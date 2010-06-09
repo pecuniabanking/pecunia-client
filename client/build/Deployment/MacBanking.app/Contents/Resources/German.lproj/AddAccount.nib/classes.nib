@@ -1,0 +1,20 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {cancel = id; lookupServer = id; new = id; newAccount = id; }; 
+            CLASS = NewAccountController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {}; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {
+            ACTIONS = {add = id; cancel = id; }; 
+            CLASS = NewBankUserController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {bankUserInfo = NSMutableDictionary; }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}

@@ -1,0 +1,5 @@
+/Users/emmi/Pecunia/Pecunia 0.3/MOAssistant.m: In function '-[MOAssistant loadModel]':
+/Users/emmi/Pecunia/Pecunia 0.3/MOAssistant.m:351: warning: unused variable 'store'
+/Users/emmi/Pecunia/Pecunia 0.3/MOAssistant.m: At top level:
+/Users/emmi/Pecunia/Pecunia 0.3/MOAssistant.m:518: warning: incomplete implementation of class 'MOAssistant'
+/Users/emmi/Pecunia/Pecunia 0.3/MOAssistant.m:518: warning: method definition for '-copyStore' not found

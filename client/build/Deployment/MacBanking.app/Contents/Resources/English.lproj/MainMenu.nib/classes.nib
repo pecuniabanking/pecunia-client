@@ -1,0 +1,25 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                addAccount = id; 
+                listUsers = id; 
+                showInfo = id; 
+                showInput = id; 
+                showProgress = id; 
+            }; 
+            CLASS = BankingController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                accountsController = NSArrayController; 
+                accountsTree = NSTreeController; 
+                jobController = NSArrayController; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = NSLevelIndicator; LANGUAGE = ObjC; SUPERCLASS = NSControl; }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }
+    ); 
+    IBVersion = 1; 
+}

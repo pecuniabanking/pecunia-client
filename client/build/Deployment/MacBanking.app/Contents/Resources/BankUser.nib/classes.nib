@@ -1,0 +1,25 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {"" = id; }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {add = id; addEntry = id; cancel = id; cancelSheet = id; endSheet = id; }; 
+            CLASS = NewBankUserController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                bankName = NSString; 
+                bankUserController = NSArrayController; 
+                bankUsers = NSArray; 
+                currentUser = User; 
+                objController = NSObjectController; 
+                userSheet = NSWindow; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}
