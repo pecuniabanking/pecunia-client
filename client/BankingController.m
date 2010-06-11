@@ -9,7 +9,6 @@
 #import "BankingController.h"
 #import "Account.h"
 #import "NewBankUserController.h"
-#import "Transaction.h"
 #import "BankStatement.h"
 #import "BankAccount.h"
 #import "Category.h"
