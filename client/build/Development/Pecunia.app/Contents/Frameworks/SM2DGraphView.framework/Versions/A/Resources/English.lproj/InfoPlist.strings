@@ -1,6 +1,0 @@
-/* Localized versions of Info.plist keys */
-
-CFBundleName = "SM2DGraphView";
-CFBundleShortVersionString = "SM2DGraphView version 1.4";
-CFBundleGetInfoString = "SM2DGraphView version 1.4, Copyright 2002-2007 Snowmint Creative Solutions LLC.";
-NSHumanReadableCopyright = "Copyright 2002-2007 Snowmint Creative Solutions LLC.";
