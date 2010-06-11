@@ -216,6 +216,9 @@
 			B12030FE11C2D15D00B1B22A /* PBXTextBookmark */ = B12030FE11C2D15D00B1B22A /* PBXTextBookmark */;
 			B12030FF11C2D15D00B1B22A /* PBXTextBookmark */ = B12030FF11C2D15D00B1B22A /* PBXTextBookmark */;
 			B120310011C2D15D00B1B22A /* PBXTextBookmark */ = B120310011C2D15D00B1B22A /* PBXTextBookmark */;
+			B120311411C2D53000B1B22A /* PBXTextBookmark */ = B120311411C2D53000B1B22A /* PBXTextBookmark */;
+			B120311511C2D53000B1B22A /* PBXTextBookmark */ = B120311511C2D53000B1B22A /* PBXTextBookmark */;
+			B120311611C2D53000B1B22A /* PBXTextBookmark */ = B120311611C2D53000B1B22A /* PBXTextBookmark */;
 			B12A4B1B10BF2079002CC63E = B12A4B1B10BF2079002CC63E /* PBXTextBookmark */;
 			B12A4DFD10CB1FEA002CC63E = B12A4DFD10CB1FEA002CC63E /* PBXTextBookmark */;
 			B12A4F9B10D19BD3002CC63E = B12A4F9B10D19BD3002CC63E /* PBXTextBookmark */;
@@ -600,6 +603,36 @@
 		vrLen = 1594;
 		vrLoc = 936;
 	};
+	B120311411C2D53000B1B22A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B12A496E10BDD23D002CC63E /* HBCIBridge.m */;
+		name = "HBCIBridge.m: 80";
+		rLen = 0;
+		rLoc = 1773;
+		rType = 0;
+		vrLen = 1225;
+		vrLoc = 936;
+	};
+	B120311511C2D53000B1B22A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B1C90E140ABB39D5006F18C9 /* BankingController.h */;
+		name = "BankingController.h: 106";
+		rLen = 37;
+		rLoc = 3229;
+		rType = 0;
+		vrLen = 1264;
+		vrLoc = 522;
+	};
+	B120311611C2D53000B1B22A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */;
+		name = "BankingController.m: 10";
+		rLen = 0;
+		rLoc = 179;
+		rType = 0;
+		vrLen = 1345;
+		vrLoc = 0;
+	};
 	B124F09D0C36F3E8001065C2 /* BankStatement.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {921, 1411}}";
@@ -675,7 +708,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1137, 6953}}";
 			sepNavSelRange = "{1773, 0}";
-			sepNavVisRange = "{936, 1594}";
+			sepNavVisRange = "{936, 1225}";
 			sepNavWindowFrame = "{{15, 57}, {1366, 1116}}";
 		};
 	};
@@ -1269,7 +1302,7 @@
 		fRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */;
 		name = "BankingController.m: 1500";
 		rLen = 1;
-		rLoc = 52710;
+		rLoc = 52686;
 		rType = 0;
 		vrLen = 1789;
 		vrLoc = 46077;
@@ -2398,7 +2431,7 @@
 		fRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */;
 		name = "BankingController.m: 1628";
 		rLen = 0;
-		rLoc = 50556;
+		rLoc = 50532;
 		rType = 0;
 		vrLen = 1459;
 		vrLoc = 49608;
@@ -2803,18 +2836,18 @@
 	};
 	B1C90E140ABB39D5006F18C9 /* BankingController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1153, 2278}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1137, 2244}}";
 			sepNavSelRange = "{3229, 37}";
-			sepNavVisRange = "{87, 1699}";
+			sepNavVisRange = "{522, 1264}";
 			sepNavVisRect = "{{0, 358}, {1161, 764}}";
 			sepNavWindowFrame = "{{61, 174}, {1186, 957}}";
 		};
 	};
 	B1C90E150ABB39D5006F18C9 /* BankingController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1137, 31314}}";
-			sepNavSelRange = "{2289, 0}";
-			sepNavVisRange = "{1565, 1227}";
+			sepNavIntBoundsRect = "{{0, 0}, {1137, 31127}}";
+			sepNavSelRange = "{179, 0}";
+			sepNavVisRange = "{0, 1345}";
 			sepNavVisRect = "{{0, 10853}, {1134, 708}}";
 			sepNavWindowFrame = "{{297, 86}, {1186, 957}}";
 		};

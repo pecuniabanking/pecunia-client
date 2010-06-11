@@ -264,6 +264,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateExpansionKey</key>
 							<array>
 								<string>29B97314FDCFA39411CA2CEA</string>
+								<string>B136AACF0FCF1BF5007A643F</string>
+								<string>B1FE0DCB106583F8005B3800</string>
 								<string>29B97323FDCFA39411CA2CEA</string>
 								<string>1058C7A0FEA54F0111CA2CBB</string>
 								<string>1058C7A2FEA54F0111CA2CBB</string>
@@ -276,6 +278,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
+									<integer>11</integer>
+									<integer>9</integer>
 									<integer>2</integer>
 									<integer>0</integer>
 								</array>
@@ -320,7 +324,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>HBCIBridge.m</string>
+								<string>BankingController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -328,11 +332,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>HBCIBridge.m</string>
+										<string>BankingController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>B120310011C2D15D00B1B22A</string>
+										<string>B120311611C2D53000B1B22A</string>
 										<key>history</key>
 										<array>
 											<string>B1E78982102DFD7500636045</string>
@@ -429,7 +433,6 @@
 											<string>B1AD65E411988D320046D9FC</string>
 											<string>B1AD661B119B40310046D9FC</string>
 											<string>B1AD6630119B44A20046D9FC</string>
-											<string>B1AD6637119B45480046D9FC</string>
 											<string>B1AD6652119B55740046D9FC</string>
 											<string>B1AD6656119BEE3B0046D9FC</string>
 											<string>B1D509A2119C556000BD0FF3</string>
@@ -445,7 +448,6 @@
 											<string>B1A138D011B9A0D900622D6C</string>
 											<string>B1A1394411BC271800622D6C</string>
 											<string>B1A1394511BC271800622D6C</string>
-											<string>B1A1394611BC271800622D6C</string>
 											<string>B16B0CD711C01A1700254078</string>
 											<string>B16B0CD811C01A1700254078</string>
 											<string>B16B0CD911C01A1700254078</string>
@@ -456,7 +458,9 @@
 											<string>B16B0CDE11C01A1700254078</string>
 											<string>B12030FD11C2D15D00B1B22A</string>
 											<string>B12030FE11C2D15D00B1B22A</string>
-											<string>B12030FF11C2D15D00B1B22A</string>
+											<string>B120311411C2D53000B1B22A</string>
+											<string>B120311511C2D53000B1B22A</string>
+											<string>B1A1394611BC271800622D6C</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -468,14 +472,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1198, 844}}</string>
+								<string>{{0, 0}, {1198, 818}}</string>
 								<key>RubberWindowFrame</key>
 								<string>39 137 1530 1018 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>844pt</string>
+							<string>818pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -488,14 +492,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 849}, {1198, 128}}</string>
+								<string>{{0, 823}, {1198, 154}}</string>
 								<key>RubberWindowFrame</key>
 								<string>39 137 1530 1018 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>128pt</string>
+							<string>154pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -652,6 +656,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>B120310111C2D15D00B1B22A</string>
 		<string>B120310211C2D15D00B1B22A</string>
 		<string>B12030C611C2CBC300B1B22A</string>
@@ -898,7 +903,7 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CDD528C0622207200134675</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>BankingController.m</string>
+										<string></string>
 										<key>StatusBarVisibility</key>
 										<true/>
 									</dict>
@@ -956,8 +961,8 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C530D57069F1CE1000CFCEE</string>
-				<string>B1AD665A119BEE3B0046D9FC</string>
-				<string>B1AD665B119BEE3B0046D9FC</string>
+				<string>B120310A11C2D34000B1B22A</string>
+				<string>B120310B11C2D34000B1B22A</string>
 				<string>1CDD528C0622207200134675</string>
 				<string>1CD0528E0623707200166675</string>
 			</array>
@@ -966,7 +971,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C530D57069F1CE1000CFCEE</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>
