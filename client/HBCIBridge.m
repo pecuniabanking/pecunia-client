@@ -77,7 +77,7 @@
 	//	[task setEnvironment: [NSDictionary dictionaryWithObjectsAndKeys: @"/users/emmi/workspace/HBCIServer", @"CLASSPATH", nil ] ];
 	
 	NSString *bundlePath = [[NSBundle mainBundle ] bundlePath ];
-	NSString *launchPath = [bundlePath stringByAppendingString:@"/Contents/HBCIServer.jar" ];
+	NSString *launchPath = [bundlePath stringByAppendingString:@"/Contents/MacOS/HBCIServer.jar" ];
 	[task setArguments: [NSArray arrayWithObjects: @"-jar", launchPath, nil ] ];
 	
 	/*	

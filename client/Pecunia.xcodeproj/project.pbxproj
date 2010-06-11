@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 44;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -32,6 +32,7 @@
 		B1014CB2101A4C3D00ABA1FF /* gpl-2.0.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */; };
 		B1029E120E3FA1D700CC681B /* CatDefWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1029E110E3FA1D700CC681B /* CatDefWindowController.m */; };
 		B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
+		B12030EC11C2CF2800B1B22A /* HBCIServer.jar in CopyFiles */ = {isa = PBXBuildFile; fileRef = B12030D511C2CD1400B1B22A /* HBCIServer.jar */; };
 		B120E3C00EB0F34D00FC5A6F /* icon_colors.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E3BF0EB0F34D00FC5A6F /* icon_colors.png */; };
 		B120E3C30EB0F3F000FC5A6F /* AccountRep.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E3C10EB0F3F000FC5A6F /* AccountRep.png */; };
 		B120E3C60EB0F7B800FC5A6F /* okshape.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E3C50EB0F7B800FC5A6F /* okshape.png */; };
@@ -148,6 +149,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		B12030F211C2CFEB00B1B22A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				B12030EC11C2CF2800B1B22A /* HBCIServer.jar in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B192EAF90EEDBFF6006F61F1 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
@@ -157,15 +168,6 @@
 				B1F4582E0F25171A00BAF4E8 /* Sparkle.framework in Copy Files */,
 			);
 			name = "Copy Files";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B1F4582C0F2516E200BAF4E8 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -207,6 +209,7 @@
 		B1029E110E3FA1D700CC681B /* CatDefWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatDefWindowController.m; sourceTree = "<group>"; };
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; };
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; };
+		B12030D511C2CD1400B1B22A /* HBCIServer.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = HBCIServer.jar; sourceTree = "<group>"; };
 		B120E3BF0EB0F34D00FC5A6F /* icon_colors.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_colors.png; sourceTree = "<group>"; };
 		B120E3C10EB0F3F000FC5A6F /* AccountRep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AccountRep.png; sourceTree = "<group>"; };
 		B120E3C50EB0F7B800FC5A6F /* okshape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = okshape.png; sourceTree = "<group>"; };
@@ -384,11 +387,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B16B0CEC11C01DFB00254078 /* SM2DGraphView.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				B1F458210F2516C200BAF4E8 /* Sparkle.framework in Frameworks */,
 				B19A86360F3CD17E000FE9B3 /* Security.framework in Frameworks */,
 				B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */,
-				B16B0CEC11C01DFB00254078 /* SM2DGraphView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +438,7 @@
 		29B97314FDCFA39411CA2CEA /* Pecunia */ = {
 			isa = PBXGroup;
 			children = (
+				B12030D511C2CD1400B1B22A /* HBCIServer.jar */,
 				B136AACF0FCF1BF5007A643F /* Classes */,
 				B136B1DD0FE25080007A643F /* BuildInstitutes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -769,7 +773,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				B192EAF90EEDBFF6006F61F1 /* Copy Files */,
-				B1F4582C0F2516E200BAF4E8 /* CopyFiles */,
+				B12030F211C2CFEB00B1B22A /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -803,7 +807,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = B14C0A8B0AAF71DB00CC41C4 /* Build configuration list for PBXProject "Pecunia" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Pecunia */;
 			projectDirPath = "";
@@ -1077,7 +1081,7 @@
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				PRODUCT_NAME = Pecunia;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SDKROOT = macosx10.5;
 				USER_HEADER_SEARCH_PATHS = "/temp/relinstall/include/gwenhywfar3 /temp/relinstall/include";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
@@ -1183,7 +1187,7 @@
 			buildSettings = {
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_VERSION = 4.0;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SDKROOT = macosx10.5;
 			};
 			name = Development;
 		};
