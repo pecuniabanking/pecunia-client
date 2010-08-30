@@ -8,7 +8,7 @@
 
 #import "LogController.h"
 
-static LogController	*_logController;
+static LogController	*_logController = nil;
 
 @implementation LogController
 
@@ -23,6 +23,9 @@ static LogController	*_logController;
 
 +(LogController*)logController
 {
+	if (_logController == nil) {
+		_logController = [[LogController alloc ] init ];
+	}
 	return _logController;
 }
 

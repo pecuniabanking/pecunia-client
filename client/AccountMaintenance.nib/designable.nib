@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="3"/>
+			<integer value="4"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -320,7 +320,7 @@
 						<object class="NSTextField" id="530339221">
 							<reference key="NSNextResponder" ref="981894283"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{116, 261}, {112, 22}}</string>
+							<string key="NSFrame">{{116, 260}, {112, 22}}</string>
 							<reference key="NSSuperview" ref="981894283"/>
 							<int key="NSTag">100</int>
 							<bool key="NSEnabled">YES</bool>
@@ -641,54 +641,6 @@
 					<int key="connectionID">118</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">editable: newAccount</string>
-						<reference key="source" ref="386683832"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="386683832"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">editable: newAccount</string>
-							<string key="NSBinding">editable</string>
-							<string key="NSKeyPath">newAccount</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">138</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">editable: newAccount</string>
-						<reference key="source" ref="822048982"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="822048982"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">editable: newAccount</string>
-							<string key="NSBinding">editable</string>
-							<string key="NSKeyPath">newAccount</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">144</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">editable: newAccount</string>
-						<reference key="source" ref="645376664"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="645376664"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">editable: newAccount</string>
-							<string key="NSBinding">editable</string>
-							<string key="NSKeyPath">newAccount</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">147</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">passports</string>
 						<reference key="source" ref="1001"/>
@@ -779,15 +731,15 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="536977474"/>
-							<reference ref="530339221"/>
 							<reference ref="982372314"/>
 							<reference ref="236333169"/>
 							<reference ref="523379319"/>
-							<reference ref="625446032"/>
-							<reference ref="386683832"/>
 							<reference ref="264268004"/>
 							<reference ref="758071205"/>
 							<reference ref="645376664"/>
+							<reference ref="530339221"/>
+							<reference ref="386683832"/>
+							<reference ref="625446032"/>
 						</object>
 						<reference key="parent" ref="428511902"/>
 					</object>
@@ -1129,9 +1081,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{292, 452}, {684, 303}}</string>
+					<string>{{209, 588}, {684, 303}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{292, 452}, {684, 303}}</string>
+					<string>{{209, 588}, {684, 303}}</string>
 					<integer value="1"/>
 					<string>{{649, 650}, {684, 320}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

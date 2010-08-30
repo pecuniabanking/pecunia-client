@@ -126,6 +126,16 @@ static NSArray*	catCache = nil;
 	}
 	return NO;
 }
+
+-(StatCatAssignment*)bankAssignment
+{
+	NSMutableSet* stats = [self mutableSetValueForKey: @"assignments" ];
+	StatCatAssignment *stat;
+	for (stat in stats) {
+		if([stat.category isBankAccount] == YES) return stat;
+	}
+	return nil;
+}
  
 -(void)updateAssigned
 {
@@ -212,9 +222,14 @@ static NSArray*	catCache = nil;
 	if(changed == NO) {
 		// create StatCatAssignment
 		stat = [NSEntityDescription insertNewObjectForEntityForName:@"StatCatAssignment" inManagedObjectContext:context ];
+		StatCatAssignment *bStat = [self bankAssignment ];
 		stat.value = value;
 		if(cat) stat.category = cat;
 		stat.statement = self;
+		// get User Info from Bank Assignment
+		if (bStat.userInfo) {
+			stat.userInfo = bStat.userInfo;
+		} else stat.userInfo = @"";
 		[stats addObject: stat ];
 	}
 	

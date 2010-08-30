@@ -22,7 +22,6 @@
 	NSManagedObjectContext	*memContext;
 	NSManagedObjectContext	*context;
 	BankStatement			*currentStatement;
-	BankStatement			*oldStatement;
 	NSString				*bankName;
 	BOOL					firstStatement;
 	NSDate					*lastDate;

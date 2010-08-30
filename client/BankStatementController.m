@@ -32,7 +32,6 @@
 	memContext = [[MOAssistant assistant ] memContext];
 	context = [[MOAssistant assistant ] context];
 	account = acc;
-	oldStatement = stat;
 	actionResult = 0;
 	
 	[self arrangeStatements ];
@@ -76,65 +75,67 @@
 -(void)awakeFromNib
 {
 	[statementController setContent:currentStatement ];
-	[dateField setEnabled:(oldStatement == nil) ];
 }
 
 -(void)saveStatement
 {
 	NSEntityDescription *entity = [currentStatement entity];
-	NSArray *attributeKeys = [[entity attributesByName] allKeys];
-	NSDictionary *attributeValues = [currentStatement dictionaryWithValuesForKeys:attributeKeys];
-	BankStatement *stat;
+	NSArray				*attributeKeys = [[entity attributesByName] allKeys];
+	NSDictionary		*attributeValues = [currentStatement dictionaryWithValuesForKeys:attributeKeys];
+	BankStatement		*stat;
+	NSError				*error = nil;
 	
-	if (oldStatement) {
-		[oldStatement setValuesForKeysWithDictionary:attributeValues ];
-	} else {
-		BankStatement *newStatement = [NSEntityDescription insertNewObjectForEntityForName:@"BankStatement" inManagedObjectContext:context ];
-		[newStatement setValuesForKeysWithDictionary:attributeValues ];
-		
-		//calculate date
-		BOOL found = NO;
-		for(stat in accountStatements) {
-			// newStatement.date >= stat.date
-			if ([[ShortDate dateWithDate:newStatement.date ] compare: [ShortDate dateWithDate: stat.date ] ] != NSOrderedAscending) {
-				// newStatement.date == stat.date
-				if ([[ShortDate dateWithDate:newStatement.date ] compare: [ShortDate dateWithDate: stat.date ] ] == NSOrderedSame) {
-					newStatement.date = [[NSDate alloc ] initWithTimeInterval:100 sinceDate:stat.date ];
-				} else {
-					newStatement.date = [[ShortDate dateWithDate:newStatement.date ] lowDate ];
-				}
-				found = YES;
-				break;
+	BankStatement *newStatement = [NSEntityDescription insertNewObjectForEntityForName:@"BankStatement" inManagedObjectContext:context ];
+	[newStatement setValuesForKeysWithDictionary:attributeValues ];
+	
+	//calculate date
+	BOOL found = NO;
+	for(stat in accountStatements) {
+		// newStatement.date >= stat.date
+		if ([[ShortDate dateWithDate:newStatement.date ] compare: [ShortDate dateWithDate: stat.date ] ] != NSOrderedAscending) {
+			// newStatement.date == stat.date
+			if ([[ShortDate dateWithDate:newStatement.date ] compare: [ShortDate dateWithDate: stat.date ] ] == NSOrderedSame) {
+				newStatement.date = [[NSDate alloc ] initWithTimeInterval:100 sinceDate:stat.date ];
+			} else {
+				newStatement.date = [[ShortDate dateWithDate:newStatement.date ] lowDate ];
 			}
+			found = YES;
+			break;
 		}
-		
-		// adjust balance of later statements
-		for(stat in accountStatements) {
-			// stat.date > newStatement.date
-			if ([stat.date compare: newStatement.date ] == NSOrderedDescending) {
-				stat.saldo = [stat.saldo decimalNumberByAdding: newStatement.value ];
-			} else break;
-		}		
-		
-		if (found == NO) {
-			newStatement.date = [[ShortDate dateWithDate:newStatement.date ] lowDate ];
-		}
-		
-		// add to account
-		[newStatement addToAccount: account ];
+	}
+	
+	// adjust balance of later statements
+	for(stat in accountStatements) {
+		// stat.date > newStatement.date
+		if ([stat.date compare: newStatement.date ] == NSOrderedDescending) {
+			stat.saldo = [stat.saldo decimalNumberByAdding: newStatement.value ];
+		} else break;
+	}		
+	
+	if (found == NO) {
+		newStatement.date = [[ShortDate dateWithDate:newStatement.date ] lowDate ];
+	}
+	
+	// add to account
+	[newStatement addToAccount: account ];
 
-		[self arrangeStatements ];
-		
-		if (lastStatement) {
-			account.balance = lastStatement.saldo;
-			[[Category bankRoot ] rollup ];
-		}
+	[self arrangeStatements ];
+	
+	if (lastStatement) {
+		account.balance = lastStatement.saldo;
+		[[Category bankRoot ] rollup ];
+	}
+	
+	// save updates
+	if([context save: &error ] == NO) {
+		NSAlert *alert = [NSAlert alertWithError:error];
+		[alert runModal];
+		return;
 	}
 }
 
 -(void)windowWillClose:(NSNotification *)aNotification
 {
-	
 	[NSApp stopModalWithCode: actionResult ];
 	[memContext reset ];
 }
@@ -181,7 +182,11 @@
 	if([te tag ] == 200) {
 		// amount field
 		if (lastStatement == nil || [[ShortDate dateWithDate:currentStatement.date ] compare: [ShortDate dateWithDate:lastStatement.date ] ] != NSOrderedAscending) {
-			if(currentStatement.value) currentStatement.saldo = [lastStatement.saldo decimalNumberByAdding:currentStatement.value ]; 
+			if (lastStatement == nil) {
+				if(currentStatement.value) currentStatement.saldo = [account.balance decimalNumberByAdding:currentStatement.value ]; 
+			} else {
+				if(currentStatement.value) currentStatement.saldo = [lastStatement.saldo decimalNumberByAdding:currentStatement.value ];
+			}
 		} else {
 			// find first statement that is later than current one.
 			BankStatement *foundStatement = nil;
@@ -199,7 +204,6 @@
 
 -(IBAction)dateChanged:(id)sender
 {
-	// date field - enable saldo if date is >= last date
 	NSDate *date = [(NSDatePicker*)sender dateValue ];
 	if (lastDate == nil && [[ShortDate dateWithDate:date ] compare: [ShortDate dateWithDate:lastStatement.date ] ] != NSOrderedAscending) {
 		if(currentStatement.value) currentStatement.saldo = [lastStatement.saldo decimalNumberByAdding:currentStatement.value ]; 

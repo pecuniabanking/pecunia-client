@@ -290,6 +290,15 @@ void updateColorCache()
 				return;
 			}
 		}
+		// check if passwort is already defined. If yes, it must(!) be taken
+		NSString *passwd = [Keychain passwordForService:@"Pecunia" account:@"DataFile" ];
+		if (passwd != nil) {
+			[passw1Field setValue:passwd ];
+			[passw2Field setValue:passwd ];
+			[passw1Field setEnabled:NO ];
+			[passw2Field setEnabled:NO ];
+		}
+		
 		[NSApp beginSheet: encryptionSheet
 		   modalForWindow: [self window ]
 			modalDelegate: self

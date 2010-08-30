@@ -127,5 +127,5 @@
 "AP99" = "HBCI-Aktion ist nicht möglich, da der HBCI-Dienst beendet wurde bzw. nicht gestartet werden kann";
 "AP100" = "Möchten Sie das Konto %@ wirklich löschen?";
 "AP101" = "Keine (manuelle Kontoverwaltung)";
-
-
+"AP102" = "Datenumsetzung bestätigen";
+"AP103" = "Die Daten werden jetzt umgesetzt. Dieser Vorgang kann nicht rückgängig gemacht werden. Bitte stellen Sie sicher, dass eine Datensicherung vorhanden ist. Möchten Sie die Daten jetzt umsetzen?";

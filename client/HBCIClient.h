@@ -13,6 +13,7 @@
 @class Passport;
 @class PecuniaError;
 @class BankAccount;
+@class Account;
 
 @interface HBCIClient : NSObject {
 	HBCIBridge		*bridge;
@@ -34,6 +35,8 @@
 -(NSArray*)initHBCI;
 -(NSArray*)passports;
 -(NSArray*)accounts;
+
+-(Account*)accountWithNumber:(NSString*)number bankCode:(NSString*)code;
 
 // HBCI Methods
 -(BankInfo*)infoForBankCode: (NSString*)bankCode error:(PecuniaError**)error;

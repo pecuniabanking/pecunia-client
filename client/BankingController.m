@@ -40,6 +40,8 @@
 #import "ShortDate.h"
 #import "BankStatementController.h"
 #import "AccountChangeController.h"
+#import "TransferListController.h"
+#import "PurposeSplitController.h"
 
 #define _expandedRows @"EMT_expandedRows"
 #define _accountsViewSD @"EMT_accountsSorting"
@@ -79,7 +81,7 @@ static BankingController	*con;
 	}
 	
 	[client initHBCI ];
-	logController = [[LogController alloc] init];
+	logController = [LogController logController ];
 
 	return self;
 }
@@ -126,11 +128,6 @@ static BankingController	*con;
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[transactionController setSortDescriptors: sds ];
 
-	// sort descriptor for transfer view
-	sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
-	sds = [NSArray arrayWithObject:sd];
-	[transferController setSortDescriptors: sds ];
-
 	// status (content) bar
 	[mainWindow setAutorecalculatesContentBorderThickness:NO forEdge:NSMinYEdge];
 	[mainWindow setContentBorderThickness:30.0f forEdge:NSMinYEdge];
@@ -166,7 +163,9 @@ static BankingController	*con;
 -(void)setBankAccounts
 {
 	NSError	*error = nil;
-
+	BankAccount *account;
+	BOOL changed = NO;
+	
 	NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
 	NSArray *bankAccounts = [context executeFetchRequest:request error:&error];
 	if( error != nil || bankAccounts == nil) {
@@ -174,7 +173,35 @@ static BankingController	*con;
 		[alert runModal];
 		return;
 	}
-	[[HBCIClient hbciClient ] setAccounts:bankAccounts ];
+	
+    NSMutableArray* relevantAccounts = [NSMutableArray arrayWithCapacity:20 ];
+	
+	for(account in bankAccounts) {
+		if (account.userId == nil || account.customerId == nil) {
+			// check if account is defined in HBCI Client
+			Account* acc = [[HBCIClient hbciClient ] accountWithNumber:account.accountNumber bankCode:account.bankCode ];
+			if (acc) {
+				account.userId = acc.userId;
+				account.customerId = acc.customerId;
+				changed = YES;
+				[relevantAccounts addObject:account ];
+			}
+		} else {
+			[relevantAccounts addObject:account ];
+		}
+
+	}
+	
+	if (changed) {
+		// save updates
+		if([context save: &error ] == NO) {
+			NSAlert *alert = [NSAlert alertWithError:error];
+			[alert runModal];
+			return;
+		}
+	}
+	
+	[[HBCIClient hbciClient ] setAccounts:relevantAccounts ];
 }
 
 -(void)updateBankAccounts
@@ -496,71 +523,6 @@ static BankingController	*con;
 -(IBAction)showInfo:(id)sender
 {
 }
-
--(IBAction)sendTransfers: (id)sender
-{
-	PecuniaError *error = nil;
-	NSArray* sel = [transferController selectedObjects ];
-	if(sel == nil) return;
-
-	// show log if wanted
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
-	BOOL showLog = [defaults boolForKey: @"logForTransfers" ];
-	if (showLog) {
-		[logController showWindow:self ];
-		[[logController window ] orderFront:self ];
-	}
-	
-	[[HBCIClient hbciClient ] sendTransfers: sel error: &error];
-	if(error) {
-		[error alertPanel ];
-	} else {
-		// save updates
-		NSError *error = nil;
-		if([context save: &error ] == NO) {
-			NSAlert *alert = [NSAlert alertWithError:error];
-			[alert runModal];
-			return;
-		}
-	}
-}
-
--(IBAction)deleteTransfers: (id)sender
-{
-	int		i;
-	NSError *error = nil;
-	
-	NSArray* sel = [transferController selectedObjects ];
-	if(sel == nil || [sel count ] == 0) return;
-	
-	i = NSRunAlertPanel(NSLocalizedString(@"AP14", @"Delete transfers"), 
-						NSLocalizedString(@"AP15", @"Entries will be deleted for good. Continue anyway?"),
-						NSLocalizedString(@"no", @"No"), 
-						NSLocalizedString(@"yes", @"Yes"), 
-						nil);
-	if(i != NSAlertAlternateReturn) return;
-
-	for(i=0; i < [sel count ]; i++) {
-		Transfer* transfer = [sel objectAtIndex: i ];
-		[context deleteObject: transfer ];
-	}
-	// save updates
-	if([context save: &error ] == NO) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-		return;
-	}
-}
-
--(IBAction)changeTransfer: (id)sender
-{
-	NSArray* sel = [transferController selectedObjects ];
-	if(sel == nil || [sel count ] != 1) return;
-	
-	[transferWindowController changeTransfer: [sel objectAtIndex:0 ] ];
-}
-
-
 
 -(IBAction)enqueueRequest: (id)sender
 {
@@ -1137,11 +1099,11 @@ static BankingController	*con;
 			}
 			break;
 			case 1:
-			if([searchName length ] == 0) [transferController setFilterPredicate: nil ];
+			if([searchName length ] == 0) [transferListController setFilterPredicate: nil ];
 			else {
 				NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or statement.additional contains[c] %@",
 									 searchName, searchName, searchName ];
-				if(pred) [transferController setFilterPredicate: pred ];
+				if(pred) [transferListController setFilterPredicate: pred ];
 			}
 			break;
 	}
@@ -1155,7 +1117,7 @@ static BankingController	*con;
 
 	[searchField setStringValue: @"" ];
 	[transactionController setFilterPredicate: [timeSlicer predicateForField: @"date" ] ];
-	[transferController setFilterPredicate: nil ];
+	[transferListController setFilterPredicate: nil ];
 	if(idx == 0  || idx == 1) [searchItem setEnabled: YES ]; else [searchItem setEnabled: NO ];
 }
 
@@ -1663,6 +1625,19 @@ static BankingController	*con;
 			return;
 		}
 	}
+}
+
+-(IBAction)splitPurpose:(id)sender
+{
+	BankAccount *acc = nil;
+	Category* cat = [self currentSelection ];
+	if (cat != nil && cat.accountNumber != nil) {
+		acc = (BankAccount*)cat;
+	}
+	
+	PurposeSplitController *con = [[PurposeSplitController alloc ] initWithAccount:(BankAccount*)cat ];
+	int res = [NSApp runModalForWindow: [con window ] ];
+	
 }
 
 

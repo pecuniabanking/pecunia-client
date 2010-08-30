@@ -230,7 +230,7 @@
 	
 	int res = [NSApp runModalForWindow: window ];
 	if(res == 1) {
-		if([context hasChanges ]) [context undo ];
+		if([context hasChanges ]) [context rollback ];
 		return;
 	}
 	
@@ -285,7 +285,7 @@
 	int res = [NSApp runModalForWindow: window ];
 	[bv setHidden: NO ];
 	if(res == 1) {
-		if([context hasChanges ]) [context undo ];
+		if([context hasChanges ]) [context rollback ];
 		return;
 	}
 	

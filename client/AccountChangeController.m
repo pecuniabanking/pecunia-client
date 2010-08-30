@@ -73,25 +73,7 @@
 }
 
 -(BOOL)check
-{
-	if(account.accountNumber == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-						NSLocalizedString(@"AP9", @"Please enter an account number"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
-		return NO;
-	}
-	
-	if(account.bankCode == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP10", @"Please enter a bank code"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
-		return NO;
-	}
-	
-	// default currency
-	if([account.currency isEqual: @"" ]) account.currency = @"EUR";
-	
-	
+{	
 	// check IBAN
 	BOOL res;
 	HBCIClient *hbciClient = [HBCIClient hbciClient ];
@@ -105,15 +87,6 @@
 		return NO;
 	}
 	
-	// check account number
-	res = [hbciClient checkAccount: account.accountNumber bankCode: account.bankCode error: &error ];
-	if(res == NO) {
-		NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-						NSLocalizedString(@"AP13", @"Account number is not valid"),
-						NSLocalizedString(@"retry", @"Retry"), nil, nil);
-		return NO;
-	}
-
 	return YES;
 }
 

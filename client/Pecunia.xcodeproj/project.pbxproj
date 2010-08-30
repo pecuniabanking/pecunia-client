@@ -86,6 +86,7 @@
 		B17074870D55104000FBF186 /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17074860D55104000FBF186 /* PreferenceController.m */; };
 		B170788310E4F80C00A974E7 /* Accounts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B170788210E4F80C00A974E7 /* Accounts.xcdatamodeld */; };
 		B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = B17078F810EA5E6100A974E7 /* StatCatAssignment.m */; };
+		B1762BD911EE4AE600F70263 /* TransferListController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1762BD811EE4AE600F70263 /* TransferListController.m */; };
 		B18268090EC0E460008BC010 /* DatedTransfer_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B18268080EC0E460008BC010 /* DatedTransfer_32.png */; };
 		B182680B0EC0E826008BC010 /* EUTransfer_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B182680A0EC0E826008BC010 /* EUTransfer_32.png */; };
 		B189782E0ECF47CA00D20503 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
@@ -146,6 +147,9 @@
 		B1F4587E0F2907BD00BAF4E8 /* AccountChangeController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountChangeController.m */; };
 		B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F459EB0F2E480700BAF4E8 /* BankInfo.m */; };
 		B1F527050C3C1D5800BE3DFC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* Category.m */; };
+		B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB50981209EA52004DCD6A /* PurposeSplitController.m */; };
+		B1FB509B1209EAC7004DCD6A /* PurposeSplitWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */; };
+		B1FB509E1209F68E004DCD6A /* PurposeSplitData.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */; };
 		C1C0842011C2D85500278CBF /* SM2DGraphView.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = B16B0CEB11C01DFB00254078 /* SM2DGraphView.framework */; };
 /* End PBXBuildFile section */
 
@@ -295,6 +299,8 @@
 		B170788410E4F80D00A974E7 /* Accounts 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 2.xcdatamodel"; sourceTree = "<group>"; };
 		B17078F710EA5E6100A974E7 /* StatCatAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatCatAssignment.h; sourceTree = "<group>"; };
 		B17078F810EA5E6100A974E7 /* StatCatAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatCatAssignment.m; sourceTree = "<group>"; };
+		B1762BD711EE4AE600F70263 /* TransferListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferListController.h; sourceTree = "<group>"; };
+		B1762BD811EE4AE600F70263 /* TransferListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferListController.m; sourceTree = "<group>"; };
 		B18268080EC0E460008BC010 /* DatedTransfer_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DatedTransfer_32.png; sourceTree = "<group>"; };
 		B182680A0EC0E826008BC010 /* EUTransfer_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EUTransfer_32.png; sourceTree = "<group>"; };
 		B189782C0ECF47CA00D20503 /* Country.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Country.h; sourceTree = "<group>"; };
@@ -382,6 +388,11 @@
 		B1F459EB0F2E480700BAF4E8 /* BankInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankInfo.m; sourceTree = "<group>"; };
 		B1F527030C3C1D5800BE3DFC /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
 		B1F527040C3C1D5800BE3DFC /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
+		B1FB50971209EA52004DCD6A /* PurposeSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitController.h; sourceTree = "<group>"; };
+		B1FB50981209EA52004DCD6A /* PurposeSplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitController.m; sourceTree = "<group>"; };
+		B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PurposeSplitWindow.xib; sourceTree = "<group>"; };
+		B1FB509C1209F68E004DCD6A /* PurposeSplitData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitData.h; sourceTree = "<group>"; };
+		B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitData.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -483,6 +494,7 @@
 				B1014C5C101A2FBE00ABA1FF /* Donation.nib */,
 				B1A59497113182DA00FD8CB8 /* StatSplitController.xib */,
 				B14C6002114848E1009324A6 /* BankStatementController.xib */,
+				B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */,
 				B136B23A0FE2F4D1007A643F /* institutes */,
 				B1923B560EB7A6D40079ADCA /* Icons */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -683,6 +695,10 @@
 				B1A59495113165BC00FD8CB8 /* StatSplitController.m */,
 				B14C5FFF1148467A009324A6 /* BankStatementController.h */,
 				B14C60001148467A009324A6 /* BankStatementController.m */,
+				B1762BD711EE4AE600F70263 /* TransferListController.h */,
+				B1762BD811EE4AE600F70263 /* TransferListController.m */,
+				B1FB50971209EA52004DCD6A /* PurposeSplitController.h */,
+				B1FB50981209EA52004DCD6A /* PurposeSplitController.m */,
 			);
 			name = WindowController;
 			sourceTree = "<group>";
@@ -760,6 +776,8 @@
 				B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */,
 				B132F91D0F96594000263F3B /* ShortDate.h */,
 				B132F91E0F96594000263F3B /* ShortDate.m */,
+				B1FB509C1209F68E004DCD6A /* PurposeSplitData.h */,
+				B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */,
 			);
 			name = Basic;
 			sourceTree = "<group>";
@@ -892,6 +910,7 @@
 				B1A59498113182DA00FD8CB8 /* StatSplitController.xib in Resources */,
 				B14C6003114848E1009324A6 /* BankStatementController.xib in Resources */,
 				B1A1376811B6FA9800622D6C /* AccountCreate.nib in Resources */,
+				B1FB509B1209EAC7004DCD6A /* PurposeSplitWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -967,6 +986,9 @@
 				B14C629B115E00AA009324A6 /* MigrationManagerWorkaround.m in Sources */,
 				B14C630E11629C7D009324A6 /* CategoryPolicy030.m in Sources */,
 				B1A1377411B6FD9400622D6C /* AccountDefController.m in Sources */,
+				B1762BD911EE4AE600F70263 /* TransferListController.m in Sources */,
+				B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */,
+				B1FB509E1209F68E004DCD6A /* PurposeSplitData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

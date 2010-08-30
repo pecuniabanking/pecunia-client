@@ -25,6 +25,7 @@
 @class TimeSliceManager;
 @class MCEMTableView;
 @class CategoryView;
+@class TransferListController;
 
 @interface BankingController : NSObject
 {
@@ -34,9 +35,6 @@
 	IBOutlet MCEMTableView		*transactionsView;
 	IBOutlet CategoryView		*accountsView;
 	IBOutlet MCEMTreeController *categoryController;
-//	IBOutlet NSTreeController   *catDefController;
-	IBOutlet NSArrayController  *transferController;
-	IBOutlet NSTableView		*transferView;
 	IBOutlet NSSplitView		*mainVSplit;
 	IBOutlet NSSplitView		*mainHSplit;
 	IBOutlet NSPredicateEditor  *predicateEditor;
@@ -52,6 +50,7 @@
 	IBOutlet CatDefWindowController			*catDefWinController;
 	IBOutlet AccountRepWindowController		*accountRepWinController;
 	IBOutlet CategoryRepWindowController	*categoryRepWinController;
+	IBOutlet TransferListController			*transferListController;
 	
     NSMutableArray				*transactions;
 	NSManagedObjectContext      *context;
@@ -83,9 +82,6 @@
 -(IBAction)save: (id)sender;
 -(IBAction)editBankUsers:(id)sender;
 -(IBAction)accountSettings:(id)sender;
--(IBAction)sendTransfers: (id)sender;
--(IBAction)deleteTransfers: (id)sender;
--(IBAction)changeTransfer: (id)sender;
 -(IBAction)export: (id)sender;
 -(IBAction)test: (id)sender;
 -(IBAction)transfer_local: (id)sender;
@@ -93,6 +89,7 @@
 -(IBAction)transfer_dated: (id)sender;
 -(IBAction)transfer_internal: (id)sender;
 -(IBAction)donate: (id)sender;
+-(IBAction)splitPurpose:(id)sender;
 
 -(IBAction)doSearch: (id)sender;
 

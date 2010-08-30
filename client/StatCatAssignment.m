@@ -13,7 +13,7 @@
 
 @implementation StatCatAssignment
 
-@dynamic userInfo;
+//@dynamic userInfo;
 @dynamic value;
 //@dynamic category;
 @dynamic statement;
@@ -118,6 +118,37 @@
     [self didChangeValueForKey:@"category"];
 	[value invalidateBalance ];
 	[Category updateCatValues ];
+}
+
+-(NSString*)userInfo
+{
+    id tmpObject;
+    
+    [self willAccessValueForKey:@"userInfo"];
+    tmpObject = [self primitiveValueForKey:@"userInfo"];
+    [self didAccessValueForKey:@"userInfo"];
+    
+    return tmpObject;
+}
+
+-(void)setUserInfo:(NSString *)info
+{
+	NSString *oldInfo = self.userInfo;
+	if (![oldInfo isEqualToString:info ]) {
+		[self willChangeValueForKey:@"userInfo" ];
+		[self setPrimitiveValue:info forKey:@"userInfo" ];
+		[self didChangeValueForKey:@"userInfo"];
+		if ([self.category isBankAccount ]) {
+			BankStatement *statement = self.statement;
+			// also set in all categories
+			NSSet *stats = [statement mutableSetValueForKey:@"assignments" ];
+			for (StatCatAssignment *stat in stats) {
+				if (stat != self && (stat.userInfo == nil || [stat.userInfo isEqualToString:oldInfo ])) {
+					stat.userInfo = info;
+				}
+			}
+		}
+	}
 }
 
 

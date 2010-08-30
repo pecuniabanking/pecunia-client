@@ -79,6 +79,21 @@ static HBCIClient *client = nil;
 	if(val) [cmd appendFormat:@"<%@>%@</%@>", tag, val, tag ];
 }
 
+-(Account*)accountWithNumber:(NSString*)number bankCode:(NSString*)code
+{
+	Account* acc = [[Account alloc ] init ];
+	acc.accountNumber = number;
+	acc.bankCode = code;
+	NSInteger idx = [accounts indexOfObject:acc ];
+	[acc release ];
+	if (idx == NSNotFound) {
+		return nil;
+	} else {
+		return [accounts objectAtIndex:idx ];
+	}
+}
+
+
 -(NSArray*)initHBCI
 {
 	PecuniaError *error=nil;

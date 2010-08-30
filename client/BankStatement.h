@@ -11,6 +11,7 @@
 @class BankAccount;
 @class ClassificationContext;
 @class Category;
+@class StatCatAssignment;
 
 @interface BankStatement : NSManagedObject {
 	
@@ -29,6 +30,7 @@
 -(void)updateAssigned;
 -(BOOL)hasAssignment;
 -(NSDecimalNumber*)residualAmount;
+-(StatCatAssignment*)bankAssignment;
 
 -(void)removeFromCategory:(Category*)cat;
 -(void)moveFromCategory:(Category*)scat toCategory:(Category*)tcat;

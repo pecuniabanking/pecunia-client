@@ -109,6 +109,7 @@
 			// create root for bank
 			bankRoot = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount" inManagedObjectContext:context];
 			bankRoot.bankName = account.bankName;
+			bankRoot.name = account.bankName;
 			bankRoot.bankCode = account.bankCode;
 			bankRoot.currency = account.currency;
 			bankRoot.bic = account.bic;
