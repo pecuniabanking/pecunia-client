@@ -28,6 +28,8 @@
 @dynamic type;
 @dynamic balance;
 @dynamic noAutomaticQuery;
+@dynamic collTransfer;
+@dynamic isManual;
 
 -(id)copyWithZone: (NSZone *)zone
 {
@@ -38,6 +40,8 @@
 {
 	NSError *error = nil;
 	BankStatement *stat;
+	ShortDate *lastTransferDate;
+	
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
 	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
@@ -48,27 +52,28 @@
 	for(stat in statements) if(stat.isNew == YES) stat.isNew = NO;
 	
 	// look for new statements and mark them
-	NSDate *lDate = self.latestTransferDate;
-	if(lDate == nil) {
-		lDate = [NSDate distantPast ];
-	} 
+	if (self.latestTransferDate) {
+		lastTransferDate = [ShortDate dateWithDate:self.latestTransferDate ];
+	} else {
+		lastTransferDate = [ShortDate dateWithDate: [NSDate distantPast ] ];	
+	}
  
 	// get (old) reference statements
-	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, lDate ];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [lastTransferDate lowDate ] ];
 	[request setPredicate:predicate];
 	statements = [context executeFetchRequest:request error:&error];
 	for (stat in stats) {
 		// check if stat matches existing statements
 		//first, check if date < lDate
-		if([[stat date ] compare: lDate ] == NSOrderedAscending) continue;
+		if([[stat date ] compare: [lastTransferDate lowDate ] ] == NSOrderedAscending) continue;
 		BankStatement *oldStat;
 		BOOL isMatched = NO;
 		for (oldStat in statements) {
 			if([stat matches: oldStat ]) {
 				isMatched = YES;
 				// update (reordered) statements at latestTransferDate
-				oldStat.date = stat.date;
-				oldStat.saldo = stat.saldo;
+//				oldStat.date = stat.date;
+//				oldStat.saldo = stat.saldo;
 				break;
 			}
 		}
@@ -81,10 +86,23 @@
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	BankStatement	*stat;
 	NSDate			*ltd = self.latestTransferDate;
-	int             count = 0;
+	NSDate			*date = nil;
+	NSTimeInterval  ofs = 1;
+	NSTimeInterval  ltdOfs = 1;
+	int             count = 0, j;
+	ShortDate		*lastTransferDate;
+	NSMutableArray	*newStatements = [NSMutableArray arrayWithCapacity:50 ];
+	
+	if (self.latestTransferDate) {
+		lastTransferDate = [ShortDate dateWithDate:self.latestTransferDate ];
+	} else {
+		lastTransferDate = [ShortDate dateWithDate: [NSDate distantPast ] ];	
+	}
 
 	if(result.balance) self.balance = result.balance;
 	if(result.statements == nil) return 0;
+	
+	// statements must be properly sorted !!!
 	for (stat in result.statements) {
 		if(stat.isNew == NO) continue;
 
@@ -98,11 +116,45 @@
 
 		[stmt setValuesForKeysWithDictionary:attributeValues];
 		stmt.isNew = YES;
+		
+		// adjust date to ensure proper ordering
+		if ([lastTransferDate isEqual:[ShortDate dateWithDate:stat.date ] ]) {
+			stmt.date = [[NSDate alloc ] initWithTimeInterval: ltdOfs++ sinceDate: self.latestTransferDate ];
+		} else {
+			if (date == nil) date = stat.date;
+			else {
+				if ([date isEqualToDate:stat.date ]) {
+					stmt.date = [[NSDate alloc ] initWithTimeInterval:ofs++ sinceDate: date ];
+				} else {
+					date = stat.date;
+					ofs=1;
+				}
+			}
+		}
+		
+		// if no balance was given, addforward it
+		if (result.balance == nil) {
+			stmt.saldo = [self.balance decimalNumberByAdding:stmt.value ];
+			self.balance = stmt.saldo;
+		}
+
+		[newStatements addObject: stmt ];
 		[stmt addToAccount: self ];	
 		count++;
 		if(ltd == nil || [ltd compare: stmt.date ] == NSOrderedAscending) ltd = stmt.date;
 	}
-	self.latestTransferDate = [[ShortDate dateWithDate: ltd ] lowDate ];
+	
+	// if balance was given, subbackward it
+	if (result.balance) {
+		NSDecimalNumber *bal = self.balance;
+		for(j = [newStatements count ]-1; j>=0; j--) {
+			stat = [newStatements objectAtIndex:j ];
+			stat.saldo = bal;
+			bal = [bal decimalNumberBySubtracting:stat.value ];
+		}
+	}
+	
+	self.latestTransferDate = ltd;
 	return count;
 }
 

@@ -10,6 +10,16 @@
 
 @implementation TransactionLimits
 
+@synthesize maxLenRemoteName;
+@synthesize maxLinesRemoteName;
+@synthesize maxLenPurpose;
+@synthesize maxLinesPurpose;
+@synthesize localLimit;
+@synthesize foreignLimit;
+@synthesize minSetupTime;
+@synthesize maxSetupTime;
+@synthesize allowedTextKeys;
+
 /*
 -(id)initWithAB: (const AB_TRANSACTION_LIMITS*)t
 {
@@ -57,22 +67,25 @@
 }
 */
 
--(int)maxLenRemoteName { return maxLenRemoteName; }
--(int)maxLinesRemoteName { return maxLinesRemoteName; }
--(int)maxLenPurpose { return maxLenPurpose; }
--(int)maxLinesPurpose { return maxLinesPurpose; }
--(double)localLimit { return localLimit; }
--(double)foreignLimit { return foreignLimit; }
--(NSArray*)allowedTextKeys { return allowedTextKeys; }
--(int)minSetupTime { return minSetupTime; }
--(int)maxSetupTime { return maxSetupTime; }
+-(int)maxLengthRemoteName
+{
+	return maxLenRemoteName * maxLinesRemoteName;
+}
+
+-(int)maxLengthPurpose
+{
+	return maxLenPurpose * maxLinesPurpose;
+}
+
 
 -(void)dealloc
 {
-	if(allowedTextKeys) [allowedTextKeys release ];
+	[allowedTextKeys release], allowedTextKeys = nil;
 
 	[super dealloc ];
 }
 
 
 @end
+
+

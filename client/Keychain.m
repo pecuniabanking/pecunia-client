@@ -43,12 +43,11 @@ static NSMutableDictionary *passwordCache = nil;
 	UInt32 myPasswordLength = 0;
 	void *passwordData = nil;
 	NSString *pwd;
+	NSString *key = [NSString stringWithFormat: @"%@/%@", service, account ];
 	
 	if(passwordCache != nil) {
-		NSString *key = [NSString stringWithFormat: @"%@/%@", service, account ];
 		pwd = [passwordCache valueForKey: key ];
 		if(pwd) return pwd;
-		
 	}
 	
 	status = SecKeychainFindGenericPassword (
@@ -67,6 +66,9 @@ static NSMutableDictionary *passwordCache = nil;
 	
 	pwd = [NSString stringWithUTF8String:passwordData ];
 	
+	if(passwordCache == nil) passwordCache = [[NSMutableDictionary alloc ] initWithCapacity: 10 ];
+	[passwordCache setValue: pwd forKey: key ];
+	
 	status = SecKeychainItemFreeContent (
 										 NULL,           //No attribute data to release
 										 passwordData    //Release data buffer allocated by SecKeychainFindGenericPassword
@@ -81,6 +83,11 @@ static NSMutableDictionary *passwordCache = nil;
 {
 	OSStatus status ;
 	SecKeychainItemRef itemRef;
+	NSString *key = [NSString stringWithFormat: @"%@/%@", service, account ];
+
+	if(passwordCache != nil) {
+		[passwordCache removeObjectForKey:key ];
+	}
 	
 	status = SecKeychainFindGenericPassword (
 											 NULL,                       // default keychain
@@ -100,6 +107,7 @@ static NSMutableDictionary *passwordCache = nil;
 	}
 }
 
+// todo:
 +(void)deletePasswordsForService: (NSString*)service
 {
 	OSStatus status;
@@ -124,6 +132,11 @@ static NSMutableDictionary *passwordCache = nil;
 			}
 		}
 	} while(status == noErr && itemRef != NULL);
+}
+
++(void)clearCache
+{
+	[passwordCache removeAllObjects ];
 }
 
 @end

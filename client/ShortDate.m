@@ -124,6 +124,12 @@ NSCalendar *calendar = nil;
 	return [comps day];
 }
 
+-(int)monthsToDate: (ShortDate*)toDate
+{
+	NSDateComponents *comps = [calendar components:NSMonthCalendarUnit fromDate:[self lowDate ]  toDate:[toDate lowDate ]  options:0];
+	return [comps month];
+}
+
 -(ShortDate*)dateByAddingDays: (int)days
 {
 	NSDateComponents *comps = [[NSDateComponents alloc] init];
@@ -133,6 +139,19 @@ NSCalendar *calendar = nil;
 	return [ShortDate dateWithDate: date ];
 }
 
+-(ShortDate*)dateByAddingMonths: (int)months
+{
+	NSDateComponents *comps = [[NSDateComponents alloc] init];
+	[comps setMonth:months ];
+	NSDate *date = [calendar dateByAddingComponents:comps toDate:[self lowDate] options:0 ];
+	[comps release];
+	return [ShortDate dateWithDate: date ];
+}
+
+-(ShortDate*)dateByAddingYears: (int)years
+{
+	return [ShortDate dateWithYear:year+years month:month day:day ];
+}
 
 - (unsigned)year {
     return year;
@@ -152,11 +171,64 @@ NSCalendar *calendar = nil;
 	return r.length;
 }
 
+- (NSString*)description
+{
+	NSDateFormatter *df = [[NSDateFormatter alloc ] init ];
+	[df setDateStyle:NSDateFormatterMediumStyle ];
+	[df setTimeStyle:NSDateFormatterNoStyle ];
+	
+	return [df stringFromDate:[self lowDate ] ];
+}
+
+- (NSString*)monthYearDescription
+{
+	return [NSString stringWithFormat:@"%d/%d", month, year ];
+}
+
+- (NSString*)quarterYearDescription
+{
+	return [NSString stringWithFormat:@"Q%d/%d", [self quarter ], year ];
+}
+
+- (NSString*)yearDescription
+{
+	return [NSString stringWithFormat:@"%d", year ];
+}
+
+
+-(ShortDate*)firstDayInYear
+{
+	return [ShortDate dateWithYear:year month:1 day:1 ];
+}
+
+-(ShortDate*)firstDayInMonth
+{
+	return [ShortDate dateWithYear:year month:month day:1 ];
+}
+
+-(int)quarter
+{
+	return (month-1)/3 + 1;
+}
+
+-(ShortDate*)firstDayInQuarter
+{
+	return [ShortDate dateWithYear:year month:([self quarter ] -1 )*3 + 1 day:1 ];
+}
+
+
+
 +(id)dateWithDate: (NSDate*)date
 {
 	ShortDate *res = [[ShortDate alloc ] initWithDate: date ];
 	return [res autorelease ];
 }
+
++(id)currentDate
+{
+	return [ShortDate dateWithDate:[NSDate date ] ];
+}
+
 
 +(id)dateWithYear: (int)y month: (int)m day: (int)d
 {

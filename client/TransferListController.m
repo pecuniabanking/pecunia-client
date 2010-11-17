@@ -34,7 +34,6 @@
 
 -(IBAction)sendTransfers: (id)sender
 {
-	PecuniaError *error = nil;
 	NSArray* sel = [transferController selectedObjects ];
 	if(sel == nil) return;
 	
@@ -47,10 +46,8 @@
 		[[logController window ] orderFront:self ];
 	}
 	
-	[[HBCIClient hbciClient ] sendTransfers: sel error: &error];
-	if(error) {
-		[error alertPanel ];
-	} else {
+	BOOL sent = [[HBCIClient hbciClient ] sendTransfers: sel ];
+	if(sent) {
 		// save updates
 		NSError *error = nil;
 		NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
@@ -125,7 +122,9 @@
 
 	for(transfer in sel) {
 		if ([transfer.isSent boolValue] == NO) {
-			sum = [sum decimalNumberByAdding:transfer.value ];
+			if (transfer.value) {
+				sum = [sum decimalNumberByAdding:transfer.value ];
+			}
 			if (currency) {
 				if (![transfer.currency isEqualToString:currency ]) {
 					currency = @"*";

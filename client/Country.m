@@ -10,6 +10,11 @@
 
 
 @implementation Country
+
+@synthesize name;
+@synthesize currency;
+@synthesize code;
+
 /*
 -(id)initWithAB: (const AB_COUNTRY*)cnty
 {
@@ -22,17 +27,15 @@
 	return self;
 }
 */
--(NSString*)name { return name; }
--(NSString*)currency { return currency; }
--(NSString*)code { return code; }
 
 -(void)dealloc
 {
-	[name release ];
-	[currency release ];
-	[code release ];
+	[name release], name = nil;
+	[currency release], currency = nil;
+	[code release], code = nil;
 
 	[super dealloc ];
 }
 
 @end
+

@@ -57,7 +57,7 @@ typedef enum {
 
 -(void)save;
 -(NSPredicate*)predicateForField: (NSString*)field;
-
+-(NSString*)description;
 
 //+(void)initialize;
 +(TimeSliceManager*)defaultManager;

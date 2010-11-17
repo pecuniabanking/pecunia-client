@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
+	<string>de_DE</string>
 	<key>CFBundleExecutable</key>
 	<string>Pecunia</string>
 	<key>CFBundleHelpBookFolder</key>

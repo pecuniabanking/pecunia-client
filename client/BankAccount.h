@@ -13,8 +13,6 @@
 
 @interface BankAccount : Category {
 	NSDate	*newLatestTransferDate;
-	
-	BOOL	collTransfer;
 }
 
 -(NSString*)bankCode;
@@ -41,6 +39,8 @@
 @property (nonatomic, retain) NSNumber * type;
 @property (nonatomic, retain) NSDecimalNumber * balance;
 @property (nonatomic, retain) NSNumber * noAutomaticQuery;
+@property (nonatomic, retain) NSNumber * collTransfer;
+@property (nonatomic, retain) NSNumber * isManual;
 
 @end
 

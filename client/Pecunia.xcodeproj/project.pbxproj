@@ -32,7 +32,7 @@
 		B1014CB2101A4C3D00ABA1FF /* gpl-2.0.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */; };
 		B1029E120E3FA1D700CC681B /* CatDefWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1029E110E3FA1D700CC681B /* CatDefWindowController.m */; };
 		B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
-		B12030EC11C2CF2800B1B22A /* HBCIServer.jar in CopyFiles */ = {isa = PBXBuildFile; fileRef = B12030D511C2CD1400B1B22A /* HBCIServer.jar */; };
+		B1139FF1127CB6F900D6EF08 /* CategoryHistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1139FF0127CB6F900D6EF08 /* CategoryHistWindowController.m */; };
 		B120E3C00EB0F34D00FC5A6F /* icon_colors.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E3BF0EB0F34D00FC5A6F /* icon_colors.png */; };
 		B120E3C30EB0F3F000FC5A6F /* AccountRep.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E3C10EB0F3F000FC5A6F /* AccountRep.png */; };
 		B120E3C60EB0F7B800FC5A6F /* okshape.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E3C50EB0F7B800FC5A6F /* okshape.png */; };
@@ -60,9 +60,12 @@
 		B132FADF0F9CFD0000263F3B /* TimeSliceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B132FADE0F9CFD0000263F3B /* TimeSliceManager.m */; };
 		B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B136AAD70FCF1C4A007A643F /* MCEMTableView.m */; };
 		B136AB360FD077DD007A643F /* MCEMPieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = B136AB350FD077DD007A643F /* MCEMPieChartView.m */; };
-		B136B1E60FE2517A007A643F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B136B1E50FE2517A007A643F /* main.m */; };
 		B136B23B0FE2F4D1007A643F /* institutes in Resources */ = {isa = PBXBuildFile; fileRef = B136B23A0FE2F4D1007A643F /* institutes */; };
 		B136B24E0FE2F705007A643F /* InstitutesController.m in Sources */ = {isa = PBXBuildFile; fileRef = B136B24D0FE2F705007A643F /* InstitutesController.m */; };
+		B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
+		B14587A21289DCB700848683 /* CategoryPeriods.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14587A11289DCB700848683 /* CategoryPeriods.xib */; };
+		B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
+		B14587EC128C8B0700848683 /* ReportingTabs.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587EB128C8B0700848683 /* ReportingTabs.m */; };
 		B14C60011148467A009324A6 /* BankStatementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C60001148467A009324A6 /* BankStatementController.m */; };
 		B14C6003114848E1009324A6 /* BankStatementController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14C6002114848E1009324A6 /* BankStatementController.xib */; };
 		B14C61BB115AB4FB009324A6 /* BankStatementPolicy030.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C61BA115AB4FB009324A6 /* BankStatementPolicy030.m */; };
@@ -73,6 +76,7 @@
 		B14EBCFD1031FAC700020A26 /* BankQueryResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B14EBCFC1031FAC700020A26 /* BankQueryResult.m */; };
 		B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */ = {isa = PBXBuildFile; fileRef = B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */; };
 		B155D92E0BFD04B300904051 /* TransactionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B155D92D0BFD04B300904051 /* TransactionController.m */; };
+		B15900BF129304B30053CB9C /* CategoryPeriodsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B15900BE129304B30053CB9C /* CategoryPeriodsView.m */; };
 		B1659E060EE88B2700998258 /* Transfer_Dated_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B1659E050EE88B2700998258 /* Transfer_Dated_32.png */; };
 		B165B4130D2D8E1A00447DD8 /* Transfers.icns in Resources */ = {isa = PBXBuildFile; fileRef = B165B4120D2D8E1A00447DD8 /* Transfers.icns */; };
 		B165B4150D2D8E4500447DD8 /* Accounts.icns in Resources */ = {isa = PBXBuildFile; fileRef = B165B4140D2D8E4500447DD8 /* Accounts.icns */; };
@@ -121,12 +125,20 @@
 		B1A6E8350FC890E400566C55 /* PasswordWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6E8340FC890E400566C55 /* PasswordWindow.m */; };
 		B1A6E8880FC8A4F700566C55 /* PasswordWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1A6E8870FC8A4F700566C55 /* PasswordWindow.nib */; };
 		B1AB52290DD4F30900327122 /* log.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1AB52280DD4F30900327122 /* log.icns */; };
+		B1AFA78E129463F100B115A7 /* CategoryHistory.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA78D129463F100B115A7 /* CategoryHistory.xib */; };
 		B1B0EEC80EDF325F00701E76 /* floppy.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B0EEC60EDF325F00701E76 /* floppy.png */; };
 		B1B0EECE0EDF33F400701E76 /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B0EECD0EDF33F400701E76 /* trash.png */; };
 		B1B0EED10EDF358200701E76 /* 3floppy.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B0EECF0EDF358200701E76 /* 3floppy.png */; };
 		B1B0EED20EDF358200701E76 /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B0EED00EDF358200701E76 /* empty.png */; };
 		B1B0EEDF0EDF3F0900701E76 /* nok.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B0EEDE0EDF3F0900701E76 /* nok.png */; };
 		B1BCDF76111F5DBB002E0802 /* CountryInfo.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */; };
+		B1C72C23123C36F100D1D78D /* ABControllerGui.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C72C22123C36F100D1D78D /* ABControllerGui.m */; };
+		B1C72C30123D4C1200D1D78D /* ABInfoBoxController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C72C2B123D4C1200D1D78D /* ABInfoBoxController.m */; };
+		B1C72C31123D4C1200D1D78D /* ABInputWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C72C2D123D4C1200D1D78D /* ABInputWindowController.m */; };
+		B1C72C32123D4C1200D1D78D /* ABProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C72C2F123D4C1200D1D78D /* ABProgressWindowController.m */; };
+		B1C72C36123D4C6900D1D78D /* ABInfoBox.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1C72C33123D4C6900D1D78D /* ABInfoBox.nib */; };
+		B1C72C37123D4C6900D1D78D /* ABInputWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1C72C34123D4C6900D1D78D /* ABInputWindow.nib */; };
+		B1C72C38123D4C6900D1D78D /* ABProgressWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1C72C35123D4C6900D1D78D /* ABProgressWindow.nib */; };
 		B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
 		B1D6C9EE0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */; };
 		B1E8118C0FF6854F00BF7451 /* AccountMaintenance.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811810FF6854F00BF7451 /* AccountMaintenance.nib */; };
@@ -147,23 +159,29 @@
 		B1F4587E0F2907BD00BAF4E8 /* AccountChangeController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountChangeController.m */; };
 		B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F459EB0F2E480700BAF4E8 /* BankInfo.m */; };
 		B1F527050C3C1D5800BE3DFC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* Category.m */; };
+		B1FAEA87122C2558000AF027 /* libgwenhywfar.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B1FAEA86122C2558000AF027 /* libgwenhywfar.60.dylib */; };
+		B1FAEA8A122C257F000AF027 /* libaqbanking.33.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B1FAEA88122C257F000AF027 /* libaqbanking.33.dylib */; };
+		B1FAEA8B122C257F000AF027 /* libaqhbci.19.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B1FAEA89122C257F000AF027 /* libaqhbci.19.dylib */; };
+		B1FAEABA122C62F7000AF027 /* ABController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEAB9122C62F7000AF027 /* ABController.m */; };
+		B1FAEABF122C65AC000AF027 /* ImExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEABC122C65AC000AF027 /* ImExporter.m */; };
+		B1FAEAC0122C65AC000AF027 /* ImExporterProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEABE122C65AC000AF027 /* ImExporterProfile.m */; };
+		B1FAEAC3122C66FE000AF027 /* ABUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEAC2122C66FE000AF027 /* ABUser.m */; };
+		B1FAEAD0122C6B80000AF027 /* ABConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEACF122C6B80000AF027 /* ABConversion.m */; };
+		B1FAEB7D122DAC9E000AF027 /* ABAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEB7C122DAC9E000AF027 /* ABAccount.m */; };
+		B1FAECAA12357D15000AF027 /* copyaq.sh in Resources */ = {isa = PBXBuildFile; fileRef = B1FAECA912357D15000AF027 /* copyaq.sh */; };
+		B1FAECAE12357DC5000AF027 /* libgwengui-cocoa.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B1FAECAD12357DC5000AF027 /* libgwengui-cocoa.0.dylib */; };
 		B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB50981209EA52004DCD6A /* PurposeSplitController.m */; };
 		B1FB509B1209EAC7004DCD6A /* PurposeSplitWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */; };
 		B1FB509E1209F68E004DCD6A /* PurposeSplitData.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */; };
+		B1FB6602124FC61B00C54A0E /* TransferTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB6601124FC61B00C54A0E /* TransferTemplate.m */; };
+		B1FB660F124FC89500C54A0E /* TransferTemplateController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB660E124FC89500C54A0E /* TransferTemplateController.m */; };
+		B1FB6611124FC9E300C54A0E /* TransferTemplates.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */; };
+		B1FB6915125D0A5500C54A0E /* edit16.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB6914125D0A5500C54A0E /* edit16.png */; };
+		B1FB6B02126B7BF300C54A0E /* BankStatementPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB6B01126B7BF300C54A0E /* BankStatementPrintView.m */; };
 		C1C0842011C2D85500278CBF /* SM2DGraphView.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = B16B0CEB11C01DFB00254078 /* SM2DGraphView.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		B12030F211C2CFEB00B1B22A /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 6;
-			files = (
-				B12030EC11C2CF2800B1B22A /* HBCIServer.jar in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		B192EAF90EEDBFF6006F61F1 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
@@ -215,6 +233,8 @@
 		B1029E110E3FA1D700CC681B /* CatDefWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatDefWindowController.m; sourceTree = "<group>"; };
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; };
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; };
+		B1139FEF127CB6F900D6EF08 /* CategoryHistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryHistWindowController.h; sourceTree = "<group>"; };
+		B1139FF0127CB6F900D6EF08 /* CategoryHistWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryHistWindowController.m; sourceTree = "<group>"; };
 		B12030D511C2CD1400B1B22A /* HBCIServer.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = HBCIServer.jar; sourceTree = "<group>"; };
 		B120E3BF0EB0F34D00FC5A6F /* icon_colors.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_colors.png; sourceTree = "<group>"; };
 		B120E3C10EB0F3F000FC5A6F /* AccountRep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AccountRep.png; sourceTree = "<group>"; };
@@ -260,11 +280,16 @@
 		B136AAD70FCF1C4A007A643F /* MCEMTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMTableView.m; sourceTree = "<group>"; };
 		B136AB340FD077DD007A643F /* MCEMPieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCEMPieChartView.h; sourceTree = "<group>"; };
 		B136AB350FD077DD007A643F /* MCEMPieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMPieChartView.m; sourceTree = "<group>"; };
-		B136B1D00FE24C59007A643F /* BuildInstitutes */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BuildInstitutes; sourceTree = BUILT_PRODUCTS_DIR; };
-		B136B1E50FE2517A007A643F /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = BuildInstitutes/main.m; sourceTree = "<group>"; };
 		B136B23A0FE2F4D1007A643F /* institutes */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = institutes; sourceTree = "<group>"; };
 		B136B24C0FE2F705007A643F /* InstitutesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstitutesController.h; sourceTree = "<group>"; };
 		B136B24D0FE2F705007A643F /* InstitutesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstitutesController.m; sourceTree = "<group>"; };
+		B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPeriodsWindowController.h; sourceTree = "<group>"; };
+		B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPeriodsWindowController.m; sourceTree = "<group>"; };
+		B14587A11289DCB700848683 /* CategoryPeriods.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryPeriods.xib; sourceTree = "<group>"; };
+		B14587A31289ED8D00848683 /* CategoryReportingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryReportingNode.h; sourceTree = "<group>"; };
+		B14587A41289ED8D00848683 /* CategoryReportingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryReportingNode.m; sourceTree = "<group>"; };
+		B14587EA128C8B0700848683 /* ReportingTabs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportingTabs.h; sourceTree = "<group>"; };
+		B14587EB128C8B0700848683 /* ReportingTabs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportingTabs.m; sourceTree = "<group>"; };
 		B14C5FFF1148467A009324A6 /* BankStatementController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementController.h; sourceTree = "<group>"; };
 		B14C60001148467A009324A6 /* BankStatementController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementController.m; sourceTree = "<group>"; };
 		B14C6002114848E1009324A6 /* BankStatementController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BankStatementController.xib; sourceTree = "<group>"; };
@@ -283,6 +308,9 @@
 		B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMBorderedView.m; sourceTree = "<group>"; };
 		B155D92C0BFD04B300904051 /* TransactionController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = TransactionController.h; sourceTree = "<group>"; };
 		B155D92D0BFD04B300904051 /* TransactionController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = TransactionController.m; sourceTree = "<group>"; };
+		B15900BD129304B30053CB9C /* CategoryPeriodsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPeriodsView.h; sourceTree = "<group>"; };
+		B15900BE129304B30053CB9C /* CategoryPeriodsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPeriodsView.m; sourceTree = "<group>"; };
+		B159010A129310E40053CB9C /* MainTabViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabViewItem.h; sourceTree = "<group>"; };
 		B1659E050EE88B2700998258 /* Transfer_Dated_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transfer_Dated_32.png; sourceTree = "<group>"; };
 		B165B4120D2D8E1A00447DD8 /* Transfers.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Transfers.icns; sourceTree = "<group>"; };
 		B165B4140D2D8E4500447DD8 /* Accounts.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Accounts.icns; sourceTree = "<group>"; };
@@ -357,12 +385,25 @@
 		B1A6E8340FC890E400566C55 /* PasswordWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordWindow.m; sourceTree = "<group>"; };
 		B1A6E8870FC8A4F700566C55 /* PasswordWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = PasswordWindow.nib; sourceTree = "<group>"; };
 		B1AB52280DD4F30900327122 /* log.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = log.icns; sourceTree = "<group>"; };
+		B1AFA78D129463F100B115A7 /* CategoryHistory.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryHistory.xib; sourceTree = "<group>"; };
 		B1B0EEC60EDF325F00701E76 /* floppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = floppy.png; sourceTree = "<group>"; };
 		B1B0EECD0EDF33F400701E76 /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = "<group>"; };
 		B1B0EECF0EDF358200701E76 /* 3floppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3floppy.png; sourceTree = "<group>"; };
 		B1B0EED00EDF358200701E76 /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = "<group>"; };
 		B1B0EEDE0EDF3F0900701E76 /* nok.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nok.png; sourceTree = "<group>"; };
 		B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CountryInfo.txt; sourceTree = "<group>"; };
+		B1C72C21123C36F100D1D78D /* ABControllerGui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABControllerGui.h; sourceTree = "<group>"; };
+		B1C72C22123C36F100D1D78D /* ABControllerGui.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABControllerGui.m; sourceTree = "<group>"; };
+		B1C72C2A123D4C1200D1D78D /* ABInfoBoxController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABInfoBoxController.h; sourceTree = "<group>"; };
+		B1C72C2B123D4C1200D1D78D /* ABInfoBoxController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABInfoBoxController.m; sourceTree = "<group>"; };
+		B1C72C2C123D4C1200D1D78D /* ABInputWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABInputWindowController.h; sourceTree = "<group>"; };
+		B1C72C2D123D4C1200D1D78D /* ABInputWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABInputWindowController.m; sourceTree = "<group>"; };
+		B1C72C2E123D4C1200D1D78D /* ABProgressWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABProgressWindowController.h; sourceTree = "<group>"; };
+		B1C72C2F123D4C1200D1D78D /* ABProgressWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABProgressWindowController.m; sourceTree = "<group>"; };
+		B1C72C33123D4C6900D1D78D /* ABInfoBox.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ABInfoBox.nib; sourceTree = "<group>"; };
+		B1C72C34123D4C6900D1D78D /* ABInputWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ABInputWindow.nib; sourceTree = "<group>"; };
+		B1C72C35123D4C6900D1D78D /* ABProgressWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ABProgressWindow.nib; sourceTree = "<group>"; };
+		B1C72D4D124A993B00D1D78D /* LogLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogLevel.h; sourceTree = "<group>"; };
 		B1C90E140ABB39D5006F18C9 /* BankingController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = BankingController.h; sourceTree = "<group>"; };
 		B1C90E150ABB39D5006F18C9 /* BankingController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = BankingController.m; sourceTree = "<group>"; };
 		B1D29BD40C2C70B8003A61D9 /* Accounts.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Accounts.xcdatamodel; sourceTree = "<group>"; };
@@ -388,11 +429,36 @@
 		B1F459EB0F2E480700BAF4E8 /* BankInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankInfo.m; sourceTree = "<group>"; };
 		B1F527030C3C1D5800BE3DFC /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
 		B1F527040C3C1D5800BE3DFC /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
+		B1FAEA86122C2558000AF027 /* libgwenhywfar.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libgwenhywfar.60.dylib; sourceTree = "<group>"; };
+		B1FAEA88122C257F000AF027 /* libaqbanking.33.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libaqbanking.33.dylib; sourceTree = "<group>"; };
+		B1FAEA89122C257F000AF027 /* libaqhbci.19.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libaqhbci.19.dylib; sourceTree = "<group>"; };
+		B1FAEAB8122C62F7000AF027 /* ABController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABController.h; sourceTree = "<group>"; };
+		B1FAEAB9122C62F7000AF027 /* ABController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABController.m; sourceTree = "<group>"; };
+		B1FAEABB122C65AC000AF027 /* ImExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImExporter.h; sourceTree = "<group>"; };
+		B1FAEABC122C65AC000AF027 /* ImExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImExporter.m; sourceTree = "<group>"; };
+		B1FAEABD122C65AC000AF027 /* ImExporterProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImExporterProfile.h; sourceTree = "<group>"; };
+		B1FAEABE122C65AC000AF027 /* ImExporterProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImExporterProfile.m; sourceTree = "<group>"; };
+		B1FAEAC1122C66FE000AF027 /* ABUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABUser.h; sourceTree = "<group>"; };
+		B1FAEAC2122C66FE000AF027 /* ABUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABUser.m; sourceTree = "<group>"; };
+		B1FAEACE122C6B80000AF027 /* ABConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABConversion.h; sourceTree = "<group>"; };
+		B1FAEACF122C6B80000AF027 /* ABConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABConversion.m; sourceTree = "<group>"; };
+		B1FAEB7B122DAC9E000AF027 /* ABAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABAccount.h; sourceTree = "<group>"; };
+		B1FAEB7C122DAC9E000AF027 /* ABAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABAccount.m; sourceTree = "<group>"; };
+		B1FAECA912357D15000AF027 /* copyaq.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = copyaq.sh; sourceTree = "<group>"; };
+		B1FAECAD12357DC5000AF027 /* libgwengui-cocoa.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libgwengui-cocoa.0.dylib"; sourceTree = "<group>"; };
 		B1FB50971209EA52004DCD6A /* PurposeSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitController.h; sourceTree = "<group>"; };
 		B1FB50981209EA52004DCD6A /* PurposeSplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitController.m; sourceTree = "<group>"; };
 		B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PurposeSplitWindow.xib; sourceTree = "<group>"; };
 		B1FB509C1209F68E004DCD6A /* PurposeSplitData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitData.h; sourceTree = "<group>"; };
 		B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitData.m; sourceTree = "<group>"; };
+		B1FB6600124FC61B00C54A0E /* TransferTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferTemplate.h; sourceTree = "<group>"; };
+		B1FB6601124FC61B00C54A0E /* TransferTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferTemplate.m; sourceTree = "<group>"; };
+		B1FB660D124FC89500C54A0E /* TransferTemplateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferTemplateController.h; sourceTree = "<group>"; };
+		B1FB660E124FC89500C54A0E /* TransferTemplateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferTemplateController.m; sourceTree = "<group>"; };
+		B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransferTemplates.xib; sourceTree = "<group>"; };
+		B1FB6914125D0A5500C54A0E /* edit16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit16.png; sourceTree = "<group>"; };
+		B1FB6B00126B7BF300C54A0E /* BankStatementPrintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPrintView.h; sourceTree = "<group>"; };
+		B1FB6B01126B7BF300C54A0E /* BankStatementPrintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPrintView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -405,13 +471,10 @@
 				B1F458210F2516C200BAF4E8 /* Sparkle.framework in Frameworks */,
 				B19A86360F3CD17E000FE9B3 /* Security.framework in Frameworks */,
 				B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B136B1CE0FE24C59007A643F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				B1FAEA87122C2558000AF027 /* libgwenhywfar.60.dylib in Frameworks */,
+				B1FAEA8A122C257F000AF027 /* libaqbanking.33.dylib in Frameworks */,
+				B1FAEA8B122C257F000AF027 /* libaqhbci.19.dylib in Frameworks */,
+				B1FAECAE12357DC5000AF027 /* libgwengui-cocoa.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +484,10 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1FAECAD12357DC5000AF027 /* libgwengui-cocoa.0.dylib */,
+				B1FAEA88122C257F000AF027 /* libaqbanking.33.dylib */,
+				B1FAEA89122C257F000AF027 /* libaqhbci.19.dylib */,
+				B1FAEA86122C2558000AF027 /* libgwenhywfar.60.dylib */,
 				B19A86350F3CD17E000FE9B3 /* Security.framework */,
 				B1F458200F2516C200BAF4E8 /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
@@ -443,7 +510,6 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* Pecunia.app */,
-				B136B1D00FE24C59007A643F /* BuildInstitutes */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -451,9 +517,9 @@
 		29B97314FDCFA39411CA2CEA /* Pecunia */ = {
 			isa = PBXGroup;
 			children = (
+				B1FAEA79122C2408000AF027 /* Scripts */,
 				B12030D511C2CD1400B1B22A /* HBCIServer.jar */,
 				B136AACF0FCF1BF5007A643F /* Classes */,
-				B136B1DD0FE25080007A643F /* BuildInstitutes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -478,6 +544,9 @@
 				B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */,
 				B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */,
 				B1E811D70FF68B3700BF7451 /* PecuniaHelp */,
+				B1C72C33123D4C6900D1D78D /* ABInfoBox.nib */,
+				B1C72C34123D4C6900D1D78D /* ABInputWindow.nib */,
+				B1C72C35123D4C6900D1D78D /* ABProgressWindow.nib */,
 				B1E811810FF6854F00BF7451 /* AccountMaintenance.nib */,
 				B1A1376711B6FA9800622D6C /* AccountCreate.nib */,
 				B1E811820FF6854F00BF7451 /* AccountSettings.nib */,
@@ -495,6 +564,9 @@
 				B1A59497113182DA00FD8CB8 /* StatSplitController.xib */,
 				B14C6002114848E1009324A6 /* BankStatementController.xib */,
 				B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */,
+				B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */,
+				B14587A11289DCB700848683 /* CategoryPeriods.xib */,
+				B1AFA78D129463F100B115A7 /* CategoryHistory.xib */,
 				B136B23A0FE2F4D1007A643F /* institutes */,
 				B1923B560EB7A6D40079ADCA /* Icons */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -539,6 +611,20 @@
 				B12A498F10BDD6A2002CC63E /* HBCIClient.m */,
 				B12A499B10BF188D002CC63E /* CallbackData.h */,
 				B12A499C10BF188D002CC63E /* CallbackData.m */,
+				B1FAEABB122C65AC000AF027 /* ImExporter.h */,
+				B1FAEABC122C65AC000AF027 /* ImExporter.m */,
+				B1FAEABD122C65AC000AF027 /* ImExporterProfile.h */,
+				B1FAEABE122C65AC000AF027 /* ImExporterProfile.m */,
+				B1FAEAC1122C66FE000AF027 /* ABUser.h */,
+				B1FAEAC2122C66FE000AF027 /* ABUser.m */,
+				B1FAEB7B122DAC9E000AF027 /* ABAccount.h */,
+				B1FAEB7C122DAC9E000AF027 /* ABAccount.m */,
+				B1FAEAB8122C62F7000AF027 /* ABController.h */,
+				B1FAEAB9122C62F7000AF027 /* ABController.m */,
+				B1FAEACE122C6B80000AF027 /* ABConversion.h */,
+				B1FAEACF122C6B80000AF027 /* ABConversion.m */,
+				B1C72C21123C36F100D1D78D /* ABControllerGui.h */,
+				B1C72C22123C36F100D1D78D /* ABControllerGui.m */,
 			);
 			name = HBCIBridge;
 			sourceTree = "<group>";
@@ -555,16 +641,12 @@
 				B1FE0DCB106583F8005B3800 /* WindowController */,
 				B1FE0DC8106583A3005B3800 /* Extensions */,
 				B1FE0DD710658824005B3800 /* Classification */,
+				B1FB6B00126B7BF300C54A0E /* BankStatementPrintView.h */,
+				B1FB6B01126B7BF300C54A0E /* BankStatementPrintView.m */,
+				B14587A31289ED8D00848683 /* CategoryReportingNode.h */,
+				B14587A41289ED8D00848683 /* CategoryReportingNode.m */,
 			);
 			name = Classes;
-			sourceTree = "<group>";
-		};
-		B136B1DD0FE25080007A643F /* BuildInstitutes */ = {
-			isa = PBXGroup;
-			children = (
-				B136B1E50FE2517A007A643F /* main.m */,
-			);
-			name = BuildInstitutes;
 			sourceTree = "<group>";
 		};
 		B14C61B8115AB4A9009324A6 /* Migration */ = {
@@ -581,6 +663,7 @@
 		B1923B560EB7A6D40079ADCA /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				B1FB6914125D0A5500C54A0E /* edit16.png */,
 				B1014C101018F97600ABA1FF /* lock.ico */,
 				B1014BEF1018E91300ABA1FF /* catdef.ico */,
 				B1014BF11018E95000ABA1FF /* catdef2.ico */,
@@ -627,6 +710,14 @@
 			name = Icons;
 			sourceTree = "<group>";
 		};
+		B1FAEA79122C2408000AF027 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				B1FAECA912357D15000AF027 /* copyaq.sh */,
+			);
+			name = Scripts;
+			sourceTree = "<group>";
+		};
 		B1FE0DC8106583A3005B3800 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -648,6 +739,8 @@
 				B18978860ED0B2E800D20503 /* StatementDetails.m */,
 				B14C6299115E00AA009324A6 /* MigrationManagerWorkaround.h */,
 				B14C629A115E00AA009324A6 /* MigrationManagerWorkaround.m */,
+				B15900BD129304B30053CB9C /* CategoryPeriodsView.h */,
+				B15900BE129304B30053CB9C /* CategoryPeriodsView.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -655,6 +748,12 @@
 		B1FE0DCB106583F8005B3800 /* WindowController */ = {
 			isa = PBXGroup;
 			children = (
+				B1C72C2A123D4C1200D1D78D /* ABInfoBoxController.h */,
+				B1C72C2B123D4C1200D1D78D /* ABInfoBoxController.m */,
+				B1C72C2C123D4C1200D1D78D /* ABInputWindowController.h */,
+				B1C72C2D123D4C1200D1D78D /* ABInputWindowController.m */,
+				B1C72C2E123D4C1200D1D78D /* ABProgressWindowController.h */,
+				B1C72C2F123D4C1200D1D78D /* ABProgressWindowController.m */,
 				B1C90E140ABB39D5006F18C9 /* BankingController.h */,
 				B1C90E150ABB39D5006F18C9 /* BankingController.m */,
 				B1029E100E3FA1D700CC681B /* CatDefWindowController.h */,
@@ -699,6 +798,15 @@
 				B1762BD811EE4AE600F70263 /* TransferListController.m */,
 				B1FB50971209EA52004DCD6A /* PurposeSplitController.h */,
 				B1FB50981209EA52004DCD6A /* PurposeSplitController.m */,
+				B1FB660D124FC89500C54A0E /* TransferTemplateController.h */,
+				B1FB660E124FC89500C54A0E /* TransferTemplateController.m */,
+				B1139FEF127CB6F900D6EF08 /* CategoryHistWindowController.h */,
+				B1139FF0127CB6F900D6EF08 /* CategoryHistWindowController.m */,
+				B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */,
+				B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */,
+				B14587EA128C8B0700848683 /* ReportingTabs.h */,
+				B14587EB128C8B0700848683 /* ReportingTabs.m */,
+				B159010A129310E40053CB9C /* MainTabViewItem.h */,
 			);
 			name = WindowController;
 			sourceTree = "<group>";
@@ -733,6 +841,8 @@
 				B1927D240C52B5CD00B4D390 /* Transfer.m */,
 				B17078F710EA5E6100A974E7 /* StatCatAssignment.h */,
 				B17078F810EA5E6100A974E7 /* StatCatAssignment.m */,
+				B1FB6600124FC61B00C54A0E /* TransferTemplate.h */,
+				B1FB6601124FC61B00C54A0E /* TransferTemplate.m */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -778,6 +888,7 @@
 				B132F91E0F96594000263F3B /* ShortDate.m */,
 				B1FB509C1209F68E004DCD6A /* PurposeSplitData.h */,
 				B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */,
+				B1C72D4D124A993B00D1D78D /* LogLevel.h */,
 			);
 			name = Basic;
 			sourceTree = "<group>";
@@ -793,7 +904,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				B192EAF90EEDBFF6006F61F1 /* Copy Files */,
-				B12030F211C2CFEB00B1B22A /* CopyFiles */,
+				B1FAEA7D122C2478000AF027 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -804,22 +915,6 @@
 			productName = Pecunia;
 			productReference = 8D1107320486CEB800E47090 /* Pecunia.app */;
 			productType = "com.apple.product-type.application";
-		};
-		B136B1CF0FE24C59007A643F /* BuildInstitutes */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B136B1D50FE24C78007A643F /* Build configuration list for PBXNativeTarget "BuildInstitutes" */;
-			buildPhases = (
-				B136B1CD0FE24C59007A643F /* Sources */,
-				B136B1CE0FE24C59007A643F /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = BuildInstitutes;
-			productName = BuildInstitutes;
-			productReference = B136B1D00FE24C59007A643F /* BuildInstitutes */;
-			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
@@ -834,7 +929,6 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Pecunia */,
-				B136B1CF0FE24C59007A643F /* BuildInstitutes */,
 			);
 		};
 /* End PBXProject section */
@@ -911,10 +1005,34 @@
 				B14C6003114848E1009324A6 /* BankStatementController.xib in Resources */,
 				B1A1376811B6FA9800622D6C /* AccountCreate.nib in Resources */,
 				B1FB509B1209EAC7004DCD6A /* PurposeSplitWindow.xib in Resources */,
+				B1FAECAA12357D15000AF027 /* copyaq.sh in Resources */,
+				B1C72C36123D4C6900D1D78D /* ABInfoBox.nib in Resources */,
+				B1C72C37123D4C6900D1D78D /* ABInputWindow.nib in Resources */,
+				B1C72C38123D4C6900D1D78D /* ABProgressWindow.nib in Resources */,
+				B1FB6611124FC9E300C54A0E /* TransferTemplates.xib in Resources */,
+				B1FB6915125D0A5500C54A0E /* edit16.png in Resources */,
+				B14587A21289DCB700848683 /* CategoryPeriods.xib in Resources */,
+				B1AFA78E129463F100B115A7 /* CategoryHistory.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B1FAEA7D122C2478000AF027 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT\"/scripts/copyaq.sh";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -989,86 +1107,30 @@
 				B1762BD911EE4AE600F70263 /* TransferListController.m in Sources */,
 				B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */,
 				B1FB509E1209F68E004DCD6A /* PurposeSplitData.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B136B1CD0FE24C59007A643F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B136B1E60FE2517A007A643F /* main.m in Sources */,
+				B1FAEABA122C62F7000AF027 /* ABController.m in Sources */,
+				B1FAEABF122C65AC000AF027 /* ImExporter.m in Sources */,
+				B1FAEAC0122C65AC000AF027 /* ImExporterProfile.m in Sources */,
+				B1FAEAC3122C66FE000AF027 /* ABUser.m in Sources */,
+				B1FAEAD0122C6B80000AF027 /* ABConversion.m in Sources */,
+				B1FAEB7D122DAC9E000AF027 /* ABAccount.m in Sources */,
+				B1C72C23123C36F100D1D78D /* ABControllerGui.m in Sources */,
+				B1C72C30123D4C1200D1D78D /* ABInfoBoxController.m in Sources */,
+				B1C72C31123D4C1200D1D78D /* ABInputWindowController.m in Sources */,
+				B1C72C32123D4C1200D1D78D /* ABProgressWindowController.m in Sources */,
+				B1FB6602124FC61B00C54A0E /* TransferTemplate.m in Sources */,
+				B1FB660F124FC89500C54A0E /* TransferTemplateController.m in Sources */,
+				B1FB6B02126B7BF300C54A0E /* BankStatementPrintView.m in Sources */,
+				B1139FF1127CB6F900D6EF08 /* CategoryHistWindowController.m in Sources */,
+				B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */,
+				B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */,
+				B14587EC128C8B0700848683 /* ReportingTabs.m in Sources */,
+				B15900BF129304B30053CB9C /* CategoryPeriodsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		B136B1D20FE24C5A007A643F /* Development */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INSTALL_PATH = /usr/local/bin;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = BuildInstitutes;
-			};
-			name = Development;
-		};
-		B136B1D30FE24C5A007A643F /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INSTALL_PATH = /usr/local/bin;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = BuildInstitutes;
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-		B136B1D40FE24C5A007A643F /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INSTALL_PATH = /usr/local/bin;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = BuildInstitutes;
-			};
-			name = Default;
-		};
 		B14C0A880AAF71DB00CC41C4 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1087,11 +1149,14 @@
 				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/AqBanking.framework/include\"";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/AqBanking.framework/lib\"",
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_7)",
+					"\"$(SRCROOT)\"",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_7 = "\"$(SRCROOT)\"";
@@ -1132,6 +1197,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					/temp/install/lib,
 					/temp/relinstall/lib,
+					"\"$(SRCROOT)\"",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/build/Development/aqbanking/plugins/20/bankinfo\"";
@@ -1179,6 +1245,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					/temp/install/lib,
 					/temp/relinstall/lib,
+					"\"$(SRCROOT)\"",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/build/Development/aqbanking/plugins/20/bankinfo\"";
@@ -1225,16 +1292,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B136B1D50FE24C78007A643F /* Build configuration list for PBXNativeTarget "BuildInstitutes" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B136B1D20FE24C5A007A643F /* Development */,
-				B136B1D30FE24C5A007A643F /* Deployment */,
-				B136B1D40FE24C5A007A643F /* Default */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
-		};
 		B14C0A870AAF71DB00CC41C4 /* Build configuration list for PBXNativeTarget "Pecunia" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

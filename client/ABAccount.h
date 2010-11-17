@@ -7,28 +7,27 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "User.h"
 #import "Transfer.h"
 
-/*
-#define _uid		@"UID"
-#define _type		@"Type"
-#define _name		@"Name"
-#define _bankName	@"BankName"
-#define _bankCode	@"BankCode"
-#define _accNumber	@"AccountNumber"
-#define _owner		@"Owner"
-#define _curr		@"Curr"
-#define _country	@"Country"
-#define _trans		@"Transactions"
-#define _balance	@"Balance"
-*/
+typedef enum {
+	AccountType_Unknown=0,
+	AccountType_Bank,
+	AccountType_CreditCard,
+	AccountType_Checking,
+	AccountType_Savings,
+	AccountType_Investment,
+	AccountType_Cash,
+	AccountType_MoneyMarket
+} AccountType;
+
+
 @class BankAccount;
 @class TransactionLimits;
+@class ABUser;
 
 @interface ABAccount : NSObject {
 	unsigned int	uid;
-	AB_ACCOUNT_TYPE	type;
+	AccountType		type;
 	NSString*		name;
 	NSString*		bankName;
 	NSString*		bankCode;
@@ -38,74 +37,37 @@
 	NSString*		country;
 	NSString*		iban;
 	NSString*		bic;
+	NSString*		userId;
+	NSString*		customerId;
 	BOOL			collTransfer;
 	
-//	TransactionLimits	*limits;
 	NSArray			*allowedCountries;
-	BankAccount		*cdAccount;
-	AB_ACCOUNT		*abAcc;
 	BOOL			substInternalTransfers;
 }
 
+@property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy) NSString *customerId;
+@property (nonatomic, assign) BOOL substInternalTransfers;
+@property (nonatomic, assign) unsigned int uid;
+@property (nonatomic, assign) AccountType type;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *bankName;
+@property (nonatomic, copy) NSString *bankCode;
+@property (nonatomic, copy) NSString *accountNumber;
+@property (nonatomic, copy) NSString *ownerName;
+@property (nonatomic, copy) NSString *currency;
+@property (nonatomic, copy) NSString *country;
+@property (nonatomic, copy) NSString *iban;
+@property (nonatomic, copy) NSString *bic;
+@property (nonatomic, assign) BOOL collTransfer;
+
 -(BOOL)isEqual: (id)obj;
--(id)initWithAB: (const AB_ACCOUNT*)acc;
-
-// Accessors
-- (AB_ACCOUNT_TYPE)type;
-- (void)setType:(AB_ACCOUNT_TYPE)value;
-
-- (NSString *)name;
-- (void)setName:(NSString *)value;
-
-- (NSString *)bankName;
-- (void)setBankName:(NSString *)value;
-
-- (NSString *)bankCode;
-- (void)setBankCode:(NSString *)value;
-
-- (NSString *)accountNumber;
-- (void)setAccountNumber:(NSString *)value;
-
-- (NSString *)ownerName;
-- (void)setOwnerName:(NSString *)value;
-
-- (NSString *)currency;
-- (void)setCurrency:(NSString *)value;
-
-- (NSString *)country;
-- (void)setCountry:(NSString *)value;
-
-- (NSString *)iban;
-- (void)setIban:(NSString *)value;
-
-- (NSString *)bic;
-- (void)setBic:(NSString *)value;
-
-- (BOOL)collTransfer;
-- (void)setCollTransfer:(BOOL)value;
-
--(void)setFlags: (uint32_t)flags;
--(uint32_t)flags;
-
 
 // Others
--(AB_ACCOUNT*)abRef;
--(void)setRef: (const AB_ACCOUNT*)ref;
--(void)initAB: (AB_ACCOUNT*)acc;
--(void)updateChanges;
--(TransactionLimits*)limitsForType: (TransferType)tt country: (NSString*)ctry;
--(BOOL)isTransferSupportedForType: (TransferType)tt;
--(NSArray*)allowedCountries;
 
--(BOOL)substInternalTransfers;
--(int)removeUser: (User*)user;
-
--(unsigned int)uid;
--(AB_ACCOUNT_TYPE)type;
--(BankAccount*)cdAccount;
--(void)setCDAccount: (BankAccount*)account;
 -(void) dealloc;
 
--(NSComparisonResult)compareByBank: (ABAccount*)x;
-+(SEL)getCBBSelector;
 @end
+
+
+

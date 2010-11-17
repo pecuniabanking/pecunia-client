@@ -11,6 +11,7 @@
 #import "Category.h"
 #import "MOAssistant.h"
 #import "StatCatAssignment.h"
+#import "ShortDate.h"
 
 static ClassificationContext* classContext = nil;
 static NSArray*	catCache = nil;
@@ -22,7 +23,7 @@ static NSArray*	catCache = nil;
 
 @dynamic value, charge, saldo;
 @dynamic localBankCode, localAccount;
-@dynamic remoteName, remoteIBAN, remoteBIC, remoteBankCode, remoteAccount, remoteCountry;
+@dynamic remoteName, remoteIBAN, remoteBIC, remoteBankCode, remoteAccount, remoteCountry, remoteBankName, remoteBankLocation;
 @dynamic purpose;
 
 @dynamic customerReference, bankReference;
@@ -37,6 +38,36 @@ static NSArray*	catCache = nil;
 @dynamic isStorno;
 
 @synthesize isNew;
+
+
+BOOL stringEqual(NSString *a, NSString *b)
+{
+	int i=0, j=0;
+	int l1, l2;
+	BOOL done = NO;
+	NSCharacterSet *cs = [NSCharacterSet whitespaceAndNewlineCharacterSet ];
+	
+	if (a == nil && b == nil) return YES;
+	if (a == nil && b != nil) return NO;
+	if (a != nil && b == nil) return NO;
+	l1 = [a length ];
+	l2 = [b length ];
+	while (done == NO) {
+		//find first of a and b
+		while (i<l1 && [cs characterIsMember: [a characterAtIndex:i ] ]) i++;		
+		while (j<l2 && [cs characterIsMember: [b characterAtIndex:j ] ]) j++;
+		if (i==l1 && j==l2) return YES;
+		if (i<l1 && j<l2) {
+			if ([a characterAtIndex:i ] != [b characterAtIndex:j ]) return NO;
+			else {
+				i++;
+				j++;
+			}
+		} else return NO;	
+	}
+	return YES;
+}
+
 
 -(NSString*)categoriesDescription
 {
@@ -100,19 +131,24 @@ static NSArray*	catCache = nil;
 
 -(BOOL)matches: (BankStatement*)stat
 {
+/*	
 	if([self.hashNumber isEqual: stat.hashNumber ]) return YES;
 	return NO;
-/*	
-	NSTimeInterval ti = [[self valutaDate ] timeIntervalSinceDate: [stat valutaDate ] ];
-	if(ti > 10) return NO;
-	if(abs([self.value doubleValue ] - [stat.value doubleValue ]) > 0.001) return NO;
-	if(	[self.remoteAccount isEqualToString: stat.remoteAccount ] &&
-		[self.remoteBankCode isEqualToString: stat.remoteBankCode ] &&
-		[self.remoteBIC isEqualToString: stat.remoteBIC ] &&
-		[self.remoteIBAN isEqualToString: stat.remoteIBAN ] &&
-		[self.purpose isEqualToString: stat.purpose ]) return YES;
-	return NO;
 */ 
+	ShortDate *d1 = [ShortDate dateWithDate:self.date ];
+	ShortDate *d2 = [ShortDate dateWithDate:stat.date ];
+	
+	if ([d1 isEqual: d2 ] == NO) return NO;
+	if(abs([self.value doubleValue ] - [stat.value doubleValue ]) > 0.001) return NO;
+	
+	if (stringEqual(self.purpose, stat.purpose) == NO) return NO;
+	if (stringEqual(self.remoteName, stat.remoteName) == NO) return NO;
+
+	if ([self.remoteAccount isEqualToString: stat.remoteAccount ] == NO) return NO;
+	if ([self.remoteBankCode isEqualToString: stat.remoteBankCode ] == NO) return NO;
+	if ([self.remoteBIC isEqualToString: stat.remoteBIC ] == NO) return NO;
+	if ([self.remoteIBAN isEqualToString: stat.remoteIBAN ] == NO) return NO;
+	return YES; 
 }
 
 -(BOOL)hasAssignment

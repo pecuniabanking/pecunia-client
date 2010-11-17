@@ -5,10 +5,10 @@
 @interface AccountChangeController : NSWindowController {
     IBOutlet NSObjectController		*accountController;
     IBOutlet NSPopUpButton			*dropDown;
-    IBOutlet NSArrayController		*passports;
 	IBOutlet NSTextField			*bicField;
 	IBOutlet NSTextField			*bankCodeField;
 	IBOutlet NSTextField			*bankNameField;
+	IBOutlet NSButton				*collTransferCheck;
 	
 	NSManagedObjectContext			*moc;
 	BankAccount						*account;

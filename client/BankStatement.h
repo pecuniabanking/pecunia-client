@@ -53,6 +53,8 @@
 @property (nonatomic, retain) NSString *remoteIBAN;
 @property (nonatomic, retain) NSString *remoteBIC;
 @property (nonatomic, retain) NSString *remoteBankCode;
+@property (nonatomic, retain) NSString *remoteBankLocation;
+@property (nonatomic, retain) NSString *remoteBankName;
 @property (nonatomic, retain) NSString *remoteAccount;
 @property (nonatomic, retain) NSString *remoteCountry;
 @property (nonatomic, retain) NSString *purpose;

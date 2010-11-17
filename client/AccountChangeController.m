@@ -30,7 +30,9 @@
 
 -(void)awakeFromNib
 {
-//	[[self window ] center ];
+	if (account.userId == nil) {
+		[collTransferCheck setHidden:YES ];
+	}
 }
 
 -(IBAction)cancel:(id)sender 
@@ -76,11 +78,9 @@
 {	
 	// check IBAN
 	BOOL res;
-	HBCIClient *hbciClient = [HBCIClient hbciClient ];
-	PecuniaError *error = nil;
+	HBCIClient *hbciClient = [HBCIClient hbciClient ];	
 	
-	
-	if([hbciClient checkIBAN: account.iban error: &error ] == NO) {
+	if([hbciClient checkIBAN: account.iban ] == NO) {
 		NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
 						NSLocalizedString(@"AP26", @"IBAN is not valid"),
 						NSLocalizedString(@"retry", @"Retry"), nil, nil);

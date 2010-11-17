@@ -7,7 +7,7 @@
 //
 
 #import "BankingController.h"
-#import "Account.h"
+#import "ABAccount.h"
 #import "NewBankUserController.h"
 #import "BankStatement.h"
 #import "BankAccount.h"
@@ -42,6 +42,9 @@
 #import "AccountChangeController.h"
 #import "TransferListController.h"
 #import "PurposeSplitController.h"
+#import "TransferTemplateController.h"
+#import "BankStatementPrintView.h"
+#import "MainTabViewItem.h"
 
 #define _expandedRows @"EMT_expandedRows"
 #define _accountsViewSD @"EMT_accountsSorting"
@@ -60,12 +63,15 @@ static BankingController	*con;
 
 -(id)init
 {
+	HBCIClient *client = nil;
+	
 	[super init ];
-	HBCIClient *client = [HBCIClient hbciClient ];
 	if(con) [con release ]; 
 	con = self;
 	restart = NO;
 	requestRunning = NO;
+	statementsBound = YES;
+	mainTabItems = [[NSMutableArray arrayWithCapacity:10 ] retain ];
 	
 	[Category setCatReportFrom: [ShortDate dateWithYear: 2009 month:1 day:1 ] to: [ShortDate distantFuture ] ];
 	
@@ -75,6 +81,15 @@ static BankingController	*con;
 		model   = [[MOAssistant assistant ] model ];
 	}
 	@catch(NSError* error) {
+		NSAlert *alert = [NSAlert alertWithError:error];
+		[alert runModal];
+		[NSApp terminate: self ];
+	}
+	
+	@try {
+		client = [HBCIClient hbciClient ];
+	}
+	@catch (NSError *error) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
 		[NSApp terminate: self ];
@@ -136,7 +151,7 @@ static BankingController	*con;
 	[self repairCategories ];
 
 	// set Bank Accounts
-	[self setBankAccounts ];
+	[self updateBankAccounts ];
 	[self updateBalances ];
 
 	NSError *error;
@@ -158,8 +173,10 @@ static BankingController	*con;
 	// set lock image
 	[self setEncrypted: [[MOAssistant assistant ] encrypted ] ];
 	
+	[WorkerThread init ];
 }
 
+/*
 -(void)setBankAccounts
 {
 	NSError	*error = nil;
@@ -203,6 +220,7 @@ static BankingController	*con;
 	
 	[[HBCIClient hbciClient ] setAccounts:relevantAccounts ];
 }
+ */
 
 -(void)updateBankAccounts
 {
@@ -222,7 +240,7 @@ static BankingController	*con;
 	NSMutableArray*	bankAccounts = [NSMutableArray arrayWithArray: tmpAccounts ];
 	
 	for(i=0; i < [hbciAccounts count ]; i++) {
-		Account* acc = [hbciAccounts objectAtIndex: i ];
+		ABAccount* acc = [hbciAccounts objectAtIndex: i ];
 		BankAccount *account;
 		
 		//lookup
@@ -290,7 +308,7 @@ static BankingController	*con;
 }
 
 
--(void)removeBankAccount: (BankAccount*)bankAccount
+-(void)removeBankAccount: (BankAccount*)bankAccount keepAssignedStatements:(BOOL)keepAssignedStats
 {
 	NSSet* stats = [bankAccount mutableSetValueForKey: @"statements" ];
 	NSEnumerator *enumerator = [stats objectEnumerator];
@@ -300,16 +318,20 @@ static BankingController	*con;
 	
 	//  Delete bank statements which are not assigned first
 	while ((statement = [enumerator nextObject])) {
-		NSSet *assignments = [statement mutableSetValueForKey:@"assignments" ];
-		if ([assignments count ] < 2) {
+		if (keepAssignedStats == NO) {
 			[context deleteObject:statement ];
-		} else if ([assignments count ] == 2) {
-			// delete statement if not assigned yet
-			if ([statement hasAssignment ] == NO) {
-				[context deleteObject:statement ];
-			}
 		} else {
-			statement.account = nil;
+			NSSet *assignments = [statement mutableSetValueForKey:@"assignments" ];
+			if ([assignments count ] < 2) {
+				[context deleteObject:statement ];
+			} else if ([assignments count ] == 2) {
+				// delete statement if not assigned yet
+				if ([statement hasAssignment ] == NO) {
+					[context deleteObject:statement ];
+				}
+			} else {
+				statement.account = nil;
+			}
 		}
 	}
 	
@@ -470,7 +492,7 @@ static BankingController	*con;
 	}
 }
 
--(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts
+-(BankAccount*)getBankNodeWithAccount: (ABAccount*)acc inAccounts: (NSMutableArray*)bankAccounts
 {
 	BankAccount *bankNode = [BankAccount bankRootForCode: acc.bankCode ];
 	
@@ -621,7 +643,7 @@ static BankingController	*con;
 	[sc startSpinning ];
 	[sc setMessage: NSLocalizedString(@"AP41", @"Load statements...") removeAfter:0 ];
 	
-	[[HBCIClient hbciClient ] getStatements: resultList sender: self ];
+	[[HBCIClient hbciClient ] getStatements: resultList ];
 }
 
 -(void)statementsNotification: (NSArray*)resultList
@@ -673,10 +695,11 @@ static BankingController	*con;
 
 -(void)requestFinished: (NSArray*)resultList
 {
+	[context processPendingChanges ];
 	[self updateBalances ];
 	requestRunning = NO;
 	[[[mainWindow contentView ] viewWithTag: 100 ] setEnabled: YES ];
-	
+
 	if(resultList != nil) {
 		Category *cat = [self currentSelection ];
 		if(cat && [cat isBankAccount ] && cat.accountNumber == nil) [transactionController setContent: [cat combinedStatements ] ];
@@ -722,8 +745,10 @@ static BankingController	*con;
 
 -(IBAction)editBankUsers:(id)sender
 {
-	if(!bankUserController) bankUserController = [[NewBankUserController alloc] initForController: self];
-	[bankUserController showWindow: self ];
+	[[HBCIClient hbciClient ] addBankUser ];
+	
+//	if(!bankUserController) bankUserController = [[NewBankUserController alloc] initForController: self];
+//	[bankUserController showWindow: self ];
 }
 
 -(IBAction)editPreferences:(id)sender
@@ -734,6 +759,13 @@ static BankingController	*con;
 	}
 	[prefController showWindow: self ];
 }
+
+-(IBAction)manageTransferTemplates: (id)sender
+{
+	TransferTemplateController *controller = [[TransferTemplateController alloc ] init ];
+	[controller showWindow: mainWindow ];
+}
+
 
 -(void)windowWillClose:(NSNotification *)aNotification
 {
@@ -758,7 +790,7 @@ static BankingController	*con;
 	}
 
 	// check if there is any User
-	if([[[HBCIClient hbciClient ] passports ] count ] == 0) {
+	if([[[HBCIClient hbciClient ] users ] count ] == 0) {
 		int res = NSRunAlertPanel(NSLocalizedString(@"AP37", @"Account cannot be created"), 
 								  NSLocalizedString(@"AP38", @"Please setup Bank ID first"), 
 								  NSLocalizedString(@"ok", @"Ok"), 
@@ -815,32 +847,46 @@ static BankingController	*con;
 	if(cat == nil) return;
 	if([cat isBankAccount ] == NO) return;
 	if([cat accountNumber ] == nil) return;
+
+	
+	// issue a confirmation
+	int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @"Delete account"),
+									  NSLocalizedString(@"AP100", @"Do you really want to delete account %@?"),
+									  NSLocalizedString(@"no", @"No"),
+									  NSLocalizedString(@"yes", @"Yes"),
+									  nil,
+									  cat.accountNumber
+									  );
+	if(res != NSAlertAlternateReturn) return;	
 	
 	// check for transactions
+	BOOL keepAssignedStatements = NO;
 	NSMutableSet *stats = [cat mutableSetValueForKey: @"statements" ];
 	if(stats && [stats count ] > 0) {
-		// issue a confirmation
-		int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @"Delete account"),
-										  NSLocalizedString(@"AP29", @"There are already transactions assigned to the selected account. Do you want to delete the account %@ anyway?"),
-										  NSLocalizedString(@"no", @"No"),
-										  NSLocalizedString(@"yes", @"Yes"),
-										  nil,
-										  cat.accountNumber
-								  );
-		if(res != NSAlertAlternateReturn) return;
-	} else {
-		// issue a confirmation
-		int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @"Delete account"),
-										  NSLocalizedString(@"AP100", @"Do you really want to delete account %@?"),
-										  NSLocalizedString(@"no", @"No"),
-										  NSLocalizedString(@"yes", @"Yes"),
-										  nil,
-										  cat.accountNumber
-										  );
-		if(res != NSAlertAlternateReturn) return;
+		BOOL hasAssignment;
+		
+		// check if transactions are assigned
+		for(BankStatement* stat in stats) {
+			if ([stat hasAssignment ]) {
+				hasAssignment = YES;
+				break;
+			}
+		}
+		
+		if (hasAssignment) {
+			int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @"Delete account"),
+											  NSLocalizedString(@"AP29", @"There are already transactions assigned to the selected account. Do you want to delete the account %@ anyway?"),
+											  NSLocalizedString(@"yes", @"Yes"),
+											  NSLocalizedString(@"no", @"No"),
+											  nil
+											  );
+			if (res == NSAlertDefaultReturn) {
+				keepAssignedStatements = YES;
+			} else keepAssignedStatements = NO;
+		}
 	}
-	// delete account
-	[self removeBankAccount: (BankAccount*)cat ];
+		// delete account
+	[self removeBankAccount: (BankAccount*)cat keepAssignedStatements: keepAssignedStatements ];
 
 	// save updates
 	if([context save: &error ] == NO) {
@@ -890,8 +936,6 @@ static BankingController	*con;
 	[mainTabView selectTabViewItemAtIndex: 4 ];
 	[self adjustSearchField ];
 }
-
-
 
 -(IBAction)save: (id)sender
 {
@@ -947,6 +991,10 @@ static BankingController	*con;
 	[categoryRepWinController terminateController ];
 	[catDefWinController terminateController ];
 	
+	for(id <MainTabViewItem> item in mainTabItems) {
+		[item terminate ];
+	}
+	
 	if([context save: &error ] == NO) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
@@ -965,6 +1013,7 @@ static BankingController	*con;
 	}
 	
 	[[MOAssistant assistant ] shutdown ];
+	[WorkerThread finish ];
 }
 
 // workaround for strange outlineView collapsing...
@@ -1284,9 +1333,18 @@ static BankingController	*con;
 	if(cat == nil) return;
 	
 	if([cat isBankAccount ] && cat.accountNumber == nil) {
+		if (statementsBound) {
+			[transactionController unbind:@"contentSet" ];
+			statementsBound = NO;
+		}
 		[transactionController setContent: [cat combinedStatements ] ];
+	} else {
+		if (statementsBound == NO) {
+			[transactionController bind:@"contentSet" toObject:categoryController withKeyPath:@"selection.assignments" options:nil ];
+			statementsBound = YES;
+		}
 	}
-
+	
 	// set states of categorie Actions Control
 	[catActions setEnabled: [cat isRemoveable ] forSegment: 2 ];
 	[catActions setEnabled: [cat isInsertable ] forSegment: 1 ];
@@ -1669,7 +1727,7 @@ static BankingController	*con;
 	[sc setMessage: NSLocalizedString(@"AP41", @"Load statements...") removeAfter:0 ];
 	
 	// get statements in separate thread
-	[[HBCIClient hbciClient ] getStatements: resultList sender: self ];
+	[[HBCIClient hbciClient ] getStatements: resultList ];
 	
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
 	[defaults setObject: [NSDate date ] forKey: @"lastSyncDate" ];
@@ -1772,6 +1830,19 @@ static BankingController	*con;
 -(void)setEncrypted:(BOOL)encrypted
 {
 	if(encrypted) [lockImage setHidden:NO ]; else [lockImage setHidden:YES ];
+}
+
+-(IBAction)print:(id)sender
+{
+	NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo ];
+	[printInfo setTopMargin:45 ];
+	[printInfo setBottomMargin:45 ];
+	NSPrintOperation *printOp;
+	NSView *view = [[BankStatementPrintView alloc ] initWithStatements:[transactionController arrangedObjects ] printInfo:printInfo ];
+	printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo ];
+	[printOp setShowsPrintPanel:YES ];
+	NSGraphicsContext *context = [printOp context ];
+	[printOp runOperation ];
 }
 
 +(BankingController*)controller

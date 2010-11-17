@@ -1,7 +1,7 @@
 #import "AccountDefController.h"
 #import "BankAccount.h"
 #import "MOAssistant.h"
-#import "Passport.h"
+#import "ABUser.h"
 #import "BankInfo.h"
 #import "HBCIClient.h"
 #import "BankingController.h"
@@ -32,23 +32,24 @@
 	[[self window ] center ];
 	
 	int i=0;
-	NSMutableArray* pps = [NSMutableArray arrayWithArray: [[HBCIClient hbciClient ] passports ] ];
-	// add special Passport
-	Passport *noPP  = [[[Passport alloc ] init ] autorelease ];
-	noPP.userId = NSLocalizedString(@"AP101", @"");
-	[pps insertObject:noPP atIndex:0 ];
+	NSMutableArray* hbciUsers = [NSMutableArray arrayWithArray: [[HBCIClient hbciClient ] users ] ];
+	// add special User
+	ABUser *noUser  = [[[ABUser alloc ] init ] autorelease ];
+	noUser.userId = NSLocalizedString(@"AP101", @"");
+	[hbciUsers insertObject:noUser atIndex:0 ];
 	
-	[passports setContent: pps ];
+	[users setContent: hbciUsers ];
 	// now find first user that fits bank code and change selection
 	if(account.bankCode) {
-		for(Passport *pp in pps) {
-			if([pp.bankCode isEqual: account.bankCode ]) {
+		for(ABUser *user in hbciUsers) {
+			if([user.bankCode isEqual: account.bankCode ]) {
 				[dropDown selectItemAtIndex:i ];
 				break;
 			}
 			i++;
 		}
 	}
+	currentAddView = accountAddView;
 	
 	// fill proposal values
 	[self dropChanged: self ];
@@ -58,27 +59,42 @@
 {
 	int idx = [dropDown indexOfSelectedItem ];
 	if(idx < 0) idx = 0;
-	Passport *pp = [[passports arrangedObjects ] objectAtIndex: idx];
+	ABUser *user = [[users arrangedObjects ] objectAtIndex: idx];
 
 	if(idx > 0) {
-		account.bankName = pp.bankName;
-		account.bankCode = pp.bankCode;
-		BankAccount *bankRoot = [BankAccount bankRootForCode: pp.bankCode ];
-		if(bankRoot) account.bic = bankRoot.bic;
-		else {
-			PecuniaError *error = nil;
-			BankInfo *info = [[HBCIClient hbciClient ] infoForBankCode: pp.bankCode error: &error ];
-			if(info) account.bic = info.bic;
+		account.bankName = user.bankName;
+		account.bankCode = user.bankCode;
+		BankInfo *info = [[HBCIClient hbciClient ] infoForBankCode: user.bankCode inCountry:account.country ];
+		if (info) {
+			account.bic = info.bic;
+			account.bankName = info.name;
 		}
+
 		[bankCodeField setEditable: NO ];
 		[bankCodeField setBezeled: NO ];
-		[balanceField setHidden: YES ];
+		
+		if (currentAddView != accountAddView) {
+			[manAccountAddView retain ];
+			[boxView replaceSubview:manAccountAddView with:accountAddView ];
+			currentAddView = accountAddView;
+		}
+		
+//		[balanceField setHidden: YES ];
+//		[balanceLabel setHidden: YES ];
 //		[balanceField setBezeled: NO ];
 	} else {
 //		account.bankCode = account.bankName = account.bic = @"";
 		[bankCodeField setEditable: YES ];
 		[bankCodeField setBezeled: YES ];
-		[balanceField setHidden: NO ];
+
+		if (currentAddView != manAccountAddView) {
+			[accountAddView retain ];
+			[boxView replaceSubview:accountAddView with:manAccountAddView ];
+			currentAddView = manAccountAddView;
+		}
+		
+//		[balanceField setHidden: NO ];
+//		[balanceLabel setHidden: NO ];
 //		[balanceField setBezeled: YES ];
 	}
 }
@@ -97,9 +113,9 @@
 	if([self check ] == NO) return;
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 
-	Passport *pp = nil;
+	ABUser *user = nil;
 	int idx = [dropDown indexOfSelectedItem ];
-	if(idx > 0) pp = [[passports arrangedObjects ] objectAtIndex:idx ];
+	if(idx > 0) user = [[users arrangedObjects ] objectAtIndex:idx ];
 
 	// account is new - create entity in productive context
 	BankAccount *bankRoot = [BankAccount bankRootForCode: account.bankCode ];
@@ -124,8 +140,12 @@
 		newAccount = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount" inManagedObjectContext:context ];
 		newAccount.bankCode = account.bankCode;
 		newAccount.bankName = account.bankName;
-		if(pp) newAccount.userId = pp.userId;
-		if(pp) newAccount.customerId = pp.customerId;
+		if(user) {
+			newAccount.userId = user.userId;
+			newAccount.customerId = user.customerId;
+			newAccount.isManual = [NSNumber numberWithBool:YES ];
+		} else newAccount.isManual = [NSNumber numberWithBool:NO ];
+		
 		newAccount.parent = bankRoot;
 		newAccount.isBankAcc = [NSNumber numberWithBool:YES ];
 	}
@@ -151,8 +171,7 @@
 	}
 	
 	if (newAccount.userId) {
-		NSArray *accounts = [NSArray arrayWithObject:newAccount ];
-		[[HBCIClient hbciClient ] setAccounts:accounts];
+		[[HBCIClient hbciClient ] addAccount:newAccount forUser:user ];
 	}
 
 	[moc reset ];
@@ -169,7 +188,7 @@
 		[bankNameField setEditable:NO ];
 		[bankNameField setBezeled:NO ];
 		if (bankRoot == nil) {
-			NSString *name = [[HBCIClient hbciClient  ] bankNameForCode: [te stringValue ] ];
+			NSString *name = [[HBCIClient hbciClient  ] bankNameForCode: [te stringValue ] inCountry: account.country ];
 			if ([name isEqualToString:NSLocalizedString(@"unknown",@"") ]) {
 				[bankNameField setEditable:YES ];
 				[bankNameField setBezeled:YES ];
@@ -205,10 +224,9 @@
 	// check IBAN
 	BOOL res;
 	HBCIClient *hbciClient = [HBCIClient hbciClient ];
-	PecuniaError *error = nil;
 	
 	
-	if([hbciClient checkIBAN: account.iban error: &error ] == NO) {
+	if([hbciClient checkIBAN: account.iban ] == NO) {
 		NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
 						NSLocalizedString(@"AP26", @"IBAN is not valid"),
 						NSLocalizedString(@"retry", @"Retry"), nil, nil);
@@ -216,7 +234,7 @@
 	}
 	
 	// check account number
-	res = [hbciClient checkAccount: account.accountNumber bankCode: account.bankCode error: &error ];
+	res = [hbciClient checkAccount: account.accountNumber forBank: account.bankCode inCountry:account.country ];
 	if(res == NO) {
 		NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
 						NSLocalizedString(@"AP13", @"Account number is not valid"),

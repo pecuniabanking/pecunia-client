@@ -54,7 +54,7 @@
 "AP26" = "Die eingegebene IBAN ist nicht gültig";
 "AP27" = "Erfolg";
 "AP28" = "Systemkennung wurde erfolgreich übermittelt";
-"AP29" = "Dem ausgewählten Konto sind bereits Umsätze zugeordnet. Möchten Sie das Konto %@ wirklich löschen?";
+"AP29" = "Für das ausgewählte Konto gibt es Umsätze die Kategorien zugeordnet sind. Sie können diese Umsätze behalten, so dass die Kategoriewerte nicht verändert werden. Möchten Sie diese Umsätze behalten?";
 "AP30" = "Konto löschen";
 "AP31" = "Löschen nicht möglich";
 "AP32" = "Das Backend konnte das gewählte Konto nicht löschen";
@@ -129,3 +129,6 @@
 "AP101" = "Keine (manuelle Kontoverwaltung)";
 "AP102" = "Datenumsetzung bestätigen";
 "AP103" = "Die Daten werden jetzt umgesetzt. Dieser Vorgang kann nicht rückgängig gemacht werden. Bitte stellen Sie sicher, dass eine Datensicherung vorhanden ist. Möchten Sie die Daten jetzt umsetzen?";
+"AP104" = "Bestätigung";
+"AP105" = "Möchten Sie die Überweisungsvorlage löschen?";
+"AP106" = "Neue Überweisungsvorlage";

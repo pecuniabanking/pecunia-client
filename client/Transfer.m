@@ -7,7 +7,8 @@
 //
 
 #import "Transfer.h"
-
+#import "TransferTemplate.h"
+#import "TransactionLimits.h"
 
 @implementation Transfer
 
@@ -42,26 +43,52 @@
 -(NSString*)purpose
 {
 	NSMutableString* s = [NSMutableString stringWithCapacity: 100 ];
-	if([self valueForKey: @"purpose1" ]) { [s appendString: [self valueForKey: @"purpose1" ] ]; }
-	if([self valueForKey: @"purpose2" ]) { [s appendString: @" " ]; [s appendString: [self valueForKey: @"purpose2" ] ]; }
-	if([self valueForKey: @"purpose3" ]) { [s appendString: @" " ]; [s appendString: [self valueForKey: @"purpose3" ] ]; }
-	if([self valueForKey: @"purpose4" ]) { [s appendString: @" " ]; [s appendString: [self valueForKey: @"purpose4" ] ]; }
+	if(self.purpose1) { [s appendString: self.purpose1 ]; }
+	if(self.purpose2) { [s appendString: @" " ]; [s appendString: self.purpose2 ]; }
+	if(self.purpose3) { [s appendString: @" " ]; [s appendString: self.purpose3 ]; }
+	if(self.purpose4) { [s appendString: @" " ]; [s appendString: self.purpose4 ]; }
 	
 	return s;
 }
 
--(void) copyFromTemplate: (Transfer*)t
+-(void) copyFromTemplate:(TransferTemplate*)t withLimits:(TransactionLimits*)limits
 {
-	[self setValue: [[t valueForKey: @"remoteName" ] copy ] forKey: @"remoteName" ];
-	[self setValue: [[t valueForKey: @"remoteAccount" ] copy ] forKey: @"remoteAccount" ];
-	[self setValue: [[t valueForKey: @"remoteBankCode" ] copy ] forKey: @"remoteBankCode" ];
-	[self setValue: [[t valueForKey: @"remoteBankName" ] copy ] forKey: @"remoteBankName" ];
-	[self setValue: [[t valueForKey: @"remoteIBAN" ] copy ] forKey: @"remoteIBAN" ];
-	[self setValue: [[t valueForKey: @"remoteBIC" ] copy ] forKey: @"remoteBIC" ];
-	[self setValue: [[t valueForKey: @"purpose1" ] copy ] forKey: @"purpose1" ];
-	[self setValue: [[t valueForKey: @"purpose2" ] copy ] forKey: @"purpose2" ];
-	[self setValue: [[t valueForKey: @"purpose3" ] copy ] forKey: @"purpose3" ];
-	[self setValue: [[t valueForKey: @"purpose4" ] copy ] forKey: @"purpose4" ];
+	NSString *s;
+	int maxLen = [limits maxLenRemoteName ] * [limits maxLinesRemoteName ];
+	s = t.remoteName;
+	if ([s length ] > maxLen) s = [s substringToIndex:maxLen ];
+	self.remoteName = s;
+	
+	maxLen = [limits maxLenPurpose ];
+	int num = [limits maxLinesPurpose ];
+	
+	s = t.purpose1;
+	if ([s length ] > maxLen) s = [s substringToIndex:maxLen ];
+	self.purpose1 = s;
+	
+	if (num > 1) {
+		s = t.purpose2;
+		if ([s length ] > maxLen) s = [s substringToIndex:maxLen ];
+		self.purpose2 = s;
+	}
+	
+	if (num > 2) {
+		s = t.purpose3;
+		if ([s length ] > maxLen) s = [s substringToIndex:maxLen ];
+		self.purpose3 = s;
+	}
+	
+	if (num > 3) {
+		s = t.purpose4;
+		if ([s length ] > maxLen) s = [s substringToIndex:maxLen ];
+		self.purpose4 = s;
+	}
+	
+	self.remoteAccount = t.remoteAccount;
+	self.remoteBankCode = t.remoteBankCode;
+//	self.remoteBankName = t.remoteBankName;
+	self.remoteIBAN = t.remoteIBAN;
+	self.remoteBIC = t.remoteBIC;
 }
 
 -(void)setJobId: (unsigned int) jid { jobId = jid; }

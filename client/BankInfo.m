@@ -25,6 +25,7 @@
 @synthesize host;
 @synthesize pinTanURL;
 @synthesize pinTanVersion;
+@synthesize website;
 
 /*
 -(id)initWithAB: (AB_BANKINFO*)bi

@@ -10,7 +10,7 @@
 
 @class ABWindowController;
 @class AccountsTree;
-@class Account;
+@class ABAccount;
 @class BankAccount;
 @class NewBankUserController;
 @class PreferenceController;
@@ -53,6 +53,7 @@
 	IBOutlet TransferListController			*transferListController;
 	
     NSMutableArray				*transactions;
+	NSMutableArray				*mainTabItems;
 	NSManagedObjectContext      *context;
 	NSManagedObjectModel		*model;
 	NewBankUserController		*bankUserController;
@@ -62,6 +63,7 @@
 	TransactionController		*transferWindowController;
 	BOOL						restart;
 	BOOL						requestRunning;
+	BOOL						statementsBound;
 }
 
 -(IBAction)listUsers:(id)sender;
@@ -103,17 +105,20 @@
 -(IBAction)addStatement: (id)sender;
 -(IBAction)showLicense: (id)sender;
 
+-(IBAction)manageTransferTemplates: (id)sender;
+
+-(IBAction)print:(id)sender;
+
 -(void)windowWillClose:(NSNotification *)aNotification;
 -(NSArray*)selectedNodes;
 -(BankAccount*)selectBankAccountWithNumber:(NSString*)accNum bankCode:(NSString*)code;
 -(void)awakeFromNib;
 -(int)AccSize;
 -(NSManagedObjectContext*)managedObjectContext;
--(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts;
+-(BankAccount*)getBankNodeWithAccount: (ABAccount*)acc inAccounts: (NSMutableArray*)bankAccounts;
 -(void)statementsNotification: (NSArray*)resultList;
 -(Category*)getBankingRoot;
 -(void)updateBankAccounts;
--(void)setBankAccounts;
 -(void)updateBalances;
 -(void)adjustSearchField;
 -(void)updateNotAssignedCategory;

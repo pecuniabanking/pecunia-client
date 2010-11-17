@@ -7,19 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
-//#import "aqhbci/tanmethod.h"
 
 @interface TanMethod : NSObject {
-	NSString	*function;
+	int			function;
 	NSString	*description;
 }
 
-//-(id)initWithAB: (const AH_TAN_METHOD*)tm;
--(id)initDefault: (int)func;
--(id)initWithString:(NSString*)s;
-
-
-@property (copy) NSString	*function;
-@property (copy) NSString	*description;
+@property (nonatomic, assign) int function;
+@property (nonatomic, retain) NSString* description;
 
 @end

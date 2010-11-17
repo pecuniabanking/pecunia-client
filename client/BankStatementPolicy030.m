@@ -96,7 +96,10 @@
 				}
 			}
 		}
-		
+		if ([statements count ] > 0) {
+			stat = [statements objectAtIndex:0 ];
+			[account setValue: [stat valueForKey:@"date" ] forKey:@"latestTransferDate" ];
+		}
 	}
 	return YES;
 }
@@ -105,6 +108,11 @@
 {
 	NSString *res = [NSString stringWithFormat:@"%0.3d", [n intValue ] ];
 	return res;
+}
+
+-(NSString*)trimString:(NSString*)s
+{
+	return [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet ] ];
 }
 
 

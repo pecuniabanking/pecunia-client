@@ -23,23 +23,24 @@
 	NSString	*host;
 	NSString	*pinTanURL;
 	NSString	*pinTanVersion;
-	
+	NSString    *website;
 }
 
-@property (copy) NSString *country;
-@property (copy) NSString *branch;
-@property (copy) NSString *bankCode;
-@property (copy) NSString *bic;
-@property (copy) NSString *name;
-@property (copy) NSString *location;
-@property (copy) NSString *street;
-@property (copy) NSString *city;
-@property (copy) NSString *region;
-@property (copy) NSString *phone;
-@property (copy) NSString *email;
-@property (copy) NSString *host;
-@property (copy) NSString *pinTanURL;
-@property (copy) NSString *pinTanVersion;
+@property (nonatomic, retain) NSString *country;
+@property (nonatomic, retain) NSString *branch;
+@property (nonatomic, retain) NSString *bankCode;
+@property (nonatomic, retain) NSString *bic;
+@property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) NSString *location;
+@property (nonatomic, retain) NSString *street;
+@property (nonatomic, retain) NSString *city;
+@property (nonatomic, retain) NSString *region;
+@property (nonatomic, retain) NSString *phone;
+@property (nonatomic, retain) NSString *email;
+@property (nonatomic, retain) NSString *host;
+@property (nonatomic, retain) NSString *pinTanURL;
+@property (nonatomic, retain) NSString *pinTanVersion;
+@property (nonatomic, retain) NSString *website;
 
 //-(id)initWithAB: (AB_BANKINFO*)bi;
 

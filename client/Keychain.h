@@ -16,5 +16,6 @@
 +(BOOL)setPassword:(NSString*)password forService:(NSString*)service account:(NSString*)account store:(BOOL)store;
 +(void)deletePasswordsForService: (NSString*)service;
 +(void)deletePasswordForService:(NSString*)service account:(NSString*)account;
++(void)clearCache;
 
 @end

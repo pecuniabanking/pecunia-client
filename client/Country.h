@@ -14,9 +14,10 @@
 	NSString	*code;
 }
 
--(NSString*)name;
--(NSString*)currency;
--(NSString*)code;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *currency;
+@property (nonatomic, copy) NSString *code;
 
 
 @end
+

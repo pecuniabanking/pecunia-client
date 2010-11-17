@@ -35,18 +35,13 @@
 	NSMutableArray					*transfers;
 	BankingController				*bankingController;
 	BankAccount						*account;
-	NSDictionary					*limits;
+	TransactionLimits				*limits;
 	TransferType					transferType;
 	NSString						*selectedCountry;
 	NSArray							*internalAccounts;
 	NSDictionary					*selCountryInfo;
 	
 	BOOL							donation;
-	
-	// limits
-	int								maxLenPurpose;
-	int								maxLenRemoteName;
-	int								maxLenBankName;
 }
 
 - (void)transferOfType: (TransferType)tt forAccount: (BankAccount*)account;

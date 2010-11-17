@@ -16,7 +16,15 @@ typedef enum {
 	cat_all
 } CatValueType;
 
+typedef enum {
+	cat_histtype_month,
+	cat_histtype_quarter,
+	cat_histtype_year
+} CatHistoryType;
+
 @class ShortDate;
+@class CategoryReportingNode;
+
 
 @interface Category : NSManagedObject {
 
@@ -59,6 +67,7 @@ typedef enum {
 -(NSSet*)allChildren;
 -(NSSet*)siblings;
 -(NSDictionary*)balanceHistory;
+-(CategoryReportingNode*)categoryHistoryWithType:(CatHistoryType)histType;
 -(NSDecimalNumber*)valuesOfType: (CatValueType)type from: (ShortDate*)fromDate to: (ShortDate*)toDate;
 -(NSArray*)statementsFrom: (ShortDate*)fromDate to: (ShortDate*)toDate withChildren: (BOOL)c;
 -(NSMutableSet*)combinedStatements;

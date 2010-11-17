@@ -56,6 +56,8 @@
 			currentStatement.date = [NSDate date ];
 			currentStatement.valutaDate = [NSDate date ];
 		}
+		//provisorisch
+		currentStatement.remoteBankCode = @"de";
 	}
 	return self;
 }
@@ -159,6 +161,7 @@
 	currentStatement.isManual = [NSNumber numberWithBool: YES ];
 	currentStatement.date = [dateField dateValue ];
 	currentStatement.valutaDate = [valutaField dateValue ];
+	currentStatement.remoteBankCode = @"de";
 	[statementController setContent:currentStatement ];
 }
 
@@ -176,7 +179,7 @@
 	NSControl	*te = [aNotification object ];
 	
 	if([te tag ] == 100) {
-		NSString *name = [[HBCIClient hbciClient  ] bankNameForCode: [te stringValue ] ];
+		NSString *name = [[HBCIClient hbciClient  ] bankNameForCode: [te stringValue ] inCountry:currentStatement.remoteCountry ];
 		if(name) [self setValue: name forKey: @"bankName" ];
 	}
 	if([te tag ] == 200) {
@@ -225,7 +228,6 @@
 {
 	BOOL			res;
 	NSNumber		*value;
-	PecuniaError	*error = nil;
 /*	
 	if([currentStatement valueForKey: @"remoteName" ] == nil) {
 		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
@@ -234,7 +236,7 @@
 		return NO;
 	}
 */	
-	if( (value = [currentStatement valueForKey: @"value" ]) == nil ) {
+	if( (value = currentStatement.value) == nil ) {
 		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
 						NSLocalizedString(@"AP11", @"Please enter a value"),
 						NSLocalizedString(@"ok", @"Ok"), nil, nil);
@@ -248,10 +250,11 @@
 		return NO;
 	}
 */	
-	if ([currentStatement valueForKey: @"remoteAccount" ] && [currentStatement valueForKey: @"remoteBankCode" ]) {
-		res = [[HBCIClient hbciClient ] checkAccount: [currentStatement valueForKey: @"remoteAccount" ] 
-											bankCode:[currentStatement valueForKey: @"remoteBankCode" ] 
-											   error: &error ];
+	if (currentStatement.remoteAccount && currentStatement.remoteBankCode) {
+		res = [[HBCIClient hbciClient ] checkAccount: currentStatement.remoteAccount 
+											bankCode: currentStatement.remoteBankCode
+										   inCountry: currentStatement.remoteCountry ];
+		
 		
 		if(res == NO) {
 			NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 

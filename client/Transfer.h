@@ -9,6 +9,8 @@
 #import <Cocoa/Cocoa.h>
 
 @class BankAccount;
+@class TransferTemplate;
+@class TransactionLimits;
 
 typedef enum {
 	TransferTypeLocal=0,
@@ -22,7 +24,7 @@ typedef enum {
 }
 
 -(NSString*)purpose;
--(void) copyFromTemplate: (Transfer*)t;
+-(void) copyFromTemplate:(TransferTemplate*)t withLimits:(TransactionLimits*)limits;
 -(void)setJobId: (unsigned int)jid;
 -(unsigned int)jobId;
 

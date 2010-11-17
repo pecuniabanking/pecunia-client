@@ -21,16 +21,31 @@
 - (NSDate*)highDate;
 - (BOOL)isBetween: (ShortDate*)fromDate and:(ShortDate*)toDate;
 - (int)daysToDate: (ShortDate*)toDate;
+- (int)monthsToDate: (ShortDate*)toDate;
 - (ShortDate*)dateByAddingDays: (int)days;
+- (ShortDate*)dateByAddingMonths: (int)months;
+- (ShortDate*)dateByAddingYears: (int)years;
+
 - (BOOL)isEqual: (ShortDate*)date;
 - (NSUInteger)hash;
 - (int)daysInMonth;
+
+- (NSString*)description;
+- (NSString*)monthYearDescription;
+- (NSString*)quarterYearDescription;
+- (NSString*)yearDescription;
+
+-(ShortDate*)firstDayInYear;
+-(ShortDate*)firstDayInMonth;
+-(ShortDate*)firstDayInQuarter;
+-(int)quarter;
 
 - (unsigned)year;
 - (unsigned)month;
 - (unsigned)day;
 
 +(id)dateWithDate: (NSDate*)date;
++(id)currentDate;
 +(id)dateWithYear: (int)y month: (int)m day: (int)d;
 +(id)distantFuture;
 +(id)distantPast;

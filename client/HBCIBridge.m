@@ -111,6 +111,7 @@
 
 - (void)getData: (NSNotification *)aNotification
 {
+/*	
 	NSData *data = [[aNotification userInfo] objectForKey:NSFileHandleNotificationDataItem];
 	// If the length of the data is zero, then the task is basically over - there is nothing
 	// more to get from the handle so we may as well shut down.
@@ -154,11 +155,13 @@
 			running = NO;
 		} else [[aNotification object] readInBackgroundAndNotify];
 	}
+*/ 
 }
 		
 	
 -(void)receive
 {
+/*	
 	NSMutableString *cmd = [[NSMutableString alloc ] init ];
 	
 	while(resultExists == NO) {
@@ -187,6 +190,7 @@
 		[cmd setString: @"" ];
 	}
 	[cmd release ];
+*/ 
 }
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
@@ -210,6 +214,7 @@
 
 -(id)syncCommand: (NSString*)cmd error:(PecuniaError**)err
 {
+/*	
 	result = nil; error = nil; resultExists = NO;
 	
 	// HBCIServer is not running
@@ -234,10 +239,12 @@
 		return nil;
 	}
 	return result;
+*/ 
 }
 
 -(void)asyncCommand:(NSString*)cmd sender:(id)sender
 {
+/*	
 	result = nil; error = nil; resultExists = NO;
 
 	// HBCIServer is not running
@@ -254,6 +261,7 @@
 	[[inPipe fileHandleForReading] readInBackgroundAndNotify ];
 	asyncSender = sender;
 	running = YES;
+*/ 
 }
 
 -(NSString*)getPassword

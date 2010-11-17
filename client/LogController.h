@@ -7,25 +7,19 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "LogLevel.h"
 
-typedef enum {
-	log_error = 1,
-	log_warning,
-	log_info,
-	log_debug,
-	log_all,
-	log_messages
-} LogLevel;
-
-@interface LogController : NSWindowController
+@interface LogController : NSWindowController <MessageLog>
 {
     IBOutlet NSTextView		*logView;
 	NSPopUpButton			*popUp;
 	BOOL					isHidden;
+	BOOL					withDetails;
+	BOOL					writeConsole;
 	LogLevel				currentLevel;
 }
 
--(void)addLog: (NSString*)info withLevel: (LogLevel)level;
+//-(void)addLog: (NSString*)info withLevel: (LogLevel)level;
 -(void)logLevelChanged: (id)sender;
 -(void)clearLog: (id)sender;
 -(void)saveLog: (id)sender;

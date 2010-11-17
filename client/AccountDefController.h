@@ -5,11 +5,17 @@
 @interface AccountDefController : NSWindowController {
     IBOutlet NSObjectController		*accountController;
     IBOutlet NSPopUpButton			*dropDown;
-    IBOutlet NSArrayController		*passports;
+    IBOutlet NSArrayController		*users;
 	IBOutlet NSTextField			*bicField;
 	IBOutlet NSTextField			*bankCodeField;
 	IBOutlet NSTextField			*bankNameField;
 	IBOutlet NSTextField			*balanceField;
+	IBOutlet NSTextField			*balanceLabel;
+	
+	IBOutlet NSBox					*boxView;
+	IBOutlet NSView					*manAccountAddView;
+	IBOutlet NSView					*accountAddView;
+	NSView							*currentAddView;
 	
 	NSManagedObjectContext			*moc;
 	BankAccount						*account;

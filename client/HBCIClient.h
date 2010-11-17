@@ -7,16 +7,21 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "Transfer.h"
+#import "LogLevel.h"
 
 @class HBCIBridge;
 @class BankInfo;
-@class Passport;
+@class ABUser;
 @class PecuniaError;
 @class BankAccount;
 @class Account;
+@class ABController;
+@class TransactionLimits;
 
 @interface HBCIClient : NSObject {
-	HBCIBridge		*bridge;
+//	HBCIBridge		*bridge;
+	ABController	*bridge;
 	
 	NSMutableArray		*passports;
 	NSMutableArray		*accounts;
@@ -27,32 +32,34 @@
 	id					asyncCommandSender;
 }
 
--(Passport*)passportForBankCode:(NSString*)bankCode;
 -(void)readCountryInfos;
 -(NSDictionary*)countryInfos;
 
 
 -(NSArray*)initHBCI;
--(NSArray*)passports;
 -(NSArray*)accounts;
-
--(Account*)accountWithNumber:(NSString*)number bankCode:(NSString*)code;
+-(NSArray*)users;
 
 // HBCI Methods
--(BankInfo*)infoForBankCode: (NSString*)bankCode error:(PecuniaError**)error;
--(BOOL)addPassport:(Passport*)passport error:(PecuniaError**)error;
--(NSArray*)getAccountsForPassport:(Passport*)pp error:(PecuniaError**)error;
--(void)setAccounts:(NSArray*)bankAccounts;
--(NSString*)bankNameForCode:(NSString*)bankCode;
--(void)deletePassport:(Passport*)pp error:(PecuniaError**)error;
--(void)getStatements:(NSArray*)resultList sender:(id)sender;
--(NSDictionary*)getRestrictionsForJob:(NSString*)jobname account:(BankAccount*)account;
--(BOOL)checkAccount:(NSString*)accountNumber bankCode:(NSString*)bankCode error:(PecuniaError**)error;
--(BOOL)checkIBAN:(NSString*)iban error:(PecuniaError**)error;
+-(BankInfo*)infoForBankCode: (NSString*)bankCode inCountry:(NSString*)country;
+-(NSString*)bankNameForCode:(NSString*)bankCode inCountry:(NSString*)country;
+-(NSString*)bankNameForBIC:(NSString*)bic inCountry:(NSString*)country;
+-(void)getStatements:(NSArray*)resultList;
+-(BOOL)checkAccount: (NSString*)accountNumber forBank: (NSString*)bankCode inCountry: (NSString*)country;
+-(BOOL)checkIBAN: (NSString*)iban;
 -(void)asyncCommandCompletedWithResult:(id)result error:(PecuniaError*)err;
--(BOOL)isJobSupported:(NSString*)jobName forAccount:(BankAccount*)account;
--(BOOL)sendTransfers:(NSArray*)transfers error:(PecuniaError**)err;
+-(BOOL)isTransferSupported:(TransferType)tt forAccount:(BankAccount*)account;
+-(BOOL)sendTransfers:(NSArray*)transfers;
+-(NSArray*)allowedCountriesForAccount:(BankAccount*)account;
+-(NSDictionary*)allCountries;
+-(TransactionLimits*)limitsForType:(TransferType)tt account:(BankAccount*)account country:(NSString*)ctry;
+-(NSArray*)users;
+-(BOOL)addAccount: (BankAccount*)account forUser: (ABUser*)user;
 
+-(void)startLog:(id <MessageLog>)logger withLevel:(LogLevel)level withDetails:(BOOL)details;
+-(void)endLog;
+
+-(BOOL)addBankUser;
 
 +(HBCIClient*)hbciClient;
 

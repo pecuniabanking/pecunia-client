@@ -376,7 +376,7 @@ void updateColorCache()
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
 	NSData *colorData = [defaults objectForKey: _notAssignedColor ];
-	if(!colorData) return [NSColor redColor ];
+	if(!colorData) return [NSColor colorWithDeviceRed: 0.918 green: 1.0 blue: 0.258 alpha: 1.0 ];
 	return [NSKeyedUnarchiver unarchiveObjectWithData: colorData ];
 }
 
@@ -392,7 +392,7 @@ void updateColorCache()
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
 	NSData *colorData = [defaults objectForKey: _newStatementColor ];
-	if(!colorData) return [NSColor grayColor ];
+	if(!colorData) return [NSColor colorWithDeviceRed: 0.207 green: 0.684 blue: 0.984 alpha: 1.0 ];
 	return [NSKeyedUnarchiver unarchiveObjectWithData: colorData ];
 }
 
