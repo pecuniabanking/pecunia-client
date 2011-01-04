@@ -3,7 +3,7 @@
 //  Pecunia
 //
 //  Created by Frank Emminghaus on 31.08.10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
 #import <aqbanking/banking.h>
@@ -16,6 +16,7 @@
 @class TransactionLimits;
 @class ABAccount;
 @class Transfer;
+@class StandingOrder;
 
 ABUser *convertUser(AB_USER *user);
 BankInfo *convertBankInfo(AB_BANKINFO *bi);
@@ -26,4 +27,6 @@ TransactionLimits *convertLimits(const AB_TRANSACTION_LIMITS *t);
 TransactionLimits *convertEULimits(const AB_EUTRANSFER_INFO* t);
 AB_TRANSACTION *convertTransfer(Transfer *transfer);
 NSDecimalNumber *convertValue(const AB_VALUE *val);
+void convertToStandingOrder(const AB_TRANSACTION *t, StandingOrder *stord);
+AB_TRANSACTION *convertStandingOrder(StandingOrder *stord);
 

@@ -11,7 +11,6 @@
 #import "Transfer.h"
 #import "TransactionLimits.h"
 #import "MOAssistant.h"
-#import "Account.h"
 #import "BankAccount.h"
 #import "HBCIClient.h"
 #import "Country.h"

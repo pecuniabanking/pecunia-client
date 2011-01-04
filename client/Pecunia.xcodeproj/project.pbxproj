@@ -60,8 +60,10 @@
 		B132FADF0F9CFD0000263F3B /* TimeSliceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B132FADE0F9CFD0000263F3B /* TimeSliceManager.m */; };
 		B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B136AAD70FCF1C4A007A643F /* MCEMTableView.m */; };
 		B136AB360FD077DD007A643F /* MCEMPieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = B136AB350FD077DD007A643F /* MCEMPieChartView.m */; };
-		B136B23B0FE2F4D1007A643F /* institutes in Resources */ = {isa = PBXBuildFile; fileRef = B136B23A0FE2F4D1007A643F /* institutes */; };
 		B136B24E0FE2F705007A643F /* InstitutesController.m in Sources */ = {isa = PBXBuildFile; fileRef = B136B24D0FE2F705007A643F /* InstitutesController.m */; };
+		B137BDCC12D28B0D00D0394C /* adduser.c in Sources */ = {isa = PBXBuildFile; fileRef = B137BDCA12D28B0D00D0394C /* adduser.c */; };
+		B137BE3C12D296A900D0394C /* getsysid.c in Sources */ = {isa = PBXBuildFile; fileRef = B137BE3A12D296A900D0394C /* getsysid.c */; };
+		B137BE9012D33AB200D0394C /* Institute.csv in Resources */ = {isa = PBXBuildFile; fileRef = B137BE8F12D33AB200D0394C /* Institute.csv */; };
 		B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
 		B14587A21289DCB700848683 /* CategoryPeriods.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14587A11289DCB700848683 /* CategoryPeriods.xib */; };
 		B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
@@ -126,6 +128,11 @@
 		B1A6E8880FC8A4F700566C55 /* PasswordWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1A6E8870FC8A4F700566C55 /* PasswordWindow.nib */; };
 		B1AB52290DD4F30900327122 /* log.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1AB52280DD4F30900327122 /* log.icns */; };
 		B1AFA78E129463F100B115A7 /* CategoryHistory.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA78D129463F100B115A7 /* CategoryHistory.xib */; };
+		B1AFA837129479BA00B115A7 /* CategoryRep.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA836129479BA00B115A7 /* CategoryRep.xib */; };
+		B1AFA8811295C5D800B115A7 /* AccountRep.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA8801295C5D800B115A7 /* AccountRep.xib */; };
+		B1AFA9361299C15900B115A7 /* StandingOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFA9351299C15900B115A7 /* StandingOrder.m */; };
+		B1AFA9F7129EEA3900B115A7 /* Orders.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA9F6129EEA3900B115A7 /* Orders.xib */; };
+		B1AFAA0512A061C100B115A7 /* StandingOrderTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFAA0412A061C100B115A7 /* StandingOrderTabController.m */; };
 		B1B0EEC80EDF325F00701E76 /* floppy.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B0EEC60EDF325F00701E76 /* floppy.png */; };
 		B1B0EECE0EDF33F400701E76 /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B0EECD0EDF33F400701E76 /* trash.png */; };
 		B1B0EED10EDF358200701E76 /* 3floppy.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B0EECF0EDF358200701E76 /* 3floppy.png */; };
@@ -280,9 +287,13 @@
 		B136AAD70FCF1C4A007A643F /* MCEMTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMTableView.m; sourceTree = "<group>"; };
 		B136AB340FD077DD007A643F /* MCEMPieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCEMPieChartView.h; sourceTree = "<group>"; };
 		B136AB350FD077DD007A643F /* MCEMPieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMPieChartView.m; sourceTree = "<group>"; };
-		B136B23A0FE2F4D1007A643F /* institutes */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = institutes; sourceTree = "<group>"; };
 		B136B24C0FE2F705007A643F /* InstitutesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstitutesController.h; sourceTree = "<group>"; };
 		B136B24D0FE2F705007A643F /* InstitutesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstitutesController.m; sourceTree = "<group>"; };
+		B137BDCA12D28B0D00D0394C /* adduser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = adduser.c; sourceTree = "<group>"; };
+		B137BDCB12D28B0D00D0394C /* adduser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = adduser.h; sourceTree = "<group>"; };
+		B137BE3A12D296A900D0394C /* getsysid.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getsysid.c; sourceTree = "<group>"; };
+		B137BE3B12D296A900D0394C /* getsysid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getsysid.h; sourceTree = "<group>"; };
+		B137BE8F12D33AB200D0394C /* Institute.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Institute.csv; sourceTree = "<group>"; };
 		B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPeriodsWindowController.h; sourceTree = "<group>"; };
 		B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPeriodsWindowController.m; sourceTree = "<group>"; };
 		B14587A11289DCB700848683 /* CategoryPeriods.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryPeriods.xib; sourceTree = "<group>"; };
@@ -386,6 +397,13 @@
 		B1A6E8870FC8A4F700566C55 /* PasswordWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = PasswordWindow.nib; sourceTree = "<group>"; };
 		B1AB52280DD4F30900327122 /* log.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = log.icns; sourceTree = "<group>"; };
 		B1AFA78D129463F100B115A7 /* CategoryHistory.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryHistory.xib; sourceTree = "<group>"; };
+		B1AFA836129479BA00B115A7 /* CategoryRep.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryRep.xib; sourceTree = "<group>"; };
+		B1AFA8801295C5D800B115A7 /* AccountRep.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountRep.xib; sourceTree = "<group>"; };
+		B1AFA9341299C15900B115A7 /* StandingOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrder.h; sourceTree = "<group>"; };
+		B1AFA9351299C15900B115A7 /* StandingOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrder.m; sourceTree = "<group>"; };
+		B1AFA9F6129EEA3900B115A7 /* Orders.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Orders.xib; sourceTree = "<group>"; };
+		B1AFAA0312A061C100B115A7 /* StandingOrderTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrderTabController.h; sourceTree = "<group>"; };
+		B1AFAA0412A061C100B115A7 /* StandingOrderTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrderTabController.m; sourceTree = "<group>"; };
 		B1B0EEC60EDF325F00701E76 /* floppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = floppy.png; sourceTree = "<group>"; };
 		B1B0EECD0EDF33F400701E76 /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = "<group>"; };
 		B1B0EECF0EDF358200701E76 /* 3floppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3floppy.png; sourceTree = "<group>"; };
@@ -540,6 +558,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B137BE8F12D33AB200D0394C /* Institute.csv */,
 				B14C6224115C04FA009324A6 /* 030.xcmappingmodel */,
 				B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */,
 				B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */,
@@ -567,7 +586,9 @@
 				B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */,
 				B14587A11289DCB700848683 /* CategoryPeriods.xib */,
 				B1AFA78D129463F100B115A7 /* CategoryHistory.xib */,
-				B136B23A0FE2F4D1007A643F /* institutes */,
+				B1AFA836129479BA00B115A7 /* CategoryRep.xib */,
+				B1AFA8801295C5D800B115A7 /* AccountRep.xib */,
+				B1AFA9F6129EEA3900B115A7 /* Orders.xib */,
 				B1923B560EB7A6D40079ADCA /* Icons */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -625,6 +646,10 @@
 				B1FAEACF122C6B80000AF027 /* ABConversion.m */,
 				B1C72C21123C36F100D1D78D /* ABControllerGui.h */,
 				B1C72C22123C36F100D1D78D /* ABControllerGui.m */,
+				B137BDCA12D28B0D00D0394C /* adduser.c */,
+				B137BDCB12D28B0D00D0394C /* adduser.h */,
+				B137BE3A12D296A900D0394C /* getsysid.c */,
+				B137BE3B12D296A900D0394C /* getsysid.h */,
 			);
 			name = HBCIBridge;
 			sourceTree = "<group>";
@@ -632,6 +657,7 @@
 		B136AACF0FCF1BF5007A643F /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B137BE7812D32F3B00D0394C /* Printing */,
 				B14C61B8115AB4A9009324A6 /* Migration */,
 				B12A497E10BDD242002CC63E /* HBCIBridge */,
 				B1FE0DD81065885D005B3800 /* Basic */,
@@ -641,12 +667,19 @@
 				B1FE0DCB106583F8005B3800 /* WindowController */,
 				B1FE0DC8106583A3005B3800 /* Extensions */,
 				B1FE0DD710658824005B3800 /* Classification */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		B137BE7812D32F3B00D0394C /* Printing */ = {
+			isa = PBXGroup;
+			children = (
 				B1FB6B00126B7BF300C54A0E /* BankStatementPrintView.h */,
 				B1FB6B01126B7BF300C54A0E /* BankStatementPrintView.m */,
 				B14587A31289ED8D00848683 /* CategoryReportingNode.h */,
 				B14587A41289ED8D00848683 /* CategoryReportingNode.m */,
 			);
-			name = Classes;
+			name = Printing;
 			sourceTree = "<group>";
 		};
 		B14C61B8115AB4A9009324A6 /* Migration */ = {
@@ -807,6 +840,8 @@
 				B14587EA128C8B0700848683 /* ReportingTabs.h */,
 				B14587EB128C8B0700848683 /* ReportingTabs.m */,
 				B159010A129310E40053CB9C /* MainTabViewItem.h */,
+				B1AFAA0312A061C100B115A7 /* StandingOrderTabController.h */,
+				B1AFAA0412A061C100B115A7 /* StandingOrderTabController.m */,
 			);
 			name = WindowController;
 			sourceTree = "<group>";
@@ -843,6 +878,8 @@
 				B17078F810EA5E6100A974E7 /* StatCatAssignment.m */,
 				B1FB6600124FC61B00C54A0E /* TransferTemplate.h */,
 				B1FB6601124FC61B00C54A0E /* TransferTemplate.m */,
+				B1AFA9341299C15900B115A7 /* StandingOrder.h */,
+				B1AFA9351299C15900B115A7 /* StandingOrder.m */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -969,7 +1006,6 @@
 				B132F84B0F8FE9DB00263F3B /* ins-8.png in Resources */,
 				B196E0970FACE30600509748 /* BSSelectWindow.nib in Resources */,
 				B1A6E8880FC8A4F700566C55 /* PasswordWindow.nib in Resources */,
-				B136B23B0FE2F4D1007A643F /* institutes in Resources */,
 				B1E8118C0FF6854F00BF7451 /* AccountMaintenance.nib in Resources */,
 				B1E8118D0FF6854F00BF7451 /* AccountSettings.nib in Resources */,
 				B1E8118E0FF6854F00BF7451 /* BankUser.nib in Resources */,
@@ -1013,6 +1049,10 @@
 				B1FB6915125D0A5500C54A0E /* edit16.png in Resources */,
 				B14587A21289DCB700848683 /* CategoryPeriods.xib in Resources */,
 				B1AFA78E129463F100B115A7 /* CategoryHistory.xib in Resources */,
+				B1AFA837129479BA00B115A7 /* CategoryRep.xib in Resources */,
+				B1AFA8811295C5D800B115A7 /* AccountRep.xib in Resources */,
+				B1AFA9F7129EEA3900B115A7 /* Orders.xib in Resources */,
+				B137BE9012D33AB200D0394C /* Institute.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1125,6 +1165,10 @@
 				B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */,
 				B14587EC128C8B0700848683 /* ReportingTabs.m in Sources */,
 				B15900BF129304B30053CB9C /* CategoryPeriodsView.m in Sources */,
+				B1AFA9361299C15900B115A7 /* StandingOrder.m in Sources */,
+				B1AFAA0512A061C100B115A7 /* StandingOrderTabController.m in Sources */,
+				B137BDCC12D28B0D00D0394C /* adduser.c in Sources */,
+				B137BE3C12D296A900D0394C /* getsysid.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,7 @@
 #import "MOAssistant.h"
 #import "BankQueryResult.h"
 #import "ShortDate.h"
+#import "StandingOrder.h"
 
 
 @implementation BankAccount
@@ -79,6 +80,38 @@
 		}
 		if(isMatched == NO) stat.isNew = YES; else stat.isNew = NO;
 	}
+}
+
+-(void)updateStandingOrders:(NSArray*)orders
+{
+	NSError *error = nil;
+	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+	StandingOrder *stord;
+	StandingOrder *order;
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"StandingOrder" inManagedObjectContext:context];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	
+	
+	for(stord in orders) {
+		// find existing order
+		NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (orderKey = %@)", self, stord.orderKey ];
+		[request setPredicate:predicate];
+		NSArray *res = [context executeFetchRequest:request error:&error];
+		if (res && [res count ] > 0) {
+			order = [res objectAtIndex:0 ];
+		} else {
+			// order does not yet exist
+			order = [NSEntityDescription insertNewObjectForEntityForName:@"StandingOrder" inManagedObjectContext:context];
+		}
+		// now copy order to real context
+		NSEntityDescription *entity = [stord entity];
+		NSArray *attributeKeys = [[entity attributesByName] allKeys];
+		NSDictionary *attributeValues = [stord dictionaryWithValuesForKeys:attributeKeys];
+		[order setValuesForKeysWithDictionary:attributeValues];
+		order.account = self;
+	}
+	
 }
 
 -(int)updateFromQueryResult: (BankQueryResult*)result

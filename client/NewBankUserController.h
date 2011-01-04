@@ -8,31 +8,33 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Passport;
+@class ABUser;
 @class BankingController;
 
 @interface NewBankUserController : NSWindowController
 {
 	IBOutlet NSObjectController		*objController;
-	IBOutlet NSArrayController		*passportController;
-	IBOutlet NSWindow				*passportSheet;
-	IBOutlet Passport				*currentPassport;
-	IBOutlet NSMutableArray			*passports;
-	IBOutlet NSProgressIndicator	*progressIndicator;
+	IBOutlet NSArrayController		*bankUserController;
+	IBOutlet NSArrayController		*tanMethods;
+	IBOutlet NSWindow				*userSheet;
+	IBOutlet ABUser					*currentUser;
+	IBOutlet NSMutableDictionary	*bankUserInfo;
+	IBOutlet NSArray				*bankUsers;
 	BankingController				*bankController;
-	NSArray							*banks;
+	NSArray							*hbciVersions;
+	NSMutableArray					*banks;
 }
 
 -(id)initForController: (BankingController*)con;
 
 - (IBAction)cancel:(id)sender;
+- (IBAction)add:(id)sender;
 - (IBAction)addEntry:(id)sender;
 - (IBAction)removeEntry:(id)sender;
 - (IBAction)getSystemID: (id)sender;
 - (IBAction)showBanks: (id)sender;
 
 - (BOOL)check;
-
-+(NewBankUserController*)currentController;
+- (void)readBanks;
 
 @end

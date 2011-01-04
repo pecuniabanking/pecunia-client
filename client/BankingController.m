@@ -20,7 +20,6 @@
 #import "CatAssignClassification.h"
 #import "ExportController.h"
 #import "CatDefWindowController.h"
-#import "AccountRepWindowController.h"
 #import "MCEMOutlineViewLayout.h"
 #import "AccountDefController.h"
 #import "TimeSliceManager.h"
@@ -667,6 +666,7 @@ static BankingController	*con;
 			noStatements = FALSE;
 			[result.account evaluateStatements: stats ];
 		}
+		[result.account updateStandingOrders: result.standingOrders ];
 	}
 	
 	[BankStatement initCategoriesCache ];
@@ -745,10 +745,10 @@ static BankingController	*con;
 
 -(IBAction)editBankUsers:(id)sender
 {
-	[[HBCIClient hbciClient ] addBankUser ];
+//	[[HBCIClient hbciClient ] addBankUser ];
 	
-//	if(!bankUserController) bankUserController = [[NewBankUserController alloc] initForController: self];
-//	[bankUserController showWindow: self ];
+	if(!bankUserController) bankUserController = [[NewBankUserController alloc] initForController: self];
+	[bankUserController showWindow: self ];
 }
 
 -(IBAction)editPreferences:(id)sender
@@ -923,19 +923,6 @@ static BankingController	*con;
 	[mainTabView selectTabViewItemAtIndex: 2 ]; 
 	[self adjustSearchField ];
 }
--(IBAction)accountsRep: (id)sender 
-{
-	[accountRepWinController prepare ];
-	[mainTabView selectTabViewItemAtIndex: 3 ]; 
-	[self adjustSearchField ];
-}
-
--(IBAction)categoryRep: (id)sender
-{
-	[categoryRepWinController prepare ];
-	[mainTabView selectTabViewItemAtIndex: 4 ];
-	[self adjustSearchField ];
-}
 
 -(IBAction)save: (id)sender
 {
@@ -987,8 +974,6 @@ static BankingController	*con;
 	NSError	*error;
 	
 	[accountsView saveLayout ];
-	[accountRepWinController terminateController ];
-	[categoryRepWinController terminateController ];
 	[catDefWinController terminateController ];
 	
 	for(id <MainTabViewItem> item in mainTabItems) {

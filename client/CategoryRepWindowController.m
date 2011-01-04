@@ -12,6 +12,7 @@
 #import "MCEMOutlineViewLayout.h"
 #import "ShortDate.h"
 #import "TimeSliceManager.h"
+#import "MOAssistant.h"
 
 NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
 {
@@ -29,6 +30,7 @@ NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
 	if(self == nil) return nil;
 	
 	incomesX = expensesX = 0;
+	managedObjectContext = [[MOAssistant assistant ] context ];
 	return self;
 }
 
@@ -387,9 +389,14 @@ NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
 	return [outlineView isExpandable: item ];
 }
 
--(void)terminateController
+-(void)terminate
 {
 	[categoryView saveLayout ];
+}
+
+-(NSView*)mainView
+{
+	return mainView;
 }
 
 

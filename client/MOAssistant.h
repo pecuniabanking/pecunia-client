@@ -28,7 +28,7 @@
 -(BOOL)relocateToPath: (NSString*)path;
 -(void)shutdown;
 -(BOOL)encrypted;
--(BOOL)encryptDataWithPassword: password strong: (BOOL)strongEncryption;
+-(BOOL)encryptDataWithPassword: (NSString*)password;
 -(BOOL)stopEncryption;
 -(BOOL)isEncryptedImageAtPath:(NSString*)path;
 -(NSString*)dataFileNameAtPath:(NSString*)path;

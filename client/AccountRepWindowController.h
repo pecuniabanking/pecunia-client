@@ -7,17 +7,20 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "MainTabViewItem.h"
+
 @class SM2DGraphView;
 @class Category;
 @class ShortDate;
 @class TimeSliceManager;
 
-@interface AccountRepWindowController : NSObject 
+@interface AccountRepWindowController : NSObject <MainTabViewItem>
 {
     IBOutlet NSTreeController	*accountsController;
 	IBOutlet NSOutlineView      *accountsView;
 	IBOutlet SM2DGraphView	    *graphView;
 	IBOutlet NSSplitView		*splitView;
+	IBOutlet NSView				*mainView;
 
 	NSPoint minValues;
 	NSPoint maxValues;
@@ -27,6 +30,7 @@
 	NSArray						*balanceKeys;
 	ShortDate					*firstDate;
 	ShortDate					*fromDate, *toDate;
+	NSManagedObjectContext		*managedObjectContext;
 	
 	double						xTickCountFactor;
 	BOOL						drawAsBars;
@@ -42,11 +46,12 @@
 -(IBAction) setBarStyle: (id)sender;
 
 -(void)prepare;
--(void)terminateController;
+-(void)terminate;
 
 -(void)drawGraph;
 -(void)updateValues;
 -(void)clearGraph;
+-(NSView*)mainView;
 
 -(Category*)currentSelection;
 

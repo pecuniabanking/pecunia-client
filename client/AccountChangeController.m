@@ -67,7 +67,7 @@
 	
 	if (changedAccount.userId) {
 		NSArray *accounts = [NSArray arrayWithObject:changedAccount ];
-		[[HBCIClient hbciClient ] setAccounts:accounts];
+//		[[HBCIClient hbciClient ] setAccounts:accounts];
 	}
 
 	[moc reset ];
@@ -77,7 +77,6 @@
 -(BOOL)check
 {	
 	// check IBAN
-	BOOL res;
 	HBCIClient *hbciClient = [HBCIClient hbciClient ];	
 	
 	if([hbciClient checkIBAN: account.iban ] == NO) {

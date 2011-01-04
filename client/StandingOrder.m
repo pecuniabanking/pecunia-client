@@ -1,32 +1,43 @@
 //
-//  TransferTemplate.m
+//  StandingOrder.m
 //  Pecunia
 //
-//  Created by Frank Emminghaus on 26.09.10.
+//  Created by Frank Emminghaus on 21.11.10.
 //  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
-#import "TransferTemplate.h"
+#import "StandingOrder.h"
 
-@implementation TransferTemplate (CoreDataGeneratedAccessors)
+@implementation StandingOrder (CoreDataGeneratedAccessors)
+@dynamic changeDate;
 @dynamic currency;
-@dynamic name;
+@dynamic cycle;
+@dynamic executionDay;
+@dynamic firstExecDate;
+@dynamic isDeleted;
+@dynamic isSent;
+@dynamic lastExecDate;
+@dynamic nextExecDate;
+@dynamic orderKey;
+@dynamic period;
 @dynamic purpose1;
 @dynamic purpose2;
 @dynamic purpose3;
 @dynamic purpose4;
 @dynamic remoteAccount;
 @dynamic remoteBankCode;
-@dynamic remoteBIC;
-@dynamic remoteCountry;
-@dynamic remoteIBAN;
+@dynamic remoteBankName;
 @dynamic remoteName;
-@dynamic value;
+@dynamic status;
+@dynamic subType;
 @dynamic type;
+@dynamic isChanged;
+@dynamic value;
+@dynamic account;
 @end
 
 
-@implementation TransferTemplate
+@implementation StandingOrder
 
 -(NSString*)purpose
 {
@@ -39,6 +50,7 @@
 	return s;
 }
 
+-(void)setJobId: (unsigned int) jid { jobId = jid; }
+-(unsigned int)jobId { return jobId; };
+
 @end
-
-

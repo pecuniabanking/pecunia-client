@@ -17,6 +17,7 @@
 	NSString		*currency;
 	NSDecimalNumber	*balance;
 	NSMutableArray	*statements;
+	NSMutableArray  *standingOrders;
 	BankAccount		*account;
 }
 
@@ -26,6 +27,7 @@
 @property (copy) NSString *userId;
 @property (copy) NSDecimalNumber *balance;
 @property (retain) NSMutableArray *statements;
+@property (retain) NSMutableArray *standingOrders;
 @property (assign) BankAccount *account;
 
 

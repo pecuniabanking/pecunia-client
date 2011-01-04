@@ -327,7 +327,7 @@ void updateColorCache()
 	if(code == 0) {
 		// now create 
 		MOAssistant *assistant = [MOAssistant assistant ];
-		if([assistant encryptDataWithPassword: password strong: aes256 ]) {
+		if([assistant encryptDataWithPassword: password ]) {
 			if(savePassword) [Keychain setPassword: password forService: @"Pecunia" account: @"DataFile" store: YES];
 			[encryptButton setEnabled: NO ];
 			[[BankingController controller ] setEncrypted: YES ];

@@ -9,7 +9,6 @@
 #import "ABAccount.h"
 #import "TransactionLimits.h"
 #import "ABController.h"
-#include <aqhbci/account.h>
 
 @implementation ABAccount
 

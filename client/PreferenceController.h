@@ -20,7 +20,6 @@
 	
 	// encryption sheet
 	NSString	*password;
-	BOOL		aes256;
 	BOOL		savePassword;
 	BOOL		encrypt;
 	BOOL		colorsChanged;

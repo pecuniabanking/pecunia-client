@@ -3,7 +3,7 @@
 //  Pecunia
 //
 //  Created by Frank Emminghaus on 31.08.10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
 #import "ABConversion.h"
@@ -19,6 +19,7 @@
 #import "TransactionLimits.h"
 #import "Transfer.h"
 #import "HBCIClient.h"
+#import "StandingOrder.h"
 
 static NSDecimalNumber *hundred=nil;
 
@@ -132,7 +133,7 @@ void convertToAccount(BankAccount *account, AB_ACCOUNT *acc)
 	AB_Account_SetBIC(acc, [account.bic UTF8String ]);
 }
 
-NSString *convertStringList(const GWEN_STRINGLIST* sl, NSString *separator)
+NSString *convertStringListToString(const GWEN_STRINGLIST* sl, NSString *separator)
 {
 	NSMutableString* result = [NSMutableString stringWithCapacity: 100 ];
 	const char*	c;
@@ -148,6 +149,29 @@ NSString *convertStringList(const GWEN_STRINGLIST* sl, NSString *separator)
 		if(sle) [result appendString: separator ];
 	}
 	return result;
+}
+
+NSArray *convertStringList(const GWEN_STRINGLIST* sl)
+{
+	NSMutableArray *strings = [NSMutableArray arrayWithCapacity:5 ];
+	
+	if(sl) {
+		const char*	c;
+		NSString*	s;
+		
+		GWEN_STRINGLISTENTRY* sle; 
+		
+		sle = GWEN_StringList_FirstEntry(sl);
+		while(sle) {
+			c = GWEN_StringListEntry_Data(sle);
+			if(c) {
+				s = [NSString stringWithUTF8String: c ];
+				[strings addObject: s ];
+			}
+			sle = GWEN_StringListEntry_Next(sle);
+		}
+	}
+	return strings;
 }
 
 NSDecimalNumber *convertValue(const AB_VALUE *val)
@@ -189,13 +213,13 @@ void convertStatement(AB_TRANSACTION *t, BankStatement *stmt)
 	
 	stmt.remoteIBAN = [NSString stringWithUTF8String: (c = AB_Transaction_GetRemoteIban(t)) ? c: ""];
 	stmt.remoteBIC = [NSString stringWithUTF8String: (c = AB_Transaction_GetRemoteBic(t)) ? c: ""];
-	stmt.remoteName = convertStringList(AB_Transaction_GetRemoteName(t), @"");
+	stmt.remoteName = convertStringListToString(AB_Transaction_GetRemoteName(t), @"");
 	stmt.customerReference = [NSString stringWithUTF8String: (c = AB_Transaction_GetCustomerReference(t)) ? c: ""];
 	stmt.bankReference = [NSString stringWithUTF8String: (c = AB_Transaction_GetBankReference(t)) ? c: ""];
 	stmt.transactionText = [NSString stringWithUTF8String: (c = AB_Transaction_GetTransactionText(t)) ? c: ""];
 	stmt.transactionCode = [NSString stringWithFormat:@"%0.3d", AB_Transaction_GetTextKey(t) ];
 	stmt.primaNota = [NSString stringWithUTF8String: (c = AB_Transaction_GetPrimanota(t)) ? c: ""];
-	stmt.purpose = convertStringList(AB_Transaction_GetPurpose(t), @"\n");
+	stmt.purpose = convertStringListToString(AB_Transaction_GetPurpose(t), @"\n");
 	
 	val = AB_Transaction_GetValue(t);
 	stmt.value = convertValue(val);
@@ -258,26 +282,31 @@ TransactionLimits *convertLimits(const AB_TRANSACTION_LIMITS *t)
 	limits.minSetupTime = AB_TransactionLimits_GetMinValueSetupTime(t);
 	limits.maxSetupTime = AB_TransactionLimits_GetMaxValueSetupTime(t);
 	
-	NSMutableArray *textKeys = [NSMutableArray arrayWithCapacity:5 ];
 	GWEN_STRINGLIST* sl = AB_TransactionLimits_GetValuesTextKey(t);
-	if(sl) {
-		const char*	c;
-		NSString*	s;
-		
-		GWEN_STRINGLISTENTRY* sle; 
-		
-		sle = GWEN_StringList_FirstEntry(sl);
-		while(sle) {
-			c = GWEN_StringListEntry_Data(sle);
-			if(c) {
-				s = [NSString stringWithUTF8String: c ];
-				[textKeys addObject: s ];
-			}
-			sle = GWEN_StringListEntry_Next(sle);
-		}
-	}
-	limits.allowedTextKeys = textKeys;
+	if(sl) limits.allowedTextKeys = convertStringList(sl);
 	limits.localLimit = limits.foreignLimit = 0.0;
+	
+	// Standing Order
+	sl = AB_TransactionLimits_GetValuesCycleWeek(t);
+	if(sl) limits.weekCycles = convertStringList(sl);
+	sl = AB_TransactionLimits_GetValuesCycleMonth(t);
+	if(sl) limits.monthCycles = convertStringList(sl);
+	sl = AB_TransactionLimits_GetValuesExecutionDayWeek(t);
+	if(sl) limits.execDaysWeek = convertStringList(sl);
+	sl = AB_TransactionLimits_GetValuesExecutionDayMonth(t);
+	if(sl) limits.execDaysMonth = convertStringList(sl);
+	limits.allowWeekly = AB_TransactionLimits_GetAllowWeekly(t);
+	limits.allowMonthly = AB_TransactionLimits_GetAllowMonthly(t);
+	limits.allowChangeRemoteName = AB_TransactionLimits_GetAllowChangeRecipientName(t);
+	limits.allowChangeRemoteAccount = AB_TransactionLimits_GetAllowChangeRecipientAccount(t);
+	limits.allowChangeValue = AB_TransactionLimits_GetAllowChangeValue(t);
+	limits.allowChangePurpose = AB_TransactionLimits_GetAllowChangePurpose(t);
+	limits.allowChangeFirstExecDate = AB_TransactionLimits_GetAllowChangeFirstExecutionDate(t);
+	limits.allowChangeLastExecDate = AB_TransactionLimits_GetAllowChangeLastExecutionDate(t);
+	limits.allowChangeCycle = AB_TransactionLimits_GetAllowChangeCycle(t);
+	limits.allowChangePeriod = AB_TransactionLimits_GetAllowChangePeriod(t);
+	limits.allowChangeExecDay = AB_TransactionLimits_GetAllowChangeExecutionDay(t);
+	
 	return limits;
 }
 
@@ -415,3 +444,159 @@ AB_TRANSACTION *convertTransfer(Transfer *transfer)
 	return t;
 }
 
+void convertToStandingOrder(const AB_TRANSACTION *t, StandingOrder *stord)
+{
+	const char*			c;
+	int					i;
+	const AB_VALUE*		val;
+	const GWEN_TIME*	d;
+	
+	AB_TRANSACTION_TYPE		type;
+	AB_TRANSACTION_SUBTYPE	stype;
+	
+	type = AB_Transaction_GetType(t);
+	stype = AB_Transaction_GetSubType(t);
+	
+//	stord.localBankCode = [NSString stringWithUTF8String: (c = AB_Transaction_GetLocalBankCode(t)) ? c: ""];
+//	stord.localAccount = [NSString stringWithUTF8String: (c = AB_Transaction_GetLocalAccountNumber(t)) ? c: ""];
+	stord.remoteBankName = [NSString stringWithUTF8String: (c = AB_Transaction_GetRemoteBankName(t)) ? c: ""];
+	stord.remoteBankCode = [NSString stringWithUTF8String: (c = AB_Transaction_GetRemoteBankCode(t)) ? c: ""];
+	stord.remoteAccount = [NSString stringWithUTF8String: (c = AB_Transaction_GetRemoteAccountNumber(t)) ? c: ""];
+	stord.remoteName = convertStringListToString(AB_Transaction_GetRemoteName(t), @"");
+	NSArray *purposes = convertStringList(AB_Transaction_GetPurpose(t));
+	stord.period = [NSNumber numberWithInt: AB_Transaction_GetPeriod(t) ];
+	stord.cycle = [NSNumber numberWithInt: AB_Transaction_GetCycle(t) ];
+	stord.executionDay = [NSNumber numberWithInt: AB_Transaction_GetExecutionDay(t) ];
+	stord.type = [NSNumber numberWithInt: AB_Transaction_GetUniqueId(t) ];
+	stord.orderKey = [NSString stringWithUTF8String: (c = AB_Transaction_GetFiId(t)) ? c: ""];
+		
+	for(i=0; i<[purposes count ]; i++) {
+		NSString *s = [purposes objectAtIndex:i ];
+		switch (i) {
+			case 0: stord.purpose1 = s; break;
+			case 1: stord.purpose2 = s; break;
+			case 2: stord.purpose3 = s; break;
+			case 3: stord.purpose4 = s; break;
+		}
+	}	
+	
+	val = AB_Transaction_GetValue(t);
+	stord.value = convertValue(val);
+	stord.currency = [NSString stringWithUTF8String: (c = AB_Value_GetCurrency(val)) ? c: ""];
+	
+	d = AB_Transaction_GetFirstExecutionDate(t);
+	if(d) {
+		stord.firstExecDate = [NSDate dateWithTimeIntervalSince1970: (NSTimeInterval)GWEN_Time_Seconds(d) ];
+	}
+	
+	d = AB_Transaction_GetLastExecutionDate(t);
+	if(d) { 
+		stord.lastExecDate = [NSDate dateWithTimeIntervalSince1970: (NSTimeInterval)GWEN_Time_Seconds(d) ];
+	}	
+	
+	d = AB_Transaction_GetNextExecutionDate(t);
+	if(d) { 
+		stord.nextExecDate = [NSDate dateWithTimeIntervalSince1970: (NSTimeInterval)GWEN_Time_Seconds(d) ];
+	}
+	
+	AB_TRANSACTION_PERIOD period = AB_Transaction_GetPeriod(t);
+	switch (period) {
+		case AB_Transaction_PeriodWeekly: stord.period = [NSNumber numberWithInt: stord_weekly ]; break;
+		default: stord.period = [NSNumber numberWithInt: stord_monthly ]; break;
+	}
+	
+}
+
+AB_TRANSACTION *convertStandingOrder(StandingOrder *stord)
+{
+	AB_TRANSACTION		*t = AB_Transaction_new();
+	NSString			*s;
+	NSNumber			*n;
+	AB_VALUE			*val;
+	
+	BankAccount *account = stord.account;
+	
+	AB_Transaction_SetLocalAccountNumber(t, [account.accountNumber UTF8String]);
+	AB_Transaction_SetLocalBankCode(t, [account.bankCode UTF8String]);
+		
+	// split remote name according to limits
+	TransactionLimits *limits = [[HBCIClient hbciClient ] standingOrderLimitsForAccount:account action:stord_create ];
+	s = stord.remoteName;
+	if(limits) {
+		int i = 0;
+		while([s length ] > [limits maxLenRemoteName ] && i < [limits maxLinesRemoteName ]) {
+			NSString *tmp = [s substringToIndex: [limits maxLenRemoteName ] ];
+			if(tmp) AB_Transaction_AddRemoteName(t, [tmp UTF8String ], 0);
+			i++;
+			s = [s substringFromIndex: [limits maxLenRemoteName ] ];
+		}
+		if(i < [limits maxLinesRemoteName ] && [s length ] > 0) AB_Transaction_AddRemoteName(t, [s UTF8String ], 0);
+	} else {
+		AB_Transaction_AddRemoteName(t, [s UTF8String ], 0);
+	}
+		
+	s = stord.remoteAccount;
+	if(s) AB_Transaction_SetRemoteAccountNumber(t, [s UTF8String ]);
+	
+	s = stord.remoteBankCode;
+	if(s) AB_Transaction_SetRemoteBankCode(t, [s UTF8String ]);
+	
+	s = stord.remoteBankName;
+	s = standardSwiftString(s);
+	if(s) AB_Transaction_SetRemoteBankName(t, [s UTF8String ]);
+	
+	s = stord.purpose1;
+	if(s && [s length ] > 0) AB_Transaction_AddPurpose(t, [s UTF8String ], 0);
+	
+	s = stord.purpose2;
+	if(s && [s length ] > 0) AB_Transaction_AddPurpose(t, [s UTF8String ], 0);
+	
+	s = stord.purpose3;
+	if(s && [s length ] > 0) AB_Transaction_AddPurpose(t, [s UTF8String ], 0);
+	
+	s = stord.purpose4;
+	if(s && [s length ] > 0) AB_Transaction_AddPurpose(t, [s UTF8String ], 0);
+	
+	s = stord.currency;
+	n = stord.value;
+	val = AB_Value_fromDouble([n doubleValue ]);
+	if(!s || [s length ] == 0) AB_Value_SetCurrency(val, "EUR");
+	else AB_Value_SetCurrency(val, [s UTF8String ]);
+	AB_Transaction_SetValue(t, val);
+	
+	AB_Transaction_SetType(t, AB_Transaction_TypeTransfer);
+	AB_Transaction_SetSubType(t, AB_Transaction_SubTypeStandingOrder);
+	
+	switch ([stord.period intValue ]) {
+		case stord_weekly: AB_Transaction_SetPeriod(t, AB_Transaction_PeriodWeekly); break;
+		default: AB_Transaction_SetPeriod(t, AB_Transaction_PeriodMonthly); break;
+	}
+	AB_Transaction_SetCycle(t, [stord.cycle intValue ]);
+	AB_Transaction_SetExecutionDay(t, [stord.executionDay intValue ]);
+	
+	if (stord.firstExecDate) {
+		NSDate *date = stord.firstExecDate;
+		GWEN_TIME *d = GWEN_Time_fromSeconds((unsigned int)[date timeIntervalSince1970 ]);
+		AB_Transaction_SetFirstExecutionDate(t, d);
+	}
+	if (stord.lastExecDate) {
+		NSDate *date = stord.lastExecDate;
+		GWEN_TIME *d = GWEN_Time_fromSeconds((unsigned int)[date timeIntervalSince1970 ]);
+		AB_Transaction_SetLastExecutionDate(t, d);
+	}
+	
+	if (stord.orderKey) {
+		AB_Transaction_SetFiId(t, [stord.orderKey UTF8String ]);
+	}
+	
+	// set text key
+	AB_Transaction_SetTextKey(t, 51);
+	if(limits) {
+		NSArray* keys = [limits allowedTextKeys ];
+		if(keys && [keys count ]>0) {
+			NSString* key = [keys objectAtIndex:0 ];
+			AB_Transaction_SetTextKey(t, [key intValue ]);
+		}
+	}
+	return t;
+}

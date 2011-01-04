@@ -21,6 +21,7 @@
 
 -(void)evaluateStatements: (NSArray*)stats;
 -(int)updateFromQueryResult: (BankQueryResult*)result;
+-(void)updateStandingOrders:(NSArray*)orders;
 -(NSDate*)nextDateForDate:(NSDate*)date;
 
 +(BankAccount*)bankRootForCode:(NSString*)bankCode;

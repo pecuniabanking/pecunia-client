@@ -3,17 +3,18 @@
 //  Pecunia
 //
 //  Created by Frank Emminghaus on 30.10.10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 #import "Category.h"
+#import "MainTabViewItem.h"
 
 @class SM2DGraphView;
 @class ShortDate;
 
 
-@interface CategoryHistWindowController : NSObject {
+@interface CategoryHistWindowController : NSObject <MainTabViewItem> {
     IBOutlet NSTreeController	*categoryController;
 	IBOutlet NSArrayController  *catHistDatesController;
 	IBOutlet NSOutlineView      *categoryView;
@@ -51,7 +52,6 @@
 -(IBAction)toButtonPressed:(id)sender;
 
 -(void)prepare;
--(void)terminateController;
 -(NSView*)mainView;
 
 -(void)drawGraph;

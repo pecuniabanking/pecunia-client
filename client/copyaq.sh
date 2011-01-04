@@ -4,7 +4,7 @@
 # Pecunia
 #
 # Created by Frank Emminghaus on 20.06.10.
-# Copyright 2010 __MyCompanyName__. All rights reserved.
+# Copyright 2010 Frank Emminghaus. All rights reserved.
 echo "$TARGET_BUILD_DIR/Pecunia.app/Contents/Frameworks/AqBanking"
 test -e "$TARGET_BUILD_DIR/Pecunia.app/Contents/Frameworks/AqBanking"
 if [ $? -ne 0 ]; then

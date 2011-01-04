@@ -48,8 +48,6 @@
 	IBOutlet NSTextField		*valueField;
 	
 	IBOutlet CatDefWindowController			*catDefWinController;
-	IBOutlet AccountRepWindowController		*accountRepWinController;
-	IBOutlet CategoryRepWindowController	*categoryRepWinController;
 	IBOutlet TransferListController			*transferListController;
 	
     NSMutableArray				*transactions;
@@ -77,8 +75,6 @@
 -(IBAction)accountsView: (id)sender;
 -(IBAction)transferView: (id)sender;
 -(IBAction)editRules: (id)sender;
--(IBAction)accountsRep: (id)sender;
--(IBAction)categoryRep: (id)sender;
 
 -(IBAction)enqueueRequest: (id)sender;
 -(IBAction)save: (id)sender;

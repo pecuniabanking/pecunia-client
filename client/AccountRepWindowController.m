@@ -12,6 +12,7 @@
 #import "MCEMOutlineViewLayout.h"
 #import "ShortDate.h"
 #import "TimeSliceManager.h"
+#import "MOAssistant.h"
 
 double sign(double x)
 {
@@ -19,6 +20,15 @@ double sign(double x)
 }
 
 @implementation AccountRepWindowController
+
+-(id)init
+{
+	self = [super init ];
+	if(self == nil) return nil;
+	
+	managedObjectContext = [[MOAssistant assistant ] context ];
+	return self;
+}
 
 -(void)awakeFromNib
 {
@@ -35,6 +45,11 @@ double sign(double x)
 
 -(void)prepare
 {
+}
+
+-(NSView*)mainView
+{
+	return mainView;
 }
 
 // workaround for strange outlineView collapsing...
@@ -342,7 +357,7 @@ double sign(double x)
     return [outlineView persistentObjectForItem: item ];
 }
 
--(void)terminateController
+-(void)terminate
 {
 	[accountsView saveLayout ];
 }

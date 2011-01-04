@@ -3,7 +3,7 @@
 //  Pecunia
 //
 //  Created by Frank Emminghaus on 12.09.10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

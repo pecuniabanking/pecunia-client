@@ -11,6 +11,7 @@
 #import "ABAccount.h"
 #import "Transfer.h"
 #import "LogLevel.h"
+#import "StandingOrder.h"
 
 @class BankAccount;
 @class Transfer;
@@ -41,20 +42,26 @@
 -(BOOL)sendTransfers: (NSArray*)transfers;
 -(BOOL)checkIBAN: (NSString*)iban;
 -(void)statementsForAccounts: (NSArray*)selAccounts;
+-(void)standingOrdersForAccounts:(NSArray*)selAccounts;
 
 -(NSString*)bankNameForCode: (NSString*)bankCode inCountry: (NSString*)country;
 -(NSString*)bankNameForBic: (NSString*)bic inCountry: (NSString*)country;
 -(BankInfo*)infoForBankCode: (NSString*)code inCountry: (NSString*)country;
 
--(BOOL)addBankUser;
+-(NSString*)addBankUser:(ABUser*)user;
 //-(BOOL)removeBankUser: (ABUser*)user;
-//-(NSString*)getSystemIDForUser: (User*)user;
+-(NSString*)getSystemIDForUser:(ABUser*)user;
+
 -(NSArray*)getImExporters;
 -(void)importForAccounts:(NSMutableArray*)selAccounts module:(ImExporter*)ie profile:(ImExporterProfile*)iep dataFile:(NSString*)file;
 
 -(BOOL)isTransferSupported:(TransferType)tt forAccount:(BankAccount*)account;
+-(BOOL)isStandingOrderSupportedForAccount:(BankAccount*)account;
+
 -(NSArray*)allowedCountriesForAccount:(BankAccount*)account;
 -(TransactionLimits*)limitsForType:(TransferType)tt account:(BankAccount*)account country:(NSString*)ctry;
+-(TransactionLimits*)standingOrderLimitsForAccount:(BankAccount*)account action:(StandingOrderAction)action;
+-(BOOL)updateStandingOrders:(NSArray*)orders;
 
 -(NSDictionary*)countries;
 

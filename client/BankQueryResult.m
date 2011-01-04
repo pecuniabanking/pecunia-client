@@ -18,6 +18,7 @@
 @synthesize statements;
 @synthesize account;
 @synthesize userId;
+@synthesize standingOrders;
 
 
 -(void)dealloc
@@ -28,6 +29,7 @@
 	[currency release ];
 	[balance release ];
 	[statements release ];
+	[standingOrders release ];
 	
 	[super dealloc ];
 }

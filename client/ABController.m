@@ -156,7 +156,6 @@ int LogHook(GWEN_GUI *gui, const char *logDomain, GWEN_LOGGER_LEVEL priority, co
 			if(acc) {
 				for(res in selAccounts) {
 					if([res.accountNumber isEqualToString: accountNumber ] && [res.bankCode isEqualToString: bankCode ]) {
-						if (res.statements == nil) res.statements = [NSMutableArray arrayWithCapacity: 100 ];
 						found = YES;
 						break;
 					}
@@ -168,11 +167,11 @@ int LogHook(GWEN_GUI *gui, const char *logDomain, GWEN_LOGGER_LEVEL priority, co
 			res = [[BankQueryResult alloc ] init ];
 			res.accountNumber = accountNumber;
 			res.bankCode = bankCode;
-			res.statements = [NSMutableArray arrayWithCapacity: 100 ];
 			[selAccounts addObject: res ];
 		}
 		
 		t=AB_ImExporterAccountInfo_GetFirstTransaction(ai);
+		if(t) res.statements = [NSMutableArray arrayWithCapacity:100 ];
 		while(t) {
 			BankStatement *stmt = [NSEntityDescription insertNewObjectForEntityForName:@"BankStatement"
 																inManagedObjectContext:memContext];
@@ -182,6 +181,15 @@ int LogHook(GWEN_GUI *gui, const char *logDomain, GWEN_LOGGER_LEVEL priority, co
 			t=AB_ImExporterAccountInfo_GetNextTransaction(ai);
 		} /* while transactions */
 		
+		t=AB_ImExporterAccountInfo_GetFirstStandingOrder(ai);
+		if(t) res.standingOrders = [NSMutableArray arrayWithCapacity:10 ];
+		while(t) {
+			StandingOrder *stord = [NSEntityDescription insertNewObjectForEntityForName:@"StandingOrder"
+																 inManagedObjectContext:memContext];
+			convertToStandingOrder(t, stord);
+			[res.standingOrders addObject: stord ];
+			t=AB_ImExporterAccountInfo_GetNextStandingOrder(ai);
+		} /* standing Orders */
 		
 		AB_ACCOUNT_STATUS* as = AB_ImExporterAccountInfo_GetFirstAccountStatus(ai);
 		if(as) {
@@ -203,6 +211,58 @@ int LogHook(GWEN_GUI *gui, const char *logDomain, GWEN_LOGGER_LEVEL priority, co
 	} /* while ai */
 }
 
+-(void)standingOrdersForAccounts:(NSArray*)selAccounts
+{
+	AB_ACCOUNT				*a;
+	AB_JOB_LIST2			*jl;
+	AB_IMEXPORTER_CONTEXT	*ctx;
+	int						rv;
+	BankQueryResult			*res;
+	
+	jl=AB_Job_List2_new();
+	
+	for(res in selAccounts) {
+		// get Aq Object
+		a = AB_Banking_GetAccountByCodeAndNumber(ab, [res.bankCode UTF8String], [res.accountNumber UTF8String]);
+		if (a) {
+			AB_JOB			*j;
+						
+			/* create a job which retrieves standing orders. */
+			j=(AB_JOB*)AB_JobGetStandingOrders_new(a);
+			rv=AB_Job_CheckAvailability(j);
+			if (rv) {
+				fprintf(stderr, "Job is not available (%d)\n", rv);
+				goto error;
+			}
+			/* enqueue this job so that AqBanking knows we want it executed. */
+			AB_Job_List2_PushBack(jl, j);
+		}
+	}
+	// joblist is created
+	
+	ctx=AB_ImExporterContext_new();
+	
+	/* execute the queue. This effectivly sends all jobs which have been
+	 * enqueued to the respective backends/banks.
+	 * It only returns an error code (!=0) if not a single job could be
+	 * executed successfully. */
+	rv=AB_Banking_ExecuteJobs(ab, jl, ctx);
+	if (rv) {
+		fprintf(stderr, "Error on executeQueue (%d)\n", rv);
+		goto error;
+	}
+	else {		
+		[self processContext: ctx forAccounts: [selAccounts mutableCopy ]];
+	} // if executeQueue successfull
+	[[BankingController controller ] performSelectorOnMainThread: @selector(statementsNotification:) withObject: selAccounts waitUntilDone: YES ];
+	return;
+	
+error:
+	[[BankingController controller ] performSelectorOnMainThread: @selector(statementsNotification:) withObject: nil waitUntilDone: NO ];
+	[selAccounts release ];
+	return;
+}
+
 -(void)statementsForAccounts: (NSArray*)selAccounts
 {
 	AB_ACCOUNT				*a;
@@ -214,18 +274,12 @@ int LogHook(GWEN_GUI *gui, const char *logDomain, GWEN_LOGGER_LEVEL priority, co
 	jl=AB_Job_List2_new();
 	
 	for(res in selAccounts) {
-		
-		// create statement collection and add it to results
-		NSMutableArray *stats = [NSMutableArray arrayWithCapacity: 100 ];
-		res.statements = stats;
-		
 		// get Aq Object
 		a = AB_Banking_GetAccountByCodeAndNumber(ab, [res.bankCode UTF8String], [res.accountNumber UTF8String]);
 		if (a) {
 			AB_JOB			*j;
 
 			/* create a job which retrieves balances */
-
 			j=(AB_JOB*)AB_JobGetBalance_new(a);
 			rv=AB_Job_CheckAvailability(j);
 			if (rv) {
@@ -245,6 +299,16 @@ int LogHook(GWEN_GUI *gui, const char *logDomain, GWEN_LOGGER_LEVEL priority, co
 			}
 			/* enqueue this job so that AqBanking knows we want it executed. */
 			AB_Job_List2_PushBack(jl, j);
+/*			
+			// create a job which retrieves standing orders.
+			j=(AB_JOB*)AB_JobGetStandingOrders_new(a);
+			rv=AB_Job_CheckAvailability(j);
+			if (rv) {
+				AB_Job_free(j);
+			} else {
+				AB_Job_List2_PushBack(jl, j);
+			}
+*/			
 		}
 	}
 	// joblist is created
@@ -270,6 +334,137 @@ error:
 	[[BankingController controller ] performSelectorOnMainThread: @selector(statementsNotification:) withObject: nil waitUntilDone: NO ];
 	[selAccounts release ];
 	return;
+}
+
+-(BOOL)updateStandingOrders:(NSArray*)orders
+{
+	int						i, res;
+	AB_TRANSACTION			*t;
+	AB_JOB					*j;
+	AB_JOB_LIST2			*jl;
+	NSError					*error = nil;
+	AB_IMEXPORTER_CONTEXT	*ctx;
+	NSString				*accountNumber;
+	NSString				*bankCode;
+	NSManagedObjectContext	*context = [[MOAssistant assistant ] context ];
+
+	jl=AB_Job_List2_new();
+	for(StandingOrder *stord in orders) {
+		// todo: don't send unchanged orders
+		if ([stord.isChanged boolValue] == NO) continue;
+		
+		t = convertStandingOrder(stord);
+	
+		accountNumber = [stord valueForKeyPath: @"account.accountNumber" ];
+		bankCode = [stord valueForKeyPath: @"account.bankCode" ];
+		
+		AB_ACCOUNT *acc = AB_Banking_GetAccountByCodeAndNumber(ab, [bankCode UTF8String], [accountNumber UTF8String]);
+		if (acc == NULL) {
+			fprintf(stderr, "Account not found (%s)\n", [accountNumber UTF8String]);
+			continue;
+		}
+		
+		// create job of correct type
+		if (stord.orderKey == nil) {
+			// create standing order
+			j = (AB_JOB*)AB_JobCreateStandingOrder_new(acc);
+			res = AB_Job_CheckAvailability(j);
+		} else if ([stord.isDeleted boolValue ] == YES ) {
+			j = (AB_JOB*)AB_JobDeleteStandingOrder_new(acc);
+		} else {
+			j = (AB_JOB*)AB_JobModifyStandingOrder_new(acc);
+		}
+		res = AB_Job_CheckAvailability(j);
+		if (res) {
+			fprintf(stderr, "Orders could not be set (%d)\n", res);
+			return NO;
+		}
+
+		switch (AB_Job_GetType(j)) {
+			case AB_Job_TypeCreateStandingOrder:
+				AB_JobCreateStandingOrder_SetTransaction(j, t);
+				break;
+			case AB_Job_TypeModifyStandingOrder:
+				AB_JobModifyStandingOrder_SetTransaction(j, t);
+				break;
+			case AB_Job_TypeDeleteStandingOrder:
+				AB_JobDeleteStandingOrder_SetTransaction(j, t);
+				break;
+			default:
+				break;
+		}
+		
+		[stord setJobId: AB_Job_GetJobId(j) ];
+		
+		/* add job to this list */
+		AB_Job_List2_PushBack(jl, j);
+		AB_Transaction_free(t);
+	}
+
+	// send orders to bank
+	ctx=AB_ImExporterContext_new();
+	
+	/* execute the queue. This effectivly sends all jobs which have been
+	 * enqueued to the respective backends/banks.
+	 * It only returns an error code (!=0) if not a single job could be
+	 * executed successfully. */
+	res=AB_Banking_ExecuteJobs(ab, jl, ctx);
+	if (res) {
+		fprintf(stderr, "Error on executeQueue (%d)\n", res);
+		return NO;
+	}
+	else {
+		AB_JOB_LIST2_ITERATOR *it;
+		
+		it=(AB_JOB_LIST2_ITERATOR*)AB_Job_List2_First(jl);
+		if(it) {
+			j=AB_Job_List2Iterator_Data(it);
+			while(j) 
+			{
+				unsigned int jid = (unsigned int)AB_Job_GetJobId(j);
+				for(i=0; i<[orders count ]; i++) {
+					StandingOrder* stord = [orders objectAtIndex: i ];
+					if([stord jobId ] != jid) continue;
+					AB_JOB_STATUS status = AB_Job_GetStatus(j);
+					if(status == AB_Job_StatusFinished || status == AB_Job_StatusPending) {
+						// todo
+						[stord setValue: [NSNumber numberWithBool:YES] forKey: @"isSent" ];
+						
+						//
+						AB_JOB_TYPE type = AB_Job_GetType(j);
+						switch (type) {
+							case AB_Job_TypeCreateStandingOrder: 
+								{
+									const AB_TRANSACTION *trans = (const AB_TRANSACTION *)AB_JobCreateStandingOrder_GetTransaction(j);
+									const char *c = AB_Transaction_GetFiId(trans);
+									if (c) {
+										stord.orderKey = [NSString stringWithUTF8String:c ];
+										stord.isChanged = [NSNumber numberWithBool:NO ];
+									}
+								}
+								break;
+							case AB_Job_TypeDeleteStandingOrder: 
+								{
+									[context deleteObject:stord ];
+								}
+							default: stord.isChanged = [NSNumber numberWithBool:NO ];
+						}
+					}
+					break;
+				}
+				j=AB_Job_List2Iterator_Next(it);
+			}
+			AB_Job_List2Iterator_free(it);
+			
+			// save everything			
+			if([context save: &error ] == NO) {
+				NSAlert *alert = [NSAlert alertWithError:error];
+				[alert runModal];
+				return NO;
+			}
+		}
+	}
+	return YES;
 }
 
 -(BOOL)sendTransfers: (NSArray*)transfers
@@ -577,29 +772,31 @@ error:
 	return bankName;
 }
 
+/*
 -(BOOL)addBankUser
 {
 	GWEN_GUI *gui = Cocoa_Gui_new();
 	GWEN_Gui_SetGui(gui);
 	GWEN_DIALOG *dlg;
-	dlg = AB_SetupDialog_new(ab);
+	dlg = (GWEN_DIALOG*)AB_SetupDialog_new(ab);
 	int res = GWEN_Gui_ExecDialog(dlg, 0);
 	GWEN_Dialog_free(dlg);
 	GWEN_Gui_SetGui([abGui gui ]);
 	if (res <= 0) return NO; else return YES;
 }
+*/
 
-/*
--(NSString*)addBankUser: (User*)user
+
+-(NSString*)addBankUser: (ABUser*)user
 {
 	char		*errmsg;
 	int			rv;
 	uint32_t	flags = AH_USER_FLAGS_FORCE_SSL3;
 
 //	if([user forceSSL3 ]) flags = flags ^ AH_USER_FLAGS_FORCE_SSL3;
-	int au = addUser( ab, [[user bankCode ] UTF8String], [[user userId ] UTF8String],
-						  [[user customerId ] UTF8String], [[user mediumId ] UTF8String], [[user bankURL ] UTF8String], 
-						  [[user name ] UTF8String ], 0 , flags, [[user hbciVersion ] intValue ], &errmsg );
+	int au = addUser( ab, [user.bankCode UTF8String], [user.userId UTF8String],
+						  [user.customerId UTF8String], [user.mediumId UTF8String], [user.bankURL UTF8String], 
+						  [user.name UTF8String ], 0 , flags, user.hbciVersion, &errmsg );
 	
 	if( au != 0 )
 	{
@@ -607,11 +804,11 @@ error:
 	}
 	else
 	{
-		int si = getSysId( ab, [[user bankCode ] UTF8String], [[user userId ] UTF8String], [[user customerId ] UTF8String], &errmsg );
+		int si = getSysId( ab, [user.bankCode UTF8String], [user.userId UTF8String], [user.customerId UTF8String], &errmsg );
 		if(si != 0) {
 		// try again with forceSSL3
-			AB_USER* usr = AB_Banking_FindUser(ab, "aqhbci", "de", [[user bankCode ] UTF8String],
-											   [[user userId ] UTF8String], [[user customerId ] UTF8String]);
+			AB_USER* usr = AB_Banking_FindUser(ab, "aqhbci", "de", [user.bankCode UTF8String],
+											   [user.userId UTF8String], [user.customerId UTF8String]);
 			if(usr) {
 				uint32 flags = AH_User_GetFlags(usr);
 				flags ^= AH_USER_FLAGS_FORCE_SSL3;
@@ -619,7 +816,7 @@ error:
 				if (rv ==  0) {
 					AH_User_SetFlags(usr, flags);
 					AB_Banking_EndExclUseUser(ab, usr, 0);
-					si = getSysId( ab, [[user bankCode ] UTF8String], [[user userId ] UTF8String], [[user customerId ] UTF8String], &errmsg );
+					si = getSysId( ab, [user.bankCode UTF8String], [user.userId UTF8String], [user.customerId UTF8String], &errmsg );
 				}
 			}
 		}
@@ -627,8 +824,8 @@ error:
 		if( si != 0 )
 		{			
 			// delete user first
-			AB_USER* usr = AB_Banking_FindUser(ab, "aqhbci", "de", [[user bankCode ] UTF8String],
-											   [[user userId ] UTF8String], [[user customerId ] UTF8String]);
+			AB_USER* usr = AB_Banking_FindUser(ab, "aqhbci", "de", [user.bankCode UTF8String],
+											   [user.userId UTF8String], [user.customerId UTF8String]);
 			if(usr) AB_Banking_DeleteUser(ab, usr);
 			return [NSString stringWithUTF8String: errmsg];
 		}
@@ -638,16 +835,16 @@ error:
 	return nil;
 }
 
--(NSString*)getSystemIDForUser: (User*)user
+-(NSString*)getSystemIDForUser: (ABUser*)user
 {
 	char		*errmsg;
 
-	int si = getSysId( ab, [[user bankCode ] UTF8String], [[user userId ] UTF8String], [[user customerId ] UTF8String], &errmsg );
+	int si = getSysId( ab, [user.bankCode UTF8String], [user.userId UTF8String], [user.customerId UTF8String], &errmsg );
 	if( si != 0 ) return [NSString stringWithUTF8String: errmsg];
 	[self getAccounts ];
 	return nil;
 }
-*/
+
 
 /*
 -(int)removeUser:(AB_USER*)user fromAccount: (AB_ACCOUNT*)acc
@@ -865,18 +1062,31 @@ error:
 	res = AB_Job_CheckAvailability(j);
 	if (res) {
 		AB_Job_free(j);
-		fprintf(stderr, "Job is not available (%d)\n", res);
 		return NO;
 	}
 	AB_Job_free(j);
 	return YES;	
 }
 
+-(BOOL)isStandingOrderSupportedForAccount:(BankAccount*)account
+{
+	AB_ACCOUNT  *acc = AB_Banking_GetAccountByCodeAndNumber(ab, [account.bankCode UTF8String], [account.accountNumber UTF8String]);
+	
+	AB_JOB *j = (AB_JOB*)AB_JobCreateStandingOrder_new(acc);
+	int res = AB_Job_CheckAvailability(j);
+	if (res) {
+		AB_Job_free(j);
+		return NO;
+	}
+	AB_Job_free(j);
+	return YES;
+}
+
 -(TransactionLimits*)limitsForType:(TransferType)tt account:(BankAccount*)account country:(NSString*)ctry
 {
 	AB_JOB				*j;
 	int					res;
-	TransactionLimits	*limits;
+	TransactionLimits	*limits = nil;
 	
 	AB_ACCOUNT *acc = AB_Banking_GetAccountByCodeAndNumber(ab, [account.bankCode UTF8String], [account.accountNumber UTF8String]);
 	switch(tt) {
@@ -911,28 +1121,65 @@ error:
 	switch(tt) {
 		case TransferTypeInternal: {
 			const AB_TRANSACTION_LIMITS* tl = (AB_TRANSACTION_LIMITS*)AB_JobInternalTransfer_GetFieldLimits (j);
-			if(!tl) return nil;
-			limits = convertLimits(tl);
+			if(tl) limits = convertLimits(tl);
 			break;
 		}
 		case TransferTypeLocal: { 
 			const AB_TRANSACTION_LIMITS* tl = (AB_TRANSACTION_LIMITS*)AB_JobSingleTransfer_GetFieldLimits(j);
-			if(!tl) return nil;
-			limits = convertLimits(tl);
+			if(tl) limits = convertLimits(tl);
 			break;
 		}
 		case TransferTypeDated: {
 			const AB_TRANSACTION_LIMITS* tl = (AB_TRANSACTION_LIMITS*)AB_JobCreateDatedTransfer_GetFieldLimits(j);
-			if(!tl) return nil;
-			limits = convertLimits(tl);
+			if(tl) limits = convertLimits(tl);
 			break;
 		}
 		case TransferTypeEU: {
 			const AB_EUTRANSFER_INFO* inf = (AB_EUTRANSFER_INFO*)AB_JobEuTransfer_FindCountryInfo (j, [ctry UTF8String ]);
-			if(!inf) return nil;
-			limits = convertEULimits(inf);
+			if(inf) limits = convertEULimits(inf);
 			break;
 		}
+	}
+	AB_Job_free(j);
+	return limits;
+}
+
+-(TransactionLimits*)standingOrderLimitsForAccount:(BankAccount*)account action:(StandingOrderAction)action
+{
+	AB_JOB		*j;
+	AB_ACCOUNT  *acc = AB_Banking_GetAccountByCodeAndNumber(ab, [account.bankCode UTF8String], [account.accountNumber UTF8String]);
+	TransactionLimits *limits = nil;
+	const AB_TRANSACTION_LIMITS* tl;
+	
+	switch (action) {
+		case stord_create: j = (AB_JOB*)AB_JobCreateStandingOrder_new(acc); break;
+		case stord_change: j = (AB_JOB*)AB_JobModifyStandingOrder_new(acc); break;
+		case stord_delete: j = (AB_JOB*)AB_JobDeleteStandingOrder_new(acc); break;
+	}
+	int res = AB_Job_CheckAvailability(j);
+	if (res) {
+		AB_Job_free(j);
+		fprintf(stderr, "Job is not available (%d)\n", res);
+		return nil;
+	}
+	switch (action) {
+		case stord_create: tl = (AB_TRANSACTION_LIMITS*)AB_JobCreateStandingOrder_GetFieldLimits(j); break;
+		case stord_change: tl = (AB_TRANSACTION_LIMITS*)AB_JobModifyStandingOrder_GetFieldLimits(j); break;
+		case stord_delete: tl = (AB_TRANSACTION_LIMITS*)AB_JobDeleteStandingOrder_GetFieldLimits(j); break;
+	}
+	if(tl) limits = convertLimits(tl);
+	
+	// on create action, all fields are changeable...
+	if (action == stord_create) {
+		limits.allowChangeRemoteName = YES;
+		limits.allowChangeRemoteAccount = YES;
+		limits.allowChangeValue = YES;
+		limits.allowChangePurpose = YES;
+		limits.allowChangeFirstExecDate = YES;
+		limits.allowChangeLastExecDate = YES;
+		limits.allowChangeCycle = YES;
+		limits.allowChangePeriod = YES;
+		limits.allowChangeExecDay = YES;
 	}
 	AB_Job_free(j);
 	return limits;

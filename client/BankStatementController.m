@@ -3,7 +3,7 @@
 //  Pecunia
 //
 //  Created by Frank Emminghaus on 10.03.10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
 #import "BankStatementController.h"
@@ -252,7 +252,7 @@
 */	
 	if (currentStatement.remoteAccount && currentStatement.remoteBankCode) {
 		res = [[HBCIClient hbciClient ] checkAccount: currentStatement.remoteAccount 
-											bankCode: currentStatement.remoteBankCode
+											 forBank: currentStatement.remoteBankCode
 										   inCountry: currentStatement.remoteCountry ];
 		
 		

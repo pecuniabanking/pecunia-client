@@ -3,7 +3,7 @@
 //  Client
 //
 //  Created by Frank Emminghaus on 23.11.09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Copyright 2009 Frank Emminghaus. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

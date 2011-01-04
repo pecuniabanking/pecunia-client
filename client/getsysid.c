@@ -53,7 +53,7 @@ int getSysId(AB_BANKING *ab,
 		AB_IMEXPORTER_CONTEXT *ctx;
 		
 		ctx = AB_ImExporterContext_new();
-		rv = AH_Provider_GetSysId(pro, u, ctx, 0, 0);
+		rv = AH_Provider_GetSysId(pro, u, ctx, 0, 0, 1);
 		AB_ImExporterContext_free(ctx);
 		if( rv ) 
 		{

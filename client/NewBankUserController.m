@@ -7,26 +7,20 @@
 //
 
 #import "NewBankUserController.h"
+#import "ABController.h"
+#import "ABUser.h"
 #import "BankingController.h"
 #import "InstitutesController.h"
-#import "Passport.h"
 #import "HBCIClient.h"
-#import "BankInfo.h"
-#import "TanMethod.h"
-#import "PecuniaError.h"
-#import "MOAssistant.h"
-#import "BankAccount.h"
 
-static NewBankUserController *current = nil;
-
-NSNumber *hbciVersionFromString(NSString* s)
+int hbciVersionFromString(NSString* s)
 {
-	if([s isEqualToString: @"2.0.1" ]) return [NSNumber numberWithInt: 201 ];
-	if([s isEqualToString: @"2.1" ]) return [NSNumber numberWithInt: 210 ];
-	if([s isEqualToString: @"2.2" ]) return [NSNumber numberWithInt: 220 ];
-	if([s isEqualToString: @"3.0" ]) return [NSNumber numberWithInt: 300 ];
-	if([s isEqualToString: @"4.0" ]) return [NSNumber numberWithInt: 400 ];
-	return [NSNumber numberWithInt: 220 ];
+	if([s isEqualToString: @"2.0.1" ]) return 201;
+	if([s isEqualToString: @"2.1" ]) return 201;
+	if([s isEqualToString: @"2.2" ]) return 220;
+	if([s isEqualToString: @"3.0" ]) return 300;
+	if([s isEqualToString: @"4.0" ]) return 400;
+	return 220;
 }
 
 
@@ -36,19 +30,35 @@ NSNumber *hbciVersionFromString(NSString* s)
 {
 	self = [super initWithWindowNibName:@"BankUser"];
 	bankController = con;
-	passports = [[NSMutableArray alloc ] initWithArray: [[HBCIClient hbciClient ] passports ] ];
+	bankUsers = [[HBCIClient hbciClient ] users ];
+	currentUser = [[ABUser alloc ] init ];
+	currentUser.hbciVersion = 220;
 	
-	currentPassport = [[Passport alloc ] init ];
-	currentPassport.version = @"plus";
-	currentPassport.base64 = YES;
-	currentPassport.checkCert = YES;
+	[self readBanks ];
+	return self;
+}
+
+-(void)readBanks
+{
+	banks = [[NSMutableArray arrayWithCapacity: 5000 ] retain ];
 	
 	NSString *path = [[NSBundle mainBundle ] resourcePath ];
-	path = [path stringByAppendingString: @"/institutes" ];
-	banks = [[NSKeyedUnarchiver unarchiveObjectWithFile: path ] retain ];
+	path = [path stringByAppendingString: @"/Institute.csv" ];
 	
-	current = self;
-	return self;
+	NSError *error=nil;
+	NSString *s = [NSString stringWithContentsOfFile: path encoding:NSUTF8StringEncoding error: &error ];
+	if(error) {
+		NSLog(@"Error reading institutes file");
+	} else {
+		NSArray *institutes = [s componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet ] ];
+		NSArray *keys = [NSArray arrayWithObjects: @"bankCode", @"bankName", @"bankLocation", @"hbciVersion", @"bankURL", nil ];
+		for(s in institutes) {
+			NSArray *objs = [s componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\t" ] ];
+			if ([objs count ] != 5) continue;
+			NSDictionary *dict = [NSDictionary dictionaryWithObjects: objs forKeys: keys ];
+			[banks addObject: dict ];
+		}
+	}
 }
 
 - (IBAction)cancel:(id)sender
@@ -56,23 +66,14 @@ NSNumber *hbciVersionFromString(NSString* s)
 	[[self window] close];
 }
 
--(void)startSpinning
+- (IBAction)add:(id)sender
 {
-//	[progressIndicator setHidden: NO ];
-	[progressIndicator setUsesThreadedAnimation: YES];
-	[progressIndicator startAnimation: self];
+	[[self window] close];
 }
-
--(void)stopSpinning
-{
-	[progressIndicator stopAnimation: self ];
-//	[progressIndicator setHidden: YES ];
-}
-
 
 - (IBAction)addEntry:(id)sender
 {
-	[NSApp beginSheet: passportSheet
+	[NSApp beginSheet: userSheet
 	   modalForWindow: [self window ]
 		modalDelegate: self
 	   didEndSelector: @selector(userSheetDidEnd:returnCode:contextInfo:)
@@ -83,18 +84,14 @@ NSNumber *hbciVersionFromString(NSString* s)
 			 returnCode: (int)code 
 			contextInfo: (void*)context
 {
-	PecuniaError *error = nil;
 	if(code == 0) {
-		[self startSpinning ];
-		[[HBCIClient hbciClient ] addPassport: currentPassport error: &error ]; 
-		[self stopSpinning ];
-		if(error) [error alertPanel ];
+		NSString* err = [[HBCIClient hbciClient ] addBankUser: currentUser ]; 
+		if(err) NSRunAlertPanel(NSLocalizedString(@"AP7", @"HBCI error occured!"), 
+								NSLocalizedString(@"AP73", @""), 
+								NSLocalizedString(@"cancel", @"Cancel"), nil, nil);
 		else {
-			[[self window ] makeKeyAndOrderFront:self];
-			NSArray *newPassports = [[HBCIClient hbciClient ] passports ];
-			[passports removeAllObjects ];
-			[passports addObjectsFromArray:newPassports ];
-			[passportController setContent: passports ];
+			bankUsers = [[HBCIClient hbciClient ] users ];
+			[bankUserController setContent: bankUsers ];
 			[bankController updateBankAccounts ];
 		}
 	}
@@ -102,112 +99,88 @@ NSNumber *hbciVersionFromString(NSString* s)
 
 - (IBAction)removeEntry:(id)sender
 {
-	NSManagedObjectModel *model = [[MOAssistant assistant ] model ];
-	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
-	BankAccount *account;
-	PecuniaError *error=nil;
-	NSArray	*sel = [passportController selectedObjects ];
+	NSArray	*sel = [bankUserController selectedObjects ];
 	if(sel == nil || [sel count ] < 1) return;
-	Passport* passport = [sel objectAtIndex: 0 ];
-
-	// remove user-IDs from affected bank accounts
-	NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
-	NSArray *bankAccounts = [context executeFetchRequest:request error:&error];
-	if( error != nil || bankAccounts == nil) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-		return;
-	}
-	for(account in bankAccounts) {
-		if ([account.userId isEqualToString: passport.userId ]) {
-			account.userId = nil;
-		}
-	}
+	ABUser* user = [sel objectAtIndex: 0 ];
 	
-	[[HBCIClient hbciClient ] deletePassport: passport error:&error];
-	if(error) {
-		[error alertPanel ];
-		return;
-	}
-	[passportController remove: self ];
-
-	// save updates
-	if([context save: &error ] == NO) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-		return;
+	if([[HBCIClient hbciClient ] removeBankUser: user] == TRUE) {
+		[bankUserController remove: self ];
 	}
 }
 
 
 - (void)cancelSheet:(id)sender
 {
-	[passportSheet orderOut: sender ];
-	[NSApp endSheet: passportSheet returnCode: 1 ];
+	[userSheet orderOut: sender ];
+	[NSApp endSheet: userSheet returnCode: 1 ];
 }
 
 - (void)endSheet: (id)sender
 {
 	[objController commitEditing ];
 	if([self check ] == NO) return;
-	[passportSheet orderOut: sender ];
-	[NSApp endSheet: passportSheet returnCode: 0 ];
+	[userSheet orderOut: sender ];
+	[NSApp endSheet: userSheet returnCode: 0 ];
 }
 
 
 
 -(void)controlTextDidEndEditing:(NSNotification *)aNotification
 {
-	PecuniaError *error=nil;
 	NSTextField	*te = [aNotification object ];
 	NSString *bankCode = [te stringValue ];
-	HBCIClient *client = [HBCIClient hbciClient ];
-	BankInfo *bi = [client infoForBankCode: bankCode error:&error ];
-
-	NSString *bankName = bi.name;
-	if(bankName == nil) bankName = NSLocalizedString(@"unknown", "- unbekannt -");
-	else currentPassport.bankName = bankName;
-	
-	if(bi.pinTanVersion) currentPassport.version = bi.pinTanVersion;
-	
-	if(bi.pinTanURL) currentPassport.host = bi.pinTanURL;
-	else {
-		NSDictionary *dict;
-		for(dict in banks) {
-			if([bankCode isEqualToString: [dict valueForKey: @"bankCode" ] ]) {
-				currentPassport.host = [dict valueForKey: @"bankURL" ];
-				// HBCI version
-				currentPassport.version = [dict valueForKey: @"hbciVersion" ];
-				break;
-			}
+	NSString *bankName = [[HBCIClient hbciClient ] bankNameForCode: bankCode inCountry: @"DE" 
+						  ];
+	[currentUser setValue: bankName forKey: @"bankName" ];
+	NSDictionary *dict;
+	for(dict in banks) {
+		if([bankCode isEqualToString: [dict valueForKey: @"bankCode" ] ]) {
+			[currentUser setBankURL: [dict valueForKey: @"bankURL" ] ];
+			// HBCI version
+			currentUser.hbciVersion = hbciVersionFromString([dict valueForKey: @"hbciVersion" ]);
+			break;
 		}
-		
 	}
+	
+	/*
+	 GWEN_BUFFER *tbuf;
+	 tbuf=GWEN_Buffer_new(0, 256, 0, 1);
+	 getBankUrl([[ABController abController ] abBankingHandle ], AH_CryptMode_Pintan, [[te stringValue] UTF8String ], tbuf);
+	 GWEN_Buffer_free(tbuf);	
+	 */ 
 }
 
 -(BOOL)check
 {
-	if(currentPassport.bankCode == nil) {
+	if([currentUser bankCode ] == nil) {
 		NSRunAlertPanel(NSLocalizedString(@"AP1", "Missing data"),
 						NSLocalizedString(@"AP2", "Please enter bank code"),
 						NSLocalizedString(@"ok", @"Ok"), nil, nil);
 		return NO;
 	}
-	if(currentPassport.userId == nil) {
+	if([currentUser userId ] == nil) {
 		NSRunAlertPanel(NSLocalizedString(@"AP1", "Missing data"),
 						NSLocalizedString(@"AP3", "Please enter user id"),
 						NSLocalizedString(@"ok", @"Ok"), nil, nil);
 		return NO;
 	}
-/* seems that customer id is not always needed	
-	if([currentUser customerId ] == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", "Missing data"), 
-						NSLocalizedString(@"AP4", "Please enter customer id"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
-		return NO;
-	}
-*/
-	if(currentPassport.host == nil) {
+	/* seems that customer id is not always needed	
+	 if([currentUser customerId ] == nil) {
+	 NSRunAlertPanel(NSLocalizedString(@"AP1", "Missing data"), 
+	 NSLocalizedString(@"AP4", "Please enter customer id"),
+	 NSLocalizedString(@"ok", @"Ok"), nil, nil);
+	 return NO;
+	 }
+	 */
+	/*	seems that mediumId is no longer needed
+	 if([currentUser mediumId ] == nil) {
+	 NSRunAlertPanel(NSLocalizedString(@"AP1", "Missing data"), 
+	 NSLocalizedString(@"AP5", "Please enter PIN/TAN id"),
+	 NSLocalizedString(@"ok", @"Ok"), nil, nil);
+	 return NO;
+	 }
+	 */
+	if([currentUser bankURL ] == nil) {
 		NSRunAlertPanel(NSLocalizedString(@"AP1", "Missing data"), 
 						NSLocalizedString(@"AP6", "Please enter bank server URL"),
 						NSLocalizedString(@"ok", @"Ok"), nil, nil);
@@ -218,11 +191,11 @@ NSNumber *hbciVersionFromString(NSString* s)
 
 - (IBAction)getSystemID: (id)sender
 {
-	NSArray *sel = [passportController selectedObjects ];
+	NSArray *sel = [bankUserController selectedObjects ];
 	if(sel == nil || [sel count ] == 0) return;
-	Passport *passport = [sel objectAtIndex: 0 ];
-	if(passport == nil) return;
-	NSString *err = nil;
+	ABUser *user = [sel objectAtIndex: 0 ];
+	if(user == nil) return;
+	NSString* err = [[HBCIClient hbciClient ] getSystemIDForUser: user ];
 	if(err) NSRunAlertPanel(NSLocalizedString(@"AP7", @"HBCI error occured!"), err, NSLocalizedString(@"cancel", @"Cancel"), nil, nil);
 	else NSRunAlertPanel(NSLocalizedString(@"AP27", @"Success"), 
 						 NSLocalizedString(@"AP28", @"SystemID has been transfered successfully"), 
@@ -241,29 +214,51 @@ NSNumber *hbciVersionFromString(NSString* s)
 	if(result == 0) {
 		NSDictionary *dict = [controller selectedBank ];
 		if(dict) {
-			currentPassport.host = [dict valueForKey: @"bankURL" ];
+			[currentUser setBankURL: [dict valueForKey: @"bankURL" ] ];
 			// HBCI version
-			NSString *version = [dict valueForKey: @"hbciVersion" ];
-			if([version hasPrefix: @"2" ]) currentPassport.version = @"plus";
-			else currentPassport.version = version;
+			currentUser.hbciVersion = hbciVersionFromString([dict valueForKey: @"hbciVersion" ]);
 		}
 	}
 	[controller release ];
 	[[self window ] makeKeyAndOrderFront: self ];
 }
 
+
+-(BOOL)windowShouldClose:(id)sender
+{
+	[NSApp stopModalWithCode:1];
+	return YES;
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
+{
+	ABUser *user;
+	// set content of TanMethod ArrayController before selection changes - otherwise it does not work
+	@try {
+		user = [[bankUserController arrangedObjects ] objectAtIndex: rowIndex ];
+	}
+	@catch(NSException *xcp) {
+		return YES;
+	}
+	if(user) {
+		[tanMethods setContent: user.tanMethodList ];
+	}
+	return YES;
+}
+
+- (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
+{
+	NSString *identifier = [aTableColumn identifier ];
+	if ([identifier isEqualToString:@"noBase64"]) {
+		[aCell setEnabled:NO ];
+	}
+}
+
 - (void)dealloc
 {
-	if(currentPassport) [currentPassport release ];
+	if(currentUser) [currentUser release ];
 	[banks release ];
-	[passports release ];
 	[super dealloc ];
 }
-
-+(NewBankUserController*)currentController
-{
-	return current;
-}
-
 
 @end

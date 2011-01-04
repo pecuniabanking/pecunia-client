@@ -3,7 +3,7 @@
 //  Pecunia
 //
 //  Created by Frank Emminghaus on 25.11.09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Copyright 2009 Frank Emminghaus. All rights reserved.
 //
 
 #import "HBCIClient.h"
@@ -105,6 +105,12 @@ static HBCIClient *client = nil;
 	return [bridge isTransferSupported: tt forAccount: account ];
 }
 
+-(BOOL)isStandingOrderSupportedForAccount:(BankAccount*)account
+{
+	return [bridge isStandingOrderSupportedForAccount:account ];
+}
+
+
 -(NSArray*)allowedCountriesForAccount:(BankAccount*)account
 {
 	return [bridge allowedCountriesForAccount:account ];
@@ -120,6 +126,12 @@ static HBCIClient *client = nil;
 {
 	return [bridge limitsForType:tt account:account country:ctry ];
 }
+
+-(TransactionLimits*)standingOrderLimitsForAccount:(BankAccount*)account action:(StandingOrderAction)action
+{
+	return [bridge standingOrderLimitsForAccount:account action:action ];
+}
+
 
 +(HBCIClient*)hbciClient
 {
@@ -138,6 +150,17 @@ static HBCIClient *client = nil;
 	[bridge performSelector:@selector(statementsForAccounts:) onThread:[WorkerThread thread ] withObject:resultList waitUntilDone:NO ];
 //	[bridge statementsForAccounts:resultList ];
 }
+
+-(void)getStandingOrders:(NSArray*)accts
+{
+	[bridge standingOrdersForAccounts:accts ];
+}
+
+-(BOOL)updateStandingOrders:(NSArray*)orders
+{
+	return [bridge updateStandingOrders:orders ];
+}
+
 
 -(void)asyncCommandCompletedWithResult:(id)result error:(PecuniaError*)err
 {
@@ -209,11 +232,20 @@ static HBCIClient *client = nil;
 	[bridge endLog ];
 }
 
--(BOOL)addBankUser
+-(NSString*)addBankUser:(ABUser*)user
 {
-	return [bridge addBankUser ];
+	return [bridge addBankUser: user ];
 }
 
+-(BOOL)removeBankUser:(ABUser*)user
+{
+	return [bridge removeBankUser: user ];
+}
+
+-(NSString*)getSystemIDForUser:(ABUser*)user
+{
+	return [bridge getSystemIDForUser:user ];
+}
 
 
 @end

@@ -247,7 +247,7 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 	return encrypted;
 }
 
--(BOOL)encryptDataWithPassword: password strong: (BOOL)strongEncryption
+-(BOOL)encryptDataWithPassword: (NSString*)password
 {
 	// now create 
 	HDIWrapper *wrapper = [HDIWrapper wrapper ];
@@ -256,7 +256,7 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 	BOOL browsable = [defaults boolForKey: @"BrowseImage" ];
 	NSString *imagePath = [path stringByAppendingString: @"/PecuniaData" ];
 	
-	BOOL success = [wrapper createImage: imagePath withPassword: password strongEncryption: strongEncryption ];
+	BOOL success = [wrapper createImage: imagePath withPassword: password strongEncryption: YES ];
 	if(!success) {
 		NSRunAlertPanel(NSLocalizedString(@"AP46", @""), 
 						[NSString stringWithFormat: NSLocalizedString(@"AP49", @""), imagePath ],

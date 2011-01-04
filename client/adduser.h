@@ -2,7 +2,6 @@
  *  adduser.h
  *  MacBanking
  *
- *  Created by Lars von Wedel on 29.06.07.
  *  Copyright 2007 Frank Emminghaus. All rights reserved.
  *
  */

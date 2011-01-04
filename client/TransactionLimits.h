@@ -19,8 +19,40 @@
 	int		maxSetupTime;
 	
 	NSArray			*allowedTextKeys;
+	
+	// Standing Orders
+	NSArray			*weekCycles;
+	NSArray			*monthCycles;
+	NSArray			*execDaysWeek;
+	NSArray			*execDaysMonth;
+	BOOL			allowMonthly;
+	BOOL			allowWeekly;
+	BOOL			allowChangeRemoteName;
+	BOOL			allowChangeRemoteAccount;
+	BOOL			allowChangeValue;
+	BOOL			allowChangePurpose;
+	BOOL			allowChangeFirstExecDate;
+	BOOL			allowChangeLastExecDate;
+	BOOL			allowChangeCycle;
+	BOOL			allowChangePeriod;
+	BOOL			allowChangeExecDay;
 }
 
+@property (nonatomic, retain) NSArray *weekCycles;
+@property (nonatomic, retain) NSArray *monthCycles;
+@property (nonatomic, retain) NSArray *execDaysWeek;
+@property (nonatomic, retain) NSArray *execDaysMonth;
+@property (nonatomic, assign) BOOL allowMonthly;
+@property (nonatomic, assign) BOOL allowWeekly;
+@property (nonatomic, assign) BOOL allowChangeRemoteName;
+@property (nonatomic, assign) BOOL allowChangeRemoteAccount;
+@property (nonatomic, assign) BOOL allowChangeValue;
+@property (nonatomic, assign) BOOL allowChangePurpose;
+@property (nonatomic, assign) BOOL allowChangeFirstExecDate;
+@property (nonatomic, assign) BOOL allowChangeLastExecDate;
+@property (nonatomic, assign) BOOL allowChangeCycle;
+@property (nonatomic, assign) BOOL allowChangePeriod;
+@property (nonatomic, assign) BOOL allowChangeExecDay;
 @property (nonatomic, assign) int maxLenRemoteName;
 @property (nonatomic, assign) int maxLinesRemoteName;
 @property (nonatomic, assign) int maxLenPurpose;
@@ -35,5 +67,6 @@
 -(int)maxLengthPurpose;
 
 @end
+
 
 
