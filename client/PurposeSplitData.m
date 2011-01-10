@@ -11,6 +11,7 @@
 
 @implementation PurposeSplitData
 
+@synthesize converted;
 @synthesize statement;
 @synthesize purposeNew;
 @synthesize purposeOld;
@@ -26,8 +27,10 @@
 	[purposeNew release], purposeNew = nil;
 	[purposeOld release], purposeOld = nil;
 	statement = nil;
+
 	[super dealloc];
 }
 
 @end
+
 

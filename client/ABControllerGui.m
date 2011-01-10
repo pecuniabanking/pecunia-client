@@ -12,6 +12,10 @@
 #import "ABInputWindowController.h"
 #import "ABInfoBoxController.h"
 #import "ABProgressWindowController.h"
+#import "MessageLog.h"
+#include <gwenhywfar/logger.h>
+#include <aqhbci/aqhbci.h>
+#include <aqbanking/banking.h>
 
 static GWEN_GUI_CHECKCERT_FN	standardCertFn;
 static ABControllerGui *abGui;
@@ -317,6 +321,24 @@ int Print(GWEN_GUI		*gui,
 	return 0;
 }
 
+int LogHook(GWEN_GUI *gui, const char *logDomain, GWEN_LOGGER_LEVEL priority, const char *str)
+{
+	LogLevel level;
+	switch (priority) {
+		case GWEN_LoggerLevel_Alert:
+		case GWEN_LoggerLevel_Error: level = LogLevel_Error; break;
+		case GWEN_LoggerLevel_Warning: level = LogLevel_Warning; break;
+		case GWEN_LoggerLevel_Notice: level = LogLevel_Notice; break;
+		case GWEN_LoggerLevel_Info: level = LogLevel_Info; break;
+		case GWEN_LoggerLevel_Debug: level = LogLevel_Debug; break;
+		case GWEN_LoggerLevel_Verbous: level = LogLevel_Verbous; break;
+		default: level = LogLevel_Warning;
+	}
+	[[MessageLog log ] addMessage:[NSString stringWithUTF8String: str ] withLevel:level];
+	return 1;
+}
+
+
 
 @implementation ABControllerGui
 
@@ -344,8 +366,13 @@ int Print(GWEN_GUI		*gui,
 	
 	//	AB_Banking_SetSetPinStatusFn(ab, SetPinStatus);
 	//	AB_Banking_SetSetTanStatusFn(ab, SetTanStatus);
-	GWEN_Gui_SetShowBoxFn(gui, ShowBox);
 	//	AB_Banking_SetGetPinFn(ab, GetPin);
+	GWEN_Gui_SetShowBoxFn(gui, ShowBox);
+	GWEN_Gui_SetLogHookFn(gui, LogHook);
+
+	GWEN_Logger_SetLevel(AQHBCI_LOGDOMAIN, GWEN_LoggerLevel_Error);
+	GWEN_Logger_SetLevel(AQBANKING_LOGDOMAIN, GWEN_LoggerLevel_Error);
+	GWEN_Logger_SetLevel(GWEN_LOGDOMAIN, GWEN_LoggerLevel_Error);
 	
 	abGui = self;
 	return self;

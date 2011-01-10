@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">10F569</string>
+		<string key="IBDocument.SystemVersion">10H574</string>
 		<string key="IBDocument.InterfaceBuilderVersion">762</string>
-		<string key="IBDocument.AppKitVersion">1038.29</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -97,16 +97,6 @@
 										<characters key="NS.bytes">OtherViews</characters>
 									</object>
 									<array class="NSMutableArray" key="NSMenuItems">
-										<object class="NSMenuItem" id="708454139">
-											<reference key="NSMenu" ref="1041922610"/>
-											<string key="NSTitle">Kritisch</string>
-											<string key="NSKeyEquiv"/>
-											<int key="NSMnemonicLoc">2147483647</int>
-											<reference key="NSOnImage" ref="432264697"/>
-											<reference key="NSMixedImage" ref="444631415"/>
-											<string key="NSAction">_popUpItemAction:</string>
-											<reference key="NSTarget" ref="228129894"/>
-										</object>
 										<object class="NSMenuItem" id="563426979">
 											<reference key="NSMenu" ref="1041922610"/>
 											<string key="NSTitle">Fehler</string>
@@ -164,7 +154,7 @@
 										</object>
 									</array>
 								</object>
-								<int key="NSSelectedIndex">2</int>
+								<int key="NSSelectedIndex">1</int>
 								<int key="NSPreferredEdge">3</int>
 								<bool key="NSUsesItemFromMenu">YES</bool>
 								<bool key="NSAltersState">YES</bool>
@@ -681,7 +671,6 @@
 							<reference ref="712982550"/>
 							<reference ref="101479994"/>
 							<reference ref="563426979"/>
-							<reference ref="708454139"/>
 							<reference ref="176862340"/>
 						</array>
 						<reference key="parent" ref="228129894"/>
@@ -737,11 +726,6 @@
 						<reference key="parent" ref="408807759"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">119</int>
-						<reference key="object" ref="708454139"/>
-						<reference key="parent" ref="1041922610"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">120</int>
 						<reference key="object" ref="176862340"/>
 						<reference key="parent" ref="1041922610"/>
@@ -786,8 +770,7 @@
 				<string key="114.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="115.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="116.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="119.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="12.IBEditorWindowLastContentRect">{{266, 742}, {298, 143}}</string>
+				<string key="12.IBEditorWindowLastContentRect">{{385, 805}, {187, 123}}</string>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="12.ImportedFromIB2"/>
 				<string key="120.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

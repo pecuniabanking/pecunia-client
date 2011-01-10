@@ -31,6 +31,7 @@
 		B1014C67101A37E800ABA1FF /* DonationMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014C66101A37E800ABA1FF /* DonationMessageController.m */; };
 		B1014CB2101A4C3D00ABA1FF /* gpl-2.0.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */; };
 		B1029E120E3FA1D700CC681B /* CatDefWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1029E110E3FA1D700CC681B /* CatDefWindowController.m */; };
+		B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */ = {isa = PBXBuildFile; fileRef = B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */; };
 		B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
 		B1139FF1127CB6F900D6EF08 /* CategoryHistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1139FF0127CB6F900D6EF08 /* CategoryHistWindowController.m */; };
 		B120E3C00EB0F34D00FC5A6F /* icon_colors.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E3BF0EB0F34D00FC5A6F /* icon_colors.png */; };
@@ -64,6 +65,7 @@
 		B137BDCC12D28B0D00D0394C /* adduser.c in Sources */ = {isa = PBXBuildFile; fileRef = B137BDCA12D28B0D00D0394C /* adduser.c */; };
 		B137BE3C12D296A900D0394C /* getsysid.c in Sources */ = {isa = PBXBuildFile; fileRef = B137BE3A12D296A900D0394C /* getsysid.c */; };
 		B137BE9012D33AB200D0394C /* Institute.csv in Resources */ = {isa = PBXBuildFile; fileRef = B137BE8F12D33AB200D0394C /* Institute.csv */; };
+		B137BF4712D5004C00D0394C /* MessageLog.m in Sources */ = {isa = PBXBuildFile; fileRef = B137BF4612D5004C00D0394C /* MessageLog.m */; };
 		B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
 		B14587A21289DCB700848683 /* CategoryPeriods.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14587A11289DCB700848683 /* CategoryPeriods.xib */; };
 		B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
@@ -150,7 +152,6 @@
 		B1D6C9EE0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */; };
 		B1E8118C0FF6854F00BF7451 /* AccountMaintenance.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811810FF6854F00BF7451 /* AccountMaintenance.nib */; };
 		B1E8118D0FF6854F00BF7451 /* AccountSettings.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811820FF6854F00BF7451 /* AccountSettings.nib */; };
-		B1E8118E0FF6854F00BF7451 /* BankUser.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811830FF6854F00BF7451 /* BankUser.nib */; };
 		B1E8118F0FF6854F00BF7451 /* ExportPopup.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811840FF6854F00BF7451 /* ExportPopup.nib */; };
 		B1E811900FF6854F00BF7451 /* Institutes.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811850FF6854F00BF7451 /* Institutes.nib */; };
 		B1E811910FF6854F00BF7451 /* LogController.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811860FF6854F00BF7451 /* LogController.nib */; };
@@ -238,6 +239,8 @@
 		B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gpl-2.0.txt"; sourceTree = "<group>"; };
 		B1029E100E3FA1D700CC681B /* CatDefWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatDefWindowController.h; sourceTree = "<group>"; };
 		B1029E110E3FA1D700CC681B /* CatDefWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatDefWindowController.m; sourceTree = "<group>"; };
+		B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitRule.h; sourceTree = "<group>"; };
+		B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitRule.m; sourceTree = "<group>"; };
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; };
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; };
 		B1139FEF127CB6F900D6EF08 /* CategoryHistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryHistWindowController.h; sourceTree = "<group>"; };
@@ -294,6 +297,8 @@
 		B137BE3A12D296A900D0394C /* getsysid.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getsysid.c; sourceTree = "<group>"; };
 		B137BE3B12D296A900D0394C /* getsysid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getsysid.h; sourceTree = "<group>"; };
 		B137BE8F12D33AB200D0394C /* Institute.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Institute.csv; sourceTree = "<group>"; };
+		B137BF4512D5004C00D0394C /* MessageLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageLog.h; sourceTree = "<group>"; };
+		B137BF4612D5004C00D0394C /* MessageLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageLog.m; sourceTree = "<group>"; };
 		B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPeriodsWindowController.h; sourceTree = "<group>"; };
 		B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPeriodsWindowController.m; sourceTree = "<group>"; };
 		B14587A11289DCB700848683 /* CategoryPeriods.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryPeriods.xib; sourceTree = "<group>"; };
@@ -429,7 +434,6 @@
 		B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMOutlineViewLayout.m; sourceTree = "<group>"; };
 		B1E811810FF6854F00BF7451 /* AccountMaintenance.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = AccountMaintenance.nib; sourceTree = "<group>"; };
 		B1E811820FF6854F00BF7451 /* AccountSettings.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = AccountSettings.nib; sourceTree = "<group>"; };
-		B1E811830FF6854F00BF7451 /* BankUser.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = BankUser.nib; sourceTree = "<group>"; };
 		B1E811840FF6854F00BF7451 /* ExportPopup.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ExportPopup.nib; sourceTree = "<group>"; };
 		B1E811850FF6854F00BF7451 /* Institutes.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Institutes.nib; sourceTree = "<group>"; };
 		B1E811860FF6854F00BF7451 /* LogController.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = LogController.nib; sourceTree = "<group>"; };
@@ -569,7 +573,6 @@
 				B1E811810FF6854F00BF7451 /* AccountMaintenance.nib */,
 				B1A1376711B6FA9800622D6C /* AccountCreate.nib */,
 				B1E811820FF6854F00BF7451 /* AccountSettings.nib */,
-				B1E811830FF6854F00BF7451 /* BankUser.nib */,
 				B1E811840FF6854F00BF7451 /* ExportPopup.nib */,
 				B1E811850FF6854F00BF7451 /* Institutes.nib */,
 				B1E811860FF6854F00BF7451 /* LogController.nib */,
@@ -901,6 +904,8 @@
 				B196E22A0FB8AFCD00509748 /* AMShellWrapper.m */,
 				B196E22F0FB8B12E00509748 /* HDIWrapper.h */,
 				B196E2300FB8B12E00509748 /* HDIWrapper.m */,
+				B137BF4512D5004C00D0394C /* MessageLog.h */,
+				B137BF4612D5004C00D0394C /* MessageLog.m */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -926,6 +931,8 @@
 				B1FB509C1209F68E004DCD6A /* PurposeSplitData.h */,
 				B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */,
 				B1C72D4D124A993B00D1D78D /* LogLevel.h */,
+				B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */,
+				B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */,
 			);
 			name = Basic;
 			sourceTree = "<group>";
@@ -1008,7 +1015,6 @@
 				B1A6E8880FC8A4F700566C55 /* PasswordWindow.nib in Resources */,
 				B1E8118C0FF6854F00BF7451 /* AccountMaintenance.nib in Resources */,
 				B1E8118D0FF6854F00BF7451 /* AccountSettings.nib in Resources */,
-				B1E8118E0FF6854F00BF7451 /* BankUser.nib in Resources */,
 				B1E8118F0FF6854F00BF7451 /* ExportPopup.nib in Resources */,
 				B1E811900FF6854F00BF7451 /* Institutes.nib in Resources */,
 				B1E811910FF6854F00BF7451 /* LogController.nib in Resources */,
@@ -1169,6 +1175,8 @@
 				B1AFAA0512A061C100B115A7 /* StandingOrderTabController.m in Sources */,
 				B137BDCC12D28B0D00D0394C /* adduser.c in Sources */,
 				B137BE3C12D296A900D0394C /* getsysid.c in Sources */,
+				B137BF4712D5004C00D0394C /* MessageLog.m in Sources */,
+				B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

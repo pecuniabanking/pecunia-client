@@ -10,7 +10,7 @@
 #import "MOAssistant.h"
 #import "BankAccount.h"
 #import "BankStatement.h"
-#import  "PurposeSplitData.h"
+#import "PurposeSplitData.h"
 
 @implementation PurposeSplitController
 
@@ -19,6 +19,7 @@
 	self = [super initWithWindowNibName:@"PurposeSplitWindow"];
 	context = [[MOAssistant assistant ] context];
 	account = acc;
+	processConvertedStats = YES;
 	return self;
 }
 
@@ -62,11 +63,15 @@
 
 	if(res == NSAlertAlternateReturn) {
 		for (PurposeSplitData *data in [purposeController arrangedObjects ]) {
+			if (data.statement.additional == nil) data.statement.additional = data.statement.purpose;
 			if (data.purposeNew) data.statement.purpose = data.purposeNew;
 			if (data.remoteName) data.statement.remoteName = data.remoteName;
 			if (data.remoteAccount) data.statement.remoteAccount = data.remoteAccount;
 			if (data.remoteBankCode) data.statement.remoteBankCode = data.remoteBankCode;
 		}
+		
+		// save conversion rule
+		account.convRule = [NSString stringWithFormat:@"%d:%d,%d,%d,%d,%d,%d,%d", 1, ePos, eLen, kPos, kLen, bPos, bLen, vPos ];
 		
 		// save updates
 		if([context save: &error ] == NO) {
@@ -98,7 +103,17 @@
 		[purposeController removeObjects:[purposeController arrangedObjects ]];
 		for (BankStatement *stat in [account mutableSetValueForKey:@"statements"]) {
 			PurposeSplitData *data = [[[PurposeSplitData alloc ] init ] autorelease ];
-			data.purposeOld = stat.purpose;
+			if (stat.additional) {
+				// data already converted
+				data.purposeOld = stat.additional;
+				data.converted = YES;
+			} else {
+				data.purposeOld = stat.purpose;
+			}
+
+			data.remoteName = stat.remoteName;
+			data.remoteAccount = stat.remoteAccount;
+			data.remoteBankCode = stat.remoteBankCode;
 			data.statement = stat;
 			[purposeController addObject:data ];
 		}
@@ -110,9 +125,19 @@
 	NSRange eRange;
 	NSRange kRange;
 	NSRange bRange;
-	int     vPos=0;
 	
 	NSString *s;
+	eRange.location = ePos;
+	eRange.length = eLen;
+	kRange.location = kPos;
+	kRange.length = kLen;
+	bRange.location = bPos;
+	bRange.length = bLen;
+
+	s = NSStringFromRange(eRange);
+	s = [s stringByAppendingString:NSStringFromRange(kRange) ];
+	
+/*	
 	s = [ePosField stringValue ];
 	if (s) eRange.location = [s intValue ]; else eRange.location = 0;
 	s = [eLenField stringValue ];
@@ -130,6 +155,7 @@
 
 	s = [vPosField stringValue ];
 	if (s) vPos = [s intValue ];
+*/
 	
 	for (PurposeSplitData *data in [purposeController arrangedObjects ]) {
 		if (eRange.length) {
@@ -141,7 +167,8 @@
 		if (bRange.length) {
 			data.remoteBankCode = [[data.purposeOld substringWithRange:bRange ] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet ]];
 		}
-		if(vPos) data.purposeNew = [data.purposeOld substringFromIndex:vPos ];
+		if(vPos) data.purposeNew = [[data.purposeOld substringFromIndex:vPos ] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet ]];
+		else data.purposeNew = data.purposeOld;
 	}
 }
 

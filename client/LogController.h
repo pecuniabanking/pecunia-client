@@ -7,9 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "LogLevel.h"
+#import "MessageLog.h"
 
-@interface LogController : NSWindowController <MessageLog>
+@interface LogController : NSWindowController <MessageLogUI>
 {
     IBOutlet NSTextView		*logView;
 	NSPopUpButton			*popUp;
@@ -17,13 +17,12 @@
 	BOOL					withDetails;
 	BOOL					writeConsole;
 	LogLevel				currentLevel;
+	MessageLog				*messageLog;
 }
 
-//-(void)addLog: (NSString*)info withLevel: (LogLevel)level;
 -(void)logLevelChanged: (id)sender;
 -(void)clearLog: (id)sender;
 -(void)saveLog: (id)sender;
--(void)logMessage: (NSString*)msg withLevel: (int)level;
 
 +(LogController*)logController;
 

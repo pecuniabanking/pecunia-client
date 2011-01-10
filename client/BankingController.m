@@ -150,7 +150,7 @@ static BankingController	*con;
 	[self repairCategories ];
 
 	// set Bank Accounts
-	[self updateBankAccounts ];
+//	[self updateBankAccounts ];
 	[self updateBalances ];
 
 	NSError *error;
@@ -221,13 +221,14 @@ static BankingController	*con;
 }
  */
 
--(void)updateBankAccounts
+-(void)updateBankAccounts:(NSArray*)hbciAccounts
 {
 	NSError	*error = nil;
 	int		i,j;
 	BOOL	found;
 	
-	NSArray* hbciAccounts = [[HBCIClient hbciClient ] accounts ];
+	if (hbciAccounts == nil) hbciAccounts = [[HBCIClient hbciClient ] accounts ];	
+//	NSArray* hbciAccounts = [[HBCIClient hbciClient ] accounts ];
 	
 	NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
 	NSArray *tmpAccounts = [context executeFetchRequest:request error:&error];
@@ -847,7 +848,8 @@ static BankingController	*con;
 	if(cat == nil) return;
 	if([cat isBankAccount ] == NO) return;
 	if([cat accountNumber ] == nil) return;
-
+	
+	BankAccount *account = (BankAccount*)cat;
 	
 	// issue a confirmation
 	int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @"Delete account"),
@@ -855,7 +857,7 @@ static BankingController	*con;
 									  NSLocalizedString(@"no", @"No"),
 									  NSLocalizedString(@"yes", @"Yes"),
 									  nil,
-									  cat.accountNumber
+									  account.accountNumber
 									  );
 	if(res != NSAlertAlternateReturn) return;	
 	
@@ -878,7 +880,8 @@ static BankingController	*con;
 											  NSLocalizedString(@"AP29", @"There are already transactions assigned to the selected account. Do you want to delete the account %@ anyway?"),
 											  NSLocalizedString(@"yes", @"Yes"),
 											  NSLocalizedString(@"no", @"No"),
-											  nil
+											  nil,
+											  account.accountNumber
 											  );
 			if (res == NSAlertDefaultReturn) {
 				keepAssignedStatements = YES;
@@ -886,7 +889,7 @@ static BankingController	*con;
 		}
 	}
 		// delete account
-	[self removeBankAccount: (BankAccount*)cat keepAssignedStatements: keepAssignedStatements ];
+	[self removeBankAccount: account keepAssignedStatements: keepAssignedStatements ];
 
 	// save updates
 	if([context save: &error ] == NO) {
@@ -896,8 +899,69 @@ static BankingController	*con;
 	}
 }
 
-
-
+-(void)removeDeletedAccounts
+{
+	NSError	*error = nil;
+	BOOL	flg_update=NO;
+	
+	NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
+	NSArray *bankAccounts = [context executeFetchRequest:request error:&error];
+	if( error != nil || bankAccounts == nil) {
+		NSAlert *alert = [NSAlert alertWithError:error];
+		[alert runModal];
+		return;
+	}
+	NSArray *hbciAccounts = [[HBCIClient hbciClient ] accounts ];
+	for(BankAccount *account in bankAccounts) {
+		BOOL found = NO;
+		for(ABAccount *acc in hbciAccounts) {
+			if ([acc.accountNumber isEqualToString: account.accountNumber ] && [acc.bankCode isEqualToString:account.bankCode ]) {
+				found = YES;
+				break;
+			}
+		}
+		if (found == NO) {
+			// Accounts will be deleted - keep Statements ?
+			BOOL keepAssignedStatements = NO;
+			NSMutableSet *stats = [account mutableSetValueForKey: @"statements" ];
+			if(stats && [stats count ] > 0) {
+				BOOL hasAssignment;
+				
+				// check if transactions are assigned
+				for(BankStatement* stat in stats) {
+					if ([stat hasAssignment ]) {
+						hasAssignment = YES;
+						break;
+					}
+				}
+				
+				if (hasAssignment) {
+					int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @"Delete account"),
+													  NSLocalizedString(@"AP29", @"There are already transactions assigned to the selected account. Do you want to delete the account %@ anyway?"),
+													  NSLocalizedString(@"yes", @"Yes"),
+													  NSLocalizedString(@"no", @"No"),
+													  nil,
+													  account.accountNumber
+													  );
+					if (res == NSAlertDefaultReturn) {
+						keepAssignedStatements = YES;
+					} else keepAssignedStatements = NO;
+				}
+			}
+			[self removeBankAccount:account keepAssignedStatements:keepAssignedStatements ];
+			flg_update = YES;
+		}
+	}
+	
+	// save updates
+	if(flg_update == YES) {
+		if([context save: &error ] == NO) {
+			NSAlert *alert = [NSAlert alertWithError:error];
+			[alert runModal];
+			return;
+		}
+	}
+}
 
 // TAB views
 -(IBAction)accountsView: (id)sender 
@@ -1698,6 +1762,8 @@ static BankingController	*con;
 	BankAccount *account;
 	NSMutableArray *resultList = [[NSMutableArray arrayWithCapacity: [selectedAccounts count ] ] retain ];
 	for(account in selectedAccounts) {
+		if (account.noAutomaticQuery) continue;
+		
 		BankQueryResult *result = [[BankQueryResult alloc ] init ];
 		result.accountNumber = account.accountNumber;
 		result.bankCode = account.bankCode;
@@ -1826,7 +1892,7 @@ static BankingController	*con;
 	NSView *view = [[BankStatementPrintView alloc ] initWithStatements:[transactionController arrangedObjects ] printInfo:printInfo ];
 	printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo ];
 	[printOp setShowsPrintPanel:YES ];
-	NSGraphicsContext *context = [printOp context ];
+//	NSGraphicsContext *context = [printOp context ];
 	[printOp runOperation ];
 }
 

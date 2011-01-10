@@ -6,7 +6,7 @@
  *  Copyright 2010 Frank Emminghaus. All rights reserved.
  *
  */
-
+/*
 typedef enum {
 	log_alert = 0,
 	log_error,
@@ -22,5 +22,5 @@ typedef enum {
 -(void)addLog:(NSString*)msg withLevel:(LogLevel)level;
 
 @end
-
+*/
 

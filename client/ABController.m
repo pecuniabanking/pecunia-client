@@ -33,38 +33,6 @@
 #import <aqhbci/account.h>
 
 static ABController* abController;
-GWEN_GUI_LOG_HOOK_FN	oldFN;
-
-@interface ABController (private)
-
--(void)addLog:(NSString*)msg withLevel:(LogLevel)level;
-
-@end
-
-
-int LogHook(GWEN_GUI *gui, const char *logDomain, GWEN_LOGGER_LEVEL priority, const char *str)
-{
-	LogLevel level;
-	NSString *s = [NSString stringWithUTF8String: str ];
-	if(!s) return 1;
-	NSDate *date = [NSDate date ];
-	NSDateFormatter *formatter = [[[NSDateFormatter alloc ] init ] autorelease ];
-	[formatter setDateFormat:@"HH:mm:ss.SSS"];
-	
-	switch (priority) {
-		case GWEN_LoggerLevel_Alert: level = log_alert; break;
-		case GWEN_LoggerLevel_Error: level = log_error; break;
-		case GWEN_LoggerLevel_Warning: level = log_warning; break;
-		case GWEN_LoggerLevel_Notice: level = log_notice; break;
-		case GWEN_LoggerLevel_Info: level = log_info; break;
-		case GWEN_LoggerLevel_Debug: level = log_debug; break;
-		case GWEN_LoggerLevel_Verbous: level = log_all; break;
-		default: level = log_warning; break;
-	}
-	
-	[abController addLog: [NSString stringWithFormat: @"<%@> %@\n", [formatter stringFromDate:date ] , s ] withLevel: level ];
-	return 1;
-}
 
 @implementation ABController
 
@@ -845,8 +813,6 @@ error:
 	return nil;
 }
 
-
-/*
 -(int)removeUser:(AB_USER*)user fromAccount: (AB_ACCOUNT*)acc
 {
 	AB_USER_LIST2			*ul = AB_Account_GetUsers(acc);
@@ -876,11 +842,10 @@ error:
 	return res;
 }
 
-
--(BOOL)removeBankUser: (ABUser*)user
+-(BOOL)deleteBankUser: (ABUser*)user
 {
-	AB_USER*	usr = AB_Banking_GetUser(ab, (uint32_t)[user uid ]);
 	int	i, res;
+	AB_USER*	usr = AB_Banking_GetUser(ab, (uint32_t)user.uid);
 	
 	if(!usr) return FALSE;
 	AB_ACCOUNT*	acc = AB_Banking_FindFirstAccountOfUser(ab, usr);
@@ -891,18 +856,18 @@ error:
 							  NSLocalizedString(@"yes", @"Yes"),
 							  NSLocalizedString(@"no", @"No")
 							  );
-//		if(res == NSAlertDefaultReturn || res == NSAlertOtherReturn) return FALSE;
+		
 		if(res == NSAlertDefaultReturn) return NO;
 		// remove user from all accounts
-
-		
 		
 		for(i=0; i < [accounts count ]; i++) {
 			ABAccount *acc = [accounts objectAtIndex:i ];
-			int n = [self removeUser: usr fromAccount: acc ];
+			AB_ACCOUNT  *abAcc = AB_Banking_GetAccountByCodeAndNumber(ab, [acc.bankCode UTF8String], [acc.accountNumber UTF8String]);
+
+			int n = [self removeUser: usr fromAccount: abAcc ];
 			// if there is no user anymore for an account, delete it
 			if(n == 0) {
-				AB_Banking_DeleteAccount(ab, [acc abRef ]);
+				AB_Banking_DeleteAccount(ab, abAcc);
 				[accounts removeObject: acc ];
 				i--;
 			}
@@ -924,7 +889,6 @@ error:
 	
 	return TRUE;
 }
-*/
 
 -(NSDictionary*)countries
 {
@@ -992,9 +956,9 @@ error:
 	return YES;
 }
 
--(void)changeAccount:(BankAccount*)account
+-(BOOL)changeAccount:(BankAccount*)account
 {
-	if(account == nil) return;
+	if(account == nil) return NO;
 	AB_ACCOUNT *acc = AB_Banking_GetAccountByCodeAndNumber(ab, [account.bankCode UTF8String ], [account.accountNumber UTF8String ]);
 
 	int rv = AB_Banking_BeginExclUseAccount(ab, acc);
@@ -1012,6 +976,7 @@ error:
 	
 	// update Accounts
 	[self getAccounts ];
+	if (rv == 0) return YES; else return NO;
 }
 
 -(BOOL)deleteAccount: (BankAccount*)account
@@ -1211,49 +1176,27 @@ error:
 	return allowedCountries;
 }
 
-//***************** logging ***************
--(void)startLog:(id <MessageLog>)logger withLevel:(LogLevel)level withDetails:(BOOL)details
+-(void)setLogLevel:(LogLevel)level
 {
-	GWEN_LOGGER_LEVEL	gwen_level;
-
-	if(oldFN == NULL) {
-		oldFN = GWEN_Gui_SetLogHookFn(GWEN_Gui_GetGui(), LogHook);
-	}
-	log = logger;
+	GWEN_LOGGER_LEVEL gwenLevel;
 	
 	switch (level) {
-		case log_alert: gwen_level = GWEN_LoggerLevel_Alert; break;
-		case log_error: gwen_level = GWEN_LoggerLevel_Error; break;
-		case log_warning: gwen_level = GWEN_LoggerLevel_Warning; break;
-		case log_notice: gwen_level = GWEN_LoggerLevel_Notice; break;
-		case log_info: gwen_level = GWEN_LoggerLevel_Info; break;
-		case log_debug: gwen_level = GWEN_LoggerLevel_Debug; break;
-		case log_all: gwen_level = GWEN_LoggerLevel_Verbous; break;
-		default: gwen_level = GWEN_LoggerLevel_Warning; break;
+		case LogLevel_Error: gwenLevel = GWEN_LoggerLevel_Error; break;
+		case LogLevel_Warning: gwenLevel = GWEN_LoggerLevel_Warning; break;
+		case LogLevel_Notice: gwenLevel = GWEN_LoggerLevel_Notice; break;
+		case LogLevel_Info: gwenLevel = GWEN_LoggerLevel_Info; break;
+		case LogLevel_Debug: gwenLevel = GWEN_LoggerLevel_Debug; break;
+		case LogLevel_Verbous: gwenLevel = GWEN_LoggerLevel_Verbous; break;
+		case LogLevel_None: gwenLevel = GWEN_LoggerLevel_Critical; break;
+		default: gwenLevel = GWEN_LoggerLevel_Warning; break;
 	}
-	GWEN_Logger_SetLevel(AQHBCI_LOGDOMAIN, gwen_level);
-	GWEN_Logger_SetLevel(AQBANKING_LOGDOMAIN, gwen_level);
-	if(details)	GWEN_Logger_SetLevel(GWEN_LOGDOMAIN, gwen_level); else GWEN_Logger_SetLevel(GWEN_LOGDOMAIN, GWEN_LoggerLevel_Error);
-}
-
--(void)endLog
-{
-	if(oldFN) {
-		GWEN_Gui_SetLogHookFn(GWEN_Gui_GetGui(), oldFN);
-		oldFN = NULL;
-	}
-	GWEN_Logger_SetLevel(AQHBCI_LOGDOMAIN, GWEN_LoggerLevel_Error);
-	GWEN_Logger_SetLevel(AQBANKING_LOGDOMAIN, GWEN_LoggerLevel_Error);
-	GWEN_Logger_SetLevel(GWEN_LOGDOMAIN, GWEN_LoggerLevel_Error);
 	
-	log = nil;
+	GWEN_Logger_SetLevel(AQHBCI_LOGDOMAIN, gwenLevel);
+	GWEN_Logger_SetLevel(AQBANKING_LOGDOMAIN, gwenLevel);
+	if (level = LogLevel_Verbous) {
+		GWEN_Logger_SetLevel(GWEN_LOGDOMAIN, GWEN_LoggerLevel_Verbous);
+	} else GWEN_Logger_SetLevel(GWEN_LOGDOMAIN, GWEN_LoggerLevel_Error);
 }
-
--(void)addLog:(NSString*)msg withLevel:(LogLevel)level
-{
-	[log addLog:msg withLevel:level ];
-}
-
 
 //******************* Im-/Exporter *****
 -(NSArray*)getImExporters

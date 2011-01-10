@@ -84,15 +84,16 @@ int hbciVersionFromString(NSString* s)
 			 returnCode: (int)code 
 			contextInfo: (void*)context
 {
+	HBCIClient *hbciClient = [HBCIClient hbciClient ];
 	if(code == 0) {
-		NSString* err = [[HBCIClient hbciClient ] addBankUser: currentUser ]; 
+		NSString* err = [hbciClient addBankUser: currentUser ]; 
 		if(err) NSRunAlertPanel(NSLocalizedString(@"AP7", @"HBCI error occured!"), 
 								NSLocalizedString(@"AP73", @""), 
 								NSLocalizedString(@"cancel", @"Cancel"), nil, nil);
 		else {
-			bankUsers = [[HBCIClient hbciClient ] users ];
+			bankUsers = [hbciClient users ];
 			[bankUserController setContent: bankUsers ];
-			[bankController updateBankAccounts ];
+			[bankController updateBankAccounts: [hbciClient accountsByUser:currentUser ] ];
 		}
 	}
 }
@@ -103,7 +104,7 @@ int hbciVersionFromString(NSString* s)
 	if(sel == nil || [sel count ] < 1) return;
 	ABUser* user = [sel objectAtIndex: 0 ];
 	
-	if([[HBCIClient hbciClient ] removeBankUser: user] == TRUE) {
+	if([[HBCIClient hbciClient ] deleteBankUser: user] == TRUE) {
 		[bankUserController remove: self ];
 	}
 }

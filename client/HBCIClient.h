@@ -8,8 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 #import "Transfer.h"
-#import "LogLevel.h"
 #import "StandingOrder.h"
+#import "MessageLog.h"
 
 @class HBCIBridge;
 @class BankInfo;
@@ -25,7 +25,7 @@
 	ABController	*bridge;
 	
 	NSMutableArray		*passports;
-	NSMutableArray		*accounts;
+//	NSMutableArray		*accounts;
 	NSMutableDictionary	*bankInfo;
 	NSMutableDictionary *countryInfos;
 	NSArray				*bankQueryResults;
@@ -39,6 +39,7 @@
 
 -(NSArray*)initHBCI;
 -(NSArray*)accounts;
+-(NSArray*)accountsByUser:(ABUser*)user;
 -(NSArray*)users;
 
 // HBCI Methods
@@ -60,13 +61,13 @@
 -(BOOL)updateStandingOrders:(NSArray*)orders;
 
 -(BOOL)addAccount: (BankAccount*)account forUser: (ABUser*)user;
-
--(void)startLog:(id <MessageLog>)logger withLevel:(LogLevel)level withDetails:(BOOL)details;
--(void)endLog;
+-(BOOL)changeAccount:(BankAccount*)account;
 
 -(NSString*)addBankUser:(ABUser*)user;
--(BOOL)removeBankUser:(ABUser*)user;
+-(BOOL)deleteBankUser:(ABUser*)user;
 -(NSString*)getSystemIDForUser:(ABUser*)user;
+
+-(void)setLogLevel:(LogLevel)level;
 
 +(HBCIClient*)hbciClient;
 

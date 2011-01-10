@@ -10,9 +10,11 @@
 #import "Category.h"
 
 @class BankQueryResult;
+@class PurposeSplitRule;
 
 @interface BankAccount : Category {
-	NSDate	*newLatestTransferDate;
+	NSDate				*newLatestTransferDate;
+	PurposeSplitRule	*purposeSplitRule;
 }
 
 -(NSString*)bankCode;
@@ -42,6 +44,7 @@
 @property (nonatomic, retain) NSNumber * noAutomaticQuery;
 @property (nonatomic, retain) NSNumber * collTransfer;
 @property (nonatomic, retain) NSNumber * isManual;
+@property (nonatomic, retain) NSString * splitRule;
 
 @end
 

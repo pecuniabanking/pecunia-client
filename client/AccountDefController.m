@@ -78,12 +78,7 @@
 			[boxView replaceSubview:manAccountAddView with:accountAddView ];
 			currentAddView = accountAddView;
 		}
-		
-//		[balanceField setHidden: YES ];
-//		[balanceLabel setHidden: YES ];
-//		[balanceField setBezeled: NO ];
 	} else {
-//		account.bankCode = account.bankName = account.bic = @"";
 		[bankCodeField setEditable: YES ];
 		[bankCodeField setBezeled: YES ];
 
@@ -92,10 +87,6 @@
 			[boxView replaceSubview:accountAddView with:manAccountAddView ];
 			currentAddView = manAccountAddView;
 		}
-		
-//		[balanceField setHidden: NO ];
-//		[balanceLabel setHidden: NO ];
-//		[balanceField setBezeled: YES ];
 	}
 }
 
@@ -143,8 +134,8 @@
 		if(user) {
 			newAccount.userId = user.userId;
 			newAccount.customerId = user.customerId;
-			newAccount.isManual = [NSNumber numberWithBool:YES ];
-		} else newAccount.isManual = [NSNumber numberWithBool:NO ];
+			newAccount.isManual = [NSNumber numberWithBool:NO ];
+		} else newAccount.isManual = [NSNumber numberWithBool:YES ];
 		
 		newAccount.parent = bankRoot;
 		newAccount.isBankAcc = [NSNumber numberWithBool:YES ];

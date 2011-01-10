@@ -25,7 +25,13 @@
 	IBOutlet NSComboBox			*comboBox;
 	
 	int							actionResult;
+	int							ePos, eLen;
+	int							kPos, kLen;
+	int							bPos, bLen;
+	int							vPos;
+	BOOL						processConvertedStats;
 	BankAccount					*account;
+	NSString					*conversionInfo;
 
 }
 

@@ -24,6 +24,7 @@
 	account.bic = acc.bic;
 	account.iban = acc.iban;
 	account.currency = acc.currency;
+	account.collTransfer = acc.collTransfer;
 
 	return self;
 }
@@ -52,9 +53,8 @@
 	changedAccount.iban = account.iban;
 	changedAccount.bic = account.bic;
 	changedAccount.owner = account.owner;
-//	changedAccount.accountNumber = account.accountNumber; //?
 	changedAccount.name = account.name;
-//	changedAccount.currency = account.currency;
+	changedAccount.collTransfer = account.collTransfer;
 
     [self close ];
 
@@ -66,8 +66,7 @@
 	}
 	
 	if (changedAccount.userId) {
-		NSArray *accounts = [NSArray arrayWithObject:changedAccount ];
-//		[[HBCIClient hbciClient ] setAccounts:accounts];
+		[[HBCIClient hbciClient ] changeAccount:changedAccount ];
 	}
 
 	[moc reset ];

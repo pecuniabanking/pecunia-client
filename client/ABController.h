@@ -10,7 +10,7 @@
 #include <aqbanking/banking.h>
 #import "ABAccount.h"
 #import "Transfer.h"
-#import "LogLevel.h"
+#import "MessageLog.h"
 #import "StandingOrder.h"
 
 @class BankAccount;
@@ -28,7 +28,6 @@
 	NSMutableArray			*users;
 	NSMutableDictionary		*countries;
 	ABControllerGui			*abGui;
-	id <MessageLog>			log;
 }
 
 -(NSMutableArray*)getAccounts;
@@ -38,6 +37,7 @@
 -(ABAccount*)accountByNumber: (NSString*)n bankCode: (NSString*)c;
 -(BOOL)checkAccount: (NSString*)accountNumber forBank: (NSString*)bankCode inCountry: (NSString*)country;
 -(BOOL)addAccount: (BankAccount*)account forUser: (ABUser*)user;
+-(BOOL)changeAccount:(BankAccount*)account;
 -(BOOL)deleteAccount: (BankAccount*)account;
 -(BOOL)sendTransfers: (NSArray*)transfers;
 -(BOOL)checkIBAN: (NSString*)iban;
@@ -49,7 +49,7 @@
 -(BankInfo*)infoForBankCode: (NSString*)code inCountry: (NSString*)country;
 
 -(NSString*)addBankUser:(ABUser*)user;
-//-(BOOL)removeBankUser: (ABUser*)user;
+-(BOOL)deleteBankUser: (ABUser*)user;
 -(NSString*)getSystemIDForUser:(ABUser*)user;
 
 -(NSArray*)getImExporters;
@@ -65,8 +65,7 @@
 
 -(NSDictionary*)countries;
 
--(void)startLog:(id <MessageLog>)logger withLevel:(LogLevel)level withDetails:(BOOL)details;
--(void)endLog;
+-(void)setLogLevel:(LogLevel)level;
 
 +(ABController*)controller;
 

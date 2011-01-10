@@ -33,5 +33,6 @@
 }
 
 -(int)getStatementHeights;
+-(id)initWithStatements:(NSArray*)stats printInfo:(NSPrintInfo*)pi;
 
 @end

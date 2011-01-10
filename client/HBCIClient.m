@@ -21,7 +21,8 @@
 #import "TransferResult.h"
 #import "BankingController.h"
 #import "WorkerThread.h"
-
+#import "ABUser.h"
+#import "ABAccount.h"
 #import "ABController.h";
 
 static HBCIClient *client = nil;
@@ -51,7 +52,7 @@ static HBCIClient *client = nil;
 {
 	[bridge release ];
 	[passports release ];
-	[accounts release ];
+//	[accounts release ];
 	[bankInfo release ];
 	[countryInfos release ];
 	[super dealloc ];
@@ -99,6 +100,12 @@ static HBCIClient *client = nil;
 {
 	return [bridge addAccount:account forUser:user ];
 }
+
+-(BOOL)changeAccount:(BankAccount*)account
+{
+	return [bridge changeAccount:account ];
+}
+
 
 -(BOOL)isTransferSupported:(TransferType)tt forAccount:(BankAccount*)account
 {
@@ -222,24 +229,14 @@ static HBCIClient *client = nil;
 	return [bridge users ];
 }
 
--(void)startLog:(id <MessageLog>)logger withLevel:(LogLevel)level withDetails:(BOOL)details
-{
-	[bridge startLog:logger withLevel:level withDetails:details ];
-}
-
--(void)endLog
-{
-	[bridge endLog ];
-}
-
 -(NSString*)addBankUser:(ABUser*)user
 {
 	return [bridge addBankUser: user ];
 }
 
--(BOOL)removeBankUser:(ABUser*)user
+-(BOOL)deleteBankUser:(ABUser*)user
 {
-	return [bridge removeBankUser: user ];
+	return [bridge deleteBankUser: user ];
 }
 
 -(NSString*)getSystemIDForUser:(ABUser*)user
@@ -247,5 +244,21 @@ static HBCIClient *client = nil;
 	return [bridge getSystemIDForUser:user ];
 }
 
+-(void)setLogLevel:(LogLevel)level
+{
+	[bridge setLogLevel:level ];
+}
+
+-(NSArray*)accountsByUser:(ABUser*)user
+{
+	NSMutableArray *accounts = [NSMutableArray arrayWithCapacity:10 ];
+	for(ABAccount *account in [self accounts ]) {
+		if ([account.customerId isEqualToString: user.customerId ] &&
+			[account.userId isEqualToString:user.userId ]) {
+			[accounts addObject: account ];
+		}
+	}
+	return accounts;
+}
 
 @end

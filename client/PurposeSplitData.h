@@ -16,10 +16,11 @@
 	NSString	*remoteName;
 	NSString	*remoteAccount;
 	NSString	*remoteBankCode;
-
+	BOOL		converted;
 	BankStatement *statement;
 }
 
+@property (nonatomic, assign) BOOL converted;
 @property (nonatomic, assign) BankStatement *statement;
 @property (nonatomic, copy) NSString *purposeNew;
 @property (nonatomic, copy) NSString *purposeOld;
@@ -29,4 +30,5 @@
 
 
 @end
+
 

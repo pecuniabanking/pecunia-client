@@ -11,7 +11,7 @@
 #import "BankQueryResult.h"
 #import "ShortDate.h"
 #import "StandingOrder.h"
-
+#import "PurposeSplitRule.h"
 
 @implementation BankAccount
 
@@ -31,6 +31,7 @@
 @dynamic noAutomaticQuery;
 @dynamic collTransfer;
 @dynamic isManual;
+@dynamic splitRule;
 
 -(id)copyWithZone: (NSZone *)zone
 {
@@ -58,13 +59,20 @@
 	} else {
 		lastTransferDate = [ShortDate dateWithDate: [NSDate distantPast ] ];	
 	}
+	
+	// check if purpose split rule exists
+	if (self.splitRule && purposeSplitRule == nil ) purposeSplitRule = [[PurposeSplitRule alloc ] initWithString:self.splitRule ];
  
 	// get (old) reference statements
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [lastTransferDate lowDate ] ];
 	[request setPredicate:predicate];
 	statements = [context executeFetchRequest:request error:&error];
 	for (stat in stats) {
-		// check if stat matches existing statements
+		// Apply purpose split rule, if exists
+		if (purposeSplitRule) [purposeSplitRule applyToStatement:stat ];
+		
+		// check if stat matches existing statement
+		
 		//first, check if date < lDate
 		if([[stat date ] compare: [lastTransferDate lowDate ] ] == NSOrderedAscending) continue;
 		BankStatement *oldStat;
@@ -262,6 +270,7 @@
 
 -(void)dealloc
 {
+	[purposeSplitRule release ];
 	[super dealloc ];
 }
 

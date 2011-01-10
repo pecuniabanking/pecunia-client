@@ -108,13 +108,14 @@
 -(void)windowWillClose:(NSNotification *)aNotification;
 -(NSArray*)selectedNodes;
 -(BankAccount*)selectBankAccountWithNumber:(NSString*)accNum bankCode:(NSString*)code;
+-(void)removeDeletedAccounts;
 -(void)awakeFromNib;
 -(int)AccSize;
 -(NSManagedObjectContext*)managedObjectContext;
 -(BankAccount*)getBankNodeWithAccount: (ABAccount*)acc inAccounts: (NSMutableArray*)bankAccounts;
 -(void)statementsNotification: (NSArray*)resultList;
 -(Category*)getBankingRoot;
--(void)updateBankAccounts;
+-(void)updateBankAccounts:(NSArray*)hbciAccounts;
 -(void)updateBalances;
 -(void)adjustSearchField;
 -(void)updateNotAssignedCategory;
