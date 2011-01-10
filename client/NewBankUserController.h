@@ -33,6 +33,7 @@
 - (IBAction)removeEntry:(id)sender;
 - (IBAction)getSystemID: (id)sender;
 - (IBAction)showBanks: (id)sender;
+- (IBAction)getUserAccounts: (id)sender;
 
 - (BOOL)check;
 - (void)readBanks;

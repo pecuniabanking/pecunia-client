@@ -255,6 +255,12 @@ int hbciVersionFromString(NSString* s)
 	}
 }
 
+- (IBAction)getUserAccounts: (id)sender
+{
+	
+}
+
+
 - (void)dealloc
 {
 	if(currentUser) [currentUser release ];
