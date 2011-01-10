@@ -247,7 +247,6 @@
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; };
 		B1139FEF127CB6F900D6EF08 /* CategoryHistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryHistWindowController.h; sourceTree = "<group>"; };
 		B1139FF0127CB6F900D6EF08 /* CategoryHistWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryHistWindowController.m; sourceTree = "<group>"; };
-		B12030D511C2CD1400B1B22A /* HBCIServer.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = HBCIServer.jar; sourceTree = "<group>"; };
 		B120E3BF0EB0F34D00FC5A6F /* icon_colors.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_colors.png; sourceTree = "<group>"; };
 		B120E3C10EB0F3F000FC5A6F /* AccountRep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AccountRep.png; sourceTree = "<group>"; };
 		B120E3C50EB0F7B800FC5A6F /* okshape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = okshape.png; sourceTree = "<group>"; };
@@ -542,7 +541,6 @@
 			isa = PBXGroup;
 			children = (
 				B1FAEA79122C2408000AF027 /* Scripts */,
-				B12030D511C2CD1400B1B22A /* HBCIServer.jar */,
 				B136AACF0FCF1BF5007A643F /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,

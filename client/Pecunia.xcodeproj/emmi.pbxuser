@@ -2542,18 +2542,18 @@
 	};
 	B18B20540CC6A51B00B0B02C /* NewBankUserController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1143, 773}}";
-			sepNavSelRange = "{460, 0}";
-			sepNavVisRange = "{0, 952}";
+			sepNavIntBoundsRect = "{{0, 0}, {1263, 887}}";
+			sepNavSelRange = "{911, 41}";
+			sepNavVisRange = "{0, 993}";
 			sepNavVisRect = "{{0, 0}, {1020, 706}}";
 			sepNavWindowFrame = "{{107, 12}, {1210, 1077}}";
 		};
 	};
 	B18B20550CC6A51B00B0B02C /* NewBankUserController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1296, 4607}}";
-			sepNavSelRange = "{2747, 0}";
-			sepNavVisRange = "{1859, 1023}";
+			sepNavIntBoundsRect = "{{0, 0}, {1263, 4488}}";
+			sepNavSelRange = "{7549, 0}";
+			sepNavVisRange = "{6571, 1088}";
 			sepNavVisRect = "{{0, 923}, {1161, 863}}";
 			sepNavWindowFrame = "{{183, 159}, {1090, 972}}";
 		};
