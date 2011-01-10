@@ -32,6 +32,7 @@
 		B1014CB2101A4C3D00ABA1FF /* gpl-2.0.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */; };
 		B1029E120E3FA1D700CC681B /* CatDefWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1029E110E3FA1D700CC681B /* CatDefWindowController.m */; };
 		B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */ = {isa = PBXBuildFile; fileRef = B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */; };
+		B10DBC0312DBB5FB0030D67A /* BankUser.nib in Resources */ = {isa = PBXBuildFile; fileRef = B10DBC0212DBB5FB0030D67A /* BankUser.nib */; };
 		B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
 		B1139FF1127CB6F900D6EF08 /* CategoryHistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1139FF0127CB6F900D6EF08 /* CategoryHistWindowController.m */; };
 		B120E3C00EB0F34D00FC5A6F /* icon_colors.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E3BF0EB0F34D00FC5A6F /* icon_colors.png */; };
@@ -241,6 +242,7 @@
 		B1029E110E3FA1D700CC681B /* CatDefWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatDefWindowController.m; sourceTree = "<group>"; };
 		B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitRule.h; sourceTree = "<group>"; };
 		B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitRule.m; sourceTree = "<group>"; };
+		B10DBC0212DBB5FB0030D67A /* BankUser.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = BankUser.nib; sourceTree = "<group>"; };
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; };
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; };
 		B1139FEF127CB6F900D6EF08 /* CategoryHistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryHistWindowController.h; sourceTree = "<group>"; };
@@ -583,6 +585,7 @@
 				B196E0960FACE30600509748 /* BSSelectWindow.nib */,
 				B12A4DC710CB16F7002CC63E /* TanMethods.nib */,
 				B1014C5C101A2FBE00ABA1FF /* Donation.nib */,
+				B10DBC0212DBB5FB0030D67A /* BankUser.nib */,
 				B1A59497113182DA00FD8CB8 /* StatSplitController.xib */,
 				B14C6002114848E1009324A6 /* BankStatementController.xib */,
 				B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */,
@@ -1059,6 +1062,7 @@
 				B1AFA8811295C5D800B115A7 /* AccountRep.xib in Resources */,
 				B1AFA9F7129EEA3900B115A7 /* Orders.xib in Resources */,
 				B137BE9012D33AB200D0394C /* Institute.csv in Resources */,
+				B10DBC0312DBB5FB0030D67A /* BankUser.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

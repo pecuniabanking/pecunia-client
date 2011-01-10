@@ -160,7 +160,7 @@
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
 					20,
-					941,
+					888,
 					20,
 					48,
 					43,
@@ -980,7 +980,7 @@
 	};
 	B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1198, 888}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1090, 823}}";
 			sepNavSelRange = "{327, 0}";
 			sepNavVisRange = "{0, 334}";
 		};
