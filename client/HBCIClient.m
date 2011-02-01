@@ -7,12 +7,10 @@
 //
 
 #import "HBCIClient.h"
-#import "HBCIBridge.h"
-#import "Passport.h"
 #import "BankInfo.h"
-#import "HBCIError.h"
+//#import "HBCIError.h"
 #import "PecuniaError.h"
-#import "Account.h"
+//#import "Account.h"
 #import "BankQueryResult.h"
 #import "BankStatement.h"
 #import "BankAccount.h"
@@ -34,25 +32,13 @@ static HBCIClient *client = nil;
 	self = [super init ];
 	if(self == nil) return nil;
 	
-	bridge = [[ABController alloc ] init ];
-	
-/*	
-	bridge = [[HBCIBridge alloc ] initWithClient: self ];
-	[bridge startup ];
-	passports = [[NSMutableArray alloc ] initWithCapacity: 10 ];
-	accounts = [[NSMutableArray alloc ] initWithCapacity: 10 ];
-	bankInfo = [[NSMutableDictionary alloc ] initWithCapacity: 10];
-	countryInfos = [[NSMutableDictionary alloc ] initWithCapacity: 50];
-	[self readCountryInfos ];
-*/ 
+	bridge = [[ABController alloc ] init ];	
 	return self;
 }
 
 -(void)dealloc
 {
 	[bridge release ];
-	[passports release ];
-//	[accounts release ];
 	[bankInfo release ];
 	[countryInfos release ];
 	[super dealloc ];
@@ -73,11 +59,6 @@ static HBCIClient *client = nil;
 -(NSDictionary*)countryInfos
 {
 	return countryInfos;
-}
-
--(NSArray*)initHBCI
-{
-	return passports;
 }
 
 -(BankInfo*)infoForBankCode: (NSString*)bankCode inCountry:(NSString*)country

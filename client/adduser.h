@@ -1,6 +1,6 @@
 /*
  *  adduser.h
- *  MacBanking
+ *  Pecunia
  *
  *  Copyright 2007 Frank Emminghaus. All rights reserved.
  *

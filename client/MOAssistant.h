@@ -16,15 +16,19 @@
 	NSMutableDictionary			*migRefs;
 	
 	NSString					*dataDir;
-	NSString					*ppDir;
 	NSString					*dataStorePath;
 	NSURL						*accountsURL;
 	BOOL						encrypted;
+	BOOL						imageAvailable;
 }
+
+@property (nonatomic, copy) NSString *dataDir;
+@property (nonatomic, copy) NSString *dataStorePath;
+@property (nonatomic, retain) NSURL *accountsURL;
 
 -(void)loadModel;
 -(BOOL)relocateStoreToLocation: (NSString*)path;
--(BOOL)openImageWithPath: (NSString*)path;
+-(BOOL)openImage;
 -(BOOL)relocateToPath: (NSString*)path;
 -(void)shutdown;
 -(BOOL)encrypted;
@@ -37,13 +41,10 @@
 -(void)migrateDataDirFrom02;
 
 
-
-
--(NSString*)passportDirectory;
-
 -(NSManagedObjectContext*)context;
 -(NSManagedObjectModel*)model;
 -(NSManagedObjectContext*)memContext;
 +(MOAssistant*)assistant;
 
 @end
+

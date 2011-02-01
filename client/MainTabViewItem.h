@@ -11,6 +11,7 @@
 
 -(void)prepare;
 -(void)terminate;
+-(void)print;
 -(NSView*)mainView;
 
 @end

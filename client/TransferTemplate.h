@@ -30,6 +30,7 @@
 @property (nonatomic, retain) NSString * remoteCountry;
 @property (nonatomic, retain) NSString * remoteIBAN;
 @property (nonatomic, retain) NSString * remoteName;
+@property (nonatomic, retain) NSString * remoteSuffix;
 @property (nonatomic, retain) NSDecimalNumber * value;
 @property (nonatomic, retain) NSNumber * type;
 @end

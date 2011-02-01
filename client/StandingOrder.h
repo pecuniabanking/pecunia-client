@@ -38,7 +38,7 @@ typedef enum {
 @property (nonatomic, retain) NSNumber * cycle;
 @property (nonatomic, retain) NSNumber * executionDay;
 @property (nonatomic, retain) NSDate * firstExecDate;
-@property (nonatomic, retain) NSNumber * isDeleted;
+@property (nonatomic, retain) NSNumber * toDelete;
 @property (nonatomic, retain) NSNumber * isSent;
 @property (nonatomic, retain) NSDate * lastExecDate;
 @property (nonatomic, retain) NSDate * nextExecDate;
@@ -52,6 +52,7 @@ typedef enum {
 @property (nonatomic, retain) NSString * remoteBankCode;
 @property (nonatomic, retain) NSString * remoteBankName;
 @property (nonatomic, retain) NSString * remoteName;
+@property (nonatomic, retain) NSString * remoteSuffix;
 @property (nonatomic, retain) NSNumber * status;
 @property (nonatomic, retain) NSNumber * subType;
 @property (nonatomic, retain) NSNumber * type;

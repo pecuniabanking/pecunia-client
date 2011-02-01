@@ -1,6 +1,6 @@
 //
 //  CCDLayoutAdditions.h
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 08.02.08.
 //  Copyright 2008 Frank Emminghaus. All rights reserved.

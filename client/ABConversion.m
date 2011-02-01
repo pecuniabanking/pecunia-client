@@ -20,6 +20,7 @@
 #import "Transfer.h"
 #import "HBCIClient.h"
 #import "StandingOrder.h"
+#import "ShortDate.h"
 
 static NSDecimalNumber *hundred=nil;
 
@@ -179,6 +180,7 @@ NSDecimalNumber *convertValue(const AB_VALUE *val)
 	double dValue;
 	int	iValue;
 	
+	if (val == NULL) return [NSDecimalNumber zero ];
 	if (hundred == nil) hundred = [[NSDecimalNumber numberWithInt:100 ] retain ];
 	dValue = AB_Value_GetValueAsDouble(val);
 	iValue = (int)(dValue*100);
@@ -200,6 +202,7 @@ void convertStatement(AB_TRANSACTION *t, BankStatement *stmt)
 	
 	stmt.localBankCode = [NSString stringWithUTF8String: (c = AB_Transaction_GetLocalBankCode(t)) ? c: ""];
 	stmt.localAccount = [NSString stringWithUTF8String: (c = AB_Transaction_GetLocalAccountNumber(t)) ? c: ""];
+	stmt.localSuffix =  (c = AB_Transaction_GetLocalSuffix(t)) ? [NSString stringWithUTF8String: c ]:nil;
 	stmt.remoteCountry = [NSString stringWithUTF8String: (c = AB_Transaction_GetRemoteCountry(t)) ? c: ""];
 	stmt.remoteBankName = [NSString stringWithUTF8String: (c = AB_Transaction_GetRemoteBankName(t)) ? c: ""];
 	stmt.remoteBankLocation = [NSString stringWithUTF8String: (c = AB_Transaction_GetRemoteBankLocation(t)) ? c: ""];
@@ -214,6 +217,7 @@ void convertStatement(AB_TRANSACTION *t, BankStatement *stmt)
 	stmt.remoteIBAN = [NSString stringWithUTF8String: (c = AB_Transaction_GetRemoteIban(t)) ? c: ""];
 	stmt.remoteBIC = [NSString stringWithUTF8String: (c = AB_Transaction_GetRemoteBic(t)) ? c: ""];
 	stmt.remoteName = convertStringListToString(AB_Transaction_GetRemoteName(t), @"");
+	stmt.remoteSuffix = (c = AB_Transaction_GetRemoteSuffix(t)) ? [NSString stringWithUTF8String: c ]:nil;
 	stmt.customerReference = [NSString stringWithUTF8String: (c = AB_Transaction_GetCustomerReference(t)) ? c: ""];
 	stmt.bankReference = [NSString stringWithUTF8String: (c = AB_Transaction_GetBankReference(t)) ? c: ""];
 	stmt.transactionText = [NSString stringWithUTF8String: (c = AB_Transaction_GetTransactionText(t)) ? c: ""];
@@ -253,6 +257,7 @@ ABAccount *convertAccount(AB_ACCOUNT *acc)
 	account.currency		= [NSString stringWithUTF8String: (c = AB_Account_GetCurrency(acc)) ? c: ""];
 	account.iban			= [NSString stringWithUTF8String: (c = AB_Account_GetIBAN(acc)) ? c: ""];
 	account.bic				= [NSString stringWithUTF8String: (c = AB_Account_GetBIC(acc)) ? c: ""];
+//	account.accountSuffix   = (c = (const char*)AH_Account_GetSuffix(acc)) ? [NSString stringWithUTF8String: c ]:nil;
 	
 	account.uid  = AB_Account_GetUniqueId(acc);
 	account.type = AB_Account_GetAccountType(acc);
@@ -295,17 +300,17 @@ TransactionLimits *convertLimits(const AB_TRANSACTION_LIMITS *t)
 	if(sl) limits.execDaysWeek = convertStringList(sl);
 	sl = AB_TransactionLimits_GetValuesExecutionDayMonth(t);
 	if(sl) limits.execDaysMonth = convertStringList(sl);
-	limits.allowWeekly = AB_TransactionLimits_GetAllowWeekly(t);
-	limits.allowMonthly = AB_TransactionLimits_GetAllowMonthly(t);
-	limits.allowChangeRemoteName = AB_TransactionLimits_GetAllowChangeRecipientName(t);
-	limits.allowChangeRemoteAccount = AB_TransactionLimits_GetAllowChangeRecipientAccount(t);
-	limits.allowChangeValue = AB_TransactionLimits_GetAllowChangeValue(t);
-	limits.allowChangePurpose = AB_TransactionLimits_GetAllowChangePurpose(t);
-	limits.allowChangeFirstExecDate = AB_TransactionLimits_GetAllowChangeFirstExecutionDate(t);
-	limits.allowChangeLastExecDate = AB_TransactionLimits_GetAllowChangeLastExecutionDate(t);
-	limits.allowChangeCycle = AB_TransactionLimits_GetAllowChangeCycle(t);
-	limits.allowChangePeriod = AB_TransactionLimits_GetAllowChangePeriod(t);
-	limits.allowChangeExecDay = AB_TransactionLimits_GetAllowChangeExecutionDay(t);
+	limits.allowWeekly = AB_TransactionLimits_GetAllowWeekly(t)==1?YES:NO;
+	limits.allowMonthly = AB_TransactionLimits_GetAllowMonthly(t)==1?YES:NO;
+	limits.allowChangeRemoteName = AB_TransactionLimits_GetAllowChangeRecipientName(t)==1?YES:NO;
+	limits.allowChangeRemoteAccount = AB_TransactionLimits_GetAllowChangeRecipientAccount(t)==1?YES:NO;
+	limits.allowChangeValue = AB_TransactionLimits_GetAllowChangeValue(t)==1?YES:NO;
+	limits.allowChangePurpose = AB_TransactionLimits_GetAllowChangePurpose(t)==1?YES:NO;
+	limits.allowChangeFirstExecDate = AB_TransactionLimits_GetAllowChangeFirstExecutionDate(t)==1?YES:NO;
+	limits.allowChangeLastExecDate = AB_TransactionLimits_GetAllowChangeLastExecutionDate(t)==1?YES:NO;
+	limits.allowChangeCycle = AB_TransactionLimits_GetAllowChangeCycle(t)==1?YES:NO;
+	limits.allowChangePeriod = AB_TransactionLimits_GetAllowChangePeriod(t)==1?YES:NO;
+	limits.allowChangeExecDay = AB_TransactionLimits_GetAllowChangeExecutionDay(t)==1?YES:NO;
 	
 	return limits;
 }
@@ -463,12 +468,13 @@ void convertToStandingOrder(const AB_TRANSACTION *t, StandingOrder *stord)
 	stord.remoteBankCode = [NSString stringWithUTF8String: (c = AB_Transaction_GetRemoteBankCode(t)) ? c: ""];
 	stord.remoteAccount = [NSString stringWithUTF8String: (c = AB_Transaction_GetRemoteAccountNumber(t)) ? c: ""];
 	stord.remoteName = convertStringListToString(AB_Transaction_GetRemoteName(t), @"");
+	stord.remoteSuffix = (c = AB_Transaction_GetRemoteSuffix(t)) ? [NSString stringWithUTF8String: c ]:nil;
 	NSArray *purposes = convertStringList(AB_Transaction_GetPurpose(t));
 	stord.period = [NSNumber numberWithInt: AB_Transaction_GetPeriod(t) ];
 	stord.cycle = [NSNumber numberWithInt: AB_Transaction_GetCycle(t) ];
 	stord.executionDay = [NSNumber numberWithInt: AB_Transaction_GetExecutionDay(t) ];
 	stord.type = [NSNumber numberWithInt: AB_Transaction_GetUniqueId(t) ];
-	stord.orderKey = [NSString stringWithUTF8String: (c = AB_Transaction_GetFiId(t)) ? c: ""];
+	stord.orderKey = (c = AB_Transaction_GetFiId(t)) ? [NSString stringWithUTF8String: c ]:nil;
 		
 	for(i=0; i<[purposes count ]; i++) {
 		NSString *s = [purposes objectAtIndex:i ];
@@ -492,7 +498,10 @@ void convertToStandingOrder(const AB_TRANSACTION *t, StandingOrder *stord)
 	d = AB_Transaction_GetLastExecutionDate(t);
 	if(d) { 
 		stord.lastExecDate = [NSDate dateWithTimeIntervalSince1970: (NSTimeInterval)GWEN_Time_Seconds(d) ];
-	}	
+	} else {
+		stord.lastExecDate = [[ShortDate dateWithYear:2999 month:12 day:31 ] lowDate ];
+	}
+
 	
 	d = AB_Transaction_GetNextExecutionDate(t);
 	if(d) { 
@@ -580,9 +589,12 @@ AB_TRANSACTION *convertStandingOrder(StandingOrder *stord)
 		AB_Transaction_SetFirstExecutionDate(t, d);
 	}
 	if (stord.lastExecDate) {
-		NSDate *date = stord.lastExecDate;
-		GWEN_TIME *d = GWEN_Time_fromSeconds((unsigned int)[date timeIntervalSince1970 ]);
-		AB_Transaction_SetLastExecutionDate(t, d);
+		ShortDate *sDate = [ShortDate dateWithDate:stord.lastExecDate ];
+		if (sDate.year < 2100) {
+			NSDate *date = stord.lastExecDate;
+			GWEN_TIME *d = GWEN_Time_fromSeconds((unsigned int)[date timeIntervalSince1970 ]);
+			AB_Transaction_SetLastExecutionDate(t, d);
+		}
 	}
 	
 	if (stord.orderKey) {

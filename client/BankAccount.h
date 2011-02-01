@@ -1,6 +1,6 @@
 //
 //  BankAccount.h
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 01.07.07.
 //  Copyright 2007 Frank Emminghaus. All rights reserved.
@@ -21,12 +21,13 @@
 -(NSDate*)latestTransferDate;
 
 
--(void)evaluateStatements: (NSArray*)stats;
+-(void)evaluateQueryResult: (BankQueryResult*)res;
 -(int)updateFromQueryResult: (BankQueryResult*)result;
 -(void)updateStandingOrders:(NSArray*)orders;
 -(NSDate*)nextDateForDate:(NSDate*)date;
 
 +(BankAccount*)bankRootForCode:(NSString*)bankCode;
++(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code;
 
 @property (nonatomic, retain) NSDate * latestTransferDate;
 @property (nonatomic, retain) NSString * country;
@@ -44,7 +45,9 @@
 @property (nonatomic, retain) NSNumber * noAutomaticQuery;
 @property (nonatomic, retain) NSNumber * collTransfer;
 @property (nonatomic, retain) NSNumber * isManual;
+@property (nonatomic, retain) NSNumber * isStandingOrderSupported;
 @property (nonatomic, retain) NSString * splitRule;
+@property (nonatomic, retain) NSString * accountSuffix;
 
 @end
 

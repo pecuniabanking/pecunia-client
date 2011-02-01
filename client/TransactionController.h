@@ -56,6 +56,7 @@
 - (IBAction)countryDidChange:(id)sender;
 
 -(void)preparePurposeFields;
+-(void)setManagedObjectContext:(NSManagedObjectContext*)context;
 -(BOOL)check;
 
 @end

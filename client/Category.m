@@ -1,6 +1,6 @@
 //
 //  Category.m
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 04.07.07.
 //  Copyright 2007 Frank Emminghaus. All rights reserved.
@@ -430,6 +430,7 @@ BOOL	updateSent = NO;
 	NSManagedObjectContext	*context = [[MOAssistant assistant ] context ];
 	NSManagedObjectModel	*model   = [[MOAssistant assistant ] model ];
 	
+	if (context == nil) return nil;
 	NSFetchRequest *request = [model fetchRequestTemplateForName:@"getCategoryRoot"];
 	NSArray *cats = [context executeFetchRequest:request error:&error];
 	if( error != nil || cats == nil) {

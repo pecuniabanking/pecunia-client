@@ -21,6 +21,7 @@
 	IBOutlet NSSplitView		*splitView;
 	IBOutlet NSOutlineView		*categoryView;
 	IBOutlet NSView				*mainView;
+	IBOutlet NSView				*printView;
 
 	CategoryReportingNode		*dataRoot;
 	CategoryReportingNode		*periodRoot;

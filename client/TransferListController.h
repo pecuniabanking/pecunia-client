@@ -25,5 +25,6 @@
 -(IBAction)transferDoubleClicked: (id)sender;
 
 -(void)setFilterPredicate:(NSPredicate*)pred;
+-(void)setManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end

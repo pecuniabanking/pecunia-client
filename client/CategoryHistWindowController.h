@@ -22,7 +22,8 @@
 	IBOutlet NSSplitView		*splitView;
 	IBOutlet NSPopUpButton		*fromButton;
 	IBOutlet NSPopUpButton		*toButton;
-	IBOutlet NSView				*mainView;	
+	IBOutlet NSView				*mainView;
+	IBOutlet NSView				*printView;
 	
 	NSPoint minValues;
 	NSPoint maxValues;

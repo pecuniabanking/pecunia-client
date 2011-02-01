@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">10F569</string>
+		<string key="IBDocument.SystemVersion">10J567</string>
 		<string key="IBDocument.InterfaceBuilderVersion">762</string>
-		<string key="IBDocument.AppKitVersion">1038.29</string>
-		<string key="IBDocument.HIToolboxVersion">461.00</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
+		<string key="IBDocument.HIToolboxVersion">462.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">762</string>
@@ -399,6 +399,33 @@
 											<int key="NSvFlags">268</int>
 											<object class="NSMutableArray" key="NSSubviews">
 												<bool key="EncodedWithXMLCoder">YES</bool>
+												<object class="NSButton" id="1004580997">
+													<reference key="NSNextResponder" ref="519582745"/>
+													<int key="NSvFlags">268</int>
+													<string key="NSFrame">{{18, 18}, {156, 18}}</string>
+													<reference key="NSSuperview" ref="519582745"/>
+													<bool key="NSEnabled">YES</bool>
+													<object class="NSButtonCell" key="NSCell" id="6959822">
+														<int key="NSCellFlags">67239424</int>
+														<int key="NSCellFlags2">0</int>
+														<string key="NSContents">Daueraufträge</string>
+														<reference key="NSSupport" ref="731885523"/>
+														<reference key="NSControlView" ref="1004580997"/>
+														<int key="NSButtonFlags">1211912703</int>
+														<int key="NSButtonFlags2">2</int>
+														<object class="NSCustomResource" key="NSNormalImage" id="380781111">
+															<string key="NSClassName">NSImage</string>
+															<string key="NSResourceName">NSSwitch</string>
+														</object>
+														<object class="NSButtonImageSource" key="NSAlternateImage" id="757885475">
+															<string key="NSImageName">NSSwitch</string>
+														</object>
+														<string key="NSAlternateContents"/>
+														<string key="NSKeyEquivalent"/>
+														<int key="NSPeriodicDelay">200</int>
+														<int key="NSPeriodicInterval">25</int>
+													</object>
+												</object>
 												<object class="NSButton" id="892748622">
 													<reference key="NSNextResponder" ref="519582745"/>
 													<int key="NSvFlags">268</int>
@@ -413,13 +440,8 @@
 														<reference key="NSControlView" ref="892748622"/>
 														<int key="NSButtonFlags">1211912703</int>
 														<int key="NSButtonFlags2">2</int>
-														<object class="NSCustomResource" key="NSNormalImage">
-															<string key="NSClassName">NSImage</string>
-															<string key="NSResourceName">NSSwitch</string>
-														</object>
-														<object class="NSButtonImageSource" key="NSAlternateImage">
-															<string key="NSImageName">NSSwitch</string>
-														</object>
+														<reference key="NSNormalImage" ref="380781111"/>
+														<reference key="NSAlternateImage" ref="757885475"/>
 														<string key="NSAlternateContents"/>
 														<string key="NSKeyEquivalent"/>
 														<int key="NSPeriodicDelay">200</int>
@@ -638,6 +660,7 @@
 					<string>collTransfer</string>
 					<string>owner</string>
 					<string>balance</string>
+					<string>isStandingOrderSupported</string>
 				</object>
 				<string key="NSObjectClassName">ABAccount</string>
 				<bool key="NSEditable">YES</bool>
@@ -1100,6 +1123,22 @@
 					</object>
 					<int key="connectionID">191</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.isStandingOrderSupported</string>
+						<reference key="source" ref="1004580997"/>
+						<reference key="destination" ref="646210689"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1004580997"/>
+							<reference key="NSDestination" ref="646210689"/>
+							<string key="NSLabel">value: selection.isStandingOrderSupported</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.isStandingOrderSupported</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">195</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1551,6 +1590,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="892748622"/>
+							<reference ref="1004580997"/>
 						</object>
 						<reference key="parent" ref="523379319"/>
 						<string key="objectName">AccountAdd</string>
@@ -1568,6 +1608,20 @@
 						<int key="objectID">186</int>
 						<reference key="object" ref="593657447"/>
 						<reference key="parent" ref="892748622"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">192</int>
+						<reference key="object" ref="1004580997"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="6959822"/>
+						</object>
+						<reference key="parent" ref="519582745"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">193</int>
+						<reference key="object" ref="6959822"/>
+						<reference key="parent" ref="1004580997"/>
 					</object>
 				</object>
 			</object>
@@ -1608,6 +1662,8 @@
 					<string>184.IBPluginDependency</string>
 					<string>185.IBPluginDependency</string>
 					<string>186.IBPluginDependency</string>
+					<string>192.IBPluginDependency</string>
+					<string>193.IBPluginDependency</string>
 					<string>20.IBPluginDependency</string>
 					<string>21.IBPluginDependency</string>
 					<string>22.IBPluginDependency</string>
@@ -1696,9 +1752,11 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{254, 690}, {684, 348}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{254, 690}, {684, 348}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{181, 690}, {684, 348}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{181, 690}, {684, 348}}</string>
 					<integer value="1"/>
 					<string>{{649, 650}, {684, 320}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1743,7 +1801,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">191</int>
+			<int key="maxID">195</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

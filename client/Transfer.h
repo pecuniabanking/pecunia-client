@@ -1,6 +1,6 @@
 //
 //  Transfer.h
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 21.07.07.
 //  Copyright 2007 Frank Emminghaus. All rights reserved.
@@ -49,6 +49,7 @@ typedef enum {
 @property (nonatomic, retain) NSString * remoteCountry;
 @property (nonatomic, retain) NSString * remoteIBAN;
 @property (nonatomic, retain) NSString * remoteName;
+@property (nonatomic, retain) NSString * remoteSuffix;
 @property (nonatomic, retain) NSNumber * status;
 @property (nonatomic, retain) NSNumber * subType;
 @property (nonatomic, retain) NSNumber * type;

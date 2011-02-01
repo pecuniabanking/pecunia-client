@@ -18,6 +18,7 @@
 	NSDecimalNumber	*balance;
 	NSMutableArray	*statements;
 	NSMutableArray  *standingOrders;
+	BOOL			isImport;
 	BankAccount		*account;
 }
 
@@ -29,7 +30,7 @@
 @property (retain) NSMutableArray *statements;
 @property (retain) NSMutableArray *standingOrders;
 @property (assign) BankAccount *account;
-
+@property (assign) BOOL isImport;
 
 
 

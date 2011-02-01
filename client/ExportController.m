@@ -77,7 +77,7 @@ static ExportController *exportController = nil;
 	//	[sp setRequiredFileType:@"txt"];
 	
 	/* display the NSSavePanel */
-	runResult = [sp runModalForDirectory:NSHomeDirectory() file:[cat name]];
+	runResult = [sp runModalForDirectory:NSHomeDirectory() file:[[cat name] stringByAppendingString:@".csv"]];
 	
 	/* if successful, save file under designated name */
 	if (runResult == NSOKButton) {

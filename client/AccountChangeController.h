@@ -9,6 +9,7 @@
 	IBOutlet NSTextField			*bankCodeField;
 	IBOutlet NSTextField			*bankNameField;
 	IBOutlet NSButton				*collTransferCheck;
+	IBOutlet NSButton				*stordCheck;
 	
 	NSManagedObjectContext			*moc;
 	BankAccount						*account;

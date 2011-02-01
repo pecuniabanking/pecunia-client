@@ -19,6 +19,7 @@
 @synthesize account;
 @synthesize userId;
 @synthesize standingOrders;
+@synthesize isImport;
 
 
 -(void)dealloc

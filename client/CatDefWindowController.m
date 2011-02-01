@@ -34,7 +34,6 @@
 
 -(void)awakeFromNib
 {
-	NSError			*error;
 	NSTableColumn	*tc;
 	
 	notAssignedSelected = NO;
@@ -58,7 +57,7 @@
 	
 	caClassification = [[CatAssignClassification alloc] init];
 	[predicateEditor addRow:self ];
-	if([catDefController fetchWithRequest:nil merge:NO error:&error]); // [catView restoreAll ];
+//	if ([[MOAssistant assistant ] context]) [catDefController fetchWithRequest:nil merge:NO error:&error];
 	
 	// sort descriptor for transactions view
 	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:NO] autorelease];
@@ -69,9 +68,19 @@
 	[assignPreview registerForDraggedTypes: [NSArray arrayWithObject: BankStatementDataType ] ];
 	[catView registerForDraggedTypes: [NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil ] ];
 	
-	[self performSelector: @selector(restoreCatView) withObject: nil afterDelay: 0.0];
+//	[self performSelector: @selector(restoreCatView) withObject: nil afterDelay: 0.0];
 	awaking = NO;
 }
+
+-(void)setManagedObjectContext:(NSManagedObjectContext*)context
+{
+	[assignPreviewController setManagedObjectContext: context ];
+	[assignPreviewController prepareContent ];
+	[catDefController setManagedObjectContext:context ];
+	[catDefController prepareContent ];
+	[self performSelector: @selector(restoreCatView) withObject: nil afterDelay: 0.0];
+}
+
 
 -(void)prepare
 {
@@ -304,7 +313,6 @@
 
 -(void)calculateCatAssignPredicate
 {
-	// (EditorPredicate && cat == NASS || EditorPredicate && category.isBankAccount && statement.isAssigned || category == cat) && date in TimeSlice
 	NSPredicate* pred = nil;
 	NSPredicate* compound = nil;
 	

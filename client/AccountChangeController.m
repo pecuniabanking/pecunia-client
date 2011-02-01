@@ -1,7 +1,6 @@
 #import "AccountChangeController.h"
 #import "BankAccount.h"
 #import "MOAssistant.h"
-#import "Passport.h"
 #import "BankInfo.h"
 #import "HBCIClient.h"
 #import "BankingController.h"
@@ -25,14 +24,16 @@
 	account.iban = acc.iban;
 	account.currency = acc.currency;
 	account.collTransfer = acc.collTransfer;
+	account.isStandingOrderSupported = acc.isStandingOrderSupported;
 
 	return self;
 }
 
 -(void)awakeFromNib
 {
-	if (account.userId == nil) {
+	if (changedAccount.userId == nil) {
 		[collTransferCheck setHidden:YES ];
+		[stordCheck setHidden:YES ];
 	}
 }
 
@@ -55,6 +56,7 @@
 	changedAccount.owner = account.owner;
 	changedAccount.name = account.name;
 	changedAccount.collTransfer = account.collTransfer;
+	changedAccount.isStandingOrderSupported = account.isStandingOrderSupported;
 
     [self close ];
 

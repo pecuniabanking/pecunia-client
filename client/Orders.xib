@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">10H574</string>
+		<string key="IBDocument.SystemVersion">10J567</string>
 		<string key="IBDocument.InterfaceBuilderVersion">762</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">461.00</string>
+		<string key="IBDocument.HIToolboxVersion">462.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">762</string>
@@ -1300,7 +1300,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 										<object class="NSMutableArray" key="NSTableColumns">
 											<bool key="EncodedWithXMLCoder">YES</bool>
 											<object class="NSTableColumn" id="153574376">
-												<string key="NSIdentifier">isDeleted</string>
+												<string key="NSIdentifier">toDelete</string>
 												<double key="NSWidth">50</double>
 												<double key="NSMinWidth">10</double>
 												<double key="NSMaxWidth">3.4028234663852886e+38</double>
@@ -1730,7 +1730,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<string>isChanged</string>
 					<string>remoteBankName</string>
 					<string>orderKey</string>
+					<string>toDelete</string>
 				</object>
+				<bool key="NSEditable">YES</bool>
 				<bool key="NSAutomaticallyPreparesContent">YES</bool>
 				<object class="_NSManagedProxy" key="_NSManagedProxy">
 					<string key="NSEntityName">StandingOrder</string>
@@ -2153,150 +2155,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.remoteName</string>
-						<reference key="source" ref="1033181750"/>
-						<reference key="destination" ref="725289747"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1033181750"/>
-							<reference key="NSDestination" ref="725289747"/>
-							<string key="NSLabel">value: selection.remoteName</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.remoteName</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">150</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.remoteAccount</string>
-						<reference key="source" ref="145109672"/>
-						<reference key="destination" ref="725289747"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="145109672"/>
-							<reference key="NSDestination" ref="725289747"/>
-							<string key="NSLabel">value: selection.remoteAccount</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.remoteAccount</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">153</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.remoteBankCode</string>
-						<reference key="source" ref="502866595"/>
-						<reference key="destination" ref="725289747"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="502866595"/>
-							<reference key="NSDestination" ref="725289747"/>
-							<string key="NSLabel">value: selection.remoteBankCode</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.remoteBankCode</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">156</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.value</string>
-						<reference key="source" ref="424968735"/>
-						<reference key="destination" ref="725289747"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="424968735"/>
-							<reference key="NSDestination" ref="725289747"/>
-							<string key="NSLabel">value: selection.value</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.value</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">159</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.currency</string>
-						<reference key="source" ref="471090065"/>
-						<reference key="destination" ref="725289747"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="471090065"/>
-							<reference key="NSDestination" ref="725289747"/>
-							<string key="NSLabel">value: selection.currency</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.currency</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">162</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.purpose1</string>
-						<reference key="source" ref="402274898"/>
-						<reference key="destination" ref="725289747"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="402274898"/>
-							<reference key="NSDestination" ref="725289747"/>
-							<string key="NSLabel">value: selection.purpose1</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.purpose1</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">165</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.purpose2</string>
-						<reference key="source" ref="367553395"/>
-						<reference key="destination" ref="725289747"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="367553395"/>
-							<reference key="NSDestination" ref="725289747"/>
-							<string key="NSLabel">value: selection.purpose2</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.purpose2</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">168</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.purpose3</string>
-						<reference key="source" ref="623302554"/>
-						<reference key="destination" ref="725289747"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="623302554"/>
-							<reference key="NSDestination" ref="725289747"/>
-							<string key="NSLabel">value: selection.purpose3</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.purpose3</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">171</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.purpose4</string>
-						<reference key="source" ref="686676307"/>
-						<reference key="destination" ref="725289747"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="686676307"/>
-							<reference key="NSDestination" ref="725289747"/>
-							<string key="NSLabel">value: selection.purpose4</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.purpose4</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">174</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: selection.lastExecDate</string>
 						<reference key="source" ref="367796770"/>
 						<reference key="destination" ref="725289747"/>
@@ -2637,38 +2495,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.account.accountNumber</string>
-						<reference key="source" ref="1000191795"/>
-						<reference key="destination" ref="725289747"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1000191795"/>
-							<reference key="NSDestination" ref="725289747"/>
-							<string key="NSLabel">value: selection.account.accountNumber</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.account.accountNumber</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">247</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.account.bankCode</string>
-						<reference key="source" ref="66058418"/>
-						<reference key="destination" ref="725289747"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="66058418"/>
-							<reference key="NSDestination" ref="725289747"/>
-							<string key="NSLabel">value: selection.account.bankCode</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.account.bankCode</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">254</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: arrangedObjects.accountNumber</string>
 						<reference key="source" ref="261701727"/>
 						<reference key="destination" ref="738676062"/>
@@ -2738,22 +2564,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="destination" ref="943136955"/>
 					</object>
 					<int key="connectionID">283</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.isDeleted</string>
-						<reference key="source" ref="153574376"/>
-						<reference key="destination" ref="725289747"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="153574376"/>
-							<reference key="NSDestination" ref="725289747"/>
-							<string key="NSLabel">value: arrangedObjects.isDeleted</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.isDeleted</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">288</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -3165,6 +2975,242 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					</object>
 					<int key="connectionID">378</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: arrangedObjects.toDelete</string>
+						<reference key="source" ref="153574376"/>
+						<reference key="destination" ref="725289747"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="153574376"/>
+							<reference key="NSDestination" ref="725289747"/>
+							<string key="NSLabel">value: arrangedObjects.toDelete</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">arrangedObjects.toDelete</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">385</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.account.accountNumber</string>
+						<reference key="source" ref="1000191795"/>
+						<reference key="destination" ref="725289747"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1000191795"/>
+							<reference key="NSDestination" ref="725289747"/>
+							<string key="NSLabel">value: selection.account.accountNumber</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.account.accountNumber</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNoSelectionPlaceholder</string>
+								<string type="base64-UTF8" key="NS.object.0">IA</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">386</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.account.bankCode</string>
+						<reference key="source" ref="66058418"/>
+						<reference key="destination" ref="725289747"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="66058418"/>
+							<reference key="NSDestination" ref="725289747"/>
+							<string key="NSLabel">value: selection.account.bankCode</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.account.bankCode</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNoSelectionPlaceholder</string>
+								<string type="base64-UTF8" key="NS.object.0">IA</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">387</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.remoteName</string>
+						<reference key="source" ref="1033181750"/>
+						<reference key="destination" ref="725289747"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1033181750"/>
+							<reference key="NSDestination" ref="725289747"/>
+							<string key="NSLabel">value: selection.remoteName</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.remoteName</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNoSelectionPlaceholder</string>
+								<string type="base64-UTF8" key="NS.object.0">IA</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">388</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.remoteAccount</string>
+						<reference key="source" ref="145109672"/>
+						<reference key="destination" ref="725289747"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="145109672"/>
+							<reference key="NSDestination" ref="725289747"/>
+							<string key="NSLabel">value: selection.remoteAccount</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.remoteAccount</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNoSelectionPlaceholder</string>
+								<string type="base64-UTF8" key="NS.object.0">IA</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">389</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.remoteBankCode</string>
+						<reference key="source" ref="502866595"/>
+						<reference key="destination" ref="725289747"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="502866595"/>
+							<reference key="NSDestination" ref="725289747"/>
+							<string key="NSLabel">value: selection.remoteBankCode</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.remoteBankCode</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNoSelectionPlaceholder</string>
+								<string type="base64-UTF8" key="NS.object.0">IA</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">390</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.value</string>
+						<reference key="source" ref="424968735"/>
+						<reference key="destination" ref="725289747"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="424968735"/>
+							<reference key="NSDestination" ref="725289747"/>
+							<string key="NSLabel">value: selection.value</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.value</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNoSelectionPlaceholder</string>
+								<real value="0.0" key="NS.object.0"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">391</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.currency</string>
+						<reference key="source" ref="471090065"/>
+						<reference key="destination" ref="725289747"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="471090065"/>
+							<reference key="NSDestination" ref="725289747"/>
+							<string key="NSLabel">value: selection.currency</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.currency</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNoSelectionPlaceholder</string>
+								<string key="NS.object.0">EUR</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">392</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.purpose1</string>
+						<reference key="source" ref="402274898"/>
+						<reference key="destination" ref="725289747"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="402274898"/>
+							<reference key="NSDestination" ref="725289747"/>
+							<string key="NSLabel">value: selection.purpose1</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.purpose1</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNoSelectionPlaceholder</string>
+								<string type="base64-UTF8" key="NS.object.0">IA</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">393</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.purpose2</string>
+						<reference key="source" ref="367553395"/>
+						<reference key="destination" ref="725289747"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="367553395"/>
+							<reference key="NSDestination" ref="725289747"/>
+							<string key="NSLabel">value: selection.purpose2</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.purpose2</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNoSelectionPlaceholder</string>
+								<string type="base64-UTF8" key="NS.object.0">IA</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">394</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.purpose3</string>
+						<reference key="source" ref="623302554"/>
+						<reference key="destination" ref="725289747"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="623302554"/>
+							<reference key="NSDestination" ref="725289747"/>
+							<string key="NSLabel">value: selection.purpose3</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.purpose3</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNoSelectionPlaceholder</string>
+								<string type="base64-UTF8" key="NS.object.0">IA</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">395</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.purpose4</string>
+						<reference key="source" ref="686676307"/>
+						<reference key="destination" ref="725289747"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="686676307"/>
+							<reference key="NSDestination" ref="725289747"/>
+							<string key="NSLabel">value: selection.purpose4</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.purpose4</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSNoSelectionPlaceholder</string>
+								<string type="base64-UTF8" key="NS.object.0">IA</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">396</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -3220,9 +3266,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 							<reference ref="367553395"/>
 							<reference ref="623302554"/>
 							<reference ref="686676307"/>
-							<reference ref="443451642"/>
 							<reference ref="718818456"/>
 							<reference ref="1030560815"/>
+							<reference ref="443451642"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -3604,7 +3650,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="182741717"/>
 							<reference ref="740047776"/>
-							<reference ref="611198217"/>
 							<reference ref="159670194"/>
 							<reference ref="342412134"/>
 							<reference ref="197784497"/>
@@ -3615,6 +3660,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 							<reference ref="367796770"/>
 							<reference ref="176847825"/>
 							<reference ref="190949945"/>
+							<reference ref="611198217"/>
 						</object>
 						<reference key="parent" ref="89273327"/>
 					</object>
@@ -4372,7 +4418,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{358, 502}, {1066, 648}}</string>
+					<string>{{74, 320}, {1066, 648}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4527,7 +4573,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">384</int>
+			<int key="maxID">396</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

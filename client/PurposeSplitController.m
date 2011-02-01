@@ -71,7 +71,7 @@
 		}
 		
 		// save conversion rule
-		account.convRule = [NSString stringWithFormat:@"%d:%d,%d,%d,%d,%d,%d,%d", 1, ePos, eLen, kPos, kLen, bPos, bLen, vPos ];
+		account.splitRule = [NSString stringWithFormat:@"%d:%d,%d,%d,%d,%d,%d,%d", 1, ePos, eLen, kPos, kLen, bPos, bLen, vPos ];
 		
 		// save updates
 		if([context save: &error ] == NO) {

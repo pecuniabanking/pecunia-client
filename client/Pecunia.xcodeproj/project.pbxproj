@@ -43,14 +43,7 @@
 		B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F09E0C36F3E8001065C2 /* BankStatement.m */; };
 		B124F1110C371384001065C2 /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F1100C371384001065C2 /* BankAccount.m */; };
 		B12A497710BDD23D002CC63E /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A496A10BDD23D002CC63E /* Account.m */; };
-		B12A497810BDD23D002CC63E /* CallbackParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A496C10BDD23D002CC63E /* CallbackParser.m */; };
-		B12A497910BDD23D002CC63E /* HBCIBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A496E10BDD23D002CC63E /* HBCIBridge.m */; };
-		B12A497A10BDD23D002CC63E /* HBCIError.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A497010BDD23D002CC63E /* HBCIError.m */; };
-		B12A497B10BDD23D002CC63E /* LogParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A497210BDD23D002CC63E /* LogParser.m */; };
-		B12A497C10BDD23D002CC63E /* Passport.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A497410BDD23D002CC63E /* Passport.m */; };
-		B12A497D10BDD23D002CC63E /* ResultParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A497610BDD23D002CC63E /* ResultParser.m */; };
 		B12A499010BDD6A2002CC63E /* HBCIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A498F10BDD6A2002CC63E /* HBCIClient.m */; };
-		B12A499D10BF188D002CC63E /* CallbackData.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A499C10BF188D002CC63E /* CallbackData.m */; };
 		B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A4D4E10C869F0002CC63E /* NewPasswordController.m */; };
 		B12A4D6310C86C22002CC63E /* NewPasswordWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = B12A4D6210C86C22002CC63E /* NewPasswordWindow.nib */; };
@@ -60,6 +53,9 @@
 		B132F8D10F93DC0D00263F3B /* MCEMTreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = B132F8D00F93DC0D00263F3B /* MCEMTreeController.m */; };
 		B132F91F0F96594000263F3B /* ShortDate.m in Sources */ = {isa = PBXBuildFile; fileRef = B132F91E0F96594000263F3B /* ShortDate.m */; };
 		B132FADF0F9CFD0000263F3B /* TimeSliceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B132FADE0F9CFD0000263F3B /* TimeSliceManager.m */; };
+		B134357212EB7FDF006C4687 /* cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = B134357112EB7FDF006C4687 /* cursor.png */; };
+		B13435A412EC36A3006C4687 /* GenericImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B13435A312EC36A3006C4687 /* GenericImportController.m */; };
+		B134365B12ECBD54006C4687 /* GenericImportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B134365A12ECBD54006C4687 /* GenericImportWindow.xib */; };
 		B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B136AAD70FCF1C4A007A643F /* MCEMTableView.m */; };
 		B136AB360FD077DD007A643F /* MCEMPieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = B136AB350FD077DD007A643F /* MCEMPieChartView.m */; };
 		B136B24E0FE2F705007A643F /* InstitutesController.m in Sources */ = {isa = PBXBuildFile; fileRef = B136B24D0FE2F705007A643F /* InstitutesController.m */; };
@@ -141,6 +137,7 @@
 		B1B0EED10EDF358200701E76 /* 3floppy.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B0EECF0EDF358200701E76 /* 3floppy.png */; };
 		B1B0EED20EDF358200701E76 /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B0EED00EDF358200701E76 /* empty.png */; };
 		B1B0EEDF0EDF3F0900701E76 /* nok.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B0EEDE0EDF3F0900701E76 /* nok.png */; };
+		B1B7B37412EA3D2B0013CF0B /* standing_order.png in Resources */ = {isa = PBXBuildFile; fileRef = B1B7B37312EA3D2B0013CF0B /* standing_order.png */; };
 		B1BCDF76111F5DBB002E0802 /* CountryInfo.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */; };
 		B1C72C23123C36F100D1D78D /* ABControllerGui.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C72C22123C36F100D1D78D /* ABControllerGui.m */; };
 		B1C72C30123D4C1200D1D78D /* ABInfoBoxController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C72C2B123D4C1200D1D78D /* ABInfoBoxController.m */; };
@@ -258,22 +255,8 @@
 		B124F1100C371384001065C2 /* BankAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccount.m; sourceTree = "<group>"; };
 		B12A496910BDD23D002CC63E /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
 		B12A496A10BDD23D002CC63E /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
-		B12A496B10BDD23D002CC63E /* CallbackParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackParser.h; sourceTree = "<group>"; };
-		B12A496C10BDD23D002CC63E /* CallbackParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackParser.m; sourceTree = "<group>"; };
-		B12A496D10BDD23D002CC63E /* HBCIBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBCIBridge.h; sourceTree = "<group>"; };
-		B12A496E10BDD23D002CC63E /* HBCIBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBCIBridge.m; sourceTree = "<group>"; };
-		B12A496F10BDD23D002CC63E /* HBCIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBCIError.h; sourceTree = "<group>"; };
-		B12A497010BDD23D002CC63E /* HBCIError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBCIError.m; sourceTree = "<group>"; };
-		B12A497110BDD23D002CC63E /* LogParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogParser.h; sourceTree = "<group>"; };
-		B12A497210BDD23D002CC63E /* LogParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogParser.m; sourceTree = "<group>"; };
-		B12A497310BDD23D002CC63E /* Passport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Passport.h; sourceTree = "<group>"; };
-		B12A497410BDD23D002CC63E /* Passport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Passport.m; sourceTree = "<group>"; };
-		B12A497510BDD23D002CC63E /* ResultParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultParser.h; sourceTree = "<group>"; };
-		B12A497610BDD23D002CC63E /* ResultParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultParser.m; sourceTree = "<group>"; };
 		B12A498E10BDD6A2002CC63E /* HBCIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBCIClient.h; sourceTree = "<group>"; };
 		B12A498F10BDD6A2002CC63E /* HBCIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBCIClient.m; sourceTree = "<group>"; };
-		B12A499B10BF188D002CC63E /* CallbackData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackData.h; sourceTree = "<group>"; };
-		B12A499C10BF188D002CC63E /* CallbackData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackData.m; sourceTree = "<group>"; };
 		B12A4D4D10C869F0002CC63E /* NewPasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPasswordController.h; sourceTree = "<group>"; };
 		B12A4D4E10C869F0002CC63E /* NewPasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPasswordController.m; sourceTree = "<group>"; };
 		B12A4D6210C86C22002CC63E /* NewPasswordWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = NewPasswordWindow.nib; sourceTree = "<group>"; };
@@ -287,6 +270,10 @@
 		B132F91E0F96594000263F3B /* ShortDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShortDate.m; sourceTree = "<group>"; };
 		B132FADD0F9CFD0000263F3B /* TimeSliceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeSliceManager.h; sourceTree = "<group>"; };
 		B132FADE0F9CFD0000263F3B /* TimeSliceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeSliceManager.m; sourceTree = "<group>"; };
+		B134357112EB7FDF006C4687 /* cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cursor.png; sourceTree = "<group>"; };
+		B13435A212EC36A3006C4687 /* GenericImportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericImportController.h; sourceTree = "<group>"; };
+		B13435A312EC36A3006C4687 /* GenericImportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericImportController.m; sourceTree = "<group>"; };
+		B134365A12ECBD54006C4687 /* GenericImportWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenericImportWindow.xib; sourceTree = "<group>"; };
 		B136AAD60FCF1C4A007A643F /* MCEMTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCEMTableView.h; sourceTree = "<group>"; };
 		B136AAD70FCF1C4A007A643F /* MCEMTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMTableView.m; sourceTree = "<group>"; };
 		B136AB340FD077DD007A643F /* MCEMPieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCEMPieChartView.h; sourceTree = "<group>"; };
@@ -415,6 +402,7 @@
 		B1B0EECF0EDF358200701E76 /* 3floppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3floppy.png; sourceTree = "<group>"; };
 		B1B0EED00EDF358200701E76 /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = "<group>"; };
 		B1B0EEDE0EDF3F0900701E76 /* nok.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nok.png; sourceTree = "<group>"; };
+		B1B7B37312EA3D2B0013CF0B /* standing_order.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = standing_order.png; sourceTree = "<group>"; };
 		B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CountryInfo.txt; sourceTree = "<group>"; };
 		B1C72C21123C36F100D1D78D /* ABControllerGui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABControllerGui.h; sourceTree = "<group>"; };
 		B1C72C22123C36F100D1D78D /* ABControllerGui.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABControllerGui.m; sourceTree = "<group>"; };
@@ -592,6 +580,7 @@
 				B1AFA78D129463F100B115A7 /* CategoryHistory.xib */,
 				B1AFA836129479BA00B115A7 /* CategoryRep.xib */,
 				B1AFA8801295C5D800B115A7 /* AccountRep.xib */,
+				B134365A12ECBD54006C4687 /* GenericImportWindow.xib */,
 				B1AFA9F6129EEA3900B115A7 /* Orders.xib */,
 				B1923B560EB7A6D40079ADCA /* Icons */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -620,22 +609,8 @@
 				B1F459EB0F2E480700BAF4E8 /* BankInfo.m */,
 				B12A496910BDD23D002CC63E /* Account.h */,
 				B12A496A10BDD23D002CC63E /* Account.m */,
-				B12A496B10BDD23D002CC63E /* CallbackParser.h */,
-				B12A496C10BDD23D002CC63E /* CallbackParser.m */,
-				B12A496D10BDD23D002CC63E /* HBCIBridge.h */,
-				B12A496E10BDD23D002CC63E /* HBCIBridge.m */,
-				B12A496F10BDD23D002CC63E /* HBCIError.h */,
-				B12A497010BDD23D002CC63E /* HBCIError.m */,
-				B12A497110BDD23D002CC63E /* LogParser.h */,
-				B12A497210BDD23D002CC63E /* LogParser.m */,
-				B12A497310BDD23D002CC63E /* Passport.h */,
-				B12A497410BDD23D002CC63E /* Passport.m */,
-				B12A497510BDD23D002CC63E /* ResultParser.h */,
-				B12A497610BDD23D002CC63E /* ResultParser.m */,
 				B12A498E10BDD6A2002CC63E /* HBCIClient.h */,
 				B12A498F10BDD6A2002CC63E /* HBCIClient.m */,
-				B12A499B10BF188D002CC63E /* CallbackData.h */,
-				B12A499C10BF188D002CC63E /* CallbackData.m */,
 				B1FAEABB122C65AC000AF027 /* ImExporter.h */,
 				B1FAEABC122C65AC000AF027 /* ImExporter.m */,
 				B1FAEABD122C65AC000AF027 /* ImExporterProfile.h */,
@@ -700,6 +675,8 @@
 		B1923B560EB7A6D40079ADCA /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				B134357112EB7FDF006C4687 /* cursor.png */,
+				B1B7B37312EA3D2B0013CF0B /* standing_order.png */,
 				B1FB6914125D0A5500C54A0E /* edit16.png */,
 				B1014C101018F97600ABA1FF /* lock.ico */,
 				B1014BEF1018E91300ABA1FF /* catdef.ico */,
@@ -846,6 +823,8 @@
 				B159010A129310E40053CB9C /* MainTabViewItem.h */,
 				B1AFAA0312A061C100B115A7 /* StandingOrderTabController.h */,
 				B1AFAA0412A061C100B115A7 /* StandingOrderTabController.m */,
+				B13435A212EC36A3006C4687 /* GenericImportController.h */,
+				B13435A312EC36A3006C4687 /* GenericImportController.m */,
 			);
 			name = WindowController;
 			sourceTree = "<group>";
@@ -966,6 +945,9 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "Frank Emminghaus";
+			};
 			buildConfigurationList = B14C0A8B0AAF71DB00CC41C4 /* Build configuration list for PBXProject "Pecunia" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
@@ -1061,6 +1043,9 @@
 				B1AFA9F7129EEA3900B115A7 /* Orders.xib in Resources */,
 				B137BE9012D33AB200D0394C /* Institute.csv in Resources */,
 				B10DBC4E12DBB96F0030D67A /* BankUser.nib in Resources */,
+				B1B7B37412EA3D2B0013CF0B /* standing_order.png in Resources */,
+				B134357212EB7FDF006C4687 /* cursor.png in Resources */,
+				B134365B12ECBD54006C4687 /* GenericImportWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1133,14 +1118,7 @@
 				B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */,
 				B14EBCFD1031FAC700020A26 /* BankQueryResult.m in Sources */,
 				B12A497710BDD23D002CC63E /* Account.m in Sources */,
-				B12A497810BDD23D002CC63E /* CallbackParser.m in Sources */,
-				B12A497910BDD23D002CC63E /* HBCIBridge.m in Sources */,
-				B12A497A10BDD23D002CC63E /* HBCIError.m in Sources */,
-				B12A497B10BDD23D002CC63E /* LogParser.m in Sources */,
-				B12A497C10BDD23D002CC63E /* Passport.m in Sources */,
-				B12A497D10BDD23D002CC63E /* ResultParser.m in Sources */,
 				B12A499010BDD6A2002CC63E /* HBCIClient.m in Sources */,
-				B12A499D10BF188D002CC63E /* CallbackData.m in Sources */,
 				B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */,
 				B12A4DC310C9CAF0002CC63E /* TanMethodListController.m in Sources */,
 				B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */,
@@ -1179,6 +1157,7 @@
 				B137BE3C12D296A900D0394C /* getsysid.c in Sources */,
 				B137BF4712D5004C00D0394C /* MessageLog.m in Sources */,
 				B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */,
+				B13435A412EC36A3006C4687 /* GenericImportController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1217,7 +1196,7 @@
 				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				PRODUCT_NAME = Pecunia;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.6;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
@@ -1325,7 +1304,7 @@
 			buildSettings = {
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_VERSION = 4.0;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.6;
 			};
 			name = Development;
 		};

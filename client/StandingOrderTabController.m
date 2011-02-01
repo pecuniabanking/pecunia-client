@@ -38,8 +38,13 @@
 -(void)awakeFromNib
 {
 	NSError *error = nil;
-	NSManagedObjectModel *model = [[MOAssistant assistant ] model ];
-	NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
+	
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:managedObjectContext];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND isStandingOrderSupported == 1" ];
+//	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil" ];
+	[request setPredicate:predicate];
 	NSArray *selectedAccounts = [managedObjectContext executeFetchRequest:request error:&error];
 	if(error == nil) {
 		for(BankAccount *account in selectedAccounts) {
@@ -95,6 +100,23 @@
 {
 	return [weekDays indexOfObject:s ] + 1;
 }
+
+-(void)preparePurposeFields
+{
+	int t;
+	if(currentLimits == nil) return;
+	
+	int num = (t = currentLimits.maxLinesPurpose)?t:2;
+	NSView* p;
+	
+	p = [mainView viewWithTag: 4 ];
+	if(num < 4) [p setHidden: TRUE ]; else [p setHidden: FALSE ];
+	p = [mainView viewWithTag: 3 ];
+	if(num < 3) [p setHidden: TRUE ]; else [p setHidden: FALSE ];
+	p = [mainView viewWithTag: 2 ];
+	if(num < 2) [p setHidden: TRUE ]; else [p setHidden: FALSE ];
+}
+
 
 -(void)enableWeekly:(BOOL)weekly
 {
@@ -177,7 +199,13 @@
 	} else {
 		self.currentLimits = [[HBCIClient hbciClient ] standingOrderLimitsForAccount:currentOrder.account action:stord_change ];
 	}
-
+	[self preparePurposeFields ];
+	
+	if(self.currentOrder.remoteBankName == nil || [self.currentOrder.remoteBankName length ] == 0) {
+		NSString *bankName = [[HBCIClient hbciClient  ] bankNameForCode: self.currentOrder.remoteBankCode inCountry: self.currentOrder.account.country ];
+		if(bankName) self.currentOrder.remoteBankName = bankName;
+	}
+	
 	StandingOrderPeriod period = [currentOrder.period intValue ];
 	if (period == stord_weekly) {
 		[self enableWeekly:YES ];
@@ -278,11 +306,14 @@
 
 -(void)delete
 {
+	[orderController remove:self ];
+/*	
 	NSArray *sel = [orderController selectedObjects ];
 	if (sel == nil || [sel count ] != 1) return;
 	StandingOrder *order = [sel lastObject ];
 	if (order.orderKey == nil) [managedObjectContext deleteObject:order ];
-	else order.isDeleted = [NSNumber numberWithBool:YES ];
+	else order.toDelete = [NSNumber numberWithBool:YES ];
+*/ 
 }
 
 -(IBAction)accountsOk:(id)sender
@@ -354,20 +385,54 @@
 
 -(IBAction)getOrders:(id)sender
 {
+	NSError *error=nil;
 	BankAccount *account;
+	NSMutableArray *resultList;
 	
-	NSMutableArray *resultList = [[NSMutableArray arrayWithCapacity: [accounts count ] ] retain ];
-	for(account in accounts) {
-		if (account.userId) {
-			BankQueryResult *result = [[BankQueryResult alloc ] init ];
-			result.accountNumber = account.accountNumber;
-			result.bankCode = account.bankCode;
-			result.userId = account.userId;
-			result.account = account;
-			[resultList addObject: [result autorelease] ];
+	if ([accounts count] == 0) {
+		// no accounts for StandingOrder found...check?
+		int res = NSRunAlertPanel(NSLocalizedString(@"AP108", @""), 
+								  NSLocalizedString(@"AP109", @""),
+								  NSLocalizedString(@"yes", @"Yes"), 
+								  NSLocalizedString(@"no", @"No"), nil);
+		if (res == NSAlertDefaultReturn) {
+			NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:managedObjectContext];
+			NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+			[request setEntity:entityDescription];
+			//	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND isStandingOrderSupported == 1" ];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil" ];
+			[request setPredicate:predicate];
+			NSArray *selectedAccounts = [managedObjectContext executeFetchRequest:request error:&error];
+			if (selectedAccounts) {
+				resultList = [[NSMutableArray arrayWithCapacity: [selectedAccounts count ] ] retain ];
+				for(account in selectedAccounts) {
+					if ([[HBCIClient hbciClient ] isStandingOrderSupportedForAccount:account]) {
+						if (account.userId) {
+							BankQueryResult *result = [[BankQueryResult alloc ] init ];
+							result.accountNumber = account.accountNumber;
+							result.bankCode = account.bankCode;
+							result.userId = account.userId;
+							result.account = account;
+							[resultList addObject: [result autorelease] ];
+						}					
+					}
+				}
+			}
+		} else return;
+	} else {
+		resultList = [[NSMutableArray arrayWithCapacity: [accounts count ] ] retain ];
+		for(account in accounts) {
+			if (account.userId) {
+				BankQueryResult *result = [[BankQueryResult alloc ] init ];
+				result.accountNumber = account.accountNumber;
+				result.bankCode = account.bankCode;
+				result.userId = account.userId;
+				result.account = account;
+				[resultList addObject: [result autorelease] ];
+			}
 		}
 	}
-	
+		
 	[[HBCIClient hbciClient ] getStandingOrders: resultList ];
 }
 
@@ -375,6 +440,11 @@
 -(NSView*)mainView
 {
 	return mainView;
+}
+
+-(void)print
+{
+	
 }
 	
 

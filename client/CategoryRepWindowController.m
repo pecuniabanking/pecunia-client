@@ -399,6 +399,19 @@ NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
 	return mainView;
 }
 
+-(void)print
+{
+	NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo ];
+	[printInfo setTopMargin:45 ];
+	[printInfo setBottomMargin:45 ];
+	[printInfo setHorizontalPagination:NSFitPagination ];
+	[printInfo setVerticalPagination:NSFitPagination ];
+	NSPrintOperation *printOp;
+	printOp = [NSPrintOperation printOperationWithView:printView printInfo: printInfo ];
+	[printOp setShowsPrintPanel:YES ];
+	[printOp runOperation ];	
+}
+
 
 -(void)mouseOverSlice: (int)n
 {

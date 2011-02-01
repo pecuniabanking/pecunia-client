@@ -1,6 +1,6 @@
 //
 //  ABAccount.h
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 06.09.06.
 //  Copyright 2006 Frank Emminghaus. All rights reserved.
@@ -39,6 +39,7 @@ typedef enum {
 	NSString*		bic;
 	NSString*		userId;
 	NSString*		customerId;
+	NSString*		accountSuffix;
 	BOOL			collTransfer;
 	
 	NSArray			*allowedCountries;
@@ -59,6 +60,7 @@ typedef enum {
 @property (nonatomic, copy) NSString *country;
 @property (nonatomic, copy) NSString *iban;
 @property (nonatomic, copy) NSString *bic;
+@property (nonatomic, copy) NSString *accountSuffix;
 @property (nonatomic, assign) BOOL collTransfer;
 
 -(BOOL)isEqual: (id)obj;

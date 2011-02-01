@@ -26,6 +26,13 @@
 	[countryController setSortDescriptors: sds ];
 }
 
+-(void)setManagedObjectContext:(NSManagedObjectContext*)context
+{
+	[templateController setManagedObjectContext:context ];
+	[templateController prepareContent ];
+	[transferController setManagedObjectContext:context ];
+}
+
 -(void)updateLimits
 {
 	[limits release ]; limits = nil;
@@ -202,7 +209,6 @@
 	int res = [NSApp runModalForWindow: window ];
 	if(res == 1) {
 		if([context hasChanges ]) [context rollback ];
-		[transfers autorelease ];
 		return;
 	}
 	
@@ -212,8 +218,6 @@
 		[alert runModal];
 		return;
 	}
-	
-	[transfers autorelease ];
 }
 
 - (void)donateWithAccount: (BankAccount*)acc

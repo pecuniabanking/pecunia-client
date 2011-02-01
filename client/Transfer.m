@@ -1,6 +1,6 @@
 //
 //  Transfer.m
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 21.07.07.
 //  Copyright 2007 Frank Emminghaus. All rights reserved.
@@ -32,6 +32,7 @@
 @dynamic remoteCountry;
 @dynamic remoteIBAN;
 @dynamic remoteName;
+@dynamic remoteSuffix;
 @dynamic status;
 @dynamic subType;
 @dynamic type;

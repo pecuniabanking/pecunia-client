@@ -334,7 +334,12 @@ int LogHook(GWEN_GUI *gui, const char *logDomain, GWEN_LOGGER_LEVEL priority, co
 		case GWEN_LoggerLevel_Verbous: level = LogLevel_Verbous; break;
 		default: level = LogLevel_Warning;
 	}
-	[[MessageLog log ] addMessage:[NSString stringWithUTF8String: str ] withLevel:level];
+	NSMutableDictionary *data = [[NSMutableDictionary alloc ] initWithCapacity:2 ];
+	[data setObject:[NSString stringWithUTF8String: str ] forKey:@"message" ];
+	[data setObject:[NSNumber numberWithInt:(int)level ] forKey:@"level" ];
+	
+	[[MessageLog log ] performSelectorOnMainThread:@selector(addMessageFromDict:) withObject:data waitUntilDone:NO ];
+//	[[MessageLog log ] addMessage:[NSString stringWithUTF8String: str ] withLevel:level];
 	return 1;
 }
 

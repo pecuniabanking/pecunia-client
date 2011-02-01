@@ -1,6 +1,6 @@
 //
 //  Account.m
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 06.09.06.
 //  Copyright 2006 Frank Emminghaus. All rights reserved.
@@ -27,6 +27,7 @@
 @synthesize bic;
 @synthesize collTransfer;
 @synthesize uid;
+@synthesize accountSuffix;
 
 -(id)init
 {
@@ -80,6 +81,7 @@
 	[bic release], bic = nil;
 	[userId release], userId = nil;
 	[customerId release], customerId = nil;
+	[accountSuffix release], accountSuffix = nil;
 
 	[super dealloc ];
 }

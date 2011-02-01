@@ -25,6 +25,7 @@
 	IBOutlet NSTextField		*incomeLabel;
 	IBOutlet NSTextField		*expenseLabel;
 	IBOutlet NSView				*mainView;
+	IBOutlet NSView				*printView;
 	
 	NSMutableArray				*expensesCats;
 	NSMutableArray				*incomesCats;

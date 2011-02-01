@@ -21,6 +21,7 @@
 	IBOutlet SM2DGraphView	    *graphView;
 	IBOutlet NSSplitView		*splitView;
 	IBOutlet NSView				*mainView;
+	IBOutlet NSView				*printView;
 
 	NSPoint minValues;
 	NSPoint maxValues;

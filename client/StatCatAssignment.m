@@ -26,8 +26,12 @@
 -(NSString*)stringForFields: (NSArray*)fields usingDateFormatter: (NSDateFormatter*)dateFormatter
 {
 	NSMutableString	*res = [NSMutableString stringWithCapacity: 300 ];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
 	NSString *s;
 	NSObject *obj;
+	NSString *sep = [defaults objectForKey:@"exportSeparator" ];
+	
+	if (sep == nil) sep = @"\t";
 	
 	for(NSString *field in fields) {
 		if([field isEqualToString: @"value" ] || [field isEqualToString: @"userInfo" ]) obj = [self valueForKey: field ]; else obj = [self.statement valueForKey: field ];
@@ -40,7 +44,7 @@
 			s = self.statement.categoriesDescription;
 		} else s = [obj description ];
 		
-		[res appendString: s ];	[res appendString: @"\t" ];
+		[res appendString: s ];	[res appendString: sep ];
 	}
 	[res appendString: @"\n" ];
 	return res;

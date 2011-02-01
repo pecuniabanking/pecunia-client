@@ -1,6 +1,6 @@
 //
 //  BankAccount.m
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 01.07.07.
 //  Copyright 2007 Frank Emminghaus. All rights reserved.
@@ -32,13 +32,15 @@
 @dynamic collTransfer;
 @dynamic isManual;
 @dynamic splitRule;
+@dynamic isStandingOrderSupported;
+@dynamic accountSuffix;
 
 -(id)copyWithZone: (NSZone *)zone
 {
 	return [self retain ];
 }
 
--(void)evaluateStatements: (NSArray*)stats
+-(void)evaluateQueryResult: (BankQueryResult*)res
 {
 	NSError *error = nil;
 	BankStatement *stat;
@@ -54,7 +56,8 @@
 	for(stat in statements) if(stat.isNew == YES) stat.isNew = NO;
 	
 	// look for new statements and mark them
-	if (self.latestTransferDate) {
+	// in Import case evaluate all statements
+	if (self.latestTransferDate && res.isImport == NO) {
 		lastTransferDate = [ShortDate dateWithDate:self.latestTransferDate ];
 	} else {
 		lastTransferDate = [ShortDate dateWithDate: [NSDate distantPast ] ];	
@@ -63,21 +66,32 @@
 	// check if purpose split rule exists
 	if (self.splitRule && purposeSplitRule == nil ) purposeSplitRule = [[PurposeSplitRule alloc ] initWithString:self.splitRule ];
  
-	// get (old) reference statements
-	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [lastTransferDate lowDate ] ];
-	[request setPredicate:predicate];
-	statements = [context executeFetchRequest:request error:&error];
-	for (stat in stats) {
+	ShortDate *currentDate = nil;
+	for (stat in res.statements) {
+		NSArray *oldStatements;
+
+		//first, check if date < lDate
+		if([[stat date ] compare: [lastTransferDate lowDate ] ] == NSOrderedAscending) continue;
+
 		// Apply purpose split rule, if exists
 		if (purposeSplitRule) [purposeSplitRule applyToStatement:stat ];
 		
-		// check if stat matches existing statement
+		ShortDate *statDate = [ShortDate dateWithDate: [stat date] ];
+
+		// Get the list of old statements for the date of the new stat.
+		if (currentDate == nil || [statDate compare: currentDate] != NSOrderedSame ) {
+			currentDate = statDate;
+			
+			NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@) AND (date <= %@)", self, [currentDate lowDate], [currentDate highDate ]];
+			[request setPredicate:predicate];
+			oldStatements = [context executeFetchRequest:request error:&error];
+		}
 		
-		//first, check if date < lDate
-		if([[stat date ] compare: [lastTransferDate lowDate ] ] == NSOrderedAscending) continue;
+		
+		// check if stat matches existing statement		
 		BankStatement *oldStat;
 		BOOL isMatched = NO;
-		for (oldStat in statements) {
+		for (oldStat in oldStatements) {
 			if([stat matches: oldStat ]) {
 				isMatched = YES;
 				// update (reordered) statements at latestTransferDate
@@ -267,6 +281,23 @@
 	return [[NSDate alloc ] initWithTimeInterval:100 sinceDate:currentDate ];
 }
 
++(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code
+{
+	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+	NSManagedObjectModel *model = [[MOAssistant assistant ] model ];
+	
+	NSError *error = nil;
+	NSDictionary *subst = [NSDictionary dictionaryWithObjectsAndKeys: number, @"ACCNT", code, @"BCODE", nil];
+	NSFetchRequest *fetchRequest = [model fetchRequestFromTemplateWithName:@"bankAccountByID" substitutionVariables:subst];
+	NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
+	if( error != nil) {
+		NSAlert *alert = [NSAlert alertWithError:error];
+		[alert runModal];
+		return nil;
+	}
+	if(results == nil || [results count ] != 1) return nil;
+	return [results objectAtIndex: 0 ];
+}
 
 -(void)dealloc
 {

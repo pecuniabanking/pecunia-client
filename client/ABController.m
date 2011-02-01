@@ -1,6 +1,6 @@
 //
 //  ABController.m
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 03.01.07.
 //  Copyright 2007 Frank Emminghaus. All rights reserved.
@@ -186,6 +186,7 @@ static ABController* abController;
 	AB_IMEXPORTER_CONTEXT	*ctx;
 	int						rv;
 	BankQueryResult			*res;
+	NSMutableDictionary		*jobIDs = [NSMutableDictionary dictionaryWithCapacity:10  ];
 	
 	jl=AB_Job_List2_new();
 	
@@ -203,6 +204,7 @@ static ABController* abController;
 				goto error;
 			}
 			/* enqueue this job so that AqBanking knows we want it executed. */
+			[jobIDs setObject:res forKey: [NSNumber numberWithInt: AB_Job_GetJobId(j) ] ];
 			AB_Job_List2_PushBack(jl, j);
 		}
 	}
@@ -219,7 +221,29 @@ static ABController* abController;
 		fprintf(stderr, "Error on executeQueue (%d)\n", rv);
 		goto error;
 	}
-	else {		
+	else {
+		AB_JOB_LIST2_ITERATOR *it;
+		
+		it=(AB_JOB_LIST2_ITERATOR*)AB_Job_List2_First(jl);
+		if(it) {
+			AB_JOB *j=AB_Job_List2Iterator_Data(it);
+			while(j) 
+			{
+				unsigned int jid = (unsigned int)AB_Job_GetJobId(j);
+				res = (BankQueryResult*)[jobIDs objectForKey:[NSNumber numberWithInt: jid ] ];
+				
+				AB_JOB_STATUS status = AB_Job_GetStatus(j);
+				if(status == AB_Job_StatusFinished || status == AB_Job_StatusPending) {
+					res.account.isStandingOrderSupported = [NSNumber numberWithBool:YES ];
+				} else {
+					res.account.isStandingOrderSupported = [NSNumber numberWithBool:NO ];
+				}
+
+				j=AB_Job_List2Iterator_Next(it);
+			}
+			AB_Job_List2Iterator_free(it);
+		}			
+		
 		[self processContext: ctx forAccounts: [selAccounts mutableCopy ]];
 	} // if executeQueue successfull
 	[[BankingController controller ] performSelectorOnMainThread: @selector(statementsNotification:) withObject: selAccounts waitUntilDone: YES ];
@@ -306,7 +330,7 @@ error:
 
 -(BOOL)updateStandingOrders:(NSArray*)orders
 {
-	int						i, res;
+	int						res;
 	AB_TRANSACTION			*t;
 	AB_JOB					*j;
 	AB_JOB_LIST2			*jl;
@@ -315,11 +339,12 @@ error:
 	NSString				*accountNumber;
 	NSString				*bankCode;
 	NSManagedObjectContext	*context = [[MOAssistant assistant ] context ];
+	NSMutableDictionary		*jobIDs = [NSMutableDictionary dictionaryWithCapacity:10  ];
 
 	jl=AB_Job_List2_new();
 	for(StandingOrder *stord in orders) {
 		// todo: don't send unchanged orders
-		if ([stord.isChanged boolValue] == NO) continue;
+		if ([stord.isChanged boolValue] == NO && [stord.toDelete boolValue ] == NO) continue;
 		
 		t = convertStandingOrder(stord);
 	
@@ -337,7 +362,7 @@ error:
 			// create standing order
 			j = (AB_JOB*)AB_JobCreateStandingOrder_new(acc);
 			res = AB_Job_CheckAvailability(j);
-		} else if ([stord.isDeleted boolValue ] == YES ) {
+		} else if ([stord.toDelete boolValue ] == YES ) {
 			j = (AB_JOB*)AB_JobDeleteStandingOrder_new(acc);
 		} else {
 			j = (AB_JOB*)AB_JobModifyStandingOrder_new(acc);
@@ -362,7 +387,7 @@ error:
 				break;
 		}
 		
-		[stord setJobId: AB_Job_GetJobId(j) ];
+		[jobIDs setObject:stord forKey: [NSNumber numberWithInt: AB_Job_GetJobId(j) ] ];
 		
 		/* add job to this list */
 		AB_Job_List2_PushBack(jl, j);
@@ -390,35 +415,29 @@ error:
 			while(j) 
 			{
 				unsigned int jid = (unsigned int)AB_Job_GetJobId(j);
-				for(i=0; i<[orders count ]; i++) {
-					StandingOrder* stord = [orders objectAtIndex: i ];
-					if([stord jobId ] != jid) continue;
-					AB_JOB_STATUS status = AB_Job_GetStatus(j);
-					if(status == AB_Job_StatusFinished || status == AB_Job_StatusPending) {
-						// todo
-						[stord setValue: [NSNumber numberWithBool:YES] forKey: @"isSent" ];
-						
-						//
-						AB_JOB_TYPE type = AB_Job_GetType(j);
-						switch (type) {
-							case AB_Job_TypeCreateStandingOrder: 
-								{
-									const AB_TRANSACTION *trans = (const AB_TRANSACTION *)AB_JobCreateStandingOrder_GetTransaction(j);
-									const char *c = AB_Transaction_GetFiId(trans);
-									if (c) {
-										stord.orderKey = [NSString stringWithUTF8String:c ];
-										stord.isChanged = [NSNumber numberWithBool:NO ];
-									}
-								}
-								break;
-							case AB_Job_TypeDeleteStandingOrder: 
-								{
-									[context deleteObject:stord ];
-								}
-							default: stord.isChanged = [NSNumber numberWithBool:NO ];
-						}
+				StandingOrder *stord = (StandingOrder*)[jobIDs objectForKey:[NSNumber numberWithInt:jid ] ];
+				AB_JOB_STATUS status = AB_Job_GetStatus(j);
+				if(status == AB_Job_StatusFinished || status == AB_Job_StatusPending) {
+					// todo
+					[stord setValue: [NSNumber numberWithBool:YES] forKey: @"isSent" ];
+					
+					//
+					AB_JOB_TYPE type = AB_Job_GetType(j);
+					switch (type) {
+						case AB_Job_TypeCreateStandingOrder: 
+							{
+								const AB_TRANSACTION *trans = (const AB_TRANSACTION *)AB_JobCreateStandingOrder_GetTransaction(j);
+								const char *c = AB_Transaction_GetFiId(trans);
+								if (c) stord.orderKey = [NSString stringWithUTF8String:c ];
+								stord.isChanged = [NSNumber numberWithBool:NO ];
+							}
+							break;
+						case AB_Job_TypeDeleteStandingOrder: 
+							{
+								[context deleteObject:stord ];
+							}
+						default: stord.isChanged = [NSNumber numberWithBool:NO ];
 					}
-					break;
 				}
 				j=AB_Job_List2Iterator_Next(it);
 			}
@@ -799,6 +818,19 @@ error:
 		}
 		[self getUsers ];
 		[self getAccounts ];
+		
+		// search for accounts and change all user accounts to single transfer
+		for(ABAccount *account in accounts) {
+			if ([account.userId isEqualToString:user.userId ] && [account.customerId isEqualToString:user.customerId ]) {
+				AB_ACCOUNT *acc = AB_Banking_GetAccountByCodeAndNumber(ab, [account.bankCode UTF8String ], [account.accountNumber UTF8String ]);
+				int rv = AB_Banking_BeginExclUseAccount(ab, acc);
+				if (rv == 0) {
+					AH_Account_AddFlags(acc, AH_BANK_FLAGS_PREFER_SINGLE_TRANSFER);
+					AB_Banking_EndExclUseAccount(ab, acc, NO);
+				}
+			}
+		}
+		
 	}
 	return nil;
 }

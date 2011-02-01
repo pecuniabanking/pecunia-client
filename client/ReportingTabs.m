@@ -33,7 +33,7 @@
 			[item setView:[controller mainView ] ];
 			[mainTabView addTabViewItem:item ];
 			[mainTabView selectTabViewItem:item ];
-			[mainTabItems addObject:controller ];
+			[mainTabItems setObject:controller forKey: _catPeriodsIdentifier ];
 		}
 	} else {
 		[mainTabView selectTabViewItemAtIndex:idx ];
@@ -52,7 +52,7 @@
 			[item setView:[controller mainView ] ];
 			[mainTabView addTabViewItem:item ];
 			[mainTabView selectTabViewItem:item ];
-			[mainTabItems addObject:controller ];
+			[mainTabItems setObject:controller forKey: _catHistoryIdentifier ];
 		}
 	} else {
 		[mainTabView selectTabViewItemAtIndex:idx ];
@@ -71,7 +71,7 @@
 			[item setView:[controller mainView ] ];
 			[mainTabView addTabViewItem:item ];
 			[mainTabView selectTabViewItem:item ];
-			[mainTabItems addObject:controller ];
+			[mainTabItems setObject:controller forKey: _catRepIdentifier ];
 			[controller prepare ];
 		}
 	} else {
@@ -90,7 +90,7 @@
 			[item setView:[controller mainView ] ];
 			[mainTabView addTabViewItem:item ];
 			[mainTabView selectTabViewItem:item ];
-			[mainTabItems addObject:controller ];
+			[mainTabItems setObject:controller forKey: _accountRepIdentifier ];
 			[controller prepare ];
 		}
 	} else {
@@ -109,7 +109,7 @@
 			[item setView:[controller mainView ] ];
 			[mainTabView addTabViewItem:item ];
 			[mainTabView selectTabViewItem:item ];
-			[mainTabItems addObject:controller ];
+			[mainTabItems setObject:controller forKey: _standingOrderTabIdentifier ];
 			[controller prepare ];
 		}
 	} else {

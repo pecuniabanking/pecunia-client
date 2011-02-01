@@ -1,6 +1,6 @@
 //
 //  TransactionLimits.h
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 26.01.08.
 //  Copyright 2008 Frank Emminghaus. All rights reserved.

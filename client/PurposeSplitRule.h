@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class BankStatement;
 
 @interface PurposeSplitRule : NSObject {
 	int ePos, eLen;

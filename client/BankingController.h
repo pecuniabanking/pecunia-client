@@ -46,13 +46,17 @@
 	IBOutlet NSSegmentedControl *catActions;
 	IBOutlet NSImageView		*lockImage;
 	IBOutlet NSTextField		*valueField;
+	IBOutlet NSTextField		*nassValueField;
+	IBOutlet NSWindow			*assignValueWindow;
+	IBOutlet NSTextField		*assignValueField;
 	
 	IBOutlet CatDefWindowController			*catDefWinController;
 	IBOutlet TransferListController			*transferListController;
 	
     NSMutableArray				*transactions;
-	NSMutableArray				*mainTabItems;
+	NSMutableDictionary			*mainTabItems;
 	NSManagedObjectContext      *context;
+	NSManagedObjectContext      *managedObjectContext;
 	NSManagedObjectModel		*model;
 	NewBankUserController		*bankUserController;
 	PreferenceController		*prefController;
@@ -62,7 +66,12 @@
 	BOOL						restart;
 	BOOL						requestRunning;
 	BOOL						statementsBound;
+	NSDecimalNumber				*saveValue;
+	NSCursor					*splitCursor;
 }
+
+@property(nonatomic, copy) NSDecimalNumber *saveValue;
+@property(nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 -(IBAction)listUsers:(id)sender;
 -(IBAction)showInput:(id)sender;
@@ -81,6 +90,7 @@
 -(IBAction)editBankUsers:(id)sender;
 -(IBAction)accountSettings:(id)sender;
 -(IBAction)export: (id)sender;
+-(IBAction)import: (id)sender;
 -(IBAction)test: (id)sender;
 -(IBAction)transfer_local: (id)sender;
 -(IBAction)transfer_eu: (id)sender;
@@ -103,7 +113,9 @@
 
 -(IBAction)manageTransferTemplates: (id)sender;
 
--(IBAction)print:(id)sender;
+-(IBAction)printDocument:(id)sender;
+-(IBAction)updateAllAccounts:(id)sender;
+
 
 -(void)windowWillClose:(NSNotification *)aNotification;
 -(NSArray*)selectedNodes;
@@ -111,7 +123,7 @@
 -(void)removeDeletedAccounts;
 -(void)awakeFromNib;
 -(int)AccSize;
--(NSManagedObjectContext*)managedObjectContext;
+//-(NSManagedObjectContext*)managedObjectContext;
 -(BankAccount*)getBankNodeWithAccount: (ABAccount*)acc inAccounts: (NSMutableArray*)bankAccounts;
 -(void)statementsNotification: (NSArray*)resultList;
 -(Category*)getBankingRoot;
@@ -127,6 +139,7 @@
 -(void)repairCategories;
 -(void)setRestart;
 -(void)syncAllAccounts;
+-(void)publishContext;
 
 +(BankingController*)controller;
 @end

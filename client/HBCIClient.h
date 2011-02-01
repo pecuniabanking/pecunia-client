@@ -11,7 +11,6 @@
 #import "StandingOrder.h"
 #import "MessageLog.h"
 
-@class HBCIBridge;
 @class BankInfo;
 @class ABUser;
 @class PecuniaError;
@@ -21,11 +20,8 @@
 @class TransactionLimits;
 
 @interface HBCIClient : NSObject {
-//	HBCIBridge		*bridge;
 	ABController	*bridge;
 	
-	NSMutableArray		*passports;
-//	NSMutableArray		*accounts;
 	NSMutableDictionary	*bankInfo;
 	NSMutableDictionary *countryInfos;
 	NSArray				*bankQueryResults;
@@ -36,8 +32,6 @@
 -(void)readCountryInfos;
 -(NSDictionary*)countryInfos;
 
-
--(NSArray*)initHBCI;
 -(NSArray*)accounts;
 -(NSArray*)accountsByUser:(ABUser*)user;
 -(NSArray*)users;
@@ -68,6 +62,7 @@
 -(NSString*)getSystemIDForUser:(ABUser*)user;
 
 -(void)setLogLevel:(LogLevel)level;
+
 
 +(HBCIClient*)hbciClient;
 

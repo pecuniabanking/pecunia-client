@@ -1,6 +1,6 @@
 //
 //  PreferenceController.h
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 02.02.08.
 //  Copyright 2008 Frank Emminghaus. All rights reserved.
@@ -34,6 +34,10 @@
 -(IBAction)cancelSheet:(id)sender;
 -(IBAction)endSheet: (id)sender;
 -(IBAction)colorButtonsChanged: (id)sender;
+
+-(IBAction)expSepTab:(id)sender;
+-(IBAction)expSepSemi:(id)sender;
+-(IBAction)expSepLine:(id)sender;
 
 -(NSColor*)notAssignedColor;
 -(void)setNotAssignedColor: (NSColor*)color;

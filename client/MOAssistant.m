@@ -21,6 +21,10 @@ NSString* const MD_Build_Number = @"MD_BUILDNUMBER";
 
 @implementation MOAssistant
 
+@synthesize dataDir;
+@synthesize dataStorePath;
+@synthesize accountsURL;
+
 static MOAssistant	*assistant = nil;
 //static NSString* oldFile = @"accounts_old.sqlite";
 static NSString *dataFile = @"accounts.sqlite";
@@ -29,8 +33,6 @@ static NSString *_dataFile = @"/accounts.sqlite";
 static NSString *_imageFile = @"/PecuniaData.sparseimage";
 
 static NSString* lDir = @"~/Library/Application Support/Pecunia/Data";
-static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
-
 
 -(id)init
 {
@@ -40,6 +42,7 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 	NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults ];
 
 	encrypted = NO;
+	imageAvailable = NO;
 	
 	// create default directories if necessary
 	[self checkPaths ];
@@ -60,15 +63,11 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 		}
 	}
 
-	if(encrypted) {
-		NSString *imagePath = [dataDir stringByAppendingString: _imageFile ];
-		[self openImageWithPath: imagePath ];
-	} else {
-	// no encryption
-		dataStorePath = [NSString stringWithFormat: @"%@/%@", dataDir, dataFile ];
-		[dataStorePath retain ];
+	if (encrypted == NO) {
+		self.dataStorePath = [NSString stringWithFormat: @"%@/%@", dataDir, dataFile ];
+		self.accountsURL = [NSURL fileURLWithPath: dataStorePath];
 	}
-	accountsURL = [[NSURL fileURLWithPath: dataStorePath] retain ];
+	
 	model = nil; 
 	context = nil;
 	return self;
@@ -130,36 +129,43 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 		if(error) @throw error;
 	}
 	
-	dataDir = [defaults valueForKey: @"DataDir" ];
+	self.dataDir = [defaults valueForKey: @"DataDir" ];
 	
 	// DB directory
 	if(dataDir == nil) {
-		dataDir = [defaultDataDir retain];
+		self.dataDir = [defaultDataDir retain];
 		[defaults setValue: dataDir forKey: @"DataDir" ];
-	}
-	
-	// Passport directory
-	ppDir = [[pDir stringByExpandingTildeInPath ] retain];
-	if([fm fileExistsAtPath: ppDir] == NO) {
-		[fm createDirectoryAtPath: ppDir withIntermediateDirectories: YES attributes: nil error: &error ];
-		if(error) @throw error;
 	}
 }
 
 -(void)migrateDataDirFrom02
 {
 	NSFileManager	*fm = [NSFileManager defaultManager ];
+	NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults ];
 	NSError *error = nil;
+	BOOL success;
 	NSString *newDefaultDir = [lDir stringByExpandingTildeInPath ];
 	NSString *newPath = [newDefaultDir stringByAppendingString: _dataFile ];
+	
 	if([fm fileExistsAtPath: newPath] == YES) return;
 	newPath = [newDefaultDir stringByAppendingString: _imageFile ];
 	if([fm fileExistsAtPath: newPath] == YES) return;
-
+	
+	// copy preferences
 	NSDictionary *oldDefaults = [NSDictionary dictionaryWithContentsOfFile: [@"~/Library/Preferences/com.macemmi.pecunia.plist" stringByExpandingTildeInPath ]];
+	for(NSString* key in [oldDefaults allKeys ]) {
+		if ([key isEqualToString:@"DataDir" ]) continue;
+		NSRange r = [key rangeOfString:@":" ];
+		if (r.location != NSNotFound) continue;
+		[defaults setObject:[oldDefaults objectForKey:key ] forKey:key ];
+	}
+		
+	// copy data file if located at old defaults path
 	if(oldDefaults == nil) return;
 	NSString *oldDir = [oldDefaults valueForKey:@"DataDir" ];
 	if(oldDir == nil) return;
+	
+	
 	
 	NSString *oldDefaultDir = [ @"~/Library/Pecunia" stringByExpandingTildeInPath ];
 	NSString *file = [self dataFileNameAtPath: oldDir ];
@@ -168,7 +174,7 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 		newPath = [NSString stringWithFormat: @"%@/%@", newDefaultDir, file ];
 		NSString *oldPath = [NSString stringWithFormat: @"%@/%@", oldDir, file ];
 		
-		BOOL success = [fm copyItemAtPath: oldPath toPath: newPath error: &error ];
+		success = [fm copyItemAtPath: oldPath toPath: newPath error: &error ];
 		if(!success) {
 			NSAlert *alert = [NSAlert alertWithError:error];
 			[alert runModal];
@@ -178,16 +184,11 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 }
 
 
--(NSString*)passportDirectory
-{
-	return ppDir;
-}
-
-
--(BOOL)openImageWithPath: (NSString*)path
+-(BOOL)openImage
 {
 	HDIWrapper *wrapper = [HDIWrapper wrapper ];
-	
+	NSString *path = [dataDir stringByAppendingString: _imageFile ];
+
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
 	BOOL browsable = [defaults boolForKey: @"BrowseImage" ];
 
@@ -208,10 +209,10 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 	BOOL success = [wrapper attachImage: path withPassword: passwd browsable: browsable ];
 	
 	if(success) {
-		dataStorePath = [NSString stringWithFormat: @"%@/%@", [wrapper volumePath ], dataFile ];
-		[dataStorePath retain ];
+		self.dataStorePath = [NSString stringWithFormat: @"%@/%@", [wrapper volumePath ], dataFile ];
 		[Keychain setPassword: passwd forService: @"Pecunia" account: @"DataFile" store: savePassword ];
-		
+		self.accountsURL = [NSURL fileURLWithPath: dataStorePath];
+		imageAvailable = YES;
 	} else {
 		NSString *errorMsg = [wrapper errorMessage ];
 		if(errorMsg == nil) errorMsg = NSLocalizedString(@"AP52", @"");
@@ -337,23 +338,30 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 
 
 -(void)loadModel
-{
-	NSError	*error = nil;
-	
+{	
 	if(model) [model release ];
-	if(context) [context release ];
 	
 	NSURL *momURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Accounts" ofType:@"momd"]];
 	model = [[NSManagedObjectModel alloc] initWithContentsOfURL:momURL];
+}
 
+-(void)loadContext
+{
+	NSError	*error = nil;
+
+	if (model == nil) [self loadModel ];
+	if(context) [context release ];
+	if (encrypted && imageAvailable == NO) return;
+	
 	NSPersistentStoreCoordinator *coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
 	
-	id store = [coord addPersistentStoreWithType: NSSQLiteStoreType 
-								   configuration: nil 
-											 URL: accountsURL
-										 options: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES ], NSMigratePersistentStoresAutomaticallyOption, nil ] 
-										   error: &error];
+	[coord addPersistentStoreWithType: NSSQLiteStoreType 
+						configuration: nil 
+								  URL: accountsURL
+							  options: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES ], NSMigratePersistentStoresAutomaticallyOption, nil ] 
+								error: &error];
 
+	
 	if( error != nil ) @throw error;
 	
 	context = [[NSManagedObjectContext alloc] init];
@@ -421,8 +429,7 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 	}
 	
 	// now, file is copied / or existent
-	[dataDir release ];
-	dataDir = [path retain ];
+	self.dataDir = path;
 	[defaults setValue: dataDir forKey: @"DataDir" ];
 	[defaults setValue: nil forKey: @"RelocationPath" ];
 	return YES;
@@ -467,13 +474,10 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 	};
 	
 	// now file is copied to new location
-	[dataDir release ];
-	dataDir = [path retain ];
+	self.dataDir = path;
 	
-	[dataStorePath release ];
-	dataStorePath = [NSString stringWithFormat: @"%@/%@", dataDir, dataFile ];
-	[dataStorePath retain ];
-	accountsURL = [NSURL fileURLWithPath: dataStorePath];
+	self.dataStorePath = [NSString stringWithFormat: @"%@/%@", dataDir, dataFile ];
+	self.accountsURL = [NSURL fileURLWithPath: dataStorePath];
 	
 	// set coordinator and stores
 	NSPersistentStoreCoordinator *coord = [context persistentStoreCoordinator ];
@@ -487,7 +491,7 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 
 -(NSManagedObjectContext*)context
 { 
-	if(context == nil) [self loadModel ];
+	if(context == nil) [self loadContext ];
 	return context; 
 }
 -(NSManagedObjectModel*)model 
@@ -512,7 +516,12 @@ static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
 	if(context) [context release ];
 	[memContext release ];
 	assistant = nil;
+	[dataDir release], dataDir = nil;
+	[dataStorePath release], dataStorePath = nil;
+	[accountsURL release], accountsURL = nil;
+
 	[super dealloc ];
 }
 
 @end
+

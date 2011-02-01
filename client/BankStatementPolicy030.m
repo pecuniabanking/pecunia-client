@@ -37,7 +37,10 @@
 			NSArray *targets = [manager destinationInstancesForEntityMappingNamed: @"CategoryToCategory" sourceInstances:[NSArray arrayWithObject:cat ] ];
 			target = [targets objectAtIndex:0 ];
 			NSString *catName = [cat valueForKey:@"name" ];
-			if ([catName isEqualToString:@"++nassroot" ] == NO) [dInstance setValue:[NSNumber numberWithBool:YES ] forKey:@"isAssigned" ];
+			if ([catName isEqualToString:@"++nassroot" ] == NO) {
+				[dInstance setValue:[NSNumber numberWithBool:YES ] forKey:@"isAssigned" ];
+				[dInstance setValue:[NSDecimalNumber zero ] forKey:@"nassValue" ];
+			}
 		}
 		// category assignments
 		NSManagedObjectContext *targetContext = [manager destinationContext ];

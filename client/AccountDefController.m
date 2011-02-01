@@ -132,10 +132,15 @@
 		newAccount.bankCode = account.bankCode;
 		newAccount.bankName = account.bankName;
 		if(user) {
+			newAccount.isManual = [NSNumber numberWithBool:NO ];
 			newAccount.userId = user.userId;
 			newAccount.customerId = user.customerId;
-			newAccount.isManual = [NSNumber numberWithBool:NO ];
-		} else newAccount.isManual = [NSNumber numberWithBool:YES ];
+			newAccount.collTransfer = account.collTransfer;
+			newAccount.isStandingOrderSupported = account.isStandingOrderSupported;
+		} else {
+			newAccount.isManual = [NSNumber numberWithBool:YES ];	
+			newAccount.balance = account.balance;
+		}
 		
 		newAccount.parent = bankRoot;
 		newAccount.isBankAcc = [NSNumber numberWithBool:YES ];
@@ -149,7 +154,6 @@
 		newAccount.accountNumber = account.accountNumber; //?
 		newAccount.name = account.name;
 		newAccount.currency = account.currency;
-		newAccount.balance = account.balance;
 	}
 
     [self close ];

@@ -33,9 +33,9 @@
 	result = [inputField stringValue];
 	if([result length] == 0) NSBeep();
 	else {
-		[NSApp stopModalWithCode:0];
 		active = NO;
 		[self closeWindow ];
+		[NSApp stopModalWithCode:0];
 	}
 }
 

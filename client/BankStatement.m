@@ -1,6 +1,6 @@
 //
 //  BankStatement.m
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 30.06.07.
 //  Copyright 2007 Frank Emminghaus. All rights reserved.
@@ -21,10 +21,10 @@ static NSArray*	catCache = nil;
 @dynamic valutaDate;
 @dynamic date;
 
-@dynamic value, charge, saldo;
+@dynamic value, nassValue, charge, saldo;
 @dynamic localBankCode, localAccount;
 @dynamic remoteName, remoteIBAN, remoteBIC, remoteBankCode, remoteAccount, remoteCountry, remoteBankName, remoteBankLocation;
-@dynamic purpose;
+@dynamic purpose, localSuffix, remoteSuffix;
 
 @dynamic customerReference, bankReference;
 @dynamic transactionCode, transactionText;
@@ -196,6 +196,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	self.isAssigned = [NSNumber numberWithBool:assigned ];
 	
 	// update not assigned part
+	self.nassValue = value;
 	BOOL found = NO;
 	iter = [stats objectEnumerator];
 	while (stat = [iter nextObject]) {
@@ -275,28 +276,6 @@ BOOL stringEqual(NSString *a, NSString *b)
 	[ncat invalidateBalance ];
 }
 
-
--(void)moveFromCategory:(Category*)scat toCategory:(Category*)tcat
-{
-	NSMutableSet* cats = [self mutableSetValueForKey: @"categories" ];
-	[cats removeObject: scat ];
-	[cats addObject: tcat ];
-	[scat invalidateBalance ];
-	[tcat invalidateBalance ];
-}
-
--(void)removeFromCategory:(Category*)cat
-{
-	Category *ncat = [Category nassRoot ];
-	NSMutableSet* cats = [self mutableSetValueForKey: @"categories" ];
-	[cats removeObject: cat ];
-	[cat invalidateBalance ];
-	if([self.isAssigned boolValue ] == NO) {
-		[cats addObject: ncat ];
-		[ncat invalidateBalance ];
-	}
-}
-
 +(void)setClassificationContext: (ClassificationContext*)cc
 {
 	if(classContext) [classContext release ];
@@ -368,6 +347,12 @@ BOOL stringEqual(NSString *a, NSString *b)
 	// replace newline with space
 	NSString *s = [self purpose ];
 	return [s stringByReplacingOccurrencesOfString:@"\n" withString:@"" ];
+}
+
+-(NSString*)note
+{
+	StatCatAssignment *stat = [self bankAssignment ];
+	return stat.userInfo;
 }
 
 

@@ -1,6 +1,6 @@
 //
 //  Category.h
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 04.07.07.
 //  Copyright 2007 Frank Emminghaus. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  BankStatement.h
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 30.06.07.
 //  Copyright 2007 Frank Emminghaus. All rights reserved.
@@ -32,8 +32,6 @@
 -(NSDecimalNumber*)residualAmount;
 -(StatCatAssignment*)bankAssignment;
 
--(void)removeFromCategory:(Category*)cat;
--(void)moveFromCategory:(Category*)scat toCategory:(Category*)tcat;
 -(void)addToAccount: (BankAccount*)account;
 
 -(NSString*)floatingPurpose;
@@ -45,6 +43,7 @@
 @property (nonatomic, retain) NSDate *date;
 
 @property (nonatomic, retain) NSDecimalNumber *value;
+@property (nonatomic, retain) NSDecimalNumber *nassValue;
 @property (nonatomic, retain) NSDecimalNumber *charge;
 @property (nonatomic, retain) NSDecimalNumber *saldo;
 
@@ -58,6 +57,8 @@
 @property (nonatomic, retain) NSString *remoteAccount;
 @property (nonatomic, retain) NSString *remoteCountry;
 @property (nonatomic, retain) NSString *purpose;
+@property (nonatomic, retain) NSString *localSuffix;
+@property (nonatomic, retain) NSString *remoteSuffix;
 
 @property (assign) BOOL isNew;
 
@@ -70,6 +71,7 @@
 @property (nonatomic, retain) NSNumber *transactionCode;
 @property (nonatomic, retain) NSString *currency;
 @property (nonatomic, retain) NSString *primaNota;
+@property (nonatomic, readonly) NSString *note;
 
 @property (nonatomic, retain) NSString *additional;
 @property (nonatomic, retain) NSNumber *hashNumber;

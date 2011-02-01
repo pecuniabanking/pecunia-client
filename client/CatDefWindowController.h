@@ -45,7 +45,7 @@
 
 -(void)prepare;
 -(void)terminateController;
-
+-(void)setManagedObjectContext:(NSManagedObjectContext *)context;
 -(void)calculateCatAssignPredicate;
 
 @end

@@ -47,6 +47,19 @@ double sign(double x)
 {
 }
 
+-(void)print
+{
+	NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo ];
+	[printInfo setTopMargin:45 ];
+	[printInfo setBottomMargin:45 ];
+	[printInfo setHorizontalPagination:NSFitPagination ];
+	[printInfo setVerticalPagination:NSFitPagination ];
+	NSPrintOperation *printOp;
+	printOp = [NSPrintOperation printOperationWithView:printView printInfo: printInfo ];
+	[printOp setShowsPrintPanel:YES ];
+	[printOp runOperation ];
+}
+
 -(NSView*)mainView
 {
 	return mainView;

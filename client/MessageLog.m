@@ -19,7 +19,7 @@ static MessageLog *_messageLog;
 {
 	self = [super init ];
 	if (self == nil) return nil;
-	formatter = [[[NSDateFormatter alloc ] init ] autorelease ];
+	formatter = [[NSDateFormatter alloc ] init ];
 	[formatter setDateFormat:@"HH:mm:ss.SSS"];
 	return self;
 }
@@ -46,6 +46,13 @@ static MessageLog *_messageLog;
 	if (logUI) {
 		[logUI addMessage:message withLevel:level ];
 	}
+}
+
+-(void)addMessageFromDict:(NSDictionary*)data
+{
+	LogLevel level = (LogLevel)[[data objectForKey:@"level" ] intValue ];
+	[self addMessage:[data objectForKey:@"message" ] withLevel: level ];
+	[data release ];
 }
 
 -(void)setLevel:(LogLevel)level

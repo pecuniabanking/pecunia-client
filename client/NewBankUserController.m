@@ -154,14 +154,14 @@ int hbciVersionFromString(NSString* s)
 -(BOOL)check
 {
 	if([currentUser bankCode ] == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", "Missing data"),
-						NSLocalizedString(@"AP2", "Please enter bank code"),
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
+						NSLocalizedString(@"AP2", @"Please enter bank code"),
 						NSLocalizedString(@"ok", @"Ok"), nil, nil);
 		return NO;
 	}
 	if([currentUser userId ] == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", "Missing data"),
-						NSLocalizedString(@"AP3", "Please enter user id"),
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
+						NSLocalizedString(@"AP3", @"Please enter user id"),
 						NSLocalizedString(@"ok", @"Ok"), nil, nil);
 		return NO;
 	}
@@ -182,8 +182,8 @@ int hbciVersionFromString(NSString* s)
 	 }
 	 */
 	if([currentUser bankURL ] == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", "Missing data"), 
-						NSLocalizedString(@"AP6", "Please enter bank server URL"),
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+						NSLocalizedString(@"AP6", @"Please enter bank server URL"),
 						NSLocalizedString(@"ok", @"Ok"), nil, nil);
 		return NO;
 	}
@@ -257,6 +257,17 @@ int hbciVersionFromString(NSString* s)
 
 - (IBAction)getUserAccounts: (id)sender
 {
+	NSArray *sel = [bankUserController selectedObjects ];
+	if(sel == nil || [sel count ] == 0) return;
+	ABUser *user = [sel objectAtIndex: 0 ];
+	if(user == nil) return;
+	[bankController updateBankAccounts: [[HBCIClient hbciClient ] accountsByUser:user ] ];
+
+	NSRunAlertPanel(NSLocalizedString(@"AP27", @""),
+					NSLocalizedString(@"AP107", @""),
+					NSLocalizedString(@"ok", @"Ok"), 
+					nil, nil,
+					user.customerId);
 	
 }
 

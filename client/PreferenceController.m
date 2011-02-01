@@ -1,6 +1,6 @@
 //
 //  PreferenceController.m
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 02.02.08.
 //  Copyright 2008 Frank Emminghaus. All rights reserved.
@@ -14,8 +14,11 @@
 
 #define _newStatementColor @"newStatementColor"
 #define _notAssignedColor @"notAssignedColor"
+#define _exportSeparator @"exportSeparator"
 
 static NSMutableDictionary *statementColors = nil;
+static NSArray *exportFields = nil;
+
 
 void updateColorCache()
 {
@@ -42,22 +45,28 @@ void updateColorCache()
 	self = [super initWithWindowNibName:@"Preferences"];
 	mainWindow = nil;
 	colorsChanged = NO;
+	exportFields = [NSArray arrayWithObjects: @"valutaDate", @"date", @"value", @"saldo", @"currency", @"localAccount", 
+					@"localBankCode", @"localName", @"localCountry",
+					@"localSuffix", @"remoteName", @"purpose", @"note", @"remoteAccount", @"remoteBankCode", 
+					@"remoteBankName", @"remoteBankLocation", @"remoteIBAN", @"remoteBIC", @"remoteSuffix",
+					@"customerReference", @"bankReference", @"transactionText", @"primaNota",
+					@"transactionCode", @"categories", nil ];
+	[exportFields retain ];
 	return self;
 }
 
 -(void)awakeFromNib
 {
-	int i;
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
-	NSArray	*indxs = [defaults objectForKey: @"Exporter.fields.indices" ];
-	if(indxs != nil) {
+	NSArray	*fields = [defaults objectForKey: @"Exporter.fields" ];
+	if(fields != nil) {
 		NSTableColumn *col = [[fieldTable tableColumns ] objectAtIndex:0 ];
 		NSComboBoxCell *cell = [col dataCell ];
 		
-		for(i=0; i<[indxs count ]; i++) {
-			NSString* name = [cell itemObjectValueAtIndex: [[indxs objectAtIndex:i ] intValue ] ];
-			NSMutableDictionary *item = [NSMutableDictionary dictionaryWithCapacity:1 ];
-			[item setObject: name forKey: @"fieldName" ];
+		for(NSString *field in fields) {
+			int idx = [exportFields indexOfObject:field ];
+			NSString* name = [cell itemObjectValueAtIndex: idx ];
+			NSMutableDictionary *item = [NSMutableDictionary dictionaryWithObject:name forKey:@"fieldName" ];
 			[fieldController addObject: item ];
 		}
 	}
@@ -96,7 +105,7 @@ void updateColorCache()
 	int i, idx;
 	NSArray	*content = [fieldController content ];
 	NSArray	*columns = [fieldTable tableColumns ];
-	NSMutableArray	*indxs = [NSMutableArray arrayWithCapacity: 25 ];
+	NSMutableArray	*fields = [NSMutableArray arrayWithCapacity: 25 ];
 	
 	NSTableColumn *col = [columns objectAtIndex:0 ];
 	NSComboBoxCell *cell = [col dataCell ];
@@ -104,11 +113,11 @@ void updateColorCache()
 	for(i=0; i<[content count ]; i++) {
 		NSDictionary	*dict = [content objectAtIndex:i ];
 		idx = [cell indexOfItemWithObjectValue: [dict valueForKey: @"fieldName" ] ];
-		if(idx >=0) [indxs addObject: [NSNumber numberWithInt:idx ] ];
+		if(idx >=0) [fields addObject: [exportFields objectAtIndex:idx ] ];
 	}
-	if([indxs count ]>0) {
+	if([fields count ]>0) {
 		NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
-		[defaults setObject: indxs forKey: @"Exporter.fields.indices" ];
+		[defaults setObject: fields forKey: @"Exporter.fields" ];
 	}
 	if(colorsChanged) {
 		updateColorCache();
@@ -419,6 +428,24 @@ void updateColorCache()
 -(void)setMainWindow: (NSWindow*)main
 {
 	mainWindow = main;
+}
+
+-(IBAction)expSepTab:(id)sender
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	[defaults setObject:@"\t" forKey:_exportSeparator ];
+}
+
+-(IBAction)expSepSemi:(id)sender
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	[defaults setObject:@";" forKey:_exportSeparator ];
+}
+
+-(IBAction)expSepLine:(id)sender
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	[defaults setObject:@"|" forKey:_exportSeparator ];
 }
 
 

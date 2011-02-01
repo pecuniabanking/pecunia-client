@@ -32,6 +32,12 @@
 	[formatter setCurrencySymbol:@"" ];
 }
 
+-(void)setManagedObjectContext:(NSManagedObjectContext*)context
+{
+	[transferController setManagedObjectContext: context ];
+	[transferController prepareContent ];
+}
+
 -(IBAction)sendTransfers: (id)sender
 {
 	NSArray* sel = [transferController selectedObjects ];

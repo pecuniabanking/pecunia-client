@@ -1,6 +1,6 @@
 //
 //  ABInputWindowController.m
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 23.09.06.
 //  Copyright 2006 Frank Emminghaus. All rights reserved.

@@ -28,7 +28,7 @@
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category == nil OR (category.isBankAcc == 0 AND category.name != \"++nassroot\")" ];
 	[splitStatController setFilterPredicate:predicate ];
 	[currentStat setContent:statement ];
-	[self setValue:[statement residualAmount ] forKey:@"residualAmount" ];
+	[self setValue:statement.nassValue forKey:@"residualAmount" ];
 	
 	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"localName" ascending:YES] autorelease];
 	NSArray				*sds = [NSArray arrayWithObject:sd];
@@ -43,7 +43,7 @@
 
 -(void)addAssignment:(id)sender
 {
-	[statement assignAmount:[statement residualAmount ] toCategory:nil ];
+	[statement assignAmount: statement.nassValue toCategory:nil ];
 	[self setValue:[NSDecimalNumber zero ] forKey:@"residualAmount" ];
 }
 
@@ -53,7 +53,7 @@
 	if (sel && [sel count] == 1) {
 		StatCatAssignment *stat = [sel objectAtIndex:0 ];
 		[stat remove ];
-		[self setValue:[statement residualAmount ] forKey:@"residualAmount" ];
+		[self setValue: statement.nassValue forKey:@"residualAmount" ];
 	}
 }
 
@@ -75,7 +75,7 @@
 			}
 			
 			[statement updateAssigned ];
-			[self setValue:[statement residualAmount ] forKey:@"residualAmount" ];
+			[self setValue: statement.nassValue forKey:@"residualAmount" ];
 			Category *cat = stat.category;
 			if(cat !=  nil) {
 				[cat invalidateBalance ];

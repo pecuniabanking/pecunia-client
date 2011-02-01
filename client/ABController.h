@@ -1,6 +1,6 @@
 //
 //  ABController.h
-//  MacBanking
+//  Pecunia
 //
 //  Created by Frank Emminghaus on 03.01.07.
 //  Copyright 2007 Frank Emminghaus. All rights reserved.

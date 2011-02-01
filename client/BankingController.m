@@ -44,6 +44,7 @@
 #import "TransferTemplateController.h"
 #import "BankStatementPrintView.h"
 #import "MainTabViewItem.h"
+#import "GenericImportController.h"
 
 #define _expandedRows @"EMT_expandedRows"
 #define _accountsViewSD @"EMT_accountsSorting"
@@ -60,6 +61,9 @@ static BankingController	*con;
 
 @implementation BankingController
 
+@synthesize saveValue;
+@synthesize managedObjectContext;
+
 -(id)init
 {
 	HBCIClient *client = nil;
@@ -70,21 +74,21 @@ static BankingController	*con;
 	restart = NO;
 	requestRunning = NO;
 	statementsBound = YES;
-	mainTabItems = [[NSMutableArray arrayWithCapacity:10 ] retain ];
+	mainTabItems = [[NSMutableDictionary dictionaryWithCapacity:10 ] retain ];
 	
 	[Category setCatReportFrom: [ShortDate dateWithYear: 2009 month:1 day:1 ] to: [ShortDate distantFuture ] ];
-	
+
 	// load context & model
 	@try {
-		context = [[MOAssistant assistant ] context ];
 		model   = [[MOAssistant assistant ] model ];
+		self.managedObjectContext = [[MOAssistant assistant ] context ];
 	}
 	@catch(NSError* error) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
 		[NSApp terminate: self ];
 	}
-	
+
 	@try {
 		client = [HBCIClient hbciClient ];
 	}
@@ -115,6 +119,17 @@ static BankingController	*con;
 			[form setTextAttributesForPositiveValues: newAttrs ];
 		}
 	}
+	// green color for transactions view
+	tc = [transactionsView tableColumnWithIdentifier: @"nassValue" ];
+	if(tc) {
+		NSCell	*cell = [tc dataCell ];
+		NSNumberFormatter	*form = [cell formatter ];
+		if(form) {
+			NSDictionary *newAttrs = [NSDictionary dictionaryWithObjectsAndKeys: 
+									  [NSColor colorWithDeviceRed: 0.09 green: 0.7 blue: 0 alpha: 100], @"NSColor", nil ];
+			[form setTextAttributesForPositiveValues: newAttrs ];
+		}
+	}
 	tc = [transactionsView tableColumnWithIdentifier: @"saldo" ];
 	if(tc) {
 		NSCell	*cell = [tc dataCell ];
@@ -135,6 +150,16 @@ static BankingController	*con;
 			[form setTextAttributesForPositiveValues: newAttrs ];
 		}
 	}
+
+	cell = [nassValueField cell ];
+	if(cell) {
+		NSNumberFormatter	*form = [cell formatter ];
+		if(form) {
+			NSDictionary *newAttrs = [NSDictionary dictionaryWithObjectsAndKeys: 
+									  [NSColor colorWithDeviceRed: 0.09 green: 0.7 blue: 0 alpha: 100], @"NSColor", nil ];
+			[form setTextAttributesForPositiveValues: newAttrs ];
+		}
+	}
 	
 	
 	// sort descriptor for transactions view
@@ -146,15 +171,7 @@ static BankingController	*con;
 	[mainWindow setAutorecalculatesContentBorderThickness:NO forEdge:NSMinYEdge];
 	[mainWindow setContentBorderThickness:30.0f forEdge:NSMinYEdge];
 	
-	// repair Category Root
-	[self repairCategories ];
-
-	// set Bank Accounts
-//	[self updateBankAccounts ];
-	[self updateBalances ];
-
-	NSError *error;
-    if([categoryController fetchWithRequest:nil merge:NO error:&error]); // [accountsView restoreAll ];
+	if (self.managedObjectContext) [self publishContext ];
 	
 	// set toolbar selection state
 	int i;
@@ -167,59 +184,39 @@ static BankingController	*con;
 	// register Drag'n Drop
 	[transactionsView registerForDraggedTypes: [NSArray arrayWithObject: BankStatementDataType ] ];
 	[accountsView registerForDraggedTypes: [NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil ] ];
-	[self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
 	
 	// set lock image
 	[self setEncrypted: [[MOAssistant assistant ] encrypted ] ];
-	
+	[mainWindow setContentMinSize:NSMakeSize(800, 450) ];
+	splitCursor = [[NSCursor alloc ] initWithImage:[NSImage imageNamed: @"cursor.png" ] hotSpot:NSMakePoint(0, 0)];
 	[WorkerThread init ];
 }
 
-/*
--(void)setBankAccounts
+-(void)publishContext
 {
-	NSError	*error = nil;
-	BankAccount *account;
-	BOOL changed = NO;
-	
-	NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
-	NSArray *bankAccounts = [context executeFetchRequest:request error:&error];
-	if( error != nil || bankAccounts == nil) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-		return;
-	}
-	
-    NSMutableArray* relevantAccounts = [NSMutableArray arrayWithCapacity:20 ];
-	
-	for(account in bankAccounts) {
-		if (account.userId == nil || account.customerId == nil) {
-			// check if account is defined in HBCI Client
-			Account* acc = [[HBCIClient hbciClient ] accountWithNumber:account.accountNumber bankCode:account.bankCode ];
-			if (acc) {
-				account.userId = acc.userId;
-				account.customerId = acc.customerId;
-				changed = YES;
-				[relevantAccounts addObject:account ];
-			}
-		} else {
-			[relevantAccounts addObject:account ];
-		}
+	NSError *error=nil;
 
+	[categoryController setManagedObjectContext:self.managedObjectContext ];
+	[transactionController setManagedObjectContext:self.managedObjectContext ];
+	
+	// repair Category Root
+	[self repairCategories ];
+	
+	// update Bank Accounts if needed
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	BOOL accUpdated = [defaults boolForKey:@"accountsUpdated" ];
+	if (accUpdated == NO) {
+		[self updateBankAccounts:nil ];
 	}
 	
-	if (changed) {
-		// save updates
-		if([context save: &error ] == NO) {
-			NSAlert *alert = [NSAlert alertWithError:error];
-			[alert runModal];
-			return;
-		}
-	}
+	[self updateBalances ];
 	
-	[[HBCIClient hbciClient ] setAccounts:relevantAccounts ];
+    [categoryController fetchWithRequest:nil merge:NO error:&error];
+	[transferListController setManagedObjectContext:self.managedObjectContext ];
+	[catDefWinController setManagedObjectContext:self.managedObjectContext ];
+	[transferWindowController setManagedObjectContext:self.managedObjectContext ];
+	[self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
 }
- */
 
 -(void)updateBankAccounts:(NSArray*)hbciAccounts
 {
@@ -231,7 +228,7 @@ static BankingController	*con;
 //	NSArray* hbciAccounts = [[HBCIClient hbciClient ] accounts ];
 	
 	NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
-	NSArray *tmpAccounts = [context executeFetchRequest:request error:&error];
+	NSArray *tmpAccounts = [self.managedObjectContext executeFetchRequest:request error:&error];
 	if( error != nil || tmpAccounts == nil) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
@@ -257,12 +254,13 @@ static BankingController	*con;
 			// Account was found: update user- and customer-id
 			account.userId = acc.userId;
 			account.customerId = acc.customerId;
+			account.collTransfer = [NSNumber numberWithBool:acc.collTransfer ];
 		} else {
 			// Account was not found: create it
 			BankAccount* bankRoot = [self getBankNodeWithAccount: acc inAccounts: bankAccounts ];
 			if(bankRoot == nil) return;
 			BankAccount	*bankAccount = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount"
-																		 inManagedObjectContext:context];
+																		 inManagedObjectContext:self.managedObjectContext];
 			
 			bankAccount.accountNumber = acc.accountNumber;
 			bankAccount.name = acc.name;
@@ -274,8 +272,8 @@ static BankingController	*con;
 			bankAccount.userId = acc.userId;
 			bankAccount.customerId = acc.customerId;
 			bankAccount.isBankAcc = [NSNumber numberWithBool: YES ];
-//			bankAccount.uid = [NSNumber numberWithUnsignedInt: [acc uid ]];
-//			bankAccount.type = [NSNumber numberWithUnsignedInt: [acc type ]];
+			bankAccount.uid = [NSNumber numberWithUnsignedInt: [acc uid ]];
+			bankAccount.type = [NSNumber numberWithUnsignedInt: [acc type ]];
 
 			// link
 			bankAccount.parent = bankRoot;
@@ -283,11 +281,14 @@ static BankingController	*con;
 		
 	}
 	// save updates
-	if([context save: &error ] == NO) {
+	if([self.managedObjectContext save: &error ] == NO) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
 		return;
 	}
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	[defaults setBool:YES forKey:@"accountsUpdated" ];
 }
 
 -(NSIndexPath*)indexPathForCategory: (Category*)cat inArray: (NSArray*)nodes
@@ -319,15 +320,15 @@ static BankingController	*con;
 	//  Delete bank statements which are not assigned first
 	while ((statement = [enumerator nextObject])) {
 		if (keepAssignedStats == NO) {
-			[context deleteObject:statement ];
+			[self.managedObjectContext deleteObject:statement ];
 		} else {
 			NSSet *assignments = [statement mutableSetValueForKey:@"assignments" ];
 			if ([assignments count ] < 2) {
-				[context deleteObject:statement ];
+				[self.managedObjectContext deleteObject:statement ];
 			} else if ([assignments count ] == 2) {
 				// delete statement if not assigned yet
 				if ([statement hasAssignment ] == NO) {
-					[context deleteObject:statement ];
+					[self.managedObjectContext deleteObject:statement ];
 				}
 			} else {
 				statement.account = nil;
@@ -335,7 +336,7 @@ static BankingController	*con;
 		}
 	}
 	
-	[context processPendingChanges ];
+	[self.managedObjectContext processPendingChanges ];
 	[[Category nassRoot ] invalidateBalance ];
 	[Category updateCatValues ];
 	
@@ -374,7 +375,7 @@ static BankingController	*con;
 			BankAccount *node = [bankNodes objectAtIndex:i ];
 			NSMutableSet *childs = [node mutableSetValueForKey: @"children" ];
 			if(childs == nil || [childs count ] == 0) {
-				[context deleteObject: node ];
+				[self.managedObjectContext deleteObject: node ];
 				flg_changed = YES;
 			}
 		}
@@ -386,7 +387,7 @@ static BankingController	*con;
 {
 	NSError	*error = nil;
 	NSFetchRequest *request = [model fetchRequestTemplateForName:@"getBankingRoot"];
-	NSArray *cats = [context executeFetchRequest:request error:&error];
+	NSArray *cats = [self.managedObjectContext executeFetchRequest:request error:&error];
 	if( error != nil || cats == nil) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
@@ -396,7 +397,7 @@ static BankingController	*con;
 	
 	// create Root object
 	Category *obj = [NSEntityDescription insertNewObjectForEntityForName:@"Category"
-												  inManagedObjectContext:context];
+												  inManagedObjectContext:self.managedObjectContext];
 	[obj setValue: @"++bankroot" forKey: @"name" ];
 	[obj setValue: [NSNumber numberWithBool: YES ] forKey: @"isBankAcc" ];
 	return obj;
@@ -412,7 +413,7 @@ static BankingController	*con;
 
 	// repair bank root
 	NSFetchRequest *request = [model fetchRequestTemplateForName:@"getBankingRoot"];
-	NSArray *cats = [context executeFetchRequest:request error:&error];
+	NSArray *cats = [self.managedObjectContext executeFetchRequest:request error:&error];
 	if( error != nil || cats == nil) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
@@ -430,7 +431,7 @@ static BankingController	*con;
 	
 	// repair categories
 	request = [model fetchRequestTemplateForName:@"getCategoryRoot"];
-	cats = [context executeFetchRequest:request error:&error];
+	cats = [self.managedObjectContext executeFetchRequest:request error:&error];
 	if( error != nil || cats == nil) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
@@ -453,7 +454,7 @@ static BankingController	*con;
 	if(found == NO) {
 		// create Category Root object
 		Category *obj = [NSEntityDescription insertNewObjectForEntityForName:@"Category"
-													  inManagedObjectContext:context];
+													  inManagedObjectContext:self.managedObjectContext];
 		[obj setValue: @"++catroot" forKey: @"name" ];
 		[obj setValue: [NSNumber numberWithBool: NO ] forKey: @"isBankAcc" ];
 		catRoot = obj;
@@ -468,7 +469,7 @@ static BankingController	*con;
 	
 	// insert not assigned node
 	request = [model fetchRequestTemplateForName:@"getNassRoot"];
-	cats = [context executeFetchRequest:request error:&error];
+	cats = [self.managedObjectContext executeFetchRequest:request error:&error];
 	if( error != nil || cats == nil) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
@@ -476,7 +477,7 @@ static BankingController	*con;
 	}
 	if([cats count ] == 0) {
 		Category *obj = [NSEntityDescription insertNewObjectForEntityForName:@"Category"
-													  inManagedObjectContext:context];
+													  inManagedObjectContext:self.managedObjectContext];
 		[obj setPrimitiveValue: @"++nassroot" forKey: @"name" ];
 		[obj setValue: [NSNumber numberWithBool: NO ] forKey: @"isBankAcc" ];
 		[obj setValue: catRoot forKey: @"parent" ];
@@ -485,7 +486,7 @@ static BankingController	*con;
 	}
 	
 	// save updates
-	if([context save: &error ] == NO) {
+	if([self.managedObjectContext save: &error ] == NO) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
 		return;
@@ -500,7 +501,7 @@ static BankingController	*con;
 		Category *root = [Category bankRoot ];
 		if(root == nil) return nil;
 		// create bank node
-		bankNode = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount" inManagedObjectContext:context];
+		bankNode = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount" inManagedObjectContext:self.managedObjectContext];
 		bankNode.name = acc.bankName;
 		bankNode.bankCode = acc.bankCode;
 		bankNode.currency = acc.currency;
@@ -518,7 +519,7 @@ static BankingController	*con;
 	int     i;
 	
 	NSFetchRequest *request = [model fetchRequestTemplateForName:@"getRootNodes"];
-	NSArray *cats = [context executeFetchRequest:request error:&error];
+	NSArray *cats = [self.managedObjectContext executeFetchRequest:request error:&error];
 	if( error != nil || cats == nil) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
@@ -531,7 +532,7 @@ static BankingController	*con;
 	}
 	
 	// save updates
-	if([context save: &error ] == NO) {
+	if([self.managedObjectContext save: &error ] == NO) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
 		return;
@@ -545,6 +546,12 @@ static BankingController	*con;
 -(IBAction)showInfo:(id)sender
 {
 }
+
+-(IBAction)updateAllAccounts:(id)sender
+{
+	[self updateBankAccounts:nil ];
+}
+
 
 -(IBAction)enqueueRequest: (id)sender
 {
@@ -560,14 +567,14 @@ static BankingController	*con;
 	if(cat.accountNumber != nil) [selectedAccounts addObject: cat ];
 	else {
 		// a node was selected
-		NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:context];
+		NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:self.managedObjectContext];
 		NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
 		[request setEntity:entityDescription];
 		if(cat.parent == nil) {
 			// root was selected
 			NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == %@", cat ];
 			[request setPredicate:predicate];
-			selectedNodes = [context executeFetchRequest:request error:&error];
+			selectedNodes = [self.managedObjectContext executeFetchRequest:request error:&error];
 			if(error) {
 				NSAlert *alert = [NSAlert alertWithError:error];
 				[alert runModal];
@@ -583,7 +590,7 @@ static BankingController	*con;
 			NSArray *result;
 			NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == %@", account ];
 			[request setPredicate:predicate];
-			result = [context executeFetchRequest:request error:&error];
+			result = [self.managedObjectContext executeFetchRequest:request error:&error];
 			if(error) {
 				NSAlert *alert = [NSAlert alertWithError:error];
 				[alert runModal];
@@ -665,7 +672,7 @@ static BankingController	*con;
 		NSArray *stats = result.statements;
 		if([stats count ] > 0) {
 			noStatements = FALSE;
-			[result.account evaluateStatements: stats ];
+			[result.account evaluateQueryResult: result ];
 		}
 		[result.account updateStandingOrders: result.standingOrders ];
 	}
@@ -696,7 +703,7 @@ static BankingController	*con;
 
 -(void)requestFinished: (NSArray*)resultList
 {
-	[context processPendingChanges ];
+	[self.managedObjectContext processPendingChanges ];
 	[self updateBalances ];
 	requestRunning = NO;
 	[[[mainWindow contentView ] viewWithTag: 100 ] setEnabled: YES ];
@@ -728,7 +735,7 @@ static BankingController	*con;
 	NSFetchRequest *fetchRequest =
 		[model fetchRequestFromTemplateWithName:@"bankAccountByID" substitutionVariables:subst];
 	NSArray *results =
-		[context executeFetchRequest:fetchRequest error:&error];
+		[self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	if( error != nil) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
@@ -809,7 +816,7 @@ static BankingController	*con;
 		NSError *error = nil;
 
 		// save updates
-		if([context save: &error ] == NO) {
+		if([self.managedObjectContext save: &error ] == NO) {
 			NSAlert *alert = [NSAlert alertWithError:error];
 			[alert runModal];
 			return;
@@ -832,7 +839,7 @@ static BankingController	*con;
 		// account was changed
 		NSError *error = nil;
 		// save updates
-		if([context save: &error ] == NO) {
+		if([self.managedObjectContext save: &error ] == NO) {
 			NSAlert *alert = [NSAlert alertWithError:error];
 			[alert runModal];
 			return;
@@ -892,7 +899,7 @@ static BankingController	*con;
 	[self removeBankAccount: account keepAssignedStatements: keepAssignedStatements ];
 
 	// save updates
-	if([context save: &error ] == NO) {
+	if([self.managedObjectContext save: &error ] == NO) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
 		return;
@@ -905,7 +912,7 @@ static BankingController	*con;
 	BOOL	flg_update=NO;
 	
 	NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
-	NSArray *bankAccounts = [context executeFetchRequest:request error:&error];
+	NSArray *bankAccounts = [self.managedObjectContext executeFetchRequest:request error:&error];
 	if( error != nil || bankAccounts == nil) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
@@ -955,7 +962,7 @@ static BankingController	*con;
 	
 	// save updates
 	if(flg_update == YES) {
-		if([context save: &error ] == NO) {
+		if([self.managedObjectContext save: &error ] == NO) {
 			NSAlert *alert = [NSAlert alertWithError:error];
 			[alert runModal];
 			return;
@@ -992,8 +999,8 @@ static BankingController	*con;
 {
 	NSError *error = nil;
 
-	if(context == nil) return;
-	if([context save: &error ] == NO) {
+	if(self.managedObjectContext == nil) return;
+	if([self.managedObjectContext save: &error ] == NO) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
 		return;
@@ -1006,6 +1013,24 @@ static BankingController	*con;
 
 	cat = [self currentSelection ];
 	[ExportController export: cat ];
+}
+
+-(IBAction)import: (id)sender
+{
+	NSError *error=nil;
+	
+	GenericImportController *con = [[GenericImportController alloc ] init ];
+	
+	int res = [NSApp runModalForWindow: [con window]];
+	if(res) {
+		// save updates
+		if([self.managedObjectContext save: &error ] == NO) {
+			NSAlert *alert = [NSAlert alertWithError:error];
+			[alert runModal];
+			return;
+		}
+	}
+	[self updateBalances ];
 }
 
 
@@ -1035,19 +1060,21 @@ static BankingController	*con;
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
-	NSError	*error;
+	NSError	*error = nil;
 	
 	[accountsView saveLayout ];
 	[catDefWinController terminateController ];
 	
-	for(id <MainTabViewItem> item in mainTabItems) {
+	for(id <MainTabViewItem> item in [mainTabItems allValues ]) {
 		[item terminate ];
 	}
 	
-	if([context save: &error ] == NO) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-		return;
+	if (self.managedObjectContext) {
+		if([self.managedObjectContext save: &error ] == NO) {
+			NSAlert *alert = [NSAlert alertWithError:error];
+			[alert runModal];
+			return;
+		}
 	}
 	
 	// if application shall restart, launch new task
@@ -1071,11 +1098,6 @@ static BankingController	*con;
 	[accountsView restoreAll ];
 }
 
--(NSManagedObjectContext*)managedObjectContext
-{
-	return context;
-}
-
 -(int)AccSize
 {
 	return 20;
@@ -1089,6 +1111,8 @@ static BankingController	*con;
 
 -(IBAction)showLog:(id)sender
 {
+//	[logController performSelector:@selector(showWindow:) onThread:[WorkerThread thread ] withObject:nil waitUntilDone:NO ];
+
 	[logController showWindow: self ];
 }
 
@@ -1114,8 +1138,8 @@ static BankingController	*con;
 {
 	BankAccount* account = [self selectedBankAccount ];
 	if(account == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP90", @""), 
-						NSLocalizedString(@"AP91", @""), 
+		NSRunAlertPanel(NSLocalizedString(@"AP91", @""), 
+						NSLocalizedString(@"AP92", @""), 
 						NSLocalizedString(@"ok", @"Ok"), nil, nil);
 		return;
 	}
@@ -1191,16 +1215,16 @@ static BankingController	*con;
 		case 0:
 			if([searchName length ] == 0) [transactionController setFilterPredicate: [timeSlicer predicateForField: @"date" ] ];
 			else {
-				NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or statement.additional contains[c] %@",
-									 searchName, searchName, searchName ];
+				NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or userInfo contains[c] %@ or value = %@",
+									 searchName, searchName, searchName, [NSDecimalNumber decimalNumberWithString:searchName locale: [NSLocale currentLocale ]] ];
 				if(pred) [transactionController setFilterPredicate: pred ];
 			}
 			break;
 			case 1:
 			if([searchName length ] == 0) [transferListController setFilterPredicate: nil ];
 			else {
-				NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or statement.additional contains[c] %@",
-									 searchName, searchName, searchName ];
+				NSPredicate *pred = [NSPredicate predicateWithFormat: @"purpose contains[c] %@ or remoteName contains[c] %@ or value = %@",
+									 searchName, searchName, [NSDecimalNumber decimalNumberWithString:searchName locale: [NSLocale currentLocale ] ]];
 				if(pred) [transferListController setFilterPredicate: pred ];
 			}
 			break;
@@ -1248,7 +1272,6 @@ static BankingController	*con;
 			if ([item action] == @selector(transfer_local:)) return NO;
 			if ([item action] == @selector(transfer_eu:)) return NO;
 			if ([item action] == @selector(transfer_dated:)) return NO;
-			if ([item action] == @selector(donate:)) return NO;
 			if ([item action] == @selector(addStatement:)) return NO;
 		}
 		if ([item action ] == @selector(deleteStatement:)) {
@@ -1278,7 +1301,7 @@ static BankingController	*con;
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: uri];
     [pboard declareTypes:[NSArray arrayWithObject: BankStatementDataType] owner:self];
     [pboard setData:data forType: BankStatementDataType];
-	if([[self currentSelection ] isBankAccount ]) [tv setDraggingSourceOperationMask: NSDragOperationCopy | NSDragOperationMove forLocal: YES ];
+	if([[self currentSelection ] isBankAccount ]) [tv setDraggingSourceOperationMask: NSDragOperationCopy | NSDragOperationMove | NSDragOperationGeneric forLocal: YES ];
 	else [tv setDraggingSourceOperationMask: NSDragOperationCopy | NSDragOperationMove forLocal: YES ];
 	[tv setDraggingSourceOperationMask: NSDragOperationDelete forLocal: NO]; 
     return YES;
@@ -1310,7 +1333,8 @@ static BankingController	*con;
 	Category* cat = (Category*)[item representedObject ];
 	if(cat == nil) return NSDragOperationNone;
 	if([cat isBankAccount]) return NSDragOperationNone;
-
+    [[NSCursor arrowCursor ] set ];
+	
 	NSString *type = [pboard availableTypeFromArray:[NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil]];
 	if(type == nil) return NO;
 	if([type isEqual: BankStatementDataType ]) {
@@ -1320,12 +1344,16 @@ static BankingController	*con;
 		// if not yet assigned: move
 		if(scat == [Category nassRoot ]) return NSDragOperationMove;
 		if(mask == NSDragOperationCopy && cat != [Category nassRoot ]) return NSDragOperationCopy;
+		if(mask == NSDragOperationGeneric && cat != [Category nassRoot ]) {
+			[splitCursor set ];
+			return NSDragOperationGeneric;
+		}
 		return NSDragOperationMove;
 	} else {
 		NSData *data = [pboard dataForType: type ];
 		NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data ];
-		NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
-		Category *scat = (Category*)[context objectWithID: moID];
+		NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
+		Category *scat = (Category*)[self.managedObjectContext objectWithID: moID];
 		if ([scat checkMoveToCategory:cat ] == NO) return NSDragOperationNone;
 		return NSDragOperationMove;
 	}
@@ -1341,17 +1369,28 @@ static BankingController	*con;
 	NSData *data = [pboard dataForType: type ];
 	NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data ];
 	
-	NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
+	NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
 	if(moID == nil) return NO;
 	// assume moID non-nil...
 	
 	if([type isEqual: BankStatementDataType ]) {
 		NSDragOperation mask = [info draggingSourceOperationMask];
-		StatCatAssignment *stat = (StatCatAssignment*)[context objectWithID: moID];
+		StatCatAssignment *stat = (StatCatAssignment*)[self.managedObjectContext objectWithID: moID];
 		if([[self currentSelection ] isBankAccount ]) {
 			// if already assigned or copy modifier is pressed, copy the complete bank statement amount - else assign residual amount (move)
-			if(mask == NSDragOperationCopy || [stat.statement isAssigned ]) [stat.statement assignToCategory: cat ];
-			else [stat.statement assignAmount: [stat.statement residualAmount] toCategory: cat ];
+			if(mask == NSDragOperationCopy || [stat.statement.isAssigned boolValue]) [stat.statement assignToCategory: cat ];
+			else if(mask == NSDragOperationGeneric) {
+				BOOL negate = NO;
+				NSDecimalNumber *residual = stat.statement.nassValue;
+				if ([residual compare:[NSDecimalNumber zero ] ] == NSOrderedAscending) negate = YES;
+				if (negate) residual = [[NSDecimalNumber zero ] decimalNumberBySubtracting:residual ];				
+				[assignValueField setObjectValue:residual ];
+				[NSApp runModalForWindow: assignValueWindow ];
+				residual = [NSDecimalNumber decimalNumberWithDecimal: [[assignValueField objectValue ] decimalValue ]];
+				if (negate) residual = [[NSDecimalNumber zero ] decimalNumberBySubtracting:residual ];				
+				[stat.statement assignAmount:residual toCategory:cat ];
+ 
+			} else [stat.statement assignAmount: stat.statement.nassValue toCategory: cat ];
 		} else {
 			if(mask == NSDragOperationCopy) [stat.statement assignAmount: stat.value toCategory: cat ];
 			else [stat moveToCategory: cat ];
@@ -1363,12 +1402,12 @@ static BankingController	*con;
 		// update tableview to maybe new row colors
 		[transactionsView display ];
 	} else {
-		Category *scat = (Category*)[context objectWithID: moID];
+		Category *scat = (Category*)[self.managedObjectContext objectWithID: moID];
 		[scat setValue: cat forKey: @"parent" ];
 		[[Category catRoot ] rollup ];
 	}
 	// save updates
-	if([context save: &error ] == NO) {
+	if([self.managedObjectContext save: &error ] == NO) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
 		return NO;
@@ -1380,6 +1419,7 @@ static BankingController	*con;
 {
 	Category *cat = [self currentSelection ];
 	if(cat == nil) return;
+	if (self.managedObjectContext == nil) return;
 	
 	if([cat isBankAccount ] && cat.accountNumber == nil) {
 		if (statementsBound) {
@@ -1457,10 +1497,10 @@ static BankingController	*con;
 	int		i;
 	
 	// fetch all bank statements
-	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:self.managedObjectContext];
 	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
 	[request setEntity:entityDescription];
-	NSArray *stats = [context executeFetchRequest:request error:&error];
+	NSArray *stats = [self.managedObjectContext executeFetchRequest:request error:&error];
 	if(error) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
@@ -1537,6 +1577,7 @@ static BankingController	*con;
 
 -(void)timeSliceManager: (TimeSliceManager*)tsm changedIntervalFrom: (ShortDate*)from to: (ShortDate*)to
 {
+	if (self.managedObjectContext == nil) return;
 	int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem ] ];
 	if(idx) return;
 	Category *cat = [Category catRoot ];
@@ -1551,26 +1592,19 @@ static BankingController	*con;
 	[searchField setStringValue: @"" ];
 }
 
-/*
-- (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor
-{
-	if(control == accountsView) {
-		NSString *s = [fieldEditor string];
-		if(s == nil || [s length ] == 0) {
-			NSBeep();
-			return NO;
-		}
-		return YES;
-	}
-}
-*/
-
 -(void)controlTextDidBeginEditing:(NSNotification *)aNotification
 {
 	if([aNotification object ] == accountsView) {
 		Category *cat = [self currentSelection ];
 		accountsView.saveCatName = [[cat name ] retain];
 	}	
+	if([aNotification object ] == valueField) {
+		NSArray *sel = [transactionController selectedObjects ];
+		if(sel && [sel count ] == 1) {
+			StatCatAssignment *stat = [sel objectAtIndex:0 ];
+			self.saveValue = stat.value;
+		}
+	}
 }
 
 -(void)controlTextDidEndEditing:(NSNotification *)aNotification
@@ -1589,6 +1623,32 @@ static BankingController	*con;
 		NSArray *sel = [transactionController selectedObjects ];
 		if(sel && [sel count ] == 1) {
 			StatCatAssignment *stat = [sel objectAtIndex:0 ];
+			
+			// do some checks
+			// amount must have correct sign
+			NSDecimal d1 = [stat.statement.value decimalValue ];
+			NSDecimal d2 = [stat.value decimalValue ];
+			if (d1._isNegative != d2._isNegative) {
+				NSBeep();
+				stat.value = self.saveValue;
+				return;
+			}
+			
+			// amount must not be higher than original amount
+			if (d1._isNegative) {
+				if ([stat.value compare:stat.statement.value ] == NSOrderedAscending) {
+					NSBeep();
+					stat.value = self.saveValue;
+					return;
+				}
+			} else {
+				if ([stat.value compare:stat.statement.value ] == NSOrderedDescending) {
+					NSBeep();
+					stat.value = self.saveValue;
+					return;
+				}
+			}
+
 			[stat.statement updateAssigned ];
 			Category *cat = [self currentSelection ];
 			if(cat !=  nil) {
@@ -1596,6 +1656,11 @@ static BankingController	*con;
 				[Category updateCatValues ];
 			}
 		}
+		[transactionController setSelectedObjects:sel ];
+	}
+	if ([aNotification object ] == assignValueField) {
+		[NSApp stopModalWithCode:0 ];
+		[assignValueWindow orderOut:self ];
 	}
 }
 
@@ -1629,12 +1694,12 @@ static BankingController	*con;
 	BankStatement *stat = [[stats objectAtIndex:0 ] statement ];
 	
 	// check if statement is duplicate. Select all statements with same date
-	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:self.managedObjectContext];
 	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
 	[request setEntity:entityDescription];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date = %@)", account, stat.date  ];
 	[request setPredicate:predicate];
-	stats = [context executeFetchRequest:request error:&error];
+	stats = [self.managedObjectContext executeFetchRequest:request error:&error];
 	if(error) {
 		NSAlert *alert = [NSAlert alertWithError:error];
 		[alert runModal];
@@ -1672,13 +1737,13 @@ static BankingController	*con;
 	}
 	
 	if (deleteStatement == YES) {
-		[context deleteObject: stat ];
+		[self.managedObjectContext deleteObject: stat ];
 		
 		// rebuild saldos - only for manual accounts
 		if (account.userId == nil) {
 			NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date > %@)", account, stat.date  ];
 			[request setPredicate:predicate];
-			stats = [context executeFetchRequest:request error:&error];
+			stats = [self.managedObjectContext executeFetchRequest:request error:&error];
 			if(error) {
 				NSAlert *alert = [NSAlert alertWithError:error];
 				[alert runModal];
@@ -1693,7 +1758,7 @@ static BankingController	*con;
 			[[Category bankRoot ] rollup ];
 		}
 
-		[context deleteObject: stat ];
+		[self.managedObjectContext deleteObject: stat ];
 	}
 	
 }
@@ -1726,7 +1791,7 @@ static BankingController	*con;
 		NSError *error = nil;
 		
 		// save updates
-		if([context save: &error ] == NO) {
+		if([self.managedObjectContext save: &error ] == NO) {
 			NSAlert *alert = [NSAlert alertWithError:error];
 			[alert runModal];
 			return;
@@ -1743,8 +1808,7 @@ static BankingController	*con;
 	}
 	
 	PurposeSplitController *con = [[PurposeSplitController alloc ] initWithAccount:(BankAccount*)cat ];
-	int res = [NSApp runModalForWindow: [con window ] ];
-	
+	[NSApp runModalForWindow: [con window ] ];
 }
 
 
@@ -1752,7 +1816,7 @@ static BankingController	*con;
 {
 	NSError *error = nil;
 	NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
-	NSArray *selectedAccounts = [context executeFetchRequest:request error:&error];
+	NSArray *selectedAccounts = [self.managedObjectContext executeFetchRequest:request error:&error];
 	if(error) {
 		NSLog(@"Read bank accounts error on automatic sync");
 		return;
@@ -1867,6 +1931,27 @@ static BankingController	*con;
 	[[NSWorkspace sharedWorkspace ] openFile: path ];
 }
 
+-(void)applicationWillFinishLaunching:(NSNotification *)notification
+{
+	if ([[MOAssistant assistant ] encrypted ]) {
+		StatusBarController *sc = [StatusBarController controller ];
+		[sc startSpinning ];
+		[sc setMessage: NSLocalizedString(@"AP110", @"Open database...") removeAfter:0 ];
+		
+		@try {
+			[[MOAssistant assistant ] openImage ];
+			self.managedObjectContext = [[MOAssistant assistant ] context ];
+		}
+		@catch(NSError* error) {
+			NSAlert *alert = [NSAlert alertWithError:error];
+			[alert runModal];
+			[NSApp terminate: self ];
+		}
+		[self publishContext ];
+		[sc stopSpinning ];
+		[sc clearMessage ];
+	}
+}
 
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -1883,17 +1968,38 @@ static BankingController	*con;
 	if(encrypted) [lockImage setHidden:NO ]; else [lockImage setHidden:YES ];
 }
 
--(IBAction)print:(id)sender
+-(IBAction)printDocument:(id)sender
 {
-	NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo ];
-	[printInfo setTopMargin:45 ];
-	[printInfo setBottomMargin:45 ];
-	NSPrintOperation *printOp;
-	NSView *view = [[BankStatementPrintView alloc ] initWithStatements:[transactionController arrangedObjects ] printInfo:printInfo ];
-	printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo ];
-	[printOp setShowsPrintPanel:YES ];
-//	NSGraphicsContext *context = [printOp context ];
-	[printOp runOperation ];
+	int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem ] ];
+	if (idx == 0) {
+		NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo ];
+		[printInfo setTopMargin:45 ];
+		[printInfo setBottomMargin:45 ];
+		NSPrintOperation *printOp;
+		NSView *view = [[BankStatementPrintView alloc ] initWithStatements:[transactionController arrangedObjects ] printInfo:printInfo ];
+		printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo ];
+		[printOp setShowsPrintPanel:YES ];
+		//	NSGraphicsContext *context = [printOp context ];
+		[printOp runOperation ];
+	}
+	if (idx == 1) {
+		NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo ];
+		[printInfo setTopMargin:45 ];
+		[printInfo setBottomMargin:45 ];
+		[printInfo setHorizontalPagination:NSFitPagination ];
+		[printInfo setVerticalPagination:NSFitPagination ];
+		NSPrintOperation *printOp;
+//		NSView *view = [[BankStatementPrintView alloc ] initWithStatements:[transactionController arrangedObjects ] printInfo:printInfo ];
+		printOp = [NSPrintOperation printOperationWithView:[[mainTabView selectedTabViewItem ] view] printInfo: printInfo ];
+		[printOp setShowsPrintPanel:YES ];
+		//	NSGraphicsContext *context = [printOp context ];
+		[printOp runOperation ];
+	}
+	
+	if (idx > 2) {
+		id <MainTabViewItem> item = [mainTabItems objectForKey:[[mainTabView selectedTabViewItem ] identifier ]];
+		[item print ];
+	}
 }
 
 +(BankingController*)controller

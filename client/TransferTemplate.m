@@ -21,6 +21,7 @@
 @dynamic remoteCountry;
 @dynamic remoteIBAN;
 @dynamic remoteName;
+@dynamic remoteSuffix;
 @dynamic value;
 @dynamic type;
 @end

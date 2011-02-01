@@ -34,6 +34,8 @@
 
 -(void)awakeFromNib
 {
+	[templateController setManagedObjectContext:context ];
+	
 	// sort descriptor for transactions view
 	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
 	NSArray				*sds = [NSArray arrayWithObject:sd];

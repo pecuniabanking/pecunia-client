@@ -117,7 +117,7 @@
 "AP89" = "Kontenabfrage nur eingeschränkt möglich";
 "AP90" = "Für %d von %d der ausgewählten Konten kann keine Kontenabfrage durchgeführt werden, da sie keine Bankkennung besitzen";
 "AP91" = "Spenden";
-"AP92" = "Bitte wählen Sie zuerst ein Bankkonto aus";
+"AP92" = "Danke dass Sie spenden möchten. Bitte wählen Sie das Bankkonto aus von dem Sie aus spenden möchten und wählen Sie dann die Funktion erneut";
 "AP93" = "Abbruch durch Benutzer";
 "AP94" = "Das eingegebene Passwort ist falsch";
 "AP95" = "Fehlende HBCI-Information: %@";
@@ -132,3 +132,7 @@
 "AP104" = "Bestätigung";
 "AP105" = "Möchten Sie die Überweisungsvorlage löschen?";
 "AP106" = "Neue Überweisungsvorlage";
+"AP107" = "Konten für Benutzerkennung %@ wurden erfolgreich aktualisiert";
+"AP108" = "Daueraufträge abrufen";
+"AP109" = "Es sind zur Zeit keine Konten für die Verwendung mit Daueraufträgen gekennzeichnet. Möchten Sie dass Pecunia nun prüft, welche Konten Daueraufträge unterstützen?";
+"AP110" = "Datenbank wird geöffnet...";

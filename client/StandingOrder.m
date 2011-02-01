@@ -14,7 +14,7 @@
 @dynamic cycle;
 @dynamic executionDay;
 @dynamic firstExecDate;
-@dynamic isDeleted;
+@dynamic toDelete;
 @dynamic isSent;
 @dynamic lastExecDate;
 @dynamic nextExecDate;
@@ -28,6 +28,7 @@
 @dynamic remoteBankCode;
 @dynamic remoteBankName;
 @dynamic remoteName;
+@dynamic remoteSuffix;
 @dynamic status;
 @dynamic subType;
 @dynamic type;
