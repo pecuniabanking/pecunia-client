@@ -289,18 +289,16 @@ error:
 				fprintf(stderr, "Job is not available (%d)\n", rv);
 				goto error;
 			}
+			
+			NSDate *ltd = res.account.latestTransferDate;
+			if (ltd) {
+				GWEN_TIME *d = GWEN_Time_fromSeconds((unsigned int)[ltd timeIntervalSince1970 ]);
+				AB_JobGetTransactions_SetFromTime(j, d);
+				GWEN_Time_free(d);
+			}
+			
 			/* enqueue this job so that AqBanking knows we want it executed. */
 			AB_Job_List2_PushBack(jl, j);
-/*			
-			// create a job which retrieves standing orders.
-			j=(AB_JOB*)AB_JobGetStandingOrders_new(a);
-			rv=AB_Job_CheckAvailability(j);
-			if (rv) {
-				AB_Job_free(j);
-			} else {
-				AB_Job_List2_PushBack(jl, j);
-			}
-*/			
 		}
 	}
 	// joblist is created
@@ -843,6 +841,19 @@ error:
 	if( si != 0 ) return [NSString stringWithUTF8String: errmsg];
 	[self getAccounts ];
 	return nil;
+}
+
+-(void)changePinTanMethodForUser:(ABUser*)user method:(int)method
+{
+	if (user == nil) return;
+	AB_USER* usr = AB_Banking_FindUser(ab, "aqhbci", "de", [user.bankCode UTF8String], [user.userId UTF8String], [user.customerId UTF8String]);
+	if (usr) {
+		int rv = AB_Banking_BeginExclUseUser(ab, usr );
+		if (rv == 0) {
+			AH_User_SetSelectedTanMethod(usr, method);
+			AB_Banking_EndExclUseUser(ab, usr, NO);
+		} else return;
+	}
 }
 
 -(int)removeUser:(AB_USER*)user fromAccount: (AB_ACCOUNT*)acc

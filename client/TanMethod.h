@@ -13,6 +13,8 @@
 	NSString	*description;
 }
 
+-(id)initDefault: (int) func;
+
 @property (nonatomic, assign) int function;
 @property (nonatomic, retain) NSString* description;
 

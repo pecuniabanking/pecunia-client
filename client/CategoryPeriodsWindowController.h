@@ -22,6 +22,7 @@
 	IBOutlet NSOutlineView		*categoryView;
 	IBOutlet NSView				*mainView;
 	IBOutlet NSView				*printView;
+	IBOutlet NSArrayController  *statementsController;
 
 	CategoryReportingNode		*dataRoot;
 	CategoryReportingNode		*periodRoot;
@@ -34,8 +35,11 @@
 	ShortDate					*minDate;
 	ShortDate					*maxDate;
 	CatHistoryType				histType;
+	NSManagedObjectContext		*managedObjectContext;
+	int							selectedColumn;
 }
 
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSNumberFormatter *formatter;
 @property (nonatomic, retain) ShortDate *minDate;
 @property (nonatomic, retain) ShortDate *maxDate;
@@ -50,6 +54,7 @@
 -(IBAction)histTypeChanged: (id)sender;
 -(IBAction)fromButtonPressed:(id)sender;
 -(IBAction)toButtonPressed:(id)sender;
+-(IBAction)doubleClicked:(id)sender;
 
 -(NSView*)mainView;
 
@@ -60,11 +65,13 @@
 -(ShortDate*)periodRefDateForDate:(ShortDate*)date;
 -(void)adjustDates;
 -(void)updateData;
+-(void)updateStatements;
 
 
 -(Category*)currentSelection;
 
 @end
+
 
 
 

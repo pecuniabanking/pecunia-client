@@ -29,7 +29,8 @@
 	
 	NSMutableArray				*expensesCats;
 	NSMutableArray				*incomesCats;
-	ShortDate					*fromDate, *toDate;
+	ShortDate					*fromDate;
+	ShortDate					*toDate;
 	NSManagedObjectContext      *managedObjectContext;
 	
 	IBOutlet TimeSliceManager	*tsManager;
@@ -38,6 +39,9 @@
 	int							expensesX;
 	int							incomesX;
 }
+
+@property (nonatomic, retain) ShortDate *fromDate;
+@property (nonatomic, retain) ShortDate *toDate;
 
 -(IBAction)balancingRuleChanged: (id)sender;
 
@@ -50,3 +54,4 @@
 -(NSView*)mainView;
 
 @end
+

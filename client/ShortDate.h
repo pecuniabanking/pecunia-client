@@ -36,8 +36,11 @@
 - (NSString*)yearDescription;
 
 -(ShortDate*)firstDayInYear;
+-(ShortDate*)lastDayInYear;
 -(ShortDate*)firstDayInMonth;
+-(ShortDate*)lastDayInMonth;
 -(ShortDate*)firstDayInQuarter;
+-(ShortDate*)lastDayInQuarter;
 -(int)quarter;
 
 - (unsigned)year;

@@ -30,7 +30,8 @@
 	NSDictionary				*balanceHistory;
 	NSArray						*balanceKeys;
 	ShortDate					*firstDate;
-	ShortDate					*fromDate, *toDate;
+	ShortDate					*fromDate;
+	ShortDate					*toDate;
 	NSManagedObjectContext		*managedObjectContext;
 	
 	double						xTickCountFactor;
@@ -42,6 +43,12 @@
 	IBOutlet NSString			*sexpense;
 	IBOutlet NSString			*sbalance;
 }
+
+@property (nonatomic, retain) ShortDate *firstDate;
+@property (nonatomic, retain) ShortDate *fromDate;
+@property (nonatomic, retain) ShortDate *toDate;
+
+
 
 -(IBAction) setGraphStyle: (id)sender;
 -(IBAction) setBarStyle: (id)sender;
@@ -57,3 +64,4 @@
 -(Category*)currentSelection;
 
 @end
+

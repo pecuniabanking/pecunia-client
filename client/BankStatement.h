@@ -16,7 +16,7 @@
 @interface BankStatement : NSManagedObject {
 	
 //	BankAccount *account;
-	BOOL		isNew;
+//	BOOL		isNew;
 }
 
 -(BOOL)matches: (BankStatement*)stat;
@@ -60,8 +60,6 @@
 @property (nonatomic, retain) NSString *localSuffix;
 @property (nonatomic, retain) NSString *remoteSuffix;
 
-@property (assign) BOOL isNew;
-
 @property (nonatomic, retain, readonly) NSString * categoriesDescription;
 
 @property (nonatomic, retain) NSString *localBankCode, *localAccount;
@@ -76,8 +74,9 @@
 @property (nonatomic, retain) NSString *additional;
 @property (nonatomic, retain) NSNumber *hashNumber;
 @property (nonatomic, retain) NSNumber *isAssigned;		// assigned to >= 100%
-@property (nonatomic, retain) NSNumber * isManual;
-@property (nonatomic, retain) NSNumber * isStorno;
+@property (nonatomic, retain) NSNumber *isManual;
+@property (nonatomic, retain) NSNumber *isStorno;
+@property (nonatomic, retain) NSNumber *isNew;
 
 @property (nonatomic, retain) BankAccount *account;
 

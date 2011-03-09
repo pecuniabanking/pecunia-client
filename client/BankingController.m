@@ -98,7 +98,6 @@ static BankingController	*con;
 		[NSApp terminate: self ];
 	}
 	
-	[client initHBCI ];
 	logController = [LogController logController ];
 
 	return self;
@@ -211,10 +210,20 @@ static BankingController	*con;
 	
 	[self updateBalances ];
 	
+	// reset BankStatement isNew
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:self.managedObjectContext];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1", self ];
+	[request setPredicate:predicate];
+	NSArray *statements = [self.managedObjectContext executeFetchRequest:request error:&error];
+	for(BankStatement *stat in statements) stat.isNew = [NSNumber numberWithBool:NO ];
+	
     [categoryController fetchWithRequest:nil merge:NO error:&error];
 	[transferListController setManagedObjectContext:self.managedObjectContext ];
 	[catDefWinController setManagedObjectContext:self.managedObjectContext ];
 	[transferWindowController setManagedObjectContext:self.managedObjectContext ];
+	[timeSlicer updateDelegate ];
 	[self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
 }
 
@@ -633,6 +642,7 @@ static BankingController	*con;
 			result.userId = account.userId;
 			result.account = account;
 			[resultList addObject: [result autorelease] ];
+			[account resetIsNew ];
 		}
 	}
 	
@@ -1012,7 +1022,8 @@ static BankingController	*con;
 	Category			*cat;
 
 	cat = [self currentSelection ];
-	[ExportController export: cat ];
+	ExportController *controller = [ExportController controller ];
+	[controller startExport:cat fromDate:[timeSlicer lowerBounds ] toDate:[timeSlicer upperBounds ] ];
 }
 
 -(IBAction)import: (id)sender
@@ -1131,13 +1142,14 @@ static BankingController	*con;
 {
 	BankAccount* account = [self selectedBankAccount ];
 	if(account == nil) return;
+	if ([[account isManual ] boolValue] == YES) return;
 	[transferWindowController transferOfType: TransferTypeLocal forAccount: account ];
 }
 
 -(IBAction)donate: (id)sender
 {
 	BankAccount* account = [self selectedBankAccount ];
-	if(account == nil) {
+	if(account == nil || [[account isManual ] boolValue] == YES) {
 		NSRunAlertPanel(NSLocalizedString(@"AP91", @""), 
 						NSLocalizedString(@"AP92", @""), 
 						NSLocalizedString(@"ok", @"Ok"), nil, nil);
@@ -1151,6 +1163,7 @@ static BankingController	*con;
 {
 	BankAccount* account = [self selectedBankAccount ];
 	if(account == nil) return;
+	if ([[account isManual ] boolValue] == YES) return;
 	[transferWindowController transferOfType: TransferTypeInternal forAccount: account ];
 }
 
@@ -1158,6 +1171,7 @@ static BankingController	*con;
 {
 	BankAccount* account = [self selectedBankAccount ];
 	if(account == nil) return;
+	if ([[account isManual ] boolValue] == YES) return;
 	[transferWindowController transferOfType: TransferTypeDated forAccount: account ];
 }
 
@@ -1165,6 +1179,7 @@ static BankingController	*con;
 {
 	BankAccount* account = [self selectedBankAccount ];
 	if(account == nil) return;
+	if ([[account isManual ] boolValue] == YES) return;
 	// check if bic and iban is defined
 /*
 	if([[account iban ] isEqual: @"" ] || [[ isEqual: @"" ]) {
@@ -1274,6 +1289,14 @@ static BankingController	*con;
 			if ([item action] == @selector(transfer_dated:)) return NO;
 			if ([item action] == @selector(addStatement:)) return NO;
 		}
+		if ([cat isBankAccount ] == YES) {
+			if ([[(BankAccount*)cat isManual ] boolValue] == YES) {
+				if ([item action] == @selector(transfer_local:)) return NO;
+				if ([item action] == @selector(transfer_eu:)) return NO;
+				if ([item action] == @selector(transfer_dated:)) return NO;
+			}
+		}
+		
 		if ([item action ] == @selector(deleteStatement:)) {
 			if ([cat isBankAccount ] == NO) return NO;
 			if ([[transactionController selectedObjects] count ] == 0) return NO;
@@ -1332,12 +1355,18 @@ static BankingController	*con;
 	if(item == nil) return NSDragOperationNone;
 	Category* cat = (Category*)[item representedObject ];
 	if(cat == nil) return NSDragOperationNone;
-	if([cat isBankAccount]) return NSDragOperationNone;
     [[NSCursor arrowCursor ] set ];
 	
 	NSString *type = [pboard availableTypeFromArray:[NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil]];
 	if(type == nil) return NO;
 	if([type isEqual: BankStatementDataType ]) {
+		if([cat isBankAccount]) {
+			// only allow for manual accounts
+			BankAccount *account = (BankAccount*)cat;
+			if ([account.isManual boolValue] == YES) return NSDragOperationCopy;
+			return NSDragOperationNone;
+		}
+		
 		NSDragOperation mask = [info draggingSourceOperationMask];
 		Category *scat = [self currentSelection ];
 		if([cat isRoot ]) return NSDragOperationNone;
@@ -1350,6 +1379,7 @@ static BankingController	*con;
 		}
 		return NSDragOperationMove;
 	} else {
+		if([cat isBankAccount]) return NSDragOperationNone;
 		NSData *data = [pboard dataForType: type ];
 		NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data ];
 		NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
@@ -1376,21 +1406,29 @@ static BankingController	*con;
 	if([type isEqual: BankStatementDataType ]) {
 		NSDragOperation mask = [info draggingSourceOperationMask];
 		StatCatAssignment *stat = (StatCatAssignment*)[self.managedObjectContext objectWithID: moID];
+		
 		if([[self currentSelection ] isBankAccount ]) {
 			// if already assigned or copy modifier is pressed, copy the complete bank statement amount - else assign residual amount (move)
-			if(mask == NSDragOperationCopy || [stat.statement.isAssigned boolValue]) [stat.statement assignToCategory: cat ];
-			else if(mask == NSDragOperationGeneric) {
-				BOOL negate = NO;
-				NSDecimalNumber *residual = stat.statement.nassValue;
-				if ([residual compare:[NSDecimalNumber zero ] ] == NSOrderedAscending) negate = YES;
-				if (negate) residual = [[NSDecimalNumber zero ] decimalNumberBySubtracting:residual ];				
-				[assignValueField setObjectValue:residual ];
-				[NSApp runModalForWindow: assignValueWindow ];
-				residual = [NSDecimalNumber decimalNumberWithDecimal: [[assignValueField objectValue ] decimalValue ]];
-				if (negate) residual = [[NSDecimalNumber zero ] decimalNumberBySubtracting:residual ];				
-				[stat.statement assignAmount:residual toCategory:cat ];
- 
-			} else [stat.statement assignAmount: stat.statement.nassValue toCategory: cat ];
+			if ([cat isBankAccount ]) {
+				// drop on a manual account
+				BankAccount *account = (BankAccount*)cat;
+				[account copyStatement:stat.statement ];
+				[[Category bankRoot ] rollup ];
+
+			} else {
+				if(mask == NSDragOperationCopy || [stat.statement.isAssigned boolValue]) [stat.statement assignToCategory: cat ];
+				else if(mask == NSDragOperationGeneric) {
+					BOOL negate = NO;
+					NSDecimalNumber *residual = stat.statement.nassValue;
+					if ([residual compare:[NSDecimalNumber zero ] ] == NSOrderedAscending) negate = YES;
+					if (negate) residual = [[NSDecimalNumber zero ] decimalNumberBySubtracting:residual ];				
+					[assignValueField setObjectValue:residual ];
+					[NSApp runModalForWindow: assignValueWindow ];
+					residual = [NSDecimalNumber decimalNumberWithDecimal: [[assignValueField objectValue ] decimalValue ]];
+					if (negate) residual = [[NSDecimalNumber zero ] decimalNumberBySubtracting:residual ];				
+					[stat.statement assignAmount:residual toCategory:cat ];
+				} else [stat.statement assignAmount: stat.statement.nassValue toCategory: cat ];
+			}
 		} else {
 			if(mask == NSDragOperationCopy) [stat.statement assignAmount: stat.value toCategory: cat ];
 			else [stat moveToCategory: cat ];
@@ -1676,7 +1714,7 @@ static BankingController	*con;
 	if(![cat isBankAccount ]) return nil;
 	
 	StatCatAssignment *stat = [[transactionController arrangedObjects ] objectAtIndex: row ];
-	if(stat.statement.isNew) color = [PreferenceController newStatementRowColor ];
+	if([stat.statement.isNew boolValue]) color = [PreferenceController newStatementRowColor ];
 	if(![stat.statement.isAssigned boolValue ] && color == nil) color = [PreferenceController notAssignedRowColor ];
 	return color;
 }
@@ -1738,6 +1776,12 @@ static BankingController	*con;
 	
 	if (deleteStatement == YES) {
 		[self.managedObjectContext deleteObject: stat ];
+
+		// special behaviour for top bank accounts
+		if(account.accountNumber == nil) {
+			[self.managedObjectContext processPendingChanges ];
+			[transactionController setContent: [account combinedStatements ] ];
+		}
 		
 		// rebuild saldos - only for manual accounts
 		if (account.userId == nil) {
@@ -1758,7 +1802,7 @@ static BankingController	*con;
 			[[Category bankRoot ] rollup ];
 		}
 
-		[self.managedObjectContext deleteObject: stat ];
+//		[self.managedObjectContext deleteObject: stat ];
 	}
 	
 }

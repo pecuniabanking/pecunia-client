@@ -36,8 +36,7 @@ static NSArray*	catCache = nil;
 @dynamic hashNumber;
 @dynamic isManual;
 @dynamic isStorno;
-
-@synthesize isNew;
+@dynamic isNew;
 
 
 BOOL stringEqual(NSString *a, NSString *b)
@@ -346,7 +345,9 @@ BOOL stringEqual(NSString *a, NSString *b)
 {
 	// replace newline with space
 	NSString *s = [self purpose ];
-	return [s stringByReplacingOccurrencesOfString:@"\n" withString:@"" ];
+	s = [s stringByReplacingOccurrencesOfString:@"\n " withString:@" " ];
+	s = [s stringByReplacingOccurrencesOfString:@" \n" withString:@" " ];
+	return [s stringByReplacingOccurrencesOfString:@"\n" withString:@" " ];
 }
 
 -(NSString*)note

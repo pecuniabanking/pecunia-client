@@ -47,10 +47,10 @@ void updateColorCache()
 	colorsChanged = NO;
 	exportFields = [NSArray arrayWithObjects: @"valutaDate", @"date", @"value", @"saldo", @"currency", @"localAccount", 
 					@"localBankCode", @"localName", @"localCountry",
-					@"localSuffix", @"remoteName", @"purpose", @"note", @"remoteAccount", @"remoteBankCode", 
+					@"localSuffix", @"remoteName", @"floatingPurpose", @"note", @"remoteAccount", @"remoteBankCode", 
 					@"remoteBankName", @"remoteBankLocation", @"remoteIBAN", @"remoteBIC", @"remoteSuffix",
 					@"customerReference", @"bankReference", @"transactionText", @"primaNota",
-					@"transactionCode", @"categories", nil ];
+					@"transactionCode", @"categoriesDescription", nil ];
 	[exportFields retain ];
 	return self;
 }

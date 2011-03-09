@@ -8,6 +8,7 @@
 
 #import "ABUser.h"
 #import "TanMethod.h"
+#import "HBCIClient.h"
 
 @implementation ABUser
 
@@ -47,6 +48,13 @@
 	}
 	return [tanMethodList objectAtIndex:0 ];
 }
+
+-(void)setTanMethod: (TanMethod*)tm
+{
+	tanMethodNumber = tm.function;
+	[[HBCIClient hbciClient ] changePinTanMethodForUser:self method:tanMethodNumber ];
+}
+
 
 -(void)dealloc
 {

@@ -19,6 +19,7 @@
 	NSString					*title;
 	NSString					*info;
 	NSMutableArray				*messages;
+	GWEN_LOGGER_LEVEL			maxLevel;
 	
 	int			progress;
 	BOOL		keepOpen;

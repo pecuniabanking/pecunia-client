@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class Category;
+@class ShortDate;
 
 @interface ExportController : NSObject {
 	NSDate		*fromDate;
@@ -21,7 +22,7 @@
 	IBOutlet NSMutableArray	*selectedFields;
 }
 
--(void)startExport: (Category*)cat;
-+(void)export: (Category*)cat;
+-(void)startExport: (Category*)cat fromDate:(ShortDate*)from toDate:(ShortDate*)to;
++(ExportController*)controller;
 
 @end

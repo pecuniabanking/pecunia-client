@@ -201,9 +201,19 @@ NSCalendar *calendar = nil;
 	return [ShortDate dateWithYear:year month:1 day:1 ];
 }
 
+-(ShortDate*)lastDayInYear
+{
+	return [ShortDate dateWithYear:year month:12 day:31 ];
+}
+
 -(ShortDate*)firstDayInMonth
 {
 	return [ShortDate dateWithYear:year month:month day:1 ];
+}
+
+-(ShortDate*)lastDayInMonth
+{
+	return [ShortDate dateWithYear:year month:month day:[self daysInMonth ] ];
 }
 
 -(int)quarter
@@ -214,6 +224,12 @@ NSCalendar *calendar = nil;
 -(ShortDate*)firstDayInQuarter
 {
 	return [ShortDate dateWithYear:year month:([self quarter ] -1 )*3 + 1 day:1 ];
+}
+
+-(ShortDate*)lastDayInQuarter
+{
+	ShortDate *lastMonth = [ShortDate dateWithYear:year month:([self quarter ])*3 day:1 ];
+	return [lastMonth lastDayInMonth ];
 }
 
 
@@ -251,6 +267,11 @@ NSCalendar *calendar = nil;
 	if(calendar) return calendar;
 	calendar = [[NSCalendar alloc ] initWithCalendarIdentifier: NSGregorianCalendar ];
 	return calendar;
+}
+
+-(void)dealloc
+{
+	[super dealloc ];
 }
 
 

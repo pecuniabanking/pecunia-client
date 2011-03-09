@@ -15,6 +15,7 @@
 @synthesize children;
 @synthesize values;
 @synthesize periodValues;
+@synthesize category;
 
 -(id)init
 {

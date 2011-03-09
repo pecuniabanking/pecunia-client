@@ -21,6 +21,7 @@
 	messages = [[NSMutableArray arrayWithCapacity: 100 ] retain ];	
 	keepOpen = NO;
 	aborted = NO;
+	maxLevel = GWEN_LoggerLevel_Verbous;
 	return self;
 }
 
@@ -87,6 +88,8 @@
 		[logTable display ];
 	}
 	
+	if (level < maxLevel) maxLevel = level;
+	
 	[s release ];
 }
 
@@ -114,13 +117,17 @@
 -(BOOL)stop
 {
 	[progressIndicator stopAnimation: self];
-	[closeButton setTitle: NSLocalizedString(@"close", @"close") ];
-	[closeButton setKeyEquivalent:@"\r"];
-	[closeButton setAction:@selector(close:) ];
 	if(keepOpen == NO && !hideWindow) {
 		[self closeWindow ];
 		return FALSE;
 	}
+	if (maxLevel > GWEN_LoggerLevel_Error && !hideWindow) {
+		[self closeWindow ];
+		return FALSE;
+	}
+	[closeButton setTitle: NSLocalizedString(@"close", @"close") ];
+	[closeButton setKeyEquivalent:@"\r"];
+	[closeButton setAction:@selector(close:) ];
 	if(!hideWindow)	[[self window ] makeKeyAndOrderFront: self ];
 	else return FALSE;
 	return TRUE;

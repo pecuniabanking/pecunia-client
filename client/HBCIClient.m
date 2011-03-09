@@ -8,9 +8,7 @@
 
 #import "HBCIClient.h"
 #import "BankInfo.h"
-//#import "HBCIError.h"
 #import "PecuniaError.h"
-//#import "Account.h"
 #import "BankQueryResult.h"
 #import "BankStatement.h"
 #import "BankAccount.h"
@@ -149,46 +147,6 @@ static HBCIClient *client = nil;
 	return [bridge updateStandingOrders:orders ];
 }
 
-
--(void)asyncCommandCompletedWithResult:(id)result error:(PecuniaError*)err
-{
-/*	
-	if(err == nil && result != nil) {
-		BankQueryResult *res;
-
-		for(res in result) {
-			// find corresponding incoming structure
-			BankQueryResult *iResult;
-			for(iResult in bankQueryResults) {
-				if([iResult.accountNumber isEqual: res.accountNumber ] && [iResult.bankCode isEqual: res.bankCode ]) break;
-			}
-			// saldo of the last statement is current saldo
-			if ([res.statements count ] > 0) {
-				BankStatement *stat = [res.statements objectAtIndex: [res.statements count ] - 1 ];
-				iResult.balance = stat.saldo;
-				
-				// ensure order by refining posting date
-				int seconds;
-				NSDate *oldDate = [NSDate distantPast ];
-				for(stat in res.statements) {
-					if([stat.date compare: oldDate ] != NSOrderedSame) {
-						seconds = 0;
-						oldDate = stat.date;
-					} else seconds += 100;
-					if(seconds > 0) stat.date = [[[NSDate alloc ] initWithTimeInterval: seconds sinceDate: stat.date ] autorelease ];
-				}
-				iResult.statements = res.statements;
-			}
-		}
-	}
-	if(err) {
-		[err alertPanel ];	
-		[asyncCommandSender statementsNotification: nil ];
-	} else [asyncCommandSender statementsNotification: bankQueryResults ];
-	[bankQueryResults release ];
-*/ 
-}
-
 -(BOOL)sendTransfers:(NSArray*)transfers
 {
 	return [bridge sendTransfers:transfers ];
@@ -204,6 +162,12 @@ static HBCIClient *client = nil;
 {
 	return [bridge checkIBAN:iban ];
 }
+
+-(void)changePinTanMethodForUser:(ABUser*)user method:(int)method
+{
+	[bridge changePinTanMethodForUser:user method:method ];
+}
+
 
 -(NSArray*)users
 {

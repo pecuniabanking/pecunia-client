@@ -347,6 +347,7 @@ BOOL	updateSent = NO;
 {
 	CategoryReportingNode *node = [[CategoryReportingNode alloc ] init ];
 	node.name = self.localName;
+	node.category = self;
 	
 	NSMutableSet* stats = [self mutableSetValueForKey: @"assignments" ];
 	NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];

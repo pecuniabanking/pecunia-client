@@ -62,6 +62,7 @@
 -(TransactionLimits*)limitsForType:(TransferType)tt account:(BankAccount*)account country:(NSString*)ctry;
 -(TransactionLimits*)standingOrderLimitsForAccount:(BankAccount*)account action:(StandingOrderAction)action;
 -(BOOL)updateStandingOrders:(NSArray*)orders;
+-(void)changePinTanMethodForUser:(ABUser*)user method:(int)method;
 
 -(NSDictionary*)countries;
 

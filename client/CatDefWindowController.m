@@ -78,6 +78,7 @@
 	[assignPreviewController prepareContent ];
 	[catDefController setManagedObjectContext:context ];
 	[catDefController prepareContent ];
+	[timeSlicer updateDelegate ];
 	[self performSelector: @selector(restoreCatView) withObject: nil afterDelay: 0.0];
 }
 

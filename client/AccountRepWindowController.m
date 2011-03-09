@@ -21,6 +21,10 @@ double sign(double x)
 
 @implementation AccountRepWindowController
 
+@synthesize firstDate;
+@synthesize fromDate;
+@synthesize toDate;
+
 -(id)init
 {
 	self = [super init ];
@@ -154,8 +158,8 @@ double sign(double x)
 {
 	Category *cat = [self currentSelection ];
 
-	NSDecimalNumber	*expenses = [cat valuesOfType: cat_expenses from: fromDate to: toDate ];
-	NSDecimalNumber *incomes = [cat valuesOfType: cat_incomes from: fromDate to: toDate ];
+	NSDecimalNumber	*expenses = [cat valuesOfType: cat_expenses from: self.fromDate to: self.toDate ];
+	NSDecimalNumber *incomes = [cat valuesOfType: cat_incomes from: self.fromDate to: self.toDate ];
 	NSDecimalNumber *balance = [incomes decimalNumberByAdding: expenses ];
 	
 	NSDecimalNumber *zero = [NSDecimalNumber zero ];
@@ -173,38 +177,37 @@ double sign(double x)
 	int i, j, ip, jp, tickCount, days = 0;
 	double a,b, lastValue = 0.0;
 	NSPoint p;
-	ShortDate	*date;
+	ShortDate	*date = nil;
 	
 	maxValues.x = maxValues.y = minValues.x = minValues.y = 0;
 	
 	[points removeAllObjects ];
 
-	[firstDate release ];
-	firstDate = nil;
+	self.firstDate = nil;
 
     NSMutableArray* dates = [[NSMutableArray alloc] init];
 	for(i=0; i<[balanceKeys count ]; i++) {
 		ShortDate* date = [balanceKeys objectAtIndex: i ];
-		if([date compare: fromDate ] == NSOrderedAscending) {
+		if([date compare: self.fromDate ] == NSOrderedAscending) {
 			lastValue = [[balanceHistory objectForKey: date ] doubleValue ];
 			continue;
 		}
-		if([date compare: toDate ] == NSOrderedDescending) continue;
+		if([date compare: self.toDate ] == NSOrderedDescending) continue;
 		[dates addObject: date ];
 	}
 	if([dates count ] == 0) {
-		[dates addObject: fromDate ];
-		[dates addObject: toDate ];
+		[dates addObject: self.fromDate ];
+		[dates addObject: self.toDate ];
 	}
 	
   	date = [dates objectAtIndex: 0 ];
-	if([fromDate compare: date ] == NSOrderedAscending) {
-		[dates insertObject: fromDate atIndex: 0 ];
+	if([self.fromDate compare: date ] == NSOrderedAscending) {
+		[dates insertObject: self.fromDate atIndex: 0 ];
 	}
 	
   	date = [dates objectAtIndex: [dates count ]-1 ];
-	if([date compare: toDate ] == NSOrderedAscending) {
-		[dates addObject: toDate ];
+	if([date compare: self.toDate ] == NSOrderedAscending) {
+		[dates addObject: self.toDate ];
 	}
 	
 	for(i=0; i<[dates count ]; i++) {
@@ -214,9 +217,9 @@ double sign(double x)
 		else p.y = [[balanceHistory objectForKey: date ] doubleValue ];
 
 		if(firstDate == nil) {
-			firstDate = [date retain];
+			self.firstDate = date;
 		} else {
-			days = [firstDate daysToDate: date ];
+			days = [self.firstDate daysToDate: date ];
 		}
 		p.x = (double)days;
 		
@@ -294,10 +297,8 @@ double sign(double x)
 
 -(void)timeSliceManager: (TimeSliceManager*)tsm changedIntervalFrom: (ShortDate*)from to: (ShortDate*)to
 {
-	[fromDate release ];
-	fromDate = [from retain ];
-	[toDate release ];
-	toDate = [to retain ];
+	self.fromDate = from;
+	self.toDate = to;
 	[self updateValues ];
 	[self drawGraph ];
 }
@@ -333,7 +334,7 @@ double sign(double x)
 	if(inAxis == kSM2DGraph_Axis_Y) return inDefault;
 	
 	a = inTickMarkIndex * xTickCountFactor;
-	ShortDate* date = [firstDate dateByAddingDays: (int)a ];
+	ShortDate* date = [self.firstDate dateByAddingDays: (int)a ];
 	
 	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease ];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
@@ -377,11 +378,15 @@ double sign(double x)
 
 -(void)dealloc
 {
-	[firstDate release ];
 	[points release ];
+	[firstDate release], firstDate = nil;
+	[fromDate release], fromDate = nil;
+	[toDate release], toDate = nil;
+
 	[super dealloc ];
 }
 
 	
 	
 @end
+

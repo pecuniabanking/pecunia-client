@@ -10,12 +10,13 @@
 #import "ShortDate.h"
 #import "MCEMOutlineViewLayout.h"
 #import "CategoryReportingNode.h"
+#import "MOAssistant.h"
 
 @implementation CategoryPeriodsWindowController
 
+@synthesize managedObjectContext;
 @synthesize minDate;
 @synthesize maxDate;
-
 @synthesize categoryHistory;
 @synthesize dates;
 @synthesize selectedDates;
@@ -31,8 +32,10 @@
 	if (self == nil) return nil;
 	
 	histType = cat_histtype_month;
+	selectedColumn = -1;
 	self.dates = [NSMutableArray arrayWithCapacity:20];
 	self.selectedDates = [NSMutableArray arrayWithCapacity:20];
+	self.managedObjectContext = [[MOAssistant assistant ] context ];
 	
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults ];
 	NSDictionary *values = [userDefaults objectForKey: @"catPeriodDefaults" ];
@@ -257,9 +260,10 @@
 		[[column headerCell ] setStringValue:title ];
 		[[column dataCell ] setFormatter:self.formatter ];
 		[[column dataCell ] setAlignment:NSRightTextAlignment ];
+		[column setEditable:NO ];
 		[categoryView addTableColumn:column ];
 		NSString *keyPath = [@"arrangedObjects.periodValues." stringByAppendingString:identifier ];
-		[column bind:@"value" toObject:categoryController withKeyPath:keyPath options: nil ];
+		[column bind:@"value" toObject:categoryController withKeyPath:keyPath options: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO ], NSCreatesSortDescriptorBindingOption, nil ] ];
 	}
 }
 
@@ -397,6 +401,11 @@
     return [[item representedObject ] name ];
 }
 
+- (void)outlineViewSelectionDidChange:(NSNotification *)notification
+{
+	[self updateStatements ];
+}
+
 -(void)prepare
 {
 }
@@ -428,6 +437,42 @@
 	[userDefaults setObject:values forKey:@"catPeriodDefaults" ];
 }
 
+-(void)updateStatements
+{
+	if (selectedColumn < 0) return;
+	int row = [categoryView selectedRow ];
+	if (row < 0) return;
+	CategoryReportingNode *node = (CategoryReportingNode*)[[categoryView itemAtRow:row ] representedObject ];
+	
+	ShortDate *selFromDate = [selectedDates objectAtIndex:selectedColumn-1 ];
+	ShortDate *selToDate;
+	switch (histType) {
+		case cat_histtype_year:
+			selToDate = [selFromDate lastDayInYear ];
+			break;
+		case cat_histtype_quarter:
+			selToDate = [selFromDate lastDayInQuarter ];
+			break;
+		default:
+			selToDate = [selFromDate lastDayInMonth ];
+			break;
+	}
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category IN %@ AND statement.date >= %@ AND statement.date <= %@", [node.category allChildren], [selFromDate lowDate ], [selToDate highDate ]  ];
+	[statementsController setFetchPredicate:predicate ];
+	[statementsController prepareContent ];	
+}
+
+
+-(void)doubleClicked:(id)sender
+{
+	NSPoint p = [NSEvent mouseLocation ];
+	p = [[categoryView window ] convertScreenToBase:p ];
+	p = [categoryView convertPointFromBase: p ];
+	selectedColumn = [categoryView columnAtPoint:p ];
+	[self updateStatements ];
+}
+
 
 - (void)dealloc
 {
@@ -441,9 +486,12 @@
 	[minDate release], minDate = nil;
 	[maxDate release], maxDate = nil;
 	[formatter release ], formatter = nil;
+	[managedObjectContext release], managedObjectContext = nil;
+
 	[super dealloc];
 }
 
 @end
+
 
 

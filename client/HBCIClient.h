@@ -44,7 +44,6 @@
 -(void)getStandingOrders:(NSArray*)accounts;
 -(BOOL)checkAccount: (NSString*)accountNumber forBank: (NSString*)bankCode inCountry: (NSString*)country;
 -(BOOL)checkIBAN: (NSString*)iban;
--(void)asyncCommandCompletedWithResult:(id)result error:(PecuniaError*)err;
 -(BOOL)isTransferSupported:(TransferType)tt forAccount:(BankAccount*)account;
 -(BOOL)isStandingOrderSupportedForAccount:(BankAccount*)account;
 -(BOOL)sendTransfers:(NSArray*)transfers;
@@ -53,6 +52,7 @@
 -(TransactionLimits*)limitsForType:(TransferType)tt account:(BankAccount*)account country:(NSString*)ctry;
 -(TransactionLimits*)standingOrderLimitsForAccount:(BankAccount*)account action:(StandingOrderAction)action;
 -(BOOL)updateStandingOrders:(NSArray*)orders;
+-(void)changePinTanMethodForUser:(ABUser*)user method:(int)method;
 
 -(BOOL)addAccount: (BankAccount*)account forUser: (ABUser*)user;
 -(BOOL)changeAccount:(BankAccount*)account;

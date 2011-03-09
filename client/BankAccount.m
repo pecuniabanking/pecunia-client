@@ -40,6 +40,19 @@
 	return [self retain ];
 }
 
+-(void)resetIsNew
+{
+	NSError *error = nil;
+	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (isNew = 1)", self ];
+	[request setPredicate:predicate];
+	NSArray *statements = [context executeFetchRequest:request error:&error];
+	for(BankStatement *stat in statements) stat.isNew = [NSNumber numberWithBool:NO ];
+}
+
 -(void)evaluateQueryResult: (BankQueryResult*)res
 {
 	NSError *error = nil;
@@ -52,8 +65,7 @@
 	[request setEntity:entityDescription];
 
 	// unmark old items
-	NSArray *statements = [[self mutableSetValueForKey: @"statements"] allObjects ];
-	for(stat in statements) if(stat.isNew == YES) stat.isNew = NO;
+	[self resetIsNew ];
 	
 	// look for new statements and mark them
 	// in Import case evaluate all statements
@@ -100,7 +112,7 @@
 				break;
 			}
 		}
-		if(isMatched == NO) stat.isNew = YES; else stat.isNew = NO;
+		if(isMatched == NO) stat.isNew = [NSNumber numberWithBool:YES ]; else stat.isNew = [NSNumber numberWithBool:NO ];
 	}
 }
 
@@ -157,9 +169,9 @@
 	if(result.balance) self.balance = result.balance;
 	if(result.statements == nil) return 0;
 	
-	// statements must be properly sorted !!!
+	// statements must be properly sorted !!! (regarding HBCI)
 	for (stat in result.statements) {
-		if(stat.isNew == NO) continue;
+		if([stat.isNew boolValue] == NO) continue;
 
 		// now copy statement
 		NSEntityDescription *entity = [stat entity];
@@ -170,7 +182,7 @@
 															inManagedObjectContext:context];
 
 		[stmt setValuesForKeysWithDictionary:attributeValues];
-		stmt.isNew = YES;
+		stmt.isNew = [NSNumber numberWithBool:YES ];
 		
 		// adjust date to ensure proper ordering
 		if ([lastTransferDate isEqual:[ShortDate dateWithDate:stat.date ] ]) {
@@ -279,6 +291,71 @@
 	
 	currentDate = [[statements objectAtIndex:0 ] date ];
 	return [[NSDate alloc ] initWithTimeInterval:100 sinceDate:currentDate ];
+}
+
+-(void)copyStatement:(BankStatement*)stat
+{
+	NSDate *startDate = [[ShortDate dateWithDate:stat.date ] lowDate ];
+	NSDate *endDate = [[ShortDate dateWithDate:stat.date ] highDate ];
+	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+	NSError *error = nil;
+	
+	// first copy statement
+	NSEntityDescription *entity = [stat entity];
+	NSArray *attributeKeys = [[entity attributesByName] allKeys];
+	NSDictionary *attributeValues = [stat dictionaryWithValuesForKeys:attributeKeys];
+	
+	BankStatement *stmt = [NSEntityDescription insertNewObjectForEntityForName:@"BankStatement"
+														inManagedObjectContext:context];
+	
+	[stmt setValuesForKeysWithDictionary:attributeValues];
+	
+	// negate value
+	stmt.value = [[NSDecimalNumber zero ] decimalNumberBySubtracting:stmt.value ];
+		
+	// next check if duplicate
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@) AND (date < %@)", self, startDate, endDate ];
+	[request setPredicate:predicate];
+	NSArray *statements = [context executeFetchRequest:request error:&error];
+	for(BankStatement *statement in statements) {
+		if ([statement matches:stmt ]) {
+			[context deleteObject:stmt ];
+			return;
+		}
+	}
+	
+	// saldo
+	stmt.date = [self nextDateForDate:stmt.date ];
+	
+	// adjust all statements after the current
+	predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date > %@)", self, stmt.date ];
+	[request setPredicate:predicate];
+
+	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES] autorelease];
+	NSArray				*sds = [NSArray arrayWithObject:sd];
+	[request setSortDescriptors:sds ];
+	
+	statements = [context executeFetchRequest:request error:&error];
+	if (statements == nil || [statements count ] == 0) {
+		self.balance = [self.balance decimalNumberByAdding:stmt.value ];
+		stmt.saldo = self.balance;
+	} else {
+		BankStatement *statement = [statements objectAtIndex:0 ];
+		NSDecimalNumber *base = [statement.saldo decimalNumberBySubtracting:statement.value ];
+		stmt.saldo = [base decimalNumberByAdding:stmt.value ];
+		
+		for(statement in statements) {
+			statement.saldo = [statement.saldo decimalNumberByAdding:stmt.value ];
+			self.balance = statement.saldo;
+		}
+	}
+	
+	// add to account
+	[stmt addToAccount:self ];	
 }
 
 +(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code

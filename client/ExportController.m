@@ -24,14 +24,15 @@ static ExportController *exportController = nil;
 	return self;
 }
 
-+(void)export: (Category*)cat
++(ExportController*)controller
 {
-	if(exportController == nil) return;
-	return [exportController startExport: cat ];
+	return exportController;
 }
+
 
 -(NSArray*)exportedFields
 {
+/*	
 	int i;
 	NSArray *fields = [NSArray arrayWithObjects: @"valutaDate", @"date", @"value", @"currency", @"localAccount", 
 					   @"localBankCode", @"localName", @"localCountry",
@@ -39,16 +40,18 @@ static ExportController *exportController = nil;
 					   @"remoteBankName", @"remoteBankLocation", @"remoteIBAN", @"remoteBranch", @"remoteSuffix",
 					   @"transactionKey", @"customerReference", @"bankReference", @"transactionText", @"primaNota",
 					   @"textKey", @"transactionCode", @"categories", nil ];
-	
+*/	
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
-	NSArray	*indxs = [defaults objectForKey: @"Exporter.fields.indices" ];
+	return [defaults objectForKey: @"Exporter.fields" ];
+/*	
 	if(indxs == nil || [indxs count] == 0 ) return nil;
 	NSMutableArray	*result = [NSMutableArray arrayWithCapacity:20 ];
 	for(i=0; i<[indxs count ]; i++) [result addObject: [fields objectAtIndex: [[indxs objectAtIndex:i ] intValue ] ] ];
 	return result;
+*/ 
 }
 
--(void)startExport: (Category*)cat
+-(void)startExport: (Category*)cat fromDate:(ShortDate*)from toDate:(ShortDate*)to
 {
 	NSSavePanel *sp;
 	NSError		*error = nil;
@@ -65,8 +68,8 @@ static ExportController *exportController = nil;
 		return;
 	}
 	
-	[self setValue:  [NSDate date ] forKey: @"toDate" ];
-	[self setValue:  [NSDate dateWithTimeIntervalSinceNow: -2678400 ] forKey: @"fromDate" ];
+	[self setValue:  [to highDate ] forKey: @"toDate" ];
+	[self setValue:  [from lowDate ] forKey: @"fromDate" ];
 	
 	/* create or get the shared instance of NSSavePanel */
 	sp = [NSSavePanel savePanel];

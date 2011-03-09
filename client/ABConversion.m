@@ -76,13 +76,11 @@ ABUser *convertUser(AB_USER *usr)
 			}
 		}
 	}
-	user.tanMethodNumber = AH_User_GetSelectedTanMethod(usr);
-/*	
+	user.tanMethodNumber = AH_User_GetSelectedTanMethod(usr);	
 	if([tanMethodList count ] == 0) {
-		TanMethod *tanM = [[TanMethod alloc ] initDefault: tanMethod ];
+		TanMethod *tanM = [[TanMethod alloc ] initDefault: user.tanMethodNumber ];
 		[tanMethodList addObject: tanM ];
 	}
-*/
 	user.tanMethodList = tanMethodList;
 	return user;
 	
@@ -421,6 +419,7 @@ AB_TRANSACTION *convertTransfer(Transfer *transfer)
 		GWEN_TIME *d = GWEN_Time_fromSeconds((unsigned int)[date timeIntervalSince1970 ]);
 		AB_Transaction_SetValutaDate(t, d);
 		AB_Transaction_SetDate(t, d);
+		GWEN_Time_free(d);
 	}
 	
 	switch(tt) {
@@ -587,6 +586,7 @@ AB_TRANSACTION *convertStandingOrder(StandingOrder *stord)
 		NSDate *date = stord.firstExecDate;
 		GWEN_TIME *d = GWEN_Time_fromSeconds((unsigned int)[date timeIntervalSince1970 ]);
 		AB_Transaction_SetFirstExecutionDate(t, d);
+		GWEN_Time_free(d);
 	}
 	if (stord.lastExecDate) {
 		ShortDate *sDate = [ShortDate dateWithDate:stord.lastExecDate ];
@@ -594,6 +594,7 @@ AB_TRANSACTION *convertStandingOrder(StandingOrder *stord)
 			NSDate *date = stord.lastExecDate;
 			GWEN_TIME *d = GWEN_Time_fromSeconds((unsigned int)[date timeIntervalSince1970 ]);
 			AB_Transaction_SetLastExecutionDate(t, d);
+			GWEN_Time_free(d);
 		}
 	}
 	

@@ -24,6 +24,9 @@ NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
 
 @implementation CategoryRepWindowController
 
+@synthesize fromDate;
+@synthesize toDate;
+
 -(id)init
 {
 	self = [super init ];
@@ -287,10 +290,8 @@ NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
 
 -(void)timeSliceManager: (TimeSliceManager*)tsm changedIntervalFrom: (ShortDate*)from to: (ShortDate*)to
 {
-	[fromDate release ];
-	[toDate release ];
-	fromDate = [from retain ];
-	toDate = [to retain ];
+	self.fromDate = from;
+	self.toDate = to;
 	[incomeLegend deselectAll: self ];
 	[expenseLegend deselectAll: self ];
 	[self updateValues ];
@@ -428,7 +429,11 @@ NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
 {
 	[expensesCats release ];
 	[incomesCats release ];
+	[fromDate release], fromDate = nil;
+	[toDate release], toDate = nil;
+
 	[super dealloc ];
 }
 
 @end
+

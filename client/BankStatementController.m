@@ -38,12 +38,18 @@
 	
 	currentStatement = [NSEntityDescription insertNewObjectForEntityForName:@"BankStatement" inManagedObjectContext:memContext ];
 
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	negateValue = [defaults boolForKey:@"negateStatementEditValue" ];
+
 	if (stat) {
 		// now copy statement
 		NSEntityDescription *entity = [stat entity];
 		NSArray *attributeKeys = [[entity attributesByName] allKeys];
 		NSDictionary *attributeValues = [stat dictionaryWithValuesForKeys:attributeKeys];
 		[currentStatement setValuesForKeysWithDictionary:attributeValues];
+		if (negateValue) {
+			currentStatement.value = [[NSDecimalNumber zero ] decimalNumberBySubtracting:currentStatement.value ];
+		}
 	} else {
 		currentStatement.currency = account.currency;
 		currentStatement.localAccount = account.accountNumber;
@@ -57,7 +63,7 @@
 			currentStatement.valutaDate = [NSDate date ];
 		}
 		//provisorisch
-		currentStatement.remoteBankCode = @"de";
+		currentStatement.remoteCountry = @"de";
 	}
 	return self;
 }
@@ -77,6 +83,14 @@
 -(void)awakeFromNib
 {
 	[statementController setContent:currentStatement ];
+	if (negateValue) {
+		[valueField setTextColor:[NSColor redColor ] ];
+	}
+	
+	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"localName" ascending:YES] autorelease];
+	NSArray				*sds = [NSArray arrayWithObject:sd];
+	[categoriesController setSortDescriptors: sds ];
+	
 }
 
 -(void)saveStatement
@@ -90,6 +104,10 @@
 	BankStatement *newStatement = [NSEntityDescription insertNewObjectForEntityForName:@"BankStatement" inManagedObjectContext:context ];
 	[newStatement setValuesForKeysWithDictionary:attributeValues ];
 	
+	if (negateValue) {
+		newStatement.value = [[NSDecimalNumber zero ] decimalNumberBySubtracting:currentStatement.value ];
+	}
+
 	//calculate date
 	BOOL found = NO;
 	for(stat in accountStatements) {
@@ -128,6 +146,13 @@
 		[[Category bankRoot ] rollup ];
 	}
 	
+	// assign to category
+	int idx = [categoriesController selectionIndex ];
+	if (idx != NSNotFound) {
+		Category *cat = [[categoriesController arrangedObjects ] objectAtIndex:idx];
+		[newStatement assignToCategory:cat ];
+	}
+	
 	// save updates
 	if([context save: &error ] == NO) {
 		NSAlert *alert = [NSAlert alertWithError:error];
@@ -161,7 +186,7 @@
 	currentStatement.isManual = [NSNumber numberWithBool: YES ];
 	currentStatement.date = [dateField dateValue ];
 	currentStatement.valutaDate = [valutaField dateValue ];
-	currentStatement.remoteBankCode = @"de";
+	currentStatement.remoteCountry = @"de";
 	[statementController setContent:currentStatement ];
 }
 
@@ -183,12 +208,16 @@
 		if(name) [self setValue: name forKey: @"bankName" ];
 	}
 	if([te tag ] == 200) {
+		NSDecimalNumber *realValue;
+		if (negateValue == YES) realValue = [[NSDecimalNumber zero ] decimalNumberBySubtracting:currentStatement.value ];
+		else realValue = currentStatement.value;
+		
 		// amount field
 		if (lastStatement == nil || [[ShortDate dateWithDate:currentStatement.date ] compare: [ShortDate dateWithDate:lastStatement.date ] ] != NSOrderedAscending) {
 			if (lastStatement == nil) {
-				if(currentStatement.value) currentStatement.saldo = [account.balance decimalNumberByAdding:currentStatement.value ]; 
+				if(currentStatement.value) currentStatement.saldo = [account.balance decimalNumberByAdding:realValue ]; 
 			} else {
-				if(currentStatement.value) currentStatement.saldo = [lastStatement.saldo decimalNumberByAdding:currentStatement.value ];
+				if(currentStatement.value) currentStatement.saldo = [lastStatement.saldo decimalNumberByAdding:realValue ];
 			}
 		} else {
 			// find first statement that is later than current one.
@@ -199,7 +228,7 @@
 				} else break;
 			}
 			if (foundStatement && currentStatement.value != nil) {
-				currentStatement.saldo = [[foundStatement.saldo decimalNumberBySubtracting: foundStatement.value ] decimalNumberByAdding:currentStatement.value ];
+				currentStatement.saldo = [[foundStatement.saldo decimalNumberBySubtracting: foundStatement.value ] decimalNumberByAdding:realValue ];
 			}
 		}
 	}
@@ -221,6 +250,15 @@
 		if (foundStatement && currentStatement.value != nil) {
 			currentStatement.saldo = [[foundStatement.saldo decimalNumberBySubtracting: foundStatement.value ] decimalNumberByAdding:currentStatement.value ];
 		}
+	}
+}
+
+-(IBAction)negateValueChanged:(id)sender
+{
+	if ([sender state ] == NSOnState) {
+		[valueField setTextColor:[NSColor redColor ] ];
+	} else {
+		[valueField setTextColor:[NSColor blackColor ] ];
 	}
 }
 
