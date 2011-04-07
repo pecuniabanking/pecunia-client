@@ -16,6 +16,7 @@
 @interface BankAccount : Category {
 	NSDate				*newLatestTransferDate;
 	PurposeSplitRule	*purposeSplitRule;
+	NSArray				*dbStatements;
 }
 
 -(NSString*)bankCode;
@@ -27,10 +28,14 @@
 -(void)updateStandingOrders:(NSArray*)orders;
 -(void)resetIsNew;
 -(void)copyStatement:(BankStatement*)stat;
+-(void)copyStatementsToManualAccounts:(NSArray*)statements;
 -(NSDate*)nextDateForDate:(NSDate*)date;
 
 +(BankAccount*)bankRootForCode:(NSString*)bankCode;
 +(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code;
+
+@property (nonatomic, retain) NSArray *dbStatements;
+@property (nonatomic, retain) PurposeSplitRule *purposeSplitRule;
 
 @property (nonatomic, retain) NSDate * latestTransferDate;
 @property (nonatomic, retain) NSString * country;

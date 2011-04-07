@@ -35,6 +35,9 @@
 @dynamic isStandingOrderSupported;
 @dynamic accountSuffix;
 
+@synthesize dbStatements;
+@synthesize purposeSplitRule;
+
 -(id)copyWithZone: (NSZone *)zone
 {
 	return [self retain ];
@@ -53,19 +56,81 @@
 	for(BankStatement *stat in statements) stat.isNew = [NSNumber numberWithBool:NO ];
 }
 
+-(NSDictionary*)statementsByDay:(NSArray*)stats
+{
+	NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:10 ];
+	
+	for(BankStatement *stat in stats) {
+		ShortDate *date = [ShortDate dateWithDate:stat.date ];
+		NSMutableArray *dayStats = [result objectForKey:date ];
+		if (dayStats == nil) {
+			dayStats = [NSMutableArray arrayWithCapacity:10 ];
+			[result setObject:dayStats forKey:date ];
+		}
+		[dayStats addObject:stat ];
+	}
+	return result;
+}
+
 -(void)evaluateQueryResult: (BankQueryResult*)res
 {
 	NSError *error = nil;
 	BankStatement *stat;
-	ShortDate *lastTransferDate;
+//	ShortDate *lastTransferDate;
 	
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
 	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
 	[request setEntity:entityDescription];
-
+	
 	// unmark old items
 	[self resetIsNew ];
+	
+	// check if purpose split rule exists
+	if (self.splitRule && self.purposeSplitRule == nil ) self.purposeSplitRule = [[PurposeSplitRule alloc ] initWithString:self.splitRule ];
+
+	// get old statements
+	if ([res.statements count] == 0) return;
+	stat = [res.statements objectAtIndex:0]; // oldest statement
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [[ShortDate dateWithDate:stat.date ] lowDate]];
+	[request setPredicate:predicate];
+	self.dbStatements = [context executeFetchRequest:request error:&error];
+
+	// rearrange statements by day
+	NSDictionary *oldDayStats = [self statementsByDay:self.dbStatements ];
+	NSDictionary *newDayStats = [self statementsByDay:res.statements ];
+	
+	// compare by day
+	NSArray *dates = [newDayStats allKeys ];
+	for(ShortDate *date in dates) {
+		NSMutableArray *oldStats = [oldDayStats objectForKey:date ];
+		NSMutableArray *newStats = [newDayStats objectForKey:date ];
+		if ([oldStats count ] == [newStats count ]) continue;
+		for(stat in newStats) {
+			if (oldStats == nil) {
+				stat.isNew = [NSNumber numberWithBool:YES ];
+				continue;
+			} else {
+				// Apply purpose split rule, if exists
+				if (self.purposeSplitRule) [self.purposeSplitRule applyToStatement:stat ];
+				// find statement in old statements
+				BOOL isMatched = NO;
+				int  idx;
+				for(idx = 0; idx < [oldStats count ]; idx++) {
+					BankStatement *oldStat = [oldStats objectAtIndex:idx ];
+					if([stat matches: oldStat ]) {
+						isMatched = YES;
+						[oldStats removeObjectAtIndex:idx ];
+						break;
+					}				
+				}
+				if(isMatched == NO) stat.isNew = [NSNumber numberWithBool:YES ]; else stat.isNew = [NSNumber numberWithBool:NO ];
+			}
+		}
+	}
+	
+	
+/*	
 	
 	// look for new statements and mark them
 	// in Import case evaluate all statements
@@ -76,7 +141,7 @@
 	}
 	
 	// check if purpose split rule exists
-	if (self.splitRule && purposeSplitRule == nil ) purposeSplitRule = [[PurposeSplitRule alloc ] initWithString:self.splitRule ];
+	if (self.splitRule && self.purposeSplitRule == nil ) self.purposeSplitRule = [[PurposeSplitRule alloc ] initWithString:self.splitRule ];
  
 	ShortDate *currentDate = nil;
 	for (stat in res.statements) {
@@ -86,7 +151,7 @@
 		if([[stat date ] compare: [lastTransferDate lowDate ] ] == NSOrderedAscending) continue;
 
 		// Apply purpose split rule, if exists
-		if (purposeSplitRule) [purposeSplitRule applyToStatement:stat ];
+		if (self.purposeSplitRule) [self.purposeSplitRule applyToStatement:stat ];
 		
 		ShortDate *statDate = [ShortDate dateWithDate: [stat date] ];
 
@@ -114,6 +179,8 @@
 		}
 		if(isMatched == NO) stat.isNew = [NSNumber numberWithBool:YES ]; else stat.isNew = [NSNumber numberWithBool:NO ];
 	}
+ 
+*/ 
 }
 
 -(void)updateStandingOrders:(NSArray*)orders
@@ -154,11 +221,13 @@
 	BankStatement	*stat;
 	NSDate			*ltd = self.latestTransferDate;
 	NSDate			*date = nil;
-	NSTimeInterval  ofs = 1;
-	NSTimeInterval  ltdOfs = 1;
-	int             count = 0, j;
+//	NSTimeInterval  ofs = 10;
+//	NSTimeInterval  ltdOfs = 1;
+//	int             count = 0, j;
 	ShortDate		*lastTransferDate;
+	ShortDate		*currentDate = nil;
 	NSMutableArray	*newStatements = [NSMutableArray arrayWithCapacity:50 ];
+	NSMutableArray	*resultingStatements = [NSMutableArray arrayWithCapacity:50 ];
 	
 	if (self.latestTransferDate) {
 		lastTransferDate = [ShortDate dateWithDate:self.latestTransferDate ];
@@ -169,6 +238,110 @@
 	if(result.balance) self.balance = result.balance;
 	if(result.statements == nil) return 0;
 	
+	// rearrange statements by day
+	NSDictionary *oldDayStats = [self statementsByDay:self.dbStatements ];
+
+	// statements must be properly sorted !!! (regarding HBCI)
+	for (stat in result.statements) {
+		if([stat.isNew boolValue] == NO) continue;
+		
+		// now copy statement
+		NSEntityDescription *entity = [stat entity];
+		NSArray *attributeKeys = [[entity attributesByName] allKeys];
+		NSDictionary *attributeValues = [stat dictionaryWithValuesForKeys:attributeKeys];
+		
+		BankStatement *stmt = [NSEntityDescription insertNewObjectForEntityForName:@"BankStatement"
+															inManagedObjectContext:context];
+		
+		[stmt setValuesForKeysWithDictionary:attributeValues];
+		stmt.isNew = [NSNumber numberWithBool:YES ];
+		
+		// check for old statements
+		ShortDate *stmtDate = [ShortDate dateWithDate:stmt.date ];
+		
+		if (currentDate == nil || [stmtDate isEqual:currentDate ] == NO) {
+			// get start date
+			NSArray *oldStats = [oldDayStats objectForKey:stmtDate ];
+			if (oldStats == nil) {
+				date = stmt.date;
+			} else {
+				date = nil;
+				for(BankStatement *oldStat in oldStats) {
+					[resultingStatements addObject:oldStat ];
+					if (date == nil || [date compare:oldStat.date ] == NSOrderedAscending) {
+						date = oldStat.date;
+					}
+				}
+				date = [[[NSDate alloc ] initWithTimeInterval:10 sinceDate: date ] autorelease ];
+			}
+			currentDate = stmtDate;
+		}
+		
+		stmt.date = date;
+		date = [[[NSDate alloc ] initWithTimeInterval:10 sinceDate: date ] autorelease ];
+		
+		[newStatements addObject: stmt ];
+		[resultingStatements addObject:stmt ];
+		[stmt addToAccount: self ];
+		if(ltd == nil || [ltd compare: stmt.date ] == NSOrderedAscending) ltd = stmt.date;
+	}		
+	
+	if ([newStatements count ] > 0) {
+		if (result.balance == nil) {
+			// no balance given - calculate new balance
+			NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES] autorelease];
+			NSArray				*sds = [NSArray arrayWithObject:sd];
+			[newStatements sortUsingDescriptors:sds ];
+			NSMutableArray *oldStatements = [self.dbStatements mutableCopy ];
+			[oldStatements sortUsingDescriptors:sds ];
+			
+			// find earliest old that is later than first new
+			BankStatement *firstNewStat = [newStatements objectAtIndex:0 ];
+
+			BOOL found = NO;
+			NSMutableArray *mergedStatements = [NSMutableArray arrayWithCapacity:100 ];
+			NSDecimalNumber *newSaldo;
+			for(stat in oldStatements) {
+				if ([stat.date compare:firstNewStat.date ] == NSOrderedDescending) {
+					found = YES;
+					newSaldo = [stat.saldo decimalNumberBySubtracting:stat.value ];
+				}
+				if (found) {
+					[mergedStatements addObject:stat ];
+				}
+			}
+
+			if(found == NO) {
+				newSaldo = self.balance;
+			}
+
+			[mergedStatements addObjectsFromArray:newStatements ];
+			[mergedStatements sortUsingDescriptors:sds ];
+			// sum up saldo
+			for(stat in mergedStatements) {
+				newSaldo = [newSaldo decimalNumberByAdding: stat.value ];
+				stat.saldo = newSaldo;
+			}
+			self.balance = newSaldo;
+		} else {
+			// balance was given - calculate back
+			NSMutableArray *mergedStatements = [NSMutableArray arrayWithCapacity:100 ];
+			[mergedStatements addObjectsFromArray:newStatements ];
+			[mergedStatements addObjectsFromArray:self.dbStatements ];
+			NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
+			NSArray				*sds = [NSArray arrayWithObject:sd];
+			[mergedStatements sortUsingDescriptors:sds ];
+			NSDecimalNumber *newSaldo = self.balance;
+			for(stat in mergedStatements) {
+				stat.saldo = newSaldo;
+				newSaldo = [newSaldo decimalNumberBySubtracting:stat.value ];
+			}
+		}
+		[self copyStatementsToManualAccounts:newStatements ];
+	}
+
+	
+/*	
 	// statements must be properly sorted !!! (regarding HBCI)
 	for (stat in result.statements) {
 		if([stat.isNew boolValue] == NO) continue;
@@ -220,9 +393,9 @@
 			bal = [bal decimalNumberBySubtracting:stat.value ];
 		}
 	}
-	
+*/	
 	self.latestTransferDate = ltd;
-	return count;
+	return [newStatements count ];
 }
 
 
@@ -358,6 +531,31 @@
 	[stmt addToAccount:self ];	
 }
 
+-(void)copyStatementsToManualAccounts:(NSArray*)statements
+{
+	NSError *error = nil;
+	
+	// find all manual accounts that have rules
+	if ([self.isManual boolValue ] == YES) return;
+	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:context];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(isManual = 1) AND (rule != nil)" ];
+	[request setPredicate:predicate];
+	NSArray *accounts = [context executeFetchRequest:request error:&error];
+	if (accounts == nil || error || [accounts count ] == 0) return;
+		
+	for(BankAccount *account in accounts) {
+		NSPredicate* pred = [NSPredicate predicateWithFormat: account.rule ];
+		for(BankStatement *stat in statements) {
+			if([pred evaluateWithObject: stat ]) {
+				[account copyStatement:stat ];
+			}
+		}
+	}	
+}
+
 +(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code
 {
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
@@ -379,6 +577,7 @@
 -(void)dealloc
 {
 	[purposeSplitRule release ];
+	[dbStatements release ];
 	[super dealloc ];
 }
 

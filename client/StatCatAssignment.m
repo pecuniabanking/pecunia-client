@@ -36,15 +36,18 @@
 	for(NSString *field in fields) {
 		if([field isEqualToString: @"value" ] || [field isEqualToString: @"userInfo" ]) obj = [self valueForKey: field ]; else obj = [self.statement valueForKey: field ];
 
-		if([field isEqualToString: @"valutaDate" ] || [field isEqualToString: @"date" ]) s = [dateFormatter stringFromDate: (NSDate*)obj ];
-		else if( [field isEqualToString: @"value" ] )  { 
-			s = [(NSDecimalNumber*)obj descriptionWithLocale: [NSLocale currentLocale ]];
+		if (obj) {
+			if([field isEqualToString: @"valutaDate" ] || [field isEqualToString: @"date" ]) s = [dateFormatter stringFromDate: (NSDate*)obj ];
+			else if( [field isEqualToString: @"value" ] )  { 
+				s = [(NSDecimalNumber*)obj descriptionWithLocale: [NSLocale currentLocale ]];
+			}
+			else if([field isEqualToString: @"categories" ]) {
+				s = self.statement.categoriesDescription;
+			} else s = [obj description ];
+			
+			if (s) [res appendString: s ];
 		}
-		else if([field isEqualToString: @"categories" ]) {
-			s = self.statement.categoriesDescription;
-		} else s = [obj description ];
-		
-		[res appendString: s ];	[res appendString: sep ];
+		[res appendString: sep ];
 	}
 	[res appendString: @"\n" ];
 	return res;

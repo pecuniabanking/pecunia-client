@@ -11,6 +11,7 @@
 	IBOutlet NSTextField			*bankNameField;
 	IBOutlet NSTextField			*balanceField;
 	IBOutlet NSTextField			*balanceLabel;
+	IBOutlet NSPredicateEditor		*predicateEditor;
 	
 	IBOutlet NSBox					*boxView;
 	IBOutlet NSView					*manAccountAddView;
@@ -29,5 +30,6 @@
 - (IBAction)cancel:(id)sender;
 - (IBAction)ok:(id)sender;
 - (IBAction)dropChanged: (id)sender;
+- (IBAction)predicateEditorChanged:(id)sender;
 
 @end

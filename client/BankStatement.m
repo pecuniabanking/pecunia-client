@@ -120,7 +120,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	//assign categories
 	for(i = 0; i < [catCache count ]; i++) {
 		Category* cat = [catCache objectAtIndex: i ];
-		NSPredicate* pred = [NSPredicate predicateWithFormat: [cat valueForKey: @"rule" ] ];
+		NSPredicate* pred = [NSPredicate predicateWithFormat: cat.rule ];
 		if([pred evaluateWithObject: stat ]) {
 			[self assignToCategory: cat ];
 		}

@@ -113,6 +113,9 @@
 		B1986F880DC126CF005F7043 /* Pecunia.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1986F870DC126CF005F7043 /* Pecunia.icns */; };
 		B19A85F00F3CC3D3000FE9B3 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */; };
 		B19A86360F3CD17E000FE9B3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B19A86350F3CD17E000FE9B3 /* Security.framework */; };
+		B19BCC80134905D200ABEE6C /* libaqhbci.19.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B19BCC7F134905D200ABEE6C /* libaqhbci.19.dylib */; };
+		B19BCC821349060500ABEE6C /* libaqbanking.33.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B19BCC811349060500ABEE6C /* libaqbanking.33.dylib */; };
+		B19BCC841349063000ABEE6C /* libgwenhywfar.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B19BCC831349063000ABEE6C /* libgwenhywfar.60.dylib */; };
 		B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */ = {isa = PBXBuildFile; fileRef = B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */; };
 		B1A0340F0D8B028300072442 /* AccountSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A0340E0D8B028300072442 /* AccountSettingsController.m */; };
 		B1A034C60D8C5B4200072442 /* pec4.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1A034C50D8C5B4200072442 /* pec4.icns */; };
@@ -167,9 +170,6 @@
 		B1F4587E0F2907BD00BAF4E8 /* AccountChangeController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountChangeController.m */; };
 		B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F459EB0F2E480700BAF4E8 /* BankInfo.m */; };
 		B1F527050C3C1D5800BE3DFC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* Category.m */; };
-		B1FAEA87122C2558000AF027 /* libgwenhywfar.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B1FAEA86122C2558000AF027 /* libgwenhywfar.60.dylib */; };
-		B1FAEA8A122C257F000AF027 /* libaqbanking.33.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B1FAEA88122C257F000AF027 /* libaqbanking.33.dylib */; };
-		B1FAEA8B122C257F000AF027 /* libaqhbci.19.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B1FAEA89122C257F000AF027 /* libaqhbci.19.dylib */; };
 		B1FAEABA122C62F7000AF027 /* ABController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEAB9122C62F7000AF027 /* ABController.m */; };
 		B1FAEABF122C65AC000AF027 /* ImExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEABC122C65AC000AF027 /* ImExporter.m */; };
 		B1FAEAC0122C65AC000AF027 /* ImExporterProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEABE122C65AC000AF027 /* ImExporterProfile.m */; };
@@ -370,6 +370,9 @@
 		B19A85EE0F3CC3D3000FE9B3 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
 		B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
 		B19A86350F3CD17E000FE9B3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
+		B19BCC7F134905D200ABEE6C /* libaqhbci.19.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libaqhbci.19.dylib; path = AqBanking.framework/lib/libaqhbci.19.dylib; sourceTree = "<group>"; };
+		B19BCC811349060500ABEE6C /* libaqbanking.33.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libaqbanking.33.dylib; path = AqBanking.framework/lib/libaqbanking.33.dylib; sourceTree = "<group>"; };
+		B19BCC831349063000ABEE6C /* libgwenhywfar.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgwenhywfar.60.dylib; path = AqBanking.framework/lib/libgwenhywfar.60.dylib; sourceTree = "<group>"; };
 		B19F41BC0FBDF57B003EE0E1 /* PecuniaError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaError.h; sourceTree = "<group>"; };
 		B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaError.m; sourceTree = "<group>"; };
 		B1A0340D0D8B028300072442 /* AccountSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AccountSettingsController.h; sourceTree = "<group>"; };
@@ -444,9 +447,6 @@
 		B1F459EB0F2E480700BAF4E8 /* BankInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankInfo.m; sourceTree = "<group>"; };
 		B1F527030C3C1D5800BE3DFC /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
 		B1F527040C3C1D5800BE3DFC /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
-		B1FAEA86122C2558000AF027 /* libgwenhywfar.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libgwenhywfar.60.dylib; sourceTree = "<group>"; };
-		B1FAEA88122C257F000AF027 /* libaqbanking.33.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libaqbanking.33.dylib; sourceTree = "<group>"; };
-		B1FAEA89122C257F000AF027 /* libaqhbci.19.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libaqhbci.19.dylib; sourceTree = "<group>"; };
 		B1FAEAB8122C62F7000AF027 /* ABController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABController.h; sourceTree = "<group>"; };
 		B1FAEAB9122C62F7000AF027 /* ABController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABController.m; sourceTree = "<group>"; };
 		B1FAEABB122C65AC000AF027 /* ImExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImExporter.h; sourceTree = "<group>"; };
@@ -486,10 +486,10 @@
 				B1F458210F2516C200BAF4E8 /* Sparkle.framework in Frameworks */,
 				B19A86360F3CD17E000FE9B3 /* Security.framework in Frameworks */,
 				B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */,
-				B1FAEA87122C2558000AF027 /* libgwenhywfar.60.dylib in Frameworks */,
-				B1FAEA8A122C257F000AF027 /* libaqbanking.33.dylib in Frameworks */,
-				B1FAEA8B122C257F000AF027 /* libaqhbci.19.dylib in Frameworks */,
 				B1FAECAE12357DC5000AF027 /* libgwengui-cocoa.0.dylib in Frameworks */,
+				B19BCC80134905D200ABEE6C /* libaqhbci.19.dylib in Frameworks */,
+				B19BCC821349060500ABEE6C /* libaqbanking.33.dylib in Frameworks */,
+				B19BCC841349063000ABEE6C /* libgwenhywfar.60.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,13 +500,13 @@
 			isa = PBXGroup;
 			children = (
 				B1FAECAD12357DC5000AF027 /* libgwengui-cocoa.0.dylib */,
-				B1FAEA88122C257F000AF027 /* libaqbanking.33.dylib */,
-				B1FAEA89122C257F000AF027 /* libaqhbci.19.dylib */,
-				B1FAEA86122C2558000AF027 /* libgwenhywfar.60.dylib */,
 				B19A86350F3CD17E000FE9B3 /* Security.framework */,
 				B1F458200F2516C200BAF4E8 /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				B16B0CEB11C01DFB00254078 /* SM2DGraphView.framework */,
+				B19BCC7F134905D200ABEE6C /* libaqhbci.19.dylib */,
+				B19BCC811349060500ABEE6C /* libaqbanking.33.dylib */,
+				B19BCC831349063000ABEE6C /* libgwenhywfar.60.dylib */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -1132,7 +1132,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$SRCROOT\"/scripts/copyaq.sh";
+			shellScript = "\"$SRCROOT\"/copyaq.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1302,6 +1302,7 @@
 					/temp/install/lib,
 					/temp/relinstall/lib,
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/AqBanking.framework/lib\"",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/build/Development/aqbanking/plugins/20/bankinfo\"";
@@ -1350,6 +1351,7 @@
 					/temp/install/lib,
 					/temp/relinstall/lib,
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/AqBanking.framework/lib\"",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/build/Development/aqbanking/plugins/20/bankinfo\"";

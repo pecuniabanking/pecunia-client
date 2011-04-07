@@ -50,6 +50,7 @@
 		}
 	}
 	currentAddView = accountAddView;
+	[predicateEditor addRow:self ];
 	
 	// fill proposal values
 	[self dropChanged: self ];
@@ -86,6 +87,7 @@
 			[accountAddView retain ];
 			[boxView replaceSubview:accountAddView with:manAccountAddView ];
 			currentAddView = manAccountAddView;
+			[manAccountAddView setFrameOrigin:NSMakePoint(0, 10) ];
 		}
 	}
 }
@@ -140,6 +142,8 @@
 		} else {
 			newAccount.isManual = [NSNumber numberWithBool:YES ];	
 			newAccount.balance = account.balance;
+			NSPredicate* predicate = [predicateEditor objectValue];
+			if(predicate) newAccount.rule = [predicate description ];
 		}
 		
 		newAccount.parent = bankRoot;
@@ -195,6 +199,26 @@
 	}
 }
 
+- (IBAction)predicateEditorChanged:(id)sender
+{	
+	//	if(awaking) return;
+	// check NSApp currentEvent for the return key
+    NSEvent* event = [NSApp currentEvent];
+    if ([event type] == NSKeyDown)
+	{
+		NSString* characters = [event characters];
+		if ([characters length] > 0 && [characters characterAtIndex:0] == 0x0D)
+		{
+			/*			
+			 [self calculateCatAssignPredicate ];
+			 ruleChanged = YES;
+			 */ 
+		}
+    }
+    // if the user deleted the first row, then add it again - no sense leaving the user with no rows
+    if ([predicateEditor numberOfRows] == 0)
+		[predicateEditor addRow:self];
+}
 
 -(BOOL)check
 {

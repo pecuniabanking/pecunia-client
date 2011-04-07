@@ -136,3 +136,7 @@
 "AP108" = "Daueraufträge abrufen";
 "AP109" = "Es sind zur Zeit keine Konten für die Verwendung mit Daueraufträgen gekennzeichnet. Möchten Sie dass Pecunia nun prüft, welche Konten Daueraufträge unterstützen?";
 "AP110" = "Datenbank wird geöffnet...";
+"AP111" = "Es gibt noch nicht gesendete Überweisungsaufträge in der Überweisungsliste. Möchten Sie Pecunia trotzdem beenden?";
+"AP112" = "Jetzt senden";
+"AP113" = "Zur Liste";
+"AP114" = "Pecunia beenden";

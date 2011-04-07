@@ -25,15 +25,27 @@
 	account.currency = acc.currency;
 	account.collTransfer = acc.collTransfer;
 	account.isStandingOrderSupported = acc.isStandingOrderSupported;
+	account.userId = acc.userId;
 
 	return self;
 }
 
 -(void)awakeFromNib
 {
-	if (changedAccount.userId == nil) {
-		[collTransferCheck setHidden:YES ];
-		[stordCheck setHidden:YES ];
+
+	if ([changedAccount.isManual boolValue] == YES) {
+		[boxView replaceSubview:accountAddView with:manAccountAddView ];
+
+		[predicateEditor addRow:self ];
+		NSString* s = changedAccount.rule;
+		if(s) {
+			NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: s ];
+			if([pred class ] != [NSCompoundPredicate class ]) {
+				NSCompoundPredicate* comp = [[NSCompoundPredicate alloc ] initWithType: NSOrPredicateType subpredicates: [NSArray arrayWithObjects: pred, nil ]];
+				pred = comp;
+			}
+			[predicateEditor setObjectValue: pred ];
+		}
 	}
 }
 
@@ -57,6 +69,12 @@
 	changedAccount.name = account.name;
 	changedAccount.collTransfer = account.collTransfer;
 	changedAccount.isStandingOrderSupported = account.isStandingOrderSupported;
+	
+	if ([changedAccount.isManual boolValue] == YES) {
+		NSPredicate* predicate = [predicateEditor objectValue];
+		if(predicate) changedAccount.rule = [predicate description ];
+	}
+	
 
     [self close ];
 
@@ -73,6 +91,32 @@
 
 	[moc reset ];
 	[NSApp stopModalWithCode: 1 ];
+}
+
+- (IBAction)predicateEditorChanged:(id)sender
+{	
+//	if(awaking) return;
+	// check NSApp currentEvent for the return key
+    NSEvent* event = [NSApp currentEvent];
+    if ([event type] == NSKeyDown)
+	{
+		NSString* characters = [event characters];
+		if ([characters length] > 0 && [characters characterAtIndex:0] == 0x0D)
+		{
+/*			
+			[self calculateCatAssignPredicate ];
+			ruleChanged = YES;
+*/ 
+		}
+    }
+    // if the user deleted the first row, then add it again - no sense leaving the user with no rows
+    if ([predicateEditor numberOfRows] == 0)
+		[predicateEditor addRow:self];
+}
+
+- (void)ruleEditorRowsDidChange:(NSNotification *)notification
+{
+//	[self calculateCatAssignPredicate ];
 }
 
 -(BOOL)check

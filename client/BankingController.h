@@ -55,7 +55,7 @@
 	
     NSMutableArray				*transactions;
 	NSMutableDictionary			*mainTabItems;
-	NSManagedObjectContext      *context;
+//	NSManagedObjectContext      *context;
 	NSManagedObjectContext      *managedObjectContext;
 	NSManagedObjectModel		*model;
 	NewBankUserController		*bankUserController;

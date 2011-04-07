@@ -597,7 +597,7 @@ static BankingController	*con;
 		BankAccount *account;
 		for(account in selectedNodes) {
 			NSArray *result;
-			NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == %@", account ];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == %@ AND noAutomaticQuery == 0", account ];
 			[request setPredicate:predicate];
 			result = [self.managedObjectContext executeFetchRequest:request error:&error];
 			if(error) {
@@ -1053,6 +1053,10 @@ static BankingController	*con;
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
+	// check if there are unsent transfers
+	BOOL close = [self checkForUnsentTransfers ];
+	if (close == NO) return NSTerminateCancel;
+	
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
 	BOOL hideDonationMessage = [defaults boolForKey: @"DonationPopup024" ];
 	
@@ -1294,6 +1298,8 @@ static BankingController	*con;
 				if ([item action] == @selector(transfer_local:)) return NO;
 				if ([item action] == @selector(transfer_eu:)) return NO;
 				if ([item action] == @selector(transfer_dated:)) return NO;
+			} else {
+				if ([item action] == @selector(addStatement:)) return NO;
 			}
 		}
 		
@@ -1870,7 +1876,7 @@ static BankingController	*con;
 	BankAccount *account;
 	NSMutableArray *resultList = [[NSMutableArray arrayWithCapacity: [selectedAccounts count ] ] retain ];
 	for(account in selectedAccounts) {
-		if (account.noAutomaticQuery) continue;
+		if ([account.noAutomaticQuery boolValue] == NO) continue;
 		
 		BankQueryResult *result = [[BankQueryResult alloc ] init ];
 		result.accountNumber = account.accountNumber;
@@ -2010,6 +2016,50 @@ static BankingController	*con;
 -(void)setEncrypted:(BOOL)encrypted
 {
 	if(encrypted) [lockImage setHidden:NO ]; else [lockImage setHidden:YES ];
+}
+
+-(BOOL)checkForUnsentTransfers
+{
+	NSError *error = nil;
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Transfer" inManagedObjectContext:self.managedObjectContext];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(isSent = 0)" ];
+	[request setPredicate:predicate];
+	NSArray *transfers = [self.managedObjectContext executeFetchRequest:request error:&error];
+	if (error || [transfers count ] == 0) return NO;
+	
+	int res = NSRunAlertPanel(NSLocalizedString(@"AP114", @""),
+							  NSLocalizedString(@"AP111", @""),
+							  NSLocalizedString(@"yes", @"Yes"),
+							  NSLocalizedString(@"AP113", @""),
+							  NSLocalizedString(@"AP112", @""),
+							  nil
+							  );
+	if (res == NSAlertDefaultReturn) return YES;
+	if (res == NSAlertAlternateReturn) {
+		NSArray *items = [toolbar items ];
+		for(NSToolbarItem *item in items) {
+			if ([item tag ] == 20) {
+				[toolbar setSelectedItemIdentifier:[item itemIdentifier ] ];
+				break;
+			}
+		}
+		[self performSelector: @selector(transferView:) withObject: self afterDelay: 0.0 ];
+		return NO;
+	}
+	
+	// send transfers
+	BOOL sent = [[HBCIClient hbciClient ] sendTransfers: transfers ];
+	if(sent) {
+		// save updates
+		if([self.managedObjectContext save: &error ] == NO) {
+			NSAlert *alert = [NSAlert alertWithError:error];
+			[alert runModal];
+			return NO;
+		}
+	}
+	return NO;
 }
 
 -(IBAction)printDocument:(id)sender
