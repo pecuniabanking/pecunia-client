@@ -175,6 +175,7 @@
 -(void)edit:(id)sender
 {
 	if (editMode == NO) {
+		[cancelButton setHidden:YES ];
 		[self openEditAnimate:YES ];
 	}
 }
@@ -194,6 +195,7 @@
 	}
 	[templateController setSelectionIndex:idx ];
 	[self edit:sender ];
+	[cancelButton setHidden:NO ];
 }
 
 -(IBAction)finished:(id)sender
@@ -202,6 +204,12 @@
 	if (sel == nil || [sel count ] == 0) return;
 	TransferTemplate *template = [sel lastObject ];
 	if([self checkTemplate:template ]) [self closeEditAnimate:YES ];
+}
+
+-(IBAction)cancel:(id)sender
+{
+	[templateController remove:self ];
+	[self closeEditAnimate:YES ];
 }
 
 -(IBAction)segButtonPressed:(id)sender

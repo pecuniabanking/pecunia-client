@@ -37,6 +37,9 @@
 		}
 	} else {
 		[mainTabView selectTabViewItemAtIndex:idx ];
+		// reload content, may have changed
+		id<MainTabViewItem> controller = (id<MainTabViewItem>)[mainTabItems objectForKey:_catPeriodsIdentifier ];
+		[controller prepare ];
 	}
 	[self adjustSearchField ];
 }

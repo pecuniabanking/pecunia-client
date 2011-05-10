@@ -6398,8 +6398,9 @@ AAAAAAAAAAAAAAAAAAA</bytes>
 									<reference key="NSOnImage" ref="883146705"/>
 									<reference key="NSMixedImage" ref="237878853"/>
 								</object>
-								<object class="NSMenuItem" id="558737675">
+								<object class="NSMenuItem" id="524806202">
 									<reference key="NSMenu" ref="902378135"/>
+									<bool key="NSIsHidden">YES</bool>
 									<string key="NSTitle">Umbuchung</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -14322,7 +14323,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<object class="IBActionConnection" key="connection">
 						<string key="label">transfer_internal:</string>
 						<reference key="source" ref="674635667"/>
-						<reference key="destination" ref="558737675"/>
+						<reference key="destination" ref="524806202"/>
 					</object>
 					<int key="connectionID">5432</int>
 				</object>
@@ -15395,7 +15396,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 							<reference ref="127867721"/>
 							<reference ref="645183552"/>
 							<reference ref="944775726"/>
-							<reference ref="558737675"/>
+							<reference ref="524806202"/>
 						</object>
 						<reference key="parent" ref="734275318"/>
 					</object>
@@ -18939,7 +18940,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">5431</int>
-						<reference key="object" ref="558737675"/>
+						<reference key="object" ref="524806202"/>
 						<reference key="parent" ref="902378135"/>
 					</object>
 				</object>

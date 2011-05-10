@@ -23,6 +23,7 @@
 	IBOutlet NSView				*mainView;
 	IBOutlet NSView				*printView;
 	IBOutlet NSArrayController  *statementsController;
+	IBOutlet NSSegmentedControl *periodControl;
 
 	CategoryReportingNode		*dataRoot;
 	CategoryReportingNode		*periodRoot;

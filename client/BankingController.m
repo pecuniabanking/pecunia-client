@@ -897,12 +897,15 @@ static BankingController	*con;
 											  NSLocalizedString(@"AP29", @"There are already transactions assigned to the selected account. Do you want to delete the account %@ anyway?"),
 											  NSLocalizedString(@"yes", @"Yes"),
 											  NSLocalizedString(@"no", @"No"),
-											  nil,
+											  NSLocalizedString(@"cancel", @"Cancel"),
 											  account.accountNumber
 											  );
 			if (res == NSAlertDefaultReturn) {
 				keepAssignedStatements = YES;
-			} else keepAssignedStatements = NO;
+			} else {
+				if (res == NSAlertOtherReturn) return;
+				else keepAssignedStatements = NO;
+			}
 		}
 	}
 		// delete account
@@ -2027,7 +2030,7 @@ static BankingController	*con;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(isSent = 0)" ];
 	[request setPredicate:predicate];
 	NSArray *transfers = [self.managedObjectContext executeFetchRequest:request error:&error];
-	if (error || [transfers count ] == 0) return NO;
+	if (error || [transfers count ] == 0) return YES;
 	
 	int res = NSRunAlertPanel(NSLocalizedString(@"AP114", @""),
 							  NSLocalizedString(@"AP111", @""),

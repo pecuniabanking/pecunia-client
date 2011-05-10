@@ -150,7 +150,7 @@
 			// also set in all categories
 			NSSet *stats = [statement mutableSetValueForKey:@"assignments" ];
 			for (StatCatAssignment *stat in stats) {
-				if (stat != self && (stat.userInfo == nil || [stat.userInfo isEqualToString:oldInfo ])) {
+				if (stat != self && (stat.userInfo == nil || [stat.userInfo isEqualToString: @"" ] || [stat.userInfo isEqualToString:oldInfo ])) {
 					stat.userInfo = info;
 				}
 			}

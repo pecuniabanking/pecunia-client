@@ -19,6 +19,7 @@
 	IBOutlet NSTableView		*tableView;
 	IBOutlet NSSegmentedControl	*segmentView;
 	IBOutlet NSView				*scrollView;
+	IBOutlet NSButton			*cancelButton;
 	
 	NSView						*currentView;
     NSPoint						subViewPos;
@@ -28,5 +29,6 @@
 -(IBAction)segButtonPressed:(id)sender;
 -(IBAction)finished:(id)sender;
 -(IBAction)countryChanged:(id)sender;
+-(IBAction)cancel:(id)sender;
 
 @end

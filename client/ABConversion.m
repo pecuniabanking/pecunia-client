@@ -264,9 +264,10 @@ ABAccount *convertAccount(AB_ACCOUNT *acc)
 	if(flags & AH_BANK_FLAGS_PREFER_SINGLE_TRANSFER) account.collTransfer = NO; else account.collTransfer = YES;
 	
 	AB_USER *usr = AB_Account_GetFirstUser(acc);
-	account.userId = [NSString stringWithUTF8String: (c = AB_User_GetUserId(usr)) ? c: ""];
-	account.customerId = [NSString stringWithUTF8String: (c = AB_User_GetCustomerId(usr)) ? c: ""];
-	
+	if (usr) {
+		account.userId = [NSString stringWithUTF8String: (c = AB_User_GetUserId(usr)) ? c: ""];
+		account.customerId = [NSString stringWithUTF8String: (c = AB_User_GetCustomerId(usr)) ? c: ""];
+	}
 	j = (AB_JOB*)AB_JobInternalTransfer_new(acc);
 	res = AB_Job_CheckAvailability(j);
 	if(res) account.substInternalTransfers = YES; else account.substInternalTransfers = NO;

@@ -73,21 +73,19 @@
 	[self.formatter setLocale:[NSLocale currentLocale ] ];
 	[self.formatter setCurrencySymbol:@"" ];
 		
-	self.dataRoot = [[Category catRoot ] categoryHistoryWithType:cat_histtype_month ];
-	[self getMinMaxDatesForNode:self.dataRoot ];
-	
-	if ([fromDate compare:minDate ] == NSOrderedAscending) {
-		self.fromDate = self.minDate;
+	switch (histType) {
+		case cat_histtype_year:
+			[periodControl setSelectedSegment:0 ];
+			break;
+		case cat_histtype_quarter:
+			[periodControl setSelectedSegment:1 ];
+			break;
+		default:
+			[periodControl setSelectedSegment:2 ];
+			break;
 	}
-	if ([toDate compare:maxDate ] == NSOrderedDescending) {
-		self.toDate = self.maxDate;
-	}
 	
-	[categoryController setContent:self.dataRoot ];
-	[self updatePeriodDates ];
-	[self adjustDates ];
-	[self updateData ];
-	[self performSelector: @selector(restoreCategoryView) withObject: nil afterDelay: 0.0];
+	[self prepare ];
 }
 
 -(void)getMinMaxDatesForNode: (CategoryReportingNode*)node
@@ -408,6 +406,21 @@
 
 -(void)prepare
 {
+	self.dataRoot = [[Category catRoot ] categoryHistoryWithType:cat_histtype_month ];
+	[self getMinMaxDatesForNode:self.dataRoot ];
+	
+	if ([fromDate compare:minDate ] == NSOrderedAscending) {
+		self.fromDate = self.minDate;
+	}
+	if ([toDate compare:maxDate ] == NSOrderedDescending) {
+		self.toDate = self.maxDate;
+	}
+	
+	[categoryController setContent:self.dataRoot ];
+	[self updatePeriodDates ];
+	[self adjustDates ];
+	[self updateData ];
+	[self performSelector: @selector(restoreCategoryView) withObject: nil afterDelay: 0.0];
 }
 
 -(void)print

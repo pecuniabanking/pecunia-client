@@ -195,7 +195,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	self.isAssigned = [NSNumber numberWithBool:assigned ];
 	
 	// update not assigned part
-	self.nassValue = value;
+	if(assigned == NO) self.nassValue = value; else self.nassValue = [NSDecimalNumber zero ];
 	BOOL found = NO;
 	iter = [stats objectEnumerator];
 	while (stat = [iter nextObject]) {
