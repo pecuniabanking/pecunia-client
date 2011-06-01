@@ -13,6 +13,7 @@
 #import "BankAccount.h"
 #import "TransactionLimits.h"
 #import "BankQueryResult.h"
+#import "MCEMTableView.h"
 
 @implementation StandingOrderTabController
 
@@ -306,14 +307,13 @@
 
 -(void)delete
 {
+	int res = NSRunAlertPanel(NSLocalizedString(@"AP117", @""), 
+							  NSLocalizedString(@"AP118", @""),
+							  NSLocalizedString(@"no", @"No"), 
+							  NSLocalizedString(@"yes", @"Yes"), nil);
+	
+	if (res == NSAlertDefaultReturn) return;	
 	[orderController remove:self ];
-/*	
-	NSArray *sel = [orderController selectedObjects ];
-	if (sel == nil || [sel count ] != 1) return;
-	StandingOrder *order = [sel lastObject ];
-	if (order.orderKey == nil) [managedObjectContext deleteObject:order ];
-	else order.toDelete = [NSNumber numberWithBool:YES ];
-*/ 
 }
 
 -(IBAction)accountsOk:(id)sender
@@ -380,7 +380,27 @@
 
 -(IBAction)update:(id)sender
 {
+	NSError *error = nil;
+	
 	[[HBCIClient hbciClient ] updateStandingOrders: [orderController arrangedObjects ]];
+	
+	// check if there are new orders without key
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"StandingOrder" inManagedObjectContext:managedObjectContext];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	//	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND isStandingOrderSupported == 1" ];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isSent == YES AND orderKey == nil" ];
+	[request setPredicate:predicate];
+	NSArray *stords = [managedObjectContext executeFetchRequest:request error:&error];
+	if ([stords count ] > 0) {
+		int res = NSRunAlertPanel(NSLocalizedString(@"AP115", @""), 
+								  NSLocalizedString(@"AP116", @""),
+								  NSLocalizedString(@"yes", @"Yes"), 
+								  NSLocalizedString(@"no", @"No"), nil);
+		if (res == NSAlertDefaultReturn) {
+			[self performSelector:@selector(getOrders:) withObject:self afterDelay:0 ];
+		}
+	}
 }
 
 -(IBAction)getOrders:(id)sender
@@ -400,7 +420,7 @@
 			NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
 			[request setEntity:entityDescription];
 			//	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND isStandingOrderSupported == 1" ];
-			NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil" ];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND isManual = FALSE" ];
 			[request setPredicate:predicate];
 			NSArray *selectedAccounts = [managedObjectContext executeFetchRequest:request error:&error];
 			if (selectedAccounts) {
@@ -432,8 +452,20 @@
 			}
 		}
 	}
-		
+	
 	[[HBCIClient hbciClient ] getStandingOrders: resultList ];
+
+	// next remove orders withoud ID
+	for(StandingOrder *stord in [orderController arrangedObjects ]) {
+		if (stord.orderKey == nil) [managedObjectContext deleteObject:stord ];
+	}
+}
+
+-(NSColor*)tableView:(MCEMTableView*)tv labelColorForRow:(int)row
+{
+	StandingOrder *stord = [[orderController arrangedObjects ] objectAtIndex: row ];
+	if (stord.orderKey == nil && [stord.isSent boolValue ] == YES) return [NSColor redColor ];
+	return nil;
 }
 
 

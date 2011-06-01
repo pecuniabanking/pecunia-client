@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">10J567</string>
+		<string key="IBDocument.SystemVersion">10J869</string>
 		<string key="IBDocument.InterfaceBuilderVersion">762</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">462.00</string>
+		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
@@ -294,8 +294,8 @@
 											<int key="NSCellFlags2">272630784</int>
 											<string key="NSContents">KATEGORIEN</string>
 											<object class="NSFont" key="NSSupport">
-												<string key="NSName">Helvetica-Bold</string>
-												<double key="NSSize">21</double>
+												<string key="NSName">LucidaGrande</string>
+												<double key="NSSize">19</double>
 												<int key="NSfFlags">16</int>
 											</object>
 											<reference key="NSControlView" ref="381096966"/>
@@ -307,7 +307,7 @@
 											</object>
 											<object class="NSColor" key="NSTextColor">
 												<int key="NSColorSpace">2</int>
-												<bytes key="NSRGB">MC4zNzk5NDg2NDU4IDAuNDMwODgzNzY1MiAwLjUwMjE5Mjk3NDEAA</bytes>
+												<bytes key="NSRGB">MC4zMzcyNTQ5MTE3IDAuMzgwMzkyMTY0IDAuNDQ3MDU4ODI2NwA</bytes>
 											</object>
 										</object>
 									</object>
@@ -531,7 +531,7 @@ tEH6QJcUMSBwwTzDkg5AQAAPAQAAAwAAAAEAEQAAAQEAAwAAAAEAEQAAAQIAAwAAAAQAAATGAQMAAwAA
 AAEABQAAAQYAAwAAAAEAAgAAAREABAAAAAEAAAAIARIAAwAAAAEAAQAAARUAAwAAAAEABAAAARYAAwAA
 AAEAEQAAARcABAAAAAEAAAQEARwAAwAAAAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAA
 AAQAAATOh3MABwAAGJgAAATWAAAAAAAIAAgACAAIAAEAAQABAAEAABiYYXBwbAIQAABtbnRyUkdCIFhZ
-WiAH2wABAAgACwAqADBhY3NwQVBQTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWFw
+WiAH2wAEABYACwA2ADNhY3NwQVBQTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWFw
 cGwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFkZXNjAAABUAAA
 AGJkc2NtAAABtAAAAPBjcHJ0AAACpAAAANB3dHB0AAADdAAAABRyWFlaAAADiAAAABRnWFlaAAADnAAA
 ABRiWFlaAAADsAAAABRyVFJDAAADxAAACAxhYXJnAAAL0AAAACB2Y2d0AAAL8AAABhJuZGluAAASBAAA
@@ -581,7 +581,7 @@ wOzBZ8Hjwl/C28NYw9TEUcTOxUvFyMZGxsPHQce/yD3IvMk6ybnKOMq3yzbLtsw1zLXNNc21zjbOts83
 z7jQOdC60TzRvtI/0sHTRNPG1EnUy9VO1dHWVdbY11zX4Nhk2OjZbNnx2nba+9uA3AXcit0Q3ZbeHN6i
 3ynfr+A24L3hROHM4lPi2+Nj4+vkc+T85YTmDeaW5x/nqegy6LzpRunQ6lvq5etw6/vshu0R7ZzuKO60
 70DvzPBY8OXxcvH/8ozzGfOn9DT0wvVQ9d72bfb794r4Gfio+Tj5x/pX+uf7d/wH/Jj9Kf26/kv+3P9t
-//9wYXJhAAAAAAADAAAAAmZmAADypwAADVkAABPQAAAKwHZjZ3QAAAAAAAAAAAADAQAAAgAAACsAxAFw
+//9wYXJhAAAAAAADAAAAAmZmAADypwAADVkAABPQAAAKDnZjZ3QAAAAAAAAAAAADAQAAAgAAACsAxAFw
 Ai4C7QOoBGwFNgYCBuwH4QjgCeYK5gv4DQQOIA82EFsRhBKwE98VGhZXF5YYyxnyGxscRR1wHpUfuCDf
 IgMjIyQ+JVYmayd+KI4pmCqkK68suC3DLs4v2DDjMe0y+TQDNQ42FjcgOCo5Mzo8O0Q8TD1RPlg/X0Bm
 QWxCcUN3RHtFfkaCR4ZIiEmJSolLi0yJTYhOhk+FUINRg1KFU4tUkVWYVqJXrVi6Wcha2FvqXPteCl8a
@@ -1189,7 +1189,7 @@ AAAAAAYQAACcZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</bytes>
 											<reference key="NSSupport" ref="26"/>
 											<reference key="NSControlView" ref="312840956"/>
 											<int key="NSButtonFlags">1211912703</int>
-											<int key="NSButtonFlags2">130</int>
+											<int key="NSButtonFlags2">2</int>
 											<object class="NSCustomResource" key="NSNormalImage">
 												<string key="NSClassName">NSImage</string>
 												<string key="NSResourceName">NSSwitch</string>
@@ -1348,10 +1348,6 @@ AAAAAAYQAACcZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</bytes>
 				<string key="NSClassName">TimeSliceManager</string>
 			</object>
 			<object class="NSUserDefaultsController" id="803099976">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>balanceCategories</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
@@ -2162,6 +2158,7 @@ AAAAAAYQAACcZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</bytes>
 					<string>19.IBPluginDependency</string>
 					<string>19.IBSegmentedControlTracker.RoundRobinState</string>
 					<string>19.IBSegmentedControlTracker.WasGrowing</string>
+					<string>2.CustomClassName</string>
 					<string>2.IBPluginDependency</string>
 					<string>20.IBPluginDependency</string>
 					<string>21.IBPluginDependency</string>
@@ -2173,6 +2170,7 @@ AAAAAAYQAACcZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</bytes>
 					<string>25.IBPluginDependency</string>
 					<string>26.IBPluginDependency</string>
 					<string>27.IBPluginDependency</string>
+					<string>28.CustomClassName</string>
 					<string>28.IBPluginDependency</string>
 					<string>29.IBPluginDependency</string>
 					<string>3.IBPluginDependency</string>
@@ -2196,6 +2194,7 @@ AAAAAAYQAACcZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</bytes>
 					<string>44.IBPluginDependency</string>
 					<string>45.IBPluginDependency</string>
 					<string>46.IBPluginDependency</string>
+					<string>47.CustomClassName</string>
 					<string>47.IBPluginDependency</string>
 					<string>48.IBPluginDependency</string>
 					<string>49.IBPluginDependency</string>
@@ -2215,11 +2214,12 @@ AAAAAAYQAACcZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</bytes>
 					<string>7.IBPluginDependency</string>
 					<string>8.IBPluginDependency</string>
 					<string>9.IBPluginDependency</string>
+					<string>99.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{174, 486}, {1066, 648}}</string>
+					<string>{{119, 313}, {1066, 648}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2235,6 +2235,7 @@ AAAAAAYQAACcZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="2"/>
 					<integer value="0"/>
+					<string>MCEMSplitView</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2246,6 +2247,7 @@ AAAAAAYQAACcZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>MCEMTransparentTableView</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2273,6 +2275,7 @@ AAAAAAYQAACcZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>MCEMTransparentTableView</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2289,6 +2292,7 @@ AAAAAAYQAACcZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</bytes>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="NO"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2374,6 +2378,22 @@ AAAAAAYQAACcZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</bytes>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">MCEMPieChartView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">MCEMSplitView</string>
+					<string key="superclassName">NSSplitView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">MCEMSplitView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">MCEMTransparentTableView</string>
+					<string key="superclassName">NSTableView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">MCEMTransparentTableView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

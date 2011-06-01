@@ -45,6 +45,7 @@
 #import "BankStatementPrintView.h"
 #import "MainTabViewItem.h"
 #import "GenericImportController.h"
+#import "ImageAndTextCell.h"
 
 #define _expandedRows @"EMT_expandedRows"
 #define _accountsViewSD @"EMT_accountsSorting"
@@ -160,12 +161,25 @@ static BankingController	*con;
 		}
 	}
 	
+	tc = [accountsView tableColumnWithIdentifier: @"name" ];
+	if(tc) {
+		ImageAndTextCell *cell = (ImageAndTextCell*)[tc dataCell ];
+		if (cell) [cell setFont: [NSFont fontWithName: @"Lucida Grande" size: 12 ] ];
+		// update unread information
+		NSInteger maxUnread = [BankAccount maxUnread ];
+		[cell setMaxUnread:maxUnread ];
+	}
 	
 	// sort descriptor for transactions view
 	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:NO] autorelease];
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[transactionController setSortDescriptors: sds ];
 
+	// sort descriptor for accounts view
+	sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+	sds = [NSArray arrayWithObject:sd];
+	[categoryController setSortDescriptors: sds ];
+	
 	// status (content) bar
 	[mainWindow setAutorecalculatesContentBorderThickness:NO forEdge:NSMinYEdge];
 	[mainWindow setContentBorderThickness:30.0f forEdge:NSMinYEdge];
@@ -209,7 +223,7 @@ static BankingController	*con;
 	}
 	
 	[self updateBalances ];
-	
+/*	
 	// reset BankStatement isNew
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:self.managedObjectContext];
 	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
@@ -218,6 +232,10 @@ static BankingController	*con;
 	[request setPredicate:predicate];
 	NSArray *statements = [self.managedObjectContext executeFetchRequest:request error:&error];
 	for(BankStatement *stat in statements) stat.isNew = [NSNumber numberWithBool:NO ];
+*/	
+	
+	// update unread information
+	[self updateUnread ];
 	
     [categoryController fetchWithRequest:nil merge:NO error:&error];
 	[transferListController setManagedObjectContext:self.managedObjectContext ];
@@ -729,6 +747,17 @@ static BankingController	*con;
 			if(maxDate && [maxDate compare: lDate ] == NSOrderedAscending || maxDate == nil) maxDate = lDate;
 		}
 		[timeSlicer stepIn: [ShortDate dateWithDate: maxDate ] ];
+		
+		// update unread information
+		NSInteger maxUnread = [BankAccount maxUnread ];
+		
+		// update data cell
+		NSTableColumn *tc = [accountsView tableColumnWithIdentifier: @"name" ];
+		if(tc) {
+			ImageAndTextCell *cell = (ImageAndTextCell*)[tc dataCell ];
+			[cell setMaxUnread:maxUnread ];
+		}
+		
 	}
 }
 
@@ -763,7 +792,7 @@ static BankingController	*con;
 
 -(IBAction)editBankUsers:(id)sender
 {
-//	[[HBCIClient hbciClient ] addBankUser ];
+//	[[HBCIClient hbciClient ] addBankUserCocoa ];
 	
 	if(!bankUserController) bankUserController = [[NewBankUserController alloc] initForController: self];
 	[bankUserController showWindow: self ];
@@ -1318,6 +1347,32 @@ static BankingController	*con;
 	return YES;
 }
 
+-(void)tableViewSelectionDidChange:(NSNotification *)aNotification
+{
+	NSArray *sel = [transactionController selectedObjects ];
+	if(sel && [sel count ] == 1) {
+		StatCatAssignment *stat = [sel objectAtIndex:0 ];
+		if ([stat.category isBankAccount] && [stat.category isRoot ] == NO) {
+			BankAccount *account = (BankAccount*)stat.category;
+			if ([stat.statement.isNew boolValue] == YES) {
+				stat.statement.isNew = [NSNumber numberWithBool:NO ];
+				account.unread = account.unread - 1;
+//				[account calcUnread ];
+				if (account.unread == 0) {
+					[self updateUnread ];
+					NSRect r = [ accountsView rectOfColumn:0];
+					[accountsView setNeedsDisplayInRect:r ];
+				} else {
+					// update tableview row
+					NSRect r = [ accountsView rectOfRow:[accountsView selectedRow ]];
+					[accountsView setNeedsDisplayInRect:r ];
+				}
+			}
+		}
+	}
+}
+
+
 // Dragging Bank Statements
 - (BOOL)tableView:(NSTableView *)tv writeRowsWithIndexes:(NSIndexSet*)rowIndexes toPasteboard:(NSPasteboard*)pboard
 {
@@ -1512,29 +1567,44 @@ static BankingController	*con;
 	[valueField setHidden: YES ];
 }
 
-- (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
+- (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(ImageAndTextCell*)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
+	if ([[tableColumn identifier ] isEqualToString: @"name" ] == NO) return;
+	
 	Category *cat = [item representedObject ];
 	if(cat == nil) return;
-	if([[tableColumn identifier ] isEqualToString: @"name" ]) {
-		if([cat isRoot ]) {
-			NSColor *txtColor;
-			if([cell isHighlighted ]) txtColor = [NSColor whiteColor]; 
-			else txtColor = [NSColor colorWithCalibratedHue: 0.6194 saturation: 0.32 brightness:0.56 alpha:1.0 ];
-			NSFont *txtFont = [NSFont fontWithName: @"Arial Rounded MT Bold" size: 13];
-			NSDictionary *txtDict = [NSDictionary dictionaryWithObjectsAndKeys: txtFont,NSFontAttributeName,txtColor, NSForegroundColorAttributeName, nil];
-			NSAttributedString *attrStr = [[[NSAttributedString alloc] initWithString: [cat localName ] attributes:txtDict] autorelease];
-			[cell setAttributedStringValue:attrStr];
-		}
+	
+	NSImage *catImage		= [NSImage imageNamed:@"catdef4_18.png"];
+	NSImage *moneyImage		= [NSImage imageNamed:@"money_18.png"];
+	NSImage *moneySyncImage	= [NSImage imageNamed:@"money_sync_18.png"];
+	NSImage *folderImage	= [NSImage imageNamed:@"folder_18.png"];
+	
+	[cell setImage: catImage];
+	
+	NSInteger numberUnread = 0;
+	
+	if([cat isBankAccount] && cat.accountNumber == nil) 	[cell setImage: folderImage];
+	if([cat isBankAccount] && cat.accountNumber != nil) {
+		BankAccount *account = (BankAccount*)cat;
+		if([account.isManual boolValue ] == YES || [account.noAutomaticQuery boolValue ] == YES) [cell setImage: moneyImage];
+		else [cell setImage: moneySyncImage];
 	}
-	if([[tableColumn identifier ] isEqualToString: @"balance" ]) {
-		if([cell isHighlighted ]){
-			[(NSTextFieldCell*)cell setTextColor: [NSColor whiteColor ] ];
-		} else {
-			if([[cat catSum ] doubleValue ] >= 0) [(NSTextFieldCell*)cell setTextColor: [NSColor colorWithDeviceRed: 0.09 green: 0.7 blue: 0 alpha: 100]];
-			else [(NSTextFieldCell*)cell setTextColor: [NSColor redColor ] ];
-		} 
+
+	if ([cat isBankAccount ] == NO || [cat isRoot ]) {
+		numberUnread = 0;
+	} else numberUnread = [(BankAccount*)cat unread ];
+	
+	BOOL itemIsSelected = FALSE;
+	if ([outlineView itemAtRow:[outlineView selectedRow]] == item)	 itemIsSelected = TRUE;
+	
+	
+	BOOL itemIsRoot = [cat isRoot];
+	if (itemIsRoot == TRUE) {
+		[cell setImage:Nil];
 	}
+	
+	
+	[cell setValues:[cat catSum] currency:cat.currency unread:numberUnread selected:itemIsSelected root:itemIsRoot ];
 }
 
 
@@ -2063,6 +2133,17 @@ static BankingController	*con;
 		}
 	}
 	return NO;
+}
+
+-(void)updateUnread
+{
+	NSTableColumn* tc = [accountsView tableColumnWithIdentifier: @"name" ];
+	if(tc) {
+		ImageAndTextCell *cell = (ImageAndTextCell*)[tc dataCell ];
+		// update unread information
+		NSInteger maxUnread = [BankAccount maxUnread ];
+		[cell setMaxUnread:maxUnread ];
+	}
 }
 
 -(IBAction)printDocument:(id)sender

@@ -140,6 +140,8 @@
 -(void)setRestart;
 -(void)syncAllAccounts;
 -(void)publishContext;
+-(void)updateUnread;
+-(BOOL)checkForUnsentTransfers;
 
 +(BankingController*)controller;
 @end

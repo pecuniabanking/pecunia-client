@@ -143,7 +143,7 @@ NSString *convertStringListToString(const GWEN_STRINGLIST* sl, NSString *separat
 	sle = GWEN_StringList_FirstEntry(sl);
 	while(sle) {
 		s = [NSString stringWithUTF8String: (c = GWEN_StringListEntry_Data(sle)) ? c: ""];
-	    [result appendString:s ];
+	    if(s) [result appendString:s ];
 		sle = GWEN_StringListEntry_Next(sle);
 		if(sle) [result appendString: separator ];
 	}

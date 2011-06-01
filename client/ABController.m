@@ -289,14 +289,14 @@ error:
 				fprintf(stderr, "Job is not available (%d)\n", rv);
 				goto error;
 			}
-			
+/*			
 			NSDate *ltd = res.account.latestTransferDate;
 			if (ltd) {
 				GWEN_TIME *d = GWEN_Time_fromSeconds((unsigned int)[ltd timeIntervalSince1970 ]);
 				AB_JobGetTransactions_SetFromTime(j, d);
 				GWEN_Time_free(d);
 			}
-			
+*/			
 			/* enqueue this job so that AqBanking knows we want it executed. */
 			AB_Job_List2_PushBack(jl, j);
 		}
@@ -343,6 +343,9 @@ error:
 	for(StandingOrder *stord in orders) {
 		// todo: don't send unchanged orders
 		if ([stord.isChanged boolValue] == NO && [stord.toDelete boolValue ] == NO) continue;
+		
+		// don't send sent orders without ID
+		if ([stord.isSent boolValue ] == YES && stord.orderKey == nil) continue;
 		
 		t = convertStandingOrder(stord);
 	
@@ -757,8 +760,8 @@ error:
 	return bankName;
 }
 
-/*
--(BOOL)addBankUser
+
+-(BOOL)addBankUserCocoa
 {
 	GWEN_GUI *gui = Cocoa_Gui_new();
 	GWEN_Gui_SetGui(gui);
@@ -769,8 +772,6 @@ error:
 	GWEN_Gui_SetGui([abGui gui ]);
 	if (res <= 0) return NO; else return YES;
 }
-*/
-
 
 -(NSString*)addBankUser: (ABUser*)user
 {
@@ -832,6 +833,7 @@ error:
 	}
 	return nil;
 }
+
 
 -(NSString*)getSystemIDForUser: (ABUser*)user
 {

@@ -17,6 +17,7 @@
 	NSDate				*newLatestTransferDate;
 	PurposeSplitRule	*purposeSplitRule;
 	NSArray				*dbStatements;
+	NSInteger           unread;
 }
 
 -(NSString*)bankCode;
@@ -30,9 +31,11 @@
 -(void)copyStatement:(BankStatement*)stat;
 -(void)copyStatementsToManualAccounts:(NSArray*)statements;
 -(NSDate*)nextDateForDate:(NSDate*)date;
+-(NSInteger)calcUnread;
 
 +(BankAccount*)bankRootForCode:(NSString*)bankCode;
 +(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code;
++(NSInteger)maxUnread;
 
 @property (nonatomic, retain) NSArray *dbStatements;
 @property (nonatomic, retain) PurposeSplitRule *purposeSplitRule;
@@ -56,6 +59,8 @@
 @property (nonatomic, retain) NSNumber * isStandingOrderSupported;
 @property (nonatomic, retain) NSString * splitRule;
 @property (nonatomic, retain) NSString * accountSuffix;
+@property (nonatomic, assign) NSInteger unread;
+
 
 @end
 

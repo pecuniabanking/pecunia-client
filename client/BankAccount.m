@@ -37,6 +37,7 @@
 
 @synthesize dbStatements;
 @synthesize purposeSplitRule;
+@synthesize unread;
 
 -(id)copyWithZone: (NSZone *)zone
 {
@@ -54,6 +55,19 @@
 	[request setPredicate:predicate];
 	NSArray *statements = [context executeFetchRequest:request error:&error];
 	for(BankStatement *stat in statements) stat.isNew = [NSNumber numberWithBool:NO ];
+}
+
+-(NSInteger)calcUnread
+{
+	NSError *error = nil;
+	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (isNew = 1)", self ];
+	[request setPredicate:predicate];
+	NSArray *statements = [context executeFetchRequest:request error:&error];
+	return unread = [statements count ];
 }
 
 -(NSDictionary*)statementsByDay:(NSArray*)stats
@@ -84,7 +98,7 @@
 	[request setEntity:entityDescription];
 	
 	// unmark old items
-	[self resetIsNew ];
+//	[self resetIsNew ];
 	
 	// check if purpose split rule exists
 	if (self.splitRule && self.purposeSplitRule == nil ) self.purposeSplitRule = [[PurposeSplitRule alloc ] initWithString:self.splitRule ];
@@ -395,6 +409,7 @@
 	}
 */	
 	self.latestTransferDate = ltd;
+	[self  calcUnread ];
 	return [newStatements count ];
 }
 
@@ -572,6 +587,28 @@
 	}
 	if(results == nil || [results count ] != 1) return nil;
 	return [results objectAtIndex: 0 ];
+}
+
++(NSInteger)maxUnread
+{
+	NSError *error = nil;
+	NSInteger unread = 0;
+	
+	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+	if (context == nil) return 0;
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:context];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(isManual = 0) AND (accountNumber != nil)" ];
+	[request setPredicate:predicate];
+	NSArray *accounts = [context executeFetchRequest:request error:&error];
+	if (accounts == nil || error || [accounts count ] == 0) return 0;
+	
+	for(BankAccount *account in accounts) {
+		NSInteger n = [account calcUnread ];
+		if (n > unread) unread = n;
+	}	
+	return unread;
 }
 
 -(void)dealloc
