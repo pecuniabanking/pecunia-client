@@ -466,8 +466,10 @@ BOOL	updateSent = NO;
 +(void)updateCatValues
 {
 	if (updateSent) return;
-	[[self catRoot ] performSelector:@selector(updateInvalidBalances) withObject:nil afterDelay:0 ]; 
-	[[self catRoot ] performSelector:@selector(rollup) withObject:nil afterDelay:0 ]; 
+	[[self catRoot ] updateInvalidBalances ]; 
+	[[self catRoot ] rollup ]; 
+//	[[self catRoot ] performSelector:@selector(updateInvalidBalances) withObject:nil afterDelay:0 ]; 
+//	[[self catRoot ] performSelector:@selector(rollup) withObject:nil afterDelay:0 ]; 
 }
 
 +(void)setCatReportFrom: (ShortDate*)fDate to: (ShortDate*)tDate

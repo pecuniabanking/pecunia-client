@@ -31,6 +31,7 @@
 	NSArray					*accountStatements;
 	int						actionResult;
 	BOOL					negateValue;
+	BOOL					valueChanged;
 }
 
 @property (nonatomic, copy) NSArray *accountStatements;
@@ -46,6 +47,7 @@
 
 -(BOOL)check;
 -(void)arrangeStatements;
+-(void)updateSaldo;
 
 @end
 

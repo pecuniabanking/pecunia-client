@@ -12,6 +12,7 @@
 #import "LogController.h"
 #import "HBCIClient.h"
 #import "MOAssistant.h"
+#import "AmountCell.h"
 
 
 @implementation TransferListController
@@ -142,6 +143,18 @@
 	if(currency) [selAmountField setStringValue: [NSString stringWithFormat: @"(%@%@ ausgewählt)", [formatter stringFromNumber:sum ], currency ] ];
 	else [selAmountField setStringValue: @"" ];
 }
+
+- (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
+{
+	if ([[aTableColumn identifier ] isEqualToString: @"value" ]) {
+		NSArray *transfers = [transferController arrangedObjects ];
+		Transfer *transfer = [transfers objectAtIndex:rowIndex ];
+		
+		AmountCell *cell = (AmountCell*)aCell;
+		cell.amount = transfer.value;
+		cell.currency = transfer.currency;
+	}
+}	
 
 -(void)dealloc
 {

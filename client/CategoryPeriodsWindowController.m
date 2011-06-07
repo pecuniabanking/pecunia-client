@@ -11,6 +11,9 @@
 #import "MCEMOutlineViewLayout.h"
 #import "CategoryReportingNode.h"
 #import "MOAssistant.h"
+#import "AmountCell.h"
+#import "StatCatAssignment.h"
+#import "BankStatement.h"
 
 @implementation CategoryPeriodsWindowController
 
@@ -255,13 +258,17 @@
 		}				
 		
 		NSTableColumn *column = [[NSTableColumn alloc ] initWithIdentifier:identifier ];
+		AmountCell *cell = [[AmountCell alloc ]  initTextCell:@"" ];
+		[cell setAlignment:NSRightTextAlignment ];
+
 		[[column headerCell ] setStringValue:title ];
-		[[column dataCell ] setFormatter:self.formatter ];
-		[[column dataCell ] setAlignment:NSRightTextAlignment ];
+		[column setDataCell: cell ];
+//		[[column dataCell ] setFormatter:self.formatter ];
+//		[[column dataCell ] setAlignment:NSRightTextAlignment ];
 		[column setEditable:NO ];
 		[categoryView addTableColumn:column ];
-		NSString *keyPath = [@"arrangedObjects.periodValues." stringByAppendingString:identifier ];
-		[column bind:@"value" toObject:categoryController withKeyPath:keyPath options: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO ], NSCreatesSortDescriptorBindingOption, nil ] ];
+//		NSString *keyPath = [@"arrangedObjects.periodValues." stringByAppendingString:identifier ];
+//		[column bind:@"value" toObject:categoryController withKeyPath:keyPath options: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO ], NSCreatesSortDescriptorBindingOption, nil ] ];
 	}
 }
 
@@ -378,19 +385,23 @@
 	[self updateData ];
 }
 		 
-- (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
+- (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(AmountCell*)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
-	if(![[tableColumn identifier ] isEqualToString: @"category" ]) return;
+	NSString *identifier = [tableColumn identifier ]; 
 	CategoryReportingNode *node = (CategoryReportingNode*)[item representedObject ];
-		
-	if([outlineView parentForItem:item ] == nil) {
-		NSColor *txtColor;
-		if([cell isHighlighted ]) txtColor = [NSColor whiteColor]; 
-		else txtColor = [NSColor colorWithCalibratedHue: 0.6194 saturation: 0.32 brightness:0.56 alpha:1.0 ];
-		NSFont *txtFont = [NSFont fontWithName: @"Arial Rounded MT Bold" size: 13];
-		NSDictionary *txtDict = [NSDictionary dictionaryWithObjectsAndKeys: txtFont,NSFontAttributeName,txtColor, NSForegroundColorAttributeName, nil];
-		NSAttributedString *attrStr = [[[NSAttributedString alloc] initWithString: [node name ] attributes:txtDict] autorelease];
-		[cell setAttributedStringValue:attrStr];
+	if(![identifier isEqualToString: @"category" ]) {
+		cell.amount = [node.periodValues objectForKey:identifier ];
+		cell.currency = @"EUR";
+	} else {
+		if([outlineView parentForItem:item ] == nil) {
+			NSColor *txtColor;
+			if([cell isHighlighted ]) txtColor = [NSColor whiteColor]; 
+			else txtColor = [NSColor colorWithCalibratedHue: 0.6194 saturation: 0.32 brightness:0.56 alpha:1.0 ];
+			NSFont *txtFont = [NSFont fontWithName: @"Arial Rounded MT Bold" size: 13];
+			NSDictionary *txtDict = [NSDictionary dictionaryWithObjectsAndKeys: txtFont,NSFontAttributeName,txtColor, NSForegroundColorAttributeName, nil];
+			NSAttributedString *attrStr = [[[NSAttributedString alloc] initWithString: [node name ] attributes:txtDict] autorelease];
+			[cell setAttributedStringValue:attrStr];
+		}
 	}
 }
 
@@ -476,6 +487,17 @@
 	[statementsController prepareContent ];	
 }
 
+- (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
+{
+	if ([[aTableColumn identifier ] isEqualToString: @"value" ]) {
+		NSArray *statements = [statementsController arrangedObjects ];
+		StatCatAssignment *stat = [statements objectAtIndex:rowIndex ];
+		
+		AmountCell *cell = (AmountCell*)aCell;
+		cell.amount = stat.value;
+		cell.currency = stat.statement.currency;
+	}
+}
 
 -(void)doubleClicked:(id)sender
 {

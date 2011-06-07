@@ -10,7 +10,10 @@
 
 
 @interface MCEMSplitView : NSSplitView {
-
+	BOOL fixLeftSubview;
+	BOOL initDone;
 }
+
+-(void)setFixLeftSubview:(BOOL)fix;
 
 @end

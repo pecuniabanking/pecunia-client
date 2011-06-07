@@ -249,6 +249,7 @@
 		lastTransferDate = [ShortDate dateWithDate: [NSDate distantPast ] ];	
 	}
 
+	result.oldBalance = self.balance;
 	if(result.balance) self.balance = result.balance;
 	if(result.statements == nil) return 0;
 	

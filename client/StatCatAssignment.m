@@ -124,7 +124,7 @@
     [self setPrimitiveCategory:value];
     [self didChangeValueForKey:@"category"];
 	[value invalidateBalance ];
-	[Category updateCatValues ];
+//	[Category updateCatValues ];
 }
 
 -(NSString*)userInfo

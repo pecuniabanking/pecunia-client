@@ -13,6 +13,8 @@
 #import "ShortDate.h"
 #import "TimeSliceManager.h"
 #import "MOAssistant.h"
+#import "ImageAndTextCell.h"
+#import "BankAccount.h"
 
 double sign(double x)
 {
@@ -43,6 +45,12 @@ double sign(double x)
 	points = [[NSMutableArray alloc ] init ];
 	if([accountsController fetchWithRequest:nil merge:NO error:&error]); // [accountsView restoreAll ];
 	[graphView setDrawsGrid: YES ];
+	
+	// sort descriptor for accounts view
+	NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+	NSArray	*sds = [NSArray arrayWithObject:sd];
+	[accountsController setSortDescriptors: sds ];
+	
 	
 	[self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
 }	
@@ -127,7 +135,7 @@ double sign(double x)
 	[self drawGraph ];
 	[self updateValues ];
 }
-
+/*
 - (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
 	Category *cat = [item representedObject ];
@@ -151,6 +159,36 @@ double sign(double x)
 			else [(NSTextFieldCell*)cell setTextColor: [NSColor redColor ] ];
 		} 
 	}
+}
+*/
+
+
+- (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(ImageAndTextCell*)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+	Category *cat = [item representedObject ];
+	if(cat == nil) return;
+	
+//	NSImage *catImage		= [NSImage imageNamed:@"catdef4_18.png"];
+	NSImage *moneyImage		= [NSImage imageNamed:@"money_18.png"];
+	NSImage *moneySyncImage	= [NSImage imageNamed:@"money_sync_18.png"];
+	NSImage *folderImage	= [NSImage imageNamed:@"folder_18.png"];
+		
+	if([cat isBankAccount] && cat.accountNumber == nil) 	[cell setImage: folderImage];
+	if([cat isBankAccount] && cat.accountNumber != nil) {
+		BankAccount *account = (BankAccount*)cat;
+		if([account.isManual boolValue ] == YES || [account.noAutomaticQuery boolValue ] == YES) [cell setImage: moneyImage];
+		else [cell setImage: moneySyncImage];
+	}
+	
+	BOOL itemIsSelected = FALSE;
+	if ([outlineView itemAtRow:[outlineView selectedRow]] == item)	 itemIsSelected = TRUE;
+	
+	BOOL itemIsRoot = [cat isRoot];
+	if (itemIsRoot == TRUE) {
+		[cell setImage:Nil];
+	}
+	
+	[cell setValues:[cat catSum] currency:cat.currency unread:0 selected:itemIsSelected root:itemIsRoot ];
 }
 
 

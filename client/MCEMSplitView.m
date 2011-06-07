@@ -13,19 +13,35 @@
 
 -(void)resizeSubviewsWithOldSize:(NSSize)oldSize
 {
+	NSRect oldLeftFrame = [[[self subviews] objectAtIndex:0] frame];
+	NSRect oldRightFrame = [[[self subviews] objectAtIndex:1] frame];
+	
+	if (initDone == NO) {
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+		NSArray *items = [defaults objectForKey:[NSString stringWithFormat:@"NSSplitView Subview Frames %@", [self autosaveName ] ] ];
+		if (items) {
+			oldLeftFrame = NSRectFromString([items objectAtIndex:0 ]);
+			oldRightFrame = NSRectFromString([items objectAtIndex:1 ]);
+		}
+		initDone = YES;
+	} 
+	
 	CGFloat dividerThickness = [self dividerThickness];
-	NSRect leftRect = [[[self subviews] objectAtIndex:0] frame];
-	NSRect rightRect = [[[self subviews] objectAtIndex:1] frame];
 	NSRect newFrame = [self frame];
 	
-	leftRect.size.height = newFrame.size.height;
-	leftRect.origin = NSMakePoint(0, 0);
-	rightRect.size.width = newFrame.size.width - leftRect.size.width - dividerThickness;
-	rightRect.size.height = newFrame.size.height;
-	rightRect.origin.x = leftRect.size.width + dividerThickness;
+	oldLeftFrame.size.height = newFrame.size.height;
+	oldLeftFrame.origin = NSMakePoint(0, 0);
+	oldRightFrame.size.width = newFrame.size.width - oldLeftFrame.size.width - dividerThickness;
+	oldRightFrame.size.height = newFrame.size.height;
+	oldRightFrame.origin.x = oldLeftFrame.size.width + dividerThickness;
 	
-	[[[self subviews] objectAtIndex:0] setFrame:leftRect];
-	[[[self subviews] objectAtIndex:1] setFrame:rightRect];
+	[[[self subviews] objectAtIndex:0] setFrame:oldLeftFrame];
+	[[[self subviews] objectAtIndex:1] setFrame:oldRightFrame];
+}
+
+-(void)setFixLeftSubview:(BOOL)fix
+{
+	fixLeftSubview = fix;
 }
 
 

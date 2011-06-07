@@ -177,6 +177,7 @@
 -(IBAction)next: (id)sender 
 {
 	[statementController commitEditing ];
+	if (valueChanged) [self updateSaldo ];
 	if ([self check ] == NO) return;
 	[self saveStatement ];
 	currentStatement = [NSEntityDescription insertNewObjectForEntityForName:@"BankStatement" inManagedObjectContext:memContext ];
@@ -193,10 +194,48 @@
 -(IBAction)done: (id)sender
 {
 	[statementController commitEditing ];
+	if (valueChanged) [self updateSaldo ];
 	if ([self check ] == NO) return;
 	[self saveStatement ];
 	actionResult = 1;
 	[self close ];
+}
+
+-(void)updateSaldo
+{
+	NSDecimalNumber *realValue;
+	if (negateValue == YES) realValue = [[NSDecimalNumber zero ] decimalNumberBySubtracting:currentStatement.value ];
+	else realValue = currentStatement.value;
+	
+	// amount field
+	if (lastStatement == nil || [[ShortDate dateWithDate:currentStatement.date ] compare: [ShortDate dateWithDate:lastStatement.date ] ] != NSOrderedAscending) {
+		if (lastStatement == nil) {
+			if(currentStatement.value) currentStatement.saldo = [account.balance decimalNumberByAdding:realValue ]; 
+		} else {
+			if(currentStatement.value) currentStatement.saldo = [lastStatement.saldo decimalNumberByAdding:realValue ];
+		}
+	} else {
+		// find first statement that is later than current one.
+		BankStatement *foundStatement = nil;
+		for(BankStatement *stat in accountStatements) {
+			if ([[ShortDate dateWithDate:currentStatement.date ] compare: [ShortDate dateWithDate:stat.date ] ] == NSOrderedAscending) {
+				foundStatement = stat;
+			} else break;
+		}
+		if (foundStatement && currentStatement.value != nil) {
+			currentStatement.saldo = [[foundStatement.saldo decimalNumberBySubtracting: foundStatement.value ] decimalNumberByAdding:realValue ];
+		}
+	}
+	valueChanged = NO;
+}
+
+-(void)controlTextDidBeginEditing:(NSNotification *)aNotification
+{
+	NSControl	*te = [aNotification object ];
+	
+	if([te tag ] == 200) {
+		valueChanged = YES;
+	}		
 }
 
 -(void)controlTextDidEndEditing:(NSNotification *)aNotification
@@ -208,29 +247,7 @@
 		if(name) [self setValue: name forKey: @"bankName" ];
 	}
 	if([te tag ] == 200) {
-		NSDecimalNumber *realValue;
-		if (negateValue == YES) realValue = [[NSDecimalNumber zero ] decimalNumberBySubtracting:currentStatement.value ];
-		else realValue = currentStatement.value;
-		
-		// amount field
-		if (lastStatement == nil || [[ShortDate dateWithDate:currentStatement.date ] compare: [ShortDate dateWithDate:lastStatement.date ] ] != NSOrderedAscending) {
-			if (lastStatement == nil) {
-				if(currentStatement.value) currentStatement.saldo = [account.balance decimalNumberByAdding:realValue ]; 
-			} else {
-				if(currentStatement.value) currentStatement.saldo = [lastStatement.saldo decimalNumberByAdding:realValue ];
-			}
-		} else {
-			// find first statement that is later than current one.
-			BankStatement *foundStatement = nil;
-			for(BankStatement *stat in accountStatements) {
-				if ([[ShortDate dateWithDate:currentStatement.date ] compare: [ShortDate dateWithDate:stat.date ] ] == NSOrderedAscending) {
-					foundStatement = stat;
-				} else break;
-			}
-			if (foundStatement && currentStatement.value != nil) {
-				currentStatement.saldo = [[foundStatement.saldo decimalNumberBySubtracting: foundStatement.value ] decimalNumberByAdding:realValue ];
-			}
-		}
+		[self updateSaldo ];
 	}
 }
 

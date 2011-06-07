@@ -146,7 +146,7 @@
 	self.currency	= aCurrency;
 	self.amount		= aAmount;
 	countUnread		= unread;
-	isSelected		= selected;
+//	isSelected		= selected;
 	isRoot			= root;
 	
 	return;
@@ -229,7 +229,7 @@
 	if([amount compare: [NSDecimalNumber zero] ] != NSOrderedAscending) textColor = [NSColor colorWithDeviceRed: 0.09 green: 0.7 blue: 0 alpha: 100];
 	else textColor  = [NSColor redColor];
 	
-	if (isSelected) textColor  = [NSColor whiteColor];
+	if ([self isHighlighted ]) textColor  = [NSColor whiteColor];
 	
 	
 	NSDictionary *attributes;
@@ -262,7 +262,7 @@
 	// Beschreibung 
 	if (isRoot) {
 		NSColor *textColor;
-		if(isSelected) textColor = [NSColor whiteColor]; 
+		if([self isHighlighted ]) textColor = [NSColor whiteColor]; 
 		else textColor = [NSColor colorWithCalibratedRed:(97/255.0) green:(111/255.0) blue:(126/255.0) alpha:1];
 		
 		NSFont *textFont = [NSFont fontWithName: @"Lucida Grande Bold" size: 12];
@@ -313,7 +313,7 @@
 	NSColor *backgroundColor;
 	NSColor *textColor;
 	
-	if(isSelected)
+	if([self isHighlighted ])
 	{
 		backgroundColor = [NSColor whiteColor];
 		textColor       = BADGE_SELECTED_TEXT_COLOR;
@@ -348,7 +348,7 @@
 	maxUnread = n;
 	if (n > 0) {
 		NSSize badgeSize = [self sizeOfBadge:n ];
-		badgeWidth = badgeSize.width;
+		badgeWidth = badgeSize.width + ROW_RIGHT_MARGIN;
 	} else badgeWidth = 0;
 }
 

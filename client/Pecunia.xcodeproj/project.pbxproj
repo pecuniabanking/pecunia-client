@@ -70,6 +70,9 @@
 		B138AC4D1391952F0026BEE2 /* folder_18.png in Resources */ = {isa = PBXBuildFile; fileRef = B138AC4C1391952F0026BEE2 /* folder_18.png */; };
 		B138AE75139582E00026BEE2 /* MCEMTransparentTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B138AE74139582E00026BEE2 /* MCEMTransparentTableView.m */; };
 		B138AE9F1396DD820026BEE2 /* MCEMSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = B138AE9E1396DD820026BEE2 /* MCEMSplitView.m */; };
+		B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B259139D52690026BEE2 /* DateAndValutaCell.m */; };
+		B138B316139D6B390026BEE2 /* AmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B315139D6B390026BEE2 /* AmountCell.m */; };
+		B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B3DE139EBC0E0026BEE2 /* DockIconController.m */; };
 		B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
 		B14587A21289DCB700848683 /* CategoryPeriods.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14587A11289DCB700848683 /* CategoryPeriods.xib */; };
 		B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
@@ -306,6 +309,12 @@
 		B138AE74139582E00026BEE2 /* MCEMTransparentTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMTransparentTableView.m; sourceTree = "<group>"; };
 		B138AE9D1396DD820026BEE2 /* MCEMSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCEMSplitView.h; sourceTree = "<group>"; };
 		B138AE9E1396DD820026BEE2 /* MCEMSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMSplitView.m; sourceTree = "<group>"; };
+		B138B258139D52690026BEE2 /* DateAndValutaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateAndValutaCell.h; sourceTree = "<group>"; };
+		B138B259139D52690026BEE2 /* DateAndValutaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateAndValutaCell.m; sourceTree = "<group>"; };
+		B138B314139D6B390026BEE2 /* AmountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmountCell.h; sourceTree = "<group>"; };
+		B138B315139D6B390026BEE2 /* AmountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AmountCell.m; sourceTree = "<group>"; };
+		B138B3DE139EBC0E0026BEE2 /* DockIconController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DockIconController.m; sourceTree = "<group>"; };
+		B138B3E0139EBC230026BEE2 /* DockIconController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DockIconController.h; sourceTree = "<group>"; };
 		B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPeriodsWindowController.h; sourceTree = "<group>"; };
 		B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPeriodsWindowController.m; sourceTree = "<group>"; };
 		B14587A11289DCB700848683 /* CategoryPeriods.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryPeriods.xib; sourceTree = "<group>"; };
@@ -774,6 +783,8 @@
 				B1C7B18B130B11280091CD72 /* Tabs */,
 				B1C90E140ABB39D5006F18C9 /* BankingController.h */,
 				B1C90E150ABB39D5006F18C9 /* BankingController.m */,
+				B138B3E0139EBC230026BEE2 /* DockIconController.h */,
+				B138B3DE139EBC0E0026BEE2 /* DockIconController.m */,
 			);
 			name = MainWindow;
 			sourceTree = "<group>";
@@ -874,6 +885,10 @@
 			children = (
 				B138AC3A13918EB50026BEE2 /* ImageAndTextCell.h */,
 				B138AC3B13918EB50026BEE2 /* ImageAndTextCell.m */,
+				B138B258139D52690026BEE2 /* DateAndValutaCell.h */,
+				B138B259139D52690026BEE2 /* DateAndValutaCell.m */,
+				B138B314139D6B390026BEE2 /* AmountCell.h */,
+				B138B315139D6B390026BEE2 /* AmountCell.m */,
 				B1D6C9EC0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.h */,
 				B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */,
 				B132F8CF0F93DC0D00263F3B /* MCEMTreeController.h */,
@@ -1267,6 +1282,9 @@
 				B138AC3C13918EB50026BEE2 /* ImageAndTextCell.m in Sources */,
 				B138AE75139582E00026BEE2 /* MCEMTransparentTableView.m in Sources */,
 				B138AE9F1396DD820026BEE2 /* MCEMSplitView.m in Sources */,
+				B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */,
+				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
+				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

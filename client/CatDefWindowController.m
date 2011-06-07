@@ -17,7 +17,8 @@
 #import "TimeSliceManager.h"
 #import "ShortDate.h"
 #import "StatCatAssignment.h"
-
+#import "ImageAndTextCell.h"
+#import "AmountCell.h"
 
 #define BankStatementDataType	@"BankStatementDataType"
 #define CategoryDataType		@"CategoryDataType"
@@ -123,6 +124,7 @@
 	
 	[cat invalidateBalance ];
 	[Category updateCatValues ];
+	[catView setNeedsDisplay: YES ];
 	
 	// save updates
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
@@ -149,6 +151,7 @@
 
 	[cat invalidateBalance ];
 	[Category updateCatValues ];
+	[catView setNeedsDisplay: YES ];
 
 	// save updates
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
@@ -310,6 +313,7 @@
 	}
 	[catDefController remove: cat ];
 	[Category updateCatValues ]; 
+	[catView setNeedsDisplay: YES ];
 }
 
 -(void)calculateCatAssignPredicate
@@ -580,6 +584,7 @@
 
 		[cat invalidateBalance ];
 		[Category updateCatValues ];
+		[catView setNeedsDisplay: YES ];
 	} else {
 		NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data ];
 		NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
@@ -598,30 +603,36 @@
 	return YES;
 }
 
-- (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
+- (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(ImageAndTextCell*)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
 	Category *cat = [item representedObject ];
 	if(cat == nil) return;
-	if([[tableColumn identifier ] isEqualToString: @"category" ]) {
-		if([cat isRoot ]) {
-			NSColor *txtColor;
-			if([cell isHighlighted ]) txtColor = [NSColor whiteColor]; 
-			else txtColor = [NSColor colorWithCalibratedHue: 0.6194 saturation: 0.32 brightness:0.56 alpha:1.0 ];
-			NSFont *txtFont = [NSFont fontWithName: @"Arial Rounded MT Bold" size: 13];
-			NSDictionary *txtDict = [NSDictionary dictionaryWithObjectsAndKeys: txtFont,NSFontAttributeName,txtColor, NSForegroundColorAttributeName, nil];
-			NSAttributedString *attrStr = [[[NSAttributedString alloc] initWithString: [cat localName ] attributes:txtDict] autorelease];
-			[cell setAttributedStringValue:attrStr];
-		}
-	}
-	if([[tableColumn identifier ] isEqualToString: @"balance" ]) {
-		if([cell isHighlighted ]){
-			[(NSTextFieldCell*)cell setTextColor: [NSColor whiteColor ] ];
-		} else {
-			if([[cat catSum ] doubleValue ] >= 0) [(NSTextFieldCell*)cell setTextColor: [NSColor colorWithDeviceRed: 0.09 green: 0.7 blue: 0 alpha: 100]];
-			else [(NSTextFieldCell*)cell setTextColor: [NSColor redColor ] ];
-		} 
-	}
+
+/*	
+	NSImage *catImage		= [NSImage imageNamed:@"catdef4_18.png"];
+	NSImage *moneyImage		= [NSImage imageNamed:@"money_18.png"];
+	NSImage *moneySyncImage	= [NSImage imageNamed:@"money_sync_18.png"];
+	NSImage *folderImage	= [NSImage imageNamed:@"folder_18.png"];
+*/	
+	[cell setImage: nil];
+	
+	BOOL itemIsSelected = FALSE;
+	if ([outlineView itemAtRow:[outlineView selectedRow]] == item)	 itemIsSelected = TRUE;
+	
+	[cell setValues:[cat catSum] currency:cat.currency unread:0 selected:itemIsSelected root:[cat isRoot] ];
 }
+
+- (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
+{
+	if ([[aTableColumn identifier ] isEqualToString: @"value" ]) {
+		NSArray *statements = [assignPreviewController arrangedObjects ];
+		StatCatAssignment *stat = [statements objectAtIndex:rowIndex ];
+		
+		AmountCell *cell = (AmountCell*)aCell;
+		cell.amount = stat.value;
+		cell.currency = stat.statement.currency;
+	}
+}	
 
 
 - (CGFloat)splitView:(NSSplitView *)sender constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)offset

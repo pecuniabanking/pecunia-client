@@ -15,6 +15,7 @@
 @synthesize bankCode;
 @synthesize currency;
 @synthesize balance;
+@synthesize oldBalance;
 @synthesize statements;
 @synthesize account;
 @synthesize userId;
@@ -29,6 +30,7 @@
 	[userId release ];
 	[currency release ];
 	[balance release ];
+	[oldBalance release ];
 	[statements release ];
 	[standingOrders release ];
 	

@@ -46,6 +46,9 @@
 #import "MainTabViewItem.h"
 #import "GenericImportController.h"
 #import "ImageAndTextCell.h"
+#import "DateAndValutaCell.h"
+#import "AmountCell.h"
+#import "DockIconController.h"
 
 #define _expandedRows @"EMT_expandedRows"
 #define _accountsViewSD @"EMT_accountsSorting"
@@ -64,6 +67,7 @@ static BankingController	*con;
 
 @synthesize saveValue;
 @synthesize managedObjectContext;
+@synthesize dockIconController;
 
 -(id)init
 {
@@ -107,7 +111,7 @@ static BankingController	*con;
 -(void)awakeFromNib
 {
 	NSTableColumn	*tc;
-	
+/*	
 	// green color for transactions view
 	tc = [transactionsView tableColumnWithIdentifier: @"value" ];
 	if(tc) {
@@ -119,7 +123,7 @@ static BankingController	*con;
 			[form setTextAttributesForPositiveValues: newAttrs ];
 		}
 	}
-	// green color for transactions view
+	// green color for transactions view	
 	tc = [transactionsView tableColumnWithIdentifier: @"nassValue" ];
 	if(tc) {
 		NSCell	*cell = [tc dataCell ];
@@ -160,7 +164,7 @@ static BankingController	*con;
 			[form setTextAttributesForPositiveValues: newAttrs ];
 		}
 	}
-	
+*/	
 	tc = [accountsView tableColumnWithIdentifier: @"name" ];
 	if(tc) {
 		ImageAndTextCell *cell = (ImageAndTextCell*)[tc dataCell ];
@@ -203,6 +207,8 @@ static BankingController	*con;
 	[mainWindow setContentMinSize:NSMakeSize(800, 450) ];
 	splitCursor = [[NSCursor alloc ] initWithImage:[NSImage imageNamed: @"cursor.png" ] hotSpot:NSMakePoint(0, 0)];
 	[WorkerThread init ];
+	
+	[self migrate ];
 }
 
 -(void)publishContext
@@ -223,16 +229,6 @@ static BankingController	*con;
 	}
 	
 	[self updateBalances ];
-/*	
-	// reset BankStatement isNew
-	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:self.managedObjectContext];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
-	[request setEntity:entityDescription];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1", self ];
-	[request setPredicate:predicate];
-	NSArray *statements = [self.managedObjectContext executeFetchRequest:request error:&error];
-	for(BankStatement *stat in statements) stat.isNew = [NSNumber numberWithBool:NO ];
-*/	
 	
 	// update unread information
 	[self updateUnread ];
@@ -243,6 +239,7 @@ static BankingController	*con;
 	[transferWindowController setManagedObjectContext:self.managedObjectContext ];
 	[timeSlicer updateDelegate ];
 	[self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
+	[dockIconController initWithManagedObjectContext:self.managedObjectContext];
 }
 
 -(void)updateBankAccounts:(NSArray*)hbciAccounts
@@ -388,6 +385,8 @@ static BankingController	*con;
 	}
 //	[categoryController remove: self ];
 	[[Category bankRoot ] rollup ];
+
+	[accountsView setNeedsDisplay: YES ];
 }
 
 -(BOOL)cleanupBankNodes
@@ -720,12 +719,14 @@ static BankingController	*con;
 		for(result in resultList) {
 			count += [result.account updateFromQueryResult: result ];
 		}
+		if (autoSyncRunning == YES) [self checkBalances:resultList ];
 		[self requestFinished: resultList ];
 		
 		// status message
 		[sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP80", @""), count ] removeAfter:120  ];
 	}
 	[resultList autorelease ];
+	autoSyncRunning = NO;
 }
 
 
@@ -758,6 +759,37 @@ static BankingController	*con;
 			[cell setMaxUnread:maxUnread ];
 		}
 		
+		// redraw accounts view
+		[accountsView setNeedsDisplay:YES ];
+	}
+}
+
+-(void)checkBalances:(NSArray*)resultList
+{
+	NSNumber *threshold;
+	BOOL alert = NO;
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	BOOL accWarning = [defaults boolForKey:@"accWarning" ];
+	if (accWarning == NO) return;
+	
+	threshold = [defaults objectForKey:@"accWarningThreshold" ];
+	if (threshold == nil) {
+		threshold = [NSDecimalNumber zero ];
+	}
+	
+	// check if account balances change below threshold
+	for(BankQueryResult *result in resultList) {
+		if ([result.oldBalance compare:threshold] == NSOrderedDescending && [result.balance compare:threshold ] == NSOrderedAscending) {
+			alert = YES;
+		}
+	}
+	if (alert == YES) {
+		NSRunAlertPanel(NSLocalizedString(@"AP119", @""), 
+						NSLocalizedString(@"AP120", @""), 
+						NSLocalizedString(@"ok", @"Ok"),
+						nil, nil
+						);
 	}
 }
 
@@ -1394,6 +1426,41 @@ static BankingController	*con;
     return YES;
 }
 
+- (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
+{
+	if ([[aTableColumn identifier ] isEqualToString: @"date" ]) {
+		NSArray *statements = [transactionController arrangedObjects ];
+		StatCatAssignment *stat = [statements objectAtIndex:rowIndex ];
+
+		DateAndValutaCell *cell = (DateAndValutaCell*)aCell;
+		cell.valuta = stat.statement.valutaDate;
+	}
+	if ([[aTableColumn identifier ] isEqualToString: @"value" ]) {
+		NSArray *statements = [transactionController arrangedObjects ];
+		StatCatAssignment *stat = [statements objectAtIndex:rowIndex ];
+		
+		AmountCell *cell = (AmountCell*)aCell;
+		cell.amount = stat.value;
+		cell.currency = stat.statement.currency;
+	}
+	if ([[aTableColumn identifier ] isEqualToString: @"saldo" ]) {
+		NSArray *statements = [transactionController arrangedObjects ];
+		StatCatAssignment *stat = [statements objectAtIndex:rowIndex ];
+		
+		AmountCell *cell = (AmountCell*)aCell;
+		cell.amount = stat.statement.saldo;
+		cell.currency = stat.statement.currency;
+	}
+	if ([[aTableColumn identifier ] isEqualToString: @"nassValue" ]) {
+		NSArray *statements = [transactionController arrangedObjects ];
+		StatCatAssignment *stat = [statements objectAtIndex:rowIndex ];
+		
+		AmountCell *cell = (AmountCell*)aCell;
+		cell.amount = stat.statement.nassValue;
+		cell.currency = stat.statement.currency;
+	}
+}
+
 - (BOOL)outlineView:(NSOutlineView*)ov writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard 
 {
 	Category		*cat;
@@ -1508,6 +1575,8 @@ static BankingController	*con;
 		[scat setValue: cat forKey: @"parent" ];
 		[[Category catRoot ] rollup ];
 	}
+	[accountsView setNeedsDisplay: YES ];
+
 	// save updates
 	if([self.managedObjectContext save: &error ] == NO) {
 		NSAlert *alert = [NSAlert alertWithError:error];
@@ -1656,7 +1725,8 @@ static BankingController	*con;
 		[stat remove ];
 	}
 	[categoryController remove: cat ];
-	[Category updateCatValues ]; 
+	[Category updateCatValues ];
+	[accountsView setNeedsDisplay: YES ];
 }
 
 -(IBAction)addCategory: (id)sender
@@ -1771,6 +1841,7 @@ static BankingController	*con;
 			if(cat !=  nil) {
 				[cat invalidateBalance ];
 				[Category updateCatValues ];
+				[accountsView setNeedsDisplay: YES ];
 			}
 		}
 		[transactionController setSelectedObjects:sel ];
@@ -1892,7 +1963,7 @@ static BankingController	*con;
 	if (idx == 0) {
 		NSArray *sel = [transactionController selectedObjects ];
 		if (sel != nil && [sel count ] == 1) {
-			StatSplitController *splitController = [[StatSplitController alloc ] initWithStatement:[[sel objectAtIndex:0 ] statement ]];
+			StatSplitController *splitController = [[StatSplitController alloc ] initWithStatement:[[sel objectAtIndex:0 ] statement ] view:accountsView ];
 			[splitController showWindow:mainWindow ];
 		}
 	}
@@ -1965,13 +2036,14 @@ static BankingController	*con;
 	[sc setMessage: NSLocalizedString(@"AP41", @"Load statements...") removeAfter:0 ];
 	
 	// get statements in separate thread
+	autoSyncRunning = YES;
 	[[HBCIClient hbciClient ] getStatements: resultList ];
 	
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
 	[defaults setObject: [NSDate date ] forKey: @"lastSyncDate" ];
 	
 	// if autosync, setup next timer event
-	BOOL autoSync = [defaults boolForKey: @"autSync" ];
+	BOOL autoSync = [defaults boolForKey: @"autoSync" ];
 	if(autoSync) {
 		NSDate *syncTime = [defaults objectForKey:@"autoSyncTime" ];
 		if(syncTime == nil) {
@@ -2177,6 +2249,19 @@ static BankingController	*con;
 	if (idx > 2) {
 		id <MainTabViewItem> item = [mainTabItems objectForKey:[[mainTabView selectedTabViewItem ] identifier ]];
 		[item print ];
+	}
+}
+
+-(void)migrate
+{
+	// in Migration from 0.2 to 0.3, add additional toolbar items
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	BOOL migrated03 = [defaults boolForKey:@"Migrated03" ];
+	if (migrated03 == NO) {
+		[toolbar insertItemWithItemIdentifier:@"catHistory" atIndex:5 ];
+		[toolbar insertItemWithItemIdentifier:@"catPeriods" atIndex:6 ];
+		[toolbar insertItemWithItemIdentifier:@"standingOrders" atIndex:7 ];
+		[defaults setBool:YES forKey:@"Migrated03" ];
 	}
 }
 

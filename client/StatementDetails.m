@@ -13,12 +13,6 @@
 
 -(void)drawRect: (NSRect)rect
 {
-	[[NSColor colorWithDeviceHue: 0.589 saturation: 0.068 brightness: 0.9 alpha: 1.0] setFill ];
-	[[NSColor colorWithDeviceRed: 0.745 green: 0.745 blue: 0.745 alpha: 1.0 ] setStroke ];
-	[NSBezierPath setDefaultLineWidth:2.0];
-//	NSRectFill([self bounds ]);
-	[NSBezierPath strokeRect: [self bounds ] ];
-	
 	NSBezierPath*    path = [NSBezierPath bezierPath];
 	[path appendBezierPathWithRect:[self bounds ] ];
 
@@ -28,6 +22,9 @@
 	
 	[aGradient drawInBezierPath:path angle:90.0];
 	
+	[[NSColor colorWithDeviceRed: 0.745 green: 0.745 blue: 0.745 alpha: 1.0 ] setStroke ];
+	[NSBezierPath setDefaultLineWidth:2.0];
+	[NSBezierPath strokeRect: [self bounds ] ];
 }
 
 @end

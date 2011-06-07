@@ -144,3 +144,5 @@
 "AP116" = "Bei mindestens einem Dauerauftrag wurde die Auftrags-ID nicht übermittelt. Möchten Sie die Daueraufträge mit der Bank abgleichen?";
 "AP117" = "Dauerauftrag löschen";
 "AP118" = "Der Dauerauftrag wird nur aus der Liste, nicht bei der Bank gelöscht! Um den Dauerauftrag bei der Bank zu löschen setzen Sie das Löschkennzeichen und drücken Sie auf 'Änderungen senden'. Möchten Sie den Eintrag wirklich löschen?";
+"AP119" = "Kontowarnung";
+"AP120" = "Eines Ihrer Konten hat zu wenig Guthaben bzw. ist ins Minus gekommen!";

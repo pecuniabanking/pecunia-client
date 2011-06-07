@@ -14,6 +14,7 @@
 #import "TransactionLimits.h"
 #import "BankQueryResult.h"
 #import "MCEMTableView.h"
+#import "AmountCell.h"
 
 @implementation StandingOrderTabController
 
@@ -468,6 +469,17 @@
 	return nil;
 }
 
+- (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
+{
+	if ([[aTableColumn identifier ] isEqualToString: @"value" ]) {
+		NSArray *orders = [orderController arrangedObjects ];
+		StandingOrder *order = [orders objectAtIndex:rowIndex ];
+		
+		AmountCell *cell = (AmountCell*)aCell;
+		cell.amount = order.value;
+		cell.currency = order.currency;
+	}
+}
 
 -(NSView*)mainView
 {

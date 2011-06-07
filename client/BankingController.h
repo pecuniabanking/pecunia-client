@@ -26,6 +26,7 @@
 @class MCEMTableView;
 @class CategoryView;
 @class TransferListController;
+@class DockIconController;
 
 @interface BankingController : NSObject
 {
@@ -63,15 +64,18 @@
 	AccountSettingsController   *accountSettingsController;
 	LogController				*logController;
 	TransactionController		*transferWindowController;
+	DockIconController			*dockIconController;
 	BOOL						restart;
 	BOOL						requestRunning;
 	BOOL						statementsBound;
+	BOOL						autoSyncRunning;
 	NSDecimalNumber				*saveValue;
 	NSCursor					*splitCursor;
 }
 
 @property(nonatomic, copy) NSDecimalNumber *saveValue;
 @property(nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property(nonatomic, retain) DockIconController *dockIconController;
 
 -(IBAction)listUsers:(id)sender;
 -(IBAction)showInput:(id)sender;
@@ -142,6 +146,8 @@
 -(void)publishContext;
 -(void)updateUnread;
 -(BOOL)checkForUnsentTransfers;
+-(void)migrate;
+-(void)checkBalances:(NSArray*)resultList;
 
 +(BankingController*)controller;
 @end
