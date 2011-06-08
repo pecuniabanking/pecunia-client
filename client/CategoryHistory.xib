@@ -21,7 +21,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="5"/>
+			<integer value="4"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -492,7 +492,7 @@
 									<object class="SM2DGraphView" id="233065302">
 										<reference key="NSNextResponder" ref="755299869"/>
 										<int key="NSvFlags">274</int>
-										<string key="NSFrame">{{2, 0}, {753, 554}}</string>
+										<string key="NSFrame">{{2, 0}, {733, 554}}</string>
 										<reference key="NSSuperview" ref="755299869"/>
 										<object class="NSColor" key="$0">
 											<int key="NSColorSpace">3</int>

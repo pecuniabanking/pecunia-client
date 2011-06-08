@@ -75,10 +75,10 @@
 	{
 		badgeValue = newBadgeValue;
 		if (newBadgeValue == 0) {
-			[[[NSApplication sharedApplication] dockTile]setBadgeLabel:@""];
+			[[[NSApplication sharedApplication] dockTile] setBadgeLabel:@""];
 		}
 		else {
-			[[[NSApplication sharedApplication] dockTile]setBadgeLabel:[NSString stringWithFormat:@"%x", badgeValue]];
+			[[[NSApplication sharedApplication] dockTile] setBadgeLabel:[NSString stringWithFormat:@"%d", badgeValue]];
 		}
 		
 		

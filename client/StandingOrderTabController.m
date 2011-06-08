@@ -39,22 +39,7 @@
 
 -(void)awakeFromNib
 {
-	NSError *error = nil;
-	
-	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:managedObjectContext];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
-	[request setEntity:entityDescription];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND isStandingOrderSupported == 1" ];
-//	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil" ];
-	[request setPredicate:predicate];
-	NSArray *selectedAccounts = [managedObjectContext executeFetchRequest:request error:&error];
-	if(error == nil) {
-		for(BankAccount *account in selectedAccounts) {
-			if ([[HBCIClient hbciClient ] isStandingOrderSupportedForAccount:account]) {
-				[accounts addObject:account ];
-			}
-		}
-	}
+	[self initAccounts ];
 	[accountsController setContent:accounts ];
 }
 
@@ -66,6 +51,25 @@
 -(void)terminate
 {
 	
+}
+
+-(void)initAccounts
+{
+	NSError *error = nil;
+	
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:managedObjectContext];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND isStandingOrderSupported == 1" ];
+	[request setPredicate:predicate];
+	NSArray *selectedAccounts = [managedObjectContext executeFetchRequest:request error:&error];
+	if(error == nil) {
+		for(BankAccount *account in selectedAccounts) {
+			if ([[HBCIClient hbciClient ] isStandingOrderSupportedForAccount:account]) {
+				[accounts addObject:account ];
+			}
+		}
+	}	
 }
 
 -(NSString*)monthDayToString:(int)day
@@ -409,6 +413,10 @@
 	NSError *error=nil;
 	BankAccount *account;
 	NSMutableArray *resultList;
+
+	if ([accounts count] == 0) {
+		[self initAccounts ];
+	}
 	
 	if ([accounts count] == 0) {
 		// no accounts for StandingOrder found...check?

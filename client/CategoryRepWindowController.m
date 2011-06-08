@@ -13,6 +13,7 @@
 #import "ShortDate.h"
 #import "TimeSliceManager.h"
 #import "MOAssistant.h"
+#import "AmountCell.h"
 
 NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
 {
@@ -148,12 +149,14 @@ NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
 					NSMutableDictionary	*pieData = [NSMutableDictionary dictionaryWithCapacity: 2 ];
 					[pieData setObject: [ccat localName ] forKey: @"name" ];
 					[pieData setObject: result forKey: @"value" ];
+					[pieData setObject: cat.currency forKey:@"currency" ];
 					[expensesCats addObject: pieData ];
 				}
 				if([result compare: zero ] == NSOrderedDescending) {
 					NSMutableDictionary	*pieData = [NSMutableDictionary dictionaryWithCapacity: 2 ];
 					[pieData setObject: [ccat localName ] forKey: @"name" ];
 					[pieData setObject: result forKey: @"value" ];
+					[pieData setObject: cat.currency forKey:@"currency" ];
 					[incomesCats addObject: pieData ];
 				}
 			} else {
@@ -162,6 +165,7 @@ NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
 					NSMutableDictionary	*pieData = [NSMutableDictionary dictionaryWithCapacity: 2 ];
 					[pieData setObject: [ccat localName ] forKey: @"name" ];
 					[pieData setObject: result forKey: @"value" ];
+					[pieData setObject: cat.currency forKey:@"currency" ];
 					[expensesCats addObject: pieData ];
 				}
 				result = [ccat valuesOfType: cat_incomes from: fromDate to: toDate ];
@@ -169,6 +173,7 @@ NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
 					NSMutableDictionary	*pieData = [NSMutableDictionary dictionaryWithCapacity: 2 ];
 					[pieData setObject: [ccat localName ] forKey: @"name" ];
 					[pieData setObject: result forKey: @"value" ];
+					[pieData setObject: cat.currency forKey:@"currency" ];
 					[incomesCats addObject: pieData ];
 				}
 			}
@@ -337,6 +342,18 @@ NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
 	if([aTableView tag ] == 1) pieData = [incomesCats objectAtIndex: row ]; else pieData = [expensesCats objectAtIndex: row ];
 	return [pieData objectForKey: [column identifier ] ];
 }
+
+- (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
+{
+	if ([[aTableColumn identifier ] isEqualToString: @"value" ]) {
+		NSDictionary	*pieData;
+		if([aTableView tag ] == 1) pieData = [incomesCats objectAtIndex: rowIndex ]; else pieData = [expensesCats objectAtIndex: rowIndex ];
+		
+		AmountCell *cell = (AmountCell*)aCell;
+		cell.amount = [pieData objectForKey:@"value" ];
+		cell.currency = [pieData objectForKey:@"currency" ];
+	}
+}	
 
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView
 {

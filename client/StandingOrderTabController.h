@@ -50,6 +50,7 @@
 @property (nonatomic, retain) StandingOrder *currentOrder;
 
 -(NSView*)mainView;
+-(void)initAccounts;
 
 -(IBAction)monthCycle:(id)sender;
 -(IBAction)weekCycle:(id)sender;

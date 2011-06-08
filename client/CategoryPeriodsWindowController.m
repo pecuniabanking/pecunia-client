@@ -258,7 +258,7 @@
 		}				
 		
 		NSTableColumn *column = [[NSTableColumn alloc ] initWithIdentifier:identifier ];
-		AmountCell *cell = [[AmountCell alloc ]  initTextCell:@"" ];
+		AmountCell *cell = [[AmountCell alloc ]  initTextCell:@"X" ];
 		[cell setAlignment:NSRightTextAlignment ];
 
 		[[column headerCell ] setStringValue:title ];
@@ -267,8 +267,8 @@
 //		[[column dataCell ] setAlignment:NSRightTextAlignment ];
 		[column setEditable:NO ];
 		[categoryView addTableColumn:column ];
-//		NSString *keyPath = [@"arrangedObjects.periodValues." stringByAppendingString:identifier ];
-//		[column bind:@"value" toObject:categoryController withKeyPath:keyPath options: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO ], NSCreatesSortDescriptorBindingOption, nil ] ];
+		NSString *keyPath = [@"arrangedObjects.periodValues." stringByAppendingString:identifier ];
+		[column bind:@"value" toObject:categoryController withKeyPath:keyPath options: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO ], NSCreatesSortDescriptorBindingOption, nil ] ];
 	}
 }
 
@@ -391,7 +391,7 @@
 	CategoryReportingNode *node = (CategoryReportingNode*)[item representedObject ];
 	if(![identifier isEqualToString: @"category" ]) {
 		cell.amount = [node.periodValues objectForKey:identifier ];
-		cell.currency = @"EUR";
+		cell.currency = node.category.currency;
 	} else {
 		if([outlineView parentForItem:item ] == nil) {
 			NSColor *txtColor;

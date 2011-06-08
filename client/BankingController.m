@@ -239,7 +239,7 @@ static BankingController	*con;
 	[transferWindowController setManagedObjectContext:self.managedObjectContext ];
 	[timeSlicer updateDelegate ];
 	[self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
-	[dockIconController initWithManagedObjectContext:self.managedObjectContext];
+	dockIconController = [[DockIconController alloc ] initWithManagedObjectContext:self.managedObjectContext ];
 }
 
 -(void)updateBankAccounts:(NSArray*)hbciAccounts
