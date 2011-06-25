@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#include <gwenhywfar/gui_be.h>
+#include <AqBanking/gwenhywfar/gui_be.h>
 
 
 @interface ABProgressWindowController : NSWindowController {

@@ -22,14 +22,14 @@
 
 #define I18N_NOOP(msg) msg
 
-#include <aqbanking/banking.h>
-#include <aqbanking/banking_be.h>
-#include <aqhbci/provider.h>
+#include <AqBanking/aqbanking/banking.h>
+#include <AqBanking/aqbanking/banking_be.h>
+#include <AqBanking/aqhbci/provider.h>
 
-#include <gwenhywfar/args.h>
-#include <gwenhywfar/buffer.h>
-#include <gwenhywfar/db.h>
-#include <gwenhywfar/debug.h>
+#include <AqBanking/gwenhywfar/args.h>
+#include <AqBanking/gwenhywfar/buffer.h>
+#include <AqBanking/gwenhywfar/db.h>
+#include <AqBanking/gwenhywfar/debug.h>
 
 int getSysId(AB_BANKING *ab,
 			 const char *bankId,

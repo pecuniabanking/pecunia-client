@@ -133,7 +133,7 @@ static NSString* lDir = @"~/Library/Application Support/Pecunia/Data";
 	
 	// DB directory
 	if(dataDir == nil) {
-		self.dataDir = [defaultDataDir retain];
+		self.dataDir = defaultDataDir;
 		[defaults setValue: dataDir forKey: @"DataDir" ];
 	}
 }
@@ -180,7 +180,11 @@ static NSString* lDir = @"~/Library/Application Support/Pecunia/Data";
 			[alert runModal];
 			return;
 		}
+	} else {
+		self.dataDir = oldDir;
+		[defaults setValue: oldDir forKey: @"DataDir" ];		
 	}
+
 }
 
 

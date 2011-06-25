@@ -170,6 +170,16 @@
 {
 	NSError *error = nil;
 	NSManagedObjectContext	*context = [[MOAssistant assistant ] context];
+	
+	// save changed done with previous actions
+	if ([context  hasChanges ]) {
+		// save updates
+		if([context save: &error ] == NO) {
+			NSAlert *alert = [NSAlert alertWithError:error];
+			[alert runModal];
+			return;
+		}
+	}	
 
 	// check for availability
 	if([[HBCIClient hbciClient ] isTransferSupported: tt forAccount: acc ] == NO) {
@@ -240,9 +250,19 @@
 
 - (void)changeTransfer:(Transfer*)tf
 {
-	NSError		*error;
+	NSError		*error=nil;
 	NSManagedObjectContext	*context = [[MOAssistant assistant ] context];
 
+	// save changed done with previous actions
+	if ([context  hasChanges ]) {
+		// save updates
+		if([context save: &error ] == NO) {
+			NSAlert *alert = [NSAlert alertWithError:error];
+			[alert runModal];
+			return;
+		}
+	}	
+	
 	transferType = [tf.type intValue ];
 	account = tf.account;
 	
@@ -330,6 +350,7 @@
 
 	[templatesDraw close: self ];
 	[window close ];
+	[transferController setContent:nil ];	
 	[NSApp stopModalWithCode:0];
 }
 
@@ -396,6 +417,7 @@
 {
 	[templatesDraw close: self ];
 	[window close ];
+	[transferController setContent:nil ];	
 	[NSApp stopModalWithCode:1];
 }
 
@@ -403,6 +425,7 @@
 {
 	[NSApp stopModalWithCode:1];
 	[transfers release ];
+	[transferController setContent:nil ];	
 	return YES;
 }
 
@@ -470,6 +493,14 @@
 	if([value doubleValue ] <= 0) {
 		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
 						NSLocalizedString(@"AP12", @"Please enter a value greater 0"),
+						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		return NO;
+	}
+	
+	// purpose?
+	if (transfer.purpose1 == nil || [transfer.purpose1 length ] == 0) {
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+						NSLocalizedString(@"AP121", @"Please enter a purpose"),
 						NSLocalizedString(@"ok", @"Ok"), nil, nil);
 		return NO;
 	}
@@ -565,11 +596,20 @@
 
 - (IBAction)getDataFromTemplate:(id)sender
 {
-	NSArray*	selection = [templateController selectedObjects ];
+	NSArray	*selection = [templateController selectedObjects ];
+	NSString *bankName = nil;
 	
 	if(selection && [selection count ] > 0) {
 		TransferTemplate*	template = (TransferTemplate*)[selection objectAtIndex: 0 ];
 		[transfer copyFromTemplate: template withLimits: limits ];
+		
+		// get Bank Name
+		if(transferType == TransferTypeEU) {
+			bankName = [[HBCIClient hbciClient  ] bankNameForBIC: transfer.remoteBIC inCountry: transfer.remoteCountry ];
+		} else {
+			bankName = [[HBCIClient hbciClient  ] bankNameForCode: transfer.remoteBankCode inCountry: transfer.remoteCountry ];
+		}
+		if(bankName) transfer.remoteBankName = bankName;		
 	}
 }
 

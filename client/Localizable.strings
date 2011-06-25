@@ -146,3 +146,5 @@
 "AP118" = "Der Dauerauftrag wird nur aus der Liste, nicht bei der Bank gelöscht! Um den Dauerauftrag bei der Bank zu löschen setzen Sie das Löschkennzeichen und drücken Sie auf 'Änderungen senden'. Möchten Sie den Eintrag wirklich löschen?";
 "AP119" = "Kontowarnung";
 "AP120" = "Eines Ihrer Konten hat zu wenig Guthaben bzw. ist ins Minus gekommen!";
+"AP121" = "Bitte einen Verwendungszweck angeben";
+

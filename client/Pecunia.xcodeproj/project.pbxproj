@@ -31,6 +31,7 @@
 		B1014C67101A37E800ABA1FF /* DonationMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014C66101A37E800ABA1FF /* DonationMessageController.m */; };
 		B1014CB2101A4C3D00ABA1FF /* gpl-2.0.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */; };
 		B1029E120E3FA1D700CC681B /* CatDefWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1029E110E3FA1D700CC681B /* CatDefWindowController.m */; };
+		B103012213AE84DE0089F3D4 /* donate2.png in Resources */ = {isa = PBXBuildFile; fileRef = B103012113AE84DE0089F3D4 /* donate2.png */; };
 		B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */ = {isa = PBXBuildFile; fileRef = B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */; };
 		B10DBC4E12DBB96F0030D67A /* BankUser.nib in Resources */ = {isa = PBXBuildFile; fileRef = B10DBC4D12DBB96F0030D67A /* BankUser.nib */; };
 		B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
@@ -62,7 +63,7 @@
 		B137BE3C12D296A900D0394C /* getsysid.c in Sources */ = {isa = PBXBuildFile; fileRef = B137BE3A12D296A900D0394C /* getsysid.c */; };
 		B137BE9012D33AB200D0394C /* Institute.csv in Resources */ = {isa = PBXBuildFile; fileRef = B137BE8F12D33AB200D0394C /* Institute.csv */; };
 		B137BF4712D5004C00D0394C /* MessageLog.m in Sources */ = {isa = PBXBuildFile; fileRef = B137BF4612D5004C00D0394C /* MessageLog.m */; };
-		B138AB83139033D40026BEE2 /* donate.png in Resources */ = {isa = PBXBuildFile; fileRef = B138AB82139033D40026BEE2 /* donate.png */; };
+		B138AB83139033D40026BEE2 /* transfer_favorites.png in Resources */ = {isa = PBXBuildFile; fileRef = B138AB82139033D40026BEE2 /* transfer_favorites.png */; };
 		B138AC3C13918EB50026BEE2 /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138AC3B13918EB50026BEE2 /* ImageAndTextCell.m */; };
 		B138AC491391946E0026BEE2 /* catdef4_18.png in Resources */ = {isa = PBXBuildFile; fileRef = B138AC461391946E0026BEE2 /* catdef4_18.png */; };
 		B138AC4A1391946E0026BEE2 /* money_18.png in Resources */ = {isa = PBXBuildFile; fileRef = B138AC471391946E0026BEE2 /* money_18.png */; };
@@ -73,6 +74,8 @@
 		B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B259139D52690026BEE2 /* DateAndValutaCell.m */; };
 		B138B316139D6B390026BEE2 /* AmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B315139D6B390026BEE2 /* AmountCell.m */; };
 		B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B3DE139EBC0E0026BEE2 /* DockIconController.m */; };
+		B138B4DD13A2AC9A0026BEE2 /* AqBanking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B138B4DC13A2AC9A0026BEE2 /* AqBanking.framework */; };
+		B138B4E413A2ACC60026BEE2 /* AqBanking.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = B138B4DC13A2AC9A0026BEE2 /* AqBanking.framework */; };
 		B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
 		B14587A21289DCB700848683 /* CategoryPeriods.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14587A11289DCB700848683 /* CategoryPeriods.xib */; };
 		B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
@@ -124,9 +127,6 @@
 		B1986F880DC126CF005F7043 /* Pecunia.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1986F870DC126CF005F7043 /* Pecunia.icns */; };
 		B19A85F00F3CC3D3000FE9B3 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */; };
 		B19A86360F3CD17E000FE9B3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B19A86350F3CD17E000FE9B3 /* Security.framework */; };
-		B19BCC80134905D200ABEE6C /* libaqhbci.19.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B19BCC7F134905D200ABEE6C /* libaqhbci.19.dylib */; };
-		B19BCC821349060500ABEE6C /* libaqbanking.33.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B19BCC811349060500ABEE6C /* libaqbanking.33.dylib */; };
-		B19BCC841349063000ABEE6C /* libgwenhywfar.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B19BCC831349063000ABEE6C /* libgwenhywfar.60.dylib */; };
 		B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */ = {isa = PBXBuildFile; fileRef = B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */; };
 		B1A0340F0D8B028300072442 /* AccountSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A0340E0D8B028300072442 /* AccountSettingsController.m */; };
 		B1A034C60D8C5B4200072442 /* pec4.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1A034C50D8C5B4200072442 /* pec4.icns */; };
@@ -188,7 +188,6 @@
 		B1FAEAD0122C6B80000AF027 /* ABConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEACF122C6B80000AF027 /* ABConversion.m */; };
 		B1FAEB7D122DAC9E000AF027 /* ABAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEB7C122DAC9E000AF027 /* ABAccount.m */; };
 		B1FAECAA12357D15000AF027 /* copyaq.sh in Resources */ = {isa = PBXBuildFile; fileRef = B1FAECA912357D15000AF027 /* copyaq.sh */; };
-		B1FAECAE12357DC5000AF027 /* libgwengui-cocoa.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B1FAECAD12357DC5000AF027 /* libgwengui-cocoa.0.dylib */; };
 		B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB50981209EA52004DCD6A /* PurposeSplitController.m */; };
 		B1FB509B1209EAC7004DCD6A /* PurposeSplitWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */; };
 		B1FB509E1209F68E004DCD6A /* PurposeSplitData.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */; };
@@ -207,6 +206,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				B138B4E413A2ACC60026BEE2 /* AqBanking.framework in Copy Files */,
 				C1C0842011C2D85500278CBF /* SM2DGraphView.framework in Copy Files */,
 				B1F4582E0F25171A00BAF4E8 /* Sparkle.framework in Copy Files */,
 			);
@@ -250,6 +250,7 @@
 		B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gpl-2.0.txt"; sourceTree = "<group>"; };
 		B1029E100E3FA1D700CC681B /* CatDefWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatDefWindowController.h; sourceTree = "<group>"; };
 		B1029E110E3FA1D700CC681B /* CatDefWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatDefWindowController.m; sourceTree = "<group>"; };
+		B103012113AE84DE0089F3D4 /* donate2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = donate2.png; sourceTree = "<group>"; };
 		B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitRule.h; sourceTree = "<group>"; };
 		B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitRule.m; sourceTree = "<group>"; };
 		B10DBC4D12DBB96F0030D67A /* BankUser.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = BankUser.nib; sourceTree = "<group>"; };
@@ -298,7 +299,7 @@
 		B137BE8F12D33AB200D0394C /* Institute.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Institute.csv; sourceTree = "<group>"; };
 		B137BF4512D5004C00D0394C /* MessageLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageLog.h; sourceTree = "<group>"; };
 		B137BF4612D5004C00D0394C /* MessageLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageLog.m; sourceTree = "<group>"; };
-		B138AB82139033D40026BEE2 /* donate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = donate.png; sourceTree = "<group>"; };
+		B138AB82139033D40026BEE2 /* transfer_favorites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = transfer_favorites.png; sourceTree = "<group>"; };
 		B138AC3A13918EB50026BEE2 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTextCell.h; sourceTree = "<group>"; };
 		B138AC3B13918EB50026BEE2 /* ImageAndTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndTextCell.m; sourceTree = "<group>"; };
 		B138AC461391946E0026BEE2 /* catdef4_18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = catdef4_18.png; sourceTree = "<group>"; };
@@ -315,6 +316,7 @@
 		B138B315139D6B390026BEE2 /* AmountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AmountCell.m; sourceTree = "<group>"; };
 		B138B3DE139EBC0E0026BEE2 /* DockIconController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DockIconController.m; sourceTree = "<group>"; };
 		B138B3E0139EBC230026BEE2 /* DockIconController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DockIconController.h; sourceTree = "<group>"; };
+		B138B4DC13A2AC9A0026BEE2 /* AqBanking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AqBanking.framework; sourceTree = "<group>"; };
 		B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPeriodsWindowController.h; sourceTree = "<group>"; };
 		B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPeriodsWindowController.m; sourceTree = "<group>"; };
 		B14587A11289DCB700848683 /* CategoryPeriods.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryPeriods.xib; sourceTree = "<group>"; };
@@ -398,9 +400,6 @@
 		B19A85EE0F3CC3D3000FE9B3 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
 		B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
 		B19A86350F3CD17E000FE9B3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
-		B19BCC7F134905D200ABEE6C /* libaqhbci.19.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libaqhbci.19.dylib; path = AqBanking.framework/lib/libaqhbci.19.dylib; sourceTree = "<group>"; };
-		B19BCC811349060500ABEE6C /* libaqbanking.33.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libaqbanking.33.dylib; path = AqBanking.framework/lib/libaqbanking.33.dylib; sourceTree = "<group>"; };
-		B19BCC831349063000ABEE6C /* libgwenhywfar.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgwenhywfar.60.dylib; path = AqBanking.framework/lib/libgwenhywfar.60.dylib; sourceTree = "<group>"; };
 		B19F41BC0FBDF57B003EE0E1 /* PecuniaError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaError.h; sourceTree = "<group>"; };
 		B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaError.m; sourceTree = "<group>"; };
 		B1A0340D0D8B028300072442 /* AccountSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AccountSettingsController.h; sourceTree = "<group>"; };
@@ -488,7 +487,6 @@
 		B1FAEB7B122DAC9E000AF027 /* ABAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABAccount.h; sourceTree = "<group>"; };
 		B1FAEB7C122DAC9E000AF027 /* ABAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABAccount.m; sourceTree = "<group>"; };
 		B1FAECA912357D15000AF027 /* copyaq.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = copyaq.sh; sourceTree = "<group>"; };
-		B1FAECAD12357DC5000AF027 /* libgwengui-cocoa.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libgwengui-cocoa.0.dylib"; sourceTree = "<group>"; };
 		B1FB50971209EA52004DCD6A /* PurposeSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitController.h; sourceTree = "<group>"; };
 		B1FB50981209EA52004DCD6A /* PurposeSplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitController.m; sourceTree = "<group>"; };
 		B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PurposeSplitWindow.xib; sourceTree = "<group>"; };
@@ -514,10 +512,7 @@
 				B1F458210F2516C200BAF4E8 /* Sparkle.framework in Frameworks */,
 				B19A86360F3CD17E000FE9B3 /* Security.framework in Frameworks */,
 				B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */,
-				B1FAECAE12357DC5000AF027 /* libgwengui-cocoa.0.dylib in Frameworks */,
-				B19BCC80134905D200ABEE6C /* libaqhbci.19.dylib in Frameworks */,
-				B19BCC821349060500ABEE6C /* libaqbanking.33.dylib in Frameworks */,
-				B19BCC841349063000ABEE6C /* libgwenhywfar.60.dylib in Frameworks */,
+				B138B4DD13A2AC9A0026BEE2 /* AqBanking.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,14 +522,11 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B1FAECAD12357DC5000AF027 /* libgwengui-cocoa.0.dylib */,
 				B19A86350F3CD17E000FE9B3 /* Security.framework */,
 				B1F458200F2516C200BAF4E8 /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				B16B0CEB11C01DFB00254078 /* SM2DGraphView.framework */,
-				B19BCC7F134905D200ABEE6C /* libaqhbci.19.dylib */,
-				B19BCC811349060500ABEE6C /* libaqbanking.33.dylib */,
-				B19BCC831349063000ABEE6C /* libgwenhywfar.60.dylib */,
+				B138B4DC13A2AC9A0026BEE2 /* AqBanking.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -710,11 +702,12 @@
 		B1923B560EB7A6D40079ADCA /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				B103012113AE84DE0089F3D4 /* donate2.png */,
 				B138AC4C1391952F0026BEE2 /* folder_18.png */,
 				B138AC461391946E0026BEE2 /* catdef4_18.png */,
 				B138AC471391946E0026BEE2 /* money_18.png */,
 				B138AC481391946E0026BEE2 /* money_sync_18.png */,
-				B138AB82139033D40026BEE2 /* donate.png */,
+				B138AB82139033D40026BEE2 /* transfer_favorites.png */,
 				B134357112EB7FDF006C4687 /* cursor.png */,
 				B1B7B37312EA3D2B0013CF0B /* standing_order.png */,
 				B1FB6914125D0A5500C54A0E /* edit16.png */,
@@ -1042,7 +1035,6 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				B192EAF90EEDBFF6006F61F1 /* Copy Files */,
-				B1FAEA7D122C2478000AF027 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1160,31 +1152,16 @@
 				B1B7B37412EA3D2B0013CF0B /* standing_order.png in Resources */,
 				B134357212EB7FDF006C4687 /* cursor.png in Resources */,
 				B134365B12ECBD54006C4687 /* GenericImportWindow.xib in Resources */,
-				B138AB83139033D40026BEE2 /* donate.png in Resources */,
+				B138AB83139033D40026BEE2 /* transfer_favorites.png in Resources */,
 				B138AC491391946E0026BEE2 /* catdef4_18.png in Resources */,
 				B138AC4A1391946E0026BEE2 /* money_18.png in Resources */,
 				B138AC4B1391946E0026BEE2 /* money_sync_18.png in Resources */,
 				B138AC4D1391952F0026BEE2 /* folder_18.png in Resources */,
+				B103012213AE84DE0089F3D4 /* donate2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		B1FAEA7D122C2478000AF027 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"$SRCROOT\"/copyaq.sh";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -1309,18 +1286,22 @@
 				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/AqBanking.framework/include\"";
+				HEADER_SEARCH_PATHS = ./AqBanking.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/AqBanking.framework/lib\"",
+					./AqBanking.framework/Resources/lib,
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_7)",
 					"\"$(SRCROOT)\"",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_7 = "\"$(SRCROOT)\"";
-				OTHER_LDFLAGS = "-lz";
+				OTHER_LDFLAGS = (
+					"-laqhbci.19",
+					"-lgwenhywfar.60",
+					"-lz",
+				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Pecunia;
 				SDKROOT = macosx10.5;
@@ -1352,30 +1333,23 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/sw/lib,
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_7)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					/temp/install/lib,
-					/temp/relinstall/lib,
+					./AqBanking.framework/Resources/lib,
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/AqBanking.framework/lib\"",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/build/Development/aqbanking/plugins/20/bankinfo\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)/build/Development/aqbanking/plugins/20/imexporters\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/build/Development/aqbanking/plugins/20/providers\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_5 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_6 = "\"$(SRCROOT)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_7 = "\"$(SRCROOT)\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(LOCAL_LIBRARY_DIR)/Pecunia/lib\"";
 				OTHER_LDFLAGS = (
-					"-liconv",
-					"-lz",
+					"-laqhbci.19",
+					"-lgwenhywfar.60",
 					"$(inherited)",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Pecunia;
-				USER_HEADER_SEARCH_PATHS = "/sw/include/gwenhywfar3 /sw/include";
+				USER_HEADER_SEARCH_PATHS = ./AqBanking.framework/Headers;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};

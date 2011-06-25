@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#include <gwenhywfar/gui.h>
+#include <AqBanking/gwenhywfar/gui.h>
 @class ABInfoBoxController;
 @class ABProgressWindowController;
 

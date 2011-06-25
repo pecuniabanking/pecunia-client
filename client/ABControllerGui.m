@@ -13,9 +13,9 @@
 #import "ABInfoBoxController.h"
 #import "ABProgressWindowController.h"
 #import "MessageLog.h"
-#include <gwenhywfar/logger.h>
-#include <aqhbci/aqhbci.h>
-#include <aqbanking/banking.h>
+#include <AqBanking/gwenhywfar/logger.h>
+#include <AqBanking/aqhbci/aqhbci.h>
+#include <AqBanking/aqbanking/banking.h>
 
 static GWEN_GUI_CHECKCERT_FN	standardCertFn;
 static ABControllerGui *abGui;
@@ -334,12 +334,20 @@ int LogHook(GWEN_GUI *gui, const char *logDomain, GWEN_LOGGER_LEVEL priority, co
 		case GWEN_LoggerLevel_Verbous: level = LogLevel_Verbous; break;
 		default: level = LogLevel_Warning;
 	}
-	NSMutableDictionary *data = [[NSMutableDictionary alloc ] initWithCapacity:2 ];
-	[data setObject:[NSString stringWithUTF8String: str ] forKey:@"message" ];
-	[data setObject:[NSNumber numberWithInt:(int)level ] forKey:@"level" ];
-	
-	[[MessageLog log ] performSelectorOnMainThread:@selector(addMessageFromDict:) withObject:data waitUntilDone:NO ];
-//	[[MessageLog log ] addMessage:[NSString stringWithUTF8String: str ] withLevel:level];
+	if(str) {
+		NSString *s = [NSString stringWithUTF8String: str ];
+		if (s == nil) {
+			s = [NSString stringWithCString:str encoding: NSISOLatin1StringEncoding ];
+			if (s == nil) {
+				s = @"String nicht konvertierbar!";
+			}
+		}
+		NSMutableDictionary *data = [[NSMutableDictionary alloc ] initWithCapacity:2 ];
+		[data setObject:s forKey:@"message" ];
+		[data setObject:[NSNumber numberWithInt:(int)level ] forKey:@"level" ];
+		
+		[[MessageLog log ] performSelectorOnMainThread:@selector(addMessageFromDict:) withObject:data waitUntilDone:NO ];
+	}
 	return 1;
 }
 

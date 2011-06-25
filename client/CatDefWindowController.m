@@ -65,6 +65,11 @@
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[assignPreviewController setSortDescriptors: sds ];
 	
+	// sort descriptor for category view
+	sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+	sds = [NSArray arrayWithObject:sd];
+	[catDefController setSortDescriptors: sds ];
+	
 	// register Drag'n Drop
 	[assignPreview registerForDraggedTypes: [NSArray arrayWithObject: BankStatementDataType ] ];
 	[catView registerForDraggedTypes: [NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil ] ];

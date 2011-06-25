@@ -659,7 +659,6 @@ static BankingController	*con;
 			result.userId = account.userId;
 			result.account = account;
 			[resultList addObject: [result autorelease] ];
-			[account resetIsNew ];
 		}
 	}
 	
@@ -747,7 +746,7 @@ static BankingController	*con;
 			NSDate *lDate = result.account.latestTransferDate;
 			if(maxDate && [maxDate compare: lDate ] == NSOrderedAscending || maxDate == nil) maxDate = lDate;
 		}
-		[timeSlicer stepIn: [ShortDate dateWithDate: maxDate ] ];
+		if(maxDate) [timeSlicer stepIn: [ShortDate dateWithDate: maxDate ] ];
 		
 		// update unread information
 		NSInteger maxUnread = [BankAccount maxUnread ];
@@ -761,6 +760,8 @@ static BankingController	*con;
 		
 		// redraw accounts view
 		[accountsView setNeedsDisplay:YES ];
+
+		[transactionController rearrangeObjects ];
 	}
 }
 
@@ -823,9 +824,7 @@ static BankingController	*con;
 }
 
 -(IBAction)editBankUsers:(id)sender
-{
-//	[[HBCIClient hbciClient ] addBankUserCocoa ];
-	
+{	
 	if(!bankUserController) bankUserController = [[NewBankUserController alloc] initForController: self];
 	[bankUserController showWindow: self ];
 }
@@ -1122,7 +1121,7 @@ static BankingController	*con;
 	if (close == NO) return NSTerminateCancel;
 	
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
-	BOOL hideDonationMessage = [defaults boolForKey: @"DonationPopup024" ];
+	BOOL hideDonationMessage = [defaults boolForKey: @"DonationPopup030" ];
 	
 	if(!hideDonationMessage) {
 		DonationMessageController *controller = [[DonationMessageController alloc ] init ];
@@ -1392,13 +1391,8 @@ static BankingController	*con;
 //				[account calcUnread ];
 				if (account.unread == 0) {
 					[self updateUnread ];
-					NSRect r = [ accountsView rectOfColumn:0];
-					[accountsView setNeedsDisplayInRect:r ];
-				} else {
-					// update tableview row
-					NSRect r = [ accountsView rectOfRow:[accountsView selectedRow ]];
-					[accountsView setNeedsDisplayInRect:r ];
 				}
+				[accountsView setNeedsDisplay: YES ];
 			}
 		}
 	}
@@ -1433,7 +1427,13 @@ static BankingController	*con;
 		StatCatAssignment *stat = [statements objectAtIndex:rowIndex ];
 
 		DateAndValutaCell *cell = (DateAndValutaCell*)aCell;
-		cell.valuta = stat.statement.valutaDate;
+		ShortDate *pDate = [ShortDate dateWithDate:stat.statement.date ];
+		ShortDate *vDate = [ShortDate dateWithDate:stat.statement.valutaDate ];
+		if ([pDate compare:vDate ] != NSOrderedSame) {
+			cell.valuta = stat.statement.valutaDate;
+		} else {
+			cell.valuta = nil;
+		}
 	}
 	if ([[aTableColumn identifier ] isEqualToString: @"value" ]) {
 		NSArray *statements = [transactionController arrangedObjects ];
@@ -2252,6 +2252,27 @@ static BankingController	*con;
 	}
 }
 
+-(IBAction)resetIsNewStatements:(id)sender
+{
+	NSError *error = nil;
+	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1" ];
+	[request setPredicate:predicate];
+	NSArray *statements = [context executeFetchRequest:request error:&error];
+	for(BankStatement *stat in statements) stat.isNew = [NSNumber numberWithBool:NO ];
+		
+	// save updates
+	if([self.managedObjectContext save: &error ] == NO) {
+		NSAlert *alert = [NSAlert alertWithError:error];
+		[alert runModal];
+	}
+	[self updateUnread ];
+	[accountsView setNeedsDisplay: YES ];
+}
+
 -(void)migrate
 {
 	// in Migration from 0.2 to 0.3, add additional toolbar items
@@ -2261,6 +2282,13 @@ static BankingController	*con;
 		[toolbar insertItemWithItemIdentifier:@"catHistory" atIndex:5 ];
 		[toolbar insertItemWithItemIdentifier:@"catPeriods" atIndex:6 ];
 		[toolbar insertItemWithItemIdentifier:@"standingOrders" atIndex:7 ];
+		
+		//initialize width of category table column
+		NSTableColumn *tc = [accountsView tableColumnWithIdentifier: @"name" ];
+		if(tc) {
+			[tc setWidth:999 ];
+		}
+		
 		[defaults setBool:YES forKey:@"Migrated03" ];
 	}
 }

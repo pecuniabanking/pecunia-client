@@ -76,7 +76,8 @@ ABUser *convertUser(AB_USER *usr)
 			}
 		}
 	}
-	user.tanMethodNumber = AH_User_GetSelectedTanMethod(usr);	
+	int methodVersion = AH_User_GetSelectedTanMethod(usr);
+	user.tanMethodNumber = methodVersion % 1000;	
 	if([tanMethodList count ] == 0) {
 		TanMethod *tanM = [[TanMethod alloc ] initDefault: user.tanMethodNumber ];
 		[tanMethodList addObject: tanM ];

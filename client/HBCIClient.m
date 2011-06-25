@@ -179,12 +179,6 @@ static HBCIClient *client = nil;
 	return [bridge addBankUser: user ];
 }
 
--(NSString*)addBankUserCocoa
-{
-	return [bridge addBankUserCocoa ];
-}
-
-
 -(BOOL)deleteBankUser:(ABUser*)user
 {
 	return [bridge deleteBankUser: user ];

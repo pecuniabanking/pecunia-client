@@ -118,6 +118,12 @@
 			}
 		}
 	}
+	
+	if (template.currency == nil || [template.currency length ] == 0) {
+		template.currency = @"EUR";
+	}
+	template.currency = [template.currency uppercaseString ];
+	
 	return YES;
 }
 
@@ -184,6 +190,7 @@
 {
 	TransferTemplate *template = [NSEntityDescription insertNewObjectForEntityForName:@"TransferTemplate" inManagedObjectContext:context ];
 	template.name = NSLocalizedString(@"AP106", @"");
+	template.currency = @"EUR";
 	[templateController addObject:template ];
 	
 	// now find out index of added item

@@ -41,7 +41,7 @@ static MessageLog *_messageLog;
 	NSDate *date = [NSDate date ];
 	NSString *message= [NSString stringWithFormat: @"<%@> %@\n", [formatter stringFromDate:date ] , msg ];
 	if (forceConsole) {
-		NSLog(message);
+		NSLog(@"%@", message);
 	}
 	if (logUI) {
 		[logUI addMessage:message withLevel:level ];

@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#include <aqbanking/banking.h>
+#include <AqBanking/aqbanking/banking.h>
 #import "ABAccount.h"
 #import "Transfer.h"
 #import "MessageLog.h"

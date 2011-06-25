@@ -90,6 +90,7 @@
 //	self.remoteBankName = t.remoteBankName;
 	self.remoteIBAN = t.remoteIBAN;
 	self.remoteBIC = t.remoteBIC;
+	self.value = t.value;
 }
 
 -(void)setJobId: (unsigned int) jid { jobId = jid; }

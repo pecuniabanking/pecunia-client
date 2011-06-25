@@ -25,12 +25,11 @@
 #import "BankingController.h"
 #import "ImExporter.h"
 #import "ImExporterProfile.h"
-#import <gwen-gui-cocoa/cocoa_gui.h>
 #import "ABConversion.h"
-#import <aqbanking/eutransferinfo.h>
-#import <aqbanking/jobeutransfer.h>
+#import <AqBanking/aqbanking/eutransferinfo.h>
+#import <AqBanking/aqbanking/jobeutransfer.h>
 #import "ABControllerGui.h"
-#import <aqhbci/account.h>
+#import <AqBanking/aqhbci/account.h>
 
 static ABController* abController;
 
@@ -760,19 +759,6 @@ error:
 	return bankName;
 }
 
-
--(BOOL)addBankUserCocoa
-{
-	GWEN_GUI *gui = Cocoa_Gui_new();
-	GWEN_Gui_SetGui(gui);
-	GWEN_DIALOG *dlg;
-	dlg = (GWEN_DIALOG*)AB_SetupDialog_new(ab);
-	int res = GWEN_Gui_ExecDialog(dlg, 0);
-	GWEN_Dialog_free(dlg);
-	GWEN_Gui_SetGui([abGui gui ]);
-	if (res <= 0) return NO; else return YES;
-}
-
 -(NSString*)addBankUser: (ABUser*)user
 {
 	char		*errmsg;
@@ -852,7 +838,20 @@ error:
 	if (usr) {
 		int rv = AB_Banking_BeginExclUseUser(ab, usr );
 		if (rv == 0) {
-			AH_User_SetSelectedTanMethod(usr, method);
+			//tanMethodList
+			const AH_TAN_METHOD_LIST *ml = AH_User_GetTanMethodDescriptions(usr);
+			if(ml) {
+				const AH_TAN_METHOD *tm = AH_TanMethod_List_First(ml);
+				while(tm) {
+					int function = AH_TanMethod_GetFunction(tm);
+					if(method == function) {
+						int methodVersion = AH_TanMethod_GetGvVersion(tm)*1000 + method;
+						AH_User_SetSelectedTanMethod(usr, methodVersion);
+						break;
+					}
+					tm = AH_TanMethod_List_Next(tm);
+				}
+			}
 			AB_Banking_EndExclUseUser(ab, usr, NO);
 		} else return;
 	}

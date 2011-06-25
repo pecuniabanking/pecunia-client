@@ -27,7 +27,6 @@
 -(void)evaluateQueryResult: (BankQueryResult*)res;
 -(int)updateFromQueryResult: (BankQueryResult*)result;
 -(void)updateStandingOrders:(NSArray*)orders;
--(void)resetIsNew;
 -(void)copyStatement:(BankStatement*)stat;
 -(void)copyStatementsToManualAccounts:(NSArray*)statements;
 -(NSDate*)nextDateForDate:(NSDate*)date;

@@ -6,8 +6,8 @@
 //  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
-#import <aqbanking/banking.h>
-#import <aqbanking/eutransferinfo.h>
+#import <AqBanking/aqbanking/banking.h>
+#import <AqBanking/aqbanking/eutransferinfo.h>
 
 @class ABUser;
 @class Country;

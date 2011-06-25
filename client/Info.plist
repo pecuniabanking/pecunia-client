@@ -6,18 +6,16 @@
 	<string>de_DE</string>
 	<key>CFBundleExecutable</key>
 	<string>Pecunia</string>
+	<key>CFBundleHelpBookFolder</key>
+	<string>PecuniaHelp</string>
+	<key>CFBundleHelpBookName</key>
+	<string>Pecunia Help</string>
 	<key>CFBundleIconFile</key>
 	<string>Vespasian</string>
 	<key>CFBundleIdentifier</key>
 	<string>de.pecuniabanking.pecunia</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>CFBundleHelpBookFolder</key>
-	<string>PecuniaHelp</string>
-	<key>CFBundleHelpBookName</key>
-	<string>Pecunia Help</string>
-	<key>HPDBookIconPath</key>
-	<string>Vespasian</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -25,7 +23,9 @@
 	<key>CFBundleSignature</key>
 	<string>EMMI</string>
 	<key>CFBundleVersion</key>
-	<string>0.3.2</string>
+	<string>0.3.5</string>
+	<key>HPDBookIconPath</key>
+	<string>Vespasian</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>

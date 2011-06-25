@@ -44,19 +44,6 @@
 	return [self retain ];
 }
 
--(void)resetIsNew
-{
-	NSError *error = nil;
-	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
-	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
-	[request setEntity:entityDescription];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (isNew = 1)", self ];
-	[request setPredicate:predicate];
-	NSArray *statements = [context executeFetchRequest:request error:&error];
-	for(BankStatement *stat in statements) stat.isNew = [NSNumber numberWithBool:NO ];
-}
-
 -(NSInteger)calcUnread
 {
 	NSError *error = nil;
@@ -96,9 +83,6 @@
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
 	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
 	[request setEntity:entityDescription];
-	
-	// unmark old items
-//	[self resetIsNew ];
 	
 	// check if purpose split rule exists
 	if (self.splitRule && self.purposeSplitRule == nil ) self.purposeSplitRule = [[PurposeSplitRule alloc ] initWithString:self.splitRule ];

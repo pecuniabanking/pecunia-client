@@ -41,7 +41,7 @@
 #import "ImageAndTextCell.h"
 
 //Layout constants
-#define MIN_BADGE_WIDTH							25.0		//The minimum badge width for each item (default 22.0)
+#define MIN_BADGE_WIDTH							22.0		//The minimum badge width for each item (default 22.0)
 #define BADGE_HEIGHT							14.0		//The badge height for each item (default 14.0)
 #define BADGE_MARGIN							5.0			//The spacing between the badge and the cell for that row
 #define ROW_RIGHT_MARGIN						5.0			//The spacing between the right edge of the badge and the edge of the table column

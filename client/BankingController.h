@@ -114,6 +114,7 @@
 -(IBAction)splitStatement: (id)sender;
 -(IBAction)addStatement: (id)sender;
 -(IBAction)showLicense: (id)sender;
+-(IBAction)resetIsNewStatements:(id)sender;
 
 -(IBAction)manageTransferTemplates: (id)sender;
 

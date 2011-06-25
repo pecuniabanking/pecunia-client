@@ -2,10 +2,10 @@
 #include "adduser.h"
 #include <aqhbci/user.h>
 
-#include <gwenhywfar/text.h>
-#include <gwenhywfar/url.h>
-#include <gwenhywfar/ct.h>
-#include <gwenhywfar/ctplugin.h>
+#include <AqBanking/gwenhywfar/text.h>
+#include <AqBanking/gwenhywfar/url.h>
+#include <AqBanking/gwenhywfar/ct.h>
+#include <AqBanking/gwenhywfar/ctplugin.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>

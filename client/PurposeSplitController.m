@@ -134,6 +134,8 @@
 	bRange.location = bPos;
 	bRange.length = bLen;
 
+	[[sender window] makeFirstResponder:nil];
+	
 	s = NSStringFromRange(eRange);
 	s = [s stringByAppendingString:NSStringFromRange(kRange) ];
 	

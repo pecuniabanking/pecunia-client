@@ -28,18 +28,22 @@
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
-	NSMutableDictionary *attrs = [[[self attributedStringValue ] attributesAtIndex:0 effectiveRange:NULL ] mutableCopy ];
-	NSString *str = [formatter stringFromDate:valuta ];
-	NSFont *txtFont = [NSFont fontWithName: @"Lucida Grande" size: 10 ];
-	[attrs setObject:txtFont forKey:NSFontAttributeName ];
-	
-	NSAttributedString *s = [[NSAttributedString alloc ] initWithString:str attributes: attrs ];
-
-	[super drawWithFrame:cellFrame inView:controlView ];
-	NSRect r, rem;
-	NSDivideRect(cellFrame, &r, &rem, 16, NSMaxYEdge);
-	r.size.width -= 5;
-	[s drawInRect:r ];
+	if (valuta) {
+		NSMutableDictionary *attrs = [[[self attributedStringValue ] attributesAtIndex:0 effectiveRange:NULL ] mutableCopy ];
+		NSString *str = [formatter stringFromDate:valuta ];
+		NSFont *txtFont = [NSFont fontWithName: @"Lucida Grande" size: 10 ];
+		[attrs setObject:txtFont forKey:NSFontAttributeName ];
+		
+		NSAttributedString *s = [[NSAttributedString alloc ] initWithString:str attributes: attrs ];
+		
+		[super drawWithFrame:cellFrame inView:controlView ];
+		NSRect r, rem;
+		NSDivideRect(cellFrame, &r, &rem, 16, NSMaxYEdge);
+		r.size.width -= 5;
+		[s drawInRect:r ];
+	} else {
+		[super drawWithFrame:cellFrame inView:controlView ];		
+	}
 }
 
 
@@ -55,7 +59,7 @@
 {
     DateAndValutaCell *cell = (DateAndValutaCell*)[super copyWithZone:zone];
 	cell->formatter = [formatter retain ];
-	cell->valuta = [valuta retain ];
+	if(valuta) cell->valuta = [valuta retain ]; else cell->valuta = nil;
     return cell;
 }
 
