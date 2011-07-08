@@ -48,15 +48,15 @@
 	
 	stat.additional = stat.purpose;
 	if (eRange.length) {
-		stat.remoteName = [[stat.purpose substringWithRange:eRange ] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet ]];
+		stat.remoteName = [[stat.purpose substringWithRange:eRange ] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet ]];
 	}
 	if (kRange.length) {
-		stat.remoteAccount = [[stat.purpose substringWithRange:kRange ] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet ]];
+		stat.remoteAccount = [[stat.purpose substringWithRange:kRange ] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet ]];
 	}
 	if (bRange.length) {
-		stat.remoteBankCode = [[stat.purpose substringWithRange:bRange ] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet ]];
+		stat.remoteBankCode = [[stat.purpose substringWithRange:bRange ] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet ]];
 	}
-	if(vPos) stat.purpose = [[stat.purpose substringFromIndex:vPos ] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet ]];
+	if(vPos) stat.purpose = [[stat.purpose substringFromIndex:vPos ] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet ]];
 }
 
 @end

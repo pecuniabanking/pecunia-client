@@ -12,6 +12,7 @@
 #import "MOAssistant.h"
 #import "StatCatAssignment.h"
 #import "ShortDate.h"
+#import "MCEMDecimalNumberAdditions.h"
 
 static ClassificationContext* classContext = nil;
 static NSArray*	catCache = nil;
@@ -149,6 +150,46 @@ BOOL stringEqual(NSString *a, NSString *b)
 	if ([self.remoteIBAN isEqualToString: stat.remoteIBAN ] == NO) return NO;
 	return YES; 
 }
+
+-(BOOL)matchesAndRepair: (BankStatement*)stat
+{
+	NSDecimalNumber *e = [NSDecimalNumber decimalNumberWithMantissa:1 exponent:-2 isNegative:NO ];
+	ShortDate *d1 = [ShortDate dateWithDate:self.date ];
+	ShortDate *d2 = [ShortDate dateWithDate:stat.date ];
+	
+	if ([d1 isEqual: d2 ] == NO) return NO;
+	
+	if (stringEqual(self.purpose, stat.purpose) == NO) return NO;
+	if (stringEqual(self.remoteName, stat.remoteName) == NO) return NO;
+	
+	if ([self.remoteAccount isEqualToString: stat.remoteAccount ] == NO) return NO;
+	if ([self.remoteBankCode isEqualToString: stat.remoteBankCode ] == NO) return NO;
+	if ([self.remoteBIC isEqualToString: stat.remoteBIC ] == NO) return NO;
+	if ([self.remoteIBAN isEqualToString: stat.remoteIBAN ] == NO) return NO;
+	
+	NSDecimalNumber *d = [[self.value decimalNumberBySubtracting: stat.value ] abs ];
+	if ([d compare:e ] == NSOrderedDescending) return NO;	
+	if ([d compare:e ] == NSOrderedSame) {
+		// repair
+		[stat changeValueTo:self.value ];
+	}
+	return YES; 
+}
+
+-(void)changeValueTo:(NSDecimalNumber*)val
+{
+	Category *ncat = [Category nassRoot ];
+
+	self.value = val;
+	NSMutableSet* stats = [self mutableSetValueForKey: @"assignments" ];
+	for(StatCatAssignment *stat in stats) {
+		if([stat.category isBankAccount]) stat.value = val;
+		// if there is only one category assignment, change that as well
+		if(stat.category != ncat && [stats count ] == 2) stat.value = val;
+	}
+	[self updateAssigned ];
+}
+
 
 -(BOOL)hasAssignment
 {

@@ -103,20 +103,22 @@
 	for(ShortDate *date in dates) {
 		NSMutableArray *oldStats = [oldDayStats objectForKey:date ];
 		NSMutableArray *newStats = [newDayStats objectForKey:date ];
-		if ([oldStats count ] == [newStats count ]) continue;
+		
+		//repair mode...
+//		if ([oldStats count ] == [newStats count ]) continue;
 		for(stat in newStats) {
+			// Apply purpose split rule, if exists
+			if (self.purposeSplitRule) [self.purposeSplitRule applyToStatement:stat ];
 			if (oldStats == nil) {
 				stat.isNew = [NSNumber numberWithBool:YES ];
 				continue;
 			} else {
-				// Apply purpose split rule, if exists
-				if (self.purposeSplitRule) [self.purposeSplitRule applyToStatement:stat ];
 				// find statement in old statements
 				BOOL isMatched = NO;
 				int  idx;
 				for(idx = 0; idx < [oldStats count ]; idx++) {
 					BankStatement *oldStat = [oldStats objectAtIndex:idx ];
-					if([stat matches: oldStat ]) {
+					if([stat matchesAndRepair: oldStat ]) {
 						isMatched = YES;
 						[oldStats removeObjectAtIndex:idx ];
 						break;

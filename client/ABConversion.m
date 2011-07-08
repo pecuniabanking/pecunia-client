@@ -21,8 +21,7 @@
 #import "HBCIClient.h"
 #import "StandingOrder.h"
 #import "ShortDate.h"
-
-static NSDecimalNumber *hundred=nil;
+#import "MCEMDecimalNumberAdditions.h"
 
 ABUser *convertUser(AB_USER *usr)
 {
@@ -176,15 +175,10 @@ NSArray *convertStringList(const GWEN_STRINGLIST* sl)
 
 NSDecimalNumber *convertValue(const AB_VALUE *val)
 {
-	double dValue;
-	int	iValue;
-	
 	if (val == NULL) return [NSDecimalNumber zero ];
-	if (hundred == nil) hundred = [[NSDecimalNumber numberWithInt:100 ] retain ];
-	dValue = AB_Value_GetValueAsDouble(val);
-	iValue = (int)(dValue*100);
-	NSDecimalNumber *decVal = (NSDecimalNumber*)[NSDecimalNumber numberWithInt:iValue ];
-	return [decVal decimalNumberByDividingBy:hundred ];
+		
+	NSDecimalNumber *number = (NSDecimalNumber*)[NSDecimalNumber numberWithDouble:AB_Value_GetValueAsDouble(val) ];
+	return [number rounded ];
 }
 
 void convertStatement(AB_TRANSACTION *t, BankStatement *stmt)

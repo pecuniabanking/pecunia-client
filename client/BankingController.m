@@ -209,6 +209,7 @@ static BankingController	*con;
 	[WorkerThread init ];
 	
 	[self migrate ];
+	[categoryController addObserver:self forKeyPath:@"arrangedObjects.catSum" options:0 context:NULL];	
 }
 
 -(void)publishContext
@@ -386,7 +387,7 @@ static BankingController	*con;
 //	[categoryController remove: self ];
 	[[Category bankRoot ] rollup ];
 
-	[accountsView setNeedsDisplay: YES ];
+//	[accountsView setNeedsDisplay: YES ];
 }
 
 -(BOOL)cleanupBankNodes
@@ -1575,7 +1576,7 @@ static BankingController	*con;
 		[scat setValue: cat forKey: @"parent" ];
 		[[Category catRoot ] rollup ];
 	}
-	[accountsView setNeedsDisplay: YES ];
+//	[accountsView setNeedsDisplay: YES ];
 
 	// save updates
 	if([self.managedObjectContext save: &error ] == NO) {
@@ -1726,7 +1727,7 @@ static BankingController	*con;
 	}
 	[categoryController remove: cat ];
 	[Category updateCatValues ];
-	[accountsView setNeedsDisplay: YES ];
+//	[accountsView setNeedsDisplay: YES ];
 }
 
 -(IBAction)addCategory: (id)sender
@@ -1841,7 +1842,7 @@ static BankingController	*con;
 			if(cat !=  nil) {
 				[cat invalidateBalance ];
 				[Category updateCatValues ];
-				[accountsView setNeedsDisplay: YES ];
+//				[accountsView setNeedsDisplay: YES ];
 			}
 		}
 		[transactionController setSelectedObjects:sel ];
@@ -2271,6 +2272,7 @@ static BankingController	*con;
 	}
 	[self updateUnread ];
 	[accountsView setNeedsDisplay: YES ];
+	[transactionsView setNeedsDisplay:YES ];
 }
 
 -(void)migrate
@@ -2291,6 +2293,13 @@ static BankingController	*con;
 		
 		[defaults setBool:YES forKey:@"Migrated03" ];
 	}
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if (object == categoryController) {
+		[accountsView setNeedsDisplay: YES ];
+	}	
 }
 
 +(BankingController*)controller

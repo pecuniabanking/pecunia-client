@@ -20,6 +20,7 @@
 }
 
 -(BOOL)matches: (BankStatement*)stat;
+-(BOOL)matchesAndRepair: (BankStatement*)stat;
 
 -(NSObject*)classify;
 -(NSString*)stringForFields: (NSArray*)fields usingDateFormatter: (NSDateFormatter*)dateFormatter;
@@ -31,6 +32,7 @@
 -(BOOL)hasAssignment;
 -(NSDecimalNumber*)residualAmount;
 -(StatCatAssignment*)bankAssignment;
+-(void)changeValueTo:(NSDecimalNumber*)val;
 
 -(void)addToAccount: (BankAccount*)account;
 

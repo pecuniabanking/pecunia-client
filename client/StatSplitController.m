@@ -81,7 +81,7 @@
 			if(cat !=  nil) {
 				[cat invalidateBalance ];
 				[Category updateCatValues ];
-				[catView setNeedsDisplay: YES ];
+//				[catView setNeedsDisplay: YES ];
 			}
 		}
 	}

@@ -123,6 +123,7 @@
 		B196E1B20FB4CFE200509748 /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E1B10FB4CFE200509748 /* StatusBarController.m */; };
 		B196E22C0FB8AFCD00509748 /* AMShellWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E22A0FB8AFCD00509748 /* AMShellWrapper.m */; };
 		B196E2310FB8B12E00509748 /* HDIWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E2300FB8B12E00509748 /* HDIWrapper.m */; };
+		B197C3E413C3A28F0025F137 /* MCEMDecimalNumberAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */; };
 		B19822DD0E6F304A001C4C70 /* AccountRepWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B19822DC0E6F304A001C4C70 /* AccountRepWindowController.m */; };
 		B1986F880DC126CF005F7043 /* Pecunia.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1986F870DC126CF005F7043 /* Pecunia.icns */; };
 		B19A85F00F3CC3D3000FE9B3 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */; };
@@ -394,6 +395,8 @@
 		B196E22B0FB8AFCD00509748 /* AMShellWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShellWrapper.h; sourceTree = "<group>"; };
 		B196E22F0FB8B12E00509748 /* HDIWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDIWrapper.h; sourceTree = "<group>"; };
 		B196E2300FB8B12E00509748 /* HDIWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDIWrapper.m; sourceTree = "<group>"; };
+		B197C3E213C3A28F0025F137 /* MCEMDecimalNumberAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCEMDecimalNumberAdditions.h; sourceTree = "<group>"; };
+		B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMDecimalNumberAdditions.m; sourceTree = "<group>"; };
 		B19822DB0E6F304A001C4C70 /* AccountRepWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountRepWindowController.h; sourceTree = "<group>"; };
 		B19822DC0E6F304A001C4C70 /* AccountRepWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountRepWindowController.m; sourceTree = "<group>"; };
 		B1986F870DC126CF005F7043 /* Pecunia.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Pecunia.icns; sourceTree = "<group>"; };
@@ -906,6 +909,8 @@
 				B138AE74139582E00026BEE2 /* MCEMTransparentTableView.m */,
 				B138AE9D1396DD820026BEE2 /* MCEMSplitView.h */,
 				B138AE9E1396DD820026BEE2 /* MCEMSplitView.m */,
+				B197C3E213C3A28F0025F137 /* MCEMDecimalNumberAdditions.h */,
+				B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -1262,6 +1267,7 @@
 				B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */,
 				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
 				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
+				B197C3E413C3A28F0025F137 /* MCEMDecimalNumberAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -76,6 +76,7 @@
 	
 //	[self performSelector: @selector(restoreCatView) withObject: nil afterDelay: 0.0];
 	awaking = NO;
+	[catDefController addObserver:self forKeyPath:@"arrangedObjects.catSum" options:0 context:NULL];	
 }
 
 -(void)setManagedObjectContext:(NSManagedObjectContext*)context
@@ -129,7 +130,7 @@
 	
 	[cat invalidateBalance ];
 	[Category updateCatValues ];
-	[catView setNeedsDisplay: YES ];
+//	[catView setNeedsDisplay: YES ];
 	
 	// save updates
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
@@ -156,7 +157,7 @@
 
 	[cat invalidateBalance ];
 	[Category updateCatValues ];
-	[catView setNeedsDisplay: YES ];
+//	[catView setNeedsDisplay: YES ];
 
 	// save updates
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
@@ -318,7 +319,7 @@
 	}
 	[catDefController remove: cat ];
 	[Category updateCatValues ]; 
-	[catView setNeedsDisplay: YES ];
+//	[catView setNeedsDisplay: YES ];
 }
 
 -(void)calculateCatAssignPredicate
@@ -589,7 +590,7 @@
 
 		[cat invalidateBalance ];
 		[Category updateCatValues ];
-		[catView setNeedsDisplay: YES ];
+//		[catView setNeedsDisplay: YES ];
 	} else {
 		NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data ];
 		NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
@@ -638,6 +639,13 @@
 		cell.currency = stat.statement.currency;
 	}
 }	
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if (object == catDefController) {
+		[catView setNeedsDisplay: YES ];
+	}	
+}
 
 
 - (CGFloat)splitView:(NSSplitView *)sender constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)offset
