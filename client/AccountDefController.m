@@ -35,7 +35,7 @@
 	NSMutableArray* hbciUsers = [NSMutableArray arrayWithArray: [[HBCIClient hbciClient ] users ] ];
 	// add special User
 	ABUser *noUser  = [[[ABUser alloc ] init ] autorelease ];
-	noUser.userId = NSLocalizedString(@"AP101", @"");
+	noUser.name = NSLocalizedString(@"AP101", @"");
 	[hbciUsers insertObject:noUser atIndex:0 ];
 	
 	[users setContent: hbciUsers ];
@@ -121,6 +121,7 @@
 			bankRoot.name = account.bankName;
 			bankRoot.bankCode = account.bankCode;
 			bankRoot.currency = account.currency;
+			bankRoot.country = account.country;
 			bankRoot.bic = account.bic;
 			bankRoot.isBankAcc = [NSNumber numberWithBool: YES ];
 			// parent
@@ -158,6 +159,7 @@
 		newAccount.accountNumber = account.accountNumber; //?
 		newAccount.name = account.name;
 		newAccount.currency = account.currency;
+		newAccount.country = account.country;
 	}
 
     [self close ];

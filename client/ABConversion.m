@@ -63,7 +63,7 @@ ABUser *convertUser(AB_USER *usr)
 				int function = AH_TanMethod_GetFunction(tm);
 				int i;
 				for(i=0; i<n;i++) {
-					if(mList[i] == function) {
+					if(mList[i] == function || mList[i] == 999) {
 						TanMethod *tanM = [[[TanMethod alloc ] init ] autorelease ];
 						tanM.function = function;
 						tanM.description = [NSString stringWithUTF8String: (c = AH_TanMethod_GetMethodName(tm)) ? c: ""];

@@ -93,7 +93,7 @@ int hbciVersionFromString(NSString* s)
 		else {
 			bankUsers = [hbciClient users ];
 			[bankUserController setContent: bankUsers ];
-			[bankController updateBankAccounts: [hbciClient accountsByUser:currentUser ] ];
+			[bankController updateBankAccounts: [hbciClient accountsByBankCode:currentUser.bankCode ] ];
 		}
 	}
 }

@@ -206,4 +206,16 @@ static HBCIClient *client = nil;
 	return accounts;
 }
 
+-(NSArray*)accountsByBankCode:(NSString*)bankCode
+{
+	NSMutableArray *accounts = [NSMutableArray arrayWithCapacity:10 ];
+	for(ABAccount *account in [self accounts ]) {
+		if ([account.bankCode isEqualToString: bankCode ]) {
+			[accounts addObject: account ];
+		}
+	}
+	return accounts;	
+}
+
+
 @end

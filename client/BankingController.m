@@ -2021,7 +2021,7 @@ static BankingController	*con;
 	BankAccount *account;
 	NSMutableArray *resultList = [[NSMutableArray arrayWithCapacity: [selectedAccounts count ] ] retain ];
 	for(account in selectedAccounts) {
-		if ([account.noAutomaticQuery boolValue] == NO) continue;
+		if ([account.noAutomaticQuery boolValue] == YES) continue;
 		
 		BankQueryResult *result = [[BankQueryResult alloc ] init ];
 		result.accountNumber = account.accountNumber;
@@ -2272,7 +2272,7 @@ static BankingController	*con;
 	}
 	[self updateUnread ];
 	[accountsView setNeedsDisplay: YES ];
-	[transactionsView setNeedsDisplay:YES ];
+	[transactionController rearrangeObjects ];
 }
 
 -(void)migrate

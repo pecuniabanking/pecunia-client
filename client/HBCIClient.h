@@ -34,6 +34,7 @@
 
 -(NSArray*)accounts;
 -(NSArray*)accountsByUser:(ABUser*)user;
+-(NSArray*)accountsByBankCode:(NSString*)bankCode;
 -(NSArray*)users;
 
 // HBCI Methods
