@@ -120,6 +120,7 @@
 
 -(IBAction)printDocument:(id)sender;
 -(IBAction)updateAllAccounts:(id)sender;
+-(IBAction)repairSaldo:(id)sender;
 
 
 -(void)windowWillClose:(NSNotification *)aNotification;

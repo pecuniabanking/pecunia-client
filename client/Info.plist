@@ -23,7 +23,7 @@
 	<key>CFBundleSignature</key>
 	<string>EMMI</string>
 	<key>CFBundleVersion</key>
-	<string>0.3.6</string>
+	<string>0.3.7</string>
 	<key>HPDBookIconPath</key>
 	<string>Vespasian</string>
 	<key>NSMainNibFile</key>

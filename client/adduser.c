@@ -231,7 +231,7 @@ int addUser(AB_BANKING *ab,
     AB_User_SetUserId(user, luserId);
     AB_User_SetCustomerId(user, lcustomerId);
     AH_User_SetTokenType(user, tokenType);
-    AH_User_SetTokenName(user, tokenName);
+    AH_User_SetTanMediumId(user, tokenName);
     AH_User_SetTokenContextId(user, cid);
     AH_User_SetCryptMode(user, cm);
 // IMPORTANT!!!

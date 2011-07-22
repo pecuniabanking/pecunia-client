@@ -2253,6 +2253,33 @@ static BankingController	*con;
 	}
 }
 
+-(IBAction)repairSaldo:(id)sender
+{
+	NSError *error = nil;
+	BankAccount *account = nil;
+	Category* cat = [self currentSelection ];
+	if (cat == nil || cat.accountNumber == nil) return;
+	account = (BankAccount*)cat;
+	
+	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
+	NSArray				*sds = [NSArray arrayWithObject:sd];
+	
+	NSMutableSet *statements = [account mutableSetValueForKey:@"statements" ];
+	NSArray *stats = [[statements allObjects ] sortedArrayUsingDescriptors:sds ];
+	
+	NSDecimalNumber *saldo = account.balance;
+	for(BankStatement *stat in stats) {
+		stat.saldo = saldo;
+		saldo = [saldo decimalNumberBySubtracting:stat.value ];
+	}
+	
+	// save updates
+	if([self.managedObjectContext save: &error ] == NO) {
+		NSAlert *alert = [NSAlert alertWithError:error];
+		[alert runModal];
+	}	
+}
+
 -(IBAction)resetIsNewStatements:(id)sender
 {
 	NSError *error = nil;
