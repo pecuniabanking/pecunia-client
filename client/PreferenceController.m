@@ -145,7 +145,9 @@ void updateColorCache()
 									  NSLocalizedString(@"no", @"No"),
 									  NSLocalizedString(@"yes", @"Yes"), nil
 									  );
-	if(res != NSAlertAlternateReturn) return; 
+	if(res != NSAlertAlternateReturn) return;
+	
+	[Keychain deletePasswordsForService:@"Pecunia PIN" ];
 }
 
 -(IBAction)changeFileLocation: (id)sender

@@ -15,14 +15,13 @@
 	NSPopUpButton			*popUp;
 	BOOL					isHidden;
 	BOOL					withDetails;
-	BOOL					writeConsole;
-	LogLevel				currentLevel;
 	MessageLog				*messageLog;
 }
 
--(void)logLevelChanged: (id)sender;
--(void)clearLog: (id)sender;
--(void)saveLog: (id)sender;
+-(IBAction)writeConsole:(id)sender;
+-(IBAction)logLevelChanged: (id)sender;
+-(IBAction)clearLog: (id)sender;
+-(IBAction)saveLog: (id)sender;
 
 +(LogController*)logController;
 

@@ -6,20 +6,10 @@
 //  Copyright 2009 Frank Emminghaus. All rights reserved.
 //
 
+
 #import "HBCIClient.h"
-#import "BankInfo.h"
-#import "PecuniaError.h"
-#import "BankQueryResult.h"
-#import "BankStatement.h"
-#import "BankAccount.h"
-#import "Transfer.h"
-#import "MOAssistant.h"
-#import "TransferResult.h"
-#import "BankingController.h"
-#import "WorkerThread.h"
-#import "ABUser.h"
-#import "ABAccount.h"
-#import "ABController.h";
+#import "User.h"
+#import "Account.h"
 
 static HBCIClient *client = nil;
 
@@ -30,94 +20,99 @@ static HBCIClient *client = nil;
 	self = [super init ];
 	if(self == nil) return nil;
 	
-	bridge = [[ABController alloc ] init ];	
+#ifdef HBCI4JAVA
+	controller = [[HBCIController alloc ] init ];
+#endif
+	
+#ifdef AQBANKING
+	controller = [[ABController alloc ] init ];
+#endif
+
 	return self;
 }
 
 -(void)dealloc
 {
-	[bridge release ];
-	[bankInfo release ];
-	[countryInfos release ];
+	[controller release ];
 	[super dealloc ];
 }
 
--(void)readCountryInfos
+-(NSArray*)initHBCI
 {
-	NSString *path = [[NSBundle mainBundle ] pathForResource: @"CountryInfo" ofType: @"txt" ];
-	NSString *data = [NSString stringWithContentsOfFile:path ];
-	NSArray *lines = [data componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet ] ];
-	NSString *line;
-	for(line in lines) {
-		NSArray *infos = [line componentsSeparatedByString: @";" ];
-		[countryInfos setObject: infos forKey: [infos objectAtIndex: 2 ] ];
-	}
+	return [controller initHBCI ];
 }
 
--(NSDictionary*)countryInfos
+-(NSArray*)supportedVersions
 {
-	return countryInfos;
+	return [controller supportedVersions ];
 }
 
 -(BankInfo*)infoForBankCode: (NSString*)bankCode inCountry:(NSString*)country
 {
-	return [bridge infoForBankCode:bankCode inCountry:country ];
+	return [controller infoForBankCode:bankCode inCountry:country ];	
 }
+
+-(BankParameter*)getBankParameterForUser:(User*)user
+{
+	return [controller getBankParameterForUser:user ];
+}
+
 
 -(NSString*)bankNameForCode:(NSString*)bankCode inCountry:(NSString*)country
 {
-	return [bridge bankNameForCode:bankCode inCountry:country ];
+	return [controller bankNameForCode:bankCode inCountry:country ];
 }
 
 -(NSString*)bankNameForBIC:(NSString*)bic inCountry:(NSString*)country
 {
-	return [bridge bankNameForBic:bic inCountry:country ];
+	return [controller bankNameForBIC:bic inCountry:country ];
 }
 
-
--(BOOL)addAccount: (BankAccount*)account forUser: (ABUser*)user
+-(PecuniaError*)addAccount: (BankAccount*)account forUser: (User*)user
 {
-	return [bridge addAccount:account forUser:user ];
+	return [controller addAccount:account forUser:user ];
 }
 
--(BOOL)changeAccount:(BankAccount*)account
+-(PecuniaError*)changeAccount:(BankAccount*)account
 {
-	return [bridge changeAccount:account ];
+	return [controller changeAccount:account ];
 }
 
+-(PecuniaError*)setAccounts:(NSArray*)bankAccounts
+{
+	return [controller setAccounts:bankAccounts ];
+}
 
 -(BOOL)isTransferSupported:(TransferType)tt forAccount:(BankAccount*)account
 {
-	return [bridge isTransferSupported: tt forAccount: account ];
+	return [controller isTransferSupported: tt forAccount: account ];
 }
 
 -(BOOL)isStandingOrderSupportedForAccount:(BankAccount*)account
 {
-	return [bridge isStandingOrderSupportedForAccount:account ];
+	return [controller isStandingOrderSupportedForAccount:account ];
 }
 
 
 -(NSArray*)allowedCountriesForAccount:(BankAccount*)account
 {
-	return [bridge allowedCountriesForAccount:account ];
+	return [controller allowedCountriesForAccount:account ];
 }
 
--(NSDictionary*)allCountries
+-(NSDictionary*)countries
 {
-	return [bridge countries ];
+	return [controller countries ];
 }
-
 
 -(TransactionLimits*)limitsForType:(TransferType)tt account:(BankAccount*)account country:(NSString*)ctry
 {
-	return [bridge limitsForType:tt account:account country:ctry ];
+	return [controller limitsForType:tt account:account country:ctry ];
 }
 
 -(TransactionLimits*)standingOrderLimitsForAccount:(BankAccount*)account action:(StandingOrderAction)action
 {
-	return [bridge standingOrderLimitsForAccount:account action:action ];
+	return [controller standingOrderLimitsForAccount:account action:action ];
 }
-
 
 +(HBCIClient*)hbciClient
 {
@@ -125,96 +120,73 @@ static HBCIClient *client = nil;
 	return client;
 }
 
--(NSArray*)accounts
-{
-	return [bridge accounts ];
-}
-
 -(void)getStatements:(NSArray*)resultList
 {
+	[controller getStatements:resultList ];
 	// get statements in separate thread
-	[bridge performSelector:@selector(statementsForAccounts:) onThread:[WorkerThread thread ] withObject:resultList waitUntilDone:NO ];
+//	[bridge performSelector:@selector(statementsForAccounts:) onThread:[WorkerThread thread ] withObject:resultList waitUntilDone:NO ];
 //	[bridge statementsForAccounts:resultList ];
 }
 
--(void)getStandingOrders:(NSArray*)accts
+-(void)getStandingOrders:(NSArray*)resultList
 {
-	[bridge standingOrdersForAccounts:accts ];
+	[controller getStandingOrders:resultList ];
 }
 
--(BOOL)updateStandingOrders:(NSArray*)orders
+-(PecuniaError*)sendStandingOrders:(NSArray*)orders
 {
-	return [bridge updateStandingOrders:orders ];
+	return [controller sendStandingOrders:orders ];
 }
+
 
 -(BOOL)sendTransfers:(NSArray*)transfers
 {
-	return [bridge sendTransfers:transfers ];
+	return [controller sendTransfers:transfers ];
 }
 
 -(BOOL)checkAccount: (NSString*)accountNumber forBank: (NSString*)bankCode inCountry: (NSString*)country
 {
-	return [bridge checkAccount:accountNumber forBank:bankCode inCountry:country ];
+	return [controller checkAccount:accountNumber forBank:bankCode inCountry:country ];
 }
-
 
 -(BOOL)checkIBAN: (NSString*)iban
 {
-	return [bridge checkIBAN:iban ];
+	return [controller checkIBAN:iban ];
 }
 
--(void)changePinTanMethodForUser:(ABUser*)user method:(int)method
+-(PecuniaError*)changePinTanMethodForUser:(User*)user
 {
-	[bridge changePinTanMethodForUser:user method:method ];
+	return [controller changePinTanMethodForUser:user ];
 }
-
 
 -(NSArray*)users
 {
-	return [bridge users ];
+	return [controller users ];
 }
 
--(NSString*)addBankUser:(ABUser*)user
+-(PecuniaError*)addBankUser:(User*)user
 {
-	return [bridge addBankUser: user ];
+	return [controller addBankUser: user ];
 }
 
--(BOOL)deleteBankUser:(ABUser*)user
+-(BOOL)deleteBankUser:(User*)user
 {
-	return [bridge deleteBankUser: user ];
+	return [controller deleteBankUser: user ];
 }
 
--(NSString*)getSystemIDForUser:(ABUser*)user
+-(PecuniaError*)updateBankDataForUser:(User*)user
 {
-	return [bridge getSystemIDForUser:user ];
+	return [controller updateBankDataForUser:user ];
 }
 
--(void)setLogLevel:(LogLevel)level
+-(PecuniaError*)setLogLevel:(LogLevel)level
 {
-	[bridge setLogLevel:level ];
+	return [controller setLogLevel:level ];
 }
 
--(NSArray*)accountsByUser:(ABUser*)user
+-(NSArray*)getAccountsForUser:(User*)user
 {
-	NSMutableArray *accounts = [NSMutableArray arrayWithCapacity:10 ];
-	for(ABAccount *account in [self accounts ]) {
-		if ([account.customerId isEqualToString: user.customerId ] &&
-			[account.userId isEqualToString:user.userId ]) {
-			[accounts addObject: account ];
-		}
-	}
-	return accounts;
-}
-
--(NSArray*)accountsByBankCode:(NSString*)bankCode
-{
-	NSMutableArray *accounts = [NSMutableArray arrayWithCapacity:10 ];
-	for(ABAccount *account in [self accounts ]) {
-		if ([account.bankCode isEqualToString: bankCode ]) {
-			[accounts addObject: account ];
-		}
-	}
-	return accounts;	
+	return [controller getAccountsForUser: user ];
 }
 
 

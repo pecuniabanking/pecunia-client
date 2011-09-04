@@ -13,18 +13,19 @@
 @synthesize function;
 @synthesize description;
 
--(id)initDefault: (int) func
+-(id)initDefault: (NSNumber*) func
 {
 	self = [super init ];
 	if(self == nil) return nil;
-	function = func;
-	description = NSLocalizedString(@"AP83", @"");
+	self.function = func;
+	self.description = NSLocalizedString(@"AP83", @"");
 	return self;
 }
 
 -(void)dealloc
 {
 	[description release ];
+	[function release ];
 	[super dealloc ];
 }
 

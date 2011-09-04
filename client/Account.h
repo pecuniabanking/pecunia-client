@@ -21,6 +21,9 @@
 	NSString	*userId;
 	NSString	*customerId;
 	NSString	*subNumber;
+	
+	BOOL		collTransfer;
+	BOOL		substInternalTransfers;
 }
 
 -(BOOL)isEqual: (id)obj;
@@ -39,5 +42,7 @@
 @property (copy) NSString *customerId;
 @property (copy) NSString *subNumber;
 
+@property (nonatomic, assign) BOOL substInternalTransfers;
+@property (nonatomic, assign) BOOL collTransfer;
 
 @end

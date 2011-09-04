@@ -7,7 +7,7 @@
  *
  */
 
-
+#ifdef AQBANKING
 #ifdef HAVE_I18N
 # ifdef HAVE_LOCALE_H
 #  include <locale.h>
@@ -36,3 +36,5 @@ int getSysId(AB_BANKING *ab,
 			 const char *userId,
 			 const char *customerId,
 			 char **errmsg );
+
+#endif

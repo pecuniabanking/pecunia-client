@@ -112,6 +112,26 @@ static LogController	*_logController = nil;
 	[[HBCIClient hbciClient ] setLogLevel:level ];
 }
 
+-(void)setLogLevel:(LogLevel)level
+{
+	NSInteger idx;
+	
+	if (level <= messageLog.currentLevel) return;
+	switch (level) {
+		case LogLevel_Error: idx = 0; break;
+		case LogLevel_Warning: idx = 1; break;
+		case LogLevel_Notice: idx = 2; break;
+		case LogLevel_Info: idx = 3; break;
+		case LogLevel_Debug: idx = 4; break;
+		case LogLevel_Verbous: idx = 5; break;
+		default: idx = 2;
+	}
+	[popUp selectItemAtIndex:idx ];
+	[messageLog setLevel:level ];
+	[[HBCIClient hbciClient ] setLogLevel:level ];
+}
+
+
 -(void)saveLog: (id)sender
 {
 	NSSavePanel *sp;
@@ -137,6 +157,16 @@ static LogController	*_logController = nil;
 		};
 	}
 }
+
+-(IBAction)writeConsole:(id)sender
+{
+	if ([sender state ] == NSOnState) {
+		messageLog.forceConsole = YES;
+	} else {
+		messageLog.forceConsole = NO;
+	}
+}
+
 
 -(void)clearLog: (id)sender
 {

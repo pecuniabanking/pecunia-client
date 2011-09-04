@@ -6,6 +6,7 @@
 //  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
+#ifdef AQBANKING
 #import <Cocoa/Cocoa.h>
 #include <AqBanking/gwenhywfar/gui.h>
 @class ABInfoBoxController;
@@ -32,3 +33,5 @@
 -(void)clearCacheForToken: (NSString*)token;
 
 @end
+
+#endif

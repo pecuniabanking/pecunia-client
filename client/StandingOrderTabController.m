@@ -15,8 +15,12 @@
 #import "BankQueryResult.h"
 #import "MCEMTableView.h"
 #import "AmountCell.h"
+#import "PecuniaError.h"
+#import "StatusBarController.h"
 
 @implementation StandingOrderTabController
+
+@synthesize requestRunning;
 
 @synthesize oldMonthCycle;
 @synthesize oldMonthDay;
@@ -34,6 +38,7 @@
 	weekDays = [NSArray arrayWithObjects:@"Montag",@"Dienstag",@"Mittwoch",@"Donnerstag",@"Freitag",@"Samstag",@"Sonntag",nil ];
 	[weekDays retain ];
 	accounts = [[NSMutableArray alloc ] initWithCapacity:10 ];
+	self.requestRunning = [NSNumber numberWithBool:NO ];
 	return self;
 }
 
@@ -57,6 +62,7 @@
 {
 	NSError *error = nil;
 	
+	[accounts removeAllObjects ];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:managedObjectContext];
 	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
 	[request setEntity:entityDescription];
@@ -207,7 +213,7 @@
 	}
 	[self preparePurposeFields ];
 	
-	if(self.currentOrder.remoteBankName == nil || [self.currentOrder.remoteBankName length ] == 0) {
+	if(self.currentOrder.remoteBankCode != nil && (self.currentOrder.remoteBankName == nil || [self.currentOrder.remoteBankName length ] == 0 )) {
 		NSString *bankName = [[HBCIClient hbciClient  ] bankNameForCode: self.currentOrder.remoteBankCode inCountry: self.currentOrder.account.country ];
 		if(bankName) self.currentOrder.remoteBankName = bankName;
 	}
@@ -290,6 +296,7 @@
 
 -(void)add
 {
+	[self initAccounts ];
 	int res = [NSApp runModalForWindow:selectAccountWindow ];
 	if (res) {
 		NSArray *sel = [accountsController selectedObjects ];
@@ -380,14 +387,90 @@
 	[oldWeekCycle release], oldWeekCycle = nil;
 	[oldWeekDay release], oldWeekDay = nil;
 
+	[requestRunning release], requestRunning = nil;
+
 	[super dealloc];
+}
+
+-(BOOL)checkOrder:(StandingOrder*)stord
+{
+	BOOL			res;
+	NSNumber		*value;
+	
+	if(stord.remoteName == nil) {
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+						NSLocalizedString(@"AP8", @"Please enter a receiver"),
+						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		return NO;
+	}
+	// do not check remote account for EU transfers, instead IBAN
+	if(stord.remoteAccount == nil) {
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
+						NSLocalizedString(@"AP9", @"Please enter an account number"),
+						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		return NO;
+	}
+	
+	if(stord.remoteBankCode == nil) {
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+						NSLocalizedString(@"AP10", @"Please enter a bank code"),
+						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		return NO;
+	}
+		
+	if( (value = stord.value) == nil ) {
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+						NSLocalizedString(@"AP11", @"Please enter a value"),
+						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		return NO;
+	}
+	
+	if([value doubleValue ] <= 0) {
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+						NSLocalizedString(@"AP12", @"Please enter a value greater 0"),
+						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		return NO;
+	}
+	
+	// purpose?
+	if (stord.purpose1 == nil || [stord.purpose1 length ] == 0) {
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+						NSLocalizedString(@"AP121", @"Please enter a purpose"),
+						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		return NO;
+	}
+				
+	res = [[HBCIClient hbciClient ] checkAccount: stord.remoteAccount 
+										 forBank: stord.remoteBankCode
+									   inCountry: @"DE" ];
+	
+	if(res == NO) {
+		NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
+						NSLocalizedString(@"AP13", @"Account number is not valid"),
+						NSLocalizedString(@"retry", @"Retry"), nil, nil);
+		return NO;
+	}
+
+	return YES;	
 }
 
 -(IBAction)update:(id)sender
 {
 	NSError *error = nil;
 	
-	[[HBCIClient hbciClient ] updateStandingOrders: [orderController arrangedObjects ]];
+	NSArray *orders = [orderController arrangedObjects ];
+	for(StandingOrder *stord in orders) {
+		if ([self checkOrder:stord ] == NO) {
+			[orderController setSelectedObjects:[NSArray arrayWithObject:stord ] ];
+			return;
+		}
+	}
+	
+	PecuniaError *hbciError = [[HBCIClient hbciClient ] sendStandingOrders: orders ];
+	if (hbciError) {
+		[hbciError alertPanel ];
+		return;
+	}
 	
 	// check if there are new orders without key
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"StandingOrder" inManagedObjectContext:managedObjectContext];
@@ -406,6 +489,13 @@
 			[self performSelector:@selector(getOrders:) withObject:self afterDelay:0 ];
 		}
 	}
+	
+	// save updates
+	if([managedObjectContext save: &error ] == NO) {
+		NSAlert *alert = [NSAlert alertWithError:error];
+		[alert runModal];
+		return;
+	}	
 }
 
 -(IBAction)getOrders:(id)sender
@@ -442,6 +532,7 @@
 							result.bankCode = account.bankCode;
 							result.userId = account.userId;
 							result.account = account;
+							account.isStandingOrderSupported = [NSNumber numberWithBool:YES ];
 							[resultList addObject: [result autorelease] ];
 						}					
 					}
@@ -462,6 +553,12 @@
 		}
 	}
 	
+	StatusBarController *sc = [StatusBarController controller ];
+	[sc startSpinning ];
+	self.requestRunning = [NSNumber numberWithBool:YES ];
+	[sc setMessage: NSLocalizedString(@"AP129", @"Load statements...") removeAfter:0 ];
+	[[NSNotificationCenter defaultCenter ] addObserver:self selector:@selector(ordersNotification:) name:PecuniaStatementsNotification object:nil ];
+
 	[[HBCIClient hbciClient ] getStandingOrders: resultList ];
 
 	// next remove orders withoud ID
@@ -489,6 +586,34 @@
 	}
 }
 
+-(void)ordersNotification: (NSNotification*)notification
+{
+	BankQueryResult *result;
+	StatusBarController *sc = [StatusBarController controller ];
+	
+	[[NSNotificationCenter defaultCenter ] removeObserver:self name:PecuniaStatementsNotification object:nil ];
+	
+	NSArray *resultList = [notification object ];
+	if(resultList == nil) {
+		[sc stopSpinning ];
+		[sc clearMessage ];
+		self.requestRunning = [NSNumber numberWithBool:NO ];
+		return;
+	}
+	
+	for(result in resultList) {
+		[result.account updateStandingOrders: result.standingOrders ];
+	}
+	
+	[orderController rearrangeObjects ];
+	
+	[sc stopSpinning ];
+	[sc clearMessage ];
+	self.requestRunning = [NSNumber numberWithBool:NO ];
+	[resultList autorelease ];
+}
+
+
 -(NSView*)mainView
 {
 	return mainView;
@@ -501,5 +626,6 @@
 	
 
 @end
+
 
 

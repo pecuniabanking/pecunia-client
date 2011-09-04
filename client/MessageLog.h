@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 typedef enum {
-	LogLevel_None,
+	LogLevel_None = -1,
 	LogLevel_Error,
 	LogLevel_Warning,
 	LogLevel_Notice,
@@ -21,6 +21,7 @@ typedef enum {
 @protocol MessageLogUI
 
 -(void)addMessage:(NSString*)msg withLevel:(LogLevel)level;
+-(void)setLogLevel:(LogLevel)level;
 
 @end
 

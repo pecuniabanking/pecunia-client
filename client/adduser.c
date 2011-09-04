@@ -1,4 +1,5 @@
 
+#ifdef AQBANKING
 #include "adduser.h"
 #include <aqhbci/user.h>
 
@@ -301,5 +302,6 @@ int addUser(AB_BANKING *ab,
   return 0;
 }
 
+#endif
 
 

@@ -22,8 +22,10 @@ NSString* const MD_Build_Number = @"MD_BUILDNUMBER";
 @implementation MOAssistant
 
 @synthesize dataDir;
+@synthesize ppDir;
 @synthesize dataStorePath;
 @synthesize accountsURL;
+@synthesize importerDir;
 
 static MOAssistant	*assistant = nil;
 //static NSString* oldFile = @"accounts_old.sqlite";
@@ -33,6 +35,8 @@ static NSString *_dataFile = @"/accounts.sqlite";
 static NSString *_imageFile = @"/PecuniaData.sparseimage";
 
 static NSString* lDir = @"~/Library/Application Support/Pecunia/Data";
+static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
+static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 -(id)init
 {
@@ -136,6 +140,20 @@ static NSString* lDir = @"~/Library/Application Support/Pecunia/Data";
 		self.dataDir = defaultDataDir;
 		[defaults setValue: dataDir forKey: @"DataDir" ];
 	}
+	
+	// Passport directory
+	self.ppDir = [[pDir stringByExpandingTildeInPath ] retain];
+	if([fm fileExistsAtPath: ppDir] == NO) {
+		[fm createDirectoryAtPath: ppDir withIntermediateDirectories: YES attributes: nil error: &error ];
+		if(error) @throw error;
+	}
+	
+	// ImExporter Directory
+	self.importerDir = [[iDir stringByExpandingTildeInPath ] retain];
+	if([fm fileExistsAtPath: importerDir ] == NO) {
+		[fm createDirectoryAtPath: importerDir withIntermediateDirectories: YES attributes: nil error: &error ];
+		if(error) @throw error;
+	}
 }
 
 -(void)migrateDataDirFrom02
@@ -185,6 +203,11 @@ static NSString* lDir = @"~/Library/Application Support/Pecunia/Data";
 		[defaults setValue: oldDir forKey: @"DataDir" ];		
 	}
 
+}
+
+-(NSString*)passportDirectory
+{
+	return ppDir;
 }
 
 

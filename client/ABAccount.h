@@ -6,6 +6,7 @@
 //  Copyright 2006 Frank Emminghaus. All rights reserved.
 //
 
+#ifdef AQBANKING
 #import <Cocoa/Cocoa.h>
 #import "Transfer.h"
 
@@ -71,5 +72,5 @@ typedef enum {
 
 @end
 
-
+#endif
 

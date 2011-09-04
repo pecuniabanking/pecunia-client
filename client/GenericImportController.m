@@ -8,6 +8,7 @@
 
 // This is AqBanking-specific !!
 
+#ifdef AQBANKING
 #import "GenericImportController.h"
 #import "ABController.h"
 #import "BankingController.h"
@@ -150,3 +151,4 @@
 
 @end
 
+#endif

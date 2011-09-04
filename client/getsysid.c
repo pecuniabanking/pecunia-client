@@ -1,4 +1,5 @@
 
+#ifdef AQBANKING
 #include "getsysid.h"
 
 #include <AqBanking/gwenhywfar/text.h>
@@ -65,3 +66,5 @@ int getSysId(AB_BANKING *ab,
 	
 	return 0;
 }
+
+#endif

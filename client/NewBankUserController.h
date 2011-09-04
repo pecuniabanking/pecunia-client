@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class ABUser;
+@class User;
 @class BankingController;
 
 @interface NewBankUserController : NSWindowController
@@ -16,12 +16,13 @@
 	IBOutlet NSObjectController		*objController;
 	IBOutlet NSArrayController		*bankUserController;
 	IBOutlet NSArrayController		*tanMethods;
+	IBOutlet NSArrayController		*hbciVersions;
 	IBOutlet NSWindow				*userSheet;
-	IBOutlet ABUser					*currentUser;
+	IBOutlet User					*currentUser;
 	IBOutlet NSMutableDictionary	*bankUserInfo;
-	IBOutlet NSArray				*bankUsers;
+	IBOutlet NSMutableArray			*bankUsers;
 	BankingController				*bankController;
-	NSArray							*hbciVersions;
+//	NSArray							*hbciVersions;
 	NSMutableArray					*banks;
 }
 
@@ -31,9 +32,11 @@
 - (IBAction)add:(id)sender;
 - (IBAction)addEntry:(id)sender;
 - (IBAction)removeEntry:(id)sender;
-- (IBAction)getSystemID: (id)sender;
+- (IBAction)updateBankParameter: (id)sender;
 - (IBAction)showBanks: (id)sender;
 - (IBAction)getUserAccounts: (id)sender;
+- (IBAction)changePinTanMethod: (id)sender;
+- (IBAction)printBankParameter: (id)sender;
 
 - (BOOL)check;
 - (void)readBanks;

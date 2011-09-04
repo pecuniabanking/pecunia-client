@@ -6,6 +6,7 @@
 //  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
+#ifdef AQBANKING
 #import "ABConversion.h"
 #import "ABUser.h"
 #import <aqhbci/user.h>
@@ -609,3 +610,5 @@ AB_TRANSACTION *convertStandingOrder(StandingOrder *stord)
 	}
 	return t;
 }
+
+#endif

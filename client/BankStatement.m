@@ -40,7 +40,7 @@ static NSArray*	catCache = nil;
 @dynamic isNew;
 
 
-BOOL stringEqual(NSString *a, NSString *b)
+BOOL stringEqualIgnoreWhitespace(NSString *a, NSString *b)
 {
 	int i=0, j=0;
 	int l1, l2;
@@ -48,6 +48,8 @@ BOOL stringEqual(NSString *a, NSString *b)
 	NSCharacterSet *cs = [NSCharacterSet whitespaceAndNewlineCharacterSet ];
 	
 	if (a == nil && b == nil) return YES;
+	if (a == nil && b != nil && [b length ] == 0) return YES;
+	if (a != nil && b == nil && [a length ] == 0) return YES;
 	if (a == nil && b != nil) return NO;
 	if (a != nil && b == nil) return NO;
 	l1 = [a length ];
@@ -66,6 +68,23 @@ BOOL stringEqual(NSString *a, NSString *b)
 		} else return NO;	
 	}
 	return YES;
+}
+
+BOOL stringEqualIgnoringMissing(NSString *a, NSString *b)
+{
+	if (a == nil || b == nil) return YES;
+	if ([a length ] == 0 || [b length ] == 0) return YES;
+	return [a isEqualToString:b ];	
+}
+
+BOOL stringEqual(NSString *a, NSString *b)
+{
+	if (a == nil && b == nil) return YES;
+	if (a == nil && b != nil && [b length ] == 0) return YES;
+	if (a != nil && b == nil && [a length ] == 0) return YES;
+	if (a == nil && b != nil) return NO;
+	if (a != nil && b == nil) return NO;
+	return [a isEqualToString:b ];
 }
 
 
@@ -141,13 +160,13 @@ BOOL stringEqual(NSString *a, NSString *b)
 	if ([d1 isEqual: d2 ] == NO) return NO;
 	if(abs([self.value doubleValue ] - [stat.value doubleValue ]) > 0.001) return NO;
 	
-	if (stringEqual(self.purpose, stat.purpose) == NO) return NO;
-	if (stringEqual(self.remoteName, stat.remoteName) == NO) return NO;
+	if (stringEqualIgnoreWhitespace(self.purpose, stat.purpose) == NO) return NO;
+	if (stringEqualIgnoreWhitespace(self.remoteName, stat.remoteName) == NO) return NO;
 
-	if ([self.remoteAccount isEqualToString: stat.remoteAccount ] == NO) return NO;
-	if ([self.remoteBankCode isEqualToString: stat.remoteBankCode ] == NO) return NO;
-	if ([self.remoteBIC isEqualToString: stat.remoteBIC ] == NO) return NO;
-	if ([self.remoteIBAN isEqualToString: stat.remoteIBAN ] == NO) return NO;
+	if (stringEqualIgnoringMissing(self.remoteAccount, stat.remoteAccount) == NO) return NO;
+	if (stringEqualIgnoringMissing(self.remoteBankCode, stat.remoteBankCode) == NO) return NO;
+	if (stringEqualIgnoringMissing(self.remoteBIC, stat.remoteBIC) == NO) return NO;
+	if (stringEqualIgnoringMissing(self.remoteIBAN, stat.remoteIBAN) == NO) return NO;
 	return YES; 
 }
 
@@ -159,13 +178,13 @@ BOOL stringEqual(NSString *a, NSString *b)
 	
 	if ([d1 isEqual: d2 ] == NO) return NO;
 	
-	if (stringEqual(self.purpose, stat.purpose) == NO) return NO;
-	if (stringEqual(self.remoteName, stat.remoteName) == NO) return NO;
+	if (stringEqualIgnoreWhitespace(self.purpose, stat.purpose) == NO) return NO;
+	if (stringEqualIgnoreWhitespace(self.remoteName, stat.remoteName) == NO) return NO;
 	
-	if ([self.remoteAccount isEqualToString: stat.remoteAccount ] == NO) return NO;
-	if ([self.remoteBankCode isEqualToString: stat.remoteBankCode ] == NO) return NO;
-	if ([self.remoteBIC isEqualToString: stat.remoteBIC ] == NO) return NO;
-	if ([self.remoteIBAN isEqualToString: stat.remoteIBAN ] == NO) return NO;
+	if (stringEqualIgnoringMissing(self.remoteAccount, stat.remoteAccount) == NO) return NO;
+	if (stringEqualIgnoringMissing(self.remoteBankCode, stat.remoteBankCode) == NO) return NO;
+	if (stringEqualIgnoringMissing(self.remoteBIC, stat.remoteBIC) == NO) return NO;
+	if (stringEqualIgnoringMissing(self.remoteIBAN, stat.remoteIBAN) == NO) return NO;
 	
 	NSDecimalNumber *d = [[self.value decimalNumberBySubtracting: stat.value ] abs ];
 	if ([d compare:e ] == NSOrderedDescending) return NO;	

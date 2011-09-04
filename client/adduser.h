@@ -6,7 +6,7 @@
  *
  */
 
-
+#ifdef AQBANKING
 #ifdef HAVE_I18N
 # ifdef HAVE_LOCALE_H
 #  include <locale.h>
@@ -41,3 +41,5 @@ int addUser(AB_BANKING *ab,
 			uint32_t    flags,
 			int			hbciVersion,
 			char		**errmsg );
+
+#endif

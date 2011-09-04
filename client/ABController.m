@@ -5,6 +5,8 @@
 //  Created by Frank Emminghaus on 03.01.07.
 //  Copyright 2007 Frank Emminghaus. All rights reserved.
 //
+
+#ifdef AQBANKING
 #import "ABController.h"
 #import "ABAccount.h"
 #import "ABUser.h"
@@ -1326,3 +1328,5 @@ error:
 +(ABController*)controller { return abController; }
 
 @end
+
+#endif

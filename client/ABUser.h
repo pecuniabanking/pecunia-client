@@ -6,6 +6,7 @@
 //  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
+#ifdef AQBANKING
 #import <Cocoa/Cocoa.h>
 
 @class TanMethod;
@@ -47,4 +48,4 @@
 @end
 
 
-
+#endif

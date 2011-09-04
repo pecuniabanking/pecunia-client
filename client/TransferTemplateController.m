@@ -41,7 +41,7 @@
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[countryController setSortDescriptors: sds ];
 
-	NSDictionary *countries = [[HBCIClient hbciClient ] allCountries ];
+	NSDictionary *countries = [[HBCIClient hbciClient ] countries ];
 	[countryController setContent:[countries allValues ] ];
 	// sort descriptor for transactions view
 	[countryController rearrangeObjects ];

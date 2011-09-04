@@ -24,6 +24,9 @@
 @synthesize customerId;
 @synthesize subNumber;
 
+@synthesize collTransfer;
+@synthesize substInternalTransfers;
+
 -(void)dealloc
 {
 	[name release ];

@@ -6,6 +6,7 @@
 //  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
+#ifdef AQBANKING
 #import <AqBanking/aqbanking/banking.h>
 #import <AqBanking/aqbanking/eutransferinfo.h>
 
@@ -30,3 +31,4 @@ NSDecimalNumber *convertValue(const AB_VALUE *val);
 void convertToStandingOrder(const AB_TRANSACTION *t, StandingOrder *stord);
 AB_TRANSACTION *convertStandingOrder(StandingOrder *stord);
 
+#endif

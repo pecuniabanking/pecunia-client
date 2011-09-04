@@ -6,8 +6,11 @@
 //  Copyright 2008 Frank Emminghaus. All rights reserved.
 //
 
+//#import "ChipTanWindowController.h"
+#import "TanMediaWindowController.h"
+
 #import "BankingController.h"
-#import "ABAccount.h"
+#import "Account.h"
 #import "NewBankUserController.h"
 #import "BankStatement.h"
 #import "BankAccount.h"
@@ -49,6 +52,7 @@
 #import "DateAndValutaCell.h"
 #import "AmountCell.h"
 #import "DockIconController.h"
+#import "ImportController.h"
 
 #define _expandedRows @"EMT_expandedRows"
 #define _accountsViewSD @"EMT_accountsSorting"
@@ -96,6 +100,7 @@ static BankingController	*con;
 
 	@try {
 		client = [HBCIClient hbciClient ];
+		[client initHBCI ];
 	}
 	@catch (NSError *error) {
 		NSAlert *alert = [NSAlert alertWithError:error];
@@ -229,6 +234,8 @@ static BankingController	*con;
 		[self updateBankAccounts:nil ];
 	}
 	
+	[self setHBCIAccounts ];
+	
 	[self updateBalances ];
 	
 	// update unread information
@@ -243,15 +250,43 @@ static BankingController	*con;
 	dockIconController = [[DockIconController alloc ] initWithManagedObjectContext:self.managedObjectContext ];
 }
 
+-(void)setHBCIAccounts
+{
+	NSError *error = nil;
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:managedObjectContext];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND userId != nil" ];
+	[request setPredicate:predicate];
+	NSArray *accounts = [self.managedObjectContext executeFetchRequest:request error:&error];
+	if( error != nil || accounts == nil) {
+		NSAlert *alert = [NSAlert alertWithError:error];
+		[alert runModal];
+		return;
+	}
+	PecuniaError *pecError = [[HBCIClient hbciClient ] setAccounts:accounts ];
+	if (pecError) {
+		[pecError alertPanel ];
+	}
+}
+
+
 -(void)updateBankAccounts:(NSArray*)hbciAccounts
 {
 	NSError	*error = nil;
 	int		i,j;
 	BOOL	found;
 	
-	if (hbciAccounts == nil) hbciAccounts = [[HBCIClient hbciClient ] accounts ];	
-//	NSArray* hbciAccounts = [[HBCIClient hbciClient ] accounts ];
-	
+	if (hbciAccounts == nil) {
+		// collect all accounts of all users
+		NSArray *users = [[HBCIClient hbciClient ] users ];
+		hbciAccounts = [NSArray array ];
+		for(User *user in users) {
+			NSArray *userAccounts = [[HBCIClient hbciClient ] getAccountsForUser:user ];
+			hbciAccounts = [hbciAccounts arrayByAddingObjectsFromArray:userAccounts ];
+		}
+	}
+		
 	NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
 	NSArray *tmpAccounts = [self.managedObjectContext executeFetchRequest:request error:&error];
 	if( error != nil || tmpAccounts == nil) {
@@ -262,7 +297,7 @@ static BankingController	*con;
 	NSMutableArray*	bankAccounts = [NSMutableArray arrayWithArray: tmpAccounts ];
 	
 	for(i=0; i < [hbciAccounts count ]; i++) {
-		ABAccount* acc = [hbciAccounts objectAtIndex: i ];
+		Account* acc = [hbciAccounts objectAtIndex: i ];
 		BankAccount *account;
 		
 		//lookup
@@ -297,8 +332,8 @@ static BankingController	*con;
 			bankAccount.userId = acc.userId;
 			bankAccount.customerId = acc.customerId;
 			bankAccount.isBankAcc = [NSNumber numberWithBool: YES ];
-			bankAccount.uid = [NSNumber numberWithUnsignedInt: [acc uid ]];
-			bankAccount.type = [NSNumber numberWithUnsignedInt: [acc type ]];
+//			bankAccount.uid = [NSNumber numberWithUnsignedInt: [acc uid ]];
+//			bankAccount.type = [NSNumber numberWithUnsignedInt: [acc type ]];
 
 			// link
 			bankAccount.parent = bankRoot;
@@ -520,7 +555,7 @@ static BankingController	*con;
 	}
 }
 
--(BankAccount*)getBankNodeWithAccount: (ABAccount*)acc inAccounts: (NSMutableArray*)bankAccounts
+-(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts
 {
 	BankAccount *bankNode = [BankAccount bankRootForCode: acc.bankCode ];
 	
@@ -676,17 +711,22 @@ static BankingController	*con;
 	StatusBarController *sc = [StatusBarController controller ];
 	[sc startSpinning ];
 	[sc setMessage: NSLocalizedString(@"AP41", @"Load statements...") removeAfter:0 ];
-	
+		
+	[[NSNotificationCenter defaultCenter ] addObserver:self selector:@selector(statementsNotification:) name:PecuniaStatementsNotification object:nil ];
 	[[HBCIClient hbciClient ] getStatements: resultList ];
 }
 
--(void)statementsNotification: (NSArray*)resultList
+-(void)statementsNotification: (NSNotification*)notification
 {
 	BankQueryResult *result;
 	StatusBarController *sc = [StatusBarController controller ];
 	BOOL			noStatements;
+	BOOL			isImport = NO;
 	int				count = 0;
+
+	[[NSNotificationCenter defaultCenter ] removeObserver:self name:PecuniaStatementsNotification object:nil ];
 	
+	NSArray *resultList = [notification object ];
 	if(resultList == nil) {
 		[sc stopSpinning ];
 		[sc clearMessage ];
@@ -701,6 +741,7 @@ static BankingController	*con;
 			noStatements = FALSE;
 			[result.account evaluateQueryResult: result ];
 		}
+		if (result.isImport) isImport = YES;
 		[result.account updateStandingOrders: result.standingOrders ];
 	}
 	
@@ -712,7 +753,7 @@ static BankingController	*con;
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
 	BOOL check = [defaults boolForKey: @"manualTransactionCheck" ];
 	
-	if(check && noStatements == FALSE) {
+	if((check || isImport) && noStatements == FALSE) {
 		BSSelectWindowController *con = [[BSSelectWindowController alloc ] initWithResults: resultList ];
 		[con showWindow: self ];
 	} else {
@@ -980,6 +1021,7 @@ static BankingController	*con;
 	}
 }
 
+/*
 -(void)removeDeletedAccounts
 {
 	NSError	*error = nil;
@@ -995,7 +1037,7 @@ static BankingController	*con;
 	NSArray *hbciAccounts = [[HBCIClient hbciClient ] accounts ];
 	for(BankAccount *account in bankAccounts) {
 		BOOL found = NO;
-		for(ABAccount *acc in hbciAccounts) {
+		for(Account *acc in hbciAccounts) {
 			if ([acc.accountNumber isEqualToString: account.accountNumber ] && [acc.bankCode isEqualToString:account.bankCode ]) {
 				found = YES;
 				break;
@@ -1043,6 +1085,7 @@ static BankingController	*con;
 		}
 	}
 }
+*/
 
 // TAB views
 -(IBAction)accountsView: (id)sender 
@@ -1092,6 +1135,16 @@ static BankingController	*con;
 
 -(IBAction)import: (id)sender
 {
+	ImportController *controller = [[ImportController alloc ] init ];
+	int res = [NSApp runModalForWindow:[controller window ] ];
+	if (res == 0) {
+		NSArray *results = [NSArray arrayWithObject: controller.importResult ];
+		NSNotification *notif = [NSNotification notificationWithName:PecuniaStatementsNotification object: results  ];
+		[self statementsNotification:notif ];
+	}
+	
+	
+#ifdef AQBANKING	
 	NSError *error=nil;
 	
 	GenericImportController *con = [[GenericImportController alloc ] init ];
@@ -1106,6 +1159,8 @@ static BankingController	*con;
 		}
 	}
 	[self updateBalances ];
+#endif	
+	
 }
 
 
@@ -1357,7 +1412,7 @@ static BankingController	*con;
 			if ([item action] == @selector(transfer_dated:)) return NO;
 			if ([item action] == @selector(addStatement:)) return NO;
 		}
-		if ([cat isBankAccount ] == YES) {
+		if ([cat isKindOfClass:[BankAccount class ] ] ) {
 			if ([[(BankAccount*)cat isManual ] boolValue] == YES) {
 				if ([item action] == @selector(transfer_local:)) return NO;
 				if ([item action] == @selector(transfer_eu:)) return NO;
@@ -2282,6 +2337,21 @@ static BankingController	*con;
 
 -(IBAction)resetIsNewStatements:(id)sender
 {
+/*	
+    User *user = [[[HBCIClient hbciClient ] users ] lastObject ];
+	
+	TanMediaWindowController *controller = [[TanMediaWindowController alloc ] initWithUser:user message:@"Telefonbezeichnung eingeben" ];
+	int res = [NSApp runModalForWindow: [controller window]];
+*/	
+/*	
+	ChipTanWindowController *controller = [[ChipTanWindowController alloc ] initWithCode:@"1784011040838F043551722F04600908004531302C303071" 
+										   message: @"Smart-TAN plus optisch Challenge 1. Stecken Sie Ihre Chipkarte in den TAN-Generator und druecken ""F""<br>2. Halten Sie den TAN-Generator an die animierte Grafik. Dabei muessen sich die Markierungen<br>   (Dreiecke) von der Grafik mit denen des TAN-Generators beruehren<br>3. Pruefen Sie die Anzeige auf dem Leserdisplay und druecken ""OK""<br>4. Pruefen Sie die Hinweise<br>   ""Empfaenger-Kontonummer (ohne fuehrende Nullen)"", ""Bankleitzahl des Empfaengers"" und ""Betrag""<br>   auf dem Leserdisplay und bestaetigen Sie diese dann jeweils mit ""OK"" auf Ihrem TAN-Generator<br><br>Hinweis: Ueberpruefen Sie die Anzeige des TAN-Generators immer anhand der Original-Transaktions-Daten - z.B. einer Rechnung<br>Bitte geben Sie die auf ihrem TAN-Generator angezeigte TAN hier ein und bestaetigen Sie diese mit ""OK" ];
+	int res = [NSApp runModalForWindow: [controller window]];
+
+*/ 
+//	return;
+	
+	
 	NSError *error = nil;
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
@@ -2304,13 +2374,9 @@ static BankingController	*con;
 
 -(void)migrate
 {
-	// in Migration from 0.2 to 0.3, add additional toolbar items
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
 	BOOL migrated03 = [defaults boolForKey:@"Migrated03" ];
 	if (migrated03 == NO) {
-		[toolbar insertItemWithItemIdentifier:@"catHistory" atIndex:5 ];
-		[toolbar insertItemWithItemIdentifier:@"catPeriods" atIndex:6 ];
-		[toolbar insertItemWithItemIdentifier:@"standingOrders" atIndex:7 ];
 		
 		//initialize width of category table column
 		NSTableColumn *tc = [accountsView tableColumnWithIdentifier: @"name" ];

@@ -6,6 +6,7 @@
 //  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
+#ifdef AQBANKING
 #import "ABUser.h"
 #import "TanMethod.h"
 #import "HBCIClient.h"
@@ -73,5 +74,5 @@
 
 @end
 
-
+#endif
 

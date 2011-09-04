@@ -10,7 +10,7 @@
 
 @class ABWindowController;
 @class AccountsTree;
-@class ABAccount;
+@class Account;
 @class BankAccount;
 @class NewBankUserController;
 @class PreferenceController;
@@ -126,12 +126,12 @@
 -(void)windowWillClose:(NSNotification *)aNotification;
 -(NSArray*)selectedNodes;
 -(BankAccount*)selectBankAccountWithNumber:(NSString*)accNum bankCode:(NSString*)code;
--(void)removeDeletedAccounts;
+//-(void)removeDeletedAccounts;
 -(void)awakeFromNib;
 -(int)AccSize;
 //-(NSManagedObjectContext*)managedObjectContext;
--(BankAccount*)getBankNodeWithAccount: (ABAccount*)acc inAccounts: (NSMutableArray*)bankAccounts;
--(void)statementsNotification: (NSArray*)resultList;
+-(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts;
+-(void)statementsNotification: (NSNotification*)notification;
 -(Category*)getBankingRoot;
 -(void)updateBankAccounts:(NSArray*)hbciAccounts;
 -(void)updateBalances;
@@ -150,6 +150,7 @@
 -(BOOL)checkForUnsentTransfers;
 -(void)migrate;
 -(void)checkBalances:(NSArray*)resultList;
+-(void)setHBCIAccounts;
 
 +(BankingController*)controller;
 @end

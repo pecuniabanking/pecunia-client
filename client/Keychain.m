@@ -112,6 +112,8 @@ static NSMutableDictionary *passwordCache = nil;
 {
 	OSStatus status;
 	SecKeychainItemRef itemRef;
+
+	[passwordCache removeAllObjects ];
 	
 	do {
 		status = SecKeychainFindGenericPassword (

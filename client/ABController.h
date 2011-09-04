@@ -6,6 +6,7 @@
 //  Copyright 2007 Frank Emminghaus. All rights reserved.
 //
 
+#ifdef AQBANKING
 #import <Cocoa/Cocoa.h>
 #include <AqBanking/aqbanking/banking.h>
 #import "ABAccount.h"
@@ -71,3 +72,5 @@
 +(ABController*)controller;
 
 @end
+
+#endif

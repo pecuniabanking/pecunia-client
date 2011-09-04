@@ -6,6 +6,7 @@
 //  Copyright 2011 Frank Emminghaus. All rights reserved.
 //
 
+#ifdef AQBANKING
 #import <Cocoa/Cocoa.h>
 
 @class ImExporter;
@@ -27,3 +28,5 @@
 
 
 @end
+
+#endif

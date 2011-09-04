@@ -6,6 +6,7 @@
 //  Copyright 2006 Frank Emminghaus. All rights reserved.
 //
 
+#ifdef AQBANKING
 #import "ABAccount.h"
 #import "TransactionLimits.h"
 #import "ABController.h"
@@ -94,5 +95,5 @@
 
 @end
 
-
+#endif
 

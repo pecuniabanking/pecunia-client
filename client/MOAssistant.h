@@ -16,6 +16,8 @@
 	NSMutableDictionary			*migRefs;
 	
 	NSString					*dataDir;
+	NSString					*ppDir;
+	NSString					*importerDir;
 	NSString					*dataStorePath;
 	NSURL						*accountsURL;
 	BOOL						encrypted;
@@ -23,6 +25,8 @@
 }
 
 @property (nonatomic, copy) NSString *dataDir;
+@property (nonatomic, copy) NSString *ppDir;
+@property (nonatomic, copy) NSString *importerDir;
 @property (nonatomic, copy) NSString *dataStorePath;
 @property (nonatomic, retain) NSURL *accountsURL;
 
@@ -39,6 +43,7 @@
 -(void)checkPaths;
 
 -(void)migrateDataDirFrom02;
+-(NSString*)passportDirectory;
 
 
 -(NSManagedObjectContext*)context;

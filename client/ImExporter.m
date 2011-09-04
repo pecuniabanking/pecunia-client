@@ -6,6 +6,7 @@
 //  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
+#ifdef AQBANKING
 #import "ImExporter.h"
 
 
@@ -28,4 +29,4 @@
 
 @end
 
-
+#endif

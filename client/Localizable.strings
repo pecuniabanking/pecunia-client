@@ -53,7 +53,7 @@
 "AP25" = "Bitte Bankidentifizierung (BIC) eingeben";
 "AP26" = "Die eingegebene IBAN ist nicht gültig";
 "AP27" = "Erfolg";
-"AP28" = "Systemkennung wurde erfolgreich übermittelt";
+"AP28" = "Bankparameter wurden erfolgreich aktualisiert";
 "AP29" = "Für das Konto %@ gibt es Umsätze die Kategorien zugeordnet sind. Sie können diese Umsätze behalten, so dass die Kategoriewerte nicht verändert werden. Möchten Sie diese Umsätze behalten?";
 "AP30" = "Konto löschen";
 "AP31" = "Löschen nicht möglich";
@@ -147,4 +147,14 @@
 "AP119" = "Kontowarnung";
 "AP120" = "Eines Ihrer Konten hat zu wenig Guthaben bzw. ist ins Minus gekommen!";
 "AP121" = "Bitte einen Verwendungszweck angeben";
-
+"AP122" = "Importeinstellungen mit dem Namen %@ existieren bereits. Möchten Sie sie überschreiben?";
+"AP123" = "Speichern nicht erfolgreich";
+"AP124" = "Die Datei %@ konnte nicht gespeichert werden!";
+"AP125" = "Bitte Konto auswählen";
+"AP126" = "Die Angabe einer Importdatei fehlt";
+"AP127" = "Importfehler";
+"AP128" = "Datei %@ existiert nicht!";
+"AP129" = "Daueraufträge holen...";
+"AP130" = "Java nicht gefunden";
+"AP131" = "Für die Ausführung von Pecunia ist Java Version 1.6.0 oder höher erforderlich. Auf Ihrem System ist Java nicht installiert. Bitte installieren Sie zunächst die Java Runtime Umgebung (JRE)";
+ 

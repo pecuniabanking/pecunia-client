@@ -40,8 +40,11 @@
 	NSNumber						*oldMonthDay;
 	NSNumber						*oldWeekCycle;
 	NSNumber						*oldWeekDay;
+	
+	NSNumber						*requestRunning;
 }
 
+@property (nonatomic, retain) NSNumber *requestRunning;
 @property (nonatomic, retain) NSNumber *oldMonthCycle;
 @property (nonatomic, retain) NSNumber *oldMonthDay;
 @property (nonatomic, retain) NSNumber *oldWeekCycle;
@@ -69,5 +72,6 @@
 
 
 @end
+
 
 

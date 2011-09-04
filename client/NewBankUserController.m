@@ -8,19 +8,20 @@
 
 #import "NewBankUserController.h"
 #import "ABController.h"
-#import "ABUser.h"
+#import "User.h"
 #import "BankingController.h"
 #import "InstitutesController.h"
 #import "HBCIClient.h"
+#import "PecuniaError.h"
+#import "LogController.h"
+#import "BankParameter.h"
 
-int hbciVersionFromString(NSString* s)
+NSString *hbciVersionFromString(NSString* s)
 {
-	if([s isEqualToString: @"2.0.1" ]) return 201;
-	if([s isEqualToString: @"2.1" ]) return 201;
-	if([s isEqualToString: @"2.2" ]) return 220;
-	if([s isEqualToString: @"3.0" ]) return 300;
-	if([s isEqualToString: @"4.0" ]) return 400;
-	return 220;
+	if([s isEqualToString: @"2.2" ]) return @"220";
+	if([s isEqualToString: @"3.0" ]) return @"300";
+	if([s isEqualToString: @"4.0" ]) return @"400";
+	return @"220";
 }
 
 
@@ -30,12 +31,18 @@ int hbciVersionFromString(NSString* s)
 {
 	self = [super initWithWindowNibName:@"BankUser"];
 	bankController = con;
-	bankUsers = [[HBCIClient hbciClient ] users ];
-	currentUser = [[ABUser alloc ] init ];
-	currentUser.hbciVersion = 220;
+	bankUsers = [[[HBCIClient hbciClient ] users ] mutableCopy ];
+	currentUser = [[User alloc ] init ];
+	currentUser.hbciVersion = @"220";
 	
 	[self readBanks ];
 	return self;
+}
+
+-(void)awakeFromNib
+{
+	[hbciVersions setContent:[[HBCIClient hbciClient ] supportedVersions ] ];
+	[hbciVersions setSelectedObjects:[NSArray arrayWithObject:currentUser.hbciVersion ] ];
 }
 
 -(void)readBanks
@@ -71,6 +78,13 @@ int hbciVersionFromString(NSString* s)
 	[[self window] close];
 }
 
+-(User*)selectedUser
+{
+	NSArray	*sel = [bankUserController selectedObjects ];
+	if(sel == nil || [sel count ] < 1) return nil;
+	return [sel lastObject ];
+}
+
 - (IBAction)addEntry:(id)sender
 {
 	[NSApp beginSheet: userSheet
@@ -86,23 +100,31 @@ int hbciVersionFromString(NSString* s)
 {
 	HBCIClient *hbciClient = [HBCIClient hbciClient ];
 	if(code == 0) {
-		NSString* err = [hbciClient addBankUser: currentUser ]; 
-		if(err) NSRunAlertPanel(NSLocalizedString(@"AP7", @"HBCI error occured!"), 
-								NSLocalizedString(@"AP73", @""), 
-								NSLocalizedString(@"cancel", @"Cancel"), nil, nil);
+		currentUser.hbciVersion = [[hbciVersions selectedObjects ] lastObject ];
+		PecuniaError *error = [hbciClient addBankUser: currentUser ];
+		if (error) {
+			[error alertPanel ];
+		}
+//		if(res == NO) NSRunAlertPanel(NSLocalizedString(@"AP7", @"HBCI error occured!"), 
+//									  NSLocalizedString(@"AP73", @""), 
+//									  NSLocalizedString(@"cancel", @"Cancel"), nil, nil);
 		else {
-			bankUsers = [hbciClient users ];
-			[bankUserController setContent: bankUsers ];
-			[bankController updateBankAccounts: [hbciClient accountsByBankCode:currentUser.bankCode ] ];
+			[bankUserController addObject:currentUser ];
+//			bankUsers = [hbciClient users ];
+//			[bankUserController setContent: bankUsers ];
+			[bankController updateBankAccounts: [hbciClient getAccountsForUser:currentUser ] ];
+
+			[currentUser autorelease ];
+			currentUser = [[User alloc ] init ];
+			currentUser.hbciVersion = @"220";
 		}
 	}
 }
 
 - (IBAction)removeEntry:(id)sender
 {
-	NSArray	*sel = [bankUserController selectedObjects ];
-	if(sel == nil || [sel count ] < 1) return;
-	ABUser* user = [sel objectAtIndex: 0 ];
+	User* user = [self selectedUser ];
+	if (user == nil) return;
 	
 	if([[HBCIClient hbciClient ] deleteBankUser: user] == TRUE) {
 		[bankUserController remove: self ];
@@ -190,16 +212,15 @@ int hbciVersionFromString(NSString* s)
 	return YES;
 }
 
-- (IBAction)getSystemID: (id)sender
+- (IBAction)updateBankParameter: (id)sender
 {
-	NSArray *sel = [bankUserController selectedObjects ];
-	if(sel == nil || [sel count ] == 0) return;
-	ABUser *user = [sel objectAtIndex: 0 ];
+	User *user = [self selectedUser ];
 	if(user == nil) return;
-	NSString* err = [[HBCIClient hbciClient ] getSystemIDForUser: user ];
-	if(err) NSRunAlertPanel(NSLocalizedString(@"AP7", @"HBCI error occured!"), err, NSLocalizedString(@"cancel", @"Cancel"), nil, nil);
+	
+	PecuniaError *error = [[HBCIClient hbciClient ] updateBankDataForUser: user ];
+	if(error) [error alertPanel ];
 	else NSRunAlertPanel(NSLocalizedString(@"AP27", @"Success"), 
-						 NSLocalizedString(@"AP28", @"SystemID has been transfered successfully"), 
+						 NSLocalizedString(@"AP28", @"Bank parameter have been updated successfully"), 
 						 NSLocalizedString(@"ok", @"Ok"), nil, nil);
 }
 
@@ -231,9 +252,10 @@ int hbciVersionFromString(NSString* s)
 	return YES;
 }
 
+/*
 - (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
 {
-	ABUser *user;
+	User *user;
 	// set content of TanMethod ArrayController before selection changes - otherwise it does not work
 	@try {
 		user = [[bankUserController arrangedObjects ] objectAtIndex: rowIndex ];
@@ -246,6 +268,7 @@ int hbciVersionFromString(NSString* s)
 	}
 	return YES;
 }
+*/
 
 - (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
@@ -257,24 +280,62 @@ int hbciVersionFromString(NSString* s)
 
 - (IBAction)getUserAccounts: (id)sender
 {
-	NSArray *sel = [bankUserController selectedObjects ];
-	if(sel == nil || [sel count ] == 0) return;
-	ABUser *user = [sel objectAtIndex: 0 ];
+	User *user = [self selectedUser ];
 	if(user == nil) return;
-	[bankController updateBankAccounts: [[HBCIClient hbciClient ] accountsByUser:user ] ];
+
+	[bankController updateBankAccounts: [[HBCIClient hbciClient ] getAccountsForUser:user ] ];
 
 	NSRunAlertPanel(NSLocalizedString(@"AP27", @""),
 					NSLocalizedString(@"AP107", @""),
 					NSLocalizedString(@"ok", @"Ok"), 
 					nil, nil,
-					user.customerId);
+					user.userId);
 	
+}
+
+-(IBAction)changePinTanMethod:(id)sender
+{
+	User *user = [self selectedUser ];
+	if(user == nil) return;
+	 PecuniaError *error = [[HBCIClient hbciClient ] changePinTanMethodForUser:user ];
+	if (error) {
+		[error alertPanel ];
+	}
+}
+
+-(IBAction)printBankParameter:(id)sender
+{
+	User *user = [self selectedUser ];
+	if (user == nil) return;
+	LogController *logController = [LogController logController ];
+	MessageLog *log = [MessageLog log ];
+//	[[logController window ] makeKeyAndOrderFront:self ];
+	[logController showWindow:self ];
+	[logController setLogLevel:LogLevel_Info ];
+	BankParameter *bp = [[HBCIClient hbciClient ] getBankParameterForUser: user ];
+	if (bp == nil) {
+		[log addMessage:@"Bankparameter konnten nicht ermittelt werden" withLevel:LogLevel_Error ];
+		return;
+	}
+	[log addMessage:@"Bankparameterdaten:" withLevel:LogLevel_Notice ];
+	NSArray *keys = [bp.bpd  allKeys ];
+	for(NSString *key in keys) {
+		NSString *s = [NSString stringWithFormat:@"%@ = %@", key, [bp.bpd valueForKey:key ]];
+		[log addMessage: s withLevel:LogLevel_Info ];
+	}
+	[log addMessage:@"Anwenderparameterdaten:" withLevel:LogLevel_Notice ];
+	keys = [bp.upd  allKeys ];
+	for(NSString *key in keys) {
+		NSString *s = [NSString stringWithFormat:@"%@ = %@", key, [bp.upd valueForKey:key ]];
+		[log addMessage: s withLevel:LogLevel_Info ];
+	}
 }
 
 
 - (void)dealloc
 {
 	if(currentUser) [currentUser release ];
+	[bankUsers release ];
 	[banks release ];
 	[super dealloc ];
 }

@@ -6,6 +6,7 @@
 //  Copyright 2010 Frank Emminghaus. All rights reserved.
 //
 
+#ifdef AQBANKING
 #import "ABControllerGui.h"
 #import "Keychain.h"
 #import "PasswordWindow.h"
@@ -460,3 +461,5 @@ int LogHook(GWEN_GUI *gui, const char *logDomain, GWEN_LOGGER_LEVEL priority, co
 
 
 @end
+
+#endif
