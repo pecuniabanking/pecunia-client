@@ -15,6 +15,7 @@
 #import "HBCIClient.h"
 #import "Country.h"
 #import "TransferTemplate.h"
+#import "LogController.h"
 
 @implementation TransactionController
 
@@ -228,6 +229,26 @@
 		[alert runModal];
 		return;
 	}
+	
+	if (res == 2) {
+		// show log if wanted
+		NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
+		BOOL showLog = [defaults boolForKey: @"logForTransfers" ];
+		if (showLog) {
+			LogController *logController = [LogController logController ];
+			[logController showWindow:self ];
+			[[logController window ] orderFront:self ];
+		}
+		
+		[[HBCIClient hbciClient ] sendTransfers: [NSArray arrayWithObject: transfer ] ];
+	}
+
+	// save updates
+	if([context save: &error ] == NO) {
+		NSAlert *alert = [NSAlert alertWithError:error];
+		[alert runModal];
+		return;
+	}
 }
 
 - (void)donateWithAccount: (BankAccount*)acc
@@ -327,26 +348,43 @@
 	[templateField setStringValue:@"" ];
 }
 
-
-- (IBAction)transferFinished:(id)sender
+-(BOOL)finalizeTransfer
 {
 	if(transferType == TransferTypeInternal) {
 		// get account from combo
 		int idx = [accountBox indexOfSelectedItem ];
-		if(idx < 0) { NSBeep(); return; }
+		if(idx < 0) { NSBeep(); return NO; }
 		transfer.remoteAccount = [[internalAccounts objectAtIndex: idx ] accountNumber ];
 		transfer.remoteBankCode = [[internalAccounts objectAtIndex: idx ] bankCode ];
+		transfer.remoteBankName = account.bankName;
 	}
 	if(transferType == TransferTypeEU) {
 		int idx = [countryButton indexOfSelectedItem ];
-		if(idx < 0) { NSBeep(); return; }
+		if(idx < 0) { NSBeep(); return NO; }
 		transfer.chargedBy = [NSNumber numberWithInt: [chargeBox indexOfSelectedItem ] + 1 ];
 	}
 	[transferController commitEditing ];
-	if([self check ] == NO) return;
-
+	if([self check ] == NO) return NO;
+	
 	// save as template (if name given)
 	[self saveTemplate ];
+	
+	return YES;
+}
+
+- (IBAction)sendTransfer:(id)sender
+{	
+	if ([self finalizeTransfer ] == NO) return;
+	
+	[templatesDraw close: self ];
+	[window close ];
+	[transferController setContent:nil ];	
+	[NSApp stopModalWithCode:2];
+}
+
+- (IBAction)transferFinished:(id)sender
+{
+	if ([self finalizeTransfer ] == NO) return;
 
 	[templatesDraw close: self ];
 	[window close ];
@@ -357,29 +395,9 @@
 - (IBAction)nextTransfer:(id)sender
 {
 	NSManagedObjectContext	*context = [[MOAssistant assistant ] context ];
-	NSError *error;
+	NSError *error=nil;
 	
-	if(transferType == TransferTypeInternal) {
-		// get account from combo
-		int idx = [accountBox indexOfSelectedItem ];
-		if(idx < 0) { NSBeep(); return; }
-		transfer.remoteAccount = [[internalAccounts objectAtIndex: idx ] accountNumber ];
-		transfer.remoteBankCode = [[internalAccounts objectAtIndex: idx ] bankCode ];
-		transfer.remoteBankName = account.bankName;
-	}
-	if(transferType == TransferTypeEU) {
-		int idx = [countryButton indexOfSelectedItem ];
-		if(idx < 0) { NSBeep(); return; }
-		transfer.chargedBy = [NSNumber numberWithInt: [chargeBox indexOfSelectedItem ] + 1 ];
-	}
-	
-	[transferController commitEditing ];
-	if([self check ] == NO) return;
-	
-	[transfers addObject: transfer ];
-
-	// save as template (if name given)
-	[self saveTemplate ];
+	if ([self finalizeTransfer ] == NO) return;
 	
 	// save updates
 	if([context save: &error ] == NO) {

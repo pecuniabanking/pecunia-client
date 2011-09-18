@@ -99,7 +99,6 @@
 		B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */ = {isa = PBXBuildFile; fileRef = B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */; };
 		B155D92E0BFD04B300904051 /* TransactionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B155D92D0BFD04B300904051 /* TransactionController.m */; };
 		B15900BF129304B30053CB9C /* CategoryPeriodsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B15900BE129304B30053CB9C /* CategoryPeriodsView.m */; };
-		B15FCCEF141422A3000738B6 /* HBCIServer.jar in Frameworks */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; };
 		B15FCCF0141422BD000738B6 /* HBCIServer.jar in CopyFiles */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; };
 		B1659E060EE88B2700998258 /* Transfer_Dated_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B1659E050EE88B2700998258 /* Transfer_Dated_32.png */; };
 		B165B4130D2D8E1A00447DD8 /* Transfers.icns in Resources */ = {isa = PBXBuildFile; fileRef = B165B4120D2D8E1A00447DD8 /* Transfers.icns */; };
@@ -225,8 +224,8 @@
 		B15FCCED14142213000738B6 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = Contents;
-			dstSubfolderSpec = 16;
+			dstPath = ..;
+			dstSubfolderSpec = 7;
 			files = (
 				B15FCCF0141422BD000738B6 /* HBCIServer.jar in CopyFiles */,
 			);
@@ -584,7 +583,6 @@
 				B1F458210F2516C200BAF4E8 /* Sparkle.framework in Frameworks */,
 				B19A86360F3CD17E000FE9B3 /* Security.framework in Frameworks */,
 				B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */,
-				B15FCCEF141422A3000738B6 /* HBCIServer.jar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1445,11 +1443,10 @@
 				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = ./AqBanking.framework/Headers;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
-					./AqBanking.framework/Resources/lib,
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_7)",
 					"\"$(SRCROOT)\"",

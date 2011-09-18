@@ -5,6 +5,7 @@
 //  Created by Frank Emminghaus on 31.12.06.
 //  Copyright 2006 Frank Emminghaus. All rights reserved.
 //
+#ifdef AQBANKING
 
 #import <Cocoa/Cocoa.h>
 #include <AqBanking/gwenhywfar/gui_be.h>
@@ -43,3 +44,5 @@
 -(IBAction)close: (id)sender;
 -(IBAction)abort: (id)sender;
 @end
+
+#endif

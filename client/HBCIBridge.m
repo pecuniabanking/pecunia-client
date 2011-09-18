@@ -186,15 +186,25 @@
 			} else [cmd appendString: s ];
 		}
 		
+		NSRange searchRange;
+		NSRange partRange;
+		
+		searchRange.location = 0;
+		searchRange.length = [cmd length ];
+
 		NSRange r = [cmd rangeOfString: @">\n.<" ];
-		NSString *part = cmd;
 		while(r.location != NSNotFound) {
-			[self parse: [part substringToIndex: r.location+1 ] ];
-			part = [part substringFromIndex: r.location+3 ];
-			r = [part rangeOfString: @">\n.<" ];
+			partRange.location = searchRange.location;
+			partRange.length = r.location-searchRange.location+1;
+			
+			[self parse: [cmd substringWithRange:partRange ] ];
+			
+			searchRange.location = r.location+3;
+			searchRange.length = [cmd length ] - searchRange.location;
+			r = [cmd rangeOfString: @">\n.<" options:NSLiteralSearch range:searchRange ];
 		}
 		
-		[self parse: part ];
+		[self parse: [cmd substringWithRange:searchRange ] ];
 		[cmd setString: @"" ];
 	}
 	[cmd release ];

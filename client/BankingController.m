@@ -1246,7 +1246,7 @@ static BankingController	*con;
 -(IBAction)showLog:(id)sender
 {
 //	[logController performSelector:@selector(showWindow:) onThread:[WorkerThread thread ] withObject:nil waitUntilDone:NO ];
-
+	[logController setLogLevel:LogLevel_Verbous ];
 	[logController showWindow: self ];
 }
 

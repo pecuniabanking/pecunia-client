@@ -31,6 +31,27 @@ static LogController	*_logController = nil;
 	return _logController;
 }
 
+-(void)adjustPopupToLogLevel
+{
+	NSInteger idx;
+	LogLevel level = messageLog.currentLevel;
+	switch (level) {
+		case LogLevel_Error: idx = 0; break;
+		case LogLevel_Warning: idx = 1; break;
+		case LogLevel_Notice: idx = 2; break;
+		case LogLevel_Info: idx = 3; break;
+		case LogLevel_Debug: idx = 4; break;
+		case LogLevel_Verbous: idx = 5; break;
+		default: idx = 2;
+	}
+	[popUp selectItemAtIndex:idx ];	
+}
+
+-(void)awakeFromNib
+{
+	[self adjustPopupToLogLevel ];
+}
+
 
 -(void)windowDidLoad
 {
@@ -114,19 +135,8 @@ static LogController	*_logController = nil;
 
 -(void)setLogLevel:(LogLevel)level
 {
-	NSInteger idx;
-	
 	if (level <= messageLog.currentLevel) return;
-	switch (level) {
-		case LogLevel_Error: idx = 0; break;
-		case LogLevel_Warning: idx = 1; break;
-		case LogLevel_Notice: idx = 2; break;
-		case LogLevel_Info: idx = 3; break;
-		case LogLevel_Debug: idx = 4; break;
-		case LogLevel_Verbous: idx = 5; break;
-		default: idx = 2;
-	}
-	[popUp selectItemAtIndex:idx ];
+	[self adjustPopupToLogLevel ];
 	[messageLog setLevel:level ];
 	[[HBCIClient hbciClient ] setLogLevel:level ];
 }

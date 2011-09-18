@@ -5,6 +5,7 @@
 //  Created by Frank Emminghaus on 30.09.06.
 //  Copyright 2006 Frank Emminghaus. All rights reserved.
 //
+#ifdef AQBANKING
 
 #import "ABInfoBoxController.h"
 
@@ -42,3 +43,5 @@
 }
 
 @end
+
+#endif

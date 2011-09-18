@@ -529,7 +529,10 @@ NSString *escapeSpecial(NSString *s)
 	[cmd appendString: @"</transfers></command>" ];
 	
 	NSArray *resultList = [bridge syncCommand: cmd error: &err ];
-	if (err) return NO;
+	if (err) {
+		[err alertPanel ];
+		return NO;
+	}
 	
 	TransferResult	*result;
 	BOOL allSent = YES;
@@ -618,7 +621,7 @@ NSString *escapeSpecial(NSString *s)
 -(PecuniaError*)setLogLevel:(LogLevel)level
 {
 	PecuniaError *error=nil;
-	NSMutableString	*cmd = [NSMutableString stringWithFormat:@"<command name=\"setLogLevel\"><logLevel>%d</logLevel></command>", level ];
+	NSMutableString	*cmd = [NSMutableString stringWithFormat:@"<command name=\"setLogLevel\"><logLevel>%d</logLevel></command>", level+1 ];
 	[bridge syncCommand: cmd error: &error ];
 	if (error != nil) return error;
 	return nil;

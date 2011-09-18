@@ -54,6 +54,7 @@
 - (IBAction)cancel:(id)sender;
 - (IBAction)getDataFromTemplate:(id)sender;
 - (IBAction)countryDidChange:(id)sender;
+- (IBAction)sendTransfer:(id)sender;
 
 -(void)preparePurposeFields;
 -(void)setManagedObjectContext:(NSManagedObjectContext*)context;

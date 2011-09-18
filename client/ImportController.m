@@ -92,7 +92,6 @@
 	MessageLog	*log = [MessageLog log ];
 	BankAccount	*account;
 	NSManagedObjectContext *context = [[MOAssistant assistant ] memContext ];
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
 	
 	// get settings
 	ImportSettings *settings = [self selectedSettings ];

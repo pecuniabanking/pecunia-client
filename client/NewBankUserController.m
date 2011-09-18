@@ -15,6 +15,7 @@
 #import "PecuniaError.h"
 #import "LogController.h"
 #import "BankParameter.h"
+#import "BankInfo.h"
 
 NSString *hbciVersionFromString(NSString* s)
 {
@@ -42,7 +43,7 @@ NSString *hbciVersionFromString(NSString* s)
 -(void)awakeFromNib
 {
 	[hbciVersions setContent:[[HBCIClient hbciClient ] supportedVersions ] ];
-	[hbciVersions setSelectedObjects:[NSArray arrayWithObject:currentUser.hbciVersion ] ];
+	[hbciVersions setSelectedObjects:[NSArray arrayWithObject:@"220" ] ];
 }
 
 -(void)readBanks
@@ -117,6 +118,7 @@ NSString *hbciVersionFromString(NSString* s)
 			[currentUser autorelease ];
 			currentUser = [[User alloc ] init ];
 			currentUser.hbciVersion = @"220";
+			[objController setContent:currentUser ];
 		}
 	}
 }
@@ -152,25 +154,23 @@ NSString *hbciVersionFromString(NSString* s)
 {
 	NSTextField	*te = [aNotification object ];
 	NSString *bankCode = [te stringValue ];
-	NSString *bankName = [[HBCIClient hbciClient ] bankNameForCode: bankCode inCountry: @"DE" 
-						  ];
-	[currentUser setValue: bankName forKey: @"bankName" ];
-	NSDictionary *dict;
-	for(dict in banks) {
-		if([bankCode isEqualToString: [dict valueForKey: @"bankCode" ] ]) {
-			[currentUser setBankURL: [dict valueForKey: @"bankURL" ] ];
-			// HBCI version
-			currentUser.hbciVersion = hbciVersionFromString([dict valueForKey: @"hbciVersion" ]);
-			break;
+	
+	BankInfo *bi = [[HBCIClient hbciClient ] infoForBankCode:bankCode inCountry:@"DE" ];
+	if (bi) {
+		[currentUser setValue: bi.name forKey: @"bankName" ];
+		[currentUser setBankURL:bi.pinTanURL ];
+	}
+	if (bi.pinTanURL == nil) {
+		NSDictionary *dict;
+		for(dict in banks) {
+			if([bankCode isEqualToString: [dict valueForKey: @"bankCode" ] ]) {
+				[currentUser setBankURL: [dict valueForKey: @"bankURL" ] ];
+				// HBCI version
+				currentUser.hbciVersion = hbciVersionFromString([dict valueForKey: @"hbciVersion" ]);
+				break;
+			}
 		}
 	}
-	
-	/*
-	 GWEN_BUFFER *tbuf;
-	 tbuf=GWEN_Buffer_new(0, 256, 0, 1);
-	 getBankUrl([[ABController abController ] abBankingHandle ], AH_CryptMode_Pintan, [[te stringValue] UTF8String ], tbuf);
-	 GWEN_Buffer_free(tbuf);	
-	 */ 
 }
 
 -(BOOL)check
