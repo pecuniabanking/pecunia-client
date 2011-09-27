@@ -1,4 +1,4 @@
-package org.pecunia.server;
+
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -38,7 +38,6 @@ import org.kapott.hbci.status.*;
 
 import java.lang.reflect.*;
 import org.xmlpull.v1.*;
-
 
 public class HBCIServer {
 	
@@ -201,7 +200,7 @@ public class HBCIServer {
         HBCIUtils.setParam("client.passport.hbciversion.default","plus");
         
         // get countries
-        String countryPath = "CountryInfo.txt";
+        String countryPath = "/CountryInfo.txt";
         InputStream f=HBCIServer.class.getResourceAsStream(countryPath);
         BufferedReader fin = new BufferedReader(new InputStreamReader(f));
         String s;
@@ -217,9 +216,11 @@ public class HBCIServer {
     }
     
     private static String escapeSpecial(String s) {
-    	String r = s.replaceAll("&", "&amp");
-    	r = r.replaceAll("<", "&lt");
-    	r = r.replaceAll(">", "&gt");
+    	String r = s.replaceAll("&", "&amp;");
+    	r = r.replaceAll("<", "&lt;");
+    	r = r.replaceAll(">", "&gt;");
+    	r = r.replaceAll("\"", "&quot;");
+    	r = r.replaceAll("'", "&apos;");
     	return r;
     }
     

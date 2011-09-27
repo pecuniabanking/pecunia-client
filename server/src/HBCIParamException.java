@@ -1,4 +1,4 @@
-package org.pecunia.server;
+
 
 public class HBCIParamException extends RuntimeException {
 	

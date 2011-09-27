@@ -1,4 +1,4 @@
-package org.pecunia.server;
+
 import java.util.ArrayList;
 import java.util.Properties;
 import java.io.FileOutputStream;
@@ -9,6 +9,9 @@ import java.io.Serializable;
 import org.kapott.hbci.passport.*;
 
 public class User implements Serializable {
+/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1572961858013515768L;
 	public String name;
 	public String bankCode;
