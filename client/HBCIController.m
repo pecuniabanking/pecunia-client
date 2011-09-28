@@ -28,6 +28,7 @@
 #import "Country.h"
 #import "ShortDate.h"
 #import "BankParameter.h"
+#import "ProgressWindowController.h"
 
 @implementation HBCIController
 
@@ -43,8 +44,18 @@
 	bankInfo = [[NSMutableDictionary alloc ] initWithCapacity: 10];
 	countries = [[NSMutableDictionary alloc ] initWithCapacity: 50];
 	[self readCountryInfos ]; 
-	
+	progressController = [[ProgressWindowController alloc ] init ];
 	return self;
+}
+
+-(void)startProgress
+{
+    [progressController start ];
+}
+
+-(void)stopProgress
+{
+    [progressController stop ];
 }
 
 -(void)dealloc
@@ -53,6 +64,7 @@
 	[bridge release ];
 	[bankInfo release ];
 	[countries release ];
+    [progressController release ];
 	[super dealloc ];
 }
 
@@ -148,8 +160,11 @@ NSString *escapeSpecial(NSString *s)
 -(BankParameter*)getBankParameterForUser:(User*)user
 {
 	PecuniaError *error=nil;
+    
+    [self startProgress ];
 	NSString *cmd = [NSString stringWithFormat: @"<command name=\"getBankParameter\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
 	BankParameter *bp = [bridge syncCommand:cmd error:&error ];
+    [self stopProgress ];
 	if (error) {
 		[error alertPanel ];
 		return nil;
@@ -486,6 +501,8 @@ NSString *escapeSpecial(NSString *s)
 	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
 	NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfers\"><transfers type=\"list\">" ];
 	NSString *type;
+    
+    [self startProgress ];
 	for(transfer in transfers) {
 		[cmd appendString: @"<transfer>" ];
 		[self appendTag: @"bankCode" withValue: transfer.account.bankCode to: cmd ];
@@ -529,6 +546,7 @@ NSString *escapeSpecial(NSString *s)
 	[cmd appendString: @"</transfers></command>" ];
 	
 	NSArray *resultList = [bridge syncCommand: cmd error: &err ];
+    [self stopProgress ];
 	if (err) {
 		[err alertPanel ];
 		return NO;
@@ -643,11 +661,11 @@ NSString *escapeSpecial(NSString *s)
 			fromString = [dateFormatter stringFromDate:fromDate ];
 			[fromDate release ];
 		}
-		fromString=@"2000-01-01";
 		[cmd appendFormat:@"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>", result.bankCode, result.accountNumber ];
 		[cmd appendFormat:@"<userId>%@</userId><fromDate>%@</fromDate></accinfo>", result.userId, fromString ];
 	}
 	[cmd appendString:@"</accinfolist></command>" ];
+    [self startProgress ];
 	[bridge asyncCommand: cmd sender: self ];
 }
 
@@ -686,6 +704,8 @@ NSString *escapeSpecial(NSString *s)
 		}
 	}
 	
+    [self stopProgress ];
+    
 	if(err) {
 		[err alertPanel ];
 		NSNotification *notification = [NSNotification notificationWithName:PecuniaStatementsNotification object:nil ];
@@ -711,6 +731,7 @@ NSString *escapeSpecial(NSString *s)
 		[cmd appendString:@"</accinfo>" ];
 	}
 	[cmd appendString:@"</accinfolist></command>" ];
+    [self startProgress ];
 	[bridge asyncCommand: cmd sender: self ];
 }
 
@@ -757,6 +778,7 @@ NSString *escapeSpecial(NSString *s)
 	PecuniaError *err = nil;
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 
+    [self startProgress ];
 	for(StandingOrder *stord in orders) {
 		// todo: don't send unchanged orders
 		if ([stord.isChanged boolValue] == NO && [stord.toDelete boolValue ] == NO) continue;
@@ -772,6 +794,7 @@ NSString *escapeSpecial(NSString *s)
 
 			NSDictionary *result = [bridge syncCommand: cmd error: &err  ];
 			if (err) {
+                [self stopProgress ];
 				return err;
 			}
 			stord.isSent = [result valueForKey:@"isOk" ];
@@ -787,6 +810,7 @@ NSString *escapeSpecial(NSString *s)
 			
 			NSNumber *result = [bridge syncCommand: cmd error: &err  ];
 			if (err) {
+                [self stopProgress ];
 				return err;
 			}
 			stord.isSent = result;
@@ -802,6 +826,7 @@ NSString *escapeSpecial(NSString *s)
 			
 			NSNumber *result = [bridge syncCommand: cmd error: &err  ];
 			if (err) {
+                [self stopProgress ];
 				return err;
 			}
 			stord.isSent = result;
@@ -810,6 +835,7 @@ NSString *escapeSpecial(NSString *s)
 			}
 		}		
 	}
+    [self stopProgress ];
 	return nil;
 }
 

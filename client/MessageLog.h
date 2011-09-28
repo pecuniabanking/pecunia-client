@@ -27,7 +27,7 @@ typedef enum {
 
 
 @interface MessageLog : NSObject {
-	id<MessageLogUI>	logUI;
+    NSMutableSet        *logUIs;
 	NSDateFormatter		*formatter;
 	BOOL				forceConsole;
 	LogLevel			currentLevel;
@@ -37,7 +37,7 @@ typedef enum {
 @property (nonatomic, readonly, assign) LogLevel currentLevel;
 
 -(void)registerLogUI:(id<MessageLogUI>)ui;
--(void)unregisterLogUI;
+-(void)unregisterLogUI:(id<MessageLogUI>)ui;
 -(void)addMessage:(NSString*)msg withLevel:(LogLevel)level;
 -(void)setLevel:(LogLevel)level;
 

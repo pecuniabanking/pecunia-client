@@ -504,9 +504,7 @@
 	BankAccount *account;
 	NSMutableArray *resultList;
 
-	if ([accounts count] == 0) {
-		[self initAccounts ];
-	}
+    [self initAccounts ];
 	
 	if ([accounts count] == 0) {
 		// no accounts for StandingOrder found...check?

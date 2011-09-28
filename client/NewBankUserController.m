@@ -16,6 +16,8 @@
 #import "LogController.h"
 #import "BankParameter.h"
 #import "BankInfo.h"
+#import "BankAccount.h"
+#import "MOAssistant.h"
 
 NSString *hbciVersionFromString(NSString* s)
 {
@@ -129,6 +131,21 @@ NSString *hbciVersionFromString(NSString* s)
 	if (user == nil) return;
 	
 	if([[HBCIClient hbciClient ] deleteBankUser: user] == TRUE) {
+        // remove userId from all related bank accounts
+        NSError *error=nil;
+        NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:context ];
+        NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+        [request setEntity:entityDescription];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"bankCode = %@ AND userId = %@", user.bankCode, user.userId ];
+        [request setPredicate:predicate];
+        NSArray *accounts = [context executeFetchRequest:request error:&error];
+        if (error == nil) {
+            for (BankAccount *account in accounts) {
+                account.userId = nil;
+                account.customerId = nil;
+            }
+        }
 		[bankUserController remove: self ];
 	}
 }

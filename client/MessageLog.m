@@ -21,31 +21,32 @@ static MessageLog *_messageLog;
 	if (self == nil) return nil;
 	formatter = [[NSDateFormatter alloc ] init ];
 	[formatter setDateFormat:@"HH:mm:ss.SSS"];
+    logUIs = [[NSMutableSet alloc ] initWithCapacity:5];
 	return self;
 }
 
 -(void)registerLogUI:(id<MessageLogUI>)ui
 {
-	logUI = ui;
+    [logUIs addObject:ui ];
 }
 
--(void)unregisterLogUI
+-(void)unregisterLogUI:(id<MessageLogUI>)ui
 {
-	logUI = nil;
+    [logUIs removeObject: ui ];
 }
 
 -(void)addMessage:(NSString*)msg withLevel:(LogLevel)level
 {
-	if (level > currentLevel) return;
-	if (logUI == nil && forceConsole == NO) return;
+//	if (level > currentLevel) return;
+	if ([logUIs count ] == 0 && forceConsole == NO) return;
 	NSDate *date = [NSDate date ];
 	NSString *message= [NSString stringWithFormat: @"<%@> %@\n", [formatter stringFromDate:date ] , msg ];
 	if (forceConsole) {
 		NSLog(@"%@", message);
 	}
-	if (logUI) {
+    for(id<MessageLogUI> logUI in logUIs) {
 		[logUI addMessage:message withLevel:level ];
-	}
+    }
 }
 
 -(void)addMessageFromDict:(NSDictionary*)data
@@ -65,6 +66,7 @@ static MessageLog *_messageLog;
 -(void)dealloc
 {
 	[formatter release ];
+    [logUIs release ];
 	[super dealloc ];
 }
 

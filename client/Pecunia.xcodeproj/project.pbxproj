@@ -43,6 +43,8 @@
 		B120E40F0EB0FC0E00FC5A6F /* cake.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E40E0EB0FC0E00FC5A6F /* cake.png */; };
 		B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F09E0C36F3E8001065C2 /* BankStatement.m */; };
 		B124F1110C371384001065C2 /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F1100C371384001065C2 /* BankAccount.m */; };
+		B1273CF2142920DF0009B7FF /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1273CF1142920DF0009B7FF /* ProgressWindow.xib */; };
+		B1273CF6142921000009B7FF /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1273CF5142921000009B7FF /* ProgressWindowController.m */; };
 		B12A497710BDD23D002CC63E /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A496A10BDD23D002CC63E /* Account.m */; };
 		B12A499010BDD6A2002CC63E /* HBCIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A498F10BDD6A2002CC63E /* HBCIClient.m */; };
 		B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
@@ -297,6 +299,9 @@
 		B124F09E0C36F3E8001065C2 /* BankStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatement.m; sourceTree = "<group>"; };
 		B124F10F0C371384001065C2 /* BankAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccount.h; sourceTree = "<group>"; };
 		B124F1100C371384001065C2 /* BankAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccount.m; sourceTree = "<group>"; };
+		B1273CF1142920DF0009B7FF /* ProgressWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressWindow.xib; sourceTree = "<group>"; };
+		B1273CF4142921000009B7FF /* ProgressWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindowController.h; sourceTree = "<group>"; };
+		B1273CF5142921000009B7FF /* ProgressWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressWindowController.m; sourceTree = "<group>"; };
 		B12A496910BDD23D002CC63E /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
 		B12A496A10BDD23D002CC63E /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
 		B12A498E10BDD6A2002CC63E /* HBCIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBCIClient.h; sourceTree = "<group>"; };
@@ -627,6 +632,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				B1273CF1142920DF0009B7FF /* ProgressWindow.xib */,
 			);
 			name = Pecunia;
 			sourceTree = "<group>";
@@ -839,6 +845,8 @@
 			children = (
 				B14D4C7113DB608D00843BE6 /* TanMethodListController.h */,
 				B14D4C7213DB608D00843BE6 /* TanMethodListController.m */,
+				B1273CF4142921000009B7FF /* ProgressWindowController.h */,
+				B1273CF5142921000009B7FF /* ProgressWindowController.m */,
 			);
 			name = Dialogs;
 			sourceTree = "<group>";
@@ -1297,6 +1305,7 @@
 				B1B417E113F06CC600BEEC8F /* TanMediaWindow.xib in Resources */,
 				B1AA633114096E6600ADE1D0 /* ImportSettings.xib in Resources */,
 				B1AA640E140C07E600ADE1D0 /* ImportWindow.xib in Resources */,
+				B1273CF2142920DF0009B7FF /* ProgressWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1419,6 +1428,7 @@
 				B1AA6337140990EF00ADE1D0 /* ImportSettings.m in Sources */,
 				B1AA633C140995F100ADE1D0 /* ImportSettingsController.m in Sources */,
 				B1AA640C140C074E00ADE1D0 /* ImportController.m in Sources */,
+				B1273CF6142921000009B7FF /* ProgressWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

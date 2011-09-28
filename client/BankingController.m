@@ -2337,22 +2337,8 @@ static BankingController	*con;
 
 -(IBAction)resetIsNewStatements:(id)sender
 {
-/*	
-    User *user = [[[HBCIClient hbciClient ] users ] lastObject ];
-	
-	TanMediaWindowController *controller = [[TanMediaWindowController alloc ] initWithUser:user message:@"Telefonbezeichnung eingeben" ];
-	int res = [NSApp runModalForWindow: [controller window]];
-*/	
-/*	
-	ChipTanWindowController *controller = [[ChipTanWindowController alloc ] initWithCode:@"1784011040838F043551722F04600908004531302C303071" 
-										   message: @"Smart-TAN plus optisch Challenge 1. Stecken Sie Ihre Chipkarte in den TAN-Generator und druecken ""F""<br>2. Halten Sie den TAN-Generator an die animierte Grafik. Dabei muessen sich die Markierungen<br>   (Dreiecke) von der Grafik mit denen des TAN-Generators beruehren<br>3. Pruefen Sie die Anzeige auf dem Leserdisplay und druecken ""OK""<br>4. Pruefen Sie die Hinweise<br>   ""Empfaenger-Kontonummer (ohne fuehrende Nullen)"", ""Bankleitzahl des Empfaengers"" und ""Betrag""<br>   auf dem Leserdisplay und bestaetigen Sie diese dann jeweils mit ""OK"" auf Ihrem TAN-Generator<br><br>Hinweis: Ueberpruefen Sie die Anzeige des TAN-Generators immer anhand der Original-Transaktions-Daten - z.B. einer Rechnung<br>Bitte geben Sie die auf ihrem TAN-Generator angezeigte TAN hier ein und bestaetigen Sie diese mit ""OK" ];
-	int res = [NSApp runModalForWindow: [controller window]];
-
-*/ 
-//	return;
-	
-	
 	NSError *error = nil;
+
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
 	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];

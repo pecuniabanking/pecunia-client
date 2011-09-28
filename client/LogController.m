@@ -68,7 +68,7 @@ static LogController	*_logController = nil;
 - (void)windowWillClose:(NSNotification *)notification
 {
 	isHidden = YES;
-	[messageLog unregisterLogUI ];
+	[messageLog unregisterLogUI:self ];
 }
 
 -(void)showWindow:(id)sender

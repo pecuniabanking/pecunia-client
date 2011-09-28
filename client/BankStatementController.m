@@ -254,6 +254,10 @@
 -(IBAction)dateChanged:(id)sender
 {
 	NSDate *date = [(NSDatePicker*)sender dateValue ];
+    if (sender == dateField) {
+        [valutaField setDateValue:date ];
+    }
+    
 	if (lastDate == nil && [[ShortDate dateWithDate:date ] compare: [ShortDate dateWithDate:lastStatement.date ] ] != NSOrderedAscending) {
 		if(currentStatement.value) currentStatement.saldo = [lastStatement.saldo decimalNumberByAdding:currentStatement.value ]; 
 	} else {
@@ -277,6 +281,8 @@
 	} else {
 		[valueField setTextColor:[NSColor blackColor ] ];
 	}
+    negateValue = ([sender state ] == NSOnState);
+    [self updateSaldo ];
 }
 
 -(BOOL)check
