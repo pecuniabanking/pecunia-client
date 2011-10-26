@@ -1138,11 +1138,11 @@ static BankingController	*con;
 	ImportController *controller = [[ImportController alloc ] init ];
 	int res = [NSApp runModalForWindow:[controller window ] ];
 	if (res == 0) {
-		NSArray *results = [NSArray arrayWithObject: controller.importResult ];
+		NSArray *results = [[NSArray arrayWithObject: controller.importResult ] retain ];
 		NSNotification *notif = [NSNotification notificationWithName:PecuniaStatementsNotification object: results  ];
 		[self statementsNotification:notif ];
 	}
-	
+	[controller release ];
 	
 #ifdef AQBANKING	
 	NSError *error=nil;
@@ -1342,6 +1342,11 @@ static BankingController	*con;
     return [outlineView persistentObjectForItem: item ];
 }
 
+-(id)outlineView:(NSOutlineView *)outlineView itemForPersistentObject:(id)object
+{
+    return nil;
+}
+
 -(IBAction)doSearch: (id)sender
 {
 	NSTextField	*te = sender;
@@ -1395,6 +1400,7 @@ static BankingController	*con;
 		if ([item action] == @selector(transfer_local:)) return NO;
 		if ([item action] == @selector(transfer_eu:)) return NO;
 		if ([item action] == @selector(transfer_dated:)) return NO;
+		if ([item action] == @selector(transfer_internal:)) return NO;
 		if ([item action] == @selector(splitStatement:)) return NO;
 		if ([item action] == @selector(donate:)) return NO;
 		if ([item action] == @selector(deleteStatement:)) return NO;
@@ -1410,6 +1416,7 @@ static BankingController	*con;
 			if ([item action] == @selector(transfer_local:)) return NO;
 			if ([item action] == @selector(transfer_eu:)) return NO;
 			if ([item action] == @selector(transfer_dated:)) return NO;
+			if ([item action] == @selector(transfer_internal:)) return NO;
 			if ([item action] == @selector(addStatement:)) return NO;
 		}
 		if ([cat isKindOfClass:[BankAccount class ] ] ) {
@@ -1417,6 +1424,7 @@ static BankingController	*con;
 				if ([item action] == @selector(transfer_local:)) return NO;
 				if ([item action] == @selector(transfer_eu:)) return NO;
 				if ([item action] == @selector(transfer_dated:)) return NO;
+                if ([item action] == @selector(transfer_internal:)) return NO;
 			} else {
 				if ([item action] == @selector(addStatement:)) return NO;
 			}
@@ -1458,16 +1466,27 @@ static BankingController	*con;
 // Dragging Bank Statements
 - (BOOL)tableView:(NSTableView *)tv writeRowsWithIndexes:(NSIndexSet*)rowIndexes toPasteboard:(NSPasteboard*)pboard
 {
-	unsigned int		idx;
+	unsigned int		idx[30], count, i;
+	NSRange				range;
 	StatCatAssignment	*stat;
-	
+	NSMutableArray		*uris = [NSMutableArray arrayWithCapacity: 10 ];
+
+    range.location = 0;
+	range.length = 100000;
+
     // Copy the row numbers to the pasteboard.
 	NSArray *objs = [transactionController arrangedObjects ];
 	
-	[rowIndexes getIndexes: &idx maxCount:1 inIndexRange: nil ];
-	stat = [objs objectAtIndex: idx ];
-	NSURL *uri = [[stat objectID] URIRepresentation];
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject: uri];
+    do {
+		count = [rowIndexes getIndexes: idx maxCount:30 inIndexRange: &range ];
+		for(i=0; i < count; i++) {
+			stat = [objs objectAtIndex: idx[i] ];
+			NSURL *uri = [[stat objectID] URIRepresentation];
+			[uris addObject: uri ];
+		}
+	} while(count > 0);    
+    
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject: uris];
     [pboard declareTypes:[NSArray arrayWithObject: BankStatementDataType] owner:self];
     [pboard setData:data forType: BankStatementDataType];
 	if([[self currentSelection ] isBankAccount ]) [tv setDraggingSourceOperationMask: NSDragOperationCopy | NSDragOperationMove | NSDragOperationGeneric forLocal: YES ];
@@ -1584,42 +1603,43 @@ static BankingController	*con;
 	NSString *type = [pboard availableTypeFromArray:[NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil]];
 	if(type == nil) return NO;
 	NSData *data = [pboard dataForType: type ];
-	NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data ];
-	
-	NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
-	if(moID == nil) return NO;
-	// assume moID non-nil...
 	
 	if([type isEqual: BankStatementDataType ]) {
 		NSDragOperation mask = [info draggingSourceOperationMask];
-		StatCatAssignment *stat = (StatCatAssignment*)[self.managedObjectContext objectWithID: moID];
-		
-		if([[self currentSelection ] isBankAccount ]) {
-			// if already assigned or copy modifier is pressed, copy the complete bank statement amount - else assign residual amount (move)
-			if ([cat isBankAccount ]) {
-				// drop on a manual account
-				BankAccount *account = (BankAccount*)cat;
-				[account copyStatement:stat.statement ];
-				[[Category bankRoot ] rollup ];
-
-			} else {
-				if(mask == NSDragOperationCopy || [stat.statement.isAssigned boolValue]) [stat.statement assignToCategory: cat ];
-				else if(mask == NSDragOperationGeneric) {
-					BOOL negate = NO;
-					NSDecimalNumber *residual = stat.statement.nassValue;
-					if ([residual compare:[NSDecimalNumber zero ] ] == NSOrderedAscending) negate = YES;
-					if (negate) residual = [[NSDecimalNumber zero ] decimalNumberBySubtracting:residual ];				
-					[assignValueField setObjectValue:residual ];
-					[NSApp runModalForWindow: assignValueWindow ];
-					residual = [NSDecimalNumber decimalNumberWithDecimal: [[assignValueField objectValue ] decimalValue ]];
-					if (negate) residual = [[NSDecimalNumber zero ] decimalNumberBySubtracting:residual ];				
-					[stat.statement assignAmount:residual toCategory:cat ];
-				} else [stat.statement assignAmount: stat.statement.nassValue toCategory: cat ];
-			}
-		} else {
-			if(mask == NSDragOperationCopy) [stat.statement assignAmount: stat.value toCategory: cat ];
-			else [stat moveToCategory: cat ];
-		}
+		NSArray *uris = [NSKeyedUnarchiver unarchiveObjectWithData: data ];
+        
+        for(NSURL *uri in uris) {
+            NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
+            if(moID == nil) continue;
+            StatCatAssignment *stat = (StatCatAssignment*)[self.managedObjectContext objectWithID: moID];
+            
+    		if([[self currentSelection ] isBankAccount ]) {
+                // if already assigned or copy modifier is pressed, copy the complete bank statement amount - else assign residual amount (move)
+                if ([cat isBankAccount ]) {
+                    // drop on a manual account
+                    BankAccount *account = (BankAccount*)cat;
+                    [account copyStatement:stat.statement ];
+                    [[Category bankRoot ] rollup ];
+                    
+                } else {
+                    if(mask == NSDragOperationCopy || [stat.statement.isAssigned boolValue]) [stat.statement assignToCategory: cat ];
+                    else if(mask == NSDragOperationGeneric) {
+                        BOOL negate = NO;
+                        NSDecimalNumber *residual = stat.statement.nassValue;
+                        if ([residual compare:[NSDecimalNumber zero ] ] == NSOrderedAscending) negate = YES;
+                        if (negate) residual = [[NSDecimalNumber zero ] decimalNumberBySubtracting:residual ];				
+                        [assignValueField setObjectValue:residual ];
+                        [NSApp runModalForWindow: assignValueWindow ];
+                        residual = [NSDecimalNumber decimalNumberWithDecimal: [[assignValueField objectValue ] decimalValue ]];
+                        if (negate) residual = [[NSDecimalNumber zero ] decimalNumberBySubtracting:residual ];				
+                        [stat.statement assignAmount:residual toCategory:cat ];
+                    } else [stat.statement assignAmount: stat.statement.nassValue toCategory: cat ];
+                }
+            } else {
+                if(mask == NSDragOperationCopy) [stat.statement assignAmount: stat.value toCategory: cat ];
+                else [stat moveToCategory: cat ];
+            }
+        }
 		
 		// update values including rollup
 		[Category updateCatValues ];
@@ -1627,6 +1647,9 @@ static BankingController	*con;
 		// update tableview to maybe new row colors
 		[transactionsView display ];
 	} else {
+        NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data ];        
+        NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
+        if (moID == nil) return NO;
 		Category *scat = (Category*)[self.managedObjectContext objectWithID: moID];
 		[scat setValue: cat forKey: @"parent" ];
 		[[Category catRoot ] rollup ];

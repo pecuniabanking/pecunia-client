@@ -25,6 +25,7 @@
 	account.currency = acc.currency;
 	account.collTransfer = acc.collTransfer;
 	account.isStandingOrderSupported = acc.isStandingOrderSupported;
+    account.noAutomaticQuery = acc.noAutomaticQuery;
 	account.userId = acc.userId;
 
 	return self;
@@ -69,6 +70,7 @@
 	changedAccount.name = account.name;
 	changedAccount.collTransfer = account.collTransfer;
 	changedAccount.isStandingOrderSupported = account.isStandingOrderSupported;
+    changedAccount.noAutomaticQuery = account.noAutomaticQuery;
 	
 	if ([changedAccount.isManual boolValue] == YES) {
 		NSPredicate* predicate = [predicateEditor objectValue];

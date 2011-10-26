@@ -157,4 +157,6 @@
 "AP129" = "Daueraufträge holen...";
 "AP130" = "Java nicht gefunden";
 "AP131" = "Für die Ausführung von Pecunia ist Java Version 1.6.0 oder höher erforderlich. Auf Ihrem System ist Java nicht installiert. Bitte installieren Sie zunächst die Java Runtime Umgebung (JRE)";
+"AP132" = "Ungültiges Zeichen";
+"AP133" = "Das Zeichen '%C' ist im Verwendungszweck und Empfängernamen nicht erlaubt!";
  

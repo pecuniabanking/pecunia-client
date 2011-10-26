@@ -189,5 +189,26 @@ static HBCIClient *client = nil;
 	return [controller getAccountsForUser: user ];
 }
 
+-(BOOL)checkDTAUS:(NSString*)s
+{
+    NSCharacterSet *cs = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß 0123456789.,&-/+*$%" ];
+    int i;
+    
+    if (s == nil || [s length ] == 0) return YES;
+    
+    for(i=0; i<[s length ]; i++) {
+        if ([cs characterIsMember:[s characterAtIndex:i ] ] == NO) {
+            NSRunAlertPanel(NSLocalizedString(@"AP132", @""), 
+                            NSLocalizedString(@"AP133", @""), 
+                            NSLocalizedString(@"ok", @"Ok"), 
+                            nil,
+                            nil,
+                            [s characterAtIndex:i ]);
+            return NO;
+        }
+    }
+    return YES;    
+}
+
 
 @end

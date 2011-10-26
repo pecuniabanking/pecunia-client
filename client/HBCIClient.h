@@ -20,5 +20,6 @@
 }
 
 +(HBCIClient*)hbciClient;
+-(BOOL)checkDTAUS:(NSString*)s;
 
 @end

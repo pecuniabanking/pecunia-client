@@ -161,10 +161,8 @@ NSString *escapeSpecial(NSString *s)
 {
 	PecuniaError *error=nil;
     
-    [self startProgress ];
 	NSString *cmd = [NSString stringWithFormat: @"<command name=\"getBankParameter\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
 	BankParameter *bp = [bridge syncCommand:cmd error:&error ];
-    [self stopProgress ];
 	if (error) {
 		[error alertPanel ];
 		return nil;
@@ -651,18 +649,18 @@ NSString *escapeSpecial(NSString *s)
 	bankQueryResults = [resultList retain ];
 	NSMutableString	*cmd = [NSMutableString stringWithFormat:@"<command name=\"getAllStatements\"><accinfolist type=\"list\">" ];
 	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
-	NSString		*fromString;
 	
 	BankQueryResult *result;
 	for(result in resultList) {
-		if (result.account.latestTransferDate == nil) fromString=@"2000-01-01";
-		else {
+		[cmd appendFormat:@"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>", result.bankCode, result.accountNumber ];
+		if (result.account.latestTransferDate != nil) {
+            NSString *fromString = nil;
 			NSDate *fromDate = [[NSDate alloc ] initWithTimeInterval:-605000 sinceDate:result.account.latestTransferDate ];
 			fromString = [dateFormatter stringFromDate:fromDate ];
+            if (fromString) [cmd appendFormat:@"<fromDate>%@</fromDate>", fromString ];
 			[fromDate release ];
 		}
-		[cmd appendFormat:@"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>", result.bankCode, result.accountNumber ];
-		[cmd appendFormat:@"<userId>%@</userId><fromDate>%@</fromDate></accinfo>", result.userId, fromString ];
+		[cmd appendFormat:@"<userId>%@</userId></accinfo>", result.userId ];
 	}
 	[cmd appendString:@"</accinfolist></command>" ];
     [self startProgress ];

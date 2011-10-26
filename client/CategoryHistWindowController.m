@@ -472,6 +472,11 @@ extern double sign(double x);
     return [outlineView persistentObjectForItem: item ];
 }
 
+-(id)outlineView:(NSOutlineView *)outlineView itemForPersistentObject:(id)object
+{
+    return nil;
+}
+
 -(void)terminate
 {
 	[categoryView saveLayout ];

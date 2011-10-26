@@ -402,6 +402,11 @@ NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
     return [outlineView persistentObjectForItem: item ];
 }
 
+-(id)outlineView:(NSOutlineView *)outlineView itemForPersistentObject:(id)object
+{
+    return nil;
+}
+
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
 {
 	return [outlineView isExpandable: item ];

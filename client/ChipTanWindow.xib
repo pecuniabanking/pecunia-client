@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="2"/>
+			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -41,11 +41,12 @@
 			<object class="NSWindowTemplate" id="647401418">
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{1029, 424}, {585, 547}}</string>
+				<string key="NSWindowRect">{{969, 522}, {585, 547}}</string>
 				<int key="NSWTFlags">611844096</int>
 				<string key="NSWindowTitle">Bitte TAN eingeben</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
+				<string key="NSWindowContentMaxSize">{3.40282e+38, 3.40282e+38}</string>
 				<object class="NSView" key="NSWindowView" id="831800538">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">292</int>
@@ -240,7 +241,7 @@
 						</object>
 						<object class="NSScrollView" id="247039833">
 							<reference key="NSNextResponder" ref="831800538"/>
-							<int key="NSvFlags">274</int>
+							<int key="NSvFlags">4370</int>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSClipView" id="1038415091">
@@ -251,7 +252,7 @@
 										<object class="NSTextView" id="367417588">
 											<reference key="NSNextResponder" ref="1038415091"/>
 											<int key="NSvFlags">2322</int>
-											<string key="NSFrameSize">{533, 119}</string>
+											<string key="NSFrameSize">{533, 14}</string>
 											<reference key="NSSuperview" ref="1038415091"/>
 											<object class="NSTextContainer" key="NSTextContainer" id="266959392">
 												<object class="NSLayoutManager" key="NSLayoutManager">
@@ -348,7 +349,6 @@
 									<reference key="NSSuperview" ref="247039833"/>
 									<reference key="NSTarget" ref="247039833"/>
 									<string key="NSAction">_doScroller:</string>
-									<double key="NSCurValue">1</double>
 									<double key="NSPercent">0.85256409645080566</double>
 								</object>
 								<object class="NSScroller" id="887616455">
@@ -359,7 +359,7 @@
 									<int key="NSsFlags">1</int>
 									<reference key="NSTarget" ref="247039833"/>
 									<string key="NSAction">_doScroller:</string>
-									<double key="NSCurValue">1</double>
+									<double key="NSCurValue">0.99437147378921509</double>
 									<double key="NSPercent">0.94565218687057495</double>
 								</object>
 							</object>
@@ -396,11 +396,6 @@
 				<string key="NSFrameAutosaveName">ChipTanWindow</string>
 			</object>
 			<object class="NSUserDefaultsController" id="97496731">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>chipTANFlickerSize</string>
-					<string>chipTANFlickerFrequency</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
@@ -526,6 +521,14 @@
 						</object>
 					</object>
 					<int key="connectionID">61</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">initialFirstResponder</string>
+						<reference key="source" ref="647401418"/>
+						<reference key="destination" ref="296003324"/>
+					</object>
+					<int key="connectionID">62</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -799,9 +802,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{643, 637}, {585, 547}}</string>
+					<string>{{745, 685}, {585, 547}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{643, 637}, {585, 547}}</string>
+					<string>{{745, 685}, {585, 547}}</string>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -878,7 +881,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">61</int>
+			<int key="maxID">62</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

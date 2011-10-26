@@ -109,7 +109,7 @@
 		if(limits) setupTime = [limits minSetupTime ]; else setupTime = 2;
 		NSDate	*date = [NSDate dateWithTimeIntervalSinceNow: setupTime*86400 ];
 		NSDate	*transferDate = transfer.valutaDate;
-		if(transferDate == nil || [transferDate compare: date ] == NSOrderedDescending) {
+		if(transferDate == nil || [transferDate compare: date ] == NSOrderedAscending) {
 			//			[transfer setValue: date forKey: @"date" ];
 			transfer.valutaDate = date;
 		}
@@ -452,7 +452,14 @@
 {
 	BOOL			res;
 	NSNumber		*value;
-
+    HBCIClient      *hbciClient = [HBCIClient hbciClient ];
+    
+    if ([hbciClient checkDTAUS: transfer.purpose1 ] == NO) return NO;
+    if ([hbciClient checkDTAUS: transfer.purpose2 ] == NO) return NO;
+    if ([hbciClient checkDTAUS: transfer.purpose3 ] == NO) return NO;
+    if ([hbciClient checkDTAUS: transfer.purpose4 ] == NO) return NO;
+    if ([hbciClient checkDTAUS: transfer.remoteName ] == NO) return NO;
+      
 	if(transfer.remoteName == nil) {
 		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
 						NSLocalizedString(@"AP8", @"Please enter a receiver"),

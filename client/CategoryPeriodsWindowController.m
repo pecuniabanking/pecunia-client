@@ -410,6 +410,11 @@
     return [[item representedObject ] name ];
 }
 
+-(id)outlineView:(NSOutlineView *)outlineView itemForPersistentObject:(id)object
+{
+    return nil;
+}
+
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
 	[self updateStatements ];

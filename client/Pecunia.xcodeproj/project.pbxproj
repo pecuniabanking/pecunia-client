@@ -116,6 +116,7 @@
 		B170788310E4F80C00A974E7 /* Accounts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B170788210E4F80C00A974E7 /* Accounts.xcdatamodeld */; };
 		B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = B17078F810EA5E6100A974E7 /* StatCatAssignment.m */; };
 		B1762BD911EE4AE600F70263 /* TransferListController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1762BD811EE4AE600F70263 /* TransferListController.m */; };
+		B1787AE714462FA90086C1AA /* Transfer_Internal.png in Resources */ = {isa = PBXBuildFile; fileRef = B1787AE614462FA90086C1AA /* Transfer_Internal.png */; };
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
 		B17B2B4013EC913800739E7A /* ChipTanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */; };
 		B17B2B4313EC921200739E7A /* FlickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B4213EC921200739E7A /* FlickerView.m */; };
@@ -418,6 +419,7 @@
 		B17078F810EA5E6100A974E7 /* StatCatAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatCatAssignment.m; sourceTree = "<group>"; };
 		B1762BD711EE4AE600F70263 /* TransferListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferListController.h; sourceTree = "<group>"; };
 		B1762BD811EE4AE600F70263 /* TransferListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferListController.m; sourceTree = "<group>"; };
+		B1787AE614462FA90086C1AA /* Transfer_Internal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transfer_Internal.png; sourceTree = "<group>"; };
 		B17B28FF13E340A300739E7A /* HBCIBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBCIBackend.h; sourceTree = "<group>"; };
 		B17B2B3C13EC8D5000739E7A /* ChipTanWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChipTanWindowController.h; sourceTree = "<group>"; };
 		B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChipTanWindowController.m; sourceTree = "<group>"; };
@@ -854,6 +856,7 @@
 		B1923B560EB7A6D40079ADCA /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				B1787AE614462FA90086C1AA /* Transfer_Internal.png */,
 				B103012113AE84DE0089F3D4 /* donate2.png */,
 				B138AC4C1391952F0026BEE2 /* folder_18.png */,
 				B138AC461391946E0026BEE2 /* catdef4_18.png */,
@@ -1306,6 +1309,7 @@
 				B1AA633114096E6600ADE1D0 /* ImportSettings.xib in Resources */,
 				B1AA640E140C07E600ADE1D0 /* ImportWindow.xib in Resources */,
 				B1273CF2142920DF0009B7FF /* ProgressWindow.xib in Resources */,
+				B1787AE714462FA90086C1AA /* Transfer_Internal.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -34,8 +34,7 @@ static LogController	*_logController = nil;
 -(void)adjustPopupToLogLevel
 {
 	NSInteger idx;
-	LogLevel level = messageLog.currentLevel;
-	switch (level) {
+	switch (currentLevel) {
 		case LogLevel_Error: idx = 0; break;
 		case LogLevel_Warning: idx = 1; break;
 		case LogLevel_Notice: idx = 2; break;
@@ -77,6 +76,11 @@ static LogController	*_logController = nil;
 	[super showWindow:sender ];
 }
 
+-(void)close:(id)sender
+{
+    [[self window ] performClose:self ];
+}
+
 -(NSColor*)colorForLevel: (LogLevel)level
 {
 	switch(level) {
@@ -93,6 +97,7 @@ static LogController	*_logController = nil;
 -(void)addMessage:(NSString*)info withLevel:(LogLevel)level
 {
 	if(info == nil || [info length ] == 0) return;
+    if (level > currentLevel) return;
 	if (isHidden == YES) {
 		if (level <= 1) {
 			[self showWindow:self ];
@@ -127,7 +132,8 @@ static LogController	*_logController = nil;
 		case 5: level = LogLevel_Verbous; break;
 		default: level = LogLevel_Warning; 
 	}
-	[messageLog setLevel:level ];
+	//[messageLog setLevel:level ]; jedes Log hat seinen eigenen Level
+    currentLevel = level;
 	
 	// workaround: GWEN/Aq sends messages to console...
 	[[HBCIClient hbciClient ] setLogLevel:level ];
@@ -135,9 +141,10 @@ static LogController	*_logController = nil;
 
 -(void)setLogLevel:(LogLevel)level
 {
-	if (level <= messageLog.currentLevel) return;
+	if (level <= currentLevel) return;
+    currentLevel = level;
 	[self adjustPopupToLogLevel ];
-	[messageLog setLevel:level ];
+	//[messageLog setLevel:level ];
 	[[HBCIClient hbciClient ] setLogLevel:level ];
 }
 
@@ -177,6 +184,27 @@ static LogController	*_logController = nil;
 	}
 }
 
+-(IBAction)sendMail:(id)sender
+{
+    // This line defines our entire mailto link. Notice that the link is formed
+    // like a standard GET query might be formed, with each parameter, subject
+    // and body, follow the email address with a ? and are separated by a &.
+    // I use the %@ formatting string to add the contents of the lastResult and
+    // songData objects to the body of the message. You should change these to
+    // whatever information you want to include in the body.
+    NSString* mailtoLink = [NSString stringWithFormat:@"mailto:support@pecuniabanking.de?subject=Pecunia Log&body=--Bitte fügen Sie hier ein, welche Aktion nicht erfolgreich war --\nDanke!\n\nLog:\n\n%@",[[logView textStorage ] mutableString ]];
+    
+    // This creates a URL string by adding percent escapes. Since the URL is
+    // just being used locally, I don't know if this is always necessary,
+    // however I thought it would be a good idea to stick to standards.
+    NSURL *url = [NSURL URLWithString:[(NSString*)
+                                       CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)mailtoLink,
+                                                                               NULL, NULL, kCFStringEncodingUTF8) autorelease]];
+    
+    // This just opens the URL in the workspace, to be opened up by Mail.app,
+    // with data already entered in the subject, to and body fields.
+    [[NSWorkspace sharedWorkspace] openURL:url];    
+}
 
 -(void)clearLog: (id)sender
 {
