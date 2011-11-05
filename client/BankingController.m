@@ -1432,10 +1432,10 @@ static BankingController	*con;
 		
 		if ([item action ] == @selector(deleteStatement:)) {
 			if ([cat isBankAccount ] == NO) return NO;
-			if ([[transactionController selectedObjects] count ] == 0) return NO;
+			if ([[transactionController selectedObjects] count ] != 1) return NO;
 		}
 		if ([item action ] == @selector(splitStatement:)) {
-			if ([[transactionController selectedObjects] count ] == 0) return NO;
+			if ([[transactionController selectedObjects] count ] != 1) return NO;
 		}
 		if(requestRunning && [item action] == @selector(enqueueRequest:)) return NO;
 	}
