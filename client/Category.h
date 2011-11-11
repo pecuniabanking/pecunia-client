@@ -11,15 +11,16 @@
 NSCalendarDate* normalizeDate(NSDate* date);
 
 typedef enum {
-	cat_expenses,
-	cat_incomes,
-	cat_all
+    cat_earnings,
+    cat_spendings,
+    cat_turnovers,
+    cat_all
 } CatValueType;
 
 typedef enum {
-	cat_histtype_month,
-	cat_histtype_quarter,
-	cat_histtype_year
+    cat_histtype_month,
+    cat_histtype_quarter,
+    cat_histtype_year
 } CatHistoryType;
 
 @class ShortDate;
@@ -27,7 +28,7 @@ typedef enum {
 
 
 @interface Category : NSManagedObject {
-
+    
 }
 
 @property (nonatomic, retain) NSString * rule;
@@ -66,8 +67,9 @@ typedef enum {
 -(NSMutableSet*)children;
 -(NSSet*)allChildren;
 -(NSSet*)siblings;
--(NSDictionary*)balanceHistory;
+-(NSUInteger)balanceHistoryToDates: (NSArray**)dates balances: (NSArray**)balances perDayCounts: (NSArray**)counts;
 -(CategoryReportingNode*)categoryHistoryWithType:(CatHistoryType)histType;
+-(NSUInteger)categoryHistoryToDates: (NSArray**)dates balances: (NSArray**)balances perDayCounts: (NSArray**)counts;
 -(NSDecimalNumber*)valuesOfType: (CatValueType)type from: (ShortDate*)fromDate to: (ShortDate*)toDate;
 -(NSArray*)statementsFrom: (ShortDate*)fromDate to: (ShortDate*)toDate withChildren: (BOOL)c;
 -(NSMutableSet*)combinedStatements;

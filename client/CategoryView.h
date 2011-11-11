@@ -12,6 +12,7 @@
 @interface CategoryView : NSOutlineView {
 	NSString	*saveCatName;
 }
+
 @property (copy) NSString *saveCatName;
 
 @end

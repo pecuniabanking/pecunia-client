@@ -198,8 +198,8 @@ static HBCIClient *client = nil;
     
     for(i=0; i<[s length ]; i++) {
         if ([cs characterIsMember:[s characterAtIndex:i ] ] == NO) {
-            NSRunAlertPanel(NSLocalizedString(@"AP132", @""), 
-                            NSLocalizedString(@"AP133", @""), 
+            NSRunAlertPanel(NSLocalizedString(@"AP170", @""), 
+                            NSLocalizedString(@"AP171", @""), 
                             NSLocalizedString(@"ok", @"Ok"), 
                             nil,
                             nil,

@@ -29,4 +29,9 @@
 	[self editColumn:0 row:[self selectedRow ] withEvent:nil select:YES ];
 }
 
+- (void)highlightSelectionInClipRect:(NSRect)rect
+{
+  // Stop the outline from drawing a selection background. We do that in the image cell.
+}
+
 @end

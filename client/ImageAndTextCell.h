@@ -35,7 +35,7 @@
  REPRODUCTION, MODIFICATION AND/OR DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED AND 
  WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR 
  OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #import <Cocoa/Cocoa.h>
 
@@ -44,15 +44,15 @@
 @private
 	
     NSImage				*image;
-	NSString			*currency;
-	NSNumberFormatter	*amountFormatter;
-	NSDecimalNumber		*amount;
+    NSString			*currency;
+    NSNumberFormatter	*amountFormatter;
+    NSDecimalNumber		*amount;
 	
-	NSInteger	countUnread;
-	NSInteger   maxUnread;
-	NSInteger	badgeWidth;
-	BOOL		isRoot;
-	BOOL		isSelected;
+    NSInteger	countUnread;
+    NSInteger   maxUnread;
+    NSInteger	badgeWidth;
+    BOOL		isRoot;
+    BOOL		isSelected;
 }
 
 
@@ -60,7 +60,7 @@
 @property (nonatomic, retain) NSImage			*image;
 @property (nonatomic, retain) NSString			*currency;
 @property (nonatomic, retain) NSDecimalNumber	*amount;
-@property (nonatomic, retain) NSNumberFormatter	*amountFormatter;
+@property (nonatomic, retain) NSNumberFormatter	*amountFormatter; // TODO: why not using the cell's formatter?
 
 - (void)setValues:(NSDecimalNumber*)aAmount currency:(NSString*)aCurrency unread:(NSInteger)unread selected:(BOOL)selected root:(BOOL)root;
 - (void)setMaxUnread:(NSInteger)n;

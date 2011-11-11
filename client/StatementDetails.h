@@ -9,8 +9,9 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface StatementDetails : NSView {
-
+@interface StatementDetails : NSView
+{
+    NSImage* backgroundImage;
 }
 
 @end

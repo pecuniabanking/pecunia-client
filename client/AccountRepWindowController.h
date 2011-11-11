@@ -7,6 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <CorePlot/CorePlot.h>
+
 #import "MainTabViewItem.h"
 
 @class SM2DGraphView;
@@ -14,7 +16,12 @@
 @class ShortDate;
 @class TimeSliceManager;
 
-@interface AccountRepWindowController : NSObject <MainTabViewItem>
+@interface PecuinaGraphHost : CPTGraphHostingView
+{
+}
+@end
+
+@interface AccountRepWindowController : NSObject <MainTabViewItem, CPTScatterPlotDataSource, CPTPlotSpaceDelegate, CPTPlotDataSource, CPTBarPlotDelegate>
 {
     IBOutlet NSTreeController	*accountsController;
 	IBOutlet NSOutlineView      *accountsView;
@@ -27,8 +34,6 @@
 	NSPoint maxValues;
 	
 	NSMutableArray				*points;
-	NSDictionary				*balanceHistory;
-	NSArray						*balanceKeys;
 	ShortDate					*firstDate;
 	ShortDate					*fromDate;
 	ShortDate					*toDate;
@@ -42,13 +47,25 @@
 	IBOutlet NSString			*sincome;
 	IBOutlet NSString			*sexpense;
 	IBOutlet NSString			*sbalance;
+    
+    // New graph
+    IBOutlet PecuinaGraphHost *mainHostView;
+    IBOutlet PecuinaGraphHost *turnoversHostView;
+    IBOutlet PecuinaGraphHost *selectionHostView;
+    
+    @private
+	CPTXYGraph* mainGraph;
+    CPTXYGraph* turnoversGraph;
+    CPTXYGraph* selectionGraph;
+    
+	NSArray* dates;
+    NSArray* balances;
+    NSArray* balanceCounts; // Number of balances per day.
 }
 
 @property (nonatomic, retain) ShortDate *firstDate;
 @property (nonatomic, retain) ShortDate *fromDate;
 @property (nonatomic, retain) ShortDate *toDate;
-
-
 
 -(IBAction) setGraphStyle: (id)sender;
 -(IBAction) setBarStyle: (id)sender;
@@ -58,10 +75,19 @@
 
 -(void)drawGraph;
 -(void)updateValues;
--(void)clearGraph;
+-(void)clearGraphs;
 -(NSView*)mainView;
 
 -(Category*)currentSelection;
+
+-(void)setupMainGraph;
+-(void)setupTurnoversGraph;
+
+-(void)setupMainPlots;
+-(void)setupTurnoversPlot;
+
+-(void)updateMainGraph;
+-(void)updateTurnoversGraph;
 
 @end
 

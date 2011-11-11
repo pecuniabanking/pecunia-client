@@ -27,50 +27,59 @@
 @class CategoryView;
 @class TransferListController;
 @class DockIconController;
+@class CurrencyValueTransformer;
+
+#import "StatementsListView.h"
 
 @interface BankingController : NSObject
 {
-	IBOutlet NSArrayController	*transactionController;
-	IBOutlet NSWindow			*mainWindow;
-	IBOutlet NSTabView			*mainTabView;
-	IBOutlet MCEMTableView		*transactionsView;
-	IBOutlet CategoryView		*accountsView;
-	IBOutlet MCEMTreeController *categoryController;
-	IBOutlet NSSplitView		*mainVSplit;
-	IBOutlet NSSplitView		*mainHSplit;
-	IBOutlet NSPredicateEditor  *predicateEditor;
-	IBOutlet NSArrayController  *assignPreviewController;
-	IBOutlet NSToolbar			*toolbar;
-	IBOutlet NSToolbarItem		*searchItem;
-	IBOutlet NSSearchField		*searchField;
-	IBOutlet TimeSliceManager	*timeSlicer;
-	IBOutlet NSSegmentedControl *catActions;
-	IBOutlet NSImageView		*lockImage;
-	IBOutlet NSTextField		*valueField;
-	IBOutlet NSTextField		*nassValueField;
-	IBOutlet NSWindow			*assignValueWindow;
-	IBOutlet NSTextField		*assignValueField;
-	
-	IBOutlet CatDefWindowController			*catDefWinController;
-	IBOutlet TransferListController			*transferListController;
-	
-    NSMutableArray				*transactions;
-	NSMutableDictionary			*mainTabItems;
-//	NSManagedObjectContext      *context;
-	NSManagedObjectContext      *managedObjectContext;
-	NSManagedObjectModel		*model;
-	NewBankUserController		*bankUserController;
-	PreferenceController		*prefController;
-	AccountSettingsController   *accountSettingsController;
-	LogController				*logController;
-	TransactionController		*transferWindowController;
-	DockIconController			*dockIconController;
-	BOOL						restart;
-	BOOL						requestRunning;
-	BOOL						statementsBound;
-	BOOL						autoSyncRunning;
-	NSDecimalNumber				*saveValue;
-	NSCursor					*splitCursor;
+  IBOutlet NSArrayController	*transactionController;
+  IBOutlet NSWindow			*mainWindow;
+  IBOutlet NSTabView			*mainTabView;
+  IBOutlet MCEMTableView		*transactionsView;
+  IBOutlet CategoryView		*accountsView;
+  IBOutlet MCEMTreeController *categoryController;
+  IBOutlet NSSplitView		*mainVSplit;
+  IBOutlet NSSplitView		*mainHSplit;
+  IBOutlet NSPredicateEditor  *predicateEditor;
+  IBOutlet NSArrayController  *assignPreviewController;
+  IBOutlet NSToolbar			*toolbar;
+  IBOutlet NSToolbarItem		*searchItem;
+  IBOutlet NSSearchField		*searchField;
+  IBOutlet TimeSliceManager	*timeSlicer;
+  IBOutlet NSSegmentedControl *catActions;
+  IBOutlet NSImageView		*lockImage;
+  IBOutlet NSTextField		*valueField;
+  IBOutlet NSTextField		*headerValueField;
+  IBOutlet NSTextField		*nassValueField;
+  IBOutlet NSWindow			*assignValueWindow;
+  IBOutlet NSTextField		*assignValueField;
+  IBOutlet NSTextField *earningsField;
+  IBOutlet NSTextField *spendingsField;
+  IBOutlet NSTextField *turnoversField;
+  IBOutlet NSTextField* remoteNameLabel;
+  
+  IBOutlet CatDefWindowController *catDefWinController;
+  IBOutlet TransferListController *transferListController;
+  IBOutlet StatementsListView *statementsListView;
+  
+  NSMutableArray				*transactions;
+  NSMutableDictionary			*mainTabItems;
+  NSManagedObjectContext      *managedObjectContext;
+  NSManagedObjectModel		*model;
+  NewBankUserController		*bankUserController;
+  PreferenceController		*prefController;
+  AccountSettingsController   *accountSettingsController;
+  LogController				*logController;
+  TransactionController		*transferWindowController;
+  DockIconController			*dockIconController;
+  BOOL						restart;
+  BOOL						requestRunning;
+  BOOL						statementsBound;
+  BOOL						autoSyncRunning;
+  NSDecimalNumber				*saveValue;
+  NSCursor					*splitCursor;
+ 
 }
 
 @property(nonatomic, copy) NSDecimalNumber *saveValue;
@@ -88,6 +97,7 @@
 -(IBAction)accountsView: (id)sender;
 -(IBAction)transferView: (id)sender;
 -(IBAction)editRules: (id)sender;
+-(IBAction)activateMainPage: (id)sender;
 
 -(IBAction)enqueueRequest: (id)sender;
 -(IBAction)save: (id)sender;
@@ -153,4 +163,5 @@
 -(void)setHBCIAccounts;
 
 +(BankingController*)controller;
+
 @end

@@ -7,24 +7,64 @@
 //
 
 #import "StatementDetails.h"
-
+#import "GraphicsAdditions.h"
 
 @implementation StatementDetails
 
--(void)drawRect: (NSRect)rect
+- (id) initWithFrame: (NSRect) frameRect
 {
-	NSBezierPath*    path = [NSBezierPath bezierPath];
-	[path appendBezierPathWithRect:[self bounds ] ];
+  self = [super initWithFrame: frameRect];
+  if (self)
+    backgroundImage = [[NSImage imageNamed: @"banknote"] retain];
+  
+  return self;
+}
 
-	NSGradient* aGradient = [[[NSGradient alloc]
-							  initWithColorsAndLocations:[NSColor colorWithDeviceHue: 0.589 saturation: 0.068 brightness: 0.9 alpha: 1.0], (CGFloat)-0.1, [NSColor whiteColor], (CGFloat)1.1,
-							  nil] autorelease];
-	
-	[aGradient drawInBezierPath:path angle:90.0];
-	
-	[[NSColor colorWithDeviceRed: 0.745 green: 0.745 blue: 0.745 alpha: 1.0 ] setStroke ];
-	[NSBezierPath setDefaultLineWidth:2.0];
-	[NSBezierPath strokeRect: [self bounds ] ];
+- (void) dealloc
+{
+  [super dealloc];
+  [backgroundImage release];
+}
+
+// Shared objects.
+static NSShadow* borderShadow = nil;
+static NSGradient* innerGradient = nil;
+
+- (void) drawRect: (NSRect) rect
+{
+  // Initialize shared objects.
+  if (borderShadow == nil)
+  {
+    borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.75]
+                                            offset: NSMakeSize(3, -3)
+                                        blurRadius: 8.0];
+	  innerGradient = [[NSGradient alloc]
+                     initWithColorsAndLocations:
+                       [NSColor colorWithDeviceRed: 240 / 255.0 green: 231 / 255.0 blue: 209 / 255.0 alpha: 1], (CGFloat) 0,
+                       [NSColor whiteColor], (CGFloat) 1,
+                       nil];
+  }
+  
+  NSBezierPath* borderPath = [NSBezierPath bezierPathWithRoundedRect: NSInsetRect([self bounds], 10, 10) xRadius: 8 yRadius: 8];
+  [NSGraphicsContext saveGraphicsState];
+  [borderShadow set];
+  [[NSColor whiteColor] set];
+  [borderPath fill];
+  [NSGraphicsContext restoreGraphicsState];
+  [borderPath addClip];
+  
+	[innerGradient drawInBezierPath: borderPath angle: 95.0];
+  
+  // The image overlay. Scale it with the height of the view.
+  CGFloat scaleFactor = ([self bounds].size.height - 40) / [backgroundImage size].height;
+  NSRect targetRect = NSMakeRect([self bounds].size.width - 400, 10, scaleFactor * [backgroundImage size].width,
+                                 [self bounds].size.height - 40);
+  [backgroundImage drawInRect: targetRect fromRect: NSZeroRect operation: NSCompositeSourceOver fraction: 0.15];
+  
+  // Assigned categories bar background.
+  [[NSColor colorWithDeviceWhite: 0.25 alpha: 1] set];
+  targetRect = NSMakeRect(10, 28, [self bounds].size.width, 30);
+  [NSBezierPath fillRect: targetRect];
 }
 
 @end
