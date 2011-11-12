@@ -11,6 +11,7 @@
 
 @implementation MCEMSplitView
 
+// TODO: might be obsolete when switching to the splitview from the BWToolkit.
 -(void)resizeSubviewsWithOldSize:(NSSize)oldSize
 {
 	NSRect oldLeftFrame = [[[self subviews] objectAtIndex:0] frame];

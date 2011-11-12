@@ -10,14 +10,14 @@
 
 @class HBCIBridge;
 
-@interface ResultParser : NSObject {
-	NSMutableString *currentValue;
-	HBCIBridge	*parent;
-	id result;
-	
-	NSMutableArray	*stack;
-	NSDateFormatter *dateFormatter;
-	NSString		*currentType;
+@interface ResultParser : NSObject <NSXMLParserDelegate> {
+    NSMutableString *currentValue;
+    HBCIBridge	*parent;
+    id result;
+    
+    NSMutableArray	*stack;
+    NSDateFormatter *dateFormatter;
+    NSString		*currentType;
 }
 
 -(id)result;

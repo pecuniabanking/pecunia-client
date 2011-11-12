@@ -50,7 +50,11 @@ static NSDecimalNumber* negativeOne;
             current = [current decimalNumberByDividingBy: ten];
         }
     }
-    NSDecimalNumberHandler* roundingBehavior = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode: NSRoundBankers
+    
+    NSRoundingMode mode = NSRoundUp;
+    if ([self compare: [NSDecimalNumber zero]] == NSOrderedAscending)
+        mode = NSRoundDown;
+    NSDecimalNumberHandler* roundingBehavior = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode: mode
                                                                                                       scale: scale
                                                                                            raiseOnExactness: NO
                                                                                             raiseOnOverflow: NO

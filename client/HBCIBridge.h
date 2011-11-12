@@ -16,28 +16,29 @@
 @class PecuniaError;
 @class CallbackData;
 
-@interface HBCIBridge : NSObject {
-	ResultParser	*rp;
-	CallbackParser	*cp;
-	
-	NSPipe		*inPipe;
-	NSPipe		*outPipe;
-	NSTask		*task;
-	
-	BOOL		resultExists;
-	BOOL		running;
-
-	id				result;
-	HBCIError		*error;
-	HBCIController	*client;
-	PasswordWindow	*pwWindow;
-	NSString		*currentPwService;
-	NSString		*currentPwAccount;
-	NSMutableString	*asyncString;
-	id				asyncSender;
+@interface HBCIBridge : NSObject <NSXMLParserDelegate>
+{
+    ResultParser	*rp;
+    CallbackParser	*cp;
+    
+    NSPipe		*inPipe;
+    NSPipe		*outPipe;
+    NSTask		*task;
+    
+    BOOL		resultExists;
+    BOOL		running;
+    
+    id				result;
+    HBCIError		*error;
+    HBCIController	*client;
+    PasswordWindow	*pwWindow;
+    NSString		*currentPwService;
+    NSString		*currentPwAccount;
+    NSMutableString	*asyncString;
+    id				asyncSender;
 }
 
--(id)initWithClient: (HBCIController*)cl;
+-(id)initWithHbciClient: (HBCIController*)cl;
 
 -(NSPipe*)outPipe;
 -(void)setResult: (id)res;

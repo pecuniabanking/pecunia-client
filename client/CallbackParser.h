@@ -11,10 +11,11 @@
 @class HBCIBridge;
 @class CallbackData;
 
-@interface CallbackParser : NSObject {
-	NSMutableString *currentValue;
-	HBCIBridge		*parent;
-	CallbackData    *data;
+@interface CallbackParser : NSObject <NSXMLParserDelegate>
+{
+    NSMutableString *currentValue;
+    HBCIBridge		*parent;
+    CallbackData    *data;
 }
 
 -(id)initWithParent: (HBCIBridge*)par command:(NSString*)cmd;

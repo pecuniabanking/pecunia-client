@@ -10,11 +10,11 @@
 
 @class HBCIBridge;
 
-@interface LogParser : NSObject {
-	NSMutableString *currentValue;
-	int				level;
-	id				parent;
-	
+@interface LogParser : NSObject <NSXMLParserDelegate> {
+    NSMutableString *currentValue;
+    int				level;
+    id				parent;
+    
 }
 
 -(id)initWithParent: (id)par level:(NSString*)lev;

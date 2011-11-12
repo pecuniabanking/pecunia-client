@@ -57,6 +57,7 @@
 	CPTXYGraph* mainGraph;
     CPTXYGraph* turnoversGraph;
     CPTXYGraph* selectionGraph;
+    CPTXYAxis* mainIndicatorLine;
     
 	NSArray* dates;
     NSArray* balances;

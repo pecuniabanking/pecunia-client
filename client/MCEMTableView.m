@@ -17,8 +17,9 @@
 - (void)drawRow:(int)rowIndex clipRect:(NSRect)clipRect
 {
 	NSColor *rowColor = nil;
-
+/* Outcommented to avoid a warning. This class will go anyway.
 	if([[self delegate ] respondsToSelector: @selector(tableView:labelColorForRow:) ]) rowColor = [[self delegate] tableView:self labelColorForRow:rowIndex];
+ */
 	if ( ![[self selectedRowIndexes] containsIndex:rowIndex] && rowColor ) {
 		NSRect rect = [self rectOfRow:rowIndex];
 		rect.origin.x += 1.0;

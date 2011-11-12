@@ -71,7 +71,7 @@ double sign(double x)
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
     CGFloat relativeScale = [event magnification];
-
+    
     CPTXYPlotSpace* plotSpace = (id)[self hostedGraph].defaultPlotSpace;
     NSNumber* location = [NSNumber numberWithDouble: plotSpace.xRange.locationDouble];
     [parameters setObject: location forKey: @"plotXLocation"];
@@ -79,6 +79,14 @@ double sign(double x)
     [parameters setObject: range forKey: @"plotXRange"];
     [parameters setObject: [NSNumber numberWithBool: NO] forKey: @"excludeSource"];
     [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
+}
+
+- (void)mouseMoved: (NSEvent *)theEvent
+{
+    [super mouseMoved: theEvent];
+    
+    NSPoint location = [theEvent locationInWindow];
+    //mainIndicatorLine.axisConstraints = [CPTConstraints constraintWithLowerOffset: location.x];
 }
 
 @end;
@@ -124,7 +132,7 @@ double sign(double x)
     [firstDate release], firstDate = nil;
     [fromDate release], fromDate = nil;
     [toDate release], toDate = nil;
-
+    
     [mainGraph release];
     [dates release];
     [balances release];
@@ -165,16 +173,16 @@ double sign(double x)
     CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
     [mainGraph applyTheme: theme];
     mainHostView.hostedGraph = mainGraph;
-
+    
     // Setup scatter plot space
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)mainGraph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = YES;
     plotSpace.delegate = self;
     
     // Grid line styles
-    CPTMutableLineStyle* majorGridLineStyle = [CPTMutableLineStyle lineStyle];
-    majorGridLineStyle.lineWidth = 0.75;
-    majorGridLineStyle.lineColor = [[CPTColor colorWithGenericGray: 0.2] colorWithAlphaComponent: 0.75];
+    CPTMutableLineStyle* frameStyle = [CPTMutableLineStyle lineStyle];
+    frameStyle.lineWidth = 0.75;
+    frameStyle.lineColor = [[CPTColor colorWithGenericGray: 0.2] colorWithAlphaComponent: 0.75];
     
     // Graph title
     mainGraph.title = @"Nichts ausgewählt";
@@ -198,20 +206,20 @@ double sign(double x)
     frame.paddingRight = 30;
     frame.paddingTop = 20;
     frame.paddingBottom = 20;
-
+    
     frame.cornerRadius = 10;
-    frame.borderLineStyle = majorGridLineStyle;
-
+    frame.borderLineStyle = frameStyle;
+    
     // Axes.
-	CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
+    CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
     CPTXYAxis* x = axisSet.xAxis;
     x.majorIntervalLength = CPTDecimalFromFloat(30 * oneDay);
     x.minorTicksPerInterval = 0;
-
+    
     NSDateFormatter* dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     dateFormatter.dateStyle = kCFDateFormatterShortStyle;
     CPTTimeFormatter* timeFormatter = [[[CPTTimeFormatter alloc] initWithDateFormatter: dateFormatter] autorelease];
-
+    
     timeFormatter.referenceDate = [self referenceDate];
     x.labelFormatter = timeFormatter;
     
@@ -224,12 +232,11 @@ double sign(double x)
     CPTXYAxis* y = axisSet.yAxis;
     y.labelTextStyle = textStyle;
     y.axisConstraints = [CPTConstraints constraintWithLowerOffset: 0];
-
+    
     CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
     lineStyle.lineWidth = 0.5;
     lineStyle.lineColor = [CPTColor blackColor];
     y.majorGridLineStyle = lineStyle;
-    //y.labelAlignment = CPTAlignmentBottom;
     
     lineStyle.lineColor = [[CPTColor blackColor] colorWithAlphaComponent: 0.25];
     y.minorGridLineStyle = lineStyle;
@@ -237,6 +244,22 @@ double sign(double x)
     y.minorTickLineStyle = nil;
     y.axisLineStyle = nil;
     
+    // The second y axis is used as the current location identifier.
+    mainIndicatorLine = [[[CPTXYAxis alloc] init] autorelease];
+    mainIndicatorLine.coordinate = CPTCoordinateY;
+    mainIndicatorLine.plotSpace = plotSpace;
+    mainIndicatorLine.axisConstraints = [CPTConstraints constraintWithLowerOffset: 0];
+    mainIndicatorLine.labelingPolicy = CPTAxisLabelingPolicyEqualDivisions;
+    mainIndicatorLine.separateLayers = NO;
+    mainIndicatorLine.preferredNumberOfMajorTicks = 6;
+    mainIndicatorLine.minorTicksPerInterval = 0;
+    mainIndicatorLine.tickDirection = CPTSignPositive;
+    mainIndicatorLine.axisLineStyle = lineStyle;
+    mainIndicatorLine.majorTickLength = 6.0;
+    mainIndicatorLine.majorTickLineStyle = lineStyle;
+    
+    // Add the y2 axis to the axis set
+    axisSet.axes = [NSArray arrayWithObjects: x, y, mainIndicatorLine, nil];
     [self setupMainPlots];
 }
 
@@ -246,11 +269,16 @@ double sign(double x)
     CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
     [turnoversGraph applyTheme: theme];
     turnoversHostView.hostedGraph = turnoversGraph;
-
+    
     // Setup scatter plot space
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)turnoversGraph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = YES;
     plotSpace.delegate = self;
+    
+    // Grid line styles
+    CPTMutableLineStyle* frameStyle = [CPTMutableLineStyle lineStyle];
+    frameStyle.lineWidth = 0.75;
+    frameStyle.lineColor = [[CPTColor colorWithGenericGray: 0.2] colorWithAlphaComponent: 0.75];
     
     // Graph title
     turnoversGraph.title = @"Anzahl Umsätze je Tag";
@@ -272,24 +300,29 @@ double sign(double x)
     CPTPlotAreaFrame* frame = turnoversGraph.plotAreaFrame;
     frame.paddingLeft = 60;
     frame.paddingRight = 30;
-    frame.paddingTop = 10;
-    frame.paddingBottom = 10;
-
+    frame.paddingTop = 15;
+    frame.paddingBottom = 15;
+    
     frame.cornerRadius = 10;
-
+    frame.borderLineStyle = frameStyle;
+    
     // Axes.
-	CPTXYAxisSet* axisSet = (id)turnoversGraph.axisSet;
-    axisSet.xAxis.axisLineStyle = nil;
-
+    CPTXYAxisSet* axisSet = (id)turnoversGraph.axisSet;
+    CPTXYAxis* x = axisSet.xAxis;
+    x.axisLineStyle = nil;
+    x.majorTickLineStyle = nil;
+    x.minorTickLineStyle = nil;
+    x.labelTextStyle = nil;
+    
     textStyle = [CPTMutableTextStyle textStyle];
     textStyle.color = [CPTColor colorWithComponentRed: 88 / 255.0 green: 86 / 255.0 blue: 77 / 255.0 alpha: 1];
     textStyle.fontName = @"LucidaGrande";
     textStyle.fontSize = 10.0;
-
+    
     CPTXYAxis* y = axisSet.yAxis;
     y.labelTextStyle = textStyle;
     y.axisConstraints = [CPTConstraints constraintWithLowerOffset: 0];
-
+    
     CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
     lineStyle.lineWidth = 0.25;
     lineStyle.lineColor = [CPTColor blackColor];
@@ -297,16 +330,20 @@ double sign(double x)
     //y.labelAlignment = CPTAlignmentBottom;
     
     lineStyle.lineColor = [[CPTColor blackColor] colorWithAlphaComponent: 0];
-    y.majorTickLineStyle = lineStyle;
-    y.minorTickLineStyle = nil;
+    y.majorTickLineStyle = nil;
+    
+    lineStyle.lineColor = [[CPTColor blackColor] colorWithAlphaComponent: 0.25];
+    y.minorGridLineStyle = lineStyle;
     y.axisLineStyle = lineStyle;
+    y.minorTickLineStyle = nil;
     
     NSNumberFormatter* formatter = [[[NSNumberFormatter alloc] init] autorelease];
     formatter.usesSignificantDigits = YES;
     formatter.minimumFractionDigits = 0;
-    formatter.numberStyle = NSNumberFormatterNoStyle;
+    formatter.numberStyle = NSNumberFormatterDecimalStyle;
+    formatter.zeroSymbol = @"0";
     y.labelFormatter = formatter;
-
+    
     [self setupTurnoversPlot];
 }
 
@@ -319,7 +356,7 @@ double sign(double x)
     linePlot.interpolation = CPTScatterPlotInterpolationHistogram;
     linePlot.areaFill = fill;
     linePlot.areaBaseValue = CPTDecimalFromInt(0);
-
+    
     linePlot.delegate = self;
     linePlot.dataSource = self;
     
@@ -328,12 +365,12 @@ double sign(double x)
 
 -(CPTBarPlot*)createBarPlotWithFill: (CPTFill*)fill
 {
-	CPTBarPlot *barPlot = [[[CPTBarPlot alloc] init] autorelease];
-	barPlot.barBasesVary = NO;
+    CPTBarPlot *barPlot = [[[CPTBarPlot alloc] init] autorelease];
+    barPlot.barBasesVary = NO;
     barPlot.barWidthsAreInViewCoordinates = YES;
     barPlot.barWidth = CPTDecimalFromFloat(15);
-	barPlot.barCornerRadius = 3.0f;
-	barPlot.barsAreHorizontal = NO;
+    barPlot.barCornerRadius = 3.0f;
+    barPlot.barsAreHorizontal = NO;
     barPlot.baseValue = CPTDecimalFromInt(0);
     barPlot.alignsPointsToPixels = YES;
     barPlot.cachePrecision = CPTPlotCachePrecisionDouble;
@@ -341,7 +378,7 @@ double sign(double x)
     CPTMutableLineStyle* lineStyle = [[[CPTMutableLineStyle alloc] init] autorelease];
     lineStyle.lineColor = [CPTColor whiteColor];
     lineStyle.lineWidth = 1;
-	barPlot.lineStyle = lineStyle;
+    barPlot.lineStyle = lineStyle;
     barPlot.fill = fill;
     
     barPlot.delegate = self;
@@ -371,18 +408,18 @@ double sign(double x)
     positiveGradient.angle = -90.0;
     CPTFill* positiveGradientFill = [CPTFill fillWithGradient: positiveGradient];
     CPTGradient* negativeGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 255 / 255.0
-                                                                                                   green: 50 / 255.0
-                                                                                                    blue: 50 / 255.0
-                                                                                                   alpha: 0.75]
-                                                            endingColor: [CPTColor colorWithComponentRed: 255 / 255.0
-                                                                                                   green: 50 / 255.0
-                                                                                                    blue: 50 / 255.0
-                                                                                                   alpha: 0.75]
-                                 ];
-
+                                                                                                       green: 50 / 255.0
+                                                                                                        blue: 50 / 255.0
+                                                                                                       alpha: 0.75]
+                                                                endingColor: [CPTColor colorWithComponentRed: 255 / 255.0
+                                                                                                       green: 50 / 255.0
+                                                                                                        blue: 50 / 255.0
+                                                                                                       alpha: 0.75]
+                                     ];
+    
     negativeGradient.angle = -90.0;
     CPTFill* negativeGradientFill = [CPTFill fillWithGradient: negativeGradient];
-
+    
     CPTPlot* plot;
     if (category.isBankAccount)
     {
@@ -401,7 +438,7 @@ double sign(double x)
     [self setupShadowForPlot: plot];
     
     [mainGraph addPlot: plot];
-
+    
     // The negative plot.
     if (category.isBankAccount)
     {
@@ -414,7 +451,7 @@ double sign(double x)
     
     plot.identifier = @"negativePlot";
     [self setupShadowForPlot: plot];
-
+    
     [mainGraph addPlot: plot];
     
     [self updateMainGraph];
@@ -433,13 +470,13 @@ double sign(double x)
                                  ];
     areaGradient.angle = -90.0;
     CPTFill* areaGradientFill = [CPTFill fillWithGradient: areaGradient];
-	CPTBarPlot* barPlot = [self createBarPlotWithFill: areaGradientFill];
-
+    CPTBarPlot* barPlot = [self createBarPlotWithFill: areaGradientFill];
+    
     barPlot.identifier = @"turnoversPlot";
     [self setupShadowForPlot: barPlot];
     
     [turnoversGraph addPlot: barPlot];
-
+    
     [self updateTurnoversGraph];
 }
 
@@ -450,7 +487,7 @@ double sign(double x)
         mainGraph.title = @"";
     else
         mainGraph.title = [category.localName stringByAppendingString: @" - Entwicklung"];
-
+    
     NSUInteger count = [dates count];
     
     NSDecimalNumber* maxValue = [NSDecimalNumber zero];
@@ -465,11 +502,11 @@ double sign(double x)
         if ([y compare: minValue] == NSOrderedAscending)
             minValue = y;
     }
-
+    
     // Time intervals are specified in number of seconds on the x axis.
     ShortDate* startDate = [ShortDate dateWithDate: [self referenceDate]];
     int totalDays = (count > 0) ? [startDate daysToDate: [dates lastObject]] : 0;
-   
+    
     // Set the available plot space depending on the min, max and day values we found. Extend both range by a few precent for more appeal.
     CPTXYPlotSpace* plotSpace = (id)mainGraph.defaultPlotSpace;
     
@@ -478,13 +515,13 @@ double sign(double x)
                                                            length: CPTDecimalFromDouble(oneDay * totalDays)];
     plotSpace.globalXRange = plotRange;
     plotSpace.xRange = plotRange;
-
+    
     CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
     CPTXYAxis* x = axisSet.xAxis;
     x.majorIntervalLength = CPTDecimalDivide(plotRange.length, CPTDecimalFromInt(15));
     CPTTimeFormatter* formatter = (id)x.labelFormatter;
     formatter.referenceDate = [self referenceDate];
-
+    
     // Vertical range.
     minValue = [minValue roundToUpperOuter];
     maxValue = [maxValue roundToUpperOuter];
@@ -511,9 +548,10 @@ double sign(double x)
     currencyFormatter.usesSignificantDigits = YES;
     currencyFormatter.minimumFractionDigits = 0;
     currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
-    currencyFormatter.currencyCode = currency; 
+    currencyFormatter.currencyCode = currency;
+    currencyFormatter.zeroSymbol = [NSString stringWithFormat: @"0 %@", currencyFormatter.currencySymbol];
     y.labelFormatter = currencyFormatter;
-
+    
     [mainGraph reloadData];
 }
 
@@ -531,10 +569,10 @@ double sign(double x)
         if ([y floatValue] > maxValue)
             maxValue = [y floatValue];
     }
-
+    
     ShortDate* startDate = [ShortDate dateWithDate: [self referenceDate]];
     int totalDays = (count > 0) ? [startDate daysToDate: [dates lastObject]] : 0;
-   
+    
     // Set the available plot space depending on the min, max and day values we found. Extend both range by a few precent for more appeal.
     CPTXYPlotSpace* plotSpace = (id)turnoversGraph.defaultPlotSpace;
     
@@ -543,27 +581,34 @@ double sign(double x)
                                                            length: CPTDecimalFromDouble(oneDay * totalDays)];
     plotSpace.globalXRange = plotRange;
     plotSpace.xRange = plotRange;
-
+    
     CPTXYAxisSet* axisSet = (id)turnoversGraph.axisSet;
     CPTXYAxis* x = axisSet.xAxis;
     x.majorIntervalLength = CPTDecimalDivide(plotRange.length, CPTDecimalFromInt(15));
-
+    
     // Vertical range.
-    CGFloat extendedMinValue = 0;
-    CGFloat extendedMaxValue = maxValue * 1.1;
-    plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(extendedMinValue)
-                                             length: CPTDecimalFromFloat(extendedMaxValue - extendedMinValue)];
+    NSDecimalNumber* roundedMax = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromFloat(maxValue)] roundToUpperOuter];
+    plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0) length: [roundedMax decimalValue]];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
     
     // Set the y axis ticks depending on the maximum value.
     CPTXYAxis* y = axisSet.yAxis;
-    y.visibleRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromInt(0)
-                                                  length: CPTDecimalFromFloat(extendedMaxValue)];
-
-    NSDecimalNumber* roundedRange = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromFloat(maxValue)] roundToUpperOuter];
-    y.majorIntervalLength = [[roundedRange decimalNumberByDividingBy: [NSDecimalNumber decimalNumberWithString: @"4"]] decimalValue];
-
+    y.visibleRange = plotRange;
+    
+    maxValue = [roundedMax doubleValue];
+    if (maxValue <= 5) {
+        y.majorIntervalLength = [roundedMax decimalValue];
+        y.minorTicksPerInterval = maxValue - 1;
+    }
+    else {
+        if (fmod(maxValue, 2) != 0) {
+            maxValue++; //
+        }
+        y.majorIntervalLength = CPTDecimalDivide([roundedMax decimalValue], CPTDecimalFromFloat(2));
+        y.minorTicksPerInterval = 2;
+    }
+    
     [turnoversGraph reloadData];
 }
 
@@ -617,7 +662,7 @@ double sign(double x)
     [parameters setObject: range forKey: @"plotXRange"];
     [parameters setObject: [NSNumber numberWithBool: YES] forKey: @"excludeSource"];
     [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
-
+    
     return proposedDisplacementVector;
 }
 
@@ -644,7 +689,7 @@ double sign(double x)
         
         return [NSDecimalNumber numberWithDouble: oneDay * days];
     }
-
+    
     if ([plot graph] == turnoversGraph)
     {
         if (fieldEnum == CPTBarPlotFieldBarTip)
@@ -652,7 +697,7 @@ double sign(double x)
         
         return [NSDecimalNumber numberWithInt: 0];
     }
-
+    
     if ([plot graph] == mainGraph)
     {
         NSString* identifier = (id)plot.identifier;
@@ -679,11 +724,11 @@ double sign(double x)
     return nil;
 }
 /*
--(CPTFill *)barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)index
-{
-    return nil;
-}
-*/
+ -(CPTFill *)barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)index
+ {
+ return nil;
+ }
+ */
 -(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)index 
 {
     return (id)[NSNull null]; // Don't show any label
@@ -748,7 +793,7 @@ double sign(double x)
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
     [self clearGraphs];
-
+    
     Category* category = [self currentSelection];
     if (category == nil)
         return;
@@ -770,7 +815,7 @@ double sign(double x)
     
     [self setupMainGraph];
     [self setupTurnoversGraph];
-
+    
     // Set Date restrictions.
     [tsManager setMinDate: [dates objectAtIndex: 0]];
     [tsManager setMaxDate: [ShortDate dateWithDate: [NSDate date]]];
@@ -835,108 +880,108 @@ double sign(double x)
 -(void)drawGraph
 {
     /*
-    int i, j, ip, jp, tickCount, days = 0;
-    double a,b, lastValue = 0.0;
-    NSPoint p;
-    ShortDate	*date = nil;
-    
-    maxValues.x = maxValues.y = minValues.x = minValues.y = 0;
-    
-    [points removeAllObjects ];
-    
-    self.firstDate = nil;
-    
-    NSMutableArray* dates = [[NSMutableArray alloc] init];
-    for(i=0; i<[dateKeys count ]; i++) {
-        ShortDate* date = [dateKeys objectAtIndex: i ];
-        if([date compare: self.fromDate ] == NSOrderedAscending) {
-            lastValue = [[balanceHistory objectForKey: date ] doubleValue ];
-            continue;
-        }
-        if([date compare: self.toDate ] == NSOrderedDescending) continue;
-        [dates addObject: date ];
-    }
-    if([dates count ] == 0) {
-        [dates addObject: self.fromDate ];
-        [dates addObject: self.toDate ];
-    }
-    
-    date = [dates objectAtIndex: 0 ];
-    if([self.fromDate compare: date ] == NSOrderedAscending) {
-        [dates insertObject: self.fromDate atIndex: 0 ];
-    }
-    
-    date = [dates objectAtIndex: [dates count ]-1 ];
-    if([date compare: self.toDate ] == NSOrderedAscending) {
-        [dates addObject: self.toDate ];
-    }
-    
-    for(i=0; i<[dates count ]; i++) {
-        date = [dates objectAtIndex: i ];
-        
-        if([balanceHistory objectForKey: date ] == nil) p.y = lastValue;
-        else p.y = [[balanceHistory objectForKey: date ] doubleValue ];
-        
-        if(firstDate == nil) {
-            self.firstDate = date;
-        } else {
-            days = [self.firstDate daysToDate: date ];
-        }
-        p.x = (double)days;
-        
-        [points addObject: NSStringFromPoint(p) ];
-        
-        if(minValues.y > p.y) minValues.y = p.y;
-        if(maxValues.y < p.y) maxValues.y = p.y;
-        lastValue = p.y;
-    }
-    
-    
-    if(days == 0) days = 1;
-    
-    maxValues.x = (double)days;
-    
-    // normalize y-values
-    i=j=0;
-    ip = jp = 1;
-    a = maxValues.y;
-    b = minValues.y;
-    if(b>0) b=0.0;
-    if(a<0) a=0.0;
-    
-    while(abs(a) > 10.0) { i++; a/=10.0; ip*=10;	}
-    while(abs(b) > 10.0) { j++; b/=10.0; jp*=10; 	}
-    
-    if(jp < ip) {
-        if(b != 0) b = sign(b);
-    } else if(jp > ip) {
-        if(a != 0) a = sign(a);
-        ip = jp;
-    }
-    
-    if(a > 0 && a != (int)a) a=a+1;
-    if(b < 0 && b != (int)b) b=b-1;
-    
-    maxValues.y = (int)a * ip;
-    minValues.y = (int)b * ip;
-    
-    tickCount = (int)a - (int)b + 1;
-    
-    NSRect r = [graphView frame ];
-    
-    [graphView setNumberOfTickMarks: tickCount forAxis: kSM2DGraph_Axis_Y ];
-    a = r.size.height/tickCount;
-    if(a>50) [graphView setNumberOfMinorTickMarks:9 forAxis: kSM2DGraph_Axis_Y ];
-    else [graphView setNumberOfMinorTickMarks:1 forAxis: kSM2DGraph_Axis_Y ];
-    
-    a = r.size.width / 70;
-    if(a < 1) a = 1;
-    if(a>days) a = days;
-    
-    xTickCountFactor = maxValues.x/(int)a;
-    
-    [graphView setNumberOfTickMarks: (int)a+1 forAxis: kSM2DGraph_Axis_X ];
-    [graphView refreshDisplay: self ];
+     int i, j, ip, jp, tickCount, days = 0;
+     double a,b, lastValue = 0.0;
+     NSPoint p;
+     ShortDate	*date = nil;
+     
+     maxValues.x = maxValues.y = minValues.x = minValues.y = 0;
+     
+     [points removeAllObjects ];
+     
+     self.firstDate = nil;
+     
+     NSMutableArray* dates = [[NSMutableArray alloc] init];
+     for(i=0; i<[dateKeys count ]; i++) {
+     ShortDate* date = [dateKeys objectAtIndex: i ];
+     if([date compare: self.fromDate ] == NSOrderedAscending) {
+     lastValue = [[balanceHistory objectForKey: date ] doubleValue ];
+     continue;
+     }
+     if([date compare: self.toDate ] == NSOrderedDescending) continue;
+     [dates addObject: date ];
+     }
+     if([dates count ] == 0) {
+     [dates addObject: self.fromDate ];
+     [dates addObject: self.toDate ];
+     }
+     
+     date = [dates objectAtIndex: 0 ];
+     if([self.fromDate compare: date ] == NSOrderedAscending) {
+     [dates insertObject: self.fromDate atIndex: 0 ];
+     }
+     
+     date = [dates objectAtIndex: [dates count ]-1 ];
+     if([date compare: self.toDate ] == NSOrderedAscending) {
+     [dates addObject: self.toDate ];
+     }
+     
+     for(i=0; i<[dates count ]; i++) {
+     date = [dates objectAtIndex: i ];
+     
+     if([balanceHistory objectForKey: date ] == nil) p.y = lastValue;
+     else p.y = [[balanceHistory objectForKey: date ] doubleValue ];
+     
+     if(firstDate == nil) {
+     self.firstDate = date;
+     } else {
+     days = [self.firstDate daysToDate: date ];
+     }
+     p.x = (double)days;
+     
+     [points addObject: NSStringFromPoint(p) ];
+     
+     if(minValues.y > p.y) minValues.y = p.y;
+     if(maxValues.y < p.y) maxValues.y = p.y;
+     lastValue = p.y;
+     }
+     
+     
+     if(days == 0) days = 1;
+     
+     maxValues.x = (double)days;
+     
+     // normalize y-values
+     i=j=0;
+     ip = jp = 1;
+     a = maxValues.y;
+     b = minValues.y;
+     if(b>0) b=0.0;
+     if(a<0) a=0.0;
+     
+     while(abs(a) > 10.0) { i++; a/=10.0; ip*=10;	}
+     while(abs(b) > 10.0) { j++; b/=10.0; jp*=10; 	}
+     
+     if(jp < ip) {
+     if(b != 0) b = sign(b);
+     } else if(jp > ip) {
+     if(a != 0) a = sign(a);
+     ip = jp;
+     }
+     
+     if(a > 0 && a != (int)a) a=a+1;
+     if(b < 0 && b != (int)b) b=b-1;
+     
+     maxValues.y = (int)a * ip;
+     minValues.y = (int)b * ip;
+     
+     tickCount = (int)a - (int)b + 1;
+     
+     NSRect r = [graphView frame ];
+     
+     [graphView setNumberOfTickMarks: tickCount forAxis: kSM2DGraph_Axis_Y ];
+     a = r.size.height/tickCount;
+     if(a>50) [graphView setNumberOfMinorTickMarks:9 forAxis: kSM2DGraph_Axis_Y ];
+     else [graphView setNumberOfMinorTickMarks:1 forAxis: kSM2DGraph_Axis_Y ];
+     
+     a = r.size.width / 70;
+     if(a < 1) a = 1;
+     if(a>days) a = days;
+     
+     xTickCountFactor = maxValues.x/(int)a;
+     
+     [graphView setNumberOfTickMarks: (int)a+1 forAxis: kSM2DGraph_Axis_X ];
+     [graphView refreshDisplay: self ];
      */
 }
 

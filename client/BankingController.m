@@ -239,8 +239,8 @@ static BankingController	*con;
     [statementsListView bind: @"selectedRows" toObject: transactionController withKeyPath: @"selectionIndexes" options: nil];
     
     [statementsListView setCellSpacing: 0];
-	[statementsListView setAllowsEmptySelection: YES];
-	[statementsListView setAllowsMultipleSelection: YES];
+    [statementsListView setAllowsEmptySelection: YES];
+    [statementsListView setAllowsMultipleSelection: YES];
     NSNumberFormatter* formatter = [statementsListView numberFormatter];
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
@@ -1502,7 +1502,7 @@ static BankingController	*con;
         if ([item action] == @selector(transfer_local:)) return NO;
         if ([item action] == @selector(transfer_eu:)) return NO;
         if ([item action] == @selector(transfer_dated:)) return NO;
- 		if ([item action] == @selector(transfer_internal:)) return NO;
+        if ([item action] == @selector(transfer_internal:)) return NO;
         if ([item action] == @selector(splitStatement:)) return NO;
         if ([item action] == @selector(donate:)) return NO;
         if ([item action] == @selector(deleteStatement:)) return NO;
@@ -1690,23 +1690,23 @@ static BankingController	*con;
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id <NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)childIndex 
 {
-	NSError *error;
-	Category *cat = (Category*)[item representedObject ];
-	NSPasteboard *pboard = [info draggingPasteboard];
-	NSString *type = [pboard availableTypeFromArray:[NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil]];
-	if(type == nil) return NO;
-	NSData *data = [pboard dataForType: type ];
-	
-	if([type isEqual: BankStatementDataType ]) {
-		NSDragOperation mask = [info draggingSourceOperationMask];
-		NSArray *uris = [NSKeyedUnarchiver unarchiveObjectWithData: data ];
+    NSError *error;
+    Category *cat = (Category*)[item representedObject ];
+    NSPasteboard *pboard = [info draggingPasteboard];
+    NSString *type = [pboard availableTypeFromArray:[NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil]];
+    if(type == nil) return NO;
+    NSData *data = [pboard dataForType: type ];
+    
+    if([type isEqual: BankStatementDataType ]) {
+        NSDragOperation mask = [info draggingSourceOperationMask];
+        NSArray *uris = [NSKeyedUnarchiver unarchiveObjectWithData: data ];
         
         for(NSURL *uri in uris) {
             NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
             if(moID == nil) continue;
             StatCatAssignment *stat = (StatCatAssignment*)[self.managedObjectContext objectWithID: moID];
             
-    		if([[self currentSelection ] isBankAccount ]) {
+            if([[self currentSelection ] isBankAccount ]) {
                 // if already assigned or copy modifier is pressed, copy the complete bank statement amount - else assign residual amount (move)
                 if ([cat isBankAccount ]) {
                     // drop on a manual account
@@ -1733,29 +1733,29 @@ static BankingController	*con;
                 else [stat moveToCategory: cat ];
             }
         }
-		
-		// update values including rollup
-		[Category updateCatValues ];
-		
-		// update tableview to maybe new row colors
-		[transactionsView display ];
-	} else {
+        
+        // update values including rollup
+        [Category updateCatValues ];
+        
+        //[transactionsView display ]; TODO: remove once MCEMTableView is gone.
+        [statementsListView updateSelectedCell];
+    } else {
         NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data ];        
         NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
         if (moID == nil) return NO;
-		Category *scat = (Category*)[self.managedObjectContext objectWithID: moID];
-		[scat setValue: cat forKey: @"parent" ];
-		[[Category catRoot ] rollup ];
-	}
+        Category *scat = (Category*)[self.managedObjectContext objectWithID: moID];
+        [scat setValue: cat forKey: @"parent" ];
+        [[Category catRoot ] rollup ];
+    }
     //	[accountsView setNeedsDisplay: YES ];
     
-	// save updates
-	if([self.managedObjectContext save: &error ] == NO) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-		return NO;
-	}
-	return YES;
+    // save updates
+    if([self.managedObjectContext save: &error ] == NO) {
+        NSAlert *alert = [NSAlert alertWithError:error];
+        [alert runModal];
+        return NO;
+    }
+    return YES;
 }
 
 
