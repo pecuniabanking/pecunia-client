@@ -301,7 +301,7 @@
 		274DE2B213F992A50009EB77 /* MainBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MainBackgroundView.h; sourceTree = "<group>"; tabWidth = 4; };
 		274DE2B313F992A50009EB77 /* MainBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MainBackgroundView.m; sourceTree = "<group>"; tabWidth = 4; };
 		274DE33313F9A0C50009EB77 /* pen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pen.png; sourceTree = "<group>"; };
-		275C07DA1438776000D97415 /* StatementsListViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatementsListViewCell.xib; sourceTree = "<group>"; };
+		275C07DA1438776000D97415 /* StatementsListViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StatementsListViewCell.xib; path = Resources/Designer/StatementsListViewCell.xib; sourceTree = "<group>"; };
 		275C07DD1438779700D97415 /* PXListDocumentView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; name = PXListDocumentView.h; path = PXListview/PXListDocumentView.h; sourceTree = "<group>"; tabWidth = 4; };
 		275C07DE1438779700D97415 /* PXListDocumentView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; name = PXListDocumentView.m; path = PXListview/PXListDocumentView.m; sourceTree = "<group>"; tabWidth = 4; };
 		275C07DF1438779700D97415 /* PXListView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; name = PXListView.h; path = PXListview/PXListView.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -327,7 +327,7 @@
 		27955AFE140C0603008369C9 /* GraphicsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = GraphicsAdditions.m; sourceTree = "<group>"; tabWidth = 4; };
 		27BF2C79145C5B180015B491 /* NumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberExtensions.h; sourceTree = "<group>"; };
 		27BF2C7A145C5B180015B491 /* NumberExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = NumberExtensions.m; sourceTree = "<group>"; tabWidth = 4; };
-		27C78792143622920095F1DA /* ProgressWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressWindow.xib; sourceTree = "<group>"; };
+		27C78792143622920095F1DA /* ProgressWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ProgressWindow.xib; path = Resources/Designer/ProgressWindow.xib; sourceTree = "<group>"; };
 		27C78794143623080095F1DA /* ProgressWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		27C78795143623080095F1DA /* ProgressWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		27D240E9145302A900EDC8C7 /* done.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = done.mp3; path = Resources/Sounds/done.mp3; sourceTree = "<group>"; };
@@ -363,7 +363,7 @@
 		B1014C081018F3D600ABA1FF /* yes_small.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = yes_small.icns; sourceTree = "<group>"; };
 		B1014C0B1018F48500ABA1FF /* yes2.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = yes2.ico; sourceTree = "<group>"; };
 		B1014C101018F97600ABA1FF /* lock.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = lock.ico; sourceTree = "<group>"; };
-		B1014C5C101A2FBE00ABA1FF /* Donation.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Donation.nib; sourceTree = "<group>"; };
+		B1014C5C101A2FBE00ABA1FF /* Donation.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Donation.nib; path = Resources/Designer/Donation.nib; sourceTree = "<group>"; };
 		B1014C65101A37E800ABA1FF /* DonationMessageController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = DonationMessageController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1014C66101A37E800ABA1FF /* DonationMessageController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = DonationMessageController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gpl-2.0.txt"; sourceTree = "<group>"; };
@@ -372,7 +372,7 @@
 		B103012113AE84DE0089F3D4 /* donate2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = donate2.png; sourceTree = "<group>"; };
 		B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitRule.h; sourceTree = "<group>"; tabWidth = 4; };
 		B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitRule.m; sourceTree = "<group>"; tabWidth = 4; };
-		B10DBC4D12DBB96F0030D67A /* BankUser.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = BankUser.nib; sourceTree = "<group>"; };
+		B10DBC4D12DBB96F0030D67A /* BankUser.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = BankUser.nib; path = Resources/Designer/BankUser.nib; sourceTree = "<group>"; };
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1139FEF127CB6F900D6EF08 /* CategoryHistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryHistWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -392,8 +392,8 @@
 		B12A498F10BDD6A2002CC63E /* HBCIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = HBCIClient.m; sourceTree = "<group>"; tabWidth = 4; };
 		B12A4D4D10C869F0002CC63E /* NewPasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = NewPasswordController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B12A4D4E10C869F0002CC63E /* NewPasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = NewPasswordController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B12A4D6210C86C22002CC63E /* NewPasswordWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = NewPasswordWindow.nib; sourceTree = "<group>"; };
-		B12A4DC710CB16F7002CC63E /* TanMethods.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = TanMethods.nib; sourceTree = "<group>"; };
+		B12A4D6210C86C22002CC63E /* NewPasswordWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = NewPasswordWindow.nib; path = Resources/Designer/NewPasswordWindow.nib; sourceTree = "<group>"; };
+		B12A4DC710CB16F7002CC63E /* TanMethods.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = TanMethods.nib; path = Resources/Designer/TanMethods.nib; sourceTree = "<group>"; };
 		B132F84A0F8FE9DB00263F3B /* ins-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ins-8.png"; sourceTree = "<group>"; };
 		B132F8CF0F93DC0D00263F3B /* MCEMTreeController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMTreeController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B132F8D00F93DC0D00263F3B /* MCEMTreeController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMTreeController.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -404,7 +404,7 @@
 		B134357112EB7FDF006C4687 /* cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cursor.png; sourceTree = "<group>"; };
 		B13435A212EC36A3006C4687 /* GenericImportController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = GenericImportController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B13435A312EC36A3006C4687 /* GenericImportController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = GenericImportController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B134365A12ECBD54006C4687 /* GenericImportWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenericImportWindow.xib; sourceTree = "<group>"; };
+		B134365A12ECBD54006C4687 /* GenericImportWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GenericImportWindow.xib; path = Resources/Designer/GenericImportWindow.xib; sourceTree = "<group>"; };
 		B136AAD60FCF1C4A007A643F /* MCEMTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMTableView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B136AAD70FCF1C4A007A643F /* MCEMTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMTableView.m; sourceTree = "<group>"; tabWidth = 4; };
 		B136AB340FD077DD007A643F /* MCEMPieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMPieChartView.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -437,14 +437,14 @@
 		B138B3E0139EBC230026BEE2 /* DockIconController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = DockIconController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPeriodsWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPeriodsWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14587A11289DCB700848683 /* CategoryPeriods.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryPeriods.xib; sourceTree = "<group>"; };
+		B14587A11289DCB700848683 /* CategoryPeriods.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CategoryPeriods.xib; path = Resources/Designer/CategoryPeriods.xib; sourceTree = "<group>"; };
 		B14587A31289ED8D00848683 /* CategoryReportingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryReportingNode.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14587A41289ED8D00848683 /* CategoryReportingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryReportingNode.m; sourceTree = "<group>"; tabWidth = 4; };
 		B14587EA128C8B0700848683 /* ReportingTabs.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ReportingTabs.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14587EB128C8B0700848683 /* ReportingTabs.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ReportingTabs.m; sourceTree = "<group>"; tabWidth = 4; };
 		B14C5FFF1148467A009324A6 /* BankStatementController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14C60001148467A009324A6 /* BankStatementController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14C6002114848E1009324A6 /* BankStatementController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BankStatementController.xib; sourceTree = "<group>"; };
+		B14C6002114848E1009324A6 /* BankStatementController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BankStatementController.xib; path = Resources/Designer/BankStatementController.xib; sourceTree = "<group>"; };
 		B14C61B9115AB4FB009324A6 /* BankStatementPolicy030.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14C61BA115AB4FB009324A6 /* BankStatementPolicy030.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPolicy030.m; sourceTree = "<group>"; tabWidth = 4; };
 		B14C6224115C04FA009324A6 /* 030.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; name = 030.xcmappingmodel; path = Resources/Models/030.xcmappingmodel; sourceTree = "<group>"; };
@@ -504,7 +504,7 @@
 		B17B28FF13E340A300739E7A /* HBCIBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIBackend.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3C13EC8D5000739E7A /* ChipTanWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ChipTanWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ChipTanWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChipTanWindow.xib; sourceTree = "<group>"; };
+		B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ChipTanWindow.xib; path = Resources/Designer/ChipTanWindow.xib; sourceTree = "<group>"; };
 		B17B2B4113EC921200739E7A /* FlickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = FlickerView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B4213EC921200739E7A /* FlickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = FlickerView.m; sourceTree = "<group>"; tabWidth = 4; };
 		B18268080EC0E460008BC010 /* DatedTransfer_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DatedTransfer_32.png; sourceTree = "<group>"; };
@@ -531,7 +531,7 @@
 		B196E03C0FABA2CC00509748 /* WorkerThread.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = WorkerThread.m; sourceTree = "<group>"; tabWidth = 4; };
 		B196E0920FACE15F00509748 /* BSSelectWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BSSelectWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B196E0930FACE15F00509748 /* BSSelectWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BSSelectWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B196E0960FACE30600509748 /* BSSelectWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = BSSelectWindow.nib; sourceTree = "<group>"; };
+		B196E0960FACE30600509748 /* BSSelectWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = BSSelectWindow.nib; path = Resources/Designer/BSSelectWindow.nib; sourceTree = "<group>"; };
 		B196E1B00FB4CFE200509748 /* StatusBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatusBarController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B196E1B10FB4CFE200509748 /* StatusBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatusBarController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B196E22A0FB8AFCD00509748 /* AMShellWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AMShellWrapper.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -553,32 +553,32 @@
 		B1A034C50D8C5B4200072442 /* pec4.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = pec4.icns; sourceTree = "<group>"; };
 		B1A035730D8C77FC00072442 /* LogController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = LogController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1A035740D8C77FC00072442 /* LogController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = LogController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B1A1376711B6FA9800622D6C /* AccountCreate.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = AccountCreate.nib; sourceTree = "<group>"; };
+		B1A1376711B6FA9800622D6C /* AccountCreate.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = AccountCreate.nib; path = Resources/Designer/AccountCreate.nib; sourceTree = "<group>"; };
 		B1A1377211B6FD9400622D6C /* AccountDefController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AccountDefController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1A1377311B6FD9400622D6C /* AccountDefController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AccountDefController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1A5940C112A8D8500FD8CB8 /* TransferResult.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransferResult.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1A5940D112A8D8500FD8CB8 /* TransferResult.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransferResult.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1A59494113165BC00FD8CB8 /* StatSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatSplitController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1A59495113165BC00FD8CB8 /* StatSplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatSplitController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1A59497113182DA00FD8CB8 /* StatSplitController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatSplitController.xib; sourceTree = "<group>"; };
+		B1A59497113182DA00FD8CB8 /* StatSplitController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StatSplitController.xib; path = Resources/Designer/StatSplitController.xib; sourceTree = "<group>"; };
 		B1A6E8330FC890E400566C55 /* PasswordWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PasswordWindow.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1A6E8340FC890E400566C55 /* PasswordWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordWindow.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1A6E8870FC8A4F700566C55 /* PasswordWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = PasswordWindow.nib; sourceTree = "<group>"; };
-		B1AA633014096E6600ADE1D0 /* ImportSettings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportSettings.xib; sourceTree = "<group>"; };
+		B1A6E8870FC8A4F700566C55 /* PasswordWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = PasswordWindow.nib; path = Resources/Designer/PasswordWindow.nib; sourceTree = "<group>"; };
+		B1AA633014096E6600ADE1D0 /* ImportSettings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ImportSettings.xib; path = Resources/Designer/ImportSettings.xib; sourceTree = "<group>"; };
 		B1AA6335140990EF00ADE1D0 /* ImportSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ImportSettings.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA6336140990EF00ADE1D0 /* ImportSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ImportSettings.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA633A140995F100ADE1D0 /* ImportSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ImportSettingsController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA633B140995F100ADE1D0 /* ImportSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ImportSettingsController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA640A140C074E00ADE1D0 /* ImportController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ImportController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA640B140C074E00ADE1D0 /* ImportController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ImportController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportWindow.xib; sourceTree = "<group>"; };
+		B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ImportWindow.xib; path = Resources/Designer/ImportWindow.xib; sourceTree = "<group>"; };
 		B1AB52280DD4F30900327122 /* log.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = log.icns; sourceTree = "<group>"; };
-		B1AFA78D129463F100B115A7 /* CategoryHistory.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryHistory.xib; sourceTree = "<group>"; };
-		B1AFA836129479BA00B115A7 /* CategoryRep.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryRep.xib; sourceTree = "<group>"; };
-		B1AFA8801295C5D800B115A7 /* AccountRep.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountRep.xib; sourceTree = "<group>"; };
+		B1AFA78D129463F100B115A7 /* CategoryHistory.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CategoryHistory.xib; path = Resources/Designer/CategoryHistory.xib; sourceTree = "<group>"; };
+		B1AFA836129479BA00B115A7 /* CategoryRep.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CategoryRep.xib; path = Resources/Designer/CategoryRep.xib; sourceTree = "<group>"; };
+		B1AFA8801295C5D800B115A7 /* AccountRep.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AccountRep.xib; path = Resources/Designer/AccountRep.xib; sourceTree = "<group>"; };
 		B1AFA9341299C15900B115A7 /* StandingOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrder.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AFA9351299C15900B115A7 /* StandingOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrder.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1AFA9F6129EEA3900B115A7 /* Orders.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Orders.xib; sourceTree = "<group>"; };
+		B1AFA9F6129EEA3900B115A7 /* Orders.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Orders.xib; path = Resources/Designer/Orders.xib; sourceTree = "<group>"; };
 		B1AFAA0312A061C100B115A7 /* StandingOrderTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrderTabController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AFAA0412A061C100B115A7 /* StandingOrderTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrderTabController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1B0EEC60EDF325F00701E76 /* floppy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = floppy.png; sourceTree = "<group>"; };
@@ -588,7 +588,7 @@
 		B1B0EEDE0EDF3F0900701E76 /* nok.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nok.png; sourceTree = "<group>"; };
 		B1B417DD13F06AD200BEEC8F /* TanMediaWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TanMediaWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TanMediaWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TanMediaWindow.xib; sourceTree = "<group>"; };
+		B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TanMediaWindow.xib; path = Resources/Designer/TanMediaWindow.xib; sourceTree = "<group>"; };
 		B1B41C8A14005B5B00BEEC8F /* BankParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankParameter.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1B41C8B14005B5B00BEEC8F /* BankParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankParameter.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1B7B37312EA3D2B0013CF0B /* standing_order.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = standing_order.png; sourceTree = "<group>"; };
@@ -601,9 +601,9 @@
 		B1C72C2D123D4C1200D1D78D /* ABInputWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ABInputWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1C72C2E123D4C1200D1D78D /* ABProgressWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ABProgressWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C72C2F123D4C1200D1D78D /* ABProgressWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ABProgressWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1C72C33123D4C6900D1D78D /* ABInfoBox.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ABInfoBox.nib; sourceTree = "<group>"; };
-		B1C72C34123D4C6900D1D78D /* ABInputWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ABInputWindow.nib; sourceTree = "<group>"; };
-		B1C72C35123D4C6900D1D78D /* ABProgressWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ABProgressWindow.nib; sourceTree = "<group>"; };
+		B1C72C33123D4C6900D1D78D /* ABInfoBox.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = ABInfoBox.nib; path = Resources/Designer/ABInfoBox.nib; sourceTree = "<group>"; };
+		B1C72C34123D4C6900D1D78D /* ABInputWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = ABInputWindow.nib; path = Resources/Designer/ABInputWindow.nib; sourceTree = "<group>"; };
+		B1C72C35123D4C6900D1D78D /* ABProgressWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = ABProgressWindow.nib; path = Resources/Designer/ABProgressWindow.nib; sourceTree = "<group>"; };
 		B1C72D4D124A993B00D1D78D /* LogLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = LogLevel.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; name = 030alpha.xcmappingmodel; path = Resources/Models/030alpha.xcmappingmodel; sourceTree = "<group>"; };
 		B1C7AFFD12FE0BAB0091CD72 /* BankStatementPolicy030alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030alpha.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -612,13 +612,13 @@
 		B1C90E150ABB39D5006F18C9 /* BankingController.m */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankingController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1D6C9EC0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMOutlineViewLayout.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMOutlineViewLayout.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1E811810FF6854F00BF7451 /* AccountMaintenance.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = AccountMaintenance.nib; sourceTree = "<group>"; };
-		B1E811820FF6854F00BF7451 /* AccountSettings.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = AccountSettings.nib; sourceTree = "<group>"; };
-		B1E811840FF6854F00BF7451 /* ExportPopup.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ExportPopup.nib; sourceTree = "<group>"; };
-		B1E811850FF6854F00BF7451 /* Institutes.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Institutes.nib; sourceTree = "<group>"; };
-		B1E811860FF6854F00BF7451 /* LogController.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = LogController.nib; sourceTree = "<group>"; };
-		B1E811870FF6854F00BF7451 /* MainMenu.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = MainMenu.nib; sourceTree = "<group>"; };
-		B1E811880FF6854F00BF7451 /* Preferences.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Preferences.nib; sourceTree = "<group>"; };
+		B1E811810FF6854F00BF7451 /* AccountMaintenance.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = AccountMaintenance.nib; path = Resources/Designer/AccountMaintenance.nib; sourceTree = "<group>"; };
+		B1E811820FF6854F00BF7451 /* AccountSettings.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = AccountSettings.nib; path = Resources/Designer/AccountSettings.nib; sourceTree = "<group>"; };
+		B1E811840FF6854F00BF7451 /* ExportPopup.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = ExportPopup.nib; path = Resources/Designer/ExportPopup.nib; sourceTree = "<group>"; };
+		B1E811850FF6854F00BF7451 /* Institutes.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Institutes.nib; path = Resources/Designer/Institutes.nib; sourceTree = "<group>"; };
+		B1E811860FF6854F00BF7451 /* LogController.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = LogController.nib; path = Resources/Designer/LogController.nib; sourceTree = "<group>"; };
+		B1E811870FF6854F00BF7451 /* MainMenu.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = MainMenu.nib; path = Resources/Designer/MainMenu.nib; sourceTree = "<group>"; };
+		B1E811880FF6854F00BF7451 /* Preferences.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Preferences.nib; path = Resources/Designer/Preferences.nib; sourceTree = "<group>"; };
 		B1E811D70FF68B3700BF7451 /* PecuniaHelp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PecuniaHelp; sourceTree = "<group>"; };
 		B1EFA8010D5CE7BA007FD9C3 /* CCDLayoutAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CCDLayoutAdditions.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1EFA8020D5CE7BA007FD9C3 /* CCDLayoutAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CCDLayoutAdditions.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -646,14 +646,14 @@
 		B1FAECA912357D15000AF027 /* copyaq.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = copyaq.sh; sourceTree = "<group>"; };
 		B1FB50971209EA52004DCD6A /* PurposeSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB50981209EA52004DCD6A /* PurposeSplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PurposeSplitWindow.xib; sourceTree = "<group>"; };
+		B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PurposeSplitWindow.xib; path = Resources/Designer/PurposeSplitWindow.xib; sourceTree = "<group>"; };
 		B1FB509C1209F68E004DCD6A /* PurposeSplitData.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitData.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitData.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB6600124FC61B00C54A0E /* TransferTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransferTemplate.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB6601124FC61B00C54A0E /* TransferTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransferTemplate.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB660D124FC89500C54A0E /* TransferTemplateController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransferTemplateController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB660E124FC89500C54A0E /* TransferTemplateController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransferTemplateController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransferTemplates.xib; sourceTree = "<group>"; };
+		B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TransferTemplates.xib; path = Resources/Designer/TransferTemplates.xib; sourceTree = "<group>"; };
 		B1FB6914125D0A5500C54A0E /* edit16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit16.png; sourceTree = "<group>"; };
 		B1FB6B00126B7BF300C54A0E /* BankStatementPrintView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPrintView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB6B01126B7BF300C54A0E /* BankStatementPrintView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPrintView.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -747,38 +747,9 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* Pecunia */ = {
+		27E55355146EDA59001DE9BE /* Designer */ = {
 			isa = PBXGroup;
 			children = (
-				B1FAEA79122C2408000AF027 /* Scripts */,
-				B136AACF0FCF1BF5007A643F /* Classes */,
-				29B97315FDCFA39411CA2CEA /* Other Sources */,
-				29B97317FDCFA39411CA2CEA /* Resources */,
-				29B97323FDCFA39411CA2CEA /* Frameworks */,
-				19C28FACFE9D520D11CA2CBB /* Products */,
-			);
-			name = Pecunia;
-			sourceTree = "<group>";
-		};
-		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
-			isa = PBXGroup;
-			children = (
-				32CA4F630368D1EE00C91783 /* Pecunia_Prefix.pch */,
-				29B97316FDCFA39411CA2CEA /* main.m */,
-			);
-			name = "Other Sources";
-			sourceTree = "<group>";
-		};
-		29B97317FDCFA39411CA2CEA /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				27E5534E146ED854001DE9BE /* Models */,
-				27D240E71453026400EDC8C7 /* Sounds */,
-				B15FCCEE141422A3000738B6 /* HBCIServer.jar */,
-				B137BE8F12D33AB200D0394C /* Institute.csv */,
-				B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */,
-				B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */,
-				B1E811D70FF68B3700BF7451 /* PecuniaHelp */,
 				B1C72C33123D4C6900D1D78D /* ABInfoBox.nib */,
 				B1C72C34123D4C6900D1D78D /* ABInputWindow.nib */,
 				B1C72C35123D4C6900D1D78D /* ABProgressWindow.nib */,
@@ -812,6 +783,43 @@
 				B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */,
 				B1AA633014096E6600ADE1D0 /* ImportSettings.xib */,
 				B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */,
+			);
+			name = Designer;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* Pecunia */ = {
+			isa = PBXGroup;
+			children = (
+				B1FAEA79122C2408000AF027 /* Scripts */,
+				B136AACF0FCF1BF5007A643F /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = Pecunia;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* Pecunia_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				27E55355146EDA59001DE9BE /* Designer */,
+				27E5534E146ED854001DE9BE /* Models */,
+				27D240E71453026400EDC8C7 /* Sounds */,
+				B15FCCEE141422A3000738B6 /* HBCIServer.jar */,
+				B137BE8F12D33AB200D0394C /* Institute.csv */,
+				B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */,
+				B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */,
+				B1E811D70FF68B3700BF7451 /* PecuniaHelp */,
 				B1923B560EB7A6D40079ADCA /* Images */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
