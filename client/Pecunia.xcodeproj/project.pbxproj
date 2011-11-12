@@ -1056,6 +1056,7 @@
 				B120E3BF0EB0F34D00FC5A6F /* icon_colors.png */,
 			);
 			name = Images;
+			path = Resources/Images;
 			sourceTree = "<group>";
 		};
 		B1C7B189130B10BF0091CD72 /* MainWindow */ = {
