@@ -860,11 +860,6 @@ double sign(double x)
     NSDecimalNumber *incomes = [cat valuesOfType: cat_earnings from: self.fromDate to: self.toDate ];
     NSDecimalNumber *balance = [incomes decimalNumberByAdding: expenses ];
     
-    NSDecimalNumber *zero = [NSDecimalNumber zero ];
-    //	[balanceColor release ];
-    if([balance compare: zero ] == NSOrderedAscending) [self setValue: [NSColor redColor ] forKey: @"balanceColor" ]; 
-    else [self setValue: [NSColor colorWithCalibratedRed:0.0 green:0.78 blue:0.0 alpha:1.0 ] forKey: @"balanceColor" ];
-    
     [self setValue: expenses forKey: @"sexpense" ];
     [self setValue: incomes forKey: @"sincome" ];
     [self setValue: balance forKey: @"sbalance" ];
@@ -886,6 +881,11 @@ double sign(double x)
 - (id)outlineView:(NSOutlineView *)outlineView persistentObjectForItem:(id)item 
 {
     return [outlineView persistentObjectForItem: item ];
+}
+
+-(id)outlineView: (NSOutlineView *)outlineView itemForPersistentObject: (id)object
+{
+    return nil;
 }
 
 -(void)terminate
