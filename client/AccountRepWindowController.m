@@ -7,7 +7,6 @@
 //
 
 #import "AccountRepWindowController.h"
-#import <SM2DGraphView/SM2DGraphView.h>
 #import "Category.h"
 #import "MCEMOutlineViewLayout.h"
 #import "ShortDate.h"
@@ -128,7 +127,6 @@ double sign(double x)
 
 -(void)dealloc 
 {
-    [points release ];
     [firstDate release], firstDate = nil;
     [fromDate release], fromDate = nil;
     [toDate release], toDate = nil;
@@ -145,11 +143,7 @@ double sign(double x)
 {
     NSError *error;
     
-    maxValues.x = maxValues.y = 0.0;
-    minValues.x = minValues.y = 0.0;
-    points = [[NSMutableArray alloc ] init ];
     [accountsController fetchWithRequest: nil merge: NO error: &error];
-    [graphView setDrawsGrid: YES ];
     
     // sort descriptor for accounts view
     NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES] autorelease];
@@ -985,18 +979,6 @@ double sign(double x)
      */
 }
 
--(IBAction) setGraphStyle: (id)sender
-{
-    drawAsBars = NO;
-    [graphView reloadAttributesForLineIndex:0 ];
-}
-
--(IBAction) setBarStyle: (id)sender
-{
-    drawAsBars = YES;
-    [graphView reloadAttributesForLineIndex:0 ];
-}
-
 -(NSString*)autosaveNameForTimeSlicer: (TimeSliceManager*)tsm
 {
     return @"AccRepTimeSlice";
@@ -1010,68 +992,6 @@ double sign(double x)
     [self drawGraph ];
 }
 
-
--(unsigned int)numberOfLinesInTwoDGraphView:(SM2DGraphView *)inGraphView
-{
-    return 1;
-}
-
--(NSArray *)twoDGraphView:(SM2DGraphView *)inGraphView dataForLineIndex:(unsigned int)inLineIndex
-{
-    return points;
-}
-
--(double)twoDGraphView:(SM2DGraphView *)inGraphView maximumValueForLineIndex:(unsigned int)inLineIndex
-               forAxis:(SM2DGraphAxisEnum)inAxis
-{
-    if(inAxis == kSM2DGraph_Axis_X) return maxValues.x; else return maxValues.y;
-}
-
--(double)twoDGraphView:(SM2DGraphView *)inGraphView minimumValueForLineIndex:(unsigned int)inLineIndex
-               forAxis:(SM2DGraphAxisEnum)inAxis
-{
-    if(inAxis == kSM2DGraph_Axis_X) return minValues.x; else return minValues.y;
-}
-
-- (NSString *)twoDGraphView:(SM2DGraphView *)inGraphView labelForTickMarkIndex:(unsigned int)inTickMarkIndex
-                    forAxis:(SM2DGraphAxisEnum)inAxis defaultLabel:(NSString *)inDefault
-{
-    double a;
-    
-    if(inAxis == kSM2DGraph_Axis_Y) return inDefault;
-    
-    a = inTickMarkIndex * xTickCountFactor;
-    ShortDate* date = [self.firstDate dateByAddingDays: (int)a ];
-    
-    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease ];
-    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-    
-    return [dateFormatter stringFromDate: [date lowDate] ];
-}
-
-- (NSDictionary *)twoDGraphView:(SM2DGraphView *)inGraphView attributesForLineIndex:(unsigned int)inLineIndex
-{
-    NSDictionary	*result = nil;
-    
-    if(drawAsBars == YES)
-        result = [ NSDictionary dictionaryWithObjectsAndKeys:
-                  [ NSNumber numberWithBool:YES ], SM2DGraphBarStyleAttributeName,
-                  //			  [ NSColor orangeColor ], NSForegroundColorAttributeName,
-                  nil ];
-    else result = [NSDictionary dictionary ];
-    
-    return result;
-}
-
-- (void)twoDGraphView:(SM2DGraphView *)inGraphView willDisplayBarIndex:(unsigned int)inBarIndex forLineIndex:(unsigned int)inLineIndex withAttributes:(NSMutableDictionary *)attr
-{
-    NSString* ps = [points objectAtIndex: inBarIndex ];
-    if(ps == nil) return;
-    NSPoint p = NSPointFromString(ps);
-    if(p.y < 0) [ attr setObject: [ NSColor redColor ] forKey:NSForegroundColorAttributeName ]; 
-    else [ attr setObject: [ NSColor greenColor ] forKey:NSForegroundColorAttributeName ];
-}
 
 - (id)outlineView:(NSOutlineView *)outlineView persistentObjectForItem:(id)item 
 {

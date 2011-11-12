@@ -490,7 +490,7 @@
 		B165B44F0D2EED7600447DD8 /* Transfer_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transfer_24.png; sourceTree = "<group>"; };
 		B165B51E0D340C5800447DD8 /* plus-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus-8.png"; sourceTree = "<group>"; };
 		B165B5200D340C7D00447DD8 /* minus-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minus-8.png"; sourceTree = "<group>"; };
-		B16B0CEB11C01DFB00254078 /* SM2DGraphView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SM2DGraphView.framework; sourceTree = "<group>"; };
+		B16B0CEB11C01DFB00254078 /* SM2DGraphView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SM2DGraphView.framework; path = Frameworks/SM2DGraphView.framework; sourceTree = "<group>"; };
 		B17072D30D4BD35D00FBF186 /* TransactionLimits.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransactionLimits.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17072D40D4BD35D00FBF186 /* TransactionLimits.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionLimits.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17074850D55104000FBF186 /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -624,7 +624,7 @@
 		B1EFA8010D5CE7BA007FD9C3 /* CCDLayoutAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CCDLayoutAdditions.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1EFA8020D5CE7BA007FD9C3 /* CCDLayoutAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CCDLayoutAdditions.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1F454370F101E7500BAF4E8 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		B1F458200F2516C200BAF4E8 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		B1F458200F2516C200BAF4E8 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
 		B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		B1F4587C0F2907BD00BAF4E8 /* AccountChangeController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AccountChangeController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1F4587D0F2907BD00BAF4E8 /* AccountChangeController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AccountChangeController.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1631,7 +1631,10 @@
 				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = ./AqBanking.framework/Headers;
+				HEADER_SEARCH_PATHS = (
+					"Frameworks//**",
+					./AqBanking.framework/Headers,
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (

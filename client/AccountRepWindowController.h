@@ -25,23 +25,15 @@
 {
     IBOutlet NSTreeController	*accountsController;
 	IBOutlet NSOutlineView      *accountsView;
-	IBOutlet SM2DGraphView	    *graphView;
 	IBOutlet NSSplitView		*splitView;
 	IBOutlet NSView				*mainView;
 	IBOutlet NSView				*printView;
 
-	NSPoint minValues;
-	NSPoint maxValues;
-	
-	NSMutableArray				*points;
 	ShortDate					*firstDate;
 	ShortDate					*fromDate;
 	ShortDate					*toDate;
 	NSManagedObjectContext		*managedObjectContext;
 	
-	double						xTickCountFactor;
-	BOOL						drawAsBars;
-	NSColor						*balanceColor;
 	IBOutlet TimeSliceManager	*tsManager;
 	
 	IBOutlet NSString			*sincome;
@@ -67,9 +59,6 @@
 @property (nonatomic, retain) ShortDate *firstDate;
 @property (nonatomic, retain) ShortDate *fromDate;
 @property (nonatomic, retain) ShortDate *toDate;
-
--(IBAction) setGraphStyle: (id)sender;
--(IBAction) setBarStyle: (id)sender;
 
 -(void)prepare;
 -(void)terminate;
