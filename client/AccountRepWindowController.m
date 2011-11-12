@@ -814,7 +814,6 @@ double sign(double x)
     [tsManager setMinDate: [dates objectAtIndex: 0]];
     [tsManager setMaxDate: [ShortDate dateWithDate: [NSDate date]]];
     
-    [self drawGraph];
     [self updateValues];
     
 }
@@ -871,114 +870,6 @@ double sign(double x)
     [self setValue: balance forKey: @"sbalance" ];
 }
 
--(void)drawGraph
-{
-    /*
-     int i, j, ip, jp, tickCount, days = 0;
-     double a,b, lastValue = 0.0;
-     NSPoint p;
-     ShortDate	*date = nil;
-     
-     maxValues.x = maxValues.y = minValues.x = minValues.y = 0;
-     
-     [points removeAllObjects ];
-     
-     self.firstDate = nil;
-     
-     NSMutableArray* dates = [[NSMutableArray alloc] init];
-     for(i=0; i<[dateKeys count ]; i++) {
-     ShortDate* date = [dateKeys objectAtIndex: i ];
-     if([date compare: self.fromDate ] == NSOrderedAscending) {
-     lastValue = [[balanceHistory objectForKey: date ] doubleValue ];
-     continue;
-     }
-     if([date compare: self.toDate ] == NSOrderedDescending) continue;
-     [dates addObject: date ];
-     }
-     if([dates count ] == 0) {
-     [dates addObject: self.fromDate ];
-     [dates addObject: self.toDate ];
-     }
-     
-     date = [dates objectAtIndex: 0 ];
-     if([self.fromDate compare: date ] == NSOrderedAscending) {
-     [dates insertObject: self.fromDate atIndex: 0 ];
-     }
-     
-     date = [dates objectAtIndex: [dates count ]-1 ];
-     if([date compare: self.toDate ] == NSOrderedAscending) {
-     [dates addObject: self.toDate ];
-     }
-     
-     for(i=0; i<[dates count ]; i++) {
-     date = [dates objectAtIndex: i ];
-     
-     if([balanceHistory objectForKey: date ] == nil) p.y = lastValue;
-     else p.y = [[balanceHistory objectForKey: date ] doubleValue ];
-     
-     if(firstDate == nil) {
-     self.firstDate = date;
-     } else {
-     days = [self.firstDate daysToDate: date ];
-     }
-     p.x = (double)days;
-     
-     [points addObject: NSStringFromPoint(p) ];
-     
-     if(minValues.y > p.y) minValues.y = p.y;
-     if(maxValues.y < p.y) maxValues.y = p.y;
-     lastValue = p.y;
-     }
-     
-     
-     if(days == 0) days = 1;
-     
-     maxValues.x = (double)days;
-     
-     // normalize y-values
-     i=j=0;
-     ip = jp = 1;
-     a = maxValues.y;
-     b = minValues.y;
-     if(b>0) b=0.0;
-     if(a<0) a=0.0;
-     
-     while(abs(a) > 10.0) { i++; a/=10.0; ip*=10;	}
-     while(abs(b) > 10.0) { j++; b/=10.0; jp*=10; 	}
-     
-     if(jp < ip) {
-     if(b != 0) b = sign(b);
-     } else if(jp > ip) {
-     if(a != 0) a = sign(a);
-     ip = jp;
-     }
-     
-     if(a > 0 && a != (int)a) a=a+1;
-     if(b < 0 && b != (int)b) b=b-1;
-     
-     maxValues.y = (int)a * ip;
-     minValues.y = (int)b * ip;
-     
-     tickCount = (int)a - (int)b + 1;
-     
-     NSRect r = [graphView frame ];
-     
-     [graphView setNumberOfTickMarks: tickCount forAxis: kSM2DGraph_Axis_Y ];
-     a = r.size.height/tickCount;
-     if(a>50) [graphView setNumberOfMinorTickMarks:9 forAxis: kSM2DGraph_Axis_Y ];
-     else [graphView setNumberOfMinorTickMarks:1 forAxis: kSM2DGraph_Axis_Y ];
-     
-     a = r.size.width / 70;
-     if(a < 1) a = 1;
-     if(a>days) a = days;
-     
-     xTickCountFactor = maxValues.x/(int)a;
-     
-     [graphView setNumberOfTickMarks: (int)a+1 forAxis: kSM2DGraph_Axis_X ];
-     [graphView refreshDisplay: self ];
-     */
-}
-
 -(NSString*)autosaveNameForTimeSlicer: (TimeSliceManager*)tsm
 {
     return @"AccRepTimeSlice";
@@ -988,8 +879,7 @@ double sign(double x)
 {
     self.fromDate = from;
     self.toDate = to;
-    [self updateValues ];
-    [self drawGraph ];
+    [self updateValues];
 }
 
 

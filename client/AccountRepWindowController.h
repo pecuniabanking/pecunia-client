@@ -63,7 +63,6 @@
 -(void)prepare;
 -(void)terminate;
 
--(void)drawGraph;
 -(void)updateValues;
 -(void)clearGraphs;
 -(NSView*)mainView;

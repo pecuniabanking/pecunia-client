@@ -37,6 +37,7 @@
 		27C78796143623080095F1DA /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C78795143623080095F1DA /* ProgressWindowController.m */; };
 		27C9F4A91467C7640060744E /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
 		27D240EA145302A900EDC8C7 /* done.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27D240E9145302A900EDC8C7 /* done.mp3 */; };
+		27E5534D146ED844001DE9BE /* Accounts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */; };
 		27E79FC1145AFBD4007C0AE3 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
 		27E79FCB145AFCB3007C0AE3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724DAED14012A0F00B0FE15 /* QuartzCore.framework */; };
 		27F30887143E282700A10FCE /* new.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F30886143E282700A10FCE /* new.png */; };
@@ -145,7 +146,6 @@
 		B16B0CEC11C01DFB00254078 /* SM2DGraphView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B16B0CEB11C01DFB00254078 /* SM2DGraphView.framework */; };
 		B17072D50D4BD35D00FBF186 /* TransactionLimits.m in Sources */ = {isa = PBXBuildFile; fileRef = B17072D40D4BD35D00FBF186 /* TransactionLimits.m */; };
 		B17074870D55104000FBF186 /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17074860D55104000FBF186 /* PreferenceController.m */; };
-		B170788310E4F80C00A974E7 /* Accounts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B170788210E4F80C00A974E7 /* Accounts.xcdatamodeld */; };
 		B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = B17078F810EA5E6100A974E7 /* StatCatAssignment.m */; };
 		B1762BD911EE4AE600F70263 /* TransferListController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1762BD811EE4AE600F70263 /* TransferListController.m */; };
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
@@ -214,7 +214,6 @@
 		B1C72C36123D4C6900D1D78D /* ABInfoBox.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1C72C33123D4C6900D1D78D /* ABInfoBox.nib */; };
 		B1C72C37123D4C6900D1D78D /* ABInputWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1C72C34123D4C6900D1D78D /* ABInputWindow.nib */; };
 		B1C72C38123D4C6900D1D78D /* ABProgressWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1C72C35123D4C6900D1D78D /* ABProgressWindow.nib */; };
-		B1C7AFF812FDFE980091CD72 /* Accounts 1.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFF712FDFE980091CD72 /* Accounts 1.xcdatamodel */; };
 		B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */; };
 		B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */; };
 		B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
@@ -332,6 +331,9 @@
 		27C78794143623080095F1DA /* ProgressWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		27C78795143623080095F1DA /* ProgressWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		27D240E9145302A900EDC8C7 /* done.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = done.mp3; path = Resources/Sounds/done.mp3; sourceTree = "<group>"; };
+		27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 1.xcdatamodel"; sourceTree = "<group>"; };
+		27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 2.xcdatamodel"; sourceTree = "<group>"; };
+		27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Accounts.xcdatamodel; sourceTree = "<group>"; };
 		27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CorePlot.framework; path = Frameworks/CorePlot.framework; sourceTree = "<group>"; };
 		27F30886143E282700A10FCE /* new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new.png; sourceTree = "<group>"; };
 		27FD58C91437569B0074B378 /* StatementsListview.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementsListview.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -445,7 +447,7 @@
 		B14C6002114848E1009324A6 /* BankStatementController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BankStatementController.xib; sourceTree = "<group>"; };
 		B14C61B9115AB4FB009324A6 /* BankStatementPolicy030.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14C61BA115AB4FB009324A6 /* BankStatementPolicy030.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPolicy030.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14C6224115C04FA009324A6 /* 030.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 030.xcmappingmodel; sourceTree = "<group>"; };
+		B14C6224115C04FA009324A6 /* 030.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; name = 030.xcmappingmodel; path = Resources/Models/030.xcmappingmodel; sourceTree = "<group>"; };
 		B14C6299115E00AA009324A6 /* MigrationManagerWorkaround.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MigrationManagerWorkaround.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14C629A115E00AA009324A6 /* MigrationManagerWorkaround.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MigrationManagerWorkaround.m; sourceTree = "<group>"; tabWidth = 4; };
 		B14C630C11629C7D009324A6 /* CategoryPolicy030.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPolicy030.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -495,7 +497,6 @@
 		B17072D40D4BD35D00FBF186 /* TransactionLimits.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionLimits.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17074850D55104000FBF186 /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17074860D55104000FBF186 /* PreferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B170788410E4F80D00A974E7 /* Accounts 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 2.xcdatamodel"; sourceTree = "<group>"; };
 		B17078F710EA5E6100A974E7 /* StatCatAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatCatAssignment.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17078F810EA5E6100A974E7 /* StatCatAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatCatAssignment.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1762BD711EE4AE600F70263 /* TransferListController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransferListController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -604,13 +605,11 @@
 		B1C72C34123D4C6900D1D78D /* ABInputWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ABInputWindow.nib; sourceTree = "<group>"; };
 		B1C72C35123D4C6900D1D78D /* ABProgressWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ABProgressWindow.nib; sourceTree = "<group>"; };
 		B1C72D4D124A993B00D1D78D /* LogLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = LogLevel.h; sourceTree = "<group>"; tabWidth = 4; };
-		B1C7AFF712FDFE980091CD72 /* Accounts 1.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 1.xcdatamodel"; sourceTree = "<group>"; };
-		B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 030alpha.xcmappingmodel; sourceTree = "<group>"; };
+		B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; name = 030alpha.xcmappingmodel; path = Resources/Models/030alpha.xcmappingmodel; sourceTree = "<group>"; };
 		B1C7AFFD12FE0BAB0091CD72 /* BankStatementPolicy030alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030alpha.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPolicy030alpha.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1C90E140ABB39D5006F18C9 /* BankingController.h */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankingController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C90E150ABB39D5006F18C9 /* BankingController.m */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankingController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B1D29BD40C2C70B8003A61D9 /* Accounts.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Accounts.xcdatamodel; sourceTree = "<group>"; };
 		B1D6C9EC0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMOutlineViewLayout.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMOutlineViewLayout.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1E811810FF6854F00BF7451 /* AccountMaintenance.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = AccountMaintenance.nib; sourceTree = "<group>"; };
@@ -738,6 +737,16 @@
 			name = Sounds;
 			sourceTree = "<group>";
 		};
+		27E5534E146ED854001DE9BE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */,
+				B14C6224115C04FA009324A6 /* 030.xcmappingmodel */,
+				B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		29B97314FDCFA39411CA2CEA /* Pecunia */ = {
 			isa = PBXGroup;
 			children = (
@@ -763,11 +772,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				27E5534E146ED854001DE9BE /* Models */,
 				27D240E71453026400EDC8C7 /* Sounds */,
 				B15FCCEE141422A3000738B6 /* HBCIServer.jar */,
 				B137BE8F12D33AB200D0394C /* Institute.csv */,
-				B14C6224115C04FA009324A6 /* 030.xcmappingmodel */,
-				B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */,
 				B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */,
 				B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */,
 				B1E811D70FF68B3700BF7451 /* PecuniaHelp */,
@@ -810,7 +818,6 @@
 				B1F454370F101E7500BAF4E8 /* Localizable.strings */,
 				B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */,
 				B19330720EE1E5E5003FEC97 /* Credits.html */,
-				B170788210E4F80C00A974E7 /* Accounts.xcdatamodeld */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1481,7 +1488,6 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */,
 				B155D92E0BFD04B300904051 /* TransactionController.m in Sources */,
-				B170788310E4F80C00A974E7 /* Accounts.xcdatamodeld in Sources */,
 				B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */,
 				B124F1110C371384001065C2 /* BankAccount.m in Sources */,
 				B1F527050C3C1D5800BE3DFC /* Category.m in Sources */,
@@ -1563,7 +1569,6 @@
 				B137BF4712D5004C00D0394C /* MessageLog.m in Sources */,
 				B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */,
 				B13435A412EC36A3006C4687 /* GenericImportController.m in Sources */,
-				B1C7AFF812FDFE980091CD72 /* Accounts 1.xcdatamodel in Sources */,
 				B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */,
 				B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */,
 				B138AC3C13918EB50026BEE2 /* ImageAndTextCell.m in Sources */,
@@ -1604,6 +1609,7 @@
 				274C09FD1440BC9800A80F0E /* RoundedOuterShadowView.m in Sources */,
 				2788C8BA1455C3CE00225939 /* CurrencyValueTransformer.m in Sources */,
 				27BF2C7B145C5B180015B491 /* NumberExtensions.m in Sources */,
+				27E5534D146ED844001DE9BE /* Accounts.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1631,10 +1637,7 @@
 				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"Frameworks//**",
-					./AqBanking.framework/Headers,
-				);
+				HEADER_SEARCH_PATHS = ./AqBanking.framework/Headers;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
@@ -1796,15 +1799,16 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		B170788210E4F80C00A974E7 /* Accounts.xcdatamodeld */ = {
+		27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				B1C7AFF712FDFE980091CD72 /* Accounts 1.xcdatamodel */,
-				B1D29BD40C2C70B8003A61D9 /* Accounts.xcdatamodel */,
-				B170788410E4F80D00A974E7 /* Accounts 2.xcdatamodel */,
+				27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */,
+				27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */,
+				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
 			);
-			currentVersion = B170788410E4F80D00A974E7 /* Accounts 2.xcdatamodel */;
-			path = Accounts.xcdatamodeld;
+			currentVersion = 27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */;
+			name = Accounts.xcdatamodeld;
+			path = Resources/Models/Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
