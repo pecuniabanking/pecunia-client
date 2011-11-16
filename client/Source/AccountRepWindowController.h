@@ -18,6 +18,7 @@
 
 @interface PecuinaGraphHost : CPTGraphHostingView
 {
+    NSTrackingArea* trackingArea; // To get mouse events, regardless of responder or key window state.
 }
 @end
 
@@ -50,10 +51,15 @@
     CPTXYGraph* turnoversGraph;
     CPTXYGraph* selectionGraph;
     CPTXYAxis* mainIndicatorLine;
+    CPTXYAxis* turnoversIndicatorLine;
+    CPTBorderedLayer* infoLayer; // Content layer of the info annotation.
+    CPTAnnotation* infoAnnotation; // The host of the info layer placed in the plot area.
     
 	NSArray* dates;
     NSArray* balances;
     NSArray* balanceCounts; // Number of balances per day.
+    NSNumberFormatter* infoTextFormatter;
+    ShortDate* lastInfoDate;       // The date for which the info text was last updated.
 }
 
 @property (nonatomic, retain) ShortDate *firstDate;
