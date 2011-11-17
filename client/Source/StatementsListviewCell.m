@@ -116,16 +116,16 @@ static NSImage* stripeImage;
 - (void) setupDrawStructures
 {
     innerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                     [NSColor colorWithDeviceRed: 240 / 255.0 green: 240 / 255.0 blue: 240 / 255.0 alpha: 1], (CGFloat) 0,
-                     [NSColor whiteColor], (CGFloat) 1,
+                     [NSColor colorWithDeviceRed: 240 / 255.0 green: 240 / 255.0 blue: 240 / 255.0 alpha: 1], (CGFloat) 0.2,
+                     [NSColor whiteColor], (CGFloat) 0.8,
                      nil];
     innerGradientSelected = [[NSGradient alloc] initWithColorsAndLocations:
                              [NSColor colorWithDeviceWhite: 234 / 255.0 alpha: 1], (CGFloat) 0,
                              [NSColor colorWithDeviceWhite: 245 / 255.0 alpha: 1], (CGFloat) 1,
                              nil];
     headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                      [NSColor colorWithDeviceWhite: 60 / 256.0 alpha: 1], (CGFloat) 0,
-                      [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat) 1,
+                      [NSColor colorWithDeviceWhite: 80 / 256.0 alpha: 1], (CGFloat) 0,
+                      [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], (CGFloat) 1,
                       nil];
     innerShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithCalibratedWhite: 0.0 alpha: .75]
                                            offset: NSMakeSize(0, -1)
@@ -150,6 +150,15 @@ static NSImage* stripeImage;
                                                             bounds.size.width,
                                                             headerHeight)];
         [headerGradient drawInBezierPath: path angle: 90.0];
+/*        
+        NSRect r = NSMakeRect(bounds.origin.x,
+                              bounds.size.height - headerHeight,
+                              bounds.size.width,
+                              headerHeight);
+        
+        [[NSColor blackColor ] set];
+        [NSBezierPath fillRect:r ];
+*/        
         bounds.size.height -= headerHeight;
     }
 	path = [NSBezierPath bezierPathWithRect: bounds];

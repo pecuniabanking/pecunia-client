@@ -494,9 +494,15 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
             cellWidth = _widthPriorToResize;
         }
 
-		CGFloat rowHeight = [delegate listView:self heightOfRow: row forDragging: forDragging];
-		
-		return NSMakeRect(0.0f, _cellYOffsets[row], cellWidth, rowHeight);
+        NSRange drawRange = NSMakeRange(0, 0);
+        if (forDragging) {
+            drawRange = [delegate listView:self rangeOfDraggedRow: row ];
+        } else {
+            drawRange.length = [delegate listView:self heightOfRow: row forDragging: forDragging];
+        }
+        
+        
+		return NSMakeRect(0.0f, _cellYOffsets[row] + drawRange.location, cellWidth, drawRange.length);
 	}
 	
 	return NSZeroRect;

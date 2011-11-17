@@ -242,6 +242,13 @@
     return CELL_BODY_HEIGHT;
 }
 
+- (NSRange)listView: (PXListView*)aListView rangeOfDraggedRow: (NSUInteger)row
+{
+    if ([self showsHeaderForRow: row])
+        return NSMakeRange(CELL_HEADER_HEIGHT, CELL_BODY_HEIGHT);
+    return NSMakeRange(0, CELL_BODY_HEIGHT);    
+}
+
 - (void)listViewSelectionDidChange:(NSNotification*)aNotification
 {
     // A selected statement automatically loses the "new" state.

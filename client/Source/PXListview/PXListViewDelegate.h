@@ -19,6 +19,7 @@ extern NSString * const PXListViewSelectionDidChange;
 - (NSUInteger)numberOfRowsInListView:(PXListView*)aListView;
 // ml: added forDragging flag, so we can use different cell sizes for normal and dragged appearance.
 - (CGFloat)listView:(PXListView*)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging;
+- (NSRange)listView: (PXListView*)aListView rangeOfDraggedRow: (NSUInteger)row;
 - (PXListViewCell*)listView:(PXListView*)aListView cellForRow:(NSUInteger)row;
 
 @optional
