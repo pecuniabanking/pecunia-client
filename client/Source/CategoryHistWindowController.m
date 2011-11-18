@@ -14,13 +14,10 @@
 #import "CategoryReportingNode.h"
 #import "MOAssistant.h"
 
-/*
 double sign(double x)
 {
 	if(x<0) return -1.0; else return 1.0;
 }
-*/
-extern double sign(double x);
 
 @implementation CategoryHistWindowController
 

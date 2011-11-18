@@ -21,11 +21,6 @@ static NSTimeInterval oneDay = 24 * 60 * 60;
 
 static NSString* const PecuniaGraphLayoutChangeNotification = @"PecuniaGraphLayoutChange";
 
-double sign(double x)
-{
-    if(x<0) return -1.0; else return 1.0;
-}
-
 @implementation PecuinaGraphHost
 
 - (void)updateTrackingArea
@@ -78,7 +73,7 @@ double sign(double x)
     if (subtype == NSTabletPointEventSubtype)
     {
         // A trackpad gesture (usually two-finger swipe).
-        [parameters setObject: @"plotMove" forKey: @"type"];
+        [parameters setObject: @"plotMoveSwipe" forKey: @"type"];
 
         CGFloat distance = [theEvent deltaX];
         CPTXYPlotSpace* plotSpace = (id)[self hostedGraph].defaultPlotSpace;
@@ -88,7 +83,6 @@ double sign(double x)
         
         NSNumber* range = [NSNumber numberWithDouble: CPTDecimalDoubleValue(plotSpace.xRange.length)];
         [parameters setObject: range forKey: @"plotXRange"];
-        [parameters setObject: [NSNumber numberWithBool: NO] forKey: @"excludeSource"];
         [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
     }
     else 
@@ -98,12 +92,18 @@ double sign(double x)
         CGFloat distance = [theEvent deltaY];
         CPTXYPlotSpace* plotSpace = (id)[self hostedGraph].defaultPlotSpace;
         
+        // Range location and size.
         NSNumber* location = [NSNumber numberWithDouble: plotSpace.xRange.locationDouble];
         [parameters setObject: location forKey: @"plotXLocation"];
 
         NSNumber* range = [NSNumber numberWithDouble: plotSpace.xRange.lengthDouble * (1 + distance / 100)];
         [parameters setObject: range forKey: @"plotXRange"];
-        [parameters setObject: [NSNumber numberWithBool: NO] forKey: @"excludeSource"];
+        
+        // Center of the scale operation (the mouse position).
+        CGPoint mouseLocation = NSPointToCGPoint([self convertPoint: [theEvent locationInWindow] fromView: nil]);
+        CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
+        [parameters setObject: [NSNumber numberWithFloat: pointInHostedGraph.x] forKey: @"scaleCenter"];
+
         [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
     }
 }
@@ -111,14 +111,14 @@ double sign(double x)
 /**
  * Allow zooming the graph with a pinch gesture on a trackpad.
  */
--(void)magnifyWithEvent: (NSEvent*)event
+-(void)magnifyWithEvent: (NSEvent*)theEvent
 {
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
    [parameters setObject: @"plotScale" forKey: @"type"];
 
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
-    CGFloat relativeScale = [event magnification];
+    CGFloat relativeScale = [theEvent magnification];
     
     CPTXYPlotSpace* plotSpace = (id)[self hostedGraph].defaultPlotSpace;
     
@@ -127,7 +127,11 @@ double sign(double x)
 
     NSNumber* range = [NSNumber numberWithDouble: plotSpace.xRange.lengthDouble * (1 - relativeScale)];
     [parameters setObject: range forKey: @"plotXRange"];
-    [parameters setObject: [NSNumber numberWithBool: NO] forKey: @"excludeSource"];
+
+    CGPoint mouseLocation = NSPointToCGPoint([self convertPoint: [theEvent locationInWindow] fromView: nil]);
+    CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
+    [parameters setObject: [NSNumber numberWithFloat: pointInHostedGraph.x] forKey: @"scaleCenter"];
+    
     [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
 }
 
@@ -142,14 +146,10 @@ double sign(double x)
     CPTXYPlotSpace* plotSpace = (id)[self hostedGraph].defaultPlotSpace;
     
     NSPoint location = [self convertPoint: [theEvent locationInWindow] fromView: nil];
-    if ([[self hostedGraph].allPlots count] > 0)
-    {
-        CPTPlot* plot = [[self hostedGraph] plotAtIndex: 0];
-        CGPoint mouseLocation = NSPointToCGPoint(location);
-        CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: [plot plotArea]];
-        [parameters setObject: [NSNumber numberWithFloat: pointInHostedGraph.x] forKey: @"location"];
-        [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
-    }
+    CGPoint mouseLocation = NSPointToCGPoint(location);
+    CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
+    [parameters setObject: [NSNumber numberWithFloat: pointInHostedGraph.x] forKey: @"location"];
+    [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent
@@ -157,7 +157,7 @@ double sign(double x)
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
-    [parameters setObject: @"plotMove" forKey: @"type"];
+    [parameters setObject: @"plotMoveDrag" forKey: @"type"];
     
     CGFloat distance = [theEvent deltaX];
     CPTXYPlotSpace* plotSpace = (id)[self hostedGraph].defaultPlotSpace;
@@ -167,11 +167,12 @@ double sign(double x)
     
     NSNumber* range = [NSNumber numberWithDouble: CPTDecimalDoubleValue(plotSpace.xRange.length)];
     [parameters setObject: range forKey: @"plotXRange"];
-    [parameters setObject: [NSNumber numberWithBool: NO] forKey: @"excludeSource"];
     [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
 }
 
 @end;
+
+//--------------------------------------------------------------------------------------------------
 
 @implementation AccountRepWindowController
 
@@ -179,31 +180,16 @@ double sign(double x)
 @synthesize fromDate;
 @synthesize toDate;
 
-/**
- * Returns the first (earliest) date in the data, which serves as the reference date to which
- * all other dates are compared (to create a time distance in seconds).
- * If we have no data then the current date is used instead.
- */
--(NSDate*)referenceDate
-{
-    if ([dates count] > 0)
-        return [[dates objectAtIndex: 0] highDate];
-    return [NSDate date];
-}
-
--(void)setupShadowForPlot: (CPTPlot*) plot
-{
-    plot.shadowColor = CGColorCreateGenericGray(0, 1);
-    plot.shadowRadius = 2.0;
-    plot.shadowOffset = CGSizeMake(1, -1);
-    plot.shadowOpacity = 0.75;
-}
+@synthesize barWidth; // The width of all bars in either the main or the turnovers bar.
 
 -(id)init
 {
-    self = [super init ];
-    if(self == nil) return nil;
+    self = [super init];
+    if (self == nil) {
+        return nil;
+    }
     
+    barWidth = 15;
     managedObjectContext = [[MOAssistant assistant] context];
     return self;
 }
@@ -228,6 +214,42 @@ double sign(double x)
     [infoAnnotation release];
     
     [super dealloc];
+}
+
+- (void)setBarWidth: (CGFloat)value
+{
+    self.barWidth = value;
+    
+    for (CPTPlot* plot in mainGraph.allPlots) {
+        if ([plot isKindOfClass: [CPTBarPlot class]]) {
+            ((CPTBarPlot*)plot).barWidth = CPTDecimalFromFloat(value);
+        }
+    }
+    for (CPTPlot* plot in turnoversGraph.allPlots) {
+        if ([plot isKindOfClass: [CPTBarPlot class]]) {
+            ((CPTBarPlot*)plot).barWidth = CPTDecimalFromFloat(value);
+        }
+    }
+}
+
+/**
+ * Returns the first (earliest) date in the data, which serves as the reference date to which
+ * all other dates are compared (to create a time distance in seconds).
+ * If we have no data then the current date is used instead.
+ */
+-(ShortDate*)referenceDate
+{
+    if ([dates count] > 0)
+        return [dates objectAtIndex: 0];
+    return [ShortDate dateWithDate: [NSDate date]];
+}
+
+-(void)setupShadowForPlot: (CPTPlot*) plot
+{
+    plot.shadowColor = CGColorCreateGenericGray(0, 1);
+    plot.shadowRadius = 2.0;
+    plot.shadowOffset = CGSizeMake(1, -1);
+    plot.shadowOpacity = 0.75;
 }
 
 -(void)awakeFromNib
@@ -305,7 +327,7 @@ double sign(double x)
     dateFormatter.dateStyle = kCFDateFormatterShortStyle;
     CPTTimeFormatter* timeFormatter = [[[CPTTimeFormatter alloc] initWithDateFormatter: dateFormatter] autorelease];
     
-    timeFormatter.referenceDate = [self referenceDate];
+    timeFormatter.referenceDate = [[self referenceDate] highDate];
     x.labelFormatter = timeFormatter;
     
     textStyle = [CPTMutableTextStyle textStyle];
@@ -485,7 +507,7 @@ double sign(double x)
     CPTBarPlot *barPlot = [[[CPTBarPlot alloc] init] autorelease];
     barPlot.barBasesVary = NO;
     barPlot.barWidthsAreInViewCoordinates = YES;
-    barPlot.barWidth = CPTDecimalFromFloat(15);
+    barPlot.barWidth = CPTDecimalFromFloat(barWidth);
     barPlot.barCornerRadius = 3.0f;
     barPlot.barsAreHorizontal = NO;
     barPlot.baseValue = CPTDecimalFromInt(0);
@@ -621,7 +643,7 @@ double sign(double x)
     }
     
     // Time intervals are specified in number of seconds on the x axis.
-    ShortDate* startDate = [ShortDate dateWithDate: [self referenceDate]];
+    ShortDate* startDate = [self referenceDate];
     int totalDays = (count > 0) ? [startDate daysToDate: [dates lastObject]] : 0;
     if (totalDays < 14)
         totalDays = 14;
@@ -639,7 +661,7 @@ double sign(double x)
     CPTXYAxis* x = axisSet.xAxis;
     x.majorIntervalLength = CPTDecimalDivide(plotRange.length, CPTDecimalFromInt(15));
     CPTTimeFormatter* formatter = (id)x.labelFormatter;
-    formatter.referenceDate = [self referenceDate];
+    formatter.referenceDate = [[self referenceDate] highDate];
     
     // Vertical range.
     minValue = [minValue roundToUpperOuter];
@@ -689,7 +711,7 @@ double sign(double x)
             maxValue = [y floatValue];
     }
     
-    ShortDate* startDate = [ShortDate dateWithDate: [self referenceDate]];
+    ShortDate* startDate = [self referenceDate];
     int totalDays = (count > 0) ? [startDate daysToDate: [dates lastObject]] : 0;
     if (totalDays < 14)
         totalDays = 14;
@@ -745,36 +767,6 @@ double sign(double x)
 }
 
 /**
- * Searches the date array for the closest value to the given date.
- */
-- (int)findDateIndexForDate: (ShortDate*)dateToSearch
-{
-    if ([dates count] == 0)
-        return -1;
-    
-    int low = 0;
-    int high = [dates count] - 1;
-    while (low <= high)
-    {
-        int mid = (low + high) / 2;
-        ShortDate* date = [dates objectAtIndex: mid];
-        switch ([date compare: dateToSearch])
-        {
-            case NSOrderedSame:
-                return mid;
-            case NSOrderedAscending:
-                low = mid + 1;
-                break;
-            case NSOrderedDescending:
-                high = mid - 1;
-                break;
-        }
-    };
-
-    return low - 1;
-}
-
-/**
  * Updates the info annotation with the given values.
  */
 - (void)updateMainInfoForDate: (ShortDate*)date balance: (NSDecimalNumber*)balance turnovers: (int)turnovers
@@ -792,83 +784,149 @@ double sign(double x)
         infoTextFormatter.zeroSymbol = [NSString stringWithFormat: @"0 %@", infoTextFormatter.currencySymbol];
     }
     
+    // Prepare the info layer if not yet done.
     if (infoLayer == nil)
     {
         CGRect frame = CGRectMake(0.5, 0.5, 120, 50);
-        infoLayer = [[(CPTBorderedLayer*)[CPTBorderedLayer alloc] initWithFrame: frame] autorelease];
+        infoLayer = [[(ColumnLayoutCorePlotLayer*)[ColumnLayoutCorePlotLayer alloc] initWithFrame: frame] autorelease];
         infoLayer.hidden = YES;
+        infoLayer.paddingTop = 10;
+        infoLayer.paddingBottom = 10;
+        infoLayer.paddingLeft = 15;
+        infoLayer.paddingRight = 15;
+        infoLayer.spacing = 5;
 
         infoLayer.shadowColor = CGColorCreateGenericGray(0, 1);
-        infoLayer.shadowRadius = 2.0;
-        infoLayer.shadowOffset = CGSizeMake(1, -1);
+        infoLayer.shadowRadius = 5.0;
+        infoLayer.shadowOffset = CGSizeMake(2, -2);
         infoLayer.shadowOpacity = 0.75;
         
         CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
         lineStyle.lineWidth = 2;
         lineStyle.lineColor = [CPTColor whiteColor];
-        CPTFill* fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 0.1 green: 0.1 blue: 0.1 alpha: 0.9]];
+        CPTFill* fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 0.1 green: 0.1 blue: 0.1 alpha: 0.75]];
         infoLayer.borderLineStyle = lineStyle;
         infoLayer.fill = fill;
         infoLayer.cornerRadius = 10;
         
+        CPTMutableTextStyle* textStyle = [CPTMutableTextStyle textStyle];
+        textStyle.fontName = @"Lucida Grande";
+        textStyle.fontSize = 12;
+        textStyle.color = [CPTColor whiteColor];
+        textStyle.textAlignment = CPTTextAlignmentCenter;
+        
+        valueInfoLayer = [[[CPTTextLayer alloc] initWithText: @"" style: textStyle] autorelease];
+        [infoLayer addSublayer: valueInfoLayer];
+
+        textStyle = [CPTMutableTextStyle textStyle];
+        textStyle.fontName = @"Lucida Grande Bold";
+        textStyle.fontSize = 14;
+        textStyle.color = [CPTColor whiteColor];
+        textStyle.textAlignment = CPTTextAlignmentCenter;
+        
+        dateInfoLayer = [[[CPTTextLayer alloc] initWithText: @"" style: textStyle] autorelease];
+        [infoLayer addSublayer: dateInfoLayer];
+        
+        // We can also prepare the annotation which hosts the info layer but don't add it to the plot area yet.
+        // When we switch the plots it won't show up otherwise unless we add it on demand.
         infoAnnotation = [[[CPTAnnotation alloc] init] retain];
         infoAnnotation.contentLayer = infoLayer;
     }
     if (![mainGraph.plotAreaFrame.plotArea.annotations containsObject: infoAnnotation])
         [mainGraph.plotAreaFrame.plotArea addAnnotation: infoAnnotation]; 
 
-    infoLayer.sublayers = nil; // Remove old text layer.
+    dateInfoLayer.text = date.description;
     
-    CPTMutableTextStyle* textStyle = [CPTMutableTextStyle textStyle];
-    textStyle.fontName = @"Lucida Grande Bold";
-    textStyle.fontSize = 14;
-    textStyle.color = [CPTColor whiteColor];
-    textStyle.textAlignment = CPTTextAlignmentLeft;
-    
-    CPTTextLayer* textLayer = [[[CPTTextLayer alloc] initWithText: date.description style: textStyle] autorelease];
-    [infoLayer addSublayer: textLayer];
-    CGSize dateSize = [textLayer sizeThatFits];
-    textLayer.bounds = CGRectMake(10, 0, dateSize.width, dateSize.height);
-    
-    NSString* infoText;
+    NSString* infoText = @"";
     if (balance != nil) {
         infoText = [infoTextFormatter stringFromNumber: balance];
     }
-    if (turnovers > 0) {
-        if (turnovers == 1) {
-            infoText = [NSString stringWithFormat: @"%@\n%@", infoText, NSLocalizedString(@"AP132", @"1 turnover")];
-        } else {
-            infoText = [NSString stringWithFormat: @"%@\n%@", infoText, [NSString stringWithFormat: NSLocalizedString(@"AP133", @"%u turnovers"), turnovers]];
-        }
-        
-        textStyle = [CPTMutableTextStyle textStyle];
-        textStyle.fontName = @"Lucida Grande";
-        textStyle.fontSize = 12;
-        textStyle.color = [CPTColor whiteColor];
-        
-        textLayer = [[[CPTTextLayer alloc] initWithText: infoText style: textStyle] autorelease];
-        textLayer.position = CGPointMake(10, 15 + dateSize.height);
-        [infoLayer addSublayer: textLayer];
+    if (turnovers == 1) {
+        infoText = [NSString stringWithFormat: @"%@\n%@", infoText, NSLocalizedString(@"AP132", @"1 turnover")];
+    } else {
+        infoText = [NSString stringWithFormat: @"%@\n%@", infoText, [NSString stringWithFormat: NSLocalizedString(@"AP133", @"%u turnovers"), turnovers]];
     }
+    valueInfoLayer.text = infoText;
     
+    // Resize the info layer so that it fits its contents.
+    CGRect infoBounds;
+    infoBounds.size = [dateInfoLayer sizeThatFits];
+    CGSize size = [valueInfoLayer sizeThatFits];
+    if (size.width > infoBounds.size.width)
+        infoBounds.size.width = size.width;
+    infoBounds.size.width += infoLayer.paddingLeft + infoLayer.paddingRight + infoLayer.borderLineStyle.lineWidth;
+    infoBounds.size.height += infoLayer.paddingTop + infoLayer.paddingBottom + infoLayer.spacing + size.height;
+    infoLayer.bounds = infoBounds;
 }
 
 - (void)animatedMoveOfLayer: (CPTLayer*)layer toPosition: (CGPoint)newPosition
 {
+    if (layer.hidden) {
+        return;
+    }
+    
+    NSArray* keys = layer.animationKeys;
+    for (NSString* key in keys)
+        if ([key isEqualToString: @"animatePosition"]) {
+            return;
+        }
+    
     CGMutablePathRef animationPath = CGPathCreateMutable();
     CGPathMoveToPoint(animationPath, NULL, layer.position.x, layer.position.y);
     CGPathAddLineToPoint(animationPath, NULL, newPosition.x, newPosition.y);
-
+    
+    layer.position = newPosition;
+    
     CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath: @"position"];
     animation.path = animationPath;
-
-    CAAnimationGroup* group = [CAAnimationGroup animation];
-    group.animations = [NSArray arrayWithObject: animation];
-    group.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
-    group.duration = 0.5;
+    animation.duration = 0.5;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
     
-    [layer addAnimation: group forKey: @"animatePosition"];
-    layer.position = newPosition;
+    [layer addAnimation: animation forKey: @"animatePosition"];
+}
+
+- (void)animatedShowOfLayer: (CPTLayer*)layer
+{
+    if (layer.hidden || layer.opacity < 1) {
+        layer.hidden = NO;
+        layer.opacity = 1;
+        
+        CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
+        animation.fromValue = [NSNumber numberWithFloat: 0];
+        animation.toValue = [NSNumber numberWithFloat: 1];
+        animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
+        animation.delegate = self;
+        
+        [layer addAnimation: animation forKey: @"animateOpacity"];
+    }
+}
+
+- (void)animatedHideOfLayer: (CPTLayer*)layer
+{
+    if (layer.opacity > 0) {
+        layer.opacity = 0;
+        
+        CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
+        animation.fromValue = [NSNumber numberWithFloat: 1];
+        animation.toValue = [NSNumber numberWithFloat: 0];
+        animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
+        animation.delegate = self;
+        
+        [layer addAnimation: animation forKey: @"animateOpacity"];
+    }
+}
+
+- (void)animationDidStop: (CAAnimation*)anim finished: (BOOL)flag
+{
+    if (flag) {
+        CABasicAnimation* animation = (CABasicAnimation*)anim;
+        
+        if ([animation.keyPath isEqualToString: @"opacity"]) {
+            if (infoLayer.opacity < 1) {
+                infoLayer.hidden = YES;
+            }
+        } 
+    }
 }
 
 - (void)updateInfoLayerPosition
@@ -908,55 +966,115 @@ double sign(double x)
 }
 
 /**
+ * Searches the date array for the closest value to the given date.
+ * The search is left-affine, that is, if the date to search is between two existing dates the 
+ * lower date will always be returned.
+ */
+- (int)findDateIndexForDate: (ShortDate*)dateToSearch
+{
+    if ([dates count] == 0)
+        return -1;
+    
+    int low = 0;
+    int high = [dates count] - 1;
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        ShortDate* date = [dates objectAtIndex: mid];
+        switch ([date compare: dateToSearch])
+        {
+            case NSOrderedSame:
+                return mid;
+            case NSOrderedAscending:
+                low = mid + 1;
+                break;
+            case NSOrderedDescending:
+                high = mid - 1;
+                break;
+        }
+    };
+
+    return low - 1;
+}
+
+/**
  * Called when the users moved the mouse over either the main or the turnovers graph.
  * Move the indicator lines in both graphs to the current mouse position and update the info annotation.
+ *
  * The location is given in plot area coordinates.
  */
 - (void)updateTrackLinesAndInfoAnnotation: (NSNumber*)location
 {
-    // Position the indicator line to the given location in main and turnovers graphs.
-    mainIndicatorLine.axisConstraints = [CPTConstraints constraintWithLowerOffset: [location floatValue]];
-    turnoversIndicatorLine.axisConstraints = [CPTConstraints constraintWithLowerOffset: [location floatValue]];
+    CGFloat actualLocation = [location floatValue];
     
     // Determine the content for the info layer.
     CPTXYPlotSpace* plotSpace = (id)mainGraph.defaultPlotSpace;
-    CGPoint point = CGPointMake([location floatValue], 0);
+    CGPoint point = CGPointMake(actualLocation, 0);
     
     NSDecimal dataPoint[2];
     [plotSpace plotPoint: dataPoint forPlotAreaViewPoint: point];
     double timePoint = CPTDecimalDoubleValue(dataPoint[0]);
     
+    // Check if the time point is within the visible range.
+    if (timePoint < plotSpace.xRange.minLimitDouble ||
+        timePoint > plotSpace.xRange.maxLimitDouble) {
+        if (!infoLayer.hidden)
+            [self animatedHideOfLayer: infoLayer];
+        return;
+    } else {
+        if (infoLayer.hidden)
+            [self animatedShowOfLayer: infoLayer];
+    }
+
+    // Find closest date in our date points that is before the computed date value.
     int days = floor(CPTDecimalFloatValue(dataPoint[0]) / oneDay);
     ShortDate* date = [[dates objectAtIndex: 0] dateByAddingDays: days];
+    int index = [self findDateIndexForDate: date];
+    ShortDate* dateAtIndex = [dates objectAtIndex: index];
+    BOOL dateHit = NO;
+    
+    // The found index might not be one matching exactly the current date. In order to ease
+    // usage we snap the indicator to the closest existing data point if it is within bar width distance.
+    dataPoint[0] = CPTDecimalFromFloat(oneDay * [[self referenceDate] daysToDate: dateAtIndex]);
+    CGPoint targetPoint = [plotSpace plotAreaViewPointForPlotPoint: dataPoint];
+    if (abs(targetPoint.x - actualLocation) <= barWidth) {
+        actualLocation = targetPoint.x;
+        date = dateAtIndex;
+        dateHit = YES;
+    } else {
+        // The found index is not close enough. Try the next date point if there is one.
+        if (index < [dates count] - 1) {
+            dateAtIndex = [dates objectAtIndex: ++index];
+            dataPoint[0] = CPTDecimalFromFloat(oneDay * [[self referenceDate] daysToDate: dateAtIndex]);
+            targetPoint = [plotSpace plotAreaViewPointForPlotPoint: dataPoint];
+            if (abs(targetPoint.x - actualLocation) <= barWidth) {
+                actualLocation = targetPoint.x;
+                date = dateAtIndex;
+                dateHit = YES;
+            }
+        }
+    }
+
     if (lastInfoDate == nil || [date compare: lastInfoDate] != NSOrderedSame)
     {
         [lastInfoDate release];
         lastInfoDate = [date retain];
         
-        // Check if the time point is within the visible range.
-        if (timePoint < plotSpace.xRange.minLimitDouble ||
-            timePoint > plotSpace.xRange.maxLimitDouble) {
-            infoLayer.hidden = YES;
+        if (dateHit) {
+            [self updateMainInfoForDate: date
+                                balance: [balances objectAtIndex: index]
+                              turnovers: [[balanceCounts objectAtIndex: index] intValue]];
         } else {
-            int index = [self findDateIndexForDate: date];
-            
-            // The found index might not be one matching exactly the current date. For the scatter plot
-            // that is fine (we show the date the indicator line is currently at) but for the bar plot
-            // we want the info annotation only exactly for a bar.
-            BOOL dateInData = [date compare: [dates objectAtIndex: index]] == NSOrderedSame;
-            if (dateInData) {
-                [self updateMainInfoForDate: date
-                                    balance: [balances objectAtIndex: index]
-                                  turnovers: [[balanceCounts objectAtIndex: index] intValue]];
-            } else {
-                Category* category = [self currentSelection];
-                [self updateMainInfoForDate: date
-                                    balance: [category isBankAccount] ? [balances objectAtIndex: index] : nil
-                                  turnovers: -1];
-            }
-            infoLayer.hidden = NO;
+            [self updateMainInfoForDate: date
+                                balance: [[self currentSelection] isBankAccount] ? [balances objectAtIndex: index] : nil
+                              turnovers: 0];
         }
     }
+
+    // Position the indicator line to the given location in main and turnovers graphs.
+    mainIndicatorLine.axisConstraints = [CPTConstraints constraintWithLowerOffset: actualLocation];
+    turnoversIndicatorLine.axisConstraints = [CPTConstraints constraintWithLowerOffset: actualLocation];
+    
     [self updateInfoLayerPosition];
 }
 
@@ -970,26 +1088,47 @@ double sign(double x)
     {
         NSDictionary* parameters = [notification userInfo];
         NSString* type = [parameters objectForKey: @"type"];
-        if ([type compare: @"plotMove"] == NSOrderedSame || [type compare: @"plotScale"] == NSOrderedSame) {
+        
+        BOOL isDragMove = [type isEqualToString: @"plotMoveDrag"];
+        BOOL isScale = [type isEqualToString: @"plotScale"];
+        if ([type isEqualToString: @"plotMoveSwipe"] || isDragMove || isScale) {
+            if (isDragMove && !infoLayer.hidden) {
+                [self animatedHideOfLayer: infoLayer];
+            }
+            
             NSNumber* location = [parameters objectForKey: @"plotXLocation"];
             NSNumber* range = [parameters objectForKey: @"plotXRange"];
-            NSNumber* lowRange = [NSNumber numberWithDouble: oneDay * 15];
+            NSNumber* lowRange = [NSNumber numberWithDouble: oneDay * 15]; // Corresponds to the number of major ticks for the x-axis.
             if ([range compare: lowRange] == NSOrderedAscending)
                 range = lowRange;
-            BOOL excludeSource = [[parameters objectForKey: @"excludeSource"] boolValue];
-            
-            // Apply new plot location and range to all relevant graphs.
-            CPTXYPlotSpace* sourcePlotSpace = [notification object];
             
             CPTXYPlotSpace* plotSpace = (id)mainGraph.defaultPlotSpace;
-            if (!excludeSource || plotSpace != sourcePlotSpace)
-                [self applyRangeLocationToPlotSpace: plotSpace location: location range: range];
+
+            // Apply new plot location and range to all relevant graphs.
+            // If this is a scale event the adjust the location so that the center is at the mouse
+            // location or in the middle of the pinch gesture.
+            if (isScale) {
+                // Convert scale center (given in device coordinates).
+                NSNumber* center = [parameters objectForKey: @"scaleCenter"];
+                CGPoint point = CGPointMake([center floatValue], 0);
+                
+                NSDecimal dataPoint[2];
+                [plotSpace plotPoint: dataPoint forPlotAreaViewPoint: point];
+                double timePoint = CPTDecimalDoubleValue(dataPoint[0]);
+                
+                CPTXYPlotSpace* sourcePlotSpace = [notification object];
+                CGFloat oldRange = sourcePlotSpace.xRange.lengthDouble;
+                CGFloat newRange = [range floatValue];
+                CGFloat offset = (oldRange - newRange) * (timePoint - [location floatValue]) / oldRange;
+                location = [NSNumber numberWithFloat: [location  floatValue] + offset];
+            }
+            
+            [self applyRangeLocationToPlotSpace: plotSpace location: location range: range];
             
             plotSpace = (id)turnoversGraph.defaultPlotSpace;
-            if (!excludeSource || plotSpace != sourcePlotSpace)
-                [self applyRangeLocationToPlotSpace: plotSpace location: location range: range];
-        } else {            
-            if ([type compare: @"trackLineMove"] == NSOrderedSame) {
+            [self applyRangeLocationToPlotSpace: plotSpace location: location range: range];
+        } else {
+            if ([type isEqualToString: @"trackLineMove"]) {
                 NSNumber* location = [parameters objectForKey: @"location"];
                 [self updateTrackLinesAndInfoAnnotation: location];
             }
@@ -1018,7 +1157,7 @@ double sign(double x)
     if (fieldEnum == CPTBarPlotFieldBarLocation || fieldEnum == CPTScatterPlotFieldX)
     {
         ShortDate* date = [dates objectAtIndex: index];
-        ShortDate* startDate = [ShortDate dateWithDate: [self referenceDate]];
+        ShortDate* startDate = [self referenceDate];
         int days = [startDate daysToDate: date];
         
         return [NSDecimalNumber numberWithDouble: oneDay * days];

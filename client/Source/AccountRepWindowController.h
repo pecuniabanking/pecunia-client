@@ -10,6 +10,7 @@
 #import <CorePlot/CorePlot.h>
 
 #import "MainTabViewItem.h"
+#import "ColumnLayoutCorePlotLayer.h"
 
 @class SM2DGraphView;
 @class Category;
@@ -52,19 +53,25 @@
     CPTXYGraph* selectionGraph;
     CPTXYAxis* mainIndicatorLine;
     CPTXYAxis* turnoversIndicatorLine;
-    CPTBorderedLayer* infoLayer; // Content layer of the info annotation.
-    CPTAnnotation* infoAnnotation; // The host of the info layer placed in the plot area.
+    ColumnLayoutCorePlotLayer* infoLayer; // Content layer of the info annotation.
+    CPTAnnotation* infoAnnotation;        // The host of the info layer placed in the plot area.
+    CPTTextLayer* dateInfoLayer;
+    CPTTextLayer* valueInfoLayer;
     
 	NSArray* dates;
     NSArray* balances;
-    NSArray* balanceCounts; // Number of balances per day.
+    NSArray* balanceCounts;               // Number of balances per day.
     NSNumberFormatter* infoTextFormatter;
-    ShortDate* lastInfoDate;       // The date for which the info text was last updated.
+    ShortDate* lastInfoDate;              // The date for which the info text was last updated.
+    
+    CGFloat barWidth;
 }
 
 @property (nonatomic, retain) ShortDate *firstDate;
 @property (nonatomic, retain) ShortDate *fromDate;
 @property (nonatomic, retain) ShortDate *toDate;
+
+@property (nonatomic, readwrite) CGFloat barWidth;
 
 -(void)prepare;
 -(void)terminate;

@@ -36,10 +36,11 @@
 		27BF2C7B145C5B180015B491 /* NumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BF2C7A145C5B180015B491 /* NumberExtensions.m */; };
 		27C78793143622920095F1DA /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27C78792143622920095F1DA /* ProgressWindow.xib */; };
 		27C78796143623080095F1DA /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C78795143623080095F1DA /* ProgressWindowController.m */; };
-		27C9F4A91467C7640060744E /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
+		27C7B2F61475466600BD4F56 /* ColumnLayoutCorePlotLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */; };
+		27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
+		27C7B49214755AE200BD4F56 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
 		27D240EA145302A900EDC8C7 /* done.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27D240E9145302A900EDC8C7 /* done.mp3 */; };
 		27E5534D146ED844001DE9BE /* Accounts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */; };
-		27E79FC1145AFBD4007C0AE3 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
 		27E79FCB145AFCB3007C0AE3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724DAED14012A0F00B0FE15 /* QuartzCore.framework */; };
 		27F30887143E282700A10FCE /* new.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F30886143E282700A10FCE /* new.png */; };
 		27FD58CB1437569B0074B378 /* StatementsListview.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD58CA1437569B0074B378 /* StatementsListview.m */; };
@@ -272,7 +273,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				27C9F4A91467C7640060744E /* CorePlot.framework in Copy Frameworks */,
+				27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */,
 				2748D2961441D87D0036BDE2 /* BWToolkitFramework.framework in Copy Frameworks */,
 				C1C0842011C2D85500278CBF /* SM2DGraphView.framework in Copy Frameworks */,
 				B1F4582E0F25171A00BAF4E8 /* Sparkle.framework in Copy Frameworks */,
@@ -332,6 +333,8 @@
 		27C78792143622920095F1DA /* ProgressWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressWindow.xib; sourceTree = "<group>"; };
 		27C78794143623080095F1DA /* ProgressWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		27C78795143623080095F1DA /* ProgressWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
+		27C7B2F41475466600BD4F56 /* ColumnLayoutCorePlotLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnLayoutCorePlotLayer.h; sourceTree = "<group>"; };
+		27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnLayoutCorePlotLayer.m; sourceTree = "<group>"; tabWidth = 4; };
 		27D240E9145302A900EDC8C7 /* done.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = done.mp3; path = Sounds/done.mp3; sourceTree = "<group>"; };
 		27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 1.xcdatamodel"; sourceTree = "<group>"; };
 		27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -666,13 +669,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27C7B49214755AE200BD4F56 /* CorePlot.framework in Frameworks */,
 				B16B0CEC11C01DFB00254078 /* SM2DGraphView.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				B1F458210F2516C200BAF4E8 /* Sparkle.framework in Frameworks */,
 				B19A86360F3CD17E000FE9B3 /* Security.framework in Frameworks */,
 				B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */,
 				2748D2931441D8620036BDE2 /* BWToolkitFramework.framework in Frameworks */,
-				27E79FC1145AFBD4007C0AE3 /* CorePlot.framework in Frameworks */,
 				27E79FCB145AFCB3007C0AE3 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -729,6 +732,17 @@
 				275C07E81438779700D97415 /* PXListViewDropHighlight.h */,
 			);
 			name = PXListview;
+			sourceTree = "<group>";
+		};
+		27C7B2E91475440E00BD4F56 /* Statistics + Graphs */ = {
+			isa = PBXGroup;
+			children = (
+				B19822DB0E6F304A001C4C70 /* AccountRepWindowController.h */,
+				B19822DC0E6F304A001C4C70 /* AccountRepWindowController.m */,
+				27C7B2F41475466600BD4F56 /* ColumnLayoutCorePlotLayer.h */,
+				27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */,
+			);
+			name = "Statistics + Graphs";
 			sourceTree = "<group>";
 		};
 		27D240E71453026400EDC8C7 /* Sounds */ = {
@@ -873,6 +887,7 @@
 		B136AACF0FCF1BF5007A643F /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				27C7B2E91475440E00BD4F56 /* Statistics + Graphs */,
 				275C07DC1438777900D97415 /* PXListview */,
 				B137BE7812D32F3B00D0394C /* Printing */,
 				B14C61B8115AB4A9009324A6 /* Migration */,
@@ -1089,8 +1104,6 @@
 				B159010A129310E40053CB9C /* MainTabViewItem.h */,
 				B1029E100E3FA1D700CC681B /* CatDefWindowController.h */,
 				B1029E110E3FA1D700CC681B /* CatDefWindowController.m */,
-				B19822DB0E6F304A001C4C70 /* AccountRepWindowController.h */,
-				B19822DC0E6F304A001C4C70 /* AccountRepWindowController.m */,
 				B192FDC00E8434D500B53380 /* CategoryRepWindowController.h */,
 				B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */,
 				B1762BD711EE4AE600F70263 /* TransferListController.h */,
@@ -1623,6 +1636,7 @@
 				2788C8BA1455C3CE00225939 /* CurrencyValueTransformer.m in Sources */,
 				27BF2C7B145C5B180015B491 /* NumberExtensions.m in Sources */,
 				27E5534D146ED844001DE9BE /* Accounts.xcdatamodeld in Sources */,
+				27C7B2F61475466600BD4F56 /* ColumnLayoutCorePlotLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
