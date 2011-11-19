@@ -219,13 +219,13 @@
 		B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */; };
 		B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */; };
 		B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
+		B1D44FCA1478407D008DD256 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D44FC91478407D008DD256 /* MainMenu.xib */; };
 		B1D6C9EE0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */; };
 		B1E8118C0FF6854F00BF7451 /* AccountMaintenance.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811810FF6854F00BF7451 /* AccountMaintenance.nib */; };
 		B1E8118D0FF6854F00BF7451 /* AccountSettings.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811820FF6854F00BF7451 /* AccountSettings.nib */; };
 		B1E8118F0FF6854F00BF7451 /* ExportPopup.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811840FF6854F00BF7451 /* ExportPopup.nib */; };
 		B1E811900FF6854F00BF7451 /* Institutes.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811850FF6854F00BF7451 /* Institutes.nib */; };
 		B1E811910FF6854F00BF7451 /* LogController.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811860FF6854F00BF7451 /* LogController.nib */; };
-		B1E811920FF6854F00BF7451 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811870FF6854F00BF7451 /* MainMenu.nib */; };
 		B1E811930FF6854F00BF7451 /* Preferences.nib in Resources */ = {isa = PBXBuildFile; fileRef = B1E811880FF6854F00BF7451 /* Preferences.nib */; };
 		B1E8119D0FF6863D00BF7451 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165DFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		B1E811A20FF6874F00BF7451 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1F454370F101E7500BAF4E8 /* Localizable.strings */; };
@@ -615,6 +615,7 @@
 		B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPolicy030alpha.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1C90E140ABB39D5006F18C9 /* BankingController.h */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankingController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C90E150ABB39D5006F18C9 /* BankingController.m */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankingController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B1D44FC91478407D008DD256 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		B1D6C9EC0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMOutlineViewLayout.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMOutlineViewLayout.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1E811810FF6854F00BF7451 /* AccountMaintenance.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = AccountMaintenance.nib; sourceTree = "<group>"; };
@@ -622,7 +623,6 @@
 		B1E811840FF6854F00BF7451 /* ExportPopup.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ExportPopup.nib; sourceTree = "<group>"; };
 		B1E811850FF6854F00BF7451 /* Institutes.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Institutes.nib; sourceTree = "<group>"; };
 		B1E811860FF6854F00BF7451 /* LogController.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = LogController.nib; sourceTree = "<group>"; };
-		B1E811870FF6854F00BF7451 /* MainMenu.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = MainMenu.nib; sourceTree = "<group>"; };
 		B1E811880FF6854F00BF7451 /* Preferences.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Preferences.nib; sourceTree = "<group>"; };
 		B1E811D70FF68B3700BF7451 /* PecuniaHelp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PecuniaHelp; sourceTree = "<group>"; };
 		B1EFA8010D5CE7BA007FD9C3 /* CCDLayoutAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CCDLayoutAdditions.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -778,11 +778,11 @@
 				B1E811840FF6854F00BF7451 /* ExportPopup.nib */,
 				B1E811850FF6854F00BF7451 /* Institutes.nib */,
 				B1E811860FF6854F00BF7451 /* LogController.nib */,
-				B1E811870FF6854F00BF7451 /* MainMenu.nib */,
 				B12A4D6210C86C22002CC63E /* NewPasswordWindow.nib */,
 				B1A6E8870FC8A4F700566C55 /* PasswordWindow.nib */,
 				B1E811880FF6854F00BF7451 /* Preferences.nib */,
 				B12A4DC710CB16F7002CC63E /* TanMethods.nib */,
+				B1D44FC91478407D008DD256 /* MainMenu.xib */,
 				B1AFA8801295C5D800B115A7 /* AccountRep.xib */,
 				B14C6002114848E1009324A6 /* BankStatementController.xib */,
 				B1AFA78D129463F100B115A7 /* CategoryHistory.xib */,
@@ -1430,7 +1430,6 @@
 				B1E8118F0FF6854F00BF7451 /* ExportPopup.nib in Resources */,
 				B1E811900FF6854F00BF7451 /* Institutes.nib in Resources */,
 				B1E811910FF6854F00BF7451 /* LogController.nib in Resources */,
-				B1E811920FF6854F00BF7451 /* MainMenu.nib in Resources */,
 				B1E811930FF6854F00BF7451 /* Preferences.nib in Resources */,
 				B1E811F00FF68B3700BF7451 /* PecuniaHelp in Resources */,
 				B1014BE41018E29F00ABA1FF /* update.ico in Resources */,
@@ -1501,6 +1500,7 @@
 				278CFA0C1451D159001409DB /* Transfer_Templates.png in Resources */,
 				27D240EA145302A900EDC8C7 /* done.mp3 in Resources */,
 				2703DE27146EE6AB0083CBA2 /* ExportPopup.xib in Resources */,
+				B1D44FCA1478407D008DD256 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
