@@ -16,7 +16,6 @@
 #import "BankAccount.h"
 #import "Category.h"
 #import "PreferenceController.h"
-#import "AccountSettingsController.h"
 #import "MOAssistant.h"
 #import "TransactionController.h"
 #import "LogController.h"
@@ -1339,12 +1338,6 @@ static BankingController	*con;
     return 20;
 }
 
--(IBAction)accountSettings:(id)sender
-{
-    if(!accountSettingsController) accountSettingsController = [[AccountSettingsController alloc] init];
-    [accountSettingsController showWindow: mainWindow ];
-}
-
 -(IBAction)showLog:(id)sender
 {
     //	[logController performSelector:@selector(showWindow:) onThread:[WorkerThread thread ] withObject:nil waitUntilDone:NO ];
@@ -1498,7 +1491,6 @@ static BankingController	*con;
         if ([item action] == @selector(changeAccount:)) return NO;
         if ([item action] == @selector(deleteAccount:)) return NO;
         if ([item action] == @selector(enqueueRequest:)) return NO;
-        if ([item action] == @selector(accountSettings:)) return NO;
         if ([item action] == @selector(transfer_local:)) return NO;
         if ([item action] == @selector(transfer_eu:)) return NO;
         if ([item action] == @selector(transfer_dated:)) return NO;

@@ -14,7 +14,6 @@
 @class BankAccount;
 @class NewBankUserController;
 @class PreferenceController;
-@class AccountSettingsController;
 @class LogController;
 @class TransactionController;
 @class CatDefWindowController;
@@ -34,50 +33,49 @@
 @interface BankingController : NSObject
 {
   IBOutlet NSArrayController	*transactionController;
-  IBOutlet NSWindow			*mainWindow;
+  IBOutlet NSWindow             *mainWindow;
   IBOutlet NSTabView			*mainTabView;
   IBOutlet MCEMTableView		*transactionsView;
-  IBOutlet CategoryView		*accountsView;
-  IBOutlet MCEMTreeController *categoryController;
-  IBOutlet NSSplitView		*mainVSplit;
-  IBOutlet NSSplitView		*mainHSplit;
-  IBOutlet NSPredicateEditor  *predicateEditor;
-  IBOutlet NSArrayController  *assignPreviewController;
+  IBOutlet CategoryView         *accountsView;
+  IBOutlet MCEMTreeController   *categoryController;
+  IBOutlet NSSplitView          *mainVSplit;
+  IBOutlet NSSplitView          *mainHSplit;
+  IBOutlet NSPredicateEditor    *predicateEditor;
+  IBOutlet NSArrayController    *assignPreviewController;
   IBOutlet NSToolbar			*toolbar;
   IBOutlet NSToolbarItem		*searchItem;
   IBOutlet NSSearchField		*searchField;
-  IBOutlet TimeSliceManager	*timeSlicer;
-  IBOutlet NSSegmentedControl *catActions;
-  IBOutlet NSImageView		*lockImage;
-  IBOutlet NSTextField		*valueField;
-  IBOutlet NSTextField		*headerValueField;
-  IBOutlet NSTextField		*nassValueField;
-  IBOutlet NSWindow			*assignValueWindow;
-  IBOutlet NSTextField		*assignValueField;
-  IBOutlet NSTextField *earningsField;
-  IBOutlet NSTextField *spendingsField;
-  IBOutlet NSTextField *turnoversField;
-  IBOutlet NSTextField* remoteNameLabel;
+  IBOutlet TimeSliceManager     *timeSlicer;
+  IBOutlet NSSegmentedControl   *catActions;
+  IBOutlet NSImageView          *lockImage;
+  IBOutlet NSTextField          *valueField;
+  IBOutlet NSTextField          *headerValueField;
+  IBOutlet NSTextField          *nassValueField;
+  IBOutlet NSWindow             *assignValueWindow;
+  IBOutlet NSTextField          *assignValueField;
+  IBOutlet NSTextField          *earningsField;
+  IBOutlet NSTextField          *spendingsField;
+  IBOutlet NSTextField          *turnoversField;
+  IBOutlet NSTextField          *remoteNameLabel;
   
-  IBOutlet CatDefWindowController *catDefWinController;
-  IBOutlet TransferListController *transferListController;
-  IBOutlet StatementsListView *statementsListView;
+  IBOutlet CatDefWindowController   *catDefWinController;
+  IBOutlet TransferListController   *transferListController;
+  IBOutlet StatementsListView       *statementsListView;
   
-  NSMutableArray				*transactions;
-  NSMutableDictionary			*mainTabItems;
-  NSManagedObjectContext      *managedObjectContext;
+  NSMutableArray			*transactions;
+  NSMutableDictionary		*mainTabItems;
+  NSManagedObjectContext    *managedObjectContext;
   NSManagedObjectModel		*model;
   NewBankUserController		*bankUserController;
   PreferenceController		*prefController;
-  AccountSettingsController   *accountSettingsController;
   LogController				*logController;
   TransactionController		*transferWindowController;
-  DockIconController			*dockIconController;
+  DockIconController		*dockIconController;
   BOOL						restart;
   BOOL						requestRunning;
   BOOL						statementsBound;
   BOOL						autoSyncRunning;
-  NSDecimalNumber				*saveValue;
+  NSDecimalNumber			*saveValue;
   NSCursor					*splitCursor;
  
 }
@@ -102,7 +100,6 @@
 -(IBAction)enqueueRequest: (id)sender;
 -(IBAction)save: (id)sender;
 -(IBAction)editBankUsers:(id)sender;
--(IBAction)accountSettings:(id)sender;
 -(IBAction)export: (id)sender;
 -(IBAction)import: (id)sender;
 -(IBAction)test: (id)sender;
