@@ -70,8 +70,15 @@
 
 -(void)readCountryInfos
 {
+    NSError *error = nil;
+    
     NSString *path = [[NSBundle mainBundle ] pathForResource: @"CountryInfo" ofType: @"txt" ];
-    NSString *data = [NSString stringWithContentsOfFile:path ];
+    NSString *data = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error ];
+    if (error) {
+        NSAlert *alert = [NSAlert alertWithError:error];
+		[alert runModal];
+        return;
+    }
     NSArray *lines = [data componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet ] ];
     NSString *line;
     for(line in lines) {
