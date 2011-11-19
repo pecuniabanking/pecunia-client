@@ -2241,6 +2241,7 @@ static BankingController	*con;
         BankQueryResult *result = [[BankQueryResult alloc ] init ];
         result.accountNumber = account.accountNumber;
         result.bankCode = account.bankCode;
+        result.userId = account.userId;
         result.account = account;
         [resultList addObject: [result autorelease] ];
     }
@@ -2253,6 +2254,7 @@ static BankingController	*con;
     
     // get statements in separate thread
     autoSyncRunning = YES;
+    [[NSNotificationCenter defaultCenter ] addObserver:self selector:@selector(statementsNotification:) name:PecuniaStatementsNotification object:nil ];
     [[HBCIClient hbciClient ] getStatements: resultList ];
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
