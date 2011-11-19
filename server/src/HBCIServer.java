@@ -436,17 +436,51 @@ public class HBCIServer {
     
     private static HBCIHandler hbciHandler(String bankCode, String userId) {
     	String fname = passportKey(bankCode, userId);
+    	String altName = null;
 		HBCIHandler handler = (HBCIHandler)hbciHandlers.get(fname);
 		if(handler == null) {
 			// check if passport file exists
 			String filePath = passportPath + "/" + fname + ".dat";
+			HBCIUtils.log("HBCIServer: open passort: "+filePath, HBCIUtils.LOG_DEBUG);
 			File file = new File(filePath);
-			if(file.exists() == false) return null;
-	        HBCIUtils.setParam("client.passport.PinTan.filename",filePath);
+			if(file.exists() == false) {
+				HBCIUtils.log("HBCIServer: passport file "+filePath+" not found, checking alternatives", HBCIUtils.LOG_DEBUG);
+				
+				boolean found = false;
+				// check if there is a passport file with userID and different bank code
+				for(Enumeration e = users.keys(); e.hasMoreElements(); ) {
+					String key  = (String)e.nextElement();
+					if(key.endsWith(userId)) {
+						// we found an alternative passport that could fit
+						
+						filePath = passportPath + "/" + key + ".dat";
+						HBCIUtils.log("HBCIServer: try alternative passort: "+filePath, HBCIUtils.LOG_DEBUG);
+						file = new File(filePath);
+						if(file.exists() == true) {
+							found = true;
+							altName = key;
+							HBCIUtils.log("HBCIServer: alternative passport file "+filePath+" found", HBCIUtils.LOG_DEBUG);
+							break;
+						}						
+					}
+				}
+				if(found == false) {
+					HBCIUtils.log("HBCIServer: alternative passport file "+filePath+" not found!", HBCIUtils.LOG_DEBUG);
+					return null;					
+				}				
+			}
+
+			HBCIUtils.setParam("client.passport.PinTan.filename",filePath);
 	        HBCIPassport passport=AbstractHBCIPassport.getInstance();
 	        HBCIHandler hbciHandle=new HBCIHandler(null, passport);
+	        if(hbciHandle == null) {
+				HBCIUtils.log("HBCIServer: failed to create passport from file "+filePath+"!", HBCIUtils.LOG_ERR);
+				return null;
+	        }
 	        // we currently support only one User per BLZ
 	        hbciHandlers.put(fname, hbciHandle);
+	        if(altName != null) hbciHandlers.put(altName, hbciHandle);
+			HBCIUtils.log("HBCIServer: passport created for bank code "+bankCode+", user "+userId, HBCIUtils.LOG_DEBUG);
 	        return hbciHandle;
 		}
 		return handler;
@@ -526,6 +560,9 @@ public class HBCIServer {
 		
 		// first collect all orders separated by handlers
 		ArrayList list = (ArrayList)map.get("accinfolist");
+		if(list.size() == 0) {
+			HBCIUtils.log("HBCIServer: getStatement called without accounts", HBCIUtils.LOG_DEBUG);
+		}
 		for(int i=0; i<list.size(); i++) {
 			Properties tmap = (Properties)list.get(i);
 			String bankCode = getParameter(tmap, "accinfo.bankCode");
@@ -533,12 +570,18 @@ public class HBCIServer {
 			String accountNumber = getParameter(tmap, "accinfo.accountNumber");
 			
 			HBCIHandler handler = hbciHandler(bankCode, userId);
-			if(handler == null) continue;
+			if(handler == null) {
+				HBCIUtils.log("HBCIServer: getStatements skips bankCode "+bankCode+" user "+userId, HBCIUtils.LOG_DEBUG);
+				continue;
+			}
 			GVKUmsAll job = (GVKUmsAll)handler.newJob("KUmsAll");
 			Konto account = (Konto)accounts.get(bankCode+accountNumber);
 			if(account == null) {
 				account = handler.getPassport().getAccount(accountNumber);
-				if(account == null) continue;
+				if(account == null) {
+					HBCIUtils.log("HBCIServer: getStatements skips account "+accountNumber, HBCIUtils.LOG_DEBUG);
+					continue;
+				}
 			}
 			job.setParam("my", account);
 			String fromDateString = tmap.getProperty("accinfo.fromDate");
@@ -548,6 +591,7 @@ public class HBCIServer {
 					job.setParam("startdate", fromDate);
 				}
 			}
+			HBCIUtils.log("HBCIServer: getStatements customerId: "+account.customerid, HBCIUtils.LOG_DEBUG);
 			if(account.customerid == null) job.addToQueue();
 			else job.addToQueue(account.customerid);
 			ArrayList<Properties> jobs = (ArrayList<Properties>)orders.get(handler);
@@ -563,6 +607,9 @@ public class HBCIServer {
 		}
 		
 		// now iterate through orders
+		if(orders.size() == 0) {
+			HBCIUtils.log("HBCIServer: getStatements: there are no orders!", HBCIUtils.LOG_DEBUG);			
+		}
 		for(Enumeration e = orders.keys(); e.hasMoreElements(); ) {
 			HBCIHandler handler = (HBCIHandler)e.nextElement();
 			ArrayList<Properties> jobs = (ArrayList<Properties>)orders.get(handler);
@@ -960,6 +1007,8 @@ public class HBCIServer {
 			    	System.err.println( e );
 			    }
 			}
+			
+			// Passport so spät wie möglich instanziieren
 /*			
 			for(int i=0; i<files.length; i++) {
 				String fname = files[i];
@@ -1055,7 +1104,7 @@ public class HBCIServer {
 		if(parts.length > 4)tag("host", parts[4]);
 		if(parts.length > 5) tag("pinTanURL", parts[5]);
 		if(parts.length > 7) tag("pinTanVersion", parts[7]);
-		xmlBuf.append("</object");
+		xmlBuf.append("</object>");
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
@@ -1097,7 +1146,7 @@ public class HBCIServer {
 				acc.bic = map.getProperty("bic");
 				acc.customerid = map.getProperty("customerId");
 				acc.iban = map.getProperty("iban");
-				acc.name = getParameter(map, "ownerName");
+				acc.name = map.getProperty("ownerName");
 				acc.type = map.getProperty("name");
 				accounts.put(bankCode+accountNumber, acc);
 			}
@@ -1327,6 +1376,43 @@ public class HBCIServer {
         out.flush();
 	}
 	
+	private static void getAccInfo() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String userId = getParameter(map, "userId");
+		String accountNumber = getParameter(map, "accountNumber");	
+		
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		if(handler == null) {
+			error(ERR_MISS_USER, "getAccInfo", userId);
+			return;			
+		}
+		HBCIPassportPinTan passport = (HBCIPassportPinTan)handler.getPassport();
+		
+		Konto account = (Konto)accounts.get(bankCode+accountNumber);
+		if(account == null) {
+			account = handler.getPassport().getAccount(accountNumber);
+			if(account == null) {
+				error(ERR_MISS_ACCOUNT, "getAccInfo",accountNumber);
+				return;
+			}
+		}
+		
+		HBCIJob job = handler.newJob("AccInfo");
+		job.setParam("my", account);
+		job.setParam("all", "J");
+		job.addToQueue();
+		HBCIExecStatus stat = handler.execute();
+
+		boolean isOk = false;
+		GVRAccInfo res = null;
+		if(stat.isOK()) {
+			res = (GVRAccInfo)job.getJobResult();
+			if(res.isOK()) isOk = true;
+		}
+		System.out.println(res.toString());
+
+	}
+	
 	
 	private static void dispatch(String command) throws IOException {
 
@@ -1353,6 +1439,7 @@ public class HBCIServer {
 			if(command.compareTo("getAllStandingOrders") == 0) { getAllStandingOrders(); return; }
 			if(command.compareTo("getBankParameter") == 0) { getBankParameter(); return; }
 			if(command.compareTo("setLogLevel") == 0) { setLogLevel(); return; }
+			if(command.compareTo("getAccInfo") == 0) { getAccInfo(); return; }
 			
 			System.err.println("HBCIServer: unknown command");
 		}
@@ -1494,8 +1581,6 @@ public class HBCIServer {
  	<jobName>DauerNew</jobName>
  </command>.
 
- 
- 
  <command name="setAccount">
  	<bankCode>60090800</bankCode>
  	<accountNumber>3551722</accountNumber>
@@ -1504,6 +1589,11 @@ public class HBCIServer {
  	<name>Girokonto</name>
  </command>.
   
+ <command name="getAccInfo">
+ 	<bankCode>67292200</bankCode>
+ 	<accountNumber>36917300</accountNumber>
+ 	<userId>206844341</userId>
+ </command>.
 	
 */	
 	private static void acceptArray(XmlPullParser xpp, Properties map, String tag) throws XmlPullParserException, IOException {
