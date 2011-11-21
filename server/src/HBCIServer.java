@@ -259,15 +259,15 @@ public class HBCIServer {
         
     private static void accountToXml(Konto account, HBCIPassport pp) throws IOException {
     	xmlBuf.append("<object type=\"Account\">");
-    	if(account.curr == null) account.curr = "EUR";
-    	if(account.country == null) account.country = "DE";
+    	if(account.curr == null || account.curr.length() == 0) account.curr = "EUR";
+    	if(account.country == null || account.curr.length() == 0) account.country = "DE";
     	tag("name", account.type);
     	tag("bankName", HBCIUtils.getNameForBLZ(account.blz));
     	tag("bankCode", account.blz);
     	tag("accountNumber", account.number);
     	tag("ownerName", account.name);
-    	tag("currency", account.curr);
-    	tag("country", account.country);
+    	tag("currency", account.curr.toUpperCase());
+    	tag("country", account.country.toUpperCase());
     	tag("iban", account.iban);
     	tag("bic", account.bic);
     	tag("userId", pp.getUserId());
@@ -939,7 +939,6 @@ public class HBCIServer {
 			booleTag("isOk", isOk);
 			if(res != null && isOk) tag("orderId", res.getOrderId());
 			xmlBuf.append("</dictionary></result>.");
-			return;
 		} else {
 			HBCIJobResult res = null;
 			if(stat.isOK()) {
