@@ -211,6 +211,10 @@
 		NSDictionary *attributeValues = [stord dictionaryWithValuesForKeys:attributeKeys];
 		[order setValuesForKeysWithDictionary:attributeValues];
 		order.account = self;
+        
+        if (order.lastExecDate == nil) {
+            order.lastExecDate = [[ShortDate dateWithYear:2999 month:12 day:31 ] lowDate ];
+        }
 	}
 	
 }

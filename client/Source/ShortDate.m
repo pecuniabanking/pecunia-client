@@ -24,7 +24,7 @@ NSCalendar *calendar = nil;
 	return self;
 }
 
--(id)initWithYear: (int)y month: (int)m day: (int)d
+-(id)initWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d
 {
 	self = [super init ];
 	if(self == nil) return nil;
@@ -216,7 +216,7 @@ NSCalendar *calendar = nil;
 	return [ShortDate dateWithYear:year month:month day:[self daysInMonth ] ];
 }
 
--(int)quarter
+-(unsigned)quarter
 {
 	return (month-1)/3 + 1;
 }
@@ -234,30 +234,30 @@ NSCalendar *calendar = nil;
 
 
 
-+(id)dateWithDate: (NSDate*)date
++(ShortDate*)dateWithDate: (NSDate*)date
 {
 	ShortDate *res = [[ShortDate alloc ] initWithDate: date ];
 	return [res autorelease ];
 }
 
-+(id)currentDate
++(ShortDate*)currentDate
 {
 	return [ShortDate dateWithDate:[NSDate date ] ];
 }
 
 
-+(id)dateWithYear: (int)y month: (int)m day: (int)d
++(ShortDate*)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d
 {
 	ShortDate *res = [[ShortDate alloc ] initWithYear: y month: m day: d ];
 	return [res autorelease ];
 }
 
-+(id)distantFuture
++(ShortDate*)distantFuture
 {
 	return [ShortDate dateWithYear: 9999 month:12 day:31 ];
 }
 
-+(id)distantPast
++(ShortDate*)distantPast
 {
 	return [ShortDate dateWithYear: 2000 month:1 day:1 ];
 }

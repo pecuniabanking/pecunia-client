@@ -15,6 +15,11 @@
 	unsigned			day;
 }
 
+@property (nonatomic, assign, readonly) unsigned year;
+@property (nonatomic, assign, readonly) unsigned month;
+@property (nonatomic, assign, readonly) unsigned day;
+@property (nonatomic, assign, readonly) unsigned quarter;
+
 - (id)initWithDate: (NSDate*)date;
 - (NSComparisonResult)compare: (ShortDate*)date;
 - (NSDate*)lowDate;
@@ -41,17 +46,12 @@
 -(ShortDate*)lastDayInMonth;
 -(ShortDate*)firstDayInQuarter;
 -(ShortDate*)lastDayInQuarter;
--(int)quarter;
 
-- (unsigned)year;
-- (unsigned)month;
-- (unsigned)day;
-
-+(id)dateWithDate: (NSDate*)date;
-+(id)currentDate;
-+(id)dateWithYear: (int)y month: (int)m day: (int)d;
-+(id)distantFuture;
-+(id)distantPast;
++(ShortDate*)dateWithDate: (NSDate*)date;
++(ShortDate*)currentDate;
++(ShortDate*)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d;
++(ShortDate*)distantFuture;
++(ShortDate*)distantPast;
 +(NSCalendar*)calendar;
 
 @end

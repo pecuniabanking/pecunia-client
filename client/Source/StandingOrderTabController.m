@@ -17,6 +17,7 @@
 #import "AmountCell.h"
 #import "PecuniaError.h"
 #import "StatusBarController.h"
+#import "ShortDate.h"
 
 @implementation StandingOrderTabController
 
@@ -311,6 +312,7 @@
 		stord.executionDay = [NSNumber numberWithInt:1 ];
 		stord.isChanged = [NSNumber numberWithBool:YES ];
 		stord.currency = account.currency;
+        stord.lastExecDate = [[ShortDate dateWithYear:2999 month:12 day:31 ] lowDate ];
 		
 		[orderController addObject:stord ];
 		[orderController setSelectedObjects:[NSArray arrayWithObject:stord ] ];

@@ -33,7 +33,7 @@
     NSUserDefaults  *defaults = [NSUserDefaults standardUserDefaults ];
 
 	[messageLog registerLogUI:self ];
-    maxLevel = LogLevel_None;
+    maxLevel = LogLevel_Verbous;
 	isHidden = [defaults boolForKey:@"hideProgessWindow" ];
     if (isHidden == NO) {
         [self showWindow:self ];
@@ -68,7 +68,7 @@
     if (level > LogLevel_Notice) {
         return;
     }
-    if (level > maxLevel) {
+    if (level < maxLevel) {
         maxLevel = level;
     }
 	if (isHidden == YES) {

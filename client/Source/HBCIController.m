@@ -808,6 +808,9 @@ NSString *escapeSpecial(NSString *s)
             }
             stord.isSent = [result valueForKey:@"isOk" ];
             stord.orderKey = [result valueForKey:@"orderId" ];
+            if (stord.isSent) {
+				stord.isChanged = [NSNumber numberWithBool:NO ];
+            }
         } else if ([stord.toDelete boolValue ] == YES) {
             // delete standing order
             NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"deleteStandingOrder\">" ];

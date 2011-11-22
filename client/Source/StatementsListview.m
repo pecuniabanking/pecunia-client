@@ -9,6 +9,8 @@
 #import "StatementsListview.h"
 #import "StatementsListViewCell.h"
 #import "StatCatAssignment.h"
+#import "ShortDate.h"
+#import "BankStatement.h"
 
 @implementation StatementsListView
 
@@ -128,10 +130,10 @@
     BOOL result = (row == 0);
     if (!result)
     {
-        id statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];
-        id previousStatement = [[_dataSource objectAtIndex: row - 1] valueForKey: @"statement"];
-        result = [self daysWithinEraFromDate: [statement valueForKey: @"date"]
-                                      toDate: [previousStatement valueForKey: @"date"]] != 0;
+        BankStatement *statement = (BankStatement*)[[_dataSource objectAtIndex: row] valueForKey: @"statement"];
+        BankStatement *previousStatement = (BankStatement*)[[_dataSource objectAtIndex: row - 1] valueForKey: @"statement"];
+        
+        result = [ShortDate dateWithDate:statement.date ].day != [ShortDate dateWithDate:previousStatement.date ].day;
     }
     return result;
 }
@@ -142,23 +144,16 @@
  */
 - (int) countSameDatesFromRow: (NSUInteger)row
 {
-    if (_calendar == nil)
-        _calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
-    
     int result = 1;
     id statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];
-    NSDate* currentDate = [statement valueForKey: @"date"];
+    ShortDate* currentDate = [ShortDate dateWithDate:[statement valueForKey: @"date"] ];
     
-    NSUInteger startDay = [_calendar ordinalityOfUnit: NSDayCalendarUnit
-                                               inUnit: NSEraCalendarUnit forDate: currentDate];
     int totalCount = [_dataSource count];
     while (++row < totalCount)
     {
         id statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];
-        NSDate* nextDate = [statement valueForKey: @"date"];
-        NSUInteger endDay = [_calendar ordinalityOfUnit: NSDayCalendarUnit
-                                                 inUnit: NSEraCalendarUnit forDate: nextDate];
-        if (startDay != endDay)
+        ShortDate* nextDate = [ShortDate dateWithDate:[statement valueForKey: @"date"] ];
+        if (currentDate.day != nextDate.day)
             break;
         result++;
     }
@@ -252,7 +247,7 @@
 - (void)listViewSelectionDidChange:(NSNotification*)aNotification
 {
     // A selected statement automatically loses the "new" state.
-    id cell = [self cellForRowAtIndex: [self selectedRow]];
+    StatementsListViewCell *cell = (StatementsListViewCell*)[self cellForRowAtIndex: [self selectedRow]];
     [cell setIsNew: NO];
 }
 
