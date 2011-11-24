@@ -36,7 +36,7 @@
   
   NSGradient* topGradient = [[[NSGradient alloc]
                               initWithColorsAndLocations:
-                                [NSColor colorWithDeviceWhite: 60 / 256.0 alpha: 1], (CGFloat) 0,
+                                [NSColor colorWithDeviceWhite: 60 / 255.0 alpha: 1], (CGFloat) 0,
                                 [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat) 1,
                                 nil
                               ]

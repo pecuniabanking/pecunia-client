@@ -42,7 +42,8 @@
 	
     NSSet* excludedSublayers = [self sublayersExcludedFromAutomaticLayout];
 	for (CALayer* subLayer in self.sublayers) {
-		if (![excludedSublayers containsObject: subLayer] && [subLayer isKindOfClass:[CPTLayer class]]) {
+		if (![excludedSublayers containsObject: subLayer] && [subLayer isKindOfClass:[CPTLayer class]] &&
+            !subLayer.hidden) {
             subLayerFrame.size.height = subLayer.frame.size.height;
             subLayer.frame = subLayerFrame;
 			[subLayer setNeedsLayout];
