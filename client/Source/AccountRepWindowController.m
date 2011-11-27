@@ -9,7 +9,6 @@
 #include <math.h>
 
 #import "AccountRepWindowController.h"
-#import "Category.h"
 #import "MCEMOutlineViewLayout.h"
 #import "ShortDate.h"
 #import "TimeSliceManager.h"
@@ -17,12 +16,13 @@
 #import "ImageAndTextCell.h"
 #import "BankAccount.h"
 
+#import "PecuniaPlotTimeFormatter.h"
 #import "NumberExtensions.h"
-
-static NSTimeInterval oneDay = 24 * 60 * 60;
 
 static NSString* const PecuniaGraphLayoutChangeNotification = @"PecuniaGraphLayoutChange";
 static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouseExited";
+
+//--------------------------------------------------------------------------------------------------
 
 @implementation PecuinaGraphHost
 
@@ -34,15 +34,12 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         [trackingArea release];
     }
 
-    CPTXYPlotSpace* plotSpace = (id)[self hostedGraph].defaultPlotSpace;
-    if (plotSpace.allowsUserInteraction) {
-        trackingArea = [[[NSTrackingArea alloc] initWithRect: NSRectFromCGRect(self.hostedGraph.plotAreaFrame.frame)
-                                                     options: NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveInActiveApp
-                                                       owner: self
-                                                    userInfo: nil]
-                        retain];
-        [self addTrackingArea: trackingArea];
-    }
+    trackingArea = [[[NSTrackingArea alloc] initWithRect: NSRectFromCGRect(self.hostedGraph.plotAreaFrame.frame)
+                                                 options: NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveInActiveApp
+                                                   owner: self
+                                                userInfo: nil]
+                    retain];
+    [self addTrackingArea: trackingArea];
 }
 
 - (id)initWithFrame:(NSRect)frameRect
@@ -202,6 +199,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 @end;
 
+//--------------------------------------------------------------------------------------------------
+
 @implementation PecuinaSelectionGraphHost
 
 @synthesize selector;
@@ -336,6 +335,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 @synthesize toDate;
 
 @synthesize barWidth; // The width of all bars in either the main or the turnovers bar.
+@synthesize groupingInterval;
 
 -(id)init
 {
@@ -427,7 +427,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     return [ShortDate dateWithDate: [NSDate date]];
 }
 
--(void)setupShadowForPlot: (CPTPlot*) plot
+- (void)setupShadowForPlot: (CPTPlot*) plot
 {
     plot.shadowColor = CGColorCreateGenericGray(0, 1);
     plot.shadowRadius = 2.0;
@@ -435,7 +435,45 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     plot.shadowOpacity = 0.75;
 }
 
--(void)setupMainGraph
+- (void)setupMainAxes
+{
+    CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
+    CPTXYAxis* x = axisSet.xAxis;
+    x.minorTicksPerInterval = 0;
+    x.labelingPolicy = CPTAxisLabelingPolicyAutomatic;
+    x.preferredNumberOfMajorTicks = [self majorTickCount];
+    
+    CPTMutableTextStyle* textStyle = [CPTMutableTextStyle textStyle];
+    textStyle.color = [CPTColor colorWithComponentRed: 88 / 255.0 green: 86 / 255.0 blue: 77 / 255.0 alpha: 1];
+    textStyle.fontName = @"LucidaGrande";
+    textStyle.fontSize = 10.0;
+    x.labelTextStyle = textStyle;
+    
+    CPTXYAxis* y = axisSet.yAxis;
+    y.labelTextStyle = textStyle;
+    y.axisConstraints = [CPTConstraints constraintWithLowerOffset: 0];
+    y.separateLayers = NO;
+    
+    CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
+    lineStyle.lineWidth = 0.5;
+    lineStyle.lineColor = [CPTColor blackColor];
+    y.majorGridLineStyle = lineStyle;
+    
+    lineStyle.lineColor = [[CPTColor blackColor] colorWithAlphaComponent: 0.25];
+    y.minorGridLineStyle = lineStyle;
+    y.majorTickLineStyle = nil;
+    y.minorTickLineStyle = nil;
+    y.axisLineStyle = nil;
+    
+    // Graph title, use y axis label for this.
+    textStyle.textAlignment = CPTTextAlignmentCenter;
+    textStyle.fontSize = 14.0;
+    y.titleTextStyle = textStyle;
+    y.title = @"Salden und Umsätze";
+    y.titleOffset = 60;
+}
+
+- (void)setupMainGraph
 {
     mainGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame: NSRectToCGRect(mainHostView.bounds)];
     CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
@@ -476,48 +514,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTFill* fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 0.8]];
     frame.fill = fill;
     
-    // Axes.
-    CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
-    CPTXYAxis* x = axisSet.xAxis;
-    x.minorTicksPerInterval = 0;
-    x.labelingPolicy = CPTAxisLabelingPolicyEqualDivisions;
-    x.preferredNumberOfMajorTicks = 15;
-    
-    NSDateFormatter* dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-    dateFormatter.dateStyle = kCFDateFormatterShortStyle;
-    CPTTimeFormatter* timeFormatter = [[[CPTTimeFormatter alloc] initWithDateFormatter: dateFormatter] autorelease];
-    
-    timeFormatter.referenceDate = [[self referenceDate] lowDate];
-    x.labelFormatter = timeFormatter;
-    
-    CPTMutableTextStyle* textStyle = [CPTMutableTextStyle textStyle];
-    textStyle.color = [CPTColor colorWithComponentRed: 88 / 255.0 green: 86 / 255.0 blue: 77 / 255.0 alpha: 1];
-    textStyle.fontName = @"LucidaGrande";
-    textStyle.fontSize = 10.0;
-    x.labelTextStyle = textStyle;
-    
-    CPTXYAxis* y = axisSet.yAxis;
-    y.labelTextStyle = textStyle;
-    y.axisConstraints = [CPTConstraints constraintWithLowerOffset: 0];
-    y.separateLayers = NO;
-    
-    CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
-    lineStyle.lineWidth = 0.5;
-    lineStyle.lineColor = [CPTColor blackColor];
-    y.majorGridLineStyle = lineStyle;
-    
-    lineStyle.lineColor = [[CPTColor blackColor] colorWithAlphaComponent: 0.25];
-    y.minorGridLineStyle = lineStyle;
-    y.majorTickLineStyle = nil;
-    y.minorTickLineStyle = nil;
-    y.axisLineStyle = nil;
-    
-    // Graph title, use y axis label for this.
-    textStyle.textAlignment = CPTTextAlignmentCenter;
-    textStyle.fontSize = 14.0;
-    y.titleTextStyle = textStyle;
-    y.title = @"Salden und Umsätze";
-    y.titleOffset = 60;
+    [self setupMainAxes];
 
     // The second y axis is used as the current location identifier.
     mainIndicatorLine = [[[CPTXYAxis alloc] init] autorelease];
@@ -526,11 +523,11 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     mainIndicatorLine.plotSpace = plotSpace;
     mainIndicatorLine.axisConstraints = [CPTConstraints constraintWithLowerOffset: 0];
     mainIndicatorLine.labelingPolicy = CPTAxisLabelingPolicyNone;
-    mainIndicatorLine.separateLayers = NO;
+    mainIndicatorLine.separateLayers = YES;
     mainIndicatorLine.preferredNumberOfMajorTicks = 6;
     mainIndicatorLine.minorTicksPerInterval = 0;
 
-    lineStyle = [CPTMutableLineStyle lineStyle];
+    CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
     lineStyle.lineWidth = 1;
     lineStyle.lineColor = [CPTColor colorWithGenericGray: 64 / 255.0];
     lineStyle.lineCap = kCGLineCapRound;
@@ -541,49 +538,17 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     mainIndicatorLine.axisLineStyle = lineStyle;
     mainIndicatorLine.majorTickLineStyle = nil;
     
-    // Add the y2 axis to the axis set
+    // Add the y2 axis to the axis set.
+    // It is essential to first assign the axes to be used in the arrayWithObject call
+    // to local variables or all kind of weird things start showing up later (mostly with invalid coordinates).
+    CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
+    CPTXYAxis* x = axisSet.xAxis;
+    CPTXYAxis* y = axisSet.yAxis;
     axisSet.axes = [NSArray arrayWithObjects: x, y, mainIndicatorLine, nil];
-    
 }
 
--(void)setupTurnoversGraph
+- (void)setupTurnoversAxes
 {
-    turnoversGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame: NSRectToCGRect(turnoversHostView.bounds)];
-    CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
-    [turnoversGraph applyTheme: theme];
-    turnoversHostView.hostedGraph = turnoversGraph;
-    
-    // Setup scatter plot space
-    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)turnoversGraph.defaultPlotSpace;
-    plotSpace.allowsUserInteraction = YES;
-    plotSpace.delegate = self;
-    
-    // Grid line styles
-    CPTMutableLineStyle* frameStyle = [CPTMutableLineStyle lineStyle];
-    frameStyle.lineWidth = 1;
-    frameStyle.lineColor = [[CPTColor colorWithGenericGray: 0] colorWithAlphaComponent: 0.5];
-    
-    // Graph padding
-    turnoversGraph.paddingLeft = 10.0;
-    turnoversGraph.paddingTop = 10;
-    turnoversGraph.paddingRight = 10.0;
-    turnoversGraph.paddingBottom = 10;
-    
-    CPTPlotAreaFrame* frame = turnoversGraph.plotAreaFrame;
-    frame.paddingLeft = 90;
-    frame.paddingRight = 30;
-    frame.paddingTop = 15;
-    frame.paddingBottom = 15;
-    
-    frame.cornerRadius = 10;
-    frame.borderLineStyle = frameStyle;
-    
-    frame.shadowColor = CGColorCreateGenericGray(0, 1);
-    frame.shadowRadius = 2.0;
-    frame.shadowOffset = CGSizeMake(1, -1);
-    frame.shadowOpacity = 0.1;
-    
-    // Axes.
     CPTXYAxisSet* axisSet = (id)turnoversGraph.axisSet;
     CPTXYAxis* x = axisSet.xAxis;
     x.axisLineStyle = nil;
@@ -591,6 +556,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     x.minorTickLineStyle = nil;
     x.labelTextStyle = nil;
     x.labelingPolicy = CPTAxisLabelingPolicyNone;
+    x.preferredNumberOfMajorTicks = [self majorTickCount];
     
     CPTMutableTextStyle* textStyle = [CPTMutableTextStyle textStyle];
     textStyle.color = [CPTColor colorWithComponentRed: 88 / 255.0 green: 86 / 255.0 blue: 77 / 255.0 alpha: 1];
@@ -627,7 +593,47 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     y.titleTextStyle = textStyle;
     y.title = @"Überweisungen";
     y.titleOffset = 60;
+}
 
+- (void)setupTurnoversGraph
+{
+    turnoversGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame: NSRectToCGRect(turnoversHostView.bounds)];
+    CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
+    [turnoversGraph applyTheme: theme];
+    turnoversHostView.hostedGraph = turnoversGraph;
+    
+    // Setup scatter plot space
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)turnoversGraph.defaultPlotSpace;
+    plotSpace.allowsUserInteraction = YES;
+    plotSpace.delegate = self;
+    
+    // Grid line styles
+    CPTMutableLineStyle* frameStyle = [CPTMutableLineStyle lineStyle];
+    frameStyle.lineWidth = 1;
+    frameStyle.lineColor = [[CPTColor colorWithGenericGray: 0] colorWithAlphaComponent: 0.5];
+    
+    // Graph padding
+    turnoversGraph.paddingLeft = 10.0;
+    turnoversGraph.paddingTop = 10;
+    turnoversGraph.paddingRight = 10.0;
+    turnoversGraph.paddingBottom = 10;
+    
+    CPTPlotAreaFrame* frame = turnoversGraph.plotAreaFrame;
+    frame.paddingLeft = 90;
+    frame.paddingRight = 30;
+    frame.paddingTop = 15;
+    frame.paddingBottom = 15;
+    
+    frame.cornerRadius = 10;
+    frame.borderLineStyle = frameStyle;
+    
+    frame.shadowColor = CGColorCreateGenericGray(0, 1);
+    frame.shadowRadius = 2.0;
+    frame.shadowOffset = CGSizeMake(1, -1);
+    frame.shadowOpacity = 0.1;
+    
+    [self setupTurnoversAxes];
+    
     // The second y axis is used as the current location identifier.
     turnoversIndicatorLine = [[[CPTXYAxis alloc] init] autorelease];
     turnoversIndicatorLine.hidden = YES;
@@ -639,7 +645,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     turnoversIndicatorLine.preferredNumberOfMajorTicks = 6;
     turnoversIndicatorLine.minorTicksPerInterval = 0;
 
-    lineStyle = [CPTMutableLineStyle lineStyle];
+    CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
     lineStyle.lineWidth = 1;
     lineStyle.lineColor = [CPTColor colorWithGenericGray: 64 / 255.0];
     lineStyle.dashPattern = lineStyle.dashPattern = [NSArray arrayWithObjects:
@@ -650,7 +656,53 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     turnoversIndicatorLine.majorTickLineStyle = nil;
     
     // Add the second y axis to the axis set.
+    CPTXYAxisSet* axisSet = (id)turnoversGraph.axisSet;
+    CPTXYAxis* x = axisSet.xAxis;
+    CPTXYAxis* y = axisSet.yAxis;
     axisSet.axes = [NSArray arrayWithObjects: x, y, turnoversIndicatorLine, nil];
+}
+
+- (void)setupSelectionAxes
+{
+    CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
+    lineStyle.lineWidth = 1;
+    lineStyle.lineColor = [[CPTColor whiteColor] colorWithAlphaComponent: 0.2];
+
+    CPTXYAxisSet* axisSet = (id)selectionGraph.axisSet;
+    CPTXYAxis* x = axisSet.xAxis;
+    x.minorTicksPerInterval = 0;
+    x.labelingPolicy = CPTAxisLabelingPolicyEqualDivisions;
+    x.preferredNumberOfMajorTicks = 60;
+
+    x.majorGridLineStyle = lineStyle;
+    x.labelTextStyle = nil;
+    x.separateLayers = NO;
+    x.minorGridLineStyle = nil;
+    x.majorTickLineStyle = nil;
+    x.minorTickLineStyle = nil;
+    x.axisLineStyle = nil;
+
+    CPTXYAxis* y = axisSet.yAxis;
+    y.minorTicksPerInterval = 0;
+    y.labelingPolicy = CPTAxisLabelingPolicyEqualDivisions;
+    y.preferredNumberOfMajorTicks = 8;
+    y.majorGridLineStyle = lineStyle;
+    y.labelTextStyle = nil;
+    y.separateLayers = NO;
+    y.minorGridLineStyle = nil;
+    y.majorTickLineStyle = nil;
+    y.minorTickLineStyle = nil;
+    y.axisLineStyle = nil;
+
+    // Graph title, use y axis label for this.
+    CPTMutableTextStyle* textStyle = [CPTMutableTextStyle textStyle];
+    textStyle.color = [CPTColor whiteColor];
+    textStyle.fontName = @"LucidaGrande";
+    textStyle.fontSize = 10.0;
+    textStyle.textAlignment = CPTTextAlignmentCenter;
+    y.titleTextStyle = textStyle;
+    y.title = @"Übersicht";
+    y.titleOffset = 8;
 }
 
 -(void)setupSelectionGraph
@@ -701,56 +753,18 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     frame.shadowRadius = 3.0;
     frame.shadowOffset = CGSizeMake(2, -2);
     frame.shadowOpacity = 0.7;
-    
-    // Axes.
-    CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
-    lineStyle.lineWidth = 1;
-    lineStyle.lineColor = [[CPTColor whiteColor] colorWithAlphaComponent: 0.2];
 
-    CPTXYAxisSet* axisSet = (id)selectionGraph.axisSet;
-    CPTXYAxis* x = axisSet.xAxis;
-    x.minorTicksPerInterval = 0;
-    x.labelingPolicy = CPTAxisLabelingPolicyEqualDivisions;
-    x.preferredNumberOfMajorTicks = 60;
-
-    x.majorGridLineStyle = lineStyle;
-    x.labelTextStyle = nil;
-    x.separateLayers = NO;
-    x.minorGridLineStyle = nil;
-    x.majorTickLineStyle = nil;
-    x.minorTickLineStyle = nil;
-    x.axisLineStyle = nil;
-
-    CPTXYAxis* y = axisSet.yAxis;
-    y.minorTicksPerInterval = 0;
-    y.labelingPolicy = CPTAxisLabelingPolicyEqualDivisions;
-    y.preferredNumberOfMajorTicks = 8;
-    y.majorGridLineStyle = lineStyle;
-    y.labelTextStyle = nil;
-    y.separateLayers = NO;
-    y.minorGridLineStyle = nil;
-    y.majorTickLineStyle = nil;
-    y.minorTickLineStyle = nil;
-    y.axisLineStyle = nil;
-
-    // Graph title, use y axis label for this.
-    CPTMutableTextStyle* textStyle = [CPTMutableTextStyle textStyle];
-    textStyle.color = [CPTColor whiteColor];
-    textStyle.fontName = @"LucidaGrande";
-    textStyle.fontSize = 10.0;
-    textStyle.textAlignment = CPTTextAlignmentCenter;
-    y.titleTextStyle = textStyle;
-    y.title = @"Übersicht";
-    y.titleOffset = 8;
+    [self setupSelectionAxes];
 }
 
--(CPTScatterPlot*)createScatterPlotWithFill: (CPTFill*)fill
+- (CPTScatterPlot*)createScatterPlotWithFill: (CPTFill*)fill
 {
     CPTScatterPlot* linePlot = [[[CPTScatterPlot alloc] init] autorelease];
     linePlot.cachePrecision = CPTPlotCachePrecisionDecimal;
     linePlot.alignsPointsToPixels = NO;
     linePlot.dataLineStyle = nil;
     linePlot.interpolation = CPTScatterPlotInterpolationStepped;
+
     linePlot.areaFill = fill;
     linePlot.areaBaseValue = CPTDecimalFromInt(0);
     
@@ -760,7 +774,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     return linePlot;
 }
 
--(CPTBarPlot*)createBarPlotWithFill: (CPTFill*)fill withBorder: (BOOL)withBorder
+- (CPTBarPlot*)createBarPlotWithFill: (CPTFill*)fill withBorder: (BOOL)withBorder
 {
     CPTBarPlot *barPlot = [[[CPTBarPlot alloc] init] autorelease];
     barPlot.barBasesVary = NO;
@@ -982,24 +996,93 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 }
 
 /**
- * Computes the distance between the given and the reference date in seconds.
+ * Determines the amount of major ticks, depending on grouping interval.
  */
-- (NSDecimal)secondsFromDate: (ShortDate*)date
+- (int)majorTickCount
 {
-    return CPTDecimalFromInt(oneDay * [[self referenceDate] daysToDate: date]);
+    switch (groupingInterval)
+    {
+        case GroupByWeeks:
+            return 10;
+            break;
+        case GroupByMonths:
+            return 12;
+            break;
+        case GroupByQuarters:
+            return 8;
+            break;
+        case GroupByYears:
+            return 4;
+            break;
+        default:
+            return 11;
+            
+    }
+}
+
+/**
+ * Determines the number of units between two dates, depending on the grouping interval.
+ */
+- (int)distanceFromDate: (ShortDate*)from toDate: (ShortDate*)to
+{
+    switch (groupingInterval)
+    {
+        case GroupByWeeks:
+            return [from unitsToDate: to byUnit: NSWeekCalendarUnit];
+            break;
+        case GroupByMonths:
+            return [from unitsToDate: to byUnit: NSMonthCalendarUnit];
+            break;
+        case GroupByQuarters:
+            return [from unitsToDate: to byUnit: NSQuarterCalendarUnit];
+            break;
+        case GroupByYears:
+            return [from unitsToDate: to byUnit: NSYearCalendarUnit];
+            break;
+        default:
+            return [from unitsToDate: to byUnit: NSDayCalendarUnit];
+            
+    }
+}
+
+- (NSDecimal)distanceAsDecimalFromDate: (ShortDate*)from toDate: (ShortDate*)to
+{
+    return CPTDecimalFromInt([self distanceFromDate: from toDate: to]);
+}
+
+/**
+ * Determines the number of units between two dates, depending on the grouping interval.
+ */
+- (ShortDate*)dateByAddingUnits: (ShortDate*)from count: (int)units
+{
+    switch (groupingInterval)
+    {
+        case GroupByWeeks:
+            return [from dateByAddingUnits: units byUnit: NSWeekCalendarUnit];
+            break;
+        case GroupByMonths:
+            return [from dateByAddingUnits: units byUnit: NSMonthCalendarUnit];
+            break;
+        case GroupByQuarters:
+            return [from dateByAddingUnits: units byUnit: NSQuarterCalendarUnit];
+            break;
+        case GroupByYears:
+            return [from dateByAddingUnits: units byUnit: NSYearCalendarUnit];
+            break;
+        default:
+            return [from dateByAddingUnits: units byUnit: NSDayCalendarUnit];
+            
+    }
 }
 
 - (void)updateMainGraph
 {
-    Category* category = [self currentSelection];
-    
-    NSUInteger count = [dates count];
-    
-    // Time intervals are specified in number of seconds on the x axis.
     ShortDate* startDate = [self referenceDate];
-    int totalDays = (count > 0) ? [startDate daysToDate: [dates lastObject]] + 1 : 0;
-    if (totalDays < 14) {
-        totalDays = 14;
+    int tickCount = [self majorTickCount];
+    int dateOffset = (groupingInterval == GroupByDays) ? 1 : 0;
+    int totalUnits = ([dates count] > 0) ? [self distanceFromDate: startDate toDate: [dates lastObject]] + dateOffset : 0;
+    if (totalUnits < tickCount) {
+        totalUnits = tickCount;
     }
     
     // Set the available plot space depending on the min, max and day values we found. Extend both range by a few precent for more appeal.
@@ -1007,23 +1090,42 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     // Horizontal range.
     CPTPlotRange* plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
-                                                           length: CPTDecimalFromDouble(oneDay * totalDays)];
+                                                           length: CPTDecimalFromDouble(totalUnits)];
     plotSpace.globalXRange = plotRange;
     
-    NSDecimal fromPoint = [self secondsFromDate: fromDate];
+    NSDecimal fromPoint = [self distanceAsDecimalFromDate: startDate toDate: fromDate];
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: fromPoint
-                                                    length: CPTDecimalSubtract([self secondsFromDate: toDate], fromPoint)];
-    
-//    NSLog(@"From: %@, To: %@", fromDate, toDate);
+                                                    length: CPTDecimalSubtract([self distanceAsDecimalFromDate: startDate toDate: toDate], fromPoint)];
     
     CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
     CPTXYAxis* x = axisSet.xAxis;
+    x.preferredNumberOfMajorTicks = tickCount;
 
-    // Recreate the time formatter to apply the now reference date. Just setting the date on the existing
+    // Recreate the time formatter to apply the new reference date. Just setting the date on the existing
     // formatter is not enough.
     NSDateFormatter* dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     dateFormatter.dateStyle = kCFDateFormatterShortStyle;
-    CPTTimeFormatter* timeFormatter = [[[CPTTimeFormatter alloc] initWithDateFormatter: dateFormatter] autorelease];
+    
+    int calendarUnit;
+    switch (groupingInterval) {
+        case GroupByWeeks:
+            calendarUnit = NSWeekCalendarUnit;
+            break;
+        case GroupByMonths:
+            calendarUnit = NSMonthCalendarUnit;
+            break;
+        case GroupByQuarters:
+            calendarUnit = NSQuarterCalendarUnit;
+            break;
+        case GroupByYears:
+            calendarUnit = NSYearCalendarUnit;
+            break;
+        default:
+            calendarUnit = NSDayCalendarUnit;
+            break;
+    }
+    PecuniaPlotTimeFormatter* timeFormatter = [[[PecuniaPlotTimeFormatter alloc] initWithDateFormatter: dateFormatter
+                                                                                          calendarUnit: calendarUnit] autorelease];
     
     timeFormatter.referenceDate = [[self referenceDate] lowDate];
     x.labelFormatter = timeFormatter;
@@ -1053,6 +1155,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     y.majorIntervalLength = CPTDecimalFromFloat(interval);
     y.minorTicksPerInterval = [self minorTicksFromInterval: interval];
     
+    Category* category = [self currentSelection];
+    
     NSString* currency = (category == nil) ? @"EUR" : [category currency];
     NSNumberFormatter* currencyFormatter = [[[NSNumberFormatter alloc] init] autorelease];
     currencyFormatter.usesSignificantDigits = YES;
@@ -1069,9 +1173,30 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 {
     NSUInteger count = [dates count];
     
+    ShortDate* startDate = [self referenceDate];
+    int dateOffset = (groupingInterval == GroupByDays) ? 1 : 0;
+    int totalUnits = (count > 0) ? [self distanceFromDate: startDate toDate: [dates lastObject]] + dateOffset : 0;
+    if (totalUnits < [self majorTickCount]) {
+        totalUnits = [self majorTickCount];
+    };
+    
+    // Set the available plot space depending on the min, max and day values we found.
+    CPTXYPlotSpace* plotSpace = (id)turnoversGraph.defaultPlotSpace;
+    
+    // Horizontal range.
+    CPTPlotRange* plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
+                                                           length: CPTDecimalFromDouble(totalUnits)];
+    plotSpace.globalXRange = plotRange;
+    
+    NSDecimal fromPoint = [self distanceAsDecimalFromDate: startDate toDate: fromDate];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: fromPoint
+                                                    length: CPTDecimalSubtract([self distanceAsDecimalFromDate: startDate toDate: toDate], fromPoint)];
+    
+    CPTXYAxisSet* axisSet = (id)turnoversGraph.axisSet;
+    
+    // Vertical range.
     int maxTurnoversCount = 0;
     
-    // Time intervals are specified in number of seconds on the x axis.
     for (NSUInteger i = 0; i < count; i++)
     {
         id y = [balanceCounts objectAtIndex: i];
@@ -1080,27 +1205,11 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
             maxTurnoversCount = [y floatValue];
     }
     
-    ShortDate* startDate = [self referenceDate];
-    int totalDays = (count > 0) ? [startDate daysToDate: [dates lastObject]] + 1: 0;
-    if (totalDays < 14) {
-        totalDays = 14;
-    };
+    // Ensure we have a value > 0 to have a pleasant plot, even without values.
+    if (maxTurnoversCount == 0) {
+        maxTurnoversCount = 1;
+    }
     
-    // Set the available plot space depending on the min, max and day values we found.
-    CPTXYPlotSpace* plotSpace = (id)turnoversGraph.defaultPlotSpace;
-    
-    // Horizontal range.
-    CPTPlotRange* plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
-                                                           length: CPTDecimalFromDouble(oneDay * totalDays)];
-    plotSpace.globalXRange = plotRange;
-    
-    NSDecimal fromPoint = [self secondsFromDate: fromDate];
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: fromPoint
-                                                    length: CPTDecimalSubtract([self secondsFromDate: toDate], fromPoint)];
-    
-    CPTXYAxisSet* axisSet = (id)turnoversGraph.axisSet;
-    
-    // Vertical range.
     NSDecimalNumber* roundedMax = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(maxTurnoversCount)] roundToUpperOuter];
     plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0) length: [roundedMax decimalValue]];
     plotSpace.globalYRange = plotRange;
@@ -1119,18 +1228,19 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 -(void)updateSelectionGraph
 {
-    // Time intervals are specified in number of seconds on the x axis.
     ShortDate* startDate = [self referenceDate];
-    int totalDays = ([dates count] > 0) ? [startDate daysToDate: [dates lastObject]] : 0;
-    if (totalDays < 14)
-        totalDays = 14;
+    int dateOffset = (groupingInterval == GroupByDays) ? 1 : 0;
+    int totalUnits = ([dates count] > 0) ? [self distanceFromDate: startDate toDate: [dates lastObject]] + dateOffset : 0;
+    if (totalUnits < [self majorTickCount]) {
+        totalUnits = [self majorTickCount];
+    };
     
     // Set the available plot space depending on the min, max and day values we found. Extend both range by a few precent for more appeal.
     CPTXYPlotSpace* plotSpace = (id)selectionGraph.defaultPlotSpace;
     
     // Horizontal range.
     CPTPlotRange* plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
-                                                           length: CPTDecimalFromDouble(oneDay * totalDays)];
+                                                           length: CPTDecimalFromDouble(totalUnits)];
     plotSpace.globalXRange = plotRange;
     plotSpace.xRange = plotRange;
     
@@ -1239,15 +1349,35 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
     
     NSString* infoText;
+    NSString* dateDescription;
+
+    switch (groupingInterval) {
+        case GroupByWeeks:
+            dateDescription = [date weekYearDescription];
+            break;
+        case GroupByMonths:
+            dateDescription = [date monthYearDescription];
+            break;
+        case GroupByQuarters:
+            dateDescription = [date quarterYearDescription];
+            break;
+        case GroupByYears:
+            dateDescription = [date yearDescription];
+            break;
+        default:
+            dateDescription = date.description;
+            break;
+    }
+    
     if (turnovers == 1) {
-        infoText = [NSString stringWithFormat: @"%@\n%@", date.description, NSLocalizedString(@"AP132", @"")];
+        infoText = [NSString stringWithFormat: @"%@\n%@", dateDescription, NSLocalizedString(@"AP132", @"")];
     } else {
-        infoText = [NSString stringWithFormat: @"%@\n%@", date.description, [NSString stringWithFormat: NSLocalizedString(@"AP133", @""), turnovers]];
+        infoText = [NSString stringWithFormat: @"%@\n%@", dateDescription, [NSString stringWithFormat: NSLocalizedString(@"AP133", @""), turnovers]];
     }
     dateInfoLayer.text = infoText;
     
     // Resize the info layer so that it fits its contents.
-    CGRect infoBounds;
+    CGRect infoBounds = infoLayer.bounds;
     infoBounds.size = [dateInfoLayer sizeThatFits];
     CGSize size = valueInfoLayer.hidden ? CGSizeMake(0, 0) : [valueInfoLayer sizeThatFits];
     if (size.width > infoBounds.size.width)
@@ -1428,8 +1558,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     }
 
     // Find closest date in our date points that is before the computed date value.
-    int days = floor(CPTDecimalFloatValue(dataPoint[0]) / oneDay);
-    ShortDate* date = [[dates objectAtIndex: 0] dateByAddingDays: days];
+    int units = round(CPTDecimalFloatValue(dataPoint[0]));
+    ShortDate* date = [self dateByAddingUnits: [dates objectAtIndex: 0] count: units];
     int index = [self findDateIndexForDate: date];
     ShortDate* dateAtIndex = [dates objectAtIndex: index];
     BOOL dateHit = NO;
@@ -1437,8 +1567,9 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     // The found index might not be one matching exactly the current date. In order to ease
     // usage we snap the indicator to the closest existing data point if it is within bar width distance.
     if (snap) {
-        dataPoint[0] = CPTDecimalFromFloat(oneDay * [[self referenceDate] daysToDate: dateAtIndex]);
-        CGPoint targetPoint = [plotSpace plotAreaViewPointForPlotPoint: dataPoint];
+        NSDecimal snapPoint[2] = {0, 0};
+        snapPoint[0] = [self distanceAsDecimalFromDate: self.referenceDate toDate: dateAtIndex];
+        CGPoint targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint];
         if (abs(targetPoint.x - actualLocation) <= barWidth) {
             actualLocation = targetPoint.x;
             date = dateAtIndex;
@@ -1447,8 +1578,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
             // The found index is not close enough. Try the next date point if there is one.
             if (index < [dates count] - 1) {
                 dateAtIndex = [dates objectAtIndex: index + 1];
-                dataPoint[0] = CPTDecimalFromFloat(oneDay * [[self referenceDate] daysToDate: dateAtIndex]);
-                targetPoint = [plotSpace plotAreaViewPointForPlotPoint: dataPoint];
+                snapPoint[0] = [self distanceAsDecimalFromDate: self.referenceDate toDate: dateAtIndex];
+                targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint];
                 if (abs(targetPoint.x - actualLocation) <= barWidth) {
                     actualLocation = targetPoint.x;
                     date = dateAtIndex;
@@ -1463,7 +1594,16 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         dateHit = YES;
     }
 
-    if (lastInfoDate == nil || [date compare: lastInfoDate] != NSOrderedSame)
+    // If there wasn't a date hit (i.e. the current position is at an actual value) then
+    // use the date left to the position (not rounded), so we show the unit properly til
+    // the next unit tick.
+    if (!dateHit) {
+        units = floor(CPTDecimalFloatValue(dataPoint[0]));
+        date = [self dateByAddingUnits: [dates objectAtIndex: 0] count: units];
+        index = [self findDateIndexForDate: date];
+    }
+        
+    if (lastInfoDate == nil || [date compare: lastInfoDate] != NSOrderedSame || dateHit)
     {
         [lastInfoDate release];
         lastInfoDate = [date retain];
@@ -1501,10 +1641,10 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
                                                                            blue: 67 / 255.0
                                                                           alpha: 1]];
     
-    NSDecimal fromPoint = [self secondsFromDate: fromDate];
+    NSDecimal fromPoint = [self distanceAsDecimalFromDate: self.referenceDate toDate: fromDate];
     selectionBand = [[CPTLimitBand limitBandWithRange:
                       [CPTPlotRange plotRangeWithLocation: fromPoint
-                                                   length: CPTDecimalSubtract([self secondsFromDate: toDate], fromPoint)]
+                                                   length: CPTDecimalSubtract([self distanceAsDecimalFromDate: self.referenceDate toDate: toDate], fromPoint)]
                                                  fill: bandFill] retain];
     [x addBackgroundLimitBand: selectionBand];
     selectionHostView.selector = selectionBand;
@@ -1515,14 +1655,12 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTXYPlotSpace* plotSpace = (id)mainGraph.defaultPlotSpace;
     
     NSDecimal fromPoint = plotSpace.xRange.location;
-    int days = CPTDecimalIntValue(CPTDecimalDivide(fromPoint, CPTDecimalFromDouble(oneDay)));
     [fromDate release];
-    fromDate = [[self.referenceDate dateByAddingDays: days] retain];
+    fromDate = [[self dateByAddingUnits: self.referenceDate count: CPTDecimalIntValue(fromPoint)] retain];
     
     NSDecimal toPoint = plotSpace.xRange.end;
-    days = CPTDecimalIntValue(CPTDecimalDivide(toPoint, CPTDecimalFromDouble(oneDay)));
     [toDate release];
-    toDate = [[self.referenceDate dateByAddingDays: days] retain];
+    toDate = [[self dateByAddingUnits: self.referenceDate count: CPTDecimalIntValue(toPoint)] retain];
 }
 
 /**
@@ -1551,7 +1689,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
             
             NSNumber* location = [parameters objectForKey: @"plotXLocation"];
             NSNumber* range = [parameters objectForKey: @"plotXRange"];
-            NSNumber* lowRange = [NSNumber numberWithDouble: oneDay * 14]; // Corresponds to the number of major ticks for the x-axis.
+            NSNumber* lowRange = [NSNumber numberWithInt: [self majorTickCount]];
             if ([range compare: lowRange] == NSOrderedAscending)
                 range = lowRange;
             
@@ -1644,7 +1782,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
     // This extra day is accompanied by duplication of the last value in our data (for scatterplots)
     // or nil (for bar plots).
-    return [dates count] + 1;
+    return [dates count] + ((groupingInterval == GroupByDays) ? 1 : 0);
 }
 
 - (NSNumber*)numberForPlot: (CPTPlot*)plot field: (NSUInteger)fieldEnum recordIndex: (NSUInteger)index
@@ -1654,12 +1792,12 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     {
         ShortDate* date = [dates objectAtIndex: endValue ? index - 1 : index];
         ShortDate* startDate = [self referenceDate];
-        int days = [startDate daysToDate: date];
+        int units = [self distanceFromDate: startDate toDate: date];
         if (endValue) {
-            days++;
+            units++;
         }
         
-        return [NSDecimalNumber numberWithDouble: oneDay * days];
+        return [NSNumber numberWithInt: units];
     }
     
     if ([plot graph] == turnoversGraph)
@@ -1716,6 +1854,9 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     return (id)[NSNull null]; // Don't show any label
 }
 
+#pragma mark -
+#pragma mark General graph routines
+
 - (void)updateValues
 {
     maxValue = [NSDecimalNumber zero];
@@ -1739,35 +1880,38 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         fromDate = [date retain];
     }
     
-    date = [[dates lastObject] dateByAddingDays: 1];
+    date = [[dates lastObject] dateByAddingUnits: (groupingInterval == GroupByDays) ? 1 : 0 byUnit: NSDayCalendarUnit];
     if (toDate == nil || [date compare: toDate] == NSOrderedAscending) {
         [toDate release];
         toDate = [date retain];
     }
 
-    // Ensure a minimum of 14 days for display.
-    int days = [fromDate daysToDate: toDate];
-    if (days < 14) {
+    // Ensure a minimum tick count for display.
+    int units = [self distanceFromDate: fromDate toDate: toDate];
+    if (units < [self majorTickCount]) {
         [toDate release];
-        toDate = [[fromDate dateByAddingDays: 14] retain];
+        toDate = [[self dateByAddingUnits: fromDate count: [self majorTickCount]] retain];
     }
 }
 
 - (void)clearGraphs
 {
-    [dates release];
-    dates = nil;
-    [balances release];
-    balances = nil;
-    [balanceCounts release];
-    balanceCounts = nil;
-    
     NSArray* plots = mainGraph.allPlots;
     for (CPTPlot* plot in plots)
         [mainGraph removePlot: plot];
     plots = turnoversGraph.allPlots;
     for (CPTPlot* plot in plots)
         [turnoversGraph removePlot: plot];
+    plots = selectionGraph.allPlots;
+    for (CPTPlot* plot in plots)
+        [selectionGraph removePlot: plot];
+    
+    mainGraph.defaultPlotSpace.allowsUserInteraction = NO;
+    turnoversGraph.defaultPlotSpace.allowsUserInteraction = NO;
+    selectionGraph.defaultPlotSpace.allowsUserInteraction = NO;
+
+    maxValue = [NSDecimalNumber zero];
+    minValue = [NSDecimalNumber zero];
 }
 
 -(Category*)currentSelection
@@ -1779,23 +1923,36 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     return [sel objectAtIndex: 0];
 }
 
-- (void)outlineViewSelectionDidChange: (NSNotification*)notification
+- (void)reloadData
 {
-    [self clearGraphs];
-    
+    [dates release];
+    dates = nil;
+    [balances release];
+    balances = nil;
+    [balanceCounts release];
+    balanceCounts = nil;
+
     Category* category = [self currentSelection];
     if (category == nil)
         return;
     
     if (category.isBankAccount)
     {
-        if ([category balanceHistoryToDates: &dates balances: &balances perDayCounts: &balanceCounts] == 0)
+        if ([category balanceHistoryToDates: &dates
+                                   balances: &balances
+                              balanceCounts: &balanceCounts
+                               withGrouping: groupingInterval] == 0) {
             return;
+        }
     }
     else
     {
-        if ([category categoryHistoryToDates: &dates balances: &balances perDayCounts: &balanceCounts] == 0)
+        if ([category categoryHistoryToDates: &dates
+                                    balances: &balances
+                               balanceCounts: &balanceCounts
+                                withGrouping: groupingInterval] == 0) {
             return;
+        }
     }
     
     [dates retain];
@@ -1803,6 +1960,20 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [balanceCounts retain];
     
     [self updateValues];
+}
+
+- (void)outlineViewSelectionDidChange: (NSNotification*)notification
+{
+    [self clearGraphs];
+    [self reloadData];
+    
+    if ([dates count] > 0) {
+        mainGraph.defaultPlotSpace.allowsUserInteraction = YES;
+        turnoversGraph.defaultPlotSpace.allowsUserInteraction = YES;
+        selectionGraph.defaultPlotSpace.allowsUserInteraction = YES;
+    } else {
+        maxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(100)];
+    }
 
     [self setupMainPlots];
     [self setupTurnoversPlot];
@@ -1810,6 +1981,26 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [self updateSelectionDisplay];
     
     [[mainHostView window] makeFirstResponder: mainHostView];
+}
+
+- (IBAction)setGrouping: (id)sender
+{
+    groupingInterval = [sender intValue];
+    [self reloadData];
+    
+    if ([dates count] == 0) {
+        [self clearGraphs];
+        maxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(100)];
+    } else {
+        mainGraph.defaultPlotSpace.allowsUserInteraction = YES;
+        turnoversGraph.defaultPlotSpace.allowsUserInteraction = YES;
+        selectionGraph.defaultPlotSpace.allowsUserInteraction = YES;
+    }
+    
+    [self updateMainGraph];
+    [self updateTurnoversGraph];
+    [self updateSelectionGraph];
+    [self updateSelectionDisplay];
 }
 
 #pragma mark -
@@ -1876,16 +2067,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [cell setValues: [cat catSum] currency: cat.currency unread: 0 selected: itemIsSelected root:itemIsRoot ];
 }
 
--(NSString*)autosaveNameForTimeSlicer: (TimeSliceManager*)tsm
-{
-    return @"AccRepTimeSlice";
-}
-
--(void)timeSliceManager: (TimeSliceManager*)tsm changedIntervalFrom: (ShortDate*)from to: (ShortDate*)to
-{
-}
-
-
 - (id)outlineView:(NSOutlineView *)outlineView persistentObjectForItem:(id)item 
 {
     return [outlineView persistentObjectForItem: item ];
@@ -1898,7 +2079,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 -(void)terminate
 {
-    [accountsView saveLayout ];
+    [accountsView saveLayout];
 }
 
 @end

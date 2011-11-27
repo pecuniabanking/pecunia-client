@@ -17,11 +17,24 @@ typedef enum {
     cat_all
 } CatValueType;
 
+// TODO: deprecated.
 typedef enum {
     cat_histtype_month,
     cat_histtype_quarter,
     cat_histtype_year
 } CatHistoryType;
+
+/**
+ * Specifies the grouping of values when collecting statistical data, that is, which time frame
+ * balance values should be coalesced in.
+ */
+typedef enum {
+    GroupByDays,
+    GroupByWeeks,
+    GroupByMonths,
+    GroupByQuarters,
+    GroupByYears
+} GroupingInterval;
 
 @class ShortDate;
 @class CategoryReportingNode;
@@ -67,9 +80,15 @@ typedef enum {
 -(NSMutableSet*)children;
 -(NSSet*)allChildren;
 -(NSSet*)siblings;
--(NSUInteger)balanceHistoryToDates: (NSArray**)dates balances: (NSArray**)balances perDayCounts: (NSArray**)counts;
--(CategoryReportingNode*)categoryHistoryWithType:(CatHistoryType)histType;
--(NSUInteger)categoryHistoryToDates: (NSArray**)dates balances: (NSArray**)balances perDayCounts: (NSArray**)counts;
+-(NSUInteger)balanceHistoryToDates: (NSArray**)dates
+                          balances: (NSArray**)balances
+                     balanceCounts: (NSArray**)counts
+                      withGrouping: (GroupingInterval)interval;
+-(CategoryReportingNode*)categoryHistoryWithType:(CatHistoryType)histType __attribute__((deprecated));
+-(NSUInteger)categoryHistoryToDates: (NSArray**)dates
+                           balances: (NSArray**)balances
+                      balanceCounts: (NSArray**)counts
+                       withGrouping: (GroupingInterval)interval;
 -(NSDecimalNumber*)valuesOfType: (CatValueType)type from: (ShortDate*)fromDate to: (ShortDate*)toDate;
 -(NSArray*)statementsFrom: (ShortDate*)fromDate to: (ShortDate*)toDate withChildren: (BOOL)c;
 -(NSMutableSet*)combinedStatements;

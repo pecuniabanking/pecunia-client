@@ -10,26 +10,29 @@
 
 
 @interface ShortDate : NSObject {
-	unsigned			year;
-	unsigned			month;
-	unsigned			day;
+    NSDateComponents* components; // The date split into components.
 }
 
 @property (nonatomic, assign, readonly) unsigned year;
 @property (nonatomic, assign, readonly) unsigned month;
 @property (nonatomic, assign, readonly) unsigned day;
 @property (nonatomic, assign, readonly) unsigned quarter;
+@property (nonatomic, assign, readonly) unsigned week;
 
 - (id)initWithDate: (NSDate*)date;
 - (NSComparisonResult)compare: (ShortDate*)date;
 - (NSDate*)lowDate;
 - (NSDate*)highDate;
+
 - (BOOL)isBetween: (ShortDate*)fromDate and:(ShortDate*)toDate;
-- (int)daysToDate: (ShortDate*)toDate;
-- (int)monthsToDate: (ShortDate*)toDate;
-- (ShortDate*)dateByAddingDays: (int)days;
-- (ShortDate*)dateByAddingMonths: (int)months;
-- (ShortDate*)dateByAddingYears: (int)years;
+- (int)daysToDate: (ShortDate*)toDate __attribute__((deprecated));
+- (int)monthsToDate: (ShortDate*)toDate __attribute__((deprecated));
+- (int)unitsToDate: (ShortDate*)toDate byUnit: (int)calendarUnit;
+
+- (ShortDate*)dateByAddingDays: (int)days __attribute__((deprecated));
+- (ShortDate*)dateByAddingMonths: (int)months __attribute__((deprecated));
+- (ShortDate*)dateByAddingYears: (int)years __attribute__((deprecated));
+- (ShortDate*)dateByAddingUnits: (int)units byUnit: (int)calendarUnit;
 
 - (BOOL)isEqual: (ShortDate*)date;
 - (NSUInteger)hash;
@@ -39,19 +42,22 @@
 - (NSString*)monthYearDescription;
 - (NSString*)quarterYearDescription;
 - (NSString*)yearDescription;
+- (NSString*)weekYearDescription;
 
--(ShortDate*)firstDayInYear;
--(ShortDate*)lastDayInYear;
--(ShortDate*)firstDayInMonth;
--(ShortDate*)lastDayInMonth;
--(ShortDate*)firstDayInQuarter;
--(ShortDate*)lastDayInQuarter;
+- (ShortDate*)firstDayInYear;
+- (ShortDate*)lastDayInYear;
+- (ShortDate*)firstDayInMonth;
+- (ShortDate*)lastDayInMonth;
+- (ShortDate*)firstDayInQuarter;
+- (ShortDate*)lastDayInQuarter;
+- (ShortDate*)firstDayInWeek;
+- (ShortDate*)lastDayInWeek;
 
-+(ShortDate*)dateWithDate: (NSDate*)date;
-+(ShortDate*)currentDate;
-+(ShortDate*)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d;
-+(ShortDate*)distantFuture;
-+(ShortDate*)distantPast;
-+(NSCalendar*)calendar;
++ (ShortDate*)dateWithDate: (NSDate*)date;
++ (ShortDate*)currentDate;
++ (ShortDate*)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d;
++ (ShortDate*)distantFuture;
++ (ShortDate*)distantPast;
++ (NSCalendar*)calendar;
 
 @end

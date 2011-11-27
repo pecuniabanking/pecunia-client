@@ -248,10 +248,10 @@ BOOL	updateSent = NO;
     NSString *n = [self primitiveValueForKey:@"name"];
     [self didAccessValueForKey:@"name"];
     if(self.parent == nil) {
-        if([n isEqualToString: @"++bankroot" ]) return NSLocalizedString(@"banking_root", @"Bank Accounts");
-        if([n isEqualToString: @"++catroot" ]) return NSLocalizedString(@"category_root", @"Categories");
+        if([n isEqualToString: @"++bankroot" ]) return NSLocalizedString(@"banking_root", @"");
+        if([n isEqualToString: @"++catroot" ]) return NSLocalizedString(@"category_root", @"");
     }
-    if([n isEqualToString: @"++nassroot" ]) return NSLocalizedString(@"nass_root", @"Not assigned");
+    if([n isEqualToString: @"++nassroot" ]) return NSLocalizedString(@"nass_root", @"");
     return n;
 }
 
@@ -382,7 +382,10 @@ BOOL	updateSent = NO;
  * This is usually only meaningful for bank accounts.
  * The resulting arrays are sorted by ascending date.
  */
--(NSUInteger)balanceHistoryToDates: (NSArray**)dates balances: (NSArray**)balances perDayCounts: (NSArray**)counts
+-(NSUInteger)balanceHistoryToDates: (NSArray**)dates
+                          balances: (NSArray**)balances
+                     balanceCounts: (NSArray**)counts
+                      withGrouping: (GroupingInterval)interval
 {
     int i;
     NSArray* stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
@@ -401,6 +404,24 @@ BOOL	updateSent = NO;
         {
             StatCatAssignment* assignment = [sortedStats objectAtIndex: i];
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
+            
+            switch (interval) {
+                case GroupByWeeks:
+                    date = [date firstDayInWeek];
+                    break;
+                case GroupByMonths:
+                    date = [date firstDayInMonth];
+                    break;
+                case GroupByQuarters:
+                    date = [date firstDayInQuarter];
+                    break;
+                case GroupByYears:
+                    date = [date firstDayInYear];
+                    break;
+                default:
+                    break;
+            }            
+
             if ([lastDate compare: date] != NSOrderedSame)
             {
                 [dateArray addObject: lastDate];
@@ -497,7 +518,10 @@ BOOL	updateSent = NO;
 /**
  * Collects a full history of turnover values over time, including all sub categories.
  */
--(NSUInteger)categoryHistoryToDates: (NSArray**)dates balances: (NSArray**)balances perDayCounts: (NSArray**)counts
+-(NSUInteger)categoryHistoryToDates: (NSArray**)dates
+                           balances: (NSArray**)balances
+                      balanceCounts: (NSArray**)counts
+                       withGrouping: (GroupingInterval)interval
 {
     int i;
     NSArray* stats = [[self allStatements] allObjects];
@@ -516,6 +540,24 @@ BOOL	updateSent = NO;
         {
             StatCatAssignment* assignment = [sortedStats objectAtIndex: i];
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
+            
+            switch (interval) {
+                case GroupByWeeks:
+                    date = [date firstDayInWeek];
+                    break;
+                case GroupByMonths:
+                    date = [date firstDayInMonth];
+                    break;
+                case GroupByQuarters:
+                    date = [date firstDayInQuarter];
+                    break;
+                case GroupByYears:
+                    date = [date firstDayInYear];
+                    break;
+                default:
+                    break;
+            }            
+
             if ([lastDate compare: date] != NSOrderedSame)
             {
                 [dateArray addObject: lastDate];

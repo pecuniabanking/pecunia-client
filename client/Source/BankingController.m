@@ -86,6 +86,7 @@ static BankingController	*con;
     statementsBound = YES;
     mainTabItems = [[NSMutableDictionary dictionaryWithCapacity:10 ] retain ];
     
+    // TODO: make lower limit configurable?
     [Category setCatReportFrom: [ShortDate dateWithYear: 2009 month:1 day:1 ] to: [ShortDate distantFuture ] ];
     
     // load context & model

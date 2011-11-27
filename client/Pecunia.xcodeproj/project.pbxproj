@@ -40,6 +40,7 @@
 		27C7B2F61475466600BD4F56 /* ColumnLayoutCorePlotLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */; };
 		27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
 		27C7B49214755AE200BD4F56 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
+		27C7B506147FC50300278131 /* PecuniaPlotTimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7B505147FC50300278131 /* PecuniaPlotTimeFormatter.m */; };
 		27D240EA145302A900EDC8C7 /* done.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27D240E9145302A900EDC8C7 /* done.mp3 */; };
 		27E5534D146ED844001DE9BE /* Accounts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */; };
 		27E79FCB145AFCB3007C0AE3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724DAED14012A0F00B0FE15 /* QuartzCore.framework */; };
@@ -313,6 +314,8 @@
 		27C78795143623080095F1DA /* ProgressWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		27C7B2F41475466600BD4F56 /* ColumnLayoutCorePlotLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnLayoutCorePlotLayer.h; sourceTree = "<group>"; };
 		27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnLayoutCorePlotLayer.m; sourceTree = "<group>"; tabWidth = 4; };
+		27C7B504147FC50300278131 /* PecuniaPlotTimeFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaPlotTimeFormatter.h; sourceTree = "<group>"; tabWidth = 4; };
+		27C7B505147FC50300278131 /* PecuniaPlotTimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaPlotTimeFormatter.m; sourceTree = "<group>"; tabWidth = 4; };
 		27D240E9145302A900EDC8C7 /* done.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = done.mp3; path = Sounds/done.mp3; sourceTree = "<group>"; };
 		27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 1.xcdatamodel"; sourceTree = "<group>"; };
 		27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -696,6 +699,77 @@
 				27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */,
 			);
 			name = "Statistics + Graphs";
+			sourceTree = "<group>";
+		};
+		27C7B501147FC41900278131 /* Drawing */ = {
+			isa = PBXGroup;
+			children = (
+				B15900BD129304B30053CB9C /* CategoryPeriodsView.h */,
+				B15900BE129304B30053CB9C /* CategoryPeriodsView.m */,
+				274C09FB1440BC9800A80F0E /* RoundedOuterShadowView.h */,
+				274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */,
+				B18978850ED0B2E800D20503 /* StatementDetails.h */,
+				B18978860ED0B2E800D20503 /* StatementDetails.m */,
+				274DE2B213F992A50009EB77 /* MainBackgroundView.h */,
+				274DE2B313F992A50009EB77 /* MainBackgroundView.m */,
+				2724DC32140155F000B0FE15 /* RoundedInnerShadowView.h */,
+				2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */,
+				27150D9E140ABDAC000841E2 /* RoundedSidebar.h */,
+				27150D9F140ABDAC000841E2 /* RoundedSidebar.m */,
+				27955AFD140C0603008369C9 /* GraphicsAdditions.h */,
+				27955AFE140C0603008369C9 /* GraphicsAdditions.m */,
+			);
+			name = Drawing;
+			sourceTree = "<group>";
+		};
+		27C7B502147FC44100278131 /* Controls and Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				B1EFA8010D5CE7BA007FD9C3 /* CCDLayoutAdditions.h */,
+				B1EFA8020D5CE7BA007FD9C3 /* CCDLayoutAdditions.m */,
+				B14D6DED0DEC9C9100C2B220 /* CategoryView.h */,
+				B14D6DEE0DEC9C9100C2B220 /* CategoryView.m */,
+				B138AE73139582E00026BEE2 /* MCEMTransparentTableView.h */,
+				B138AE74139582E00026BEE2 /* MCEMTransparentTableView.m */,
+				B138AE9D1396DD820026BEE2 /* MCEMSplitView.h */,
+				B138AE9E1396DD820026BEE2 /* MCEMSplitView.m */,
+				B197C3E213C3A28F0025F137 /* MCEMDecimalNumberAdditions.h */,
+				B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */,
+				27FD58C91437569B0074B378 /* StatementsListview.h */,
+				27FD58CA1437569B0074B378 /* StatementsListview.m */,
+				275C07ED143877C800D97415 /* StatementsListviewCell.h */,
+				275C07EE143877C800D97415 /* StatementsListviewCell.m */,
+				B138AC3A13918EB50026BEE2 /* ImageAndTextCell.h */,
+				B138AC3B13918EB50026BEE2 /* ImageAndTextCell.m */,
+				B138B258139D52690026BEE2 /* DateAndValutaCell.h */,
+				B138B259139D52690026BEE2 /* DateAndValutaCell.m */,
+				B138B314139D6B390026BEE2 /* AmountCell.h */,
+				B138B315139D6B390026BEE2 /* AmountCell.m */,
+				B1D6C9EC0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.h */,
+				B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */,
+				B132F8CF0F93DC0D00263F3B /* MCEMTreeController.h */,
+				B132F8D00F93DC0D00263F3B /* MCEMTreeController.m */,
+				B152B5121025FE2400EE06D6 /* MCEMBorderedView.h */,
+				B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */,
+				B136AAD60FCF1C4A007A643F /* MCEMTableView.h */,
+				B136AAD70FCF1C4A007A643F /* MCEMTableView.m */,
+				B136AB340FD077DD007A643F /* MCEMPieChartView.h */,
+				B136AB350FD077DD007A643F /* MCEMPieChartView.m */,
+			);
+			name = "Controls and Layouts";
+			sourceTree = "<group>";
+		};
+		27C7B503147FC47400278131 /* Numbers and Dates */ = {
+			isa = PBXGroup;
+			children = (
+				2788C8B81455C3CE00225939 /* CurrencyValueTransformer.h */,
+				2788C8B91455C3CE00225939 /* CurrencyValueTransformer.m */,
+				27BF2C79145C5B180015B491 /* NumberExtensions.h */,
+				27BF2C7A145C5B180015B491 /* NumberExtensions.m */,
+				27C7B504147FC50300278131 /* PecuniaPlotTimeFormatter.h */,
+				27C7B505147FC50300278131 /* PecuniaPlotTimeFormatter.m */,
+			);
+			name = "Numbers and Dates";
 			sourceTree = "<group>";
 		};
 		27D240E71453026400EDC8C7 /* Sounds */ = {
@@ -1120,56 +1194,11 @@
 		B1FE0DC8106583A3005B3800 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				274C09FB1440BC9800A80F0E /* RoundedOuterShadowView.h */,
-				274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */,
-				275C07ED143877C800D97415 /* StatementsListviewCell.h */,
-				275C07EE143877C800D97415 /* StatementsListviewCell.m */,
-				B138AC3A13918EB50026BEE2 /* ImageAndTextCell.h */,
-				B138AC3B13918EB50026BEE2 /* ImageAndTextCell.m */,
-				B138B258139D52690026BEE2 /* DateAndValutaCell.h */,
-				B138B259139D52690026BEE2 /* DateAndValutaCell.m */,
-				B138B314139D6B390026BEE2 /* AmountCell.h */,
-				B138B315139D6B390026BEE2 /* AmountCell.m */,
-				B1D6C9EC0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.h */,
-				B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */,
-				B132F8CF0F93DC0D00263F3B /* MCEMTreeController.h */,
-				B132F8D00F93DC0D00263F3B /* MCEMTreeController.m */,
-				B152B5121025FE2400EE06D6 /* MCEMBorderedView.h */,
-				B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */,
-				B136AAD60FCF1C4A007A643F /* MCEMTableView.h */,
-				B136AAD70FCF1C4A007A643F /* MCEMTableView.m */,
-				B136AB340FD077DD007A643F /* MCEMPieChartView.h */,
-				B136AB350FD077DD007A643F /* MCEMPieChartView.m */,
-				B1EFA8010D5CE7BA007FD9C3 /* CCDLayoutAdditions.h */,
-				B1EFA8020D5CE7BA007FD9C3 /* CCDLayoutAdditions.m */,
-				B14D6DED0DEC9C9100C2B220 /* CategoryView.h */,
-				B14D6DEE0DEC9C9100C2B220 /* CategoryView.m */,
-				B18978850ED0B2E800D20503 /* StatementDetails.h */,
-				B18978860ED0B2E800D20503 /* StatementDetails.m */,
+				27C7B503147FC47400278131 /* Numbers and Dates */,
+				27C7B502147FC44100278131 /* Controls and Layouts */,
+				27C7B501147FC41900278131 /* Drawing */,
 				B14C6299115E00AA009324A6 /* MigrationManagerWorkaround.h */,
 				B14C629A115E00AA009324A6 /* MigrationManagerWorkaround.m */,
-				B15900BD129304B30053CB9C /* CategoryPeriodsView.h */,
-				B15900BE129304B30053CB9C /* CategoryPeriodsView.m */,
-				B138AE73139582E00026BEE2 /* MCEMTransparentTableView.h */,
-				B138AE74139582E00026BEE2 /* MCEMTransparentTableView.m */,
-				B138AE9D1396DD820026BEE2 /* MCEMSplitView.h */,
-				B138AE9E1396DD820026BEE2 /* MCEMSplitView.m */,
-				B197C3E213C3A28F0025F137 /* MCEMDecimalNumberAdditions.h */,
-				B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */,
-				274DE2B213F992A50009EB77 /* MainBackgroundView.h */,
-				274DE2B313F992A50009EB77 /* MainBackgroundView.m */,
-				2724DC32140155F000B0FE15 /* RoundedInnerShadowView.h */,
-				2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */,
-				27150D9E140ABDAC000841E2 /* RoundedSidebar.h */,
-				27150D9F140ABDAC000841E2 /* RoundedSidebar.m */,
-				27955AFD140C0603008369C9 /* GraphicsAdditions.h */,
-				27955AFE140C0603008369C9 /* GraphicsAdditions.m */,
-				27FD58C91437569B0074B378 /* StatementsListview.h */,
-				27FD58CA1437569B0074B378 /* StatementsListview.m */,
-				2788C8B81455C3CE00225939 /* CurrencyValueTransformer.h */,
-				2788C8B91455C3CE00225939 /* CurrencyValueTransformer.m */,
-				27BF2C79145C5B180015B491 /* NumberExtensions.h */,
-				27BF2C7A145C5B180015B491 /* NumberExtensions.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -1543,6 +1572,7 @@
 				27BF2C7B145C5B180015B491 /* NumberExtensions.m in Sources */,
 				27E5534D146ED844001DE9BE /* Accounts.xcdatamodeld in Sources */,
 				27C7B2F61475466600BD4F56 /* ColumnLayoutCorePlotLayer.m in Sources */,
+				27C7B506147FC50300278131 /* PecuniaPlotTimeFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

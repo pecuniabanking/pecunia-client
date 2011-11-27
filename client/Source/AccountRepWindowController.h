@@ -12,10 +12,10 @@
 #import "MainTabViewItem.h"
 #import "ColumnLayoutCorePlotLayer.h"
 
-@class SM2DGraphView;
+#import "Category.h"
+
 @class Category;
 @class ShortDate;
-@class TimeSliceManager;
 
 @interface PecuinaGraphHost : CPTGraphHostingView
 {
@@ -35,20 +35,21 @@
 
 @interface AccountRepWindowController : NSObject <MainTabViewItem, CPTScatterPlotDataSource, CPTPlotSpaceDelegate, CPTPlotDataSource, CPTBarPlotDelegate>
 {
-    IBOutlet NSTreeController	*accountsController;
-	IBOutlet NSOutlineView      *accountsView;
-	IBOutlet NSSplitView		*splitView;
-	IBOutlet NSView				*mainView;
-	IBOutlet NSView				*printView;
+    IBOutlet NSTreeController* accountsController;
+	IBOutlet NSOutlineView* accountsView;
+	IBOutlet NSSplitView* splitView;
+	IBOutlet NSView* mainView;
+	IBOutlet NSView* printView;
 
-	NSManagedObjectContext		*managedObjectContext;
-	
-    // New graph
-    IBOutlet PecuinaGraphHost *mainHostView;
-    IBOutlet PecuinaGraphHost *turnoversHostView;
-    IBOutlet PecuinaSelectionGraphHost *selectionHostView;
+    IBOutlet PecuinaGraphHost* mainHostView;
+    IBOutlet PecuinaGraphHost* turnoversHostView;
+    IBOutlet PecuinaSelectionGraphHost* selectionHostView;
+
+    IBOutlet NSSlider* groupingSlider;
     
     @private
+	NSManagedObjectContext		*managedObjectContext;
+	
 	CPTXYGraph* mainGraph;
     CPTXYGraph* turnoversGraph;
     CPTXYGraph* selectionGraph;
@@ -72,15 +73,17 @@
     CGFloat barWidth;
     NSDecimalNumber* minValue;            // The minimum value of the currently selected category.
     NSDecimalNumber* maxValue;            // Ditto for maximum.
+    
+    GroupingInterval groupingInterval;
 }
 
 @property (nonatomic, retain) ShortDate *fromDate;
 @property (nonatomic, retain) ShortDate *toDate;
 
 @property (nonatomic, readwrite) CGFloat barWidth;
+@property (nonatomic, readwrite) GroupingInterval groupingInterval;
 
-//- (void)prepare;
-//- (void)terminate;
+- (IBAction)setGrouping: (id)sender;
 
 - (void)updateValues;
 - (void)clearGraphs;
@@ -100,6 +103,8 @@
 - (void)updateTurnoversGraph;
 - (void)updateSelectionGraph;
 - (void)updateSelectionDisplay;
+
+- (int)majorTickCount;
 
 @end
 
