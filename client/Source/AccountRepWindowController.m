@@ -996,7 +996,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 }
 
 /**
- * Determines the amount of major ticks, depending on grouping interval.
+ * Determines the amount of major ticks, depending on the grouping interval.
  */
 - (int)majorTickCount
 {
@@ -1221,7 +1221,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     float interval = [self intervalFromRange: roundedMax];
     y.majorIntervalLength = CPTDecimalFromFloat(interval);
-    y.minorTicksPerInterval = [self minorTicksFromInterval: interval];
+    y.minorTicksPerInterval = 0;
     
     [turnoversGraph reloadData];
 }
@@ -1873,24 +1873,41 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         }
     }
 
-    // Ensure the stored time range is not larger than our existing data.
-    ShortDate* date = [dates objectAtIndex: 0];
-    if (fromDate == nil || [date compare: fromDate] == NSOrderedDescending) {
-        [fromDate release];
-        fromDate = [date retain];
-    }
-    
-    date = [[dates lastObject] dateByAddingUnits: (groupingInterval == GroupByDays) ? 1 : 0 byUnit: NSDayCalendarUnit];
-    if (toDate == nil || [date compare: toDate] == NSOrderedAscending) {
-        [toDate release];
-        toDate = [date retain];
-    }
+    // Update the selected range so that its length corresponds to the minimum length
+    // and it doesn't start before the first date in the date array. It might go beyond the
+    // available data, which is handled elsewhere.
 
-    // Ensure a minimum tick count for display.
+    // First check the selection length.
     int units = [self distanceFromDate: fromDate toDate: toDate];
     if (units < [self majorTickCount]) {
         [toDate release];
         toDate = [[self dateByAddingUnits: fromDate count: [self majorTickCount]] retain];
+    }
+
+    // Now see if the new toDate goes beyond the available data. Try fixing it (if so)
+    // by moving the selected range closer to the beginning.
+    ShortDate* date = [[dates lastObject] dateByAddingUnits: (groupingInterval == GroupByDays) ? 1 : 0 byUnit: NSDayCalendarUnit];
+    if (toDate == nil || [date compare: toDate] == NSOrderedAscending) {
+        units = [self distanceFromDate: toDate toDate: date];
+        [toDate release];
+        toDate = [date retain];
+        
+        date = [self dateByAddingUnits: fromDate count: units];
+        [fromDate release];
+        fromDate = [date retain];
+    }
+
+    // Finaly ensure we do not begin before our first data entry. Move the selection range
+    // accordingly, accepting that this might move the end point beyond the last data entry.
+    date = [dates objectAtIndex: 0];
+    if (fromDate == nil || [date compare: fromDate] == NSOrderedDescending) {
+        units = [self distanceFromDate: fromDate toDate: date];
+        [fromDate release];
+        fromDate = [date retain];
+
+        date = [self dateByAddingUnits: toDate count: units];
+        [toDate release];
+        toDate = [date retain];
     }
 }
 
