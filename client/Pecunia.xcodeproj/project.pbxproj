@@ -171,7 +171,6 @@
 		B1AA640C140C074E00ADE1D0 /* ImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA640B140C074E00ADE1D0 /* ImportController.m */; };
 		B1AA640E140C07E600ADE1D0 /* ImportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */; };
 		B1AB52290DD4F30900327122 /* log.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1AB52280DD4F30900327122 /* log.icns */; };
-		B1AFA78E129463F100B115A7 /* CategoryHistory.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA78D129463F100B115A7 /* CategoryHistory.xib */; };
 		B1AFA837129479BA00B115A7 /* CategoryRep.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA836129479BA00B115A7 /* CategoryRep.xib */; };
 		B1AFA8811295C5D800B115A7 /* AccountRep.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA8801295C5D800B115A7 /* AccountRep.xib */; };
 		B1AFA9361299C15900B115A7 /* StandingOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFA9351299C15900B115A7 /* StandingOrder.m */; };
@@ -534,7 +533,6 @@
 		B1AA640B140C074E00ADE1D0 /* ImportController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ImportController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportWindow.xib; sourceTree = "<group>"; };
 		B1AB52280DD4F30900327122 /* log.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = log.icns; sourceTree = "<group>"; };
-		B1AFA78D129463F100B115A7 /* CategoryHistory.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryHistory.xib; sourceTree = "<group>"; };
 		B1AFA836129479BA00B115A7 /* CategoryRep.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryRep.xib; sourceTree = "<group>"; };
 		B1AFA8801295C5D800B115A7 /* AccountRep.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountRep.xib; sourceTree = "<group>"; };
 		B1AFA9341299C15900B115A7 /* StandingOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrder.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -810,7 +808,6 @@
 				B1D44FC91478407D008DD256 /* MainMenu.xib */,
 				B1AFA8801295C5D800B115A7 /* AccountRep.xib */,
 				B14C6002114848E1009324A6 /* BankStatementController.xib */,
-				B1AFA78D129463F100B115A7 /* CategoryHistory.xib */,
 				B14587A11289DCB700848683 /* CategoryPeriods.xib */,
 				B1AFA836129479BA00B115A7 /* CategoryRep.xib */,
 				B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */,
@@ -1387,7 +1384,6 @@
 				B1FB6611124FC9E300C54A0E /* TransferTemplates.xib in Resources */,
 				B1FB6915125D0A5500C54A0E /* edit16.png in Resources */,
 				B14587A21289DCB700848683 /* CategoryPeriods.xib in Resources */,
-				B1AFA78E129463F100B115A7 /* CategoryHistory.xib in Resources */,
 				B1AFA837129479BA00B115A7 /* CategoryRep.xib in Resources */,
 				B1AFA8811295C5D800B115A7 /* AccountRep.xib in Resources */,
 				B1AFA9F7129EEA3900B115A7 /* Orders.xib in Resources */,

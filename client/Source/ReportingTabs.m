@@ -15,7 +15,6 @@
 
 
 #define _catPeriodsIdentifier @"categoryPeriods"
-#define _catHistoryIdentifier @"categoryHistory"
 #define _catRepIdentifier @"categoryRep"
 #define _accountRepIdentifier @"accountRep"
 #define _standingOrderTabIdentifier @"standingOrders"
@@ -43,26 +42,6 @@
 	}
 	[self adjustSearchField ];
 }
-
--(IBAction)catHistoryView: (id)sender;
-{
-	int idx = [ mainTabView indexOfTabViewItemWithIdentifier:_catHistoryIdentifier ];
-	if (idx == NSNotFound) {
-		CategoryHistWindowController *controller = [[CategoryHistWindowController alloc ] init ];
-		if([NSBundle loadNibNamed:@"CategoryHistory" owner:controller ]) {
-			//		[controller prepare ];
-			NSTabViewItem *item = [[NSTabViewItem alloc ] initWithIdentifier:_catHistoryIdentifier ];
-			[item setView:[controller mainView ] ];
-			[mainTabView addTabViewItem:item ];
-			[mainTabView selectTabViewItem:item ];
-			[mainTabItems setObject:controller forKey: _catHistoryIdentifier ];
-		}
-	} else {
-		[mainTabView selectTabViewItemAtIndex:idx ];
-	}
-	[self adjustSearchField ];
-}
-
 
 -(IBAction)categoryRep: (id)sender
 {

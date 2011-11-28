@@ -13,7 +13,6 @@
 
 -(IBAction)catPeriodView: (id)sender;
 -(IBAction)categoryRep: (id)sender;
--(IBAction)catHistoryView: (id)sender;
 -(IBAction)accountsRep: (id)sender;
 -(IBAction)standingOrders: (id)sender;
 

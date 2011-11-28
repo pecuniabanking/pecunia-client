@@ -1202,12 +1202,9 @@ static BankingController	*con;
             [self editRules: nil];
             break;
         case 5:
-            [self catHistoryView: nil];
-            break;
-        case 6:
             [self categoryRep: nil];
             break;
-        case 7:
+        case 6:
             [self catPeriodView: nil];
             break;
     }

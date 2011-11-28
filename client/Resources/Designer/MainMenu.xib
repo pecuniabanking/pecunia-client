@@ -102,9 +102,11 @@
               <string key="NSToolbarItemPaletteLabel">Suche</string>
               <nil key="NSToolbarItemToolTip"/>
               <object class="NSSearchField" key="NSToolbarItemView" id="12448498">
-                <nil key="NSNextResponder"/>
+                <reference key="NSNextResponder"/>
                 <int key="NSvFlags">268</int>
                 <string key="NSFrame">{{0, 14}, {181, 22}}</string>
+                <reference key="NSSuperview"/>
+                <reference key="NSWindow"/>
                 <int key="NSTag">100</int>
                 <bool key="NSEnabled">YES</bool>
                 <object class="NSSearchFieldCell" key="NSCell" id="509185536">
@@ -228,28 +230,6 @@
               <bool key="NSToolbarIsUserRemovable">YES</bool>
               <int key="NSToolbarItemVisibilityPriority">0</int>
             </object>
-            <object class="NSToolbarItem" key="8CEEBC96-C871-4A8B-B4D0-25C54919C6EF" id="51926160">
-              <object class="NSMutableString" key="NSToolbarItemIdentifier">
-                <characters key="NS.bytes">8CEEBC96-C871-4A8B-B4D0-25C54919C6EF</characters>
-              </object>
-              <string key="NSToolbarItemLabel">Kategorieverlauf</string>
-              <string key="NSToolbarItemPaletteLabel">Kategorieverlauf</string>
-              <string key="NSToolbarItemToolTip"/>
-              <nil key="NSToolbarItemView"/>
-              <object class="NSCustomResource" key="NSToolbarItemImage">
-                <string key="NSClassName">NSImage</string>
-                <string key="NSResourceName">accrep3</string>
-              </object>
-              <nil key="NSToolbarItemTarget"/>
-              <nil key="NSToolbarItemAction"/>
-              <string key="NSToolbarItemMinSize">{0, 0}</string>
-              <string key="NSToolbarItemMaxSize">{0, 0}</string>
-              <bool key="NSToolbarItemEnabled">YES</bool>
-              <bool key="NSToolbarItemAutovalidates">YES</bool>
-              <int key="NSToolbarItemTag">60</int>
-              <bool key="NSToolbarIsUserRemovable">YES</bool>
-              <int key="NSToolbarItemVisibilityPriority">0</int>
-            </object>
             <object class="NSToolbarItem" key="B8E1FA8F-28F0-4D0E-92E2-32F1AF6C9084" id="201145095">
               <object class="NSMutableString" key="NSToolbarItemIdentifier">
                 <characters key="NS.bytes">B8E1FA8F-28F0-4D0E-92E2-32F1AF6C9084</characters>
@@ -346,9 +326,11 @@
               <string key="NSToolbarItemPaletteLabel">Custom View</string>
               <nil key="NSToolbarItemToolTip"/>
               <object class="NSSegmentedControl" key="NSToolbarItemView" id="976916531">
-                <nil key="NSNextResponder"/>
+                <reference key="NSNextResponder"/>
                 <int key="NSvFlags">268</int>
-                <string key="NSFrame">{{0, 14}, {697, 25}}</string>
+                <string key="NSFrame">{{0, 14}, {631, 25}}</string>
+                <reference key="NSSuperview"/>
+                <reference key="NSWindow"/>
                 <int key="NSViewLayerContentsRedrawPolicy">2</int>
                 <bool key="NSEnabled">YES</bool>
                 <object class="NSSegmentedCell" key="NSCell" id="838201828">
@@ -381,11 +363,6 @@
                     <object class="NSSegmentItem">
                       <string key="NSSegmentItemLabel">Kategorien</string>
                       <string key="NSSegmentItemTooltip">Kategorien verwalten und automatische Zuordnungen definieren</string>
-                      <int key="NSSegmentItemImageScaling">0</int>
-                    </object>
-                    <object class="NSSegmentItem">
-                      <string key="NSSegmentItemLabel">Verlauf</string>
-                      <string key="NSSegmentItemTooltip">Grafische Übersicht der Veränderungen in den Kategorien über die Zeit</string>
                       <int key="NSSegmentItemImageScaling">0</int>
                     </object>
                     <object class="NSSegmentItem">
@@ -502,14 +479,13 @@
             <reference ref="821793189"/>
             <reference ref="77555350"/>
             <reference ref="524621885"/>
-            <reference ref="51926160"/>
             <reference ref="951197622"/>
             <reference ref="376623175"/>
             <reference ref="180270506"/>
             <reference ref="201145095"/>
             <reference ref="835103846"/>
           </array>
-          <array key="NSToolbarIBDefaultItems">
+          <array class="NSMutableArray" key="NSToolbarIBDefaultItems">
             <reference ref="180270506"/>
             <reference ref="376623175"/>
             <reference ref="835103846"/>
@@ -13367,14 +13343,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
         </object>
         <object class="IBConnectionRecord">
           <object class="IBActionConnection" key="connection">
-            <string key="label">catHistoryView:</string>
-            <reference key="source" ref="674635667"/>
-            <reference key="destination" ref="51926160"/>
-          </object>
-          <int key="connectionID">5146</int>
-        </object>
-        <object class="IBConnectionRecord">
-          <object class="IBActionConnection" key="connection">
             <string key="label">catPeriodView:</string>
             <reference key="source" ref="674635667"/>
             <reference key="destination" ref="951197622"/>
@@ -15412,7 +15380,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
               <reference ref="821793189"/>
               <reference ref="77555350"/>
               <reference ref="524621885"/>
-              <reference ref="51926160"/>
               <reference ref="951197622"/>
               <reference ref="201145095"/>
               <reference ref="835103846"/>
@@ -16796,11 +16763,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             <int key="objectID">5017</int>
             <reference key="object" ref="1010280140"/>
             <reference key="parent" ref="1065393850"/>
-          </object>
-          <object class="IBObjectRecord">
-            <int key="objectID">5145</int>
-            <reference key="object" ref="51926160"/>
-            <reference key="parent" ref="675481013"/>
           </object>
           <object class="IBObjectRecord">
             <int key="objectID">5151</int>
@@ -18494,7 +18456,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
         <integer value="1" key="3496.IBShouldRemoveOnLegacySave"/>
         <string key="3497.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
         <integer value="1" key="3497.IBShouldRemoveOnLegacySave"/>
-        <string key="3532.IBEditorWindowLastContentRect">{{653, 1063}, {616, 0}}</string>
+        <string key="3532.IBEditorWindowLastContentRect">{{636, 1076}, {616, 0}}</string>
         <string key="3532.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
         <string key="3532.editorWindowContentRectSynchronizationRect">{{631, 1082}, {616, 0}}</string>
         <string key="3536.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -18935,8 +18897,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
         <integer value="1" key="5015.ImportedFromIB2"/>
         <string key="5016.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
         <string key="5017.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-        <string key="5145.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-        <string key="5145.designableToolbarItemIdentifier">catHistory</string>
         <string key="5151.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
         <string key="5151.designableToolbarItemIdentifier">catPeriods</string>
         <string key="5153.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -19079,7 +19039,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
         <string key="5936.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
         <string key="5946.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
         <string key="5947.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-        <integer value="0" key="5947.IBSegmentedControlInspectorSelectedSegmentMetadataKey"/>
+        <integer value="5" key="5947.IBSegmentedControlInspectorSelectedSegmentMetadataKey"/>
         <string key="5998.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
         <object class="NSAffineTransform" key="5998.IBViewBoundsToFrameTransform">
           <bytes key="NSTransformStruct">AUEAAAAAAAAAA</bytes>
@@ -21462,7 +21422,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
       <integer value="1060" key="NS.object.0"/>
     </object>
     <bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-    <string key="IBDocument.LastKnownRelativeProjectPath">Pecunia.xcodeproj</string>
+    <string key="IBDocument.LastKnownRelativeProjectPath">../../Pecunia.xcodeproj</string>
     <int key="IBDocument.defaultPropertyAccessControl">3</int>
     <dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
       <string key="AccountRep">{256, 256}</string>
@@ -21479,7 +21439,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
       <string key="Transfer_help">{24, 24}</string>
       <string key="Transfers">{128, 128}</string>
       <string key="accrep2">{128, 128}</string>
-      <string key="accrep3">{128, 128}</string>
       <string key="catdef4">{128, 128}</string>
       <string key="catrep">{48, 48}</string>
       <string key="donate_24">{16, 24}</string>
