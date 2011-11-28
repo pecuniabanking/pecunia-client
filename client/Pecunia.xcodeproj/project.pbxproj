@@ -65,7 +65,6 @@
 		B103012213AE84DE0089F3D4 /* donate2.png in Resources */ = {isa = PBXBuildFile; fileRef = B103012113AE84DE0089F3D4 /* donate2.png */; };
 		B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */ = {isa = PBXBuildFile; fileRef = B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */; };
 		B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
-		B1139FF1127CB6F900D6EF08 /* CategoryHistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1139FF0127CB6F900D6EF08 /* CategoryHistWindowController.m */; };
 		B120E3C30EB0F3F000FC5A6F /* AccountRep.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E3C10EB0F3F000FC5A6F /* AccountRep.png */; };
 		B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F09E0C36F3E8001065C2 /* BankStatement.m */; };
 		B124F1110C371384001065C2 /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F1100C371384001065C2 /* BankAccount.m */; };
@@ -351,8 +350,6 @@
 		B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitRule.m; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1139FEF127CB6F900D6EF08 /* CategoryHistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryHistWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B1139FF0127CB6F900D6EF08 /* CategoryHistWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryHistWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B120E3C10EB0F3F000FC5A6F /* AccountRep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AccountRep.png; sourceTree = "<group>"; };
 		B124F09D0C36F3E8001065C2 /* BankStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatement.h; sourceTree = "<group>"; tabWidth = 4; };
 		B124F09E0C36F3E8001065C2 /* BankStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatement.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1110,8 +1107,6 @@
 				B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */,
 				B1762BD711EE4AE600F70263 /* TransferListController.h */,
 				B1762BD811EE4AE600F70263 /* TransferListController.m */,
-				B1139FEF127CB6F900D6EF08 /* CategoryHistWindowController.h */,
-				B1139FF0127CB6F900D6EF08 /* CategoryHistWindowController.m */,
 				B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */,
 				B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */,
 				B14587EA128C8B0700848683 /* ReportingTabs.h */,
@@ -1514,7 +1509,6 @@
 				B1FB6602124FC61B00C54A0E /* TransferTemplate.m in Sources */,
 				B1FB660F124FC89500C54A0E /* TransferTemplateController.m in Sources */,
 				B1FB6B02126B7BF300C54A0E /* BankStatementPrintView.m in Sources */,
-				B1139FF1127CB6F900D6EF08 /* CategoryHistWindowController.m in Sources */,
 				B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */,
 				B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */,
 				B14587EC128C8B0700848683 /* ReportingTabs.m in Sources */,

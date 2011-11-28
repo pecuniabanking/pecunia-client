@@ -11,7 +11,7 @@
       <string key="com.brandonwalkin.BWToolkit">1.2.5</string>
     </dictionary>
     <array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-      <integer value="21"/>
+      <integer value="6084"/>
     </array>
     <array key="IBDocument.PluginDependencies">
       <string>com.brandonwalkin.BWToolkit</string>
@@ -1091,6 +1091,7 @@
                                         <int key="NSvFlags">265</int>
                                         <string key="NSFrame">{{406, 301}, {108, 13}}</string>
                                         <reference key="NSSuperview" ref="132378374"/>
+                                        <int key="NSViewLayerContentsRedrawPolicy">2</int>
                                         <bool key="NSEnabled">YES</bool>
                                         <object class="NSTextFieldCell" key="NSCell" id="417040336">
                                           <int key="NSCellFlags">68288064</int>
@@ -2219,6 +2220,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
                                     </array>
                                     <string key="NSFrameSize">{794, 360}</string>
                                     <reference key="NSSuperview" ref="227698823"/>
+                                    <int key="NSViewLayerContentsRedrawPolicy">2</int>
                                     <string key="NSClassName">NSView</string>
                                   </object>
                                   <object class="BWCustomView" id="1042720461">
@@ -2238,6 +2240,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
                                         </set>
                                         <string key="NSFrame">{{697, 34}, {71, 185}}</string>
                                         <reference key="NSSuperview" ref="1042720461"/>
+                                        <int key="NSViewLayerContentsRedrawPolicy">2</int>
                                         <bool key="NSEnabled">YES</bool>
                                         <object class="NSImageCell" key="NSCell" id="972627458">
                                           <int key="NSCellFlags">130560</int>
@@ -3593,11 +3596,13 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
                                     </array>
                                     <string key="NSFrame">{{0, 361}, {794, 290}}</string>
                                     <reference key="NSSuperview" ref="227698823"/>
+                                    <int key="NSViewLayerContentsRedrawPolicy">2</int>
                                     <string key="NSClassName">StatementDetails</string>
                                   </object>
                                 </array>
                                 <string key="NSFrame">{{1, 6}, {794, 651}}</string>
                                 <reference key="NSSuperview" ref="34476444"/>
+                                <int key="NSViewLayerContentsRedrawPolicy">2</int>
                                 <int key="NSDividerStyle">2</int>
                                 <string key="NSAutosaveName">MainSplitV</string>
                                 <object class="NSColor" key="BWSVColor">
@@ -3645,6 +3650,8 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
                             </array>
                             <string key="NSFrame">{{363, 0}, {800, 657}}</string>
                             <reference key="NSSuperview" ref="464761302"/>
+                            <bool key="NSViewIsLayerTreeHost">YES</bool>
+                            <int key="NSViewLayerContentsRedrawPolicy">2</int>
                             <string key="NSClassName">NSView</string>
                           </object>
                         </array>
@@ -12856,86 +12863,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
         </object>
         <object class="IBConnectionRecord">
           <object class="IBBindingConnection" key="connection">
-            <string key="label">value: selection.statement.remoteName</string>
-            <reference key="source" ref="619238337"/>
-            <reference key="destination" ref="107188715"/>
-            <object class="NSNibBindingConnector" key="connector">
-              <reference key="NSSource" ref="619238337"/>
-              <reference key="NSDestination" ref="107188715"/>
-              <string key="NSLabel">value: selection.statement.remoteName</string>
-              <string key="NSBinding">value</string>
-              <string key="NSKeyPath">selection.statement.remoteName</string>
-              <object class="NSDictionary" key="NSOptions">
-                <string key="NS.key.0">NSNoSelectionPlaceholder</string>
-                <string type="base64-UTF8" key="NS.object.0">IA</string>
-              </object>
-              <int key="NSNibBindingConnectorVersion">2</int>
-            </object>
-          </object>
-          <int key="connectionID">4828</int>
-        </object>
-        <object class="IBConnectionRecord">
-          <object class="IBBindingConnection" key="connection">
-            <string key="label">value: selection.statement.remoteBankCode</string>
-            <reference key="source" ref="816420216"/>
-            <reference key="destination" ref="107188715"/>
-            <object class="NSNibBindingConnector" key="connector">
-              <reference key="NSSource" ref="816420216"/>
-              <reference key="NSDestination" ref="107188715"/>
-              <string key="NSLabel">value: selection.statement.remoteBankCode</string>
-              <string key="NSBinding">value</string>
-              <string key="NSKeyPath">selection.statement.remoteBankCode</string>
-              <object class="NSDictionary" key="NSOptions">
-                <string key="NS.key.0">NSNoSelectionPlaceholder</string>
-                <string type="base64-UTF8" key="NS.object.0">IA</string>
-              </object>
-              <int key="NSNibBindingConnectorVersion">2</int>
-            </object>
-          </object>
-          <int key="connectionID">4830</int>
-        </object>
-        <object class="IBConnectionRecord">
-          <object class="IBBindingConnection" key="connection">
-            <string key="label">value: selection.statement.remoteIBAN</string>
-            <reference key="source" ref="170648102"/>
-            <reference key="destination" ref="107188715"/>
-            <object class="NSNibBindingConnector" key="connector">
-              <reference key="NSSource" ref="170648102"/>
-              <reference key="NSDestination" ref="107188715"/>
-              <string key="NSLabel">value: selection.statement.remoteIBAN</string>
-              <string key="NSBinding">value</string>
-              <string key="NSKeyPath">selection.statement.remoteIBAN</string>
-              <dictionary key="NSOptions">
-                <string type="base64-UTF8" key="NSNoSelectionPlaceholder">IA</string>
-                <boolean value="NO" key="NSRaisesForNotApplicableKeys"/>
-              </dictionary>
-              <int key="NSNibBindingConnectorVersion">2</int>
-            </object>
-          </object>
-          <int key="connectionID">4832</int>
-        </object>
-        <object class="IBConnectionRecord">
-          <object class="IBBindingConnection" key="connection">
-            <string key="label">value: selection.statement.remoteBIC</string>
-            <reference key="source" ref="643141902"/>
-            <reference key="destination" ref="107188715"/>
-            <object class="NSNibBindingConnector" key="connector">
-              <reference key="NSSource" ref="643141902"/>
-              <reference key="NSDestination" ref="107188715"/>
-              <string key="NSLabel">value: selection.statement.remoteBIC</string>
-              <string key="NSBinding">value</string>
-              <string key="NSKeyPath">selection.statement.remoteBIC</string>
-              <dictionary key="NSOptions">
-                <string type="base64-UTF8" key="NSNoSelectionPlaceholder">IA</string>
-                <boolean value="NO" key="NSRaisesForNotApplicableKeys"/>
-              </dictionary>
-              <int key="NSNibBindingConnectorVersion">2</int>
-            </object>
-          </object>
-          <int key="connectionID">4833</int>
-        </object>
-        <object class="IBConnectionRecord">
-          <object class="IBBindingConnection" key="connection">
             <string key="label">value: selection.statement.categoriesDescription</string>
             <reference key="source" ref="51105792"/>
             <reference key="destination" ref="107188715"/>
@@ -12953,46 +12880,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             </object>
           </object>
           <int key="connectionID">4837</int>
-        </object>
-        <object class="IBConnectionRecord">
-          <object class="IBBindingConnection" key="connection">
-            <string key="label">value: selection.statement.date</string>
-            <reference key="source" ref="646223007"/>
-            <reference key="destination" ref="107188715"/>
-            <object class="NSNibBindingConnector" key="connector">
-              <reference key="NSSource" ref="646223007"/>
-              <reference key="NSDestination" ref="107188715"/>
-              <string key="NSLabel">value: selection.statement.date</string>
-              <string key="NSBinding">value</string>
-              <string key="NSKeyPath">selection.statement.date</string>
-              <dictionary key="NSOptions">
-                <string type="base64-UTF8" key="NSNoSelectionPlaceholder">IA</string>
-                <boolean value="NO" key="NSRaisesForNotApplicableKeys"/>
-              </dictionary>
-              <int key="NSNibBindingConnectorVersion">2</int>
-            </object>
-          </object>
-          <int key="connectionID">4846</int>
-        </object>
-        <object class="IBConnectionRecord">
-          <object class="IBBindingConnection" key="connection">
-            <string key="label">value: selection.statement.valutaDate</string>
-            <reference key="source" ref="448451846"/>
-            <reference key="destination" ref="107188715"/>
-            <object class="NSNibBindingConnector" key="connector">
-              <reference key="NSSource" ref="448451846"/>
-              <reference key="NSDestination" ref="107188715"/>
-              <string key="NSLabel">value: selection.statement.valutaDate</string>
-              <string key="NSBinding">value</string>
-              <string key="NSKeyPath">selection.statement.valutaDate</string>
-              <dictionary key="NSOptions">
-                <string type="base64-UTF8" key="NSNoSelectionPlaceholder">IA</string>
-                <boolean value="NO" key="NSRaisesForNotApplicableKeys"/>
-              </dictionary>
-              <int key="NSNibBindingConnectorVersion">2</int>
-            </object>
-          </object>
-          <int key="connectionID">4847</int>
         </object>
         <object class="IBConnectionRecord">
           <object class="IBOutletConnection" key="connection">
@@ -13494,26 +13381,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
           <int key="connectionID">5508</int>
         </object>
         <object class="IBConnectionRecord">
-          <object class="IBBindingConnection" key="connection">
-            <string key="label">value: selection.statement.remoteAccount</string>
-            <reference key="source" ref="215964308"/>
-            <reference key="destination" ref="107188715"/>
-            <object class="NSNibBindingConnector" key="connector">
-              <reference key="NSSource" ref="215964308"/>
-              <reference key="NSDestination" ref="107188715"/>
-              <string key="NSLabel">value: selection.statement.remoteAccount</string>
-              <string key="NSBinding">value</string>
-              <string key="NSKeyPath">selection.statement.remoteAccount</string>
-              <object class="NSDictionary" key="NSOptions">
-                <string key="NS.key.0">NSNoSelectionPlaceholder</string>
-                <string type="base64-UTF8" key="NS.object.0">IA</string>
-              </object>
-              <int key="NSNibBindingConnectorVersion">2</int>
-            </object>
-          </object>
-          <int key="connectionID">5920</int>
-        </object>
-        <object class="IBConnectionRecord">
           <object class="IBActionConnection" key="connection">
             <string key="label">activateMainPage:</string>
             <reference key="source" ref="674635667"/>
@@ -13680,48 +13547,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
         </object>
         <object class="IBConnectionRecord">
           <object class="IBBindingConnection" key="connection">
-            <string key="label">value: selection.statement.nassValue</string>
-            <reference key="source" ref="334395456"/>
-            <reference key="destination" ref="107188715"/>
-            <object class="NSNibBindingConnector" key="connector">
-              <reference key="NSSource" ref="334395456"/>
-              <reference key="NSDestination" ref="107188715"/>
-              <string key="NSLabel">value: selection.statement.nassValue</string>
-              <string key="NSBinding">value</string>
-              <string key="NSKeyPath">selection.statement.nassValue</string>
-              <dictionary key="NSOptions">
-                <boolean value="NO" key="NSAllowsEditingMultipleValuesSelection"/>
-                <string key="NSNoSelectionPlaceholder">0.00</string>
-                <boolean value="NO" key="NSRaisesForNotApplicableKeys"/>
-              </dictionary>
-              <int key="NSNibBindingConnectorVersion">2</int>
-            </object>
-          </object>
-          <int key="connectionID">6136</int>
-        </object>
-        <object class="IBConnectionRecord">
-          <object class="IBBindingConnection" key="connection">
-            <string key="label">value: selection.value</string>
-            <reference key="source" ref="238313678"/>
-            <reference key="destination" ref="107188715"/>
-            <object class="NSNibBindingConnector" key="connector">
-              <reference key="NSSource" ref="238313678"/>
-              <reference key="NSDestination" ref="107188715"/>
-              <string key="NSLabel">value: selection.value</string>
-              <string key="NSBinding">value</string>
-              <string key="NSKeyPath">selection.value</string>
-              <dictionary key="NSOptions">
-                <boolean value="NO" key="NSAllowsEditingMultipleValuesSelection"/>
-                <string key="NSNoSelectionPlaceholder">0.00</string>
-                <boolean value="NO" key="NSRaisesForNotApplicableKeys"/>
-              </dictionary>
-              <int key="NSNibBindingConnectorVersion">2</int>
-            </object>
-          </object>
-          <int key="connectionID">6140</int>
-        </object>
-        <object class="IBConnectionRecord">
-          <object class="IBBindingConnection" key="connection">
             <string key="label">value: selection.statement.currency</string>
             <reference key="source" ref="480239612"/>
             <reference key="destination" ref="107188715"/>
@@ -13809,6 +13634,210 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             <reference key="destination" ref="520886359"/>
           </object>
           <int key="connectionID">6159</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBOutletConnection" key="connection">
+            <string key="label">rightPane</string>
+            <reference key="source" ref="674635667"/>
+            <reference key="destination" ref="34476444"/>
+          </object>
+          <int key="connectionID">6160</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBBindingConnection" key="connection">
+            <string key="label">value: selection.statement.remoteName</string>
+            <reference key="source" ref="619238337"/>
+            <reference key="destination" ref="107188715"/>
+            <object class="NSNibBindingConnector" key="connector">
+              <reference key="NSSource" ref="619238337"/>
+              <reference key="NSDestination" ref="107188715"/>
+              <string key="NSLabel">value: selection.statement.remoteName</string>
+              <string key="NSBinding">value</string>
+              <string key="NSKeyPath">selection.statement.remoteName</string>
+              <dictionary key="NSOptions">
+                <string key="NSMultipleValuesPlaceholder">mehrere</string>
+                <string type="base64-UTF8" key="NSNoSelectionPlaceholder">IA</string>
+              </dictionary>
+              <int key="NSNibBindingConnectorVersion">2</int>
+            </object>
+          </object>
+          <int key="connectionID">6161</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBBindingConnection" key="connection">
+            <string key="label">value: selection.value</string>
+            <reference key="source" ref="238313678"/>
+            <reference key="destination" ref="107188715"/>
+            <object class="NSNibBindingConnector" key="connector">
+              <reference key="NSSource" ref="238313678"/>
+              <reference key="NSDestination" ref="107188715"/>
+              <string key="NSLabel">value: selection.value</string>
+              <string key="NSBinding">value</string>
+              <string key="NSKeyPath">selection.value</string>
+              <dictionary key="NSOptions">
+                <boolean value="NO" key="NSAllowsEditingMultipleValuesSelection"/>
+                <string key="NSMultipleValuesPlaceholder">mehrere</string>
+                <string key="NSNoSelectionPlaceholder">0.00</string>
+                <boolean value="NO" key="NSRaisesForNotApplicableKeys"/>
+              </dictionary>
+              <int key="NSNibBindingConnectorVersion">2</int>
+            </object>
+          </object>
+          <int key="connectionID">6162</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBBindingConnection" key="connection">
+            <string key="label">value: selection.statement.nassValue</string>
+            <reference key="source" ref="334395456"/>
+            <reference key="destination" ref="107188715"/>
+            <object class="NSNibBindingConnector" key="connector">
+              <reference key="NSSource" ref="334395456"/>
+              <reference key="NSDestination" ref="107188715"/>
+              <string key="NSLabel">value: selection.statement.nassValue</string>
+              <string key="NSBinding">value</string>
+              <string key="NSKeyPath">selection.statement.nassValue</string>
+              <dictionary key="NSOptions">
+                <boolean value="NO" key="NSAllowsEditingMultipleValuesSelection"/>
+                <string key="NSMultipleValuesPlaceholder">mehrere</string>
+                <string key="NSNoSelectionPlaceholder">0.00</string>
+                <boolean value="NO" key="NSRaisesForNotApplicableKeys"/>
+              </dictionary>
+              <int key="NSNibBindingConnectorVersion">2</int>
+            </object>
+          </object>
+          <int key="connectionID">6163</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBBindingConnection" key="connection">
+            <string key="label">value: selection.statement.remoteAccount</string>
+            <reference key="source" ref="215964308"/>
+            <reference key="destination" ref="107188715"/>
+            <object class="NSNibBindingConnector" key="connector">
+              <reference key="NSSource" ref="215964308"/>
+              <reference key="NSDestination" ref="107188715"/>
+              <string key="NSLabel">value: selection.statement.remoteAccount</string>
+              <string key="NSBinding">value</string>
+              <string key="NSKeyPath">selection.statement.remoteAccount</string>
+              <dictionary key="NSOptions">
+                <string key="NSMultipleValuesPlaceholder">mehrere</string>
+                <string type="base64-UTF8" key="NSNoSelectionPlaceholder">IA</string>
+              </dictionary>
+              <int key="NSNibBindingConnectorVersion">2</int>
+            </object>
+          </object>
+          <int key="connectionID">6164</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBBindingConnection" key="connection">
+            <string key="label">value: selection.statement.remoteBankCode</string>
+            <reference key="source" ref="816420216"/>
+            <reference key="destination" ref="107188715"/>
+            <object class="NSNibBindingConnector" key="connector">
+              <reference key="NSSource" ref="816420216"/>
+              <reference key="NSDestination" ref="107188715"/>
+              <string key="NSLabel">value: selection.statement.remoteBankCode</string>
+              <string key="NSBinding">value</string>
+              <string key="NSKeyPath">selection.statement.remoteBankCode</string>
+              <dictionary key="NSOptions">
+                <string key="NSMultipleValuesPlaceholder">mehrere</string>
+                <string type="base64-UTF8" key="NSNoSelectionPlaceholder">IA</string>
+              </dictionary>
+              <int key="NSNibBindingConnectorVersion">2</int>
+            </object>
+          </object>
+          <int key="connectionID">6165</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBBindingConnection" key="connection">
+            <string key="label">value: selection.statement.date</string>
+            <reference key="source" ref="646223007"/>
+            <reference key="destination" ref="107188715"/>
+            <object class="NSNibBindingConnector" key="connector">
+              <reference key="NSSource" ref="646223007"/>
+              <reference key="NSDestination" ref="107188715"/>
+              <string key="NSLabel">value: selection.statement.date</string>
+              <string key="NSBinding">value</string>
+              <string key="NSKeyPath">selection.statement.date</string>
+              <dictionary key="NSOptions">
+                <string key="NSMultipleValuesPlaceholder">mehrere</string>
+                <string type="base64-UTF8" key="NSNoSelectionPlaceholder">IA</string>
+                <boolean value="NO" key="NSRaisesForNotApplicableKeys"/>
+              </dictionary>
+              <int key="NSNibBindingConnectorVersion">2</int>
+            </object>
+          </object>
+          <int key="connectionID">6166</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBBindingConnection" key="connection">
+            <string key="label">value: selection.statement.valutaDate</string>
+            <reference key="source" ref="448451846"/>
+            <reference key="destination" ref="107188715"/>
+            <object class="NSNibBindingConnector" key="connector">
+              <reference key="NSSource" ref="448451846"/>
+              <reference key="NSDestination" ref="107188715"/>
+              <string key="NSLabel">value: selection.statement.valutaDate</string>
+              <string key="NSBinding">value</string>
+              <string key="NSKeyPath">selection.statement.valutaDate</string>
+              <dictionary key="NSOptions">
+                <string key="NSMultipleValuesPlaceholder">mehrere</string>
+                <string type="base64-UTF8" key="NSNoSelectionPlaceholder">IA</string>
+                <boolean value="NO" key="NSRaisesForNotApplicableKeys"/>
+              </dictionary>
+              <int key="NSNibBindingConnectorVersion">2</int>
+            </object>
+          </object>
+          <int key="connectionID">6167</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBBindingConnection" key="connection">
+            <string key="label">value: selection.statement.remoteIBAN</string>
+            <reference key="source" ref="170648102"/>
+            <reference key="destination" ref="107188715"/>
+            <object class="NSNibBindingConnector" key="connector">
+              <reference key="NSSource" ref="170648102"/>
+              <reference key="NSDestination" ref="107188715"/>
+              <string key="NSLabel">value: selection.statement.remoteIBAN</string>
+              <string key="NSBinding">value</string>
+              <string key="NSKeyPath">selection.statement.remoteIBAN</string>
+              <dictionary key="NSOptions">
+                <string key="NSMultipleValuesPlaceholder">mehrere</string>
+                <string type="base64-UTF8" key="NSNoSelectionPlaceholder">IA</string>
+                <boolean value="NO" key="NSRaisesForNotApplicableKeys"/>
+              </dictionary>
+              <int key="NSNibBindingConnectorVersion">2</int>
+            </object>
+          </object>
+          <int key="connectionID">6168</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBBindingConnection" key="connection">
+            <string key="label">value: selection.statement.remoteBIC</string>
+            <reference key="source" ref="643141902"/>
+            <reference key="destination" ref="107188715"/>
+            <object class="NSNibBindingConnector" key="connector">
+              <reference key="NSSource" ref="643141902"/>
+              <reference key="NSDestination" ref="107188715"/>
+              <string key="NSLabel">value: selection.statement.remoteBIC</string>
+              <string key="NSBinding">value</string>
+              <string key="NSKeyPath">selection.statement.remoteBIC</string>
+              <dictionary key="NSOptions">
+                <string key="NSMultipleValuesPlaceholder">mehrere</string>
+                <string type="base64-UTF8" key="NSNoSelectionPlaceholder">IA</string>
+                <boolean value="NO" key="NSRaisesForNotApplicableKeys"/>
+              </dictionary>
+              <int key="NSNibBindingConnectorVersion">2</int>
+            </object>
+          </object>
+          <int key="connectionID">6169</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBOutletConnection" key="connection">
+            <string key="label">rightSplitter</string>
+            <reference key="source" ref="674635667"/>
+            <reference key="destination" ref="227698823"/>
+          </object>
+          <int key="connectionID">6170</int>
         </object>
       </array>
       <object class="IBMutableOrderedSet" key="objectRecords">
@@ -19308,7 +19337,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
       <nil key="activeLocalization"/>
       <dictionary class="NSMutableDictionary" key="localizations"/>
       <nil key="sourceID"/>
-      <int key="maxID">6159</int>
+      <int key="maxID">6170</int>
     </object>
     <object class="IBClassDescriber" key="IBDocument.Classes">
       <array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -19525,6 +19554,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             <string key="nassValueField">NSTextField</string>
             <string key="predicateEditor">NSPredicateEditor</string>
             <string key="remoteNameLabel">NSTextField</string>
+            <string key="rightPane">NSView</string>
+            <string key="rightSplitter">BWSplitView</string>
             <string key="searchField">NSSearchField</string>
             <string key="searchItem">NSToolbarItem</string>
             <string key="spendingsField">NSTextField</string>
@@ -19606,6 +19637,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
               <string key="name">remoteNameLabel</string>
               <string key="candidateClassName">NSTextField</string>
             </object>
+            <object class="IBToOneOutletInfo" key="rightPane">
+              <string key="name">rightPane</string>
+              <string key="candidateClassName">NSView</string>
+            </object>
+            <object class="IBToOneOutletInfo" key="rightSplitter">
+              <string key="name">rightSplitter</string>
+              <string key="candidateClassName">BWSplitView</string>
+            </object>
             <object class="IBToOneOutletInfo" key="searchField">
               <string key="name">searchField</string>
               <string key="candidateClassName">NSSearchField</string>
@@ -19660,7 +19699,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
           <string key="className">BankingController</string>
           <dictionary class="NSMutableDictionary" key="actions">
             <string key="accountsRep:">id</string>
-            <string key="catHistoryView:">id</string>
             <string key="catPeriodView:">id</string>
             <string key="categoryRep:">id</string>
             <string key="standingOrders:">id</string>
@@ -19668,10 +19706,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
           <dictionary class="NSMutableDictionary" key="actionInfosByName">
             <object class="IBActionInfo" key="accountsRep:">
               <string key="name">accountsRep:</string>
-              <string key="candidateClassName">id</string>
-            </object>
-            <object class="IBActionInfo" key="catHistoryView:">
-              <string key="name">catHistoryView:</string>
               <string key="candidateClassName">id</string>
             </object>
             <object class="IBActionInfo" key="catPeriodView:">

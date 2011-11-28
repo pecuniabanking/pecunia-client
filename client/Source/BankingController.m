@@ -54,6 +54,7 @@
 #import "ReportingTabs.h"
 #import "ImportController.h"
 #import "ImageAndTextCell.h"
+#import "StatementsListview.h"
 
 #define _expandedRows @"EMT_expandedRows"
 #define _accountsViewSD @"EMT_accountsSorting"

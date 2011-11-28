@@ -8,7 +8,6 @@
 
 #import "ReportingTabs.h"
 #import "CategoryPeriodsWindowController.h"
-#import "CategoryHistWindowController.h"
 #import "CategoryRepWindowController.h"
 #import "AccountRepWindowController.h"
 #import "StandingOrderTabController.h"
