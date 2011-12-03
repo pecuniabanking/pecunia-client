@@ -397,10 +397,10 @@ BOOL	updateSent = NO;
     NSMutableArray* countArray = [NSMutableArray arrayWithCapacity: count];
     if (count > 0)
     {
-        ShortDate* lastDate = [ShortDate dateWithDate: [[sortedStats objectAtIndex: 0] statement].date];
+        ShortDate* lastDate = nil;
         int balanceCount = 1;
-        NSDecimalNumber* lastSaldo = [[sortedStats objectAtIndex: 0] statement].saldo;
-        for (i = 1; i < [stats count]; i++)
+        NSDecimalNumber* lastSaldo;
+        for (i = 0; i < [stats count]; i++)
         {
             StatCatAssignment* assignment = [sortedStats objectAtIndex: i];
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
@@ -422,19 +422,22 @@ BOOL	updateSent = NO;
                     break;
             }            
 
-            if ([lastDate compare: date] != NSOrderedSame)
-            {
-                [dateArray addObject: lastDate];
-                [balanceArray addObject: lastSaldo];
-                [countArray addObject: [NSNumber numberWithInt: balanceCount]];
-                balanceCount = 1;
+            if (lastDate == nil) {
                 lastDate = date;
-            }
-            else
-            {
-                balanceCount++;
-            }
-
+            } else {
+                if ([lastDate compare: date] != NSOrderedSame)
+                {
+                    [dateArray addObject: lastDate];
+                    [balanceArray addObject: lastSaldo];
+                    [countArray addObject: [NSNumber numberWithInt: balanceCount]];
+                    balanceCount = 1;
+                    lastDate = date;
+                }
+                else
+                {
+                    balanceCount++;
+                }
+            }                
             lastSaldo = assignment.statement.saldo;
         }
         [dateArray addObject: lastDate];
@@ -533,10 +536,10 @@ BOOL	updateSent = NO;
     NSMutableArray* countArray = [NSMutableArray arrayWithCapacity: count];
     if (count > 0)
     {
-        ShortDate* lastDate = [ShortDate dateWithDate: [[sortedStats objectAtIndex: 0] statement].date];
-        int balanceCount = 1;
-        NSDecimalNumber* currentValue = [[sortedStats objectAtIndex: 0] statement].value;
-        for (i = 1; i < [sortedStats count]; i++)
+        ShortDate* lastDate = nil;
+        int balanceCount = 0;
+        NSDecimalNumber* currentValue = [NSDecimalNumber zero];
+        for (i = 0; i < [sortedStats count]; i++)
         {
             StatCatAssignment* assignment = [sortedStats objectAtIndex: i];
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
@@ -558,7 +561,7 @@ BOOL	updateSent = NO;
                     break;
             }            
 
-            if ([lastDate compare: date] != NSOrderedSame)
+            if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame)
             {
                 [dateArray addObject: lastDate];
                 [balanceArray addObject: currentValue];
@@ -569,6 +572,9 @@ BOOL	updateSent = NO;
             }
             else
             {
+                if (lastDate == nil) {
+                    lastDate = date;
+                }
                 balanceCount++;
                 currentValue = [currentValue decimalNumberByAdding: assignment.statement.value];
             }

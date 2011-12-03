@@ -17,12 +17,11 @@ typedef enum {
     cat_all
 } CatValueType;
 
-// TODO: deprecated.
 typedef enum {
     cat_histtype_month,
     cat_histtype_quarter,
     cat_histtype_year
-} CatHistoryType;
+} CatHistoryType __attribute__((deprecated));
 
 /**
  * Specifies the grouping of values when collecting statistical data, that is, which time frame
@@ -38,7 +37,6 @@ typedef enum {
 
 @class ShortDate;
 @class CategoryReportingNode;
-
 
 @interface Category : NSManagedObject {
     

@@ -8,8 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-
+/**
+ * ShortDate is a specialization of the NSDate class which only considers full days
+ * (it rounds itself to midnight 0h:0m:0s) and provides convenience methods to
+ * do date arithmetics.
+ */
 @interface ShortDate : NSObject {
+    NSDate* inner;
     NSDateComponents* components; // The date split into components.
 }
 

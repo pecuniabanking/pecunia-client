@@ -12,14 +12,20 @@ NSCalendar *calendar = nil;
 
 @implementation ShortDate
 
--(id)initWithDate: (NSDate*)date
+- (id)initWithDate: (NSDate*)date
 {
     self = [super init];
     if (self != nil) {
-        // The computation for quaters seems to be non-existant. We use months instead to compute that.
-        components = [[[ShortDate calendar] components: NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit
+        components = [[[ShortDate calendar] components: NSYearCalendarUnit | NSMonthCalendarUnit |
+                       NSDayCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit
                                               fromDate: date]
                       retain];
+        
+        // Make a copy of the given date set to midnight. We need that for various computations.
+        components.hour = 0;
+        components.minute = 0;
+        components.second = 0;
+        inner = [[calendar dateFromComponents: components] retain];
     }        
     return self;
 }
@@ -28,17 +34,15 @@ NSCalendar *calendar = nil;
 {
     self = [super init];
     if (self != nil) {
-        // Create an NSDate first from the components and then retrieve those that are not specified.
-        NSDateComponents *comps = [[NSDateComponents alloc] init];
-        comps.year = y;
-        comps.month = m;
-        comps.day = d;
-        NSDate *date = [[ShortDate calendar] dateFromComponents: comps];
-        [comps release];
-        
-        components = [[calendar components: NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit
-                                  fromDate: date]
-                      retain];
+        components = [[NSDateComponents alloc] init];
+        components.year = y;
+        components.month = m;
+        components.day = d;
+        components.hour = 0;
+        components.minute = 0;
+        components.second = 0;
+
+        inner = [[[ShortDate calendar] dateFromComponents: components] retain];
     }
     return self;
 }
@@ -55,6 +59,7 @@ NSCalendar *calendar = nil;
 
 - (void)dealloc
 {
+    [inner release];
     [components release];
     [super dealloc];
 }
@@ -72,10 +77,7 @@ NSCalendar *calendar = nil;
 
 - (NSDate*)lowDate
 {
-    components.hour = 0;
-    components.minute = 0;
-    components.second = 0;
-    return [[ShortDate calendar] dateFromComponents: components];
+    return inner;
 }
 
 - (NSDate*)highDate
@@ -161,11 +163,13 @@ NSCalendar *calendar = nil;
         case NSMonthCalendarUnit:
             return 12 * (toDate.year - components.year) + (toDate.month - components.month);
         case NSDayCalendarUnit: {
-            NSDateComponents *comps = [calendar components: NSDayCalendarUnit fromDate: self.lowDate toDate: toDate.lowDate  options: 0];
+            NSDateComponents *comps = [calendar components: NSDayCalendarUnit fromDate: inner toDate: toDate.lowDate options: 0];
             return comps.day;
         }
-        case NSWeekCalendarUnit:
-            return 52 * (toDate.year - components.year) + (toDate.week - components.week);
+        case NSWeekCalendarUnit: {
+            NSDateComponents *comps = [calendar components: NSWeekCalendarUnit fromDate: inner toDate: toDate.lowDate options: 0];
+            return comps.week;
+        }
         case NSQuarterCalendarUnit:
             return 4 * (toDate.year - components.year) + (toDate.quarter - self.quarter);
         default:
@@ -207,6 +211,7 @@ NSCalendar *calendar = nil;
         case NSMonthCalendarUnit:
             comps.month += units;
             break;
+        case NSWeekdayCalendarUnit:
         case NSDayCalendarUnit:
             comps.day += units;
             break;
@@ -250,15 +255,15 @@ NSCalendar *calendar = nil;
 
 -(int)daysInMonth
 {
-    NSRange r = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate: [self lowDate ] ];
+    NSRange r = [calendar rangeOfUnit: NSDayCalendarUnit inUnit: NSMonthCalendarUnit forDate: inner];
     return r.length;
 }
 
 - (NSString*)description
 {
-    NSDateFormatter *df = [[NSDateFormatter alloc ] init ];
-    [df setDateStyle:NSDateFormatterMediumStyle ];
-    [df setTimeStyle:NSDateFormatterNoStyle ];
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateStyle: NSDateFormatterMediumStyle];
+    [df setTimeStyle: NSDateFormatterNoStyle];
     
     return [df stringFromDate:[self lowDate ] ];
 }
@@ -329,39 +334,42 @@ NSCalendar *calendar = nil;
     return [self dateByAddingUnits: (7 - [comps weekday]) byUnit: NSWeekdayCalendarUnit];
 }
 
-+(ShortDate*)dateWithDate: (NSDate*)date
++ (ShortDate*)dateWithDate: (NSDate*)date
 {
-    ShortDate *res = [[ShortDate alloc ] initWithDate: date ];
-    return [res autorelease ];
+    ShortDate *res = [[ShortDate alloc] initWithDate: date];
+    return [res autorelease];
 }
 
-+(ShortDate*)currentDate
++ (ShortDate*)currentDate
 {
-    return [ShortDate dateWithDate:[NSDate date ] ];
+    return [ShortDate dateWithDate: [NSDate date]];
 }
 
 
-+(ShortDate*)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d
++ (ShortDate*)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d
 {
-    ShortDate *res = [[ShortDate alloc ] initWithYear: y month: m day: d ];
-    return [res autorelease ];
+    ShortDate *res = [[ShortDate alloc] initWithYear: y month: m day: d ];
+    return [res autorelease];
 }
 
-+(ShortDate*)distantFuture
++ (ShortDate*)distantFuture
 {
-    return [ShortDate dateWithYear: 9999 month:12 day:31 ];
+    return [ShortDate dateWithYear: 9999 month: 12 day: 31];
 }
 
-+(ShortDate*)distantPast
++ (ShortDate*)distantPast
 {
-    return [ShortDate dateWithYear: 2000 month:1 day:1 ];
+    return [ShortDate dateWithYear: 2000 month: 1 day: 1];
 }
 
 +(NSCalendar*)calendar
 {
     if (calendar == nil) {
         calendar = [[[NSCalendar alloc] initWithCalendarIdentifier:  NSGregorianCalendar] retain];
-        calendar.firstWeekday = 1; // Set monday as first day of week.
+        calendar.firstWeekday = 2; // Set monday as first day of week.
+        calendar.locale = [NSLocale currentLocale];
+        calendar.minimumDaysInFirstWeek = 4; // According to DIN 1355-1/ISO 8601.
+        calendar.timeZone = [NSTimeZone localTimeZone];
     }
     return calendar;
 }

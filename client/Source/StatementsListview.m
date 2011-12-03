@@ -133,7 +133,7 @@
         BankStatement *statement = (BankStatement*)[[_dataSource objectAtIndex: row] valueForKey: @"statement"];
         BankStatement *previousStatement = (BankStatement*)[[_dataSource objectAtIndex: row - 1] valueForKey: @"statement"];
         
-        result = [ShortDate dateWithDate:statement.date ].day != [ShortDate dateWithDate:previousStatement.date ].day;
+        result = [ShortDate dateWithDate: statement.date].day != [ShortDate dateWithDate: previousStatement.date].day;
     }
     return result;
 }
@@ -247,8 +247,14 @@
 - (void)listViewSelectionDidChange:(NSNotification*)aNotification
 {
     // A selected statement automatically loses the "new" state.
-    StatementsListViewCell *cell = (StatementsListViewCell*)[self cellForRowAtIndex: [self selectedRow]];
-    [cell setIsNew: NO];
+    NSIndexSet* selection = [self selectedRows];
+    NSUInteger index = [selection firstIndex];
+    while (index != NSNotFound) {
+        StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
+        [cell setIsNew: NO];
+        
+        index = [selection indexGreaterThanIndex: index];
+    }
 }
 
 /**

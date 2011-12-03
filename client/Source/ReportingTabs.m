@@ -61,25 +61,6 @@
 	[self adjustSearchField ];
 }
 
--(IBAction)accountsRep: (id)sender 
-{
-	int idx = [ mainTabView indexOfTabViewItemWithIdentifier:_accountRepIdentifier ];
-	if (idx == NSNotFound) {
-		AccountRepWindowController *controller = [[AccountRepWindowController alloc ] init ];
-		if([NSBundle loadNibNamed:@"AccountRep" owner:controller ]) {
-			NSTabViewItem *item = [[NSTabViewItem alloc ] initWithIdentifier:_accountRepIdentifier ];
-			[item setView:[controller mainView ] ];
-			[mainTabView addTabViewItem:item ];
-			[mainTabView selectTabViewItem:item ];
-			[mainTabItems setObject:controller forKey: _accountRepIdentifier ];
-			[controller prepare ];
-		}
-	} else {
-		[mainTabView selectTabViewItemAtIndex:idx ];
-	}
-	[self adjustSearchField ];
-}
-
 -(IBAction)standingOrders: (id)sender 
 {
 	int idx = [ mainTabView indexOfTabViewItemWithIdentifier:_standingOrderTabIdentifier ];

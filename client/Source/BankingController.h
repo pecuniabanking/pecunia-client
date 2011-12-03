@@ -17,7 +17,6 @@
 @class LogController;
 @class TransactionController;
 @class CatDefWindowController;
-@class AccountRepWindowController;
 @class CategoryRepWindowController;
 @class Category;
 @class MCEMTreeController;
@@ -29,6 +28,7 @@
 @class CurrencyValueTransformer;
 @class BWSplitView;
 @class StatementsListView;
+@class AccountRepWindowController;
 
 @interface BankingController : NSObject
 {
@@ -57,8 +57,8 @@
     IBOutlet NSTextField        *spendingsField;
     IBOutlet NSTextField        *turnoversField;
     IBOutlet NSTextField        *remoteNameLabel;
-    IBOutlet NSView             *rightPane;
     IBOutlet BWSplitView        *rightSplitter;
+    IBOutlet NSView             *rightPane;
     
     IBOutlet CatDefWindowController *catDefWinController;
     IBOutlet TransferListController *transferListController;
@@ -80,6 +80,9 @@
     BOOL                   autoSyncRunning;
     NSDecimalNumber        *saveValue;
     NSCursor               *splitCursor;
+    
+    AccountRepWindowController *categoryAnalysisController;
+    NSView                     *categoryAnalysisView;
 }
 
 @property(nonatomic, copy) NSDecimalNumber *saveValue;

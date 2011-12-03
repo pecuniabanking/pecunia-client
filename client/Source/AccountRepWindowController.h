@@ -33,12 +33,8 @@
 
 @end
 
-@interface AccountRepWindowController : NSObject <MainTabViewItem, CPTScatterPlotDataSource, CPTPlotSpaceDelegate, CPTPlotDataSource, CPTBarPlotDelegate>
+@interface AccountRepWindowController : NSObject <CPTScatterPlotDataSource, CPTPlotSpaceDelegate, CPTPlotDataSource, CPTBarPlotDelegate>
 {
-    IBOutlet NSTreeController* accountsController;
-	IBOutlet NSOutlineView* accountsView;
-	IBOutlet NSSplitView* splitView;
-	IBOutlet NSView* mainView;
 	IBOutlet NSView* printView;
 
     IBOutlet PecuinaGraphHost* mainHostView;
@@ -48,8 +44,6 @@
     IBOutlet NSSlider* groupingSlider;
     
     @private
-	NSManagedObjectContext		*managedObjectContext;
-	
 	CPTXYGraph* mainGraph;
     CPTXYGraph* turnoversGraph;
     CPTXYGraph* selectionGraph;
@@ -61,6 +55,7 @@
     CPTTextLayer* valueInfoLayer;
     CPTLimitBand* selectionBand;
     
+    Category* mainCategory;
 	NSArray* dates;
     NSArray* balances;
     NSArray* balanceCounts;               // Number of balances per day.
@@ -77,6 +72,7 @@
     GroupingInterval groupingInterval;
 }
 
+@property (nonatomic, retain) Category* category;
 @property (nonatomic, retain) ShortDate *fromDate;
 @property (nonatomic, retain) ShortDate *toDate;
 
@@ -85,26 +81,8 @@
 
 - (IBAction)setGrouping: (id)sender;
 
-- (void)updateValues;
-- (void)clearGraphs;
 - (NSView*)mainView;
-
-- (Category*)currentSelection;
-
-- (void)setupMainGraph;
-- (void)setupTurnoversGraph;
-- (void)setupSelectionGraph;
-
-- (void)setupMainPlots;
-- (void)setupTurnoversPlot;
-- (void)setupSelectionPlot;
-
-- (void)updateMainGraph;
-- (void)updateTurnoversGraph;
-- (void)updateSelectionGraph;
-- (void)updateSelectionDisplay;
-
-- (int)majorTickCount;
+- (void)updateGraphs;
 
 @end
 

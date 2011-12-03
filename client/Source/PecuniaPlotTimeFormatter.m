@@ -27,33 +27,25 @@
 - (NSString*)stringForObjectValue: (NSDecimalNumber*)coordinateValue
 {
     NSString* result = @"?";
-    if (calendarUnit == NSDayCalendarUnit) {
-        NSDate* date;
-        double seconds = 60 * 60 * 24 * [coordinateValue doubleValue];
-        if (self.referenceDate) 
-            date = [[NSDate alloc] initWithTimeInterval: seconds sinceDate: self.referenceDate];
-        else
-            date = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate: seconds];
-        result = [self.dateFormatter stringFromDate: date];
-        [date release];
-    } else {
-        ShortDate* date = [ShortDate dateWithDate: self.referenceDate];
-        date = [date dateByAddingUnits: [coordinateValue intValue] byUnit: calendarUnit];
+    ShortDate* date = [ShortDate dateWithDate: self.referenceDate];
+    date = [date dateByAddingUnits: [coordinateValue intValue] byUnit: calendarUnit];
     
-        switch (calendarUnit) {
-            case NSWeekCalendarUnit:
-                result = [date weekYearDescription];
-                break;
-            case NSMonthCalendarUnit:
-                result = [date monthYearDescription];
-                break;
-            case NSQuarterCalendarUnit:
-                result = [date quarterYearDescription];
-                break;
-            case NSYearCalendarUnit:
-                result = [date yearDescription];
-                break;
-        }
+    switch (calendarUnit) {
+        case NSDayCalendarUnit:
+            result = [date description];
+            break;
+        case NSWeekCalendarUnit:
+            result = [date weekYearDescription];
+            break;
+        case NSMonthCalendarUnit:
+            result = [date monthYearDescription];
+            break;
+        case NSQuarterCalendarUnit:
+            result = [date quarterYearDescription];
+            break;
+        case NSYearCalendarUnit:
+            result = [date yearDescription];
+            break;
     }
     return result;
 }

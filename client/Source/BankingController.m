@@ -6,6 +6,8 @@
 //  Copyright 2008 Frank Emminghaus. All rights reserved.
 //
 
+#import <BWToolkitFramework/BWToolkitFramework.h>
+
 //#import "ChipTanWindowController.h"
 #import "TanMediaWindowController.h"
 
@@ -44,17 +46,21 @@
 #import "TransferListController.h"
 #import "PurposeSplitController.h"
 #import "TransferTemplateController.h"
+#import "AccountRepWindowController.h"
+
 #import "BankStatementPrintView.h"
 #import "MainTabViewItem.h"
 #import "GenericImportController.h"
-#import "ImageAndTextCell.h"
 #import "DateAndValutaCell.h"
 #import "AmountCell.h"
 #import "DockIconController.h"
 #import "ReportingTabs.h"
+
 #import "ImportController.h"
 #import "ImageAndTextCell.h"
 #import "StatementsListview.h"
+
+#import "AnimationHelper.h"
 
 #define _expandedRows @"EMT_expandedRows"
 #define _accountsViewSD @"EMT_accountsSorting"
@@ -154,22 +160,6 @@ static BankingController	*con;
     
     NSTableColumn* tableColumn;
     
-    /* TODO: remove once MCEMTableView is gone.
-     // Value colors for transactions view.
-     tableColumn = [transactionsView tableColumnWithIdentifier: @"value" ];
-     if (tableColumn != nil)
-     [self setNumberFormatForCell: [tableColumn dataCell] positive: positiveAttributes negative: negativeAttributes];
-     
-     // Value colors for transactions view.	
-     tableColumn = [transactionsView tableColumnWithIdentifier: @"nassValue" ];
-     if (tableColumn != nil)
-     [self setNumberFormatForCell: [tableColumn dataCell] positive: positiveAttributes negative: negativeAttributes];
-     
-     tableColumn = [transactionsView tableColumnWithIdentifier: @"saldo"];
-     if (tableColumn != nil)
-     [self setNumberFormatForCell: [tableColumn dataCell] positive: positiveAttributes negative: negativeAttributes];
-     */
-    
     [self setNumberFormatForCell: [valueField cell] positive: positiveAttributes negative: negativeAttributes];
     [self setNumberFormatForCell: [headerValueField cell] positive: positiveAttributes negative: negativeAttributes];
     [self setNumberFormatForCell: [nassValueField cell] positive: positiveAttributes negative: negativeAttributes];
@@ -194,7 +184,7 @@ static BankingController	*con;
     }
     
     // sort descriptor for transactions view
-    NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:NO] autorelease];
+    NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:NO] autorelease];
     NSArray *sds = [NSArray arrayWithObject:sd];
     [transactionController setSortDescriptors: sds ];
     
@@ -245,6 +235,16 @@ static BankingController	*con;
     NSNumberFormatter* formatter = [statementsListView numberFormatter];
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
+    
+    categoryAnalysisController = [[AccountRepWindowController alloc] init];
+    if ([NSBundle loadNibNamed: @"AccountRep" owner: categoryAnalysisController]) {
+        categoryAnalysisView = [categoryAnalysisController mainView];
+        NSRect frame = rightSplitter.frame;
+        frame.size.height -= 61; // The height of the heading.
+        categoryAnalysisView.frame = frame;
+        [rightPane addSubview: categoryAnalysisView];
+        [categoryAnalysisView setHidden: YES];
+    }
 }
 
 -(void)publishContext
@@ -1182,20 +1182,31 @@ static BankingController	*con;
 
 /**
  * Called by the segmented account toolbar control to switch to a particular page.
- **/
+ */
 -(IBAction)activateMainPage: (id)sender
 {
     switch ([sender selectedSegment])
     {
         case 0:
+        {
+            // Cross-fade between the analysis view and the right splitter.
+            if ([rightSplitter isHidden]) {
+                [AnimationHelper switchFromView: categoryAnalysisView toView: rightSplitter];
+            }
+
             [self accountsView: nil];
             break;
+        }
         case 1:
             [self transferView: nil];
             break;
         case 2:
-            [self accountsRep: nil];
+        {
+            if ([categoryAnalysisView isHidden]) {
+                [AnimationHelper switchFromView: rightSplitter toView: categoryAnalysisView];
+            }
             break;
+        }
         case 3:
             [self standingOrders: nil];
             break;
@@ -1209,6 +1220,8 @@ static BankingController	*con;
             [self catPeriodView: nil];
             break;
     }
+    
+	[self adjustSearchField];
     [self updateStatusbar];
 }
 
@@ -1798,6 +1811,10 @@ static BankingController	*con;
     } else {
         [valueField setDrawsBackground: NO];
     }
+    
+    // Update analysis pane.
+    categoryAnalysisController.category = cat;
+    [categoryAnalysisController updateGraphs];
     
     [self updateStatusbar];
 }
@@ -2530,17 +2547,13 @@ static BankingController	*con;
 {
     if (object == categoryController) {
         [accountsView setNeedsDisplay: YES ];
-    }
-    else
-        if (object == transactionController)
-        {
-            if ([keyPath compare: @"selectionIndex"] == NSOrderedSame)
-            {
+    } else {
+        if (object == transactionController) {
+            if ([keyPath compare: @"selectionIndexes"] == NSOrderedSame) {
                 // Selection did change. If the currently selected entry is a new one remove the "new" mark.
-                NSArray* sel = [transactionController selectedObjects];
-                if (sel && [sel count ] == 1)
-                {
-                    StatCatAssignment *stat = [sel objectAtIndex: 0];
+                NSEnumerator *enumerator = [[transactionController selectedObjects] objectEnumerator];
+                StatCatAssignment *stat;
+                while (stat = [enumerator nextObject]) {
                     if ([stat.category isBankAccount] && ![stat.category isRoot])
                     {
                         BankAccount* account = (BankAccount*)stat.category;
@@ -2548,24 +2561,23 @@ static BankingController	*con;
                         {
                             stat.statement.isNew = [NSNumber numberWithBool: NO];
                             account.unread = account.unread - 1;
-                            if (account.unread == 0)
-                            {
-                                [self updateUnread ];
+                            if (account.unread == 0) {
+                                [self updateUnread];
                             }
-                            [accountsView setNeedsDisplay: YES ];
+                            [accountsView setNeedsDisplay: YES];
                         }
                     }
-                    
-                    // Check for the type of transaction and adjust remote name display accordingly.
-                    if ([stat.statement.value compare: [NSDecimalNumber zero]] == NSOrderedAscending)
-                        [remoteNameLabel setStringValue: NSLocalizedString(@"AP134", "Receiver:")];
-                    else
-                        [remoteNameLabel setStringValue: NSLocalizedString(@"AP135", "Sender:")];
                 }
                 
+                // Check for the type of transaction and adjust remote name display accordingly.
+                if ([stat.statement.value compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
+                    [remoteNameLabel setStringValue: NSLocalizedString(@"AP134", "")];
+                } else {
+                    [remoteNameLabel setStringValue: NSLocalizedString(@"AP135", "")];
+                }
             }
         }
-    
+    }
 }
 
 +(BankingController*)controller

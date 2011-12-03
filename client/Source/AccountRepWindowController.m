@@ -9,11 +9,7 @@
 #include <math.h>
 
 #import "AccountRepWindowController.h"
-#import "MCEMOutlineViewLayout.h"
 #import "ShortDate.h"
-#import "TimeSliceManager.h"
-#import "MOAssistant.h"
-#import "ImageAndTextCell.h"
 #import "BankAccount.h"
 
 #import "PecuniaPlotTimeFormatter.h"
@@ -329,8 +325,36 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 //--------------------------------------------------------------------------------------------------
 
+/**
+ * Private declarations for the controller.
+ */
+@interface AccountRepWindowController(Private)
+
+- (void)updateValues;
+- (void)clearGraphs;
+
+- (void)setupMainGraph;
+- (void)setupTurnoversGraph;
+- (void)setupSelectionGraph;
+
+- (void)setupMainPlots;
+- (void)setupTurnoversPlot;
+- (void)setupSelectionPlot;
+
+- (void)updateMainGraph;
+- (void)updateTurnoversGraph;
+- (void)updateSelectionGraph;
+- (void)updateSelectionDisplay;
+
+- (int)majorTickCount;
+
+@end
+
+//--------------------------------------------------------------------------------------------------
+
 @implementation AccountRepWindowController
 
+@synthesize category = mainCategory;
 @synthesize fromDate;
 @synthesize toDate;
 
@@ -342,7 +366,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     self = [super init];
     if (self != nil) {
         barWidth = 15;
-        managedObjectContext = [[MOAssistant assistant] context];
     }
     return self;
 }
@@ -371,20 +394,9 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 -(void)awakeFromNib
 {
-    NSError *error;
-    
     [self setupMainGraph];
     [self setupTurnoversGraph];
     [self setupSelectionGraph];
-    
-    [accountsController fetchWithRequest: nil merge: NO error: &error];
-    
-    // sort descriptor for accounts view
-    NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES] autorelease];
-    NSArray	*sds = [NSArray arrayWithObject: sd];
-    [accountsController setSortDescriptors: sds];
-    
-    [self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(graphLayoutChanged:)
@@ -485,16 +497,16 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     plotSpace.allowsUserInteraction = YES;
     plotSpace.delegate = self;
     
-    // Grid line styles
+    // Border style.
     CPTMutableLineStyle* frameStyle = [CPTMutableLineStyle lineStyle];
     frameStyle.lineWidth = 1;
     frameStyle.lineColor = [[CPTColor colorWithGenericGray: 0] colorWithAlphaComponent: 0.5];
     
     // Graph padding
-    mainGraph.paddingLeft = 10.0;
-    mainGraph.paddingTop = 10.0;
-    mainGraph.paddingRight = 10.0;
-    mainGraph.paddingBottom = 10.0;
+    mainGraph.paddingLeft = 0;
+    mainGraph.paddingTop = 0;
+    mainGraph.paddingRight = 0;
+    mainGraph.paddingBottom = 0;
     mainGraph.fill = nil;
     
     CPTPlotAreaFrame* frame = mainGraph.plotAreaFrame;
@@ -607,16 +619,17 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     plotSpace.allowsUserInteraction = YES;
     plotSpace.delegate = self;
     
-    // Grid line styles
+    // Frame setup (background, border).
     CPTMutableLineStyle* frameStyle = [CPTMutableLineStyle lineStyle];
     frameStyle.lineWidth = 1;
     frameStyle.lineColor = [[CPTColor colorWithGenericGray: 0] colorWithAlphaComponent: 0.5];
     
-    // Graph padding
-    turnoversGraph.paddingLeft = 10.0;
-    turnoversGraph.paddingTop = 10;
-    turnoversGraph.paddingRight = 10.0;
-    turnoversGraph.paddingBottom = 10;
+    // Graph properties.
+    turnoversGraph.fill = nil;
+    turnoversGraph.paddingLeft = 0;
+    turnoversGraph.paddingTop = 0;
+    turnoversGraph.paddingRight = 0;
+    turnoversGraph.paddingBottom = 0;
     
     CPTPlotAreaFrame* frame = turnoversGraph.plotAreaFrame;
     frame.paddingLeft = 90;
@@ -626,12 +639,12 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
-    
+    /*
     frame.shadowColor = CGColorCreateGenericGray(0, 1);
     frame.shadowRadius = 2.0;
     frame.shadowOffset = CGSizeMake(1, -1);
     frame.shadowOpacity = 0.1;
-    
+    */
     [self setupTurnoversAxes];
     
     // The second y axis is used as the current location identifier.
@@ -711,26 +724,25 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
     [selectionGraph applyTheme: theme];
     selectionHostView.hostedGraph = selectionGraph;
+
     selectionGraph.fill = nil;
+    selectionGraph.paddingLeft = 10.0;
+    selectionGraph.paddingTop = 10;
+    selectionGraph.paddingRight = 10.0;
+    selectionGraph.paddingBottom = 10.0;
     
     // Setup scatter plot space
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)selectionGraph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = YES;
     plotSpace.delegate = self;
     
-    // Grid line styles
+    // Frame setup (background, border).
     CPTMutableLineStyle* frameStyle = [CPTMutableLineStyle lineStyle];
     frameStyle.lineWidth = 2;
     frameStyle.lineColor = [CPTColor colorWithComponentRed: 18 / 255.0
                                                      green: 97 / 255.0
                                                       blue: 185 / 255.0
                                                      alpha: 1];
-    
-    // Graph padding
-    selectionGraph.paddingLeft = 10.0;
-    selectionGraph.paddingTop = 10;
-    selectionGraph.paddingRight = 10.0;
-    selectionGraph.paddingBottom = 10.0;
     
     CPTPlotAreaFrame* frame = selectionGraph.plotAreaFrame;
     frame.paddingLeft = 30;
@@ -810,8 +822,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     // The main graph contains two plots, one for the positive values (with a gray fill)
     // and the other one for negative values (with a red fill).
     // Depending on whether we view a bank account or a normal category either line or bar plots are used.
-    Category* category = [self currentSelection];
-    if (category == nil)
+    if (mainCategory == nil)
         return;
     
     CPTGradient* positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 100 / 255.0
@@ -839,7 +850,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTFill* negativeGradientFill = [CPTFill fillWithGradient: negativeGradient];
     
     CPTPlot* plot;
-    if (category.isBankAccount)
+    if (mainCategory.isBankAccount)
     {
         plot = [self createScatterPlotWithFill: positiveGradientFill];
     }
@@ -858,7 +869,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [mainGraph addPlot: plot];
     
     // The negative plot.
-    if (category.isBankAccount)
+    if (mainCategory.isBankAccount)
     {
         plot = [self createScatterPlotWithFill: negativeGradientFill];
     }
@@ -906,8 +917,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
     // The selection plot always contains the full range of values as it is used to select a subrange
     // for main and turnovers graphs.
-    Category* category = [self currentSelection];
-    if (category == nil)
+    if (mainCategory == nil)
         return;
     
     CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 255 / 255.0
@@ -1155,9 +1165,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     y.majorIntervalLength = CPTDecimalFromFloat(interval);
     y.minorTicksPerInterval = [self minorTicksFromInterval: interval];
     
-    Category* category = [self currentSelection];
-    
-    NSString* currency = (category == nil) ? @"EUR" : [category currency];
+    NSString* currency = (mainCategory == nil) ? @"EUR" : [mainCategory currency];
     NSNumberFormatter* currencyFormatter = [[[NSNumberFormatter alloc] init] autorelease];
     currencyFormatter.usesSignificantDigits = YES;
     currencyFormatter.minimumFractionDigits = 0;
@@ -1279,9 +1287,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 {
     if (infoTextFormatter == nil)
     {
-        Category* category = [self currentSelection];
-        
-        NSString* currency = (category == nil) ? @"EUR" : [category currency];
+        NSString* currency = (mainCategory == nil) ? @"EUR" : [mainCategory currency];
         infoTextFormatter = [[[NSNumberFormatter alloc] init] retain];
         infoTextFormatter.usesSignificantDigits = NO;
         infoTextFormatter.minimumFractionDigits = 2;
@@ -1407,7 +1413,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath: @"position"];
     animation.path = animationPath;
-    animation.duration = 0.5;
+    animation.duration = 0.15;
     animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
     
     [layer addAnimation: animation forKey: @"animatePosition"];
@@ -1614,7 +1620,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
                               turnovers: [[balanceCounts objectAtIndex: index] intValue]];
         } else {
             [self updateMainInfoForDate: date
-                                balance: [[self currentSelection] isBankAccount] ? [balances objectAtIndex: index] : nil
+                                balance: [mainCategory isBankAccount] ? [balances objectAtIndex: index] : nil
                               turnovers: 0];
         }
     }
@@ -1790,7 +1796,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     BOOL endValue = index >= [dates count];
     if (fieldEnum == CPTBarPlotFieldBarLocation || fieldEnum == CPTScatterPlotFieldX)
     {
-        ShortDate* date = [dates objectAtIndex: endValue ? index - 1 : index];
+        ShortDate* date = endValue ? [dates lastObject] : [dates objectAtIndex: index];
         ShortDate* startDate = [self referenceDate];
         int units = [self distanceFromDate: startDate toDate: date];
         if (endValue) {
@@ -1931,15 +1937,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     minValue = [NSDecimalNumber zero];
 }
 
--(Category*)currentSelection
-{
-    NSArray* sel = [accountsController selectedObjects];
-    if (sel == nil || [sel count] != 1) {
-        return nil;
-    }
-    return [sel objectAtIndex: 0];
-}
-
 - (void)reloadData
 {
     [dates release];
@@ -1949,25 +1946,24 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [balanceCounts release];
     balanceCounts = nil;
 
-    Category* category = [self currentSelection];
-    if (category == nil)
+    if (mainCategory == nil)
         return;
     
-    if (category.isBankAccount)
+    if (mainCategory.isBankAccount)
     {
-        if ([category balanceHistoryToDates: &dates
-                                   balances: &balances
-                              balanceCounts: &balanceCounts
-                               withGrouping: groupingInterval] == 0) {
+        if ([mainCategory balanceHistoryToDates: &dates
+                                       balances: &balances
+                                  balanceCounts: &balanceCounts
+                                   withGrouping: groupingInterval] == 0) {
             return;
         }
     }
     else
     {
-        if ([category categoryHistoryToDates: &dates
-                                    balances: &balances
-                               balanceCounts: &balanceCounts
-                                withGrouping: groupingInterval] == 0) {
+        if ([mainCategory categoryHistoryToDates: &dates
+                                        balances: &balances
+                                   balanceCounts: &balanceCounts
+                                    withGrouping: groupingInterval] == 0) {
             return;
         }
     }
@@ -1979,7 +1975,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [self updateValues];
 }
 
-- (void)outlineViewSelectionDidChange: (NSNotification*)notification
+- (void)updateGraphs
 {
     [self clearGraphs];
     [self reloadData];
@@ -2020,13 +2016,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [self updateSelectionDisplay];
 }
 
-#pragma mark -
-#pragma mark Old chart code
-
--(void)prepare
-{
-}
-
 -(void)print
 {
     NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
@@ -2042,61 +2031,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 -(NSView*)mainView
 {
-    return mainView;
-}
-
-// workaround for strange outlineView collapsing...
--(void)restoreAccountsView
-{
-   [accountsView restoreAll];
-}
-
-- (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(ImageAndTextCell*)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
-{
-    Category *cat = [item representedObject];
-    if(cat == nil)
-        return;
-    
-    //	NSImage *catImage		= [NSImage imageNamed:@"catdef4_18.png"];
-    NSImage *moneyImage		= [NSImage imageNamed:@"money_18.png"];
-    NSImage *moneySyncImage	= [NSImage imageNamed:@"money_sync_18.png"];
-    NSImage *folderImage	= [NSImage imageNamed:@"folder_18.png"];
-    
-    if ([cat isBankAccount] && cat.accountNumber == nil)
-        [cell setImage: folderImage];
-    if ([cat isBankAccount] && cat.accountNumber != nil)
-    {
-        BankAccount *account = (BankAccount*)cat;
-        if ([account.isManual boolValue] || [account.noAutomaticQuery boolValue])
-            [cell setImage: moneyImage];
-        else
-            [cell setImage: moneySyncImage];
-    }
-    
-    BOOL itemIsSelected = NO;
-    if ([outlineView itemAtRow:[outlineView selectedRow]] == item)	 itemIsSelected = TRUE;
-    
-    BOOL itemIsRoot = [cat isRoot];
-    if (itemIsRoot) {
-        [cell setImage: nil];
-    }
-    
-    [cell setValues: [cat catSum] currency: cat.currency unread: 0 selected: itemIsSelected root:itemIsRoot ];
-}
-
-- (id)outlineView:(NSOutlineView *)outlineView persistentObjectForItem:(id)item 
-{
-    return [outlineView persistentObjectForItem: item ];
-}
-
--(id)outlineView: (NSOutlineView *)outlineView itemForPersistentObject: (id)object
-{
-    return nil;
-}
-
--(void)terminate
-{
-    [accountsView saveLayout];
+    return printView;
 }
 
 @end
