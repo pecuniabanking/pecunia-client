@@ -10,6 +10,7 @@
 #import "Category.h"
 #import "BankStatement.h"
 #import "MOAssistant.h"
+#import "BankAccount.h"
 
 @implementation StatCatAssignment
 
@@ -34,7 +35,9 @@
 	if (sep == nil) sep = @"\t";
 	
 	for(NSString *field in fields) {
-		if([field isEqualToString: @"value" ] || [field isEqualToString: @"userInfo" ]) obj = [self valueForKey: field ]; else obj = [self.statement valueForKey: field ];
+		if([field isEqualToString: @"value" ] || [field isEqualToString: @"userInfo" ]) obj = [self valueForKey: field ]; 
+        else if([field isEqualToString:@"localName" ]) obj = self.statement.account.localName;
+        else if([field isEqualToString:@"localCountry" ]) obj = self.statement.account.country; else obj = [self.statement valueForKey: field ];
 
 		if (obj) {
 			if([field isEqualToString: @"valutaDate" ] || [field isEqualToString: @"date" ]) s = [dateFormatter stringFromDate: (NSDate*)obj ];

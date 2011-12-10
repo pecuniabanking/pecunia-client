@@ -79,7 +79,6 @@ BOOL	updateSent = NO;
 -(void)rebuildValues
 {
     NSArray *stats;
-    int     i;
     NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
     if([childs count ] > 0) {
         // first handle children
@@ -96,10 +95,8 @@ BOOL	updateSent = NO;
     if([self isBankAccount ]) stats = [[self mutableSetValueForKey: @"assignments" ] allObjects ];
     else stats = [self statementsFrom: catFromDate to: catToDate withChildren: NO ];
     
-    StatCatAssignment *stat = nil;
-    for(i=0; i<[stats count ]; i++) {
-        stat = [stats objectAtIndex:i ];
-        balance = [balance decimalNumberByAdding: stat.value];
+    for(StatCatAssignment *stat in stats) {
+        if(stat.value != nil) balance = [balance decimalNumberByAdding: stat.value]; else stat.value = [NSDecimalNumber zero ];
     }
     self.balance = balance;
 }
