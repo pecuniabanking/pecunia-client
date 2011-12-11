@@ -31,7 +31,6 @@
 #import "WorkerThread.h"
 #import "BSSelectWindowController.h"
 #import "StatusBarController.h"
-//#import "MCEMTableView.h" TODO: obsolete, delete when MCEMTableView is removed.
 #import "DonationMessageController.h"
 #import "BankQueryResult.h"
 #import "CategoryView.h"
@@ -59,6 +58,7 @@
 #import "ImportController.h"
 #import "ImageAndTextCell.h"
 #import "StatementsListview.h"
+#import "SideToolbarView.h"
 
 #import "AnimationHelper.h"
 
@@ -80,6 +80,9 @@ static BankingController	*con;
 @synthesize saveValue;
 @synthesize managedObjectContext;
 @synthesize dockIconController;
+
+#pragma mark -
+#pragma mark Initialization
 
 -(id)init
 {
@@ -150,11 +153,17 @@ static BankingController	*con;
 {
     // Some appealing colors for (positive and negative) values.
     NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor colorWithDeviceRed: 88 / 255.0 green: 128 / 255.0 blue: 34 / 255.0 alpha: 1], NSForegroundColorAttributeName,
+                                        [NSColor colorWithDeviceRed: 88 / 255.0
+                                                              green: 128 / 255.0
+                                                               blue: 34 / 255.0
+                                                              alpha: 1], NSForegroundColorAttributeName,
                                         nil
                                         ];
     NSDictionary* negativeAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor colorWithDeviceRed: 194 / 255.0 green: 69 / 255.0 blue: 47 / 255.0 alpha: 1], NSForegroundColorAttributeName,
+                                        [NSColor colorWithDeviceRed: 194 / 255.0
+                                                              green: 69 / 255.0
+                                                               blue: 47 / 255.0
+                                                              alpha: 1], NSForegroundColorAttributeName,
                                         nil
                                         ];
     
@@ -245,6 +254,16 @@ static BankingController	*con;
         [rightPane addSubview: categoryAnalysisView];
         [categoryAnalysisView setHidden: YES];
     }
+    [categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+    [sideToolbar retain]; // We are going to remove and re-add the toolbar on demand to maintain its top z position.
+    
+    activeAccountsView = rightSplitter;
+}
+
+- (void)dealloc
+{
+    [sideToolbar release];
+    [super dealloc];
 }
 
 -(void)publishContext
@@ -279,6 +298,9 @@ static BankingController	*con;
     [self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
     dockIconController = [[DockIconController alloc ] initWithManagedObjectContext:self.managedObjectContext ];
 }
+
+#pragma mark -
+#pragma mark User actions
 
 -(void)setHBCIAccounts
 {
@@ -1005,10 +1027,10 @@ static BankingController	*con;
     BankAccount *account = (BankAccount*)cat;
     
     // issue a confirmation
-    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @"Delete account"),
-                                      NSLocalizedString(@"AP100", @"Do you really want to delete account %@?"),
-                                      NSLocalizedString(@"no", @"No"),
-                                      NSLocalizedString(@"yes", @"Yes"),
+    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @""),
+                                      NSLocalizedString(@"AP100", @""),
+                                      NSLocalizedString(@"no", @""),
+                                      NSLocalizedString(@"yes", @""),
                                       nil,
                                       account.accountNumber
                                       );
@@ -1029,11 +1051,11 @@ static BankingController	*con;
         }
         
         if (hasAssignment) {
-            int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @"Delete account"),
-                                              NSLocalizedString(@"AP29", @"There are already transactions assigned to the selected account. Do you want to delete the account %@ anyway?"),
-                                              NSLocalizedString(@"yes", @"Yes"),
-                                              NSLocalizedString(@"no", @"No"),
-                                              NSLocalizedString(@"cancel", @"Cancel"),
+            int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @""),
+                                              NSLocalizedString(@"AP29", @""),
+                                              NSLocalizedString(@"yes", @""),
+                                              NSLocalizedString(@"no", @""),
+                                              NSLocalizedString(@"cancel", @""),
                                               account.accountNumber
                                               );
             if (res == NSAlertDefaultReturn) {
@@ -1056,84 +1078,72 @@ static BankingController	*con;
 }
 
 /*
- -(void)removeDeletedAccounts
- {
- NSError	*error = nil;
- BOOL	flg_update=NO;
- 
- NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
- NSArray *bankAccounts = [self.managedObjectContext executeFetchRequest:request error:&error];
- if( error != nil || bankAccounts == nil) {
- NSAlert *alert = [NSAlert alertWithError:error];
- [alert runModal];
- return;
- }
- NSArray *hbciAccounts = [[HBCIClient hbciClient ] accounts ];
- for(BankAccount *account in bankAccounts) {
- BOOL found = NO;
- for(Account *acc in hbciAccounts) {
- if ([acc.accountNumber isEqualToString: account.accountNumber ] && [acc.bankCode isEqualToString:account.bankCode ]) {
- found = YES;
- break;
- }
- }
- if (found == NO) {
- // Accounts will be deleted - keep Statements ?
- BOOL keepAssignedStatements = NO;
- NSMutableSet *stats = [account mutableSetValueForKey: @"statements" ];
- if(stats && [stats count ] > 0) {
- BOOL hasAssignment;
- 
- // check if transactions are assigned
- for(BankStatement* stat in stats) {
- if ([stat hasAssignment ]) {
- hasAssignment = YES;
- break;
- }
- }
- 
- if (hasAssignment) {
- int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @"Delete account"),
- NSLocalizedString(@"AP29", @"There are already transactions assigned to the selected account. Do you want to delete the account %@ anyway?"),
- NSLocalizedString(@"yes", @"Yes"),
- NSLocalizedString(@"no", @"No"),
- nil,
- account.accountNumber
- );
- if (res == NSAlertDefaultReturn) {
- keepAssignedStatements = YES;
- } else keepAssignedStatements = NO;
- }
- }
- [self removeBankAccount:account keepAssignedStatements:keepAssignedStatements ];
- flg_update = YES;
- }
- }
- 
- // save updates
- if(flg_update == YES) {
- if([self.managedObjectContext save: &error ] == NO) {
- NSAlert *alert = [NSAlert alertWithError:error];
- [alert runModal];
- return;
- }
- }
- }
- */
+-(void)removeDeletedAccounts
+{
+    NSError	*error = nil;
+    BOOL	flg_update=NO;
+    
+    NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
+    NSArray *bankAccounts = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if( error != nil || bankAccounts == nil) {
+        NSAlert *alert = [NSAlert alertWithError:error];
+        [alert runModal];
+        return;
+    }
+    NSArray *hbciAccounts = [[HBCIClient hbciClient ] accounts ];
+    for(BankAccount *account in bankAccounts) {
+        BOOL found = NO;
+        for(Account *acc in hbciAccounts) {
+            if ([acc.accountNumber isEqualToString: account.accountNumber ] && [acc.bankCode isEqualToString:account.bankCode ]) {
+                found = YES;
+                break;
+            }
+        }
+        if (found == NO) {
+            // Accounts will be deleted - keep Statements ?
+            BOOL keepAssignedStatements = NO;
+            NSMutableSet *stats = [account mutableSetValueForKey: @"statements" ];
+            if(stats && [stats count ] > 0) {
+                BOOL hasAssignment;
+                
+                // check if transactions are assigned
+                for(BankStatement* stat in stats) {
+                    if ([stat hasAssignment ]) {
+                        hasAssignment = YES;
+                        break;
+                    }
+                }
+                
+                if (hasAssignment) {
+                    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @""),
+                                                      NSLocalizedString(@"AP29", @""),
+                                                      NSLocalizedString(@"yes", @""),
+                                                      NSLocalizedString(@"no", @""),
+                                                      nil,
+                                                      account.accountNumber
+                                                      );
+                    if (res == NSAlertDefaultReturn) {
+                        keepAssignedStatements = YES;
+                    } else keepAssignedStatements = NO;
+                }
+            }
+            [self removeBankAccount:account keepAssignedStatements:keepAssignedStatements ];
+            flg_update = YES;
+        }
+    }
+    
+    // save updates
+    if(flg_update == YES) {
+        if([self.managedObjectContext save: &error ] == NO) {
+            NSAlert *alert = [NSAlert alertWithError:error];
+            [alert runModal];
+            return;
+        }
+    }
+}
+*/
 
 // TAB views
--(IBAction)accountsView: (id)sender 
-{ 
-    [mainTabView selectTabViewItemAtIndex: 0 ];
-    [self adjustSearchField ];
-    
-    // update values according to slicer
-    Category *cat = [Category catRoot ];
-    [Category setCatReportFrom: [timeSlicer lowerBounds ] to: [timeSlicer upperBounds ] ];
-    [cat rebuildValues ];
-    [cat rollup ];
-}
-
 -(IBAction)transferView: (id)sender 
 { 
     [mainTabView selectTabViewItemAtIndex: 1 ];
@@ -1189,12 +1199,16 @@ static BankingController	*con;
     {
         case 0:
         {
-            // Cross-fade between the analysis view and the right splitter.
-            if ([rightSplitter isHidden]) {
-                [AnimationHelper switchFromView: categoryAnalysisView toView: rightSplitter];
-            }
+            [mainTabView selectTabViewItemAtIndex: 0];
+            
+            /* TODO: is it really necessary to do all computation in the category on every page switch.
+            // update values according to slicer
+            Category *cat = [Category catRoot];
+            [Category setCatReportFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+            [cat rebuildValues];
+            [cat rollup];
+            */
 
-            [self accountsView: nil];
             break;
         }
         case 1:
@@ -1202,27 +1216,53 @@ static BankingController	*con;
             break;
         case 2:
         {
-            if ([categoryAnalysisView isHidden]) {
-                [AnimationHelper switchFromView: rightSplitter toView: categoryAnalysisView];
-            }
             break;
         }
         case 3:
             [self standingOrders: nil];
             break;
+    }
+    
+    // Ensure z-order (sideToolbar must remain top-most view).
+    [sideToolbar removeFromSuperviewWithoutNeedingDisplay];
+    [rightPane addSubview: sideToolbar];
+
+	[self adjustSearchField];
+    [self updateStatusbar];
+}
+
+- (IBAction)activateAccountPage: (id)sender
+{
+    switch ([sender tag]) {
+        case 0:
+            // Cross-fade between the analysis view and the right splitter.
+            if (activeAccountsView != rightSplitter) {
+                [AnimationHelper switchFromView: activeAccountsView toView: rightSplitter withSlide: NO];
+                activeAccountsView = rightSplitter;
+            }
+            break;
+        case 1:
+            if (activeAccountsView != categoryAnalysisView) {
+                [AnimationHelper switchFromView: activeAccountsView toView: categoryAnalysisView withSlide: NO];
+                activeAccountsView = categoryAnalysisView;
+                [categoryAnalysisController updateTrackingAreas];
+            }
+            break;
+        case 2:
+            [self categoryRep: nil];
+            break;
+        case 3:
+            [self catPeriodView: nil];
+            break;
         case 4:
             [self editRules: nil];
             break;
-        case 5:
-            [self categoryRep: nil];
-            break;
-        case 6:
-            [self catPeriodView: nil];
-            break;
     }
-    
-	[self adjustSearchField];
-    [self updateStatusbar];
+
+    // Ensure z-order (sideToolbar must remain top-most view).
+    [sideToolbar slideOut];
+    [sideToolbar removeFromSuperviewWithoutNeedingDisplay];
+    [rightPane addSubview: sideToolbar];
 }
 
 -(IBAction)save: (id)sender
@@ -1741,8 +1781,7 @@ static BankingController	*con;
         // update values including rollup
         [Category updateCatValues ];
         
-        //[transactionsView display ]; TODO: remove once MCEMTableView is gone.
-        [statementsListView updateSelectedCell];
+        [statementsListView updateDraggedCells];
     } else {
         NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data ];        
         NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
@@ -1986,6 +2025,8 @@ static BankingController	*con;
     [cat rebuildValues ];
     [cat rollup ];
     
+    [categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+    
     [searchField setStringValue: @"" ];
     [self updateStatusbar];
 }
@@ -2064,7 +2105,7 @@ static BankingController	*con;
             {
                 [cat invalidateBalance ];
                 [Category updateCatValues ];
-                [statementsListView updateSelectedCell];
+                [statementsListView updateSelectedCells];
             }
         }
     }
@@ -2078,20 +2119,6 @@ static BankingController	*con;
 {
     restart = YES;
 }
-
-/* TODO: obsolete, delete when the MCEMTableView class is removed.
- -(NSColor*)tableView:(MCEMTableView*)tv labelColorForRow:(int)row
- {
- NSColor *color = nil;
- Category *cat = [self currentSelection ];
- if(![cat isBankAccount ]) return nil;
- 
- StatCatAssignment *stat = [[transactionController arrangedObjects ] objectAtIndex: row ];
- if([stat.statement.isNew boolValue]) color = [PreferenceController newStatementRowColor ];
- if(![stat.statement.isAssigned boolValue ] && color == nil) color = [PreferenceController notAssignedRowColor ];
- return color;
- }
- */
 
 -(IBAction)deleteStatement: (id)sender
 {
@@ -2444,37 +2471,55 @@ static BankingController	*con;
     }
 }
 
+- (void)printCurrentAccountsView
+{
+    if (activeAccountsView == rightSplitter) {
+        NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
+        [printInfo setTopMargin: 45];
+        [printInfo setBottomMargin: 45];
+        NSPrintOperation *printOp;
+        NSView *view = [[BankStatementPrintView alloc ] initWithStatements: [transactionController arrangedObjects] printInfo:printInfo];
+        printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo];
+        [printOp setShowsPrintPanel: YES];
+        [printOp runOperation];
+        
+        return;
+    }
+
+    if (activeAccountsView == categoryAnalysisView) {
+        [categoryAnalysisController print];
+        
+        return;
+    }
+}
+
 -(IBAction)printDocument:(id)sender
 {
-    int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem ] ];
-    if (idx == 0) {
-        NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo ];
-        [printInfo setTopMargin:45 ];
-        [printInfo setBottomMargin:45 ];
-        NSPrintOperation *printOp;
-        NSView *view = [[BankStatementPrintView alloc ] initWithStatements:[transactionController arrangedObjects ] printInfo:printInfo ];
-        printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo ];
-        [printOp setShowsPrintPanel:YES ];
-        //	NSGraphicsContext *context = [printOp context ];
-        [printOp runOperation ];
-    }
-    if (idx == 1) {
-        NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo ];
-        [printInfo setTopMargin:45 ];
-        [printInfo setBottomMargin:45 ];
-        [printInfo setHorizontalPagination:NSFitPagination ];
-        [printInfo setVerticalPagination:NSFitPagination ];
-        NSPrintOperation *printOp;
-        //		NSView *view = [[BankStatementPrintView alloc ] initWithStatements:[transactionController arrangedObjects ] printInfo:printInfo ];
-        printOp = [NSPrintOperation printOperationWithView:[[mainTabView selectedTabViewItem ] view] printInfo: printInfo ];
-        [printOp setShowsPrintPanel:YES ];
-        //	NSGraphicsContext *context = [printOp context ];
-        [printOp runOperation ];
-    }
-    
-    if (idx > 2) {
-        id <MainTabViewItem> item = [mainTabItems objectForKey:[[mainTabView selectedTabViewItem ] identifier ]];
-        [item print ];
+    switch ([mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]]) {
+        case 0:
+            [self printCurrentAccountsView];
+            break;
+        case 1:
+        {
+            NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo ];
+            [printInfo setTopMargin:45 ];
+            [printInfo setBottomMargin:45 ];
+            [printInfo setHorizontalPagination:NSFitPagination ];
+            [printInfo setVerticalPagination:NSFitPagination ];
+            NSPrintOperation *printOp;
+            //		NSView *view = [[BankStatementPrintView alloc ] initWithStatements:[transactionController arrangedObjects ] printInfo:printInfo ];
+            printOp = [NSPrintOperation printOperationWithView:[[mainTabView selectedTabViewItem ] view] printInfo: printInfo ];
+            [printOp setShowsPrintPanel:YES ];
+            //	NSGraphicsContext *context = [printOp context ];
+            [printOp runOperation ];
+            
+            break;
+        }
+        default:
+        {
+            id <MainTabViewItem> item = [mainTabItems objectForKey: [[mainTabView selectedTabViewItem] identifier]];
+            [item print];
+        }
     }
 }
 

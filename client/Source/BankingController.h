@@ -29,6 +29,7 @@
 @class BWSplitView;
 @class StatementsListView;
 @class AccountRepWindowController;
+@class SideToolbarView;
 
 @interface BankingController : NSObject
 {
@@ -64,6 +65,8 @@
     IBOutlet TransferListController *transferListController;
     IBOutlet StatementsListView     *statementsListView;
     
+    IBOutlet SideToolbarView *sideToolbar;
+    
 @private
     NSMutableArray         *transactions;
     NSMutableDictionary    *mainTabItems;
@@ -81,6 +84,7 @@
     NSDecimalNumber        *saveValue;
     NSCursor               *splitCursor;
     
+    NSView *activeAccountsView; // Statements, analysis, categories etc.
     AccountRepWindowController *categoryAnalysisController;
     NSView                     *categoryAnalysisView;
 }
@@ -97,10 +101,10 @@
 -(IBAction)deleteAccount:(id)sender;
 -(IBAction)editPreferences:(id)sender;
 
--(IBAction)accountsView: (id)sender;
 -(IBAction)transferView: (id)sender;
 -(IBAction)editRules: (id)sender;
 -(IBAction)activateMainPage: (id)sender;
+- (IBAction)activateAccountPage: (id)sender;
 
 -(IBAction)enqueueRequest: (id)sender;
 -(IBAction)save: (id)sender;

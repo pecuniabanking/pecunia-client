@@ -10,6 +10,11 @@
 
 #import "PXListViewCell.h"
 
+@interface NonAnimatedCellTextField : NSTextField
+{
+}
+@end
+
 @interface StatementsListViewCell : PXListViewCell
 {
 	IBOutlet NSTextField* dateLabel;

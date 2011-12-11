@@ -2,7 +2,7 @@
 //  GraphicsAdditions.m
 //  Pecunia
 //
-//  Created by Mike on 29.08.11.
+//  Created by Mike Lischke on 29.08.11.
 //  Copyright 2011 Frank Emminghaus. All rights reserved.
 //
 

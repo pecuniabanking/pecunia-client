@@ -18,6 +18,7 @@
              withDuration: (float)duration;
 
 + (void)switchFromView: (NSView*)from
-                toView: (NSView*)to;
+                toView: (NSView*)to
+             withSlide: (BOOL)doSlide;
 
 @end

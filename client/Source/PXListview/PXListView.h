@@ -45,6 +45,8 @@
 	
 	NSUInteger _dropRow;
 	PXListViewDropHighlight	_dropHighlight;
+    
+    BOOL _updating;
 }
 
 @property (nonatomic, assign) IBOutlet id <PXListViewDelegate> delegate;

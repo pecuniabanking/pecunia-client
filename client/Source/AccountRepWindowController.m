@@ -355,8 +355,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 @implementation AccountRepWindowController
 
 @synthesize category = mainCategory;
-@synthesize fromDate;
-@synthesize toDate;
 
 @synthesize barWidth; // The width of all bars in either the main or the turnovers bar.
 @synthesize groupingInterval;
@@ -394,6 +392,13 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 -(void)awakeFromNib
 {
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary* values = [userDefaults objectForKey: @"categoryAnalysis"];
+    if (values) {
+        groupingInterval = [[values objectForKey: @"grouping"] intValue];
+        groupingSlider.intValue = groupingInterval;
+    }
+    
     [self setupMainGraph];
     [self setupTurnoversGraph];
     [self setupSelectionGraph];
@@ -442,8 +447,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 - (void)setupShadowForPlot: (CPTPlot*) plot
 {
     plot.shadowColor = CGColorCreateGenericGray(0, 1);
-    plot.shadowRadius = 2.0;
-    plot.shadowOffset = CGSizeMake(1, -1);
+    plot.shadowRadius = 3.0;
+    plot.shadowOffset = CGSizeMake(2, -2);
     plot.shadowOpacity = 0.75;
 }
 
@@ -490,6 +495,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     mainGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame: NSRectToCGRect(mainHostView.bounds)];
     CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
     [mainGraph applyTheme: theme];
+    mainGraph.zPosition = 100;
     mainHostView.hostedGraph = mainGraph;
     
     // Setup scatter plot space
@@ -511,7 +517,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     CPTPlotAreaFrame* frame = mainGraph.plotAreaFrame;
     frame.paddingLeft = 90;
-    frame.paddingRight = 30;
+    frame.paddingRight = 50;
     frame.paddingTop = 30;
     frame.paddingBottom = 30;
     
@@ -521,9 +527,9 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     frame.shadowColor = CGColorCreateGenericGray(0, 1);
     frame.shadowRadius = 2.0;
     frame.shadowOffset = CGSizeMake(1, -1);
-    frame.shadowOpacity = 0.1;
-    
-    CPTFill* fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 0.8]];
+    frame.shadowOpacity = 0.25;
+  
+    CPTFill* fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1]];
     frame.fill = fill;
     
     [self setupMainAxes];
@@ -612,6 +618,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     turnoversGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame: NSRectToCGRect(turnoversHostView.bounds)];
     CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
     [turnoversGraph applyTheme: theme];
+    turnoversGraph.zPosition = -100;
     turnoversHostView.hostedGraph = turnoversGraph;
     
     // Setup scatter plot space
@@ -633,18 +640,18 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     CPTPlotAreaFrame* frame = turnoversGraph.plotAreaFrame;
     frame.paddingLeft = 90;
-    frame.paddingRight = 30;
+    frame.paddingRight = 50;
     frame.paddingTop = 15;
     frame.paddingBottom = 15;
     
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
-    /*
+    
     frame.shadowColor = CGColorCreateGenericGray(0, 1);
     frame.shadowRadius = 2.0;
     frame.shadowOffset = CGSizeMake(1, -1);
-    frame.shadowOpacity = 0.1;
-    */
+    frame.shadowOpacity = 0.25;
+    
     [self setupTurnoversAxes];
     
     // The second y axis is used as the current location identifier.
@@ -723,6 +730,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     selectionGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame: NSRectToCGRect(selectionHostView.bounds)];
     CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
     [selectionGraph applyTheme: theme];
+    selectionGraph.zPosition = -100;
     selectionHostView.hostedGraph = selectionGraph;
 
     selectionGraph.fill = nil;
@@ -773,7 +781,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 {
     CPTScatterPlot* linePlot = [[[CPTScatterPlot alloc] init] autorelease];
     linePlot.cachePrecision = CPTPlotCachePrecisionDecimal;
-    linePlot.alignsPointsToPixels = NO;
+    linePlot.alignsPointsToPixels = YES;
+    
     linePlot.dataLineStyle = nil;
     linePlot.interpolation = CPTScatterPlotInterpolationStepped;
 
@@ -795,7 +804,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     barPlot.barCornerRadius = 3.0f;
     barPlot.barsAreHorizontal = NO;
     barPlot.baseValue = CPTDecimalFromInt(0);
-    barPlot.alignsPointsToPixels = NO;
+    barPlot.alignsPointsToPixels = YES;
     barPlot.cachePrecision = CPTPlotCachePrecisionDouble;
     
     if (withBorder) {
@@ -825,24 +834,24 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     if (mainCategory == nil)
         return;
     
-    CPTGradient* positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 100 / 255.0
-                                                                                                       green: 100 / 255.0
-                                                                                                        blue: 100 / 255.0
+    CPTGradient* positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 120 / 255.0
+                                                                                                       green: 120 / 255.0
+                                                                                                        blue: 120 / 255.0
                                                                                                        alpha: 0.75]
                                                                 endingColor: [CPTColor colorWithComponentRed: 60 / 255.0
                                                                                                        green: 60 / 255.0
                                                                                                         blue: 60 / 255.0
-                                                                                                       alpha: 0.75]
+                                                                                                       alpha: 1]
                                      ];
     positiveGradient.angle = -90.0;
     CPTFill* positiveGradientFill = [CPTFill fillWithGradient: positiveGradient];
-    CPTGradient* negativeGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 255 / 255.0
-                                                                                                       green: 50 / 255.0
-                                                                                                        blue: 50 / 255.0
-                                                                                                       alpha: 0.75]
-                                                                endingColor: [CPTColor colorWithComponentRed: 255 / 255.0
-                                                                                                       green: 50 / 255.0
-                                                                                                        blue: 50 / 255.0
+    CPTGradient* negativeGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 194 / 255.0
+                                                                                                       green: 69 / 255.0
+                                                                                                        blue: 47 / 255.0
+                                                                                                       alpha: 0.9]
+                                                                endingColor: [CPTColor colorWithComponentRed: 194 / 255.0
+                                                                                                       green: 69 / 255.0
+                                                                                                        blue: 47 / 255.0
                                                                                                        alpha: 0.75]
                                      ];
     
@@ -1268,6 +1277,20 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     y.visibleRange = plotRange;
     
     [selectionGraph reloadData];
+}
+
+#pragma mark -
+#pragma mark Event handling
+
+/**
+ * Allows to trigger tracking area updates of the graph views from outside of the controller.
+ */
+- (void)updateTrackingAreas
+{
+    [mainHostView updateTrackingAreas];
+    [turnoversHostView updateTrackingAreas];
+    [selectionHostView updateTrackingAreas];
+
 }
 
 #pragma mark -
@@ -1788,7 +1811,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
     // This extra day is accompanied by duplication of the last value in our data (for scatterplots)
     // or nil (for bar plots).
-    return [dates count] + ((groupingInterval == GroupByDays) ? 1 : 0);
+    return [dates count] + 1;
 }
 
 - (NSNumber*)numberForPlot: (CPTPlot*)plot field: (NSUInteger)fieldEnum recordIndex: (NSUInteger)index
@@ -1999,6 +2022,12 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 - (IBAction)setGrouping: (id)sender
 {
     groupingInterval = [sender intValue];
+    
+    NSMutableDictionary* values = [NSMutableDictionary dictionaryWithCapacity: 1];
+    [values setValue: [NSNumber numberWithInt: groupingInterval ] forKey: @"grouping"];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject: values forKey: @"categoryAnalysis"];
+    
     [self reloadData];
     
     if ([dates count] == 0) {
@@ -2016,22 +2045,80 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [self updateSelectionDisplay];
 }
 
--(void)print
+/**
+ * Returns an offscreen view containing all visual elements of this page for printing.
+ */
+- (NSView*)getPrintViewForLayerBackedView: (NSView*)view;
+{
+    NSRect bounds = view.bounds;
+    int bitmapBytesPerRow = 4 * bounds.size.width;
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
+    CGContextRef context = CGBitmapContextCreate (NULL,
+                                                  bounds.size.width,
+                                                  bounds.size.height,
+                                                  8,
+                                                  bitmapBytesPerRow,
+                                                  colorSpace,
+                                                  kCGImageAlphaPremultipliedLast);
+    if (context == NULL)
+    {
+        NSLog(@"Failed to create context.");
+        return nil;
+    }
+    
+    CGColorSpaceRelease(colorSpace);
+
+    [[view layer] renderInContext: context];
+    CGImageRef img = CGBitmapContextCreateImage(context);
+    NSImage* image = [[NSImage alloc] initWithCGImage: img size: bounds.size];
+    
+    NSImageView* canvas = [[NSImageView alloc] initWithFrame: bounds];
+    [canvas setImage: image];
+
+    CFRelease(img);
+    CFRelease(context);
+    return [canvas autorelease];
+}
+
+- (void)print
 {
     NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
     [printInfo setTopMargin: 45];
     [printInfo setBottomMargin: 45];
-    [printInfo setHorizontalPagination:NSFitPagination];
-    [printInfo setVerticalPagination:NSFitPagination];
+    [printInfo setHorizontalPagination: NSFitPagination];
+    [printInfo setVerticalPagination: NSFitPagination];
     NSPrintOperation *printOp;
-    printOp = [NSPrintOperation printOperationWithView: printView printInfo: printInfo];
+
+    printOp = [NSPrintOperation printOperationWithView: [self getPrintViewForLayerBackedView: topView] printInfo: printInfo];
+
     [printOp setShowsPrintPanel: YES];
     [printOp runOperation];
 }
 
 -(NSView*)mainView
 {
-    return printView;
+    return topView;
+}
+
+/**
+ * Sets a new time interval for display. The given interval is checked against our minimum intervals
+ * (depending on the current grouping mode) and adjusted to match them.
+ */
+- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
+{
+    [fromDate release];
+    fromDate = [from retain];
+    
+    [toDate release];
+    toDate = [to retain];
+
+    [self updateValues];
+
+    [self updateMainGraph];
+    [self updateTurnoversGraph];
+    [self updateSelectionGraph];
+    [self updateSelectionDisplay];
 }
 
 @end

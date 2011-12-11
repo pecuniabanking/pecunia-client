@@ -2,7 +2,7 @@
 //  StatementsListview.h
 //  Pecunia
 //
-//  Created by Mike on 01.10.11.
+//  Created by Mike Lischke on 01.10.11.
 //  Copyright 2011 Frank Emminghaus. All rights reserved.
 //
 
@@ -11,12 +11,14 @@
 
 @interface StatementsListView : PXListView <PXListViewDelegate>
 {
-  NSArray* _dataSource;
-  NSArray* _valueArray;
-
-  NSDateFormatter* _dateFormatter;
-  NSNumberFormatter* _numberFormatter;
-  NSCalendar* _calendar;
+    NSArray* _dataSource;
+    NSArray* _valueArray;
+    
+    NSDateFormatter* _dateFormatter;
+    NSNumberFormatter* _numberFormatter;
+    NSCalendar* _calendar;
+    
+    NSIndexSet* draggedIndexes;
 }
 
 - (NSNumberFormatter*) numberFormatter;
@@ -27,6 +29,7 @@
 - (NSArray*)valueArray;
 - (void)setValueArray: (NSArray*)array;
 
-- (void)updateSelectedCell;
+- (void)updateSelectedCells;
+- (void)updateDraggedCells;
 
 @end

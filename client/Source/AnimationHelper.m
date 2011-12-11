@@ -6,8 +6,9 @@
 //  Copyright 2011 Frank Emminghaus. All rights reserved.
 //
 
-#import "AnimationHelper.h"
+#import <Quartz/Quartz.h>
 
+#import "AnimationHelper.h"
 
 @implementation AnimationHelper
 
@@ -53,14 +54,17 @@
  */
 + (void)switchFromView: (NSView*)from
                 toView: (NSView*)to
+             withSlide: (BOOL)doSlide
 {
-    NSRect frame = [to frame];
-    frame.origin.x -= frame.size.width;
-    [to setFrame: frame];
-    frame.origin.x += frame.size.width;
-    [[to animator] setFrame: frame];
-    [to setHidden: NO];
+    if (doSlide) {
+        NSRect frame = [to frame];
+        frame.origin.x -= frame.size.width;
+        [to setFrame: frame];
+        frame.origin.x += frame.size.width;
+        [[to animator] setFrame: frame];
+    }
     
+    [[to animator] setHidden: NO];
     [[from animator] setHidden: YES];
 }
 

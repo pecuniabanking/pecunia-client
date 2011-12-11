@@ -10,7 +10,25 @@
 #import "GraphicsAdditions.h"
 #import "CurrencyValueTransformer.h"
 
+@implementation NonAnimatedCellTextField
+
++ (id)defaultAnimationForKey: (NSString *)key
+{
+    // Disable animations for text changes.
+    return nil;
+}
+
+@end
+
 @implementation StatementsListViewCell
+
++ (id)defaultAnimationForKey: (NSString *)key
+{
+    // No animations for the cells please. In a class where cells are constantly added and removed
+    // this gets annoying quickly otherwise. This does only disable animations for the cell itself
+    // not its content.
+    return nil;
+}
 
 #pragma mark Init/Dealloc
 

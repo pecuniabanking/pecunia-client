@@ -252,22 +252,44 @@
     while (index != NSNotFound) {
         StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
         [cell setIsNew: NO];
-        
         index = [selection indexGreaterThanIndex: index];
     }
 }
 
 /**
- * Used to set all values for the current cell again, for changes not covered by KVO.
+ * Used to set all values for the current cells again, for changes not covered by KVO.
  */
-- (void)updateSelectedCell
+- (void)updateSelectedCells
 {
-    NSUInteger row = [self selectedRow];
-    if (row == NSNotFound)
+    NSIndexSet* selection = [self selectedRows];
+    NSUInteger index = [selection firstIndex];
+    while (index != NSNotFound) {
+        StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
+        [self fillCell: cell forRow: index];
+        index = [selection indexGreaterThanIndex: index];
+    }
+}
+
+/**
+ * Used to set all values for the those cells that were dragged previously, for changes not covered by KVO.
+ */
+- (void)updateDraggedCells
+{
+    if (draggedIndexes == nil)
         return;
     
-    StatementsListViewCell* cell = (StatementsListViewCell*)[self cellForRowAtIndex: row];
-    [self fillCell: cell forRow: row];
+    NSUInteger index = [draggedIndexes firstIndex];
+    while (index != NSNotFound) {
+        StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
+        
+        // The cell can actually have been removed
+        if (cell != nil)
+            [self fillCell: cell forRow: index];
+        index = [draggedIndexes indexGreaterThanIndex: index];
+    }
+    
+    [draggedIndexes release];
+    draggedIndexes = nil;
 }
 
 #pragma mark -
@@ -278,35 +300,36 @@
 
 - (BOOL)listView: (PXListView*)aListView writeRowsWithIndexes: (NSIndexSet*)rowIndexes toPasteboard: (NSPasteboard*)dragPasteboard
 {
-    unsigned int		idx[30], count, i;
-	NSRange				range;
-	StatCatAssignment	*stat;
-	NSMutableArray		*uris = [NSMutableArray arrayWithCapacity: 10 ];
+    // Keep a copy of the selected indexes as the selection is removed during the drag operation,
+    // but we need to update the selected cells then.
+    draggedIndexes = [rowIndexes copy];
+    
+    unsigned int indexes[30], count, i;
+	NSRange range;
+	StatCatAssignment* stat;
+	NSMutableArray* uris = [NSMutableArray arrayWithCapacity: 30];
     
     range.location = 0;
 	range.length = 100000;
     
     // Copy the row numbers to the pasteboard.
     do {
-		count = [rowIndexes getIndexes: idx maxCount:30 inIndexRange: &range ];
-		for(i=0; i < count; i++) {
-			stat = [_dataSource objectAtIndex: idx[i] ];
+		count = [rowIndexes getIndexes: indexes maxCount: 30 inIndexRange: &range];
+		for (i = 0; i < count; i++) {
+			stat = [_dataSource objectAtIndex: indexes[i]];
 			NSURL *uri = [[stat objectID] URIRepresentation];
-			[uris addObject: uri ];
+			[uris addObject: uri];
 		}
-	} while(count > 0);    
+	} while (count > 0);    
     
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: uris];
-    [dragPasteboard declareTypes:[NSArray arrayWithObject: BankStatementDataType] owner:self];
+    [dragPasteboard declareTypes:[NSArray arrayWithObject: BankStatementDataType] owner: self];
     [dragPasteboard setData:data forType: BankStatementDataType];
-/*    
-	if([[self currentSelection ] isBankAccount ]) [tv setDraggingSourceOperationMask: NSDragOperationCopy | NSDragOperationMove | NSDragOperationGeneric forLocal: YES ];
-	else [tv setDraggingSourceOperationMask: NSDragOperationCopy | NSDragOperationMove forLocal: YES ];
-	[tv setDraggingSourceOperationMask: NSDragOperationDelete forLocal: NO]; 
-*/ 
+
     return YES;
 }
 
+// TODO: doesn't seem to have any effect, remove?
 - (NSDragOperation)listView: (PXListView*)aListView validateDrop: (id <NSDraggingInfo>)info proposedRow: (NSUInteger)row
       proposedDropHighlight: (PXListViewDropHighlight)dropHighlight;
 {

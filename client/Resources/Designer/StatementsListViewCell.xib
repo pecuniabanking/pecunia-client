@@ -808,30 +808,37 @@
           <string>1.WindowOrigin</string>
           <string>1.editorWindowContentRectSynchronizationRect</string>
           <string>10.IBPluginDependency</string>
+          <string>11.CustomClassName</string>
           <string>11.IBPluginDependency</string>
           <string>11.IBViewBoundsToFrameTransform</string>
           <string>12.IBPluginDependency</string>
+          <string>15.CustomClassName</string>
           <string>15.IBPluginDependency</string>
           <string>15.IBViewBoundsToFrameTransform</string>
           <string>16.IBPluginDependency</string>
+          <string>2.CustomClassName</string>
           <string>2.IBPluginDependency</string>
           <string>2.IBViewBoundsToFrameTransform</string>
           <string>22.IBNumberFormatterBehaviorMetadataKey</string>
           <string>22.IBNumberFormatterLocalizesFormatMetadataKey</string>
           <string>22.IBNumberFormatterSampleNumberKey</string>
           <string>22.IBPluginDependency</string>
+          <string>23.CustomClassName</string>
           <string>23.IBPluginDependency</string>
           <string>23.IBViewBoundsToFrameTransform</string>
           <string>24.IBPluginDependency</string>
+          <string>25.CustomClassName</string>
           <string>25.IBPluginDependency</string>
           <string>25.IBViewBoundsToFrameTransform</string>
           <string>26.IBPluginDependency</string>
           <string>28.IBAttributePlaceholdersKey</string>
           <string>28.IBViewBoundsToFrameTransform</string>
           <string>3.IBPluginDependency</string>
+          <string>64.CustomClassName</string>
           <string>64.IBPluginDependency</string>
           <string>64.IBViewBoundsToFrameTransform</string>
           <string>65.IBPluginDependency</string>
+          <string>66.CustomClassName</string>
           <string>66.IBPluginDependency</string>
           <string>66.IBViewBoundsToFrameTransform</string>
           <string>67.IBPluginDependency</string>
@@ -839,15 +846,19 @@
           <string>68.IBNumberFormatterLocalizesFormatMetadataKey</string>
           <string>68.IBNumberFormatterSampleNumberKey</string>
           <string>68.IBPluginDependency</string>
+          <string>69.CustomClassName</string>
           <string>69.IBPluginDependency</string>
           <string>69.IBViewBoundsToFrameTransform</string>
+          <string>7.CustomClassName</string>
           <string>7.IBPluginDependency</string>
           <string>7.IBViewBoundsToFrameTransform</string>
           <string>70.IBPluginDependency</string>
+          <string>74.CustomClassName</string>
           <string>74.IBPluginDependency</string>
           <string>74.IBViewBoundsToFrameTransform</string>
           <string>75.IBPluginDependency</string>
           <string>8.IBPluginDependency</string>
+          <string>9.CustomClassName</string>
           <string>9.IBPluginDependency</string>
           <string>9.IBViewBoundsToFrameTransform</string>
         </object>
@@ -861,16 +872,19 @@
           <string>{628, 654}</string>
           <string>{{357, 416}, {480, 272}}</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+          <string>NonAnimatedCellTextField</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
             <bytes key="NSTransformStruct">P4AAAL+AAABDVgAAwggAAA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+          <string>NonAnimatedCellTextField</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
             <bytes key="NSTransformStruct">P4AAAL+AAABEIgAAwgQAAA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+          <string>NonAnimatedCellTextField</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
             <bytes key="NSTransformStruct">P4AAAL+AAABBiAAAwkQAAA</bytes>
@@ -879,11 +893,13 @@
           <boolean value="YES"/>
           <real value="-1234.75"/>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+          <string>NonAnimatedCellTextField</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
             <bytes key="NSTransformStruct">P4AAAL+AAABEPUAAwegAAA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+          <string>NonAnimatedCellTextField</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
             <bytes key="NSTransformStruct">P4AAAL+AAABD/QAAwegAAA</bytes>
@@ -901,11 +917,13 @@
             <bytes key="NSTransformStruct">AUEgAABBYAAAA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+          <string>NonAnimatedCellTextField</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
             <bytes key="NSTransformStruct">P4AAAL+AAABEIIAAwYAAAA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+          <string>NonAnimatedCellTextField</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
             <bytes key="NSTransformStruct">P4AAAL+AAABENMAAwhAAAA</bytes>
@@ -915,21 +933,25 @@
           <boolean value="YES"/>
           <real value="-1234.75"/>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+          <string>NonAnimatedCellTextField</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
             <bytes key="NSTransformStruct">P4AAAL+AAABETcAAwgQAAA</bytes>
           </object>
+          <string>NonAnimatedCellTextField</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
             <bytes key="NSTransformStruct">P4AAAL+AAABEJQAAwoIAAA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+          <string>NonAnimatedCellTextField</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
             <bytes key="NSTransformStruct">P4AAAL+AAABEIgAAwWAAAA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+          <string>NonAnimatedCellTextField</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
             <bytes key="NSTransformStruct">P4AAAL+AAABCrAAAwfgAAA</bytes>
@@ -958,10 +980,18 @@
       <object class="NSMutableArray" key="referencedPartialClassDescriptions">
         <bool key="EncodedWithXMLCoder">YES</bool>
         <object class="IBPartialClassDescription">
+          <string key="className">NonAnimatedCellTextField</string>
+          <string key="superclassName">NSTextField</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier" id="271057629">
+            <string key="majorKey">IBProjectSource</string>
+            <string key="minorKey">Source/StatementsListviewCell.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
           <string key="className">PXListViewCell</string>
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBProjectSource</string>
-            <string key="minorKey">PXListview/PXListViewCell+Private.h</string>
+            <string key="minorKey">Source/PXListview/PXListViewCell+Private.h</string>
           </object>
         </object>
         <object class="IBPartialClassDescription">
@@ -969,7 +999,7 @@
           <string key="superclassName">NSView</string>
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBProjectSource</string>
-            <string key="minorKey">PXListview/PXListViewCell.h</string>
+            <string key="minorKey">Source/PXListview/PXListViewCell.h</string>
           </object>
         </object>
         <object class="IBPartialClassDescription">
@@ -1070,10 +1100,7 @@
               </object>
             </object>
           </object>
-          <object class="IBClassDescriptionSource" key="sourceIdentifier">
-            <string key="majorKey">IBProjectSource</string>
-            <string key="minorKey">StatementsListviewCell.h</string>
-          </object>
+          <reference key="sourceIdentifier" ref="271057629"/>
         </object>
       </object>
       <object class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">
@@ -1131,6 +1158,13 @@
         </object>
         <object class="IBPartialClassDescription">
           <string key="className">NSApplication</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier" id="1029662292">
+            <string key="majorKey">IBFrameworkSource</string>
+            <string key="minorKey">AppKit.framework/Headers/NSWindowRestoration.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSApplication</string>
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBFrameworkSource</string>
             <string key="minorKey">BWToolkitFramework.framework/Headers/NSApplication+BWAdditions.h</string>
@@ -1150,6 +1184,13 @@
           <object class="IBClassDescriptionSource" key="sourceIdentifier" id="274675954">
             <string key="majorKey">IBFrameworkSource</string>
             <string key="minorKey">AppKit.framework/Headers/NSControl.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSControl</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier" id="440906004">
+            <string key="majorKey">IBFrameworkSource</string>
+            <string key="minorKey">AppKit.framework/Headers/NSLayoutConstraint.h</string>
           </object>
         </object>
         <object class="IBPartialClassDescription">
@@ -1259,13 +1300,6 @@
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBFrameworkSource</string>
             <string key="minorKey">AppKit.framework/Headers/NSNibLoading.h</string>
-          </object>
-        </object>
-        <object class="IBPartialClassDescription">
-          <string key="className">NSObject</string>
-          <object class="IBClassDescriptionSource" key="sourceIdentifier">
-            <string key="majorKey">IBFrameworkSource</string>
-            <string key="minorKey">AppKit.framework/Headers/NSOutlineView.h</string>
           </object>
         </object>
         <object class="IBPartialClassDescription">
@@ -1426,20 +1460,6 @@
           <string key="className">NSObject</string>
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBFrameworkSource</string>
-            <string key="minorKey">Foundation.framework/Headers/NSURLConnection.h</string>
-          </object>
-        </object>
-        <object class="IBPartialClassDescription">
-          <string key="className">NSObject</string>
-          <object class="IBClassDescriptionSource" key="sourceIdentifier">
-            <string key="majorKey">IBFrameworkSource</string>
-            <string key="minorKey">Foundation.framework/Headers/NSURLDownload.h</string>
-          </object>
-        </object>
-        <object class="IBPartialClassDescription">
-          <string key="className">NSObject</string>
-          <object class="IBClassDescriptionSource" key="sourceIdentifier">
-            <string key="majorKey">IBFrameworkSource</string>
             <string key="minorKey">QuartzCore.framework/Headers/CAAnimation.h</string>
           </object>
         </object>
@@ -1501,6 +1521,10 @@
           </object>
         </object>
         <object class="IBPartialClassDescription">
+          <string key="className">NSResponder</string>
+          <reference key="sourceIdentifier" ref="1029662292"/>
+        </object>
+        <object class="IBPartialClassDescription">
           <string key="className">NSTextField</string>
           <string key="superclassName">NSControl</string>
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -1525,9 +1549,20 @@
         </object>
         <object class="IBPartialClassDescription">
           <string key="className">NSView</string>
+          <reference key="sourceIdentifier" ref="440906004"/>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSView</string>
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBFrameworkSource</string>
             <string key="minorKey">AppKit.framework/Headers/NSMenuItem.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSView</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier">
+            <string key="majorKey">IBFrameworkSource</string>
+            <string key="minorKey">AppKit.framework/Headers/NSOpenGLView.h</string>
           </object>
         </object>
         <object class="IBPartialClassDescription">
@@ -1562,7 +1597,7 @@
       <integer value="3000" key="NS.object.0"/>
     </object>
     <bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-    <string key="IBDocument.LastKnownRelativeProjectPath">Pecunia.xcodeproj</string>
+    <string key="IBDocument.LastKnownRelativeProjectPath">../../Pecunia.xcodeproj</string>
     <int key="IBDocument.defaultPropertyAccessControl">3</int>
     <object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
       <string key="NS.key.0">new</string>

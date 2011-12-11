@@ -115,6 +115,8 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 
 - (void)reloadData
 {
+    _updating = YES;
+    
 	id <PXListViewDelegate> delegate = [self delegate];
 	
 	// Move all visible cells to the reusable cells array
@@ -128,6 +130,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 	
 	[_visibleCells removeAllObjects];
 	free(_cellYOffsets);
+    _cellYOffsets = NULL;
 	
 	[_selectedRows removeAllIndexes];
     _lastSelectedRow = -1;
@@ -143,6 +146,8 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 		
 		[self layoutCells];
 	}
+    
+    _updating = NO;
 }
 
 - (NSUInteger)numberOfRows
@@ -294,6 +299,10 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 
 - (void)updateCells
 {	
+    // ml: no cell updates while reloading data, please.
+    if (_updating)
+        return;
+    
 	NSRange visibleRange = [self visibleRange];
 	NSRange intersectionRange = NSIntersectionRange(visibleRange, _currentRange);
 	

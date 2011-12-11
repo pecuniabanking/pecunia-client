@@ -29,6 +29,16 @@
     [super dealloc];
 }
 
+// Background graphic elements, used in all sidebars.
+static NSShadow* borderShadow = nil;
+static NSGradient* backgroundGradient = nil;
+static NSGradient* insetGradient = nil;
+
+// Inset graphic elements, used in all sidebars.
+static NSColor* strokeColor = nil;
+static NSShadow* innerShadow1 = nil;
+static NSShadow* innerShadow2 = nil;
+	
 - (void)drawRect: (NSRect)rect
 {
     if (borderShadow == nil)
@@ -66,10 +76,8 @@
     [borderPath addClip];
     
     [backgroundGradient drawInBezierPath: borderPath angle: 95.0];
-    [NSGraphicsContext restoreGraphicsState];
     
     // Inset.
-    // TODO: dimensions, especially the height can be customized with custom attributes, once we switch to OS X 10.6 (KVC required).
     NSBezierPath* insetPath = [NSBezierPath bezierPath];
     int height = [self bounds].size.height;
     [insetPath moveToPoint: NSMakePoint(47, height - 10)];
@@ -92,6 +100,8 @@
     // Twofold inner shadow.
     [insetPath fillWithInnerShadow: innerShadow1 borderOnly: YES];
     [insetPath fillWithInnerShadow: innerShadow2 borderOnly: YES];
+
+    [NSGraphicsContext restoreGraphicsState];
 }
 
 @end

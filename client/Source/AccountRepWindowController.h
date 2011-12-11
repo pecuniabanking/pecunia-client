@@ -35,7 +35,7 @@
 
 @interface AccountRepWindowController : NSObject <CPTScatterPlotDataSource, CPTPlotSpaceDelegate, CPTPlotDataSource, CPTBarPlotDelegate>
 {
-	IBOutlet NSView* printView;
+	IBOutlet NSView* topView;
 
     IBOutlet PecuinaGraphHost* mainHostView;
     IBOutlet PecuinaGraphHost* turnoversHostView;
@@ -58,7 +58,7 @@
     Category* mainCategory;
 	NSArray* dates;
     NSArray* balances;
-    NSArray* balanceCounts;               // Number of balances per day.
+    NSArray* balanceCounts;               // Number of balances per unit (day, week etc.).
     NSNumberFormatter* infoTextFormatter;
 
 	ShortDate* fromDate;
@@ -73,8 +73,6 @@
 }
 
 @property (nonatomic, retain) Category* category;
-@property (nonatomic, retain) ShortDate *fromDate;
-@property (nonatomic, retain) ShortDate *toDate;
 
 @property (nonatomic, readwrite) CGFloat barWidth;
 @property (nonatomic, readwrite) GroupingInterval groupingInterval;
@@ -82,7 +80,12 @@
 - (IBAction)setGrouping: (id)sender;
 
 - (NSView*)mainView;
+- (void)print;
+
 - (void)updateGraphs;
+- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
+
+- (void)updateTrackingAreas;
 
 @end
 
