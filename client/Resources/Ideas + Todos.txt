@@ -1,0 +1,14 @@
+To Dos
+
+===================================================================================================
+
+Raw Ideas
+
+Kategorie + Kontenanalyse
+-------------------------
+- (Graph) anpassbar durch Nutzer
+- (Graph) Punktsymbole (z.B. Dreieck, Kreis, Quadrat)
+- (Graph) Export zu png, pdf
+- (Graph) Anzeige von min, max, average
+- (Graph) Trendlinie (zumindest für Konten)
+- (Graph) mehrere Kategorien zusammen

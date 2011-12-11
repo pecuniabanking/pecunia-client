@@ -94,7 +94,7 @@
 	return [_dataSource count];
 }
 
-- (id) formatValue: (id)value capitalize: (BOOL) capitalize
+- (id)formatValue: (id)value capitalize: (BOOL)capitalize
 {
     if (value == nil || [value isKindOfClass: [NSNull class]])
         value = @"";
@@ -109,22 +109,6 @@
     return value;
 }
 
-/**
- * Taken from Cocoa help. Computes number of days between two dates.
- */
-- (NSInteger)daysWithinEraFromDate: (NSDate*) startDate toDate: (NSDate*) endDate
-{
-    if (_calendar == nil)
-        _calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
-    
-    NSUInteger startDay = [_calendar ordinalityOfUnit: NSDayCalendarUnit
-                                               inUnit: NSEraCalendarUnit forDate: startDate];
-    NSUInteger endDay = [_calendar ordinalityOfUnit: NSDayCalendarUnit
-                                             inUnit: NSEraCalendarUnit forDate: endDate];
-    
-    return endDay - startDay;
-}
-
 - (BOOL)showsHeaderForRow: (NSUInteger)row
 {
     BOOL result = (row == 0);
@@ -133,7 +117,7 @@
         BankStatement *statement = (BankStatement*)[[_dataSource objectAtIndex: row] valueForKey: @"statement"];
         BankStatement *previousStatement = (BankStatement*)[[_dataSource objectAtIndex: row - 1] valueForKey: @"statement"];
         
-        result = [ShortDate dateWithDate: statement.date].day != [ShortDate dateWithDate: previousStatement.date].day;
+        result = [[ShortDate dateWithDate: statement.date] compare: [ShortDate dateWithDate: previousStatement.date]] != NSOrderedSame;
     }
     return result;
 }
@@ -146,14 +130,14 @@
 {
     int result = 1;
     id statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];
-    ShortDate* currentDate = [ShortDate dateWithDate:[statement valueForKey: @"date"] ];
+    ShortDate* currentDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
     
     int totalCount = [_dataSource count];
     while (++row < totalCount)
     {
-        id statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];
-        ShortDate* nextDate = [ShortDate dateWithDate:[statement valueForKey: @"date"] ];
-        if (currentDate.day != nextDate.day)
+        statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];
+        ShortDate* nextDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
+        if ([currentDate compare: nextDate] != NSOrderedSame)
             break;
         result++;
     }
@@ -173,9 +157,9 @@
     int turnovers = [self countSameDatesFromRow: row];
     NSString* turnoversString;
     if (turnovers != 1)
-        turnoversString = [NSString stringWithFormat: NSLocalizedString(@"AP133", @"%u turnovers"), turnovers];
+        turnoversString = [NSString stringWithFormat: NSLocalizedString(@"AP133", @""), turnovers];
     else
-        turnoversString = NSLocalizedString(@"AP132", @"1 turnover");
+        turnoversString = NSLocalizedString(@"AP132", @"");
     
     [cell setDetailsDate: [self formatValue: currentDate capitalize: NO]
                turnovers: turnoversString

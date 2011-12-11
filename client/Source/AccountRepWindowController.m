@@ -2024,7 +2024,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     groupingInterval = [sender intValue];
     
     NSMutableDictionary* values = [NSMutableDictionary dictionaryWithCapacity: 1];
-    [values setValue: [NSNumber numberWithInt: groupingInterval ] forKey: @"grouping"];
+    [values setValue: [NSNumber numberWithInt: groupingInterval] forKey: @"grouping"];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject: values forKey: @"categoryAnalysis"];
     
