@@ -21,7 +21,7 @@ typedef enum {
     cat_histtype_month,
     cat_histtype_quarter,
     cat_histtype_year
-} CatHistoryType __attribute__((deprecated));
+} CatHistoryType __attribute__((deprecated)); // Replace with GroupingInterval.
 
 /**
  * Specifies the grouping of values when collecting statistical data, that is, which time frame
@@ -73,6 +73,9 @@ typedef enum {
 -(BOOL)isInsertable;
 -(BOOL)isNotAssignedCategory;
 -(BOOL)checkMoveToCategory:(Category*)cat;
+
+-(NSColor*)categoryColor;
+-(void)setCategoryColor: (NSColor*)color;
 
 //-(void)setLocalName: (NSString*)name;
 -(NSMutableSet*)children;

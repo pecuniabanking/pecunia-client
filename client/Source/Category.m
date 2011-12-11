@@ -14,6 +14,8 @@
 #import "StatCatAssignment.h"
 #import "CategoryReportingNode.h"
 
+#import "GraphicsAdditions.h"
+
 Category *catRoot = nil;
 Category *bankRoot = nil;
 Category *nassRoot = nil;
@@ -601,6 +603,43 @@ BOOL	updateSent = NO;
         parent = parent.parent;
     }
     return YES;
+}
+
+-(NSColor*)categoryColor
+{
+    if (self.catRepColor == nil) {
+        // Assign a default color if none has been set so far.
+        // Root categories get different dark gray default colors. Others either get one of the predefined
+        // colors or a random one if no color is left from the set of predefined colors.
+        if (self.catRepColor == nil) {
+            NSColor* color;
+            if (self == bankRoot) {
+                color = [NSColor colorWithDeviceWhite: 0.12 alpha: 1];
+            } else {
+                if (self == catRoot) {
+                    color = [NSColor colorWithDeviceWhite: 0.24 alpha: 1];
+                } else {
+                    if (self == nassRoot) {
+                        color = [NSColor colorWithDeviceWhite: 0.36 alpha: 1];
+                    } else {
+                        if ([self isBankAccount]) {
+                            color = [NSColor nextDefaultAccountColor];
+                        } else {
+                            color = [NSColor nextDefaultCategoryColor];
+                        }
+                    }
+                }
+            }
+            self.catRepColor = [NSArchiver archivedDataWithRootObject: color];
+        }
+    }
+    
+    return [NSUnarchiver unarchiveObjectWithData: self.catRepColor];
+}
+
+-(void)setCategoryColor: (NSColor*)color
+{
+    self.catRepColor = [NSArchiver archivedDataWithRootObject: color];
 }
 
 +(Category*)bankRoot

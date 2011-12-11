@@ -27,6 +27,7 @@
 	account.isStandingOrderSupported = acc.isStandingOrderSupported;
     account.noAutomaticQuery = acc.noAutomaticQuery;
 	account.userId = acc.userId;
+    account.catRepColor = acc.catRepColor;
 
 	return self;
 }
@@ -71,6 +72,7 @@
 	changedAccount.collTransfer = account.collTransfer;
 	changedAccount.isStandingOrderSupported = account.isStandingOrderSupported;
     changedAccount.noAutomaticQuery = account.noAutomaticQuery;
+    changedAccount.catRepColor = account.catRepColor;
 	
 	if ([changedAccount.isManual boolValue] == YES) {
 		NSPredicate* predicate = [predicateEditor objectValue];

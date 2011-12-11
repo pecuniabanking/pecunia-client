@@ -8,6 +8,111 @@
 
 #import "GraphicsAdditions.h"
 
+@implementation NSColor (PecuniaAdditions)
+
+static NSMutableArray* defaultAccountColors;
+static NSMutableArray* defaultCategoryColors;
+
++ (void)loadDefaultColors
+{
+    // Generate our random seed.
+    srandom(time(NULL));
+	
+    defaultAccountColors = [[NSMutableArray arrayWithCapacity: 10] retain];
+    defaultCategoryColors = [[NSMutableArray arrayWithCapacity: 10] retain];
+	
+	NSString* path = [[NSBundle mainBundle] resourcePath];
+	path = [path stringByAppendingString: @"/Colors.acf"];
+	
+	NSError* error = nil;
+	NSString* s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
+	if (error) {
+		NSLog(@"Error reading default colors file at %@\n%@", path, [error localizedFailureReason]);
+	} else {
+		NSArray* lines = [s componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+        NSEnumerator* enumerator = [lines objectEnumerator];
+        NSString* line = [enumerator nextObject];
+        if (([lines count] > 3) && [line isEqualToString: @"ACF 1.0"]) {
+            
+            // Scan for data start.
+            while (line = [enumerator nextObject]) {
+                if ([line isEqualToString: @"Data:"])
+                    break;
+            }
+            
+            // Read color values.
+            while (line = [enumerator nextObject]) {
+                NSArray* components = [line componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+                line = [enumerator nextObject];
+                if (line == nil || [components count] < 3) {
+                    break;
+                }
+                
+                NSColor* color = [NSColor colorWithDeviceRed: [[components objectAtIndex: 0] intValue] / 65535.0
+                                                       green: [[components objectAtIndex: 1] intValue] / 65535.0
+                                                        blue: [[components objectAtIndex: 2] intValue] / 65535.0
+                                                       alpha: 1];
+                if ([line hasPrefix: @"Default Account Color"]) {
+                    [defaultAccountColors addObject: color];
+                } else {
+                    if ([line hasPrefix: @"Default Category Color"]) {
+                        [defaultCategoryColors addObject: color];
+                    }
+                }
+            }
+        }
+	}
+}
+
+/**
+ * Returns the next available default color for accounts. These colors are taken from a list
+ * of default colors. If this list is exhausted random colors are returned.
+ */
++ (NSColor*)nextDefaultAccountColor
+{
+    if (defaultAccountColors == nil) {
+        [self loadDefaultColors];
+    }
+
+    if ([defaultAccountColors count] > 0) {
+        NSColor* result = [defaultAccountColors objectAtIndex: 0];
+        [defaultAccountColors removeObjectAtIndex: 0];
+        
+        return result;
+    }
+
+    // No colors left. Generate a random one with components between 128 and 255 (0.5 - 1).
+    return [NSColor colorWithDeviceRed: (128 + random() % 127) / 256
+                                 green: (128 + random() % 127) / 256
+                                  blue: (128 + random() % 127) / 256
+                                 alpha: 1];
+}
+
+/**
+ * Like nextDefaultAccountColor but for categories.
+ */
++ (NSColor*)nextDefaultCategoryColor
+{
+    if (defaultCategoryColors == nil) {
+        [self loadDefaultColors];
+    }
+
+    if ([defaultCategoryColors count] > 0) {
+        NSColor* result = [defaultCategoryColors objectAtIndex: 0];
+        [defaultCategoryColors removeObjectAtIndex: 0];
+        
+        return result;
+    }
+
+    // No colors left. Generate a random one with components between 128 and 255 (0.5 - 1).
+    return [NSColor colorWithDeviceRed: (128 + random() % 127) / 256
+                                 green: (128 + random() % 127) / 256
+                                  blue: (128 + random() % 127) / 256
+                                 alpha: 1];
+}
+
+@end
+
 
 @implementation NSShadow (PecuniaAdditions)
 

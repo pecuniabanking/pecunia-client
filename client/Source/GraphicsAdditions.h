@@ -8,6 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 
+@interface NSColor (PecuniaAdditions)
+
++ (NSColor*)nextDefaultAccountColor;
++ (NSColor*)nextDefaultCategoryColor;
+
+@end
+
 /**
  * Helper code for drawing with bezier paths and shadows.
  * Code mostly from: http://www.seanpatrickobrien.com/journal/posts/3.
