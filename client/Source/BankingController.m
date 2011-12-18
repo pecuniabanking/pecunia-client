@@ -45,7 +45,9 @@
 #import "TransferListController.h"
 #import "PurposeSplitController.h"
 #import "TransferTemplateController.h"
+
 #import "AccountRepWindowController.h"
+#import "CategoryRepWindowController.h"
 
 #import "BankStatementPrintView.h"
 #import "MainTabViewItem.h"
@@ -217,7 +219,6 @@ static BankingController	*con;
     }
     
     // register Drag'n Drop
-    //[transactionsView registerForDraggedTypes: [NSArray arrayWithObject: BankStatementDataType ] ]; TODO: remove once MCEMTableView is gone.
     [accountsView registerForDraggedTypes: [NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil ] ];
     
     // set lock image
@@ -245,19 +246,30 @@ static BankingController	*con;
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
     
+    NSRect frame = rightSplitter.frame;
+    frame.size.height -= 61; // The height of the heading.
+
     categoryAnalysisController = [[AccountRepWindowController alloc] init];
     if ([NSBundle loadNibNamed: @"AccountRep" owner: categoryAnalysisController]) {
         categoryAnalysisView = [categoryAnalysisController mainView];
-        NSRect frame = rightSplitter.frame;
-        frame.size.height -= 61; // The height of the heading.
         categoryAnalysisView.frame = frame;
         [rightPane addSubview: categoryAnalysisView];
         [categoryAnalysisView setHidden: YES];
     }
     [categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+    
+    categoryReportingController = [[CategoryRepWindowController alloc] init];
+    if ([NSBundle loadNibNamed: @"CategoryRep" owner: categoryReportingController]) {
+        categoryReportingView = [categoryReportingController mainView];
+        categoryReportingView.frame = frame;
+        [rightPane addSubview: categoryReportingView];
+        [categoryReportingView setHidden: YES];
+    }
+    [categoryReportingController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+
     [sideToolbar retain]; // We are going to remove and re-add the toolbar on demand to maintain its top z position.
     
-    activeAccountsView = rightSplitter;
+    activeCategoryView = rightSplitter;
 }
 
 - (void)dealloc
@@ -953,9 +965,8 @@ static BankingController	*con;
 {
 }
 
--(IBAction)test: (id)sender
-{
-}
+#pragma mark -
+#pragma mark Account management
 
 -(IBAction)addAccount: (id)sender
 {
@@ -1143,7 +1154,9 @@ static BankingController	*con;
 }
 */
 
-// TAB views
+#pragma mark -
+#pragma mark Page switching
+
 -(IBAction)transferView: (id)sender 
 { 
     [mainTabView selectTabViewItemAtIndex: 1 ];
@@ -1215,10 +1228,6 @@ static BankingController	*con;
             [self transferView: nil];
             break;
         case 2:
-        {
-            break;
-        }
-        case 3:
             [self standingOrders: nil];
             break;
     }
@@ -1233,37 +1242,60 @@ static BankingController	*con;
 
 - (IBAction)activateAccountPage: (id)sender
 {
+    BOOL pageHasChanged = NO;
     switch ([sender tag]) {
         case 0:
-            // Cross-fade between the analysis view and the right splitter.
-            if (activeAccountsView != rightSplitter) {
-                [AnimationHelper switchFromView: activeAccountsView toView: rightSplitter withSlide: NO];
-                activeAccountsView = rightSplitter;
+            // Cross-fade between the active view and the right splitter.
+            if (activeCategoryView != rightSplitter) {
+                [AnimationHelper switchFromView: activeCategoryView toView: rightSplitter withSlide: NO];
+                activeCategoryView = rightSplitter;
+                pageHasChanged = YES;
             }
             break;
         case 1:
-            if (activeAccountsView != categoryAnalysisView) {
-                [AnimationHelper switchFromView: activeAccountsView toView: categoryAnalysisView withSlide: NO];
-                activeAccountsView = categoryAnalysisView;
+            if (activeCategoryView != categoryAnalysisView) {
+                [AnimationHelper switchFromView: activeCategoryView toView: categoryAnalysisView withSlide: NO];
+                activeCategoryView = categoryAnalysisView;
                 [categoryAnalysisController updateTrackingAreas];
+                pageHasChanged = YES;
             }
             break;
         case 2:
-            [self categoryRep: nil];
+            if (activeCategoryView != categoryReportingView) {
+                [AnimationHelper switchFromView: activeCategoryView toView: categoryReportingView withSlide: NO];
+                activeCategoryView = categoryReportingView;
+                
+                // If a category is selected currently which has no child categories then move the
+                // selection to its parent instead.
+                Category* category = [self currentSelection];
+                if ([[category children] count] < 1) {
+                    [categoryController setSelectedObject: category.parent];
+                }
+                pageHasChanged = YES;
+            }
             break;
         case 3:
             [self catPeriodView: nil];
+            pageHasChanged = YES;
             break;
         case 4:
             [self editRules: nil];
+            pageHasChanged = YES;
             break;
     }
 
     // Ensure z-order (sideToolbar must remain top-most view).
     [sideToolbar slideOut];
-    [sideToolbar removeFromSuperviewWithoutNeedingDisplay];
-    [rightPane addSubview: sideToolbar];
+    if (pageHasChanged) {
+        [sideToolbar removeFromSuperviewWithoutNeedingDisplay];
+        [rightPane addSubview: sideToolbar];
+        
+        [accountsView setNeedsDisplay];
+    }
 }
+
+#pragma mark -
+#pragma mark File actions
 
 -(IBAction)save: (id)sender
 {
@@ -1465,9 +1497,11 @@ static BankingController	*con;
 
 -(Category*)currentSelection
 {
-    NSArray* sel = [categoryController selectedObjects ];
-    if(sel == nil || [sel count ] != 1) return nil;
-    return [sel objectAtIndex: 0 ];
+    NSArray* sel = [categoryController selectedObjects];
+    if (sel == nil || [sel count] != 1) {
+        return nil;
+    }
+    return [sel objectAtIndex: 0];
 }
 
 - (NSArray *)toolbarSelectableItemIdentifiers: (NSToolbar *)tb;
@@ -1484,6 +1518,9 @@ static BankingController	*con;
     return result;
 }
 
+#pragma mark -
+#pragma mark Outline delegate methods
+
 - (id)outlineView:(NSOutlineView *)outlineView persistentObjectForItem:(id)item 
 {
     return [outlineView persistentObjectForItem: item ];
@@ -1494,184 +1531,17 @@ static BankingController	*con;
     return nil;
 }
 
--(IBAction)doSearch: (id)sender
-{
-    NSTextField	*te = sender;
-    NSString	*searchName = [te stringValue ];
-    
-    int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem ] ];
-    
-    switch(idx) {
-        case 0:
-            if([searchName length ] == 0) [transactionController setFilterPredicate: [timeSlicer predicateForField: @"date" ] ];
-            else {
-                NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or userInfo contains[c] %@ or value = %@",
-                                     searchName, searchName, searchName, [NSDecimalNumber decimalNumberWithString:searchName locale: [NSLocale currentLocale ]] ];
-                if(pred) [transactionController setFilterPredicate: pred ];
-            }
-            break;
-        case 1:
-            if([searchName length ] == 0) [transferListController setFilterPredicate: nil ];
-            else {
-                NSPredicate *pred = [NSPredicate predicateWithFormat: @"purpose contains[c] %@ or remoteName contains[c] %@ or value = %@",
-                                     searchName, searchName, [NSDecimalNumber decimalNumberWithString:searchName locale: [NSLocale currentLocale ] ]];
-                if(pred) [transferListController setFilterPredicate: pred ];
-            }
-            break;
-    }
-    
-}
-
-
--(void)adjustSearchField
-{
-    int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem ] ];
-    
-    [searchField setStringValue: @"" ];
-    [transactionController setFilterPredicate: [timeSlicer predicateForField: @"date" ] ];
-    [transferListController setFilterPredicate: nil ];
-    if(idx == 0  || idx == 1) [searchItem setEnabled: YES ]; else [searchItem setEnabled: NO ];
-}
-
-- (BOOL)validateMenuItem:(NSMenuItem *)item
-{
-    int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem ] ];
-    
-    if(idx != 0) {
-        if ([item action] == @selector(export:)) return NO;
-        if ([item action] == @selector(addAccount:)) return NO;
-        if ([item action] == @selector(changeAccount:)) return NO;
-        if ([item action] == @selector(deleteAccount:)) return NO;
-        if ([item action] == @selector(enqueueRequest:)) return NO;
-        if ([item action] == @selector(transfer_local:)) return NO;
-        if ([item action] == @selector(transfer_eu:)) return NO;
-        if ([item action] == @selector(transfer_dated:)) return NO;
-        if ([item action] == @selector(transfer_internal:)) return NO;
-        if ([item action] == @selector(splitStatement:)) return NO;
-        if ([item action] == @selector(donate:)) return NO;
-        if ([item action] == @selector(deleteStatement:)) return NO;
-        if ([item action] == @selector(addStatement:)) return NO;
-    }
-    
-    if(idx == 0) {
-        Category* cat = [self currentSelection ];
-        if(cat == nil || [cat accountNumber ] == nil) {
-            if ([item action] == @selector(enqueueRequest:)) return NO;
-            if ([item action] == @selector(changeAccount:)) return NO;
-            if ([item action] == @selector(deleteAccount:)) return NO;
-            if ([item action] == @selector(transfer_local:)) return NO;
-            if ([item action] == @selector(transfer_eu:)) return NO;
-            if ([item action] == @selector(transfer_dated:)) return NO;
-            if ([item action] == @selector(transfer_internal:)) return NO;
-            if ([item action] == @selector(addStatement:)) return NO;
-        }
-        if ([cat isKindOfClass:[BankAccount class ] ] ) {
-            if ([[(BankAccount*)cat isManual ] boolValue] == YES) {
-                if ([item action] == @selector(transfer_local:)) return NO;
-                if ([item action] == @selector(transfer_eu:)) return NO;
-                if ([item action] == @selector(transfer_dated:)) return NO;
-                if ([item action] == @selector(transfer_internal:)) return NO;
-            } else {
-                if ([item action] == @selector(addStatement:)) return NO;
-            }
-        }
-        
-        if ([item action ] == @selector(deleteStatement:)) {
-            if ([cat isBankAccount ] == NO) return NO;
-            if ([[transactionController selectedObjects] count ] != 1) return NO;
-        }
-        if ([item action ] == @selector(splitStatement:)) {
-            if ([[transactionController selectedObjects] count ] != 1) return NO;
-        }
-        if(requestRunning && [item action] == @selector(enqueueRequest:)) return NO;
-    }
-    return YES;
-}
-
-/* TODO: remove as soon as we no longer need the MCEMTableView.
- -(void)tableViewSelectionDidChange:(NSNotification *)aNotification
- {
- NSArray *sel = [transactionController selectedObjects ];
- if(sel && [sel count ] == 1) {
- StatCatAssignment *stat = [sel objectAtIndex:0 ];
- if ([stat.category isBankAccount] && [stat.category isRoot ] == NO) {
- BankAccount *account = (BankAccount*)stat.category;
- if ([stat.statement.isNew boolValue] == YES) {
- stat.statement.isNew = [NSNumber numberWithBool:NO ];
- account.unread = account.unread - 1;
- //				[account calcUnread ];
- if (account.unread == 0) {
- [self updateUnread ];
- }
- [accountsView setNeedsDisplay: YES ];
- }
- }
- }
- }
- 
- 
- // Dragging Bank Statements
- - (BOOL)tableView:(NSTableView *)tv writeRowsWithIndexes:(NSIndexSet*)rowIndexes toPasteboard:(NSPasteboard*)pboard
- {
- unsigned int		idx;
- StatCatAssignment	*stat;
- 
- // Copy the row numbers to the pasteboard.
- NSArray *objs = [transactionController arrangedObjects ];
- 
- [rowIndexes getIndexes: &idx maxCount:1 inIndexRange: nil ];
- stat = [objs objectAtIndex: idx ];
- NSURL *uri = [[stat objectID] URIRepresentation];
- NSData *data = [NSKeyedArchiver archivedDataWithRootObject: uri];
- [pboard declareTypes:[NSArray arrayWithObject: BankStatementDataType] owner:self];
- [pboard setData:data forType: BankStatementDataType];
- if([[self currentSelection ] isBankAccount ]) [tv setDraggingSourceOperationMask: NSDragOperationCopy | NSDragOperationMove | NSDragOperationGeneric forLocal: YES ];
- else [tv setDraggingSourceOperationMask: NSDragOperationCopy | NSDragOperationMove forLocal: YES ];
- [tv setDraggingSourceOperationMask: NSDragOperationDelete forLocal: NO]; 
- return YES;
- }
- 
- - (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
- {
- if ([[aTableColumn identifier ] isEqualToString: @"date" ]) {
- NSArray *statements = [transactionController arrangedObjects ];
- StatCatAssignment *stat = [statements objectAtIndex:rowIndex ];
- 
- DateAndValutaCell *cell = (DateAndValutaCell*)aCell;
- ShortDate *pDate = [ShortDate dateWithDate:stat.statement.date ];
- ShortDate *vDate = [ShortDate dateWithDate:stat.statement.valutaDate ];
- if ([pDate compare:vDate ] != NSOrderedSame) {
- cell.valuta = stat.statement.valutaDate;
- } else {
- cell.valuta = nil;
- }
- }
- if ([[aTableColumn identifier ] isEqualToString: @"value" ]) {
- NSArray *statements = [transactionController arrangedObjects ];
- StatCatAssignment *stat = [statements objectAtIndex:rowIndex ];
- 
- AmountCell *cell = (AmountCell*)aCell;
- cell.amount = stat.value;
- cell.currency = stat.statement.currency;
- }
- if ([[aTableColumn identifier ] isEqualToString: @"saldo" ]) {
- NSArray *statements = [transactionController arrangedObjects ];
- StatCatAssignment *stat = [statements objectAtIndex:rowIndex ];
- 
- AmountCell *cell = (AmountCell*)aCell;
- cell.amount = stat.statement.saldo;
- cell.currency = stat.statement.currency;
- }
- if ([[aTableColumn identifier ] isEqualToString: @"nassValue" ]) {
- NSArray *statements = [transactionController arrangedObjects ];
- StatCatAssignment *stat = [statements objectAtIndex:rowIndex ];
- 
- AmountCell *cell = (AmountCell*)aCell;
- cell.amount = stat.statement.nassValue;
- cell.currency = stat.statement.currency;
- }
- }
+/**
+ * Prevent the outline from selecting entries without child entries if category reporting
+ * is currently active.
  */
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
+{
+    if (activeCategoryView == categoryReportingView) {
+        return [outlineView isExpandable: item];
+    }
+    return true;
+}
 
 - (BOOL)outlineView:(NSOutlineView*)ov writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard 
 {
@@ -1826,20 +1696,12 @@ static BankingController	*con;
     [catActions setEnabled: [cat isRemoveable ] forSegment: 2 ];
     [catActions setEnabled: [cat isInsertable ] forSegment: 1 ];
     
-    // TODO: remove once MCEMTableView is gone.
-    // hide saldo for Categories
-    NSTableColumn	*tc;
-    tc = [transactionsView tableColumnWithIdentifier: @"saldo" ];
-    [tc setHidden: ![cat isBankAccount ] ];
-    
     BOOL editable = NO;
     if(![cat isBankAccount ] && cat != [Category nassRoot ] && cat != [Category catRoot ]) {
         editable = YES;
         NSArray *sel = [transactionController selectedObjects ];
         if(sel && [sel count ] > 0) editable = YES;
     }
-    tc = [transactionsView tableColumnWithIdentifier: @"value" ];
-    [tc setEditable: editable ];
     
     // value field
     [valueField setEditable: editable];
@@ -1851,9 +1713,10 @@ static BankingController	*con;
         [valueField setDrawsBackground: NO];
     }
     
-    // Update analysis pane.
+    // Update graph panes.
     categoryAnalysisController.category = cat;
     [categoryAnalysisController updateGraphs];
+    categoryReportingController.category = cat;
     
     [self updateStatusbar];
 }
@@ -1876,21 +1739,24 @@ static BankingController	*con;
         return;
     
     Category *cat = [item representedObject];
-    if (cat == nil)
+    if (cat == nil) {
         return;
+    }
     
-    NSImage *categoryImage = [NSImage imageNamed:@"catdef5_16.png"];
-    NSImage *moneyImage = [NSImage imageNamed:@"money_18.png"];
-    NSImage *moneySyncImage = [NSImage imageNamed:@"money_sync_18.png"];
-    NSImage *folderImage = [NSImage imageNamed:@"Bank.png"];
+    NSImage *categoryImage = [NSImage imageNamed: @"catdef5_16.png"];
+    NSImage *moneyImage = [NSImage imageNamed: @"money_18.png"];
+    NSImage *moneySyncImage = [NSImage imageNamed: @"money_sync_18.png"];
+    NSImage *folderImage = [NSImage imageNamed: @"Bank.png"];
     
     [cell setImage: categoryImage];
     
     NSInteger numberUnread = 0;
     
-    if([cat isBankAccount] && cat.accountNumber == nil)
+    if ([cat isBankAccount] && cat.accountNumber == nil) {
         [cell setImage: folderImage];
-    if([cat isBankAccount] && cat.accountNumber != nil)
+    }
+    
+    if ([cat isBankAccount] && cat.accountNumber != nil)
     {
         BankAccount *account = (BankAccount*)cat;
         BOOL value = [account.isManual boolValue];
@@ -1901,30 +1767,127 @@ static BankingController	*con;
             [cell setImage: moneySyncImage];
     }
     
-    if (![cat isBankAccount] || [cat isRoot])
-    {
+    if (![cat isBankAccount] || [cat isRoot]) {
         numberUnread = 0;
-    }
-    else
+    } else {
         numberUnread = [(BankAccount*)cat unread];
+    }
     
-    BOOL itemIsSelected = NO;
-    if ([outlineView itemAtRow:[outlineView selectedRow]] == item)
-        itemIsSelected = YES;
+    BOOL itemIsDisabled = NO;
+    if (activeCategoryView == categoryReportingView && [[cat children] count] == 0) {
+        itemIsDisabled = YES;
+    }
     
     BOOL itemIsRoot = [cat isRoot];
-    if (itemIsRoot)
-    {
+    if (itemIsRoot) {
         [cell setImage: nil];
     }
     
     [cell setValues: [cat catSum]
            currency: cat.currency
              unread: numberUnread
-           selected: itemIsSelected
-               root: itemIsRoot];
+           disabled: itemIsDisabled
+             isRoot: itemIsRoot];
 }
 
+#pragma mark -
+#pragma mark Searching
+
+-(IBAction)doSearch: (id)sender
+{
+    NSTextField	*te = sender;
+    NSString	*searchName = [te stringValue ];
+    
+    int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem ] ];
+    
+    switch(idx) {
+        case 0:
+            if([searchName length ] == 0) [transactionController setFilterPredicate: [timeSlicer predicateForField: @"date" ] ];
+            else {
+                NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or userInfo contains[c] %@ or value = %@",
+                                     searchName, searchName, searchName, [NSDecimalNumber decimalNumberWithString:searchName locale: [NSLocale currentLocale ]] ];
+                if(pred) [transactionController setFilterPredicate: pred ];
+            }
+            break;
+        case 1:
+            if([searchName length ] == 0) [transferListController setFilterPredicate: nil ];
+            else {
+                NSPredicate *pred = [NSPredicate predicateWithFormat: @"purpose contains[c] %@ or remoteName contains[c] %@ or value = %@",
+                                     searchName, searchName, [NSDecimalNumber decimalNumberWithString:searchName locale: [NSLocale currentLocale ] ]];
+                if(pred) [transferListController setFilterPredicate: pred ];
+            }
+            break;
+    }
+    
+}
+
+-(void)adjustSearchField
+{
+    int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem ] ];
+    
+    [searchField setStringValue: @"" ];
+    [transactionController setFilterPredicate: [timeSlicer predicateForField: @"date" ] ];
+    [transferListController setFilterPredicate: nil ];
+    if(idx == 0  || idx == 1) [searchItem setEnabled: YES ]; else [searchItem setEnabled: NO ];
+}
+
+- (BOOL)validateMenuItem:(NSMenuItem *)item
+{
+    int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem ] ];
+    
+    if(idx != 0) {
+        if ([item action] == @selector(export:)) return NO;
+        if ([item action] == @selector(addAccount:)) return NO;
+        if ([item action] == @selector(changeAccount:)) return NO;
+        if ([item action] == @selector(deleteAccount:)) return NO;
+        if ([item action] == @selector(enqueueRequest:)) return NO;
+        if ([item action] == @selector(transfer_local:)) return NO;
+        if ([item action] == @selector(transfer_eu:)) return NO;
+        if ([item action] == @selector(transfer_dated:)) return NO;
+        if ([item action] == @selector(transfer_internal:)) return NO;
+        if ([item action] == @selector(splitStatement:)) return NO;
+        if ([item action] == @selector(donate:)) return NO;
+        if ([item action] == @selector(deleteStatement:)) return NO;
+        if ([item action] == @selector(addStatement:)) return NO;
+    }
+    
+    if(idx == 0) {
+        Category* cat = [self currentSelection ];
+        if(cat == nil || [cat accountNumber ] == nil) {
+            if ([item action] == @selector(enqueueRequest:)) return NO;
+            if ([item action] == @selector(changeAccount:)) return NO;
+            if ([item action] == @selector(deleteAccount:)) return NO;
+            if ([item action] == @selector(transfer_local:)) return NO;
+            if ([item action] == @selector(transfer_eu:)) return NO;
+            if ([item action] == @selector(transfer_dated:)) return NO;
+            if ([item action] == @selector(transfer_internal:)) return NO;
+            if ([item action] == @selector(addStatement:)) return NO;
+        }
+        if ([cat isKindOfClass:[BankAccount class ] ] ) {
+            if ([[(BankAccount*)cat isManual ] boolValue] == YES) {
+                if ([item action] == @selector(transfer_local:)) return NO;
+                if ([item action] == @selector(transfer_eu:)) return NO;
+                if ([item action] == @selector(transfer_dated:)) return NO;
+                if ([item action] == @selector(transfer_internal:)) return NO;
+            } else {
+                if ([item action] == @selector(addStatement:)) return NO;
+            }
+        }
+        
+        if ([item action ] == @selector(deleteStatement:)) {
+            if ([cat isBankAccount ] == NO) return NO;
+            if ([[transactionController selectedObjects] count ] != 1) return NO;
+        }
+        if ([item action ] == @selector(splitStatement:)) {
+            if ([[transactionController selectedObjects] count ] != 1) return NO;
+        }
+        if(requestRunning && [item action] == @selector(enqueueRequest:)) return NO;
+    }
+    return YES;
+}
+
+#pragma mark -
+#pragma mark Category management
 
 -(void)updateNotAssignedCategory
 {
@@ -1975,7 +1938,6 @@ static BankingController	*con;
     }
     [categoryController remove: cat ];
     [Category updateCatValues ];
-    //	[accountsView setNeedsDisplay: YES ];
 }
 
 -(IBAction)addCategory: (id)sender
@@ -2022,10 +1984,11 @@ static BankingController	*con;
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(statement.date => %@) AND (statement.date <= %@)", [from lowDate ], [to highDate ] ];
     [transactionController setFilterPredicate: predicate];
     
-    [cat rebuildValues ];
-    [cat rollup ];
+    [cat rebuildValues];
+    [cat rollup];
     
     [categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+    [categoryReportingController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
     
     [searchField setStringValue: @"" ];
     [self updateStatusbar];
@@ -2059,7 +2022,7 @@ static BankingController	*con;
     }
     
     // Value field changed (todo: replace by key value observation).
-    if([aNotification object ] == transactionsView || [aNotification object] == valueField)
+    if ([aNotification object] == valueField)
     {
         NSArray *sel = [transactionController selectedObjects ];
         if(sel && [sel count ] == 1)
@@ -2473,12 +2436,12 @@ static BankingController	*con;
 
 - (void)printCurrentAccountsView
 {
-    if (activeAccountsView == rightSplitter) {
+    if (activeCategoryView == rightSplitter) {
         NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
         [printInfo setTopMargin: 45];
         [printInfo setBottomMargin: 45];
         NSPrintOperation *printOp;
-        NSView *view = [[BankStatementPrintView alloc ] initWithStatements: [transactionController arrangedObjects] printInfo:printInfo];
+        NSView *view = [[BankStatementPrintView alloc] initWithStatements: [transactionController arrangedObjects] printInfo: printInfo];
         printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo];
         [printOp setShowsPrintPanel: YES];
         [printOp runOperation];
@@ -2486,8 +2449,14 @@ static BankingController	*con;
         return;
     }
 
-    if (activeAccountsView == categoryAnalysisView) {
+    if (activeCategoryView == categoryAnalysisView) {
         [categoryAnalysisController print];
+        
+        return;
+    }
+
+    if (activeCategoryView == categoryReportingView) {
+        [categoryReportingController print];
         
         return;
     }
@@ -2597,8 +2566,12 @@ static BankingController	*con;
             if ([keyPath compare: @"selectionIndexes"] == NSOrderedSame) {
                 // Selection did change. If the currently selected entry is a new one remove the "new" mark.
                 NSEnumerator *enumerator = [[transactionController selectedObjects] objectEnumerator];
-                StatCatAssignment *stat;
+                StatCatAssignment* stat = nil;
+                NSDecimalNumber* firstValue = nil;
                 while (stat = [enumerator nextObject]) {
+                    if (firstValue == nil) {
+                        firstValue = stat.statement.value;
+                    }
                     if ([stat.category isBankAccount] && ![stat.category isRoot])
                     {
                         BankAccount* account = (BankAccount*)stat.category;
@@ -2615,7 +2588,7 @@ static BankingController	*con;
                 }
                 
                 // Check for the type of transaction and adjust remote name display accordingly.
-                if ([stat.statement.value compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
+                if ([firstValue compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
                     [remoteNameLabel setStringValue: NSLocalizedString(@"AP134", "")];
                 } else {
                     [remoteNameLabel setStringValue: NSLocalizedString(@"AP135", "")];

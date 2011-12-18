@@ -14,15 +14,13 @@
 
 
 #define _catPeriodsIdentifier @"categoryPeriods"
-#define _catRepIdentifier @"categoryRep"
-#define _accountRepIdentifier @"accountRep"
 #define _standingOrderTabIdentifier @"standingOrders"
 
 @implementation BankingController (ReportingTabs)
 
 -(IBAction)catPeriodView: (id)sender
 {
-	int idx = [ mainTabView indexOfTabViewItemWithIdentifier:_catPeriodsIdentifier ];
+	NSInteger idx = [ mainTabView indexOfTabViewItemWithIdentifier:_catPeriodsIdentifier ];
 	if (idx == NSNotFound) {
 		CategoryPeriodsWindowController *controller = [[CategoryPeriodsWindowController alloc ] init ];
 		if([NSBundle loadNibNamed:@"CategoryPeriods" owner:controller ]) {
@@ -42,28 +40,9 @@
 	[self adjustSearchField ];
 }
 
--(IBAction)categoryRep: (id)sender
-{
-	int idx = [ mainTabView indexOfTabViewItemWithIdentifier:_catRepIdentifier ];
-	if (idx == NSNotFound) {
-		CategoryRepWindowController *controller = [[CategoryRepWindowController alloc ] init ];
-		if([NSBundle loadNibNamed:@"CategoryRep" owner:controller ]) {
-			NSTabViewItem *item = [[NSTabViewItem alloc ] initWithIdentifier:_catRepIdentifier ];
-			[item setView:[controller mainView ] ];
-			[mainTabView addTabViewItem:item ];
-			[mainTabView selectTabViewItem:item ];
-			[mainTabItems setObject:controller forKey: _catRepIdentifier ];
-			[controller prepare ];
-		}
-	} else {
-		[mainTabView selectTabViewItemAtIndex:idx ];
-	}
-	[self adjustSearchField ];
-}
-
 -(IBAction)standingOrders: (id)sender 
 {
-	int idx = [ mainTabView indexOfTabViewItemWithIdentifier:_standingOrderTabIdentifier ];
+	NSInteger idx = [ mainTabView indexOfTabViewItemWithIdentifier:_standingOrderTabIdentifier ];
 	if (idx == NSNotFound) {
 		StandingOrderTabController *controller = [[StandingOrderTabController alloc ] init ];
 		if([NSBundle loadNibNamed:@"Orders" owner:controller ]) {

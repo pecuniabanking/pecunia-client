@@ -147,7 +147,7 @@
 	}
 	
 	// assign to category
-	int idx = [categoriesController selectionIndex ];
+	NSInteger idx = [categoriesController selectionIndex ];
 	if (idx != NSNotFound) {
 		Category *cat = [[categoriesController arrangedObjects ] objectAtIndex:idx];
 		[newStatement assignToCategory:cat ];

@@ -30,13 +30,8 @@
 - (NSDate*)highDate;
 
 - (BOOL)isBetween: (ShortDate*)fromDate and:(ShortDate*)toDate;
-- (int)daysToDate: (ShortDate*)toDate __attribute__((deprecated));
-- (int)monthsToDate: (ShortDate*)toDate __attribute__((deprecated));
 - (int)unitsToDate: (ShortDate*)toDate byUnit: (int)calendarUnit;
 
-- (ShortDate*)dateByAddingDays: (int)days __attribute__((deprecated));
-- (ShortDate*)dateByAddingMonths: (int)months __attribute__((deprecated));
-- (ShortDate*)dateByAddingYears: (int)years __attribute__((deprecated));
 - (ShortDate*)dateByAddingUnits: (int)units byUnit: (int)calendarUnit;
 
 - (BOOL)isEqual: (ShortDate*)date;

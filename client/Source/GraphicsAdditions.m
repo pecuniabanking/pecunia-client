@@ -105,10 +105,24 @@ static NSMutableArray* defaultCategoryColors;
     }
 
     // No colors left. Generate a random one with components between 128 and 255 (0.5 - 1).
-    return [NSColor colorWithDeviceRed: (128 + random() % 127) / 256
-                                 green: (128 + random() % 127) / 256
-                                  blue: (128 + random() % 127) / 256
+    return [NSColor colorWithDeviceRed: (32 + random() % 200) / 255.0
+                                 green: (32 + random() % 200) / 255.0
+                                  blue: (32 + random() % 200) / 255.0
                                  alpha: 1];
+}
+
+- (CGColorRef) CGColor
+{
+    CGColorSpaceRef colorspace = [[self colorSpace] CGColorSpace];
+    const NSInteger nComponents = [self numberOfComponents];
+    
+    CGFloat components[nComponents];
+    
+    [self getComponents: components];
+    
+    CGColorRef c = CGColorCreate(colorspace, components);
+        
+    return (CGColorRef)[(id)c autorelease];
 }
 
 @end

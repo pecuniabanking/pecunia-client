@@ -177,29 +177,6 @@ NSCalendar *calendar = nil;
     }
 }
 
--(ShortDate*)dateByAddingDays: (int)days
-{
-    NSDateComponents *comps = [[NSDateComponents alloc] init];
-    [comps setDay:days ];
-    NSDate *date = [calendar dateByAddingComponents:comps toDate:[self lowDate] options:0 ];
-    [comps release];
-    return [ShortDate dateWithDate: date ];
-}
-
--(ShortDate*)dateByAddingMonths: (int)months
-{
-    NSDateComponents *comps = [[NSDateComponents alloc] init];
-    [comps setMonth:months ];
-    NSDate *date = [calendar dateByAddingComponents:comps toDate:[self lowDate] options:0 ];
-    [comps release];
-    return [ShortDate dateWithDate: date ];
-}
-
--(ShortDate*)dateByAddingYears: (int)years
-{
-    return [ShortDate dateWithYear: components.year + years month: components.month day: components.day];
-}
-
 - (ShortDate*)dateByAddingUnits: (int)units byUnit: (int)calendarUnit
 {
     NSDateComponents* comps = [components copy];

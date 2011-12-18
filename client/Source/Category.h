@@ -21,7 +21,7 @@ typedef enum {
     cat_histtype_month,
     cat_histtype_quarter,
     cat_histtype_year
-} CatHistoryType __attribute__((deprecated)); // Replace with GroupingInterval.
+} CatHistoryType; // TODO: Replace with GroupingInterval.
 
 /**
  * Specifies the grouping of values when collecting statistical data, that is, which time frame

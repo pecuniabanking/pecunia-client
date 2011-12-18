@@ -117,13 +117,13 @@
 		[self.dates addObject:refDate ];
 		switch (histType) {
 			case cat_histtype_year:
-				refDate = [refDate dateByAddingYears:1 ];
+				refDate = [refDate dateByAddingUnits: 1 byUnit: NSYearCalendarUnit];
 				break;
 			case cat_histtype_quarter:
-				refDate = [refDate dateByAddingMonths:3 ];
+				refDate = [refDate dateByAddingUnits: 3 byUnit: NSMonthCalendarUnit];
 				break;
 			default:
-				refDate = [refDate dateByAddingMonths:1 ];
+				refDate = [refDate dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit];
 				break;
 		}
 	} //while
@@ -140,7 +140,7 @@
 	NSMutableArray* uris = [urs mutableCopy ];
 	
 	while([uris count ] > 0 && found == TRUE) {
-		int i, idx;
+		NSInteger i, idx;
 		
 		found = FALSE;
 		for(i=0; i<[categoryView numberOfRows ]; i++) {
@@ -205,13 +205,13 @@
 			}
 			switch (histType) {
 				case cat_histtype_year:
-					refDate = [refDate dateByAddingYears:1 ];
+					refDate = [refDate dateByAddingUnits: 1 byUnit: NSYearCalendarUnit];
 					break;
 				case cat_histtype_quarter:
-					refDate = [refDate dateByAddingMonths:3 ];
+					refDate = [refDate dateByAddingUnits: 3 byUnit: NSMonthCalendarUnit];
 					break;
 				default:
-					refDate = [refDate dateByAddingMonths:1 ];
+					refDate = [refDate dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit];
 					break;
 			}
 		} //while
@@ -235,13 +235,13 @@
 		[self.selectedDates addObject:refDate ];
 		switch (histType) {
 			case cat_histtype_year:
-				refDate = [refDate dateByAddingYears:1 ];
+				refDate = [refDate dateByAddingUnits: 1 byUnit: NSYearCalendarUnit];
 				break;
 			case cat_histtype_quarter:
-				refDate = [refDate dateByAddingMonths:3 ];
+				refDate = [refDate dateByAddingUnits: 3 byUnit: NSMonthCalendarUnit];
 				break;
 			default:
-				refDate = [refDate dateByAddingMonths:1 ];
+				refDate = [refDate dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit];
 				break;
 		}
 	} //while

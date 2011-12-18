@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -88,7 +88,6 @@
 		B13435A412EC36A3006C4687 /* GenericImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B13435A312EC36A3006C4687 /* GenericImportController.m */; };
 		B134365B12ECBD54006C4687 /* GenericImportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B134365A12ECBD54006C4687 /* GenericImportWindow.xib */; };
 		B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B136AAD70FCF1C4A007A643F /* MCEMTableView.m */; };
-		B136AB360FD077DD007A643F /* MCEMPieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = B136AB350FD077DD007A643F /* MCEMPieChartView.m */; };
 		B136B24E0FE2F705007A643F /* InstitutesController.m in Sources */ = {isa = PBXBuildFile; fileRef = B136B24D0FE2F705007A643F /* InstitutesController.m */; };
 		B137BDCC12D28B0D00D0394C /* adduser.c in Sources */ = {isa = PBXBuildFile; fileRef = B137BDCA12D28B0D00D0394C /* adduser.c */; };
 		B137BE3C12D296A900D0394C /* getsysid.c in Sources */ = {isa = PBXBuildFile; fileRef = B137BE3A12D296A900D0394C /* getsysid.c */; };
@@ -137,7 +136,6 @@
 		B165B4500D2EED7600447DD8 /* Transfer_24.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B44F0D2EED7600447DD8 /* Transfer_24.png */; };
 		B165B51F0D340C5800447DD8 /* plus-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B51E0D340C5800447DD8 /* plus-8.png */; };
 		B165B5210D340C7D00447DD8 /* minus-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B5200D340C7D00447DD8 /* minus-8.png */; };
-		B16B0CEC11C01DFB00254078 /* SM2DGraphView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B16B0CEB11C01DFB00254078 /* SM2DGraphView.framework */; };
 		B17072D50D4BD35D00FBF186 /* TransactionLimits.m in Sources */ = {isa = PBXBuildFile; fileRef = B17072D40D4BD35D00FBF186 /* TransactionLimits.m */; };
 		B17074870D55104000FBF186 /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17074860D55104000FBF186 /* PreferenceController.m */; };
 		B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = B17078F810EA5E6100A974E7 /* StatCatAssignment.m */; };
@@ -236,7 +234,6 @@
 		B1FB6611124FC9E300C54A0E /* TransferTemplates.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */; };
 		B1FB6915125D0A5500C54A0E /* edit16.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB6914125D0A5500C54A0E /* edit16.png */; };
 		B1FB6B02126B7BF300C54A0E /* BankStatementPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB6B01126B7BF300C54A0E /* BankStatementPrintView.m */; };
-		C1C0842011C2D85500278CBF /* SM2DGraphView.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B16B0CEB11C01DFB00254078 /* SM2DGraphView.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -259,7 +256,6 @@
 			files = (
 				27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */,
 				2748D2961441D87D0036BDE2 /* BWToolkitFramework.framework in Copy Frameworks */,
-				C1C0842011C2D85500278CBF /* SM2DGraphView.framework in Copy Frameworks */,
 				B1F4582E0F25171A00BAF4E8 /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
@@ -392,8 +388,6 @@
 		B134365A12ECBD54006C4687 /* GenericImportWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenericImportWindow.xib; sourceTree = "<group>"; };
 		B136AAD60FCF1C4A007A643F /* MCEMTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMTableView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B136AAD70FCF1C4A007A643F /* MCEMTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMTableView.m; sourceTree = "<group>"; tabWidth = 4; };
-		B136AB340FD077DD007A643F /* MCEMPieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMPieChartView.h; sourceTree = "<group>"; tabWidth = 4; };
-		B136AB350FD077DD007A643F /* MCEMPieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMPieChartView.m; sourceTree = "<group>"; tabWidth = 4; };
 		B136B24C0FE2F705007A643F /* InstitutesController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = InstitutesController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B136B24D0FE2F705007A643F /* InstitutesController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = InstitutesController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B137BDCA12D28B0D00D0394C /* adduser.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.c; path = adduser.c; sourceTree = "<group>"; tabWidth = 4; };
@@ -475,7 +469,6 @@
 		B165B44F0D2EED7600447DD8 /* Transfer_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transfer_24.png; sourceTree = "<group>"; };
 		B165B51E0D340C5800447DD8 /* plus-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus-8.png"; sourceTree = "<group>"; };
 		B165B5200D340C7D00447DD8 /* minus-8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minus-8.png"; sourceTree = "<group>"; };
-		B16B0CEB11C01DFB00254078 /* SM2DGraphView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SM2DGraphView.framework; path = Frameworks/SM2DGraphView.framework; sourceTree = "<group>"; };
 		B17072D30D4BD35D00FBF186 /* TransactionLimits.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransactionLimits.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17072D40D4BD35D00FBF186 /* TransactionLimits.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionLimits.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17074850D55104000FBF186 /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -639,7 +632,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				27C7B49214755AE200BD4F56 /* CorePlot.framework in Frameworks */,
-				B16B0CEC11C01DFB00254078 /* SM2DGraphView.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				B1F458210F2516C200BAF4E8 /* Sparkle.framework in Frameworks */,
 				B19A86360F3CD17E000FE9B3 /* Security.framework in Frameworks */,
@@ -658,7 +650,6 @@
 				B19A86350F3CD17E000FE9B3 /* Security.framework */,
 				B1F458200F2516C200BAF4E8 /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
-				B16B0CEB11C01DFB00254078 /* SM2DGraphView.framework */,
 				2748D2921441D8620036BDE2 /* BWToolkitFramework.framework */,
 				27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */,
 			);
@@ -777,8 +768,6 @@
 				B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */,
 				B136AAD60FCF1C4A007A643F /* MCEMTableView.h */,
 				B136AAD70FCF1C4A007A643F /* MCEMTableView.m */,
-				B136AB340FD077DD007A643F /* MCEMPieChartView.h */,
-				B136AB350FD077DD007A643F /* MCEMPieChartView.m */,
 			);
 			name = "Controls and Layouts";
 			sourceTree = "<group>";
@@ -1357,7 +1346,7 @@
 				ORGANIZATIONNAME = "Frank Emminghaus";
 			};
 			buildConfigurationList = B14C0A8B0AAF71DB00CC41C4 /* Build configuration list for PBXProject "Pecunia" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -1517,7 +1506,6 @@
 				B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */,
 				B1A6E8350FC890E400566C55 /* PasswordWindow.m in Sources */,
 				B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */,
-				B136AB360FD077DD007A643F /* MCEMPieChartView.m in Sources */,
 				B136B24E0FE2F705007A643F /* InstitutesController.m in Sources */,
 				B1014AEE101643C800ABA1FF /* TanMethod.m in Sources */,
 				B1014C67101A37E800ABA1FF /* DonationMessageController.m in Sources */,
@@ -1616,6 +1604,7 @@
 		B14C0A880AAF71DB00CC41C4 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1657,6 +1646,7 @@
 		B14C0A890AAF71DB00CC41C4 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1693,6 +1683,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = Pecunia;
+				SDKROOT = macosx10.6;
 				USER_HEADER_SEARCH_PATHS = ./AqBanking.framework/Headers;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
@@ -1751,8 +1742,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_VERSION = 4.0;
+				GCC_VERSION = "";
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx10.6;
+				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Development;
 		};
@@ -1760,6 +1753,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Deployment;
 		};

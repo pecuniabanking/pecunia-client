@@ -10,8 +10,6 @@
 
 
 @interface RoundedOuterShadowView : NSView {
-
-  NSImage* headerImage;
 }
 
 @end

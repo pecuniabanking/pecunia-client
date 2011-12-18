@@ -848,11 +848,11 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTGradient* negativeGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 194 / 255.0
                                                                                                        green: 69 / 255.0
                                                                                                         blue: 47 / 255.0
-                                                                                                       alpha: 0.9]
+                                                                                                       alpha: 1]
                                                                 endingColor: [CPTColor colorWithComponentRed: 194 / 255.0
                                                                                                        green: 69 / 255.0
                                                                                                         blue: 47 / 255.0
-                                                                                                       alpha: 0.75]
+                                                                                                       alpha: 0.9]
                                      ];
     
     negativeGradient.angle = -90.0;

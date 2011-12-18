@@ -24,7 +24,7 @@
 	NSMutableArray* uris = [NSMutableArray arrayWithArray: urs ];
 	
 	while([uris count ] > 0 && found == TRUE) {
-		int i, idx;
+		NSInteger i, idx;
 		
 		found = FALSE;
 		for(i=0; i<[self numberOfRows ]; i++) {

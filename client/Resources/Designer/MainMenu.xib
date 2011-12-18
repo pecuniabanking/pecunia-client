@@ -11,8 +11,7 @@
       <string key="com.brandonwalkin.BWToolkit">1.2.5</string>
     </dictionary>
     <array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-      <integer value="6172"/>
-      <integer value="3906"/>
+      <integer value="6092"/>
     </array>
     <array key="IBDocument.PluginDependencies">
       <string>com.brandonwalkin.BWToolkit</string>
@@ -6453,17 +6452,6 @@ wHhtbW9kAAAAAAAAEKwAAKAQMEdWU7/vQQAAAAAAAAAAAAAAAAAAAAAAA</bytes>
                   <reference key="NSOnImage" ref="883146705"/>
                   <reference key="NSMixedImage" ref="237878853"/>
                 </object>
-                <object class="NSMenuItem" id="212781462">
-                  <reference key="NSMenu" ref="902378135"/>
-                  <bool key="NSIsDisabled">YES</bool>
-                  <bool key="NSIsHidden">YES</bool>
-                  <string key="NSTitle">Test</string>
-                  <string key="NSKeyEquiv"/>
-                  <int key="NSKeyEquivModMask">1048576</int>
-                  <int key="NSMnemonicLoc">2147483647</int>
-                  <reference key="NSOnImage" ref="883146705"/>
-                  <reference key="NSMixedImage" ref="237878853"/>
-                </object>
                 <object class="NSMenuItem" id="960329486">
                   <reference key="NSMenu" ref="902378135"/>
                   <bool key="NSIsDisabled">YES</bool>
@@ -8441,7 +8429,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
         <string key="NSWindowContentMaxSize">{3.4028235e+38, 3.4028235e+38}</string>
         <string key="NSWindowContentMinSize">{213, 107}</string>
         <object class="NSView" key="NSWindowView" id="264346445">
-          <reference key="NSNextResponder"/>
+          <nil key="NSNextResponder"/>
           <int key="NSvFlags">256</int>
           <array class="NSMutableArray" key="NSSubviews">
             <object class="NSTextField" id="712407473">
@@ -9118,7 +9106,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             </object>
           </array>
           <string key="NSFrameSize">{470, 503}</string>
-          <reference key="NSSuperview"/>
         </object>
         <string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
         <string key="NSMinSize">{213, 129}</string>
@@ -11399,14 +11386,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             <reference key="destination" ref="155974698"/>
           </object>
           <int key="connectionID">3614</int>
-        </object>
-        <object class="IBConnectionRecord">
-          <object class="IBActionConnection" key="connection">
-            <string key="label">test:</string>
-            <reference key="source" ref="674635667"/>
-            <reference key="destination" ref="212781462"/>
-          </object>
-          <int key="connectionID">3617</int>
         </object>
         <object class="IBConnectionRecord">
           <object class="IBOutletConnection" key="connection">
@@ -14636,7 +14615,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
               <reference ref="526089316"/>
               <reference ref="301683424"/>
               <reference ref="963123864"/>
-              <reference ref="212781462"/>
               <reference ref="1069592852"/>
               <reference ref="267302886"/>
               <reference ref="155464195"/>
@@ -15567,11 +15545,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             <int key="objectID">3601</int>
             <reference key="object" ref="617271465"/>
             <reference key="parent" ref="0"/>
-          </object>
-          <object class="IBObjectRecord">
-            <int key="objectID">3616</int>
-            <reference key="object" ref="212781462"/>
-            <reference key="parent" ref="902378135"/>
           </object>
           <object class="IBObjectRecord">
             <int key="objectID">3901</int>
@@ -18460,6 +18433,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
         <object class="NSAffineTransform" key="280.IBViewBoundsToFrameTransform">
           <bytes key="NSTransformStruct">P4AAAL+AAABCcAAAxBSAAA</bytes>
         </object>
+        <real value="0.0" key="280.IBViewIntegration.shadowBlurRadius"/>
+        <reference key="280.IBViewIntegration.shadowColor" ref="1053514231"/>
+        <real value="0.0" key="280.IBViewIntegration.shadowOffsetHeight"/>
+        <real value="0.0" key="280.IBViewIntegration.shadowOffsetWidth"/>
         <integer value="1" key="280.ImportedFromIB2"/>
         <string key="281.CustomClassName">CategoryView</string>
         <dictionary class="NSMutableDictionary" key="281.IBAttributePlaceholdersKey"/>
@@ -18627,7 +18604,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
         <string key="3598.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
         <string key="3599.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
         <string key="3600.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-        <string key="3616.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
         <string key="3901.IBEditorWindowLastContentRect">{{332, 645}, {470, 503}}</string>
         <string key="3901.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
         <string key="3901.IBWindowTemplateEditedContentRect">{{332, 645}, {470, 503}}</string>
@@ -19574,7 +19550,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             <string key="showLicense:">id</string>
             <string key="splitPurpose:">id</string>
             <string key="splitStatement:">id</string>
-            <string key="test:">id</string>
             <string key="transferView:">id</string>
             <string key="transfer_dated:">id</string>
             <string key="transfer_eu:">id</string>
@@ -19697,10 +19672,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             </object>
             <object class="IBActionInfo" key="splitStatement:">
               <string key="name">splitStatement:</string>
-              <string key="candidateClassName">id</string>
-            </object>
-            <object class="IBActionInfo" key="test:">
-              <string key="name">test:</string>
               <string key="candidateClassName">id</string>
             </object>
             <object class="IBActionInfo" key="transferView:">
@@ -19896,16 +19867,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
           <string key="className">BankingController</string>
           <dictionary class="NSMutableDictionary" key="actions">
             <string key="catPeriodView:">id</string>
-            <string key="categoryRep:">id</string>
             <string key="standingOrders:">id</string>
           </dictionary>
           <dictionary class="NSMutableDictionary" key="actionInfosByName">
             <object class="IBActionInfo" key="catPeriodView:">
               <string key="name">catPeriodView:</string>
-              <string key="candidateClassName">id</string>
-            </object>
-            <object class="IBActionInfo" key="categoryRep:">
-              <string key="name">categoryRep:</string>
               <string key="candidateClassName">id</string>
             </object>
             <object class="IBActionInfo" key="standingOrders:">
@@ -21222,20 +21188,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBFrameworkSource</string>
             <string key="minorKey">QuartzCore.framework/Headers/CIImageProvider.h</string>
-          </object>
-        </object>
-        <object class="IBPartialClassDescription">
-          <string key="className">NSObject</string>
-          <object class="IBClassDescriptionSource" key="sourceIdentifier">
-            <string key="majorKey">IBFrameworkSource</string>
-            <string key="minorKey">SM2DGraphView.framework/Headers/SM2DGraphView.h</string>
-          </object>
-        </object>
-        <object class="IBPartialClassDescription">
-          <string key="className">NSObject</string>
-          <object class="IBClassDescriptionSource" key="sourceIdentifier">
-            <string key="majorKey">IBFrameworkSource</string>
-            <string key="minorKey">SM2DGraphView.framework/Headers/SMPieChartView.h</string>
           </object>
         </object>
         <object class="IBPartialClassDescription">

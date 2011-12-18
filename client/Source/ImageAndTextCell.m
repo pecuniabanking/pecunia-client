@@ -64,32 +64,6 @@
 @synthesize amount;
 @synthesize amountFormatter;
 
-/*
- - (id)init {
- if ((self = [super init])) {
- [self setLineBreakMode:NSLineBreakByTruncatingTail];
- [self setSelectable:YES];
- 
- self.amountFormatter = [[[NSNumberFormatter alloc ] init ] autorelease ];
- [amountFormatter setNumberStyle: NSNumberFormatterCurrencyStyle ];
- [amountFormatter setLocale:[NSLocale currentLocale ] ];
- [amountFormatter setCurrencySymbol:@"" ];
- }
- return self;
- }
- 
- - (id)initTextCell:(NSString*)text {
- if ((self = [super initTextCell:text])) {
- 
- self.amountFormatter = [[NSNumberFormatter alloc ] init ];
- [amountFormatter setNumberStyle: NSNumberFormatterCurrencyStyle ];
- [amountFormatter setLocale:[NSLocale currentLocale ] ];
- [amountFormatter setCurrencySymbol:@"" ];
- }
- return self;
- }
- */
-
 - (id)initWithCoder: (NSCoder*)decoder
 {
     if ((self = [super initWithCoder:decoder]))
@@ -139,13 +113,13 @@
 }
 
 - (void)setValues: (NSDecimalNumber*)aAmount currency: (NSString*)aCurrency unread: (NSInteger)unread
-         selected: (BOOL)selected root: (BOOL)root
+         disabled: (BOOL)disabled isRoot: (BOOL)root
 {
-    self.currency	= aCurrency;
-    self.amount		= aAmount;
-    countUnread		= unread;
-    //	isSelected		= selected;
-    isRoot			= root;
+    currency = aCurrency;
+    amount = aAmount;
+    countUnread = unread;
+    isRoot = root;
+    isDisabled = disabled;
     
     return;
 }
@@ -163,8 +137,7 @@
     NSRect titleRect = [self titleRectForBounds:cellFrame];
     [[self attributedStringValue] drawInRect:titleRect];
 }
-
-- (void)selectWithFrame:(NSRect)aRect inView:(NSView *)controlView editor:(NSText *)textObj delegate:(id)anObject start:(int)selStart length:(int)selLength
+- (void)selectWithFrame:(NSRect)aRect inView: (NSView*)controlView editor: (NSText*)textObj delegate: (id)anObject start: (NSInteger)selStart length: (NSInteger)selLength;
 {
     NSRect textFrame, imageFrame;
     NSDivideRect (aRect, &imageFrame, &textFrame, 3 + [image size].width, NSMinXEdge);
@@ -255,26 +228,22 @@ static NSGradient* selectionGradient = nil;
         }
     }
     
-    // Sum and currency. Set cell text color at the same time.
+    // Sum and currency text color.
     NSRect amountwithCurrencyFrame;
     
     NSColor* valueColor;
-    if ([self isHighlighted] || isRoot)
-    {
+    if ([self isHighlighted] || isRoot) {
         valueColor = [NSColor whiteColor];
-        [self setTextColor: [NSColor whiteColor]];
-    }
-    else
-    {
+    } else {
         NSDictionary* fontAttributes;
-        if ([amount compare: [NSDecimalNumber zero]] != NSOrderedAscending)
+        if ([amount compare: [NSDecimalNumber zero]] != NSOrderedAscending) {
             fontAttributes = [amountFormatter textAttributesForPositiveValues];
-        else
+        } else {
             fontAttributes = [amountFormatter textAttributesForNegativeValues];
-        valueColor = (NSColor*) [fontAttributes objectForKey: NSForegroundColorAttributeName];
-        [self setTextColor: [NSColor colorWithCalibratedWhite: 64 / 255 alpha: 1]];
+        }
+        valueColor = (NSColor*)[fontAttributes objectForKey: NSForegroundColorAttributeName];
     }
-    
+
     NSFont *txtFont = [NSFont fontWithName: @"Lucida Grande" size: 13];
     NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:
                                 txtFont, NSFontAttributeName,
@@ -303,9 +272,11 @@ static NSGradient* selectionGradient = nil;
     [attributes release];
     [amountWithCurrency release];
     
-    // Tree section headers.
-    if (isRoot)
+    // Cell text color.
+    NSAttributedString *cellStringWithFormat;
+    if (isRoot || [self isHighlighted])
     {
+        // Selected and root items can never be disabled.
         NSColor *textColor = [NSColor whiteColor];
         
         NSFont *textFont = [NSFont fontWithName: @"Lucida Grande Bold" size: 12];
@@ -314,10 +285,23 @@ static NSGradient* selectionGradient = nil;
                       textColor, NSForegroundColorAttributeName,
                       nil
                       ];
-        NSAttributedString *attrStr = [[[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
-                                                                       attributes: attributes] autorelease];
-        [self setAttributedStringValue: attrStr];
+       cellStringWithFormat = [[[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
+                                                               attributes: attributes] autorelease];
+    } else {
+        NSColor *textColor = [NSColor colorWithCalibratedWhite: 40 / 255.0 alpha: 1];
+        
+        if (isDisabled) {
+            textColor = [NSColor colorWithCalibratedWhite: 180 / 255.0 alpha: 1];
+        }   
+        attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                      [self font], NSFontAttributeName,
+                      textColor, NSForegroundColorAttributeName,
+                      nil
+                      ];
+        cellStringWithFormat = [[[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
+                                                                attributes: attributes] autorelease];
     }
+    [self setAttributedStringValue: cellStringWithFormat];
     
     [super drawWithFrame: cellFrame inView: controlView];
 }

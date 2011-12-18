@@ -8,7 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class ABWindowController;
 @class AccountsTree;
 @class Account;
 @class BankAccount;
@@ -28,7 +27,10 @@
 @class CurrencyValueTransformer;
 @class BWSplitView;
 @class StatementsListView;
+
 @class AccountRepWindowController;
+@class CategoryRepWindowController;
+
 @class SideToolbarView;
 
 @interface BankingController : NSObject
@@ -36,7 +38,6 @@
     IBOutlet NSArrayController  *transactionController;
     IBOutlet NSWindow           *mainWindow;
     IBOutlet NSTabView          *mainTabView;
-    IBOutlet MCEMTableView      *transactionsView;
     IBOutlet CategoryView       *accountsView;
     IBOutlet MCEMTreeController *categoryController;
     IBOutlet NSSplitView        *mainVSplit;
@@ -84,9 +85,11 @@
     NSDecimalNumber        *saveValue;
     NSCursor               *splitCursor;
     
-    NSView *activeAccountsView; // Statements, analysis, categories etc.
+    NSView *activeCategoryView; // Statements, analysis, categories etc.
     AccountRepWindowController *categoryAnalysisController;
-    NSView                     *categoryAnalysisView;
+    NSView *categoryAnalysisView;
+    CategoryRepWindowController *categoryReportingController;
+    NSView *categoryReportingView;
 }
 
 @property(nonatomic, copy) NSDecimalNumber *saveValue;
@@ -111,7 +114,6 @@
 -(IBAction)editBankUsers:(id)sender;
 -(IBAction)export: (id)sender;
 -(IBAction)import: (id)sender;
--(IBAction)test: (id)sender;
 -(IBAction)transfer_local: (id)sender;
 -(IBAction)transfer_eu: (id)sender;
 -(IBAction)transfer_dated: (id)sender;
@@ -142,10 +144,8 @@
 -(void)windowWillClose:(NSNotification *)aNotification;
 -(NSArray*)selectedNodes;
 -(BankAccount*)selectBankAccountWithNumber:(NSString*)accNum bankCode:(NSString*)code;
-//-(void)removeDeletedAccounts;
 -(void)awakeFromNib;
 -(int)AccSize;
-//-(NSManagedObjectContext*)managedObjectContext;
 -(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts;
 -(void)statementsNotification: (NSNotification*)notification;
 -(Category*)getBankingRoot;

@@ -263,7 +263,7 @@
               <int key="NSCellFlags">67239488</int>
               <int key="NSCellFlags2">4200448</int>
               <string key="NSContents">categories</string>
-              <object class="NSFont" key="NSSupport" id="588884133">
+              <object class="NSFont" key="NSSupport">
                 <string key="NSName">LucidaGrande</string>
                 <double key="NSSize">11</double>
                 <int key="NSfFlags">16</int>
@@ -431,7 +431,11 @@
               <int key="NSCellFlags">67239488</int>
               <int key="NSCellFlags2">71309312</int>
               <string key="NSContents">turnovers</string>
-              <reference key="NSSupport" ref="588884133"/>
+              <object class="NSFont" key="NSSupport" id="623550465">
+                <string key="NSName">LucidaGrande-Bold</string>
+                <double key="NSSize">11</double>
+                <int key="NSfFlags">16</int>
+              </object>
               <reference key="NSControlView" ref="616500165"/>
               <reference key="NSBackgroundColor" ref="609700460"/>
               <object class="NSColor" key="NSTextColor" id="219540686">
@@ -442,7 +446,7 @@
           </object>
           <object class="NSTextField" id="1001270240">
             <reference key="NSNextResponder" ref="1005"/>
-            <int key="NSvFlags">260</int>
+            <int key="NSvFlags">292</int>
             <string key="NSFrame">{{17, 52}, {193, 14}}</string>
             <reference key="NSSuperview" ref="1005"/>
             <bool key="NSEnabled">YES</bool>
@@ -450,7 +454,7 @@
               <int key="NSCellFlags">68288064</int>
               <int key="NSCellFlags2">272634880</int>
               <string key="NSContents">statement date</string>
-              <reference key="NSSupport" ref="588884133"/>
+              <reference key="NSSupport" ref="623550465"/>
               <reference key="NSControlView" ref="1001270240"/>
               <reference key="NSBackgroundColor" ref="609700460"/>
               <reference key="NSTextColor" ref="219540686"/>
@@ -1475,20 +1479,6 @@
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBFrameworkSource</string>
             <string key="minorKey">QuartzCore.framework/Headers/CIImageProvider.h</string>
-          </object>
-        </object>
-        <object class="IBPartialClassDescription">
-          <string key="className">NSObject</string>
-          <object class="IBClassDescriptionSource" key="sourceIdentifier">
-            <string key="majorKey">IBFrameworkSource</string>
-            <string key="minorKey">SM2DGraphView.framework/Headers/SM2DGraphView.h</string>
-          </object>
-        </object>
-        <object class="IBPartialClassDescription">
-          <string key="className">NSObject</string>
-          <object class="IBClassDescriptionSource" key="sourceIdentifier">
-            <string key="majorKey">IBFrameworkSource</string>
-            <string key="minorKey">SM2DGraphView.framework/Headers/SMPieChartView.h</string>
           </object>
         </object>
         <object class="IBPartialClassDescription">

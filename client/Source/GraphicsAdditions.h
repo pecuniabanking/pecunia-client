@@ -13,6 +13,8 @@
 + (NSColor*)nextDefaultAccountColor;
 + (NSColor*)nextDefaultCategoryColor;
 
+- (CGColorRef)CGColor;
+
 @end
 
 /**

@@ -288,7 +288,7 @@
     // but we need to update the selected cells then.
     draggedIndexes = [rowIndexes copy];
     
-    unsigned int indexes[30], count, i;
+    NSUInteger indexes[30], count, i;
 	NSRange range;
 	StatCatAssignment* stat;
 	NSMutableArray* uris = [NSMutableArray arrayWithCapacity: 30];

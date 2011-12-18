@@ -490,7 +490,7 @@
 // Dragging Bank Statements
 - (BOOL)tableView:(NSTableView *)tv writeRowsWithIndexes:(NSIndexSet*)rowIndexes toPasteboard:(NSPasteboard*)pboard
 {
-	unsigned int		idx[10], count, i;
+	NSUInteger idx[10], count, i;
 	StatCatAssignment	*stat;
 	NSRange				range;
 	NSMutableArray		*uris = [NSMutableArray arrayWithCapacity: 10 ];
@@ -619,18 +619,12 @@
 	Category *cat = [item representedObject ];
 	if(cat == nil) return;
 
-/*	
-	NSImage *catImage		= [NSImage imageNamed:@"catdef4_18.png"];
-	NSImage *moneyImage		= [NSImage imageNamed:@"money_18.png"];
-	NSImage *moneySyncImage	= [NSImage imageNamed:@"money_sync_18.png"];
-	NSImage *folderImage	= [NSImage imageNamed:@"folder_18.png"];
-*/	
 	[cell setImage: nil];
 	
-	BOOL itemIsSelected = FALSE;
-	if ([outlineView itemAtRow:[outlineView selectedRow]] == item)	 itemIsSelected = TRUE;
-	
-	[cell setValues:[cat catSum] currency:cat.currency unread:0 selected:itemIsSelected root:[cat isRoot] ];
+	[cell setValues:[cat catSum] currency: cat.currency
+             unread: 0
+           disabled: NO
+             isRoot: [cat isRoot]];
 }
 
 - (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex

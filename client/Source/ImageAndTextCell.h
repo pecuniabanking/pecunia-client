@@ -43,32 +43,30 @@
 {
 @private
 	
-    NSImage				*image;
-    NSString			*currency;
-    NSNumberFormatter	*amountFormatter;
-    NSDecimalNumber		*amount;
+    NSImage *image;
+    NSString *currency;
+    NSNumberFormatter *amountFormatter;
+    NSDecimalNumber *amount;
 	
-    NSInteger	countUnread;
-    NSInteger   maxUnread;
-    NSInteger	badgeWidth;
-    BOOL		isRoot;
-    BOOL		isSelected;
+    NSInteger countUnread;
+    NSInteger maxUnread;
+    NSInteger badgeWidth;
+    BOOL isRoot;
+    BOOL isDisabled;
 }
-
-
 
 @property (nonatomic, retain) NSImage			*image;
 @property (nonatomic, retain) NSString			*currency;
 @property (nonatomic, retain) NSDecimalNumber	*amount;
 @property (nonatomic, retain) NSNumberFormatter	*amountFormatter; // TODO: why not using the cell's formatter?
 
-- (void)setValues:(NSDecimalNumber*)aAmount currency:(NSString*)aCurrency unread:(NSInteger)unread selected:(BOOL)selected root:(BOOL)root;
-- (void)setMaxUnread:(NSInteger)n;
-- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView;
+- (void)setValues: (NSDecimalNumber*)aAmount currency: (NSString*)aCurrency unread: (NSInteger)unread disabled: (BOOL)disabled isRoot: (BOOL)root;
+- (void)setMaxUnread: (NSInteger)n;
+- (void)drawWithFrame: (NSRect)cellFrame inView: (NSView*)controlView;
 - (NSSize)cellSize;
 
-- (NSSize)sizeOfBadge:(NSInteger)unread;
-- (void)drawBadgeInRect:(NSRect)badgeFrame;
+- (NSSize)sizeOfBadge: (NSInteger)unread;
+- (void)drawBadgeInRect: (NSRect)badgeFrame;
 
 @end
 

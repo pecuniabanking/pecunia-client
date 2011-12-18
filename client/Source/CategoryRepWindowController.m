@@ -7,7 +7,6 @@
 //
 
 #import "CategoryRepWindowController.h"
-#import <SM2DGraphView/SMPieChartView.h>
 #import "Category.h"
 #import "MCEMOutlineViewLayout.h"
 #import "ShortDate.h"
@@ -15,446 +14,527 @@
 #import "MOAssistant.h"
 #import "AmountCell.h"
 
-NSInteger comparePies(NSDictionary *a, NSDictionary *b, void* context)
+#import "GraphicsAdditions.h"
+
+static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
+
+@interface PecuniaGraphHost : CPTGraphHostingView
 {
-  NSString *s1 = [a objectForKey: @"name" ];
-  NSString *s2 = [b objectForKey: @"name" ];
-  NSComparisonResult r = [s1 compare: s2 ];
-  return r;
+    NSTrackingArea* trackingArea; // To get mouse events, regardless of responder or key window state.
 }
+
+@end
+
+@implementation PecuniaGraphHost
+
+- (void)updateTrackingArea
+{
+    if (trackingArea != nil)
+    {
+        [self removeTrackingArea: trackingArea];
+        [trackingArea release];
+    }
+
+    trackingArea = [[[NSTrackingArea alloc] initWithRect: NSRectFromCGRect(self.hostedGraph.plotAreaFrame.frame)
+                                                 options: NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveInActiveApp
+                                                   owner: self
+                                                userInfo: nil]
+                    retain];
+    [self addTrackingArea: trackingArea];
+}
+
+- (id)initWithFrame:(NSRect)frameRect
+{
+    self = [super initWithFrame: frameRect];
+    [self updateTrackingArea];
+    return self;
+}
+
+- (void)dealloc
+{
+    [self removeTrackingArea: trackingArea];
+    [trackingArea release];
+    [super dealloc];
+}
+
+- (void)updateTrackingAreas
+{
+    [super updateTrackingAreas];
+    
+    [self updateTrackingArea];
+}
+
+- (BOOL) acceptsFirstResponder
+{
+  return YES;
+}
+
+- (void)sendMouseNotification: (NSEvent*)theEvent withParameters: (NSMutableDictionary*)parameters
+{
+    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    
+    NSPoint location = [self convertPoint: [theEvent locationInWindow] fromView: nil];
+    CGPoint mouseLocation = NSPointToCGPoint(location);
+    CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
+    [parameters setObject: [NSNumber numberWithFloat: pointInHostedGraph.x] forKey: @"x"];
+    [parameters setObject: [NSNumber numberWithFloat: pointInHostedGraph.y] forKey: @"y"];
+    [parameters setObject: [NSNumber numberWithInt: [theEvent buttonNumber]] forKey: @"button"];
+    [center postNotificationName: PecuniaHitNotification object: nil userInfo: parameters];
+}
+
+- (void)mouseMoved: (NSEvent*)theEvent
+{
+    [super mouseMoved: theEvent];
+    
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    [parameters setObject: @"mouseMoved" forKey: @"type"];
+    [self sendMouseNotification: theEvent withParameters: parameters];
+}
+
+- (void)mouseDown: (NSEvent*)theEvent
+{
+    [super mouseDown: theEvent];
+    
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    [parameters setObject: @"mouseDown" forKey: @"type"];
+    [self sendMouseNotification: theEvent withParameters: parameters];
+}
+
+- (void)mouseDragged: (NSEvent*)theEvent
+{
+    [super mouseDragged: theEvent];
+    
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    [parameters setObject: @"mouseDragged" forKey: @"type"];
+    [self sendMouseNotification: theEvent withParameters: parameters];
+}
+
+- (void)mouseUp: (NSEvent*)theEvent
+{
+    [super mouseUp: theEvent];
+    
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    [parameters setObject: @"mouseUp" forKey: @"type"];
+    [self sendMouseNotification: theEvent withParameters: parameters];
+}
+
+@end;
+
+//--------------------------------------------------------------------------------------------------
+
+@interface CategoryRepWindowController(Private)
+- (void)setupPieCharts;
+-(void)updateValues;
+@end
 
 @implementation CategoryRepWindowController
 
-@synthesize fromDate;
-@synthesize toDate;
+@synthesize category = currentCategory;
 
--(id)init
+- (id)init
 {
-  self = [super init ];
-  if(self == nil) return nil;
-  
-  incomesX = expensesX = 0;
-  managedObjectContext = [[MOAssistant assistant ] context ];
-  return self;
-}
-
--(void)awakeFromNib
-{
-  NSError	*error;
-  NSRect	frame;
-  
-  expensesCats = [[NSMutableArray arrayWithCapacity: 10 ] retain ];
-  incomesCats  = [[NSMutableArray arrayWithCapacity: 10 ] retain ];
-  if([categoryController fetchWithRequest:nil merge:NO error:&error]); // [categoryView restoreAll ];
-  incomeExplosionIndex = expenseExplosionIndex = -1;
-  
-  // get origin x coordinates
-  frame = [expenseView frame ];
-  expensesX = frame.origin.x;
-  frame = [incomeView frame ];
-  incomesX = frame.origin.x;
-  
-  // set Titles
-  NSMutableAttributedString *s;
-  s = [[NSMutableAttributedString alloc ] initWithString: NSLocalizedString(@"AP64", @"Revenues") ];
-  [s addAttribute:NSFontAttributeName
-            value:[NSFont userFontOfSize: 16 ]
-            range:NSMakeRange(0, [s length ]) ];
-  [incomeView setAttributedTitle: s ];
-  
-  s = [[NSMutableAttributedString alloc ] initWithString: NSLocalizedString(@"AP65", @"Expenses") ];
-  [s addAttribute:NSFontAttributeName
-            value:[NSFont userFontOfSize: 16 ]
-            range:NSMakeRange(0, [s length ]) ];
-  [expenseView setAttributedTitle: s ];
-  
-  [self performSelector: @selector(restoreCatView) withObject: nil afterDelay: 0.0];
-}
-
-
--(void)prepare
-{
-}
-
--(void)restoreCatView
-{
-  [categoryView restoreAll ];
-}
-
--(Category*)currentSelection
-{
-  NSArray* sel = [categoryController selectedObjects ];
-  if(sel == nil || [sel count ] != 1) return nil;
-  return [sel objectAtIndex: 0 ];
-}
-
-- (void)outlineViewSelectionDidChange:(NSNotification *)notification
-{
-  [incomeLegend deselectAll: self ];
-  [expenseLegend deselectAll: self ];
-  [self updateValues ];
-  [self updateViews ];
-}
-
-- (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
-{
-  Category *cat = [item representedObject ];
-  if(cat == nil) return;
-  if(![[tableColumn identifier ] isEqualToString: @"category" ]) return;
-  
-  NSMutableSet *children = [cat children ];
-  if(children == nil || [children count ] == 0) {
-    //display in gray color
-    NSColor *txtColor = [NSColor grayColor];
-    NSDictionary *txtDict = [NSDictionary dictionaryWithObjectsAndKeys: txtColor, NSForegroundColorAttributeName, nil];
-    NSAttributedString *attrStr = [[[NSAttributedString alloc] initWithString: [cat localName ] attributes:txtDict] autorelease];
-    [cell setAttributedStringValue:attrStr];
-  }
-  
-  if([cat isRoot ]) {
-    NSColor *txtColor;
-    if([cell isHighlighted ]) txtColor = [NSColor whiteColor]; 
-    else txtColor = [NSColor colorWithCalibratedHue: 0.6194 saturation: 0.32 brightness:0.56 alpha:1.0 ];
-    NSFont *txtFont = [NSFont fontWithName: @"Arial Rounded MT Bold" size: 13];
-    NSDictionary *txtDict = [NSDictionary dictionaryWithObjectsAndKeys: txtFont,NSFontAttributeName,txtColor, NSForegroundColorAttributeName, nil];
-    NSAttributedString *attrStr = [[[NSAttributedString alloc] initWithString: [cat localName ] attributes:txtDict] autorelease];
-    [cell setAttributedStringValue:attrStr];
-  }
-}
-
--(void)updateValues
-{
-  NSDecimalNumber	*result;
-  
-  [expensesCats removeAllObjects ];
-  [incomesCats removeAllObjects ];
-  
-  Category *cat = [self currentSelection ];
-  if(cat == nil) return;
-  
-  NSMutableSet* childs = [cat mutableSetValueForKey: @"children" ];
-  
-  if([childs count ] > 0) {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults ];
-    BOOL balance = [userDefaults boolForKey: @"balanceCategories" ];
-    
-    NSEnumerator	*enumerator = [childs objectEnumerator];
-    NSDecimalNumber	*zero = [NSDecimalNumber zero ];
-    Category		*ccat;
-    
-    while ((ccat = [enumerator nextObject])) {
-      if(balance) {
-        result = [ccat valuesOfType: cat_all from: fromDate to: toDate ];
-        if([result compare: zero ] == NSOrderedAscending) {
-          NSMutableDictionary	*pieData = [NSMutableDictionary dictionaryWithCapacity: 2 ];
-          [pieData setObject: [ccat localName ] forKey: @"name" ];
-          [pieData setObject: result forKey: @"value" ];
-          [pieData setObject: cat.currency forKey:@"currency" ];
-          [expensesCats addObject: pieData ];
-        }
-        if([result compare: zero ] == NSOrderedDescending) {
-          NSMutableDictionary	*pieData = [NSMutableDictionary dictionaryWithCapacity: 2 ];
-          [pieData setObject: [ccat localName ] forKey: @"name" ];
-          [pieData setObject: result forKey: @"value" ];
-          [pieData setObject: cat.currency forKey:@"currency" ];
-          [incomesCats addObject: pieData ];
-        }
-      } else {
-        result = [ccat valuesOfType: cat_spendings from: fromDate to: toDate ];
-        if([result compare: zero ] != NSOrderedSame) {
-          NSMutableDictionary	*pieData = [NSMutableDictionary dictionaryWithCapacity: 2 ];
-          [pieData setObject: [ccat localName ] forKey: @"name" ];
-          [pieData setObject: result forKey: @"value" ];
-          [pieData setObject: cat.currency forKey:@"currency" ];
-          [expensesCats addObject: pieData ];
-        }
-        result = [ccat valuesOfType: cat_earnings from: fromDate to: toDate ];
-        if([result compare: zero ] != NSOrderedSame) {
-          NSMutableDictionary	*pieData = [NSMutableDictionary dictionaryWithCapacity: 2 ];
-          [pieData setObject: [ccat localName ] forKey: @"name" ];
-          [pieData setObject: result forKey: @"value" ];
-          [pieData setObject: cat.currency forKey:@"currency" ];
-          [incomesCats addObject: pieData ];
-        }
-      }
-    }
-  }
-  [incomesCats sortUsingFunction: comparePies context:nil ];
-  [expensesCats sortUsingFunction: comparePies context:nil ];
-  [self setColors ];
-  [incomeView refreshDisplay: self ];
-  [expenseView refreshDisplay: self ];
-  [incomeLegend reloadData ];
-  [expenseLegend reloadData ];
-}
-
--(void)updateViews
-{
-  if(expensesX == 0) return;
-  BOOL income = [incomesCats count ] > 0;
-  BOOL expense = [expensesCats count ] > 0;
-  
-  NSView *inl = [[incomeLegend superview ] superview ];
-  NSView *exl = [[expenseLegend superview ] superview ];
-  
-  if(income) {
-    [[incomeView animator] setHidden: NO ];
-    [[inl animator] setHidden: NO ];
-    [[incomeLabel animator ] setHidden: NO ];
-  } else {
-    [[incomeView animator] setHidden: YES ];
-    [[inl animator] setHidden: YES ];
-    [[incomeLabel animator ] setHidden: YES ];
-  }
-  
-  if(expense) {
-    [[expenseView animator] setHidden: NO ];
-    [[exl animator] setHidden: NO ];
-    [[expenseLabel animator ] setHidden: NO ];
-  } else {
-    [[expenseView animator] setHidden: YES ];
-    [[exl animator] setHidden: YES ];
-    [[expenseLabel animator ] setHidden: YES ];
-  }
-  
-  // move expenses left
-  if(expense && !income) {
-    NSRect frame = [expenseView frame ];
-    frame.origin.x = incomesX;
-    [[expenseView animator] setFrame: frame ];
-    frame = [expenseLabel frame ];
-    frame.origin.x = incomesX+20;
-    [[expenseLabel animator ] setFrame: frame ];
-    frame = [exl frame ];
-    frame.origin.x = incomesX+20;
-    [[exl animator] setFrame: frame ];
-  } else {
-    NSRect frame = [expenseView frame ];
-    frame.origin.x = expensesX;
-    [[expenseView animator] setFrame: frame ];
-    frame = [expenseLabel frame ];
-    frame.origin.x = expensesX+20;
-    [[expenseLabel animator ] setFrame: frame ];
-    frame = [exl frame ];
-    frame.origin.x = expensesX+20;
-    [[exl animator] setFrame: frame ];
-  }
-}
-
--(void)setColors
-{
-  int n = [incomesCats count ];
-  int i;
-  double a = 0.05;
-  NSSize s;
-  NSRect r;
-  
-  s.width = 16; s.height = 16;
-  r.origin.x = 0; 
-  r.origin.y = 0;
-  r.size = s;
-  
-  //if(n>0) a = 1.0 / n;
-  for(i = 0; i < n; i++) {
-    NSMutableDictionary	*pieData = [incomesCats objectAtIndex: i ];
-    NSColor	*color = [NSColor colorWithDeviceHue: a*i saturation: 1.0 brightness: 1.0 alpha: 1.0 ];
-    [pieData setObject: color forKey: @"color" ];
-    
-    NSImage	*img = [[NSImage alloc ] initWithSize: s ];
-    [img lockFocus ];
-    [color set ];
-    NSBezierPath	*path = [NSBezierPath bezierPathWithOvalInRect:r ];
-    [path fill ];
-    [img setBackgroundColor: [color retain] ];
-    [img unlockFocus ];
-    [pieData setObject: img forKey: @"image" ];
-  }
-  
-  n = [expensesCats count ];
-  //if(n>0) a = 1.0 / n;
-  for(i = 0; i < n; i++) {
-    NSMutableDictionary	*pieData = [expensesCats objectAtIndex: i ];
-    NSColor	*color = [NSColor colorWithDeviceHue: a*i saturation: 1.0 brightness: 1.0 alpha: 1.0 ];
-    [pieData setObject: color forKey: @"color" ];
-    
-    NSImage	*img = [[NSImage alloc ] initWithSize: s ];
-    [img lockFocus ];
-    [color set ];
-    NSBezierPath	*path = [NSBezierPath bezierPathWithOvalInRect:r ];
-    [path fill ];
-    [img setBackgroundColor: [color retain] ];
-    [img unlockFocus ];
-    [pieData setObject: img forKey: @"image" ];
-  }
-}
-
--(NSString*)autosaveNameForTimeSlicer: (TimeSliceManager*)tsm
-{
-  return @"CatRepTimeSlice";
-}
-
--(void)timeSliceManager: (TimeSliceManager*)tsm changedIntervalFrom: (ShortDate*)from to: (ShortDate*)to
-{
-  self.fromDate = from;
-  self.toDate = to;
-  [incomeLegend deselectAll: self ];
-  [expenseLegend deselectAll: self ];
-  [self updateValues ];
-  [self updateViews ];
-}
-
-
-- (unsigned int)numberOfSlicesInPieChartView:(SMPieChartView*)inPieChartView
-{
-  if(inPieChartView == (SMPieChartView*)incomeView) return [incomesCats count ];
-  return [expensesCats count ];
-}
-
-- (double)pieChartView:(SMPieChartView*)inPieChartView dataForSliceIndex:(unsigned int)inSliceIndex
-{
-  if(inPieChartView == (SMPieChartView*)incomeView) {
-    return [[[incomesCats objectAtIndex: inSliceIndex ] objectForKey: @"value" ] doubleValue ];
-  }
-  return [[[expensesCats objectAtIndex: inSliceIndex ] objectForKey: @"value" ] doubleValue ];
-}
-
-- (NSString *)pieChartView:(SMPieChartView*)inPieChartView labelForSliceIndex:(unsigned int)inSliceIndex
-{
-  if(inPieChartView == (SMPieChartView*)incomeView) {
-    return [[incomesCats objectAtIndex: inSliceIndex ] objectForKey: @"name" ];
-  }
-  return [[expensesCats objectAtIndex: inSliceIndex ] objectForKey: @"name" ];
-  
-}
-
-- (NSDictionary *)pieChartView:(SMPieChartView*)inPieChartView attributesForSliceIndex:(unsigned int)inSliceIndex
-{
-  NSColor	*color;
-  if(inPieChartView == (SMPieChartView*)incomeView) color = [[incomesCats objectAtIndex: inSliceIndex ] objectForKey: @"color" ];
-  else color = [[expensesCats objectAtIndex: inSliceIndex ] objectForKey: @"color" ];
-  return [NSDictionary dictionaryWithObjectsAndKeys: color, NSBackgroundColorAttributeName, nil  ];
-}
-
-
--(id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)column row:(int)row
-{
-  NSDictionary	*pieData;
-  if([aTableView tag ] == 1) pieData = [incomesCats objectAtIndex: row ]; else pieData = [expensesCats objectAtIndex: row ];
-  return [pieData objectForKey: [column identifier ] ];
-}
-
-- (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
-{
-  if ([[aTableColumn identifier ] isEqualToString: @"value" ]) {
-    NSDictionary	*pieData;
-    if([aTableView tag ] == 1) pieData = [incomesCats objectAtIndex: rowIndex ]; else pieData = [expensesCats objectAtIndex: rowIndex ];
-    
-    AmountCell *cell = (AmountCell*)aCell;
-    cell.amount = [pieData objectForKey:@"value" ];
-    cell.currency = [pieData objectForKey:@"currency" ];
-  }
-}	
-
--(int)numberOfRowsInTableView:(NSTableView *)aTableView
-{
-  if([aTableView tag ] == 1) return [incomesCats count ]; else return [expensesCats count ];
-}
-
-- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
-{
-  if([[aNotification object ] tag ] == 1) {
-    incomeExplosionIndex = [incomeLegend selectedRow ];
-    [incomeView refreshDisplay: self ];
-  } else {
-    expenseExplosionIndex = [expenseLegend selectedRow ];
-    [expenseView refreshDisplay: self ];
-  }
-}
-
-- (NSRange)pieChartView:(SMPieChartView*)inPieChartView rangeOfExplodedPartIndex:(unsigned int)inIndex
-{
-  NSRange r;
-  r.length = 1;
-  if(inPieChartView == (SMPieChartView*)incomeView) r.location = incomeExplosionIndex; else r.location = expenseExplosionIndex;
-  return r;
-}
-
-- (unsigned int)numberOfExplodedPartsInPieChartView:(SMPieChartView*)inPieChartView
-{
-  if(inPieChartView == (SMPieChartView*)incomeView && incomeExplosionIndex >= 0) return  1; 
-  if(inPieChartView == (SMPieChartView*)expenseView && expenseExplosionIndex >= 0) return  1; 
-  return 0;
-}
-
--(void)pieChartView: (MCEMPieChartView*)view mouseOverSlice: (int)slice
-{
-  if(view == incomeView) {
-    if(slice >= 0) [incomeLabel setStringValue: [[incomesCats objectAtIndex: slice ] objectForKey: @"name" ] ];
-    else [incomeLabel setStringValue: @"" ];
-  } else {
-    if(slice >= 0) [expenseLabel setStringValue: [[expensesCats objectAtIndex: slice ] objectForKey: @"name" ] ];
-    else [expenseLabel setStringValue: @"" ];
-  }
-}
-
-- (id)outlineView:(NSOutlineView *)outlineView persistentObjectForItem:(id)item 
-{
-  return [outlineView persistentObjectForItem: item ];
-}
-
--(id)outlineView:(NSOutlineView *)outlineView itemForPersistentObject:(id)object
-{
-    return nil;
-}
-
-- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
-{
-  return [outlineView isExpandable: item ];
-}
-
--(void)terminate
-{
-  [categoryView saveLayout ];
-}
-
--(NSView*)mainView
-{
-  return mainView;
-}
-
--(void)print
-{
-  NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo ];
-  [printInfo setTopMargin:45 ];
-  [printInfo setBottomMargin:45 ];
-  [printInfo setHorizontalPagination:NSFitPagination ];
-  [printInfo setVerticalPagination:NSFitPagination ];
-  NSPrintOperation *printOp;
-  printOp = [NSPrintOperation printOperationWithView:printView printInfo: printInfo ];
-  [printOp setShowsPrintPanel:YES ];
-  [printOp runOperation ];	
-}
-
-
--(void)mouseOverSlice: (int)n
-{
-  if(n>0) NSLog(@"Mouse over: %@\n", [[incomesCats objectAtIndex: n ] objectForKey: @"name" ]);
-}
-
--(IBAction)balancingRuleChanged: (id)sender
-{
-  [self updateValues ];
-  [self updateViews ];
+    self = [super init];
+    if (self != nil) {    
+    }        
+    return self;
 }
 
 -(void)dealloc
 {
-  [expensesCats release ];
-  [incomesCats release ];
-  [fromDate release], fromDate = nil;
-  [toDate release], toDate = nil;
+    [spendingsCategories release];
+    [earningsCategories release];
+    [fromDate release];
+    fromDate = nil;
+    [toDate release];
+    toDate = nil;
+    
+    [super dealloc];
+}
+
+- (void)awakeFromNib
+{
+    earningsExplosionIndex = -1;
+    spendingsExplosionIndex = -1;
+    spendingsCategories = [[NSMutableArray arrayWithCapacity: 10] retain];
+    earningsCategories = [[NSMutableArray arrayWithCapacity: 10] retain];
+
+    
+    [self setupPieCharts];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(mouseHit:)
+                                                 name: PecuniaHitNotification
+                                               object: nil];
+}
+
+- (void)setupPieCharts
+{
+    pieChartGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame: NSRectToCGRect(pieChartHost.bounds)];
+    CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
+    [pieChartGraph applyTheme: theme];
+    pieChartHost.hostedGraph = pieChartGraph;
+    
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)pieChartGraph.defaultPlotSpace;
+    plotSpace.allowsUserInteraction = NO; // Disallow coreplot interaction (will do unwanted manipulations).
+    plotSpace.delegate = self;
+    
+	CPTMutableTextStyle* textStyle = [CPTMutableTextStyle textStyle];
+	textStyle.color = [CPTColor grayColor];
+	textStyle.fontName = @"Helvetica-Bold";
+	textStyle.fontSize = pieChartHost.bounds.size.height / 20.0f;
+	pieChartGraph.titleTextStyle = textStyle;
+	pieChartGraph.titleDisplacement = CGPointMake(0.0f, pieChartHost.bounds.size.height / 18.0f);
+	pieChartGraph.titlePlotAreaFrameAnchor = CPTRectAnchorTop;
+    
+//	pieChartGraph.plotAreaFrame.masksToBorder = NO;
+    
+	// Graph padding
+    pieChartGraph.paddingLeft = 20;
+    pieChartGraph.paddingTop = 20;
+    pieChartGraph.paddingRight = 20;
+    pieChartGraph.paddingBottom = 20;
+    pieChartGraph.fill = nil;
+    
+    CPTPlotAreaFrame* frame = pieChartGraph.plotAreaFrame;
+    frame.paddingLeft = 10;
+    frame.paddingRight = 10;
+    frame.paddingTop = 10;
+    frame.paddingBottom = 10;
+    
+    // Border style.
+    CPTMutableLineStyle* frameStyle = [CPTMutableLineStyle lineStyle];
+    frameStyle.lineWidth = 1;
+    frameStyle.lineColor = [[CPTColor colorWithGenericGray: 0] colorWithAlphaComponent: 0.5];
+    
+    frame.cornerRadius = 10;
+    frame.borderLineStyle = frameStyle;
+
+    frame.shadowColor = CGColorCreateGenericGray(0, 1);
+    frame.shadowRadius = 2.0;
+    frame.shadowOffset = CGSizeMake(1, -1);
+    frame.shadowOpacity = 0.25;
+//    frame.fill = nil;
   
-  [super dealloc ];
+	pieChartGraph.axisSet = nil;
+    
+	CPTMutableLineStyle* pieLineStyle = [CPTMutableLineStyle lineStyle];
+	pieLineStyle.lineColor = [CPTColor colorWithGenericGray: 1];
+    pieLineStyle.lineWidth = 2;
+    
+	// Add pie chart
+	earningsPlot = [[[CPTPieChart alloc] init] autorelease];
+	earningsPlot.dataSource = self;
+	earningsPlot.delegate = self;
+	earningsPlot.pieRadius = 130;
+	earningsPlot.pieInnerRadius = 30;
+	earningsPlot.identifier = @"earnings";
+	earningsPlot.borderLineStyle = pieLineStyle;
+	earningsPlot.startAngle = 0;
+	earningsPlot.sliceDirection = CPTPieDirectionClockwise;
+    earningsPlot.centerAnchor = CGPointMake(0.2, 0.6);
+    earningsPlot.alignsPointsToPixels = YES;
+    earningsPlot.labelOffset = 10;
+	
+    earningsPlot.shadowColor = CGColorCreateGenericGray(0, 1);
+    earningsPlot.shadowRadius = 5.0;
+    earningsPlot.shadowOffset = CGSizeMake(3, -3);
+    earningsPlot.shadowOpacity = 0.3;
+
+	[pieChartGraph addPlot: earningsPlot];
+    
+	// Add another pie chart
+	spendingsPlot = [[[CPTPieChart alloc] init] autorelease];
+	spendingsPlot.dataSource = self;
+	spendingsPlot.delegate = self;
+	spendingsPlot.pieRadius = 130;
+	spendingsPlot.pieInnerRadius = 30;
+	spendingsPlot.identifier = @"spendings";
+	spendingsPlot.borderLineStyle = pieLineStyle;
+	spendingsPlot.startAngle = 0;
+	spendingsPlot.sliceDirection = CPTPieDirectionClockwise;
+    spendingsPlot.centerAnchor = CGPointMake(0.7, 0.6);
+    spendingsPlot.alignsPointsToPixels = YES;
+    spendingsPlot.labelOffset = 10;
+	
+    spendingsPlot.shadowColor = CGColorCreateGenericGray(0, 1);
+    spendingsPlot.shadowRadius = 5.0;
+    spendingsPlot.shadowOffset = CGSizeMake(3, -3);
+    spendingsPlot.shadowOpacity = 0.3;
+
+	[pieChartGraph addPlot: spendingsPlot];
+}
+
+#pragma mark -
+#pragma mark Plot Data Source Methods
+
+- (NSUInteger)numberOfRecordsForPlot: (CPTPlot*)plot
+{
+	if (plot == spendingsPlot) {
+        return [spendingsCategories count];
+    } else {
+        return [earningsCategories count];
+    }
+}
+
+- (NSNumber*)numberForPlot: (CPTPlot*)plot field: (NSUInteger)fieldEnum recordIndex: (NSUInteger)index
+{
+	if (fieldEnum == CPTPieChartFieldSliceWidth) {
+        if (plot == spendingsPlot) {
+            return [[spendingsCategories objectAtIndex: index] objectForKey: @"value"];
+        } else {
+            return [[earningsCategories objectAtIndex: index] objectForKey: @"value"];
+        }
+    }
+
+	return (id)[NSNull null];
+}
+
+- (CPTLayer*)dataLabelForPlot: (CPTPlot*)plot recordIndex: (NSUInteger)index
+{
+	static CPTMutableTextStyle* labelStyle = nil;
+
+    if (!labelStyle) {
+        labelStyle = [[CPTMutableTextStyle alloc] init];
+        labelStyle.color = [CPTColor blackColor];
+        labelStyle.fontName = @"Lucida Grande";
+        labelStyle.fontSize = 10;
+    }
+    
+    CPTTextLayer* newLayer = nil;
+
+	if (plot == spendingsPlot) {
+		newLayer = [[[CPTTextLayer alloc] initWithText: [[spendingsCategories objectAtIndex: index] objectForKey: @"name"] style: labelStyle] autorelease];
+	} else {
+		newLayer = [[[CPTTextLayer alloc] initWithText: [[earningsCategories objectAtIndex: index] objectForKey: @"name"] style: labelStyle] autorelease];
+    }
+
+	return newLayer;
+}
+
+-(CGFloat)radialOffsetForPieChart:(CPTPieChart *)pieChart recordIndex: (NSUInteger)index
+{
+    CGFloat result = 0.0;
+    
+    if (pieChart == spendingsPlot) {
+        if (index == spendingsExplosionIndex) {
+            result = 20.0;
+        }
+    } else {
+        if (index == earningsExplosionIndex) {
+            result = 20.0;
+        }
+    }
+
+    return result;
+}
+
+- (CPTFill*)sliceFillForPieChart: (CPTPieChart*)pieChart recordIndex: (NSUInteger)index
+{
+    NSColor* color;
+    
+   if (pieChart == spendingsPlot) {
+       color = [[spendingsCategories objectAtIndex: index] objectForKey: @"color"];
+   } else {
+       color = [[earningsCategories objectAtIndex: index] objectForKey: @"color"];
+   }
+
+    CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: [[color highlightWithLevel: 0.5] CGColor]]
+                                                        endingColor: [CPTColor colorWithCGColor: [color CGColor]]
+                             ];
+    gradient.angle = -45.0;
+    CPTFill* gradientFill = [CPTFill fillWithGradient: gradient];
+
+    return gradientFill;
+}
+
+#pragma mark -
+#pragma mark Controller logic
+
+- (void)pieChart: (CPTPieChart*)plot sliceWasSelectedAtRecordIndex: (NSUInteger)index
+{
+    currentPlot = plot;
+    
+    if (plot == earningsPlot) {
+        if ((earningsExplosionIndex == index) || ([earningsCategories count] < 2)) {
+            earningsExplosionIndex = -1;
+        } else {
+            earningsExplosionIndex = index;
+        }
+        [earningsPlot repositionAllLabelAnnotations];
+    } else {
+        if ((spendingsExplosionIndex == index) || ([spendingsCategories count] < 2)) {
+            spendingsExplosionIndex = -1;
+        } else {
+            spendingsExplosionIndex = index;
+        }
+        [spendingsPlot repositionAllLabelAnnotations];
+    }
+    [pieChartGraph setNeedsLayout];
+    
+    CGRect bounds = plot.plotArea.bounds;
+    currentPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * plot.centerAnchor.x,
+                                    bounds.origin.y + bounds.size.height * plot.centerAnchor.y);
+}
+
+/**
+ * Handler method for notifications sent from the graph host windows if something in the graphs need
+ * adjustment, mostly due to user input.
+ */
+- (void)mouseHit: (NSNotification*)notification
+{
+    if ([[notification name] isEqualToString: PecuniaHitNotification]) {
+        NSDictionary* parameters = [notification userInfo];
+        NSString* type = [parameters objectForKey: @"type"];
+        BOOL isMouseDown = [type isEqualToString: @"mouseDown"];
+        if (currentPlot == nil) {
+            if (isMouseDown) {
+                earningsExplosionIndex = -1;
+                spendingsExplosionIndex = -1;
+                [earningsPlot repositionAllLabelAnnotations];
+                [spendingsPlot repositionAllLabelAnnotations];
+                [pieChartGraph setNeedsLayout];
+            }
+        } else {
+            NSNumber* x = [parameters objectForKey: @"x"];
+            NSNumber* y = [parameters objectForKey: @"y"];
+            
+            if (isMouseDown) {
+                lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
+                lastMouseDistance = sqrt(pow(lastMousePosition.x - currentPlotCenter.x, 2) + pow(lastMousePosition.y - currentPlotCenter.y, 2));
+                lastAngle = atan2(lastMousePosition.y - currentPlotCenter.y, lastMousePosition.x - currentPlotCenter.x);
+            } else {
+                if ([type isEqualToString: @"mouseUp"]) {
+                    currentPlot = nil;
+                } else {
+                    if ([type isEqualToString: @"mouseDragged"]) {
+                        CGFloat distance = sqrt(pow([x floatValue] - currentPlotCenter.x, 2) + pow([y floatValue] - currentPlotCenter.y, 2));
+                        CGFloat newRadius = currentPlot.pieRadius + (distance - lastMouseDistance);
+                        if (newRadius < 130) {
+                            newRadius = 130;
+                        }
+                        currentPlot.pieRadius = newRadius;
+                        lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
+                        lastMouseDistance = sqrt(pow(lastMousePosition.x - currentPlotCenter.x, 2) + pow(lastMousePosition.y - currentPlotCenter.y, 2));
+                        
+                        CGFloat newAngle = atan2(lastMousePosition.y - currentPlotCenter.y, lastMousePosition.x - currentPlotCenter.x);
+                        currentPlot.startAngle += newAngle - lastAngle;
+                        lastAngle = newAngle;
+                    }
+                }
+            }
+        }
+    }
+}
+
+- (void)setCategory: (Category*)newCategory
+{
+    currentCategory = newCategory;
+    [self updateValues];
+}
+
+- (void)updateValues
+{
+    [spendingsCategories removeAllObjects];
+    [earningsCategories removeAllObjects];
+    
+    if (currentCategory == nil) {
+        return;
+    }
+    
+    NSMutableSet* childs = [currentCategory mutableSetValueForKey: @"children"];
+    
+    if([childs count] > 0) {
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        BOOL balance = [userDefaults boolForKey: @"balanceCategories"];
+        
+        NSEnumerator* enumerator = [childs objectEnumerator];
+        NSDecimalNumber* zero = [NSDecimalNumber zero];
+        Category* childCategory;
+        NSDecimalNumber* result;
+
+        while ((childCategory = [enumerator nextObject])) {
+            if (balance) {
+                result = [childCategory valuesOfType: cat_all from: fromDate to: toDate];
+
+                NSMutableDictionary* pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
+                [pieData setObject: [childCategory localName ] forKey: @"name"];
+                [pieData setObject: result forKey: @"value"];
+                [pieData setObject: currentCategory.currency forKey:@"currency"];
+                [pieData setObject: childCategory.categoryColor forKey: @"color"];
+
+                if ([result compare: zero] == NSOrderedAscending) {
+                    [spendingsCategories addObject: pieData];
+                } else {
+                    [earningsCategories addObject: pieData];
+                }
+            } else {
+                result = [childCategory valuesOfType: cat_spendings from: fromDate to: toDate];
+
+                if ([result compare: zero] != NSOrderedSame) {
+                    NSMutableDictionary* pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
+                    [pieData setObject: [childCategory localName ] forKey: @"name"];
+                    [pieData setObject: result forKey: @"value"];
+                    [pieData setObject: currentCategory.currency forKey:@"currency"];
+                    [pieData setObject: childCategory.categoryColor forKey: @"color"];
+                    
+                    [spendingsCategories addObject: pieData];
+                }
+                
+                result = [childCategory valuesOfType: cat_earnings from: fromDate to: toDate];
+                if ([result compare: zero] != NSOrderedSame) {
+                    NSMutableDictionary* pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
+                    [pieData setObject: [childCategory localName ] forKey: @"name"];
+                    [pieData setObject: result forKey: @"value"];
+                    [pieData setObject: currentCategory.currency forKey:@"currency"];
+                    [pieData setObject: childCategory.categoryColor forKey: @"color"];
+                    
+                    [earningsCategories addObject: pieData];
+                }
+            }
+        }
+    }
+    
+    earningsExplosionIndex = -1;
+    spendingsExplosionIndex = -1;
+    earningsPlot.startAngle = 0;
+    earningsPlot.pieRadius = 130;
+    spendingsPlot.startAngle = 0;
+    spendingsPlot.pieRadius = 130;
+
+    [pieChartGraph reloadData];
+}
+
+- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
+{
+    [fromDate release];
+    fromDate = [from retain];
+    [toDate release];
+    toDate = [to retain];
+    [self updateValues];
+}
+
+-(NSView*)mainView
+{
+    return mainView;
+}
+
+-(void)print
+{
+    NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo ];
+    [printInfo setTopMargin:45 ];
+    [printInfo setBottomMargin:45 ];
+    [printInfo setHorizontalPagination:NSFitPagination ];
+    [printInfo setVerticalPagination:NSFitPagination ];
+    NSPrintOperation *printOp;
+    printOp = [NSPrintOperation printOperationWithView: mainView printInfo: printInfo ];
+    [printOp setShowsPrintPanel:YES ];
+    [printOp runOperation ];	
+}
+
+
+-(IBAction)balancingRuleChanged: (id)sender
+{
+    [self updateValues ];
 }
 
 @end

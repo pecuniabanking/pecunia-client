@@ -7,51 +7,44 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MainTabViewItem.h"
+#import <CorePlot/CorePlot.h>
 
-@class SMPieChartView;
 @class ShortDate;
-@class TimeSliceManager;
-@class MCEMPieChartView;
+@class PecuniaGraphHost;
+@class Category;
 
-@interface CategoryRepWindowController : NSObject <MainTabViewItem> {
-    IBOutlet NSTreeController	*categoryController;
-	IBOutlet NSOutlineView      *categoryView;
-	IBOutlet MCEMPieChartView	*incomeView;
-	IBOutlet MCEMPieChartView	*expenseView;
-	IBOutlet NSTableView		*incomeLegend;
-	IBOutlet NSTableView		*expenseLegend;
-	IBOutlet NSSplitView		*splitView;
-	IBOutlet NSTextField		*incomeLabel;
-	IBOutlet NSTextField		*expenseLabel;
-	IBOutlet NSView				*mainView;
-	IBOutlet NSView				*printView;
-	
-	NSMutableArray				*expensesCats;
-	NSMutableArray				*incomesCats;
-	ShortDate					*fromDate;
-	ShortDate					*toDate;
-	NSManagedObjectContext      *managedObjectContext;
-	
-	IBOutlet TimeSliceManager	*tsManager;
-	int							incomeExplosionIndex;
-	int							expenseExplosionIndex;
-	int							expensesX;
-	int							incomesX;
+@interface CategoryRepWindowController : NSObject <CPTPlotSpaceDelegate, CPTPieChartDataSource> {
+    IBOutlet NSView* mainView;
+    IBOutlet PecuniaGraphHost* pieChartHost;
+    
+@private
+    CPTXYGraph* pieChartGraph;
+    CPTPieChart* earningsPlot;
+    CPTPieChart* spendingsPlot;
+    
+    NSPoint lastMousePosition;
+    CGFloat lastMouseDistance; // Distinance of the mouse from the center of the current plot.
+    CGFloat lastAngle;
+    CPTPieChart* currentPlot;
+    NSPoint currentPlotCenter; // Center of the current plot. Only valid if currentPlot is not nil.
+    
+    NSMutableArray *spendingsCategories;
+    NSMutableArray *earningsCategories;
+    Category* currentCategory;
+    ShortDate* fromDate;
+    ShortDate* toDate;
+    
+    int earningsExplosionIndex;
+    int spendingsExplosionIndex;
 }
 
-@property (nonatomic, retain) ShortDate *fromDate;
-@property (nonatomic, retain) ShortDate *toDate;
+@property (nonatomic, retain) Category* category;
 
--(IBAction)balancingRuleChanged: (id)sender;
+- (IBAction)balancingRuleChanged: (id)sender;
 
--(void)updateValues;
--(void)updateViews;
--(void)setColors;
-
--(void)prepare;
--(void)terminate;
--(NSView*)mainView;
+- (NSView*)mainView;
+- (void)print;
+- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
 
 @end
 
