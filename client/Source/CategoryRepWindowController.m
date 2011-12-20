@@ -189,10 +189,10 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 //	pieChartGraph.plotAreaFrame.masksToBorder = NO;
     
 	// Graph padding
-    pieChartGraph.paddingLeft = 20;
-    pieChartGraph.paddingTop = 20;
-    pieChartGraph.paddingRight = 20;
-    pieChartGraph.paddingBottom = 20;
+    pieChartGraph.paddingLeft = 0;
+    pieChartGraph.paddingTop = 0;
+    pieChartGraph.paddingRight = 0;
+    pieChartGraph.paddingBottom = 0;
     pieChartGraph.fill = nil;
     
     CPTPlotAreaFrame* frame = pieChartGraph.plotAreaFrame;
@@ -535,6 +535,10 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 -(IBAction)balancingRuleChanged: (id)sender
 {
     [self updateValues ];
+}
+
+- (IBAction)showHelp: (id)sender
+{
 }
 
 @end

@@ -40,8 +40,8 @@
     IBOutlet NSTabView          *mainTabView;
     IBOutlet CategoryView       *accountsView;
     IBOutlet MCEMTreeController *categoryController;
-    IBOutlet NSSplitView        *mainVSplit;
-    IBOutlet NSSplitView        *mainHSplit;
+    IBOutlet BWSplitView        *mainVSplit;
+    IBOutlet BWSplitView        *mainHSplit;
     IBOutlet NSPredicateEditor  *predicateEditor;
     IBOutlet NSArrayController  *assignPreviewController;
     IBOutlet NSToolbar          *toolbar;
@@ -61,6 +61,12 @@
     IBOutlet NSTextField        *remoteNameLabel;
     IBOutlet BWSplitView        *rightSplitter;
     IBOutlet NSView             *rightPane;
+    
+    // About panel.
+    IBOutlet NSWindow           *aboutWindow;
+    IBOutlet NSTextView         *aboutText;
+    IBOutlet NSTextField        *versionText;
+    IBOutlet NSTextField        *copyrightText;
     
     IBOutlet CatDefWindowController *catDefWinController;
     IBOutlet TransferListController *transferListController;
@@ -140,6 +146,7 @@
 -(IBAction)updateAllAccounts:(id)sender;
 -(IBAction)repairSaldo:(id)sender;
 
+-(IBAction)showAboutPanel:(id)sender;
 
 -(void)windowWillClose:(NSNotification *)aNotification;
 -(NSArray*)selectedNodes;

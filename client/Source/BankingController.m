@@ -250,7 +250,7 @@ static BankingController	*con;
     frame.size.height -= 61; // The height of the heading.
 
     categoryAnalysisController = [[AccountRepWindowController alloc] init];
-    if ([NSBundle loadNibNamed: @"AccountRep" owner: categoryAnalysisController]) {
+    if ([NSBundle loadNibNamed: @"CategoryStatistics" owner: categoryAnalysisController]) {
         categoryAnalysisView = [categoryAnalysisController mainView];
         categoryAnalysisView.frame = frame;
         [rightPane addSubview: categoryAnalysisView];
@@ -259,7 +259,7 @@ static BankingController	*con;
     [categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
     
     categoryReportingController = [[CategoryRepWindowController alloc] init];
-    if ([NSBundle loadNibNamed: @"CategoryRep" owner: categoryReportingController]) {
+    if ([NSBundle loadNibNamed: @"CategoryReporting" owner: categoryReportingController]) {
         categoryReportingView = [categoryReportingController mainView];
         categoryReportingView.frame = frame;
         [rightPane addSubview: categoryReportingView];
@@ -2539,6 +2539,24 @@ static BankingController	*con;
     [self updateUnread ];
     [accountsView setNeedsDisplay: YES ];
     [transactionController rearrangeObjects ];
+}
+
+-(IBAction)showAboutPanel:(id)sender
+{
+    if (aboutWindow == nil) {
+        [NSBundle loadNibNamed: @"About" owner: self];
+        
+        NSBundle* mainBundle = [NSBundle mainBundle];
+        NSString* path = [mainBundle pathForResource: @"Credits" ofType: @"rtf"];
+        [aboutText readRTFDFromFile: path];
+        [versionText setStringValue: [NSString stringWithFormat: @"Version %@ (%@)",
+                                      [mainBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"],
+                                      [mainBundle objectForInfoDictionaryKey: @"CFBundleVersion"]
+                                      ]];
+        [copyrightText setStringValue: [mainBundle objectForInfoDictionaryKey: @"NSHumanReadableCopyright"]];
+    } else {
+        [aboutWindow orderFront: self];
+    }
 }
 
 -(void)migrate

@@ -16,6 +16,7 @@
 @interface CategoryRepWindowController : NSObject <CPTPlotSpaceDelegate, CPTPieChartDataSource> {
     IBOutlet NSView* mainView;
     IBOutlet PecuniaGraphHost* pieChartHost;
+    IBOutlet NSImageView* helpButton;
     
 @private
     CPTXYGraph* pieChartGraph;
@@ -41,6 +42,7 @@
 @property (nonatomic, retain) Category* category;
 
 - (IBAction)balancingRuleChanged: (id)sender;
+- (IBAction)showHelp: (id)sender;
 
 - (NSView*)mainView;
 - (void)print;

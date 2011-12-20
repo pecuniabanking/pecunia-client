@@ -11,7 +11,7 @@
       <string key="com.brandonwalkin.BWToolkit">1.2.5</string>
     </dictionary>
     <array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-      <integer value="6092"/>
+      <integer value="6172"/>
     </array>
     <array key="IBDocument.PluginDependencies">
       <string>com.brandonwalkin.BWToolkit</string>
@@ -839,6 +839,7 @@
                             </array>
                             <string key="NSFrameSize">{360, 651}</string>
                             <reference key="NSSuperview" ref="464761302"/>
+                            <bool key="NSViewIsLayerTreeHost">YES</bool>
                             <int key="NSViewLayerContentsRedrawPolicy">2</int>
                             <string key="NSClassName">NSView</string>
                           </object>
@@ -3707,7 +3708,6 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
                         </array>
                         <string key="NSFrameSize">{1158, 651}</string>
                         <reference key="NSSuperview" ref="641812421"/>
-                        <bool key="NSViewIsLayerTreeHost">YES</bool>
                         <int key="NSViewLayerContentsRedrawPolicy">2</int>
                         <bool key="NSIsVertical">YES</bool>
                         <int key="NSDividerStyle">2</int>
@@ -3757,10 +3757,9 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
                     </array>
                     <string key="NSFrameSize">{1158, 651}</string>
                     <reference key="NSSuperview" ref="768391083"/>
-                    <bool key="NSViewIsLayerTreeHost">YES</bool>
                     <int key="NSViewLayerContentsRedrawPolicy">2</int>
                   </object>
-                  <string key="NSLabel">Konten</string>
+                  <string key="NSLabel">Konten + Kategorien</string>
                   <reference key="NSColor" ref="537281325"/>
                   <reference key="NSTabView" ref="768391083"/>
                 </object>
@@ -5974,7 +5973,7 @@ wHhtbW9kAAAAAAAAEKwAAKAQMEdWU7/vQQAAAAAAAAAAAAAAAAAAAAAAA</bytes>
                     </array>
                     <string key="NSFrameSize">{1158, 651}</string>
                   </object>
-                  <string key="NSLabel">Umsatzregeln</string>
+                  <string key="NSLabel">Daueraufräge</string>
                   <reference key="NSColor" ref="537281325"/>
                   <reference key="NSTabView" ref="768391083"/>
                 </object>
@@ -10057,14 +10056,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
         </object>
         <object class="IBConnectionRecord">
           <object class="IBActionConnection" key="connection">
-            <string key="label">orderFrontStandardAboutPanel:</string>
-            <reference key="source" ref="135735987"/>
-            <reference key="destination" ref="261933536"/>
-          </object>
-          <int key="connectionID">142</int>
-        </object>
-        <object class="IBConnectionRecord">
-          <object class="IBActionConnection" key="connection">
             <string key="label">hideOtherApplications:</string>
             <reference key="source" ref="135735987"/>
             <reference key="destination" ref="1033884640"/>
@@ -13880,6 +13871,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             <reference key="destination" ref="729474541"/>
           </object>
           <int key="connectionID">6191</int>
+        </object>
+        <object class="IBConnectionRecord">
+          <object class="IBActionConnection" key="connection">
+            <string key="label">showAboutPanel:</string>
+            <reference key="source" ref="674635667"/>
+            <reference key="destination" ref="261933536"/>
+          </object>
+          <int key="connectionID">6212</int>
         </object>
       </array>
       <object class="IBMutableOrderedSet" key="objectRecords">
@@ -19505,7 +19504,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
       <nil key="activeLocalization"/>
       <dictionary class="NSMutableDictionary" key="localizations"/>
       <nil key="sourceID"/>
-      <int key="maxID">6211</int>
+      <int key="maxID">6212</int>
     </object>
     <object class="IBClassDescriber" key="IBDocument.Classes">
       <array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -19545,6 +19544,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             <string key="repairSaldo:">id</string>
             <string key="resetIsNewStatements:">id</string>
             <string key="save:">id</string>
+            <string key="showAboutPanel:">id</string>
             <string key="showInfo:">id</string>
             <string key="showInput:">id</string>
             <string key="showLicense:">id</string>
@@ -19654,6 +19654,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
               <string key="name">save:</string>
               <string key="candidateClassName">id</string>
             </object>
+            <object class="IBActionInfo" key="showAboutPanel:">
+              <string key="name">showAboutPanel:</string>
+              <string key="candidateClassName">id</string>
+            </object>
             <object class="IBActionInfo" key="showInfo:">
               <string key="name">showInfo:</string>
               <string key="candidateClassName">id</string>
@@ -19710,9 +19714,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             <string key="earningsField">NSTextField</string>
             <string key="headerValueField">NSTextField</string>
             <string key="lockImage">NSImageView</string>
-            <string key="mainHSplit">NSSplitView</string>
+            <string key="mainHSplit">BWSplitView</string>
             <string key="mainTabView">NSTabView</string>
-            <string key="mainVSplit">NSSplitView</string>
+            <string key="mainVSplit">BWSplitView</string>
             <string key="mainWindow">NSWindow</string>
             <string key="nassValueField">NSTextField</string>
             <string key="predicateEditor">NSPredicateEditor</string>
@@ -19727,7 +19731,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             <string key="timeSlicer">TimeSliceManager</string>
             <string key="toolbar">NSToolbar</string>
             <string key="transactionController">NSArrayController</string>
-            <string key="transactionsView">MCEMTableView</string>
             <string key="transferListController">TransferListController</string>
             <string key="turnoversField">NSTextField</string>
             <string key="valueField">NSTextField</string>
@@ -19775,7 +19778,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             </object>
             <object class="IBToOneOutletInfo" key="mainHSplit">
               <string key="name">mainHSplit</string>
-              <string key="candidateClassName">NSSplitView</string>
+              <string key="candidateClassName">BWSplitView</string>
             </object>
             <object class="IBToOneOutletInfo" key="mainTabView">
               <string key="name">mainTabView</string>
@@ -19783,7 +19786,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             </object>
             <object class="IBToOneOutletInfo" key="mainVSplit">
               <string key="name">mainVSplit</string>
-              <string key="candidateClassName">NSSplitView</string>
+              <string key="candidateClassName">BWSplitView</string>
             </object>
             <object class="IBToOneOutletInfo" key="mainWindow">
               <string key="name">mainWindow</string>
@@ -19840,10 +19843,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
             <object class="IBToOneOutletInfo" key="transactionController">
               <string key="name">transactionController</string>
               <string key="candidateClassName">NSArrayController</string>
-            </object>
-            <object class="IBToOneOutletInfo" key="transactionsView">
-              <string key="name">transactionsView</string>
-              <string key="candidateClassName">MCEMTableView</string>
             </object>
             <object class="IBToOneOutletInfo" key="transferListController">
               <string key="name">transferListController</string>
@@ -20047,6 +20046,47 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
           </object>
         </object>
         <object class="IBPartialClassDescription">
+          <string key="className">CategoryRepWindowController</string>
+          <string key="superclassName">NSObject</string>
+          <dictionary class="NSMutableDictionary" key="actions">
+            <string key="balancingRuleChanged:">id</string>
+            <string key="showHelp:">id</string>
+          </dictionary>
+          <dictionary class="NSMutableDictionary" key="actionInfosByName">
+            <object class="IBActionInfo" key="balancingRuleChanged:">
+              <string key="name">balancingRuleChanged:</string>
+              <string key="candidateClassName">id</string>
+            </object>
+            <object class="IBActionInfo" key="showHelp:">
+              <string key="name">showHelp:</string>
+              <string key="candidateClassName">id</string>
+            </object>
+          </dictionary>
+          <dictionary class="NSMutableDictionary" key="outlets">
+            <string key="helpButton">NSImageView</string>
+            <string key="mainView">NSView</string>
+            <string key="pieChartHost">PecuniaGraphHost</string>
+          </dictionary>
+          <dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+            <object class="IBToOneOutletInfo" key="helpButton">
+              <string key="name">helpButton</string>
+              <string key="candidateClassName">NSImageView</string>
+            </object>
+            <object class="IBToOneOutletInfo" key="mainView">
+              <string key="name">mainView</string>
+              <string key="candidateClassName">NSView</string>
+            </object>
+            <object class="IBToOneOutletInfo" key="pieChartHost">
+              <string key="name">pieChartHost</string>
+              <string key="candidateClassName">PecuniaGraphHost</string>
+            </object>
+          </dictionary>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier">
+            <string key="majorKey">IBProjectSource</string>
+            <string key="minorKey">Source/CategoryRepWindowController.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
           <string key="className">CategoryView</string>
           <string key="superclassName">NSOutlineView</string>
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -20125,14 +20165,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBProjectSource</string>
             <string key="minorKey">Source/MCEMSplitView.h</string>
-          </object>
-        </object>
-        <object class="IBPartialClassDescription">
-          <string key="className">MCEMTableView</string>
-          <string key="superclassName">NSTableView</string>
-          <object class="IBClassDescriptionSource" key="sourceIdentifier">
-            <string key="majorKey">IBProjectSource</string>
-            <string key="minorKey">Source/MCEMTableView.h</string>
           </object>
         </object>
         <object class="IBPartialClassDescription">
