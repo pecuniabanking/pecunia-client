@@ -46,11 +46,10 @@
 #import "PurposeSplitController.h"
 #import "TransferTemplateController.h"
 
-#import "AccountRepWindowController.h"
+#import "CategoryAnalysisWindowController.h"
 #import "CategoryRepWindowController.h"
 
 #import "BankStatementPrintView.h"
-#import "MainTabViewItem.h"
 #import "GenericImportController.h"
 #import "DateAndValutaCell.h"
 #import "AmountCell.h"
@@ -249,31 +248,33 @@ static BankingController	*con;
     NSRect frame = rightSplitter.frame;
     frame.size.height -= 61; // The height of the heading.
 
-    categoryAnalysisController = [[AccountRepWindowController alloc] init];
-    if ([NSBundle loadNibNamed: @"CategoryStatistics" owner: categoryAnalysisController]) {
-        categoryAnalysisView = [categoryAnalysisController mainView];
-        categoryAnalysisView.frame = frame;
-        [rightPane addSubview: categoryAnalysisView];
-        [categoryAnalysisView setHidden: YES];
+    categoryAnalysisController = [[CategoryAnalysisWindowController alloc] init];
+    if ([NSBundle loadNibNamed: @"CategoryAnalysis" owner: categoryAnalysisController]) {
+        NSView* view = [categoryAnalysisController mainView];
+        view.frame = frame;
+        [rightPane addSubview: view];
+        [view setHidden: YES];
     }
     [categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
     
     categoryReportingController = [[CategoryRepWindowController alloc] init];
     if ([NSBundle loadNibNamed: @"CategoryReporting" owner: categoryReportingController]) {
-        categoryReportingView = [categoryReportingController mainView];
-        categoryReportingView.frame = frame;
-        [rightPane addSubview: categoryReportingView];
-        [categoryReportingView setHidden: YES];
+        NSView* view = [categoryReportingController mainView];
+        view.frame = frame;
+        [rightPane addSubview: view];
+        [view setHidden: YES];
     }
     [categoryReportingController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
 
     [sideToolbar retain]; // We are going to remove and re-add the toolbar on demand to maintain its top z position.
     
-    activeCategoryView = rightSplitter;
+    currentSection = nil; // The right splitter, which is by default active is not a regular section.
 }
 
 - (void)dealloc
 {
+    [categoryAnalysisController release];
+    [categoryReportingController release];
     [sideToolbar release];
     [super dealloc];
 }
@@ -1225,9 +1226,11 @@ static BankingController	*con;
             break;
         }
         case 1:
+            [currentSection deactivate]; // Temporary solution.
             [self transferView: nil];
             break;
         case 2:
+            [currentSection deactivate]; // Temporary solution.
             [self standingOrders: nil];
             break;
     }
@@ -1243,27 +1246,37 @@ static BankingController	*con;
 - (IBAction)activateAccountPage: (id)sender
 {
     BOOL pageHasChanged = NO;
+    NSView* currentView;
+    if (currentSection != nil) {
+        currentView = [currentSection mainView];
+    } else {
+        currentView = rightSplitter;
+    }
+        
     switch ([sender tag]) {
         case 0:
             // Cross-fade between the active view and the right splitter.
-            if (activeCategoryView != rightSplitter) {
-                [AnimationHelper switchFromView: activeCategoryView toView: rightSplitter withSlide: NO];
-                activeCategoryView = rightSplitter;
+            if (currentSection != nil) {
+                [currentSection deactivate];
+                [AnimationHelper switchFromView: currentView toView: rightSplitter withSlide: NO];
+                currentSection = nil;
                 pageHasChanged = YES;
             }
             break;
         case 1:
-            if (activeCategoryView != categoryAnalysisView) {
-                [AnimationHelper switchFromView: activeCategoryView toView: categoryAnalysisView withSlide: NO];
-                activeCategoryView = categoryAnalysisView;
+            if (currentSection != categoryAnalysisController) {
+                [currentSection deactivate];
+                [AnimationHelper switchFromView: currentView toView: [categoryAnalysisController mainView] withSlide: NO];
+                currentSection = categoryAnalysisController;
                 [categoryAnalysisController updateTrackingAreas];
                 pageHasChanged = YES;
             }
             break;
         case 2:
-            if (activeCategoryView != categoryReportingView) {
-                [AnimationHelper switchFromView: activeCategoryView toView: categoryReportingView withSlide: NO];
-                activeCategoryView = categoryReportingView;
+            if (currentSection != categoryReportingController) {
+                [currentSection deactivate];
+                [AnimationHelper switchFromView: currentView toView: [categoryReportingController mainView] withSlide: NO];
+                currentSection = categoryReportingController;
                 
                 // If a category is selected currently which has no child categories then move the
                 // selection to its parent instead.
@@ -1275,10 +1288,12 @@ static BankingController	*con;
             }
             break;
         case 3:
+            [currentSection deactivate]; // Temporary solution.
             [self catPeriodView: nil];
             pageHasChanged = YES;
             break;
         case 4:
+            [currentSection deactivate]; // Temporary solution.
             [self editRules: nil];
             pageHasChanged = YES;
             break;
@@ -1287,6 +1302,7 @@ static BankingController	*con;
     // Ensure z-order (sideToolbar must remain top-most view).
     [sideToolbar slideOut];
     if (pageHasChanged) {
+        [currentSection activate];
         [sideToolbar removeFromSuperviewWithoutNeedingDisplay];
         [rightPane addSubview: sideToolbar];
         
@@ -1384,7 +1400,8 @@ static BankingController	*con;
     [accountsView saveLayout ];
     [catDefWinController terminateController ];
     
-    for(id <MainTabViewItem> item in [mainTabItems allValues ]) {
+    // TODO: call terminate for all section items, not only those in the main tab.
+    for(id <PecuniaSectionItem> item in [mainTabItems allValues ]) {
         [item terminate ];
     }
     
@@ -1537,7 +1554,7 @@ static BankingController	*con;
  */
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
 {
-    if (activeCategoryView == categoryReportingView) {
+    if (currentSection == categoryReportingController) {
         return [outlineView isExpandable: item];
     }
     return true;
@@ -1774,7 +1791,7 @@ static BankingController	*con;
     }
     
     BOOL itemIsDisabled = NO;
-    if (activeCategoryView == categoryReportingView && [[cat children] count] == 0) {
+    if (currentSection == categoryReportingController && [[cat children] count] == 0) {
         itemIsDisabled = YES;
     }
     
@@ -2436,7 +2453,7 @@ static BankingController	*con;
 
 - (void)printCurrentAccountsView
 {
-    if (activeCategoryView == rightSplitter) {
+    if (currentSection == nil) {
         NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
         [printInfo setTopMargin: 45];
         [printInfo setBottomMargin: 45];
@@ -2449,17 +2466,7 @@ static BankingController	*con;
         return;
     }
 
-    if (activeCategoryView == categoryAnalysisView) {
-        [categoryAnalysisController print];
-        
-        return;
-    }
-
-    if (activeCategoryView == categoryReportingView) {
-        [categoryReportingController print];
-        
-        return;
-    }
+    [currentSection print];
 }
 
 -(IBAction)printDocument:(id)sender
@@ -2476,17 +2483,15 @@ static BankingController	*con;
             [printInfo setHorizontalPagination:NSFitPagination ];
             [printInfo setVerticalPagination:NSFitPagination ];
             NSPrintOperation *printOp;
-            //		NSView *view = [[BankStatementPrintView alloc ] initWithStatements:[transactionController arrangedObjects ] printInfo:printInfo ];
             printOp = [NSPrintOperation printOperationWithView:[[mainTabView selectedTabViewItem ] view] printInfo: printInfo ];
             [printOp setShowsPrintPanel:YES ];
-            //	NSGraphicsContext *context = [printOp context ];
             [printOp runOperation ];
             
             break;
         }
         default:
         {
-            id <MainTabViewItem> item = [mainTabItems objectForKey: [[mainTabView selectedTabViewItem] identifier]];
+            id <PecuniaSectionItem> item = [mainTabItems objectForKey: [[mainTabView selectedTabViewItem] identifier]];
             [item print];
         }
     }

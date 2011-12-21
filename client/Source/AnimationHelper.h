@@ -22,3 +22,10 @@
              withSlide: (BOOL)doSlide;
 
 @end
+
+@interface NSWindow (PecuniaAdditions)
+
+- (void)fadeIn;
+- (void)fadeOut;
+
+@end

@@ -9,14 +9,20 @@
 #import <Cocoa/Cocoa.h>
 #import <CorePlot/CorePlot.h>
 
+#import "PecuniaSectionItem.h"
+
 @class ShortDate;
 @class PecuniaGraphHost;
 @class Category;
+@class MAAttachedWindow;
 
-@interface CategoryRepWindowController : NSObject <CPTPlotSpaceDelegate, CPTPieChartDataSource> {
-    IBOutlet NSView* mainView;
+@interface CategoryRepWindowController : NSObject <PecuniaSectionItem, CPTPlotSpaceDelegate, CPTPieChartDataSource> {
+    IBOutlet NSView* topView;
     IBOutlet PecuniaGraphHost* pieChartHost;
-    IBOutlet NSImageView* helpButton;
+    
+    IBOutlet NSButton* helpButton;
+    IBOutlet NSView* helpContentView;
+    IBOutlet NSTextField* helpText;
     
 @private
     CPTXYGraph* pieChartGraph;
@@ -37,16 +43,23 @@
     
     int earningsExplosionIndex;
     int spendingsExplosionIndex;
+    
+    MAAttachedWindow* helpWindow;
 }
 
 @property (nonatomic, retain) Category* category;
 
-- (IBAction)balancingRuleChanged: (id)sender;
-- (IBAction)showHelp: (id)sender;
+- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
 
+- (IBAction)balancingRuleChanged: (id)sender;
+- (IBAction)toggleHelp: (id)sender;
+
+// PecuniaSectionItem protocol.
 - (NSView*)mainView;
 - (void)print;
-- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
+- (void)prepare;
+- (void)activate;
+- (void)deactivate;
 
 @end
 

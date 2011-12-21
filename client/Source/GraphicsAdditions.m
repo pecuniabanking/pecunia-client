@@ -369,3 +369,44 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 }
 
 @end
+
+@implementation NSView (PecuniaAdditions)
+
+/**
+ * Returns an offscreen view containing all visual elements of this view for printing,
+ * including CALayer content. Useful only for views that are layer-backed.
+ */
+- (NSView*)getPrintViewForLayerBackedView;
+{
+    NSRect bounds = self.bounds;
+    int bitmapBytesPerRow = 4 * bounds.size.width;
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
+    CGContextRef context = CGBitmapContextCreate (NULL,
+                                                  bounds.size.width,
+                                                  bounds.size.height,
+                                                  8,
+                                                  bitmapBytesPerRow,
+                                                  colorSpace,
+                                                  kCGImageAlphaPremultipliedLast);
+    if (context == NULL)
+    {
+        NSLog(@"getPrintViewForLayerBackedView: Failed to create context.");
+        return nil;
+    }
+    
+    CGColorSpaceRelease(colorSpace);
+
+    [[self layer] renderInContext: context];
+    CGImageRef img = CGBitmapContextCreateImage(context);
+    NSImage* image = [[NSImage alloc] initWithCGImage: img size: bounds.size];
+    
+    NSImageView* canvas = [[NSImageView alloc] initWithFrame: bounds];
+    [canvas setImage: image];
+
+    CFRelease(img);
+    CFRelease(context);
+    return [canvas autorelease];
+}
+
+@end

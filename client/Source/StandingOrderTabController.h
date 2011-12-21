@@ -7,12 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MainTabViewItem.h"
+#import "PecuniaSectionItem.h"
 
 @class TransactionLimits;
 @class StandingOrder;
 
-@interface StandingOrderTabController : NSObject <MainTabViewItem> {
+@interface StandingOrderTabController : NSObject <PecuniaSectionItem> {
 	IBOutlet NSTableView			*orderView;
 	IBOutlet NSArrayController		*orderController;
 	IBOutlet NSArrayController		*monthCyclesController;

@@ -15,6 +15,10 @@
 #import "AmountCell.h"
 
 #import "GraphicsAdditions.h"
+#import "NS(Attributed)String+Geometrics.h"
+#import "AnimationHelper.h"
+
+#import "MAAttachedWindow.h"
 
 static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 
@@ -125,6 +129,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 @interface CategoryRepWindowController(Private)
 - (void)setupPieCharts;
 -(void)updateValues;
+- (void)hideHelp;
 @end
 
 @implementation CategoryRepWindowController
@@ -158,9 +163,32 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     spendingsCategories = [[NSMutableArray arrayWithCapacity: 10] retain];
     earningsCategories = [[NSMutableArray arrayWithCapacity: 10] retain];
 
-    
+    // Set up the pie charts and restore their transformations.
     [self setupPieCharts];
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    earningsPlot.startAngle = [userDefaults floatForKey: @"earningsRotation"];
+    float radius = [userDefaults floatForKey: @"earningsRadius"];
+    if (radius < 130) {
+        radius = 130;
+    }
+    earningsPlot.pieRadius = radius;
     
+    spendingsPlot.startAngle = [userDefaults floatForKey: @"spendingsRotation"];
+    radius = [userDefaults floatForKey: @"spendingsRadius"];
+    if (radius < 130) {
+        radius = 130;
+    }
+    spendingsPlot.pieRadius = radius;
+    
+    // Help text.
+    NSBundle* mainBundle = [NSBundle mainBundle];
+    NSString* path = [mainBundle pathForResource: @"category-reporting-help" ofType: @"rtf"];
+    NSAttributedString* text = [[NSAttributedString alloc] initWithPath: path documentAttributes: NULL];
+    [helpText setAttributedStringValue: text];
+    float height = [text heightForWidth: helpText.bounds.size.width];
+    helpContentView.frame = NSMakeRect(0, 0, helpText.bounds.size.width, height);
+    [text release];
+
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mouseHit:)
                                                  name: PecuniaHitNotification
@@ -185,8 +213,6 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 	pieChartGraph.titleTextStyle = textStyle;
 	pieChartGraph.titleDisplacement = CGPointMake(0.0f, pieChartHost.bounds.size.height / 18.0f);
 	pieChartGraph.titlePlotAreaFrameAnchor = CPTRectAnchorTop;
-    
-//	pieChartGraph.plotAreaFrame.masksToBorder = NO;
     
 	// Graph padding
     pieChartGraph.paddingLeft = 0;
@@ -353,7 +379,12 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 - (void)pieChart: (CPTPieChart*)plot sliceWasSelectedAtRecordIndex: (NSUInteger)index
 {
     currentPlot = plot;
-    
+    currentPlot.shadowColor = CGColorCreateGenericRGB(0, 44 / 255.0, 179 / 255.0, 1);
+    currentPlot.shadowRadius = 5.0;
+    currentPlot.shadowOffset = CGSizeMake(2, -2);
+    currentPlot.shadowOpacity = 0.75;
+
+    /*
     if (plot == earningsPlot) {
         if ((earningsExplosionIndex == index) || ([earningsCategories count] < 2)) {
             earningsExplosionIndex = -1;
@@ -370,6 +401,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
         [spendingsPlot repositionAllLabelAnnotations];
     }
     [pieChartGraph setNeedsLayout];
+    */
     
     CGRect bounds = plot.plotArea.bounds;
     currentPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * plot.centerAnchor.x,
@@ -386,40 +418,44 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
         NSDictionary* parameters = [notification userInfo];
         NSString* type = [parameters objectForKey: @"type"];
         BOOL isMouseDown = [type isEqualToString: @"mouseDown"];
-        if (currentPlot == nil) {
-            if (isMouseDown) {
-                earningsExplosionIndex = -1;
-                spendingsExplosionIndex = -1;
-                [earningsPlot repositionAllLabelAnnotations];
-                [spendingsPlot repositionAllLabelAnnotations];
-                [pieChartGraph setNeedsLayout];
-            }
+        NSNumber* x = [parameters objectForKey: @"x"];
+        NSNumber* y = [parameters objectForKey: @"y"];
+        
+        if (isMouseDown) {
+            lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
+            lastMouseDistance = sqrt(pow(lastMousePosition.x - currentPlotCenter.x, 2) + pow(lastMousePosition.y - currentPlotCenter.y, 2));
+            lastAngle = atan2(lastMousePosition.y - currentPlotCenter.y, lastMousePosition.x - currentPlotCenter.x);
         } else {
-            NSNumber* x = [parameters objectForKey: @"x"];
-            NSNumber* y = [parameters objectForKey: @"y"];
-            
-            if (isMouseDown) {
-                lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
-                lastMouseDistance = sqrt(pow(lastMousePosition.x - currentPlotCenter.x, 2) + pow(lastMousePosition.y - currentPlotCenter.y, 2));
-                lastAngle = atan2(lastMousePosition.y - currentPlotCenter.y, lastMousePosition.x - currentPlotCenter.x);
-            } else {
-                if ([type isEqualToString: @"mouseUp"]) {
+            if ([type isEqualToString: @"mouseUp"]) {
+                if (currentPlot != nil) {
+                    currentPlot.shadowColor = CGColorCreateGenericGray(0, 1);
+                    currentPlot.shadowRadius = 5.0;
+                    currentPlot.shadowOffset = CGSizeMake(3, -3);
+                    currentPlot.shadowOpacity = 0.3;
                     currentPlot = nil;
-                } else {
-                    if ([type isEqualToString: @"mouseDragged"]) {
-                        CGFloat distance = sqrt(pow([x floatValue] - currentPlotCenter.x, 2) + pow([y floatValue] - currentPlotCenter.y, 2));
-                        CGFloat newRadius = currentPlot.pieRadius + (distance - lastMouseDistance);
-                        if (newRadius < 130) {
-                            newRadius = 130;
-                        }
-                        currentPlot.pieRadius = newRadius;
-                        lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
-                        lastMouseDistance = sqrt(pow(lastMousePosition.x - currentPlotCenter.x, 2) + pow(lastMousePosition.y - currentPlotCenter.y, 2));
-                        
-                        CGFloat newAngle = atan2(lastMousePosition.y - currentPlotCenter.y, lastMousePosition.x - currentPlotCenter.x);
-                        currentPlot.startAngle += newAngle - lastAngle;
-                        lastAngle = newAngle;
+                }
+                
+                // Store current values.
+                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setFloat: earningsPlot.startAngle forKey: @"earningsRotation"];
+                [userDefaults setFloat: earningsPlot.pieRadius forKey: @"earningsRadius"];
+                [userDefaults setFloat: spendingsPlot.startAngle forKey: @"spendingsRotation"];
+                [userDefaults setFloat: spendingsPlot.pieRadius forKey: @"spendingsRadius"];
+                
+            } else {
+                if ([type isEqualToString: @"mouseDragged"]) {
+                    CGFloat distance = sqrt(pow([x floatValue] - currentPlotCenter.x, 2) + pow([y floatValue] - currentPlotCenter.y, 2));
+                    CGFloat newRadius = currentPlot.pieRadius + (distance - lastMouseDistance);
+                    if (newRadius < 130) {
+                        newRadius = 130;
                     }
+                    currentPlot.pieRadius = newRadius;
+                    lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
+                    lastMouseDistance = sqrt(pow(lastMousePosition.x - currentPlotCenter.x, 2) + pow(lastMousePosition.y - currentPlotCenter.y, 2));
+                    
+                    CGFloat newAngle = atan2(lastMousePosition.y - currentPlotCenter.y, lastMousePosition.x - currentPlotCenter.x);
+                    currentPlot.startAngle += newAngle - lastAngle;
+                    lastAngle = newAngle;
                 }
             }
         }
@@ -434,6 +470,8 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 
 - (void)updateValues
 {
+    [self hideHelp];
+    
     [spendingsCategories removeAllObjects];
     [earningsCategories removeAllObjects];
     
@@ -443,7 +481,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     
     NSMutableSet* childs = [currentCategory mutableSetValueForKey: @"children"];
     
-    if([childs count] > 0) {
+    if ([childs count] > 0) {
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         BOOL balance = [userDefaults boolForKey: @"balanceCategories"];
         
@@ -496,10 +534,6 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     
     earningsExplosionIndex = -1;
     spendingsExplosionIndex = -1;
-    earningsPlot.startAngle = 0;
-    earningsPlot.pieRadius = 130;
-    spendingsPlot.startAngle = 0;
-    spendingsPlot.pieRadius = 130;
 
     [pieChartGraph reloadData];
 }
@@ -513,32 +547,100 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     [self updateValues];
 }
 
--(NSView*)mainView
+- (void)releaseHelpWindow
 {
-    return mainView;
+    [[helpButton window] removeChildWindow: helpWindow];
+    [helpWindow orderOut: self];
+    [helpWindow release];
+    helpWindow = nil;
 }
 
--(void)print
+- (void)hideHelp
 {
-    NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo ];
-    [printInfo setTopMargin:45 ];
-    [printInfo setBottomMargin:45 ];
-    [printInfo setHorizontalPagination:NSFitPagination ];
-    [printInfo setVerticalPagination:NSFitPagination ];
-    NSPrintOperation *printOp;
-    printOp = [NSPrintOperation printOperationWithView: mainView printInfo: printInfo ];
-    [printOp setShowsPrintPanel:YES ];
-    [printOp runOperation ];	
+    if (helpWindow != nil) {
+        [helpWindow fadeOut];
+        
+        // We need to delay the release of the help window
+        // otherwise it will just disappear instead to fade out.
+        // With 10.7 and completion handlers it would be way more elegant.
+        [NSTimer scheduledTimerWithTimeInterval: .25
+                                         target: self 
+                                       selector: @selector(releaseHelpWindow)
+                                       userInfo: nil
+                                        repeats: NO];
+    }
 }
 
+#pragma mark -
+#pragma mark Interface Builder actions
 
--(IBAction)balancingRuleChanged: (id)sender
+- (IBAction)balancingRuleChanged: (id)sender
 {
     [self updateValues ];
 }
 
-- (IBAction)showHelp: (id)sender
+- (IBAction)toggleHelp: (id)sender
 {
+    if (!helpWindow) {
+        NSPoint buttonPoint = NSMakePoint(NSMidX([helpButton frame]),
+                                          NSMidY([helpButton frame]));
+        buttonPoint = [topView convertPoint: buttonPoint toView: nil];
+        helpWindow = [[MAAttachedWindow alloc] initWithView: helpContentView 
+                                                attachedToPoint: buttonPoint 
+                                                       inWindow: [topView window] 
+                                                         onSide: MAPositionTopLeft 
+                                                     atDistance: 20];
+        
+        [helpWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 0.2 alpha: 1]];
+        [helpWindow setViewMargin: 10];
+        [helpWindow setBorderWidth: 0];
+        [helpWindow setCornerRadius: 10];
+        [helpWindow setHasArrow: YES];
+        [helpWindow setDrawsRoundCornerBesideArrow: YES];
+
+        [helpWindow setAlphaValue: 0];
+        [[helpButton window] addChildWindow: helpWindow ordered: NSWindowAbove];
+        [helpWindow fadeIn];
+     
+    } else {
+        [self hideHelp];
+    }
+}
+
+#pragma mark -
+#pragma mark PecuniaSectionItem protocol
+
+- (void)print
+{
+    NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
+    [printInfo setTopMargin: 45];
+    [printInfo setBottomMargin: 45];
+    [printInfo setHorizontalPagination: NSFitPagination];
+    [printInfo setVerticalPagination: NSFitPagination];
+    NSPrintOperation *printOp;
+
+    printOp = [NSPrintOperation printOperationWithView: [topView getPrintViewForLayerBackedView] printInfo: printInfo];
+
+    [printOp setShowsPrintPanel: YES];
+    [printOp runOperation];
+}
+
+- (NSView*)mainView
+{
+    return topView;
+}
+
+- (void)prepare
+{
+}
+
+- (void)activate;
+{
+}
+
+- (void)deactivate
+{
+    [self hideHelp];
 }
 
 @end

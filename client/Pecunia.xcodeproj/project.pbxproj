@@ -48,6 +48,10 @@
 		27C7B49214755AE200BD4F56 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
 		27C7B506147FC50300278131 /* PecuniaPlotTimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7B505147FC50300278131 /* PecuniaPlotTimeFormatter.m */; };
 		27C930F6149508280055EAD5 /* Colors.acf in Resources */ = {isa = PBXBuildFile; fileRef = 27C930F5149508280055EAD5 /* Colors.acf */; };
+		27CC732614A09E060082495C /* MAAttachedWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC732514A09E060082495C /* MAAttachedWindow.m */; };
+		27CC73D514A0C0680082495C /* category-analysis-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC73D314A0C0680082495C /* category-analysis-help.rtf */; };
+		27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */; };
+		27CC74AA14A102800082495C /* category-reporting-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC74A814A102800082495C /* category-reporting-help.rtf */; };
 		27D240EA145302A900EDC8C7 /* done.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27D240E9145302A900EDC8C7 /* done.mp3 */; };
 		27E1693B149F6E5C00089103 /* help-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E1693A149F6E5C00089103 /* help-button.png */; };
 		27E1699A149F90D900089103 /* About.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E16999149F90D900089103 /* About.xib */; };
@@ -161,7 +165,7 @@
 		B196E22C0FB8AFCD00509748 /* AMShellWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E22A0FB8AFCD00509748 /* AMShellWrapper.m */; };
 		B196E2310FB8B12E00509748 /* HDIWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E2300FB8B12E00509748 /* HDIWrapper.m */; };
 		B197C3E413C3A28F0025F137 /* MCEMDecimalNumberAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */; };
-		B19822DD0E6F304A001C4C70 /* AccountRepWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B19822DC0E6F304A001C4C70 /* AccountRepWindowController.m */; };
+		B19822DD0E6F304A001C4C70 /* CategoryAnalysisWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */; };
 		B19A85F00F3CC3D3000FE9B3 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */; };
 		B19A86360F3CD17E000FE9B3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B19A86350F3CD17E000FE9B3 /* Security.framework */; };
 		B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */ = {isa = PBXBuildFile; fileRef = B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */; };
@@ -178,7 +182,7 @@
 		B1AA640E140C07E600ADE1D0 /* ImportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */; };
 		B1AB52290DD4F30900327122 /* log.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1AB52280DD4F30900327122 /* log.icns */; };
 		B1AFA837129479BA00B115A7 /* CategoryReporting.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA836129479BA00B115A7 /* CategoryReporting.xib */; };
-		B1AFA8811295C5D800B115A7 /* CategoryStatistics.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA8801295C5D800B115A7 /* CategoryStatistics.xib */; };
+		B1AFA8811295C5D800B115A7 /* CategoryAnalysis.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA8801295C5D800B115A7 /* CategoryAnalysis.xib */; };
 		B1AFA9361299C15900B115A7 /* StandingOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFA9351299C15900B115A7 /* StandingOrder.m */; };
 		B1AFA9F7129EEA3900B115A7 /* Orders.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA9F6129EEA3900B115A7 /* Orders.xib */; };
 		B1AFAA0512A061C100B115A7 /* StandingOrderTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFAA0412A061C100B115A7 /* StandingOrderTabController.m */; };
@@ -328,6 +332,12 @@
 		27C7B504147FC50300278131 /* PecuniaPlotTimeFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaPlotTimeFormatter.h; sourceTree = "<group>"; tabWidth = 4; };
 		27C7B505147FC50300278131 /* PecuniaPlotTimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaPlotTimeFormatter.m; sourceTree = "<group>"; tabWidth = 4; };
 		27C930F5149508280055EAD5 /* Colors.acf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Colors.acf; sourceTree = "<group>"; };
+		27CC732414A09E060082495C /* MAAttachedWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MAAttachedWindow.h; path = MAAttachedWindow/MAAttachedWindow.h; sourceTree = "<group>"; };
+		27CC732514A09E060082495C /* MAAttachedWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MAAttachedWindow.m; path = MAAttachedWindow/MAAttachedWindow.m; sourceTree = "<group>"; };
+		27CC73D414A0C0680082495C /* German */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = German; path = "German.lproj/category-analysis-help.rtf"; sourceTree = SOURCE_ROOT; };
+		27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NS(Attributed)String+Geometrics.h"; sourceTree = "<group>"; };
+		27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NS(Attributed)String+Geometrics.m"; sourceTree = "<group>"; };
+		27CC74A914A102800082495C /* German */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = German; path = "German.lproj/category-reporting-help.rtf"; sourceTree = SOURCE_ROOT; };
 		27D240E9145302A900EDC8C7 /* done.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = done.mp3; path = Sounds/done.mp3; sourceTree = "<group>"; };
 		27E1693A149F6E5C00089103 /* help-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-button.png"; sourceTree = "<group>"; };
 		27E16999149F90D900089103 /* About.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = About.xib; sourceTree = "<group>"; };
@@ -464,7 +474,7 @@
 		B155D92D0BFD04B300904051 /* TransactionController.m */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B15900BD129304B30053CB9C /* CategoryPeriodsView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPeriodsView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B15900BE129304B30053CB9C /* CategoryPeriodsView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPeriodsView.m; sourceTree = "<group>"; tabWidth = 4; };
-		B159010A129310E40053CB9C /* MainTabViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MainTabViewItem.h; sourceTree = "<group>"; tabWidth = 4; };
+		B159010A129310E40053CB9C /* PecuniaSectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaSectionItem.h; sourceTree = "<group>"; tabWidth = 4; };
 		B15FCCEE141422A3000738B6 /* HBCIServer.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = HBCIServer.jar; sourceTree = "<group>"; };
 		B1659E050EE88B2700998258 /* Transfer_Dated_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transfer_Dated_32.png; sourceTree = "<group>"; };
 		B165B4120D2D8E1A00447DD8 /* Transfers.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Transfers.icns; sourceTree = "<group>"; };
@@ -516,8 +526,8 @@
 		B196E2300FB8B12E00509748 /* HDIWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = HDIWrapper.m; sourceTree = "<group>"; tabWidth = 4; };
 		B197C3E213C3A28F0025F137 /* MCEMDecimalNumberAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMDecimalNumberAdditions.h; sourceTree = "<group>"; tabWidth = 4; };
 		B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMDecimalNumberAdditions.m; sourceTree = "<group>"; tabWidth = 4; };
-		B19822DB0E6F304A001C4C70 /* AccountRepWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AccountRepWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B19822DC0E6F304A001C4C70 /* AccountRepWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AccountRepWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
+		B19822DB0E6F304A001C4C70 /* CategoryAnalysisWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryAnalysisWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
+		B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryAnalysisWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B19A85EE0F3CC3D3000FE9B3 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; tabWidth = 4; };
 		B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; tabWidth = 4; };
 		B19A86350F3CD17E000FE9B3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
@@ -544,7 +554,7 @@
 		B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportWindow.xib; sourceTree = "<group>"; };
 		B1AB52280DD4F30900327122 /* log.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = log.icns; sourceTree = "<group>"; };
 		B1AFA836129479BA00B115A7 /* CategoryReporting.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryReporting.xib; sourceTree = "<group>"; };
-		B1AFA8801295C5D800B115A7 /* CategoryStatistics.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryStatistics.xib; sourceTree = "<group>"; };
+		B1AFA8801295C5D800B115A7 /* CategoryAnalysis.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryAnalysis.xib; sourceTree = "<group>"; };
 		B1AFA9341299C15900B115A7 /* StandingOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrder.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AFA9351299C15900B115A7 /* StandingOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrder.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1AFA9F6129EEA3900B115A7 /* Orders.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Orders.xib; sourceTree = "<group>"; };
@@ -708,8 +718,10 @@
 		27C7B2E91475440E00BD4F56 /* Statistics + Graphs */ = {
 			isa = PBXGroup;
 			children = (
-				B19822DB0E6F304A001C4C70 /* AccountRepWindowController.h */,
-				B19822DC0E6F304A001C4C70 /* AccountRepWindowController.m */,
+				B192FDC00E8434D500B53380 /* CategoryRepWindowController.h */,
+				B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */,
+				B19822DB0E6F304A001C4C70 /* CategoryAnalysisWindowController.h */,
+				B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */,
 				27C7B2F41475466600BD4F56 /* ColumnLayoutCorePlotLayer.h */,
 				27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */,
 			);
@@ -787,6 +799,43 @@
 			name = "Numbers and Dates";
 			sourceTree = "<group>";
 		};
+		27CC732314A09DDD0082495C /* 3rd Party */ = {
+			isa = PBXGroup;
+			children = (
+				27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */,
+				27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */,
+				27CC732714A09E0B0082495C /* MAAttachedWindow */,
+				275C07DC1438777900D97415 /* PXListview */,
+			);
+			name = "3rd Party";
+			sourceTree = "<group>";
+		};
+		27CC732714A09E0B0082495C /* MAAttachedWindow */ = {
+			isa = PBXGroup;
+			children = (
+				27CC732414A09E060082495C /* MAAttachedWindow.h */,
+				27CC732514A09E060082495C /* MAAttachedWindow.m */,
+			);
+			name = MAAttachedWindow;
+			sourceTree = "<group>";
+		};
+		27CC73CD14A0BFF40082495C /* Inline Help */ = {
+			isa = PBXGroup;
+			children = (
+				27CC73CE14A0C0110082495C /* German */,
+			);
+			name = "Inline Help";
+			sourceTree = "<group>";
+		};
+		27CC73CE14A0C0110082495C /* German */ = {
+			isa = PBXGroup;
+			children = (
+				27CC74A814A102800082495C /* category-reporting-help.rtf */,
+				27CC73D314A0C0680082495C /* category-analysis-help.rtf */,
+			);
+			name = German;
+			sourceTree = "<group>";
+		};
 		27D240E71453026400EDC8C7 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -819,7 +868,7 @@
 				B1D4500714784412008DD256 /* BSSelectWindow.xib */,
 				B14587A11289DCB700848683 /* CategoryPeriods.xib */,
 				B1AFA836129479BA00B115A7 /* CategoryReporting.xib */,
-				B1AFA8801295C5D800B115A7 /* CategoryStatistics.xib */,
+				B1AFA8801295C5D800B115A7 /* CategoryAnalysis.xib */,
 				B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */,
 				B1D45004147843D0008DD256 /* Donation.xib */,
 				2703DE26146EE6AB0083CBA2 /* ExportPopup.xib */,
@@ -870,6 +919,7 @@
 			isa = PBXGroup;
 			children = (
 				27E55355146EDA59001DE9BE /* Designer */,
+				27CC73CD14A0BFF40082495C /* Inline Help */,
 				B1923B560EB7A6D40079ADCA /* Images */,
 				27E5534E146ED854001DE9BE /* Models */,
 				B1E811D70FF68B3700BF7451 /* PecuniaHelp */,
@@ -928,8 +978,7 @@
 		B136AACF0FCF1BF5007A643F /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				27C7B2E91475440E00BD4F56 /* Statistics + Graphs */,
-				275C07DC1438777900D97415 /* PXListview */,
+				27CC732314A09DDD0082495C /* 3rd Party */,
 				B137BE7812D32F3B00D0394C /* Printing */,
 				B14C61B8115AB4A9009324A6 /* Migration */,
 				B12A497E10BDD242002CC63E /* HBCIBackend */,
@@ -1102,6 +1151,7 @@
 		B1C7B189130B10BF0091CD72 /* MainWindow */ = {
 			isa = PBXGroup;
 			children = (
+				27C7B2E91475440E00BD4F56 /* Statistics + Graphs */,
 				B1C7B18B130B11280091CD72 /* Tabs */,
 				B1C90E140ABB39D5006F18C9 /* BankingController.h */,
 				B1C90E150ABB39D5006F18C9 /* BankingController.m */,
@@ -1127,11 +1177,8 @@
 		B1C7B18B130B11280091CD72 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				B159010A129310E40053CB9C /* MainTabViewItem.h */,
 				B1029E100E3FA1D700CC681B /* CatDefWindowController.h */,
 				B1029E110E3FA1D700CC681B /* CatDefWindowController.m */,
-				B192FDC00E8434D500B53380 /* CategoryRepWindowController.h */,
-				B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */,
 				B1762BD711EE4AE600F70263 /* TransferListController.h */,
 				B1762BD811EE4AE600F70263 /* TransferListController.m */,
 				B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */,
@@ -1304,6 +1351,7 @@
 		B1FE0DD81065885D005B3800 /* Basic */ = {
 			isa = PBXGroup;
 			children = (
+				B159010A129310E40053CB9C /* PecuniaSectionItem.h */,
 				B19F41BC0FBDF57B003EE0E1 /* PecuniaError.h */,
 				B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */,
 				B132F91D0F96594000263F3B /* ShortDate.h */,
@@ -1407,7 +1455,7 @@
 				B1FB6915125D0A5500C54A0E /* edit16.png in Resources */,
 				B14587A21289DCB700848683 /* CategoryPeriods.xib in Resources */,
 				B1AFA837129479BA00B115A7 /* CategoryReporting.xib in Resources */,
-				B1AFA8811295C5D800B115A7 /* CategoryStatistics.xib in Resources */,
+				B1AFA8811295C5D800B115A7 /* CategoryAnalysis.xib in Resources */,
 				B1AFA9F7129EEA3900B115A7 /* Orders.xib in Resources */,
 				B137BE9012D33AB200D0394C /* Institute.csv in Resources */,
 				B1B7B37412EA3D2B0013CF0B /* standing_order.png in Resources */,
@@ -1463,6 +1511,8 @@
 				27E1693B149F6E5C00089103 /* help-button.png in Resources */,
 				27E1699A149F90D900089103 /* About.xib in Resources */,
 				27E169D8149FA01600089103 /* Credits.rtf in Resources */,
+				27CC73D514A0C0680082495C /* category-analysis-help.rtf in Resources */,
+				27CC74AA14A102800082495C /* category-reporting-help.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1491,7 +1541,7 @@
 				B18B31790E3E463C00F0D2BF /* CatAssignClassification.m in Sources */,
 				B1029E120E3FA1D700CC681B /* CatDefWindowController.m in Sources */,
 				B18EA36A0E4B8C0100A53FD4 /* ExportController.m in Sources */,
-				B19822DD0E6F304A001C4C70 /* AccountRepWindowController.m in Sources */,
+				B19822DD0E6F304A001C4C70 /* CategoryAnalysisWindowController.m in Sources */,
 				B192FDC20E8434D500B53380 /* CategoryRepWindowController.m in Sources */,
 				B1D6C9EE0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m in Sources */,
 				B189782E0ECF47CA00D20503 /* Country.m in Sources */,
@@ -1599,10 +1649,31 @@
 				27C7B506147FC50300278131 /* PecuniaPlotTimeFormatter.m in Sources */,
 				2792CB3414840506006A510A /* AnimationHelper.m in Sources */,
 				2700B6AC148B814500E18BBE /* SideToolbarView.m in Sources */,
+				27CC732614A09E060082495C /* MAAttachedWindow.m in Sources */,
+				27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		27CC73D314A0C0680082495C /* category-analysis-help.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27CC73D414A0C0680082495C /* German */,
+			);
+			name = "category-analysis-help.rtf";
+			sourceTree = "<group>";
+		};
+		27CC74A814A102800082495C /* category-reporting-help.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27CC74A914A102800082495C /* German */,
+			);
+			name = "category-reporting-help.rtf";
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		B14C0A880AAF71DB00CC41C4 /* Development */ = {

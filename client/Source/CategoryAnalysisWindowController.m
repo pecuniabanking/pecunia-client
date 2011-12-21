@@ -1,5 +1,5 @@
 //
-//  AccountRepWindowController.m
+//  CategoryAnalysisWindowController.m
 //  Pecunia
 //
 //  Created by Frank Emminghaus on 03.09.08.
@@ -8,12 +8,17 @@
 
 #include <math.h>
 
-#import "AccountRepWindowController.h"
+#import "CategoryAnalysisWindowController.h"
 #import "ShortDate.h"
 #import "BankAccount.h"
 
 #import "PecuniaPlotTimeFormatter.h"
 #import "NumberExtensions.h"
+#import "GraphicsAdditions.h"
+#import "NS(Attributed)String+Geometrics.h"
+#import "AnimationHelper.h"
+
+#import "MAAttachedWindow.h"
 
 static NSString* const PecuniaGraphLayoutChangeNotification = @"PecuniaGraphLayoutChange";
 static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouseExited";
@@ -328,7 +333,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 /**
  * Private declarations for the controller.
  */
-@interface AccountRepWindowController(Private)
+@interface CategoryAnalysisWindowController(Private)
 
 - (void)updateValues;
 - (void)clearGraphs;
@@ -347,12 +352,13 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 - (void)updateSelectionDisplay;
 
 - (int)majorTickCount;
+- (void)hideHelp;
 
 @end
 
 //--------------------------------------------------------------------------------------------------
 
-@implementation AccountRepWindowController
+@implementation CategoryAnalysisWindowController
 
 @synthesize category = mainCategory;
 
@@ -403,6 +409,16 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [self setupTurnoversGraph];
     [self setupSelectionGraph];
     
+    // Help text.
+    NSBundle* mainBundle = [NSBundle mainBundle];
+    NSString* path = [mainBundle pathForResource: @"category-analysis-help" ofType: @"rtf"];
+    NSAttributedString* text = [[NSAttributedString alloc] initWithPath: path documentAttributes: NULL];
+    [helpText setAttributedStringValue: text];
+    float height = [text heightForWidth: helpText.bounds.size.width];
+    helpContentView.frame = NSMakeRect(0, 0, helpText.bounds.size.width, height);
+    [text release];
+
+    // Notifications.
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(graphLayoutChanged:)
                                                  name: PecuniaGraphLayoutChangeNotification
@@ -734,10 +750,10 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     selectionHostView.hostedGraph = selectionGraph;
 
     selectionGraph.fill = nil;
-    selectionGraph.paddingLeft = 10.0;
-    selectionGraph.paddingTop = 10;
-    selectionGraph.paddingRight = 10.0;
-    selectionGraph.paddingBottom = 10.0;
+    selectionGraph.paddingLeft = 0;
+    selectionGraph.paddingTop = 0;
+    selectionGraph.paddingRight = 0;
+    selectionGraph.paddingBottom = 0;
     
     // Setup scatter plot space
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)selectionGraph.defaultPlotSpace;
@@ -1442,7 +1458,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [layer addAnimation: animation forKey: @"animatePosition"];
 }
 
-- (void)animatedShowOfLayer: (CPTLayer*)layer
+- (void)animatedShowOfLayer: (CALayer*)layer
 {
     if (layer.hidden || layer.opacity < 1) {
         layer.hidden = NO;
@@ -1458,7 +1474,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     }
 }
 
-- (void)animatedHideOfLayer: (CPTLayer*)layer
+- (void)animatedHideOfLayer: (CALayer*)layer
 {
     if (layer.opacity > 0) {
         layer.opacity = 0;
@@ -1962,6 +1978,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 - (void)reloadData
 {
+    [self hideHelp];
+    
     [dates release];
     dates = nil;
     [balances release];
@@ -2019,6 +2037,53 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [[mainHostView window] makeFirstResponder: mainHostView];
 }
 
+/**
+ * Sets a new time interval for display. The given interval is checked against our minimum intervals
+ * (depending on the current grouping mode) and adjusted to match them.
+ */
+- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
+{
+    [fromDate release];
+    fromDate = [from retain];
+    
+    [toDate release];
+    toDate = [to retain];
+
+    [self updateValues];
+
+    [self updateMainGraph];
+    [self updateTurnoversGraph];
+    [self updateSelectionGraph];
+    [self updateSelectionDisplay];
+}
+
+- (void)releaseHelpWindow
+{
+    [[helpButton window] removeChildWindow: helpWindow];
+    [helpWindow orderOut: self];
+    [helpWindow release];
+    helpWindow = nil;
+}
+
+- (void)hideHelp
+{
+    if (helpWindow != nil) {
+        [helpWindow fadeOut];
+        
+        // We need to delay the release of the help window
+        // otherwise it will just disappear instead to fade out.
+        // With 10.7 and completion handlers it would be way more elegant.
+        [NSTimer scheduledTimerWithTimeInterval: .25
+                                         target: self 
+                                       selector: @selector(releaseHelpWindow)
+                                       userInfo: nil
+                                        repeats: NO];
+    }
+}
+
+#pragma mark -
+#pragma mark Interface Builder Actions
+
 - (IBAction)setGrouping: (id)sender
 {
     groupingInterval = [sender intValue];
@@ -2045,41 +2110,36 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [self updateSelectionDisplay];
 }
 
-/**
- * Returns an offscreen view containing all visual elements of this page for printing.
- */
-- (NSView*)getPrintViewForLayerBackedView: (NSView*)view;
+- (IBAction)toggleHelp: (id)sender
 {
-    NSRect bounds = view.bounds;
-    int bitmapBytesPerRow = 4 * bounds.size.width;
-    
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
-    CGContextRef context = CGBitmapContextCreate (NULL,
-                                                  bounds.size.width,
-                                                  bounds.size.height,
-                                                  8,
-                                                  bitmapBytesPerRow,
-                                                  colorSpace,
-                                                  kCGImageAlphaPremultipliedLast);
-    if (context == NULL)
-    {
-        NSLog(@"Failed to create context.");
-        return nil;
+    if (!helpWindow) {
+        NSPoint buttonPoint = NSMakePoint(NSMidX([helpButton frame]),
+                                          NSMidY([helpButton frame]));
+        buttonPoint = [topView convertPoint: buttonPoint toView: nil];
+        helpWindow = [[MAAttachedWindow alloc] initWithView: helpContentView 
+                                                attachedToPoint: buttonPoint 
+                                                       inWindow: [topView window] 
+                                                         onSide: MAPositionTopLeft 
+                                                     atDistance: 20];
+        
+        [helpWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 0.2 alpha: 1]];
+        [helpWindow setViewMargin: 10];
+        [helpWindow setBorderWidth: 0];
+        [helpWindow setCornerRadius: 10];
+        [helpWindow setHasArrow: YES];
+        [helpWindow setDrawsRoundCornerBesideArrow: YES];
+
+        [helpWindow setAlphaValue: 0];
+        [[helpButton window] addChildWindow: helpWindow ordered: NSWindowAbove];
+        [helpWindow fadeIn];
+     
+    } else {
+        [self hideHelp];
     }
-    
-    CGColorSpaceRelease(colorSpace);
-
-    [[view layer] renderInContext: context];
-    CGImageRef img = CGBitmapContextCreateImage(context);
-    NSImage* image = [[NSImage alloc] initWithCGImage: img size: bounds.size];
-    
-    NSImageView* canvas = [[NSImageView alloc] initWithFrame: bounds];
-    [canvas setImage: image];
-
-    CFRelease(img);
-    CFRelease(context);
-    return [canvas autorelease];
 }
+
+#pragma mark -
+#pragma mark PecuniaSectionItem protocol
 
 - (void)print
 {
@@ -2090,7 +2150,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [printInfo setVerticalPagination: NSFitPagination];
     NSPrintOperation *printOp;
 
-    printOp = [NSPrintOperation printOperationWithView: [self getPrintViewForLayerBackedView: topView] printInfo: printInfo];
+    printOp = [NSPrintOperation printOperationWithView: [topView getPrintViewForLayerBackedView] printInfo: printInfo];
 
     [printOp setShowsPrintPanel: YES];
     [printOp runOperation];
@@ -2101,24 +2161,17 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     return topView;
 }
 
-/**
- * Sets a new time interval for display. The given interval is checked against our minimum intervals
- * (depending on the current grouping mode) and adjusted to match them.
- */
-- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
+- (void)prepare
 {
-    [fromDate release];
-    fromDate = [from retain];
-    
-    [toDate release];
-    toDate = [to retain];
+}
 
-    [self updateValues];
+- (void)activate;
+{
+}
 
-    [self updateMainGraph];
-    [self updateTurnoversGraph];
-    [self updateSelectionGraph];
-    [self updateSelectionDisplay];
+- (void)deactivate
+{
+    [self hideHelp];
 }
 
 @end

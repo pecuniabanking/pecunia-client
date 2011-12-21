@@ -69,3 +69,31 @@
 }
 
 @end
+
+@implementation NSWindow (PecuniaAdditions)
+
+- (void)fadeIn
+{
+    [self setAlphaValue: 0.f];
+    [self makeKeyAndOrderFront: nil];
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setDuration: 0.2];
+    [[self animator] setAlphaValue: 1.f];
+    [NSAnimationContext endGrouping];
+}
+
+- (void)fadeOut
+{
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setDuration: 0.2];
+    /* Completion handler aren't available before 10.7.
+    [[NSAnimationContext currentContext] setCompletionHandler:^{
+        [bself orderOut: nil];
+        [bself setAlphaValue: 1.f];
+    }];
+     */
+    [[self animator] setAlphaValue: 0.f];
+    [NSAnimationContext endGrouping];
+}
+@end
+

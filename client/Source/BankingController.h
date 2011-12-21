@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "PecuniaSectionItem.h"
+
 @class AccountsTree;
 @class Account;
 @class BankAccount;
@@ -28,7 +30,7 @@
 @class BWSplitView;
 @class StatementsListView;
 
-@class AccountRepWindowController;
+@class CategoryAnalysisWindowController;
 @class CategoryRepWindowController;
 
 @class SideToolbarView;
@@ -91,11 +93,12 @@
     NSDecimalNumber        *saveValue;
     NSCursor               *splitCursor;
     
-    NSView *activeCategoryView; // Statements, analysis, categories etc.
-    AccountRepWindowController *categoryAnalysisController;
-    NSView *categoryAnalysisView;
+    //NSView *activeCategoryView; // Statements, analysis, categories etc.
+    CategoryAnalysisWindowController *categoryAnalysisController;
+    //NSView *categoryAnalysisView;
     CategoryRepWindowController *categoryReportingController;
-    NSView *categoryReportingView;
+    id<PecuniaSectionItem> currentSection;
+    //NSView *categoryReportingView;
 }
 
 @property(nonatomic, copy) NSDecimalNumber *saveValue;

@@ -1,5 +1,5 @@
 //
-//  AccountRepWindowController.h
+//  CategoryAnalysisWindowController.h
 //  Pecunia
 //
 //  Created by Frank Emminghaus on 03.09.08.
@@ -9,13 +9,14 @@
 #import <Cocoa/Cocoa.h>
 #import <CorePlot/CorePlot.h>
 
-#import "MainTabViewItem.h"
+#import "PecuniaSectionItem.h"
 #import "ColumnLayoutCorePlotLayer.h"
 
 #import "Category.h"
 
 @class Category;
 @class ShortDate;
+@class MAAttachedWindow;
 
 @interface PecuinaGraphHost : CPTGraphHostingView
 {
@@ -33,7 +34,8 @@
 
 @end
 
-@interface AccountRepWindowController : NSObject <CPTScatterPlotDataSource, CPTPlotSpaceDelegate, CPTPlotDataSource, CPTBarPlotDelegate>
+@interface CategoryAnalysisWindowController : NSObject <PecuniaSectionItem, CPTScatterPlotDataSource,
+  CPTPlotSpaceDelegate, CPTPlotDataSource, CPTBarPlotDelegate>
 {
 	IBOutlet NSView* topView;
 
@@ -42,7 +44,11 @@
     IBOutlet PecuinaSelectionGraphHost* selectionHostView;
 
     IBOutlet NSSlider* groupingSlider;
-    
+
+    IBOutlet NSButton* helpButton;
+    IBOutlet NSView* helpContentView;
+    IBOutlet NSTextField* helpText;
+
     @private
 	CPTXYGraph* mainGraph;
     CPTXYGraph* turnoversGraph;
@@ -70,6 +76,8 @@
     NSDecimalNumber* maxValue;            // Ditto for maximum.
     
     GroupingInterval groupingInterval;
+    
+    MAAttachedWindow* helpWindow;
 }
 
 @property (nonatomic, retain) Category* category;
@@ -77,15 +85,20 @@
 @property (nonatomic, readwrite) CGFloat barWidth;
 @property (nonatomic, readwrite) GroupingInterval groupingInterval;
 
-- (IBAction)setGrouping: (id)sender;
-
-- (NSView*)mainView;
-- (void)print;
-
 - (void)updateGraphs;
 - (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
 
 - (void)updateTrackingAreas;
+
+- (IBAction)setGrouping: (id)sender;
+- (IBAction)toggleHelp: (id)sender;
+
+// PecuniaSectionItem protocol.
+- (NSView*)mainView;
+- (void)print;
+- (void)prepare;
+- (void)activate;
+- (void)deactivate;
 
 @end
 

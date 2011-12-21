@@ -8,12 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 #import "Category.h"
-#import "MainTabViewItem.h"
+#import "PecuniaSectionItem.h"
 
 @class ShortDate;
 @class CategoryReportingNode;
 
-@interface CategoryPeriodsWindowController : NSObject <MainTabViewItem> {
+@interface CategoryPeriodsWindowController : NSObject <PecuniaSectionItem> {
     IBOutlet NSTreeController	*categoryController;
 	IBOutlet NSArrayController  *catPeriodDatesController;
 	IBOutlet NSPopUpButton		*fromButton;

@@ -8,8 +8,6 @@
 
 #import "ReportingTabs.h"
 #import "CategoryPeriodsWindowController.h"
-#import "CategoryRepWindowController.h"
-#import "AccountRepWindowController.h"
 #import "StandingOrderTabController.h"
 
 
@@ -34,7 +32,7 @@
 	} else {
 		[mainTabView selectTabViewItemAtIndex:idx ];
 		// reload content, may have changed
-		id<MainTabViewItem> controller = (id<MainTabViewItem>)[mainTabItems objectForKey:_catPeriodsIdentifier ];
+		id<PecuniaSectionItem> controller = (id<PecuniaSectionItem>)[mainTabItems objectForKey:_catPeriodsIdentifier ];
 		[controller prepare ];
 	}
 	[self adjustSearchField ];
