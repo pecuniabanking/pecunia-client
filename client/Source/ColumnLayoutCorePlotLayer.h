@@ -17,5 +17,6 @@
 @property (nonatomic, readwrite) CGFloat spacing;
 
 -(void)layoutSublayers;
+-(void)sizeToFit;
 
 @end

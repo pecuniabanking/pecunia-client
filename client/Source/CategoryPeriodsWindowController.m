@@ -327,11 +327,6 @@
 	}
 }
 
--(NSView*)mainView
-{
-	return mainView;
-}
-
 -(IBAction) histTypeChanged: (id)sender
 {
 	NSSegmentedControl *sc = (NSSegmentedControl*)sender;
@@ -529,6 +524,22 @@
 	[managedObjectContext release], managedObjectContext = nil;
 
 	[super dealloc];
+}
+
+#pragma mark -
+#pragma mark PecuniaSectionItem protocol
+
+-(NSView*)mainView
+{
+	return mainView;
+}
+
+- (void)activate
+{
+}
+
+- (void)deactivate
+{
 }
 
 @end

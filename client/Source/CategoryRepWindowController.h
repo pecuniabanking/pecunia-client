@@ -10,13 +10,14 @@
 #import <CorePlot/CorePlot.h>
 
 #import "PecuniaSectionItem.h"
+#import "ColumnLayoutCorePlotLayer.h"
 
 @class ShortDate;
 @class PecuniaGraphHost;
 @class Category;
 @class MAAttachedWindow;
 
-@interface CategoryRepWindowController : NSObject <PecuniaSectionItem, CPTPlotSpaceDelegate, CPTPieChartDataSource> {
+@interface CategoryRepWindowController : NSObject <PecuniaSectionItem, CPTPlotSpaceDelegate, CPTPieChartDataSource, CPTBarPlotDelegate> {
     IBOutlet NSView* topView;
     IBOutlet PecuniaGraphHost* pieChartHost;
     
@@ -28,6 +29,8 @@
     CPTXYGraph* pieChartGraph;
     CPTPieChart* earningsPlot;
     CPTPieChart* spendingsPlot;
+    CPTBarPlot* earningsMiniPlot;
+    CPTBarPlot* spendingsMiniPlot;
     
     NSPoint lastMousePosition;
     CGFloat lastMouseDistance; // Distinance of the mouse from the center of the current plot.
@@ -35,14 +38,26 @@
     CPTPieChart* currentPlot;
     NSPoint currentPlotCenter; // Center of the current plot. Only valid if currentPlot is not nil.
     
-    NSMutableArray *spendingsCategories;
-    NSMutableArray *earningsCategories;
+    ColumnLayoutCorePlotLayer* infoLayer; // Content layer of the info annotation.
+    CPTAnnotation* infoAnnotation;        // The host of the info layer placed in the plot area.
+    CPTTextLayer* categoryInfoLayer;
+    CPTTextLayer* earningsInfoLayer;
+    CPTTextLayer* spendingsInfoLayer;
+    NSNumberFormatter* infoTextFormatter;
+
+    NSMutableArray* spendingsCategories;
+    NSMutableArray* sortedSpendingValues;
+    NSMutableArray* earningsCategories;
+    NSMutableArray* sortedEarningValues;
     Category* currentCategory;
     ShortDate* fromDate;
     ShortDate* toDate;
     
-    int earningsExplosionIndex;
-    int spendingsExplosionIndex;
+    NSInteger earningsExplosionIndex;
+    NSInteger spendingsExplosionIndex;
+    NSInteger lastEarningsIndex;
+    NSInteger lastSpendingsIndex;
+    BOOL inMouseMoveHandling;
     
     MAAttachedWindow* helpWindow;
 }

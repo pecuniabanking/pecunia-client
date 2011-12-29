@@ -388,6 +388,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [turnoversIndicatorLine release];
     
     [infoLayer release];
+    [dateInfoLayer release];
+    [valueInfoLayer release];
     [infoTextFormatter release];
     [lastInfoDate release];
     [infoAnnotation release];
@@ -502,7 +504,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     textStyle.textAlignment = CPTTextAlignmentCenter;
     textStyle.fontSize = 14.0;
     y.titleTextStyle = textStyle;
-    y.title = @"Salden und Umsätze";
+    y.title = NSLocalizedString(@"AP136", @"");
     y.titleOffset = 60;
 }
 
@@ -572,7 +574,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     mainIndicatorLine.axisLineStyle = lineStyle;
     mainIndicatorLine.majorTickLineStyle = nil;
     
-    // Add the y2 axis to the axis set.
+    // Add the mainIndicatorLine to the axis set.
     // It is essential to first assign the axes to be used in the arrayWithObject call
     // to local variables or all kind of weird things start showing up later (mostly with invalid coordinates).
     CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
@@ -625,7 +627,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     textStyle.textAlignment = CPTTextAlignmentCenter;
     textStyle.fontSize = 12.0;
     y.titleTextStyle = textStyle;
-    y.title = @"Überweisungen";
+    y.title = NSLocalizedString(@"transfers", @"");
     y.titleOffset = 60;
 }
 
@@ -737,7 +739,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     textStyle.fontSize = 10.0;
     textStyle.textAlignment = CPTTextAlignmentCenter;
     y.titleTextStyle = textStyle;
-    y.title = @"Übersicht";
+    y.title = NSLocalizedString(@"AP137", @"");
     y.titleOffset = 8;
 }
 
@@ -1361,7 +1363,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         infoLayer.cornerRadius = 10;
         
         CPTMutableTextStyle* textStyle = [CPTMutableTextStyle textStyle];
-        textStyle.fontName = @"Lucida Grande";
+        textStyle.fontName = @"LucidaGrande";
         textStyle.fontSize = 12;
         textStyle.color = [CPTColor whiteColor];
         textStyle.textAlignment = CPTTextAlignmentCenter;
@@ -1370,7 +1372,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         [infoLayer addSublayer: dateInfoLayer];
         
         textStyle = [CPTMutableTextStyle textStyle];
-        textStyle.fontName = @"Lucida Grande Bold";
+        textStyle.fontName = @"LucidaGrande-Bold";
         textStyle.fontSize = 16;
         textStyle.color = [CPTColor whiteColor];
         textStyle.textAlignment = CPTTextAlignmentCenter;
@@ -1432,76 +1434,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     infoLayer.bounds = infoBounds;
 }
 
-- (void)animatedMoveOfLayer: (CPTLayer*)layer toPosition: (CGPoint)newPosition
-{
-    if (layer.hidden) {
-        return;
-    }
-    
-    NSArray* keys = layer.animationKeys;
-    for (NSString* key in keys)
-        if ([key isEqualToString: @"animatePosition"]) {
-            return;
-        }
-    
-    CGMutablePathRef animationPath = CGPathCreateMutable();
-    CGPathMoveToPoint(animationPath, NULL, layer.position.x, layer.position.y);
-    CGPathAddLineToPoint(animationPath, NULL, newPosition.x, newPosition.y);
-    
-    layer.position = newPosition;
-    
-    CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath: @"position"];
-    animation.path = animationPath;
-    animation.duration = 0.15;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
-    
-    [layer addAnimation: animation forKey: @"animatePosition"];
-}
-
-- (void)animatedShowOfLayer: (CALayer*)layer
-{
-    if (layer.hidden || layer.opacity < 1) {
-        layer.hidden = NO;
-        layer.opacity = 1;
-        
-        CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
-        animation.fromValue = [NSNumber numberWithFloat: 0];
-        animation.toValue = [NSNumber numberWithFloat: 1];
-        animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
-        animation.delegate = self;
-        
-        [layer addAnimation: animation forKey: @"animateOpacity"];
-    }
-}
-
-- (void)animatedHideOfLayer: (CALayer*)layer
-{
-    if (layer.opacity > 0) {
-        layer.opacity = 0;
-        
-        CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
-        animation.fromValue = [NSNumber numberWithFloat: 1];
-        animation.toValue = [NSNumber numberWithFloat: 0];
-        animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
-        animation.delegate = self;
-        
-        [layer addAnimation: animation forKey: @"animateOpacity"];
-    }
-}
-
-- (void)animationDidStop: (CAAnimation*)anim finished: (BOOL)flag
-{
-    if (flag) {
-        CABasicAnimation* animation = (CABasicAnimation*)anim;
-        
-        if ([animation.keyPath isEqualToString: @"opacity"]) {
-            if (infoLayer.opacity < 1) {
-                infoLayer.hidden = YES;
-            }
-        } 
-    }
-}
-
 - (void)updateInfoLayerPosition
 {
     // Place the info layer so in the graph that it doesn't get "in the way" but is still close enough
@@ -1536,7 +1468,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     }
     
     if (infoLayer.position.x != infoLayerLocation.x || infoLayer.position.y != infoLayerLocation.y)
-        [self animatedMoveOfLayer: infoLayer toPosition: infoLayerLocation];
+        [infoLayer slideTo: infoLayerLocation inTime: 0.15];
 }
 
 /**
@@ -1592,14 +1524,14 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     // Check if the time point is within the visible range.
     if (timePoint < plotSpace.xRange.minLimitDouble ||
         timePoint > plotSpace.xRange.maxLimitDouble) {
-        [self animatedHideOfLayer: infoLayer];
-        [self animatedHideOfLayer: mainIndicatorLine];
-        [self animatedHideOfLayer: turnoversIndicatorLine];
+        [infoLayer fadeOut];
+        [mainIndicatorLine fadeOut];
+        [turnoversIndicatorLine fadeOut];
         return;
     } else {
-        [self animatedShowOfLayer: infoLayer];
-        [self animatedShowOfLayer: mainIndicatorLine];
-        [self animatedShowOfLayer: turnoversIndicatorLine];
+        [infoLayer fadeIn];
+        [mainIndicatorLine fadeIn];
+        [turnoversIndicatorLine fadeIn];
     }
 
     // Find closest date in our date points that is before the computed date value.
@@ -1728,7 +1660,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
             if (isDragMove || isScale) {
                 keepInfoLayerHidden = YES;
                 if (!infoLayer.hidden) {
-                    [self animatedHideOfLayer: infoLayer];
+                    [infoLayer fadeOut];
                 }
             }
             
@@ -1810,9 +1742,9 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
  */
 - (void)mouseLeftGraph: (NSNotification*)notification
 {
-    [self animatedHideOfLayer: infoLayer];
-    [self animatedHideOfLayer: mainIndicatorLine];
-    [self animatedHideOfLayer: turnoversIndicatorLine];
+    [infoLayer fadeOut];
+    [mainIndicatorLine fadeOut];
+    [turnoversIndicatorLine fadeOut];
 }
 
 #pragma mark -

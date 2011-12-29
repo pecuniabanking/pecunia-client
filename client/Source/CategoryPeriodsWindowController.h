@@ -57,8 +57,6 @@
 -(IBAction)toButtonPressed:(id)sender;
 -(IBAction)doubleClicked:(id)sender;
 
--(NSView*)mainView;
-
 -(void)getMinMaxDatesForNode: (CategoryReportingNode*)node;
 -(void)updatePeriodDates;
 -(NSString*)keyForDate:(ShortDate*)date;
@@ -70,6 +68,11 @@
 
 
 -(Category*)currentSelection;
+
+// PecuniaSectionItem protocol
+-(NSView*)mainView;
+- (void)activate;
+- (void)deactivate;
 
 @end
 

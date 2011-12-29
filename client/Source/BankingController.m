@@ -1400,9 +1400,17 @@ static BankingController	*con;
     [accountsView saveLayout ];
     [catDefWinController terminateController ];
     
+    // Remove explicit bindings and observers to speed up shutdown.
+    [categoryController removeObserver: self forKeyPath: @"arrangedObjects.catSum"];
+    [transactionController removeObserver: self forKeyPath: @"selectionIndexes"];
+    [statementsListView unbind: @"dataSource"];
+    [statementsListView unbind: @"valueArray"];
+    [transactionController unbind: @"selectionIndexes"];
+    [statementsListView unbind: @"selectedRows"];
+
     // TODO: call terminate for all section items, not only those in the main tab.
     for(id <PecuniaSectionItem> item in [mainTabItems allValues ]) {
-        [item terminate ];
+        [item terminate];
     }
     
     if (self.managedObjectContext) {

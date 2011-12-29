@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
+#import <Quartz/Quartz.h>
 
 @interface AnimationHelper : NSObject {
 
@@ -27,5 +27,13 @@
 
 - (void)fadeIn;
 - (void)fadeOut;
+
+@end
+
+@interface CALayer (PecuniaAdditions)
+
+- (void)fadeIn;
+- (void)fadeOut;
+- (void)slideTo: (CGPoint)newPosition inTime: (CGFloat)time;
 
 @end

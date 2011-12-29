@@ -116,6 +116,8 @@ CPTPieDirection;
 @property (nonatomic, readwrite, copy) CPTLineStyle *borderLineStyle;
 @property (nonatomic, readwrite, copy) CPTFill *overlayFill;
 
+-(NSInteger)indexFromPoint:(CGPoint)point;
+
 /// @name Factory Methods
 /// @{
 +(CPTColor *)defaultPieSliceColorForIndex:(NSUInteger)pieSliceIndex;

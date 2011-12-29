@@ -161,6 +161,8 @@
 "AP133" = "%u Umsätze";
 "AP134" = "Empfänger:";
 "AP135" = "Auftraggeber:";
+"AP136" = "Salden und Umsätze";
+"AP137" = "Übersicht";
 "AP170" = "Ungültiges Zeichen";
 "AP171" = "Das Zeichen '%C' ist im Verwendungszweck und Empfängernamen nicht erlaubt!";
  

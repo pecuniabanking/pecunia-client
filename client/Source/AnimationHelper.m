@@ -6,8 +6,6 @@
 //  Copyright 2011 Frank Emminghaus. All rights reserved.
 //
 
-#import <Quartz/Quartz.h>
-
 #import "AnimationHelper.h"
 
 @implementation AnimationHelper
@@ -88,12 +86,80 @@
     [[NSAnimationContext currentContext] setDuration: 0.2];
     /* Completion handler aren't available before 10.7.
     [[NSAnimationContext currentContext] setCompletionHandler:^{
-        [bself orderOut: nil];
-        [bself setAlphaValue: 1.f];
+        [self orderOut: nil];
+        [self setAlphaValue: 1.f];
     }];
      */
     [[self animator] setAlphaValue: 0.f];
     [NSAnimationContext endGrouping];
 }
+
 @end
 
+@implementation CALayer (PecuniaAdditions)
+
+- (void)fadeIn
+{
+    self.hidden = NO;
+    if (self.opacity < 1) {
+        CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
+        animation.fromValue = [NSNumber numberWithFloat: 0];
+        animation.toValue = [NSNumber numberWithFloat: 1];
+        animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
+        [animation setValue: @"fadeIn" forKey: @"action"];
+        
+        [self addAnimation: animation forKey: @"layerFade"];
+        self.opacity = 1;
+    }
+}
+
+- (void)fadeOut
+{
+    if (self.opacity > 0) {
+        CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
+        animation.fromValue = [NSNumber numberWithFloat: 1];
+        animation.toValue = [NSNumber numberWithFloat: 0];
+        animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
+        animation.delegate = self;
+        [animation setValue: @"fadeOut" forKey: @"action"];
+        
+        // It is important to use the same key for fadeIn and fadeOut to avoid concurrency if triggered
+        // quickly one after the other (e.g. for fast mouse moves). Using the same key will remove
+        // an ongoing animation instead letting it run concurrently on the same property.
+        [self addAnimation: animation forKey: @"layerFade"];
+        self.opacity = 0;
+    }
+}
+
+- (void)slideTo: (CGPoint)newPosition inTime: (CGFloat)time
+{
+    if (self.hidden) {
+        return;
+    }
+
+    CGMutablePathRef animationPath = CGPathCreateMutable();
+    CGPathMoveToPoint(animationPath, NULL, self.position.x, self.position.y);
+    CGPathAddLineToPoint(animationPath, NULL, newPosition.x, newPosition.y);
+    
+    self.position = newPosition;
+    
+    CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath: @"position"];
+    animation.path = animationPath;
+    animation.duration = time;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
+    
+    [self addAnimation: animation forKey: @"slide"];
+}
+
+- (void)animationDidStop: (CAAnimation*)anim finished: (BOOL)flag
+{
+    if (flag) {
+        CABasicAnimation* animation = (CABasicAnimation*)anim;
+        NSString* action = [animation valueForKey: @"action"];
+        if ([action isEqualToString: @"fadeOut"]) {
+            self.hidden = YES;
+        }
+    }
+}
+
+@end
