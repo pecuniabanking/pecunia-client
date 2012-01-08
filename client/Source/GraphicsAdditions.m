@@ -75,16 +75,16 @@ static NSMutableArray* defaultCategoryColors;
     }
 
     if ([defaultAccountColors count] > 0) {
-        NSColor* result = [defaultAccountColors objectAtIndex: 0];
+        NSColor* result = [[defaultAccountColors objectAtIndex: 0] retain];
         [defaultAccountColors removeObjectAtIndex: 0];
         
         return result;
     }
 
     // No colors left. Generate a random one with components between 128 and 255 (0.5 - 1).
-    return [NSColor colorWithDeviceRed: (128 + random() % 127) / 256
-                                 green: (128 + random() % 127) / 256
-                                  blue: (128 + random() % 127) / 256
+    return [NSColor colorWithDeviceRed: (96 + random() % 64) / 255.0
+                                 green: (96 + random() % 64) / 255.0
+                                  blue: (192 + random() % 63) / 255.0
                                  alpha: 1];
 }
 
@@ -98,7 +98,7 @@ static NSMutableArray* defaultCategoryColors;
     }
 
     if ([defaultCategoryColors count] > 0) {
-        NSColor* result = [defaultCategoryColors objectAtIndex: 0];
+        NSColor* result = [[defaultCategoryColors objectAtIndex: 0] retain];
         [defaultCategoryColors removeObjectAtIndex: 0];
         
         return result;
@@ -107,7 +107,7 @@ static NSMutableArray* defaultCategoryColors;
     // No colors left. Generate a random one with components between 128 and 255 (0.5 - 1).
     return [NSColor colorWithDeviceRed: (32 + random() % 200) / 255.0
                                  green: (32 + random() % 200) / 255.0
-                                  blue: (32 + random() % 200) / 255.0
+                                  blue: (32 + random() % 100) / 255.0
                                  alpha: 1];
 }
 

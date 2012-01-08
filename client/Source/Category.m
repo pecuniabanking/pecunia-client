@@ -610,15 +610,17 @@ BOOL	updateSent = NO;
     // Assign a default color if none has been set so far.
     // Root categories get different dark gray default colors. Others either get one of the predefined
     // colors or a random one if no color is left from the set of predefined colors.
+
+    NSColor* color = nil;
+
     if (self.catRepColor == nil) {
-        NSColor* color;
-        if (self == bankRoot) {
+        if (self == [Category bankRoot]) {
             color = [NSColor colorWithDeviceWhite: 0.12 alpha: 1];
         } else {
-            if (self == catRoot) {
+            if (self == [Category catRoot]) {
                 color = [NSColor colorWithDeviceWhite: 0.24 alpha: 1];
             } else {
-                if (self == nassRoot) {
+                if (self == [Category nassRoot]) {
                     color = [NSColor colorWithDeviceWhite: 0.36 alpha: 1];
                 } else {
                     if ([self isBankAccount]) {
@@ -629,15 +631,38 @@ BOOL	updateSent = NO;
                 }
             }
         }
-        self.catRepColor = [NSArchiver archivedDataWithRootObject: color];
+        
+        NSMutableData* data = [NSMutableData data];
+
+        NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
+        [archiver encodeObject: color forKey: @"color"];
+        [archiver finishEncoding];
+        [archiver release];
+        
+        self.catRepColor = data;
     }
     
-    return [NSUnarchiver unarchiveObjectWithData: self.catRepColor];
+    // If color is not nil then we have just archived a new color. No need unarchive it again.
+    if (color != nil)
+        return color;
+    
+    NSKeyedUnarchiver* archiver = [[NSKeyedUnarchiver alloc] initForReadingWithData: self.catRepColor];
+    color = [archiver decodeObjectForKey: @"color"];
+    [archiver release];
+    
+    return color;
 }
 
 -(void)setCategoryColor: (NSColor*)color
 {
-    self.catRepColor = [NSArchiver archivedDataWithRootObject: color];
+    NSMutableData* data = [NSMutableData data];
+    
+    NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
+    [archiver encodeObject: color forKey: @"color"];
+    [archiver finishEncoding];
+    [archiver release];
+    
+    self.catRepColor = data;
 }
 
 +(Category*)bankRoot

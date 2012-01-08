@@ -59,6 +59,7 @@
 #import "ImportController.h"
 #import "ImageAndTextCell.h"
 #import "StatementsListview.h"
+#import "RoundedOuterShadowView.h"
 #import "SideToolbarView.h"
 
 #import "AnimationHelper.h"
@@ -936,8 +937,13 @@ static BankingController	*con;
 
 -(IBAction)editBankUsers:(id)sender
 {	
-    if(!bankUserController) bankUserController = [[NewBankUserController alloc] initForController: self];
-    [bankUserController showWindow: self ];
+    if (!bankUserController) {
+        bankUserController = [[NewBankUserController alloc] initForController: self];
+    }
+
+    NSRect frame = [[bankUserController window] frame];
+    frame = NSInsetRect(frame, 0.5 * frame.size.width, 0.5 * frame.size.height);
+    [[bankUserController window] zoomInFromRect: frame withFade: NO];
 }
 
 -(IBAction)editPreferences:(id)sender
@@ -1008,14 +1014,16 @@ static BankingController	*con;
 
 -(IBAction)changeAccount: (id)sender
 {
-    Category* cat = [self currentSelection ];
-    if(cat == nil) return;
-    if([cat isBankAccount ] == NO) return;
-    if([cat accountNumber ] == nil) return;
+    Category* cat = [self currentSelection];
+    if (cat == nil || ![cat isBankAccount] || [cat accountNumber] == nil) {
+        return;
+    }
     
     AccountChangeController *con = [[AccountChangeController alloc ] initWithAccount: (BankAccount*)cat ];
     int res = [NSApp runModalForWindow: [con window]];
     if(res) {
+        statementsListViewHost.indicatorColor = [cat categoryColor];
+        
         // account was changed
         NSError *error = nil;
         // save updates
@@ -1025,7 +1033,7 @@ static BankingController	*con;
             return;
         }
     }
-    [categoryController rearrangeObjects ];
+    [categoryController rearrangeObjects];
 }
 
 -(IBAction)deleteAccount:(id)sender
@@ -1215,7 +1223,7 @@ static BankingController	*con;
         {
             [mainTabView selectTabViewItemAtIndex: 0];
             
-            /* TODO: is it really necessary to do all computation in the category on every page switch.
+            /* TODO: is it really necessary to do all computation in the category on every page switch?
             // update values according to slicer
             Category *cat = [Category catRoot];
             [Category setCatReportFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
@@ -1737,6 +1745,8 @@ static BankingController	*con;
     } else {
         [valueField setDrawsBackground: NO];
     }
+    
+    statementsListViewHost.indicatorColor = [cat categoryColor];
     
     // Update graph panes.
     categoryAnalysisController.category = cat;
@@ -2567,9 +2577,8 @@ static BankingController	*con;
                                       [mainBundle objectForInfoDictionaryKey: @"CFBundleVersion"]
                                       ]];
         [copyrightText setStringValue: [mainBundle objectForInfoDictionaryKey: @"NSHumanReadableCopyright"]];
-    } else {
-        [aboutWindow orderFront: self];
     }
+    [aboutWindow orderFront: self];
 }
 
 -(void)migrate

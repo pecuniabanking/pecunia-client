@@ -10,6 +10,7 @@
 
 @class User;
 @class BankingController;
+@class InstitutesController;
 
 @interface NewBankUserController : NSWindowController
 {
@@ -18,27 +19,27 @@
 	IBOutlet NSArrayController		*tanMethods;
 	IBOutlet NSArrayController		*hbciVersions;
 	IBOutlet NSWindow				*userSheet;
-	IBOutlet User					*currentUser;
+    IBOutlet User					*currentUser;
 	IBOutlet NSMutableDictionary	*bankUserInfo;
 	IBOutlet NSMutableArray			*bankUsers;
-	BankingController				*bankController;
-//	NSArray							*hbciVersions;
-	NSMutableArray					*banks;
+    
+    @private
+	BankingController* bankController;
+    InstitutesController* institutesController;
+	NSMutableArray* banks;
+    NSWindow* selectBankUrlSheet;
 }
 
--(id)initForController: (BankingController*)con;
+- (id)initForController: (BankingController*)con;
 
-- (IBAction)cancel:(id)sender;
+- (IBAction)close:(id)sender;
 - (IBAction)add:(id)sender;
 - (IBAction)addEntry:(id)sender;
+- (IBAction)selectBankUrl: (id)sender;
 - (IBAction)removeEntry:(id)sender;
 - (IBAction)updateBankParameter: (id)sender;
-- (IBAction)showBanks: (id)sender;
 - (IBAction)getUserAccounts: (id)sender;
 - (IBAction)changePinTanMethod: (id)sender;
 - (IBAction)printBankParameter: (id)sender;
-
-- (BOOL)check;
-- (void)readBanks;
 
 @end

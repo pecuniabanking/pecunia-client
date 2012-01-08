@@ -10,6 +10,9 @@
 
 
 @interface RoundedOuterShadowView : NSView {
+    NSColor* indicatorColor;
 }
+
+@property (nonatomic, readwrite, retain) NSColor* indicatorColor;
 
 @end

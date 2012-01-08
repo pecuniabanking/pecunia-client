@@ -21,11 +21,11 @@ static HBCIClient *client = nil;
 	if(self == nil) return nil;
 	
 #ifdef HBCI4JAVA
-	controller = [[HBCIController alloc ] init ];
+	controller = [[HBCIController alloc] init];
 #endif
 	
 #ifdef AQBANKING
-	controller = [[ABController alloc ] init ];
+	controller = [[ABController alloc] init];
 #endif
 
 	return self;
@@ -33,7 +33,15 @@ static HBCIClient *client = nil;
 
 -(void)dealloc
 {
-	[controller release ];
+#ifdef HBCI4JAVA
+    // Cast needed as the protocol itself doesn't support -release.
+	[(HBCIController*)controller release];
+#endif
+	
+#ifdef AQBANKING
+	[(ABController*)controller release];
+#endif
+
 	[super dealloc ];
 }
 

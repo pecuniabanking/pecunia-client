@@ -27,8 +27,10 @@
 @class TransferListController;
 @class DockIconController;
 @class CurrencyValueTransformer;
+
 @class BWSplitView;
 @class StatementsListView;
+@class RoundedOuterShadowView;
 
 @class CategoryAnalysisWindowController;
 @class CategoryRepWindowController;
@@ -63,6 +65,7 @@
     IBOutlet NSTextField        *remoteNameLabel;
     IBOutlet BWSplitView        *rightSplitter;
     IBOutlet NSView             *rightPane;
+    IBOutlet RoundedOuterShadowView* statementsListViewHost;
     
     // About panel.
     IBOutlet NSWindow           *aboutWindow;

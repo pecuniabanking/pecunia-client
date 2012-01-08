@@ -166,7 +166,7 @@
               remoteName: [self formatValue: [statement valueForKey: @"remoteName"] capitalize: YES]
                  purpose: [self formatValue: [statement valueForKey: @"floatingPurpose"] capitalize: YES]
               categories: [self formatValue: [statement valueForKey: @"categoriesDescription"] capitalize: NO]
-                   value: [[_dataSource objectAtIndex: row] valueForKey: @"value"]
+                   value: [statement valueForKey: @"value"]
                    saldo: [statement valueForKey: @"saldo"]
                 currency: [self formatValue: [statement valueForKey: @"currency"] capitalize: NO]
          transactionText: [self formatValue: [statement valueForKey: @"transactionText"] capitalize: YES]

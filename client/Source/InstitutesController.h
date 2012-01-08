@@ -8,7 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-
 @interface InstitutesController : NSWindowController {
 	IBOutlet NSTableView		*bankView;
 	IBOutlet NSSearchField		*bankSearch;
@@ -16,15 +15,13 @@
 	
 	NSArray						*banks;
 	NSDictionary				*selectedBank;
-	NSPoint						origin;
 }
 
--(void)setBankData: (NSArray*)data;
--(void)setPosition: (NSPoint)xy;
--(NSDictionary*)selectedBank;
+- (void)setBankData: (NSArray*)data;
+- (NSDictionary*)selectedBank;
 
--(IBAction)cancel:(id)sender;
--(IBAction)select:(id)sender;
--(IBAction)doSearch: (id)sender;
+- (IBAction)cancelSheet: (id)sender;
+- (IBAction)endSheet: (id)sender;
+- (IBAction)doSearch: (id)sender;
 
 @end

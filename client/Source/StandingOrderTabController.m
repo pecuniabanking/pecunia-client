@@ -613,6 +613,8 @@
 	[resultList autorelease ];
 }
 
+#pragma mark -
+#pragma mark PecuniaSectionItem protocol
 
 -(NSView*)mainView
 {
@@ -623,7 +625,14 @@
 {
 	
 }
-	
+
+- (void)activate
+{
+}
+
+- (void)deactivate
+{
+}
 
 @end
 

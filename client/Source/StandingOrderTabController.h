@@ -70,6 +70,11 @@
 -(IBAction)update:(id)sender;
 -(IBAction)getOrders:(id)sender;
 
+// PecuniaSectionItem protocol.
+- (NSView*)mainView;
+- (void)initAccounts;
+- (void)activate;
+- (void)deactivate;
 
 @end
 
