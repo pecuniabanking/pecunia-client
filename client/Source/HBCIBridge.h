@@ -11,7 +11,6 @@
 @class ResultParser;
 @class CallbackParser;
 @class HBCIError;
-@class HBCIController;
 @class PasswordWindow;
 @class PecuniaError;
 @class CallbackData;
@@ -30,15 +29,12 @@
     
     id				result;
     HBCIError		*error;
-    HBCIController	*client;
     PasswordWindow	*pwWindow;
     NSString		*currentPwService;
     NSString		*currentPwAccount;
     NSMutableString	*asyncString;
     id				asyncSender;
 }
-
--(id)initWithHbciClient: (HBCIController*)cl;
 
 -(NSPipe*)outPipe;
 -(void)setResult: (id)res;

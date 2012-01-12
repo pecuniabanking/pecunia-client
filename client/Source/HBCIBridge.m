@@ -12,7 +12,6 @@
 #import "LogParser.h"
 #import "HBCIError.h"
 #import "CallbackData.h"
-#import "HBCIController.h"
 #import "PasswordWindow.h"
 #import "Keychain.h"
 #import "TanMethod.h"
@@ -23,15 +22,14 @@
 #import "LogController.h"
 #import "ChipTanWindowController.h"
 #import "TanMediaWindowController.h"
-
+#import "HBCIBackend.h"
 
 @implementation HBCIBridge
 
--(id)initWithHbciClient: (HBCIController*)cl
+-(id)init
 {
     self = [super init ];
     if(self == nil) return nil;
-    client = cl;
     running = NO;
     
     return self;
@@ -430,6 +428,10 @@
     }
     if([data.command isEqualToString: @"getTanMedia" ]) {
         return [self getTanMedia: data ];
+    }
+    if ([data.command isEqualToString:@"instMessage" ]) {
+        NSNotification *notification = [NSNotification notificationWithName:PecuniaInstituteMessageNotification object:data.message ];
+        [[NSNotificationCenter defaultCenter ] postNotification:notification ];
     }
     return @"";
 }

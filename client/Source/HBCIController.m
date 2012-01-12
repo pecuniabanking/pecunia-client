@@ -37,7 +37,7 @@
     self = [super init ];
     if(self == nil) return nil;
     
-    bridge = [[HBCIBridge alloc ] initWithHbciClient: self ];
+    bridge = [[HBCIBridge alloc ] init ];
     [bridge startup ];
     
     users = [[NSMutableArray alloc ] initWithCapacity: 10 ];
@@ -268,6 +268,7 @@ NSString *escapeSpecial(NSString *s)
         case TransferTypeDated: return @"TermUeb"; break;
         case TransferTypeInternal: return @"Umb"; break;
         case TransferTypeEU: return @"UebForeign"; break;
+        case TransferTypeLast: return @"Last"; break;
     };
     return nil;
 }
@@ -536,6 +537,7 @@ NSString *escapeSpecial(NSString *s)
             case TransferTypeLocal: type = @"standard"; break;
             case TransferTypeDated: type = @"dated"; break;
             case TransferTypeInternal: type = @"internal"; break;
+            case TransferTypeLast: type = @"last"; break;
             case TransferTypeEU:	
                 type = @"foreign";
                 [self appendTag:@"chargeTo" withValue:[transfer.chargedBy description ]  to:cmd ];

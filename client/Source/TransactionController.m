@@ -136,6 +136,7 @@
 		case TransferTypeDated: window = transferLocalWindow; break;
 		case TransferTypeEU: window = transferEUWindow; break;
 		case TransferTypeInternal: window = transferInternalWindow; break;
+        case TransferTypeLast: break; //todo
 	};
 	
 	if(transferType != TransferTypeEU) [self preparePurposeFields ];
@@ -205,14 +206,16 @@
 	// prepare container
 	transfers = [[NSMutableArray alloc ] initWithCapacity: 5 ];
 	[transferController setContent: transfer ];
-	
+
+	/*
 	switch(transferType) {
 		case TransferTypeLocal: window = transferLocalWindow; break;
 		case TransferTypeDated: window = transferLocalWindow; break;
 		case TransferTypeEU: window = transferEUWindow; break;
 		case TransferTypeInternal: window = transferInternalWindow; break;
 	};
-	
+	*/
+    
 	[self preparePurposeFields ];
 	if(transferType == TransferTypeLocal) [self hideTransferDate: YES ];
 	else [self hideTransferDate: NO ];
@@ -491,7 +494,7 @@
 		}
 	}
 	
-	if(transferType == TransferTypeLocal ||  transferType == TransferTypeDated) {
+	if(transferType == TransferTypeLocal || transferType == TransferTypeDated || transferType == TransferTypeLast) {
 		if(transfer.remoteBankCode == nil) {
 			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
 							NSLocalizedString(@"AP10", @"Please enter a bank code"),

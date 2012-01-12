@@ -1749,10 +1749,11 @@ static BankingController	*con;
     statementsListViewHost.indicatorColor = [cat categoryColor];
     
     // Update graph panes.
+/*    
     categoryAnalysisController.category = cat;
     [categoryAnalysisController updateGraphs];
     categoryReportingController.category = cat;
-    
+*/    
     [self updateStatusbar];
 }
 

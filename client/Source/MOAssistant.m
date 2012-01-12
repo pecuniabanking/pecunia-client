@@ -15,9 +15,8 @@
 #import "PecuniaError.h"
 #import "MigrationManagerWorkaround.h"
 
-#define CURRENT_BUILD 3
-
-NSString* const MD_Build_Number = @"MD_BUILDNUMBER";
+//#define CURRENT_BUILD 3
+//NSString* const MD_Build_Number = @"MD_BUILDNUMBER";
 
 @implementation MOAssistant
 
@@ -29,8 +28,6 @@ NSString* const MD_Build_Number = @"MD_BUILDNUMBER";
 
 static MOAssistant	*assistant = nil;
 //static NSString* oldFile = @"accounts_old.sqlite";
-static NSString *dataFile = @"accounts.sqlite";
-static NSString *imageFile = @"PecuniaData.sparseimage";
 static NSString *_dataFile = @"/accounts.sqlite";
 static NSString *_imageFile = @"/PecuniaData.sparseimage";
 
@@ -45,6 +42,26 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	[NSMigrationManager addRelationshipMigrationMethodIfMissing ];
 	NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults ];
 
+    // customize data file name
+    BOOL altFile = NO;
+    NSArray *args=[[NSProcessInfo processInfo] arguments];
+    for(NSString *s in args) {
+        if ([s hasPrefix:@"-f" ]) {
+            altFile = YES;
+            NSString *name = [s substringFromIndex:2 ];
+            if (name == nil || [name length ] == 0) continue;
+            else {
+                _dataFile = [[@"/" stringByAppendingString:name ] retain ];
+                altFile = NO;
+            }
+        }
+        if (altFile) {
+            altFile = NO;
+            if (s == nil || [s length ] == 0) continue;
+            _dataFile = [[@"/" stringByAppendingString:s ] retain ];
+        }
+    }
+    
 	encrypted = NO;
 	imageAvailable = NO;
 	
@@ -68,7 +85,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	}
 
 	if (encrypted == NO) {
-		self.dataStorePath = [NSString stringWithFormat: @"%@/%@", dataDir, dataFile ];
+		self.dataStorePath = [dataDir stringByAppendingString:_dataFile ];
 		self.accountsURL = [NSURL fileURLWithPath: dataStorePath];
 	}
 	
@@ -114,9 +131,9 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 -(NSString*)dataFileNameAtPath:(NSString*)path
 {
 	if ([self isEncryptedImageAtPath: path ]) {
-		return imageFile;
+		return _imageFile;
 	} else {
-		return dataFile;
+		return _dataFile;
 	}
 }
 
@@ -171,6 +188,8 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	
 	// copy preferences
 	NSDictionary *oldDefaults = [NSDictionary dictionaryWithContentsOfFile: [@"~/Library/Preferences/com.macemmi.pecunia.plist" stringByExpandingTildeInPath ]];
+	if(oldDefaults == nil) return;
+
 	for(NSString* key in [oldDefaults allKeys ]) {
 		if ([key isEqualToString:@"DataDir" ]) continue;
 		NSRange r = [key rangeOfString:@":" ];
@@ -179,23 +198,19 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	}
 		
 	// copy data file if located at old defaults path
-	if(oldDefaults == nil) return;
 	NSString *oldDir = [oldDefaults valueForKey:@"DataDir" ];
 	if(oldDir == nil) return;
-	
-	
 	
 	NSString *oldDefaultDir = [ @"~/Library/Pecunia" stringByExpandingTildeInPath ];
 	NSString *file = [self dataFileNameAtPath: oldDir ];
 	
 	if ([oldDir isEqualToString:oldDefaultDir ]) {
-		newPath = [NSString stringWithFormat: @"%@/%@", newDefaultDir, file ];
-		NSString *oldPath = [NSString stringWithFormat: @"%@/%@", oldDir, file ];
+		newPath = [newDefaultDir stringByAppendingString:file ];
+		NSString *oldPath = [oldDir stringByAppendingString:file ];
 		
 		success = [fm copyItemAtPath: oldPath toPath: newPath error: &error ];
 		if(!success) {
-			NSAlert *alert = [NSAlert alertWithError:error];
-			[alert runModal];
+            NSLog(@"Migration from file: %@ to file: %@ was not successful!", oldPath, newPath );
 			return;
 		}
 	} else {
@@ -236,7 +251,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	BOOL success = [wrapper attachImage: path withPassword: passwd browsable: browsable ];
 	
 	if(success) {
-		self.dataStorePath = [NSString stringWithFormat: @"%@/%@", [wrapper volumePath ], dataFile ];
+		self.dataStorePath = [[wrapper volumePath ] stringByAppendingString:_dataFile ];
 		[Keychain setPassword: passwd forService: @"Pecunia" account: @"DataFile" store: savePassword ];
 		self.accountsURL = [NSURL fileURLWithPath: dataStorePath];
 		imageAvailable = YES;
@@ -475,7 +490,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	}
 	
 	// copy data file to new location
-	NSString *newPath = [NSString stringWithFormat: @"%@/%@", path, dataFile ];
+	NSString *newPath = [path stringByAppendingString:_dataFile ];
 	NSFileManager *fm = [NSFileManager defaultManager ];
 
 	if([fm fileExistsAtPath: newPath ]) {
@@ -503,7 +518,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	// now file is copied to new location
 	self.dataDir = path;
 	
-	self.dataStorePath = [NSString stringWithFormat: @"%@/%@", dataDir, dataFile ];
+	self.dataStorePath = [dataDir stringByAppendingString:_dataFile ];
 	self.accountsURL = [NSURL fileURLWithPath: dataStorePath];
 	
 	// set coordinator and stores

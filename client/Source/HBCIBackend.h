@@ -12,6 +12,7 @@
 #import "StandingOrder.h"
 
 #define PecuniaStatementsNotification @"PecuniaStatementsNotification"
+#define PecuniaInstituteMessageNotification @"PecuniaInstMessageNotification"
 
 @class BankInfo;
 @class TransactionLimits;
