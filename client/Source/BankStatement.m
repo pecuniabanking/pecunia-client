@@ -116,7 +116,6 @@ BOOL stringEqual(NSString *a, NSString *b)
 
 -(void)addToAccount: (BankAccount*)account
 {
-	int i;
 	if(account == nil) return;
 	
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
@@ -138,7 +137,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	}	
 */	
 	//assign categories
-	for(i = 0; i < [catCache count ]; i++) {
+	for (NSUInteger i = 0; i < [catCache count ]; i++) {
 		Category* cat = [catCache objectAtIndex: i ];
 		NSPredicate* pred = [NSPredicate predicateWithFormat: cat.rule ];
 		if([pred evaluateWithObject: stat ]) {
@@ -216,7 +215,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	Category *ncat = [Category nassRoot ];
 	NSMutableSet* stats = [self mutableSetValueForKey: @"assignments" ];
 	NSEnumerator *iter = [stats objectEnumerator];
-	while (stat = [iter nextObject]) {
+	while ((stat = [iter nextObject]) != nil) {
 		if([stat.category isBankAccount] == NO && stat.category != ncat) return YES;
 	}
 	return NO;
@@ -242,7 +241,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	Category *ncat = [Category nassRoot ];
 	NSMutableSet* stats = [self mutableSetValueForKey: @"assignments" ];
 	NSEnumerator *iter = [stats objectEnumerator];
-	while (stat = [iter nextObject]) {
+	while ((stat = [iter nextObject]) != nil) {
 		if([stat.category isBankAccount ] == NO && stat.category != ncat) {
 			value = [value decimalNumberBySubtracting: stat.value ];
 		}
@@ -258,7 +257,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	if(assigned == NO) self.nassValue = value; else self.nassValue = [NSDecimalNumber zero ];
 	BOOL found = NO;
 	iter = [stats objectEnumerator];
-	while (stat = [iter nextObject]) {
+	while ((stat = [iter nextObject]) != nil) {
 		if(stat.category == ncat) {
 			if(assigned || [stat.value compare: value ] != NSOrderedSame) [ncat invalidateBalance ];
 			if(assigned) [context deleteObject: stat ]; else stat.value = value;
@@ -269,7 +268,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	
 	if(found == NO && assigned == NO) {
 		// create a new assignment to ncat
-		StatCatAssignment *stat = [NSEntityDescription insertNewObjectForEntityForName:@"StatCatAssignment" inManagedObjectContext:context ];
+		stat = [NSEntityDescription insertNewObjectForEntityForName:@"StatCatAssignment" inManagedObjectContext:context ];
 		stat.value = value;
 		stat.category = ncat;
 		stat.statement = self;
@@ -283,7 +282,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	NSMutableSet* stats = [self mutableSetValueForKey: @"assignments" ];
 	NSEnumerator *iter = [stats objectEnumerator];
 	StatCatAssignment *stat;
-	while (stat = [iter nextObject]) {
+	while ((stat = [iter nextObject]) != nil) {
 		if(stat.category == ncat) return stat.value;
 	}
 	return [NSDecimalNumber zero ];
@@ -305,7 +304,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	// if assignment already done, add value
 	NSEnumerator *iter = [stats objectEnumerator];
 	BOOL changed = NO;
-	while (stat = [iter nextObject]) {
+	while ((stat = [iter nextObject]) != nil) {
 		if(stat.category == cat) {
 			if(value == nil || [value isEqual: [NSDecimalNumber zero ] ]) [context deleteObject: stat ]; else stat.value = [stat.value decimalNumberByAdding: value ];
 			changed = YES;
@@ -362,10 +361,9 @@ BOOL stringEqual(NSString *a, NSString *b)
 {
 	NSMutableString	*res = [NSMutableString stringWithCapacity: 300 ];
 	NSString *s;
-	int i;
 	NSObject *obj;
 	
-	for(i = 0; i < [fields count ]; i++) {
+	for (NSUInteger i = 0; i < [fields count ]; i++) {
 		NSString* field = [fields objectAtIndex: i ];
 		obj = [self valueForKey: field ];
 		if([field isEqualToString: @"valutaDate" ] || [field isEqualToString: @"date" ]) s = [dateFormatter stringFromDate: (NSDate*)obj ];

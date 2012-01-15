@@ -53,8 +53,8 @@
     ShortDate* fromDate;
     ShortDate* toDate;
     
-    NSInteger earningsExplosionIndex;
-    NSInteger spendingsExplosionIndex;
+    NSUInteger earningsExplosionIndex;
+    NSUInteger spendingsExplosionIndex;
     NSInteger lastEarningsIndex;
     NSInteger lastSpendingsIndex;
     BOOL inMouseMoveHandling;

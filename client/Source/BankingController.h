@@ -153,6 +153,7 @@
 -(IBAction)repairSaldo:(id)sender;
 
 -(IBAction)showAboutPanel:(id)sender;
+-(IBAction)closeAboutPanel:(id)sender;
 
 -(void)windowWillClose:(NSNotification *)aNotification;
 -(NSArray*)selectedNodes;

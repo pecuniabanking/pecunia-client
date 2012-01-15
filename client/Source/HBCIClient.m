@@ -200,11 +200,10 @@ static HBCIClient *client = nil;
 -(BOOL)checkDTAUS:(NSString*)s
 {
     NSCharacterSet *cs = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß 0123456789.,&-/+*$%" ];
-    int i;
     
     if (s == nil || [s length ] == 0) return YES;
     
-    for(i=0; i<[s length ]; i++) {
+    for (NSUInteger i = 0; i < [s length]; i++) {
         if ([cs characterIsMember:[s characterAtIndex:i ] ] == NO) {
             NSRunAlertPanel(NSLocalizedString(@"AP170", @""), 
                             NSLocalizedString(@"AP171", @""), 

@@ -85,9 +85,8 @@
 			[stat setValue:saldo forKey: @"saldo" ];
 			saldo = [saldo decimalNumberBySubtracting:[stat valueForKey: @"value" ] ];
 		}
-		int i;
 		NSTimeInterval j=1;
-		for(i = [statements count ]-1; i--; i>=0) {
+		for (NSUInteger i = [statements count] - 1; i >= 0; i--) {
 			stat = [statements objectAtIndex:i ];
 			if (date == nil) date = [stat valueForKey: @"date" ];
 			else {

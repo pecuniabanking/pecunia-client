@@ -382,11 +382,10 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 
 - (void)setSelectedRow:(NSInteger)row
 {
-  // ml: handle "no selection" setting too. We cannot store NSNotFound in the index set.
   if (row == NSNotFound)
-    [self selectRowIndexes:[NSIndexSet indexSetWithIndex: -1] byExtendingSelection: NO];
+      [self selectRowIndexes: [NSIndexSet indexSet] byExtendingSelection: NO];
   else
-    [self selectRowIndexes:[NSIndexSet indexSetWithIndex: row] byExtendingSelection: NO];
+      [self selectRowIndexes:[NSIndexSet indexSetWithIndex: row] byExtendingSelection: NO];
 }
 
 
@@ -394,8 +393,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 {
 	if( [_selectedRows count] == 1 )
   {
-    // ml: translate our intermediate -1 value back to NSNotFound.
-		return [_selectedRows firstIndex] == -1 ? NSNotFound : [_selectedRows firstIndex];
+		return [_selectedRows firstIndex];
 	}
 	else {
 		//This gives -1 for 0 selected items (backwards compatible) *and* for multiple selections.

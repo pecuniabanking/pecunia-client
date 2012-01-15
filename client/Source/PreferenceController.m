@@ -102,7 +102,7 @@ void updateColorCache()
 */
 -(void)windowWillClose:(NSNotification *)aNotification
 {
-	int i, idx;
+	int idx;
 	NSArray	*content = [fieldController content ];
 	NSArray	*columns = [fieldTable tableColumns ];
 	NSMutableArray	*fields = [NSMutableArray arrayWithCapacity: 25 ];
@@ -110,7 +110,7 @@ void updateColorCache()
 	NSTableColumn *col = [columns objectAtIndex:0 ];
 	NSComboBoxCell *cell = [col dataCell ];
 	
-	for(i=0; i<[content count ]; i++) {
+	for (NSUInteger i = 0; i < [content count]; i++) {
 		NSDictionary	*dict = [content objectAtIndex:i ];
 		idx = [cell indexOfItemWithObjectValue: [dict valueForKey: @"fieldName" ] ];
 		if(idx >=0) [fields addObject: [exportFields objectAtIndex:idx ] ];
@@ -285,11 +285,11 @@ void updateColorCache()
 			}
 			if(res == NSAlertOtherReturn) {
 				[defaults setBool: YES forKey: @"forceEncryption" ];
-				int res = NSRunAlertPanel(NSLocalizedString(@"AP46", @""), 
-										  NSLocalizedString(@"AP63", @""),
-										  NSLocalizedString(@"yes", @"Yes"), 
-										  NSLocalizedString(@"no", @"No"), 
-										  nil);
+				res = NSRunAlertPanel(NSLocalizedString(@"AP46", @""), 
+                                      NSLocalizedString(@"AP63", @""),
+                                      NSLocalizedString(@"yes", @"Yes"), 
+                                      NSLocalizedString(@"no", @"No"), 
+                                      nil);
 				if(res == NSAlertDefaultReturn) {
 					[[BankingController controller ] setRestart ];
 					[NSApp terminate: self ];
@@ -317,10 +317,10 @@ void updateColorCache()
 			  contextInfo: NULL ];
 	} else {
 		int res = NSRunAlertPanel(NSLocalizedString(@"AP46", @""), 
-								  NSLocalizedString(@"AP79", @""),
-								  NSLocalizedString(@"no", @"No"), 
-								  NSLocalizedString(@"yes", @"Yes"), 
-								  nil);
+                                  NSLocalizedString(@"AP79", @""),
+                                  NSLocalizedString(@"no", @"No"), 
+                                  NSLocalizedString(@"yes", @"Yes"), 
+                                  nil);
 		if(res == NSAlertAlternateReturn) {
 			MOAssistant *assistant = [MOAssistant assistant ];
 			if([assistant stopEncryption ])	[[BankingController controller ] setEncrypted: NO ];

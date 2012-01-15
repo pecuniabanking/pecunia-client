@@ -18,7 +18,7 @@
 	
 	char		*bitString;
 	int			frequency;
-	int			currentCode;
+	NSUInteger  currentCode;
 	int			clock;
 	NSUInteger	codeLen;
 	NSString	*tan;

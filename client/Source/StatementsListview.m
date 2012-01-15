@@ -132,7 +132,7 @@
     id statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];
     ShortDate* currentDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
     
-    int totalCount = [_dataSource count];
+    NSUInteger totalCount = [_dataSource count];
     while (++row < totalCount)
     {
         statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];

@@ -58,11 +58,10 @@
 	[templateController setFilterPredicate: [pred retain ] ];
 	
 	if(transferType == TransferTypeInternal) {
-		int i;
 		[internalAccounts release ];
 		internalAccounts = [[[account siblings ] allObjects ] retain ];
 		[accountBox removeAllItems ];
-		for(i=0; i<[internalAccounts count ]; i++) {
+		for (NSUInteger i = 0; i < [internalAccounts count]; i++) {
 			[accountBox addItemWithObjectValue: [[internalAccounts objectAtIndex: i ] valueForKey: @"name" ] ];
 		}
 		NSString* selectedAccount = [transfer valueForKey: @"remoteAccount" ];
@@ -607,14 +606,14 @@
 -(void)controlTextDidChange: (NSNotification*)aNotification
 {
 	NSTextField	*te = [aNotification object ];
-	int			maxLen;
+	NSUInteger maxLen;
 	
 	if([te tag ] < 10) maxLen = [limits maxLenPurpose ];
 	else if([te tag ] == 10) maxLen = [limits maxLengthRemoteName ];
 	else if([te tag ] == 20) maxLen = 52;
 	else return;
 	
-	if([[te stringValue ] length ] > maxLen) { 
+	if ([[te stringValue ] length ] > maxLen) { 
 		[te setStringValue:  [[te stringValue ] substringToIndex: maxLen ] ];
 		NSBeep();
 		return; 

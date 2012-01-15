@@ -351,6 +351,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 - (void)updateSelectionGraph;
 - (void)updateSelectionDisplay;
 
+- (void)updateGraphs;
+
 - (int)majorTickCount;
 - (void)hideHelp;
 
@@ -376,13 +378,18 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 -(void)dealloc 
 {
-    [fromDate release], fromDate = nil;
-    [toDate release], toDate = nil;
+    free(timePoints);
+    free(totalBalances);
+    free(negativeBalances);
+    free(positiveBalances);
+    free(balanceCounts);
+    free(selectionBalances);
+
+    [fromDate release];
+    [toDate release];
+    [referenceDate release];
     
     [mainGraph release];
-    [dates release];
-    [balances release];
-    [balanceCounts release];
     
     [mainIndicatorLine release];
     [turnoversIndicatorLine release];
@@ -391,7 +398,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [dateInfoLayer release];
     [valueInfoLayer release];
     [infoTextFormatter release];
-    [lastInfoDate release];
     [infoAnnotation release];
     [selectionBand release];
     
@@ -402,7 +408,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 {
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* values = [userDefaults objectForKey: @"categoryAnalysis"];
-    if (values) {
+    if (values != nil) {
         groupingInterval = [[values objectForKey: @"grouping"] intValue];
         groupingSlider.intValue = groupingInterval;
     }
@@ -410,6 +416,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [self setupMainGraph];
     [self setupTurnoversGraph];
     [self setupSelectionGraph];
+    [self updateGraphs];
     
     // Help text.
     NSBundle* mainBundle = [NSBundle mainBundle];
@@ -448,18 +455,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
             ((CPTBarPlot*)plot).barWidth = CPTDecimalFromFloat(value);
         }
     }
-}
-
-/**
- * Returns the first (earliest) date in the data, which serves as the reference date to which
- * all other dates are compared (to create a time distance in seconds).
- * If we have no data then the current date is used instead.
- */
--(ShortDate*)referenceDate
-{
-    if ([dates count] > 0)
-        return [dates objectAtIndex: 0];
-    return [ShortDate dateWithDate: [NSDate date]];
 }
 
 - (void)setupShadowForPlot: (CPTPlot*) plot
@@ -763,13 +758,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     plotSpace.delegate = self;
     
     // Frame setup (background, border).
-    CPTMutableLineStyle* frameStyle = [CPTMutableLineStyle lineStyle];
-    frameStyle.lineWidth = 2;
-    frameStyle.lineColor = [CPTColor colorWithComponentRed: 18 / 255.0
-                                                     green: 97 / 255.0
-                                                      blue: 185 / 255.0
-                                                     alpha: 1];
-    
     CPTPlotAreaFrame* frame = selectionGraph.plotAreaFrame;
     frame.paddingLeft = 30;
     frame.paddingRight = 10;
@@ -777,7 +765,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     frame.paddingBottom = 10;
     
     frame.cornerRadius = 5;
-    frame.borderLineStyle = nil; //frameStyle;
+    frame.borderLineStyle = nil;
     
     CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithGenericGray: 80 / 255.0]
                                                         endingColor: [CPTColor colorWithGenericGray: 30 / 255.0]
@@ -798,7 +786,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 - (CPTScatterPlot*)createScatterPlotWithFill: (CPTFill*)fill
 {
     CPTScatterPlot* linePlot = [[[CPTScatterPlot alloc] init] autorelease];
-    linePlot.cachePrecision = CPTPlotCachePrecisionDecimal;
     linePlot.alignsPointsToPixels = YES;
     
     linePlot.dataLineStyle = nil;
@@ -823,7 +810,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     barPlot.barsAreHorizontal = NO;
     barPlot.baseValue = CPTDecimalFromInt(0);
     barPlot.alignsPointsToPixels = YES;
-    barPlot.cachePrecision = CPTPlotCachePrecisionDouble;
     
     if (withBorder) {
         CPTMutableLineStyle* lineStyle = [[[CPTMutableLineStyle alloc] init] autorelease];
@@ -849,66 +835,59 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     // The main graph contains two plots, one for the positive values (with a gray fill)
     // and the other one for negative values (with a red fill).
     // Depending on whether we view a bank account or a normal category either line or bar plots are used.
-    if (mainCategory == nil)
-        return;
-    
-    CPTGradient* positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 120 / 255.0
-                                                                                                       green: 120 / 255.0
-                                                                                                        blue: 120 / 255.0
-                                                                                                       alpha: 0.75]
-                                                                endingColor: [CPTColor colorWithComponentRed: 60 / 255.0
-                                                                                                       green: 60 / 255.0
-                                                                                                        blue: 60 / 255.0
-                                                                                                       alpha: 1]
-                                     ];
-    positiveGradient.angle = -90.0;
-    CPTFill* positiveGradientFill = [CPTFill fillWithGradient: positiveGradient];
-    CPTGradient* negativeGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 194 / 255.0
-                                                                                                       green: 69 / 255.0
-                                                                                                        blue: 47 / 255.0
-                                                                                                       alpha: 1]
-                                                                endingColor: [CPTColor colorWithComponentRed: 194 / 255.0
-                                                                                                       green: 69 / 255.0
-                                                                                                        blue: 47 / 255.0
-                                                                                                       alpha: 0.9]
-                                     ];
-    
-    negativeGradient.angle = -90.0;
-    CPTFill* negativeGradientFill = [CPTFill fillWithGradient: negativeGradient];
-    
-    CPTPlot* plot;
-    if (mainCategory.isBankAccount)
-    {
-        plot = [self createScatterPlotWithFill: positiveGradientFill];
+    if (mainCategory != nil) {
+        CPTGradient* positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 120 / 255.0
+                                                                                                           green: 120 / 255.0
+                                                                                                            blue: 120 / 255.0
+                                                                                                           alpha: 0.75]
+                                                                    endingColor: [CPTColor colorWithComponentRed: 60 / 255.0
+                                                                                                           green: 60 / 255.0
+                                                                                                            blue: 60 / 255.0
+                                                                                                           alpha: 1]
+                                         ];
+        positiveGradient.angle = -90.0;
+        CPTFill* positiveGradientFill = [CPTFill fillWithGradient: positiveGradient];
+        CPTGradient* negativeGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 194 / 255.0
+                                                                                                           green: 69 / 255.0
+                                                                                                            blue: 47 / 255.0
+                                                                                                           alpha: 1]
+                                                                    endingColor: [CPTColor colorWithComponentRed: 194 / 255.0
+                                                                                                           green: 69 / 255.0
+                                                                                                            blue: 47 / 255.0
+                                                                                                           alpha: 0.9]
+                                         ];
+        
+        negativeGradient.angle = -90.0;
+        CPTFill* negativeGradientFill = [CPTFill fillWithGradient: negativeGradient];
+        
+        CPTPlot* plot;
+        if (mainCategory.isBankAccount) {
+            plot = [self createScatterPlotWithFill: positiveGradientFill];
+        } else {
+            plot = [self createBarPlotWithFill: positiveGradientFill withBorder: YES];
+        }
+        
+        CPTMutableTextStyle* labelTextStyle = [CPTMutableTextStyle textStyle];
+        labelTextStyle.color = [CPTColor blackColor];
+        plot.labelTextStyle = labelTextStyle;
+        
+        plot.identifier = @"positivePlot";
+        [self setupShadowForPlot: plot];
+        
+        [mainGraph addPlot: plot];
+        
+        // The negative plot.
+        if (mainCategory.isBankAccount) {
+            plot = [self createScatterPlotWithFill: negativeGradientFill];
+        } else {
+            plot = [self createBarPlotWithFill: negativeGradientFill withBorder: YES];
+        }
+        
+        plot.identifier = @"negativePlot";
+        [self setupShadowForPlot: plot];
+        
+        [mainGraph addPlot: plot];
     }
-    else
-    {
-        plot = [self createBarPlotWithFill: positiveGradientFill withBorder: YES];
-    }
-    
-    CPTMutableTextStyle* labelTextStyle = [CPTMutableTextStyle textStyle];
-    labelTextStyle.color = [CPTColor blackColor];
-    plot.labelTextStyle = labelTextStyle;
-    
-    plot.identifier = @"positivePlot";
-    [self setupShadowForPlot: plot];
-    
-    [mainGraph addPlot: plot];
-    
-    // The negative plot.
-    if (mainCategory.isBankAccount)
-    {
-        plot = [self createScatterPlotWithFill: negativeGradientFill];
-    }
-    else
-    {
-        plot = [self createBarPlotWithFill: negativeGradientFill withBorder: YES];
-    }
-    
-    plot.identifier = @"negativePlot";
-    [self setupShadowForPlot: plot];
-    
-    [mainGraph addPlot: plot];
     
     [self updateMainGraph];
 }
@@ -944,28 +923,26 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
     // The selection plot always contains the full range of values as it is used to select a subrange
     // for main and turnovers graphs.
-    if (mainCategory == nil)
-        return;
-    
-    CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 255 / 255.0
-                                                                                               green: 255 / 255.0
-                                                                                                blue: 255 / 255.0
-                                                                                               alpha: 0.80]
-                                                        endingColor: [CPTColor colorWithComponentRed: 255 / 255.0
-                                                                                               green: 255 / 255.0
-                                                                                                blue: 255 / 255.0
-                                                                                               alpha: 0.9]
-                             ];
-    gradient.angle = 90.0;
-    CPTFill* gradientFill = [CPTFill fillWithGradient: gradient];
-    
-    CPTPlot* plot = [self createScatterPlotWithFill: gradientFill];
-    
-    plot.identifier = @"selectionPlot";
-    [self setupShadowForPlot: plot];
-    
-    [selectionGraph addPlot: plot];
-    
+    if (mainCategory != nil) {
+        CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 255 / 255.0
+                                                                                                   green: 255 / 255.0
+                                                                                                    blue: 255 / 255.0
+                                                                                                   alpha: 0.80]
+                                                            endingColor: [CPTColor colorWithComponentRed: 255 / 255.0
+                                                                                                   green: 255 / 255.0
+                                                                                                    blue: 255 / 255.0
+                                                                                                   alpha: 0.9]
+                                 ];
+        gradient.angle = 90.0;
+        CPTFill* gradientFill = [CPTFill fillWithGradient: gradient];
+        
+        CPTPlot* plot = [self createScatterPlotWithFill: gradientFill];
+        
+        plot.identifier = @"selectionPlot";
+        [self setupShadowForPlot: plot];
+        
+        [selectionGraph addPlot: plot];
+    }        
     [self updateSelectionGraph];
 }
 
@@ -979,8 +956,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     int digitCount = [range numberOfDigits];
     NSDecimal value = [range decimalValue];
     NSDecimal hundred = [[NSNumber numberWithInt: 100] decimalValue];
-    if (NSDecimalCompare(&value, &hundred) == NSOrderedDescending)
-    {
+    if (NSDecimalCompare(&value, &hundred) == NSOrderedDescending) {
         // The range is > 100 so scale it down so it falls into that range.
         NSDecimalMultiplyByPowerOf10(&value, &value, -digitCount + 2, NSRoundDown);
     }
@@ -1010,8 +986,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     NSDecimal value = CPTDecimalFromFloat(interval);
     int digitCount = [[NSDecimalNumber decimalNumberWithDecimal: value] numberOfDigits];
     NSDecimal hundred = [[NSNumber numberWithInt: 100] decimalValue];
-    if (NSDecimalCompare(&value, &hundred) == NSOrderedDescending)
-    {
+    if (NSDecimalCompare(&value, &hundred) == NSOrderedDescending) {
         // The range is > 100 so scale it down so it falls into that range.
         NSDecimalMultiplyByPowerOf10(&value, &value, -digitCount + 2, NSRoundDown);
     }
@@ -1114,10 +1089,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 - (void)updateMainGraph
 {
-    ShortDate* startDate = [self referenceDate];
     int tickCount = [self majorTickCount];
-    int dateOffset = (groupingInterval == GroupByDays) ? 1 : 0;
-    int totalUnits = ([dates count] > 0) ? [self distanceFromDate: startDate toDate: [dates lastObject]] + dateOffset : 0;
+    int totalUnits = (rawCount > 0) ? timePoints[rawCount - 1] : 0;
     if (totalUnits < tickCount) {
         totalUnits = tickCount;
     }
@@ -1130,9 +1103,9 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
                                                            length: CPTDecimalFromDouble(totalUnits)];
     plotSpace.globalXRange = plotRange;
     
-    NSDecimal fromPoint = [self distanceAsDecimalFromDate: startDate toDate: fromDate];
+    NSDecimal fromPoint = [self distanceAsDecimalFromDate: referenceDate toDate: fromDate];
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: fromPoint
-                                                    length: CPTDecimalSubtract([self distanceAsDecimalFromDate: startDate toDate: toDate], fromPoint)];
+                                                    length: CPTDecimalSubtract([self distanceAsDecimalFromDate: referenceDate toDate: toDate], fromPoint)];
     
     CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
     CPTXYAxis* x = axisSet.xAxis;
@@ -1164,7 +1137,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     PecuniaPlotTimeFormatter* timeFormatter = [[[PecuniaPlotTimeFormatter alloc] initWithDateFormatter: dateFormatter
                                                                                           calendarUnit: calendarUnit] autorelease];
     
-    timeFormatter.referenceDate = [[self referenceDate] lowDate];
+    timeFormatter.referenceDate = [referenceDate lowDate];
     x.labelFormatter = timeFormatter;
     
     // Vertical range.
@@ -1200,17 +1173,11 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     currencyFormatter.currencyCode = currency;
     currencyFormatter.zeroSymbol = [NSString stringWithFormat: @"0 %@", currencyFormatter.currencySymbol];
     y.labelFormatter = currencyFormatter;
-    
-    [mainGraph reloadData];
 }
 
 - (void)updateTurnoversGraph
 {
-    NSUInteger count = [dates count];
-    
-    ShortDate* startDate = [self referenceDate];
-    int dateOffset = (groupingInterval == GroupByDays) ? 1 : 0;
-    int totalUnits = (count > 0) ? [self distanceFromDate: startDate toDate: [dates lastObject]] + dateOffset : 0;
+    int totalUnits = (rawCount > 0) ? timePoints[rawCount - 1] : 0;
     if (totalUnits < [self majorTickCount]) {
         totalUnits = [self majorTickCount];
     };
@@ -1223,30 +1190,27 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
                                                            length: CPTDecimalFromDouble(totalUnits)];
     plotSpace.globalXRange = plotRange;
     
-    NSDecimal fromPoint = [self distanceAsDecimalFromDate: startDate toDate: fromDate];
+    NSDecimal fromPoint = [self distanceAsDecimalFromDate: referenceDate toDate: fromDate];
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: fromPoint
-                                                    length: CPTDecimalSubtract([self distanceAsDecimalFromDate: startDate toDate: toDate], fromPoint)];
+                                                    length: CPTDecimalSubtract([self distanceAsDecimalFromDate: referenceDate toDate: toDate], fromPoint)];
     
     CPTXYAxisSet* axisSet = (id)turnoversGraph.axisSet;
     
     // Vertical range.
-    int maxTurnoversCount = 0;
+    double maxTurnoversCount = 0;
     
-    for (NSUInteger i = 0; i < count; i++)
-    {
-        id y = [balanceCounts objectAtIndex: i];
-        
-        if ([y intValue] > maxTurnoversCount)
-            maxTurnoversCount = [y floatValue];
+    for (NSUInteger i = 0; i < rawCount; i++) {
+        if (balanceCounts[i] > maxTurnoversCount)
+            maxTurnoversCount = balanceCounts[i];
     }
     
-    // Ensure we have a value > 0 to have a pleasant plot, even without values.
-    if (maxTurnoversCount == 0) {
+    // Ensure we have a value >= 1 to have a pleasant plot, even without values.
+    if (maxTurnoversCount < 1) {
         maxTurnoversCount = 1;
     }
     
-    NSDecimalNumber* roundedMax = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(maxTurnoversCount)] roundToUpperOuter];
-    plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0) length: [roundedMax decimalValue]];
+    NSDecimalNumber* roundedMax = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(maxTurnoversCount)] roundToUpperOuter];
+    plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromInt(0) length: [roundedMax decimalValue]];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
     
@@ -1257,15 +1221,17 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     float interval = [self intervalFromRange: roundedMax];
     y.majorIntervalLength = CPTDecimalFromFloat(interval);
     y.minorTicksPerInterval = 0;
-    
-    [turnoversGraph reloadData];
 }
 
 -(void)updateSelectionGraph
 {
-    ShortDate* startDate = [self referenceDate];
-    int dateOffset = (groupingInterval == GroupByDays) ? 1 : 0;
-    int totalUnits = ([dates count] > 0) ? [self distanceFromDate: startDate toDate: [dates lastObject]] + dateOffset : 0;
+    int totalUnits;
+    if (selectionTimePoints != nil) {
+        totalUnits = selectionTimePoints[selectionSampleCount - 1];
+    } else {
+       totalUnits = (rawCount > 0) ? timePoints[rawCount - 1] : 0;
+    }
+
     if (totalUnits < [self majorTickCount]) {
         totalUnits = [self majorTickCount];
     };
@@ -1274,8 +1240,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTXYPlotSpace* plotSpace = (id)selectionGraph.defaultPlotSpace;
     
     // Horizontal range.
-    CPTPlotRange* plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
-                                                           length: CPTDecimalFromDouble(totalUnits)];
+    CPTPlotRange* plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromInt(0)
+                                                           length: CPTDecimalFromInt(totalUnits)];
     plotSpace.globalXRange = plotRange;
     plotSpace.xRange = plotRange;
     
@@ -1293,8 +1259,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     // Set the y axis lines depending on the maximum value.
     CPTXYAxis* y = axisSet.yAxis;
     y.visibleRange = plotRange;
-    
-    [selectionGraph reloadData];
 }
 
 #pragma mark -
@@ -1324,8 +1288,13 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 /**
  * Updates the info annotation with the given values.
  */
-- (void)updateMainInfoForDate: (ShortDate*)date balance: (NSDecimalNumber*)balance turnovers: (int)turnovers
+- (void)updateMainInfo: (NSDictionary*)values
 {
+    ShortDate *date = [values objectForKey: @"date"];
+    id balance = [values objectForKey: @"balance"];
+    int turnovers = [[values objectForKey: @"turnovers"] intValue];
+    
+    
     if (infoTextFormatter == nil)
     {
         NSString* currency = (mainCategory == nil) ? @"EUR" : [mainCategory currency];
@@ -1388,12 +1357,11 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     if (![mainGraph.plotAreaFrame.plotArea.annotations containsObject: infoAnnotation])
         [mainGraph.plotAreaFrame.plotArea addAnnotation: infoAnnotation]; 
 
-    if (balance != nil) {
-        valueInfoLayer.text = [infoTextFormatter stringFromNumber: balance];
+    if ([balance isKindOfClass: [NSNumber class]]) {
+        valueInfoLayer.text = [infoTextFormatter stringFromNumber: (NSNumber*)balance];
     } else {
         valueInfoLayer.text = @"--";
     }
-
     
     NSString* infoText;
     NSString* dateDescription;
@@ -1472,31 +1440,28 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 }
 
 /**
- * Searches the date array for the closest value to the given date.
- * The search is left-affine, that is, if the date to search is between two existing dates the 
- * lower date will always be returned.
+ * Searches the time point array for the closest value to the given point.
+ * The search is left-affine, that is, if the time point to search is between two existing points the 
+ * lower point will always be returned.
  */
-- (int)findDateIndexForDate: (ShortDate*)dateToSearch
+- (NSUInteger)findIndexForTimePoint: (NSUInteger)timePoint
 {
-    if ([dates count] == 0)
+    if (rawCount == 0)
         return -1;
     
     int low = 0;
-    int high = [dates count] - 1;
+    int high = rawCount - 1;
     while (low <= high)
     {
         int mid = (low + high) / 2;
-        ShortDate* date = [dates objectAtIndex: mid];
-        switch ([date compare: dateToSearch])
-        {
-            case NSOrderedSame:
-                return mid;
-            case NSOrderedAscending:
-                low = mid + 1;
-                break;
-            case NSOrderedDescending:
-                high = mid - 1;
-                break;
+        double midPoint = timePoints[mid];
+        if (midPoint == timePoint) {
+            return mid;
+        }
+        if (midPoint < timePoint) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
         }
     };
 
@@ -1509,8 +1474,9 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
  *
  * The location is given in plot area coordinates.
  */
-- (void)updateTrackLinesAndInfoAnnotation: (NSNumber*)location snapToCloseDate: (BOOL)snap
+- (void)updateTrackLinesAndInfoAnnotation: (NSNumber*)location
 {
+    BOOL snap = YES;
     CGFloat actualLocation = [location floatValue];
     
     // Determine the content for the info layer.
@@ -1534,32 +1500,31 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         [turnoversIndicatorLine fadeIn];
     }
 
-    // Find closest date in our date points that is before the computed date value.
+    // Find closest point in our time points that is before the computed time value.
     int units = round(CPTDecimalFloatValue(dataPoint[0]));
-    ShortDate* date = [self dateByAddingUnits: [dates objectAtIndex: 0] count: units];
-    int index = [self findDateIndexForDate: date];
-    ShortDate* dateAtIndex = [dates objectAtIndex: index];
+    NSUInteger index = [self findIndexForTimePoint: units];
+    double timePointAtIndex = timePoints[index];
     BOOL dateHit = NO;
     
     // The found index might not be one matching exactly the current date. In order to ease
     // usage we snap the indicator to the closest existing data point if it is within bar width distance.
     if (snap) {
         NSDecimal snapPoint[2] = {0, 0};
-        snapPoint[0] = [self distanceAsDecimalFromDate: self.referenceDate toDate: dateAtIndex];
+        snapPoint[0] = CPTDecimalFromDouble(timePointAtIndex);
         CGPoint targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint];
         if (abs(targetPoint.x - actualLocation) <= barWidth) {
             actualLocation = targetPoint.x;
-            date = dateAtIndex;
+            timePoint = timePointAtIndex;
             dateHit = YES;
         } else {
             // The found index is not close enough. Try the next date point if there is one.
-            if (index < [dates count] - 1) {
-                dateAtIndex = [dates objectAtIndex: index + 1];
-                snapPoint[0] = [self distanceAsDecimalFromDate: self.referenceDate toDate: dateAtIndex];
+            if (index < rawCount - 1) {
+                timePointAtIndex = timePoints[index + 1];
+                snapPoint[0] = CPTDecimalFromDouble(timePointAtIndex);
                 targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint];
                 if (abs(targetPoint.x - actualLocation) <= barWidth) {
                     actualLocation = targetPoint.x;
-                    date = dateAtIndex;
+                    timePoint = timePointAtIndex;
                     dateHit = YES;
                     index++;
                 }
@@ -1567,7 +1532,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         }
     }
     
-    if (!dateHit && [date compare: dateAtIndex] == NSOrderedSame) {
+    if (!dateHit && (timePoint == timePointAtIndex)) {
         dateHit = YES;
     }
 
@@ -1575,25 +1540,29 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     // use the date left to the position (not rounded), so we show the unit properly til
     // the next unit tick.
     if (!dateHit) {
-        units = floor(CPTDecimalFloatValue(dataPoint[0]));
-        date = [self dateByAddingUnits: [dates objectAtIndex: 0] count: units];
-        index = [self findDateIndexForDate: date];
+        index = [self findIndexForTimePoint: floor(CPTDecimalFloatValue(dataPoint[0]))];
     }
-        
-    if (lastInfoDate == nil || [date compare: lastInfoDate] != NSOrderedSame || dateHit)
+
+    if (lastInfoTimePoint == 0 || (timePoint != lastInfoTimePoint) || dateHit)
     {
-        [lastInfoDate release];
-        lastInfoDate = [date retain];
-        
+        lastInfoTimePoint = timePoint;
+
+        NSMutableDictionary *values = [NSMutableDictionary dictionary];
+        [values setObject: [self dateByAddingUnits: referenceDate count: timePoint] forKey: @"date"];
+        id balance;
+        int turnovers = 0;
         if (dateHit) {
-            [self updateMainInfoForDate: date
-                                balance: [balances objectAtIndex: index]
-                              turnovers: [[balanceCounts objectAtIndex: index] intValue]];
+            balance = [NSNumber numberWithDouble: totalBalances[index]];
+            turnovers = balanceCounts[index];
         } else {
-            [self updateMainInfoForDate: date
-                                balance: [mainCategory isBankAccount] ? [balances objectAtIndex: index] : nil
-                              turnovers: 0];
+            balance = [mainCategory isBankAccount] ? [NSNumber numberWithDouble: totalBalances[index]] : (id)[NSNull null];
         }
+        [values setObject: balance forKey: @"balance"];
+        [values setObject: [NSNumber numberWithInt: turnovers] forKey: @"turnovers"];
+
+        // Update the info layer content, but after a short delay. This will be canceled if new
+        // update request arrive in the meantime (circumventing so too many updates that slow down the display).
+        [self performSelector: @selector(updateMainInfo:) withObject: values afterDelay: 0.1];
     }
 
     // Position the indicator line to the given location in main and turnovers graphs.
@@ -1618,10 +1587,10 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
                                                                            blue: 67 / 255.0
                                                                           alpha: 1]];
     
-    NSDecimal fromPoint = [self distanceAsDecimalFromDate: self.referenceDate toDate: fromDate];
+    NSDecimal fromPoint = [self distanceAsDecimalFromDate: referenceDate toDate: fromDate];
     selectionBand = [[CPTLimitBand limitBandWithRange:
                       [CPTPlotRange plotRangeWithLocation: fromPoint
-                                                   length: CPTDecimalSubtract([self distanceAsDecimalFromDate: self.referenceDate toDate: toDate], fromPoint)]
+                                                   length: CPTDecimalSubtract([self distanceAsDecimalFromDate: referenceDate toDate: toDate], fromPoint)]
                                                  fill: bandFill] retain];
     [x addBackgroundLimitBand: selectionBand];
     selectionHostView.selector = selectionBand;
@@ -1633,11 +1602,11 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     NSDecimal fromPoint = plotSpace.xRange.location;
     [fromDate release];
-    fromDate = [[self dateByAddingUnits: self.referenceDate count: CPTDecimalIntValue(fromPoint)] retain];
+    fromDate = [[self dateByAddingUnits: referenceDate count: CPTDecimalIntValue(fromPoint)] retain];
     
     NSDecimal toPoint = plotSpace.xRange.end;
     [toDate release];
-    toDate = [[self dateByAddingUnits: self.referenceDate count: CPTDecimalIntValue(toPoint)] retain];
+    toDate = [[self dateByAddingUnits: referenceDate count: CPTDecimalIntValue(toPoint)] retain];
 }
 
 /**
@@ -1648,6 +1617,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 {
     if ([[notification name] isEqualToString: PecuniaGraphLayoutChangeNotification])
     {
+        [NSObject cancelPreviousPerformRequestsWithTarget: self];
+        
         NSDictionary* parameters = [notification userInfo];
         NSString* type = [parameters objectForKey: @"type"];
         
@@ -1698,18 +1669,18 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
             
             [self applyRangeLocationToPlotSpace: (id)mainGraph.defaultPlotSpace location: location range: range];
             [self applyRangeLocationToPlotSpace: (id)turnoversGraph.defaultPlotSpace location: location range: range];
-            
+
             // Adjust the time range display in the selection graph.
             [self updateTimeRangeVariables];
             [self updateSelectionDisplay];
 
             if (!keepInfoLayerHidden && !fromSelectionGraph) {
-                [self updateTrackLinesAndInfoAnnotation: center snapToCloseDate: NO];
+                [self updateTrackLinesAndInfoAnnotation: center];
             }
         } else {
             if ([type isEqualToString: @"trackLineMove"]) {
                 NSNumber* location = [parameters objectForKey: @"location"];
-                [self updateTrackLinesAndInfoAnnotation: location snapToCloseDate: YES];
+                [self updateTrackLinesAndInfoAnnotation: location];
             } else {
                 if ([type isEqualToString: @"plotMoveCenter"]) {
                     NSNumber* location = [parameters objectForKey: @"location"];
@@ -1755,72 +1726,43 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 - (NSUInteger)numberOfRecordsForPlot: (CPTPlot*)plot
 {
-    // We add one to the total number as we have to duplicate the last value in scatter plots to
-    // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
-    // This extra day is accompanied by duplication of the last value in our data (for scatterplots)
-    // or nil (for bar plots).
-    return [dates count] + 1;
-}
-
-- (NSNumber*)numberForPlot: (CPTPlot*)plot field: (NSUInteger)fieldEnum recordIndex: (NSUInteger)index
-{
-    BOOL endValue = index >= [dates count];
-    if (fieldEnum == CPTBarPlotFieldBarLocation || fieldEnum == CPTScatterPlotFieldX)
-    {
-        ShortDate* date = endValue ? [dates lastObject] : [dates objectAtIndex: index];
-        ShortDate* startDate = [self referenceDate];
-        int units = [self distanceFromDate: startDate toDate: date];
-        if (endValue) {
-            units++;
-        }
-        
-        return [NSNumber numberWithInt: units];
+    if ([plot graph] == selectionGraph && selectionBalances != nil) {
+        return selectionSampleCount;
     }
     
-    if ([plot graph] == turnoversGraph)
-    {
-        if (!endValue && fieldEnum == CPTBarPlotFieldBarTip)
-            return [balanceCounts objectAtIndex: index];
+    return rawCount;
+}
+
+- (double *)doublesForPlot: (CPTPlot*)plot field: (NSUInteger)fieldEnum recordIndexRange: (NSRange)indexRange
+{
+    if (fieldEnum == CPTBarPlotFieldBarLocation || fieldEnum == CPTScatterPlotFieldX) {
+        if ([plot graph] == selectionGraph && selectionTimePoints != nil) {
+            return selectionTimePoints;
+        }
+        return &timePoints[indexRange.location];
+    }
+    
+    if ([plot graph] == turnoversGraph) {
+        if (fieldEnum == CPTBarPlotFieldBarTip)
+            return &balanceCounts[indexRange.location];
         
         return nil;
     }
     
-    if ([plot graph] == mainGraph)
-    {
-        if (endValue) {
-            if (fieldEnum == CPTBarPlotFieldBarTip) {
-                return nil;
-            }
-            index--;
-        }
-        
+    if ([plot graph] == mainGraph) {
         NSString* identifier = (id)plot.identifier;
-        NSDecimalNumber* value = [balances objectAtIndex: index];
-        if ([identifier isEqualToString: @"positivePlot"])
-        {
-            // Only return positive values for this plot. Negative values are displayed as 0.
-            if ([value compare: [NSDecimalNumber zero]] == NSOrderedAscending)
-                return [NSDecimalNumber numberWithDouble: 0];
-            else
-                return [balances objectAtIndex: index];
-        }
-        else
-        {
-            // Similar as for the positive plot, but for negative values.
-            if ([value compare: [NSDecimalNumber zero]] == NSOrderedDescending)
-                return [NSDecimalNumber numberWithDouble: 0];
-            else
-                return [balances objectAtIndex: index];
+        if ([identifier isEqualToString: @"positivePlot"]) {
+            return &positiveBalances[indexRange.location];
+        } else {
+            return &negativeBalances[indexRange.location];
         }
     }
     
-    if ([plot graph] == selectionGraph)
-    {
-        if (endValue) {
-            index--;
+    if ([plot graph] == selectionGraph) {
+        if (selectionBalances != nil) {
+            return &selectionBalances[indexRange.location];
         }
-        
-        return [balances objectAtIndex: index];
+        return &totalBalances[indexRange.location];
     }
     
     return nil;
@@ -1828,7 +1770,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 - (CPTLayer *)dataLabelForPlot: (CPTPlot*)plot recordIndex: (NSUInteger)index 
 {
-    return (id)[NSNull null]; // Don't show any label
+    return (id)[NSNull null]; // Don't show any data label.
 }
 
 #pragma mark -
@@ -1836,19 +1778,19 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 - (void)updateValues
 {
-    maxValue = [NSDecimalNumber zero];
-    minValue = [NSDecimalNumber zero];
-    
-    for (NSUInteger i = 0; i < [dates count]; i++) {
-        id y = [balances objectAtIndex: i];
-        
-        if ([y compare: maxValue] == NSOrderedDescending) {
-            maxValue = y;
+    double minDoubleValue = 0;
+    double maxDoubleValue = 0;
+    for (NSUInteger i = 0; i < rawCount; i++) {
+        if (totalBalances[i] > maxDoubleValue) {
+            maxDoubleValue = totalBalances[i];
         }
-        if ([y compare: minValue] == NSOrderedAscending) {
-            minValue = y;
+        if (totalBalances[i] < minDoubleValue) {
+            minDoubleValue = totalBalances[i];
         }
     }
+    
+    minValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(minDoubleValue)];
+    maxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(maxDoubleValue)];
 
     // Update the selected range so that its length corresponds to the minimum length
     // and it doesn't start before the first date in the date array. It might go beyond the
@@ -1863,7 +1805,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
     // Now see if the new toDate goes beyond the available data. Try fixing it (if so)
     // by moving the selected range closer to the beginning.
-    ShortDate* date = [[dates lastObject] dateByAddingUnits: (groupingInterval == GroupByDays) ? 1 : 0 byUnit: NSDayCalendarUnit];
+    ShortDate* date = [self dateByAddingUnits: referenceDate count: (rawCount > 0) ? timePoints[rawCount - 1] : 0];
     if (toDate == nil || [date compare: toDate] == NSOrderedAscending) {
         units = [self distanceFromDate: toDate toDate: date];
         [toDate release];
@@ -1876,7 +1818,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
     // Finaly ensure we do not begin before our first data entry. Move the selection range
     // accordingly, accepting that this might move the end point beyond the last data entry.
-    date = [dates objectAtIndex: 0];
+    date = referenceDate;
     if (fromDate == nil || [date compare: fromDate] == NSOrderedDescending) {
         units = [self distanceFromDate: fromDate toDate: date];
         [fromDate release];
@@ -1891,14 +1833,17 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 - (void)clearGraphs
 {
     NSArray* plots = mainGraph.allPlots;
-    for (CPTPlot* plot in plots)
+    for (CPTPlot* plot in plots) {
         [mainGraph removePlot: plot];
+    }
     plots = turnoversGraph.allPlots;
-    for (CPTPlot* plot in plots)
+    for (CPTPlot* plot in plots) {
         [turnoversGraph removePlot: plot];
+    }
     plots = selectionGraph.allPlots;
-    for (CPTPlot* plot in plots)
+    for (CPTPlot* plot in plots) {
         [selectionGraph removePlot: plot];
+    }
     
     mainGraph.defaultPlotSpace.allowsUserInteraction = NO;
     turnoversGraph.defaultPlotSpace.allowsUserInteraction = NO;
@@ -1912,40 +1857,141 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 {
     [self hideHelp];
     
-    [dates release];
-    dates = nil;
-    [balances release];
-    balances = nil;
-    [balanceCounts release];
+    rawCount = 0;
+    free(timePoints);
+    timePoints = nil;
+    
+    free(totalBalances);
+    totalBalances = nil;
+    
+    free(negativeBalances);
+    negativeBalances = nil;
+    
+    free(positiveBalances);
+    positiveBalances = nil;
+    
+    free(balanceCounts);
     balanceCounts = nil;
 
+    if (selectionBalances != nil) {
+        free(selectionBalances);
+        selectionBalances = nil;
+
+        free(selectionTimePoints);
+        selectionTimePoints = nil;
+    }
+    
+    [referenceDate release];
+    referenceDate = [[ShortDate currentDate] retain];
+    
     if (mainCategory == nil)
         return;
     
-    if (mainCategory.isBankAccount)
-    {
+    NSArray *dates;
+    NSArray *balances;
+    NSArray *turnovers;
+    if (mainCategory.isBankAccount) {
         if ([mainCategory balanceHistoryToDates: &dates
                                        balances: &balances
-                                  balanceCounts: &balanceCounts
+                                  balanceCounts: &turnovers
                                    withGrouping: groupingInterval] == 0) {
             return;
         }
-    }
-    else
-    {
+    } else {
         if ([mainCategory categoryHistoryToDates: &dates
                                         balances: &balances
-                                   balanceCounts: &balanceCounts
+                                   balanceCounts: &turnovers
                                     withGrouping: groupingInterval] == 0) {
             return;
         }
     }
     
-    [dates retain];
-    [balances retain];
-    [balanceCounts retain];
+    // Convert the data to the internal representations.
+    // We add one to the total number as we need it (mostly) in scatter plots to
+    // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
+    rawCount = [dates count] + 1;
+    
+    // Convert the dates to distance units from a reference date.
+    timePoints = malloc(rawCount * sizeof(double));
+    [referenceDate release];
+    referenceDate = [[dates objectAtIndex: 0] retain];
+    int index = 0;
+    for (ShortDate *date in dates) {
+        timePoints[index++] = [self distanceFromDate: referenceDate toDate: date];
+    }
+    timePoints[index] = timePoints[index - 1] + 1; // One calendar unit more in the last entry.
+    
+    // Convert all NSDecimalNumbers to double for better performance.
+    totalBalances = malloc(rawCount * sizeof(double));
+    positiveBalances = malloc(rawCount * sizeof(double));
+    negativeBalances = malloc(rawCount * sizeof(double));
+    
+    index = 0;
+    for (NSDecimalNumber *value in balances) {
+        double doubleValue = [value doubleValue];
+        totalBalances[index] = doubleValue;
+        if (doubleValue < 0) {
+            positiveBalances[index] = 0;
+            negativeBalances[index] = doubleValue;
+        } else {
+            positiveBalances[index] = doubleValue;
+            negativeBalances[index] = 0;
+        }
+        index++;
+    }
+    
+    // Now the turnovers.
+    balanceCounts = malloc(rawCount * sizeof(double));
+    index = 0;
+    for (NSDecimalNumber *value in turnovers) {
+        balanceCounts[index++] = [value doubleValue];
+    }
+
+    // The value in the extra field is set to 0. It is used only indirectly.
+    totalBalances[index] = 0;
+    positiveBalances[index] = 0;
+    negativeBalances[index] = 0;
+    balanceCounts[index] = 0;
+    
+    // Sample data for the selection plot. Use only as many values as needed to fill the window.
+    CPTPlotAreaFrame *frame = selectionGraph.plotAreaFrame;
+    selectionSampleCount = frame.bounds.size.width - frame.paddingLeft - frame.paddingRight;
+    int datapointsPerSample = rawCount / selectionSampleCount; // Count only discrete values.
+
+    // Don't sample the data if there aren't at least twice as many values as needed to show.
+    if (datapointsPerSample > 1) {
+        // The computed sample count leaves us with some missing values (discrete math).
+        // The systematic error is rawCount - trunc(rawCount / windowSize) * windowSize and the
+        // maximum systematic error being almost windowSize.
+        // To minimize this error we compute the maximum number of samples that fit into the
+        // full range leaving us with a systematic error of
+        //   rawCount - (rawCount / trunc(rawCount / windowSize)) * windowSize
+        // which is at most the sample size.
+        selectionSampleCount = rawCount / datapointsPerSample;
+        
+        selectionBalances = malloc(selectionSampleCount * sizeof(double));
+        selectionTimePoints = malloc(selectionSampleCount * sizeof(double));
+        
+        // Pick the largest value in the sample window as sampled representation.
+        for (NSUInteger i = 0; i < rawCount; i++) {
+            NSUInteger sampleIndex = i / datapointsPerSample;
+            if (i % datapointsPerSample == 0) {
+                selectionBalances[sampleIndex] = totalBalances[i];
+                selectionTimePoints[sampleIndex] = timePoints[i];
+            } else {
+                if (totalBalances[i] > selectionBalances[sampleIndex]) {
+                    selectionBalances[sampleIndex] = totalBalances[i];
+                    selectionTimePoints[sampleIndex] = timePoints[i];
+                }
+            }
+        }
+    }
     
     [self updateValues];
+
+    [mainGraph reloadData];
+    [turnoversGraph reloadData];
+    [selectionGraph reloadData];
 }
 
 - (void)updateGraphs
@@ -1953,7 +1999,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [self clearGraphs];
     [self reloadData];
     
-    if ([dates count] > 0) {
+    if (rawCount > 0) {
         mainGraph.defaultPlotSpace.allowsUserInteraction = YES;
         turnoversGraph.defaultPlotSpace.allowsUserInteraction = YES;
         selectionGraph.defaultPlotSpace.allowsUserInteraction = YES;
@@ -1989,6 +2035,14 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [self updateSelectionDisplay];
 }
 
+- (void)setCategory:(Category *)newCategory
+{
+    if (mainCategory != newCategory) {
+        mainCategory = newCategory;
+        [self updateGraphs];
+    }
+}
+
 - (void)releaseHelpWindow
 {
     [[helpButton window] removeChildWindow: helpWindow];
@@ -2020,14 +2074,16 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 {
     groupingInterval = [sender intValue];
     
-    NSMutableDictionary* values = [NSMutableDictionary dictionaryWithCapacity: 1];
-    [values setValue: [NSNumber numberWithInt: groupingInterval] forKey: @"grouping"];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject: values forKey: @"categoryAnalysis"];
-    
+    NSMutableDictionary* values = [userDefaults objectForKey: @"categoryAnalysis"];
+    if (values == nil) {
+        values = [NSMutableDictionary dictionaryWithCapacity: 1];
+    }
+    [values setValue: [NSNumber numberWithInt: groupingInterval] forKey: @"grouping"];
+
     [self reloadData];
     
-    if ([dates count] == 0) {
+    if (rawCount == 0) {
         [self clearGraphs];
         maxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(100)];
     } else {

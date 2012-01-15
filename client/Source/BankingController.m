@@ -211,9 +211,8 @@ static BankingController	*con;
     if (self.managedObjectContext) [self publishContext ];
     
     // set toolbar selection state
-    int i;
     NSArray* items = [toolbar items ];
-    for(i = 0; i < [items count ]; i++) {
+    for (NSUInteger i = 0; i < [items count]; i++) {
         NSToolbarItem *item = [items objectAtIndex: i ];
         if([item tag ] == 10) { [toolbar setSelectedItemIdentifier: [item itemIdentifier ] ]; break; }
     }
@@ -340,8 +339,7 @@ static BankingController	*con;
 -(void)updateBankAccounts:(NSArray*)hbciAccounts
 {
     NSError	*error = nil;
-    int		i,j;
-    BOOL	found;
+    BOOL found;
     
     if (hbciAccounts == nil) {
         // collect all accounts of all users
@@ -362,13 +360,13 @@ static BankingController	*con;
     }
     NSMutableArray*	bankAccounts = [NSMutableArray arrayWithArray: tmpAccounts ];
     
-    for(i=0; i < [hbciAccounts count ]; i++) {
+    for (NSUInteger i=0; i < [hbciAccounts count ]; i++) {
         Account* acc = [hbciAccounts objectAtIndex: i ];
         BankAccount *account;
         
         //lookup
         found = NO;
-        for(j=0; j<[bankAccounts count ]; j++) {
+        for (NSUInteger j=0; j<[bankAccounts count ]; j++) {
             account = [bankAccounts objectAtIndex: j ];
             if( [account.bankCode isEqual: acc.bankCode ] &&
                [account.accountNumber isEqual: acc.accountNumber ]) {
@@ -419,8 +417,7 @@ static BankingController	*con;
 
 -(NSIndexPath*)indexPathForCategory: (Category*)cat inArray: (NSArray*)nodes
 {
-    int i;
-    for(i=0; i<[nodes count ]; i++) {
+    for (NSUInteger i=0; i<[nodes count ]; i++) {
         NSTreeNode *node = [nodes objectAtIndex:i ];
         Category *obj = [node representedObject ];
         if(obj == cat) return [NSIndexPath indexPathWithIndex: i ];
@@ -493,13 +490,12 @@ static BankingController	*con;
 
 -(BOOL)cleanupBankNodes
 {
-    int i;
     BOOL flg_changed = NO;
     // remove empty bank nodes
     Category *root = [Category bankRoot ];
     if(root != nil) {
         NSArray *bankNodes = [[root mutableSetValueForKey: @"children" ] allObjects ];
-        for(i=0; i<[bankNodes count ]; i++) {
+        for (NSUInteger i=0; i<[bankNodes count ]; i++) {
             BankAccount *node = [bankNodes objectAtIndex:i ];
             NSMutableSet *childs = [node mutableSetValueForKey: @"children" ];
             if(childs == nil || [childs count ] == 0) {
@@ -536,7 +532,6 @@ static BankingController	*con;
 {
     NSError		*error = nil;
     Category	*catRoot;
-    int			i;
     BOOL		found = NO;
     
     // repair bank root
@@ -548,7 +543,7 @@ static BankingController	*con;
         return;
     }
     
-    for(i=0; i<[cats count ]; i++) {
+    for (NSUInteger i=0; i<[cats count ]; i++) {
         Category *cat = [cats objectAtIndex:i ];
         NSString *n = [cat primitiveValueForKey:@"name"];
         if(![n isEqualToString: @"++bankroot" ]) {
@@ -566,7 +561,7 @@ static BankingController	*con;
         return;
     }
     
-    for(i=0; i<[cats count ]; i++) {
+    for (NSUInteger i = 0; i < [cats count]; i++) {
         Category *cat = [cats objectAtIndex:i ];
         NSString *n = [cat primitiveValueForKey:@"name"];
         if([n isEqualToString: @"++catroot" ] ||
@@ -589,7 +584,7 @@ static BankingController	*con;
     }
     
     // reassign categories
-    for(i=0; i<[cats count ]; i++) {
+    for (NSUInteger i = 0; i < [cats count]; i++) {
         Category *cat = [cats objectAtIndex:i ];
         if(cat == catRoot) continue;
         if([cat valueForKey: @"parent" ] == nil) [cat setValue: catRoot forKey: @"parent" ];
@@ -644,7 +639,6 @@ static BankingController	*con;
 -(void)updateBalances
 {
     NSError *error = nil;
-    int     i;
     
     NSFetchRequest *request = [model fetchRequestTemplateForName:@"getRootNodes"];
     NSArray *cats = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -653,7 +647,7 @@ static BankingController	*con;
         [alert runModal];
         return;
     }
-    for(i=0; i<[cats count ]; i++) {
+    for (NSUInteger i = 0; i < [cats count]; i++) {
         Category* cat = [cats objectAtIndex: i ];
         if([cat isBankingRoot ] == NO) [cat updateInvalidBalances ];
         [cat rollup ];
@@ -730,10 +724,10 @@ static BankingController	*con;
     if([selectedAccounts count ] == 0) return;
     
     // check if at least one Account is assigned to a user
-    int nInactive = 0;
+    NSUInteger nInactive = 0;
     BankAccount *account;
-    for(account in selectedAccounts) if(account.userId == nil) nInactive++;
-    if(nInactive == [selectedAccounts count ]) {
+    for (account in selectedAccounts) if(account.userId == nil) nInactive++;
+    if (nInactive == [selectedAccounts count ]) {
         NSRunAlertPanel(NSLocalizedString(@"AP87", @""), 
                         NSLocalizedString(@"AP88", @""), 
                         NSLocalizedString(@"ok", @"Ok"),
@@ -820,8 +814,8 @@ static BankingController	*con;
     BOOL check = [defaults boolForKey: @"manualTransactionCheck" ];
     
     if((check || isImport) && noStatements == FALSE) {
-        BSSelectWindowController *con = [[BSSelectWindowController alloc ] initWithResults: resultList ];
-        [con showWindow: self ];
+        BSSelectWindowController *selectWindowController = [[BSSelectWindowController alloc] initWithResults: resultList];
+        [selectWindowController showWindow: self ];
     } else {
         for(result in resultList) {
             count += [result.account updateFromQueryResult: result ];
@@ -856,7 +850,7 @@ static BankingController	*con;
         NSDate *maxDate = nil;
         for(result in resultList) {
             NSDate *lDate = result.account.latestTransferDate;
-            if(maxDate && [maxDate compare: lDate ] == NSOrderedAscending || maxDate == nil) maxDate = lDate;
+            if (((maxDate != nil) && ([maxDate compare: lDate ] == NSOrderedAscending)) || (maxDate == nil)) maxDate = lDate;
         }
         if(maxDate) [timeSlicer stepIn: [ShortDate dateWithDate: maxDate ] ];
         
@@ -943,7 +937,7 @@ static BankingController	*con;
 
     NSRect frame = [[bankUserController window] frame];
     frame = NSInsetRect(frame, 0.5 * frame.size.width, 0.5 * frame.size.height);
-    [[bankUserController window] zoomInFromRect: frame withFade: NO];
+    [[bankUserController window] zoomInFromRect: frame withFade: NO makeKey: YES];
 }
 
 -(IBAction)editPreferences:(id)sender
@@ -993,10 +987,10 @@ static BankingController	*con;
         return;
     }
     
-    AccountDefController *con = [[AccountDefController alloc ] init ];
-    if(bankCode) [con setBankCode: bankCode name: [cat valueForKey: @"bankName" ] ];
+    AccountDefController *defController = [[AccountDefController alloc ] init ];
+    if (bankCode) [defController setBankCode: bankCode name: [cat valueForKey: @"bankName"]];
     
-    int res = [NSApp runModalForWindow: [con window]];
+    int res = [NSApp runModalForWindow: [defController window]];
     if(res) {
         // account was created
         NSError *error = nil;
@@ -1019,8 +1013,8 @@ static BankingController	*con;
         return;
     }
     
-    AccountChangeController *con = [[AccountChangeController alloc ] initWithAccount: (BankAccount*)cat ];
-    int res = [NSApp runModalForWindow: [con window]];
+    AccountChangeController *changeController = [[AccountChangeController alloc] initWithAccount: (BankAccount*)cat];
+    int res = [NSApp runModalForWindow: [changeController window]];
     if(res) {
         statementsListViewHost.indicatorColor = [cat categoryColor];
         
@@ -1071,17 +1065,17 @@ static BankingController	*con;
         }
         
         if (hasAssignment) {
-            int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @""),
-                                              NSLocalizedString(@"AP29", @""),
-                                              NSLocalizedString(@"yes", @""),
-                                              NSLocalizedString(@"no", @""),
-                                              NSLocalizedString(@"cancel", @""),
-                                              account.accountNumber
-                                              );
-            if (res == NSAlertDefaultReturn) {
+            int alertResult = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @""),
+                                                      NSLocalizedString(@"AP29", @""),
+                                                      NSLocalizedString(@"yes", @""),
+                                                      NSLocalizedString(@"no", @""),
+                                                      NSLocalizedString(@"cancel", @""),
+                                                      account.accountNumber
+                                                      );
+            if (alertResult == NSAlertDefaultReturn) {
                 keepAssignedStatements = YES;
             } else {
-                if (res == NSAlertOtherReturn) return;
+                if (alertResult == NSAlertOtherReturn) return;
                 else keepAssignedStatements = NO;
             }
         }
@@ -1382,8 +1376,10 @@ static BankingController	*con;
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
     // check if there are unsent transfers
-    BOOL close = [self checkForUnsentTransfers ];
-    if (close == NO) return NSTerminateCancel;
+    BOOL canClose = [self checkForUnsentTransfers];
+    if (!canClose) {
+        return NSTerminateCancel;
+    }
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
     BOOL hideDonationMessage = [defaults boolForKey: @"DonationPopup030" ];
@@ -1431,11 +1427,11 @@ static BankingController	*con;
     
     // if application shall restart, launch new task
     if(restart) {
-        NSProcessInfo *pi = [NSProcessInfo processInfo ];
-        NSArray *args = [pi arguments ];
+        NSProcessInfo *info = [NSProcessInfo processInfo];
+        NSArray *args = [info arguments];
         NSString *path = [args objectAtIndex:0 ];
         if(path) {
-            int pid = [pi processIdentifier ];
+            int pid = [info processIdentifier ];
             [NSTask launchedTaskWithLaunchPath:path arguments:[NSArray arrayWithObjects:path, [NSString stringWithFormat:@"%d", pid], nil]];
         }
     }
@@ -1541,10 +1537,9 @@ static BankingController	*con;
 {
     // Optional delegate method: Returns the identifiers of the subset of
     // toolbar items that are selectable. In our case, all of them
-    int i;
     NSArray* items = [tb items ];
     NSMutableArray* result = [NSMutableArray arrayWithCapacity: 5 ];
-    for(i = 0; i < [items count ]; i++) {
+    for (NSUInteger i = 0; i < [items count ]; i++) {
         NSToolbarItem *item = [items objectAtIndex: i ];
         if([item tag ] > 0) [result addObject: [item itemIdentifier] ];
     }
@@ -1749,11 +1744,9 @@ static BankingController	*con;
     statementsListViewHost.indicatorColor = [cat categoryColor];
     
     // Update graph panes.
-/*    
     categoryAnalysisController.category = cat;
-    [categoryAnalysisController updateGraphs];
     categoryReportingController.category = cat;
-*/    
+
     [self updateStatusbar];
 }
 
@@ -1928,7 +1921,6 @@ static BankingController	*con;
 -(void)updateNotAssignedCategory
 {
     NSError *error = nil;
-    int		i;
     
     // fetch all bank statements
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:self.managedObjectContext];
@@ -1940,7 +1932,7 @@ static BankingController	*con;
         [alert runModal];
         return;
     }
-    for(i=0; i<[stats count ]; i++) {
+    for (NSUInteger i = 0; i < [stats count]; i++) {
         BankStatement *stat = [stats objectAtIndex: i ];
         [stat updateAssigned ];
     }
@@ -2185,8 +2177,8 @@ static BankingController	*con;
         
         // rebuild saldos - only for manual accounts
         if (account.userId == nil) {
-            NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date > %@)", account, stat.date  ];
-            [request setPredicate:predicate];
+            NSPredicate *saldoPredicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date > %@)", account, stat.date  ];
+            [request setPredicate: saldoPredicate];
             stats = [self.managedObjectContext executeFetchRequest:request error:&error];
             if(error) {
                 NSAlert *alert = [NSAlert alertWithError:error];
@@ -2225,9 +2217,9 @@ static BankingController	*con;
     if (cat == nil) return;
     if (cat.accountNumber == nil) return;
     
-    BankStatementController *con = [[BankStatementController alloc ] initWithAccount: (BankAccount*)cat statement: nil ];
+    BankStatementController *statementController = [[BankStatementController alloc ] initWithAccount: (BankAccount*)cat statement: nil ];
     
-    int res = [NSApp runModalForWindow: [con window]];
+    int res = [NSApp runModalForWindow: [statementController window]];
     if(res) {
         [ transactionController rearrangeObjects ];
         
@@ -2251,8 +2243,8 @@ static BankingController	*con;
         acc = (BankAccount*)cat;
     }
     
-    PurposeSplitController *con = [[PurposeSplitController alloc ] initWithAccount:(BankAccount*)cat ];
-    [NSApp runModalForWindow: [con window ] ];
+    PurposeSplitController *splitController = [[PurposeSplitController alloc ] initWithAccount:(BankAccount*)cat ];
+    [NSApp runModalForWindow: [splitController window]];
 }
 
 
@@ -2579,7 +2571,17 @@ static BankingController	*con;
                                       ]];
         [copyrightText setStringValue: [mainBundle objectForInfoDictionaryKey: @"NSHumanReadableCopyright"]];
     }
-    [aboutWindow orderFront: self];
+    
+    NSRect frame = [aboutWindow frame];
+    frame = NSInsetRect(frame, 0.5 * frame.size.width, 0.5 * frame.size.height);
+    [aboutWindow zoomInFromRect: frame withFade: NO makeKey: NO];
+}
+
+- (IBAction)closeAboutPanel:(id)sender
+{
+    NSRect frame = [aboutWindow frame];
+    frame = NSInsetRect(frame, 0.5 * frame.size.width, 0.5 * frame.size.height);
+    [aboutWindow zoomOffToRect: frame withFade: NO];
 }
 
 -(void)migrate
@@ -2609,7 +2611,7 @@ static BankingController	*con;
                 NSEnumerator *enumerator = [[transactionController selectedObjects] objectEnumerator];
                 StatCatAssignment* stat = nil;
                 NSDecimalNumber* firstValue = nil;
-                while (stat = [enumerator nextObject]) {
+                while ((stat = [enumerator nextObject]) != nil) {
                     if (firstValue == nil) {
                         firstValue = stat.statement.value;
                     }

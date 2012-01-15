@@ -26,7 +26,7 @@
 		NSMutableSet* stats = [statement mutableSetValueForKey: @"assignments" ];
 		NSEnumerator *iter = [stats objectEnumerator];
 		NSManagedObject *stat;
-		while (stat = [iter nextObject]) {
+		while ((stat = [iter nextObject]) != nil) {
 			NSManagedObject *cat = [stat valueForKey: @"category" ];
 			if ([[cat valueForKey:@"isBankAcc" ] boolValue] == NO && ![[cat valueForKey:@"name" ] isEqualToString: @"++nassroot" ]) {
 				[statement setValue:[NSDecimalNumber zero] forKey: @"nassValue" ];

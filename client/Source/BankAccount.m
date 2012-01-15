@@ -115,8 +115,7 @@
 			} else {
 				// find statement in old statements
 				BOOL isMatched = NO;
-				int  idx;
-				for(idx = 0; idx < [oldStats count ]; idx++) {
+				for (NSUInteger idx = 0; idx < [oldStats count ]; idx++) {
 					BankStatement *oldStat = [oldStats objectAtIndex:idx ];
 					if([stat matchesAndRepair: oldStat ]) {
 						isMatched = YES;

@@ -137,8 +137,7 @@
 	}
 	
 	NSMutableArray *statStrings = [NSMutableArray arrayWithCapacity:100 ];
-	int i;
-	for(i = ignoreLines; i<[lines count ]; i++) {
+	for (NSUInteger i = ignoreLines; i < [lines count]; i++) {
 		[statStrings addObject:[lines objectAtIndex:i ] ];
 	}
 	
@@ -175,7 +174,7 @@
 	NSMutableArray *statements = [NSMutableArray arrayWithCapacity:100 ];
 	for(NSString *statString in statStrings) {
 		NSArray * fields = [statString componentsSeparatedByString:sep ];
-		if ([fields count ] != [settings.fields count ]) {
+		if ([fields count] < [settings.fields count]) {
 			[log addMessage:[NSString stringWithFormat:@"Zeile übersprungen: %@", statString ] withLevel: LogLevel_Warning ];
 			continue;
 		}
@@ -193,7 +192,8 @@
 		
 		id value = nil;
 		
-		for(i=0; i<[fields count ]; i++) {
+        // Go through all defined fields. Ignore anything that goes beyond those defined.
+		for (NSUInteger i = 0; i < [settings.fields count]; i++) {
 			
 			NSString *fieldName = [settings.fields objectAtIndex:i ];
 			NSString *valueString = [fields objectAtIndex:i ];

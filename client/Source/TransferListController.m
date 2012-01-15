@@ -68,21 +68,20 @@
 
 -(IBAction)deleteTransfers: (id)sender
 {
-	int		i;
 	NSError *error = nil;
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	
 	NSArray* sel = [transferController selectedObjects ];
 	if(sel == nil || [sel count ] == 0) return;
 	
-	i = NSRunAlertPanel(NSLocalizedString(@"AP14", @"Delete transfers"), 
-						NSLocalizedString(@"AP15", @"Entries will be deleted for good. Continue anyway?"),
-						NSLocalizedString(@"no", @"No"), 
-						NSLocalizedString(@"yes", @"Yes"), 
-						nil);
-	if(i != NSAlertAlternateReturn) return;
+	int res = NSRunAlertPanel(NSLocalizedString(@"AP14", @"Delete transfers"), 
+                              NSLocalizedString(@"AP15", @"Entries will be deleted for good. Continue anyway?"),
+                              NSLocalizedString(@"no", @"No"), 
+                              NSLocalizedString(@"yes", @"Yes"), 
+                              nil);
+	if (res != NSAlertAlternateReturn) return;
 	
-	for(i=0; i < [sel count ]; i++) {
+	for (NSUInteger i = 0; i < [sel count]; i++) {
 		Transfer* transfer = [sel objectAtIndex: i ];
 		[context deleteObject: transfer ];
 	}

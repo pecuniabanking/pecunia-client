@@ -19,6 +19,7 @@
 	__cpt_weak CPTGraph *graph;
 	CGPathRef outerBorderPath;
 	CGPathRef innerBorderPath;
+	id<NSCopying, NSCoding, NSObject> identifier;
 }
 
 /// @name Graph
@@ -48,6 +49,11 @@
 @property (nonatomic, readwrite, assign) CGPathRef innerBorderPath;
 @property (nonatomic, readonly, assign) CGPathRef maskingPath;
 @property (nonatomic, readonly, assign) CGPathRef sublayerMaskingPath;
+///	@}
+
+/// @name Identification
+/// @{
+@property (nonatomic, readwrite, copy) id<NSCopying, NSCoding, NSObject> identifier;
 ///	@}
 
 /// @name Layout
@@ -80,11 +86,14 @@
 -(void)sublayerMarginLeft:(CGFloat *)left top:(CGFloat *)top right:(CGFloat *)right bottom:(CGFloat *)bottom;
 ///	@}
 
+/// @name Information
+/// @{
 -(void)logLayers;
+///	@}
 
 @end
 
-/**	@cond */
+///	@cond
 // for MacOS 10.6 SDK compatibility
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 #else
@@ -97,4 +106,4 @@
 #endif
 #endif
 
-/**	@endcond */
+///	@endcond

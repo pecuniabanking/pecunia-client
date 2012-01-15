@@ -35,13 +35,13 @@ static NSMutableArray* defaultCategoryColors;
         if (([lines count] > 3) && [line isEqualToString: @"ACF 1.0"]) {
             
             // Scan for data start.
-            while (line = [enumerator nextObject]) {
+            while ((line = [enumerator nextObject]) != nil) {
                 if ([line isEqualToString: @"Data:"])
                     break;
             }
             
             // Read color values.
-            while (line = [enumerator nextObject]) {
+            while ((line = [enumerator nextObject]) != nil) {
                 NSArray* components = [line componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
                 line = [enumerator nextObject];
                 if (line == nil || [components count] < 3) {

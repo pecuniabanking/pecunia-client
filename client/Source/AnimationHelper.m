@@ -209,7 +209,7 @@
     [NSAnimationContext endGrouping];
 }
 
-- (void)zoomInFromRect: (NSRect)startRect withFade: (BOOL)fade
+- (void)zoomInFromRect: (NSRect)startRect withFade: (BOOL)fade makeKey: (BOOL)makeKey
 {
     if ([self isVisible]) {
         return;
@@ -225,7 +225,12 @@
     [zoomWindow setFrame: overshotFrame display: YES animate: YES];
     zoomWindow.animationTimeMultiplier = 0.25;
     [zoomWindow setFrame: frame display: YES animate: YES];
-    [self makeKeyAndOrderFront: self];
+    
+    if (makeKey) {
+        [self makeKeyAndOrderFront: self];
+    } else {
+        [self orderFront: self];
+    }
     [zoomWindow close];
 }
 

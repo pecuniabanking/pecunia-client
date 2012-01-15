@@ -62,14 +62,25 @@
     CPTLimitBand* selectionBand;
     
     Category* mainCategory;
-	NSArray* dates;
-    NSArray* balances;
-    NSArray* balanceCounts;               // Number of balances per unit (day, week etc.).
+
+	ShortDate *referenceDate;             // The date at which the time points start.
+
+    NSUInteger rawCount;                  // Raw number of values we have.
+    NSUInteger selectionSampleCount;      // Number of values we use for the selection graph.
+    
+    double *timePoints;                   // Contains for each data point the relative distance in date units from the reference day.
+    double *selectionTimePoints;          // Down sampled time points for the selection graph (if sampling is active at all).
+    double *totalBalances;                // A balance value for each time point (full set).
+
+    double *selectionBalances;            // Sampled balance values.
+    double *positiveBalances;             // A balance value for each time point (positive main plot).
+    double *negativeBalances;             // A balance value for each time point (negative main plot).
+    double *balanceCounts;                // The number balances per unit for each time point.
     NSNumberFormatter* infoTextFormatter;
 
 	ShortDate* fromDate;
 	ShortDate* toDate;
-    ShortDate* lastInfoDate;              // The date for which the info text was last updated.
+    double lastInfoTimePoint;             // The time point for which the info text was last updated.
     
     CGFloat barWidth;
     NSDecimalNumber* minValue;            // The minimum value of the currently selected category.
@@ -85,7 +96,6 @@
 @property (nonatomic, readwrite) CGFloat barWidth;
 @property (nonatomic, readwrite) GroupingInterval groupingInterval;
 
-- (void)updateGraphs;
 - (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
 
 - (void)updateTrackingAreas;

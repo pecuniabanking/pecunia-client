@@ -74,7 +74,7 @@
 
 -(IBAction)save:(id)sender
 {
-	int i, idx;
+	int idx;
 	[settingsController commitEditing ];
 
 	NSString *fileName = [NSString stringWithFormat:@"%@/%@.plist", [MOAssistant assistant ].importerDir, settings.name ];
@@ -101,7 +101,7 @@
 	NSTableColumn *col = [columns objectAtIndex:0 ];
 	NSComboBoxCell *cell = [col dataCell ];
 	
-	for(i=0; i<[content count ]; i++) {
+	for (NSUInteger i = 0; i < [content count]; i++) {
 		NSDictionary	*dict = [content objectAtIndex:i ];
 		idx = [cell indexOfItemWithObjectValue: [dict valueForKey: @"fieldName" ] ];
 		if(idx >=0) [fields addObject: [importFields objectAtIndex:idx ] ];

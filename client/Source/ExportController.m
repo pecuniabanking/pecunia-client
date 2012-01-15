@@ -96,14 +96,13 @@ static ExportController *exportController = nil;
 		ShortDate *to_Date = [ShortDate dateWithDate: toDate ];
 		
 		// addObjectsFromArray
-		Category			*cat;
 		NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:NO] autorelease];
-		for(cat in cats) {
-			NSArray* stats = [cat statementsFrom: from_Date to: to_Date withChildren: withChildren ];
-			stats = [stats sortedArrayUsingDescriptors:[NSArray arrayWithObject:sd ] ];
-			for(StatCatAssignment *stat in stats) {
-				NSString* s = [stat stringForFields: fields usingDateFormatter: dateFormatter ];
-				[res appendString: s ];
+		for (Category *category in cats) {
+			NSArray* stats = [category statementsFrom: from_Date to: to_Date withChildren: withChildren];
+			stats = [stats sortedArrayUsingDescriptors: [NSArray arrayWithObject: sd]];
+			for (StatCatAssignment *stat in stats) {
+				NSString* s = [stat stringForFields: fields usingDateFormatter: dateFormatter];
+				[res appendString: s];
 			}
 		}
 		

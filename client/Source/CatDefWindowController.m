@@ -325,7 +325,7 @@
 -(void)calculateCatAssignPredicate
 {
 	NSPredicate* pred = nil;
-	NSPredicate* compound = nil;
+	NSPredicate* compoundPredicate = nil;
 	
 	// first add selected category
 	Category* cat = [self currentSelection ];
@@ -351,16 +351,16 @@
 		[orPreds addObject: pred ];
 	}
 	
-	compound = [NSCompoundPredicate orPredicateWithSubpredicates: orPreds ];
+	compoundPredicate = [NSCompoundPredicate orPredicateWithSubpredicates: orPreds ];
 	pred = [timeSlicer predicateForField: @"date" ];
-    compound = [NSCompoundPredicate andPredicateWithSubpredicates: [NSArray arrayWithObjects: compound, pred, nil ] ];
+    compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: [NSArray arrayWithObjects: compoundPredicate, pred, nil ] ];
 	
 	
 	// update classification Context
 	if(cat == [Category nassRoot ]) [caClassification setCategory: nil]; else [caClassification setCategory: cat];
 	
 	// set new fetch predicate
-	if(compound) [assignPreviewController setFilterPredicate: compound ];
+	if(compoundPredicate) [assignPreviewController setFilterPredicate: compoundPredicate ];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
@@ -397,11 +397,10 @@
 	if(cat == nil) return;
 	
 	if(cat == [Category nassRoot ]) {
-		int i;
 		NSArray *subviews = [rightSplitContent subviews ];
 		NSRect frame = [rightSplitContent frame ];
 		frame.origin.x = 0;
-		for(i=0; i<[subviews count ]; i++) {
+		for (NSUInteger i = 0; i < [subviews count]; i++) {
 			NSView *cView = [subviews objectAtIndex:i ];
 			if([cView tag ] == 1) [cView setHidden: YES ];
 		}
@@ -411,12 +410,11 @@
 		notAssignedSelected = YES;
 	} else {
 		if(notAssignedSelected) {
-			int i;
 			NSArray *subviews = [rightSplitContent subviews ];
 			NSRect frame = [rightSplitContent frame ];
 			frame.origin.x = 0; frame.origin.y = 20;
 			frame.size.height -= 306;
-			for(i=0; i<[subviews count ]; i++) {
+			for (NSUInteger i = 0; i < [subviews count]; i++) {
 				NSView *cView = [subviews objectAtIndex:i ];
 				if([cView tag ] == 1) [cView setHidden: NO ];
 			}
@@ -568,7 +566,6 @@
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id <NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)childIndex 
 {
-	int i;
 	NSError *error;
 	NSManagedObjectContext	*context = [[MOAssistant assistant ] context ];
 	Category *cat = (Category*)[item representedObject ];
@@ -580,7 +577,7 @@
 	if([type isEqual: BankStatementDataType ]) {
 		NSDragOperation mask = [info draggingSourceOperationMask];
 		NSArray *uris = [NSKeyedUnarchiver unarchiveObjectWithData: data ];
-		for(i=0; i<[uris count ]; i++) {
+		for (NSUInteger i = 0; i < [uris count]; i++) {
 			NSURL *uri = [uris objectAtIndex: i ];
 			NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
 			if(moID == nil) continue;

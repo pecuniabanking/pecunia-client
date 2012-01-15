@@ -309,26 +309,26 @@ NSString *hbciVersionFromString(NSString* s)
 	User *user = [self selectedUser];
 	if (user == nil) return;
 	LogController *logController = [LogController logController];
-	MessageLog *log = [MessageLog log];
+	MessageLog *messageLog = [MessageLog log];
 //	[[logController window] makeKeyAndOrderFront:self];
 	[logController showWindow:self];
 	[logController setLogLevel:LogLevel_Info];
 	BankParameter *bp = [[HBCIClient hbciClient] getBankParameterForUser: user];
 	if (bp == nil) {
-		[log addMessage:@"Bankparameter konnten nicht ermittelt werden" withLevel:LogLevel_Error];
+		[messageLog addMessage:@"Bankparameter konnten nicht ermittelt werden" withLevel:LogLevel_Error];
 		return;
 	}
-	[log addMessage:@"Bankparameterdaten:" withLevel:LogLevel_Notice];
+	[messageLog addMessage:@"Bankparameterdaten:" withLevel:LogLevel_Notice];
 	NSArray *keys = [bp.bpd  allKeys];
 	for(NSString *key in keys) {
 		NSString *s = [NSString stringWithFormat:@"%@ = %@", key, [bp.bpd valueForKey:key]];
-		[log addMessage: s withLevel:LogLevel_Info];
+		[messageLog addMessage: s withLevel:LogLevel_Info];
 	}
-	[log addMessage:@"Anwenderparameterdaten:" withLevel:LogLevel_Notice];
+	[messageLog addMessage:@"Anwenderparameterdaten:" withLevel:LogLevel_Notice];
 	keys = [bp.upd  allKeys];
 	for(NSString *key in keys) {
 		NSString *s = [NSString stringWithFormat:@"%@ = %@", key, [bp.upd valueForKey:key]];
-		[log addMessage: s withLevel:LogLevel_Info];
+		[messageLog addMessage: s withLevel:LogLevel_Info];
 	}
 }
 

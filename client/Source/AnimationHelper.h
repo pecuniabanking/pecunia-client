@@ -26,7 +26,7 @@
 @interface NSWindow (PecuniaAdditions)
 
 - (void)fadeIn;
-- (void)zoomInFromRect: (NSRect)startRect withFade: (BOOL)fade;
+- (void)zoomInFromRect: (NSRect)startRect withFade: (BOOL)fade makeKey: (BOOL)makeKey;
 - (void)fadeOut;
 - (void)zoomOffToRect: (NSRect)endRect withFade: (BOOL)fade;
 

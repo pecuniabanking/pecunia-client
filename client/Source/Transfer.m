@@ -55,7 +55,7 @@
 -(void) copyFromTemplate:(TransferTemplate*)t withLimits:(TransactionLimits*)limits
 {
 	NSString *s;
-	int maxLen = [limits maxLenRemoteName ] * [limits maxLinesRemoteName ];
+	NSUInteger maxLen = [limits maxLenRemoteName ] * [limits maxLinesRemoteName ];
 	s = t.remoteName;
 	if ([s length ] > maxLen) s = [s substringToIndex:maxLen ];
 	self.remoteName = s;

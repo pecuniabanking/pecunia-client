@@ -46,7 +46,6 @@ BOOL	updateSent = NO;
 -(void)updateInvalidBalances
 {
     NSArray *stats;
-    int     i;
     NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
     if([childs count ] > 0) {
         // first handle children
@@ -65,7 +64,7 @@ BOOL	updateSent = NO;
         else stats = [self statementsFrom: catFromDate to: catToDate withChildren: NO ];
         
         StatCatAssignment *stat = nil;
-        for(i=0; i<[stats count ]; i++) {
+        for(NSUInteger i = 0; i < [stats count]; i++) {
             stat = [stats objectAtIndex:i ];
             balance = [balance decimalNumberByAdding: stat.value ];
         }
@@ -112,7 +111,9 @@ BOOL	updateSent = NO;
     NSSet *childs = [self allChildren ];
     NSEnumerator *enumerator = [childs objectEnumerator];
     Category *cat;
-    while (cat = [enumerator nextObject]) [stats unionSet: [cat mutableSetValueForKey: @"assignments" ] ];
+    while ((cat = [enumerator nextObject]) != nil) {
+        [stats unionSet: [cat mutableSetValueForKey: @"assignments"]];
+    }
     return stats;
 }
 
@@ -386,7 +387,6 @@ BOOL	updateSent = NO;
                      balanceCounts: (NSArray**)counts
                       withGrouping: (GroupingInterval)interval
 {
-    int i;
     NSArray* stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
     NSArray* sortedStats = [stats sortedArrayUsingSelector: @selector(compareDate:)];
     
@@ -399,8 +399,7 @@ BOOL	updateSent = NO;
         ShortDate* lastDate = nil;
         int balanceCount = 1;
         NSDecimalNumber* lastSaldo;
-        for (i = 0; i < [stats count]; i++)
-        {
+        for (NSUInteger i = 0; i < [stats count]; i++) {
             StatCatAssignment* assignment = [sortedStats objectAtIndex: i];
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
             
@@ -525,7 +524,6 @@ BOOL	updateSent = NO;
                       balanceCounts: (NSArray**)counts
                        withGrouping: (GroupingInterval)interval
 {
-    int i;
     NSArray* stats = [[self allStatements] allObjects];
     NSArray* sortedStats = [stats sortedArrayUsingSelector: @selector(compareDate:)];
     
@@ -538,8 +536,7 @@ BOOL	updateSent = NO;
         ShortDate* lastDate = nil;
         int balanceCount = 0;
         NSDecimalNumber* currentValue = [NSDecimalNumber zero];
-        for (i = 0; i < [sortedStats count]; i++)
-        {
+        for (NSUInteger i = 0; i < [sortedStats count]; i++) {
             StatCatAssignment* assignment = [sortedStats objectAtIndex: i];
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
             

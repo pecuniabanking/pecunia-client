@@ -68,7 +68,7 @@
 	
 	// if assignment already done, add value
 	NSEnumerator *iter = [stats objectEnumerator];
-	while (stat = [iter nextObject]) {
+	while ((stat = [iter nextObject]) != nil) {
 		if(stat.category == tcat) {
 			stat.value = [stat.value decimalNumberByAdding: self.value ];
 			// value must never be higher than statement's value
