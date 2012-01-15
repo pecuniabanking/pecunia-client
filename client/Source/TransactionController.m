@@ -61,10 +61,10 @@
 		[internalAccounts release ];
 		internalAccounts = [[[account siblings ] allObjects ] retain ];
 		[accountBox removeAllItems ];
-		for (NSUInteger i = 0; i < [internalAccounts count]; i++) {
-			[accountBox addItemWithObjectValue: [[internalAccounts objectAtIndex: i ] valueForKey: @"name" ] ];
+		for (BankAccount *acc in internalAccounts) {
+			[accountBox addItemWithObjectValue: acc.name ];
 		}
-		NSString* selectedAccount = [transfer valueForKey: @"remoteAccount" ];
+		NSString* selectedAccount = transfer.remoteAccount;
 		if(selectedAccount != nil) [accountBox selectItemWithObjectValue: selectedAccount ];
 	}
 	

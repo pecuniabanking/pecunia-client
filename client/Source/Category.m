@@ -64,8 +64,7 @@ BOOL	updateSent = NO;
         else stats = [self statementsFrom: catFromDate to: catToDate withChildren: NO ];
         
         StatCatAssignment *stat = nil;
-        for(NSUInteger i = 0; i < [stats count]; i++) {
-            stat = [stats objectAtIndex:i ];
+        for(stat in stats) {
             balance = [balance decimalNumberByAdding: stat.value ];
         }
         if(stat) {
@@ -536,8 +535,7 @@ BOOL	updateSent = NO;
         ShortDate* lastDate = nil;
         int balanceCount = 0;
         NSDecimalNumber* currentValue = [NSDecimalNumber zero];
-        for (NSUInteger i = 0; i < [sortedStats count]; i++) {
-            StatCatAssignment* assignment = [sortedStats objectAtIndex: i];
+        for (StatCatAssignment* assignment in sortedStats) {
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
             
             switch (interval) {

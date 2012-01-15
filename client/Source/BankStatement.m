@@ -137,8 +137,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	}	
 */	
 	//assign categories
-	for (NSUInteger i = 0; i < [catCache count ]; i++) {
-		Category* cat = [catCache objectAtIndex: i ];
+	for (Category* cat in catCache) {
 		NSPredicate* pred = [NSPredicate predicateWithFormat: cat.rule ];
 		if([pred evaluateWithObject: stat ]) {
 			[self assignToCategory: cat ];
@@ -363,8 +362,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	NSString *s;
 	NSObject *obj;
 	
-	for (NSUInteger i = 0; i < [fields count ]; i++) {
-		NSString* field = [fields objectAtIndex: i ];
+	for (NSString* field in fields) {
 		obj = [self valueForKey: field ];
 		if([field isEqualToString: @"valutaDate" ] || [field isEqualToString: @"date" ]) s = [dateFormatter stringFromDate: (NSDate*)obj ];
 		else if( [field isEqualToString: @"value" ] )  { 

@@ -81,8 +81,7 @@
                               nil);
 	if (res != NSAlertAlternateReturn) return;
 	
-	for (NSUInteger i = 0; i < [sel count]; i++) {
-		Transfer* transfer = [sel objectAtIndex: i ];
+	for (Transfer* transfer in sel) {
 		[context deleteObject: transfer ];
 	}
 	// save updates

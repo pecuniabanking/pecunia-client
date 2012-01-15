@@ -400,8 +400,7 @@
 		NSArray *subviews = [rightSplitContent subviews ];
 		NSRect frame = [rightSplitContent frame ];
 		frame.origin.x = 0;
-		for (NSUInteger i = 0; i < [subviews count]; i++) {
-			NSView *cView = [subviews objectAtIndex:i ];
+		for (NSView *cView in subviews) {
 			if([cView tag ] == 1) [cView setHidden: YES ];
 		}
 		[[[predicateEditor superview] superview ] setHidden: YES ];
@@ -414,8 +413,7 @@
 			NSRect frame = [rightSplitContent frame ];
 			frame.origin.x = 0; frame.origin.y = 20;
 			frame.size.height -= 306;
-			for (NSUInteger i = 0; i < [subviews count]; i++) {
-				NSView *cView = [subviews objectAtIndex:i ];
+			for (NSView *cView in subviews) {
 				if([cView tag ] == 1) [cView setHidden: NO ];
 			}
 			[[[predicateEditor superview] superview ] setHidden: NO ];
@@ -577,8 +575,7 @@
 	if([type isEqual: BankStatementDataType ]) {
 		NSDragOperation mask = [info draggingSourceOperationMask];
 		NSArray *uris = [NSKeyedUnarchiver unarchiveObjectWithData: data ];
-		for (NSUInteger i = 0; i < [uris count]; i++) {
-			NSURL *uri = [uris objectAtIndex: i ];
+		for (NSURL *uri in uris) {
 			NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
 			if(moID == nil) continue;
 			StatCatAssignment *stat = (StatCatAssignment*)[context objectWithID: moID];

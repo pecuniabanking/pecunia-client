@@ -101,8 +101,7 @@
 	NSTableColumn *col = [columns objectAtIndex:0 ];
 	NSComboBoxCell *cell = [col dataCell ];
 	
-	for (NSUInteger i = 0; i < [content count]; i++) {
-		NSDictionary	*dict = [content objectAtIndex:i ];
+	for (NSDictionary *dict in content) {
 		idx = [cell indexOfItemWithObjectValue: [dict valueForKey: @"fieldName" ] ];
 		if(idx >=0) [fields addObject: [importFields objectAtIndex:idx ] ];
 	}

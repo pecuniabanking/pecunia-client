@@ -212,8 +212,7 @@ static BankingController	*con;
     
     // set toolbar selection state
     NSArray* items = [toolbar items ];
-    for (NSUInteger i = 0; i < [items count]; i++) {
-        NSToolbarItem *item = [items objectAtIndex: i ];
+    for (NSToolbarItem *item in items) {
         if([item tag ] == 10) { [toolbar setSelectedItemIdentifier: [item itemIdentifier ] ]; break; }
     }
     
@@ -289,13 +288,6 @@ static BankingController	*con;
     // repair Category Root
     [self repairCategories ];
     
-    // update Bank Accounts if needed
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-    BOOL accUpdated = [defaults boolForKey:@"accountsUpdated" ];
-    if (accUpdated == NO) {
-        [self updateBankAccounts:nil ];
-    }
-    
     [self setHBCIAccounts ];
     
     [self updateBalances ];
@@ -360,14 +352,12 @@ static BankingController	*con;
     }
     NSMutableArray*	bankAccounts = [NSMutableArray arrayWithArray: tmpAccounts ];
     
-    for (NSUInteger i=0; i < [hbciAccounts count ]; i++) {
-        Account* acc = [hbciAccounts objectAtIndex: i ];
+    for (Account *acc in hbciAccounts) {
         BankAccount *account;
         
         //lookup
         found = NO;
-        for (NSUInteger j=0; j<[bankAccounts count ]; j++) {
-            account = [bankAccounts objectAtIndex: j ];
+        for (account in bankAccounts) {
             if( [account.bankCode isEqual: acc.bankCode ] &&
                [account.accountNumber isEqual: acc.accountNumber ]) {
                 found = YES;
@@ -410,23 +400,21 @@ static BankingController	*con;
         [alert runModal];
         return;
     }
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-    [defaults setBool:YES forKey:@"accountsUpdated" ];
 }
 
 -(NSIndexPath*)indexPathForCategory: (Category*)cat inArray: (NSArray*)nodes
 {
-    for (NSUInteger i=0; i<[nodes count ]; i++) {
-        NSTreeNode *node = [nodes objectAtIndex:i ];
+    NSUInteger idx=0;
+    for (NSTreeNode *node in nodes) {
         Category *obj = [node representedObject ];
-        if(obj == cat) return [NSIndexPath indexPathWithIndex: i ];
+        if(obj == cat) return [NSIndexPath indexPathWithIndex: idx ];
         else {
             NSArray *children = [node childNodes ];
             if(children == nil) continue;
             NSIndexPath *p = [self indexPathForCategory: cat inArray: children ];
-            if(p) return [p indexPathByAddingIndex: i ];
+            if(p) return [p indexPathByAddingIndex: idx ];
         }
+        idx++;
     }
     return nil;
 }
@@ -495,8 +483,7 @@ static BankingController	*con;
     Category *root = [Category bankRoot ];
     if(root != nil) {
         NSArray *bankNodes = [[root mutableSetValueForKey: @"children" ] allObjects ];
-        for (NSUInteger i=0; i<[bankNodes count ]; i++) {
-            BankAccount *node = [bankNodes objectAtIndex:i ];
+        for (BankAccount *node in bankNodes) {
             NSMutableSet *childs = [node mutableSetValueForKey: @"children" ];
             if(childs == nil || [childs count ] == 0) {
                 [self.managedObjectContext deleteObject: node ];
@@ -543,8 +530,7 @@ static BankingController	*con;
         return;
     }
     
-    for (NSUInteger i=0; i<[cats count ]; i++) {
-        Category *cat = [cats objectAtIndex:i ];
+    for (Category *cat in cats) {
         NSString *n = [cat primitiveValueForKey:@"name"];
         if(![n isEqualToString: @"++bankroot" ]) {
             [cat setValue: @"++bankroot" forKey: @"name" ];
@@ -561,8 +547,7 @@ static BankingController	*con;
         return;
     }
     
-    for (NSUInteger i = 0; i < [cats count]; i++) {
-        Category *cat = [cats objectAtIndex:i ];
+    for (Category *cat in cats) {
         NSString *n = [cat primitiveValueForKey:@"name"];
         if([n isEqualToString: @"++catroot" ] ||
            [n isEqualToString: @"Umsatzkategorien" ] ||
@@ -584,8 +569,7 @@ static BankingController	*con;
     }
     
     // reassign categories
-    for (NSUInteger i = 0; i < [cats count]; i++) {
-        Category *cat = [cats objectAtIndex:i ];
+    for (Category *cat in cats) {
         if(cat == catRoot) continue;
         if([cat valueForKey: @"parent" ] == nil) [cat setValue: catRoot forKey: @"parent" ];
     }
@@ -647,8 +631,7 @@ static BankingController	*con;
         [alert runModal];
         return;
     }
-    for (NSUInteger i = 0; i < [cats count]; i++) {
-        Category* cat = [cats objectAtIndex: i ];
+    for (Category* cat in cats) {
         if([cat isBankingRoot ] == NO) [cat updateInvalidBalances ];
         [cat rollup ];
     }
@@ -1539,8 +1522,7 @@ static BankingController	*con;
     // toolbar items that are selectable. In our case, all of them
     NSArray* items = [tb items ];
     NSMutableArray* result = [NSMutableArray arrayWithCapacity: 5 ];
-    for (NSUInteger i = 0; i < [items count ]; i++) {
-        NSToolbarItem *item = [items objectAtIndex: i ];
+    for (NSToolbarItem *item in items) {
         if([item tag ] > 0) [result addObject: [item itemIdentifier] ];
     }
     return result;
@@ -1932,8 +1914,7 @@ static BankingController	*con;
         [alert runModal];
         return;
     }
-    for (NSUInteger i = 0; i < [stats count]; i++) {
-        BankStatement *stat = [stats objectAtIndex: i ];
+    for (BankStatement *stat in stats) {
         [stat updateAssigned ];
     }
 }
