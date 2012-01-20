@@ -78,8 +78,7 @@
 		} else return;
 	}
 	
-	NSMutableAttributedString* s = [NSMutableAttributedString alloc ];
-	[s initWithString: [NSString stringWithFormat: @"%@\n", info ] ];
+	NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString: [NSString stringWithFormat: @"%@\n", info]];
 	[s addAttribute: NSForegroundColorAttributeName
 			  value: [self colorForLevel: level ]
 			  range: NSMakeRange(0, [s length ]) ];

@@ -29,12 +29,12 @@
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
 	if (valuta) {
-		NSMutableDictionary *attrs = [[[self attributedStringValue ] attributesAtIndex:0 effectiveRange:NULL ] mutableCopy ];
+		NSMutableDictionary *attrs = [[[[self attributedStringValue ] attributesAtIndex: 0 effectiveRange: NULL] mutableCopy] autorelease];
 		NSString *str = [formatter stringFromDate:valuta ];
 		NSFont *txtFont = [NSFont fontWithName: @"Lucida Grande" size: 10 ];
 		[attrs setObject:txtFont forKey:NSFontAttributeName ];
 		
-		NSAttributedString *s = [[NSAttributedString alloc ] initWithString:str attributes: attrs ];
+		NSAttributedString *s = [[[NSAttributedString alloc ] initWithString:str attributes: attrs] autorelease];
 		
 		[super drawWithFrame:cellFrame inView:controlView ];
 		NSRect r, rem;

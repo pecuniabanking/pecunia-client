@@ -13,9 +13,8 @@
 
 -(NSIndexPath*)reverseIndexPathForObject: (id)obj inArray: (NSArray*)nodes
 {
-	int i;
-	for(i=0; i<[nodes count ]; i++) {
-		NSTreeNode *node = [nodes objectAtIndex:i ];
+	for (NSUInteger i = 0; i < [nodes count]; i++) {
+		NSTreeNode *node = [nodes objectAtIndex: i];
 		id nodeObj = [node representedObject ];
 		if(nodeObj == obj) return [NSIndexPath indexPathWithIndex: i ];
 		else {

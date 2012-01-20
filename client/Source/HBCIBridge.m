@@ -24,6 +24,8 @@
 #import "TanMediaWindowController.h"
 #import "HBCIBackend.h"
 
+#import "HBCIController.h" // for -asyncCommandCompletedWithResult
+
 @implementation HBCIBridge
 
 -(id)init
@@ -210,14 +212,14 @@
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
     if([elementName isEqualToString: @"callback" ]) {
-        cp = [[CallbackParser alloc ] initWithParent: self command: [attributeDict valueForKey: @"command" ] ];
+        cp = [[[CallbackParser alloc ] initWithParent: self command: [attributeDict valueForKey:  @"command"]] autorelease];
         [parser setDelegate: cp ];
     } else if([elementName isEqualToString: @"result" ]) {
-        rp = [[ResultParser alloc ] initWithParent: self ];
+        rp = [[[ResultParser alloc ] initWithParent: self] autorelease];
         [parser setDelegate: rp ];
         resultExists = YES;
     } else if([elementName isEqualToString: @"log" ]) {
-        LogParser *lp = [[LogParser alloc ] initWithParent: self level: [attributeDict valueForKey: @"level" ] ];
+        LogParser *lp = [[[LogParser alloc ] initWithParent: self level: [attributeDict valueForKey: @"level"]] autorelease];
         [parser setDelegate: lp ];
     }
     
@@ -338,10 +340,9 @@
         [tanMethods addObject: tanMethod ];
     }
     
-    TanMethodListController *controller = [[TanMethodListController alloc ] initWithMethods: tanMethods ];
+    TanMethodListController *controller = [[[TanMethodListController alloc] initWithMethods: tanMethods] autorelease];
     int res = [NSApp runModalForWindow: [controller window]];
     if(res) {
-        [controller release ];
         return @"<abort>";
     }
     NSNumber *selectedMethod = [controller selectedMethod ];
@@ -379,7 +380,7 @@
 {
     if (data.proposal && [data.proposal length ] > 0) {
         // FlickerCode
-        ChipTanWindowController *controller = [[ChipTanWindowController alloc ] initWithCode:data.proposal message:data.message ];
+        ChipTanWindowController *controller = [[[ChipTanWindowController alloc] initWithCode: data.proposal message: data.message] autorelease];
         int res = [NSApp runModalForWindow:[controller window ] ];
         if (res == 0) {
             return [controller tan ];
@@ -387,11 +388,10 @@
     }
     
     
-    PasswordWindow *tanWindow = [[PasswordWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP98", @""), data.userId, data.message ]
-                                                               title: @"Bitte TAN eingeben" ];
+    PasswordWindow *tanWindow = [[[PasswordWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP98", @""), data.userId, data.message]
+                                                                title: @"Bitte TAN eingeben" ] autorelease];
     int res = [NSApp runModalForWindow: [tanWindow window]];
     [tanWindow close ];
-    [tanWindow autorelease ];
     if(res == 0) {
         return [tanWindow result];
     } else return @"<abort>";
@@ -399,7 +399,7 @@
 
 -(NSString*)getTanMedia:(CallbackData*)data
 {
-    TanMediaWindowController *mediaWindow = [[TanMediaWindowController alloc] initWithUser:data.userId bankCode:data.bankCode message:data.message ];
+    TanMediaWindowController *mediaWindow = [[[TanMediaWindowController alloc] initWithUser: data.userId bankCode: data.bankCode message: data.message] autorelease];
     int res = [NSApp runModalForWindow: [mediaWindow window]];
     if(res == 0) {
         return mediaWindow.tanMedia;

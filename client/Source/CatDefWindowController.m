@@ -220,7 +220,7 @@
 	NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: @"statement.purpose CONTAINS[c] ''" ];
 	if([pred class ] != [NSCompoundPredicate class ]) {
 		NSCompoundPredicate* comp = [[NSCompoundPredicate alloc ] initWithType: NSOrPredicateType subpredicates: [NSArray arrayWithObjects: pred, nil ]];
-		pred = comp;
+		pred = [comp autorelease];
 	}
 	[predicateEditor setObjectValue: pred ];
 	
@@ -432,7 +432,7 @@
 	NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: s ];
 	if([pred class ] != [NSCompoundPredicate class ]) {
 		NSCompoundPredicate* comp = [[NSCompoundPredicate alloc ] initWithType: NSOrPredicateType subpredicates: [NSArray arrayWithObjects: pred, nil ]];
-		pred = comp;
+		pred = [comp autorelease];
 	}
 	[predicateEditor setObjectValue: pred ];
 	[self calculateCatAssignPredicate ];

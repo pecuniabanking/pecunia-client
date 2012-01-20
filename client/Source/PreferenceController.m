@@ -12,31 +12,10 @@
 #import "Keychain.h"
 #import "BankingController.h"
 
-#define _newStatementColor @"newStatementColor"
-#define _notAssignedColor @"notAssignedColor"
 #define _exportSeparator @"exportSeparator"
 
-static NSMutableDictionary *statementColors = nil;
 static NSArray *exportFields = nil;
 
-
-void updateColorCache()
-{
-	if(statementColors == nil) statementColors = [[NSMutableDictionary dictionaryWithCapacity: 5 ] retain ];
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	BOOL markNotAssigned = [defaults boolForKey: @"markNAStatements" ];
-	if(markNotAssigned) {
-		NSData *colorData = [defaults objectForKey: _notAssignedColor ];
-		if(colorData == nil) [statementColors setObject: [NSColor colorWithDeviceRed: 0.918 green: 1.0 blue: 0.258 alpha: 1.0 ] forKey: _notAssignedColor ];
-		else [statementColors setObject: [NSKeyedUnarchiver unarchiveObjectWithData: colorData ] forKey: _notAssignedColor ]; 
-	} else [statementColors removeObjectForKey: _notAssignedColor ];
-	BOOL markNewStatements = [defaults boolForKey: @"markNewStatements" ];
-	if(markNewStatements) {
-		NSData *colorData = [defaults objectForKey: _newStatementColor ];
-		if(colorData == nil) [statementColors setObject: [NSColor colorWithDeviceRed: 0.207 green: 0.684 blue: 0.984 alpha: 1.0 ] forKey: _newStatementColor ];
-		else [statementColors setObject: [NSKeyedUnarchiver unarchiveObjectWithData: colorData ] forKey: _newStatementColor ]; 
-	} else [statementColors removeObjectForKey: _newStatementColor ];
-}
 
 @implementation PreferenceController
 
@@ -118,24 +97,8 @@ void updateColorCache()
 		NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
 		[defaults setObject: fields forKey: @"Exporter.fields" ];
 	}
-	if(colorsChanged) {
-		updateColorCache();
-		[[mainWindow contentView ] display ];
-		colorsChanged = NO;
-	}
 }
 
--(IBAction)colorButtonsChanged: (id)sender
-{
-	colorsChanged = YES;
-}
-
-/*
--(IBAction) cancel: (id) sender;
-{
-	[[self window] close];
-}
-*/
 // remove keychain values of all accounts
 -(IBAction)removePINs: (id)sender
 {
@@ -165,12 +128,9 @@ void updateColorCache()
 	MOAssistant *assistant = [MOAssistant assistant ];
 	BOOL encrypted = [assistant encrypted ];
 	if(result == NSOKButton) {
-		NSString *oldFilePath, *filePath;
+		NSString *filePath;
 		
 		// we assume that encrypt is correct(!)
-		if(encrypted)	oldFilePath = [path stringByAppendingString: @"/PecuniaData.sparseimage" ];
-		else oldFilePath = [path stringByAppendingString: @"/accounts.sqlite" ];
-		
 		if(encrypted)	filePath = [[panel filename ] stringByAppendingString: @"/PecuniaData.sparseimage" ];
 		else filePath = [[panel filename ] stringByAppendingString: @"/accounts.sqlite" ];
 		
@@ -380,50 +340,6 @@ void updateColorCache()
 	password = [passw1 retain ];
 	[encryptionSheet orderOut: sender ];
 	[NSApp endSheet: encryptionSheet returnCode: 0 ];
-}
-
--(NSColor*)notAssignedColor
-{
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	NSData *colorData = [defaults objectForKey: _notAssignedColor ];
-	if(!colorData) return [NSColor colorWithDeviceRed: 0.918 green: 1.0 blue: 0.258 alpha: 1.0 ];
-	return [NSKeyedUnarchiver unarchiveObjectWithData: colorData ];
-}
-
--(void)setNotAssignedColor: (NSColor*)color
-{
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject: color ];
-	[defaults setObject: colorData forKey: _notAssignedColor ];
-	colorsChanged = YES;
-}
-
--(NSColor*)newStatementColor
-{
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	NSData *colorData = [defaults objectForKey: _newStatementColor ];
-	if(!colorData) return [NSColor colorWithDeviceRed: 0.207 green: 0.684 blue: 0.984 alpha: 1.0 ];
-	return [NSKeyedUnarchiver unarchiveObjectWithData: colorData ];
-}
-
--(void)setNewStatementColor: (NSColor*)color
-{
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject: color ];
-	[defaults setObject: colorData forKey: _newStatementColor ];
-	colorsChanged = YES;
-}
-
-+(NSColor*)notAssignedRowColor
-{
-	if(statementColors == nil) updateColorCache();
-	return [statementColors objectForKey: _notAssignedColor ];
-}
-
-+(NSColor*)newStatementRowColor
-{
-	if(statementColors == nil) updateColorCache();
-	return [statementColors objectForKey: _newStatementColor ];
 }
 
 -(void)setMainWindow: (NSWindow*)main

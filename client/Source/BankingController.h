@@ -80,7 +80,6 @@
     IBOutlet SideToolbarView *sideToolbar;
     
 @private
-    NSMutableArray         *transactions;
     NSMutableDictionary    *mainTabItems;
     NSManagedObjectContext *managedObjectContext;
     NSManagedObjectModel   *model;

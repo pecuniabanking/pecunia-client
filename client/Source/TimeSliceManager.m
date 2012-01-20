@@ -152,8 +152,8 @@ TimeSliceManager *timeSliceManager = nil;
 		case slice_quarter: {
 			quarter++;
 			if(quarter > 3) { quarter = 0; year++; }
-			int l = quarter*3+1;
-			int u = quarter*3+3;
+			NSUInteger l = quarter*3+1;
+			NSUInteger u = quarter*3+3;
 			if(month<l || month>u) month = l;
 			break;
 		}
@@ -165,7 +165,7 @@ TimeSliceManager *timeSliceManager = nil;
 		}
 	}
 	if(maxDate) {
-		if(year > [maxDate year ]) year = [maxDate year ];
+		if (year > [maxDate year ]) year = [maxDate year ];
 		if(year == [maxDate year ] && month > [maxDate month ]) month = [maxDate month ];
 		quarter = (month-1) / 3;
 	}
@@ -178,8 +178,8 @@ TimeSliceManager *timeSliceManager = nil;
 		case slice_quarter: {
 			quarter--;
 			if(quarter<0) { quarter = 3; year--; }
-			int l = quarter*3+1;
-			int u = quarter*3+3;
+			NSUInteger l = quarter*3+1;
+			NSUInteger u = quarter*3+3;
 			if(month<l || month>u) month = l;
 			break;
 		}
@@ -231,7 +231,7 @@ TimeSliceManager *timeSliceManager = nil;
 	[control setLabel: quarterString forSegment: 1 ];
 	
 	// month
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
 	NSArray* months = [dateFormatter monthSymbols ];
 	[control setLabel: [months objectAtIndex:month-1] forSegment: 2 ];
 }
@@ -285,8 +285,8 @@ TimeSliceManager *timeSliceManager = nil;
 		case slice_year: break;
 		case slice_month: break;
 		case slice_quarter: {
-			int l = quarter*3+1;
-			int u = quarter*3+3;
+			NSUInteger l = quarter*3+1;
+			NSUInteger u = quarter*3+3;
 			if(month<l || month>u) month = l;
 			break;
 		}

@@ -105,11 +105,10 @@ static LogController	*_logController = nil;
 		} else return;
 	}
 	
-	NSMutableAttributedString* s = [NSMutableAttributedString alloc ];
-	[s initWithString: [NSString stringWithFormat: @"%@\n", info ] ];
+	NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString: [NSString stringWithFormat: @"%@\n", info]];
 	[s addAttribute: NSForegroundColorAttributeName
-			  value: [self colorForLevel: level ]
-			  range: NSMakeRange(0, [s length ]) ];
+			  value: [self colorForLevel: level]
+			  range: NSMakeRange(0, [s length])];
 	[[logView textStorage ] appendAttributedString: s ];
 	[s release ];
 	
@@ -208,7 +207,7 @@ static LogController	*_logController = nil;
 
 -(void)clearLog: (id)sender
 {
-	[[logView textStorage ] setAttributedString: [[NSAttributedString alloc ] initWithString: @"" ] ];
+	[[logView textStorage ] setAttributedString: [[[NSAttributedString alloc] initWithString: @""] autorelease]];
 }
 
 -(void)dealloc

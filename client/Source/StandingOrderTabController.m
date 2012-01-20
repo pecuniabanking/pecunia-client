@@ -36,10 +36,9 @@
 	if (self == nil) return nil;
 	
 	managedObjectContext = [[MOAssistant assistant ] context ];
-	weekDays = [NSArray arrayWithObjects:@"Montag",@"Dienstag",@"Mittwoch",@"Donnerstag",@"Freitag",@"Samstag",@"Sonntag",nil ];
-	[weekDays retain ];
-	accounts = [[NSMutableArray alloc ] initWithCapacity:10 ];
-	self.requestRunning = [NSNumber numberWithBool:NO ];
+	weekDays = [[NSArray arrayWithObjects: @"Montag", @"Dienstag", @"Mittwoch", @"Donnerstag", @"Freitag", @"Samstag", @"Sonntag", nil] retain];
+	accounts = [[NSMutableArray alloc] initWithCapacity: 10];
+	self.requestRunning = [NSNumber numberWithBool: NO];
 	return self;
 }
 
@@ -504,7 +503,7 @@
 {
 	NSError *error=nil;
 	BankAccount *account;
-	NSMutableArray *resultList;
+	NSMutableArray *resultList = nil;
 
     [self initAccounts ];
 	
@@ -523,7 +522,7 @@
 			[request setPredicate:predicate];
 			NSArray *selectedAccounts = [managedObjectContext executeFetchRequest:request error:&error];
 			if (selectedAccounts) {
-				resultList = [[NSMutableArray arrayWithCapacity: [selectedAccounts count ] ] retain ];
+				resultList = [NSMutableArray arrayWithCapacity: [selectedAccounts count]];
 				for(account in selectedAccounts) {
 					if ([[HBCIClient hbciClient ] isStandingOrderSupportedForAccount:account]) {
 						if (account.userId) {
@@ -540,7 +539,7 @@
 			}
 		} else return;
 	} else {
-		resultList = [[NSMutableArray arrayWithCapacity: [accounts count ] ] retain ];
+		resultList = [NSMutableArray arrayWithCapacity: [accounts count]];
 		for(account in accounts) {
 			if (account.userId) {
 				BankQueryResult *result = [[BankQueryResult alloc ] init ];
@@ -593,7 +592,7 @@
 	
 	[[NSNotificationCenter defaultCenter ] removeObserver:self name:PecuniaStatementsNotification object:nil ];
 	
-	NSArray *resultList = [notification object ];
+	NSArray *resultList = [notification object];
 	if(resultList == nil) {
 		[sc stopSpinning ];
 		[sc clearMessage ];
@@ -610,7 +609,6 @@
 	[sc stopSpinning ];
 	[sc clearMessage ];
 	self.requestRunning = [NSNumber numberWithBool:NO ];
-	[resultList autorelease ];
 }
 
 #pragma mark -

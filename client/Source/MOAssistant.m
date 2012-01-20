@@ -237,8 +237,8 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	BOOL savePassword = NO;
 	NSString* passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile" ];
 	if(passwd == nil) {
-		PasswordWindow *pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP54", @"")
-																  title: NSLocalizedString(@"AP53", @"")];
+		PasswordWindow *pwWindow = [[[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP54", @"")
+                                                                   title: NSLocalizedString(@"AP53", @"")] autorelease];
 		
 		
 		int res = [NSApp runModalForWindow: [pwWindow window]];
@@ -395,7 +395,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	if(context) [context release ];
 	if (encrypted && imageAvailable == NO) return;
 	
-	NSPersistentStoreCoordinator *coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+	NSPersistentStoreCoordinator *coord = [[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: model] autorelease];
 	
 	[coord addPersistentStoreWithType: NSSQLiteStoreType 
 						configuration: nil 
@@ -426,7 +426,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	if(memContext) return memContext;
 	if(model == nil) return nil;
 	
-	NSPersistentStoreCoordinator *coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+	NSPersistentStoreCoordinator *coord = [[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: model] autorelease];
 
 	[coord addPersistentStoreWithType: NSInMemoryStoreType configuration: nil URL: nil options: nil error: &error];
 	if( error != nil ) @throw error;

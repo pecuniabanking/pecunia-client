@@ -397,7 +397,7 @@ BOOL	updateSent = NO;
     {
         ShortDate* lastDate = nil;
         int balanceCount = 1;
-        NSDecimalNumber* lastSaldo;
+        NSDecimalNumber* lastSaldo = nil;
         for (NSUInteger i = 0; i < [stats count]; i++) {
             StatCatAssignment* assignment = [sortedStats objectAtIndex: i];
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
@@ -437,10 +437,11 @@ BOOL	updateSent = NO;
             }                
             lastSaldo = assignment.statement.saldo;
         }
-        [dateArray addObject: lastDate];
-        [balanceArray addObject: lastSaldo];
-        [countArray addObject: [NSNumber numberWithInt: balanceCount]];
-        
+        if (lastDate != nil) {
+            [dateArray addObject: lastDate];
+            [balanceArray addObject: lastSaldo];
+            [countArray addObject: [NSNumber numberWithInt: balanceCount]];
+        }            
         *dates = dateArray;
         *balances = balanceArray;
         *counts = countArray;
@@ -758,7 +759,7 @@ BOOL	updateSent = NO;
 
 +(void)setQuarterFromDate: (ShortDate*)date
 {
-    int month;
+    int month = 1;
     [catFromDate release ];
     switch([date month ]) {
         case 1:

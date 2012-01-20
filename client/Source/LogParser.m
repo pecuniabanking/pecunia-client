@@ -36,7 +36,7 @@
 	if([elementName isEqualToString: @"log" ]) {
 		[parser setDelegate: parent ];
 		[[MessageLog log ] addMessage:currentValue withLevel:level ];
-		[self autorelease ];
+		//[self autorelease ]; don't autorelease here but where the parser is allocated or the analyizer will report a leak.
 		return;
 	} 
 }

@@ -52,7 +52,7 @@
 
 -(IBAction)createSettings:(id)sender
 {
-	ImportSettingsController *controller = [[ImportSettingsController alloc ] initWitSettings:nil ];
+	ImportSettingsController *controller = [[[ImportSettingsController alloc] initWitSettings: nil] autorelease];
 	int res = [NSApp runModalForWindow:[controller window ] ];
 	if (res) return;
 	[self updateSettingsController ];	
@@ -76,7 +76,7 @@
 {
 	ImportSettings *settings = [self selectedSettings ];
 	
-	ImportSettingsController *controller = [[ImportSettingsController alloc ] initWitSettings:settings ];
+	ImportSettingsController *controller = [[[ImportSettingsController alloc] initWitSettings: settings] autorelease];
 	[NSApp runModalForWindow:[controller window ] ];
 }
 

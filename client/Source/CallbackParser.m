@@ -50,7 +50,7 @@
 		NSPipe *pipe = [parent outPipe ];
 		result = [result stringByAppendingString: @"\n" ];
 		[[pipe fileHandleForWriting ] writeData: [result dataUsingEncoding: NSUTF8StringEncoding ] ];
-		[self autorelease ];
+		//[self autorelease ]; autorelease where alloc'ed
 		return;
 	}
 	[data setValue: currentValue forKey:elementName ];

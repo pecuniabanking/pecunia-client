@@ -462,7 +462,7 @@ static BankingController	*con;
     NSArray *nodes = [[categoryController arrangedObjects ] childNodes ];
     NSIndexPath *path = [self indexPathForCategory: bankAccount inArray: nodes ];
     // IndexPath umdrehen
-    NSIndexPath *newPath = [[NSIndexPath alloc ] init];
+    NSIndexPath *newPath = [[[NSIndexPath alloc] init] autorelease];
     for(i=[path length ]-1; i>=0; i--) newPath = [newPath indexPathByAddingIndex: [path indexAtPosition:i ] ]; 
     
     [categoryController removeObjectAtArrangedObjectIndexPath: newPath ];
@@ -729,7 +729,7 @@ static BankingController	*con;
     }
     
     // now selectedAccounts has all selected Bank Accounts
-    NSMutableArray *resultList = [[NSMutableArray arrayWithCapacity: [selectedAccounts count ] ] retain ];
+    NSMutableArray *resultList = [NSMutableArray arrayWithCapacity: [selectedAccounts count]];
     for(account in selectedAccounts) {
         if (account.userId) {
             BankQueryResult *result = [[BankQueryResult alloc ] init ];
@@ -763,7 +763,7 @@ static BankingController	*con;
 {
     BankQueryResult *result;
     StatusBarController *sc = [StatusBarController controller ];
-    BOOL			noStatements;
+    BOOL			noStatements = YES;
     BOOL			isImport = NO;
     int				count = 0;
     
@@ -797,7 +797,7 @@ static BankingController	*con;
     BOOL check = [defaults boolForKey: @"manualTransactionCheck" ];
     
     if((check || isImport) && noStatements == FALSE) {
-        BSSelectWindowController *selectWindowController = [[BSSelectWindowController alloc] initWithResults: resultList];
+        BSSelectWindowController *selectWindowController = [[[BSSelectWindowController alloc] initWithResults: resultList] autorelease];
         [selectWindowController showWindow: self ];
     } else {
         for(result in resultList) {
@@ -809,7 +809,6 @@ static BankingController	*con;
         // status message
         [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP80", @""), count ] removeAfter:120  ];
     }
-    [resultList autorelease ];
     autoSyncRunning = NO;
     
     NSSound* doneSound = [NSSound soundNamed: @"done.mp3"];
@@ -934,7 +933,7 @@ static BankingController	*con;
 
 -(IBAction)manageTransferTemplates: (id)sender
 {
-    TransferTemplateController *controller = [[TransferTemplateController alloc ] init ];
+    TransferTemplateController *controller = [[[TransferTemplateController alloc] init] autorelease];
     [controller showWindow: mainWindow ];
 }
 
@@ -970,7 +969,7 @@ static BankingController	*con;
         return;
     }
     
-    AccountDefController *defController = [[AccountDefController alloc ] init ];
+    AccountDefController *defController = [[[AccountDefController alloc] init] autorelease];
     if (bankCode) [defController setBankCode: bankCode name: [cat valueForKey: @"bankName"]];
     
     int res = [NSApp runModalForWindow: [defController window]];
@@ -996,7 +995,7 @@ static BankingController	*con;
         return;
     }
     
-    AccountChangeController *changeController = [[AccountChangeController alloc] initWithAccount: (BankAccount*)cat];
+    AccountChangeController *changeController = [[[AccountChangeController alloc] initWithAccount: (BankAccount*)cat] autorelease];
     int res = [NSApp runModalForWindow: [changeController window]];
     if(res) {
         statementsListViewHost.indicatorColor = [cat categoryColor];
@@ -1037,7 +1036,7 @@ static BankingController	*con;
     BOOL keepAssignedStatements = NO;
     NSMutableSet *stats = [cat mutableSetValueForKey: @"statements" ];
     if(stats && [stats count ] > 0) {
-        BOOL hasAssignment;
+        BOOL hasAssignment = NO;
         
         // check if transactions are assigned
         for(BankStatement* stat in stats) {
@@ -1324,7 +1323,7 @@ static BankingController	*con;
     ImportController *controller = [[ImportController alloc ] init ];
     int res = [NSApp runModalForWindow:[controller window ] ];
     if (res == 0) {
-        NSArray *results = [[NSArray arrayWithObject: controller.importResult ] retain ];
+        NSArray *results = [NSArray arrayWithObject: controller.importResult];
         NSNotification *notif = [NSNotification notificationWithName:PecuniaStatementsNotification object: results  ];
         [self statementsNotification:notif ];
     }
@@ -1770,8 +1769,6 @@ static BankingController	*con;
     if ([cat isBankAccount] && cat.accountNumber != nil)
     {
         BankAccount *account = (BankAccount*)cat;
-        BOOL value = [account.isManual boolValue];
-        value = [account.noAutomaticQuery boolValue];
         if ([account.isManual boolValue] || [account.noAutomaticQuery boolValue])
             [cell setImage: moneyImage];
         else
@@ -2186,7 +2183,8 @@ static BankingController	*con;
     if (idx == 0) {
         NSArray *sel = [transactionController selectedObjects ];
         if (sel != nil && [sel count ] == 1) {
-            StatSplitController *splitController = [[StatSplitController alloc ] initWithStatement:[[sel objectAtIndex:0 ] statement ] view:accountsView ];
+            StatSplitController *splitController = [[[StatSplitController alloc ] initWithStatement: [[sel objectAtIndex:0] statement]
+                                                                                               view: accountsView] autorelease];
             [splitController showWindow:mainWindow ];
         }
     }
@@ -2198,7 +2196,7 @@ static BankingController	*con;
     if (cat == nil) return;
     if (cat.accountNumber == nil) return;
     
-    BankStatementController *statementController = [[BankStatementController alloc ] initWithAccount: (BankAccount*)cat statement: nil ];
+    BankStatementController *statementController = [[[BankStatementController alloc] initWithAccount: (BankAccount*)cat statement: nil] autorelease];
     
     int res = [NSApp runModalForWindow: [statementController window]];
     if(res) {
@@ -2218,13 +2216,9 @@ static BankingController	*con;
 
 -(IBAction)splitPurpose:(id)sender
 {
-    BankAccount *acc = nil;
     Category* cat = [self currentSelection ];
-    if (cat != nil && cat.accountNumber != nil) {
-        acc = (BankAccount*)cat;
-    }
     
-    PurposeSplitController *splitController = [[PurposeSplitController alloc ] initWithAccount:(BankAccount*)cat ];
+    PurposeSplitController *splitController = [[[PurposeSplitController alloc ] initWithAccount:(BankAccount*)cat] autorelease];
     [NSApp runModalForWindow: [splitController window]];
 }
 
@@ -2241,7 +2235,7 @@ static BankingController	*con;
     
     // now selectedAccounts has all selected Bank Accounts
     BankAccount *account;
-    NSMutableArray *resultList = [[NSMutableArray arrayWithCapacity: [selectedAccounts count ] ] retain ];
+    NSMutableArray *resultList = [NSMutableArray arrayWithCapacity: [selectedAccounts count]];
     for(account in selectedAccounts) {
         if ([account.noAutomaticQuery boolValue] == YES) continue;
         
@@ -2333,12 +2327,12 @@ static BankingController	*con;
         if(!syncDone) [self performSelector: @selector(syncAllAccounts) withObject: nil afterDelay: 5.0];
     } else {
         // syncTime in future: setup Timer
-        NSTimer *timer = [[NSTimer alloc ] initWithFireDate:syncDate 
-                                                   interval:0.0 
-                                                     target:self 
-                                                   selector:@selector(autoSyncTimerEvent) 
-                                                   userInfo:nil 
-                                                    repeats:NO];
+        NSTimer *timer = [[[NSTimer alloc] initWithFireDate: syncDate 
+                                                   interval: 0.0 
+                                                     target: self 
+                                                   selector: @selector(autoSyncTimerEvent) 
+                                                   userInfo: nil 
+                                                    repeats: NO] autorelease];
         [[NSRunLoop currentRunLoop ] addTimer:timer forMode:NSDefaultRunLoopMode ];
         //		[timer release ];
     }
@@ -2450,7 +2444,7 @@ static BankingController	*con;
         [printInfo setTopMargin: 45];
         [printInfo setBottomMargin: 45];
         NSPrintOperation *printOp;
-        NSView *view = [[BankStatementPrintView alloc] initWithStatements: [transactionController arrangedObjects] printInfo: printInfo];
+        NSView *view = [[[BankStatementPrintView alloc] initWithStatements: [transactionController arrangedObjects] printInfo: printInfo] autorelease];
         printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo];
         [printOp setShowsPrintPanel: YES];
         [printOp runOperation];

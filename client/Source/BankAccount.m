@@ -224,19 +224,10 @@
 	BankStatement	*stat;
 	NSDate			*ltd = self.latestTransferDate;
 	NSDate			*date = nil;
-//	NSTimeInterval  ofs = 10;
-//	NSTimeInterval  ltdOfs = 1;
-//	int             count = 0, j;
-	ShortDate		*lastTransferDate;
 	ShortDate		*currentDate = nil;
 	NSMutableArray	*newStatements = [NSMutableArray arrayWithCapacity:50 ];
 	NSMutableArray	*resultingStatements = [NSMutableArray arrayWithCapacity:50 ];
 	
-	if (self.latestTransferDate) {
-		lastTransferDate = [ShortDate dateWithDate:self.latestTransferDate ];
-	} else {
-		lastTransferDate = [ShortDate dateWithDate: [NSDate distantPast ] ];	
-	}
 
 	result.oldBalance = self.balance;
 	if(result.balance) self.balance = result.balance;
@@ -296,7 +287,7 @@
 			NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES] autorelease];
 			NSArray				*sds = [NSArray arrayWithObject:sd];
 			[newStatements sortUsingDescriptors:sds ];
-			NSMutableArray *oldStatements = [self.dbStatements mutableCopy ];
+			NSMutableArray *oldStatements = [[self.dbStatements mutableCopy] autorelease];
 			[oldStatements sortUsingDescriptors:sds ];
 			
 			// find earliest old that is later than first new
@@ -468,7 +459,7 @@
 	if (statements == nil || [statements count ] == 0) return startDate;
 	
 	currentDate = [[statements objectAtIndex:0 ] date ];
-	return [[NSDate alloc ] initWithTimeInterval:100 sinceDate:currentDate ];
+	return [[[NSDate alloc] initWithTimeInterval: 100 sinceDate:currentDate] autorelease];
 }
 
 -(void)copyStatement:(BankStatement*)stat

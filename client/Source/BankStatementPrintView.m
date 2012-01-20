@@ -220,7 +220,7 @@
 	BOOL   isNegative;
 		
 	NSParagraphStyle *ps = [NSParagraphStyle defaultParagraphStyle ];
-	NSMutableParagraphStyle *mps = [ps mutableCopy ];
+	NSMutableParagraphStyle *mps = [[ps mutableCopy] autorelease];
 	[mps setAlignment:NSRightTextAlignment ];
 	
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
@@ -230,9 +230,9 @@
 	[amountAttributes setObject:[NSFont userFontOfSize:9 ] forKey:NSFontAttributeName ];
 	[amountAttributes setObject:mps forKey:NSParagraphStyleAttributeName ];
 	
-	NSDecimalNumber *debitSum = [NSDecimalNumber zero ];
-	NSDecimalNumber *creditSum = [NSDecimalNumber zero ];
-	NSDecimalNumber *currentSaldo;
+	NSDecimalNumber *debitSum = [NSDecimalNumber zero];
+	NSDecimalNumber *creditSum = [NSDecimalNumber zero];
+	NSDecimalNumber *currentSaldo = [NSDecimalNumber zero];
 	
 	size.width = purposeWidth-2*padding;
 	size.height = 400;
@@ -306,7 +306,7 @@
 		rect.origin.x = hBase+padding;
 		[[numberFormatter stringFromNumber:stat.saldo ] drawInRect:rect withAttributes:amountAttributes ];
 		currentSaldo = stat.saldo;
-		hBase+=amountWidth;
+		//hBase+=amountWidth;
 		
 		h += height+5;
 	}
@@ -344,7 +344,7 @@
 	[df setTimeStyle: NSDateFormatterMediumStyle ];
 	
 	NSParagraphStyle *ps = [NSParagraphStyle defaultParagraphStyle ];
-	NSMutableParagraphStyle *mps = [ps mutableCopy ];
+	NSMutableParagraphStyle *mps = [[ps mutableCopy] autorelease];
 	[mps setAlignment:NSRightTextAlignment ];
 	
 	NSRect frame = [self frame ];

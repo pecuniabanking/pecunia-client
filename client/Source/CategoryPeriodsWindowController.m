@@ -137,7 +137,7 @@
 	BOOL found = TRUE;
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
 	NSArray* urs = [defaults objectForKey: [NSString stringWithFormat: @"NSOutlineView Items %@", [categoryView autosaveName ]]];
-	NSMutableArray* uris = [urs mutableCopy ];
+	NSMutableArray* uris = [[urs mutableCopy] autorelease];
 	
 	while([uris count ] > 0 && found == TRUE) {
 		NSInteger i, idx;
@@ -221,7 +221,7 @@
 -(void)updateData
 {
 	// delete all table columns
-	NSArray *cols = [[categoryView tableColumns ] copy ];
+	NSArray *cols = [[[categoryView tableColumns] copy] autorelease];
 	for(NSTableColumn *col in cols) {
 		if ([[col identifier ] isEqualToString: @"category" ] == NO) [categoryView removeTableColumn:col ];
 	}
@@ -257,8 +257,8 @@
 			default: title = [date monthYearDescription ]; break;
 		}				
 		
-		NSTableColumn *column = [[NSTableColumn alloc ] initWithIdentifier:identifier ];
-		AmountCell *cell = [[AmountCell alloc ]  initTextCell:@"X" ];
+		NSTableColumn *column = [[[NSTableColumn alloc] initWithIdentifier: identifier] autorelease];
+		AmountCell *cell = [[[AmountCell alloc] initTextCell: @"X"] autorelease];
 		[cell setAlignment:NSRightTextAlignment ];
 
 		[[column headerCell ] setStringValue:title ];

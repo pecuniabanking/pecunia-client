@@ -33,21 +33,11 @@
 -(IBAction)encryptData: (id)sender;
 -(IBAction)cancelSheet:(id)sender;
 -(IBAction)endSheet: (id)sender;
--(IBAction)colorButtonsChanged: (id)sender;
 
 -(IBAction)expSepTab:(id)sender;
 -(IBAction)expSepSemi:(id)sender;
 -(IBAction)expSepLine:(id)sender;
 
--(NSColor*)notAssignedColor;
--(void)setNotAssignedColor: (NSColor*)color;
--(NSColor*)newStatementColor;
--(void)setNewStatementColor: (NSColor*)color;
-
 -(void)setMainWindow: (NSWindow*)main;
-
-+(NSColor*)notAssignedRowColor;
-+(NSColor*)newStatementRowColor;
-
 
 @end

@@ -63,11 +63,11 @@
 	
 	if ([self isHighlighted ]) textColor  = [NSColor whiteColor];
 	
-	NSMutableDictionary *attrs = [[[self attributedStringValue ] attributesAtIndex:0 effectiveRange:NULL ] mutableCopy ];
+	NSMutableDictionary *attrs = [[[[self attributedStringValue ] attributesAtIndex:0 effectiveRange:NULL ] mutableCopy] autorelease];
 	[attrs setObject:textColor forKey:NSForegroundColorAttributeName ];
 	[formatter setCurrencyCode:currency ];
 	NSString *str = [formatter stringFromNumber:amount ];
-	NSAttributedString *s = [[NSAttributedString alloc ] initWithString:str attributes: attrs ];
+	NSAttributedString *s = [[[NSAttributedString alloc ] initWithString: str attributes: attrs] autorelease];
 	
 	cellFrame.origin.x += CELL_BOUNDS;
 	cellFrame.size.width -= 2*CELL_BOUNDS;

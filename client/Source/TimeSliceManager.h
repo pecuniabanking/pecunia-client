@@ -18,24 +18,24 @@ typedef enum {
 @class ShortDate;
 
 @interface TimeSliceManager : NSObject {
-	int			year;
-	int			quarter;
-	int			month;
-	SliceType	type;
-	NSString	*autosaveName;
-	
-	ShortDate	*minDate;
-	ShortDate	*maxDate;
-	ShortDate	*fromDate;
-	ShortDate	*toDate;
-	
-	IBOutlet NSDatePicker			*fromPicker;
-	IBOutlet NSDatePicker			*toPicker;
-	
-	IBOutlet id						delegate;
-	IBOutlet NSSegmentedControl		*control;
-	
-	NSMutableArray *controls;
+    NSUInteger year;
+    NSUInteger quarter;
+    NSUInteger month;
+    SliceType type;
+    NSString *autosaveName;
+    
+    ShortDate *minDate;
+    ShortDate *maxDate;
+    ShortDate *fromDate;
+    ShortDate *toDate;
+    
+    IBOutlet NSDatePicker *fromPicker;
+    IBOutlet NSDatePicker *toPicker;
+    
+    IBOutlet id delegate;
+    IBOutlet NSSegmentedControl *control;
+    
+    NSMutableArray *controls;
 }
 
 -(id)initWithYear: (int)y month: (int)m;

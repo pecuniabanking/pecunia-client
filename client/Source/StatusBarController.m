@@ -36,12 +36,12 @@ static StatusBarController *controller = nil;
 
 	if(secs > 0) {
 		NSDate *endDate = [NSDate dateWithTimeIntervalSinceNow: secs ];
-		NSTimer *ltimer = [[NSTimer alloc ] initWithFireDate:endDate 
-											  	    interval:0.0 
-													  target:self 
-												    selector:@selector(clearMessage) 
-												    userInfo:nil 
-													 repeats:NO];
+		NSTimer *ltimer = [[[NSTimer alloc ] initWithFireDate:endDate 
+                                                     interval:0.0 
+                                                       target:self 
+                                                     selector:@selector(clearMessage) 
+                                                     userInfo:nil 
+                                                      repeats:NO] autorelease];
 		[[NSRunLoop currentRunLoop ] addTimer:ltimer forMode:NSDefaultRunLoopMode ];
 	}
 }

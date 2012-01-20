@@ -91,7 +91,7 @@
 			if (date == nil) date = [stat valueForKey: @"date" ];
 			else {
 				if ([date isEqualToDate:[stat valueForKey: @"date" ] ]) {
-					[stat setValue:[[NSDate alloc ] initWithTimeInterval:j++ sinceDate: date ] forKey: @"date" ];
+					[stat setValue: [[[NSDate alloc] initWithTimeInterval: j++ sinceDate: date] autorelease] forKey: @"date"];
 				} else {
 					date = [stat valueForKey: @"date" ];
 					j=1;

@@ -55,7 +55,7 @@
 	// set template filter
 	if(transferType == TransferTypeLocal || transferType == TransferTypeDated) pred = [NSPredicate predicateWithFormat: @"type = 0 OR type = 2" ];
 	else pred = [NSPredicate predicateWithFormat: @"type = %d", transferType ];
-	[templateController setFilterPredicate: [pred retain ] ];
+	[templateController setFilterPredicate: pred];
 	
 	if(transferType == TransferTypeInternal) {
 		[internalAccounts release ];

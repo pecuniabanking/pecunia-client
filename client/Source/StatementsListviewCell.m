@@ -49,6 +49,14 @@
 - (void) setHeaderHeight: (int) aHeaderHeight
 {
     headerHeight = aHeaderHeight;
+    if (headerHeight > 0) {
+        [dateLabel setHidden: NO];
+        [turnoversLabel setHidden: NO];
+    } else {
+        [dateLabel setHidden: YES];
+        [turnoversLabel setHidden: YES];
+    }
+
     [self setNeedsDisplay: YES];
 }
 
@@ -107,6 +115,15 @@ static CurrencyValueTransformer* currencyTransformer;
 
 - (void)prepareForReuse
 {
+    [dateLabel setStringValue: @""];
+    [turnoversLabel setStringValue: @""];
+    [remoteNameLabel setStringValue: @""];
+    [purposeLabel setStringValue: @""];
+    [categoriesLabel setStringValue: @""];
+    [valueLabel setObjectValue: @""];
+    [saldoLabel setObjectValue: @""];
+    [transactionTypeLabel setObjectValue: @""];
+    [transactionTypeLabel setObjectValue: @""];
 }
 
 #pragma mark Drawing

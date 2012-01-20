@@ -111,12 +111,12 @@ NSCalendar *calendar = nil;
         return NO;
     }
     if (components.year == fy) {
-        if ((components.month < fm) || (components.month == fm) && (components.day < fromDate.day)) {
+        if ((components.month < fm) || ((components.month == fm) && (components.day < fromDate.day))) {
             return NO;
         }
     }
     if (components.year == ty) {
-        if ((components.month > tm) || (components.month == tm) && (components.day > toDate.day)) {
+        if ((components.month > tm) || ((components.month == tm) && (components.day > toDate.day))) {
             return NO;
         }
     }
@@ -238,7 +238,7 @@ NSCalendar *calendar = nil;
 
 - (NSString*)description
 {
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    NSDateFormatter *df = [[[NSDateFormatter alloc] init] autorelease];
     [df setDateStyle: NSDateFormatterMediumStyle];
     [df setTimeStyle: NSDateFormatterNoStyle];
     

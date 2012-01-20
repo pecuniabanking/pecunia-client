@@ -20,7 +20,7 @@
 {
 	NSInteger idx = [ mainTabView indexOfTabViewItemWithIdentifier:_catPeriodsIdentifier ];
 	if (idx == NSNotFound) {
-		CategoryPeriodsWindowController *controller = [[CategoryPeriodsWindowController alloc ] init ];
+		CategoryPeriodsWindowController *controller = [[[CategoryPeriodsWindowController alloc] init] autorelease];
 		if([NSBundle loadNibNamed:@"CategoryPeriods" owner:controller ]) {
 			//		[controller prepare ];
 			NSTabViewItem *item = [[NSTabViewItem alloc ] initWithIdentifier:_catPeriodsIdentifier ];
@@ -42,7 +42,7 @@
 {
 	NSInteger idx = [ mainTabView indexOfTabViewItemWithIdentifier:_standingOrderTabIdentifier ];
 	if (idx == NSNotFound) {
-		StandingOrderTabController *controller = [[StandingOrderTabController alloc ] init ];
+		StandingOrderTabController *controller = [[[StandingOrderTabController alloc] init] autorelease];
 		if([NSBundle loadNibNamed:@"Orders" owner:controller ]) {
 			NSTabViewItem *item = [[NSTabViewItem alloc ] initWithIdentifier:_standingOrderTabIdentifier ];
 			[item setView:[controller mainView ] ];

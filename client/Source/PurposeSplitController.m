@@ -126,7 +126,6 @@
 	NSRange kRange;
 	NSRange bRange;
 	
-	NSString *s;
 	eRange.location = ePos;
 	eRange.length = eLen;
 	kRange.location = kPos;
@@ -136,10 +135,10 @@
 
 	[[sender window] makeFirstResponder:nil];
 	
-	s = NSStringFromRange(eRange);
+/*	
+	NSString *s = NSStringFromRange(eRange);
 	s = [s stringByAppendingString:NSStringFromRange(kRange) ];
 	
-/*	
 	s = [ePosField stringValue ];
 	if (s) eRange.location = [s intValue ]; else eRange.location = 0;
 	s = [eLenField stringValue ];

@@ -98,7 +98,7 @@
 		[parser setDelegate: parent ];
 		result = [stack lastObject ];
 		[parent setResult: [stack lastObject ] ];
-		[self autorelease ];
+		//[self autorelease ]; autorelease where alloc'ed
 		return;
 	} else {
 		if([[stack lastObject ] isKindOfClass: [NSMutableArray class ] ] || [[stack lastObject ] isKindOfClass: [NSMutableDictionary class ] ]) {

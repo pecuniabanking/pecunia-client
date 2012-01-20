@@ -69,9 +69,8 @@ static NSMutableDictionary *passwordCache = nil;
 	if(passwordCache == nil) passwordCache = [[NSMutableDictionary alloc ] initWithCapacity: 10 ];
 	[passwordCache setValue: pwd forKey: key ];
 	
-	status = SecKeychainItemFreeContent (
-										 NULL,           //No attribute data to release
-										 passwordData    //Release data buffer allocated by SecKeychainFindGenericPassword
+	SecKeychainItemFreeContent(NULL,           //No attribute data to release
+                               passwordData    //Release data buffer allocated by SecKeychainFindGenericPassword
 	);
 	
 	if (itemRef) CFRelease(itemRef);

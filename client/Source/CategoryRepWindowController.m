@@ -617,12 +617,12 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     switch ([(NSNumber*)pieChart.identifier intValue])
     {
         case EARNINGS_PLOT_ID:
-            if (index == earningsExplosionIndex) {
+            if ((NSInteger)index == earningsExplosionIndex) {
                 result = 10.0;
             }
             break;
         case SPENDINGS_PLOT_ID:
-            if (index == spendingsExplosionIndex) {
+            if ((NSInteger)index == spendingsExplosionIndex) {
                 result = 10.0;
             }
             break;

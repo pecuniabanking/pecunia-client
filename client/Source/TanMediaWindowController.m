@@ -51,7 +51,7 @@
 	NSString *userMediaId = [NSString stringWithFormat:@"TanMediaList_%@_%@", self.bankCode, self.userId ];
 	NSArray *mList = [defaults objectForKey:userMediaId ];
 	if (mList) {
-		mediaList = [mList mutableCopy ];
+		mediaList = [[mList mutableCopy] autorelease];
 		[mediaList removeObject:self.tanMedia ];
 		[mediaList addObject:self.tanMedia ];
 	} else {

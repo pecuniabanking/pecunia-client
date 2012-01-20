@@ -288,7 +288,6 @@
 -(BOOL)check
 {
 	BOOL			res;
-	NSNumber		*value;
 /*	
 	if([currentStatement valueForKey: @"remoteName" ] == nil) {
 		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
@@ -297,7 +296,7 @@
 		return NO;
 	}
 */	
-	if( (value = currentStatement.value) == nil ) {
+	if (currentStatement.value == nil) {
 		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
 						NSLocalizedString(@"AP11", @"Please enter a value"),
 						NSLocalizedString(@"ok", @"Ok"), nil, nil);
