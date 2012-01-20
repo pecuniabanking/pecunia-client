@@ -2,12 +2,10 @@
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.HashSet;
@@ -25,19 +23,20 @@ import org.kapott.hbci.exceptions.*;
 import org.kapott.hbci.manager.HBCIHandler;
 import org.kapott.hbci.manager.HBCIUtils;
 import org.kapott.hbci.manager.HBCIUtilsInternal;
-import org.kapott.hbci.manager.LogFilter;
 import org.kapott.hbci.passport.AbstractHBCIPassport;
 import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.passport.HBCIPassportPinTan;
-import org.kapott.hbci.passport.INILetter;
-import org.kapott.hbci.structures.*;
 import org.kapott.hbci.structures.*;
 import org.kapott.hbci.GV.*;
 import org.kapott.hbci.GV_Result.*;
 import org.kapott.hbci.status.*;
 
-import java.lang.reflect.*;
 import org.xmlpull.v1.*;
+//import java.lang.reflect.*;
+
+@SuppressWarnings(value={"unchecked", "rawtypes"})
+
+
 
 public class HBCIServer {
 	
@@ -47,6 +46,7 @@ public class HBCIServer {
 	public static final int ERR_MISS_PARAM = 3;
 	public static final int ERR_MISS_USER = 4;
 	public static final int ERR_MISS_ACCOUNT = 5;
+	public static final int ERR_WRONG_COMMAND = 6;
 	
     private static HBCIPassport passport;
     private static HBCIHandler  hbciHandle;
@@ -59,9 +59,6 @@ public class HBCIServer {
     public static String passportPath;
     private static Properties countryInfos;
     
-    // should be replaced with PW-notifications to client
-    private static String currentPassword = null;
-    private static String password = null;
     private static Properties users = null;
 
 	
@@ -278,7 +275,7 @@ public class HBCIServer {
     
     private static void umsToXml(GVRKUms ums, Konto account) throws IOException {
 //    	ArrayList<GVRKUms.UmsLine> lines = (ArrayList)ums.getFlatData();
-    	List lines = ums.getFlatData();
+		List lines = ums.getFlatData();
     	if(lines.isEmpty()) return;
     	long hash;
     	for(Iterator i = lines.iterator(); i.hasNext(); ) {
@@ -506,11 +503,11 @@ public class HBCIServer {
 
 			HBCIUtils.setParam("client.passport.PinTan.filename",filePath);
 	        HBCIPassport passport=AbstractHBCIPassport.getInstance();
-	        HBCIHandler hbciHandle=new HBCIHandler(null, passport);
-	        if(hbciHandle == null) {
+	        if(passport == null) {
 				HBCIUtils.log("HBCIServer: failed to create passport from file "+filePath+"!", HBCIUtils.LOG_ERR);
 				return null;
 	        }
+	        HBCIHandler hbciHandle=new HBCIHandler(null, passport);
 	        // we currently support only one User per BLZ
 	        hbciHandlers.put(fname, hbciHandle);
 	        if(altName != null) hbciHandlers.put(altName, hbciHandle);
@@ -831,46 +828,6 @@ public class HBCIServer {
 		out.flush();
 	}
 
-/*	
-	private static void getStandingOrders() throws IOException {
-		String bankCode = getParameter(map, "bankCode");
-		String userId = getParameter(map, "userId");
-		String accountNumber = getParameter(map, "accountNumber");
-		
-		HBCIHandler handler = (HBCIHandler)hbciHandlers.get(passportKey(bankCode, userId));
-		if(handler == null) {
-			error(ERR_MISS_USER, "getStandingOrders", userId);
-			return;
-		}
-		
-		GVDauerList job = (GVDauerList)handler.newJob("DauerList");
-		Konto account = (Konto)accounts.get(bankCode+accountNumber);
-		if(account == null) {
-			account = handler.getPassport().getAccount(accountNumber);
-			if(account == null) {
-				error(ERR_MISS_ACCOUNT, "getStandingOrders", accountNumber);
-				return;
-			}
-		}
-		job.setParam("my", account);
-		if(account.customerid == null) job.addToQueue();
-		else job.addToQueue(account.customerid);
-
-		HBCIExecStatus status = handler.execute();
-		if(status.isOK()) {
-			GVRDauerList res = (GVRDauerList)job.getJobResult();
-			if(res.isOK()) {
-				dauerListToXml(res, account);
-			}
-		}
-		out.write("<result command=\"getAllStandingOrders\">");
-		out.write("<list>");
-		out.write(xmlBuf.toString());
-		out.write("</list>");
-		out.write("</result>.");
-		out.flush();
-	}
-*/	
 	
 	private static void sendTransfers() throws IOException {
 		Properties orders = new Properties();
@@ -964,7 +921,7 @@ public class HBCIServer {
 			HBCIHandler handler = (HBCIHandler)e.nextElement();
 			ArrayList<Properties> jobs = (ArrayList<Properties>)orders.get(handler);
 			
-			HBCIExecStatus stat = handler.execute();
+//			HBCIExecStatus stat = handler.execute();
 			
 			for(Properties jobParam: jobs) {
 				HBCIJob job = (HBCIJob)jobParam.get("job");
@@ -1135,37 +1092,8 @@ public class HBCIServer {
 			}
 			
 			// Passport so spät wie möglich instanziieren
-/*			
-			for(int i=0; i<files.length; i++) {
-				String fname = files[i];
-				if(!fname.endsWith(".dat")) continue;
-				fname = passportPath + "/" + fname;
-		        HBCIUtils.setParam("client.passport.PinTan.filename",fname);
-		        HBCIPassport passport=AbstractHBCIPassport.getInstance();
-		        HBCIHandler hbciHandle=new HBCIHandler(null, passport);
-		        // we currently support only one User per BLZ
-		        hbciHandlers.put(passportKey(passport.getBLZ(), passport.getUserId()), hbciHandle);
-		        result.add(passport);
-		        if(password == null && currentPassword != null) password = currentPassword;
-				currentPassword = null;
+		}
 
-				//		        System.out.println(hbciHandle.getLowlevelJobRestrictions("Ueb").toString());
-//		        System.out.println(((HBCIPassportPinTan)passport).getCurrentSecMechInfo().toString());
-			}
-*/			
-		}
-/*		
-		// Read user descriptions
-		try {
-			FileInputStream istream = new FileInputStream(passportPath+"/UserInfos.conf");
-			userInfos.load(istream);
-			istream.close();
-		}
-		catch (IOException e) {
-			// do nothing
-		}
-*/		
-		password = null;
 		// return list of registered users
 		xmlBuf.append("<result command=\"init\">");
 		xmlBuf.append("<list>");
@@ -1180,7 +1108,6 @@ public class HBCIServer {
 	}
 	
 	private static void getAccounts() throws IOException {
-		ArrayList<Konto> accounts = new ArrayList<Konto>();
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
 
@@ -1513,7 +1440,6 @@ public class HBCIServer {
 			error(ERR_MISS_USER, "getAccInfo", userId);
 			return;			
 		}
-		HBCIPassportPinTan passport = (HBCIPassportPinTan)handler.getPassport();
 		
 		Konto account = (Konto)accounts.get(bankCode+accountNumber);
 		if(account == null) {
@@ -1540,11 +1466,55 @@ public class HBCIServer {
 
 	}
 	
+	private static void customerMessage() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String userId = getParameter(map, "userId");
+		String accountNumber = getParameter(map, "accountNumber");
+		
+		String msgHead = map.getProperty("head");
+		String msgBody = getParameter(map, "body");
+		String receipient = map.getProperty("recpt");
+		
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		if(handler == null) {
+			error(ERR_MISS_USER, "customerMessage", userId);
+			return;			
+		}
+		
+		Konto account = (Konto)accounts.get(bankCode+accountNumber);
+		if(account == null) {
+			account = handler.getPassport().getAccount(accountNumber);
+			if(account == null) {
+				error(ERR_MISS_ACCOUNT, "customerMessage",accountNumber);
+				return;
+			}
+		}
+		
+		HBCIJob job = handler.newJob("CustomMsg");
+		job.setParam("my", account);
+		if(msgHead != null) job.setParam("betreff", msgHead);
+		job.setParam("msg", msgBody);
+		if(receipient != null) job.setParam("recpt", receipient);
+		
+		job.addToQueue();
+		HBCIExecStatus stat = handler.execute();
+
+		boolean isOk = false;
+		HBCIJobResult res = null;
+		if(stat.isOK()) {
+			res = job.getJobResult();
+			if(res.isOK()) isOk = true;
+		}
+		xmlBuf.append("<result command=\"customerMessage\">");
+		booleTag("isOk", isOk);
+		xmlBuf.append("</result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+	}
+	
 	
 	private static void dispatch(String command) throws IOException {
-
-//		Method cmd = HBCIServer.class.getMethod(command, new Class[0]);
-		xmlBuf = new StringBuffer();
+//			cmd = HBCIServer.class.getMethod(command, new Class[0]);
 		try {
 			if(command.compareTo("addUser") ==0 ) { addPassport(); return; }
 			if(command.compareTo("init") == 0) { init(); return; }
@@ -1567,8 +1537,12 @@ public class HBCIServer {
 			if(command.compareTo("getBankParameter") == 0) { getBankParameter(); return; }
 			if(command.compareTo("setLogLevel") == 0) { setLogLevel(); return; }
 			if(command.compareTo("getAccInfo") == 0) { getAccInfo(); return; }
+			if(command.compareTo("getAllTermUebs") == 0) { getAllTermUebs(); return; }
+			if(command.compareTo("customerMessage") == 0) { customerMessage(); return; }
 			
-			System.err.println("HBCIServer: unknown command");
+			System.err.println("HBCIServer: unknown command: "+command);
+			error(ERR_WRONG_COMMAND, command, "Ungültiger Befehl");
+			
 		}
 		catch(HBCI_Exception e) {
 		    Throwable e2=e;
@@ -1765,7 +1739,6 @@ public class HBCIServer {
 	
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 			String command = null;
 			map = new Properties();
 			countryInfos = new Properties();
