@@ -134,7 +134,7 @@ public class HBCIServer {
 	                case NEED_PT_PIN:			st = callbackClient(passport, "getPin", msg, def, reason, datatype); break;
 	                case NEED_PT_TAN:			st = callbackClient(passport, "getTan", msg, def, reason, datatype); break;
 	                case NEED_PT_TANMEDIA:		st = callbackClient(passport, "getTanMedia", msg, def, reason, datatype); break;
-	                case HAVE_INST_MSG:			return;
+	                case HAVE_INST_MSG:			callbackClient(passport, "instMessage", msg, def, reason, datatype); return;
 	
 	                default: System.err.println("Unhandled callback reason code: " + Integer.toString(reason)); return;
 	            }
@@ -391,6 +391,40 @@ public class HBCIServer {
     	}
     }
     
+    private static void termUebListToXml(GVRTermUebList ul, Konto account) throws IOException {
+    	GVRTermUebList.Entry [] uebs = ul.getEntries();
+    	
+    	for(GVRTermUebList.Entry ueb: uebs) {
+    		xmlBuf.append("<cdObject type=\"Transfer\">");
+        	tag("localAccount", ueb.my.number);
+        	tag("localBankCode", ueb.my.blz);
+        	tag("currency",ueb.my.curr);
+        	valueTag("value", ueb.value);
+        	
+        	// purpose
+        	int i=1;
+        	for(String s: ueb.usage) {
+        		tag("purpose"+Integer.toString(i), s);
+        		i++;
+        		if(i>4) break;
+        	}
+        	
+        	// other
+        	if(ueb.other != null) {
+	        	tag("remoteAccount", ueb.other.number);
+	        	tag("remoteBankCode", ueb.other.blz);
+	        	tag("remoteSuffix",ueb.other.subnumber);
+	        	if(ueb.other.name2 == null) tag("remoteName", ueb.other.name);
+	        	else tag("remoteName", ueb.other.name + ueb.other.name2);
+        	}
+
+        	// exec date
+        	dateTag("date", ueb.date);
+        	tag("orderKey", ueb.orderid);
+        	xmlBuf.append("</cdObject>");
+    	}
+    }
+    
     private static void passportToXml(HBCIPassportPinTan pp) throws IOException {
     	xmlBuf.append("<object type=\"User\">");
     	tag("bankCode", pp.getBLZ());
@@ -555,9 +589,65 @@ public class HBCIServer {
         out.flush();
 	}
 	
-	private static void getAllStatements() throws IOException {
+	private static Properties getOrdersForJob(String jobName) throws IOException {
 		Properties orders = new Properties();
 		
+		// first collect all orders separated by handlers
+		ArrayList list = (ArrayList)map.get("accinfolist");
+		if(list.size() == 0) {
+			HBCIUtils.log("HBCIServer: "+jobName+" called without accounts", HBCIUtils.LOG_DEBUG);
+		}
+		for(int i=0; i<list.size(); i++) {
+			Properties tmap = (Properties)list.get(i);
+			String bankCode = getParameter(tmap, "accinfo.bankCode");
+			String userId = getParameter(tmap, "accinfo.userId");
+			String accountNumber = getParameter(tmap, "accinfo.accountNumber");
+			
+			HBCIHandler handler = hbciHandler(bankCode, userId);
+			if(handler == null) {
+				HBCIUtils.log("HBCIServer: "+jobName+" skips bankCode "+bankCode+" user "+userId, HBCIUtils.LOG_DEBUG);
+				continue;
+			}
+			HBCIJob job = handler.newJob("jobName");
+			Konto account = (Konto)accounts.get(bankCode+accountNumber);
+			if(account == null) {
+				account = handler.getPassport().getAccount(accountNumber);
+				if(account == null) {
+					HBCIUtils.log("HBCIServer: "+jobName+" skips account "+accountNumber, HBCIUtils.LOG_DEBUG);
+					continue;
+				}
+			}
+			job.setParam("my", account);
+			String fromDateString = tmap.getProperty("accinfo.fromDate");
+			if(fromDateString != null) {
+				Date fromDate = HBCIUtils.string2DateISO(fromDateString);
+				if(fromDate != null) {
+					job.setParam("startdate", fromDate);
+				}
+			}
+			HBCIUtils.log("HBCIServer: "+jobName+" customerId: "+account.customerid, HBCIUtils.LOG_DEBUG);
+			if(account.customerid == null) job.addToQueue();
+			else job.addToQueue(account.customerid);
+			ArrayList<Properties> jobs = (ArrayList<Properties>)orders.get(handler);
+			if(jobs == null) {
+				jobs = new ArrayList<Properties>();
+				orders.put(handler, jobs);
+			}
+			Properties jobacc = new Properties();
+			jobacc.put("job", job);
+			jobacc.put("account", account);
+			jobs.add(jobacc);
+		}
+		return orders;
+	}
+	
+	
+	
+	
+	private static void getAllStatements() throws IOException {
+		
+		Properties orders = getOrdersForJob("KUmsAll");
+/*		
 		// first collect all orders separated by handlers
 		ArrayList list = (ArrayList)map.get("accinfolist");
 		if(list.size() == 0) {
@@ -605,6 +695,7 @@ public class HBCIServer {
 			jobs.add(jobacc);
 			
 		}
+*/
 		
 		// now iterate through orders
 		if(orders.size() == 0) {
@@ -642,8 +733,9 @@ public class HBCIServer {
 
 	
 	private static void getAllStandingOrders() throws IOException {
-		Properties orders = new Properties();
 		
+		Properties orders = getOrdersForJob("DauerList");
+/*		
 		// first collect all orders separated by handlers
 		ArrayList list = (ArrayList)map.get("accinfolist");
 		for(int i=0; i<list.size(); i++) {
@@ -674,7 +766,7 @@ public class HBCIServer {
 			jobs.add(jobacc);
 			
 		}
-		
+*/		
 		// now iterate through orders
 		for(Enumeration e = orders.keys(); e.hasMoreElements(); ) {
 			HBCIHandler handler = (HBCIHandler)e.nextElement();
@@ -698,6 +790,40 @@ public class HBCIServer {
 			}
 		}
 		out.write("<result command=\"getAllStandingOrders\">");
+		out.write("<list>");
+		out.write(xmlBuf.toString());
+		out.write("</list>");
+		out.write("</result>.");
+		out.flush();
+	}
+	
+	private static void getAllTermUebs() throws IOException {
+		
+		Properties orders = getOrdersForJob("TermUebList");
+		
+		// now iterate through orders
+		for(Enumeration e = orders.keys(); e.hasMoreElements(); ) {
+			HBCIHandler handler = (HBCIHandler)e.nextElement();
+			ArrayList<Properties> jobs = (ArrayList<Properties>)orders.get(handler);
+			
+			HBCIExecStatus status = handler.execute();
+			if(status.isOK()) {
+				for(Properties jobacc: jobs) {
+					HBCIJob job = (HBCIJob)jobacc.get("job");
+					Konto account = (Konto)jobacc.get("account");
+					GVRTermUebList res = (GVRTermUebList)job.getJobResult();
+					if(res.isOK()) {
+				    	xmlBuf.append("<object type=\"BankQueryResult\">");
+				    	tag("bankCode", account.blz);
+				    	tag("accountNumber", account.number);
+				    	xmlBuf.append("<termUebs type=\"list\">");
+						termUebListToXml(res, account);
+						xmlBuf.append("</termUebs></object>");
+					}
+				}
+			}
+		}
+		out.write("<result command=\"getAllTermUebs\">");
 		out.write("<list>");
 		out.write(xmlBuf.toString());
 		out.write("</list>");
@@ -779,6 +905,7 @@ public class HBCIServer {
 			else if(transferType.equals("dated")) gvCode = "TermUeb"; 
 			else if(transferType.equals("internal")) gvCode = "Umb";
 			else if(transferType.equals("foreign")) gvCode = "UebForeign";
+			else if(transferType.equals("last")) gvCode = "Last";
 			
 			HBCIJob job = handler.newJob(gvCode);
 			job.setParam("src", account);
@@ -1299,6 +1426,7 @@ public class HBCIServer {
 				else if(jobName.equals("TermUeb")) supp = gvcodes.contains("HKTUE");
 				else if(jobName.equals("UebForeign")) supp = gvcodes.contains("HKAOM");
 				else if(jobName.equals("Umb")) supp = gvcodes.contains("HKUMB");
+				else if(jobName.equals("Last")) supp = gvcodes.contains("HKLAS");
 				else if(jobName.equals("DauerNew")) supp = gvcodes.contains("HKDAE");
 				else if(jobName.equals("DauerEdit")) supp = gvcodes.contains("HKDAN");
 				else if(jobName.equals("DauerDel")) supp = gvcodes.contains("HKDAL");
