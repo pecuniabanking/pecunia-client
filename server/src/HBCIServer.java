@@ -644,55 +644,6 @@ public class HBCIServer {
 	private static void getAllStatements() throws IOException {
 		
 		Properties orders = getOrdersForJob("KUmsAll");
-/*		
-		// first collect all orders separated by handlers
-		ArrayList list = (ArrayList)map.get("accinfolist");
-		if(list.size() == 0) {
-			HBCIUtils.log("HBCIServer: getStatement called without accounts", HBCIUtils.LOG_DEBUG);
-		}
-		for(int i=0; i<list.size(); i++) {
-			Properties tmap = (Properties)list.get(i);
-			String bankCode = getParameter(tmap, "accinfo.bankCode");
-			String userId = getParameter(tmap, "accinfo.userId");
-			String accountNumber = getParameter(tmap, "accinfo.accountNumber");
-			
-			HBCIHandler handler = hbciHandler(bankCode, userId);
-			if(handler == null) {
-				HBCIUtils.log("HBCIServer: getStatements skips bankCode "+bankCode+" user "+userId, HBCIUtils.LOG_DEBUG);
-				continue;
-			}
-			GVKUmsAll job = (GVKUmsAll)handler.newJob("KUmsAll");
-			Konto account = (Konto)accounts.get(bankCode+accountNumber);
-			if(account == null) {
-				account = handler.getPassport().getAccount(accountNumber);
-				if(account == null) {
-					HBCIUtils.log("HBCIServer: getStatements skips account "+accountNumber, HBCIUtils.LOG_DEBUG);
-					continue;
-				}
-			}
-			job.setParam("my", account);
-			String fromDateString = tmap.getProperty("accinfo.fromDate");
-			if(fromDateString != null) {
-				Date fromDate = HBCIUtils.string2DateISO(fromDateString);
-				if(fromDate != null) {
-					job.setParam("startdate", fromDate);
-				}
-			}
-			HBCIUtils.log("HBCIServer: getStatements customerId: "+account.customerid, HBCIUtils.LOG_DEBUG);
-			if(account.customerid == null) job.addToQueue();
-			else job.addToQueue(account.customerid);
-			ArrayList<Properties> jobs = (ArrayList<Properties>)orders.get(handler);
-			if(jobs == null) {
-				jobs = new ArrayList<Properties>();
-				orders.put(handler, jobs);
-			}
-			Properties jobacc = new Properties();
-			jobacc.put("job", job);
-			jobacc.put("account", account);
-			jobs.add(jobacc);
-			
-		}
-*/
 		
 		// now iterate through orders
 		if(orders.size() == 0) {
@@ -732,38 +683,7 @@ public class HBCIServer {
 	private static void getAllStandingOrders() throws IOException {
 		
 		Properties orders = getOrdersForJob("DauerList");
-/*		
-		// first collect all orders separated by handlers
-		ArrayList list = (ArrayList)map.get("accinfolist");
-		for(int i=0; i<list.size(); i++) {
-			Properties tmap = (Properties)list.get(i);
-			String bankCode = getParameter(tmap, "accinfo.bankCode");
-			String userId = getParameter(tmap, "accinfo.userId");
-			String accountNumber = getParameter(tmap, "accinfo.accountNumber");
-			
-			HBCIHandler handler = hbciHandler(bankCode, userId);
-			if(handler == null) continue;
-			GVDauerList job = (GVDauerList)handler.newJob("DauerList");
-			Konto account = (Konto)accounts.get(bankCode+accountNumber);
-			if(account == null) {
-				account = handler.getPassport().getAccount(accountNumber);
-				if(account == null) continue;
-			}
-			job.setParam("my", account);
-			if(account.customerid == null) job.addToQueue();
-			else job.addToQueue(account.customerid);
-			ArrayList<Properties> jobs = (ArrayList<Properties>)orders.get(handler);
-			if(jobs == null) {
-				jobs = new ArrayList<Properties>();
-				orders.put(handler, jobs);
-			}
-			Properties jobacc = new Properties();
-			jobacc.put("job", job);
-			jobacc.put("account", account);
-			jobs.add(jobacc);
-			
-		}
-*/		
+
 		// now iterate through orders
 		for(Enumeration e = orders.keys(); e.hasMoreElements(); ) {
 			HBCIHandler handler = (HBCIHandler)e.nextElement();
@@ -1515,6 +1435,7 @@ public class HBCIServer {
 	
 	private static void dispatch(String command) throws IOException {
 //			cmd = HBCIServer.class.getMethod(command, new Class[0]);
+		xmlBuf = new StringBuffer();
 		try {
 			if(command.compareTo("addUser") ==0 ) { addPassport(); return; }
 			if(command.compareTo("init") == 0) { init(); return; }
@@ -1577,126 +1498,7 @@ public class HBCIServer {
 		}
 	}
 
-/*	
- <command name="addUser"> 
- 	<bankCode>76010085</bankCode>
- 	<userId>718610851</userId>
- 	<customerId></customerId>
- 	<host>hbci.postbank.de/banking/hbci.do</host>
- 	<port>443</port>
- 	<version>plus</version>
- 	<filter>Base64</filter>
- </command>.
- 
- <command name="addUser">
-    <name>HBCI4Java</name>
- 	<bankCode>80007777</bankCode>
- 	<userId>femminghaus</userId>
- 	<customerId></customerId>
- 	<host>www.hora-obscura.de/pintan/PinTanServlet</host>
- 	<port>443</port>
- 	<version>plus</version>
- 	<filter>Base64</filter>
- </command>.
- 
- <command name="resetPinTanProcess">
- 	<bankCode>76010085</bankCode>
- 	<userId>718610851</userId>
- 	<customerId>718610851</customerId>
-</command>.   
- 
-<command name="updateBankData">
- 	<bankCode>76010085</bankCode>
- 	<userId>718610851</userId>
- 	<customerId>718610851</customerId>
-</command>.   
-
- 
- <command name="init">
- 	<path>/users/emmi/Library/Application Support/Pecunia/Passports</path>
- </command>.
- 
- <command name="checkAccount">
- 	<bankCode>BLZ</bankCode>
- 	<accountNumber>xxx</accountNumber>
- </command>.
- 
- <command name="getJobRestrictions">
- 	<bankCode>BLZ</bankCode>
- 	<userId>xxx</userId>
- 	<jobName>UebForeign</jobName>
- </command>.
-
- <command name="checkAccount">
- 	<iban>(null)</iban>
- </command>.
- 
- <command name="getAccounts">
- 	<bankCode>*</bankCode>
- </command>. 	
- 
- <command name="getBankInfo">
- 	<bankCode>76010085</bankCode>
- </command>.
- 
- <command name="getBankParameter">
-	<bankCode>60090800</bankCode>
-	<userId>3551722</userId>
- </command>.
-
- <command name="getAllStatements">
- 	<accinfolist type="list">
- 		<accinfo>
- 			<bankCode>76010085</bankCode>
- 			<accountNumber>718610851</accountNumber>
- 			<userId>718610851</userId>
- 			<fromDate>2011-08-01</fromDate>
- 		</accinfo>
- 	</accinfolist>
- </command>.
- 
- <command name="sendTransfers">
- 	<transfers type="list">
- 		<transfer>
- 			<type>standard</type>
- 			<bankCode>80007777</bankCode>
- 			<userId>femminghaus</userId>
- 			<accountNumber>2806090740</accountNumber>
- 			<customerId>femminghaus</customerId>
- 			<remoteAccount>2806090741</remoteAccount>
- 			<remoteBankCode>80007777</remoteBankCode>
- 			<remoteName>Frank Emminghaus</remoteName>
- 			<remoteCountry>DE</remoteCountry>
- 			<purpose1>Test</purpose1>
- 			<currency>EUR</currency>
- 			<value>1000</value>
- 			<transferId>1</transferId>
- 		</transfer>
- 	</transfers>
- </command>.
-
- <command name="isJobSupported">
-	<bankCode>60090800</bankCode>
- 	<userId>3551722</userId>
- 	<accountNumber>3551722</accountNumber>
- 	<jobName>DauerNew</jobName>
- </command>.
-
- <command name="setAccount">
- 	<bankCode>60090800</bankCode>
- 	<accountNumber>3551722</accountNumber>
- 	<customerId>3551722</customerId>
- 	<ownerName>Frank Emminghaus</ownerName>
- 	<name>Girokonto</name>
- </command>.
-  
- <command name="getAccInfo">
- 	<bankCode>67292200</bankCode>
- 	<accountNumber>36917300</accountNumber>
- 	<userId>206844341</userId>
- </command>.
 	
-*/	
 	private static void acceptArray(XmlPullParser xpp, Properties map, String tag) throws XmlPullParserException, IOException {
 		int eventType;
 		ArrayList list = new ArrayList();
@@ -1712,8 +1514,7 @@ public class HBCIServer {
 		}
 		map.put(tag, list);
 	}
-	
-	
+		
 	private static void acceptTag(XmlPullParser xpp, Properties map, String tag) throws XmlPullParserException, IOException {
 		int eventType;
 		String currTag = null;
