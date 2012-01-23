@@ -166,7 +166,7 @@ static HDIWrapper *_wrapper = nil;
 - (void)appendOutput:(NSString *)outp;
 // output from stdout
 {
-	NSLog(@"%@", outp);
+//	NSLog(@"%@", outp);
 	NSString *s = [outp stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet ] ];
 	if(output) {
 		[output autorelease ];
@@ -177,7 +177,7 @@ static HDIWrapper *_wrapper = nil;
 - (void)appendError:(NSString *)error
 {
 // output from stderr
-	NSLog(@"%@", error);
+//	NSLog(@"%@", error);
 	NSString *err = [error stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet ] ];
 	if(errorMessage) {
 		[errorMessage autorelease ];

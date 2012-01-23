@@ -20,6 +20,7 @@
 @class BankAccount;
 @class PecuniaError;
 @class BankParameter;
+@class CustomerMessage;
 
 @protocol HBCIBackend
 
@@ -47,6 +48,7 @@
 -(BOOL)sendTransfers:(NSArray*)transfers;
 -(PecuniaError*)sendStandingOrders:(NSArray*)orders;
 -(PecuniaError*)changePinTanMethodForUser:(User*)user;
+-(PecuniaError*)sendCustomerMessage:(CustomerMessage*)msg;
 
 -(PecuniaError*)addAccount: (BankAccount*)account forUser: (User*)user;
 -(PecuniaError*)changeAccount:(BankAccount*)account;

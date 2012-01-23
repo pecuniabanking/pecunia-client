@@ -77,7 +77,7 @@ NSString *hbciVersionFromString(NSString* s)
 	NSError *error=nil;
 	NSString *s = [NSString stringWithContentsOfFile: path encoding:NSUTF8StringEncoding error: &error];
 	if(error) {
-		NSLog(@"Error reading institutes file");
+        [[MessageLog log ] addMessage:@"Error reading institutes file" withLevel:LogLevel_Error];
 	} else {
 		NSArray *institutes = [s componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
 		NSArray *keys = [NSArray arrayWithObjects: @"bankCode", @"bankName", @"bankLocation", @"hbciVersion", @"bankURL", nil];

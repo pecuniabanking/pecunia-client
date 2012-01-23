@@ -14,6 +14,7 @@
 #import "Keychain.h"
 #import "PecuniaError.h"
 #import "MigrationManagerWorkaround.h"
+#import "LaunchParameters.h"
 
 //#define CURRENT_BUILD 3
 //NSString* const MD_Build_Number = @"MD_BUILDNUMBER";
@@ -43,25 +44,10 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults ];
 
     // customize data file name
-    BOOL altFile = NO;
-    NSArray *args=[[NSProcessInfo processInfo] arguments];
-    for(NSString *s in args) {
-        if ([s hasPrefix:@"-f" ]) {
-            altFile = YES;
-            NSString *name = [s substringFromIndex:2 ];
-            if (name == nil || [name length ] == 0) continue;
-            else {
-                _dataFile = [[@"/" stringByAppendingString:name ] retain ];
-                altFile = NO;
-            }
-        }
-        if (altFile) {
-            altFile = NO;
-            if (s == nil || [s length ] == 0) continue;
-            _dataFile = [[@"/" stringByAppendingString:s ] retain ];
-        }
+    if ([LaunchParameters parameters ].dataFile) {
+        _dataFile = [LaunchParameters parameters ].dataFile;
     }
-    
+
 	encrypted = NO;
 	imageAvailable = NO;
 	

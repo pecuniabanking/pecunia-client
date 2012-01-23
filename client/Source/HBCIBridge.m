@@ -23,6 +23,7 @@
 #import "ChipTanWindowController.h"
 #import "TanMediaWindowController.h"
 #import "HBCIBackend.h"
+#import "LaunchParameters.h"
 
 #import "HBCIController.h" // for -asyncCommandCompletedWithResult
 
@@ -90,7 +91,10 @@
     
     NSString *bundlePath = [[NSBundle mainBundle ] bundlePath ];
     NSString *launchPath = [bundlePath stringByAppendingString:@"/Contents/HBCIServer.jar" ];
-    [task setArguments: [NSArray arrayWithObjects: @"-jar", launchPath, nil ] ];
+    
+    if ([LaunchParameters parameters ].debugServer) {
+        [task setArguments: [NSArray arrayWithObjects: @"-Xdebug", @"-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005", @"-jar", launchPath, nil ] ];
+    } else [task setArguments: [NSArray arrayWithObjects: @"-jar", launchPath, nil ] ];
     
     /*	
      [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -102,6 +106,11 @@
     
     // launch the task asynchronously
     [task launch];
+    
+    if ([LaunchParameters parameters ].debugServer) {
+        // consume jvm status message
+        [[inPipe fileHandleForReading ] availableData ];
+    }
     
     // init 
     //	NSString *cmd = @"<command name=\"init\"><path>/users/emmi/workspace/HBCIServer</path></command>.\n";
@@ -430,7 +439,8 @@
         return [self getTanMedia: data ];
     }
     if ([data.command isEqualToString:@"instMessage" ]) {
-        NSNotification *notification = [NSNotification notificationWithName:PecuniaInstituteMessageNotification object:data.message ];
+        NSNotification *notification = [NSNotification notificationWithName:PecuniaInstituteMessageNotification 
+                                                                     object:[NSDictionary dictionaryWithObjectsAndKeys:data.bankCode, @"bankCode", data.message, @"message", nil ] ];
         [[NSNotificationCenter defaultCenter ] postNotification:notification ];
     }
     return @"";

@@ -67,7 +67,7 @@
 	NSString *fileName = [NSString stringWithFormat:@"%@/%@.plist" , [MOAssistant assistant ].importerDir, name ];
 	ImportSettings *settings = [NSKeyedUnarchiver unarchiveObjectWithFile: fileName ];	
 	if (settings == nil) {
-		NSLog(@"Import settings file not found: %@", fileName );
+        [[MessageLog log ] addMessage:[NSString stringWithFormat:@"Import settings file not found: %@", fileName ] withLevel:LogLevel_Warning];
 	}
 	return settings;
 }

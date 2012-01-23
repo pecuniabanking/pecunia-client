@@ -10,6 +10,7 @@
 #import "HBCIClient.h"
 #import "User.h"
 #import "Account.h"
+#import "CustomerMessage.h"
 
 static HBCIClient *client = nil;
 
@@ -196,6 +197,12 @@ static HBCIClient *client = nil;
 {
 	return [controller getAccountsForUser: user ];
 }
+
+-(PecuniaError*)sendCustomerMessage:(CustomerMessage*)msg
+{
+    return [controller sendCustomerMessage:msg ];
+}
+
 
 -(BOOL)checkDTAUS:(NSString*)s
 {

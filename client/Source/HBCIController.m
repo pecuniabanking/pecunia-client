@@ -29,6 +29,8 @@
 #import "ShortDate.h"
 #import "BankParameter.h"
 #import "ProgressWindowController.h"
+#import "CustomerMessage.h"
+#import "MessageLog.h"
 
 @implementation HBCIController
 
@@ -118,6 +120,7 @@ NSString *escapeSpecial(NSString *s)
 
 -(void)appendTag:(NSString*)tag withValue:(NSString*)val to:(NSMutableString*)cmd
 {
+    if (val == nil) return;
     NSString *s = escapeSpecial(val);
     if(val) [cmd appendFormat:@"<%@>%@</%@>", tag, s, tag ];
 }
@@ -583,7 +586,7 @@ NSString *escapeSpecial(NSString *s)
     NSNumber *result = [bridge syncCommand: cmd error: &error ];
     if (error) {
         // Bei Fehlern sollte die Prüfung nicht die Buchung verhindern
-        NSLog(@"Error checking account %@, bankCode %@", accountNumber, bankCode);
+        [[MessageLog log ] addMessage:[NSString stringWithFormat:@"Error checking account %@, bankCode %@", accountNumber, bankCode ] withLevel:LogLevel_Warning ];
         return YES;
     }
     if(result) return [result boolValue ]; else return NO;
@@ -598,7 +601,7 @@ NSString *escapeSpecial(NSString *s)
     NSNumber *result = [bridge syncCommand: cmd error: &error ];
     if (error) {
         // Bei Fehlern sollte die Prüfung nicht die Buchung verhindern
-        NSLog(@"Error checking iban %@", iban);
+        [[MessageLog log ] addMessage:[NSString stringWithFormat:@"Error checking iban %@", iban ] withLevel:LogLevel_Warning ];
         return YES;
     }
     if(result) return [result boolValue ]; else return NO;
@@ -896,8 +899,30 @@ NSString *escapeSpecial(NSString *s)
             break;
         }
     }
-    
     return nil;
+}
+
+-(PecuniaError*)sendCustomerMessage:(CustomerMessage*)msg
+{
+    PecuniaError *error=nil;
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"customerMessage\">" ];
+    [self appendTag: @"bankCode" withValue: msg.account.bankCode to: cmd ];
+    [self appendTag: @"accountNumber" withValue: msg.account.accountNumber to:cmd ];
+    [self appendTag: @"userId" withValue: msg.account.userId to: cmd ];
+    [self appendTag: @"head" withValue: msg.header to: cmd ];
+    [self appendTag: @"body" withValue: msg.message to: cmd ];
+    [self appendTag: @"recpt" withValue: msg.receipient to: cmd ];
+    [cmd appendString: @"</command>" ];
+
+    NSNumber *result = [bridge syncCommand: cmd error: &error ];
+    if(error) return error;
+
+    if ([result boolValue ] == YES) {
+        msg.isSent = [NSNumber numberWithBool:YES ];
+    } else {
+        error = [PecuniaError errorWithCode:0 message: NSLocalizedString(@"AP172", @"") ];
+    }
+    return error;
 }
 
 
