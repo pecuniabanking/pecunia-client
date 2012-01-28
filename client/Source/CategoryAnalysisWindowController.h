@@ -81,10 +81,11 @@
 	ShortDate* fromDate;
 	ShortDate* toDate;
     double lastInfoTimePoint;             // The time point for which the info text was last updated.
+    bool doingGraphUpdates;
     
     CGFloat barWidth;
-    NSDecimalNumber* minValue;            // The minimum value of the currently selected category.
-    NSDecimalNumber* maxValue;            // Ditto for maximum.
+    NSDecimalNumber* totalMinValue;            // The minimum value of the currently selected category.
+    NSDecimalNumber* totalMaxValue;            // Ditto for maximum.
     
     GroupingInterval groupingInterval;
     

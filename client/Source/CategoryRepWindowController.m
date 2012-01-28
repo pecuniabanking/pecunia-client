@@ -799,12 +799,6 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     }
 }
 
-- (void)setCategory: (Category*)newCategory
-{
-    currentCategory = newCategory;
-    [self updateValues];
-}
-
 - (void)updateValues
 {
     [self hideHelp];
@@ -1002,15 +996,6 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     y.visibleAxisRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
                                                       length: CPTDecimalFromFloat(1.27 * range)];
     
-}
-
-- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
-{
-    [fromDate release];
-    fromDate = [from retain];
-    [toDate release];
-    toDate = [to retain];
-    [self updateValues];
 }
 
 - (void)releaseHelpWindow
@@ -1268,6 +1253,21 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 - (void)deactivate
 {
     [self hideHelp];
+}
+
+- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
+{
+    [fromDate release];
+    fromDate = [from retain];
+    [toDate release];
+    toDate = [to retain];
+    [self updateValues];
+}
+
+- (void)setCategory: (Category*)newCategory
+{
+    currentCategory = newCategory;
+    [self updateValues];
 }
 
 @end

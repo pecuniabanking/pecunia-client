@@ -95,12 +95,9 @@
     NSDecimalNumber        *saveValue;
     NSCursor               *splitCursor;
     
-    //NSView *activeCategoryView; // Statements, analysis, categories etc.
     CategoryAnalysisWindowController *categoryAnalysisController;
-    //NSView *categoryAnalysisView;
     CategoryRepWindowController *categoryReportingController;
     id<PecuniaSectionItem> currentSection;
-    //NSView *categoryReportingView;
 }
 
 @property(nonatomic, copy) NSDecimalNumber *saveValue;

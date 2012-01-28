@@ -355,6 +355,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 - (int)majorTickCount;
 - (void)hideHelp;
+- (NSUInteger)findIndexForTimePoint: (NSUInteger)timePoint;
 
 @end
 
@@ -389,6 +390,9 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [toDate release];
     [referenceDate release];
     
+    [totalMaxValue release];
+    [totalMinValue release];
+
     [mainGraph release];
     
     [mainIndicatorLine release];
@@ -1087,15 +1091,106 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     }
 }
 
+- (void)updateVerticalMainGraphRange
+{
+    if (rawCount == 0) {
+        return;
+    }
+    
+    CPTXYPlotSpace* plotSpace = (id)mainGraph.defaultPlotSpace;
+
+    NSUInteger units = round(plotSpace.xRange.locationDouble);
+    NSUInteger startIndex = [self findIndexForTimePoint: units];
+    if (![mainCategory isBankAccount] && timePoints[startIndex] < units) {
+        // The search routine for an index is left affine, that is, the lower indices are prefered
+        // when a time point is between two time indices.
+        // For scatterplots this is ok, but we need to correct it for bar plots to only consider
+        // what is visible.
+        ++startIndex;
+    }
+    units = round(plotSpace.xRange.endDouble);
+    NSUInteger endIndex = [self findIndexForTimePoint: units] + 1;
+
+    if (startIndex > endIndex) {
+        return;
+    }
+    
+    double min = 0;
+    double max = 0;
+    for (NSUInteger i = startIndex; i < endIndex; i++) {
+        if (totalBalances[i] < min) {
+            min = totalBalances[i];
+        }
+        if (totalBalances[i] > max) {
+            max = totalBalances[i];
+        }
+    }
+    
+    NSDecimalNumber* minValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(min)];
+    NSDecimalNumber* maxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(max)];
+    NSDecimalNumber* roundedMinValue = [minValue roundToUpperOuter];
+    NSDecimalNumber* roundedMaxValue = [maxValue roundToUpperOuter];
+    
+    CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
+    
+    float animationDuration = 0.3;
+    if (([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) != 0) {
+		animationDuration = 3;
+	}
+
+    // Set the y axis ticks depending on the maximum value.
+    CPTXYAxis* y = axisSet.yAxis;
+
+    // Let the larger area (negative or positive) determine the size of the major tick range.
+    NSDecimalNumber* minAbsolute = [roundedMinValue abs];
+    NSDecimalNumber* maxAbsolute = [roundedMaxValue abs];
+    float interval;
+    if ([minAbsolute compare: maxAbsolute] == NSOrderedDescending) {
+        interval = [self intervalFromRange: minAbsolute];
+    } else {
+        interval = [self intervalFromRange: maxAbsolute];
+    }
+    
+    // Apply new interval length and minor ticks now only if they lead to equal or less labels.
+    // Otherwise do it after the animation.
+    // This is necessary to avoid a potentially large intermittent number of labels during animation.
+    NSDecimal newInterval = CPTDecimalFromFloat(interval);
+    NSDecimal oldInterval = y.majorIntervalLength;
+    if (NSDecimalCompare(&oldInterval, &newInterval) == NSOrderedAscending) {
+        y.majorIntervalLength = newInterval;
+        y.minorTicksPerInterval = [self minorTicksFromInterval: interval];
+    }
+
+    CorePlotXYRangeAnimation* animation = [[CorePlotXYRangeAnimation alloc] initWithDuration: animationDuration
+                                                                              animationCurve: NSAnimationEaseInOut
+                                                                                   plotSpace: plotSpace
+                                                                                        axis: axisSet.yAxis
+                                                                                   forXRange: NO];
+    animation.animationBlockingMode = NSAnimationBlocking;
+    animation.targetPosition = [roundedMinValue doubleValue];
+    animation.targetLength = [[roundedMaxValue decimalNumberBySubtracting: roundedMinValue] doubleValue];
+    [animation startAnimation];
+    [animation release];
+
+    y.majorIntervalLength = newInterval;
+    y.minorTicksPerInterval = [self minorTicksFromInterval: interval];
+
+    CPTPlotRange* plotRange = [CPTPlotRange plotRangeWithLocation: [roundedMinValue decimalValue]
+                                                           length: [[roundedMaxValue decimalNumberBySubtracting: roundedMinValue] decimalValue]];
+    
+    plotSpace.globalYRange = plotRange;
+
+}
+
 - (void)updateMainGraph
 {
     int tickCount = [self majorTickCount];
-    int totalUnits = (rawCount > 0) ? timePoints[rawCount - 1] : 0;
+    int totalUnits = (rawCount > 1) ? timePoints[rawCount - 2] + 1 : 0;
     if (totalUnits < tickCount) {
         totalUnits = tickCount;
     }
     
-    // Set the available plot space depending on the min, max and day values we found. Extend both range by a few precent for more appeal.
+    // Set the available plot space depending on the min, max and day values we found.
     CPTXYPlotSpace* plotSpace = (id)mainGraph.defaultPlotSpace;
     
     // Horizontal range.
@@ -1139,32 +1234,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     timeFormatter.referenceDate = [referenceDate lowDate];
     x.labelFormatter = timeFormatter;
-    
-    // Vertical range.
-    NSDecimalNumber* roundedMinValue = [minValue roundToUpperOuter];
-    NSDecimalNumber* roundedMaxValue = [maxValue roundToUpperOuter];
-    
-    plotRange = [CPTPlotRange plotRangeWithLocation: [roundedMinValue decimalValue]
-                                             length: [[roundedMaxValue decimalNumberBySubtracting: roundedMinValue] decimalValue]];
-    plotSpace.globalYRange = plotRange;
-    plotSpace.yRange = plotRange;
-    
-    // Set the y axis ticks depending on the maximum value.
-    CPTXYAxis* y = axisSet.yAxis;
-    y.visibleRange = plotRange;
-    
-    // Let the larger area (negative or positive) determine the size of the major tick range.
-    NSDecimalNumber* minAbsolute = [roundedMinValue abs];
-    NSDecimalNumber* maxAbsolute = [roundedMaxValue abs];
-    float interval;
-    if ([minAbsolute compare: maxAbsolute] == NSOrderedDescending) {
-        interval = [self intervalFromRange: minAbsolute];
-    } else {
-        interval = [self intervalFromRange: maxAbsolute];
-    }
-    y.majorIntervalLength = CPTDecimalFromFloat(interval);
-    y.minorTicksPerInterval = [self minorTicksFromInterval: interval];
-    
+
+    // The currency of the main category can change so update the y axis label formatter as well.
     NSString* currency = (mainCategory == nil) ? @"EUR" : [mainCategory currency];
     NSNumberFormatter* currencyFormatter = [[[NSNumberFormatter alloc] init] autorelease];
     currencyFormatter.usesSignificantDigits = YES;
@@ -1172,12 +1243,12 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
     currencyFormatter.currencyCode = currency;
     currencyFormatter.zeroSymbol = [NSString stringWithFormat: @"0 %@", currencyFormatter.currencySymbol];
-    y.labelFormatter = currencyFormatter;
+    axisSet.yAxis.labelFormatter = currencyFormatter;
 }
 
 - (void)updateTurnoversGraph
 {
-    int totalUnits = (rawCount > 0) ? timePoints[rawCount - 1] : 0;
+    int totalUnits = (rawCount > 1) ? timePoints[rawCount - 2] + 1 : 0;
     if (totalUnits < [self majorTickCount]) {
         totalUnits = [self majorTickCount];
     };
@@ -1229,7 +1300,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     if (selectionTimePoints != nil) {
         totalUnits = selectionTimePoints[selectionSampleCount - 1];
     } else {
-       totalUnits = (rawCount > 0) ? timePoints[rawCount - 1] : 0;
+       totalUnits = (rawCount > 1) ? timePoints[rawCount - 2] + 1 : 0;
     }
 
     if (totalUnits < [self majorTickCount]) {
@@ -1248,8 +1319,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTXYAxisSet* axisSet = (id)selectionGraph.axisSet;
 
     // Vertical range.
-    NSDecimalNumber* roundedMinValue = [minValue roundToUpperOuter];
-    NSDecimalNumber* roundedMaxValue = [maxValue roundToUpperOuter];
+    NSDecimalNumber* roundedMinValue = [totalMinValue roundToUpperOuter];
+    NSDecimalNumber* roundedMaxValue = [totalMaxValue roundToUpperOuter];
     
     plotRange = [CPTPlotRange plotRangeWithLocation: [roundedMinValue decimalValue]
                                              length: [[roundedMaxValue decimalNumberBySubtracting: roundedMinValue] decimalValue]];
@@ -1501,7 +1572,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     }
 
     // Find closest point in our time points that is before the computed time value.
-    int units = round(CPTDecimalFloatValue(dataPoint[0]));
+    int units = round(timePoint);
     NSUInteger index = [self findIndexForTimePoint: units];
     double timePointAtIndex = timePoints[index];
     BOOL dateHit = NO;
@@ -1615,8 +1686,10 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
  */
 - (void)graphLayoutChanged: (NSNotification*)notification
 {
-    if ([[notification name] isEqualToString: PecuniaGraphLayoutChangeNotification])
+    if ([[notification name] isEqualToString: PecuniaGraphLayoutChangeNotification] && !doingGraphUpdates)
     {
+        doingGraphUpdates = YES;
+        
         [NSObject cancelPreviousPerformRequestsWithTarget: self];
         
         NSDictionary* parameters = [notification userInfo];
@@ -1674,6 +1747,9 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
             [self updateTimeRangeVariables];
             [self updateSelectionDisplay];
 
+            // Adjust vertical graph ranges after a short delay.
+            [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.1];
+
             if (!keepInfoLayerHidden && !fromSelectionGraph) {
                 [self updateTrackLinesAndInfoAnnotation: center];
             }
@@ -1700,10 +1776,12 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
                     [self updateTimeRangeVariables];
                     [self updateSelectionDisplay];
                     
+                    [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.1];
                 }
             }
 
         }
+        doingGraphUpdates = NO;
     }
 }
 
@@ -1789,8 +1867,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         }
     }
     
-    minValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(minDoubleValue)];
-    maxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(maxDoubleValue)];
+    totalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(minDoubleValue)] retain];
+    totalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(maxDoubleValue)] retain];
 
     // Update the selected range so that its length corresponds to the minimum length
     // and it doesn't start before the first date in the date array. It might go beyond the
@@ -1849,8 +1927,10 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     turnoversGraph.defaultPlotSpace.allowsUserInteraction = NO;
     selectionGraph.defaultPlotSpace.allowsUserInteraction = NO;
 
-    maxValue = [NSDecimalNumber zero];
-    minValue = [NSDecimalNumber zero];
+    [totalMaxValue release];
+    totalMaxValue = [[NSDecimalNumber zero] retain];
+    [totalMinValue release];
+    totalMinValue = [[NSDecimalNumber zero] retain];
 }
 
 - (void)reloadData
@@ -1919,7 +1999,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     for (ShortDate *date in dates) {
         timePoints[index++] = [self distanceFromDate: referenceDate toDate: date];
     }
-    timePoints[index] = timePoints[index - 1] + 1; // One calendar unit more in the last entry.
+    timePoints[index] = timePoints[index - 1] + 1000; // A date far in the future.
     
     // Convert all NSDecimalNumbers to double for better performance.
     totalBalances = malloc(rawCount * sizeof(double));
@@ -1947,7 +2027,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         balanceCounts[index++] = [value doubleValue];
     }
 
-    // The value in the extra field is set to 0. It is used only indirectly.
+    // The value in the extra field is never used, but serves only as additional data point.
     totalBalances[index] = 0;
     positiveBalances[index] = 0;
     negativeBalances[index] = 0;
@@ -1996,6 +2076,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 - (void)updateGraphs
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget: self];
+        
     [self clearGraphs];
     [self reloadData];
     
@@ -2004,7 +2086,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         turnoversGraph.defaultPlotSpace.allowsUserInteraction = YES;
         selectionGraph.defaultPlotSpace.allowsUserInteraction = YES;
     } else {
-        maxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(100)];
+        [totalMaxValue release];
+        totalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(100)] retain];
     }
 
     [self setupMainPlots];
@@ -2012,35 +2095,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [self setupSelectionPlot];
     [self updateSelectionDisplay];
     
-    [[mainHostView window] makeFirstResponder: mainHostView];
-}
-
-/**
- * Sets a new time interval for display. The given interval is checked against our minimum intervals
- * (depending on the current grouping mode) and adjusted to match them.
- */
-- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
-{
-    [fromDate release];
-    fromDate = [from retain];
-    
-    [toDate release];
-    toDate = [to retain];
-
-    [self updateValues];
-
-    [self updateMainGraph];
-    [self updateTurnoversGraph];
-    [self updateSelectionGraph];
-    [self updateSelectionDisplay];
-}
-
-- (void)setCategory:(Category *)newCategory
-{
-    if (mainCategory != newCategory) {
-        mainCategory = newCategory;
-        [self updateGraphs];
-    }
+    [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
 }
 
 - (void)releaseHelpWindow
@@ -2072,6 +2127,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 - (IBAction)setGrouping: (id)sender
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget: self];
+        
     groupingInterval = [sender intValue];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -2085,7 +2142,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     if (rawCount == 0) {
         [self clearGraphs];
-        maxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(100)];
+        [totalMaxValue release];
+        totalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(100)] retain];
     } else {
         mainGraph.defaultPlotSpace.allowsUserInteraction = YES;
         turnoversGraph.defaultPlotSpace.allowsUserInteraction = YES;
@@ -2096,6 +2154,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [self updateTurnoversGraph];
     [self updateSelectionGraph];
     [self updateSelectionDisplay];
+    
+    [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
 }
 
 - (IBAction)toggleHelp: (id)sender
@@ -2160,6 +2220,38 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 - (void)deactivate
 {
     [self hideHelp];
+}
+
+/**
+ * Sets a new time interval for display. The given interval is checked against our minimum intervals
+ * (depending on the current grouping mode) and adjusted to match them.
+ */
+- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget: self];
+        
+    [fromDate release];
+    fromDate = [from retain];
+    
+    [toDate release];
+    toDate = [to retain];
+
+    [self updateValues];
+
+    [self updateMainGraph];
+    [self updateTurnoversGraph];
+    [self updateSelectionGraph];
+    [self updateSelectionDisplay];
+    
+    [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.1];
+}
+
+- (void)setCategory:(Category *)newCategory
+{
+    if (mainCategory != newCategory) {
+        mainCategory = newCategory;
+        [self updateGraphs];
+    }
 }
 
 @end

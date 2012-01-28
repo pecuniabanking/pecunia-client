@@ -251,8 +251,6 @@ static BankingController	*con;
     if ([NSBundle loadNibNamed: @"CategoryAnalysis" owner: categoryAnalysisController]) {
         NSView* view = [categoryAnalysisController mainView];
         view.frame = frame;
-        [rightPane addSubview: view];
-        [view setHidden: YES];
     }
     [categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
     
@@ -260,12 +258,13 @@ static BankingController	*con;
     if ([NSBundle loadNibNamed: @"CategoryReporting" owner: categoryReportingController]) {
         NSView* view = [categoryReportingController mainView];
         view.frame = frame;
-        [rightPane addSubview: view];
-        [view setHidden: YES];
     }
     [categoryReportingController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
 
     [sideToolbar retain]; // We are going to remove and re-add the toolbar on demand to maintain its top z position.
+    [rightSplitter retain]; // Content views are dynamically exchanged with proper retain/release.
+                            // The right splitter is the initial control and needs an own retain to avoid losing it
+                            // on the next switch.
     
     currentSection = nil; // The right splitter, which is by default active is not a regular section.
 }
@@ -275,6 +274,7 @@ static BankingController	*con;
     [categoryAnalysisController release];
     [categoryReportingController release];
     [sideToolbar release];
+    [rightSplitter release];
     [super dealloc];
 }
 
@@ -1242,7 +1242,7 @@ static BankingController	*con;
             // Cross-fade between the active view and the right splitter.
             if (currentSection != nil) {
                 [currentSection deactivate];
-                [AnimationHelper switchFromView: currentView toView: rightSplitter withSlide: NO];
+                [[rightPane animator] replaceSubview: currentView with: rightSplitter];
                 currentSection = nil;
                 pageHasChanged = YES;
             }
@@ -1250,7 +1250,7 @@ static BankingController	*con;
         case 1:
             if (currentSection != categoryAnalysisController) {
                 [currentSection deactivate];
-                [AnimationHelper switchFromView: currentView toView: [categoryAnalysisController mainView] withSlide: NO];
+                [[rightPane animator] replaceSubview: currentView with: [categoryAnalysisController mainView]];
                 currentSection = categoryAnalysisController;
                 [categoryAnalysisController updateTrackingAreas];
                 pageHasChanged = YES;
@@ -1259,7 +1259,7 @@ static BankingController	*con;
         case 2:
             if (currentSection != categoryReportingController) {
                 [currentSection deactivate];
-                [AnimationHelper switchFromView: currentView toView: [categoryReportingController mainView] withSlide: NO];
+                [[rightPane animator] replaceSubview: currentView with: [categoryReportingController mainView]];
                 currentSection = categoryReportingController;
                 
                 // If a category is selected currently which has no child categories then move the
@@ -1286,7 +1286,11 @@ static BankingController	*con;
     // Ensure z-order (sideToolbar must remain top-most view).
     [sideToolbar slideOut];
     if (pageHasChanged) {
-        [currentSection activate];
+        if (currentSection != nil) {
+            currentSection.category = [self currentSelection];
+            [currentSection setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+            [currentSection activate];
+        }
         [sideToolbar removeFromSuperviewWithoutNeedingDisplay];
         [rightPane addSubview: sideToolbar];
         
@@ -1724,9 +1728,10 @@ static BankingController	*con;
     
     statementsListViewHost.indicatorColor = [cat categoryColor];
     
-    // Update graph panes.
-    categoryAnalysisController.category = cat;
-    categoryReportingController.category = cat;
+    // Update current section if the default is not active.
+    if (currentSection != nil) {
+        currentSection.category = cat;
+    }
 
     [self updateStatusbar];
 }
@@ -1993,9 +1998,11 @@ static BankingController	*con;
     [cat rebuildValues];
     [cat rollup];
     
-    [categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
-    [categoryReportingController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
-    
+    // Update current section if the default is not active.
+    if (currentSection != nil) {
+        [currentSection setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+    }
+
     [searchField setStringValue: @"" ];
     [self updateStatusbar];
 }

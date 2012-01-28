@@ -7,6 +7,9 @@
  *
  */
 
+@class Category;
+@class ShortDate;
+
 @protocol PecuniaSectionItem
 
 @optional
@@ -20,6 +23,9 @@
 - (NSView*)mainView;
 - (void)activate;
 - (void)deactivate;
+
+- (void)setCategory: (Category*)category;
+- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
 
 @end
 

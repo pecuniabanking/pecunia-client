@@ -9,8 +9,9 @@
 #import <Cocoa/Cocoa.h>
 #import <Quartz/Quartz.h>
 
-@interface AnimationHelper : NSObject {
+#import <CorePlot/CorePlot.h>
 
+@interface AnimationHelper : NSObject {
 }
 
 + (void)crossFadeFromView: (NSView*)oldView
@@ -39,3 +40,27 @@
 - (void)slideTo: (CGPoint)newPosition inTime: (CGFloat)time;
 
 @end
+
+@interface CorePlotXYRangeAnimation : NSAnimation {
+    CPTXYPlotSpace* plotSpace; // The plotspace of which we animate the xRange or the yRange.
+    CPTXYAxis* axis; // Can be nil.
+    
+    bool useXRange;
+    double startPosition;
+    double startLength;
+    double targetPosition;
+    double targetLength;
+}
+
+- (id)initWithDuration: (NSTimeInterval)duration
+        animationCurve: (NSAnimationCurve)animationCurve
+             plotSpace: (CPTXYPlotSpace*)theSpace
+                  axis: (CPTXYAxis*)theAxis
+             forXRange: (bool)forXRange;
+
+@property (nonatomic, assign) double targetPosition;
+@property (nonatomic, assign) double targetLength;
+
+@end
+
+
