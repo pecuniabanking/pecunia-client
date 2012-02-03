@@ -605,7 +605,7 @@ public class HBCIServer {
 				HBCIUtils.log("HBCIServer: "+jobName+" skips bankCode "+bankCode+" user "+userId, HBCIUtils.LOG_DEBUG);
 				continue;
 			}
-			HBCIJob job = handler.newJob("jobName");
+			HBCIJob job = handler.newJob(jobName);
 			Konto account = (Konto)accounts.get(bankCode+accountNumber);
 			if(account == null) {
 				account = handler.getPassport().getAccount(accountNumber);
@@ -841,7 +841,7 @@ public class HBCIServer {
 			HBCIHandler handler = (HBCIHandler)e.nextElement();
 			ArrayList<Properties> jobs = (ArrayList<Properties>)orders.get(handler);
 			
-//			HBCIExecStatus stat = handler.execute();
+			handler.execute();
 			
 			for(Properties jobParam: jobs) {
 				HBCIJob job = (HBCIJob)jobParam.get("job");
