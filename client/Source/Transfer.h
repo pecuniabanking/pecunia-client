@@ -17,7 +17,8 @@ typedef enum {
 	TransferTypeEU,
 	TransferTypeDated,
 	TransferTypeInternal,
-    TransferTypeLast
+    TransferTypeLast,
+    TransferTypeSEPA
 } TransferType;
 
 @interface Transfer : NSManagedObject {

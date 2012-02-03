@@ -124,6 +124,7 @@
 -(IBAction)import: (id)sender;
 -(IBAction)transfer_local: (id)sender;
 -(IBAction)transfer_eu: (id)sender;
+-(IBAction)transfer_sepa: (id)sender;
 -(IBAction)transfer_dated: (id)sender;
 -(IBAction)transfer_internal: (id)sender;
 -(IBAction)donate: (id)sender;

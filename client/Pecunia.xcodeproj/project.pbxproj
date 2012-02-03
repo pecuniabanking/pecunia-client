@@ -156,6 +156,8 @@
 		B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B17FE44414CA091E00F6FAFE /* CustomerMessage.m */; };
 		B17FE48C14CB586A00F6FAFE /* BankMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B17FE48B14CB586A00F6FAFE /* BankMessage.m */; };
 		B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */ = {isa = PBXBuildFile; fileRef = B17FE49614CB59BA00F6FAFE /* CategoryBudget.m */; };
+		B17FE81B14DC350E00F6FAFE /* Transfer_SEPA.png in Resources */ = {isa = PBXBuildFile; fileRef = B17FE81A14DC350E00F6FAFE /* Transfer_SEPA.png */; };
+		B17FE82914DC380300F6FAFE /* Transfer_Internal.png in Resources */ = {isa = PBXBuildFile; fileRef = B17FE82814DC380300F6FAFE /* Transfer_Internal.png */; };
 		B18268090EC0E460008BC010 /* DatedTransfer_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B18268080EC0E460008BC010 /* DatedTransfer_32.png */; };
 		B189782E0ECF47CA00D20503 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
 		B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B18978860ED0B2E800D20503 /* StatementDetails.m */; };
@@ -515,6 +517,8 @@
 		B17FE48B14CB586A00F6FAFE /* BankMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankMessage.m; sourceTree = "<group>"; };
 		B17FE49514CB59BA00F6FAFE /* CategoryBudget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryBudget.h; sourceTree = "<group>"; };
 		B17FE49614CB59BA00F6FAFE /* CategoryBudget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryBudget.m; sourceTree = "<group>"; };
+		B17FE81A14DC350E00F6FAFE /* Transfer_SEPA.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transfer_SEPA.png; sourceTree = "<group>"; };
+		B17FE82814DC380300F6FAFE /* Transfer_Internal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transfer_Internal.png; sourceTree = "<group>"; };
 		B18268080EC0E460008BC010 /* DatedTransfer_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DatedTransfer_32.png; sourceTree = "<group>"; };
 		B189782C0ECF47CA00D20503 /* Country.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Country.h; sourceTree = "<group>"; tabWidth = 4; };
 		B189782D0ECF47CA00D20503 /* Country.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Country.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1114,6 +1118,8 @@
 		B1923B560EB7A6D40079ADCA /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B17FE82814DC380300F6FAFE /* Transfer_Internal.png */,
+				B17FE81A14DC350E00F6FAFE /* Transfer_SEPA.png */,
 				272BF53E14B770A100628805 /* Tresor.png */,
 				27EB308314B22CB000ABE3A6 /* Bank large.png */,
 				27D3168F14A8C81B002F500D /* blue arrow.png */,
@@ -1547,6 +1553,8 @@
 				27D3169014A8C81B002F500D /* blue arrow.png in Resources */,
 				27EB308414B22CB000ABE3A6 /* Bank large.png in Resources */,
 				272BF53F14B770A100628805 /* Tresor.png in Resources */,
+				B17FE81B14DC350E00F6FAFE /* Transfer_SEPA.png in Resources */,
+				B17FE82914DC380300F6FAFE /* Transfer_Internal.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

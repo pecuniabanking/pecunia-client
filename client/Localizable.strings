@@ -61,7 +61,7 @@
 "AP33" = "PINs aus dem Schlüsselbund entfernen";
 "AP34" = "Es werden alle PINs aus dem Schlüsselbund entfernt. Möchten Sie fortfahren?";
 "AP35" = "Daten unvollständig";
-"AP36" = "IBAN und/oder BIC sind für das Konto %@ noch nicht gepflegt";
+"AP36" = "IBAN und/oder BIC sind für das Konto %@ nicht gepflegt";
 "AP37" = "Konto anlegen nicht möglich";
 "AP38" = "Bitte legen Sie zuerst eine Bankkennung an";
 "AP39" = "Bankkennung anlegen";

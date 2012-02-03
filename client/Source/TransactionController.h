@@ -23,12 +23,14 @@
     IBOutlet NSWindow				*transferLocalWindow;
 	IBOutlet NSWindow				*transferEUWindow;
 	IBOutlet NSWindow				*transferInternalWindow;
+    IBOutlet NSWindow               *transferSEPAWindow;
 	IBOutlet NSPopUpButton			*countryButton;
 	IBOutlet NSComboBox				*accountBox;
 	IBOutlet NSComboBox				*chargeBox;
 	IBOutlet NSDatePicker			*executionDatePicker;
 	IBOutlet NSDrawer				*templatesDraw;
-	IBOutlet NSTableView			*templatesView;
+    IBOutlet NSView                 *standardHelpView;
+    IBOutlet NSView                 *foreignHelpView;
 	NSWindow						*window;
 	
 	Transfer						*transfer;

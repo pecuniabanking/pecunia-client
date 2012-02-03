@@ -65,7 +65,7 @@
 		return NO;
 	}
 	// do not check remote account for EU transfers, instead IBAN
-	if(transferType != TransferTypeEU) {
+	if(transferType != TransferTypeEU && transferType != TransferTypeSEPA) {
 		if(template.remoteAccount == nil) {
 			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
 							NSLocalizedString(@"AP9", @"Please enter an account number"),
@@ -73,7 +73,7 @@
 			return NO;
 		}
 	} else {
-		// EU transfer
+		// EU or SEPA transfer
 		if(template.remoteIBAN == nil) {
 			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
 							NSLocalizedString(@"AP24", @"Please enter a valid IBAN"),
@@ -89,7 +89,7 @@
 		}
 	}
 	
-	if(transferType == TransferTypeEU) {
+	if(transferType == TransferTypeSEPA) {
 		if(template.remoteBIC == nil) {
 			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
 							NSLocalizedString(@"AP25", @"Please enter valid bank identification code (BIC)"),
@@ -99,7 +99,7 @@
 	}
 		
 	// verify account and bank information
-	if(transferType != TransferTypeEU) {
+	if(transferType != TransferTypeEU && transferType != TransferTypeSEPA) {
 		// verify accounts, but only for available countries
 		if([template.remoteCountry caseInsensitiveCompare: @"de" ] == NSOrderedSame ||
 		   [template.remoteCountry caseInsensitiveCompare: @"at" ] == NSOrderedSame ||
@@ -231,19 +231,30 @@
 	}
 }
 
+-(void)toggleCountryFieldsForType: (TransferType)type
+{
+    BOOL hidden = (type == TransferTypeSEPA);
+    
+    NSArray *subviews = [currentView subviews ];
+    for(NSView *view in subviews) {
+        if ([view tag ] >= 100) [view setHidden:hidden ];
+    }
+}
+
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
 	NSArray *sel = [templateController selectedObjects ];
 	if (sel == nil || [sel count ] == 0) return;
 	TransferTemplate *template = [sel lastObject ];
-	if ([template.type intValue ] == TransferTypeEU && currentView == standardView) {
+	if (([template.type intValue ] == TransferTypeEU || [template.type intValue ] == TransferTypeSEPA) && currentView == standardView) {
 		[standardView retain ];
 		[boxView replaceSubview:standardView with:euView ];
 		[euView setFrameOrigin:subViewPos ];
 		currentView = euView;
+        [self toggleCountryFieldsForType: [template.type intValue ] ];
 	}
-	if ([template.type intValue ] != TransferTypeEU && currentView == euView) {
+	if (([template.type intValue ] != TransferTypeEU || [template.type intValue ] != TransferTypeSEPA) && currentView == euView) {
 		[euView retain ];
 		[boxView replaceSubview:euView with:standardView ];
 		currentView = standardView;

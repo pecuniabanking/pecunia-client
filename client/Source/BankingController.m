@@ -1510,6 +1510,24 @@ static BankingController	*con;
     [transferWindowController transferOfType: TransferTypeEU forAccount: account ];
 }
 
+-(IBAction)transfer_sepa: (id)sender
+{
+    BankAccount* account = [self selectedBankAccount ];
+    if(account == nil) return;
+    if ([[account isManual ] boolValue] == YES) return;
+    
+    // check if bic and iban is defined
+    if(account.iban == nil || account.bic == nil) {
+        NSRunAlertPanel(NSLocalizedString(@"AP35", @"Incomplete data"), 
+        [NSString stringWithFormat: NSLocalizedString(@"AP36", @"Missing IBAN or BIC for account %@"), account.accountNumber ], 
+        NSLocalizedString(@"ok", @"Ok"), nil, nil);
+        return;
+    }
+    
+    [transferWindowController transferOfType: TransferTypeSEPA forAccount: account ];
+}
+
+
 -(Category*)currentSelection
 {
     NSArray* sel = [categoryController selectedObjects];
@@ -1856,6 +1874,7 @@ static BankingController	*con;
         if ([item action] == @selector(enqueueRequest:)) return NO;
         if ([item action] == @selector(transfer_local:)) return NO;
         if ([item action] == @selector(transfer_eu:)) return NO;
+        if ([item action] == @selector(transfer_sepa:)) return NO;
         if ([item action] == @selector(transfer_dated:)) return NO;
         if ([item action] == @selector(transfer_internal:)) return NO;
         if ([item action] == @selector(splitStatement:)) return NO;
@@ -1872,6 +1891,7 @@ static BankingController	*con;
             if ([item action] == @selector(deleteAccount:)) return NO;
             if ([item action] == @selector(transfer_local:)) return NO;
             if ([item action] == @selector(transfer_eu:)) return NO;
+            if ([item action] == @selector(transfer_sepa:)) return NO;
             if ([item action] == @selector(transfer_dated:)) return NO;
             if ([item action] == @selector(transfer_internal:)) return NO;
             if ([item action] == @selector(addStatement:)) return NO;
@@ -1880,6 +1900,7 @@ static BankingController	*con;
             if ([[(BankAccount*)cat isManual ] boolValue] == YES) {
                 if ([item action] == @selector(transfer_local:)) return NO;
                 if ([item action] == @selector(transfer_eu:)) return NO;
+                if ([item action] == @selector(transfer_sepa:)) return NO;
                 if ([item action] == @selector(transfer_dated:)) return NO;
                 if ([item action] == @selector(transfer_internal:)) return NO;
             } else {

@@ -52,9 +52,31 @@
 {
 	NSPredicate	*pred;
 
+    // set drawer content
+    switch (transferType) {
+        case TransferTypeLocal:
+        case TransferTypeDated: {
+            [templatesDraw setContentView: standardHelpView ];
+            [templatesDraw setParentWindow: transferLocalWindow ];
+            break;
+        }
+        case TransferTypeEU: {
+            [templatesDraw setContentView: foreignHelpView ];
+            [templatesDraw setParentWindow: transferEUWindow ];
+            break;
+        }
+        case TransferTypeSEPA: {
+            [templatesDraw setContentView: foreignHelpView ];
+            [templatesDraw setParentWindow: transferSEPAWindow ];
+            break;            
+        }
+        default:
+            break;
+    }
+        
 	// set template filter
 	if(transferType == TransferTypeLocal || transferType == TransferTypeDated) pred = [NSPredicate predicateWithFormat: @"type = 0 OR type = 2" ];
-	else pred = [NSPredicate predicateWithFormat: @"type = %d", transferType ];
+	else pred = [NSPredicate predicateWithFormat: @"type = 1 or type = 5" ];
 	[templateController setFilterPredicate: pred];
 	
 	if(transferType == TransferTypeInternal) {
@@ -134,11 +156,12 @@
 		case TransferTypeLocal: window = transferLocalWindow; break;
 		case TransferTypeDated: window = transferLocalWindow; break;
 		case TransferTypeEU: window = transferEUWindow; break;
+        case TransferTypeSEPA: window = transferSEPAWindow; break;
 		case TransferTypeInternal: window = transferInternalWindow; break;
         case TransferTypeLast: break; //todo
 	};
 	
-	if(transferType != TransferTypeEU) [self preparePurposeFields ];
+	if(transferType != TransferTypeEU && transferType != TransferTypeSEPA) [self preparePurposeFields ];
 	if(transferType == TransferTypeLocal) [self hideTransferDate: YES ];
 	if(transferType == TransferTypeDated) [self hideTransferDate: NO ];
 	
@@ -158,7 +181,7 @@
 	
 	if(/*transferType == TransferTypeEU || */donation) [window makeFirstResponder: [[window contentView ] viewWithTag: 11 ] ];
 	
-	[templatesView setDoubleAction: @selector(templateDoubleClicked:) ];
+    [[[templatesDraw contentView ] viewWithTag:10 ] setDoubleAction:@selector(templateDoubleClicked:) ];
 	
 /*	
 	// limits
@@ -206,19 +229,11 @@
 	transfers = [[NSMutableArray alloc ] initWithCapacity: 5 ];
 	[transferController setContent: transfer ];
 
-	/*
-	switch(transferType) {
-		case TransferTypeLocal: window = transferLocalWindow; break;
-		case TransferTypeDated: window = transferLocalWindow; break;
-		case TransferTypeEU: window = transferEUWindow; break;
-		case TransferTypeInternal: window = transferInternalWindow; break;
-	};
-	*/
-    
+/*
 	[self preparePurposeFields ];
 	if(transferType == TransferTypeLocal) [self hideTransferDate: YES ];
 	else [self hideTransferDate: NO ];
-	
+*/	
 	int res = [NSApp runModalForWindow: window ];
 	if(res == 1) {
 		if([context hasChanges ]) [context rollback ];
@@ -443,6 +458,7 @@
 
 -(BOOL)windowShouldClose:(id)sender
 {
+    [templatesDraw close ];
 	[NSApp stopModalWithCode:1];
 	[transfers release ];
 	[transferController setContent:nil ];	
@@ -469,7 +485,7 @@
 		return NO;
 	}
 	// do not check remote account for EU transfers, instead IBAN
-	if(transferType != TransferTypeEU) {
+	if(transferType != TransferTypeEU && transferType != TransferTypeSEPA) {
 		if(transfer.remoteAccount == nil) {
 			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
 							NSLocalizedString(@"AP9", @"Please enter an account number"),
@@ -477,7 +493,7 @@
 			return NO;
 		}
 	} else {
-		// EU transfer
+		// EU or SEPA transfer
 		if(transfer.remoteIBAN == nil) {
 			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
 							NSLocalizedString(@"AP24", @"Please enter a valid IBAN"),
@@ -502,7 +518,7 @@
 		}
 	}
 	
-	if(transferType == TransferTypeEU) {
+	if(transferType == TransferTypeSEPA) {
 		if(transfer.remoteBIC == nil) {
 			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
 							NSLocalizedString(@"AP25", @"Please enter valid bank identification code (BIC)"),

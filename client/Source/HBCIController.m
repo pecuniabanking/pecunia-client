@@ -272,6 +272,7 @@ NSString *escapeSpecial(NSString *s)
         case TransferTypeInternal: return @"Umb"; break;
         case TransferTypeEU: return @"UebForeign"; break;
         case TransferTypeLast: return @"Last"; break;
+        case TransferTypeSEPA: return @"UebSEPA"; break;
     };
     return nil;
 }
@@ -541,6 +542,7 @@ NSString *escapeSpecial(NSString *s)
             case TransferTypeDated: type = @"dated"; break;
             case TransferTypeInternal: type = @"internal"; break;
             case TransferTypeLast: type = @"last"; break;
+            case TransferTypeSEPA: type = @"sepa"; break;
             case TransferTypeEU:	
                 type = @"foreign";
                 [self appendTag:@"chargeTo" withValue:[transfer.chargedBy description ]  to:cmd ];

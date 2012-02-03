@@ -9,6 +9,8 @@
 #import "RoundedSidebar.h"
 #import "GraphicsAdditions.h"
 
+#define INSETHEIGHT 290
+
 /**
  * Gradient background with rounded corners and a shadow for sidebars. There is an additional area with a dark
  * background which provides room for buttons.
@@ -81,8 +83,8 @@ static NSShadow* innerShadow2 = nil;
     NSBezierPath* insetPath = [NSBezierPath bezierPath];
     int height = [self bounds].size.height;
     [insetPath moveToPoint: NSMakePoint(47, height - 10)];
-    [insetPath appendBezierPathWithArcFromPoint: NSMakePoint(47, height - 210) toPoint: NSMakePoint(39, height - 210) radius: 8];
-    [insetPath lineToPoint: NSMakePoint(10, height - 210)];
+    [insetPath appendBezierPathWithArcFromPoint: NSMakePoint(47, height - INSETHEIGHT) toPoint: NSMakePoint(39, height - INSETHEIGHT) radius: 8];
+    [insetPath lineToPoint: NSMakePoint(10, height - INSETHEIGHT)];
     [insetPath appendBezierPathWithArcFromPoint: NSMakePoint(10, height - 10) toPoint: NSMakePoint(18, height - 10) radius: 8];
     
     // Draw the background.
@@ -90,8 +92,8 @@ static NSShadow* innerShadow2 = nil;
     
     insetPath = [NSBezierPath bezierPath];
     [insetPath moveToPoint: NSMakePoint(47, height - 10)];
-    [insetPath appendBezierPathWithArcFromPoint: NSMakePoint(47, height - 210) toPoint: NSMakePoint(39, height - 210) radius: 8];
-    [insetPath lineToPoint: NSMakePoint(10, height - 210)];
+    [insetPath appendBezierPathWithArcFromPoint: NSMakePoint(47, height - INSETHEIGHT) toPoint: NSMakePoint(39, height - INSETHEIGHT) radius: 8];
+    [insetPath lineToPoint: NSMakePoint(10, height - INSETHEIGHT)];
     
     // Inner stroke as part of the inner shadow.
     [strokeColor setStroke];
