@@ -1,10 +1,21 @@
-//
-//  StatementsListview.m
-//  Pecunia
-//
-//  Created by Mike on 01.10.11.
-//  Copyright 2011 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "StatementsListview.h"
 #import "StatementsListViewCell.h"
@@ -13,6 +24,10 @@
 #import "BankStatement.h"
 
 @implementation StatementsListView
+
+@synthesize showAssignedIndicators;
+@synthesize owner;
+@synthesize autoResetNew;
 
 + (void)initialize
 {
@@ -29,6 +44,7 @@
     [_dateFormatter setLocale: [NSLocale currentLocale]];
     [_dateFormatter setDateStyle: kCFDateFormatterFullStyle];
     [_dateFormatter setTimeStyle: NSDateFormatterNoStyle];
+    autoResetNew = YES;
 }
 
 - (void) dealloc
@@ -161,6 +177,7 @@
     else
         turnoversString = NSLocalizedString(@"AP132", @"");
     
+    cell.delegate = self;
     [cell setDetailsDate: [self formatValue: currentDate capitalize: NO]
                turnovers: turnoversString
               remoteName: [self formatValue: [statement valueForKey: @"remoteName"] capitalize: YES]
@@ -170,11 +187,19 @@
                    saldo: [statement valueForKey: @"saldo"]
                 currency: [self formatValue: [statement valueForKey: @"currency"] capitalize: NO]
          transactionText: [self formatValue: [statement valueForKey: @"transactionText"] capitalize: YES]
+                   index: row
      ];
     [cell setIsNew: [[statement valueForKey: @"isNew"] boolValue]];
     
+    if (self.showAssignedIndicators) {
+        id test = [[_dataSource objectAtIndex: row] valueForKey: @"classify"];
+        [cell showActivator: YES markActive: test != nil];
+    } else {
+        [cell showActivator: NO markActive: NO];
+    }
+    
     NSDecimalNumber* nassValue = [statement valueForKey: @"nassValue"];
-    [cell setHasNotAssignedValue:  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame];
+    cell.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
     
     // Set the size of the cell, depending on if we show its header or not.
     NSRect frame = [cell frame];
@@ -230,13 +255,15 @@
 
 - (void)listViewSelectionDidChange:(NSNotification*)aNotification
 {
-    // A selected statement automatically loses the "new" state.
-    NSIndexSet* selection = [self selectedRows];
-    NSUInteger index = [selection firstIndex];
-    while (index != NSNotFound) {
-        StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
-        [cell setIsNew: NO];
-        index = [selection indexGreaterThanIndex: index];
+    if (autoResetNew) {
+        // A selected statement automatically loses the "new" state (if auto reset is enabled).
+        NSIndexSet* selection = [self selectedRows];
+        NSUInteger index = [selection firstIndex];
+        while (index != NSNotFound) {
+            StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
+            [cell setIsNew: NO];
+            index = [selection indexGreaterThanIndex: index];
+        }
     }
 }
 
@@ -318,6 +345,14 @@
       proposedDropHighlight: (PXListViewDropHighlight)dropHighlight;
 {
 	return NSDragOperationCopy;
+}
+
+- (void)cellActivationChanged: (BOOL)state forIndex: (NSUInteger)index
+{
+    // Simply forward the notification to the notification delegate if any is set.
+    if ([self.owner respondsToSelector: @selector(activationChanged:forIndex:)]) {
+        [self.owner activationChanged: state forIndex: index];
+    }
 }
 
 @end

@@ -327,10 +327,10 @@ BOOL stringEqual(NSString *a, NSString *b)
 		[stats addObject: stat ];
 	}
 	
-	[self updateAssigned ];
-	
-	[cat invalidateBalance ];
-	[ncat invalidateBalance ];
+	[self updateAssigned];
+    
+	[cat invalidateBalance];
+	[ncat invalidateBalance];
 }
 
 +(void)setClassificationContext: (ClassificationContext*)cc

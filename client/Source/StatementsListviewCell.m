@@ -1,26 +1,30 @@
-//
-//  StatementsListviewCell.h
-//  Pecunia
-//
-//  Created by Mike Lischke on 02.10.11.
-//  Copyright 2011 Frank Emminghaus. All rights reserved.
-//
+/** 
+ * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "StatementsListViewCell.h"
 #import "GraphicsAdditions.h"
 #import "CurrencyValueTransformer.h"
 
-@implementation NonAnimatedCellTextField
-
-+ (id)defaultAnimationForKey: (NSString *)key
-{
-    // Disable animations for text changes.
-    return nil;
-}
-
-@end
-
 @implementation StatementsListViewCell
+
+@synthesize delegate;
+@synthesize hasUnassignedValue;
 
 + (id)defaultAnimationForKey: (NSString *)key
 {
@@ -71,7 +75,10 @@ static CurrencyValueTransformer* currencyTransformer;
                  saldo: (NSDecimalNumber*) saldo
               currency: (NSString*) currency
        transactionText: (NSString*) transactionText
+                 index: (NSUInteger) theIndex
 {
+    index = theIndex;
+    
     [dateLabel setStringValue: date];
     [turnoversLabel setStringValue: turnovers];
     
@@ -98,7 +105,7 @@ static CurrencyValueTransformer* currencyTransformer;
     [[[valueLabel cell] formatter] setCurrencyCode: currency]; // Important for proper display of the value, even without currency.
     [saldoCurrencyLabel setStringValue: symbol];
     [[[saldoLabel cell] formatter] setCurrencyCode: currency];
-    
+
     [self setNeedsDisplay: YES];
 }
 
@@ -124,6 +131,9 @@ static CurrencyValueTransformer* currencyTransformer;
     [saldoLabel setObjectValue: @""];
     [transactionTypeLabel setObjectValue: @""];
     [transactionTypeLabel setObjectValue: @""];
+    hasUnassignedValue = NO;
+    isNew = NO;
+    index = -1;
 }
 
 #pragma mark Drawing
@@ -133,12 +143,20 @@ static CurrencyValueTransformer* currencyTransformer;
     [newImage setHidden: !flag];
 }
 
-- (void)setHasNotAssignedValue: (BOOL)flag
+- (void)showActivator: (BOOL)flag markActive: (BOOL)active
 {
-    if (hasNotAssignedValue != flag)
-    {
-        hasNotAssignedValue = flag;
-        [self setNeedsDisplay: YES];
+    [checkbox setHidden: !flag];
+    [checkbox setState: active ? NSOnState : NSOffState];
+}
+
+- (void)refresh
+{
+    [self setNeedsDisplay: YES];
+}
+- (IBAction)activationChanged: (id)sender
+{
+    if ([self.delegate conformsToProtocol: @protocol(StatementsListViewNotificationProtocol)]) {
+        [self.delegate cellActivationChanged: ([checkbox state] == NSOnState ? YES : NO) forIndex: index];
     }
 }
 
@@ -185,15 +203,6 @@ static NSImage* stripeImage;
                                                             bounds.size.width,
                                                             headerHeight)];
         [headerGradient drawInBezierPath: path angle: 90.0];
-/*        
-        NSRect r = NSMakeRect(bounds.origin.x,
-                              bounds.size.height - headerHeight,
-                              bounds.size.width,
-                              headerHeight);
-        
-        [[NSColor blackColor ] set];
-        [NSBezierPath fillRect:r ];
-*/        
         bounds.size.height -= headerHeight;
     }
 	path = [NSBezierPath bezierPathWithRect: bounds];
@@ -237,7 +246,7 @@ static NSImage* stripeImage;
     [path stroke];
     
     // Mark the value area if there is an unassigned value remaining.
-    if (hasNotAssignedValue)
+    if (hasUnassignedValue)
     {
         NSRect area = [valueLabel frame];
         area.origin.y = 2;

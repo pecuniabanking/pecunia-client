@@ -39,6 +39,7 @@
  */
 
 #import "ImageAndTextCell.h"
+#import "GraphicsAdditions.h"
 
 // Layout constants
 #define MIN_BADGE_WIDTH           22.0 //The minimum badge width for each item (default 22.0)
@@ -291,7 +292,7 @@ static NSGradient* selectionGradient = nil;
         NSColor *textColor = [NSColor colorWithCalibratedWhite: 40 / 255.0 alpha: 1];
         
         if (isDisabled) {
-            textColor = [NSColor colorWithCalibratedWhite: 180 / 255.0 alpha: 1];
+            textColor = [NSColor disabledTreeItemColor];
         }   
         attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                       [self font], NSFontAttributeName,

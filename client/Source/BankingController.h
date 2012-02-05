@@ -1,10 +1,21 @@
-//
-//  BankingController.h
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 03.09.08.
-//  Copyright 2008 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import <Cocoa/Cocoa.h>
 
@@ -17,12 +28,9 @@
 @class PreferenceController;
 @class LogController;
 @class TransactionController;
-@class CatDefWindowController;
-@class CategoryRepWindowController;
 @class Category;
 @class MCEMTreeController;
 @class TimeSliceManager;
-@class MCEMTableView;
 @class CategoryView;
 @class TransferListController;
 @class DockIconController;
@@ -34,6 +42,7 @@
 
 @class CategoryAnalysisWindowController;
 @class CategoryRepWindowController;
+@class CategoryDefWindowController;
 
 @class SideToolbarView;
 
@@ -73,7 +82,6 @@
     IBOutlet NSTextField        *versionText;
     IBOutlet NSTextField        *copyrightText;
     
-    IBOutlet CatDefWindowController *catDefWinController;
     IBOutlet TransferListController *transferListController;
     IBOutlet StatementsListView     *statementsListView;
     
@@ -95,8 +103,14 @@
     NSDecimalNumber        *saveValue;
     NSCursor               *splitCursor;
     
+    NSImage *categoryImage;
+    NSImage *moneyImage;
+    NSImage *moneySyncImage;
+    NSImage *folderImage;
+    
     CategoryAnalysisWindowController *categoryAnalysisController;
     CategoryRepWindowController *categoryReportingController;
+    CategoryDefWindowController *categoryDefinitionController;
     id<PecuniaSectionItem> currentSection;
 }
 
@@ -113,7 +127,6 @@
 -(IBAction)editPreferences:(id)sender;
 
 -(IBAction)transferView: (id)sender;
--(IBAction)editRules: (id)sender;
 -(IBAction)activateMainPage: (id)sender;
 - (IBAction)activateAccountPage: (id)sender;
 
