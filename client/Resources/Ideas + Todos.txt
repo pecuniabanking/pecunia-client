@@ -21,7 +21,7 @@ Kategorie + Kontenanalyse
 - statt mehrere Kategorien in einem Zeitraum vergleiche eine Kategorie in mehreren Zeiträumen
 - Umsatzsteuerschlüssel für jede Kategorie.
 - Nutzerdefiniertes Icon für eine Kategorie.
-- vordefinierte Kategorien.
+- Vordefinierte/automatische Kategorien - anlegen (einschließlich Regeln) bei Erstabruf eines Kontos.
 - Numerischer Kategorienexport (List + Einnahmen/Ausgaben).
 
 Transaktionen
@@ -33,10 +33,15 @@ Transaktionen
 Ausgaben/Export
 ---------------
 - In der Druckausgabe Kategorien einschließen (erlauben nach Kategorien zu sortieren/gruppieren?)
-- Weitgehend freie Wahl, was gedruckt wird, Zwischensalden einschließen
+- Weitgehend freie Wahl, was gedruckt wird, Zwischensalden einschließen + Kategorien und Zusatzinfo
 - Pecuniabanner überarbeiten
 - Filtermöglichkeiten?
 
 Bankkennungen + Konten
-======================
+----------------------
 - Anzeige der von der Bank und diesem Nutzer unterstützten Geschäftsvorfälle.
+
+Aufträge, Überweisungen, Lastschriften
+--------------------------------------
+- In Terminüberweisungen Datum (auch) als Kalender anzeigen.
+

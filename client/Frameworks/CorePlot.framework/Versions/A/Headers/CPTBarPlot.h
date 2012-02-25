@@ -25,9 +25,9 @@ extern NSString *const CPTBarPlotBindingBarBases;
  *	@brief Enumeration of bar plot data source field types
  **/
 typedef enum _CPTBarPlotField {
-	CPTBarPlotFieldBarLocation = 2, ///< Bar location on independent coordinate axis.
-	CPTBarPlotFieldBarTip	   = 3, ///< Bar tip value.
-	CPTBarPlotFieldBarBase	   = 4  ///< Bar base (used only if barBasesVary is YES).
+	CPTBarPlotFieldBarLocation, ///< Bar location on independent coordinate axis.
+	CPTBarPlotFieldBarTip,      ///< Bar tip value.
+	CPTBarPlotFieldBarBase      ///< Bar base (used only if @link CPTBarPlot::barBasesVary barBasesVary @endlink is YES).
 }
 CPTBarPlotField;
 
@@ -60,6 +60,17 @@ CPTBarPlotField;
 
 ///	@}
 
+/// @name Legends
+/// @{
+
+/** @brief (Optional) Gets the legend title for the given bar plot bar.
+ *	@param barPlot The bar plot.
+ *	@param index The data index of interest.
+ *	@return The title text for the legend entry for the point with the given index.
+ **/
+-(NSString *)legendTitleForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)index;
+
+///	@}
 @end
 
 #pragma mark -
