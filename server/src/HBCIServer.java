@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,6 +22,8 @@ import java.io.StringReader;
 import org.kapott.hbci.callback.HBCICallbackConsole;
 import org.kapott.hbci.exceptions.*;
 import org.kapott.hbci.manager.HBCIHandler;
+import org.kapott.hbci.manager.HBCIInstitute;
+import org.kapott.hbci.manager.HBCIKernelImpl;
 import org.kapott.hbci.manager.HBCIUtils;
 import org.kapott.hbci.manager.HBCIUtilsInternal;
 import org.kapott.hbci.passport.AbstractHBCIPassport;
@@ -29,6 +32,7 @@ import org.kapott.hbci.passport.HBCIPassportPinTan;
 import org.kapott.hbci.structures.*;
 import org.kapott.hbci.GV.*;
 import org.kapott.hbci.GV_Result.*;
+import org.kapott.hbci.GV_Result.GVRTANMediaList.TANMediaInfo;
 import org.kapott.hbci.status.*;
 
 import org.xmlpull.v1.*;
@@ -48,19 +52,31 @@ public class HBCIServer {
 	public static final int ERR_MISS_ACCOUNT = 5;
 	public static final int ERR_WRONG_COMMAND = 6;
 	
-    private static HBCIPassport passport;
-    private static HBCIHandler  hbciHandle;
-    private static BufferedReader in;
-    private static BufferedWriter out;
-    private static StringBuffer xmlBuf;
-    private static Properties map;
-    private static Properties hbciHandlers;
-    private static Properties accounts;
-    public static String passportPath;
-    private static Properties countryInfos;
+    private BufferedReader 	in;
+    private BufferedWriter 	out;
+    private StringBuffer 	xmlBuf;
+    private Properties 		map;
+    private Properties 		hbciHandlers;
+    private Properties 		accounts;
+    public  String 			passportPath;
+    private Properties 		countryInfos;
+    private XmlGen 			xmlGen;
+    private Properties 		users;
     
-    private static Properties users = null;
+    private static HBCIServer server;
+    
+    HBCIServer() throws UnsupportedEncodingException  {
+		countryInfos = new Properties();
+		hbciHandlers = new Properties();
+		accounts = new Properties();
+		users = new Properties();
+		map = new Properties();
+	
+		in = new BufferedReader(new InputStreamReader(System.in, "UTF-8"));
+		out = new BufferedWriter(new OutputStreamWriter(System.out, "UTF-8"));			
+    }
 
+	//------------------------------ START CALLBACK ---------------------------------------------------
 	
 	private static class MyCallback	extends HBCICallbackConsole
 	{
@@ -71,34 +87,27 @@ public class HBCIServer {
 
 		public void log(String msg,int level,Date date,StackTraceElement trace) {
 			try {
-				out.write("<log level=\""+Integer.toString(level)+"\"><![CDATA[");
-				out.write(msg);
-				out.write("]]></log>\n.");
-				out.flush();
+				server.out.write("<log level=\""+Integer.toString(level)+"\"><![CDATA[");
+				server.out.write(msg);
+				server.out.write("]]></log>\n.");
+				server.out.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-
-/*		
-		public void log(String msg,int level,Date date,StackTraceElement trace) {
-				System.err.print("<log level=\""+Integer.toString(level)+"\">");
-				System.err.println(msg);
-		}
-*/
 		
 		public String callbackClient(HBCIPassport pp, String command, String msg, String def, int reason, int type) throws IOException {
-			out.write("<callback command=\""+command+"\">");
-			out.write("<bankCode>"+pp.getBLZ()+"</bankCode>");
-			out.write("<userId>"+pp.getUserId()+"</userId>");
-			out.write("<message><![CDATA["+msg+"]]></message>");
-			out.write("<proposal>"+def+"</proposal>");
-			out.write("<reason>"+Integer.toString(reason)+"</reason>");
-			out.write("<type>"+Integer.toString(type)+"</type>");
-			out.write("</callback>.");
-			out.flush();
+			server.out.write("<callback command=\""+command+"\">");
+			server.out.write("<bankCode>"+pp.getBLZ()+"</bankCode>");
+			server.out.write("<userId>"+pp.getUserId()+"</userId>");
+			server.out.write("<message><![CDATA["+msg+"]]></message>");
+			server.out.write("<proposal>"+def+"</proposal>");
+			server.out.write("<reason>"+Integer.toString(reason)+"</reason>");
+			server.out.write("<type>"+Integer.toString(type)+"</type>");
+			server.out.write("</callback>.");
+			server.out.flush();
 			
-			String res = in.readLine();
+			String res = server.in.readLine();
 			return res;
 		}
 		
@@ -110,12 +119,12 @@ public class HBCIServer {
 	            
 	            switch(reason) {
 	               	case NEED_COUNTRY: 			st = "DE"; break;
-	                case NEED_BLZ: 				st = (String)map.get("bankCode"); break;
-	                case NEED_HOST: 			st = (String)map.get("host"); break;
-	                case NEED_PORT: 			st = (String)map.get("port"); break;
-	                case NEED_FILTER: 			st = (String)map.get("filter"); break;
-	                case NEED_USERID: 			st = (String)map.get("userId"); break;
-	                case NEED_CUSTOMERID: 		st = (String)map.get("customerId"); break;
+	                case NEED_BLZ: 				st = (String)server.map.get("bankCode"); break;
+	                case NEED_HOST: 			st = (String)server.map.get("host"); break;
+	                case NEED_PORT: 			st = (String)server.map.get("port"); break;
+	                case NEED_FILTER: 			st = (String)server.map.get("filter"); break;
+	                case NEED_USERID: 			st = (String)server.map.get("userId"); break;
+	                case NEED_CUSTOMERID: 		st = (String)server.map.get("customerId"); break;
 	                case NEED_PASSPHRASE_LOAD:  st = "PecuniaData"; break;
 	                	/*
 	                	if(password != null) st = password; else {
@@ -144,41 +153,51 @@ public class HBCIServer {
 	        } catch (Exception e) {
 	            throw new HBCI_Exception(HBCIUtilsInternal.getLocMsg("EXCMSG_CALLB_ERR"),e);
 	        }
-	    	
-	    	
 	    }
-		
 	}
 	
 	private static void log(String msg,int level,Date date) {
 		try {
-			out.write("<log level=\""+Integer.toString(level)+"\"><![CDATA[");
-			out.write(msg);
-			out.write("]]></log>\n.");
-			out.flush();
+			server.out.write("<log level=\""+Integer.toString(level)+"\"><![CDATA[");
+			server.out.write(msg);
+			server.out.write("]]></log>\n.");
+			server.out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private static String passportKey(Properties map, String command) throws IOException
+	//------------------------------ END CALLBACK ---------------------------------------------------
+	
+	public static HBCIServer server()
+	{
+		return server;
+	}
+	
+	public String passportFilepath(String bankCode, String userId) {
+		String filename = passportKey(bankCode, userId);
+	    String filePath = passportPath + "/" + filename + ".ser";
+	    return filePath;
+	}
+		
+	private String passportKey(Properties map, String command) throws IOException
 	{
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
 		return passportKey(bankCode, userId);
 	}
 	
-	public static String passportKey(String bankCode, String userId) {
+	public String passportKey(String bankCode, String userId) {
 		return bankCode + "_" + userId;
 	}
 	
-	private static String getParameter(Properties aMap, String parameter) throws IOException {
+	private String getParameter(Properties aMap, String parameter) throws IOException {
 		String ret = aMap.getProperty(parameter);
 		if(ret == null) throw new HBCIParamException(parameter);
 		return ret;
 	}
 
-    private static void initHBCI() {
+    private void initHBCI() {
         HBCIUtils.init(null,new MyCallback());
         
         // Basic Params
@@ -212,260 +231,8 @@ public class HBCIServer {
 		}
     }
     
-    private static String escapeSpecial(String s) {
-    	String r = s.replaceAll("&", "&amp;");
-    	r = r.replaceAll("<", "&lt;");
-    	r = r.replaceAll(">", "&gt;");
-    	r = r.replaceAll("\"", "&quot;");
-    	r = r.replaceAll("'", "&apos;");
-    	return r;
-    }
     
-    private static void tag(String tag, String value) throws IOException {
-    	if(value == null) return;
-    	xmlBuf.append("<"+tag+">"+escapeSpecial(value)+"</"+tag+">");
-    }
-    
-    private static void valueTag(String tag, Value value) {
-    	if(value == null) return;
-    	xmlBuf.append("<"+tag+" type=\"value\">"+Long.toString(value.getLongValue())+"</"+tag+">");
-    }
-    
-    private static void longTag(String tag, long l) {
-    	xmlBuf.append("<"+tag+" type=\"long\">"+Long.toString(l)+"</"+tag+">");
-    }
-    
-    private static void dateTag(String tag, Date date) {
-    	if(date == null) return;
-    	xmlBuf.append("<"+tag+" type=\"date\">"+HBCIUtils.date2StringISO(date)+"</"+tag+">");
-    }
-    
-    private static void intTag(String tag, String value) {
-    	xmlBuf.append("<"+tag+" type=\"int\">"+value+"</"+tag+">");
-    }
-
-    private static void intTag(String tag, int value) {
-    	xmlBuf.append("<"+tag+" type=\"int\">"+Integer.toString(value)+"</"+tag+">");
-    }
-
-    
-    private static void booleTag(String tag, boolean b) {
-    	if(b) xmlBuf.append("<"+tag+" type=\"boole\">yes</"+tag+">");
-    	else xmlBuf.append("<"+tag+" type=\"boole\">no</"+tag+">");
-    }
-        
-    private static void accountToXml(Konto account, HBCIPassport pp) throws IOException {
-    	xmlBuf.append("<object type=\"Account\">");
-    	if(account.curr == null || account.curr.length() == 0) account.curr = "EUR";
-    	if(account.country == null || account.curr.length() == 0) account.country = "DE";
-    	tag("name", account.type);
-    	tag("bankName", HBCIUtils.getNameForBLZ(account.blz));
-    	tag("bankCode", account.blz);
-    	tag("accountNumber", account.number);
-    	tag("ownerName", account.name);
-    	tag("currency", account.curr.toUpperCase());
-    	tag("country", account.country.toUpperCase());
-    	tag("iban", account.iban);
-    	tag("bic", account.bic);
-    	tag("userId", pp.getUserId());
-    	tag("customerId", account.customerid);
-    	tag("subNumber", account.subnumber);
-    	xmlBuf.append("</object>");
-    }
-    
-    private static void umsToXml(GVRKUms ums, Konto account) throws IOException {
-//    	ArrayList<GVRKUms.UmsLine> lines = (ArrayList)ums.getFlatData();
-		List lines = ums.getFlatData();
-    	if(lines.isEmpty()) return;
-    	long hash;
-    	for(Iterator i = lines.iterator(); i.hasNext(); ) {
-    		hash = 0;
-    		GVRKUms.UmsLine line = (GVRKUms.UmsLine)i.next();
-    		
-    		StringBuffer purpose = new StringBuffer();
-    		if(line.gvcode.equals("999")) {
-    			purpose.append(line.additional);
-    			hash += line.additional.hashCode();
-    		}
-    		else {
-	    		for(Iterator j = line.usage.iterator(); j.hasNext();) {
-	    			String s = (String)j.next();
-	    			purpose.append(s);
-	    			hash += s.hashCode();
-	    			if(j.hasNext()) purpose.append("\n");
-	    		}
-    		}
-    		
-    		// calculate id
-    		hash += account.number.hashCode();
-    		hash += account.blz.hashCode();
-    		
-        	xmlBuf.append("<cdObject type=\"BankStatement\">");
-        	tag("localAccount", account.number);
-        	tag("localBankCode", account.blz);
-        	tag("bankReference", line.instref);
-        	tag("currency", line.value.getCurr());
-        	tag("customerReference", line.customerref);
-        	if(line.customerref != null) hash += line.customerref.hashCode();
-        	dateTag("date", line.bdate);
-        	hash += line.bdate.hashCode();
-        	dateTag("valutaDate", line.valuta);
-        	hash += line.valuta.hashCode();
-        	valueTag("value", line.value);
-        	hash += line.value.getLongValue();
-        	if(line.saldo != null) valueTag("saldo", line.saldo.value);
-//        	if(line.saldo != null) dateTag("saldoTimestamp", line.saldo.timestamp);
-        	valueTag("charge", line.charge_value);
-        	// todo: orig_value
-        	tag("primaNota", line.primanota);
-        	if(line.primanota != null) hash += line.primanota.hashCode();
-        	tag("purpose", purpose.toString());
-        	if(line.other != null) {
-	        	tag("remoteAccount", line.other.number);
-	        	tag("remoteBankCode", line.other.blz);
-	        	tag("remoteBIC", line.other.bic);
-	        	tag("remoteCountry", line.other.country);
-	        	tag("remoteIBAN", line.other.iban);
-	        	if(line.other.name2 == null) tag("remoteName", line.other.name);
-	        	else tag("remoteName", line.other.name + line.other.name2);
-	        	
-	        	hash += line.other.number.hashCode();
-	        	hash += line.other.blz.hashCode();
-	        	if(line.other.bic != null) hash += line.other.bic.hashCode();
-	        	if(line.other.iban != null) hash += line.other.iban.hashCode();
-        	}
-            tag("transactionCode", line.gvcode);
-            tag("transactionText", line.text);
-            tag("additional", line.additional);
-            booleTag("isStorno", line.isStorno);
-            longTag("hashNumber", hash);
-        	xmlBuf.append("</cdObject>");
-    	}
-    }
-    
-    private static void dauerListToXml(GVRDauerList dl, Konto account) throws IOException {
-    	GVRDauerList.Dauer [] standingOrders = dl.getEntries();
-    	for(GVRDauerList.Dauer stord: standingOrders) {
-    		
-        	xmlBuf.append("<cdObject type=\"StandingOrder\">");
-//        	tag("localAccount", stord.my.number);
-//        	tag("localBankCode", stord.my.blz);
-        	tag("currency",stord.my.curr);
-        	valueTag("value", stord.value);
-        	
-        	// purpose
-        	int i=1;
-        	for(String s: stord.usage) {
-        		tag("purpose"+Integer.toString(i), s);
-        		i++;
-        		if(i>4) break;
-        	}
-        	
-        	// other
-        	if(stord.other != null) {
-	        	tag("remoteAccount", stord.other.number);
-	        	tag("remoteBankCode", stord.other.blz);
-	        	tag("remoteSuffix",stord.other.subnumber);
-	        	if(stord.other.name2 == null) tag("remoteName", stord.other.name);
-	        	else tag("remoteName", stord.other.name + stord.other.name2);
-        	}
-        	
-        	// timeunit
-        	if(stord.timeunit.compareTo("W") == 0) intTag("period", 0); else intTag("period", 1);
-        	
-        	// turnus
-        	intTag("cycle", stord.turnus);
-        	intTag("executionDay", stord.execday);
-        	
-        	tag("orderKey", stord.orderid);
-        	
-        	// exec dates
-        	dateTag("firstExecDate", stord.firstdate);
-        	dateTag("nextExecDate", stord.nextdate);
-        	dateTag("lastExecDate", stord.lastdate);
-        	
-        	xmlBuf.append("</cdObject>");
-    	}
-    }
-    
-    private static void termUebListToXml(GVRTermUebList ul, Konto account) throws IOException {
-    	GVRTermUebList.Entry [] uebs = ul.getEntries();
-    	
-    	for(GVRTermUebList.Entry ueb: uebs) {
-    		xmlBuf.append("<cdObject type=\"Transfer\">");
-        	tag("localAccount", ueb.my.number);
-        	tag("localBankCode", ueb.my.blz);
-        	tag("currency",ueb.my.curr);
-        	valueTag("value", ueb.value);
-        	
-        	// purpose
-        	int i=1;
-        	for(String s: ueb.usage) {
-        		tag("purpose"+Integer.toString(i), s);
-        		i++;
-        		if(i>4) break;
-        	}
-        	
-        	// other
-        	if(ueb.other != null) {
-	        	tag("remoteAccount", ueb.other.number);
-	        	tag("remoteBankCode", ueb.other.blz);
-	        	tag("remoteSuffix",ueb.other.subnumber);
-	        	if(ueb.other.name2 == null) tag("remoteName", ueb.other.name);
-	        	else tag("remoteName", ueb.other.name + ueb.other.name2);
-        	}
-
-        	// exec date
-        	dateTag("date", ueb.date);
-        	tag("orderKey", ueb.orderid);
-        	xmlBuf.append("</cdObject>");
-    	}
-    }
-    
-    private static void passportToXml(HBCIPassportPinTan pp) throws IOException {
-    	xmlBuf.append("<object type=\"User\">");
-    	tag("bankCode", pp.getBLZ());
-    	tag("bankName", pp.getInstName());
-    	tag("userId",pp.getUserId());
-    	tag("customerId", pp.getCustomerId());
-    	tag("bankURL", pp.getHost());
-    	tag("port", pp.getPort().toString());
-    	String filter = pp.getFilterType();
-    	if(filter.compareTo("Base64") == 0) booleTag("noBase64", false); else booleTag("noBase64", true);  	
-    	String version = pp.getHBCIVersion();
-    	if(version.compareTo("plus") == 0) version = "220";
-    	tag("hbciVersion", version);
-    	booleTag("checkCert", pp.getCheckCert());
-    	Properties sec = pp.getCurrentSecMechInfo();
-    	if(sec != null)	{
-    		intTag("tanMethodNumber", sec.getProperty("secfunc"));
-    		tag("tanMethodDescription", sec.getProperty("name"));
-    	}
-    	    	
-    	xmlBuf.append("</object>");
-    }
-    
-    private static void userToXml(User user) throws IOException {
-    	xmlBuf.append("<object type=\"User\">");
-    	tag("name", user.name);
-    	tag("bankCode", user.bankCode);
-    	tag("bankName", user.bankName);
-    	tag("userId", user.userId);
-    	tag("customerId", user.customerId);
-    	tag("bankURL", user.host);
-    	tag("port", Integer.toString(user.port));
-    	String filter = user.filter;
-    	if(filter.compareTo("Base64") == 0) booleTag("noBase64", false); else booleTag("noBase64", true);  	
-    	String version = user.version;
-    	if(version.compareTo("plus") == 0) version = "220";
-    	tag("hbciVersion", version);
-    	booleTag("checkCert", user.checkCert);
-		intTag("tanMethodNumber", user.tanMethod);
-		tag("tanMethodDescription", user.tanMethodDescription);    	    	
-    	xmlBuf.append("</object>");
-    }
-    
-    private static HBCIHandler hbciHandler(String bankCode, String userId) {
+    private HBCIHandler hbciHandler(String bankCode, String userId) {
     	String fname = passportKey(bankCode, userId);
     	String altName = null;
 		HBCIHandler handler = (HBCIHandler)hbciHandlers.get(fname);
@@ -518,7 +285,7 @@ public class HBCIServer {
     }
     
 	
-	private static void addPassport() throws IOException {
+	private void addPassport() throws IOException {
 		String filename = passportKey(map, "addPassport");
 		if(filename == null) return;
 		String filePath = passportPath + "/" + filename + ".dat";
@@ -530,12 +297,14 @@ public class HBCIServer {
         } else {
         	HBCIUtils.setParam("client.passport.PinTan.checkcert", "1");
         }
-        passport=AbstractHBCIPassport.getInstance();
+        
+        HBCIPassport passport=AbstractHBCIPassport.getInstance();
         HBCIUtils.setParam("action.resetBPD","1");
         HBCIUtils.setParam("action.resetUPD","1");
         
 //    	passport.clearBPD();
 //    	passport.clearUPD();
+        HBCIHandler hbciHandle = null;
         try {
         	String version = map.getProperty("version");
         	if(version.compareTo("220") == 0) version = "plus";
@@ -557,13 +326,13 @@ public class HBCIServer {
         users.put(filename, user);
         
         xmlBuf.append("<result name=\"addPassport\">");
-		passportToXml((HBCIPassportPinTan)passport);
+		xmlGen.passportToXml((HBCIPassportPinTan)passport);
         xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
         out.flush();
  	}
 	
-	private static void deletePassport() throws IOException {
+	private void deletePassport() throws IOException {
 		String filename = passportKey(map, "deletePassport");
 		if(filename == null) return;
 	
@@ -586,7 +355,7 @@ public class HBCIServer {
         out.flush();
 	}
 	
-	private static Properties getOrdersForJob(String jobName) throws IOException {
+	private Properties getOrdersForJob(String jobName) throws IOException {
 		Properties orders = new Properties();
 		
 		// first collect all orders separated by handlers
@@ -599,6 +368,7 @@ public class HBCIServer {
 			String bankCode = getParameter(tmap, "accinfo.bankCode");
 			String userId = getParameter(tmap, "accinfo.userId");
 			String accountNumber = getParameter(tmap, "accinfo.accountNumber");
+			String subNumber = tmap.getProperty("accinfo.subNumber");
 			
 			HBCIHandler handler = hbciHandler(bankCode, userId);
 			if(handler == null) {
@@ -606,7 +376,7 @@ public class HBCIServer {
 				continue;
 			}
 			HBCIJob job = handler.newJob(jobName);
-			Konto account = (Konto)accounts.get(bankCode+accountNumber);
+			Konto account = accountWithId(bankCode, accountNumber, subNumber);
 			if(account == null) {
 				account = handler.getPassport().getAccount(accountNumber);
 				if(account == null) {
@@ -641,7 +411,7 @@ public class HBCIServer {
 	
 	
 	
-	private static void getAllStatements() throws IOException {
+	private void getAllStatements() throws IOException {
 		
 		Properties orders = getOrdersForJob("KUmsAll");
 		
@@ -661,10 +431,10 @@ public class HBCIServer {
 					GVRKUms res = (GVRKUms)job.getJobResult();
 					if(res.isOK()) {
 				    	xmlBuf.append("<object type=\"BankQueryResult\">");
-				    	tag("bankCode", account.blz);
-				    	tag("accountNumber", account.number);
+				    	xmlGen.tag("bankCode", account.blz);
+				    	xmlGen.tag("accountNumber", account.number);
 				    	xmlBuf.append("<statements type=\"list\">");
-						umsToXml(res, account);
+						xmlGen.umsToXml(res, account);
 						xmlBuf.append("</statements></object>");
 					}
 					
@@ -680,7 +450,7 @@ public class HBCIServer {
 	}
 
 	
-	private static void getAllStandingOrders() throws IOException {
+	private void getAllStandingOrders() throws IOException {
 		
 		Properties orders = getOrdersForJob("DauerList");
 
@@ -697,10 +467,10 @@ public class HBCIServer {
 					GVRDauerList res = (GVRDauerList)job.getJobResult();
 					if(res.isOK()) {
 				    	xmlBuf.append("<object type=\"BankQueryResult\">");
-				    	tag("bankCode", account.blz);
-				    	tag("accountNumber", account.number);
+				    	xmlGen.tag("bankCode", account.blz);
+				    	xmlGen.tag("accountNumber", account.number);
 				    	xmlBuf.append("<standingOrders type=\"list\">");
-						dauerListToXml(res, account);
+						xmlGen.dauerListToXml(res, account);
 						xmlBuf.append("</standingOrders></object>");
 					}
 				}
@@ -714,7 +484,7 @@ public class HBCIServer {
 		out.flush();
 	}
 	
-	private static void getAllTermUebs() throws IOException {
+	private void getAllTermUebs() throws IOException {
 		
 		Properties orders = getOrdersForJob("TermUebList");
 		
@@ -731,10 +501,10 @@ public class HBCIServer {
 					GVRTermUebList res = (GVRTermUebList)job.getJobResult();
 					if(res.isOK()) {
 				    	xmlBuf.append("<object type=\"BankQueryResult\">");
-				    	tag("bankCode", account.blz);
-				    	tag("accountNumber", account.number);
+				    	xmlGen.tag("bankCode", account.blz);
+				    	xmlGen.tag("accountNumber", account.number);
 				    	xmlBuf.append("<termUebs type=\"list\">");
-						termUebListToXml(res, account);
+				    	xmlGen.termUebListToXml(res, account);
 						xmlBuf.append("</termUebs></object>");
 					}
 				}
@@ -749,7 +519,7 @@ public class HBCIServer {
 	}
 
 	
-	private static void sendTransfers() throws IOException {
+	private void sendTransfers() throws IOException {
 		Properties orders = new Properties();
 		HashSet<HBCIHandler> handlers = new HashSet<HBCIHandler>();
 		String gvCode=null;
@@ -760,6 +530,7 @@ public class HBCIServer {
 			String bankCode = getParameter(map, "transfer.bankCode");
 			String userId = getParameter(map, "transfer.userId");
 			String accountNumber = getParameter(map, "transfer.accountNumber");
+			String subNumber = map.getProperty("transfer.subNumber");
 			
 			HBCIHandler handler = hbciHandler(bankCode, userId);
 			if(handler == null) {
@@ -771,7 +542,7 @@ public class HBCIServer {
 				handler.reset();
 				handlers.add(handler);
 			}
-			Konto account = (Konto)accounts.get(bankCode+accountNumber);
+			Konto account = accountWithId(bankCode, accountNumber, subNumber);
 			if(account == null) {
 				account = handler.getPassport().getAccount(accountNumber);
 				if(account == null) continue;
@@ -783,12 +554,13 @@ public class HBCIServer {
 			else if(transferType.equals("internal")) gvCode = "Umb";
 			else if(transferType.equals("foreign")) gvCode = "UebForeign";
 			else if(transferType.equals("last")) gvCode = "Last";
+			else if(transferType.equals("sepa")) gvCode = "UebSEPA";
 			
 			HBCIJob job = handler.newJob(gvCode);
 			job.setParam("src", account);
 
 			// Gegenkonto
-			if(!transferType.equals("foreign")) {
+			if(!transferType.equals("foreign") && !transferType.equals("sepa")) {
 				Konto dest = new Konto(	getParameter(map, "transfer.remoteCountry"),
 				getParameter(map, "transfer.remoteBankCode"),
 				getParameter(map, "transfer.remoteAccount"));
@@ -802,9 +574,21 @@ public class HBCIServer {
 				} else job.setParam("name", remoteName);
 				
 			} else {
-				job.setParam("dst.iban", getParameter(map, "transfer.iban"));
-				job.setParam("dst.kiname", getParameter(map, "transfer.bankName"));
+				// Auslandsüberweisung oder SEPA Einzelüberweisung
 				job.setParam("dst.name", getParameter(map, "transfer.remoteName"));
+				
+				// wir unterstützen nur die IBAN
+				job.setParam("dst.iban", getParameter(map, "transfer.iban"));
+				if(transferType.equals("sepa")) {
+					if(account.isSEPAAccount() == false) {
+						// Konto kann nicht für SEPA-Geschäftsvorfälle verwendet werden
+						HBCIUtils.log("Account "+account.number+" is no SEPA account (missing IBAN, BIC), skip transfer", HBCIUtils.LOG_ERR);
+						continue;
+					}
+				} else {
+					job.setParam("dst.kiname", getParameter(map, "transfer.bankName"));
+					if(map.containsKey("chargeTo")) job.setParam("kostentraeger", map.getProperty("chargeTo"));
+				}
 			}
 			long val = Long.decode(getParameter(map, "transfer.value"));
 			job.setParam("btg", new Value(val, getParameter(map, "transfer.currency")));
@@ -847,8 +631,8 @@ public class HBCIServer {
 				HBCIJob job = (HBCIJob)jobParam.get("job");
 				HBCIJobResult res = job.getJobResult();
 		    	xmlBuf.append("<object type=\"TransferResult\">");
-		    	tag("transferId", jobParam.getProperty("id"));
-		    	booleTag("isOk", res.isOK());
+		    	xmlGen.tag("transferId", jobParam.getProperty("id"));
+		    	xmlGen.booleTag("isOk", res.isOK());
 				xmlBuf.append("</object>");
 			}
 		}
@@ -861,10 +645,11 @@ public class HBCIServer {
 		out.flush();
 	}
 	
-	private static void handleStandingOrder(String jobName, String cmd) throws IOException {
+	private void handleStandingOrder(String jobName, String cmd) throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
 		String accountNumber = getParameter(map, "accountNumber");
+		String subNumber = map.getProperty("subNumber");
 		String orderId = null;
 		
 		HBCIHandler handler = hbciHandler(bankCode, userId);
@@ -873,7 +658,7 @@ public class HBCIServer {
 			return;
 		}
 		
-		Konto account = (Konto)accounts.get(bankCode+accountNumber);
+		Konto account = accountWithId(bankCode, accountNumber, subNumber);
 		if(account == null) {
 			account = handler.getPassport().getAccount(accountNumber);
 			if(account == null) {
@@ -940,8 +725,8 @@ public class HBCIServer {
 				if(res.isOK()) isOk = true;
 			}
 			xmlBuf.append("<result command=\"addStandingOrder\"><dictionary>");
-			booleTag("isOk", isOk);
-			if(res != null && isOk) tag("orderId", res.getOrderId());
+			xmlGen.booleTag("isOk", isOk);
+			if(res != null && isOk) xmlGen.tag("orderId", res.getOrderId());
 			xmlBuf.append("</dictionary></result>.");
 		} else {
 			HBCIJobResult res = null;
@@ -950,26 +735,26 @@ public class HBCIServer {
 				if(res.isOK()) isOk = true;
 			}
 			xmlBuf.append("<result command=\""+cmd+"\">");
-			booleTag("isOk", isOk);
+			xmlGen.booleTag("isOk", isOk);
 			xmlBuf.append("</result>.");
 		}
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
 	
-	private static void addStandingOrder() throws IOException {
+	private void addStandingOrder() throws IOException {
 		handleStandingOrder("DauerNew", "addStandingOrder");
 	}
 	
-	private static void changeStandingOrder() throws IOException {
+	private void changeStandingOrder() throws IOException {
 		handleStandingOrder("DauerEdit", "changeStandingOrder");
 	}
 	
-	private static void deleteStandingOrder() throws IOException {
+	private void deleteStandingOrder() throws IOException {
 		handleStandingOrder("DauerDel", "deleteStandingOrder");		
 	}
 	
-	private static void init() throws IOException {
+	private void init() throws IOException {
 		// global inits
 		initHBCI();
 		hbciHandlers = new Properties();
@@ -1018,7 +803,7 @@ public class HBCIServer {
 		xmlBuf.append("<result command=\"init\">");
 		xmlBuf.append("<list>");
 		for(int i=0; i<result.size(); i++) {
-			userToXml(result.get(i));
+			xmlGen.userToXml(result.get(i));
 //			passportToXml((HBCIPassportPinTan)result.get(i));
 		}
 		xmlBuf.append("</list>");
@@ -1027,7 +812,7 @@ public class HBCIServer {
 		out.flush();
 	}
 	
-	private static void getAccounts() throws IOException {
+	private void getAccounts() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
 
@@ -1043,7 +828,7 @@ public class HBCIServer {
 					if(handler != null) {
 						HBCIPassport pp = handler.getPassport();
 						Konto [] accs = pp.getAccounts();
-						for(Konto k: accs) accountToXml(k, pp);
+						for(Konto k: accs) xmlGen.accountToXml(k, pp);
 					}
 				} 
 			}
@@ -1052,7 +837,7 @@ public class HBCIServer {
 			if(handler != null) {
 				HBCIPassport pp = handler.getPassport();
 				Konto [] accs = pp.getAccounts();
-				for(Konto k: accs) accountToXml(k, pp);
+				for(Konto k: accs) xmlGen.accountToXml(k, pp);
 			} else {
 				error(ERR_MISS_USER, "getAccounts", userId);
 				return;
@@ -1065,25 +850,25 @@ public class HBCIServer {
 		out.flush();
 	}
 	
-	private static void getBankInfo() throws IOException {
+	private void getBankInfo() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String data = HBCIUtilsInternal.getBLZData(bankCode);
         String[] parts=data.split("\\|");
 		xmlBuf.append("<result command=\"getBankInfo\">");
     	xmlBuf.append("<object type=\"BankInfo\">");
-		tag("bankCode", bankCode);
-		if(parts.length > 0) tag("name", parts[0]);
-		if(parts.length > 2) tag("bic", parts[2]);
-		if(parts.length > 4)tag("host", parts[4]);
-		if(parts.length > 5) tag("pinTanURL", parts[5]);
-		if(parts.length > 7) tag("pinTanVersion", parts[7]);
+    	xmlGen.tag("bankCode", bankCode);
+		if(parts.length > 0) xmlGen.tag("name", parts[0]);
+		if(parts.length > 2) xmlGen.tag("bic", parts[2]);
+		if(parts.length > 4) xmlGen.tag("host", parts[4]);
+		if(parts.length > 5) xmlGen.tag("pinTanURL", parts[5]);
+		if(parts.length > 7) xmlGen.tag("pinTanVersion", parts[7]);
 		xmlBuf.append("</object>");
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
 	
-	private static void checkAccount() throws IOException {
+	private void checkAccount() throws IOException {
 		boolean result = true;
 		String bankCode = map.getProperty("bankCode");
 		if(bankCode != null) {
@@ -1096,22 +881,32 @@ public class HBCIServer {
 		}
 
 		xmlBuf.append("<result command=\"checkAccount\">");
-		booleTag("checkResult", result);
+		xmlGen.booleTag("checkResult", result);
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
 	
-	private static void setAccount() throws IOException {
+	private Konto accountWithId(String bankCode, String accountNumber, String subNumber)
+	{
+		if(subNumber == null) {
+			return (Konto)accounts.get(bankCode+accountNumber);
+		} else {
+			return (Konto)accounts.get(bankCode+accountNumber+subNumber);			
+		}
+	}
+	
+	private void setAccount() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
 		String accountNumber = getParameter(map, "accountNumber");
+		String subNumber = map.getProperty("subNumber");
 		
 		// first check if there is a valid user
 		String key = passportKey(bankCode, userId);
 		User user = (User)users.get(key);
 		if(user != null) {
-			Konto acc = (Konto)accounts.get(bankCode+accountNumber);
+			Konto acc = accountWithId(bankCode, accountNumber, subNumber);
 			if(acc == null) {
 				acc = new Konto(getParameter(map, "country"), bankCode, accountNumber);
 				acc.curr = map.getProperty("currency");
@@ -1121,27 +916,34 @@ public class HBCIServer {
 				acc.iban = map.getProperty("iban");
 				acc.name = map.getProperty("ownerName");
 				acc.type = map.getProperty("name");
-				accounts.put(bankCode+accountNumber, acc);
+				acc.subnumber = subNumber;
+				if(subNumber != null) accounts.put(bankCode+accountNumber+subNumber, acc);
+				else accounts.put(bankCode+accountNumber, acc);
+			} else {
+				// IBAN und BIC können von außen gesetzt werden
+				if (acc.iban == null) acc.iban = map.getProperty("iban");
+				if (acc.bic == null) acc.bic = map.getProperty("bic");
 			}
 		}
 		
 		xmlBuf.append("<result command=\"setAccount\">");
-		booleTag("checkResult", true);
+		xmlGen.booleTag("checkResult", true);
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
 	
-	private static void changeAccount() throws IOException {
+	private void changeAccount() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
 		String accountNumber = getParameter(map, "accountNumber");
+		String subNumber = map.getProperty("subNumber");
 		
 		// first check if there is a valid passport
 		String key = passportKey(bankCode, userId);
 		User user = (User)users.get(key);
 		if(user != null) {
-			Konto acc = (Konto)accounts.get(bankCode+accountNumber);
+			Konto acc = accountWithId(bankCode, accountNumber, subNumber);
 			if(acc != null) {
 				acc.bic = map.getProperty("bic");
 				acc.iban = map.getProperty("iban");
@@ -1151,13 +953,13 @@ public class HBCIServer {
 		}
 		
 		xmlBuf.append("<result command=\"changeAccount\">");
-		booleTag("checkResult", true);
+		xmlGen.booleTag("checkResult", true);
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
 	
-	private static void getJobRestrictions() throws IOException {
+	private void getJobRestrictions() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
 		String jobName = getParameter(map, "jobName");
@@ -1183,13 +985,13 @@ public class HBCIServer {
 					String countryId = cInfos[2];
 					countryRestrictions.add(countryId+";"+s);
 				} else
-					tag(key, props.getProperty(key));
+					xmlGen.tag(key, props.getProperty(key));
 			}
 			xmlBuf.append("<textKeys type=\"list\">");
-			for(String k: textKeys) tag("key", k);
+			for(String k: textKeys) xmlGen.tag("key", k);
 			xmlBuf.append("</textKeys>");
 			xmlBuf.append("<countryInfos type=\"list\">");
-			for(String k: countryRestrictions) tag("info", k);
+			for(String k: countryRestrictions) xmlGen.tag("info", k);
 			xmlBuf.append("</countryInfos>");
 			
 		}
@@ -1199,7 +1001,7 @@ public class HBCIServer {
 		out.flush();
 	}
 	
-	private static void getBankParameter() throws IOException {
+	private void getBankParameter() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
 		HBCIHandler handler = hbciHandler(bankCode, userId);
@@ -1213,22 +1015,68 @@ public class HBCIServer {
 		xmlBuf.append("<bpd type=\"dictionary\">");
 		for(Enumeration e = bpd.keys(); e.hasMoreElements(); ) {
 			String key = (String)e.nextElement();
-			tag(key, bpd.getProperty(key));
+			xmlGen.tag(key, bpd.getProperty(key));
 		}
 		xmlBuf.append("</bpd>");
 		xmlBuf.append("<upd type=\"dictionary\">");
 		Properties upd = passport.getUPD();
 		for(Enumeration e = upd.keys(); e.hasMoreElements(); ) {
 			String key = (String)e.nextElement();
-			tag(key, upd.getProperty(key));
+			xmlGen.tag(key, upd.getProperty(key));
 		}
 		xmlBuf.append("</upd>");
 		xmlBuf.append("</object></result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
+
+	private void getBankParameterRaw() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String userId = getParameter(map, "userId");
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		if(handler == null) {
+			error(ERR_MISS_USER, "getBankParameter", userId);
+			return;
+		}
+		HBCIPassport passport = handler.getPassport();
+		xmlBuf.append("<result command=\"getBankParameter\"><object type=\"BankParameter\">");
+		Properties bpd = passport.getBPD();
+		if (bpd != null) {
+			xmlBuf.append("<bpd_raw>");
+			
+			String[] keys = (String[])bpd.keySet().toArray(new String[bpd.keySet().size()]);
+			java.util.Arrays.sort(keys);
+			
+			for(int i=0; i<keys.length; i++) {
+				String key = keys[i];
+				if(i > 0) xmlBuf.append("\n");
+				xmlBuf.append(key+"="+bpd.getProperty(key));
+			}
+			xmlBuf.append("</bpd_raw>");			
+		}
+
+		
+		Properties upd = passport.getUPD();
+		if (upd != null) {
+			xmlBuf.append("<upd_raw>");
+			String keys[] = (String[])upd.keySet().toArray(new String[upd.keySet().size()]);
+			java.util.Arrays.sort(keys);
+			
+			for(int i=0; i<keys.length; i++) {
+				String key = keys[i];
+				if(i > 0) xmlBuf.append("\n");
+				xmlBuf.append(key+"="+upd.getProperty(key));
+			}
+			xmlBuf.append("</upd_raw>");
+		}
+
+		xmlBuf.append("</object></result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+	}
+
 	
-	private static void isJobSupported() throws IOException {
+	private void isJobSupported() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String accountNumber = getParameter(map, "accountNumber");
 		String userId = getParameter(map, "userId");
@@ -1272,6 +1120,7 @@ public class HBCIServer {
 				if(jobName.equals("Ueb")) supp = gvcodes.contains("HKUEB");
 				else if(jobName.equals("TermUeb")) supp = gvcodes.contains("HKTUE");
 				else if(jobName.equals("UebForeign")) supp = gvcodes.contains("HKAOM");
+				else if(jobName.equals("UebSEPA")) supp = gvcodes.contains("HKCCS");
 				else if(jobName.equals("Umb")) supp = gvcodes.contains("HKUMB");
 				else if(jobName.equals("Last")) supp = gvcodes.contains("HKLAS");
 				else if(jobName.equals("DauerNew")) supp = gvcodes.contains("HKDAE");
@@ -1281,13 +1130,13 @@ public class HBCIServer {
 		}
 		
 		xmlBuf.append("<result command=\"isSupported\">");
-		booleTag("isSupported", supp);
+		xmlGen.booleTag("isSupported", supp);
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
 	
-	private static void updateBankData() throws IOException {
+	private void updateBankData() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
 		
@@ -1301,24 +1150,24 @@ public class HBCIServer {
 			error(ERR_GENERIC, "updateBankData", status.getErrorString());
 			return;
 		}
-		passportToXml(passport);
+		xmlGen.passportToXml(passport);
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
 	
-	private static void error(int code, String command, String msg) throws IOException {
+	private void error(int code, String command, String msg) throws IOException {
 		xmlBuf = new StringBuffer();
 		xmlBuf.append("<result command=\""+command+"\">");
 		xmlBuf.append("<error code=\""+Integer.toString(code)+"\">");
-		tag("msg", msg);
+		xmlGen.tag("msg", msg);
 		xmlBuf.append("</error>");
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
 	
-	private static void resetPinTanMethod() throws IOException {
+	private void resetPinTanMethod() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
 		
@@ -1334,13 +1183,13 @@ public class HBCIServer {
 		user.updatePinTanMethod(passport);
 		user.save();
 		xmlBuf.append("<result command=\"resetPinTanMethod\">");
-		passportToXml(passport);
+		xmlGen.passportToXml(passport);
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
 	
-	private static void setLogLevel() throws IOException {
+	private void setLogLevel() throws IOException {
 		String level = getParameter(map, "logLevel");
 		Integer logLevel = Integer.valueOf(level);
 		logLevel += 1;
@@ -1350,10 +1199,11 @@ public class HBCIServer {
         out.flush();
 	}
 	
-	private static void getAccInfo() throws IOException {
+	private void getAccInfo() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
-		String accountNumber = getParameter(map, "accountNumber");	
+		String accountNumber = getParameter(map, "accountNumber");
+		String subNumber = map.getProperty("subNumber");
 		
 		HBCIHandler handler = hbciHandler(bankCode, userId);
 		if(handler == null) {
@@ -1361,7 +1211,7 @@ public class HBCIServer {
 			return;			
 		}
 		
-		Konto account = (Konto)accounts.get(bankCode+accountNumber);
+		Konto account = accountWithId(bankCode, accountNumber, subNumber);
 		if(account == null) {
 			account = handler.getPassport().getAccount(accountNumber);
 			if(account == null) {
@@ -1386,10 +1236,11 @@ public class HBCIServer {
 
 	}
 	
-	private static void customerMessage() throws IOException {
+	private void customerMessage() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
 		String accountNumber = getParameter(map, "accountNumber");
+		String subNumber = map.getProperty("subNumber");
 		
 		String msgHead = map.getProperty("head");
 		String msgBody = getParameter(map, "body");
@@ -1401,7 +1252,7 @@ public class HBCIServer {
 			return;			
 		}
 		
-		Konto account = (Konto)accounts.get(bankCode+accountNumber);
+		Konto account = accountWithId(bankCode, accountNumber, subNumber);
 		if(account == null) {
 			account = handler.getPassport().getAccount(accountNumber);
 			if(account == null) {
@@ -1426,16 +1277,123 @@ public class HBCIServer {
 			if(res.isOK()) isOk = true;
 		}
 		xmlBuf.append("<result command=\"customerMessage\">");
-		booleTag("isOk", isOk);
+		xmlGen.booleTag("isOk", isOk);
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
 	
+	public void getAllCCStatements() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String userId = getParameter(map, "userId");
+		String accountNumber = getParameter(map, "accountNumber");
+		String ccnum = getParameter(map,"cc_number");
+		String subNumber = map.getProperty("subNumber");
+		
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		if(handler == null) {
+			error(ERR_MISS_USER, "getAllCCStatements", userId);
+			return;			
+		}
+		
+		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		if(account == null) {
+			account = handler.getPassport().getAccount(accountNumber);
+			if(account == null) {
+				error(ERR_MISS_ACCOUNT, "getAllCCStatements",accountNumber);
+				return;
+			}
+		}
 	
-	private static void dispatch(String command) throws IOException {
+		HBCIJob job = handler.newJob("KKUmsAll");
+		job.setParam("my", account);
+		job.setParam("cc_number", ccnum);
+		
+		job.addToQueue();
+		HBCIExecStatus stat = handler.execute();
+
+		boolean isOk = false;
+		HBCIJobResult res = null;
+		if(stat.isOK()) {
+			res = job.getJobResult();
+			if(res.isOK()) isOk = true;
+		}
+		xmlBuf.append("<result command=\"getAllCCStatements\">");
+		xmlGen.booleTag("isOk", isOk);
+		xmlBuf.append("</result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+	}
+	
+	private void getTANMediaList() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String userId = getParameter(map, "userId");
+		
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		if(handler == null) {
+			error(ERR_MISS_USER, "customerMessage", userId);
+			return;			
+		}
+		
+		HBCIJob job = handler.newJob("TANMediaList");
+		job.setParam("mediatype", "1");
+		job.setParam("mediacategory", "A");
+		job.addToQueue();
+		HBCIExecStatus stat = handler.execute();
+
+		xmlBuf.append("<result command=\"getTANMediaList\">");
+		if(stat.isOK()) {
+			GVRTANMediaList res = (GVRTANMediaList)job.getJobResult();
+			xmlGen.tanMediaListToXml(res);
+		}
+		xmlBuf.append("</result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+	}
+	
+	private void getInitialBPD() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+
+		HBCIPassportPinTanAnon	passport = new HBCIPassportPinTanAnon(bankCode);
+		if(passport.isReady() == false) return;
+		HBCIKernelImpl kernel = new HBCIKernelImpl(null,passport.getHBCIVersion());
+		HBCIInstitute inst = new HBCIInstitute(kernel, passport, true);
+		inst.fetchBPD();
+		Properties bpd = passport.getBPD();
+		
+		// search for PIN/TAN Information
+		xmlBuf.append("<result command=\"getInitialBPD\">");
+		if (bpd != null) {
+			for(Enumeration e = bpd.keys(); e.hasMoreElements(); ) {
+				String key = (String)e.nextElement();
+				if (key.endsWith("info_userid")) {
+					xmlGen.tag("info_userid", bpd.getProperty(key));
+				}
+				if (key.endsWith("info_customerid")) {
+					xmlGen.tag("info_customerid", bpd.getProperty(key));
+				}
+				if (key.endsWith("pinlen_min")) {
+					xmlGen.tag("pinlen_min", bpd.getProperty(key));
+				}
+				if (key.endsWith("pinlen_max")) {
+					xmlGen.tag("pinlen_max", bpd.getProperty(key));
+				}
+				if (key.endsWith("tanlen_max")) {
+					xmlGen.tag("tanlen_max", bpd.getProperty(key));
+				}
+			}			
+		}
+		xmlBuf.append("</result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+	}
+		
+	
+	private void dispatch(String command) throws IOException {
 //			cmd = HBCIServer.class.getMethod(command, new Class[0]);
 		xmlBuf = new StringBuffer();
+		xmlGen = new XmlGen(xmlBuf);
+		
 		try {
 			if(command.compareTo("addUser") ==0 ) { addPassport(); return; }
 			if(command.compareTo("init") == 0) { init(); return; }
@@ -1460,6 +1418,11 @@ public class HBCIServer {
 			if(command.compareTo("getAccInfo") == 0) { getAccInfo(); return; }
 			if(command.compareTo("getAllTermUebs") == 0) { getAllTermUebs(); return; }
 			if(command.compareTo("customerMessage") == 0) { customerMessage(); return; }
+			if(command.compareTo("getAllCCStatements") == 0) { getAllCCStatements(); return; }
+			if(command.compareTo("getInitialBPD") == 0) { getInitialBPD(); return; }
+			if(command.compareTo("getTANMediaList") == 0) { getTANMediaList(); return; }
+			if(command.compareTo("getBankParameterRaw") == 0) { getBankParameterRaw(); return; }
+			
 			
 			System.err.println("HBCIServer: unknown command: "+command);
 			error(ERR_WRONG_COMMAND, command, "Ungültiger Befehl");
@@ -1499,7 +1462,7 @@ public class HBCIServer {
 	}
 
 	
-	private static void acceptArray(XmlPullParser xpp, Properties map, String tag) throws XmlPullParserException, IOException {
+	private void acceptArray(XmlPullParser xpp, Properties map, String tag) throws XmlPullParserException, IOException {
 		int eventType;
 		ArrayList list = new ArrayList();
 		
@@ -1515,7 +1478,7 @@ public class HBCIServer {
 		map.put(tag, list);
 	}
 		
-	private static void acceptTag(XmlPullParser xpp, Properties map, String tag) throws XmlPullParserException, IOException {
+	private void acceptTag(XmlPullParser xpp, Properties map, String tag) throws XmlPullParserException, IOException {
 		int eventType;
 		String currTag = null;
 		
@@ -1538,62 +1501,74 @@ public class HBCIServer {
 		}
 	}
 	
-	
-	public static void main(String[] args) {
-			String command = null;
-			map = new Properties();
-			countryInfos = new Properties();
-			hbciHandlers = new Properties();
-			accounts = new Properties();
-			users = new Properties();
-			XmlPullParserFactory factory;
-			System.err.println("HBCI Server up and running...");
-		
-			try {
-				String s;
-				String cmd = "";
-				
-				factory = XmlPullParserFactory.newInstance();
-	            factory.setNamespaceAware(true);
-	            XmlPullParser xpp = factory.newPullParser();
-				in = new BufferedReader(new InputStreamReader(System.in, "UTF-8"));
-				out = new BufferedWriter(new OutputStreamWriter(System.out, "UTF-8"));
-  
-				while ((s = in.readLine()) != null && s.length() != 0) {
-//					cmd += s;
-					if(s.endsWith(".")) {
-						s = s.substring(0, s.length()-1);
-						cmd += s;
-						xpp.setInput(new StringReader(cmd));
-						cmd = "";
+	void start() {
+		XmlPullParserFactory factory;
+		String command = null;
 
-			            int eventType = xpp.getEventType();
-			            while (eventType != XmlPullParser.END_DOCUMENT) {
-			             if(eventType == XmlPullParser.START_DOCUMENT) {
-			             } else if(eventType == XmlPullParser.END_DOCUMENT) {
-			             } else if(eventType == XmlPullParser.START_TAG) {
-			            	 String tag = xpp.getName();
-			            	 if(tag.compareTo("command") == 0) {
-			            		 command = xpp.getAttributeValue(null, "name");
-			            		 map.clear();
-			            	 } else acceptTag(xpp, map, null);
-			             } else if(eventType == XmlPullParser.END_TAG) {
-			            	 String tag = xpp.getName();
-			            	 if(tag.compareTo("command") == 0) {
-			            		 dispatch(command);
-			            	 }
-			             } else if(eventType == XmlPullParser.TEXT) {
-			             }
-			             eventType = xpp.next();
-			            }
-					
-					} else cmd += s;
-				 }
- 			} catch (XmlPullParserException e) {
-				// TODO Auto-generated catch block
+		try {
+			String s;
+			String cmd = "";
+
+			factory = XmlPullParserFactory.newInstance();
+			factory.setNamespaceAware(true);
+			XmlPullParser xpp = factory.newPullParser();
+
+			while ((s = in.readLine()) != null && s.length() != 0) {
+				// cmd += s;
+				if (s.endsWith(".")) {
+					s = s.substring(0, s.length() - 1);
+					cmd += s;
+					xpp.setInput(new StringReader(cmd));
+					cmd = "";
+
+					int eventType = xpp.getEventType();
+					while (eventType != XmlPullParser.END_DOCUMENT) {
+						if (eventType == XmlPullParser.START_DOCUMENT) {
+						} else if (eventType == XmlPullParser.END_DOCUMENT) {
+						} else if (eventType == XmlPullParser.START_TAG) {
+							String tag = xpp.getName();
+							if (tag.compareTo("command") == 0) {
+								command = xpp.getAttributeValue(null, "name");
+								map.clear();
+							} else
+								acceptTag(xpp, map, null);
+						} else if (eventType == XmlPullParser.END_TAG) {
+							String tag = xpp.getName();
+							if (tag.compareTo("command") == 0) {
+								dispatch(command);
+							}
+						} else if (eventType == XmlPullParser.TEXT) {
+						}
+						eventType = xpp.next();
+					}
+
+				} else
+					cmd += s;
+			}
+		} catch (XmlPullParserException e) {
+			try {
+			    error(ERR_GENERIC, command, e.getMessage());
 				e.printStackTrace();
 			}
-			catch (IOException e) {
+			catch (IOException x) {
+				System.err.println("HBCI Server panic: IO exception occured!");
+				x.printStackTrace();
+			}
+		} catch (IOException e) {
+			System.err.println("HBCI Server panic: IO exception occured!");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public static void main(String[] args) {
+		
+			try {
+				server = new HBCIServer();
+				System.err.println("HBCI Server up and running...");
+				server.start();
+ 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

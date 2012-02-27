@@ -56,9 +56,7 @@ public class User implements Serializable {
 	}
 	
 	public void save() throws IOException {
-		String filename = HBCIServer.passportKey(bankCode, userId);
-        String filePath = HBCIServer.passportPath + "/" + filename + ".ser";
-        FileOutputStream userFile = new FileOutputStream( filePath );
+        FileOutputStream userFile = new FileOutputStream(HBCIServer.server().passportFilepath(bankCode, userId));
         ObjectOutputStream o = new ObjectOutputStream( userFile );
         o.writeObject(this);
         o.close();
