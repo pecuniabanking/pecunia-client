@@ -86,6 +86,16 @@
 #define BankStatementDataType	@"BankStatementDataType"
 #define CategoryDataType		@"CategoryDataType"
 
+@implementation AboutWindow
+
+- (BOOL)canBecomeKeyWindow
+{
+    return NO;
+}
+
+@end;
+
+
 // Singleton simulation
 static BankingController	*con;
 
@@ -2615,14 +2625,12 @@ static BankingController	*con;
     
     NSRect frame = [aboutWindow frame];
     frame = NSInsetRect(frame, 0.5 * frame.size.width, 0.5 * frame.size.height);
-    [aboutWindow zoomInFromRect: frame withFade: NO makeKey: NO];
+    [aboutWindow fadeIn];
 }
 
 - (IBAction)closeAboutPanel:(id)sender
 {
-    NSRect frame = [aboutWindow frame];
-    frame = NSInsetRect(frame, 0.5 * frame.size.width, 0.5 * frame.size.height);
-    [aboutWindow zoomOffToRect: frame withFade: NO];
+    [aboutWindow orderOut: self];
 }
 
 -(void)migrate

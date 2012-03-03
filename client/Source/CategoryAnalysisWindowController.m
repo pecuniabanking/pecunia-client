@@ -1091,39 +1091,44 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     }
 }
 
+/**
+ * Updates the vertical plotrange of the main graph and must only be called with data loaded.
+ */
 - (void)updateVerticalMainGraphRange
 {
-    if (rawCount == 0) {
-        return;
-    }
-    
-    CPTXYPlotSpace* plotSpace = (id)mainGraph.defaultPlotSpace;
-
-    NSUInteger units = round(plotSpace.xRange.locationDouble);
-    NSUInteger startIndex = [self findIndexForTimePoint: units];
-    if (![mainCategory isBankAccount] && timePoints[startIndex] < units) {
-        // The search routine for an index is left affine, that is, the lower indices are prefered
-        // when a time point is between two time indices.
-        // For scatterplots this is ok, but we need to correct it for bar plots to only consider
-        // what is visible.
-        ++startIndex;
-    }
-    units = round(plotSpace.xRange.endDouble);
-    NSUInteger endIndex = [self findIndexForTimePoint: units] + 1;
-
-    if (startIndex > endIndex) {
-        return;
-    }
-    
     double min = 0;
     double max = 0;
-    for (NSUInteger i = startIndex; i < endIndex; i++) {
-        if (totalBalances[i] < min) {
-            min = totalBalances[i];
+    CPTXYPlotSpace* plotSpace = (id)mainGraph.defaultPlotSpace;
+
+    if (rawCount > 0) {
+        
+        NSUInteger units = round(plotSpace.xRange.locationDouble);
+        NSUInteger startIndex = [self findIndexForTimePoint: units];
+        if (![mainCategory isBankAccount] && timePoints[startIndex] < units) {
+            // The search routine for an index is left affine, that is, the lower indices are prefered
+            // when a time point is between two time indices.
+            // For scatterplots this is ok, but we need to correct it for bar plots to only consider
+            // what is visible.
+            ++startIndex;
         }
-        if (totalBalances[i] > max) {
-            max = totalBalances[i];
+        units = round(plotSpace.xRange.endDouble);
+        NSUInteger endIndex = [self findIndexForTimePoint: units] + 1;
+        
+        if (startIndex >= endIndex) {
+            // Don't change the plot range if we are in a time range that doesn't contain values.
+            return;
         }
+        
+        for (NSUInteger i = startIndex; i < endIndex; i++) {
+            if (totalBalances[i] < min) {
+                min = totalBalances[i];
+            }
+            if (totalBalances[i] > max) {
+                max = totalBalances[i];
+            }
+        }
+    } else {
+        max = [totalMaxValue doubleValue];
     }
     
     NSDecimalNumber* minValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(min)];
@@ -1856,20 +1861,26 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 - (void)updateValues
 {
-    double minDoubleValue = 0;
-    double maxDoubleValue = 0;
-    for (NSUInteger i = 0; i < rawCount; i++) {
-        if (totalBalances[i] > maxDoubleValue) {
-            maxDoubleValue = totalBalances[i];
+    if (rawCount > 0) {
+        double minDoubleValue = 0;
+        double maxDoubleValue = 0;
+        for (NSUInteger i = 0; i < rawCount; i++) {
+            if (totalBalances[i] > maxDoubleValue) {
+                maxDoubleValue = totalBalances[i];
+            }
+            if (totalBalances[i] < minDoubleValue) {
+                minDoubleValue = totalBalances[i];
+            }
         }
-        if (totalBalances[i] < minDoubleValue) {
-            minDoubleValue = totalBalances[i];
-        }
+        
+        totalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(minDoubleValue)] retain];
+        totalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(maxDoubleValue)] retain];
+    } else {
+        // totalMinValue is already set to zero in clearGraphs.
+        [totalMaxValue release];
+        totalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(100)] retain];
     }
     
-    totalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(minDoubleValue)] retain];
-    totalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(maxDoubleValue)] retain];
-
     // Update the selected range so that its length corresponds to the minimum length
     // and it doesn't start before the first date in the date array. It might go beyond the
     // available data, which is handled elsewhere.
@@ -1967,101 +1978,100 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     if (mainCategory == nil)
         return;
     
-    NSArray *dates;
-    NSArray *balances;
-    NSArray *turnovers;
+    NSArray *dates = nil;
+    NSArray *balances = nil;
+    NSArray *turnovers = nil;
     if (mainCategory.isBankAccount) {
-        if ([mainCategory balanceHistoryToDates: &dates
-                                       balances: &balances
-                                  balanceCounts: &turnovers
-                                   withGrouping: groupingInterval] == 0) {
-            return;
-        }
+        [mainCategory balanceHistoryToDates: &dates
+                                   balances: &balances
+                              balanceCounts: &turnovers
+                               withGrouping: groupingInterval];
     } else {
-        if ([mainCategory categoryHistoryToDates: &dates
-                                        balances: &balances
-                                   balanceCounts: &turnovers
-                                    withGrouping: groupingInterval] == 0) {
-            return;
-        }
+        [mainCategory categoryHistoryToDates: &dates
+                                    balances: &balances
+                               balanceCounts: &turnovers
+                                withGrouping: groupingInterval];
     }
     
-    // Convert the data to the internal representations.
-    // We add one to the total number as we need it (mostly) in scatter plots to
-    // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
-    rawCount = [dates count] + 1;
-    
-    // Convert the dates to distance units from a reference date.
-    timePoints = malloc(rawCount * sizeof(double));
-    [referenceDate release];
-    referenceDate = [[dates objectAtIndex: 0] retain];
-    int index = 0;
-    for (ShortDate *date in dates) {
-        timePoints[index++] = [self distanceFromDate: referenceDate toDate: date];
-    }
-    timePoints[index] = timePoints[index - 1] + 1000; // A date far in the future.
-    
-    // Convert all NSDecimalNumbers to double for better performance.
-    totalBalances = malloc(rawCount * sizeof(double));
-    positiveBalances = malloc(rawCount * sizeof(double));
-    negativeBalances = malloc(rawCount * sizeof(double));
-    
-    index = 0;
-    for (NSDecimalNumber *value in balances) {
-        double doubleValue = [value doubleValue];
-        totalBalances[index] = doubleValue;
-        if (doubleValue < 0) {
-            positiveBalances[index] = 0;
-            negativeBalances[index] = doubleValue;
-        } else {
-            positiveBalances[index] = doubleValue;
-            negativeBalances[index] = 0;
-        }
-        index++;
-    }
-    
-    // Now the turnovers.
-    balanceCounts = malloc(rawCount * sizeof(double));
-    index = 0;
-    for (NSDecimalNumber *value in turnovers) {
-        balanceCounts[index++] = [value doubleValue];
-    }
-
-    // The value in the extra field is never used, but serves only as additional data point.
-    totalBalances[index] = 0;
-    positiveBalances[index] = 0;
-    negativeBalances[index] = 0;
-    balanceCounts[index] = 0;
-    
-    // Sample data for the selection plot. Use only as many values as needed to fill the window.
-    CPTPlotAreaFrame *frame = selectionGraph.plotAreaFrame;
-    selectionSampleCount = frame.bounds.size.width - frame.paddingLeft - frame.paddingRight;
-    int datapointsPerSample = rawCount / selectionSampleCount; // Count only discrete values.
-
-    // Don't sample the data if there aren't at least twice as many values as needed to show.
-    if (datapointsPerSample > 1) {
-        // The computed sample count leaves us with some missing values (discrete math).
-        // The systematic error is rawCount - trunc(rawCount / windowSize) * windowSize and the
-        // maximum systematic error being almost windowSize.
-        // To minimize this error we compute the maximum number of samples that fit into the
-        // full range leaving us with a systematic error of
-        //   rawCount - (rawCount / trunc(rawCount / windowSize)) * windowSize
-        // which is at most the sample size.
-        selectionSampleCount = rawCount / datapointsPerSample;
+    if (dates != nil)
+    {
+        // Convert the data to the internal representations.
+        // We add one to the total number as we need it (mostly) in scatter plots to
+        // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
+        rawCount = [dates count] + 1;
         
-        selectionBalances = malloc(selectionSampleCount * sizeof(double));
-        selectionTimePoints = malloc(selectionSampleCount * sizeof(double));
+        // Convert the dates to distance units from a reference date.
+        timePoints = malloc(rawCount * sizeof(double));
+        [referenceDate release];
+        referenceDate = [[dates objectAtIndex: 0] retain];
+        int index = 0;
+        for (ShortDate *date in dates) {
+            timePoints[index++] = [self distanceFromDate: referenceDate toDate: date];
+        }
+        timePoints[index] = timePoints[index - 1] + 1000; // A date far in the future.
         
-        // Pick the largest value in the sample window as sampled representation.
-        for (NSUInteger i = 0; i < rawCount; i++) {
-            NSUInteger sampleIndex = i / datapointsPerSample;
-            if (i % datapointsPerSample == 0) {
-                selectionBalances[sampleIndex] = totalBalances[i];
-                selectionTimePoints[sampleIndex] = timePoints[i];
+        // Convert all NSDecimalNumbers to double for better performance.
+        totalBalances = malloc(rawCount * sizeof(double));
+        positiveBalances = malloc(rawCount * sizeof(double));
+        negativeBalances = malloc(rawCount * sizeof(double));
+        
+        index = 0;
+        for (NSDecimalNumber *value in balances) {
+            double doubleValue = [value doubleValue];
+            totalBalances[index] = doubleValue;
+            if (doubleValue < 0) {
+                positiveBalances[index] = 0;
+                negativeBalances[index] = doubleValue;
             } else {
-                if (totalBalances[i] > selectionBalances[sampleIndex]) {
+                positiveBalances[index] = doubleValue;
+                negativeBalances[index] = 0;
+            }
+            index++;
+        }
+        
+        // Now the turnovers.
+        balanceCounts = malloc(rawCount * sizeof(double));
+        index = 0;
+        for (NSDecimalNumber *value in turnovers) {
+            balanceCounts[index++] = [value doubleValue];
+        }
+        
+        // The value in the extra field is never used, but serves only as additional data point.
+        totalBalances[index] = 0;
+        positiveBalances[index] = 0;
+        negativeBalances[index] = 0;
+        balanceCounts[index] = 0;
+        
+        // Sample data for the selection plot. Use only as many values as needed to fill the window.
+        CPTPlotAreaFrame *frame = selectionGraph.plotAreaFrame;
+        selectionSampleCount = frame.bounds.size.width - frame.paddingLeft - frame.paddingRight;
+        int datapointsPerSample = rawCount / selectionSampleCount; // Count only discrete values.
+        
+        // Don't sample the data if there aren't at least twice as many values as needed to show.
+        if (datapointsPerSample > 1) {
+            // The computed sample count leaves us with some missing values (discrete math).
+            // The systematic error is rawCount - trunc(rawCount / windowSize) * windowSize and the
+            // maximum systematic error being almost windowSize.
+            // To minimize this error we compute the maximum number of samples that fit into the
+            // full range leaving us with a systematic error of
+            //   rawCount - (rawCount / trunc(rawCount / windowSize)) * windowSize
+            // which is at most the sample size.
+            selectionSampleCount = rawCount / datapointsPerSample;
+            
+            selectionBalances = malloc(selectionSampleCount * sizeof(double));
+            selectionTimePoints = malloc(selectionSampleCount * sizeof(double));
+            
+            // Pick the largest value in the sample window as sampled representation.
+            for (NSUInteger i = 0; i < rawCount; i++) {
+                NSUInteger sampleIndex = i / datapointsPerSample;
+                if (i % datapointsPerSample == 0) {
                     selectionBalances[sampleIndex] = totalBalances[i];
                     selectionTimePoints[sampleIndex] = timePoints[i];
+                } else {
+                    if (totalBalances[i] > selectionBalances[sampleIndex]) {
+                        selectionBalances[sampleIndex] = totalBalances[i];
+                        selectionTimePoints[sampleIndex] = timePoints[i];
+                    }
                 }
             }
         }
@@ -2085,10 +2095,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         mainGraph.defaultPlotSpace.allowsUserInteraction = YES;
         turnoversGraph.defaultPlotSpace.allowsUserInteraction = YES;
         selectionGraph.defaultPlotSpace.allowsUserInteraction = YES;
-    } else {
-        [totalMaxValue release];
-        totalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(100)] retain];
-    }
+    };
 
     [self setupMainPlots];
     [self setupTurnoversPlot];

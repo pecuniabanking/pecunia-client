@@ -203,10 +203,10 @@
 - (void)fadeIn
 {
     [self setAlphaValue: 0.f];
-    [self makeKeyAndOrderFront: nil];
+    [self orderFront: nil];
 
     [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration: 0.2];
+    [[NSAnimationContext currentContext] setDuration: 0.25];
     [[self animator] setAlphaValue: 1.f];
     [NSAnimationContext endGrouping];
 }
@@ -217,6 +217,7 @@
         return;
     }
     
+    [self setAlphaValue: 1];
     NSRect frame = [self frame];
     NSRect overshotFrame = NSInsetRect(frame, -0.07 * frame.size.width, -0.07 * frame.size.height);
     ZoomWindow *zoomWindow = [self createZoomWindowWithRect: startRect];

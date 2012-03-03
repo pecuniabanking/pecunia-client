@@ -219,9 +219,7 @@ NSString *hbciVersionFromString(NSString* s)
 
 - (IBAction)close:(id)sender
 {
-    NSRect frame = [[self window] frame];
-    frame = NSInsetRect(frame, 0.5 * frame.size.width, 0.5 * frame.size.height);
-    [[self window] zoomOffToRect: frame withFade: NO];
+    [[self window] orderOut: self];
 }
 
 - (IBAction)add:(id)sender

@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
   <data>
     <int key="IBDocument.SystemTarget">1060</int>
-    <string key="IBDocument.SystemVersion">11C74</string>
+    <string key="IBDocument.SystemVersion">11D50</string>
     <string key="IBDocument.InterfaceBuilderVersion">851</string>
-    <string key="IBDocument.AppKitVersion">1138.23</string>
-    <string key="IBDocument.HIToolboxVersion">567.00</string>
+    <string key="IBDocument.AppKitVersion">1138.32</string>
+    <string key="IBDocument.HIToolboxVersion">568.00</string>
     <object class="NSMutableDictionary" key="IBDocument.PluginVersions">
       <bool key="EncodedWithXMLCoder">YES</bool>
       <object class="NSArray" key="dict.sortedKeys">
@@ -21,7 +21,7 @@
     </object>
     <object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
       <bool key="EncodedWithXMLCoder">YES</bool>
-      <integer value="19"/>
+      <integer value="8"/>
     </object>
     <object class="NSArray" key="IBDocument.PluginDependencies">
       <bool key="EncodedWithXMLCoder">YES</bool>
@@ -54,7 +54,7 @@
         <string key="NSWindowRect">{{631, 634}, {610, 283}}</string>
         <int key="NSWTFlags">1685586944</int>
         <string key="NSWindowTitle">Über Pecunia</string>
-        <string key="NSWindowClass">NSWindow</string>
+        <string key="NSWindowClass">AboutWindow</string>
         <nil key="NSViewClass"/>
         <nil key="NSUserInterfaceItemIdentifier"/>
         <string key="NSWindowContentMaxSize">{610, 283}</string>
@@ -147,7 +147,7 @@
                         <object class="NSTextView" id="5143494">
                           <reference key="NSNextResponder" ref="545110416"/>
                           <int key="NSvFlags">2322</int>
-                          <string key="NSFrameSize">{353, 38}</string>
+                          <string key="NSFrame">{{0, 9}, {353, 29}}</string>
                           <reference key="NSSuperview" ref="545110416"/>
                           <string key="NSReuseIdentifierKey">_NS:1498</string>
                           <object class="NSTextContainer" key="NSTextContainer" id="308092860">
@@ -751,6 +751,14 @@
       <object class="NSMutableArray" key="referencedPartialClassDescriptions">
         <bool key="EncodedWithXMLCoder">YES</bool>
         <object class="IBPartialClassDescription">
+          <string key="className">AboutWindow</string>
+          <string key="superclassName">NSWindow</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier" id="598005865">
+            <string key="majorKey">IBProjectSource</string>
+            <string key="minorKey">Source/BankingController.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
           <string key="className">BankingController</string>
           <string key="superclassName">NSObject</string>
           <object class="NSMutableDictionary" key="actions">
@@ -770,7 +778,6 @@
               <string>donate:</string>
               <string>editBankUsers:</string>
               <string>editPreferences:</string>
-              <string>editRules:</string>
               <string>enqueueRequest:</string>
               <string>export:</string>
               <string>import:</string>
@@ -793,6 +800,7 @@
               <string>transfer_eu:</string>
               <string>transfer_internal:</string>
               <string>transfer_local:</string>
+              <string>transfer_sepa:</string>
               <string>updateAllAccounts:</string>
             </object>
             <object class="NSMutableArray" key="dict.values">
@@ -853,7 +861,6 @@
               <string>donate:</string>
               <string>editBankUsers:</string>
               <string>editPreferences:</string>
-              <string>editRules:</string>
               <string>enqueueRequest:</string>
               <string>export:</string>
               <string>import:</string>
@@ -876,6 +883,7 @@
               <string>transfer_eu:</string>
               <string>transfer_internal:</string>
               <string>transfer_local:</string>
+              <string>transfer_sepa:</string>
               <string>updateAllAccounts:</string>
             </object>
             <object class="NSMutableArray" key="dict.values">
@@ -930,10 +938,6 @@
               </object>
               <object class="IBActionInfo">
                 <string key="name">editPreferences:</string>
-                <string key="candidateClassName">id</string>
-              </object>
-              <object class="IBActionInfo">
-                <string key="name">editRules:</string>
                 <string key="candidateClassName">id</string>
               </object>
               <object class="IBActionInfo">
@@ -1025,6 +1029,10 @@
                 <string key="candidateClassName">id</string>
               </object>
               <object class="IBActionInfo">
+                <string key="name">transfer_sepa:</string>
+                <string key="candidateClassName">id</string>
+              </object>
+              <object class="IBActionInfo">
                 <string key="name">updateAllAccounts:</string>
                 <string key="candidateClassName">id</string>
               </object>
@@ -1041,7 +1049,6 @@
               <string>assignValueField</string>
               <string>assignValueWindow</string>
               <string>catActions</string>
-              <string>catDefWinController</string>
               <string>categoryController</string>
               <string>copyrightText</string>
               <string>currentSection</string>
@@ -1074,13 +1081,12 @@
             <object class="NSMutableArray" key="dict.values">
               <bool key="EncodedWithXMLCoder">YES</bool>
               <string>NSTextView</string>
-              <string>NSWindow</string>
+              <string>AboutWindow</string>
               <string>CategoryView</string>
               <string>NSArrayController</string>
               <string>NSTextField</string>
               <string>NSWindow</string>
               <string>NSSegmentedControl</string>
-              <string>CatDefWindowController</string>
               <string>MCEMTreeController</string>
               <string>NSTextField</string>
               <string>id</string>
@@ -1122,7 +1128,6 @@
               <string>assignValueField</string>
               <string>assignValueWindow</string>
               <string>catActions</string>
-              <string>catDefWinController</string>
               <string>categoryController</string>
               <string>copyrightText</string>
               <string>currentSection</string>
@@ -1160,7 +1165,7 @@
               </object>
               <object class="IBToOneOutletInfo">
                 <string key="name">aboutWindow</string>
-                <string key="candidateClassName">NSWindow</string>
+                <string key="candidateClassName">AboutWindow</string>
               </object>
               <object class="IBToOneOutletInfo">
                 <string key="name">accountsView</string>
@@ -1181,10 +1186,6 @@
               <object class="IBToOneOutletInfo">
                 <string key="name">catActions</string>
                 <string key="candidateClassName">NSSegmentedControl</string>
-              </object>
-              <object class="IBToOneOutletInfo">
-                <string key="name">catDefWinController</string>
-                <string key="candidateClassName">CatDefWindowController</string>
               </object>
               <object class="IBToOneOutletInfo">
                 <string key="name">categoryController</string>
@@ -1300,10 +1301,7 @@
               </object>
             </object>
           </object>
-          <object class="IBClassDescriptionSource" key="sourceIdentifier">
-            <string key="majorKey">IBProjectSource</string>
-            <string key="minorKey">Source/BankingController.h</string>
-          </object>
+          <reference key="sourceIdentifier" ref="598005865"/>
         </object>
         <object class="IBPartialClassDescription">
           <string key="className">BankingController</string>
@@ -1342,190 +1340,6 @@
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBProjectSource</string>
             <string key="minorKey">Source/ReportingTabs.h</string>
-          </object>
-        </object>
-        <object class="IBPartialClassDescription">
-          <string key="className">CatDefWindowController</string>
-          <string key="superclassName">NSObject</string>
-          <object class="NSMutableDictionary" key="actions">
-            <bool key="EncodedWithXMLCoder">YES</bool>
-            <object class="NSArray" key="dict.sortedKeys">
-              <bool key="EncodedWithXMLCoder">YES</bool>
-              <string>add:</string>
-              <string>addCategory:</string>
-              <string>deleteCategory:</string>
-              <string>deleteRule:</string>
-              <string>hideAssignedChanged:</string>
-              <string>insertCategory:</string>
-              <string>manageCategories:</string>
-              <string>predicateEditorChanged:</string>
-              <string>saveRule:</string>
-            </object>
-            <object class="NSMutableArray" key="dict.values">
-              <bool key="EncodedWithXMLCoder">YES</bool>
-              <string>id</string>
-              <string>id</string>
-              <string>id</string>
-              <string>id</string>
-              <string>id</string>
-              <string>id</string>
-              <string>id</string>
-              <string>id</string>
-              <string>id</string>
-            </object>
-          </object>
-          <object class="NSMutableDictionary" key="actionInfosByName">
-            <bool key="EncodedWithXMLCoder">YES</bool>
-            <object class="NSArray" key="dict.sortedKeys">
-              <bool key="EncodedWithXMLCoder">YES</bool>
-              <string>add:</string>
-              <string>addCategory:</string>
-              <string>deleteCategory:</string>
-              <string>deleteRule:</string>
-              <string>hideAssignedChanged:</string>
-              <string>insertCategory:</string>
-              <string>manageCategories:</string>
-              <string>predicateEditorChanged:</string>
-              <string>saveRule:</string>
-            </object>
-            <object class="NSMutableArray" key="dict.values">
-              <bool key="EncodedWithXMLCoder">YES</bool>
-              <object class="IBActionInfo">
-                <string key="name">add:</string>
-                <string key="candidateClassName">id</string>
-              </object>
-              <object class="IBActionInfo">
-                <string key="name">addCategory:</string>
-                <string key="candidateClassName">id</string>
-              </object>
-              <object class="IBActionInfo">
-                <string key="name">deleteCategory:</string>
-                <string key="candidateClassName">id</string>
-              </object>
-              <object class="IBActionInfo">
-                <string key="name">deleteRule:</string>
-                <string key="candidateClassName">id</string>
-              </object>
-              <object class="IBActionInfo">
-                <string key="name">hideAssignedChanged:</string>
-                <string key="candidateClassName">id</string>
-              </object>
-              <object class="IBActionInfo">
-                <string key="name">insertCategory:</string>
-                <string key="candidateClassName">id</string>
-              </object>
-              <object class="IBActionInfo">
-                <string key="name">manageCategories:</string>
-                <string key="candidateClassName">id</string>
-              </object>
-              <object class="IBActionInfo">
-                <string key="name">predicateEditorChanged:</string>
-                <string key="candidateClassName">id</string>
-              </object>
-              <object class="IBActionInfo">
-                <string key="name">saveRule:</string>
-                <string key="candidateClassName">id</string>
-              </object>
-            </object>
-          </object>
-          <object class="NSMutableDictionary" key="outlets">
-            <bool key="EncodedWithXMLCoder">YES</bool>
-            <object class="NSArray" key="dict.sortedKeys">
-              <bool key="EncodedWithXMLCoder">YES</bool>
-              <string>assignPreview</string>
-              <string>assignPreviewController</string>
-              <string>catActions</string>
-              <string>catDefController</string>
-              <string>catView</string>
-              <string>mainTabView</string>
-              <string>predicateEditor</string>
-              <string>rightSplitContent</string>
-              <string>saveButton</string>
-              <string>splitView</string>
-              <string>timeSlicer</string>
-            </object>
-            <object class="NSMutableArray" key="dict.values">
-              <bool key="EncodedWithXMLCoder">YES</bool>
-              <string>NSTableView</string>
-              <string>NSArrayController</string>
-              <string>NSSegmentedControl</string>
-              <string>MCEMTreeController</string>
-              <string>CategoryView</string>
-              <string>NSTabView</string>
-              <string>NSPredicateEditor</string>
-              <string>NSView</string>
-              <string>NSButton</string>
-              <string>NSSplitView</string>
-              <string>TimeSliceManager</string>
-            </object>
-          </object>
-          <object class="NSMutableDictionary" key="toOneOutletInfosByName">
-            <bool key="EncodedWithXMLCoder">YES</bool>
-            <object class="NSArray" key="dict.sortedKeys">
-              <bool key="EncodedWithXMLCoder">YES</bool>
-              <string>assignPreview</string>
-              <string>assignPreviewController</string>
-              <string>catActions</string>
-              <string>catDefController</string>
-              <string>catView</string>
-              <string>mainTabView</string>
-              <string>predicateEditor</string>
-              <string>rightSplitContent</string>
-              <string>saveButton</string>
-              <string>splitView</string>
-              <string>timeSlicer</string>
-            </object>
-            <object class="NSMutableArray" key="dict.values">
-              <bool key="EncodedWithXMLCoder">YES</bool>
-              <object class="IBToOneOutletInfo">
-                <string key="name">assignPreview</string>
-                <string key="candidateClassName">NSTableView</string>
-              </object>
-              <object class="IBToOneOutletInfo">
-                <string key="name">assignPreviewController</string>
-                <string key="candidateClassName">NSArrayController</string>
-              </object>
-              <object class="IBToOneOutletInfo">
-                <string key="name">catActions</string>
-                <string key="candidateClassName">NSSegmentedControl</string>
-              </object>
-              <object class="IBToOneOutletInfo">
-                <string key="name">catDefController</string>
-                <string key="candidateClassName">MCEMTreeController</string>
-              </object>
-              <object class="IBToOneOutletInfo">
-                <string key="name">catView</string>
-                <string key="candidateClassName">CategoryView</string>
-              </object>
-              <object class="IBToOneOutletInfo">
-                <string key="name">mainTabView</string>
-                <string key="candidateClassName">NSTabView</string>
-              </object>
-              <object class="IBToOneOutletInfo">
-                <string key="name">predicateEditor</string>
-                <string key="candidateClassName">NSPredicateEditor</string>
-              </object>
-              <object class="IBToOneOutletInfo">
-                <string key="name">rightSplitContent</string>
-                <string key="candidateClassName">NSView</string>
-              </object>
-              <object class="IBToOneOutletInfo">
-                <string key="name">saveButton</string>
-                <string key="candidateClassName">NSButton</string>
-              </object>
-              <object class="IBToOneOutletInfo">
-                <string key="name">splitView</string>
-                <string key="candidateClassName">NSSplitView</string>
-              </object>
-              <object class="IBToOneOutletInfo">
-                <string key="name">timeSlicer</string>
-                <string key="candidateClassName">TimeSliceManager</string>
-              </object>
-            </object>
-          </object>
-          <object class="IBClassDescriptionSource" key="sourceIdentifier">
-            <string key="majorKey">IBProjectSource</string>
-            <string key="minorKey">Source/CatDefWindowController.h</string>
           </object>
         </object>
         <object class="IBPartialClassDescription">
@@ -1624,6 +1438,17 @@
         <object class="IBPartialClassDescription">
           <string key="className">StatementsListView</string>
           <string key="superclassName">PXListView</string>
+          <object class="NSMutableDictionary" key="outlets">
+            <string key="NS.key.0">owner</string>
+            <string key="NS.object.0">id</string>
+          </object>
+          <object class="NSMutableDictionary" key="toOneOutletInfosByName">
+            <string key="NS.key.0">owner</string>
+            <object class="IBToOneOutletInfo" key="NS.object.0">
+              <string key="name">owner</string>
+              <string key="candidateClassName">id</string>
+            </object>
+          </object>
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBProjectSource</string>
             <string key="minorKey">Source/StatementsListview.h</string>
@@ -1794,13 +1619,15 @@
               <string>countryButton</string>
               <string>countryController</string>
               <string>executionDatePicker</string>
+              <string>foreignHelpView</string>
+              <string>standardHelpView</string>
               <string>templateController</string>
               <string>templatesDraw</string>
-              <string>templatesView</string>
               <string>transferController</string>
               <string>transferEUWindow</string>
               <string>transferInternalWindow</string>
               <string>transferLocalWindow</string>
+              <string>transferSEPAWindow</string>
             </object>
             <object class="NSMutableArray" key="dict.values">
               <bool key="EncodedWithXMLCoder">YES</bool>
@@ -1809,10 +1636,12 @@
               <string>NSPopUpButton</string>
               <string>NSArrayController</string>
               <string>NSDatePicker</string>
+              <string>NSView</string>
+              <string>NSView</string>
               <string>NSArrayController</string>
               <string>NSDrawer</string>
-              <string>NSTableView</string>
               <string>NSObjectController</string>
+              <string>NSWindow</string>
               <string>NSWindow</string>
               <string>NSWindow</string>
               <string>NSWindow</string>
@@ -1827,13 +1656,15 @@
               <string>countryButton</string>
               <string>countryController</string>
               <string>executionDatePicker</string>
+              <string>foreignHelpView</string>
+              <string>standardHelpView</string>
               <string>templateController</string>
               <string>templatesDraw</string>
-              <string>templatesView</string>
               <string>transferController</string>
               <string>transferEUWindow</string>
               <string>transferInternalWindow</string>
               <string>transferLocalWindow</string>
+              <string>transferSEPAWindow</string>
             </object>
             <object class="NSMutableArray" key="dict.values">
               <bool key="EncodedWithXMLCoder">YES</bool>
@@ -1858,16 +1689,20 @@
                 <string key="candidateClassName">NSDatePicker</string>
               </object>
               <object class="IBToOneOutletInfo">
+                <string key="name">foreignHelpView</string>
+                <string key="candidateClassName">NSView</string>
+              </object>
+              <object class="IBToOneOutletInfo">
+                <string key="name">standardHelpView</string>
+                <string key="candidateClassName">NSView</string>
+              </object>
+              <object class="IBToOneOutletInfo">
                 <string key="name">templateController</string>
                 <string key="candidateClassName">NSArrayController</string>
               </object>
               <object class="IBToOneOutletInfo">
                 <string key="name">templatesDraw</string>
                 <string key="candidateClassName">NSDrawer</string>
-              </object>
-              <object class="IBToOneOutletInfo">
-                <string key="name">templatesView</string>
-                <string key="candidateClassName">NSTableView</string>
               </object>
               <object class="IBToOneOutletInfo">
                 <string key="name">transferController</string>
@@ -1883,6 +1718,10 @@
               </object>
               <object class="IBToOneOutletInfo">
                 <string key="name">transferLocalWindow</string>
+                <string key="candidateClassName">NSWindow</string>
+              </object>
+              <object class="IBToOneOutletInfo">
+                <string key="name">transferSEPAWindow</string>
                 <string key="candidateClassName">NSWindow</string>
               </object>
             </object>
@@ -2440,6 +2279,55 @@
           <string key="className">NSObject</string>
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBFrameworkSource</string>
+            <string key="minorKey">ImageKit.framework/Headers/IKImageBrowserView.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSObject</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier">
+            <string key="majorKey">IBFrameworkSource</string>
+            <string key="minorKey">ImageKit.framework/Headers/IKSaveOptions.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSObject</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier">
+            <string key="majorKey">IBFrameworkSource</string>
+            <string key="minorKey">ImageKit.framework/Headers/ImageKitDeprecated.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSObject</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier">
+            <string key="majorKey">IBFrameworkSource</string>
+            <string key="minorKey">PDFKit.framework/Headers/PDFDocument.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSObject</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier">
+            <string key="majorKey">IBFrameworkSource</string>
+            <string key="minorKey">PDFKit.framework/Headers/PDFView.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSObject</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier">
+            <string key="majorKey">IBFrameworkSource</string>
+            <string key="minorKey">QuartzComposer.framework/Headers/QCCompositionParameterView.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSObject</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier">
+            <string key="majorKey">IBFrameworkSource</string>
+            <string key="minorKey">QuartzComposer.framework/Headers/QCCompositionPickerView.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSObject</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier">
+            <string key="majorKey">IBFrameworkSource</string>
             <string key="minorKey">QuartzCore.framework/Headers/CAAnimation.h</string>
           </object>
         </object>
@@ -2455,6 +2343,20 @@
           <object class="IBClassDescriptionSource" key="sourceIdentifier">
             <string key="majorKey">IBFrameworkSource</string>
             <string key="minorKey">QuartzCore.framework/Headers/CIImageProvider.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSObject</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier">
+            <string key="majorKey">IBFrameworkSource</string>
+            <string key="minorKey">QuartzFilters.framework/Headers/QuartzFilterManager.h</string>
+          </object>
+        </object>
+        <object class="IBPartialClassDescription">
+          <string key="className">NSObject</string>
+          <object class="IBClassDescriptionSource" key="sourceIdentifier">
+            <string key="majorKey">IBFrameworkSource</string>
+            <string key="minorKey">QuickLookUI.framework/Headers/QLPreviewPanel.h</string>
           </object>
         </object>
         <object class="IBPartialClassDescription">

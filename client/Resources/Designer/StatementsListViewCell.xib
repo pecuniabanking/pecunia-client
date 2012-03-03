@@ -111,14 +111,18 @@
           <object class="NSTextField" id="249958409">
             <reference key="NSNextResponder" ref="1005"/>
             <int key="NSvFlags">289</int>
-            <string key="NSFrame">{{761, 5}, {23, 13}}</string>
+            <string key="NSFrame">{{761, 6}, {23, 11}}</string>
             <reference key="NSSuperview" ref="1005"/>
             <bool key="NSEnabled">YES</bool>
             <object class="NSTextFieldCell" key="NSCell" id="466988470">
               <int key="NSCellFlags">68288064</int>
               <int key="NSCellFlags2">-1874852864</int>
               <string key="NSContents">€</string>
-              <reference key="NSSupport" ref="24"/>
+              <object class="NSFont" key="NSSupport">
+                <string key="NSName">LucidaGrande</string>
+                <double key="NSSize">9</double>
+                <int key="NSfFlags">16</int>
+              </object>
               <reference key="NSControlView" ref="249958409"/>
               <reference key="NSBackgroundColor" ref="609700460"/>
               <object class="NSColor" key="NSTextColor">
@@ -130,18 +134,14 @@
           <object class="NSTextField" id="1021982914">
             <reference key="NSNextResponder" ref="1005"/>
             <int key="NSvFlags">289</int>
-            <string key="NSFrame">{{688, 5}, {72, 15}}</string>
+            <string key="NSFrame">{{687, 5}, {73, 13}}</string>
             <reference key="NSSuperview" ref="1005"/>
             <bool key="NSEnabled">YES</bool>
             <object class="NSTextFieldCell" key="NSCell" id="104944774">
               <int key="NSCellFlags">67239488</int>
               <int key="NSCellFlags2">71309312</int>
               <real value="-100000" key="NSContents"/>
-              <object class="NSFont" key="NSSupport">
-                <string key="NSName">Helvetica</string>
-                <double key="NSSize">12</double>
-                <int key="NSfFlags">16</int>
-              </object>
+              <reference key="NSSupport" ref="24"/>
               <object class="NSNumberFormatter" key="NSFormatter" id="671061966">
                 <object class="NSMutableDictionary" key="NS.attributes">
                   <bool key="EncodedWithXMLCoder">YES</bool>
@@ -310,7 +310,7 @@
           <object class="NSTextField" id="992290495">
             <reference key="NSNextResponder" ref="1005"/>
             <int key="NSvFlags">289</int>
-            <string key="NSFrame">{{761, 22}, {23, 19}}</string>
+            <string key="NSFrame">{{761, 23}, {23, 17}}</string>
             <reference key="NSSuperview" ref="1005"/>
             <bool key="NSEnabled">YES</bool>
             <object class="NSTextFieldCell" key="NSCell" id="232929193">
@@ -319,7 +319,7 @@
               <string key="NSContents">€</string>
               <object class="NSFont" key="NSSupport">
                 <string key="NSName">LucidaGrande</string>
-                <double key="NSSize">15</double>
+                <double key="NSSize">13</double>
                 <int key="NSfFlags">16</int>
               </object>
               <reference key="NSControlView" ref="992290495"/>
@@ -333,7 +333,7 @@
           <object class="NSTextField" id="546531735">
             <reference key="NSNextResponder" ref="1005"/>
             <int key="NSvFlags">289</int>
-            <string key="NSFrame">{{630, 21}, {130, 24}}</string>
+            <string key="NSFrame">{{630, 23}, {130, 18}}</string>
             <reference key="NSSuperview" ref="1005"/>
             <bool key="NSEnabled">YES</bool>
             <object class="NSTextFieldCell" key="NSCell" id="65307048">
@@ -341,8 +341,8 @@
               <int key="NSCellFlags2">71309312</int>
               <real value="-100000" key="NSContents"/>
               <object class="NSFont" key="NSSupport">
-                <string key="NSName">Helvetica</string>
-                <double key="NSSize">19</double>
+                <string key="NSName">LucidaGrande-Bold</string>
+                <double key="NSSize">14</double>
                 <int key="NSfFlags">16</int>
               </object>
               <object class="NSNumberFormatter" key="NSFormatter" id="689745020">
@@ -643,17 +643,17 @@
               <bool key="EncodedWithXMLCoder">YES</bool>
               <reference ref="1001270240"/>
               <reference ref="616500165"/>
-              <reference ref="992290495"/>
               <reference ref="414654506"/>
               <reference ref="884097897"/>
-              <reference ref="546531735"/>
               <reference ref="925874188"/>
               <reference ref="1035282341"/>
-              <reference ref="1021982914"/>
-              <reference ref="249958409"/>
               <reference ref="160702253"/>
               <reference ref="474576322"/>
               <reference ref="570069044"/>
+              <reference ref="1021982914"/>
+              <reference ref="546531735"/>
+              <reference ref="992290495"/>
+              <reference ref="249958409"/>
             </object>
             <reference key="parent" ref="0"/>
           </object>
@@ -941,7 +941,7 @@
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
-            <bytes key="NSTransformStruct">P4AAAL+AAABEIgAAwgQAAA</bytes>
+            <bytes key="NSTransformStruct">P4AAAL+AAABEHYAAwiwAAA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -954,7 +954,7 @@
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
-            <bytes key="NSTransformStruct">P4AAAL+AAABEPUAAwegAAA</bytes>
+            <bytes key="NSTransformStruct">P4AAAL+AAABEPkAAwhwAAA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -981,7 +981,7 @@
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
-            <bytes key="NSTransformStruct">P4AAAL+AAABENMAAwhAAAA</bytes>
+            <bytes key="NSTransformStruct">P4AAAL+AAABEK8AAwZAAAA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <integer value="1040"/>
@@ -990,7 +990,7 @@
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">
-            <bytes key="NSTransformStruct">P4AAAL+AAABETcAAwgQAAA</bytes>
+            <bytes key="NSTransformStruct">P4AAAL+AAABEPkAAwYAAAA</bytes>
           </object>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <object class="NSAffineTransform">

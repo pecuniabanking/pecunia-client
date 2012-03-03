@@ -49,3 +49,6 @@ Aufträge, Überweisungen, Lastschriften
 --------------------------------------
 - In Terminüberweisungen Datum (auch) als Kalender anzeigen.
 
+Daueraufträge
+---------------
+- Nächste fälligen Überweisungen anzeigen

@@ -46,6 +46,13 @@
 
 @class SideToolbarView;
 
+@interface AboutWindow : NSWindow
+{
+}
+
+- (BOOL)canBecomeKeyWindow;
+@end
+
 @interface BankingController : NSObject
 {
     IBOutlet NSArrayController  *transactionController;
@@ -77,7 +84,7 @@
     IBOutlet RoundedOuterShadowView* statementsListViewHost;
     
     // About panel.
-    IBOutlet NSWindow           *aboutWindow;
+    IBOutlet AboutWindow        *aboutWindow;
     IBOutlet NSTextView         *aboutText;
     IBOutlet NSTextField        *versionText;
     IBOutlet NSTextField        *copyrightText;
