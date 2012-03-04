@@ -2,25 +2,37 @@
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Properties;
-import java.util.ArrayList;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.StringReader;
+import java.util.Vector;
 
+import org.kapott.hbci.GV.GVDauerList;
+import org.kapott.hbci.GV.GVKUmsAll;
+import org.kapott.hbci.GV.HBCIJob;
+import org.kapott.hbci.GV_Result.GVRAccInfo;
+import org.kapott.hbci.GV_Result.GVRDauerList;
+import org.kapott.hbci.GV_Result.GVRDauerNew;
+import org.kapott.hbci.GV_Result.GVRKUms;
+import org.kapott.hbci.GV_Result.GVRTANMediaList;
+import org.kapott.hbci.GV_Result.GVRTermUebList;
+import org.kapott.hbci.GV_Result.HBCIJobResult;
 import org.kapott.hbci.callback.HBCICallbackConsole;
-import org.kapott.hbci.exceptions.*;
+import org.kapott.hbci.exceptions.AbortedException;
+import org.kapott.hbci.exceptions.HBCI_Exception;
+import org.kapott.hbci.exceptions.InvalidPassphraseException;
 import org.kapott.hbci.manager.HBCIHandler;
 import org.kapott.hbci.manager.HBCIInstitute;
 import org.kapott.hbci.manager.HBCIKernelImpl;
@@ -29,14 +41,13 @@ import org.kapott.hbci.manager.HBCIUtilsInternal;
 import org.kapott.hbci.passport.AbstractHBCIPassport;
 import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.passport.HBCIPassportPinTan;
-import org.kapott.hbci.structures.*;
-import org.kapott.hbci.GV.*;
-import org.kapott.hbci.GV_Result.*;
-import org.kapott.hbci.GV_Result.GVRTANMediaList.TANMediaInfo;
-import org.kapott.hbci.status.*;
-
-import org.xmlpull.v1.*;
-//import java.lang.reflect.*;
+import org.kapott.hbci.status.HBCIDialogStatus;
+import org.kapott.hbci.status.HBCIExecStatus;
+import org.kapott.hbci.structures.Konto;
+import org.kapott.hbci.structures.Value;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 @SuppressWarnings(value={"unchecked", "rawtypes"})
 
@@ -1009,18 +1020,33 @@ public class HBCIServer {
 			error(ERR_MISS_USER, "getBankParameter", userId);
 			return;
 		}
+		
+		// Construct the result. Add all values sorted by key.
 		HBCIPassport passport = handler.getPassport();
 		xmlBuf.append("<result command=\"getBankParameter\"><object type=\"BankParameter\">");
+		
+		Vector sortedKeys = new Vector();
 		Properties bpd = passport.getBPD();
 		xmlBuf.append("<bpd type=\"dictionary\">");
-		for(Enumeration e = bpd.keys(); e.hasMoreElements(); ) {
+		for (Enumeration e = bpd.keys(); e.hasMoreElements(); ) {
+			sortedKeys.add((String)e.nextElement());
+		}
+		Collections.sort(sortedKeys);
+		for(Enumeration e = sortedKeys.elements(); e.hasMoreElements(); ) {
 			String key = (String)e.nextElement();
 			xmlGen.tag(key, bpd.getProperty(key));
 		}
+		
 		xmlBuf.append("</bpd>");
+		
+		sortedKeys.clear();
 		xmlBuf.append("<upd type=\"dictionary\">");
 		Properties upd = passport.getUPD();
-		for(Enumeration e = upd.keys(); e.hasMoreElements(); ) {
+		for (Enumeration e = upd.keys(); e.hasMoreElements(); ) {
+			sortedKeys.add((String)e.nextElement());
+		}
+		Collections.sort(sortedKeys);
+		for(Enumeration e = sortedKeys.elements(); e.hasMoreElements(); ) {
 			String key = (String)e.nextElement();
 			xmlGen.tag(key, upd.getProperty(key));
 		}
@@ -1226,11 +1252,11 @@ public class HBCIServer {
 		job.addToQueue();
 		HBCIExecStatus stat = handler.execute();
 
-		boolean isOk = false;
+//		boolean isOk = false; TODO: unused
 		GVRAccInfo res = null;
 		if(stat.isOK()) {
 			res = (GVRAccInfo)job.getJobResult();
-			if(res.isOK()) isOk = true;
+//			if(res.isOK()) isOk = true;
 		}
 		System.out.println(res.toString());
 
@@ -1388,7 +1414,62 @@ public class HBCIServer {
 		out.flush();
 	}
 		
+	private void getSupportedBusinessTransactions() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String accountNumber = getParameter(map, "accountNumber");
+		String userId = getParameter(map, "userId");
+
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		if (handler == null) {
+			error(ERR_MISS_USER, "getSupportedBusinessTransactions", userId);
+			return;			
+		}
+
+		xmlBuf.append("<result command=\"getSupportedBusinessTransactons\"><list>");
+		HBCIPassport passport = handler.getPassport();
+		
+		// First collect all supported transactions (for all accounts).
+		Properties upd = passport.getUPD();
+		Properties gvs = new Properties();
+		Properties accNums = new Properties();
+		for(Enumeration e = upd.keys(); e.hasMoreElements(); ) {
+			String key = (String)e.nextElement();
+			if(key.matches("KInfo\\w*.AllowedGV\\w*.code")) {
+				String accKey = key.substring(0, key.indexOf('.'));
+				ArrayList<String> gvcodes= (ArrayList<String>)gvs.get(accKey);
+				if(gvcodes == null) {
+					gvcodes = new ArrayList<String>();
+					gvs.put(accKey, gvcodes);
+				}
+				gvcodes.add((String)upd.get(key));
+			} else if(key.matches("KInfo\\w*.KTV.number")) {
+				String accKey = key.substring(0, key.indexOf('.'));
+				accNums.put(accKey, upd.get(key));
+			}
+			
+		}
+		// now merge it
+		for(Enumeration e = accNums.keys(); e.hasMoreElements(); ) {
+			String key = (String)e.nextElement();
+			ArrayList<String> gvcodes= (ArrayList<String>)gvs.get(key);
+			if(gvcodes != null) gvs.put(accNums.get(key), gvcodes);
+			gvs.remove(key);
+		}
+
+		// Filter by account and return result.
+		ArrayList<String> gvcodes = (ArrayList<String>)gvs.get(accountNumber);
+		if(gvcodes != null) {
+			for (Enumeration e = Collections.enumeration(gvcodes); e.hasMoreElements();) {
+				xmlGen.tag("gv", (String)e.nextElement());
+			}
+		};
+		
+		xmlBuf.append("</list></result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+	}
 	
+
 	private void dispatch(String command) throws IOException {
 //			cmd = HBCIServer.class.getMethod(command, new Class[0]);
 		xmlBuf = new StringBuffer();
@@ -1422,6 +1503,7 @@ public class HBCIServer {
 			if(command.compareTo("getInitialBPD") == 0) { getInitialBPD(); return; }
 			if(command.compareTo("getTANMediaList") == 0) { getTANMediaList(); return; }
 			if(command.compareTo("getBankParameterRaw") == 0) { getBankParameterRaw(); return; }
+			if(command.compareTo("getSupportedBusinessTransactions") == 0) { getSupportedBusinessTransactions(); return; }
 			
 			
 			System.err.println("HBCIServer: unknown command: "+command);

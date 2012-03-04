@@ -927,5 +927,21 @@ NSString *escapeSpecial(NSString *s)
     return error;
 }
 
+- (NSArray*)getSupportedBusinessTransactions: (BankAccount*)account
+{
+    PecuniaError *error = nil;
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getSupportedBusinessTransactions\">" ];
+    [self appendTag: @"bankCode" withValue: account.bankCode to: cmd];
+    [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd];
+    [self appendTag: @"userId" withValue: account.userId to: cmd];
+    [cmd appendString: @"</command>" ];
+
+    NSArray* result = [bridge syncCommand: cmd error: &error];
+    if (error) {
+        return nil;
+    }
+
+    return result;
+}
 
 @end

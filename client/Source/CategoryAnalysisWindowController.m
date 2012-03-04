@@ -1873,7 +1873,9 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
             }
         }
         
+        [totalMinValue release];
         totalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(minDoubleValue)] retain];
+        [totalMaxValue release];
         totalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(maxDoubleValue)] retain];
     } else {
         // totalMinValue is already set to zero in clearGraphs.

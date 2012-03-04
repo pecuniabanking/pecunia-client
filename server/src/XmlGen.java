@@ -84,14 +84,15 @@ public class XmlGen {
     	xmlBuf.append("</object>");
     }
   
+	@SuppressWarnings("unchecked")
     public void umsToXml(GVRKUms ums, Konto account) throws IOException {
 //    	ArrayList<GVRKUms.UmsLine> lines = (ArrayList)ums.getFlatData();
-		List lines = ums.getFlatData();
+		List<GVRKUms.UmsLine> lines = ums.getFlatData();
     	if(lines.isEmpty()) return;
     	long hash;
-    	for(Iterator i = lines.iterator(); i.hasNext(); ) {
+    	for(Iterator<GVRKUms.UmsLine> i = lines.iterator(); i.hasNext(); ) {
     		hash = 0;
-    		GVRKUms.UmsLine line = (GVRKUms.UmsLine)i.next();
+    		GVRKUms.UmsLine line = i.next();
     		
     		StringBuffer purpose = new StringBuffer();
     		if(line.gvcode.equals("999")) {
@@ -99,8 +100,8 @@ public class XmlGen {
     			hash += line.additional.hashCode();
     		}
     		else {
-	    		for(Iterator j = line.usage.iterator(); j.hasNext();) {
-	    			String s = (String)j.next();
+	    		for(Iterator<String> j = line.usage.iterator(); j.hasNext();) {
+	    			String s = j.next();
 	    			purpose.append(s);
 	    			hash += s.hashCode();
 	    			if(j.hasNext()) purpose.append("\n");

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,9 +19,15 @@
 
 #import <Cocoa/Cocoa.h>
 
+@interface BusinessTransactionsController : NSWindowController {
 
-@interface MainBackgroundView : NSView {
-
+    @private
+    NSMutableArray* transactionList;
+    NSMutableDictionary* allTransactions;
 }
+
+- (IBAction)endSheet: (id)sender;
+
+- (id)initWithTransactions: (NSArray*)transactions;
 
 @end

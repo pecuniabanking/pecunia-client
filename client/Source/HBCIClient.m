@@ -203,6 +203,10 @@ static HBCIClient *client = nil;
     return [controller sendCustomerMessage:msg ];
 }
 
+- (NSArray*)getSupportedBusinessTransactions: (BankAccount*)account
+{
+    return [controller getSupportedBusinessTransactions: account];
+}
 
 -(BOOL)checkDTAUS:(NSString*)s
 {

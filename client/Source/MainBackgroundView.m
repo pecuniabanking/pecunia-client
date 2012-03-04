@@ -1,10 +1,21 @@
-//
-//  BackgroundView.m
-//  Pecunia
-//
-//  Created by Mike Lischke on 15.08.11.
-//  Copyright 2011 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "MainBackgroundView.h"
 #import "GraphicsAdditions.h"
@@ -19,13 +30,24 @@
     [super dealloc];
 }
 
+static NSImage* background = nil;
+
 - (void)drawRect: (NSRect)dirtyRect
 {
+    if (background == nil) {
+        background = [NSImage imageNamed: @"background-pattern.png"];
+    }
+    
     [NSGraphicsContext saveGraphicsState];
     
     NSRect bounds = [self bounds];
     bounds.size.height -= 61; // Upper border transfer list.
-    NSColor* color = [NSColor colorWithDeviceWhite: 110.0 / 255.0 alpha: 1];
+    NSColor* color;
+    if (background != nil) {
+        color = [NSColor colorWithPatternImage: background];
+    } else {
+        color = [NSColor colorWithDeviceWhite: 110.0 / 255.0 alpha: 1];
+    }
     [color setFill];
 	[NSBezierPath fillRect: [self bounds]];
     
