@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -306,6 +307,22 @@ public class XmlGen {
 			tanMediaToXml(mediaList.get(i));
 		}
     	xmlBuf.append("</mediaList></object>");
+    }
+    
+    public void tanMethodToXml(Properties tanMethod) throws IOException {
+    	xmlBuf.append("<object type=\"TanMethod\">");
+		intTag("function", Integer.parseInt(tanMethod.getProperty("secfunc")));
+		tag("identifier", tanMethod.getProperty("id"));
+		tag("process", tanMethod.getProperty("process"));
+		tag("zkaMethodName", tanMethod.getProperty("zkamethod_name"));
+		tag("zkaMethodVersion", tanMethod.getProperty("zkamethod_version"));
+		tag("name", tanMethod.getProperty("name"));
+		tag("inputInfo", tanMethod.getProperty("intputinfo"));
+		String s = tanMethod.getProperty("maxlentan2step");
+		if( s != null) intTag("maxTanLength", Integer.parseInt(s));
+		s = tanMethod.getProperty("needtanmedia");
+		if( s != null) intTag("needTanMedia", Integer.parseInt(s));
+    	xmlBuf.append("</object>");
     }
 
 	

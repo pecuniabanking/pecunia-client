@@ -11,6 +11,8 @@ import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
+import java.util.Hashtable;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -41,6 +43,7 @@ import org.kapott.hbci.manager.HBCIUtilsInternal;
 import org.kapott.hbci.passport.AbstractHBCIPassport;
 import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.passport.HBCIPassportPinTan;
+import org.kapott.hbci.passport.AbstractPinTanPassport;
 import org.kapott.hbci.status.HBCIDialogStatus;
 import org.kapott.hbci.status.HBCIExecStatus;
 import org.kapott.hbci.structures.Konto;
@@ -146,7 +149,9 @@ public class HBCIServer {
 	                case NEED_PASSPHRASE_SAVE: 	st = "PecuniaData"; break; //st = callbackClient(passport, "password_save", msg, def, reason, datatype); break; 
 	                case NEED_CONNECTION:
 	                case CLOSE_CONNECTION: return;
-	                case NEED_PT_SECMECH: 		st = callbackClient(passport, "getTanMethod", msg, def, reason, datatype); break;
+	                case NEED_PT_SECMECH: 		if(server.passportExists(passport)) st = callbackClient(passport, "getTanMethod", msg, def, reason, datatype);
+	                							else st = ((AbstractPinTanPassport)passport).getCurrentTANMethod(false);
+	                							break;
 	                case NEED_SOFTPIN:
 	                case NEED_PT_PIN:			st = callbackClient(passport, "getPin", msg, def, reason, datatype); break;
 	                case NEED_PT_TAN:			st = callbackClient(passport, "getTan", msg, def, reason, datatype); break;
@@ -293,6 +298,13 @@ public class HBCIServer {
 	        return hbciHandle;
 		}
 		return handler;
+    }
+    
+    private boolean passportExists(HBCIPassport pp) {
+		String bankCode = pp.getBLZ();
+		String userId = pp.getUserId();
+		String name = passportKey(bankCode, userId);
+		return hbciHandlers.containsKey(name);
     }
     
 	
@@ -1357,7 +1369,7 @@ public class HBCIServer {
 		
 		HBCIHandler handler = hbciHandler(bankCode, userId);
 		if(handler == null) {
-			error(ERR_MISS_USER, "customerMessage", userId);
+			error(ERR_MISS_USER, "getTANMediaList", userId);
 			return;			
 		}
 		
@@ -1389,9 +1401,11 @@ public class HBCIServer {
 		
 		// search for PIN/TAN Information
 		xmlBuf.append("<result command=\"getInitialBPD\">");
+		xmlBuf.append("<object type=\"BankSetupInfo\">");
 		if (bpd != null) {
 			for(Enumeration e = bpd.keys(); e.hasMoreElements(); ) {
 				String key = (String)e.nextElement();
+				String s = bpd.getProperty(key);
 				if (key.endsWith("info_userid")) {
 					xmlGen.tag("info_userid", bpd.getProperty(key));
 				}
@@ -1399,16 +1413,43 @@ public class HBCIServer {
 					xmlGen.tag("info_customerid", bpd.getProperty(key));
 				}
 				if (key.endsWith("pinlen_min")) {
-					xmlGen.tag("pinlen_min", bpd.getProperty(key));
+					if(s != null) xmlGen.intTag("pinlen_min", Integer.parseInt(s));
 				}
 				if (key.endsWith("pinlen_max")) {
-					xmlGen.tag("pinlen_max", bpd.getProperty(key));
+					if(s != null) xmlGen.intTag("pinlen_max", Integer.parseInt(s));
 				}
 				if (key.endsWith("tanlen_max")) {
-					xmlGen.tag("tanlen_max", bpd.getProperty(key));
+					if(s != null) xmlGen.intTag("tanlen_max", Integer.parseInt(s));
 				}
 			}			
 		}
+		xmlBuf.append("</object></result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+	}
+	
+	private void getTANMethods() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String userId = getParameter(map, "userId");
+		
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		if(handler == null) {
+			error(ERR_MISS_USER, "getTANMethods", userId);
+			return;			
+		}
+		
+		AbstractPinTanPassport pp = (AbstractPinTanPassport)handler.getPassport();
+		
+		Hashtable tanMethods = pp.getTwostepMechanisms();
+		List allowedMethods = pp.getAllowedTwostepMechanisms();
+		
+		xmlBuf.append("<result command=\"getTANMethods\">");
+    	xmlBuf.append("<tanMethods type=\"list\">");
+    	for (Enumeration e = tanMethods.keys(); e.hasMoreElements(); ) {
+    		String key = (String)e.nextElement();
+    		if (allowedMethods.contains(key)) xmlGen.tanMethodToXml((Properties)tanMethods.get(key));
+    	}
+    	xmlBuf.append("</tanMethods>");
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
@@ -1503,6 +1544,7 @@ public class HBCIServer {
 			if(command.compareTo("getInitialBPD") == 0) { getInitialBPD(); return; }
 			if(command.compareTo("getTANMediaList") == 0) { getTANMediaList(); return; }
 			if(command.compareTo("getBankParameterRaw") == 0) { getBankParameterRaw(); return; }
+			if(command.compareTo("getTANMethods") == 0) { getTANMethods(); return; }
 			if(command.compareTo("getSupportedBusinessTransactions") == 0) { getSupportedBusinessTransactions(); return; }
 			
 			
