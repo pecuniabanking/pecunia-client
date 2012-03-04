@@ -31,6 +31,7 @@
 #import "ProgressWindowController.h"
 #import "CustomerMessage.h"
 #import "MessageLog.h"
+#import "BankSetupInfo.h"
 
 @implementation HBCIController
 
@@ -172,7 +173,7 @@ NSString *escapeSpecial(NSString *s)
     PecuniaError *error=nil;
     
     [self startProgress ];
-    NSString *cmd = [NSString stringWithFormat: @"<command name=\"getBankParameter\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
+    NSString *cmd = [NSString stringWithFormat: @"<command name=\"getBankParameterRaw\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
     BankParameter *bp = [bridge syncCommand:cmd error:&error ];
     [self stopProgress ];
     if (error) {
@@ -181,6 +182,20 @@ NSString *escapeSpecial(NSString *s)
     }
     return bp;
 }
+
+-(BankSetupInfo*)getBankSetupInfo:(NSString*)bankCode
+{
+    PecuniaError *error=nil;
+    
+    NSString *cmd = [NSString stringWithFormat: @"<command name=\"getInitialBPD\"><bankCode>%@</bankCode></command>", bankCode ];
+    BankSetupInfo *info = [bridge syncCommand:cmd error:&error ];
+    if (error) {
+        [error alertPanel ];
+        return nil;
+    }
+    return info;
+}
+
 
 -(NSString*)bankNameForCode:(NSString*)bankCode inCountry:(NSString*)country
 {
@@ -882,7 +897,7 @@ NSString *escapeSpecial(NSString *s)
     return nil;
 }
 
--(PecuniaError*)changePinTanMethodForUser:(User*)user;
+-(PecuniaError*)changePinTanMethodForUser:(User*)user
 {
     PecuniaError *error=nil;
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"resetPinTanMethod\">" ];
@@ -927,6 +942,22 @@ NSString *escapeSpecial(NSString *s)
     return error;
 }
 
+-(NSArray*)getTanMethodsForUser:(User*)user
+{
+    PecuniaError *error=nil;
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getTANMethods\">" ];
+    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
+    [self appendTag: @"userId" withValue: user.userId to: cmd ];
+    [cmd appendString: @"</command>" ];
+    
+    NSArray *methods = [bridge syncCommand: cmd error: &error ];
+    if (error) {
+        [error alertPanel ];
+        return nil;
+    }
+    return methods;
+}
+
 - (NSArray*)getSupportedBusinessTransactions: (BankAccount*)account
 {
     PecuniaError *error = nil;
@@ -938,6 +969,7 @@ NSString *escapeSpecial(NSString *s)
 
     NSArray* result = [bridge syncCommand: cmd error: &error];
     if (error) {
+        [error alertPanel ];
         return nil;
     }
 

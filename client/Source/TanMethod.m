@@ -10,6 +10,14 @@
 
 @implementation TanMethod
 
+@synthesize identifier;
+@synthesize process;
+@synthesize zkaMethodName;
+@synthesize zkaMethodVersion;
+@synthesize name;
+@synthesize inputInfo;
+@synthesize maxTanLength;
+@synthesize needTanMedia;
 @synthesize function;
 @synthesize description;
 
@@ -26,8 +34,18 @@
 {
 	[description release ];
 	[function release ];
+	[identifier release], identifier = nil;
+	[process release], process = nil;
+	[zkaMethodName release], zkaMethodName = nil;
+	[zkaMethodVersion release], zkaMethodVersion = nil;
+	[name release], name = nil;
+	[inputInfo release], inputInfo = nil;
+	[maxTanLength release], maxTanLength = nil;
+	[needTanMedia release], needTanMedia = nil;
+
 	[super dealloc ];
 }
 
 
 @end
+

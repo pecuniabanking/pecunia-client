@@ -43,6 +43,8 @@
 -(NSString*)bankNameForCode:(NSString*)bankCode inCountry:(NSString*)country;
 -(NSString*)bankNameForBIC:(NSString*)bic inCountry:(NSString*)country;
 -(BankParameter*)getBankParameterForUser:(User*)user;
+-(NSArray*)getTanMethodsForUser:(User*)user;
+
 
 -(BOOL)checkAccount: (NSString*)accountNumber forBank: (NSString*)bankCode inCountry: (NSString*)country;
 -(BOOL)checkIBAN: (NSString*)iban;

@@ -327,18 +327,11 @@ NSString *hbciVersionFromString(NSString* s)
 		[messageLog addMessage:@"Bankparameter konnten nicht ermittelt werden" withLevel:LogLevel_Error];
 		return;
 	}
-	[messageLog addMessage:@"Bankparameterdaten:" withLevel:LogLevel_Notice];
-	NSArray *keys = [bp.bpd  allKeys];
-	for(NSString *key in keys) {
-		NSString *s = [NSString stringWithFormat:@"%@ = %@", key, [bp.bpd valueForKey:key]];
-		[messageLog addMessage: s withLevel:LogLevel_Info];
-	}
-	[messageLog addMessage:@"Anwenderparameterdaten:" withLevel:LogLevel_Notice];
-	keys = [bp.upd  allKeys];
-	for(NSString *key in keys) {
-		NSString *s = [NSString stringWithFormat:@"%@ = %@", key, [bp.upd valueForKey:key]];
-		[messageLog addMessage: s withLevel:LogLevel_Info];
-	}
+	[messageLog addMessage:@"Bankparameterdaten:" withLevel:LogLevel_Info];
+    [messageLog addMessage: bp.bpd_raw withLevel:LogLevel_Notice];
+    
+	[messageLog addMessage:@"Anwenderparameterdaten:" withLevel:LogLevel_Info];
+    [messageLog addMessage: bp.upd_raw withLevel:LogLevel_Notice];
 }
 
 
