@@ -278,51 +278,49 @@ public class XmlGen {
     	xmlBuf.append("</object>");
     }
     
-    public void tanMediaToXml(TANMediaInfo info) throws IOException {
-    	xmlBuf.append("<object type=\"TANMedia\">");
-    	tag("mediaCategory", info.mediaCategory);
+    public void tanMediumToXml(TANMediaInfo info) throws IOException {
+    	xmlBuf.append("<cdObject type=\"TanMedium\">");
+    	tag("category", info.mediaCategory);
     	tag("status", info.status);
     	tag("cardNumber", info.cardNumber);
     	tag("cardSeqNumber", info.cardSeqNumber);
-    	tag("cardType", info.cardType);
+    	if(info.cardType != null) intTag("cardType", info.cardType);
     	dateTag("validFrom", info.validFrom);
     	dateTag("validTo", info.validTo);
     	tag("tanListNumber", info.tanListNumber);
-    	tag("mediaName", info.mediaName);
+    	tag("name", info.mediaName);
     	tag("mobileNumber", info.mobileNumber);
     	tag("mobileNumberSecure", info.mobileNumberSecure);
-    	intTag("freeTans", info.freeTans);
+    	if(info.freeTans != null) intTag("freeTans", info.freeTans);
     	dateTag("lastUse", info.lastUse);
     	dateTag("activatedOn", info.activatedOn);
-    	tag("cardType", info.cardType);
-    	xmlBuf.append("</object>");
+    	xmlBuf.append("</cdObject>");
     }
     
     public void tanMediaListToXml(GVRTANMediaList list) throws IOException {
-    	xmlBuf.append("<object type=\"TANMediaList\">");
+    	xmlBuf.append("<object type=\"TanMediaList\">");
     	intTag("tanOption", list.getTanOption());
     	xmlBuf.append("<mediaList type=\"list\">");
 		List<GVRTANMediaList.TANMediaInfo> mediaList = list.mediaList();
 		for (int i=0; i<mediaList.size(); i++) {
-			tanMediaToXml(mediaList.get(i));
+			tanMediumToXml(mediaList.get(i));
 		}
     	xmlBuf.append("</mediaList></object>");
     }
     
     public void tanMethodToXml(Properties tanMethod) throws IOException {
-    	xmlBuf.append("<object type=\"TanMethod\">");
-		intTag("function", Integer.parseInt(tanMethod.getProperty("secfunc")));
+    	xmlBuf.append("<cdObject type=\"TanMethod\">");
+		tag("method", tanMethod.getProperty("secfunc"));
 		tag("identifier", tanMethod.getProperty("id"));
 		tag("process", tanMethod.getProperty("process"));
 		tag("zkaMethodName", tanMethod.getProperty("zkamethod_name"));
 		tag("zkaMethodVersion", tanMethod.getProperty("zkamethod_version"));
 		tag("name", tanMethod.getProperty("name"));
 		tag("inputInfo", tanMethod.getProperty("intputinfo"));
+		tag("needTanMedia", tanMethod.getProperty("needtanmedia"));
 		String s = tanMethod.getProperty("maxlentan2step");
 		if( s != null) intTag("maxTanLength", Integer.parseInt(s));
-		s = tanMethod.getProperty("needtanmedia");
-		if( s != null) intTag("needTanMedia", Integer.parseInt(s));
-    	xmlBuf.append("</object>");
+    	xmlBuf.append("</cdObject>");
     }
 
 	
