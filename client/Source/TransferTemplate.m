@@ -8,7 +8,7 @@
 
 #import "TransferTemplate.h"
 
-@implementation TransferTemplate (CoreDataGeneratedAccessors)
+@implementation TransferTemplate
 @dynamic currency;
 @dynamic name;
 @dynamic purpose1;
@@ -24,10 +24,6 @@
 @dynamic remoteSuffix;
 @dynamic value;
 @dynamic type;
-@end
-
-
-@implementation TransferTemplate
 
 -(NSString*)purpose
 {

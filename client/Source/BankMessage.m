@@ -8,12 +8,9 @@
 
 #import "BankMessage.h"
 
-@implementation BankMessage (CoreDataGeneratedAccessors)
+@implementation BankMessage
 @dynamic bankCode;
 @dynamic date;
 @dynamic message;
-@end
-
-@implementation BankMessage
 
 @end

@@ -8,12 +8,9 @@
 
 #import "CategoryBudget.h"
 
-@implementation CategoryBudget (CoreDataGeneratedAccessors)
+@implementation CategoryBudget
 @dynamic budget;
 @dynamic date;
 @dynamic category;
-@end
-
-@implementation CategoryBudget
 
 @end

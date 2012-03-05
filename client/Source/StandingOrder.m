@@ -8,7 +8,7 @@
 
 #import "StandingOrder.h"
 
-@implementation StandingOrder (CoreDataGeneratedAccessors)
+@implementation StandingOrder
 @dynamic changeDate;
 @dynamic currency;
 @dynamic cycle;
@@ -35,10 +35,6 @@
 @dynamic isChanged;
 @dynamic value;
 @dynamic account;
-@end
-
-
-@implementation StandingOrder
 
 -(NSString*)purpose
 {

@@ -7,7 +7,7 @@
 //
 
 #import "User.h"
-#import "TanMethod.h"
+#import "TanMethodOld.h"
 #import "HBCIClient.h"
 
 @implementation User
@@ -44,16 +44,16 @@
 			[self.customerId isEqualToString: obj->customerId ] );
 }
 
--(TanMethod*)tanMethod
+-(TanMethodOld*)tanMethod
 { 
-	TanMethod *method;
+	TanMethodOld *method;
 	for(method in tanMethodList) {
 		if([method.function intValue ] == [tanMethodNumber intValue ]) return method;
 	}
 	return [tanMethodList objectAtIndex:0 ];
 }
 
--(void)setTanMethod: (TanMethod*)tm
+-(void)setTanMethod: (TanMethodOld*)tm
 {
 	self.tanMethodNumber = tm.function;
 //todo	[[HBCIClient hbciClient ] changePinTanMethodForUser:self method:tanMethodNumber ];

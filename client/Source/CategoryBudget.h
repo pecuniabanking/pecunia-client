@@ -14,10 +14,8 @@
 
 }
 
-@end
-
-@interface CategoryBudget (CoreDataGeneratedAccessors)
 @property (nonatomic, retain) NSDecimalNumber * budget;
 @property (nonatomic, retain) NSDate * date;
 @property (nonatomic, retain) Category * category;
+
 @end

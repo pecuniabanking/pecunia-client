@@ -151,6 +151,12 @@
 		B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = B17078F810EA5E6100A974E7 /* StatCatAssignment.m */; };
 		B1762BD911EE4AE600F70263 /* TransferListController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1762BD811EE4AE600F70263 /* TransferListController.m */; };
 		B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728AF1502D0D300256898 /* BankSetupInfo.m */; };
+		B17728D71504ABC700256898 /* TanMedium.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728D61504ABC700256898 /* TanMedium.m */; };
+		B17728F01504B14500256898 /* TanMediaList.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728EF1504B14500256898 /* TanMediaList.m */; };
+		B17728FD1504C33F00256898 /* BankUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728FC1504C33F00256898 /* BankUser.m */; };
+		B17729141504C9B200256898 /* TanMethodOld.m in Sources */ = {isa = PBXBuildFile; fileRef = B17729131504C9B200256898 /* TanMethodOld.m */; };
+		B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B177297C1504CE1B00256898 /* BusinessTransactionsController.m */; };
+		B17729AD1504D63200256898 /* BusinessTransactionsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17729AC1504D63200256898 /* BusinessTransactionsWindow.xib */; };
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
 		B17B2B4013EC913800739E7A /* ChipTanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */; };
 		B17B2B4313EC921200739E7A /* FlickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B4213EC921200739E7A /* FlickerView.m */; };
@@ -507,6 +513,17 @@
 		B1762BD811EE4AE600F70263 /* TransferListController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransferListController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17728AE1502D0D300256898 /* BankSetupInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankSetupInfo.h; sourceTree = "<group>"; };
 		B17728AF1502D0D300256898 /* BankSetupInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankSetupInfo.m; sourceTree = "<group>"; };
+		B17728D51504ABC700256898 /* TanMedium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanMedium.h; sourceTree = "<group>"; };
+		B17728D61504ABC700256898 /* TanMedium.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanMedium.m; sourceTree = "<group>"; };
+		B17728EE1504B14500256898 /* TanMediaList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanMediaList.h; sourceTree = "<group>"; };
+		B17728EF1504B14500256898 /* TanMediaList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanMediaList.m; sourceTree = "<group>"; };
+		B17728FB1504C33F00256898 /* BankUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankUser.h; sourceTree = "<group>"; };
+		B17728FC1504C33F00256898 /* BankUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankUser.m; sourceTree = "<group>"; };
+		B17729121504C9B200256898 /* TanMethodOld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanMethodOld.h; sourceTree = "<group>"; };
+		B17729131504C9B200256898 /* TanMethodOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanMethodOld.m; sourceTree = "<group>"; };
+		B177297C1504CE1B00256898 /* BusinessTransactionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessTransactionsController.m; sourceTree = "<group>"; };
+		B177297D1504CE1B00256898 /* BusinessTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessTransactionsController.h; sourceTree = "<group>"; };
+		B17729AC1504D63200256898 /* BusinessTransactionsWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BusinessTransactionsWindow.xib; sourceTree = "<group>"; };
 		B17B28FF13E340A300739E7A /* HBCIBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIBackend.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3C13EC8D5000739E7A /* ChipTanWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ChipTanWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ChipTanWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -883,6 +900,7 @@
 		27E55355146EDA59001DE9BE /* Designer */ = {
 			isa = PBXGroup;
 			children = (
+				B17729AC1504D63200256898 /* BusinessTransactionsWindow.xib */,
 				B1D450561478469A008DD256 /* ABInfoBox.xib */,
 				B1D4505314784666008DD256 /* ABInputWindow.xib */,
 				27E16999149F90D900089103 /* About.xib */,
@@ -1001,6 +1019,12 @@
 				B1A5940D112A8D8500FD8CB8 /* TransferResult.m */,
 				B17728AE1502D0D300256898 /* BankSetupInfo.h */,
 				B17728AF1502D0D300256898 /* BankSetupInfo.m */,
+				B17728D51504ABC700256898 /* TanMedium.h */,
+				B17728D61504ABC700256898 /* TanMedium.m */,
+				B17728EE1504B14500256898 /* TanMediaList.h */,
+				B17728EF1504B14500256898 /* TanMediaList.m */,
+				B17729121504C9B200256898 /* TanMethodOld.h */,
+				B17729131504C9B200256898 /* TanMethodOld.m */,
 			);
 			name = HBCIBackend;
 			sourceTree = "<group>";
@@ -1325,6 +1349,8 @@
 				B1A035730D8C77FC00072442 /* LogController.m */,
 				B1FB50971209EA52004DCD6A /* PurposeSplitController.h */,
 				B1FB50981209EA52004DCD6A /* PurposeSplitController.m */,
+				B177297C1504CE1B00256898 /* BusinessTransactionsController.m */,
+				B177297D1504CE1B00256898 /* BusinessTransactionsController.h */,
 			);
 			name = WindowController;
 			sourceTree = "<group>";
@@ -1352,6 +1378,8 @@
 				B17FE48B14CB586A00F6FAFE /* BankMessage.m */,
 				B17FE49514CB59BA00F6FAFE /* CategoryBudget.h */,
 				B17FE49614CB59BA00F6FAFE /* CategoryBudget.m */,
+				B17728FB1504C33F00256898 /* BankUser.h */,
+				B17728FC1504C33F00256898 /* BankUser.m */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -1564,6 +1592,7 @@
 				27BB1A1A14D4739900A2C8A7 /* CategoryDefinition.xib in Resources */,
 				B17FE81B14DC350E00F6FAFE /* Transfer_SEPA.png in Resources */,
 				B17FE82914DC380300F6FAFE /* Transfer_Internal.png in Resources */,
+				B17729AD1504D63200256898 /* BusinessTransactionsWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1706,6 +1735,11 @@
 				B17FE48C14CB586A00F6FAFE /* BankMessage.m in Sources */,
 				B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */,
 				B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */,
+				B17728D71504ABC700256898 /* TanMedium.m in Sources */,
+				B17728F01504B14500256898 /* TanMediaList.m in Sources */,
+				B17728FD1504C33F00256898 /* BankUser.m in Sources */,
+				B17729141504C9B200256898 /* TanMethodOld.m in Sources */,
+				B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,7 @@
 //
 
 #import "TanMethodListController.h"
-#import "TanMethod.h"
+#import "TanMethodOld.h"
 
 @implementation TanMethodListController
 
@@ -34,7 +34,7 @@
 -(IBAction)ok:(id)sender
 {
 	NSArray *sel = [tanMethodController selectedObjects ];
-	TanMethod *method = [sel objectAtIndex:0 ];
+	TanMethodOld *method = [sel objectAtIndex:0 ];
 	self.selectedMethod = method.function;
 	
 	[NSApp stopModalWithCode:0 ];

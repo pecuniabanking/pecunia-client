@@ -8,7 +8,7 @@
 
 #import "CustomerMessage.h"
 
-@implementation CustomerMessage (CoreDataGeneratedAccessors)
+@implementation CustomerMessage
 @dynamic header;
 @dynamic isSent;
 @dynamic accountNumber;
@@ -16,8 +16,5 @@
 @dynamic message;
 @dynamic receipient;
 @dynamic account;
-@end
-
-@implementation CustomerMessage
 
 @end

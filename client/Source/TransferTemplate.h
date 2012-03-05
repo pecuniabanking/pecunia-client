@@ -15,9 +15,6 @@
 
 -(NSString*)purpose;
 
-@end
-
-@interface TransferTemplate (CoreDataGeneratedAccessors)
 @property (nonatomic, retain) NSString * currency;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * purpose1;

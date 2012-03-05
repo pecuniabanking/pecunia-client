@@ -29,10 +29,6 @@ typedef enum {
 -(void)setJobId: (unsigned int)jid;
 -(unsigned int)jobId;
 
-
-@end
-
-@interface StandingOrder (CoreDataGeneratedAccessors)
 @property (nonatomic, retain) NSDate * changeDate;
 @property (nonatomic, retain) NSString * currency;
 @property (nonatomic, retain) NSNumber * cycle;

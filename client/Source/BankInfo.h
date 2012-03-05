@@ -42,6 +42,4 @@
 @property (nonatomic, retain) NSString *pinTanVersion;
 @property (nonatomic, retain) NSString *website;
 
-//-(id)initWithAB: (AB_BANKINFO*)bi;
-
 @end

@@ -14,7 +14,7 @@
 #import "CallbackData.h"
 #import "PasswordWindow.h"
 #import "Keychain.h"
-#import "TanMethod.h"
+#import "TanMethodOld.h"
 #import "PasswordWindow.h"
 #import "NewPasswordController.h"
 #import "TanMethodListController.h"
@@ -342,7 +342,7 @@
     NSArray *meths = [data.proposal componentsSeparatedByString: @"|" ];
     NSString *meth;
     for(meth in meths) {
-        TanMethod *tanMethod = [[[TanMethod alloc ] init ] autorelease ];
+        TanMethodOld *tanMethod = [[[TanMethodOld alloc ] init ] autorelease ];
         NSArray *list = [meth componentsSeparatedByString: @":" ];
         tanMethod.function = [NSNumber numberWithInteger:[[list objectAtIndex:0 ] integerValue ] ];
         tanMethod.description = [list objectAtIndex:1 ];

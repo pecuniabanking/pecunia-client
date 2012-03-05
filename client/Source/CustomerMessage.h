@@ -14,10 +14,6 @@
 
 }
 
-@end
-
-
-@interface CustomerMessage (CoreDataGeneratedAccessors)
 @property (nonatomic, retain) NSString * header;
 @property (nonatomic, retain) NSNumber * isSent;
 @property (nonatomic, retain) NSString * accountNumber;

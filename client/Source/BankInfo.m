@@ -27,31 +27,6 @@
 @synthesize pinTanVersion;
 @synthesize website;
 
-/*
--(id)initWithAB: (AB_BANKINFO*)bi
-{
-	const char* c;
-	
-	self = [super init ];
-	if(self == nil) return nil;
-
-	name		= [[NSString stringWithUTF8String: (c = AB_BankInfo_GetBankName(bi)) ? c: ""] retain];
-	country		= [[NSString stringWithUTF8String: (c = AB_BankInfo_GetCountry(bi)) ? c: ""] retain];
-	branch		= [[NSString stringWithUTF8String: (c = AB_BankInfo_GetBranchId(bi)) ? c: ""] retain];
-	bankCode	= [[NSString stringWithUTF8String: (c = AB_BankInfo_GetBankId(bi)) ? c: ""] retain];
-	bic			= [[NSString stringWithUTF8String: (c = AB_BankInfo_GetBic(bi)) ? c: ""] retain];
-	location	= [[NSString stringWithUTF8String: (c = AB_BankInfo_GetLocation(bi)) ? c: ""] retain];
-	street		= [[NSString stringWithUTF8String: (c = AB_BankInfo_GetStreet(bi)) ? c: ""] retain];
-	city		= [[NSString stringWithUTF8String: (c = AB_BankInfo_GetCity(bi)) ? c: ""] retain];
-	region		= [[NSString stringWithUTF8String: (c = AB_BankInfo_GetRegion(bi)) ? c: ""] retain];
-	phone		= [[NSString stringWithUTF8String: (c = AB_BankInfo_GetPhone(bi)) ? c: ""] retain];
-	email		= [[NSString stringWithUTF8String: (c = AB_BankInfo_GetEmail(bi)) ? c: ""] retain];
-	website		= [[NSString stringWithUTF8String: (c = AB_BankInfo_GetWebsite(bi)) ? c: ""] retain];
- 
-	return self;
-}
-*/
-
 -(void)dealloc
 {
 	[country release ];

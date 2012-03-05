@@ -7,32 +7,24 @@
 //
 
 #import <Cocoa/Cocoa.h>
+@class TanMedium;
+@class BankUser;
 
-@interface TanMethod : NSObject {
-	NSNumber	*function;
-	NSString	*description;
-    NSString    *identifier;
-    NSString    *process;
-    NSString    *zkaMethodName;
-    NSString    *zkaMethodVersion;
-    NSString    *name;
-    NSString    *inputInfo;
-    NSNumber    *maxTanLength;
-    NSNumber    *needTanMedia;
+@interface TanMethod : NSManagedObject {
+
 }
 
-@property (nonatomic, copy) NSString *identifier;
-@property (nonatomic, copy) NSString *process;
-@property (nonatomic, copy) NSString *zkaMethodName;
-@property (nonatomic, copy) NSString *zkaMethodVersion;
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *inputInfo;
-@property (nonatomic, retain) NSNumber *maxTanLength;
-@property (nonatomic, retain) NSNumber *needTanMedia;
-@property (nonatomic, retain) NSNumber* function;
-@property (nonatomic, retain) NSString* description;
-
--(id)initDefault: (NSNumber*) func;
+@property (nonatomic, retain) NSString * identifier;
+@property (nonatomic, retain) NSString * inputInfo;
+@property (nonatomic, retain) NSNumber * maxTanLength;
+@property (nonatomic, retain) NSString * method;
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString * needTanMedia;
+@property (nonatomic, retain) NSString * process;
+@property (nonatomic, retain) NSString * zkaMethodName;
+@property (nonatomic, retain) NSString * zkaMethodVersion;
+@property (nonatomic, retain) TanMedium * preferredMedium;
+@property (nonatomic, retain) BankUser * user;
 
 @end
 

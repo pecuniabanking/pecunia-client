@@ -12,11 +12,10 @@
 @interface BankMessage : NSManagedObject {
 
 }
-@end
 
-@interface BankMessage (CoreDataGeneratedAccessors)
 @property (nonatomic, retain) NSString * bankCode;
 @property (nonatomic, retain) NSDate * date;
 @property (nonatomic, retain) NSString * message;
+
 @end
 

@@ -15,19 +15,6 @@
 @synthesize currency;
 @synthesize code;
 
-/*
--(id)initWithAB: (const AB_COUNTRY*)cnty
-{
-	const char	*c;
-	
-	[super init ];
-	name =		[[NSString stringWithUTF8String: (c = AB_Country_GetLocalName(cnty)) ? c: ""] retain];
-	code =		[[NSString stringWithUTF8String: (c = AB_Country_GetCode(cnty)) ? c: ""] retain];
-	currency =	[[NSString stringWithUTF8String: (c = AB_Country_GetCurrencyCode(cnty)) ? c: ""] retain];
-	return self;
-}
-*/
-
 -(void)dealloc
 {
 	[name release], name = nil;

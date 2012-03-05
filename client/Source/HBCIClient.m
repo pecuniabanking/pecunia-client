@@ -208,6 +208,17 @@ static HBCIClient *client = nil;
     return [controller getSupportedBusinessTransactions: account];
 }
 
+-(PecuniaError*)updateTanMethodsForUser:(BankUser*)user
+{
+    return [controller updateTanMethodsForUser:user ];
+}
+
+- (PecuniaError*)updateTanMediaForUser:(BankUser*)user
+{
+    return [controller updateTanMediaForUser:user ];
+}
+
+
 -(BOOL)checkDTAUS:(NSString*)s
 {
     NSCharacterSet *cs = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß 0123456789.,&-/+*$%" ];
