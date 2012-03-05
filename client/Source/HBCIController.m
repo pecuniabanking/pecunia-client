@@ -19,10 +19,10 @@
 #import "BankingController.h"
 #import "WorkerThread.h"
 #import "User.h"
+#import "BankUser.h"
 #import "Account.h"
 #import "StandingOrder.h"
 #import "HBCIBridge.h"
-#import "Passport.h"
 #import "Account.h"
 #import "TransactionLimits.h"
 #import "Country.h"
@@ -32,6 +32,7 @@
 #import "CustomerMessage.h"
 #import "MessageLog.h"
 #import "BankSetupInfo.h"
+#import "TanMediaList.h"
 
 @implementation HBCIController
 
@@ -942,7 +943,7 @@ NSString *escapeSpecial(NSString *s)
     return error;
 }
 
--(NSArray*)getTanMethodsForUser:(User*)user
+-(PecuniaError*)updateTanMethodsForUser:(BankUser*)user
 {
     PecuniaError *error=nil;
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getTANMethods\">" ];
@@ -951,11 +952,9 @@ NSString *escapeSpecial(NSString *s)
     [cmd appendString: @"</command>" ];
     
     NSArray *methods = [bridge syncCommand: cmd error: &error ];
-    if (error) {
-        [error alertPanel ];
-        return nil;
-    }
-    return methods;
+    if (error) return error;
+    [user updateTanMethods:methods ];
+    return nil;
 }
 
 - (NSArray*)getSupportedBusinessTransactions: (BankAccount*)account
@@ -974,6 +973,20 @@ NSString *escapeSpecial(NSString *s)
     }
 
     return result;
+}
+
+- (PecuniaError*)updateTanMediaForUser:(BankUser*)user
+{
+    PecuniaError *error=nil;
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getTANMediaList\">" ];
+    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
+    [self appendTag: @"userId" withValue: user.userId to: cmd ];
+    [cmd appendString: @"</command>" ];
+    
+    TanMediaList *mediaList = [bridge syncCommand: cmd error: &error ];
+    if (error) return error;
+    [user updateTanMedia:mediaList.mediaList ];
+    return nil;
 }
 
 @end
