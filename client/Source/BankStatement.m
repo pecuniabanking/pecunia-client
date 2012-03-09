@@ -38,6 +38,7 @@ static NSArray*	catCache = nil;
 @dynamic isManual;
 @dynamic isStorno;
 @dynamic isNew;
+@dynamic ref1, ref2, ref3, ref4;
 
 
 BOOL stringEqualIgnoreWhitespace(NSString *a, NSString *b)

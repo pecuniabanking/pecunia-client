@@ -19,7 +19,7 @@
 
 #import "NewBankUserController.h"
 #import "ABController.h"
-#import "User.h"
+#import "BankUser.h"
 #import "BankingController.h"
 #import "InstitutesController.h"
 #import "HBCIClient.h"
@@ -53,10 +53,10 @@ NSString *hbciVersionFromString(NSString* s)
 {
 	self = [super initWithWindowNibName:@"BankUser"];
 	bankController = con;
-	bankUsers = [[[HBCIClient hbciClient] users] mutableCopy];
-    currentUser = [[User alloc ] init ];
-	currentUser.hbciVersion = @"220";
-	
+	bankUsers = [[BankUser allUsers ] mutableCopy];
+//    currentUser = [[User alloc ] init ];
+//	currentUser.hbciVersion = @"220";
+	context = [[MOAssistant assistant ] context ];
 	[self readBanks];
 	return self;
 }
@@ -101,7 +101,7 @@ NSString *hbciVersionFromString(NSString* s)
 	}
 }
 
--(User*)selectedUser
+-(BankUser*)selectedUser
 {
 	NSArray	*selection = [bankUserController selectedObjects];
 	if (selection == nil || [selection count] < 1) {
@@ -138,21 +138,28 @@ NSString *hbciVersionFromString(NSString* s)
 {
 	HBCIClient *hbciClient = [HBCIClient hbciClient];
 	if(code == 0) {
+        BankUser *currentUser = [currentUserController content ];
+
 		currentUser.hbciVersion = [[hbciVersions selectedObjects] lastObject];
 		PecuniaError *error = [hbciClient addBankUser: currentUser];
 		if (error) {
 			[error alertPanel];
+            [currentUserController remove:self ];
 		}
 		else {
 			[bankUserController addObject:currentUser];
 			[bankController updateBankAccounts: [hbciClient getAccountsForUser:currentUser]];
-
+/*            
 			[currentUser autorelease];
-			currentUser = [[User alloc ] init];
+			currentUser = [[BankUser alloc ] init];
 			currentUser.hbciVersion = @"220";
 			[objController setContent:currentUser];
+*/ 
 		}
-	}
+	} else {
+        [currentUserController remove:self ];
+    }
+
 }
 
 - (void)cancelSheet:(id)sender
@@ -163,7 +170,7 @@ NSString *hbciVersionFromString(NSString* s)
 
 - (void)endSheet: (id)sender
 {
-	[objController commitEditing];
+	[currentUserController commitEditing];
 	if([self check] == NO) return;
 	[userSheet orderOut: sender];
 	[NSApp endSheet: userSheet returnCode: 0];
@@ -180,6 +187,8 @@ NSString *hbciVersionFromString(NSString* s)
 
 - (BOOL)check
 {
+    BankUser *currentUser = [currentUserController content ];
+
 	if ([currentUser bankCode] == nil) {
 		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
 						NSLocalizedString(@"AP2", @"Please enter bank code"),
@@ -207,7 +216,8 @@ NSString *hbciVersionFromString(NSString* s)
 {
 	NSTextField	*te = [aNotification object];
 	NSString *bankCode = [te stringValue];
-	
+    BankUser *currentUser = [currentUserController content ];
+    
 	BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: bankCode inCountry: @"DE"];
 	if (bi) {
 		[currentUser setValue: bi.name forKey: @"bankName"];
@@ -240,6 +250,10 @@ NSString *hbciVersionFromString(NSString* s)
 
 - (IBAction)addEntry:(id)sender
 {
+    [currentUserController add:self ];
+    BankUser *user = [currentUserController content ];
+    user.hbciVersion = @"220";    
+    
 	[NSApp beginSheet: userSheet
 	   modalForWindow: [self window ]
 		modalDelegate: self
@@ -265,13 +279,12 @@ NSString *hbciVersionFromString(NSString* s)
 
 - (IBAction)removeEntry:(id)sender
 {
-	User* user = [self selectedUser];
+	BankUser* user = [self selectedUser];
 	if (user == nil) return;
 	
 	if([[HBCIClient hbciClient] deleteBankUser: user] == TRUE) {
         // remove userId from all related bank accounts
         NSError *error=nil;
-        NSManagedObjectContext *context = [[MOAssistant assistant] context];
         NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:context];
         NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
         [request setEntity:entityDescription];
@@ -290,7 +303,7 @@ NSString *hbciVersionFromString(NSString* s)
 
 - (IBAction)getUserAccounts: (id)sender
 {
-	User *user = [self selectedUser];
+	BankUser *user = [self selectedUser];
 	if(user == nil) return;
 
 	[bankController updateBankAccounts: [[HBCIClient hbciClient] getAccountsForUser:user]];
@@ -305,7 +318,7 @@ NSString *hbciVersionFromString(NSString* s)
 
 -(IBAction)changePinTanMethod:(id)sender
 {
-	User *user = [self selectedUser];
+	BankUser *user = [self selectedUser];
 	if(user == nil) return;
 	 PecuniaError *error = [[HBCIClient hbciClient] changePinTanMethodForUser:user];
 	if (error) {
@@ -315,7 +328,7 @@ NSString *hbciVersionFromString(NSString* s)
 
 -(IBAction)printBankParameter:(id)sender
 {
-	User *user = [self selectedUser];
+	BankUser *user = [self selectedUser];
 	if (user == nil) return;
 	LogController *logController = [LogController logController];
 	MessageLog *messageLog = [MessageLog log];
@@ -337,7 +350,7 @@ NSString *hbciVersionFromString(NSString* s)
 
 - (IBAction)updateBankParameter: (id)sender
 {
-	User *user = [self selectedUser];
+	BankUser *user = [self selectedUser];
 	if(user == nil) return;
 	
 	PecuniaError *error = [[HBCIClient hbciClient] updateBankDataForUser: user];

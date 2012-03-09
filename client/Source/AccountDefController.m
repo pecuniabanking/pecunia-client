@@ -1,7 +1,7 @@
 #import "AccountDefController.h"
 #import "BankAccount.h"
 #import "MOAssistant.h"
-#import "User.h"
+#import "BankUser.h"
 #import "BankInfo.h"
 #import "HBCIClient.h"
 #import "BankingController.h"
@@ -32,16 +32,16 @@
 	[[self window ] center ];
 	
 	int i=0;
-	NSMutableArray* hbciUsers = [NSMutableArray arrayWithArray: [[HBCIClient hbciClient ] users ] ];
+	NSMutableArray* hbciUsers = [NSMutableArray arrayWithArray: [BankUser allUsers ] ];
 	// add special User
-	User *noUser  = [[[User alloc ] init ] autorelease ];
+	BankUser *noUser  = [NSEntityDescription insertNewObjectForEntityForName:@"BankUser" inManagedObjectContext:moc ];
 	noUser.name = NSLocalizedString(@"AP101", @"");
 	[hbciUsers insertObject:noUser atIndex:0 ];
 	
 	[users setContent: hbciUsers ];
 	// now find first user that fits bank code and change selection
 	if(account.bankCode) {
-		for(User *user in hbciUsers) {
+		for(BankUser *user in hbciUsers) {
 			if([user.bankCode isEqual: account.bankCode ]) {
 				[dropDown selectItemAtIndex:i ];
 				break;
@@ -60,7 +60,7 @@
 {
 	int idx = [dropDown indexOfSelectedItem ];
 	if(idx < 0) idx = 0;
-	User *user = [[users arrangedObjects ] objectAtIndex: idx];
+	BankUser *user = [[users arrangedObjects ] objectAtIndex: idx];
 
 	if(idx > 0) {
 		account.bankName = user.bankName;
@@ -106,7 +106,7 @@
 	if([self check ] == NO) return;
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 
-	User *user = nil;
+	BankUser *user = nil;
 	int idx = [dropDown indexOfSelectedItem ];
 	if(idx > 0) user = [[users arrangedObjects ] objectAtIndex:idx ];
 

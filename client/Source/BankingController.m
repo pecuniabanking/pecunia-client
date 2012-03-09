@@ -306,6 +306,7 @@ static BankingController	*con;
     [categoryReportingController release];
     [sideToolbar release];
     [rightSplitter release];
+    
     [super dealloc];
 }
 
@@ -334,6 +335,8 @@ static BankingController	*con;
     [timeSlicer updateDelegate];
     [self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext:self.managedObjectContext];
+    
+    [self migrate];
 }
 
 #pragma mark -
@@ -367,9 +370,9 @@ static BankingController	*con;
     
     if (hbciAccounts == nil) {
         // collect all accounts of all users
-        NSArray *users = [[HBCIClient hbciClient] users];
+        NSArray *users = [BankUser allUsers];
         hbciAccounts = [NSArray array];
-        for(User *user in users) {
+        for(BankUser *user in users) {
             NSArray *userAccounts = [[HBCIClient hbciClient] getAccountsForUser:user];
             hbciAccounts = [hbciAccounts arrayByAddingObjectsFromArray:userAccounts];
         }
@@ -992,7 +995,7 @@ static BankingController	*con;
     }
     
     // check if there is any User
-    if([[[HBCIClient hbciClient] users] count] == 0) {
+    if([[BankUser allUsers ] count] == 0) {
         int res = NSRunAlertPanel(NSLocalizedString(@"AP37", @"Account cannot be created"), 
                                   NSLocalizedString(@"AP38", @"Please setup Bank ID first"), 
                                   NSLocalizedString(@"ok", @"Ok"), 
@@ -2669,6 +2672,8 @@ static BankingController	*con;
 				bankUser.country = user.country;
 				bankUser.userId = user.userId;
 				bankUser.customerId = user.customerId;
+                
+                [[HBCIClient hbciClient ] updateTanMethodsForUser:bankUser ];
 			}
 		}
 	

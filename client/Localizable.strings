@@ -168,4 +168,5 @@
 "AP172" = "Die Kundenmeldung konnte nicht erfolgreich versendet werden";
 "AP173" = "Beim ermitteln der unterstützten Geschäftsvorfälle ist ein unbekannter Fehler aufgetreten";
 "AP174" = "Keine Information verfügbar";
+"AP175" = "Ermittle TAN-Medium-Informationen...";
  

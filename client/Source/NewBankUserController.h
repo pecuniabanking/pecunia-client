@@ -19,7 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class User;
+@class BankUser;
 @class BankingController;
 @class InstitutesController;
 
@@ -30,9 +30,12 @@
 	IBOutlet NSArrayController		*tanMethods;
 	IBOutlet NSArrayController		*hbciVersions;
 	IBOutlet NSWindow				*userSheet;
-    IBOutlet User					*currentUser;
+//    IBOutlet BankUser				*currentUser;
 	IBOutlet NSMutableDictionary	*bankUserInfo;
 	IBOutlet NSMutableArray			*bankUsers;
+    IBOutlet NSObjectController     *currentUserController;
+    
+    NSManagedObjectContext          *context;
     
     @private
 	BankingController* bankController;

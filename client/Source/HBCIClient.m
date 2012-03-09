@@ -8,7 +8,6 @@
 
 
 #import "HBCIClient.h"
-#import "User.h"
 #import "Account.h"
 #import "CustomerMessage.h"
 
@@ -61,7 +60,7 @@ static HBCIClient *client = nil;
 	return [controller infoForBankCode:bankCode inCountry:country ];	
 }
 
--(BankParameter*)getBankParameterForUser:(User*)user
+-(BankParameter*)getBankParameterForUser:(BankUser*)user
 {
 	return [controller getBankParameterForUser:user ];
 }
@@ -77,7 +76,7 @@ static HBCIClient *client = nil;
 	return [controller bankNameForBIC:bic inCountry:country ];
 }
 
--(PecuniaError*)addAccount: (BankAccount*)account forUser: (User*)user
+-(PecuniaError*)addAccount: (BankAccount*)account forUser: (BankUser*)user
 {
 	return [controller addAccount:account forUser:user ];
 }
@@ -163,7 +162,7 @@ static HBCIClient *client = nil;
 	return [controller checkIBAN:iban ];
 }
 
--(PecuniaError*)changePinTanMethodForUser:(User*)user
+-(PecuniaError*)changePinTanMethodForUser:(BankUser*)user
 {
 	return [controller changePinTanMethodForUser:user ];
 }
@@ -173,17 +172,17 @@ static HBCIClient *client = nil;
 	return [controller users ];
 }
 
--(PecuniaError*)addBankUser:(User*)user
+-(PecuniaError*)addBankUser:(BankUser*)user
 {
 	return [controller addBankUser: user ];
 }
 
--(BOOL)deleteBankUser:(User*)user
+-(BOOL)deleteBankUser:(BankUser*)user
 {
 	return [controller deleteBankUser: user ];
 }
 
--(PecuniaError*)updateBankDataForUser:(User*)user
+-(PecuniaError*)updateBankDataForUser:(BankUser*)user
 {
 	return [controller updateBankDataForUser:user ];
 }
@@ -193,7 +192,7 @@ static HBCIClient *client = nil;
 	return [controller setLogLevel:level ];
 }
 
--(NSArray*)getAccountsForUser:(User*)user
+-(NSArray*)getAccountsForUser:(BankUser*)user
 {
 	return [controller getAccountsForUser: user ];
 }

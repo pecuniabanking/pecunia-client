@@ -120,7 +120,7 @@
 	
 	option = [[[TanSigningOption alloc ] init ] autorelease ];
 	option.tanMethod = method;
-	[currentSignOptions setObject:option forKey:user ];
+	if (self.currentSignOptions) [currentSignOptions setObject:option forKey:user ];
     return method;
 }
 

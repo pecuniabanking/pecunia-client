@@ -27,7 +27,6 @@
 
 @class BankInfo;
 @class TransactionLimits;
-@class User;
 @class BankUser;
 @class BankAccount;
 @class PecuniaError;
@@ -44,7 +43,7 @@
 -(BankInfo*)infoForBankCode: (NSString*)bankCode inCountry:(NSString*)country;
 -(NSString*)bankNameForCode:(NSString*)bankCode inCountry:(NSString*)country;
 -(NSString*)bankNameForBIC:(NSString*)bic inCountry:(NSString*)country;
--(BankParameter*)getBankParameterForUser:(User*)user;
+-(BankParameter*)getBankParameterForUser:(BankUser*)user;
 -(PecuniaError*)updateTanMethodsForUser:(BankUser*)user;
 - (PecuniaError*)updateTanMediaForUser:(BankUser*)user;
 
@@ -62,17 +61,17 @@
 
 -(BOOL)sendTransfers:(NSArray*)transfers;
 -(PecuniaError*)sendStandingOrders:(NSArray*)orders;
--(PecuniaError*)changePinTanMethodForUser:(User*)user;
+-(PecuniaError*)changePinTanMethodForUser:(BankUser*)user;
 -(PecuniaError*)sendCustomerMessage:(CustomerMessage*)msg;
 
--(PecuniaError*)addAccount: (BankAccount*)account forUser: (User*)user;
+-(PecuniaError*)addAccount: (BankAccount*)account forUser: (BankUser*)user;
 -(PecuniaError*)changeAccount:(BankAccount*)account;
 -(PecuniaError*)setAccounts:(NSArray*)bankAccounts;
--(NSArray*)getAccountsForUser: (User*)user;
+-(NSArray*)getAccountsForUser: (BankUser*)user;
 
--(PecuniaError*)addBankUser:(User*)user;
--(BOOL)deleteBankUser:(User*)user;
--(PecuniaError*)updateBankDataForUser:(User*)user;
+-(PecuniaError*)addBankUser:(BankUser*)user;
+-(BOOL)deleteBankUser:(BankUser*)user;
+-(PecuniaError*)updateBankDataForUser:(BankUser*)user;
 -(NSArray*)getSupportedBusinessTransactions: (BankAccount*)account;
 
 -(PecuniaError*)setLogLevel:(LogLevel)level;

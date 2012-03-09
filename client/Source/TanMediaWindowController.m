@@ -7,7 +7,6 @@
 //
 
 #import "TanMediaWindowController.h"
-#import "User.h"
 
 @implementation TanMediaWindowController
 

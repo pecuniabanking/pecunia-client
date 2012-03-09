@@ -247,6 +247,9 @@
         return nil;
     }
     NSString *command = [cmd stringByAppendingString: @".\n" ];
+    
+    // todo: startSession hier ist nur die erste Näherung
+    [callbackHandler startSession ];
     // Send Log
     [[MessageLog log ] addMessage:cmd withLevel:LogLevel_Verbous ];
     [[outPipe fileHandleForWriting ] writeData: [command dataUsingEncoding: NSUTF8StringEncoding ] ];

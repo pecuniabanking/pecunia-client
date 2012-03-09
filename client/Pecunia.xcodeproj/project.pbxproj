@@ -1984,7 +1984,7 @@
 				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
 				B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */,
 			);
-			currentVersion = 27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */;
+			currentVersion = B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

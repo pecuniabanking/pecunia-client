@@ -33,6 +33,7 @@
 #import "MessageLog.h"
 #import "BankSetupInfo.h"
 #import "TanMediaList.h"
+#import "StatusBarController.h"
 
 @implementation HBCIController
 
@@ -169,7 +170,7 @@ NSString *escapeSpecial(NSString *s)
     return info;
 }
 
--(BankParameter*)getBankParameterForUser:(User*)user
+-(BankParameter*)getBankParameterForUser:(BankUser*)user
 {
     PecuniaError *error=nil;
     
@@ -216,7 +217,7 @@ NSString *escapeSpecial(NSString *s)
     return users;
 }
 
--(NSArray*)getAccountsForUser:(User*)user
+-(NSArray*)getAccountsForUser:(BankUser*)user
 {
     PecuniaError *error=nil;
     NSString *cmd = [NSString stringWithFormat: @"<command name=\"getAccounts\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
@@ -228,7 +229,7 @@ NSString *escapeSpecial(NSString *s)
     return accs;
 }
 
--(PecuniaError*)addAccount: (BankAccount*)account forUser: (User*)user
+-(PecuniaError*)addAccount: (BankAccount*)account forUser: (BankUser*)user
 {
     account.userId = user.userId;
     account.customerId = user.customerId;
@@ -526,72 +527,91 @@ NSString *escapeSpecial(NSString *s)
 {
     PecuniaError *err = nil;
     Transfer *transfer;
+    NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
     NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
-    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfers\"><transfers type=\"list\">" ];
-    NSString *type;
+//    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfers\"><transfers type=\"list\">" ];
+    NSMutableDictionary *userTransferRegister = [NSMutableDictionary dictionaryWithCapacity:10 ];
+    
+    // Umsätze nach Bankkennung gruppieren
+    for(transfer in transfers) {
+        BankUser *user = [BankUser userWithId:transfer.account.userId bankCode:transfer.account.bankCode ];
+        NSMutableArray *userTransfers = [userTransferRegister objectForKey:user ];
+        if (userTransfers == nil) {
+            userTransfers = [NSMutableArray arrayWithCapacity:10 ];
+            [userTransferRegister setObject:userTransfers forKey:user ];
+        }
+        [userTransfers addObject:transfer ];
+    }
+    
+    // jetzt nach Bankkennung vorgehen
     
     [self startProgress ];
-    for(transfer in transfers) {
-        [cmd appendString: @"<transfer>" ];
-        [self appendTag: @"bankCode" withValue: transfer.account.bankCode to: cmd ];
-        [self appendTag: @"accountNumber" withValue: transfer.account.accountNumber to: cmd ];
-        [self appendTag: @"customerId" withValue: transfer.account.customerId to: cmd ];
-        [self appendTag: @"userId" withValue: transfer.account.userId to: cmd ];
-        [self appendTag: @"remoteAccount" withValue: transfer.remoteAccount to: cmd ];
-        [self appendTag: @"remoteBankCode" withValue: transfer.remoteBankCode to: cmd ];
-        [self appendTag: @"remoteName" withValue: transfer.remoteName to: cmd ];
-        [self appendTag: @"purpose1" withValue: transfer.purpose1 to: cmd ];
-        [self appendTag: @"purpose2" withValue: transfer.purpose2 to: cmd ];
-        [self appendTag: @"purpose3" withValue: transfer.purpose3 to: cmd ];
-        [self appendTag: @"purpose4" withValue: transfer.purpose4 to: cmd ];
-        [self appendTag: @"currency" withValue: transfer.currency to: cmd ];
-        [self appendTag: @"remoteBIC" withValue: transfer.remoteBIC to: cmd ];
-        [self appendTag: @"remoteIBAN" withValue: transfer.remoteIBAN to: cmd ];
-        [self appendTag: @"remoteCountry" withValue: transfer.remoteCountry==nil?@"DE":[transfer.remoteCountry uppercaseString] to: cmd ];
-        if([transfer.type intValue] == TransferTypeDated) {
-            NSString *fromString = [dateFormatter stringFromDate:transfer.valutaDate ];
-            [self appendTag: @"valutaDate" withValue: fromString to: cmd ];
-        }
-        TransferType tt = [transfer.type intValue];
-        switch(tt) {
-            case TransferTypeLocal: type = @"standard"; break;
-            case TransferTypeDated: type = @"dated"; break;
-            case TransferTypeInternal: type = @"internal"; break;
-            case TransferTypeLast: type = @"last"; break;
-            case TransferTypeSEPA: type = @"sepa"; break;
-            case TransferTypeEU:	
-                type = @"foreign";
-                [self appendTag:@"chargeTo" withValue:[transfer.chargedBy description ]  to:cmd ];
-                break;
-        }
-        
-        [self appendTag: @"type" withValue: type to: cmd ];
-        NSDecimalNumber *val = [transfer.value decimalNumberByMultiplyingByPowerOf10:2 ];
-        [self appendTag: @"value" withValue: [val stringValue ] to: cmd ];
-        
-        NSURL *uri = [[transfer objectID] URIRepresentation];
-        [self appendTag: @"transferId" withValue: [uri absoluteString ] to: cmd ];
-        [cmd appendString: @"</transfer>" ];
-    }
-    [cmd appendString: @"</transfers></command>" ];
-    
-    NSArray *resultList = [bridge syncCommand: cmd error: &err ];
-    [self stopProgress ];
-    if (err) {
-        [err alertPanel ];
-        return NO;
-    }
-    
-    TransferResult	*result;
     BOOL allSent = YES;
-    for(result in resultList) {
-        NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
-        NSURL *uri = [NSURL URLWithString:result.transferId ];
-        NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
-        Transfer *transfer = (Transfer*)[context objectWithID: moID];
-        transfer.isSent = [NSNumber numberWithBool: result.isOk ];
-        if(transfer.isSent == NO) allSent = NO;
+    
+    for(BankUser *user in [userTransferRegister allKeys ]) {
+        if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
+        
+        NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfers\"><transfers type=\"list\">" ];
+        for(transfer in [userTransferRegister objectForKey:user ]) {
+            [cmd appendString: @"<transfer>" ];
+            [self appendTag: @"bankCode" withValue: transfer.account.bankCode to: cmd ];
+            [self appendTag: @"accountNumber" withValue: transfer.account.accountNumber to: cmd ];
+            [self appendTag: @"customerId" withValue: transfer.account.customerId to: cmd ];
+            [self appendTag: @"userId" withValue: transfer.account.userId to: cmd ];
+            [self appendTag: @"remoteAccount" withValue: transfer.remoteAccount to: cmd ];
+            [self appendTag: @"remoteBankCode" withValue: transfer.remoteBankCode to: cmd ];
+            [self appendTag: @"remoteName" withValue: transfer.remoteName to: cmd ];
+            [self appendTag: @"purpose1" withValue: transfer.purpose1 to: cmd ];
+            [self appendTag: @"purpose2" withValue: transfer.purpose2 to: cmd ];
+            [self appendTag: @"purpose3" withValue: transfer.purpose3 to: cmd ];
+            [self appendTag: @"purpose4" withValue: transfer.purpose4 to: cmd ];
+            [self appendTag: @"currency" withValue: transfer.currency to: cmd ];
+            [self appendTag: @"remoteBIC" withValue: transfer.remoteBIC to: cmd ];
+            [self appendTag: @"remoteIBAN" withValue: transfer.remoteIBAN to: cmd ];
+            [self appendTag: @"remoteCountry" withValue: transfer.remoteCountry==nil?@"DE":[transfer.remoteCountry uppercaseString] to: cmd ];
+            if([transfer.type intValue] == TransferTypeDated) {
+                NSString *fromString = [dateFormatter stringFromDate:transfer.valutaDate ];
+                [self appendTag: @"valutaDate" withValue: fromString to: cmd ];
+            }
+            TransferType tt = [transfer.type intValue];
+            NSString *type;
+            switch(tt) {
+                case TransferTypeLocal: type = @"standard"; break;
+                case TransferTypeDated: type = @"dated"; break;
+                case TransferTypeInternal: type = @"internal"; break;
+                case TransferTypeLast: type = @"last"; break;
+                case TransferTypeSEPA: type = @"sepa"; break;
+                case TransferTypeEU:	
+                    type = @"foreign";
+                    [self appendTag:@"chargeTo" withValue:[transfer.chargedBy description ]  to:cmd ];
+                    break;
+            }
+            
+            [self appendTag: @"type" withValue: type to: cmd ];
+            NSDecimalNumber *val = [transfer.value decimalNumberByMultiplyingByPowerOf10:2 ];
+            [self appendTag: @"value" withValue: [val stringValue ] to: cmd ];
+            
+            NSURL *uri = [[transfer objectID] URIRepresentation];
+            [self appendTag: @"transferId" withValue: [uri absoluteString ] to: cmd ];
+            [cmd appendString: @"</transfer>" ];
+        }
+        [cmd appendString: @"</transfers></command>" ];
+        
+        NSArray *resultList = [bridge syncCommand: cmd error: &err ];
+        if (err) {
+            [[MessageLog log ] addMessage:[err localizedDescription ] withLevel:LogLevel_Error ];
+        }
+        
+        for(TransferResult *result in resultList) {
+            NSURL *uri = [NSURL URLWithString:result.transferId ];
+            NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
+            Transfer *transfer = (Transfer*)[context objectWithID: moID];
+            transfer.isSent = [NSNumber numberWithBool: result.isOk ];
+            if(transfer.isSent == NO) allSent = NO;
+        }
     }
+    
+    [self stopProgress ];
     return allSent;
 }
 
@@ -625,7 +645,7 @@ NSString *escapeSpecial(NSString *s)
     if(result) return [result boolValue ]; else return NO;
 }
 
--(PecuniaError*)addBankUser:(User*)user
+-(PecuniaError*)addBankUser:(BankUser*)user
 {
     PecuniaError *error=nil;
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"addUser\">" ];
@@ -636,7 +656,7 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"host" withValue: [user.bankURL stringByReplacingOccurrencesOfString: @"https://" withString:@"" ] to: cmd ];
     [self appendTag: @"version" withValue: user.hbciVersion to: cmd ];
     [self appendTag: @"port" withValue: @"443" to: cmd ];
-    if(user.noBase64 == NO) [self appendTag: @"filter" withValue: @"Base64" to: cmd ];
+    if([user.noBase64 boolValue] == NO) [self appendTag: @"filter" withValue: @"Base64" to: cmd ];
     [cmd appendString: @"</command>" ];
     
     User* usr = [bridge syncCommand: cmd error: &error ];
@@ -650,14 +670,15 @@ NSString *escapeSpecial(NSString *s)
     [users addObject: usr ];
     
     // update external user data
+/*    
     user.tanMethodNumber = usr.tanMethodNumber;
     user.tanMethodDescription = usr.tanMethodDescription;
     user.customerId = usr.customerId;
-    
+*/    
     return nil;
 }
 
--(BOOL)deleteBankUser:(User*)user 
+-(BOOL)deleteBankUser:(BankUser*)user 
 {
     PecuniaError *error=nil;
     NSString *cmd = [NSString stringWithFormat: @"<command name=\"deletePassport\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
@@ -811,7 +832,11 @@ NSString *escapeSpecial(NSString *s)
     NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
     
     [self startProgress ];
+
     for(StandingOrder *stord in orders) {
+        BankUser *user = [BankUser userWithId:stord.account.userId bankCode:stord.account.bankCode ];
+        if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
+        
         // todo: don't send unchanged orders
         if ([stord.isChanged boolValue] == NO && [stord.toDelete boolValue ] == NO) continue;
         
@@ -874,7 +899,7 @@ NSString *escapeSpecial(NSString *s)
     return nil;
 }
 
--(PecuniaError*)updateBankDataForUser:(User*)user
+-(PecuniaError*)updateBankDataForUser:(BankUser*)user
 {
     PecuniaError *error=nil;
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"updateBankData\">" ];
@@ -883,22 +908,13 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"userId" withValue: user.userId to: cmd ];
     [cmd appendString: @"</command>" ];
     
-    User *newUser = [bridge syncCommand: cmd error: &error ];
+    [bridge syncCommand: cmd error: &error ];
+    
     if(error) return error;
-    
-    // update user
-    for(User *usr in users) {
-        if ([usr isEqual:newUser ]) {
-            usr.tanMethodNumber = newUser.tanMethodNumber;
-            usr.tanMethodDescription = newUser.tanMethodDescription;
-            break;
-        }
-    }
-    
     return nil;
 }
 
--(PecuniaError*)changePinTanMethodForUser:(User*)user
+-(PecuniaError*)changePinTanMethodForUser:(BankUser*)user
 {
     PecuniaError *error=nil;
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"resetPinTanMethod\">" ];
@@ -906,23 +922,20 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"userId" withValue: user.userId to: cmd ];
     [cmd appendString: @"</command>" ];
     
-    User *newUser = [bridge syncCommand: cmd error: &error ];
+    [bridge syncCommand: cmd error: &error ];
     if(error) return error;
-    
-    // update user
-    for(User *usr in users) {
-        if ([usr isEqual:newUser ]) {
-            usr.tanMethodNumber = newUser.tanMethodNumber;
-            usr.tanMethodDescription = newUser.tanMethodDescription;
-            break;
-        }
-    }
     return nil;
 }
 
 -(PecuniaError*)sendCustomerMessage:(CustomerMessage*)msg
 {
     PecuniaError *error=nil;
+    
+    [self startProgress ];
+    
+    BankUser *user = [BankUser userWithId:msg.account.userId bankCode:msg.account.bankCode ];
+    if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
+
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"customerMessage\">" ];
     [self appendTag: @"bankCode" withValue: msg.account.bankCode to: cmd ];
     [self appendTag: @"accountNumber" withValue: msg.account.accountNumber to:cmd ];
@@ -933,6 +946,8 @@ NSString *escapeSpecial(NSString *s)
     [cmd appendString: @"</command>" ];
 
     NSNumber *result = [bridge syncCommand: cmd error: &error ];
+    [self stopProgress ];
+    
     if(error) return error;
 
     if ([result boolValue ] == YES) {
@@ -978,14 +993,20 @@ NSString *escapeSpecial(NSString *s)
 - (PecuniaError*)updateTanMediaForUser:(BankUser*)user
 {
     PecuniaError *error=nil;
+    StatusBarController *sbController = [StatusBarController controller ];
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getTANMediaList\">" ];
     [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
     [self appendTag: @"userId" withValue: user.userId to: cmd ];
     [cmd appendString: @"</command>" ];
     
+    [sbController setMessage:NSLocalizedString(@"AP175", @"") removeAfter:0];
+    [sbController startSpinning ];
     TanMediaList *mediaList = [bridge syncCommand: cmd error: &error ];
+    [sbController stopSpinning ];
+    [sbController clearMessage ];
     if (error) return error;
     [user updateTanMedia:mediaList.mediaList ];
+    user.tanMediaFetched = [NSNumber numberWithBool:YES ];
     return nil;
 }
 

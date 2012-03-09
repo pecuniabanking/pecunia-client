@@ -18,6 +18,8 @@
 @property (nonatomic, retain) NSString * bankName;
 @property (nonatomic, retain) NSString * bankURL;
 @property (nonatomic, retain) NSNumber * checkCert;
+@property (nonatomic, retain) NSNumber * noBase64;
+@property (nonatomic, retain) NSNumber * tanMediaFetched;
 @property (nonatomic, retain) NSString * country;
 @property (nonatomic, retain) NSString * customerId;
 @property (nonatomic, retain) NSString * hbciVersion;

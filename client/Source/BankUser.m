@@ -28,12 +28,14 @@
 @dynamic preferredTanMethod;
 @dynamic tanMedia;
 @dynamic tanMethods;
+@dynamic noBase64;
+@dynamic tanMediaFetched;
 
 
 -(void)updateTanMethods:(NSArray*)methods
 {
     NSManagedObjectContext *context = [[MOAssistant assistant ] context];
-    NSMutableSet *oldMethods = [self tanMethods ];
+    NSMutableSet *oldMethods = [[[self tanMethods ] copy ] autorelease ];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"TanMethod" inManagedObjectContext:context ];
     NSArray *attributeKeys = [[entity attributesByName] allKeys];
     
@@ -60,7 +62,7 @@
 -(void)updateTanMedia:(NSArray*)media
 {
     NSManagedObjectContext *context = [[MOAssistant assistant ] context];
-    NSMutableSet *oldMedia = [self tanMedia ];
+    NSMutableSet *oldMedia = [[[self tanMedia ] copy ] autorelease];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"TanMedium" inManagedObjectContext:context ];
     NSArray *attributeKeys = [[entity attributesByName] allKeys];
     
@@ -125,13 +127,13 @@
     }
     return options;
 }
-
+/*
 -(BOOL)isEqual:(BankUser*)user
 {
 	return [self.userId isEqualToString:user.userId	] && [self.bankCode isEqualToString:user.bankCode ] &&
 	(self.customerId == nil || [self.customerId isEqualToString:user.customerId ]);
 }
-
+*/
 +(NSArray*)allUsers
 {
 	NSError *error=nil;

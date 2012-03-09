@@ -80,6 +80,11 @@
 @property (nonatomic, retain) NSNumber *isStorno;
 @property (nonatomic, retain) NSNumber *isNew;
 
+@property (nonatomic, retain) NSString * ref1;
+@property (nonatomic, retain) NSString * ref2;
+@property (nonatomic, retain) NSString * ref3;
+@property (nonatomic, retain) NSString * ref4;
+
 @property (nonatomic, retain) BankAccount *account;
 
 @end
