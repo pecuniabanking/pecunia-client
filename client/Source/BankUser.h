@@ -29,5 +29,6 @@
 
 -(void)updateTanMethods:(NSArray*)methods;
 -(void)updateTanMedia:(NSArray*)media;
+-(NSArray*)getTanSigningOptions;
 
 @end
