@@ -11,9 +11,10 @@
 @class ResultParser;
 @class CallbackParser;
 @class HBCIError;
-@class PasswordWindow;
+//@class PasswordWindow;
 @class PecuniaError;
 @class CallbackData;
+@class CallbackHandler;
 
 @interface HBCIBridge : NSObject <NSXMLParserDelegate>
 {
@@ -29,12 +30,15 @@
     
     id				result;
     HBCIError		*error;
-    PasswordWindow	*pwWindow;
-    NSString		*currentPwService;
-    NSString		*currentPwAccount;
+//    PasswordWindow	*pwWindow;
+//    NSString		*currentPwService;
+//    NSString		*currentPwAccount;
     NSMutableString	*asyncString;
     id				asyncSender;
+	CallbackHandler	*callbackHandler;
 }
+
+@property(nonatomic, readonly) CallbackHandler *callbackHandler;
 
 -(NSPipe*)outPipe;
 -(void)setResult: (id)res;
@@ -44,8 +48,8 @@
 -(id)syncCommand: (NSString*)cmd error:(PecuniaError**)err;
 -(void)asyncCommand:(NSString*)cmd sender:(id)sender;
 -(HBCIError*)error;
--(void)finishPasswordEntry;
--(NSString*)callbackWithData:(CallbackData*)data;
+//-(void)finishPasswordEntry;
+//-(NSString*)callbackWithData:(CallbackData*)data;
 
 
 @end

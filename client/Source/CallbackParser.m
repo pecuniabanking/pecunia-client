@@ -9,6 +9,7 @@
 #import "CallbackParser.h"
 #import "HBCIBridge.h"
 #import "CallbackData.h"
+#import "CallbackHandler.h"
 
 
 @implementation CallbackParser
@@ -45,7 +46,7 @@
 		[parser setDelegate: parent ];
 		 
 		// do command handling here.
-		NSString *result = [parent callbackWithData: data ]; 
+		NSString *result = [parent.callbackHandler callbackWithData: data ]; 
 		
 		NSPipe *pipe = [parent outPipe ];
 		result = [result stringByAppendingString: @"\n" ];

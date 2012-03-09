@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 @class TanMedium;
+@class TanMethod;
 
 @interface BankUser : NSManagedObject {
 
@@ -23,12 +24,15 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * port;
 @property (nonatomic, retain) NSString * userId;
-@property (nonatomic, retain) NSManagedObject * preferredTanMethod;
+@property (nonatomic, retain) TanMethod * preferredTanMethod;
 @property (nonatomic, retain) NSMutableSet* tanMedia;
 @property (nonatomic, retain) NSMutableSet* tanMethods;
 
 -(void)updateTanMethods:(NSArray*)methods;
 -(void)updateTanMedia:(NSArray*)media;
 -(NSArray*)getTanSigningOptions;
+
++(NSArray*)allUsers;
++(BankUser*)userWithId:(NSString*)userId bankCode:(NSString*)bankCode;
 
 @end

@@ -11,6 +11,7 @@
 #import "TanMethod.h"
 #import "TanMedium.h"
 #import "TanSigningOption.h"
+#import "MessageLog.h"
 
 @implementation BankUser
 
@@ -124,6 +125,45 @@
     }
     return options;
 }
+
+-(BOOL)isEqual:(BankUser*)user
+{
+	return [self.userId isEqualToString:user.userId	] && [self.bankCode isEqualToString:user.bankCode ] &&
+	(self.customerId == nil || [self.customerId isEqualToString:user.customerId ]);
+}
+
++(NSArray*)allUsers
+{
+	NSError *error=nil;
+	NSManagedObjectContext *context = [[MOAssistant assistant] context];
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankUser" inManagedObjectContext:context];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	NSArray *bankUsers = [context executeFetchRequest:request error:&error];
+	if(error) {
+		[[MessageLog log ] addMessage:[error localizedDescription ] withLevel:LogLevel_Warning];
+		return nil;
+	}
+	return bankUsers;
+}
+
++(BankUser*)userWithId:(NSString*)userId bankCode:(NSString*)bankCode
+{
+	NSError *error=nil;
+	NSManagedObjectContext *context = [[MOAssistant assistant] context];
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankUser" inManagedObjectContext:context];
+	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	[request setEntity:entityDescription];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userId = %@ AND bankCode = %@", userId, bankCode ];
+	[request setPredicate:predicate ];
+	NSArray *bankUsers = [context executeFetchRequest:request error:&error];
+	if(error) {
+		[[MessageLog log ] addMessage:[error localizedDescription ] withLevel:LogLevel_Warning];
+		return nil;
+	}
+	return [bankUsers lastObject];
+}
+
 
 
 @end

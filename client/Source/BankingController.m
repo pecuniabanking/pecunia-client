@@ -76,6 +76,9 @@
 #import "AnimationHelper.h"
 #import "GraphicsAdditions.h"
 
+#import "User.h"
+#import "BankUser.h"
+
 #define _expandedRows @"EMT_expandedRows"
 #define _accountsViewSD @"EMT_accountsSorting"
 #define _accountsTreeWidth @"EMT_accountsTreeWidth"
@@ -271,7 +274,7 @@ static BankingController	*con;
     splitCursor = [[NSCursor alloc] initWithImage:[NSImage imageNamed: @"cursor.png"] hotSpot:NSMakePoint(0, 0)];
     [WorkerThread init];
     
-    [self migrate];
+    // todo [self migrate];
     [categoryController addObserver: self forKeyPath: @"arrangedObjects.catSum" options: 0 context: nil];
     [transactionController addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
     
@@ -2635,17 +2638,48 @@ static BankingController	*con;
 
 -(void)migrate
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL migrated03 = [defaults boolForKey:@"Migrated03"];
-    if (migrated03 == NO) {
-        
-        //initialize width of category table column
-        NSTableColumn *tc = [accountsView tableColumnWithIdentifier: @"name"];
-        if(tc) {
-            [tc setWidth:999];
-        }
-        
-        [defaults setBool:YES forKey:@"Migrated03"];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL migrated10 = [defaults boolForKey:@"Migrated10"];
+    if (migrated10 == NO) {
+		
+		NSError *error = nil;
+		NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+		NSArray *bankUsers = [BankUser allUsers ];		
+		NSArray *users = [[HBCIClient hbciClient ] users ];
+		
+		for(User *user in users) {
+			BOOL found = NO;
+			for(BankUser *bankUser in bankUsers) {
+				if ([user.userId isEqualToString:bankUser.userId ] &&
+					[user.bankCode isEqualToString:bankUser.bankCode ] && 
+					(user.customerId == nil || [user.customerId isEqualToString:bankUser.customerId ])) {
+					found = YES;
+				}
+			}
+			if (found == NO) {
+				// create BankUser
+				BankUser *bankUser = [NSEntityDescription insertNewObjectForEntityForName:@"BankUser" inManagedObjectContext:context];
+				bankUser.name = user.name;
+				bankUser.bankCode = user.bankCode;
+				bankUser.bankName = user.bankName;
+				bankUser.bankURL = user.bankURL;
+				bankUser.port = user.port;
+				bankUser.hbciVersion = user.hbciVersion;
+				bankUser.checkCert = [NSNumber numberWithBool:user.checkCert];
+				bankUser.country = user.country;
+				bankUser.userId = user.userId;
+				bankUser.customerId = user.customerId;
+			}
+		}
+	
+		if([context save:&error ] == NO) {
+			NSAlert *alert = [NSAlert alertWithError:error];
+			[alert runModal];
+			return;
+		}
+	
+	        
+        [defaults setBool:YES forKey:@"Migrated10"];
     }
 }
 

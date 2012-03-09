@@ -257,6 +257,8 @@
 		B1FB6611124FC9E300C54A0E /* TransferTemplates.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */; };
 		B1FB6915125D0A5500C54A0E /* edit16.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB6914125D0A5500C54A0E /* edit16.png */; };
 		B1FB6B02126B7BF300C54A0E /* BankStatementPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB6B01126B7BF300C54A0E /* BankStatementPrintView.m */; };
+		C10CFBC8150A046A003DFC12 /* 100.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = C10CFBC7150A046A003DFC12 /* 100.xcmappingmodel */; };
+		C13152B1150A0B260037958E /* CallbackHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C13152B0150A0B260037958E /* CallbackHandler.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -684,6 +686,9 @@
 		B1FB6914125D0A5500C54A0E /* edit16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit16.png; sourceTree = "<group>"; };
 		B1FB6B00126B7BF300C54A0E /* BankStatementPrintView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPrintView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB6B01126B7BF300C54A0E /* BankStatementPrintView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPrintView.m; sourceTree = "<group>"; tabWidth = 4; };
+		C10CFBC7150A046A003DFC12 /* 100.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 100.xcmappingmodel; sourceTree = "<group>"; };
+		C13152AF150A0B260037958E /* CallbackHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallbackHandler.h; sourceTree = "<group>"; };
+		C13152B0150A0B260037958E /* CallbackHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallbackHandler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -896,6 +901,7 @@
 				27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */,
 				B14C6224115C04FA009324A6 /* 030.xcmappingmodel */,
 				B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */,
+				C10CFBC7150A046A003DFC12 /* 100.xcmappingmodel */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1124,6 +1130,8 @@
 				B14D4C5E13DB5F3200843BE6 /* HBCIBridge.m */,
 				B1B41C8A14005B5B00BEEC8F /* BankParameter.h */,
 				B1B41C8B14005B5B00BEEC8F /* BankParameter.m */,
+				C13152AF150A0B260037958E /* CallbackHandler.h */,
+				C13152B0150A0B260037958E /* CallbackHandler.m */,
 			);
 			name = HBCI4Java;
 			sourceTree = "<group>";
@@ -1746,6 +1754,8 @@
 				B17729141504C9B200256898 /* TanMethodOld.m in Sources */,
 				B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */,
 				B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */,
+				C10CFBC8150A046A003DFC12 /* 100.xcmappingmodel in Sources */,
+				C13152B1150A0B260037958E /* CallbackHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
