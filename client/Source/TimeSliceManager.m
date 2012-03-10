@@ -1,10 +1,22 @@
-//
-//  TimeSliceManager.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 20.04.09.
-//  Copyright 2009 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
+
 
 #import "TimeSliceManager.h"
 #import "ShortDate.h"
@@ -179,7 +191,9 @@ TimeSliceManager *timeSliceManager = nil;
 		case slice_year: year--; break;
 		case slice_quarter: {
 			quarter--;
-			if(quarter<0) { quarter = 3; year--; }
+			if (quarter < 0) {
+                quarter = 3; year--;
+            }
 			NSUInteger l = quarter*3+1;
 			NSUInteger u = quarter*3+3;
 			if(month<l || month>u) month = l;
@@ -191,6 +205,8 @@ TimeSliceManager *timeSliceManager = nil;
 			quarter = (month-1) / 3;
 			break;
 		}
+        default:
+            break;
 	}
 	if(minDate) {
 		if(year < [minDate year ]) year = [minDate year ];
@@ -292,6 +308,8 @@ TimeSliceManager *timeSliceManager = nil;
 			if(month<l || month>u) month = l;
 			break;
 		}
+        default:
+            break;
 	}
 	type = t;
 	

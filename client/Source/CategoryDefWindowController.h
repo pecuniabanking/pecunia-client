@@ -46,6 +46,7 @@
 }
 
 @property (nonatomic, retain) TimeSliceManager* timeSliceManager;
+@property (nonatomic, retain) Category* category;
 
 - (IBAction)predicateEditorChanged:(id)sender;
 - (IBAction)saveRule:(id)sender;

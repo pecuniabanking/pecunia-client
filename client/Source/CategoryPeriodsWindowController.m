@@ -539,6 +539,8 @@
 #pragma mark -
 #pragma mark PecuniaSectionItem protocol
 
+@synthesize category;
+
 -(NSView*)mainView
 {
 	return mainView;
@@ -549,10 +551,6 @@
 }
 
 - (void)deactivate
-{
-}
-
-- (void)setCategory: (Category*)category
 {
 }
 

@@ -39,6 +39,7 @@
 @implementation CategoryDefWindowController
 
 @synthesize timeSliceManager;
+@synthesize category = currentCategory;
 
 - (id)init
 {

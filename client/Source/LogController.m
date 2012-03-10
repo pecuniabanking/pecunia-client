@@ -1,10 +1,21 @@
-//
-//  LogController.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 03.09.08.
-//  Copyright 2008 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "LogController.h"
 #import "HBCIClient.h"
@@ -164,11 +175,15 @@ static LogController	*_logController = nil;
 	//	[sp setRequiredFileType:@"txt"];
 	
 	/* display the NSSavePanel */
-	runResult = [sp runModalForDirectory:NSHomeDirectory() file: @""];
+    [sp setDirectoryURL: [NSURL URLWithString: NSHomeDirectory()]];
+	runResult = [sp runModal];
 	
 	/* if successful, save file under designated name */
 	if (runResult == NSOKButton) {
-		if([[[logView textStorage ] mutableString ] writeToFile: [sp filename ] atomically: NO encoding: NSUTF8StringEncoding error: &error ] == NO) {
+		if ([[[logView textStorage] mutableString] writeToFile: [[sp URL] path]
+                                                    atomically: NO
+                                                      encoding: NSUTF8StringEncoding
+                                                         error: &error] == NO) {
 			NSAlert *alert = [NSAlert alertWithError:error];
 			[alert runModal];
 			return;

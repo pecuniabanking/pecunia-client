@@ -52,6 +52,7 @@
 #import "AccountChangeController.h"
 #import "TransferListController.h"
 #import "PurposeSplitController.h"
+#import "PurposeSplitRule.h"
 #import "TransferTemplateController.h"
 
 #import "CategoryAnalysisWindowController.h"
@@ -1315,8 +1316,6 @@ static BankingController	*con;
                 }
                 pageHasChanged = YES;
             }
-
-            pageHasChanged = YES;
             break;
     }
 
@@ -2107,7 +2106,7 @@ static BankingController	*con;
 {
     if([aNotification object] == accountsView) {
         Category *cat = [self currentSelection];
-        accountsView.saveCatName = [[cat name] retain];
+        accountsView.saveCatName = [cat name];
     }	
     if([aNotification object] == valueField) {
         NSArray *sel = [transactionController selectedObjects];
@@ -2124,7 +2123,7 @@ static BankingController	*con;
     if([aNotification object] == accountsView) {
         Category *cat = [self currentSelection];
         if([cat name] == nil) {
-            [cat setValue: [accountsView.saveCatName autorelease] forKey: @"name"];
+            [cat setValue: accountsView.saveCatName forKey: @"name"];
         }
         [categoryController resort];
         if(cat) [categoryController setSelectedObject: cat];
@@ -2650,8 +2649,6 @@ static BankingController	*con;
         [copyrightText setStringValue: [mainBundle objectForInfoDictionaryKey: @"NSHumanReadableCopyright"]];
     }
     
-    NSRect frame = [aboutWindow frame];
-    frame = NSInsetRect(frame, 0.5 * frame.size.width, 0.5 * frame.size.height);
     [aboutWindow fadeIn];
 }
 

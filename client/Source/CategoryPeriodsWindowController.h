@@ -82,10 +82,12 @@
 -(Category*)currentSelection;
 
 // PecuniaSectionItem protocol
+
+@property (nonatomic, retain) Category* category;
+
 - (NSView*)mainView;
 - (void)activate;
 - (void)deactivate;
-- (void)setCategory: (Category*)category;
 - (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
 
 @end
