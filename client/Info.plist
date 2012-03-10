@@ -26,6 +26,8 @@
 	<string>1.0.0</string>
 	<key>HPDBookIconPath</key>
 	<string>Vespasian</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.finance</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
