@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
   <data>
-    <int key="IBDocument.SystemTarget">1050</int>
-    <string key="IBDocument.SystemVersion">11C74</string>
+    <int key="IBDocument.SystemTarget">1060</int>
+    <string key="IBDocument.SystemVersion">11D50</string>
     <string key="IBDocument.InterfaceBuilderVersion">851</string>
-    <string key="IBDocument.AppKitVersion">1138.23</string>
-    <string key="IBDocument.HIToolboxVersion">567.00</string>
+    <string key="IBDocument.AppKitVersion">1138.32</string>
+    <string key="IBDocument.HIToolboxVersion">568.00</string>
     <object class="NSMutableDictionary" key="IBDocument.PluginVersions">
       <string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
       <string key="NS.object.0">851</string>
     </object>
     <object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
       <bool key="EncodedWithXMLCoder">YES</bool>
-      <integer value="144"/>
+      <integer value="352"/>
+      <integer value="287"/>
     </object>
     <object class="NSArray" key="IBDocument.PluginDependencies">
       <bool key="EncodedWithXMLCoder">YES</bool>
@@ -61,7 +62,7 @@
                 <object class="NSTabViewItem" id="704590598">
                   <string key="NSIdentifier">requests</string>
                   <object class="NSView" key="NSView" id="487917790">
-                    <reference key="NSNextResponder" ref="86709182"/>
+                    <nil key="NSNextResponder"/>
                     <int key="NSvFlags">288</int>
                     <object class="NSMutableArray" key="NSSubviews">
                       <bool key="EncodedWithXMLCoder">YES</bool>
@@ -82,7 +83,7 @@
                           </object>
                           <reference key="NSControlView" ref="39049948"/>
                           <int key="NSButtonFlags">1211912703</int>
-                          <int key="NSButtonFlags2">130</int>
+                          <int key="NSButtonFlags2">2</int>
                           <object class="NSCustomResource" key="NSNormalImage" id="775149304">
                             <string key="NSClassName">NSImage</string>
                             <string key="NSResourceName">NSSwitch</string>
@@ -109,7 +110,7 @@
                           <reference key="NSSupport" ref="73563250"/>
                           <reference key="NSControlView" ref="436417953"/>
                           <int key="NSButtonFlags">1211912703</int>
-                          <int key="NSButtonFlags2">130</int>
+                          <int key="NSButtonFlags2">2</int>
                           <reference key="NSNormalImage" ref="775149304"/>
                           <reference key="NSAlternateImage" ref="915988509"/>
                           <string key="NSAlternateContents"/>
@@ -131,7 +132,7 @@
                           <reference key="NSSupport" ref="73563250"/>
                           <reference key="NSControlView" ref="602525933"/>
                           <int key="NSButtonFlags">1211912703</int>
-                          <int key="NSButtonFlags2">130</int>
+                          <int key="NSButtonFlags2">2</int>
                           <reference key="NSNormalImage" ref="775149304"/>
                           <reference key="NSAlternateImage" ref="915988509"/>
                           <string key="NSAlternateContents"/>
@@ -362,7 +363,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
                       </object>
                     </object>
                     <string key="NSFrame">{{10, 33}, {504, 238}}</string>
-                    <reference key="NSSuperview" ref="86709182"/>
                   </object>
                   <string key="NSLabel">Umsatzabfrage</string>
                   <reference key="NSColor" ref="467697342"/>
@@ -371,7 +371,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
                 <object class="NSTabViewItem" id="881192032">
                   <string key="NSIdentifier">security</string>
                   <object class="NSView" key="NSView" id="837868664">
-                    <nil key="NSNextResponder"/>
+                    <reference key="NSNextResponder" ref="86709182"/>
                     <int key="NSvFlags">256</int>
                     <object class="NSMutableArray" key="NSSubviews">
                       <bool key="EncodedWithXMLCoder">YES</bool>
@@ -484,7 +484,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
                           <reference key="NSSupport" ref="73563250"/>
                           <reference key="NSControlView" ref="126823349"/>
                           <int key="NSButtonFlags">1211912703</int>
-                          <int key="NSButtonFlags2">130</int>
+                          <int key="NSButtonFlags2">2</int>
                           <reference key="NSNormalImage" ref="775149304"/>
                           <reference key="NSAlternateImage" ref="915988509"/>
                           <string key="NSAlternateContents"/>
@@ -495,6 +495,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
                       </object>
                     </object>
                     <string key="NSFrame">{{10, 33}, {504, 238}}</string>
+                    <reference key="NSSuperview" ref="86709182"/>
                   </object>
                   <string key="NSLabel">Sicherheit</string>
                   <reference key="NSColor" ref="467697342"/>
@@ -1053,7 +1054,7 @@ ZSBpbiBkZXIgRGF0ZWkuA</bytes>
                       <object class="NSMatrix" id="1031515808">
                         <reference key="NSNextResponder" ref="1032487041"/>
                         <int key="NSvFlags">268</int>
-                        <string key="NSFrame">{{272, 53}, {113, 55}}</string>
+                        <string key="NSFrame">{{272, 50}, {74, 58}}</string>
                         <reference key="NSSuperview" ref="1032487041"/>
                         <bool key="NSEnabled">YES</bool>
                         <int key="NSNumRows">3</int>
@@ -1232,7 +1233,7 @@ QXBwbGUgQ29tcHV0ZXIsIEluYy4sIDIwMDUAAAAAA</bytes>
                             <int key="NSPeriodicInterval">75</int>
                           </object>
                         </object>
-                        <string key="NSCellSize">{113, 17}</string>
+                        <string key="NSCellSize">{74, 18}</string>
                         <string key="NSIntercellSpacing">{4, 2}</string>
                         <int key="NSMatrixFlags">1151868928</int>
                         <string key="NSCellClass">NSActionCell</string>
@@ -1317,14 +1318,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
                   <reference key="NSTabView" ref="86709182"/>
                 </object>
               </object>
-              <reference key="NSSelectedTabViewItem" ref="704590598"/>
+              <reference key="NSSelectedTabViewItem" ref="881192032"/>
               <reference key="NSFont" ref="73563250"/>
               <int key="NSTvFlags">0</int>
               <bool key="NSAllowTruncatedLabels">YES</bool>
               <bool key="NSDrawsBackground">YES</bool>
               <object class="NSMutableArray" key="NSSubviews">
                 <bool key="EncodedWithXMLCoder">YES</bool>
-                <reference ref="487917790"/>
+                <reference ref="837868664"/>
               </object>
             </object>
           </object>
@@ -1363,7 +1364,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
         <nil key="NSUserInterfaceItemIdentifier"/>
         <string key="NSWindowContentMaxSize">{1.7976931348623157e+308, 1.7976931348623157e+308}</string>
         <object class="NSView" key="NSWindowView" id="427418145">
-          <nil key="NSNextResponder"/>
+          <reference key="NSNextResponder"/>
           <int key="NSvFlags">256</int>
           <object class="NSMutableArray" key="NSSubviews">
             <bool key="EncodedWithXMLCoder">YES</bool>
@@ -1454,7 +1455,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
                 <reference key="NSSupport" ref="26"/>
                 <reference key="NSControlView" ref="403111812"/>
                 <int key="NSButtonFlags">1211912703</int>
-                <int key="NSButtonFlags2">130</int>
+                <int key="NSButtonFlags2">2</int>
                 <reference key="NSNormalImage" ref="775149304"/>
                 <reference key="NSAlternateImage" ref="915988509"/>
                 <string key="NSAlternateContents"/>
@@ -1505,6 +1506,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
             </object>
           </object>
           <string key="NSFrameSize">{407, 150}</string>
+          <reference key="NSSuperview"/>
         </object>
         <string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
         <string key="NSMaxSize">{1.7976931348623157e+308, 1.7976931348623157e+308}</string>
@@ -1761,14 +1763,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
             <reference key="destination" ref="558289101"/>
           </object>
           <int key="connectionID">659</int>
-        </object>
-        <object class="IBConnectionRecord">
-          <object class="IBOutletConnection" key="connection">
-            <string key="label">pass2Field</string>
-            <reference key="source" ref="558289101"/>
-            <reference key="destination" ref="13048108"/>
-          </object>
-          <int key="connectionID">724</int>
         </object>
         <object class="IBConnectionRecord">
           <object class="IBOutletConnection" key="connection">
@@ -2638,9 +2632,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
           <boolean value="YES"/>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <boolean value="YES"/>
-          <string>{{203, 502}, {407, 150}}</string>
+          <string>{{332, 502}, {407, 150}}</string>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-          <string>{{203, 502}, {407, 150}}</string>
+          <string>{{332, 502}, {407, 150}}</string>
           <boolean value="YES"/>
           <string>com.apple.InterfaceBuilder.CocoaPlugin</string>
           <boolean value="YES"/>
@@ -2809,7 +2803,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               <bool key="EncodedWithXMLCoder">YES</bool>
               <string>cancelSheet:</string>
               <string>changeFileLocation:</string>
-              <string>colorButtonsChanged:</string>
               <string>encryptData:</string>
               <string>endSheet:</string>
               <string>expSepLine:</string>
@@ -2819,7 +2812,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
             </object>
             <object class="NSMutableArray" key="dict.values">
               <bool key="EncodedWithXMLCoder">YES</bool>
-              <string>id</string>
               <string>id</string>
               <string>id</string>
               <string>id</string>
@@ -2836,7 +2828,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               <bool key="EncodedWithXMLCoder">YES</bool>
               <string>cancelSheet:</string>
               <string>changeFileLocation:</string>
-              <string>colorButtonsChanged:</string>
               <string>encryptData:</string>
               <string>endSheet:</string>
               <string>expSepLine:</string>
@@ -2852,10 +2843,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
               </object>
               <object class="IBActionInfo">
                 <string key="name">changeFileLocation:</string>
-                <string key="candidateClassName">id</string>
-              </object>
-              <object class="IBActionInfo">
-                <string key="name">colorButtonsChanged:</string>
                 <string key="candidateClassName">id</string>
               </object>
               <object class="IBActionInfo">
@@ -3775,7 +3762,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
     <string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
     <object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
       <string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
-      <integer value="1050" key="NS.object.0"/>
+      <integer value="1060" key="NS.object.0"/>
     </object>
     <object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
       <string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>

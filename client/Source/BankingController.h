@@ -36,7 +36,6 @@
 @class DockIconController;
 @class CurrencyValueTransformer;
 
-@class BWSplitView;
 @class StatementsListView;
 @class RoundedOuterShadowView;
 
@@ -60,8 +59,7 @@
     IBOutlet NSTabView          *mainTabView;
     IBOutlet CategoryView       *accountsView;
     IBOutlet MCEMTreeController *categoryController;
-    IBOutlet BWSplitView        *mainVSplit;
-    IBOutlet BWSplitView        *mainHSplit;
+    IBOutlet NSSplitView        *mainVSplit;
     IBOutlet NSPredicateEditor  *predicateEditor;
     IBOutlet NSArrayController  *assignPreviewController;
     IBOutlet NSToolbar          *toolbar;
@@ -79,7 +77,7 @@
     IBOutlet NSTextField        *spendingsField;
     IBOutlet NSTextField        *turnoversField;
     IBOutlet NSTextField        *remoteNameLabel;
-    IBOutlet BWSplitView        *rightSplitter;
+    IBOutlet NSSplitView        *rightSplitter;
     IBOutlet NSView             *rightPane;
     IBOutlet RoundedOuterShadowView* statementsListViewHost;
     

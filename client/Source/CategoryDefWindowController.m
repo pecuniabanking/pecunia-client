@@ -327,6 +327,19 @@
 }
 
 #pragma mark -
+#pragma mark Splitview delegate methods
+
+- (CGFloat)splitView: (NSSplitView *)splitView constrainMinCoordinate: (CGFloat)proposedMin ofSubviewAt: (NSInteger)dividerIndex
+{
+    return 200;
+}
+
+- (CGFloat)splitView: (NSSplitView *)splitView constrainMaxCoordinate: (CGFloat)proposedMax ofSubviewAt: (NSInteger)dividerIndex
+{
+    return NSHeight([splitView frame]) - 200;
+}
+
+#pragma mark -
 #pragma mark PecuniaSectionItem protocol
 
 - (void)print

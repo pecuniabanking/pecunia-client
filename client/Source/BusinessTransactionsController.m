@@ -24,7 +24,7 @@
 
 - (id)initWithTransactions: (NSArray*)transactions;
 {
-	self = [super initWithWindowNibName: @"BusinessTransactionsWindow"];
+    self = [super initWithWindowNibName: @"BusinessTransactionsWindow"];
     if (self != nil) {
         NSString* path = [[NSBundle mainBundle] resourcePath];
         path = [path stringByAppendingString: @"/HBCI business transactions.csv"];

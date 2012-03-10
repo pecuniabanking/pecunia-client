@@ -30,6 +30,7 @@ Transaktionen
 - In der Kontenansicht nicht nur Transaktionen in einer Kategorie sondern auch ihrer Unterkategorien anzeigen.
 - Zusatzinfo in der Transaktionsliste anzeigen (umschaltbar).
 - Tagesheader in statements listview zu dominant
+- Übernahme von Kontodaten aus der Zwischenablage.
 
 Ausgaben/Export
 ---------------

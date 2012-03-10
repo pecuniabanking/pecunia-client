@@ -17,8 +17,6 @@
  * 02110-1301  USA
  */
 
-#import <BWToolkitFramework/BWToolkitFramework.h>
-
 //#import "ChipTanWindowController.h"
 #import "TanMediaWindowController.h"
 
@@ -82,9 +80,6 @@
 #define _expandedRows @"EMT_expandedRows"
 #define _accountsViewSD @"EMT_accountsSorting"
 #define _accountsTreeWidth @"EMT_accountsTreeWidth"
-
-#define _mainVSplit @"mainVSplit"
-#define _mainHSplit @"mainHSplit"
 
 #define BankStatementDataType	@"BankStatementDataType"
 #define CategoryDataType		@"CategoryDataType"
@@ -298,6 +293,7 @@ static BankingController	*con;
     if (self.managedObjectContext) {
         [self publishContext];
     }
+    
 }
 
 - (void)dealloc
@@ -1265,7 +1261,7 @@ static BankingController	*con;
     } else {
         currentView = rightSplitter;
     }
-        
+    
     switch ([sender tag]) {
         case 0:
             // Cross-fade between the active view and the right splitter.
@@ -1873,6 +1869,31 @@ static BankingController	*con;
              unread: numberUnread
            disabled: itemIsDisabled
              isRoot: itemIsRoot];
+}
+
+#pragma mark -
+#pragma mark Splitview delegate methods
+
+- (CGFloat)splitView: (NSSplitView *)splitView constrainMinCoordinate: (CGFloat)proposedMin ofSubviewAt: (NSInteger)dividerIndex
+{
+    if (splitView == mainVSplit) {
+        return 370;
+    }
+    if (splitView == rightSplitter) {
+        return 240;
+    }
+    return proposedMin;
+}
+
+- (CGFloat)splitView: (NSSplitView *)splitView constrainMaxCoordinate: (CGFloat)proposedMax ofSubviewAt: (NSInteger)dividerIndex
+{
+    if (splitView == mainVSplit) {
+        return NSWidth([mainWindow frame]) - 800;
+    }
+    if (splitView == rightSplitter) {
+        return NSHeight([rightSplitter frame]) - 300;
+    }
+    return proposedMax;
 }
 
 #pragma mark -
