@@ -271,7 +271,7 @@
 	if (outputString) {
 		[controller appendOutput:outputString];
 	} else {
-		NSLog(@"AMShellWrapper - not able to encode output. Specified encoding: %i", outputStringEncoding);
+		NSLog(@"AMShellWrapper - not able to encode output. Specified encoding: %@", outputStringEncoding);
 	}
 }
 
@@ -281,7 +281,7 @@
 	if (errorString) {
 		[controller appendError:errorString];
 	} else {
-		NSLog(@"AMShellWrapper - not able to encode output. Specified encoding: %i", outputStringEncoding);
+		NSLog(@"AMShellWrapper - not able to encode output. Specified encoding: %@", outputStringEncoding);
 	}
 }
 

@@ -90,6 +90,8 @@ static LogController	*_logController = nil;
 		case LogLevel_Info: return [NSColor blackColor ]; break;
 		case LogLevel_Debug: 
 		case LogLevel_Verbous: return [NSColor darkGrayColor ]; break;
+        default:
+            break;
 	}
 	return [NSColor blackColor ];
 }

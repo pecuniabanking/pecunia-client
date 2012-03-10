@@ -22,7 +22,6 @@
 @synthesize reusableIdentifier = _reusableIdentifier;
 @synthesize listView = _listView;
 @synthesize row = _row;
-@synthesize dropHighlight = _dropHighlight;
 
 + (id)cellLoadedFromNibNamed:(NSString*)nibName reusableIdentifier:(NSString*)identifier
 {
@@ -96,6 +95,11 @@
 
 #pragma mark -
 #pragma mark Drag & Drop
+
+- (PXListViewDropHighlight)dropHighlight
+{
+    return _dropHighlight;
+}
 
 - (void)setDropHighlight:(PXListViewDropHighlight)inState
 {

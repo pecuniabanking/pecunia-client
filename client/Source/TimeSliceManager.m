@@ -163,6 +163,8 @@ TimeSliceManager *timeSliceManager = nil;
 			quarter = (month-1) / 3;
 			break;
 		}
+        default:
+            break;
 	}
 	if(maxDate) {
 		if (year > [maxDate year ]) year = [maxDate year ];

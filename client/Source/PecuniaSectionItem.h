@@ -19,6 +19,8 @@
 
 @required
 
+@property (nonatomic, retain) Category* category;
+
 - (void)print;
 - (NSView*)mainView;
 - (void)activate;

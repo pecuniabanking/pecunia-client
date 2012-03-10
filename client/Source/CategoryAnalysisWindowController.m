@@ -1564,7 +1564,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     double timePoint = CPTDecimalDoubleValue(dataPoint[0]);
     
     // Check if the time point is within the visible range.
-    if (timePoint < plotSpace.xRange.minLimitDouble ||
+    if (rawCount == 0 || timePoint < plotSpace.xRange.minLimitDouble ||
         timePoint > plotSpace.xRange.maxLimitDouble) {
         [infoLayer fadeOut];
         [mainIndicatorLine fadeOut];
