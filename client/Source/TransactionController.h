@@ -31,11 +31,12 @@
 	IBOutlet NSDrawer				*templatesDraw;
     IBOutlet NSView                 *standardHelpView;
     IBOutlet NSView                 *foreignHelpView;
+	IBOutlet BankingController		*bankingController;
+
 	NSWindow						*window;
 	
 	Transfer						*transfer;
 	NSMutableArray					*transfers;
-	BankingController				*bankingController;
 	BankAccount						*account;
 	TransactionLimits				*limits;
 	TransferType					transferType;

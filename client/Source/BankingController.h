@@ -82,6 +82,7 @@
     IBOutlet NSTextField        *versionText;
     IBOutlet NSTextField        *copyrightText;
     
+    IBOutlet TransactionController  *transferWindowController;
     IBOutlet TransferListController *transferListController;
     IBOutlet StatementsListView     *statementsListView;
     
@@ -94,7 +95,6 @@
     NewBankUserController  *bankUserController;
     PreferenceController   *prefController;
     LogController          *logController;
-    TransactionController  *transferWindowController;
     DockIconController     *dockIconController;
     BOOL                   restart;
     BOOL                   requestRunning;
@@ -162,6 +162,7 @@
 -(IBAction)updateAllAccounts:(id)sender;
 -(IBAction)repairSaldo:(id)sender;
 
+-(IBAction)showLog:(id)sender;
 -(IBAction)showAboutPanel:(id)sender;
 
 -(void)windowWillClose:(NSNotification *)aNotification;
