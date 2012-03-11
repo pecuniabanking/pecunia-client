@@ -87,7 +87,9 @@
 #define CategoryDataType		@"CategoryDataType"
 
 // Singleton simulation
-static BankingController	*con;
+static BankingController *con;
+
+static BOOL runningOnLionOrLater = NO;
 
 @implementation BankingController
 
@@ -100,42 +102,48 @@ static BankingController	*con;
 
 -(id)init
 {
-    HBCIClient *client = nil;
-    
-    [super init];
-    if(con) [con release]; 
-    con = self;
-    restart = NO;
-    requestRunning = NO;
-    statementsBound = YES;
-    mainTabItems = [[NSMutableDictionary dictionaryWithCapacity:10] retain];
-    
-    // TODO: make lower limit configurable?
-    [Category setCatReportFrom: [ShortDate dateWithYear: 2009 month:1 day:1] to: [ShortDate distantFuture]];
-    
-    // load context & model
-    @try {
-        model   = [[MOAssistant assistant] model];
-        self.managedObjectContext = [[MOAssistant assistant] context];
-    }
-    @catch(NSError* error) {
-        NSAlert *alert = [NSAlert alertWithError:error];
-        [alert runModal];
-        [NSApp terminate: self];
-    }
-    
-    @try {
-        client = [HBCIClient hbciClient];
-        [client initHBCI];
-    }
-    @catch (NSError *error) {
-        NSAlert *alert = [NSAlert alertWithError:error];
-        [alert runModal];
-        [NSApp terminate: self];
-    }
-    
-    logController = [LogController logController];
-    
+    self = [super init];
+    if (self != nil) {
+        HBCIClient *client = nil;
+        
+        if (con) [con release]; // TODO: Hon can this already be assigned in init?
+        con = self;
+        restart = NO;
+        requestRunning = NO;
+        statementsBound = YES;
+        mainTabItems = [[NSMutableDictionary dictionaryWithCapacity:10] retain];
+        
+        // TODO: make lower limit configurable?
+        [Category setCatReportFrom: [ShortDate dateWithYear: 2009 month:1 day:1] to: [ShortDate distantFuture]];
+        
+        // Load context & model.
+        @try {
+            model = [[MOAssistant assistant] model];
+            self.managedObjectContext = [[MOAssistant assistant] context];
+        }
+        @catch (NSError* error) {
+            NSAlert *alert = [NSAlert alertWithError:error];
+            [alert runModal];
+            [NSApp terminate: self];
+        }
+        
+        @try {
+            client = [HBCIClient hbciClient];
+            [client initHBCI];
+        }
+        @catch (NSError *error) {
+            NSAlert *alert = [NSAlert alertWithError:error];
+            [alert runModal];
+            [NSApp terminate: self];
+        }
+        
+        logController = [LogController logController];
+        
+        int macVersion;
+        if (Gestalt(gestaltSystemVersion, &macVersion) == noErr) {
+            runningOnLionOrLater = macVersion > MAC_OS_X_VERSION_10_6;
+        }
+    }    
     return self;
 }
 
@@ -286,6 +294,12 @@ static BankingController	*con;
         [self publishContext];
     }
     
+    // Setup full screen mode on Lion+.
+#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_6
+    if (runningOnLionOrLater) {
+        [mainWindow setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
+    }
+#endif
 }
 
 - (void)dealloc
