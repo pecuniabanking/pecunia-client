@@ -74,6 +74,7 @@
 
 #import "AnimationHelper.h"
 #import "GraphicsAdditions.h"
+#import "BWGradientBox.h"
 
 #import "User.h"
 #import "BankUser.h"
@@ -84,16 +85,6 @@
 
 #define BankStatementDataType	@"BankStatementDataType"
 #define CategoryDataType		@"CategoryDataType"
-
-@implementation AboutWindow
-
-- (BOOL)canBecomeKeyWindow
-{
-    return NO;
-}
-
-@end;
-
 
 // Singleton simulation
 static BankingController	*con;
@@ -2647,14 +2638,15 @@ static BankingController	*con;
                                       [mainBundle objectForInfoDictionaryKey: @"CFBundleVersion"]
                                      ]];
         [copyrightText setStringValue: [mainBundle objectForInfoDictionaryKey: @"NSHumanReadableCopyright"]];
+        gradient.fillColor = [NSColor whiteColor];
+        
+        // Delayed show gives the about window time to finish initialization. Otherwise it will
+        // simply pop up without animation first time it is shown.
+        [aboutWindow performSelector: @selector(fadeIn) withObject: nil afterDelay: 0.05];
+        return;
     }
     
     [aboutWindow fadeIn];
-}
-
-- (IBAction)closeAboutPanel:(id)sender
-{
-    [aboutWindow orderOut: self];
 }
 
 -(void)migrate

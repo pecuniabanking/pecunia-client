@@ -19,6 +19,6 @@
 
 @property (nonatomic, retain) NSColor *fillStartingColor, *fillEndingColor, *fillColor, *topBorderColor, *bottomBorderColor;
 @property float topInsetAlpha, bottomInsetAlpha;
-@property BOOL hasTopBorder, hasBottomBorder, hasGradient, hasFillColor;
+@property (nonatomic, assign) BOOL hasTopBorder, hasBottomBorder, hasGradient, hasFillColor;
 
 @end

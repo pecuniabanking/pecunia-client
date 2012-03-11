@@ -31,6 +31,7 @@
 #import "MOAssistant.h"
 
 #import "AnimationHelper.h"
+#import "BWGradientBox.h"
 
 NSString *hbciVersionFromString(NSString* s)
 {
@@ -73,6 +74,11 @@ NSString *hbciVersionFromString(NSString* s)
 {
 	[hbciVersions setContent:[[HBCIClient hbciClient] supportedVersions]];
 	[hbciVersions setSelectedObjects:[NSArray arrayWithObject:@"220"]];
+    
+    // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
+    topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
+    topGradient.fillEndingColor = [NSColor colorWithCalibratedWhite: 99 / 255.0 alpha: 1];
+    backgroundGradient.fillColor = [NSColor whiteColor];
 }
 
 #pragma mark -

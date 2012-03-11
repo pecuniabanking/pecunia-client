@@ -25,6 +25,8 @@
 #import "BankingController.h"
 #import "PecuniaError.h"
 
+#import "BWGradientBox.h"
+
 #import "BusinessTransactionsController.h"
 
 @implementation AccountChangeController
@@ -62,7 +64,6 @@
 
 -(void)awakeFromNib
 {
-
 	if ([changedAccount.isManual boolValue] == YES) {
 		[boxView replaceSubview:accountAddView with:manAccountAddView ];
 
@@ -77,6 +78,11 @@
 			[predicateEditor setObjectValue: pred ];
 		}
 	}
+    
+    // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
+    topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
+    topGradient.fillEndingColor = [NSColor colorWithCalibratedWhite: 99 / 255.0 alpha: 1];
+    backgroundGradient.fillColor = [NSColor whiteColor];
 }
 
 -(IBAction)cancel:(id)sender 

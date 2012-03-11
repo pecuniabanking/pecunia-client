@@ -203,7 +203,7 @@
 - (void)fadeIn
 {
     [self setAlphaValue: 0.f];
-    [self orderFront: nil];
+    [self makeKeyAndOrderFront: nil];
 
     [NSAnimationContext beginGrouping];
     [[NSAnimationContext currentContext] setDuration: 0.25];

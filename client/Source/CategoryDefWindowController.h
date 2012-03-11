@@ -26,6 +26,8 @@
 @class StatementsListView;
 @class TimeSliceManager;
 
+@class BWGradientBox;
+
 @interface CategoryDefWindowController : NSObject <PecuniaSectionItem>
 {
     IBOutlet NSArrayController	*assignPreviewController;
@@ -35,6 +37,8 @@
     IBOutlet StatementsListView *statementsListView;
     IBOutlet NSButton           *saveButton;
     IBOutlet NSButton           *discardButton;
+    
+    IBOutlet BWGradientBox      *predicatesBackground;
 	
 	CatAssignClassification* caClassification;
     TimeSliceManager* timeSliceManager;

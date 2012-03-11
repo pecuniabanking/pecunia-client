@@ -33,6 +33,8 @@
 #import "StatementsListview.h"
 #import "GraphicsAdditions.h"
 
+#import "BWGradientBox.h"
+
 #define BankStatementDataType	@"BankStatementDataType"
 #define CategoryDataType		@"CategoryDataType"
 
@@ -96,6 +98,8 @@
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
 
+    predicatesBackground.fillColor = [NSColor colorWithCalibratedWhite: 233 / 255.0 alpha: 1];
+    
     awaking = NO;
 }
 

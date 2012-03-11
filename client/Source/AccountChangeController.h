@@ -21,6 +21,7 @@
 
 @class BankAccount;
 @class BusinessTransactionsController;
+@class BWGradientBox;
 
 @interface AccountChangeController : NSWindowController {
     IBOutlet NSObjectController		*accountController;
@@ -35,6 +36,8 @@
 	IBOutlet NSBox					*boxView;
 	IBOutlet NSView					*manAccountAddView;
 	IBOutlet NSView					*accountAddView;
+    IBOutlet BWGradientBox          *topGradient;
+    IBOutlet BWGradientBox          *backgroundGradient;
 
     @private
 	NSManagedObjectContext			*moc;

@@ -112,7 +112,7 @@
 
 - (BOOL)isFlipped
 {
-	return YES;
+	return NO;
 }
 
 - (void)setFillColor:(NSColor *)color

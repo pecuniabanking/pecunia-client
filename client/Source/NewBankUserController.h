@@ -23,6 +23,8 @@
 @class BankingController;
 @class InstitutesController;
 
+@class BWGradientBox;
+
 @interface NewBankUserController : NSWindowController
 {
 	IBOutlet NSObjectController		*objController;
@@ -34,6 +36,8 @@
 	IBOutlet NSMutableDictionary	*bankUserInfo;
 	IBOutlet NSMutableArray			*bankUsers;
     IBOutlet NSObjectController     *currentUserController;
+    IBOutlet BWGradientBox          *topGradient;
+    IBOutlet BWGradientBox          *backgroundGradient;
     
     NSManagedObjectContext          *context;
     

@@ -44,13 +44,7 @@
 @class CategoryDefWindowController;
 
 @class SideToolbarView;
-
-@interface AboutWindow : NSWindow
-{
-}
-
-- (BOOL)canBecomeKeyWindow;
-@end
+@class BWGradientBox;
 
 @interface BankingController : NSObject
 {
@@ -82,7 +76,8 @@
     IBOutlet RoundedOuterShadowView* statementsListViewHost;
     
     // About panel.
-    IBOutlet AboutWindow        *aboutWindow;
+    IBOutlet NSPanel            *aboutWindow;
+    IBOutlet BWGradientBox      *gradient; 
     IBOutlet NSTextView         *aboutText;
     IBOutlet NSTextField        *versionText;
     IBOutlet NSTextField        *copyrightText;
@@ -168,7 +163,6 @@
 -(IBAction)repairSaldo:(id)sender;
 
 -(IBAction)showAboutPanel:(id)sender;
--(IBAction)closeAboutPanel:(id)sender;
 
 -(void)windowWillClose:(NSNotification *)aNotification;
 -(NSArray*)selectedNodes;
