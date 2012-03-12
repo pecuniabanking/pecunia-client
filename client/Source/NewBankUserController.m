@@ -39,6 +39,8 @@
 - (void)readBanks;
 - (BOOL)check;
 - (void)prepareUserSheet;
+- (void)startProgressWithMessage:(NSString*)msg;
+- (void)stopProgress;
 
 @end
 
@@ -111,6 +113,22 @@
 #pragma mark -
 #pragma mark Window/sheet handling
 
+- (void)startProgressWithMessage:(NSString*)msg
+{
+	[msgField setStringValue:msg ];
+	[msgField display ];
+	[progressIndicator setUsesThreadedAnimation: YES];
+	[progressIndicator startAnimation: self];
+}
+
+- (void)stopProgress
+{
+	[progressIndicator stopAnimation: self ];
+	[msgField setStringValue:@"" ];
+
+}
+
+
 - (void)bankUrlSheetDidEnd: (NSWindow*)sheet
                 returnCode: (int)code 
                contextInfo: (void*)context
@@ -154,11 +172,9 @@
             [field setStringValue:info.info_customerid ];
         }
     }
-    NSView *view = [[groupBox contentView ] viewWithTag:20];
-    [view setHidden:YES ];
-    [progressIndicator stopAnimation: self ];
+	[self stopProgress ];
     step = 2;
-    view = [[groupBox contentView ] viewWithTag:110];
+    NSView *view = [[groupBox contentView ] viewWithTag:110];
     [userSheet makeFirstResponder:view ];
     
     [self prepareUserSheet ];
@@ -166,16 +182,15 @@
 
 - (void)ok:(id)sender
 {
+	[userSheet makeFirstResponder:okButton ];
     [currentUserController commitEditing ];
     if ([self check ] == NO) return;
+	[okButton setKeyEquivalent:@"" ];
     
     BankUser *currentUser = [currentUserController content ];
     
     if (step == 1) {
-        [progressIndicator setUsesThreadedAnimation: YES];
-        [progressIndicator startAnimation: self];
-        NSView *view = [[groupBox contentView ] viewWithTag:20];
-        [view setHidden:NO ];
+		[self startProgressWithMessage: NSLocalizedString(@"AP177", @"") ];
         [self performSelector:@selector(getBankSetupInfo) withObject:nil afterDelay:0 ];
         return;
     }
@@ -191,12 +206,15 @@
 
     if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
         // User anlegen
+		
+        [self startProgressWithMessage: NSLocalizedString(@"AP178", @"") ];
         PecuniaError *error = [[HBCIClient hbciClient ] addBankUser: currentUser];
+		[self stopProgress ];
         if (error) {
             [error alertPanel];
         }
         else {
-            [bankUserController addObject:currentUser];
+//            [bankUserController addObject:currentUser];
             [bankController updateBankAccounts: [[HBCIClient hbciClient ] getAccountsForUser:currentUser]];
             
             [userSheet orderOut: sender];
@@ -288,6 +306,15 @@
             }
         }
     }
+	if ([te tag ] == 110) {
+		if ([s length ] > 0) {
+			NSString *k = [okButton keyEquivalent ];
+			if ([k isEqualToString:@"\r" ] == NO) {
+				[okButton setKeyEquivalent:@"\r" ];
+			}
+		}
+	}
+	
 }
 
 -(void)controlTextDidEndEditing:(NSNotification *)aNotification
@@ -361,24 +388,24 @@
 	}
 	if (step == 2) {
 		for(NSView *view in views) {
-			if ([view tag ] >= 100 && [view tag ] <= 130) {
+			if ([view tag ] >= 100 && [view tag ] <= 110) {
 				[[view animator] setHidden:NO ];
 			}
 		}
 
 		NSRect frame = [userSheet frame ];
-		frame.size.height += 64; frame.origin.y -= 64;
+		frame.size.height += 32; frame.origin.y -= 32;
 		[[userSheet animator] setFrame: frame display: YES ];
 	}
 	if (step == 3) {
 		for(NSView *view in views) {
-			if ([view tag ] > 130) {
+			if ([view tag ] > 110) {
 				[[view animator] setHidden:NO ];
 			}
 		}
         
 		NSRect frame = [userSheet frame ];
-		frame.size.height += 119; frame.origin.y -= 119;
+		frame.size.height += 151; frame.origin.y -= 151;
 		[[userSheet animator] setFrame: frame display: YES ];
 	}			
 }

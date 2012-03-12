@@ -39,6 +39,7 @@
 	IBOutlet NSBox					*groupBox;
     IBOutlet NSProgressIndicator    *progressIndicator;
     IBOutlet NSButton               *okButton;
+	IBOutlet NSTextField			*msgField;
     
     NSManagedObjectContext          *context;
     
