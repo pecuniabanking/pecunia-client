@@ -31,13 +31,14 @@
 	IBOutlet NSArrayController		*bankUserController;
 	IBOutlet NSArrayController		*tanMethods;
 	IBOutlet NSArrayController		*hbciVersions;
-	IBOutlet NSWindow				*userSheet;
+	IBOutlet NSPanel				*userSheet;
 //    IBOutlet BankUser				*currentUser;
 	IBOutlet NSMutableDictionary	*bankUserInfo;
 	IBOutlet NSMutableArray			*bankUsers;
     IBOutlet NSObjectController     *currentUserController;
     IBOutlet BWGradientBox          *topGradient;
     IBOutlet BWGradientBox          *backgroundGradient;
+	IBOutlet NSBox					*groupBox;
     
     NSManagedObjectContext          *context;
     
@@ -46,6 +47,8 @@
     InstitutesController* institutesController;
 	NSMutableArray* banks;
     NSWindow* selectBankUrlSheet;
+	
+	NSUInteger step;
 }
 
 - (id)initForController: (BankingController*)con;
@@ -59,5 +62,7 @@
 - (IBAction)getUserAccounts: (id)sender;
 - (IBAction)changePinTanMethod: (id)sender;
 - (IBAction)printBankParameter: (id)sender;
+
+- (IBAction)ok:(id)sender;
 
 @end

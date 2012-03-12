@@ -168,6 +168,11 @@ NSString *hbciVersionFromString(NSString* s)
 
 }
 
+- (void)ok:(id)sender
+{
+	[self prepareUserSheet ];
+}
+
 - (void)cancelSheet:(id)sender
 {
 	[userSheet orderOut: sender];
@@ -254,11 +259,85 @@ NSString *hbciVersionFromString(NSString* s)
 	[[self window] close];
 }
 
+- (void)prepareUserSheet
+{
+	NSArray *views = [[groupBox contentView ] subviews ];
+	
+	if (step == 1) {
+		for(NSView *view in views) {
+			if ([view tag ] >= 100) {
+				[view setHidden:YES ];
+			}
+		}
+		// resize box
+		NSRect frame = NSMakeRect(110, 60, 549, 124);
+		[groupBox setFrame: frame ];
+		
+		// image
+		NSView *view = [[userSheet contentView ] viewWithTag:10];
+		frame = [view frame ];
+		frame.origin.y = 20;
+		[view setFrame:frame ];
+		
+		frame = [userSheet frame ];
+		frame.size.height = 406;
+		frame.size.height -= 183; frame.origin.y += 183;
+		[userSheet setFrame: frame display: YES ];
+	}
+	if (step == 2) {
+		for(NSView *view in views) {
+			if ([view tag ] >= 100 && [view tag ] <= 130) {
+				[[view animator] setHidden:NO ];
+			}
+		}
+		// resize box
+		NSRect frame = NSMakeRect(110, 60, 549, 188);
+		[[groupBox animator ] setFrame: frame ];
+
+		// image
+		NSView *view = [[userSheet contentView ] viewWithTag:10];
+		frame = [view frame ];
+		frame.origin.y = 84;
+		[[view animator] setFrame:frame ];
+
+		frame = [userSheet frame ];
+		frame.size.height += 64; frame.origin.y -= 64;
+		[[userSheet animator] setFrame: frame display: YES ];
+	}
+	if (step == 3) {
+		for(NSView *view in views) {
+			if ([view tag ] > 130) {
+				[[view animator] setHidden:NO ];
+			}
+		}
+		// resize box
+		NSRect frame = NSMakeRect(110, 60, 549, 307);
+		[[groupBox animator] setFrame: frame ];
+
+		// image
+		NSView *view = [[userSheet contentView ] viewWithTag:10];
+		frame = [view frame ];
+		frame.origin.y = 203;
+		[[view animator] setFrame:frame ];
+
+		frame = [userSheet frame ];
+		frame.size.height += 119; frame.origin.y -= 119;
+		[[userSheet animator] setFrame: frame display: YES ];
+	}
+	if (step < 4) {
+		step += 1;
+	}
+			
+}
+
 - (IBAction)addEntry:(id)sender
 {
     [currentUserController add:self ];
     BankUser *user = [currentUserController content ];
-    user.hbciVersion = @"220";    
+    user.hbciVersion = @"220";
+	
+	step = 1;
+	[self prepareUserSheet ];
     
 	[NSApp beginSheet: userSheet
 	   modalForWindow: [self window ]
