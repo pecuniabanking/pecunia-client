@@ -33,6 +33,7 @@
 @class BankParameter;
 @class CustomerMessage;
 @class TanMediaList;
+@class BankSetupInfo;
 
 @protocol HBCIBackend
 
@@ -41,11 +42,12 @@
 -(NSArray*)supportedVersions;
 
 -(BankInfo*)infoForBankCode: (NSString*)bankCode inCountry:(NSString*)country;
+-(BankSetupInfo*)getBankSetupInfo:(NSString*)bankCode;
 -(NSString*)bankNameForCode:(NSString*)bankCode inCountry:(NSString*)country;
 -(NSString*)bankNameForBIC:(NSString*)bic inCountry:(NSString*)country;
 -(BankParameter*)getBankParameterForUser:(BankUser*)user;
 -(PecuniaError*)updateTanMethodsForUser:(BankUser*)user;
-- (PecuniaError*)updateTanMediaForUser:(BankUser*)user;
+-(PecuniaError*)updateTanMediaForUser:(BankUser*)user;
 
 -(BOOL)checkAccount: (NSString*)accountNumber forBank: (NSString*)bankCode inCountry: (NSString*)country;
 -(BOOL)checkIBAN: (NSString*)iban;

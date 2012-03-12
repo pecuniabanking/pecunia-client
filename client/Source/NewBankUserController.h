@@ -27,18 +27,18 @@
 
 @interface NewBankUserController : NSWindowController
 {
-	IBOutlet NSObjectController		*objController;
 	IBOutlet NSArrayController		*bankUserController;
 	IBOutlet NSArrayController		*tanMethods;
 	IBOutlet NSArrayController		*hbciVersions;
 	IBOutlet NSPanel				*userSheet;
-//    IBOutlet BankUser				*currentUser;
 	IBOutlet NSMutableDictionary	*bankUserInfo;
 	IBOutlet NSMutableArray			*bankUsers;
     IBOutlet NSObjectController     *currentUserController;
     IBOutlet BWGradientBox          *topGradient;
     IBOutlet BWGradientBox          *backgroundGradient;
 	IBOutlet NSBox					*groupBox;
+    IBOutlet NSProgressIndicator    *progressIndicator;
+    IBOutlet NSButton               *okButton;
     
     NSManagedObjectContext          *context;
     
@@ -62,6 +62,7 @@
 - (IBAction)getUserAccounts: (id)sender;
 - (IBAction)changePinTanMethod: (id)sender;
 - (IBAction)printBankParameter: (id)sender;
+- (IBAction)allSettings: (id)sender;
 
 - (IBAction)ok:(id)sender;
 

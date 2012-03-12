@@ -169,4 +169,6 @@
 "AP173" = "Beim ermitteln der unterstützten Geschäftsvorfälle ist ein unbekannter Fehler aufgetreten";
 "AP174" = "Keine Information verfügbar";
 "AP175" = "Ermittle TAN-Medium-Informationen...";
+"AP176" = "Bitte geben Sie einen Namen für die Bankkennung ein. Der Name dient zur Unterscheidung der verschiedenen Bankkennungen und ist frei wählbar";
+
  

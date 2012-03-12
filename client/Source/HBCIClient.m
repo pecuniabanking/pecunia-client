@@ -217,6 +217,12 @@ static HBCIClient *client = nil;
     return [controller updateTanMediaForUser:user ];
 }
 
+-(BankSetupInfo*)getBankSetupInfo:(NSString*)bankCode
+{
+    return [controller getBankSetupInfo:bankCode ];
+}
+
+
 
 -(BOOL)checkDTAUS:(NSString*)s
 {

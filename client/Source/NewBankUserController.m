@@ -29,22 +29,16 @@
 #import "BankInfo.h"
 #import "BankAccount.h"
 #import "MOAssistant.h"
+#import "BankSetupInfo.h"
 
 #import "AnimationHelper.h"
 #import "BWGradientBox.h"
-
-NSString *hbciVersionFromString(NSString* s)
-{
-	if([s isEqualToString: @"2.2"]) return @"220";
-	if([s isEqualToString: @"3.0"]) return @"300";
-	if([s isEqualToString: @"4.0"]) return @"400";
-	return @"220";
-}
 
 @interface NewBankUserController (Private)
 
 - (void)readBanks;
 - (BOOL)check;
+- (void)prepareUserSheet;
 
 @end
 
@@ -55,8 +49,6 @@ NSString *hbciVersionFromString(NSString* s)
 	self = [super initWithWindowNibName:@"BankUser"];
 	bankController = con;
 	bankUsers = [[BankUser allUsers ] mutableCopy];
-//    currentUser = [[User alloc ] init ];
-//	currentUser.hbciVersion = @"220";
 	context = [[MOAssistant assistant ] context ];
 	[self readBanks];
 	return self;
@@ -142,34 +134,79 @@ NSString *hbciVersionFromString(NSString* s)
 			 returnCode: (int)code 
 			contextInfo: (void*)context
 {
-	HBCIClient *hbciClient = [HBCIClient hbciClient];
-	if(code == 0) {
-        BankUser *currentUser = [currentUserController content ];
-
-		currentUser.hbciVersion = [[hbciVersions selectedObjects] lastObject];
-		PecuniaError *error = [hbciClient addBankUser: currentUser];
-		if (error) {
-			[error alertPanel];
-            [currentUserController remove:self ];
-		}
-		else {
-			[bankUserController addObject:currentUser];
-			[bankController updateBankAccounts: [hbciClient getAccountsForUser:currentUser]];
-/*            
-			[currentUser autorelease];
-			currentUser = [[BankUser alloc ] init];
-			currentUser.hbciVersion = @"220";
-			[objController setContent:currentUser];
-*/ 
-		}
-	} else {
+	if(code != 0) {
         [currentUserController remove:self ];
     }
+}
 
+-(void)getBankSetupInfo
+{
+    BankUser *currentUser = [currentUserController content ];
+
+    BankSetupInfo *info = [[HBCIClient hbciClient ] getBankSetupInfo:currentUser.bankCode ];
+    if (info != nil) {
+        if (info.info_userid) {
+            NSTextField *field = [[groupBox contentView ] viewWithTag:100];
+            [field setStringValue:info.info_userid ];
+        }
+        if (info.info_customerid) {
+            NSTextField *field = [[groupBox contentView ] viewWithTag:120];
+            [field setStringValue:info.info_customerid ];
+        }
+    }
+    NSView *view = [[groupBox contentView ] viewWithTag:20];
+    [view setHidden:YES ];
+    [progressIndicator stopAnimation: self ];
+    step = 2;
+    view = [[groupBox contentView ] viewWithTag:110];
+    [userSheet makeFirstResponder:view ];
+    
+    [self prepareUserSheet ];
 }
 
 - (void)ok:(id)sender
 {
+    [currentUserController commitEditing ];
+    if ([self check ] == NO) return;
+    
+    BankUser *currentUser = [currentUserController content ];
+    
+    if (step == 1) {
+        [progressIndicator setUsesThreadedAnimation: YES];
+        [progressIndicator startAnimation: self];
+        NSView *view = [[groupBox contentView ] viewWithTag:20];
+        [view setHidden:NO ];
+        [self performSelector:@selector(getBankSetupInfo) withObject:nil afterDelay:0 ];
+        return;
+    }
+
+    if (step == 2) {
+        // jetzt schauen, ob wir Infos Ÿber die Bank haben
+        BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
+        if (bi) {
+            currentUser.hbciVersion = bi.pinTanVersion;
+            currentUser.bankURL = bi.pinTanURL;
+        }
+    }
+
+    if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
+        // User anlegen
+        PecuniaError *error = [[HBCIClient hbciClient ] addBankUser: currentUser];
+        if (error) {
+            [error alertPanel];
+        }
+        else {
+            [bankUserController addObject:currentUser];
+            [bankController updateBankAccounts: [[HBCIClient hbciClient ] getAccountsForUser:currentUser]];
+            
+            [userSheet orderOut: sender];
+            [NSApp endSheet: userSheet returnCode: 0];
+        }
+    }
+    
+    if (step < 4) {
+		step += 1;
+	}
 	[self prepareUserSheet ];
 }
 
@@ -200,18 +237,30 @@ NSString *hbciVersionFromString(NSString* s)
 {
     BankUser *currentUser = [currentUserController content ];
 
-	if ([currentUser bankCode] == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-						NSLocalizedString(@"AP2", @"Please enter bank code"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
-		return NO;
-	}
-	if ([currentUser userId] == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-						NSLocalizedString(@"AP3", @"Please enter user id"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
-		return NO;
-	}
+    if (step == 1) {
+        if (currentUser.bankCode == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
+                            NSLocalizedString(@"AP2", @"Please enter bank code"),
+                            NSLocalizedString(@"ok", @"Ok"), nil, nil);
+            return NO;
+        }
+        if (currentUser.name == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
+                            NSLocalizedString(@"AP176", @"Please enter name"),
+                            NSLocalizedString(@"ok", @"Ok"), nil, nil);
+            return NO;
+        }
+    }
+    
+    
+    if (step == 2) {
+        if ([currentUser userId] == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
+                            NSLocalizedString(@"AP3", @"Please enter user id"),
+                            NSLocalizedString(@"ok", @"Ok"), nil, nil);
+            return NO;
+        }
+    }
     /*
 	if ([currentUser bankURL] == nil) {
 		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
@@ -223,6 +272,24 @@ NSString *hbciVersionFromString(NSString* s)
 	return YES;
 }
 
+-(void)controlTextDidChange:(NSNotification *)aNotification
+{
+	NSTextField	*te = [aNotification object];
+	NSString *s = [te stringValue];
+    BankUser *currentUser = [currentUserController content ];
+    
+    if ([te tag ] == 10) {
+        NSString *bankCode = [s stringByReplacingOccurrencesOfString:@" " withString:@"" ];
+        if ([bankCode length ] == 8) {
+            BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: bankCode inCountry: @"DE"];
+            if (bi) {
+                currentUser.name = bi.name;
+                [okButton setKeyEquivalent:@"\r" ];
+            }
+        }
+    }
+}
+
 -(void)controlTextDidEndEditing:(NSNotification *)aNotification
 {
 	NSTextField	*te = [aNotification object];
@@ -231,18 +298,9 @@ NSString *hbciVersionFromString(NSString* s)
     
 	BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: bankCode inCountry: @"DE"];
 	if (bi) {
-		[currentUser setValue: bi.name forKey: @"bankName"];
-		[currentUser setBankURL:bi.pinTanURL];
-	}
-	if (bi.pinTanURL == nil) {
-		NSDictionary* dict;
-		for(dict in banks) {
-			if ([bankCode isEqualToString: [dict valueForKey: @"bankCode"]]) {
-				[currentUser setBankURL: [dict valueForKey: @"bankURL"]];
-				currentUser.hbciVersion = hbciVersionFromString([dict valueForKey: @"hbciVersion" ]);
-				break;
-			}
-		}
+        currentUser.bankName = bi.name;
+        currentUser.bankURL = bi.pinTanURL;
+        currentUser.hbciVersion = bi.pinTanVersion;
 	}
 }
 
@@ -259,6 +317,32 @@ NSString *hbciVersionFromString(NSString* s)
 	[[self window] close];
 }
 
+- (IBAction)allSettings:(id)sender
+{
+    if (step > 3) return;
+    
+    BankUser *currentUser = [currentUserController content ];
+    if (currentUser.hbciVersion == nil) currentUser.hbciVersion = @"220";
+    
+	NSArray *views = [[groupBox contentView ] subviews ];
+    for(NSView *view in views) {
+        if ([view tag ] >= 100) {
+            [[view animator] setHidden:NO ];
+        }
+    }
+    
+    NSRect frame = [userSheet frame ];
+    if(step == 2)  {
+        frame.size.height += 119; frame.origin.y -= 119;
+    } else {
+        frame.size.height += 183; frame.origin.y -= 183;
+    }
+    [[userSheet animator] setFrame: frame display: YES ];
+    
+    
+    step = 4;
+}
+
 - (void)prepareUserSheet
 {
 	NSArray *views = [[groupBox contentView ] subviews ];
@@ -269,17 +353,8 @@ NSString *hbciVersionFromString(NSString* s)
 				[view setHidden:YES ];
 			}
 		}
-		// resize box
-		NSRect frame = NSMakeRect(110, 60, 549, 124);
-		[groupBox setFrame: frame ];
-		
-		// image
-		NSView *view = [[userSheet contentView ] viewWithTag:10];
-		frame = [view frame ];
-		frame.origin.y = 20;
-		[view setFrame:frame ];
-		
-		frame = [userSheet frame ];
+        
+		NSRect frame = [userSheet frame ];
 		frame.size.height = 406;
 		frame.size.height -= 183; frame.origin.y += 183;
 		[userSheet setFrame: frame display: YES ];
@@ -290,17 +365,8 @@ NSString *hbciVersionFromString(NSString* s)
 				[[view animator] setHidden:NO ];
 			}
 		}
-		// resize box
-		NSRect frame = NSMakeRect(110, 60, 549, 188);
-		[[groupBox animator ] setFrame: frame ];
 
-		// image
-		NSView *view = [[userSheet contentView ] viewWithTag:10];
-		frame = [view frame ];
-		frame.origin.y = 84;
-		[[view animator] setFrame:frame ];
-
-		frame = [userSheet frame ];
+		NSRect frame = [userSheet frame ];
 		frame.size.height += 64; frame.origin.y -= 64;
 		[[userSheet animator] setFrame: frame display: YES ];
 	}
@@ -310,31 +376,16 @@ NSString *hbciVersionFromString(NSString* s)
 				[[view animator] setHidden:NO ];
 			}
 		}
-		// resize box
-		NSRect frame = NSMakeRect(110, 60, 549, 307);
-		[[groupBox animator] setFrame: frame ];
-
-		// image
-		NSView *view = [[userSheet contentView ] viewWithTag:10];
-		frame = [view frame ];
-		frame.origin.y = 203;
-		[[view animator] setFrame:frame ];
-
-		frame = [userSheet frame ];
+        
+		NSRect frame = [userSheet frame ];
 		frame.size.height += 119; frame.origin.y -= 119;
 		[[userSheet animator] setFrame: frame display: YES ];
-	}
-	if (step < 4) {
-		step += 1;
-	}
-			
+	}			
 }
 
 - (IBAction)addEntry:(id)sender
 {
     [currentUserController add:self ];
-    BankUser *user = [currentUserController content ];
-    user.hbciVersion = @"220";
 	
 	step = 1;
 	[self prepareUserSheet ];
