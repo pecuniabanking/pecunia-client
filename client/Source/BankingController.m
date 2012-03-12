@@ -172,7 +172,6 @@ static BOOL runningOnLionOrLater = NO;
 - (void)setupSections
 {
     NSRect frame = rightSplitter.frame;
-    frame.size.height -= 61; // The height of the heading.
 
     categoryAnalysisController = [[CategoryAnalysisWindowController alloc] init];
     if ([NSBundle loadNibNamed: @"CategoryAnalysis" owner: categoryAnalysisController]) {
@@ -294,7 +293,7 @@ static BOOL runningOnLionOrLater = NO;
         [self publishContext];
     }
     
-    // Setup full screen mode on Lion+.
+    // Setup full screen mode support on Lion+.
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_6
     if (runningOnLionOrLater) {
         [mainWindow setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
@@ -1268,11 +1267,13 @@ static BOOL runningOnLionOrLater = NO;
         currentView = rightSplitter;
     }
     
+    NSRect frame = [currentView frame];
     switch ([sender tag]) {
         case 0:
             // Cross-fade between the active view and the right splitter.
             if (currentSection != nil) {
                 [currentSection deactivate];
+                [rightSplitter setFrame: frame];
                 [[rightPane animator] replaceSubview: currentView with: rightSplitter];
                 currentSection = nil;
                 pageHasChanged = YES;
@@ -1281,6 +1282,7 @@ static BOOL runningOnLionOrLater = NO;
         case 1:
             if (currentSection != categoryAnalysisController) {
                 [currentSection deactivate];
+                [[categoryAnalysisController mainView] setFrame: frame];
                 [[rightPane animator] replaceSubview: currentView with: [categoryAnalysisController mainView]];
                 currentSection = categoryAnalysisController;
                 [categoryAnalysisController updateTrackingAreas];
@@ -1290,6 +1292,7 @@ static BOOL runningOnLionOrLater = NO;
         case 2:
             if (currentSection != categoryReportingController) {
                 [currentSection deactivate];
+                [[categoryReportingController mainView] setFrame: frame];
                 [[rightPane animator] replaceSubview: currentView with: [categoryReportingController mainView]];
                 currentSection = categoryReportingController;
                 
@@ -1310,6 +1313,7 @@ static BOOL runningOnLionOrLater = NO;
         case 4:
             if (currentSection != categoryDefinitionController) {
                 [currentSection deactivate];
+                [[categoryDefinitionController mainView] setFrame: frame];
                 [[rightPane animator] replaceSubview: currentView with: [categoryDefinitionController mainView]];
                 currentSection = categoryDefinitionController;
                 
