@@ -412,7 +412,8 @@
 
 - (IBAction)addEntry:(id)sender
 {
-    [currentUserController add:self ];
+    BankUser *user = [NSEntityDescription insertNewObjectForEntityForName:@"BankUser" inManagedObjectContext:context ];
+    [currentUserController setContent:user ];
 	
 	step = 1;
 	[self prepareUserSheet ];

@@ -32,6 +32,11 @@
 @dynamic tanMediaFetched;
 
 
+-(id)copyWithZone: (NSZone *)zone
+{
+	return [self retain ];
+}
+
 -(void)updateTanMethods:(NSArray*)methods
 {
     NSManagedObjectContext *context = [[MOAssistant assistant ] context];
