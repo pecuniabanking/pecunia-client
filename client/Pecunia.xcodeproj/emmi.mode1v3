@@ -265,8 +265,6 @@
 							<array>
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>B136AACF0FCF1BF5007A643F</string>
-								<string>B12A497E10BDD242002CC63E</string>
-								<string>B17B294613E35BF900739E7A</string>
 								<string>B1FE0DCD106585DC005B3800</string>
 								<string>B1FE0DCB106583F8005B3800</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
@@ -276,14 +274,13 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>92</integer>
-									<integer>84</integer>
+									<integer>4</integer>
 									<integer>2</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 1094}, {354, 1205}}</string>
+							<string>{{0, 0}, {354, 1078}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -295,7 +292,7 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {371, 1223}}</string>
+						<string>{{0, 0}, {371, 1096}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>SCMStatusColumn</string>
@@ -304,7 +301,7 @@
 							<real>332</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>120 153 1893 1264 0 0 2560 1418 </string>
+						<string>97 276 1823 1137 0 0 2560 1418 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -322,7 +319,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>NewBankUserController.m</string>
+								<string>HBCIBridge.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -330,11 +327,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>NewBankUserController.m</string>
+										<string>HBCIBridge.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>B192454715113A22005DE028</string>
+										<string>B1D9F42C15178C3400723BA8</string>
 										<key>history</key>
 										<array>
 											<string>B1A2D6E610551D84000B91BA</string>
@@ -624,7 +621,6 @@
 											<string>B1EC7C36150A5BED00813E1A</string>
 											<string>B1EC7CAA150ABD4D00813E1A</string>
 											<string>B1EC7CAB150ABD4D00813E1A</string>
-											<string>B1EC7CAF150ABD4D00813E1A</string>
 											<string>B1EC7CB0150ABD4D00813E1A</string>
 											<string>B1EC7CB1150ABD4D00813E1A</string>
 											<string>B1EC7CB2150ABD4D00813E1A</string>
@@ -638,7 +634,6 @@
 											<string>B1EC7CD5150ABED600813E1A</string>
 											<string>B1EC7D39150CB29000813E1A</string>
 											<string>B1924449150E17EB005DE028</string>
-											<string>B192444A150E17EB005DE028</string>
 											<string>B192444B150E17EB005DE028</string>
 											<string>B192444C150E17EB005DE028</string>
 											<string>B192444D150E17EB005DE028</string>
@@ -650,7 +645,9 @@
 											<string>B192453C15113320005DE028</string>
 											<string>B192453D15113320005DE028</string>
 											<string>B192453E15113320005DE028</string>
-											<string>B192453F15113320005DE028</string>
+											<string>B192455415129603005DE028</string>
+											<string>B192455515129603005DE028</string>
+											<string>B192459B15138798005DE028</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -662,14 +659,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1517, 995}}</string>
+								<string>{{0, 0}, {1447, 858}}</string>
 								<key>RubberWindowFrame</key>
-								<string>120 153 1893 1264 0 0 2560 1418 </string>
+								<string>97 276 1823 1137 0 0 2560 1418 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>995pt</string>
+							<string>858pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -682,18 +679,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 1000}, {1517, 223}}</string>
+								<string>{{0, 863}, {1447, 233}}</string>
 								<key>RubberWindowFrame</key>
-								<string>120 153 1893 1264 0 0 2560 1418 </string>
+								<string>97 276 1823 1137 0 0 2560 1418 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>223pt</string>
+							<string>233pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>1517pt</string>
+					<string>1447pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -708,9 +705,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>B192454115113320005DE028</string>
+				<string>B1D9F42D15178C3400723BA8</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>B192454215113320005DE028</string>
+				<string>B1D9F42E15178C3400723BA8</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -846,16 +843,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>B192454515113320005DE028</string>
-		<string>B192454615113320005DE028</string>
 		<string>B15054370DB0113B00D0DC49</string>
-		<string>1C530D57069F1CE1000CFCEE</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>/Users/emmi/Pecunia/Pecunia 1.0/Pecunia.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>120 153 1893 1264 0 0 2560 1418 </string>
+	<string>97 276 1823 1137 0 0 2560 1418 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -932,7 +925,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>B15054370DB0113B00D0DC49</string>
-				<string>B19245291511307B005DE028</string>
+				<string>B1D9F42F15178C3400723BA8</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -974,8 +967,8 @@
 										<string>yes</string>
 										<key>sizes</key>
 										<array>
-											<string>{{0, 0}, {580, 458}}</string>
-											<string>{{580, 0}, {1244, 458}}</string>
+											<string>{{0, 0}, {580, 506}}</string>
+											<string>{{580, 0}, {1244, 506}}</string>
 										</array>
 									</dict>
 									<key>VerticalSplitView</key>
@@ -990,8 +983,8 @@
 										<string>yes</string>
 										<key>sizes</key>
 										<array>
-											<string>{{0, 0}, {1824, 458}}</string>
-											<string>{{0, 458}, {1824, 522}}</string>
+											<string>{{0, 0}, {1824, 506}}</string>
+											<string>{{0, 506}, {1824, 474}}</string>
 										</array>
 									</dict>
 								</dict>
@@ -1024,7 +1017,7 @@
 										<real>570</real>
 									</array>
 									<key>Frame</key>
-									<string>{{580, 0}, {1244, 458}}</string>
+									<string>{{580, 0}, {1244, 506}}</string>
 									<key>RubberWindowFrame</key>
 									<string>244 366 1824 1021 0 0 2560 1418 </string>
 								</dict>
@@ -1052,13 +1045,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>B192452A1511307B005DE028</string>
+				<string>B1D9F43015178C3400723BA8</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>B192452B1511307B005DE028</string>
-				<string>B192452C1511307B005DE028</string>
-				<string>B192452D1511307B005DE028</string>
-				<string>B192452E1511307B005DE028</string>
-				<string>B192452F1511307B005DE028</string>
+				<string>B1D9F43115178C3400723BA8</string>
+				<string>B1D9F43215178C3400723BA8</string>
+				<string>B1D9F43315178C3400723BA8</string>
+				<string>B1D9F43415178C3400723BA8</string>
+				<string>B1D9F43515178C3400723BA8</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>

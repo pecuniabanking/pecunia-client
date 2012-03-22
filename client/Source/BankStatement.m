@@ -312,7 +312,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 		}
 	}
 	// value must never be higher than statement's value
-	if([stat.value compare: stat.statement.value ] == NSOrderedAscending) stat.value = stat.statement.value;
+	if(changed == YES && [[stat.value abs ] compare: [stat.statement.value abs ] ] == NSOrderedDescending) stat.value = stat.statement.value;
 	
 	if(changed == NO) {
 		// create StatCatAssignment

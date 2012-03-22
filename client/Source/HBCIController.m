@@ -34,6 +34,7 @@
 #import "BankSetupInfo.h"
 #import "TanMediaList.h"
 #import "StatusBarController.h"
+#import "Keychain.h"
 
 @implementation HBCIController
 
@@ -684,6 +685,9 @@ NSString *escapeSpecial(NSString *s)
     NSString *cmd = [NSString stringWithFormat: @"<command name=\"deletePassport\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
     [bridge syncCommand: cmd error:&error ];
     if(error == nil) {
+        NSString *s = [NSString stringWithFormat: @"PIN_%@_%@", user.bankCode, user.userId ];
+        [Keychain deletePasswordForService:@"Pecunia PIN" account: s ];
+                
         [users removeObject: user ];
     } else return NO;
     return YES;
