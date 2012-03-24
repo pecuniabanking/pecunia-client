@@ -10,6 +10,8 @@ Allgemeines
 -----------
 - Start von Pecunia mittels Alt+Klick zur Auswahl einer Datenbank (zusätzlich zum Kommandozeilenparameter).
 - Unterstützung für Paypal.
+- Unterstützung für Chipkarten
+- Navigationshistorie + back/forward buttons für alle Seiten
 
 Kategorie + Kontenanalyse
 -------------------------
@@ -31,6 +33,7 @@ Transaktionen
 - Zusatzinfo in der Transaktionsliste anzeigen (umschaltbar).
 - Tagesheader in statements listview zu dominant
 - Übernahme von Kontodaten aus der Zwischenablage.
+- Wiederkehrende Überweisung (auch für Prognosen), http://www.onlinebanking-forum.de/phpBB2/viewtopic.php?p=81818#81818
 
 Ausgaben/Export
 ---------------

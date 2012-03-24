@@ -22,6 +22,11 @@
 		2724DCF114016E4000B0FE15 /* banknote.png in Resources */ = {isa = PBXBuildFile; fileRef = 2724DCF014016E4000B0FE15 /* banknote.png */; };
 		272B5EB3143F724600007749 /* slanted_stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 272B5EB2143F724600007749 /* slanted_stripes.png */; };
 		272BF53F14B770A100628805 /* Tresor.png in Resources */ = {isa = PBXBuildFile; fileRef = 272BF53E14B770A100628805 /* Tresor.png */; };
+		2736DD4D1514F6590066917C /* MBTableGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD421514F6590066917C /* MBTableGrid.m */; };
+		2736DD4E1514F6590066917C /* MBTableGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD441514F6590066917C /* MBTableGridCell.m */; };
+		2736DD4F1514F6590066917C /* MBTableGridContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD461514F6590066917C /* MBTableGridContentView.m */; };
+		2736DD511514F6590066917C /* MBTableGridHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD4A1514F6590066917C /* MBTableGridHeaderCell.m */; };
+		2736DD521514F6590066917C /* MBTableGridHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD4C1514F6590066917C /* MBTableGridHeaderView.m */; };
 		2748D2251441C7010036BDE2 /* slanted_stripes_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 2748D2241441C7010036BDE2 /* slanted_stripes_red.png */; };
 		274C09FD1440BC9800A80F0E /* RoundedOuterShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */; };
 		274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274DE2B313F992A50009EB77 /* MainBackgroundView.m */; };
@@ -36,13 +41,14 @@
 		2777A755142F9B86005729F0 /* expanded.png in Resources */ = {isa = PBXBuildFile; fileRef = 2777A753142F9B86005729F0 /* expanded.png */; };
 		2777A756142F9B86005729F0 /* collapsed.png in Resources */ = {isa = PBXBuildFile; fileRef = 2777A754142F9B86005729F0 /* collapsed.png */; };
 		2777A781142FA471005729F0 /* catdef5_16.png in Resources */ = {isa = PBXBuildFile; fileRef = 2777A780142FA471005729F0 /* catdef5_16.png */; };
+		2780E50D151B229700CB86CE /* category-reporting-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC74A814A102800082495C /* category-reporting-help.rtf */; };
+		2780E50E151B229700CB86CE /* category-analysis-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC73D314A0C0680082495C /* category-analysis-help.rtf */; };
 		2788C8BA1455C3CE00225939 /* CurrencyValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788C8B91455C3CE00225939 /* CurrencyValueTransformer.m */; };
 		278CFA0C1451D159001409DB /* Transfer_Templates.png in Resources */ = {isa = PBXBuildFile; fileRef = 278CFA0B1451D159001409DB /* Transfer_Templates.png */; };
 		2790545014A37F59001380A3 /* hatch 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2790544F14A37F59001380A3 /* hatch 1.png */; };
 		2792CB3414840506006A510A /* AnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2792CB3314840506006A510A /* AnimationHelper.m */; };
 		27955AFF140C0603008369C9 /* GraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27955AFE140C0603008369C9 /* GraphicsAdditions.m */; };
 		27BB1A1A14D4739900A2C8A7 /* CategoryDefinition.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */; };
-		27BF2C7B145C5B180015B491 /* NumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BF2C7A145C5B180015B491 /* NumberExtensions.m */; };
 		27C78793143622920095F1DA /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27C78792143622920095F1DA /* ProgressWindow.xib */; };
 		27C78796143623080095F1DA /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C78795143623080095F1DA /* ProgressWindowController.m */; };
 		27C7B2F61475466600BD4F56 /* ColumnLayoutCorePlotLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */; };
@@ -51,9 +57,7 @@
 		27C7B506147FC50300278131 /* PecuniaPlotTimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7B505147FC50300278131 /* PecuniaPlotTimeFormatter.m */; };
 		27C930F6149508280055EAD5 /* Colors.acf in Resources */ = {isa = PBXBuildFile; fileRef = 27C930F5149508280055EAD5 /* Colors.acf */; };
 		27CC732614A09E060082495C /* MAAttachedWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC732514A09E060082495C /* MAAttachedWindow.m */; };
-		27CC73D514A0C0680082495C /* category-analysis-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC73D314A0C0680082495C /* category-analysis-help.rtf */; };
 		27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */; };
-		27CC74AA14A102800082495C /* category-reporting-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC74A814A102800082495C /* category-reporting-help.rtf */; };
 		27D240EA145302A900EDC8C7 /* done.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27D240E9145302A900EDC8C7 /* done.mp3 */; };
 		27D3169014A8C81B002F500D /* blue arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D3168F14A8C81B002F500D /* blue arrow.png */; };
 		27DD4AC5150B60A4006C2370 /* HBCI business transactions.csv in Resources */ = {isa = PBXBuildFile; fileRef = 27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */; };
@@ -312,6 +316,16 @@
 		272B5EB2143F724600007749 /* slanted_stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slanted_stripes.png; sourceTree = "<group>"; };
 		272BF53E14B770A100628805 /* Tresor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Tresor.png; sourceTree = "<group>"; };
 		27334AE614C20BF600268FD9 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		2736DD411514F6590066917C /* MBTableGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBTableGrid.h; path = MBTableGrid/MBTableGrid.h; sourceTree = "<group>"; };
+		2736DD421514F6590066917C /* MBTableGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBTableGrid.m; path = MBTableGrid/MBTableGrid.m; sourceTree = "<group>"; };
+		2736DD431514F6590066917C /* MBTableGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBTableGridCell.h; path = MBTableGrid/MBTableGridCell.h; sourceTree = "<group>"; };
+		2736DD441514F6590066917C /* MBTableGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBTableGridCell.m; path = MBTableGrid/MBTableGridCell.m; sourceTree = "<group>"; };
+		2736DD451514F6590066917C /* MBTableGridContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBTableGridContentView.h; path = MBTableGrid/MBTableGridContentView.h; sourceTree = "<group>"; };
+		2736DD461514F6590066917C /* MBTableGridContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBTableGridContentView.m; path = MBTableGrid/MBTableGridContentView.m; sourceTree = "<group>"; };
+		2736DD491514F6590066917C /* MBTableGridHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBTableGridHeaderCell.h; path = MBTableGrid/MBTableGridHeaderCell.h; sourceTree = "<group>"; };
+		2736DD4A1514F6590066917C /* MBTableGridHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBTableGridHeaderCell.m; path = MBTableGrid/MBTableGridHeaderCell.m; sourceTree = "<group>"; };
+		2736DD4B1514F6590066917C /* MBTableGridHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBTableGridHeaderView.h; path = MBTableGrid/MBTableGridHeaderView.h; sourceTree = "<group>"; };
+		2736DD4C1514F6590066917C /* MBTableGridHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBTableGridHeaderView.m; path = MBTableGrid/MBTableGridHeaderView.m; sourceTree = "<group>"; };
 		2748D2241441C7010036BDE2 /* slanted_stripes_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slanted_stripes_red.png; sourceTree = "<group>"; };
 		274C09FB1440BC9800A80F0E /* RoundedOuterShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RoundedOuterShadowView.h; sourceTree = "<group>"; tabWidth = 4; };
 		274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedOuterShadowView.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -347,8 +361,6 @@
 		27955AFE140C0603008369C9 /* GraphicsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = GraphicsAdditions.m; sourceTree = "<group>"; tabWidth = 4; };
 		27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Pecunia.entitlements; path = ../Pecunia.entitlements; sourceTree = "<group>"; };
 		27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryDefinition.xib; sourceTree = "<group>"; };
-		27BF2C79145C5B180015B491 /* NumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberExtensions.h; sourceTree = "<group>"; };
-		27BF2C7A145C5B180015B491 /* NumberExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = NumberExtensions.m; sourceTree = "<group>"; tabWidth = 4; };
 		27C78792143622920095F1DA /* ProgressWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressWindow.xib; sourceTree = "<group>"; };
 		27C78794143623080095F1DA /* ProgressWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		27C78795143623080095F1DA /* ProgressWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -743,6 +755,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		2736DD531514F6680066917C /* MBTableGrid */ = {
+			isa = PBXGroup;
+			children = (
+				2736DD411514F6590066917C /* MBTableGrid.h */,
+				2736DD421514F6590066917C /* MBTableGrid.m */,
+				2736DD431514F6590066917C /* MBTableGridCell.h */,
+				2736DD441514F6590066917C /* MBTableGridCell.m */,
+				2736DD451514F6590066917C /* MBTableGridContentView.h */,
+				2736DD461514F6590066917C /* MBTableGridContentView.m */,
+				2736DD491514F6590066917C /* MBTableGridHeaderCell.h */,
+				2736DD4A1514F6590066917C /* MBTableGridHeaderCell.m */,
+				2736DD4B1514F6590066917C /* MBTableGridHeaderView.h */,
+				2736DD4C1514F6590066917C /* MBTableGridHeaderView.m */,
+			);
+			name = MBTableGrid;
+			sourceTree = "<group>";
+		};
 		275C07DC1438777900D97415 /* PXListview */ = {
 			isa = PBXGroup;
 			children = (
@@ -814,8 +843,6 @@
 				B14D6DEE0DEC9C9100C2B220 /* CategoryView.m */,
 				B138AE73139582E00026BEE2 /* MCEMTransparentTableView.h */,
 				B138AE74139582E00026BEE2 /* MCEMTransparentTableView.m */,
-				B197C3E213C3A28F0025F137 /* MCEMDecimalNumberAdditions.h */,
-				B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */,
 				27FD58C91437569B0074B378 /* StatementsListview.h */,
 				27FD58CA1437569B0074B378 /* StatementsListview.m */,
 				275C07ED143877C800D97415 /* StatementsListviewCell.h */,
@@ -841,10 +868,10 @@
 		27C7B503147FC47400278131 /* Numbers and Dates */ = {
 			isa = PBXGroup;
 			children = (
+				B197C3E213C3A28F0025F137 /* MCEMDecimalNumberAdditions.h */,
+				B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */,
 				2788C8B81455C3CE00225939 /* CurrencyValueTransformer.h */,
 				2788C8B91455C3CE00225939 /* CurrencyValueTransformer.m */,
-				27BF2C79145C5B180015B491 /* NumberExtensions.h */,
-				27BF2C7A145C5B180015B491 /* NumberExtensions.m */,
 				27C7B504147FC50300278131 /* PecuniaPlotTimeFormatter.h */,
 				27C7B505147FC50300278131 /* PecuniaPlotTimeFormatter.m */,
 			);
@@ -854,6 +881,7 @@
 		27CC732314A09DDD0082495C /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				2736DD531514F6680066917C /* MBTableGrid */,
 				27DD4AFB150B6F84006C2370 /* BWToolkit */,
 				27CC732714A09E0B0082495C /* MAAttachedWindow */,
 				275C07DC1438777900D97415 /* PXListview */,
@@ -1521,6 +1549,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2780E50D151B229700CB86CE /* category-reporting-help.rtf in Resources */,
+				2780E50E151B229700CB86CE /* category-analysis-help.rtf in Resources */,
 				B1E8119D0FF6863D00BF7451 /* InfoPlist.strings in Resources */,
 				B1E811A20FF6874F00BF7451 /* Localizable.strings in Resources */,
 				B165B4130D2D8E1A00447DD8 /* Transfers.icns in Resources */,
@@ -1612,8 +1642,6 @@
 				27E1693B149F6E5C00089103 /* help-button.png in Resources */,
 				27E1699A149F90D900089103 /* About.xib in Resources */,
 				27E169D8149FA01600089103 /* Credits.rtf in Resources */,
-				27CC73D514A0C0680082495C /* category-analysis-help.rtf in Resources */,
-				27CC74AA14A102800082495C /* category-reporting-help.rtf in Resources */,
 				2790545014A37F59001380A3 /* hatch 1.png in Resources */,
 				27D3169014A8C81B002F500D /* blue arrow.png in Resources */,
 				27EB308414B22CB000ABE3A6 /* Bank large.png in Resources */,
@@ -1752,7 +1780,6 @@
 				275C07EF143877C800D97415 /* StatementsListviewCell.m in Sources */,
 				274C09FD1440BC9800A80F0E /* RoundedOuterShadowView.m in Sources */,
 				2788C8BA1455C3CE00225939 /* CurrencyValueTransformer.m in Sources */,
-				27BF2C7B145C5B180015B491 /* NumberExtensions.m in Sources */,
 				27E5534D146ED844001DE9BE /* Accounts.xcdatamodeld in Sources */,
 				27C7B2F61475466600BD4F56 /* ColumnLayoutCorePlotLayer.m in Sources */,
 				27C7B506147FC50300278131 /* PecuniaPlotTimeFormatter.m in Sources */,
@@ -1775,6 +1802,11 @@
 				C13152B1150A0B260037958E /* CallbackHandler.m in Sources */,
 				27DD4AFE150B6F84006C2370 /* BWGradientBox.m in Sources */,
 				27DD4B09150B6FD0006C2370 /* NSColor+BWAdditions.m in Sources */,
+				2736DD4D1514F6590066917C /* MBTableGrid.m in Sources */,
+				2736DD4E1514F6590066917C /* MBTableGridCell.m in Sources */,
+				2736DD4F1514F6590066917C /* MBTableGridContentView.m in Sources */,
+				2736DD511514F6590066917C /* MBTableGridHeaderCell.m in Sources */,
+				2736DD521514F6590066917C /* MBTableGridHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

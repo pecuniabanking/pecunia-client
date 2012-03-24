@@ -23,6 +23,7 @@
 
 + (NSColor*)nextDefaultAccountColor;
 + (NSColor*)nextDefaultCategoryColor;
++ (NSColor*)applicationColorForKey: (NSString*)key;
 
 + (NSColor*)positiveCashColor;
 + (NSColor*)negativeCashColor;

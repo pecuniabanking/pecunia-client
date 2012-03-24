@@ -1,10 +1,21 @@
-//
-//  CategoryAnalysisWindowController.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 03.09.08.
-//  Copyright 2008 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #include <math.h>
 
@@ -13,7 +24,7 @@
 #import "BankAccount.h"
 
 #import "PecuniaPlotTimeFormatter.h"
-#import "NumberExtensions.h"
+#import "MCEMDecimalNumberAdditions.h"
 #import "GraphicsAdditions.h"
 #import "NS(Attributed)String+Geometrics.h"
 #import "AnimationHelper.h"
@@ -2137,13 +2148,14 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 - (IBAction)setGrouping: (id)sender
 {
     [NSObject cancelPreviousPerformRequestsWithTarget: self];
-        
+
     groupingInterval = [sender intValue];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary* values = [userDefaults objectForKey: @"categoryAnalysis"];
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 1];
+        [userDefaults setObject: values forKey: @"categoryAnalysis"];
     }
     [values setValue: [NSNumber numberWithInt: groupingInterval] forKey: @"grouping"];
 

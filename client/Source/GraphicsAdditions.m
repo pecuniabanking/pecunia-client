@@ -23,14 +23,16 @@
 
 static NSMutableArray* defaultAccountColors;
 static NSMutableArray* defaultCategoryColors;
+static NSMutableDictionary* applicationColors;
 
-+ (void)loadDefaultColors
++ (void)loadApplicationColors
 {
     // Generate our random seed.
     srandom(time(NULL));
 	
     defaultAccountColors = [[NSMutableArray arrayWithCapacity: 10] retain];
     defaultCategoryColors = [[NSMutableArray arrayWithCapacity: 10] retain];
+    applicationColors = [[NSMutableDictionary dictionary] retain];
 	
 	NSString* path = [[NSBundle mainBundle] resourcePath];
 	path = [path stringByAppendingString: @"/Colors.acf"];
@@ -38,7 +40,7 @@ static NSMutableArray* defaultCategoryColors;
 	NSError* error = nil;
 	NSString* s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
 	if (error) {
-		NSLog(@"Error reading default colors file at %@\n%@", path, [error localizedFailureReason]);
+		NSLog(@"Error reading applicaton colors file at %@\n%@", path, [error localizedFailureReason]);
 	} else {
 		NSArray* lines = [s componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
         NSEnumerator* enumerator = [lines objectEnumerator];
@@ -68,6 +70,9 @@ static NSMutableArray* defaultCategoryColors;
                 } else {
                     if ([line hasPrefix: @"Default Category Color"]) {
                         [defaultCategoryColors addObject: color];
+                    } else {
+                        // Everything else goes into the color dictionary.
+                        [applicationColors setValue: color forKey: line];
                     }
                 }
             }
@@ -82,7 +87,7 @@ static NSMutableArray* defaultCategoryColors;
 + (NSColor*)nextDefaultAccountColor
 {
     if (defaultAccountColors == nil) {
-        [self loadDefaultColors];
+        [self loadApplicationColors];
     }
 
     if ([defaultAccountColors count] > 0) {
@@ -105,7 +110,7 @@ static NSMutableArray* defaultCategoryColors;
 + (NSColor*)nextDefaultCategoryColor
 {
     if (defaultCategoryColors == nil) {
-        [self loadDefaultColors];
+        [self loadApplicationColors];
     }
 
     if ([defaultCategoryColors count] > 0) {
@@ -120,6 +125,23 @@ static NSMutableArray* defaultCategoryColors;
                                  green: (32 + random() % 200) / 255.0
                                   blue: (32 + random() % 100) / 255.0
                                  alpha: 1];
+}
+
+/**
+ * Returns a predefined application color named by the given key. This key is the same as used
+ * in the "Pecunia Colors.html" chart.
+ * Returns black if the given key could not be found.
+ */
++ (NSColor*)applicationColorForKey: (NSString*)key
+{
+    if (applicationColors == nil) {
+        [self loadApplicationColors];
+    }
+    NSColor* color = [applicationColors valueForKey: key];
+    if (color != nil)
+        return color;
+    
+    return [NSColor blackColor];
 }
 
 + (NSColor*)positiveCashColor
