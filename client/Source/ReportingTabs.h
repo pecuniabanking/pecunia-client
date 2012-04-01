@@ -11,7 +11,6 @@
 
 @interface BankingController (ReportingTabs) 
 
--(IBAction)catPeriodView: (id)sender;
 -(IBAction)standingOrders: (id)sender;
 
 @end

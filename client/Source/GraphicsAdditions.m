@@ -34,31 +34,48 @@ static NSMutableDictionary* applicationColors;
     defaultCategoryColors = [[NSMutableArray arrayWithCapacity: 10] retain];
     applicationColors = [[NSMutableDictionary dictionary] retain];
 	
-	NSString* path = [[NSBundle mainBundle] resourcePath];
+	NSString *path = [[NSBundle mainBundle] resourcePath];
 	path = [path stringByAppendingString: @"/Colors.acf"];
 	
-	NSError* error = nil;
-	NSString* s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
+	NSError *error = nil;
+	NSString *s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
 	if (error) {
 		NSLog(@"Error reading applicaton colors file at %@\n%@", path, [error localizedFailureReason]);
 	} else {
-		NSArray* lines = [s componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
-        NSEnumerator* enumerator = [lines objectEnumerator];
-        NSString* line = [enumerator nextObject];
+        // Lines can be separated by Windows linebreaks, so we need to check explicitly.
+		NSArray *lines = [s componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\n"]];
+        NSEnumerator *enumerator = [lines objectEnumerator];
+        NSString *line = [[enumerator nextObject] stringByTrimmingCharactersInSet: [NSCharacterSet newlineCharacterSet]];
         if (([lines count] > 3) && [line isEqualToString: @"ACF 1.0"]) {
             
             // Scan for data start.
             while ((line = [enumerator nextObject]) != nil) {
+                line = [line stringByTrimmingCharactersInSet: [NSCharacterSet newlineCharacterSet]];
                 if ([line isEqualToString: @"Data:"])
                     break;
             }
             
             // Read color values.
-            while ((line = [enumerator nextObject]) != nil) {
+            while (true) {
+                while ((line = [enumerator nextObject]) != nil) {
+                    line = [line stringByTrimmingCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+                    if (line.length > 0) {
+                        break;
+                    }
+                }
+                if (line == nil) {
+                    return;
+                }
+                
                 NSArray* components = [line componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
-                line = [enumerator nextObject];
-                if (line == nil || [components count] < 3) {
-                    break;
+                while ((line = [enumerator nextObject]) != nil) {
+                    line = [line stringByTrimmingCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+                    if (line.length > 0) {
+                        break;
+                    }
+                }
+                if (line == nil) {
+                    return;
                 }
                 
                 NSColor* color = [NSColor colorWithDeviceRed: [[components objectAtIndex: 0] intValue] / 65535.0
@@ -142,21 +159,6 @@ static NSMutableDictionary* applicationColors;
         return color;
     
     return [NSColor blackColor];
-}
-
-+ (NSColor*)positiveCashColor
-{
-    return [NSColor colorWithDeviceRed: 88 / 255.0 green: 128 / 255.0 blue: 34 / 255.0 alpha: 1];
-}
-
-+ (NSColor*)negativeCashColor
-{
-    return [NSColor colorWithDeviceRed: 194 / 255.0 green: 69 / 255.0 blue: 47 / 255.0 alpha: 1];
-}
-
-+ (NSColor*)disabledTreeItemColor
-{
-    return [NSColor colorWithDeviceRed: 203 / 255.0 green: 196 / 255.0 blue: 178 / 255.0 alpha: 1];
 }
 
 - (CGColorRef) CGColor

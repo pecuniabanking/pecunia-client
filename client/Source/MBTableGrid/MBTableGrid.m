@@ -29,6 +29,8 @@
 #import "MBTableGridContentView.h"
 #import "MBTableGridCell.h"
 
+#import "SynchronousScrollView.h"
+
 #pragma mark -
 #pragma mark Constant Definitions
 NSString *MBTableGridDidChangeSelectionNotification		= @"MBTableGridDidChangeSelectionNotification";
@@ -80,14 +82,22 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 @implementation MBTableGrid
 
 @synthesize allowsMultipleSelection;
+@synthesize showSelectionRing;
 @synthesize dataSource;
 @synthesize delegate;
 @synthesize selectedColumnIndexes;
 @synthesize selectedRowIndexes;
 
+@synthesize defaultCellSize;
 
 #pragma mark -
 #pragma mark Initialization & Superclass Overrides
+
++ (void)initialize
+{
+  [self exposeBinding: @"selectedRowIndexes"];
+  [self exposeBinding: @"selectedColumnIndexes"];
+}
 
 - (id)initWithFrame:(NSRect)frameRect
 {
@@ -105,6 +115,8 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		[self setCell:defaultCell];
 		[defaultCell release];
 		
+    defaultCellSize = NSMakeSize(60, 20);
+    
 		// Setup the column headers
 		NSRect columnHeaderFrame = NSMakeRect(MBTableGridRowHeaderWidth, 0, frameRect.size.width-MBTableGridRowHeaderWidth, MBTableGridColumnHeaderHeight);
 		columnHeaderScrollView = [[NSScrollView alloc] initWithFrame:columnHeaderFrame];
@@ -129,7 +141,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		
 		// Setup the content view
 		NSRect contentFrame = NSMakeRect(MBTableGridRowHeaderWidth, MBTableGridColumnHeaderHeight, [self frame].size.width-MBTableGridRowHeaderWidth, [self frame].size.height-MBTableGridColumnHeaderHeight);
-		contentScrollView = [[NSScrollView alloc] initWithFrame:contentFrame];
+		contentScrollView = [[SynchronousScrollView alloc] initWithFrame: contentFrame];
 		contentView = [[MBTableGridContentView alloc] initWithFrame:NSMakeRect(0,0,contentFrame.size.width,contentFrame.size.height)];
 		[contentScrollView setDocumentView:contentView];
 		[contentScrollView setAutoresizingMask:(NSViewWidthSizable|NSViewHeightSizable)];
@@ -145,6 +157,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		self.selectedColumnIndexes = [NSIndexSet indexSetWithIndex:0];
 		self.selectedRowIndexes = [NSIndexSet indexSetWithIndex:0];
 		self.allowsMultipleSelection = YES;
+    self.showSelectionRing = YES;
 		
 		// Set the default sticky edges
 		stickyColumnEdge = MBTableGridLeftEdge;
@@ -259,6 +272,9 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	}
 	
 	selectedColumnIndexes = [anIndexSet retain];
+  if ([selectedColumnIndexes count] == 1) {
+    [self scrollColumnToVisible: selectedColumnIndexes.firstIndex];
+  }
 	
 	[self setNeedsDisplay:YES];
   
@@ -286,8 +302,16 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	}
 	
 	selectedRowIndexes = [anIndexSet retain];
+  if ([selectedRowIndexes count] == 1) {
+    [self scrollRowToVisible: selectedRowIndexes.firstIndex];
+  }
 	
 	[self setNeedsDisplay:YES];
+	
+  // Explicitly set needsDisplay for subviews too, as this doesn't happen automatically if we are layer-backed.
+  [contentView setNeedsDisplay: YES];
+  [columnHeaderView setNeedsDisplay: YES];
+  [rowHeaderView setNeedsDisplay: YES];
 	
 	// Post the notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:MBTableGridDidChangeSelectionNotification object:self];
@@ -324,7 +348,9 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 - (void)mouseDown:(NSEvent *)theEvent
 {
 	// End editing (if necessary)
-	[[self cell] endEditing:[[self window] fieldEditor:NO forObject:contentView]];
+  NSText *fieldEditor = [[self window] fieldEditor:NO forObject:contentView];
+  if (fieldEditor != nil)
+    [[self cell] endEditing: fieldEditor];
 	
 	// If we're not the first responder, we need to be
 	if([[self window] firstResponder] != self) {
@@ -611,6 +637,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	
 	// Insert the typed string into the field editor
 	NSText *fieldEditor = [[self window] fieldEditor:YES forObject:self];
+  [fieldEditor setAlignment: [self.cell alignment]];
 	[fieldEditor setString:aString];
 }
 
@@ -953,11 +980,14 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 {
 	NSRect rect = [self convertRect:[contentView rectOfColumn:columnIndex] fromView:contentView];
 	rect.origin.y = 0;
-	rect.size.height += MBTableGridColumnHeaderHeight;
+  if (![columnHeaderView isHidden]) {
+    rect.size.height += MBTableGridColumnHeaderHeight;
+  }
 	if(rect.size.height > [self frame].size.height) {
 		rect.size.height = [self frame].size.height;
 		
-		// If the scrollbar is visible, don't include it in the rect
+		// If the scrollbar is visible, don't include it in the rect.
+    // TODO: incorrect with active embedded scrollers in Lion and newer.
 		if(![[contentScrollView horizontalScroller] isHidden]) {
 			rect.size.height -= [NSScroller scrollerWidth];
 		}
@@ -970,7 +1000,9 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 {
 	NSRect rect = [self convertRect:[contentView rectOfRow:rowIndex] fromView:contentView];
 	rect.origin.x = 0;
-	rect.size.width += MBTableGridRowHeaderWidth;
+  if (![rowHeaderView isHidden]) {
+    rect.size.width += MBTableGridRowHeaderWidth;
+  }
 	
 	return rect;
 }
@@ -1020,6 +1052,46 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		row++;
 	}
 	return NSNotFound;
+}
+
+- (void)scrollRowToVisible: (NSInteger)rowIndex
+{
+  NSRect visibleRect = [contentScrollView documentVisibleRect];
+  NSRect rowFrame = [self rectOfRow: rowIndex];
+  if (![columnHeaderView isHidden]) {
+    rowFrame.origin.y -= MBTableGridColumnHeaderHeight;
+  }
+  if (rowFrame.origin.y < 0) {
+    // Row is above the visible area (keep in mind we are flipped).
+		[[contentScrollView contentView] scrollToPoint:
+     NSMakePoint(visibleRect.origin.x, visibleRect.origin.y + rowFrame.origin.y)];
+    [contentScrollView reflectScrolledClipView: [contentScrollView contentView]];
+  }
+  if (NSMaxY(rowFrame) > visibleRect.size.height) {
+    // Row is below the visible area.
+		[[contentScrollView contentView] scrollToPoint:
+     NSMakePoint(visibleRect.origin.x, visibleRect.origin.y + NSMaxY(rowFrame) - visibleRect.size.height)];
+    [contentScrollView reflectScrolledClipView: [contentScrollView contentView]];
+  }
+}
+
+- (void)scrollColumnToVisible: (NSInteger)columnIndex
+{
+  NSRect visibleRect = [contentScrollView documentVisibleRect];
+  NSRect columnFrame = [self rectOfColumn: columnIndex];
+  if (![rowHeaderView isHidden]) {
+    columnFrame.origin.x -= MBTableGridRowHeaderWidth;
+  }
+  if (columnFrame.origin.x < 0) {
+		[[contentScrollView contentView] scrollToPoint:
+     NSMakePoint(visibleRect.origin.x + columnFrame.origin.x, visibleRect.origin.y)];
+    [contentScrollView reflectScrolledClipView: [contentScrollView contentView]];
+  }
+  if (NSMaxX(columnFrame) > visibleRect.size.width) {
+		[[contentScrollView contentView] scrollToPoint:
+     NSMakePoint(visibleRect.origin.x + NSMaxX(columnFrame) - visibleRect.size.width, visibleRect.origin.y)];
+    [contentScrollView reflectScrolledClipView: [contentScrollView contentView]];
+  }
 }
 
 - (void)updateLayout
@@ -1083,6 +1155,11 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 - (MBTableGridContentView *)contentView
 {
 	return contentView;
+}
+
+- (SynchronousScrollView *)contentScrollView
+{
+  return contentScrollView;
 }
 
 @end

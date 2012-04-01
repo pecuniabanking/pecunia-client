@@ -45,6 +45,7 @@ typedef enum {
     
     IBOutlet id delegate;
     IBOutlet NSSegmentedControl *control;
+    IBOutlet NSSegmentedControl *upDown;
     
     NSMutableArray *controls;
 }
@@ -69,6 +70,8 @@ typedef enum {
 -(void)save;
 -(NSPredicate*)predicateForField: (NSString*)field;
 -(NSString*)description;
+
+- (void)showControls: (BOOL)show;
 
 //+(void)initialize;
 +(TimeSliceManager*)defaultManager;

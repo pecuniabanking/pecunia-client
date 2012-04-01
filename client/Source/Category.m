@@ -1,10 +1,21 @@
-//
-//  Category.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 04.07.07.
-//  Copyright 2007 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2007, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "Category.h"
 #import "BankStatement.h"
@@ -448,6 +459,46 @@ BOOL	updateSent = NO;
     }
     
     return count;
+}
+
+/**
+ * Returns the dates of the oldest and newest entry for this category and all its children.
+ */
+- (void)getDatesMin: (ShortDate **)minDate max: (ShortDate **)maxDate
+{
+    ShortDate* currentMinDate = [ShortDate currentDate];
+    ShortDate* currentMaxDate = [ShortDate currentDate];
+    
+    // First get the dates from all child categories and then compare them to dates of this one.
+    NSMutableSet* children = [self mutableSetValueForKey: @"children" ];
+    for (Category* category in children) {
+        ShortDate *localMin, *localMax;
+        [category getDatesMin: &localMin max: &localMax];
+        if ([localMin compare: currentMinDate] == NSOrderedAscending) {
+            currentMinDate = localMin;
+        }
+        if ([localMax compare: currentMaxDate] == NSOrderedDescending) {
+            currentMaxDate = localMax;
+        }
+    }
+    
+    NSArray* stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
+    NSArray* sortedStats = [stats sortedArrayUsingSelector: @selector(compareDate:)];
+    
+    if ([sortedStats count] > 0) {
+        StatCatAssignment* assignment = [sortedStats objectAtIndex: 0];
+        ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
+        if ([date compare: currentMinDate] == NSOrderedAscending) {
+            currentMinDate = date;
+        }
+        assignment = [sortedStats lastObject];
+        date = [ShortDate dateWithDate: assignment.statement.date];
+        if ([date compare: currentMaxDate] == NSOrderedDescending) {
+            currentMaxDate = date;
+        }
+    }
+    *minDate = currentMinDate;
+    *maxDate = currentMaxDate;
 }
 
 /**

@@ -23,7 +23,6 @@
 #import "ShortDate.h"
 #import "TimeSliceManager.h"
 #import "MOAssistant.h"
-#import "AmountCell.h"
 
 #import "GraphicsAdditions.h"
 #import "NS(Attributed)String+Geometrics.h"

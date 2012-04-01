@@ -50,8 +50,6 @@
 	NSTimer *autoscrollTimer;
 	
 	BOOL isDraggingColumnOrRow;
-	
-	MBTableGridCell *_cell;
 }
 
 /**

@@ -2134,7 +2134,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         // We need to delay the release of the help window
         // otherwise it will just disappear instead to fade out.
         // With 10.7 and completion handlers it would be way more elegant.
-        [NSTimer scheduledTimerWithTimeInterval: .25
+        [NSTimer scheduledTimerWithTimeInterval: .5
                                          target: self 
                                        selector: @selector(releaseHelpWindow)
                                        userInfo: nil

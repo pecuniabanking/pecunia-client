@@ -18,68 +18,69 @@
  */
 
 #import <Cocoa/Cocoa.h>
+
 #import "Category.h"
 #import "PecuniaSectionItem.h"
 
 @class ShortDate;
 @class CategoryReportingNode;
+@class MBTableGrid;
+@class SynchronousScrollView;
+@class MAAttachedWindow;
+@class StatementsListView;
 
 @interface CategoryPeriodsWindowController : NSObject <PecuniaSectionItem> {
-    IBOutlet NSTreeController	*categoryController;
 	IBOutlet NSArrayController  *catPeriodDatesController;
-	IBOutlet NSPopUpButton		*fromButton;
-	IBOutlet NSPopUpButton		*toButton;
-	IBOutlet NSSplitView		*splitView;
-	IBOutlet NSOutlineView		*categoryView;
-	IBOutlet NSView				*mainView;
-	IBOutlet NSView				*printView;
+	IBOutlet NSPopUpButton      *fromButton;
+	IBOutlet NSPopUpButton      *toButton;
+    IBOutlet MBTableGrid        *valueGrid;
+	IBOutlet NSView             *mainView;
+	IBOutlet NSView             *printView;
 	IBOutlet NSArrayController  *statementsController;
-	IBOutlet NSSegmentedControl *periodControl;
+    IBOutlet NSSlider           *groupingSlider;
+    IBOutlet NSView             *statementDetailsView;
+    IBOutlet StatementsListView *statementsListView;
 
     @private
 	CategoryReportingNode		*dataRoot;
 	CategoryReportingNode		*periodRoot;
 	NSDictionary				*categoryHistory;
-	NSMutableArray				*dates;
 	NSMutableArray				*selectedDates;
-	NSNumberFormatter			*formatter;
 	ShortDate					*fromDate;
 	ShortDate					*toDate;
 	ShortDate					*minDate;
 	ShortDate					*maxDate;
 	CatHistoryType				histType;
 	NSManagedObjectContext		*managedObjectContext;
-	int							selectedColumn;
+
+    // Data storage.
+    NSMutableArray *dates;
+    NSMutableArray *balances;     // An array of balance arrays.
+    NSMutableArray *turnovers;    // An array of balance counts arrays.
+    
+    GroupingInterval groupingInterval;
+    
+    __weak NSOutlineView* outline; // The controlling outline.
+    BOOL active; // YES if we are the active section.
+    BOOL fadeInProgress; // YES if we are currently fading out the popup.
+    
+   MAAttachedWindow *detailsPopupWindow;
 }
 
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain) NSNumberFormatter *formatter;
-@property (nonatomic, retain) ShortDate *minDate;
-@property (nonatomic, retain) ShortDate *maxDate;
-@property (nonatomic, retain) CategoryReportingNode *dataRoot;
-@property (nonatomic, retain) CategoryReportingNode *periodRoot;
-@property (nonatomic, retain) NSDictionary *categoryHistory;
-@property (nonatomic, retain) NSMutableArray *dates;
-@property (nonatomic, retain) NSMutableArray *selectedDates;
-@property (nonatomic, retain) ShortDate *fromDate;
-@property (nonatomic, retain) ShortDate *toDate;
+@property (nonatomic, assign) NSOutlineView* outline; // weak reference
 
--(IBAction)histTypeChanged: (id)sender;
--(IBAction)fromButtonPressed:(id)sender;
--(IBAction)toButtonPressed:(id)sender;
--(IBAction)doubleClicked:(id)sender;
+- (IBAction)setGrouping: (id)sender;
+- (IBAction)fromButtonPressed:(id)sender;
+- (IBAction)toButtonPressed:(id)sender;
+- (IBAction)filterStatements: (id)sender;
 
--(void)getMinMaxDatesForNode: (CategoryReportingNode*)node;
--(void)updatePeriodDates;
--(NSString*)keyForDate:(ShortDate*)date;
--(void)updatePeriodDataForNode:(CategoryReportingNode*)node;
--(ShortDate*)periodRefDateForDate:(ShortDate*)date;
--(void)adjustDates;
--(void)updateData;
--(void)updateStatements;
-
-
--(Category*)currentSelection;
+- (void)updatePeriodDates;
+- (NSString*)keyForDate:(ShortDate*)date;
+- (void)updatePeriodDataForNode:(CategoryReportingNode*)node;
+- (ShortDate*)periodRefDateForDate:(ShortDate*)date;
+- (void)adjustDates;
+- (void)updateData;
+- (void)connectScrollViews: (SynchronousScrollView *)other;
 
 // PecuniaSectionItem protocol
 

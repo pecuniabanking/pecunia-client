@@ -17,10 +17,6 @@
  * 02110-1301  USA
  */
 
-//#import "ChipTanWindowController.h"
-#import "TanMediaWindowController.h"
-
-#import "BankingController.h"
 #import "Account.h"
 #import "NewBankUserController.h"
 #import "BankStatement.h"
@@ -46,25 +42,20 @@
 #import "StatCatAssignment.h"
 #import "PecuniaError.h"
 #import	"StatSplitController.h"
-#import "MigrationManagerWorkaround.h"
 #import "ShortDate.h"
 #import "BankStatementController.h"
 #import "AccountChangeController.h"
-#import "TransferListController.h"
 #import "PurposeSplitController.h"
-#import "PurposeSplitRule.h"
 #import "TransferTemplateController.h"
 
 #import "CategoryAnalysisWindowController.h"
 #import "CategoryRepWindowController.h"
 #import "CategoryDefWindowController.h"
+#import "CategoryPeriodsWindowController.h"
 
 #import "BankStatementPrintView.h"
-#import "GenericImportController.h"
-#import "DateAndValutaCell.h"
-#import "AmountCell.h"
 #import "DockIconController.h"
-#import "ReportingTabs.h"
+#import "ReportingTabs.h" // TODO: remove when no tabs exist anymore.
 
 #import "ImportController.h"
 #import "ImageAndTextCell.h"
@@ -79,10 +70,6 @@
 #import "User.h"
 #import "BankUser.h"
 
-#define _expandedRows @"EMT_expandedRows"
-#define _accountsViewSD @"EMT_accountsSorting"
-#define _accountsTreeWidth @"EMT_accountsTreeWidth"
-
 #define BankStatementDataType	@"BankStatementDataType"
 #define CategoryDataType		@"CategoryDataType"
 
@@ -90,6 +77,13 @@
 static BankingController *con;
 
 static BOOL runningOnLionOrLater = NO;
+
+@interface BankingController (Private)
+
+- (void)saveBankAccountItemsStates;
+- (void)restoreBankAccountItemsStates;
+
+@end
 
 @implementation BankingController
 
@@ -194,7 +188,16 @@ static BOOL runningOnLionOrLater = NO;
     }
     [categoryDefinitionController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
 
-    [sideToolbar retain]; // We are going to remove and re-add the toolbar on demand to maintain its top z position.
+    categoryPeriodsController = [[CategoryPeriodsWindowController alloc] init];
+    if ([NSBundle loadNibNamed: @"CategoryPeriods" owner: categoryPeriodsController]) {
+        NSView* view = [categoryPeriodsController mainView];
+        view.frame = frame;
+        [categoryPeriodsController connectScrollViews: accountsScrollView];
+    }
+    [categoryPeriodsController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+    categoryPeriodsController.outline = accountsView;
+    
+    [sideToolbar retain];   // We are going to remove and re-add the toolbar on demand to maintain its top z position.
     [rightSplitter retain]; // Content views are dynamically exchanged with proper retain/release.
                             // The right splitter is the initial control and needs an own retain to avoid losing it
                             // on the next switch.
@@ -204,13 +207,12 @@ static BOOL runningOnLionOrLater = NO;
 
 -(void)awakeFromNib
 {
-    // Some appealing colors for (positive and negative) values.
     NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor positiveCashColor], NSForegroundColorAttributeName,
+                                        [NSColor applicationColorForKey: @"Positive Cash"], NSForegroundColorAttributeName,
                                         nil
                                        ];
     NSDictionary* negativeAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor negativeCashColor], NSForegroundColorAttributeName,
+                                        [NSColor applicationColorForKey: @"Negative Cash"], NSForegroundColorAttributeName,
                                         nil
                                        ];
     
@@ -297,6 +299,7 @@ static BOOL runningOnLionOrLater = NO;
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_6
     if (runningOnLionOrLater) {
         [mainWindow setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
+        [toggleFullscreenItem setHidden: NO];
     }
 #endif
 }
@@ -305,8 +308,12 @@ static BOOL runningOnLionOrLater = NO;
 {
     [categoryAnalysisController release];
     [categoryReportingController release];
+    [categoryDefinitionController release];
+    [categoryPeriodsController release];
+    
     [sideToolbar release];
     [rightSplitter release];
+    [bankAccountItemsExpandState release];
     
     [super dealloc];
 }
@@ -1228,15 +1235,6 @@ static BOOL runningOnLionOrLater = NO;
         case 0:
         {
             [mainTabView selectTabViewItemAtIndex: 0];
-            
-            /* TODO: is it really necessary to do all computation in the category on every page switch?
-            // update values according to slicer
-            Category *cat = [Category catRoot];
-            [Category setCatReportFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
-            [cat rebuildValues];
-            [cat rollup];
-            */
-
             break;
         }
         case 1:
@@ -1267,6 +1265,19 @@ static BOOL runningOnLionOrLater = NO;
         currentView = rightSplitter;
     }
     
+    // Reset fetch predicate for the tree controller if we are switching away from
+    // the category periods view.
+    if (currentSection == categoryPeriodsController && [sender tag] != 3) {
+        NSPredicate* predicate = [NSPredicate predicateWithFormat: @"parent == nil"];
+        [categoryController setFetchPredicate: predicate];
+        
+        // Restore the previous expand state and selection (after a delay, to let the controller
+        // propagate the changed content to the outline.
+        [self performSelector: @selector(restoreBankAccountItemsStates) withObject: nil afterDelay: 0.1];
+        
+        [timeSlicer showControls: YES];
+    }
+
     NSRect frame = [currentView frame];
     switch ([sender tag]) {
         case 0:
@@ -1306,9 +1317,23 @@ static BOOL runningOnLionOrLater = NO;
             }
             break;
         case 3:
-            [currentSection deactivate]; // Temporary solution.
-            [self catPeriodView: nil];
-            pageHasChanged = YES;
+            if (currentSection != categoryPeriodsController) {
+                [currentSection deactivate];
+                [[categoryPeriodsController mainView] setFrame: frame];
+                [[rightPane animator] replaceSubview: currentView with: [categoryPeriodsController mainView]];
+                currentSection = categoryPeriodsController;
+                
+                // In order to be able to line up the category entries with the grid we hide the bank
+                // accounts.
+                [self saveBankAccountItemsStates];
+
+                NSPredicate* predicate = [NSPredicate predicateWithFormat: @"parent == nil && isBankAcc == NO"];
+                [categoryController setFetchPredicate: predicate];
+                [categoryController prepareContent];
+                [timeSlicer showControls: NO];
+
+                pageHasChanged = YES;
+            }
             break;
         case 4:
             if (currentSection != categoryDefinitionController) {
@@ -1433,6 +1458,7 @@ static BOOL runningOnLionOrLater = NO;
 {
     NSError	*error = nil;
     
+    [currentSection deactivate];
     [accountsView saveLayout];
     
     // Remove explicit bindings and observers to speed up shutdown.
@@ -2025,7 +2051,7 @@ static BOOL runningOnLionOrLater = NO;
     }
 }
 
-- (IBAction)deleteCategory: (id)sender
+- (void)deleteCategory: (id)sender
 {
     Category *cat = [self currentSelection];
     if(cat == nil) return;
@@ -2047,15 +2073,15 @@ static BOOL runningOnLionOrLater = NO;
         if(res != NSAlertAlternateReturn) return;
     }
     
-    //  Delete bank statements from category first
-    for(stat in stats) {
+    //  Delete bank statements from category first.
+    for (stat in stats) {
         [stat remove];
     }
     [categoryController remove: cat];
     [Category updateCatValues];
 }
 
--(IBAction)addCategory: (id)sender
+- (void)addCategory: (id)sender
 {
     Category *cat = [self currentSelection];
     if(cat.isBankAccount) return;
@@ -2063,7 +2089,7 @@ static BOOL runningOnLionOrLater = NO;
     [accountsView performSelector: @selector(editSelectedCell) withObject: nil afterDelay: 0.0];
 }
 
--(IBAction)insertCategory: (id)sender
+- (void)insertCategory: (id)sender
 {
     Category *cat = [self currentSelection];
     if([cat isInsertable] == NO) return;
@@ -2081,6 +2107,7 @@ static BOOL runningOnLionOrLater = NO;
         case 2: [self deleteCategory: sender]; break;
         default: return;
     }
+    [currentSection activate]; // Notifies the current section to updates values if necessary.
 }
 
 -(NSString*)autosaveNameForTimeSlicer: (TimeSliceManager*)tsm
@@ -2333,6 +2360,62 @@ static BOOL runningOnLionOrLater = NO;
     [NSApp runModalForWindow: [splitController window]];
 }
 
+#pragma mark -
+#pragma mark Miscellaneous code
+
+/**
+ * Saves the expand states of the top bank account node and all its children.
+ * Also saves the current selection if it is on a bank account.
+ */
+- (void)saveBankAccountItemsStates
+{
+    Category* category = [self currentSelection];
+    if ([category isBankAccount]) {
+        lastSelection = category;
+        [categoryController setSelectedObject: Category.nassRoot];
+    }
+    bankAccountItemsExpandState = [[NSMutableArray array] retain];
+    NSUInteger row, numberOfRows = [accountsView numberOfRows];
+    
+    for (row = 0 ; row < numberOfRows; row++)
+    {
+        id item = [accountsView itemAtRow: row];
+        Category *category = [item representedObject];
+        if (![category isBankAccount]) {
+            break;
+        }
+        if ([accountsView isItemExpanded: item])
+            [bankAccountItemsExpandState addObject: category];
+    }
+}
+
+/**
+ * Restores the previously saved expand states of all bank account nodes and sets the
+ * last selection if it was on a bank account node.
+ */
+- (void)restoreBankAccountItemsStates
+{
+    NSUInteger row, numberOfRows = [accountsView numberOfRows];
+    for (Category *savedItem in bankAccountItemsExpandState) {
+        for (row = 0 ; row < numberOfRows ; row++) {
+            id item = [accountsView itemAtRow: row];
+            Category *object = [item representedObject];
+            if ([object.name isEqualToString: savedItem.name]) {
+                [accountsView expandItem: item];
+                numberOfRows = [accountsView numberOfRows];
+                break;
+            }
+        }
+    }
+    [bankAccountItemsExpandState release];
+    bankAccountItemsExpandState = nil;
+    
+    // Restore the last selection, but only when selecting the item is allowed.
+    if (lastSelection != nil && currentSection != categoryReportingController && currentSection != categoryDefinitionController) {
+        [categoryController setSelectedObject: lastSelection];
+    }
+    lastSelection = nil;
+}
 
 -(void)syncAllAccounts
 {
@@ -2366,7 +2449,7 @@ static BOOL runningOnLionOrLater = NO;
     
     // get statements in separate thread
     autoSyncRunning = YES;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statementsNotification:) name:PecuniaStatementsNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(statementsNotification:) name: PecuniaStatementsNotification object: nil];
     [[HBCIClient hbciClient] getStatements: resultList];
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
@@ -2665,6 +2748,15 @@ static BOOL runningOnLionOrLater = NO;
     }
     
     [aboutWindow fadeIn];
+}
+
+- (IBAction)toggleFullscreenIfSupported: (id)sender
+{
+#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_6
+    if (runningOnLionOrLater) {
+        [mainWindow toggleFullScreen: mainWindow];
+    }
+#endif
 }
 
 -(void)migrate

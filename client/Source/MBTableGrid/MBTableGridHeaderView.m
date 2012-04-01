@@ -201,7 +201,7 @@
 	// Otherwise, extend the selection (if possible)
 	else if (mouseDownItem >= 0 && !isInDrag && !shouldDragItems) {
 		// Determine which item is under the mouse
-		NSInteger itemUnderMouse;
+		NSInteger itemUnderMouse = -1;
 		if (self.orientation == MBTableHeaderHorizontalOrientation) {
 			itemUnderMouse = [[self tableGrid] columnAtPoint:[self convertPoint:loc toView:[self tableGrid]]];
 		} else if(self.orientation == MBTableHeaderVerticalOrientation) {

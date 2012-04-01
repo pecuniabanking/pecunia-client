@@ -156,7 +156,7 @@ static NSGradient* selectionGradient = nil;
     selectionRect.size.width = [controlView bounds].size.width;
     selectionRect.origin.x = 0;
     
-    NSBezierPath* selectionOutline = [NSBezierPath bezierPathWithRoundedRect: selectionRect xRadius: 4 yRadius: 4];
+    NSBezierPath* selectionOutline = [NSBezierPath bezierPathWithRoundedRect: selectionRect xRadius: 3 yRadius: 3];
     if ([self isHighlighted])
     {
         if (selectionGradient == nil)
@@ -166,8 +166,8 @@ static NSGradient* selectionGradient = nil;
                               [NSColor colorWithDeviceWhite: 60 / 256.0 alpha: 1], (CGFloat) 1,
                               nil];
             selectionGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                                 [NSColor colorWithCalibratedRed: 1 / 255.0 green: 115 / 255.0 blue: 244 / 255.0 alpha: 1], (CGFloat) 0,
-                                 [NSColor colorWithCalibratedRed: 0 / 255.0 green: 65 / 255.0 blue: 225 / 255.0 alpha: 1], (CGFloat) 1,
+                                 [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat) 0,
+                                 [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 1,
                                  nil
                                  ];
         }
@@ -292,7 +292,7 @@ static NSGradient* selectionGradient = nil;
         NSColor *textColor = [NSColor colorWithCalibratedWhite: 40 / 255.0 alpha: 1];
         
         if (isDisabled) {
-            textColor = [NSColor disabledTreeItemColor];
+            textColor = [NSColor applicationColorForKey: @"Disabled Tree Item Color"];
         }   
         attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                       [self font], NSFontAttributeName,

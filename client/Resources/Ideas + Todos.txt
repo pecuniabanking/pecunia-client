@@ -12,6 +12,10 @@ Allgemeines
 - Unterstützung für Paypal.
 - Unterstützung für Chipkarten
 - Navigationshistorie + back/forward buttons für alle Seiten
+- Kontenmappen, also eine Möglichkeit für verschiedene Eigentümer die Konten anzuzeigen (und Kategorien). Vielleicht täte es auch ein Filter.
+- Eine Startseite:
+"ich dachte da an verschiedene Dinge, z.B ein Modul für Konten, so das man einen Direkteinstieg hat auf Konten, Kreditkarten. Etwa mit einem Rechtsklick eine Überweisung direkt von einem Konto anstoßen kann. Oder eine Statistik der Ausgaben-Einnahmen. Fällige, noch nicht getätigte Überweisungen. Aktienkurse, Devisenmärkte eventuell einen integrierten Taschenrechner, Adressbuch, Abruf der einzelnen Konten. Eine individuell anpassbare Startseite ist sehr bequem für den Benutzer."
+- OCR zur automatischen Übernahme von vorgedruckten Zahlungsanweisungen.
 
 Kategorie + Kontenanalyse
 -------------------------
@@ -47,7 +51,7 @@ Ausgaben/Export
 
 Bankkennungen + Konten
 ----------------------
-- Anzeige der von der Bank und diesem Nutzer unterstützten Geschäftsvorfälle.
+
 
 Aufträge, Überweisungen, Lastschriften
 --------------------------------------
@@ -56,3 +60,8 @@ Aufträge, Überweisungen, Lastschriften
 Daueraufträge
 ---------------
 - Nächste fälligen Überweisungen anzeigen
+
+Haushaltsbuch/Budgetplanung
+---------------------------
+- OCR für Bons, zur (halb)automatischen Erfassung von gekauften Artikeln.
+

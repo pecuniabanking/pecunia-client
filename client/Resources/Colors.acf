@@ -1,12 +1,12 @@
 ACF 1.0
 Colors.acf
 LibraryVersion: 1.0
-Copyright: (c) 2011, Mike Lischke
+Copyright: 
 AboutMessage: 
 Names: Partial
 Rows: 12
 Columns: 12
-Entries: 19
+Entries: 25
 Prefix: 
 Suffix: 
 Type: Process
@@ -51,3 +51,15 @@ Positive Gradient (high)
 Positive Gradient (low)
 49858 17733 12079
 Negative Cash
+52171 50372 45746
+Disabled Tree Item Color
+62194 60395 55512
+Table Background Main
+62194 57311 44204
+Table Background Alternate
+24158 41891 57311
+Selection Gradient (high)
+13621 30583 49858
+Selection Gradient (low)
+65535 64764 62194
+Grid Partial Selection

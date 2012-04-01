@@ -177,12 +177,12 @@ static NSImage* stripeImage;
                              [NSColor colorWithDeviceWhite: 245 / 255.0 alpha: 1], (CGFloat) 1,
                              nil];
     headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                      [NSColor colorWithDeviceWhite: 80 / 256.0 alpha: 1], (CGFloat) 0,
-                      [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], (CGFloat) 1,
+                      [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], (CGFloat) 0,
+                      [NSColor colorWithDeviceWhite: 170 / 255.0 alpha: 1], (CGFloat) 1,
                       nil];
     innerShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithCalibratedWhite: 0.0 alpha: .75]
                                            offset: NSMakeSize(0, -1)
-                                       blurRadius: 4.0];
+                                       blurRadius: 3.0];
     stripeImage = [NSImage imageNamed: @"slanted_stripes.png"];
 }
 

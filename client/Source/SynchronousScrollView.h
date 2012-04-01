@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,12 +19,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "MBTableGridCell.h"
-
-@interface AmountCell : MBTableGridCell {
+@interface SynchronousScrollView : NSScrollView
+{
+  NSScrollView* synchronizedScrollView; // not retained
 }
 
-@property (nonatomic, retain) NSString *currency;
-@property (nonatomic, retain) NSNumberFormatter *formatter;
+- (void)setSynchronizedScrollView: (NSScrollView*)scrollview;
+- (void)stopSynchronizing;
+- (void)synchronizedViewContentBoundsDidChange: (NSNotification *)notification;
 
 @end

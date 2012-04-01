@@ -340,6 +340,12 @@ TimeSliceManager *timeSliceManager = nil;
 	return [NSString stringWithFormat:@"%@ - %@", [self lowerBounds ],  [self upperBounds ] ];
 }
 
+- (void)showControls:(BOOL)show
+{
+    [[control animator] setHidden: !show];
+    [[upDown animator] setHidden: !show];
+}
+
 -(void)dealloc
 {
 	[controls release ];

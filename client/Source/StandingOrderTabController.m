@@ -591,7 +591,7 @@
 		StandingOrder *order = [orders objectAtIndex:rowIndex ];
 		
 		AmountCell *cell = (AmountCell*)aCell;
-		cell.amount = order.value;
+		cell.objectValue = order.value;
 		cell.currency = order.currency;
 	}
 }

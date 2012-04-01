@@ -71,18 +71,12 @@
 		cursorImage = [[self _cellSelectionCursorImage] retain];
 		
 		isDraggingColumnOrRow = NO;
-		
-		_cell = [[MBTableGridCell alloc] initTextCell:@""];
-		[_cell setBezeled:YES];
-		[_cell setScrollable:YES];
-		[_cell setLineBreakMode:NSLineBreakByTruncatingTail];
 	}
 	return self;
 }
 
 - (void)dealloc
 {
-	[_cell release];
 	[cursorImage release];
 	[super dealloc];
 }
@@ -96,6 +90,9 @@
 	NSInteger lastColumn = numberOfColumns - 1;
 	NSInteger firstRow = NSNotFound;
 	NSInteger lastRow = numberOfRows - 1;
+	
+	NSIndexSet *selectedColumns = [[self tableGrid] selectedColumnIndexes];
+	NSIndexSet *selectedRows = [[self tableGrid] selectedRowIndexes];
 	
 	// Find the columns to draw.
   // Note: we cannot optimize drawing here with [self visibleRect] as this doesn't work with
@@ -126,6 +123,33 @@
 		row++;
 	}	
 	
+  // First loop. Draw only cells which are not or only partially selected.
+  id cell = [self tableGrid].cell;
+	column = firstColumn;
+	while (column <= lastColumn) {
+		row = firstRow;
+		while (row <= lastRow) {
+			NSRect cellFrame = [self frameOfCellAtColumn:column row:row];
+			
+			// Only draw the cell if we need to
+			if ([self needsToDrawRect: cellFrame]) {
+        BOOL isFullySelected = [selectedRows containsIndex: row] && [selectedColumns containsIndex: column];
+        if ([cell isKindOfClass: [MBTableGridCell class]]) {
+          [cell setIsInSelectedRow: [selectedRows containsIndex: row]];
+          [cell setIsInSelectedColumn: [selectedColumns containsIndex: column]];
+        }
+        if (!isFullySelected) {
+          [cell setObjectValue:[[self tableGrid] _objectValueForColumn:column row:row]];
+          [cell drawWithFrame:cellFrame inView:self];
+        }
+			}
+			row++;
+		}
+		column++;
+	}
+	
+  // Second loop. Draw only cells which are fully selected (i.e. are in both selection sets).
+  // This allows to draw them oversized.
 	column = firstColumn;
 	while (column <= lastColumn) {
 		row = firstRow;
@@ -134,8 +158,15 @@
 			
 			// Only draw the cell if we need to
 			if ([self needsToDrawRect:cellFrame]) {
-				[_cell setObjectValue:[[self tableGrid] _objectValueForColumn:column row:row]];
-				[_cell drawWithFrame:cellFrame inView:self];
+        BOOL isFullySelected = [selectedRows containsIndex: row] && [selectedColumns containsIndex: column];
+        if ([cell isKindOfClass: [MBTableGridCell class]]) {
+          [cell setIsInSelectedRow: YES];
+          [cell setIsInSelectedColumn: YES];
+        }
+        if (isFullySelected) {
+          [cell setObjectValue:[[self tableGrid] _objectValueForColumn:column row:row]];
+          [cell drawWithFrame:cellFrame inView:self];
+        }
 			}
 			row++;
 		}
@@ -143,10 +174,8 @@
 	}
 	
 	// Draw the selection rectangle
-	NSIndexSet *selectedColumns = [[self tableGrid] selectedColumnIndexes];
-	NSIndexSet *selectedRows = [[self tableGrid] selectedRowIndexes];
-	
-	if([selectedColumns count] && [selectedRows count] && [[self tableGrid] numberOfColumns] > 0 && [[self tableGrid] numberOfRows] > 0) {
+	if (self.tableGrid.showSelectionRing && [selectedColumns count] && [selectedRows count] &&
+      [[self tableGrid] numberOfColumns] > 0 && [[self tableGrid] numberOfRows] > 0) {
 		NSRect selectionTopLeft = [self frameOfCellAtColumn:[selectedColumns firstIndex] row:[selectedRows firstIndex]];
 		NSRect selectionBottomRight = [self frameOfCellAtColumn:[selectedColumns lastIndex] row:[selectedRows lastIndex]];
 		
@@ -390,7 +419,7 @@
 	// Give focus back to the table grid (the field editor took it)
 	[[self window] makeFirstResponder:[self tableGrid]];
 	
-	NSString *value = [[[aNotification object] string] copy];
+	NSString *value = [[aNotification object] string];
 	[[self tableGrid] _setObjectValue:value forColumn:editedColumn row:editedRow];
 	
 	editedColumn = NSNotFound;
@@ -495,36 +524,20 @@
 
 - (NSRect)rectOfColumn: (NSInteger)columnIndex
 {
-	NSRect rect = NSMakeRect(0, 0, 60, [self frame].size.height);
+	NSRect rect = NSMakeRect(0, 0, [[self tableGrid] defaultCellSize].width, [self frame].size.height);
   if (columnIndex >= 0) {
     rect.origin.x += rect.size.width * columnIndex;
   }
-/*	
-	NSUInteger i = 0;
-	while(i < columnIndex) {
-		float headerWidth = rect.size.width;
-		rect.origin.x += headerWidth;
-		i++;
-	}
-	*/
 	return rect;
 }
 
 - (NSRect)rectOfRow: (NSInteger)rowIndex
 {
-	float heightForRow = 20.0;
-	NSRect rect = NSMakeRect(0, 0, [self frame].size.width, heightForRow);
+	NSRect rect = NSMakeRect(0, 0, [self frame].size.width, [[self tableGrid] defaultCellSize].height);
 	
   if (rowIndex >= 0) {
     rect.origin.y += 20.0 * rowIndex;
   }
-	
-	/*NSUInteger i = 0;
-	while(i < rowIndex) {
-		float rowHeight = rect.size.height;
-		rect.origin.y += rowHeight;
-		i++;
-	}*/
 	
 	return rect;
 }

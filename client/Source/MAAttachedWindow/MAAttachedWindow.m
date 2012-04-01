@@ -786,6 +786,9 @@
 	// Thanks to Martin Redington.
 	_point = point;
 	_side = side;
+  if (_side == MAPositionAutomatic) {
+    _side = [self _bestSideForAutomaticPosition];
+  }
 	NSDisableScreenUpdates();
 	[self _updateGeometry];
 	[self _updateBackground];

@@ -25,6 +25,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class SynchronousScrollView;
+
 @class MBTableGridHeaderView, MBTableGridHeaderCell, MBTableGridContentView;
 @protocol MBTableGridDelegate, MBTableGridDataSource;
 
@@ -121,7 +123,7 @@ typedef enum {
 	MBTableGridHeaderView *rowHeaderView;
 	
 	/* Content */
-	NSScrollView *contentScrollView;
+	SynchronousScrollView *contentScrollView;
 	MBTableGridContentView *contentView;
 	
 	/* Selections */
@@ -269,6 +271,12 @@ typedef enum {
 @property(assign) BOOL allowsMultipleSelection;
 
 /**
+ * @brief		Indicates whether the receiver should draw the selection ring around selected cells.
+ *
+ */
+@property(assign) BOOL showSelectionRing;
+
+/**
  * @}
  */
 
@@ -302,6 +310,11 @@ typedef enum {
  * @see			dataSource
  */
 @property (nonatomic, assign) id <MBTableGridDelegate> delegate;
+
+/**
+ * @brief	The default size for a cell (which determines the width of columns and the height of rows.
+ */
+@property (nonatomic, assign) NSSize defaultCellSize;
 
 /**
  * @}
@@ -440,6 +453,12 @@ typedef enum {
 - (NSInteger)rowAtPoint:(NSPoint)aPoint;
 
 /**
+ * If the given row/column is not in the visible area then scroll it so it becomes visible.
+ */
+- (void)scrollRowToVisible: (NSInteger)rowIndex;
+- (void)scrollColumnToVisible: (NSInteger)columnIndex;
+
+/**
  * @}
  */
 
@@ -489,6 +508,7 @@ typedef enum {
  * @}
  */
 
+- (SynchronousScrollView *)contentScrollView;
 @end
 
 #pragma mark -

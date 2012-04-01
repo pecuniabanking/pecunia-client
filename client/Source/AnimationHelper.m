@@ -203,10 +203,10 @@
 - (void)fadeIn
 {
     [self setAlphaValue: 0.f];
-    [self makeKeyAndOrderFront: nil];
+    [self orderFront: nil];
 
     [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration: 0.25];
+    [[NSAnimationContext currentContext] setDuration: 0.3];
     [[self animator] setAlphaValue: 1.f];
     [NSAnimationContext endGrouping];
 }
@@ -240,7 +240,12 @@
 - (void)fadeOut
 {
     [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration: 0.2];
+    float duration = 0.3;
+    if (([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) != 0) {
+		duration = 3;
+	}
+
+    [[NSAnimationContext currentContext] setDuration: duration];
     /* Completion handler aren't available before 10.7.
     [[NSAnimationContext currentContext] setCompletionHandler:^{
         [self orderOut: nil];

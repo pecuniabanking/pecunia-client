@@ -149,7 +149,7 @@
 		Transfer *transfer = [transfers objectAtIndex:rowIndex ];
 		
 		AmountCell *cell = (AmountCell*)aCell;
-		cell.amount = transfer.value;
+		cell.objectValue = transfer.value;
 		cell.currency = transfer.currency;
 	}
 }	

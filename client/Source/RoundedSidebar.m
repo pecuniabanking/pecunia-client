@@ -77,7 +77,7 @@ static NSShadow* innerShadow2 = nil;
     [borderPath fill];
     [borderPath addClip];
     
-    [backgroundGradient drawInBezierPath: borderPath angle: 95.0];
+    //[backgroundGradient drawInBezierPath: borderPath angle: 95.0];
     
     // Inset.
     NSBezierPath* insetPath = [NSBezierPath bezierPath];

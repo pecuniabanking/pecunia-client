@@ -25,10 +25,6 @@
 + (NSColor*)nextDefaultCategoryColor;
 + (NSColor*)applicationColorForKey: (NSString*)key;
 
-+ (NSColor*)positiveCashColor;
-+ (NSColor*)negativeCashColor;
-+ (NSColor*)disabledTreeItemColor;
-
 - (CGColorRef)CGColor;
 
 @end

@@ -16,6 +16,7 @@
 		2708DA051493DB3300758A6B /* rules.png in Resources */ = {isa = PBXBuildFile; fileRef = 2708DA041493DB3300758A6B /* rules.png */; };
 		2710CD5815093575006223A6 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 2710CD5715093575006223A6 /* account.png */; };
 		27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
+		2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2716FE4C152381A60015A753 /* SynchronousScrollView.m */; };
 		271B47D614508F2F0036815C /* Transfer_EU_24.png in Resources */ = {isa = PBXBuildFile; fileRef = 271B47D514508F2E0036815C /* Transfer_EU_24.png */; };
 		271B47DC1450946D0036815C /* donate_24.png in Resources */ = {isa = PBXBuildFile; fileRef = 271B47DB1450946D0036815C /* donate_24.png */; };
 		2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */; };
@@ -58,6 +59,7 @@
 		27C930F6149508280055EAD5 /* Colors.acf in Resources */ = {isa = PBXBuildFile; fileRef = 27C930F5149508280055EAD5 /* Colors.acf */; };
 		27CC732614A09E060082495C /* MAAttachedWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC732514A09E060082495C /* MAAttachedWindow.m */; };
 		27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */; };
+		27D1172B15288C3600CD7E83 /* background-pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D1172A15288C3600CD7E83 /* background-pattern.png */; };
 		27D240EA145302A900EDC8C7 /* done.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27D240E9145302A900EDC8C7 /* done.mp3 */; };
 		27D3169014A8C81B002F500D /* blue arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D3168F14A8C81B002F500D /* blue arrow.png */; };
 		27DD4AC5150B60A4006C2370 /* HBCI business transactions.csv in Resources */ = {isa = PBXBuildFile; fileRef = 27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */; };
@@ -307,6 +309,8 @@
 		2710CD5715093575006223A6 /* account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account.png; sourceTree = "<group>"; };
 		27150D9E140ABDAC000841E2 /* RoundedSidebar.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RoundedSidebar.h; sourceTree = "<group>"; tabWidth = 4; };
 		27150D9F140ABDAC000841E2 /* RoundedSidebar.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedSidebar.m; sourceTree = "<group>"; tabWidth = 4; };
+		2716FE4B152381A60015A753 /* SynchronousScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynchronousScrollView.h; sourceTree = "<group>"; };
+		2716FE4C152381A60015A753 /* SynchronousScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynchronousScrollView.m; sourceTree = "<group>"; };
 		271B47D514508F2E0036815C /* Transfer_EU_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transfer_EU_24.png; sourceTree = "<group>"; };
 		271B47DB1450946D0036815C /* donate_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = donate_24.png; sourceTree = "<group>"; };
 		2724DAED14012A0F00B0FE15 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -375,6 +379,7 @@
 		27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NS(Attributed)String+Geometrics.h"; sourceTree = "<group>"; };
 		27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NS(Attributed)String+Geometrics.m"; sourceTree = "<group>"; };
 		27CC74A914A102800082495C /* German */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = German; path = "German.lproj/category-reporting-help.rtf"; sourceTree = SOURCE_ROOT; };
+		27D1172A15288C3600CD7E83 /* background-pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-pattern.png"; sourceTree = "<group>"; };
 		27D240E9145302A900EDC8C7 /* done.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = done.mp3; path = Sounds/done.mp3; sourceTree = "<group>"; };
 		27D3168F14A8C81B002F500D /* blue arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue arrow.png"; sourceTree = "<group>"; };
 		27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "HBCI business transactions.csv"; sourceTree = "<group>"; };
@@ -861,6 +866,8 @@
 				B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */,
 				B136AAD60FCF1C4A007A643F /* MCEMTableView.h */,
 				B136AAD70FCF1C4A007A643F /* MCEMTableView.m */,
+				2716FE4B152381A60015A753 /* SynchronousScrollView.h */,
+				2716FE4C152381A60015A753 /* SynchronousScrollView.m */,
 			);
 			name = "Controls and Layouts";
 			sourceTree = "<group>";
@@ -1205,6 +1212,7 @@
 		B1923B560EB7A6D40079ADCA /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				27D1172A15288C3600CD7E83 /* background-pattern.png */,
 				2710CD5715093575006223A6 /* account.png */,
 				B17FE82814DC380300F6FAFE /* Transfer_Internal.png */,
 				B17FE81A14DC350E00F6FAFE /* Transfer_SEPA.png */,
@@ -1652,6 +1660,7 @@
 				B17729AD1504D63200256898 /* BusinessTransactionsWindow.xib in Resources */,
 				2710CD5815093575006223A6 /* account.png in Resources */,
 				27DD4AC5150B60A4006C2370 /* HBCI business transactions.csv in Resources */,
+				27D1172B15288C3600CD7E83 /* background-pattern.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1807,6 +1816,7 @@
 				2736DD4F1514F6590066917C /* MBTableGridContentView.m in Sources */,
 				2736DD511514F6590066917C /* MBTableGridHeaderCell.m in Sources */,
 				2736DD521514F6590066917C /* MBTableGridHeaderView.m in Sources */,
+				2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

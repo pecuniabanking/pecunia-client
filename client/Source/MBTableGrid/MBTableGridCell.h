@@ -34,4 +34,10 @@
 
 }
 
+@property (nonatomic, assign) BOOL isInSelectedRow;
+@property (nonatomic, assign) BOOL isInSelectedColumn;
+
+@property (nonatomic, retain) NSGradient *partiallyHighlightedGradient;
+@property (nonatomic, retain) NSGradient *fullyHighlightedGradient;
+
 @end

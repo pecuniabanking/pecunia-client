@@ -21,7 +21,6 @@
 
 #import "PecuniaSectionItem.h"
 
-@class AccountsTree;
 @class Account;
 @class BankAccount;
 @class NewBankUserController;
@@ -34,7 +33,6 @@
 @class CategoryView;
 @class TransferListController;
 @class DockIconController;
-@class CurrencyValueTransformer;
 
 @class StatementsListView;
 @class RoundedOuterShadowView;
@@ -42,9 +40,12 @@
 @class CategoryAnalysisWindowController;
 @class CategoryRepWindowController;
 @class CategoryDefWindowController;
+@class CategoryPeriodsWindowController;
 
+@class RoundedSidebar;
 @class SideToolbarView;
 @class BWGradientBox;
+@class SynchronousScrollView;
 
 @interface BankingController : NSObject
 {
@@ -53,8 +54,8 @@
     IBOutlet NSTabView          *mainTabView;
     IBOutlet CategoryView       *accountsView;
     IBOutlet MCEMTreeController *categoryController;
+    IBOutlet SynchronousScrollView *accountsScrollView;
     IBOutlet NSSplitView        *mainVSplit;
-    IBOutlet NSPredicateEditor  *predicateEditor;
     IBOutlet NSArrayController  *assignPreviewController;
     IBOutlet NSToolbar          *toolbar;
     IBOutlet NSToolbarItem      *searchItem;
@@ -86,7 +87,10 @@
     IBOutlet TransferListController *transferListController;
     IBOutlet StatementsListView     *statementsListView;
     
+    IBOutlet RoundedSidebar  *sideBar;
     IBOutlet SideToolbarView *sideToolbar;
+    
+    IBOutlet NSMenuItem    *toggleFullscreenItem;
     
 @private
     NSMutableDictionary    *mainTabItems;
@@ -108,9 +112,13 @@
     NSImage *moneySyncImage;
     NSImage *folderImage;
     
+    NSMutableArray *bankAccountItemsExpandState;
+    Category *lastSelection;
+    
     CategoryAnalysisWindowController *categoryAnalysisController;
     CategoryRepWindowController *categoryReportingController;
     CategoryDefWindowController *categoryDefinitionController;
+    CategoryPeriodsWindowController *categoryPeriodsController;
     id<PecuniaSectionItem> currentSection;
 }
 
@@ -147,9 +155,6 @@
 
 -(IBAction)manageCategories:(id)sender;
 
--(IBAction)addCategory: (id)sender;
--(IBAction)insertCategory: (id)sender;
-
 -(IBAction)deleteStatement: (id)sender;
 -(IBAction)splitStatement: (id)sender;
 -(IBAction)addStatement: (id)sender;
@@ -164,6 +169,7 @@
 
 -(IBAction)showLog:(id)sender;
 -(IBAction)showAboutPanel:(id)sender;
+- (IBAction)toggleFullscreenIfSupported: (id)sender;
 
 -(void)windowWillClose:(NSNotification *)aNotification;
 -(NSArray*)selectedNodes;

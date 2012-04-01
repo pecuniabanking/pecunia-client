@@ -1,79 +1,112 @@
-//
-//  AmountCell.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 06.06.11.
-//  Copyright 2011 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "AmountCell.h"
+#import "GraphicsAdditions.h"
 
-#define CELL_BOUNDS 2
+#define CELL_BOUNDS 3
 
 @implementation AmountCell
 
-@synthesize amount;
 @synthesize currency;
 @synthesize formatter;
 
-
--(id)initTextCell:(NSString *)aString
+-(id)initTextCell: (NSString *)aString
 {
-	if ((self = [super initTextCell:aString ])) {
-		self.formatter = [[[NSNumberFormatter alloc ] init ] autorelease ];
-		[formatter setNumberStyle: NSNumberFormatterCurrencyStyle ];
-		[formatter setLocale:[NSLocale currentLocale ] ];
-		[formatter setCurrencySymbol:@"" ];
-	}
-	return  self;
+    if ((self = [super initTextCell: aString])) {
+        formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
+        [formatter setLocale: [NSLocale currentLocale]];
+        [formatter setCurrencySymbol: @""];
+        
+        self.partiallyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
+                                             [NSColor applicationColorForKey: @"Grid Partial Selection"], (CGFloat) 0,
+                                             [NSColor applicationColorForKey: @"Grid Partial Selection"], (CGFloat) 1,
+                                             nil
+                                             ];
+        self.fullyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
+                                         [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat) 0,
+                                         [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 1,
+                                         nil
+                                         ];
+
+    }
+    return  self;
 }
 
-- (id)initWithCoder:(NSCoder*)decoder {
-    if ((self = [super initWithCoder:decoder ])) {
-		self.formatter = [[[NSNumberFormatter alloc ] init ] autorelease ];
-		[formatter setNumberStyle: NSNumberFormatterCurrencyStyle ];
-		[formatter setLocale:[NSLocale currentLocale ] ];
-		[formatter setCurrencySymbol:@"" ];
+- (id)initWithCoder: (NSCoder*)decoder {
+    if ((self = [super initWithCoder: decoder])) {
+        formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
+        [formatter setLocale: [NSLocale currentLocale]];
+        [formatter setCurrencySymbol: @""];
     }
     return self;
 }
 
--(void)dealloc
+- (void)dealloc
 {
-	[currency release ];
-	[amount release ];
-	[formatter release ];
-	[super dealloc ];
+    [currency release];
+    [formatter release];
+    [super dealloc];
 }
 
-- copyWithZone:(NSZone *)zone
+- (id)copyWithZone:(NSZone *)zone
 {
     AmountCell *cell = (AmountCell*)[super copyWithZone:zone];
-	cell->formatter = [formatter retain ];
-	cell->amount = [amount retain ];
-	cell->currency = [currency retain ];
+    cell->formatter = [formatter retain ];
+    cell->currency = [currency retain ];
     return cell;
 }
 
-- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
+- (void)drawInteriorWithFrame: (NSRect)cellFrame inView: (NSView *)controlView
 {
-	NSColor *textColor;
-	if([amount compare: [NSDecimalNumber zero] ] != NSOrderedAscending) textColor = [NSColor colorWithDeviceRed: 0.09 green: 0.7 blue: 0 alpha: 100];
-	else textColor  = [NSColor redColor];
-	
-	if ([self isHighlighted ]) textColor  = [NSColor whiteColor];
-	
-	NSMutableDictionary *attrs = [[[[self attributedStringValue ] attributesAtIndex:0 effectiveRange:NULL ] mutableCopy] autorelease];
-	[attrs setObject:textColor forKey:NSForegroundColorAttributeName ];
-	[formatter setCurrencyCode:currency ];
-	NSString *str = [formatter stringFromNumber:amount ];
-	NSAttributedString *s = [[[NSAttributedString alloc ] initWithString: str attributes: attrs] autorelease];
-	
-	cellFrame.origin.x += CELL_BOUNDS;
-	cellFrame.size.width -= 2*CELL_BOUNDS;
-	[s drawInRect:cellFrame ];
+    NSColor *textColor;
+    if ([self.objectValue compare: [NSDecimalNumber zero]] != NSOrderedAscending) {
+        textColor = [NSColor applicationColorForKey: @"Positive Cash"];
+    } else {
+        textColor  = [NSColor applicationColorForKey: @"Negative Cash"];
+    }
+    if (self.isInSelectedRow && self.isInSelectedColumn) {
+        textColor  = [NSColor whiteColor];
+    }
+    NSMutableDictionary *attrs = [[[[self attributedStringValue] attributesAtIndex: 0 effectiveRange: NULL] mutableCopy] autorelease];
+    
+    // If this cell is fully selected then make the text bold.
+    if (self.isInSelectedRow && self.isInSelectedColumn) {
+        NSFontManager *manager = [NSFontManager sharedFontManager];
+        NSFont *font = [attrs objectForKey: NSFontAttributeName];
+        font = [manager convertFont: font toHaveTrait: NSBoldFontMask];
+        [attrs setObject: font forKey: NSFontAttributeName];
+    }
+    [attrs setObject: textColor forKey: NSForegroundColorAttributeName];
+    [formatter setCurrencyCode: currency];
+    NSString *str = [formatter stringFromNumber: self.objectValue];
+    if (str != nil) {
+        NSAttributedString *s = [[[NSAttributedString alloc] initWithString: str attributes: attrs] autorelease];
+    
+        cellFrame.origin.x += CELL_BOUNDS;
+        cellFrame.size.width -= 2 * CELL_BOUNDS;
+        cellFrame.origin.y++;
+        cellFrame.size.height--;
+        [s drawInRect: cellFrame];
+    }
 }
-
-
 
 @end

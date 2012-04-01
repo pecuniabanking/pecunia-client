@@ -16,28 +16,6 @@
 
 @implementation BankingController (ReportingTabs)
 
--(IBAction)catPeriodView: (id)sender
-{
-	NSInteger idx = [ mainTabView indexOfTabViewItemWithIdentifier:_catPeriodsIdentifier ];
-	if (idx == NSNotFound) {
-		CategoryPeriodsWindowController *controller = [[[CategoryPeriodsWindowController alloc] init] autorelease];
-		if([NSBundle loadNibNamed:@"CategoryPeriods" owner:controller ]) {
-			//		[controller prepare ];
-			NSTabViewItem *item = [[NSTabViewItem alloc ] initWithIdentifier:_catPeriodsIdentifier ];
-			[item setView:[controller mainView ] ];
-			[mainTabView addTabViewItem:item ];
-			[mainTabView selectTabViewItem:item ];
-			[mainTabItems setObject:controller forKey: _catPeriodsIdentifier ];
-		}
-	} else {
-		[mainTabView selectTabViewItemAtIndex:idx ];
-		// reload content, may have changed
-		id<PecuniaSectionItem> controller = (id<PecuniaSectionItem>)[mainTabItems objectForKey:_catPeriodsIdentifier ];
-		[controller prepare ];
-	}
-	[self adjustSearchField ];
-}
-
 -(IBAction)standingOrders: (id)sender 
 {
 	NSInteger idx = [ mainTabView indexOfTabViewItemWithIdentifier:_standingOrderTabIdentifier ];

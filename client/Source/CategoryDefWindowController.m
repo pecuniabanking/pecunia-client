@@ -28,7 +28,6 @@
 #import "ShortDate.h"
 #import "StatCatAssignment.h"
 #import "ImageAndTextCell.h"
-#import "AmountCell.h"
 
 #import "StatementsListview.h"
 #import "GraphicsAdditions.h"
@@ -80,11 +79,11 @@
     
     // Some appealing colors for (positive and negative) values.
     NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor positiveCashColor], NSForegroundColorAttributeName,
+                                        [NSColor applicationColorForKey: @"Positive Cash"], NSForegroundColorAttributeName,
                                         nil
                                        ];
     NSDictionary* negativeAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor negativeCashColor], NSForegroundColorAttributeName,
+                                        [NSColor applicationColorForKey: @"Negative Cash"], NSForegroundColorAttributeName,
                                         nil
                                        ];
 
