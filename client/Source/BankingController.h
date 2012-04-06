@@ -86,6 +86,7 @@
     IBOutlet TransactionController  *transferWindowController;
     IBOutlet TransferListController *transferListController;
     IBOutlet StatementsListView     *statementsListView;
+    IBOutlet NSSegmentedControl     *sortControl;
     
     IBOutlet RoundedSidebar  *sideBar;
     IBOutlet SideToolbarView *sideToolbar;
@@ -120,6 +121,10 @@
     CategoryDefWindowController *categoryDefinitionController;
     CategoryPeriodsWindowController *categoryPeriodsController;
     id<PecuniaSectionItem> currentSection;
+    
+    // Sorting statements.
+    NSInteger sortIndex;
+    BOOL sortAscending;
 }
 
 @property(nonatomic, copy) NSDecimalNumber *saveValue;
@@ -151,7 +156,7 @@
 -(IBAction)donate: (id)sender;
 -(IBAction)splitPurpose:(id)sender;
 
--(IBAction)doSearch: (id)sender;
+-(IBAction)filterStatements: (id)sender;
 
 -(IBAction)manageCategories:(id)sender;
 

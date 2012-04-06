@@ -28,6 +28,7 @@
 @class Category;
 @class ShortDate;
 @class MAAttachedWindow;
+@class BWGradientBox;
 
 @interface PecuinaGraphHost : CPTGraphHostingView
 {
@@ -59,6 +60,7 @@
     IBOutlet NSButton* helpButton;
     IBOutlet NSView* helpContentView;
     IBOutlet NSTextField* helpText;
+    IBOutlet BWGradientBox *selectionBox;
 
     @private
 	CPTXYGraph* mainGraph;

@@ -28,12 +28,6 @@ typedef enum {
     cat_all
 } CatValueType;
 
-typedef enum {
-    cat_histtype_month,
-    cat_histtype_quarter,
-    cat_histtype_year
-} CatHistoryType; // TODO: Replace with GroupingInterval.
-
 /**
  * Specifies the grouping of values when collecting statistical data, that is, which time frame
  * balance values should be coalesced in.
@@ -96,7 +90,6 @@ typedef enum {
                           balances: (NSArray**)balances
                      balanceCounts: (NSArray**)counts
                       withGrouping: (GroupingInterval)interval;
--(CategoryReportingNode*)categoryHistoryWithType:(CatHistoryType)histType __attribute__((deprecated));
 -(NSUInteger)categoryHistoryToDates: (NSArray**)dates
                            balances: (NSArray**)balances
                       balanceCounts: (NSArray**)counts

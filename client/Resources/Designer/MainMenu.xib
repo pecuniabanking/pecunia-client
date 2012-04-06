@@ -801,7 +801,7 @@
 																				<double key="NSPercent">0.99193549156188965</double>
 																			</object>
 																		</array>
-																		<string key="NSFrame">{{54, 115}, {254, 438}}</string>
+																		<string key="NSFrame">{{54, 113}, {254, 438}}</string>
 																		<reference key="NSSuperview" ref="143471938"/>
 																		<reference key="NSWindow"/>
 																		<reference key="NSNextKeyView" ref="1007887673"/>
@@ -871,7 +871,7 @@
 																		<string key="NSFrame">{{12, 8}, {32, 32}}</string>
 																		<reference key="NSSuperview" ref="1096"/>
 																		<reference key="NSWindow"/>
-																		<reference key="NSNextKeyView" ref="569487988"/>
+																		<reference key="NSNextKeyView" ref="768391083"/>
 																		<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																		<int key="NSTag">4</int>
 																		<bool key="NSEnabled">YES</bool>
@@ -3326,7 +3326,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																											<string>WebURLsWithTitlesPboardType</string>
 																											<string>public.url</string>
 																										</set>
-																										<string key="NSFrameSize">{518, 10}</string>
+																										<string key="NSFrameSize">{518, 14}</string>
 																										<reference key="NSSuperview" ref="679719261"/>
 																										<reference key="NSWindow"/>
 																										<reference key="NSNextKeyView" ref="715429031"/>
@@ -3477,7 +3477,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																									<object class="NSTextView" id="1030740562">
 																										<reference key="NSNextResponder" ref="909982314"/>
 																										<int key="NSvFlags">6418</int>
-																										<string key="NSFrameSize">{503, 10}</string>
+																										<string key="NSFrameSize">{503, 14}</string>
 																										<reference key="NSSuperview" ref="909982314"/>
 																										<reference key="NSWindow"/>
 																										<reference key="NSNextKeyView" ref="644377234"/>
@@ -9276,6 +9276,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
+						<string key="label">showLog:</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="621890146"/>
+					</object>
+					<int key="connectionID">3548</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
 						<string key="label">export:</string>
 						<reference key="source" ref="674635667"/>
 						<reference key="destination" ref="492554241"/>
@@ -9764,19 +9772,27 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">showLog:</string>
-						<reference key="source" ref="674635667"/>
-						<reference key="destination" ref="621890146"/>
-					</object>
-					<int key="connectionID">3548</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">doSearch:</string>
+						<string key="label">filterStatements:</string>
 						<reference key="source" ref="674635667"/>
 						<reference key="destination" ref="276340152"/>
 					</object>
-					<int key="connectionID">6352</int>
+					<int key="connectionID">6363</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">sortingChanged:</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="497321021"/>
+					</object>
+					<int key="connectionID">6364</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">sortControl</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="497321021"/>
+					</object>
+					<int key="connectionID">6365</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -16728,7 +16744,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<string key="197.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="21.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="21.IBWindowTemplateEditedContentRect">{{332, 342}, {1158, 671}}</string>
+				<string key="21.IBWindowTemplateEditedContentRect">{{332, 407}, {1158, 671}}</string>
 				<integer value="1" key="21.NSWindowTemplate.visibleAtLaunch"/>
 				<string key="23.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="235.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -17456,7 +17472,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6362</int>
+			<int key="maxID">6365</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -17487,12 +17503,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<string key="changeAccount:">id</string>
 						<string key="deleteAccount:">id</string>
 						<string key="deleteStatement:">id</string>
-						<string key="doSearch:">id</string>
 						<string key="donate:">id</string>
 						<string key="editBankUsers:">id</string>
 						<string key="editPreferences:">id</string>
 						<string key="enqueueRequest:">id</string>
 						<string key="export:">id</string>
+						<string key="filterStatements:">id</string>
 						<string key="import:">id</string>
 						<string key="listUsers:">id</string>
 						<string key="manageCategories:">id</string>
@@ -17547,10 +17563,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 							<string key="name">deleteStatement:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="doSearch:">
-							<string key="name">doSearch:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="donate:">
 							<string key="name">donate:</string>
 							<string key="candidateClassName">id</string>
@@ -17569,6 +17581,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						</object>
 						<object class="IBActionInfo" key="export:">
 							<string key="name">export:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="filterStatements:">
+							<string key="name">filterStatements:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="import:">
@@ -17694,6 +17710,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<string key="searchItem">NSToolbarItem</string>
 						<string key="sideBar">RoundedSidebar</string>
 						<string key="sideToolbar">SideToolbarView</string>
+						<string key="sortControl">NSSegmentedControl</string>
 						<string key="spendingsField">NSTextField</string>
 						<string key="statementsListView">StatementsListView</string>
 						<string key="statementsListViewHost">RoundedOuterShadowView</string>
@@ -17807,6 +17824,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<object class="IBToOneOutletInfo" key="sideToolbar">
 							<string key="name">sideToolbar</string>
 							<string key="candidateClassName">SideToolbarView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sortControl">
+							<string key="name">sortControl</string>
+							<string key="candidateClassName">NSSegmentedControl</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="spendingsField">
 							<string key="name">spendingsField</string>
@@ -18325,6 +18346,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
 			<integer value="1060" key="NS.object.0"/>
+		</object>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.InterfaceBuilder3</string>
+			<real value="3200" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>

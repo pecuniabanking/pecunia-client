@@ -15,6 +15,9 @@
 @synthesize topInsetAlpha, bottomInsetAlpha;
 @synthesize hasTopBorder, hasBottomBorder, hasGradient, hasFillColor;
 
+@synthesize cornerRadius;
+@synthesize shadow;
+
 - (id)initWithCoder:(NSCoder *)decoder
 {
 	if ((self = [super initWithCoder:decoder]) != nil)
@@ -47,13 +50,16 @@
 		
 		if (self.bottomBorderColor == nil)
 			self.bottomBorderColor = [NSColor blackColor];
+    
+    self.cornerRadius = [decoder decodeFloatForKey: @"BWGBCornerRadius"];
+		self.shadow = [decoder decodeObjectForKey: @"BWGBShadow"];
 	}
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
-    [super encodeWithCoder:coder];
+  [super encodeWithCoder:coder];
 	
 	[coder encodeObject:[self fillStartingColor] forKey:@"BWGBFillStartingColor"];
 	[coder encodeObject:[self fillEndingColor] forKey:@"BWGBFillEndingColor"];
@@ -68,14 +74,29 @@
 	
 	[coder encodeFloat:[self topInsetAlpha] forKey:@"BWGBTopInsetAlpha"];
 	[coder encodeFloat:[self bottomInsetAlpha] forKey:@"BWGBBottomInsetAlpha"];
+  
+  [coder encodeFloat: cornerRadius forKey: @"BWGBCornerRadius"];
+	[coder encodeObject: self.shadow forKey: @"BWGBShadow"];
 } 
 
 - (void)drawRect:(NSRect)rect 
 {
+  [NSGraphicsContext saveGraphicsState];
+
+  NSBezierPath* borderPath = [NSBezierPath bezierPathWithRoundedRect: NSInsetRect([self bounds], cornerRadius, cornerRadius) xRadius: cornerRadius yRadius: cornerRadius];
+  
+  if (shadow != nil) {
+    [shadow set];
+    [[NSColor whiteColor] set];
+    [borderPath fill];
+  }
+  [borderPath addClip];
+  
 	if (hasGradient)
 	{
 		NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:fillStartingColor endingColor:fillEndingColor];
-		[gradient drawInRect:self.bounds angle:90];
+		//[gradient drawInRect:self.bounds angle:90];
+    [gradient drawInBezierPath: borderPath angle: 90];
 		[gradient release];
 	}
 	else
@@ -107,7 +128,8 @@
 	{
 		[[[NSColor whiteColor] colorWithAlphaComponent:bottomInsetAlpha] bwDrawPixelThickLineAtPosition:0 withInset:0 inRect:self.bounds inView:self horizontal:YES flip:YES];
 	}
-		
+
+  [NSGraphicsContext restoreGraphicsState];
 }
 
 - (BOOL)isFlipped

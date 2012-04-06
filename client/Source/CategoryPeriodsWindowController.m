@@ -19,6 +19,7 @@
 
 #import "MBTableGrid/MBTableGrid.h"
 #import "MAAttachedWindow.h"
+#import "BWGradientBox.h"
 
 #import "CategoryPeriodsWindowController.h"
 #import "ShortDate.h"
@@ -40,6 +41,8 @@
 - (void)hideStatementList;
 - (void)showStatementList: (NSRect)cellBounds;
 - (void)updateStatementList: (NSRect)cellBounds;
+- (void)updateData;
+- (void)updateLimitLabel: (NSTextField *)field index: (NSUInteger) index;
 
 @end
 
@@ -55,7 +58,6 @@
     self = [super init];
     if (self != nil) {
         active = NO;
-        histType = cat_histtype_month;
         dates = [[NSMutableArray array] retain];
         balances = [[NSMutableArray array] retain];
         turnovers = [[NSMutableArray array] retain];
@@ -73,13 +75,7 @@
     [dates release];
     [balances release];
     [turnovers release];
-    
-    [categoryHistory release], categoryHistory = nil;
     [selectedDates release], selectedDates = nil;
-    [fromDate release], fromDate = nil;
-    [toDate release], toDate = nil;
-    [dataRoot release ], dataRoot = nil;
-    [periodRoot release ], periodRoot = nil;
     [minDate release], minDate = nil;
     [maxDate release], maxDate = nil;
     [managedObjectContext release], managedObjectContext = nil;
@@ -88,34 +84,46 @@
 }
 
 -(void)awakeFromNib
-{	
-    NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey: @"self" ascending: NO] autorelease];
-    NSArray          *sds = [NSArray arrayWithObject: sd];
-    [catPeriodDatesController setSortDescriptors: sds];
+{
+	fromIndex = 0;
+    toIndex = 1;
+    sortAscending = NO;
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *values = [userDefaults objectForKey: @"categoryPeriods"];
     if (values) {
-        if ([values objectForKey: @"type" ]) {
-            histType = (CatHistoryType)[[values objectForKey: @"type" ] intValue];
+        if ([values objectForKey: @"fromIndex" ]) {
+            fromIndex = [[values objectForKey: @"fromIndex" ] intValue];
         }
-        if ([values objectForKey: @"fromDate" ]) {
-            fromDate = [ShortDate dateWithDate: [values objectForKey: @"fromDate" ]];
+        if ([values objectForKey: @"toIndex" ]) {
+            toIndex = [[values objectForKey: @"toIndex" ] intValue];
         }
-        if ([values objectForKey: @"toDate" ]) {
-            toDate = [ShortDate dateWithDate: [values objectForKey: @"toDate" ]];
+        if ([values objectForKey: @"grouping" ]) {
+            groupingInterval = [[values objectForKey: @"grouping"] intValue];
+            groupingSlider.intValue = groupingInterval;
         }
-        groupingInterval = [[values objectForKey: @"grouping"] intValue];
-        groupingSlider.intValue = groupingInterval;
+        if ([values objectForKey: @"sortIndex" ]) {
+            sortIndex = [[values objectForKey: @"sortIndex"] intValue];
+            sortControl.selectedSegment = sortIndex;
+        }
+        if ([values objectForKey: @"sortAscending" ]) {
+            // We set the inverse value hear as it will be reversed again when
+            // we update the sort descriptor below.
+            sortAscending = ![[values objectForKey: @"sortAscending"] boolValue];
+        }
     }
     
-    if (fromDate == nil) {
-        fromDate = [[[ShortDate currentDate] firstDayInYear] retain];
+    if (toIndex < fromIndex) {
+        toIndex = fromIndex;
     }
-    if (toDate == nil) {
-        toDate = [[[ShortDate currentDate] firstDayInMonth] retain];
-    }
-
+    
+    fromSlider.continuous = YES;
+    fromSlider.intValue = fromIndex;
+    [self updateLimitLabel: fromText index: fromIndex];
+    toSlider.continuous = YES;
+    toSlider.intValue = toIndex;
+    [self updateLimitLabel: toText index: toIndex];
+    
     valueGrid.defaultCellSize = NSMakeSize(100, 20);
     [valueGrid.rowHeaderView setHidden: YES];
     
@@ -149,53 +157,26 @@
     [statementsController bind: @"selectionIndexes" toObject: statementsListView withKeyPath: @"selectedRows" options: nil];
     [statementsListView bind: @"selectedRows" toObject: statementsController withKeyPath: @"selectionIndexes" options: nil];
     
-    [statementsListView setCellSpacing: 0];
-    [statementsListView setAllowsEmptySelection: YES];
-    [statementsListView setAllowsMultipleSelection: YES];
+    statementsListView.cellSpacing = 0;
+    statementsListView.allowsEmptySelection = YES;
+    statementsListView.allowsMultipleSelection = NO;
+    statementsListView.disableSelection = YES;
+    [self sortingChanged: sortControl];
+    
     formatter = [statementsListView numberFormatter];
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
-}
-
-#pragma mark -
-#pragma mark Properties
-
--(void)updatePeriodDates
-{
-    [dates removeAllObjects];
-    ShortDate *refDate = [self periodRefDateForDate: minDate];
     
-    while ([refDate compare: maxDate ] != NSOrderedDescending) {
-        [dates addObject: refDate];
-        switch (histType) {
-            case cat_histtype_year:
-                refDate = [refDate dateByAddingUnits: 1 byUnit: NSYearCalendarUnit];
-                break;
-            case cat_histtype_quarter:
-                refDate = [refDate dateByAddingUnits: 3 byUnit: NSMonthCalendarUnit];
-                break;
-            default:
-                refDate = [refDate dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit];
-                break;
-        }
-    } //while
-    
-    [catPeriodDatesController setContent: dates];
-    [catPeriodDatesController rearrangeObjects];
-}
-
--(NSString*)keyForDate: (ShortDate*)date
-{
-    return [NSString stringWithFormat: @"%d%d%d", date.year, date.month, date.day]; 
-}
-
--(ShortDate*)periodRefDateForDate: (ShortDate*)date
-{
-    switch (histType) {
-        case cat_histtype_year: return [date firstDayInYear];
-        case cat_histtype_quarter: return [date firstDayInQuarter];
-        default: return date;
-    }
+    selectionBox.hasGradient = YES;
+    selectionBox.fillStartingColor = [NSColor applicationColorForKey: @"Small Background Gradient (low)"];
+    selectionBox.fillEndingColor = [NSColor applicationColorForKey: @"Small Background Gradient (high)"];
+    selectionBox.cornerRadius = 5;
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.5];
+    shadow.shadowOffset = NSMakeSize(1, -1);
+    shadow.shadowBlurRadius = 3;
+    selectionBox.shadow = shadow;
+    [shadow release];
 }
 
 #pragma mark -
@@ -208,7 +189,10 @@
 
 - (NSUInteger)numberOfColumnsInTableGrid: (MBTableGrid *)aTableGrid
 {
-	return [dates count];
+    if (dates.count == 0) {
+        return 0;
+    }
+	return toIndex - fromIndex + 1;
 }
 
 - (id)tableGrid: (MBTableGrid *)aTableGrid objectValueForColumn: (NSUInteger)columnIndex row: (NSUInteger)rowIndex
@@ -221,6 +205,8 @@
     Category *cat = [[outline itemAtRow: rowIndex] representedObject];
     AmountCell *cell = valueGrid.cell;
     cell.currency = cat.currency;
+    
+    columnIndex +=  fromIndex;
 	return ([rowValues count] > columnIndex) ? [rowValues objectAtIndex: columnIndex] : @"";
 }
 
@@ -231,7 +217,7 @@
 
 - (NSString *) tableGrid: (MBTableGrid*)aTableGrid headerStringForColumn: (NSUInteger)columnIndex
 {
-    ShortDate* date = [dates objectAtIndex: columnIndex];
+    ShortDate* date = [dates objectAtIndex: columnIndex + fromIndex];
     NSString* title;
         
     switch (groupingInterval) {
@@ -267,6 +253,13 @@
         [self showStatementList: [valueGrid frameOfCellAtColumn: columnIndex row: rowIndex]];
     }
     return false;
+}
+
+- (void)cancelEditForTableGrid: (MBTableGrid *)aTableGrid
+{
+    if (detailsPopupWindow != nil) {
+        [self hideStatementList];
+    }
 }
 
 - (void)tableGridDidChangeSelection: (NSNotification *)aNotification
@@ -351,51 +344,6 @@
     }
 }
 
--(void)updatePeriodDataForNode: (CategoryReportingNode*)node
-{
-    for(CategoryReportingNode *child in node.children) {
-        [self updatePeriodDataForNode: child];
-    }
-    
-    NSArray *keys = [node.values allKeys];
-    
-    [node.periodValues removeAllObjects]; 
-    for(ShortDate *date in keys) {
-        ShortDate *refDate = [self periodRefDateForDate: date];
-        
-        // add up values
-        if ([refDate compare: fromDate ] != NSOrderedAscending && [refDate compare: toDate ] != NSOrderedDescending) {
-            NSDecimalNumber *num = [node.periodValues objectForKey: [self keyForDate: refDate ]];
-            if (num) {
-                num = [num decimalNumberByAdding: [node.values objectForKey: date ]];
-            } else {
-                num = [node.values objectForKey: date];
-            }
-            [node.periodValues setObject: num forKey: [self keyForDate: refDate ]];
-        }
-        
-        // check that there is an entry for each date
-        refDate = fromDate;
-        while ([refDate compare: toDate ] != NSOrderedDescending) {
-            NSDecimalNumber *num = [node.periodValues objectForKey: [self keyForDate: refDate ]];
-            if (num == nil) {
-                [node.periodValues setObject: [NSDecimalNumber zero ] forKey: [self keyForDate: refDate ]];
-            }
-            switch (histType) {
-                case cat_histtype_year:
-                    refDate = [refDate dateByAddingUnits: 1 byUnit: NSYearCalendarUnit];
-                    break;
-                case cat_histtype_quarter:
-                    refDate = [refDate dateByAddingUnits: 3 byUnit: NSMonthCalendarUnit];
-                    break;
-                default:
-                    refDate = [refDate dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit];
-                    break;
-            }
-        } //while
-    }
-}
-
 -(void)updateData
 {
     if (!active) {
@@ -447,59 +395,25 @@
         }
         
     }
+
+    fromSlider.maxValue = dates.count - 1;
+    if (fromIndex > fromSlider.maxValue) {
+        fromIndex = fromSlider.maxValue;
+        fromSlider.intValue = fromIndex;
+    }
+    [self updateLimitLabel: fromText index: fromIndex];
+    
+    toSlider.maxValue = dates.count - 1;
+    if (toIndex > toSlider.maxValue) {
+        toIndex = toSlider.maxValue;
+        fromSlider.intValue = toIndex;
+    }
+    [self updateLimitLabel: toText index: toIndex];
     
     // Remaining data is loaded on demand.
     
     [valueGrid reloadData];
     [valueGrid setNeedsDisplay: YES];
-}
-
--(void)adjustDates
-{
-    if ([dates count ] == 0) return;
-    ShortDate *firstDate = [dates objectAtIndex: 0];
-    ShortDate *lastDate = [dates lastObject];
-    ShortDate *refFromDate;
-    ShortDate *refToDate;
-    
-    switch (histType) {
-        case cat_histtype_year:
-            refFromDate = [fromDate firstDayInYear];
-            refToDate = [toDate firstDayInYear];
-            break;
-        case cat_histtype_quarter:
-            refFromDate = [fromDate firstDayInQuarter];
-            refToDate = [toDate firstDayInQuarter];
-            break;
-        default:
-            refFromDate = fromDate;
-            refToDate = toDate;
-            break;
-    }
-    
-    if ([fromDate compare: firstDate ] == NSOrderedAscending || [fromDate compare: lastDate ] == NSOrderedDescending) {
-        fromDate = firstDate;
-        [fromButton selectItemAtIndex: [dates count ] - 1];
-    } else {
-        int idx = [dates count ] - 1;
-        for(ShortDate *date in dates) {
-            if ([date isEqual: refFromDate ]) {
-                [fromButton selectItemAtIndex: idx];
-            } else idx--;
-        }
-    }
-    
-    if ([toDate compare: lastDate ] == NSOrderedDescending || [toDate compare: firstDate ] == NSOrderedAscending) {
-        toDate = lastDate;
-        [toButton selectItemAtIndex: 0];
-    } else {
-        int idx = [dates count ] - 1;
-        for(ShortDate *date in dates) {
-            if ([date isEqual: refToDate ]) {
-                [toButton selectItemAtIndex: idx];
-            } else idx--;
-        }
-    }
 }
 
 - (void)loadDataForIndex: (NSInteger) index
@@ -545,9 +459,10 @@
                                                              onSide: MAPositionAutomatic 
                                                          atDistance: 11];
         
-        [detailsPopupWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.95]];
-        [detailsPopupWindow setViewMargin: 0];
-        [detailsPopupWindow setBorderWidth: 0];
+        [detailsPopupWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.8]];
+        [detailsPopupWindow setViewMargin: 1];
+        [detailsPopupWindow setBorderWidth: 1];
+        [detailsPopupWindow setBorderColor: [NSColor colorWithCalibratedWhite: 0 alpha: 0.3]];
         [detailsPopupWindow setCornerRadius: 10];
         [detailsPopupWindow setHasArrow: YES];
         [detailsPopupWindow setDrawsRoundCornerBesideArrow: YES];
@@ -564,7 +479,7 @@
 {
     if (detailsPopupWindow != nil) {
         NSInteger columnIndex = valueGrid.selectedColumnIndexes.firstIndex;
-        ShortDate *selFromDate = [dates objectAtIndex: columnIndex];
+        ShortDate *selFromDate = [dates objectAtIndex: columnIndex + fromIndex];
         ShortDate *selToDate;
         switch (groupingInterval) {
             case GroupByYears:
@@ -616,12 +531,33 @@
     }
 }
 
+- (void)updateLimitLabel: (NSTextField *)field index: (NSUInteger) index
+{
+    if (dates.count == 0) {
+        field.stringValue = @"--";
+    } else {
+        ShortDate* date = [dates objectAtIndex: index];
+        switch (groupingInterval) {
+            case GroupByYears:
+                field.stringValue = [date yearDescription];
+                break;
+            case GroupByQuarters:
+                field.stringValue = [date quarterYearDescription];
+                break;
+            default:
+                field.stringValue = [date monthYearDescription];
+                break;
+        }	
+    }   
+}
 
 #pragma mark -
 #pragma mark Interface Builder Actions
 
 - (IBAction)setGrouping: (id)sender
 {
+    [self hideStatementList];
+    
     groupingInterval = [sender intValue];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -635,32 +571,63 @@
     [self updateData];
 }
 
--(IBAction)fromButtonPressed: (id)sender
+// The time selection sliders use a range from 0 to 100 so we can calculate percentage values
+// easily, which allows a very flexible selection of a date regardless of the available dates.
+- (IBAction)fromChanged: (id)sender
 {
-    int idx_from = [fromButton indexOfSelectedItem];
-    int idx_to = [toButton indexOfSelectedItem];
-    if (idx_from >=0 ) {
-        fromDate = [[catPeriodDatesController arrangedObjects ] objectAtIndex: idx_from];
+    [self hideStatementList];
+    
+    NSUInteger fromPosition = [sender intValue];
+    if (fromIndex == fromPosition) {
+        return;
     }
-    if (idx_from < idx_to) {
-        [toButton selectItemAtIndex: idx_from];
-        toDate = fromDate;
+    fromIndex = fromPosition;
+    if (fromIndex > toIndex) {
+        toIndex = fromIndex;
+        toSlider.intValue = toIndex;
+        [self updateLimitLabel: toText index: toIndex];
     }
-    [self updateData];
+    
+    [self updateLimitLabel: fromText index: fromIndex];
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary* values = [userDefaults objectForKey: @"categoryPeriods"];
+    if (values == nil) {
+        values = [NSMutableDictionary dictionaryWithCapacity: 1];
+        [userDefaults setObject: values forKey: @"categoryPeriods"];
+    }
+    [values setValue: [NSNumber numberWithInt: fromIndex] forKey: @"fromIndex"];
+    
+    [valueGrid reloadData];
 }
 
--(IBAction)toButtonPressed: (id)sender
+- (IBAction)toChanged: (id)sender
 {
-    int idx_from = [fromButton indexOfSelectedItem];
-    int idx_to = [toButton indexOfSelectedItem];
-    if (idx_to >=0 ) {
-        toDate = [[catPeriodDatesController arrangedObjects ] objectAtIndex: idx_to];
+    [self hideStatementList];
+    
+    NSUInteger toPosition = [sender intValue];
+    if (toIndex == toPosition) {
+        return;
     }
-    if (idx_from < idx_to) {
-        [fromButton selectItemAtIndex: idx_to];
-        fromDate = toDate;
+    
+    toIndex = toPosition;
+    if (toIndex < fromIndex) {
+        fromIndex = toIndex;
+        fromSlider.intValue = fromIndex;
+        [self updateLimitLabel: fromText index: fromIndex];
     }
-    [self updateData];
+    
+    [self updateLimitLabel: toText index: toIndex];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary* values = [userDefaults objectForKey: @"categoryPeriods"];
+    if (values == nil) {
+        values = [NSMutableDictionary dictionaryWithCapacity: 1];
+        [userDefaults setObject: values forKey: @"categoryPeriods"];
+    }
+    [values setValue: [NSNumber numberWithInt: toIndex] forKey: @"toIndex"];
+    
+    [valueGrid reloadData];
 }
 
 - (IBAction)filterStatements: (id)sender
@@ -679,6 +646,53 @@
             [statementsController setFilterPredicate: predicate];
         }
     }
+}
+
+- (IBAction)sortingChanged: (id)sender
+{
+    if ([sender selectedSegment] == sortIndex) {
+        sortAscending = !sortAscending;
+    } else {
+        sortAscending = YES;
+    }
+    
+    sortIndex = [sender selectedSegment];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary* values = [userDefaults objectForKey: @"categoryPeriods"];
+    if (values == nil) {
+        values = [NSMutableDictionary dictionaryWithCapacity: 1];
+        [userDefaults setObject: values forKey: @"categoryPeriods"];
+    }
+    [values setValue: [NSNumber numberWithInt: sortIndex] forKey: @"sortIndex"];
+    [values setValue: [NSNumber numberWithBool: sortAscending] forKey: @"sortAscending"];
+
+    NSString *key;
+    switch (sortIndex) {
+        case 1:
+            statementsListView.showHeaders = false;
+            key = @"statement.remoteName";
+            break;
+        case 2:
+            statementsListView.showHeaders = false;
+            key = @"statement.purpose";
+            break;
+        case 3:
+            statementsListView.showHeaders = false;
+            key = @"statement.categoriesDescription";
+            break;
+        case 4:
+            statementsListView.showHeaders = false;
+            key = @"statement.value";
+            break;
+        default:
+            statementsListView.showHeaders = true;
+            key = @"statement.valutaDate";
+            break;
+    }
+    [statementsController setSortDescriptors:
+     [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending] autorelease]]];
+
 }
 
 #pragma mark -

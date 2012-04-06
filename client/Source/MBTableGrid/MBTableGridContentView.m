@@ -32,6 +32,7 @@
 - (id)_objectValueForColumn:(NSUInteger)columnIndex row:(NSUInteger)rowIndex;
 - (void)_setObjectValue:(id)value forColumn:(NSUInteger)columnIndex row:(NSUInteger)rowIndex;
 - (BOOL)_canEditCellAtColumn:(NSUInteger)columnIndex row:(NSUInteger)rowIndex;
+- (void)_cancelEdit;
 - (void)_setStickyColumn:(MBTableGridEdge)stickyColumn row:(MBTableGridEdge)stickyRow;
 - (MBTableGridEdge)_stickyColumn;
 - (MBTableGridEdge)_stickyRow;
@@ -427,6 +428,19 @@
 	
 	// End the editing session
 	[[[self tableGrid] cell] endEditing:[[self window] fieldEditor:NO forObject:self]];
+}
+
+- (void)cancelEditing
+{
+  [[self window] makeFirstResponder:[self tableGrid]];
+  
+  [[self tableGrid] _cancelEdit];
+  
+  editedColumn = NSNotFound;
+  editedRow = NSNotFound;
+  
+  // End the editing session
+  [[self tableGrid] abortEditing];
 }
 
 #pragma mark -

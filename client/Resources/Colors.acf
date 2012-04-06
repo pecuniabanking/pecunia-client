@@ -6,7 +6,7 @@ AboutMessage:
 Names: Partial
 Rows: 12
 Columns: 12
-Entries: 25
+Entries: 28
 Prefix: 
 Suffix: 
 Type: Process
@@ -44,6 +44,8 @@ Default Category Color 9
 44461 58082 45232
 Default Category Color 10
 22616 32896 8738
+Positive Cash light
+9252 13364 3598
 Positive Cash
 30840 30840 30840
 Positive Gradient (high)
@@ -63,3 +65,7 @@ Selection Gradient (high)
 Selection Gradient (low)
 65535 64764 62194
 Grid Partial Selection
+15420 15420 15420
+Small Background Gradient (low)
+25700 25700 25700
+Small Background Gradient (high)

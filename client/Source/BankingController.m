@@ -207,6 +207,21 @@ static BOOL runningOnLionOrLater = NO;
 
 -(void)awakeFromNib
 {
+    sortAscending = NO;
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults objectForKey: @"mainSortIndex" ]) {
+        sortIndex = [[userDefaults objectForKey: @"mainSortIndex"] intValue];
+        sortControl.selectedSegment = sortIndex;
+    }
+    if ([userDefaults objectForKey: @"mainSortAscending" ]) {
+        // We set the inverse value hear as it will be reversed again when
+        // we update the sort descriptor below.
+        sortAscending = ![[userDefaults objectForKey: @"mainSortAscending"] boolValue];
+    }
+
+    [self sortingChanged: sortControl];
+    
     NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                         [NSColor applicationColorForKey: @"Positive Cash"], NSForegroundColorAttributeName,
                                         nil
@@ -241,14 +256,9 @@ static BOOL runningOnLionOrLater = NO;
         }
     }
     
-    // sort descriptor for transactions view
-    NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:NO] autorelease];
-    NSArray *sds = [NSArray arrayWithObject:sd];
-    [transactionController setSortDescriptors: sds];
-    
     // sort descriptor for accounts view
-    sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
-    sds = [NSArray arrayWithObject:sd];
+    NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+    NSArray *sds = [NSArray arrayWithObject:sd];
     [categoryController setSortDescriptors: sds];
     
     // status (content) bar
@@ -1931,45 +1941,73 @@ static BOOL runningOnLionOrLater = NO;
 }
 
 #pragma mark -
-#pragma mark Searching
+#pragma mark Sorting and searching statements
 
--(IBAction)doSearch: (id)sender
+-(IBAction)filterStatements: (id)sender
 {
     NSTextField	*te = sender;
     NSString	*searchName = [te stringValue];
     
-    int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]];
+    if ([searchName length] == 0) {
+        [transactionController setFilterPredicate: [timeSlicer predicateForField: @"date"]];
+    } else {
+        NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or userInfo contains[c] %@ or value = %@",
+                             searchName, searchName, searchName, [NSDecimalNumber decimalNumberWithString:searchName locale: [NSLocale currentLocale]]];
+        if(pred) [transactionController setFilterPredicate: pred];
+    }
+}
+
+- (IBAction)sortingChanged: (id)sender
+{
+    if ([sender selectedSegment] == sortIndex) {
+        sortAscending = !sortAscending;
+    } else {
+        sortAscending = YES;
+    }
     
-    switch(idx) {
-        case 0:
-            if([searchName length] == 0) [transactionController setFilterPredicate: [timeSlicer predicateForField: @"date"]];
-            else {
-                NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or userInfo contains[c] %@ or value = %@",
-                                     searchName, searchName, searchName, [NSDecimalNumber decimalNumberWithString:searchName locale: [NSLocale currentLocale]]];
-                if(pred) [transactionController setFilterPredicate: pred];
-            }
-            break;
+    sortIndex = [sender selectedSegment];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setValue: [NSNumber numberWithInt: sortIndex] forKey: @"mainSortIndex"];
+    [userDefaults setValue: [NSNumber numberWithBool: sortAscending] forKey: @"mainSortAscending"];
+    
+    NSString *key;
+    switch (sortIndex) {
         case 1:
-            if([searchName length] == 0) [transferListController setFilterPredicate: nil];
-            else {
-                NSPredicate *pred = [NSPredicate predicateWithFormat: @"purpose contains[c] %@ or remoteName contains[c] %@ or value = %@",
-                                     searchName, searchName, [NSDecimalNumber decimalNumberWithString:searchName locale: [NSLocale currentLocale]]];
-                if(pred) [transferListController setFilterPredicate: pred];
-            }
+            statementsListView.showHeaders = false;
+            key = @"statement.remoteName";
+            break;
+        case 2:
+            statementsListView.showHeaders = false;
+            key = @"statement.purpose";
+            break;
+        case 3:
+            statementsListView.showHeaders = false;
+            key = @"statement.categoriesDescription";
+            break;
+        case 4:
+            statementsListView.showHeaders = false;
+            key = @"statement.value";
+            break;
+        default:
+            statementsListView.showHeaders = true;
+            key = @"statement.valutaDate";
             break;
     }
+    [transactionController setSortDescriptors:
+     [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending] autorelease]]];
     
 }
 
 -(void)adjustSearchField
 {
-    int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]];
-    
     [searchField setStringValue: @""];
     [transactionController setFilterPredicate: [timeSlicer predicateForField: @"date"]];
     [transferListController setFilterPredicate: nil];
-    if(idx == 0  || idx == 1) [searchItem setEnabled: YES]; else [searchItem setEnabled: NO];
 }
+
+#pragma mark -
+#pragma mark Menu handling
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item
 {

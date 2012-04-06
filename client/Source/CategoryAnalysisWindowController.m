@@ -30,6 +30,7 @@
 #import "AnimationHelper.h"
 
 #import "MAAttachedWindow.h"
+#import "BWGradientBox.h"
 
 static NSString* const PecuniaGraphLayoutChangeNotification = @"PecuniaGraphLayoutChange";
 static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouseExited";
@@ -441,6 +442,17 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     float height = [text heightForWidth: helpText.bounds.size.width];
     helpContentView.frame = NSMakeRect(0, 0, helpText.bounds.size.width, height);
     [text release];
+
+    selectionBox.hasGradient = YES;
+    selectionBox.fillStartingColor = [NSColor applicationColorForKey: @"Small Background Gradient (low)"];
+    selectionBox.fillEndingColor = [NSColor applicationColorForKey: @"Small Background Gradient (high)"];
+    selectionBox.cornerRadius = 5;
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.5];
+    shadow.shadowOffset = NSMakeSize(1, -1);
+    shadow.shadowBlurRadius = 3;
+    selectionBox.shadow = shadow;
+    [shadow release];
 
     // Notifications.
     [[NSNotificationCenter defaultCenter] addObserver: self

@@ -28,6 +28,8 @@
 @synthesize showAssignedIndicators;
 @synthesize owner;
 @synthesize autoResetNew;
+@synthesize disableSelection;
+@synthesize showHeaders;
 
 + (void)initialize
 {
@@ -45,6 +47,8 @@
     [_dateFormatter setDateStyle: kCFDateFormatterFullStyle];
     [_dateFormatter setTimeStyle: NSDateFormatterNoStyle];
     autoResetNew = YES;
+    disableSelection = NO;
+    showHeaders = YES;
 }
 
 - (void) dealloc
@@ -127,6 +131,10 @@
 
 - (BOOL)showsHeaderForRow: (NSUInteger)row
 {
+    if (!showHeaders) {
+        return false;
+    }
+    
     BOOL result = (row == 0);
     if (!result)
     {
@@ -265,6 +273,11 @@
             index = [selection indexGreaterThanIndex: index];
         }
     }
+}
+
+- (bool)listView:(PXListView*)aListView shouldSelectRows: (NSIndexSet *)rows byExtendingSelection:(BOOL)shouldExtend
+{
+    return !self.disableSelection;
 }
 
 /**

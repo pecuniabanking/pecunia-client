@@ -54,6 +54,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 - (id)_objectValueForColumn:(NSUInteger)columnIndex row:(NSUInteger)rowIndex;
 - (void)_setObjectValue:(id)value forColumn:(NSUInteger)columnIndex row:(NSUInteger)rowIndex;
 - (BOOL)_canEditCellAtColumn:(NSUInteger)columnIndex row:(NSUInteger)rowIndex;
+- (void)_cancelEdit;
 @end
 
 @interface MBTableGrid (DragAndDrop)
@@ -371,6 +372,11 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 }*/
 
 #pragma mark NSResponder Event Handlers
+
+- (void)cancelOperation:(id)sender
+{
+  [contentView cancelEditing];
+}
 
 - (void)insertTab:(id)sender 
 {
@@ -972,6 +978,9 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	
   [self updateLayout];
 	[self setNeedsDisplay:YES];
+  [contentView setNeedsDisplay: YES];
+  [columnHeaderView setNeedsDisplay: YES];
+  [rowHeaderView setNeedsDisplay: YES];
 }
 
 #pragma mark Layout Support
@@ -1343,6 +1352,13 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	}
 	
 	return YES;
+}
+
+- (void)_cancelEdit
+{
+	if ([[self delegate] respondsToSelector:@selector(cancelEditForTableGrid:)]) {
+		[[self delegate] cancelEditForTableGrid:self];
+	}
 }
 
 @end

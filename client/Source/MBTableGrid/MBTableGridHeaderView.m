@@ -42,7 +42,8 @@
 
 - (id)initWithFrame:(NSRect)frameRect
 {
-	if(self = [super initWithFrame:frameRect]) {
+	self = [super initWithFrame:frameRect];
+  if (self != nil) {
 		// Setup the header cell
 		headerCell = [[MBTableGridHeaderCell alloc] init];
 		

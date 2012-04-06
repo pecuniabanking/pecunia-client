@@ -502,49 +502,6 @@ BOOL	updateSent = NO;
 }
 
 /**
- * Collects a coalesced history of turnover values over time, including all sub categories.
- */
--(CategoryReportingNode*)categoryHistoryWithType:(CatHistoryType)histType
-{
-    CategoryReportingNode *node = [[CategoryReportingNode alloc ] init ];
-    node.name = self.localName;
-    node.category = self;
-    
-    NSMutableSet* stats = [self mutableSetValueForKey: @"assignments" ];
-    NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
-    
-    for(Category *cat in childs) {
-        CategoryReportingNode *childNode = [cat categoryHistoryWithType:histType ];
-        for(ShortDate *key in [childNode.values allKeys ]) {
-            NSDecimalNumber *value = [node.values objectForKey:key ];
-            if (value != nil) {
-                value = [value decimalNumberByAdding:[childNode.values objectForKey:key ] ];
-            } else value = [childNode.values objectForKey:key ];
-            [node.values setObject:value forKey:key ];
-            [node.children addObject:childNode ];
-        }
-    }
-    
-    for(StatCatAssignment *stat in stats) {
-        ShortDate *date = [ShortDate dateWithDate: stat.statement.date ];
-        ShortDate *newDate;
-        switch (histType) {
-            case cat_histtype_year: newDate = [date firstDayInYear ]; break;
-            case cat_histtype_quarter: newDate = [date firstDayInQuarter ]; break;
-            case cat_histtype_month: newDate = [date firstDayInMonth ]; break;
-            default: newDate = [date firstDayInMonth ]; break;
-        }
-        NSDecimalNumber *value = [node.values objectForKey:newDate ];
-        if (value != nil) {
-            value = [value decimalNumberByAdding: stat.value ];
-        } else value = stat.value;
-        [node.values setObject:value forKey:newDate ];
-    }
-    
-    return [node autorelease ];	
-}
-
-/**
  * Returns a list of all statements for this category, including sub categories.
  */
 -(NSSet*)allStatements

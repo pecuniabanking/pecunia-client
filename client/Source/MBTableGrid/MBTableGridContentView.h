@@ -84,6 +84,8 @@
  */
 - (void)editSelectedCell:(id)sender;
 
+- (void)cancelEditing;
+
 /**
  * @}
  */

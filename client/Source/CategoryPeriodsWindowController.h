@@ -23,35 +23,36 @@
 #import "PecuniaSectionItem.h"
 
 @class ShortDate;
-@class CategoryReportingNode;
 @class MBTableGrid;
 @class SynchronousScrollView;
 @class MAAttachedWindow;
 @class StatementsListView;
+@class BWGradientBox;
 
 @interface CategoryPeriodsWindowController : NSObject <PecuniaSectionItem> {
-	IBOutlet NSArrayController  *catPeriodDatesController;
-	IBOutlet NSPopUpButton      *fromButton;
-	IBOutlet NSPopUpButton      *toButton;
     IBOutlet MBTableGrid        *valueGrid;
 	IBOutlet NSView             *mainView;
 	IBOutlet NSView             *printView;
 	IBOutlet NSArrayController  *statementsController;
     IBOutlet NSSlider           *groupingSlider;
+    IBOutlet NSSlider           *fromSlider;
+    IBOutlet NSSlider           *toSlider;
+    IBOutlet NSTextField        *fromText;
+    IBOutlet NSTextField        *toText;
     IBOutlet NSView             *statementDetailsView;
     IBOutlet StatementsListView *statementsListView;
+    IBOutlet BWGradientBox      *selectionBox;
+    IBOutlet NSSegmentedControl *sortControl;
 
     @private
-	CategoryReportingNode		*dataRoot;
-	CategoryReportingNode		*periodRoot;
-	NSDictionary				*categoryHistory;
-	NSMutableArray				*selectedDates;
-	ShortDate					*fromDate;
-	ShortDate					*toDate;
-	ShortDate					*minDate;
-	ShortDate					*maxDate;
-	CatHistoryType				histType;
-	NSManagedObjectContext		*managedObjectContext;
+	NSMutableArray         *selectedDates;
+	ShortDate              *minDate;
+	ShortDate              *maxDate;
+    NSUInteger             fromIndex;
+    NSUInteger             toIndex;
+    NSInteger              sortIndex;
+    BOOL                   sortAscending;
+	NSManagedObjectContext *managedObjectContext;
 
     // Data storage.
     NSMutableArray *dates;
@@ -70,20 +71,14 @@
 @property (nonatomic, assign) NSOutlineView* outline; // weak reference
 
 - (IBAction)setGrouping: (id)sender;
-- (IBAction)fromButtonPressed:(id)sender;
-- (IBAction)toButtonPressed:(id)sender;
+- (IBAction)fromChanged:(id)sender;
+- (IBAction)toChanged:(id)sender;
 - (IBAction)filterStatements: (id)sender;
+- (IBAction)sortingChanged: (id)sender;
 
-- (void)updatePeriodDates;
-- (NSString*)keyForDate:(ShortDate*)date;
-- (void)updatePeriodDataForNode:(CategoryReportingNode*)node;
-- (ShortDate*)periodRefDateForDate:(ShortDate*)date;
-- (void)adjustDates;
-- (void)updateData;
 - (void)connectScrollViews: (SynchronousScrollView *)other;
 
 // PecuniaSectionItem protocol
-
 @property (nonatomic, retain) Category* category;
 
 - (NSView*)mainView;

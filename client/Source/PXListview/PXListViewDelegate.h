@@ -23,6 +23,7 @@ extern NSString * const PXListViewSelectionDidChange;
 - (PXListViewCell*)listView:(PXListView*)aListView cellForRow:(NSUInteger)row;
 
 @optional
+- (bool)listView:(PXListView*)aListView shouldSelectRows: (NSIndexSet *)rows byExtendingSelection:(BOOL)shouldExtend;
 - (void)listViewSelectionDidChange:(NSNotification*)aNotification;
 - (void)listView:(PXListView*)aListView rowDoubleClicked:(NSUInteger)rowIndex;
 

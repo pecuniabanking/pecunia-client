@@ -46,6 +46,8 @@
 @property (nonatomic, assign) BOOL showAssignedIndicators;
 @property (nonatomic, retain) id owner;
 @property (nonatomic, assign) BOOL autoResetNew;
+@property (nonatomic, assign) BOOL disableSelection;
+@property (nonatomic, assign) BOOL showHeaders;
 
 - (NSNumberFormatter*) numberFormatter;
 

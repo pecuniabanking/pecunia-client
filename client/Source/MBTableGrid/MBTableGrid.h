@@ -959,6 +959,8 @@ typedef enum {
  */
 - (BOOL)tableGrid:(MBTableGrid *)aTableGrid shouldEditColumn:(NSUInteger)columnIndex row:(NSUInteger)rowIndex;
 
+- (void) cancelEditForTableGrid:(MBTableGrid *)aTableGrid;
+
 /**
  * @}
  */

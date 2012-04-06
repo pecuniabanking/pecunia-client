@@ -416,6 +416,11 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 
 - (void)selectRowIndexes:(NSIndexSet*)rows byExtendingSelection:(BOOL)shouldExtend
 {
+    id <PXListViewDelegate> delegate = [self delegate];
+    if ([delegate respondsToSelector: @selector(listView:shouldSelectRows:byExtendingSelection:)])
+        if (![delegate listView: self shouldSelectRows: rows byExtendingSelection: shouldExtend])
+            return;
+    
   // ml: added manual KVO notification.
   [self willChangeValueForKey: @"selectedRow"];
   [self willChangeValueForKey: @"selectedRows"];
@@ -439,7 +444,6 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 		[cell setNeedsDisplay:YES];
 	}
   
-  // TODO: this should go. Use KVC/KVO for notifications.
   [self postSelectionDidChangeNotification];
 }
 
