@@ -43,6 +43,7 @@
 - (void)updateStatementList: (NSRect)cellBounds;
 - (void)updateData;
 - (void)updateLimitLabel: (NSTextField *)field index: (NSUInteger) index;
+- (void)updateSorting;
 
 @end
 
@@ -88,6 +89,7 @@
 	fromIndex = 0;
     toIndex = 1;
     sortAscending = NO;
+    sortIndex = 0;
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *values = [userDefaults objectForKey: @"categoryPeriods"];
@@ -103,24 +105,22 @@
             groupingSlider.intValue = groupingInterval;
         }
         if ([values objectForKey: @"sortIndex" ]) {
-            sortIndex = [[values objectForKey: @"sortIndex"] intValue];
-            sortControl.selectedSegment = sortIndex;
+            sortControl.selectedSegment = [[values objectForKey: @"sortIndex"] intValue];
         }
         if ([values objectForKey: @"sortAscending" ]) {
-            // We set the inverse value hear as it will be reversed again when
-            // we update the sort descriptor below.
             sortAscending = ![[values objectForKey: @"sortAscending"] boolValue];
         }
     }
+    [self updateSorting];
     
     if (toIndex < fromIndex) {
         toIndex = fromIndex;
     }
     
-    fromSlider.continuous = YES;
+    [fromSlider setContinuous: YES];
     fromSlider.intValue = fromIndex;
     [self updateLimitLabel: fromText index: fromIndex];
-    toSlider.continuous = YES;
+    [toSlider setContinuous: YES];
     toSlider.intValue = toIndex;
     [self updateLimitLabel: toText index: toIndex];
     
@@ -161,7 +161,6 @@
     statementsListView.allowsEmptySelection = YES;
     statementsListView.allowsMultipleSelection = NO;
     statementsListView.disableSelection = YES;
-    [self sortingChanged: sortControl];
     
     formatter = [statementsListView numberFormatter];
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
@@ -551,6 +550,44 @@
     }   
 }
 
+- (void)updateSorting
+{
+    [sortControl setImage: nil forSegment: sortIndex];
+    sortIndex = [sortControl selectedSegment];
+    NSImage *sortImage = sortAscending ? [NSImage imageNamed: @"sort-indicator-inc"] : [NSImage imageNamed: @"sort-indicator-dec"];
+    [sortControl setImage: sortImage forSegment: sortIndex];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setValue: [NSNumber numberWithInt: sortIndex] forKey: @"mainSortIndex"];
+    [userDefaults setValue: [NSNumber numberWithBool: sortAscending] forKey: @"mainSortAscending"];
+    
+    NSString *key;
+    switch (sortIndex) {
+        case 1:
+            statementsListView.showHeaders = false;
+            key = @"statement.remoteName";
+            break;
+        case 2:
+            statementsListView.showHeaders = false;
+            key = @"statement.purpose";
+            break;
+        case 3:
+            statementsListView.showHeaders = false;
+            key = @"statement.categoriesDescription";
+            break;
+        case 4:
+            statementsListView.showHeaders = false;
+            key = @"statement.value";
+            break;
+        default:
+            statementsListView.showHeaders = true;
+            key = @"statement.valutaDate";
+            break;
+    }
+    [statementsController setSortDescriptors:
+     [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending] autorelease]]];
+}
+
 #pragma mark -
 #pragma mark Interface Builder Actions
 
@@ -655,44 +692,8 @@
     } else {
         sortAscending = YES;
     }
-    
-    sortIndex = [sender selectedSegment];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary* values = [userDefaults objectForKey: @"categoryPeriods"];
-    if (values == nil) {
-        values = [NSMutableDictionary dictionaryWithCapacity: 1];
-        [userDefaults setObject: values forKey: @"categoryPeriods"];
-    }
-    [values setValue: [NSNumber numberWithInt: sortIndex] forKey: @"sortIndex"];
-    [values setValue: [NSNumber numberWithBool: sortAscending] forKey: @"sortAscending"];
 
-    NSString *key;
-    switch (sortIndex) {
-        case 1:
-            statementsListView.showHeaders = false;
-            key = @"statement.remoteName";
-            break;
-        case 2:
-            statementsListView.showHeaders = false;
-            key = @"statement.purpose";
-            break;
-        case 3:
-            statementsListView.showHeaders = false;
-            key = @"statement.categoriesDescription";
-            break;
-        case 4:
-            statementsListView.showHeaders = false;
-            key = @"statement.value";
-            break;
-        default:
-            statementsListView.showHeaders = true;
-            key = @"statement.valutaDate";
-            break;
-    }
-    [statementsController setSortDescriptors:
-     [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending] autorelease]]];
-
+    [self updateSorting];
 }
 
 #pragma mark -

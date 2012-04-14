@@ -871,7 +871,7 @@
 																		<string key="NSFrame">{{12, 8}, {32, 32}}</string>
 																		<reference key="NSSuperview" ref="1096"/>
 																		<reference key="NSWindow"/>
-																		<reference key="NSNextKeyView" ref="768391083"/>
+																		<reference key="NSNextKeyView" ref="569487988"/>
 																		<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																		<int key="NSTag">4</int>
 																		<bool key="NSEnabled">YES</bool>
@@ -2018,7 +2018,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																					<object class="NSSegmentedControl" id="497321021">
 																						<reference key="NSNextResponder" ref="475239580"/>
 																						<int key="NSvFlags">268</int>
-																						<string key="NSFrame">{{130, 251}, {282, 20}}</string>
+																						<string key="NSFrame">{{127, 251}, {293, 20}}</string>
 																						<reference key="NSSuperview" ref="475239580"/>
 																						<reference key="NSWindow"/>
 																						<reference key="NSNextKeyView" ref="276340152"/>
@@ -2033,9 +2033,12 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																							<reference key="NSControlView" ref="497321021"/>
 																							<array class="NSMutableArray" key="NSSegmentImages">
 																								<object class="NSSegmentItem">
+																									<object class="NSCustomResource" key="NSSegmentItemImage">
+																										<string key="NSClassName">NSImage</string>
+																										<string key="NSResourceName">sort-indicator-dec</string>
+																									</object>
 																									<string key="NSSegmentItemLabel">Datum</string>
-																									<bool key="NSSegmentItemSelected">YES</bool>
-																									<int key="NSSegmentItemImageScaling">0</int>
+																									<int key="NSSegmentItemImageScaling">2</int>
 																								</object>
 																								<object class="NSSegmentItem">
 																									<string key="NSSegmentItemLabel">Von/An</string>
@@ -3716,7 +3719,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 															<object class="NSTextField" id="628223670">
 																<reference key="NSNextResponder" ref="764661400"/>
 																<int key="NSvFlags">266</int>
-																<string key="NSFrame">{{7, 587}, {198, 22}}</string>
+																<string key="NSFrame">{{7, 587}, {233, 22}}</string>
 																<reference key="NSSuperview" ref="764661400"/>
 																<reference key="NSWindow"/>
 																<reference key="NSNextKeyView" ref="641656875"/>
@@ -3817,7 +3820,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 															</object>
 															<object class="NSTextField" id="641656875">
 																<reference key="NSNextResponder" ref="764661400"/>
-																<int key="NSvFlags">268</int>
+																<int key="NSvFlags">265</int>
 																<string key="NSFrame">{{242, 592}, {174, 17}}</string>
 																<reference key="NSSuperview" ref="764661400"/>
 																<reference key="NSWindow"/>
@@ -17420,7 +17423,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<string key="6350.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6351.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6359.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<integer value="2" key="6360.IBNSSegmentedControlInspectorSelectedSegmentMetadataKey"/>
+				<integer value="0" key="6360.IBNSSegmentedControlInspectorSelectedSegmentMetadataKey"/>
 				<string key="6360.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6361.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6362.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -18377,6 +18380,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 			<string key="pen">{122, 323}</string>
 			<string key="plus-8">{8, 8}</string>
 			<string key="rules">{32, 32}</string>
+			<string key="sort-indicator-dec">{8, 8}</string>
 			<string key="statementlist">{32, 32}</string>
 			<string key="update">{48, 48}</string>
 		</dictionary>

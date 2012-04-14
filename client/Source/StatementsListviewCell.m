@@ -21,6 +21,8 @@
 #import "GraphicsAdditions.h"
 #import "CurrencyValueTransformer.h"
 
+#import "GraphicsAdditions.h"
+
 @implementation StatementsListViewCell
 
 @synthesize delegate;
@@ -122,6 +124,8 @@ static CurrencyValueTransformer* currencyTransformer;
 
 - (void)prepareForReuse
 {
+    [super prepareForReuse];
+
     [dateLabel setStringValue: @""];
     [turnoversLabel setStringValue: @""];
     [remoteNameLabel setStringValue: @""];
@@ -177,8 +181,10 @@ static NSImage* stripeImage;
                              [NSColor colorWithDeviceWhite: 245 / 255.0 alpha: 1], (CGFloat) 1,
                              nil];
     headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                      [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], (CGFloat) 0,
-                      [NSColor colorWithDeviceWhite: 170 / 255.0 alpha: 1], (CGFloat) 1,
+                      [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat) 0,
+                      //[NSColor applicationColorForKey: @"Positive Gradient (low)"], (CGFloat) 0,
+                      [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], (CGFloat) 1,
+                      //[NSColor applicationColorForKey: @"Positive Gradient (high)"], (CGFloat) 1,
                       nil];
     innerShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithCalibratedWhite: 0.0 alpha: .75]
                                            offset: NSMakeSize(0, -1)

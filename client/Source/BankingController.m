@@ -82,6 +82,7 @@ static BOOL runningOnLionOrLater = NO;
 
 - (void)saveBankAccountItemsStates;
 - (void)restoreBankAccountItemsStates;
+- (void)updateSorting;
 
 @end
 
@@ -208,19 +209,17 @@ static BOOL runningOnLionOrLater = NO;
 -(void)awakeFromNib
 {
     sortAscending = NO;
+    sortIndex = 0;
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults objectForKey: @"mainSortIndex" ]) {
-        sortIndex = [[userDefaults objectForKey: @"mainSortIndex"] intValue];
-        sortControl.selectedSegment = sortIndex;
+        sortControl.selectedSegment = [[userDefaults objectForKey: @"mainSortIndex"] intValue];
     }
     if ([userDefaults objectForKey: @"mainSortAscending" ]) {
-        // We set the inverse value hear as it will be reversed again when
-        // we update the sort descriptor below.
-        sortAscending = ![[userDefaults objectForKey: @"mainSortAscending"] boolValue];
+        sortAscending = [[userDefaults objectForKey: @"mainSortAscending"] boolValue];
     }
 
-    [self sortingChanged: sortControl];
+    [self updateSorting];
     
     NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                         [NSColor applicationColorForKey: @"Positive Cash"], NSForegroundColorAttributeName,
@@ -1962,41 +1961,10 @@ static BOOL runningOnLionOrLater = NO;
     if ([sender selectedSegment] == sortIndex) {
         sortAscending = !sortAscending;
     } else {
-        sortAscending = YES;
+        sortAscending = NO; // Per default entries are sorted by date in decreasing order.
     }
     
-    sortIndex = [sender selectedSegment];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setValue: [NSNumber numberWithInt: sortIndex] forKey: @"mainSortIndex"];
-    [userDefaults setValue: [NSNumber numberWithBool: sortAscending] forKey: @"mainSortAscending"];
-    
-    NSString *key;
-    switch (sortIndex) {
-        case 1:
-            statementsListView.showHeaders = false;
-            key = @"statement.remoteName";
-            break;
-        case 2:
-            statementsListView.showHeaders = false;
-            key = @"statement.purpose";
-            break;
-        case 3:
-            statementsListView.showHeaders = false;
-            key = @"statement.categoriesDescription";
-            break;
-        case 4:
-            statementsListView.showHeaders = false;
-            key = @"statement.value";
-            break;
-        default:
-            statementsListView.showHeaders = true;
-            key = @"statement.valutaDate";
-            break;
-    }
-    [transactionController setSortDescriptors:
-     [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending] autorelease]]];
-    
+    [self updateSorting];
 }
 
 -(void)adjustSearchField
@@ -2887,6 +2855,44 @@ static BOOL runningOnLionOrLater = NO;
             }
         }
     }
+}
+
+- (void)updateSorting
+{
+    [sortControl setImage: nil forSegment: sortIndex];
+    sortIndex = [sortControl selectedSegment];
+    NSImage *sortImage = sortAscending ? [NSImage imageNamed: @"sort-indicator-inc"] : [NSImage imageNamed: @"sort-indicator-dec"];
+    [sortControl setImage: sortImage forSegment: sortIndex];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setValue: [NSNumber numberWithInt: sortIndex] forKey: @"mainSortIndex"];
+    [userDefaults setValue: [NSNumber numberWithBool: sortAscending] forKey: @"mainSortAscending"];
+    
+    NSString *key;
+    switch (sortIndex) {
+        case 1:
+            statementsListView.showHeaders = false;
+            key = @"statement.remoteName";
+            break;
+        case 2:
+            statementsListView.showHeaders = false;
+            key = @"statement.purpose";
+            break;
+        case 3:
+            statementsListView.showHeaders = false;
+            key = @"statement.categoriesDescription";
+            break;
+        case 4:
+            statementsListView.showHeaders = false;
+            key = @"statement.value";
+            break;
+        default:
+            statementsListView.showHeaders = true;
+            key = @"statement.valutaDate";
+            break;
+    }
+    [transactionController setSortDescriptors:
+     [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending] autorelease]]];
 }
 
 +(BankingController*)controller

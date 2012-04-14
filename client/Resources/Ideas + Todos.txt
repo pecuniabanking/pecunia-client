@@ -16,6 +16,7 @@ Allgemeines
 - Eine Startseite:
 "ich dachte da an verschiedene Dinge, z.B ein Modul für Konten, so das man einen Direkteinstieg hat auf Konten, Kreditkarten. Etwa mit einem Rechtsklick eine Überweisung direkt von einem Konto anstoßen kann. Oder eine Statistik der Ausgaben-Einnahmen. Fällige, noch nicht getätigte Überweisungen. Aktienkurse, Devisenmärkte eventuell einen integrierten Taschenrechner, Adressbuch, Abruf der einzelnen Konten. Eine individuell anpassbare Startseite ist sehr bequem für den Benutzer."
 - OCR zur automatischen Übernahme von vorgedruckten Zahlungsanweisungen.
+- Pecunia nach einer Zeitspanne automatisch sperren.
 
 Kategorie + Kontenanalyse
 -------------------------
