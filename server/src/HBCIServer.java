@@ -307,7 +307,16 @@ public class HBCIServer {
 		return hbciHandlers.containsKey(name);
     }
     
-	
+    private Konto getAccount(HBCIPassport passport, String accountNumber, String subNumber)
+    {
+    	Konto [] accounts = passport.getAccounts();
+    	
+    	for(Konto k: accounts) {
+    		if(k.number.equals(accountNumber) && ((k.subnumber == null && subNumber == null) || k.subnumber.equals(subNumber))) return k;
+    	}
+    	return null;
+    }
+    	
 	private void addPassport() throws IOException {
 		String filename = passportKey(map, "addPassport");
 		if(filename == null) return;
@@ -401,7 +410,7 @@ public class HBCIServer {
 			HBCIJob job = handler.newJob(jobName);
 			Konto account = accountWithId(bankCode, accountNumber, subNumber);
 			if(account == null) {
-				account = handler.getPassport().getAccount(accountNumber);
+				account = getAccount(handler.getPassport(), accountNumber, subNumber);
 				if(account == null) {
 					HBCIUtils.log("HBCIServer: "+jobName+" skips account "+accountNumber, HBCIUtils.LOG_DEBUG);
 					continue;
@@ -456,6 +465,7 @@ public class HBCIServer {
 				    	xmlBuf.append("<object type=\"BankQueryResult\">");
 				    	xmlGen.tag("bankCode", account.blz);
 				    	xmlGen.tag("accountNumber", account.number);
+				    	xmlGen.tag("accountSubnumber", account.subnumber);
 				    	xmlBuf.append("<statements type=\"list\">");
 						xmlGen.umsToXml(res, account);
 						xmlBuf.append("</statements></object>");
@@ -492,6 +502,7 @@ public class HBCIServer {
 				    	xmlBuf.append("<object type=\"BankQueryResult\">");
 				    	xmlGen.tag("bankCode", account.blz);
 				    	xmlGen.tag("accountNumber", account.number);
+				    	xmlGen.tag("accountSubnumber", account.subnumber);
 				    	xmlBuf.append("<standingOrders type=\"list\">");
 						xmlGen.dauerListToXml(res, account);
 						xmlBuf.append("</standingOrders></object>");
@@ -526,6 +537,7 @@ public class HBCIServer {
 				    	xmlBuf.append("<object type=\"BankQueryResult\">");
 				    	xmlGen.tag("bankCode", account.blz);
 				    	xmlGen.tag("accountNumber", account.number);
+				    	xmlGen.tag("accountSubnumber", account.subnumber);
 				    	xmlBuf.append("<termUebs type=\"list\">");
 				    	xmlGen.termUebListToXml(res, account);
 						xmlBuf.append("</termUebs></object>");
@@ -567,7 +579,7 @@ public class HBCIServer {
 			}
 			Konto account = accountWithId(bankCode, accountNumber, subNumber);
 			if(account == null) {
-				account = handler.getPassport().getAccount(accountNumber);
+				account = getAccount(handler.getPassport(), accountNumber, subNumber);
 				if(account == null) continue;
 			}
 			
@@ -683,7 +695,7 @@ public class HBCIServer {
 		
 		Konto account = accountWithId(bankCode, accountNumber, subNumber);
 		if(account == null) {
-			account = handler.getPassport().getAccount(accountNumber);
+			account = getAccount(handler.getPassport(), accountNumber, subNumber);
 			if(account == null) {
 				error(ERR_MISS_ACCOUNT, cmd,accountNumber);
 				return;
@@ -1117,10 +1129,12 @@ public class HBCIServer {
 	private void isJobSupported() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String accountNumber = getParameter(map, "accountNumber");
+		String subNumber = map.getProperty("subNumber");
 		String userId = getParameter(map, "userId");
 		String jobName = getParameter(map, "jobName");
 		boolean supp = false;
 
+		if(subNumber == null) subNumber = "";
 		HBCIHandler handler = hbciHandler(bankCode, userId);
 		if(handler != null) {
 			HBCIPassport passport = handler.getPassport();
@@ -1141,10 +1155,23 @@ public class HBCIServer {
 					gvcodes.add((String)upd.get(key));
 				} else if(key.matches("KInfo\\w*.KTV.number")) {
 					String accKey = key.substring(0, key.indexOf('.'));
-					accNums.put(accKey, upd.get(key));
+					String val = accNums.getProperty(accKey);
+					if(val == null) accNums.put(accKey, upd.get(key));
+					else accNums.put(accKey, upd.get(key)+val);
+				} else if(key.matches("KInfo\\w*.KTV.subnumber")) {
+					String accKey = key.substring(0, key.indexOf('.'));
+					String val = accNums.getProperty(accKey);
+					String subNum = (String) upd.get(key);
+					if(subNum != null) {
+						if(val == null) accNums.put(accKey, subNum);
+						else accNums.put(accKey, val+subNum);					
+					}
 				}
-				
 			}
+			
+			HBCIUtils.log(accNums.toString(), HBCIUtils.LOG_DEBUG);
+			HBCIUtils.log(gvs.toString(), HBCIUtils.LOG_DEBUG);
+			
 			// now merge it
 			for(Enumeration e = accNums.keys(); e.hasMoreElements(); ) {
 				String key = (String)e.nextElement();
@@ -1152,8 +1179,10 @@ public class HBCIServer {
 				if(gvcodes != null) gvs.put(accNums.get(key), gvcodes);
 				gvs.remove(key);
 			}
+			
+			HBCIUtils.log(gvs.toString(), HBCIUtils.LOG_DEBUG);
 
-			ArrayList<String> gvcodes = (ArrayList<String>)gvs.get(accountNumber);
+			ArrayList<String> gvcodes = (ArrayList<String>)gvs.get(accountNumber+subNumber);
 			if(gvcodes != null) {
 				if(jobName.equals("Ueb")) supp = gvcodes.contains("HKUEB");
 				else if(jobName.equals("TermUeb")) supp = gvcodes.contains("HKTUE");
@@ -1251,7 +1280,7 @@ public class HBCIServer {
 		
 		Konto account = accountWithId(bankCode, accountNumber, subNumber);
 		if(account == null) {
-			account = handler.getPassport().getAccount(accountNumber);
+			account = getAccount(handler.getPassport(), accountNumber, subNumber);
 			if(account == null) {
 				error(ERR_MISS_ACCOUNT, "getAccInfo",accountNumber);
 				return;
@@ -1292,7 +1321,7 @@ public class HBCIServer {
 		
 		Konto account = accountWithId(bankCode, accountNumber, subNumber);
 		if(account == null) {
-			account = handler.getPassport().getAccount(accountNumber);
+			account = getAccount(handler.getPassport(), accountNumber, subNumber);
 			if(account == null) {
 				error(ERR_MISS_ACCOUNT, "customerMessage",accountNumber);
 				return;
@@ -1336,7 +1365,7 @@ public class HBCIServer {
 		
 		Konto account = accountWithId(bankCode, accountNumber, subNumber);
 		if(account == null) {
-			account = handler.getPassport().getAccount(accountNumber);
+			account = getAccount(handler.getPassport(), accountNumber, subNumber);
 			if(account == null) {
 				error(ERR_MISS_ACCOUNT, "getAllCCStatements",accountNumber);
 				return;
@@ -1391,13 +1420,15 @@ public class HBCIServer {
 	
 	private void getInitialBPD() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
+		Properties bpd = null;
 
 		HBCIPassportPinTanAnon	passport = new HBCIPassportPinTanAnon(bankCode);
-		if(passport.isReady() == false) return;
-		HBCIKernelImpl kernel = new HBCIKernelImpl(null,passport.getHBCIVersion());
-		HBCIInstitute inst = new HBCIInstitute(kernel, passport, true);
-		inst.fetchBPD();
-		Properties bpd = passport.getBPD();
+		if(passport.isReady() == true) {
+			HBCIKernelImpl kernel = new HBCIKernelImpl(null,passport.getHBCIVersion());
+			HBCIInstitute inst = new HBCIInstitute(kernel, passport, true);
+			inst.fetchBPD();
+			bpd = passport.getBPD();
+		}
 		
 		// search for PIN/TAN Information
 		xmlBuf.append("<result command=\"getInitialBPD\">");
@@ -1458,6 +1489,8 @@ public class HBCIServer {
 	private void getSupportedBusinessTransactions() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String accountNumber = getParameter(map, "accountNumber");
+		String subNumber = map.getProperty("subNumber");
+		
 		String userId = getParameter(map, "userId");
 
 		HBCIHandler handler = hbciHandler(bankCode, userId);
@@ -1469,7 +1502,7 @@ public class HBCIServer {
 		xmlBuf.append("<result command=\"getSupportedBusinessTransactons\"><list>");
 		HBCIPassport passport = handler.getPassport();
 		
-		// First collect all supported transactions (for all accounts).
+		// general purpose: get supported GVs for each account - should be separated later
 		Properties upd = passport.getUPD();
 		Properties gvs = new Properties();
 		Properties accNums = new Properties();
@@ -1485,10 +1518,20 @@ public class HBCIServer {
 				gvcodes.add((String)upd.get(key));
 			} else if(key.matches("KInfo\\w*.KTV.number")) {
 				String accKey = key.substring(0, key.indexOf('.'));
-				accNums.put(accKey, upd.get(key));
+				String val = accNums.getProperty(accKey);
+				if(val == null) accNums.put(accKey, upd.get(key));
+				else accNums.put(accKey, upd.get(key)+val);
+			} else if(key.matches("KInfo\\w*.KTV.subnumber")) {
+				String accKey = key.substring(0, key.indexOf('.'));
+				String val = accNums.getProperty(accKey);
+				String subNum = (String) upd.get(key);
+				if(subNum != null) {
+					if(val == null) accNums.put(accKey, subNum);
+					else accNums.put(accKey, val+subNum);					
+				}
 			}
-			
 		}
+
 		// now merge it
 		for(Enumeration e = accNums.keys(); e.hasMoreElements(); ) {
 			String key = (String)e.nextElement();
@@ -1498,7 +1541,7 @@ public class HBCIServer {
 		}
 
 		// Filter by account and return result.
-		ArrayList<String> gvcodes = (ArrayList<String>)gvs.get(accountNumber);
+		ArrayList<String> gvcodes = (ArrayList<String>)gvs.get(accountNumber+subNumber);
 		if(gvcodes != null) {
 			for (Enumeration e = Collections.enumeration(gvcodes); e.hasMoreElements();) {
 				xmlGen.tag("gv", (String)e.nextElement());
