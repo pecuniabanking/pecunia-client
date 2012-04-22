@@ -32,7 +32,6 @@
 	} else {
 		[mainTabView selectTabViewItemAtIndex:idx ];
 	}
-	[self adjustSearchField ];
 }
 
 

@@ -25,9 +25,9 @@ extern NSString *const CPTBarPlotBindingBarBases;
  *	@brief Enumeration of bar plot data source field types
  **/
 typedef enum _CPTBarPlotField {
-	CPTBarPlotFieldBarLocation, ///< Bar location on independent coordinate axis.
-	CPTBarPlotFieldBarTip,      ///< Bar tip value.
-	CPTBarPlotFieldBarBase      ///< Bar base (used only if @link CPTBarPlot::barBasesVary barBasesVary @endlink is YES).
+    CPTBarPlotFieldBarLocation, ///< Bar location on independent coordinate axis.
+    CPTBarPlotFieldBarTip,      ///< Bar tip value.
+    CPTBarPlotFieldBarBase      ///< Bar base (used only if @link CPTBarPlot::barBasesVary barBasesVary @endlink is YES).
 }
 CPTBarPlotField;
 
@@ -78,16 +78,20 @@ CPTBarPlotField;
 /**
  *	@brief Bar plot delegate.
  **/
-@protocol CPTBarPlotDelegate<NSObject>
+@protocol CPTBarPlotDelegate<CPTPlotDelegate>
 
 @optional
 
 ///	@name Point Selection
 /// @{
 
-/**	@brief (Optional) Informs delegate that a point was touched.
- *	@param plot The scatter plot.
- *	@param index Index of touched point
+/**	@brief (Optional) Informs the delegate that a bar was
+ *	@if MacOnly clicked. @endif
+ *	@if iOSOnly touched. @endif
+ *	@param plot The bar plot.
+ *	@param index The index of the
+ *	@if MacOnly clicked bar. @endif
+ *	@if iOSOnly touched bar. @endif
  **/
 -(void)barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)index;
 
@@ -98,19 +102,19 @@ CPTBarPlotField;
 #pragma mark -
 
 @interface CPTBarPlot : CPTPlot {
-	@private
-	CPTLineStyle *lineStyle;
-	CPTFill *fill;
-	NSDecimal barWidth;
-	CGFloat barWidthScale;
-	NSDecimal barOffset;
-	CGFloat barOffsetScale;
-	CGFloat barCornerRadius;
-	NSDecimal baseValue;
-	BOOL barsAreHorizontal;
-	BOOL barBasesVary;
-	BOOL barWidthsAreInViewCoordinates;
-	CPTPlotRange *plotRange;
+    @private
+    CPTLineStyle *lineStyle;
+    CPTFill *fill;
+    NSDecimal barWidth;
+    CGFloat barWidthScale;
+    NSDecimal barOffset;
+    CGFloat barOffsetScale;
+    CGFloat barCornerRadius;
+    NSDecimal baseValue;
+    BOOL barsAreHorizontal;
+    BOOL barBasesVary;
+    BOOL barWidthsAreInViewCoordinates;
+    CPTPlotRange *plotRange;
 }
 
 @property (nonatomic, readwrite, assign) BOOL barWidthsAreInViewCoordinates;

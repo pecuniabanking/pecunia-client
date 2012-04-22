@@ -44,7 +44,7 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSCustomView" id="148167949">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSCustomView" id="816165749">
@@ -384,7 +384,6 @@ AAAmIgAAEn8AALFwA</bytes>
 					</object>
 				</array>
 				<string key="NSFrameSize">{1106, 688}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="950255970"/>
 				<bool key="NSViewIsLayerTreeHost">YES</bool>
 				<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -486,7 +485,7 @@ AAAmIgAAEn8AALFwA</bytes>
 									</object>
 									<string key="NSSegmentItemLabel">Datum</string>
 									<bool key="NSSegmentItemSelected">YES</bool>
-									<int key="NSSegmentItemImageScaling">0</int>
+									<int key="NSSegmentItemImageScaling">2</int>
 								</object>
 								<object class="NSSegmentItem">
 									<string key="NSSegmentItemLabel">Von/An</string>

@@ -5,7 +5,7 @@
 @class CPTPlotArea;
 
 @interface CPTPlotAreaFrame : CPTBorderedLayer {
-	@private
+    @private
     CPTPlotArea *plotArea;
 }
 

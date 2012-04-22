@@ -748,7 +748,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
                         BOOL hideInfo = YES;
     
                         lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
-                        NSInteger slice = [earningsPlot indexFromPoint: lastMousePosition];
+                        NSInteger slice = [earningsPlot dataIndexFromInteractionPoint: lastMousePosition];
                         BOOL needInfoUpdate = lastEarningsIndex != slice;
                         lastEarningsIndex = slice;
                         if ([earningsCategories count] > 1 && earningsExplosionIndex != slice) {
@@ -762,7 +762,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
                                 hideInfo = NO;
                             }
                         } else {
-                            slice = [spendingsPlot indexFromPoint: lastMousePosition];
+                            slice = [spendingsPlot dataIndexFromInteractionPoint: lastMousePosition];
                             needInfoUpdate |= lastSpendingsIndex != slice;
                             lastSpendingsIndex = slice;
                             if ([spendingsCategories count] > 1 && spendingsExplosionIndex != slice) {

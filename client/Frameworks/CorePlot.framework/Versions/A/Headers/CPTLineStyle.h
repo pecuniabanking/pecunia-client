@@ -2,18 +2,20 @@
 #import <QuartzCore/QuartzCore.h>
 
 @class CPTColor;
+@class CPTFill;
 
-@interface CPTLineStyle : NSObject <NSCoding, NSCopying, NSMutableCopying> {
-	@private
-	CGLineCap lineCap;
+@interface CPTLineStyle : NSObject<NSCoding, NSCopying, NSMutableCopying> {
+    @private
+    CGLineCap lineCap;
 //	CGLineDash lineDash; // We should make a struct to keep this information
-	CGLineJoin lineJoin;
-	CGFloat miterLimit;
-	CGFloat lineWidth;
-	NSArray *dashPattern;
-	CGFloat patternPhase;
+    CGLineJoin lineJoin;
+    CGFloat miterLimit;
+    CGFloat lineWidth;
+    NSArray *dashPattern;
+    CGFloat patternPhase;
 //	StrokePattern; // We should make a struct to keep this information
     CPTColor *lineColor;
+    CPTFill *lineFill;
 }
 
 @property (nonatomic, readonly, assign) CGLineCap lineCap;
@@ -23,6 +25,7 @@
 @property (nonatomic, readonly, retain) NSArray *dashPattern;
 @property (nonatomic, readonly, assign) CGFloat patternPhase;
 @property (nonatomic, readonly, retain) CPTColor *lineColor;
+@property (nonatomic, readonly, retain) CPTFill *lineFill;
 
 /// @name Factory Methods
 /// @{
@@ -32,6 +35,8 @@
 /// @name Drawing
 /// @{
 -(void)setLineStyleInContext:(CGContextRef)theContext;
+-(void)strokePathInContext:(CGContextRef)theContext;
+-(void)strokeRect:(CGRect)rect inContext:(CGContextRef)theContext;
 ///	@}
 
 @end

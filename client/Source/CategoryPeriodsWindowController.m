@@ -558,8 +558,13 @@
     [sortControl setImage: sortImage forSegment: sortIndex];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setValue: [NSNumber numberWithInt: sortIndex] forKey: @"mainSortIndex"];
-    [userDefaults setValue: [NSNumber numberWithBool: sortAscending] forKey: @"mainSortAscending"];
+    NSDictionary *values = [userDefaults objectForKey: @"categoryPeriods"];
+    if (values == nil) {
+        values = [NSMutableDictionary dictionaryWithCapacity: 2];
+        [userDefaults setObject: values forKey: @"categoryPeriods"];
+    }
+    [values setValue: [NSNumber numberWithInt: sortIndex] forKey: @"sortIndex"];
+    [values setValue: [NSNumber numberWithBool: sortAscending] forKey: @"sortAscending"];
     
     NSString *key;
     switch (sortIndex) {
@@ -608,8 +613,6 @@
     [self updateData];
 }
 
-// The time selection sliders use a range from 0 to 100 so we can calculate percentage values
-// easily, which allows a very flexible selection of a date regardless of the available dates.
 - (IBAction)fromChanged: (id)sender
 {
     [self hideStatementList];
@@ -674,8 +677,7 @@
     
     if ([text length] == 0) {
         [statementsController setFilterPredicate: nil];
-    }
-    else {
+    } else {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:
                                   @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or userInfo contains[c] %@ or value = %@",
                                   text, text, text, [NSDecimalNumber decimalNumberWithString: text locale: [NSLocale currentLocale]]];

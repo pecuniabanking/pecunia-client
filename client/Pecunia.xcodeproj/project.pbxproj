@@ -12,8 +12,11 @@
 		2700B920148BC58700E18BBE /* graph1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2700B91C148BC58700E18BBE /* graph1.png */; };
 		2700B921148BC58700E18BBE /* graph2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2700B91D148BC58700E18BBE /* graph2.png */; };
 		2700B922148BC58700E18BBE /* statementlist.png in Resources */ = {isa = PBXBuildFile; fileRef = 2700B91E148BC58700E18BBE /* statementlist.png */; };
+		27028DCF1539B58700AEB651 /* TransfersBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */; };
 		2703DE27146EE6AB0083CBA2 /* ExportPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2703DE26146EE6AB0083CBA2 /* ExportPopup.xib */; };
 		2708DA051493DB3300758A6B /* rules.png in Resources */ = {isa = PBXBuildFile; fileRef = 2708DA041493DB3300758A6B /* rules.png */; };
+		270A0BFE1544177B00653031 /* standing-order-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 270A0BFC1544177B00653031 /* standing-order-active.png */; };
+		270A0BFF1544177B00653031 /* standing-order.png in Resources */ = {isa = PBXBuildFile; fileRef = 270A0BFD1544177B00653031 /* standing-order.png */; };
 		2710CD5815093575006223A6 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 2710CD5715093575006223A6 /* account.png */; };
 		27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
 		2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2716FE4C152381A60015A753 /* SynchronousScrollView.m */; };
@@ -23,6 +26,10 @@
 		2724DCF114016E4000B0FE15 /* banknote.png in Resources */ = {isa = PBXBuildFile; fileRef = 2724DCF014016E4000B0FE15 /* banknote.png */; };
 		272B5EB3143F724600007749 /* slanted_stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 272B5EB2143F724600007749 /* slanted_stripes.png */; };
 		272BF53F14B770A100628805 /* Tresor.png in Resources */ = {isa = PBXBuildFile; fileRef = 272BF53E14B770A100628805 /* Tresor.png */; };
+		272D814915431DCD006E1008 /* accounts.png in Resources */ = {isa = PBXBuildFile; fileRef = 272D814815431DCD006E1008 /* accounts.png */; };
+		272D814B154324B3006E1008 /* accounts-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 272D814A154324B3006E1008 /* accounts-active.png */; };
+		272D814D154326B0006E1008 /* transfers.png in Resources */ = {isa = PBXBuildFile; fileRef = 272D814C154326B0006E1008 /* transfers.png */; };
+		272D814F154327F0006E1008 /* transfers-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 272D814E154327F0006E1008 /* transfers-active.png */; };
 		2736DD4D1514F6590066917C /* MBTableGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD421514F6590066917C /* MBTableGrid.m */; };
 		2736DD4E1514F6590066917C /* MBTableGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD441514F6590066917C /* MBTableGridCell.m */; };
 		2736DD4F1514F6590066917C /* MBTableGridContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD461514F6590066917C /* MBTableGridContentView.m */; };
@@ -38,6 +45,11 @@
 		275C07EB1438779700D97415 /* PXListView+UserInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 275C07E31438779700D97415 /* PXListView+UserInteraction.m */; };
 		275C07EC1438779700D97415 /* PXListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 275C07E51438779700D97415 /* PXListViewCell.m */; };
 		275C07EF143877C800D97415 /* StatementsListviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 275C07EE143877C800D97415 /* StatementsListviewCell.m */; };
+		2764B63915443C6600FF0B73 /* computing-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764B63415443C6600FF0B73 /* computing-active.png */; };
+		2764B63A15443C6600FF0B73 /* graph1-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764B63515443C6600FF0B73 /* graph1-active.png */; };
+		2764B63B15443C6600FF0B73 /* graph2-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764B63615443C6600FF0B73 /* graph2-active.png */; };
+		2764B63C15443C6600FF0B73 /* rules-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764B63715443C6600FF0B73 /* rules-active.png */; };
+		2764B63D15443C6600FF0B73 /* statementlist-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764B63815443C6600FF0B73 /* statementlist-active.png */; };
 		2777A739142F968B005729F0 /* Bank.png in Resources */ = {isa = PBXBuildFile; fileRef = 2777A738142F968B005729F0 /* Bank.png */; };
 		2777A755142F9B86005729F0 /* expanded.png in Resources */ = {isa = PBXBuildFile; fileRef = 2777A753142F9B86005729F0 /* expanded.png */; };
 		2777A756142F9B86005729F0 /* collapsed.png in Resources */ = {isa = PBXBuildFile; fileRef = 2777A754142F9B86005729F0 /* collapsed.png */; };
@@ -49,6 +61,9 @@
 		2790545014A37F59001380A3 /* hatch 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2790544F14A37F59001380A3 /* hatch 1.png */; };
 		2792CB3414840506006A510A /* AnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2792CB3314840506006A510A /* AnimationHelper.m */; };
 		27955AFF140C0603008369C9 /* GraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27955AFE140C0603008369C9 /* GraphicsAdditions.m */; };
+		279A785D1539D8EB00443854 /* TransfersListview.m in Sources */ = {isa = PBXBuildFile; fileRef = 279A785C1539D8EB00443854 /* TransfersListview.m */; };
+		279A785F1539DA0300443854 /* TransfersListviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 279A785E1539DA0300443854 /* TransfersListviewCell.m */; };
+		279A78621539DD5400443854 /* TranfersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 279A78611539DD5400443854 /* TranfersListViewCell.xib */; };
 		27BB1A1A14D4739900A2C8A7 /* CategoryDefinition.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */; };
 		27C78793143622920095F1DA /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27C78792143622920095F1DA /* ProgressWindow.xib */; };
 		27C78796143623080095F1DA /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C78795143623080095F1DA /* ProgressWindowController.m */; };
@@ -308,8 +323,12 @@
 		2700B91C148BC58700E18BBE /* graph1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graph1.png; sourceTree = "<group>"; };
 		2700B91D148BC58700E18BBE /* graph2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graph2.png; sourceTree = "<group>"; };
 		2700B91E148BC58700E18BBE /* statementlist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statementlist.png; sourceTree = "<group>"; };
+		27028DCD1539B58700AEB651 /* TransfersBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransfersBackgroundView.h; sourceTree = "<group>"; };
+		27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersBackgroundView.m; sourceTree = "<group>"; };
 		2703DE26146EE6AB0083CBA2 /* ExportPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExportPopup.xib; sourceTree = "<group>"; };
 		2708DA041493DB3300758A6B /* rules.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rules.png; sourceTree = "<group>"; };
+		270A0BFC1544177B00653031 /* standing-order-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "standing-order-active.png"; sourceTree = "<group>"; };
+		270A0BFD1544177B00653031 /* standing-order.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "standing-order.png"; sourceTree = "<group>"; };
 		2710CD5715093575006223A6 /* account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account.png; sourceTree = "<group>"; };
 		27150D9E140ABDAC000841E2 /* RoundedSidebar.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RoundedSidebar.h; sourceTree = "<group>"; tabWidth = 4; };
 		27150D9F140ABDAC000841E2 /* RoundedSidebar.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedSidebar.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -323,6 +342,10 @@
 		2724DCF014016E4000B0FE15 /* banknote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banknote.png; sourceTree = "<group>"; };
 		272B5EB2143F724600007749 /* slanted_stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slanted_stripes.png; sourceTree = "<group>"; };
 		272BF53E14B770A100628805 /* Tresor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Tresor.png; sourceTree = "<group>"; };
+		272D814815431DCD006E1008 /* accounts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accounts.png; sourceTree = "<group>"; };
+		272D814A154324B3006E1008 /* accounts-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "accounts-active.png"; sourceTree = "<group>"; };
+		272D814C154326B0006E1008 /* transfers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = transfers.png; sourceTree = "<group>"; };
+		272D814E154327F0006E1008 /* transfers-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfers-active.png"; sourceTree = "<group>"; };
 		27334AE614C20BF600268FD9 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		2736DD411514F6590066917C /* MBTableGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBTableGrid.h; path = MBTableGrid/MBTableGrid.h; sourceTree = "<group>"; };
 		2736DD421514F6590066917C /* MBTableGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBTableGrid.m; path = MBTableGrid/MBTableGrid.m; sourceTree = "<group>"; };
@@ -355,6 +378,11 @@
 		275C07E81438779700D97415 /* PXListViewDropHighlight.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; name = PXListViewDropHighlight.h; path = PXListview/PXListViewDropHighlight.h; sourceTree = "<group>"; tabWidth = 4; };
 		275C07ED143877C800D97415 /* StatementsListviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementsListviewCell.h; sourceTree = "<group>"; tabWidth = 4; };
 		275C07EE143877C800D97415 /* StatementsListviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsListviewCell.m; sourceTree = "<group>"; tabWidth = 4; };
+		2764B63415443C6600FF0B73 /* computing-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "computing-active.png"; sourceTree = "<group>"; };
+		2764B63515443C6600FF0B73 /* graph1-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graph1-active.png"; sourceTree = "<group>"; };
+		2764B63615443C6600FF0B73 /* graph2-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graph2-active.png"; sourceTree = "<group>"; };
+		2764B63715443C6600FF0B73 /* rules-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules-active.png"; sourceTree = "<group>"; };
+		2764B63815443C6600FF0B73 /* statementlist-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "statementlist-active.png"; sourceTree = "<group>"; };
 		2777A738142F968B005729F0 /* Bank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bank.png; sourceTree = "<group>"; };
 		2777A753142F9B86005729F0 /* expanded.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = expanded.png; sourceTree = "<group>"; };
 		2777A754142F9B86005729F0 /* collapsed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = collapsed.png; sourceTree = "<group>"; };
@@ -367,6 +395,11 @@
 		2792CB3314840506006A510A /* AnimationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationHelper.m; sourceTree = "<group>"; tabWidth = 4; };
 		27955AFD140C0603008369C9 /* GraphicsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsAdditions.h; sourceTree = "<group>"; tabWidth = 4; };
 		27955AFE140C0603008369C9 /* GraphicsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = GraphicsAdditions.m; sourceTree = "<group>"; tabWidth = 4; };
+		279A785B1539D8BE00443854 /* TransfersListview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransfersListview.h; sourceTree = "<group>"; };
+		279A785C1539D8EB00443854 /* TransfersListview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersListview.m; sourceTree = "<group>"; };
+		279A785E1539DA0300443854 /* TransfersListviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersListviewCell.m; sourceTree = "<group>"; };
+		279A78601539DA1300443854 /* TransfersListviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransfersListviewCell.h; sourceTree = "<group>"; };
+		279A78611539DD5400443854 /* TranfersListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TranfersListViewCell.xib; sourceTree = "<group>"; };
 		27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Pecunia.entitlements; path = ../Pecunia.entitlements; sourceTree = "<group>"; };
 		27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryDefinition.xib; sourceTree = "<group>"; };
 		27C78792143622920095F1DA /* ProgressWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressWindow.xib; sourceTree = "<group>"; };
@@ -829,6 +862,8 @@
 		27C7B501147FC41900278131 /* Drawing + Colors */ = {
 			isa = PBXGroup;
 			children = (
+				27028DCD1539B58700AEB651 /* TransfersBackgroundView.h */,
+				27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */,
 				274C09FB1440BC9800A80F0E /* RoundedOuterShadowView.h */,
 				274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */,
 				B18978850ED0B2E800D20503 /* StatementDetails.h */,
@@ -858,6 +893,10 @@
 				B138AE74139582E00026BEE2 /* MCEMTransparentTableView.m */,
 				27FD58C91437569B0074B378 /* StatementsListview.h */,
 				27FD58CA1437569B0074B378 /* StatementsListview.m */,
+				279A785B1539D8BE00443854 /* TransfersListview.h */,
+				279A785C1539D8EB00443854 /* TransfersListview.m */,
+				279A78601539DA1300443854 /* TransfersListviewCell.h */,
+				279A785E1539DA0300443854 /* TransfersListviewCell.m */,
 				275C07ED143877C800D97415 /* StatementsListviewCell.h */,
 				275C07EE143877C800D97415 /* StatementsListviewCell.m */,
 				B138AC3A13918EB50026BEE2 /* ImageAndTextCell.h */,
@@ -896,8 +935,8 @@
 		27CC732314A09DDD0082495C /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
-				2736DD531514F6680066917C /* MBTableGrid */,
 				27DD4AFB150B6F84006C2370 /* BWToolkit */,
+				2736DD531514F6680066917C /* MBTableGrid */,
 				27CC732714A09E0B0082495C /* MAAttachedWindow */,
 				275C07DC1438777900D97415 /* PXListview */,
 				27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */,
@@ -995,6 +1034,7 @@
 				27C78792143622920095F1DA /* ProgressWindow.xib */,
 				B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */,
 				275C07DA1438776000D97415 /* StatementsListViewCell.xib */,
+				279A78611539DD5400443854 /* TranfersListViewCell.xib */,
 				B1A59497113182DA00FD8CB8 /* StatSplitController.xib */,
 				B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */,
 				B1D44FE7147841DA008DD256 /* TanMethods.xib */,
@@ -1013,8 +1053,10 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
+			indentWidth = 4;
 			name = Pecunia;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
@@ -1220,6 +1262,17 @@
 		B1923B560EB7A6D40079ADCA /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				2764B63415443C6600FF0B73 /* computing-active.png */,
+				2764B63515443C6600FF0B73 /* graph1-active.png */,
+				2764B63615443C6600FF0B73 /* graph2-active.png */,
+				2764B63715443C6600FF0B73 /* rules-active.png */,
+				2764B63815443C6600FF0B73 /* statementlist-active.png */,
+				270A0BFC1544177B00653031 /* standing-order-active.png */,
+				270A0BFD1544177B00653031 /* standing-order.png */,
+				272D814E154327F0006E1008 /* transfers-active.png */,
+				272D814C154326B0006E1008 /* transfers.png */,
+				272D814A154324B3006E1008 /* accounts-active.png */,
+				272D814815431DCD006E1008 /* accounts.png */,
 				27D302961538461700D6A2CC /* sort-indicator-dec.png */,
 				27D302941538453300D6A2CC /* sort-indicator-inc.png */,
 				27D1172A15288C3600CD7E83 /* background-pattern.png */,
@@ -1673,6 +1726,18 @@
 				27D1172B15288C3600CD7E83 /* background-pattern.png in Resources */,
 				27D302951538453300D6A2CC /* sort-indicator-inc.png in Resources */,
 				27D302971538461700D6A2CC /* sort-indicator-dec.png in Resources */,
+				279A78621539DD5400443854 /* TranfersListViewCell.xib in Resources */,
+				272D814915431DCD006E1008 /* accounts.png in Resources */,
+				272D814B154324B3006E1008 /* accounts-active.png in Resources */,
+				272D814D154326B0006E1008 /* transfers.png in Resources */,
+				272D814F154327F0006E1008 /* transfers-active.png in Resources */,
+				270A0BFE1544177B00653031 /* standing-order-active.png in Resources */,
+				270A0BFF1544177B00653031 /* standing-order.png in Resources */,
+				2764B63915443C6600FF0B73 /* computing-active.png in Resources */,
+				2764B63A15443C6600FF0B73 /* graph1-active.png in Resources */,
+				2764B63B15443C6600FF0B73 /* graph2-active.png in Resources */,
+				2764B63C15443C6600FF0B73 /* rules-active.png in Resources */,
+				2764B63D15443C6600FF0B73 /* statementlist-active.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1829,6 +1894,9 @@
 				2736DD511514F6590066917C /* MBTableGridHeaderCell.m in Sources */,
 				2736DD521514F6590066917C /* MBTableGridHeaderView.m in Sources */,
 				2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */,
+				27028DCF1539B58700AEB651 /* TransfersBackgroundView.m in Sources */,
+				279A785D1539D8EB00443854 /* TransfersListview.m in Sources */,
+				279A785F1539DA0300443854 /* TransfersListviewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

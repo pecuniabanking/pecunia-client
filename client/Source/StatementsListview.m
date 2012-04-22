@@ -212,13 +212,10 @@
     // Set the size of the cell, depending on if we show its header or not.
     NSRect frame = [cell frame];
     frame.size.height = CELL_BODY_HEIGHT;
-    if ([self showsHeaderForRow: row])
-    {
+    if ([self showsHeaderForRow: row]) {
         frame.size.height += CELL_HEADER_HEIGHT;
         [cell setHeaderHeight: CELL_HEADER_HEIGHT];
-    }
-    else
-    {
+    } else {
         [cell setHeaderHeight: 0];
     }
     [cell setFrame: frame];
@@ -237,8 +234,7 @@
 {
 	StatementsListViewCell* cell = (StatementsListViewCell*)[aListView dequeueCellWithReusableIdentifier: @"statcell"];
 	
-	if (!cell)
-    {
+	if (!cell) {
 		cell = [StatementsListViewCell cellLoadedFromNibNamed: @"StatementsListViewCell" reusableIdentifier: @"statcell"];
 	}
 	
@@ -249,15 +245,17 @@
 
 - (CGFloat)listView: (PXListView*)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
 {
-    if (!forDragging && [self showsHeaderForRow: row])
+    if (!forDragging && [self showsHeaderForRow: row]) {
         return CELL_BODY_HEIGHT + CELL_HEADER_HEIGHT;
+    }
     return CELL_BODY_HEIGHT;
 }
 
 - (NSRange)listView: (PXListView*)aListView rangeOfDraggedRow: (NSUInteger)row
 {
-    if ([self showsHeaderForRow: row])
+    if ([self showsHeaderForRow: row]) {
         return NSMakeRange(CELL_HEADER_HEIGHT, CELL_BODY_HEIGHT);
+    }
     return NSMakeRange(0, CELL_BODY_HEIGHT);    
 }
 

@@ -45,31 +45,29 @@ static NSImage* headerImage;
         headerImage = [NSImage imageNamed: @"slanted_stripes_red.png"];
     }
     
-    NSRect bounds = [self bounds];
-    
     // Outer bounds with shadow.
-    NSBezierPath* borderPath = [NSBezierPath bezierPath];
-    [borderPath moveToPoint: NSMakePoint(10, bounds.size.height)];
-    [borderPath lineToPoint: NSMakePoint(bounds.size.width - 10, bounds.size.height)];
-    [borderPath appendBezierPathWithArcFromPoint: NSMakePoint(bounds.size.width - 10, 8)
-                                         toPoint: NSMakePoint(bounds.size.height - 10, 0)
-                                          radius: 8];
-    [borderPath appendBezierPathWithArcFromPoint: NSMakePoint(10, 10) toPoint: NSMakePoint(10, 18) radius: 8];
-    
+    NSRect bounds = [self bounds];
+    bounds.size.width -= 20;
+    bounds.size.height -= 10;
+    bounds.origin.x += 10;
+    bounds.origin.y += 10;
+
+    NSBezierPath* borderPath = [NSBezierPath bezierPathWithRoundedRect: bounds xRadius: 8 yRadius: 8];
     [borderShadow set];
     [[NSColor whiteColor] set];
     [borderPath fill];
     
     // Top bar.
-    NSRect barRect = bounds;
+    NSRect barRect = [self bounds];
     barRect.origin.y = barRect.size.height - 10;
     barRect.size.height = 10;
     [[NSColor colorWithDeviceWhite: 0.25 alpha: 1] set];
     NSRectFill(barRect);
+    bounds = barRect;
     
     barRect.size.width = [headerImage size].width;
     NSRect imageRect = NSMakeRect(0, 0, [headerImage size].width, [headerImage size].height);
-    while (barRect.origin.x < bounds.size.width - 4)
+    while (barRect.origin.x < bounds.size.width)
     {
         [headerImage drawInRect: barRect fromRect: imageRect operation: NSCompositeSourceOver fraction: .75];
         barRect.origin.x += headerImage.size.width;

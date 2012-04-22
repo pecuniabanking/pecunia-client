@@ -97,7 +97,7 @@ static CurrencyValueTransformer* currencyTransformer;
     [saldoLabel setObjectValue: saldo];
     
     [transactionTypeLabel setObjectValue: transactionText];
-    [transactionTypeLabel setObjectValue: transactionText];
+    [transactionTypeLabel setToolTip: transactionText];
     
     if (currencyTransformer == nil)
         currencyTransformer = [[[CurrencyValueTransformer alloc] init] retain];

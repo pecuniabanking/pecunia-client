@@ -198,7 +198,6 @@ static BOOL runningOnLionOrLater = NO;
     [categoryPeriodsController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
     categoryPeriodsController.outline = accountsView;
     
-    [sideToolbar retain];   // We are going to remove and re-add the toolbar on demand to maintain its top z position.
     [rightSplitter retain]; // Content views are dynamically exchanged with proper retain/release.
                             // The right splitter is the initial control and needs an own retain to avoid losing it
                             // on the next switch.
@@ -261,14 +260,8 @@ static BOOL runningOnLionOrLater = NO;
     [categoryController setSortDescriptors: sds];
     
     // status (content) bar
-    [mainWindow setAutorecalculatesContentBorderThickness:NO forEdge:NSMinYEdge];
-    [mainWindow setContentBorderThickness:30.0f forEdge:NSMinYEdge];
-    
-    // set toolbar selection state
-    NSArray* items = [toolbar items];
-    for (NSToolbarItem *item in items) {
-        if([item tag] == 10) { [toolbar setSelectedItemIdentifier: [item itemIdentifier]]; break; }
-    }
+    [mainWindow setAutorecalculatesContentBorderThickness: NO forEdge: NSMinYEdge];
+    [mainWindow setContentBorderThickness: 30.0f forEdge: NSMinYEdge];
     
     // register Drag'n Drop
     [accountsView registerForDraggedTypes: [NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil]];
@@ -320,7 +313,6 @@ static BOOL runningOnLionOrLater = NO;
     [categoryDefinitionController release];
     [categoryPeriodsController release];
     
-    [sideToolbar release];
     [rightSplitter release];
     [bankAccountItemsExpandState release];
     
@@ -346,9 +338,9 @@ static BOOL runningOnLionOrLater = NO;
     // update unread information
     [self updateUnread];
     
-    [categoryController fetchWithRequest:nil merge:NO error:&error];
-    [transferListController setManagedObjectContext:self.managedObjectContext];
-    [transferWindowController setManagedObjectContext:self.managedObjectContext];
+    [categoryController fetchWithRequest: nil merge: NO error: &error];
+    [transferListController setManagedObjectContext: managedObjectContext];
+    [transferWindowController setManagedObjectContext: managedObjectContext];
     [timeSlicer updateDelegate];
     [self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext:self.managedObjectContext];
@@ -1197,7 +1189,6 @@ static BOOL runningOnLionOrLater = NO;
 -(IBAction)transferView: (id)sender 
 { 
     [mainTabView selectTabViewItemAtIndex: 1];
-    [self adjustSearchField];
 }
 
 - (void)updateStatusbar
@@ -1234,33 +1225,29 @@ static BOOL runningOnLionOrLater = NO;
     }
 }
 
-/**
- * Called by the segmented account toolbar control to switch to a particular page.
- */
--(IBAction)activateMainPage: (id)sender
+- (IBAction)activateMainPage: (id)sender
 {
-    switch ([sender selectedSegment])
+    [accountsToolbarItem setImage: [NSImage imageNamed: @"accounts"]];
+    [transfersToolbarItem setImage: [NSImage imageNamed: @"transfers"]];
+    [standingOrdersToolbarItem setImage: [NSImage imageNamed: @"standing-order"]];
+    switch ([sender tag])
     {
         case 0:
         {
             [mainTabView selectTabViewItemAtIndex: 0];
+            [accountsToolbarItem setImage: [NSImage imageNamed: @"accounts-active"]];
             break;
         }
         case 1:
-            [currentSection deactivate]; // Temporary solution.
             [self transferView: nil];
+            [transfersToolbarItem setImage: [NSImage imageNamed: @"transfers-active"]];
             break;
         case 2:
-            [currentSection deactivate]; // Temporary solution.
             [self standingOrders: nil];
+            [standingOrdersToolbarItem setImage: [NSImage imageNamed: @"standing-order-active"]];
             break;
     }
     
-    // Ensure z-order (sideToolbar must remain top-most view).
-    [sideToolbar removeFromSuperviewWithoutNeedingDisplay];
-    [rightPane addSubview: sideToolbar];
-
-	[self adjustSearchField];
     [self updateStatusbar];
 }
 
@@ -1273,6 +1260,12 @@ static BOOL runningOnLionOrLater = NO;
     } else {
         currentView = rightSplitter;
     }
+    
+    [statementsButton setImage: [NSImage imageNamed: @"statementlist"]];
+    [graph1Button setImage: [NSImage imageNamed: @"graph1"]];
+    [graph2Button setImage: [NSImage imageNamed: @"graph2"]];
+    [computingButton setImage: [NSImage imageNamed: @"computing"]];
+    [rulesButton setImage: [NSImage imageNamed: @"rules"]];
     
     // Reset fetch predicate for the tree controller if we are switching away from
     // the category periods view.
@@ -1298,6 +1291,8 @@ static BOOL runningOnLionOrLater = NO;
                 currentSection = nil;
                 pageHasChanged = YES;
             }
+            
+            [statementsButton setImage: [NSImage imageNamed: @"statementlist-active"]];
             break;
         case 1:
             if (currentSection != categoryAnalysisController) {
@@ -1308,6 +1303,8 @@ static BOOL runningOnLionOrLater = NO;
                 [categoryAnalysisController updateTrackingAreas];
                 pageHasChanged = YES;
             }
+
+            [graph1Button setImage: [NSImage imageNamed: @"graph1-active"]];
             break;
         case 2:
             if (currentSection != categoryReportingController) {
@@ -1324,6 +1321,8 @@ static BOOL runningOnLionOrLater = NO;
                 }
                 pageHasChanged = YES;
             }
+            
+            [graph2Button setImage: [NSImage imageNamed: @"graph2-active"]];
             break;
         case 3:
             if (currentSection != categoryPeriodsController) {
@@ -1343,6 +1342,8 @@ static BOOL runningOnLionOrLater = NO;
 
                 pageHasChanged = YES;
             }
+            
+            [computingButton setImage: [NSImage imageNamed: @"computing-active"]];
             break;
         case 4:
             if (currentSection != categoryDefinitionController) {
@@ -1359,21 +1360,17 @@ static BOOL runningOnLionOrLater = NO;
                 }
                 pageHasChanged = YES;
             }
+            
+            [rulesButton setImage: [NSImage imageNamed: @"rules-active"]];
             break;
     }
 
-    // Ensure z-order (sideToolbar must remain top-most view).
-    [sideToolbar slideOut];
     if (pageHasChanged) {
         if (currentSection != nil) {
             currentSection.category = [self currentSelection];
             [currentSection setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
             [currentSection activate];
         }
-        [sideToolbar removeFromSuperviewWithoutNeedingDisplay];
-        [rightPane addSubview: sideToolbar];
-        
-        [self adjustSearchField];
         [accountsView setNeedsDisplay];
     }
 }
@@ -1478,9 +1475,20 @@ static BOOL runningOnLionOrLater = NO;
     [transactionController unbind: @"selectionIndexes"];
     [statementsListView unbind: @"selectedRows"];
 
-    // TODO: call terminate for all section items, not only those in the main tab.
     for(id <PecuniaSectionItem> item in [mainTabItems allValues]) {
         [item terminate];
+    }
+    if ([categoryAnalysisController respondsToSelector: @selector(terminate)]) {
+        [categoryAnalysisController terminate];
+    }
+    if ([categoryReportingController respondsToSelector: @selector(terminate)]) {
+        [categoryReportingController terminate];
+    }
+    if ([categoryDefinitionController respondsToSelector: @selector(terminate)]) {
+        [categoryDefinitionController terminate];
+    }
+    if ([categoryPeriodsController respondsToSelector: @selector(terminate)]) {
+        [categoryPeriodsController terminate];
     }
     
     if (self.managedObjectContext) {
@@ -1615,18 +1623,6 @@ static BOOL runningOnLionOrLater = NO;
         return nil;
     }
     return [sel objectAtIndex: 0];
-}
-
-- (NSArray *)toolbarSelectableItemIdentifiers: (NSToolbar *)tb;
-{
-    // Optional delegate method: Returns the identifiers of the subset of
-    // toolbar items that are selectable. In our case, all of them
-    NSArray* items = [tb items];
-    NSMutableArray* result = [NSMutableArray arrayWithCapacity: 5];
-    for (NSToolbarItem *item in items) {
-        if([item tag] > 0) [result addObject: [item itemIdentifier]];
-    }
-    return result;
 }
 
 #pragma mark -
@@ -1967,13 +1963,6 @@ static BOOL runningOnLionOrLater = NO;
     [self updateSorting];
 }
 
--(void)adjustSearchField
-{
-    [searchField setStringValue: @""];
-    [transactionController setFilterPredicate: [timeSlicer predicateForField: @"date"]];
-    [transferListController setFilterPredicate: nil];
-}
-
 #pragma mark -
 #pragma mark Menu handling
 
@@ -2140,7 +2129,6 @@ static BOOL runningOnLionOrLater = NO;
         [currentSection setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
     }
 
-    [searchField setStringValue: @""];
     [self updateStatusbar];
 }
 
@@ -2602,13 +2590,6 @@ static BOOL runningOnLionOrLater = NO;
                               );
     if (res == NSAlertDefaultReturn) return YES;
     if (res == NSAlertAlternateReturn) {
-        NSArray *items = [toolbar items];
-        for(NSToolbarItem *item in items) {
-            if ([item tag] == 20) {
-                [toolbar setSelectedItemIdentifier:[item itemIdentifier]];
-                break;
-            }
-        }
         [self performSelector: @selector(transferView:) withObject: self afterDelay: 0.0];
         return NO;
     }

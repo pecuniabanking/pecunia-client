@@ -57,9 +57,9 @@
     IBOutlet SynchronousScrollView *accountsScrollView;
     IBOutlet NSSplitView        *mainVSplit;
     IBOutlet NSArrayController  *assignPreviewController;
-    IBOutlet NSToolbar          *toolbar;
-    IBOutlet NSToolbarItem      *searchItem;
-    IBOutlet NSSearchField      *searchField;
+    IBOutlet NSToolbarItem      *accountsToolbarItem;
+    IBOutlet NSToolbarItem      *transfersToolbarItem;
+    IBOutlet NSToolbarItem      *standingOrdersToolbarItem;
     IBOutlet TimeSliceManager   *timeSlicer;
     IBOutlet NSSegmentedControl *catActions;
     IBOutlet NSImageView        *lockImage;
@@ -83,15 +83,21 @@
     IBOutlet NSTextField        *versionText;
     IBOutlet NSTextField        *copyrightText;
     
-    IBOutlet TransactionController  *transferWindowController;
-    IBOutlet TransferListController *transferListController;
     IBOutlet StatementsListView     *statementsListView;
     IBOutlet NSSegmentedControl     *sortControl;
     
+    IBOutlet NSButton        *statementsButton;
+    IBOutlet NSButton        *graph1Button;
+    IBOutlet NSButton        *graph2Button;
+    IBOutlet NSButton        *computingButton;
+    IBOutlet NSButton        *rulesButton;
     IBOutlet RoundedSidebar  *sideBar;
-    IBOutlet SideToolbarView *sideToolbar;
     
     IBOutlet NSMenuItem    *toggleFullscreenItem;
+    
+    // Transfers.
+    IBOutlet TransactionController  *transferWindowController;
+    IBOutlet TransferListController *transferListController;
     
 @private
     NSMutableDictionary    *mainTabItems;
@@ -186,7 +192,6 @@
 -(Category*)getBankingRoot;
 -(void)updateBankAccounts:(NSArray*)hbciAccounts;
 -(void)updateBalances;
--(void)adjustSearchField;
 -(void)updateNotAssignedCategory;
 -(void)requestFinished: (NSArray*)resultList;
 -(BOOL)requestRunning;

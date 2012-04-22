@@ -57,6 +57,7 @@ Bankkennungen + Konten
 Aufträge, Überweisungen, Lastschriften
 --------------------------------------
 - In Terminüberweisungen Datum (auch) als Kalender anzeigen.
+- Automatisch Lehrzeichen aus BLZ entfernen vor dem Nachschlagen.
 
 Daueraufträge
 ---------------
