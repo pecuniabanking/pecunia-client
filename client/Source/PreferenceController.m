@@ -277,8 +277,8 @@ static NSArray *exportFields = nil;
 		// check if passwort is already defined. If yes, it must(!) be taken
 		NSString *passwd = [Keychain passwordForService:@"Pecunia" account:@"DataFile" ];
 		if (passwd != nil) {
-			[passw1Field setValue:passwd ];
-			[passw2Field setValue:passwd ];
+			[passw1Field setStringValue:passwd ];
+			[passw2Field setStringValue:passwd ];
 			[passw1Field setEnabled:NO ];
 			[passw2Field setEnabled:NO ];
 		}

@@ -12,6 +12,7 @@
 @implementation BankQueryResult
 
 @synthesize accountNumber;
+@synthesize accountSubnumber;
 @synthesize bankCode;
 @synthesize currency;
 @synthesize balance;
@@ -26,6 +27,7 @@
 -(void)dealloc
 {
 	[accountNumber release ];
+    [accountSubnumber release ];
 	[bankCode release ];
 	[userId release ];
 	[currency release ];

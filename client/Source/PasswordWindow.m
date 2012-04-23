@@ -15,16 +15,27 @@
 {
 	self = [super initWithWindowNibName:@"PasswordWindow"];
 	active = YES;
+    hidePasswortSave = NO;
 	return self;
 }
 
 -(id)initWithText: (NSString *)x title: (NSString *)y
 {
 	self = [super initWithWindowNibName:@"PasswordWindow"];
-    text = [x copy];
-	title = [y copy];
+    
+    NSString *s = [x stringByReplacingOccurrencesOfString:@"\n" withString:@"<br>" ];
+    NSData *d = [s dataUsingEncoding:NSISOLatin1StringEncoding ];
+    text = [[NSAttributedString alloc ] initWithHTML:d documentAttributes:NULL ];
+	title = [y retain];
 	active = YES;
 	return self;
+}
+
+-(void)awakeFromNib
+{
+    if (hidePasswortSave) {
+        [savePasswordButton setHidden:YES ];
+    }
 }
 
 -(void)controlTextDidEndEditing:(NSNotification *)aNotification
@@ -64,7 +75,7 @@
 
 -(void)windowDidLoad
 {
-	[inputText setStringValue: text];
+	[inputText setAttributedStringValue: text];
 	[[self window] setTitle: title];
 }
 
@@ -78,5 +89,16 @@
 	return savePassword;
 }
 
+-(void)disablePasswordSave
+{
+    hidePasswortSave = YES;
+}
+
+-(void)dealloc
+{
+    [text release ];
+    [title release ];
+    [super dealloc ];
+}
 
 @end

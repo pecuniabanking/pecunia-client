@@ -12,6 +12,7 @@
 #import "TanMedium.h"
 #import "TanSigningOption.h"
 #import "MessageLog.h"
+#import "HBCIClient.h"
 
 @implementation BankUser
 
@@ -93,6 +94,9 @@
 
 -(NSArray*)getTanSigningOptions
 {
+    // first get TAN Media if not already fetched
+    if ([self.tanMediaFetched boolValue ] == NO) [[HBCIClient hbciClient ] updateTanMediaForUser:self ];
+    
     NSSet *methods = [self tanMethods ];
     NSSet *media = [self tanMedia ];
     NSMutableArray *options = [NSMutableArray arrayWithCapacity:10 ];
@@ -103,42 +107,38 @@
         option.tanMethodName = method.name;
         NSString *zkamethod = method.zkaMethodName;
         
-        // check which media fit
-        for (TanMedium *medium in media) {
-            BOOL added = NO;
-            if ([zkamethod isEqualToString:@"mobileTAN" ] && [medium.category isEqualToString:@"M" ]) {
-                option.tanMediumName = medium.name;
-                option.mobileNumber = medium.mobileNumber;
-                [options addObject:option ];
-                added = YES;
-            }
-            if ([zkamethod isEqualToString:@"BestSign" ] && [medium.category isEqualToString:@"G" ] && [[medium.name substringToIndex:2 ] isEqualToString:@"oT"]) {
-                // Spezialfall Postbank Bestsign
-                option.tanMediumName = medium.name;
-                [options addObject:option ];
-                added = YES;
-            }
-            if ([[zkamethod substringToIndex:3] isEqualToString:@"HHD" ] && [medium.category isEqualToString:@"G" ]) {
-                option.tanMediumName = medium.name;
-                [options addObject:option ];
-                added = YES;
-            }
-            if (added == YES) {
-                option = [[[TanSigningOption alloc ] init ] autorelease ];
-                option.tanMethod = method.method;
-                option.tanMethodName = method.name;
+        if ([method.needTanMedia isEqualToString: @"1"] || [method.needTanMedia isEqualToString: @"2"]) {
+            // check which media fit
+            for (TanMedium *medium in media) {
+                BOOL added = NO;
+                if ([zkamethod isEqualToString:@"mobileTAN" ] && [medium.category isEqualToString:@"M" ]) {
+                    option.tanMediumName = medium.name;
+                    option.mobileNumber = medium.mobileNumber;
+                    [options addObject:option ];
+                    added = YES;
+                }
+                if ([zkamethod isEqualToString:@"BestSign" ] && [medium.category isEqualToString:@"G" ] && [[medium.name substringToIndex:2 ] isEqualToString:@"oT"]) {
+                    // Spezialfall Postbank Bestsign
+                    option.tanMediumName = medium.name;
+                    [options addObject:option ];
+                    added = YES;
+                }
+                if ([[zkamethod substringToIndex:3] isEqualToString:@"HHD" ] && [medium.category isEqualToString:@"G" ]) {
+                    option.tanMediumName = medium.name;
+                    [options addObject:option ];
+                    added = YES;
+                }
+                if (added == YES) {
+                    option = [[[TanSigningOption alloc ] init ] autorelease ];
+                    option.tanMethod = method.method;
+                    option.tanMethodName = method.name;
+                }
             }
         }
     }
     return options;
 }
-/*
--(BOOL)isEqual:(BankUser*)user
-{
-	return [self.userId isEqualToString:user.userId	] && [self.bankCode isEqualToString:user.bankCode ] &&
-	(self.customerId == nil || [self.customerId isEqualToString:user.customerId ]);
-}
-*/
+
 +(NSArray*)allUsers
 {
 	NSError *error=nil;

@@ -65,6 +65,7 @@
 
 -(NSView*)mainView;
 -(void)initAccounts;
+-(void)disableCycles;
 
 -(IBAction)monthCycle:(id)sender;
 -(IBAction)weekCycle:(id)sender;

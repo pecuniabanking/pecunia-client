@@ -36,7 +36,7 @@
 
 @interface NewBankUserController (Private)
 
-- (void)readBanks;
+//- (void)readBanks;
 - (BOOL)check;
 - (void)prepareUserSheet;
 - (void)startProgressWithMessage:(NSString*)msg;
@@ -52,15 +52,12 @@
 	bankController = con;
 	bankUsers = [[BankUser allUsers ] mutableCopy];
 	context = [[MOAssistant assistant ] context ];
-	[self readBanks];
 	return self;
 }
 
 - (void)dealloc
 {
 	[bankUsers release];
-    [institutesController release];
-	[banks release];
 	[super dealloc];
 }
 
@@ -77,29 +74,6 @@
 
 #pragma mark -
 #pragma mark Data handling
-
-- (void)readBanks
-{
-	banks = [[NSMutableArray arrayWithCapacity: 5000] retain];
-	
-	NSString *path = [[NSBundle mainBundle] resourcePath];
-	path = [path stringByAppendingString: @"/Institute.csv"];
-	
-	NSError *error=nil;
-	NSString *s = [NSString stringWithContentsOfFile: path encoding:NSUTF8StringEncoding error: &error];
-	if(error) {
-        [[MessageLog log ] addMessage:@"Error reading institutes file" withLevel:LogLevel_Error];
-	} else {
-		NSArray *institutes = [s componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
-		NSArray *keys = [NSArray arrayWithObjects: @"bankCode", @"bankName", @"bankLocation", @"hbciVersion", @"bankURL", nil];
-		for(s in institutes) {
-			NSArray *objs = [s componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\t"]];
-			if ([objs count] != 5) continue;
-			NSDictionary *dict = [NSDictionary dictionaryWithObjects: objs forKeys: keys];
-			[banks addObject: dict];
-		}
-	}
-}
 
 -(BankUser*)selectedUser
 {
@@ -126,26 +100,6 @@
 	[progressIndicator stopAnimation: self ];
 	[msgField setStringValue:@"" ];
 
-}
-
-
-- (void)bankUrlSheetDidEnd: (NSWindow*)sheet
-                returnCode: (int)code 
-               contextInfo: (void*)context
-{
-    /*
-	int result = [NSApp runModalForWindow: [controller window]];
-	if(result == 0) {
-		NSDictionary *dict = [controller selectedBank];
-		if(dict) {
-			[currentUser setBankURL: [dict valueForKey: @"bankURL"]];
-			// HBCI version
-			currentUser.hbciVersion = hbciVersionFromString([dict valueForKey: @"hbciVersion"]);
-		}
-	}
-	[[self window] makeKeyAndOrderFront: self];
-     */
-    
 }
 
 - (void)userSheetDidEnd: (NSWindow*)sheet
@@ -209,13 +163,14 @@
 		
         [self startProgressWithMessage: NSLocalizedString(@"AP178", @"") ];
         PecuniaError *error = [[HBCIClient hbciClient ] addBankUser: currentUser];
-		[self stopProgress ];
         if (error) {
+            [self stopProgress ];
             [error alertPanel];
         }
         else {
-//            [bankUserController addObject:currentUser];
+            [[HBCIClient hbciClient ] updateTanMediaForUser:currentUser ];
             [bankController updateBankAccounts: [[HBCIClient hbciClient ] getAccountsForUser:currentUser]];
+            [self stopProgress ];
             
             [userSheet orderOut: sender];
             [NSApp endSheet: userSheet returnCode: 0];
@@ -423,22 +378,6 @@
 		modalDelegate: self
 	   didEndSelector: @selector(userSheetDidEnd:returnCode:contextInfo:)
 		  contextInfo: NULL ];
-}
-
-- (IBAction)selectBankUrl: (id)sender
-{
-    if (selectBankUrlSheet == nil) {
-        institutesController = [[InstitutesController alloc] init];
-        [institutesController setBankData: banks];
-        selectBankUrlSheet = [institutesController window];
-    }
-    
-	[NSApp beginSheet: selectBankUrlSheet
-	   modalForWindow: [self window]
-		modalDelegate: self
-	   didEndSelector: @selector(bankUrlSheetDidEnd:returnCode:contextInfo:)
-		  contextInfo: NULL];
-
 }
 
 - (IBAction)removeEntry:(id)sender

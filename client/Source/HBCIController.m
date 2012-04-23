@@ -246,6 +246,7 @@ NSString *escapeSpecial(NSString *s)
         NSMutableString	*cmd = [NSMutableString stringWithFormat: @"<command name=\"setAccount\">" ];
         [self appendTag: @"bankCode" withValue: acc.bankCode to: cmd ];
         [self appendTag: @"accountNumber" withValue: acc.accountNumber to: cmd ];
+        [self appendTag: @"subNumber" withValue: acc.accountSuffix to:cmd ];
         [self appendTag: @"country" withValue: [acc.country uppercaseString] to: cmd ];
         [self appendTag: @"iban" withValue: acc.iban to: cmd ];
         [self appendTag: @"bic" withValue: acc.bic to: cmd ];
@@ -268,6 +269,7 @@ NSString *escapeSpecial(NSString *s)
     NSMutableString	*cmd = [NSMutableString stringWithFormat: @"<command name=\"changeAccount\">" ];
     [self appendTag: @"bankCode" withValue: account.bankCode to: cmd ];
     [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd ];
+    [self appendTag: @"subNumber" withValue: account.accountSuffix to:cmd ];
     [self appendTag: @"iban" withValue: account.iban to: cmd ];
     [self appendTag: @"bic" withValue: account.bic to: cmd ];
     [self appendTag: @"ownerName" withValue: account.owner to: cmd ];
@@ -304,6 +306,7 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"userId" withValue: account.userId to: cmd ];
     [self appendTag: @"jobName" withValue: jobName to: cmd ];
     [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd ];
+    [self appendTag: @"subNumber" withValue: account.accountSuffix to:cmd ];
     [cmd appendString: @"</command>" ];
     NSNumber *result = [bridge syncCommand: cmd error: &error ];
     if(result) return [result boolValue ]; else return NO;
@@ -557,6 +560,7 @@ NSString *escapeSpecial(NSString *s)
             [cmd appendString: @"<transfer>" ];
             [self appendTag: @"bankCode" withValue: transfer.account.bankCode to: cmd ];
             [self appendTag: @"accountNumber" withValue: transfer.account.accountNumber to: cmd ];
+            [self appendTag: @"subNumber" withValue: transfer.account.accountSuffix to:cmd ];
             [self appendTag: @"customerId" withValue: transfer.account.customerId to: cmd ];
             [self appendTag: @"userId" withValue: transfer.account.userId to: cmd ];
             [self appendTag: @"remoteAccount" withValue: transfer.remoteAccount to: cmd ];
@@ -712,6 +716,14 @@ NSString *escapeSpecial(NSString *s)
     BankQueryResult *result;
     for(result in resultList) {
         [cmd appendFormat:@"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>", result.bankCode, result.accountNumber ];
+        [self appendTag:@"subNumber" withValue:result.accountSubnumber to:cmd ];
+        NSInteger maxStatDays = [[NSUserDefaults standardUserDefaults ] integerForKey:@"maxStatDays" ];
+        if (maxStatDays == 0) maxStatDays = 90;
+        
+        if (result.account.latestTransferDate == nil) {
+            result.account.latestTransferDate = [[NSDate alloc ] initWithTimeInterval: -86400*maxStatDays sinceDate:[NSDate date ] ];
+        }
+        
         if (result.account.latestTransferDate != nil) {
             NSString *fromString = nil;
             NSDate *fromDate = [[NSDate alloc ] initWithTimeInterval:-605000 sinceDate:result.account.latestTransferDate ];
@@ -735,7 +747,8 @@ NSString *escapeSpecial(NSString *s)
             // find corresponding incoming structure
             BankQueryResult *iResult;
             for(iResult in bankQueryResults) {
-                if([iResult.accountNumber isEqualToString: res.accountNumber ] && [iResult.bankCode isEqualToString: res.bankCode ]) break;
+				if([iResult.accountNumber isEqualToString: res.accountNumber ] && [iResult.bankCode isEqualToString: res.bankCode ] &&
+                   ((iResult.accountSubnumber == nil && res.accountSubnumber == nil) || [iResult.accountSubnumber isEqualToString: res.accountSubnumber ])) break;
             }
             // saldo of the last statement is current saldo
             if ([res.statements count ] > 0) {
@@ -784,6 +797,7 @@ NSString *escapeSpecial(NSString *s)
         [cmd appendString:@"<accinfo>" ];
         [self appendTag: @"bankCode" withValue: result.bankCode to: cmd ];
         [self appendTag: @"accountNumber" withValue: result.accountNumber to: cmd ];
+        [self appendTag: @"subNumber" withValue:result.accountSubnumber to:cmd ];
         [self appendTag: @"userId" withValue: result.userId to: cmd ];
         [cmd appendString:@"</accinfo>" ];
     }
@@ -798,6 +812,7 @@ NSString *escapeSpecial(NSString *s)
     
     [self appendTag: @"bankCode" withValue: stord.account.bankCode to: cmd ];
     [self appendTag: @"accountNumber" withValue: stord.account.accountNumber to: cmd ];
+    [self appendTag: @"subNumber" withValue: stord.account.accountSuffix to:cmd ];
     [self appendTag: @"customerId" withValue: stord.account.customerId to: cmd ];
     [self appendTag: @"userId" withValue: stord.account.userId to: cmd ];
     [self appendTag: @"remoteAccount" withValue: stord.remoteAccount to: cmd ];

@@ -20,6 +20,7 @@
 	NSNumber	*ignoreLines;
 	NSString	*accountNumber;
 	NSString	*bankCode;
+    NSString    *accountSuffix;
 	NSString	*fileName;
 }
 
@@ -32,6 +33,7 @@
 @property (nonatomic, retain) NSNumber *charEncodingIndex;
 @property (nonatomic, retain) NSNumber *ignoreLines;
 @property (nonatomic, copy) NSString *accountNumber;
+@property (nonatomic, copy) NSString *accountSuffix;
 @property (nonatomic, copy) NSString *bankCode;
 @property (nonatomic, copy) NSString *fileName;
 

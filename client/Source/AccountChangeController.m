@@ -41,6 +41,7 @@
 	changedAccount = acc;
 	account.bankCode = acc.bankCode;
 	account.accountNumber = acc.accountNumber;
+    account.accountSuffix = acc.accountSuffix;
 	account.owner = acc.owner;
 	account.bankName = acc.bankName;
 	account.name = acc.name;
@@ -111,8 +112,9 @@
 	if ([changedAccount.isManual boolValue] == YES) {
 		NSPredicate* predicate = [predicateEditor objectValue];
 		if(predicate) changedAccount.rule = [predicate description ];
-	}
-	
+	} else {        
+        changedAccount.accountSuffix = account.accountSuffix;
+    }
 
     [self close ];
 
@@ -169,6 +171,19 @@
 		return NO;
 	}
 	
+    if (![changedAccount.accountSuffix isEqualToString:account.accountSuffix ]) {
+        if (changedAccount.accountSuffix != nil || account.accountSuffix != nil) {
+            int result = NSRunAlertPanel(NSLocalizedString(@"AP119", @""), 
+                                         NSLocalizedString(@"AP179", @""),
+                                         NSLocalizedString(@"no", @"No"), 
+                                         NSLocalizedString(@"yes", @"Yes"), nil);
+            if (result == NSAlertDefaultReturn) {
+                account.accountSuffix = changedAccount.accountSuffix;
+                return NO;
+            }
+        }
+    }
+    
 	return YES;
 }
 

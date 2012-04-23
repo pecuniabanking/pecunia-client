@@ -47,7 +47,7 @@
 	frequency = FREQ_DEFAULT;
 	clock = 1;
 	currentCode = 0;
-	message = [msg retain ];
+	message = [[msg stringByReplacingOccurrencesOfString:@"\n" withString:@"<br>"] retain ];
 	return self;
 }
 

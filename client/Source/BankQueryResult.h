@@ -12,6 +12,7 @@
 
 @interface BankQueryResult : NSObject {
 	NSString		*accountNumber;
+    NSString        *accountSubnumber;
 	NSString		*bankCode;
 	NSString		*userId;
 	NSString		*currency;
@@ -24,6 +25,7 @@
 }
 
 @property (copy) NSString *accountNumber;
+@property (copy) NSString *accountSubnumber;
 @property (copy) NSString *bankCode;
 @property (copy) NSString *currency;
 @property (copy) NSString *userId;

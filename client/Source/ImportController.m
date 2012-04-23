@@ -133,7 +133,7 @@
 	}
 	
 	// get bank account
-	account = [BankAccount accountWithNumber:settings.accountNumber bankCode:settings.bankCode ];
+	account = [BankAccount accountWithNumber:settings.accountNumber subNumber: settings.accountSuffix bankCode:settings.bankCode ];
 	
 	// Load data file into array
 	NSStringEncoding enc = NSISOLatin1StringEncoding;

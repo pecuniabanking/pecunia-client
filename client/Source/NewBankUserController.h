@@ -45,9 +45,6 @@
     
     @private
 	BankingController* bankController;
-    InstitutesController* institutesController;
-	NSMutableArray* banks;
-    NSWindow* selectBankUrlSheet;
 	
 	NSUInteger step;
 }
@@ -57,7 +54,6 @@
 - (IBAction)close:(id)sender;
 - (IBAction)add:(id)sender;
 - (IBAction)addEntry:(id)sender;
-- (IBAction)selectBankUrl: (id)sender;
 - (IBAction)removeEntry:(id)sender;
 - (IBAction)updateBankParameter: (id)sender;
 - (IBAction)getUserAccounts: (id)sender;

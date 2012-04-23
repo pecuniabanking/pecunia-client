@@ -402,8 +402,8 @@ static BOOL runningOnLionOrLater = NO;
         //lookup
         found = NO;
         for (account in bankAccounts) {
-            if( [account.bankCode isEqual: acc.bankCode] &&
-               [account.accountNumber isEqual: acc.accountNumber]) {
+			if ([account.bankCode isEqual: acc.bankCode ] && [account.accountNumber isEqual: acc.accountNumber ] && 
+                ((account.accountSuffix == nil && acc.subNumber == nil) || [account.accountSuffix isEqual: acc.subNumber ])) {
                 found = YES;
                 break;
             }
@@ -430,6 +430,7 @@ static BOOL runningOnLionOrLater = NO;
             bankAccount.userId = acc.userId;
             bankAccount.customerId = acc.customerId;
             bankAccount.isBankAcc = [NSNumber numberWithBool: YES];
+            bankAccount.accountSuffix = acc.subNumber;
             //			bankAccount.uid = [NSNumber numberWithUnsignedInt: [acc uid]];
             //			bankAccount.type = [NSNumber numberWithUnsignedInt: [acc type]];
             
@@ -778,6 +779,7 @@ static BOOL runningOnLionOrLater = NO;
         if (account.userId) {
             BankQueryResult *result = [[BankQueryResult alloc] init];
             result.accountNumber = account.accountNumber;
+            result.accountSubnumber = account.accountSuffix;
             result.bankCode = account.bankCode;
             result.userId = account.userId;
             result.account = account;
@@ -2074,6 +2076,10 @@ static BOOL runningOnLionOrLater = NO;
     }
     [categoryController remove: cat];
     [Category updateCatValues];
+    
+    // workaround: NSTreeController issue: when an item is removed and the NSOutlineViewSelectionDidChange notification is sent,
+    // the selectedObjects: message returns the wrong (the old) selection
+    [self performSelector:@selector(outlineViewSelectionDidChange:) withObject: nil afterDelay:0 ];    
 }
 
 - (void)addCategory: (id)sender
@@ -2429,6 +2435,7 @@ static BOOL runningOnLionOrLater = NO;
         
         BankQueryResult *result = [[BankQueryResult alloc] init];
         result.accountNumber = account.accountNumber;
+        result.accountSubnumber = account.accountSuffix;
         result.bankCode = account.bankCode;
         result.userId = account.userId;
         result.account = account;

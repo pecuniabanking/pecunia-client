@@ -34,6 +34,7 @@
 
 +(BankAccount*)bankRootForCode:(NSString*)bankCode;
 +(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code;
++(BankAccount*)accountWithNumber:(NSString*)number subNumber:(NSString*)subNumber bankCode:(NSString*)code;
 +(NSInteger)maxUnread;
 
 @property (nonatomic, retain) NSArray *dbStatements;

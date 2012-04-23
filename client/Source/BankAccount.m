@@ -585,6 +585,30 @@
 	return [results objectAtIndex: 0 ];
 }
 
++(BankAccount*)accountWithNumber:(NSString*)number subNumber:(NSString*)subNumber bankCode:(NSString*)code
+{
+	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+	NSManagedObjectModel *model = [[MOAssistant assistant ] model ];
+	
+	NSError *error = nil;
+	NSDictionary *subst = [NSDictionary dictionaryWithObjectsAndKeys: number, @"ACCNT", code, @"BCODE", nil];
+	NSFetchRequest *fetchRequest = [model fetchRequestFromTemplateWithName:@"bankAccountByID" substitutionVariables:subst];
+	NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
+	if( error != nil) {
+		NSAlert *alert = [NSAlert alertWithError:error];
+		[alert runModal];
+		return nil;
+	}
+	if(results == nil || [results count ] == 0 ) return nil;
+    if ([results count ] == 1 || subNumber == nil) return [results lastObject ];
+    for(BankAccount *account in results) {
+        if ([account.accountSuffix isEqualToString: subNumber ]) {
+            return account;
+        }
+    }
+    return nil;
+}
+
 +(NSInteger)maxUnread
 {
 	NSError *error = nil;

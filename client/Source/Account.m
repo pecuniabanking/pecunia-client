@@ -46,8 +46,12 @@
 
 -(BOOL)isEqual: (id)obj
 {
-	if([accountNumber isEqual: ((Account*)obj)->accountNumber ] && [bankCode isEqual: ((Account*)obj)->bankCode ]) return YES;
-	else return NO;
+	if([accountNumber isEqual: ((Account*)obj)->accountNumber ] && [bankCode isEqual: ((Account*)obj)->bankCode ]) {
+        if ((subNumber == nil && ((Account*)obj)->subNumber == nil) || [subNumber isEqual: ((Account*)obj)->subNumber ]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 

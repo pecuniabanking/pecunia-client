@@ -20,6 +20,7 @@
 @synthesize charEncodingIndex;
 @synthesize ignoreLines;
 @synthesize accountNumber;
+@synthesize accountSuffix;
 @synthesize bankCode;
 @synthesize fileName;
 
@@ -38,6 +39,7 @@
 	self.accountNumber = [aDecoder decodeObjectForKey:@"accountNumber" ];
 	self.bankCode = [aDecoder decodeObjectForKey:@"bankCode" ];
 	self.fileName = [aDecoder decodeObjectForKey:@"fileName" ];
+    self.accountSuffix = [aDecoder decodeObjectForKey:@"accountSuffix" ];
 	return self;
 }
 
@@ -54,6 +56,7 @@
 	[aCoder encodeObject:accountNumber forKey:@"accountNumber" ];
 	[aCoder encodeObject:bankCode forKey:@"bankCode" ];
 	[aCoder encodeObject:fileName forKey:@"fileName" ];
+    [aCoder encodeObject:accountSuffix forKey: @"accountSuffix" ];
 }
 
 
@@ -68,6 +71,7 @@
 	[charEncodingIndex release], charEncodingIndex = nil;
 	[ignoreLines release], ignoreLines = nil;
 	[accountNumber release], accountNumber = nil;
+    [accountSuffix release ], accountSuffix = nil;
 	[bankCode release], bankCode = nil;
 	[fileName release], fileName = nil;
 

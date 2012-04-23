@@ -165,6 +165,7 @@
     
     PasswordWindow *tanWindow = [[[PasswordWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP98", @""), data.userId, data.message]
                                                                 title: @"Bitte TAN eingeben" ] autorelease];
+    [tanWindow disablePasswordSave ];
     int res = [NSApp runModalForWindow: [tanWindow window]];
     [tanWindow close ];
     if(res == 0) {

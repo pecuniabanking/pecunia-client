@@ -56,6 +56,7 @@
 -(void)awakeFromNib
 {
 	[self initAccounts ];
+    [self disableCycles ];
 	[accountsController setContent:accounts ];
 }
 
@@ -156,6 +157,16 @@
 	[weekCyclesPopup setEnabled:weekly ];
 }
 
+-(void)disableCycles
+{
+	[execDaysMonthPopup setEnabled:NO ];
+	[monthCyclesPopup setEnabled:NO ];
+	[execDaysWeekPopup setEnabled:NO ];
+	[weekCyclesPopup setEnabled:NO ];
+    [weekCell setEnabled:NO ];
+    [monthCell setEnabled:NO ];
+}
+
 -(void)updateWeekCycles
 {
 	int i;
@@ -213,7 +224,10 @@
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
 	NSArray *sel = [orderController selectedObjects ];
-	if (sel == nil || [sel count ] == 0) return;
+	if (sel == nil || [sel count ] == 0) {
+        [self disableCycles ];
+        return;
+    }
 	self.currentOrder = [sel objectAtIndex:0 ];
 	
 	oldWeekDay = nil; oldWeekCycle = nil; oldMonthDay =  nil; oldMonthCycle = nil;
@@ -539,6 +553,7 @@
 						if (account.userId) {
 							BankQueryResult *result = [[BankQueryResult alloc ] init ];
 							result.accountNumber = account.accountNumber;
+                            result.accountSubnumber = account.accountSuffix;
 							result.bankCode = account.bankCode;
 							result.userId = account.userId;
 							result.account = account;
@@ -555,6 +570,7 @@
 			if (account.userId) {
 				BankQueryResult *result = [[BankQueryResult alloc ] init ];
 				result.accountNumber = account.accountNumber;
+                result.accountSubnumber = account.accountSuffix;
 				result.bankCode = account.bankCode;
 				result.userId = account.userId;
 				result.account = account;

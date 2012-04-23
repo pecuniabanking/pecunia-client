@@ -13,12 +13,14 @@
 
 	IBOutlet NSTextField	*inputText;
 	IBOutlet NSTextField	*inputField;
+    IBOutlet NSButton       *savePasswordButton;
 	
-	NSString	*text;
-	NSString	*title;
-	NSString	*result;
+	NSAttributedString      *text;
+	NSString                *title;
+	NSString                *result;
 	BOOL		savePassword;
 	BOOL		active;
+    BOOL        hidePasswortSave;
 	
 }
 -(id)initWithText: (NSString* )x title: (NSString *)y;
@@ -29,5 +31,6 @@
 -(NSString*)result;
 -(BOOL)shouldSavePassword;
 -(void)retry;
+-(void)disablePasswordSave;
 
 @end

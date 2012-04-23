@@ -172,5 +172,6 @@
 "AP176" = "Bitte geben Sie einen Namen für die Bankkennung ein. Der Name dient zur Unterscheidung der verschiedenen Bankkennungen und ist frei wählbar";
 "AP177" = "Verbindung mit der Bank aufbauen...";
 "AP178" = "Bankkennung abrufen und einrichten...";
+"AP179" = "Wenn Sie die Unterkonto-Information ändern können Sie das Konto ggfs. nicht mehr verwenden. Möchten Sie die Information trotzdem ändern?";
 
  
