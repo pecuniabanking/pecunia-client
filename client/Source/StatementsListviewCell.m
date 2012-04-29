@@ -23,6 +23,18 @@
 
 #import "GraphicsAdditions.h"
 
+NSString *StatementDateKey            = @"date";
+NSString *StatementTurnoversKey       = @"turnovers";
+NSString *StatementRemoteNameKey      = @"remoteName";
+NSString *StatementPurposeKey         = @"purpose";
+NSString *StatementCategoriesKey      = @"categories";
+NSString *StatementValueKey           = @"value";
+NSString *StatementSaldoKey           = @"saldo";
+NSString *StatementCurrencyKey        = @"currency";
+NSString *StatementTransactionTextKey = @"transactionText";
+NSString *StatementIndexKey           = @"index";
+NSString *StatementNoteKey            = @"note";
+
 @implementation StatementsListViewCell
 
 @synthesize delegate;
@@ -68,40 +80,35 @@
 
 static CurrencyValueTransformer* currencyTransformer;
 
-- (void)setDetailsDate: (NSString*) date
-             turnovers: (NSString*) turnovers
-            remoteName: (NSString*) name
-               purpose: (NSString*) purpose
-            categories: (NSString*) categories
-                 value: (NSDecimalNumber*) value
-                 saldo: (NSDecimalNumber*) saldo
-              currency: (NSString*) currency
-       transactionText: (NSString*) transactionText
-                 index: (NSUInteger) theIndex
+- (void)setDetails: (NSDictionary*) details
 {
-    index = theIndex;
+    index = [[details objectForKey: StatementIndexKey] intValue];
     
-    [dateLabel setStringValue: date];
-    [turnoversLabel setStringValue: turnovers];
+    [dateLabel setStringValue: [details objectForKey: StatementDateKey]];
+    [turnoversLabel setStringValue: [details objectForKey: StatementTurnoversKey]];
     
-    [remoteNameLabel setStringValue: name];
-    [remoteNameLabel setToolTip: name];
+    [remoteNameLabel setStringValue: [details objectForKey: StatementRemoteNameKey]];
+    [remoteNameLabel setToolTip: [details objectForKey: StatementRemoteNameKey]];
     
-    [purposeLabel setStringValue: purpose];
-    [purposeLabel setToolTip: purpose];
+    [purposeLabel setStringValue: [details objectForKey: StatementPurposeKey]];
+    [purposeLabel setToolTip: [details objectForKey: StatementPurposeKey]];
     
-    [categoriesLabel setStringValue: categories];
-    [categoriesLabel setToolTip: categories];
+    [noteLabel setStringValue: [details objectForKey: StatementNoteKey]];
+    [noteLabel setToolTip: [details objectForKey: StatementNoteKey]];
     
-    [valueLabel setObjectValue: value];
-    [saldoLabel setObjectValue: saldo];
+    [categoriesLabel setStringValue: [details objectForKey: StatementCategoriesKey]];
+    [categoriesLabel setToolTip: [details objectForKey: StatementCategoriesKey]];
     
-    [transactionTypeLabel setObjectValue: transactionText];
-    [transactionTypeLabel setToolTip: transactionText];
+    [valueLabel setObjectValue: [details objectForKey: StatementValueKey]];
+    [saldoLabel setObjectValue: [details objectForKey: StatementSaldoKey]];
+    
+    [transactionTypeLabel setObjectValue: [details objectForKey: StatementTransactionTextKey]];
+    [transactionTypeLabel setToolTip: [details objectForKey: StatementTransactionTextKey]];
     
     if (currencyTransformer == nil)
         currencyTransformer = [[[CurrencyValueTransformer alloc] init] retain];
     
+    id currency = [details objectForKey: StatementCurrencyKey];
     NSString* symbol = [currencyTransformer transformedValue: currency];
     [currencyLabel setStringValue: symbol];
     [[[valueLabel cell] formatter] setCurrencyCode: currency]; // Important for proper display of the value, even without currency.

@@ -21,6 +21,19 @@
 
 #import "PXListViewCell.h"
 
+// Key names for the fields passed in via the value dictionary.
+extern NSString *StatementDateKey;
+extern NSString *StatementTurnoversKey;
+extern NSString *StatementRemoteNameKey;
+extern NSString *StatementPurposeKey;
+extern NSString *StatementCategoriesKey;
+extern NSString *StatementValueKey;
+extern NSString *StatementSaldoKey;
+extern NSString *StatementCurrencyKey;
+extern NSString *StatementTransactionTextKey;
+extern NSString *StatementIndexKey;
+extern NSString *StatementNoteKey;
+
 @protocol StatementsListViewNotificationProtocol
 - (void)cellActivationChanged: (BOOL)state forIndex: (NSUInteger)index;
 @end
@@ -31,6 +44,7 @@
     IBOutlet NSTextField* turnoversLabel;
     IBOutlet NSTextField* remoteNameLabel;
     IBOutlet NSTextField* purposeLabel;
+    IBOutlet NSTextField* noteLabel;
     IBOutlet NSTextField* categoriesLabel;
     IBOutlet NSTextField* valueLabel;
     IBOutlet NSImageView* newImage;
@@ -54,19 +68,10 @@
 
 - (IBAction)activationChanged: (id)sender;
 
+- (void)setDetails: (NSDictionary*) details;
+
 - (void)setHeaderHeight: (int) aHeaderHeight;
-
-- (void)setDetailsDate: (NSString*) date
-             turnovers: (NSString*) turnovers
-            remoteName: (NSString*) name
-               purpose: (NSString*) purpose
-            categories: (NSString*) categories
-                 value: (NSDecimalNumber*) value
-                 saldo: (NSDecimalNumber*) saldo
-              currency: (NSString*) currency
-       transactionText: (NSString*) transactionText
-                 index: (NSUInteger) theIndex;
-
+- (void)setDetails: (NSDictionary*) details;
 - (void)setIsNew: (BOOL) flag;
 - (void)showActivator: (BOOL)flag markActive: (BOOL)active;
 

@@ -174,6 +174,7 @@
 - (void) fillCell: (StatementsListViewCell*)cell forRow: (NSUInteger)row
 {
     id statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];
+    NSMutableDictionary *details = [NSMutableDictionary dictionary];
     
     NSDate* currentDate = [statement valueForKey: @"date"];
     
@@ -186,17 +187,19 @@
         turnoversString = NSLocalizedString(@"AP132", @"");
     
     cell.delegate = self;
-    [cell setDetailsDate: [self formatValue: currentDate capitalize: NO]
-               turnovers: turnoversString
-              remoteName: [self formatValue: [statement valueForKey: @"remoteName"] capitalize: YES]
-                 purpose: [self formatValue: [statement valueForKey: @"floatingPurpose"] capitalize: YES]
-              categories: [self formatValue: [statement valueForKey: @"categoriesDescription"] capitalize: NO]
-                   value: [statement valueForKey: @"value"]
-                   saldo: [statement valueForKey: @"saldo"]
-                currency: [self formatValue: [statement valueForKey: @"currency"] capitalize: NO]
-         transactionText: [self formatValue: [statement valueForKey: @"transactionText"] capitalize: YES]
-                   index: row
-     ];
+    [details setValue: [self formatValue: currentDate capitalize: NO] forKey: StatementDateKey];
+    [details setValue: turnoversString forKey: StatementTurnoversKey];
+    [details setValue: [self formatValue: [statement valueForKey: @"remoteName"] capitalize: YES] forKey: StatementRemoteNameKey];
+    [details setValue: [self formatValue: [statement valueForKey: @"floatingPurpose"] capitalize: YES] forKey: StatementPurposeKey];
+    [details setValue: [self formatValue: [statement valueForKey: @"note"] capitalize: YES] forKey: StatementNoteKey];
+    [details setValue: [self formatValue: [statement valueForKey: @"categoriesDescription"] capitalize: NO] forKey: StatementCategoriesKey];
+    [details setValue: [statement valueForKey: @"value"] forKey: StatementValueKey];
+    [details setValue: [statement valueForKey: @"saldo"] forKey: StatementSaldoKey];
+    [details setValue: [self formatValue: [statement valueForKey: @"currency"] capitalize: NO] forKey: StatementCurrencyKey];
+    [details setValue: [self formatValue: [statement valueForKey: @"transactionText"] capitalize: YES] forKey: StatementTransactionTextKey];
+    [details setValue: [NSNumber numberWithInt: row] forKey: StatementIndexKey];
+    
+    [cell setDetails: details];
     [cell setIsNew: [[statement valueForKey: @"isNew"] boolValue]];
     
     if (self.showAssignedIndicators) {
