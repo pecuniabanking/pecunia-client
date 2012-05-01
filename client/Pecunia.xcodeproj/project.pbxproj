@@ -62,7 +62,7 @@
 		27955AFF140C0603008369C9 /* GraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27955AFE140C0603008369C9 /* GraphicsAdditions.m */; };
 		279A785D1539D8EB00443854 /* TransfersListview.m in Sources */ = {isa = PBXBuildFile; fileRef = 279A785C1539D8EB00443854 /* TransfersListview.m */; };
 		279A785F1539DA0300443854 /* TransfersListviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 279A785E1539DA0300443854 /* TransfersListviewCell.m */; };
-		279A78621539DD5400443854 /* TranfersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 279A78611539DD5400443854 /* TranfersListViewCell.xib */; };
+		279A78621539DD5400443854 /* TransfersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 279A78611539DD5400443854 /* TransfersListViewCell.xib */; };
 		27BB1A1A14D4739900A2C8A7 /* CategoryDefinition.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */; };
 		27C78793143622920095F1DA /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27C78792143622920095F1DA /* ProgressWindow.xib */; };
 		27C78796143623080095F1DA /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C78795143623080095F1DA /* ProgressWindowController.m */; };
@@ -91,6 +91,8 @@
 		27F30887143E282700A10FCE /* new.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F30886143E282700A10FCE /* new.png */; };
 		27FA4A17154D49E5002A5ED0 /* donate-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A15154D49E5002A5ED0 /* donate-active.png */; };
 		27FA4A18154D49E5002A5ED0 /* donate.png in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A16154D49E5002A5ED0 /* donate.png */; };
+		27FA4A1B154D5AB9002A5ED0 /* BankingController+Tabs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FA4A1A154D5AB9002A5ED0 /* BankingController+Tabs.m */; };
+		27FA4A1E154D5F16002A5ED0 /* Transfers.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A1D154D5F16002A5ED0 /* Transfers.xib */; };
 		27FD58CB1437569B0074B378 /* StatementsListview.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD58CA1437569B0074B378 /* StatementsListview.m */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -143,7 +145,6 @@
 		B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
 		B14587A21289DCB700848683 /* CategoryPeriods.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14587A11289DCB700848683 /* CategoryPeriods.xib */; };
 		B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
-		B14587EC128C8B0700848683 /* ReportingTabs.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587EB128C8B0700848683 /* ReportingTabs.m */; };
 		B14C60011148467A009324A6 /* BankStatementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C60001148467A009324A6 /* BankStatementController.m */; };
 		B14C6003114848E1009324A6 /* BankStatementController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14C6002114848E1009324A6 /* BankStatementController.xib */; };
 		B14C61BB115AB4FB009324A6 /* BankStatementPolicy030.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C61BA115AB4FB009324A6 /* BankStatementPolicy030.m */; };
@@ -174,7 +175,7 @@
 		B17072D50D4BD35D00FBF186 /* TransactionLimits.m in Sources */ = {isa = PBXBuildFile; fileRef = B17072D40D4BD35D00FBF186 /* TransactionLimits.m */; };
 		B17074870D55104000FBF186 /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17074860D55104000FBF186 /* PreferenceController.m */; };
 		B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = B17078F810EA5E6100A974E7 /* StatCatAssignment.m */; };
-		B1762BD911EE4AE600F70263 /* TransferListController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1762BD811EE4AE600F70263 /* TransferListController.m */; };
+		B1762BD911EE4AE600F70263 /* TransfersController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1762BD811EE4AE600F70263 /* TransfersController.m */; };
 		B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728AF1502D0D300256898 /* BankSetupInfo.m */; };
 		B17728D71504ABC700256898 /* TanMedium.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728D61504ABC700256898 /* TanMedium.m */; };
 		B17728F01504B14500256898 /* TanMediaList.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728EF1504B14500256898 /* TanMediaList.m */; };
@@ -398,7 +399,7 @@
 		279A785C1539D8EB00443854 /* TransfersListview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersListview.m; sourceTree = "<group>"; };
 		279A785E1539DA0300443854 /* TransfersListviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersListviewCell.m; sourceTree = "<group>"; };
 		279A78601539DA1300443854 /* TransfersListviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransfersListviewCell.h; sourceTree = "<group>"; };
-		279A78611539DD5400443854 /* TranfersListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TranfersListViewCell.xib; sourceTree = "<group>"; };
+		279A78611539DD5400443854 /* TransfersListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransfersListViewCell.xib; sourceTree = "<group>"; };
 		27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Pecunia.entitlements; path = ../Pecunia.entitlements; sourceTree = "<group>"; };
 		27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryDefinition.xib; sourceTree = "<group>"; };
 		27C78792143622920095F1DA /* ProgressWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressWindow.xib; sourceTree = "<group>"; };
@@ -437,6 +438,9 @@
 		27F30886143E282700A10FCE /* new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new.png; sourceTree = "<group>"; };
 		27FA4A15154D49E5002A5ED0 /* donate-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "donate-active.png"; sourceTree = "<group>"; };
 		27FA4A16154D49E5002A5ED0 /* donate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = donate.png; sourceTree = "<group>"; };
+		27FA4A19154D5AB9002A5ED0 /* BankingController+Tabs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BankingController+Tabs.h"; sourceTree = "<group>"; };
+		27FA4A1A154D5AB9002A5ED0 /* BankingController+Tabs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BankingController+Tabs.m"; sourceTree = "<group>"; };
+		27FA4A1D154D5F16002A5ED0 /* Transfers.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Transfers.xib; sourceTree = "<group>"; };
 		27FD58C91437569B0074B378 /* StatementsListview.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementsListview.h; sourceTree = "<group>"; tabWidth = 4; };
 		27FD58CA1437569B0074B378 /* StatementsListview.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsListview.m; sourceTree = "<group>"; tabWidth = 4; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; };
@@ -519,8 +523,6 @@
 		B14587A11289DCB700848683 /* CategoryPeriods.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryPeriods.xib; sourceTree = "<group>"; };
 		B14587A31289ED8D00848683 /* CategoryReportingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryReportingNode.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14587A41289ED8D00848683 /* CategoryReportingNode.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryReportingNode.m; sourceTree = "<group>"; tabWidth = 4; };
-		B14587EA128C8B0700848683 /* ReportingTabs.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ReportingTabs.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14587EB128C8B0700848683 /* ReportingTabs.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ReportingTabs.m; sourceTree = "<group>"; tabWidth = 4; };
 		B14C5FFF1148467A009324A6 /* BankStatementController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14C60001148467A009324A6 /* BankStatementController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B14C6002114848E1009324A6 /* BankStatementController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BankStatementController.xib; sourceTree = "<group>"; };
@@ -573,8 +575,8 @@
 		B17074860D55104000FBF186 /* PreferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17078F710EA5E6100A974E7 /* StatCatAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatCatAssignment.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17078F810EA5E6100A974E7 /* StatCatAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatCatAssignment.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1762BD711EE4AE600F70263 /* TransferListController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransferListController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B1762BD811EE4AE600F70263 /* TransferListController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransferListController.m; sourceTree = "<group>"; tabWidth = 4; };
+		B1762BD711EE4AE600F70263 /* TransfersController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransfersController.h; sourceTree = "<group>"; tabWidth = 4; };
+		B1762BD811EE4AE600F70263 /* TransfersController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17728AE1502D0D300256898 /* BankSetupInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankSetupInfo.h; sourceTree = "<group>"; };
 		B17728AF1502D0D300256898 /* BankSetupInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankSetupInfo.m; sourceTree = "<group>"; };
 		B17728D51504ABC700256898 /* TanMedium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanMedium.h; sourceTree = "<group>"; };
@@ -846,19 +848,6 @@
 			name = Animation;
 			sourceTree = "<group>";
 		};
-		27C7B2E91475440E00BD4F56 /* Statistics + Graphs */ = {
-			isa = PBXGroup;
-			children = (
-				B192FDC00E8434D500B53380 /* CategoryRepWindowController.h */,
-				B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */,
-				B19822DB0E6F304A001C4C70 /* CategoryAnalysisWindowController.h */,
-				B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */,
-				27C7B2F41475466600BD4F56 /* ColumnLayoutCorePlotLayer.h */,
-				27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */,
-			);
-			name = "Statistics + Graphs";
-			sourceTree = "<group>";
-		};
 		27C7B501147FC41900278131 /* Drawing + Colors */ = {
 			isa = PBXGroup;
 			children = (
@@ -1034,13 +1023,31 @@
 				27C78792143622920095F1DA /* ProgressWindow.xib */,
 				B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */,
 				275C07DA1438776000D97415 /* StatementsListViewCell.xib */,
-				279A78611539DD5400443854 /* TranfersListViewCell.xib */,
 				B1A59497113182DA00FD8CB8 /* StatSplitController.xib */,
+				279A78611539DD5400443854 /* TransfersListViewCell.xib */,
 				B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */,
 				B1D44FE7147841DA008DD256 /* TanMethods.xib */,
+				27FA4A1D154D5F16002A5ED0 /* Transfers.xib */,
 				B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */,
 			);
 			path = Designer;
+			sourceTree = "<group>";
+		};
+		27FA4A1C154D5B76002A5ED0 /* Sections */ = {
+			isa = PBXGroup;
+			children = (
+				B192FDC00E8434D500B53380 /* CategoryRepWindowController.h */,
+				B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */,
+				B19822DB0E6F304A001C4C70 /* CategoryAnalysisWindowController.h */,
+				B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */,
+				27C7B2F41475466600BD4F56 /* ColumnLayoutCorePlotLayer.h */,
+				27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */,
+				B1029E100E3FA1D700CC681B /* CategoryDefWindowController.h */,
+				B1029E110E3FA1D700CC681B /* CategoryDefWindowController.m */,
+				B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */,
+				B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */,
+			);
+			name = Sections;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* Pecunia */ = {
@@ -1338,7 +1345,7 @@
 		B1C7B189130B10BF0091CD72 /* MainWindow */ = {
 			isa = PBXGroup;
 			children = (
-				27C7B2E91475440E00BD4F56 /* Statistics + Graphs */,
+				27FA4A1C154D5B76002A5ED0 /* Sections */,
 				B1C7B18B130B11280091CD72 /* Tabs */,
 				B1C90E140ABB39D5006F18C9 /* BankingController.h */,
 				B1C90E150ABB39D5006F18C9 /* BankingController.m */,
@@ -1364,16 +1371,12 @@
 		B1C7B18B130B11280091CD72 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				B1029E100E3FA1D700CC681B /* CategoryDefWindowController.h */,
-				B1029E110E3FA1D700CC681B /* CategoryDefWindowController.m */,
-				B1762BD711EE4AE600F70263 /* TransferListController.h */,
-				B1762BD811EE4AE600F70263 /* TransferListController.m */,
-				B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */,
-				B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */,
-				B14587EA128C8B0700848683 /* ReportingTabs.h */,
-				B14587EB128C8B0700848683 /* ReportingTabs.m */,
+				27FA4A19154D5AB9002A5ED0 /* BankingController+Tabs.h */,
+				27FA4A1A154D5AB9002A5ED0 /* BankingController+Tabs.m */,
 				B1AFAA0312A061C100B115A7 /* StandingOrderTabController.h */,
 				B1AFAA0412A061C100B115A7 /* StandingOrderTabController.m */,
+				B1762BD711EE4AE600F70263 /* TransfersController.h */,
+				B1762BD811EE4AE600F70263 /* TransfersController.m */,
 			);
 			name = Tabs;
 			sourceTree = "<group>";
@@ -1724,7 +1727,7 @@
 				27D1172B15288C3600CD7E83 /* background-pattern.png in Resources */,
 				27D302951538453300D6A2CC /* sort-indicator-inc.png in Resources */,
 				27D302971538461700D6A2CC /* sort-indicator-dec.png in Resources */,
-				279A78621539DD5400443854 /* TranfersListViewCell.xib in Resources */,
+				279A78621539DD5400443854 /* TransfersListViewCell.xib in Resources */,
 				272D814915431DCD006E1008 /* accounts.png in Resources */,
 				272D814B154324B3006E1008 /* accounts-active.png in Resources */,
 				272D814D154326B0006E1008 /* transfers.png in Resources */,
@@ -1738,6 +1741,7 @@
 				2764B63D15443C6600FF0B73 /* statementlist-active.png in Resources */,
 				27FA4A17154D49E5002A5ED0 /* donate-active.png in Resources */,
 				27FA4A18154D49E5002A5ED0 /* donate.png in Resources */,
+				27FA4A1E154D5F16002A5ED0 /* Transfers.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1802,7 +1806,7 @@
 				B14C629B115E00AA009324A6 /* MigrationManagerWorkaround.m in Sources */,
 				B14C630E11629C7D009324A6 /* CategoryPolicy030.m in Sources */,
 				B1A1377411B6FD9400622D6C /* AccountDefController.m in Sources */,
-				B1762BD911EE4AE600F70263 /* TransferListController.m in Sources */,
+				B1762BD911EE4AE600F70263 /* TransfersController.m in Sources */,
 				B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */,
 				B1FB509E1209F68E004DCD6A /* PurposeSplitData.m in Sources */,
 				B1FAEABA122C62F7000AF027 /* ABController.m in Sources */,
@@ -1820,7 +1824,6 @@
 				B1FB6B02126B7BF300C54A0E /* BankStatementPrintView.m in Sources */,
 				B14587A01289DC3100848683 /* CategoryPeriodsWindowController.m in Sources */,
 				B14587A51289ED8D00848683 /* CategoryReportingNode.m in Sources */,
-				B14587EC128C8B0700848683 /* ReportingTabs.m in Sources */,
 				B1AFA9361299C15900B115A7 /* StandingOrder.m in Sources */,
 				B1AFAA0512A061C100B115A7 /* StandingOrderTabController.m in Sources */,
 				B137BDCC12D28B0D00D0394C /* adduser.c in Sources */,
@@ -1897,6 +1900,7 @@
 				27028DCF1539B58700AEB651 /* TransfersBackgroundView.m in Sources */,
 				279A785D1539D8EB00443854 /* TransfersListview.m in Sources */,
 				279A785F1539DA0300443854 /* TransfersListviewCell.m in Sources */,
+				27FA4A1B154D5AB9002A5ED0 /* BankingController+Tabs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

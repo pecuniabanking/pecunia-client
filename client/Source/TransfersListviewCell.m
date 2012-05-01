@@ -42,30 +42,42 @@
 
 - (void)dealloc
 {
+    [categoryColor release];
 	[super dealloc];
 }
 
 static CurrencyValueTransformer* currencyTransformer;
 
-- (void)setDetailsDate: (NSString*)date
-            remoteName: (NSString*)name
-               purpose: (NSString*)purpose
-                 value: (NSDecimalNumber*)value
-              currency: (NSString*)currency
+- (void)setDetails: (NSDictionary *)details
 {
-    [dateLabel setStringValue: date];
+    [dateLabel setStringValue: [details valueForKey: @"date"]];
     
-    [remoteNameLabel setStringValue: name];
-    [remoteNameLabel setToolTip: name];
+    [remoteNameLabel setStringValue: [details valueForKey: @"remoteName"]];
+    [remoteNameLabel setToolTip: [details valueForKey: @"remoteName"]];
     
-    [purposeLabel setStringValue: purpose];
-    [purposeLabel setToolTip: purpose];
+    [purposeLabel setStringValue: [details valueForKey: @"purpose"]];
+    [purposeLabel setToolTip: [details valueForKey: @"purpose"]];
     
-    [valueLabel setObjectValue: value];
+    [valueLabel setObjectValue: [details valueForKey: @"value"]];
+    
+    [bankNameLabel setStringValue: [details valueForKey: @"remoteBankName"]];
+    [bankNameLabel setToolTip: [details valueForKey: @"remoteBankName"]];
+    
+    NSMutableAttributedString *account = [details valueForKey: @"account"];
+
+    // Since we use an attributed string for the account label we have to set the alignment explicitly.
+    NSMutableParagraphStyle *paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+    [paragraphStyle setAlignment: NSRightTextAlignment];
+    [account addAttributes: [NSDictionary dictionaryWithObject: paragraphStyle forKey: NSParagraphStyleAttributeName] range: NSMakeRange(0, [account length])];
+    [accountLabel setAttributedStringValue: account];
+    [accountLabel setToolTip: [[details valueForKey: @"account"] string]];
+    
+    categoryColor = [[details valueForKey: @"color"] retain];
     
     if (currencyTransformer == nil)
         currencyTransformer = [[CurrencyValueTransformer alloc] init];
     
+    NSString *currency = [details valueForKey: @"currency"];
     NSString *symbol = [currencyTransformer transformedValue: currency];
     [currencyLabel setStringValue: symbol];
     [[[valueLabel cell] formatter] setCurrencyCode: currency]; // Important for proper display of the value, even without currency.
@@ -135,9 +147,19 @@ static NSShadow* innerShadow;
     
     if ([self isSelected]) {
         [innerGradientSelected drawInBezierPath: path angle: 90.0];
-        [path fillWithInnerShadow: innerShadow borderOnly: NO];
     } else {
         [innerGradient drawInBezierPath: path angle: 90.0];
+    }
+    
+    if (categoryColor != nil) {
+        [categoryColor set];
+        NSRect colorRect = bounds;
+        colorRect.size.width = 5;
+        [NSBezierPath fillRect: colorRect];
+    }
+    
+    if ([self isSelected]) {
+        [path fillWithInnerShadow: innerShadow borderOnly: NO];
     }
     
     [[NSColor colorWithDeviceWhite: 0 / 255.0 alpha: 1] set];

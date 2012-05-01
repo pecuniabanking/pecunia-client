@@ -21,6 +21,7 @@
 #import "TransfersListViewCell.h"
 #import "ShortDate.h"
 #import "BankStatement.h"
+#import "Category.h"
 
 @implementation TransfersListView
 
@@ -35,27 +36,13 @@
     [self exposeBinding: @"valueArray"];
 }
 
-- (id)initWithFrame:(NSRect)theFrame
+- (id)initWithCoder: (NSCoder*)decoder
 {
-    self = [super initWithFrame: theFrame];
+    self = [super initWithCoder: decoder];
     if (self != nil) {
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setLocale: [NSLocale currentLocale]];
-        [dateFormatter setDateStyle: kCFDateFormatterFullStyle];
-        [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
-        
-        numberFormatter = [[NSNumberFormatter alloc] init];
-    }
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder*)decoder
-{
-    self = [super initWithCoder:decoder];
-    if (self != nil) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setLocale: [NSLocale currentLocale]];
-        [dateFormatter setDateStyle: kCFDateFormatterFullStyle];
+        [dateFormatter setDateStyle: kCFDateFormatterShortStyle];
         [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
         
         numberFormatter = [[NSNumberFormatter alloc] init];
@@ -76,6 +63,7 @@
     [valueArray release];
     [dateFormatter release];
     [calendar release];
+    [numberFormatter release];
     
     [super dealloc];
 }
@@ -120,51 +108,58 @@
         value = @"";
     else
     {
-        if ([value isKindOfClass: [NSDate class]])
+        if ([value isKindOfClass: [NSDate class]]) {
             value = [dateFormatter stringFromDate: value];
-        if (capitalize)
-            value = [value capitalizedString];
+        }
     }
     
     return value;
-}
-
-/**
- * Looks through the statement array starting with "row" and counts how many entries follow it with the 
- * same date (time is not compared).
- */
-- (int) countSameDatesFromRow: (NSUInteger)row
-{
-    int result = 1;
-    id statement = [[dataSource objectAtIndex: row] valueForKey: @"statement"];
-    ShortDate* currentDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
-    
-    NSUInteger totalCount = [dataSource count];
-    while (++row < totalCount)
-    {
-        statement = [[dataSource objectAtIndex: row] valueForKey: @"statement"];
-        ShortDate* nextDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
-        if ([currentDate compare: nextDate] != NSOrderedSame)
-            break;
-        result++;
-    }
-    return result;
 }
 
 #define CELL_HEIGHT 49
 
 - (void) fillCell: (TransfersListViewCell*)cell forRow: (NSUInteger)row
 {
-    id statement = [[dataSource objectAtIndex: row] valueForKey: @"statement"];
+    id transfer = [dataSource objectAtIndex: row];
     
-    NSDate* currentDate = [statement valueForKey: @"date"];
+    NSDate* currentDate = [transfer valueForKey: @"date"];
+    NSMutableDictionary *details = [NSMutableDictionary dictionary];
+    [details setValue: [self formatValue: currentDate capitalize: NO] forKey: @"date"];
+    [details setValue: [self formatValue: [transfer valueForKey: @"remoteName"] capitalize: YES] forKey: @"remoteName"];
+    [details setValue: [self formatValue: [transfer valueForKey: @"purpose"] capitalize: YES] forKey: @"purpose"];
+    [details setValue: [transfer valueForKey: @"value"] forKey: @"value"];
+    [details setValue: [self formatValue: [transfer valueForKey: @"currency"] capitalize: NO] forKey: @"currency"];
+    [details setValue: [self formatValue: [transfer valueForKey: @"remoteBankName"] capitalize: YES] forKey: @"remoteBankName"];
     
-    [cell setDetailsDate: [self formatValue: currentDate capitalize: NO]
-              remoteName: [self formatValue: [statement valueForKey: @"remoteName"] capitalize: YES]
-                 purpose: [self formatValue: [statement valueForKey: @"floatingPurpose"] capitalize: YES]
-                   value: [statement valueForKey: @"value"]
-                currency: [self formatValue: [statement valueForKey: @"currency"] capitalize: NO]
+    // Construct a formatted string for account and bank code to be displayed in a single text field.
+    NSFont *normalFont = [NSFont fontWithName: @"Helvetica Neue" size: 11];
+    NSDictionary *normalAttributes = [NSDictionary dictionaryWithObject: normalFont forKey: NSFontAttributeName];
+    
+    NSFontManager *fontManager = [NSFontManager sharedFontManager];
+    NSFont *boldFont = [fontManager convertFont: normalFont toHaveTrait: NSBoldFontMask];
+    NSDictionary *boldAttributes = [NSDictionary dictionaryWithObject: boldFont forKey: NSFontAttributeName];
+
+    NSMutableAttributedString *accountString = [[[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"AP180", "")
+                                                                                       attributes: boldAttributes] autorelease];
+    [accountString appendAttributedString: [[[NSMutableAttributedString alloc] initWithString: [transfer valueForKey: @"remoteBankCode"]
+                                                                                   attributes: normalAttributes]
+                                            autorelease]
+    ];
+    [accountString appendAttributedString: [[[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"AP181", "")
+                                                                                   attributes: boldAttributes]
+                                            autorelease]
+    ];
+    [accountString appendAttributedString: [[[NSMutableAttributedString alloc] initWithString: [transfer valueForKey: @"remoteAccount"]
+                                                                                   attributes: normalAttributes]
+                                            autorelease]
      ];
+    // TODO: add handling for IBAN and BIC.
+    [details setValue: accountString forKey: @"account"];
+    
+    // TODO: add handling for changed category colors.
+    [details setValue: [[transfer account] categoryColor] forKey: @"color"];
+    
+    [cell setDetails: details];
     
     NSRect frame = [cell frame];
     frame.size.height = CELL_HEIGHT;

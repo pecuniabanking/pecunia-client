@@ -31,7 +31,7 @@
 @class MCEMTreeController;
 @class TimeSliceManager;
 @class CategoryView;
-@class TransferListController;
+@class TransfersController;
 @class DockIconController;
 
 @class StatementsListView;
@@ -41,6 +41,7 @@
 @class CategoryRepWindowController;
 @class CategoryDefWindowController;
 @class CategoryPeriodsWindowController;
+@class StandingOrderTabController;
 
 @class RoundedSidebar;
 @class SideToolbarView;
@@ -49,7 +50,7 @@
 
 @interface BankingController : NSObject
 {
-    IBOutlet NSArrayController  *transactionController;
+    IBOutlet NSArrayController  *transactions;
     IBOutlet NSWindow           *mainWindow;
     IBOutlet NSTabView          *mainTabView;
     IBOutlet CategoryView       *accountsView;
@@ -93,11 +94,9 @@
     IBOutlet NSButton        *rulesButton;
     IBOutlet RoundedSidebar  *sideBar;
     
-    IBOutlet NSMenuItem    *toggleFullscreenItem;
+    IBOutlet NSMenuItem      *toggleFullscreenItem;
     
-    // Transfers.
-    IBOutlet TransactionController  *transferWindowController;
-    IBOutlet TransferListController *transferListController;
+    IBOutlet TransactionController *transactionController;
     
 @private
     NSMutableDictionary    *mainTabItems;
@@ -126,6 +125,9 @@
     CategoryRepWindowController *categoryReportingController;
     CategoryDefWindowController *categoryDefinitionController;
     CategoryPeriodsWindowController *categoryPeriodsController;
+
+    TransfersController *transfersController;
+    
     id<PecuniaSectionItem> currentSection;
     
     // Sorting statements.
@@ -145,7 +147,6 @@
 -(IBAction)deleteAccount:(id)sender;
 -(IBAction)editPreferences:(id)sender;
 
--(IBAction)transferView: (id)sender;
 -(IBAction)activateMainPage: (id)sender;
 - (IBAction)activateAccountPage: (id)sender;
 
@@ -154,11 +155,13 @@
 -(IBAction)editBankUsers:(id)sender;
 -(IBAction)export: (id)sender;
 -(IBAction)import: (id)sender;
+
 -(IBAction)transfer_local: (id)sender;
 -(IBAction)transfer_eu: (id)sender;
 -(IBAction)transfer_sepa: (id)sender;
 -(IBAction)transfer_dated: (id)sender;
 -(IBAction)transfer_internal: (id)sender;
+
 -(IBAction)donate: (id)sender;
 -(IBAction)splitPurpose:(id)sender;
 
