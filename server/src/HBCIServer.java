@@ -28,6 +28,7 @@ import org.kapott.hbci.GV_Result.GVRAccInfo;
 import org.kapott.hbci.GV_Result.GVRDauerList;
 import org.kapott.hbci.GV_Result.GVRDauerNew;
 import org.kapott.hbci.GV_Result.GVRKUms;
+import org.kapott.hbci.GV_Result.GVRSaldoReq;
 import org.kapott.hbci.GV_Result.GVRTANMediaList;
 import org.kapott.hbci.GV_Result.GVRTermUebList;
 import org.kapott.hbci.GV_Result.HBCIJobResult;
@@ -47,6 +48,7 @@ import org.kapott.hbci.passport.AbstractPinTanPassport;
 import org.kapott.hbci.status.HBCIDialogStatus;
 import org.kapott.hbci.status.HBCIExecStatus;
 import org.kapott.hbci.structures.Konto;
+import org.kapott.hbci.structures.Saldo;
 import org.kapott.hbci.structures.Value;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -660,14 +662,14 @@ public class HBCIServer {
 			HBCIHandler handler = (HBCIHandler)e.nextElement();
 			ArrayList<Properties> jobs = (ArrayList<Properties>)orders.get(handler);
 			
-			handler.execute();
+			HBCIExecStatus status = handler.execute();
 			
 			for(Properties jobParam: jobs) {
 				HBCIJob job = (HBCIJob)jobParam.get("job");
 				HBCIJobResult res = job.getJobResult();
 		    	xmlBuf.append("<object type=\"TransferResult\">");
 		    	xmlGen.tag("transferId", jobParam.getProperty("id"));
-		    	xmlGen.booleTag("isOk", res.isOK());
+		    	xmlGen.booleTag("isOk", status.isOK() && res.isOK());
 				xmlBuf.append("</object>");
 			}
 		}
@@ -1303,6 +1305,53 @@ public class HBCIServer {
 
 	}
 	
+	private void getBalance() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String userId = getParameter(map, "userId");
+		String accountNumber = getParameter(map, "accountNumber");
+		String subNumber = map.getProperty("subNumber");
+		
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		if(handler == null) {
+			error(ERR_MISS_USER, "getBalance", userId);
+			return;			
+		}
+		
+		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		if(account == null) {
+			account = getAccount(handler.getPassport(), accountNumber, subNumber);
+			if(account == null) {
+				error(ERR_MISS_ACCOUNT, "getBalance",accountNumber);
+				return;
+			}
+		}
+		
+		HBCIJob job = handler.newJob("SaldoReq");
+		job.setParam("my", account);
+
+		job.addToQueue();
+		HBCIExecStatus stat = handler.execute();
+
+		xmlBuf.append("<result command=\"getBalance\"><dictionary>");
+		boolean isOk = false;
+		GVRSaldoReq res = null;
+		if(stat.isOK()) {
+			res = (GVRSaldoReq)job.getJobResult();
+			if(res.isOK()) isOk = true;
+			GVRSaldoReq.Info[] saldi = res.getEntries();
+			if(saldi.length > 0) {
+				GVRSaldoReq.Info info = saldi[0];
+				Value saldo = info.ready.value;
+				xmlGen.valueTag("balance", saldo);
+			}
+		}
+		
+		xmlGen.booleTag("isOk", isOk);
+		xmlBuf.append("</dictionary></result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+	}
+	
 	private void customerMessage() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
@@ -1588,6 +1637,7 @@ public class HBCIServer {
 			if(command.compareTo("getTANMediaList") == 0) { getTANMediaList(); return; }
 			if(command.compareTo("getBankParameterRaw") == 0) { getBankParameterRaw(); return; }
 			if(command.compareTo("getTANMethods") == 0) { getTANMethods(); return; }
+			if(command.compareTo("getBalance") == 0) { getBalance(); return; }
 			if(command.compareTo("getSupportedBusinessTransactions") == 0) { getSupportedBusinessTransactions(); return; }
 			
 			
