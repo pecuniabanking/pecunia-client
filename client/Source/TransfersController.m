@@ -35,7 +35,7 @@
 static NSString* const PecuniaTransferTemplateDataType = @"PecuniaTransferTemplateDataType";
 extern NSString* const BankStatementDataType;
 
-@interface CarouselView : iCarousel <NSDraggingSource>
+@interface CarouselView : iCarousel
 {    
 }
 
@@ -68,12 +68,12 @@ extern NSString* const BankStatementDataType;
               slideBack: YES];
     }
 }
-
+/*
 - (NSDragOperation)draggingSession: (NSDraggingSession *)session sourceOperationMaskForDraggingContext: (NSDraggingContext)context;
 {
     return NSDragOperationCopy;
 }
-
+*/
 @end
 
 @implementation TransferTemplateDragDestination
@@ -187,7 +187,7 @@ extern NSString* const BankStatementDataType;
     finishedTransfers.managedObjectContext = MOAssistant.assistant.context;
     //finishedTransfers.filterPredicate = [NSPredicate predicateWithFormat: @"isSent = YES"];
 
-    transactionController.managedObjectContext = MOAssistant.assistant.context;
+    [transactionController setManagedObjectContext: MOAssistant.assistant.context];
 
 	// Sort transfer list views by date (newest first).
 	NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO] autorelease];

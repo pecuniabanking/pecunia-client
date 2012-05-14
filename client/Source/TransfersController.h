@@ -25,7 +25,7 @@
 @class iCarousel;
 @class OnOffSwitchControlCell;
 
-@interface TransferTemplateDragDestination : NSView <NSDraggingDestination>
+@interface TransferTemplateDragDestination : NSView
 {
 @private
     BOOL formularVisible;

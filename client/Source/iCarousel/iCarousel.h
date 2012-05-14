@@ -46,23 +46,30 @@
 //
 
 #ifndef AH_RETAIN
-#if __has_feature(objc_arc)
-#define AH_STRONG strong
-#define AH_RETAIN(x) (x)
-#define AH_RELEASE(x) (void)(x)
-#define AH_AUTORELEASE(x) (x)
-#define AH_SUPER_DEALLOC (void)(0)
-#define __AH_BRIDGE __bridge
-#else
-#define __AH_WEAK
-#define AH_WEAK assign
-#define AH_STRONG retain
-#define AH_RETAIN(x) [(x) retain]
-#define AH_RELEASE(x) [(x) release]
-#define AH_AUTORELEASE(x) [(x) autorelease]
-#define AH_SUPER_DEALLOC [super dealloc]
-#define __AH_BRIDGE
+
+    #ifdef __has_feature
+        #if __has_feature(objc_arc)
+            #define AH_STRONG strong
+            #define AH_RETAIN(x) (x)
+            #define AH_RELEASE(x) (void)(x)
+            #define AH_AUTORELEASE(x) (x)
+            #define AH_SUPER_DEALLOC (void)(0)
+            #define __AH_BRIDGE __bridge
+        #endif
+    #endif
+
 #endif
+
+// If still not defined then it means we are compiling in XC3.
+#ifndef AH_RETAIN
+    #define __AH_WEAK
+    #define AH_WEAK assign
+    #define AH_STRONG retain
+    #define AH_RETAIN(x) [(x) retain]
+    #define AH_RELEASE(x) [(x) release]
+    #define AH_AUTORELEASE(x) [(x) autorelease]
+    #define AH_SUPER_DEALLOC [super dealloc]
+    #define __AH_BRIDGE
 #endif
 
 //  Weak reference support
