@@ -29,6 +29,8 @@
 -(void)updateStandingOrders:(NSArray*)orders;
 -(void)copyStatement:(BankStatement*)stat;
 -(void)copyStatementsToManualAccounts:(NSArray*)statements;
+-(void)updateBalanceWithValue:(NSDecimalNumber*)value;
+-(void)repairStatementBalances;
 -(NSDate*)nextDateForDate:(NSDate*)date;
 -(NSInteger)calcUnread;
 

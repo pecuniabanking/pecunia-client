@@ -958,6 +958,7 @@ NSString *escapeSpecial(NSString *s)
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"customerMessage\">" ];
     [self appendTag: @"bankCode" withValue: msg.account.bankCode to: cmd ];
     [self appendTag: @"accountNumber" withValue: msg.account.accountNumber to:cmd ];
+    [self appendTag: @"subNumber" withValue: msg.account.accountSuffix to:cmd ];
     [self appendTag: @"userId" withValue: msg.account.userId to: cmd ];
     [self appendTag: @"head" withValue: msg.header to: cmd ];
     [self appendTag: @"body" withValue: msg.message to: cmd ];
@@ -975,6 +976,41 @@ NSString *escapeSpecial(NSString *s)
         error = [PecuniaError errorWithCode:0 message: NSLocalizedString(@"AP172", @"") ];
     }
     return error;
+}
+
+-(PecuniaError*)getBalanceForAccount:(BankAccount*)account
+{
+    PecuniaError *error=nil;
+    
+    [self startProgress ];
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getBalance\">" ];
+    [self appendTag: @"bankCode" withValue: account.bankCode to: cmd ];
+    [self appendTag: @"accountNumber" withValue: account.accountNumber to:cmd ];
+    [self appendTag: @"subNumber" withValue: account.accountSuffix to:cmd ];
+    [self appendTag: @"userId" withValue: account.userId to: cmd ];
+    [cmd appendString: @"</command>" ];
+	
+    NSDictionary *result = [bridge syncCommand: cmd error: &error ];
+    [self stopProgress ];
+    
+    if(error) return error;
+	if (result == nil) {
+		[[MessageLog log ] addMessage: @"Unexpected result for getBalance: nil" withLevel: LogLevel_Error  ];
+		return nil;
+	}
+	NSNumber *isOk = [result valueForKey:@"isOk" ];
+	if (isOk != nil) {
+		NSDecimalNumber *value = [result valueForKey:@"balance" ];
+		if (value !=nil) {
+			[account updateBalanceWithValue: value ];
+		} else {
+			[[MessageLog log ] addMessage: @"getBalance: no balance delivered" withLevel: LogLevel_Error  ];
+			return nil;
+		}
+	} else {
+		error = [PecuniaError errorWithCode:0 message: NSLocalizedString(@"AP182", @"") ];
+	}
+	return error;
 }
 
 -(PecuniaError*)updateTanMethodsForUser:(BankUser*)user
@@ -997,6 +1033,7 @@ NSString *escapeSpecial(NSString *s)
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getSupportedBusinessTransactions\">" ];
     [self appendTag: @"bankCode" withValue: account.bankCode to: cmd];
     [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd];
+    [self appendTag: @"subNumber" withValue: account.accountSuffix to: cmd];
     [self appendTag: @"userId" withValue: account.userId to: cmd];
     [cmd appendString: @"</command>" ];
 

@@ -180,6 +180,7 @@
 -(IBAction)printDocument:(id)sender;
 -(IBAction)updateAllAccounts:(id)sender;
 -(IBAction)repairSaldo:(id)sender;
+-(IBAction)getAccountBalance:(id)sender;
 
 -(IBAction)showLog:(id)sender;
 -(IBAction)showAboutPanel:(id)sender;

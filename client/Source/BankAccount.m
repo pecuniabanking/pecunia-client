@@ -349,7 +349,7 @@
 		}
 		[self copyStatementsToManualAccounts:newStatements ];
 	}
-
+	
 	
 /*	
 	// statements must be properly sorted !!! (regarding HBCI)
@@ -409,6 +409,28 @@
 	return [newStatements count ];
 }
 
+-(void)updateBalanceWithValue:(NSDecimalNumber*)value
+{
+	self.balance = value;
+	[self repairStatementBalances ];
+}
+
+-(void)repairStatementBalances
+{
+	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
+    NSArray				*sds = [NSArray arrayWithObject:sd];
+    
+    NSMutableSet *statements = [self mutableSetValueForKey:@"statements"];
+    NSArray *stats = [[statements allObjects] sortedArrayUsingDescriptors:sds];
+    
+    NSDecimalNumber *saldo = self.balance;
+    for(BankStatement *stat in stats) {
+		if ([stat.saldo isEqual: saldo ] == NO) {
+			stat.saldo = saldo;
+			saldo = [saldo decimalNumberBySubtracting:stat.value];
+		} else break;
+    }
+}
 
 +(BankAccount*)bankRootForCode:(NSString*)bankCode
 {

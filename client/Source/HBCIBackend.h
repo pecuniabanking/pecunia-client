@@ -60,6 +60,7 @@
 
 -(void)getStatements:(NSArray*)resultList;
 -(void)getStandingOrders:(NSArray*)resultList;
+-(PecuniaError*)getBalanceForAccount:(BankAccount*)account;
 
 -(BOOL)sendTransfers:(NSArray*)transfers;
 -(PecuniaError*)sendStandingOrders:(NSArray*)orders;

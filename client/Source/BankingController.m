@@ -2681,24 +2681,33 @@ static BOOL runningOnLionOrLater = NO;
     Category* cat = [self currentSelection];
     if (cat == nil || cat.accountNumber == nil) return;
     account = (BankAccount*)cat;
-    
-    NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
-    NSArray				*sds = [NSArray arrayWithObject:sd];
-    
-    NSMutableSet *statements = [account mutableSetValueForKey:@"statements"];
-    NSArray *stats = [[statements allObjects] sortedArrayUsingDescriptors:sds];
-    
-    NSDecimalNumber *saldo = account.balance;
-    for(BankStatement *stat in stats) {
-        stat.saldo = saldo;
-        saldo = [saldo decimalNumberBySubtracting:stat.value];
-    }
+	
+	[account repairStatementBalances ];
     
     // save updates
     if([self.managedObjectContext save: &error] == NO) {
         NSAlert *alert = [NSAlert alertWithError:error];
         [alert runModal];
     }	
+}
+
+-(IBAction)getAccountBalance:(id)sender
+{
+    NSError *error = nil;
+	PecuniaError *pec_err = nil;
+    BankAccount *account = nil;
+    Category* cat = [self currentSelection];
+    if (cat == nil || cat.accountNumber == nil) return;
+    account = (BankAccount*)cat;
+	
+	pec_err = [[HBCIClient hbciClient ] getBalanceForAccount:account ];
+    if (pec_err) return;
+	
+    // save updates
+    if([self.managedObjectContext save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError:error];
+        [alert runModal];
+    }		
 }
 
 -(IBAction)resetIsNewStatements:(id)sender

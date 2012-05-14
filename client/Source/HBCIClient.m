@@ -222,6 +222,12 @@ static HBCIClient *client = nil;
     return [controller getBankSetupInfo:bankCode ];
 }
 
+-(PecuniaError*)getBalanceForAccount:(BankAccount*)account
+{
+	return [controller getBalanceForAccount:account ];
+}
+
+
 
 
 -(BOOL)checkDTAUS:(NSString*)s

@@ -175,4 +175,5 @@
 "AP179" = "Wenn Sie die Unterkonto-Information ändern können Sie das Konto ggfs. nicht mehr verwenden. Möchten Sie die Information trotzdem ändern?";
 "AP180" = "BLZ ";
 "AP181" = " Kto ";
+"AP182" = "Die Ermittlung des Kontosaldos ist fehlgeschlagen.";
 
