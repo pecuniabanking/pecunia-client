@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,12 +17,10 @@
  * 02110-1301  USA
  */
 
-#import "RoundedOuterShadowView.h"
+#import "TransferFormularBackground.h"
 #import "GraphicsAdditions.h"
 
-@implementation RoundedOuterShadowView
-
-@synthesize indicatorColor;
+@implementation TransferFormularBackground
 
 - (id) initWithFrame: (NSRect) frameRect
 {
@@ -41,9 +39,9 @@
 
 // Shared objects.
 static NSShadow* borderShadow = nil;
-static NSImage* headerImage;
+static NSImage* ornament;
 
-- (void) drawRect: (NSRect) rect
+- (void)drawRect: (NSRect) rect
 {
     [NSGraphicsContext saveGraphicsState];
     
@@ -53,11 +51,11 @@ static NSImage* headerImage;
         borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.75]
                                                 offset: NSMakeSize(3, -3)
                                             blurRadius: 8.0];
-        headerImage = [NSImage imageNamed: @"slanted_stripes_red.png"];
+        ornament = [NSImage imageNamed: @"ornament1.png"];
     }
     
     // Outer bounds with shadow.
-    NSRect bounds = [self bounds];
+    NSRect bounds = self.bounds;
     bounds.size.width -= 20;
     bounds.size.height -= 10;
     bounds.origin.x += 10;
@@ -65,43 +63,16 @@ static NSImage* headerImage;
 
     NSBezierPath* borderPath = [NSBezierPath bezierPathWithRoundedRect: bounds xRadius: 8 yRadius: 8];
     [borderShadow set];
-    [[NSColor whiteColor] set];
+    [[NSColor controlColor] set];
     [borderPath fill];
-    
-    // Top bar.
-    NSRect barRect = [self bounds];
-    barRect.origin.y = barRect.size.height - 10;
-    barRect.size.height = 10;
-    [[NSColor colorWithDeviceWhite: 0.25 alpha: 1] set];
-    NSRectFill(barRect);
-    bounds = barRect;
-    
-    barRect.size.width = [headerImage size].width;
-    NSRect imageRect = NSMakeRect(0, 0, [headerImage size].width, [headerImage size].height);
-    while (barRect.origin.x < bounds.size.width)
-    {
-        [headerImage drawInRect: barRect fromRect: imageRect operation: NSCompositeSourceOver fraction: .75];
-        barRect.origin.x += headerImage.size.width;
-    }
-    
     [NSGraphicsContext restoreGraphicsState];
-
-    if (self.indicatorColor != nil) {
-        [borderPath setClip];
-        [self.indicatorColor set];
-        barRect = bounds;
-        barRect.origin.y = 8;
-        barRect.size.height = 8;
-        NSRectFill(barRect);
-    }
     
-}
-
-- (void)setIndicatorColor: (NSColor*)color
-{
-    [indicatorColor release];
-    indicatorColor = [color retain];
-    [self setNeedsDisplay: YES];
+    [borderPath setClip];
+    
+    NSPoint destination = NSMakePoint(bounds.origin.x + (bounds.size.width - ornament.size.width) / 2,
+                                      bounds.origin.y + (bounds.size.height - ornament.size.height) / 2);
+    NSRect imageRect = NSMakeRect(0, 0, ornament.size.width, ornament.size.height);
+    [ornament drawAtPoint: destination fromRect: imageRect operation: NSCompositeSourceOver fraction: 1];
 }
 
 @end

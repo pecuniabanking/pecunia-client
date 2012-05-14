@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,23 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class TransactionController;
-
-@interface TransferListController : NSObject {
-	IBOutlet NSArrayController     *transferController;
-	IBOutlet NSTableView           *transferView;
-    IBOutlet NSTextField           *selAmountField;
-	IBOutlet TransactionController *transferWindowController;
-	
-	NSNumberFormatter *formatter;
+@interface TransferFormularBackground : NSView {
 }
-
--(IBAction)sendTransfers: (id)sender;
--(IBAction)deleteTransfers: (id)sender;
--(IBAction)changeTransfer: (id)sender;
--(IBAction)transferDoubleClicked: (id)sender;
-
--(void)setFilterPredicate:(NSPredicate*)pred;
--(void)setManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end

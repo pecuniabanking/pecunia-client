@@ -102,7 +102,7 @@
 	return [dataSource count];
 }
 
-- (id)formatValue: (id)value capitalize: (BOOL)capitalize
+- (id)formatValue: (id)value
 {
     if (value == nil || [value isKindOfClass: [NSNull class]])
         value = @"";
@@ -124,33 +124,34 @@
     
     NSDate* currentDate = [transfer valueForKey: @"date"];
     NSMutableDictionary *details = [NSMutableDictionary dictionary];
-    [details setValue: [self formatValue: currentDate capitalize: NO] forKey: @"date"];
-    [details setValue: [self formatValue: [transfer valueForKey: @"remoteName"] capitalize: YES] forKey: @"remoteName"];
-    [details setValue: [self formatValue: [transfer valueForKey: @"purpose"] capitalize: YES] forKey: @"purpose"];
+    [details setValue: [self formatValue: currentDate] forKey: @"date"];
+    [details setValue: [self formatValue: [transfer valueForKey: @"remoteName"]] forKey: @"remoteName"];
+    [details setValue: [self formatValue: [transfer valueForKey: @"purpose"]] forKey: @"purpose"];
     [details setValue: [transfer valueForKey: @"value"] forKey: @"value"];
-    [details setValue: [self formatValue: [transfer valueForKey: @"currency"] capitalize: NO] forKey: @"currency"];
-    [details setValue: [self formatValue: [transfer valueForKey: @"remoteBankName"] capitalize: YES] forKey: @"remoteBankName"];
+    [details setValue: [self formatValue: [transfer valueForKey: @"currency"]] forKey: @"currency"];
+    [details setValue: [self formatValue: [transfer valueForKey: @"remoteBankName"]] forKey: @"remoteBankName"];
     
     // Construct a formatted string for account and bank code to be displayed in a single text field.
     NSFont *normalFont = [NSFont fontWithName: @"Helvetica Neue" size: 11];
-    NSDictionary *normalAttributes = [NSDictionary dictionaryWithObject: normalFont forKey: NSFontAttributeName];
+    NSDictionary *normalAttributes = [NSDictionary dictionaryWithObjectsAndKeys: normalFont, NSFontAttributeName,
+                                      [NSColor grayColor], NSForegroundColorAttributeName, nil];
     
     NSFontManager *fontManager = [NSFontManager sharedFontManager];
     NSFont *boldFont = [fontManager convertFont: normalFont toHaveTrait: NSBoldFontMask];
     NSDictionary *boldAttributes = [NSDictionary dictionaryWithObject: boldFont forKey: NSFontAttributeName];
 
     NSMutableAttributedString *accountString = [[[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"AP180", "")
-                                                                                       attributes: boldAttributes] autorelease];
-    [accountString appendAttributedString: [[[NSMutableAttributedString alloc] initWithString: [transfer valueForKey: @"remoteBankCode"]
-                                                                                   attributes: normalAttributes]
-                                            autorelease]
-    ];
-    [accountString appendAttributedString: [[[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"AP181", "")
+                                                                                       attributes: normalAttributes] autorelease];
+    [accountString appendAttributedString: [[[NSMutableAttributedString alloc] initWithString: [self formatValue: [transfer valueForKey: @"remoteBankCode"]]
                                                                                    attributes: boldAttributes]
                                             autorelease]
     ];
-    [accountString appendAttributedString: [[[NSMutableAttributedString alloc] initWithString: [transfer valueForKey: @"remoteAccount"]
+    [accountString appendAttributedString: [[[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"AP181", "")
                                                                                    attributes: normalAttributes]
+                                            autorelease]
+    ];
+    [accountString appendAttributedString: [[[NSMutableAttributedString alloc] initWithString: [self formatValue: [transfer valueForKey: @"remoteAccount"]]
+                                                                                   attributes: boldAttributes]
                                             autorelease]
      ];
     // TODO: add handling for IBAN and BIC.
@@ -237,8 +238,7 @@
 #pragma mark -
 #pragma mark Drag'n drop
 
-// TODO: Taken from BankinController.mm. Might be better to move them to a central location.
-#define BankStatementDataType	@"BankStatementDataType"
+extern NSString* const BankStatementDataType;
 
 - (BOOL)listView: (PXListView*)aListView writeRowsWithIndexes: (NSIndexSet*)rowIndexes toPasteboard: (NSPasteboard*)dragPasteboard
 {

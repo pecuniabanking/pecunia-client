@@ -20,32 +20,55 @@
 #import <Cocoa/Cocoa.h>
 
 @class TransactionController;
+@class TransfersController;
 @class TransfersListView;
+@class iCarousel;
+@class OnOffSwitchControlCell;
+
+@interface TransferTemplateDragDestination : NSView <NSDraggingDestination>
+{
+@private
+    BOOL formularVisible;
+}
+
+@property (nonatomic, assign) TransfersController *controller;
+
+- (NSRect)dropTargetFrame;
+
+@end
 
 @interface TransfersController : NSObject
 {
-    IBOutlet NSView                *mainView;
-	IBOutlet NSArrayController     *transfers;
-	IBOutlet NSTableView           *transferView;
-    IBOutlet NSTextField           *selAmountField;
-	IBOutlet TransactionController *transactionController;	
-    IBOutlet TransfersListView     *transfersListView;
-    
-    @private
-    
+    IBOutlet NSView                 *mainView;
+	IBOutlet NSArrayController      *finishedTransfers;
+	IBOutlet NSArrayController      *pendingTransfers;
+	IBOutlet NSTableView            *transferView;
+    IBOutlet NSTextField            *selAmountField;
+	IBOutlet TransactionController  *transactionController;
+    IBOutlet TransfersListView      *finishedTransfersListView;
+    IBOutlet TransfersListView      *pendingTransfersListView;
+    IBOutlet iCarousel              *templateCarousel;
+    IBOutlet OnOffSwitchControlCell *carouselSwitch;
+    IBOutlet TransferTemplateDragDestination *rightPane;
+
+@private
 	NSNumberFormatter *formatter;
 }
+
+// Formulars.
+@property (assign) IBOutlet NSView *internalTransferView;
 
 - (IBAction)sendTransfers: (id)sender;
 - (IBAction)deleteTransfers: (id)sender;
 - (IBAction)changeTransfer: (id)sender;
 - (IBAction)transferDoubleClicked: (id)sender;
+- (IBAction)carouselSwitchChanged: (id)sender;
 
-- (void)setFilterPredicate: (NSPredicate*)pred;
 - (void)setManagedObjectContext: (NSManagedObjectContext *)context;
 
 - (NSView *)mainView;
 - (void)prepare;
--(void)terminate;
+- (void)activate;
+- (void)terminate;
 
 @end

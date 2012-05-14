@@ -17,7 +17,9 @@
  * 02110-1301  USA
  */
 
+#import "PXListView.h"
 #import "StatementsListViewCell.h"
+
 #import "GraphicsAdditions.h"
 #import "CurrencyValueTransformer.h"
 
@@ -55,12 +57,19 @@ NSString *StatementNoteKey            = @"note";
     self = [super initWithFrame: frame];
     if (self != nil)
     {
+        whiteAttributes = [[NSDictionary dictionaryWithObjectsAndKeys:
+                              [NSColor whiteColor], NSForegroundColorAttributeName,
+                              nil
+                              ] retain];
     }
     return self;
 }
 
 - (void)dealloc
 {
+    [positiveAttributes release];
+    [negativeAttributes release];
+    [whiteAttributes release];
 	[super dealloc];
 }
 
@@ -115,16 +124,26 @@ static CurrencyValueTransformer* currencyTransformer;
     [saldoCurrencyLabel setStringValue: symbol];
     [[[saldoLabel cell] formatter] setCurrencyCode: currency];
 
+    [self selectionChanged];
     [self setNeedsDisplay: YES];
 }
 
-- (void)setTextAttributesForPositivNumbers: (NSDictionary*) positiveAttributes
-                           negativeNumbers: (NSDictionary*) negativeAttributes
+- (void)setTextAttributesForPositivNumbers: (NSDictionary*) _positiveAttributes
+                           negativeNumbers: (NSDictionary*) _negativeAttributes
 {
-    [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
-    [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
-    [[[saldoLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
-    [[[saldoLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
+    if (positiveAttributes != _positiveAttributes) {
+        [positiveAttributes release];
+        positiveAttributes = [_positiveAttributes retain];
+        [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
+        [[[saldoLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
+    }
+    
+    if (negativeAttributes != _negativeAttributes) {
+        [positiveAttributes release];
+        negativeAttributes = [_negativeAttributes retain];
+        [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
+        [[[saldoLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
+    }
 }
 
 #pragma mark Reuse
@@ -141,17 +160,63 @@ static CurrencyValueTransformer* currencyTransformer;
     [valueLabel setObjectValue: @""];
     [saldoLabel setObjectValue: @""];
     [transactionTypeLabel setObjectValue: @""];
-    [transactionTypeLabel setObjectValue: @""];
+    [noteLabel setObjectValue: @""];
     hasUnassignedValue = NO;
     isNew = NO;
     index = -1;
 }
 
-#pragma mark Drawing
+#pragma mark -
+#pragma mark Properties
 
 - (void)setIsNew: (BOOL)flag
 {
     [newImage setHidden: !flag];
+}
+
+- (void)selectionChanged
+{
+    // The internal row value might not be assigned yet (when the cell is reused), so
+    // the normal check for selection fails. We use instead the index we get from the owning
+    // listview (which will later be assigned to this cell anyway).
+    BOOL isSelected = [self.listView.selectedRows containsIndex: index];
+    
+    if (isSelected) {
+        [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: whiteAttributes];
+        [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: whiteAttributes];
+        [[[saldoLabel cell] formatter] setTextAttributesForPositiveValues: whiteAttributes];
+        [[[saldoLabel cell] formatter] setTextAttributesForNegativeValues: whiteAttributes];
+
+        [remoteNameLabel setTextColor: [NSColor whiteColor]];
+        [purposeLabel setTextColor: [NSColor whiteColor]];
+        [categoriesLabel setTextColor: [NSColor whiteColor]];
+        [valueLabel setTextColor: [NSColor whiteColor]];
+        [saldoLabel setTextColor: [NSColor whiteColor]];
+        [currencyLabel setTextColor: [NSColor whiteColor]];
+        [saldoCurrencyLabel setTextColor: [NSColor whiteColor]];
+
+        [transactionTypeLabel setTextColor: [NSColor whiteColor]];
+        [noteLabel setTextColor: [NSColor whiteColor]];
+        [saldoCaption setTextColor: [NSColor whiteColor]];
+    } else {
+        [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
+        [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
+        [[[saldoLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
+        [[[saldoLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
+
+        [remoteNameLabel setTextColor: [NSColor controlTextColor]];
+        [purposeLabel setTextColor: [NSColor controlTextColor]];
+        [categoriesLabel setTextColor: [NSColor controlTextColor]];
+        [valueLabel setTextColor: [NSColor controlTextColor]];
+        [saldoLabel setTextColor: [NSColor controlTextColor]];
+        
+        NSColor *paleColor = [NSColor colorWithDeviceRed: 124 / 255.0 green: 121 / 255.0 blue: 109 / 255.0 alpha: 1];
+        [transactionTypeLabel setTextColor: paleColor];
+        [noteLabel setTextColor: paleColor];
+        [saldoCaption setTextColor: paleColor];
+        [currencyLabel setTextColor: paleColor];
+        [saldoCurrencyLabel setTextColor: paleColor];
+    }
 }
 
 - (void)showActivator: (BOOL)flag markActive: (BOOL)active
@@ -171,6 +236,9 @@ static CurrencyValueTransformer* currencyTransformer;
     }
 }
 
+#pragma mark -
+#pragma mark Drawing
+
 static NSGradient* innerGradient;
 static NSGradient* innerGradientSelected;
 static NSGradient* headerGradient;
@@ -184,14 +252,12 @@ static NSImage* stripeImage;
                      [NSColor whiteColor], (CGFloat) 0.8,
                      nil];
     innerGradientSelected = [[NSGradient alloc] initWithColorsAndLocations:
-                             [NSColor colorWithDeviceWhite: 234 / 255.0 alpha: 1], (CGFloat) 0,
-                             [NSColor colorWithDeviceWhite: 245 / 255.0 alpha: 1], (CGFloat) 1,
+                             [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 0,
+                             [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat) 1,
                              nil];
     headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
                       [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat) 0,
-                      //[NSColor applicationColorForKey: @"Positive Gradient (low)"], (CGFloat) 0,
                       [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], (CGFloat) 1,
-                      //[NSColor applicationColorForKey: @"Positive Gradient (high)"], (CGFloat) 1,
                       nil];
     innerShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithCalibratedWhite: 0.0 alpha: .75]
                                            offset: NSMakeSize(0, -1)
@@ -223,7 +289,7 @@ static NSImage* stripeImage;
     if ([self isSelected])
     {
         [innerGradientSelected drawInBezierPath: path angle: 90.0];
-        [path fillWithInnerShadow: innerShadow borderOnly: NO];
+        //[path fillWithInnerShadow: innerShadow borderOnly: NO];
     }
     else
     {
@@ -253,8 +319,10 @@ static NSImage* stripeImage;
     [path lineToPoint: NSMakePoint(0, bounds.size.height + headerHeight)];
     [path moveToPoint: NSMakePoint(bounds.size.width, 0)];
     [path lineToPoint: NSMakePoint(bounds.size.width, bounds.size.height + headerHeight)];
-    [path moveToPoint: NSMakePoint(0, 0)];
-    [path lineToPoint: NSMakePoint(bounds.size.width, 0)];
+    if (![self isSelected]) {
+        [path moveToPoint: NSMakePoint(0, 0)];
+        [path lineToPoint: NSMakePoint(bounds.size.width, 0)];
+    }
     [[NSColor colorWithDeviceWhite: 210 / 255.0 alpha: 1] set];
     [path stroke];
     

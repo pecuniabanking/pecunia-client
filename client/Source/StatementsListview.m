@@ -284,6 +284,12 @@
             index = [selection indexGreaterThanIndex: index];
         }
     }
+    
+    // Also let every entry check its selection state, in case internal states must be updated.
+    NSArray* cells = [self visibleCells];
+    for (StatementsListViewCell *cell in cells) {
+        [cell selectionChanged];
+    }
 }
 
 - (bool)listView:(PXListView*)aListView shouldSelectRows: (NSIndexSet *)rows byExtendingSelection:(BOOL)shouldExtend
@@ -330,8 +336,7 @@
 #pragma mark -
 #pragma mark Drag'n drop
 
-// TODO: Taken from BankinController.mm. Might be better to move them to a central location.
-#define BankStatementDataType	@"BankStatementDataType"
+extern NSString* const BankStatementDataType;
 
 - (BOOL)listView: (PXListView*)aListView writeRowsWithIndexes: (NSIndexSet*)rowIndexes toPasteboard: (NSPasteboard*)dragPasteboard
 {

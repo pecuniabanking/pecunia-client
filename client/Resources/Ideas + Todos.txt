@@ -17,6 +17,7 @@ Allgemeines
 "ich dachte da an verschiedene Dinge, z.B ein Modul für Konten, so das man einen Direkteinstieg hat auf Konten, Kreditkarten. Etwa mit einem Rechtsklick eine Überweisung direkt von einem Konto anstoßen kann. Oder eine Statistik der Ausgaben-Einnahmen. Fällige, noch nicht getätigte Überweisungen. Aktienkurse, Devisenmärkte eventuell einen integrierten Taschenrechner, Adressbuch, Abruf der einzelnen Konten. Eine individuell anpassbare Startseite ist sehr bequem für den Benutzer."
 - OCR zur automatischen Übernahme von vorgedruckten Zahlungsanweisungen.
 - Pecunia nach einer Zeitspanne automatisch sperren.
+- Einstellbarer Starttag in einenm Zeitbereich (statt immer z.B. vom ersten zum letzten im Monat), z.B. über ein Setting.
 
 Kategorie + Kontenanalyse
 -------------------------
@@ -25,6 +26,7 @@ Kategorie + Kontenanalyse
 - (Graph) Anzeige von min, max, average
 - (Graph) Trendlinie (zumindest für Konten)
 - (Graph) mehrere Kategorien zusammen
+- (Graph) Auch für Kontenknoten alle Kindknoten in die Auswertung einbeziehen (wie schon für Kategorien).
 - statt mehrere Kategorien in einem Zeitraum vergleiche eine Kategorie in mehreren Zeiträumen
 - Umsatzsteuerschlüssel für jede Kategorie.
 - Nutzerdefiniertes Icon für eine Kategorie.
@@ -57,7 +59,7 @@ Bankkennungen + Konten
 Aufträge, Überweisungen, Lastschriften
 --------------------------------------
 - In Terminüberweisungen Datum (auch) als Kalender anzeigen.
-- Automatisch Lehrzeichen aus BLZ entfernen vor dem Nachschlagen.
+- Automatisch Leerzeichen aus BLZ entfernen vor dem Nachschlagen.
 
 Daueraufträge
 ---------------

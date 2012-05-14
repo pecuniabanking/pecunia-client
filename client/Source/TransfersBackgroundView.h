@@ -19,9 +19,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface TransfersBackgroundView : NSView {
+@class iCarousel;
+@class TransferTemplateDragDestination;
 
-    NSSplitView *contentSplitView;
+@interface TransfersBackgroundView : NSView
+{
+    IBOutlet iCarousel *templateCarousel;
+    IBOutlet TransferTemplateDragDestination *rightPane;
 }
 
 @end

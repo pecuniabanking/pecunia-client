@@ -71,8 +71,8 @@
 #import "User.h"
 #import "BankUser.h"
 
-#define BankStatementDataType	@"BankStatementDataType"
-#define CategoryDataType		@"CategoryDataType"
+NSString* const BankStatementDataType = @"BankStatementDataType";
+NSString* const CategoryDataType = @"CategoryDataType";
 
 // Singleton simulation
 static BankingController *con;
@@ -1201,13 +1201,12 @@ static BOOL runningOnLionOrLater = NO;
         case 1: {
             [currentSection deactivate];
             [self activateTransfersTab];
-            //[mainTabView selectTabViewItemAtIndex: 1];
             [transfersToolbarItem setImage: [NSImage imageNamed: @"transfers-active"]];
             break;
         }
         case 2: {
             [self activateStandingOrdersTab];
-            [standingOrdersToolbarItem setImage: [NSImage imageNamed: @"<-order-active"]];
+            [standingOrdersToolbarItem setImage: [NSImage imageNamed: @"standing-order-active"]];
             break;
         }
     }

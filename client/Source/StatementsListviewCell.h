@@ -40,27 +40,32 @@ extern NSString *StatementNoteKey;
 
 @interface StatementsListViewCell : PXListViewCell
 {
-	IBOutlet NSTextField* dateLabel;
-    IBOutlet NSTextField* turnoversLabel;
-    IBOutlet NSTextField* remoteNameLabel;
-    IBOutlet NSTextField* purposeLabel;
-    IBOutlet NSTextField* noteLabel;
-    IBOutlet NSTextField* categoriesLabel;
-    IBOutlet NSTextField* valueLabel;
-    IBOutlet NSImageView* newImage;
-    IBOutlet NSTextField* currencyLabel;
-    IBOutlet NSTextField* saldoLabel;
-    IBOutlet NSTextField* saldoCurrencyLabel;
-    IBOutlet NSTextField* transactionTypeLabel;
-    IBOutlet NSButton* checkbox;
-    
-    @private
+	IBOutlet NSTextField *dateLabel;
+    IBOutlet NSTextField *turnoversLabel;
+    IBOutlet NSTextField *remoteNameLabel;
+    IBOutlet NSTextField *purposeLabel;
+    IBOutlet NSTextField *noteLabel;
+    IBOutlet NSTextField *categoriesLabel;
+    IBOutlet NSTextField *valueLabel;
+    IBOutlet NSImageView *newImage;
+    IBOutlet NSTextField *currencyLabel;
+    IBOutlet NSTextField *saldoCaption;
+    IBOutlet NSTextField *saldoLabel;
+    IBOutlet NSTextField *saldoCurrencyLabel;
+    IBOutlet NSTextField *transactionTypeLabel;
+    IBOutlet NSButton *checkbox;
+
+@private
     id<StatementsListViewNotificationProtocol> delegate;
     
     BOOL isNew;
     BOOL hasUnassignedValue;
     int  headerHeight;
     NSUInteger index;
+    
+    NSDictionary *positiveAttributes;
+    NSDictionary *negativeAttributes;
+    NSDictionary *whiteAttributes;
 }
 
 @property (nonatomic, retain) id delegate;
@@ -74,6 +79,7 @@ extern NSString *StatementNoteKey;
 - (void)setDetails: (NSDictionary*) details;
 - (void)setIsNew: (BOOL) flag;
 - (void)showActivator: (BOOL)flag markActive: (BOOL)active;
+- (void)selectionChanged;
 
 - (void)setTextAttributesForPositivNumbers: (NSDictionary*) positiveAttributes
                            negativeNumbers: (NSDictionary*) negativeAttributes;

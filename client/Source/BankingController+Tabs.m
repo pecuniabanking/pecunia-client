@@ -49,17 +49,18 @@
 {
 	NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: TransfersTabIdentifier];
 	if (index == NSNotFound) {
-		TransfersController *tabController = [[[TransfersController alloc] init] autorelease];
-		if ([NSBundle loadNibNamed: @"Transfers" owner: tabController]) {
+		transfersController = [[[TransfersController alloc] init] autorelease];
+		if ([NSBundle loadNibNamed: @"Transfers" owner: transfersController]) {
 			NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: TransfersTabIdentifier];
-			[item setView: [tabController mainView]];
+			[item setView: [transfersController mainView]];
 			[mainTabView addTabViewItem: item];
 			[mainTabView selectTabViewItem: item];
-			[mainTabItems setObject: tabController forKey: TransfersTabIdentifier];
-			[tabController prepare];
+			[mainTabItems setObject: transfersController forKey: TransfersTabIdentifier];
+			[transfersController prepare];
 		}
 	} else {
 		[mainTabView selectTabViewItemAtIndex: index];
+        [transfersController activate];
 	}
 }
 
