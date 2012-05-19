@@ -2887,7 +2887,7 @@ static BOOL runningOnLionOrLater = NO;
             break;
         default:
             statementsListView.showHeaders = true;
-            key = @"statement.valutaDate";
+            key = @"statement.date";
             break;
     }
     [transactions setSortDescriptors:
