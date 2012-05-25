@@ -27,6 +27,11 @@
 
 static NSArray *exportFields = nil;
 
+#define SYNCH_HEIGHT 280
+#define SEC_HEIGHT 280
+#define EXP_HEIGHT 375
+#define PRINT_HEIGHT 200
+
 
 @implementation PreferenceController
 
@@ -63,6 +68,13 @@ static NSArray *exportFields = nil;
 	MOAssistant *assistant = [MOAssistant assistant ];
 	encrypt = [assistant encrypted ];
 	[self setValue: [NSNumber numberWithBool: [assistant encrypted ] ] forKey: @"encrypt" ];
+    
+    // erstes Tab setzen
+    [toolBar setSelectedItemIdentifier: @"synch" ];
+    [mainTab selectTabViewItemAtIndex:0 ];
+    [mainTab setTabViewType:NSNoTabsNoBorder ];
+    
+    [self setHeight:SYNCH_HEIGHT ];
 
 //	if(encrypt)	[encryptButton setEnabled: NO ];
 }
@@ -379,6 +391,45 @@ static NSArray *exportFields = nil;
 	[defaults setObject:@"|" forKey:_exportSeparator ];
 }
 
+-(void)setHeight:(int)h
+{
+    NSWindow *window = [self window ] ;
+    NSRect frame = [window frame ];
+    int pos = frame.origin.y + frame.size.height;
+    frame.size.height = h;
+    frame.origin.y = pos - h;
+    [window setFrame:frame display:YES animate:YES ];
+}
+
+
+-(IBAction)synchSettings:(id)sender
+{
+    [mainTab selectTabViewItemAtIndex:0 ];
+    [self setHeight: SYNCH_HEIGHT ];
+}
+
+-(IBAction)securitySettings:(id)sender
+{
+    [mainTab selectTabViewItemAtIndex:1 ];    
+    [self setHeight: SEC_HEIGHT ];
+}
+
+-(IBAction)exportSettings:(id)sender
+{
+    [mainTab selectTabViewItemAtIndex:2 ];
+    [self setHeight: EXP_HEIGHT ];
+}
+
+-(IBAction)printSettings:(id)sender
+{
+    [mainTab selectTabViewItemAtIndex:3 ];
+    [self setHeight: PRINT_HEIGHT ];
+}
+
+-(void)tabView:(NSTabView*)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
+{
+    [[self window ] setTitle:[tabViewItem label ] ];
+}
 
 
 

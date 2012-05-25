@@ -25,15 +25,15 @@
 	pageHeight = paperSize.height - topMargin - bottomMargin;
 	pageWidth = paperSize.width - leftMargin - rightMargin;
 	dateWidth = 37;
-	amountWidth = 75;
+	amountWidth = 65;
 	purposeWidth = pageWidth - dateWidth - 3*amountWidth;
 	padding = 3;
 	currentPage = 1;
 	
 	statements = [[NSMutableArray alloc ] initWithCapacity:100 ];
-	for(StatCatAssignment *stat in stats) [statements addObject:stat.statement ];
+	for(StatCatAssignment *stat in stats) [statements addObject:stat ];
 
-	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES] autorelease];
+	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:YES] autorelease];
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[statements sortUsingDescriptors:sds ];
 
@@ -48,36 +48,64 @@
 	
 	debitNumberFormatter = [numberFormatter copy ];
 	[debitNumberFormatter setMinusSign:@"" ];
-	
+    
+    // User defaults
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+    printUserInfo = [defaults boolForKey:@"printUserInfo" ];
+    printCategories = [defaults boolForKey:@"printCategories" ];
 	
 	NSRect frame;
 	
 	frame.origin.x = 0;
 	frame.origin.y = 0;
-	frame.size = paperSize;
+	frame.size.width = pageWidth;
 	
     self = [super initWithFrame:frame];
     if (self) {
 		int height = [self getStatementHeights ];
-		frame.size.height = height;
+		if(height > pageHeight) frame.size.height = height; else frame.size.height = pageHeight;
 		[self setFrame:frame ];
     }
     return self;
 }
 
--(NSString*)textFromStatement:(BankStatement*)statement
+-(NSAttributedString*)textFromStatement:(StatCatAssignment*)stat
 {
 	NSMutableString *s = [NSMutableString stringWithString:@"" ];
-	if (statement.transactionText && [statement.transactionText length ] > 0) {
-		[s appendString:statement.transactionText ];
+	if (stat.statement.transactionText && [stat.statement.transactionText length ] > 0) {
+		[s appendString:stat.statement.transactionText ];
 		[s appendString:@"\n" ];
 	}
-	if (statement.remoteName && [statement.remoteName length ] > 0) {
-		[s appendString:statement.remoteName ];
+	if (stat.statement.remoteName && [stat.statement.remoteName length ] > 0) {
+		[s appendString:stat.statement.remoteName ];
 		[s appendString:@"\n" ];
 	}
-	[s appendString:statement.purpose ];
-	return s;
+	[s appendString:stat.statement.purpose ];
+
+    NSDictionary *attr1 = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont userFontOfSize:9 ], NSFontAttributeName, nil ];
+    NSMutableAttributedString *as = [[NSMutableAttributedString alloc ] initWithString:s attributes: attr1 ];
+    
+    // Zusatzinfo
+    if (stat.userInfo != nil && printUserInfo) {
+        NSFont *font = [NSFont fontWithName:@"Helvetica-Oblique" size:9 ];
+        NSDictionary *attr2 = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil ];
+        NSMutableAttributedString *as2 = [[NSMutableAttributedString alloc ] initWithString:[@"\n" stringByAppendingString:stat.userInfo ] attributes: attr2 ];
+        [as appendAttributedString:[as2 autorelease] ];
+    }
+    
+    // Kategorien
+    if (printCategories) {
+        NSString *cs = [stat.statement categoriesDescription ];
+        if (cs != nil && [cs length ] > 0) {
+            cs = [NSString stringWithFormat:@"\n*(%@)", cs ];
+            NSFont *font = [NSFont fontWithName:@"Helvetica-Oblique" size:8 ];
+            NSDictionary *attr2 = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil ];
+            NSMutableAttributedString *as2 = [[NSMutableAttributedString alloc ] initWithString:cs attributes: attr2 ];
+            [as appendAttributedString:[as2 autorelease] ];
+        }
+    }
+    
+	return [as autorelease ];
 }
 
 
@@ -96,9 +124,9 @@
 	NSRect r = [@"01.01.\n10.10." boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes ];
 	minStatHeight = r.size.height;	
 	
-	for(BankStatement *stat in statements) {
-		NSString *s = [self textFromStatement:stat ];
-		r = [s boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes ];
+	for(StatCatAssignment *stat in statements) {
+		NSAttributedString *s = [self textFromStatement:stat ];
+		r = [s boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin ];
 		height = r.size.height;
 		if (height < minStatHeight) height = minStatHeight;
 		if (h + height + 5 > pageHeight) {
@@ -135,9 +163,9 @@
 	[NSBezierPath strokeLineFromPoint:NSMakePoint(0, baseHeight+20) toPoint:NSMakePoint(pageWidth, baseHeight+20) ];
 	
 	// first header text
-	BankStatement *stat = [statements objectAtIndex:0 ];
+	StatCatAssignment *stat = [statements objectAtIndex:0 ];
 	if (stat == nil) return;
-	BankAccount *account = stat.account;
+	BankAccount *account = stat.statement.account;
 	NSString *s = [NSString stringWithFormat:@"Konto: %@\tBLZ: %@\t%@", account.accountNumber, account.bankCode, account.bankName ];
 	NSAttributedString *as = [[[NSAttributedString alloc ] initWithString:s attributes: attributes ] autorelease ];
 	headerFrame.origin.y += 1;
@@ -248,13 +276,13 @@
 	[@"Anfangssaldo:" drawInRect:rect withAttributes:attributes ];
 	rect.origin.x = dateWidth+purposeWidth+2*amountWidth+padding;
 	rect.size.width = amountWidth-2*padding;
-	BankStatement *stat = [statements objectAtIndex:0 ];
-	NSDecimalNumber *startSaldo = [stat.saldo decimalNumberBySubtracting:stat.value ];
+	StatCatAssignment *stat = [statements objectAtIndex:0 ];
+	NSDecimalNumber *startSaldo = [stat.statement.saldo decimalNumberBySubtracting:stat.value ];
 	[[numberFormatter stringFromNumber:startSaldo ] drawInRect:rect withAttributes:amountAttributes ];
 	h+=15;
 
 	// draw statements
-	for(BankStatement *stat in statements) {
+	for(StatCatAssignment *stat in statements) {
 		int hBase = 0;
 		height = statHeights[idx++];
 		if (h + height + 5 > pageHeight) {
@@ -269,15 +297,15 @@
 		
 		// dates
 		rect.size.width = dateWidth-2*padding;
-		NSString *s = [NSString stringWithFormat:@"%@\n%@", [dateFormatter stringFromDate: stat.date ], [dateFormatter stringFromDate: stat.valutaDate ] ];
+		NSString *s = [NSString stringWithFormat:@"%@\n%@", [dateFormatter stringFromDate: stat.statement.date ], [dateFormatter stringFromDate: stat.statement.valutaDate ] ];
 		[s drawInRect:rect withAttributes:attributes ];
 		hBase+=dateWidth;
 		
 		// purpose
 		rect.size.width = purposeWidth-2*padding;
 		rect.origin.x = hBase+padding;
-		s = [self textFromStatement:stat ];
-		[s drawInRect:rect withAttributes:attributes ];
+		NSAttributedString *as = [self textFromStatement:stat ];
+		[as drawInRect:rect ];
 		hBase+=purposeWidth;
 		
 		NSDecimalNumber *value = stat.value;
@@ -304,8 +332,8 @@
 		// saldo
 		rect.size.width = amountWidth-2*padding;
 		rect.origin.x = hBase+padding;
-		[[numberFormatter stringFromNumber:stat.saldo ] drawInRect:rect withAttributes:amountAttributes ];
-		currentSaldo = stat.saldo;
+		[[numberFormatter stringFromNumber:stat.statement.saldo ] drawInRect:rect withAttributes:amountAttributes ];
+		currentSaldo = stat.statement.saldo;
 		//hBase+=amountWidth;
 		
 		h += height+5;
@@ -362,7 +390,7 @@
 	[aGradient drawInBezierPath:bp angle:90.0];
 	
 	NSMutableDictionary *headerAttributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	[headerAttributes setObject:[NSFont fontWithName:@"Helvetica-Bold" size:16 ] forKey:NSFontAttributeName ];
+	[headerAttributes setObject:[NSFont fontWithName:@"ComicSansMS" size:16 ] forKey:NSFontAttributeName ];
 	[headerAttributes setObject:[NSColor whiteColor ] forKey:NSForegroundColorAttributeName ];
 	[headerAttributes setObject:mps forKey:NSParagraphStyleAttributeName ];
 	rect.size.width-=10;

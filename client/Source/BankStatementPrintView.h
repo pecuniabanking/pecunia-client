@@ -24,6 +24,9 @@
 	int		minStatHeight;
 	int		totalPages;
 	int		currentPage;
+    BOOL    printUserInfo;
+    BOOL    printCategories;
+    
 	NSMutableArray	*statements;
 	int				*statHeights;
 	

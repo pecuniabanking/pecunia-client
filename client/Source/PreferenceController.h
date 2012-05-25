@@ -16,6 +16,8 @@
 	IBOutlet NSButton			*encryptButton;
 	IBOutlet NSSecureTextField	*passw1Field;
 	IBOutlet NSSecureTextField	*passw2Field;
+    IBOutlet NSTabView          *mainTab;
+    IBOutlet NSToolbar          *toolBar;
 	NSWindow					*mainWindow;
 	
 	// encryption sheet
@@ -38,6 +40,12 @@
 -(IBAction)expSepSemi:(id)sender;
 -(IBAction)expSepLine:(id)sender;
 
+-(IBAction)synchSettings:(id)sender;
+-(IBAction)securitySettings:(id)sender;
+-(IBAction)exportSettings:(id)sender;
+-(IBAction)printSettings:(id)sender;
+
 -(void)setMainWindow: (NSWindow*)main;
+-(void)setHeight:(int)h;
 
 @end

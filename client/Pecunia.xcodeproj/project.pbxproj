@@ -125,6 +125,7 @@
 		B120E3C30EB0F3F000FC5A6F /* AccountRep.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E3C10EB0F3F000FC5A6F /* AccountRep.png */; };
 		B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F09E0C36F3E8001065C2 /* BankStatement.m */; };
 		B124F1110C371384001065C2 /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F1100C371384001065C2 /* BankAccount.m */; };
+		B126CC22157018FC0065EAC1 /* printer.png in Resources */ = {isa = PBXBuildFile; fileRef = B126CC21157018FC0065EAC1 /* printer.png */; };
 		B12A497710BDD23D002CC63E /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A496A10BDD23D002CC63E /* Account.m */; };
 		B12A499010BDD6A2002CC63E /* HBCIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A498F10BDD6A2002CC63E /* HBCIClient.m */; };
 		B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
@@ -499,6 +500,7 @@
 		B124F09E0C36F3E8001065C2 /* BankStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatement.m; sourceTree = "<group>"; tabWidth = 4; };
 		B124F10F0C371384001065C2 /* BankAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankAccount.h; sourceTree = "<group>"; tabWidth = 4; };
 		B124F1100C371384001065C2 /* BankAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccount.m; sourceTree = "<group>"; tabWidth = 4; };
+		B126CC21157018FC0065EAC1 /* printer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = printer.png; sourceTree = "<group>"; };
 		B12A496910BDD23D002CC63E /* Account.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; tabWidth = 4; };
 		B12A496A10BDD23D002CC63E /* Account.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; tabWidth = 4; };
 		B12A498E10BDD6A2002CC63E /* HBCIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIClient.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1317,6 +1319,7 @@
 		B1923B560EB7A6D40079ADCA /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B126CC21157018FC0065EAC1 /* printer.png */,
 				273657261559887900E8ABDC /* ornament1.png */,
 				27E80D461551AC9600BB1AF8 /* transfer-normal-preview.png */,
 				2723289B1551A4D500B9683B /* transfer-debit-preview.png */,
@@ -1802,6 +1805,7 @@
 				272328A41551A4D500B9683B /* transfer-sepa-preview.png in Resources */,
 				27E80D471551AC9600BB1AF8 /* transfer-normal-preview.png in Resources */,
 				273657271559887900E8ABDC /* ornament1.png in Resources */,
+				B126CC22157018FC0065EAC1 /* printer.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
