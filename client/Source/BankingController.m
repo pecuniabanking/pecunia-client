@@ -289,8 +289,6 @@ static BOOL runningOnLionOrLater = NO;
     
     [categoryController setManagedObjectContext: self.managedObjectContext];
     [transactions setManagedObjectContext: self.managedObjectContext];
-    [categoryDefinitionController setManagedObjectContext: self.managedObjectContext];
-    categoryDefinitionController.timeSliceManager = timeSlicer;
     
     // repair Category Root
     [self repairCategories];
@@ -1344,6 +1342,8 @@ static BOOL runningOnLionOrLater = NO;
                     NSView* view = [categoryDefinitionController mainView];
                     view.frame = frame;
                 }
+                [categoryDefinitionController setManagedObjectContext: self.managedObjectContext];
+                categoryDefinitionController.timeSliceManager = timeSlicer;
                 [categoryDefinitionController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
             }
             if (currentSection != categoryDefinitionController) {
