@@ -18,6 +18,11 @@ Allgemeines
 - OCR zur automatischen Übernahme von vorgedruckten Zahlungsanweisungen.
 - Pecunia nach einer Zeitspanne automatisch sperren.
 - Einstellbarer Starttag in einenm Zeitbereich (statt immer z.B. vom ersten zum letzten im Monat), z.B. über ein Setting.
+- Automatische Groß-/Kleinschreibung per Setting abschaltbar machen.
+
+Umsatzabfrage
+-------------
+- Konten getrennt abfragen, nicht alles in einem Rutsch -> schnellere Rückmeldung mit erstem Ergebnis und kein Abbruch aller Abfragen, wenn eine fehlschlägt.
 
 Kategorie + Kontenanalyse
 -------------------------

@@ -2020,20 +2020,18 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
         decelerating = NO;
         
         short eventType = [theEvent type];
-        short subType = [theEvent subtype];
         BOOL useY = vertical;
         CGFloat translation = 1;
         if (eventType == NSScrollWheel)
         {
-            switch (subType)
+            if (theEvent.deltaX == 0)
             {
-                case NSTabletPointEventSubtype:
-                    translation = 4; // Swipe event has smaller deltas.
-                    break;
-                default:
-                    translation = 15; // Scroll wheel events even smaller.
-                    useY = YES; // For scrollwheel events deltaX is always 0.
-                    break;
+                translation = 15; // Scroll wheel events even smaller.
+                useY = YES; // For scrollwheel events deltaX is always 0.
+            }
+            else
+            {
+                translation = 4; // Swipe event has smaller deltas.
             }
             
         }

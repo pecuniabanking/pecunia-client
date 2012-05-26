@@ -37,6 +37,15 @@ NSString *StatementTransactionTextKey = @"transactionText";
 NSString *StatementIndexKey           = @"index";
 NSString *StatementNoteKey            = @"note";
 
+@implementation NoAnimationTextField
+
++ (id)defaultAnimationForKey: (NSString *)key
+{
+    return nil;
+}
+
+@end
+
 @implementation StatementsListViewCell
 
 @synthesize delegate;
@@ -58,9 +67,9 @@ NSString *StatementNoteKey            = @"note";
     if (self != nil)
     {
         whiteAttributes = [[NSDictionary dictionaryWithObjectsAndKeys:
-                              [NSColor whiteColor], NSForegroundColorAttributeName,
-                              nil
-                              ] retain];
+                            [NSColor whiteColor], NSForegroundColorAttributeName, nil
+                           ] retain
+                          ];
     }
     return self;
 }

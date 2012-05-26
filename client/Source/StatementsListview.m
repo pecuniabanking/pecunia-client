@@ -126,10 +126,8 @@
             NSMutableArray *words = [[[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy] autorelease];
             for (NSUInteger i = 0; i < [words count]; i++) {
                 NSString *word = [words objectAtIndex: i];
-                if ([word length] > 3) {
+                if (i == 0 || [word length] > 3) {
                     [words replaceObjectAtIndex: i withObject: [word capitalizedString]];
-                } else {
-                    [words replaceObjectAtIndex: i withObject: [word lowercaseString]];
                 }
             }
             value = [words componentsJoinedByString: @" "];

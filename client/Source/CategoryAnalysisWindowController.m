@@ -92,13 +92,14 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
-    short subtype = [theEvent subtype];
-    if (subtype == NSTabletPointEventSubtype)
+    // This method is called for touch events and mouse wheel events, which we cannot directly
+    // tell apart. The event's subtype is in both cases NSTablePointerEventSubtype (which it should not
+    // for wheel events). So, to get this still working we use the x delta, which is 0 for wheel events.
+    CGFloat distance = [theEvent deltaX];
+    if (distance != 0)
     {
         // A trackpad gesture (usually two-finger swipe).
         [parameters setObject: @"plotMoveSwipe" forKey: @"type"];
-
-        CGFloat distance = [theEvent deltaX];
 
         NSNumber* location = [NSNumber numberWithDouble: plotSpace.xRange.locationDouble - plotSpace.xRange.lengthDouble * distance / 100];
         [parameters setObject: location forKey: @"plotXLocation"];
@@ -110,7 +111,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     {
         [parameters setObject: @"plotScale" forKey: @"type"];
         
-        CGFloat distance = [theEvent deltaY];
+        distance = [theEvent deltaY];
         
         // Range location and size.
         NSNumber* location = [NSNumber numberWithDouble: plotSpace.xRange.locationDouble];
