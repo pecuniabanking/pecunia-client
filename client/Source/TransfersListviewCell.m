@@ -54,8 +54,14 @@ static CurrencyValueTransformer* currencyTransformer;
     
     [remoteNameLabel setStringValue: [details valueForKey: @"remoteName"]];
     [remoteNameLabel setToolTip: [details valueForKey: @"remoteName"]];
-    
-    [purposeLabel setStringValue: [details valueForKey: @"purpose"]];
+
+    // The default line height for a multiline label is too large so we convert the given string
+    // so it can have paragraph styles.
+    NSMutableAttributedString *purpose = [[[NSMutableAttributedString alloc] initWithString: [details valueForKey: @"purpose"]] autorelease];
+    NSMutableParagraphStyle *paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+    [paragraphStyle setMaximumLineHeight: 12];
+    [purpose addAttributes: [NSDictionary dictionaryWithObject: paragraphStyle forKey: NSParagraphStyleAttributeName] range: NSMakeRange(0, [purpose length])];
+    [purposeLabel setAttributedStringValue: purpose];
     [purposeLabel setToolTip: [details valueForKey: @"purpose"]];
     
     [valueLabel setObjectValue: [details valueForKey: @"value"]];
@@ -66,7 +72,7 @@ static CurrencyValueTransformer* currencyTransformer;
     NSMutableAttributedString *account = [details valueForKey: @"account"];
 
     // Since we use an attributed string for the account label we have to set the alignment explicitly.
-    NSMutableParagraphStyle *paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+    paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
     [paragraphStyle setAlignment: NSRightTextAlignment];
     [account addAttributes: [NSDictionary dictionaryWithObject: paragraphStyle forKey: NSParagraphStyleAttributeName] range: NSMakeRange(0, [account length])];
     [accountLabel setAttributedStringValue: account];

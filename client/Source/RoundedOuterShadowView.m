@@ -50,7 +50,7 @@ static NSImage* headerImage;
     // Initialize shared objects.
     if (borderShadow == nil)
     {
-        borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.75]
+        borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.5]
                                                 offset: NSMakeSize(3, -3)
                                             blurRadius: 8.0];
         headerImage = [NSImage imageNamed: @"slanted_stripes_red.png"];

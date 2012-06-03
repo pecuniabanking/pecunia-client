@@ -46,7 +46,7 @@ static NSShadow* innerShadow2 = nil;
     if (borderShadow == nil)
     {
         // One time initialization.
-        borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.75]
+        borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.5]
                                                 offset: NSMakeSize(3, -3)
                                             blurRadius: 8.0];
         

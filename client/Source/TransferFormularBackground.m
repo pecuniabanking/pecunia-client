@@ -22,11 +22,13 @@
 
 @implementation TransferFormularBackground
 
+@synthesize icon;
+
 - (id) initWithFrame: (NSRect) frameRect
 {
     self = [super initWithFrame: frameRect];
     if (self != nil)
-    {
+    {        
     }
     
     return self;
@@ -34,12 +36,14 @@
 
 - (void) dealloc
 {
+    [icon release];
     [super dealloc];
 }
 
 // Shared objects.
 static NSShadow* borderShadow = nil;
-static NSImage* ornament;
+static NSShadow* smallShadow = nil;
+static NSImage* stripes;
 
 - (void)drawRect: (NSRect) rect
 {
@@ -48,10 +52,13 @@ static NSImage* ornament;
     // Initialize shared objects.
     if (borderShadow == nil)
     {
-        borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.75]
+        borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.5]
                                                 offset: NSMakeSize(3, -3)
                                             blurRadius: 8.0];
-        ornament = [NSImage imageNamed: @"ornament1.png"];
+        smallShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.2]
+                                                offset: NSMakeSize(0, 0)
+                                            blurRadius: 3];
+        stripes = [NSImage imageNamed: @"green-slanted-stripes.png"];
     }
     
     // Outer bounds with shadow.
@@ -63,16 +70,40 @@ static NSImage* ornament;
 
     NSBezierPath* borderPath = [NSBezierPath bezierPathWithRoundedRect: bounds xRadius: 8 yRadius: 8];
     [borderShadow set];
-    [[NSColor controlColor] set];
+    [[NSColor colorWithPatternImage: stripes] set];
     [borderPath fill];
-    [NSGraphicsContext restoreGraphicsState];
-    
     [borderPath setClip];
     
-    NSPoint destination = NSMakePoint(bounds.origin.x + (bounds.size.width - ornament.size.width) / 2,
-                                      bounds.origin.y + (bounds.size.height - ornament.size.height) / 2);
-    NSRect imageRect = NSMakeRect(0, 0, ornament.size.width, ornament.size.height);
-    [ornament drawAtPoint: destination fromRect: imageRect operation: NSCompositeSourceOver fraction: 1];
+    // Top pane.
+    bounds.origin.x += 30;
+    bounds.size.width-= 60;
+    bounds.origin.y = self.bounds.size.height - 90;
+    bounds.size.height = 100;
+    
+    // For composition of top shade and a semitransparent icon we need a separate image which
+    // we then blend over the background.
+    NSImage *shadeImage = [[NSImage alloc] initWithSize: NSMakeSize(bounds.size.width, bounds.size.height)];
+    NSBezierPath *shadePath = [NSBezierPath bezierPathWithRoundedRect: NSMakeRect(0, 0, bounds.size.width, bounds.size.height)
+                                                              xRadius: 6
+                                                              yRadius: 6];
+    [shadeImage lockFocus];
+    [[NSColor whiteColor] set];
+    [shadePath fill];
+    [icon drawAtPoint: NSMakePoint(bounds.size.width - 120, 45) fromRect: NSZeroRect operation: NSCompositeCopy fraction: 1];
+    [shadeImage unlockFocus];
+
+    [smallShadow set];
+    [shadeImage drawAtPoint: bounds.origin fromRect: NSZeroRect operation: NSCompositeSourceOver fraction: 0.75];
+    [shadeImage release];
+    
+    // Main pane.
+    bounds.size.height = 250;
+    bounds.origin.y = self.bounds.size.height - 250 - 110;
+    shadePath = [NSBezierPath bezierPathWithRoundedRect: bounds xRadius: 6 yRadius: 6];
+    [[NSColor colorWithCalibratedRed: 131 / 255.0 green: 171 / 255.0 blue: 113 / 255.0 alpha: 0.76] set];
+    [shadePath fill];
+
+    [NSGraphicsContext restoreGraphicsState];
 }
 
 @end

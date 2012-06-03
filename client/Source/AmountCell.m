@@ -45,7 +45,6 @@
                                          [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 1,
                                          nil
                                          ];
-
     }
     return  self;
 }

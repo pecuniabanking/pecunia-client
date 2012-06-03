@@ -62,12 +62,13 @@ static NSImage* background = nil;
     int dotCount = templateCarousel.numberOfItems;
     float dotWidth = dotCount * 2 * DOT_RADIUS + (dotCount - 1) * DOT_SPACING;
     float dotOffset = dragTargetFrame.origin.x + (dragTargetFrame.size.width - dotWidth) / 2 + DOT_RADIUS;
-    float verticalOffset = NSMaxY(dragTargetFrame) + 30;
-    [[NSColor colorWithCalibratedWhite: 0.3 alpha: 1] set];
+    float verticalOffset = self.bounds.size.height - 260;
+    [[NSColor colorWithCalibratedWhite: 70 / 255.0 alpha: 1] set];
     for (int i = 0; i < dotCount; i++)
     {
         NSRect dotRect = NSMakeRect(dotOffset, verticalOffset, 2 * DOT_RADIUS, 2 * DOT_RADIUS);
         NSBezierPath *dotPath = [NSBezierPath bezierPathWithOvalInRect: dotRect];
+        [dotPath setLineWidth: 1];
         if (i == templateCarousel.currentItemIndex) {
             [dotPath fill];
         } else {

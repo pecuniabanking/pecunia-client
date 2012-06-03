@@ -19,11 +19,16 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "Transfer.h"
+
 @class TransactionController;
 @class TransfersController;
 @class TransfersListView;
+@class TransferFormularBackground;
+
 @class iCarousel;
 @class OnOffSwitchControlCell;
+@class MAAttachedWindow;
 
 @interface TransferTemplateDragDestination : NSView
 {
@@ -51,24 +56,59 @@
     IBOutlet OnOffSwitchControlCell *carouselSwitch;
     IBOutlet TransferTemplateDragDestination *rightPane;
 
+    IBOutlet NSTextField            *titleText;
+    IBOutlet NSTextField            *receiverText;
+    IBOutlet NSPopUpButton          *sourceAccountSelector;
+    IBOutlet NSPopUpButton          *targetAccountSelector;
+    IBOutlet NSComboBox             *receiverComboBox;
+    IBOutlet NSTextField            *amountTextField;
+    IBOutlet NSTextField            *amountCurrencyText;
+    IBOutlet NSTextField            *accountText;
+    IBOutlet NSTextField            *accountNumber;
+    IBOutlet NSTextField            *bankCodeText;
+    IBOutlet NSTextField            *bankCode;
+    IBOutlet NSTextField            *saldoText;
+    IBOutlet NSTextField            *saldoCurrencyText;
+    IBOutlet NSTextField            *targetCountryText;
+    IBOutlet NSPopUpButton          *targetCountrySelector;
+    IBOutlet NSTextField            *feeText;
+    IBOutlet NSPopUpButton          *feeSelector;
+    IBOutlet NSTextField            *purposeTextField;
+    IBOutlet NSTextField            *bankDescription;
+    
+    IBOutlet NSTextField            *executionText;
+    IBOutlet NSButton               *executeImmediatelyRadioButton;
+    IBOutlet NSTextField            *executeImmediatelyText;
+    IBOutlet NSButton               *executeAtDateRadioButton;
+    IBOutlet NSDatePicker           *executionDatePicker;
+    IBOutlet NSView                 *calendarView;
+    IBOutlet NSButton               *calendarButton;
+    IBOutlet NSDatePicker           *calendar;
+    
+    IBOutlet NSButton               *queueItButton;
+    IBOutlet NSButton               *doItButton;
+    
 @private
 	NSNumberFormatter *formatter;
+    MAAttachedWindow* calendarWindow;
 }
 
 // Formulars.
-@property (assign) IBOutlet NSView *internalTransferView;
+@property (assign) IBOutlet TransferFormularBackground *transferFormular;
 
 - (IBAction)sendTransfers: (id)sender;
 - (IBAction)deleteTransfers: (id)sender;
 - (IBAction)changeTransfer: (id)sender;
 - (IBAction)transferDoubleClicked: (id)sender;
 - (IBAction)carouselSwitchChanged: (id)sender;
+- (IBAction)showCalendar: (id)sender;
 
-- (void)setManagedObjectContext: (NSManagedObjectContext *)context;
+- (void)prepareTransferFormular: (TransferType)type;
 
 - (NSView *)mainView;
 - (void)prepare;
 - (void)activate;
+- (void)deactivate;
 - (void)terminate;
 
 @end

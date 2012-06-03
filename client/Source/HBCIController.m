@@ -287,11 +287,11 @@ NSString *escapeSpecial(NSString *s)
 -(NSString*)jobNameForType: (TransferType)tt
 {
     switch(tt) {
-        case TransferTypeLocal: return @"Ueb"; break;
+        case TransferTypeStandard: return @"Ueb"; break;
         case TransferTypeDated: return @"TermUeb"; break;
         case TransferTypeInternal: return @"Umb"; break;
         case TransferTypeEU: return @"UebForeign"; break;
-        case TransferTypeLast: return @"Last"; break;
+        case TransferTypeDebit: return @"Last"; break;
         case TransferTypeSEPA: return @"UebSEPA"; break;
     };
     return nil;
@@ -581,10 +581,10 @@ NSString *escapeSpecial(NSString *s)
             TransferType tt = [transfer.type intValue];
             NSString *type;
             switch(tt) {
-                case TransferTypeLocal: type = @"standard"; break;
+                case TransferTypeStandard: type = @"standard"; break;
                 case TransferTypeDated: type = @"dated"; break;
                 case TransferTypeInternal: type = @"internal"; break;
-                case TransferTypeLast: type = @"last"; break;
+                case TransferTypeDebit: type = @"last"; break;
                 case TransferTypeSEPA: type = @"sepa"; break;
                 case TransferTypeEU:	
                     type = @"foreign";

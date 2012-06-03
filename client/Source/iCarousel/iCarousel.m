@@ -2026,7 +2026,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
         {
             if (theEvent.deltaX == 0)
             {
-                translation = 15; // Scroll wheel events even smaller.
+                translation = 5; // Scroll wheel events even smaller.
                 useY = YES; // For scrollwheel events deltaX is always 0.
             }
             else

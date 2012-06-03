@@ -342,12 +342,13 @@ static NSImage* stripeImage;
         area.origin.y = 2;
         area.size.height = bounds.size.height - 4;
         area.size.width = stripeImage.size.width;
+        CGFloat fraction = [self isSelected] ? 0.2 : 1;
         
         // Tile the image into the area.
         NSRect imageRect = NSMakeRect(0, 0, stripeImage.size.width, stripeImage.size.height);
         while (area.origin.x < bounds.size.width - 4)
         {
-            [stripeImage drawInRect: area fromRect: imageRect operation: NSCompositeSourceOver fraction: 1];
+            [stripeImage drawInRect: area fromRect: imageRect operation: NSCompositeSourceOver fraction: fraction];
             area.origin.x += stripeImage.size.width;
         }
     }

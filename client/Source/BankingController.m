@@ -74,8 +74,7 @@
 NSString* const BankStatementDataType = @"BankStatementDataType";
 NSString* const CategoryDataType = @"CategoryDataType";
 
-// Singleton simulation
-static BankingController *con;
+static BankingController *bankinControllerInstance;
 
 static BOOL runningOnLionOrLater = NO;
 
@@ -102,8 +101,8 @@ static BOOL runningOnLionOrLater = NO;
     if (self != nil) {
         HBCIClient *client = nil;
         
-        if (con) [con release]; // TODO: Hon can this already be assigned in init?
-        con = self;
+        [bankinControllerInstance release];
+        bankinControllerInstance = self;
         restart = NO;
         requestRunning = NO;
         statementsBound = YES;
@@ -1192,6 +1191,7 @@ static BOOL runningOnLionOrLater = NO;
     {
         case 0: {
             [currentSection deactivate];
+            [transfersController deactivate];
             [mainTabView selectTabViewItemAtIndex: 0];
             [accountsToolbarItem setImage: [NSImage imageNamed: @"accounts-active"]];
             break;
@@ -1203,6 +1203,7 @@ static BOOL runningOnLionOrLater = NO;
             break;
         }
         case 2: {
+            [transfersController deactivate];
             [self activateStandingOrdersTab];
             [standingOrdersToolbarItem setImage: [NSImage imageNamed: @"standing-order-active"]];
             break;
@@ -1548,7 +1549,7 @@ static BOOL runningOnLionOrLater = NO;
     BankAccount* account = [self selectedBankAccount];
     if(account == nil) return;
     if ([[account isManual] boolValue] == YES) return;
-    [transactionController transferOfType: TransferTypeLocal forAccount: account];
+    [transactionController transferOfType: TransferTypeStandard forAccount: account];
 }
 
 -(IBAction)donate: (id)sender
@@ -2896,7 +2897,7 @@ static BOOL runningOnLionOrLater = NO;
 
 +(BankingController*)controller
 {
-    return con;
+    return bankinControllerInstance;
 }
 
 //--------------------------------------------------------------------------------------------------

@@ -19,11 +19,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface TransferFormularBackground : NSView {
-@private
-    NSImage *icon;
-}
-
-@property (nonatomic, retain) NSImage *icon;
+@interface GradientButtonCell : NSButtonCell
 
 @end

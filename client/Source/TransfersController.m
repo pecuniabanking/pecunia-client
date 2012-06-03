@@ -26,11 +26,17 @@
 #import "HBCIClient.h"
 #import "MOAssistant.h"
 #import "AmountCell.h"
+#import "BankAccount.h"
+
+#import "TransferFormularBackground.h"
+#import "GradientButtonCell.h"
 
 #import "GraphicsAdditions.h"
+#import "AnimationHelper.h"
 
 #import "iCarousel.h"
 #import "OnOffSwitchControlCell.h"
+#import "MAAttachedWindow.h"
 
 static NSString* const PecuniaTransferTemplateDataType = @"PecuniaTransferTemplateDataType";
 extern NSString* const BankStatementDataType;
@@ -103,18 +109,36 @@ extern NSString* const BankStatementDataType;
     if (NSPointInRect(location, [self dropTargetFrame])) {
         if (!formularVisible) {
             formularVisible = YES;
-            NSRect formularFrame = controller.internalTransferView.frame;
-            formularFrame.origin.x = 32;
+            NSRect formularFrame = controller.transferFormular.frame;
+            formularFrame.origin.x = (self.bounds.size.width - formularFrame.size.width) / 2 - 10;
             formularFrame.origin.y = 0;
-            controller.internalTransferView.frame = formularFrame;
+            
+            NSString *data = [sender.draggingPasteboard stringForType: PecuniaTransferTemplateDataType];
+            TransferType type;
+            switch ([data intValue]) {
+                case 0:
+                    type = TransferTypeInternal;
+                    break;
+                case 2:
+                    type = TransferTypeEU;
+                    break;
+                case 3:
+                    type = TransferTypeSEPA;
+                    break;
+                default:
+                    type = TransferTypeStandard;
+                    break;
+            }
+            [controller prepareTransferFormular: type];
+            controller.transferFormular.frame = formularFrame;
 
-            [[self animator] addSubview: controller.internalTransferView];
+            [[self animator] addSubview: controller.transferFormular];
         }
         return NSDragOperationCopy;
     } else {
         if (formularVisible) {
             formularVisible = NO;
-            [[controller.internalTransferView animator] removeFromSuperview];
+            [[controller.transferFormular animator] removeFromSuperview];
         }
         return NSDragOperationNone;
     }
@@ -138,7 +162,7 @@ extern NSString* const BankStatementDataType;
 {
     if (formularVisible) {
         formularVisible = NO;
-        [controller.internalTransferView removeFromSuperview];
+        [controller.transferFormular removeFromSuperview];
     }
 }
 
@@ -159,7 +183,7 @@ extern NSString* const BankStatementDataType;
     NSRect dragTargetFrame = self.frame;
     dragTargetFrame.size.width -= 150;
     dragTargetFrame.size.height = 350;
-    dragTargetFrame.origin.x += 64;
+    dragTargetFrame.origin.x += 65;
     dragTargetFrame.origin.y += 35;
     
     return dragTargetFrame;
@@ -167,8 +191,15 @@ extern NSString* const BankStatementDataType;
 
 @end
 
+@interface TransfersController (private)
+- (void)prepareAccountSelectors;
+- (void)hideCalendarWindow;
+- (void)updateCarousel;
+@end
+
 @implementation TransfersController
-@synthesize internalTransferView;
+
+@synthesize transferFormular;
 
 - (void)dealloc
 {
@@ -176,16 +207,20 @@ extern NSString* const BankStatementDataType;
 	templateCarousel.dataSource = nil;
 
 	[formatter release];
+    [calendarWindow release];
+   
 	[super dealloc];
 }
 
 - (void)awakeFromNib
 {
+    [[mainView window] setInitialFirstResponder: receiverComboBox];
+    
     pendingTransfers.managedObjectContext = MOAssistant.assistant.context;
     pendingTransfers.filterPredicate = [NSPredicate predicateWithFormat: @"isSent = NO"];
     
     finishedTransfers.managedObjectContext = MOAssistant.assistant.context;
-    //finishedTransfers.filterPredicate = [NSPredicate predicateWithFormat: @"isSent = YES"];
+    finishedTransfers.filterPredicate = [NSPredicate predicateWithFormat: @"isSent = YES"];
 
     [transactionController setManagedObjectContext: MOAssistant.assistant.context];
 
@@ -238,18 +273,192 @@ extern NSString* const BankStatementDataType;
     [carouselSwitch setOnSwitchLabel: @"Rad"];
     [carouselSwitch setOffSwitchLabel: @"Reihe"];
 
-    [self carouselSwitchChanged: carouselSwitch];
-    templateCarousel.currentItemIndex = 4;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary* values = [userDefaults objectForKey: @"transfers"];
+    if (values != nil) {
+        templateCarousel.type = [[values valueForKey: @"carouselType"] intValue];
+    } else {
+        templateCarousel.type = iCarouselTypeTimeMachine;
+    }
+    [self updateCarousel];
+
+    templateCarousel.currentItemIndex = 1;
 
     rightPane.controller = self;
     [rightPane registerForDraggedTypes: [NSArray arrayWithObjects: PecuniaTransferTemplateDataType, BankStatementDataType, nil]];
+
+    CALayer *layer = [queueItButton layer];
+    layer.shadowColor = CGColorCreateGenericGray(0, 1);
+    layer.shadowRadius = 1.0;
+    layer.shadowOffset = CGSizeMake(1, -1);
+    layer.shadowOpacity = 0.5;
+    layer = [doItButton layer];
+    layer.shadowColor = CGColorCreateGenericGray(0, 1);
+    layer.shadowRadius = 1.0;
+    layer.shadowOffset = CGSizeMake(1, -1);
+    layer.shadowOpacity = 0.5;
+    
+    [self prepareAccountSelectors];
+    
+    executeImmediatelyRadioButton.target = self;
+    executeImmediatelyRadioButton.action = @selector(executionTimeChanged:);
+    executeAtDateRadioButton.target = self;
+    executeAtDateRadioButton.action = @selector(executionTimeChanged:);
 }
 
-- (void)setManagedObjectContext:(NSManagedObjectContext*)context
+- (NSMenuItem*)createItemForAccountSelector: (Category *)category
 {
-	[finishedTransfers setManagedObjectContext: context ];
-	[finishedTransfers prepareContent ];
+    NSMenuItem *item = [[[NSMenuItem alloc] initWithTitle: [category localName] action: nil keyEquivalent: @""] autorelease];
+    item.representedObject = category;
+    
+    return item;
 }
+
+- (void)prepareAccountSelectors
+{
+    [sourceAccountSelector removeAllItems];
+    [targetAccountSelector removeAllItems];
+    
+    NSMenu *sourceMenu = [sourceAccountSelector menu];
+    NSMenu *targetMenu = [targetAccountSelector menu];
+    
+    Category *category = [Category bankRoot];
+	NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES] autorelease];
+	NSArray *sortDescriptors = [NSArray arrayWithObject: sortDescriptor];
+    NSArray *institutes = [[category children] sortedArrayUsingDescriptors: sortDescriptors];
+    
+    // Convert list of accounts in their institutes branches to a flat list
+    // usable by the selector.
+    NSEnumerator *institutesEnumerator = [institutes objectEnumerator];
+    Category *currentInstitute;
+    while ((currentInstitute = [institutesEnumerator nextObject])) {
+        NSMenuItem *item = [self createItemForAccountSelector: currentInstitute];
+        [sourceMenu addItem: item];
+        item.enabled = NO;
+        item = [self createItemForAccountSelector: currentInstitute];
+        item.enabled = NO;
+        [targetMenu addItem: item];
+
+        NSArray *accounts = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
+        NSEnumerator *accountEnumerator = [accounts objectEnumerator];
+        Category *currentAccount;
+        while ((currentAccount = [accountEnumerator nextObject])) {
+            item = [self createItemForAccountSelector: currentAccount];
+            item.enabled = YES;
+            item.indentationLevel = 1;
+            [sourceMenu addItem: item];
+            item = [self createItemForAccountSelector: currentAccount];
+            item.enabled = YES;
+            item.indentationLevel = 1;
+            [targetMenu addItem: item];
+        }
+    }
+    if (sourceMenu.numberOfItems > 1) {
+        [sourceAccountSelector selectItemAtIndex: 1];
+        [targetAccountSelector selectItemAtIndex: 1];
+    } else {
+        [sourceAccountSelector selectItemAtIndex: -1];
+        [targetAccountSelector selectItemAtIndex: -1];
+    }
+    [self sourceAccountChanged: sourceAccountSelector];
+}
+
+/**
+ * Prepares the transfer formular for the given type. Not every UI element is visible for all types
+ * so we have hide what is not needed and update also some captions.
+ */
+- (void)prepareTransferFormular: (TransferType)type
+{
+    switch (type) {
+        case TransferTypeInternal:
+            [titleText setStringValue: NSLocalizedString(@"AP183", @"")];
+            [receiverText setStringValue: NSLocalizedString(@"AP188", @"")];
+            transferFormular.icon = [NSImage imageNamed: @"internal-transfer-icon.png"];
+            break;
+        case TransferTypeStandard:
+            [titleText setStringValue: NSLocalizedString(@"AP184", @"")];
+            [receiverText setStringValue: NSLocalizedString(@"AP134", @"")];
+            [accountText setStringValue: NSLocalizedString(@"AP191", @"")];
+            [bankCodeText setStringValue: NSLocalizedString(@"AP192", @"")];
+            transferFormular.icon = [NSImage imageNamed: @"standard-transfer-icon.png"];
+            break;
+        case TransferTypeEU:
+            [titleText setStringValue: NSLocalizedString(@"AP185", @"")];
+            [receiverText setStringValue: NSLocalizedString(@"AP134", @"")];
+            [accountText setStringValue: NSLocalizedString(@"AP189", @"")];
+            [bankCodeText setStringValue: NSLocalizedString(@"AP190", @"")];
+            transferFormular.icon = [NSImage imageNamed: @"eu-transfer-icon.png"];
+            break;
+        case TransferTypeSEPA:
+            [titleText setStringValue: NSLocalizedString(@"AP186", @"")];
+            [receiverText setStringValue: NSLocalizedString(@"AP134", @"")];
+            [accountText setStringValue: NSLocalizedString(@"AP189", @"")];
+            [bankCodeText setStringValue: NSLocalizedString(@"AP190", @"")];
+            transferFormular.icon = [NSImage imageNamed: @"sepa-transfer-icon.png"];
+            break;
+        case TransferTypeDebit:
+            [titleText setStringValue: NSLocalizedString(@"AP187", @"")];
+            [receiverText setStringValue: NSLocalizedString(@"AP134", @"")];
+            [accountText setStringValue: NSLocalizedString(@"AP191", @"")];
+            [bankCodeText setStringValue: NSLocalizedString(@"AP192", @"")];
+            transferFormular.icon = [NSImage imageNamed: @"debit-transfer-icon.png"];
+            break;
+        case TransferTypeDated: // TODO: needs to go, different transfer types allow an execution date.
+            return;
+            break;
+    }
+    
+    BOOL isInternal = (type == TransferTypeInternal);
+    [targetAccountSelector setHidden: !isInternal];
+    [receiverComboBox setHidden: isInternal];
+    [accountText setHidden: isInternal];
+    [accountNumber setHidden: isInternal];
+    [bankCodeText setHidden: isInternal];
+    [bankCode setHidden: isInternal];
+
+    BOOL isEUTransfer = (type == TransferTypeEU);
+    [targetCountryText setHidden: !isEUTransfer];
+    [targetCountrySelector setHidden: !isEUTransfer];
+    [feeText setHidden: !isEUTransfer];
+    [feeSelector setHidden: !isEUTransfer];
+    
+    [bankDescription setHidden: type != TransferTypeStandard];
+    
+    // These business transactions support termination:
+    //   - SEPA company/normal single debit/transfer
+    //   - SEPA consolidated company/normal debits/transfers
+    //   - Standard company/normal single debit/transfer
+    //   - Standard consolidated company/normal debits/transfers
+    BOOL canBeTerminated = (type == TransferTypeSEPA) || (type == TransferTypeStandard) || (type == TransferTypeDebit);
+    [executionText setHidden: !canBeTerminated];
+    [executeImmediatelyRadioButton setHidden: !canBeTerminated];
+    [executeImmediatelyText setHidden: !canBeTerminated];
+    [executeAtDateRadioButton setHidden: !canBeTerminated];
+    [executionDatePicker setHidden: !canBeTerminated];
+    [calendarButton setHidden: !canBeTerminated];
+    
+    [self prepareAccountSelectors];
+    
+    // Load the set of previously entered text for the receiver combo box.
+    [receiverComboBox removeAllItems];
+    [receiverComboBox setStringValue: @""];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary* values = [userDefaults objectForKey: @"transfers"];
+    if (values != nil) {
+        NSArray *previousReceivers = [values valueForKey: @"previousReceivers"];
+        [receiverComboBox addItemsWithObjectValues: previousReceivers];
+    }
+    [amountTextField setObjectValue: [NSNumber numberWithInt: 0]];
+    [accountNumber setStringValue: @""];
+    [bankCode setStringValue: @""];
+    [bankDescription setStringValue: @""];
+    executeImmediatelyRadioButton.state = NSOnState;
+    executeAtDateRadioButton.state = NSOffState;
+    executionDatePicker.dateValue = [NSDate date];
+}
+
+#pragma mark -
+#pragma mark Actions messages
 
 - (IBAction)sendTransfers: (id)sender
 {
@@ -329,24 +538,135 @@ extern NSString* const BankStatementDataType;
 {
     if (carouselSwitch.state == NSOffState) {
         templateCarousel.type = iCarouselTypeTimeMachine;
-    
-        templateCarousel.perspective = -0.001;
-        templateCarousel.bounces = YES;
-        templateCarousel.bounceDistance = 0.3;
-        templateCarousel.contentOffset = CGSizeMake(0, 0);
-        templateCarousel.viewpointOffset = CGSizeMake(0, 0);
     } else {
         templateCarousel.type = iCarouselTypeWheel;
-
-        templateCarousel.perspective = -0.001;
-        templateCarousel.bounces = NO;
-        templateCarousel.bounceDistance = 0.3;
-        templateCarousel.contentOffset = CGSizeMake(0, 0);
-        templateCarousel.viewpointOffset = CGSizeMake(0, 0);
-    } 
+    }
+    [self updateCarousel];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary* values = [userDefaults objectForKey: @"transfers"];
+    if (values == nil) {
+        values = [NSMutableDictionary dictionaryWithCapacity: 1];
+        [userDefaults setObject: values forKey: @"transfers"];
+    }
+    [values setValue: [NSNumber numberWithInt: templateCarousel.type] forKey: @"carouselType"];
 }
 
-- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+- (IBAction)showCalendar: (id)sender
+{
+    if (calendarWindow == nil) {
+        NSPoint buttonPoint = NSMakePoint(NSMidX([sender frame]),
+                                          NSMidY([sender frame]));
+        buttonPoint = [transferFormular convertPoint: buttonPoint toView: nil];
+        calendarWindow = [[MAAttachedWindow alloc] initWithView: calendarView 
+                                                attachedToPoint: buttonPoint 
+                                                       inWindow: [transferFormular window] 
+                                                         onSide: MAPositionTopLeft 
+                                                     atDistance: 20];
+        
+        [calendarWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.9]];
+        [calendarWindow setViewMargin: 0];
+        [calendarWindow setBorderWidth: 0];
+        [calendarWindow setCornerRadius: 10];
+        [calendarWindow setHasArrow: YES];
+        [calendarWindow setDrawsRoundCornerBesideArrow: YES];
+        
+        [calendarWindow setAlphaValue: 0];
+        [[sender window] addChildWindow: calendarWindow ordered: NSWindowAbove];
+        [calendarWindow fadeIn];
+        [calendarWindow makeKeyWindow];
+    }
+}
+
+- (IBAction)calendarChanged: (id)sender
+{
+    [executionDatePicker setDateValue: [sender dateValue]];
+    [self hideCalendarWindow];
+}
+
+- (IBAction)sourceAccountChanged: (id)sender
+{
+    Category *category = [sender selectedItem].representedObject;
+    [saldoText setObjectValue: [category catSum]];
+}
+
+- (IBAction)executionTimeChanged: (id)sender {
+    if (sender == executeImmediatelyRadioButton) {
+        executeAtDateRadioButton.state = NSOffState;
+        executionDatePicker.enabled = NO;
+        calendarButton.enabled = NO;
+    } else {
+        executeImmediatelyRadioButton.state = NSOffState;
+        executionDatePicker.enabled = YES;
+        calendarButton.enabled = YES;
+    }
+}
+
+- (void)textDidEndEditing: (NSNotification *)aNotification
+{
+    if (aNotification.object == bankDescription) {
+        
+    }
+}
+
+- (IBAction)queueTransfer:(id)sender {
+}
+
+
+- (IBAction)sendTransfer:(id)sender {
+}
+
+#pragma mark -
+#pragma mark Other application logic
+
+- (void)updateCarousel
+{
+    switch (templateCarousel.type) {
+        case iCarouselTypeTimeMachine:
+            templateCarousel.perspective = -0.001;
+            templateCarousel.bounces = YES;
+            templateCarousel.bounceDistance = 0.6;
+            templateCarousel.contentOffset = CGSizeMake(0, 0);
+            templateCarousel.viewpointOffset = CGSizeMake(0, 0);
+            carouselSwitch.state = NSOffState;
+            break;
+        case iCarouselTypeWheel:
+            templateCarousel.perspective = -0.001;
+            templateCarousel.bounces = NO;
+            templateCarousel.bounceDistance = 0.3;
+            templateCarousel.contentOffset = CGSizeMake(0, 0);
+            templateCarousel.viewpointOffset = CGSizeMake(0, 0);
+            carouselSwitch.state = NSOnState;
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)releaseCalendarWindow
+{
+    [[calendarButton window] removeChildWindow: calendarWindow];
+    [calendarWindow orderOut: self];
+    [calendarWindow release];
+    calendarWindow = nil;
+}
+
+- (void)hideCalendarWindow
+{
+    if (calendarWindow != nil) {
+        [calendarWindow fadeOut];
+        
+        // We need to delay the release of the calendar window
+        // otherwise it will just disappear instead to fade out.
+        [NSTimer scheduledTimerWithTimeInterval: .5
+                                         target: self 
+                                       selector: @selector(releaseCalendarWindow)
+                                       userInfo: nil
+                                        repeats: NO];
+    }
+}
+
+- (void)tableViewSelectionDidChange: (NSNotification *)aNotification
 {
 	NSDecimalNumber *sum = [NSDecimalNumber zero ];
 	Transfer *transfer;
@@ -387,12 +707,12 @@ extern NSString* const BankStatementDataType;
 
 - (NSUInteger)numberOfItemsInCarousel: (iCarousel *)carousel
 {
-    return 5; // Internal transfer, normal transfer, EU transfer, SEPA transfer, debit.
+    return 4; // Internal transfer, normal transfer, EU transfer, SEPA transfer (debit not yet).
 }
 
 - (NSUInteger)numberOfVisibleItemsInCarousel:(iCarousel *)carousel
 {
-    return 5;
+    return 10; // Must be at least number of items in the carousel.
 }
 
 - (NSView *)carousel: (iCarousel *)carousel viewForItemAtIndex: (NSUInteger)index reusingView: (NSView *)view
@@ -432,19 +752,19 @@ extern NSString* const BankStatementDataType;
 
 - (CGFloat)carouselItemWidth: (iCarousel *)carousel
 {
-    return (carouselSwitch.state == NSOffState) ? 180 : 280;
+    return (templateCarousel.type == iCarouselTypeWheel) ? 280 : 180;
 }
 
 - (BOOL)carouselShouldWrap: (iCarousel *)carousel
 {
-    return carouselSwitch.state != NSOffState;
+    return templateCarousel.type == iCarouselTypeWheel;
 }
 
 /**
  * Triggered when the carousel finished its scroll animation (after either a swipe, mouse wheel
  * or mouse dragging even).
  */
-- (void)carouselDidEndScrollingAnimation:(iCarousel *)carousel;
+- (void)carouselDidEndScrollingAnimation: (iCarousel *)carousel;
 {
     [mainView setNeedsDisplay: YES];
 }
@@ -465,6 +785,11 @@ extern NSString* const BankStatementDataType;
 - (void)activate
 {
     [templateCarousel layOutItemViews];
+}
+
+- (void)deactivate
+{
+    [self hideCalendarWindow];
 }
 
 -(void)terminate

@@ -61,7 +61,7 @@
 "AP33" = "PINs aus dem Schlüsselbund entfernen";
 "AP34" = "Es werden alle PINs aus dem Schlüsselbund entfernt. Möchten Sie fortfahren?";
 "AP35" = "Daten unvollständig";
-"AP36" = "IBAN und/oder BIC sind für das Konto %@ nicht gepflegt";
+"AP36" = "IBAN und/oder BIC sind für das Konto %@ nicht eingetragen";
 "AP37" = "Konto anlegen nicht möglich";
 "AP38" = "Bitte legen Sie zuerst eine Bankkennung an";
 "AP39" = "Bankkennung anlegen";
@@ -84,7 +84,7 @@
 "AP56" = "Der Umzug der Pecunia-Daten war nicht erfolgreich. Es wird auf die alte Datenablage zurückgegriffen";
 "AP57" = "Die Änderung des Speicherorts wird erst beim nächsten Neustart wirksam. Möchten Sie Pecunia jetzt neu starten?";
 "AP58" = "Es existiert bereits eine verschlüsselte Datendatei (%@), die am %@ zuletzt verwendet wurde. Möchten Sie die Datei verwenden oder eine neue mit den derzeitigen Daten anlegen?";
-"AP59" = "Die Datei %@ existiert bereits und wurde am %@ zuletzt geändert. Sie muss vor dem Umzug der Pecunia-Daten gelöscht werden. Alternativ können Sie statt einem Umzug auch die vorgenannte Datei verwenden";
+"AP59" = "Die Datei %@ existiert bereits und wurde am %@ zuletzt geändert. Sie muss vor dem Umzug der Pecunia-Daten gelöscht werden. Alternativ können Sie statt eines Umzugs auch die vorgenannte Datei verwenden";
 "AP60" = "Verwenden";
 "AP61" = "Löschen";
 "AP62" = "Neue anlegen";
@@ -166,7 +166,7 @@
 "AP170" = "Ungültiges Zeichen";
 "AP171" = "Das Zeichen '%C' ist im Verwendungszweck und Empfängernamen nicht erlaubt!";
 "AP172" = "Die Kundenmeldung konnte nicht erfolgreich versendet werden";
-"AP173" = "Beim ermitteln der unterstützten Geschäftsvorfälle ist ein unbekannter Fehler aufgetreten";
+"AP173" = "Bei der Ermittlung der unterstützten Geschäftsvorfälle ist ein unbekannter Fehler aufgetreten";
 "AP174" = "Keine Information verfügbar";
 "AP175" = "Ermittle TAN-Medium-Informationen...";
 "AP176" = "Bitte geben Sie einen Namen für die Bankkennung ein. Der Name dient zur Unterscheidung der verschiedenen Bankkennungen und ist frei wählbar";
@@ -176,4 +176,15 @@
 "AP180" = "BLZ ";
 "AP181" = " Kto ";
 "AP182" = "Die Ermittlung des Kontosaldos ist fehlgeschlagen.";
+
+"AP183" = "Umbuchung";
+"AP184" = "Standardüberweisung";
+"AP185" = "EU-Überweisung";
+"AP186" = "SEPA-Überweisung";
+"AP187" = "Lastschrift";
+"AP188" = "Zielkonto";
+"AP189" = "IBAN";
+"AP190" = "BIC";
+"AP191" = "Konto";
+"AP192" = "BLZ";
 
