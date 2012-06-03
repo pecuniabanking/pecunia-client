@@ -26,5 +26,10 @@
 	[super dealloc];
 }
 
+- (NSString*)description
+{
+    return [NSString stringWithFormat:@"%@ (%@)", tanMethodName, tanMediumName ];
+}
+
 @end
 

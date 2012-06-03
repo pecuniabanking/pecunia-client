@@ -18,8 +18,8 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import "BankUser.h"
 
-@class BankUser;
 @class BankingController;
 @class InstitutesController;
 
@@ -40,13 +40,21 @@
     IBOutlet NSProgressIndicator    *progressIndicator;
     IBOutlet NSButton               *okButton;
 	IBOutlet NSTextField			*msgField;
+    IBOutlet NSBox                  *secSelectBox;
+    IBOutlet NSBox                  *pinTanBox;
+    IBOutlet NSBox                  *ddvBox;
+    IBOutlet NSPopUpButton          *secMethodPopup;
+    IBOutlet NSPopUpButton          *ddvPortPopup;
+    IBOutlet NSTextField            *ddvReaderIdx;
     
     NSManagedObjectContext          *context;
     
     @private
 	BankingController* bankController;
 	
-	NSUInteger step;
+	NSUInteger      step;
+    SecurityMethod  secMethod;
+    NSBox           *currentBox;
 }
 
 - (id)initForController: (BankingController*)con;

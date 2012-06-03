@@ -32,6 +32,9 @@
 @dynamic noBase64;
 @dynamic tanMediaFetched;
 
+@synthesize ddvPortIdx;
+@synthesize ddvReaderIdx;
+@synthesize secMethod;
 
 -(id)copyWithZone: (NSZone *)zone
 {

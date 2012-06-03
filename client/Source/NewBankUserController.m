@@ -18,8 +18,8 @@
  */
 
 #import "NewBankUserController.h"
-#import "ABController.h"
-#import "BankUser.h"
+//#import "ABController.h"
+//#import "BankUser.h"
 #import "BankingController.h"
 #import "InstitutesController.h"
 #import "HBCIClient.h"
@@ -70,6 +70,9 @@
     topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
     topGradient.fillEndingColor = [NSColor colorWithCalibratedWhite: 99 / 255.0 alpha: 1];
     backgroundGradient.fillColor = [NSColor whiteColor];
+    
+    // Sicherheitsverfahren
+    currentBox = pinTanBox;
 }
 
 #pragma mark -
@@ -143,37 +146,57 @@
     
     BankUser *currentUser = [currentUserController content ];
     
-    if (step == 1) {
-		[self startProgressWithMessage: NSLocalizedString(@"AP177", @"") ];
-        [self performSelector:@selector(getBankSetupInfo) withObject:nil afterDelay:0 ];
-        return;
-    }
-
-    if (step == 2) {
-        // jetzt schauen, ob wir Infos Ÿber die Bank haben
-        BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
-        if (bi) {
-            currentUser.hbciVersion = bi.pinTanVersion;
-            currentUser.bankURL = bi.pinTanURL;
+    if (step == 0) {
+        NSInteger idx = [secMethodPopup indexOfSelectedItem ];
+        if (idx == 1) {
+            secMethod = SecMethod_DDV;
+        } else {
+            secMethod = SecMethod_PinTan;
         }
+        currentUser.secMethod = [NSNumber numberWithInt:secMethod ];
     }
-
-    if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
-        // User anlegen
-		
-        [self startProgressWithMessage: NSLocalizedString(@"AP178", @"") ];
-        PecuniaError *error = [[HBCIClient hbciClient ] addBankUser: currentUser];
-        if (error) {
-            [self stopProgress ];
-            [error alertPanel];
+    
+    // PinTan-Zugang 
+    if (secMethod == SecMethod_PinTan) {
+        if (step == 1) {
+            [self startProgressWithMessage: NSLocalizedString(@"AP177", @"") ];
+            [self performSelector:@selector(getBankSetupInfo) withObject:nil afterDelay:0 ];
+            return;
         }
-        else {
-            [[HBCIClient hbciClient ] updateTanMediaForUser:currentUser ];
-            [bankController updateBankAccounts: [[HBCIClient hbciClient ] getAccountsForUser:currentUser]];
-            [self stopProgress ];
+        
+        if (step == 2) {
+            // jetzt schauen, ob wir Infos Ÿber die Bank haben
+            BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
+            if (bi) {
+                currentUser.hbciVersion = bi.pinTanVersion;
+                currentUser.bankURL = bi.pinTanURL;
+            }
+        }
+        
+        if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
             
-            [userSheet orderOut: sender];
-            [NSApp endSheet: userSheet returnCode: 0];
+            // User anlegen
+            [self startProgressWithMessage: NSLocalizedString(@"AP178", @"") ];
+            PecuniaError *error = [[HBCIClient hbciClient ] addBankUser: currentUser];
+            if (error) {
+                [self stopProgress ];
+                [error alertPanel];
+            }
+            else {
+                [[HBCIClient hbciClient ] updateTanMediaForUser:currentUser ];
+                [bankController updateBankAccounts: [[HBCIClient hbciClient ] getAccountsForUser:currentUser]];
+                [self stopProgress ];
+                
+                [userSheet orderOut: sender];
+                [NSApp endSheet: userSheet returnCode: 0];
+            }
+        }
+    }
+    
+    // DDV-Zugang
+    if (secMethod == SecMethod_DDV) {
+        if (step == 1) {
+            
         }
     }
     
@@ -325,11 +348,17 @@
     step = 4;
 }
 
-- (void)prepareUserSheet
+- (void)prepareUserSheet_PinTan
 {
-	NSArray *views = [[groupBox contentView ] subviews ];
+   	NSArray *views = [[pinTanBox contentView ] subviews ];
 	
 	if (step == 1) {
+        [currentBox retain ];
+        NSView *contentView = [userSheet contentView ];
+        [contentView replaceSubview:currentBox with: pinTanBox ];
+        currentBox = pinTanBox;
+        [pinTanBox setFrame:[secSelectBox frame ] ];
+        
 		for(NSView *view in views) {
 			if ([view tag ] >= 100) {
 				[view setHidden:YES ];
@@ -337,9 +366,10 @@
 		}
         
 		NSRect frame = [userSheet frame ];
-		frame.size.height = 406;
-		frame.size.height -= 183; frame.origin.y += 183;
-		[userSheet setFrame: frame display: YES ];
+//		frame.size.height = 406;
+//		frame.size.height -= 183; frame.origin.y += 183;
+        frame.size.height += 17; frame.origin.y -= 17;
+		[[userSheet animator ] setFrame: frame display: YES ];
 	}
 	if (step == 2) {
 		for(NSView *view in views) {
@@ -347,7 +377,7 @@
 				[[view animator] setHidden:NO ];
 			}
 		}
-
+        
 		NSRect frame = [userSheet frame ];
 		frame.size.height += 32; frame.origin.y -= 32;
 		[[userSheet animator] setFrame: frame display: YES ];
@@ -363,14 +393,61 @@
 		frame.size.height += 151; frame.origin.y -= 151;
 		[[userSheet animator] setFrame: frame display: YES ];
 	}			
+    
 }
+
+- (void)prepareUserSheet_DDV
+{
+    if (step == 1) {
+        
+        // zur DDV-Box wechseln
+        [currentBox retain ];
+        NSView *contentView = [userSheet contentView ];
+        [contentView replaceSubview:currentBox with: ddvBox ];
+        currentBox = ddvBox;
+        [ddvBox setFrame:[secSelectBox frame ] ];   
+        
+        // Defaultwerte setzen
+        BankUser *user = [currentUserController content ];
+        user.ddvPortIdx = [NSNumber numberWithInt:1 ];
+        user.ddvReaderIdx = [NSNumber numberWithInt:0 ];
+
+        // Grš§e setzen
+		NSRect frame = [userSheet frame ];
+        frame.size.height += 20; frame.origin.y -= 20;
+		[[userSheet animator ] setFrame: frame display: YES ];
+    }
+    
+}
+
+- (void)prepareUserSheet
+{
+    
+    if (step == 0) {
+		NSRect frame = [userSheet frame ];
+		frame.size.height = 406;
+		frame.size.height -= 200; frame.origin.y += 200;
+		[userSheet setFrame: frame display: YES ];
+        return;
+    }
+    
+    if (secMethod == SecMethod_PinTan) [self prepareUserSheet_PinTan ];
+    if (secMethod == SecMethod_DDV) [self prepareUserSheet_DDV ];
+ }
 
 - (IBAction)addEntry:(id)sender
 {
     BankUser *user = [NSEntityDescription insertNewObjectForEntityForName:@"BankUser" inManagedObjectContext:context ];
     [currentUserController setContent:user ];
 	
-	step = 1;
+	step = 0;
+    
+    NSView *contentView = [userSheet contentView ];
+    [currentBox retain ];
+    [contentView replaceSubview:currentBox with:secSelectBox ];
+    currentBox = secSelectBox;
+    [secSelectBox setFrame:[pinTanBox frame ] ];
+    
 	[self prepareUserSheet ];
     
 	[NSApp beginSheet: userSheet

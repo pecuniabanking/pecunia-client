@@ -7,6 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+
+typedef enum {
+    SecMethod_PinTan = 0,
+    SecMethod_DDV
+} SecurityMethod;
+
 @class TanMedium;
 @class TanMethod;
 
@@ -29,6 +35,10 @@
 @property (nonatomic, retain) TanMethod * preferredTanMethod;
 @property (nonatomic, retain) NSMutableSet* tanMedia;
 @property (nonatomic, retain) NSMutableSet* tanMethods;
+
+@property (nonatomic, retain) NSNumber *ddvPortIdx;
+@property (nonatomic, retain) NSNumber *ddvReaderIdx;
+@property (nonatomic, retain) NSNumber *secMethod;
 
 -(void)updateTanMethods:(NSArray*)methods;
 -(void)updateTanMedia:(NSArray*)media;
