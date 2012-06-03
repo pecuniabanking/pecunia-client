@@ -334,9 +334,9 @@ extern NSString* const BankStatementDataType;
     while ((currentInstitute = [institutesEnumerator nextObject])) {
         NSMenuItem *item = [self createItemForAccountSelector: currentInstitute];
         [sourceMenu addItem: item];
-        item.enabled = NO;
+        [item setEnabled: NO ];
         item = [self createItemForAccountSelector: currentInstitute];
-        item.enabled = NO;
+        [item setEnabled: NO ];
         [targetMenu addItem: item];
 
         NSArray *accounts = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
@@ -344,11 +344,11 @@ extern NSString* const BankStatementDataType;
         Category *currentAccount;
         while ((currentAccount = [accountEnumerator nextObject])) {
             item = [self createItemForAccountSelector: currentAccount];
-            item.enabled = YES;
+            [item setEnabled: YES ];
             item.indentationLevel = 1;
             [sourceMenu addItem: item];
             item = [self createItemForAccountSelector: currentAccount];
-            item.enabled = YES;
+            [item setEnabled: YES ];
             item.indentationLevel = 1;
             [targetMenu addItem: item];
         }
@@ -593,12 +593,12 @@ extern NSString* const BankStatementDataType;
 - (IBAction)executionTimeChanged: (id)sender {
     if (sender == executeImmediatelyRadioButton) {
         executeAtDateRadioButton.state = NSOffState;
-        executionDatePicker.enabled = NO;
-        calendarButton.enabled = NO;
+        [executionDatePicker setEnabled: NO ];
+        [calendarButton setEnabled: NO ];
     } else {
         executeImmediatelyRadioButton.state = NSOffState;
-        executionDatePicker.enabled = YES;
-        calendarButton.enabled = YES;
+        [executionDatePicker setEnabled: YES ];
+        [calendarButton setEnabled: YES ];
     }
 }
 
