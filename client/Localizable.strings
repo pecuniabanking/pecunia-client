@@ -176,7 +176,6 @@
 "AP180" = "BLZ ";
 "AP181" = " Kto ";
 "AP182" = "Die Ermittlung des Kontosaldos ist fehlgeschlagen.";
-
 "AP183" = "Umbuchung";
 "AP184" = "Standardüberweisung";
 "AP185" = "EU-Überweisung";
@@ -187,4 +186,5 @@
 "AP190" = "BIC";
 "AP191" = "Konto";
 "AP192" = "BLZ";
+"AP193" = "Bitte Chipkarte einlegen";
 

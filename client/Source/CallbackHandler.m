@@ -225,6 +225,13 @@
                                                                      object:[NSDictionary dictionaryWithObjectsAndKeys:data.bankCode, @"bankCode", data.message, @"message", nil ] ];
         [[NSNotificationCenter defaultCenter ] postNotification:notification ];
     }
+    if ([data.command isEqualToString:@"needChipcard" ]) {
+        MessageLog *log = [MessageLog log ];
+        [log addMessage:NSLocalizedString(@"AP193", @"") withLevel:LogLevel_Info ];
+    }
+    if ([data.command isEqualToString:@"haveChipcard" ]) {
+    }
+    
     return @"";
 }
 

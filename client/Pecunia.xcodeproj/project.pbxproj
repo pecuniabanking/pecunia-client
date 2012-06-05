@@ -130,6 +130,8 @@
 		B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */ = {isa = PBXBuildFile; fileRef = B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */; };
 		B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
 		B120E3C30EB0F3F000FC5A6F /* AccountRep.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E3C10EB0F3F000FC5A6F /* AccountRep.png */; };
+		B124C35C157E8556004DAC59 /* libhbci4java-card-mac-os-x-10.6.jnilib in Frameworks */ = {isa = PBXBuildFile; fileRef = B124C35B157E8556004DAC59 /* libhbci4java-card-mac-os-x-10.6.jnilib */; };
+		B124C35D157E855B004DAC59 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy Java */ = {isa = PBXBuildFile; fileRef = B124C35B157E8556004DAC59 /* libhbci4java-card-mac-os-x-10.6.jnilib */; };
 		B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F09E0C36F3E8001065C2 /* BankStatement.m */; };
 		B124F1110C371384001065C2 /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F1100C371384001065C2 /* BankAccount.m */; };
 		B126CC22157018FC0065EAC1 /* printer.png in Resources */ = {isa = PBXBuildFile; fileRef = B126CC21157018FC0065EAC1 /* printer.png */; };
@@ -312,6 +314,7 @@
 			dstPath = ..;
 			dstSubfolderSpec = 7;
 			files = (
+				B124C35D157E855B004DAC59 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy Java */,
 				B15FCCF0141422BD000738B6 /* HBCIServer.jar in Copy Java */,
 			);
 			name = "Copy Java";
@@ -511,6 +514,7 @@
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; tabWidth = 4; };
 		B120E3C10EB0F3F000FC5A6F /* AccountRep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AccountRep.png; sourceTree = "<group>"; };
+		B124C35B157E8556004DAC59 /* libhbci4java-card-mac-os-x-10.6.jnilib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libhbci4java-card-mac-os-x-10.6.jnilib"; sourceTree = "<group>"; };
 		B124F09D0C36F3E8001065C2 /* BankStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatement.h; sourceTree = "<group>"; tabWidth = 4; };
 		B124F09E0C36F3E8001065C2 /* BankStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatement.m; sourceTree = "<group>"; tabWidth = 4; };
 		B124F10F0C371384001065C2 /* BankAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankAccount.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -806,6 +810,7 @@
 				B19A86360F3CD17E000FE9B3 /* Security.framework in Frameworks */,
 				B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */,
 				27E79FCB145AFCB3007C0AE3 /* QuartzCore.framework in Frameworks */,
+				B124C35C157E8556004DAC59 /* libhbci4java-card-mac-os-x-10.6.jnilib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1156,6 +1161,7 @@
 				B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */,
 				B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */,
 				27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */,
+				B124C35B157E8556004DAC59 /* libhbci4java-card-mac-os-x-10.6.jnilib */,
 				B15FCCEE141422A3000738B6 /* HBCIServer.jar */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -2057,7 +2063,10 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Resources\"",
+				);
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
@@ -2091,7 +2100,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Resources\"",
+				);
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
@@ -2124,7 +2136,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Resources\"",
+				);
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;

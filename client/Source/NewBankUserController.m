@@ -141,7 +141,6 @@
 {
 	[userSheet makeFirstResponder:okButton ];
     [currentUserController commitEditing ];
-    if ([self check ] == NO) return;
 	[okButton setKeyEquivalent:@"" ];
     
     BankUser *currentUser = [currentUserController content ];
@@ -158,6 +157,8 @@
     
     // PinTan-Zugang 
     if (secMethod == SecMethod_PinTan) {
+        if ([self check ] == NO) return;
+
         if (step == 1) {
             [self startProgressWithMessage: NSLocalizedString(@"AP177", @"") ];
             [self performSelector:@selector(getBankSetupInfo) withObject:nil afterDelay:0 ];
@@ -196,7 +197,21 @@
     // DDV-Zugang
     if (secMethod == SecMethod_DDV) {
         if (step == 1) {
-            
+            // User anlegen
+            [self startProgressWithMessage: NSLocalizedString(@"AP178", @"") ];
+            PecuniaError *error = [[HBCIClient hbciClient ] addBankUser: currentUser];
+            if (error) {
+                [self stopProgress ];
+                [error alertPanel];
+            }
+            else {
+                [[HBCIClient hbciClient ] updateTanMediaForUser:currentUser ];
+                [bankController updateBankAccounts: [[HBCIClient hbciClient ] getAccountsForUser:currentUser]];
+                [self stopProgress ];
+                
+                [userSheet orderOut: sender];
+                [NSApp endSheet: userSheet returnCode: 0];
+            }
         }
     }
     
@@ -428,6 +443,15 @@
 		frame.size.height = 406;
 		frame.size.height -= 200; frame.origin.y += 200;
 		[userSheet setFrame: frame display: YES ];
+        
+        NSView *contentView = [userSheet contentView ];
+        if (currentBox != secSelectBox) {
+            [currentBox retain ];
+            [contentView replaceSubview:currentBox with:secSelectBox ];
+            currentBox = secSelectBox;
+            [secSelectBox setFrame:NSMakeRect(110,60,549,120) ];
+        }
+        
         return;
     }
     
@@ -441,13 +465,7 @@
     [currentUserController setContent:user ];
 	
 	step = 0;
-    
-    NSView *contentView = [userSheet contentView ];
-    [currentBox retain ];
-    [contentView replaceSubview:currentBox with:secSelectBox ];
-    currentBox = secSelectBox;
-    [secSelectBox setFrame:[pinTanBox frame ] ];
-    
+        
 	[self prepareUserSheet ];
     
 	[NSApp beginSheet: userSheet
