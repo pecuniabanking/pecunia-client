@@ -10,11 +10,15 @@
 	<string>$(TeamIdentifierPrefix)de.pecuniabanking.pecunia.10</string>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
+	<key>com.apple.security.device.usb</key>
+	<true/>
 	<key>com.apple.security.files.downloads.read-write</key>
 	<true/>
 	<key>com.apple.security.files.user-selected.read-write</key>
 	<true/>
 	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.security.personal-information.calendars</key>
 	<true/>
 </dict>
 </plist>

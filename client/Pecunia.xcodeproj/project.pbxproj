@@ -27,6 +27,7 @@
 		27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
 		2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2716FE4C152381A60015A753 /* SynchronousScrollView.m */; };
 		271B47D614508F2F0036815C /* Transfer_EU_24.png in Resources */ = {isa = PBXBuildFile; fileRef = 271B47D514508F2E0036815C /* Transfer_EU_24.png */; };
+		271BCF14158120E600ACB6F6 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy Java */ = {isa = PBXBuildFile; fileRef = 271BCF13158120B800ACB6F6 /* libhbci4java-card-mac-os-x-10.6.jnilib */; };
 		272328A01551A4D500B9683B /* transfer-debit-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289B1551A4D500B9683B /* transfer-debit-preview.png */; };
 		272328A11551A4D500B9683B /* transfer-eu-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289C1551A4D500B9683B /* transfer-eu-preview.png */; };
 		272328A21551A4D500B9683B /* transfer-internal-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289D1551A4D500B9683B /* transfer-internal-preview.png */; };
@@ -92,7 +93,6 @@
 		27D240EA145302A900EDC8C7 /* done.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27D240E9145302A900EDC8C7 /* done.mp3 */; };
 		27D302951538453300D6A2CC /* sort-indicator-inc.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302941538453300D6A2CC /* sort-indicator-inc.png */; };
 		27D302971538461700D6A2CC /* sort-indicator-dec.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302961538461700D6A2CC /* sort-indicator-dec.png */; };
-		27D302A91538857900D6A2CC /* ChromiumTabs.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27D302A81538857900D6A2CC /* ChromiumTabs.framework */; };
 		27D3169014A8C81B002F500D /* blue arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D3168F14A8C81B002F500D /* blue arrow.png */; };
 		27DD4AC5150B60A4006C2370 /* HBCI business transactions.csv in Resources */ = {isa = PBXBuildFile; fileRef = 27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */; };
 		27DD4AFE150B6F84006C2370 /* BWGradientBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DD4AFD150B6F84006C2370 /* BWGradientBox.m */; };
@@ -314,6 +314,7 @@
 			dstPath = ..;
 			dstSubfolderSpec = 7;
 			files = (
+				271BCF14158120E600ACB6F6 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy Java */,
 				B124C371157FF437004DAC59 /* pcsc-ctapi-wrapper.dylib in Copy Java */,
 				B15FCCF0141422BD000738B6 /* HBCIServer.jar in Copy Java */,
 			);
@@ -328,7 +329,6 @@
 			files = (
 				27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */,
 				B1F4582E0F25171A00BAF4E8 /* Sparkle.framework in Copy Frameworks */,
-				27D302A91538857900D6A2CC /* ChromiumTabs.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -365,6 +365,7 @@
 		2716FE4B152381A60015A753 /* SynchronousScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynchronousScrollView.h; sourceTree = "<group>"; };
 		2716FE4C152381A60015A753 /* SynchronousScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynchronousScrollView.m; sourceTree = "<group>"; };
 		271B47D514508F2E0036815C /* Transfer_EU_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transfer_EU_24.png; sourceTree = "<group>"; };
+		271BCF13158120B800ACB6F6 /* libhbci4java-card-mac-os-x-10.6.jnilib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libhbci4java-card-mac-os-x-10.6.jnilib"; sourceTree = "<group>"; };
 		2723289B1551A4D500B9683B /* transfer-debit-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-debit-preview.png"; sourceTree = "<group>"; };
 		2723289C1551A4D500B9683B /* transfer-eu-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-eu-preview.png"; sourceTree = "<group>"; };
 		2723289D1551A4D500B9683B /* transfer-internal-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-internal-preview.png"; sourceTree = "<group>"; };
@@ -1166,6 +1167,7 @@
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
 				B137BE8F12D33AB200D0394C /* Institute.csv */,
+				271BCF13158120B800ACB6F6 /* libhbci4java-card-mac-os-x-10.6.jnilib */,
 				B1F454370F101E7500BAF4E8 /* Localizable.strings */,
 				27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */,
 			);
