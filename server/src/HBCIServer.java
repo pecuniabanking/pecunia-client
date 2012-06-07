@@ -44,6 +44,7 @@ import org.kapott.hbci.manager.HBCIUtilsInternal;
 import org.kapott.hbci.passport.AbstractHBCIPassport;
 import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.passport.HBCIPassportPinTan;
+import org.kapott.hbci.passport.HBCIPassportDDV;
 import org.kapott.hbci.passport.AbstractPinTanPassport;
 import org.kapott.hbci.status.HBCIDialogStatus;
 import org.kapott.hbci.status.HBCIExecStatus;
@@ -55,7 +56,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 @SuppressWarnings(value={"unchecked", "rawtypes"})
-
 
 
 public class HBCIServer {
@@ -91,7 +91,7 @@ public class HBCIServer {
 		in = new BufferedReader(new InputStreamReader(System.in, "UTF-8"));
 		out = new BufferedWriter(new OutputStreamWriter(System.out, "UTF-8"));			
     }
-
+    
 	//------------------------------ START CALLBACK ---------------------------------------------------
 	
 	private static class MyCallback	extends HBCICallbackConsole
@@ -131,7 +131,8 @@ public class HBCIServer {
 	    {
 	        try {
 	            String    st;
-	            String def = retData.toString();
+	            String def = null;
+	            if(retData!= null) def = retData.toString();
 	            
 	            switch(reason) {
 	               	case NEED_COUNTRY: 			st = "DE"; break;
@@ -159,6 +160,8 @@ public class HBCIServer {
 	                case NEED_PT_TAN:			st = callbackClient(passport, "getTan", msg, def, reason, datatype); break;
 	                case NEED_PT_TANMEDIA:		st = callbackClient(passport, "getTanMedia", msg, def, reason, datatype); break;
 	                case HAVE_INST_MSG:			callbackClient(passport, "instMessage", msg, def, reason, datatype); return;
+	                case NEED_CHIPCARD:			callbackClient(passport, "needChipcard", msg, def, reason, datatype); return;
+	                case HAVE_CHIPCARD:			callbackClient(passport, "haveChipcard", msg, def, reason, datatype); return;
 	
 	                default: System.err.println("Unhandled callback reason code: " + Integer.toString(reason)); return;
 	            }
@@ -320,21 +323,42 @@ public class HBCIServer {
     }
     	
 	private void addPassport() throws IOException {
-		String filename = passportKey(map, "addPassport");
-		if(filename == null) return;
-		String filePath = passportPath + "/" + filename + ".dat";
-        HBCIUtils.setParam("client.passport.PinTan.filename",filePath);
+		
+		String type = getParameter(map, "passportType");
+		
+		if(type.equals("PinTan")) {
+			String filename = passportKey(map, "addPassport");
+			if(filename == null) return;
+			String filePath = passportPath + "/" + filename + ".dat";
+
+			HBCIUtils.setParam("client.passport.PinTan.filename",filePath);
+	        
+	        String checkCert = map.getProperty("checkCert");
+	        if(checkCert != null && checkCert.equals("no")) {
+	        	HBCIUtils.setParam("client.passport.PinTan.checkcert", "0");
+	        } else {
+	        	HBCIUtils.setParam("client.passport.PinTan.checkcert", "1");
+	        }			
+		}
+		
+		if(type.equals("DDV")) {
+	        // DDV
+			String libPath = getParameter(map, "ddvLibPath");
+			String portIdx = getParameter(map, "ddvPortIdx");
+			String readerIdx = getParameter(map, "ddvReaderIdx");
+	        HBCIUtils.setParam("client.passport.DDV.libname.ddv", libPath+"libhbci4java-card-mac-os-x-10.6.jnilib");
+	        HBCIUtils.setParam("client.passport.DDV.path", passportPath+"/");
+	        HBCIUtils.setParam("client.passport.DDV.libname.ctapi", libPath+"pcsc-ctapi-wrapper.dylib");
+	        HBCIUtils.setParam("client.passport.DDV.port", portIdx);
+	        HBCIUtils.setParam("client.passport.DDV.ctnumber", readerIdx);
+	        HBCIUtils.setParam("client.passport.DDV.usebio", "0");
+	        HBCIUtils.setParam("client.passport.DDV.softpin", "0");			
+		}
         
-        String checkCert = map.getProperty("checkCert");
-        if(checkCert != null && checkCert.equals("no")) {
-        	HBCIUtils.setParam("client.passport.PinTan.checkcert", "0");
-        } else {
-        	HBCIUtils.setParam("client.passport.PinTan.checkcert", "1");
-        }
-        
-        HBCIPassport passport=AbstractHBCIPassport.getInstance();
+        HBCIPassport passport=AbstractHBCIPassport.getInstance(type);
         HBCIUtils.setParam("action.resetBPD","1");
         HBCIUtils.setParam("action.resetUPD","1");
+        
         
 //    	passport.clearBPD();
 //    	passport.clearUPD();
@@ -345,22 +369,33 @@ public class HBCIServer {
         	hbciHandle=new HBCIHandler(version, passport);
         }
         catch(HBCI_Exception e) {
-        	File ppFile = new File(filePath);
-        	ppFile.delete();
+        	String fileName = null;
+        	if(type.equals("PinTan")) fileName = ((HBCIPassportPinTan)passport).getFileName();
+        	if(type.equals("DDV")) fileName = ((HBCIPassportDDV)passport).getFileName();
+        	if(fileName != null) {
+            	File ppFile = new File(fileName);
+            	ppFile.delete();        		
+        	}
         	throw e;
         }
         
-        hbciHandlers.put(filename, hbciHandle);
+        // Passport-Schlüssel ermitteln und Handle ablegen
+        HBCIUtils.log("DDVPassport BLZ:  "+passport.getBLZ(), HBCIUtils.LOG_DEBUG);
+        HBCIUtils.log("DDVPassport UserId:  "+passport.getUserId(), HBCIUtils.LOG_DEBUG);
+        
+        String passportKey = passportKey(passport.getBLZ(), passport.getUserId());
+        hbciHandlers.put(passportKey, hbciHandle);
         
         
         // User-Infos schreiben
+/*        
         String name = getParameter(map, "name");
         User user = User.createFromHBCI((HBCIPassportPinTan)passport, name);
         user.save();
         users.put(filename, user);
-        
+*/        
         xmlBuf.append("<result name=\"addPassport\">");
-		xmlGen.passportToXml((HBCIPassportPinTan)passport);
+        xmlGen.passportToXml(passport);
         xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
         out.flush();
@@ -1195,6 +1230,7 @@ public class HBCIServer {
 				else if(jobName.equals("DauerNew")) supp = gvcodes.contains("HKDAE");
 				else if(jobName.equals("DauerEdit")) supp = gvcodes.contains("HKDAN");
 				else if(jobName.equals("DauerDel")) supp = gvcodes.contains("HKDAL");
+				else if(jobName.equals("TANMediaList")) supp = gvcodes.contains("HKTAB");
 			} else supp = handler.isSupported(jobName);
 		}
 		
@@ -1449,6 +1485,23 @@ public class HBCIServer {
 		if(handler == null) {
 			error(ERR_MISS_USER, "getTANMediaList", userId);
 			return;			
+		}
+		
+		// check if job is supported
+		Properties bpd = handler.getPassport().getBPD();
+		boolean isSupported = false;
+		for(Enumeration e = bpd.keys(); e.hasMoreElements(); ) {
+			String key = (String)e.nextElement();
+			if(key.matches("Params\\w*.PinTanPar1.ParPinTan.PinTanGV\\w*.segcode")) {
+				String gvName = bpd.getProperty(key);
+				if(gvName.equals("HKTAB")) isSupported = true;
+			}
+		}
+		if(isSupported == false) {
+			xmlBuf.append("<result command=\"getTANMediaList\"></result>.");
+			out.write(xmlBuf.toString());
+			out.flush();
+			return;
 		}
 		
 		HBCIJob job = handler.newJob("TANMediaList");

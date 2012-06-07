@@ -13,6 +13,7 @@ import org.kapott.hbci.GV_Result.GVRTANMediaList;
 import org.kapott.hbci.manager.HBCIUtils;
 import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.passport.HBCIPassportPinTan;
+import org.kapott.hbci.passport.HBCIPassportDDV;
 import org.kapott.hbci.structures.Konto;
 import org.kapott.hbci.structures.Value;
 
@@ -235,7 +236,7 @@ public class XmlGen {
     	}
     }
     
-    public void passportToXml(HBCIPassportPinTan pp) throws IOException {
+    public void passportToXml(HBCIPassport pp) throws IOException {
     	xmlBuf.append("<object type=\"User\">");
     	tag("bankCode", pp.getBLZ());
     	tag("bankName", pp.getInstName());
@@ -248,16 +249,25 @@ public class XmlGen {
     	String version = pp.getHBCIVersion();
     	if(version.compareTo("plus") == 0) version = "220";
     	tag("hbciVersion", version);
-    	booleTag("checkCert", pp.getCheckCert());
-    	Properties sec = pp.getCurrentSecMechInfo();
-    	if(sec != null)	{
-    		intTag("tanMethodNumber", sec.getProperty("secfunc"));
-    		tag("tanMethodDescription", sec.getProperty("name"));
+
+    	if(pp instanceof HBCIPassportPinTan) {
+    		HBCIPassportPinTan ppPT = (HBCIPassportPinTan)pp;
+    		
+        	booleTag("checkCert", ppPT.getCheckCert());
+        	Properties sec = ppPT.getCurrentSecMechInfo();
+        	if(sec != null)	{
+        		intTag("tanMethodNumber", sec.getProperty("secfunc"));
+        		tag("tanMethodDescription", sec.getProperty("name"));
+        	}    		
     	}
-    	    	
-    	xmlBuf.append("</object>");
+    	
+    	if(pp instanceof HBCIPassportDDV) {
+    		
+    	}
+    	
+    	xmlBuf.append("</object>");    	
     }
-    
+        
     public void userToXml(User user) throws IOException {
     	xmlBuf.append("<object type=\"User\">");
     	tag("name", user.name);
