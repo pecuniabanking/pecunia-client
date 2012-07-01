@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,19 +17,21 @@
  * 02110-1301  USA
  */
 
-#define HBCI4JAVA
-
 #import <Cocoa/Cocoa.h>
-#import "Transfer.h"
-#import "StandingOrder.h"
-#import "MessageLog.h"
-#import "HBCIBackend.h"
-#import "HBCIController.h"
 
-@interface HBCIClient : NSObject <HBCIBackend> {
-	id<HBCIBackend> controller;
+#import "PXListView.h"
+#import "TransfersListView.h"
+
+@interface TransferTemplatesListView : PXListView <PXListViewDelegate>
+{
+@private
+    id observedObject;
+    id<TransfersDragDelegate> owner; // The member "delegate" is already taken.
 }
 
-+(HBCIClient*)hbciClient;
+@property (nonatomic, retain) id<TransfersDragDelegate> owner;
+@property (nonatomic, readonly) NSNumberFormatter *numberFormatter;
+@property (nonatomic, retain) NSArray *dataSource;
 
 @end
+

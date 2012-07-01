@@ -1,3 +1,9 @@
+// XXX: refactor keys and split messages into groups.
+
+// Common strings.
+// AP0 .. AP99
+
+"AP0" = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß 0123456789.,&-/+*$%";
 "EUR" = "€";
 "close" = "Schließen";
 "AP1" = "Eingabe unvollständig";
@@ -27,6 +33,12 @@
 "accounts_info" = "Kontensicht";
 "AP16" = "Warnung";
 "AP17" = "Der Bankkennung sind noch Konten zugeordnet. Möchten Sie die zugeordneten Konten löschen?";
+"close anyway" = "Dennoch Beenden";
+"banking_root" = "BANKKONTEN";
+"category_root" = "KATEGORIEN";
+
+// Common errors.
+// AP 100..199
 "AP100" = "Kritisch";
 "AP101" = "Fehler";
 "AP102" = "Warnung";
@@ -36,12 +48,10 @@
 "AP106" = "Alle Meldungen";
 "display_log" = "Meldungen";
 "log_info" = "Meldungen ausgeben";
-"banking_root" = "BANKKONTEN";
-"category_root" = "KATEGORIEN";
 "nass_root" = " Nicht zugeordnet";
 "category_rules" = "Umsatzregeln";
 "rules_info" = "Umsatzregeln bearbeiten";
-"unknown" = "- unbekannt -";
+"unknown" = "Nicht bekannt";
 "change_account" = "Konto ändern";
 "AP18" = "Transaktion wird nicht unterstützt";
 "AP19" = "Für das gewählte Konto wird diese Art der Überweisung nicht von Ihrer Bank unterstützt";
@@ -136,9 +146,10 @@
 "AP108" = "Daueraufträge abrufen";
 "AP109" = "Es sind zur Zeit keine Konten für die Verwendung mit Daueraufträgen gekennzeichnet. Möchten Sie dass Pecunia nun prüft, welche Konten Daueraufträge unterstützen?";
 "AP110" = "Datenbank wird geöffnet...";
-"AP111" = "Es gibt noch nicht gesendete Überweisungsaufträge in der Überweisungsliste. Möchten Sie Pecunia trotzdem beenden?";
+"AP111" = "Es gibt noch nicht gesendete Überweisungsaufträge in der Überweisungsliste.\nMöchten Sie Pecunia dennoch beenden?\n\nHinweis: Die Aufträge können auch später noch gesendet werden.\n";
+"AP111.2" = "Sie haben eine neue Überweisung begonnen ohne sie zu beenden. Wenn Sie Pecunia jetzt schließen wird diese Überweisung verworfen. Was wollen Sie tun?";
 "AP112" = "Jetzt senden";
-"AP113" = "Zur Liste";
+"AP113" = "Überweisungsseite";
 "AP114" = "Pecunia beenden";
 "AP115" = "Dauerauftrag einrichten";
 "AP116" = "Bei mindestens einem Dauerauftrag wurde die Auftrags-ID nicht übermittelt. Möchten Sie die Daueraufträge mit der Bank abgleichen?";
@@ -173,18 +184,29 @@
 "AP177" = "Verbindung mit der Bank aufbauen...";
 "AP178" = "Bankkennung abrufen und einrichten...";
 "AP179" = "Wenn Sie die Unterkonto-Information ändern können Sie das Konto ggfs. nicht mehr verwenden. Möchten Sie die Information trotzdem ändern?";
-"AP180" = "BLZ ";
-"AP181" = " Kto ";
-"AP182" = "Die Ermittlung des Kontosaldos ist fehlgeschlagen.";
-"AP183" = "Umbuchung";
-"AP184" = "Standardüberweisung";
-"AP185" = "EU-Überweisung";
-"AP186" = "SEPA-Überweisung";
-"AP187" = "Lastschrift";
-"AP188" = "Zielkonto";
-"AP189" = "IBAN";
-"AP190" = "BIC";
-"AP191" = "Konto";
-"AP192" = "BLZ";
-"AP193" = "Bitte Chipkarte einlegen";
 
+// Callback and backend.
+// AP350..AP399
+"AP350" = "Bitte Chipkarte einlegen";
+
+// Transfers.
+// AP400..AP449
+"AP400" = "BLZ";
+"AP401" = "Konto";
+"AP402" = "Die Ermittlung des Kontosaldos ist fehlgeschlagen.";
+"AP403" = "Umbuchung";
+"AP404" = "Standardüberweisung";
+"AP405" = "EU-Überweisung";
+"AP406" = "SEPA-Überweisung";
+"AP407" = "Lastschrift";
+"AP408" = "Zielkonto";
+"AP409" = "IBAN";
+"AP410" = "BIC";
+"AP411" = "Bearbeitung abbrechen";
+"AP413" = "Beenden Sie bitte zunächst die aktuelle Überweisung.";
+"AP414" = "Es kann immer nur eine Überweisung bearbeitet werden. Wählen Sie deshalb nur einen einzigen Eintrag aus der Liste.";
+"AP415" = "Alle Aufträge senden";
+"AP416" = "Ausgewählte Aufträge senden";
+
+// Use a new block of IDs for next set of strings!
+// AP450..AP499

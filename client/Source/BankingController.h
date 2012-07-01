@@ -50,7 +50,7 @@
 
 @interface BankingController : NSObject
 {
-    IBOutlet NSArrayController  *transactions;
+    IBOutlet NSArrayController  *categoryAssignments;
     IBOutlet NSWindow           *mainWindow;
     IBOutlet NSTabView          *mainTabView;
     IBOutlet CategoryView       *accountsView;
@@ -84,8 +84,8 @@
     IBOutlet NSTextField        *versionText;
     IBOutlet NSTextField        *copyrightText;
     
-    IBOutlet StatementsListView     *statementsListView;
-    IBOutlet NSSegmentedControl     *sortControl;
+    IBOutlet StatementsListView *statementsListView;
+    IBOutlet NSSegmentedControl *sortControl;
     
     IBOutlet NSButton        *statementsButton;
     IBOutlet NSButton        *graph1Button;
@@ -139,13 +139,14 @@
 @property(nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property(nonatomic, retain) DockIconController *dockIconController;
 
--(IBAction)listUsers:(id)sender;
--(IBAction)showInput:(id)sender;
--(IBAction)showInfo:(id)sender;
--(IBAction)addAccount:(id)sender;
--(IBAction)changeAccount:(id)sender;
--(IBAction)deleteAccount:(id)sender;
--(IBAction)editPreferences:(id)sender;
+- (IBAction)listUsers: (id)sender;
+- (IBAction)showInput: (id)sender;
+- (IBAction)showInfo: (id)sender;
+- (IBAction)addAccount: (id)sender;
+- (IBAction)changeAccount: (id)sender;
+- (IBAction)deleteAccount: (id)sender;
+- (IBAction)editPreferences: (id)sender;
+- (IBAction)sortingChanged: (id)sender;
 
 -(IBAction)activateMainPage: (id)sender;
 - (IBAction)activateAccountPage: (id)sender;
@@ -207,7 +208,7 @@
 -(void)syncAllAccounts;
 -(void)publishContext;
 -(void)updateUnread;
--(BOOL)checkForUnsentTransfers;
+-(BOOL)checkForUnhandledTransfersAndSend;
 -(void)migrate;
 -(void)checkBalances:(NSArray*)resultList;
 -(void)setHBCIAccounts;

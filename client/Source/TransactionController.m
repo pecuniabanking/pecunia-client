@@ -28,21 +28,56 @@
 #import "TransferTemplate.h"
 #import "LogController.h"
 
+/**
+ * Transform zero-based selector indices to one-based chargedBy property values for transfers.
+ */
+@implementation ChargeByValueTransformer
+
++ (BOOL)allowsReverseTransformation
+{
+    return YES;
+}
+
+- (id)transformedValue: (id)value
+{
+    if (value == nil)
+        return nil;
+    
+    if ([value intValue] == 0)
+        return value;
+    
+    return [NSNumber numberWithInt: [value intValue] - 1];
+}
+
+- (id)reverseTransformedValue: (id)value
+{
+    if (value == nil)
+        return nil;
+    
+    return [NSNumber numberWithInt: [value intValue] + 1];
+}
+
+@end
+
 @implementation TransactionController
+
+@synthesize currentTransfer;
+@synthesize currentTransferController;
+@synthesize templateController;
 
 -(void)awakeFromNib
 {
 	// sort descriptor for transactions view
-	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
-	NSArray				*sds = [NSArray arrayWithObject:sd];
-	[countryController setSortDescriptors: sds ];
+	NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+	NSArray *sds = [NSArray arrayWithObject:sd];
+	[countryController setSortDescriptors: sds];
 }
 
--(void)setManagedObjectContext:(NSManagedObjectContext*)context
+-(void)setManagedObjectContext: (NSManagedObjectContext*)context
 {
-	[templateController setManagedObjectContext:context ];
-	[templateController prepareContent ];
-	[currentTransferController setManagedObjectContext:context ];
+	[templateController setManagedObjectContext: context];
+	[templateController prepareContent];
+	[currentTransferController setManagedObjectContext: context];
 }
 
 -(void)updateLimits
@@ -193,13 +228,298 @@
 	if(/*transferType == TransferTypeEU || */donation) [window makeFirstResponder: [[window contentView ] viewWithTag: 11 ] ];
 	
     [[[templatesDraw contentView ] viewWithTag:10 ] setDoubleAction:@selector(templateDoubleClicked:) ];
-	
-/*	
-	// limits
-	maxLenPurpose = 27;
-	maxLenRemoteName = 52;
-*/ 
 }
+
+- (BOOL)newTransferOfType: (TransferType)type
+{
+    NSError *error = nil;
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+
+    // Save any previous change.
+    if ([context  hasChanges]) {
+        if([context save: &error ] == NO) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+            return NO;
+        }
+    }
+
+	transferType = type;
+    currentTransfer = [NSEntityDescription insertNewObjectForEntityForName: @"Transfer" inManagedObjectContext: context];
+    currentTransfer.type = [NSNumber numberWithInt: transferType];
+    currentTransfer.changeState = TransferChangeNew;
+    [self prepareTransfer];
+    [currentTransferController setContent: currentTransfer];
+
+    return YES;
+}
+
+- (BOOL)editExistingTransfer: (Transfer*)transfer
+{
+    NSError *error = nil;
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    
+    // Save any previous change.
+    if ([context  hasChanges]) {
+        if ([context save: &error] == NO) {
+            NSAlert *alert = [NSAlert alertWithError:error];
+            [alert runModal];
+            return NO;
+        }
+    }
+	
+	transferType = [transfer.type intValue];
+	account = transfer.account;
+	
+	if (transferType == TransferTypeEU) {
+		[self setValue: transfer.remoteCountry forKey: @"selectedCountry"];
+	}
+	
+	currentTransfer = transfer;
+	[self prepareTransfer];
+    currentTransfer.changeState = TransferChangeEditing;
+	
+	[currentTransferController setContent: transfer];
+    
+    return YES;
+}
+
+- (BOOL)newTransferFromExistingTransfer: (Transfer*)transfer
+{
+    if (![self newTransferOfType: [transfer.type intValue]]) {
+        return NO;
+    }
+        
+    [currentTransfer copyFromTransfer: transfer withLimits: limits];
+    currentTransfer.changeState = TransferChangeNew;
+    
+    // Determine the remote bank name again.
+    NSString *bankName;
+    if (transferType == TransferTypeEU) {
+        bankName = [[HBCIClient hbciClient] bankNameForBIC: currentTransfer.remoteBIC inCountry: currentTransfer.remoteCountry];
+    } else {
+        bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode inCountry: currentTransfer.remoteCountry];
+    }
+    if (bankName != nil) {
+        currentTransfer.remoteBankName = bankName;		   
+    }
+    return YES;
+}
+
+- (BOOL)editingInProgress
+{
+    return currentTransferController.content != nil;
+}
+
+- (void)cancelCurrentTransfer
+{
+    if ([self editingInProgress]) {
+        if (currentTransfer.changeState != TransferChangeNew) {
+            currentTransfer.changeState = TransferChangeUnchanged;
+        }
+        currentTransferController.content = nil;
+        if (currentTransferController.managedObjectContext.hasChanges) {
+            [currentTransferController.managedObjectContext rollback];
+        }
+    }
+}
+
+/**
+ * Validates the values entered for the current transfer and if everything seems correct
+ * commits the changes.
+ * Returns YES if the current transfer could be finished, otherwise (e.g. for validation errors) NO.
+ */
+- (BOOL)finishCurrentTransfer
+{
+    if (![self validateCurrentTransfer]) {
+        return NO;
+    }
+	[currentTransferController commitEditing];
+    
+    NSError *error = nil;
+	NSManagedObjectContext	*context = MOAssistant.assistant.context;
+	if (![context save: &error]) {
+		NSAlert *alert = [NSAlert alertWithError: error];
+		[alert runModal];
+		return NO;
+	}
+	
+    currentTransfer.changeState = TransferChangeUnchanged;
+    currentTransferController.content = nil;
+    
+	return YES;
+}
+
+/**
+ * Checks if the given string contains any character that is not allowed and alerts the
+ * user if so.
+ */
+- (BOOL)validateCharacters: (NSString*)s
+{
+    NSCharacterSet *cs = [NSCharacterSet characterSetWithCharactersInString: NSLocalizedString(@"AP0", @"")];
+    
+    if (s == nil || [s length] == 0) {
+        return YES;
+    }
+    
+    for (NSUInteger i = 0; i < [s length]; i++) {
+        if ([cs characterIsMember: [s characterAtIndex: i]] == NO) {
+            NSRunAlertPanel(NSLocalizedString(@"AP170", @""), 
+                            NSLocalizedString(@"AP171", @""), 
+                            NSLocalizedString(@"ok", @"Ok"), 
+                            nil,
+                            nil,
+                            [s characterAtIndex:i ]);
+            return NO;
+        }
+    }
+    return YES;    
+}
+
+/**
+ * Validation of the entered values. Checks for empty or invalid entries.
+ * Returns YES if all entries are ok, otherwise NO.
+ */
+- (BOOL)validateCurrentTransfer
+{
+	BOOL res;
+	NSNumber *value;
+    
+    if (![self validateCharacters: currentTransfer.purpose1]) {
+        return NO;
+    }
+    if (![self validateCharacters: currentTransfer.purpose2]) {
+        return NO;
+    }
+    if (![self validateCharacters: currentTransfer.purpose3]) {
+        return NO;
+    }
+    if (![self validateCharacters: currentTransfer.purpose4]) {
+        return NO;
+    }
+    if (![self validateCharacters: currentTransfer.remoteName]) {
+        return NO;
+    }
+    
+	if(currentTransfer.remoteName == nil) {
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+						NSLocalizedString(@"AP8", @"Please enter a receiver"),
+						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		return NO;
+	}
+	// do not check remote account for EU transfers, instead IBAN
+	if(transferType != TransferTypeEU && transferType != TransferTypeSEPA) {
+		if(currentTransfer.remoteAccount == nil) {
+			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
+							NSLocalizedString(@"AP9", @"Please enter an account number"),
+							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			return NO;
+		}
+	} else {
+		// EU or SEPA transfer
+		if(currentTransfer.remoteIBAN == nil) {
+			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
+							NSLocalizedString(@"AP24", @"Please enter a valid IBAN"),
+							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			return NO;
+		}
+		// check IBAN
+		if([[HBCIClient hbciClient ] checkIBAN: currentTransfer.remoteIBAN ] == NO) {
+			NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
+							NSLocalizedString(@"AP26", @"IBAN is not valid"),
+							NSLocalizedString(@"retry", @"Retry"), nil, nil);
+			return NO;
+		}
+	}
+	
+	if(transferType == TransferTypeStandard || transferType == TransferTypeDated || transferType == TransferTypeDebit) {
+		if(currentTransfer.remoteBankCode == nil) {
+			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+							NSLocalizedString(@"AP10", @"Please enter a bank code"),
+							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			return NO;
+		}
+	}
+	
+	if(transferType == TransferTypeSEPA) {
+		if(currentTransfer.remoteBIC == nil) {
+			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+							NSLocalizedString(@"AP25", @"Please enter valid bank identification code (BIC)"),
+							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			return NO;
+		}
+	}
+	
+	if( (value = currentTransfer.value) == nil ) {
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+						NSLocalizedString(@"AP11", @"Please enter a value"),
+						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		return NO;
+	}
+	if([value doubleValue ] <= 0) {
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+						NSLocalizedString(@"AP12", @"Please enter a value greater 0"),
+						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		return NO;
+	}
+	
+	// purpose?
+	if (currentTransfer.purpose1 == nil || [currentTransfer.purpose1 length ] == 0) {
+		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
+						NSLocalizedString(@"AP121", @"Please enter a purpose"),
+						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		return NO;
+	}
+	
+	if (transferType == TransferTypeEU) {
+		NSString	*foreignCurr = [[[countryController selectedObjects ] lastObject ] currency ];
+		NSString	*curr = currentTransfer.currency;
+		double		limit = 0.0;
+		
+		if(![curr isEqual: foreignCurr ] && ![curr isEqual: @"EUR" ] && ![curr isEqual: account.currency ]) {
+			NSRunAlertPanel(NSLocalizedString(@"AP22", @"Currency not allowed"), 
+							[NSString stringWithFormat: NSLocalizedString(@"AP23", @"The transfer currency is not allowed"), [limits localLimit ] ], 
+							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			return NO;
+		}
+		
+		if([curr isEqual: foreignCurr ] && limits) limit = [limits foreignLimit ]; else limit = [limits localLimit ];
+		if(limit > 0 && [value doubleValue ] > limit) {
+			NSRunAlertPanel(NSLocalizedString(@"AP20", @"Amount too high"), 
+							[NSString stringWithFormat: NSLocalizedString(@"AP21", @"The transfer amount must not be higher than %.2f"), [limits localLimit ] ], 
+							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			return NO;
+		}
+	}
+	
+	
+	// verify account and bank information
+	if(transferType != TransferTypeEU) {
+		// verify accounts, but only for available countries
+		if([currentTransfer.remoteCountry caseInsensitiveCompare: @"de" ] == NSOrderedSame ||
+		   [currentTransfer.remoteCountry caseInsensitiveCompare: @"at" ] == NSOrderedSame ||
+		   [currentTransfer.remoteCountry caseInsensitiveCompare: @"ch" ] == NSOrderedSame ||
+		   [currentTransfer.remoteCountry caseInsensitiveCompare: @"ca" ] == NSOrderedSame) {
+            
+			res = [[HBCIClient hbciClient ] checkAccount: currentTransfer.remoteAccount 
+												 forBank: currentTransfer.remoteBankCode 
+											   inCountry: currentTransfer.remoteCountry ];
+            
+			if(res == NO) {
+				NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
+								NSLocalizedString(@"AP13", @"Account number is not valid"),
+								NSLocalizedString(@"retry", @"Retry"), nil, nil);
+				return NO;
+			}
+		}
+	}
+	return YES;
+}
+
+//--------------------------------------------------------------------------------------------------
+
+#pragma mark -
+#pragma mark Old transfer handling code
 
 - (void)transferOfType: (TransferType)tt forAccount: (BankAccount*)acc
 {
@@ -236,9 +556,7 @@
 	if([currentTransfer.currency isEqualToString: @"" ]) currentTransfer.currency = @"EUR";
 	currentTransfer.type = [NSNumber numberWithInt: transferType ];
 	
-	// prepare container
-	transfers = [[NSMutableArray alloc ] initWithCapacity: 5 ];
-	[currentTransferController setContent: currentTransfer ];
+	[currentTransferController setContent: currentTransfer];
 
 /*
 	[self preparePurposeFields ];
@@ -323,7 +641,6 @@
 	[self prepareTransfer ];
 	
 	[currentTransferController setContent: tf ];
-	transfers = nil;
 	
 	//hide "next"-button
 	NSView	*cv = [window contentView ];
@@ -392,7 +709,7 @@
 		currentTransfer.chargedBy = [NSNumber numberWithInt: [chargeBox indexOfSelectedItem ] + 1 ];
 	}
 	[currentTransferController commitEditing ];
-	if([self check ] == NO) return NO;
+	if([self validateCurrentTransfer ] == NO) return NO;
 	
 	// save as template (if name given)
 	[self saveTemplate ];
@@ -471,138 +788,10 @@
 {
     [templatesDraw close ];
 	[NSApp stopModalWithCode:1];
-	[transfers release ];
 	[currentTransferController setContent:nil ];	
 	return YES;
 }
 
-
--(BOOL)check
-{
-	BOOL			res;
-	NSNumber		*value;
-    HBCIClient      *hbciClient = [HBCIClient hbciClient ];
-    
-    if ([hbciClient checkDTAUS: currentTransfer.purpose1 ] == NO) return NO;
-    if ([hbciClient checkDTAUS: currentTransfer.purpose2 ] == NO) return NO;
-    if ([hbciClient checkDTAUS: currentTransfer.purpose3 ] == NO) return NO;
-    if ([hbciClient checkDTAUS: currentTransfer.purpose4 ] == NO) return NO;
-    if ([hbciClient checkDTAUS: currentTransfer.remoteName ] == NO) return NO;
-      
-	if(currentTransfer.remoteName == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP8", @"Please enter a receiver"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
-		return NO;
-	}
-	// do not check remote account for EU transfers, instead IBAN
-	if(transferType != TransferTypeEU && transferType != TransferTypeSEPA) {
-		if(currentTransfer.remoteAccount == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-							NSLocalizedString(@"AP9", @"Please enter an account number"),
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
-			return NO;
-		}
-	} else {
-		// EU or SEPA transfer
-		if(currentTransfer.remoteIBAN == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-							NSLocalizedString(@"AP24", @"Please enter a valid IBAN"),
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
-			return NO;
-		}
-		// check IBAN
-		if([[HBCIClient hbciClient ] checkIBAN: currentTransfer.remoteIBAN ] == NO) {
-			NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-							NSLocalizedString(@"AP26", @"IBAN is not valid"),
-							NSLocalizedString(@"retry", @"Retry"), nil, nil);
-			return NO;
-		}
-	}
-	
-	if(transferType == TransferTypeStandard || transferType == TransferTypeDated || transferType == TransferTypeDebit) {
-		if(currentTransfer.remoteBankCode == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-							NSLocalizedString(@"AP10", @"Please enter a bank code"),
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
-			return NO;
-		}
-	}
-	
-	if(transferType == TransferTypeSEPA) {
-		if(currentTransfer.remoteBIC == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-							NSLocalizedString(@"AP25", @"Please enter valid bank identification code (BIC)"),
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
-			return NO;
-		}
-	}
-	
-	if( (value = currentTransfer.value) == nil ) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP11", @"Please enter a value"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
-		return NO;
-	}
-	if([value doubleValue ] <= 0) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP12", @"Please enter a value greater 0"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
-		return NO;
-	}
-	
-	// purpose?
-	if (currentTransfer.purpose1 == nil || [currentTransfer.purpose1 length ] == 0) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP121", @"Please enter a purpose"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
-		return NO;
-	}
-	
-	if(transferType == TransferTypeEU) {
-		NSString	*foreignCurr = [[[countryController selectedObjects ] lastObject ] currency ];
-		NSString	*curr = currentTransfer.currency;
-		double		limit = 0.0;
-		
-		if(![curr isEqual: foreignCurr ] && ![curr isEqual: @"EUR" ] && ![curr isEqual: account.currency ]) {
-			NSRunAlertPanel(NSLocalizedString(@"AP22", @"Currency not allowed"), 
-							[NSString stringWithFormat: NSLocalizedString(@"AP23", @"The transfer currency is not allowed"), [limits localLimit ] ], 
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
-			return NO;
-		}
-		
-		if([curr isEqual: foreignCurr ] && limits) limit = [limits foreignLimit ]; else limit = [limits localLimit ];
-		if(limit > 0 && [value doubleValue ] > limit) {
-			NSRunAlertPanel(NSLocalizedString(@"AP20", @"Amount too high"), 
-							[NSString stringWithFormat: NSLocalizedString(@"AP21", @"The transfer amount must not be higher than %.2f"), [limits localLimit ] ], 
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
-			return NO;
-		}
-	}
-	
-	
-	// verify account and bank information
-	if(transferType != TransferTypeEU) {
-		// verify accounts, but only for available countries
-		if([currentTransfer.remoteCountry caseInsensitiveCompare: @"de" ] == NSOrderedSame ||
-		   [currentTransfer.remoteCountry caseInsensitiveCompare: @"at" ] == NSOrderedSame ||
-		   [currentTransfer.remoteCountry caseInsensitiveCompare: @"ch" ] == NSOrderedSame ||
-		   [currentTransfer.remoteCountry caseInsensitiveCompare: @"ca" ] == NSOrderedSame) {
-
-			res = [[HBCIClient hbciClient ] checkAccount: currentTransfer.remoteAccount 
-												 forBank: currentTransfer.remoteBankCode 
-											   inCountry: currentTransfer.remoteCountry ];
-
-			if(res == NO) {
-				NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-								NSLocalizedString(@"AP13", @"Account number is not valid"),
-								NSLocalizedString(@"retry", @"Retry"), nil, nil);
-				return NO;
-			}
-		}
-	}
-	return YES;
-}
 
 -(void)windowWillClose:(NSNotification *)aNotification
 {
@@ -620,12 +809,12 @@
 	NSTextField	*te = [aNotification object ];
 	NSString	*bankName;
 	
-	if([te tag ] != 100) return;
+	if([te tag] != 100) return;
 	
 	if(transferType == TransferTypeEU) {
-		bankName = [[HBCIClient hbciClient  ] bankNameForBIC: [te stringValue ] inCountry: currentTransfer.remoteCountry ];
+		bankName = [[HBCIClient hbciClient] bankNameForBIC: [te stringValue] inCountry: currentTransfer.remoteCountry];
 	} else {
-		bankName = [[HBCIClient hbciClient  ] bankNameForCode: [te stringValue ] inCountry: currentTransfer.remoteCountry ];
+		bankName = [[HBCIClient hbciClient] bankNameForCode: [te stringValue] inCountry: currentTransfer.remoteCountry];
  	}
 	if(bankName) currentTransfer.remoteBankName = bankName;
 }

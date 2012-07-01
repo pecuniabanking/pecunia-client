@@ -49,15 +49,55 @@ static NSGradient *blackGradient;
     [NSGraphicsContext restoreGraphicsState];
 
     NSMutableParagraphStyle *paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
-    [paragraphStyle setAlignment: NSCenterTextAlignment];
-    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [NSColor whiteColor], NSForegroundColorAttributeName,
-                                paragraphStyle, NSParagraphStyleAttributeName,
-                                nil
-                                ];
-    NSAttributedString *cellStringWithFormat = [[[NSAttributedString alloc] initWithString: [self title]
-                                                                                attributes: attributes] autorelease];
-    [cellStringWithFormat drawInRect: NSInsetRect(cellFrame, 10, 4)];
+    
+    // If there is an image left or right to the title then exclude its bounding rect from the
+    // available space for the title. For now we don't support image above or below the title.
+    if (self.image != nil) {
+        NSPoint imageLocation = NSZeroPoint;
+        switch (self.imagePosition) {
+            case NSImageOnly:
+            case NSImageOverlaps:
+            {
+                imageLocation = NSMakePoint((cellFrame.size.width - self.image.size.width) / 2, 
+                                            (cellFrame.size.height - self.image.size.height) / 2);
+                break;
+            }
+            case NSImageLeft:
+                imageLocation.x = 4;
+                imageLocation.y = (cellFrame.size.height - self.image.size.height) / 2;
+                cellFrame.origin.x -= self.image.size.width + 4;
+                cellFrame.size.width -= self.image.size.width + 4;
+                break;
+            case NSImageRight:
+                imageLocation.x = cellFrame.size.width - self.image.size.width - 4;
+                imageLocation.y = (cellFrame.size.height - self.image.size.height) / 2;
+                cellFrame.size.width -= self.image.size.width + 4;
+                break;
+        }
+        if (imageLocation.x > 0) {
+            NSRect targetRect;
+            targetRect.origin = imageLocation;
+            targetRect.size = self.image.size;
+            [self.image drawInRect: targetRect
+                          fromRect: NSZeroRect
+                         operation: NSCompositeSourceOver
+                          fraction: 1.0
+                    respectFlipped: YES
+                             hints: nil];
+        }
+    }
+    
+    if (self.imagePosition != NSImageOnly || self.image == nil) {
+        [paragraphStyle setAlignment: NSCenterTextAlignment];
+        NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSColor whiteColor], NSForegroundColorAttributeName,
+                                    paragraphStyle, NSParagraphStyleAttributeName,
+                                    nil
+                                    ];
+        NSAttributedString *cellStringWithFormat = [[[NSAttributedString alloc] initWithString: [self title]
+                                                                                    attributes: attributes] autorelease];
+        [cellStringWithFormat drawInRect: NSInsetRect(cellFrame, 10, 4)];
+    }
 }
 
 @end

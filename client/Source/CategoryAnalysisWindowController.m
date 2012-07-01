@@ -2232,7 +2232,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [printInfo setVerticalPagination: NSFitPagination];
     NSPrintOperation *printOp;
 
-    printOp = [NSPrintOperation printOperationWithView: [topView getPrintViewForLayerBackedView] printInfo: printInfo];
+    printOp = [NSPrintOperation printOperationWithView: [topView printViewForLayerBackedView] printInfo: printInfo];
 
     [printOp setShowsPrintPanel: YES];
     [printOp runOperation];

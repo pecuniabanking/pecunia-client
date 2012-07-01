@@ -450,9 +450,16 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 
 - (void)deselectRowIndexes:(NSIndexSet*)rows
 {
+    // ml: added manual KVO notification.
+    [self willChangeValueForKey: @"selectedRow"];
+    [self willChangeValueForKey: @"selectedRows"];
+    
 	NSArray *oldSelectedCells = [self visibleCellsForRowIndexes:rows];
 	[_selectedRows removeIndexes:rows];
 	
+    [self didChangeValueForKey: @"selectedRow"];
+    [self didChangeValueForKey: @"selectedRows"];
+    
 	for(PXListViewCell *oldSelectedCell in oldSelectedCells)
 	{
 		[oldSelectedCell setNeedsDisplay:YES];

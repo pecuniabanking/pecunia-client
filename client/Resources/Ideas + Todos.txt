@@ -26,6 +26,7 @@ Umsatzabfrage
 
 Kategorie + Kontenanalyse
 -------------------------
+- Optionale Zuweisung einer Umsatzsteuer und wenn zugewiesen Anzeige desselben im Baum (z.B. als Badge).
 - (Graph) anpassbar durch Nutzer
 - (Graph) Export zu png, pdf
 - (Graph) Anzeige von min, max, average
@@ -33,7 +34,6 @@ Kategorie + Kontenanalyse
 - (Graph) mehrere Kategorien zusammen
 - (Graph) Auch für Kontenknoten alle Kindknoten in die Auswertung einbeziehen (wie schon für Kategorien).
 - statt mehrere Kategorien in einem Zeitraum vergleiche eine Kategorie in mehreren Zeiträumen
-- Umsatzsteuerschlüssel für jede Kategorie.
 - Nutzerdefiniertes Icon für eine Kategorie.
 - Vordefinierte/automatische Kategorien - anlegen (einschließlich Regeln) bei Erstabruf eines Kontos.
 - Numerischer Kategorienexport (Liste + Einnahmen/Ausgaben).
@@ -45,6 +45,7 @@ Transaktionen
 - Zusatzinfo in der Transaktionsliste anzeigen (umschaltbar).
 - Übernahme von Kontodaten aus der Zwischenablage.
 - Wiederkehrende Überweisung (auch für Prognosen), http://www.onlinebanking-forum.de/phpBB2/viewtopic.php?p=81818#81818
+- Zwischensaldoanzeige per Knopf abschaltbar machen.
 
 Ausgaben/Export
 ---------------
@@ -68,9 +69,11 @@ Aufträge, Überweisungen, Lastschriften
 
 Daueraufträge
 ---------------
-- Nächste fälligen Überweisungen anzeigen
+- Nächste fällige Überweisungen anzeigen
 
 Haushaltsbuch/Budgetplanung
 ---------------------------
 - OCR für Bons, zur (halb)automatischen Erfassung von gekauften Artikeln.
 - Vorlage eines Standardkontenrahmens (z.B. SKR03).
+- Automatische Belegnummern für Buchungen. Eine fortlaufende Nummer über alle Konten, eventuell mit manueller Startnummer und/oder Template.
+

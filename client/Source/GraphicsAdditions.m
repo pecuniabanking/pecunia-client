@@ -426,7 +426,7 @@ static void CGPathCallback(void *info, const CGPathElement *element)
  * Returns an offscreen view containing all visual elements of this view for printing,
  * including CALayer content. Useful only for views that are layer-backed.
  */
-- (NSView*)getPrintViewForLayerBackedView;
+- (NSView*)printViewForLayerBackedView;
 {
     NSRect bounds = self.bounds;
     int bitmapBytesPerRow = 4 * bounds.size.width;

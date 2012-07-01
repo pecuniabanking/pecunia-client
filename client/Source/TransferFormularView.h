@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,19 +17,17 @@
  * 02110-1301  USA
  */
 
-#define HBCI4JAVA
-
 #import <Cocoa/Cocoa.h>
-#import "Transfer.h"
-#import "StandingOrder.h"
-#import "MessageLog.h"
-#import "HBCIBackend.h"
-#import "HBCIController.h"
 
-@interface HBCIClient : NSObject <HBCIBackend> {
-	id<HBCIBackend> controller;
+@class TransfersController;
+
+@interface TransferFormularView : NSView {
+@private
+    NSImage *icon;
+    NSRect draggingArea;
 }
 
-+(HBCIClient*)hbciClient;
+@property (nonatomic, retain) NSImage *icon;
+@property (nonatomic, assign) TransfersController *controller;
 
 @end

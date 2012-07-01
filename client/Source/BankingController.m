@@ -54,6 +54,7 @@
 #import "CategoryRepWindowController.h"
 #import "CategoryDefWindowController.h"
 #import "CategoryPeriodsWindowController.h"
+#import "TransfersController.h"
 
 #import "BankStatementPrintView.h"
 #import "DockIconController.h"
@@ -71,6 +72,7 @@
 #import "User.h"
 #import "BankUser.h"
 
+// Pasteboard data types.
 NSString* const BankStatementDataType = @"BankStatementDataType";
 NSString* const CategoryDataType = @"CategoryDataType";
 
@@ -233,15 +235,15 @@ static BOOL runningOnLionOrLater = NO;
     
     // todo [self migrate];
     [categoryController addObserver: self forKeyPath: @"arrangedObjects.catSum" options: 0 context: nil];
-    [transactions addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
+    [categoryAssignments addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
     
     // Setup statements listview.
-    [statementsListView bind: @"dataSource" toObject: transactions withKeyPath: @"arrangedObjects" options: nil];
-    [statementsListView bind: @"valueArray" toObject: transactions withKeyPath: @"arrangedObjects.value" options: nil];
+    [statementsListView bind: @"dataSource" toObject: categoryAssignments withKeyPath: @"arrangedObjects" options: nil];
+    [statementsListView bind: @"valueArray" toObject: categoryAssignments withKeyPath: @"arrangedObjects.value" options: nil];
     
     // Bind controller to selectedRow property and the listview to the controller's selectedIndex property to get notified about selection changes.
-    [transactions bind: @"selectionIndexes" toObject: statementsListView withKeyPath: @"selectedRows" options: nil];
-    [statementsListView bind: @"selectedRows" toObject: transactions withKeyPath: @"selectionIndexes" options: nil];
+    [categoryAssignments bind: @"selectionIndexes" toObject: statementsListView withKeyPath: @"selectedRows" options: nil];
+    [statementsListView bind: @"selectedRows" toObject: categoryAssignments withKeyPath: @"selectionIndexes" options: nil];
     
     [statementsListView setCellSpacing: 0];
     [statementsListView setAllowsEmptySelection: YES];
@@ -287,7 +289,7 @@ static BOOL runningOnLionOrLater = NO;
     NSError *error=nil;
     
     [categoryController setManagedObjectContext: self.managedObjectContext];
-    [transactions setManagedObjectContext: self.managedObjectContext];
+    [categoryAssignments setManagedObjectContext: self.managedObjectContext];
     
     // repair Category Root
     [self repairCategories];
@@ -832,7 +834,7 @@ static BOOL runningOnLionOrLater = NO;
     
     if(resultList != nil) {
         Category *cat = [self currentSelection];
-        if(cat && [cat isBankAccount] && cat.accountNumber == nil) [transactions setContent: [cat combinedStatements]];
+        if(cat && [cat isBankAccount] && cat.accountNumber == nil) [categoryAssignments setContent: [cat combinedStatements]];
         
         BankQueryResult *result;
         NSDate *maxDate = nil;
@@ -855,7 +857,7 @@ static BOOL runningOnLionOrLater = NO;
         // redraw accounts view
         [accountsView setNeedsDisplay:YES];
         
-        [transactions rearrangeObjects];
+        [categoryAssignments rearrangeObjects];
     }
 }
 
@@ -1439,8 +1441,8 @@ static BOOL runningOnLionOrLater = NO;
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    // check if there are unsent transfers
-    BOOL canClose = [self checkForUnsentTransfers];
+    // Check if there are unsent or unfinished transfers. Send unsent transfers if the users says so.
+    BOOL canClose = [self checkForUnhandledTransfersAndSend];
     if (!canClose) {
         return NSTerminateCancel;
     }
@@ -1470,10 +1472,10 @@ static BOOL runningOnLionOrLater = NO;
     
     // Remove explicit bindings and observers to speed up shutdown.
     [categoryController removeObserver: self forKeyPath: @"arrangedObjects.catSum"];
-    [transactions removeObserver: self forKeyPath: @"selectionIndexes"];
+    [categoryAssignments removeObserver: self forKeyPath: @"selectionIndexes"];
     [statementsListView unbind: @"dataSource"];
     [statementsListView unbind: @"valueArray"];
-    [transactions unbind: @"selectionIndexes"];
+    [categoryAssignments unbind: @"selectionIndexes"];
     [statementsListView unbind: @"selectedRows"];
 
     for(id<PecuniaSectionItem> item in [mainTabItems allValues]) {
@@ -1799,13 +1801,13 @@ static BOOL runningOnLionOrLater = NO;
     
     if ([cat isBankAccount] && cat.accountNumber == nil) {
         if (statementsBound) {
-            [transactions unbind:@"contentSet"];
+            [categoryAssignments unbind:@"contentSet"];
             statementsBound = NO;
         }
-        [transactions setContent: [cat combinedStatements]];
+        [categoryAssignments setContent: [cat combinedStatements]];
     } else {
         if (statementsBound == NO) {
-            [transactions bind:@"contentSet" toObject:categoryController withKeyPath:@"selection.assignments" options:nil];
+            [categoryAssignments bind:@"contentSet" toObject:categoryController withKeyPath:@"selection.assignments" options:nil];
             statementsBound = YES;
         }
     }
@@ -1817,7 +1819,7 @@ static BOOL runningOnLionOrLater = NO;
     BOOL editable = NO;
     if(![cat isBankAccount] && cat != [Category nassRoot] && cat != [Category catRoot]) {
         editable = YES;
-        NSArray *sel = [transactions selectedObjects];
+        NSArray *sel = [categoryAssignments selectedObjects];
         if(sel && [sel count] > 0) editable = YES;
     }
     
@@ -1949,11 +1951,11 @@ static BOOL runningOnLionOrLater = NO;
     NSString	*searchName = [te stringValue];
     
     if ([searchName length] == 0) {
-        [transactions setFilterPredicate: [timeSlicer predicateForField: @"date"]];
+        [categoryAssignments setFilterPredicate: [timeSlicer predicateForField: @"date"]];
     } else {
         NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or userInfo contains[c] %@ or value = %@",
                              searchName, searchName, searchName, [NSDecimalNumber decimalNumberWithString:searchName locale: [NSLocale currentLocale]]];
-        if(pred) [transactions setFilterPredicate: pred];
+        if(pred) [categoryAssignments setFilterPredicate: pred];
     }
 }
 
@@ -2019,10 +2021,10 @@ static BOOL runningOnLionOrLater = NO;
         
         if ([item action] == @selector(deleteStatement:)) {
             if ([cat isBankAccount] == NO) return NO;
-            if ([[transactions selectedObjects] count] != 1) return NO;
+            if ([[categoryAssignments selectedObjects] count] != 1) return NO;
         }
         if ([item action] == @selector(splitStatement:)) {
-            if ([[transactions selectedObjects] count] != 1) return NO;
+            if ([[categoryAssignments selectedObjects] count] != 1) return NO;
         }
         if(requestRunning && [item action] == @selector(enqueueRequest:)) return NO;
     }
@@ -2128,7 +2130,7 @@ static BOOL runningOnLionOrLater = NO;
     [Category setCatReportFrom: from to: to];
     // change filter
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(statement.date => %@) AND (statement.date <= %@)", [from lowDate], [to highDate]];
-    [transactions setFilterPredicate: predicate];
+    [categoryAssignments setFilterPredicate: predicate];
     
     [cat rebuildValues];
     [cat rollup];
@@ -2148,7 +2150,7 @@ static BOOL runningOnLionOrLater = NO;
         accountsView.saveCatName = [cat name];
     }	
     if([aNotification object] == valueField) {
-        NSArray *sel = [transactions selectedObjects];
+        NSArray *sel = [categoryAssignments selectedObjects];
         if(sel && [sel count] == 1) {
             StatCatAssignment *stat = [sel objectAtIndex:0];
             self.saveValue = stat.value;
@@ -2171,7 +2173,7 @@ static BOOL runningOnLionOrLater = NO;
     // Value field changed (todo: replace by key value observation).
     if ([aNotification object] == valueField)
     {
-        NSArray *sel = [transactions selectedObjects];
+        NSArray *sel = [categoryAssignments selectedObjects];
         if(sel && [sel count] == 1)
         {
             StatCatAssignment *stat = [sel objectAtIndex:0];
@@ -2207,7 +2209,7 @@ static BOOL runningOnLionOrLater = NO;
             }
             
             // [Category updateCatValues] invalidates the selection we got. So re-set it first and then update.
-            [transactions setSelectedObjects:sel];
+            [categoryAssignments setSelectedObjects:sel];
             
             [stat.statement updateAssigned];
             Category *cat = [self currentSelection];
@@ -2238,7 +2240,7 @@ static BOOL runningOnLionOrLater = NO;
     if(account == nil) return;
     
     // get selected statement
-    NSArray *stats = [transactions selectedObjects];
+    NSArray *stats = [categoryAssignments selectedObjects];
     if([stats count] != 1) return;
     BankStatement *stat = [[stats objectAtIndex:0] statement];
     
@@ -2291,7 +2293,7 @@ static BOOL runningOnLionOrLater = NO;
         // special behaviour for top bank accounts
         if(account.accountNumber == nil) {
             [self.managedObjectContext processPendingChanges];
-            [transactions setContent: [account combinedStatements]];
+            [categoryAssignments setContent: [account combinedStatements]];
         }
         
         // rebuild saldos - only for manual accounts
@@ -2322,7 +2324,7 @@ static BOOL runningOnLionOrLater = NO;
 {
     int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]];
     if (idx == 0) {
-        NSArray *sel = [transactions selectedObjects];
+        NSArray *sel = [categoryAssignments selectedObjects];
         if (sel != nil && [sel count] == 1) {
             StatSplitController *splitController = [[[StatSplitController alloc] initWithStatement: [[sel objectAtIndex:0] statement]
                                                                                                view: accountsView] autorelease];
@@ -2341,7 +2343,7 @@ static BOOL runningOnLionOrLater = NO;
     
     int res = [NSApp runModalForWindow: [statementController window]];
     if(res) {
-        [ transactions rearrangeObjects];
+        [ categoryAssignments rearrangeObjects];
         
         // statement was created
         NSError *error = nil;
@@ -2532,7 +2534,6 @@ static BOOL runningOnLionOrLater = NO;
                                                    userInfo: nil 
                                                     repeats: NO] autorelease];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-        //		[timer release];
     }
     [calendar release];
 }
@@ -2580,27 +2581,53 @@ static BOOL runningOnLionOrLater = NO;
     if(encrypted) [lockImage setHidden:NO]; else [lockImage setHidden:YES];
 }
 
--(BOOL)checkForUnsentTransfers
+- (BOOL)checkForUnhandledTransfersAndSend
 {
+    // Check for a new transfer not yet finished.
+    if ([transfersController editingInProgress]) {
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP114", @""),
+                                  NSLocalizedString(@"AP111.2", @""),
+                                  NSLocalizedString(@"AP411", @""),
+                                  NSLocalizedString(@"AP113", @""),
+                                  nil
+                                  );
+        if (res == NSAlertAlternateReturn) {
+            NSButton *dummy = [[NSButton alloc] init];
+            dummy.tag = 1;
+            [self activateMainPage: dummy];
+            [dummy release];
+            return NO;
+        }
+        [transfersController cancelEditing];
+    }
+    
+    // Check for unsent transfers.
     NSError *error = nil;
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Transfer" inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Transfer" inManagedObjectContext: self.managedObjectContext];
     NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
-    [request setEntity:entityDescription];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(isSent = 0)"];
-    [request setPredicate:predicate];
-    NSArray *transfers = [self.managedObjectContext executeFetchRequest:request error:&error];
+    [request setEntity: entityDescription];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isSent = NO"];
+    [request setPredicate: predicate];
+    NSArray *transfers = [self.managedObjectContext executeFetchRequest: request error: &error];
     if (error || [transfers count] == 0) return YES;
     
     int res = NSRunAlertPanel(NSLocalizedString(@"AP114", @""),
                               NSLocalizedString(@"AP111", @""),
-                              NSLocalizedString(@"yes", @"Yes"),
+                              NSLocalizedString(@"close anyway", @""),
                               NSLocalizedString(@"AP113", @""),
                               NSLocalizedString(@"AP112", @""),
                               nil
                               );
-    if (res == NSAlertDefaultReturn) return YES;
+    if (res == NSAlertDefaultReturn)
+    {
+        return YES;
+    }
     if (res == NSAlertAlternateReturn) {
-        [self performSelector: @selector(transferView:) withObject: self afterDelay: 0.0];
+        NSButton *dummy = [[NSButton alloc] init];
+        dummy.tag = 1;
+        [self activateMainPage: dummy];
+        [dummy release];
         return NO;
     }
     
@@ -2635,7 +2662,7 @@ static BOOL runningOnLionOrLater = NO;
         [printInfo setTopMargin: 45];
         [printInfo setBottomMargin: 45];
         NSPrintOperation *printOp;
-        NSView *view = [[[BankStatementPrintView alloc] initWithStatements: [transactions arrangedObjects] printInfo: printInfo] autorelease];
+        NSView *view = [[[BankStatementPrintView alloc] initWithStatements: [categoryAssignments arrangedObjects] printInfo: printInfo] autorelease];
         printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo];
         [printOp setShowsPrintPanel: YES];
         [printOp runOperation];
@@ -2729,7 +2756,7 @@ static BOOL runningOnLionOrLater = NO;
     }
     [self updateUnread];
     [accountsView setNeedsDisplay: YES];
-    [transactions rearrangeObjects];
+    [categoryAssignments rearrangeObjects];
 }
 
 -(IBAction)showAboutPanel:(id)sender
@@ -2819,10 +2846,10 @@ static BOOL runningOnLionOrLater = NO;
     if (object == categoryController) {
         [accountsView setNeedsDisplay: YES];
     } else {
-        if (object == transactions) {
+        if (object == categoryAssignments) {
             if ([keyPath compare: @"selectionIndexes"] == NSOrderedSame) {
                 // Selection did change. If the currently selected entry is a new one remove the "new" mark.
-                NSEnumerator *enumerator = [[transactions selectedObjects] objectEnumerator];
+                NSEnumerator *enumerator = [[categoryAssignments selectedObjects] objectEnumerator];
                 StatCatAssignment* stat = nil;
                 NSDecimalNumber* firstValue = nil;
                 while ((stat = [enumerator nextObject]) != nil) {
@@ -2891,7 +2918,7 @@ static BOOL runningOnLionOrLater = NO;
             key = @"statement.date";
             break;
     }
-    [transactions setSortDescriptors:
+    [categoryAssignments setSortDescriptors:
      [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending] autorelease]]];
 }
 

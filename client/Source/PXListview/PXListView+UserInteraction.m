@@ -272,11 +272,12 @@ static PXIsDragStartResult PXIsDragStart( NSEvent *startEvent, NSTimeInterval th
 		NSImage			*dragImage = [self dragImageForRowsWithIndexes: _selectedRows event: theEvent clickedCell: theCell offset: &dragImageOffset];
 		NSPasteboard	*dragPasteboard = [NSPasteboard pasteboardWithUniqueName];
 		
-		if( [_delegate respondsToSelector: @selector(listView:writeRowsWithIndexes:toPasteboard:)]
-           and [_delegate listView: self writeRowsWithIndexes: _selectedRows toPasteboard: dragPasteboard] )
+        BOOL doSlideBack = YES;
+		if( [_delegate respondsToSelector: @selector(listView:writeRowsWithIndexes:toPasteboard:slideBack:)]
+           and [_delegate listView: self writeRowsWithIndexes: _selectedRows toPasteboard: dragPasteboard slideBack: &doSlideBack] )
 		{
 			[theCell dragImage: dragImage at: dragImageOffset offset: NSZeroSize event: theEvent
-                    pasteboard: dragPasteboard source: self slideBack: YES];
+                    pasteboard: dragPasteboard source: self slideBack: doSlideBack];
 			
 			return YES;
 		}

@@ -59,7 +59,7 @@ static NSImage* headerImage;
     // Outer bounds with shadow.
     NSRect bounds = [self bounds];
     bounds.size.width -= 20;
-    bounds.size.height -= 10;
+    bounds.size.height -= 20;
     bounds.origin.x += 10;
     bounds.origin.y += 10;
 
@@ -67,7 +67,7 @@ static NSImage* headerImage;
     [borderShadow set];
     [[NSColor whiteColor] set];
     [borderPath fill];
-    
+    /*
     // Top bar.
     NSRect barRect = [self bounds];
     barRect.origin.y = barRect.size.height - 10;
@@ -83,13 +83,14 @@ static NSImage* headerImage;
         [headerImage drawInRect: barRect fromRect: imageRect operation: NSCompositeSourceOver fraction: .75];
         barRect.origin.x += headerImage.size.width;
     }
-    
+    */
+
     [NSGraphicsContext restoreGraphicsState];
 
     if (self.indicatorColor != nil) {
         [borderPath setClip];
         [self.indicatorColor set];
-        barRect = bounds;
+        NSRect barRect = bounds;
         barRect.origin.y = 8;
         barRect.size.height = 8;
         NSRectFill(barRect);

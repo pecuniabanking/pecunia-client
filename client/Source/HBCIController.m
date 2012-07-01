@@ -524,99 +524,111 @@ NSString *escapeSpecial(NSString *s)
     return limits;
 }
 
-
-
-
+/**
+ * Sends out the given transfer by grouping them by bank and issuing one command per bank.
+ * TODO: If supported by the bank grouped transfers should use consolidated transfers instead individual ones.
+ */
 -(BOOL)sendTransfers:(NSArray*)transfers 
 {
     PecuniaError *err = nil;
     Transfer *transfer;
-    NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
-    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
-//    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfers\"><transfers type=\"list\">" ];
-    NSMutableDictionary *userTransferRegister = [NSMutableDictionary dictionaryWithCapacity:10 ];
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] initWithDateFormat: @"%Y-%m-%d" allowNaturalLanguage: NO] autorelease];
+    NSMutableDictionary *userTransferRegister = [NSMutableDictionary dictionaryWithCapacity: 10];
     
-    // Umsätze nach Bankkennung gruppieren
-    for(transfer in transfers) {
-        BankUser *user = [BankUser userWithId:transfer.account.userId bankCode:transfer.account.bankCode ];
-        NSMutableArray *userTransfers = [userTransferRegister objectForKey:user ];
+    // Group transfers by bank.
+    for (transfer in transfers) {
+        BankUser *user = [BankUser userWithId: transfer.account.userId bankCode: transfer.account.bankCode];
+        NSMutableArray *userTransfers = [userTransferRegister objectForKey: user];
         if (userTransfers == nil) {
-            userTransfers = [NSMutableArray arrayWithCapacity:10 ];
-            [userTransferRegister setObject:userTransfers forKey:user ];
+            userTransfers = [NSMutableArray arrayWithCapacity: 10];
+            [userTransferRegister setObject: userTransfers forKey: user];
         }
-        [userTransfers addObject:transfer ];
+        [userTransfers addObject: transfer];
     }
     
-    // jetzt nach Bankkennung vorgehen
-    
-    [self startProgress ];
+    // Now go for each bank.
+    [self startProgress];
     BOOL allSent = YES;
     
-    for(BankUser *user in [userTransferRegister allKeys ]) {
+    for (BankUser *user in [userTransferRegister allKeys]) {
         if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
         
         NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfers\"><transfers type=\"list\">" ];
-        for(transfer in [userTransferRegister objectForKey:user ]) {
-            [cmd appendString: @"<transfer>" ];
-            [self appendTag: @"bankCode" withValue: transfer.account.bankCode to: cmd ];
-            [self appendTag: @"accountNumber" withValue: transfer.account.accountNumber to: cmd ];
-            [self appendTag: @"subNumber" withValue: transfer.account.accountSuffix to:cmd ];
-            [self appendTag: @"customerId" withValue: transfer.account.customerId to: cmd ];
-            [self appendTag: @"userId" withValue: transfer.account.userId to: cmd ];
-            [self appendTag: @"remoteAccount" withValue: transfer.remoteAccount to: cmd ];
-            [self appendTag: @"remoteBankCode" withValue: transfer.remoteBankCode to: cmd ];
-            [self appendTag: @"remoteName" withValue: transfer.remoteName to: cmd ];
-            [self appendTag: @"purpose1" withValue: transfer.purpose1 to: cmd ];
-            [self appendTag: @"purpose2" withValue: transfer.purpose2 to: cmd ];
-            [self appendTag: @"purpose3" withValue: transfer.purpose3 to: cmd ];
-            [self appendTag: @"purpose4" withValue: transfer.purpose4 to: cmd ];
-            [self appendTag: @"currency" withValue: transfer.currency to: cmd ];
-            [self appendTag: @"remoteBIC" withValue: transfer.remoteBIC to: cmd ];
-            [self appendTag: @"remoteIBAN" withValue: transfer.remoteIBAN to: cmd ];
-            [self appendTag: @"remoteCountry" withValue: transfer.remoteCountry==nil?@"DE":[transfer.remoteCountry uppercaseString] to: cmd ];
+        for (transfer in [userTransferRegister objectForKey: user]) {
+            [cmd appendString: @"<transfer>"];
+            [self appendTag: @"bankCode" withValue: transfer.account.bankCode to: cmd];
+            [self appendTag: @"accountNumber" withValue: transfer.account.accountNumber to: cmd];
+            [self appendTag: @"subNumber" withValue: transfer.account.accountSuffix to: cmd];
+            [self appendTag: @"customerId" withValue: transfer.account.customerId to: cmd];
+            [self appendTag: @"userId" withValue: transfer.account.userId to: cmd];
+            [self appendTag: @"remoteAccount" withValue: transfer.remoteAccount to: cmd];
+            [self appendTag: @"remoteBankCode" withValue: transfer.remoteBankCode to: cmd];
+            [self appendTag: @"remoteName" withValue: transfer.remoteName to: cmd];
+            [self appendTag: @"purpose1" withValue: transfer.purpose1 to: cmd];
+            [self appendTag: @"purpose2" withValue: transfer.purpose2 to: cmd];
+            [self appendTag: @"purpose3" withValue: transfer.purpose3 to: cmd];
+            [self appendTag: @"purpose4" withValue: transfer.purpose4 to: cmd];
+            [self appendTag: @"currency" withValue: transfer.currency to: cmd];
+            [self appendTag: @"remoteBIC" withValue: transfer.remoteBIC to: cmd];
+            [self appendTag: @"remoteIBAN" withValue: transfer.remoteIBAN to: cmd];
+            [self appendTag: @"remoteCountry" withValue: transfer.remoteCountry == nil ? @"DE" : [transfer.remoteCountry uppercaseString] to: cmd];
             if([transfer.type intValue] == TransferTypeDated) {
-                NSString *fromString = [dateFormatter stringFromDate:transfer.valutaDate ];
-                [self appendTag: @"valutaDate" withValue: fromString to: cmd ];
+                NSString *fromString = [dateFormatter stringFromDate: transfer.valutaDate];
+                [self appendTag: @"valutaDate" withValue: fromString to: cmd];
             }
             TransferType tt = [transfer.type intValue];
             NSString *type;
             switch(tt) {
-                case TransferTypeStandard: type = @"standard"; break;
-                case TransferTypeDated: type = @"dated"; break;
-                case TransferTypeInternal: type = @"internal"; break;
-                case TransferTypeDebit: type = @"last"; break;
-                case TransferTypeSEPA: type = @"sepa"; break;
+                case TransferTypeStandard:
+                    type = @"standard";
+                    break;
+                case TransferTypeDated:
+                    type = @"dated";
+                    break;
+                case TransferTypeInternal:
+                    type = @"internal";
+                    break;
+                case TransferTypeDebit:
+                    type = @"last";
+                    break;
+                case TransferTypeSEPA:
+                    type = @"sepa";
+                    break;
                 case TransferTypeEU:	
                     type = @"foreign";
-                    [self appendTag:@"chargeTo" withValue:[transfer.chargedBy description ]  to:cmd ];
+                    [self appendTag:@"chargeTo" withValue: [transfer.chargedBy description]  to: cmd];
                     break;
             }
             
-            [self appendTag: @"type" withValue: type to: cmd ];
-            NSDecimalNumber *val = [transfer.value decimalNumberByMultiplyingByPowerOf10:2 ];
-            [self appendTag: @"value" withValue: [val stringValue ] to: cmd ];
+            [self appendTag: @"type" withValue: type to: cmd];
+            NSDecimalNumber *val = [transfer.value decimalNumberByMultiplyingByPowerOf10: 2];
+            [self appendTag: @"value" withValue: [val stringValue] to: cmd];
             
             NSURL *uri = [[transfer objectID] URIRepresentation];
-            [self appendTag: @"transferId" withValue: [uri absoluteString ] to: cmd ];
-            [cmd appendString: @"</transfer>" ];
+            [self appendTag: @"transferId" withValue: [uri absoluteString] to: cmd];
+            [cmd appendString: @"</transfer>"];
         }
-        [cmd appendString: @"</transfers></command>" ];
+        [cmd appendString: @"</transfers></command>"];
         
-        NSArray *resultList = [bridge syncCommand: cmd error: &err ];
+        NSArray *resultList = [bridge syncCommand: cmd error: &err];
         if (err) {
-            [[MessageLog log ] addMessage:[err localizedDescription ] withLevel:LogLevel_Error ];
+            [[MessageLog log] addMessage: [err localizedDescription] withLevel: LogLevel_Error];
         }
         
-        for(TransferResult *result in resultList) {
-            NSURL *uri = [NSURL URLWithString:result.transferId ];
-            NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri ];
+        for (TransferResult *result in resultList) {
+            NSURL *uri = [NSURL URLWithString:result.transferId];
+            NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
             Transfer *transfer = (Transfer*)[context objectWithID: moID];
-            transfer.isSent = [NSNumber numberWithBool: result.isOk ];
-            if(transfer.isSent == NO) allSent = NO;
+            if (result.isOk) {
+                transfer.isSent = [NSNumber numberWithBool: YES];
+            } else {
+                allSent = NO;
+            }
         }
     }
     
-    [self stopProgress ];
+    [self stopProgress];
     return allSent;
 }
 
@@ -1033,7 +1045,7 @@ NSString *escapeSpecial(NSString *s)
 			return nil;
 		}
 	} else {
-		error = [PecuniaError errorWithCode:0 message: NSLocalizedString(@"AP182", @"") ];
+		error = [PecuniaError errorWithCode:0 message: NSLocalizedString(@"AP402", @"") ];
 	}
 	return error;
 }

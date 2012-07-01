@@ -33,9 +33,6 @@
     [super dealloc];
 }
 
-#define DOT_RADIUS 3.5
-#define DOT_SPACING 10
-
 static NSImage* background = nil;
 
 - (void)drawRect: (NSRect)dirtyRect
@@ -56,30 +53,11 @@ static NSImage* background = nil;
     [color setFill];
     [NSBezierPath fillRect: [self bounds]];
 
-    NSRect dragTargetFrame = [rightPane dropTargetFrame];
+    NSRect dropTargetFrame = [rightPane dropTargetFrame];
 
-    // Draw index dots for the template carousel.
-    int dotCount = templateCarousel.numberOfItems;
-    float dotWidth = dotCount * 2 * DOT_RADIUS + (dotCount - 1) * DOT_SPACING;
-    float dotOffset = dragTargetFrame.origin.x + (dragTargetFrame.size.width - dotWidth) / 2 + DOT_RADIUS;
-    float verticalOffset = self.bounds.size.height - 260;
-    [[NSColor colorWithCalibratedWhite: 70 / 255.0 alpha: 1] set];
-    for (int i = 0; i < dotCount; i++)
-    {
-        NSRect dotRect = NSMakeRect(dotOffset, verticalOffset, 2 * DOT_RADIUS, 2 * DOT_RADIUS);
-        NSBezierPath *dotPath = [NSBezierPath bezierPathWithOvalInRect: dotRect];
-        [dotPath setLineWidth: 1];
-        if (i == templateCarousel.currentItemIndex) {
-            [dotPath fill];
-        } else {
-            [dotPath stroke];
-        }
-        dotOffset += 2 * DOT_RADIUS + DOT_SPACING;
-    }
-    
-    // Draw the target area for drop operations from the template carousel or one of the transfer
+    // Draw the target area for drop operations from the preview images or one of the transfer
     // lists (unsent/sent transfers and transfer templates).
-    NSBezierPath* dragTargetPath = [NSBezierPath bezierPathWithRoundedRect: dragTargetFrame xRadius: 20 yRadius: 20];
+    NSBezierPath* dragTargetPath = [NSBezierPath bezierPathWithRoundedRect: dropTargetFrame xRadius: 20 yRadius: 20];
     [dragTargetPath setLineWidth: 8];
     [[NSColor colorWithCalibratedWhite: 90 / 255.0 alpha: 1] setStroke];
     CGFloat lineDash[2] = {20, 5};

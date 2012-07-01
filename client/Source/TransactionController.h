@@ -25,10 +25,12 @@
 @class TransactionLimits;
 
 
+@interface ChargeByValueTransformer : NSValueTransformer
+
+@end
+
 @interface TransactionController : NSObject
 {
-    IBOutlet NSObjectController		*currentTransferController;
-	IBOutlet NSArrayController		*templateController;
 	IBOutlet NSArrayController		*countryController;
     IBOutlet NSWindow				*transferLocalWindow;
 	IBOutlet NSWindow				*transferEUWindow;
@@ -45,8 +47,6 @@
 
 	NSWindow						*window;
 	
-	Transfer						*currentTransfer;
-	NSMutableArray					*transfers;
 	BankAccount						*account;
 	TransactionLimits				*limits;
 	TransferType					transferType;
@@ -57,20 +57,31 @@
 	BOOL							donation;
 }
 
-- (void)transferOfType: (TransferType)tt forAccount: (BankAccount*)account;
-- (void)donateWithAccount: (BankAccount*)account;
-- (void)changeTransfer:(Transfer*)transfer;
-- (void)hideTransferDate: (BOOL)hide;
+@property (nonatomic, readonly) Transfer *currentTransfer;
+@property (nonatomic, retain) IBOutlet NSObjectController *currentTransferController;
+@property (nonatomic, retain) IBOutlet NSArrayController *templateController;
 
-- (IBAction)transferFinished:(id)sender;
-- (IBAction)nextTransfer:(id)sender;
-- (IBAction)cancel:(id)sender;
-- (IBAction)getDataFromTemplate:(id)sender;
-- (IBAction)countryDidChange:(id)sender;
-- (IBAction)sendTransfer:(id)sender;
+- (BOOL)newTransferOfType: (TransferType)type;
+- (BOOL)editExistingTransfer: (Transfer*)transfer;
+- (BOOL)newTransferFromExistingTransfer: (Transfer*)transfer;
+- (BOOL)editingInProgress;
+- (void)cancelCurrentTransfer;
+- (BOOL)finishCurrentTransfer;
+- (BOOL)validateCurrentTransfer;
 
--(void)preparePurposeFields;
--(void)setManagedObjectContext:(NSManagedObjectContext*)context;
--(BOOL)check;
+- (void)transferOfType: (TransferType)tt forAccount: (BankAccount*)account; // deprecated
+- (void)donateWithAccount: (BankAccount*)account; // deprecated
+- (void)changeTransfer:(Transfer*)transfer; // deprecated
+- (void)hideTransferDate: (BOOL)hide; // deprecated
+
+- (IBAction)transferFinished:(id)sender; // deprecated
+- (IBAction)nextTransfer:(id)sender; // deprecated
+- (IBAction)cancel:(id)sender; // deprecated
+- (IBAction)getDataFromTemplate:(id)sender; // deprecated
+- (IBAction)countryDidChange:(id)sender; // deprecated
+- (IBAction)sendTransfer:(id)sender; // deprecated
+
+- (void)preparePurposeFields;
+- (void)setManagedObjectContext:(NSManagedObjectContext*)context;
 
 @end

@@ -20,29 +20,33 @@
 #import <Cocoa/Cocoa.h>
 
 #import "Transfer.h"
+#import "TransfersListview.h"
+#import "TransferTemplatesListview.h"
 
 @class TransactionController;
 @class TransfersController;
-@class TransfersListView;
-@class TransferFormularBackground;
+@class TransferFormularView;
 
-@class iCarousel;
-@class OnOffSwitchControlCell;
-@class MAAttachedWindow;
+@class CalendarWindow;
+@class DragImageView;
+@class DeleteImageView;
 
 @interface TransferTemplateDragDestination : NSView
 {
 @private
     BOOL formularVisible;
+    NSString *currentDragDataType;
 }
 
 @property (nonatomic, assign) TransfersController *controller;
 
 - (NSRect)dropTargetFrame;
+- (void)hideFormular;
+- (void)showFormular;
 
 @end
 
-@interface TransfersController : NSObject
+@interface TransfersController : NSObject <NSWindowDelegate, NSTextFieldDelegate, TransfersDragDelegate>
 {
     IBOutlet NSView                 *mainView;
 	IBOutlet NSArrayController      *finishedTransfers;
@@ -52,58 +56,75 @@
 	IBOutlet TransactionController  *transactionController;
     IBOutlet TransfersListView      *finishedTransfersListView;
     IBOutlet TransfersListView      *pendingTransfersListView;
-    IBOutlet iCarousel              *templateCarousel;
-    IBOutlet OnOffSwitchControlCell *carouselSwitch;
+    IBOutlet TransferTemplatesListView *transferTemplateListView;
     IBOutlet TransferTemplateDragDestination *rightPane;
 
-    IBOutlet NSTextField            *titleText;
-    IBOutlet NSTextField            *receiverText;
-    IBOutlet NSPopUpButton          *sourceAccountSelector;
-    IBOutlet NSPopUpButton          *targetAccountSelector;
-    IBOutlet NSComboBox             *receiverComboBox;
-    IBOutlet NSTextField            *amountTextField;
-    IBOutlet NSTextField            *amountCurrencyText;
-    IBOutlet NSTextField            *accountText;
-    IBOutlet NSTextField            *accountNumber;
-    IBOutlet NSTextField            *bankCodeText;
-    IBOutlet NSTextField            *bankCode;
-    IBOutlet NSTextField            *saldoText;
-    IBOutlet NSTextField            *saldoCurrencyText;
-    IBOutlet NSTextField            *targetCountryText;
-    IBOutlet NSPopUpButton          *targetCountrySelector;
-    IBOutlet NSTextField            *feeText;
-    IBOutlet NSPopUpButton          *feeSelector;
-    IBOutlet NSTextField            *purposeTextField;
-    IBOutlet NSTextField            *bankDescription;
+    IBOutlet NSTextField   *titleText;
+    IBOutlet NSTextField   *receiverText;
+    IBOutlet NSPopUpButton *sourceAccountSelector;
+    IBOutlet NSPopUpButton *targetAccountSelector;
+    IBOutlet NSComboBox    *receiverComboBox;
+    IBOutlet NSTextField   *amountCurrencyText;
+    IBOutlet NSTextField   *accountText;
+    IBOutlet NSTextField   *accountNumber;
+    IBOutlet NSTextField   *bankCodeText;
+    IBOutlet NSTextField   *bankCode;
+    IBOutlet NSTextField   *saldoText;
+    IBOutlet NSTextField   *saldoCurrencyText;
+    IBOutlet NSTextField   *targetCountryText;
+    IBOutlet NSPopUpButton *targetCountrySelector;
+    IBOutlet NSTextField   *feeText;
+    IBOutlet NSPopUpButton *feeSelector;
+    IBOutlet NSTextField   *bankDescription;
     
-    IBOutlet NSTextField            *executionText;
-    IBOutlet NSButton               *executeImmediatelyRadioButton;
-    IBOutlet NSTextField            *executeImmediatelyText;
-    IBOutlet NSButton               *executeAtDateRadioButton;
-    IBOutlet NSDatePicker           *executionDatePicker;
-    IBOutlet NSView                 *calendarView;
-    IBOutlet NSButton               *calendarButton;
-    IBOutlet NSDatePicker           *calendar;
+    IBOutlet NSTextField   *executionText;
+    IBOutlet NSButton      *executeImmediatelyRadioButton;
+    IBOutlet NSTextField   *executeImmediatelyText;
+    IBOutlet NSButton      *executeAtDateRadioButton;
+    IBOutlet NSDatePicker  *executionDatePicker;
+    IBOutlet NSView        *calendarView;
+    IBOutlet NSButton      *calendarButton;
+    IBOutlet NSDatePicker  *calendar;
     
-    IBOutlet NSButton               *queueItButton;
-    IBOutlet NSButton               *doItButton;
+    IBOutlet NSButton      *queueItButton;
+    IBOutlet NSButton      *doItButton;
+    IBOutlet NSButton      *sendTransfersButton;
+    
+    IBOutlet DragImageView  *transferDebitImage;
+    IBOutlet DragImageView  *transferInternalImage;
+    IBOutlet DragImageView  *transferNormalImage;
+    IBOutlet DragImageView  *transferEUImage;
+    IBOutlet DragImageView  *transferSEPAImage;
+    IBOutlet DeleteImageView *transferDeleteImage;
     
 @private
 	NSNumberFormatter *formatter;
-    MAAttachedWindow* calendarWindow;
+    CalendarWindow* calendarWindow;
 }
 
-// Formulars.
-@property (assign) IBOutlet TransferFormularBackground *transferFormular;
+@property (assign) IBOutlet TransferFormularView *transferFormular;
+@property (nonatomic, assign) BOOL dropToEditRejected;
 
 - (IBAction)sendTransfers: (id)sender;
 - (IBAction)deleteTransfers: (id)sender;
 - (IBAction)changeTransfer: (id)sender;
 - (IBAction)transferDoubleClicked: (id)sender;
-- (IBAction)carouselSwitchChanged: (id)sender;
 - (IBAction)showCalendar: (id)sender;
+- (IBAction)sourceAccountChanged: (id)sender;
+- (IBAction)targetAccountChanged: (id)sender;
+- (IBAction)calendarChanged: (id)sender;
+- (IBAction)queueTransfer: (id)sender;
+- (IBAction)sendTransfer: (id)sender;
 
-- (void)prepareTransferFormular: (TransferType)type;
+- (void)hideCalendarWindow;
+
+- (void)draggingStartsFor: (TransfersListView *)sender;
+- (BOOL)prepareTransferOfType: (TransferType)type;
+- (BOOL)prepareEditingFromDragging: (id<NSDraggingInfo>)info;
+- (BOOL)startEditingFromDragging: (id<NSDraggingInfo>)info;
+- (BOOL)concludeDropDeleteOperation: (id<NSDraggingInfo>)info;
+- (void)cancelEditing;
+- (BOOL)editingInProgress;
 
 - (NSView *)mainView;
 - (void)prepare;

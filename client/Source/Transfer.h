@@ -33,14 +33,21 @@ typedef enum {
     TransferTypeSEPA
 } TransferType;
 
+typedef enum {
+    TransferChangeUnchanged,
+    TransferChangeEditing,
+    TransferChangeNew
+} TransferChangeState;
+
 @interface Transfer : NSManagedObject {
 	unsigned int jobId;
 }
 
--(NSString*)purpose;
--(void) copyFromTemplate:(TransferTemplate*)t withLimits:(TransactionLimits*)limits;
--(void)setJobId: (unsigned int)jid;
--(unsigned int)jobId;
+- (NSString*)purpose;
+- (void)copyFromTemplate: (TransferTemplate*)t withLimits: (TransactionLimits*)limits;
+- (void)copyFromTransfer: (Transfer*)other withLimits: (TransactionLimits*)limits;
+- (void)setJobId: (unsigned int)jid;
+- (unsigned int)jobId;
 
 
 @property (nonatomic, retain) NSNumber * chargedBy;
@@ -71,5 +78,7 @@ typedef enum {
 @property (nonatomic, retain) NSDecimalNumber * value;
 @property (nonatomic, retain) NSDate * valutaDate;
 @property (nonatomic, retain) BankAccount * account;
+
+@property (nonatomic, assign) TransferChangeState changeState; // Temporary flag used while editing transfers.
 
 @end

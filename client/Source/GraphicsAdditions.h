@@ -57,6 +57,6 @@
 
 @interface NSView (PecuniaAdditions)
 
-- (NSView*)getPrintViewForLayerBackedView;
+- (NSView*)printViewForLayerBackedView;
 
 @end

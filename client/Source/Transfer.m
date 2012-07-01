@@ -41,6 +41,8 @@
 @dynamic valutaDate;
 @dynamic account;
 
+@synthesize changeState;
+
 -(NSString*)purpose
 {
 	NSMutableString* s = [NSMutableString stringWithCapacity: 100 ];
@@ -91,6 +93,56 @@
 	self.remoteIBAN = t.remoteIBAN;
 	self.remoteBIC = t.remoteBIC;
 	self.value = t.value;
+}
+
+- (void)copyFromTransfer: (Transfer*)other withLimits: (TransactionLimits*)limits
+{
+	NSString *s;
+	NSUInteger maxLen = limits.maxLenRemoteName * limits.maxLinesRemoteName;
+	s = other.remoteName;
+	if (s.length > maxLen) {
+        s = [s substringToIndex: maxLen];
+    }
+	self.remoteName = s;
+	
+	maxLen = [limits maxLenPurpose];
+	int num = [limits maxLinesPurpose];
+	
+	s = other.purpose1;
+	if (s.length > maxLen) {
+        s = [s substringToIndex: maxLen];
+    }
+	self.purpose1 = s;
+	
+	if (num > 1) {
+		s = other.purpose2;
+		if (s.length > maxLen) {
+            s = [s substringToIndex: maxLen];   
+        }
+		self.purpose2 = s;
+	}
+	
+	if (num > 2) {
+		s = other.purpose3;
+		if (s.length > maxLen) {
+            s = [s substringToIndex: maxLen];   
+        }
+		self.purpose3 = s;
+	}
+	
+	if (num > 3) {
+		s = other.purpose4;
+		if (s.length > maxLen) {
+            s = [s substringToIndex: maxLen];   
+        }
+		self.purpose4 = s;
+	}
+	
+	self.remoteAccount = other.remoteAccount;
+	self.remoteBankCode = other.remoteBankCode;
+	self.remoteIBAN = other.remoteIBAN;
+	self.remoteBIC = other.remoteBIC;
+	self.value = other.value;
 }
 
 -(void)setJobId: (unsigned int) jid { jobId = jid; }

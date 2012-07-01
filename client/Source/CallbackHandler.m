@@ -227,7 +227,7 @@
     }
     if ([data.command isEqualToString:@"needChipcard" ]) {
         MessageLog *log = [MessageLog log ];
-        [log addMessage:NSLocalizedString(@"AP193", @"") withLevel:LogLevel_Info ];
+        [log addMessage:NSLocalizedString(@"AP350", @"") withLevel:LogLevel_Info ];
     }
     if ([data.command isEqualToString:@"haveChipcard" ]) {
     }
