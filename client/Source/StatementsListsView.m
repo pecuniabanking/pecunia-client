@@ -23,6 +23,25 @@
 #import "ShortDate.h"
 #import "BankStatement.h"
 
+extern NSString *StatementDateKey;
+extern NSString *StatementTurnoversKey;
+extern NSString *StatementRemoteNameKey;
+extern NSString *StatementPurposeKey;
+extern NSString *StatementCategoriesKey;
+extern NSString *StatementValueKey;
+extern NSString *StatementSaldoKey;
+extern NSString *StatementCurrencyKey;
+extern NSString *StatementTransactionTextKey;
+extern NSString *StatementIndexKey;
+extern NSString *StatementNoteKey;
+extern NSString *StatementRemoteBankNameKey;
+extern NSString *StatementColorKey;
+extern NSString *StatementRemoteAccountKey;
+extern NSString *StatementRemoteBankCodeKey;
+extern NSString *StatementRemoteIBANKey;
+extern NSString *StatementRemoteBICKey;
+extern NSString *StatementTypeKey;
+
 @implementation StatementsListView
 
 @synthesize showAssignedIndicators;
@@ -182,7 +201,6 @@
 - (void) fillCell: (StatementsListViewCell*)cell forRow: (NSUInteger)row
 {
     id statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];
-    NSMutableDictionary *details = [NSMutableDictionary dictionary];
     
     NSDate* currentDate = [statement valueForKey: @"date"];
     
@@ -195,17 +213,19 @@
         turnoversString = NSLocalizedString(@"AP132", @"");
     
     cell.delegate = self;
-    [details setValue: [self formatValue: currentDate capitalize: NO] forKey: StatementDateKey];
-    [details setValue: turnoversString forKey: StatementTurnoversKey];
-    [details setValue: [self formatValue: [statement valueForKey: @"remoteName"] capitalize: YES] forKey: StatementRemoteNameKey];
-    [details setValue: [self formatValue: [statement valueForKey: @"floatingPurpose"] capitalize: YES] forKey: StatementPurposeKey];
-    [details setValue: [self formatValue: [statement valueForKey: @"note"] capitalize: YES] forKey: StatementNoteKey];
-    [details setValue: [self formatValue: [statement valueForKey: @"categoriesDescription"] capitalize: NO] forKey: StatementCategoriesKey];
-    [details setValue: [statement valueForKey: @"value"] forKey: StatementValueKey];
-    [details setValue: [statement valueForKey: @"saldo"] forKey: StatementSaldoKey];
-    [details setValue: [self formatValue: [statement valueForKey: @"currency"] capitalize: NO] forKey: StatementCurrencyKey];
-    [details setValue: [self formatValue: [statement valueForKey: @"transactionText"] capitalize: YES] forKey: StatementTransactionTextKey];
-    [details setValue: [NSNumber numberWithInt: row] forKey: StatementIndexKey];
+    NSDictionary *details = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [self formatValue: currentDate capitalize: NO], StatementDateKey,
+                             turnoversString, StatementTurnoversKey,
+                             [self formatValue: [statement valueForKey: @"remoteName"] capitalize: YES], StatementRemoteNameKey,
+                             [self formatValue: [statement valueForKey: @"floatingPurpose"] capitalize: YES], StatementPurposeKey,
+                             [self formatValue: [statement valueForKey: @"note"] capitalize: YES], StatementNoteKey,
+                             [self formatValue: [statement valueForKey: @"categoriesDescription"] capitalize: NO], StatementCategoriesKey,
+                             [statement valueForKey: @"value"], StatementValueKey,
+                             [statement valueForKey: @"saldo"], StatementSaldoKey,
+                             [self formatValue: [statement valueForKey: @"currency"] capitalize: NO], StatementCurrencyKey,
+                             [self formatValue: [statement valueForKey: @"transactionText"] capitalize: YES], StatementTransactionTextKey,
+                             [NSNumber numberWithInt: row], StatementIndexKey,
+                             nil];
     
     [cell setDetails: details];
     [cell setIsNew: [[statement valueForKey: @"isNew"] boolValue]];
@@ -336,8 +356,12 @@
 
 extern NSString* const BankStatementDataType;
 
-- (BOOL)listView: (PXListView*)aListView writeRowsWithIndexes: (NSIndexSet*)rowIndexes toPasteboard: (NSPasteboard*)dragPasteboard
+- (BOOL)listView: (PXListView*)aListView writeRowsWithIndexes: (NSIndexSet*)rowIndexes
+    toPasteboard: (NSPasteboard*)dragPasteboard
+       slideBack: (BOOL *)slideBack
 {
+    *slideBack = YES;
+    
     // Keep a copy of the selected indexes as the selection is removed during the drag operation,
     // but we need to update the selected cells then.
     draggedIndexes = [rowIndexes copy];

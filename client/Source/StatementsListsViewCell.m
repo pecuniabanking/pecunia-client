@@ -25,17 +25,24 @@
 
 #import "GraphicsAdditions.h"
 
-NSString *StatementDateKey            = @"date";
-NSString *StatementTurnoversKey       = @"turnovers";
-NSString *StatementRemoteNameKey      = @"remoteName";
-NSString *StatementPurposeKey         = @"purpose";
-NSString *StatementCategoriesKey      = @"categories";
-NSString *StatementValueKey           = @"value";
-NSString *StatementSaldoKey           = @"saldo";
-NSString *StatementCurrencyKey        = @"currency";
-NSString *StatementTransactionTextKey = @"transactionText";
-NSString *StatementIndexKey           = @"index";
-NSString *StatementNoteKey            = @"note";
+extern NSString *StatementDateKey;
+extern NSString *StatementTurnoversKey;
+extern NSString *StatementRemoteNameKey;
+extern NSString *StatementPurposeKey;
+extern NSString *StatementCategoriesKey;
+extern NSString *StatementValueKey;
+extern NSString *StatementSaldoKey;
+extern NSString *StatementCurrencyKey;
+extern NSString *StatementTransactionTextKey;
+extern NSString *StatementIndexKey;
+extern NSString *StatementNoteKey;
+extern NSString *StatementRemoteBankNameKey;
+extern NSString *StatementColorKey;
+extern NSString *StatementRemoteAccountKey;
+extern NSString *StatementRemoteBankCodeKey;
+extern NSString *StatementRemoteIBANKey;
+extern NSString *StatementRemoteBICKey;
+extern NSString *StatementTypeKey;
 
 @implementation NoAnimationTextField
 
@@ -199,7 +206,7 @@ static CurrencyValueTransformer* currencyTransformer;
         [remoteNameLabel setTextColor: [NSColor whiteColor]];
         [purposeLabel setTextColor: [NSColor whiteColor]];
         [categoriesLabel setTextColor: [NSColor whiteColor]];
-        [valueLabel setTextColor: [NSColor whiteColor]];
+        [valueLabel setTextColor: [NSColor whiteColor]]; // Need to set both the label itself as well as its cell formatter.
         [saldoLabel setTextColor: [NSColor whiteColor]];
         [currencyLabel setTextColor: [NSColor whiteColor]];
         [saldoCurrencyLabel setTextColor: [NSColor whiteColor]];
@@ -251,7 +258,6 @@ static CurrencyValueTransformer* currencyTransformer;
 static NSGradient* innerGradient;
 static NSGradient* innerGradientSelected;
 static NSGradient* headerGradient;
-static NSShadow* innerShadow;
 static NSImage* stripeImage;
 
 - (void) setupDrawStructures
@@ -268,24 +274,21 @@ static NSImage* stripeImage;
                       [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat) 0,
                       [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], (CGFloat) 1,
                       nil];
-    innerShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithCalibratedWhite: 0.0 alpha: .75]
-                                           offset: NSMakeSize(0, -1)
-                                       blurRadius: 3.0];
     stripeImage = [NSImage imageNamed: @"slanted_stripes.png"];
 }
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    if (innerGradient == nil)
+    if (innerGradient == nil) {
         [self setupDrawStructures];
+    }
     
     NSGraphicsContext *context = [NSGraphicsContext currentContext];
     [context saveGraphicsState];
     
     NSBezierPath* path;
     NSRect bounds = [self bounds];
-    if (headerHeight > 0)
-    {
+    if (headerHeight > 0) {
         path = [NSBezierPath bezierPathWithRect: NSMakeRect(bounds.origin.x,
                                                             bounds.size.height - headerHeight,
                                                             bounds.size.width,
@@ -295,13 +298,9 @@ static NSImage* stripeImage;
     }
 	path = [NSBezierPath bezierPathWithRect: bounds];
     
-    if ([self isSelected])
-    {
+    if ([self isSelected]) {
         [innerGradientSelected drawInBezierPath: path angle: 90.0];
-        //[path fillWithInnerShadow: innerShadow borderOnly: NO];
-    }
-    else
-    {
+    } else {
         [innerGradient drawInBezierPath: path angle: 90.0];
     }
     

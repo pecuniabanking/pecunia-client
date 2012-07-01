@@ -21,23 +21,30 @@
 
 #import "PXListView.h"
 
+@class TransfersListView;
+
+@protocol TransfersDragDelegate
+
+- (void)draggingStartsFor: (id)sender;
+- (BOOL)canAcceptDropFor: (id)sender context: (id<NSDraggingInfo>)info;
+- (void)concludeDropOperation: (id)sender context: (id<NSDraggingInfo>)info;
+
+@end
+
 @interface TransfersListView : PXListView <PXListViewDelegate>
 {
-    @private
-    NSArray *dataSource;
-    NSArray *valueArray;
+@private
+    id observedObject;
     
     NSDateFormatter *dateFormatter;
     NSCalendar *calendar;
     
-    NSIndexSet *draggedIndexes;
-    
-    id owner;
+    id<TransfersDragDelegate> owner; // The member "delegate" is already defined.
 }
 
-@property (nonatomic, retain) id owner;
+@property (nonatomic, retain) id<TransfersDragDelegate> owner;
 @property (nonatomic, readonly) NSNumberFormatter *numberFormatter;
 @property (nonatomic, retain) NSArray *dataSource;
-@property (nonatomic, retain) NSArray *valueArray;
 
 @end
+

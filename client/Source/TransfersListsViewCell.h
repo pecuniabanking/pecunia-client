@@ -20,6 +20,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "PXListViewCell.h"
+#import "Transfer.h"
 
 @interface TransfersListViewCell : PXListViewCell
 {
@@ -30,15 +31,28 @@
     IBOutlet NSTextField *purposeLabel;
     IBOutlet NSTextField *valueLabel;
     IBOutlet NSTextField *currencyLabel;
-    
-    @private
+    IBOutlet NSTextField *valueTitle;
+    IBOutlet NSTextField *dateTitle;
+
+@private
     NSColor *categoryColor;
+    NSDictionary *positiveAttributes;
+    NSDictionary *negativeAttributes;
+    NSDictionary *whiteAttributes;
     
+    // Need to keep these values from the details dictionary to rebuild the attributed string
+    // for the account label depending on whether we are selected or not.
+    NSString *remoteBankCode;
+    NSString *remoteAccount;
+    
+    NSUInteger index;
+    TransferType type;
 }
 
 - (void)setDetails: (NSDictionary *)details;
 
 - (void)setTextAttributesForPositivNumbers: (NSDictionary*)positiveAttributes
                            negativeNumbers: (NSDictionary*)negativeAttributes;
+- (void)selectionChanged;
 
 @end
