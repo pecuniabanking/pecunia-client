@@ -921,24 +921,24 @@
 		27C7B501147FC41900278131 /* Drawing + Colors */ = {
 			isa = PBXGroup;
 			children = (
-				27028DCD1539B58700AEB651 /* TransfersBackgroundView.h */,
-				27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */,
-				274C09FB1440BC9800A80F0E /* RoundedOuterShadowView.h */,
-				274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */,
-				27365728155988F200E8ABDC /* TransferFormularView.h */,
-				273657291559890E00E8ABDC /* TransferFormularView.m */,
-				B18978850ED0B2E800D20503 /* StatementDetails.h */,
-				B18978860ED0B2E800D20503 /* StatementDetails.m */,
+				27955AFD140C0603008369C9 /* GraphicsAdditions.h */,
+				27955AFE140C0603008369C9 /* GraphicsAdditions.m */,
 				274DE2B213F992A50009EB77 /* MainBackgroundView.h */,
 				274DE2B313F992A50009EB77 /* MainBackgroundView.m */,
 				2724DC32140155F000B0FE15 /* RoundedInnerShadowView.h */,
 				2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */,
+				274C09FB1440BC9800A80F0E /* RoundedOuterShadowView.h */,
+				274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */,
 				27150D9E140ABDAC000841E2 /* RoundedSidebar.h */,
 				27150D9F140ABDAC000841E2 /* RoundedSidebar.m */,
-				27955AFD140C0603008369C9 /* GraphicsAdditions.h */,
-				27955AFE140C0603008369C9 /* GraphicsAdditions.m */,
 				2700B6AA148B814500E18BBE /* SideToolbarView.h */,
 				2700B6AB148B814500E18BBE /* SideToolbarView.m */,
+				B18978850ED0B2E800D20503 /* StatementDetails.h */,
+				B18978860ED0B2E800D20503 /* StatementDetails.m */,
+				27028DCD1539B58700AEB651 /* TransfersBackgroundView.h */,
+				27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */,
+				27365728155988F200E8ABDC /* TransferFormularView.h */,
+				273657291559890E00E8ABDC /* TransferFormularView.m */,
 			);
 			name = "Drawing + Colors";
 			sourceTree = "<group>";
