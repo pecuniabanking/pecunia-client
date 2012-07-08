@@ -244,6 +244,7 @@
         }
     }
 
+    account = nil;
 	transferType = type;
     currentTransfer = [NSEntityDescription insertNewObjectForEntityForName: @"Transfer" inManagedObjectContext: context];
     currentTransfer.type = [NSNumber numberWithInt: transferType];
@@ -290,6 +291,14 @@
         return NO;
     }
         
+	transferType = [transfer.type intValue];
+	account = transfer.account;
+	
+	if (transferType == TransferTypeEU) {
+		[self setValue: transfer.remoteCountry forKey: @"selectedCountry"];
+	}
+	
+	[self prepareTransfer];
     [currentTransfer copyFromTransfer: transfer withLimits: limits];
     currentTransfer.changeState = TransferChangeNew;
     

@@ -424,7 +424,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 -(void)awakeFromNib
 {
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary* values = [userDefaults objectForKey: @"categoryAnalysis"];
+    NSDictionary* values = [userDefaults dictionaryForKey: @"categoryAnalysis"];
     if (values != nil) {
         groupingInterval = [[values objectForKey: @"grouping"] intValue];
         groupingSlider.intValue = groupingInterval;
@@ -2165,12 +2165,15 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     groupingInterval = [sender intValue];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary* values = [userDefaults objectForKey: @"categoryAnalysis"];
+    NSDictionary* values = [userDefaults dictionaryForKey: @"categoryAnalysis"];
+    NSMutableDictionary *mutableValues;
     if (values == nil) {
-        values = [NSMutableDictionary dictionaryWithCapacity: 1];
-        [userDefaults setObject: values forKey: @"categoryAnalysis"];
+        mutableValues = [NSMutableDictionary dictionaryWithCapacity: 1];
+    } else {
+        mutableValues = [values mutableCopy];
     }
-    [values setValue: [NSNumber numberWithInt: groupingInterval] forKey: @"grouping"];
+    [mutableValues setValue: [NSNumber numberWithInt: groupingInterval] forKey: @"grouping"];
+    [userDefaults setObject: mutableValues forKey: @"categoryAnalysis"];
 
     [self reloadData];
     

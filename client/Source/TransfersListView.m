@@ -172,7 +172,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 	return [dataSource count];
 }
 
-- (id)formatValue: (id)value
+- (id)safeAndFormattedValue: (id)value
 {
     if (value == nil || [value isKindOfClass: [NSNull class]])
         value = @"";
@@ -194,17 +194,17 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     
     NSDictionary *details = [NSDictionary dictionaryWithObjectsAndKeys:
                              [NSNumber numberWithInt: row], StatementIndexKey,
-                             [self formatValue: transfer.date], StatementDateKey,
-                             [self formatValue: transfer.remoteName], StatementRemoteNameKey,
-                             [self formatValue: transfer.purpose], StatementPurposeKey,
-                             transfer.value, StatementValueKey,
-                             [self formatValue: transfer.currency], StatementCurrencyKey,
-                             [self formatValue: transfer.remoteBankName], StatementRemoteBankNameKey,
-                             [self formatValue: transfer.remoteBankCode], StatementRemoteBankCodeKey,
-                             [self formatValue: transfer.remoteIBAN], StatementRemoteIBANKey,
-                             [self formatValue: transfer.remoteBIC], StatementRemoteBICKey,
-                             [self formatValue: transfer.remoteAccount], StatementRemoteAccountKey,
-                             transfer.type, StatementTypeKey,
+                             [self safeAndFormattedValue: transfer.date], StatementDateKey,
+                             [self safeAndFormattedValue: transfer.remoteName], StatementRemoteNameKey,
+                             [self safeAndFormattedValue: transfer.purpose], StatementPurposeKey,
+                             [self safeAndFormattedValue: transfer.value], StatementValueKey,
+                             [self safeAndFormattedValue: transfer.currency], StatementCurrencyKey,
+                             [self safeAndFormattedValue: transfer.remoteBankName], StatementRemoteBankNameKey,
+                             [self safeAndFormattedValue: transfer.remoteBankCode], StatementRemoteBankCodeKey,
+                             [self safeAndFormattedValue: transfer.remoteIBAN], StatementRemoteIBANKey,
+                             [self safeAndFormattedValue: transfer.remoteBIC], StatementRemoteBICKey,
+                             [self safeAndFormattedValue: transfer.remoteAccount], StatementRemoteAccountKey,
+                             [self safeAndFormattedValue: transfer.type], StatementTypeKey,
                              [transfer.account categoryColor], StatementColorKey,
                              nil];
     
@@ -219,11 +219,6 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     
 }
 
-/**
- * Called by the PXListView when it needs to set up a new visual cell. This method uses enqueued cells
- * to avoid creating potentially many cells. This way we can have many entries but still only as many 
- * cells as fit in the window.
- */
 - (PXListViewCell*)listView: (PXListView*)aListView cellForRow: (NSUInteger)row
 {
 	TransfersListViewCell* cell = (TransfersListViewCell*)[aListView dequeueCellWithReusableIdentifier: @"transfer-cell"];

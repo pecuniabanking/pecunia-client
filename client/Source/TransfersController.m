@@ -691,10 +691,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     // Load the set of previously entered text for the receiver combo box.
     [receiverComboBox removeAllItems];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary* values = [userDefaults objectForKey: @"transfers"];
+    NSDictionary *values = [userDefaults dictionaryForKey: @"transfers"];
     if (values != nil) {
-        NSArray *previousReceivers = [values valueForKey: @"previousReceivers"];
-        [receiverComboBox addItemsWithObjectValues: previousReceivers];
+        id previousReceivers = [values objectForKey: @"previousReceivers"];
+        if ([previousReceivers isKindOfClass: [NSArray class]]) {
+            [receiverComboBox addItemsWithObjectValues: previousReceivers];
+        }
     }
     executeImmediatelyRadioButton.state = NSOnState;
     executeAtDateRadioButton.state = NSOffState;
@@ -1005,6 +1007,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
  */
 - (IBAction)queueTransfer: (id)sender
 {
+    [self storeReceiverInMRUList];
+    
     if ([transactionController finishCurrentTransfer]) {
         [rightPane hideFormular];
         [pendingTransfers prepareContent];
@@ -1016,6 +1020,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
  */
 - (IBAction)sendTransfer: (id)sender
 {
+    [self storeReceiverInMRUList];
+    
     // Can never be called if editing is not in progress, but better safe than sorry.
     if ([self editingInProgress]) {
         NSArray* transfers = [NSArray arrayWithObject: transactionController.currentTransfer];
@@ -1187,6 +1193,45 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                                        userInfo: nil
                                         repeats: NO];
     }
+}
+
+/**
+ * Stores the current value of the receiver edit field in the MRU list used for lookup
+ * of previously entered receivers. The list is kept at no more than 15 entries and no duplicates.
+ */
+- (void)storeReceiverInMRUList
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *values = [userDefaults dictionaryForKey: @"transfers"];
+    NSMutableDictionary *mutableValues;
+    if (values == nil) {
+        mutableValues = [NSMutableDictionary dictionary];
+    } else {
+        mutableValues = [values mutableCopy];
+    }
+    
+    NSString *newValue = receiverComboBox.stringValue;
+    id previousReceivers = [values objectForKey: @"previousReceivers"];
+    NSMutableArray *mutableReceivers;
+    if (![previousReceivers isKindOfClass: [NSArray class]]) {
+        mutableReceivers = [NSMutableArray arrayWithObject: newValue];
+    } else {
+        mutableReceivers = [previousReceivers mutableCopy];
+    }
+
+    // Now remove a possible duplicate and add the new entry
+    // at the top. Remove any entry beyond the first 15 entries finally.
+    [mutableReceivers removeObject: newValue];
+    [mutableReceivers insertObject: newValue atIndex: 0];
+    if ([mutableReceivers count] > 15) {
+        NSRange unwantedEntries = NSMakeRange(15, [mutableReceivers count] - 15);
+        if (unwantedEntries.length > 0) {
+            [mutableReceivers removeObjectsInRange: unwantedEntries];
+        }
+    }
+    
+    [mutableValues setObject: mutableReceivers forKey: @"previousReceivers"];
+    [userDefaults setObject: mutableValues forKey: @"transfers"];
 }
 
 - (void)tableViewSelectionDidChange: (NSNotification *)aNotification
