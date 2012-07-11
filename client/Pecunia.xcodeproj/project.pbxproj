@@ -27,7 +27,6 @@
 		27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
 		2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2716FE4C152381A60015A753 /* SynchronousScrollView.m */; };
 		271B47D614508F2F0036815C /* Transfer_EU_24.png in Resources */ = {isa = PBXBuildFile; fileRef = 271B47D514508F2E0036815C /* Transfer_EU_24.png */; };
-		271BCF14158120E600ACB6F6 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy Java */ = {isa = PBXBuildFile; fileRef = 271BCF13158120B800ACB6F6 /* libhbci4java-card-mac-os-x-10.6.jnilib */; };
 		272328A01551A4D500B9683B /* transfer-debit-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289B1551A4D500B9683B /* transfer-debit-preview.png */; };
 		272328A11551A4D500B9683B /* transfer-eu-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289C1551A4D500B9683B /* transfer-eu-preview.png */; };
 		272328A21551A4D500B9683B /* transfer-internal-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289D1551A4D500B9683B /* transfer-internal-preview.png */; };
@@ -135,8 +134,6 @@
 		B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */ = {isa = PBXBuildFile; fileRef = B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */; };
 		B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
 		B120E3C30EB0F3F000FC5A6F /* AccountRep.png in Resources */ = {isa = PBXBuildFile; fileRef = B120E3C10EB0F3F000FC5A6F /* AccountRep.png */; };
-		B124C36E157FF414004DAC59 /* pcsc-ctapi-wrapper.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B124C36D157FF414004DAC59 /* pcsc-ctapi-wrapper.dylib */; };
-		B124C371157FF437004DAC59 /* pcsc-ctapi-wrapper.dylib in Copy Java */ = {isa = PBXBuildFile; fileRef = B124C36D157FF414004DAC59 /* pcsc-ctapi-wrapper.dylib */; };
 		B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F09E0C36F3E8001065C2 /* BankStatement.m */; };
 		B124F1110C371384001065C2 /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F1100C371384001065C2 /* BankAccount.m */; };
 		B126CC22157018FC0065EAC1 /* printer.png in Resources */ = {isa = PBXBuildFile; fileRef = B126CC21157018FC0065EAC1 /* printer.png */; };
@@ -299,7 +296,6 @@
 		B1FAEAC3122C66FE000AF027 /* ABUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEAC2122C66FE000AF027 /* ABUser.m */; };
 		B1FAEAD0122C6B80000AF027 /* ABConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEACF122C6B80000AF027 /* ABConversion.m */; };
 		B1FAEB7D122DAC9E000AF027 /* ABAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAEB7C122DAC9E000AF027 /* ABAccount.m */; };
-		B1FAECAA12357D15000AF027 /* copyaq.sh in Resources */ = {isa = PBXBuildFile; fileRef = B1FAECA912357D15000AF027 /* copyaq.sh */; };
 		B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB50981209EA52004DCD6A /* PurposeSplitController.m */; };
 		B1FB509B1209EAC7004DCD6A /* PurposeSplitWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */; };
 		B1FB509E1209F68E004DCD6A /* PurposeSplitData.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */; };
@@ -319,8 +315,6 @@
 			dstPath = ..;
 			dstSubfolderSpec = 7;
 			files = (
-				271BCF14158120E600ACB6F6 /* libhbci4java-card-mac-os-x-10.6.jnilib in Copy Java */,
-				B124C371157FF437004DAC59 /* pcsc-ctapi-wrapper.dylib in Copy Java */,
 				B15FCCF0141422BD000738B6 /* HBCIServer.jar in Copy Java */,
 			);
 			name = "Copy Java";
@@ -370,7 +364,6 @@
 		2716FE4B152381A60015A753 /* SynchronousScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynchronousScrollView.h; sourceTree = "<group>"; };
 		2716FE4C152381A60015A753 /* SynchronousScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynchronousScrollView.m; sourceTree = "<group>"; };
 		271B47D514508F2E0036815C /* Transfer_EU_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transfer_EU_24.png; sourceTree = "<group>"; };
-		271BCF13158120B800ACB6F6 /* libhbci4java-card-mac-os-x-10.6.jnilib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libhbci4java-card-mac-os-x-10.6.jnilib"; sourceTree = "<group>"; };
 		2723289B1551A4D500B9683B /* transfer-debit-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-debit-preview.png"; sourceTree = "<group>"; };
 		2723289C1551A4D500B9683B /* transfer-eu-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-eu-preview.png"; sourceTree = "<group>"; };
 		2723289D1551A4D500B9683B /* transfer-internal-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-internal-preview.png"; sourceTree = "<group>"; };
@@ -527,7 +520,6 @@
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; tabWidth = 4; };
 		B120E3C10EB0F3F000FC5A6F /* AccountRep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AccountRep.png; sourceTree = "<group>"; };
-		B124C36D157FF414004DAC59 /* pcsc-ctapi-wrapper.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "pcsc-ctapi-wrapper.dylib"; sourceTree = "<group>"; };
 		B124F09D0C36F3E8001065C2 /* BankStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatement.h; sourceTree = "<group>"; tabWidth = 4; };
 		B124F09E0C36F3E8001065C2 /* BankStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatement.m; sourceTree = "<group>"; tabWidth = 4; };
 		B124F10F0C371384001065C2 /* BankAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankAccount.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -793,7 +785,6 @@
 		B1FAEACF122C6B80000AF027 /* ABConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ABConversion.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1FAEB7B122DAC9E000AF027 /* ABAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ABAccount.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1FAEB7C122DAC9E000AF027 /* ABAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ABAccount.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1FAECA912357D15000AF027 /* copyaq.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = copyaq.sh; sourceTree = "<group>"; };
 		B1FB50971209EA52004DCD6A /* PurposeSplitController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB50981209EA52004DCD6A /* PurposeSplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PurposeSplitWindow.xib; sourceTree = "<group>"; };
@@ -823,7 +814,6 @@
 				B19A86360F3CD17E000FE9B3 /* Security.framework in Frameworks */,
 				B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */,
 				27E79FCB145AFCB3007C0AE3 /* QuartzCore.framework in Frameworks */,
-				B124C36E157FF414004DAC59 /* pcsc-ctapi-wrapper.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1143,7 +1133,6 @@
 		29B97314FDCFA39411CA2CEA /* Pecunia */ = {
 			isa = PBXGroup;
 			children = (
-				B1FAEA79122C2408000AF027 /* Scripts */,
 				B136AACF0FCF1BF5007A643F /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -1179,12 +1168,10 @@
 				B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */,
 				B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */,
 				27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */,
-				B124C36D157FF414004DAC59 /* pcsc-ctapi-wrapper.dylib */,
 				B15FCCEE141422A3000738B6 /* HBCIServer.jar */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
 				B137BE8F12D33AB200D0394C /* Institute.csv */,
-				271BCF13158120B800ACB6F6 /* libhbci4java-card-mac-os-x-10.6.jnilib */,
 				B1F454370F101E7500BAF4E8 /* Localizable.strings */,
 				27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */,
 			);
@@ -1546,14 +1533,6 @@
 			name = Password;
 			sourceTree = "<group>";
 		};
-		B1FAEA79122C2408000AF027 /* Scripts */ = {
-			isa = PBXGroup;
-			children = (
-				B1FAECA912357D15000AF027 /* copyaq.sh */,
-			);
-			name = Scripts;
-			sourceTree = "<group>";
-		};
 		B1FE0DC8106583A3005B3800 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1686,6 +1665,7 @@
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				27EEDE4E14153FB70099C900 /* Copy Java */,
 				B192EAF90EEDBFF6006F61F1 /* Copy Frameworks */,
+				B150A17115ADBCC80003DF5B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1762,7 +1742,6 @@
 				B1A59498113182DA00FD8CB8 /* StatSplitController.xib in Resources */,
 				B14C6003114848E1009324A6 /* BankStatementController.xib in Resources */,
 				B1FB509B1209EAC7004DCD6A /* PurposeSplitWindow.xib in Resources */,
-				B1FAECAA12357D15000AF027 /* copyaq.sh in Resources */,
 				B1FB6611124FC9E300C54A0E /* TransferTemplates.xib in Resources */,
 				B1FB6915125D0A5500C54A0E /* edit16.png in Resources */,
 				B14587A21289DCB700848683 /* CategoryPeriods.xib in Resources */,
@@ -1869,6 +1848,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B150A17115ADBCC80003DF5B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n\n# copylibs.sh\n# Pecunia\n#\n# Created by Frank Emminghaus on 11.07.12.\n# Copyright 2012 Frank Emminghaus. All rights reserved.\necho \"$TARGET_BUILD_DIR/Pecunia.app/Contents/\"\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/pcsc-ctapi-wrapper.dylib\"\nif [ $? -ne 0 ]; then\n  echo \"copy libs\"\n  cp \"$SRCROOT/Resources/pcsc-ctapi-wrapper.dylib\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents\"\n  cp \"$SRCROOT/Resources/libhbci4java-card-mac-os-x-10.6.jnilib\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
