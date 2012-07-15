@@ -1,7 +1,7 @@
 // XXX: refactor keys and split messages into groups.
 
 // Common strings.
-// AP0 .. AP99
+// AP0..AP99
 
 "AP0" = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß 0123456789.,&-/+*$%";
 "EUR" = "€";
@@ -23,8 +23,6 @@
 "wrong_input" = "Falsche Eingabe";
 "AP13" = "Die Kontonummer ist nicht gültig";
 "retry" = "Eingabe wiederholen";
-"AP14" = "Überweisungen löschen";
-"AP15" = "Die Einträge werden unwiderruflich gelöscht. Möchten Sie trotzdem fortfahren?";
 "yes" = "Ja";
 "no" = "Nein";
 "transfers" = "Überweisungen";
@@ -36,9 +34,10 @@
 "close anyway" = "Dennoch Beenden";
 "banking_root" = "BANKKONTEN";
 "category_root" = "KATEGORIEN";
+"delete" = "Löschen";
 
 // Common errors.
-// AP 100..199
+// AP100..AP199
 "AP100" = "Kritisch";
 "AP101" = "Fehler";
 "AP102" = "Warnung";
@@ -207,6 +206,12 @@
 "AP414" = "Es kann immer nur eine Überweisung bearbeitet werden. Wählen Sie deshalb nur einen einzigen Eintrag aus der Liste.";
 "AP415" = "Alle Aufträge senden";
 "AP416" = "Ausgewählte Aufträge senden";
+"AP417" = "Überweisung löschen";
+"AP418" = "Überweisungen löschen";
+"AP419" = "Der Eintrag wird unwiderruflich gelöscht. Möchten Sie trotzdem fortfahren?";
+"AP420" = "Die Einträge werden unwiderruflich gelöscht. Möchten Sie trotzdem fortfahren?";
+"AP421" = "Vorlage löschen";
+"AP422" = "Vorlagen löschen";
 
 // Use a new block of IDs for next set of strings!
 // AP450..AP499

@@ -200,7 +200,7 @@ extern NSString *StatementTypeKey;
 
 - (void) fillCell: (StatementsListViewCell*)cell forRow: (NSUInteger)row
 {
-    id statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];
+    id statement = [[_dataSource objectAtIndex: row] statement];
     
     NSDate* currentDate = [statement valueForKey: @"date"];
     
@@ -216,28 +216,28 @@ extern NSString *StatementTypeKey;
     NSDictionary *details = [NSDictionary dictionaryWithObjectsAndKeys:
                              [self formatValue: currentDate capitalize: NO], StatementDateKey,
                              turnoversString, StatementTurnoversKey,
-                             [self formatValue: [statement valueForKey: @"remoteName"] capitalize: YES], StatementRemoteNameKey,
-                             [self formatValue: [statement valueForKey: @"floatingPurpose"] capitalize: YES], StatementPurposeKey,
-                             [self formatValue: [statement valueForKey: @"note"] capitalize: YES], StatementNoteKey,
-                             [self formatValue: [statement valueForKey: @"categoriesDescription"] capitalize: NO], StatementCategoriesKey,
-                             [statement valueForKey: @"value"], StatementValueKey,
-                             [statement valueForKey: @"saldo"], StatementSaldoKey,
-                             [self formatValue: [statement valueForKey: @"currency"] capitalize: NO], StatementCurrencyKey,
-                             [self formatValue: [statement valueForKey: @"transactionText"] capitalize: YES], StatementTransactionTextKey,
+                             [self formatValue: [statement remoteName] capitalize: YES], StatementRemoteNameKey,
+                             [self formatValue: [statement floatingPurpose] capitalize: YES], StatementPurposeKey,
+                             [self formatValue: [[_dataSource objectAtIndex: row] userInfo] capitalize: YES], StatementNoteKey,
+                             [self formatValue: [statement categoriesDescription] capitalize: NO], StatementCategoriesKey,
+                             [self formatValue: [statement value] capitalize: NO], StatementValueKey,
+                             [self formatValue: [statement saldo] capitalize: NO], StatementSaldoKey,
+                             [self formatValue: [statement currency] capitalize: NO], StatementCurrencyKey,
+                             [self formatValue: [statement transactionText] capitalize: YES], StatementTransactionTextKey,
                              [NSNumber numberWithInt: row], StatementIndexKey,
                              nil];
     
     [cell setDetails: details];
-    [cell setIsNew: [[statement valueForKey: @"isNew"] boolValue]];
+    [cell setIsNew: [[statement isNew] boolValue]];
     
     if (self.showAssignedIndicators) {
-        id test = [[_dataSource objectAtIndex: row] valueForKey: @"classify"];
+        id test = [[_dataSource objectAtIndex: row] classify];
         [cell showActivator: YES markActive: test != nil];
     } else {
         [cell showActivator: NO markActive: NO];
     }
     
-    NSDecimalNumber* nassValue = [statement valueForKey: @"nassValue"];
+    NSDecimalNumber* nassValue = [statement nassValue];
     cell.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
     
     // Set the size of the cell, depending on if we show its header or not.

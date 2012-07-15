@@ -22,7 +22,7 @@ Allgemeines
 
 Umsatzabfrage
 -------------
-- Konten getrennt abfragen, nicht alles in einem Rutsch -> schnellere Rückmeldung mit erstem Ergebnis und kein Abbruch aller Abfragen, wenn eine fehlschlägt.
+- Konten getrennt abfragen, nicht alles in einem Rutsch -> schnellere Rückmeldung mit erstem Ergebnis und kein Abbruch aller Abfragen, wenn eine fehlschlägt. Außerdem schnelleres Weiterarbeiten, wenn man das erste Mal eine Überweisung bearbeitet.
 
 Kategorie + Kontenanalyse
 -------------------------
@@ -46,6 +46,7 @@ Transaktionen
 - Übernahme von Kontodaten aus der Zwischenablage.
 - Wiederkehrende Überweisung (auch für Prognosen), http://www.onlinebanking-forum.de/phpBB2/viewtopic.php?p=81818#81818
 - Zwischensaldoanzeige per Knopf abschaltbar machen.
+- Eine Möglichkeit aus Buchungen auf der Kontenseite eine neue Überweisung (auf der Überweisungsseite) zu erstellen.
 
 Ausgaben/Export
 ---------------

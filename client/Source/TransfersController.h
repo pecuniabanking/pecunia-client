@@ -89,6 +89,7 @@
     IBOutlet NSButton      *queueItButton;
     IBOutlet NSButton      *doItButton;
     IBOutlet NSButton      *sendTransfersButton;
+    IBOutlet NSTextField   *templateName;
     
     IBOutlet DragImageView  *transferDebitImage;
     IBOutlet DragImageView  *transferInternalImage;
@@ -96,6 +97,8 @@
     IBOutlet DragImageView  *transferEUImage;
     IBOutlet DragImageView  *transferSEPAImage;
     IBOutlet DeleteImageView *transferDeleteImage;
+    
+    IBOutlet NSPanel        *templateNameSheet;
     
 @private
 	NSNumberFormatter *formatter;
@@ -115,6 +118,8 @@
 - (IBAction)calendarChanged: (id)sender;
 - (IBAction)queueTransfer: (id)sender;
 - (IBAction)sendTransfer: (id)sender;
+- (IBAction)saveTemplate: (id)sender;
+- (IBAction)cancelCreateTemplate: (id)sender;
 
 - (void)hideCalendarWindow;
 

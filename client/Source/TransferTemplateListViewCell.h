@@ -30,6 +30,7 @@
     IBOutlet NSTextField *valueLabel;
     IBOutlet NSTextField *currencyLabel;
     IBOutlet NSTextField *valueTitle;
+    IBOutlet NSTextField *templateName;
 
 @private
     NSDictionary *positiveAttributes;

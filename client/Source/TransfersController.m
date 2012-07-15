@@ -96,13 +96,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [super viewDidMoveToSuperview];
 
     // Register for types that can be deleted.
-    [self registerForDraggedTypes: [NSArray arrayWithObjects: TransferDataType, TransferReadyForUseDataType, nil]];
+    [self registerForDraggedTypes: [NSArray arrayWithObjects: TransferDataType, TransferReadyForUseDataType,
+                                    TransferTemplateDataType, nil]];
 }
 
 - (NSDragOperation)draggingEntered: (id <NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType, TransferReadyForUseDataType, nil]];
+    NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType,
+                                                          TransferReadyForUseDataType, TransferTemplateDataType, nil]];
     if (type == nil) {
         return NSDragOperationNone;
     }
@@ -240,8 +242,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (NSDragOperation)draggingEntered: (id<NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    currentDragDataType = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType,
-                                                               TransferPredefinedTemplateDataType, TransferReadyForUseDataType, nil]];
+    currentDragDataType = [pasteboard availableTypeFromArray:
+                           [NSArray arrayWithObjects:
+                             TransferDataType,
+                             TransferPredefinedTemplateDataType,
+                             TransferReadyForUseDataType,
+                             TransferTemplateDataType,
+                            nil]];
     return NSDragOperationNone;
 }
 
@@ -253,10 +260,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     NSPoint location = info.draggingLocation;
     if (NSPointInRect(location, [self dropTargetFrame])) {
-        // Mouse is within our drag target area.
         
-        if ((currentDragDataType == TransferDataType || currentDragDataType == TransferPredefinedTemplateDataType) &&
-            [controller editingInProgress]) {
+        // Mouse is within our drag target area.
+        if ((currentDragDataType == TransferDataType || currentDragDataType == TransferPredefinedTemplateDataType
+             || currentDragDataType == TransferTemplateDataType)
+            && [controller editingInProgress]) {
             return NSDragOperationNone;
         }
         
@@ -459,7 +467,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     rightPane.controller = self;
     [rightPane registerForDraggedTypes: [NSArray arrayWithObjects: TransferPredefinedTemplateDataType,
-                                         TransferDataType, TransferReadyForUseDataType, nil]];
+                                         TransferDataType, TransferReadyForUseDataType, TransferTemplateDataType, nil]];
 
     executeImmediatelyRadioButton.target = self;
     executeImmediatelyRadioButton.action = @selector(executionTimeChanged:);
@@ -481,6 +489,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [transferDebitImage setFrameCenterRotation: -5];
     
     transferDeleteImage.controller = self;
+    
 }
 
 - (NSMenuItem*)createItemForAccountSelector: (BankAccount *)account
@@ -716,19 +725,46 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 }
 
 /**
+ * Called when the template name sheet ended.
+ */
+- (void)sheetDidEnd: (NSWindow *)sheet returnCode: (NSInteger)returnCode contextInfo: (void *)contextInfo
+{
+    [sheet orderOut: nil];
+    if (returnCode == NSRunStoppedResponse) {
+        NSArray *transfers = (NSArray *)contextInfo;
+        
+        NSUInteger counter = 0;
+        for (Transfer *transfer in transfers) {
+            NSString *actualName = (counter++ == 0) ? [templateName stringValue] : [NSString stringWithFormat: @"%@ %i", [templateName stringValue], counter];
+            [transactionController saveTransfer: transfer asTemplateWithName: actualName];
+        }
+        [transfers release];
+        
+        NSManagedObjectContext *context = MOAssistant.assistant.context;
+        NSError *error = nil;
+        if ([context save: &error ] == NO) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+        }
+    }
+}
+
+/**
  * Used to determine certain cases of drop operations.
  */
-- (BOOL)canAcceptDropFor: (TransfersListView *)sender context: (id<NSDraggingInfo>)info
+- (BOOL)canAcceptDropFor: (id)sender context: (id<NSDraggingInfo>)info
 {
     if (sender == finishedTransfersListView) {
         // Can accept drops only from other transfers list views.
         return info.draggingSource == pendingTransfersListView;
     }
-    if (sender == pendingTransfersListView) {
+    
+    if (sender == pendingTransfersListView || sender == transferTemplateListView) {
         NSPasteboard *pasteboard = [info draggingPasteboard];
         NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType, TransferReadyForUseDataType, nil]];
         return type != nil;
     }
+    
     return NO;
 }
 
@@ -736,11 +772,48 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
  * Called when the user dragged something on one of the transfers listviews. The meaning depends
  * on the target.
  */
-- (void)concludeDropOperation: (TransfersListView *)sender context: (id<NSDraggingInfo>)info
+- (void)concludeDropOperation: (id)sender context: (id<NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
     NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType, TransferReadyForUseDataType, nil]];
     if (type == nil) {
+        return;
+    }
+    
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    
+    if (sender == transferTemplateListView) {
+        NSArray *transfers;
+        if (type == TransferReadyForUseDataType) {
+            // If this is an edited transfer then finish the edit operation first
+            // (and do so the validation) before using it as template.
+            if (![transactionController finishCurrentTransfer]) {
+                return;
+            }
+            [rightPane hideFormular];
+            transfers = [NSArray arrayWithObject: transactionController.currentTransfer];
+        } else {
+            NSData *data = [pasteboard dataForType: type];
+            NSArray *urls = [NSKeyedUnarchiver unarchiveObjectWithData: data];
+            NSMutableArray *mutableTransfers = [NSMutableArray array];
+            
+            for (NSURL *url in urls) {
+                NSManagedObjectID *objectId = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: url];
+                if (objectId == nil) {
+                    continue;
+                }
+                [mutableTransfers addObject: [context objectWithID: objectId]];
+            }
+            transfers = mutableTransfers;
+        }
+        
+        // Use the remote name of the first transfer as default for the template name.
+        templateName.stringValue = [[transfers objectAtIndex: 0] remoteName];
+        [NSApp beginSheet: templateNameSheet
+           modalForWindow: [mainView window]
+            modalDelegate: self
+           didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
+              contextInfo: [transfers retain]]; // Will be released in the didEndSelector.
         return;
     }
     
@@ -749,8 +822,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             [rightPane hideFormular];
         }
     } else {
-        NSManagedObjectContext *context = MOAssistant.assistant.context;
-        
         NSData *data = [pasteboard dataForType: type];
         NSArray *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
         
@@ -781,7 +852,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (BOOL)concludeDropDeleteOperation: (id<NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType, TransferReadyForUseDataType, nil]];
+    NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType,
+                                                          TransferReadyForUseDataType, TransferTemplateDataType, nil]];
     if (type == nil) {
         return NO;
     }
@@ -801,16 +873,16 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 	NSError *error = nil;
 	NSManagedObjectContext *context = MOAssistant.assistant.context;
 	
-	int res = NSRunAlertPanel(NSLocalizedString(@"AP14", @"Delete transfers"), 
-                              NSLocalizedString(@"AP15", @"Entries will be deleted for good. Continue anyway?"),
-                              NSLocalizedString(@"no", @"No"), 
-                              NSLocalizedString(@"yes", @"Yes"), 
-                              nil);
-	if (res != NSAlertAlternateReturn) {
-        return NO;
-    }
-	
     if (type == TransferReadyForUseDataType) {
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP417", @""), 
+                                  NSLocalizedString(@"AP419", @""),
+                                  NSLocalizedString(@"cancel", @""), 
+                                  NSLocalizedString(@"delete", @""), 
+                                  nil);
+        if (res != NSAlertAlternateReturn) {
+            return NO;
+        }
+        
         // We are throwing away the currently being edited transfer which was already placed in the
         // pending transfers queue but brought back for editing. This time the user wants it deleted.
         [rightPane hideFormular];
@@ -819,24 +891,52 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         [context deleteObject: transfer];
         return YES;
     }
+    
     NSData *data = [pasteboard dataForType: type];
-    NSArray *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
+    NSArray *entries = [NSKeyedUnarchiver unarchiveObjectWithData: data];
     
+    NSString *warningTitle;
+    if (type == TransferDataType) {
+        warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP417", @"") : NSLocalizedString(@"AP418", @"");
+    } else {
+        warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP421", @"") : NSLocalizedString(@"AP422", @"");
+    }
+    NSString *warningText = (entries.count == 1) ? NSLocalizedString(@"AP419", @"") : NSLocalizedString(@"AP420", @"");
+    int res = NSRunAlertPanel(NSLocalizedString(warningTitle, @""), 
+                              NSLocalizedString(warningText, @""),
+                              NSLocalizedString(@"cancel", @""), 
+                              NSLocalizedString(@"delete", @""), 
+                              nil);
+    if (res != NSAlertAlternateReturn) {
+        return NO;
+    }
     
-    for (NSURL *url in transfers) {
-        NSManagedObjectID *objectId = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: url];
-        if (objectId == nil) {
-            continue;
+    if (type == TransferDataType) {
+        // Pending or finished transfers.
+        for (NSURL *url in entries) {
+            NSManagedObjectID *objectId = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: url];
+            if (objectId == nil) {
+                continue;
+            }
+            Transfer *transfer = (Transfer *)[context objectWithID: objectId];
+            [context deleteObject: transfer];
         }
-        Transfer *transfer = (Transfer *)[context objectWithID: objectId];
-		[context deleteObject: transfer];
-	}
-    
-	if ([context save: &error ] == NO) {
-		NSAlert *alert = [NSAlert alertWithError: error];
-		[alert runModal];
-	}
-    
+    } else {
+        // Stored templates.
+        for (NSURL *url in entries) {
+            NSManagedObjectID *objectId = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: url];
+            if (objectId == nil) {
+                continue;
+            }
+            NSManagedObject *template = [context objectWithID: objectId];
+            [context deleteObject: template];
+        }
+    }
+        
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+    }
     return YES;
 }
 
@@ -847,7 +947,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (BOOL)prepareEditingFromDragging: (id<NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType, TransferPredefinedTemplateDataType, nil]];
+    NSString *type = [pasteboard availableTypeFromArray:
+                      [NSArray arrayWithObjects:
+                        TransferDataType,
+                        TransferPredefinedTemplateDataType,
+                        TransferTemplateDataType,
+                       nil]];
     if (type == nil) {
         return NO;
     }
@@ -875,8 +980,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (objectId == nil) {
         return NO;
     }
-    Transfer *transfer = (Transfer *)[context objectWithID: objectId];
-    if (![self prepareTransferOfType: [transfer.type intValue]]) {
+    
+    id transfer = [context objectWithID: objectId];
+    if (![self prepareTransferOfType: [[transfer valueForKey: @"type"] intValue]]) {
         return NO;
     }
     
@@ -899,7 +1005,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
     
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType, TransferPredefinedTemplateDataType, nil]];
+    NSString *type = [pasteboard availableTypeFromArray:
+                      [NSArray arrayWithObjects:
+                        TransferDataType,
+                        TransferPredefinedTemplateDataType,
+                        TransferTemplateDataType,
+                       nil]];
     if (type == nil) {
         return NO;
     }
@@ -924,6 +1035,17 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (objectId == nil) {
         return NO;
     }
+
+    if (type == TransferTemplateDataType) {
+        // A new transfer from a stored template.
+        TransferTemplate *template = (TransferTemplate *)[context objectWithID: objectId];
+        BOOL result = [transactionController newTransferFromTemplate: template];
+        if (result) {
+            [self prepareSourceAccountSelector: nil];
+        }
+        return result;
+    }
+    
     Transfer *transfer = (Transfer *)[context objectWithID: objectId];
     BOOL result;
     if (transfer.isSent.intValue == 1) {
@@ -960,6 +1082,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
  */
 - (void)doSendTransfers: (NSArray*)transfers
 {
+    if (transfers.count == 0) {
+        return;
+    }
+    
     // Show log output if wanted.
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     BOOL showLog = [defaults boolForKey: @"logForTransfers"];
@@ -1023,10 +1149,25 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [self storeReceiverInMRUList];
     
     // Can never be called if editing is not in progress, but better safe than sorry.
-    if ([self editingInProgress]) {
+    if ([self editingInProgress] && [transactionController finishCurrentTransfer]) {
         NSArray* transfers = [NSArray arrayWithObject: transactionController.currentTransfer];
         [self doSendTransfers: transfers];
     }
+}
+
+- (IBAction)saveTemplate: (id)sender
+{
+    NSString *name = templateName.stringValue;
+    if (name.length == 0) {
+        NSBeep();
+        return;
+    }
+    [NSApp endSheet: templateNameSheet returnCode: NSRunStoppedResponse];
+}
+
+- (IBAction)cancelCreateTemplate: (id)sender
+{
+    [NSApp endSheet: templateNameSheet returnCode: NSRunAbortedResponse ];
 }
 
 - (IBAction)deleteTransfers: (id)sender
@@ -1037,8 +1178,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 	NSArray* sel = [finishedTransfers selectedObjects ];
 	if(sel == nil || [sel count ] == 0) return;
 	
-	int res = NSRunAlertPanel(NSLocalizedString(@"AP14", @"Delete transfers"), 
-                              NSLocalizedString(@"AP15", @"Entries will be deleted for good. Continue anyway?"),
+	int res = NSRunAlertPanel(NSLocalizedString(@"AP418", @"Delete transfers"), 
+                              NSLocalizedString(@"AP420", @"Entries will be deleted for good. Continue anyway?"),
                               NSLocalizedString(@"no", @"No"), 
                               NSLocalizedString(@"yes", @"Yes"), 
                               nil);

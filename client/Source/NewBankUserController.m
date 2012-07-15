@@ -137,7 +137,7 @@
     [self prepareUserSheet ];
 }
 
-- (void)ok:(id)sender
+- (IBAction)ok:(id)sender
 {
 	[userSheet makeFirstResponder:okButton ];
     [currentUserController commitEditing ];
@@ -221,7 +221,7 @@
 	[self prepareUserSheet ];
 }
 
-- (void)cancelSheet:(id)sender
+- (IBAction)cancelSheet:(id)sender
 {
 	[userSheet orderOut: sender];
 	[NSApp endSheet: userSheet returnCode: 1];

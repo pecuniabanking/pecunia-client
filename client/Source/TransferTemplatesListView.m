@@ -41,6 +41,7 @@ extern NSString *StatementRemoteBankCodeKey;
 extern NSString *StatementRemoteIBANKey;
 extern NSString *StatementRemoteBICKey;
 extern NSString *StatementTypeKey;
+NSString *TemplateNameKey = @"TemplateNameKey";
 
 NSString *TransferTemplateDataType = @"TransferTemplateDataType";
 
@@ -175,9 +176,10 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     
     NSDictionary *details = [NSDictionary dictionaryWithObjectsAndKeys:
                              [NSNumber numberWithInt: row], StatementIndexKey,
+                             [self formatValue: template.name], TemplateNameKey,
                              [self formatValue: template.remoteName], StatementRemoteNameKey,
                              [self formatValue: template.purpose], StatementPurposeKey,
-                             template.value, StatementValueKey,
+                             [self formatValue: template.value], StatementValueKey,
                              [self formatValue: template.currency], StatementCurrencyKey,
                              [self formatValue: template.remoteBankCode], StatementRemoteBankCodeKey,
                              [self formatValue: template.remoteIBAN], StatementRemoteIBANKey,

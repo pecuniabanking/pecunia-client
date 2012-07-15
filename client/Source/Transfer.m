@@ -1,10 +1,21 @@
-//
-//  Transfer.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 21.07.07.
-//  Copyright 2007 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2007, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "Transfer.h"
 #import "TransferTemplate.h"
@@ -54,42 +65,51 @@
 	return s;
 }
 
--(void) copyFromTemplate:(TransferTemplate*)t withLimits:(TransactionLimits*)limits
+- (void)copyFromTemplate: (TransferTemplate*)t withLimits: (TransactionLimits*)limits
 {
 	NSString *s;
-	NSUInteger maxLen = [limits maxLenRemoteName ] * [limits maxLinesRemoteName ];
+	NSUInteger maxLen = [limits maxLenRemoteName] * [limits maxLinesRemoteName];
 	s = t.remoteName;
-	if ([s length ] > maxLen) s = [s substringToIndex:maxLen ];
+	if (maxLen > 0 && [s length] > maxLen) {
+       s = [s substringToIndex:maxLen]; 
+    }
 	self.remoteName = s;
 	
-	maxLen = [limits maxLenPurpose ];
-	int num = [limits maxLinesPurpose ];
+	maxLen = [limits maxLenPurpose];
+	int num = [limits maxLinesPurpose];
 	
 	s = t.purpose1;
-	if ([s length ] > maxLen) s = [s substringToIndex:maxLen ];
+	if (maxLen > 0 && [s length] > maxLen) {
+        s = [s substringToIndex: maxLen];
+    }
 	self.purpose1 = s;
 	
-	if (num > 1) {
+	if (num == 0 || num > 1) {
 		s = t.purpose2;
-		if ([s length ] > maxLen) s = [s substringToIndex:maxLen ];
+		if (maxLen > 0 && [s length] > maxLen) {
+            s = [s substringToIndex: maxLen];
+        }
 		self.purpose2 = s;
 	}
 	
-	if (num > 2) {
+	if (num == 0 || num > 2) {
 		s = t.purpose3;
-		if ([s length ] > maxLen) s = [s substringToIndex:maxLen ];
+		if (maxLen > 0 && [s length] > maxLen) {
+            s = [s substringToIndex: maxLen];
+        }
 		self.purpose3 = s;
 	}
 	
-	if (num > 3) {
+	if (num == 0 || num > 3) {
 		s = t.purpose4;
-		if ([s length ] > maxLen) s = [s substringToIndex:maxLen ];
+		if (maxLen > 0 && [s length] > maxLen) {
+            s = [s substringToIndex: maxLen];
+        }
 		self.purpose4 = s;
 	}
 	
 	self.remoteAccount = t.remoteAccount;
 	self.remoteBankCode = t.remoteBankCode;
-//	self.remoteBankName = t.remoteBankName;
 	self.remoteIBAN = t.remoteIBAN;
 	self.remoteBIC = t.remoteBIC;
 	self.value = t.value;

@@ -80,11 +80,10 @@
 	[currentTransferController setManagedObjectContext: context];
 }
 
--(void)updateLimits
+- (void)updateLimits
 {
-	[limits release ]; limits = nil;
-	limits = [[HBCIClient hbciClient ] limitsForType: transferType account: account country: selectedCountry ];
-	if(limits) [limits retain ];
+	[limits release];
+	limits = [[[HBCIClient hbciClient] limitsForType: transferType account: account country: selectedCountry] retain];
 }
 
 -(void)templateDoubleClicked: (id)sender
@@ -96,7 +95,7 @@
 
 -(void)prepareTransfer
 {
-	NSPredicate	*pred;
+	//NSPredicate	*pred;
 
     // set drawer content
     switch (transferType) {
@@ -120,11 +119,13 @@
             break;
     }
         
+    /*
 	// set template filter
 	if(transferType == TransferTypeStandard || transferType == TransferTypeDated) pred = [NSPredicate predicateWithFormat: @"type = 0 OR type = 2" ];
 	else pred = [NSPredicate predicateWithFormat: @"type = 1 or type = 5" ];
 	[templateController setFilterPredicate: pred];
-	
+	*/
+    
 	if(transferType == TransferTypeInternal) {
 		[internalAccounts release ];
 		internalAccounts = [[[account siblings ] allObjects ] retain ];
@@ -141,9 +142,7 @@
 		selectedCountry = nil;
 		[self updateLimits ];
 		currentTransfer.remoteCountry = account.country;
-	}
-
-	if(transferType == TransferTypeEU) {
+	} else {
 		NSArray *allowedCountries = [[HBCIClient hbciClient ] allowedCountriesForAccount: account ];
 		[countryController setContent:allowedCountries ];
 		// sort descriptor for transactions view
@@ -313,6 +312,61 @@
         currentTransfer.remoteBankName = bankName;		   
     }
     return YES;
+}
+
+- (BOOL)newTransferFromTemplate: (TransferTemplate*)template
+{
+    if (![self newTransferOfType: [template.type intValue]]) {
+        return NO;
+    }
+    
+	transferType = [template.type intValue];
+	
+	[self prepareTransfer];
+    [currentTransfer copyFromTemplate: template withLimits: nil];
+    currentTransfer.changeState = TransferChangeNew;
+    
+    // Determine the remote bank name again.
+    NSString *bankName;
+    if (transferType == TransferTypeEU) {
+        bankName = [[HBCIClient hbciClient] bankNameForBIC: currentTransfer.remoteBIC inCountry: currentTransfer.remoteCountry];
+    } else {
+        bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode inCountry: currentTransfer.remoteCountry];
+    }
+    if (bankName != nil) {
+        currentTransfer.remoteBankName = bankName;		   
+    }
+    return YES;
+}
+
+- (void)saveTransfer: (Transfer*)transfer asTemplateWithName: (NSString *)name
+{
+    if (name == nil) {
+        return;
+    }
+    name = [name stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (name.length == 0) {
+        return;
+    }
+    
+	NSManagedObjectContext	*context = templateController.managedObjectContext;
+	TransferTemplate *template = [NSEntityDescription insertNewObjectForEntityForName: @"TransferTemplate" inManagedObjectContext: context];
+	template.name = name;
+    template.type = transfer.type;
+	template.remoteAccount = transfer.remoteAccount;
+	template.remoteBankCode = transfer.remoteBankCode;
+	template.remoteName = transfer.remoteName;
+	template.purpose1 = transfer.purpose1;
+	template.purpose2 = transfer.purpose2;
+	template.purpose3 = transfer.purpose3;
+	template.purpose4 = transfer.purpose4;
+	template.remoteIBAN = transfer.remoteIBAN;
+	template.remoteBIC = transfer.remoteBIC;
+	template.remoteCountry = transfer.remoteCountry;
+	template.value = transfer.value;
+	template.currency = transfer.currency;
+    
+    // TODO: Save the context?
 }
 
 - (BOOL)editingInProgress

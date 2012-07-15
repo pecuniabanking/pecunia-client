@@ -42,6 +42,7 @@ extern NSString *StatementRemoteBankCodeKey;
 extern NSString *StatementRemoteIBANKey;
 extern NSString *StatementRemoteBICKey;
 extern NSString *StatementTypeKey;
+extern NSString *TemplateNameKey;
 
 @implementation TransferTemplateListViewCell
 
@@ -82,6 +83,7 @@ static CurrencyValueTransformer* currencyTransformer;
     index = [[details objectForKey: StatementIndexKey] intValue];
     type = [[details objectForKey: StatementTypeKey] intValue];
     
+    [templateName setStringValue: [details valueForKey: TemplateNameKey]];
     [remoteNameLabel setStringValue: [details valueForKey: StatementRemoteNameKey]];
     [remoteNameLabel setToolTip: [details valueForKey: StatementRemoteNameKey]];
 
@@ -165,6 +167,7 @@ static CurrencyValueTransformer* currencyTransformer;
         [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: whiteAttributes];
         [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: whiteAttributes];
         
+        [templateName setTextColor: [NSColor whiteColor]];
         [remoteNameLabel setTextColor: [NSColor whiteColor]];
         [purposeLabel setTextColor: [NSColor whiteColor]];
         [valueLabel setTextColor: [NSColor whiteColor]]; // Need to set both the label itself as well as its cell formatter.
@@ -175,6 +178,7 @@ static CurrencyValueTransformer* currencyTransformer;
         [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
         [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
         
+        [templateName setTextColor: [NSColor controlTextColor]];
         [remoteNameLabel setTextColor: [NSColor controlTextColor]];
         [accountLabel setTextColor: [NSColor controlTextColor]];
         [valueLabel setTextColor: [NSColor controlTextColor]];

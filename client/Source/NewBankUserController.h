@@ -70,5 +70,6 @@
 - (IBAction)allSettings: (id)sender;
 
 - (IBAction)ok:(id)sender;
+- (IBAction)cancelSheet:(id)sender;
 
 @end

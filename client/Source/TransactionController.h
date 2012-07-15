@@ -64,6 +64,8 @@
 - (BOOL)newTransferOfType: (TransferType)type;
 - (BOOL)editExistingTransfer: (Transfer*)transfer;
 - (BOOL)newTransferFromExistingTransfer: (Transfer*)transfer;
+- (BOOL)newTransferFromTemplate: (TransferTemplate*)template;
+- (void)saveTransfer: (Transfer*)transfer asTemplateWithName: (NSString *)name;
 - (BOOL)editingInProgress;
 - (void)cancelCurrentTransfer;
 - (BOOL)finishCurrentTransfer;
