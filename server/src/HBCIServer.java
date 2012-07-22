@@ -29,6 +29,9 @@ import org.kapott.hbci.GV_Result.GVRDauerList;
 import org.kapott.hbci.GV_Result.GVRDauerNew;
 import org.kapott.hbci.GV_Result.GVRKUms;
 import org.kapott.hbci.GV_Result.GVRSaldoReq;
+import org.kapott.hbci.GV_Result.GVRKKSaldoReq;
+import org.kapott.hbci.GV_Result.GVRKKSettleList;
+import org.kapott.hbci.GV_Result.GVRKKUms;
 import org.kapott.hbci.GV_Result.GVRTANMediaList;
 import org.kapott.hbci.GV_Result.GVRTermUebList;
 import org.kapott.hbci.GV_Result.HBCIJobResult;
@@ -162,6 +165,8 @@ public class HBCIServer {
 	                case HAVE_INST_MSG:			callbackClient(passport, "instMessage", msg, def, reason, datatype); return;
 	                case NEED_CHIPCARD:			callbackClient(passport, "needChipcard", msg, def, reason, datatype); return;
 	                case HAVE_CHIPCARD:			callbackClient(passport, "haveChipcard", msg, def, reason, datatype); return;
+	                case NEED_HARDPIN:			callbackClient(passport,"needHardPin", msg, def, reason, datatype); return;
+	                case HAVE_HARDPIN:			callbackClient(passport, "haveHardPin", msg, def, reason, datatype); return;
 	
 	                default: System.err.println("Unhandled callback reason code: " + Integer.toString(reason)); return;
 	            }
@@ -317,7 +322,12 @@ public class HBCIServer {
     	Konto [] accounts = passport.getAccounts();
     	
     	for(Konto k: accounts) {
-    		if(k.number.equals(accountNumber) && ((k.subnumber == null && subNumber == null) || k.subnumber.equals(subNumber))) return k;
+    		if(k.number.equals(accountNumber)) {
+    			if(k.subnumber == null && subNumber == null) return k;
+    			if(k.subnumber != null) {
+    				if(k.subnumber.equals(subNumber)) return k;
+    			}
+    		}
     	}
     	return null;
     }
@@ -365,7 +375,7 @@ public class HBCIServer {
         HBCIHandler hbciHandle = null;
         try {
         	String version = map.getProperty("version");
-        	if(version.compareTo("220") == 0) version = "plus";
+        	if(version.compareTo("220") == 0 && type.equals("PinTan")) version = "plus";
         	hbciHandle=new HBCIHandler(version, passport);
         }
         catch(HBCI_Exception e) {
@@ -499,13 +509,7 @@ public class HBCIServer {
 					Konto account = (Konto)jobacc.get("account");
 					GVRKUms res = (GVRKUms)job.getJobResult();
 					if(res.isOK()) {
-				    	xmlBuf.append("<object type=\"BankQueryResult\">");
-				    	xmlGen.tag("bankCode", account.blz);
-				    	xmlGen.tag("accountNumber", account.number);
-				    	xmlGen.tag("accountSubnumber", account.subnumber);
-				    	xmlBuf.append("<statements type=\"list\">");
 						xmlGen.umsToXml(res, account);
-						xmlBuf.append("</statements></object>");
 					}
 					
 				}
@@ -1161,21 +1165,14 @@ public class HBCIServer {
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
-
 	
-	private void isJobSupported() throws IOException {
-		String bankCode = getParameter(map, "bankCode");
-		String accountNumber = getParameter(map, "accountNumber");
-		String subNumber = map.getProperty("subNumber");
-		String userId = getParameter(map, "userId");
-		String jobName = getParameter(map, "jobName");
-		boolean supp = false;
-
-		if(subNumber == null) subNumber = "";
-		HBCIHandler handler = hbciHandler(bankCode, userId);
-		if(handler != null) {
-			HBCIPassport passport = handler.getPassport();
-			
+	private ArrayList<String> getAllowedGVs(HBCIPassport passport, String accountNumber, String subNumber) {
+		
+		Konto account = getAccount(passport, accountNumber, subNumber);
+		ArrayList<String> result = (ArrayList<String>)account.allowedGVs;
+		
+		if(result == null) {
+			if(subNumber == null) subNumber = "";
 			// general purpose: get supported GVs for each account - should be separated later
 			Properties upd = passport.getUPD();
 			Properties gvs = new Properties();
@@ -1219,7 +1216,27 @@ public class HBCIServer {
 			
 			HBCIUtils.log(gvs.toString(), HBCIUtils.LOG_DEBUG);
 
-			ArrayList<String> gvcodes = (ArrayList<String>)gvs.get(accountNumber+subNumber);
+			result = (ArrayList<String>)gvs.get(accountNumber+subNumber);
+			account.allowedGVs = result;
+		}
+		
+		return result;
+	}
+
+	
+	private void isJobSupported() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String accountNumber = getParameter(map, "accountNumber");
+		String subNumber = map.getProperty("subNumber");
+		String userId = getParameter(map, "userId");
+		String jobName = getParameter(map, "jobName");
+		boolean supp = false;
+
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		if(handler != null) {
+			HBCIPassport passport = handler.getPassport();
+			ArrayList<String> gvcodes = getAllowedGVs(passport, accountNumber, subNumber);
+			
 			if(gvcodes != null) {
 				if(jobName.equals("Ueb")) supp = gvcodes.contains("HKUEB");
 				else if(jobName.equals("TermUeb")) supp = gvcodes.contains("HKTUE");
@@ -1262,7 +1279,7 @@ public class HBCIServer {
 	}
 	
 	private void error(int code, String command, String msg) throws IOException {
-		xmlBuf = new StringBuffer();
+		xmlBuf.delete(0, xmlBuf.length());
 		xmlBuf.append("<result command=\""+command+"\">");
 		xmlBuf.append("<error code=\""+Integer.toString(code)+"\">");
 		xmlGen.tag("msg", msg);
@@ -1435,11 +1452,95 @@ public class HBCIServer {
 		out.flush();
 	}
 	
-	public void getAllCCStatements() throws IOException {
+	private void getCCBalance() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
 		String accountNumber = getParameter(map, "accountNumber");
-		String ccnum = getParameter(map,"cc_number");
+		String subNumber = map.getProperty("subNumber");
+		
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		if(handler == null) {
+			error(ERR_MISS_USER, "getAllCCStatements", userId);
+			return;			
+		}
+		
+		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		if(account == null) {
+			account = getAccount(handler.getPassport(), accountNumber, subNumber);
+			if(account == null) {
+				error(ERR_MISS_ACCOUNT, "getCCBalance",accountNumber);
+				return;
+			}
+		}
+	
+		HBCIJob job = handler.newJob("KKSaldoReq");
+		job.setParam("my", account);
+		job.setParam("cc_number", accountNumber);
+		
+		job.addToQueue();
+		HBCIExecStatus stat = handler.execute();
+
+		boolean isOk = false;
+		GVRKKSaldoReq res = null;
+		if(stat.isOK()) {
+			res = (GVRKKSaldoReq)job.getJobResult();
+			if(res.isOK()) isOk = true;
+		}
+		xmlBuf.append("<result command=\"getCCBalance\">");
+		if(isOk == true) xmlGen.ccBalanceToXml(res);
+		xmlBuf.append("</result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+	}
+	
+	private void getCCSettlementList() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String userId = getParameter(map, "userId");
+		String accountNumber = getParameter(map, "accountNumber");
+		String subNumber = map.getProperty("subNumber");
+		
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		if(handler == null) {
+			error(ERR_MISS_USER, "getCCSettlementList", userId);
+			return;			
+		}
+		
+		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		if(account == null) {
+			account = getAccount(handler.getPassport(), accountNumber, subNumber);
+			if(account == null) {
+				error(ERR_MISS_ACCOUNT, "getCCSettlementList",accountNumber);
+				return;
+			}
+		}
+		
+		HBCIJob job = handler.newJob("KKSettleList");
+		job.setParam("my", account);
+		job.setParam("cc_number", accountNumber);
+		
+		job.addToQueue();
+		HBCIExecStatus stat = handler.execute();
+
+		boolean isOk = false;
+		GVRKKSettleList res = null;
+		if(stat.isOK()) {
+			res = (GVRKKSettleList)job.getJobResult();
+			if(res.isOK()) isOk = true;
+		}
+		xmlBuf.append("<result command=\"getCCBalance\">");
+		if(isOk == true) xmlGen.ccSettleListToXml(res);
+		xmlBuf.append("</result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+		
+		
+	}
+	
+	private void getAllCCStatements() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String userId = getParameter(map, "userId");
+		String accountNumber = getParameter(map, "accountNumber");
+		//String ccnum = getParameter(map,"cc_number");
 		String subNumber = map.getProperty("subNumber");
 		
 		HBCIHandler handler = hbciHandler(bankCode, userId);
@@ -1459,19 +1560,19 @@ public class HBCIServer {
 	
 		HBCIJob job = handler.newJob("KKUmsAll");
 		job.setParam("my", account);
-		job.setParam("cc_number", ccnum);
+		job.setParam("cc_number", accountNumber);
 		
 		job.addToQueue();
 		HBCIExecStatus stat = handler.execute();
 
 		boolean isOk = false;
-		HBCIJobResult res = null;
+		GVRKKUms res = null;
 		if(stat.isOK()) {
-			res = job.getJobResult();
+			res = (GVRKKUms)job.getJobResult();
 			if(res.isOK()) isOk = true;
 		}
 		xmlBuf.append("<result command=\"getAllCCStatements\">");
-		xmlGen.booleTag("isOk", isOk);
+		if(isOk == true) xmlGen.ccUmsToXml(res);
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
@@ -1604,46 +1705,8 @@ public class HBCIServer {
 		xmlBuf.append("<result command=\"getSupportedBusinessTransactons\"><list>");
 		HBCIPassport passport = handler.getPassport();
 		
-		// general purpose: get supported GVs for each account - should be separated later
-		Properties upd = passport.getUPD();
-		Properties gvs = new Properties();
-		Properties accNums = new Properties();
-		for(Enumeration e = upd.keys(); e.hasMoreElements(); ) {
-			String key = (String)e.nextElement();
-			if(key.matches("KInfo\\w*.AllowedGV\\w*.code")) {
-				String accKey = key.substring(0, key.indexOf('.'));
-				ArrayList<String> gvcodes= (ArrayList<String>)gvs.get(accKey);
-				if(gvcodes == null) {
-					gvcodes = new ArrayList<String>();
-					gvs.put(accKey, gvcodes);
-				}
-				gvcodes.add((String)upd.get(key));
-			} else if(key.matches("KInfo\\w*.KTV.number")) {
-				String accKey = key.substring(0, key.indexOf('.'));
-				String val = accNums.getProperty(accKey);
-				if(val == null) accNums.put(accKey, upd.get(key));
-				else accNums.put(accKey, upd.get(key)+val);
-			} else if(key.matches("KInfo\\w*.KTV.subnumber")) {
-				String accKey = key.substring(0, key.indexOf('.'));
-				String val = accNums.getProperty(accKey);
-				String subNum = (String) upd.get(key);
-				if(subNum != null) {
-					if(val == null) accNums.put(accKey, subNum);
-					else accNums.put(accKey, val+subNum);					
-				}
-			}
-		}
-
-		// now merge it
-		for(Enumeration e = accNums.keys(); e.hasMoreElements(); ) {
-			String key = (String)e.nextElement();
-			ArrayList<String> gvcodes= (ArrayList<String>)gvs.get(key);
-			if(gvcodes != null) gvs.put(accNums.get(key), gvcodes);
-			gvs.remove(key);
-		}
-
 		// Filter by account and return result.
-		ArrayList<String> gvcodes = (ArrayList<String>)gvs.get(accountNumber+subNumber);
+		ArrayList<String> gvcodes = getAllowedGVs(passport, accountNumber, subNumber);
 		if(gvcodes != null) {
 			for (Enumeration e = Collections.enumeration(gvcodes); e.hasMoreElements();) {
 				xmlGen.tag("gv", (String)e.nextElement());
@@ -1686,12 +1749,14 @@ public class HBCIServer {
 			if(command.compareTo("getAllTermUebs") == 0) { getAllTermUebs(); return; }
 			if(command.compareTo("customerMessage") == 0) { customerMessage(); return; }
 			if(command.compareTo("getAllCCStatements") == 0) { getAllCCStatements(); return; }
+			if(command.compareTo("getCCBalance") == 0) { getCCBalance(); return; }
 			if(command.compareTo("getInitialBPD") == 0) { getInitialBPD(); return; }
 			if(command.compareTo("getTANMediaList") == 0) { getTANMediaList(); return; }
 			if(command.compareTo("getBankParameterRaw") == 0) { getBankParameterRaw(); return; }
 			if(command.compareTo("getTANMethods") == 0) { getTANMethods(); return; }
 			if(command.compareTo("getBalance") == 0) { getBalance(); return; }
 			if(command.compareTo("getSupportedBusinessTransactions") == 0) { getSupportedBusinessTransactions(); return; }
+			if(command.compareTo("getCCSettlementList") == 0) { getCCSettlementList(); return; }
 			
 			
 			System.err.println("HBCIServer: unknown command: "+command);
