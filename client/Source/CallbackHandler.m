@@ -231,6 +231,12 @@
     }
     if ([data.command isEqualToString:@"haveChipcard" ]) {
     }
+    if ([data.command isEqualToString:@"needHardPin" ]) {
+        // todo: Popup Pin eingeben
+    }
+    if ([data.command isEqualToString:@"haveHardPin" ]) {
+        // todo: Popup löschen
+    }
     
     return @"";
 }

@@ -37,7 +37,7 @@
 
 @protocol HBCIBackend
 
--(NSArray*)initHBCI;
+-(PecuniaError*)initHBCI;
 
 -(NSArray*)supportedVersions;
 

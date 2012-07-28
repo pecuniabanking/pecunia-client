@@ -109,6 +109,7 @@ static NSMutableDictionary* applicationColors;
 
     if ([defaultAccountColors count] > 0) {
         NSColor* result = [defaultAccountColors objectAtIndex: 0];
+        [[result retain ] autorelease ];
         [defaultAccountColors removeObjectAtIndex: 0];
         
         return result;

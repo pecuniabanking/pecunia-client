@@ -35,6 +35,7 @@
 @synthesize ddvPortIdx;
 @synthesize ddvReaderIdx;
 @synthesize secMethod;
+@synthesize isRegistered;
 
 -(id)copyWithZone: (NSZone *)zone
 {

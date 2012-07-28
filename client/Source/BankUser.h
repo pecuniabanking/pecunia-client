@@ -39,6 +39,7 @@ typedef enum {
 @property (nonatomic, retain) NSNumber *ddvPortIdx;
 @property (nonatomic, retain) NSNumber *ddvReaderIdx;
 @property (nonatomic, retain) NSNumber *secMethod;
+@property (nonatomic, assign) BOOL isRegistered;
 
 -(void)updateTanMethods:(NSArray*)methods;
 -(void)updateTanMedia:(NSArray*)media;

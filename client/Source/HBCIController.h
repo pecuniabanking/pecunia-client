@@ -29,6 +29,7 @@
 -(void)readCountryInfos;
 
 -(void)asyncCommandCompletedWithResult:(id)result error:(PecuniaError*)err;
+-(PecuniaError*)checkRegistered:(BankUser *)user;
 
 
 @end

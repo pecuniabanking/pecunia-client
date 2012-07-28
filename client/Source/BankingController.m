@@ -126,7 +126,12 @@ static BOOL runningOnLionOrLater = NO;
         
         @try {
             client = [HBCIClient hbciClient];
-            [client initHBCI];
+            PecuniaError *error = [client initHBCI];
+            if (error != nil) {
+                [error alertPanel ];
+                [NSApp terminate: self];
+                
+            }
         }
         @catch (NSError *error) {
             NSAlert *alert = [NSAlert alertWithError:error];

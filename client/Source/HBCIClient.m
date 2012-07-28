@@ -55,7 +55,7 @@ static HBCIClient *client = nil;
 	[super dealloc ];
 }
 
--(NSArray*)initHBCI
+-(PecuniaError*)initHBCI
 {
 	return [controller initHBCI ];
 }
