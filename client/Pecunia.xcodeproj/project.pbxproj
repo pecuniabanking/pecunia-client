@@ -64,8 +64,6 @@
 		2764B63C15443C6600FF0B73 /* rules-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764B63715443C6600FF0B73 /* rules-active.png */; };
 		2764B63D15443C6600FF0B73 /* statementlist-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764B63815443C6600FF0B73 /* statementlist-active.png */; };
 		2777A739142F968B005729F0 /* Bank.png in Resources */ = {isa = PBXBuildFile; fileRef = 2777A738142F968B005729F0 /* Bank.png */; };
-		2777A755142F9B86005729F0 /* expanded.png in Resources */ = {isa = PBXBuildFile; fileRef = 2777A753142F9B86005729F0 /* expanded.png */; };
-		2777A756142F9B86005729F0 /* collapsed.png in Resources */ = {isa = PBXBuildFile; fileRef = 2777A754142F9B86005729F0 /* collapsed.png */; };
 		2777A781142FA471005729F0 /* catdef5_16.png in Resources */ = {isa = PBXBuildFile; fileRef = 2777A780142FA471005729F0 /* catdef5_16.png */; };
 		2780E50D151B229700CB86CE /* category-reporting-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC74A814A102800082495C /* category-reporting-help.rtf */; };
 		2780E50E151B229700CB86CE /* category-analysis-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC73D314A0C0680082495C /* category-analysis-help.rtf */; };
@@ -422,8 +420,6 @@
 		2764B63715443C6600FF0B73 /* rules-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rules-active.png"; sourceTree = "<group>"; };
 		2764B63815443C6600FF0B73 /* statementlist-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "statementlist-active.png"; sourceTree = "<group>"; };
 		2777A738142F968B005729F0 /* Bank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bank.png; sourceTree = "<group>"; };
-		2777A753142F9B86005729F0 /* expanded.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = expanded.png; sourceTree = "<group>"; };
-		2777A754142F9B86005729F0 /* collapsed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = collapsed.png; sourceTree = "<group>"; };
 		2777A780142FA471005729F0 /* catdef5_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = catdef5_16.png; sourceTree = "<group>"; };
 		2788C8B81455C3CE00225939 /* CurrencyValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyValueTransformer.h; sourceTree = "<group>"; tabWidth = 4; };
 		2788C8B91455C3CE00225939 /* CurrencyValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyValueTransformer.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1401,8 +1397,6 @@
 				272B5EB2143F724600007749 /* slanted_stripes.png */,
 				27F30886143E282700A10FCE /* new.png */,
 				2777A780142FA471005729F0 /* catdef5_16.png */,
-				2777A753142F9B86005729F0 /* expanded.png */,
-				2777A754142F9B86005729F0 /* collapsed.png */,
 				2777A738142F968B005729F0 /* Bank.png */,
 				2724DCF014016E4000B0FE15 /* banknote.png */,
 				274DE33313F9A0C50009EB77 /* pen.png */,
@@ -1767,8 +1761,6 @@
 				B1AA633114096E6600ADE1D0 /* ImportSettings.xib in Resources */,
 				B1AA640E140C07E600ADE1D0 /* ImportWindow.xib in Resources */,
 				2777A739142F968B005729F0 /* Bank.png in Resources */,
-				2777A755142F9B86005729F0 /* expanded.png in Resources */,
-				2777A756142F9B86005729F0 /* collapsed.png in Resources */,
 				2777A781142FA471005729F0 /* catdef5_16.png in Resources */,
 				27C78793143622920095F1DA /* ProgressWindow.xib in Resources */,
 				275C07DB1438776000D97415 /* StatementsListViewCell.xib in Resources */,
