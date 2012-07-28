@@ -47,6 +47,7 @@ Transaktionen
 - Wiederkehrende Überweisung (auch für Prognosen), http://www.onlinebanking-forum.de/phpBB2/viewtopic.php?p=81818#81818
 - Zwischensaldoanzeige per Knopf abschaltbar machen.
 - Eine Möglichkeit aus Buchungen auf der Kontenseite eine neue Überweisung (auf der Überweisungsseite) zu erstellen.
+- Wenn eine Suche aktiv ist optional den gewählten Datumsbereich hinzuziehen (nicht alle Ergebnisse zeigen).
 
 Ausgaben/Export
 ---------------

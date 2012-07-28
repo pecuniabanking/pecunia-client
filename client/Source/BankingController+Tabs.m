@@ -33,7 +33,7 @@
 	if (index == NSNotFound) {
 		StandingOrderTabController *tabController = [[[StandingOrderTabController alloc] init] autorelease];
 		if ([NSBundle loadNibNamed: @"Orders" owner: tabController]) {
-			NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: StandingOrderTabIdentifier];
+			NSTabViewItem *item = [[[NSTabViewItem alloc] initWithIdentifier: StandingOrderTabIdentifier] autorelease];
 			[item setView: [tabController mainView]];
 			[mainTabView addTabViewItem: item];
 			[mainTabView selectTabViewItem: item];
@@ -51,7 +51,7 @@
 	if (index == NSNotFound) {
 		transfersController = [[[TransfersController alloc] init] autorelease];
 		if ([NSBundle loadNibNamed: @"Transfers" owner: transfersController]) {
-			NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: TransfersTabIdentifier];
+			NSTabViewItem *item = [[[NSTabViewItem alloc] initWithIdentifier: TransfersTabIdentifier] autorelease];
 			[item setView: [transfersController mainView]];
 			[mainTabView addTabViewItem: item];
 			[mainTabView selectTabViewItem: item];

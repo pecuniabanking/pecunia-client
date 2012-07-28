@@ -58,6 +58,7 @@
 	
 	frame.origin.x = 0;
 	frame.origin.y = 0;
+    frame.size.height = 0;
 	frame.size.width = pageWidth;
 	
     self = [super initWithFrame:frame];

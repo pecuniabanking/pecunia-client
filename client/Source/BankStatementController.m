@@ -115,7 +115,7 @@
 		if ([[ShortDate dateWithDate:newStatement.date ] compare: [ShortDate dateWithDate: stat.date ] ] != NSOrderedAscending) {
 			// newStatement.date == stat.date
 			if ([[ShortDate dateWithDate:newStatement.date ] compare: [ShortDate dateWithDate: stat.date ] ] == NSOrderedSame) {
-				newStatement.date = [[NSDate alloc ] initWithTimeInterval:100 sinceDate:stat.date ];
+				newStatement.date = [[[NSDate alloc] initWithTimeInterval: 100 sinceDate: stat.date] autorelease];
 			} else {
 				newStatement.date = [[ShortDate dateWithDate:newStatement.date ] lowDate ];
 			}

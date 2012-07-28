@@ -171,6 +171,7 @@ static CurrencyValueTransformer* currencyTransformer;
     // listview (which will later be assigned to this cell anyway).
     BOOL isSelected = [self.listView.selectedRows containsIndex: index];
     
+    NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text Color"];
     if (isSelected) {
         [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: whiteAttributes];
         [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: whiteAttributes];
@@ -193,7 +194,6 @@ static CurrencyValueTransformer* currencyTransformer;
         [dateLabel setTextColor: [NSColor controlTextColor]];
         [valueLabel setTextColor: [NSColor controlTextColor]];
         
-        NSColor *paleColor = [NSColor colorWithDeviceRed: 124 / 255.0 green: 121 / 255.0 blue: 109 / 255.0 alpha: 1];
         [bankNameLabel setTextColor: paleColor];
         [purposeLabel setTextColor: paleColor];
         [currencyLabel setTextColor: paleColor];
@@ -217,9 +217,9 @@ static CurrencyValueTransformer* currencyTransformer;
 
     // Construct a formatted string for the accunt label.
     NSMutableAttributedString *accountString = [[[NSMutableAttributedString alloc] init] autorelease];
-    NSFont *normalFont = [NSFont fontWithName: @"Helvetica Neue" size: 11];
+    NSFont *normalFont = [NSFont fontWithName: @"LucidaGrande" size: 11];
     NSDictionary *normalAttributes = [NSDictionary dictionaryWithObjectsAndKeys: normalFont, NSFontAttributeName,
-                                      isSelected ? [NSColor whiteColor] : [NSColor grayColor], NSForegroundColorAttributeName,
+                                      isSelected ? [NSColor whiteColor] : paleColor, NSForegroundColorAttributeName,
                                       nil];
     
     NSFontManager *fontManager = [NSFontManager sharedFontManager];

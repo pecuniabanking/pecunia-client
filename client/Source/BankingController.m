@@ -1843,17 +1843,6 @@ static BOOL runningOnLionOrLater = NO;
     [self updateStatusbar];
 }
 
-/**
- * Triggered when the outline view wants to draw the disclosure triangles.
- */
-- (void)outlineView: (NSOutlineView *)outlineView willDisplayOutlineCell: (NSButtonCell*)cell
-     forTableColumn: (NSTableColumn *)tableColumn item: (id)item
-{
-    [cell setImage: [NSImage imageNamed: @"collapsed.png"]];
-    [cell setAlternateImage: [NSImage imageNamed: @"expanded.png"]];
-    [cell setImageScaling: NSImageScaleProportionallyUpOrDown];
-}
-
 - (void)outlineView: (NSOutlineView *)outlineView willDisplayCell: (ImageAndTextCell*)cell
      forTableColumn: (NSTableColumn *)tableColumn item: (id)item
 {
@@ -1864,6 +1853,8 @@ static BOOL runningOnLionOrLater = NO;
     if (cat == nil) {
         return;
     }
+    
+    cell.swatchColor = cat.categoryColor;
     
     if (categoryImage == nil) {
         categoryImage = [NSImage imageNamed: @"catdef5_16.png"];

@@ -145,14 +145,14 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	}
 	
 	// Passport directory
-	self.ppDir = [[pDir stringByExpandingTildeInPath ] retain];
+	self.ppDir = [pDir stringByExpandingTildeInPath];
 	if([fm fileExistsAtPath: ppDir] == NO) {
 		[fm createDirectoryAtPath: ppDir withIntermediateDirectories: YES attributes: nil error: &error ];
 		if(error) @throw error;
 	}
 	
 	// ImExporter Directory
-	self.importerDir = [[iDir stringByExpandingTildeInPath ] retain];
+	self.importerDir = [iDir stringByExpandingTildeInPath];
 	if([fm fileExistsAtPath: importerDir ] == NO) {
 		[fm createDirectoryAtPath: importerDir withIntermediateDirectories: YES attributes: nil error: &error ];
 		if(error) @throw error;

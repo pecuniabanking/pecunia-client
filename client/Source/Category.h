@@ -45,6 +45,8 @@ typedef enum {
 
 @interface Category : NSManagedObject {
     
+@private
+    NSColor *catColor;
 }
 
 @property (nonatomic, retain) NSString * rule;
@@ -60,6 +62,7 @@ typedef enum {
 @property (nonatomic, retain) NSData * catRepColor;
 @property (nonatomic, retain) NSNumber * noCatRep;
 
+@property (nonatomic, retain) NSColor *categoryColor; // Unarchived catRepColor.
 
 //-(NSDecimalNumber*)updateBalance;
 -(void)updateInvalidBalances;
@@ -78,9 +81,6 @@ typedef enum {
 -(BOOL)isInsertable;
 -(BOOL)isNotAssignedCategory;
 -(BOOL)checkMoveToCategory:(Category*)cat;
-
--(NSColor*)categoryColor;
--(void)setCategoryColor: (NSColor*)color;
 
 //-(void)setLocalName: (NSString*)name;
 -(NSMutableSet*)children;

@@ -58,8 +58,11 @@
 #define BADGE_SELECTED_HIDDEN_TEXT_COLOR    [NSColor colorWithCalibratedWhite: (170 / 255.0) alpha: 1]
 #define BADGE_FONT                          [NSFont boldSystemFontOfSize: 11]
 
+#define SWATCH_SIZE               7
+
 @implementation ImageAndTextCell
 
+@synthesize swatchColor;
 @synthesize image;
 @synthesize currency;
 @synthesize amount;
@@ -69,7 +72,7 @@
 {
     if ((self = [super initWithCoder:decoder]))
     {    
-        self.amountFormatter = [[[NSNumberFormatter alloc] init] retain];
+        amountFormatter = [[NSNumberFormatter alloc] init];
         [amountFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];
         [amountFormatter setLocale: [NSLocale currentLocale]];
         [amountFormatter setCurrencySymbol: @""];
@@ -81,9 +84,9 @@
 
 - (void)dealloc
 {
-    [image release], image = nil;
-    [currency release], currency = nil;
-    [amountFormatter release ], amountFormatter = nil;
+    [image release];
+    [currency release];
+    [amountFormatter release];
     
     [super dealloc];
 }
@@ -196,7 +199,7 @@ static NSGradient* selectionGradient = nil;
         iconFrame.origin.x += ICON_SPACING;
         iconFrame.origin.y += floor((cellFrame.size.height + iconFrame.size.height) / 2);
         
-        [image compositeToPoint:iconFrame.origin operation:NSCompositeSourceOver];
+        [image compositeToPoint: iconFrame.origin operation: NSCompositeSourceOver];
         
     }
     else
@@ -205,6 +208,26 @@ static NSGradient* selectionGradient = nil;
         cellFrame.origin.x   += ICON_SPACING;
     }
     
+    // Draw category color swatch.
+    if (swatchColor != nil) {
+        NSRect swatchRect = cellFrame;
+        swatchRect.size = NSMakeSize(SWATCH_SIZE, SWATCH_SIZE);
+        swatchRect.origin.y += floor((cellFrame.size.height - SWATCH_SIZE) / 2) + 0.5;
+        swatchRect.origin.x += 0.5;
+        [swatchColor setFill];
+        [NSBezierPath fillRect: swatchRect];
+        
+        if ([self isHighlighted] || isRoot) {
+            [[NSColor whiteColor] setStroke];
+        } else {
+            [[NSColor blackColor] setStroke];
+        }
+        [NSBezierPath strokeRect: swatchRect];
+
+        cellFrame.size.width -= SWATCH_SIZE + 4;
+        cellFrame.origin.x += SWATCH_SIZE + 4;
+    }
+
     // Reserve space for badges.
     if (maxUnread > 0)
     {

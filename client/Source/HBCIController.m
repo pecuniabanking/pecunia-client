@@ -758,7 +758,7 @@ NSString *escapeSpecial(NSString *s)
         if (maxStatDays == 0) maxStatDays = 90;
         
         if (result.account.latestTransferDate == nil) {
-            result.account.latestTransferDate = [[NSDate alloc ] initWithTimeInterval: -86400*maxStatDays sinceDate:[NSDate date ] ];
+            result.account.latestTransferDate = [[[NSDate alloc] initWithTimeInterval: -86400 * maxStatDays sinceDate: [NSDate date]] autorelease];
         }
         
         if (result.account.latestTransferDate != nil) {

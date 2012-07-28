@@ -87,7 +87,7 @@ static NSImage* headerImage;
 
     [NSGraphicsContext restoreGraphicsState];
 
-    if (self.indicatorColor != nil) {
+    if (indicatorColor != nil) {
         [borderPath setClip];
         [self.indicatorColor set];
         NSRect barRect = bounds;
@@ -95,14 +95,16 @@ static NSImage* headerImage;
         barRect.size.height = 8;
         NSRectFill(barRect);
     }
-    
+
 }
 
 - (void)setIndicatorColor: (NSColor*)color
 {
-    [indicatorColor release];
-    indicatorColor = [color retain];
-    [self setNeedsDisplay: YES];
+    if (indicatorColor != color) {
+        [indicatorColor release];
+        indicatorColor = [color retain];
+        [self setNeedsDisplay: YES];
+    }
 }
 
 @end

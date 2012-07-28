@@ -108,7 +108,7 @@ static NSMutableDictionary* applicationColors;
     }
 
     if ([defaultAccountColors count] > 0) {
-        NSColor* result = [[defaultAccountColors objectAtIndex: 0] retain];
+        NSColor* result = [defaultAccountColors objectAtIndex: 0];
         [defaultAccountColors removeObjectAtIndex: 0];
         
         return result;
@@ -131,7 +131,7 @@ static NSMutableDictionary* applicationColors;
     }
 
     if ([defaultCategoryColors count] > 0) {
-        NSColor* result = [[defaultCategoryColors objectAtIndex: 0] retain];
+        NSColor* result = [defaultCategoryColors objectAtIndex: 0];
         [defaultCategoryColors removeObjectAtIndex: 0];
         
         return result;
@@ -439,17 +439,17 @@ static void CGPathCallback(void *info, const CGPathElement *element)
                                                   bitmapBytesPerRow,
                                                   colorSpace,
                                                   kCGImageAlphaPremultipliedLast);
+    CGColorSpaceRelease(colorSpace);
+    
     if (context == NULL)
     {
         NSLog(@"getPrintViewForLayerBackedView: Failed to create context.");
         return nil;
     }
     
-    CGColorSpaceRelease(colorSpace);
-
     [[self layer] renderInContext: context];
     CGImageRef img = CGBitmapContextCreateImage(context);
-    NSImage* image = [[NSImage alloc] initWithCGImage: img size: bounds.size];
+    NSImage* image = [[[NSImage alloc] initWithCGImage: img size: bounds.size] autorelease];
     
     NSImageView* canvas = [[NSImageView alloc] initWithFrame: bounds];
     [canvas setImage: image];

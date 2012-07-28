@@ -34,11 +34,16 @@
 }
 
 static NSImage* background = nil;
+static NSShadow* borderShadow = nil;
 
 - (void)drawRect: (NSRect)dirtyRect
 {
     if (background == nil) {
         background = [NSImage imageNamed: @"background-pattern.png"];
+        
+        borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.25]
+                                                offset: NSMakeSize(1, -1)
+                                            blurRadius: 2.0];
     }
     
     [NSGraphicsContext saveGraphicsState];
@@ -52,14 +57,15 @@ static NSImage* background = nil;
     }
     [color setFill];
     [NSBezierPath fillRect: [self bounds]];
-
+    
     NSRect dropTargetFrame = [rightPane dropTargetFrame];
-
+    [borderShadow set];
+    
     // Draw the target area for drop operations from the preview images or one of the transfer
     // lists (unsent/sent transfers and transfer templates).
     NSBezierPath* dragTargetPath = [NSBezierPath bezierPathWithRoundedRect: dropTargetFrame xRadius: 20 yRadius: 20];
     [dragTargetPath setLineWidth: 8];
-    [[NSColor colorWithCalibratedWhite: 90 / 255.0 alpha: 1] setStroke];
+    [[NSColor colorWithCalibratedWhite: 60 / 255.0 alpha: 1] setStroke];
     CGFloat lineDash[2] = {20, 5};
     [dragTargetPath setLineDash: lineDash count: 2 phase: 0];
     [dragTargetPath stroke];

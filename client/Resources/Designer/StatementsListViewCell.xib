@@ -142,7 +142,6 @@
 						<string key="NSFrame">{{761, 6}, {23, 11}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="466988470">
 							<int key="NSCellFlags">68288064</int>
@@ -535,11 +534,12 @@
 						<reference key="NSNextKeyView" ref="616500165"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="9901859">
-							<int key="NSCellFlags">68288064</int>
-							<int key="NSCellFlags2">272634880</int>
+							<int key="NSCellFlags">67239488</int>
+							<int key="NSCellFlags2">4200448</int>
 							<string key="NSContents">statement date</string>
 							<reference key="NSSupport" ref="623550465"/>
 							<reference key="NSControlView" ref="1001270240"/>
+							<bool key="NSDrawsBackground">YES</bool>
 							<reference key="NSBackgroundColor" ref="609700460"/>
 							<reference key="NSTextColor" ref="219540686"/>
 						</object>

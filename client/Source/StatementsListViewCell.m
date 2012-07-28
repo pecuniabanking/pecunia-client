@@ -17,6 +17,8 @@
  * 02110-1301  USA
  */
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "PXListView.h"
 #import "StatementsListViewCell.h"
 
@@ -226,7 +228,7 @@ static CurrencyValueTransformer* currencyTransformer;
         [valueLabel setTextColor: [NSColor controlTextColor]];
         [saldoLabel setTextColor: [NSColor controlTextColor]];
         
-        NSColor *paleColor = [NSColor colorWithDeviceRed: 124 / 255.0 green: 121 / 255.0 blue: 109 / 255.0 alpha: 1];
+        NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text Color"];
         [transactionTypeLabel setTextColor: paleColor];
         [noteLabel setTextColor: paleColor];
         [saldoCaption setTextColor: paleColor];
@@ -337,7 +339,7 @@ static NSImage* stripeImage;
     // Mark the value area if there is an unassigned value remaining.
     if (hasUnassignedValue)
     {
-        NSRect area = [valueLabel frame];
+        NSRect area = [categoriesLabel frame];
         area.origin.y = 2;
         area.size.height = bounds.size.height - 4;
         area.size.width = stripeImage.size.width;

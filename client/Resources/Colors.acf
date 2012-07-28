@@ -6,7 +6,7 @@ AboutMessage:
 Names: Partial
 Rows: 12
 Columns: 12
-Entries: 28
+Entries: 29
 Prefix: 
 Suffix: 
 Type: Process
@@ -69,3 +69,5 @@ Grid Partial Selection
 Small Background Gradient (low)
 25700 25700 25700
 Small Background Gradient (high)
+23130 23130 20560
+Pale Text Color

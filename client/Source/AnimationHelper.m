@@ -163,7 +163,9 @@
         
         [[[self contentView] layer] renderInContext: context];
         CGImageRef img = CGBitmapContextCreateImage(context);
+        CFRelease(context);
         NSImage *subImage = [[NSImage alloc] initWithCGImage: img size: contentFrame.size];
+        CFRelease(img);
         [image lockFocus];
         [subImage drawAtPoint: NSMakePoint(0, 0)
                      fromRect: NSMakeRect(0, 0, contentFrame.size.width, contentFrame.size.height)
@@ -373,6 +375,7 @@
     
     CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath: @"position"];
     animation.path = animationPath;
+    CFRelease(animationPath);
     animation.duration = time;
     animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
     

@@ -35,16 +35,16 @@
         [formatter setLocale: [NSLocale currentLocale]];
         [formatter setCurrencySymbol: @""];
         
-        self.partiallyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
+        self.partiallyHighlightedGradient = [[[NSGradient alloc] initWithColorsAndLocations:
                                              [NSColor applicationColorForKey: @"Grid Partial Selection"], (CGFloat) 0,
                                              [NSColor applicationColorForKey: @"Grid Partial Selection"], (CGFloat) 1,
                                              nil
-                                             ];
-        self.fullyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                                         [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat) 0,
-                                         [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 1,
-                                         nil
-                                         ];
+                                             ] autorelease];
+        self.fullyHighlightedGradient = [[[NSGradient alloc] initWithColorsAndLocations:
+                                    [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat) 0,
+                                    [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 1,
+                                    nil
+                                    ] autorelease];
     }
     return  self;
 }

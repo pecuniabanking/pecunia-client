@@ -55,6 +55,7 @@
     BOOL isDisabled;
 }
 
+@property (nonatomic, retain) NSColor           *swatchColor;
 @property (nonatomic, retain) NSImage			*image;
 @property (nonatomic, retain) NSString			*currency;
 @property (nonatomic, retain) NSDecimalNumber	*amount;

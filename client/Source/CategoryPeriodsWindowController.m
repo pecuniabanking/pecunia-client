@@ -127,7 +127,7 @@
     valueGrid.defaultCellSize = NSMakeSize(100, 20);
     [valueGrid.rowHeaderView setHidden: YES];
     
-    AmountCell *cell = [[AmountCell alloc] initTextCell: @""];
+    AmountCell *cell = [[[AmountCell alloc] initTextCell: @""] autorelease];
     [cell setAlignment: NSRightTextAlignment];
     valueGrid.cell = cell;
     NSDictionary *positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:

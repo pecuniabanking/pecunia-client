@@ -41,15 +41,15 @@
     isInSelectedRow = NO;
     isInSelectedColumn = NO;
     
-    self.partiallyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
+    self.partiallyHighlightedGradient = [[[NSGradient alloc] initWithColorsAndLocations:
                                          [NSColor colorWithCalibratedRed: 92 / 255.0 green: 168 / 255.0 blue: 234 / 255.0 alpha: 1], (CGFloat) 0,
                                          [NSColor colorWithCalibratedRed: 92 / 255.0 green: 168 / 255.0 blue: 234 / 255.0 alpha: 1], (CGFloat) 1,
-                                         nil];
+                                         nil] autorelease];
 
-    self.fullyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
+    self.fullyHighlightedGradient = [[[NSGradient alloc] initWithColorsAndLocations:
                                          [NSColor colorWithCalibratedRed: 28 / 255.0 green: 131 / 255.0 blue: 222 / 255.0 alpha: 1], (CGFloat) 0,
                                          [NSColor colorWithCalibratedRed: 28 / 255.0 green: 131 / 255.0 blue: 222 / 255.0 alpha: 1], (CGFloat) 1,
-                                         nil];
+                                         nil] autorelease];
   }
   return self;
 }
