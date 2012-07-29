@@ -73,6 +73,7 @@
 								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{351, 363}, {220, 25}}</string>
 								<reference key="NSSuperview" ref="477091028"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="473696187"/>
 								<object class="NSShadow" key="NSViewShadow">
 									<double key="NSShadowHoriz">1</double>
@@ -114,7 +115,7 @@
 								<int key="NSvFlags">34</int>
 								<string key="NSFrame">{{13, 8}, {566, 334}}</string>
 								<reference key="NSSuperview" ref="477091028"/>
-								<reference key="NSNextKeyView" ref="467245500"/>
+								<reference key="NSWindow"/>
 								<int key="NSViewLayerContentsRedrawPolicy">2</int>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<array class="NSMutableArray" key="NSTabViewItems">
@@ -137,7 +138,7 @@
 																	<int key="NSvFlags">292</int>
 																	<string key="NSFrameSize">{422, 194}</string>
 																	<reference key="NSSuperview" ref="505806513"/>
-																	<reference key="NSNextKeyView" ref="141631344"/>
+																	<reference key="NSNextKeyView" ref="36266504"/>
 																	<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																	<string key="NSClassName">PXListDocumentView</string>
 																</object>
@@ -183,7 +184,7 @@
 													</array>
 													<string key="NSFrame">{{17, 17}, {512, 236}}</string>
 													<reference key="NSSuperview" ref="602143070"/>
-													<reference key="NSNextKeyView" ref="36266504"/>
+													<reference key="NSNextKeyView" ref="505806513"/>
 													<int key="NSViewLayerContentsRedrawPolicy">2</int>
 													<int key="NSsFlags">133648</int>
 													<reference key="NSVScroller" ref="141631344"/>
@@ -326,13 +327,15 @@
 																	<int key="NSvFlags">292</int>
 																	<string key="NSFrameSize">{422, 194}</string>
 																	<reference key="NSSuperview" ref="1070050306"/>
-																	<reference key="NSNextKeyView" ref="24183996"/>
+																	<reference key="NSWindow"/>
+																	<reference key="NSNextKeyView" ref="29584212"/>
 																	<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																	<string key="NSClassName">PXListDocumentView</string>
 																</object>
 															</array>
 															<string key="NSFrameSize">{512, 236}</string>
 															<reference key="NSSuperview" ref="636991751"/>
+															<reference key="NSWindow"/>
 															<reference key="NSNextKeyView" ref="685525644"/>
 															<int key="NSViewLayerContentsRedrawPolicy">2</int>
 															<reference key="NSDocView" ref="685525644"/>
@@ -344,6 +347,7 @@
 															<int key="NSvFlags">-2147483392</int>
 															<string key="NSFrame">{{454, 0}, {15, 199}}</string>
 															<reference key="NSSuperview" ref="636991751"/>
+															<reference key="NSWindow"/>
 															<reference key="NSNextKeyView" ref="374438338"/>
 															<reference key="NSTarget" ref="636991751"/>
 															<string key="NSAction">_doScroller:</string>
@@ -355,6 +359,7 @@
 															<int key="NSvFlags">-2147483392</int>
 															<string key="NSFrame">{{-100, -100}, {739, 15}}</string>
 															<reference key="NSSuperview" ref="636991751"/>
+															<reference key="NSWindow"/>
 															<reference key="NSNextKeyView" ref="1070050306"/>
 															<int key="NSsFlags">1</int>
 															<reference key="NSTarget" ref="636991751"/>
@@ -364,7 +369,8 @@
 													</array>
 													<string key="NSFrame">{{17, 17}, {512, 236}}</string>
 													<reference key="NSSuperview" ref="467245500"/>
-													<reference key="NSNextKeyView" ref="29584212"/>
+													<reference key="NSWindow"/>
+													<reference key="NSNextKeyView" ref="1070050306"/>
 													<int key="NSViewLayerContentsRedrawPolicy">2</int>
 													<int key="NSsFlags">133648</int>
 													<reference key="NSVScroller" ref="24183996"/>
@@ -376,6 +382,7 @@
 													<int key="NSvFlags">268</int>
 													<string key="NSFrame">{{14, 260}, {368, 24}}</string>
 													<reference key="NSSuperview" ref="467245500"/>
+													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="763290644"/>
 													<int key="NSViewLayerContentsRedrawPolicy">2</int>
 													<string key="NSReuseIdentifierKey">_NS:1505</string>
@@ -399,6 +406,7 @@
 													<int key="NSvFlags">265</int>
 													<string key="NSFrame">{{393, 262}, {136, 22}}</string>
 													<reference key="NSSuperview" ref="467245500"/>
+													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="636991751"/>
 													<int key="NSViewLayerContentsRedrawPolicy">2</int>
 													<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -452,6 +460,7 @@
 											</array>
 											<string key="NSFrame">{{10, 33}, {546, 288}}</string>
 											<reference key="NSSuperview" ref="473696187"/>
+											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="935630674"/>
 											<int key="NSViewLayerContentsRedrawPolicy">2</int>
 											<string key="NSReuseIdentifierKey">_NS:28</string>
@@ -1089,6 +1098,7 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{17, 675}, {475, 24}}</string>
 								<reference key="NSSuperview" ref="477091028"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="363232072"/>
 								<int key="NSViewLayerContentsRedrawPolicy">2</int>
 								<string key="NSReuseIdentifierKey">_NS:1505</string>
@@ -1120,13 +1130,15 @@
 												<int key="NSvFlags">292</int>
 												<string key="NSFrameSize">{350, 100}</string>
 												<reference key="NSSuperview" ref="350021224"/>
-												<reference key="NSNextKeyView" ref="271489172"/>
+												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="286497907"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSClassName">PXListDocumentView</string>
 											</object>
 										</array>
 										<string key="NSFrame">{{1, 1}, {550, 249}}</string>
 										<reference key="NSSuperview" ref="363232072"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="124800032"/>
 										<int key="NSViewLayerContentsRedrawPolicy">2</int>
 										<reference key="NSDocView" ref="124800032"/>
@@ -1141,6 +1153,7 @@
 										<int key="NSvFlags">-2147483392</int>
 										<string key="NSFrame">{{524, 0}, {15, 167}}</string>
 										<reference key="NSSuperview" ref="363232072"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="234829604"/>
 										<reference key="NSTarget" ref="363232072"/>
 										<string key="NSAction">_doScroller:</string>
@@ -1153,6 +1166,7 @@
 										<int key="NSvFlags">-2147483392</int>
 										<string key="NSFrame">{{-100, -100}, {739, 15}}</string>
 										<reference key="NSSuperview" ref="363232072"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="350021224"/>
 										<int key="NSsFlags">1</int>
 										<reference key="NSTarget" ref="363232072"/>
@@ -1163,7 +1177,8 @@
 								</array>
 								<string key="NSFrame">{{20, 411}, {552, 251}}</string>
 								<reference key="NSSuperview" ref="477091028"/>
-								<reference key="NSNextKeyView" ref="286497907"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="350021224"/>
 								<int key="NSViewLayerContentsRedrawPolicy">2</int>
 								<int key="NSsFlags">133650</int>
 								<reference key="NSVScroller" ref="271489172"/>
@@ -1174,6 +1189,7 @@
 						</array>
 						<string key="NSFrame">{{0, 10}, {591, 724}}</string>
 						<reference key="NSSuperview" ref="738284139"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="158252614"/>
 						<int key="NSViewLayerContentsRedrawPolicy">2</int>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -1196,6 +1212,7 @@
 								</set>
 								<string key="NSFrame">{{572, 434}, {59, 75}}</string>
 								<reference key="NSSuperview" ref="374438338"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="791394780"/>
 								<object class="NSShadow" key="NSViewShadow">
 									<double key="NSShadowHoriz">3</double>
@@ -1237,6 +1254,7 @@
 								</set>
 								<string key="NSFrame">{{202, 406}, {240, 145}}</string>
 								<reference key="NSSuperview" ref="374438338"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1040201423"/>
 								<int key="NSViewLayerContentsRedrawPolicy">2</int>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -1270,6 +1288,7 @@
 								</set>
 								<string key="NSFrame">{{19, 406}, {240, 145}}</string>
 								<reference key="NSSuperview" ref="374438338"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="956719228"/>
 								<int key="NSViewLayerContentsRedrawPolicy">2</int>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -1303,6 +1322,7 @@
 								</set>
 								<string key="NSFrame">{{450, 554}, {240, 145}}</string>
 								<reference key="NSSuperview" ref="374438338"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="914284004"/>
 								<double key="NSViewAlphaValue">0.50000000000000011</double>
 								<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -1337,6 +1357,7 @@
 								</set>
 								<string key="NSFrame">{{202, 554}, {240, 145}}</string>
 								<reference key="NSSuperview" ref="374438338"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="441607440"/>
 								<int key="NSViewLayerContentsRedrawPolicy">2</int>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -1370,6 +1391,7 @@
 								</set>
 								<string key="NSFrame">{{19, 554}, {240, 145}}</string>
 								<reference key="NSSuperview" ref="374438338"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="948364489"/>
 								<int key="NSViewLayerContentsRedrawPolicy">2</int>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -1394,6 +1416,7 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{50, 115}, {590, 160}}</string>
 								<reference key="NSSuperview" ref="374438338"/>
+								<reference key="NSWindow"/>
 								<int key="NSViewLayerContentsRedrawPolicy">2</int>
 								<string key="NSReuseIdentifierKey">_NS:1505</string>
 								<string key="NSAntiCompressionPriority">{250, 750}</string>
@@ -1412,13 +1435,14 @@
 									<reference key="NSBackgroundColor" ref="943481889"/>
 									<object class="NSColor" key="NSTextColor">
 										<int key="NSColorSpace">1</int>
-										<bytes key="NSRGB">MC4zNTg1MjUyNzYyIDAuMzU4MDY1ODEzOCAwLjM2NjA5MTM3MDYAA</bytes>
+										<bytes key="NSRGB">MC4yMTE5MDE4NzI4IDAuMjEyMzc5NDIyOSAwLjIxOTY2Njc3MwA</bytes>
 									</object>
 								</object>
 							</object>
 						</array>
 						<string key="NSFrame">{{599, 10}, {710, 724}}</string>
 						<reference key="NSSuperview" ref="738284139"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="643532653"/>
 						<int key="NSViewLayerContentsRedrawPolicy">2</int>
 						<string key="NSReuseIdentifierKey">_NS:13</string>
@@ -1427,6 +1451,7 @@
 				</array>
 				<string key="NSFrameSize">{1304, 734}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="477091028"/>
 				<bool key="NSViewIsLayerTreeHost">YES</bool>
 				<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -2688,7 +2713,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<string key="NSClassName">TransferFormularView</string>
 			</object>
 			<object class="NSCustomView" id="94518281">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">4364</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSDatePicker" id="540406822">
@@ -2696,7 +2721,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{20, 15}, {139, 148}}</string>
 						<reference key="NSSuperview" ref="94518281"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSDatePickerCell" key="NSCell" id="355484581">
@@ -2741,7 +2765,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					</object>
 				</array>
 				<string key="NSFrameSize">{179, 178}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="540406822"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="NSClassName">NSView</string>
@@ -2756,7 +2779,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<object class="NSView" key="NSWindowView" id="734233500">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<array class="NSMutableArray" key="NSSubviews">
 						<object class="NSImageView" id="937973837">
@@ -2832,7 +2855,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{267, 12}, {100, 32}}</string>
 							<reference key="NSSuperview" ref="734233500"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="808269005">
@@ -2875,7 +2897,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						</object>
 					</array>
 					<string key="NSFrameSize">{381, 121}</string>
-					<reference key="NSSuperview"/>
 					<reference key="NSNextKeyView" ref="937973837"/>
 					<string key="NSReuseIdentifierKey">_NS:21</string>
 				</object>
@@ -5615,7 +5636,1103 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 			<nil key="sourceID"/>
 			<int key="maxID">657</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">AmountCell</string>
+					<string key="superclassName">MBTableGridCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/AmountCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">BWGradientBox</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/BWGradientBox.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">BankingController</string>
+					<string key="superclassName">NSObject</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="activateAccountPage:">id</string>
+						<string key="activateMainPage:">id</string>
+						<string key="addAccount:">id</string>
+						<string key="addStatement:">id</string>
+						<string key="changeAccount:">id</string>
+						<string key="deleteAccount:">id</string>
+						<string key="deleteStatement:">id</string>
+						<string key="donate:">id</string>
+						<string key="editBankUsers:">id</string>
+						<string key="editPreferences:">id</string>
+						<string key="enqueueRequest:">id</string>
+						<string key="export:">id</string>
+						<string key="filterStatements:">id</string>
+						<string key="getAccountBalance:">id</string>
+						<string key="import:">id</string>
+						<string key="listUsers:">id</string>
+						<string key="manageCategories:">id</string>
+						<string key="manageTransferTemplates:">id</string>
+						<string key="printDocument:">id</string>
+						<string key="repairSaldo:">id</string>
+						<string key="resetIsNewStatements:">id</string>
+						<string key="save:">id</string>
+						<string key="showAboutPanel:">id</string>
+						<string key="showInfo:">id</string>
+						<string key="showInput:">id</string>
+						<string key="showLicense:">id</string>
+						<string key="showLog:">id</string>
+						<string key="sortingChanged:">id</string>
+						<string key="splitPurpose:">id</string>
+						<string key="splitStatement:">id</string>
+						<string key="toggleFullscreenIfSupported:">id</string>
+						<string key="transfer_dated:">id</string>
+						<string key="transfer_eu:">id</string>
+						<string key="transfer_internal:">id</string>
+						<string key="transfer_local:">id</string>
+						<string key="transfer_sepa:">id</string>
+						<string key="updateAllAccounts:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="activateAccountPage:">
+							<string key="name">activateAccountPage:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="activateMainPage:">
+							<string key="name">activateMainPage:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="addAccount:">
+							<string key="name">addAccount:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="addStatement:">
+							<string key="name">addStatement:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="changeAccount:">
+							<string key="name">changeAccount:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="deleteAccount:">
+							<string key="name">deleteAccount:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="deleteStatement:">
+							<string key="name">deleteStatement:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="donate:">
+							<string key="name">donate:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="editBankUsers:">
+							<string key="name">editBankUsers:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="editPreferences:">
+							<string key="name">editPreferences:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="enqueueRequest:">
+							<string key="name">enqueueRequest:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="export:">
+							<string key="name">export:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="filterStatements:">
+							<string key="name">filterStatements:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="getAccountBalance:">
+							<string key="name">getAccountBalance:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="import:">
+							<string key="name">import:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="listUsers:">
+							<string key="name">listUsers:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="manageCategories:">
+							<string key="name">manageCategories:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="manageTransferTemplates:">
+							<string key="name">manageTransferTemplates:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="printDocument:">
+							<string key="name">printDocument:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="repairSaldo:">
+							<string key="name">repairSaldo:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="resetIsNewStatements:">
+							<string key="name">resetIsNewStatements:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="save:">
+							<string key="name">save:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showAboutPanel:">
+							<string key="name">showAboutPanel:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showInfo:">
+							<string key="name">showInfo:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showInput:">
+							<string key="name">showInput:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showLicense:">
+							<string key="name">showLicense:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showLog:">
+							<string key="name">showLog:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="sortingChanged:">
+							<string key="name">sortingChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="splitPurpose:">
+							<string key="name">splitPurpose:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="splitStatement:">
+							<string key="name">splitStatement:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="toggleFullscreenIfSupported:">
+							<string key="name">toggleFullscreenIfSupported:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="transfer_dated:">
+							<string key="name">transfer_dated:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="transfer_eu:">
+							<string key="name">transfer_eu:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="transfer_internal:">
+							<string key="name">transfer_internal:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="transfer_local:">
+							<string key="name">transfer_local:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="transfer_sepa:">
+							<string key="name">transfer_sepa:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="updateAllAccounts:">
+							<string key="name">updateAllAccounts:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="aboutText">NSTextView</string>
+						<string key="aboutWindow">NSPanel</string>
+						<string key="accountsScrollView">SynchronousScrollView</string>
+						<string key="accountsToolbarItem">NSToolbarItem</string>
+						<string key="accountsView">CategoryView</string>
+						<string key="assignPreviewController">NSArrayController</string>
+						<string key="assignValueField">NSTextField</string>
+						<string key="assignValueWindow">NSWindow</string>
+						<string key="catActions">NSSegmentedControl</string>
+						<string key="categoryAssignments">NSArrayController</string>
+						<string key="categoryController">MCEMTreeController</string>
+						<string key="computingButton">NSButton</string>
+						<string key="copyrightText">NSTextField</string>
+						<string key="earningsField">NSTextField</string>
+						<string key="gradient">BWGradientBox</string>
+						<string key="graph1Button">NSButton</string>
+						<string key="graph2Button">NSButton</string>
+						<string key="headerValueField">NSTextField</string>
+						<string key="lockImage">NSImageView</string>
+						<string key="mainTabView">NSTabView</string>
+						<string key="mainVSplit">NSSplitView</string>
+						<string key="mainWindow">NSWindow</string>
+						<string key="nassValueField">NSTextField</string>
+						<string key="remoteNameLabel">NSTextField</string>
+						<string key="rightPane">NSView</string>
+						<string key="rightSplitter">NSSplitView</string>
+						<string key="rulesButton">NSButton</string>
+						<string key="sideBar">RoundedSidebar</string>
+						<string key="sortControl">NSSegmentedControl</string>
+						<string key="spendingsField">NSTextField</string>
+						<string key="standingOrdersToolbarItem">NSToolbarItem</string>
+						<string key="statementsButton">NSButton</string>
+						<string key="statementsListView">StatementsListView</string>
+						<string key="statementsListViewHost">RoundedOuterShadowView</string>
+						<string key="timeSlicer">TimeSliceManager</string>
+						<string key="toggleFullscreenItem">NSMenuItem</string>
+						<string key="transactionController">TransactionController</string>
+						<string key="transfersToolbarItem">NSToolbarItem</string>
+						<string key="turnoversField">NSTextField</string>
+						<string key="valueField">NSTextField</string>
+						<string key="versionText">NSTextField</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="aboutText">
+							<string key="name">aboutText</string>
+							<string key="candidateClassName">NSTextView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="aboutWindow">
+							<string key="name">aboutWindow</string>
+							<string key="candidateClassName">NSPanel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="accountsScrollView">
+							<string key="name">accountsScrollView</string>
+							<string key="candidateClassName">SynchronousScrollView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="accountsToolbarItem">
+							<string key="name">accountsToolbarItem</string>
+							<string key="candidateClassName">NSToolbarItem</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="accountsView">
+							<string key="name">accountsView</string>
+							<string key="candidateClassName">CategoryView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="assignPreviewController">
+							<string key="name">assignPreviewController</string>
+							<string key="candidateClassName">NSArrayController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="assignValueField">
+							<string key="name">assignValueField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="assignValueWindow">
+							<string key="name">assignValueWindow</string>
+							<string key="candidateClassName">NSWindow</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="catActions">
+							<string key="name">catActions</string>
+							<string key="candidateClassName">NSSegmentedControl</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="categoryAssignments">
+							<string key="name">categoryAssignments</string>
+							<string key="candidateClassName">NSArrayController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="categoryController">
+							<string key="name">categoryController</string>
+							<string key="candidateClassName">MCEMTreeController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="computingButton">
+							<string key="name">computingButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="copyrightText">
+							<string key="name">copyrightText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="earningsField">
+							<string key="name">earningsField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="gradient">
+							<string key="name">gradient</string>
+							<string key="candidateClassName">BWGradientBox</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="graph1Button">
+							<string key="name">graph1Button</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="graph2Button">
+							<string key="name">graph2Button</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="headerValueField">
+							<string key="name">headerValueField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="lockImage">
+							<string key="name">lockImage</string>
+							<string key="candidateClassName">NSImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mainTabView">
+							<string key="name">mainTabView</string>
+							<string key="candidateClassName">NSTabView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mainVSplit">
+							<string key="name">mainVSplit</string>
+							<string key="candidateClassName">NSSplitView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mainWindow">
+							<string key="name">mainWindow</string>
+							<string key="candidateClassName">NSWindow</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="nassValueField">
+							<string key="name">nassValueField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="remoteNameLabel">
+							<string key="name">remoteNameLabel</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="rightPane">
+							<string key="name">rightPane</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="rightSplitter">
+							<string key="name">rightSplitter</string>
+							<string key="candidateClassName">NSSplitView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="rulesButton">
+							<string key="name">rulesButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sideBar">
+							<string key="name">sideBar</string>
+							<string key="candidateClassName">RoundedSidebar</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sortControl">
+							<string key="name">sortControl</string>
+							<string key="candidateClassName">NSSegmentedControl</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="spendingsField">
+							<string key="name">spendingsField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="standingOrdersToolbarItem">
+							<string key="name">standingOrdersToolbarItem</string>
+							<string key="candidateClassName">NSToolbarItem</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="statementsButton">
+							<string key="name">statementsButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="statementsListView">
+							<string key="name">statementsListView</string>
+							<string key="candidateClassName">StatementsListView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="statementsListViewHost">
+							<string key="name">statementsListViewHost</string>
+							<string key="candidateClassName">RoundedOuterShadowView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="timeSlicer">
+							<string key="name">timeSlicer</string>
+							<string key="candidateClassName">TimeSliceManager</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toggleFullscreenItem">
+							<string key="name">toggleFullscreenItem</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transactionController">
+							<string key="name">transactionController</string>
+							<string key="candidateClassName">TransactionController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transfersToolbarItem">
+							<string key="name">transfersToolbarItem</string>
+							<string key="candidateClassName">NSToolbarItem</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="turnoversField">
+							<string key="name">turnoversField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="valueField">
+							<string key="name">valueField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="versionText">
+							<string key="name">versionText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/BankingController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">CategoryView</string>
+					<string key="superclassName">NSOutlineView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/CategoryView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">DeleteImageView</string>
+					<string key="superclassName">NSImageView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/DeleteImageView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">DragImageView</string>
+					<string key="superclassName">NSImageView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/DragImageView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">GradientButtonCell</string>
+					<string key="superclassName">NSButtonCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/GradientButtonCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">MBTableGridCell</string>
+					<string key="superclassName">NSTextFieldCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/MBTableGridCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">MCEMTreeController</string>
+					<string key="superclassName">NSTreeController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/MCEMTreeController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">PXListDocumentView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/PXListDocumentView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">PXListView</string>
+					<string key="superclassName">NSScrollView</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">delegate</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">delegate</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">delegate</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/PXListView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">RoundedOuterShadowView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/RoundedOuterShadowView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">RoundedSidebar</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/RoundedSidebar.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">StatementsListView</string>
+					<string key="superclassName">PXListView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/StatementsListView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SynchronousScrollView</string>
+					<string key="superclassName">NSScrollView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SynchronousScrollView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TimeSliceManager</string>
+					<string key="superclassName">NSObject</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="dateChanged:">id</string>
+						<string key="timeSliceChanged:">id</string>
+						<string key="timeSliceUpDown:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="dateChanged:">
+							<string key="name">dateChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="timeSliceChanged:">
+							<string key="name">timeSliceChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="timeSliceUpDown:">
+							<string key="name">timeSliceUpDown:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="control">NSSegmentedControl</string>
+						<string key="delegate">id</string>
+						<string key="fromPicker">NSDatePicker</string>
+						<string key="toPicker">NSDatePicker</string>
+						<string key="upDown">NSSegmentedControl</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="control">
+							<string key="name">control</string>
+							<string key="candidateClassName">NSSegmentedControl</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="delegate">
+							<string key="name">delegate</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="fromPicker">
+							<string key="name">fromPicker</string>
+							<string key="candidateClassName">NSDatePicker</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toPicker">
+							<string key="name">toPicker</string>
+							<string key="candidateClassName">NSDatePicker</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="upDown">
+							<string key="name">upDown</string>
+							<string key="candidateClassName">NSSegmentedControl</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TimeSliceManager.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TransactionController</string>
+					<string key="superclassName">NSObject</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="cancel:">id</string>
+						<string key="countryDidChange:">id</string>
+						<string key="getDataFromTemplate:">id</string>
+						<string key="nextTransfer:">id</string>
+						<string key="sendTransfer:">id</string>
+						<string key="transferFinished:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="cancel:">
+							<string key="name">cancel:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="countryDidChange:">
+							<string key="name">countryDidChange:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="getDataFromTemplate:">
+							<string key="name">getDataFromTemplate:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="nextTransfer:">
+							<string key="name">nextTransfer:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="sendTransfer:">
+							<string key="name">sendTransfer:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="transferFinished:">
+							<string key="name">transferFinished:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="accountBox">NSComboBox</string>
+						<string key="bankingController">BankingController</string>
+						<string key="chargeBox">NSComboBox</string>
+						<string key="countryButton">NSPopUpButton</string>
+						<string key="countryController">NSArrayController</string>
+						<string key="currentTransferController">NSObjectController</string>
+						<string key="executionDatePicker">NSDatePicker</string>
+						<string key="foreignHelpView">NSView</string>
+						<string key="standardHelpView">NSView</string>
+						<string key="templateController">NSArrayController</string>
+						<string key="templatesDraw">NSDrawer</string>
+						<string key="transferEUWindow">NSWindow</string>
+						<string key="transferInternalWindow">NSWindow</string>
+						<string key="transferLocalWindow">NSWindow</string>
+						<string key="transferSEPAWindow">NSWindow</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="accountBox">
+							<string key="name">accountBox</string>
+							<string key="candidateClassName">NSComboBox</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="bankingController">
+							<string key="name">bankingController</string>
+							<string key="candidateClassName">BankingController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="chargeBox">
+							<string key="name">chargeBox</string>
+							<string key="candidateClassName">NSComboBox</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="countryButton">
+							<string key="name">countryButton</string>
+							<string key="candidateClassName">NSPopUpButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="countryController">
+							<string key="name">countryController</string>
+							<string key="candidateClassName">NSArrayController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="currentTransferController">
+							<string key="name">currentTransferController</string>
+							<string key="candidateClassName">NSObjectController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="executionDatePicker">
+							<string key="name">executionDatePicker</string>
+							<string key="candidateClassName">NSDatePicker</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="foreignHelpView">
+							<string key="name">foreignHelpView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="standardHelpView">
+							<string key="name">standardHelpView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="templateController">
+							<string key="name">templateController</string>
+							<string key="candidateClassName">NSArrayController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="templatesDraw">
+							<string key="name">templatesDraw</string>
+							<string key="candidateClassName">NSDrawer</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferEUWindow">
+							<string key="name">transferEUWindow</string>
+							<string key="candidateClassName">NSWindow</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferInternalWindow">
+							<string key="name">transferInternalWindow</string>
+							<string key="candidateClassName">NSWindow</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferLocalWindow">
+							<string key="name">transferLocalWindow</string>
+							<string key="candidateClassName">NSWindow</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferSEPAWindow">
+							<string key="name">transferSEPAWindow</string>
+							<string key="candidateClassName">NSWindow</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TransactionController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TransferFormularView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TransferFormularView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TransferTemplateDragDestination</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TransferTemplateDragDestination.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TransferTemplatesListView</string>
+					<string key="superclassName">PXListView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TransferTemplatesListView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TransfersBackgroundView</string>
+					<string key="superclassName">NSView</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="rightPane">TransferTemplateDragDestination</string>
+						<string key="templateCarousel">iCarousel</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="rightPane">
+							<string key="name">rightPane</string>
+							<string key="candidateClassName">TransferTemplateDragDestination</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="templateCarousel">
+							<string key="name">templateCarousel</string>
+							<string key="candidateClassName">iCarousel</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TransfersBackgroundView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TransfersController</string>
+					<string key="superclassName">NSObject</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="calendarChanged:">id</string>
+						<string key="cancelCreateTemplate:">id</string>
+						<string key="changeTransfer:">id</string>
+						<string key="deleteTransfers:">id</string>
+						<string key="queueTransfer:">id</string>
+						<string key="saveTemplate:">id</string>
+						<string key="sendTransfer:">id</string>
+						<string key="sendTransfers:">id</string>
+						<string key="showCalendar:">id</string>
+						<string key="sourceAccountChanged:">id</string>
+						<string key="targetAccountChanged:">id</string>
+						<string key="transferDoubleClicked:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="calendarChanged:">
+							<string key="name">calendarChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="cancelCreateTemplate:">
+							<string key="name">cancelCreateTemplate:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="changeTransfer:">
+							<string key="name">changeTransfer:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="deleteTransfers:">
+							<string key="name">deleteTransfers:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="queueTransfer:">
+							<string key="name">queueTransfer:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="saveTemplate:">
+							<string key="name">saveTemplate:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="sendTransfer:">
+							<string key="name">sendTransfer:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="sendTransfers:">
+							<string key="name">sendTransfers:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showCalendar:">
+							<string key="name">showCalendar:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="sourceAccountChanged:">
+							<string key="name">sourceAccountChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="targetAccountChanged:">
+							<string key="name">targetAccountChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="transferDoubleClicked:">
+							<string key="name">transferDoubleClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="accountNumber">NSTextField</string>
+						<string key="accountText">NSTextField</string>
+						<string key="amountCurrencyText">NSTextField</string>
+						<string key="bankCode">NSTextField</string>
+						<string key="bankCodeText">NSTextField</string>
+						<string key="bankDescription">NSTextField</string>
+						<string key="calendar">NSDatePicker</string>
+						<string key="calendarButton">NSButton</string>
+						<string key="calendarView">NSView</string>
+						<string key="doItButton">NSButton</string>
+						<string key="executeAtDateRadioButton">NSButton</string>
+						<string key="executeImmediatelyRadioButton">NSButton</string>
+						<string key="executeImmediatelyText">NSTextField</string>
+						<string key="executionDatePicker">NSDatePicker</string>
+						<string key="executionText">NSTextField</string>
+						<string key="feeSelector">NSPopUpButton</string>
+						<string key="feeText">NSTextField</string>
+						<string key="finishedTransfers">NSArrayController</string>
+						<string key="finishedTransfersListView">TransfersListView</string>
+						<string key="mainView">NSView</string>
+						<string key="pendingTransfers">NSArrayController</string>
+						<string key="pendingTransfersListView">TransfersListView</string>
+						<string key="queueItButton">NSButton</string>
+						<string key="receiverComboBox">NSComboBox</string>
+						<string key="receiverText">NSTextField</string>
+						<string key="rightPane">TransferTemplateDragDestination</string>
+						<string key="saldoCurrencyText">NSTextField</string>
+						<string key="saldoText">NSTextField</string>
+						<string key="selAmountField">NSTextField</string>
+						<string key="sendTransfersButton">NSButton</string>
+						<string key="sourceAccountSelector">NSPopUpButton</string>
+						<string key="targetAccountSelector">NSPopUpButton</string>
+						<string key="targetCountrySelector">NSPopUpButton</string>
+						<string key="targetCountryText">NSTextField</string>
+						<string key="templateName">NSTextField</string>
+						<string key="templateNameSheet">NSPanel</string>
+						<string key="titleText">NSTextField</string>
+						<string key="transactionController">TransactionController</string>
+						<string key="transferDebitImage">DragImageView</string>
+						<string key="transferDeleteImage">DeleteImageView</string>
+						<string key="transferEUImage">DragImageView</string>
+						<string key="transferFormular">TransferFormularView</string>
+						<string key="transferInternalImage">DragImageView</string>
+						<string key="transferNormalImage">DragImageView</string>
+						<string key="transferSEPAImage">DragImageView</string>
+						<string key="transferTemplateListView">TransferTemplatesListView</string>
+						<string key="transferView">NSTableView</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="accountNumber">
+							<string key="name">accountNumber</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="accountText">
+							<string key="name">accountText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="amountCurrencyText">
+							<string key="name">amountCurrencyText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="bankCode">
+							<string key="name">bankCode</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="bankCodeText">
+							<string key="name">bankCodeText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="bankDescription">
+							<string key="name">bankDescription</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="calendar">
+							<string key="name">calendar</string>
+							<string key="candidateClassName">NSDatePicker</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="calendarButton">
+							<string key="name">calendarButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="calendarView">
+							<string key="name">calendarView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="doItButton">
+							<string key="name">doItButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="executeAtDateRadioButton">
+							<string key="name">executeAtDateRadioButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="executeImmediatelyRadioButton">
+							<string key="name">executeImmediatelyRadioButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="executeImmediatelyText">
+							<string key="name">executeImmediatelyText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="executionDatePicker">
+							<string key="name">executionDatePicker</string>
+							<string key="candidateClassName">NSDatePicker</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="executionText">
+							<string key="name">executionText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="feeSelector">
+							<string key="name">feeSelector</string>
+							<string key="candidateClassName">NSPopUpButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="feeText">
+							<string key="name">feeText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="finishedTransfers">
+							<string key="name">finishedTransfers</string>
+							<string key="candidateClassName">NSArrayController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="finishedTransfersListView">
+							<string key="name">finishedTransfersListView</string>
+							<string key="candidateClassName">TransfersListView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mainView">
+							<string key="name">mainView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="pendingTransfers">
+							<string key="name">pendingTransfers</string>
+							<string key="candidateClassName">NSArrayController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="pendingTransfersListView">
+							<string key="name">pendingTransfersListView</string>
+							<string key="candidateClassName">TransfersListView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="queueItButton">
+							<string key="name">queueItButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="receiverComboBox">
+							<string key="name">receiverComboBox</string>
+							<string key="candidateClassName">NSComboBox</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="receiverText">
+							<string key="name">receiverText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="rightPane">
+							<string key="name">rightPane</string>
+							<string key="candidateClassName">TransferTemplateDragDestination</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="saldoCurrencyText">
+							<string key="name">saldoCurrencyText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="saldoText">
+							<string key="name">saldoText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="selAmountField">
+							<string key="name">selAmountField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sendTransfersButton">
+							<string key="name">sendTransfersButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sourceAccountSelector">
+							<string key="name">sourceAccountSelector</string>
+							<string key="candidateClassName">NSPopUpButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="targetAccountSelector">
+							<string key="name">targetAccountSelector</string>
+							<string key="candidateClassName">NSPopUpButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="targetCountrySelector">
+							<string key="name">targetCountrySelector</string>
+							<string key="candidateClassName">NSPopUpButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="targetCountryText">
+							<string key="name">targetCountryText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="templateName">
+							<string key="name">templateName</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="templateNameSheet">
+							<string key="name">templateNameSheet</string>
+							<string key="candidateClassName">NSPanel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="titleText">
+							<string key="name">titleText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transactionController">
+							<string key="name">transactionController</string>
+							<string key="candidateClassName">TransactionController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferDebitImage">
+							<string key="name">transferDebitImage</string>
+							<string key="candidateClassName">DragImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferDeleteImage">
+							<string key="name">transferDeleteImage</string>
+							<string key="candidateClassName">DeleteImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferEUImage">
+							<string key="name">transferEUImage</string>
+							<string key="candidateClassName">DragImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferFormular">
+							<string key="name">transferFormular</string>
+							<string key="candidateClassName">TransferFormularView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferInternalImage">
+							<string key="name">transferInternalImage</string>
+							<string key="candidateClassName">DragImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferNormalImage">
+							<string key="name">transferNormalImage</string>
+							<string key="candidateClassName">DragImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferSEPAImage">
+							<string key="name">transferSEPAImage</string>
+							<string key="candidateClassName">DragImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferTemplateListView">
+							<string key="name">transferTemplateListView</string>
+							<string key="candidateClassName">TransferTemplatesListView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="transferView">
+							<string key="name">transferView</string>
+							<string key="candidateClassName">NSTableView</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TransfersController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TransfersListView</string>
+					<string key="superclassName">PXListView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TransfersListView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">iCarousel</string>
+					<string key="superclassName">UIView</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="dataSource">id</string>
+						<string key="delegate">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="dataSource">
+							<string key="name">dataSource</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="delegate">
+							<string key="name">delegate</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/iCarousel.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">

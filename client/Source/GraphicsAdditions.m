@@ -108,8 +108,9 @@ static NSMutableDictionary* applicationColors;
     }
 
     if ([defaultAccountColors count] > 0) {
-        NSColor* result = [defaultAccountColors objectAtIndex: 0];
-        [[result retain ] autorelease ];
+        // To return the color with a refcount of 1 (autoreleased), we need to retain it
+        // here as the ref count is decreased when it is removed from the default colors array.
+        NSColor* result = [[defaultAccountColors objectAtIndex: 0] retain];
         [defaultAccountColors removeObjectAtIndex: 0];
         
         return result;
@@ -132,7 +133,7 @@ static NSMutableDictionary* applicationColors;
     }
 
     if ([defaultCategoryColors count] > 0) {
-        NSColor* result = [defaultCategoryColors objectAtIndex: 0];
+        NSColor* result = [[defaultCategoryColors objectAtIndex: 0] retain];
         [defaultCategoryColors removeObjectAtIndex: 0];
         
         return result;

@@ -54,6 +54,15 @@
 
 @synthesize changeState;
 
+- (id)initWithEntity: (NSEntityDescription *)entity insertIntoManagedObjectContext: (NSManagedObjectContext *)context; 
+{
+    self = [super initWithEntity: entity insertIntoManagedObjectContext: context];
+    if (self != nil) {
+        changeState = TransferChangeUnchanged;
+    }
+    return self;
+}
+
 -(NSString*)purpose
 {
 	NSMutableString* s = [NSMutableString stringWithCapacity: 100 ];
