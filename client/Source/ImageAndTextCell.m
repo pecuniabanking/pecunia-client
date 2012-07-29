@@ -197,10 +197,14 @@ static NSGradient* selectionGradient = nil;
         iconFrame.size = iconSize;
         
         iconFrame.origin.x += ICON_SPACING;
-        iconFrame.origin.y += floor((cellFrame.size.height + iconFrame.size.height) / 2);
+        iconFrame.origin.y += floor((cellFrame.size.height - iconFrame.size.height) / 2);
         
-        [image compositeToPoint: iconFrame.origin operation: NSCompositeSourceOver];
-        
+        [image drawInRect: iconFrame
+                 fromRect: NSZeroRect
+                operation: NSCompositeSourceOver
+                 fraction: 1.0
+           respectFlipped: YES
+                    hints: nil];
     }
     else
     {

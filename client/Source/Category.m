@@ -651,9 +651,10 @@ BOOL	updateSent = NO;
         self.catRepColor = data;
     } else {
         if (catColor == nil) {
-            NSKeyedUnarchiver* archiver = [[NSKeyedUnarchiver alloc] initForReadingWithData: self.catRepColor];
-            catColor = [[archiver decodeObjectForKey: @"color"] retain];
-            [archiver release];
+            NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData: self.catRepColor];
+            catColor = [[unarchiver decodeObjectForKey: @"color"] retain];
+            [unarchiver finishDecoding];
+            [unarchiver release];
         }
     }
     
@@ -662,14 +663,19 @@ BOOL	updateSent = NO;
 
 -(void)setCategoryColor: (NSColor*)color
 {
-    NSMutableData* data = [NSMutableData data];
-    
-    NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
-    [archiver encodeObject: color forKey: @"color"];
-    [archiver finishEncoding];
-    [archiver release];
-    
-    self.catRepColor = data;
+    if (catColor != color) {
+        [catColor release];
+        catColor = [color retain];
+        
+        NSMutableData* data = [NSMutableData data];
+        
+        NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
+        [archiver encodeObject: catColor forKey: @"color"];
+        [archiver finishEncoding];
+        [archiver release];
+        
+        self.catRepColor = data;
+    }
 }
 
 +(Category*)bankRoot
