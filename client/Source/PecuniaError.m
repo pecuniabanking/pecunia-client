@@ -7,7 +7,7 @@
 //
 
 #import "PecuniaError.h"
-
+#import "MessageLog.h"
 
 @implementation PecuniaError
 
@@ -43,5 +43,11 @@
 		NSRunAlertPanel(title, message,	NSLocalizedString(@"ok", @"Ok"), nil, nil);
 	} else NSLog(@"Unhandled alert: %@", [self localizedDescription ]);
 }
+
+-(void)logMessage
+{
+    [[MessageLog log] addMessage: [self localizedDescription] withLevel: LogLevel_Error];
+}
+
 
 @end

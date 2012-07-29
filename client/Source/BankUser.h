@@ -13,6 +13,12 @@ typedef enum {
     SecMethod_DDV
 } SecurityMethod;
 
+typedef enum {
+    Reg_notchecked = 0,
+    Reg_ok,
+    Reg_failed
+} RegisterResult;
+
 @class TanMedium;
 @class TanMethod;
 
@@ -39,7 +45,7 @@ typedef enum {
 @property (nonatomic, retain) NSNumber *ddvPortIdx;
 @property (nonatomic, retain) NSNumber *ddvReaderIdx;
 @property (nonatomic, retain) NSNumber *secMethod;
-@property (nonatomic, assign) BOOL isRegistered;
+@property (nonatomic, assign) RegisterResult regResult;
 
 -(void)updateTanMethods:(NSArray*)methods;
 -(void)updateTanMedia:(NSArray*)media;

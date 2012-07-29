@@ -12,6 +12,7 @@
 @class BankQueryResult;
 @class PurposeSplitRule;
 @class BankStatement;
+@class BankUser;
 
 @interface BankAccount : Category {
 	NSDate				*newLatestTransferDate;
@@ -33,6 +34,7 @@
 -(void)repairStatementBalances;
 -(NSDate*)nextDateForDate:(NSDate*)date;
 -(NSInteger)calcUnread;
+-(BankUser*)defaultBankUser;
 
 +(BankAccount*)bankRootForCode:(NSString*)bankCode;
 +(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code;

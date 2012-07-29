@@ -25,6 +25,7 @@
 #import "StandingOrder.h"
 #import "PurposeSplitRule.h"
 #import "PurposeSplitController.h"
+#import "BankUser.h"
 
 @implementation BankAccount
 
@@ -587,6 +588,13 @@
 			}
 		}
 	}	
+}
+
+// Wenn es mehrere Benutzerkennungen pro Bankkonto gibt muss das hier möglicherweise angepasst werden
+-(BankUser*)defaultBankUser
+{
+    if (self.userId == nil) return nil;
+    return [BankUser userWithId:self.userId bankCode:self.bankCode ];
 }
 
 +(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code

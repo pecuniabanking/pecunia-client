@@ -165,8 +165,7 @@ NSString *escapeSpecial(NSString *s)
     BankParameter *bp=nil;
     
     [self startProgress ];
-    error = [self checkRegistered:user ];
-    if (error == nil) {
+    if ([self registerBankUser:user error:&error]) {
         NSString *cmd = [NSString stringWithFormat: @"<command name=\"getBankParameterRaw\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
         bp = [bridge syncCommand:cmd error:&error ];
     }
@@ -214,8 +213,7 @@ NSString *escapeSpecial(NSString *s)
 {
     PecuniaError *error=nil;
     NSArray *accs=nil;
-    error = [self checkRegistered:user ];
-    if (error == nil) {
+    if ([self registerBankUser:user error:&error]) {
         NSString *cmd = [NSString stringWithFormat: @"<command name=\"getAccounts\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
         accs = [bridge syncCommand: cmd error:&error ];
     }
@@ -228,11 +226,6 @@ NSString *escapeSpecial(NSString *s)
 
 -(PecuniaError*)addAccount: (BankAccount*)account forUser: (BankUser*)user
 {
-    PecuniaError	*error = nil;
-    error = [self checkRegistered:user ];
-    if(error != nil) return error;
-
-    account.userId = user.userId;
     account.customerId = user.customerId;
     return [self setAccounts:[NSArray arrayWithObject:account ] ];
 }
@@ -253,7 +246,6 @@ NSString *escapeSpecial(NSString *s)
         [self appendTag: @"ownerName" withValue: acc.owner to: cmd ];
         [self appendTag: @"name" withValue: acc.name to: cmd ];
         [self appendTag: @"customerId" withValue: acc.customerId to: cmd ];
-        [self appendTag: @"userId" withValue: acc.userId to: cmd ];
         [self appendTag: @"currency" withValue: acc.currency to: cmd ];
         [cmd appendString: @"</command>" ];
         [bridge syncCommand: cmd error: &error ];
@@ -275,7 +267,6 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"ownerName" withValue: account.owner to: cmd ];
     [self appendTag: @"name" withValue: account.name to: cmd ];
     [self appendTag: @"customerId" withValue: account.customerId to: cmd ];
-    [self appendTag: @"userId" withValue: account.userId to: cmd ];
     [cmd appendString: @"</command>" ];
     [bridge syncCommand: cmd error: &error ];
     if(error != nil) return error;
@@ -301,6 +292,11 @@ NSString *escapeSpecial(NSString *s)
 {
     PecuniaError *error=nil;
     if(account == nil) return NO;
+    
+    BankUser *user = [account defaultBankUser ];
+    if (user == nil) return NO;
+    if ([self registerBankUser:user error:&error ] == NO) return NO;
+    
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"isJobSupported\">" ];
     [self appendTag: @"bankCode" withValue: account.bankCode to: cmd ];
     [self appendTag: @"userId" withValue: account.userId to: cmd ];
@@ -328,6 +324,11 @@ NSString *escapeSpecial(NSString *s)
     NSDictionary *result;
     PecuniaError *error=nil;
     if(account == nil) return nil;
+    
+    BankUser *user = [account defaultBankUser ];
+    if (user == nil) return nil;
+    if ([self registerBankUser:user error:&error] == NO) return nil;
+    
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getJobRestrictions\">" ];
     [self appendTag: @"bankCode" withValue: account.bankCode to: cmd ];
     [self appendTag: @"userId" withValue: account.userId to: cmd ];
@@ -552,10 +553,7 @@ NSString *escapeSpecial(NSString *s)
     BOOL allSent = YES;
     
     for (BankUser *user in [userTransferRegister allKeys]) {
-        err = [self checkRegistered:user ];
-        if (err != nil) {
-            continue;
-        }
+        if ([self registerBankUser:user error:&err] == NO) continue;
         if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
         
         NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfers\"><transfers type=\"list\">" ];
@@ -617,7 +615,7 @@ NSString *escapeSpecial(NSString *s)
         
         NSArray *resultList = [bridge syncCommand: cmd error: &err];
         if (err) {
-            [[MessageLog log] addMessage: [err localizedDescription] withLevel: LogLevel_Error];
+            [err logMessage ];
         }
         
         for (TransferResult *result in resultList) {
@@ -727,9 +725,8 @@ NSString *escapeSpecial(NSString *s)
 -(BOOL)deleteBankUser:(BankUser*)user 
 {
     PecuniaError *error=nil;
-    error = [self checkRegistered:user ];
-    if(error != nil) return NO;
-
+    if([self registerBankUser:user error:&error] == NO) return NO;
+    
     NSString *cmd = [NSString stringWithFormat: @"<command name=\"deletePassport\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
     [bridge syncCommand: cmd error:&error ];
     if(error == nil) {
@@ -737,7 +734,10 @@ NSString *escapeSpecial(NSString *s)
         [Keychain deletePasswordForService:@"Pecunia PIN" account: s ];
                 
         [users removeObject: user ];
-    } else return NO;
+    } else {
+        [error logMessage ];
+        return NO;
+    }
     return YES;
 }
 
@@ -759,6 +759,12 @@ NSString *escapeSpecial(NSString *s)
     
     BankQueryResult *result;
     for(result in resultList) {
+        // check if user is registered
+        PecuniaError *error = nil;
+        BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode ];
+        if (user == nil) continue;
+        if ([self registerBankUser:user error:&error] == NO) continue;
+        
         [cmd appendFormat:@"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>", result.bankCode, result.accountNumber ];
         [self appendTag:@"subNumber" withValue:result.accountSubnumber to:cmd ];
         NSInteger maxStatDays = [[NSUserDefaults standardUserDefaults ] integerForKey:@"maxStatDays" ];
@@ -838,6 +844,12 @@ NSString *escapeSpecial(NSString *s)
     NSMutableString	*cmd = [NSMutableString stringWithFormat:@"<command name=\"getAllStandingOrders\"><accinfolist type=\"list\">" ];
     
     for(BankQueryResult *result in resultList) {
+        // check if user is registered
+        PecuniaError *error = nil;
+        BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode ];
+        if (user == nil) continue;
+        if ([self registerBankUser:user error:&error] == NO) continue;
+        
         [cmd appendString:@"<accinfo>" ];
         [self appendTag: @"bankCode" withValue: result.bankCode to: cmd ];
         [self appendTag: @"accountNumber" withValue: result.accountNumber to: cmd ];
@@ -898,10 +910,7 @@ NSString *escapeSpecial(NSString *s)
 
     for(StandingOrder *stord in orders) {
         BankUser *user = [BankUser userWithId:stord.account.userId bankCode:stord.account.bankCode ];
-        err = [self checkRegistered:user ];
-        if(err != nil) {
-            continue;
-        }
+        if([self registerBankUser:user error:&err] == NO) continue;
 
         if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
         
@@ -919,6 +928,7 @@ NSString *escapeSpecial(NSString *s)
             
             NSDictionary *result = [bridge syncCommand: cmd error: &err  ];
             if (err) {
+                [err logMessage ];
                 [self stopProgress ];
                 return err;
             }
@@ -938,6 +948,7 @@ NSString *escapeSpecial(NSString *s)
             
             NSNumber *result = [bridge syncCommand: cmd error: &err  ];
             if (err) {
+                [err logMessage ];
                 [self stopProgress ];
                 return err;
             }
@@ -954,6 +965,7 @@ NSString *escapeSpecial(NSString *s)
             
             NSNumber *result = [bridge syncCommand: cmd error: &err  ];
             if (err) {
+                [err logMessage ];
                 [self stopProgress ];
                 return err;
             }
@@ -970,8 +982,7 @@ NSString *escapeSpecial(NSString *s)
 -(PecuniaError*)updateBankDataForUser:(BankUser*)user
 {
     PecuniaError *error=nil;
-    error = [self checkRegistered:user ];
-    if(error != nil) return error;
+    if([self registerBankUser:user error:&error] == NO) return error;
 
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"updateBankData\">" ];
     [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
@@ -988,8 +999,7 @@ NSString *escapeSpecial(NSString *s)
 -(PecuniaError*)changePinTanMethodForUser:(BankUser*)user
 {
     PecuniaError *error=nil;
-    error = [self checkRegistered:user ];
-    if(error != nil) return error;
+    if([self registerBankUser:user error:&error] == NO) return error;
 
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"resetPinTanMethod\">" ];
     [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
@@ -1008,8 +1018,7 @@ NSString *escapeSpecial(NSString *s)
     [self startProgress ];
     
     BankUser *user = [BankUser userWithId:msg.account.userId bankCode:msg.account.bankCode ];
-    error = [self checkRegistered:user ];
-    if(error != nil) return error;
+    if([self registerBankUser:user error:&error] == NO) return error;
 
     if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
 
@@ -1041,6 +1050,13 @@ NSString *escapeSpecial(NSString *s)
     PecuniaError *error=nil;
     
     [self startProgress ];
+    
+    BankUser *user = [account defaultBankUser ];
+    if (user == nil) return nil;
+    
+    // BankUser registrieren
+    if([self registerBankUser:user error:&error] == NO) return error;
+    
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getBalance\">" ];
     [self appendTag: @"bankCode" withValue: account.bankCode to: cmd ];
     [self appendTag: @"accountNumber" withValue: account.accountNumber to:cmd ];
@@ -1074,8 +1090,7 @@ NSString *escapeSpecial(NSString *s)
 -(PecuniaError*)updateTanMethodsForUser:(BankUser*)user
 {
     PecuniaError *error=nil;
-    error = [self checkRegistered:user ];
-    if(error != nil) return error;
+    if([self registerBankUser:user error:&error] == NO) return error;
 
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getTANMethods\">" ];
     [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
@@ -1091,6 +1106,13 @@ NSString *escapeSpecial(NSString *s)
 - (NSArray*)getSupportedBusinessTransactions: (BankAccount*)account
 {
     PecuniaError *error = nil;
+    
+    BankUser *user = [account defaultBankUser ];
+    if (user == nil) return nil;
+    
+    // BankUser registrieren
+    if([self registerBankUser:user error:&error] == NO) return nil;    
+    
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getSupportedBusinessTransactions\">" ];
     [self appendTag: @"bankCode" withValue: account.bankCode to: cmd];
     [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd];
@@ -1110,8 +1132,7 @@ NSString *escapeSpecial(NSString *s)
 - (PecuniaError*)updateTanMediaForUser:(BankUser*)user
 {
     PecuniaError *error=nil;
-    error = [self checkRegistered:user ];
-    if(error != nil) return error;
+    if([self registerBankUser:user error:&error] == NO) return error;
 
     StatusBarController *sbController = [StatusBarController controller ];
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getTANMediaList\">" ];
@@ -1130,10 +1151,15 @@ NSString *escapeSpecial(NSString *s)
     return nil;
 }
 
-- (PecuniaError*)checkRegistered:(BankUser*)user
+- (BOOL)registerBankUser:(BankUser*)user error:(PecuniaError**)err
 {
-    PecuniaError *error = nil;
-    if (user.isRegistered) return nil;
+    static PecuniaError *error = nil;
+    if (user.regResult == Reg_ok) return YES;
+    if (user.regResult == Reg_failed) {
+        *err = error;
+        return NO;
+    }
+    
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"registerUser\">" ];
     [self appendTag: @"bankCode" withValue: user.bankCode to: cmd];
     [self appendTag: @"passportType" withValue: @"PinTan" to: cmd];
@@ -1141,11 +1167,17 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"userId" withValue: user.userId to: cmd];
     [cmd appendString: @"</command>" ];
     
-    //[bridge syncCommand: cmd error: &error];
+    [bridge syncCommand: cmd error: &error];
     if (error == nil) {
-        user.isRegistered = YES;
-    }
-    return error;    
+        user.regResult = Reg_ok;
+        return YES;
+    } else {
+        [error logMessage ];
+        [error retain ];
+        *err = error;
+        user.regResult = Reg_failed;
+        return NO;
+    }   
 }
 
 @end
