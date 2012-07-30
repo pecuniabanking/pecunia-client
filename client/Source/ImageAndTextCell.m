@@ -58,7 +58,7 @@
 #define BADGE_SELECTED_HIDDEN_TEXT_COLOR    [NSColor colorWithCalibratedWhite: (170 / 255.0) alpha: 1]
 #define BADGE_FONT                          [NSFont boldSystemFontOfSize: 11]
 
-#define SWATCH_SIZE               7
+#define SWATCH_SIZE               14
 
 @implementation ImageAndTextCell
 
@@ -185,6 +185,28 @@ static NSGradient* selectionGradient = nil;
             [headerGradient drawInBezierPath: selectionOutline angle: 90];
         }
     
+    // Draw category color swatch.
+    if (swatchColor != nil) {
+        NSRect swatchRect = cellFrame;
+        CGFloat swatchWidth = 3;
+        swatchRect.size = NSMakeSize(swatchWidth, SWATCH_SIZE);
+        swatchRect.origin.y += floor((cellFrame.size.height - SWATCH_SIZE) / 2);
+        swatchRect.origin.x += 3;
+        [swatchColor setFill];
+        [NSBezierPath fillRect: swatchRect];
+
+        // Draw a border for entries with a darker background.
+        if ([self isHighlighted] || isRoot) {
+            swatchRect.origin.x += 0.5;
+            swatchRect.origin.y += 0.5;
+            [[NSColor colorWithDeviceWhite: 1 alpha: 0.75] setStroke];
+            [NSBezierPath strokeRect: swatchRect];
+        }
+
+        cellFrame.size.width -= swatchWidth  + 4;
+        cellFrame.origin.x += swatchWidth + 4;
+    }
+    
     // Draw cell symbol if there is one.
     if (image != nil)
     {
@@ -212,26 +234,6 @@ static NSGradient* selectionGradient = nil;
         cellFrame.origin.x   += ICON_SPACING;
     }
     
-    // Draw category color swatch.
-    if (swatchColor != nil) {
-        NSRect swatchRect = cellFrame;
-        swatchRect.size = NSMakeSize(SWATCH_SIZE, SWATCH_SIZE);
-        swatchRect.origin.y += floor((cellFrame.size.height - SWATCH_SIZE) / 2) + 0.5;
-        swatchRect.origin.x += 0.5;
-        [swatchColor setFill];
-        [NSBezierPath fillRect: swatchRect];
-        
-        if ([self isHighlighted] || isRoot) {
-            [[NSColor whiteColor] setStroke];
-        } else {
-            [[NSColor blackColor] setStroke];
-        }
-        [NSBezierPath strokeRect: swatchRect];
-
-        cellFrame.size.width -= SWATCH_SIZE + 4;
-        cellFrame.origin.x += SWATCH_SIZE + 4;
-    }
-
     // Reserve space for badges.
     if (maxUnread > 0)
     {

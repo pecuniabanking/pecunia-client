@@ -68,6 +68,7 @@ Aufträge, Überweisungen, Lastschriften
 - In Terminüberweisungen Datum (auch) als Kalender anzeigen.
 - Automatisch Leerzeichen aus BLZ entfernen vor dem Nachschlagen.
 - Splitting per Hotkey und Popup mit schrittweiser Erweiterung der Splitliste (ähnlich wie Regeleditor). Später dazu eine Importfunktion für (halb)automatisches Splitting.
+- Unterstützung für Sammelüberweisungen
 
 Daueraufträge
 ---------------

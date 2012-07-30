@@ -397,6 +397,15 @@
     if (![self validateCurrentTransfer]) {
         return NO;
     }
+    
+    // Change the transfer's type to a terminated transfer if a valuta date is given.
+    // TODO: solve terminated transfers differently. There are too many combinations possible as that
+    //       a single transfer type could cover all of them.
+    //       Should probably either just use the valuta date too in the server or add a new flag.
+    if (currentTransfer.valutaDate != nil) {
+        currentTransfer.type = [NSNumber numberWithInt: TransferTypeDated];
+    }
+    
 	[currentTransferController commitEditing];
     
     NSError *error = nil;
@@ -447,6 +456,10 @@
 {
 	BOOL res;
 	NSNumber *value;
+    TransferType activeType = transferType;
+    if (currentTransfer.valutaDate != nil) {
+        activeType = TransferTypeDated;
+    }
     
     if (![self validateCharacters: currentTransfer.purpose1]) {
         return NO;
@@ -471,7 +484,7 @@
 		return NO;
 	}
 	// do not check remote account for EU transfers, instead IBAN
-	if(transferType != TransferTypeEU && transferType != TransferTypeSEPA) {
+	if (activeType != TransferTypeEU && activeType != TransferTypeSEPA) {
 		if(currentTransfer.remoteAccount == nil) {
 			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
 							NSLocalizedString(@"AP9", @"Please enter an account number"),
@@ -495,7 +508,7 @@
 		}
 	}
 	
-	if(transferType == TransferTypeStandard || transferType == TransferTypeDated || transferType == TransferTypeDebit) {
+	if(activeType == TransferTypeStandard || activeType == TransferTypeDated || activeType == TransferTypeDebit) {
 		if(currentTransfer.remoteBankCode == nil) {
 			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
 							NSLocalizedString(@"AP10", @"Please enter a bank code"),
@@ -504,7 +517,7 @@
 		}
 	}
 	
-	if(transferType == TransferTypeSEPA) {
+	if(activeType == TransferTypeSEPA) {
 		if(currentTransfer.remoteBIC == nil) {
 			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
 							NSLocalizedString(@"AP25", @"Please enter valid bank identification code (BIC)"),
@@ -534,7 +547,7 @@
 		return NO;
 	}
 	
-	if (transferType == TransferTypeEU) {
+	if (activeType == TransferTypeEU) {
 		NSString	*foreignCurr = [[[countryController selectedObjects ] lastObject ] currency ];
 		NSString	*curr = currentTransfer.currency;
 		double		limit = 0.0;
@@ -557,7 +570,7 @@
 	
 	
 	// verify account and bank information
-	if(transferType != TransferTypeEU) {
+	if(activeType != TransferTypeEU) {
 		// verify accounts, but only for available countries
 		if([currentTransfer.remoteCountry caseInsensitiveCompare: @"de" ] == NSOrderedSame ||
 		   [currentTransfer.remoteCountry caseInsensitiveCompare: @"at" ] == NSOrderedSame ||
