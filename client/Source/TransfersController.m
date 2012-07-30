@@ -697,6 +697,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [executionDatePicker setHidden: !canBeTerminated];
     [calendarButton setHidden: !canBeTerminated];
     
+    if (canBeTerminated) {
+        executeAtDateRadioButton.enabled = NO;
+        executeAtDateRadioButton.state = NSOffState;
+        executeImmediatelyRadioButton.enabled = YES;
+        executeImmediatelyRadioButton.state = NSOnState;
+    }
+    
     // Load the set of previously entered text for the receiver combo box.
     [receiverComboBox removeAllItems];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -986,6 +993,17 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return NO;
     }
     
+    BOOL isTerminated = [transfer valutaDate] != nil;
+    executeAtDateRadioButton.enabled = isTerminated;
+    executeImmediatelyRadioButton.enabled = !isTerminated;
+
+    if (isTerminated) {
+        executeAtDateRadioButton.state = NSOnState;
+        executeImmediatelyRadioButton.state = NSOffState;
+    } else {
+        executeAtDateRadioButton.state = NSOffState;
+        executeImmediatelyRadioButton.state = NSOnState;
+    }
     return YES;
 }
 
@@ -1152,6 +1170,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if ([self editingInProgress] && [transactionController finishCurrentTransfer]) {
         NSArray* transfers = [NSArray arrayWithObject: transactionController.currentTransfer];
         [self doSendTransfers: transfers];
+        [rightPane hideFormular];
     }
 }
 
@@ -1167,16 +1186,18 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (IBAction)cancelCreateTemplate: (id)sender
 {
-    [NSApp endSheet: templateNameSheet returnCode: NSRunAbortedResponse ];
+    [NSApp endSheet: templateNameSheet returnCode: NSRunAbortedResponse];
 }
 
 - (IBAction)deleteTransfers: (id)sender
 {
 	NSError *error = nil;
-	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+	NSManagedObjectContext *context = MOAssistant.assistant.context;
 	
-	NSArray* sel = [finishedTransfers selectedObjects ];
-	if(sel == nil || [sel count ] == 0) return;
+	NSArray* sel = [finishedTransfers selectedObjects];
+	if (sel == nil || [sel count ] == 0) {
+        return;
+    }
 	
 	int res = NSRunAlertPanel(NSLocalizedString(@"AP418", @"Delete transfers"), 
                               NSLocalizedString(@"AP420", @"Entries will be deleted for good. Continue anyway?"),
@@ -1301,12 +1322,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     if (sender == executeImmediatelyRadioButton) {
         executeAtDateRadioButton.state = NSOffState;
-        [executionDatePicker setEnabled: NO ];
-        [calendarButton setEnabled: NO ];
+        [executionDatePicker setEnabled: NO];
+        [calendarButton setEnabled: NO];
     } else {
         executeImmediatelyRadioButton.state = NSOffState;
-        [executionDatePicker setEnabled: YES ];
-        [calendarButton setEnabled: YES ];
+        [executionDatePicker setEnabled: YES];
+        [calendarButton setEnabled: YES];
     }
 }
 
@@ -1446,6 +1467,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         } else {
             sendTransfersButton.title = NSLocalizedString(@"AP416", @"");
         }
+        sendTransfersButton.enabled = [pendingTransfers.arrangedObjects count] > 0;
     }
 }
 

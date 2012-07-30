@@ -81,7 +81,7 @@ static NSGradient *blackGradient;
             [self.image drawInRect: targetRect
                           fromRect: NSZeroRect
                          operation: NSCompositeSourceOver
-                          fraction: 1.0
+                          fraction: self.isEnabled ? 1.0 : 0.5
                     respectFlipped: YES
                              hints: nil];
         }
@@ -89,8 +89,12 @@ static NSGradient *blackGradient;
     
     if (self.imagePosition != NSImageOnly || self.image == nil) {
         [paragraphStyle setAlignment: NSCenterTextAlignment];
+        NSColor *textColor = [NSColor whiteColor];
+        if (!self.isEnabled) {
+            textColor = [NSColor grayColor];
+        }
         NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    [NSColor whiteColor], NSForegroundColorAttributeName,
+                                    textColor, NSForegroundColorAttributeName,
                                     paragraphStyle, NSParagraphStyleAttributeName,
                                     nil
                                     ];

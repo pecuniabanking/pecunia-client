@@ -116,7 +116,7 @@ static NSMutableDictionary* applicationColors;
         return result;
     }
 
-    // No colors left. Generate a random one with components between 128 and 255 (0.5 - 1).
+    // No colors left. Generate a random one (here with an accent on blue).
     return [NSColor colorWithDeviceRed: (96 + random() % 64) / 255.0
                                  green: (96 + random() % 64) / 255.0
                                   blue: (192 + random() % 63) / 255.0
@@ -139,7 +139,8 @@ static NSMutableDictionary* applicationColors;
         return result;
     }
 
-    // No colors left. Generate a random one with components between 128 and 255 (0.5 - 1).
+    // Also here, if no colors are left generate random ones. Take back the blue component a bit
+    // so we can use bluish tints rather for account colors.
     return [NSColor colorWithDeviceRed: (32 + random() % 200) / 255.0
                                  green: (32 + random() % 200) / 255.0
                                   blue: (32 + random() % 100) / 255.0

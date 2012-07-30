@@ -134,6 +134,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
         // (for all objects in the array).
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteName" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.date" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.valutaDate" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteName" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.purpose1" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.purpose2" options: 0 context: nil];
@@ -192,9 +193,13 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 {
     Transfer *transfer = [dataSource objectAtIndex: row];
     
+    NSDate *date = transfer.valutaDate;
+    if (date == nil) {
+        date = transfer.date;
+    }
     NSDictionary *details = [NSDictionary dictionaryWithObjectsAndKeys:
                              [NSNumber numberWithInt: row], StatementIndexKey,
-                             [self safeAndFormattedValue: transfer.date], StatementDateKey,
+                             [self safeAndFormattedValue: date], StatementDateKey,
                              [self safeAndFormattedValue: transfer.remoteName], StatementRemoteNameKey,
                              [self safeAndFormattedValue: transfer.purpose], StatementPurposeKey,
                              [self safeAndFormattedValue: transfer.value], StatementValueKey,
