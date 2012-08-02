@@ -668,28 +668,26 @@ NSString *escapeSpecial(NSString *s)
 {
     PecuniaError *error=nil;
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"addUser\">" ];
+
+    [self appendTag: @"name" withValue: user.name to: cmd ];
+    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
+    [self appendTag: @"customerId" withValue: user.customerId to: cmd ];
+    [self appendTag: @"userId" withValue: user.userId to: cmd ];
+    [self appendTag: @"version" withValue: user.hbciVersion to: cmd ];
     
     SecurityMethod secMethod = [user.secMethod intValue ];
     if (secMethod == SecMethod_PinTan) {
-        [self appendTag: @"name" withValue: user.name to: cmd ];
-        [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
-        [self appendTag: @"customerId" withValue: user.customerId to: cmd ];
-        [self appendTag: @"userId" withValue: user.userId to: cmd ];
         [self appendTag: @"host" withValue: [user.bankURL stringByReplacingOccurrencesOfString: @"https://" withString:@"" ] to: cmd ];
-        [self appendTag: @"version" withValue: user.hbciVersion to: cmd ];
         [self appendTag: @"port" withValue: @"443" to: cmd ];
         [self appendTag: @"passportType" withValue: @"PinTan" to: cmd ];
         if([user.noBase64 boolValue] == NO) [self appendTag: @"filter" withValue: @"Base64" to: cmd ];
     }
     
     if (secMethod == SecMethod_DDV) {
-        NSString *bundlePath = [[NSBundle mainBundle ] bundlePath ];
-        NSString *libPath = [bundlePath stringByAppendingString:@"/Contents/" ];
-
-        [self appendTag: @"ddvLibPath" withValue: libPath to: cmd ];
         [self appendTag: @"ddvReaderIdx" withValue: [user.ddvReaderIdx stringValue ] to: cmd ];
         [self appendTag: @"ddvPortIdx" withValue: [user.ddvPortIdx stringValue ] to: cmd ];
         [self appendTag: @"passportType" withValue: @"DDV" to: cmd ];
+        [self appendTag: @"host" withValue: user.bankURL to: cmd ];
     }
     
 
@@ -1161,10 +1159,17 @@ NSString *escapeSpecial(NSString *s)
     }
     
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"registerUser\">" ];
-    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd];
-    [self appendTag: @"passportType" withValue: @"PinTan" to: cmd];
+    
+    SecurityMethod secMethod = [user.secMethod intValue ];
+    if (secMethod == SecMethod_DDV) {
+        [self appendTag: @"passportType" withValue: @"DDV" to: cmd];
+        user.tanMediaFetched = [NSNumber numberWithBool:YES ];
+    } else {
+        [self appendTag: @"passportType" withValue: @"PinTan" to: cmd];
+    }
     [self appendTag: @"version" withValue: user.hbciVersion to: cmd];
     [self appendTag: @"userId" withValue: user.userId to: cmd];
+    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd];
     [cmd appendString: @"</command>" ];
     
     [bridge syncCommand: cmd error: &error];

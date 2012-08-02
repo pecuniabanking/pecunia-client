@@ -25,6 +25,7 @@
 @synthesize host;
 @synthesize pinTanURL;
 @synthesize pinTanVersion;
+@synthesize hbciVersion;
 @synthesize website;
 
 -(void)dealloc
@@ -43,7 +44,7 @@
 	[host release ];
 	[pinTanURL release ];
 	[pinTanVersion release ];
-
+    [hbciVersion release ];
 	[super dealloc ];
 }
 

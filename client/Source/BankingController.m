@@ -398,6 +398,7 @@ static BOOL runningOnLionOrLater = NO;
             bankAccount.customerId = acc.customerId;
             bankAccount.isBankAcc = [NSNumber numberWithBool: YES];
             bankAccount.accountSuffix = acc.subNumber;
+            bankAccount.type = acc.type;
             //			bankAccount.uid = [NSNumber numberWithUnsignedInt: [acc uid]];
             //			bankAccount.type = [NSNumber numberWithUnsignedInt: [acc type]];
             

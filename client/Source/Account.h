@@ -21,6 +21,7 @@
 	NSString	*userId;
 	NSString	*customerId;
 	NSString	*subNumber;
+    NSNumber    *type;
 	
 	BOOL		collTransfer;
 	BOOL		substInternalTransfers;
@@ -41,6 +42,7 @@
 @property (copy) NSString *userId;
 @property (copy) NSString *customerId;
 @property (copy) NSString *subNumber;
+@property (copy) NSNumber *type;
 
 @property (nonatomic, assign) BOOL substInternalTransfers;
 @property (nonatomic, assign) BOOL collTransfer;

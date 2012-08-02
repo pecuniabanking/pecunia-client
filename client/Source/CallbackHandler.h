@@ -16,6 +16,7 @@
 	PasswordWindow	*pwWindow;
     NSString		*currentPwService;
     NSString		*currentPwAccount;
+    NSAlert         *alert;
 	BOOL			errorOccured;
 }
 

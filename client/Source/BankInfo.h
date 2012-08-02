@@ -23,6 +23,7 @@
 	NSString	*host;
 	NSString	*pinTanURL;
 	NSString	*pinTanVersion;
+    NSString    *hbciVersion;
 	NSString    *website;
 }
 
@@ -40,6 +41,7 @@
 @property (nonatomic, retain) NSString *host;
 @property (nonatomic, retain) NSString *pinTanURL;
 @property (nonatomic, retain) NSString *pinTanVersion;
+@property (nonatomic, retain) NSString *hbciVersion;
 @property (nonatomic, retain) NSString *website;
 
 @end

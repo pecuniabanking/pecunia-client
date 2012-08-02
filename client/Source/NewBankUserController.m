@@ -197,25 +197,44 @@
     // DDV-Zugang
     if (secMethod == SecMethod_DDV) {
         if (step == 1) {
+            // BankInfos holen
+            BankInfo *bi = [[HBCIClient hbciClient ] infoForBankCode:currentUser.bankCode inCountry:@"DE"];
+            if (bi) {
+                currentUser.hbciVersion = bi.hbciVersion;
+                currentUser.bankURL = bi.host;
+                if (currentUser.hbciVersion == nil || currentUser.bankURL == nil) {
+                    step = 4;
+                }
+            } else {
+                step = 4;
+            }
+        }
+        
+            
+        if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
+        
             // User anlegen
             [self startProgressWithMessage: NSLocalizedString(@"AP178", @"") ];
             PecuniaError *error = [[HBCIClient hbciClient ] addBankUser: currentUser];
             if (error) {
                 [self stopProgress ];
-                [error alertPanel];
+                if (step == 2) {
+                } else {
+                    [error alertPanel ];
+                }
             }
             else {
-                [[HBCIClient hbciClient ] updateTanMediaForUser:currentUser ];
                 [bankController updateBankAccounts: [[HBCIClient hbciClient ] getAccountsForUser:currentUser]];
                 [self stopProgress ];
                 
                 [userSheet orderOut: sender];
                 [NSApp endSheet: userSheet returnCode: 0];
+                return;
             }
         }
     }
     
-    if (step < 4) {
+    if (step < 6) {
 		step += 1;
 	}
 	[self prepareUserSheet ];
@@ -312,6 +331,7 @@
 
 -(void)controlTextDidEndEditing:(NSNotification *)aNotification
 {
+    /*
 	NSTextField	*te = [aNotification object];
 	NSString *bankCode = [te stringValue];
     BankUser *currentUser = [currentUserController content ];
@@ -322,6 +342,7 @@
         currentUser.bankURL = bi.pinTanURL;
         currentUser.hbciVersion = bi.pinTanVersion;
 	}
+     */
 }
 
 #pragma mark -
@@ -413,6 +434,8 @@
 
 - (void)prepareUserSheet_DDV
 {
+    NSArray *views = [[ddvBox contentView ] subviews ];
+
     if (step == 1) {
         
         // zur DDV-Box wechseln
@@ -427,11 +450,62 @@
         user.ddvPortIdx = [NSNumber numberWithInt:1 ];
         user.ddvReaderIdx = [NSNumber numberWithInt:0 ];
 
+        for(NSView *view in views) {
+			if ([view tag ] >= 100) {
+				[view setHidden:YES ];
+			}
+		}
+        
         // Grš§e setzen
 		NSRect frame = [userSheet frame ];
         frame.size.height += 20; frame.origin.y -= 20;
 		[[userSheet animator ] setFrame: frame display: YES ];
     }
+    if (step == 2) {
+		for(NSView *view in views) {
+			if ([view tag ] >= 100 && [view tag ] <= 110) {
+				[[view animator] setHidden:NO ];
+			}
+		}
+        
+		NSRect frame = [userSheet frame ];
+		frame.size.height += 32; frame.origin.y -= 32;
+		[[userSheet animator] setFrame: frame display: YES ];
+	}
+	if (step == 3) {
+		for(NSView *view in views) {
+			if ([view tag ] > 110 && [view tag ] <= 130) {
+				[[view animator] setHidden:NO ];
+			}
+		}
+        
+		NSRect frame = [userSheet frame ];
+		frame.size.height += 64; frame.origin.y -= 64;
+		[[userSheet animator] setFrame: frame display: YES ];
+	}
+	if (step == 4) {
+		for(NSView *view in views) {
+			if ([view tag ] > 110) {
+				[[view animator] setHidden:NO ];
+			}
+		}
+        
+		NSRect frame = [userSheet frame ];
+		frame.size.height += 87; frame.origin.y -= 87;
+		[[userSheet animator] setFrame: frame display: YES ];
+	}
+	if (step == 5) {
+		for(NSView *view in views) {
+			if ([view tag ] >= 110) {
+				[[view animator] setHidden:NO ];
+			}
+		}
+        
+		NSRect frame = [userSheet frame ];
+		frame.size.height += 183; frame.origin.y -= 183;
+		[[userSheet animator] setFrame: frame display: YES ];
+	}
+    
     
 }
 
@@ -480,6 +554,11 @@
 	BankUser* user = [self selectedUser];
 	if (user == nil) return;
 	
+    if (user.userId == nil) {
+		[bankUserController remove: self];
+        return;
+    }
+    
 	if([[HBCIClient hbciClient] deleteBankUser: user] == TRUE) {
         // remove userId from all related bank accounts
         NSError *error=nil;

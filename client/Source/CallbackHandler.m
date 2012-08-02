@@ -226,10 +226,26 @@
         [[NSNotificationCenter defaultCenter ] postNotification:notification ];
     }
     if ([data.command isEqualToString:@"needChipcard" ]) {
-        MessageLog *log = [MessageLog log ];
-        [log addMessage:NSLocalizedString(@"AP350", @"") withLevel:LogLevel_Info ];
+        
+        alert = [NSAlert alertWithMessageText:NSLocalizedString(@"AP350", @"") 
+                                defaultButton:NSLocalizedString(@"ok", @"") 
+                              alternateButton:nil 
+                                  otherButton:nil 
+                    informativeTextWithFormat:@"" ];
+        [alert runModal ];
+/*        
+        [alert retain ];
+        [self performSelector: @selector(runAlertPanel) withObject: nil afterDelay: 0.1];
+*/ 
+        
     }
     if ([data.command isEqualToString:@"haveChipcard" ]) {
+        /*
+        [NSApp stopModalWithCode:NSAlertDefaultReturn ];
+        [[alert window ] orderOut:self];
+        [alert release ];
+        alert = nil;
+        */ 
     }
     if ([data.command isEqualToString:@"needHardPin" ]) {
         // todo: Popup Pin eingeben
@@ -239,6 +255,11 @@
     }
     
     return @"";
+}
+
+- (void)runAlertPanel
+{
+    if(alert) [alert runModal ];    
 }
 
 -(void)setErrorOccured

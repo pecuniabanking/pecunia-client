@@ -23,6 +23,7 @@
 @synthesize userId;
 @synthesize customerId;
 @synthesize subNumber;
+@synthesize type;
 
 @synthesize collTransfer;
 @synthesize substInternalTransfers;
@@ -41,6 +42,7 @@
 	[userId release ];
 	[customerId release ];
 	[subNumber release ];
+    [type release ];
 	[super dealloc ];
 }
 

@@ -698,9 +698,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [calendarButton setHidden: !canBeTerminated];
     
     if (canBeTerminated) {
-        executeAtDateRadioButton.enabled = NO;
+        [executeAtDateRadioButton setEnabled:NO ];
         executeAtDateRadioButton.state = NSOffState;
-        executeImmediatelyRadioButton.enabled = YES;
+        [executeImmediatelyRadioButton setEnabled:YES ];
         executeImmediatelyRadioButton.state = NSOnState;
     }
     
@@ -994,8 +994,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
     
     BOOL isTerminated = [transfer valutaDate] != nil;
-    executeAtDateRadioButton.enabled = isTerminated;
-    executeImmediatelyRadioButton.enabled = !isTerminated;
+    [executeAtDateRadioButton setEnabled:isTerminated ];
+    [executeImmediatelyRadioButton setEnabled:!isTerminated ];
 
     if (isTerminated) {
         executeAtDateRadioButton.state = NSOnState;
@@ -1467,7 +1467,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         } else {
             sendTransfersButton.title = NSLocalizedString(@"AP416", @"");
         }
-        sendTransfersButton.enabled = [pendingTransfers.arrangedObjects count] > 0;
+        [sendTransfersButton setEnabled:[pendingTransfers.arrangedObjects count] > 0 ];
     }
 }
 
