@@ -78,9 +78,9 @@ public class HBCIServer {
     private Properties 		hbciHandlers;
     private Properties 		accounts;
     public  String 			passportPath;
+    private String			ddvLibPath;
     private Properties 		countryInfos;
     private XmlGen 			xmlGen;
-    private Properties 		users;
     
     private static HBCIServer server;
     
@@ -88,7 +88,6 @@ public class HBCIServer {
 		countryInfos = new Properties();
 		hbciHandlers = new Properties();
 		accounts = new Properties();
-		users = new Properties();
 		map = new Properties();
 	
 		in = new BufferedReader(new InputStreamReader(System.in, "UTF-8"));
@@ -230,8 +229,8 @@ public class HBCIServer {
         HBCIUtils.setParam("client.connection.localPort",null);
         HBCIUtils.setParam("log.loglevel.default","5");
         
-        //Passport
-        HBCIUtils.setParam("client.passport.default","PinTan");
+        // PinTan Passport
+//        HBCIUtils.setParam("client.passport.default","PinTan");
         HBCIUtils.setParam("client.passport.PinTan.checkcert","1");
         HBCIUtils.setParam("client.passport.PinTan.certfile",null);
         HBCIUtils.setParam("client.passport.PinTan.proxy",null);
@@ -239,7 +238,13 @@ public class HBCIServer {
         HBCIUtils.setParam("client.passport.PinTan.proxypass",null);
         HBCIUtils.setParam("client.passport.PinTan.init","1");
 //        HBCIUtils.setParam("client.retries.passphrase","0");
-        HBCIUtils.setParam("client.passport.hbciversion.default","plus");
+//        HBCIUtils.setParam("client.passport.hbciversion.default","plus");
+        
+        // DDV Passports
+        HBCIUtils.setParam("client.passport.DDV.libname.ddv", ddvLibPath+"libhbci4java-card-mac-os-x-10.6.jnilib");
+        HBCIUtils.setParam("client.passport.DDV.path", passportPath+"/");
+        HBCIUtils.setParam("client.passport.DDV.libname.ctapi", ddvLibPath+"pcsc-ctapi-wrapper.dylib");
+
         
         // get countries
         String countryPath = "/CountryInfo.txt";
@@ -262,6 +267,7 @@ public class HBCIServer {
     	String fname = passportKey(bankCode, userId);
     	String altName = null;
 		HBCIHandler handler = (HBCIHandler)hbciHandlers.get(fname);
+/*		
 		if(handler == null) {
 			// check if passport file exists
 			String filePath = passportPath + "/" + fname + ".dat";
@@ -307,6 +313,7 @@ public class HBCIServer {
 			HBCIUtils.log("HBCIServer: passport created for bank code "+bankCode+", user "+userId, HBCIUtils.LOG_DEBUG);
 	        return hbciHandle;
 		}
+*/		
 		return handler;
     }
     
@@ -331,6 +338,78 @@ public class HBCIServer {
     	}
     	return null;
     }
+    
+    // Passport in hbciHandlers aufnehmen bzw. puffern
+    private void registerPassport() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String userId = getParameter(map, "userId");
+    	String version = map.getProperty("version");
+        HBCIHandler hbciHandle = null;
+
+    	// Passport-Typ setzen
+		String type = getParameter(map, "passportType");
+        HBCIUtils.setParam("client.passport.default",type);
+
+        String key = passportKey(bankCode, userId);
+
+        if(type.equals("PinTan")) {
+			if(version.compareTo("220") == 0) version = "plus";
+			
+			// check if passport file exists
+			String filePath = passportPath + "/" + key + ".dat";
+			HBCIUtils.log("HBCIServer: open passort: "+filePath, HBCIUtils.LOG_DEBUG);
+			File file = new File(filePath);
+			if(file.exists() == false) {
+				HBCIUtils.log("HBCIServer: passport file "+filePath+" not found!", HBCIUtils.LOG_DEBUG);
+			} else {
+				HBCIUtils.setParam("client.passport.PinTan.filename",filePath);
+		        HBCIPassport passport=AbstractHBCIPassport.getInstance();
+		        if(passport == null) {
+					HBCIUtils.log("HBCIServer: failed to create passport from file "+filePath+"!", HBCIUtils.LOG_ERR);
+		        } else {
+		        	try {
+			        	HBCIUtils.setParam("client.passport.hbciversion.default",version);
+				        hbciHandle=new HBCIHandler(null, passport);
+		        	}
+		        	catch(HBCI_Exception e) {
+		        		hbciHandle = null;
+		        	}
+		        }
+			}
+		}
+        
+		if(type.equals("DDV")) {
+			String portIdx = getParameter(map, "ddvPortIdx");
+			String readerIdx = getParameter(map, "ddvReaderIdx");
+	        HBCIUtils.setParam("client.passport.DDV.path", passportPath+"/");
+	        HBCIUtils.setParam("client.passport.DDV.port", portIdx);
+	        HBCIUtils.setParam("client.passport.DDV.ctnumber", readerIdx);
+	        HBCIUtils.setParam("client.passport.DDV.usebio", "0");
+	        HBCIUtils.setParam("client.passport.DDV.softpin", "-1");	
+	        
+	        HBCIPassport passport=AbstractHBCIPassport.getInstance(type);
+	        
+	        try {
+	        	HBCIUtils.setParam("client.passport.hbciversion.default",version);
+	        	hbciHandle=new HBCIHandler(version, passport);
+
+	        }
+	        catch(HBCI_Exception e) {
+	        	hbciHandle = null;
+	        }
+		}
+		
+		if(hbciHandle != null) {
+			HBCIUtils.log("HBCIServer: passport created for bank code "+bankCode+", user "+userId, HBCIUtils.LOG_DEBUG);
+			hbciHandlers.put(key, hbciHandle);
+		}
+		
+		xmlBuf.append("<result command=\"registerPassport\">");
+		xmlGen.booleTag("ok", hbciHandle != null);
+		xmlBuf.append("</result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+    }
     	
 	private void addPassport() throws IOException {
 		
@@ -353,12 +432,8 @@ public class HBCIServer {
 		
 		if(type.equals("DDV")) {
 	        // DDV
-			String libPath = getParameter(map, "ddvLibPath");
 			String portIdx = getParameter(map, "ddvPortIdx");
 			String readerIdx = getParameter(map, "ddvReaderIdx");
-	        HBCIUtils.setParam("client.passport.DDV.libname.ddv", libPath+"libhbci4java-card-mac-os-x-10.6.jnilib");
-	        HBCIUtils.setParam("client.passport.DDV.path", passportPath+"/");
-	        HBCIUtils.setParam("client.passport.DDV.libname.ctapi", libPath+"pcsc-ctapi-wrapper.dylib");
 	        HBCIUtils.setParam("client.passport.DDV.port", portIdx);
 	        HBCIUtils.setParam("client.passport.DDV.ctnumber", readerIdx);
 	        HBCIUtils.setParam("client.passport.DDV.usebio", "0");
@@ -374,7 +449,7 @@ public class HBCIServer {
 //    	passport.clearUPD();
         HBCIHandler hbciHandle = null;
         try {
-        	String version = map.getProperty("version");
+        	String version = getParameter(map, "version");
         	if(version.compareTo("220") == 0 && type.equals("PinTan")) version = "plus";
         	hbciHandle=new HBCIHandler(version, passport);
         }
@@ -426,7 +501,6 @@ public class HBCIServer {
 		filePath = passportPath + "/" + filename + ".ser";
     	ppFile = new File(filePath);
     	ppFile.delete();
-    	users.remove(filename);
     	
         xmlBuf.append("<result name=\"deletePassport\">");
         xmlBuf.append("</result>.");
@@ -831,23 +905,30 @@ public class HBCIServer {
 	}
 	
 	private void init() throws IOException {
+		
+		// Pfade besorgen
+		ddvLibPath = getParameter(map, "ddvLibPath");
+		passportPath = getParameter(map, "passportPath");
+		
 		// global inits
 		initHBCI();
+		
 		hbciHandlers = new Properties();
-//		ArrayList<HBCIPassport> result = new ArrayList<HBCIPassport>();
+
+		// return list of registered users
+		xmlBuf.append("<result command=\"init\">");
+		xmlBuf.append("</result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+	}
+	
+	//  Alte Passport-Daten zurückliefern (wird nur für die Migration nach 1.0 benötigt)
+	private void getOldBankUsers() throws IOException {		
 		ArrayList<User> result = new ArrayList<User>();
-
-		passportPath = getParameter(map, "path");
-
-		// load all available passports
-		if(passportPath == null) {
-			error(ERR_MISS_PARAM,"init", "Pfad");
-			return;
-		}
 		File dir = new File(passportPath);
 		String [] files = dir.list();
+		
 		if(files != null) {
-			
 			for(int i=0; i<files.length; i++) {
 				String fname = files[i];
 				if(!fname.endsWith(".ser")) continue;
@@ -864,23 +945,19 @@ public class HBCIServer {
 				    File ppFile = new File(ppPath);
 				    if(ppFile.exists() == true) {
 				    	result.add(user);
-				    	users.put(filename, user);
 				    }
 			    } 
 			    catch (ClassNotFoundException e) {
 			    	System.err.println( e );
 			    }
 			}
-			
-			// Passport so spät wie möglich instanziieren
 		}
 
 		// return list of registered users
-		xmlBuf.append("<result command=\"init\">");
+		xmlBuf.append("<result command=\"getOldBankUsers\">");
 		xmlBuf.append("<list>");
 		for(int i=0; i<result.size(); i++) {
 			xmlGen.userToXml(result.get(i));
-//			passportToXml((HBCIPassportPinTan)result.get(i));
 		}
 		xmlBuf.append("</list>");
 		xmlBuf.append("</result>.");
@@ -888,6 +965,7 @@ public class HBCIServer {
 		out.flush();
 	}
 	
+	// Konten einer Bankkennung ermitteln
 	private void getAccounts() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String userId = getParameter(map, "userId");
@@ -934,9 +1012,11 @@ public class HBCIServer {
     	xmlBuf.append("<object type=\"BankInfo\">");
     	xmlGen.tag("bankCode", bankCode);
 		if(parts.length > 0) xmlGen.tag("name", parts[0]);
+		if(parts.length > 1) xmlGen.tag("city", parts[1]);
 		if(parts.length > 2) xmlGen.tag("bic", parts[2]);
 		if(parts.length > 4) xmlGen.tag("host", parts[4]);
 		if(parts.length > 5) xmlGen.tag("pinTanURL", parts[5]);
+		if(parts.length > 6) xmlGen.tag("hbciVersion", parts[6]);
 		if(parts.length > 7) xmlGen.tag("pinTanVersion", parts[7]);
 		xmlBuf.append("</object>");
 		xmlBuf.append("</result>.");
@@ -974,32 +1054,26 @@ public class HBCIServer {
 	
 	private void setAccount() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
-		String userId = getParameter(map, "userId");
 		String accountNumber = getParameter(map, "accountNumber");
 		String subNumber = map.getProperty("subNumber");
 		
-		// first check if there is a valid user
-		String key = passportKey(bankCode, userId);
-		User user = (User)users.get(key);
-		if(user != null) {
-			Konto acc = accountWithId(bankCode, accountNumber, subNumber);
-			if(acc == null) {
-				acc = new Konto(getParameter(map, "country"), bankCode, accountNumber);
-				acc.curr = map.getProperty("currency");
-				if (acc.curr == null) acc.curr = "EUR";
-				acc.bic = map.getProperty("bic");
-				acc.customerid = map.getProperty("customerId");
-				acc.iban = map.getProperty("iban");
-				acc.name = map.getProperty("ownerName");
-				acc.type = map.getProperty("name");
-				acc.subnumber = subNumber;
-				if(subNumber != null) accounts.put(bankCode+accountNumber+subNumber, acc);
-				else accounts.put(bankCode+accountNumber, acc);
-			} else {
-				// IBAN und BIC können von außen gesetzt werden
-				if (acc.iban == null) acc.iban = map.getProperty("iban");
-				if (acc.bic == null) acc.bic = map.getProperty("bic");
-			}
+		Konto acc = accountWithId(bankCode, accountNumber, subNumber);
+		if(acc == null) {
+			acc = new Konto(getParameter(map, "country"), bankCode, accountNumber);
+			acc.curr = map.getProperty("currency");
+			if (acc.curr == null) acc.curr = "EUR";
+			acc.bic = map.getProperty("bic");
+			acc.customerid = map.getProperty("customerId");
+			acc.iban = map.getProperty("iban");
+			acc.name = map.getProperty("ownerName");
+			acc.type = map.getProperty("name");
+			acc.subnumber = subNumber;
+			if(subNumber != null) accounts.put(bankCode+accountNumber+subNumber, acc);
+			else accounts.put(bankCode+accountNumber, acc);
+		} else {
+			// IBAN und BIC können von außen gesetzt werden
+			if (acc.iban == null) acc.iban = map.getProperty("iban");
+			if (acc.bic == null) acc.bic = map.getProperty("bic");
 		}
 		
 		xmlBuf.append("<result command=\"setAccount\">");
@@ -1011,21 +1085,15 @@ public class HBCIServer {
 	
 	private void changeAccount() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
-		String userId = getParameter(map, "userId");
 		String accountNumber = getParameter(map, "accountNumber");
 		String subNumber = map.getProperty("subNumber");
 		
-		// first check if there is a valid passport
-		String key = passportKey(bankCode, userId);
-		User user = (User)users.get(key);
-		if(user != null) {
-			Konto acc = accountWithId(bankCode, accountNumber, subNumber);
-			if(acc != null) {
-				acc.bic = map.getProperty("bic");
-				acc.iban = map.getProperty("iban");
-				acc.name = getParameter(map, "ownerName");
-				acc.type = map.getProperty("name");
-			}
+		Konto acc = accountWithId(bankCode, accountNumber, subNumber);
+		if(acc != null) {
+			acc.bic = map.getProperty("bic");
+			acc.iban = map.getProperty("iban");
+			acc.name = getParameter(map, "ownerName");
+			acc.type = map.getProperty("name");
 		}
 		
 		xmlBuf.append("<result command=\"changeAccount\">");
@@ -1297,13 +1365,7 @@ public class HBCIServer {
 		HBCIPassportPinTan passport = (HBCIPassportPinTan)handler.getPassport();
 		passport.resetSecMechs();
 		passport.getCurrentTANMethod(true);
-		User user = (User)users.get(passportKey(bankCode, userId));
-		if(user == null) {
-			error(ERR_MISS_USER, "resetPinTanMethod", userId);
-			return;
-		}
-		user.updatePinTanMethod(passport);
-		user.save();
+
 		xmlBuf.append("<result command=\"resetPinTanMethod\">");
 		xmlGen.passportToXml(passport);
 		xmlBuf.append("</result>.");
@@ -1527,7 +1589,7 @@ public class HBCIServer {
 			res = (GVRKKSettleList)job.getJobResult();
 			if(res.isOK()) isOk = true;
 		}
-		xmlBuf.append("<result command=\"getCCBalance\">");
+		xmlBuf.append("<result command=\"getCCSettlementList\">");
 		if(isOk == true) xmlGen.ccSettleListToXml(res);
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
@@ -1726,6 +1788,8 @@ public class HBCIServer {
 		
 		try {
 			if(command.compareTo("addUser") ==0 ) { addPassport(); return; }
+			if(command.compareTo("registerUser") == 0) { registerPassport(); return; }
+			if(command.compareTo("getOldBankUsers") == 0) { getOldBankUsers(); return; }
 			if(command.compareTo("init") == 0) { init(); return; }
 			if(command.compareTo("getAllStatements") == 0) { getAllStatements(); return; }
 			if(command.compareTo("getAccounts") == 0) { getAccounts(); return; }
