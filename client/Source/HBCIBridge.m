@@ -20,14 +20,11 @@
 
 @implementation HBCIBridge
 
-@synthesize callbackHandler;
-
 -(id)init
 {
     self = [super init ];
     if(self == nil) return nil;
     running = NO;
-	callbackHandler = [[CallbackHandler alloc ] init ];
     
     return self;
 }
@@ -166,7 +163,7 @@
         if(resultExists == YES) {
             PecuniaError *err = nil;
             if(error) err = [error toPecuniaError ];
-            [callbackHandler finishPasswordEntry ];
+            [[CallbackHandler handler ] finishPasswordEntry ];
             [asyncSender asyncCommandCompletedWithResult: result error: err ];
             [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleReadCompletionNotification object: [inPipe fileHandleForReading]];
             running = NO;
@@ -249,12 +246,12 @@
     NSString *command = [cmd stringByAppendingString: @".\n" ];
     
     // todo: startSession hier ist nur die erste Näherung
-    [callbackHandler startSession ];
+    [[CallbackHandler handler ] startSession ];
     // Send Log
     [[MessageLog log ] addMessage:cmd withLevel:LogLevel_Verbous ];
     [[outPipe fileHandleForWriting ] writeData: [command dataUsingEncoding: NSUTF8StringEncoding ] ];
     [self receive ];
-    [callbackHandler finishPasswordEntry ];
+    [[CallbackHandler handler ] finishPasswordEntry ];
     if(error) {
         *err = [error toPecuniaError ];
         return nil;

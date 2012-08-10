@@ -28,6 +28,7 @@
 @synthesize bankName;
 @synthesize checkCert;
 @synthesize port;
+@synthesize chipCardId;
 
 -(id)init
 {
@@ -76,6 +77,7 @@
 	[tanMethodNumber release ], tanMethodNumber = nil;
 	[hbciVersion release ], hbciVersion = nil;
 	[port release ], port = nil;
+    [chipCardId release ], chipCardId = nil;
 	[super dealloc ];
 }
 

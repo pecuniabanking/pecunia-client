@@ -186,7 +186,8 @@
 
 // Callback and backend.
 // AP350..AP399
-"AP350" = "Bitte Chipkarte einlegen";
+"AP350" = "Bitte legen Sie Ihre Chipkarte in das Chipkarten-Terminal ein";
+"AP351" = "Bitte geben Sie Ihre PIN in das Chipkarten-Terminal ein";
 
 // Transfers.
 // AP400..AP449

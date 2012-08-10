@@ -24,9 +24,13 @@
 #import "BankUser.h"
 #import "TanMedium.h"
 #import "TanSigningOption.h"
+#import "NotificationWindowController.h"
+
+static CallbackHandler *callbackHandler = nil;
 
 @implementation CallbackHandler
 @synthesize currentSignOptions;
+@synthesize currentSigningOption;
 
 -(void)startSession
 {
@@ -89,16 +93,15 @@
 
 -(NSString*)getTanMethod: (CallbackData*)data
 {
+	if (self.currentSigningOption) {
+		return self.currentSigningOption.tanMethod;
+	}
+
+	// alter Code, sollte eigentlich nicht durchlaufen werden. Bleibt drin als Fallback
 	BankUser *user = [BankUser userWithId:data.userId bankCode:data.bankCode ];
 	if (user.preferredTanMethod != nil) {
 		return user.preferredTanMethod.method;
 	}
-	
-	TanSigningOption *option = [currentSignOptions objectForKey:user ];
-	if (option) {
-		return option.tanMethod;
-	}
-	
 	
     NSMutableArray *tanMethods = [NSMutableArray arrayWithCapacity: 5 ];
     NSArray *meths = [data.proposal componentsSeparatedByString: @"|" ];
@@ -118,9 +121,8 @@
     }
     NSString *method = [[controller selectedMethod ] stringValue ];
 	
-	option = [[[TanSigningOption alloc ] init ] autorelease ];
+	SigningOption *option = [[[SigningOption alloc ] init ] autorelease ];
 	option.tanMethod = method;
-	if (self.currentSignOptions) [currentSignOptions setObject:option forKey:user ];
     return method;
 }
 
@@ -175,6 +177,11 @@
 
 -(NSString*)getTanMedia:(CallbackData*)data
 {
+    if (self.currentSigningOption) {
+		return self.currentSigningOption.tanMediumName;
+	}
+    
+    // alter Code, sollte eigentlich nicht durchlaufen werden. Bleibt drin als Fallback
 	BankUser *user = [BankUser userWithId:data.userId bankCode:data.bankCode ];
 	if (user.preferredTanMethod != nil) {
 		if (user.preferredTanMethod.preferredMedium != nil) {
@@ -226,46 +233,44 @@
         [[NSNotificationCenter defaultCenter ] postNotification:notification ];
     }
     if ([data.command isEqualToString:@"needChipcard" ]) {
-        
+        NSAlert *alert;
         alert = [NSAlert alertWithMessageText:NSLocalizedString(@"AP350", @"") 
                                 defaultButton:NSLocalizedString(@"ok", @"") 
                               alternateButton:nil 
                                   otherButton:nil 
                     informativeTextWithFormat:@"" ];
         [alert runModal ];
-/*        
-        [alert retain ];
-        [self performSelector: @selector(runAlertPanel) withObject: nil afterDelay: 0.1];
-*/ 
         
     }
     if ([data.command isEqualToString:@"haveChipcard" ]) {
-        /*
-        [NSApp stopModalWithCode:NSAlertDefaultReturn ];
-        [[alert window ] orderOut:self];
-        [alert release ];
-        alert = nil;
-        */ 
     }
     if ([data.command isEqualToString:@"needHardPin" ]) {
-        // todo: Popup Pin eingeben
+        notificationController = [[NotificationWindowController alloc ] initWithMessage:NSLocalizedString(@"AP351", @"") 
+                                                                                  title:NSLocalizedString(@"AP351", @"") ];
+        [notificationController showWindow:self ];
     }
     if ([data.command isEqualToString:@"haveHardPin" ]) {
-        // todo: Popup löschen
+        [[notificationController window ] close ];
+        [notificationController release ];
+        notificationController = nil;
     }
     
     return @"";
-}
-
-- (void)runAlertPanel
-{
-    if(alert) [alert runModal ];    
 }
 
 -(void)setErrorOccured
 {
 	errorOccured = YES;
 }
+
++(CallbackHandler*)handler
+{
+    if (callbackHandler == nil) {
+        callbackHandler = [[CallbackHandler alloc ] init ];
+    }
+    return callbackHandler;
+}
+
 
 
 @end

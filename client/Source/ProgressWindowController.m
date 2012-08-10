@@ -45,7 +45,7 @@
 
 	[messageLog registerLogUI:self ];
     maxLevel = LogLevel_Verbous;
-	isHidden = [defaults boolForKey:@"hideProgessWindow" ];
+	isHidden = [defaults boolForKey:@"hideProgressWindow" ];
     if (isHidden == NO) {
         [self showWindow:self ];
         [[self window ] orderFront:self ];

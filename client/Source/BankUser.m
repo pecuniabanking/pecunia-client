@@ -10,7 +10,7 @@
 #import "MOAssistant.h"
 #import "TanMethod.h"
 #import "TanMedium.h"
-#import "TanSigningOption.h"
+#import "SigningOption.h"
 #import "MessageLog.h"
 #import "HBCIClient.h"
 
@@ -31,10 +31,11 @@
 @dynamic tanMethods;
 @dynamic noBase64;
 @dynamic tanMediaFetched;
+@dynamic ddvPortIdx;
+@dynamic ddvReaderIdx;
+@dynamic secMethod;
+@dynamic chipCardId;
 
-@synthesize ddvPortIdx;
-@synthesize ddvReaderIdx;
-@synthesize secMethod;
 @synthesize regResult;
 
 -(id)copyWithZone: (NSZone *)zone
@@ -98,16 +99,20 @@
 
 -(NSArray*)getTanSigningOptions
 {
+    if ([self.secMethod intValue ] != SecMethod_PinTan) return nil;
     // first get TAN Media if not already fetched
-    if ([self.tanMediaFetched boolValue ] == NO) [[HBCIClient hbciClient ] updateTanMediaForUser:self ];
+    //if ([self.tanMediaFetched boolValue ] == NO) [[HBCIClient hbciClient ] updateTanMediaForUser:self ];
     
     NSSet *methods = [self tanMethods ];
     NSSet *media = [self tanMedia ];
     NSMutableArray *options = [NSMutableArray arrayWithCapacity:10 ];
     
     for (TanMethod *method in methods) {
-        TanSigningOption *option = [[[TanSigningOption alloc ] init ] autorelease ];
+        SigningOption *option = [[[SigningOption alloc ] init ] autorelease ];
+        option.secMethod = SecMethod_PinTan;
         option.tanMethod = method.method;
+        option.userId = self.userId;
+        option.userName = self.name;
         option.tanMethodName = method.name;
         NSString *zkamethod = method.zkaMethodName;
         
@@ -118,30 +123,133 @@
                 if ([zkamethod isEqualToString:@"mobileTAN" ] && [medium.category isEqualToString:@"M" ]) {
                     option.tanMediumName = medium.name;
                     option.mobileNumber = medium.mobileNumber;
+                    option.tanMediumCategory = medium.category;
                     [options addObject:option ];
                     added = YES;
                 }
-                if ([zkamethod isEqualToString:@"BestSign" ] && [medium.category isEqualToString:@"G" ] && [[medium.name substringToIndex:2 ] isEqualToString:@"oT"]) {
+                if ([zkamethod isEqualToString:@"BestSign" ] && [medium.category isEqualToString:@"G" ] && [[medium.name substringToIndex:3 ] isEqualToString:@"SO:"]) {
                     // Spezialfall Postbank Bestsign
                     option.tanMediumName = medium.name;
+                    option.tanMediumCategory = medium.category;
                     [options addObject:option ];
                     added = YES;
                 }
-                if ([[zkamethod substringToIndex:3] isEqualToString:@"HHD" ] && [medium.category isEqualToString:@"G" ]) {
+                if ([[zkamethod substringToIndex:3] isEqualToString:@"HHD" ] && [medium.category isEqualToString:@"G" ] && ![[medium.name substringToIndex:3 ] isEqualToString:@"SO:"]) {
                     option.tanMediumName = medium.name;
+                    option.tanMediumCategory = medium.category;
                     [options addObject:option ];
                     added = YES;
                 }
                 if (added == YES) {
-                    option = [[[TanSigningOption alloc ] init ] autorelease ];
+                    option = [[[SigningOption alloc ] init ] autorelease ];
+                    option.secMethod = SecMethod_PinTan;
                     option.tanMethod = method.method;
                     option.tanMethodName = method.name;
+                    option.userId = self.userId;
+                    option.userName = self.name;
                 }
             }
+        } else {
+            [options addObject:option ];
         }
     }
+
+    // sortieren
+    NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"tanMethodName" ascending: YES] autorelease];
+	NSArray *sortDescriptors = [NSArray arrayWithObject: sortDescriptor];
+    return [options sortedArrayUsingDescriptors:sortDescriptors ];
+}
+
+-(NSArray*)getSigningOptions
+{
+    if (self.userId == nil) return nil;
+    if ([self.secMethod intValue ] == SecMethod_PinTan) return [self getTanSigningOptions ];
+    
+    // DDV
+    NSMutableArray *options = [NSMutableArray arrayWithCapacity:10 ];
+    SigningOption *option = [[[SigningOption alloc ] init ] autorelease ];
+    option.secMethod = SecMethod_DDV;
+    option.userId = self.userId;
+    option.userName = self.name;
+    option.cardId = self.chipCardId;
+    [options addObject:option ];
     return options;
 }
+
+
+-(void)setpreferredSigningOption:(SigningOption*)option
+{
+    if (option == nil) {
+        self.preferredTanMethod = nil;
+        return;
+    }
+    NSSet *methods = [self tanMethods ];
+    for(TanMethod *method in methods) {
+        if ([method.method isEqualToString: option.tanMethod ]) {
+            self.preferredTanMethod = method;
+            NSSet *media = [self tanMedia ];
+            for(TanMedium *medium in media) {
+                if ([medium.name isEqualToString:option.tanMediumName ]) {
+                    method.preferredMedium = medium;
+                    break;
+                }
+            }
+            break;
+        }
+    }
+}
+
+-(SigningOption*)preferredSigningOption
+{
+    TanMethod *method = self.preferredTanMethod;
+    if (method == nil) return nil;
+    TanMedium *medium = method.preferredMedium;
+    
+    SigningOption *option = [[[SigningOption alloc ] init ] autorelease ];
+    option.tanMethod = method.method;
+    option.tanMethodName = method.name;
+    option.userId = self.userId;
+    option.userName = self.name;
+    option.secMethod = SecMethod_PinTan;
+    if (medium) {
+        option.tanMediumName = medium.name;
+        option.mobileNumber = medium.mobileNumber;
+    }
+    return option;
+}
+
+-(int)getpreferredSigningOptionIdx
+{
+    if ([self.secMethod intValue ] == SecMethod_DDV) {
+        return 0;
+    }
+    
+    NSArray *options = [self getTanSigningOptions ];
+    SigningOption *option = [self preferredSigningOption ];
+    
+    // Wenn nichts voreingestellt ist, Index des letzten Eintrags +1 zurückgeben, der zeigt dann automatisch auf den virtuellen Eintrag
+    if (option == nil) {
+        return [options count ];
+    }
+    
+    int idx = 0;
+    for(SigningOption *opt in options) {
+        if ([opt.tanMethod isEqualToString: option.tanMethod ] && ((opt.tanMediumName == nil && option.tanMediumName == nil) || [opt.tanMediumName isEqualToString:option.tanMediumName ])) {
+            return idx;
+        } else idx++;
+    }
+    return [options count ];
+}
+
+-(void)setpreferredSigningOptionIdx:(NSIndexSet*)iSet
+{
+    int idx = [iSet firstIndex ];
+    if (idx < 0) return;
+    NSArray *options = [self getTanSigningOptions ];
+    
+    [self setpreferredSigningOption:[options objectAtIndex:idx ] ];
+}
+
 
 +(NSArray*)allUsers
 {

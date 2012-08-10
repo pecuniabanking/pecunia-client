@@ -28,7 +28,7 @@
 @interface NewBankUserController : NSWindowController
 {
 	IBOutlet NSArrayController		*bankUserController;
-	IBOutlet NSArrayController		*tanMethods;
+	IBOutlet NSArrayController		*tanSigningOptions;
 	IBOutlet NSArrayController		*hbciVersions;
 	IBOutlet NSPanel				*userSheet;
 	IBOutlet NSMutableDictionary	*bankUserInfo;
@@ -68,7 +68,8 @@
 - (IBAction)changePinTanMethod: (id)sender;
 - (IBAction)printBankParameter: (id)sender;
 - (IBAction)allSettings: (id)sender;
-
+- (IBAction)secMethodChanged:(id)sender;
+- (IBAction)tanOptionChanged:(id)sender;
 - (IBAction)ok:(id)sender;
 - (IBAction)cancelSheet:(id)sender;
 

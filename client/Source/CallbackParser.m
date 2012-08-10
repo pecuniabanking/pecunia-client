@@ -46,7 +46,7 @@
 		[parser setDelegate: parent ];
 		 
 		// do command handling here.
-		NSString *result = [parent.callbackHandler callbackWithData: data ]; 
+		NSString *result = [[CallbackHandler handler ] callbackWithData: data ]; 
 		
 		NSPipe *pipe = [parent outPipe ];
 		result = [result stringByAppendingString: @"\n" ];

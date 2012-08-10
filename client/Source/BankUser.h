@@ -7,11 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
-typedef enum {
-    SecMethod_PinTan = 0,
-    SecMethod_DDV
-} SecurityMethod;
+#import "SigningOption.h"
 
 typedef enum {
     Reg_notchecked = 0,
@@ -23,7 +19,7 @@ typedef enum {
 @class TanMethod;
 
 @interface BankUser : NSManagedObject {
-
+    RegisterResult regResult;
 }
 
 @property (nonatomic, retain) NSString * bankCode;
@@ -38,18 +34,22 @@ typedef enum {
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * port;
 @property (nonatomic, retain) NSString * userId;
+@property (nonatomic, retain) NSString * chipCardId;
 @property (nonatomic, retain) TanMethod * preferredTanMethod;
 @property (nonatomic, retain) NSMutableSet* tanMedia;
 @property (nonatomic, retain) NSMutableSet* tanMethods;
-
 @property (nonatomic, retain) NSNumber *ddvPortIdx;
 @property (nonatomic, retain) NSNumber *ddvReaderIdx;
 @property (nonatomic, retain) NSNumber *secMethod;
+
 @property (nonatomic, assign) RegisterResult regResult;
 
 -(void)updateTanMethods:(NSArray*)methods;
 -(void)updateTanMedia:(NSArray*)media;
--(NSArray*)getTanSigningOptions;
+-(NSArray*)getSigningOptions;
+-(void)setpreferredSigningOption:(SigningOption*)option;
+-(SigningOption*)preferredSigningOption;
+-(int)getpreferredSigningOptionIdx;
 
 +(NSArray*)allUsers;
 +(BankUser*)userWithId:(NSString*)userId bankCode:(NSString*)bankCode;

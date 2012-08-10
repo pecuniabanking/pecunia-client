@@ -214,6 +214,17 @@
 		B17FE81B14DC350E00F6FAFE /* Transfer_SEPA.png in Resources */ = {isa = PBXBuildFile; fileRef = B17FE81A14DC350E00F6FAFE /* Transfer_SEPA.png */; };
 		B17FE82914DC380300F6FAFE /* Transfer_Internal.png in Resources */ = {isa = PBXBuildFile; fileRef = B17FE82814DC380300F6FAFE /* Transfer_Internal.png */; };
 		B18268090EC0E460008BC010 /* DatedTransfer_32.png in Resources */ = {isa = PBXBuildFile; fileRef = B18268080EC0E460008BC010 /* DatedTransfer_32.png */; };
+		B183572815CC505A003B93ED /* NotificationWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B183572715CC505A003B93ED /* NotificationWindow.xib */; };
+		B183572B15CC5091003B93ED /* NotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B183572A15CC5091003B93ED /* NotificationWindowController.m */; };
+		B183586215CDC064003B93ED /* SigningOption.m in Sources */ = {isa = PBXBuildFile; fileRef = B183586115CDC064003B93ED /* SigningOption.m */; };
+		B1835C0F15D2A1A2003B93ED /* SigningOptionsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1835C0915D2A1A2003B93ED /* SigningOptionsViewCell.m */; };
+		B1835C1015D2A1A2003B93ED /* SigningOptionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1835C0A15D2A1A2003B93ED /* SigningOptionsController.m */; };
+		B1835C1115D2A1A2003B93ED /* SigningOptionsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1835C0D15D2A1A2003B93ED /* SigningOptionsTableView.m */; };
+		B1835C1315D2A1C6003B93ED /* SigningOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1215D2A1C6003B93ED /* SigningOptions.xib */; };
+		B1835C1815D2A1F4003B93ED /* Kobil.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1415D2A1F4003B93ED /* Kobil.png */; };
+		B1835C1915D2A1F4003B93ED /* iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1515D2A1F4003B93ED /* iPhone.png */; };
+		B1835C1A15D2A1F4003B93ED /* PinTan.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1615D2A1F4003B93ED /* PinTan.png */; };
+		B1835C1B15D2A1F4003B93ED /* Chipcard.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1715D2A1F4003B93ED /* Chipcard.png */; };
 		B189782E0ECF47CA00D20503 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
 		B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B18978860ED0B2E800D20503 /* StatementDetails.m */; };
 		B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B20550CC6A51B00B0B02C /* NewBankUserController.m */; };
@@ -656,6 +667,23 @@
 		B17FE81A14DC350E00F6FAFE /* Transfer_SEPA.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transfer_SEPA.png; sourceTree = "<group>"; };
 		B17FE82814DC380300F6FAFE /* Transfer_Internal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Transfer_Internal.png; sourceTree = "<group>"; };
 		B18268080EC0E460008BC010 /* DatedTransfer_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DatedTransfer_32.png; sourceTree = "<group>"; };
+		B183568815CBFA6D003B93ED /* Accounts 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 4.xcdatamodel"; sourceTree = "<group>"; };
+		B183572715CC505A003B93ED /* NotificationWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationWindow.xib; sourceTree = "<group>"; };
+		B183572915CC5091003B93ED /* NotificationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationWindowController.h; sourceTree = "<group>"; };
+		B183572A15CC5091003B93ED /* NotificationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationWindowController.m; sourceTree = "<group>"; };
+		B183586015CDC064003B93ED /* SigningOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigningOption.h; sourceTree = "<group>"; };
+		B183586115CDC064003B93ED /* SigningOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SigningOption.m; sourceTree = "<group>"; };
+		B1835C0915D2A1A2003B93ED /* SigningOptionsViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SigningOptionsViewCell.m; sourceTree = "<group>"; };
+		B1835C0A15D2A1A2003B93ED /* SigningOptionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SigningOptionsController.m; sourceTree = "<group>"; };
+		B1835C0B15D2A1A2003B93ED /* SigningOptionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigningOptionsController.h; sourceTree = "<group>"; };
+		B1835C0C15D2A1A2003B93ED /* SigningOptionsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigningOptionsViewCell.h; sourceTree = "<group>"; };
+		B1835C0D15D2A1A2003B93ED /* SigningOptionsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SigningOptionsTableView.m; sourceTree = "<group>"; };
+		B1835C0E15D2A1A2003B93ED /* SigningOptionsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigningOptionsTableView.h; sourceTree = "<group>"; };
+		B1835C1215D2A1C6003B93ED /* SigningOptions.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SigningOptions.xib; sourceTree = "<group>"; };
+		B1835C1415D2A1F4003B93ED /* Kobil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Kobil.png; sourceTree = "<group>"; };
+		B1835C1515D2A1F4003B93ED /* iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone.png; sourceTree = "<group>"; };
+		B1835C1615D2A1F4003B93ED /* PinTan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PinTan.png; sourceTree = "<group>"; };
+		B1835C1715D2A1F4003B93ED /* Chipcard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Chipcard.png; sourceTree = "<group>"; };
 		B189782C0ECF47CA00D20503 /* Country.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Country.h; sourceTree = "<group>"; tabWidth = 4; };
 		B189782D0ECF47CA00D20503 /* Country.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Country.m; sourceTree = "<group>"; tabWidth = 4; };
 		B18978850ED0B2E800D20503 /* StatementDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementDetails.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1061,6 +1089,7 @@
 		27E55355146EDA59001DE9BE /* Designer */ = {
 			isa = PBXGroup;
 			children = (
+				B1835C1215D2A1C6003B93ED /* SigningOptions.xib */,
 				B1D450561478469A008DD256 /* ABInfoBox.xib */,
 				B1D4505314784666008DD256 /* ABInputWindow.xib */,
 				27E16999149F90D900089103 /* About.xib */,
@@ -1085,6 +1114,7 @@
 				B1D44FF71478430A008DD256 /* LogController.xib */,
 				B1D44FC91478407D008DD256 /* MainMenu.xib */,
 				B1D44FF4147842C5008DD256 /* NewPasswordWindow.xib */,
+				B183572715CC505A003B93ED /* NotificationWindow.xib */,
 				B1AFA9F6129EEA3900B115A7 /* Orders.xib */,
 				B1D44FF11478428E008DD256 /* PasswordWindow.xib */,
 				B1D44FEE14784213008DD256 /* Preferences.xib */,
@@ -1219,6 +1249,8 @@
 				B17729131504C9B200256898 /* TanMethodOld.m */,
 				B1EC7B251508077100813E1A /* TanSigningOption.h */,
 				B1EC7B261508077100813E1A /* TanSigningOption.m */,
+				B183586015CDC064003B93ED /* SigningOption.h */,
+				B183586115CDC064003B93ED /* SigningOption.m */,
 			);
 			name = HBCIBackend;
 			sourceTree = "<group>";
@@ -1335,10 +1367,18 @@
 		B17B296A13E366C800739E7A /* Dialogs */ = {
 			isa = PBXGroup;
 			children = (
+				B1835C0B15D2A1A2003B93ED /* SigningOptionsController.h */,
+				B1835C0A15D2A1A2003B93ED /* SigningOptionsController.m */,
+				B1835C0C15D2A1A2003B93ED /* SigningOptionsViewCell.h */,
+				B1835C0915D2A1A2003B93ED /* SigningOptionsViewCell.m */,
+				B1835C0E15D2A1A2003B93ED /* SigningOptionsTableView.h */,
+				B1835C0D15D2A1A2003B93ED /* SigningOptionsTableView.m */,
 				27C78794143623080095F1DA /* ProgressWindowController.h */,
 				27C78795143623080095F1DA /* ProgressWindowController.m */,
 				B14D4C7113DB608D00843BE6 /* TanMethodListController.h */,
 				B14D4C7213DB608D00843BE6 /* TanMethodListController.m */,
+				B183572915CC5091003B93ED /* NotificationWindowController.h */,
+				B183572A15CC5091003B93ED /* NotificationWindowController.m */,
 			);
 			name = Dialogs;
 			sourceTree = "<group>";
@@ -1346,6 +1386,10 @@
 		B1923B560EB7A6D40079ADCA /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B1835C1415D2A1F4003B93ED /* Kobil.png */,
+				B1835C1515D2A1F4003B93ED /* iPhone.png */,
+				B1835C1615D2A1F4003B93ED /* PinTan.png */,
+				B1835C1715D2A1F4003B93ED /* Chipcard.png */,
 				2722DE8015B2F03300503E95 /* templates.png */,
 				27465177159B795E00D774FE /* shield.png */,
 				27B56886159743B10064A28B /* basket.png */,
@@ -1840,6 +1884,12 @@
 				27465178159B795E00D774FE /* shield.png in Resources */,
 				27E662B115A09B24002F9277 /* TransferTemplateListViewCell.xib in Resources */,
 				2722DE8115B2F03300503E95 /* templates.png in Resources */,
+				B183572815CC505A003B93ED /* NotificationWindow.xib in Resources */,
+				B1835C1315D2A1C6003B93ED /* SigningOptions.xib in Resources */,
+				B1835C1815D2A1F4003B93ED /* Kobil.png in Resources */,
+				B1835C1915D2A1F4003B93ED /* iPhone.png in Resources */,
+				B1835C1A15D2A1F4003B93ED /* PinTan.png in Resources */,
+				B1835C1B15D2A1F4003B93ED /* Chipcard.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2022,6 +2072,11 @@
 				27B9868515769132008907F3 /* GradientButtonCell.m in Sources */,
 				27E662B615A09BDA002F9277 /* TransferTemplatesListView.m in Sources */,
 				27E662B715A09BDA002F9277 /* TransferTemplateListViewCell.m in Sources */,
+				B183572B15CC5091003B93ED /* NotificationWindowController.m in Sources */,
+				B183586215CDC064003B93ED /* SigningOption.m in Sources */,
+				B1835C0F15D2A1A2003B93ED /* SigningOptionsViewCell.m in Sources */,
+				B1835C1015D2A1A2003B93ED /* SigningOptionsController.m in Sources */,
+				B1835C1115D2A1A2003B93ED /* SigningOptionsTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2236,8 +2291,9 @@
 				27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */,
 				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
 				B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */,
+				B183568815CBFA6D003B93ED /* Accounts 4.xcdatamodel */,
 			);
-			currentVersion = B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */;
+			currentVersion = B183568815CBFA6D003B93ED /* Accounts 4.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -338,7 +338,84 @@ static BOOL runningOnLionOrLater = NO;
     }
 }
 
+-(void)updateBankAccounts:(NSArray *)hbciAccounts forUser:(BankUser*)user
+{
+    NSError *error=nil;
+    BOOL found;
+    
+    if (hbciAccounts == nil) {
+        hbciAccounts = [[HBCIClient hbciClient] getAccountsForUser:user];
+    }
+    
+    NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
+    NSArray *tmpAccounts = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if( error != nil || tmpAccounts == nil) {
+        NSAlert *alert = [NSAlert alertWithError:error];
+        [alert runModal];
+        return;
+    }
+    NSMutableArray*	bankAccounts = [NSMutableArray arrayWithArray: tmpAccounts];
 
+    for (Account *acc in hbciAccounts) {
+        BankAccount *account;
+        
+        //lookup
+        found = NO;
+        for (account in bankAccounts) {
+			if ([account.bankCode isEqual: acc.bankCode ] && [account.accountNumber isEqual: acc.accountNumber ] && 
+                ((account.accountSuffix == nil && acc.subNumber == nil) || [account.accountSuffix isEqual: acc.subNumber ])) {
+                found = YES;
+                break;
+            }
+        }
+        if (found == YES) {
+            // Kennung zum Konto hinzufügen
+            if (account.userId == nil) {
+                account.userId = acc.userId;
+                account.customerId = acc.customerId;
+            } else {
+                if ([account.userId isEqualToString:acc.userId ] == NO) {
+                    NSMutableSet *users = [account mutableSetValueForKey:@"users" ];
+                    [users addObject:user ];
+                }
+            }
+        } else {
+            // Account was not found: create it
+            BankAccount* bankRoot = [self getBankNodeWithAccount: acc inAccounts: bankAccounts];
+            if(bankRoot == nil) return;
+            BankAccount	*bankAccount = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount"
+                                                                     inManagedObjectContext:self.managedObjectContext];
+            
+            bankAccount.accountNumber = acc.accountNumber;
+            bankAccount.name = acc.name;
+            bankAccount.bankCode = acc.bankCode;
+            bankAccount.bankName = acc.bankName;
+            bankAccount.currency = acc.currency;
+            bankAccount.country = acc.country;
+            bankAccount.owner = acc.ownerName;
+            bankAccount.userId = acc.userId;
+            bankAccount.customerId = acc.customerId;
+            bankAccount.isBankAcc = [NSNumber numberWithBool: YES];
+            bankAccount.accountSuffix = acc.subNumber;
+            bankAccount.type = acc.type;
+            //			bankAccount.uid = [NSNumber numberWithUnsignedInt: [acc uid]];
+            //			bankAccount.type = [NSNumber numberWithUnsignedInt: [acc type]];
+            
+            // links
+            bankAccount.parent = bankRoot;
+            NSMutableSet *users = [bankAccount mutableSetValueForKey:@"users" ];
+            [users addObject:user ];
+        } 
+    }
+    // save updates
+    if([self.managedObjectContext save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError:error];
+        [alert runModal];
+        return;
+    }
+}
+
+/*
 -(void)updateBankAccounts:(NSArray*)hbciAccounts
 {
     NSError	*error = nil;
@@ -414,6 +491,7 @@ static BOOL runningOnLionOrLater = NO;
         return;
     }
 }
+ */
 
 -(NSIndexPath*)indexPathForCategory: (Category*)cat inArray: (NSArray*)nodes
 {
@@ -667,7 +745,11 @@ static BOOL runningOnLionOrLater = NO;
 
 -(IBAction)updateAllAccounts:(id)sender
 {
-    [self updateBankAccounts:nil];
+    NSArray *users = [BankUser allUsers];
+    for(BankUser *user in users) {
+        [self updateBankAccounts:nil forUser: user];
+
+    }
 }
 
 
@@ -2798,7 +2880,7 @@ static BOOL runningOnLionOrLater = NO;
 		NSError *error = nil;
 		NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 		NSArray *bankUsers = [BankUser allUsers ];		
-		NSArray *users = [[HBCIClient hbciClient ] users ];
+		NSArray *users = [[HBCIClient hbciClient ] getOldBankUsers ];
 		
 		for(User *user in users) {
 			BOOL found = NO;

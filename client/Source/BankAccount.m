@@ -48,6 +48,7 @@
 @dynamic splitRule;
 @dynamic isStandingOrderSupported;
 @dynamic accountSuffix;
+@dynamic users;
 
 @synthesize dbStatements;
 @synthesize purposeSplitRule;

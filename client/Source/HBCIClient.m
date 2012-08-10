@@ -177,11 +177,6 @@ static HBCIClient *client = nil;
 	return [controller changePinTanMethodForUser:user ];
 }
 
--(NSArray*)users
-{
-	return [controller users ];
-}
-
 -(PecuniaError*)addBankUser:(BankUser*)user
 {
 	return [controller addBankUser: user ];
@@ -235,6 +230,11 @@ static HBCIClient *client = nil;
 -(PecuniaError*)getBalanceForAccount:(BankAccount*)account
 {
 	return [controller getBalanceForAccount:account ];
+}
+
+-(NSArray*)getOldBankUsers
+{
+    return [controller getOldBankUsers ];
 }
 
 @end

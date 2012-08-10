@@ -11,8 +11,9 @@
 			<string key="NS.object.0">851</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="876"/>
 			<integer value="1016"/>
+			<integer value="50"/>
+			<integer value="698"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -45,7 +46,7 @@
 				</object>
 				<string key="NSWindowContentMaxSize">{3.40282e+38, 3.40282e+38}</string>
 				<object class="NSView" key="NSWindowView" id="295136492">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<array class="NSMutableArray" key="NSSubviews">
 						<object class="NSCustomView" id="145184999">
@@ -538,6 +539,7 @@
 									<string key="NSFrame">{{224, 17}, {15, 102}}</string>
 									<reference key="NSSuperview" ref="398596655"/>
 									<reference key="NSNextKeyView" ref="482667620"/>
+									<int key="NSViewLayerContentsRedrawPolicy">2</int>
 									<reference key="NSTarget" ref="398596655"/>
 									<string key="NSAction">_doScroller:</string>
 									<double key="NSPercent">0.99484539031982422</double>
@@ -548,6 +550,7 @@
 									<string key="NSFrame">{{1, 220}, {193.996, 15}}</string>
 									<reference key="NSSuperview" ref="398596655"/>
 									<reference key="NSNextKeyView" ref="946041026"/>
+									<int key="NSViewLayerContentsRedrawPolicy">2</int>
 									<int key="NSsFlags">1</int>
 									<reference key="NSTarget" ref="398596655"/>
 									<string key="NSAction">_doScroller:</string>
@@ -699,7 +702,7 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{285, 173}, {128, 17}}</string>
 							<reference key="NSSuperview" ref="295136492"/>
-							<reference key="NSNextKeyView" ref="243192712"/>
+							<reference key="NSNextKeyView"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="396032595">
@@ -709,27 +712,6 @@
 								<reference key="NSSupport" ref="770263158"/>
 								<reference key="NSControlView" ref="946041026"/>
 								<reference key="NSBackgroundColor" ref="709846591"/>
-								<object class="NSColor" key="NSTextColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xNjg2Mjc0NTU4IDAuMTY4NjI3NDU1OCAwLjE2ODYyNzQ1NTgAA</bytes>
-								</object>
-							</object>
-						</object>
-						<object class="NSTextField" id="243192712">
-							<reference key="NSNextResponder" ref="295136492"/>
-							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{408, 173}, {97, 17}}</string>
-							<reference key="NSSuperview" ref="295136492"/>
-							<reference key="NSNextKeyView" ref="70316167"/>
-							<int key="NSViewLayerContentsRedrawPolicy">2</int>
-							<bool key="NSEnabled">YES</bool>
-							<object class="NSTextFieldCell" key="NSCell" id="67746932">
-								<int key="NSCellFlags">-2077098431</int>
-								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">tanMethod</string>
-								<reference key="NSSupport" ref="391630030"/>
-								<reference key="NSControlView" ref="243192712"/>
-								<reference key="NSBackgroundColor" ref="242502910"/>
 								<object class="NSColor" key="NSTextColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4xNjg2Mjc0NTU4IDAuMTY4NjI3NDU1OCAwLjE2ODYyNzQ1NTgAA</bytes>
@@ -805,7 +787,7 @@
 						<object class="NSPopUpButton" id="70316167">
 							<reference key="NSNextResponder" ref="295136492"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{491, 167}, {278, 26}}</string>
+							<string key="NSFrame">{{408, 167}, {361, 26}}</string>
 							<reference key="NSSuperview" ref="295136492"/>
 							<reference key="NSNextKeyView" ref="592266135"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -877,6 +859,7 @@
 						</object>
 					</array>
 					<string key="NSFrameSize">{895, 301}</string>
+					<reference key="NSSuperview"/>
 					<reference key="NSNextKeyView" ref="145184999"/>
 					<bool key="NSViewIsLayerTreeHost">YES</bool>
 					<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -1558,6 +1541,7 @@
 					<string>preferredTanMethod.name</string>
 					<string>checkCert</string>
 					<string>tanSigningOptions</string>
+					<string>preferredTanOptionIdx</string>
 				</array>
 				<string key="NSObjectClassName">User</string>
 				<bool key="NSEditable">YES</bool>
@@ -1586,16 +1570,15 @@
 				<array class="NSMutableArray" key="NSDeclaredKeys">
 					<string>description</string>
 				</array>
-				<string key="NSObjectClassName">TanSigningOptions</string>
+				<string key="NSObjectClassName">SigningOptions</string>
 				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
 				<bool key="NSAvoidsEmptySelection">YES</bool>
 				<bool key="NSPreservesSelection">YES</bool>
-				<bool key="NSSelectsInsertedObjects">YES</bool>
 				<bool key="NSFilterRestrictsInsertion">YES</bool>
 				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
 			</object>
 			<object class="NSCustomView" id="766630273">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSBox" id="367124268">
@@ -1611,6 +1594,7 @@
 										<int key="NSvFlags">268</int>
 										<string key="NSFrame">{{74, 37}, {153, 17}}</string>
 										<reference key="NSSuperview" ref="406890983"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="274166229"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSTextFieldCell" key="NSCell" id="722387823">
@@ -1628,6 +1612,7 @@
 										<int key="NSvFlags">268</int>
 										<string key="NSFrame">{{15, 75}, {241, 18}}</string>
 										<reference key="NSSuperview" ref="406890983"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="911484025"/>
 										<int key="NSViewLayerContentsRedrawPolicy">2</int>
 										<bool key="NSEnabled">YES</bool>
@@ -1649,6 +1634,7 @@
 										<int key="NSvFlags">268</int>
 										<string key="NSFrame">{{223, 31}, {236, 26}}</string>
 										<reference key="NSSuperview" ref="406890983"/>
+										<reference key="NSWindow"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSPopUpButtonCell" key="NSCell" id="847794444">
 											<int key="NSCellFlags">-2076049856</int>
@@ -1701,11 +1687,13 @@
 								</array>
 								<string key="NSFrame">{{1, 1}, {474, 106}}</string>
 								<reference key="NSSuperview" ref="367124268"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1064246678"/>
 							</object>
 						</array>
 						<string key="NSFrame">{{17, 16}, {476, 108}}</string>
 						<reference key="NSSuperview" ref="766630273"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="406890983"/>
 						<string key="NSOffsets">{0, 0}</string>
 						<object class="NSTextFieldCell" key="NSTitleCell">
@@ -1736,6 +1724,8 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{510, 144}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="367124268"/>
 				<string key="NSClassName">NSView</string>
 			</object>
@@ -2789,29 +2779,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.preferredTanMethod.name</string>
-						<reference key="source" ref="243192712"/>
-						<reference key="destination" ref="581744579"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="243192712"/>
-							<reference key="NSDestination" ref="581744579"/>
-							<string key="NSLabel">value: selection.preferredTanMethod.name</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.preferredTanMethod.name</string>
-							<dictionary key="NSOptions">
-								<boolean value="NO" key="NSAllowsEditingMultipleValuesSelection"/>
-								<boolean value="YES" key="NSConditionallySetsHidden"/>
-								<string type="base64-UTF8" key="NSNoSelectionPlaceholder">IA</string>
-								<string type="base64-UTF8" key="NSNotApplicablePlaceholder">IA</string>
-								<string key="NSNullPlaceholder">(keine)</string>
-							</dictionary>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">961</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: selection.noBase64</string>
 						<reference key="source" ref="876305144"/>
 						<reference key="destination" ref="581744579"/>
@@ -2919,22 +2886,6 @@
 						</object>
 					</object>
 					<int key="connectionID">986</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: selection.tanSigningOptions</string>
-						<reference key="source" ref="91464090"/>
-						<reference key="destination" ref="581744579"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="91464090"/>
-							<reference key="NSDestination" ref="581744579"/>
-							<string key="NSLabel">contentArray: selection.tanSigningOptions</string>
-							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">selection.tanSigningOptions</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">991</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -3161,6 +3112,30 @@
 					</object>
 					<int key="connectionID">1076</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">secMethodChanged:</string>
+						<reference key="source" ref="150018269"/>
+						<reference key="destination" ref="274166229"/>
+					</object>
+					<int key="connectionID">1077</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">tanOptionChanged:</string>
+						<reference key="source" ref="150018269"/>
+						<reference key="destination" ref="70316167"/>
+					</object>
+					<int key="connectionID">1078</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">tanSigningOptions</string>
+						<reference key="source" ref="150018269"/>
+						<reference key="destination" ref="91464090"/>
+					</object>
+					<int key="connectionID">1080</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -3201,7 +3176,6 @@
 						<int key="objectID">6</int>
 						<reference key="object" ref="295136492"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="243192712"/>
 							<reference ref="946041026"/>
 							<reference ref="592266135"/>
 							<reference ref="976176952"/>
@@ -3795,19 +3769,6 @@
 						<int key="objectID">802</int>
 						<reference key="object" ref="396032595"/>
 						<reference key="parent" ref="946041026"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">827</int>
-						<reference key="object" ref="243192712"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="67746932"/>
-						</array>
-						<reference key="parent" ref="295136492"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">828</int>
-						<reference key="object" ref="67746932"/>
-						<reference key="parent" ref="243192712"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">379</int>
@@ -4439,7 +4400,7 @@
 				<string key="1008.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1009.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1010.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="1015.IBEditorWindowLastContentRect">{{619, 551}, {583, 380}}</string>
+				<string key="1015.IBEditorWindowLastContentRect">{{735, 456}, {583, 380}}</string>
 				<string key="1015.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1016.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<object class="NSAffineTransform" key="1016.IBViewBoundsToFrameTransform">
@@ -4549,8 +4510,9 @@
 					<bytes key="NSTransformStruct">P4AAAL+AAABD0YAAw1cAAA</bytes>
 				</object>
 				<string key="379.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="5.IBEditorWindowLastContentRect">{{585, 841}, {895, 301}}</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="5.IBWindowTemplateEditedContentRect">{{332, 798}, {895, 301}}</string>
+				<string key="5.IBWindowTemplateEditedContentRect">{{585, 841}, {895, 301}}</string>
 				<string key="50.IBEditorWindowLastContentRect">{{803, 993}, {679, 390}}</string>
 				<string key="50.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="50.IBWindowTemplateEditedContentRect">{{803, 993}, {679, 390}}</string>
@@ -4666,8 +4628,6 @@
 				<string key="784.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="801.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="802.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="827.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="828.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="860.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="4" key="860.IBViewIntegration.shadowBlurRadius"/>
 				<reference key="860.IBViewIntegration.shadowColor" ref="1007265222"/>
@@ -4747,6 +4707,7 @@
 				<string key="978.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="979.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="980.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="992.IBEditorWindowLastContentRect">{{750, 930}, {510, 144}}</string>
 				<string key="992.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="993.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="994.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4760,7 +4721,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">1076</int>
+			<int key="maxID">1082</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4819,6 +4780,8 @@
 						<string key="ok:">id</string>
 						<string key="printBankParameter:">id</string>
 						<string key="removeEntry:">id</string>
+						<string key="secMethodChanged:">id</string>
+						<string key="tanOptionChanged:">id</string>
 						<string key="updateBankParameter:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -4862,6 +4825,14 @@
 							<string key="name">removeEntry:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="secMethodChanged:">
+							<string key="name">secMethodChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="tanOptionChanged:">
+							<string key="name">tanOptionChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="updateBankParameter:">
 							<string key="name">updateBankParameter:</string>
 							<string key="candidateClassName">id</string>
@@ -4884,7 +4855,7 @@
 						<string key="progressIndicator">NSProgressIndicator</string>
 						<string key="secMethodPopup">NSPopUpButton</string>
 						<string key="secSelectBox">NSBox</string>
-						<string key="tanMethods">NSArrayController</string>
+						<string key="tanSigningOptions">NSArrayController</string>
 						<string key="topGradient">BWGradientBox</string>
 						<string key="userSheet">NSPanel</string>
 					</dictionary>
@@ -4953,8 +4924,8 @@
 							<string key="name">secSelectBox</string>
 							<string key="candidateClassName">NSBox</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="tanMethods">
-							<string key="name">tanMethods</string>
+						<object class="IBToOneOutletInfo" key="tanSigningOptions">
+							<string key="name">tanSigningOptions</string>
 							<string key="candidateClassName">NSArrayController</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="topGradient">

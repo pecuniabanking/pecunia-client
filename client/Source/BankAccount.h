@@ -64,7 +64,7 @@
 @property (nonatomic, retain) NSString * splitRule;
 @property (nonatomic, retain) NSString * accountSuffix;
 @property (nonatomic, assign) NSInteger unread;
-
+@property (nonatomic, retain) NSSet* users;
 
 @end
 

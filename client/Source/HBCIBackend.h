@@ -79,7 +79,7 @@
 
 -(PecuniaError*)setLogLevel:(LogLevel)level;
 
--(NSArray*)users;
+-(NSArray*)getOldBankUsers;
 -(NSDictionary*)countries;
 
 @end

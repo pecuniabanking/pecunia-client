@@ -14,12 +14,12 @@
 @class HBCIBridge;
 @class PecuniaError;
 @class ProgressWindowController;
+@class SigningOption;
 
 @interface HBCIController : NSObject <HBCIBackend> {
 	
 	HBCIBridge                  *bridge;
     ProgressWindowController    *progressController;
-	NSMutableArray              *users;
 	NSMutableDictionary         *bankInfo;
 	NSMutableDictionary         *countries;
 	NSArray                     *bankQueryResults;
@@ -30,6 +30,7 @@
 
 -(void)asyncCommandCompletedWithResult:(id)result error:(PecuniaError*)err;
 -(BOOL)registerBankUser:(BankUser*)user error:(PecuniaError**)err;
+-(SigningOption*)signingOptionForAccount:(BankAccount*)account;
 
 
 @end

@@ -27,6 +27,7 @@
 	NSString		*tanMethodDescription;
 	NSMutableArray	*tanMethodList;	
 	NSString		*port;
+    NSString        *chipCardId;
 }
 
 @property (nonatomic, retain) NSMutableArray *tanMethodList;
@@ -45,6 +46,7 @@
 @property (nonatomic, copy) NSString *bankURL;
 @property (nonatomic, copy) NSString *bankName;
 @property (nonatomic, copy) NSString *port;
+@property (nonatomic, copy) NSString *chipCardId;
 
 -(BOOL)isEqual: (User*)obj;
 

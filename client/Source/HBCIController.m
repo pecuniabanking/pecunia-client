@@ -35,6 +35,9 @@
 #import "TanMediaList.h"
 #import "StatusBarController.h"
 #import "Keychain.h"
+#import "SigningOptionsController.h"
+#import "SigningOption.h"
+#import "CallbackHandler.h"
 
 @implementation HBCIController
 
@@ -46,7 +49,6 @@
     bridge = [[HBCIBridge alloc ] init ];
     [bridge startup ];
     
-    users = [[NSMutableArray alloc ] initWithCapacity: 10 ];
     bankInfo = [[NSMutableDictionary alloc ] initWithCapacity: 10];
     countries = [[NSMutableDictionary alloc ] initWithCapacity: 50];
     [self readCountryInfos ]; 
@@ -66,7 +68,6 @@
 
 -(void)dealloc
 {
-    [users release ];
     [bridge release ];
     [bankInfo release ];
     [countries release ];
@@ -164,12 +165,10 @@ NSString *escapeSpecial(NSString *s)
     PecuniaError *error=nil;
     BankParameter *bp=nil;
     
-    [self startProgress ];
     if ([self registerBankUser:user error:&error]) {
         NSString *cmd = [NSString stringWithFormat: @"<command name=\"getBankParameterRaw\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
         bp = [bridge syncCommand:cmd error:&error ];
     }
-    [self stopProgress ];
     if (error) {
         [error alertPanel ];
         return nil;
@@ -202,11 +201,6 @@ NSString *escapeSpecial(NSString *s)
 {
     // is not supported
     return @"";
-}
-
--(NSArray*)users
-{
-    return users;
 }
 
 -(NSArray*)getAccountsForUser:(BankUser*)user
@@ -535,29 +529,40 @@ NSString *escapeSpecial(NSString *s)
     Transfer *transfer;
     NSManagedObjectContext *context = MOAssistant.assistant.context;
     NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] initWithDateFormat: @"%Y-%m-%d" allowNaturalLanguage: NO] autorelease];
-    NSMutableDictionary *userTransferRegister = [NSMutableDictionary dictionaryWithCapacity: 10];
+    NSMutableDictionary *accountTransferRegister = [NSMutableDictionary dictionaryWithCapacity: 10];
     
-    // Group transfers by bank.
+    // Group transfers by BankAccount
     for (transfer in transfers) {
-        BankUser *user = [BankUser userWithId: transfer.account.userId bankCode: transfer.account.bankCode];
-        NSMutableArray *userTransfers = [userTransferRegister objectForKey: user];
-        if (userTransfers == nil) {
-            userTransfers = [NSMutableArray arrayWithCapacity: 10];
-            [userTransferRegister setObject: userTransfers forKey: user];
+        BankAccount *account = transfer.account;
+        NSMutableArray *accountTransfers = [accountTransferRegister objectForKey: account];
+        if (accountTransfers == nil) {
+            accountTransfers = [NSMutableArray arrayWithCapacity: 10];
+            [accountTransferRegister setObject: accountTransfers forKey: account];
         }
-        [userTransfers addObject: transfer];
+        [accountTransfers addObject: transfer];
     }
     
     // Now go for each bank.
     [self startProgress];
     BOOL allSent = YES;
     
-    for (BankUser *user in [userTransferRegister allKeys]) {
+    for (BankAccount *account in [accountTransferRegister allKeys]) {
+        SigningOption *option = [self signingOptionForAccount:account ];
+        if (option == nil) {
+            continue;
+        }
+        [CallbackHandler handler ].currentSigningOption = option;
+        
+        // Registriere gewählten User
+        BankUser *user = [BankUser userWithId:option.userId bankCode:account.bankCode ];
+        if (user == nil) {
+            continue;
+        }
         if ([self registerBankUser:user error:&err] == NO) continue;
         if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
         
         NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfers\"><transfers type=\"list\">" ];
-        for (transfer in [userTransferRegister objectForKey: user]) {
+        for (transfer in [accountTransferRegister objectForKey: account]) {
             [cmd appendString: @"<transfer>"];
             [self appendTag: @"bankCode" withValue: transfer.account.bankCode to: cmd];
             [self appendTag: @"accountNumber" withValue: transfer.account.accountNumber to: cmd];
@@ -697,12 +702,6 @@ NSString *escapeSpecial(NSString *s)
     if (error)
         return error;
     
-    //	[users addObject: usr ];
-    
-    // delete any previously existing user first
-    [users removeObject: usr ];
-    [users addObject: usr ];
-    
     // update external user data
     if (secMethod == SecMethod_DDV) {
         user.bankCode = usr.bankCode;
@@ -710,13 +709,8 @@ NSString *escapeSpecial(NSString *s)
         user.customerId = usr.customerId;
         user.hbciVersion = usr.hbciVersion;
         user.country = usr.country;
+        user.chipCardId = usr.chipCardId;
     }
-    
-/*    
-    user.tanMethodNumber = usr.tanMethodNumber;
-    user.tanMethodDescription = usr.tanMethodDescription;
-    user.customerId = usr.customerId;
-*/    
     return nil;
 }
 
@@ -730,8 +724,6 @@ NSString *escapeSpecial(NSString *s)
     if(error == nil) {
         NSString *s = [NSString stringWithFormat: @"PIN_%@_%@", user.bankCode, user.userId ];
         [Keychain deletePasswordForService:@"Pecunia PIN" account: s ];
-                
-        [users removeObject: user ];
     } else {
         [error logMessage ];
         return NO;
@@ -904,74 +896,104 @@ NSString *escapeSpecial(NSString *s)
     PecuniaError *err = nil;
     NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
     
+    NSMutableDictionary *accountTransferRegister = [NSMutableDictionary dictionaryWithCapacity: 10];
+    
+    // Group transfers by BankAccount
+    for (StandingOrder *stord in orders) {
+        BankAccount *account = stord.account;
+        NSMutableArray *accountTransfers = [accountTransferRegister objectForKey: account];
+        if (accountTransfers == nil) {
+            accountTransfers = [NSMutableArray arrayWithCapacity: 10];
+            [accountTransferRegister setObject: accountTransfers forKey: account];
+        }
+        [accountTransfers addObject: stord];
+    }
+    
     [self startProgress ];
-
-    for(StandingOrder *stord in orders) {
-        BankUser *user = [BankUser userWithId:stord.account.userId bankCode:stord.account.bankCode ];
-        if([self registerBankUser:user error:&err] == NO) continue;
-
+    
+    for (BankAccount *account in [accountTransferRegister allKeys]) {
+        SigningOption *option = [self signingOptionForAccount:account ];
+        if (option == nil) {
+            continue;
+        }
+        [CallbackHandler handler ].currentSigningOption = option;
+        
+        // Registriere gewählten User
+        BankUser *user = [BankUser userWithId:option.userId bankCode:account.bankCode ];
+        if (user == nil) {
+            continue;
+        }
+        if ([self registerBankUser:user error:&err] == NO) continue;
         if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
         
-        // todo: don't send unchanged orders
-        if ([stord.isChanged boolValue] == NO && [stord.toDelete boolValue ] == NO) continue;
-        
-        // don't send sent orders without ID
-        if ([stord.isSent boolValue ] == YES && stord.orderKey == nil) continue;
-        
-        if (stord.orderKey == nil) {
-            // create standing order
-            NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"addStandingOrder\">" ];
-            [self prepareCommand:cmd forStandingOrder:stord ];			
-            [cmd appendString: @"</command>" ];
+    
+        for(StandingOrder *stord in [accountTransferRegister objectForKey: account]) {
+            BankUser *user = [BankUser userWithId:stord.account.userId bankCode:stord.account.bankCode ];
+            if([self registerBankUser:user error:&err] == NO) continue;
+
+            if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
             
-            NSDictionary *result = [bridge syncCommand: cmd error: &err  ];
-            if (err) {
-                [err logMessage ];
-                [self stopProgress ];
-                return err;
-            }
-            stord.isSent = [result valueForKey:@"isOk" ];
-            stord.orderKey = [result valueForKey:@"orderId" ];
-            if (stord.isSent) {
-				stord.isChanged = [NSNumber numberWithBool:NO ];
-            }
-        } else if ([stord.toDelete boolValue ] == YES) {
-            // delete standing order
-            NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"deleteStandingOrder\">" ];
-            [self prepareCommand:cmd forStandingOrder:stord ];
-            if (stord.orderKey) {
-                [self appendTag:@"orderId" withValue:stord.orderKey to:cmd ];
-            }
-            [cmd appendString: @"</command>" ];
+            // todo: don't send unchanged orders
+            if ([stord.isChanged boolValue] == NO && [stord.toDelete boolValue ] == NO) continue;
             
-            NSNumber *result = [bridge syncCommand: cmd error: &err  ];
-            if (err) {
-                [err logMessage ];
-                [self stopProgress ];
-                return err;
-            }
-            stord.isSent = result;
-            if ([result boolValue ] == YES) {
-                [context deleteObject:stord ];
-            }
-        } else {
-            // change standing order
-            NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"changeStandingOrder\">" ];
-            [self prepareCommand:cmd forStandingOrder:stord ];
-            [self appendTag:@"orderId" withValue:stord.orderKey to:cmd ];			
-            [cmd appendString: @"</command>" ];
+            // don't send sent orders without ID
+            if ([stord.isSent boolValue ] == YES && stord.orderKey == nil) continue;
             
-            NSNumber *result = [bridge syncCommand: cmd error: &err  ];
-            if (err) {
-                [err logMessage ];
-                [self stopProgress ];
-                return err;
-            }
-            stord.isSent = result;
-            if ([result boolValue ] == YES) {
-                stord.isChanged = [NSNumber numberWithBool:NO ];
-            }
-        }		
+            if (stord.orderKey == nil) {
+                // create standing order
+                NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"addStandingOrder\">" ];
+                [self prepareCommand:cmd forStandingOrder:stord ];			
+                [cmd appendString: @"</command>" ];
+                
+                NSDictionary *result = [bridge syncCommand: cmd error: &err  ];
+                if (err) {
+                    [err logMessage ];
+                    [self stopProgress ];
+                    return err;
+                }
+                stord.isSent = [result valueForKey:@"isOk" ];
+                stord.orderKey = [result valueForKey:@"orderId" ];
+                if (stord.isSent) {
+                    stord.isChanged = [NSNumber numberWithBool:NO ];
+                }
+            } else if ([stord.toDelete boolValue ] == YES) {
+                // delete standing order
+                NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"deleteStandingOrder\">" ];
+                [self prepareCommand:cmd forStandingOrder:stord ];
+                if (stord.orderKey) {
+                    [self appendTag:@"orderId" withValue:stord.orderKey to:cmd ];
+                }
+                [cmd appendString: @"</command>" ];
+                
+                NSNumber *result = [bridge syncCommand: cmd error: &err  ];
+                if (err) {
+                    [err logMessage ];
+                    [self stopProgress ];
+                    return err;
+                }
+                stord.isSent = result;
+                if ([result boolValue ] == YES) {
+                    [context deleteObject:stord ];
+                }
+            } else {
+                // change standing order
+                NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"changeStandingOrder\">" ];
+                [self prepareCommand:cmd forStandingOrder:stord ];
+                [self appendTag:@"orderId" withValue:stord.orderKey to:cmd ];			
+                [cmd appendString: @"</command>" ];
+                
+                NSNumber *result = [bridge syncCommand: cmd error: &err  ];
+                if (err) {
+                    [err logMessage ];
+                    [self stopProgress ];
+                    return err;
+                }
+                stord.isSent = result;
+                if ([result boolValue ] == YES) {
+                    stord.isChanged = [NSNumber numberWithBool:NO ];
+                }
+            }		
+        }
     }
     [self stopProgress ];
     return nil;
@@ -1164,6 +1186,8 @@ NSString *escapeSpecial(NSString *s)
     if (secMethod == SecMethod_DDV) {
         [self appendTag: @"passportType" withValue: @"DDV" to: cmd];
         user.tanMediaFetched = [NSNumber numberWithBool:YES ];
+        [self appendTag: @"ddvPortIdx" withValue: [user.ddvPortIdx stringValue ] to: cmd];
+        [self appendTag: @"ddvReaderIdx" withValue: [user.ddvReaderIdx stringValue ] to: cmd];
     } else {
         [self appendTag: @"passportType" withValue: @"PinTan" to: cmd];
     }
@@ -1183,6 +1207,38 @@ NSString *escapeSpecial(NSString *s)
         user.regResult = Reg_failed;
         return NO;
     }   
+}
+
+-(NSArray*)getOldBankUsers
+{
+    PecuniaError *error=nil;
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getOldBankUsers\"></command>" ];
+    NSArray *users = [bridge syncCommand: cmd error: &error ];
+    if (error) {
+        [error alertPanel ];
+        return nil;
+    }
+    return users;
+}
+
+-(SigningOption*)signingOptionForAccount:(BankAccount*)account
+{
+    NSMutableArray *options = [NSMutableArray arrayWithCapacity:10 ];
+    NSSet *users = account.users;
+    for(BankUser *user in users) {
+        SigningOption *option =  [user preferredSigningOption ];
+        if (option) {
+            [options addObject:option ];
+        } else {
+            [options addObjectsFromArray:[user getSigningOptions ] ];
+        }
+    }
+    if ([options count ] == 1) return [options lastObject ];
+
+    SigningOptionsController *controller = [[SigningOptionsController alloc ] initWithSigningOptions:options forAccount: account ];
+    int res = [NSApp runModalForWindow:[controller window ] ];
+    if (res > 0) return nil;
+    return [controller selectedOption ];
 }
 
 @end

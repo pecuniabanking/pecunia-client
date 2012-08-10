@@ -23,6 +23,7 @@
 
 @class Account;
 @class BankAccount;
+@class BankUser;
 @class NewBankUserController;
 @class PreferenceController;
 @class LogController;
@@ -195,7 +196,7 @@
 -(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts;
 -(void)statementsNotification: (NSNotification*)notification;
 -(Category*)getBankingRoot;
--(void)updateBankAccounts:(NSArray*)hbciAccounts;
+-(void)updateBankAccounts:(NSArray *)hbciAccounts forUser:(BankUser*)user;
 -(void)updateBalances;
 -(void)updateNotAssignedCategory;
 -(void)requestFinished: (NSArray*)resultList;

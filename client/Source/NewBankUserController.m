@@ -30,6 +30,7 @@
 #import "BankAccount.h"
 #import "MOAssistant.h"
 #import "BankSetupInfo.h"
+#import "TanSigningOption.h"
 
 #import "AnimationHelper.h"
 #import "BWGradientBox.h"
@@ -149,6 +150,8 @@
         NSInteger idx = [secMethodPopup indexOfSelectedItem ];
         if (idx == 1) {
             secMethod = SecMethod_DDV;
+            currentUser.ddvPortIdx = [NSNumber numberWithInt:1 ];
+            currentUser.ddvReaderIdx = [NSNumber numberWithInt:0 ];
         } else {
             secMethod = SecMethod_PinTan;
         }
@@ -184,8 +187,14 @@
                 [error alertPanel];
             }
             else {
+                [[HBCIClient hbciClient ] updateTanMethodsForUser:currentUser ];
                 [[HBCIClient hbciClient ] updateTanMediaForUser:currentUser ];
-                [bankController updateBankAccounts: [[HBCIClient hbciClient ] getAccountsForUser:currentUser]];
+                
+                [bankController updateBankAccounts: nil forUser: currentUser ];
+                
+                // TAN-Optionen aktualisieren
+                [self tableViewSelectionDidChange:nil ];
+                
                 [self stopProgress ];
                 
                 [userSheet orderOut: sender];
@@ -224,7 +233,7 @@
                 }
             }
             else {
-                [bankController updateBankAccounts: [[HBCIClient hbciClient ] getAccountsForUser:currentUser]];
+                [bankController updateBankAccounts: nil forUser: currentUser ];
                 [self stopProgress ];
                 
                 [userSheet orderOut: sender];
@@ -245,6 +254,25 @@
 	[userSheet orderOut: sender];
 	[NSApp endSheet: userSheet returnCode: 1];
 }
+
+-(IBAction)secMethodChanged:(id)sender
+{
+    [self ok:sender ];
+}
+
+- (IBAction)tanOptionChanged:(id)sender
+{
+    NSArray *sel = [tanSigningOptions selectedObjects];
+    if ([sel count ] != 1) return;
+    SigningOption *option = [sel lastObject ];
+    BankUser *user = [self selectedUser ];
+    if (user) {
+        if ([user.secMethod intValue ] == SecMethod_PinTan) {
+            [user setpreferredSigningOption:option ];
+        }
+    }
+}
+
 
 - (void)endSheet: (id)sender
 {
@@ -343,6 +371,29 @@
         currentUser.hbciVersion = bi.pinTanVersion;
 	}
      */
+}
+
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+{
+    BankUser *user = [self selectedUser ];
+    if (user) {
+        if ([user.secMethod intValue ] == SecMethod_PinTan) {
+            NSMutableArray *options = [[user getSigningOptions ] mutableCopy ];
+            
+            // Füge virtuelle Methode "Beim Senden festlegen" hinzu
+            SigningOption *option = [[[SigningOption alloc ] init ] autorelease ];
+            option.secMethod = SecMethod_PinTan;
+            option.userId = user.userId;
+            option.userName = user.name;
+            option.tanMethod = @"100";
+            option.tanMethodName = @"Beim Senden festlegen";
+            [options addObject:option ];
+            [tanSigningOptions setContent:options ];
+        } else {
+            [tanSigningOptions setContent:[user getSigningOptions ] ];
+        }
+        [tanSigningOptions setSelectionIndex:[user getpreferredSigningOptionIdx ] ];
+    }
 }
 
 #pragma mark -
@@ -551,6 +602,8 @@
 
 - (IBAction)removeEntry:(id)sender
 {
+    NSError *error=nil;
+    
 	BankUser* user = [self selectedUser];
 	if (user == nil) return;
 	
@@ -560,21 +613,30 @@
     }
     
 	if([[HBCIClient hbciClient] deleteBankUser: user] == TRUE) {
-        // remove userId from all related bank accounts
-        NSError *error=nil;
-        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:context];
-        NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
-        [request setEntity:entityDescription];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"bankCode = %@ AND userId = %@", user.bankCode, user.userId];
-        [request setPredicate:predicate];
-        NSArray *accounts = [context executeFetchRequest:request error:&error];
-        if (error == nil) {
-            for (BankAccount *account in accounts) {
+        // remove user from all related bank accounts
+        NSMutableSet *accounts = [user mutableSetValueForKey:@"accounts" ];
+        for (BankAccount *account in accounts) {
+            // prüfen ob die userId gelöscht oder geändert werden muss
+            if ([account.userId isEqualToString: user.userId ]) {
+                NSMutableSet *users = [account mutableSetValueForKey:@"users" ];
                 account.userId = nil;
                 account.customerId = nil;
+                for(BankUser *accUser in users) {
+                    if ([accUser.userId isEqualToString: user.userId ] == NO) {
+                        account.userId = accUser.userId;
+                        account.customerId = accUser.customerId;
+                    }
+                }
             }
         }
 		[bankUserController remove: self];
+        
+        // save updates
+        if([context save: &error] == NO) {
+            NSAlert *alert = [NSAlert alertWithError:error];
+            [alert runModal];
+            return;
+        }
 	}
 }
 
@@ -583,7 +645,7 @@
 	BankUser *user = [self selectedUser];
 	if(user == nil) return;
 
-	[bankController updateBankAccounts: [[HBCIClient hbciClient] getAccountsForUser:user]];
+	[bankController updateBankAccounts: nil forUser: user ];
 
 	NSRunAlertPanel(NSLocalizedString(@"AP27", @""),
 					NSLocalizedString(@"AP107", @""),

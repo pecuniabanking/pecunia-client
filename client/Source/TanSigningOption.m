@@ -28,7 +28,11 @@
 
 - (NSString*)description
 {
-    return [NSString stringWithFormat:@"%@ (%@)", tanMethodName, tanMediumName ];
+    if (tanMediumName) {
+        return [NSString stringWithFormat:@"%@ (%@)", tanMethodName, tanMediumName ];
+    } else {
+        return tanMethodName;
+    }
 }
 
 @end
