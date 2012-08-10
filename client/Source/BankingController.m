@@ -1038,6 +1038,7 @@ static BOOL runningOnLionOrLater = NO;
 {
     // save state of accountsView
     //	[self saveAccountsViewState];
+    [NSApp terminate:self ];
 }
 
 -(IBAction)listUsers:(id)sender

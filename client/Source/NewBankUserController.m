@@ -140,9 +140,7 @@
 
 - (IBAction)ok:(id)sender
 {
-	[userSheet makeFirstResponder:okButton ];
     [currentUserController commitEditing ];
-	[okButton setKeyEquivalent:@"" ];
     
     BankUser *currentUser = [currentUserController content ];
     
@@ -457,6 +455,8 @@
 //		frame.size.height -= 183; frame.origin.y += 183;
         frame.size.height += 17; frame.origin.y -= 17;
 		[[userSheet animator ] setFrame: frame display: YES ];
+        
+        [userSheet makeFirstResponder: [contentView viewWithTag:10 ] ];
 	}
 	if (step == 2) {
 		for(NSView *view in views) {
@@ -468,6 +468,8 @@
 		NSRect frame = [userSheet frame ];
 		frame.size.height += 32; frame.origin.y -= 32;
 		[[userSheet animator] setFrame: frame display: YES ];
+
+        [userSheet makeFirstResponder: [[userSheet contentView ] viewWithTag:110 ] ];
 	}
 	if (step == 3) {
 		for(NSView *view in views) {
@@ -511,6 +513,7 @@
 		NSRect frame = [userSheet frame ];
         frame.size.height += 20; frame.origin.y -= 20;
 		[[userSheet animator ] setFrame: frame display: YES ];
+        [userSheet makeFirstResponder: [contentView viewWithTag:10 ] ];
     }
     if (step == 2) {
 		for(NSView *view in views) {
@@ -522,6 +525,7 @@
 		NSRect frame = [userSheet frame ];
 		frame.size.height += 32; frame.origin.y -= 32;
 		[[userSheet animator] setFrame: frame display: YES ];
+        [userSheet makeFirstResponder: [[userSheet contentView ] viewWithTag:110 ] ];
 	}
 	if (step == 3) {
 		for(NSView *view in views) {
@@ -562,7 +566,7 @@
 
 - (void)prepareUserSheet
 {
-    
+    //[okButton setKeyEquivalent:@"\r" ];
     if (step == 0) {
 		NSRect frame = [userSheet frame ];
 		frame.size.height = 406;
