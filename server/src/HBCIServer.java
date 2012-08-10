@@ -128,6 +128,7 @@ public class HBCIServer {
 			String res = server.in.readLine();
 			return res;
 		}
+
 		
 	    public void callback(HBCIPassport passport, int reason, String msg, int datatype, StringBuffer retData) 
 	    {
@@ -385,7 +386,7 @@ public class HBCIServer {
 	        HBCIUtils.setParam("client.passport.DDV.port", portIdx);
 	        HBCIUtils.setParam("client.passport.DDV.ctnumber", readerIdx);
 	        HBCIUtils.setParam("client.passport.DDV.usebio", "0");
-	        HBCIUtils.setParam("client.passport.DDV.softpin", "-1");	
+	        HBCIUtils.setParam("client.passport.DDV.softpin", "0");	
 	        
 	        HBCIPassport passport=AbstractHBCIPassport.getInstance(type);
 	        
@@ -683,6 +684,12 @@ public class HBCIServer {
 			String subNumber = map.getProperty("transfer.subNumber");
 			
 			HBCIHandler handler = hbciHandler(bankCode, userId);
+			HBCIPassport passport = handler.getPassport();
+			if(passport instanceof HBCIPassportPinTan) {
+				HBCIPassportPinTan pp = (HBCIPassportPinTan)passport;
+				pp.setCurrentTANMethod(null);
+			}
+			
 			if(handler == null) {
 				System.err.println("No HBCI Handler for bank: " + bankCode + ", user: " + userId);
 				continue;

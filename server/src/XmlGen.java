@@ -273,7 +273,8 @@ public class XmlGen {
     	}
     	
     	if(pp instanceof HBCIPassportDDV) {
-    		
+    		HBCIPassportDDV ppDDV =(HBCIPassportDDV)pp;
+    		tag("chipCardId", ppDDV.getCardId());
     	}
     	
     	xmlBuf.append("</object>");    	
@@ -294,8 +295,6 @@ public class XmlGen {
     	if(version.compareTo("plus") == 0) version = "220";
     	tag("hbciVersion", version);
     	booleTag("checkCert", user.checkCert);
-		intTag("tanMethodNumber", user.tanMethod);
-		tag("tanMethodDescription", user.tanMethodDescription);    	    	
     	xmlBuf.append("</object>");
     }
     
