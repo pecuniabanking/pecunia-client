@@ -2905,10 +2905,25 @@ static BOOL runningOnLionOrLater = NO;
 				bankUser.country = user.country;
 				bankUser.userId = user.userId;
 				bankUser.customerId = user.customerId;
-                
-                [[HBCIClient hbciClient ] updateTanMethodsForUser:bankUser ];
+                bankUser.secMethod = [NSNumber numberWithInt:SecMethod_PinTan ];
 			}
 		}
+        
+        // BankUser Konten zuordnen
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:context];
+        NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+        [request setEntity:entityDescription];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"userId != nil", self ];
+        [request setPredicate:predicate];
+        NSArray *accounts = [context executeFetchRequest:request error:&error];
+        
+        for(BankAccount *account in accounts) {
+            BankUser *user = [BankUser userWithId:account.userId bankCode:account.bankCode ];
+            if (user) {
+                NSMutableSet *users = [account mutableSetValueForKey:@"users" ];
+                [users addObject:user ];
+            }
+        }
 	
 		if([context save:&error ] == NO) {
 			NSAlert *alert = [NSAlert alertWithError:error];

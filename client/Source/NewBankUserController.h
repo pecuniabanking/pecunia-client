@@ -58,6 +58,8 @@
 }
 
 - (id)initForController: (BankingController*)con;
+- (void)updateTanMethods;
+
 
 - (IBAction)close:(id)sender;
 - (IBAction)add:(id)sender;

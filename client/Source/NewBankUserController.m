@@ -191,8 +191,7 @@
                 [bankController updateBankAccounts: nil forUser: currentUser ];
                 
                 // TAN-Optionen aktualisieren
-                [self tableViewSelectionDidChange:nil ];
-                
+                [self updateTanMethods ];                
                 [self stopProgress ];
                 
                 [userSheet orderOut: sender];
@@ -371,7 +370,7 @@
      */
 }
 
-- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+-(void)updateTanMethods
 {
     BankUser *user = [self selectedUser ];
     if (user) {
@@ -391,7 +390,12 @@
             [tanSigningOptions setContent:[user getSigningOptions ] ];
         }
         [tanSigningOptions setSelectionIndex:[user getpreferredSigningOptionIdx ] ];
-    }
+    }    
+}
+
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+{
+    [self updateTanMethods ];
 }
 
 #pragma mark -
@@ -698,9 +702,18 @@
 	
 	PecuniaError *error = [[HBCIClient hbciClient] updateBankDataForUser: user];
 	if(error) [error alertPanel];
-	else NSRunAlertPanel(NSLocalizedString(@"AP27", @"Success"), 
-						 NSLocalizedString(@"AP28", @"Bank parameter have been updated successfully"), 
-						 NSLocalizedString(@"ok", @"Ok"), nil, nil);
+    
+    // auch die TAN-Methoden und TAN-Medien neu ermitteln
+    if ([user.secMethod intValue ] == SecMethod_PinTan) {
+        error = [[HBCIClient hbciClient ] updateTanMethodsForUser:user ];
+        if(error) [error alertPanel];
+        error = [[HBCIClient hbciClient ] updateTanMediaForUser:user ];
+        
+        [self updateTanMethods ];
+    }
+    NSRunAlertPanel(NSLocalizedString(@"AP27", @"Success"), 
+                    NSLocalizedString(@"AP28", @"Bank parameter have been updated successfully"), 
+                    NSLocalizedString(@"ok", @"Ok"), nil, nil);
 }
 
 @end

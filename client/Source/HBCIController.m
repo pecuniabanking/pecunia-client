@@ -1233,6 +1233,13 @@ NSString *escapeSpecial(NSString *s)
             [options addObjectsFromArray:[user getSigningOptions ] ];
         }
     }
+    if ([options count ] == 0) {
+        NSRunAlertPanel(NSLocalizedString(@"352", @""), 
+                        NSLocalizedString(@"353",@""), 
+                        NSLocalizedString(@"ok",@""), 
+                        nil, nil, account.accountNumber);
+        return nil;
+    }
     if ([options count ] == 1) return [options lastObject ];
 
     SigningOptionsController *controller = [[SigningOptionsController alloc ] initWithSigningOptions:options forAccount: account ];

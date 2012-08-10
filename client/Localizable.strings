@@ -188,6 +188,8 @@
 // AP350..AP399
 "AP350" = "Bitte legen Sie Ihre Chipkarte in das Chipkarten-Terminal ein";
 "AP351" = "Bitte geben Sie Ihre PIN in das Chipkarten-Terminal ein";
+"AP352" = "Fehlende Signier-Informationen";
+"AP353" = "Es sind keine Signier-Informationen (z.B. TAN-Methoden/TAN-Medien) für das Konto %@ vorhanden. Bitte aktualisieren Sie die Bankparameter";
 
 // Transfers.
 // AP400..AP449

@@ -225,6 +225,7 @@
 		B1835C1915D2A1F4003B93ED /* iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1515D2A1F4003B93ED /* iPhone.png */; };
 		B1835C1A15D2A1F4003B93ED /* PinTan.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1615D2A1F4003B93ED /* PinTan.png */; };
 		B1835C1B15D2A1F4003B93ED /* Chipcard.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1715D2A1F4003B93ED /* Chipcard.png */; };
+		B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1835D3415D521B5003B93ED /* 101.xcmappingmodel */; };
 		B189782E0ECF47CA00D20503 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
 		B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B18978860ED0B2E800D20503 /* StatementDetails.m */; };
 		B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B20550CC6A51B00B0B02C /* NewBankUserController.m */; };
@@ -684,6 +685,7 @@
 		B1835C1515D2A1F4003B93ED /* iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone.png; sourceTree = "<group>"; };
 		B1835C1615D2A1F4003B93ED /* PinTan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PinTan.png; sourceTree = "<group>"; };
 		B1835C1715D2A1F4003B93ED /* Chipcard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Chipcard.png; sourceTree = "<group>"; };
+		B1835D3415D521B5003B93ED /* 101.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 101.xcmappingmodel; sourceTree = "<group>"; };
 		B189782C0ECF47CA00D20503 /* Country.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Country.h; sourceTree = "<group>"; tabWidth = 4; };
 		B189782D0ECF47CA00D20503 /* Country.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Country.m; sourceTree = "<group>"; tabWidth = 4; };
 		B18978850ED0B2E800D20503 /* StatementDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementDetails.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1082,6 +1084,7 @@
 				B14C6224115C04FA009324A6 /* 030.xcmappingmodel */,
 				B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */,
 				C10CFBC7150A046A003DFC12 /* 100.xcmappingmodel */,
+				B1835D3415D521B5003B93ED /* 101.xcmappingmodel */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2077,6 +2080,7 @@
 				B1835C0F15D2A1A2003B93ED /* SigningOptionsViewCell.m in Sources */,
 				B1835C1015D2A1A2003B93ED /* SigningOptionsController.m in Sources */,
 				B1835C1115D2A1A2003B93ED /* SigningOptionsTableView.m in Sources */,
+				B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

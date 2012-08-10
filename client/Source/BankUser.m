@@ -117,6 +117,15 @@
         NSString *zkamethod = method.zkaMethodName;
         
         if ([method.needTanMedia isEqualToString: @"1"] || [method.needTanMedia isEqualToString: @"2"]) {
+            
+            // wenn es keine TAN-Medien gibt, nur die Methode angeben
+            if ([media count ] == 0) {
+                option.tanMediumName = [NSString stringWithFormat:@"%@ %@", method.zkaMethodName, method.zkaMethodVersion ];
+                if ([zkamethod isEqualToString:@"mobileTAN" ]) option.tanMediumCategory = @"M";
+                if([[zkamethod substringToIndex:3] isEqualToString:@"HHD" ]) option.tanMediumCategory = @"G";
+                [options addObject:option ];
+            }
+            
             // check which media fit
             for (TanMedium *medium in media) {
                 BOOL added = NO;
