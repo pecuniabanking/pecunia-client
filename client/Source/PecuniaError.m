@@ -11,7 +11,6 @@
 
 @implementation PecuniaError
 
-
 +(NSError*)errorWithText: (NSString*)msg
 {
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1 ];
@@ -31,17 +30,26 @@
 {
 	// HBCI Errors
 	NSString *title = nil;
-	NSString *message = nil;
 	if(self.code < 100) title = NSLocalizedString(@"AP7", @"HBCI error occured!");
+    [self alertPanelWithTitle:title];
+}
+
+-(void)alertPanelWithTitle:(NSString*)title
+{
+	NSString *message = nil;
 	switch(self.code) {
 		case 0: message = NSLocalizedString(@"AP93", @"User abort"); break;
 		case 1: message = [self localizedDescription ]; break;
 		case 2: message = NSLocalizedString(@"AP94", @"The password entered was wrong"); break;
 		case 3: message = [NSString stringWithFormat: NSLocalizedString(@"AP95", @"Missing HBCI-Information: %@"), [self localizedDescription ] ]; break;
 	}
+    if (self.code >=100) {
+        message = [self localizedDescription];
+    }
 	if(message && title) {
 		NSRunAlertPanel(title, message,	NSLocalizedString(@"ok", @"Ok"), nil, nil);
 	} else NSLog(@"Unhandled alert: %@", [self localizedDescription ]);
+    
 }
 
 -(void)logMessage

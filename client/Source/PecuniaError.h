@@ -17,5 +17,6 @@
 +(PecuniaError*)errorWithCode:(NSInteger)code message:(NSString*)msg;
 -(void)alertPanel;
 -(void)logMessage;
+-(void)alertPanelWithTitle:(NSString*)title;
 
 @end
