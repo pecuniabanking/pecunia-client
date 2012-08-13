@@ -278,6 +278,7 @@ NSString *escapeSpecial(NSString *s)
         case TransferTypeEU: return @"UebForeign"; break;
         case TransferTypeDebit: return @"Last"; break;
         case TransferTypeSEPA: return @"UebSEPA"; break;
+        case TransferTypeCollectiveCredit: return @"MultiUeb"; break;
     };
     return nil;
 }
@@ -519,6 +520,79 @@ NSString *escapeSpecial(NSString *s)
     return limits;
 }
 
+-(PecuniaError*)sendCollectiveTransfer:(NSArray*)transfers
+{
+    PecuniaError *err = nil;
+    Transfer *transfer;
+
+    if ([transfers count] == 0) return nil;
+    
+    // Prüfen ob alle Überweisungen das gleiche Konto betreffen
+    transfer = [transfers lastObject ];
+    for(Transfer *transf in transfers) {
+        if (transfer.account != transf.account) {
+            return [PecuniaError errorWithMessage:NSLocalizedString(@"424",@"") ];
+            /*
+            NSRunAlertPanel(NSLocalizedString(@"423", @""), 
+                            NSLocalizedString(@"424",@""), 
+                            NSLocalizedString(@"ok",@""));
+            return;
+            */
+        }
+    }
+
+    SigningOption *option = [self signingOptionForAccount:transfer.account ];
+    if (option == nil) {
+        return nil;
+    }
+    [CallbackHandler handler ].currentSigningOption = option;
+    
+    // Registriere gewählten User
+    BankUser *user = [BankUser userWithId:option.userId bankCode:transfer.account.bankCode ];
+    if (user == nil) {
+        return [PecuniaError errorWithMessage: [NSString stringWithFormat: NSLocalizedString(@"424",@""), option.userId ] ];
+    }
+    
+    if ([self registerBankUser:user error:&err] == NO) return err;
+    if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
+    
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendCollectiveTransfer\">" ];
+    [self appendTag: @"bankCode" withValue: transfer.account.bankCode to: cmd];
+    [self appendTag: @"accountNumber" withValue: transfer.account.accountNumber to: cmd];
+    [self appendTag: @"subNumber" withValue: transfer.account.accountSuffix to: cmd];
+    [self appendTag: @"customerId" withValue: transfer.account.customerId to: cmd];
+    [self appendTag: @"userId" withValue: transfer.account.userId to: cmd];
+    [cmd appendString:@"<transfers type=\"list\">" ];
+    for(transfer in transfers) {
+        [cmd appendString: @"<transfer>"];
+        [self appendTag: @"remoteAccount" withValue: transfer.remoteAccount to: cmd];
+        [self appendTag: @"remoteBankCode" withValue: transfer.remoteBankCode to: cmd];
+        [self appendTag: @"remoteName" withValue: transfer.remoteName to: cmd];
+        [self appendTag: @"purpose1" withValue: transfer.purpose1 to: cmd];
+        [self appendTag: @"purpose2" withValue: transfer.purpose2 to: cmd];
+        [self appendTag: @"purpose3" withValue: transfer.purpose3 to: cmd];
+        [self appendTag: @"purpose4" withValue: transfer.purpose4 to: cmd];
+        [self appendTag: @"currency" withValue: transfer.currency to: cmd];
+        [self appendTag: @"remoteBIC" withValue: transfer.remoteBIC to: cmd];
+        [self appendTag: @"remoteIBAN" withValue: transfer.remoteIBAN to: cmd];
+        [self appendTag: @"remoteCountry" withValue: transfer.remoteCountry == nil ? @"DE" : [transfer.remoteCountry uppercaseString] to: cmd];
+        
+        NSDecimalNumber *val = [transfer.value decimalNumberByMultiplyingByPowerOf10: 2];
+        [self appendTag: @"value" withValue: [val stringValue] to: cmd];
+        [cmd appendString: @"</transfer>"];
+    }
+    
+    [cmd appendString: @"</transfers></command>"];
+    
+    [self startProgress ];
+    NSNumber *isOk = [bridge syncCommand: cmd error: &err];
+    [self stopProgress ];
+    if (err == nil && [isOk boolValue ] == YES) {
+        for(transfer in transfers) transfer.isSent = [NSNumber numberWithBool:YES ];
+    }
+    return err;
+}
+
 /**
  * Sends out the given transfer by grouping them by bank and issuing one command per bank.
  * TODO: If supported by the bank grouped transfers should use consolidated transfers instead individual ones.
@@ -543,7 +617,6 @@ NSString *escapeSpecial(NSString *s)
     }
     
     // Now go for each bank.
-    [self startProgress];
     BOOL allSent = YES;
     
     for (BankAccount *account in [accountTransferRegister allKeys]) {
@@ -618,7 +691,9 @@ NSString *escapeSpecial(NSString *s)
         }
         [cmd appendString: @"</transfers></command>"];
         
+        [self startProgress];
         NSArray *resultList = [bridge syncCommand: cmd error: &err];
+        [self stopProgress];
         if (err) {
             [err logMessage ];
         }
@@ -634,8 +709,6 @@ NSString *escapeSpecial(NSString *s)
             }
         }
     }
-    
-    [self stopProgress];
     return allSent;
 }
 

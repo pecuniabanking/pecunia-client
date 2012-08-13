@@ -48,6 +48,7 @@
 -(BankParameter*)getBankParameterForUser:(BankUser*)user;
 -(PecuniaError*)updateTanMethodsForUser:(BankUser*)user;
 -(PecuniaError*)updateTanMediaForUser:(BankUser*)user;
+-(PecuniaError*)sendCollectiveTransfer:(NSArray*)transfers;
 
 -(BOOL)checkAccount: (NSString*)accountNumber forBank: (NSString*)bankCode inCountry: (NSString*)country;
 -(BOOL)checkIBAN: (NSString*)iban;

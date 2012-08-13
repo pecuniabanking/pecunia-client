@@ -10,6 +10,7 @@
 #import "MessageLog.h"
 
 @implementation PecuniaError
+@synthesize title;
 
 +(NSError*)errorWithText: (NSString*)msg
 {
@@ -18,7 +19,7 @@
 	return [NSError errorWithDomain:@"de.pecuniabanking.ErrorDomain" code:1 userInfo:userInfo];
 }
 
-+(PecuniaError*)errorWithCode:(NSInteger)code message:(NSString*)msg
++(PecuniaError*)errorWithCode:(ErrorCode)code message:(NSString*)msg
 {
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1 ];
 	if(msg) [userInfo setObject: msg forKey:NSLocalizedDescriptionKey];
@@ -26,26 +27,30 @@
 	return [error autorelease ];
 }
 
++(PecuniaError*)errorWithMessage:(NSString*)msg title:(NSString*)title
+{
+	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1 ];
+	if(msg) [userInfo setObject: msg forKey:NSLocalizedDescriptionKey];
+	PecuniaError *error = [[PecuniaError alloc ] initWithDomain: @"de.pecuniabanking.ErrorDomain" code:err_gen userInfo:userInfo ];
+    if (title) error.title = title;
+	return [error autorelease ];    
+}
+
+
 -(void)alertPanel
 {
 	// HBCI Errors
-	NSString *title = nil;
-	if(self.code < 100) title = NSLocalizedString(@"AP7", @"HBCI error occured!");
-    [self alertPanelWithTitle:title];
-}
+	if(self.code < err_gen && self.title == nil) self.title = NSLocalizedString(@"AP7", @"HBCI error occured!");
 
--(void)alertPanelWithTitle:(NSString*)title
-{
 	NSString *message = nil;
 	switch(self.code) {
-		case 0: message = NSLocalizedString(@"AP93", @"User abort"); break;
-		case 1: message = [self localizedDescription ]; break;
-		case 2: message = NSLocalizedString(@"AP94", @"The password entered was wrong"); break;
-		case 3: message = [NSString stringWithFormat: NSLocalizedString(@"AP95", @"Missing HBCI-Information: %@"), [self localizedDescription ] ]; break;
+		case err_hbci_abort : message = NSLocalizedString(@"AP93", @"User abort"); break;
+		case err_hbci_gen   : message = [self localizedDescription ]; break;
+		case err_hbci_passwd: message = NSLocalizedString(@"AP94", @"The password entered was wrong"); break;
+		case err_hbci_param : message = [NSString stringWithFormat: NSLocalizedString(@"AP95", @"Missing HBCI-Information: %@"), [self localizedDescription ] ]; break;
+        default             : message = [self localizedDescription ]; break;
 	}
-    if (self.code >=100) {
-        message = [self localizedDescription];
-    }
+
 	if(message && title) {
 		NSRunAlertPanel(title, message,	NSLocalizedString(@"ok", @"Ok"), nil, nil);
 	} else NSLog(@"Unhandled alert: %@", [self localizedDescription ]);

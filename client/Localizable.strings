@@ -190,6 +190,7 @@
 "AP351" = "Bitte geben Sie Ihre PIN in das Chipkarten-Terminal ein";
 "AP352" = "Fehlende Signier-Informationen";
 "AP353" = "Es sind keine Signier-Informationen (z.B. TAN-Methoden/TAN-Medien) für das Konto %@ vorhanden. Bitte aktualisieren Sie die Bankparameter";
+"AP354" = "Benutzerkennung %@ wurde nicht gefunden";
 
 // Transfers.
 // AP400..AP449
@@ -215,6 +216,8 @@
 "AP420" = "Die Einträge werden unwiderruflich gelöscht. Möchten Sie trotzdem fortfahren?";
 "AP421" = "Vorlage löschen";
 "AP422" = "Vorlagen löschen";
+"AP423" = "Sammelüberweisungen";
+"AP424" = "Nicht alle Überweisungen des Auftrags betreffen das gleiche Konto. Bei einer Sammelüberweisungen müssen alle Überweisungen vom gleichen Konto abgehen.";
 
 // Use a new block of IDs for next set of strings!
 // AP450..AP499

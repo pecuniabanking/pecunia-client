@@ -379,6 +379,9 @@ static BOOL runningOnLionOrLater = NO;
                     [users addObject:user ];
                 }
             }
+            if (acc.bic != nil) account.bic = acc.bic;
+            if (acc.iban != nil) account.iban = acc.iban;
+            
         } else {
             // Account was not found: create it
             BankAccount* bankRoot = [self getBankNodeWithAccount: acc inAccounts: bankAccounts];
@@ -397,6 +400,8 @@ static BOOL runningOnLionOrLater = NO;
             bankAccount.customerId = acc.customerId;
             bankAccount.isBankAcc = [NSNumber numberWithBool: YES];
             bankAccount.accountSuffix = acc.subNumber;
+            bankAccount.bic = acc.bic;
+            bankAccount.iban = acc.iban;
             bankAccount.type = acc.type;
             //			bankAccount.uid = [NSNumber numberWithUnsignedInt: [acc uid]];
             //			bankAccount.type = [NSNumber numberWithUnsignedInt: [acc type]];

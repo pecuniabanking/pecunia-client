@@ -237,4 +237,9 @@ static HBCIClient *client = nil;
     return [controller getOldBankUsers ];
 }
 
+-(PecuniaError*)sendCollectiveTransfer:(NSArray*)transfers
+{
+    return [controller sendCollectiveTransfer:(NSArray*)transfers ];
+}
+
 @end
