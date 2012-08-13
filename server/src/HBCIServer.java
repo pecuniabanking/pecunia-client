@@ -54,6 +54,7 @@ import org.kapott.hbci.status.HBCIExecStatus;
 import org.kapott.hbci.structures.Konto;
 import org.kapott.hbci.structures.Saldo;
 import org.kapott.hbci.structures.Value;
+import org.kapott.hbci.swift.DTAUS;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -668,6 +669,98 @@ public class HBCIServer {
 		out.write("</result>.");
 		out.flush();
 	}
+	
+	private void sendCollectiveTransfer() throws IOException {
+		String bankCode = getParameter(map, "transfer.bankCode");
+		String userId = getParameter(map, "transfer.userId");
+		String accountNumber = getParameter(map, "transfer.accountNumber");
+		String subNumber = map.getProperty("transfer.subNumber");
+
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		if(handler == null) {
+			error(ERR_MISS_USER, "sendCollectiveTransfer", userId);
+			return;			
+		}
+		
+		HBCIPassport passport = handler.getPassport();
+		if(passport instanceof HBCIPassportPinTan) {
+			HBCIPassportPinTan pp = (HBCIPassportPinTan)passport;
+			pp.setCurrentTANMethod(null);
+		}
+
+		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		if(account == null) {
+			account = getAccount(handler.getPassport(), accountNumber, subNumber);
+			if(account == null) {
+				error(ERR_MISS_ACCOUNT, "sendCollectiveTransfer", "Konto "+accountNumber+" nicht gefunden!");
+				return;
+			}
+		}
+
+		HBCIJob job = handler.newJob("MultiUeb");
+		job.setParam("my", account);
+
+		// Alle Überweisungen in DTAUS-Struktur überführen
+		ArrayList<Properties> transfers = (ArrayList<Properties>)map.get("transfers");
+		if(transfers.size() == 0) {
+			error(ERR_GENERIC, "sendCollectiveTransfer", "Keine Überweisungsdaten vorhanden!");
+			return;
+		}
+		
+		DTAUS dtaus = new DTAUS(account, DTAUS.TYPE_CREDIT, null);
+		for(Properties map: transfers) {
+			DTAUS.Transaction transfer = dtaus.new Transaction();
+			
+			// Empfänger
+			Konto dest = new Konto(	getParameter(map, "transfer.remoteCountry"),
+									getParameter(map, "transfer.remoteBankCode"),
+									getParameter(map, "transfer.remoteAccount"));
+
+			// RemoteName
+			String remoteName = getParameter(map, "transfer.remoteName");
+			if(remoteName.length() > 27) {
+				dest.name = remoteName.substring(0, 27);
+				dest.name2 = remoteName.substring(27);
+			} else dest.name = remoteName;
+			
+			transfer.otherAccount = dest;
+			
+			// Betrag
+			long val = Long.decode(getParameter(map, "transfer.value"));
+			transfer.value = new Value(val, getParameter(map, "transfer.currency"));
+
+			// Verwendungszweck
+			String purpose = getParameter(map, "transfer.purpose1");
+			if(purpose != null) transfer.addUsage(purpose);
+			purpose = map.getProperty("transfer.purpose2");
+			if(purpose != null) transfer.addUsage(purpose);
+			purpose = map.getProperty("transfer.purpose3");
+			if(purpose != null) transfer.addUsage(purpose);
+			purpose = map.getProperty("transfer.purpose4");
+			if(purpose != null) transfer.addUsage(purpose);
+
+			// Überweisung hinzufügen
+			dtaus.addEntry(transfer);
+		}
+		
+		job.setParam("data", dtaus.toString());
+		job.addToQueue();
+		
+		HBCIExecStatus status = handler.execute();
+		
+		boolean isOk = false;
+		HBCIJobResult res = null;
+		if(status.isOK()) {
+			res = job.getJobResult();
+			if(res.isOK()) isOk = true;
+		}
+		
+		xmlBuf.append("<result command=\"sendCollectiveTransfer\">");
+		xmlGen.booleTag("isOk", isOk);
+		xmlBuf.append("</result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+	}
 
 	
 	private void sendTransfers() throws IOException {
@@ -684,16 +777,17 @@ public class HBCIServer {
 			String subNumber = map.getProperty("transfer.subNumber");
 			
 			HBCIHandler handler = hbciHandler(bankCode, userId);
+			if(handler == null) {
+				error(ERR_MISS_USER, "sendTransfers", userId);
+				return;			
+			}
+			
 			HBCIPassport passport = handler.getPassport();
 			if(passport instanceof HBCIPassportPinTan) {
 				HBCIPassportPinTan pp = (HBCIPassportPinTan)passport;
 				pp.setCurrentTANMethod(null);
 			}
 			
-			if(handler == null) {
-				System.err.println("No HBCI Handler for bank: " + bankCode + ", user: " + userId);
-				continue;
-			}
 			// delete all unsent transfers from previous calls
 			if(!handlers.contains(handler)) {
 				handler.reset();
@@ -719,8 +813,8 @@ public class HBCIServer {
 			// Gegenkonto
 			if(!transferType.equals("foreign") && !transferType.equals("sepa")) {
 				Konto dest = new Konto(	getParameter(map, "transfer.remoteCountry"),
-				getParameter(map, "transfer.remoteBankCode"),
-				getParameter(map, "transfer.remoteAccount"));
+										getParameter(map, "transfer.remoteBankCode"),
+										getParameter(map, "transfer.remoteAccount"));
 				job.setParam("dst", dest);
 
 				// RemoteName
@@ -1323,6 +1417,7 @@ public class HBCIServer {
 				else if(jobName.equals("DauerEdit")) supp = gvcodes.contains("HKDAN");
 				else if(jobName.equals("DauerDel")) supp = gvcodes.contains("HKDAL");
 				else if(jobName.equals("TANMediaList")) supp = gvcodes.contains("HKTAB");
+				else if(jobName.equals("MultiUeb")) supp = gvcodes.contains("HKSUB");
 			} else supp = handler.isSupported(jobName);
 		}
 		
@@ -1828,6 +1923,7 @@ public class HBCIServer {
 			if(command.compareTo("getBalance") == 0) { getBalance(); return; }
 			if(command.compareTo("getSupportedBusinessTransactions") == 0) { getSupportedBusinessTransactions(); return; }
 			if(command.compareTo("getCCSettlementList") == 0) { getCCSettlementList(); return; }
+			if(command.compareTo("sendCollectiveTransfer") == 0) { sendCollectiveTransfer(); return; }
 			
 			
 			System.err.println("HBCIServer: unknown command: "+command);
