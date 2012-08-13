@@ -11,6 +11,7 @@
 #import "BankStatement.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
+#import "MCEMDecimalNumberAdditions.h"
 
 @implementation StatCatAssignment
 
@@ -61,6 +62,10 @@
 	StatCatAssignment *stat;
 	Category *ncat = [Category nassRoot ];
 	Category *scat = self.category;
+    
+    if (tcat == scat) {
+        return;
+    }
 	
 	// check if there is already an entry for the statement in tcat
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
@@ -72,11 +77,13 @@
 		if(stat.category == tcat) {
 			stat.value = [stat.value decimalNumberByAdding: self.value ];
 			// value must never be higher than statement's value
-			if([stat.value compare: stat.statement.value ] == NSOrderedDescending) stat.value = stat.statement.value;
+			if([[stat.value abs] compare: [stat.statement.value abs] ] == NSOrderedDescending) stat.value = stat.statement.value;
 			[stat.statement updateAssigned ];
 			[scat invalidateBalance ];
 			[tcat invalidateBalance ];
-			[context deleteObject: self ];
+			if (self != stat) {
+                [context deleteObject: self ];
+            }
 			return;
 		}
 	}

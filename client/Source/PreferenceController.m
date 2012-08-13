@@ -75,6 +75,20 @@ static NSArray *exportFields = nil;
     [mainTab setTabViewType:NSNoTabsNoBorder ];
     
     [self setHeight:SYNCH_HEIGHT ];
+    
+    // Export-Feldseparator
+    NSString *expSep = [defaults stringForKey:_exportSeparator ];
+    if (expSep) {
+        if ([expSep isEqualToString:@"\t"]) {
+            [expRadioMatrix setState:NSOnState atRow:0 column:0];
+        }
+        if ([expSep isEqualToString:@";"]) {
+            [expRadioMatrix setState:NSOnState atRow:1 column:0];
+        }
+        if ([expSep isEqualToString:@"|"]) {
+            [expRadioMatrix setState:NSOnState atRow:2 column:0];
+        }
+    }
 
 //	if(encrypt)	[encryptButton setEnabled: NO ];
 }

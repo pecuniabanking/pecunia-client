@@ -28,6 +28,7 @@
 	IBOutlet NSSecureTextField	*passw2Field;
     IBOutlet NSTabView          *mainTab;
     IBOutlet NSToolbar          *toolBar;
+    IBOutlet NSMatrix           *expRadioMatrix;
 	NSWindow					*mainWindow;
 	
 	// encryption sheet
