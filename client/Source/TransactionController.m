@@ -546,6 +546,21 @@
 						NSLocalizedString(@"ok", @"Ok"), nil, nil);
 		return NO;
 	}
+    
+    // Prüfen, ob das Zieldatum auf ein Wochenende fällt
+    if(transferType == TransferTypeDated) {
+        NSCalendar *gregorian = [[NSCalendar alloc]
+                                 initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *weekdayComponents =
+        [gregorian components:NSWeekdayCalendarUnit fromDate:currentTransfer.date ];
+        int weekday = [weekdayComponents weekday];
+        if (weekday == 1 || weekday == 7) {
+			NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
+							NSLocalizedString(@"AP425", @""),
+							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			return NO;
+        }
+    }
 	
 	if (activeType == TransferTypeEU) {
 		NSString	*foreignCurr = [[[countryController selectedObjects ] lastObject ] currency ];

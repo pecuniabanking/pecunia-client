@@ -33,14 +33,19 @@ TimeSliceManager *timeSliceManager = nil;
 
 @implementation TimeSliceManager
 
+@synthesize minDate;
+@synthesize maxDate;
+@synthesize fromDate;
+@synthesize toDate;
+@synthesize autosaveName;
+
 
 -(void)awakeFromNib
 {
 	BOOL savedValues = NO;
 	
 	if([delegate respondsToSelector: @selector(autosaveNameForTimeSlicer:) ]) {
-		autosaveName = [delegate autosaveNameForTimeSlicer: self ];
-		[autosaveName retain ];
+		self.autosaveName = [delegate autosaveNameForTimeSlicer: self ];
 	}
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults ];
 	
@@ -51,8 +56,8 @@ TimeSliceManager *timeSliceManager = nil;
 			type = [[values objectForKey: @"type" ] intValue ];
 			year = [[values objectForKey: @"year" ] intValue ];
 			month = [[values objectForKey: @"month" ] intValue ];
-			fromDate = [[ShortDate dateWithDate: [values objectForKey: @"fromDate" ] ] retain ];
-			toDate = [[ShortDate dateWithDate: [values objectForKey:@"toDate" ] ] retain ];
+			self.fromDate = [ShortDate dateWithDate: [values objectForKey: @"fromDate" ] ];
+			self.toDate = [ShortDate dateWithDate: [values objectForKey:@"toDate" ] ];
 			quarter = (month-1) / 3;
 			savedValues = YES;
 		}
@@ -105,8 +110,8 @@ TimeSliceManager *timeSliceManager = nil;
 	year = [coder decodeIntForKey: @"year" ];
 	quarter = [coder decodeIntForKey: @"quarter" ];
 	month = [coder decodeIntForKey: @"month" ];
-	fromDate = [coder decodeObjectForKey: @"fromDate" ];
-	toDate = [coder decodeObjectForKey: @"toDate" ];
+	self.fromDate = [coder decodeObjectForKey: @"fromDate" ];
+	self.toDate = [coder decodeObjectForKey: @"toDate" ];
 	return self;
 }
 	
@@ -256,10 +261,8 @@ TimeSliceManager *timeSliceManager = nil;
 
 -(void)updatePickers
 {
-	[fromDate release ];
-	[toDate release ];
-	fromDate = [[self lowerBounds ] retain ];
-	toDate = [[self upperBounds ] retain ];
+	self.fromDate = [self lowerBounds ];
+	self.toDate = [self upperBounds ];
 	if(fromPicker) [fromPicker setDateValue: [fromDate lowDate ] ];
 	if(toPicker) [toPicker setDateValue: [toDate highDate ] ];
 	
@@ -274,23 +277,21 @@ TimeSliceManager *timeSliceManager = nil;
 
 -(void)setMinDate: (ShortDate*)date
 {
-	[minDate release ];
-	minDate = [date retain ];
+	self.minDate = date;
 	if(fromPicker) [fromPicker setMinDate: [date lowDate ] ];
 }
 
 -(void)setMaxDate: (ShortDate*)date
 {
-	[maxDate release ];
-	maxDate = [date retain ];
+	self.maxDate = date;
 	if(toPicker) [toPicker setMaxDate: [date highDate ] ];
 }
 
 -(IBAction)dateChanged: (id)sender
 {
 	type = slice_none;
-	if(sender == fromPicker) fromDate = [ShortDate dateWithDate: [sender dateValue ] ];
-	else toDate = [ShortDate dateWithDate: [sender dateValue ] ];
+	if(sender == fromPicker) self.fromDate = [ShortDate dateWithDate: [sender dateValue ] ];
+	else self.toDate = [ShortDate dateWithDate: [sender dateValue ] ];
 	[self updateControl ];
 	[self updateDelegate ];
 	[self save ];
@@ -351,6 +352,8 @@ TimeSliceManager *timeSliceManager = nil;
 	[controls release ];
 	[minDate release ];
 	[maxDate release ];
+    [fromDate release ];
+    [toDate release ];
 	[autosaveName release ];
 	[super dealloc ];
 }

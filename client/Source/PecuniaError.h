@@ -24,7 +24,8 @@ typedef enum {
 
 +(NSError*)errorWithText:(NSString*)msg;
 +(PecuniaError*)errorWithCode:(ErrorCode)code message:(NSString*)msg;
-+(PecuniaError*)errorWithMessage:(NSString*)msg;
++(PecuniaError*)errorWithMessage:(NSString*)msg title:(NSString*)title;
+
 -(void)alertPanel;
 -(void)logMessage;
 

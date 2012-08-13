@@ -531,7 +531,7 @@ NSString *escapeSpecial(NSString *s)
     transfer = [transfers lastObject ];
     for(Transfer *transf in transfers) {
         if (transfer.account != transf.account) {
-            return [PecuniaError errorWithMessage:NSLocalizedString(@"424",@"") ];
+            return [PecuniaError errorWithMessage:NSLocalizedString(@"424",@"") title:NSLocalizedString(@"AP423",@"") ];
             /*
             NSRunAlertPanel(NSLocalizedString(@"423", @""), 
                             NSLocalizedString(@"424",@""), 
@@ -550,7 +550,7 @@ NSString *escapeSpecial(NSString *s)
     // Registriere gewählten User
     BankUser *user = [BankUser userWithId:option.userId bankCode:transfer.account.bankCode ];
     if (user == nil) {
-        return [PecuniaError errorWithMessage: [NSString stringWithFormat: NSLocalizedString(@"424",@""), option.userId ] ];
+        return [PecuniaError errorWithMessage: [NSString stringWithFormat: NSLocalizedString(@"424",@""), option.userId ] title:NSLocalizedString(@"AP355",@"")  ];
     }
     
     if ([self registerBankUser:user error:&err] == NO) return err;
@@ -1269,12 +1269,15 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"bankCode" withValue: user.bankCode to: cmd];
     [cmd appendString: @"</command>" ];
     
-    [bridge syncCommand: cmd error: &error];
-    if (error == nil) {
+    NSNumber *isOk = [bridge syncCommand: cmd error: &error];
+    
+    if (error == nil && [isOk boolValue ] == YES) {
         user.regResult = Reg_ok;
         return YES;
     } else {
-        [error logMessage ];
+        if (error == nil) {
+            error = [PecuniaError errorWithMessage:[NSString stringWithFormat:NSLocalizedString(@"AP356",@""), user.userId ] title:NSLocalizedString(@"AP355",@"") ];
+        }
         [error retain ];
         *err = error;
         user.regResult = Reg_failed;

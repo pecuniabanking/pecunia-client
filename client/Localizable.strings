@@ -191,6 +191,8 @@
 "AP352" = "Fehlende Signier-Informationen";
 "AP353" = "Es sind keine Signier-Informationen (z.B. TAN-Methoden/TAN-Medien) für das Konto %@ vorhanden. Bitte aktualisieren Sie die Bankparameter";
 "AP354" = "Benutzerkennung %@ wurde nicht gefunden";
+"AP355" = "Benutzerkennung anmelden";
+"AP356" = "Benutzerkennung %@ konnte nicht angemeldet werden (Details siehe Nachrichtenlog).";
 
 // Transfers.
 // AP400..AP449
@@ -218,6 +220,7 @@
 "AP422" = "Vorlagen löschen";
 "AP423" = "Sammelüberweisungen";
 "AP424" = "Nicht alle Überweisungen des Auftrags betreffen das gleiche Konto. Bei einer Sammelüberweisungen müssen alle Überweisungen vom gleichen Konto abgehen.";
+"AP425" = "Der Ausführungstag fällt auf ein Wochenende. Bitte geben Sie einen Werktag ein.";
 
 // Use a new block of IDs for next set of strings!
 // AP450..AP499

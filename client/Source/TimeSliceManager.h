@@ -50,6 +50,12 @@ typedef enum {
     NSMutableArray *controls;
 }
 
+@property (nonatomic, retain) ShortDate *minDate;
+@property (nonatomic, retain) ShortDate *maxDate;
+@property (nonatomic, retain) ShortDate *fromDate;
+@property (nonatomic, retain) ShortDate *toDate;
+@property (nonatomic, retain) NSString  *autosaveName;
+
 -(id)initWithYear: (int)y month: (int)m;
 -(ShortDate*)lowerBounds;
 -(ShortDate*)upperBounds;

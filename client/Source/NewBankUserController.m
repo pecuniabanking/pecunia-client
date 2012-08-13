@@ -670,6 +670,7 @@
 	 PecuniaError *error = [[HBCIClient hbciClient] changePinTanMethodForUser:user];
 	if (error) {
 		[error alertPanel];
+        return;
 	}
 }
 
@@ -701,7 +702,10 @@
 	if(user == nil) return;
 	
 	PecuniaError *error = [[HBCIClient hbciClient] updateBankDataForUser: user];
-	if(error) [error alertPanel];
+	if(error) {
+        [error alertPanel];
+        return;
+    }
     
     // auch die TAN-Methoden und TAN-Medien neu ermitteln
     if ([user.secMethod intValue ] == SecMethod_PinTan) {

@@ -59,7 +59,15 @@
 
 -(void)logMessage
 {
-    [[MessageLog log] addMessage: [self localizedDescription] withLevel: LogLevel_Error];
+	NSString *message = nil;
+	switch(self.code) {
+		case err_hbci_abort : message = NSLocalizedString(@"AP93", @"User abort"); break;
+		case err_hbci_gen   : message = [self localizedDescription ]; break;
+		case err_hbci_passwd: message = NSLocalizedString(@"AP94", @"The password entered was wrong"); break;
+		case err_hbci_param : message = [NSString stringWithFormat: NSLocalizedString(@"AP95", @"Missing HBCI-Information: %@"), [self localizedDescription ] ]; break;
+        default             : message = [self localizedDescription ]; break;
+	}    
+    [[MessageLog log] addMessage: message withLevel: LogLevel_Error];
 }
 
 
