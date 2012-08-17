@@ -1041,9 +1041,13 @@ static BOOL runningOnLionOrLater = NO;
 
 -(void)windowWillClose:(NSNotification *)aNotification
 {
-    // save state of accountsView
-    //	[self saveAccountsViewState];
-    [NSApp terminate:self ];
+    id window = [aNotification object ];
+    if (window == assignValueWindow) {
+        [NSApp stopModalWithCode:0 ];
+    }
+    if (window == mainWindow) {
+        [NSApp terminate:self ];
+    }
 }
 
 -(IBAction)listUsers:(id)sender

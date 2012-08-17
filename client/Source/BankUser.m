@@ -234,6 +234,11 @@
     }
     
     NSArray *options = [self getTanSigningOptions ];
+    
+    if ([options count ] == 1) {
+        return 0;
+    }
+    
     SigningOption *option = [self preferredSigningOption ];
     
     // Wenn nichts voreingestellt ist, Index des letzten Eintrags +1 zurückgeben, der zeigt dann automatisch auf den virtuellen Eintrag

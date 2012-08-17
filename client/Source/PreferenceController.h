@@ -29,6 +29,7 @@
     IBOutlet NSTabView          *mainTab;
     IBOutlet NSToolbar          *toolBar;
     IBOutlet NSMatrix           *expRadioMatrix;
+    IBOutlet NSView             *contentView;
 	NSWindow					*mainWindow;
 	
 	// encryption sheet

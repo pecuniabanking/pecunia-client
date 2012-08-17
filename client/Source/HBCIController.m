@@ -768,7 +768,6 @@ NSString *escapeSpecial(NSString *s)
         [self appendTag: @"host" withValue: user.bankURL to: cmd ];
     }
     
-
     [cmd appendString: @"</command>" ];
     
     User* usr = [bridge syncCommand: cmd error: &error ];
@@ -790,15 +789,27 @@ NSString *escapeSpecial(NSString *s)
 -(BOOL)deleteBankUser:(BankUser*)user 
 {
     PecuniaError *error=nil;
-    if([self registerBankUser:user error:&error] == NO) return NO;
     
-    NSString *cmd = [NSString stringWithFormat: @"<command name=\"deletePassport\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"deletePassport\">" ];
+    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
+    [self appendTag: @"userId" withValue: user.userId to: cmd ];
+
+    SecurityMethod secMethod = [user.secMethod intValue ];
+    if (secMethod == SecMethod_PinTan) {
+        [self appendTag: @"passportType" withValue: @"PinTan" to: cmd ];
+    } else {
+        [self appendTag: @"passportType" withValue: @"DDV" to: cmd ];
+        [self appendTag: @"chipCardId" withValue:user.chipCardId to:cmd ];
+    }
+
+    [cmd appendString: @"</command>" ];
+        
     [bridge syncCommand: cmd error:&error ];
     if(error == nil) {
         NSString *s = [NSString stringWithFormat: @"PIN_%@_%@", user.bankCode, user.userId ];
         [Keychain deletePasswordForService:@"Pecunia PIN" account: s ];
     } else {
-        [error logMessage ];
+        [error alertPanel ];
         return NO;
     }
     return YES;

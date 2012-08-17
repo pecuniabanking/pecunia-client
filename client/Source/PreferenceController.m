@@ -409,12 +409,13 @@ static NSArray *exportFields = nil;
 {
     NSWindow *window = [self window ] ;
     NSRect frame = [window frame ];
+    [contentView removeFromSuperview ];
     int pos = frame.origin.y + frame.size.height;
     frame.size.height = h;
     frame.origin.y = pos - h;
     [window setFrame:frame display:YES animate:YES ];
+    [window setContentView:contentView ];
 }
-
 
 -(IBAction)synchSettings:(id)sender
 {

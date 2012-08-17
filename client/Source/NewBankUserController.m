@@ -377,14 +377,16 @@
         if ([user.secMethod intValue ] == SecMethod_PinTan) {
             NSMutableArray *options = [[user getSigningOptions ] mutableCopy ];
             
-            // FŸge virtuelle Methode "Beim Senden festlegen" hinzu
-            SigningOption *option = [[[SigningOption alloc ] init ] autorelease ];
-            option.secMethod = SecMethod_PinTan;
-            option.userId = user.userId;
-            option.userName = user.name;
-            option.tanMethod = @"100";
-            option.tanMethodName = @"Beim Senden festlegen";
-            [options addObject:option ];
+            if ([options count ] > 1) {
+                // FŸge virtuelle Methode "Beim Senden festlegen" hinzu
+                SigningOption *option = [[[SigningOption alloc ] init ] autorelease ];
+                option.secMethod = SecMethod_PinTan;
+                option.userId = user.userId;
+                option.userName = user.name;
+                option.tanMethod = @"100";
+                option.tanMethodName = @"Beim Senden festlegen";
+                [options addObject:option ];
+            }
             [tanSigningOptions setContent:options ];
         } else {
             [tanSigningOptions setContent:[user getSigningOptions ] ];
@@ -638,6 +640,7 @@
             }
         }
 		[bankUserController remove: self];
+        [self updateTanMethods ];
         
         // save updates
         if([context save: &error] == NO) {
