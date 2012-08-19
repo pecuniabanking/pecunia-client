@@ -51,8 +51,6 @@
     IBOutlet NSView                 *mainView;
 	IBOutlet NSArrayController      *finishedTransfers;
 	IBOutlet NSArrayController      *pendingTransfers;
-	IBOutlet NSTableView            *transferView;
-    IBOutlet NSTextField            *selAmountField;
 	IBOutlet TransactionController  *transactionController;
     IBOutlet TransfersListView      *finishedTransfersListView;
     IBOutlet TransfersListView      *pendingTransfersListView;
@@ -109,9 +107,6 @@
 @property (nonatomic, assign) BOOL dropToEditRejected;
 
 - (IBAction)sendTransfers: (id)sender;
-- (IBAction)deleteTransfers: (id)sender;
-- (IBAction)changeTransfer: (id)sender;
-- (IBAction)transferDoubleClicked: (id)sender;
 - (IBAction)showCalendar: (id)sender;
 - (IBAction)sourceAccountChanged: (id)sender;
 - (IBAction)targetAccountChanged: (id)sender;

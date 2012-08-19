@@ -380,6 +380,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (void)updateSourceAccountSelector;
 - (void)prepareSourceAccountSelector: (BankAccount *)account;
 - (void)updateTargetAccountSelector;
+- (void)storeReceiverInMRUList;
 @end
 
 @implementation TransfersController
@@ -420,9 +421,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 	[pendingTransfers setSortDescriptors: sds];
 	[finishedTransfers setSortDescriptors: sds];
 	
-	[transferView setDoubleAction: @selector(transferDoubleClicked:) ];
-	[transferView setTarget:self ];
-	
     NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                         [NSColor applicationColorForKey: @"Positive Cash"], NSForegroundColorAttributeName,
                                         nil
@@ -434,7 +432,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
 	formatter = [[NSNumberFormatter alloc] init];
 	[formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
-	[formatter setLocale:[NSLocale currentLocale]];
+	[formatter setLocale: [NSLocale currentLocale]];
 	[formatter setCurrencySymbol: @""];
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
@@ -532,6 +530,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         if (![currentInstitute isKindOfClass: [BankAccount class]]) {
             continue;
         }
+        
         NSMenuItem *item = [self createItemForAccountSelector: (BankAccount *)currentInstitute];
         [sourceMenu addItem: item];
         [item setEnabled: NO];
@@ -543,7 +542,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             if (![currentAccount isKindOfClass: [BankAccount class]]) {
                 continue;
             }
-            item = [self createItemForAccountSelector: (BankAccount *)currentAccount];
+            
+            BankAccount *account = (BankAccount *)currentAccount;
+            
+            // Exclude manual accounts from the list.
+            if ([account.isManual boolValue]) {
+                continue;
+            }
+
+            item = [self createItemForAccountSelector: account];
             [item setEnabled: YES];
             item.indentationLevel = 1;
             [sourceMenu addItem: item];
@@ -580,6 +587,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSArray *siblingAccounts = [[sourceAccount siblings] sortedArrayUsingDescriptors: sortDescriptors];
     NSInteger selectedItem = 0;
     for (BankAccount *account in siblingAccounts) {
+
+        // Exclude manual accounts from the list.
+        if ([account.isManual boolValue]) {
+            continue;
+        }
+
         NSMenuItem *item = [self createItemForAccountSelector: account];
         [item setEnabled: YES];
         item.indentationLevel = 1;
@@ -656,7 +669,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             break;
         case TransferTypeDated: // TODO: needs to go, different transfer types allow an execution date.
             return NO;
-            break;
+        case TransferTypeCollectiveCredit:
+        case TransferTypeCollectiveDebit:
+            return NO; // Not needed as individual transfer template type.
     }
     
     BOOL isInternal = (type == TransferTypeInternal);
@@ -698,9 +713,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [calendarButton setHidden: !canBeTerminated];
     
     if (canBeTerminated) {
-        [executeAtDateRadioButton setEnabled:NO ];
+        [executeAtDateRadioButton setEnabled: NO];
         executeAtDateRadioButton.state = NSOffState;
-        [executeImmediatelyRadioButton setEnabled:YES ];
+        [executeImmediatelyRadioButton setEnabled: YES];
         executeImmediatelyRadioButton.state = NSOnState;
     }
     
@@ -994,8 +1009,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
     
     BOOL isTerminated = [transfer valutaDate] != nil;
-    [executeAtDateRadioButton setEnabled:isTerminated ];
-    [executeImmediatelyRadioButton setEnabled:!isTerminated ];
+    [executeAtDateRadioButton setEnabled: isTerminated];
+    [executeImmediatelyRadioButton setEnabled: !isTerminated];
 
     if (isTerminated) {
         executeAtDateRadioButton.state = NSOnState;
@@ -1189,55 +1204,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [NSApp endSheet: templateNameSheet returnCode: NSRunAbortedResponse];
 }
 
-- (IBAction)deleteTransfers: (id)sender
-{
-	NSError *error = nil;
-	NSManagedObjectContext *context = MOAssistant.assistant.context;
-	
-	NSArray* sel = [finishedTransfers selectedObjects];
-	if (sel == nil || [sel count ] == 0) {
-        return;
-    }
-	
-	int res = NSRunAlertPanel(NSLocalizedString(@"AP418", @"Delete transfers"), 
-                              NSLocalizedString(@"AP420", @"Entries will be deleted for good. Continue anyway?"),
-                              NSLocalizedString(@"no", @"No"), 
-                              NSLocalizedString(@"yes", @"Yes"), 
-                              nil);
-	if (res != NSAlertAlternateReturn) return;
-	
-	for (Transfer* transfer in sel) {
-		[context deleteObject: transfer ];
-	}
-	// save updates
-	if([context save: &error ] == NO) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-		return;
-	}
-}
-
-- (IBAction)changeTransfer: (id)sender
-{
-	NSArray* sel = [finishedTransfers selectedObjects ];
-	if(sel == nil || [sel count ] != 1) return;
-	
-	[transactionController changeTransfer: [sel objectAtIndex:0 ] ];
-}
-
-- (IBAction)transferDoubleClicked: (id)sender
-{
-	int row = [sender clickedRow ];
-	if(row<0) return;
-	
-	NSArray* sel = [finishedTransfers selectedObjects ];
-	if(sel == nil || [sel count ] != 1) return;
-	Transfer *transfer = (Transfer*)[sel objectAtIndex:0 ];
-	if ([transfer.isSent boolValue] == NO) {
-		[transactionController changeTransfer: transfer ];
-	}
-}
-
 - (IBAction)showCalendar: (id)sender
 {
     if (calendarWindow == nil) {
@@ -1396,42 +1362,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [userDefaults setObject: mutableValues forKey: @"transfers"];
 }
 
-- (void)tableViewSelectionDidChange: (NSNotification *)aNotification
-{
-	NSDecimalNumber *sum = [NSDecimalNumber zero ];
-	Transfer *transfer;
-	NSArray *sel = [finishedTransfers selectedObjects ];
-	NSString *currency = nil;
-
-	for(transfer in sel) {
-		if ([transfer.isSent boolValue] == NO) {
-			if (transfer.value) {
-				sum = [sum decimalNumberByAdding:transfer.value ];
-			}
-			if (currency) {
-				if (![transfer.currency isEqualToString:currency ]) {
-					currency = @"*";
-				}
-			} else currency = transfer.currency;
-		}
-	}
-	
-	if(currency) [selAmountField setStringValue: [NSString stringWithFormat: @"(%@%@ ausgewählt)", [formatter stringFromNumber:sum ], currency ] ];
-	else [selAmountField setStringValue: @"" ];
-}
-
-- (void)tableView:(NSTableView *)aTableView willDisplayCell:(id)aCell forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
-{
-	if ([[aTableColumn identifier ] isEqualToString: @"value" ]) {
-		NSArray *transfersArray = [finishedTransfers arrangedObjects];
-		Transfer *transfer = [transfersArray objectAtIndex:rowIndex ];
-		
-		AmountCell *cell = (AmountCell*)aCell;
-		cell.objectValue = transfer.value;
-		cell.currency = transfer.currency;
-	}
-}	
-
 #pragma mark -
 #pragma mark Other delegate methods
 
@@ -1467,7 +1397,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         } else {
             sendTransfersButton.title = NSLocalizedString(@"AP416", @"");
         }
-        [sendTransfersButton setEnabled:[pendingTransfers.arrangedObjects count] > 0 ];
+        [sendTransfersButton setEnabled: [pendingTransfers.arrangedObjects count] > 0];
     }
 }
 

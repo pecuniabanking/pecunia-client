@@ -1,10 +1,21 @@
-//
-//  HBCIBridge.m
-//  Client
-//
-//  Created by Frank Emminghaus on 18.11.09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
-//
+/**
+ * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "HBCIBridge.h"
 #import "ResultParser.h"
@@ -17,6 +28,8 @@
 #import "CallbackHandler.h"
 
 #import "HBCIController.h" // for -asyncCommandCompletedWithResult
+
+#import "NSString+PecuniaAdditions.h"
 
 @implementation HBCIBridge
 
@@ -126,12 +139,12 @@
     NSData *data = [[aNotification userInfo] objectForKey:NSFileHandleNotificationDataItem];
     // If the length of the data is zero, then the task is basically over - there is nothing
     // more to get from the handle so we may as well shut down.
-    if ([data length])
+    if ([data length] > 0)
     {
         // Send the data on to the controller; we can't just use +stringWithUTF8String: here
         // because -[data bytes] is not necessarily a properly terminated string.
         // -initWithData:encoding: on the other hand checks -[data length]
-        NSString *s = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+        NSString *s = [NSString stringWithData: data];
         
         // Receive log
         [[MessageLog log ] addMessage:s withLevel:LogLevel_Verbous ];
@@ -180,16 +193,19 @@
     
     while(resultExists == NO) {
         while(TRUE) {
-            NSData *data = [[inPipe fileHandleForReading ] availableData ];
-            NSString *s = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+            NSData *data = [[inPipe fileHandleForReading] availableData];
             
-            // Receive log
-            [[MessageLog log ] addMessage:s withLevel:LogLevel_Verbous ];
+            NSString *s = [NSString stringWithData: data];
             
-            if([s hasSuffix: @">." ]) {
-                [cmd appendString: [s substringToIndex: [s length ] -1  ] ];
+            // Log the message.
+            [[MessageLog log] addMessage: s withLevel: LogLevel_Verbous];
+            
+            if ([s hasSuffix: @">." ]) {
+                [cmd appendString: [s substringToIndex: [s length] - 1]];
                 break;
-            } else [cmd appendString: s ];
+            } else {
+                [cmd appendString: s];
+            }
         }
         
         NSRange r = [cmd rangeOfString: @">\n.<" ];

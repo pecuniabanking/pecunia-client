@@ -1,10 +1,21 @@
-//
-//  MessageLog.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 05.01.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
+/**
+ * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "MessageLog.h"
 
@@ -15,66 +26,77 @@ static MessageLog *_messageLog;
 @synthesize forceConsole;
 @synthesize currentLevel;
 
--(id)init
+- (id)init
 {
 	self = [super init ];
 	if (self == nil) return nil;
-	formatter = [[NSDateFormatter alloc ] init ];
-	[formatter setDateFormat:@"HH:mm:ss.SSS"];
-    logUIs = [[NSMutableSet alloc ] initWithCapacity:5];
+	formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateFormat: @"HH:mm:ss.SSS"];
+    logUIs = [[NSMutableSet alloc] initWithCapacity: 5];
 	return self;
 }
 
--(void)registerLogUI:(id<MessageLogUI>)ui
+- (void)registerLogUI: (id<MessageLogUI>)ui
 {
-    [logUIs addObject:ui ];
-}
-
--(void)unregisterLogUI:(id<MessageLogUI>)ui
-{
-    [logUIs removeObject: ui ];
-}
-
--(void)addMessage:(NSString*)msg withLevel:(LogLevel)level
-{
-//	if (level > currentLevel) return;
-	if ([logUIs count ] == 0 && forceConsole == NO) return;
-	NSDate *date = [NSDate date ];
-	NSString *message= [NSString stringWithFormat: @"<%@> %@\n", [formatter stringFromDate:date ] , msg ];
-	if (forceConsole) {
-		NSLog(@"%@", message);
-	}
-    for(id<MessageLogUI> logUI in logUIs) {
-		[logUI addMessage:message withLevel:level ];
+    @synchronized(logUIs) {
+        if (![logUIs containsObject: ui]) {
+            [logUIs addObject: ui];
+        }
     }
 }
 
--(void)addMessageFromDict:(NSDictionary*)data
+- (void)unregisterLogUI: (id<MessageLogUI>)ui
 {
-	LogLevel level = (LogLevel)[[data objectForKey:@"level" ] intValue ];
-	[self addMessage:[data objectForKey:@"message" ] withLevel: level ];
-	[data release ];
+    @synchronized(logUIs) {
+        if ([logUIs containsObject: ui]) {
+            [logUIs removeObject: ui];
+        }
+    }
 }
 
--(void)setLevel:(LogLevel)level
+- (void)addMessage: (NSString*)msg withLevel: (LogLevel)level
+{
+	if ([logUIs count] == 0 && !forceConsole) {
+        return;   
+    }
+	NSDate *date = [NSDate date];
+	NSString *message = [NSString stringWithFormat: @"<%@> %@\n", [formatter stringFromDate: date] , msg];
+	if (forceConsole) {
+		NSLog(@"%@", message);
+	}
+
+    @synchronized(logUIs) {
+        for (id<MessageLogUI> logUI in logUIs) {
+            [logUI addMessage: message withLevel: level];
+        }
+    }
+}
+
+- (void)addMessageFromDict: (NSDictionary*)data
+{
+	LogLevel level = (LogLevel)[[data objectForKey: @"level"] intValue];
+	[self addMessage: [data objectForKey: @"message"] withLevel: level];
+	[data release];
+}
+
+- (void)setLevel: (LogLevel)level
 {
 	currentLevel = level;
 	// todo
 }
 
 
--(void)dealloc
+- (void)dealloc
 {
-	[formatter release ];
-    [logUIs release ];
-	[super dealloc ];
+	[formatter release];
+    [logUIs release];
+	[super dealloc];
 }
 
-
-+(MessageLog*)log
++ (MessageLog*)log
 {
 	if (_messageLog == nil) {
-		_messageLog = [[MessageLog alloc ] init ];
+		_messageLog = [[MessageLog alloc] init];
 	}
 	return _messageLog;
 }

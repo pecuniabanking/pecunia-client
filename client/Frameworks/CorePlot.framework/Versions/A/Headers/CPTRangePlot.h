@@ -14,6 +14,7 @@ extern NSString *const CPTRangePlotBindingHighValues;
 extern NSString *const CPTRangePlotBindingLowValues;
 extern NSString *const CPTRangePlotBindingLeftValues;
 extern NSString *const CPTRangePlotBindingRightValues;
+extern NSString *const CPTRangePlotBindingBarLineStyles;
 ///	@}
 
 /**
@@ -28,6 +29,39 @@ typedef enum _CPTRangePlotField {
     CPTRangePlotFieldRight, ///< relative Right values.
 }
 CPTRangePlotField;
+
+#pragma mark -
+
+/**
+ *	@brief A range plot data source.
+ **/
+@protocol CPTRangePlotDataSource<CPTPlotDataSource>
+@optional
+
+///	@name Bar Style
+/// @{
+
+/**	@brief (Optional) Gets a range of bar line styles for the given range plot.
+ *	@param plot The range plot.
+ *	@param indexRange The range of the data indexes of interest.
+ *	@return An array of line styles.
+ **/
+-(NSArray *)barLineStylesForRangePlot:(CPTRangePlot *)plot recordIndexRange:(NSRange)indexRange;
+
+/**	@brief (Optional) Gets a bar line style for the given range plot.
+ *	This method will not be called if
+ *	@link CPTRangePlotDataSource::barLineStylesForRangePlot:recordIndexRange: -barLineStylesForRangePlot:recordIndexRange: @endlink
+ *	is also implemented in the datasource.
+ *	@param plot The range plot.
+ *	@param index The data index of interest.
+ *	@return The bar line style for the bar with the given index. If the data source returns <code>nil</code>, the default line style is used.
+ *	If the data source returns an NSNull object, no line is drawn.
+ **/
+-(CPTLineStyle *)barLineStyleForRangePlot:(CPTRangePlot *)plot recordIndex:(NSUInteger)index;
+
+///	@}
+
+@end
 
 #pragma mark -
 
@@ -50,6 +84,17 @@ CPTRangePlotField;
  *	@if iOSOnly touched bar. @endif
  **/
 -(void)rangePlot:(CPTRangePlot *)plot rangeWasSelectedAtRecordIndex:(NSUInteger)index;
+
+/**	@brief (Optional) Informs the delegate that a bar was
+ *	@if MacOnly clicked. @endif
+ *	@if iOSOnly touched. @endif
+ *	@param plot The range plot.
+ *	@param index The index of the
+ *	@if MacOnly clicked bar. @endif
+ *	@if iOSOnly touched bar. @endif
+ *  @param event The event that triggered the selection.
+ **/
+-(void)rangePlot:(CPTRangePlot *)plot rangeWasSelectedAtRecordIndex:(NSUInteger)index withEvent:(CPTNativeEvent *)event;
 
 ///	@}
 

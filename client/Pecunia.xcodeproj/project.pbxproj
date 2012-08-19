@@ -86,6 +86,7 @@
 		27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
 		27C7B49214755AE200BD4F56 /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
 		27C7B506147FC50300278131 /* PecuniaPlotTimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7B505147FC50300278131 /* PecuniaPlotTimeFormatter.m */; };
+		27C883C715E0EBCE007572F0 /* NSString+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */; };
 		27C930F6149508280055EAD5 /* Colors.acf in Resources */ = {isa = PBXBuildFile; fileRef = 27C930F5149508280055EAD5 /* Colors.acf */; };
 		27CC732614A09E060082495C /* MAAttachedWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC732514A09E060082495C /* MAAttachedWindow.m */; };
 		27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */; };
@@ -460,6 +461,8 @@
 		27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnLayoutCorePlotLayer.m; sourceTree = "<group>"; tabWidth = 4; };
 		27C7B504147FC50300278131 /* PecuniaPlotTimeFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaPlotTimeFormatter.h; sourceTree = "<group>"; tabWidth = 4; };
 		27C7B505147FC50300278131 /* PecuniaPlotTimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaPlotTimeFormatter.m; sourceTree = "<group>"; tabWidth = 4; };
+		27C883C515E0EBCE007572F0 /* NSString+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+PecuniaAdditions.h"; sourceTree = "<group>"; };
+		27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		27C930F5149508280055EAD5 /* Colors.acf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Colors.acf; sourceTree = "<group>"; };
 		27CC732414A09E060082495C /* MAAttachedWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MAAttachedWindow.h; path = MAAttachedWindow/MAAttachedWindow.h; sourceTree = "<group>"; };
 		27CC732514A09E060082495C /* MAAttachedWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MAAttachedWindow.m; path = MAAttachedWindow/MAAttachedWindow.m; sourceTree = "<group>"; };
@@ -1586,6 +1589,8 @@
 				27C7B501147FC41900278131 /* Drawing + Colors */,
 				B14C6299115E00AA009324A6 /* MigrationManagerWorkaround.h */,
 				B14C629A115E00AA009324A6 /* MigrationManagerWorkaround.m */,
+				27C883C515E0EBCE007572F0 /* NSString+PecuniaAdditions.h */,
+				27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -2081,6 +2086,7 @@
 				B1835C1015D2A1A2003B93ED /* SigningOptionsController.m in Sources */,
 				B1835C1115D2A1A2003B93ED /* SigningOptionsTableView.m in Sources */,
 				B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */,
+				27C883C715E0EBCE007572F0 /* NSString+PecuniaAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

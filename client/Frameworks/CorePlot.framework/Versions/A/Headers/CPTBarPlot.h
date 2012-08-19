@@ -19,6 +19,8 @@
 extern NSString *const CPTBarPlotBindingBarLocations;
 extern NSString *const CPTBarPlotBindingBarTips;
 extern NSString *const CPTBarPlotBindingBarBases;
+extern NSString *const CPTBarPlotBindingBarFills;
+extern NSString *const CPTBarPlotBindingBarLineStyles;
 ///	@}
 
 /**
@@ -42,18 +44,38 @@ CPTBarPlotField;
 ///	@name Bar Style
 /// @{
 
+/**	@brief (Optional) Gets an array of bar fills for the given bar plot.
+ *	@param barPlot The bar plot.
+ *	@param indexRange The range of the data indexes of interest.
+ *	@return An array of bar fills.
+ **/
+-(NSArray *)barFillsForBarPlot:(CPTBarPlot *)barPlot recordIndexRange:(NSRange)indexRange;
+
 /**	@brief (Optional) Gets a bar fill for the given bar plot.
+ *	This method will not be called if
+ *	@link CPTBarPlotDataSource::barFillsForBarPlot:recordIndexRange: -barFillsForBarPlot:recordIndexRange: @endlink
+ *	is also implemented in the datasource.
  *	@param barPlot The bar plot.
  *	@param index The data index of interest.
- *	@return The bar fill for the bar with the given index. If the data source returns nil, the default fill is used.
+ *	@return The bar fill for the bar with the given index. If the data source returns <code>nil</code>, the default fill is used.
  *	If the data source returns an NSNull object, no fill is drawn.
  **/
 -(CPTFill *)barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)index;
 
+/**	@brief (Optional) Gets an array of bar line styles for the given bar plot.
+ *	@param barPlot The bar plot.
+ *	@param indexRange The range of the data indexes of interest.
+ *	@return An array of line styles.
+ **/
+-(NSArray *)barLineStylesForBarPlot:(CPTBarPlot *)barPlot recordIndexRange:(NSRange)indexRange;
+
 /**	@brief (Optional) Gets a bar line style for the given bar plot.
+ *	This method will not be called if
+ *	@link CPTBarPlotDataSource::barLineStylesForBarPlot:recordIndexRange: -barLineStylesForBarPlot:recordIndexRange: @endlink
+ *	is also implemented in the datasource.
  *	@param barPlot The bar plot.
  *	@param index The data index of interest.
- *	@return The bar line style for the bar with the given index. If the data source returns nil, the default line style is used.
+ *	@return The bar line style for the bar with the given index. If the data source returns <code>nil</code>, the default line style is used.
  *	If the data source returns an NSNull object, no line is drawn.
  **/
 -(CPTLineStyle *)barLineStyleForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)index;
@@ -95,6 +117,17 @@ CPTBarPlotField;
  **/
 -(void)barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)index;
 
+/**	@brief (Optional) Informs the delegate that a bar was
+ *	@if MacOnly clicked. @endif
+ *	@if iOSOnly touched. @endif
+ *	@param plot The bar plot.
+ *	@param index The index of the
+ *	@if MacOnly clicked bar. @endif
+ *	@if iOSOnly touched bar. @endif
+ *  @param event The event that triggered the selection.
+ **/
+-(void)barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)index withEvent:(CPTNativeEvent *)event;
+
 ///	@}
 
 @end
@@ -110,6 +143,7 @@ CPTBarPlotField;
     NSDecimal barOffset;
     CGFloat barOffsetScale;
     CGFloat barCornerRadius;
+    CGFloat barBaseCornerRadius;
     NSDecimal baseValue;
     BOOL barsAreHorizontal;
     BOOL barBasesVary;
@@ -123,6 +157,7 @@ CPTBarPlotField;
 @property (nonatomic, readwrite, assign) NSDecimal barOffset;
 @property (nonatomic, readwrite, assign) CGFloat barOffsetScale;
 @property (nonatomic, readwrite, assign) CGFloat barCornerRadius;
+@property (nonatomic, readwrite, assign) CGFloat barBaseCornerRadius;
 @property (nonatomic, readwrite, copy) CPTLineStyle *lineStyle;
 @property (nonatomic, readwrite, copy) CPTFill *fill;
 @property (nonatomic, readwrite, assign) BOOL barsAreHorizontal;
@@ -133,6 +168,11 @@ CPTBarPlotField;
 /// @name Factory Methods
 /// @{
 +(CPTBarPlot *)tubularBarPlotWithColor:(CPTColor *)color horizontalBars:(BOOL)horizontal;
+///	@}
+
+/// @name Data Ranges
+/// @{
+-(CPTPlotRange *)plotRangeEnclosingBars;
 ///	@}
 
 @end

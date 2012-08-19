@@ -279,8 +279,9 @@ NSString *escapeSpecial(NSString *s)
         case TransferTypeDebit: return @"Last"; break;
         case TransferTypeSEPA: return @"UebSEPA"; break;
         case TransferTypeCollectiveCredit: return @"MultiUeb"; break;
+        default:
+            return nil;
     };
-    return nil;
 }
 
 -(BOOL)isJobSupported:(NSString*)jobName forAccount:(BankAccount*)account

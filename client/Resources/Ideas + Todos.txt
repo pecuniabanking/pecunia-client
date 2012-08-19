@@ -1,6 +1,6 @@
 To Dos
 
-- Farbanzeige für Kategorien im Baum
+- Datum in den Listviewzellen, wenn kein Header angezeigt wird.
 
 ===================================================================================================
 
@@ -48,8 +48,10 @@ Transaktionen
 - Zwischensaldoanzeige per Knopf abschaltbar machen.
 - Eine Möglichkeit aus Buchungen auf der Kontenseite eine neue Überweisung (auf der Überweisungsseite) zu erstellen.
 - Wenn eine Suche aktiv ist optional den gewählten Datumsbereich hinzuziehen (nicht alle Ergebnisse zeigen).
+- Gruppierung auch wenn die Liste nicht nach Datum sortiert ist.
+- Header (Gruppierung) umschaltbar machen (checkbox neben Filterbar).
 
-Ausgaben/Export
+Ausgaben/Export/Reporting
 ---------------
 - In der Druckausgabe Kategorien einschließen (erlauben nach Kategorien zu sortieren/gruppieren?)
 - Weitgehend freie Wahl, was gedruckt wird, Zwischensalden einschließen + Kategorien und Zusatzinfo

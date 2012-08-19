@@ -52,7 +52,6 @@ import org.kapott.hbci.passport.AbstractPinTanPassport;
 import org.kapott.hbci.status.HBCIDialogStatus;
 import org.kapott.hbci.status.HBCIExecStatus;
 import org.kapott.hbci.structures.Konto;
-import org.kapott.hbci.structures.Saldo;
 import org.kapott.hbci.structures.Value;
 import org.kapott.hbci.swift.DTAUS;
 import org.xmlpull.v1.XmlPullParser;
@@ -1435,14 +1434,13 @@ public class HBCIServer {
 		HBCIHandler handler = hbciHandler(bankCode, userId);
 		
 		HBCIDialogStatus status = handler.refreshXPD(HBCIHandler.REFRESH_BPD | HBCIHandler.REFRESH_UPD); 
-		HBCIPassportPinTan passport = (HBCIPassportPinTan)handler.getPassport();
-	   
+		
 		xmlBuf.append("<result command=\"updateBankData\">");
 		if(status.isOK() == false) {
 			error(ERR_GENERIC, "updateBankData", status.getErrorString());
 			return;
 		}
-		xmlGen.passportToXml(passport);
+		xmlGen.passportToXml(handler.getPassport());
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
