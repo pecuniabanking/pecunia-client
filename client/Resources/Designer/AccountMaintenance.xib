@@ -11,7 +11,7 @@
 			<string key="NS.object.0">851</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="3"/>
+			<integer value="175"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -183,7 +183,11 @@
 												<string key="NSContents">Kontoinhaber</string>
 												<reference key="NSSupport" ref="731885523"/>
 												<reference key="NSControlView" ref="476380759"/>
-												<reference key="NSBackgroundColor" ref="577447682"/>
+												<bool key="NSDrawsBackground">YES</bool>
+												<object class="NSColor" key="NSBackgroundColor">
+													<int key="NSColorSpace">2</int>
+													<bytes key="NSRGB">MC45Njg2Mjc1MTI1IDAuOTY4NjI3NTEyNSAwLjk2ODYyNzUxMjUAA</bytes>
+												</object>
 												<object class="NSColor" key="NSTextColor" id="218825756">
 													<int key="NSColorSpace">6</int>
 													<string key="NSCatalogName">System</string>
@@ -255,7 +259,11 @@
 												<string key="NSContents">BIC</string>
 												<reference key="NSSupport" ref="731885523"/>
 												<reference key="NSControlView" ref="740594650"/>
-												<reference key="NSBackgroundColor" ref="577447682"/>
+												<bool key="NSDrawsBackground">YES</bool>
+												<object class="NSColor" key="NSBackgroundColor">
+													<int key="NSColorSpace">2</int>
+													<bytes key="NSRGB">MC45Njg2Mjc1MTI1IDAuOTY4NjI3NTEyNSAwLjk2ODYyNzUxMjUAA</bytes>
+												</object>
 												<reference key="NSTextColor" ref="218825756"/>
 											</object>
 										</object>
@@ -290,7 +298,11 @@
 												<string key="NSContents">IBAN</string>
 												<reference key="NSSupport" ref="731885523"/>
 												<reference key="NSControlView" ref="196759146"/>
-												<reference key="NSBackgroundColor" ref="577447682"/>
+												<bool key="NSDrawsBackground">YES</bool>
+												<object class="NSColor" key="NSBackgroundColor">
+													<int key="NSColorSpace">2</int>
+													<bytes key="NSRGB">MC45Njg2Mjc1MTI1IDAuOTY4NjI3NTEyNSAwLjk2ODYyNzUxMjUAA</bytes>
+												</object>
 												<reference key="NSTextColor" ref="218825756"/>
 											</object>
 										</object>
@@ -325,7 +337,11 @@
 												<string key="NSContents">Kontoname</string>
 												<reference key="NSSupport" ref="731885523"/>
 												<reference key="NSControlView" ref="955254715"/>
-												<reference key="NSBackgroundColor" ref="577447682"/>
+												<bool key="NSDrawsBackground">YES</bool>
+												<object class="NSColor" key="NSBackgroundColor">
+													<int key="NSColorSpace">2</int>
+													<bytes key="NSRGB">MC45Njg2Mjc1MTI1IDAuOTY4NjI3NTEyNSAwLjk2ODYyNzUxMjUAA</bytes>
+												</object>
 												<reference key="NSTextColor" ref="218825756"/>
 											</object>
 										</object>
@@ -364,7 +380,11 @@
 														<string key="NSContents">Unterkonto</string>
 														<reference key="NSSupport" ref="731885523"/>
 														<reference key="NSControlView" ref="95367612"/>
-														<reference key="NSBackgroundColor" ref="577447682"/>
+														<bool key="NSDrawsBackground">YES</bool>
+														<object class="NSColor" key="NSBackgroundColor">
+															<int key="NSColorSpace">2</int>
+															<bytes key="NSRGB">MC45Njg2Mjc1MTI1IDAuOTY4NjI3NTEyNSAwLjk2ODYyNzUxMjUAA</bytes>
+														</object>
 														<reference key="NSTextColor" ref="218825756"/>
 													</object>
 												</object>
@@ -529,7 +549,8 @@
 								<string key="NSContents">Kontowährung</string>
 								<reference key="NSSupport" ref="731885523"/>
 								<reference key="NSControlView" ref="625446032"/>
-								<reference key="NSBackgroundColor" ref="577447682"/>
+								<bool key="NSDrawsBackground">YES</bool>
+								<reference key="NSBackgroundColor" ref="319238016"/>
 								<reference key="NSTextColor" ref="218825756"/>
 							</object>
 						</object>
@@ -546,7 +567,8 @@
 								<string key="NSContents">Konto</string>
 								<reference key="NSSupport" ref="731885523"/>
 								<reference key="NSControlView" ref="236333169"/>
-								<reference key="NSBackgroundColor" ref="577447682"/>
+								<bool key="NSDrawsBackground">YES</bool>
+								<reference key="NSBackgroundColor" ref="319238016"/>
 								<reference key="NSTextColor" ref="218825756"/>
 							</object>
 						</object>
@@ -579,7 +601,8 @@
 								<string key="NSContents">Farbe</string>
 								<reference key="NSSupport" ref="731885523"/>
 								<reference key="NSControlView" ref="21463782"/>
-								<reference key="NSBackgroundColor" ref="577447682"/>
+								<bool key="NSDrawsBackground">YES</bool>
+								<reference key="NSBackgroundColor" ref="319238016"/>
 								<reference key="NSTextColor" ref="218825756"/>
 							</object>
 						</object>
@@ -633,7 +656,8 @@
 								<string key="NSContents">Bankleitzahl</string>
 								<reference key="NSSupport" ref="731885523"/>
 								<reference key="NSControlView" ref="536977474"/>
-								<reference key="NSBackgroundColor" ref="577447682"/>
+								<bool key="NSDrawsBackground">YES</bool>
+								<reference key="NSBackgroundColor" ref="319238016"/>
 								<reference key="NSTextColor" ref="628572952"/>
 							</object>
 						</object>
@@ -2453,9 +2477,9 @@
 					<bytes key="NSTransformStruct">AUHYAABCogAAA</bytes>
 				</object>
 				<string key="29.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="3.IBEditorWindowLastContentRect">{{577, 705}, {801, 408}}</string>
+				<string key="3.IBEditorWindowLastContentRect">{{336, 918}, {801, 408}}</string>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="3.IBWindowTemplateEditedContentRect">{{577, 705}, {801, 408}}</string>
+				<string key="3.IBWindowTemplateEditedContentRect">{{336, 918}, {801, 408}}</string>
 				<integer value="1" key="3.NSWindowTemplate.visibleAtLaunch"/>
 				<string key="3.editorWindowContentRectSynchronizationRect">{{649, 650}, {684, 320}}</string>
 				<string key="30.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

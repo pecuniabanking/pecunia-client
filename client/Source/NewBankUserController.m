@@ -656,14 +656,15 @@
 	BankUser *user = [self selectedUser];
 	if(user == nil) return;
 
-	[bankController updateBankAccounts: nil forUser: user ];
-
-	NSRunAlertPanel(NSLocalizedString(@"AP27", @""),
-					NSLocalizedString(@"AP107", @""),
-					NSLocalizedString(@"ok", @"Ok"), 
-					nil, nil,
-					user.userId);
-	
+    NSArray *accounts = [[HBCIClient hbciClient] getAccountsForUser:user];
+    if (accounts != nil) {
+        [bankController updateBankAccounts: accounts forUser: user ];
+        NSRunAlertPanel(NSLocalizedString(@"AP27", @""),
+                        NSLocalizedString(@"AP107", @""),
+                        NSLocalizedString(@"ok", @"Ok"), 
+                        nil, nil,
+                        user.userId);
+    }
 }
 
 -(IBAction)changePinTanMethod:(id)sender

@@ -373,12 +373,9 @@ static BOOL runningOnLionOrLater = NO;
             if (account.userId == nil) {
                 account.userId = acc.userId;
                 account.customerId = acc.customerId;
-            } else {
-                if ([account.userId isEqualToString:acc.userId ] == NO) {
-                    NSMutableSet *users = [account mutableSetValueForKey:@"users" ];
-                    [users addObject:user ];
-                }
             }
+            NSMutableSet *users = [account mutableSetValueForKey:@"users" ];
+            [users addObject:user ];
             if (acc.bic != nil) account.bic = acc.bic;
             if (acc.iban != nil) account.iban = acc.iban;
             
