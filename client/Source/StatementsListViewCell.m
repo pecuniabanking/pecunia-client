@@ -95,11 +95,11 @@ extern NSString *StatementTypeKey;
 {
     headerHeight = aHeaderHeight;
     if (headerHeight > 0) {
-        [dateLabel setHidden: NO];
-        [turnoversLabel setHidden: NO];
+        [dateLabel setEnabled: YES];
+        [turnoversLabel setEnabled: YES];
     } else {
-        [dateLabel setHidden: YES];
-        [turnoversLabel setHidden: YES];
+        [dateLabel setEnabled: NO];
+        [turnoversLabel setEnabled: NO];
     }
 
     [self setNeedsDisplay: YES];
@@ -351,6 +351,19 @@ static NSImage* stripeImage;
         {
             [stripeImage drawInRect: area fromRect: imageRect operation: NSCompositeSourceOver fraction: fraction];
             area.origin.x += stripeImage.size.width;
+        }
+    }
+    
+    // TextFelder zeichnen
+    NSArray *views = [self subviews];
+    for(NSView *view in views) {
+        if([view isKindOfClass:[NSTextField class]]) {
+            NSTextField *field = (NSTextField*)view;
+            if ([field isEnabled ]) {
+                NSRect r = [view frame];
+                NSAttributedString *as = [[field cell] attributedStringValue];
+                [as drawInRect:r];
+            }
         }
     }
     
