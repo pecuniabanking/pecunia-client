@@ -19,11 +19,10 @@
 
 #import <Cocoa/Cocoa.h>
 #import "NSView+PecuniaAdditions.h"
+#import "BWGradientBox.h"
 
-@interface RoundedOuterShadowView : NSView {
-    NSColor* indicatorColor;
+@interface GradientBoxWithLabels : BWGradientBox {
+
 }
-
-@property (nonatomic, readwrite, retain) NSColor* indicatorColor;
 
 @end

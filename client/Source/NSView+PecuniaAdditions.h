@@ -18,12 +18,11 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import "NSView+PecuniaAdditions.h"
 
-@interface RoundedOuterShadowView : NSView {
-    NSColor* indicatorColor;
-}
 
-@property (nonatomic, readwrite, retain) NSColor* indicatorColor;
+@interface NSView (PecuniaAdditions)
+
+- (void)drawTextFields;    
+- (NSView*)printViewForLayerBackedView;
 
 @end

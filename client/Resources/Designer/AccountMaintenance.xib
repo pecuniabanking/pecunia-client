@@ -11,7 +11,7 @@
 			<string key="NS.object.0">851</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="175"/>
+			<integer value="247"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -75,7 +75,7 @@
 							<array class="NSMutableArray" key="NSSubviews">
 								<object class="NSTextField" id="982372314">
 									<reference key="NSNextResponder" ref="908959367"/>
-									<int key="NSvFlags">290</int>
+									<int key="NSvFlags">-2147483358</int>
 									<string key="NSFrame">{{17, 31}, {294, 19}}</string>
 									<reference key="NSSuperview" ref="908959367"/>
 									<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -108,7 +108,7 @@
 								</object>
 								<object class="NSTextField" id="423395339">
 									<reference key="NSNextResponder" ref="908959367"/>
-									<int key="NSvFlags">289</int>
+									<int key="NSvFlags">-2147483359</int>
 									<string key="NSFrame">{{484, 12}, {207, 17}}</string>
 									<reference key="NSSuperview" ref="908959367"/>
 									<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -160,7 +160,7 @@
 								</object>
 							</object>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
-							<string key="NSClassName">BWGradientBox</string>
+							<string key="NSClassName">GradientBoxWithLabels</string>
 						</object>
 						<object class="NSBox" id="523379319">
 							<reference key="NSNextResponder" ref="981894283"/>
@@ -2655,10 +2655,25 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">GradientBoxWithLabels</string>
+					<string key="superclassName">BWGradientBox</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Source/GradientBoxWithLabels.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">NSView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Source/GraphicsAdditions.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Source/NSView+PecuniaAdditions.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

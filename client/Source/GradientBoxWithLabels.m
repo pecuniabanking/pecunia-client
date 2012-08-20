@@ -17,13 +17,14 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-#import "NSView+PecuniaAdditions.h"
+#import "GradientBoxWithLabels.h"
 
-@interface RoundedOuterShadowView : NSView {
-    NSColor* indicatorColor;
+
+@implementation GradientBoxWithLabels
+
+- (void)drawRect:(NSRect)dirtyRect {
+    [super drawRect:dirtyRect ];
+    [self drawTextFields ];
 }
-
-@property (nonatomic, readwrite, retain) NSColor* indicatorColor;
 
 @end

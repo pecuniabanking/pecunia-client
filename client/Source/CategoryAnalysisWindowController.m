@@ -26,6 +26,7 @@
 #import "PecuniaPlotTimeFormatter.h"
 #import "MCEMDecimalNumberAdditions.h"
 #import "GraphicsAdditions.h"
+#import "NSView+PecuniaAdditions.h"
 #import "NS(Attributed)String+Geometrics.h"
 #import "AnimationHelper.h"
 

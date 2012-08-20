@@ -351,6 +351,9 @@ static NSGradient* innerGradientSelected;
     [[NSColor colorWithDeviceWhite: 210 / 255.0 alpha: 1] set];
     [path stroke];
     
+    // draw Text Fields
+    [self drawTextFields ];
+    
     [context restoreGraphicsState];
 }
 

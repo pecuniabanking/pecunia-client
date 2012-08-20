@@ -170,6 +170,11 @@
 	}
 }
 
+-(void)windowWillClose:(NSNotification *)aNotification
+{
+	[NSApp stopModalWithCode:1 ];    
+}
+
 
 -(IBAction)cancel:(id)sender
 {

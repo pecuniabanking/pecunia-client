@@ -227,6 +227,8 @@
 		B1835C1A15D2A1F4003B93ED /* PinTan.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1615D2A1F4003B93ED /* PinTan.png */; };
 		B1835C1B15D2A1F4003B93ED /* Chipcard.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1715D2A1F4003B93ED /* Chipcard.png */; };
 		B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1835D3415D521B5003B93ED /* 101.xcmappingmodel */; };
+		B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */; };
+		B183625C15E2DAFE003B93ED /* GradientBoxWithLabels.m in Sources */ = {isa = PBXBuildFile; fileRef = B183625B15E2DAFE003B93ED /* GradientBoxWithLabels.m */; };
 		B189782E0ECF47CA00D20503 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
 		B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B18978860ED0B2E800D20503 /* StatementDetails.m */; };
 		B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B20550CC6A51B00B0B02C /* NewBankUserController.m */; };
@@ -689,6 +691,10 @@
 		B1835C1615D2A1F4003B93ED /* PinTan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PinTan.png; sourceTree = "<group>"; };
 		B1835C1715D2A1F4003B93ED /* Chipcard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Chipcard.png; sourceTree = "<group>"; };
 		B1835D3415D521B5003B93ED /* 101.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 101.xcmappingmodel; sourceTree = "<group>"; };
+		B18361FB15E23D3F003B93ED /* NSView+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+PecuniaAdditions.h"; sourceTree = "<group>"; };
+		B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+PecuniaAdditions.m"; sourceTree = "<group>"; };
+		B183625A15E2DAFE003B93ED /* GradientBoxWithLabels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientBoxWithLabels.h; sourceTree = "<group>"; };
+		B183625B15E2DAFE003B93ED /* GradientBoxWithLabels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientBoxWithLabels.m; sourceTree = "<group>"; };
 		B189782C0ECF47CA00D20503 /* Country.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Country.h; sourceTree = "<group>"; tabWidth = 4; };
 		B189782D0ECF47CA00D20503 /* Country.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Country.m; sourceTree = "<group>"; tabWidth = 4; };
 		B18978850ED0B2E800D20503 /* StatementDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementDetails.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1003,6 +1009,8 @@
 				2716FE4C152381A60015A753 /* SynchronousScrollView.m */,
 				27B9868315769132008907F3 /* GradientButtonCell.h */,
 				27B9868415769132008907F3 /* GradientButtonCell.m */,
+				B183625A15E2DAFE003B93ED /* GradientBoxWithLabels.h */,
+				B183625B15E2DAFE003B93ED /* GradientBoxWithLabels.m */,
 			);
 			name = "Controls and Layouts";
 			sourceTree = "<group>";
@@ -1591,6 +1599,8 @@
 				B14C629A115E00AA009324A6 /* MigrationManagerWorkaround.m */,
 				27C883C515E0EBCE007572F0 /* NSString+PecuniaAdditions.h */,
 				27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */,
+				B18361FB15E23D3F003B93ED /* NSView+PecuniaAdditions.h */,
+				B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -2087,6 +2097,8 @@
 				B1835C1115D2A1A2003B93ED /* SigningOptionsTableView.m in Sources */,
 				B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */,
 				27C883C715E0EBCE007572F0 /* NSString+PecuniaAdditions.m in Sources */,
+				B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */,
+				B183625C15E2DAFE003B93ED /* GradientBoxWithLabels.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

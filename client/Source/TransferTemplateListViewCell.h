@@ -21,6 +21,7 @@
 
 #import "PXListViewCell.h"
 #import "Transfer.h"
+#import "NSView+PecuniaAdditions.h"
 
 @interface TransferTemplateListViewCell : PXListViewCell
 {

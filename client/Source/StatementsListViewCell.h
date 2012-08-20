@@ -20,6 +20,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "PXListViewCell.h"
+#import "NSView+PecuniaAdditions.h"
 
 // Key names for the fields passed in via the value dictionary.
 extern NSString *StatementDateKey;

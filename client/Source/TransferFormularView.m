@@ -20,6 +20,7 @@
 #import "TransfersController.h"
 #import "TransferFormularView.h"
 #import "GraphicsAdditions.h"
+#import "NSView+PecuniaAdditions.h"
 
 NSString* const TransferReadyForUseDataType = @"TransferReadyForUseDataType";
 

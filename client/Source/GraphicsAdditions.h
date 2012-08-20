@@ -54,9 +54,3 @@
 - (void)strokeInsideWithinRect: (NSRect)clipRect;
 
 @end
-
-@interface NSView (PecuniaAdditions)
-
-- (NSView*)printViewForLayerBackedView;
-
-@end

@@ -84,6 +84,9 @@ static NSImage* headerImage;
         barRect.origin.x += headerImage.size.width;
     }
     */
+    
+    // Draw Text Fields
+    [self drawTextFields ];
 
     [NSGraphicsContext restoreGraphicsState];
 
