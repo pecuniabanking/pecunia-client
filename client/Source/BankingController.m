@@ -368,19 +368,23 @@ static BOOL runningOnLionOrLater = NO;
                 break;
             }
         }
-        if (found == YES) {
-            // Kennung zum Konto hinzufügen
-            if (account.userId == nil) {
+        if (found) {
+            // Update the user id if there is none assigned yet or if it differs.
+            if (account.userId == nil || ![account.userId isEqualToString: acc.userId]) {
                 account.userId = acc.userId;
                 account.customerId = acc.customerId;
+                NSMutableSet *users = [account mutableSetValueForKey: @"users"];
+                [users addObject: user];
             }
-            NSMutableSet *users = [account mutableSetValueForKey:@"users" ];
-            [users addObject:user ];
-            if (acc.bic != nil) account.bic = acc.bic;
-            if (acc.iban != nil) account.iban = acc.iban;
+            if (acc.bic != nil) {
+                account.bic = acc.bic;
+            }
+            if (acc.iban != nil) {
+                account.iban = acc.iban;
+            }
             
         } else {
-            // Account was not found: create it
+            // Account was not found: create it.
             BankAccount* bankRoot = [self getBankNodeWithAccount: acc inAccounts: bankAccounts];
             if(bankRoot == nil) return;
             BankAccount	*bankAccount = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount"
