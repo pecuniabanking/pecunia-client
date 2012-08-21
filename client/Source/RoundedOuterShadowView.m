@@ -85,9 +85,6 @@ static NSImage* headerImage;
     }
     */
     
-    // Draw Text Fields
-    [self drawTextFields ];
-
     [NSGraphicsContext restoreGraphicsState];
 
     if (indicatorColor != nil) {
@@ -99,6 +96,8 @@ static NSImage* headerImage;
         NSRectFill(barRect);
     }
 
+    // Draw Text Fields
+    [self drawTextFields ];
 }
 
 - (void)setIndicatorColor: (NSColor*)color

@@ -18,7 +18,7 @@
  */
 
 #import <Cocoa/Cocoa.h>
-
+#import "NSView+PecuniaAdditions.h"
 
 @interface MainBackgroundView : NSView {
 

@@ -1939,6 +1939,7 @@ static BOOL runningOnLionOrLater = NO;
         currentSection.category = cat;
     }
 
+    [rightPane setNeedsDisplay:YES ];
     [self updateStatusbar];
 }
 

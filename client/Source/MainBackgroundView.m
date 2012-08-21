@@ -109,6 +109,9 @@ static NSImage* background = nil;
     [catSumAreaPath fillWithInnerShadow: innerShadow1 borderOnly: NO];
     [catSumAreaPath fillWithInnerShadow: innerShadow2 borderOnly: NO];
     
+    // draw text fields
+    [self drawTextFields ];
+    
     [NSGraphicsContext restoreGraphicsState];
 }
 
