@@ -117,6 +117,8 @@
 		27FD58CB1437569B0074B378 /* StatementsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD58CA1437569B0074B378 /* StatementsListView.m */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		A652533515E39A92000C2989 /* TanWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A652533415E39A92000C2989 /* TanWindow.m */; };
+		A6E9242A15E38FFE00FA09A3 /* TanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E9242915E38FFE00FA09A3 /* TanWindow.xib */; };
 		B1014AEE101643C800ABA1FF /* TanMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014AED101643C800ABA1FF /* TanMethod.m */; };
 		B1014BE41018E29F00ABA1FF /* update.ico in Resources */ = {isa = PBXBuildFile; fileRef = B1014BE31018E29F00ABA1FF /* update.ico */; };
 		B1014BE61018E32A00ABA1FF /* library.ico in Resources */ = {isa = PBXBuildFile; fileRef = B1014BE51018E32A00ABA1FF /* library.ico */; };
@@ -513,6 +515,9 @@
 		32CA4F630368D1EE00C91783 /* Pecunia_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pecunia_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Pecunia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pecunia.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A652533315E39A76000C2989 /* TanWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanWindow.h; sourceTree = "<group>"; };
+		A652533415E39A92000C2989 /* TanWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanWindow.m; sourceTree = "<group>"; };
+		A6E9242915E38FFE00FA09A3 /* TanWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TanWindow.xib; sourceTree = "<group>"; };
 		B1014AEC101643C800ABA1FF /* TanMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TanMethod.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1014AED101643C800ABA1FF /* TanMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TanMethod.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1014BE31018E29F00ABA1FF /* update.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = update.ico; sourceTree = "<group>"; };
@@ -1113,6 +1118,7 @@
 				B14C6002114848E1009324A6 /* BankStatementController.xib */,
 				B1D4500A14784443008DD256 /* BankUser.xib */,
 				B1D4500714784412008DD256 /* BSSelectWindow.xib */,
+				B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */,
 				B17729AC1504D63200256898 /* BusinessTransactionsWindow.xib */,
 				B1AFA8801295C5D800B115A7 /* CategoryAnalysis.xib */,
 				27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */,
@@ -1123,7 +1129,6 @@
 				2703DE26146EE6AB0083CBA2 /* ExportPopup.xib */,
 				B134365A12ECBD54006C4687 /* GenericImportWindow.xib */,
 				B1AA633014096E6600ADE1D0 /* ImportSettings.xib */,
-				B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */,
 				B1D44FFD14784344008DD256 /* Institutes.xib */,
 				B1D44FF71478430A008DD256 /* LogController.xib */,
 				B1D44FC91478407D008DD256 /* MainMenu.xib */,
@@ -1131,6 +1136,7 @@
 				B183572715CC505A003B93ED /* NotificationWindow.xib */,
 				B1AFA9F6129EEA3900B115A7 /* Orders.xib */,
 				B1D44FF11478428E008DD256 /* PasswordWindow.xib */,
+				A6E9242915E38FFE00FA09A3 /* TanWindow.xib */,
 				B1D44FEE14784213008DD256 /* Preferences.xib */,
 				27C78792143622920095F1DA /* ProgressWindow.xib */,
 				B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */,
@@ -1576,6 +1582,8 @@
 			children = (
 				B1A6E8330FC890E400566C55 /* PasswordWindow.h */,
 				B1A6E8340FC890E400566C55 /* PasswordWindow.m */,
+				A652533315E39A76000C2989 /* TanWindow.h */,
+				A652533415E39A92000C2989 /* TanWindow.m */,
 				B12A4D4D10C869F0002CC63E /* NewPasswordController.h */,
 				B12A4D4E10C869F0002CC63E /* NewPasswordController.m */,
 				B17B2B3C13EC8D5000739E7A /* ChipTanWindowController.h */,
@@ -1908,6 +1916,7 @@
 				B1835C1915D2A1F4003B93ED /* iPhone.png in Resources */,
 				B1835C1A15D2A1F4003B93ED /* PinTan.png in Resources */,
 				B1835C1B15D2A1F4003B93ED /* Chipcard.png in Resources */,
+				A6E9242A15E38FFE00FA09A3 /* TanWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2099,6 +2108,7 @@
 				27C883C715E0EBCE007572F0 /* NSString+PecuniaAdditions.m in Sources */,
 				B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */,
 				B183625C15E2DAFE003B93ED /* GradientBoxWithLabels.m in Sources */,
+				A652533515E39A92000C2989 /* TanWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
