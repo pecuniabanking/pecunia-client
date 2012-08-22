@@ -62,6 +62,7 @@
 #import "ImportController.h"
 #import "ImageAndTextCell.h"
 #import "StatementsListview.h"
+#import "StatementDetails.h"
 #import "RoundedOuterShadowView.h"
 #import "SideToolbarView.h"
 
@@ -2984,6 +2985,7 @@ static BOOL runningOnLionOrLater = NO;
                     [remoteNameLabel setStringValue: NSLocalizedString(@"AP135", "")];
                 }
                 
+                [statementDetails setNeedsDisplay:YES ];
                 [self updateStatusbar];
             }
         }

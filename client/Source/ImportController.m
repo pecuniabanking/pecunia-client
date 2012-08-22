@@ -98,6 +98,11 @@
 	[NSApp stopModalWithCode:1 ];
 }
 
+-(void)windowWillClose:(NSNotification*)aNotification
+{
+	[NSApp stopModalWithCode:1 ];    
+}
+
 -(IBAction)start:(id)sender
 {
 	NSError		*error = nil;

@@ -48,6 +48,7 @@
 @class SideToolbarView;
 @class BWGradientBox;
 @class SynchronousScrollView;
+@class StatementDetails;
 
 @interface BankingController : NSObject
 {
@@ -76,6 +77,7 @@
     IBOutlet NSTextField        *remoteNameLabel;
     IBOutlet NSSplitView        *rightSplitter;
     IBOutlet NSView             *rightPane;
+    IBOutlet StatementDetails   *statementDetails;
     IBOutlet RoundedOuterShadowView* statementsListViewHost;
     
     // About panel.
