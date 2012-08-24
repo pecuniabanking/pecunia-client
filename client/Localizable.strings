@@ -183,6 +183,8 @@
 "AP177" = "Verbindung mit der Bank aufbauen...";
 "AP178" = "Bankkennung abrufen und einrichten...";
 "AP179" = "Wenn Sie die Unterkonto-Information ändern können Sie das Konto ggfs. nicht mehr verwenden. Möchten Sie die Information trotzdem ändern?";
+"AP180" = "Speichern nicht möglich";
+"AP181" = "Die Regel konnte nicht interpretiert werden, vermutlich sind Sonderzeichen enthalten. Der Parser meldet folgendes Problem: %@";
 
 // Callback and backend.
 // AP350..AP399

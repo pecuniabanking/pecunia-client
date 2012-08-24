@@ -243,8 +243,6 @@
 	NSDate			*date = nil;
 	ShortDate		*currentDate = nil;
 	NSMutableArray	*newStatements = [NSMutableArray arrayWithCapacity:50 ];
-	NSMutableArray	*resultingStatements = [NSMutableArray arrayWithCapacity:50 ];
-	
 
 	result.oldBalance = self.balance;
 	if(result.balance) self.balance = result.balance;
@@ -279,7 +277,6 @@
 			} else {
 				date = nil;
 				for(BankStatement *oldStat in oldStats) {
-					[resultingStatements addObject:oldStat ];
 					if (date == nil || [date compare:oldStat.date ] == NSOrderedAscending) {
 						date = oldStat.date;
 					}
@@ -293,7 +290,6 @@
 		date = [[[NSDate alloc ] initWithTimeInterval:10 sinceDate: date ] autorelease ];
 		
 		[newStatements addObject: stmt ];
-		[resultingStatements addObject:stmt ];
 		[stmt addToAccount: self ];
 		if(ltd == nil || [ltd compare: stmt.date ] == NSOrderedAscending) ltd = stmt.date;
 	}		

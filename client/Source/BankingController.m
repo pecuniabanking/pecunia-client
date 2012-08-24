@@ -903,8 +903,13 @@ static BOOL runningOnLionOrLater = NO;
         BSSelectWindowController *selectWindowController = [[[BSSelectWindowController alloc] initWithResults: resultList] autorelease];
         [selectWindowController showWindow: self];
     } else {
-        for(result in resultList) {
-            count += [result.account updateFromQueryResult: result];
+        @try {
+            for(result in resultList) {
+                    count += [result.account updateFromQueryResult: result];
+                }
+        }
+        @catch (NSException * e) {
+            [[MessageLog log ] addMessage:e.reason withLevel:LogLevel_Error];
         }
         if (autoSyncRunning == YES) [self checkBalances:resultList];
         [self requestFinished: resultList];

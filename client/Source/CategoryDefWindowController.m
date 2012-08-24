@@ -119,7 +119,22 @@
     
     NSPredicate* predicate = [predicateEditor objectValue];
     if(predicate) {
-        [currentCategory setValue: [predicate description] forKey: @"rule"];
+        // check predicate
+        NSString *rule = [predicate description ];
+        @try {
+            [NSPredicate predicateWithFormat:rule ];
+        }
+        @catch (NSException * e) {
+            NSRunAlertPanel(NSLocalizedString(@"AP180", @""),
+                            NSLocalizedString(@"AP181", @""),
+                            NSLocalizedString(@"ok", @"Ok"),
+                            nil, nil,
+                            e.reason
+                            );
+            return;
+        }
+        
+        [currentCategory setValue: rule forKey: @"rule"];
         
         // save updates
         NSManagedObjectContext *context = [[MOAssistant assistant] context];

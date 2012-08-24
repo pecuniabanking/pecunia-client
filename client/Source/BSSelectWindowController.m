@@ -13,6 +13,7 @@
 #import "BankStatement.h"
 #import "StatusBarController.h"
 #import "BankQueryResult.h"
+#import "MessageLog.h"
 
 @implementation BSSelectWindowController
 
@@ -60,7 +61,14 @@
 	
 	BankQueryResult *result;
 
-	for(result in resultList) count += [result.account updateFromQueryResult: result ];
+    @try {
+        for(result in resultList) {
+          count += [result.account updateFromQueryResult: result ];  
+        }
+    }
+    @catch (NSException * e) {
+        [[MessageLog log ] addMessage:e.reason withLevel:LogLevel_Error];
+    }
 	[[BankingController controller ] requestFinished: resultList ];
 
 	// status message
