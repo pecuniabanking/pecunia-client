@@ -142,9 +142,6 @@
 @property(nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property(nonatomic, retain) DockIconController *dockIconController;
 
-- (IBAction)listUsers: (id)sender;
-- (IBAction)showInput: (id)sender;
-- (IBAction)showInfo: (id)sender;
 - (IBAction)addAccount: (id)sender;
 - (IBAction)changeAccount: (id)sender;
 - (IBAction)deleteAccount: (id)sender;
@@ -155,7 +152,6 @@
 - (IBAction)activateAccountPage: (id)sender;
 
 -(IBAction)enqueueRequest: (id)sender;
--(IBAction)save: (id)sender;
 -(IBAction)editBankUsers:(id)sender;
 -(IBAction)export: (id)sender;
 -(IBAction)import: (id)sender;
@@ -178,8 +174,6 @@
 -(IBAction)addStatement: (id)sender;
 -(IBAction)showLicense: (id)sender;
 -(IBAction)resetIsNewStatements:(id)sender;
-
--(IBAction)manageTransferTemplates: (id)sender;
 
 -(IBAction)printDocument:(id)sender;
 -(IBAction)updateAllAccounts:(id)sender;

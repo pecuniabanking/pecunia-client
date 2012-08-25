@@ -342,7 +342,7 @@ static NSGradient* selectionGradient = nil;
 - (NSSize)sizeOfBadge:(NSInteger)unread
 {
     
-    NSAttributedString *badgeAttrString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%d", unread ]																	  attributes:[NSDictionary dictionaryWithObjectsAndKeys:BADGE_FONT, NSFontAttributeName, nil]];
+    NSAttributedString *badgeAttrString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%li", unread ]																	  attributes:[NSDictionary dictionaryWithObjectsAndKeys:BADGE_FONT, NSFontAttributeName, nil]];
     
     NSSize stringSize = [badgeAttrString size];
     
@@ -393,7 +393,7 @@ static NSGradient* selectionGradient = nil;
     [badgePath fill];
     
     //Draw the badge text
-    NSAttributedString *badgeAttrString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%d", countUnread ] 
+    NSAttributedString *badgeAttrString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%li", countUnread ] 
                                                                           attributes:attributes];
     NSSize stringSize = [badgeAttrString size];
     NSPoint badgeTextPoint = NSMakePoint(NSMidX(badgeFrame)-(stringSize.width/2.0),		//Center in the badge frame

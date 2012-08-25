@@ -81,7 +81,7 @@
 		NSMutableArray *dayStats = [result objectForKey:date ];
 		if (dayStats == nil) {
 			dayStats = [NSMutableArray arrayWithCapacity:10 ];
-			[result setObject:dayStats forKey:date ];
+			[result setObject:dayStats forKey: date];
 		}
 		[dayStats addObject:stat ];
 	}

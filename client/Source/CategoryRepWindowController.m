@@ -25,6 +25,7 @@
 #import "MOAssistant.h"
 
 #import "GraphicsAdditions.h"
+#import "NSView+PecuniaAdditions.h"
 #import "NS(Attributed)String+Geometrics.h"
 #import "AnimationHelper.h"
 #import "MCEMDecimalNumberAdditions.h"
@@ -855,6 +856,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 
                         totalSpendings = [totalSpendings decimalNumberByAdding: value];
                         break;
+                    case NSOrderedSame:
                     case NSOrderedDescending:
                         [earningsCategories addObject: pieData];
                         [sortedEarningValues addObject: [value abs]];

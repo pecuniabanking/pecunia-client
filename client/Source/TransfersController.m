@@ -757,7 +757,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         
         NSUInteger counter = 0;
         for (Transfer *transfer in transfers) {
-            NSString *actualName = (counter++ == 0) ? [templateName stringValue] : [NSString stringWithFormat: @"%@ %i", [templateName stringValue], counter];
+            NSString *actualName = (counter++ == 0) ? [templateName stringValue] : [NSString stringWithFormat: @"%@ %li", [templateName stringValue], counter];
             [transactionController saveTransfer: transfer asTemplateWithName: actualName];
         }
         [transfers release];

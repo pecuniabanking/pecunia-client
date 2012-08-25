@@ -25,8 +25,6 @@
 + (NSColor*)nextDefaultCategoryColor;
 + (NSColor*)applicationColorForKey: (NSString*)key;
 
-- (CGColorRef)CGColor;
-
 @end
 
 /**

@@ -742,23 +742,13 @@ static BOOL runningOnLionOrLater = NO;
     }
 }
 
--(IBAction)showInput:(id)sender
-{
-}
-
--(IBAction)showInfo:(id)sender
-{
-}
-
 -(IBAction)updateAllAccounts:(id)sender
 {
     NSArray *users = [BankUser allUsers];
-    for(BankUser *user in users) {
-        [self updateBankAccounts:nil forUser: user];
-
+    for (BankUser *user in users) {
+        [self updateBankAccounts: nil forUser: user];
     }
 }
-
 
 -(IBAction)enqueueRequest: (id)sender
 {
@@ -1039,13 +1029,6 @@ static BOOL runningOnLionOrLater = NO;
     [prefController showWindow: self];
 }
 
--(IBAction)manageTransferTemplates: (id)sender
-{
-    TransferTemplateController *controller = [[[TransferTemplateController alloc] init] autorelease];
-    [controller showWindow: mainWindow];
-}
-
-
 -(void)windowWillClose:(NSNotification *)aNotification
 {
     id window = [aNotification object ];
@@ -1055,10 +1038,6 @@ static BOOL runningOnLionOrLater = NO;
     if (window == mainWindow) {
         [NSApp terminate:self ];
     }
-}
-
--(IBAction)listUsers:(id)sender
-{
 }
 
 #pragma mark -
@@ -1485,18 +1464,6 @@ static BOOL runningOnLionOrLater = NO;
 
 #pragma mark -
 #pragma mark File actions
-
--(IBAction)save: (id)sender
-{
-    NSError *error = nil;
-    
-    if(self.managedObjectContext == nil) return;
-    if([self.managedObjectContext save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError:error];
-        [alert runModal];
-        return;
-    }
-}
 
 -(IBAction)export: (id)sender
 {

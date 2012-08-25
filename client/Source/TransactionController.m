@@ -204,6 +204,8 @@
         case TransferTypeSEPA: window = transferSEPAWindow; break;
 		case TransferTypeInternal: window = transferInternalWindow; break;
         case TransferTypeDebit: break; //todo
+        case TransferTypeCollectiveCredit: break; // TODO
+        case TransferTypeCollectiveDebit: break;
 	};
 	
 	if(transferType != TransferTypeEU && transferType != TransferTypeSEPA) [self preparePurposeFields ];

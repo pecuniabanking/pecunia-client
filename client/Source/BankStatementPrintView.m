@@ -406,7 +406,7 @@
 	[s drawInRect:rect withAttributes:attributes ];
 	
 	[attributes setObject:mps forKey:NSParagraphStyleAttributeName ];
-	s = [NSString stringWithFormat:@"Seite %d von %d", [[NSPrintOperation currentOperation ] currentPage], totalPages ];
+	s = [NSString stringWithFormat:@"Seite %li von %i", [[NSPrintOperation currentOperation ] currentPage], totalPages ];
 	[s drawInRect:rect withAttributes:attributes ];
 	
 	

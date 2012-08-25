@@ -250,7 +250,7 @@ TimeSliceManager *timeSliceManager = nil;
 	[control setLabel: [[NSNumber numberWithInt: year ] description ] forSegment: 0 ];
 	
 	// quarter
-	NSString *quarterString = [NSString stringWithFormat: @"Q%.1u", quarter+1 ];
+	NSString *quarterString = [NSString stringWithFormat: @"Q%.1lu", quarter+1 ];
 	[control setLabel: quarterString forSegment: 1 ];
 	
 	// month

@@ -41,7 +41,7 @@
         
         NSMutableString *hexString  = [NSMutableString stringWithCapacity: 2 * data.length];
         for (NSUInteger i = 0; i < data.length; ++i)
-            [hexString appendString:[NSString stringWithFormat: @"%02x", (unsigned long)dataBuffer[i]]];
+            [hexString appendString:[NSString stringWithFormat: @"%02x", dataBuffer[i]]];
         result = [NSString stringWithString: hexString];
     }
     return result;

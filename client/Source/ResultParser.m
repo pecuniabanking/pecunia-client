@@ -62,7 +62,7 @@
 		id obj;
 		id class = objc_getClass([currentType UTF8String]);
 		if (class == nil) {
-            NSLog(@"Result parser: couldn't find class \"%@\"", [currentType UTF8String]);
+            NSLog(@"Result parser: couldn't find class \"%s\"", [currentType UTF8String]);
         } else {
             obj = [[[class alloc] init] autorelease];
             [stack addObject: obj];

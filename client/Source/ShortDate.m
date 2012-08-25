@@ -1,10 +1,21 @@
-//
-//  SimpleDate.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 15.04.09.
-//  Copyright 2009 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "ShortDate.h"
 
@@ -247,23 +258,23 @@ NSCalendar *calendar = nil;
 
 - (NSString*)monthYearDescription
 {
-    return [NSString stringWithFormat: @"%d/%d", components.month, components.year];
+    return [NSString stringWithFormat: @"%li/%li", components.month, components.year];
 }
 
 - (NSString*)quarterYearDescription
 {
-    return [NSString stringWithFormat: @"Q%d/%d", self.quarter, components.year];
+    return [NSString stringWithFormat: @"Q%i/%li", self.quarter, components.year];
 }
 
 - (NSString*)yearDescription
 {
-    return [NSString stringWithFormat: @"%d", components.year];
+    return [NSString stringWithFormat: @"%li", components.year];
 }
 
 - (NSString*)weekYearDescription
 {
     // TODO: localization?
-    return [NSString stringWithFormat: @"KW %d/%d", components.week, components.year]; 
+    return [NSString stringWithFormat: @"KW %li/%li", components.week, components.year];
 }
 
 -(ShortDate*)firstDayInYear

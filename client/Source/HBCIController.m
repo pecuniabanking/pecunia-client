@@ -137,7 +137,7 @@ NSString *escapeSpecial(NSString *s)
     NSString *bundlePath = [[NSBundle mainBundle ] bundlePath ];
     NSString *libPath = [bundlePath stringByAppendingString:@"/Contents/" ];
     
-    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"init\">", ppDir ];
+    NSMutableString *cmd = [NSMutableString stringWithString: @"<command name=\"init\">"];
     [self appendTag: @"passportPath" withValue: ppDir to: cmd ];
     [self appendTag: @"path" withValue: ppDir to: cmd ];
     [self appendTag: @"ddvLibPath" withValue: libPath to: cmd ];
@@ -679,6 +679,10 @@ NSString *escapeSpecial(NSString *s)
                 case TransferTypeEU:	
                     type = @"foreign";
                     [self appendTag:@"chargeTo" withValue: [transfer.chargedBy description]  to: cmd];
+                    break;
+                case TransferTypeCollectiveCredit:
+                case TransferTypeCollectiveDebit:
+                    // TODO
                     break;
             }
             

@@ -164,20 +164,6 @@ static NSMutableDictionary* applicationColors;
     return [NSColor blackColor];
 }
 
-- (CGColorRef) CGColor
-{
-    CGColorSpaceRef colorspace = [[self colorSpace] CGColorSpace];
-    const NSInteger nComponents = [self numberOfComponents];
-    
-    CGFloat components[nComponents];
-    
-    [self getComponents: components];
-    
-    CGColorRef c = CGColorCreate(colorspace, components);
-        
-    return (CGColorRef)[(id)c autorelease];
-}
-
 @end
 
 

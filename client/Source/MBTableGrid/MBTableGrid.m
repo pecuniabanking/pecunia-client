@@ -1318,7 +1318,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		return [[self dataSource] tableGrid:self headerStringForRow:rowIndex];
 	}
 	
-	return [NSString stringWithFormat:@"%i", (rowIndex+1)];
+	return [NSString stringWithFormat:@"%li", (rowIndex+1)];
 }
 
 - (id)_objectValueForColumn:(NSUInteger)columnIndex row:(NSUInteger)rowIndex
