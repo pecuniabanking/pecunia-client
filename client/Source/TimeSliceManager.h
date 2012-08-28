@@ -33,12 +33,12 @@ typedef enum {
     NSInteger quarter;
     NSUInteger month;
     SliceType type;
-    NSString *autosaveName;
     
-    ShortDate *minDate;
-    ShortDate *maxDate;
-    ShortDate *fromDate;
-    ShortDate *toDate;
+    ShortDate   *_minDate;
+    ShortDate   *_maxDate;
+    ShortDate   *_fromDate;
+    ShortDate   *_toDate;
+    NSString    *_autosaveName;
     
     IBOutlet NSDatePicker *fromPicker;
     IBOutlet NSDatePicker *toPicker;
@@ -50,11 +50,11 @@ typedef enum {
     NSMutableArray *controls;
 }
 
-@property (nonatomic, retain) ShortDate *minDate;
-@property (nonatomic, retain) ShortDate *maxDate;
-@property (nonatomic, retain) ShortDate *fromDate;
-@property (nonatomic, retain) ShortDate *toDate;
-@property (nonatomic, retain) NSString  *autosaveName;
+@property (nonatomic, retain) ShortDate *_minDate;
+@property (nonatomic, retain) ShortDate *_maxDate;
+@property (nonatomic, retain) ShortDate *_fromDate;
+@property (nonatomic, retain) ShortDate *_toDate;
+@property (nonatomic, retain) NSString  *_autosaveName;
 
 -(id)initWithYear: (int)y month: (int)m;
 -(ShortDate*)lowerBounds;

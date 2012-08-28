@@ -33,11 +33,11 @@ TimeSliceManager *timeSliceManager = nil;
 
 @implementation TimeSliceManager
 
-@synthesize minDate;
-@synthesize maxDate;
-@synthesize fromDate;
-@synthesize toDate;
-@synthesize autosaveName;
+@synthesize _minDate;
+@synthesize _maxDate;
+@synthesize _fromDate;
+@synthesize _toDate;
+@synthesize _autosaveName;
 
 
 -(void)awakeFromNib
@@ -45,19 +45,19 @@ TimeSliceManager *timeSliceManager = nil;
 	BOOL savedValues = NO;
 	
 	if([delegate respondsToSelector: @selector(autosaveNameForTimeSlicer:) ]) {
-		self.autosaveName = [delegate autosaveNameForTimeSlicer: self ];
+		self._autosaveName = [delegate autosaveNameForTimeSlicer: self ];
 	}
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults ];
 	
 //	NSMutableDictionary *values = [NSMutableDictionary dictionaryWithCapacity:5 ];
-	if(autosaveName) {
-		NSDictionary *values = [userDefaults objectForKey: autosaveName ];
+	if(_autosaveName) {
+		NSDictionary *values = [userDefaults objectForKey: _autosaveName ];
 		if(values) {
 			type = [[values objectForKey: @"type" ] intValue ];
 			year = [[values objectForKey: @"year" ] intValue ];
 			month = [[values objectForKey: @"month" ] intValue ];
-			self.fromDate = [ShortDate dateWithDate: [values objectForKey: @"fromDate" ] ];
-			self.toDate = [ShortDate dateWithDate: [values objectForKey:@"toDate" ] ];
+			self._fromDate = [ShortDate dateWithDate: [values objectForKey: @"fromDate" ] ];
+			self._toDate = [ShortDate dateWithDate: [values objectForKey:@"toDate" ] ];
 			quarter = (month-1) / 3;
 			savedValues = YES;
 		}
@@ -91,16 +91,16 @@ TimeSliceManager *timeSliceManager = nil;
 
 -(void)save
 {
-	if(!autosaveName) return;
+	if(!_autosaveName) return;
 	NSMutableDictionary *values = [NSMutableDictionary dictionaryWithCapacity:5 ];
 	[values setValue: [NSNumber numberWithInt: type ] forKey: @"type" ];
 	[values setValue: [NSNumber numberWithInt: year ] forKey: @"year" ];
 	[values setValue: [NSNumber numberWithInt: month ] forKey: @"month" ];
-	[values setValue: [fromDate lowDate] forKey: @"fromDate" ];
-	[values setValue: [toDate highDate ] forKey: @"toDate" ];
+	[values setValue: [_fromDate lowDate] forKey: @"fromDate" ];
+	[values setValue: [_toDate highDate ] forKey: @"toDate" ];
 	
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults ];
-	[userDefaults setObject: values forKey: autosaveName ];
+	[userDefaults setObject: values forKey: _autosaveName ];
 }
 
 -(id)initWithCoder:(NSCoder*)coder
@@ -110,8 +110,8 @@ TimeSliceManager *timeSliceManager = nil;
 	year = [coder decodeIntForKey: @"year" ];
 	quarter = [coder decodeIntForKey: @"quarter" ];
 	month = [coder decodeIntForKey: @"month" ];
-	self.fromDate = [coder decodeObjectForKey: @"fromDate" ];
-	self.toDate = [coder decodeObjectForKey: @"toDate" ];
+	self._fromDate = [coder decodeObjectForKey: @"fromDate" ];
+	self._toDate = [coder decodeObjectForKey: @"toDate" ];
 	return self;
 }
 	
@@ -121,8 +121,8 @@ TimeSliceManager *timeSliceManager = nil;
 	[coder encodeInt: year forKey: @"year" ];
 	[coder encodeInt: quarter forKey: @"quarter" ];
 	[coder encodeInt: month forKey: @"month" ];
-	[coder encodeObject:fromDate forKey: @"fromDate" ];
-	[coder encodeObject:toDate forKey: @"toDate" ];
+	[coder encodeObject:_fromDate forKey: @"fromDate" ];
+	[coder encodeObject:_toDate forKey: @"toDate" ];
 }
 
 -(ShortDate*)lowerBounds
@@ -132,10 +132,10 @@ TimeSliceManager *timeSliceManager = nil;
 		case slice_year: date = [ShortDate dateWithYear: year month: 1 day: 1 ]; break;
 		case slice_quarter: date = [ShortDate dateWithYear: year month: quarter*3+1 day: 1 ]; break;
 		case slice_month: date = [ShortDate dateWithYear: year month: month day: 1 ]; break;
-		case slice_none: date = fromDate;
+		case slice_none: date = _fromDate;
 	}
-	if(minDate) {
-		if([minDate compare: date ] == NSOrderedDescending) return minDate; else return date;
+	if(_minDate) {
+		if([_minDate compare: date ] == NSOrderedDescending) return _minDate; else return date;
 	} else return date;
 }
 
@@ -155,10 +155,10 @@ TimeSliceManager *timeSliceManager = nil;
 			date = [ShortDate dateWithYear: year month: month day: day ];
 			break;
 		}
-		case slice_none: date = toDate;
+		case slice_none: date = _toDate;
 	}
-	if(maxDate) {
-		if([maxDate compare: date ] == NSOrderedAscending) return maxDate; else return date;
+	if(_maxDate) {
+		if([_maxDate compare: date ] == NSOrderedAscending) return _maxDate; else return date;
 	} else return date;
 }
 
@@ -183,9 +183,9 @@ TimeSliceManager *timeSliceManager = nil;
         default:
             break;
 	}
-	if(maxDate) {
-		if (year > [maxDate year ]) year = [maxDate year ];
-		if(year == [maxDate year ] && month > [maxDate month ]) month = [maxDate month ];
+	if(_maxDate) {
+		if (year > [_maxDate year ]) year = [_maxDate year ];
+		if(year == [_maxDate year ] && month > [_maxDate month ]) month = [_maxDate month ];
 		quarter = (month-1) / 3;
 	}
 }
@@ -213,9 +213,9 @@ TimeSliceManager *timeSliceManager = nil;
         default:
             break;
 	}
-	if(minDate) {
-		if(year < [minDate year ]) year = [minDate year ];
-		if(year == [minDate year ] && month < [minDate month ]) month = [minDate month ];
+	if(_minDate) {
+		if(year < [_minDate year ]) year = [_minDate year ];
+		if(year == [_minDate year ] && month < [_minDate month ]) month = [_minDate month ];
 		quarter = (month-1) / 3;
 	}
 }
@@ -224,11 +224,11 @@ TimeSliceManager *timeSliceManager = nil;
 {
 	BOOL stepped = NO;
 	
-	if(maxDate && [date compare: maxDate ] == NSOrderedDescending) return;
+	if(_maxDate && [date compare: _maxDate ] == NSOrderedDescending) return;
 	while([date compare: [self upperBounds ] ] == NSOrderedDescending) {
 		[self stepUp ];
 		stepped = YES;
-		if(maxDate && [date compare: maxDate ] == NSOrderedDescending) break;
+		if(_maxDate && [date compare: _maxDate ] == NSOrderedDescending) break;
 	}
 	if(stepped) {
 		[self updateControl ];
@@ -261,10 +261,10 @@ TimeSliceManager *timeSliceManager = nil;
 
 -(void)updatePickers
 {
-	self.fromDate = [self lowerBounds ];
-	self.toDate = [self upperBounds ];
-	if(fromPicker) [fromPicker setDateValue: [fromDate lowDate ] ];
-	if(toPicker) [toPicker setDateValue: [toDate highDate ] ];
+	self._fromDate = [self lowerBounds ];
+	self._toDate = [self upperBounds ];
+	if(fromPicker) [fromPicker setDateValue: [_fromDate lowDate ] ];
+	if(toPicker) [toPicker setDateValue: [_toDate highDate ] ];
 	
 }
 
@@ -277,21 +277,21 @@ TimeSliceManager *timeSliceManager = nil;
 
 -(void)setMinDate: (ShortDate*)date
 {
-	self.minDate = date;
+	self._minDate = date;
 	if(fromPicker) [fromPicker setMinDate: [date lowDate ] ];
 }
 
 -(void)setMaxDate: (ShortDate*)date
 {
-	self.maxDate = date;
+	self._maxDate = date;
 	if(toPicker) [toPicker setMaxDate: [date highDate ] ];
 }
 
 -(IBAction)dateChanged: (id)sender
 {
 	type = slice_none;
-	if(sender == fromPicker) self.fromDate = [ShortDate dateWithDate: [sender dateValue ] ];
-	else self.toDate = [ShortDate dateWithDate: [sender dateValue ] ];
+	if(sender == fromPicker) self._fromDate = [ShortDate dateWithDate: [sender dateValue ] ];
+	else self._toDate = [ShortDate dateWithDate: [sender dateValue ] ];
 	[self updateControl ];
 	[self updateDelegate ];
 	[self save ];
@@ -350,11 +350,11 @@ TimeSliceManager *timeSliceManager = nil;
 -(void)dealloc
 {
 	[controls release ];
-	[minDate release ];
-	[maxDate release ];
-    [fromDate release ];
-    [toDate release ];
-	[autosaveName release ];
+	[_minDate release ];
+	[_maxDate release ];
+    [_fromDate release ];
+    [_toDate release ];
+	[_autosaveName release ];
 	[super dealloc ];
 }
 

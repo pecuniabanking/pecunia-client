@@ -71,6 +71,11 @@
 	NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
 	NSArray *sds = [NSArray arrayWithObject:sd];
 	[countryController setSortDescriptors: sds];
+
+	// sort descriptor for template view
+	sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+	sds = [NSArray arrayWithObject:sd];
+	[templateController setSortDescriptors: sds];
 }
 
 -(void)setManagedObjectContext: (NSManagedObjectContext*)context
@@ -554,7 +559,7 @@
         NSCalendar *gregorian = [[NSCalendar alloc]
                                  initWithCalendarIdentifier:NSGregorianCalendar];
         NSDateComponents *weekdayComponents =
-        [gregorian components:NSWeekdayCalendarUnit fromDate:currentTransfer.date ];
+        [gregorian components:NSWeekdayCalendarUnit fromDate:currentTransfer.valutaDate ];
         int weekday = [weekdayComponents weekday];
         if (weekday == 1 || weekday == 7) {
 			NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 

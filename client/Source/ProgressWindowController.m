@@ -85,7 +85,7 @@
         maxLevel = level;
     }
 	if (isHidden == YES) {
-		if (level <= 1) {
+		if (level <= LogLevel_Error) {
 			[self showWindow:self ];
 			[[self window ] orderFront:self ]; 
 		} else return;
