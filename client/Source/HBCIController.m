@@ -1260,15 +1260,8 @@ NSString *escapeSpecial(NSString *s)
     return nil;
 }
 
-- (BOOL)registerBankUser:(BankUser*)user error:(PecuniaError**)err
+- (BOOL)registerBankUser:(BankUser*)user error:(PecuniaError**)error
 {
-    static PecuniaError *error = nil;
-    if (user.regResult == Reg_ok) return YES;
-    if (user.regResult == Reg_failed) {
-        *err = error;
-        return NO;
-    }
-    
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"registerUser\">" ];
     
     SecurityMethod secMethod = [user.secMethod intValue ];
@@ -1285,18 +1278,14 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"bankCode" withValue: user.bankCode to: cmd];
     [cmd appendString: @"</command>" ];
     
-    NSNumber *isOk = [bridge syncCommand: cmd error: &error];
+    NSNumber *isOk = [bridge syncCommand: cmd error: error];
     
-    if (error == nil && [isOk boolValue ] == YES) {
-        user.regResult = Reg_ok;
+    if (*error == nil && [isOk boolValue ] == YES) {
         return YES;
     } else {
-        if (error == nil) {
-            error = [PecuniaError errorWithMessage:[NSString stringWithFormat:NSLocalizedString(@"AP356",@""), user.userId ] title:NSLocalizedString(@"AP355",@"") ];
+        if (*error == nil) {
+            *error = [PecuniaError errorWithMessage:[NSString stringWithFormat:NSLocalizedString(@"AP356",@""), user.userId ] title:NSLocalizedString(@"AP355",@"") ];
         }
-        [error retain ];
-        *err = error;
-        user.regResult = Reg_failed;
         return NO;
     }   
 }
