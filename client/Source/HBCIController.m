@@ -682,7 +682,8 @@ NSString *escapeSpecial(NSString *s)
                     break;
                 case TransferTypeCollectiveCredit:
                 case TransferTypeCollectiveDebit:
-                    // TODO
+                    [[MessageLog log ] addMessage:@"Collective transfer must be sent with 'sendCollectiveTransfer'" withLevel:LogLevel_Error];
+                    continue;
                     break;
             }
             

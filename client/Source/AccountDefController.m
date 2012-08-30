@@ -138,7 +138,7 @@
 			newAccount.isManual = [NSNumber numberWithBool:NO ];
 			newAccount.userId = user.userId;
 			newAccount.customerId = user.customerId;
-			newAccount.collTransfer = account.collTransfer;
+			newAccount.collTransferMethod = account.collTransferMethod;
 			newAccount.isStandingOrderSupported = account.isStandingOrderSupported;
 		} else {
 			newAccount.isManual = [NSNumber numberWithBool:YES ];	

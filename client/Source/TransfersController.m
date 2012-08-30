@@ -1110,6 +1110,68 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     return transactionController.editingInProgress;  
 }
 
+// checks in the given list of transfers which of them can/should be sent as collective transfers and sends them
+// returns the list of transfers still to be sent
+- (NSArray*)doSendCollectiveTransfers:(NSArray*)transfers
+{
+    NSMutableArray *singleTransfers = [NSMutableArray arrayWithCapacity:20 ];
+    NSMutableDictionary *transfersByAccount = [NSMutableDictionary dictionaryWithCapacity:10 ];
+    for (Transfer *transfer in transfers) {
+        BankAccount *account = transfer.account;
+        if ([account.collTransferMethod intValue] == CTM_none) {
+            [singleTransfers addObject:transfer ];
+            continue;
+        }
+        NSMutableArray *collTransfers = [transfersByAccount objectForKey:account ];
+        if (collTransfers == nil) {
+            [transfersByAccount setObject:[NSMutableArray arrayWithCapacity:10 ] forKey:account ];
+            collTransfers = [transfersByAccount objectForKey:account ];
+        }
+        [collTransfers addObject:transfer ];
+    }
+    
+    // check accounts and transfers
+    for (BankAccount *account in [transfersByAccount allKeys ]) {
+        BOOL collectiveTransfer = YES;
+        
+        // sort out single transfers (only one transfer per account)
+        NSArray *collTransfers = [transfersByAccount objectForKey:account ];
+        if ([collTransfers count ] == 1) {
+            collectiveTransfer = NO;
+        }
+        
+        // now ask for accounts with method "ask"
+        if ([account.collTransferMethod intValue] == CTM_ask) {
+            NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP426", @""), 
+                                            NSLocalizedString(@"AP427", @""), 
+                                            NSLocalizedString(@"no", @"No"), 
+                                            NSLocalizedString(@"yes", @"Yes"), 
+                                            nil,
+                                            account.accountNumber);
+            if (res == NSAlertDefaultReturn) {
+                collectiveTransfer = NO;
+            }
+        }
+        
+        if (collectiveTransfer == NO) {
+            // do not create collective transfer for this account
+            for (Transfer *transfer in collTransfers) {
+                [singleTransfers addObject:transfer ];
+            }
+            [transfersByAccount removeObjectForKey:account ];
+        } else {
+            // now send collective transfer
+            PecuniaError *error = [[HBCIClient hbciClient ] sendCollectiveTransfer:collTransfers];
+            if (error) {
+                [error logMessage ];
+            }
+        }
+    }
+    
+    // return array of single transfers
+    return singleTransfers;
+}
+
 /**
  * Sends the given transfers out.
  */
@@ -1127,6 +1189,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         [logController showWindow: self];
         [[logController window] orderFront: self];
     }
+    
+    // first check for collective transfers
+    transfers = [self doSendCollectiveTransfers:transfers ];
     
     BOOL sent = [[HBCIClient hbciClient] sendTransfers: transfers];
     if (sent) {

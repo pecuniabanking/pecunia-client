@@ -43,7 +43,7 @@
 @dynamic type;
 @dynamic balance;
 @dynamic noAutomaticQuery;
-@dynamic collTransfer;
+@dynamic collTransferMethod;
 @dynamic isManual;
 @dynamic splitRule;
 @dynamic isStandingOrderSupported;

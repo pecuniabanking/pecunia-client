@@ -25,6 +25,12 @@
 @class BankStatement;
 @class BankUser;
 
+typedef enum {
+    CTM_none = 0,
+    CTM_all,
+    CTM_ask
+} CollectiveTransferMethod;
+
 @interface BankAccount : Category<NSCopying> {
 	NSDate				*newLatestTransferDate;
 	PurposeSplitRule	*purposeSplitRule;
@@ -69,7 +75,7 @@
 @property (nonatomic, retain) NSNumber * type;
 @property (nonatomic, retain) NSDecimalNumber * balance;
 @property (nonatomic, retain) NSNumber * noAutomaticQuery;
-@property (nonatomic, retain) NSNumber * collTransfer;
+@property (nonatomic, retain) NSNumber * collTransferMethod;
 @property (nonatomic, retain) NSNumber * isManual;
 @property (nonatomic, retain) NSNumber * isStandingOrderSupported;
 @property (nonatomic, retain) NSString * splitRule;

@@ -38,6 +38,7 @@
 	IBOutlet NSView					*accountAddView;
     IBOutlet BWGradientBox          *topGradient;
     IBOutlet BWGradientBox          *backgroundGradient;
+    IBOutlet NSPopUpButton          *collTransferButton;
 
     @private
 	NSManagedObjectContext			*moc;

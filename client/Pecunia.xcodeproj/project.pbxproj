@@ -205,6 +205,7 @@
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
 		B17B2B4013EC913800739E7A /* ChipTanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */; };
 		B17B2B4313EC921200739E7A /* FlickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B4213EC921200739E7A /* FlickerView.m */; };
+		B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B17E5C8315EFFC03008527C8 /* 102.xcmappingmodel */; };
 		B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = B17FE3C214C9F17400F6FAFE /* LaunchParameters.m */; };
 		B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B17FE44414CA091E00F6FAFE /* CustomerMessage.m */; };
 		B17FE48C14CB586A00F6FAFE /* BankMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B17FE48B14CB586A00F6FAFE /* BankMessage.m */; };
@@ -653,6 +654,8 @@
 		B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChipTanWindow.xib; sourceTree = "<group>"; };
 		B17B2B4113EC921200739E7A /* FlickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = FlickerView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B4213EC921200739E7A /* FlickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = FlickerView.m; sourceTree = "<group>"; tabWidth = 4; };
+		B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 5.xcdatamodel"; sourceTree = "<group>"; };
+		B17E5C8315EFFC03008527C8 /* 102.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 102.xcmappingmodel; sourceTree = "<group>"; };
 		B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 3.xcdatamodel"; sourceTree = "<group>"; };
 		B17FE3C114C9F17400F6FAFE /* LaunchParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchParameters.h; sourceTree = "<group>"; };
 		B17FE3C214C9F17400F6FAFE /* LaunchParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchParameters.m; sourceTree = "<group>"; };
@@ -1085,6 +1088,7 @@
 				B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */,
 				C10CFBC7150A046A003DFC12 /* 100.xcmappingmodel */,
 				B1835D3415D521B5003B93ED /* 101.xcmappingmodel */,
+				B17E5C8315EFFC03008527C8 /* 102.xcmappingmodel */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2077,6 +2081,7 @@
 				B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */,
 				B183625C15E2DAFE003B93ED /* GradientBoxWithLabels.m in Sources */,
 				A652533515E39A92000C2989 /* TanWindow.m in Sources */,
+				B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2295,8 +2300,9 @@
 				27E5534C146ED844001DE9BE /* Accounts.xcdatamodel */,
 				B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */,
 				B183568815CBFA6D003B93ED /* Accounts 4.xcdatamodel */,
+				B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */,
 			);
-			currentVersion = B183568815CBFA6D003B93ED /* Accounts 4.xcdatamodel */;
+			currentVersion = B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

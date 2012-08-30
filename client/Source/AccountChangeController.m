@@ -48,7 +48,7 @@
 	account.bic = acc.bic;
 	account.iban = acc.iban;
 	account.currency = acc.currency;
-	account.collTransfer = acc.collTransfer;
+	account.collTransferMethod = acc.collTransferMethod;
 	account.isStandingOrderSupported = acc.isStandingOrderSupported;
     account.noAutomaticQuery = acc.noAutomaticQuery;
 	account.userId = acc.userId;
@@ -78,7 +78,26 @@
 			}
 			[predicateEditor setObjectValue: pred ];
 		}
-	}
+        
+        // change window size
+        int deltaHeight = [manAccountAddView frame ].size.height - [accountAddView frame ].size.height;
+        NSRect frame = [[self window] frame];
+        frame.size.height += deltaHeight;
+        [[self window] setFrame:frame display:YES];
+        frame = [manAccountAddView frame];
+        frame.origin.y -= deltaHeight;
+        [manAccountAddView setFrame:frame];
+	} else {
+        // no manual account
+        // check if collective transfers are available - if not, disable collection transfer method popup
+        BOOL collTransferSupported = [[HBCIClient hbciClient ] isTransferSupported:TransferTypeCollectiveCredit forAccount:account];
+        if (collTransferSupported == NO) {
+            NSMenuItem *item = [collTransferButton itemAtIndex:0];
+            [item setTitle:NSLocalizedString(@"AP428",@"")];
+            [collTransferButton setEnabled:NO ];
+        }
+    }
+
     
     // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
     topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
@@ -104,7 +123,7 @@
 	changedAccount.bic = account.bic;
 	changedAccount.owner = account.owner;
 	changedAccount.name = account.name;
-	changedAccount.collTransfer = account.collTransfer;
+	changedAccount.collTransferMethod = account.collTransferMethod;
 	changedAccount.isStandingOrderSupported = account.isStandingOrderSupported;
     changedAccount.noAutomaticQuery = account.noAutomaticQuery;
     changedAccount.catRepColor = account.catRepColor;
