@@ -21,7 +21,6 @@
 	bottomMargin = [pi bottomMargin ];
 	leftMargin = [pi leftMargin ];
 	rightMargin = [pi rightMargin ];
-	purposeWidth = paperSize.width - leftMargin - rightMargin - 320;
 	pageHeight = paperSize.height - topMargin - bottomMargin;
 	pageWidth = paperSize.width - leftMargin - rightMargin;
 	dateWidth = 37;
