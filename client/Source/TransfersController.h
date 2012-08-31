@@ -63,6 +63,7 @@
     IBOutlet NSPopUpButton *targetAccountSelector;
     IBOutlet NSComboBox    *receiverComboBox;
     IBOutlet NSTextField   *amountCurrencyText;
+    IBOutlet NSTextField   *amountField;
     IBOutlet NSTextField   *accountText;
     IBOutlet NSTextField   *accountNumber;
     IBOutlet NSTextField   *bankCodeText;
@@ -126,6 +127,8 @@
 - (void)cancelEditing;
 - (BOOL)editingInProgress;
 
+- (void)startDonationTransfer;
+    
 - (NSView *)mainView;
 - (void)prepare;
 - (void)activate;

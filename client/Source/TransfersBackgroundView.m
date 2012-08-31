@@ -41,9 +41,9 @@ static NSShadow* borderShadow = nil;
     if (background == nil) {
         background = [NSImage imageNamed: @"background-pattern.png"];
         
-        borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.25]
+        borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 1 alpha: 0.5]
                                                 offset: NSMakeSize(1, -1)
-                                            blurRadius: 2.0];
+                                            blurRadius: 3.0];
     }
     
     [NSGraphicsContext saveGraphicsState];
@@ -59,15 +59,28 @@ static NSShadow* borderShadow = nil;
     [NSBezierPath fillRect: [self bounds]];
     
     NSRect dropTargetFrame = [rightPane dropTargetFrame];
-    [borderShadow set];
     
     // Draw the target area for drop operations from the preview images or one of the transfer
     // lists (unsent/sent transfers and transfer templates).
     NSBezierPath* dragTargetPath = [NSBezierPath bezierPathWithRoundedRect: dropTargetFrame xRadius: 20 yRadius: 20];
     [dragTargetPath setLineWidth: 8];
-    [[NSColor colorWithCalibratedWhite: 60 / 255.0 alpha: 1] setStroke];
     CGFloat lineDash[2] = {20, 5};
     [dragTargetPath setLineDash: lineDash count: 2 phase: 0];
+
+    NSAffineTransform *transform = [NSAffineTransform transform];
+    [transform translateXBy: 3 yBy: -3];
+    [dragTargetPath transformUsingAffineTransform: transform];
+    [[NSColor colorWithCalibratedWhite: 100 / 255.0 alpha: 1] setStroke];
+    [dragTargetPath stroke];
+
+    [[NSColor colorWithCalibratedWhite: 30 / 255.0 alpha: 1] setStroke];
+    [transform translateXBy: -5 yBy: 5];
+    [dragTargetPath transformUsingAffineTransform: transform];
+    [dragTargetPath stroke];
+    
+    [[NSColor colorWithCalibratedWhite: 60 / 255.0 alpha: 1] setStroke];
+    [transform translateXBy: 3 yBy: -3];
+    [dragTargetPath transformUsingAffineTransform: transform];
     [dragTargetPath stroke];
     
     [NSGraphicsContext restoreGraphicsState];

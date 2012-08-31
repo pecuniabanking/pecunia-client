@@ -164,6 +164,27 @@ static NSMutableDictionary* applicationColors;
     return [NSColor blackColor];
 }
 
+// Suppress warning about this method reimplementing a same named function in the primary class,
+// as this is available not before 10.8.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
+
+- (CGColorRef)CGColor
+{
+    CGColorSpaceRef colorspace = [[self colorSpace] CGColorSpace];
+    const NSInteger nComponents = [self numberOfComponents];
+    
+    CGFloat components[nComponents];
+    
+    [self getComponents: components];
+    
+    CGColorRef c = CGColorCreate(colorspace, components);
+    
+    return (CGColorRef)[(id)c autorelease];
+}
+
+#pragma clang diagnostic pop
+
 @end
 
 

@@ -25,6 +25,8 @@
 + (NSColor*)nextDefaultCategoryColor;
 + (NSColor*)applicationColorForKey: (NSString*)key;
 
+- (CGColorRef)CGColor; // There's an NSColor implementation starting with 10.8.
+
 @end
 
 /**

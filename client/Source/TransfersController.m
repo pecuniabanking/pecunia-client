@@ -510,7 +510,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 /**
  * Refreshes the content of the source account selector and selects the given account (if found).
  */
-- (void)prepareSourceAccountSelector: (BankAccount *)account
+- (void)prepareSourceAccountSelector: (BankAccount *)selectedAccount
 {
     [sourceAccountSelector removeAllItems];
     
@@ -554,7 +554,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             [item setEnabled: YES];
             item.indentationLevel = 1;
             [sourceMenu addItem: item];
-            if (currentAccount == account)
+            if (currentAccount == selectedAccount)
                 selectedItem = sourceMenu.numberOfItems - 1;
         }
     }
@@ -1206,6 +1206,28 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
     [pendingTransfers prepareContent];
     [finishedTransfers prepareContent];
+}
+
+- (void)startDonationTransfer
+{
+    if (![self prepareTransferOfType: TransferTypeStandard]) {
+        return;
+    }
+    
+    BOOL result = [transactionController newTransferOfType: TransferTypeStandard];
+    if (result) {
+        Transfer *transfer = transactionController.currentTransfer;
+        transfer.remoteAccount = @"1016381558";
+        transfer.remoteBankCode = @"12030000";
+        transfer.remoteBankName = [[HBCIClient hbciClient] bankNameForCode: @"12030000" inCountry: @"de"];;
+        transfer.remoteName = @"Frank Emminghaus";
+        transfer.purpose1 = @"Spende fuer Pecunia";
+        
+        [self prepareSourceAccountSelector: nil];
+    }
+    
+    [rightPane showFormular];
+    [amountField.window makeFirstResponder: amountField];
 }
 
 #pragma mark -

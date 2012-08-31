@@ -208,30 +208,16 @@
 		case TransferTypeEU: window = transferEUWindow; break;
         case TransferTypeSEPA: window = transferSEPAWindow; break;
 		case TransferTypeInternal: window = transferInternalWindow; break;
-        case TransferTypeDebit: break; //todo
+        case TransferTypeDebit: break; // TODO
         case TransferTypeCollectiveCredit: break; // TODO
-        case TransferTypeCollectiveDebit: break;
+        case TransferTypeCollectiveDebit: break; // TODO
 	};
 	
 	if(transferType != TransferTypeEU && transferType != TransferTypeSEPA) [self preparePurposeFields ];
 	if(transferType == TransferTypeStandard) [self hideTransferDate: YES ];
 	if(transferType == TransferTypeDated) [self hideTransferDate: NO ];
 	
-	if(donation) {
-		currentTransfer.remoteAccount = @"0853820165";
-		currentTransfer.remoteBankCode = @"50010517";
-		NSString *bankName = [[HBCIClient hbciClient] bankNameForCode:  @"50010517" inCountry: @"de"];
-		currentTransfer.remoteBankName = bankName;
-		currentTransfer.remoteName = @"Frank Emminghaus";
-		currentTransfer.purpose1 = @"Spende fuer Pecunia";
-		
-		//hide "next"-button
-		NSView	*cv = [window contentView ];
-		NSView	*bv = [cv viewWithTag: 50 ];
-		[bv setHidden: YES ];
-	}
-	
-	if(/*transferType == TransferTypeEU || */donation) [window makeFirstResponder: [[window contentView ] viewWithTag: 11 ] ];
+    //	if(/*transferType == TransferTypeEU || */donation) [window makeFirstResponder: [[window contentView ] viewWithTag: 11 ] ];
 	
     [[[templatesDraw contentView ] viewWithTag:10 ] setDoubleAction:@selector(templateDoubleClicked:) ];
 }
@@ -391,6 +377,7 @@
         if (currentTransferController.managedObjectContext.hasChanges) {
             [currentTransferController.managedObjectContext rollback];
         }
+        currentTransfer = nil;
     }
 }
 
@@ -647,7 +634,7 @@
 	
 	currentTransfer = [NSEntityDescription insertNewObjectForEntityForName:@"Transfer" inManagedObjectContext: context];
 	
-	[self prepareTransfer ];
+	[self prepareTransfer];
 
 	currentTransfer.account = account;
 	currentTransfer.currency = account.currency;
@@ -736,7 +723,7 @@
 	}
 	
 	currentTransfer = tf;
-	[self prepareTransfer ];
+	[self prepareTransfer];
 	
 	[currentTransferController setContent: tf ];
 	

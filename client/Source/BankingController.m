@@ -1628,14 +1628,14 @@ static BOOL runningOnLionOrLater = NO;
 
 -(IBAction)donate: (id)sender
 {
-    BankAccount* account = [self selectedBankAccount];
-    if(account == nil || [[account isManual] boolValue] == YES) {
-        NSRunAlertPanel(NSLocalizedString(@"AP91", @""), 
-                        NSLocalizedString(@"AP92", @""), 
-                        NSLocalizedString(@"ok", @"Ok"), nil, nil);
-        return;
-    }
-    [transactionController donateWithAccount: account];
+    // Switch to the transfers page.
+    NSButton *dummy = [[NSButton alloc] init];
+    dummy.tag = 1;
+    [self activateMainPage: dummy];
+    [dummy release];
+
+    // Start transfer editing process.
+    [transfersController startDonationTransfer];
 }
 
 
