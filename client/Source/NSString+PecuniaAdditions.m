@@ -47,4 +47,12 @@
     return result;
 }
 
+- (NSAttributedString*)attributedStringWithFont:(NSFont*)font
+{
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil ];
+    NSAttributedString *result = [[NSAttributedString alloc ] initWithString:self attributes:attrs];
+    return [result autorelease ];
+}
+
+
 @end

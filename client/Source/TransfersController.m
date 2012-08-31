@@ -25,6 +25,7 @@
 #import "MOAssistant.h"
 #import "AmountCell.h"
 #import "BankAccount.h"
+#import "TransferPrintView.h"
 
 #import "TransferFormularView.h"
 #import "GradientButtonCell.h"
@@ -1489,7 +1490,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 }
 
 #pragma mark -
-#pragma mark Interface functions for main window
+#pragma mark PecuniaTabItem protocol
 
 - (NSView *)mainView
 {
@@ -1498,7 +1499,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (void)prepare
 {
-    
 }
 
 - (void)activate
@@ -1511,9 +1511,30 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [self hideCalendarWindow];
 }
 
--(void)terminate
+- (void)terminate
 {
     [self cancelEditing];
+}
+
+- (void)print
+{
+    NSInteger idx = [transferTab indexOfTabViewItem:[transferTab selectedTabViewItem]];
+    if (idx == NSNotFound) {
+        return;
+    }
+    
+    if (idx == 0) {
+        // transfers
+        NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
+        [printInfo setTopMargin: 45];
+        [printInfo setBottomMargin: 45];
+        NSPrintOperation *printOp;
+        NSView *view = [[TransferPrintView alloc] initWithTransfers:[finishedTransfers arrangedObjects ] printInfo:printInfo];
+        printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo];
+        [printOp setShowsPrintPanel: YES];
+        [printOp runOperation];
+        
+    }
 }
 
 @end

@@ -226,6 +226,7 @@
 "AP426" = "Sammelüberweisung";
 "AP427" = "Möchten Sie die Überweisungen von Konto %@ als Sammelüberweisung ausführen?";
 "AP428" = "Nicht unterstützt";
+"AP429" = "Terminierte Überweisung";
 
 // Use a new block of IDs for next set of strings!
 // AP450..AP499

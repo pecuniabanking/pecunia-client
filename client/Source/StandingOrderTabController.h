@@ -18,12 +18,12 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import "PecuniaSectionItem.h"
+#import "PecuniaTabItem.h"
 
 @class TransactionLimits;
 @class StandingOrder;
 
-@interface StandingOrderTabController : NSObject <PecuniaSectionItem> {
+@interface StandingOrderTabController : NSObject <PecuniaTabItem> {
 	IBOutlet NSTableView			*orderView;
 	IBOutlet NSArrayController		*orderController;
 	IBOutlet NSArrayController		*monthCyclesController;
@@ -82,14 +82,7 @@
 -(IBAction)update:(id)sender;
 -(IBAction)getOrders:(id)sender;
 
-// PecuniaSectionItem protocol.
-@property (nonatomic, retain) Category* category;
-
-- (NSView*)mainView;
 - (void)initAccounts;
-- (void)activate;
-- (void)deactivate;
-- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
 
 @end
 

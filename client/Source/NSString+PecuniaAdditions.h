@@ -22,5 +22,6 @@
 @interface NSString (PecuniaAdditions)
 
 + (NSString *)stringWithData: (NSData *)data;
+- (NSAttributedString*)attributedStringWithFont:(NSFont*)font;
 
 @end

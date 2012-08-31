@@ -2745,6 +2745,8 @@ static BOOL runningOnLionOrLater = NO;
             break;
         case 1:
         {
+            [transfersController print ];
+/*            
             NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
             [printInfo setTopMargin:45];
             [printInfo setBottomMargin:45];
@@ -2754,7 +2756,7 @@ static BOOL runningOnLionOrLater = NO;
             printOp = [NSPrintOperation printOperationWithView:[[mainTabView selectedTabViewItem] view] printInfo: printInfo];
             [printOp setShowsPrintPanel:YES];
             [printOp runOperation];
-            
+*/            
             break;
         }
         default:

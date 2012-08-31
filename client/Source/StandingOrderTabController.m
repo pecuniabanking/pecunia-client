@@ -60,16 +60,6 @@
 	[accountsController setContent:accounts ];
 }
 
--(void)prepare
-{
-	
-}
-
--(void)terminate
-{
-	
-}
-
 -(void)initAccounts
 {
 	NSError *error = nil;
@@ -639,9 +629,7 @@
 }
 
 #pragma mark -
-#pragma mark PecuniaSectionItem protocol
-
-@synthesize category;
+#pragma mark PecuniaTabItem protocol
 
 -(NSView*)mainView
 {
@@ -650,7 +638,6 @@
 
 -(void)print
 {
-	
 }
 
 - (void)activate
@@ -661,9 +648,14 @@
 {
 }
 
-- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
+-(void)prepare
 {
 }
+
+-(void)terminate
+{
+}
+
 
 @end
 

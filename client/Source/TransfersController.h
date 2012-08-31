@@ -22,6 +22,7 @@
 #import "Transfer.h"
 #import "TransfersListview.h"
 #import "TransferTemplatesListview.h"
+#import "PecuniaTabItem.h"
 
 @class TransactionController;
 @class TransfersController;
@@ -46,7 +47,7 @@
 
 @end
 
-@interface TransfersController : NSObject <NSWindowDelegate, NSTextFieldDelegate, TransfersDragDelegate>
+@interface TransfersController : NSObject <PecuniaTabItem, NSWindowDelegate, NSTextFieldDelegate, TransfersDragDelegate>
 {
     IBOutlet NSView                 *mainView;
 	IBOutlet NSArrayController      *finishedTransfers;
@@ -98,6 +99,7 @@
     IBOutlet DeleteImageView *transferDeleteImage;
     
     IBOutlet NSPanel        *templateNameSheet;
+    IBOutlet NSTabView      *transferTab;
     
 @private
 	NSNumberFormatter *formatter;
@@ -126,13 +128,6 @@
 - (BOOL)concludeDropDeleteOperation: (id<NSDraggingInfo>)info;
 - (void)cancelEditing;
 - (BOOL)editingInProgress;
-
 - (void)startDonationTransfer;
-    
-- (NSView *)mainView;
-- (void)prepare;
-- (void)activate;
-- (void)deactivate;
-- (void)terminate;
 
 @end

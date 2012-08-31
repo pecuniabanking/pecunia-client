@@ -202,6 +202,7 @@
 		B17729141504C9B200256898 /* TanMethodOld.m in Sources */ = {isa = PBXBuildFile; fileRef = B17729131504C9B200256898 /* TanMethodOld.m */; };
 		B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B177297C1504CE1B00256898 /* BusinessTransactionsController.m */; };
 		B17729AD1504D63200256898 /* BusinessTransactionsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17729AC1504D63200256898 /* BusinessTransactionsWindow.xib */; };
+		B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */; };
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
 		B17B2B4013EC913800739E7A /* ChipTanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */; };
 		B17B2B4313EC921200739E7A /* FlickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B4213EC921200739E7A /* FlickerView.m */; };
@@ -648,6 +649,9 @@
 		B177297C1504CE1B00256898 /* BusinessTransactionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessTransactionsController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B177297D1504CE1B00256898 /* BusinessTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessTransactionsController.h; sourceTree = "<group>"; };
 		B17729AC1504D63200256898 /* BusinessTransactionsWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BusinessTransactionsWindow.xib; sourceTree = "<group>"; };
+		B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferPrintView.m; sourceTree = "<group>"; };
+		B1798E2D15F0CE7E005AB39A /* TransferPrintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferPrintView.h; sourceTree = "<group>"; };
+		B1798EAD15F0F09B005AB39A /* PecuniaTabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaTabItem.h; sourceTree = "<group>"; };
 		B17B28FF13E340A300739E7A /* HBCIBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIBackend.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3C13EC8D5000739E7A /* ChipTanWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ChipTanWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ChipTanWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1152,6 +1156,7 @@
 		27FA4A1C154D5B76002A5ED0 /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				B159010A129310E40053CB9C /* PecuniaSectionItem.h */,
 				B192FDC00E8434D500B53380 /* CategoryRepWindowController.h */,
 				B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */,
 				B19822DB0E6F304A001C4C70 /* CategoryAnalysisWindowController.h */,
@@ -1284,6 +1289,8 @@
 		B137BE7812D32F3B00D0394C /* Printing */ = {
 			isa = PBXGroup;
 			children = (
+				B1798E2D15F0CE7E005AB39A /* TransferPrintView.h */,
+				B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */,
 				B1FB6B00126B7BF300C54A0E /* BankStatementPrintView.h */,
 				B1FB6B01126B7BF300C54A0E /* BankStatementPrintView.m */,
 				B14587A31289ED8D00848683 /* CategoryReportingNode.h */,
@@ -1506,6 +1513,7 @@
 		B1C7B18B130B11280091CD72 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				B1798EAD15F0F09B005AB39A /* PecuniaTabItem.h */,
 				27FA4A19154D5AB9002A5ED0 /* BankingController+Tabs.h */,
 				27FA4A1A154D5AB9002A5ED0 /* BankingController+Tabs.m */,
 				B1AFAA0312A061C100B115A7 /* StandingOrderTabController.h */,
@@ -1686,7 +1694,6 @@
 		B1FE0DD81065885D005B3800 /* Basic */ = {
 			isa = PBXGroup;
 			children = (
-				B159010A129310E40053CB9C /* PecuniaSectionItem.h */,
 				B19F41BC0FBDF57B003EE0E1 /* PecuniaError.h */,
 				B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */,
 				B132F91D0F96594000263F3B /* ShortDate.h */,
@@ -2082,6 +2089,7 @@
 				B183625C15E2DAFE003B93ED /* GradientBoxWithLabels.m in Sources */,
 				A652533515E39A92000C2989 /* TanWindow.m in Sources */,
 				B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */,
+				B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

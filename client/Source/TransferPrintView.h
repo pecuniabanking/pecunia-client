@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-@class TransfersListViewCell;
 
 @interface TransferPrintView : NSView
 {
@@ -21,12 +20,11 @@
 	int		pageWidth;
 	int		dateWidth;
 	int		amountWidth;
+    int     bankAddressWidth;
 	int		padding;
 	int		minStatHeight;
 	int		totalPages;
 	int		currentPage;
-    BOOL    printUserInfo;
-    BOOL    printCategories;
     
 	NSMutableArray  *transfers;
 	int				*statHeights;
@@ -35,11 +33,9 @@
 	NSNumberFormatter *numberFormatter;
 	NSNumberFormatter *debitNumberFormatter;
     
-    TransfersListViewCell   *cell;
-
 }
 
-@property(nonatomic, copy) NSMutableArray *transfers;
+@property(nonatomic, retain) NSMutableArray *transfers;
 
 
 @end

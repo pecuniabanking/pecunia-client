@@ -24,7 +24,7 @@
 	pageHeight = paperSize.height - topMargin - bottomMargin;
 	pageWidth = paperSize.width - leftMargin - rightMargin;
 	dateWidth = 37;
-	amountWidth = 65;
+	amountWidth = 67;
 	purposeWidth = pageWidth - dateWidth - 3*amountWidth;
 	padding = 3;
 	currentPage = 1;
@@ -57,7 +57,6 @@
 	
 	frame.origin.x = 0;
 	frame.origin.y = 0;
-    frame.size.height = 0;
 	frame.size.width = pageWidth;
 	
     self = [super initWithFrame:frame];
@@ -382,19 +381,10 @@
 	
 	// Header
 	NSRect rect = NSMakeRect(leftMargin, topMargin-30, pageWidth, 25);
-	NSBezierPath *bp = [NSBezierPath bezierPathWithRoundedRect:rect xRadius:4 yRadius:4 ];
-	NSGradient* aGradient = [[[NSGradient alloc]
-							  initWithColorsAndLocations:[NSColor whiteColor], (CGFloat)-0.5, [NSColor orangeColor ], (CGFloat)1.1,
-							  nil] autorelease];
-	
-	[aGradient drawInBezierPath:bp angle:90.0];
-	
 	NSMutableDictionary *headerAttributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	[headerAttributes setObject:[NSFont fontWithName:@"ComicSansMS" size:16 ] forKey:NSFontAttributeName ];
-	[headerAttributes setObject:[NSColor whiteColor ] forKey:NSForegroundColorAttributeName ];
-	[headerAttributes setObject:mps forKey:NSParagraphStyleAttributeName ];
+	[headerAttributes setObject:[NSFont fontWithName:@"Helvetica Bold Oblique" size:16 ] forKey:NSFontAttributeName ];
 	rect.size.width-=10;
-	[@"Pecunia" drawInRect:rect withAttributes:headerAttributes ];
+	[@"Kontoauszug" drawInRect:rect withAttributes:headerAttributes ];
 	
 	// Footer
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
