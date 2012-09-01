@@ -19,35 +19,20 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface TransferPrintView : NSView
-{
-    NSSize	paperSize;
-	int		purposeWidth;
-	int		topMargin;
-	int		bottomMargin;
-	int		leftMargin;
-	int		rightMargin;
-	int		pageHeight;
-	int		pageWidth;
-	int		dateWidth;
-	int		amountWidth;
-    int     bankAddressWidth;
-	int		padding;
-	int		minStatHeight;
-	int		totalPages;
-	int		currentPage;
-    
-	NSMutableArray  *transfers;
-	int				*statHeights;
-	
-	NSDateFormatter *dateFormatter;
-	NSNumberFormatter *numberFormatter;
-	NSNumberFormatter *debitNumberFormatter;
-    
-}
+/**
+ * Categories for NSButton and NSButtonCell.
+ */
 
-@property(nonatomic, retain) NSMutableArray *transfers;
+@interface NSButton (PecuniaAdditions)
 
-- (id)initWithTransfers: (NSArray *)transfersToPrint printInfo: (NSPrintInfo *)pi;
+- (NSColor *)textColor;
+- (void)setTextColor:(NSColor *)textColor;
+
+@end
+
+@interface NSButtonCell (PecuniaAdditions)
+
+- (NSColor *)textColor;
+- (void)setTextColor:(NSColor *)textColor;
 
 @end

@@ -1316,8 +1316,8 @@ NSString *escapeSpecial(NSString *s)
         }
     }
     if ([options count ] == 0) {
-        NSRunAlertPanel(NSLocalizedString(@"352", @""), 
-                        NSLocalizedString(@"353",@""), 
+        NSRunAlertPanel(NSLocalizedString(@"AP352", @""),
+                        NSLocalizedString(@"AP353",@""),
                         NSLocalizedString(@"ok",@""), 
                         nil, nil, account.accountNumber);
         return nil;

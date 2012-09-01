@@ -228,5 +228,12 @@
 "AP428" = "Nicht unterstützt";
 "AP429" = "Terminierte Überweisung";
 
-// Use a new block of IDs for next set of strings!
+// Standing orders.
 // AP450..AP499
+"AP450" = "Jeden Monat";
+"AP451" = "Jede Woche";
+"AP452" = "Alle %d Monate";
+"AP453" = "Alle %d Wochen";
+
+// Use a new block of IDs for next set of strings!
+// AP500..AP559

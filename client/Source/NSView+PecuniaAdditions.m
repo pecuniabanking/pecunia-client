@@ -25,15 +25,15 @@
 
 - (void)drawTextFields
 {
-    // TextFelder zeichnen
+    // Manually draw all text fields to avoid font problems with layer-backed views.
     NSArray *views = [self subviews];
-    for(NSView *view in views) {
-        if([view isKindOfClass:[NSTextField class]]) {
-            NSTextField *field = (NSTextField*)view;
-            if ([field isEnabled ] && [field isHidden ]) {
+    for (NSView *view in views) {
+        if ([view isKindOfClass: [NSTextField class]]) {
+            NSTextField *field = (NSTextField *)view;
+            if ([field isEnabled] && [field isHidden]) {
                 NSRect r = [view frame];
                 NSAttributedString *as = [[field cell] attributedStringValue];
-                [as drawInRect:r];
+                [as drawInRect: r];
             }
         }
     }
@@ -74,6 +74,16 @@
     CFRelease(img);
     CFRelease(context);
     return [canvas autorelease];
+}
+
+@end
+
+@implementation CustomTextDrawingView
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+    [super drawRect: dirtyRect];
+    [self drawTextFields];
 }
 
 @end

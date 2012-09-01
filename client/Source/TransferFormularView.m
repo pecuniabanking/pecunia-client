@@ -91,6 +91,8 @@ static NSShadow* borderShadow = nil;
 static NSShadow* smallShadow = nil;
 static NSImage* stripes;
 
+#define TOP_PANE_HEIGHT 100
+
 - (void)drawRect: (NSRect) rect
 {
     [NSGraphicsContext saveGraphicsState];
@@ -122,9 +124,9 @@ static NSImage* stripes;
     
     // Top pane.
     bounds.origin.x += 30;
-    bounds.size.width-= 60;
+    bounds.size.width -= 60;
     bounds.origin.y = self.bounds.size.height - 90;
-    bounds.size.height = 100;
+    bounds.size.height = TOP_PANE_HEIGHT;
     
     draggingArea = bounds;
     
@@ -145,8 +147,8 @@ static NSImage* stripes;
     [shadeImage release];
     
     // Main pane.
-    bounds.size.height = 276;
-    bounds.origin.y = self.bounds.size.height - bounds.size.height - 110;
+    bounds.size.height = self.bounds.size.height - TOP_PANE_HEIGHT - 65;
+    bounds.origin.y = 60;
     shadePath = [NSBezierPath bezierPathWithRoundedRect: bounds xRadius: 6 yRadius: 6];
     [[NSColor colorWithCalibratedRed: 131 / 255.0 green: 171 / 255.0 blue: 113 / 255.0 alpha: 0.76] set];
     [shadePath fill];

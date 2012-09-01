@@ -30,6 +30,8 @@
 #import "StatusBarController.h"
 #import "ShortDate.h"
 
+#import "NSButton+PecuniaAdditions.h"
+
 @implementation StandingOrderTabController
 
 @synthesize requestRunning;
@@ -55,9 +57,12 @@
 
 -(void)awakeFromNib
 {
-	[self initAccounts ];
-    [self disableCycles ];
-	[accountsController setContent:accounts ];
+    monthCell.textColor = [NSColor whiteColor];
+    weekCell.textColor = [NSColor whiteColor];
+
+	[self initAccounts];
+    [self disableCycles];
+	[accountsController setContent: accounts];
 }
 
 -(void)initAccounts
@@ -159,56 +164,96 @@
 
 -(void)updateWeekCycles
 {
-	int i;
+    NSInteger selectedIndex = 0;
+    NSInteger currentCycle = currentOrder.cycle.intValue;
+    NSMutableArray *weekCycles = [NSMutableArray arrayWithCapacity: 52];
+    
+    if (currentLimits.weekCycles == nil || currentLimits.weekCycles.count == 0 || [[currentLimits.weekCycles lastObject] intValue] == 0) {
+        [weekCycles addObject: NSLocalizedString(@"AP451",  @"")];
+        for(int i = 2; i <= 52; i++) {
+            [weekCycles addObject:[NSString stringWithFormat: NSLocalizedString(@"AP453",  @""), i]];
+            if (i == currentCycle) {
+                selectedIndex = i;
+            }
+        }
+    } else {
+        NSInteger index = 0;
+        for (NSString *s in currentLimits.weekCycles) {
+            if (s.intValue == 1) {
+                [weekCycles addObject: NSLocalizedString(@"AP451",  @"")];
+            } else {
+                [weekCycles addObject: [NSString stringWithFormat: NSLocalizedString(@"AP453",  @""), s.intValue]];
+            }
+            if (s.intValue == currentCycle) {
+                selectedIndex = index;
+            }
+            index++;
+        }
+    }
+    [weekCyclesController setContent: weekCycles];
+    [weekCyclesPopup selectItemAtIndex: selectedIndex];
+
+    NSMutableArray *execDays = [NSMutableArray arrayWithCapacity: 7];
+    if (currentLimits.execDaysWeek == nil || [currentLimits.execDaysWeek count] == 0 || [[currentLimits.execDaysWeek lastObject] intValue] == 0) {
+        for (int i = 1; i <= 7; i++) {
+            [execDays addObject: [self weekDayToString: i]];
+        }
+    } else {
+        for (NSString *s in currentLimits.execDaysWeek) {
+            [execDays addObject: [self weekDayToString: s.intValue]];
+        }
+    }
 	
-	NSMutableArray *weekCycles = [NSMutableArray arrayWithCapacity:52 ];
-	if (currentLimits.weekCycles == nil || [currentLimits.weekCycles count] == 0 || [[currentLimits.weekCycles lastObject ] intValue ] == 0) {
-		for(i=1;i<=52;i++) [weekCycles addObject:[NSString stringWithFormat:@"%d",i ] ];
-	} else {
-		for(NSString *s in currentLimits.weekCycles) [weekCycles addObject:[NSString stringWithFormat:@"%d", [s intValue ] ]];
-	}
-	[weekCyclesController setContent:weekCycles ];
-	[weekCyclesPopup selectItemWithTitle:[NSString stringWithFormat:@"%d",[currentOrder.cycle intValue ] ]];
-	
-	NSMutableArray *execDays = [NSMutableArray arrayWithCapacity:7 ];
-	if (currentLimits.execDaysWeek == nil || [currentLimits.execDaysWeek count] == 0 || [[currentLimits.execDaysWeek lastObject ] intValue ] == 0) {
-		for(i=1;i<=7;i++) [execDays addObject:[self weekDayToString: i ] ];
-	} else {
-		for(NSString *s in currentLimits.execDaysWeek) [execDays addObject:[self weekDayToString:[s intValue ] ] ];
-	}
-	
-	[execDaysWeekController setContent:execDays ];
-	[execDaysWeekPopup selectItemWithTitle:[self weekDayToString: [currentOrder.executionDay intValue ] ]];
+    [execDaysWeekController setContent: execDays];
+    [execDaysWeekPopup selectItemWithTitle: [self weekDayToString: currentOrder.executionDay.intValue]];
 }
 
 -(void)updateMonthCycles
 {
-	int i;
-	
-	NSMutableArray *monthCycles = [NSMutableArray arrayWithCapacity:12 ];
-	if (currentLimits.monthCycles == nil || [currentLimits.monthCycles count] == 0 || [[currentLimits.monthCycles lastObject ] intValue ] == 0) {
-		for(i=1;i<=12;i++) [monthCycles addObject:[NSString stringWithFormat:@"%d",i ] ];
+    NSInteger selectedIndex = 0;
+    NSInteger currentCycle = currentOrder.cycle.intValue;
+	NSMutableArray *monthCycles = [NSMutableArray arrayWithCapacity: 12];
+    
+	if (currentLimits.monthCycles == nil || currentLimits.monthCycles.count == 0 || [[currentLimits.monthCycles lastObject] intValue] == 0) {
+        [monthCycles addObject: NSLocalizedString(@"AP450",  @"")];
+		for (NSInteger i = 1; i <= 12; i++) {
+            [monthCycles addObject: [NSString stringWithFormat: NSLocalizedString(@"AP452",  @""), i]];
+            if (i == currentCycle) {
+                selectedIndex = i;
+            }
+        }
 	} else {
-		for(NSString *s in currentLimits.monthCycles) [monthCycles addObject:[NSString stringWithFormat:@"%d", [s intValue ] ]];
+        NSInteger index = 0;
+		for (NSString *s in currentLimits.monthCycles) {
+            if (s.intValue == 1) {
+                [monthCycles addObject: NSLocalizedString(@"AP450",  @"")];
+            } else {
+                [monthCycles addObject: [NSString stringWithFormat: NSLocalizedString(@"AP452",  @""), s.intValue]];
+            }
+            if (s.intValue == currentCycle) {
+                selectedIndex = index;
+            }
+            index++;
+        }
 	}
 	
-	[monthCyclesController setContent:monthCycles ];
-	[monthCyclesPopup selectItemWithTitle:[NSString stringWithFormat:@"%d",[currentOrder.cycle intValue ] ]];
+	[monthCyclesController setContent: monthCycles];
+	[monthCyclesPopup selectItemAtIndex: selectedIndex];
 	
-	NSMutableArray *execDays = [NSMutableArray arrayWithCapacity:31 ];
-	if (currentLimits.execDaysMonth == nil || [currentLimits.execDaysMonth count] == 0 || [[currentLimits.execDaysMonth lastObject ] intValue ] == 0) {
-		for(i=1;i<=28;i++) [execDays addObject:[NSString stringWithFormat:@"%d.",i ] ];
-		[execDays addObject:@"Ultimo-2" ];
-		[execDays addObject:@"Ultimo-1" ];
-		[execDays addObject:@"Ultimo" ];
+	NSMutableArray *execDays = [NSMutableArray arrayWithCapacity: 31];
+	if (currentLimits.execDaysMonth == nil || currentLimits.execDaysMonth.count == 0 || [[currentLimits.execDaysMonth lastObject] intValue] == 0) {
+		for (int i = 1; i <= 28; i++) [execDays addObject: [NSString stringWithFormat: @"%d.", i]];
+		[execDays addObject: @"Ultimo-2"];
+		[execDays addObject: @"Ultimo-1"];
+		[execDays addObject: @"Ultimo"];
 	} else {
-		for(NSString *s in currentLimits.execDaysMonth) {
-			[execDays addObject:[self monthDayToString: [s intValue ] ] ];
+		for (NSString *s in currentLimits.execDaysMonth) {
+			[execDays addObject: [self monthDayToString: s.intValue]];
 		}
 	}
 	
-	[execDaysMonthController setContent:execDays ];
-	[execDaysMonthPopup selectItemWithTitle:[self monthDayToString: [currentOrder.executionDay intValue ] ]];
+	[execDaysMonthController setContent: execDays];
+	[execDaysMonthPopup selectItemWithTitle: [self monthDayToString: currentOrder.executionDay.intValue]];
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification

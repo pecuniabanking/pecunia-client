@@ -89,6 +89,7 @@
 		27C930F6149508280055EAD5 /* Colors.acf in Resources */ = {isa = PBXBuildFile; fileRef = 27C930F5149508280055EAD5 /* Colors.acf */; };
 		27CC732614A09E060082495C /* MAAttachedWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC732514A09E060082495C /* MAAttachedWindow.m */; };
 		27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */; };
+		27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */; };
 		27D1172B15288C3600CD7E83 /* background-pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D1172A15288C3600CD7E83 /* background-pattern.png */; };
 		27D240EA145302A900EDC8C7 /* done.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27D240E9145302A900EDC8C7 /* done.mp3 */; };
 		27D302951538453300D6A2CC /* sort-indicator-inc.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302941538453300D6A2CC /* sort-indicator-inc.png */; };
@@ -467,6 +468,8 @@
 		27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NS(Attributed)String+Geometrics.h"; sourceTree = "<group>"; };
 		27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NS(Attributed)String+Geometrics.m"; sourceTree = "<group>"; };
 		27CC74A914A102800082495C /* German */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = German; path = "German.lproj/category-reporting-help.rtf"; sourceTree = SOURCE_ROOT; };
+		27CF0A6B15F260F200F48203 /* NSButton+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSButton+PecuniaAdditions.h"; sourceTree = "<group>"; };
+		27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSButton+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		27D1172A15288C3600CD7E83 /* background-pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-pattern.png"; sourceTree = "<group>"; };
 		27D240E9145302A900EDC8C7 /* done.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = done.mp3; path = Sounds/done.mp3; sourceTree = "<group>"; };
 		27D302941538453300D6A2CC /* sort-indicator-inc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-indicator-inc.png"; sourceTree = "<group>"; };
@@ -969,6 +972,8 @@
 		27C7B502147FC44100278131 /* Controls and Layouts */ = {
 			isa = PBXGroup;
 			children = (
+				B18361FB15E23D3F003B93ED /* NSView+PecuniaAdditions.h */,
+				B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */,
 				27E662B215A09BD9002F9277 /* TransferTemplatesListView.h */,
 				27E662B315A09BD9002F9277 /* TransferTemplatesListView.m */,
 				27E662B415A09BD9002F9277 /* TransferTemplateListViewCell.h */,
@@ -1595,8 +1600,8 @@
 				B14C629A115E00AA009324A6 /* MigrationManagerWorkaround.m */,
 				27C883C515E0EBCE007572F0 /* NSString+PecuniaAdditions.h */,
 				27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */,
-				B18361FB15E23D3F003B93ED /* NSView+PecuniaAdditions.h */,
-				B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */,
+				27CF0A6B15F260F200F48203 /* NSButton+PecuniaAdditions.h */,
+				27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -2090,6 +2095,7 @@
 				A652533515E39A92000C2989 /* TanWindow.m in Sources */,
 				B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */,
 				B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */,
+				27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

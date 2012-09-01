@@ -832,7 +832,6 @@
 																		<bool key="NS.natural">NO</bool>
 																	</object>
 																	<reference key="NSControlView" ref="585463272"/>
-																	<bool key="NSDrawsBackground">YES</bool>
 																	<object class="NSColor" key="NSBackgroundColor">
 																		<int key="NSColorSpace">2</int>
 																		<bytes key="NSRGB">MC4yNTQ5MDE5NzU0IDAuMjU0OTAxOTc1NCAwLjI1NDkwMTk3NTQAA</bytes>
@@ -2048,7 +2047,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{749, 34}, {71, 185}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView"/>
+																				<reference key="NSNextKeyView" ref="569487988"/>
 																				<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																				<bool key="NSEnabled">YES</bool>
 																				<object class="NSImageCell" key="NSCell" id="972627458">
@@ -3462,7 +3461,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 															</object>
 															<object class="NSTextField" id="997389077">
 																<reference key="NSNextResponder" ref="764661400"/>
-																<int key="NSvFlags">-2147483380</int>
+																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{7, 642}, {586, 30}}</string>
 																<reference key="NSSuperview" ref="764661400"/>
 																<reference key="NSWindow"/>
@@ -3513,7 +3512,6 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																		<int key="NSfFlags">16</int>
 																	</object>
 																	<reference key="NSControlView" ref="628223670"/>
-																	<bool key="NSDrawsBackground">YES</bool>
 																	<object class="NSColor" key="NSBackgroundColor">
 																		<int key="NSColorSpace">2</int>
 																		<bytes key="NSRGB">MC4yNTg4MjM1NDM4IDAuMjU4ODIzNTQzOCAwLjI1ODgyMzU0MzgAA</bytes>
@@ -3614,7 +3612,6 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																	<string key="NSContents">Kontonummer</string>
 																	<reference key="NSSupport" ref="673900462"/>
 																	<reference key="NSControlView" ref="641656875"/>
-																	<bool key="NSDrawsBackground">YES</bool>
 																	<object class="NSColor" key="NSBackgroundColor">
 																		<int key="NSColorSpace">2</int>
 																		<bytes key="NSRGB">MC4yNjI3NDUxMTIyIDAuMjYyNzQ1MTEyMiAwLjI2Mjc0NTExMjIAA</bytes>
@@ -3642,7 +3639,6 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																	<string key="NSContents">Letzter Umsatz am</string>
 																	<reference key="NSSupport" ref="509315332"/>
 																	<reference key="NSControlView" ref="680163091"/>
-																	<bool key="NSDrawsBackground">YES</bool>
 																	<object class="NSColor" key="NSBackgroundColor">
 																		<int key="NSColorSpace">2</int>
 																		<bytes key="NSRGB">MC4yNTg4MjM1NDM4IDAuMjU4ODIzNTQzOCAwLjI1ODgyMzU0MzgAA</bytes>
@@ -3690,7 +3686,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 														<reference key="NSNextKeyView" ref="997389077"/>
 														<bool key="NSViewIsLayerTreeHost">YES</bool>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
-														<string key="NSClassName">MainBackgroundView</string>
+														<string key="NSClassName">CustomTextDrawingView</string>
 													</object>
 												</array>
 												<string key="NSFrameSize">{1200, 680}</string>
@@ -7113,13 +7109,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 												<object class="NSComboTableView" key="NSTableView" id="476426159">
 													<reference key="NSNextResponder"/>
 													<int key="NSvFlags">274</int>
-													<string key="NSFrameSize">{15, 0}</string>
+													<string key="NSFrameSize">{13, 0}</string>
 													<reference key="NSSuperview"/>
 													<reference key="NSWindow"/>
 													<bool key="NSEnabled">YES</bool>
 													<array class="NSMutableArray" key="NSTableColumns">
 														<object class="NSTableColumn">
-															<double key="NSWidth">12</double>
+															<double key="NSWidth">10</double>
 															<double key="NSMinWidth">10</double>
 															<double key="NSMaxWidth">1000</double>
 															<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -7153,7 +7149,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 													<reference key="NSGridColor" ref="890778246"/>
 													<double key="NSRowHeight">19</double>
 													<string key="NSAction">tableViewAction:</string>
-													<int key="NSTvFlags">-767524864</int>
+													<int key="NSTvFlags">-765427712</int>
 													<reference key="NSDelegate" ref="156100258"/>
 													<reference key="NSDataSource" ref="156100258"/>
 													<reference key="NSTarget" ref="156100258"/>
@@ -13940,8 +13936,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 							<reference ref="290074284"/>
 							<reference ref="641656875"/>
 							<reference ref="680163091"/>
-							<reference ref="572930782"/>
 							<reference ref="774779502"/>
+							<reference ref="572930782"/>
 						</array>
 						<reference key="parent" ref="1067880127"/>
 					</object>
@@ -15275,47 +15271,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<characters key="NS.bytes">Set runtime attributes to customize.</characters>
 					</object>
 					<dictionary key="NSAttributes">
-						<reference key="NSFont" ref="86887149"/>
-						<object class="NSParagraphStyle" key="NSParagraphStyle">
+						<object class="NSFont" key="NSFont">
+							<string key="NSName">LucidaGrande</string>
+							<double key="NSSize">11</double>
+							<int key="NSfFlags">2329</int>
+						</object>
+						<object class="NSMutableParagraphStyle" key="NSParagraphStyle">
 							<int key="NSAlignment">4</int>
-							<array key="NSTabStops">
-								<object class="NSTextTab">
-									<double key="NSLocation">28</double>
-								</object>
-								<object class="NSTextTab">
-									<double key="NSLocation">56</double>
-								</object>
-								<object class="NSTextTab">
-									<double key="NSLocation">84</double>
-								</object>
-								<object class="NSTextTab">
-									<double key="NSLocation">112</double>
-								</object>
-								<object class="NSTextTab">
-									<double key="NSLocation">140</double>
-								</object>
-								<object class="NSTextTab">
-									<double key="NSLocation">168</double>
-								</object>
-								<object class="NSTextTab">
-									<double key="NSLocation">196</double>
-								</object>
-								<object class="NSTextTab">
-									<double key="NSLocation">224</double>
-								</object>
-								<object class="NSTextTab">
-									<double key="NSLocation">252</double>
-								</object>
-								<object class="NSTextTab">
-									<double key="NSLocation">280</double>
-								</object>
-								<object class="NSTextTab">
-									<double key="NSLocation">308</double>
-								</object>
-								<object class="NSTextTab">
-									<double key="NSLocation">336</double>
-								</object>
-							</array>
+							<nil key="NSTabStops"/>
 						</object>
 					</dictionary>
 				</object>
@@ -15944,6 +15907,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/CategoryView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">CustomTextDrawingView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/CustomTextDrawingView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

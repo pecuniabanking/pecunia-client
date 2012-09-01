@@ -51,6 +51,15 @@ static NSImage* background = nil;
     [color setFill];
 	[NSBezierPath fillRect: [self bounds]];
     
+    // Draw a highlight effect over the background.
+    NSGradient *highlight = [[[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.6]
+                                                           endingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0]] autorelease];
+    
+    CGFloat height = self.bounds.size.height;
+    NSPoint centerPoint = NSMakePoint(NSMidX(self.bounds), 2 * height - 61);
+    NSPoint otherPoint = NSMakePoint(centerPoint.x, height - 61);
+    [highlight drawFromCenter: centerPoint radius: 1 toCenter: otherPoint radius: height options: 0];
+    
     bounds.origin.x = 0;
     bounds.origin.y = bounds.size.height; // Area above the transfer list.
     bounds.size.height = 61;
@@ -67,7 +76,7 @@ static NSImage* background = nil;
 	[topGradient drawInRect: bounds angle: 90.0];
     
     // Category sum area.
-    int height = [self bounds].size.height;
+    height = [self bounds].size.height;
     bounds.size.height--;
     int radius = 10;
     NSBezierPath* catSumAreaPath = [NSBezierPath bezierPath];
@@ -91,14 +100,6 @@ static NSImage* background = nil;
     
     [topGradient drawInBezierPath: catSumAreaPath angle: 90];
     
-    /*
-     catSumAreaPath = [NSBezierPath bezierPath];
-     [catSumAreaPath moveToPoint: NSMakePoint(47, bounds.size.height - 10)];
-     [catSumAreaPath appendBezierPathWithArcFromPoint: NSMakePoint(47, bounds.size.height - 210)
-     toPoint: NSMakePoint(39, bounds.size.height - 210) radius: 8];
-     [catSumAreaPath lineToPoint: NSMakePoint(10, bounds.size.height - 210)];
-     */
-    
     NSShadow* innerShadow1 = [[[NSShadow alloc] initWithColor: [NSColor blackColor]
                                                        offset: NSMakeSize(2.0, 0)
                                                    blurRadius: 5.0] autorelease];
@@ -108,9 +109,6 @@ static NSImage* background = nil;
     // Twofold inner shadow.
     [catSumAreaPath fillWithInnerShadow: innerShadow1 borderOnly: NO];
     [catSumAreaPath fillWithInnerShadow: innerShadow2 borderOnly: NO];
-    
-    // draw text fields
-    [self drawTextFields ];
     
     [NSGraphicsContext restoreGraphicsState];
 }
