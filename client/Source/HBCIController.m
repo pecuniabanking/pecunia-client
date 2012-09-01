@@ -291,7 +291,12 @@ NSString *escapeSpecial(NSString *s)
     
     BankUser *user = [account defaultBankUser ];
     if (user == nil) return NO;
-    if ([self registerBankUser:user error:&error ] == NO) return NO;
+    if ([self registerBankUser:user error:&error ] == NO) {
+        if (error) {
+            [error alertPanel ];
+        }
+        return NO;
+    }
     
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"isJobSupported\">" ];
     [self appendTag: @"bankCode" withValue: account.bankCode to: cmd ];
@@ -323,7 +328,12 @@ NSString *escapeSpecial(NSString *s)
     
     BankUser *user = [account defaultBankUser ];
     if (user == nil) return nil;
-    if ([self registerBankUser:user error:&error] == NO) return nil;
+    if ([self registerBankUser:user error:&error] == NO) {
+        if (error) {
+            [error alertPanel ];
+        }
+        return nil;
+    }
     
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getJobRestrictions\">" ];
     [self appendTag: @"bankCode" withValue: account.bankCode to: cmd ];
@@ -632,7 +642,12 @@ NSString *escapeSpecial(NSString *s)
         if (user == nil) {
             continue;
         }
-        if ([self registerBankUser:user error:&err] == NO) continue;
+        if ([self registerBankUser:user error:&err] == NO) {
+            if (err) {
+                [err alertPanel ];
+            }
+            continue;
+        }
         if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
         
         NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfers\"><transfers type=\"list\">" ];
@@ -843,7 +858,12 @@ NSString *escapeSpecial(NSString *s)
         PecuniaError *error = nil;
         BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode ];
         if (user == nil) continue;
-        if ([self registerBankUser:user error:&error] == NO) continue;
+        if ([self registerBankUser:user error:&error] == NO) {
+            if (error) {
+                [error alertPanel ];
+            }
+            continue;
+        };
         
         [cmd appendFormat:@"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>", result.bankCode, result.accountNumber ];
         [self appendTag:@"subNumber" withValue:result.accountSubnumber to:cmd ];
@@ -928,7 +948,12 @@ NSString *escapeSpecial(NSString *s)
         PecuniaError *error = nil;
         BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode ];
         if (user == nil) continue;
-        if ([self registerBankUser:user error:&error] == NO) continue;
+        if ([self registerBankUser:user error:&error] == NO) {
+            if (error) {
+                [error alertPanel ];
+            }
+            continue;
+        };
         
         [cmd appendString:@"<accinfo>" ];
         [self appendTag: @"bankCode" withValue: result.bankCode to: cmd ];
@@ -1013,15 +1038,16 @@ NSString *escapeSpecial(NSString *s)
         if (user == nil) {
             continue;
         }
-        if ([self registerBankUser:user error:&err] == NO) continue;
+        if ([self registerBankUser:user error:&err] == NO) {
+            if (err) {
+                [err alertPanel ];
+            }
+            continue;
+        };
         if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
         
     
         for(StandingOrder *stord in [accountTransferRegister objectForKey: account]) {
-            BankUser *user = [BankUser userWithId:stord.account.userId bankCode:stord.account.bankCode ];
-            if([self registerBankUser:user error:&err] == NO) continue;
-
-            if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
             
             // todo: don't send unchanged orders
             if ([stord.isChanged boolValue] == NO && [stord.toDelete boolValue ] == NO) continue;
@@ -1221,7 +1247,12 @@ NSString *escapeSpecial(NSString *s)
     if (user == nil) return nil;
     
     // BankUser registrieren
-    if([self registerBankUser:user error:&error] == NO) return nil;    
+    if([self registerBankUser:user error:&error] == NO) {
+        if (error) {
+            [error alertPanel ];   
+        }
+        return nil;
+    } 
     
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getSupportedBusinessTransactions\">" ];
     [self appendTag: @"bankCode" withValue: account.bankCode to: cmd];
@@ -1271,11 +1302,16 @@ NSString *escapeSpecial(NSString *s)
         user.tanMediaFetched = [NSNumber numberWithBool:YES ];
         [self appendTag: @"ddvPortIdx" withValue: [user.ddvPortIdx stringValue ] to: cmd];
         [self appendTag: @"ddvReaderIdx" withValue: [user.ddvReaderIdx stringValue ] to: cmd];
+        [self appendTag: @"host" withValue: user.bankURL to: cmd ];
     } else {
         [self appendTag: @"passportType" withValue: @"PinTan" to: cmd];
+        [self appendTag: @"host" withValue: [user.bankURL stringByReplacingOccurrencesOfString: @"https://" withString:@"" ] to: cmd ];
+        [self appendTag: @"port" withValue: @"443" to: cmd ];
+        if([user.noBase64 boolValue] == NO) [self appendTag: @"filter" withValue: @"Base64" to: cmd ];
     }
     [self appendTag: @"version" withValue: user.hbciVersion to: cmd];
     [self appendTag: @"userId" withValue: user.userId to: cmd];
+    [self appendTag: @"customerId" withValue: user.customerId to: cmd ];
     [self appendTag: @"bankCode" withValue: user.bankCode to: cmd];
     [cmd appendString: @"</command>" ];
     
