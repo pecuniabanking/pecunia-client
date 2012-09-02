@@ -91,7 +91,6 @@
     IBOutlet NSButton      *sendTransfersButton;
     IBOutlet NSTextField   *templateName;
     
-    IBOutlet DragImageView  *transferDebitImage;
     IBOutlet DragImageView  *transferInternalImage;
     IBOutlet DragImageView  *transferNormalImage;
     IBOutlet DragImageView  *transferEUImage;

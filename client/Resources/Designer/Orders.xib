@@ -681,7 +681,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSPopUpButtonCell" key="NSCell" id="191363252">
 													<int key="NSCellFlags">-2076049856</int>
-													<int key="NSCellFlags2">2048</int>
+													<int key="NSCellFlags2">67110912</int>
 													<reference key="NSSupport" ref="429143643"/>
 													<reference key="NSControlView" ref="740047776"/>
 													<int key="NSButtonFlags">109199615</int>
@@ -760,12 +760,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 													<reference key="NSSupport" ref="429143643"/>
 													<reference key="NSControlView" ref="198334819"/>
 													<reference key="NSBackgroundColor" ref="366669381"/>
-													<object class="NSColor" key="NSTextColor" id="17426255">
-														<int key="NSColorSpace">6</int>
-														<string key="NSCatalogName">System</string>
-														<string key="NSColorName">controlTextColor</string>
-														<reference key="NSColor" ref="466262559"/>
-													</object>
+													<reference key="NSTextColor" ref="448837303"/>
 												</object>
 											</object>
 											<object class="NSPopUpButton" id="611198217">
@@ -846,7 +841,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSPopUpButtonCell" key="NSCell" id="471240656">
 													<int key="NSCellFlags">-2076049856</int>
-													<int key="NSCellFlags2">2048</int>
+													<int key="NSCellFlags2">67110912</int>
 													<reference key="NSSupport" ref="429143643"/>
 													<reference key="NSControlView" ref="342412134"/>
 													<int key="NSButtonFlags">109199615</int>
@@ -919,7 +914,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 													<reference key="NSSupport" ref="429143643"/>
 													<reference key="NSControlView" ref="568039999"/>
 													<reference key="NSBackgroundColor" ref="366669381"/>
-													<reference key="NSTextColor" ref="17426255"/>
+													<reference key="NSTextColor" ref="448837303"/>
 												</object>
 											</object>
 											<object class="NSPopUpButton" id="197784497">
@@ -1055,7 +1050,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 														<string key="NSColorName">controlBackgroundColor</string>
 														<reference key="NSColor" ref="158233138"/>
 													</object>
-													<reference key="NSTextColor" ref="17426255"/>
+													<object class="NSColor" key="NSTextColor" id="17426255">
+														<int key="NSColorSpace">6</int>
+														<string key="NSCatalogName">System</string>
+														<string key="NSColorName">controlTextColor</string>
+														<reference key="NSColor" ref="466262559"/>
+													</object>
 												</object>
 											</object>
 											<object class="NSTextField" id="846180001">

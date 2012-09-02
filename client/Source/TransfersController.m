@@ -477,15 +477,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     bankCode.delegate = self;
     
     transferInternalImage.controller = self;
-    [transferInternalImage setFrameCenterRotation: -5];
+    [transferInternalImage setFrameCenterRotation: -10];
     transferNormalImage.controller = self;
-    [transferNormalImage setFrameCenterRotation: -5];
+    [transferNormalImage setFrameCenterRotation: -10];
     transferEUImage.controller = self;
-    [transferEUImage setFrameCenterRotation: -5];
+    [transferEUImage setFrameCenterRotation: -10];
     transferSEPAImage.controller = self;
-    [transferSEPAImage setFrameCenterRotation: -5];
-    transferDebitImage.controller = self;
-    [transferDebitImage setFrameCenterRotation: -5];
+    [transferSEPAImage setFrameCenterRotation: -10];
     
     transferDeleteImage.controller = self;
     

@@ -84,11 +84,11 @@ static NSShadow* borderShadow = nil;
     [dragTargetPath stroke];
     
     // Draw a highlight effect over everything.
-    NSGradient *highlight = [[[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.6]
+    NSGradient *highlight = [[[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.3]
                                                           endingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0]] autorelease];
 
     CGFloat height = self.bounds.size.height;
-    NSPoint centerPoint = NSMakePoint(NSMidX(self.bounds), 2 * height);
+    NSPoint centerPoint = NSMakePoint(NSMidX(self.bounds), height + 1);
     NSPoint otherPoint = NSMakePoint(centerPoint.x, height);
     [highlight drawFromCenter: centerPoint radius: 1 toCenter: otherPoint radius: height options: 0];
     
