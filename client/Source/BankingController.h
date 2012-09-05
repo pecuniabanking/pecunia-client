@@ -99,7 +99,8 @@
     
     IBOutlet NSMenuItem      *toggleFullscreenItem;
     
-    IBOutlet TransactionController *transactionController;
+    IBOutlet TransactionController      *transactionController;
+    IBOutlet NSWindow                   *licenseWindow;
     
 @private
     NSMutableDictionary    *mainTabItems;

@@ -1007,7 +1007,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return NO;
     }
     
-    BOOL isTerminated = [transfer valutaDate] != nil;
+    BOOL isTerminated = [[transfer type ] intValue] == TransferTypeDated;
     [executeAtDateRadioButton setEnabled: isTerminated];
     [executeImmediatelyRadioButton setEnabled: !isTerminated];
 

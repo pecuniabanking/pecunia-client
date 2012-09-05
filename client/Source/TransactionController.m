@@ -388,6 +388,8 @@
  */
 - (BOOL)finishCurrentTransfer
 {
+	[currentTransferController commitEditing];
+    
     if (![self validateCurrentTransfer]) {
         return NO;
     }
@@ -399,8 +401,6 @@
     if (currentTransfer.valutaDate != nil) {
         currentTransfer.type = [NSNumber numberWithInt: TransferTypeDated];
     }
-    
-	[currentTransferController commitEditing];
     
     NSError *error = nil;
 	NSManagedObjectContext	*context = MOAssistant.assistant.context;

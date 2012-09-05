@@ -2604,12 +2604,30 @@ static BOOL runningOnLionOrLater = NO;
 
 -(IBAction)showLicense: (id)sender
 {
-    NSString *path = [[NSBundle mainBundle] pathForResource: @"gpl-2.0" ofType: @"txt"];
+    NSString *path = [[NSBundle mainBundle] pathForResource: @"gpl-2.0-standalone" ofType: @"html"];
     [[NSWorkspace sharedWorkspace] openFile: path];
 }
 
 -(void)applicationWillFinishLaunching:(NSNotification *)notification
 {
+    // Check License Agreement
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+    BOOL licenseAgreed = [defaults boolForKey:@"licenseAgreed" ];
+    if (licenseAgreed == NO) {
+        int result = [NSApp runModalForWindow:licenseWindow ];
+        if (result == 1) {
+            [NSApp terminate:nil ];
+            return;
+        } else {
+            [defaults setBool:YES forKey:@"licenseAgreed" ];
+        }
+    }
+    
+    // Display main window
+    [mainWindow display ];
+    [mainWindow makeKeyAndOrderFront:self ];
+    
+    // Open encrypted database
     if ([[MOAssistant assistant] encrypted]) {
         StatusBarController *sc = [StatusBarController controller];
         [sc startSpinning];

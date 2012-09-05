@@ -386,7 +386,8 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	[coord addPersistentStoreWithType: NSSQLiteStoreType 
 						configuration: nil 
 								  URL: accountsURL
-							  options: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES ], NSMigratePersistentStoresAutomaticallyOption, nil ] 
+							  options: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES ], NSMigratePersistentStoresAutomaticallyOption, 
+                                                                                  [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil ] 
 								error: &error];
 
 	

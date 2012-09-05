@@ -204,6 +204,10 @@
 -(void)updateSaldo
 {
 	NSDecimalNumber *realValue;
+    
+    if (currentStatement.value == nil) {
+        return;
+    }
 	if (negateValue == YES) realValue = [[NSDecimalNumber zero ] decimalNumberBySubtracting:currentStatement.value ];
 	else realValue = currentStatement.value;
 	

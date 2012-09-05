@@ -204,6 +204,8 @@
 		B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B177297C1504CE1B00256898 /* BusinessTransactionsController.m */; };
 		B17729AD1504D63200256898 /* BusinessTransactionsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17729AC1504D63200256898 /* BusinessTransactionsWindow.xib */; };
 		B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */; };
+		B179916C15F7D2B4005AB39A /* LicenseWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B179916B15F7D2B4005AB39A /* LicenseWindowController.m */; };
+		B179917015F7D6F8005AB39A /* gpl-2.0-standalone.html in Resources */ = {isa = PBXBuildFile; fileRef = B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */; };
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
 		B17B2B4013EC913800739E7A /* ChipTanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */; };
 		B17B2B4313EC921200739E7A /* FlickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B4213EC921200739E7A /* FlickerView.m */; };
@@ -655,6 +657,9 @@
 		B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferPrintView.m; sourceTree = "<group>"; };
 		B1798E2D15F0CE7E005AB39A /* TransferPrintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferPrintView.h; sourceTree = "<group>"; };
 		B1798EAD15F0F09B005AB39A /* PecuniaTabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaTabItem.h; sourceTree = "<group>"; };
+		B179916A15F7D2B4005AB39A /* LicenseWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseWindowController.h; sourceTree = "<group>"; };
+		B179916B15F7D2B4005AB39A /* LicenseWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicenseWindowController.m; sourceTree = "<group>"; };
+		B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "gpl-2.0-standalone.html"; sourceTree = "<group>"; };
 		B17B28FF13E340A300739E7A /* HBCIBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIBackend.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3C13EC8D5000739E7A /* ChipTanWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ChipTanWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ChipTanWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1213,6 +1218,7 @@
 				B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */,
 				B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */,
 				B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */,
+				B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */,
 				27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */,
 				B15FCCEE141422A3000738B6 /* HBCIServer.jar */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -1498,6 +1504,8 @@
 				B1C90E150ABB39D5006F18C9 /* BankingController.m */,
 				B138B3E0139EBC230026BEE2 /* DockIconController.h */,
 				B138B3DE139EBC0E0026BEE2 /* DockIconController.m */,
+				B179916A15F7D2B4005AB39A /* LicenseWindowController.h */,
+				B179916B15F7D2B4005AB39A /* LicenseWindowController.m */,
 			);
 			name = MainWindow;
 			sourceTree = "<group>";
@@ -1901,6 +1909,7 @@
 				B1835C1B15D2A1F4003B93ED /* Chipcard.png in Resources */,
 				27C3B78915E37CD9008B8DB3 /* refresh.png in Resources */,
 				A6E9242A15E38FFE00FA09A3 /* TanWindow.xib in Resources */,
+				B179917015F7D6F8005AB39A /* gpl-2.0-standalone.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2096,6 +2105,7 @@
 				B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */,
 				B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */,
 				27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */,
+				B179916C15F7D2B4005AB39A /* LicenseWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
