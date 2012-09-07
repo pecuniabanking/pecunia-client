@@ -71,7 +71,9 @@ public class XmlGen {
     	else xmlBuf.append("<"+tag+" type=\"boole\">no</"+tag+">");
     }
     
-    public void accountToXml(Konto account, HBCIPassport pp) throws IOException {
+    public void accountToXml(Konto account, HBCIHandler handler) throws IOException {
+    	HBCIPassport pp = handler.getPassport();
+    	
     	xmlBuf.append("<object type=\"Account\">");
     	if(account.curr == null || account.curr.length() == 0) account.curr = "EUR";
     	if(account.country == null || account.curr.length() == 0) account.country = "DE";
@@ -90,18 +92,17 @@ public class XmlGen {
         intTag("type", account.category);
         xmlBuf.append("<supportedJobs type=\"list\">");
         ArrayList<String> gvs = (ArrayList<String>)account.allowedGVs;
-        if(gvs != null && gvs.contains("HKUEB")) tag("name", "Ueb");
-        if(gvs != null && gvs.contains("HKTUE")) tag("name", "TermUeb");
-        if(gvs != null && gvs.contains("HKAOM")) tag("name", "UebForeign");
-        if(gvs != null && gvs.contains("HKCCS")) tag("name", "UebSEPA");
-        if(gvs != null && gvs.contains("HKUMB")) tag("name", "Umb");
-        if(gvs != null && gvs.contains("HKLAS")) tag("name", "Last");
-        if(gvs != null && gvs.contains("HKDAE")) tag("name", "DauerNew");
-        if(gvs != null && gvs.contains("HKDAN")) tag("name", "DauerEdit");
-        if(gvs != null && gvs.contains("HKDAL")) tag("name", "DauerDel");
-        if(gvs != null && gvs.contains("HKTAB")) tag("name", "TANMediaList");
-        if(gvs != null && gvs.contains("HKSUB")) tag("name", "MultiUeb");
-
+        if(gvs != null && gvs.contains("HKUEB") || gvs == null && handler.isSupported("Ueb")) tag("name", "Ueb");
+        if(gvs != null && gvs.contains("HKTUE") || gvs == null && handler.isSupported("TermUeb")) tag("name", "TermUeb");
+        if(gvs != null && gvs.contains("HKAOM") || gvs == null && handler.isSupported("UebForeign")) tag("name", "UebForeign");
+        if(gvs != null && gvs.contains("HKCCS") || gvs == null && handler.isSupported("UebSEPA")) tag("name", "UebSEPA");
+        if(gvs != null && gvs.contains("HKUMB") || gvs == null && handler.isSupported("Umb")) tag("name", "Umb");
+        if(gvs != null && gvs.contains("HKLAS") || gvs == null && handler.isSupported("Last")) tag("name", "Last");
+        if(gvs != null && gvs.contains("HKDAE") || gvs == null && handler.isSupported("DauerNew")) tag("name", "DauerNew");
+        if(gvs != null && gvs.contains("HKDAN") || gvs == null && handler.isSupported("DauerEdit")) tag("name", "DauerEdit");
+        if(gvs != null && gvs.contains("HKDAL") || gvs == null && handler.isSupported("DauerDel")) tag("name", "DauerDel");
+        if(gvs != null && gvs.contains("HKTAB") || gvs == null && handler.isSupported("TANMediaList")) tag("name", "TANMediaList");
+        if(gvs != null && gvs.contains("HKSUB") || gvs == null && handler.isSupported("MultiUeb")) tag("name", "MultiUeb");
         
         xmlBuf.append("</supportedJobs>");
     	xmlBuf.append("</object>");
@@ -284,7 +285,8 @@ public class XmlGen {
     	}
     }
     
-    public void passportToXml(HBCIPassport pp) throws IOException {
+    public void passportToXml(HBCIHandler handler, boolean withAccounts) throws IOException {
+    	HBCIPassport pp = handler.getPassport();
     	xmlBuf.append("<object type=\"User\">");
     	tag("bankCode", pp.getBLZ());
     	tag("bankName", pp.getInstName());
@@ -312,6 +314,15 @@ public class XmlGen {
     	if(pp instanceof HBCIPassportDDV) {
     		HBCIPassportDDV ppDDV =(HBCIPassportDDV)pp;
     		tag("chipCardId", ppDDV.getCardId());
+    	}
+    	
+    	if(withAccounts == true) {
+    		xmlBuf.append("<accounts \"type=list\">");
+    		Konto [] accounts = pp.getAccounts();
+    		for(Konto k: accounts) {
+    			accountToXml(k, handler);
+    		}
+    		xmlBuf.append("</accounts>");
     	}
     	
     	xmlBuf.append("</object>");    	

@@ -537,7 +537,7 @@ public class HBCIServer {
         users.put(filename, user);
 */        
         xmlBuf.append("<result name=\"addPassport\">");
-        xmlGen.passportToXml(passport);
+        xmlGen.passportToXml(hbciHandle, true);
         xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
         out.flush();
@@ -1148,7 +1148,7 @@ public class HBCIServer {
 					if(handler != null) {
 						HBCIPassport pp = handler.getPassport();
 						Konto [] accs = pp.getAccounts();
-						for(Konto k: accs) xmlGen.accountToXml(k, pp);
+						for(Konto k: accs) xmlGen.accountToXml(k, handler);
 					}
 				} 
 			}
@@ -1157,7 +1157,7 @@ public class HBCIServer {
 			if(handler != null) {
 				HBCIPassport pp = handler.getPassport();
 				Konto [] accs = pp.getAccounts();
-				for(Konto k: accs) xmlGen.accountToXml(k, pp);
+				for(Konto k: accs) xmlGen.accountToXml(k, handler);
 			} else {
 				error(ERR_MISS_USER, "getAccounts", userId);
 				return;
@@ -1538,7 +1538,7 @@ public class HBCIServer {
 			error(ERR_GENERIC, "updateBankData", status.getErrorString());
 			return;
 		}
-		xmlGen.passportToXml(handler.getPassport());
+		xmlGen.passportToXml(handler, true);
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
@@ -1565,7 +1565,7 @@ public class HBCIServer {
 		passport.getCurrentTANMethod(true);
 
 		xmlBuf.append("<result command=\"resetPinTanMethod\">");
-		xmlGen.passportToXml(passport);
+		xmlGen.passportToXml(handler, false);
 		xmlBuf.append("</result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
