@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.kapott.hbci.GV_Result.GVRKKSettleList;
 import org.kapott.hbci.GV_Result.GVRTANMediaList.TANMediaInfo;
 import org.kapott.hbci.GV_Result.GVRTANMediaList;
 import org.kapott.hbci.manager.HBCIUtils;
+import org.kapott.hbci.manager.HBCIHandler;
 import org.kapott.hbci.passport.HBCIPassport;
 import org.kapott.hbci.passport.HBCIPassportPinTan;
 import org.kapott.hbci.passport.HBCIPassportDDV;
@@ -86,7 +88,43 @@ public class XmlGen {
     	tag("customerId", account.customerid);
     	tag("subNumber", account.subnumber);
         intTag("type", account.category);
+        xmlBuf.append("<supportedJobs type=\"list\">");
+        ArrayList<String> gvs = (ArrayList<String>)account.allowedGVs;
+        if(gvs != null && gvs.contains("HKUEB")) tag("name", "Ueb");
+        if(gvs != null && gvs.contains("HKTUE")) tag("name", "TermUeb");
+        if(gvs != null && gvs.contains("HKAOM")) tag("name", "UebForeign");
+        if(gvs != null && gvs.contains("HKCCS")) tag("name", "UebSEPA");
+        if(gvs != null && gvs.contains("HKUMB")) tag("name", "Umb");
+        if(gvs != null && gvs.contains("HKLAS")) tag("name", "Last");
+        if(gvs != null && gvs.contains("HKDAE")) tag("name", "DauerNew");
+        if(gvs != null && gvs.contains("HKDAN")) tag("name", "DauerEdit");
+        if(gvs != null && gvs.contains("HKDAL")) tag("name", "DauerDel");
+        if(gvs != null && gvs.contains("HKTAB")) tag("name", "TANMediaList");
+        if(gvs != null && gvs.contains("HKSUB")) tag("name", "MultiUeb");
+
+        
+        xmlBuf.append("</supportedJobs>");
     	xmlBuf.append("</object>");
+    }
+    
+    public void accountJobsToXml(Konto account, HBCIHandler handler) throws IOException {
+		xmlBuf.append("<object type=\"AccountJobs\">");
+		tag("accountNumber", account.number);
+		tag("subNumber", account.subnumber);
+        xmlBuf.append("<supportedJobs type=\"list\">");
+		ArrayList<String> gvs = (ArrayList<String>)account.allowedGVs;
+        if(gvs != null && gvs.contains("HKUEB") || gvs == null && handler.isSupported("Ueb")) tag("name", "Ueb");
+        if(gvs != null && gvs.contains("HKTUE") || gvs == null && handler.isSupported("TermUeb")) tag("name", "TermUeb");
+        if(gvs != null && gvs.contains("HKAOM") || gvs == null && handler.isSupported("UebForeign")) tag("name", "UebForeign");
+        if(gvs != null && gvs.contains("HKCCS") || gvs == null && handler.isSupported("UebSEPA")) tag("name", "UebSEPA");
+        if(gvs != null && gvs.contains("HKUMB") || gvs == null && handler.isSupported("Umb")) tag("name", "Umb");
+        if(gvs != null && gvs.contains("HKLAS") || gvs == null && handler.isSupported("Last")) tag("name", "Last");
+        if(gvs != null && gvs.contains("HKDAE") || gvs == null && handler.isSupported("DauerNew")) tag("name", "DauerNew");
+        if(gvs != null && gvs.contains("HKDAN") || gvs == null && handler.isSupported("DauerEdit")) tag("name", "DauerEdit");
+        if(gvs != null && gvs.contains("HKDAL") || gvs == null && handler.isSupported("DauerDel")) tag("name", "DauerDel");
+        if(gvs != null && gvs.contains("HKTAB") || gvs == null && handler.isSupported("TANMediaList")) tag("name", "TANMediaList");
+        if(gvs != null && gvs.contains("HKSUB") || gvs == null && handler.isSupported("MultiUeb")) tag("name", "MultiUeb");
+        xmlBuf.append("</supportedJobs></object>");
     }
   
 	@SuppressWarnings("unchecked")

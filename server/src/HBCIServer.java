@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -156,7 +157,11 @@ public class HBCIServer {
 	                case NEED_CONNECTION:
 	                case CLOSE_CONNECTION: return;
 	                case NEED_PT_SECMECH: 		if(server.passportExists(passport)) st = callbackClient(passport, "getTanMethod", msg, def, reason, datatype);
-	                							else st = ((AbstractPinTanPassport)passport).getCurrentTANMethod(false);
+	                							else {
+	                								// if passport is created just return the first alternative (will be overwritten later anyway)
+	                								String[] methods = def.split("\\|");
+	                								st = methods[0].split(":")[0];
+	                							}
 	                							break;
 	                case NEED_SOFTPIN:
 	                case NEED_PT_PIN:			st = callbackClient(passport, "getPin", msg, def, reason, datatype); break;
@@ -261,6 +266,19 @@ public class HBCIServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        
+        // set new bank list
+        try {
+        	String blzPath = "/blz_new.properties";
+        	InputStream blzStream=HBCIServer.class.getResourceAsStream(blzPath);
+			HBCIUtils.refreshBLZList(blzStream);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     
@@ -352,58 +370,96 @@ public class HBCIServer {
         HBCIUtils.setParam("client.passport.default",type);
 
         String key = passportKey(bankCode, userId);
-
-        if(type.equals("PinTan")) {
-			if(version.compareTo("220") == 0) version = "plus";
-			
-			// check if passport file exists
-			String filePath = passportPath + "/" + key + ".dat";
-			HBCIUtils.log("HBCIServer: open passort: "+filePath, HBCIUtils.LOG_DEBUG);
-			File file = new File(filePath);
-			if(file.exists() == false) {
-				HBCIUtils.log("HBCIServer: passport file "+filePath+" not found!", HBCIUtils.LOG_DEBUG);
-			} else {
-				HBCIUtils.setParam("client.passport.PinTan.filename",filePath);
-		        HBCIPassport passport=AbstractHBCIPassport.getInstance();
+        hbciHandle = (HBCIHandler)hbciHandlers.get(key);
+        if(hbciHandle != null) {
+        	// Passport already there. If it's a DDV passport, check if it's still alive (chipcard has not been removed in the meanwhile)
+        	if(type.equals("DDV")) {
+        		HBCIPassportDDVExt passport = (HBCIPassportDDVExt)hbciHandle.getPassport();
+        		if (passport.isAlive() == false) {
+        			hbciHandlers.remove(key);
+        			hbciHandle = null;
+        		}
+        	}
+        }
+        
+        if(hbciHandle == null) {
+            if(type.equals("PinTan")) {
+            	HBCIPassport passport = null;
+    			if(version.compareTo("220") == 0) version = "plus";
+	        	HBCIUtils.setParam("client.passport.hbciversion.default",version);
+    			
+    			// check if passport file exists
+    			String filePath = passportPath + "/" + key + ".dat";
+    			HBCIUtils.log("HBCIServer: open passort: "+filePath, HBCIUtils.LOG_DEBUG);
+    			File file = new File(filePath);
+    			if(file.exists() == false) {
+    				// does not exist - try to create new passport
+    				HBCIUtils.log("HBCIServer: passport file "+filePath+" not found! Try to rebuild it", HBCIUtils.LOG_WARN);
+    				HBCIUtils.setParam("client.passport.PinTan.filename",filePath);
+    		        
+    		        String checkCert = map.getProperty("checkCert");
+    		        if(checkCert != null && checkCert.equals("no")) {
+    		        	HBCIUtils.setParam("client.passport.PinTan.checkcert", "0");
+    		        } else {
+    		        	HBCIUtils.setParam("client.passport.PinTan.checkcert", "1");
+    		        }
+    		        try {
+    		        	passport=AbstractHBCIPassport.getInstance(type);
+    		        }
+    		        catch(HBCI_Exception e) {
+    		        	passport = null;
+    		        }
+    			} else {
+    				HBCIUtils.setParam("client.passport.PinTan.filename",filePath);
+    		        passport=AbstractHBCIPassport.getInstance(type);
+    			}
 		        if(passport == null) {
 					HBCIUtils.log("HBCIServer: failed to create passport from file "+filePath+"!", HBCIUtils.LOG_ERR);
 		        } else {
 		        	try {
-			        	HBCIUtils.setParam("client.passport.hbciversion.default",version);
-				        hbciHandle=new HBCIHandler(null, passport);
+				        hbciHandle=new HBCIHandler(version, passport);
 		        	}
 		        	catch(HBCI_Exception e) {
 		        		hbciHandle = null;
 		        	}
 		        }
-			}
-		}
-        
-		if(type.equals("DDV")) {
-			String portIdx = getParameter(map, "ddvPortIdx");
-			String readerIdx = getParameter(map, "ddvReaderIdx");
-	        HBCIUtils.setParam("client.passport.DDV.path", passportPath+"/");
-	        HBCIUtils.setParam("client.passport.DDV.port", portIdx);
-	        HBCIUtils.setParam("client.passport.DDV.ctnumber", readerIdx);
-	        HBCIUtils.setParam("client.passport.DDV.usebio", "0");
-	        HBCIUtils.setParam("client.passport.DDV.softpin", "0");	
-	        
-	        HBCIPassport passport=AbstractHBCIPassport.getInstance(type);
-	        
-	        try {
-	        	HBCIUtils.setParam("client.passport.hbciversion.default",version);
-	        	hbciHandle=new HBCIHandler(version, passport);
+    		}
+            
+    		if(type.equals("DDV")) {
+    			String portIdx = getParameter(map, "ddvPortIdx");
+    			String readerIdx = getParameter(map, "ddvReaderIdx");
+    	        HBCIUtils.setParam("client.passport.DDV.path", passportPath+"/");
+    	        HBCIUtils.setParam("client.passport.DDV.port", portIdx);
+    	        HBCIUtils.setParam("client.passport.DDV.ctnumber", readerIdx);
+    	        HBCIUtils.setParam("client.passport.DDV.usebio", "0");
+    	        HBCIUtils.setParam("client.passport.DDV.softpin", "0");	
+    	        
+    	        //HBCIPassport passport=AbstractHBCIPassport.getInstance("DDV");
+    	        HBCIPassport passport = new HBCIPassportDDVExt(null);
+    	        
+    	        try {
+    	        	HBCIUtils.setParam("client.passport.hbciversion.default",version);
+    	        	hbciHandle=new HBCIHandler(version, passport);
 
-	        }
-	        catch(HBCI_Exception e) {
-	        	hbciHandle = null;
-	        }
-		}
-		
-		if(hbciHandle != null) {
-			HBCIUtils.log("HBCIServer: passport created for bank code "+bankCode+", user "+userId, HBCIUtils.LOG_DEBUG);
-			hbciHandlers.put(key, hbciHandle);
-		}
+    	        }
+    	        catch(HBCI_Exception e) {
+    	        	hbciHandle = null;
+    	        }
+    		}
+    		
+    		if(hbciHandle != null) {
+    			HBCIUtils.log("HBCIServer: passport created for bank code "+bankCode+", user "+userId, HBCIUtils.LOG_DEBUG);
+    			hbciHandlers.put(key, hbciHandle);
+
+    			// set accounts
+        		HBCIPassport passport = hbciHandle.getPassport();
+            	Konto [] ppAccounts = passport.getAccounts();
+            	for(Konto k: ppAccounts) {
+            		if(k.subnumber == null) accounts.put(k.blz+k.number, k);
+            		else accounts.put(k.blz+k.number+k.subnumber, k);
+            	}
+    		}        	
+        }
 		
 		xmlBuf.append("<result command=\"registerPassport\">");
 		xmlGen.booleTag("ok", hbciHandle != null);
@@ -488,20 +544,25 @@ public class HBCIServer {
  	}
 	
 	private void deletePassport() throws IOException {
-		String filename = passportKey(map, "deletePassport");
-		if(filename == null) return;
+		String type = getParameter(map, "passportType");
+		String key = null;
+		if(type.equals("PinTan")) {
+			key = passportKey(map, "deletePassport");
+			if(key == null) return;
+			// remove the passport file
+			String filePath = passportPath + "/" + key + ".dat";
+	    	File ppFile = new File(filePath);
+	    	ppFile.delete();
+		}
+		if(type.equals("DDV")) {
+			// remove the passport file
+			key = getParameter(map, "chipCardId");
+			String filePath = passportPath + "/" + key;
+	    	File ppFile = new File(filePath);
+	    	ppFile.delete();			
+		}
 	
-		hbciHandlers.remove(filename);
-		
-		// remove the passport file
-		String filePath = passportPath + "/" + filename + ".dat";
-    	File ppFile = new File(filePath);
-    	ppFile.delete();
-    	
-    	// remove user file
-		filePath = passportPath + "/" + filename + ".ser";
-    	ppFile = new File(filePath);
-    	ppFile.delete();
+		hbciHandlers.remove(key);
     	
         xmlBuf.append("<result name=\"deletePassport\">");
         xmlBuf.append("</result>.");
@@ -530,7 +591,7 @@ public class HBCIServer {
 				continue;
 			}
 			HBCIJob job = handler.newJob(jobName);
-			Konto account = accountWithId(bankCode, accountNumber, subNumber);
+			Konto account = accountWithId(userId, bankCode, accountNumber, subNumber);
 			if(account == null) {
 				account = getAccount(handler.getPassport(), accountNumber, subNumber);
 				if(account == null) {
@@ -687,7 +748,7 @@ public class HBCIServer {
 			pp.setCurrentTANMethod(null);
 		}
 
-		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		Konto account = accountWithId(userId, bankCode, accountNumber, subNumber);
 		if(account == null) {
 			account = getAccount(handler.getPassport(), accountNumber, subNumber);
 			if(account == null) {
@@ -792,7 +853,7 @@ public class HBCIServer {
 				handler.reset();
 				handlers.add(handler);
 			}
-			Konto account = accountWithId(bankCode, accountNumber, subNumber);
+			Konto account = accountWithId(userId, bankCode, accountNumber, subNumber);
 			if(account == null) {
 				account = getAccount(handler.getPassport(), accountNumber, subNumber);
 				if(account == null) continue;
@@ -823,12 +884,23 @@ public class HBCIServer {
 					job.setParam("name2", remoteName.substring(27));
 				} else job.setParam("name", remoteName);
 				
+				String purpose = getParameter(map, "transfer.purpose1");
+				if(purpose != null) job.setParam("usage", purpose);
+				purpose = map.getProperty("transfer.purpose2");
+				if(purpose != null) job.setParam("usage_2", purpose);
+				purpose = map.getProperty("transfer.purpose3");
+				if(purpose != null) job.setParam("usage_3", purpose);
+				purpose = map.getProperty("transfer.purpose4");
+				if(purpose != null) job.setParam("usage_4", purpose);
+
+				
 			} else {
 				// Auslandsüberweisung oder SEPA Einzelüberweisung
 				job.setParam("dst.name", getParameter(map, "transfer.remoteName"));
 				
 				// wir unterstützen nur die IBAN
-				job.setParam("dst.iban", getParameter(map, "transfer.iban"));
+				job.setParam("dst.iban", getParameter(map, "transfer.remoteIBAN"));
+				job.setParam("dst.bic", getParameter(map, "transfer.remoteBIC"));
 				if(transferType.equals("sepa")) {
 					if(account.isSEPAAccount() == false) {
 						// Konto kann nicht für SEPA-Geschäftsvorfälle verwendet werden
@@ -839,19 +911,13 @@ public class HBCIServer {
 					job.setParam("dst.kiname", getParameter(map, "transfer.bankName"));
 					if(map.containsKey("chargeTo")) job.setParam("kostentraeger", map.getProperty("chargeTo"));
 				}
+
+				String purpose = getParameter(map, "transfer.purpose1");
+				if(purpose != null) job.setParam("usage", purpose);
 			}
 			long val = Long.decode(getParameter(map, "transfer.value"));
 			job.setParam("btg", new Value(val, getParameter(map, "transfer.currency")));
 			
-			String purpose = getParameter(map, "transfer.purpose1");
-			if(purpose != null) job.setParam("usage", purpose);
-			purpose = map.getProperty("transfer.purpose2");
-			if(purpose != null) job.setParam("usage_2", purpose);
-			purpose = map.getProperty("transfer.purpose3");
-			if(purpose != null) job.setParam("usage_3", purpose);
-			purpose = map.getProperty("transfer.purpose4");
-			if(purpose != null) job.setParam("usage_4", purpose);
-
 			if(transferType.equals("dated")) {
 				Date date = HBCIUtils.string2DateISO(getParameter(map, "transfer.valutaDate"));
 				job.setParam("date", date);
@@ -908,7 +974,7 @@ public class HBCIServer {
 			return;
 		}
 		
-		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		Konto account = accountWithId(userId, bankCode, accountNumber, subNumber);
 		if(account == null) {
 			account = getAccount(handler.getPassport(), accountNumber, subNumber);
 			if(account == null) {
@@ -1143,21 +1209,28 @@ public class HBCIServer {
 		out.flush();
 	}
 	
-	private Konto accountWithId(String bankCode, String accountNumber, String subNumber)
+	private String accountKey(String userId, String bankCode, String accountNumber, String subNumber)
 	{
 		if(subNumber == null) {
-			return (Konto)accounts.get(bankCode+accountNumber);
+			return userId+bankCode+accountNumber;
 		} else {
-			return (Konto)accounts.get(bankCode+accountNumber+subNumber);			
+			return userId+bankCode+accountNumber+subNumber;			
 		}
+		
+	}
+	
+	private Konto accountWithId(String userId, String bankCode, String accountNumber, String subNumber)
+	{
+		return (Konto)accounts.get(accountKey(userId, bankCode, accountNumber, subNumber));
 	}
 	
 	private void setAccount() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String accountNumber = getParameter(map, "accountNumber");
+		String userId = getParameter(map, "userId");
 		String subNumber = map.getProperty("subNumber");
 		
-		Konto acc = accountWithId(bankCode, accountNumber, subNumber);
+		Konto acc = accountWithId(userId, bankCode, accountNumber, subNumber);
 		if(acc == null) {
 			acc = new Konto(getParameter(map, "country"), bankCode, accountNumber);
 			acc.curr = map.getProperty("currency");
@@ -1168,8 +1241,7 @@ public class HBCIServer {
 			acc.name = map.getProperty("ownerName");
 			acc.type = map.getProperty("name");
 			acc.subnumber = subNumber;
-			if(subNumber != null) accounts.put(bankCode+accountNumber+subNumber, acc);
-			else accounts.put(bankCode+accountNumber, acc);
+			accounts.put(accountKey(userId, bankCode, accountNumber, subNumber), acc);
 		} else {
 			// IBAN und BIC können von außen gesetzt werden
 			if (acc.iban == null) acc.iban = map.getProperty("iban");
@@ -1186,9 +1258,10 @@ public class HBCIServer {
 	private void changeAccount() throws IOException {
 		String bankCode = getParameter(map, "bankCode");
 		String accountNumber = getParameter(map, "accountNumber");
+		String userId = getParameter(map, "userId");
 		String subNumber = map.getProperty("subNumber");
 		
-		Konto acc = accountWithId(bankCode, accountNumber, subNumber);
+		Konto acc = accountWithId(userId, bankCode, accountNumber, subNumber);
 		if(acc != null) {
 			acc.bic = map.getProperty("bic");
 			acc.iban = map.getProperty("iban");
@@ -1336,8 +1409,11 @@ public class HBCIServer {
 	
 	private ArrayList<String> getAllowedGVs(HBCIPassport passport, String accountNumber, String subNumber) {
 		
+		ArrayList<String> result = null;
 		Konto account = getAccount(passport, accountNumber, subNumber);
-		ArrayList<String> result = (ArrayList<String>)account.allowedGVs;
+		if(account == null) {
+			HBCIUtils.log("Account "+accountNumber+" unknown!", HBCIUtils.LOG_ERR);
+		} else result = (ArrayList<String>)account.allowedGVs;
 		
 		if(result == null) {
 			if(subNumber == null) subNumber = "";
@@ -1385,7 +1461,7 @@ public class HBCIServer {
 			HBCIUtils.log(gvs.toString(), HBCIUtils.LOG_DEBUG);
 
 			result = (ArrayList<String>)gvs.get(accountNumber+subNumber);
-			account.allowedGVs = result;
+			if(account != null) account.allowedGVs = result;
 		}
 		
 		return result;
@@ -1423,6 +1499,28 @@ public class HBCIServer {
 		xmlBuf.append("<result command=\"isSupported\">");
 		xmlGen.booleTag("isSupported", supp);
 		xmlBuf.append("</result>.");
+		out.write(xmlBuf.toString());
+		out.flush();
+	}
+	
+	private void supportedJobsForAccount() throws IOException {
+		String bankCode = getParameter(map, "bankCode");
+		String accountNumber = getParameter(map, "accountNumber");
+		String subNumber = map.getProperty("subNumber");
+		String userId = getParameter(map, "userId");
+
+		HBCIHandler handler = hbciHandler(bankCode, userId);
+		xmlBuf.append("<result command=\"supportedJobsForAccount\"><list>");
+		if(handler != null) {
+			HBCIPassport passport = handler.getPassport();
+			Konto[] ppAccounts = passport.getAccounts();
+			for(Konto k: ppAccounts) {
+				if((accountNumber.equals(k.number) && (subNumber == null || subNumber.equals(k.subnumber))) || accountNumber.equals("*")) {
+					xmlGen.accountJobsToXml(k, handler);
+				}
+			}
+		}
+		xmlBuf.append("</list></result>.");
 		out.write(xmlBuf.toString());
 		out.flush();
 	}
@@ -1495,7 +1593,7 @@ public class HBCIServer {
 			return;			
 		}
 		
-		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		Konto account = accountWithId(userId, bankCode, accountNumber, subNumber);
 		if(account == null) {
 			account = getAccount(handler.getPassport(), accountNumber, subNumber);
 			if(account == null) {
@@ -1532,7 +1630,7 @@ public class HBCIServer {
 			return;			
 		}
 		
-		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		Konto account = accountWithId(userId, bankCode, accountNumber, subNumber);
 		if(account == null) {
 			account = getAccount(handler.getPassport(), accountNumber, subNumber);
 			if(account == null) {
@@ -1582,8 +1680,13 @@ public class HBCIServer {
 			error(ERR_MISS_USER, "customerMessage", userId);
 			return;			
 		}
+		HBCIPassport passport = handler.getPassport();
+		if(passport instanceof HBCIPassportPinTan) {
+			HBCIPassportPinTan pp = (HBCIPassportPinTan)passport;
+			pp.setCurrentTANMethod(null);
+		}
 		
-		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		Konto account = accountWithId(userId, bankCode, accountNumber, subNumber);
 		if(account == null) {
 			account = getAccount(handler.getPassport(), accountNumber, subNumber);
 			if(account == null) {
@@ -1626,7 +1729,7 @@ public class HBCIServer {
 			return;			
 		}
 		
-		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		Konto account = accountWithId(userId, bankCode, accountNumber, subNumber);
 		if(account == null) {
 			account = getAccount(handler.getPassport(), accountNumber, subNumber);
 			if(account == null) {
@@ -1667,7 +1770,7 @@ public class HBCIServer {
 			return;			
 		}
 		
-		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		Konto account = accountWithId(userId, bankCode, accountNumber, subNumber);
 		if(account == null) {
 			account = getAccount(handler.getPassport(), accountNumber, subNumber);
 			if(account == null) {
@@ -1711,7 +1814,7 @@ public class HBCIServer {
 			return;			
 		}
 		
-		Konto account = accountWithId(bankCode, accountNumber, subNumber);
+		Konto account = accountWithId(userId, bankCode, accountNumber, subNumber);
 		if(account == null) {
 			account = getAccount(handler.getPassport(), accountNumber, subNumber);
 			if(account == null) {
@@ -1922,6 +2025,7 @@ public class HBCIServer {
 			if(command.compareTo("getSupportedBusinessTransactions") == 0) { getSupportedBusinessTransactions(); return; }
 			if(command.compareTo("getCCSettlementList") == 0) { getCCSettlementList(); return; }
 			if(command.compareTo("sendCollectiveTransfer") == 0) { sendCollectiveTransfer(); return; }
+			if(command.compareTo("supportedJobsForAccount") == 0) { supportedJobsForAccount(); return; }
 			
 			
 			System.err.println("HBCIServer: unknown command: "+command);
