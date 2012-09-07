@@ -339,6 +339,27 @@ static BOOL runningOnLionOrLater = NO;
     }
 }
 
+/*
+-(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts
+{
+    BankAccount *bankNode = [BankAccount bankRootForCode: acc.bankCode];
+    
+    if(bankNode == nil) {
+        Category *root = [Category bankRoot];
+        if(root == nil) return nil;
+        // create bank node
+        bankNode = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount" inManagedObjectContext:self.managedObjectContext];
+        bankNode.name = acc.bankName;
+        bankNode.bankCode = acc.bankCode;
+        bankNode.currency = acc.currency;
+        bankNode.bic = acc.bic;
+        bankNode.isBankAcc = [NSNumber numberWithBool: YES];
+        bankNode.parent = root;
+        if(bankAccounts) [bankAccounts addObject: bankNode];
+    }
+    return bankNode;
+}
+
 -(void)updateBankAccounts:(NSArray *)hbciAccounts forUser:(BankUser*)user
 {
     NSError *error=nil;
@@ -421,7 +442,7 @@ static BOOL runningOnLionOrLater = NO;
         return;
     }
 }
-
+*/
 /*
 -(void)updateBankAccounts:(NSArray*)hbciAccounts
 {
@@ -698,26 +719,6 @@ static BOOL runningOnLionOrLater = NO;
     }
 }
 
--(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts
-{
-    BankAccount *bankNode = [BankAccount bankRootForCode: acc.bankCode];
-    
-    if(bankNode == nil) {
-        Category *root = [Category bankRoot];
-        if(root == nil) return nil;
-        // create bank node
-        bankNode = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount" inManagedObjectContext:self.managedObjectContext];
-        bankNode.name = acc.bankName;
-        bankNode.bankCode = acc.bankCode;
-        bankNode.currency = acc.currency;
-        bankNode.bic = acc.bic;
-        bankNode.isBankAcc = [NSNumber numberWithBool: YES];
-        bankNode.parent = root;
-        if(bankAccounts) [bankAccounts addObject: bankNode];
-    }
-    return bankNode;
-}
-
 -(void)updateBalances
 {
     NSError *error = nil;
@@ -739,14 +740,6 @@ static BOOL runningOnLionOrLater = NO;
         NSAlert *alert = [NSAlert alertWithError:error];
         [alert runModal];
         return;
-    }
-}
-
--(IBAction)updateAllAccounts:(id)sender
-{
-    NSArray *users = [BankUser allUsers];
-    for (BankUser *user in users) {
-        [self updateBankAccounts: nil forUser: user];
     }
 }
 

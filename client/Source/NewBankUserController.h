@@ -66,7 +66,6 @@
 - (IBAction)addEntry:(id)sender;
 - (IBAction)removeEntry:(id)sender;
 - (IBAction)updateBankParameter: (id)sender;
-- (IBAction)getUserAccounts: (id)sender;
 - (IBAction)changePinTanMethod: (id)sender;
 - (IBAction)printBankParameter: (id)sender;
 - (IBAction)allSettings: (id)sender;

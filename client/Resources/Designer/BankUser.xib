@@ -11,7 +11,7 @@
 			<string key="NS.object.0">851</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="904"/>
+			<integer value="6"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -268,36 +268,10 @@
 							</object>
 							<bool key="NSEditable">YES</bool>
 						</object>
-						<object class="NSButton" id="236135580">
-							<reference key="NSNextResponder" ref="295136492"/>
-							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{282, 11}, {130, 32}}</string>
-							<reference key="NSSuperview" ref="295136492"/>
-							<reference key="NSNextKeyView" ref="714844827"/>
-							<int key="NSViewLayerContentsRedrawPolicy">2</int>
-							<bool key="NSEnabled">YES</bool>
-							<object class="NSButtonCell" key="NSCell" id="574700053">
-								<int key="NSCellFlags">67239424</int>
-								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">Konten abrufen</string>
-								<object class="NSFont" key="NSSupport" id="175963918">
-									<string key="NSName">LucidaGrande</string>
-									<double key="NSSize">13</double>
-									<int key="NSfFlags">1044</int>
-								</object>
-								<reference key="NSControlView" ref="236135580"/>
-								<int key="NSButtonFlags">-2038284033</int>
-								<int key="NSButtonFlags2">129</int>
-								<string key="NSAlternateContents"/>
-								<string key="NSKeyEquivalent"/>
-								<int key="NSPeriodicDelay">200</int>
-								<int key="NSPeriodicInterval">25</int>
-							</object>
-						</object>
 						<object class="NSButton" id="714844827">
 							<reference key="NSNextResponder" ref="295136492"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{412, 11}, {130, 32}}</string>
+							<string key="NSFrame">{{282, 11}, {157, 32}}</string>
 							<reference key="NSSuperview" ref="295136492"/>
 							<reference key="NSNextKeyView" ref="403410077"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -306,10 +280,18 @@
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">134217728</int>
 								<string key="NSContents">BP aktualisieren</string>
-								<reference key="NSSupport" ref="175963918"/>
+								<object class="NSFont" key="NSSupport" id="175963918">
+									<string key="NSName">LucidaGrande</string>
+									<double key="NSSize">13</double>
+									<int key="NSfFlags">1044</int>
+								</object>
 								<reference key="NSControlView" ref="714844827"/>
-								<int key="NSButtonFlags">-2038284033</int>
+								<int key="NSButtonFlags">-2034482945</int>
 								<int key="NSButtonFlags2">129</int>
+								<object class="NSCustomResource" key="NSNormalImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">refresh</string>
+								</object>
 								<string key="NSAlternateContents"/>
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">200</int>
@@ -319,7 +301,7 @@
 						<object class="NSButton" id="403410077">
 							<reference key="NSNextResponder" ref="295136492"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{542, 11}, {130, 32}}</string>
+							<string key="NSFrame">{{439, 11}, {157, 32}}</string>
 							<reference key="NSSuperview" ref="295136492"/>
 							<reference key="NSNextKeyView" ref="1044085389"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -327,11 +309,15 @@
 							<object class="NSButtonCell" key="NSCell" id="57551435">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">134217728</int>
-								<string key="NSContents">BPD ausgeben</string>
+								<string key="NSContents">BP ausgeben</string>
 								<reference key="NSSupport" ref="175963918"/>
 								<reference key="NSControlView" ref="403410077"/>
-								<int key="NSButtonFlags">-2038284033</int>
+								<int key="NSButtonFlags">-2034482945</int>
 								<int key="NSButtonFlags2">129</int>
+								<object class="NSCustomResource" key="NSNormalImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">log</string>
+								</object>
 								<string key="NSAlternateContents"/>
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">200</int>
@@ -392,7 +378,7 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{51, 23}, {24, 24}}</string>
 							<reference key="NSSuperview" ref="295136492"/>
-							<reference key="NSNextKeyView" ref="236135580"/>
+							<reference key="NSNextKeyView"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="819773258">
@@ -2299,14 +2285,6 @@
 					<int key="connectionID">124</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">getUserAccounts:</string>
-						<reference key="source" ref="150018269"/>
-						<reference key="destination" ref="236135580"/>
-					</object>
-					<int key="connectionID">627</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">hbciVersions</string>
 						<reference key="source" ref="150018269"/>
@@ -2479,28 +2457,6 @@
 						</object>
 					</object>
 					<int key="connectionID">840</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: canRemove</string>
-						<reference key="source" ref="236135580"/>
-						<reference key="destination" ref="581744579"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="236135580"/>
-							<reference key="NSDestination" ref="581744579"/>
-							<string key="NSLabel">enabled: canRemove</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">canRemove</string>
-							<dictionary key="NSOptions">
-								<integer value="0" key="NSMultipleValuesPlaceholder"/>
-								<integer value="0" key="NSNoSelectionPlaceholder"/>
-								<integer value="0" key="NSNotApplicablePlaceholder"/>
-								<integer value="0" key="NSNullPlaceholder"/>
-							</dictionary>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">841</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -3176,9 +3132,6 @@
 							<reference ref="997354932"/>
 							<reference ref="602821846"/>
 							<reference ref="1044085389"/>
-							<reference ref="403410077"/>
-							<reference ref="714844827"/>
-							<reference ref="236135580"/>
 							<reference ref="720133094"/>
 							<reference ref="145184999"/>
 							<reference ref="635332920"/>
@@ -3187,6 +3140,8 @@
 							<reference ref="570447070"/>
 							<reference ref="876305144"/>
 							<reference ref="70316167"/>
+							<reference ref="714844827"/>
+							<reference ref="403410077"/>
 						</array>
 						<reference key="parent" ref="524467833"/>
 						<string key="objectName">Background Gradient</string>
@@ -3558,19 +3513,6 @@
 						<int key="objectID">861</int>
 						<reference key="object" ref="278984937"/>
 						<reference key="parent" ref="720133094"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">623</int>
-						<reference key="object" ref="236135580"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="574700053"/>
-						</array>
-						<reference key="parent" ref="295136492"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">624</int>
-						<reference key="object" ref="574700053"/>
-						<reference key="parent" ref="236135580"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">155</int>
@@ -4437,7 +4379,22 @@
 				<string key="1070.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1071.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="123.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<dictionary class="NSMutableDictionary" key="155.IBAttributePlaceholdersKey">
+					<object class="IBAccessibilityAttribute" key="AccessibilityDescription">
+						<string key="name">AccessibilityDescription</string>
+						<reference key="object" ref="714844827"/>
+						<string key="accessibilityValue">Bankparameter aktualisieren</string>
+					</object>
+					<object class="IBToolTipAttribute" key="ToolTip">
+						<string key="name">ToolTip</string>
+						<reference key="object" ref="714844827"/>
+						<string key="toolTip">Bankparameter aktualisieren</string>
+					</object>
+				</dictionary>
 				<string key="155.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<object class="NSAffineTransform" key="155.IBViewBoundsToFrameTransform">
+					<bytes key="NSTransformStruct">P4AAAL+AAABDjQAAwiQAAA</bytes>
+				</object>
 				<string key="22.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="328.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="329.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4497,13 +4454,26 @@
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="60.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="61.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="623.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="624.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="635.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="65.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="654.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="655.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<dictionary class="NSMutableDictionary" key="667.IBAttributePlaceholdersKey">
+					<object class="IBAccessibilityAttribute" key="AccessibilityDescription">
+						<string key="name">AccessibilityDescription</string>
+						<reference key="object" ref="403410077"/>
+						<string key="accessibilityValue">Bankparameter ins Nachrichtenlog schreiben</string>
+					</object>
+					<object class="IBToolTipAttribute" key="ToolTip">
+						<string key="name">ToolTip</string>
+						<reference key="object" ref="403410077"/>
+						<string key="toolTip">Bankparameter ins Nachrichtenlog schreiben</string>
+					</object>
+				</dictionary>
 				<string key="667.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<object class="NSAffineTransform" key="667.IBViewBoundsToFrameTransform">
+					<bytes key="NSTransformStruct">P4AAAL+AAABD4YAAwiQAAA</bytes>
+				</object>
 				<string key="668.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="698.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="5" key="698.IBViewIntegration.shadowBlurRadius"/>
@@ -4662,11 +4632,15 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+					<string key="className">NSButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="907044406">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Source/GraphicsAdditions.h</string>
+						<string key="minorKey">Source/NSButton+PecuniaAdditions.h</string>
 					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSButtonCell</string>
+					<reference key="sourceIdentifier" ref="907044406"/>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSView</string>
@@ -5662,8 +5636,10 @@
 			<string key="NSMenuMixedState">{7, 2}</string>
 			<string key="NSSwitch">{15, 15}</string>
 			<string key="Tresor">{223, 228}</string>
+			<string key="log">{128, 128}</string>
 			<string key="minus-8">{8, 8}</string>
 			<string key="plus-8">{8, 8}</string>
+			<string key="refresh">{32, 32}</string>
 		</dictionary>
 	</data>
 </archive>

@@ -240,6 +240,7 @@ NSString *escapeSpecial(NSString *s)
         [self appendTag: @"ownerName" withValue: acc.owner to: cmd ];
         [self appendTag: @"name" withValue: acc.name to: cmd ];
         [self appendTag: @"customerId" withValue: acc.customerId to: cmd ];
+        [self appendTag: @"userId" withValue: acc.userId to: cmd ];
         [self appendTag: @"currency" withValue: acc.currency to: cmd ];
         [cmd appendString: @"</command>" ];
         [bridge syncCommand: cmd error: &error ];
@@ -261,6 +262,7 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"ownerName" withValue: account.owner to: cmd ];
     [self appendTag: @"name" withValue: account.name to: cmd ];
     [self appendTag: @"customerId" withValue: account.customerId to: cmd ];
+    [self appendTag: @"userId" withValue: account.userId to: cmd ];
     [cmd appendString: @"</command>" ];
     [bridge syncCommand: cmd error: &error ];
     if(error != nil) return error;
@@ -328,6 +330,7 @@ NSString *escapeSpecial(NSString *s)
     
     BankUser *user = [account defaultBankUser ];
     if (user == nil) return nil;
+    
     if ([self registerBankUser:user error:&error] == NO) {
         if (error) {
             [error alertPanel ];
@@ -791,9 +794,11 @@ NSString *escapeSpecial(NSString *s)
     
     [cmd appendString: @"</command>" ];
     
+    // create bank user at the bank
     User* usr = [bridge syncCommand: cmd error: &error ];
-    if (error)
+    if (error) {
         return error;
+    }
     
     // update external user data
     if (secMethod == SecMethod_DDV) {
@@ -803,6 +808,17 @@ NSString *escapeSpecial(NSString *s)
         user.hbciVersion = usr.hbciVersion;
         user.country = usr.country;
         user.chipCardId = usr.chipCardId;
+    }
+    
+    // Update user's accounts
+    [self updateBankAccounts:usr.accounts forUser:user];
+    
+    // also update TAN media and TAN methods
+    if (secMethod == SecMethod_PinTan) {
+        error = [self updateTanMethodsForUser:user ];
+        if(error != nil) return error;
+        error = [self updateTanMediaForUser:user ];
+        if(error != nil) return error;
     }
     return nil;
 }
@@ -1115,6 +1131,113 @@ NSString *escapeSpecial(NSString *s)
     return nil;
 }
 
+-(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts
+{
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    BankAccount *bankNode = [BankAccount bankRootForCode: acc.bankCode];
+    
+    if(bankNode == nil) {
+        Category *root = [Category bankRoot];
+        if(root == nil) return nil;
+        // create bank node
+        bankNode = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount" inManagedObjectContext:context];
+        bankNode.name = acc.bankName;
+        bankNode.bankCode = acc.bankCode;
+        bankNode.currency = acc.currency;
+        bankNode.bic = acc.bic;
+        bankNode.isBankAcc = [NSNumber numberWithBool: YES];
+        bankNode.parent = root;
+        if(bankAccounts) [bankAccounts addObject: bankNode];
+    }
+    return bankNode;
+}
+
+-(void)updateBankAccounts:(NSArray*)hbciAccounts forUser:(BankUser*)user
+{
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectModel *model = [[MOAssistant assistant] model];
+    NSError *error=nil;
+    BOOL found;
+    
+    if (hbciAccounts == nil) {
+        hbciAccounts = [self getAccountsForUser:user];
+    }
+    
+    NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
+    NSArray *tmpAccounts = [context executeFetchRequest:request error:&error];
+    if( error != nil || tmpAccounts == nil) {
+        NSAlert *alert = [NSAlert alertWithError:error];
+        [alert runModal];
+        return;
+    }
+    NSMutableArray*	bankAccounts = [NSMutableArray arrayWithArray: tmpAccounts];
+    
+    for (Account *acc in hbciAccounts) {
+        BankAccount *account;
+        
+        //lookup
+        found = NO;
+        for (account in bankAccounts) {
+			if ([account.bankCode isEqual: acc.bankCode ] && [account.accountNumber isEqual: acc.accountNumber ] && 
+                ((account.accountSuffix == nil && acc.subNumber == nil) || [account.accountSuffix isEqual: acc.subNumber ])) {
+                found = YES;
+                break;
+            }
+        }
+        if (found) {
+            // Update the user id if there is none assigned yet or if it differs.
+            if (account.userId == nil || ![account.userId isEqualToString: acc.userId]) {
+                account.userId = acc.userId;
+                account.customerId = acc.customerId;
+                NSMutableSet *users = [account mutableSetValueForKey: @"users"];
+                [users addObject: user];
+            }
+            if (acc.bic != nil) {
+                account.bic = acc.bic;
+            }
+            if (acc.iban != nil) {
+                account.iban = acc.iban;
+            }
+            
+        } else {
+            // Account was not found: create it.
+            BankAccount* bankRoot = [self getBankNodeWithAccount: acc inAccounts: bankAccounts];
+            if(bankRoot == nil) return;
+            BankAccount	*bankAccount = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount"
+                                                                     inManagedObjectContext:context];
+            
+            bankAccount.accountNumber = acc.accountNumber;
+            bankAccount.name = acc.name;
+            bankAccount.bankCode = acc.bankCode;
+            bankAccount.bankName = acc.bankName;
+            bankAccount.currency = acc.currency;
+            bankAccount.country = acc.country;
+            bankAccount.owner = acc.ownerName;
+            bankAccount.userId = acc.userId;
+            bankAccount.customerId = acc.customerId;
+            bankAccount.isBankAcc = [NSNumber numberWithBool: YES];
+            bankAccount.accountSuffix = acc.subNumber;
+            bankAccount.bic = acc.bic;
+            bankAccount.iban = acc.iban;
+            bankAccount.type = acc.type;
+            //			bankAccount.uid = [NSNumber numberWithUnsignedInt: [acc uid]];
+            //			bankAccount.type = [NSNumber numberWithUnsignedInt: [acc type]];
+            
+            // links
+            bankAccount.parent = bankRoot;
+            NSMutableSet *users = [bankAccount mutableSetValueForKey:@"users" ];
+            [users addObject:user ];
+        } 
+    }
+    // save updates
+    if([context save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError:error];
+        [alert runModal];
+        return;
+    }
+}
+
+
 -(PecuniaError*)updateBankDataForUser:(BankUser*)user
 {
     PecuniaError *error=nil;
@@ -1126,9 +1249,20 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"userId" withValue: user.userId to: cmd ];
     [cmd appendString: @"</command>" ];
     
-    [bridge syncCommand: cmd error: &error ];
-    
+    // communicate with bank to update bank parameters
+    User *usr = [bridge syncCommand: cmd error: &error ];
     if(error) return error;
+    
+    // Update user's accounts
+    [self updateBankAccounts:usr.accounts forUser:user];
+    
+    // also update TAN media and TAN methods
+    if ([user.secMethod intValue ] == SecMethod_PinTan) {
+        error = [self updateTanMethodsForUser:user ];
+        if(error != nil) return error;
+        error = [self updateTanMediaForUser:user ];
+        if(error != nil) return error;
+    }
     return nil;
 }
 

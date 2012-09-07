@@ -185,11 +185,6 @@
                 [error alertPanel];
             }
             else {
-                [[HBCIClient hbciClient ] updateTanMethodsForUser:currentUser ];
-                [[HBCIClient hbciClient ] updateTanMediaForUser:currentUser ];
-                
-                [bankController updateBankAccounts: nil forUser: currentUser ];
-                
                 // TAN-Optionen aktualisieren
                 [self updateTanMethods ];                
                 [self stopProgress ];
@@ -230,9 +225,7 @@
                 }
             }
             else {
-                [bankController updateBankAccounts: nil forUser: currentUser ];
                 [self stopProgress ];
-                
                 [userSheet orderOut: sender];
                 [NSApp endSheet: userSheet returnCode: 0];
                 return;
@@ -651,22 +644,6 @@
 	}
 }
 
-- (IBAction)getUserAccounts: (id)sender
-{
-	BankUser *user = [self selectedUser];
-	if(user == nil) return;
-
-    NSArray *accounts = [[HBCIClient hbciClient] getAccountsForUser:user];
-    if (accounts != nil) {
-        [bankController updateBankAccounts: accounts forUser: user ];
-        NSRunAlertPanel(NSLocalizedString(@"AP27", @""),
-                        NSLocalizedString(@"AP107", @""),
-                        NSLocalizedString(@"ok", @"Ok"), 
-                        nil, nil,
-                        user.userId);
-    }
-}
-
 -(IBAction)changePinTanMethod:(id)sender
 {
 	BankUser *user = [self selectedUser];
@@ -711,12 +688,8 @@
         return;
     }
     
-    // auch die TAN-Methoden und TAN-Medien neu ermitteln
+    // update TAN methods list
     if ([user.secMethod intValue ] == SecMethod_PinTan) {
-        error = [[HBCIClient hbciClient ] updateTanMethodsForUser:user ];
-        if(error) [error alertPanel];
-        error = [[HBCIClient hbciClient ] updateTanMediaForUser:user ];
-        
         [self updateTanMethods ];
     }
     NSRunAlertPanel(NSLocalizedString(@"AP27", @"Success"), 

@@ -177,7 +177,6 @@
 -(IBAction)resetIsNewStatements:(id)sender;
 
 -(IBAction)printDocument:(id)sender;
--(IBAction)updateAllAccounts:(id)sender;
 -(IBAction)repairSaldo:(id)sender;
 -(IBAction)getAccountBalance:(id)sender;
 
@@ -190,10 +189,10 @@
 -(BankAccount*)selectBankAccountWithNumber:(NSString*)accNum bankCode:(NSString*)code;
 -(void)awakeFromNib;
 -(int)AccSize;
--(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts;
 -(void)statementsNotification: (NSNotification*)notification;
 -(Category*)getBankingRoot;
--(void)updateBankAccounts:(NSArray *)hbciAccounts forUser:(BankUser*)user;
+//-(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts;
+//-(void)updateBankAccounts:(NSArray *)hbciAccounts forUser:(BankUser*)user;
 -(void)updateBalances;
 -(void)updateNotAssignedCategory;
 -(void)requestFinished: (NSArray*)resultList;

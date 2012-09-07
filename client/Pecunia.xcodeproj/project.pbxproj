@@ -660,6 +660,7 @@
 		B179916A15F7D2B4005AB39A /* LicenseWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseWindowController.h; sourceTree = "<group>"; };
 		B179916B15F7D2B4005AB39A /* LicenseWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicenseWindowController.m; sourceTree = "<group>"; };
 		B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "gpl-2.0-standalone.html"; sourceTree = "<group>"; };
+		B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 6.xcdatamodel"; sourceTree = "<group>"; };
 		B17B28FF13E340A300739E7A /* HBCIBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIBackend.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3C13EC8D5000739E7A /* ChipTanWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ChipTanWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ChipTanWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -2325,6 +2326,7 @@
 				B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */,
 				B183568815CBFA6D003B93ED /* Accounts 4.xcdatamodel */,
 				B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */,
+				B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */,
 			);
 			currentVersion = B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
