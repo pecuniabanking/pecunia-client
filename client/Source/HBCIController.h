@@ -31,6 +31,7 @@
 -(void)asyncCommandCompletedWithResult:(id)result error:(PecuniaError*)err;
 -(BOOL)registerBankUser:(BankUser*)user error:(PecuniaError**)err;
 -(void)updateBankAccounts:(NSArray*)hbciAccounts forUser:(BankUser*)user;
+-(PecuniaError*)updateSupportedTransactionsForAccounts:(NSArray*)accounts user:(BankUser*)user;
 -(SigningOption*)signingOptionForAccount:(BankAccount*)account;
 
 

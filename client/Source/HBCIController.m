@@ -38,6 +38,7 @@
 #import "SigningOptionsController.h"
 #import "SigningOption.h"
 #import "CallbackHandler.h"
+#import "SupportedTransactionInfo.h"
 
 @implementation HBCIController
 
@@ -813,6 +814,10 @@ NSString *escapeSpecial(NSString *s)
     // Update user's accounts
     [self updateBankAccounts:usr.accounts forUser:user];
     
+    // update supported transactions
+    error = [self updateSupportedTransactionsForAccounts:usr.accounts user:user];
+    if(error != nil) return error;    
+    
     // also update TAN media and TAN methods
     if (secMethod == SecMethod_PinTan) {
         error = [self updateTanMethodsForUser:user ];
@@ -1237,10 +1242,109 @@ NSString *escapeSpecial(NSString *s)
     }
 }
 
--(void)updateSupportedJobs:(NSArray*)supportedJobNames forUser:(BankUser*)user
+-(PecuniaError*)updateSupportedTransactionsForAccounts:(NSArray*)accounts user:(BankUser*)user
 {
+    NSError *error=nil;
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"user = %@", user];
+    NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+    [request setEntity:entityDescription];
+    [request setPredicate:predicate ];
     
+    // remove existing
+    NSArray *result = [context executeFetchRequest:request error:&error];
+    if (error) {
+        return [PecuniaError errorWithMessage:[error localizedDescription ] title:NSLocalizedString(@"AP182",@"")];
+    }
+    
+    for(SupportedTransactionInfo *tinfo in result) {
+        [context deleteObject:tinfo ];
+    }
+    
+    for(Account *acc in accounts) {
+        BankAccount *account = [BankAccount accountWithNumber:acc.accountNumber subNumber:acc.subNumber bankCode:acc.bankCode ];
+        if (account == nil) {
+            continue;
+        }
+        NSArray *supportedJobNames = acc.supportedJobs;
+        
+        if ([supportedJobNames containsObject:@"Ueb" ] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = [NSNumber numberWithInt:TransactionType_TransferStandard ];
+            
+            // Parameters
+            if ([supportedJobNames containsObject:@"TermUeb" ] == YES) {
+                tinfo.allowsDated = [NSNumber numberWithBool:YES];
+            } else {
+                tinfo.allowsDated = [NSNumber numberWithBool:NO];
+            }
+            if ([supportedJobNames containsObject:@"MultiUeb" ] == YES) {
+                tinfo.allowsCollective = [NSNumber numberWithBool:YES];
+            } else {
+                tinfo.allowsCollective = [NSNumber numberWithBool:NO];
+            }
+        }
+        
+        // todo as soon as we support management of standing orders
+        if ([supportedJobNames containsObject:@"TermUeb" ] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = [NSNumber numberWithInt:TransactionType_TransferDated ];
+        }
+        
+        if ([supportedJobNames containsObject:@"UebForeign" ] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = [NSNumber numberWithInt:TransactionType_TransferEU ];
+        }
+        
+        if ([supportedJobNames containsObject:@"UebSEPA" ] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = [NSNumber numberWithInt:TransactionType_TransferSEPA ];
+        }
+        
+        if ([supportedJobNames containsObject:@"Umb" ] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = [NSNumber numberWithInt:TransactionType_TransferInternal ];
+        }
+        
+        if ([supportedJobNames containsObject:@"Last" ] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = [NSNumber numberWithInt:TransactionType_TransferDebit ];
+        }
+        
+        if ([supportedJobNames containsObject:@"DauerNew" ] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = [NSNumber numberWithInt:TransactionType_StandingOrder ];
+            
+            // Parameters
+            if ([supportedJobNames containsObject:@"DauerEdit" ] == YES) {
+                tinfo.allowsChange = [NSNumber numberWithBool:YES];
+            } else {
+                tinfo.allowsChange = [NSNumber numberWithBool:NO];
+            }
+            if ([supportedJobNames containsObject:@"DauerDel" ] == YES) {
+                tinfo.allowesDelete = [NSNumber numberWithBool:YES];
+            } else {
+                tinfo.allowesDelete = [NSNumber numberWithBool:NO];
+            }
+        }
+    }
+    return nil;
 }
 
 
@@ -1262,6 +1366,10 @@ NSString *escapeSpecial(NSString *s)
     // Update user's accounts
     [self updateBankAccounts:usr.accounts forUser:user];
     
+    // update supported transactions
+    error = [self updateSupportedTransactionsForAccounts:usr.accounts user:user];
+    if(error) return error;
+        
     // also update TAN media and TAN methods
     if ([user.secMethod intValue ] == SecMethod_PinTan) {
         error = [self updateTanMethodsForUser:user ];

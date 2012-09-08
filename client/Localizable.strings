@@ -185,6 +185,7 @@
 "AP179" = "Wenn Sie die Unterkonto-Information ändern können Sie das Konto ggfs. nicht mehr verwenden. Möchten Sie die Information trotzdem ändern?";
 "AP180" = "Speichern nicht möglich";
 "AP181" = "Die Regel konnte nicht interpretiert werden, vermutlich sind Sonderzeichen enthalten. Der Parser meldet folgendes Problem: %@";
+"AP182" = "Selektion unterstützte Geschäftsvorfälle";
 
 // Callback and backend.
 // AP350..AP399

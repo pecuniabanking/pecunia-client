@@ -17,9 +17,10 @@
  * 02110-1301  USA
  */
 
-#import "SupportedJob.h"
+#import "SupportedTransactionInfo.h"
 
-@implementation SupportedJob
+
+@implementation SupportedTransactionInfo
 
 @dynamic allowsChange;
 @dynamic allowsCollective;

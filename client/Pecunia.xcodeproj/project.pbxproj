@@ -206,6 +206,7 @@
 		B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */; };
 		B179916C15F7D2B4005AB39A /* LicenseWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B179916B15F7D2B4005AB39A /* LicenseWindowController.m */; };
 		B179917015F7D6F8005AB39A /* gpl-2.0-standalone.html in Resources */ = {isa = PBXBuildFile; fileRef = B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */; };
+		B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */; };
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
 		B17B2B4013EC913800739E7A /* ChipTanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */; };
 		B17B2B4313EC921200739E7A /* FlickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B4213EC921200739E7A /* FlickerView.m */; };
@@ -661,6 +662,8 @@
 		B179916B15F7D2B4005AB39A /* LicenseWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicenseWindowController.m; sourceTree = "<group>"; };
 		B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "gpl-2.0-standalone.html"; sourceTree = "<group>"; };
 		B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 6.xcdatamodel"; sourceTree = "<group>"; };
+		B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportedTransactionInfo.h; sourceTree = "<group>"; };
+		B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportedTransactionInfo.m; sourceTree = "<group>"; };
 		B17B28FF13E340A300739E7A /* HBCIBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIBackend.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3C13EC8D5000739E7A /* ChipTanWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ChipTanWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ChipTanWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1665,6 +1668,8 @@
 				B17FE49614CB59BA00F6FAFE /* CategoryBudget.m */,
 				B17728FB1504C33F00256898 /* BankUser.h */,
 				B17728FC1504C33F00256898 /* BankUser.m */,
+				B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */,
+				B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -2107,6 +2112,7 @@
 				B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */,
 				27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */,
 				B179916C15F7D2B4005AB39A /* LicenseWindowController.m in Sources */,
+				B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,13 +17,25 @@
  * 02110-1301  USA
  */
 
-#import <CoreData/CoreData.h>
+#import <Cocoa/Cocoa.h>
+
+typedef enum {
+    TransactionType_TransferStandard = 0,
+    TransactionType_TransferDated,
+    TransactionType_TransferInternal,
+    TransactionType_TransferDebit,
+    TransactionType_TransferEU,
+    TransactionType_TransferSEPA,
+    TransactionType_StandingOrder,
+} TransactionType;
+
 @class BankAccount;
 @class BankUser;
 
-@interface SupportedJob : NSManagedObject {
-    
+@interface SupportedTransactionInfo : NSManagedObject {
+
 }
+
 @property (nonatomic, retain) NSNumber * allowsChange;
 @property (nonatomic, retain) NSNumber * allowsCollective;
 @property (nonatomic, retain) NSNumber * allowsDated;
@@ -33,5 +45,4 @@
 
 @property (nonatomic, retain) BankAccount *account;
 @property (nonatomic, retain) BankUser *user;
-
 @end
