@@ -1237,6 +1237,12 @@ NSString *escapeSpecial(NSString *s)
     }
 }
 
+-(void)updateSupportedJobs:(NSArray*)supportedJobNames forUser:(BankUser*)user
+{
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    
+}
+
 
 -(PecuniaError*)updateBankDataForUser:(BankUser*)user
 {
