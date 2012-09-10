@@ -196,6 +196,7 @@
 "AP354" = "Benutzerkennung %@ wurde nicht gefunden";
 "AP355" = "Benutzerkennung anmelden";
 "AP356" = "Benutzerkennung %@ konnte nicht angemeldet werden (Details siehe Nachrichtenlog).";
+"AP357" = "Chipkarten-Terminal";
 
 // Transfers.
 // AP400..AP449

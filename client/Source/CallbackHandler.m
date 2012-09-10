@@ -243,20 +243,19 @@ static CallbackHandler *callbackHandler = nil;
         [[NSNotificationCenter defaultCenter ] postNotification:notification ];
     }
     if ([data.command isEqualToString:@"needChipcard" ]) {
-        NSAlert *alert;
-        alert = [NSAlert alertWithMessageText:NSLocalizedString(@"AP350", @"") 
-                                defaultButton:NSLocalizedString(@"ok", @"") 
-                              alternateButton:nil 
-                                  otherButton:nil 
-                    informativeTextWithFormat:@"" ];
-        [alert runModal ];
-        
+        notificationController = [[NotificationWindowController alloc ] initWithMessage:NSLocalizedString(@"AP350", @"") 
+                                                                                  title:NSLocalizedString(@"AP357", @"") ];
+        [notificationController showWindow:self ];
     }
     if ([data.command isEqualToString:@"haveChipcard" ]) {
+        [[notificationController window ] close ];
+        [notificationController release ];
+        notificationController = nil;
     }
+    
     if ([data.command isEqualToString:@"needHardPin" ]) {
         notificationController = [[NotificationWindowController alloc ] initWithMessage:NSLocalizedString(@"AP351", @"") 
-                                                                                  title:NSLocalizedString(@"AP351", @"") ];
+                                                                                  title:NSLocalizedString(@"AP357", @"") ];
         [notificationController showWindow:self ];
     }
     if ([data.command isEqualToString:@"haveHardPin" ]) {
