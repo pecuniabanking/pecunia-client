@@ -42,7 +42,7 @@
 @class CategoryRepWindowController;
 @class CategoryDefWindowController;
 @class CategoryPeriodsWindowController;
-@class StandingOrderTabController;
+@class StandingOrderController;
 
 @class RoundedSidebar;
 @class SideToolbarView;
@@ -60,9 +60,6 @@
     IBOutlet SynchronousScrollView *accountsScrollView;
     IBOutlet NSSplitView        *mainVSplit;
     IBOutlet NSArrayController  *assignPreviewController;
-    IBOutlet NSToolbarItem      *accountsToolbarItem;
-    IBOutlet NSToolbarItem      *transfersToolbarItem;
-    IBOutlet NSToolbarItem      *standingOrdersToolbarItem;
     IBOutlet TimeSliceManager   *timeSlicer;
     IBOutlet NSSegmentedControl *catActions;
     IBOutlet NSImageView        *lockImage;
@@ -78,7 +75,8 @@
     IBOutlet NSSplitView        *rightSplitter;
     IBOutlet NSView             *rightPane;
     IBOutlet StatementDetails   *statementDetails;
-    IBOutlet RoundedOuterShadowView* statementsListViewHost;
+    IBOutlet RoundedOuterShadowView *statementsListViewHost;
+    IBOutlet NSSegmentedControl *toolbarButtons;
     
     // About panel.
     IBOutlet NSPanel            *aboutWindow;
@@ -90,17 +88,17 @@
     IBOutlet StatementsListView *statementsListView;
     IBOutlet NSSegmentedControl *sortControl;
     
-    IBOutlet NSButton        *statementsButton;
-    IBOutlet NSButton        *graph1Button;
-    IBOutlet NSButton        *graph2Button;
-    IBOutlet NSButton        *computingButton;
-    IBOutlet NSButton        *rulesButton;
-    IBOutlet RoundedSidebar  *sideBar;
+    IBOutlet NSButton           *statementsButton;
+    IBOutlet NSButton           *graph1Button;
+    IBOutlet NSButton           *graph2Button;
+    IBOutlet NSButton           *computingButton;
+    IBOutlet NSButton           *rulesButton;
+    IBOutlet RoundedSidebar     *sideBar;
     
-    IBOutlet NSMenuItem      *toggleFullscreenItem;
+    IBOutlet NSMenuItem         *toggleFullscreenItem;
     
-    IBOutlet TransactionController      *transactionController;
-    IBOutlet NSWindow                   *licenseWindow;
+    IBOutlet TransactionController *transactionController;
+    IBOutlet NSWindow              *licenseWindow;
     
 @private
     NSMutableDictionary    *mainTabItems;
@@ -126,11 +124,12 @@
     Category *lastSelection;
     
     CategoryAnalysisWindowController *categoryAnalysisController;
-    CategoryRepWindowController *categoryReportingController;
-    CategoryDefWindowController *categoryDefinitionController;
-    CategoryPeriodsWindowController *categoryPeriodsController;
+    CategoryRepWindowController      *categoryReportingController;
+    CategoryDefWindowController      *categoryDefinitionController;
+    CategoryPeriodsWindowController  *categoryPeriodsController;
 
-    TransfersController *transfersController;
+    TransfersController              *transfersController;
+    StandingOrderController       *standingOrderController;
     
     id<PecuniaSectionItem> currentSection;
     

@@ -1932,7 +1932,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         fromDate = [date retain];
     }
 
-    // Finaly ensure we do not begin before our first data entry. Move the selection range
+    // Finally ensure we do not begin before our first data entry. Move the selection range
     // accordingly, accepting that this might move the end point beyond the last data entry.
     date = referenceDate;
     if (fromDate == nil || [date compare: fromDate] == NSOrderedDescending) {

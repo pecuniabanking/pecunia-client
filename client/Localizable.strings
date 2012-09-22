@@ -36,7 +36,15 @@
 "category_root" = "KATEGORIEN";
 "delete" = "Löschen";
 
-// Common errors.
+"AP10030" = "Montag"; // TODO: renumber when refactoring of the other strings has been finished.
+"AP10031" = "Dienstag";
+"AP10032" = "Mittwoch";
+"AP10033" = "Donnerstag";
+"AP10034" = "Freitag";
+"AP10035" = "Samstag";
+"AP10036" = "Sonntag";
+
+// General messages.
 // AP100..AP199
 "AP100" = "Kritisch";
 "AP101" = "Fehler";
@@ -152,8 +160,6 @@
 "AP114" = "Pecunia beenden";
 "AP115" = "Dauerauftrag einrichten";
 "AP116" = "Bei mindestens einem Dauerauftrag wurde die Auftrags-ID nicht übermittelt. Möchten Sie die Daueraufträge mit der Bank abgleichen?";
-"AP117" = "Dauerauftrag löschen";
-"AP118" = "Der Dauerauftrag wird nur aus der Liste, nicht bei der Bank gelöscht! Um den Dauerauftrag bei der Bank zu löschen setzen Sie das Löschkennzeichen und drücken Sie auf 'Änderungen senden'. Möchten Sie den Eintrag wirklich löschen?";
 "AP119" = "Kontowarnung";
 "AP120" = "Eines Ihrer Konten hat zu wenig Guthaben bzw. ist ins Minus gekommen!";
 "AP121" = "Bitte einen Verwendungszweck angeben";
@@ -164,7 +170,6 @@
 "AP126" = "Die Angabe einer Importdatei fehlt";
 "AP127" = "Importfehler";
 "AP128" = "Datei %@ existiert nicht!";
-"AP129" = "Daueraufträge holen...";
 "AP130" = "Java nicht gefunden";
 "AP131" = "Für die Ausführung von Pecunia ist Java Version 1.6.0 oder höher erforderlich. Auf Ihrem System ist Java nicht installiert. Bitte installieren Sie zunächst die Java Runtime Umgebung (JRE)";
 "AP132" = "1 Umsatz";
@@ -236,6 +241,13 @@
 "AP451" = "Jede Woche";
 "AP452" = "Alle %d Monate";
 "AP453" = "Alle %d Wochen";
+"AP454" = "Löschen eines Dauerauftrags";
+"AP455" = "Wenn Sie fortfahren, wird der gewählte Auftrag zur Löschung vorgemerkt. Die tatsächliche Löschung geschieht, wenn alle wartenden Änderungen zur Bank gesendet werden. Bis dahin können Sie jederzeit die Aktion durch Klick auf das Löschen-Icon neben dem Auftrag stornieren.";
+"AP456" = "Zur Löschung vormerken";
+"AP457" = "Der Dauerauftrag wird nur aus der Liste, nicht bei der Bank gelöscht! Um den Dauerauftrag bei der Bank zu löschen setzen Sie das Löschkennzeichen und drücken Sie auf 'Änderungen senden'. Möchten Sie den Eintrag wirklich löschen?";
+"AP458" = "Dieser Dauerauftrag wurde noch nicht zur Bank gesendet. Er kann also sofort gelöscht werden. Wollen Sie den Auftrag endgültig entfernen?";
+"AP459" = "Daueraufträge holen...";
+"AP460" = "Änderungen senden ...";
 
 // Use a new block of IDs for next set of strings!
 // AP500..AP559

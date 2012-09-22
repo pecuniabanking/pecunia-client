@@ -263,6 +263,7 @@ static BOOL runningOnLionOrLater = NO;
                             // on the next switch.
     
     currentSection = nil; // The right splitter, which is by default active is not a regular section.
+    toolbarButtons.selectedSegment = 0;
 
     if (self.managedObjectContext) {
         [self publishContext];
@@ -1263,28 +1264,27 @@ static BOOL runningOnLionOrLater = NO;
 
 - (IBAction)activateMainPage: (id)sender
 {
-    [accountsToolbarItem setImage: [NSImage imageNamed: @"accounts"]];
-    [transfersToolbarItem setImage: [NSImage imageNamed: @"transfers"]];
-    [standingOrdersToolbarItem setImage: [NSImage imageNamed: @"standing-order"]];
-    switch ([sender tag])
+    [self switchMainPage: [sender selectedSegment]];
+}
+
+- (void)switchMainPage: (NSUInteger)page
+{
+    switch (page)
     {
         case 0: {
             [currentSection deactivate];
             [transfersController deactivate];
             [mainTabView selectTabViewItemAtIndex: 0];
-            [accountsToolbarItem setImage: [NSImage imageNamed: @"accounts-active"]];
             break;
         }
         case 1: {
             [currentSection deactivate];
             [self activateTransfersTab];
-            [transfersToolbarItem setImage: [NSImage imageNamed: @"transfers-active"]];
             break;
         }
         case 2: {
             [transfersController deactivate];
             [self activateStandingOrdersTab];
-            [standingOrdersToolbarItem setImage: [NSImage imageNamed: @"standing-order-active"]];
             break;
         }
     }
@@ -1622,10 +1622,7 @@ static BOOL runningOnLionOrLater = NO;
 -(IBAction)donate: (id)sender
 {
     // Switch to the transfers page.
-    NSButton *dummy = [[NSButton alloc] init];
-    dummy.tag = 1;
-    [self activateMainPage: dummy];
-    [dummy release];
+    [self switchMainPage: 1];
 
     // Start transfer editing process.
     [transfersController startDonationTransfer];
@@ -2667,10 +2664,7 @@ static BOOL runningOnLionOrLater = NO;
                                   nil
                                   );
         if (res == NSAlertAlternateReturn) {
-            NSButton *dummy = [[NSButton alloc] init];
-            dummy.tag = 1;
-            [self activateMainPage: dummy];
-            [dummy release];
+            [self switchMainPage: 1];
             return NO;
         }
         [transfersController cancelEditing];
@@ -2699,10 +2693,7 @@ static BOOL runningOnLionOrLater = NO;
         return YES;
     }
     if (res == NSAlertAlternateReturn) {
-        NSButton *dummy = [[NSButton alloc] init];
-        dummy.tag = 1;
-        [self activateMainPage: dummy];
-        [dummy release];
+        [self switchMainPage: 1];
         return NO;
     }
     

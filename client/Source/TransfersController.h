@@ -30,7 +30,7 @@
 
 @class CalendarWindow;
 @class DragImageView;
-@class DeleteImageView;
+@class DeleteTransferTargetView;
 
 @interface TransferTemplateDragDestination : NSView
 {
@@ -95,7 +95,7 @@
     IBOutlet DragImageView  *transferNormalImage;
     IBOutlet DragImageView  *transferEUImage;
     IBOutlet DragImageView  *transferSEPAImage;
-    IBOutlet DeleteImageView *transferDeleteImage;
+    IBOutlet DeleteTransferTargetView *transferDeleteImage;
     
     IBOutlet NSPanel        *templateNameSheet;
     IBOutlet NSTabView      *transferTab;

@@ -67,23 +67,6 @@ static NSImage* headerImage;
     [borderShadow set];
     [[NSColor whiteColor] set];
     [borderPath fill];
-    /*
-    // Top bar.
-    NSRect barRect = [self bounds];
-    barRect.origin.y = barRect.size.height - 10;
-    barRect.size.height = 10;
-    [[NSColor colorWithDeviceWhite: 0.25 alpha: 1] set];
-    NSRectFill(barRect);
-    bounds = barRect;
-    
-    barRect.size.width = [headerImage size].width;
-    NSRect imageRect = NSMakeRect(0, 0, [headerImage size].width, [headerImage size].height);
-    while (barRect.origin.x < bounds.size.width)
-    {
-        [headerImage drawInRect: barRect fromRect: imageRect operation: NSCompositeSourceOver fraction: .75];
-        barRect.origin.x += headerImage.size.width;
-    }
-    */
     
     [NSGraphicsContext restoreGraphicsState];
 
@@ -97,7 +80,7 @@ static NSImage* headerImage;
     }
 
     // Draw Text Fields
-    [self drawTextFields ];
+    [self drawTextFields];
 }
 
 - (void)setIndicatorColor: (NSColor*)color

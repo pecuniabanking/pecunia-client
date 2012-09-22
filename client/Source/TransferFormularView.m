@@ -26,6 +26,9 @@ NSString* const TransferReadyForUseDataType = @"TransferReadyForUseDataType";
 
 @implementation TransferFormularView
 
+@synthesize bottomArea;
+@synthesize draggable;
+@synthesize draggingArea;
 @synthesize icon;
 @synthesize controller;
 
@@ -34,7 +37,7 @@ NSString* const TransferReadyForUseDataType = @"TransferReadyForUseDataType";
     self = [super initWithFrame: frameRect];
     if (self != nil)
     {
-        [self registerForDraggedTypes: [NSArray arrayWithObjects: TransferReadyForUseDataType, nil]];
+        bottomArea = 60;
     }
     
     return self;
@@ -52,29 +55,32 @@ NSString* const TransferReadyForUseDataType = @"TransferReadyForUseDataType";
 // The formular as drag source.
 - (void)mouseDragged: (NSEvent *)theEvent
 {
-    NSPoint viewPoint = [self convertPoint: [theEvent locationInWindow] fromView: nil];
-    if (NSPointInRect(viewPoint,  draggingArea)) {
-        [[NSCursor closedHandCursor] set];
-        
-        NSPasteboard *pasteBoard = [NSPasteboard pasteboardWithUniqueName];
-        [pasteBoard setString: @"transfer-ready" forType: TransferReadyForUseDataType];
-        
-        NSImageView *imageView = (NSImageView*)[self printViewForLayerBackedView];
-        
-        [self dragImage: [imageView image]
-                     at: NSMakePoint(0, 0)
-                 offset: NSZeroSize
-                  event: theEvent
-             pasteboard: pasteBoard
-                 source: self
-              slideBack: YES];
+    if (draggable) {
+        NSPoint viewPoint = [self convertPoint: [theEvent locationInWindow] fromView: nil];
+        if (NSPointInRect(viewPoint,  draggingArea)) {
+            [[NSCursor closedHandCursor] set];
+            
+            NSPasteboard *pasteBoard = [NSPasteboard pasteboardWithUniqueName];
+            [pasteBoard setString: @"transfer-ready" forType: TransferReadyForUseDataType];
+            
+            NSImageView *imageView = (NSImageView*)[self printViewForLayerBackedView];
+            
+            [self dragImage: [imageView image]
+                         at: NSMakePoint(0, 0)
+                     offset: NSZeroSize
+                      event: theEvent
+                 pasteboard: pasteBoard
+                     source: self
+                  slideBack: YES];
+        }
+    } else {
+        [super mouseDragged: theEvent];
     }
 }
 
 // The formular as drag target.
 - (NSDragOperation)draggingEntered: (id<NSDraggingInfo>)sender
 {
-    //[[NSCursor closedHandCursor] set];
     return NSDragOperationNone;
 }
 
@@ -139,7 +145,7 @@ static NSImage* stripes;
     [shadeImage lockFocus];
     [[NSColor whiteColor] set];
     [shadePath fill];
-    [icon drawAtPoint: NSMakePoint(bounds.size.width - 120, 45) fromRect: NSZeroRect operation: NSCompositeCopy fraction: 1];
+    [icon drawAtPoint: NSMakePoint(bounds.size.width - 120, TOP_PANE_HEIGHT - icon.size.height - 19) fromRect: NSZeroRect operation: NSCompositeCopy fraction: 1];
     [shadeImage unlockFocus];
 
     [smallShadow set];
@@ -147,8 +153,8 @@ static NSImage* stripes;
     [shadeImage release];
     
     // Main pane.
-    bounds.size.height = self.bounds.size.height - TOP_PANE_HEIGHT - 65;
-    bounds.origin.y = 60;
+    bounds.size.height = self.bounds.size.height - TOP_PANE_HEIGHT - bottomArea - 5;
+    bounds.origin.y = bottomArea;
     shadePath = [NSBezierPath bezierPathWithRoundedRect: bounds xRadius: 6 yRadius: 6];
     [[NSColor colorWithCalibratedRed: 131 / 255.0 green: 171 / 255.0 blue: 113 / 255.0 alpha: 0.76] set];
     [shadePath fill];

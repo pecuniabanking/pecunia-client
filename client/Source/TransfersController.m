@@ -80,7 +80,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 //--------------------------------------------------------------------------------------------------
 
-@interface DeleteImageView : NSImageView
+@interface DeleteTransferTargetView : NSImageView
 {    
 }
 
@@ -88,7 +88,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 @end
 
-@implementation DeleteImageView
+@implementation DeleteTransferTargetView
 
 @synthesize controller;
 
@@ -474,6 +474,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     executeAtDateRadioButton.action = @selector(executionTimeChanged:);
 
     transferFormular.controller = self;
+    transferFormular.draggable = YES;
     bankCode.delegate = self;
     
     transferInternalImage.controller = self;
@@ -1002,7 +1003,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return NO;
     }
     
-    id transfer = [context objectWithID: objectId];
+    Transfer *transfer = (Transfer *)[context objectWithID: objectId];
     if (![self prepareTransferOfType: [[transfer valueForKey: @"type"] intValue]]) {
         return NO;
     }
@@ -1218,7 +1219,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         Transfer *transfer = transactionController.currentTransfer;
         transfer.remoteAccount = @"1016381558";
         transfer.remoteBankCode = @"12030000";
-        transfer.remoteBankName = [[HBCIClient hbciClient] bankNameForCode: @"12030000" inCountry: @"de"];;
+        transfer.remoteBankName = [[HBCIClient hbciClient] bankNameForCode: @"12030000" inCountry: @"de"];
         transfer.remoteName = @"Frank Emminghaus";
         transfer.purpose1 = @"Spende fuer Pecunia";
         

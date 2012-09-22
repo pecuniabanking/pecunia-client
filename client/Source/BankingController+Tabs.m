@@ -20,7 +20,7 @@
 #import "BankingController+Tabs.h"
 
 #import "TransfersController.h"
-#import "StandingOrderTabController.h"
+#import "StandingOrderController.h"
 
 #define TransfersTabIdentifier @"transfers"
 #define StandingOrderTabIdentifier @"standingOrders"
@@ -31,17 +31,18 @@
 {
 	NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: StandingOrderTabIdentifier];
 	if (index == NSNotFound) {
-		StandingOrderTabController *tabController = [[[StandingOrderTabController alloc] init] autorelease];
-		if ([NSBundle loadNibNamed: @"Orders" owner: tabController]) {
+		standingOrderController = [[[StandingOrderController alloc] init] autorelease];
+		if ([NSBundle loadNibNamed: @"Orders" owner: standingOrderController]) {
 			NSTabViewItem *item = [[[NSTabViewItem alloc] initWithIdentifier: StandingOrderTabIdentifier] autorelease];
-			[item setView: [tabController mainView]];
+			[item setView: [standingOrderController mainView]];
 			[mainTabView addTabViewItem: item];
 			[mainTabView selectTabViewItem: item];
-			[mainTabItems setObject: tabController forKey: StandingOrderTabIdentifier];
-			[tabController prepare];
+			[mainTabItems setObject: standingOrderController forKey: StandingOrderTabIdentifier];
+			[standingOrderController prepare];
 		}
 	} else {
 		[mainTabView selectTabViewItemAtIndex: index];
+        [standingOrderController activate];
 	}
 }
 

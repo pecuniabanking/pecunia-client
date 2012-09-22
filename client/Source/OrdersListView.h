@@ -19,15 +19,22 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class TransfersController;
+#import "PXListView.h"
+#import "ShortDate.h"
 
-@interface TransferFormularView : NSView {
+@class OrdersListView;
+
+@interface OrdersListView : PXListView <PXListViewDelegate>
+{
+@private
+    id observedObject;
+    
+    NSDateFormatter *dateFormatter;
+    ShortDate *hunderedYearsLater;
 }
 
-@property (nonatomic, assign) BOOL draggable;
-@property (nonatomic, retain) NSImage *icon;
-@property (nonatomic, assign) NSUInteger bottomArea;
-@property (nonatomic, assign) NSRect draggingArea;
-@property (nonatomic, assign) TransfersController *controller;
+@property (nonatomic, readonly) NSNumberFormatter *numberFormatter;
+@property (nonatomic, retain) NSArray *dataSource;
 
 @end
+
