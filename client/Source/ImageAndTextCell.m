@@ -160,14 +160,14 @@ static NSGradient* selectionGradient = nil;
     selectionRect.origin.x = 0;
     
     NSBezierPath* selectionOutline = [NSBezierPath bezierPathWithRoundedRect: selectionRect xRadius: 3 yRadius: 3];
-    if ([self isHighlighted])
-    {
-        if (selectionGradient == nil)
-        {
+    if ([self isHighlighted]) {
+        if (headerGradient == nil) {
             headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
                               [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat) 0,
                               [NSColor colorWithDeviceWhite: 60 / 256.0 alpha: 1], (CGFloat) 1,
                               nil];
+        }
+        if (selectionGradient == nil) {
             selectionGradient = [[NSGradient alloc] initWithColorsAndLocations:
                                  [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat) 0,
                                  [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 1,
@@ -179,8 +179,7 @@ static NSGradient* selectionGradient = nil;
         [selectionGradient drawInBezierPath: selectionOutline angle: 90];
     }
     else
-        if (isRoot)
-        {
+        if (isRoot) {
             // Fill constant background for unselected root entries.
             [headerGradient drawInBezierPath: selectionOutline angle: 90];
         }
