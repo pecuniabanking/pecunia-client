@@ -245,7 +245,8 @@ static CallbackHandler *callbackHandler = nil;
     if ([data.command isEqualToString:@"needChipcard" ]) {
         notificationController = [[NotificationWindowController alloc ] initWithMessage:NSLocalizedString(@"AP350", @"") 
                                                                                   title:NSLocalizedString(@"AP357", @"") ];
-        [notificationController showWindow:self ];
+        //[notificationController showWindow:self ];
+        [self performSelector:@selector(showNotificationWindow) withObject:nil afterDelay:1 ];
     }
     if ([data.command isEqualToString:@"haveChipcard" ]) {
         [[notificationController window ] close ];
@@ -265,6 +266,11 @@ static CallbackHandler *callbackHandler = nil;
     }
     
     return @"";
+}
+
+-(void)showNotificationWindow
+{
+    [notificationController showWindow:self ];    
 }
 
 -(void)setErrorOccured

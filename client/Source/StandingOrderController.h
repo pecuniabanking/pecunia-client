@@ -46,7 +46,7 @@
     IBOutlet TransferFormularView   *standingOrderForm;
     IBOutlet NSPopUpButton          *sourceAccountSelector;
     IBOutlet NSComboBox             *receiverComboBox;
-    IBOutlet DeleteOrderTargetView *deleteImage;
+    IBOutlet DeleteOrderTargetView  *deleteImage;
 	
 @private
 	NSManagedObjectContext			*managedObjectContext;

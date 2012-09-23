@@ -296,7 +296,8 @@ NSString *escapeSpecial(NSString *s)
     if (user == nil) return NO;
     if ([self registerBankUser:user error:&error ] == NO) {
         if (error) {
-            [error alertPanel ];
+            [error logMessage ];
+            return NO;
         }
         return NO;
     }

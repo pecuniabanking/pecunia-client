@@ -91,6 +91,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 - (void)updateSourceAccountSelector;
 - (void)prepareSourceAccountSelector: (BankAccount *)account;
 - (void)storeReceiverInMRUList;
+- (void)updateSourceAccountSelection;
 @end
 
 @implementation StandingOrderController
@@ -263,14 +264,23 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	if(currentLimits == nil) return;
 	
 	int num = (t = currentLimits.maxLinesPurpose)? t : 2;
-	NSView* p;
+	NSTextField* p;
 	
-	p = [mainView viewWithTag: 4 ];
-	if(num < 4) [p setHidden: TRUE ]; else [p setHidden: FALSE ];
+	p = (NSTextField*)[mainView viewWithTag: 4 ];
+	if(num < 4) {
+        [p setHidden: TRUE ];
+        [p setStringValue:@"" ];
+    } else [p setHidden: FALSE ];
 	p = [mainView viewWithTag: 3 ];
-	if(num < 3) [p setHidden: TRUE ]; else [p setHidden: FALSE ];
+	if(num < 3) {
+        [p setHidden: TRUE ];
+        [p setStringValue:@"" ];        
+    } else [p setHidden: FALSE ];
 	p = [mainView viewWithTag: 2 ];
-	if(num < 2) [p setHidden: TRUE ]; else [p setHidden: FALSE ];
+	if(num < 2) {
+        [p setHidden: TRUE ];
+        [p setStringValue:@"" ];
+    } else [p setHidden: FALSE ];
 }
 
 
@@ -401,6 +411,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     return item;
 }
 
+
 /**
  * Refreshes the content of the source account selector.
  * An attempt is made to keep the current selection.
@@ -408,6 +419,22 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 - (void)updateSourceAccountSelector
 {
     [self prepareSourceAccountSelector: sourceAccountSelector.selectedItem.representedObject];
+}
+
+// update the selected item of the account selector with currentObject's account
+- (void)updateSourceAccountSelection
+{
+    NSInteger selectedItem = 0;
+    NSMenu *menu = [sourceAccountSelector menu ];
+    NSArray *items = [menu itemArray ];
+    for (NSMenuItem *item in items) {
+        if (item.representedObject == currentOrder.account) {
+            [sourceAccountSelector selectItemAtIndex: selectedItem];
+            return;
+        }
+        selectedItem += 1;
+    }
+    [sourceAccountSelector selectItemAtIndex: -1];
 }
 
 /**
@@ -700,9 +727,10 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     // edit action.
     [[mainView window] makeFirstResponder: sender];
 
+	NSMutableArray *resultList = nil;
+/*    
 	NSError *error = nil;
 	BankAccount *account;
-	NSMutableArray *resultList = nil;
 
     [self initAccounts];
 	
@@ -751,7 +779,25 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 			}
 		}
 	}
-	
+*/
+    resultList = [NSMutableArray arrayWithCapacity: 10];
+    NSMenu *menu = [sourceAccountSelector menu ];
+    NSArray *items = [menu itemArray ];
+    for (NSMenuItem *item in items) {
+        if ([item.representedObject isKindOfClass:[BankAccount class ]]) {
+            BankAccount *account = (BankAccount*)item.representedObject;
+			if (account.userId) {
+				BankQueryResult *result = [[BankQueryResult alloc] init];
+				result.accountNumber = account.accountNumber;
+                result.accountSubnumber = account.accountSuffix;
+				result.bankCode = account.bankCode;
+				result.userId = account.userId;
+				result.account = account;
+				[resultList addObject: [result autorelease]];
+			}
+        }
+    }
+    
 	StatusBarController *sc = [StatusBarController controller];
 	[sc startSpinning];
 	self.requestRunning = [NSNumber numberWithBool: YES];
@@ -784,6 +830,17 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     } else {
         currentOrder.currency = account.currency;
     }
+    
+    // re-calculate limits and check
+    if (currentOrder.orderKey == nil) {
+        self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
+    } else {
+        self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
+    }
+    [self preparePurposeFields];
+    
+    // todo: update order to meet (new) limits
+    
 }
 
 - (void)ordersNotification: (NSNotification*)notification
@@ -879,6 +936,9 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
                 [receiverComboBox addItemsWithObjectValues: previousReceivers];
             }
         }
+        
+        // update account selector
+        [self updateSourceAccountSelection ];
     } else {
         [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
     }
