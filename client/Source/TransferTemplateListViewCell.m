@@ -70,9 +70,11 @@ extern NSString *TemplateNameKey;
 {
     [remoteBankCode release];
     [remoteAccount release];
+    [purpose release];
     [positiveAttributes release];
     [negativeAttributes release];
     [whiteAttributes release];
+    
 	[super dealloc];
 }
 
@@ -87,19 +89,13 @@ static CurrencyValueTransformer* currencyTransformer;
     [remoteNameLabel setStringValue: [details valueForKey: StatementRemoteNameKey]];
     [remoteNameLabel setToolTip: [details valueForKey: StatementRemoteNameKey]];
 
-    // The default line height for a multiline label is too large so we convert the given string
-    // so it can have paragraph styles.
-    NSMutableAttributedString *purpose = [[[NSMutableAttributedString alloc] initWithString: [details valueForKey: StatementPurposeKey]] autorelease];
-    NSMutableParagraphStyle *paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
-    [paragraphStyle setMaximumLineHeight: 12];
-    [purpose addAttributes: [NSDictionary dictionaryWithObject: paragraphStyle forKey: NSParagraphStyleAttributeName] range: NSMakeRange(0, [purpose length])];
-    [purposeLabel setAttributedStringValue: purpose];
     [purposeLabel setToolTip: [details valueForKey: StatementPurposeKey]];
     
     [valueLabel setObjectValue: [details valueForKey: StatementValueKey]];
     
     [remoteBankCode release];
     [remoteAccount release];
+    [purpose release];
     
     // For the remote bank code and account number we either use the german bank details or
     // IBAN/BIC, depending on the type.
@@ -111,6 +107,7 @@ static CurrencyValueTransformer* currencyTransformer;
         remoteBankCode = [[[details valueForKey: StatementRemoteBankCodeKey] copy] retain];
         remoteAccount = [[[details valueForKey: StatementRemoteAccountKey] copy] retain];
     }
+    purpose = [[[details valueForKey: StatementPurposeKey] copy] retain];
     
     if (currencyTransformer == nil)
         currencyTransformer = [[CurrencyValueTransformer alloc] init];
@@ -212,7 +209,9 @@ static CurrencyValueTransformer* currencyTransformer;
     
     NSFontManager *fontManager = [NSFontManager sharedFontManager];
     NSFont *boldFont = [fontManager convertFont: normalFont toHaveTrait: NSBoldFontMask];
-    NSDictionary *boldAttributes = [NSDictionary dictionaryWithObject: boldFont forKey: NSFontAttributeName];
+    NSDictionary *boldAttributes = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName,
+                                    isSelected ? [NSColor whiteColor] : [NSColor blackColor], NSForegroundColorAttributeName,
+                                    nil];
     
     [accountString appendAttributedString: [[[NSAttributedString alloc] initWithString: accountTitle
                                                                             attributes: normalAttributes]
@@ -231,12 +230,23 @@ static CurrencyValueTransformer* currencyTransformer;
                                             autorelease]
      ];
     
-    NSMutableParagraphStyle *paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
-    [paragraphStyle setAlignment: NSRightTextAlignment];
-    [accountString addAttributes: [NSDictionary dictionaryWithObject: paragraphStyle
-                                                              forKey: NSParagraphStyleAttributeName]
-                           range: NSMakeRange(0, [accountString length])];
     [accountLabel setAttributedStringValue: accountString];
+    
+    // The default line height for a multiline label is too large so we convert the given string
+    // so it can have paragraph styles. At the same time we need to apply font size and color
+    // explicitly as calling [s drawInRect] doesn't otherwise apply the same formatting as automatic drawing would.
+    NSMutableAttributedString *purposeString = [[[NSMutableAttributedString alloc] initWithString: purpose] autorelease];
+    NSMutableParagraphStyle *paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+    [paragraphStyle setMaximumLineHeight: 12];
+    
+    normalFont = [NSFont fontWithName: @"LucidaGrande" size: 10];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys: paragraphStyle, NSParagraphStyleAttributeName,
+                                normalFont, NSFontAttributeName,
+                                isSelected ? [NSColor whiteColor] : paleColor, NSForegroundColorAttributeName,
+                                nil];
+    
+    [purposeString addAttributes: attributes range: NSMakeRange(0, [purposeString length])];
+    [purposeLabel setAttributedStringValue: purposeString];
 }
 
 - (void)refresh

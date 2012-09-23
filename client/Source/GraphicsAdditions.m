@@ -171,12 +171,15 @@ static NSMutableDictionary* applicationColors;
 
 - (CGColorRef)CGColor
 {
-    CGColorSpaceRef colorspace = [[self colorSpace] CGColorSpace];
-    const NSInteger nComponents = [self numberOfComponents];
+    // First convert ourselve to a color with an RGB colorspace in case we use a pattern
+    // or named color space. If we are already using an RGB colorspace then a reference
+    // to ourselve is returned.
+    NSColor *color = [self colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
+    CGColorSpaceRef colorspace = [[color colorSpace] CGColorSpace];
+    const NSInteger nComponents = [color numberOfComponents];
     
     CGFloat components[nComponents];
-    
-    [self getComponents: components];
+    [color getComponents: components];
     
     CGColorRef c = CGColorCreate(colorspace, components);
     

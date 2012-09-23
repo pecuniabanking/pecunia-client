@@ -183,6 +183,7 @@ static PXIsDragStartResult PXIsDragStart( NSEvent *startEvent, NSTimeInterval th
         if([[self delegate] respondsToSelector:@selector(listView:rowDoubleClicked:)]) {
             [[self delegate] listView:self rowDoubleClicked:[theCell row]];
         }
+        return;
     }
     
     // theEvent is NIL if we get a "press" action from accessibility. In that case, try to toggle, so users can selectively turn on/off an item.

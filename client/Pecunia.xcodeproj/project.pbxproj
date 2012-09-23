@@ -48,7 +48,6 @@
 		2736DD521514F6590066917C /* MBTableGridHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD4C1514F6590066917C /* MBTableGridHeaderView.m */; };
 		2743844615FB925D00E36DB5 /* cyclic.png in Resources */ = {isa = PBXBuildFile; fileRef = 2743844515FB925D00E36DB5 /* cyclic.png */; };
 		27465178159B795E00D774FE /* shield.png in Resources */ = {isa = PBXBuildFile; fileRef = 27465177159B795E00D774FE /* shield.png */; };
-		2748D2251441C7010036BDE2 /* slanted_stripes_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 2748D2241441C7010036BDE2 /* slanted_stripes_red.png */; };
 		274C09FD1440BC9800A80F0E /* RoundedOuterShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */; };
 		274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274DE2B313F992A50009EB77 /* MainBackgroundView.m */; };
 		274DE33413F9A0C50009EB77 /* pen.png in Resources */ = {isa = PBXBuildFile; fileRef = 274DE33313F9A0C50009EB77 /* pen.png */; };
@@ -414,7 +413,6 @@
 		2736DD4C1514F6590066917C /* MBTableGridHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBTableGridHeaderView.m; path = MBTableGrid/MBTableGridHeaderView.m; sourceTree = "<group>"; };
 		2743844515FB925D00E36DB5 /* cyclic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cyclic.png; sourceTree = "<group>"; };
 		27465177159B795E00D774FE /* shield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shield.png; sourceTree = "<group>"; };
-		2748D2241441C7010036BDE2 /* slanted_stripes_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slanted_stripes_red.png; sourceTree = "<group>"; };
 		274C09FB1440BC9800A80F0E /* RoundedOuterShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RoundedOuterShadowView.h; sourceTree = "<group>"; tabWidth = 4; };
 		274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedOuterShadowView.m; sourceTree = "<group>"; tabWidth = 4; };
 		274DE2B213F992A50009EB77 /* MainBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MainBackgroundView.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1470,7 +1468,6 @@
 				2700B91C148BC58700E18BBE /* graph1.png */,
 				2700B91D148BC58700E18BBE /* graph2.png */,
 				2700B91E148BC58700E18BBE /* statementlist.png */,
-				2748D2241441C7010036BDE2 /* slanted_stripes_red.png */,
 				272B5EB2143F724600007749 /* slanted_stripes.png */,
 				27F30886143E282700A10FCE /* new.png */,
 				2777A780142FA471005729F0 /* catdef5_16.png */,
@@ -1859,7 +1856,6 @@
 				275C07DB1438776000D97415 /* StatementsListViewCell.xib in Resources */,
 				27F30887143E282700A10FCE /* new.png in Resources */,
 				272B5EB3143F724600007749 /* slanted_stripes.png in Resources */,
-				2748D2251441C7010036BDE2 /* slanted_stripes_red.png in Resources */,
 				27D240EA145302A900EDC8C7 /* done.mp3 in Resources */,
 				2703DE27146EE6AB0083CBA2 /* ExportPopup.xib in Resources */,
 				B1D44FCA1478407D008DD256 /* MainMenu.xib in Resources */,

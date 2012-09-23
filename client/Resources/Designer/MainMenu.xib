@@ -88,8 +88,8 @@
 					<bool key="NSToolbarPrefersToBeShown">YES</bool>
 					<bool key="NSToolbarShowsBaselineSeparator">NO</bool>
 					<bool key="NSToolbarAllowsUserCustomization">NO</bool>
-					<bool key="NSToolbarAutosavesConfiguration">YES</bool>
-					<int key="NSToolbarDisplayMode">3</int>
+					<bool key="NSToolbarAutosavesConfiguration">NO</bool>
+					<int key="NSToolbarDisplayMode">1</int>
 					<int key="NSToolbarSizeMode">1</int>
 					<dictionary class="NSMutableDictionary" key="NSToolbarIBIdentifiedItems">
 						<object class="NSToolbarItem" key="82DC93BF-CF89-451E-804F-C55D4E129DA5" id="545394835">
@@ -97,12 +97,14 @@
 								<characters key="NS.bytes">82DC93BF-CF89-451E-804F-C55D4E129DA5</characters>
 							</object>
 							<string key="NSToolbarItemLabel"/>
-							<string key="NSToolbarItemPaletteLabel"/>
+							<string key="NSToolbarItemPaletteLabel">Buttons</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSSegmentedControl" key="NSToolbarItemView" id="805917942">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {388, 25}}</string>
+								<reference key="NSSuperview"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSegmentedCell" key="NSCell" id="848648286">
@@ -184,7 +186,7 @@
 						<reference ref="545394835"/>
 						<reference ref="376623175"/>
 					</array>
-					<array key="NSToolbarIBDefaultItems">
+					<array class="NSMutableArray" key="NSToolbarIBDefaultItems">
 						<reference ref="376623175"/>
 						<reference ref="545394835"/>
 						<reference ref="376623175"/>
@@ -1976,7 +1978,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{737, 34}, {71, 185}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView"/>
+																				<reference key="NSNextKeyView" ref="569487988"/>
 																				<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																				<bool key="NSEnabled">YES</bool>
 																				<object class="NSImageCell" key="NSCell" id="972627458">
@@ -3869,7 +3871,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 					<int key="NSViewLayerContentsRedrawPolicy">2</int>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
-				<string key="NSMinSize">{1280, 842}</string>
+				<string key="NSMinSize">{1280, 870}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">mcmain</string>
 				<bool key="NSAutorecalculatesContentBorderThicknessMinY">NO</bool>
@@ -7029,13 +7031,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 												<object class="NSComboTableView" key="NSTableView" id="476426159">
 													<reference key="NSNextResponder"/>
 													<int key="NSvFlags">274</int>
-													<string key="NSFrameSize">{13, 0}</string>
+													<string key="NSFrameSize">{15, 0}</string>
 													<reference key="NSSuperview"/>
 													<reference key="NSWindow"/>
 													<bool key="NSEnabled">YES</bool>
 													<array class="NSMutableArray" key="NSTableColumns">
 														<object class="NSTableColumn">
-															<double key="NSWidth">10</double>
+															<double key="NSWidth">12</double>
 															<double key="NSMinWidth">10</double>
 															<double key="NSMaxWidth">1000</double>
 															<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -7069,7 +7071,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 													<reference key="NSGridColor" ref="890778246"/>
 													<double key="NSRowHeight">19</double>
 													<string key="NSAction">tableViewAction:</string>
-													<int key="NSTvFlags">-765427712</int>
+													<int key="NSTvFlags">-767524864</int>
 													<reference key="NSDelegate" ref="156100258"/>
 													<reference key="NSDataSource" ref="156100258"/>
 													<reference key="NSTarget" ref="156100258"/>
@@ -15872,7 +15874,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6497</int>
+			<int key="maxID">6500</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

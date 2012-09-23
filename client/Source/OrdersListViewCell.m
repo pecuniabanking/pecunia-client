@@ -119,7 +119,7 @@ static CurrencyValueTransformer* currencyTransformer;
     
     [remoteBankCode release];
     [remoteAccount release];
-    
+    [purpose release];
     
     remoteBankCode = [[[details valueForKey: StatementRemoteBankCodeKey] copy] retain];
     remoteAccount = [[[details valueForKey: StatementRemoteAccountKey] copy] retain];
@@ -231,7 +231,7 @@ static CurrencyValueTransformer* currencyTransformer;
     [accountLabel setToolTip: [NSString stringWithFormat: @"%@%@%@%@",
                                accountTitle, remoteAccount, bankCodeTitle, remoteBankCode]];
 
-    // Construct a formatted string for the accunt label.
+    // Construct a formatted string for the account label.
     NSMutableAttributedString *accountString = [[[NSMutableAttributedString alloc] init] autorelease];
     NSFont *normalFont = [NSFont fontWithName: @"LucidaGrande" size: 11];
     NSDictionary *normalAttributes = [NSDictionary dictionaryWithObjectsAndKeys: normalFont, NSFontAttributeName,
@@ -241,7 +241,7 @@ static CurrencyValueTransformer* currencyTransformer;
     NSFontManager *fontManager = [NSFontManager sharedFontManager];
     NSFont *boldFont = [fontManager convertFont: normalFont toHaveTrait: NSBoldFontMask];
     NSDictionary *boldAttributes = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName,
-                                    isSelected ? [NSColor whiteColor] : paleColor, NSForegroundColorAttributeName,
+                                    isSelected ? [NSColor whiteColor] : [NSColor blackColor], NSForegroundColorAttributeName,
                                     nil];
     
     [accountString appendAttributedString: [[[NSAttributedString alloc] initWithString: accountTitle

@@ -26,6 +26,7 @@
 #import "AmountCell.h"
 #import "BankAccount.h"
 #import "TransferPrintView.h"
+#import "TransferTemplate.h"
 
 #import "TransferFormularView.h"
 #import "GradientButtonCell.h"
@@ -149,6 +150,33 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (void)mouseDown: (NSEvent *)theEvent
 {
+    if ([theEvent clickCount] > 1) {
+        // Double click event. Start editing directly if possible.
+        TransferType type;
+        switch (self.tag) {
+            case 0:
+                type = TransferTypeInternal;
+                break;
+            case 2:
+                type = TransferTypeEU;
+                break;
+            case 3:
+                type = TransferTypeSEPA;
+                break;
+            case 4:
+                return; // Not yet implemented.
+                break;
+            default:
+                type = TransferTypeStandard;
+                break;
+        }
+        
+        if (![controller startTransferOfType: type]) {
+            [super mouseDown: theEvent];
+        }
+        return;
+    }
+
     // Keep track of mouse clicks in the view because mouseDragged may be called even when another
     // view was clicked on.
     canDrag = YES;
@@ -1228,6 +1256,34 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     [rightPane showFormular];
     [amountField.window makeFirstResponder: amountField];
+}
+
+- (BOOL)startTransferOfType: (TransferType)type
+{
+    if (![self prepareTransferOfType: type]) {
+        return NO;
+    }
+    
+    BOOL result = [transactionController newTransferOfType: TransferTypeStandard];
+    if (result) {
+        [self prepareSourceAccountSelector: nil];
+        [rightPane showFormular];
+    }
+    return result;
+}
+
+- (BOOL)startTransferFromTemplate: (TransferTemplate *)template
+{
+    if (![self prepareTransferOfType: template.type.intValue]) {
+        return NO;
+    }
+    
+    BOOL result = [transactionController newTransferFromTemplate: template];
+    if (result) {
+        [self prepareSourceAccountSelector: nil];
+        [rightPane showFormular];
+    }
+    return result;
 }
 
 #pragma mark -

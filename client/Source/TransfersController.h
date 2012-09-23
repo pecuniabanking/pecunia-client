@@ -47,7 +47,7 @@
 
 @end
 
-@interface TransfersController : NSObject <PecuniaTabItem, NSWindowDelegate, NSTextFieldDelegate, TransfersDragDelegate>
+@interface TransfersController : NSObject <PecuniaTabItem, NSWindowDelegate, NSTextFieldDelegate, TransfersActionDelegate>
 {
     IBOutlet NSView                 *mainView;
 	IBOutlet NSArrayController      *finishedTransfers;
@@ -128,5 +128,6 @@
 - (void)cancelEditing;
 - (BOOL)editingInProgress;
 - (void)startDonationTransfer;
+- (BOOL)startTransferOfType: (TransferType)type;
 
 @end

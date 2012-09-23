@@ -237,6 +237,12 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     }
 }
 
+- (void)listView: (PXListView*)aListView rowDoubleClicked: (NSUInteger)rowIndex
+{
+    TransferTemplate *template = [dataSource objectAtIndex: rowIndex];
+    [owner startTransferFromTemplate: template];
+}
+
 /**
  * Triggered when KVO notifies us about changes.
  */

@@ -42,6 +42,7 @@
     // for the account label depending on whether we are selected or not.
     NSString *remoteBankCode;
     NSString *remoteAccount;
+    NSString *purpose;
     
     NSUInteger index;
     TransferType type;
