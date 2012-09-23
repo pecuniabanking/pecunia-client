@@ -26,6 +26,7 @@
 		2710CD5815093575006223A6 /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 2710CD5715093575006223A6 /* account.png */; };
 		27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
 		2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2716FE4C152381A60015A753 /* SynchronousScrollView.m */; };
+		2719CD84160F5B45004B37C0 /* donate2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2719CD83160F5B45004B37C0 /* donate2.jpg */; };
 		2722DE8115B2F03300503E95 /* templates.png in Resources */ = {isa = PBXBuildFile; fileRef = 2722DE8015B2F03300503E95 /* templates.png */; };
 		272328A01551A4D500B9683B /* transfer-debit-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289B1551A4D500B9683B /* transfer-debit-preview.png */; };
 		272328A11551A4D500B9683B /* transfer-eu-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289C1551A4D500B9683B /* transfer-eu-preview.png */; };
@@ -382,6 +383,7 @@
 		27150D9F140ABDAC000841E2 /* RoundedSidebar.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedSidebar.m; sourceTree = "<group>"; tabWidth = 4; };
 		2716FE4B152381A60015A753 /* SynchronousScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynchronousScrollView.h; sourceTree = "<group>"; };
 		2716FE4C152381A60015A753 /* SynchronousScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynchronousScrollView.m; sourceTree = "<group>"; };
+		2719CD83160F5B45004B37C0 /* donate2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = donate2.jpg; sourceTree = "<group>"; };
 		2722DE8015B2F03300503E95 /* templates.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = templates.png; sourceTree = "<group>"; };
 		2723289B1551A4D500B9683B /* transfer-debit-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-debit-preview.png"; sourceTree = "<group>"; };
 		2723289C1551A4D500B9683B /* transfer-eu-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-eu-preview.png"; sourceTree = "<group>"; };
@@ -1417,6 +1419,7 @@
 		B1923B560EB7A6D40079ADCA /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				2719CD83160F5B45004B37C0 /* donate2.jpg */,
 				27A659C81604D8D200C737E8 /* delete16.png */,
 				27A659C21604D8C500C737E8 /* send16.png */,
 				2743844515FB925D00E36DB5 /* cyclic.png */,
@@ -1938,6 +1941,7 @@
 				2743844615FB925D00E36DB5 /* cyclic.png in Resources */,
 				27A659C51604D8C500C737E8 /* send16.png in Resources */,
 				27A659CB1604D8D200C737E8 /* delete16.png in Resources */,
+				2719CD84160F5B45004B37C0 /* donate2.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1275,16 +1275,22 @@ static BOOL runningOnLionOrLater = NO;
             [currentSection deactivate];
             [transfersController deactivate];
             [mainTabView selectTabViewItemAtIndex: 0];
+            toolbarButtons.selectedSegment = 0;
+            
             break;
         }
         case 1: {
             [currentSection deactivate];
             [self activateTransfersTab];
+            toolbarButtons.selectedSegment = 1;
+            
             break;
         }
         case 2: {
             [transfersController deactivate];
             [self activateStandingOrdersTab];
+            toolbarButtons.selectedSegment = 2;
+            
             break;
         }
     }
@@ -1513,13 +1519,13 @@ static BOOL runningOnLionOrLater = NO;
     }
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hideDonationMessage = [defaults boolForKey: @"DonationPopup030"];
+    BOOL hideDonationMessage = [defaults boolForKey: @"DonationPopup100"];
     
     if(!hideDonationMessage) {
         DonationMessageController *controller = [[DonationMessageController alloc] init];
         BOOL donate = [controller run];
         [controller release];
-        if(donate) {
+        if (donate) {
             [self performSelector: @selector(donate:) withObject: self afterDelay: 0.0];
             return NSTerminateCancel;
         }

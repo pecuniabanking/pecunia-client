@@ -104,7 +104,7 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {388, 25}}</string>
 								<reference key="NSSuperview"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSegmentedCell" key="NSCell" id="848648286">
@@ -186,7 +186,7 @@
 						<reference ref="545394835"/>
 						<reference ref="376623175"/>
 					</array>
-					<array class="NSMutableArray" key="NSToolbarIBDefaultItems">
+					<array key="NSToolbarIBDefaultItems">
 						<reference ref="376623175"/>
 						<reference ref="545394835"/>
 						<reference ref="376623175"/>
