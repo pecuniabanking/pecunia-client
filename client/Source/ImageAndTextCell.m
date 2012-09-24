@@ -154,6 +154,18 @@ static NSGradient* selectionGradient = nil;
 
 - (void)drawWithFrame: (NSRect)cellFrame inView: (NSView *)controlView
 {
+    if (headerGradient == nil) {
+        headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
+                          [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat) 0,
+                          [NSColor colorWithDeviceWhite: 60 / 256.0 alpha: 1], (CGFloat) 1,
+                          nil];
+        selectionGradient = [[NSGradient alloc] initWithColorsAndLocations:
+                             [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat) 0,
+                             [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 1,
+                             nil
+                             ];
+    }
+    
     // Draw selection rectangle.
     NSRect selectionRect = cellFrame;
     selectionRect.size.width = [controlView bounds].size.width;
@@ -161,20 +173,6 @@ static NSGradient* selectionGradient = nil;
     
     NSBezierPath* selectionOutline = [NSBezierPath bezierPathWithRoundedRect: selectionRect xRadius: 3 yRadius: 3];
     if ([self isHighlighted]) {
-        if (headerGradient == nil) {
-            headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                              [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat) 0,
-                              [NSColor colorWithDeviceWhite: 60 / 256.0 alpha: 1], (CGFloat) 1,
-                              nil];
-        }
-        if (selectionGradient == nil) {
-            selectionGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                                 [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat) 0,
-                                 [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 1,
-                                 nil
-                                 ];
-        }
-        
         // Fill selection rectangle for selected entries.
         [selectionGradient drawInBezierPath: selectionOutline angle: 90];
     }
