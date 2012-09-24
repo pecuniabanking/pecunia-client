@@ -797,6 +797,11 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 			}
         }
     }
+
+    // delete old orders
+	for (StandingOrder *order in [orderController arrangedObjects]) {
+            [managedObjectContext deleteObject: order];
+	}
     
 	StatusBarController *sc = [StatusBarController controller];
 	[sc startSpinning];
@@ -808,13 +813,14 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
                                                object: nil];
 
 	[[HBCIClient hbciClient] getStandingOrders: resultList];
-
+/*
 	// Next remove orders without ID.
 	for (StandingOrder *order in [orderController arrangedObjects]) {
 		if (order.orderKey == nil) {
             [managedObjectContext deleteObject: order];
         }
 	}
+*/ 
 }
 
 #pragma mark -

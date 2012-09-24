@@ -212,6 +212,7 @@
 	
 	for(stord in orders) {
 		// find existing order
+/*        
 		NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (orderKey = %@)", self, stord.orderKey ];
 		[request setPredicate:predicate];
 		NSArray *res = [context executeFetchRequest:request error:&error];
@@ -221,6 +222,10 @@
 			// order does not yet exist
 			order = [NSEntityDescription insertNewObjectForEntityForName:@"StandingOrder" inManagedObjectContext:context];
 		}
+*/
+        
+        order = [NSEntityDescription insertNewObjectForEntityForName:@"StandingOrder" inManagedObjectContext:context];
+        
 		// now copy order to real context
 		NSEntityDescription *entity = [stord entity];
 		NSArray *attributeKeys = [[entity attributesByName] allKeys];

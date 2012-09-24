@@ -177,6 +177,7 @@
             PecuniaError *err = nil;
             if(error) err = [error toPecuniaError ];
             [[CallbackHandler handler ] finishPasswordEntry ];
+            //running = NO;
             [asyncSender asyncCommandCompletedWithResult: result error: err ];
             [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleReadCompletionNotification object: [inPipe fileHandleForReading]];
             running = NO;
