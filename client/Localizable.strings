@@ -248,6 +248,8 @@
 "AP458" = "Dieser Dauerauftrag wurde noch nicht zur Bank gesendet. Er kann also sofort gelöscht werden. Wollen Sie den Auftrag endgültig entfernen?";
 "AP459" = "Daueraufträge holen...";
 "AP460" = "Änderungen senden ...";
+"AP461" = "Es gibt noch Änderungen in Daueraufträgen die nicht an die Bank gesendet wurden. Diese Änderungen gehen durch das Abrufen der Daueraufträge verloren.";
+"AP462" = "Trotzdem abrufen";
 
 // Use a new block of IDs for next set of strings!
 // AP500..AP559

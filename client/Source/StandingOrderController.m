@@ -174,12 +174,12 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [listViewFormatter setTextAttributesForPositiveValues: positiveAttributes];
     [listViewFormatter setTextAttributesForNegativeValues: negativeAttributes];
     
-    /*
+    
 	// Sort order list by change date (newest first).
-	NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey: @"changeDate" ascending: NO] autorelease];
+	NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO] autorelease];
 	NSArray *sds = [NSArray arrayWithObject: sd];
 	[orderController setSortDescriptors: sds];
-     */
+    
     
     // Actually, the values for the bound property and the key path don't matter as the listview has
     // a very clear understanding what it needs to bind to. It's just there to make the listview
@@ -780,6 +780,21 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 		}
 	}
 */
+    for (StandingOrder *stord in [orderController arrangedObjects ]) {
+        if ([stord.isChanged boolValue] == YES) {
+            int res = NSRunAlertPanel(NSLocalizedString(@"AP16", @""), 
+                                      NSLocalizedString(@"AP461", @""),
+                                      NSLocalizedString(@"AP462", @""), 
+                                      NSLocalizedString(@"cancel", @"Cancel"), nil);
+            if (res == NSAlertAlternateReturn) {
+                return;
+            } else {
+                break;
+            }
+        }
+    }
+    
+    
     resultList = [NSMutableArray arrayWithCapacity: 10];
     NSMenu *menu = [sourceAccountSelector menu ];
     NSArray *items = [menu itemArray ];
@@ -797,11 +812,6 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 			}
         }
     }
-
-    // delete old orders
-	for (StandingOrder *order in [orderController arrangedObjects]) {
-            [managedObjectContext deleteObject: order];
-	}
     
 	StatusBarController *sc = [StatusBarController controller];
 	[sc startSpinning];
@@ -863,12 +873,19 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 		self.requestRunning = [NSNumber numberWithBool: NO];
 		return;
 	}
+    
+    // delete old orders
+	for (StandingOrder *order in [orderController arrangedObjects]) {
+        //[orderController removeObject:order ];
+        [managedObjectContext deleteObject: order];
+	}    
 	
 	for (result in resultList) {
 		[result.account updateStandingOrders: result.standingOrders];
 	}
 	
-	[orderController rearrangeObjects];
+    [orderController fetch:self];
+	//[orderController rearrangeObjects];
 	
 	[sc stopSpinning];
 	[sc clearMessage];

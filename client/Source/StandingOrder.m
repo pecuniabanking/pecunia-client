@@ -35,6 +35,8 @@
 @dynamic isChanged;
 @dynamic value;
 @dynamic account;
+@dynamic localAccount;
+@dynamic localBankCode;
 
 -(NSString*)purpose
 {

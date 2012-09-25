@@ -246,7 +246,7 @@ static CallbackHandler *callbackHandler = nil;
         notificationController = [[NotificationWindowController alloc ] initWithMessage:NSLocalizedString(@"AP350", @"") 
                                                                                   title:NSLocalizedString(@"AP357", @"") ];
         //[notificationController showWindow:self ];
-        [self performSelector:@selector(showNotificationWindow) withObject:nil afterDelay:1 ];
+        [self performSelector:@selector(showNotificationWindow) withObject:nil afterDelay:0.5 ];
     }
     if ([data.command isEqualToString:@"haveChipcard" ]) {
         [[notificationController window ] close ];

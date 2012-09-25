@@ -55,5 +55,7 @@ typedef enum {
 @property (nonatomic, retain) NSNumber * isChanged;
 @property (nonatomic, retain) NSDecimalNumber * value;
 @property (nonatomic, retain) BankAccount * account;
+@property (nonatomic, retain) NSString * localAccount;
+@property (nonatomic, retain) NSString * localBankCode;
 
 @end
