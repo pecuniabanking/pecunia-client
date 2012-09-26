@@ -1592,7 +1592,7 @@
 	};
 	B1014AEC101643C800ABA1FF /* TanMethod.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1351, 943}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1601, 793}}";
 			sepNavSelRange = "{543, 12}";
 			sepNavVisRange = "{0, 835}";
 			sepNavWindowFrame = "{{1472, 217}, {979, 1160}}";
@@ -1973,6 +1973,14 @@
 		};
 	};
 	B137BDCA12D28B0D00D0394C /* adduser.c */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.c;
+		name = adduser.c;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/adduser.c";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1333, 5236}}";
 			sepNavSelRange = "{31, 6}";
@@ -1980,6 +1988,14 @@
 		};
 	};
 	B137BDCB12D28B0D00D0394C /* adduser.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = adduser.h;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/adduser.h";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1333, 883}}";
 			sepNavSelRange = "{10, 6}";
@@ -1987,6 +2003,14 @@
 		};
 	};
 	B137BE3A12D296A900D0394C /* getsysid.c */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.c;
+		name = getsysid.c;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/getsysid.c";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1242, 1190}}";
 			sepNavSelRange = "{1229, 0}";
@@ -1994,6 +2018,14 @@
 		};
 	};
 	B137BE3B12D296A900D0394C /* getsysid.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = getsysid.h;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/getsysid.h";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1242, 956}}";
 			sepNavSelRange = "{799, 6}";
@@ -2493,8 +2525,8 @@
 	};
 	B14EBCFC1031FAC700020A26 /* BankQueryResult.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1601, 857}}";
-			sepNavSelRange = "{549, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {1601, 793}}";
+			sepNavSelRange = "{310, 0}";
 			sepNavVisRange = "{0, 741}";
 		};
 	};
@@ -4510,23 +4542,23 @@
 	};
 	B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1601, 2363}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1601, 2397}}";
 			sepNavSelRange = "{3106, 0}";
-			sepNavVisRange = "{2401, 1000}";
+			sepNavVisRange = "{2401, 999}";
 		};
 	};
 	B17B2B4113EC921200739E7A /* FlickerView.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1360, 960}}";
-			sepNavSelRange = "{268, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {1601, 793}}";
+			sepNavSelRange = "{167, 0}";
 			sepNavVisRange = "{0, 318}";
 		};
 	};
 	B17B2B4213EC921200739E7A /* FlickerView.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1896, 1224}}";
-			sepNavSelRange = "{523, 0}";
-			sepNavVisRange = "{169, 1017}";
+			sepNavIntBoundsRect = "{{0, 0}, {1601, 1207}}";
+			sepNavSelRange = "{453, 0}";
+			sepNavVisRange = "{167, 1057}";
 		};
 	};
 	B17E5BB715ED5451008527C8 /* PBXTextBookmark */ = {
@@ -7003,6 +7035,14 @@
 		};
 	};
 	B1C72C21123C36F100D1D78D /* ABControllerGui.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = ABControllerGui.h;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABControllerGui.h";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1242, 956}}";
 			sepNavSelRange = "{787, 0}";
@@ -7010,6 +7050,14 @@
 		};
 	};
 	B1C72C22123C36F100D1D78D /* ABControllerGui.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = ABControllerGui.m;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABControllerGui.m";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1364, 7922}}";
 			sepNavSelRange = "{12784, 0}";
@@ -7017,13 +7065,29 @@
 		};
 	};
 	B1C72C2A123D4C1200D1D78D /* ABInfoBoxController.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = ABInfoBoxController.h;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABInfoBoxController.h";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1283, 958}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1601, 793}}";
 			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 498}";
+			sepNavVisRange = "{0, 522}";
 		};
 	};
 	B1C72C2B123D4C1200D1D78D /* ABInfoBoxController.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = ABInfoBoxController.m;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABInfoBoxController.m";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1296, 765}}";
 			sepNavSelRange = "{84, 3}";
@@ -7031,6 +7095,14 @@
 		};
 	};
 	B1C72C2E123D4C1200D1D78D /* ABProgressWindowController.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = ABProgressWindowController.h;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABProgressWindowController.h";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1282, 1102}}";
 			sepNavSelRange = "{560, 0}";
@@ -7038,6 +7110,14 @@
 		};
 	};
 	B1C72C2F123D4C1200D1D78D /* ABProgressWindowController.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = ABProgressWindowController.m;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABProgressWindowController.m";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1896, 3077}}";
 			sepNavSelRange = "{3095, 0}";
@@ -10057,6 +10137,14 @@
 		};
 	};
 	B1FAEAB8122C62F7000AF027 /* ABController.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = ABController.h;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABController.h";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1084, 1309}}";
 			sepNavSelRange = "{2446, 0}";
@@ -10064,6 +10152,14 @@
 		};
 	};
 	B1FAEAB9122C62F7000AF027 /* ABController.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = ABController.m;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABController.m";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1084, 22372}}";
 			sepNavSelRange = "{38941, 0}";
@@ -10072,13 +10168,29 @@
 		};
 	};
 	B1FAEABB122C65AC000AF027 /* ImExporter.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = ImExporter.h;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ImExporter.h";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1242, 956}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1601, 793}}";
 			sepNavSelRange = "{531, 0}";
 			sepNavVisRange = "{0, 532}";
 		};
 	};
 	B1FAEABC122C65AC000AF027 /* ImExporter.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = ImExporter.m;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ImExporter.m";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1242, 956}}";
 			sepNavSelRange = "{519, 0}";
@@ -10086,13 +10198,29 @@
 		};
 	};
 	B1FAEABD122C65AC000AF027 /* ImExporterProfile.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = ImExporterProfile.h;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ImExporterProfile.h";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1242, 956}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1601, 793}}";
 			sepNavSelRange = "{480, 0}";
 			sepNavVisRange = "{0, 480}";
 		};
 	};
 	B1FAEABE122C65AC000AF027 /* ImExporterProfile.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = ImExporterProfile.m;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ImExporterProfile.m";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1242, 956}}";
 			sepNavSelRange = "{496, 0}";
@@ -10100,6 +10228,14 @@
 		};
 	};
 	B1FAEAC1122C66FE000AF027 /* ABUser.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = ABUser.h;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABUser.h";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1242, 956}}";
 			sepNavSelRange = "{1259, 0}";
@@ -10108,6 +10244,14 @@
 		};
 	};
 	B1FAEAC2122C66FE000AF027 /* ABUser.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = ABUser.m;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABUser.m";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1242, 1343}}";
 			sepNavSelRange = "{1451, 0}";
@@ -10115,21 +10259,29 @@
 		};
 	};
 	B1FAEACE122C6B80000AF027 /* ABConversion.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = ABConversion.h;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABConversion.h";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1091, 1030}}";
 			sepNavSelRange = "{1015, 0}";
 			sepNavVisRange = "{0, 1015}";
 		};
 	};
-	B1FAEACF122C6B80000AF027 /* ABConversion.m */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1091, 10421}}";
-			sepNavSelRange = "{561, 25}";
-			sepNavVisRange = "{692, 2231}";
-			sepNavWindowFrame = "{{102, 89}, {1450, 1302}}";
-		};
-	};
 	B1FAEB7B122DAC9E000AF027 /* ABAccount.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = ABAccount.h;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABAccount.h";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1242, 1309}}";
 			sepNavSelRange = "{1748, 0}";
@@ -10137,6 +10289,14 @@
 		};
 	};
 	B1FAEB7C122DAC9E000AF027 /* ABAccount.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		indentWidth = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = ABAccount.m;
+		path = "/Users/emmi/Pecunia/Pecunia 1.0/Source/ABAccount.m";
+		sourceTree = "<absolute>";
+		tabWidth = 4;
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1052, 1700}}";
 			sepNavSelRange = "{2235, 0}";
