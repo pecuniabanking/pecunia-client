@@ -31,7 +31,7 @@
 
 - (id)initWithText: (NSString *)x;
 {
-	self = [super initWithWindowNibName:@"PasswordWindow"];
+	self = [super initWithWindowNibName:@"TanWindow"];
     
     NSString *s = [x stringByReplacingOccurrencesOfString:@"\n" withString:@"<br>" ];
     NSData *d = [s dataUsingEncoding:NSISOLatin1StringEncoding ];
@@ -53,22 +53,12 @@
 
 - (void)controlTextDidEndEditing:(NSNotification *)aNotification
 {
-	result = [inputField stringValue];
 	if([result length] == 0) NSBeep();
 	else {
 		active = NO;
 		[self closeWindow ];
 		[NSApp stopModalWithCode:0];
 	}
-}
-
-- (void)retry
-{
-	[self showWindow:self ];
-	active = YES;
-	NSBeep();
-	[inputField setStringValue: @"" ];
-	[inputField setBackgroundColor:[NSColor redColor ] ];
 }
 
 - (void)closeWindow

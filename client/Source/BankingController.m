@@ -72,6 +72,7 @@
 
 #import "User.h"
 #import "BankUser.h"
+#import "TanWindow.h"
 
 // Pasteboard data types.
 NSString* const BankStatementDataType = @"BankStatementDataType";
@@ -313,8 +314,6 @@ static BOOL runningOnLionOrLater = NO;
     [timeSlicer updateDelegate];
     [self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext:self.managedObjectContext];
-    
-    [self migrate];
 }
 
 #pragma mark -
@@ -2642,6 +2641,8 @@ static BOOL runningOnLionOrLater = NO;
         [sc stopSpinning];
         [sc clearMessage];
     }
+    
+    [self migrate];
 }
 
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -2903,7 +2904,7 @@ static BOOL runningOnLionOrLater = NO;
 			}
 		}
         
-        // BankUser Konten zuordnen
+        // BankUser assign accounts
         NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:context];
         NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
         [request setEntity:entityDescription];
@@ -2924,7 +2925,19 @@ static BOOL runningOnLionOrLater = NO;
 			[alert runModal];
 			return;
 		}
-	
+        
+        // BankUser update BPD
+        bankUsers = [BankUser allUsers ];
+        if ([bankUsers count ] > 0) {
+            NSRunAlertPanel(NSLocalizedString(@"AP183", @""),
+                            NSLocalizedString(@"AP184", @""),
+                            NSLocalizedString(@"ok", @"Ok"),
+                            nil, nil
+                            );
+            for (BankUser *user in [BankUser allUsers]) {
+                [[HBCIClient hbciClient] updateBankDataForUser:user];
+            }
+        }	
 	        
         [defaults setBool:YES forKey:@"Migrated10"];
     }

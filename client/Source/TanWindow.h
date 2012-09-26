@@ -24,15 +24,16 @@
 
 	IBOutlet NSTextField	*inputText;
 	IBOutlet NSTextField	*inputField;
+    IBOutlet NSTextField    *secureInputField;
 	
 	NSAttributedString      *text;
 	NSString                *result;
 	BOOL                    active;
 	
 }
+
 - (id)initWithText:(NSString*)x;
 - (void)closeWindow;
 - (NSString*)result;
-- (void)retry;
 
 @end

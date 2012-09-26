@@ -115,9 +115,11 @@
 
 -(IBAction)ok:(id)sender
 {
-	self.tan = [tanField stringValue];
-	if(self.tan) [NSApp stopModalWithCode:0];
-	[[self window ] close ];
+	//self.tan = [tanField stringValue];
+	if(self.tan && [self.tan length]>0) {
+        [NSApp stopModalWithCode:0];
+        [[self window ] close ];
+    }
 }
 
 -(IBAction)cancel:(id)sender

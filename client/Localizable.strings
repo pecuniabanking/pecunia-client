@@ -191,6 +191,8 @@
 "AP180" = "Speichern nicht möglich";
 "AP181" = "Die Regel konnte nicht interpretiert werden, vermutlich sind Sonderzeichen enthalten. Der Parser meldet folgendes Problem: %@";
 "AP182" = "Selektion unterstützte Geschäftsvorfälle";
+"AP183" = "Datenmigration";
+"AP184" = "Pecunia ermittelt jetzt für jede Bankkennung Informationen über erlaubte Geschäftsvorfälle, TAN-Methoden etc. Dazu müssen Sie evtl. Ihre PINs eingeben (falls nicht im Schlüsselbund gespeichert).";
 
 // Callback and backend.
 // AP350..AP399

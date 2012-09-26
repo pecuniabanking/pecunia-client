@@ -2362,7 +2362,7 @@
 				B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */,
 				B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */,
 			);
-			currentVersion = B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */;
+			currentVersion = B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

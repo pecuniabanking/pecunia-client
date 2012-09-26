@@ -201,7 +201,6 @@
 
 -(void)updateStandingOrders:(NSArray*)orders
 {
-	NSError *error = nil;
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	StandingOrder *stord;
 	StandingOrder *order;
@@ -210,20 +209,7 @@
 	[request setEntity:entityDescription];
 	
 	
-	for(stord in orders) {
-		// find existing order
-/*        
-		NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (orderKey = %@)", self, stord.orderKey ];
-		[request setPredicate:predicate];
-		NSArray *res = [context executeFetchRequest:request error:&error];
-		if (res && [res count ] > 0) {
-			order = [res objectAtIndex:0 ];
-		} else {
-			// order does not yet exist
-			order = [NSEntityDescription insertNewObjectForEntityForName:@"StandingOrder" inManagedObjectContext:context];
-		}
-*/
-        
+	for(stord in orders) {        
         order = [NSEntityDescription insertNewObjectForEntityForName:@"StandingOrder" inManagedObjectContext:context];
         
 		// now copy order to real context

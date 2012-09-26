@@ -317,10 +317,13 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     
     if (currentLimits.weekCycles == nil || currentLimits.weekCycles.count == 0 || [[currentLimits.weekCycles lastObject] intValue] == 0) {
         [weekCycles addObject: NSLocalizedString(@"AP451",  @"")];
+        if (currentCycle == 1) {
+            selectedIndex = 0;
+        }
         for(int i = 2; i <= 52; i++) {
             [weekCycles addObject:[NSString stringWithFormat: NSLocalizedString(@"AP453",  @""), i]];
             if (i == currentCycle) {
-                selectedIndex = i;
+                selectedIndex = i-1;
             }
         }
     } else {
@@ -363,10 +366,13 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     
 	if (currentLimits.monthCycles == nil || currentLimits.monthCycles.count == 0 || [[currentLimits.monthCycles lastObject] intValue] == 0) {
         [monthCycles addObject: NSLocalizedString(@"AP450",  @"")];
-		for (NSInteger i = 1; i <= 12; i++) {
+        if (currentCycle == 1) {
+            selectedIndex = 0;
+        }
+		for (NSInteger i = 2; i <= 12; i++) {
             [monthCycles addObject: [NSString stringWithFormat: NSLocalizedString(@"AP452",  @""), i]];
             if (i == currentCycle) {
-                selectedIndex = i;
+                selectedIndex = i-1;
             }
         }
 	} else {
@@ -529,7 +535,15 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 -(IBAction)monthCycleChanged: (id)sender
 {
-	currentOrder.cycle = [NSNumber numberWithInt:[[monthCyclesPopup titleOfSelectedItem ] intValue ] ];
+    NSInteger idx = [monthCyclesPopup indexOfSelectedItem];
+    if (currentLimits.monthCycles == nil || currentLimits.monthCycles.count == 0 || [[currentLimits.monthCycles lastObject] intValue] == 0) {
+        currentOrder.cycle = [NSNumber numberWithInt:idx + 1];
+    } else {
+        NSString *c = [currentLimits.monthCycles objectAtIndex:idx];
+        currentOrder.cycle = [NSNumber numberWithInt:[c intValue]];
+    }
+    
+	//currentOrder.cycle = [NSNumber numberWithInt:[[monthCyclesPopup titleOfSelectedItem ] intValue ] ];
 	currentOrder.isChanged = [NSNumber numberWithBool: YES];
 }
 
@@ -541,6 +555,14 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 -(IBAction)weekCycleChanged: (id)sender
 {
+    NSInteger idx = [weekCyclesPopup indexOfSelectedItem];
+    if (currentLimits.weekCycles == nil || currentLimits.weekCycles.count == 0 || [[currentLimits.weekCycles lastObject] intValue] == 0) {
+        currentOrder.cycle = [NSNumber numberWithInt:idx + 1];
+    } else {
+        NSString *c = [currentLimits.weekCycles objectAtIndex:idx];
+        currentOrder.cycle = [NSNumber numberWithInt:[c intValue]];
+    }
+
 	currentOrder.cycle = [NSNumber numberWithInt:[[weekCyclesPopup titleOfSelectedItem ] intValue ] ];
 	currentOrder.isChanged = [NSNumber numberWithBool: YES];
 }
@@ -598,6 +620,13 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
         }
 	}
 	currentOrder.isChanged = [NSNumber numberWithBool: YES];
+}
+
+- (void)controlTextDidChange:(NSNotification *)aNotification
+{
+    if ([currentOrder.isChanged boolValue] == NO) {
+        currentOrder.isChanged = [NSNumber numberWithBool: YES];
+    }
 }
 
 - (BOOL)checkOrder: (StandingOrder*)stord
@@ -671,6 +700,12 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	NSArray *orders = [orderController arrangedObjects];
     
 	for (StandingOrder *stord in orders) {
+        // don't send 
+        if ([stord.isChanged boolValue] == NO && [stord.toDelete boolValue ] == NO) continue;
+        
+        // don't send sent orders without ID
+        if ([stord.isSent boolValue ] == YES && stord.orderKey == nil) continue;
+        
 		if (![self checkOrder: stord]) {
 			[orderController setSelectedObjects: [NSArray arrayWithObject: stord]];
 			return;
@@ -682,7 +717,19 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	self.requestRunning = [NSNumber numberWithBool: YES];
 	[sc setMessage: NSLocalizedString(@"AP460", nil) removeAfter: 0];
     
-	PecuniaError *hbciError = [[HBCIClient hbciClient] sendStandingOrders: orders];
+    NSMutableArray *sendOrders = [NSMutableArray arrayWithCapacity:[orders count]];
+    for (StandingOrder *stord in orders) {
+        // don't send unchanged
+        if ([stord.isChanged boolValue] == NO && [stord.toDelete boolValue ] == NO) continue;
+        
+        // don't send sent orders without ID
+        if ([stord.isSent boolValue ] == YES && stord.orderKey == nil) continue;
+        
+        [sendOrders addObject:stord];
+    }
+    
+    
+	PecuniaError *hbciError = [[HBCIClient hbciClient] sendStandingOrders: sendOrders];
 	if (hbciError != nil) {
 		[sc stopSpinning];
 		[sc clearMessage];
