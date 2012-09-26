@@ -46,8 +46,6 @@ static NSGradient *blackGradient;
     NSBezierPath* borderPath = [NSBezierPath bezierPathWithRoundedRect: cellFrame xRadius: 5 yRadius: 5];
     [blackGradient drawInBezierPath: borderPath angle: 90];
     
-    [NSGraphicsContext restoreGraphicsState];
-
     NSMutableParagraphStyle *paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
     
     // If there is an image left or right to the title then exclude its bounding rect from the
@@ -102,6 +100,8 @@ static NSGradient *blackGradient;
                                                                                     attributes: attributes] autorelease];
         [cellStringWithFormat drawInRect: NSInsetRect(cellFrame, 10, 4)];
     }
+
+    [NSGraphicsContext restoreGraphicsState];
 }
 
 @end

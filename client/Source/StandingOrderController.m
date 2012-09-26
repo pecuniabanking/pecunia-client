@@ -884,7 +884,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 		[result.account updateStandingOrders: result.standingOrders];
 	}
 	
-    [orderController fetch:self];
+    [orderController fetch: self];
 	//[orderController rearrangeObjects];
 	
 	[sc stopSpinning];

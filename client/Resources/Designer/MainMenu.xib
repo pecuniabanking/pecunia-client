@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
 		<string key="IBDocument.SystemVersion">11G56</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2549</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2840</string>
 		<string key="IBDocument.AppKitVersion">1138.51</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">2549</string>
+			<string key="NS.object.0">2840</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -100,11 +100,9 @@
 							<string key="NSToolbarItemPaletteLabel">Buttons</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSSegmentedControl" key="NSToolbarItemView" id="805917942">
-								<reference key="NSNextResponder"/>
+								<nil key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {388, 25}}</string>
-								<reference key="NSSuperview"/>
-								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSegmentedCell" key="NSCell" id="848648286">
@@ -205,7 +203,6 @@
 							<string key="NSFrame">{{0, 20}, {1200, 680}}</string>
 							<reference key="NSSuperview" ref="996798234"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="641812421"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<array class="NSMutableArray" key="NSTabViewItems">
 								<object class="NSTabViewItem" id="177750096">
@@ -239,7 +236,7 @@
 																	<reference key="NSSupport" ref="831196016"/>
 																	<reference key="NSControlView" ref="67883172"/>
 																	<int key="NSTag">100</int>
-																	<int key="NSButtonFlags">-2042347265</int>
+																	<int key="NSButtonFlags">138690815</int>
 																	<int key="NSButtonFlags2">2</int>
 																	<object class="NSCustomResource" key="NSNormalImage">
 																		<string key="NSClassName">NSImage</string>
@@ -1844,7 +1841,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																										<string key="NSFrameSize">{735, 203}</string>
 																										<reference key="NSSuperview" ref="470987086"/>
 																										<reference key="NSWindow"/>
-																										<reference key="NSNextKeyView" ref="377464508"/>
+																										<reference key="NSNextKeyView" ref="395855179"/>
 																										<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																										<string key="NSClassName">PXListDocumentView</string>
 																									</object>
@@ -1886,7 +1883,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																						<string key="NSFrame">{{20, 20}, {794, 222}}</string>
 																						<reference key="NSSuperview" ref="475239580"/>
 																						<reference key="NSWindow"/>
-																						<reference key="NSNextKeyView" ref="395855179"/>
+																						<reference key="NSNextKeyView" ref="470987086"/>
 																						<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																						<int key="NSsFlags">133648</int>
 																						<reference key="NSVScroller" ref="377464508"/>
@@ -3045,7 +3042,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																										<string key="NSFrameSize">{0, 0}</string>
 																										<reference key="NSSuperview" ref="679719261"/>
 																										<reference key="NSWindow"/>
-																										<reference key="NSNextKeyView" ref="1055645265"/>
+																										<reference key="NSNextKeyView" ref="715429031"/>
 																										<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																										<object class="NSTextContainer" key="NSTextContainer" id="6843">
 																											<object class="NSLayoutManager" key="NSLayoutManager">
@@ -3163,7 +3160,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																						<string key="NSFrame">{{10, 10}, {257, 42}}</string>
 																						<reference key="NSSuperview" ref="266015751"/>
 																						<reference key="NSWindow"/>
-																						<reference key="NSNextKeyView" ref="715429031"/>
+																						<reference key="NSNextKeyView" ref="679719261"/>
 																						<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																						<int key="NSsFlags">133648</int>
 																						<reference key="NSVScroller" ref="715429031"/>
@@ -3197,7 +3194,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																										<string key="NSFrameSize">{0, 0}</string>
 																										<reference key="NSSuperview" ref="909982314"/>
 																										<reference key="NSWindow"/>
-																										<reference key="NSNextKeyView" ref="644377234"/>
+																										<reference key="NSNextKeyView" ref="117266648"/>
 																										<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																										<object class="NSTextContainer" key="NSTextContainer" id="560996048">
 																											<object class="NSLayoutManager" key="NSLayoutManager">
@@ -3281,7 +3278,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																						<string key="NSFrame">{{7, 10}, {261, 42}}</string>
 																						<reference key="NSSuperview" ref="126344531"/>
 																						<reference key="NSWindow"/>
-																						<reference key="NSNextKeyView" ref="117266648"/>
+																						<reference key="NSNextKeyView" ref="909982314"/>
 																						<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																						<int key="NSsFlags">133648</int>
 																						<reference key="NSVScroller" ref="644377234"/>
@@ -3702,7 +3699,6 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 							<string key="NSFrame">{{1164, 2}, {16, 16}}</string>
 							<reference key="NSSuperview" ref="996798234"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSImageCell" key="NSCell" id="1681">
@@ -7031,13 +7027,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 												<object class="NSComboTableView" key="NSTableView" id="476426159">
 													<reference key="NSNextResponder"/>
 													<int key="NSvFlags">274</int>
-													<string key="NSFrameSize">{15, 0}</string>
+													<string key="NSFrameSize">{13, 0}</string>
 													<reference key="NSSuperview"/>
 													<reference key="NSWindow"/>
 													<bool key="NSEnabled">YES</bool>
 													<array class="NSMutableArray" key="NSTableColumns">
 														<object class="NSTableColumn">
-															<double key="NSWidth">12</double>
+															<double key="NSWidth">10</double>
 															<double key="NSMinWidth">10</double>
 															<double key="NSMaxWidth">1000</double>
 															<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -7071,7 +7067,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 													<reference key="NSGridColor" ref="890778246"/>
 													<double key="NSRowHeight">19</double>
 													<string key="NSAction">tableViewAction:</string>
-													<int key="NSTvFlags">-767524864</int>
+													<int key="NSTvFlags">-765427712</int>
 													<reference key="NSDelegate" ref="156100258"/>
 													<reference key="NSDataSource" ref="156100258"/>
 													<reference key="NSTarget" ref="156100258"/>
@@ -16376,47 +16372,6 @@ wGw</bytes>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/MainBackgroundView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSDocument</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="printDocument:">id</string>
-						<string key="revertDocumentToSaved:">id</string>
-						<string key="runPageLayout:">id</string>
-						<string key="saveDocument:">id</string>
-						<string key="saveDocumentAs:">id</string>
-						<string key="saveDocumentTo:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="printDocument:">
-							<string key="name">printDocument:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="revertDocumentToSaved:">
-							<string key="name">revertDocumentToSaved:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="runPageLayout:">
-							<string key="name">runPageLayout:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="saveDocument:">
-							<string key="name">saveDocument:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="saveDocumentAs:">
-							<string key="name">saveDocumentAs:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="saveDocumentTo:">
-							<string key="name">saveDocumentTo:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/NSDocument.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
