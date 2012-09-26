@@ -1258,7 +1258,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [amountField.window makeFirstResponder: amountField];
 }
 
-- (BOOL)startTransferOfType: (TransferType)type
+- (BOOL)startTransferOfType: (TransferType)type withAccount:(BankAccount*)account
 {
     if (![self prepareTransferOfType: type]) {
         return NO;
@@ -1266,7 +1266,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     BOOL result = [transactionController newTransferOfType: TransferTypeStandard];
     if (result) {
-        [self prepareSourceAccountSelector: nil];
+        [self prepareSourceAccountSelector: account];
         [rightPane showFormular];
     }
     return result;

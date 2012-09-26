@@ -136,7 +136,6 @@
 		B1014C0C1018F48500ABA1FF /* yes2.ico in Resources */ = {isa = PBXBuildFile; fileRef = B1014C0B1018F48500ABA1FF /* yes2.ico */; };
 		B1014C111018F97600ABA1FF /* lock.ico in Resources */ = {isa = PBXBuildFile; fileRef = B1014C101018F97600ABA1FF /* lock.ico */; };
 		B1014C67101A37E800ABA1FF /* DonationMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014C66101A37E800ABA1FF /* DonationMessageController.m */; };
-		B1014CB2101A4C3D00ABA1FF /* gpl-2.0.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */; };
 		B1029E120E3FA1D700CC681B /* CategoryDefWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1029E110E3FA1D700CC681B /* CategoryDefWindowController.m */; };
 		B10DBBAA12DA48EF0030D67A /* PurposeSplitRule.m in Sources */ = {isa = PBXBuildFile; fileRef = B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */; };
 		B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
@@ -156,8 +155,6 @@
 		B13435A412EC36A3006C4687 /* GenericImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B13435A312EC36A3006C4687 /* GenericImportController.m */; };
 		B134365B12ECBD54006C4687 /* GenericImportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B134365A12ECBD54006C4687 /* GenericImportWindow.xib */; };
 		B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B136AAD70FCF1C4A007A643F /* MCEMTableView.m */; };
-		B136B24E0FE2F705007A643F /* InstitutesController.m in Sources */ = {isa = PBXBuildFile; fileRef = B136B24D0FE2F705007A643F /* InstitutesController.m */; };
-		B137BE9012D33AB200D0394C /* Institute.csv in Resources */ = {isa = PBXBuildFile; fileRef = B137BE8F12D33AB200D0394C /* Institute.csv */; };
 		B137BF4712D5004C00D0394C /* MessageLog.m in Sources */ = {isa = PBXBuildFile; fileRef = B137BF4612D5004C00D0394C /* MessageLog.m */; };
 		B138AC3C13918EB50026BEE2 /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138AC3B13918EB50026BEE2 /* ImageAndTextCell.m */; };
 		B138AC491391946E0026BEE2 /* catdef4_18.png in Resources */ = {isa = PBXBuildFile; fileRef = B138AC461391946E0026BEE2 /* catdef4_18.png */; };
@@ -529,7 +526,6 @@
 		B1014C101018F97600ABA1FF /* lock.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = lock.ico; sourceTree = "<group>"; };
 		B1014C65101A37E800ABA1FF /* DonationMessageController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = DonationMessageController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1014C66101A37E800ABA1FF /* DonationMessageController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = DonationMessageController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gpl-2.0.txt"; sourceTree = "<group>"; };
 		B1029E100E3FA1D700CC681B /* CategoryDefWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryDefWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1029E110E3FA1D700CC681B /* CategoryDefWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryDefWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitRule.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -561,9 +557,6 @@
 		B134365A12ECBD54006C4687 /* GenericImportWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenericImportWindow.xib; sourceTree = "<group>"; };
 		B136AAD60FCF1C4A007A643F /* MCEMTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMTableView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B136AAD70FCF1C4A007A643F /* MCEMTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMTableView.m; sourceTree = "<group>"; tabWidth = 4; };
-		B136B24C0FE2F705007A643F /* InstitutesController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = InstitutesController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B136B24D0FE2F705007A643F /* InstitutesController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = InstitutesController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B137BE8F12D33AB200D0394C /* Institute.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Institute.csv; sourceTree = "<group>"; };
 		B137BF4512D5004C00D0394C /* MessageLog.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MessageLog.h; sourceTree = "<group>"; tabWidth = 4; };
 		B137BF4612D5004C00D0394C /* MessageLog.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MessageLog.m; sourceTree = "<group>"; tabWidth = 4; };
 		B138AC3A13918EB50026BEE2 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTextCell.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1179,13 +1172,11 @@
 				27C930F5149508280055EAD5 /* Colors.acf */,
 				B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */,
 				B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */,
-				B1014CB1101A4C3D00ABA1FF /* gpl-2.0.txt */,
 				B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */,
 				27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */,
 				B15FCCEE141422A3000738B6 /* HBCIServer.jar */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
-				B137BE8F12D33AB200D0394C /* Institute.csv */,
 				B1F454370F101E7500BAF4E8 /* Localizable.strings */,
 				27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */,
 			);
@@ -1456,8 +1447,6 @@
 				279A785E1539DA0300443854 /* TransfersListViewCell.m */,
 				B155D92C0BFD04B300904051 /* TransactionController.h */,
 				B155D92D0BFD04B300904051 /* TransactionController.m */,
-				B136B24C0FE2F705007A643F /* InstitutesController.h */,
-				B136B24D0FE2F705007A643F /* InstitutesController.m */,
 				B1FB660D124FC89500C54A0E /* TransferTemplateController.h */,
 				B1FB660E124FC89500C54A0E /* TransferTemplateController.m */,
 			);
@@ -1743,7 +1732,6 @@
 				B1014BFD1018EF9D00ABA1FF /* catdef4.ico in Resources */,
 				B1014C0C1018F48500ABA1FF /* yes2.ico in Resources */,
 				B1014C111018F97600ABA1FF /* lock.ico in Resources */,
-				B1014CB2101A4C3D00ABA1FF /* gpl-2.0.txt in Resources */,
 				B1BCDF76111F5DBB002E0802 /* CountryInfo.txt in Resources */,
 				B1A59498113182DA00FD8CB8 /* StatSplitController.xib in Resources */,
 				B14C6003114848E1009324A6 /* BankStatementController.xib in Resources */,
@@ -1754,7 +1742,6 @@
 				B1AFA837129479BA00B115A7 /* CategoryReporting.xib in Resources */,
 				B1AFA8811295C5D800B115A7 /* CategoryAnalysis.xib in Resources */,
 				B1AFA9F7129EEA3900B115A7 /* Orders.xib in Resources */,
-				B137BE9012D33AB200D0394C /* Institute.csv in Resources */,
 				B1B7B37412EA3D2B0013CF0B /* standing_order.png in Resources */,
 				B134357212EB7FDF006C4687 /* cursor.png in Resources */,
 				B134365B12ECBD54006C4687 /* GenericImportWindow.xib in Resources */,
@@ -1917,7 +1904,6 @@
 				B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */,
 				B1A6E8350FC890E400566C55 /* PasswordWindow.m in Sources */,
 				B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */,
-				B136B24E0FE2F705007A643F /* InstitutesController.m in Sources */,
 				B1014AEE101643C800ABA1FF /* TanMethod.m in Sources */,
 				B1014C67101A37E800ABA1FF /* DonationMessageController.m in Sources */,
 				B152B5141025FE2400EE06D6 /* MCEMBorderedView.m in Sources */,

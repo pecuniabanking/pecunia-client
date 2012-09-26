@@ -31,6 +31,7 @@
 @class CalendarWindow;
 @class DragImageView;
 @class DeleteTransferTargetView;
+@class BankAccount;
 
 @interface TransferTemplateDragDestination : NSView
 {
@@ -128,6 +129,6 @@
 - (void)cancelEditing;
 - (BOOL)editingInProgress;
 - (void)startDonationTransfer;
-- (BOOL)startTransferOfType: (TransferType)type;
+- (BOOL)startTransferOfType: (TransferType)type withAccount:(BankAccount*)account;
 
 @end

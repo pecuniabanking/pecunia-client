@@ -18,10 +18,7 @@
  */
 
 #import "NewBankUserController.h"
-//#import "ABController.h"
-//#import "BankUser.h"
 #import "BankingController.h"
-#import "InstitutesController.h"
 #import "HBCIClient.h"
 #import "PecuniaError.h"
 #import "LogController.h"
@@ -37,7 +34,6 @@
 
 @interface NewBankUserController (Private)
 
-//- (void)readBanks;
 - (BOOL)check;
 - (void)prepareUserSheet;
 - (void)startProgressWithMessage:(NSString*)msg;

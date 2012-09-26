@@ -21,7 +21,6 @@
 #import "BankUser.h"
 
 @class BankingController;
-@class InstitutesController;
 
 @class BWGradientBox;
 

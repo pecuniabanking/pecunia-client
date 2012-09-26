@@ -1618,10 +1618,14 @@ static BOOL runningOnLionOrLater = NO;
 
 -(IBAction)transfer_local: (id)sender
 {
-    BankAccount* account = [self selectedBankAccount];
-    if(account == nil) return;
-    if ([[account isManual] boolValue] == YES) return;
-    [transactionController transferOfType: TransferTypeStandard forAccount: account];
+    BankAccount* account = [self selectedBankAccount ];
+    if (account != nil && [[account isManual ] boolValue] == YES) return;
+    
+    // Switch to the transfers page.
+    [self switchMainPage:1];
+    
+    // Start local transfer
+    [transfersController startTransferOfType:TransferTypeStandard withAccount:account];
 }
 
 -(IBAction)donate: (id)sender
@@ -1636,53 +1640,71 @@ static BOOL runningOnLionOrLater = NO;
 
 -(IBAction)transfer_internal: (id)sender
 {
-    BankAccount* account = [self selectedBankAccount];
-    if(account == nil) return;
-    if ([[account isManual] boolValue] == YES) return;
-    [transactionController transferOfType: TransferTypeInternal forAccount: account];
+    BankAccount* account = [self selectedBankAccount ];
+    if (account != nil && [[account isManual ] boolValue] == YES) return;
+    
+    // Switch to the transfers page.
+    [self switchMainPage:1];
+    
+    // Start local transfer
+    [transfersController startTransferOfType:TransferTypeInternal withAccount:account];
 }
 
 -(IBAction)transfer_dated: (id)sender
 {
-    BankAccount* account = [self selectedBankAccount];
-    if(account == nil) return;
-    if ([[account isManual] boolValue] == YES) return;
-    [transactionController transferOfType: TransferTypeDated forAccount: account];
+    BankAccount* account = [self selectedBankAccount ];
+    if (account != nil && [[account isManual ] boolValue] == YES) return;
+
+    // Switch to the transfers page.
+    [self switchMainPage:1];
+    
+    // Start local transfer
+    [transfersController startTransferOfType:TransferTypeDated withAccount:account];
 }
 
 -(IBAction)transfer_eu: (id)sender
 {
-    BankAccount* account = [self selectedBankAccount];
-    if(account == nil) return;
-    if ([[account isManual] boolValue] == YES) return;
-    // check if bic and iban is defined
-    /*
-     if([[account iban] isEqual: @""] || [[ isEqual: @""]) {
-     NSRunAlertPanel(NSLocalizedString(@"AP35", @"Incomplete data"), 
-     [NSString stringWithFormat: NSLocalizedString(@"AP36", @"Missing IBAN or BIC for account %@"), [account accountNumber]], 
-     NSLocalizedString(@"ok", @"Ok"), nil, nil);
-     return;
-     }
-     */ 
+    BankAccount* account = [self selectedBankAccount ];
+    if (account != nil && [[account isManual ] boolValue] == YES) return;
     
-    [transactionController transferOfType: TransferTypeEU forAccount: account];
+    // check if bic and iban is defined
+    if (account != nil) {
+        if(account.iban == nil || account.bic == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP35", @"Incomplete data"), 
+                            [NSString stringWithFormat: NSLocalizedString(@"AP36", @"Missing IBAN or BIC for account %@"), account.accountNumber ], 
+                            NSLocalizedString(@"ok", @"Ok"), nil, nil);
+            return;
+        }
+    }
+
+    // Switch to the transfers page.
+    [self switchMainPage:1];
+    
+    // Start local transfer
+    [transfersController startTransferOfType:TransferTypeEU withAccount:account];
 }
 
 -(IBAction)transfer_sepa: (id)sender
 {
+    
     BankAccount* account = [self selectedBankAccount ];
-    if(account == nil) return;
-    if ([[account isManual ] boolValue] == YES) return;
+    if (account != nil && [[account isManual ] boolValue] == YES) return;
     
     // check if bic and iban is defined
-    if(account.iban == nil || account.bic == nil) {
-        NSRunAlertPanel(NSLocalizedString(@"AP35", @"Incomplete data"), 
-        [NSString stringWithFormat: NSLocalizedString(@"AP36", @"Missing IBAN or BIC for account %@"), account.accountNumber ], 
-        NSLocalizedString(@"ok", @"Ok"), nil, nil);
-        return;
+    if (account != nil) {
+        if(account.iban == nil || account.bic == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP35", @"Incomplete data"), 
+                            [NSString stringWithFormat: NSLocalizedString(@"AP36", @"Missing IBAN or BIC for account %@"), account.accountNumber ], 
+                            NSLocalizedString(@"ok", @"Ok"), nil, nil);
+            return;
+        }
     }
     
-    [transactionController transferOfType: TransferTypeSEPA forAccount: account ];
+    // Switch to the transfers page.
+    [self switchMainPage:1];
+    
+    // Start local transfer
+    [transfersController startTransferOfType:TransferTypeSEPA withAccount:account];
 }
 
 
