@@ -10,7 +10,6 @@ Allgemeines
 -----------
 - Start von Pecunia mittels Alt+Klick zur Auswahl einer Datenbank (zusätzlich zum Kommandozeilenparameter).
 - Unterstützung für Paypal.
-- Unterstützung für Chipkarten
 - Navigationshistorie + back/forward buttons für alle Seiten
 - Kontenmappen, also eine Möglichkeit für verschiedene Eigentümer die Konten anzuzeigen (und Kategorien). Vielleicht täte es auch ein Filter.
 - Eine Startseite:
@@ -51,8 +50,9 @@ Transaktionen
 - Gruppierung auch wenn die Liste nicht nach Datum sortiert ist.
 - Header (Gruppierung) umschaltbar machen (checkbox neben Filterbar).
 
-Ausgaben/Export/Reporting
----------------
+Ausgaben/Export/Reporting/Drucken
+---------------------------------
+- Datumsangaben mit Jahr in der Druckausgabe. Zeitrahmenauswahl für den Druck (von - bis).
 - In der Druckausgabe Kategorien einschließen (erlauben nach Kategorien zu sortieren/gruppieren?)
 - Weitgehend freie Wahl, was gedruckt wird, Zwischensalden einschließen + Kategorien und Zusatzinfo
 - Pecuniabanner überarbeiten
@@ -70,7 +70,6 @@ Aufträge, Überweisungen, Lastschriften
 - In Terminüberweisungen Datum (auch) als Kalender anzeigen.
 - Automatisch Leerzeichen aus BLZ entfernen vor dem Nachschlagen.
 - Splitting per Hotkey und Popup mit schrittweiser Erweiterung der Splitliste (ähnlich wie Regeleditor). Später dazu eine Importfunktion für (halb)automatisches Splitting.
-- Unterstützung für Sammelüberweisungen
 
 Daueraufträge
 ---------------

@@ -171,7 +171,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                 break;
         }
         
-        if (![controller startTransferOfType: type]) {
+        if (![controller startTransferOfType: type withAccount: nil]) {
             [super mouseDown: theEvent];
         }
         return;
