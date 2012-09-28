@@ -49,6 +49,7 @@
 	bankController = con;
 	bankUsers = [[BankUser allUsers ] mutableCopy];
 	context = [[MOAssistant assistant ] context ];
+    triedFirst = NO;
 	return self;
 }
 
@@ -272,6 +273,15 @@
 {
 	[NSApp stopModalWithCode: 1];
 	return YES;
+}
+
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+    NSArray *users = [BankUser allUsers];
+    if ([users count] == 0 && triedFirst == NO) {
+        [self addEntry:self];
+        triedFirst = YES;
+    }
 }
 
 #pragma mark -

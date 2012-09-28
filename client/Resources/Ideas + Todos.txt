@@ -63,6 +63,7 @@ Ausgaben/Export/Reporting/Drucken
 
 Bankkennungen + Konten
 ----------------------
+- Abfrage von SEPA-Kontoinformationen (IBAN / BIC)
 
 
 Aufträge, Überweisungen, Lastschriften

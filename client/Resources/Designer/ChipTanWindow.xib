@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="2"/>
+			<integer value="16"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -36,7 +36,7 @@
 			<object class="NSWindowTemplate" id="647401418">
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{969, 522}, {585, 547}}</string>
+				<string key="NSWindowRect">{{901, 680}, {585, 547}}</string>
 				<int key="NSWTFlags">611844096</int>
 				<string key="NSWindowTitle">Bitte TAN eingeben</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -451,15 +451,11 @@
 					<string key="NSFrameSize">{585, 547}</string>
 					<reference key="NSSuperview"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
 				<string key="NSFrameAutosaveName">ChipTanWindow</string>
 			</object>
 			<object class="NSUserDefaultsController" id="97496731">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>showTAN</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
@@ -529,14 +525,6 @@
 						<reference key="destination" ref="531169858"/>
 					</object>
 					<int key="connectionID">34</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">tanField</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="296003324"/>
-					</object>
-					<int key="connectionID">41</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -685,6 +673,22 @@
 						</object>
 					</object>
 					<int key="connectionID">85</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">secureTanField</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="296003324"/>
+					</object>
+					<int key="connectionID">86</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">tanField</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="697824171"/>
+					</object>
+					<int key="connectionID">87</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -957,6 +961,7 @@
 					<string>15.IBPluginDependency</string>
 					<string>16.IBPluginDependency</string>
 					<string>17.IBPluginDependency</string>
+					<string>18.CustomClassName</string>
 					<string>18.IBPluginDependency</string>
 					<string>19.IBPluginDependency</string>
 					<string>2.IBPluginDependency</string>
@@ -985,9 +990,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{522, 819}, {585, 547}}</string>
+					<string>{{852, 680}, {585, 547}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{522, 819}, {585, 547}}</string>
+					<string>{{852, 680}, {585, 547}}</string>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -997,6 +1002,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>NSSecureTextField</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1039,7 +1045,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">85</int>
+			<int key="maxID">87</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1100,6 +1106,7 @@
 							<string>flickerView</string>
 							<string>frequencySlider</string>
 							<string>messageView</string>
+							<string>secureTanField</string>
 							<string>sizeSlider</string>
 							<string>tanField</string>
 						</object>
@@ -1108,6 +1115,7 @@
 							<string>FlickerView</string>
 							<string>NSSlider</string>
 							<string>NSTextView</string>
+							<string>NSTextField</string>
 							<string>NSSlider</string>
 							<string>NSTextField</string>
 						</object>
@@ -1119,6 +1127,7 @@
 							<string>flickerView</string>
 							<string>frequencySlider</string>
 							<string>messageView</string>
+							<string>secureTanField</string>
 							<string>sizeSlider</string>
 							<string>tanField</string>
 						</object>
@@ -1135,6 +1144,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">messageView</string>
 								<string key="candidateClassName">NSTextView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">secureTanField</string>
+								<string key="candidateClassName">NSTextField</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">sizeSlider</string>
@@ -1672,6 +1685,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">AppKit.framework/Headers/NSScroller.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSSecureTextField</string>
+					<string key="superclassName">NSTextField</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSSecureTextField.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

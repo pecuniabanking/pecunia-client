@@ -72,7 +72,6 @@
 
 #import "User.h"
 #import "BankUser.h"
-#import "TanWindow.h"
 
 // Pasteboard data types.
 NSString* const BankStatementDataType = @"BankStatementDataType";
@@ -87,6 +86,7 @@ static BOOL runningOnLionOrLater = NO;
 - (void)saveBankAccountItemsStates;
 - (void)restoreBankAccountItemsStates;
 - (void)updateSorting;
+- (void)switchMainPage:(NSUInteger)page;
 
 @end
 
@@ -2670,6 +2670,20 @@ static BOOL runningOnLionOrLater = NO;
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [self checkForAutoSync];
+    
+    // check if there are bank users
+    NSArray *users = [BankUser allUsers];
+    if ([users count] == 0) {
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP39", @""),
+                                  NSLocalizedString(@"AP185", @""),
+                                  NSLocalizedString(@"yes", @"Yes"),
+                                  NSLocalizedString(@"nolater", @"No, later"),
+                                  nil
+                                  );
+        if (res == NSAlertDefaultReturn) {
+            [self editBankUsers:self];
+        }
+    }
 }
 
 -(void)autoSyncTimerEvent:(NSTimer*)theTimer

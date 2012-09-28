@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="2"/>
+			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -36,7 +36,7 @@
 			<object class="NSWindowTemplate" id="366675092">
 				<int key="NSWindowStyleMask">3</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{702, 574}, {556, 177}}</string>
+				<string key="NSWindowRect">{{685, 917}, {556, 177}}</string>
 				<int key="NSWTFlags">1886912512</int>
 				<string key="NSWindowTitle">Bitte TAN eingeben</string>
 				<object class="NSMutableString" key="NSWindowClass">
@@ -228,30 +228,18 @@
 					<reference key="NSSuperview"/>
 					<reference key="NSNextKeyView" ref="870437000"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMinSize">{422, 191}</string>
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
-				<string key="NSFrameAutosaveName"/>
+				<string key="NSFrameAutosaveName">TANWindow</string>
 			</object>
 			<object class="NSUserDefaultsController" id="255353264">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>showTAN</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<object class="NSMutableArray" key="connectionRecords">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">inputField</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="187127827"/>
-					</object>
-					<int key="connectionID">10</int>
-				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">inputText</string>
@@ -384,6 +372,22 @@
 					</object>
 					<int key="connectionID">69</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">secureInputField</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="187127827"/>
+					</object>
+					<int key="connectionID">70</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">inputField</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="87852966"/>
+					</object>
+					<int key="connectionID">71</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -422,7 +426,7 @@
 							<reference ref="414533564"/>
 						</object>
 						<reference key="parent" ref="0"/>
-						<string key="objectName">PasswordWindow</string>
+						<string key="objectName">TANWindow</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">2</int>
@@ -554,9 +558,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{559, 928}, {556, 177}}</string>
+					<string>{{685, 917}, {556, 177}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{559, 928}, {556, 177}}</string>
+					<string>{{685, 917}, {556, 177}}</string>
 					<boolean value="YES"/>
 					<string>{422, 169}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -597,7 +601,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">69</int>
+			<int key="maxID">71</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

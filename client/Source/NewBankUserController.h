@@ -54,6 +54,7 @@
 	NSUInteger      step;
     SecurityMethod  secMethod;
     NSBox           *currentBox;
+    BOOL            triedFirst;
 }
 
 - (id)initForController: (BankingController*)con;

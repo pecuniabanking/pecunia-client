@@ -49,6 +49,14 @@
         frame.size.height += boundingRect.size.height - 97;
         [[self window] setFrame:frame display:YES];
     }
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL showTAN = [defaults boolForKey:@"showTAN"];
+    if (showTAN) {
+        [[self window] makeFirstResponder:inputField];
+    } else {
+        [[self window] makeFirstResponder:secureInputField];
+    }
 }
 
 - (void)controlTextDidEndEditing:(NSNotification *)aNotification
@@ -69,7 +77,6 @@
 - (void)windowWillClose:(NSNotification *)aNotification
 {
 	if(active) {
-		result = [inputField stringValue];
 		if([result length] == 0) [NSApp stopModalWithCode:1];
 		else [NSApp stopModalWithCode:0];
 	}

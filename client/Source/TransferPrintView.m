@@ -14,6 +14,13 @@
 #define VERT_PADDING 5
 #define HEADER_HEIGHT 25
 
+@interface TransferPrintView (private)
+
+-(int)getTransferHeights;
+
+@end
+
+
 @implementation TransferPrintView
 
 @synthesize transfers;

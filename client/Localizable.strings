@@ -25,6 +25,7 @@
 "retry" = "Eingabe wiederholen";
 "yes" = "Ja";
 "no" = "Nein";
+"nolater" = "Nein, später";
 "transfers" = "Überweisungen";
 "transfers_info" = "Überweisungen";
 "accounts" = "Konten";
@@ -193,6 +194,7 @@
 "AP182" = "Selektion unterstützte Geschäftsvorfälle";
 "AP183" = "Datenmigration";
 "AP184" = "Pecunia ermittelt jetzt für jede Bankkennung Informationen über erlaubte Geschäftsvorfälle, TAN-Methoden etc. Dazu müssen Sie evtl. Ihre PINs eingeben (falls nicht im Schlüsselbund gespeichert).";
+"AP185" = "Willkommen bei Pecunia. Um mit Ihrer Bank kommunizieren zu können müssen Sie zunächst eine sogenannte 'Bankkennung' anlegen. Mit der Bankkennung identifizieren Sie sich bei der Bank. Möchten Sie nun eine Bankkennung anlegen?";
 
 // Callback and backend.
 // AP350..AP399

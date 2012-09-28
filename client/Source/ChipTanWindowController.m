@@ -9,8 +9,8 @@
 #import "ChipTanWindowController.h"
 #import "FlickerView.h"
 
-#define FREQ_MAX 40
-#define FREQ_MIN 2
+#define FREQ_MAX 50
+#define FREQ_MIN 10
 #define FREQ_DEFAULT 20
 
 #define FLICKER_SIZE_MIN 30
@@ -71,6 +71,14 @@
 	flickerView.size = size;
 	timer = [NSTimer timerWithTimeInterval:1.0/frequency target:self selector:@selector(clock:) userInfo:nil repeats:YES ];
 	[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSModalPanelRunLoopMode];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL showTAN = [defaults boolForKey:@"showTAN"];
+    if (showTAN) {
+        [[self window] makeFirstResponder:tanField];
+    } else {
+        [[self window] makeFirstResponder:secureTanField];
+    }
 }
 
 -(void)clock:(NSTimer*)timer
@@ -115,7 +123,6 @@
 
 -(IBAction)ok:(id)sender
 {
-	//self.tan = [tanField stringValue];
 	if(self.tan && [self.tan length]>0) {
         [NSApp stopModalWithCode:0];
         [[self window ] close ];
@@ -130,7 +137,6 @@
 - (void)dealloc
 {
 	[tan release], tan = nil;
-	[timer release ], timer = nil;
 	[message release ];
 	if (bitString) free(bitString);
 	[super dealloc];

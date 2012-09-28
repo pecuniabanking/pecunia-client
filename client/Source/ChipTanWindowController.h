@@ -12,6 +12,7 @@
 @interface ChipTanWindowController : NSWindowController {
 	IBOutlet NSTextView		*messageView;
 	IBOutlet NSTextField	*tanField;
+    IBOutlet NSTextField    *secureTanField;
 	IBOutlet FlickerView    *flickerView;
 	IBOutlet NSSlider		*sizeSlider;
 	IBOutlet NSSlider		*frequencySlider;
