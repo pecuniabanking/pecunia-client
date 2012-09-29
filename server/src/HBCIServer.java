@@ -974,6 +974,12 @@ public class HBCIServer {
 			return;
 		}
 		
+		HBCIPassport passport = handler.getPassport();
+		if(passport instanceof HBCIPassportPinTan) {
+			HBCIPassportPinTan pp = (HBCIPassportPinTan)passport;
+			pp.setCurrentTANMethod(null);
+		}
+		
 		Konto account = accountWithId(userId, bankCode, accountNumber, subNumber);
 		if(account == null) {
 			account = getAccount(handler.getPassport(), accountNumber, subNumber);

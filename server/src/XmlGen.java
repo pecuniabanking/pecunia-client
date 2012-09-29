@@ -317,7 +317,7 @@ public class XmlGen {
     	}
     	
     	if(withAccounts == true) {
-    		xmlBuf.append("<accounts \"type=list\">");
+    		xmlBuf.append("<accounts type=\"list\">");
     		Konto [] accounts = pp.getAccounts();
     		for(Konto k: accounts) {
     			accountToXml(k, handler);
