@@ -13,7 +13,7 @@
 	<key>CFBundleIconFile</key>
 	<string>Vespasian</string>
 	<key>CFBundleIdentifier</key>
-	<string>de.pecuniabanking.pecunia.10</string>
+	<string>de.pecuniabanking.pecunia</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

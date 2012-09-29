@@ -4,10 +4,10 @@
 <dict>
 	<key>com.apple.developer.ubiquity-container-identifiers</key>
 	<array>
-		<string>$(TeamIdentifierPrefix)de.pecuniabanking.pecunia.10</string>
+		<string>$(TeamIdentifierPrefix)de.pecuniabanking.pecunia</string>
 	</array>
 	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
-	<string>$(TeamIdentifierPrefix)de.pecuniabanking.pecunia.10</string>
+	<string>$(TeamIdentifierPrefix)de.pecuniabanking.pecunia</string>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
 	<key>com.apple.security.device.usb</key>
