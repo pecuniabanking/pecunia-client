@@ -107,6 +107,7 @@
 }
 
 @property (assign) IBOutlet TransferFormularView *transferFormular;
+@property (assign) IBOutlet NSTextField *dragToHereLabel;
 @property (nonatomic, assign) BOOL dropToEditRejected;
 
 - (IBAction)sendTransfers: (id)sender;

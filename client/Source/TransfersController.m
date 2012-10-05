@@ -385,6 +385,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (formularVisible) {
         formularVisible = NO;
         [[controller.transferFormular animator] removeFromSuperview];
+        [[controller.dragToHereLabel animator] setHidden: NO];
     }
 }
 
@@ -392,6 +393,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     if (!formularVisible) {
         formularVisible = YES;
+        [[controller.dragToHereLabel animator] setHidden: YES];
+
         NSRect formularFrame = controller.transferFormular.frame;
         formularFrame.origin.x = (self.bounds.size.width - formularFrame.size.width) / 2 - 10;
         formularFrame.origin.y = 0;
