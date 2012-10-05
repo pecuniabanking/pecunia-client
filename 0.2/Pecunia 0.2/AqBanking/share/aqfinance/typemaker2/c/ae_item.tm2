@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AE_ITEM" type="pointer" lang="c" extends="struct_base">
+    <identifier>AE_ITEM</identifier>
+    <prefix>AE_Item</prefix>
+  </typedef>
+</tm2>

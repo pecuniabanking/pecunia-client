@@ -1,0 +1,130 @@
+/***************************************************************************
+ $RCSfile$
+ -------------------
+ cvs         : $Id$
+ begin       : Sat Jun 28 2003
+ copyright   : (C) 2003 by Martin Preuss
+ email       : martin@libchipcard.de
+
+ ***************************************************************************
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Lesser General Public            *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2.1 of the License, or (at your option) any later version.    *
+ *                                                                         *
+ *   This library is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU     *
+ *   Lesser General Public License for more details.                       *
+ *                                                                         *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with this library; if not, write to the Free Software   *
+ *   Foundation, Inc., 59 Temple Place, Suite 330, Boston,                 *
+ *   MA  02111-1307  USA                                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+
+#ifndef @TYPENAME@_LIST1_H
+#define @TYPENAME@_LIST1_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+  /** @internal */
+  typedef struct @TYPENAME@_LIST_ELEMENT {
+    uint32_t id;
+    @TYPENAME@ *nextObject;
+  } @TYPENAME@_LIST__ELEMENT;
+
+  /**
+   * This represents a list of @TYPENAME@ (see @ref @FN_PREFIX@_List_new).
+   * This list may contain any number of elements. However, every element can
+   * only exist within a single list.
+   * If you need a better list please check @ref GWEN_LIST.
+   */
+  typedef struct @TYPENAME@_LIST @TYPENAME@_LIST;
+  /** @internal */
+  struct @TYPENAME@_LIST {
+    @TYPENAME@ *first;
+    uint32_t count;
+    uint32_t id;
+  } @TYPENAME@_LIST;
+
+  /**
+   * Moves the content of one list to another list thus leaving the
+   * old list empty.
+   */
+  void @FN_PREFIX@_List_AddList(@TYPENAME@_LIST *dst, @TYPENAME@_LIST *l);
+
+  /**
+   * Adds the given element to the given list making it the new tail.
+   */
+  void @FN_PREFIX@_List_Add(@TYPENAME@ *element, @TYPENAME@_LIST *list);
+
+  /**
+   * Inserts the given element into the given list thus making it the new
+   * head of the list.
+   */
+  void @FN_PREFIX@_List_Insert(@TYPENAME@ *element, @TYPENAME@_LIST *list);
+
+  /**
+   * Unlinks the given element from whatever list it may currently be
+   * enlisted. If the element is @b not member of any list the program is
+   * aborted.
+   * Please note: The element is just unlinked, not deleted.
+   */
+  void @FN_PREFIX@_List_Del(@TYPENAME@ *element);
+
+  /**
+   * Returns the first element of the list.
+   */
+  @TYPENAME@* @FN_PREFIX@_List_First(const @TYPENAME@_LIST *l);
+
+  /**
+   * Returns the last element of the list.
+   */
+  @TYPENAME@* @FN_PREFIX@_List_Last(const @TYPENAME@_LIST *l);
+
+  /**
+   * Clears the given list (thus leaving it empty). All elements of this list
+   * are deleted via @ref @FN_PREFIX@_free();
+   */
+  void @FN_PREFIX@_List_Clear(@TYPENAME@_LIST *l);
+
+  /**
+   * Creates a new list of @ref @TYPENAME@.
+   */
+  @TYPENAME@_LIST* @FN_PREFIX@_List_new();
+
+  /**
+   * Destroys the list and frees all its elements.
+   */
+  void @FN_PREFIX@_List_free(@TYPENAME@_LIST *l);
+
+  /**
+   * Returns the successor of the given element.
+   */
+  @TYPENAME@* @FN_PREFIX@_List_Next(const @TYPENAME@ *element);
+
+  /**
+   * Returns the predecessor of the given element.
+   */
+  @TYPENAME@* @FN_PREFIX@_List_Previous(const @TYPENAME@ *element);
+
+  /**
+   * Returns the number of elements currently in the given list.
+   */
+  uint32_t @FN_PREFIX@_List_GetCount(const @TYPENAME@_LIST *l);
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#endif
+
+
+

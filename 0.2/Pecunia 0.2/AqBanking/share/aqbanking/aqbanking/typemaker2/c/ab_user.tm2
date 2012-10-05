@@ -1,0 +1,9 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AB_USER" type="pointer" lang="c" extends="struct_base">
+    <identifier>AB_USER</identifier>
+    <prefix>AB_User</prefix>
+  </typedef>
+</tm2>
+

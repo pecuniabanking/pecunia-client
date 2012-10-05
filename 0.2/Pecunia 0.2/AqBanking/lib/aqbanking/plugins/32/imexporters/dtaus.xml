@@ -1,0 +1,13 @@
+<PluginDescr>
+  <plugin name="dtaus" type="imexporter" import="1" export="1" >
+    <version>4.99.17</version>
+    <author>Martin Preuss(martin@libchipcard.de)</author>
+    <short>DTAUS</short>
+    <descr>
+      This plugin imports and exports DTAUS data.
+    </descr>
+    <descr lang="de">
+      Diese Erweiterung importiert/exportiert DTAUS-Dateien.
+    </descr>
+  </plugin>
+</PluginDescr>

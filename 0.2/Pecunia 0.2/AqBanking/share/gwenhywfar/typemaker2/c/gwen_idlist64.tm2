@@ -1,0 +1,46 @@
+<?xml?>
+
+<tm2>
+
+  <typedef id="gwen_idlist64" type="pointer" lang="c" >
+    <identifier>GWEN_IDLIST64</identifier>
+
+
+    <codedefs>
+
+      <codedef id="construct">
+        <code>
+          $(dst)=$(preset);
+        </code>
+      </codedef>
+
+      <codedef id="destruct">
+        <code>
+          GWEN_IdList64_free($(src));
+        </code>
+      </codedef>
+
+      <codedef id="assign">
+        <code>
+          $(dst)=$(src);
+        </code>
+      </codedef>
+
+      <codedef id="dup">
+        <code>
+        $(dst)=GWEN_IdList64_dup($(src));
+        </code>
+      </codedef>
+
+    </codedefs>
+
+    <defaults>
+      <!-- defaults flags etc for member declarations of this type -->
+      <default>NULL</default>
+      <preset>NULL</preset>
+      <dupflags>const</dupflags>
+    </defaults>
+  
+  </typedef>
+
+</tm2>

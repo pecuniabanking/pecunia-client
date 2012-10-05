@@ -1,0 +1,15 @@
+<PluginDescr>
+  <plugin name="at" type="bankinfo" >
+    <version>4.99.17</version>
+    <author>Martin Preuss(martin@libchipcard.de)</author>
+    <short>Bank info provider for Austria</short>
+    <short lang="de">Bankenliste fuer Oesterreich</short>
+    <descr>
+      This plugin handles Austrian banks.
+    </descr>
+    <descr lang="de">
+      Diese Erweiterung behandelt oesterreichische Banken.
+    </descr>
+  </plugin>
+</PluginDescr>
+

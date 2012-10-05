@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/***************************************************************************
+ copyright   : (C) 2010 by Martin Preuss
+ email       : martin@aqbanking.de
+
+ ***************************************************************************
+ * This file is part of the project "AqBanking".                           *
+ * Please see toplevel file COPYING of that project for license details.   *
+ ***************************************************************************/
+-->
+
+<dialog type="dialog" name="ab_importwizard" i18n="aqbanking"
+        flags="decorShrinkable decorStretchable decorMaximize decorMinimize decorClose decorMenu" >
+  <widget type="vlayout" flags="fillX fillY" >
+
+    <!-- wizard pages -->
+    <widget type="widgetStack" name="wiz_stack" flags="fillX fillY" >
+      <!-- intro page -->
+      <widget type="vlayout" flags="fillX fillY" >
+        <widget type="label" name="wiz_begin_label" flags="fillX fillY justifyLeft" />
+      </widget>
+
+      <!-- file page -->
+      <widget type="vlayout" flags="fillX fillY" >
+        <widget type="label" name="wiz_file_label" flags="fillX fillY justifyLeft" />
+        <widget type="hlayout" flags="fillX" >
+          <widget type="label" text="File" />
+          <widget type="lineEdit" name="wiz_file_edit" flags="fillX" />
+          <widget type="pushButton" name="wiz_file_button" text="Select" />
+        </widget>
+      </widget>
+      
+      <!-- importer page -->
+      <widget type="vlayout" flags="fillX fillY" >
+        <widget type="label" name="wiz_importer_label" flags="fillX justifyLeft" />
+        <widget type="listBox" name="wiz_importer_list" flags="fillX fillY" />
+      </widget>
+
+      <!-- profile page -->
+      <widget type="vlayout" flags="fillX fillY" >
+        <widget type="label" name="wiz_profile_label" flags="fillX justifyLeft" />
+        <widget type="hlayout" flags="fillX fillY" >
+          <widget type="listBox" name="wiz_profile_list" flags="fillX fillY" />
+          <widget type="vlayout" flags="fillY equalWidth" >
+            <widget type="pushButton" text="Edit"     name="wiz_profile_edit_button" />
+            <widget type="pushButton" text="New"      name="wiz_profile_new_button" />
+            <widget type="pushButton" text="Delete"   name="wiz_profile_del_button" />
+            <widget type="vspacer" flags="fillY" />
+          </widget>
+        </widget>
+      </widget>
+
+      <!-- extro page -->
+      <widget type="vlayout" flags="fillX fillY" >
+        <widget type="label" name="wiz_end_label" flags="fillX fillY justifyLeft" />
+      </widget>
+
+    </widget>
+
+    <!-- wizard controls -->
+    <widget type="hLine" flags="fillX" />
+    <widget type="hlayout" flags="fillX equalWidth" >
+      <widget type="pushButton" text="Help"     name="wiz_help_button" />
+      <widget type="hspacer" flags="fillX" />
+      <widget type="pushButton" text="Previous" name="wiz_prev_button" />
+      <widget type="pushButton" text="Next"     name="wiz_next_button" flags="default" />
+      <widget type="pushButton" text="Abort"    name="wiz_abort_button" />
+    </widget>
+
+  </widget>
+
+</dialog>

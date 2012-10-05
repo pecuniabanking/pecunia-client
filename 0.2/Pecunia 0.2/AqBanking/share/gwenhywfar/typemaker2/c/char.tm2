@@ -1,0 +1,7 @@
+<?xml?>
+
+<tm2>
+  <typedef id="char" lang="c" extends="int_base">
+    <identifier>char</identifier>
+  </typedef>
+</tm2>

@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AB_USERQUEUE_LIST" type="pointer" lang="c" extends="list1_base" basetype="AB_USERQUEUE">
+    <identifier>AB_USERQUEUE_LIST</identifier>
+    <prefix>AB_UserQueue_List</prefix>
+  </typedef>
+</tm2>

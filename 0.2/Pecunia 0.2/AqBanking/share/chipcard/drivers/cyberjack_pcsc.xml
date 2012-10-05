@@ -1,0 +1,56 @@
+
+<driver name="cyberjack_pcsc" type="ifd">
+  <short>Driver for the Reiner-SCT Cyberjack</short>
+  <manufacturer>
+    <name>Reiner SCT</name>
+    <url>http://www.reiner-sct.de/</url>
+  </manufacturer>
+
+  <readers>
+
+    <!-- Cyberjack E-com 0x100 -->
+    <reader name="cyberjack" 
+            devicePathTmpl="REINER SCT cyberJack pinpad/e-com *"
+    >
+      <short>Cyberjack pinpad or ecom</short>
+      <flags>
+        <flag>keypad</flag>
+        <flag>display</flag>
+      </flags>
+      <image>cyberjack_pinpad.jpg</image>
+    </reader>
+
+    <!-- 
+      Please note that the following readers can't be distinguihsed
+      from the reader above since Windows returns the same reader name
+      for all Cyberjacks (sigh).
+      All cyberjacks do have a keypad, so at least it is not a big problem.
+     -->
+
+    <!-- Cyberjack 0x300 -->
+    <reader name="cyberjack2" 
+            devicePathTmpl="REINER SCT cyberJack pinpad(a) *"
+    >
+      <short>Cyberjack pinpad</short>
+      <flags>
+        <flag>keypad</flag>
+      </flags>
+      <image>cyberjack_pinpad_a.jpg</image>
+    </reader>
+
+    <!-- Cyberjack 0x400 -->
+    <reader name="cyberjack3" 
+            devicePathTmpl="REINER SCT CyberJack ecom_a *"
+    >
+      <short>Cyberjack ecom a</short>
+      <flags>
+        <flag>keypad</flag>
+        <flag>display</flag>
+      </flags>
+      <image>cyberjack_ecom_a.jpg</image>
+    </reader>
+
+  </readers>
+
+</driver>
+

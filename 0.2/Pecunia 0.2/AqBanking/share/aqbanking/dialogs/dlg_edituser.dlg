@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/***************************************************************************
+ copyright   : (C) 2010 by Martin Preuss
+ email       : martin@aqbanking.de
+
+ ***************************************************************************
+ * This file is part of the project "AqBanking".                           *
+ * Please see toplevel file COPYING of that project for license details.   *
+ ***************************************************************************/
+-->
+
+<dialog type="dialog" name="ab_edit_user" i18n="aqbanking"
+        flags="decorShrinkable decorStretchable decorMaximize decorMinimize decorClose decorMenu" >
+  <widget type="vlayout" flags="fillX fillY" >
+
+    <widget type="hlayout" flags="fillX" >
+
+      <widget type="gridLayout" columns="2" flags="fillX" >
+
+        <widget type="label" text="Country" />
+        <widget type="comboBox" name="countryCombo"  columns="20" flags="fillX readOnly" />
+
+        <widget type="label" text="User Name" />
+        <widget type="lineEdit" name="userNameEdit" columns="20" flags="fillX" />
+
+        <widget type="label" text="Bank Code" />
+        <widget type="hlayout" flags="fillX" >
+          <widget type="lineEdit" name="bankCodeEdit" flags="fillX" />
+          <widget type="pushButton" name="bankCodeButton" text="Select" />
+        </widget>
+
+        <widget type="label" text="User Id" />
+        <widget type="lineEdit" name="userIdEdit" columns="20" flags="fillX" />
+  
+        <widget type="label" text="Customer Id" />
+        <widget type="lineEdit" name="customerIdEdit" columns="20" flags="fillX" />
+
+      </widget>
+
+    </widget>
+
+
+    <!-- wizard controls -->
+    <widget type="vspacer" flags="fillY" />
+    <widget type="hLine" flags="fillX" />
+    <widget type="hlayout" flags="fillX equalWidth" >
+      <widget type="pushButton" text="Help"     name="helpButton" />
+      <widget type="hspacer" flags="fillX" />
+      <widget type="pushButton" text="Ok"     name="okButton" flags="default" />
+      <widget type="pushButton" text="Abort"  name="abortButton" />
+    </widget>
+
+  </widget>
+
+</dialog>

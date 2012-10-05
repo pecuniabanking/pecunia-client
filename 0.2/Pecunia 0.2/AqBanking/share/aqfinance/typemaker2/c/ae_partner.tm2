@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AE_PARTNER" type="pointer" lang="c" extends="struct_base">
+    <identifier>AE_PARTNER</identifier>
+    <prefix>AE_Partner</prefix>
+  </typedef>
+</tm2>

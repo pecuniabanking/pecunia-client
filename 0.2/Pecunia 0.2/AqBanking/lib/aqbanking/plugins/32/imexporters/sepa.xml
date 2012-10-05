@@ -1,0 +1,14 @@
+<PluginDescr>
+  <plugin name="sepa" type="imexporter" import="0" export="1" >
+    <version>4.99.17</version>
+    <author>Martin Preuss(martin@libchipcard.de)</author>
+    <short>SEPA</short>
+    <descr>
+      This plugin exports SEPA data.
+    </descr>
+    <descr lang="de" >
+      Diese Erweiterung exportiert SEPA-Dateien.
+    </descr>
+  </plugin>
+</PluginDescr>
+

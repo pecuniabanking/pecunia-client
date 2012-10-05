@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AF_PRINT_DOC" type="pointer" lang="c" extends="struct_base">
+    <identifier>AF_PRINT_DOC</identifier>
+    <prefix>AF_PrintDoc</prefix>
+  </typedef>
+</tm2>

@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AE_RULE_LIST" type="pointer" lang="c" extends="list1_base" basetype="AE_RULE">
+    <identifier>AE_RULE_LIST</identifier>
+    <prefix>AE_Rule_List</prefix>
+  </typedef>
+</tm2>

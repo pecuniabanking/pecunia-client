@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AEDB_QUERY" type="pointer" lang="c" extends="struct_base">
+    <identifier>AEDB_QUERY</identifier>
+    <prefix>AEDB_Query</prefix>
+  </typedef>
+</tm2>

@@ -1,0 +1,74 @@
+<!-- 
+  This file only contains a short description which applies to all DDV type
+  cards. It is only used while determining the correct DDV card version
+ -->
+ 
+<apps>
+  <app name="ddv">
+    <files>
+      <ef name="EF_ID" sid="0x0003"
+          type="record" mode="linear" 
+          minnum="1" maxnum="1">
+        <record>
+          <ELEM name="branchKey" type="byte" bcd="1"  />
+          <ELEM name="shortBankCode" type="bcd" size="3">
+            <DESCR>
+              First byte (BCD) shows the group:
+                21: oeffentlich-rechtliche und private banken
+                22: Privat- und Geschaeftsbanken
+                25: Sparkassen
+                26, 29: Genossenschaftsbanken
+            </DESCR>
+          </ELEM>
+          <ELEM name="cardNumber" type="bcd" size="5" />
+          <ELEM name="checksum" type="byte" bcd="1" />
+          <ELEM name="validUntil" type="bytes" size="2">
+            <DESCR> YYMM (BCD)</DESCR>
+          </ELEM>
+          <ELEM name="validSince" type="bytes" size="3" >
+            <DESCR> YYMMDD (BCD)</DESCR>
+          </ELEM>
+          <ELEM name="country" type="word" bcd="1" />
+          <ELEM name="currency" type="ascii" 
+                size="3" filler="32" condense="1"  />
+          <ELEM name="factor" type="byte" >
+            <DESCR>
+              Binary coded:
+                01: 10^-2
+                02: 10^-1
+                04: 10^0
+                08: 10^1
+                10: 10^2
+                20: 10^3
+            </DESCR>
+          </ELEM>
+          <ELEM name="chipversion" type="byte" />
+          <ELEM name="filler" type="byte" minnum="0" >
+            <DESCR>This value MUST be 0, otherwise this is bad data</DESCR>
+          </ELEM>
+          <ELEM name="OSVersion" type="byte" minnum="0" >
+            <DESCR>This value MUST be !=0, otherwise this is bad data</DESCR>
+          </ELEM>
+        </record>
+      </ef>
+
+      <ef name="EF_LOG" sid="0x0004"
+          type="record" mode="cyclic" 
+          size="10" minnum="1" maxnum="3">
+        <record>
+          <ELEM name="CLA" type="byte" />
+          <ELEM name="INS" type="byte" />
+          <ELEM name="SW1" type="byte" />
+          <ELEM name="SW2" type="byte" />
+          <ELEM name="path" type="bytes" size="6">
+            <DESCR> Left-filled with F </DESCR>
+          </ELEM>
+        </record>
+      </ef>
+      
+    </files>
+  </app>
+</apps>
+
+
+

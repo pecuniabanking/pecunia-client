@@ -1,0 +1,20 @@
+<plugin name="aqpaypal" type="provider" >
+  <version>4.99.17</version>
+  <author>Martin Preuss(martin@libchipcard.de)</author>
+  <short>Paypal</short>
+  <descr>
+    This backend provides support for Paypal.
+  </descr>
+</plugin>
+
+
+<plugin name="aqpaypal" type="provider" lang="de" >
+  <version>4.99.17</version>
+  <author>Martin Preuss(martin@libchipcard.de)</author>
+  <short>Paypal Erweiterung</short>
+  <descr>
+    Diese Erweiterung erlaubt den Umsatzabruf eines Paypal-Kontos.
+  </descr>
+</plugin>
+
+

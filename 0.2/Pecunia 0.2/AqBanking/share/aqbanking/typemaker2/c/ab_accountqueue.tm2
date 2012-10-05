@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AB_ACCOUNTQUEUE" type="pointer" lang="c" extends="struct_base">
+    <identifier>AB_ACCOUNTQUEUE</identifier>
+    <prefix>AB_AccountQueue</prefix>
+  </typedef>
+</tm2>

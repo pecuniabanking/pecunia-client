@@ -1,0 +1,283 @@
+<cards>
+  <card name="card" >
+
+    <commands>
+
+      <!-- Secure PIN verification using the reader's keypad: ASCII -->
+      <!-- Command for any CCID reader -->
+      <command name="IsoPerformVerification_Ascii" target="reader" 
+               driver="generic_pcsc" >
+        <send>
+          <APDU>
+            <!-- use the following values:
+              0: use the control code from the following element
+              6: FEATURE_VERIFY_PIN_DIRECT
+              7: FEATURE_MODIFY_PIN_DIRECT
+              8: FEATURE_MCT_READERDIRECT
+              9: FEATURE_MCT_UNIVERSAL
+            -->
+            <ELEM type="byte" >6</ELEM>
+            <!-- use the following values: 
+              0x42000001  IFD_EXCHANGE
+              0x42000002: VERIFY_PIN
+              0x42000003: MODIFY_PIN
+              0x42000004: TRANSFER_PIN
+            -->
+            <ELEM type="dword" bigEndian="1" >0</ELEM>
+              <!--
+                00                       bTimeOut
+                00                       bTimeOut2
+                82                       bmFormatString: bytes, pos 0, 
+                                         left justify, BCD
+                00                       bmPINBlockString (PIN length)
+                00                       bmPINLengthFormat
+                08                       wPINMaxExtraDigit: max
+                04                       wPINMaxExtraDigit: min
+                02                       bEntryValidationCondition
+                00                       bNumberMessage
+                04 09                    wLangId
+                00                       bMsgIndex
+                00 00 00                 bTeoPrologue
+                0d 00 00 00              ulDataLength
+                00 20 00 00              APDU
+                08 20 20 20 20 20 20 20  lc, data
+              -->
+            <ELEM type="bytes" storedAs="bytes" >
+              00 00
+              82 00 00
+              08 04 02
+              00 00 00 00 00 00 00
+              0d 00 00 00
+              00 20 00 
+            </ELEM>
+            <ELEM name="pid" type="byte" />
+                    <ELEM type="bytes" storedAs="bytes" >
+              08 20 20 20 20 20 20 20 20
+            </ELEM>
+          </APDU>
+        </send>
+        <results>
+          <result sw1="0x90" type="success" >
+            PIN ok
+          </result>
+            <result sw1="0x63" sw2="0xc0" type="error" >
+            Bad PIN (only one try left !)
+          </result>
+            <result sw1="0x63" type="error" >Bad PIN</result>
+            <result sw1="0x63" sw2="0xc1" type="error" >
+            Bad PIN (only two tries left !)
+          </result>
+            <result sw1="0x63" sw2="0xc2" type="error" >
+            Bad PIN (only three tries left !)
+          </result>
+            <result sw1="0x69" sw2="0x83" type="error" >
+            Card seems to be destroyed, this might have the following reasons:
+             1) you entered a bad PIN too often
+             2) the card is of a new and yet unknown type
+          </result>
+            <result sw1="0x64" sw2="0x00" type="error" >
+            Verification aborted due to timeout
+          </result>
+            <result sw1="0x64" sw2="0x01" type="error" >
+            Verification aborted by user
+          </result>
+        </results>
+      </command>
+
+      <!-- Secure PIN verification using the reader's keypad: FPIN2 -->
+      <command name="IsoPerformVerification_FPin2" target="reader" 
+               driver="generic_pcsc" >
+        <send>
+          <APDU>
+            <ELEM type="byte" >6</ELEM>
+            <ELEM type="dword" bigEndian="1" >0</ELEM>
+            <ELEM type="bytes" storedAs="bytes" >
+              00 00
+              89 47 04
+              08 04 02
+              00 00 00 00 00 00 00
+              0d 00 00 00
+              00 20 00 
+            </ELEM>
+            <ELEM name="pid" type="byte" />
+            <ELEM type="bytes" storedAs="bytes" >
+              08 20 ff ff ff ff ff ff ff
+            </ELEM>
+          </APDU>
+        </send>
+        <results>
+          <result sw1="0x90" type="success" >
+            PIN ok
+          </result>
+            <result sw1="0x63" sw2="0xc0" type="error" >
+            Bad PIN (only one try left !)
+          </result>
+            <result sw1="0x63" type="error" >Bad PIN</result>
+            <result sw1="0x63" sw2="0xc1" type="error" >
+            Bad PIN (only two tries left !)
+          </result>
+            <result sw1="0x63" sw2="0xc2" type="error" >
+            Bad PIN (only three tries left !)
+          </result>
+            <result sw1="0x69" sw2="0x83" type="error" >
+            Card seems to be destroyed, this might have the following reasons:
+             1) you entered a bad PIN too often
+             2) the card is of a new and yet unknown type
+          </result>
+            <result sw1="0x64" sw2="0x00" type="error" >
+            Verification aborted due to timeout
+          </result>
+            <result sw1="0x64" sw2="0x01" type="error" >
+            Verification aborted by user
+          </result>
+        </results>
+      </command>
+
+
+      <!-- Secure PIN modification using the reader's keypad: ASCII -->
+      <!-- Command for any CCID reader -->
+      <command name="IsoPerformModification_Ascii" target="reader" 
+               driver="generic_pcsc" >
+        <send>
+          <APDU>
+            <!-- use the following values:
+              0: use the control code from the following element
+              6: FEATURE_VERIFY_PIN_DIRECT
+              7: FEATURE_MODIFY_PIN_DIRECT
+              8: FEATURE_MCT_READERDIRECT
+              9: FEATURE_MCT_UNIVERSAL
+            -->
+            <ELEM type="byte" >7</ELEM>
+            <!-- use the following values: 
+              0x42000001  IFD_EXCHANGE
+              0x42000002: VERIFY_PIN
+              0x42000003: MODIFY_PIN
+              0x42000004: TRANSFER_PIN
+            -->
+            <ELEM type="dword" bigEndian="1" >0</ELEM>
+              <!--
+                00                       bTimeOut
+                00                       bTimeOut2
+                82                       bmFormatString: bytes, pos 0, 
+                                         left justify, BCD
+                00                       bmPINBlockString (PIN length)
+                00                       bmPINLengthFormat
+                00                       bInsertionOffsetOld
+                08                       bInsertionOffsetNew
+                08                       wPINMaxExtraDigit: max
+                04                       wPINMaxExtraDigit: min
+                01                       bConfirmPin
+                02                       bEntryValidationCondition
+                00                       bNumberMessage
+                04 09                    wLangId
+                00                       bMsgIndex1
+                00                       bMsgIndex2
+                00                       bMsgIndex3
+                00 00 00                 bTeoPrologue
+                0d 00 00 00              ulDataLength
+                00 24 00 00              APDU
+                10 20 20 20 20 20 20 20  lc, data
+                   20 20 20 20 20 20 20
+              -->
+            <ELEM type="bytes" storedAs="bytes" >
+              00 00
+              82 00 00
+              00 08
+              08 04 03 02
+              03 
+              00 00 
+              00 00 00 
+              00 00 00
+              15 00 00 00
+              00 24 00 
+            </ELEM>
+            <ELEM name="pid" type="byte" />
+            <ELEM type="bytes" storedAs="bytes" >
+              10 
+              20 20 20 20 20 20 20 20
+              20 20 20 20 20 20 20 20
+            </ELEM>
+          </APDU>
+        </send>
+        <results>
+          <result sw1="0x90" type="success" >
+            PIN ok
+          </result>
+            <result sw1="0x63" sw2="0xc0" type="error" >
+            Bad PIN (only one try left !)
+          </result>
+            <result sw1="0x63" type="error" >Bad PIN</result>
+            <result sw1="0x63" sw2="0xc1" type="error" >
+            Bad PIN (only two tries left !)
+          </result>
+            <result sw1="0x63" sw2="0xc2" type="error" >
+            Bad PIN (only three tries left !)
+          </result>
+            <result sw1="0x69" sw2="0x83" type="error" >
+            Card seems to be destroyed, this might have the following reasons:
+             1) you entered a bad PIN too often
+             2) the card is of a new and yet unknown type
+          </result>
+            <result sw1="0x64" sw2="0x00" type="error" >
+            Verification aborted due to timeout
+          </result>
+            <result sw1="0x64" sw2="0x01" type="error" >
+            Verification aborted by user
+          </result>
+        </results>
+      </command>
+
+
+      <!-- Secure PIN verification using the reader's keypad: ASCII -->
+      <!-- Command for SCM X32 -->
+      <command name="IsoPerformVerification_Ascii" target="reader" 
+               driver="generic_pcsc" reader="ccid_scm_x32" >
+        <send>
+          <APDU>
+            <ELEM type="byte" >6</ELEM>
+            <ELEM type="dword" bigEndian="1" >0</ELEM>
+            <ELEM type="bytes" storedAs="bytes" >
+              00 00
+              82 00 00
+              08 04 02
+              00 00 00 00 00 00 00
+              0d 00 00 00
+              00 20 00 
+            </ELEM>
+            <ELEM name="pid" type="byte" />
+            <ELEM type="bytes" storedAs="bytes" >
+              08 20 20 20 20 20 20 20 20
+            </ELEM>
+          </APDU>
+        </send>
+        <results>
+          <result sw1="0x90" type="success" >
+            PIN ok
+          </result>
+            <result sw1="0x63" sw2="0xc0" type="error" >
+            Bad PIN (only one try left !)
+          </result>
+            <result sw1="0x63" type="error" >Bad PIN</result>
+            <result sw1="0x63" sw2="0xc1" type="error" >
+            Bad PIN (only two tries left !)
+          </result>
+            <result sw1="0x63" sw2="0xc2" type="error" >
+            Bad PIN (only three tries left !)
+          </result>
+            <result sw1="0x69" sw2="0x83" type="error" >
+            Card seems to be destroyed, this might have the following reasons:
+             1) you entered a bad PIN too often
+             2) the card is of a new and yet unknown type
+          </result>
+            <result sw1="0x64" sw2="0x00" type="error" >
+            Verification aborted due to timeout
+          </result>
+            <result sw1="0x64" sw2="0x01" type="error" >
+            Verification aborted by user
+          </result>
+        </results>
+      </command>
+
+    </commands>
+  </card>
+</cards>

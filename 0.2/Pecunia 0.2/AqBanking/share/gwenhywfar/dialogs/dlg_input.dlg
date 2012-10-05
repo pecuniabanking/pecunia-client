@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialog type="dialog" name="dlg_gwen_input" flags="decorShrinkable decorStretchable" i18n="gwenhywfar" >
+  <widget type="vlayout" name="vlayout1" flags="fillX fillY" >
+    <widget type="label" name="descrLabel" flags="fillX" />
+
+    <widget   type="gridLayout" flags="fillX fillY" columns="2">
+      <widget type="label"      name="label1" text="Input" />
+      <widget type="lineEdit"   name="input1" columns="32" flags="fillX fillY" />
+
+      <widget type="label"      name="label2" text="Input" />
+      <widget type="lineEdit"   name="input2" columns="32" flags="fillX fillY" />
+    </widget>
+
+    <widget   type="vspacer"    name="vspacer1"    flags="fillY" />
+    
+    <widget   type="hLine"      name="hline1"      flags="fillX" />
+
+    <widget   type="hlayout"    name="hlayout1"    flags="fillX equalWidth" >
+      <widget type="hspacer"    name="hspacer1"    flags="fillX" />
+      <widget type="pushButton" name="okButton" flags="default" text="Ok" />
+      <widget type="pushButton" name="abortButton" text="Abort" />
+    </widget>
+  </widget>
+
+</dialog>

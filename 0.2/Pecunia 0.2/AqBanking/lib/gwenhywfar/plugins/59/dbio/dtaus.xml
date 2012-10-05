@@ -1,0 +1,16 @@
+<PluginDescr>
+  <plugin name="dtaus" type="dbio" >
+    <version>4.99.17</version>
+    <author>Martin Preuss(martin@libchipcard.de)</author>
+    <short>Importer and Exporter for DTAUS</short>
+    <short lang="de">Im- und Exporter fuer DTAUS</short>
+    <descr>
+      This plugin imports and exports German DTAUS data.
+    </descr>
+    <descr lang="de">
+      Diese Erweiterung im- und exportiert DTAUS Daten.
+    </descr>
+  </plugin>
+</PluginDescr>
+
+

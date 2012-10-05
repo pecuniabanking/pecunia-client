@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/***************************************************************************
+ copyright   : (C) 2010 by Martin Preuss
+ email       : martin@aqbanking.de
+
+ ***************************************************************************
+ * This file is part of the project "AqBanking".                           *
+ * Please see toplevel file COPYING of that project for license details.   *
+ ***************************************************************************/
+-->
+
+<dialog type="dialog" name="ab_setup_newuser" i18n="aqbanking"
+        flags="decorShrinkable decorStretchable decorMaximize decorMinimize decorClose decorMenu" >
+  <widget type="vlayout" name="dialogVLayout" flags="fillX fillY" >
+
+    <!-- wizard pages -->
+    <widget type="widgetStack" name="wiz_stack" flags="fillX fillY" >
+      <!-- intro page -->
+      <widget type="vlayout" flags="fillX fillY" >
+        <widget type="label" name="wiz_begin_label" flags="fillX fillY justifyLeft" />
+      </widget>
+
+      <!-- backend selection page -->
+      <widget type="vlayout" name="backendRadioWidget" flags="fillX fillY" >
+        <widget type="label" name="backendPageLabel" flags="fillX fillY justifyLeft" />
+        <!-- for each backend a radioButton will be added here programmatically -->
+      </widget>
+
+      <!-- for each backend a page will be added here programmatically -->
+
+    </widget>
+
+    <!-- wizard controls -->
+    <widget type="hLine" flags="fillX" />
+    <widget type="hlayout" flags="fillX equalWidth" >
+      <widget type="pushButton" text="Help"     name="wiz_help_button" />
+      <widget type="hspacer" flags="fillX" />
+      <widget type="pushButton" text="Previous" name="wiz_prev_button" />
+      <widget type="pushButton" text="Next"     name="wiz_next_button" flags="default" />
+      <widget type="pushButton" text="Abort"    name="wiz_abort_button" />
+    </widget>
+
+  </widget>
+
+</dialog>

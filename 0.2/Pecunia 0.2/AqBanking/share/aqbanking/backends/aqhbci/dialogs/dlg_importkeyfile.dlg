@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/***************************************************************************
+ copyright   : (C) 2010 by Martin Preuss
+ email       : martin@aqbanking.de
+
+ ***************************************************************************
+ * This file is part of the project "AqBanking".                           *
+ * Please see toplevel file COPYING of that project for license details.   *
+ ***************************************************************************/
+-->
+
+<dialog type="dialog" name="ah_setup_importkeyfile" i18n="aqbanking"
+        flags="decorShrinkable decorStretchable decorMaximize decorMinimize decorClose decorMenu" >
+  <widget type="vlayout" flags="fillX fillY" >
+
+    <!-- wizard pages -->
+    <widget type="widgetStack" name="wiz_stack" flags="fillX fillY" >
+      <!-- intro page -->
+      <widget type="vlayout" flags="fillX fillY" >
+        <widget type="label" name="wiz_begin_label" flags="fillX fillY justifyLeft" />
+      </widget>
+
+      <!-- file settings page -->
+      <widget type="vlayout" flags="fillX fillY" >
+        <widget type="label" name="wiz_file_label" flags="fillX fillY justifyLeft" />
+        <widget type="hLine" flags="fillX" />
+        <widget type="hlayout" flags="fillX" >
+          <widget type="label" text="File" />
+          <widget type="lineEdit" name="wiz_filename_edit" columns="40" flags="fillX" />
+          <widget type="pushButton" text="Select" name="wiz_filename_button" />
+        </widget>
+  
+      </widget>
+
+      <!-- bank settings page -->
+      <widget type="vlayout" flags="fillX fillY" >
+        <widget type="label" name="wiz_bank_label" flags="fillX fillY justifyLeft" />
+        <widget type="hLine" flags="fillX" />
+        <widget type="gridLayout" columns="2" flags="fillX" >
+
+          <widget type="label" text="Context From File" />
+          <widget type="comboBox" name="wiz_context_combo" columns="40" flags="fillX readOnly" />
+
+          <widget type="label" text="Bank Code" flags="justifyLeft" />
+          <widget type="hlayout" flags="fillX" >
+            <widget type="lineEdit" name="wiz_bankcode_edit" flags="fillX" />
+            <widget type="pushButton" name="wiz_bankcode_button" text="Select" />
+          </widget>
+
+          <widget type="label" text="Bank Name" />
+          <widget type="lineEdit" name="wiz_bankname_edit" columns="40" flags="fillX" />
+
+          <widget type="label" text="Server URL" />
+          <widget type="lineEdit" name="wiz_url_edit" columns="40" flags="fillX" />
+  
+        </widget>
+  
+      </widget>
+
+      <!-- user settings page -->
+      <widget type="vlayout" flags="fillX fillY" >
+        <widget type="label" name="wiz_user_label" flags="fillX fillY justifyLeft" />
+        <widget type="hLine" flags="fillX" />
+        <widget type="gridLayout" columns="2" flags="fillX" >
+
+          <widget type="label" text="User Name" />
+          <widget type="lineEdit" name="wiz_username_edit" columns="40" flags="fillX" />
+
+          <widget type="label" text="User Id" />
+          <widget type="lineEdit" name="wiz_userid_edit" columns="40" flags="fillX" />
+
+          <widget type="label" text="Customer Id" />
+          <widget type="lineEdit" name="wiz_customerid_edit" columns="40" flags="fillX" />
+
+        </widget>
+  
+      </widget>
+
+
+      <!-- action page -->
+      <widget type="vlayout" flags="fillX fillY" >
+        <widget type="label" name="wiz_create_label" flags="fillX fillY justifyLeft" />
+        <widget type="hlayout" flags="fillX" >
+          <widget type="hspacer" flags="fillX" />
+          <widget type="pushButton" text="Special Settings" name="wiz_special_button" />
+        </widget>
+      </widget>
+
+      <!-- extro page -->
+      <widget type="vlayout" flags="fillX fillY" >
+        <widget type="label" name="wiz_end_label" flags="fillX fillY justifyLeft" />
+        <widget type="hlayout" flags="fillX" >
+          <widget type="hspacer" flags="fillX" />
+          <!-- <widget type="pushButton" text="Print Ini Letter" name="wiz_iniletter_button" /> -->
+        </widget>
+      </widget>
+
+    </widget>
+
+    <!-- wizard controls -->
+    <widget type="hLine" flags="fillX" />
+    <widget type="hlayout" flags="fillX equalWidth" >
+      <widget type="pushButton" text="Help"     name="wiz_help_button" />
+      <widget type="hspacer" flags="fillX" />
+      <widget type="pushButton" text="Previous" name="wiz_prev_button" />
+      <widget type="pushButton" text="Next"     name="wiz_next_button" flags="default" />
+      <widget type="pushButton" text="Abort"    name="wiz_abort_button" />
+    </widget>
+
+  </widget>
+
+</dialog>

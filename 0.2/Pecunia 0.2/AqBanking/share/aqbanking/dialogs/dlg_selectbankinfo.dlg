@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/***************************************************************************
+ copyright   : (C) 2010 by Martin Preuss
+ email       : martin@aqbanking.de
+
+ ***************************************************************************
+ * This file is part of the project "AqBanking".                           *
+ * Please see toplevel file COPYING of that project for license details.   *
+ ***************************************************************************/
+-->
+
+<dialog type="dialog" name="ab_select_bankinfo" i18n="aqbanking"
+        flags="decorShrinkable decorStretchable decorMaximize decorMinimize decorClose decorMenu" >
+  <widget type="vlayout" flags="fillX fillY" >
+
+    <widget type="gridLayout" columns="2" flags="fillX" >
+
+      <widget type="label" text="Bank Code" />
+      <widget type="lineEdit" name="blzEdit"      columns="40" flags="" />
+
+      <widget type="label" text="BIC" />
+      <widget type="lineEdit" name="bicEdit"      columns="40" flags="" />
+
+      <widget type="label" text="Bank Name" />
+      <widget type="lineEdit" name="nameEdit"     columns="40" flags="" />
+
+      <widget type="label" text="Location" />
+      <widget type="lineEdit" name="locationEdit" columns="40" flags="" />
+
+    </widget>
+
+
+    <widget type="groupBox" text="Matching Banks" flags="fillX fillY" >
+      <widget type="listBox" name="listBox" columns="5" flags="fillX fillY" />
+    </widget>
+
+    <!-- wizard controls -->
+    <widget type="hLine" flags="fillX" />
+    <widget type="hlayout" flags="fillX equalWidth" >
+      <widget type="pushButton" text="Help"     name="wiz_help_button" />
+      <widget type="hspacer" flags="fillX" />
+      <widget type="pushButton" text="Ok"     name="okButton" flags="default" />
+      <widget type="pushButton" text="Abort"  name="abortButton" />
+    </widget>
+
+  </widget>
+
+</dialog>

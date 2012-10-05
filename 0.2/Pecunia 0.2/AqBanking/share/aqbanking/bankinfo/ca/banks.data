@@ -1,0 +1,347 @@
+# This is an automatically created file
+# All banks are separated by newlines
+# Please do not modify this file, the index files rely on exact positions.
+country="ca"
+bankName="Advisor%27s Choice"
+location="Toronto"
+street="130 ADELAIDE STREET WEST"
+zipcode="M5H 3P5"
+city="Toronto"
+phone="1%2D866%2D334%2D4434"
+email="Customerservice%40advisorschoice.ca"
+website="http%3A%2F%2Fwww.advisorschoice.ca%2F"
+services {
+}
+
+country="ca"
+bankName="Banque Laurentienne du Canada"
+location="Montreal"
+street="Tour Banque Laurentienne"
+zipcode="H2K2S4"
+city="Montreal"
+phone="1%2D800%2DBLC%2D1846"
+email="courrier%40banquelaurentienne.ca"
+website="https%3A%2F%2Fwww.blcdirect.banquelaurentienne.ca"
+services {
+}
+
+country="ca"
+bankName="Banque National du Canada"
+location="Montr al"
+street="500, place d Armes, 27e tage"
+zipcode="H2Y 2W3"
+city="Montr al"
+phone="%28514%29 286%2D0808 ou 1888 286%2D0808"
+website="http%3A%2F%2Fwww.nbc.ca%2F"
+services {
+}
+
+country="ca"
+bankName="BMO Bank of Montreal"
+location="Toronto"
+street="P.O. Box 5000"
+zipcode="M4Y 2T1"
+city="Toronto"
+phone="1%2D888%2D491%2D0000"
+website="http%3A%2F%2Fwww.mbanx.com"
+services {
+}
+
+country="ca"
+bankName="Canada %2D Advisor%27s Choice"
+location="Toronto"
+street="130 ADELAIDE STREET WEST"
+zipcode="M5H 3P5"
+city="Toronto"
+phone="1%2D866%2D334%2D4434"
+email="Customerservice%40advisorschoice.ca"
+website="http%3A%2F%2Fwww.advisorschoice.ca%2F"
+services {
+}
+
+country="ca"
+bankName="Canada %2D Banque Laurentienne du Canada"
+location="Montreal"
+street="Tour Banque Laurentienne"
+zipcode="H2K2S4"
+city="Montreal"
+phone="1%2D800%2DBLC%2D1846"
+email="courrier%40banquelaurentienne.ca"
+website="https%3A%2F%2Fwww.blcdirect.banquelaurentienne.ca"
+services {
+}
+
+country="ca"
+bankName="Canada %2D Banque National du Canada"
+location="Montr al"
+street="500, place d Armes, 27e tage"
+zipcode="H2Y 2W3"
+city="Montr al"
+phone="%28514%29 286%2D0808 ou 1888 286%2D0808"
+website="http%3A%2F%2Fwww.nbc.ca%2F"
+services {
+}
+
+country="ca"
+bankName="Canada %2D CIBC %28English%29"
+location="Toronto"
+street="Commerce Court Postal Station"
+zipcode="M5L%2D1A2"
+city="Toronto"
+phone="1 888 8PC%2DCIBC"
+website="http%3A%2F%2Fwww.cibc.com%2F"
+services {
+}
+
+country="ca"
+bankName="Canada %2D CIBC %28Francais%29"
+location="Toronto"
+street="C.P. 613, Stn. Agincourt"
+zipcode="M1S5R7"
+city="Toronto"
+phone="1.888.526.2601"
+email="commentaires%40solutionsbancaires.groupeinvestors.com"
+website="http%3A%2F%2Fwww.solutionsbanking.investorsgroup.com%2Ffrancais"
+services {
+}
+
+country="ca"
+bankName="Canada %2D HEPCOE Credit Union Limited"
+location="Toronto"
+street="777 Bay St., 26th Floor"
+zipcode="M5G 2C8"
+city="Toronto"
+phone="1%2D800%2D268%2D8023"
+email="telepower%40hepcoe.com"
+website="http%3A%2F%2Fwww.hepcoe.com%2F"
+services {
+}
+
+country="ca"
+bankName="Canada %2D Investment Planning Counsel of Canada"
+location="Toronto"
+street="130 Adelaide St. W 4th floor"
+zipcode="M5H 3P5"
+city="Toronto"
+phone="1%2D866%2D472%2D7283"
+email="customerservice%40b2b%2Dtrust.com"
+website="http%3A%2F%2Fwww.ipcc.ca%2F"
+services {
+}
+
+country="ca"
+bankName="Canada %2D IPC Gestion du Patrimoine"
+location="Toronto"
+street="130, Rue Adelaide Ouest 4e tage"
+zipcode="M5H 3P5"
+city="Toronto"
+phone="1%2D866%2D472%2D7283"
+email="service%5Fa%5Fla%5Fclientele%40b2b%2Dtrust.com"
+website="http%3A%2F%2Fwww.ipcc.ca%2F"
+services {
+}
+
+country="ca"
+bankName="Canada %2D Laurentian Bank of Canada"
+location="Montreal"
+street="Tour Banque Laurentienne"
+zipcode="H3A3K3"
+city="Montreal"
+phone="1%2D800%2DLBC%2D1846"
+email="mail%40laurentianbank.ca"
+website="https%3A%2F%2Fwww.lbcdirect.laurentianbank.ca"
+services {
+}
+
+country="ca"
+bankName="Canada %2D mbanx"
+location="Toronto"
+street="P.O. Box 5000"
+zipcode="M4Y 2T1"
+city="Toronto"
+phone="1%2D888%2D491%2D0000"
+website="http%3A%2F%2Fwww.mbanx.com"
+services {
+}
+
+country="ca"
+bankName="Canada %2D National Bank of Canada"
+location="Montreal"
+street="500 place d Armes, 27th floor"
+zipcode="H2Y 2W3"
+city="Montreal"
+phone="%28514%29 286%2D0808 or 1 888 286%2D0808"
+website="http%3A%2F%2Fwww.nbc.ca"
+services {
+}
+
+country="ca"
+bankName="Canada %2D President%27s Choice Financial"
+location="Scarboroguh"
+street="PO Box 603"
+zipcode="M1S5K9"
+city="Scarboroguh"
+phone="1%2D888%2D872%2D4724"
+email="talktous%40preschoicefinancial.com"
+website="http%3A%2F%2Fwww.pcfinancial.ca"
+services {
+}
+
+country="ca"
+bankName="Canada %2D SOLUTIONS BANCAIRES %28Francais%29"
+location="Toronto"
+street="C.P. 613, Stn. Agincourt"
+zipcode="M1S5R7"
+city="Toronto"
+phone="1.888.526.2601"
+email="commentaires%40solutionsbancaires.groupeinvestors.com"
+website="http%3A%2F%2Fwww.solutionsbanking.investorsgroup.com%2Ffrancais"
+services {
+}
+
+country="ca"
+bankName="Canada %2D TD Canada Trust"
+location="Toronto"
+street="55 King Street West, 17th Floor, TD Tower"
+zipcode="M5K1A2"
+city="Toronto"
+phone="1%2D866%2D222%2D3456"
+website="http%3A%2F%2Fwww.tdcanadatrust.com"
+services {
+}
+
+country="ca"
+bankName="Servus Credit Union Ltd."
+location="Edmonton"
+street="Suite 300%3B 8723 82 Avenue"
+zipcode="T6C 0Y9"
+city="Edmonton"
+phone="1%2D780%2D496%2D2000"
+email="info%40ccscu.ca"
+website="http%3A%2F%2Fwww.servuscu.ca"
+services {
+}
+
+country="ca"
+bankName="CIBC %28English%29"
+location="Toronto"
+street="Commerce Court Postal Station"
+zipcode="M5L%2D1A2"
+city="Toronto"
+phone="1 888 8PC%2DCIBC"
+website="http%3A%2F%2Fwww.cibc.com%2F"
+services {
+}
+
+country="ca"
+bankName="CIBC %28Francais%29"
+location="Toronto"
+street="Commerce Court Postal Station"
+zipcode="M5L%2D1A2"
+city="Toronto"
+phone="1 888 8PC%2DCIBC"
+website="http%3A%2F%2Fwww.cibc.com%2F"
+services {
+}
+
+country="ca"
+bankName="HEPCOE Credit Union Limited"
+location="Toronto"
+street="777 Bay St., 26th Floor"
+zipcode="M5G 2C8"
+city="Toronto"
+phone="1%2D800%2D268%2D8023"
+email="telepower%40hepcoe.com"
+website="http%3A%2F%2Fwww.hepcoe.com%2F"
+services {
+}
+
+country="ca"
+bankName="Investment Planning Counsel of Canada"
+location="Toronto"
+street="130 Adelaide St. W 4th floor"
+zipcode="M5H 3P5"
+city="Toronto"
+phone="1%2D866%2D472%2D7283"
+email="customerservice%40b2b%2Dtrust.com"
+website="http%3A%2F%2Fwww.ipcc.ca%2F"
+services {
+}
+
+country="ca"
+bankName="Laurentian Bank of Canada"
+location="Montreal"
+street="Tour Banque Laurentienne"
+zipcode="H3A3K3"
+city="Montreal"
+phone="1%2D800%2DLBC%2D1846"
+email="mail%40laurentianbank.ca"
+website="https%3A%2F%2Fwww.lbcdirect.laurentianbank.ca"
+services {
+}
+
+country="ca"
+bankName="Canada %2D Le Choix du Conseiller"
+location="Toronto"
+street="130 rue adelaide Ouest"
+zipcode="M5H 3P5"
+city="Toronto"
+phone="1%2D866%2D334%2D4434"
+email="Customerservice%40advisorschoice.ca"
+website="http%3A%2F%2Fwww.lechoixduconseiller.ca%2F"
+services {
+}
+
+country="ca"
+bankName="Canada %2D Libro Financial Group"
+website="http%3A%2F%2Fwww.libro.ca%2F"
+services {
+}
+
+country="ca"
+bankName="President%27s Choice Financial"
+location="Scarboroguh"
+street="PO Box 603"
+zipcode="M1S5K9"
+city="Scarboroguh"
+phone="1%2D888%2D872%2D4724"
+email="talktous%40preschoicefinancial.com"
+website="http%3A%2F%2Fwww.pcfinancial.ca"
+services {
+}
+
+country="ca"
+bankName="SOLUTIONS BANCAIRES %28Francais%29"
+location="Toronto"
+street="C.P. 613, Stn. Agincourt"
+zipcode="M1S5R7"
+city="Toronto"
+phone="1.888.526.2601"
+email="commentaires%40solutionsbancaires.groupeinvestors.com"
+website="http%3A%2F%2Fwww.solutionsbanking.investorsgroup.com%2Ffrancais"
+services {
+}
+
+country="ca"
+bankName="Canada %2D TD Bank"
+location="Toronto"
+street="Head Office, 55 King Street West, 17th Floor, TD Tower"
+zipcode="M5K 1A2"
+city="Toronto"
+phone="1%2D888%2D983%2D8372"
+website="http%3A%2F%2Fwww.tdbank.ca%2F"
+services {
+}
+
+country="ca"
+bankName="HEPCOE Credit Union Limited"
+location="Toronto"
+street="777 Bay St., 26th Floor"
+zipcode="M5G 2C8"
+city="Toronto"
+phone="1%2D800%2D268%2D8023"
+email="telepower%40hepcoe.com"
+website="http%3A%2F%2Fwww.hepcoe.com%2F"
+services {
+}
+

@@ -1,0 +1,22 @@
+<plugin name="aqhbci" type="provider" >
+  <version>4.99.17</version>
+  <author>Martin Preuss(martin@libchipcard.de)</author>
+  <short>HBCI backend using AqHBCI</short>
+  <descr>
+    This backend provides support for HBCI using AqHBCI.
+  </descr>
+</plugin>
+
+
+<plugin name="aqhbci" type="provider" lang="de" >
+  <version>4.99.17</version>
+  <author>Martin Preuss(martin@libchipcard.de)</author>
+  <short>HBCI Homebanking Modul</short>
+  <descr>
+    Dieses Modul bietet Homebanking mittels HBCI (Home
+  Banking Computer Interface). Dieses Protokoll wird von der Mehrheit
+  der deutschen Banken angeboten.
+  </descr>
+</plugin>
+
+

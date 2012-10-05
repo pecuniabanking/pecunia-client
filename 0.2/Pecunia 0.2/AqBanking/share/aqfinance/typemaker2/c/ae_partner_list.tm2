@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AE_PARTNER_LIST" type="pointer" lang="c" extends="list1_base" basetype="AE_PARTNER">
+    <identifier>AE_PARTNER_LIST</identifier>
+    <prefix>AE_Partner_List</prefix>
+  </typedef>
+</tm2>

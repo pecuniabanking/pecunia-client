@@ -1,0 +1,194 @@
+<?xml?>
+
+<tm2>
+
+  <typedef id="char_ptr" type="pointer" basetype="char" lang="c">
+    <identifier>char</identifier>
+    <aedb_type>AEDB_DataType_String</aedb_type>
+
+
+    <codedefs>
+
+      <codedef id="construct">
+        <code>
+          $(dst)=$(preset);
+        </code>
+      </codedef>
+
+      <codedef id="destruct">
+        <code>
+          free($(src));
+        </code>
+      </codedef>
+
+      <codedef id="assign">
+        <code>
+          $(dst)=$(src);
+        </code>
+      </codedef>
+
+      <codedef id="dup">
+        <code>
+          $(dst)=strdup($(src));
+        </code>
+      </codedef>
+
+      <codedef id="compare">
+        <code>
+          if ($(dst) &amp;&amp; $(src))
+            $(retval)=strcasecmp($(src), $(dst));
+          else if ($(src))
+            $(retval)=1;
+          else if ($(dst))
+            $(retval)=-1;
+          else
+            $(retval)=0;
+        </code>
+      </codedef>
+
+      <codedef id="toXml">
+        <!-- !attribute -->
+        <memberFlagsMask>  attribute</memberFlagsMask>
+        <memberFlagsValue>          </memberFlagsValue>
+        <code>
+          GWEN_XMLNode_SetCharValue($(db), "$(name)", $(src));
+        </code>
+      </codedef>
+
+      <codedef id="toXml">
+        <!-- attribute -->
+        <memberFlagsMask>  attribute</memberFlagsMask>
+        <memberFlagsValue> attribute</memberFlagsValue>
+        <code>
+          GWEN_XMLNode_SetProperty($(db), "$(name)", $(src));
+        </code>
+      </codedef>
+
+      <codedef id="fromXml">
+        <!-- !attribute -->
+        <memberFlagsMask>  attribute</memberFlagsMask>
+        <memberFlagsValue>          </memberFlagsValue>
+        <code>
+          {
+            const char *s;
+            
+            s=GWEN_XMLNode_GetCharValue($(db), "$(name)", $(default));
+            if (s)
+             $(dst)=strdup(s);
+          }
+        </code>
+      </codedef>
+
+      <codedef id="fromXml">
+        <!-- enum | attribute -->
+        <memberFlagsMask>  attribute</memberFlagsMask>
+        <memberFlagsValue> attribute</memberFlagsValue>
+        <code>
+          {
+            const char *s;
+            
+            s=GWEN_XMLNode_GetProperty($(db), "$(name)", $(default));
+            if (s)
+             $(dst)=strdup(s);
+          }
+        </code>
+      </codedef>
+
+
+
+      <codedef id="toDb">
+        <code>
+          if ($(src)) 
+            $(retval)=GWEN_DB_SetCharValue($(db), 
+                                           GWEN_DB_FLAGS_OVERWRITE_VARS, 
+                                           "$(name)", 
+                                           $(src));
+          else {
+            GWEN_DB_DeleteVar($(db), "$(name)");
+            $(retval)=0;
+          }
+        </code>
+      </codedef>
+
+
+
+      <codedef id="fromDb">
+        <code>
+          {
+            const char *s;
+            
+            s=GWEN_DB_GetCharValue($(db), "$(name)", 0, $(default));
+            if (s)
+              $(dst)=strdup(s);
+          }
+        </code>
+      </codedef>
+
+
+
+      <codedef id="toObject">
+        <code>
+          if ($(src))
+            $(retval)=AEDB_Object_SetFieldString($(db), $(fieldId), $(src));
+          else 
+            $(retval)=AEDB_Object_SetFieldString($(db), $(fieldId), NULL);
+        </code>
+      </codedef>
+
+
+
+      <codedef id="fromObject">
+        <code>
+          {
+            const char *s;
+            
+            $(retval)=AEDB_Object_GetFieldString($(db), $(fieldId), &amp;s);
+            if ($(retval)&gt;=0 &amp;&amp; s)
+              $(dst)=strdup(s);
+          }
+        </code>
+      </codedef>
+
+
+
+      <codedef id="toHashString">
+        <!-- !with_hashnum -->
+        <memberFlagsMask>  with_hashnum</memberFlagsMask>
+        <memberFlagsValue> </memberFlagsValue>
+        <code>
+          if ($(src)) 
+            GWEN_Buffer_AppendString($(buffer), $(src));
+        </code>
+      </codedef>
+
+      <codedef id="toHashString">
+        <!-- with_hashnum -->
+        <memberFlagsMask>  with_hashnum</memberFlagsMask>
+        <memberFlagsValue> with_hashnum</memberFlagsValue>
+        <code>
+          if (($(src))) {
+            const char *tmp_s;
+            tmp_s=$(src);
+            while (*tmp_s=='0')
+              tmp_s++;
+            if (*tmp_s)
+              GWEN_Buffer_AppendString($(buffer), tmp_s);
+          }
+        </code>
+      </codedef>
+
+    </codedefs>
+
+    <defaults>
+      <!-- defaults flags etc for member declarations of this type -->
+      <default>NULL</default>
+      <preset>NULL</preset>
+      <flags>own</flags>
+      <setflags>const dup</setflags>
+      <getflags>const</getflags>
+      <dupflags>const</dupflags>
+    </defaults>
+  
+  </typedef>
+
+</tm2>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/***************************************************************************
+ copyright   : (C) 2010 by Martin Preuss
+ email       : martin@aqbanking.de
+
+ ***************************************************************************
+ * This file is part of the project "AqBanking".                           *
+ * Please see toplevel file COPYING of that project for license details.   *
+ ***************************************************************************/
+-->
+
+<dialog type="dialog" name="ah_new_user" i18n="aqbanking"
+        flags="decorShrinkable decorStretchable decorMaximize decorMinimize decorClose decorMenu" >
+  <widget type="vlayout" flags="fillX fillY" >
+
+    <widget type="label" name="introLabel" flags="fillX fillY" />
+
+    <widget type="hLine" flags="fillX" />
+
+    <widget type="hlayout" flags="fillX" >
+      <widget type="pushButton" name="createKeyFileButton" text="Create Keyfile" icon="keyfile.png" />
+      <widget type="pushButton" name="importKeyFileButton" text="Import Keyfile" icon="keyfile.png" />
+      <widget type="hspacer" flags="fillX" />
+    </widget>
+
+    <widget type="hLine" flags="fillX" />
+
+    <widget type="hlayout" flags="fillX" >
+      <widget type="pushButton" name="initChipcardButton" text="Init Chipcard" icon="chipcard.png" />
+      <widget type="pushButton" name="useChipcardButton"  text="Use Chipcard"  icon="chipcard.png" />
+      <widget type="hspacer" flags="fillX" />
+    </widget>
+
+    <widget type="hLine" flags="fillX" />
+
+    <widget type="hlayout" flags="fillX" >
+      <widget type="pushButton" name="usePinTanButton" text="Use PIN/TAN" icon="pintan.png"  />
+      <widget type="hspacer" flags="fillX" />
+    </widget>
+
+    <!-- wizard controls -->
+    <widget type="vspacer" flags="fillY" />
+    <widget type="hLine" flags="fillX" />
+    <widget type="hlayout" flags="fillX equalWidth" >
+      <widget type="pushButton" text="Help"     name="helpButton" />
+      <widget type="hspacer" flags="fillX" />
+      <widget type="pushButton" text="Abort"     name="abortButton" />
+    </widget>
+
+  </widget>
+
+</dialog>

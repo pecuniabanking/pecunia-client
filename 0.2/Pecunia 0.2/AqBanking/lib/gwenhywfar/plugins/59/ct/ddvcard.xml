@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf8"?>
+
+<plugin type="ct" name="ddvcard" device="card" >
+  <version>4.99.7</version>
+  <author>Martin Preuss (martin@libchipcard.de)</author>
+  <short>DDV Chipcard Medium</short>
+
+  <descr>
+    This plugins provides support for DDV chipcards.
+
+    <text format="html" >
+      <p>
+        This plugins provides support for DDV chipcards.
+      </p>
+    </text>
+
+    <text format="html" lang="de" >
+      <p>
+        Dieses Modul unterstuetzt DDV Chipkarten.
+      </p>
+    </text>
+
+  </descr>
+
+</plugin>
+
+

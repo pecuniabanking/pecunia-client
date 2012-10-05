@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/***************************************************************************
+ copyright   : (C) 2010 by Martin Preuss
+ email       : martin@aqbanking.de
+
+ ***************************************************************************
+ * This file is part of the project "AqBanking".                           *
+ * Please see toplevel file COPYING of that project for license details.   *
+ ***************************************************************************/
+-->
+
+<dialog type="dialog" name="ah_choose_usertype" i18n="aqbanking"
+        flags="decorShrinkable decorStretchable decorMaximize decorMinimize decorClose decorMenu" >
+  <widget type="vlayout" flags="fillX fillY" >
+
+    <widget type="label" name="hbciIntroLabel" flags="fillX fillY" />
+
+    <widget type="hLine" flags="fillX" />
+
+    <widget type="radioButton" name="hbciPinTanRadio"        text="Setup a PIN/TAN account" group="1" flags="fillX justifyLeft" />
+    <widget type="radioButton" name="hbciUseChipcardRadio"   text="Import an already used chipcard" group="1" flags="fillX justifyLeft" />
+    <widget type="radioButton" name="hbciCreateKeyFileRadio" text="Create a new Keyfile" group="1" flags="fillX justifyLeft" />
+    <widget type="radioButton" name="hbciImportKeyFileRadio" text="Import an existing Keyfile" group="1" flags="fillX justifyLeft" />
+    <widget type="radioButton" name="hbciInitChipcardRadio"  text="Init a chipcard" group="1" flags="fillX justifyLeft" />
+
+  </widget>
+
+</dialog>

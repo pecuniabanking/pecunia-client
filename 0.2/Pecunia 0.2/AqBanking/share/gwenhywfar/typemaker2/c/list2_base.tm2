@@ -1,0 +1,113 @@
+<?xml?>
+
+<tm2>
+
+  <typedef id="list2_base" type="pointer" lang="c" >
+
+    <codedefs>
+
+      <codedef id="construct">
+        <code>
+          $(dst)=$(preset);
+        </code>
+      </codedef>
+
+      <codedef id="destruct">
+        <code>
+          $(member_prefix)_free($(src));
+        </code>
+      </codedef>
+
+      <codedef id="assign">
+        <code>
+          $(dst)=$(src);
+        </code>
+      </codedef>
+
+      <codedef id="dup">
+        <code>
+        </code>
+      </codedef>
+
+      <codedef id="compare">
+        <code>
+        </code>
+      </codedef>
+
+      <codedef id="toXml">
+        <!-- !attribute -->
+        <memberFlagsMask>  attribute</memberFlagsMask>
+        <memberFlagsValue>          </memberFlagsValue>
+        <code>
+        </code>
+      </codedef>
+
+      <codedef id="toXml">
+        <!-- attribute -->
+        <memberFlagsMask>  attribute</memberFlagsMask>
+        <memberFlagsValue> attribute</memberFlagsValue>
+        <code>
+        </code>
+      </codedef>
+
+      <codedef id="fromXml">
+        <!-- !attribute -->
+        <memberFlagsMask>  attribute</memberFlagsMask>
+        <memberFlagsValue>          </memberFlagsValue>
+        <code>
+        </code>
+      </codedef>
+
+      <codedef id="fromXml">
+        <!-- enum | attribute -->
+        <memberFlagsMask>  attribute</memberFlagsMask>
+        <memberFlagsValue> attribute</memberFlagsValue>
+        <code>
+        </code>
+      </codedef>
+
+
+
+      <codedef id="toObject">
+        <code>
+        </code>
+      </codedef>
+
+
+
+      <codedef id="fromObject">
+        <code>
+        </code>
+      </codedef>
+
+
+
+      <codedef id="toDb">
+        <code>
+        </code>
+      </codedef>
+
+
+
+      <codedef id="fromDb">
+        <code>
+        </code>
+      </codedef>
+
+
+    </codedefs>
+
+
+
+    <defaults>
+      <!-- defaults flags etc for member declarations of this type -->
+      <default>NULL</default>
+      <preset>NULL</preset>
+      <setflags>const dup</setflags>
+      <getflags>const</getflags>
+      <dupflags>const</dupflags>
+    </defaults>
+  
+  </typedef>
+
+</tm2>

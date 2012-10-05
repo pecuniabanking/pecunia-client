@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AE_ITEM_LIST" type="pointer" lang="c" extends="list1_base" basetype="AE_ITEM">
+    <identifier>AE_ITEM_LIST</identifier>
+    <prefix>AE_Item_List</prefix>
+  </typedef>
+</tm2>

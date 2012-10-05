@@ -1,0 +1,16 @@
+<PluginDescr>
+  <plugin name="us" type="bankinfo" >
+    <version>4.99.17</version>
+    <author>Martin Preuss(martin@libchipcard.de)</author>
+    <short>Bank info provider for the United States of America</short>
+    <short lang="de">Bankenliste fuer die USA</short>
+    <descr>
+      This plugin handles US banks.
+    </descr>
+    <descr lang="de">
+      Diese Erweiterung behandelt US-amerikanische Banken.
+    </descr>
+  </plugin>
+</PluginDescr>
+
+

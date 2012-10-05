@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialog type="dialog" name="dlg_gwen_progress" flags="decorShrinkable decorStretchable" i18n="gwenhywfar" >
+  <widget type="vlayout" name="vlayout1" flags="fillX fillY" >
+    <widget type="label" name="descrLabel" flags="fillX" width="500" />
+
+    <widget type="groupBox" name="logGroup" flags="fillX fillY">
+      <widget type="textBrowser" name="logText" flags="fillX fillY readOnly" />
+    </widget>
+
+    <widget name="hline1" type="hLine" flags="fillX" />
+    
+    <widget type="progressBar" name="currentProgress" flags="fillX" />
+    <widget type="progressBar" name="allProgress" flags="fillX" />
+    
+    <widget name="hline2" type="hLine" flags="fillX" />
+
+    <widget type="hlayout" name="hlayout1" flags="fillX equalWidth" >
+      <widget type="hspacer" name="hspacer1" flags="fillX" />
+      <widget type="pushButton" text="Close" name="closeButton" flags="default" />
+      <widget type="pushButton" text="Abort" name="abortButton" />
+    </widget>
+  </widget>
+
+</dialog>

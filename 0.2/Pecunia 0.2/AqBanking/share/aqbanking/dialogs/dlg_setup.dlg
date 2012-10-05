@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/***************************************************************************
+ copyright   : (C) 2010 by Martin Preuss
+ email       : martin@aqbanking.de
+
+ ***************************************************************************
+ * This file is part of the project "AqBanking".                           *
+ * Please see toplevel file COPYING of that project for license details.   *
+ ***************************************************************************/
+-->
+
+<dialog type="dialog" name="ab_setup" i18n="aqbanking"
+        flags="decorShrinkable decorStretchable decorMaximize decorMinimize decorClose decorMenu" >
+  <widget type="vlayout" flags="fillX fillY" >
+
+    <!-- pages -->
+    <widget type="tabBook" name="tabBook" flags="fillX fillY" >
+
+      <!-- user page -->
+      <widget type="tabPage" text="Users" flags="fillX fillY" >
+        <widget type="hlayout" flags="fillX fillY" >
+          <widget type="listBox" name="userListBox" flags="fillX fillY" />
+          <widget type="vlayout" flags="fillY equalWidth" >
+            <widget type="pushButton" text="Edit User"    name="editUserButton" />
+            <widget type="pushButton" text="Create User"  name="addUserButton" />
+            <widget type="pushButton" text="Delete User"  name="delUserButton" />
+            <widget type="vspacer" flags="fillY" />
+          </widget>
+        </widget>
+      </widget>
+
+      <!-- account page -->
+      <widget type="tabPage" text="Accounts" flags="fillX fillY" >
+        <widget type="hlayout" flags="fillX fillY" >
+          <widget type="listBox" name="accountListBox" flags="fillX fillY" />
+          <widget type="vlayout" flags="fillY equalWidth" >
+            <widget type="pushButton" text="Edit Account"    name="editAccountButton" />
+            <widget type="pushButton" text="Create Account"  name="addAccountButton" />
+            <widget type="pushButton" text="Delete Account"  name="delAccountButton" />
+            <widget type="vspacer" flags="fillY" />
+          </widget>
+        </widget>
+      </widget>
+
+    </widget>
+
+    <!-- wizard controls -->
+    <widget type="hLine" flags="fillX" />
+    <widget type="hlayout" flags="fillX equalWidth" >
+      <widget type="pushButton" text="Help"     name="wiz_help_button" />
+      <widget type="hspacer" flags="fillX" />
+      <widget type="pushButton" text="Close"    name="closeButton" />
+    </widget>
+
+  </widget>
+
+</dialog>
+

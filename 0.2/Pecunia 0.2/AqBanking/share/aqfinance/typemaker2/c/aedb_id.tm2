@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AEDB_ID" lang="c" extends="int_base" >
+    <identifier>AEDB_ID</identifier>
+    <aedb_type>AEDB_DataType_Int</aedb_type>
+  </typedef>
+</tm2>

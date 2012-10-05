@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AE_RECURRENCE" type="pointer" lang="c" extends="struct_base">
+    <identifier>AE_RECURRENCE</identifier>
+    <prefix>AE_Recurrence</prefix>
+  </typedef>
+</tm2>

@@ -1,0 +1,115 @@
+<!-- 
+  This file only contains a short description for a German medical card.
+ -->
+ 
+<apps>
+  <app name="kvk" >
+  
+    <formats>
+  
+      <format name="kvkdata">
+        <ELEM name="kvk" type="tlv" minnum="1" maxnum="1" >
+          <tlv id="0x60">
+  
+            <ELEM name="data" type="tlv" minnum="12" maxnum="0" >
+              
+              <tlv id="0x80">
+                <ELEM name="insuranceCompanyName" type="ascii" kvk="1" />
+              </tlv>
+              
+              <tlv id="0x81">
+                <ELEM name="insuranceCompanyCode" type="ascii" kvk="1" />
+              </tlv>
+              
+              <tlv id="0x82">
+                <ELEM name="insuranceNumber" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x83">
+                <ELEM name="insuranceState" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x84">
+                <ELEM name="title" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x85">
+                <ELEM name="foreName" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x86">
+                <ELEM name="nameSuffix" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x87">
+                <ELEM name="name" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x88">
+                <ELEM name="dateOfBirth" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x89">
+                <ELEM name="addrStreet" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x8a">
+                <ELEM name="addrState" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x8b">
+                <ELEM name="addrPostalCode" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x8c">
+                <ELEM name="addrCity" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x8d">
+                <ELEM name="bestBefore" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x8e">
+                <ELEM name="checksum" type="byte" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x8f">
+                <ELEM name="cardNumber" type="ascii" kvk="1" />
+              </tlv>
+  
+              <tlv id="0x90">
+                <ELEM name="eastOrWest" type="ascii" kvk="1" >
+                  <descr>
+                    1: west
+                    9: ost
+                    6: BVG
+                    7: SVA, nach Aufwand, dt.-nl Grenzgaenger
+                    8: SVA, pauschal
+                    M: DMP Diabetes mellitus Typ 2, west
+                    X: DMP Diabetes mellitus Typ 2, ost
+                    A: DMP Brustkrebs, west
+                    C: DMP Brustkrebs, ost
+                    K: DMP KHK, west
+                    L: DMP KHK, ost
+                    4: nichtversicherter Sozialhilfe-Empfaenger
+                    E: DMP Diabetes mellitus Typ 1, west
+                    N: DMP Diabetes mellitus Typ 1, ost
+                    D: DMP Asthma bronchiale, west
+                    F: DMP Asthma bronchiale, ost
+                    S: DMP COPD, west
+                    P: DMP COPD, ost
+                  </descr>
+                </ELEM>
+              </tlv>
+              
+            </ELEM>
+            
+          </tlv>
+        </ELEM>
+  
+      </format>
+    </formats>
+  
+  </app>
+</apps>
+

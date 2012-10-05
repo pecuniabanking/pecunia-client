@@ -1,0 +1,110 @@
+
+<GROUPs>
+  <GROUPdef id="SegHead" hide="0" >
+    <!-- Part of the record header to identify a record -->
+    <ELEM name="localAccountNumber" type="ascii" size="10" 
+          lfiller="48" />
+    <ELEM name="currency" type="ascii" size="3" filler="32" condense="1" />
+    <ELEM name="MainGroup" type="num" size="5" filler="32" condense="1"/>
+    <ELEM name="TransactionGroup" type="num" size="5" 
+          filler="32" condense="1"/>
+    <ELEM name="code" type="ascii" size="1" />
+  </GROUPdef>
+
+</GROUPs>
+
+
+<SEGs>
+
+  <SEGdef id="RecordType1" 
+          code="2" 
+          version="1"
+  >
+    <GROUP type="SegHead" />
+    <ELEM name="BatchNumber" type="num" size="3" filler="32" condense="1" />
+    <ELEM name="UniversalTransactionCode" type="ascii" size="5" 
+          filler="32" condense="1" />
+    <ELEM name="CodeCorrection" type="num" size="1" />
+    <ELEM name="BanksTransactionCode" type="ascii" size="5" 
+          filler="32" condense="1" />
+    <ELEM name="remoteAccountNumber" type="ascii" size="10" 
+          filler="32" condense="1" />
+    <ELEM name="remoteName" type="ascii" size="24" 
+          filler="32" condense="1" />
+    <ELEM name="StatusPayee" type="num" size="1" />
+
+    <ELEM name="Amount" type="ascii" size="13" 
+          lfiller="48" />
+    <ELEM name="Sign" type="ascii" size="1" />
+    <ELEM name="Date" type="ascii" size="6" />
+    <ELEM name="ValutaDate" type="ascii" size="6" />
+    <ELEM name="NumberOfListing" type="num" size="4" />
+    <ELEM name="CategoryNumber" type="num" size="5" />
+    <ELEM name="CustomerReference" type="ascii" size="16" />
+    <ELEM name="MediaCode" type="num" size="2" />
+    <ELEM name="Reserved" type="ascii" size="2" filler="32" condense="1" />
+
+    <VALUES>
+      <VALUE path="code">%code</VALUE>
+      <VALUE path="MainGroup">99999</VALUE>
+      <VALUE path="TransactionGroup">99999</VALUE>
+      <VALUE path="CodeCorrection">0</VALUE>
+      <VALUE path="StatusPayee">0</VALUE>
+      <VALUE path="NumberOfListing">0000</VALUE>
+      <VALUE path="CategoryNumber">99999</VALUE>
+      <VALUE path="MediaCode">99</VALUE>
+    </VALUES>
+  </SEGdef>
+
+
+  <SEGdef id="RecordType2" 
+          code="3"
+          version="1"
+  >
+    <GROUP type="SegHead" />
+    <ELEM name="BankReference" type="ascii" size="29" filler="32" condense="1" />
+    <ELEM name="Reserved1" type="ascii" size="3" filler="32" condense="1" />
+    <ELEM name="purpose1" type="ascii" size="32" filler="32" condense="1" />
+    <ELEM name="purpose2" type="ascii" size="32" filler="32" condense="1">
+      <descr>Lines 1-2 of description</descr>
+      
+    </ELEM>
+    <ELEM name="NumberOfExtraRecords" type="num" size="1" >
+      <descr>Number of RecordType3 records to follow</descr>
+    </ELEM>
+    <ELEM name="Reserved2" type="ascii" size="7" filler="32" condense="1" />
+
+    <VALUES>
+      <VALUE path="code">%code</VALUE>
+      <VALUE path="MainGroup">99999</VALUE>
+      <VALUE path="TransactionGroup">99999</VALUE>
+      <VALUE path="NumberOfExtraRecords">0</VALUE>
+    </VALUES>
+  </SEGdef>
+
+
+  <SEGdef id="RecordType3" 
+          code="4"
+          version="1"
+  >
+    <GROUP type="SegHead" />
+    <ELEM name="purpose3" type="ascii" size="32" filler="32" condense="1" />
+    <ELEM name="purpose4" type="ascii" size="32" filler="32" condense="1" />
+    <ELEM name="purpose5" type="ascii" size="32" filler="32" condense="1">
+      <descr>Lines 3-5 or 6 of description</descr>
+      
+    </ELEM>
+    <ELEM name="Reserved2" type="ascii" size="8" filler="32" condense="1" />
+
+    <VALUES>
+      <VALUE path="code">%code</VALUE>
+      <VALUE path="MainGroup">99999</VALUE>
+      <VALUE path="TransactionGroup">99999</VALUE>
+      <VALUE path="NumberOfExtraRecords">0</VALUE>
+    </VALUES>
+  </SEGdef>
+
+
+</SEGs>
+
+

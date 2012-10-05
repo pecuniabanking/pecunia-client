@@ -1,0 +1,169 @@
+<?xml?>
+
+<accounts name="Basiskonten" type="basic">
+  <descr>
+    Diese Kategorie beinhaltet grundsaetzliche Konten, die von den meisten Benutzern
+    benoetigt werden.
+  </descr>
+
+  <account>
+    <id>1</id>
+    <parentId>0</parentId>
+    <type>asset</type>
+    <name>Aktiva</name>
+    <code></code>
+    <description></description>
+    <primaryCommodityId>4</primaryCommodityId>
+    <secondaryCommodityId>0</secondaryCommodityId>
+    <bankAccountId>0</bankAccountId>
+    <flags>4194305</flags>
+    <taxId>0</taxId>
+    <partnerId>0</partnerId>
+  </account>
+
+  <account>
+    <id>2</id>
+    <parentId>0</parentId>
+    <type>equity</type>
+    <name>Anfangsbestand</name>
+    <code></code>
+    <description></description>
+    <primaryCommodityId>4</primaryCommodityId>
+    <secondaryCommodityId>0</secondaryCommodityId>
+    <bankAccountId>0</bankAccountId>
+    <flags>4194305</flags>
+    <taxId>0</taxId>
+    <partnerId>0</partnerId>
+  </account>
+
+
+  <account>
+    <id>3</id>
+    <parentId>0</parentId>
+    <type>expense</type>
+    <name>Aufwendungen</name>
+    <code></code>
+    <description></description>
+    <primaryCommodityId>4</primaryCommodityId>
+    <secondaryCommodityId>0</secondaryCommodityId>
+    <bankAccountId>0</bankAccountId>
+    <flags>4194305</flags>
+    <taxId>0</taxId>
+    <partnerId>0</partnerId>
+  </account>
+
+
+  <account>
+    <id>4</id>
+    <parentId>0</parentId>
+    <type>income</type>
+    <name>Ertraege</name>
+    <code></code>
+    <description></description>
+    <primaryCommodityId>4</primaryCommodityId>
+    <secondaryCommodityId>0</secondaryCommodityId>
+    <bankAccountId>0</bankAccountId>
+    <flags>4194305</flags>
+    <taxId>0</taxId>
+    <partnerId>0</partnerId>
+  </account>
+  
+  
+  <account>
+    <id>5</id>
+    <parentId>0</parentId>
+    <type>liability</type>
+    <name>Passiva</name>
+    <code></code>
+    <description>Verbindlichkeiten</description>
+    <primaryCommodityId>4</primaryCommodityId>
+    <secondaryCommodityId>0</secondaryCommodityId>
+    <bankAccountId>0</bankAccountId>
+    <flags>4194305</flags>
+    <taxId>0</taxId>
+    <partnerId>0</partnerId>
+  </account>
+
+
+  <account>
+    <id>11</id>
+    <parentId>1</parentId>
+    <type>cash</type>
+    <name>Bargeld</name>
+    <code></code>
+    <description></description>
+    <primaryCommodityId>4</primaryCommodityId>
+    <secondaryCommodityId>0</secondaryCommodityId>
+    <bankAccountId>0</bankAccountId>
+    <flags>4194305</flags>
+    <taxId>0</taxId>
+    <partnerId>0</partnerId>
+  </account>
+  
+  
+  <account>
+    <id>12</id>
+    <parentId>1</parentId>
+    <type>bank</type>
+    <name>Bankkonten</name>
+    <code></code>
+    <description></description>
+    <primaryCommodityId>4</primaryCommodityId>
+    <secondaryCommodityId>0</secondaryCommodityId>
+    <bankAccountId>0</bankAccountId>
+    <flags>4194305</flags>
+    <taxId>0</taxId>
+    <partnerId>0</partnerId>
+  </account>
+  
+  
+  
+  <account>
+    <id>51</id>
+    <parentId>5</parentId>
+    <type>creditCard</type>
+    <name>Kreditkarten</name>
+    <code></code>
+    <description></description>
+    <primaryCommodityId>4</primaryCommodityId>
+    <secondaryCommodityId>0</secondaryCommodityId>
+    <bankAccountId>0</bankAccountId>
+    <flags>4194305</flags>
+    <taxId>0</taxId>
+    <partnerId>0</partnerId>
+  </account>
+
+  <account>
+    <id>52</id>
+    <parentId>5</parentId>
+    <type>liability</type>
+    <name>Kredite</name>
+    <code></code>
+    <description></description>
+    <primaryCommodityId>4</primaryCommodityId>
+    <secondaryCommodityId>0</secondaryCommodityId>
+    <bankAccountId>0</bankAccountId>
+    <flags>4194305</flags>
+    <taxId>0</taxId>
+    <partnerId>0</partnerId>
+  </account>
+
+  <account>
+    <id>31</id>
+    <parentId>3</parentId>
+    <type>expense</type>
+    <name>Fahrtkosten</name>
+    <code></code>
+    <description></description>
+    <primaryCommodityId>4</primaryCommodityId>
+    <secondaryCommodityId>0</secondaryCommodityId>
+    <bankAccountId>0</bankAccountId>
+    <flags>4194305</flags>
+    <taxId>0</taxId>
+    <partnerId>0</partnerId>
+  </account>
+
+  
+</accounts>
+
+

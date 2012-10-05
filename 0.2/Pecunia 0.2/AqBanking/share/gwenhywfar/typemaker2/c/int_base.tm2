@@ -1,0 +1,214 @@
+<?xml?>
+
+<tm2>
+  <typedef id="int_base" lang="c">
+    <aedb_type>AEDB_DataType_Int</aedb_type>
+
+    <codedefs>
+
+      <codedef id="construct">
+        <code>
+          $(dst)=$(preset);
+        </code>
+      </codedef>
+
+      <codedef id="destruct">
+        <code>
+        </code>
+      </codedef>
+
+      <codedef id="assign">
+        <code>
+          $(dst)=$(src);
+        </code>
+      </codedef>
+
+      <codedef id="dup">
+        <code>
+          $(dst)=$(src);
+        </code>
+      </codedef>
+
+      <codedef id="compare">
+        <code>
+          if ($(dst)==$(src))
+            $(retval)=0;
+          else if ($(src)&lt;$(dst))
+            $(retval)=-1;
+          else
+            $(retval)=1;
+        </code>
+      </codedef>
+
+      <codedef id="toXml">
+        <!-- enum | !attribute -->
+        <memberFlagsMask>  enum attribute</memberFlagsMask>
+        <memberFlagsValue> enum          </memberFlagsValue>
+        <code>
+          GWEN_XMLNode_SetCharValue($(db), "$(name)", $(enum_tostring_fn)($(src)));
+        </code>
+      </codedef>
+
+      <codedef id="toXml">
+        <!-- enum | attribute -->
+        <memberFlagsMask>  enum attribute</memberFlagsMask>
+        <memberFlagsValue> enum attribute</memberFlagsValue>
+        <code>
+          GWEN_XMLNode_SetProperty($(db), "$(name)", $(enum_tostring_fn)($(src)));
+        </code>
+      </codedef>
+
+      <codedef id="toXml">
+        <!-- !enum -->
+        <memberFlagsMask>  enum </memberFlagsMask>
+        <memberFlagsValue>      </memberFlagsValue>
+        <code>
+          GWEN_XMLNode_SetIntValue($(db), "$(name)", $(src));
+        </code>
+      </codedef>
+
+
+      <codedef id="fromXml">
+        <!-- enum | !attribute -->
+        <memberFlagsMask>  enum attribute</memberFlagsMask>
+        <memberFlagsValue> enum          </memberFlagsValue>
+        <code>
+          {
+            const char *s;
+            
+            s=GWEN_XMLNode_GetCharValue($(db), "$(name)", NULL);
+            if (s)
+              $(dst)=$(enum_fromstring_fn)(s);
+            else
+              $(dst)=$(default);
+          }
+        </code>
+      </codedef>
+
+      <codedef id="fromXml">
+        <!-- enum | attribute -->
+        <memberFlagsMask>  enum attribute</memberFlagsMask>
+        <memberFlagsValue> enum attribute</memberFlagsValue>
+        <code>
+          {
+            const char *s;
+            
+            s=GWEN_XMLNode_GetProperty($(db), "$(name)", NULL);
+            if (s)
+              $(dst)=$(enum_fromstring_fn)(s);
+            else
+              $(dst)=$(default);
+          }
+        </code>
+      </codedef>
+
+      <codedef id="fromXml">
+        <!-- !enum -->
+        <memberFlagsMask>  enum </memberFlagsMask>
+        <memberFlagsValue>      </memberFlagsValue>
+        <code>
+          $(dst)=GWEN_XMLNode_GetIntValue($(db), "$(name)", $(default));
+        </code>
+      </codedef>
+
+
+
+      <codedef id="toDb">
+        <!-- enum | !attribute -->
+        <memberFlagsMask>  enum </memberFlagsMask>
+        <memberFlagsValue> enum </memberFlagsValue>
+        <code>
+          $(retval)=GWEN_DB_SetCharValue($(db), 
+                                         GWEN_DB_FLAGS_OVERWRITE_VARS, 
+                                         "$(name)", 
+                                         $(enum_tostring_fn)($(src)));
+        </code>
+      </codedef>
+
+      <codedef id="toDb">
+        <!-- !enum -->
+        <memberFlagsMask>  enum </memberFlagsMask>
+        <memberFlagsValue>      </memberFlagsValue>
+        <code>
+          $(retval)=GWEN_DB_SetIntValue($(db), GWEN_DB_FLAGS_OVERWRITE_VARS, "$(name)", $(src));
+        </code>
+      </codedef>
+
+
+
+      <codedef id="fromDb">
+        <!-- enum | !attribute -->
+        <memberFlagsMask>  enum </memberFlagsMask>
+        <memberFlagsValue> enum </memberFlagsValue>
+        <code>
+          {
+            const char *s;
+            
+            s=GWEN_DB_GetCharValue($(db), "$(name)", 0, NULL);
+            if (s)
+              $(dst)=$(enum_fromstring_fn)(s);
+            else
+              $(dst)=$(default);
+          }
+        </code>
+      </codedef>
+
+      <codedef id="fromDb">
+        <!-- !enum -->
+        <memberFlagsMask>  enum </memberFlagsMask>
+        <memberFlagsValue>      </memberFlagsValue>
+        <code>
+          $(dst)=GWEN_DB_GetIntValue($(db), "$(name)", 0, $(default));
+        </code>
+      </codedef>
+
+
+
+      <codedef id="toObject">
+        <code>
+          {
+            int64_t v64=(int64_t) ($(src));
+            $(retval)=AEDB_Object_SetFieldInt64($(db), $(fieldId), v64);
+          }
+        </code>
+      </codedef>
+
+
+
+      <codedef id="fromObject">
+        <code>
+          {
+            int64_t v64;
+            
+            $(retval)=AEDB_Object_GetFieldInt64($(db), $(fieldId), &amp;v64);
+            if ($(retval)&gt;=0)
+              $(dst)=(int) v64;
+          }
+        </code>
+      </codedef>
+
+
+
+      <codedef id="toHashString">
+        <code>
+          {
+            char numbuf[32];
+            
+            snprintf(numbuf, sizeof(numbuf)-1, "%d", $(src));
+            numbuf[sizeof(numbuf)-1]=0;
+            GWEN_Buffer_AppendString($(buffer), numbuf);
+          }
+        </code>
+      </codedef>
+
+
+    </codedefs>
+
+    <defaults>
+      <!-- defaults flags etc for member declarations of this type -->
+      <default>0</default>
+      <preset>0</preset>
+    </defaults>
+      
+  </typedef>
+</tm2>

@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AB_JOBQUEUE_LIST" type="pointer" lang="c" extends="list1_base" basetype="AB_JOBQUEUE">
+    <identifier>AB_JOBQUEUE_LIST</identifier>
+    <prefix>AB_JobQueue_List</prefix>
+  </typedef>
+</tm2>

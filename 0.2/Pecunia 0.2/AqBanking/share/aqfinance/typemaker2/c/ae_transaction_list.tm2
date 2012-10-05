@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AE_TRANSACTION_LIST" type="pointer" lang="c" extends="list1_base" basetype="AE_TRANSACTION">
+    <identifier>AE_TRANSACTION_LIST</identifier>
+    <prefix>AE_Transaction_List</prefix>
+  </typedef>
+</tm2>

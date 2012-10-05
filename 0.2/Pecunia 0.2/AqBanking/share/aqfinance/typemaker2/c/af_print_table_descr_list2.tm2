@@ -1,0 +1,8 @@
+<?xml?>
+
+<tm2>
+  <typedef id="AF_PRINT_TABLE_DESCR_LIST2" type="pointer" lang="c" extends="list2_base" basetype="AF_PRINT_TABLE_DESCR">
+    <identifier>AF_PRINT_TABLE_DESCR_LIST2</identifier>
+    <prefix>AF_PrintTableDescr_List2</prefix>
+  </typedef>
+</tm2>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/***************************************************************************
+ copyright   : (C) 2010 by Martin Preuss
+ email       : martin@aqbanking.de
+
+ ***************************************************************************
+ * This file is part of the project "AqBanking".                           *
+ * Please see toplevel file COPYING of that project for license details.   *
+ ***************************************************************************/
+-->
+
+<dialog type="dialog" name="ah_rdh_special" i18n="aqbanking"
+        flags="decorShrinkable decorStretchable decorMaximize decorMinimize decorClose decorMenu" >
+  <widget type="vlayout" flags="fillX fillY" >
+
+    <widget type="gridLayout" columns="2" flags="fillX" >
+
+      <widget type="label" text="HBCI Version" />
+      <widget type="comboBox" name="hbciVersionCombo"  columns="20" flags="fillX" />
+
+      <widget type="label" text="RDH Version" />
+      <widget type="comboBox" name="rdhVersionCombo"  columns="20" flags="fillX" />
+
+    </widget>
+
+    <widget type="checkBox" name="bankDoesntSignCheck" text="Bank does not sign messages" />
+    <widget type="checkBox" name="bankUsesSignSeqCheck" text="Bank uses own signature counter" />
+
+    <!-- wizard controls -->
+    <widget type="hLine" flags="fillX" />
+    <widget type="hlayout" flags="fillX equalWidth" >
+      <widget type="pushButton" text="Help"     name="helpButton" />
+      <widget type="hspacer" flags="fillX" />
+      <widget type="pushButton" text="Ok"     name="okButton" flags="default" />
+      <widget type="pushButton" text="Abort"  name="abortButton" />
+    </widget>
+
+  </widget>
+
+</dialog>

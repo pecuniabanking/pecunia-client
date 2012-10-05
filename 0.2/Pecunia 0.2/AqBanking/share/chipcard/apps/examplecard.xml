@@ -1,0 +1,68 @@
+<!-- 
+  This file only contains an description for an ExampleCard.
+  Such a file is not needed for every card application type, but it makes
+  it easier to implement and debug a new card application type.
+  Such a file contains a description of the file hierarchy on card 
+  applications (i.e. what files are stored on the card, the kind of content
+  etc).
+  For more complex examples see the XML files in data/apps/.
+ -->
+ 
+<apps>
+  <app name="ExampleCard" >
+  
+    <formats>
+      <!-- This element contains some formats to be referenced from within
+           applications or other parts of this file -->
+  
+      <format name="ExampleData">
+        <ELEM name="SomeText" type="ascii" />
+      </format>
+    </formats>
+  
+  
+    <files>
+      <!-- 
+        This element now contains the file hierarchy.
+        A chipcard most likely has a master file (the same as the root of a
+        disc-based filesystem), which contains multiple DF (equivalent to
+        directories in filesystems) and EF (equivalent to files in 
+        filesystems). Each DF/EF has an identifier (at least a short one, some
+        also have aliases).
+      -->
+  
+      <df name="DF_BOERSE" sid="0xa200" >
+        <!--
+          This element describes a DF on the chipcard. It has the short
+          identifier "0xa200".
+        -->
+        
+        <files>
+  
+          <ef name="EF_BETRAG" sid="0x0104"
+              type="record" mode="linear" 
+              size="0" minnum="1" maxnum="1">
+              <!--
+                This element describes an EF of a chipcard. Its short 
+                identifier is "0x0104" and it is found below the DF 
+                "DF_BOERSE" (short id "0xa200"). 
+                This EF has only one record whose size may vary (therefore the
+                "size" attribute above is "0"). The description of the format
+                of the data stored within such a record is described below.
+              -->
+              
+            <record>
+              <ELEM name="loaded" type="bcd" size="3" />
+              <ELEM name="maxload" type="bcd" size="3" />
+              <ELEM name="maxtrans" type="bcd" size="3" />
+            </record>
+          </ef>
+  
+        </files>
+      </df>
+        
+    </files>
+
+  </app>
+</apps>
+
