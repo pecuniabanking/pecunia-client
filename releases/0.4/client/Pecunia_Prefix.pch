@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'Pecunia' target in the 'Pecunia' project
-//
-
-#ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-#endif
