@@ -1,9 +1,0 @@
-<!-- 
-  This file just contains a dummy definition for any memory card.
- -->
- 
-<apps>
-  <app name="MemoryCard" >
-  </app>
-</apps>
-

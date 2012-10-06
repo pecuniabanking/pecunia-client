@@ -1,8 +1,0 @@
-<?xml?>
-
-<tm2>
-  <typedef id="AE_DBCONFLICT_LIST" type="pointer" lang="c" extends="list1_base" basetype="AE_DBCONFLICT">
-    <identifier>AE_DBCONFLICT_LIST</identifier>
-    <prefix>AE_DbConflict_List</prefix>
-  </typedef>
-</tm2>

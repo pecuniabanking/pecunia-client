@@ -1,8 +1,0 @@
-<?xml?>
-
-<tm2>
-  <typedef id="FF_APPSPEC_LIST2" type="pointer" lang="c" extends="list2_base" basetype="FF_APPSPEC">
-    <identifier>FF_APPSPEC_LIST2</identifier>
-    <prefix>FF_AppSpec_List2</prefix>
-  </typedef>
-</tm2>

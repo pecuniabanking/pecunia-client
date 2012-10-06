@@ -1,8 +1,0 @@
-<?xml?>
-
-<tm2>
-  <typedef id="AE_TASK" type="pointer" lang="c" extends="struct_base">
-    <identifier>AE_TASK</identifier>
-    <prefix>AE_Task</prefix>
-  </typedef>
-</tm2>

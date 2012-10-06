@@ -1,7 +1,0 @@
-<?xml?>
-
-<tm2>
-  <typedef id="uint32_t" lang="c" extends="int_base">
-    <identifier>uint32_t</identifier>
-  </typedef>
-</tm2>

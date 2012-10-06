@@ -1,8 +1,0 @@
-<?xml?>
-
-<tm2>
-  <typedef id="AE_BANKBALANCE" type="pointer" lang="c" extends="struct_base">
-    <identifier>AE_BANKBALANCE</identifier>
-    <prefix>AE_BankBalance</prefix>
-  </typedef>
-</tm2>

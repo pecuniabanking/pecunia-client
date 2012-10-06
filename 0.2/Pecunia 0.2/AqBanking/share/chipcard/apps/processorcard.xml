@@ -1,9 +1,0 @@
-<!-- 
-  This file just contains a dummy definition for any processor card.
- -->
- 
-<apps>
-  <app name="ProcessorCard" >
-  </app>
-</apps>
-

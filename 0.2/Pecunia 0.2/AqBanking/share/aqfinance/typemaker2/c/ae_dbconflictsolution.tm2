@@ -1,8 +1,0 @@
-<?xml?>
-
-<tm2>
-  <typedef id="AE_DBCONFLICTSOLUTION" type="pointer" lang="c" extends="struct_base">
-    <identifier>AE_DBCONFLICTSOLUTION</identifier>
-    <prefix>AE_DbConflictSolution</prefix>
-  </typedef>
-</tm2>

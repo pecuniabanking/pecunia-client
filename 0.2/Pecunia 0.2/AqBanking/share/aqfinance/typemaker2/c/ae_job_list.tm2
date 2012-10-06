@@ -1,8 +1,0 @@
-<?xml?>
-
-<tm2>
-  <typedef id="AE_JOB_LIST" type="pointer" lang="c" extends="list1_base" basetype="AE_JOB">
-    <identifier>AE_JOB_LIST</identifier>
-    <prefix>AE_Job_List</prefix>
-  </typedef>
-</tm2>

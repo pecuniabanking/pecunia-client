@@ -1,8 +1,0 @@
-<?xml?>
-
-<tm2>
-  <typedef id="AE_STATEMENT_LIST" type="pointer" lang="c" extends="list1_base" basetype="AE_STATEMENT">
-    <identifier>AE_STATEMENT_LIST</identifier>
-    <prefix>AE_Statement_List</prefix>
-  </typedef>
-</tm2>

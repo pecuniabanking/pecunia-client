@@ -1,8 +1,0 @@
-<?xml?>
-
-<tm2>
-  <typedef id="AF_PRINT_BOX_LIST2" type="pointer" lang="c" extends="list2_base" basetype="AF_PRINT_BOX">
-    <identifier>AF_PRINT_BOX_LIST2</identifier>
-    <prefix>AF_PrintBox_List2</prefix>
-  </typedef>
-</tm2>
