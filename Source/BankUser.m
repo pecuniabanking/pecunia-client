@@ -1,10 +1,21 @@
-//
-//  BankUser.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 05.03.12.
-//  Copyright 2012 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "BankUser.h"
 #import "MOAssistant.h"
@@ -68,6 +79,7 @@
     for (TanMethod *oldMethod in oldMethods) {
         [context deleteObject:oldMethod ];
     }
+    [context processPendingChanges];
 }
 
 -(void)updateTanMedia:(NSArray*)media
@@ -95,6 +107,7 @@
     for (TanMedium *oldMedium in oldMedia) {
         [context deleteObject:oldMedium ];
     }
+    [context processPendingChanges];
 }
 
 -(NSArray*)getTanSigningOptions
@@ -120,9 +133,9 @@
             
             // wenn es keine TAN-Medien gibt, nur die Methode angeben
             if ([media count ] == 0) {
-                option.tanMediumName = [NSString stringWithFormat:@"%@ %@", method.zkaMethodName, method.zkaMethodVersion ];
-                if ([zkamethod isEqualToString:@"mobileTAN" ]) option.tanMediumCategory = @"M";
-                if([[zkamethod substringToIndex:3] isEqualToString:@"HHD" ]) option.tanMediumCategory = @"G";
+                //option.tanMediumName = [NSString stringWithFormat:@"%@ %@", method.zkaMethodName, method.zkaMethodVersion ];
+                if (zkamethod && [zkamethod isEqualToString:@"mobileTAN" ]) option.tanMediumCategory = @"M";
+                if (zkamethod && [[zkamethod substringToIndex:3] isEqualToString:@"HHD" ]) option.tanMediumCategory = @"G";
                 [options addObject:option ];
             }
             

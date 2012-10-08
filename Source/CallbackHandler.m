@@ -41,12 +41,10 @@
 static CallbackHandler *callbackHandler = nil;
 
 @implementation CallbackHandler
-@synthesize currentSignOptions;
 @synthesize currentSigningOption;
 
 -(void)startSession
 {
-	self.currentSignOptions = [NSMutableDictionary dictionaryWithCapacity:10 ];
 	errorOccured = NO;
 }
 
@@ -105,7 +103,7 @@ static CallbackHandler *callbackHandler = nil;
 
 -(NSString*)getTanMethod: (CallbackData*)data
 {
-	if (self.currentSigningOption) {
+	if (self.currentSigningOption && self.currentSigningOption.tanMethod) {
 		return self.currentSigningOption.tanMethod;
 	}
 
@@ -133,8 +131,6 @@ static CallbackHandler *callbackHandler = nil;
     }
     NSString *method = [[controller selectedMethod ] stringValue ];
 	
-	SigningOption *option = [[[SigningOption alloc ] init ] autorelease ];
-	option.tanMethod = method;
     return method;
 }
 
@@ -187,29 +183,13 @@ static CallbackHandler *callbackHandler = nil;
 
 -(NSString*)getTanMedia:(CallbackData*)data
 {
-    if (self.currentSigningOption) {
+    if (self.currentSigningOption && self.currentSigningOption.tanMediumName) {
 		return self.currentSigningOption.tanMediumName;
 	}
     
-    // alter Code, sollte eigentlich nicht durchlaufen werden. Bleibt drin als Fallback
-	BankUser *user = [BankUser userWithId:data.userId bankCode:data.bankCode ];
-	if (user.preferredTanMethod != nil) {
-		if (user.preferredTanMethod.preferredMedium != nil) {
-			return user.preferredTanMethod.preferredMedium.name;
-		}
-	}
-	
-	TanSigningOption *option = [currentSignOptions objectForKey:user ];
-	if (option && option.tanMediumName != nil) {
-		return option.tanMediumName;
-	}
-	
     TanMediaWindowController *mediaWindow = [[[TanMediaWindowController alloc] initWithUser: data.userId bankCode: data.bankCode message: data.message] autorelease];
     int res = [NSApp runModalForWindow: [mediaWindow window]];
     if(res == 0) {
-		if (option) {
-			option.tanMediumName = mediaWindow.tanMedia;
-		}
         return mediaWindow.tanMedia;
     } else return @"<abort>";
 }
