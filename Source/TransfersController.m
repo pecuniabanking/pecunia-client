@@ -663,6 +663,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteBankCodeKey = @"selection.remoteBankCode";
             break;
         case TransferTypeStandard:
+        case TransferTypeDated: // TODO: needs to be handled differently, for all the various terminated flavours.
             [titleText setStringValue: NSLocalizedString(@"AP404", @"")];
             [receiverText setStringValue: NSLocalizedString(@"AP134", @"")];
             [accountText setStringValue: NSLocalizedString(@"AP401", @"")];
@@ -698,8 +699,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteAccountKey = @"selection.remoteAccount";
             remoteBankCodeKey = @"selection.remoteBankCode";
             break;
-        case TransferTypeDated: // TODO: needs to go, different transfer types allow an execution date.
-            return NO;
         case TransferTypeCollectiveCredit:
         case TransferTypeCollectiveDebit:
             return NO; // Not needed as individual transfer template type.
@@ -735,7 +734,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     //   - SEPA consolidated company/normal debits/transfers
     //   - Standard company/normal single debit/transfer
     //   - Standard consolidated company/normal debits/transfers
-    BOOL canBeTerminated = (type == TransferTypeSEPA) || (type == TransferTypeStandard) || (type == TransferTypeDebit);
+    // TODO: the bank has a final word if termination is available, so include this here.
+    BOOL canBeTerminated = (type == TransferTypeStandard) || (type == TransferTypeDated); // || (type == TransferTypeSEPA) || (type == TransferTypeDebit);
     [executionText setHidden: !canBeTerminated];
     [executeImmediatelyRadioButton setHidden: !canBeTerminated];
     [executeImmediatelyText setHidden: !canBeTerminated];
@@ -743,13 +743,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [executionDatePicker setHidden: !canBeTerminated];
     [calendarButton setHidden: !canBeTerminated];
     
-    if (canBeTerminated) {
-        [executeAtDateRadioButton setEnabled: NO];
-        executeAtDateRadioButton.state = NSOffState;
-        [executeImmediatelyRadioButton setEnabled: YES];
-        executeImmediatelyRadioButton.state = NSOnState;
-    }
-    
+    executeAtDateRadioButton.state = (type == TransferTypeDated) ? NSOnState : NSOffState;
+    executeImmediatelyRadioButton.state = (type == TransferTypeDated) ? NSOffState : NSOnState;
+
+    executionDatePicker.dateValue = [NSDate date];
+    [executionDatePicker setEnabled: type == TransferTypeDated];
+    [calendarButton setEnabled: type == TransferTypeDated];
+
     // Load the set of previously entered text for the receiver combo box.
     [receiverComboBox removeAllItems];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -760,12 +760,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             [receiverComboBox addItemsWithObjectValues: previousReceivers];
         }
     }
-    executeImmediatelyRadioButton.state = NSOnState;
-    executeAtDateRadioButton.state = NSOffState;
-    executionDatePicker.dateValue = [NSDate date];
-    [executionDatePicker setEnabled: NO];
-    [calendarButton setEnabled: NO];
-    
+
     return YES;
 }
 
@@ -1039,9 +1034,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return NO;
     }
     
-    BOOL isTerminated = [[transfer type ] intValue] == TransferTypeDated;
-    [executeAtDateRadioButton setEnabled: isTerminated];
-    [executeImmediatelyRadioButton setEnabled: !isTerminated];
+    BOOL isTerminated = transfer.type.intValue == TransferTypeDated;
 
     if (isTerminated) {
         executeAtDateRadioButton.state = NSOnState;
@@ -1375,7 +1368,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         [calendarWindow makeKeyWindow];
         calendarWindow.delegate = self;
         calendarWindow.controller = self;
-        [calendar setDateValue: [executionDatePicker dateValue]];
+        [calendar setDateValue: executionDatePicker.dateValue];
     }
 }
 
@@ -1394,7 +1387,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (IBAction)calendarChanged: (id)sender
 {
-    [executionDatePicker setDateValue: [sender dateValue]];
+    executionDatePicker.dateValue = [sender dateValue];
     [self hideCalendarWindow];
 }
 
@@ -1436,10 +1429,17 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         executeAtDateRadioButton.state = NSOffState;
         [executionDatePicker setEnabled: NO];
         [calendarButton setEnabled: NO];
+
+        // Remove valuta date, which is used to automatically switch to the dated type of the
+        // transfer (in the transaction controller). Set the transfer type accordingly in case it was changed.
+        transactionController.currentTransfer.valutaDate = nil;
+        transactionController.currentTransfer.type = [NSNumber numberWithInt: TransferTypeStandard];
     } else {
         executeImmediatelyRadioButton.state = NSOffState;
         [executionDatePicker setEnabled: YES];
         [calendarButton setEnabled: YES];
+
+        transactionController.currentTransfer.valutaDate = executionDatePicker.dateValue;
     }
 }
 
