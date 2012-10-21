@@ -1982,7 +1982,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{737, 34}, {71, 185}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView" ref="569487988"/>
+																				<reference key="NSNextKeyView"/>
 																				<bool key="NSEnabled">YES</bool>
 																				<object class="NSImageCell" key="NSCell" id="972627458">
 																					<int key="NSCellFlags">134217728</int>
@@ -3408,7 +3408,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																<reference key="NSNextKeyView" ref="628223670"/>
 																<object class="NSShadow" key="NSViewShadow">
 																	<double key="NSShadowHoriz">1</double>
-																	<double key="NSShadowVert">1</double>
+																	<double key="NSShadowVert">-1</double>
 																	<double key="NSShadowBlurRadius">2</double>
 																	<reference key="NSShadowColor" ref="1053514231"/>
 																</object>
@@ -15731,7 +15731,7 @@ wGw</bytes>
 				<string key="576.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="2" key="576.IBViewIntegration.shadowBlurRadius"/>
 				<reference key="576.IBViewIntegration.shadowColor" ref="1053514231"/>
-				<real value="1" key="576.IBViewIntegration.shadowOffsetHeight"/>
+				<real value="-1" key="576.IBViewIntegration.shadowOffsetHeight"/>
 				<real value="1" key="576.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="577.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="58.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
