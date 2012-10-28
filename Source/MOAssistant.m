@@ -1,10 +1,21 @@
-//
-//  MOAssistant.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 17.03.08.
-//  Copyright 2008 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "MOAssistant.h"
 #import "Category.h"
@@ -28,7 +39,6 @@
 @synthesize importerDir;
 
 static MOAssistant	*assistant = nil;
-//static NSString* oldFile = @"accounts_old.sqlite";
 static NSString *_dataFile = @"/accounts.sqlite";
 static NSString *_imageFile = @"/PecuniaData.sparseimage";
 
@@ -38,28 +48,28 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 -(id)init
 {
-	self = [super init ];
+	self = [super init];
 	
-	[NSMigrationManager addRelationshipMigrationMethodIfMissing ];
-	NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults ];
+	[NSMigrationManager addRelationshipMigrationMethodIfMissing];
+	NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults];
 
-    // customize data file name
-    if ([LaunchParameters parameters ].dataFile) {
-        _dataFile = [LaunchParameters parameters ].dataFile;
+    // Customize data file name.
+    if ([LaunchParameters parameters].dataFile) {
+        _dataFile = [LaunchParameters parameters].dataFile;
     }
 
 	encrypted = NO;
 	imageAvailable = NO;
 	
-	// create default directories if necessary
-	[self checkPaths ];
+	// Create default directories if necessary.
+	[self checkPaths];
 	
-	[self migrateDataDirFrom02 ];
+	[self migrateDataDirFrom02];
 	
-	encrypted = [self isEncryptedImageAtPath: dataDir ];
+	encrypted = [self isEncryptedImageAtPath: dataDir];
 	
-	// Check for relocation
-	NSString *relPath = [defaults valueForKey: @"RelocationPath" ];
+	// Check for relocation.
+	NSString *relPath = [defaults valueForKey: @"RelocationPath"];
 	if(relPath) {
 		BOOL res = [self relocateToPath: relPath ];
 		if(res == NO) {
@@ -71,7 +81,12 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	}
 
 	if (encrypted == NO) {
-		self.dataStorePath = [dataDir stringByAppendingString:_dataFile ];
+        NSArray *components = [_dataFile pathComponents];
+        if ([components count] > 2 && [[components objectAtIndex: 0] isEqualToString: @"/"]) {
+            self.dataStorePath = _dataFile;
+        } else {
+            self.dataStorePath = [dataDir stringByAppendingString: _dataFile];
+        }
 		self.accountsURL = [NSURL fileURLWithPath: dataStorePath];
 	}
 	
@@ -80,7 +95,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	return self;
 }
 
--(BOOL)isEncryptedImageAtPath:(NSString*)path
+-(BOOL)isEncryptedImageAtPath: (NSString*)path
 {
 	NSFileManager	*fm = [NSFileManager defaultManager ];
 	NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults ];
@@ -114,7 +129,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	return NO;
 }
 
--(NSString*)dataFileNameAtPath:(NSString*)path
+-(NSString*)dataFileNameAtPath: (NSString*)path
 {
 	if ([self isEncryptedImageAtPath: path ]) {
 		return _imageFile;
@@ -123,7 +138,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	}
 }
 
--(void)checkPaths
+- (void)checkPaths
 {
 	// create default paths
 	NSFileManager	*fm = [NSFileManager defaultManager ];
@@ -146,14 +161,14 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	
 	// Passport directory
 	self.ppDir = [pDir stringByExpandingTildeInPath];
-	if([fm fileExistsAtPath: ppDir] == NO) {
+	if ([fm fileExistsAtPath: ppDir] == NO) {
 		[fm createDirectoryAtPath: ppDir withIntermediateDirectories: YES attributes: nil error: &error ];
 		if(error) @throw error;
 	}
 	
 	// ImExporter Directory
 	self.importerDir = [iDir stringByExpandingTildeInPath];
-	if([fm fileExistsAtPath: importerDir ] == NO) {
+	if ([fm fileExistsAtPath: importerDir ] == NO) {
 		[fm createDirectoryAtPath: importerDir withIntermediateDirectories: YES attributes: nil error: &error ];
 		if(error) @throw error;
 	}

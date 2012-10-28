@@ -102,8 +102,9 @@
 							<object class="NSSegmentedControl" key="NSToolbarItemView" id="805917942">
 								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{0, 14}, {458, 25}}</string>
+								<string key="NSFrame">{{0, 14}, {398, 25}}</string>
 								<reference key="NSSuperview"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
@@ -119,19 +120,19 @@
 									<reference key="NSControlView" ref="805917942"/>
 									<array class="NSMutableArray" key="NSSegmentImages">
 										<object class="NSSegmentItem">
-											<double key="NSSegmentItemWidth">150</double>
+											<double key="NSSegmentItemWidth">130</double>
 											<string key="NSSegmentItemLabel">Konten + Kategorien</string>
 											<int key="NSSegmentItemImageScaling">0</int>
 										</object>
 										<object class="NSSegmentItem">
-											<double key="NSSegmentItemWidth">150</double>
+											<double key="NSSegmentItemWidth">130</double>
 											<string key="NSSegmentItemLabel">Überweisungen</string>
 											<int key="NSSegmentItemTag">1</int>
 											<bool key="NSSegmentItemSelected">YES</bool>
 											<int key="NSSegmentItemImageScaling">0</int>
 										</object>
 										<object class="NSSegmentItem">
-											<double key="NSSegmentItemWidth">150</double>
+											<double key="NSSegmentItemWidth">130</double>
 											<string key="NSSegmentItemLabel">Daueraufträge</string>
 											<int key="NSSegmentItemImageScaling">0</int>
 										</object>
@@ -186,7 +187,7 @@
 							</object>
 						</object>
 					</dictionary>
-					<array class="NSMutableArray" key="NSToolbarIBAllowedItems">
+					<array key="NSToolbarIBAllowedItems">
 						<reference ref="376623175"/>
 						<reference ref="545394835"/>
 					</array>
@@ -15944,7 +15945,7 @@ wGw</bytes>
 				<string key="6488.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6489.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6493.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<integer value="2" key="6494.IBNSSegmentedControlInspectorSelectedSegmentMetadataKey"/>
+				<integer value="0" key="6494.IBNSSegmentedControlInspectorSelectedSegmentMetadataKey"/>
 				<string key="6494.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6495.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6502.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

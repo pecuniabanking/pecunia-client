@@ -62,6 +62,10 @@
             argument = "-dServer"
             isEnabled = "YES">
          </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-f&quot;~/Library/Application Support/Pecunia/Demo/demodata.sqlite&quot;"
+            isEnabled = "YES">
+         </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
