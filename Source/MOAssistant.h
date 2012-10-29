@@ -1,10 +1,21 @@
-//
-//  MOAssistant.h
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 17.03.08.
-//  Copyright 2008 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import <Cocoa/Cocoa.h>
 
@@ -15,24 +26,56 @@
 	NSManagedObjectModel		*model;
 	NSMutableDictionary			*migRefs;
 	
+    // Location (external/internal) of data file (directory & filename)
 	NSString					*dataDir;
-	NSString					*ppDir;
-	NSString					*importerDir;
-	NSString					*dataStorePath;
+    NSURL                       *dataDirURL;
+    NSString                    *dataFilename;
+
+    // location (directory) of persistent store file
+    NSString					*dataStoreDir;
+    NSURL                       *pecuniaFileURL;
+
+    // resulting URL to use for persistent store
 	NSURL						*accountsURL;
-	BOOL						encrypted;
-	BOOL						imageAvailable;
+    
+    // passport directory
+	NSString					*ppDir;
+    
+    // import settings directory
+	NSString					*importerDir;
+    
+    // temporary directory
+	NSString					*tempDir;
+    
+	NSString					*dataStorePath;
+    NSString                    *accountsFilename;
+    
+    NSString                    *dataPassword;
+    
+    
+	BOOL						isEncrypted;
+	BOOL						decryptionDone;
+    BOOL                        isSandboxed;
+    BOOL                        isDefaultDir;
 }
 
 @property (nonatomic, copy) NSString *dataDir;
 @property (nonatomic, copy) NSString *ppDir;
 @property (nonatomic, copy) NSString *importerDir;
+@property (nonatomic, copy) NSString *tempDir;
 @property (nonatomic, copy) NSString *dataStorePath;
+@property (nonatomic, copy) NSString *accountsFilename;
+@property (nonatomic, copy) NSString *dataFilename;
+@property (nonatomic, copy) NSString *dataPassword;
 @property (nonatomic, retain) NSURL *accountsURL;
+@property (nonatomic, retain) NSURL *dataDirURL;
+@property (nonatomic, retain) NSURL *pecuniaFileURL;
 
 -(void)loadModel;
+-(void)relocate;
 -(BOOL)relocateStoreToLocation: (NSString*)path;
 -(BOOL)openImage;
+-(BOOL)decrypt;
 -(BOOL)relocateToPath: (NSString*)path;
 -(void)shutdown;
 -(BOOL)encrypted;
@@ -41,8 +84,8 @@
 -(BOOL)isEncryptedImageAtPath:(NSString*)path;
 -(NSString*)dataFileNameAtPath:(NSString*)path;
 -(void)checkPaths;
+-(void)checkSandboxed;
 
--(void)migrateDataDirFrom02;
 -(NSString*)passportDirectory;
 
 

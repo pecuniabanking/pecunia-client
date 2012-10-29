@@ -8,6 +8,7 @@
 
 #import "LaunchParameters.h"
 
+static NSString *extensionPackage = @".pecuniadata";
 
 @implementation LaunchParameters
 
@@ -27,14 +28,14 @@ static LaunchParameters *parameters = nil;
             NSString *name = [s substringFromIndex:2 ];
             if (name == nil || [name length ] == 0) continue;
             else {
-                self.dataFile = [@"/" stringByAppendingString:name ];
+                self.dataFile = [name stringByAppendingString:extensionPackage];
                 altFile = NO;
             }
         }
         if (altFile) {
             altFile = NO;
             if (s == nil || [s length ] == 0) continue;
-            self.dataFile = [@"/" stringByAppendingString:s ];
+            self.dataFile = [s stringByAppendingString:extensionPackage];
         }
         
         if ([s isEqualToString: @"-dServer" ]) {

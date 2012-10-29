@@ -102,9 +102,9 @@
 "AP56" = "Der Umzug der Pecunia-Daten war nicht erfolgreich. Es wird auf die alte Datenablage zurückgegriffen";
 "AP57" = "Die Änderung des Speicherorts wird erst beim nächsten Neustart wirksam. Möchten Sie Pecunia jetzt neu starten?";
 "AP58" = "Es existiert bereits eine verschlüsselte Datendatei (%@), die am %@ zuletzt verwendet wurde. Möchten Sie die Datei verwenden oder eine neue mit den derzeitigen Daten anlegen?";
-"AP59" = "Die Datei %@ existiert bereits und wurde am %@ zuletzt geändert. Sie muss vor dem Umzug der Pecunia-Daten gelöscht werden. Alternativ können Sie statt eines Umzugs auch die vorgenannte Datei verwenden";
+"AP59" = "Die Datei %@ existiert bereits. Möchten Sie die Datei überschreiben oder verwenden?";
 "AP60" = "Verwenden";
-"AP61" = "Löschen";
+"AP61" = "Überschreiben";
 "AP62" = "Neue anlegen";
 "AP63" = "Die verschlüsselte Datendatei wird beim nächsten Neustart verwendet. Möchten Sie Pecunia jetzt neu starten?";
 "AP64" = "Einnahmen";
@@ -195,6 +195,8 @@
 "AP183" = "Datenmigration";
 "AP184" = "Pecunia ermittelt jetzt für jede Bankkennung Informationen über erlaubte Geschäftsvorfälle, TAN-Methoden etc. Dazu müssen Sie evtl. Ihre PINs eingeben (falls nicht im Schlüsselbund gespeichert).";
 "AP185" = "Willkommen bei Pecunia. Um mit Ihrer Bank kommunizieren zu können müssen Sie zunächst eine sogenannte 'Bankkennung' anlegen. Mit der Bankkennung identifizieren Sie sich bei der Bank. Möchten Sie nun eine Bankkennung anlegen?";
+"AP186" = "Daten konnten nicht verschlüsselt werden";
+"AP187" = "Daten konnten nicht entschlüsselt werden";
 
 // Callback and backend.
 // AP350..AP399

@@ -151,6 +151,11 @@ static NSArray *exportFields = nil;
 
 -(IBAction)changeFileLocation: (id)sender
 {
+    
+	MOAssistant *assistant = [MOAssistant assistant ];
+    [assistant relocate];
+    
+    /*
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
 	NSString *path = [defaults valueForKey: @"DataDir" ];
 	if(path == nil) return; // should not happen
@@ -162,7 +167,7 @@ static NSArray *exportFields = nil;
 	
 	int result = [panel runModal];
 	
-	MOAssistant *assistant = [MOAssistant assistant ];
+	//MOAssistant *assistant = [MOAssistant assistant ];
 	BOOL encrypted = [assistant encrypted ];
 	if(result == NSOKButton) {
 		NSString *filePath;
@@ -219,6 +224,7 @@ static NSArray *exportFields = nil;
 			[NSApp terminate: self ];
 		}
 	}
+     */
 }
 
 -(IBAction)test: (id) sender
@@ -234,13 +240,42 @@ static NSArray *exportFields = nil;
 
 -(IBAction)encryptData: (id)sender
 {
-	NSFileManager *fm = [NSFileManager defaultManager ];
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
-	NSString *path = [defaults valueForKey: @"DataDir" ];
-	path = [path stringByAppendingString: @"/PecuniaData.sparseimage" ];
-	BOOL fileExists = [fm fileExistsAtPath: path ];
+    if (encrypt) {
+        // check if passwort is already defined. If yes, it must(!) be taken
+		NSString *passwd = [Keychain passwordForService:@"Pecunia" account:@"DataFile" ];
+		if (passwd != nil) {
+			[passw1Field setStringValue:passwd ];
+			[passw2Field setStringValue:passwd ];
+			[passw1Field setEnabled:NO ];
+			[passw2Field setEnabled:NO ];
+		}
+		
+		[NSApp beginSheet: encryptionSheet
+		   modalForWindow: [self window ]
+			modalDelegate: self
+		   didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
+			  contextInfo: NULL ];
+
+    } else {
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
+                                  NSLocalizedString(@"AP79", @""),
+                                  NSLocalizedString(@"no", @"No"),
+                                  NSLocalizedString(@"yes", @"Yes"),
+                                  nil);
+		if(res == NSAlertAlternateReturn) {
+			MOAssistant *assistant = [MOAssistant assistant ];
+			if([assistant stopEncryption ])	[[BankingController controller ] setEncrypted: NO ];
+            [Keychain deletePasswordForService:@"Pecunia" account:@"DataFile"];
+            return;
+		}
+    }
+    
+    return;
+    
+    
 	
-//	BOOL encrypt = ([sender state ] == NSOnState);
+    //	BOOL encrypt = ([sender state ] == NSOnState);
+    /*
 	if(encrypt) {
 		//  check if there is already an image
 		if(fileExists) {
@@ -328,6 +363,7 @@ static NSArray *exportFields = nil;
 			[self setValue: [NSNumber numberWithBool: YES ] forKey: @"encrypt" ];
 		}
 	}
+     */
 }
 
 - (void)sheetDidEnd: (NSWindow*)sheet
