@@ -197,6 +197,8 @@
 "AP185" = "Willkommen bei Pecunia. Um mit Ihrer Bank kommunizieren zu können müssen Sie zunächst eine sogenannte 'Bankkennung' anlegen. Mit der Bankkennung identifizieren Sie sich bei der Bank. Möchten Sie nun eine Bankkennung anlegen?";
 "AP186" = "Daten konnten nicht verschlüsselt werden";
 "AP187" = "Daten konnten nicht entschlüsselt werden";
+"AP188" = "Die Verschlüsselung wurde aufgehoben";
+"AP189" = "Die Pecunia-Datendatei wurde erfolgreich verschlüsselt";
 
 // Callback and backend.
 // AP350..AP399

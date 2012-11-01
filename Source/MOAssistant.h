@@ -24,15 +24,12 @@
 	NSManagedObjectContext		*context;
 	NSManagedObjectContext		*memContext;
 	NSManagedObjectModel		*model;
-	NSMutableDictionary			*migRefs;
 	
     // Location (external/internal) of data file (directory & filename)
-	NSString					*dataDir;
     NSURL                       *dataDirURL;
     NSString                    *dataFilename;
 
     // location (directory) of persistent store file
-    NSString					*dataStoreDir;
     NSURL                       *pecuniaFileURL;
 
     // resulting URL to use for persistent store
@@ -47,9 +44,6 @@
     // temporary directory
 	NSString					*tempDir;
     
-	NSString					*dataStorePath;
-    NSString                    *accountsFilename;
-    
     NSString                    *dataPassword;
     
     
@@ -59,12 +53,9 @@
     BOOL                        isDefaultDir;
 }
 
-@property (nonatomic, copy) NSString *dataDir;
 @property (nonatomic, copy) NSString *ppDir;
 @property (nonatomic, copy) NSString *importerDir;
 @property (nonatomic, copy) NSString *tempDir;
-@property (nonatomic, copy) NSString *dataStorePath;
-@property (nonatomic, copy) NSString *accountsFilename;
 @property (nonatomic, copy) NSString *dataFilename;
 @property (nonatomic, copy) NSString *dataPassword;
 @property (nonatomic, retain) NSURL *accountsURL;
@@ -73,16 +64,16 @@
 
 -(void)loadModel;
 -(void)relocate;
--(BOOL)relocateStoreToLocation: (NSString*)path;
--(BOOL)openImage;
+//-(BOOL)relocateStoreToLocation: (NSString*)path;
+//-(BOOL)openImage;
 -(BOOL)decrypt;
--(BOOL)relocateToPath: (NSString*)path;
+//-(BOOL)relocateToPath: (NSString*)path;
 -(void)shutdown;
 -(BOOL)encrypted;
 -(BOOL)encryptDataWithPassword: (NSString*)password;
 -(BOOL)stopEncryption;
--(BOOL)isEncryptedImageAtPath:(NSString*)path;
--(NSString*)dataFileNameAtPath:(NSString*)path;
+//-(BOOL)isEncryptedImageAtPath:(NSString*)path;
+//-(NSString*)dataFileNameAtPath:(NSString*)path;
 -(void)checkPaths;
 -(void)checkSandboxed;
 
