@@ -22,15 +22,35 @@
 #import "Keychain.h"
 #import "BankingController.h"
 
+#define _newStatementColor @"newStatementColor"
+#define _notAssignedColor @"notAssignedColor"
 #define _exportSeparator @"exportSeparator"
 
+static NSMutableDictionary *statementColors = nil;
 static NSArray *exportFields = nil;
 
-#define SYNCH_HEIGHT 280
+#define SYNCH_HEIGHT 330
 #define SEC_HEIGHT 280
 #define EXP_HEIGHT 375
 #define PRINT_HEIGHT 200
 
+void updateColorCache()
+{
+	if(statementColors == nil) statementColors = [[NSMutableDictionary dictionaryWithCapacity: 5 ] retain ];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	BOOL markNotAssigned = [defaults boolForKey: @"markNAStatements" ];
+	if(markNotAssigned) {
+		NSData *colorData = [defaults objectForKey: _notAssignedColor ];
+		if(colorData == nil) [statementColors setObject: [NSColor colorWithDeviceRed: 0.918 green: 1.0 blue: 0.258 alpha: 1.0 ] forKey: _notAssignedColor ];
+		else [statementColors setObject: [NSKeyedUnarchiver unarchiveObjectWithData: colorData ] forKey: _notAssignedColor ];
+	} else [statementColors removeObjectForKey: _notAssignedColor ];
+	BOOL markNewStatements = [defaults boolForKey: @"markNewStatements" ];
+	if(markNewStatements) {
+		NSData *colorData = [defaults objectForKey: _newStatementColor ];
+		if(colorData == nil) [statementColors setObject: [NSColor colorWithDeviceRed: 0.207 green: 0.684 blue: 0.984 alpha: 1.0 ] forKey: _newStatementColor ];
+		else [statementColors setObject: [NSKeyedUnarchiver unarchiveObjectWithData: colorData ] forKey: _newStatementColor ];
+	} else [statementColors removeObjectForKey: _newStatementColor ];
+}
 
 @implementation PreferenceController
 
@@ -131,6 +151,16 @@ static NSArray *exportFields = nil;
 		NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
 		[defaults setObject: fields forKey: @"Exporter.fields" ];
 	}
+    if(colorsChanged) {
+		updateColorCache();
+		[[mainWindow contentView ] display ];
+		colorsChanged = NO;
+	}
+}
+
+-(IBAction)colorButtonsChanged: (id)sender
+{
+	colorsChanged = YES;
 }
 
 // remove keychain values of all accounts
@@ -312,6 +342,49 @@ static NSArray *exportFields = nil;
     [[self window ] setTitle:[tabViewItem label ] ];
 }
 
+-(NSColor*)notAssignedColor
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	NSData *colorData = [defaults objectForKey: _notAssignedColor ];
+	if(!colorData) return [NSColor colorWithDeviceRed: 0.918 green: 1.0 blue: 0.258 alpha: 1.0 ];
+	return [NSKeyedUnarchiver unarchiveObjectWithData: colorData ];
+}
+
+-(void)setNotAssignedColor: (NSColor*)color
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject: color ];
+	[defaults setObject: colorData forKey: _notAssignedColor ];
+	colorsChanged = YES;
+}
+
+-(NSColor*)newStatementColor
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	NSData *colorData = [defaults objectForKey: _newStatementColor ];
+	if(!colorData) return [NSColor colorWithDeviceRed: 0.207 green: 0.684 blue: 0.984 alpha: 1.0 ];
+	return [NSKeyedUnarchiver unarchiveObjectWithData: colorData ];
+}
+
+-(void)setNewStatementColor: (NSColor*)color
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+	NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject: color ];
+	[defaults setObject: colorData forKey: _newStatementColor ];
+	colorsChanged = YES;
+}
+
++(NSColor*)notAssignedRowColor
+{
+	if(statementColors == nil) updateColorCache();
+	return [statementColors objectForKey: _notAssignedColor ];
+}
+
++(NSColor*)newStatementRowColor
+{
+	if(statementColors == nil) updateColorCache();
+	return [statementColors objectForKey: _newStatementColor ];
+}
 
 
 @end

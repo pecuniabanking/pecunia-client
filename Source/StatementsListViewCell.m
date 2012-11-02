@@ -24,7 +24,7 @@
 
 #import "GraphicsAdditions.h"
 #import "CurrencyValueTransformer.h"
-
+#import "PreferenceController.h"
 #import "GraphicsAdditions.h"
 
 extern NSString *StatementDateKey;
@@ -190,6 +190,7 @@ static CurrencyValueTransformer* currencyTransformer;
 - (void)setIsNew: (BOOL)flag
 {
     [newImage setHidden: !flag];
+    isNew = flag;
 }
 
 - (void)selectionChanged
@@ -281,6 +282,8 @@ static NSImage* stripeImage;
 
 - (void)drawRect:(NSRect)dirtyRect
 {
+    BOOL isUnassignedColored = NO;
+    
     if (innerGradient == nil) {
         [self setupDrawStructures];
     }
@@ -302,8 +305,35 @@ static NSImage* stripeImage;
     
     if ([self isSelected]) {
         [innerGradientSelected drawInBezierPath: path angle: 90.0];
+        if (hasUnassignedValue) {
+            NSColor *color = [PreferenceController notAssignedRowColor];
+            if (color) {
+                isUnassignedColored = YES;
+            }
+        }
     } else {
         [innerGradient drawInBezierPath: path angle: 90.0];
+		if (hasUnassignedValue) {
+            NSColor *color = [PreferenceController notAssignedRowColor];
+            if (color) {
+                NSGradient* aGradient = [[[NSGradient alloc]
+                                          initWithColorsAndLocations:color, (CGFloat)-0.1, [NSColor whiteColor], (CGFloat)1.1,
+                                          nil] autorelease];
+                
+                [aGradient drawInBezierPath:path angle:90.0];
+                isUnassignedColored = YES;
+            }
+        }
+        if (isNew) {
+            NSColor *color = [PreferenceController newStatementRowColor];
+            if (color) {
+                NSGradient* aGradient = [[[NSGradient alloc]
+                                          initWithColorsAndLocations:color, (CGFloat)-0.1, [NSColor whiteColor], (CGFloat)1.1,
+                                          nil] autorelease];
+                
+                [aGradient drawInBezierPath:path angle:90.0];
+            }
+        }
     }
     
     [[NSColor colorWithDeviceWhite: 0 / 255.0 alpha: 1] set];
@@ -337,7 +367,7 @@ static NSImage* stripeImage;
     [path stroke];
     
     // Mark the value area if there is an unassigned value remaining.
-    if (hasUnassignedValue)
+    if (hasUnassignedValue && !isUnassignedColored)
     {
         NSRect area = [categoriesLabel frame];
         area.origin.y = 2;

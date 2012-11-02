@@ -7,7 +7,7 @@
 //
 
 #import "PasswordWindow.h"
-
+#import "BWGradientBox.h"
 
 @implementation PasswordWindow
 
@@ -36,6 +36,11 @@
     if (hidePasswortSave) {
         [savePasswordButton setHidden:YES ];
     }
+    
+    // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
+    topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
+    topGradient.fillEndingColor = [NSColor colorWithCalibratedWhite: 99 / 255.0 alpha: 1];
+    backgroundGradient.fillColor = [NSColor whiteColor];
 }
 
 -(void)controlTextDidEndEditing:(NSNotification *)aNotification
@@ -45,7 +50,7 @@
 	if([result length] == 0) NSBeep();
 	else {
 		active = NO;
-		[self closeWindow ];
+		//[self closeWindow ];
 		[NSApp stopModalWithCode:0];
 	}
 }
@@ -56,8 +61,23 @@
 	active = YES;
 	NSBeep();
 	[inputField setStringValue: @"" ];
-	[inputField setBackgroundColor:[NSColor redColor ] ];
+    
+    shakeCount = 0;
+    while (shakeCount < 10) {
+        NSRect frame = [[self window] frame];
+        if ((shakeCount % 2) == 1) {
+            frame.origin.x -= 10;
+            [[self window] setFrame:frame display:YES];
+            usleep(50000);
+        } else {
+            frame.origin.x += 10;
+            [[self window] setFrame:frame display:YES];
+            usleep(50000);
+        }
+        shakeCount++;
+    }
 }
+
 
 -(void)closeWindow
 {

@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class BWGradientBox;
 
 @interface PasswordWindow : NSWindowController {
 
@@ -18,11 +19,18 @@
 	NSAttributedString      *text;
 	NSString                *title;
 	NSString                *result;
+    IBOutlet BWGradientBox  *topGradient;
+    IBOutlet BWGradientBox  *backgroundGradient;
+    NSTimer                 *shakeTimer;
+
 	BOOL		savePassword;
 	BOOL		active;
     BOOL        hidePasswortSave;
-	
+    BOOL        retry;
+    
+    int         shakeCount;
 }
+
 -(id)initWithText: (NSString* )x title: (NSString *)y;
 -(void)controlTextDidEndEditing:(NSNotification *)aNotification;
 -(void)windowWillClose:(NSNotification *)aNotification;

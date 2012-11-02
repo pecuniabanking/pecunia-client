@@ -61,9 +61,12 @@ static CallbackHandler *callbackHandler = nil;
         } else [pwWindow retry ];
         
         int res = [NSApp runModalForWindow: [pwWindow window]];
-        if(res) [NSApp terminate: self ];
-        
-        passwd = [pwWindow result];
+        if(res) {
+            passwd = nil;
+        } else {
+            passwd = [pwWindow result];
+        }
+        [pwWindow closeWindow];
     }
     if(passwd == nil || [passwd length ] == 0) return @"<abort>";
     return passwd;
@@ -154,8 +157,8 @@ static CallbackHandler *callbackHandler = nil;
                                                   title: @"Bitte PIN eingeben" ];
         
     } else [pwWindow retry ];
-    
     int res = [NSApp runModalForWindow: [pwWindow window]];
+    [pwWindow closeWindow];
     if(res == 0) {
         return [pwWindow result];
     } else return @"<abort>";

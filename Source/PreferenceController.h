@@ -55,8 +55,12 @@
 -(IBAction)printSettings:(id)sender;
 
 -(IBAction)removePINs: (id)sender;
+-(IBAction)colorButtonsChanged: (id)sender;
 
 -(void)setMainWindow: (NSWindow*)main;
 -(void)setHeight:(int)h;
+
++(NSColor*)notAssignedRowColor;
++(NSColor*)newStatementRowColor;
 
 @end

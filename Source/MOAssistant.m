@@ -450,6 +450,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                     }
                 }
             }
+            [pwWindow closeWindow];
         }
     } else {
         passwd = self.dataPassword;
