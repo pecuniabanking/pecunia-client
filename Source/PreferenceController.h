@@ -39,11 +39,8 @@
 	BOOL		colorsChanged;
 }
 
-//-(IBAction)ok: (id) sender;
-//-(IBAction)cancel: (id) sender;
 -(IBAction)changeFileLocation: (id)sender;
 
--(IBAction)test: (id) sender;
 -(IBAction)encryptData: (id)sender;
 -(IBAction)cancelSheet:(id)sender;
 -(IBAction)endSheet: (id)sender;

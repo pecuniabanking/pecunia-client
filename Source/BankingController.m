@@ -2651,7 +2651,7 @@ static BOOL runningOnLionOrLater = NO;
         [sc setMessage: NSLocalizedString(@"AP110", @"Open database...") removeAfter:0];
         
         @try {
-            [[MOAssistant assistant] openImage];
+            [[MOAssistant assistant] decrypt];
             self.managedObjectContext = [[MOAssistant assistant] context];
         }
         @catch(NSError* error) {
@@ -2892,6 +2892,12 @@ static BOOL runningOnLionOrLater = NO;
     }
     
     [aboutWindow fadeIn];
+}
+
+- (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
+{
+    // todo
+    return YES;
 }
 
 - (IBAction)toggleFullscreenIfSupported: (id)sender

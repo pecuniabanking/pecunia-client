@@ -1195,9 +1195,11 @@ NSString *escapeSpecial(NSString *s)
             if (account.userId == nil || ![account.userId isEqualToString: acc.userId]) {
                 account.userId = acc.userId;
                 account.customerId = acc.customerId;
-                NSMutableSet *users = [account mutableSetValueForKey: @"users"];
-                [users addObject: user];
             }
+            // ensure the user is linked to the account
+            NSMutableSet *users = [account mutableSetValueForKey: @"users"];
+            [users addObject: user];
+            
             if (acc.bic != nil) {
                 account.bic = acc.bic;
             }
@@ -1592,6 +1594,10 @@ NSString *escapeSpecial(NSString *s)
 {
     NSMutableArray *options = [NSMutableArray arrayWithCapacity:10 ];
     NSSet *users = account.users;
+    if (users == nil || [users count] == 0) {
+        [[MessageLog log ] addMessage: @"signingOptionForAccount: no users assigned to account" withLevel: LogLevel_Error];
+        return nil;
+    }
     for(BankUser *user in users) {
         SigningOption *option =  [user preferredSigningOption ];
         if (option) {

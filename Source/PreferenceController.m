@@ -19,7 +19,6 @@
 
 #import "PreferenceController.h"
 #import "MOAssistant.h"
-#import "HDIWrapper.h"
 #import "Keychain.h"
 #import "BankingController.h"
 
@@ -89,8 +88,6 @@ static NSArray *exportFields = nil;
             [expRadioMatrix setState:NSOnState atRow:2 column:0];
         }
     }
-
-//	if(encrypt)	[encryptButton setEnabled: NO ];
 }
 
 /*
@@ -151,156 +148,14 @@ static NSArray *exportFields = nil;
 
 -(IBAction)changeFileLocation: (id)sender
 {
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
-	NSString *path = [defaults valueForKey: @"DataDir" ];
-	if(path == nil) return; // should not happen
-
-	NSFileManager *fm = [NSFileManager defaultManager ];
-	NSOpenPanel *panel = [NSOpenPanel openPanel ];
-	[panel setCanChooseFiles: NO ];
-	[panel setCanChooseDirectories: YES ];
-	
-	int result = [panel runModal];
-	
 	MOAssistant *assistant = [MOAssistant assistant ];
-	BOOL encrypted = [assistant encrypted ];
-	if(result == NSOKButton) {
-		NSString *filePath;
-		
-		// we assume that encrypt is correct(!)
-		if (encrypted) {
-            filePath = [[[panel URL] path] stringByAppendingString: @"/PecuniaData.sparseimage"];
-        } else {
-            filePath = [[[panel URL] path] stringByAppendingString: @"/accounts.sqlite"];
-        }
-		
-		// check if file exists at target
-		NSDictionary *attrs = [fm attributesOfItemAtPath: filePath error: NULL ];
-		if(attrs) {
-			NSDate *date = [attrs objectForKey: NSFileModificationDate ];
-			NSDateFormatter *df = [[[NSDateFormatter alloc ] init ] autorelease ];
-			[df setDateStyle: NSDateFormatterMediumStyle ];
-			[df setTimeStyle: NSDateFormatterMediumStyle ];
-			
-			// issue a confirmation
-			int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP42", @""),
-											  NSLocalizedString(@"AP59", @""),
-											  NSLocalizedString(@"cancel", @""),
-											  NSLocalizedString(@"AP61", @""),
-											  NSLocalizedString(@"AP60", @""), 
-											  filePath,
-											  [df stringFromDate: date  ]
-											  );
-			
-			switch(res) {
-				case NSAlertDefaultReturn: return;
-				case NSAlertAlternateReturn: {
-					// remove existing file
-					NSError *error;
-					if(![fm removeItemAtPath: filePath error: &error ]) {
-						NSAlert *alert = [NSAlert alertWithError:error];
-						[alert runModal];
-						return;
-					}
-				}
-				default: break;
-			}
-		}
-		
-		// now relocation can start
-		[defaults setValue: [[panel URL] path] forKey: @"RelocationPath"];
-		int res = NSRunAlertPanel(NSLocalizedString(@"AP42", @""), 
-								  NSLocalizedString(@"AP57", @""),
-								  NSLocalizedString(@"yes", @"Yes"), 
-								  NSLocalizedString(@"no", @"No"), 
-								  nil);
-		if(res == NSAlertDefaultReturn) {
-			[[BankingController controller ] setRestart ];
-			[NSApp terminate: self ];
-		}
-	}
-}
-
--(IBAction)test: (id) sender
-{
-/*
-	HDIWrapper *wrapper = [HDIWrapper wrapper ];
-	
-	//[wrapper createImageWithPassword: @"test" ];
-	NSString *dataDir = [@"~/Library/Pecunia/PecuniaData.sparseimage" stringByExpandingTildeInPath ];
-	[wrapper attachImage: dataDir withPassword: @"test" ];
- */
+    [assistant relocate];
 }
 
 -(IBAction)encryptData: (id)sender
 {
-	NSFileManager *fm = [NSFileManager defaultManager ];
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
-	NSString *path = [defaults valueForKey: @"DataDir" ];
-	path = [path stringByAppendingString: @"/PecuniaData.sparseimage" ];
-	BOOL fileExists = [fm fileExistsAtPath: path ];
-	
-//	BOOL encrypt = ([sender state ] == NSOnState);
-	if(encrypt) {
-		//  check if there is already an image
-		if(fileExists) {
-			NSError *error;
-			NSDictionary *attrs = [fm attributesOfItemAtPath: path error: &error ];
-			NSDate *date = [attrs objectForKey: NSFileModificationDate ];
-			NSDateFormatter *df = [[[NSDateFormatter alloc ] init ] autorelease ];
-			[df setDateStyle: NSDateFormatterMediumStyle ];
-			[df setTimeStyle: NSDateFormatterMediumStyle ];
-			int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP46", @""), 
-									  NSLocalizedString(@"AP58", @""),
-									  NSLocalizedString(@"AP62", @""),
-									  NSLocalizedString(@"cancel", @"Cancel"),
-									  NSLocalizedString(@"AP60", @""), 
-									  path,
-									  [df stringFromDate: date  ]
-									  );
-			
-			
-			if(res == NSAlertDefaultReturn) {
-				// create new file. First rename old file
-				NSString *destPath = [[defaults valueForKey: @"DataDir" ] stringByAppendingString: @"/PecuniaData_old.sparseimage" ];
-				// if file exists first remove it
-				if([fm fileExistsAtPath: destPath ]) {
-					BOOL success = [fm removeItemAtPath: destPath error: &error ];
-					if(!success) {
-						NSAlert *alert = [NSAlert alertWithError:error];
-						[alert runModal];
-						[sender setState: NO ];
-						return;
-					}
-				}
-				// then rename the file
-				BOOL success = [fm moveItemAtPath: path toPath: destPath error: &error ];
-				if(!success) {
-					NSAlert *alert = [NSAlert alertWithError:error];
-					[alert runModal];
-					[sender setState: NO ];
-					return;
-				}
-			}
-			if(res == NSAlertOtherReturn) {
-				[defaults setBool: YES forKey: @"forceEncryption" ];
-				res = NSRunAlertPanel(NSLocalizedString(@"AP46", @""), 
-                                      NSLocalizedString(@"AP63", @""),
-                                      NSLocalizedString(@"yes", @"Yes"), 
-                                      NSLocalizedString(@"no", @"No"), 
-                                      nil);
-				if(res == NSAlertDefaultReturn) {
-					[[BankingController controller ] setRestart ];
-					[NSApp terminate: self ];
-				}
-				return;
-			}
-			if(res == NSAlertAlternateReturn) {
-				[sender setState: NO ];
-				return;
-			}
-		}
-		// check if passwort is already defined. If yes, it must(!) be taken
+    if (encrypt) {
+        // check if passwort is already defined. If yes, it must(!) be taken
 		NSString *passwd = [Keychain passwordForService:@"Pecunia" account:@"DataFile" ];
 		if (passwd != nil) {
 			[passw1Field setStringValue:passwd ];
@@ -314,20 +169,27 @@ static NSArray *exportFields = nil;
 			modalDelegate: self
 		   didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
 			  contextInfo: NULL ];
-	} else {
-		int res = NSRunAlertPanel(NSLocalizedString(@"AP46", @""), 
+
+    } else {
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
                                   NSLocalizedString(@"AP79", @""),
-                                  NSLocalizedString(@"no", @"No"), 
-                                  NSLocalizedString(@"yes", @"Yes"), 
+                                  NSLocalizedString(@"no", @"No"),
+                                  NSLocalizedString(@"yes", @"Yes"),
                                   nil);
 		if(res == NSAlertAlternateReturn) {
 			MOAssistant *assistant = [MOAssistant assistant ];
-			if([assistant stopEncryption ])	[[BankingController controller ] setEncrypted: NO ];
-			return;
-		} else {
-			[self setValue: [NSNumber numberWithBool: YES ] forKey: @"encrypt" ];
+			if([assistant stopEncryption ])	{
+                [[BankingController controller ] setEncrypted: NO ];
+                [Keychain deletePasswordForService:@"Pecunia" account:@"DataFile"];
+                NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
+                                NSLocalizedString(@"AP188", @""),
+                                NSLocalizedString(@"ok", @"Ok"),
+                                nil,
+                                nil);
+
+            }
 		}
-	}
+    }
 }
 
 - (void)sheetDidEnd: (NSWindow*)sheet
@@ -336,13 +198,17 @@ static NSArray *exportFields = nil;
 {
 	if(code == 0) {
 		// now create 
-		MOAssistant *assistant = [MOAssistant assistant ];
-		if([assistant encryptDataWithPassword: password ]) {
-			if(savePassword) [Keychain setPassword: password forService: @"Pecunia" account: @"DataFile" store: YES];
+		MOAssistant *assistant = [MOAssistant assistant];
+		if([assistant encryptDataWithPassword: password]) {
 			[encryptButton setEnabled: NO ];
 			[[BankingController controller ] setEncrypted: YES ];
+            NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
+                            NSLocalizedString(@"AP189", @""),
+                            NSLocalizedString(@"ok", @"Ok"),
+                            nil,
+                            nil);
 			return;
-		} 
+		}
 	}
 	// No success
 	[self setValue: [NSNumber numberWithBool: NO ] forKey: @"encrypt" ];

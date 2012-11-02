@@ -4,6 +4,23 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>de_DE</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>pecuniadata</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>Vespasian</string>
+			<key>CFBundleTypeName</key>
+			<string>Pecunia Datendatei</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSTypeIsPackage</key>
+			<true/>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>Pecunia</string>
 	<key>CFBundleHelpBookFolder</key>
