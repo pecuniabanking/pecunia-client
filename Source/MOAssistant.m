@@ -40,6 +40,13 @@
 
 
 static MOAssistant	*assistant = nil;
+
+static NSString *dataDirKey = @"DataDir";
+static NSString *dataFilenameKey = @"dataFilename";
+
+static NSString *extensionStandard = @".sqlite";
+static NSString *extensionCrypted = @".sqlcrypt";
+static NSString *extensionPackage = @".pecuniadata";
 static NSString *_dataFile = @"/accounts.sqlite";
 static NSString *_imageFile = @"/PecuniaData.sparseimage";
 
@@ -52,14 +59,41 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 -(id)init
 {
-	self = [super init];
-	
-	[NSMigrationManager addRelationshipMigrationMethodIfMissing];
-	NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults];
-
-    // Customize data file name.
-    if ([LaunchParameters parameters].dataFile) {
-        _dataFile = [LaunchParameters parameters].dataFile;
+    self = [super init ];
+    
+    NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults ];
+    
+    self.dataFilename = [defaults valueForKey:dataFilenameKey];
+    if (self.dataFilename == nil) {
+        self.dataFilename = @"accounts.pecuniadata";
+    }
+    
+    // customize data file name
+    if ([LaunchParameters parameters ].dataFile) {
+        self.dataFilename = [LaunchParameters parameters ].dataFile;
+    }
+    
+    isEncrypted = NO;
+    isDefaultDir = YES;
+    decryptionDone = NO;
+    
+    // do we run in a Sandbox?
+    [self checkSandboxed];
+    
+    // create default directories if necessary
+    [self checkPaths ];
+    
+    // migrate old stores
+    [self migrate10];
+    
+    [self accessSandbox];
+    
+    isEncrypted = [self checkIsEncrypted];
+    
+    if (isEncrypted == NO) {
+        self.accountsURL = [self.pecuniaFileURL URLByAppendingPathComponent:_dataFileStandard];
+    } else {
+        self.accountsURL = [[NSURL fileURLWithPath:tempDir] URLByAppendingPathComponent:_dataFileStandard];
     }
     
     model = nil; 
@@ -67,44 +101,17 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     return self;
 }
 
-	encrypted = NO;
-	imageAvailable = NO;
-	
-	// Create default directories if necessary.
-	[self checkPaths];
-	
-	[self migrateDataDirFrom02];
-	
-	encrypted = [self isEncryptedImageAtPath: dataDir];
-	
-	// Check for relocation.
-	NSString *relPath = [defaults valueForKey: @"RelocationPath"];
-	if(relPath) {
-		BOOL res = [self relocateToPath: relPath ];
-		if(res == NO) {
-			NSRunAlertPanel(NSLocalizedString(@"AP42", @""), 
-							NSLocalizedString(@"AP56", @""),
-							NSLocalizedString(@"ok", @"OK"), 
-							nil, nil);
-		}
-	}
-
-	if (encrypted == NO) {
-        NSArray *components = [_dataFile pathComponents];
-        if ([components count] > 2 && [[components objectAtIndex: 0] isEqualToString: @"/"]) {
-            self.dataStorePath = _dataFile;
-        } else {
-            self.dataStorePath = [dataDir stringByAppendingString: _dataFile];
-        }
-		self.accountsURL = [NSURL fileURLWithPath: dataStorePath];
-	}
-	
-	model = nil; 
-	context = nil;
-	return self;
+-(void)checkSandboxed
+{
+    NSString *homeDir = [@"~" stringByExpandingTildeInPath];
+    if ([homeDir hasSuffix:@"de.pecuniabanking.pecunia/Data"]) {
+        isSandboxed = YES;
+    } else {
+        isSandboxed = NO;
+    }
 }
 
--(BOOL)isEncryptedImageAtPath: (NSString*)path
+-(void)updateDefaults
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setValue:self.dataFilename forKey:dataFilenameKey];
@@ -176,7 +183,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 }
 
--(NSString*)dataFileNameAtPath: (NSString*)path
+-(BOOL)checkIsEncrypted
 {
     NSFileManager	*fm = [NSFileManager defaultManager ];
     NSURL *dataFileURL = [self.dataDirURL URLByAppendingPathComponent:self.dataFilename];
@@ -191,38 +198,74 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 - (void)checkPaths
 {
-	// create default paths
-	NSFileManager	*fm = [NSFileManager defaultManager ];
-	NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults ];
-	NSError *error = nil;
+    // create default paths
+    NSFileManager	*fm = [NSFileManager defaultManager ];
+    NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults ];
+    NSError *error = nil;
+    
+    NSString *defaultDataDir = [lDir stringByExpandingTildeInPath ];
+    if([fm fileExistsAtPath: defaultDataDir] == NO) {
+        [fm createDirectoryAtPath: defaultDataDir withIntermediateDirectories: YES attributes: nil error: &error ];
+        if(error) @throw error;
+    }
+
+    NSString *dataDir = [defaults valueForKey: dataDirKey ];
+    
+    if (isSandboxed) {
+        if (dataDir != nil) {
+            if ([dataDir hasPrefix:@"/Users/"] && [dataDir hasSuffix:@"/Library/Application Support/Pecunia/Data"]) {
+                // it's the default directory, set the DataDir to nil
+                [defaults setValue: nil forKey: dataDirKey ];
+                dataDir = defaultDataDir;
+            } else {
+                // it's not the default directory
+                isDefaultDir = NO;
+            }
+        } else {
+            dataDir = defaultDataDir;
+        }
+    } else {
+        // not sandboxed
+        if (dataDir == nil) {
+            dataDir = defaultDataDir;
+        } else {
+            // check if it is the default directory
+            if ([dataDir hasPrefix:defaultDataDir]) {
+                [defaults setValue:nil forKey:dataDirKey];
+                dataDir = defaultDataDir;
+            } else {
+                defaultDataDir = NO;
+            }
+        }
+    }
+    self.dataDirURL = [NSURL fileURLWithPath:dataDir];
+    self.pecuniaFileURL = [self.dataDirURL URLByAppendingPathComponent:self.dataFilename];
 	
-	NSString *defaultDataDir = [lDir stringByExpandingTildeInPath ];
-	if([fm fileExistsAtPath: defaultDataDir] == NO) {
-		[fm createDirectoryAtPath: defaultDataDir withIntermediateDirectories: YES attributes: nil error: &error ];
-		if(error) @throw error;
-	}
-	
-	self.dataDir = [defaults valueForKey: @"DataDir" ];
-	
-	// DB directory
-	if(dataDir == nil) {
-		self.dataDir = defaultDataDir;
-		[defaults setValue: dataDir forKey: @"DataDir" ];
-	}
-	
-	// Passport directory
-	self.ppDir = [pDir stringByExpandingTildeInPath];
-	if ([fm fileExistsAtPath: ppDir] == NO) {
-		[fm createDirectoryAtPath: ppDir withIntermediateDirectories: YES attributes: nil error: &error ];
-		if(error) @throw error;
-	}
-	
-	// ImExporter Directory
-	self.importerDir = [iDir stringByExpandingTildeInPath];
-	if ([fm fileExistsAtPath: importerDir ] == NO) {
-		[fm createDirectoryAtPath: importerDir withIntermediateDirectories: YES attributes: nil error: &error ];
-		if(error) @throw error;
-	}
+    // Passport directory
+    self.ppDir = [pDir stringByExpandingTildeInPath];
+    if([fm fileExistsAtPath: ppDir] == NO) {
+        [fm createDirectoryAtPath: ppDir withIntermediateDirectories: YES attributes: nil error: &error ];
+        if(error) @throw error;
+    }
+    
+    // ImExporter Directory
+    self.importerDir = [iDir stringByExpandingTildeInPath];
+    if([fm fileExistsAtPath: importerDir ] == NO) {
+        [fm createDirectoryAtPath: importerDir withIntermediateDirectories: YES attributes: nil error: &error ];
+        if(error) @throw error;
+    }
+    
+    // Temporary Directory
+    self.tempDir = NSTemporaryDirectory();
+    
+    // if it's the default data dir: check if the pecunia datafile already exists - if not, create it
+    if (defaultDataDir) {
+        if ([fm fileExistsAtPath:[self.pecuniaFileURL path]] == NO) {
+            NSDictionary *attributes = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:0700] forKey:NSFilePosixPermissions];
+            [fm createDirectoryAtPath: [self.pecuniaFileURL path] withIntermediateDirectories: YES attributes: attributes error: &error ];
+            if(error) @throw error;
+        }
+    }
 }
 
 -(void)migrate10

@@ -19,6 +19,8 @@
 
 #import "LaunchParameters.h"
 
+static NSString *extensionPackage = @".pecuniadata";
+
 @implementation LaunchParameters
 
 @synthesize dataFile;
@@ -39,17 +41,15 @@ static LaunchParameters *parameters = nil;
                 continue;
             }
             else {
-                dataFile = [name stringByExpandingTildeInPath];
+                self.dataFile = [name stringByAppendingString:extensionPackage];
                 altFile = NO;
             }
         }
         if (altFile) {
             // If there's a space between -f and the file name we end up here.
             altFile = NO;
-            if (s == nil || [s length] == 0) {
-                continue;
-            }
-            dataFile = [s stringByExpandingTildeInPath];
+            if (s == nil || [s length ] == 0) continue;
+            self.dataFile = [s stringByAppendingString:extensionPackage];
         }
         
         if ([s isEqualToString: @"-dServer"]) {
