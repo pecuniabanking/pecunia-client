@@ -20,7 +20,7 @@
 //@property (nonatomic, retain) Category *category;
 @property (nonatomic, strong) BankStatement *statement;
 
--(NSString*)stringForFields: (NSArray*)fields usingDateFormatter: (NSDateFormatter*)dateFormatter;
+-(NSString*)stringForFields:(NSArray*)fields usingDateFormatter:(NSDateFormatter*)dateFormatter numberFormatter:(NSNumberFormatter*)numberFormatter;
 -(void)moveToCategory:(Category*)tcat;
 -(void)remove;
 -(NSComparisonResult)compareDate: (StatCatAssignment*)stat;

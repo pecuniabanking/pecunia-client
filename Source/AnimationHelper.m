@@ -181,7 +181,7 @@
     [zoomWindow setHasShadow: [self hasShadow]];
 	[zoomWindow setLevel: [self level]];
     [zoomWindow setOpaque: NO];
-    [zoomWindow setReleasedWhenClosed: YES];
+    [zoomWindow setReleasedWhenClosed: NO];
     [zoomWindow useOptimizedDrawing: YES];
     
     imageView = [[NSImageView alloc] initWithFrame: [zoomWindow contentRectForFrameRect: frame]];

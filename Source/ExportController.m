@@ -67,6 +67,8 @@ static ExportController *exportController = nil;
 	NSSavePanel *sp;
 	NSError		*error = nil;
 	int runResult;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
 	// which fields shall be exported?
 	NSArray	*fields = [self exportedFields ];
@@ -91,7 +93,13 @@ static ExportController *exportController = nil;
 	//	[sp setRequiredFileType:@"txt"];
 	
 	/* display the NSSavePanel */
-    [sp setDirectoryURL: [NSURL URLWithString: NSHomeDirectory()]];
+    NSString *saveDir = [defaults valueForKey:@"lastExportDirectory"];
+    if (saveDir == nil) {
+        // todo: to be replaced
+        saveDir = NSHomeDirectory();
+    }
+    
+    [sp setDirectoryURL: [NSURL URLWithString: saveDir]];
     [sp setNameFieldStringValue: [[cat name] stringByAppendingString:@".csv"]];
 	runResult = [sp runModal];
 	
@@ -101,6 +109,11 @@ static ExportController *exportController = nil;
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 		[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+        
+        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+        numberFormatter.usesSignificantDigits = NO;
+        numberFormatter.minimumFractionDigits = 2;
+        numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
 		
 		NSMutableString* res = [NSMutableString stringWithCapacity: 1000 ];
 		NSArray* cats = [[cat allChildren ] allObjects ];
@@ -114,7 +127,7 @@ static ExportController *exportController = nil;
 			NSArray* stats = [currentCategory statementsFrom: from_Date to: to_Date withChildren: withChildren];
 			stats = [stats sortedArrayUsingDescriptors: [NSArray arrayWithObject: sd]];
 			for (StatCatAssignment *stat in stats) {
-				NSString* s = [stat stringForFields: fields usingDateFormatter: dateFormatter];
+				NSString* s = [stat stringForFields:fields usingDateFormatter:dateFormatter numberFormatter:numberFormatter];
 				[res appendString: s];
 			}
 		}
@@ -125,6 +138,10 @@ static ExportController *exportController = nil;
 			[alert runModal];
 			return;
 		};
+        
+        // save last export directory
+        [defaults setValue:[[sp directoryURL] path] forKey:@"lastExportDirectory"];
+        
 		// issue success message
 		NSRunInformationalAlertPanel(NSLocalizedString(@"AP71", @""),
 									 NSLocalizedString(@"AP74", @""),

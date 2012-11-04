@@ -881,10 +881,16 @@ NSString *escapeSpecial(NSString *s)
         
         [cmd appendFormat:@"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>", result.bankCode, result.accountNumber ];
         [self appendTag:@"subNumber" withValue:result.accountSubnumber to:cmd ];
-        NSInteger maxStatDays = [[NSUserDefaults standardUserDefaults ] integerForKey:@"maxStatDays" ];
-        if (maxStatDays == 0) maxStatDays = 90;
         
-        if (result.account.latestTransferDate == nil) {
+        
+        
+        NSInteger maxStatDays = 0;
+        if ([[NSUserDefaults standardUserDefaults ] boolForKey:@"limitStatsAge"]) {
+            maxStatDays = [[NSUserDefaults standardUserDefaults ] integerForKey:@"maxStatDays" ];
+            if (maxStatDays == 0) maxStatDays = 90;
+        }
+        
+        if (result.account.latestTransferDate == nil && maxStatDays > 0) {
             result.account.latestTransferDate = [[NSDate alloc] initWithTimeInterval: -86400 * maxStatDays sinceDate: [NSDate date]];
         }
         

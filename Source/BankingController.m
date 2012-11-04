@@ -781,7 +781,7 @@ static BOOL runningOnLionOrLater = NO;
     // check if at least one Account is assigned to a user
     NSUInteger nInactive = 0;
     BankAccount *account;
-    for (account in selectedAccounts) if(account.userId == nil) nInactive++;
+    for (account in selectedAccounts) if(account.userId == nil && ([account.isManual boolValue] == NO)) nInactive++;
     if (nInactive == [selectedAccounts count]) {
         NSRunAlertPanel(NSLocalizedString(@"AP87", @""), 
                         NSLocalizedString(@"AP88", @""), 

@@ -25,7 +25,7 @@
 	return [self.statement.date compare: stat.statement.date ];
 }
 
--(NSString*)stringForFields: (NSArray*)fields usingDateFormatter: (NSDateFormatter*)dateFormatter
+-(NSString*)stringForFields: (NSArray*)fields usingDateFormatter:(NSDateFormatter*)dateFormatter numberFormatter:(NSNumberFormatter*)numberFormatter
 {
 	NSMutableString	*res = [NSMutableString stringWithCapacity: 300 ];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
@@ -42,8 +42,8 @@
 
 		if (obj) {
 			if([field isEqualToString: @"valutaDate" ] || [field isEqualToString: @"date" ]) s = [dateFormatter stringFromDate: (NSDate*)obj ];
-			else if( [field isEqualToString: @"value" ] )  { 
-				s = [(NSDecimalNumber*)obj descriptionWithLocale: [NSLocale currentLocale ]];
+			else if( [field isEqualToString: @"value" ] )  {
+                s = [numberFormatter stringFromNumber:(NSNumber*)obj];
 			}
 			else if([field isEqualToString: @"categories" ]) {
 				s = self.statement.categoriesDescription;
