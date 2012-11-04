@@ -28,24 +28,5 @@
 @synthesize hbciVersion;
 @synthesize website;
 
--(void)dealloc
-{
-	[country release ];
-	[branch release ];
-	[bankCode release ];
-	[bic release ];
-	[name release ];
-	[location release ];
-	[street release ];
-	[city release ];
-	[region release ];
-	[phone release ];
-	[email release ];
-	[host release ];
-	[pinTanURL release ];
-	[pinTanVersion release ];
-    [hbciVersion release ];
-	[super dealloc ];
-}
 
 @end

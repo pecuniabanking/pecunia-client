@@ -31,7 +31,7 @@
 		settings = [[ImportSettings alloc ] init ];
 		isNew = YES;
 	} else {
-		settings = [is retain ];
+		settings = is;
 		isNew = NO;
 	}
 	
@@ -40,7 +40,6 @@
 					@"remoteSuffix", @"remoteCountry", @"remoteName1", @"remoteName2", @"saldo",
 					@"debitCredit", @"transactionText", @"undefined", @"purpose1", @"purpose2", @"purpose3", @"purpose4",
 					@"value", @"valutaDate", @"currency", nil ];
-	[importFields retain ];
 	
 	managedObjectContext = [[MOAssistant assistant ] context ];
 	return self;
@@ -76,12 +75,6 @@
 }
 
 
--(void)dealloc
-{
-	[settings release ];
-	[importFields release ];
-	[super dealloc ];
-}
 
 -(IBAction)save:(id)sender
 {

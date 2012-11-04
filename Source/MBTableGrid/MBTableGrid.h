@@ -111,10 +111,10 @@ typedef enum {
 	MBTableGridHeaderCell *headerCell;
 	
 	/* Data Source */
-	IBOutlet id <MBTableGridDataSource> dataSource;
+	IBOutlet id <MBTableGridDataSource> __unsafe_unretained dataSource;
 	
 	/* Delegate */
-	IBOutlet id <MBTableGridDelegate> delegate;
+	IBOutlet id <MBTableGridDelegate> __unsafe_unretained delegate;
 	
 	/* Headers */
 	NSScrollView *columnHeaderScrollView;
@@ -196,7 +196,7 @@ typedef enum {
  * @see			selectedRowIndexes
  * @see			selectCellsInColumns:rows:
  */
-@property (nonatomic, retain) NSIndexSet *selectedColumnIndexes;
+@property (nonatomic, strong) NSIndexSet *selectedColumnIndexes;
 
 /**
  * @brief		Returns an index set containing the indexes of
@@ -208,7 +208,7 @@ typedef enum {
  * @see			selectedColumnIndexes
  * @see			selectCellsInColumns:rows:
  */
-@property (nonatomic, retain) NSIndexSet *selectedRowIndexes;
+@property (nonatomic, strong) NSIndexSet *selectedRowIndexes;
 
 /**
  * @}
@@ -298,7 +298,7 @@ typedef enum {
  *
  * @see			delegate
  */
-@property(assign) id <MBTableGridDataSource> dataSource;
+@property(unsafe_unretained) id <MBTableGridDataSource> dataSource;
 
 /**
  * @brief		The object that acts as the delegate of the 
@@ -309,7 +309,7 @@ typedef enum {
  *
  * @see			dataSource
  */
-@property (nonatomic, assign) id <MBTableGridDelegate> delegate;
+@property (nonatomic, unsafe_unretained) id <MBTableGridDelegate> delegate;
 
 /**
  * @brief	The default size for a cell (which determines the width of columns and the height of rows.

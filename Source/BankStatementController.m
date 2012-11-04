@@ -18,9 +18,8 @@
 
 - (void)dealloc
 {
-	[accountStatements release], accountStatements = nil;
+	accountStatements = nil;
 
-	[super dealloc];
 }
 
 @synthesize accountStatements;
@@ -70,7 +69,7 @@
 
 -(void)arrangeStatements
 {
-	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
+	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 
 	NSMutableSet *statements = [account mutableSetValueForKey:@"statements" ];
@@ -87,7 +86,7 @@
 		[valueField setTextColor:[NSColor redColor ] ];
 	}
 	
-	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"localName" ascending:YES] autorelease];
+	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"localName" ascending:YES];
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[categoriesController setSortDescriptors: sds ];
 	
@@ -115,7 +114,7 @@
 		if ([[ShortDate dateWithDate:newStatement.date ] compare: [ShortDate dateWithDate: stat.date ] ] != NSOrderedAscending) {
 			// newStatement.date == stat.date
 			if ([[ShortDate dateWithDate:newStatement.date ] compare: [ShortDate dateWithDate: stat.date ] ] == NSOrderedSame) {
-				newStatement.date = [[[NSDate alloc] initWithTimeInterval: 100 sinceDate: stat.date] autorelease];
+				newStatement.date = [[NSDate alloc] initWithTimeInterval: 100 sinceDate: stat.date];
 			} else {
 				newStatement.date = [[ShortDate dateWithDate:newStatement.date ] lowDate ];
 			}

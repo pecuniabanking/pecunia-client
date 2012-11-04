@@ -78,9 +78,8 @@ static LaunchParameters *parameters = nil;
 
 - (void)dealloc
 {
-	[dataFile release], dataFile = nil;
+	dataFile = nil;
 
-	[super dealloc];
 }
 
 @end

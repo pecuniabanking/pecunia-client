@@ -26,7 +26,7 @@
 -(void)awakeFromNib
 {
     NSTableColumn* column = [[optionsView tableColumns] objectAtIndex:0];
-    SigningOptionsViewCell* cell = [[[SigningOptionsViewCell alloc] init] autorelease];
+    SigningOptionsViewCell* cell = [[SigningOptionsViewCell alloc] init];
     [column setDataCell: cell];
 /*    
     NSMutableArray *options = [NSMutableArray arrayWithCapacity:10 ];

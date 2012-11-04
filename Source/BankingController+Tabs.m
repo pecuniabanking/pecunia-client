@@ -31,9 +31,9 @@
 {
 	NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: StandingOrderTabIdentifier];
 	if (index == NSNotFound) {
-		standingOrderController = [[[StandingOrderController alloc] init] autorelease];
+		standingOrderController = [[StandingOrderController alloc] init];
 		if ([NSBundle loadNibNamed: @"Orders" owner: standingOrderController]) {
-			NSTabViewItem *item = [[[NSTabViewItem alloc] initWithIdentifier: StandingOrderTabIdentifier] autorelease];
+			NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: StandingOrderTabIdentifier];
 			[item setView: [standingOrderController mainView]];
 			[mainTabView addTabViewItem: item];
 			[mainTabView selectTabViewItem: item];
@@ -50,9 +50,9 @@
 {
 	NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: TransfersTabIdentifier];
 	if (index == NSNotFound) {
-		transfersController = [[[TransfersController alloc] init] autorelease];
+		transfersController = [[TransfersController alloc] init];
 		if ([NSBundle loadNibNamed: @"Transfers" owner: transfersController]) {
-			NSTabViewItem *item = [[[NSTabViewItem alloc] initWithIdentifier: TransfersTabIdentifier] autorelease];
+			NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: TransfersTabIdentifier];
 			[item setView: [transfersController mainView]];
 			[mainTabView addTabViewItem: item];
 			[mainTabView selectTabViewItem: item];

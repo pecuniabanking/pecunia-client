@@ -62,20 +62,19 @@
 
 - (void)dealloc
 {
-	[name release], name = nil;
-	[fields release], fields = nil;
-	[sepRadioIndex release], sepRadioIndex = nil;
-	[sepChar release], sepChar = nil;
-	[dateFormatIndex release], dateFormatIndex = nil;
-	[dateFormatString release], dateFormatString = nil;
-	[charEncodingIndex release], charEncodingIndex = nil;
-	[ignoreLines release], ignoreLines = nil;
-	[accountNumber release], accountNumber = nil;
-    [accountSuffix release ], accountSuffix = nil;
-	[bankCode release], bankCode = nil;
-	[fileName release], fileName = nil;
+	name = nil;
+	fields = nil;
+	sepRadioIndex = nil;
+	sepChar = nil;
+	dateFormatIndex = nil;
+	dateFormatString = nil;
+	charEncodingIndex = nil;
+	ignoreLines = nil;
+	accountNumber = nil;
+    accountSuffix = nil;
+	bankCode = nil;
+	fileName = nil;
 
-	[super dealloc];
 }
 
 @end

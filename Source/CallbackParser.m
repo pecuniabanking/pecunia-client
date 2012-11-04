@@ -25,15 +25,10 @@
 	return self;
 }
 
--(void)dealloc
-{
-	[data dealloc ];
-	[super dealloc ];
-}
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
-	currentValue = [[[NSMutableString alloc ] init ] autorelease ];
+	currentValue = [[NSMutableString alloc ] init ];
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {

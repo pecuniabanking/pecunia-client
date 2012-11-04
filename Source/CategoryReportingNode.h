@@ -15,14 +15,14 @@
 	NSMutableSet		*children;
 	NSMutableDictionary	*values;
 	NSMutableDictionary *periodValues;
-	Category			*category;
+	Category			*__unsafe_unretained category;
 }
 
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, retain) NSMutableSet *children;
-@property (nonatomic, retain) NSMutableDictionary *values;
-@property (nonatomic, retain) NSMutableDictionary *periodValues;
-@property (nonatomic, assign) Category *category;
+@property (nonatomic, strong) NSMutableSet *children;
+@property (nonatomic, strong) NSMutableDictionary *values;
+@property (nonatomic, strong) NSMutableDictionary *periodValues;
+@property (nonatomic, unsafe_unretained) Category *category;
 
 @end
 

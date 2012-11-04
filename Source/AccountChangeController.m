@@ -57,11 +57,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-    [super dealloc];
-    [transactionsController release];
-}
 
 -(void)awakeFromNib
 {
@@ -74,7 +69,7 @@
 			NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: s ];
 			if([pred class ] != [NSCompoundPredicate class ]) {
 				NSCompoundPredicate* comp = [[NSCompoundPredicate alloc ] initWithType: NSOrPredicateType subpredicates: [NSArray arrayWithObjects: pred, nil ]];
-				pred = [comp autorelease];
+				pred = comp;
 			}
 			[predicateEditor setObjectValue: pred ];
 		}

@@ -27,17 +27,12 @@
 {
     self = [super initWithFrame: frameRect];
     if (self) {
-        backgroundImage = [[NSImage imageNamed: @"banknote"] retain];
+        backgroundImage = [NSImage imageNamed: @"banknote"];
     }
 
     return self;
 }
 
-- (void) dealloc
-{
-    [super dealloc];
-    [backgroundImage release];
-}
 
 // Shared objects.
 static NSShadow* borderShadow = nil;

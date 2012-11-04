@@ -51,13 +51,13 @@
 
 -(id)copyWithZone: (NSZone *)zone
 {
-	return [self retain ];
+	return self;
 }
 
 -(void)updateTanMethods:(NSArray*)methods
 {
     NSManagedObjectContext *context = [[MOAssistant assistant ] context];
-    NSMutableSet *oldMethods = [[[self tanMethods ] copy ] autorelease ];
+    NSMutableSet *oldMethods = [[self tanMethods ] copy ];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"TanMethod" inManagedObjectContext:context ];
     NSArray *attributeKeys = [[entity attributesByName] allKeys];
     
@@ -85,7 +85,7 @@
 -(void)updateTanMedia:(NSArray*)media
 {
     NSManagedObjectContext *context = [[MOAssistant assistant ] context];
-    NSMutableSet *oldMedia = [[[self tanMedia ] copy ] autorelease];
+    NSMutableSet *oldMedia = [[self tanMedia ] copy ];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"TanMedium" inManagedObjectContext:context ];
     NSArray *attributeKeys = [[entity attributesByName] allKeys];
     
@@ -121,7 +121,7 @@
     NSMutableArray *options = [NSMutableArray arrayWithCapacity:10 ];
     
     for (TanMethod *method in methods) {
-        SigningOption *option = [[[SigningOption alloc ] init ] autorelease ];
+        SigningOption *option = [[SigningOption alloc ] init ];
         option.secMethod = SecMethod_PinTan;
         option.tanMethod = method.method;
         option.userId = self.userId;
@@ -163,7 +163,7 @@
                     added = YES;
                 }
                 if (added == YES) {
-                    option = [[[SigningOption alloc ] init ] autorelease ];
+                    option = [[SigningOption alloc ] init ];
                     option.secMethod = SecMethod_PinTan;
                     option.tanMethod = method.method;
                     option.tanMethodName = method.name;
@@ -177,7 +177,7 @@
     }
 
     // sortieren
-    NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"tanMethodName" ascending: YES] autorelease];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"tanMethodName" ascending: YES];
 	NSArray *sortDescriptors = [NSArray arrayWithObject: sortDescriptor];
     return [options sortedArrayUsingDescriptors:sortDescriptors ];
 }
@@ -189,7 +189,7 @@
     
     // DDV
     NSMutableArray *options = [NSMutableArray arrayWithCapacity:10 ];
-    SigningOption *option = [[[SigningOption alloc ] init ] autorelease ];
+    SigningOption *option = [[SigningOption alloc ] init ];
     option.secMethod = SecMethod_DDV;
     option.userId = self.userId;
     option.userName = self.name;
@@ -227,7 +227,7 @@
     if (method == nil) return nil;
     TanMedium *medium = method.preferredMedium;
     
-    SigningOption *option = [[[SigningOption alloc ] init ] autorelease ];
+    SigningOption *option = [[SigningOption alloc ] init ];
     option.tanMethod = method.method;
     option.tanMethodName = method.name;
     option.userId = self.userId;
@@ -283,7 +283,7 @@
 	NSError *error=nil;
 	NSManagedObjectContext *context = [[MOAssistant assistant] context];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankUser" inManagedObjectContext:context];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	NSArray *bankUsers = [context executeFetchRequest:request error:&error];
 	if(error) {
@@ -298,7 +298,7 @@
 	NSError *error=nil;
 	NSManagedObjectContext *context = [[MOAssistant assistant] context];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankUser" inManagedObjectContext:context];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userId = %@ AND bankCode = %@", userId, bankCode ];
 	[request setPredicate:predicate ];

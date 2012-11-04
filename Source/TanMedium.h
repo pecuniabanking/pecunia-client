@@ -14,21 +14,21 @@
     
 }
 
-@property (nonatomic, retain) NSString *category;
-@property (nonatomic, retain) NSString *status;
-@property (nonatomic, retain) NSString *cardNumber;
-@property (nonatomic, retain) NSString *cardSeqNumber;
-@property (nonatomic, retain) NSNumber *cardType;
-@property (nonatomic, retain) NSDate *validFrom;
-@property (nonatomic, retain) NSDate *validTo;
-@property (nonatomic, retain) NSString *tanListNumber;
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *mobileNumber;
-@property (nonatomic, retain) NSString *mobileNumberSecure;
-@property (nonatomic, retain) NSNumber *freeTans;
-@property (nonatomic, retain) NSDate *lastUse;
-@property (nonatomic, retain) NSDate *activatedOn;
-@property (nonatomic, retain) BankUser *user;
+@property (nonatomic, strong) NSString *category;
+@property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) NSString *cardNumber;
+@property (nonatomic, strong) NSString *cardSeqNumber;
+@property (nonatomic, strong) NSNumber *cardType;
+@property (nonatomic, strong) NSDate *validFrom;
+@property (nonatomic, strong) NSDate *validTo;
+@property (nonatomic, strong) NSString *tanListNumber;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *mobileNumber;
+@property (nonatomic, strong) NSString *mobileNumberSecure;
+@property (nonatomic, strong) NSNumber *freeTans;
+@property (nonatomic, strong) NSDate *lastUse;
+@property (nonatomic, strong) NSDate *activatedOn;
+@property (nonatomic, strong) BankUser *user;
 
 @end
 

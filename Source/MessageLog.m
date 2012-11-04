@@ -76,7 +76,6 @@ static MessageLog *_messageLog;
 {
 	LogLevel level = (LogLevel)[[data objectForKey: @"level"] intValue];
 	[self addMessage: [data objectForKey: @"message"] withLevel: level];
-	[data release];
 }
 
 - (void)setLevel: (LogLevel)level
@@ -86,12 +85,6 @@ static MessageLog *_messageLog;
 }
 
 
-- (void)dealloc
-{
-	[formatter release];
-    [logUIs release];
-	[super dealloc];
-}
 
 + (MessageLog*)log
 {

@@ -28,10 +28,6 @@
  */
 @implementation TransfersBackgroundView
 
-- (void) dealloc
-{
-    [super dealloc];
-}
 
 static NSImage* background = nil;
 static NSShadow* borderShadow = nil;
@@ -84,8 +80,8 @@ static NSShadow* borderShadow = nil;
     [dragTargetPath stroke];
     
     // Draw a highlight effect over everything.
-    NSGradient *highlight = [[[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.3]
-                                                          endingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0]] autorelease];
+    NSGradient *highlight = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.3]
+                                                          endingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0]];
 
     CGFloat height = self.bounds.size.height;
     NSPoint centerPoint = NSMakePoint(NSMidX(self.bounds), height + 1);

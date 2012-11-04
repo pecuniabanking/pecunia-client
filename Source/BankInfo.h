@@ -27,21 +27,21 @@
 	NSString    *website;
 }
 
-@property (nonatomic, retain) NSString *country;
-@property (nonatomic, retain) NSString *branch;
-@property (nonatomic, retain) NSString *bankCode;
-@property (nonatomic, retain) NSString *bic;
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *location;
-@property (nonatomic, retain) NSString *street;
-@property (nonatomic, retain) NSString *city;
-@property (nonatomic, retain) NSString *region;
-@property (nonatomic, retain) NSString *phone;
-@property (nonatomic, retain) NSString *email;
-@property (nonatomic, retain) NSString *host;
-@property (nonatomic, retain) NSString *pinTanURL;
-@property (nonatomic, retain) NSString *pinTanVersion;
-@property (nonatomic, retain) NSString *hbciVersion;
-@property (nonatomic, retain) NSString *website;
+@property (nonatomic, strong) NSString *country;
+@property (nonatomic, strong) NSString *branch;
+@property (nonatomic, strong) NSString *bankCode;
+@property (nonatomic, strong) NSString *bic;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *location;
+@property (nonatomic, strong) NSString *street;
+@property (nonatomic, strong) NSString *city;
+@property (nonatomic, strong) NSString *region;
+@property (nonatomic, strong) NSString *phone;
+@property (nonatomic, strong) NSString *email;
+@property (nonatomic, strong) NSString *host;
+@property (nonatomic, strong) NSString *pinTanURL;
+@property (nonatomic, strong) NSString *pinTanVersion;
+@property (nonatomic, strong) NSString *hbciVersion;
+@property (nonatomic, strong) NSString *website;
 
 @end

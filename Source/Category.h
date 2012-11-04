@@ -49,29 +49,26 @@ typedef enum {
     NSColor *catColor;
 }
 
-@property (nonatomic, retain) NSString * rule;
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSNumber * isBankAcc;
-@property (nonatomic, retain) NSString * currency;
-@property (nonatomic, retain) Category * parent;
-@property (nonatomic, retain) NSString * localName;
-@property (nonatomic, retain) NSNumber * isBalanceValid;
-@property (nonatomic, retain) NSDecimalNumber * catSum;
-@property (nonatomic, retain) NSDecimalNumber * balance;
-//@property (nonatomic, retain, readonly) NSString * accountNumber;
-@property (nonatomic, retain) NSData * catRepColor;
-@property (nonatomic, retain) NSNumber * noCatRep;
+@property (nonatomic, strong) NSString * rule;
+@property (nonatomic, strong) NSString * name;
+@property (nonatomic, strong) NSNumber * isBankAcc;
+@property (nonatomic, strong) NSString * currency;
+@property (nonatomic, strong) Category * parent;
+@property (nonatomic, strong) NSString * localName;
+@property (nonatomic, strong) NSNumber * isBalanceValid;
+@property (nonatomic, strong) NSDecimalNumber * catSum;
+@property (nonatomic, strong) NSDecimalNumber * balance;
+@property (nonatomic, strong) NSData * catRepColor;
+@property (nonatomic, strong) NSNumber * noCatRep;
 
-@property (nonatomic, retain) NSColor *categoryColor; // Unarchived catRepColor.
+@property (nonatomic, strong) NSColor *categoryColor; // Unarchived catRepColor.
 
-//-(NSDecimalNumber*)updateBalance;
 -(void)updateInvalidBalances;
 -(void)invalidateBalance;
 -(NSDecimalNumber*)rollup;
 -(void)rebuildValues;
 
 -(NSString*)name;
-//-(NSString*)localName;
 -(NSString*)accountNumber;
 -(BOOL)isRoot;
 -(BOOL)isBankAccount;

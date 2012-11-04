@@ -36,7 +36,7 @@ static NSArray *exportFields = nil;
 
 void updateColorCache()
 {
-	if(statementColors == nil) statementColors = [[NSMutableDictionary dictionaryWithCapacity: 5 ] retain ];
+	if(statementColors == nil) statementColors = [NSMutableDictionary dictionaryWithCapacity: 5 ];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
 	BOOL markNotAssigned = [defaults boolForKey: @"markNAStatements" ];
 	if(markNotAssigned) {
@@ -65,7 +65,6 @@ void updateColorCache()
 					@"remoteBankName", @"remoteBankLocation", @"remoteIBAN", @"remoteBIC", @"remoteSuffix",
 					@"customerReference", @"bankReference", @"transactionText", @"primaNota",
 					@"transactionCode", @"categoriesDescription", nil ];
-	[exportFields retain ];
 	return self;
 }
 
@@ -272,8 +271,7 @@ void updateColorCache()
 		return;
 	}
 	
-	[password release ];
-	password = [passw1 retain ];
+	password = passw1;
 	[encryptionSheet orderOut: sender ];
 	[NSApp endSheet: encryptionSheet returnCode: 0 ];
 }

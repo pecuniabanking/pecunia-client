@@ -75,7 +75,6 @@
 		[bankCodeField setBezeled: NO ];
 		
 		if (currentAddView != accountAddView) {
-			[manAccountAddView retain ];
 			[boxView replaceSubview:manAccountAddView with:accountAddView ];
 			currentAddView = accountAddView;
 		}
@@ -84,7 +83,6 @@
 		[bankCodeField setBezeled: YES ];
 
 		if (currentAddView != manAccountAddView) {
-			[accountAddView retain ];
 			[boxView replaceSubview:accountAddView with:manAccountAddView ];
 			currentAddView = manAccountAddView;
 			[manAccountAddView setFrameOrigin:NSMakePoint(0, 10) ];

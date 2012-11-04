@@ -336,8 +336,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 
 +(void)setClassificationContext: (ClassificationContext*)cc
 {
-	if(classContext) [classContext release ];
-	classContext = [cc retain];
+	classContext = cc;
 }
 
 +(ClassificationContext*)classificationContext
@@ -386,7 +385,6 @@ BOOL stringEqual(NSString *a, NSString *b)
 	NSManagedObjectModel*	model   = [[MOAssistant assistant ] model ];
 
 	
-	if(catCache) [catCache release ];
 	catCache = nil;
 	NSFetchRequest *request = [model fetchRequestTemplateForName:@"categories"];
 	catCache = [context executeFetchRequest:request error:&error];
@@ -395,7 +393,6 @@ BOOL stringEqual(NSString *a, NSString *b)
 		[alert runModal];
 		return;
 	}
-	[catCache retain ];
 }
 
 -(NSString*)floatingPurpose

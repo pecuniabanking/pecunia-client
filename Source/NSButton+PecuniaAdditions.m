@@ -46,7 +46,6 @@
                       range: range];
     [attrTitle fixAttributesInRange: range];
     [self setAttributedTitle: attrTitle];
-    [attrTitle release];
 }
 
 @end
@@ -77,7 +76,6 @@
                       range: range];
     [attrTitle fixAttributesInRange: range];
     [self setAttributedTitle: attrTitle];
-    [attrTitle release];
 }
 
 @end

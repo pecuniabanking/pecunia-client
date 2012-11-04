@@ -82,22 +82,14 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [image release];
-    [currency release];
-    [amountFormatter release];
-    
-    [super dealloc];
-}
 
 - (id)copyWithZone: (NSZone *)zone
 {
     ImageAndTextCell *cell = (ImageAndTextCell *)[super copyWithZone: zone];
-    cell->image = [image retain];
-    cell->amountFormatter = [amountFormatter retain];
-    cell->amount = [amount retain];
-    cell->currency = [currency retain];
+    cell->image = image;
+    cell->amountFormatter = amountFormatter;
+    cell->amount = amount;
+    cell->currency = currency;
     return cell;
 }
 
@@ -296,8 +288,6 @@ static NSGradient* selectionGradient = nil;
         [amountWithCurrency	drawInRect:amountwithCurrencyFrame];    
     }
     
-    [attributes release];
-    [amountWithCurrency release];
     
     // Cell text color.
     NSAttributedString *cellStringWithFormat;
@@ -312,8 +302,8 @@ static NSGradient* selectionGradient = nil;
                       textColor, NSForegroundColorAttributeName,
                       nil
                       ];
-       cellStringWithFormat = [[[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
-                                                               attributes: attributes] autorelease];
+       cellStringWithFormat = [[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
+                                                               attributes: attributes];
     } else {
         NSColor *textColor = [NSColor colorWithCalibratedWhite: 40 / 255.0 alpha: 1];
         
@@ -325,8 +315,8 @@ static NSGradient* selectionGradient = nil;
                       textColor, NSForegroundColorAttributeName,
                       nil
                       ];
-        cellStringWithFormat = [[[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
-                                                                attributes: attributes] autorelease];
+        cellStringWithFormat = [[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
+                                                                attributes: attributes];
     }
     [self setAttributedStringValue: cellStringWithFormat];
     
@@ -351,7 +341,6 @@ static NSGradient* selectionGradient = nil;
         width = MIN_BADGE_WIDTH;
     }
     
-    [badgeAttrString release];
     
     return NSMakeSize(width, BADGE_HEIGHT);
 }
@@ -397,8 +386,6 @@ static NSGradient* selectionGradient = nil;
                                          NSMidY(badgeFrame)-(stringSize.height/2.0));	//Center in the badge frame
     [badgeAttrString drawAtPoint:badgeTextPoint];
     
-    [attributes release];
-    [badgeAttrString release];
 }
 
 - (void)setMaxUnread:(NSInteger)n

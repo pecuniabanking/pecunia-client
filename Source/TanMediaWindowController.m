@@ -50,7 +50,7 @@
 	NSString *userMediaId = [NSString stringWithFormat:@"TanMediaList_%@_%@", self.bankCode, self.userId ];
 	NSArray *mList = [defaults objectForKey:userMediaId ];
 	if (mList) {
-		mediaList = [[mList mutableCopy] autorelease];
+		mediaList = [mList mutableCopy];
 		[mediaList removeObject:self.tanMedia ];
 		[mediaList addObject:self.tanMedia ];
 	} else {
@@ -88,12 +88,11 @@
 
 - (void)dealloc
 {
-	[message release], message = nil;
-	[tanMedia release], tanMedia = nil;
-	[userId release], userId = nil;
-	[bankCode release], bankCode = nil;
+	message = nil;
+	tanMedia = nil;
+	userId = nil;
+	bankCode = nil;
 	
-	[super dealloc];
 }
 
 @end

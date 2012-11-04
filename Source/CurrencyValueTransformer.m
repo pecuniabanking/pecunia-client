@@ -27,11 +27,11 @@ static NSMutableDictionary* cache;
   
   if (formatter == nil)
   {
-    formatter = [[[NSNumberFormatter alloc] init] retain];
+    formatter = [[NSNumberFormatter alloc] init];
     [formatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
     [formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
     
-    cache = [[[NSMutableDictionary alloc] init] retain];
+    cache = [[NSMutableDictionary alloc] init];
   }
   
   id result = [cache valueForKey: value];

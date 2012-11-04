@@ -61,7 +61,7 @@ extern NSString *StatementTypeKey;
     [super awakeFromNib];
     
     [self setDelegate: self];
-    _dateFormatter = [[[NSDateFormatter alloc] init] retain];
+    _dateFormatter = [[NSDateFormatter alloc] init];
     [_dateFormatter setLocale: [NSLocale currentLocale]];
     [_dateFormatter setDateStyle: kCFDateFormatterFullStyle];
     [_dateFormatter setTimeStyle: NSDateFormatterNoStyle];
@@ -70,22 +70,13 @@ extern NSString *StatementTypeKey;
     showHeaders = YES;
 }
 
-- (void) dealloc
-{
-    [_dataSource release];
-    [_dateFormatter release];
-    [_numberFormatter release];
-    [_calendar release];
-    
-    [super dealloc];
-}
 
 - (NSNumberFormatter*)numberFormatter
 {
     // Cannot place this in awakeFromLib as it accessed by other awakeFromNib methods and might not
     // be ready yet by then.
     if (_numberFormatter == nil)
-        _numberFormatter = [[[NSNumberFormatter alloc] init] retain];
+        _numberFormatter = [[NSNumberFormatter alloc] init];
     return _numberFormatter;
 }
 
@@ -101,8 +92,7 @@ extern NSString *StatementTypeKey;
 {
     if (_dataSource != array)
     {
-        [_dataSource release];
-        _dataSource = [array retain];
+        _dataSource = array;
         
         [self reloadData];
     }
@@ -119,8 +109,7 @@ extern NSString *StatementTypeKey;
 
 - (void)setValueArray: (NSArray*)array
 {
-    [_valueArray release];
-    _valueArray = [array retain];
+    _valueArray = array;
     [self reloadData];
 }
 
@@ -142,7 +131,7 @@ extern NSString *StatementTypeKey;
         if ([value isKindOfClass: [NSDate class]])
             value = [_dateFormatter stringFromDate: value];
         if (capitalize) {
-            NSMutableArray *words = [[[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy] autorelease];
+            NSMutableArray *words = [[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
             for (NSUInteger i = 0; i < [words count]; i++) {
                 NSString *word = [words objectAtIndex: i];
                 if (i == 0 || [word length] > 3) {
@@ -347,7 +336,6 @@ extern NSString *StatementTypeKey;
         index = [draggedIndexes indexGreaterThanIndex: index];
     }
     
-    [draggedIndexes release];
     draggedIndexes = nil;
 }
 

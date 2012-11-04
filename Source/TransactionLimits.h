@@ -38,10 +38,10 @@
 	BOOL			allowChangeExecDay;
 }
 
-@property (nonatomic, retain) NSArray *weekCycles;
-@property (nonatomic, retain) NSArray *monthCycles;
-@property (nonatomic, retain) NSArray *execDaysWeek;
-@property (nonatomic, retain) NSArray *execDaysMonth;
+@property (nonatomic, strong) NSArray *weekCycles;
+@property (nonatomic, strong) NSArray *monthCycles;
+@property (nonatomic, strong) NSArray *execDaysWeek;
+@property (nonatomic, strong) NSArray *execDaysMonth;
 @property (nonatomic, assign) BOOL allowMonthly;
 @property (nonatomic, assign) BOOL allowWeekly;
 @property (nonatomic, assign) BOOL allowChangeRemoteName;
@@ -61,7 +61,7 @@
 @property (nonatomic, assign) double foreignLimit;
 @property (nonatomic, assign) int minSetupTime;
 @property (nonatomic, assign) int maxSetupTime;
-@property (nonatomic, retain) NSArray *allowedTextKeys;
+@property (nonatomic, strong) NSArray *allowedTextKeys;
 
 -(int)maxLengthRemoteName;
 -(int)maxLengthPurpose;

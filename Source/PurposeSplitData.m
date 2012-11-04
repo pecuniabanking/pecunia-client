@@ -21,14 +21,13 @@
 
 - (void)dealloc
 {
-	[remoteName release], remoteName = nil;
-	[remoteAccount release], remoteAccount = nil;
-	[remoteBankCode release], remoteBankCode = nil;
-	[purposeNew release], purposeNew = nil;
-	[purposeOld release], purposeOld = nil;
+	remoteName = nil;
+	remoteAccount = nil;
+	remoteBankCode = nil;
+	purposeNew = nil;
+	purposeOld = nil;
 	statement = nil;
 
-	[super dealloc];
 }
 
 @end

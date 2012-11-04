@@ -74,7 +74,7 @@ extern NSString* OrderDataType;
         [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
         
         numberFormatter = [[NSNumberFormatter alloc] init];
-        hunderedYearsLater = [[[ShortDate currentDate] dateByAddingUnits: 100 byUnit: NSYearCalendarUnit] retain];
+        hunderedYearsLater = [[ShortDate currentDate] dateByAddingUnits: 100 byUnit: NSYearCalendarUnit];
     }
     return self;
 }
@@ -107,13 +107,8 @@ extern NSString* OrderDataType;
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.toDelete"];
 
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
-    [observedObject release];
     
-    [dateFormatter release];
-    [numberFormatter release];
-    [hunderedYearsLater release];
     
-    [super dealloc];
 }
 
 #pragma mark -
@@ -128,8 +123,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 {
     if ([binding isEqualToString: @"dataSource"])
     {
-        [observedObject release];
-        observedObject = [observableObject retain];
+        observedObject = observableObject;
         dataSource = [observableObject valueForKey: keyPath];
         
         // One binding for the array, to get notifications about insertion and deletions.

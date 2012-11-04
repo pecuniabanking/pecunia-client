@@ -105,7 +105,7 @@ TimeSliceManager *timeSliceManager = nil;
 
 -(id)initWithCoder:(NSCoder*)coder
 {
-	[super init ];
+	if (!(self = [super init ])) return nil;
 	type = [coder decodeIntForKey: @"type" ];
 	year = [coder decodeIntForKey: @"year" ];
 	quarter = [coder decodeIntForKey: @"quarter" ];
@@ -254,7 +254,7 @@ TimeSliceManager *timeSliceManager = nil;
 	[control setLabel: quarterString forSegment: 1 ];
 	
 	// month
-	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	NSArray* months = [dateFormatter monthSymbols ];
 	[control setLabel: [months objectAtIndex:month-1] forSegment: 2 ];
 }
@@ -347,16 +347,6 @@ TimeSliceManager *timeSliceManager = nil;
     [[upDown animator] setHidden: !show];
 }
 
--(void)dealloc
-{
-	[controls release ];
-	[_minDate release ];
-	[_maxDate release ];
-    [_fromDate release ];
-    [_toDate release ];
-	[_autosaveName release ];
-	[super dealloc ];
-}
 
 /*
 +(void)initialize

@@ -105,12 +105,11 @@ static BOOL runningOnLionOrLater = NO;
     if (self != nil) {
         HBCIClient *client = nil;
         
-        [bankinControllerInstance release];
         bankinControllerInstance = self;
         restart = NO;
         requestRunning = NO;
         statementsBound = YES;
-        mainTabItems = [[NSMutableDictionary dictionaryWithCapacity:10] retain];
+        mainTabItems = [NSMutableDictionary dictionaryWithCapacity:10];
         
         // TODO: make lower limit configurable?
         [Category setCatReportFrom: [ShortDate dateWithYear: 2009 month:1 day:1] to: [ShortDate distantFuture]];
@@ -128,7 +127,7 @@ static BOOL runningOnLionOrLater = NO;
         
         @try {
             client = [HBCIClient hbciClient];
-            PecuniaError *error = [client initHBCI];
+            PecuniaError *error = [client initalizeHBCI];
             if (error != nil) {
                 [error alertPanel ];
                 [NSApp terminate: self];
@@ -223,7 +222,7 @@ static BOOL runningOnLionOrLater = NO;
     }
     
     // sort descriptor for accounts view
-    NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
     NSArray *sds = [NSArray arrayWithObject:sd];
     [categoryController setSortDescriptors: sds];
     
@@ -259,7 +258,7 @@ static BOOL runningOnLionOrLater = NO;
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
 
-    [rightSplitter retain]; // Content views are dynamically exchanged with proper retain/release.
+     // Content views are dynamically exchanged with proper retain/release.
                             // The right splitter is the initial control and needs an own retain to avoid losing it
                             // on the next switch.
     
@@ -279,18 +278,6 @@ static BOOL runningOnLionOrLater = NO;
 #endif
 }
 
-- (void)dealloc
-{
-    [categoryAnalysisController release];
-    [categoryReportingController release];
-    [categoryDefinitionController release];
-    [categoryPeriodsController release];
-    
-    [rightSplitter release];
-    [bankAccountItemsExpandState release];
-    
-    [super dealloc];
-}
 
 -(void)publishContext
 {
@@ -323,7 +310,7 @@ static BOOL runningOnLionOrLater = NO;
 {
     NSError *error = nil;
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:managedObjectContext];
-    NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entityDescription];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND userId != nil"];
     [request setPredicate:predicate];
@@ -581,7 +568,7 @@ static BOOL runningOnLionOrLater = NO;
     NSArray *nodes = [[categoryController arrangedObjects] childNodes];
     NSIndexPath *path = [self indexPathForCategory: bankAccount inArray: nodes];
     // IndexPath umdrehen
-    NSIndexPath *newPath = [[[NSIndexPath alloc] init] autorelease];
+    NSIndexPath *newPath = [[NSIndexPath alloc] init];
     for(i=[path length]-1; i>=0; i--) newPath = [newPath indexPathByAddingIndex: [path indexAtPosition:i]]; 
     
     [categoryController removeObjectAtArrangedObjectIndexPath: newPath];
@@ -758,7 +745,7 @@ static BOOL runningOnLionOrLater = NO;
     else {
         // a node was selected
         NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:self.managedObjectContext];
-        NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
         [request setEntity:entityDescription];
         if(cat.parent == nil) {
             // root was selected
@@ -823,7 +810,7 @@ static BOOL runningOnLionOrLater = NO;
             result.bankCode = account.bankCode;
             result.userId = account.userId;
             result.account = account;
-            [resultList addObject: [result autorelease]];
+            [resultList addObject: result];
         }
     }
     
@@ -883,7 +870,7 @@ static BOOL runningOnLionOrLater = NO;
     BOOL check = [defaults boolForKey: @"manualTransactionCheck"];
     
     if((check || isImport) && noStatements == FALSE) {
-        BSSelectWindowController *selectWindowController = [[[BSSelectWindowController alloc] initWithResults: resultList] autorelease];
+        BSSelectWindowController *selectWindowController = [[BSSelectWindowController alloc] initWithResults: resultList];
         [NSApp runModalForWindow: [selectWindowController window]];
     } else {
         @try {
@@ -1054,7 +1041,7 @@ static BOOL runningOnLionOrLater = NO;
         return;
     }
     
-    AccountDefController *defController = [[[AccountDefController alloc] init] autorelease];
+    AccountDefController *defController = [[AccountDefController alloc] init];
     if (bankCode) [defController setBankCode: bankCode name: [cat valueForKey: @"bankName"]];
     
     int res = [NSApp runModalForWindow: [defController window]];
@@ -1080,7 +1067,7 @@ static BOOL runningOnLionOrLater = NO;
         return;
     }
     
-    AccountChangeController *changeController = [[[AccountChangeController alloc] initWithAccount: (BankAccount*)cat] autorelease];
+    AccountChangeController *changeController = [[AccountChangeController alloc] initWithAccount: (BankAccount*)cat];
     int res = [NSApp runModalForWindow: [changeController window]];
     if(res) {
         statementsListViewHost.indicatorColor = [cat categoryColor];
@@ -1481,7 +1468,6 @@ static BOOL runningOnLionOrLater = NO;
         NSNotification *notif = [NSNotification notificationWithName:PecuniaStatementsNotification object: results ];
         [self statementsNotification:notif];
     }
-    [controller release];
     
 #ifdef AQBANKING	
     NSError *error=nil;
@@ -1523,7 +1509,6 @@ static BOOL runningOnLionOrLater = NO;
     if(!hideDonationMessage) {
         DonationMessageController *controller = [[DonationMessageController alloc] init];
         BOOL donate = [controller run];
-        [controller release];
         if (donate) {
             [self performSelector: @selector(donate:) withObject: self afterDelay: 0.0];
             return NSTerminateCancel;
@@ -2121,7 +2106,7 @@ static BOOL runningOnLionOrLater = NO;
     
     // fetch all bank statements
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:self.managedObjectContext];
-    NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entityDescription];
     NSArray *stats = [self.managedObjectContext executeFetchRequest:request error:&error];
     if(error) {
@@ -2327,7 +2312,7 @@ static BOOL runningOnLionOrLater = NO;
     
     // check if statement is duplicate. Select all statements with same date
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:self.managedObjectContext];
-    NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entityDescription];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date = %@)", account, stat.date ];
     [request setPredicate:predicate];
@@ -2407,8 +2392,8 @@ static BOOL runningOnLionOrLater = NO;
     if (idx == 0) {
         NSArray *sel = [categoryAssignments selectedObjects];
         if (sel != nil && [sel count] == 1) {
-            StatSplitController *splitController = [[[StatSplitController alloc] initWithStatement: [[sel objectAtIndex:0] statement]
-                                                                                               view: accountsView] autorelease];
+            StatSplitController *splitController = [[StatSplitController alloc] initWithStatement: [[sel objectAtIndex:0] statement]
+                                                                                               view: accountsView];
             [splitController showWindow:mainWindow];
         }
     }
@@ -2420,7 +2405,7 @@ static BOOL runningOnLionOrLater = NO;
     if (cat == nil) return;
     if (cat.accountNumber == nil) return;
     
-    BankStatementController *statementController = [[[BankStatementController alloc] initWithAccount: (BankAccount*)cat statement: nil] autorelease];
+    BankStatementController *statementController = [[BankStatementController alloc] initWithAccount: (BankAccount*)cat statement: nil];
     
     int res = [NSApp runModalForWindow: [statementController window]];
     if(res) {
@@ -2442,7 +2427,7 @@ static BOOL runningOnLionOrLater = NO;
 {
     Category* cat = [self currentSelection];
     
-    PurposeSplitController *splitController = [[[PurposeSplitController alloc] initWithAccount:(BankAccount*)cat] autorelease];
+    PurposeSplitController *splitController = [[PurposeSplitController alloc] initWithAccount:(BankAccount*)cat];
     [NSApp runModalForWindow: [splitController window]];
 }
 
@@ -2460,7 +2445,7 @@ static BOOL runningOnLionOrLater = NO;
         lastSelection = category;
         [categoryController setSelectedObject: Category.nassRoot];
     }
-    bankAccountItemsExpandState = [[NSMutableArray array] retain];
+    bankAccountItemsExpandState = [NSMutableArray array];
     NSUInteger row, numberOfRows = [accountsView numberOfRows];
     
     for (row = 0 ; row < numberOfRows; row++)
@@ -2493,7 +2478,6 @@ static BOOL runningOnLionOrLater = NO;
             }
         }
     }
-    [bankAccountItemsExpandState release];
     bankAccountItemsExpandState = nil;
     
     // Restore the last selection, but only when selecting the item is allowed.
@@ -2525,7 +2509,7 @@ static BOOL runningOnLionOrLater = NO;
         result.bankCode = account.bankCode;
         result.userId = account.userId;
         result.account = account;
-        [resultList addObject: [result autorelease]];
+        [resultList addObject: result];
     }
     
     // prepare UI
@@ -2565,8 +2549,6 @@ static BOOL runningOnLionOrLater = NO;
                                                    userInfo:nil 
                                                     repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-        [timer release];
-        [calendar release];
     }
 }
 
@@ -2608,15 +2590,14 @@ static BOOL runningOnLionOrLater = NO;
         if(!syncDone) [self performSelector: @selector(syncAllAccounts) withObject: nil afterDelay: 5.0];
     } else {
         // syncTime in future: setup Timer
-        NSTimer *timer = [[[NSTimer alloc] initWithFireDate: syncDate 
+        NSTimer *timer = [[NSTimer alloc] initWithFireDate: syncDate 
                                                    interval: 0.0 
                                                      target: self 
                                                    selector: @selector(autoSyncTimerEvent) 
                                                    userInfo: nil 
-                                                    repeats: NO] autorelease];
+                                                    repeats: NO];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     }
-    [calendar release];
 }
 
 -(IBAction)showLicense: (id)sender
@@ -2716,7 +2697,7 @@ static BOOL runningOnLionOrLater = NO;
     // Check for unsent transfers.
     NSError *error = nil;
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Transfer" inManagedObjectContext: self.managedObjectContext];
-    NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isSent = NO"];
@@ -2771,7 +2752,7 @@ static BOOL runningOnLionOrLater = NO;
         [printInfo setTopMargin: 45];
         [printInfo setBottomMargin: 45];
         NSPrintOperation *printOp;
-        NSView *view = [[[BankStatementPrintView alloc] initWithStatements: [categoryAssignments arrangedObjects] printInfo: printInfo] autorelease];
+        NSView *view = [[BankStatementPrintView alloc] initWithStatements: [categoryAssignments arrangedObjects] printInfo: printInfo];
         printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo];
         [printOp setShowsPrintPanel: YES];
         [printOp runOperation];
@@ -2853,7 +2834,7 @@ static BOOL runningOnLionOrLater = NO;
     NSError *error = nil;
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
-    NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entityDescription];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1"];
     [request setPredicate:predicate];
@@ -2948,7 +2929,7 @@ static BOOL runningOnLionOrLater = NO;
         
         // BankUser assign accounts
         NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:context];
-        NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
         [request setEntity:entityDescription];
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"userId != nil", self ];
         [request setPredicate:predicate];
@@ -3064,7 +3045,7 @@ static BOOL runningOnLionOrLater = NO;
             break;
     }
     [categoryAssignments setSortDescriptors:
-     [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending] autorelease]]];
+     [NSArray arrayWithObject: [[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
 }
 
 +(BankingController*)controller

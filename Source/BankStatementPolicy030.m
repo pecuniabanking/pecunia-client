@@ -73,7 +73,7 @@
 	NSManagedObjectContext *context = [manager destinationContext ];
 	
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext:context];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isBankAcc == 1 and accountNumber != nil" ];
@@ -86,7 +86,7 @@
 		if ([stats count ] == 0) {
 			continue;
 		}
-		NSSortDescriptor *sd = [[[NSSortDescriptor alloc ] initWithKey: @"date" ascending: NO ] autorelease ];
+		NSSortDescriptor *sd = [[NSSortDescriptor alloc ] initWithKey: @"date" ascending: NO ];
 		NSArray *statarray = [stats allObjects ];
 		NSArray *statements = [statarray sortedArrayUsingDescriptors: [NSArray arrayWithObject: sd ] ];
 		NSDecimalNumber *saldo = [account valueForKey: @"balance" ];
@@ -102,7 +102,7 @@
 			if (date == nil) date = [stat valueForKey: @"date" ];
 			else {
 				if ([date isEqualToDate:[stat valueForKey: @"date" ] ]) {
-					[stat setValue: [[[NSDate alloc] initWithTimeInterval: j++ sinceDate: date] autorelease] forKey: @"date"];
+					[stat setValue: [[NSDate alloc] initWithTimeInterval: j++ sinceDate: date] forKey: @"date"];
 				} else {
 					date = [stat valueForKey: @"date" ];
 					j=1;

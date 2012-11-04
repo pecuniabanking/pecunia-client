@@ -24,20 +24,6 @@
 @synthesize isImport;
 
 
--(void)dealloc
-{
-	[accountNumber release ];
-    [accountSubnumber release ];
-	[bankCode release ];
-	[userId release ];
-	[currency release ];
-	[balance release ];
-	[oldBalance release ];
-	[statements release ];
-	[standingOrders release ];
-	
-	[super dealloc ];
-}
 
 
 @end

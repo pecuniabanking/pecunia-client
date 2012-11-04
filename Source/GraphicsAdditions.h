@@ -19,6 +19,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+CGColorRef CGColorCreateFromNSColor(NSColor *color);
+
 @interface NSColor (PecuniaAdditions)
 
 + (NSColor*)nextDefaultAccountColor;

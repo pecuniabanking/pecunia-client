@@ -81,7 +81,6 @@ static CallbackHandler *callbackHandler = nil;
 			[Keychain setPassword:passwd forService:currentPwService account:currentPwAccount store:savePassword ];
 		}
 		[pwWindow close ];
-		[pwWindow release ];
 		pwWindow = nil;
 	}
 }
@@ -94,11 +93,9 @@ static CallbackHandler *callbackHandler = nil;
                                                                                 title: @"Bitte Passwort eingeben" ];
     int res = [NSApp runModalForWindow: [pwController window]];
     if(res) {
-        [pwController release ];
         return @"<abort>";
     }
-    passwd = [pwController result ];
-    [pwController autorelease ];
+    passwd = [pwController result];
     
     [Keychain setPassword:passwd forService:@"Pecunia" account:@"DataFile" store:NO ];
     return passwd;
@@ -120,14 +117,14 @@ static CallbackHandler *callbackHandler = nil;
     NSArray *meths = [data.proposal componentsSeparatedByString: @"|" ];
     NSString *meth;
     for(meth in meths) {
-        TanMethodOld *tanMethod = [[[TanMethodOld alloc ] init ] autorelease ];
+        TanMethodOld *tanMethod = [[TanMethodOld alloc ] init ];
         NSArray *list = [meth componentsSeparatedByString: @":" ];
         tanMethod.function = [NSNumber numberWithInteger:[[list objectAtIndex:0 ] integerValue ] ];
         tanMethod.description = [list objectAtIndex:1 ];
         [tanMethods addObject: tanMethod ];
     }
     
-    TanMethodListController *controller = [[[TanMethodListController alloc] initWithMethods: tanMethods] autorelease];
+    TanMethodListController *controller = [[TanMethodListController alloc] initWithMethods: tanMethods];
     int res = [NSApp runModalForWindow: [controller window]];
     if(res) {
         return @"<abort>";
@@ -143,8 +140,7 @@ static CallbackHandler *callbackHandler = nil;
     NSString *s = [NSString stringWithFormat: @"PIN_%@_%@", data.bankCode, data.userId ];
     if (![s isEqualToString: currentPwAccount]) {
         if(pwWindow) [self finishPasswordEntry ];
-        [currentPwAccount release ];
-        currentPwAccount = [s retain ];
+        currentPwAccount = s;
     }
     
     NSString* passwd;
@@ -168,7 +164,7 @@ static CallbackHandler *callbackHandler = nil;
 {
     if (data.proposal && [data.proposal length ] > 0) {
         // FlickerCode
-        ChipTanWindowController *controller = [[[ChipTanWindowController alloc] initWithCode: data.proposal message: data.message] autorelease];
+        ChipTanWindowController *controller = [[ChipTanWindowController alloc] initWithCode: data.proposal message: data.message];
         int res = [NSApp runModalForWindow:[controller window ] ];
         if (res == 0) {
             return [controller tan ];
@@ -176,7 +172,7 @@ static CallbackHandler *callbackHandler = nil;
     }
     
     
-    TanWindow *tanWindow = [[[TanWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP98", @""), data.userId, data.message]] autorelease];
+    TanWindow *tanWindow = [[TanWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP98", @""), data.userId, data.message]];
     int res = [NSApp runModalForWindow: [tanWindow window]];
     [tanWindow close ];
     if(res == 0) {
@@ -190,7 +186,7 @@ static CallbackHandler *callbackHandler = nil;
 		return self.currentSigningOption.tanMediumName;
 	}
     
-    TanMediaWindowController *mediaWindow = [[[TanMediaWindowController alloc] initWithUser: data.userId bankCode: data.bankCode message: data.message] autorelease];
+    TanMediaWindowController *mediaWindow = [[TanMediaWindowController alloc] initWithUser: data.userId bankCode: data.bankCode message: data.message];
     int res = [NSApp runModalForWindow: [mediaWindow window]];
     if(res == 0) {
         return mediaWindow.tanMedia;
@@ -233,7 +229,6 @@ static CallbackHandler *callbackHandler = nil;
     }
     if ([data.command isEqualToString:@"haveChipcard" ]) {
         [[notificationController window ] close ];
-        [notificationController release ];
         notificationController = nil;
     }
     
@@ -244,7 +239,6 @@ static CallbackHandler *callbackHandler = nil;
     }
     if ([data.command isEqualToString:@"haveHardPin" ]) {
         [[notificationController window ] close ];
-        [notificationController release ];
         notificationController = nil;
     }
     

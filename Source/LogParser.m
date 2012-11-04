@@ -18,7 +18,7 @@
 	if(self == nil) return nil;
 	parent = par;
 	if(lev) level = [lev intValue ] - 1; else level = LogLevel_Debug;
-	currentValue = [[[NSMutableString alloc ] init ] autorelease ];
+	currentValue = [[NSMutableString alloc ] init ];
 	return self;
 }
 

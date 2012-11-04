@@ -38,9 +38,8 @@
 
 - (void)dealloc
 {
-	[message release], message = nil;
-	[title release], title = nil;
-	[super dealloc];
+	message = nil;
+	title = nil;
 }
 
 @end

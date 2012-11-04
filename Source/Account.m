@@ -41,24 +41,6 @@
 @synthesize collTransfer;
 @synthesize substInternalTransfers;
 
--(void)dealloc
-{
-	[name release ];
-	[bankName release ];
-	[bankCode release ];
-	[accountNumber release ];
-	[ownerName release ];
-	[currency release ];
-	[country release ];
-	[iban release ];
-	[bic release ];
-	[userId release ];
-	[customerId release ];
-	[subNumber release ];
-    [type release ];
-    [supportedJobs release ];
-	[super dealloc ];
-}
 
 -(BOOL)isEqual: (id)obj
 {

@@ -14,11 +14,11 @@
 
 }
 
-@property (nonatomic, retain) NSString * header;
-@property (nonatomic, retain) NSNumber * isSent;
-@property (nonatomic, retain) NSString * accountNumber;
-@property (nonatomic, retain) NSString * bankCode;
-@property (nonatomic, retain) NSString * message;
-@property (nonatomic, retain) NSString * receipient;
-@property (nonatomic, retain) BankAccount * account;
+@property (nonatomic, strong) NSString * header;
+@property (nonatomic, strong) NSNumber * isSent;
+@property (nonatomic, strong) NSString * accountNumber;
+@property (nonatomic, strong) NSString * bankCode;
+@property (nonatomic, strong) NSString * message;
+@property (nonatomic, strong) NSString * receipient;
+@property (nonatomic, strong) BankAccount * account;
 @end

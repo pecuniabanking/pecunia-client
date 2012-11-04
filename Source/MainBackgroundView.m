@@ -25,10 +25,6 @@
  */
 @implementation MainBackgroundView
 
-- (void) dealloc
-{
-    [super dealloc];
-}
 
 static NSImage* background = nil;
 
@@ -52,8 +48,8 @@ static NSImage* background = nil;
 	[NSBezierPath fillRect: [self bounds]];
     
     // Draw a highlight effect over the background.
-    NSGradient *highlight = [[[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.6]
-                                                           endingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0]] autorelease];
+    NSGradient *highlight = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.6]
+                                                           endingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0]];
     
     CGFloat height = self.bounds.size.height;
     NSPoint centerPoint = NSMakePoint(NSMidX(self.bounds), 2 * height - 61);
@@ -65,13 +61,12 @@ static NSImage* background = nil;
     bounds.size.height = 61;
     
     
-    NSGradient* topGradient = [[[NSGradient alloc]
+    NSGradient* topGradient = [[NSGradient alloc]
                                 initWithColorsAndLocations:
                                 [NSColor colorWithDeviceWhite: 60 / 255.0 alpha: 1], (CGFloat) 0,
                                 [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat) 1,
                                 nil
-                                ]
-                               autorelease];
+                                ];
     
 	[topGradient drawInRect: bounds angle: 90.0];
     
@@ -90,21 +85,20 @@ static NSImage* background = nil;
     [catSumAreaPath lineToPoint: NSMakePoint(bounds.size.width, height - bounds.size.height)];
     
     // Draw the background.
-    topGradient = [[[NSGradient alloc]
+    topGradient = [[NSGradient alloc]
                     initWithColorsAndLocations:
                     [NSColor colorWithDeviceRed: 213 / 256.0 green: 208 / 255.0f blue: 187 / 255.0f alpha: 1], (CGFloat) 0,
                     [NSColor colorWithDeviceRed: 233 / 256.0 green: 228 / 255.0f blue: 204 / 255.0f alpha: 1], (CGFloat) 1,
                     nil
-                    ]
-                   autorelease];
+                    ];
     
     [topGradient drawInBezierPath: catSumAreaPath angle: 90];
     
-    NSShadow* innerShadow1 = [[[NSShadow alloc] initWithColor: [NSColor blackColor]
+    NSShadow* innerShadow1 = [[NSShadow alloc] initWithColor: [NSColor blackColor]
                                                        offset: NSMakeSize(2.0, 0)
-                                                   blurRadius: 5.0] autorelease];
-    NSShadow* innerShadow2 = [[[NSShadow alloc] initWithColor: [NSColor colorWithCalibratedWhite: 0.0 alpha: .52]
-                                                       offset: NSMakeSize(2.0, -2.0) blurRadius: 12.0] autorelease];
+                                                   blurRadius: 5.0];
+    NSShadow* innerShadow2 = [[NSShadow alloc] initWithColor: [NSColor colorWithCalibratedWhite: 0.0 alpha: .52]
+                                                       offset: NSMakeSize(2.0, -2.0) blurRadius: 12.0];
     
     // Twofold inner shadow.
     [catSumAreaPath fillWithInnerShadow: innerShadow1 borderOnly: NO];

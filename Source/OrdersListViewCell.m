@@ -76,26 +76,13 @@ extern NSString *OrderIsSentKey;
     self = [super initWithFrame: frame];
     if (self != nil)
     {
-        whiteAttributes = [[NSDictionary dictionaryWithObjectsAndKeys:
+        whiteAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                             [NSColor whiteColor], NSForegroundColorAttributeName, nil
-                            ] retain
-                           ];
+                            ];
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [remoteBankCode release];
-    [remoteAccount release];
-    [purpose release];
-    [positiveAttributes release];
-    [negativeAttributes release];
-    [whiteAttributes release];
-    [categoryColor release];
-    
-	[super dealloc];
-}
 
 static CurrencyValueTransformer* currencyTransformer;
 
@@ -117,15 +104,12 @@ static CurrencyValueTransformer* currencyTransformer;
     [bankNameLabel setStringValue: [details valueForKey: StatementRemoteBankNameKey]];
     [bankNameLabel setToolTip: [details valueForKey: StatementRemoteBankNameKey]];
     
-    [remoteBankCode release];
-    [remoteAccount release];
-    [purpose release];
     
-    remoteBankCode = [[[details valueForKey: StatementRemoteBankCodeKey] copy] retain];
-    remoteAccount = [[[details valueForKey: StatementRemoteAccountKey] copy] retain];
-    purpose = [[[details valueForKey: StatementPurposeKey] copy] retain];
+    remoteBankCode = [[details valueForKey: StatementRemoteBankCodeKey] copy];
+    remoteAccount = [[details valueForKey: StatementRemoteAccountKey] copy];
+    purpose = [[details valueForKey: StatementPurposeKey] copy];
     
-    categoryColor = [[details valueForKey: StatementColorKey] retain];
+    categoryColor = [details valueForKey: StatementColorKey];
     
     if (currencyTransformer == nil)
         currencyTransformer = [[CurrencyValueTransformer alloc] init];
@@ -147,13 +131,11 @@ static CurrencyValueTransformer* currencyTransformer;
                            negativeNumbers: (NSDictionary*) _negativeAttributes
 {
     if (positiveAttributes != _positiveAttributes) {
-        [positiveAttributes release];
-        positiveAttributes = [_positiveAttributes retain];
+        positiveAttributes = _positiveAttributes;
         [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
     }
     if (negativeAttributes != _negativeAttributes) {
-        [negativeAttributes release];
-        negativeAttributes = [_negativeAttributes retain];
+        negativeAttributes = _negativeAttributes;
         [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
     }
 }
@@ -232,7 +214,7 @@ static CurrencyValueTransformer* currencyTransformer;
                                accountTitle, remoteAccount, bankCodeTitle, remoteBankCode]];
 
     // Construct a formatted string for the account label.
-    NSMutableAttributedString *accountString = [[[NSMutableAttributedString alloc] init] autorelease];
+    NSMutableAttributedString *accountString = [[NSMutableAttributedString alloc] init];
     NSFont *normalFont = [NSFont fontWithName: @"LucidaGrande" size: 11];
     NSDictionary *normalAttributes = [NSDictionary dictionaryWithObjectsAndKeys: normalFont, NSFontAttributeName,
                                       isSelected ? [NSColor whiteColor] : paleColor, NSForegroundColorAttributeName,
@@ -244,21 +226,17 @@ static CurrencyValueTransformer* currencyTransformer;
                                     isSelected ? [NSColor whiteColor] : [NSColor blackColor], NSForegroundColorAttributeName,
                                     nil];
     
-    [accountString appendAttributedString: [[[NSAttributedString alloc] initWithString: accountTitle
+    [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: accountTitle
                                                                             attributes: normalAttributes]
-                                            autorelease]
      ];
-    [accountString appendAttributedString: [[[NSAttributedString alloc] initWithString: remoteAccount
+    [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: remoteAccount
                                                                             attributes: boldAttributes]
-                                            autorelease]
      ];
-    [accountString appendAttributedString: [[[NSAttributedString alloc] initWithString: bankCodeTitle
+    [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: bankCodeTitle
                                                                             attributes: normalAttributes]
-                                            autorelease]
      ];
-    [accountString appendAttributedString: [[[NSAttributedString alloc] initWithString: remoteBankCode
+    [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: remoteBankCode
                                                                             attributes: boldAttributes]
-                                            autorelease]
      ];
     
     [accountLabel setAttributedStringValue: accountString];
@@ -266,8 +244,8 @@ static CurrencyValueTransformer* currencyTransformer;
     // The default line height for a multiline label is too large so we convert the given string
     // so it can have paragraph styles. At the same time we need to apply font size and color
     // explicitly as calling [s drawInRect] doesn't otherwise apply the same formatting as automatic drawing would.
-    NSMutableAttributedString *purposeString = [[[NSMutableAttributedString alloc] initWithString: purpose] autorelease];
-    NSMutableParagraphStyle *paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+    NSMutableAttributedString *purposeString = [[NSMutableAttributedString alloc] initWithString: purpose];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setMaximumLineHeight: 12];
     
     normalFont = [NSFont fontWithName: @"LucidaGrande" size: 10];

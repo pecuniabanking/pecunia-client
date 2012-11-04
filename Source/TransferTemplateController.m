@@ -37,7 +37,7 @@
 	[templateController setManagedObjectContext:context ];
 	
 	// sort descriptor for transactions view
-	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[countryController setSortDescriptors: sds ];
 
@@ -248,14 +248,12 @@
 	if (sel == nil || [sel count ] == 0) return;
 	TransferTemplate *template = [sel lastObject ];
 	if (([template.type intValue ] == TransferTypeEU || [template.type intValue ] == TransferTypeSEPA) && currentView == standardView) {
-		[standardView retain ];
 		[boxView replaceSubview:standardView with:euView ];
 		[euView setFrameOrigin:subViewPos ];
 		currentView = euView;
         [self toggleCountryFieldsForType: [template.type intValue ] ];
 	}
 	if (([template.type intValue ] != TransferTypeEU || [template.type intValue ] != TransferTypeSEPA) && currentView == euView) {
-		[euView retain ];
 		[boxView replaceSubview:euView with:standardView ];
 		currentView = standardView;
 	}

@@ -92,7 +92,7 @@
  *				To change the appearance of the headers, you can
  *				use your own \c MBTableGridHeaderCell subclass.
  */
-@property(retain) MBTableGridHeaderCell *headerCell;
+@property(strong) MBTableGridHeaderCell *headerCell;
 
 /**
  * @}

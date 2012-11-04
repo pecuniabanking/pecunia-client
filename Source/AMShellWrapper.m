@@ -46,31 +46,20 @@
 
 - (id)initWithController:(id <AMShellWrapperController>)cont inputPipe:(id)input outputPipe:(id)output errorPipe:(id)error workingDirectory:(NSString *)directoryPath environment:(NSDictionary *)env arguments:(NSArray *)args
 {
-	[super init];
+	if (!(self = [super init])) return nil;
 	controller = cont;
-	arguments = [args retain];
-	environment = [env retain];
-	workingDirectory = [directoryPath retain];
-	stdinPipe = [input retain];
-	stdoutPipe = [output retain];
-	stderrPipe = [error retain];
+	arguments = args;
+	environment = env;
+	workingDirectory = directoryPath;
+	stdinPipe = input;
+	stdoutPipe = output;
+	stderrPipe = error;
 	inputStringEncoding = NSUTF8StringEncoding;
 	outputStringEncoding = NSUTF8StringEncoding;
 	return self;
 }
 
 // tear things down
-- (void)dealloc
-{		
-	[stderrPipe release];
-	[stdoutPipe release];
-	[stdinPipe release];
-	[workingDirectory release];
-	[environment release];
-	[arguments release];
-	[task release];
-	[super dealloc];
-}
 
 // If you need something else than UTF8, set the code type of the task's input here
 - (void)setInputStringEncoding:(NSStringEncoding)newInputStringEncoding
@@ -101,7 +90,6 @@
 			stdinHandle = [[task standardInput] fileHandleForWriting];
 			// we do NOT retain stdinHandle here since it is retained (and released)
 			// by the task standardInput pipe (or so I hope ...)
-			[newPipe release];
 		} else {
 			perror("AMShellWrapper - failed to create pipe for stdIn");
 			error = YES;
@@ -119,7 +107,6 @@
 		if (newPipe) {
 			[task setStandardOutput:newPipe];
 			stdoutHandle = [[task standardOutput] fileHandleForReading];
-			[newPipe release];
 		} else {
 			perror("AMShellWrapper - failed to create pipe for stdOut");
 			error = YES;
@@ -134,7 +121,6 @@
 		if (newPipe) {
 			[task setStandardError:newPipe];
 			stderrHandle = [[task standardError] fileHandleForReading];
-			[newPipe release];
 		} else {
 			perror("AMShellWrapper - failed to create pipe for stdErr");
 			error = YES;
@@ -192,9 +178,7 @@
 		
 		// since the notification center does not retain the observer, make sure
 		// we don't get deallocated early
-		[self retain];
 	} else {
-		[self retain];
 		[self performSelector:@selector(cleanup) withObject:nil afterDelay:0];
 	}
 }
@@ -256,7 +240,6 @@
 	controller = nil;
 
 	// we are done; go ahead and kill us if you like ...
-	[self release];
 }
 
 // input to stdin
@@ -267,7 +250,7 @@
 
 - (void)appendOutput:(NSData *)data
 {
-	NSString *outputString = [[[NSString alloc] initWithData:data encoding:outputStringEncoding] autorelease];
+	NSString *outputString = [[NSString alloc] initWithData:data encoding:outputStringEncoding];
 	if (outputString) {
 		[controller appendOutput:outputString];
 	} else {
@@ -277,7 +260,7 @@
 
 - (void)appendError:(NSData *)data
 {
-	NSString *errorString = [[[NSString alloc] initWithData:data encoding:outputStringEncoding] autorelease];
+	NSString *errorString = [[NSString alloc] initWithData:data encoding:outputStringEncoding];
 	if (errorString) {
 		[controller appendError:errorString];
 	} else {

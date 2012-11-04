@@ -49,14 +49,13 @@
 
 -(void)dealloc
 {
-	[allowedTextKeys release], allowedTextKeys = nil;
+	allowedTextKeys = nil;
 
-	[weekCycles release], weekCycles = nil;
-	[monthCycles release], monthCycles = nil;
-	[execDaysWeek release], execDaysWeek = nil;
-	[execDaysMonth release], execDaysMonth = nil;
+	weekCycles = nil;
+	monthCycles = nil;
+	execDaysWeek = nil;
+	execDaysMonth = nil;
 
-	[super dealloc ];
 }
 
 

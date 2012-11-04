@@ -26,10 +26,6 @@
     return self;
 }
 
-- (void) dealloc
-{
-    [super dealloc];
-}
 
 // Background graphic elements, used in all sidebars.
 static NSShadow* borderShadow = nil;
@@ -67,7 +63,7 @@ static NSShadow* innerShadow2 = nil;
                                             blurRadius: 3.0];
         innerShadow2 = [[NSShadow alloc] initWithColor: [NSColor colorWithCalibratedWhite: 0.0 alpha: .52]
                                                 offset: NSMakeSize(0.0, -2.0) blurRadius: 8.0];
-        strokeColor = [[NSColor colorWithCalibratedWhite: .26 alpha: 1.0] retain];
+        strokeColor = [NSColor colorWithCalibratedWhite: .26 alpha: 1.0];
     }
     
     NSBezierPath* borderPath = [NSBezierPath bezierPathWithRoundedRect: NSInsetRect([self bounds], 10, 10) xRadius: 8 yRadius: 8];

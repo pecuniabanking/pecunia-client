@@ -18,12 +18,11 @@
 
 - (void)dealloc
 {
-	[bpd release], bpd = nil;
-	[upd release], upd = nil;
-	[bpd_raw release], bpd_raw = nil;
-	[upd_raw release], upd_raw = nil;
+	bpd = nil;
+	upd = nil;
+	bpd_raw = nil;
+	upd_raw = nil;
 
-	[super dealloc];
 }
 
 @end

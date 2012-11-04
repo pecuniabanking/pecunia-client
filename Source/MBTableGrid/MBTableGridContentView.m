@@ -69,18 +69,13 @@
 		dropRow = NSNotFound;
 		
 		// Cache the cursor image
-		cursorImage = [[self _cellSelectionCursorImage] retain];
+		cursorImage = [self _cellSelectionCursorImage];
 		
 		isDraggingColumnOrRow = NO;
 	}
 	return self;
 }
 
-- (void)dealloc
-{
-	[cursorImage release];
-	[super dealloc];
-}
 
 - (void)drawRect:(NSRect)rect
 {	
@@ -596,7 +591,7 @@
 - (NSCursor *)_cellSelectionCursor
 {
 	NSCursor *cursor = [[NSCursor alloc] initWithImage:cursorImage hotSpot:NSMakePoint(8, 8)];	
-	return [cursor autorelease];
+	return cursor;
 }
 
 /**
@@ -631,7 +626,6 @@
 	NSRectFill(verticalOuter);
 	
 	[[NSGraphicsContext currentContext] restoreGraphicsState];
-	[shadow release];
 	
 	// Fill them again to compensate for the shadows
 	NSRectFill(horizontalOuter);
@@ -643,7 +637,7 @@
 	
 	[image unlockFocus];
 	
-	return [image autorelease];
+	return image;
 }
 
 @end

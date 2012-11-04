@@ -18,14 +18,12 @@
     if (trackingArea != nil)
     {
         [self removeTrackingArea: trackingArea];
-        [trackingArea release];
     }
 
-    trackingArea = [[[NSTrackingArea alloc] initWithRect: self.bounds
+    trackingArea = [[NSTrackingArea alloc] initWithRect: self.bounds
                                                  options: NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveInActiveApp
                                                    owner: self
-                                                userInfo: nil]
-                    retain];
+                                                userInfo: nil];
     [self addTrackingArea: trackingArea];
 }
 
@@ -41,11 +39,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [trackingArea release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Event handling
@@ -84,7 +77,7 @@ static NSColor* strokeColor = nil;
                               [NSColor whiteColor], (CGFloat) 1,
                               nil
                               ];
-        strokeColor = [[NSColor colorWithCalibratedWhite: 0.35 alpha: 1.0] retain];
+        strokeColor = [NSColor colorWithCalibratedWhite: 0.35 alpha: 1.0];
     }
     
     [NSGraphicsContext saveGraphicsState];
@@ -111,7 +104,6 @@ static NSColor* strokeColor = nil;
     [strokeColor setStroke];
     [borderPath stroke];
     
-    [transform release];
     
     [NSGraphicsContext restoreGraphicsState];
 }

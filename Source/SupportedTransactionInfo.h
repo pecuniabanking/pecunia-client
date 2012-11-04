@@ -36,13 +36,13 @@ typedef enum {
 
 }
 
-@property (nonatomic, retain) NSNumber * allowsChange;
-@property (nonatomic, retain) NSNumber * allowsCollective;
-@property (nonatomic, retain) NSNumber * allowsDated;
-@property (nonatomic, retain) NSNumber * allowsList;
-@property (nonatomic, retain) NSNumber * type;
-@property (nonatomic, retain) NSNumber * allowesDelete;
+@property (nonatomic, strong) NSNumber * allowsChange;
+@property (nonatomic, strong) NSNumber * allowsCollective;
+@property (nonatomic, strong) NSNumber * allowsDated;
+@property (nonatomic, strong) NSNumber * allowsList;
+@property (nonatomic, strong) NSNumber * type;
+@property (nonatomic, strong) NSNumber * allowesDelete;
 
-@property (nonatomic, retain) BankAccount *account;
-@property (nonatomic, retain) BankUser *user;
+@property (nonatomic, strong) BankAccount *account;
+@property (nonatomic, strong) BankUser *user;
 @end

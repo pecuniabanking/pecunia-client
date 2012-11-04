@@ -24,7 +24,7 @@
 @interface AmountCell : MBTableGridCell {
 }
 
-@property (nonatomic, retain) NSString *currency;
-@property (nonatomic, retain) NSNumberFormatter *formatter;
+@property (nonatomic, strong) NSString *currency;
+@property (nonatomic, strong) NSNumberFormatter *formatter;
 
 @end

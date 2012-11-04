@@ -75,23 +75,20 @@
 
 -(void)dealloc
 {
-	[tanMethodList release ];
-	[tanMethodDescription release ];
-	[name release], name = nil;
-	[country release], country = nil;
-	[bankCode release], bankCode = nil;
-	[userId release], userId = nil;
-	[customerId release], customerId = nil;
-	[mediumId release], mediumId = nil;
-	[bankURL release], bankURL = nil;
-	[bankName release], bankName = nil;
-	[tanMethodList release], tanMethodList = nil;
-	[tanMethodNumber release ], tanMethodNumber = nil;
-	[hbciVersion release ], hbciVersion = nil;
-	[port release ], port = nil;
-    [chipCardId release ], chipCardId = nil;
-    [accounts release ], accounts = nil;
-	[super dealloc ];
+	name = nil;
+	country = nil;
+	bankCode = nil;
+	userId = nil;
+	customerId = nil;
+	mediumId = nil;
+	bankURL = nil;
+	bankName = nil;
+	tanMethodList = nil;
+	tanMethodNumber = nil;
+	hbciVersion = nil;
+	port = nil;
+    chipCardId = nil;
+    accounts = nil;
 }
 
 @end

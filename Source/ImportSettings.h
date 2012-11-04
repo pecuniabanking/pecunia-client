@@ -26,12 +26,12 @@
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSArray *fields;
-@property (nonatomic, retain) NSNumber *sepRadioIndex;
+@property (nonatomic, strong) NSNumber *sepRadioIndex;
 @property (nonatomic, copy) NSString *sepChar;
-@property (nonatomic, retain) NSNumber *dateFormatIndex;
+@property (nonatomic, strong) NSNumber *dateFormatIndex;
 @property (nonatomic, copy) NSString *dateFormatString;
-@property (nonatomic, retain) NSNumber *charEncodingIndex;
-@property (nonatomic, retain) NSNumber *ignoreLines;
+@property (nonatomic, strong) NSNumber *charEncodingIndex;
+@property (nonatomic, strong) NSNumber *ignoreLines;
 @property (nonatomic, copy) NSString *accountNumber;
 @property (nonatomic, copy) NSString *accountSuffix;
 @property (nonatomic, copy) NSString *bankCode;

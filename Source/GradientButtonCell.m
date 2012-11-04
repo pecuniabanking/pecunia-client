@@ -46,7 +46,7 @@ static NSGradient *blackGradient;
     NSBezierPath* borderPath = [NSBezierPath bezierPathWithRoundedRect: cellFrame xRadius: 5 yRadius: 5];
     [blackGradient drawInBezierPath: borderPath angle: 90];
     
-    NSMutableParagraphStyle *paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     
     // If there is an image left or right to the title then exclude its bounding rect from the
     // available space for the title. For now we don't support image above or below the title.
@@ -96,8 +96,8 @@ static NSGradient *blackGradient;
                                     paragraphStyle, NSParagraphStyleAttributeName,
                                     nil
                                     ];
-        NSAttributedString *cellStringWithFormat = [[[NSAttributedString alloc] initWithString: [self title]
-                                                                                    attributes: attributes] autorelease];
+        NSAttributedString *cellStringWithFormat = [[NSAttributedString alloc] initWithString: [self title]
+                                                                                    attributes: attributes];
         [cellStringWithFormat drawInRect: NSInsetRect(cellFrame, 10, 4)];
     }
 

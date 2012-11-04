@@ -20,7 +20,7 @@
 }
 
 @property (nonatomic, copy) NSArray *tanMethods;
-@property (nonatomic, retain) NSNumber *selectedMethod;
+@property (nonatomic, strong) NSNumber *selectedMethod;
 
 
 -(id)initWithMethods:(NSArray*)methods;

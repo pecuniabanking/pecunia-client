@@ -75,23 +75,23 @@
 //  Weak reference support
 
 #ifndef AH_WEAK
-#if defined __IPHONE_OS_VERSION_MIN_REQUIRED
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_4_3
-#define __AH_WEAK __weak
-#define AH_WEAK weak
-#else
-#define __AH_WEAK __unsafe_unretained
-#define AH_WEAK unsafe_unretained
-#endif
-#elif defined __MAC_OS_X_VERSION_MIN_REQUIRED
-#if __MAC_OS_X_VERSION_MIN_REQUIRED > __MAC_10_6
-#define __AH_WEAK __weak
-#define AH_WEAK weak
-#else
-#define __AH_WEAK __unsafe_unretained
-#define AH_WEAK unsafe_unretained
-#endif
-#endif
+#  if defined __IPHONE_OS_VERSION_MIN_REQUIRED
+#    if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_4_3
+#      define __AH_WEAK __weak
+#      define AH_WEAK weak
+#    else
+#      define __AH_WEAK __unsafe_unretained
+#      define AH_WEAK unsafe_unretained
+#    endif
+#  elif defined __MAC_OS_X_VERSION_MIN_REQUIRED
+#    if __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_7
+#      define __AH_WEAK __weak
+#      define AH_WEAK weak
+#    else
+#      define __AH_WEAK __unsafe_unretained
+#      define AH_WEAK unsafe_unretained
+#    endif
+#  endif
 #endif
 
 //  ARC Helper ends

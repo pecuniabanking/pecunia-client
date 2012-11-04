@@ -18,6 +18,7 @@
  */
 
 #import "MBTableGrid/MBTableGrid.h"
+#import "MBTableGrid/MBTableGridHeaderView.h"
 #import "MAAttachedWindow.h"
 #import "BWGradientBox.h"
 
@@ -59,11 +60,11 @@
     self = [super init];
     if (self != nil) {
         active = NO;
-        dates = [[NSMutableArray array] retain];
-        balances = [[NSMutableArray array] retain];
-        turnovers = [[NSMutableArray array] retain];
-        selectedDates = [[NSMutableArray array] retain];
-        managedObjectContext = [[[MOAssistant assistant] context] retain];
+        dates = [NSMutableArray array];
+        balances = [NSMutableArray array];
+        turnovers = [NSMutableArray array];
+        selectedDates = [NSMutableArray array];
+        managedObjectContext = [[MOAssistant assistant] context];
     }
     
     return self;
@@ -73,15 +74,11 @@
 {
     self.outline = nil; // Will remove self from default notification center.
     
-    [dates release];
-    [balances release];
-    [turnovers release];
-    [selectedDates release], selectedDates = nil;
-    [minDate release], minDate = nil;
-    [maxDate release], maxDate = nil;
-    [managedObjectContext release], managedObjectContext = nil;
+    selectedDates = nil;
+    minDate = nil;
+    maxDate = nil;
+    managedObjectContext = nil;
     
-    [super dealloc];
 }
 
 -(void)awakeFromNib
@@ -127,7 +124,7 @@
     valueGrid.defaultCellSize = NSMakeSize(100, 20);
     [valueGrid.rowHeaderView setHidden: YES];
     
-    AmountCell *cell = [[[AmountCell alloc] initTextCell: @""] autorelease];
+    AmountCell *cell = [[AmountCell alloc] initTextCell: @""];
     [cell setAlignment: NSRightTextAlignment];
     valueGrid.cell = cell;
     NSDictionary *positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -175,7 +172,6 @@
     shadow.shadowOffset = NSMakeSize(1, -1);
     shadow.shadowBlurRadius = 3;
     selectionBox.shadow = shadow;
-    [shadow release];
 }
 
 #pragma mark -
@@ -363,19 +359,21 @@
     
     if (rowCount > 0) {
         // Fill the dates array with dates that fill the entire range of available values.
-        [[[outline itemAtRow: 0] representedObject] getDatesMin: &minDate max: &maxDate];
+        ShortDate *min = minDate;
+        ShortDate *max = maxDate;
+        [[[outline itemAtRow: 0] representedObject] getDatesMin: &min max: &max];
         switch (groupingInterval) {
             case GroupByYears:
-                minDate = [minDate firstDayInYear];
-                maxDate = [maxDate firstDayInYear];
+                minDate = [min firstDayInYear];
+                maxDate = [max firstDayInYear];
                 break;
             case GroupByQuarters:
-                minDate = [minDate firstDayInQuarter];
-                maxDate = [maxDate firstDayInQuarter];
+                minDate = [min firstDayInQuarter];
+                maxDate = [max firstDayInQuarter];
                 break;
             default:
-                minDate = [minDate firstDayInMonth];
-                maxDate = [maxDate firstDayInMonth];
+                minDate = [min firstDayInMonth];
+                maxDate = [max firstDayInMonth];
         }
 
         ShortDate* date = minDate;
@@ -508,7 +506,6 @@
 {
     [[valueGrid window] removeChildWindow: detailsPopupWindow];
     [detailsPopupWindow orderOut: self];
-    [detailsPopupWindow release];
     detailsPopupWindow = nil;
     fadeInProgress = NO;
 }
@@ -590,7 +587,7 @@
             break;
     }
     [statementsController setSortDescriptors:
-     [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending] autorelease]]];
+     [NSArray arrayWithObject: [[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
 }
 
 #pragma mark -

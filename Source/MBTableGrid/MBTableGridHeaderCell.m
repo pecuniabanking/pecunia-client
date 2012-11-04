@@ -98,8 +98,6 @@
 	
 	[[NSGraphicsContext currentContext] restoreGraphicsState];
 	
-	[textShadow release];
-	[string release];
 }
 
 @end

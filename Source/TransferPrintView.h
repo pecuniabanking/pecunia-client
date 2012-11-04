@@ -46,7 +46,7 @@
     
 }
 
-@property(nonatomic, retain) NSMutableArray *transfers;
+@property(nonatomic, strong) NSMutableArray *transfers;
 
 - (id)initWithTransfers: (NSArray *)transfersToPrint printInfo: (NSPrintInfo *)pi;
 

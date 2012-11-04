@@ -35,16 +35,16 @@
         [formatter setLocale: [NSLocale currentLocale]];
         [formatter setCurrencySymbol: @""];
         
-        self.partiallyHighlightedGradient = [[[NSGradient alloc] initWithColorsAndLocations:
+        self.partiallyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
                                              [NSColor applicationColorForKey: @"Grid Partial Selection"], (CGFloat) 0,
                                              [NSColor applicationColorForKey: @"Grid Partial Selection"], (CGFloat) 1,
                                              nil
-                                             ] autorelease];
-        self.fullyHighlightedGradient = [[[NSGradient alloc] initWithColorsAndLocations:
+                                             ];
+        self.fullyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
                                     [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat) 0,
                                     [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 1,
                                     nil
-                                    ] autorelease];
+                                    ];
     }
     return  self;
 }
@@ -59,18 +59,12 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [currency release];
-    [formatter release];
-    [super dealloc];
-}
 
 - (id)copyWithZone:(NSZone *)zone
 {
     AmountCell *cell = (AmountCell*)[super copyWithZone:zone];
-    cell->formatter = [formatter retain ];
-    cell->currency = [currency retain ];
+    cell->formatter = formatter;
+    cell->currency = currency;
     return cell;
 }
 
@@ -85,7 +79,7 @@
     if (self.isInSelectedRow && self.isInSelectedColumn) {
         textColor  = [NSColor whiteColor];
     }
-    NSMutableDictionary *attrs = [[[[self attributedStringValue] attributesAtIndex: 0 effectiveRange: NULL] mutableCopy] autorelease];
+    NSMutableDictionary *attrs = [[[self attributedStringValue] attributesAtIndex: 0 effectiveRange: NULL] mutableCopy];
     
     // If this cell is fully selected then make the text bold.
     if (self.isInSelectedRow && self.isInSelectedColumn) {
@@ -98,7 +92,7 @@
     [formatter setCurrencyCode: currency];
     NSString *str = [formatter stringFromNumber: self.objectValue];
     if (str != nil) {
-        NSAttributedString *s = [[[NSAttributedString alloc] initWithString: str attributes: attrs] autorelease];
+        NSAttributedString *s = [[NSAttributedString alloc] initWithString: str attributes: attrs];
     
         cellFrame.origin.x += CELL_BOUNDS;
         cellFrame.size.width -= 2 * CELL_BOUNDS;

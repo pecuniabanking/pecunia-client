@@ -42,7 +42,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 {
 }
 
-@property (nonatomic, assign) StandingOrderController *controller;
+@property (nonatomic, unsafe_unretained) StandingOrderController *controller;
 
 @end
 
@@ -110,7 +110,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	self = [super init];
 	if (self != nil) {
         managedObjectContext = MOAssistant.assistant.context;
-        weekDays = [[NSArray arrayWithObjects:
+        weekDays = [NSArray arrayWithObjects:
                      NSLocalizedString(@"AP10030", nil),
                      NSLocalizedString(@"AP10031", nil),
                      NSLocalizedString(@"AP10032", nil),
@@ -118,7 +118,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
                      NSLocalizedString(@"AP10034", nil),
                      NSLocalizedString(@"AP10035", nil),
                      NSLocalizedString(@"AP10036", nil),
-                     nil] retain];
+                     nil];
         accounts = [[NSMutableArray alloc] initWithCapacity: 10];
         self.requestRunning = [NSNumber numberWithBool: NO];
     }
@@ -126,22 +126,6 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	return self;
 }
 
-- (void)dealloc
-{
-	[currentLimits release];
-	[currentOrder release];
-	[weekDays release];
-	[accounts release];
-	
-	[oldMonthCycle release];
-	[oldMonthDay release];
-	[oldWeekCycle release];
-	[oldWeekDay release];
-    
-	[requestRunning release];
-    
-	[super dealloc];
-}
 
 -(void)awakeFromNib
 {
@@ -176,7 +160,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     
     
 	// Sort order list by change date (newest first).
-	NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO] autorelease];
+	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO];
 	NSArray *sds = [NSArray arrayWithObject: sd];
 	[orderController setSortDescriptors: sds];
     
@@ -209,7 +193,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	
 	[accounts removeAllObjects];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: managedObjectContext];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity: entityDescription];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND isStandingOrderSupported == 1" ];
 	[request setPredicate: predicate];
@@ -411,7 +395,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 - (NSMenuItem*)createItemForAccountSelector: (BankAccount *)account
 {
-    NSMenuItem *item = [[[NSMenuItem alloc] initWithTitle: [account localName] action: nil keyEquivalent: @""] autorelease];
+    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle: [account localName] action: nil keyEquivalent: @""];
     item.representedObject = account;
     
     return item;
@@ -453,7 +437,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     NSMenu *sourceMenu = [sourceAccountSelector menu];
     
     Category *category = [Category bankRoot];
-	NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES] autorelease];
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
 	NSArray *sortDescriptors = [NSArray arrayWithObject: sortDescriptor];
     NSArray *institutes = [[category children] sortedArrayUsingDescriptors: sortDescriptors];
     
@@ -741,7 +725,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	
 	// Check if there are new orders without key.
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"StandingOrder" inManagedObjectContext:managedObjectContext];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity: entityDescription];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isSent == YES AND orderKey == nil" ];
 	[request setPredicate: predicate];
@@ -855,7 +839,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 				result.bankCode = account.bankCode;
 				result.userId = account.userId;
 				result.account = account;
-				[resultList addObject: [result autorelease]];
+				[resultList addObject: result];
 			}
         }
     }

@@ -42,7 +42,7 @@
 	currentPage = 1;
 	
     self.transfers = [transfersToPrint mutableCopy ];
-	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
+	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[self.transfers sortUsingDescriptors:sds ];
     
@@ -117,7 +117,7 @@
     font = [NSFont fontWithName:@"Lucida Grande" size:9 ];
     [result appendAttributedString:[[@"\n" stringByAppendingString:transfer.purpose ] attributedStringWithFont:font]];
     
-	return [result autorelease ];
+	return result;
 }
 
 -(NSAttributedString*)bankAddressTextFromTransfer:(Transfer*)transfer
@@ -223,7 +223,7 @@
 	hBase+=dateWidth;
 	headerFrame = NSMakeRect(0, baseHeight, dateWidth, HEADER_HEIGHT);
 	[NSBezierPath strokeLineFromPoint:NSMakePoint(hBase, baseHeight) toPoint:NSMakePoint(hBase, baseHeight+HEADER_HEIGHT) ];
-	NSAttributedString *as = [[[NSAttributedString alloc ] initWithString:@"Datum\nValuta" attributes: attributes] autorelease];
+	NSAttributedString *as = [[NSAttributedString alloc ] initWithString:@"Datum\nValuta" attributes: attributes];
 	headerFrame.origin.y += 1;
 	headerFrame.origin.x += padding;
 	[as drawInRect:headerFrame ];
@@ -233,7 +233,7 @@
 	headerFrame = NSMakeRect(dateWidth, baseHeight, purposeWidth, HEADER_HEIGHT);
     //	[NSBezierPath strokeRect:headerFrame ];
 	[NSBezierPath strokeLineFromPoint:NSMakePoint(hBase, baseHeight) toPoint:NSMakePoint(hBase, baseHeight+HEADER_HEIGHT) ];
-	as = [[[NSAttributedString alloc ] initWithString:@"Empfänger\nBuchungshinweis" attributes: attributes] autorelease];
+	as = [[NSAttributedString alloc ] initWithString:@"Empfänger\nBuchungshinweis" attributes: attributes];
 	headerFrame.origin.y += 1;
 	headerFrame.origin.x += padding;
 	[as drawInRect:headerFrame ];
@@ -243,7 +243,7 @@
 	headerFrame = NSMakeRect(dateWidth+purposeWidth, baseHeight, bankAddressWidth, HEADER_HEIGHT);
     //	[NSBezierPath strokeRect:headerFrame ];
 	[NSBezierPath strokeLineFromPoint:NSMakePoint(hBase, baseHeight) toPoint:NSMakePoint(hBase, baseHeight+HEADER_HEIGHT) ];
-	as = [[[NSAttributedString alloc ] initWithString:@"Kontoverbindung" attributes: attributes] autorelease];
+	as = [[NSAttributedString alloc ] initWithString:@"Kontoverbindung" attributes: attributes];
 	headerFrame.origin.y += 1;
 	headerFrame.origin.x += padding;
 	[as drawInRect:headerFrame ];
@@ -253,7 +253,7 @@
 	headerFrame = NSMakeRect(dateWidth+purposeWidth+bankAddressWidth, baseHeight, amountWidth, HEADER_HEIGHT);
     //	[NSBezierPath strokeRect:headerFrame ];
 	[NSBezierPath strokeLineFromPoint:NSMakePoint(hBase, baseHeight) toPoint:NSMakePoint(hBase, baseHeight+HEADER_HEIGHT) ];
-	as = [[[NSAttributedString alloc ] initWithString:@"Betrag" attributes: attributes] autorelease];
+	as = [[NSAttributedString alloc ] initWithString:@"Betrag" attributes: attributes];
 	headerFrame.origin.y += 1;
 	headerFrame.origin.x += padding;
 	[as drawInRect:headerFrame ];
@@ -262,12 +262,12 @@
 -(void)drawPageBorderWithSize:(NSSize)borderSize
 {
 	NSString *s;
-	NSDateFormatter *df = [[[NSDateFormatter alloc ] init ] autorelease ];
+	NSDateFormatter *df = [[NSDateFormatter alloc ] init ];
 	[df setDateStyle: NSDateFormatterMediumStyle ];
 	[df setTimeStyle: NSDateFormatterMediumStyle ];
 	
 	NSParagraphStyle *ps = [NSParagraphStyle defaultParagraphStyle ];
-	NSMutableParagraphStyle *mps = [[ps mutableCopy] autorelease];
+	NSMutableParagraphStyle *mps = [ps mutableCopy];
 	[mps setAlignment:NSRightTextAlignment ];
 	
 	NSRect frame = [self frame ];
@@ -311,7 +311,7 @@
 	int    height;
     
 	NSParagraphStyle *ps = [NSParagraphStyle defaultParagraphStyle ];
-	NSMutableParagraphStyle *mps = [[ps mutableCopy] autorelease];
+	NSMutableParagraphStyle *mps = [ps mutableCopy];
 	[mps setAlignment:NSRightTextAlignment ];
 	
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
@@ -404,14 +404,5 @@
 }
 
 
--(void)dealloc
-{
-	[dateFormatter release ];
-	[numberFormatter release ];
-	[debitNumberFormatter release ];
-	[transfers release ];
-	[super dealloc ];
-	
-}
 
 @end

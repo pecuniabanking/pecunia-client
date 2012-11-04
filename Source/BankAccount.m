@@ -56,7 +56,7 @@
 
 -(id)copyWithZone: (NSZone *)zone
 {
-	return [self retain ];
+	return self;
 }
 
 -(NSInteger)calcUnread
@@ -64,7 +64,7 @@
 	NSError *error = nil;
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (isNew = 1)", self ];
 	[request setPredicate:predicate];
@@ -96,12 +96,12 @@
 	
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	
 	// check if purpose split rule exists
 	if (self.splitRule && self.purposeSplitRule == nil ) {
-        self.purposeSplitRule = [[[PurposeSplitRule alloc] initWithString: self.splitRule] autorelease];
+        self.purposeSplitRule = [[PurposeSplitRule alloc] initWithString: self.splitRule];
     }
 
 	// get old statements
@@ -205,7 +205,7 @@
 	StandingOrder *stord;
 	StandingOrder *order;
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"StandingOrder" inManagedObjectContext:context];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	
 	
@@ -274,13 +274,13 @@
 						date = oldStat.date;
 					}
 				}
-				date = [[[NSDate alloc ] initWithTimeInterval:10 sinceDate: date ] autorelease ];
+				date = [[NSDate alloc ] initWithTimeInterval:10 sinceDate: date ];
 			}
 			currentDate = stmtDate;
 		}
 		
 		stmt.date = date;
-		date = [[[NSDate alloc ] initWithTimeInterval:10 sinceDate: date ] autorelease ];
+		date = [[NSDate alloc ] initWithTimeInterval:10 sinceDate: date ];
 		
 		[newStatements addObject: stmt ];
 		[stmt addToAccount: self ];
@@ -290,10 +290,10 @@
 	if ([newStatements count ] > 0) {
 		if (result.balance == nil) {
 			// no balance given - calculate new balance
-			NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES] autorelease];
+			NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
 			NSArray				*sds = [NSArray arrayWithObject:sd];
 			[newStatements sortUsingDescriptors:sds ];
-			NSMutableArray *oldStatements = [[self.dbStatements mutableCopy] autorelease];
+			NSMutableArray *oldStatements = [self.dbStatements mutableCopy];
 			[oldStatements sortUsingDescriptors:sds ];
 			
 			// find earliest old that is later than first new
@@ -329,7 +329,7 @@
 			NSMutableArray *mergedStatements = [NSMutableArray arrayWithCapacity:100 ];
 			[mergedStatements addObjectsFromArray:newStatements ];
 			[mergedStatements addObjectsFromArray:self.dbStatements ];
-			NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
+			NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
 			NSArray				*sds = [NSArray arrayWithObject:sd];
 			[mergedStatements sortUsingDescriptors:sds ];
 			NSDecimalNumber *newSaldo = self.balance;
@@ -408,7 +408,7 @@
 
 -(void)repairStatementBalances
 {
-	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
+	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
     NSArray				*sds = [NSArray arrayWithObject:sd];
     
     NSMutableSet *statements = [self mutableSetValueForKey:@"statements"];
@@ -473,13 +473,13 @@
 	
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@) AND (date < %@)", self, startDate, endDate ];
 	[request setPredicate:predicate];
 	
-	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
+	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[request setSortDescriptors:sds ];
 
@@ -487,7 +487,7 @@
 	if (statements == nil || [statements count ] == 0) return startDate;
 	
 	currentDate = [[statements objectAtIndex:0 ] date ];
-	return [[[NSDate alloc] initWithTimeInterval: 100 sinceDate:currentDate] autorelease];
+	return [[NSDate alloc] initWithTimeInterval: 100 sinceDate:currentDate];
 }
 
 -(void)copyStatement:(BankStatement*)stat
@@ -512,7 +512,7 @@
 		
 	// next check if duplicate
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:context];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@) AND (date < %@)", self, startDate, endDate ];
@@ -532,7 +532,7 @@
 	predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date > %@)", self, stmt.date ];
 	[request setPredicate:predicate];
 
-	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES] autorelease];
+	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[request setSortDescriptors:sds ];
 	
@@ -563,7 +563,7 @@
 	if ([self.isManual boolValue ] == YES) return;
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:context];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(isManual = 1) AND (rule != nil)" ];
 	[request setPredicate:predicate];
@@ -637,7 +637,7 @@
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	if (context == nil) return 0;
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankAccount" inManagedObjectContext:context];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(isManual = 0) AND (accountNumber != nil)" ];
 	[request setPredicate:predicate];
@@ -651,11 +651,5 @@
 	return unread;
 }
 
--(void)dealloc
-{
-	[purposeSplitRule release ];
-	[dbStatements release ];
-	[super dealloc ];
-}
 
 @end

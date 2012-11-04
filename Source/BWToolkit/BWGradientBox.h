@@ -17,10 +17,10 @@
 	BOOL hasTopBorder, hasBottomBorder, hasGradient, hasFillColor;
 }
 
-@property (nonatomic, retain) NSColor *fillStartingColor, *fillEndingColor, *fillColor, *topBorderColor, *bottomBorderColor;
+@property (nonatomic, strong) NSColor *fillStartingColor, *fillEndingColor, *fillColor, *topBorderColor, *bottomBorderColor;
 @property float topInsetAlpha, bottomInsetAlpha;
 @property (nonatomic, assign) BOOL hasTopBorder, hasBottomBorder, hasGradient, hasFillColor;
 
 @property (nonatomic, assign) float cornerRadius;
-@property (nonatomic, retain) NSShadow *shadow;
+@property (nonatomic, strong) NSShadow *shadow;
 @end

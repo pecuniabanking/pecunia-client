@@ -24,6 +24,6 @@
     NSColor* indicatorColor;
 }
 
-@property (nonatomic, readwrite, retain) NSColor* indicatorColor;
+@property (nonatomic, readwrite, strong) NSColor* indicatorColor;
 
 @end

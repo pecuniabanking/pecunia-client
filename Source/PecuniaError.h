@@ -20,7 +20,7 @@ typedef enum {
     NSString    *title;
 }
 
-@property(nonatomic,retain) NSString *title;
+@property(nonatomic,strong) NSString *title;
 
 +(NSError*)errorWithText:(NSString*)msg;
 +(PecuniaError*)errorWithCode:(ErrorCode)code message:(NSString*)msg;

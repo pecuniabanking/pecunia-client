@@ -17,11 +17,10 @@
 
 -(void)dealloc
 {
-	[name release], name = nil;
-	[currency release], currency = nil;
-	[code release], code = nil;
+	name = nil;
+	currency = nil;
+	code = nil;
 
-	[super dealloc ];
 }
 
 @end

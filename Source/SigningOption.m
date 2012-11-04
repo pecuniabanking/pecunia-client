@@ -23,20 +23,19 @@
 
 - (void)dealloc
 {
-	[userId release], userId = nil;
-	[userName release], userName = nil;
-	[cardId release], cardId = nil;
-	[tanMethod release], tanMethod = nil;
-	[tanMethodName release], tanMethodName = nil;
-	[tanMediumName release], tanMediumName = nil;
-    [tanMediumCategory release], tanMediumCategory = nil;
-	[mobileNumber release], mobileNumber = nil;    
-	[super dealloc];
+	userId = nil;
+	userName = nil;
+	cardId = nil;
+	tanMethod = nil;
+	tanMethodName = nil;
+	tanMediumName = nil;
+    tanMediumCategory = nil;
+	mobileNumber = nil;    
 }
 
 -(id)copyWithZone:(NSZone*)zone
 {
-    return [self retain ];
+    return self;
 }
 
 - (NSString*)description

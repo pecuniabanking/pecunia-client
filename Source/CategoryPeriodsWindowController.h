@@ -60,15 +60,14 @@
     NSMutableArray *turnovers;    // An array of balance counts arrays.
     
     GroupingInterval groupingInterval;
-    
-    __weak NSOutlineView* outline; // The controlling outline.
+
     BOOL active; // YES if we are the active section.
     BOOL fadeInProgress; // YES if we are currently fading out the popup.
     
    MAAttachedWindow *detailsPopupWindow;
 }
 
-@property (nonatomic, assign) NSOutlineView* outline; // weak reference
+@property (nonatomic, unsafe_unretained) NSOutlineView* outline; // The controlling outline.
 
 - (IBAction)setGrouping: (id)sender;
 - (IBAction)fromChanged:(id)sender;
@@ -79,7 +78,7 @@
 - (void)connectScrollViews: (SynchronousScrollView *)other;
 
 // PecuniaSectionItem protocol
-@property (nonatomic, retain) Category* category;
+@property (nonatomic, strong) Category* category;
 
 - (NSView*)mainView;
 - (void)activate;

@@ -21,7 +21,7 @@
 	NSMutableArray	*statements;
 	NSMutableArray  *standingOrders;
 	BOOL			isImport;
-	BankAccount		*account;
+	BankAccount		*__unsafe_unretained account;
 }
 
 @property (copy) NSString *accountNumber;
@@ -31,9 +31,9 @@
 @property (copy) NSString *userId;
 @property (copy) NSDecimalNumber *balance;
 @property (copy) NSDecimalNumber *oldBalance;
-@property (retain) NSMutableArray *statements;
-@property (retain) NSMutableArray *standingOrders;
-@property (assign) BankAccount *account;
+@property (strong) NSMutableArray *statements;
+@property (strong) NSMutableArray *standingOrders;
+@property (unsafe_unretained) BankAccount *account;
 @property (assign) BOOL isImport;
 
 

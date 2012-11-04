@@ -13,9 +13,9 @@
 
 }
 
-@property (nonatomic, retain) NSString * bankCode;
-@property (nonatomic, retain) NSDate * date;
-@property (nonatomic, retain) NSString * message;
+@property (nonatomic, strong) NSString * bankCode;
+@property (nonatomic, strong) NSDate * date;
+@property (nonatomic, strong) NSString * message;
 
 @end
 

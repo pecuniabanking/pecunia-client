@@ -15,7 +15,7 @@
 
 }
 
-@property (nonatomic, retain) NSNumber *function;
+@property (nonatomic, strong) NSNumber *function;
 @property (nonatomic, copy) NSString *description;
 
 -(id)initDefault: (NSNumber*) func;

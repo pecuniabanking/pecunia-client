@@ -34,7 +34,7 @@
 @property (copy) NSString *version;
 @property (copy) NSString *tanMethod;
 @property (copy) NSString *port;
-@property (retain) NSArray *tanMethods;
+@property (strong) NSArray *tanMethods;
 @property (assign) BOOL base64;
 @property (assign) BOOL checkCert;
 

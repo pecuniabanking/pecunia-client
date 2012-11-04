@@ -52,34 +52,34 @@ typedef enum {
 - (unsigned int)jobId;
 
 
-@property (nonatomic, retain) NSNumber * chargedBy;
-@property (nonatomic, retain) NSString * currency;
-@property (nonatomic, retain) NSDate * date;
-@property (nonatomic, retain) NSNumber * isSent;
-@property (nonatomic, retain) NSNumber * isTemplate;
-@property (nonatomic, retain) NSString * purpose1;
-@property (nonatomic, retain) NSString * purpose2;
-@property (nonatomic, retain) NSString * purpose3;
-@property (nonatomic, retain) NSString * purpose4;
-@property (nonatomic, retain) NSString * remoteAccount;
-@property (nonatomic, retain) NSString * remoteAddrCity;
-@property (nonatomic, retain) NSString * remoteAddrPhone;
-@property (nonatomic, retain) NSString * remoteAddrStreet;
-@property (nonatomic, retain) NSString * remoteAddrZip;
-@property (nonatomic, retain) NSString * remoteBankCode;
-@property (nonatomic, retain) NSString * remoteBankName;
-@property (nonatomic, retain) NSString * remoteBIC;
-@property (nonatomic, retain) NSString * remoteCountry;
-@property (nonatomic, retain) NSString * remoteIBAN;
-@property (nonatomic, retain) NSString * remoteName;
-@property (nonatomic, retain) NSString * remoteSuffix;
-@property (nonatomic, retain) NSNumber * status;
-@property (nonatomic, retain) NSNumber * subType;
-@property (nonatomic, retain) NSNumber * type;
-@property (nonatomic, retain) NSString * usedTAN;
-@property (nonatomic, retain) NSDecimalNumber * value;
-@property (nonatomic, retain) NSDate * valutaDate;
-@property (nonatomic, retain) BankAccount * account;
+@property (nonatomic, strong) NSNumber * chargedBy;
+@property (nonatomic, strong) NSString * currency;
+@property (nonatomic, strong) NSDate * date;
+@property (nonatomic, strong) NSNumber * isSent;
+@property (nonatomic, strong) NSNumber * isTemplate;
+@property (nonatomic, strong) NSString * purpose1;
+@property (nonatomic, strong) NSString * purpose2;
+@property (nonatomic, strong) NSString * purpose3;
+@property (nonatomic, strong) NSString * purpose4;
+@property (nonatomic, strong) NSString * remoteAccount;
+@property (nonatomic, strong) NSString * remoteAddrCity;
+@property (nonatomic, strong) NSString * remoteAddrPhone;
+@property (nonatomic, strong) NSString * remoteAddrStreet;
+@property (nonatomic, strong) NSString * remoteAddrZip;
+@property (nonatomic, strong) NSString * remoteBankCode;
+@property (nonatomic, strong) NSString * remoteBankName;
+@property (nonatomic, strong) NSString * remoteBIC;
+@property (nonatomic, strong) NSString * remoteCountry;
+@property (nonatomic, strong) NSString * remoteIBAN;
+@property (nonatomic, strong) NSString * remoteName;
+@property (nonatomic, strong) NSString * remoteSuffix;
+@property (nonatomic, strong) NSNumber * status;
+@property (nonatomic, strong) NSNumber * subType;
+@property (nonatomic, strong) NSNumber * type;
+@property (nonatomic, strong) NSString * usedTAN;
+@property (nonatomic, strong) NSDecimalNumber * value;
+@property (nonatomic, strong) NSDate * valutaDate;
+@property (nonatomic, strong) BankAccount * account;
 
 @property (nonatomic, assign) TransferChangeState changeState; // Temporary flag used while editing transfers.
 

@@ -58,9 +58,9 @@
 @property (nonatomic, copy) NSString *tempDir;
 @property (nonatomic, copy) NSString *dataFilename;
 @property (nonatomic, copy) NSString *dataPassword;
-@property (nonatomic, retain) NSURL *accountsURL;
-@property (nonatomic, retain) NSURL *dataDirURL;
-@property (nonatomic, retain) NSURL *pecuniaFileURL;
+@property (nonatomic, strong) NSURL *accountsURL;
+@property (nonatomic, strong) NSURL *dataDirURL;
+@property (nonatomic, strong) NSURL *pecuniaFileURL;
 
 -(void)loadModel;
 -(void)relocate;

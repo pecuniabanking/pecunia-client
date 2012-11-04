@@ -30,9 +30,9 @@
 		NSBezierPath*    path = [NSBezierPath bezierPath];
 		[path appendBezierPathWithRoundedRect:rect xRadius:9.0 yRadius:9.0];
 		
-		NSGradient* aGradient = [[[NSGradient alloc]
+		NSGradient* aGradient = [[NSGradient alloc]
 								  initWithColorsAndLocations:[NSColor whiteColor], (CGFloat)-0.1, rowColor, (CGFloat)1.1,
-								  nil] autorelease];
+								  nil];
 		
 		[aGradient drawInBezierPath:path angle:90.0];
 	}

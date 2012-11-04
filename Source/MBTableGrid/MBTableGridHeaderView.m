@@ -57,22 +57,18 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[headerCell release];
-	[super dealloc];
-}
 
 - (void)drawRect:(NSRect)rect
 {
+    /*
 	NSColor *topGradientTop = [NSColor colorWithDeviceWhite:0.91 alpha:1.0];
 	NSColor *topGradientBottom = [NSColor colorWithDeviceWhite:0.89 alpha:1.0];
 	NSColor *bottomGradientTop = [NSColor colorWithDeviceWhite:0.85 alpha:1.0];
 	NSColor *bottomGradientBottom = [NSColor colorWithDeviceWhite:0.83 alpha:1.0];	
-	
+
 	NSGradient *topGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:topGradientTop, topGradientBottom, nil]];
 	NSGradient *bottomGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:bottomGradientTop, bottomGradientBottom, nil]];
-	
+	*/
 	if (self.orientation == MBTableHeaderHorizontalOrientation) {
 		// Draw the column headers
 		NSUInteger numberOfColumns = [[self tableGrid] numberOfColumns];
@@ -121,8 +117,6 @@
 		}
 	}
 	
-	[topGradient release];
-	[bottomGradient release];
 }
 
 - (BOOL)isFlipped

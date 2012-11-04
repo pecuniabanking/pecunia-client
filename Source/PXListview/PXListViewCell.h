@@ -16,12 +16,12 @@
 {
 	NSString *_reusableIdentifier;
 	
-	PXListView *_listView;
+	PXListView *__unsafe_unretained _listView;
 	NSUInteger _row;
 	PXListViewDropHighlight	_dropHighlight;
 }
 
-@property (nonatomic, assign) PXListView *listView;
+@property (nonatomic, unsafe_unretained) PXListView *listView;
 
 @property (readonly, copy) NSString *reusableIdentifier;
 @property (readonly) NSUInteger row;

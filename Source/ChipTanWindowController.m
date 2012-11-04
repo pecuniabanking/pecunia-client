@@ -47,13 +47,13 @@
 	frequency = FREQ_DEFAULT;
 	clock = 1;
 	currentCode = 0;
-	message = [[msg stringByReplacingOccurrencesOfString:@"\n" withString:@"<br>"] retain ];
+	message = [msg stringByReplacingOccurrencesOfString:@"\n" withString:@"<br>"];
 	return self;
 }
 
 -(void)awakeFromNib
 {
-	NSMutableAttributedString *msgString = [[[NSMutableAttributedString alloc] initWithHTML:[message dataUsingEncoding:NSISOLatin1StringEncoding ] documentAttributes:nil] autorelease];
+	NSMutableAttributedString *msgString = [[NSMutableAttributedString alloc] initWithHTML:[message dataUsingEncoding:NSISOLatin1StringEncoding ] documentAttributes:nil];
 	[[messageView textStorage] setAttributedString:msgString ];
 	[frequencySlider setMaxValue:FREQ_MAX ];
 	[frequencySlider setMinValue:FREQ_MIN ];
@@ -136,10 +136,8 @@
 
 - (void)dealloc
 {
-	[tan release], tan = nil;
-	[message release ];
+	tan = nil;
 	if (bitString) free(bitString);
-	[super dealloc];
 }
 
 @end

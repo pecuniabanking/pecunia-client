@@ -58,30 +58,30 @@ typedef enum {
 +(BankAccount*)accountWithNumber:(NSString*)number subNumber:(NSString*)subNumber bankCode:(NSString*)code;
 +(NSInteger)maxUnread;
 
-@property (nonatomic, retain) NSArray *dbStatements;
-@property (nonatomic, retain) PurposeSplitRule *purposeSplitRule;
+@property (nonatomic, strong) NSArray *dbStatements;
+@property (nonatomic, strong) PurposeSplitRule *purposeSplitRule;
 
-@property (nonatomic, retain) NSDate * latestTransferDate;
-@property (nonatomic, retain) NSString * country;
-@property (nonatomic, retain) NSString * bankName;
-@property (nonatomic, retain) NSString * bankCode;
-@property (nonatomic, retain) NSString * bic;
-@property (nonatomic, retain) NSString * iban;
-@property (nonatomic, retain) NSString * userId;
-@property (nonatomic, retain) NSString * customerId;
-@property (nonatomic, retain) NSString * accountNumber;
-@property (nonatomic, retain) NSString * owner;
-@property (nonatomic, retain) NSNumber * uid;
-@property (nonatomic, retain) NSNumber * type;
-@property (nonatomic, retain) NSDecimalNumber * balance;
-@property (nonatomic, retain) NSNumber * noAutomaticQuery;
-@property (nonatomic, retain) NSNumber * collTransferMethod;
-@property (nonatomic, retain) NSNumber * isManual;
-@property (nonatomic, retain) NSNumber * isStandingOrderSupported;
-@property (nonatomic, retain) NSString * splitRule;
-@property (nonatomic, retain) NSString * accountSuffix;
+@property (nonatomic, strong) NSDate * latestTransferDate;
+@property (nonatomic, strong) NSString * country;
+@property (nonatomic, strong) NSString * bankName;
+@property (nonatomic, strong) NSString * bankCode;
+@property (nonatomic, strong) NSString * bic;
+@property (nonatomic, strong) NSString * iban;
+@property (nonatomic, strong) NSString * userId;
+@property (nonatomic, strong) NSString * customerId;
+@property (nonatomic, strong) NSString * accountNumber;
+@property (nonatomic, strong) NSString * owner;
+@property (nonatomic, strong) NSNumber * uid;
+@property (nonatomic, strong) NSNumber * type;
+@property (nonatomic, strong) NSDecimalNumber * balance;
+@property (nonatomic, strong) NSNumber * noAutomaticQuery;
+@property (nonatomic, strong) NSNumber * collTransferMethod;
+@property (nonatomic, strong) NSNumber * isManual;
+@property (nonatomic, strong) NSNumber * isStandingOrderSupported;
+@property (nonatomic, strong) NSString * splitRule;
+@property (nonatomic, strong) NSString * accountSuffix;
 @property (nonatomic, assign) NSInteger unread;
-@property (nonatomic, retain) NSSet* users;
+@property (nonatomic, strong) NSSet* users;
 
 @end
 

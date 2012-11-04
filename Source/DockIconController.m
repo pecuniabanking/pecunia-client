@@ -25,7 +25,7 @@
 
 -(DockIconController*)initWithManagedObjectContext: (NSManagedObjectContext *) objectContext
 {
-	[super init];
+	if (!(self = [super init])) return nil;
 	managedObjectContext = objectContext;
 	
 	[[NSNotificationCenter defaultCenter]  addObserver:self
@@ -66,7 +66,7 @@
 {
 	NSError *error = nil;
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:managedObjectContext];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1", self ];
 	[request setPredicate:predicate];

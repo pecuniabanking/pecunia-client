@@ -29,31 +29,33 @@
 
 @implementation MAAttachedWindow
 
+@synthesize view;
+@synthesize window;
 
 #pragma mark Initializers
 
 
-- (MAAttachedWindow *)initWithView:(NSView *)view 
+- (MAAttachedWindow *)initWithView:(NSView *)aView
                    attachedToPoint:(NSPoint)point 
-                          inWindow:(NSWindow *)window 
+                          inWindow:(NSWindow *)aWindow
                             onSide:(MAWindowPosition)side 
                         atDistance:(float)distance
 {
     // Insist on having a valid view.
-    if (!view) {
+    if (!aView) {
         return nil;
     }
     
     // Create dummy initial contentRect for window.
     NSRect contentRect = NSZeroRect;
-    contentRect.size = [view frame].size;
+    contentRect.size = [aView frame].size;
     
     if ((self = [super initWithContentRect:contentRect 
                                 styleMask:NSBorderlessWindowMask 
                                   backing:NSBackingStoreBuffered 
                                     defer:NO])) {
-        _view = view;
-        _window = window;
+        view = aView;
+        window = aWindow;
         _point = point;
         _side = side;
         _distance = distance;
@@ -91,7 +93,7 @@
         [self _updateBackground];
         
         // Add view as subview of our contentView.
-        [[self contentView] addSubview:_view];
+        [[self contentView] addSubview: view];
         
         // Subscribe to notifications for when we change size.
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -103,62 +105,62 @@
 }
 
 
-- (MAAttachedWindow *)initWithView:(NSView *)view 
+- (MAAttachedWindow *)initWithView:(NSView *)aView
                    attachedToPoint:(NSPoint)point 
-                          inWindow:(NSWindow *)window 
+                          inWindow:(NSWindow *)aWindow
                         atDistance:(float)distance
 {
-    return [self initWithView:view attachedToPoint:point 
-                     inWindow:window onSide:MAPositionAutomatic 
+    return [self initWithView:aView attachedToPoint:point
+                     inWindow:aWindow onSide:MAPositionAutomatic
                    atDistance:distance];
 }
 
 
-- (MAAttachedWindow *)initWithView:(NSView *)view 
+- (MAAttachedWindow *)initWithView:(NSView *)aView
                    attachedToPoint:(NSPoint)point 
                             onSide:(MAWindowPosition)side 
                         atDistance:(float)distance
 {
-    return [self initWithView:view attachedToPoint:point 
+    return [self initWithView:aView attachedToPoint:point
                      inWindow:nil onSide:side 
                    atDistance:distance];
 }
 
 
-- (MAAttachedWindow *)initWithView:(NSView *)view 
+- (MAAttachedWindow *)initWithView:(NSView *)aView
                    attachedToPoint:(NSPoint)point 
                         atDistance:(float)distance
 {
-    return [self initWithView:view attachedToPoint:point 
+    return [self initWithView:aView attachedToPoint:point
                      inWindow:nil onSide:MAPositionAutomatic 
                    atDistance:distance];
 }
 
 
-- (MAAttachedWindow *)initWithView:(NSView *)view 
+- (MAAttachedWindow *)initWithView:(NSView *)aView
                    attachedToPoint:(NSPoint)point 
-                          inWindow:(NSWindow *)window
+                          inWindow:(NSWindow *)aWindow
 {
-    return [self initWithView:view attachedToPoint:point 
-                     inWindow:window onSide:MAPositionAutomatic 
+    return [self initWithView:aView attachedToPoint:point
+                     inWindow:aWindow onSide:MAPositionAutomatic
                    atDistance:0];
 }
 
 
-- (MAAttachedWindow *)initWithView:(NSView *)view 
+- (MAAttachedWindow *)initWithView:(NSView *)aView
                    attachedToPoint:(NSPoint)point 
                             onSide:(MAWindowPosition)side
 {
-    return [self initWithView:view attachedToPoint:point 
+    return [self initWithView:aView attachedToPoint:point
                      inWindow:nil onSide:side 
                    atDistance:0];
 }
 
 
-- (MAAttachedWindow *)initWithView:(NSView *)view 
+- (MAAttachedWindow *)initWithView:(NSView *)aView
                    attachedToPoint:(NSPoint)point
 {
-    return [self initWithView:view attachedToPoint:point 
+    return [self initWithView:aView attachedToPoint:point
                      inWindow:nil onSide:MAPositionAutomatic 
                    atDistance:0];
 }
@@ -167,10 +169,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [borderColor release];
-    [_MABackgroundColor release];
     
-    [super dealloc];
 }
 
 
@@ -180,12 +179,12 @@
 - (void)_updateGeometry
 {
     NSRect contentRect = NSZeroRect;
-    contentRect.size = [_view frame].size;
+    contentRect.size = [view frame].size;
     
     // Account for viewMargin.
     _viewFrame = NSMakeRect(viewMargin * MAATTACHEDWINDOW_SCALE_FACTOR,
                             viewMargin * MAATTACHEDWINDOW_SCALE_FACTOR,
-                            [_view frame].size.width, [_view frame].size.height);
+                            [view frame].size.width, [view frame].size.height);
     contentRect = NSInsetRect(contentRect, 
                               -viewMargin * MAATTACHEDWINDOW_SCALE_FACTOR, 
                               -viewMargin * MAATTACHEDWINDOW_SCALE_FACTOR);
@@ -223,7 +222,7 @@
     }
     
     // Position frame origin appropriately for _side, accounting for arrow-inset.
-    contentRect.origin = (_window) ? [_window convertBaseToScreen:_point] : _point;
+    contentRect.origin = (self.window) ? [self.window convertBaseToScreen:_point] : _point;
     float arrowInset = [self _arrowInset];
     float halfWidth = contentRect.size.width / 2.0;
     float halfHeight = contentRect.size.height / 2.0;
@@ -302,7 +301,7 @@
     
     // Reconfigure window and view frames appropriately.
     [self setFrame:contentRect display:NO];
-    [_view setFrame:_viewFrame];
+    [view setFrame: _viewFrame];
 }
 
 
@@ -310,13 +309,13 @@
 {
     // Get all relevant geometry in screen coordinates.
     NSRect screenFrame;
-    if (_window && [_window screen]) {
-        screenFrame = [[_window screen] visibleFrame];
+    if (self.window && [self.window screen]) {
+        screenFrame = [[self.window screen] visibleFrame];
     } else {
          screenFrame = [[NSScreen mainScreen] visibleFrame];
     }
-    NSPoint pointOnScreen = (_window) ? [_window convertBaseToScreen:_point] : _point;
-    NSSize viewSize = [_view frame].size;
+    NSPoint pointOnScreen = (self.window) ? [self.window convertBaseToScreen:_point] : _point;
+    NSSize viewSize = [view frame].size;
     viewSize.width += (viewMargin * MAATTACHEDWINDOW_SCALE_FACTOR) * 2.0;
     viewSize.height += (viewMargin * MAATTACHEDWINDOW_SCALE_FACTOR) * 2.0;
     MAWindowPosition side = MAPositionBottom; // By default, position us centered below.
@@ -344,7 +343,7 @@
     float halfWidth = viewSize.width / 2.0;
     float halfHeight = viewSize.height / 2.0;
     
-    NSRect parentFrame = (_window) ? [_window frame] : screenFrame;
+    NSRect parentFrame = (self.window) ? [self.window frame] : screenFrame;
     float arrowInset = [self _arrowInset];
     
     // We're currently at a primary side.
@@ -460,7 +459,7 @@
     [NSGraphicsContext restoreGraphicsState];
     [bg unlockFocus];
     
-    return [NSColor colorWithPatternImage:[bg autorelease]];
+    return [NSColor colorWithPatternImage:bg];
 }
 
 
@@ -752,8 +751,8 @@
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item
 {
-    if (_window) {
-        return [_window validateMenuItem:item];
+    if (window) {
+        return [window validateMenuItem:item];
     }
     return [super validateMenuItem:item];
 }
@@ -761,8 +760,8 @@
 
 - (IBAction)performClose:(id)sender
 {
-    if (_window) {
-        [_window performClose:sender];
+    if (window) {
+        [window performClose:sender];
     } else {
         [super performClose:sender];
     }
@@ -797,13 +796,12 @@
 
 
 - (NSColor *)windowBackgroundColor {
-    return [[_MABackgroundColor retain] autorelease];
+    return _MABackgroundColor;
 }
 
 
 - (void)setBackgroundColor:(NSColor *)value {
     if (_MABackgroundColor != value) {
-        [_MABackgroundColor release];
         _MABackgroundColor = [value copy];
         
         [self _updateBackground];
@@ -812,13 +810,12 @@
 
 
 - (NSColor *)borderColor {
-    return [[borderColor retain] autorelease];
+    return borderColor;
 }
 
 
 - (void)setBorderColor:(NSColor *)value {
     if (borderColor != value) {
-        [borderColor release];
         borderColor = [value copy];
         
         [self _updateBackground];
@@ -866,7 +863,7 @@
 
 
 - (void)setArrowBaseWidth:(float)value {
-    float maxWidth = (MIN(_viewFrame.size.width, _viewFrame.size.height) + 
+    float maxWidth = (MIN(_viewFrame.size.width, _viewFrame.size.height) +
                       (viewMargin * 2.0)) - cornerRadius;
     if (drawsRoundCornerBesideArrow) {
         maxWidth -= cornerRadius;

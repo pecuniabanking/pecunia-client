@@ -68,12 +68,12 @@
 -(void)awakeFromNib
 {
 	// sort descriptor for transactions view
-	NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
 	NSArray *sds = [NSArray arrayWithObject:sd];
 	[countryController setSortDescriptors: sds];
 
 	// sort descriptor for template view
-	sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+	sd = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
 	sds = [NSArray arrayWithObject:sd];
 	[templateController setSortDescriptors: sds];
 }
@@ -87,8 +87,7 @@
 
 - (void)updateLimits
 {
-	[limits release];
-	limits = [[[HBCIClient hbciClient] limitsForType: transferType account: account country: selectedCountry] retain];
+	limits = [[HBCIClient hbciClient] limitsForType: transferType account: account country: selectedCountry];
 }
 
 -(void)templateDoubleClicked: (id)sender
@@ -132,8 +131,7 @@
 	*/
     
 	if(transferType == TransferTypeInternal) {
-		[internalAccounts release ];
-		internalAccounts = [[[account siblings ] allObjects ] retain ];
+		internalAccounts = [[account siblings ] allObjects ];
 		[accountBox removeAllItems ];
 		for (BankAccount *acc in internalAccounts) {
 			[accountBox addItemWithObjectValue: acc.name ];
@@ -967,12 +965,6 @@
 	currentTransfer.remoteCountry = selectedCountry;
 }
 
--(void)dealloc
-{
-	[limits release ];
-	[internalAccounts release ];
-	[super dealloc ];
-}
 
 
 @end

@@ -127,11 +127,10 @@
 -(void)parse: (NSString*)cmd
 {
     //	NSLog(@"String to parse: %@", cmd);
-    NSXMLParser *parser = [[NSXMLParser alloc] initWithData: [cmd dataUsingEncoding: NSUTF8StringEncoding ]];
+    NSXMLParser *parser = [[NSXMLParser alloc] initWithData: [cmd dataUsingEncoding: NSUTF8StringEncoding]];
     [parser setDelegate: self];
     [parser setShouldResolveExternalEntities:YES];
     [parser parse];
-    [parser release ];
 }
 
 - (void)getData: (NSNotification *)aNotification
@@ -223,20 +222,19 @@
             [self parse: [cmd substringWithRange: NSMakeRange(offset, length - offset)]];
         [cmd setString: @"" ];
     }
-    [cmd release ];
 }
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
     if([elementName isEqualToString: @"callback" ]) {
-        cp = [[[CallbackParser alloc ] initWithParent: self command: [attributeDict valueForKey:  @"command"]] autorelease];
+        cp = [[CallbackParser alloc ] initWithParent: self command: [attributeDict valueForKey:  @"command"]];
         [parser setDelegate: cp ];
     } else if([elementName isEqualToString: @"result" ]) {
-        rp = [[[ResultParser alloc ] initWithParent: self] autorelease];
+        rp = [[ResultParser alloc ] initWithParent: self];
         [parser setDelegate: rp ];
         resultExists = YES;
     } else if([elementName isEqualToString: @"log" ]) {
-        LogParser *lp = [[[LogParser alloc ] initWithParent: self level: [attributeDict valueForKey: @"level"]] autorelease];
+        lp = [[LogParser alloc ] initWithParent: self level: [attributeDict valueForKey: @"level"]];
         [parser setDelegate: lp ];
     }
     

@@ -41,15 +41,15 @@
     isInSelectedRow = NO;
     isInSelectedColumn = NO;
     
-    self.partiallyHighlightedGradient = [[[NSGradient alloc] initWithColorsAndLocations:
+    self.partiallyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
                                          [NSColor colorWithCalibratedRed: 92 / 255.0 green: 168 / 255.0 blue: 234 / 255.0 alpha: 1], (CGFloat) 0,
                                          [NSColor colorWithCalibratedRed: 92 / 255.0 green: 168 / 255.0 blue: 234 / 255.0 alpha: 1], (CGFloat) 1,
-                                         nil] autorelease];
+                                         nil];
 
-    self.fullyHighlightedGradient = [[[NSGradient alloc] initWithColorsAndLocations:
+    self.fullyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
                                          [NSColor colorWithCalibratedRed: 28 / 255.0 green: 131 / 255.0 blue: 222 / 255.0 alpha: 1], (CGFloat) 0,
                                          [NSColor colorWithCalibratedRed: 28 / 255.0 green: 131 / 255.0 blue: 222 / 255.0 alpha: 1], (CGFloat) 1,
-                                         nil] autorelease];
+                                         nil];
   }
   return self;
 }
@@ -63,7 +63,7 @@
     fillRect.origin.x -= 1;
     NSBezierPath *selectionOutline = [NSBezierPath bezierPathWithRoundedRect: fillRect xRadius: 4 yRadius: 4];
 
-    NSShadow *shadow = [[[NSShadow alloc] init] autorelease];
+    NSShadow *shadow = [[NSShadow alloc] init];
     [shadow setShadowColor: [NSColor colorWithCalibratedWhite: 0 alpha: 0.5]];
     [shadow setShadowBlurRadius: 2];
     //   [shadow setShadowOffset: NSMakeSize(1, -1)];

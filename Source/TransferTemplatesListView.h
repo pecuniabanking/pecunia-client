@@ -29,9 +29,9 @@
     id<TransfersActionDelegate> owner; // The member "delegate" is already taken.
 }
 
-@property (nonatomic, retain) id<TransfersActionDelegate> owner;
+@property (nonatomic, strong) id<TransfersActionDelegate> owner;
 @property (nonatomic, readonly) NSNumberFormatter *numberFormatter;
-@property (nonatomic, retain) NSArray *dataSource;
+@property (nonatomic, strong) NSArray *dataSource;
 
 @end
 

@@ -42,12 +42,6 @@
 }
 
 
--(void)dealloc
-{
-	[stack release ];
-	[dateFormatter release ];
-	[super dealloc ];
-}
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
@@ -64,7 +58,7 @@
 		if (class == nil) {
             NSLog(@"Result parser: couldn't find class \"%s\"", [currentType UTF8String]);
         } else {
-            obj = [[[class alloc] init] autorelease];
+            obj = [[class alloc] init];
             [stack addObject: obj];
         }
 	} else if ([elementName isEqualToString: @"cdObject" ]) {
@@ -75,12 +69,12 @@
 		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity: 10 ];
 		[stack addObject: dict ];
 	} else if([elementName isEqualToString: @"error" ]) {
-		HBCIError *err = [[[HBCIError alloc ] init ] autorelease ];
+		HBCIError *err = [[HBCIError alloc ] init ];
 		err.code = [attributeDict valueForKey: @"code" ];
 		[stack addObject: err ];
 	} else {
 //		if(type == nil) [stack addObject: [[[NSMutableString alloc ] init ] autorelease ] ]; else
-		[stack addObject: [[[NSMutableString alloc ] init ] autorelease ] ];
+		[stack addObject: [[NSMutableString alloc ] init ] ];
 		// etc.
 	}
 }

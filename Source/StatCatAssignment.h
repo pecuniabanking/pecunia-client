@@ -15,10 +15,10 @@
 
 }
 
-@property (nonatomic, retain) NSString *userInfo;
-@property (nonatomic, retain) NSDecimalNumber *value;
+@property (nonatomic, strong) NSString *userInfo;
+@property (nonatomic, strong) NSDecimalNumber *value;
 //@property (nonatomic, retain) Category *category;
-@property (nonatomic, retain) BankStatement *statement;
+@property (nonatomic, strong) BankStatement *statement;
 
 -(NSString*)stringForFields: (NSArray*)fields usingDateFormatter: (NSDateFormatter*)dateFormatter;
 -(void)moveToCategory:(Category*)tcat;

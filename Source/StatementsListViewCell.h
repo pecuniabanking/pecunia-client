@@ -72,7 +72,7 @@ extern NSString *StatementNoteKey;
     NSDictionary *whiteAttributes;
 }
 
-@property (nonatomic, retain) id delegate;
+@property (nonatomic, strong) id delegate;
 @property (nonatomic, assign) BOOL hasUnassignedValue;
 
 - (IBAction)activationChanged: (id)sender;

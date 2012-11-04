@@ -63,13 +63,13 @@
     BOOL                            initializing;
 }
 
-@property (nonatomic, retain) NSNumber *requestRunning;
-@property (nonatomic, retain) NSNumber *oldMonthCycle;
-@property (nonatomic, retain) NSNumber *oldMonthDay;
-@property (nonatomic, retain) NSNumber *oldWeekCycle;
-@property (nonatomic, retain) NSNumber *oldWeekDay;
-@property (nonatomic, retain) TransactionLimits *currentLimits;
-@property (nonatomic, retain) StandingOrder *currentOrder;
+@property (nonatomic, strong) NSNumber *requestRunning;
+@property (nonatomic, strong) NSNumber *oldMonthCycle;
+@property (nonatomic, strong) NSNumber *oldMonthDay;
+@property (nonatomic, strong) NSNumber *oldWeekCycle;
+@property (nonatomic, strong) NSNumber *oldWeekDay;
+@property (nonatomic, strong) TransactionLimits *currentLimits;
+@property (nonatomic, strong) StandingOrder *currentOrder;
 
 - (NSView*)mainView;
 - (void)initAccounts;

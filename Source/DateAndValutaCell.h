@@ -14,8 +14,8 @@
 	NSDateFormatter	*formatter;
 }
 
-@property(nonatomic, retain) NSDate *valuta;
-@property(nonatomic, retain) NSDateFormatter *formatter;
+@property(nonatomic, strong) NSDate *valuta;
+@property(nonatomic, strong) NSDateFormatter *formatter;
 
 
 @end

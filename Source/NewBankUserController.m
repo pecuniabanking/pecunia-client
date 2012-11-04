@@ -53,11 +53,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[bankUsers release];
-	[super dealloc];
-}
 
 - (void)awakeFromNib
 {
@@ -378,7 +373,7 @@
             
             if ([options count ] > 1) {
                 // FŸge virtuelle Methode "Beim Senden festlegen" hinzu
-                SigningOption *option = [[[SigningOption alloc ] init ] autorelease ];
+                SigningOption *option = [[SigningOption alloc ] init ];
                 option.secMethod = SecMethod_PinTan;
                 option.userId = user.userId;
                 option.userName = user.name;
@@ -443,7 +438,6 @@
    	NSArray *views = [[pinTanBox contentView ] subviews ];
 	
 	if (step == 1) {
-        [currentBox retain ];
         NSView *contentView = [userSheet contentView ];
         [contentView replaceSubview:currentBox with: pinTanBox ];
         currentBox = pinTanBox;
@@ -497,7 +491,6 @@
     if (step == 1) {
         
         // zur DDV-Box wechseln
-        [currentBox retain ];
         NSView *contentView = [userSheet contentView ];
         [contentView replaceSubview:currentBox with: ddvBox ];
         currentBox = ddvBox;
@@ -580,7 +573,6 @@
         
         NSView *contentView = [userSheet contentView ];
         if (currentBox != secSelectBox) {
-            [currentBox retain ];
             [contentView replaceSubview:currentBox with:secSelectBox ];
             currentBox = secSelectBox;
             [secSelectBox setFrame:NSMakeRect(110,60,549,120) ];

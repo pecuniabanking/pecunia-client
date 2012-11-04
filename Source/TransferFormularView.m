@@ -43,11 +43,6 @@ NSString* const TransferReadyForUseDataType = @"TransferReadyForUseDataType";
     return self;
 }
 
-- (void) dealloc
-{
-    [icon release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Drag and drop
@@ -150,7 +145,6 @@ static NSImage* stripes;
 
     [smallShadow set];
     [shadeImage drawAtPoint: bounds.origin fromRect: NSZeroRect operation: NSCompositeSourceOver fraction: 0.75];
-    [shadeImage release];
     
     // Main pane.
     bounds.size.height = self.bounds.size.height - TOP_PANE_HEIGHT - bottomArea - 5;

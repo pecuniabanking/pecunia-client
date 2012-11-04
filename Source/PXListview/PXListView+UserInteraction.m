@@ -27,49 +27,51 @@ static PXIsDragStartResult PXIsDragStart( NSEvent *startEvent, NSTimeInterval th
 	NSPoint			startPos = [startEvent locationInWindow];
 	NSTimeInterval	startTime = [NSDate timeIntervalSinceReferenceDate];
 	NSDate*			expireTime = [NSDate dateWithTimeIntervalSinceReferenceDate: startTime +theTimeout];
-	
-	NSAutoreleasePool	*pool = nil;
-	while( ([expireTime timeIntervalSinceReferenceDate] -[NSDate timeIntervalSinceReferenceDate]) > 0 )
-	{
-		[pool release];
-		pool = [[NSAutoreleasePool alloc] init];
-		
-		NSEvent*	currEvent = [NSApp nextEventMatchingMask: NSLeftMouseUpMask | NSRightMouseUpMask | NSOtherMouseUpMask
-								 | NSLeftMouseDraggedMask | NSRightMouseDraggedMask | NSOtherMouseDraggedMask
-												untilDate: expireTime inMode: NSEventTrackingRunLoopMode dequeue: YES];
-		if( currEvent )
-		{
-			switch( [currEvent type] )
-			{
-				case NSLeftMouseUp:
-				case NSRightMouseUp:
-				case NSOtherMouseUp:
-				{
-					[pool release];
-					return PXIsDragStartMouseReleased;	// Mouse released within the wait time.
-					break;
-				}
-					
-				case NSLeftMouseDragged:
-				case NSRightMouseDragged:
-				case NSOtherMouseDragged:
-				{
-					NSPoint	newPos = [currEvent locationInWindow];
-					CGFloat	xMouseMovement = CGFLOATABS(newPos.x -startPos.x);
-					CGFloat	yMouseMovement = CGFLOATABS(newPos.y -startPos.y);
-					if( xMouseMovement > 2 or yMouseMovement > 2 )
-					{
-						[pool release];
-						return (xMouseMovement > yMouseMovement) ? PXIsDragStartMouseMovedHorizontally : PXIsDragStartMouseMovedVertically;	// Mouse moved within the wait time, probably a drag!
-					}
-					break;
-				}
-			}
-		}
-		
-	}
-	
-	[pool release];
+
+    @autoreleasepool {
+        //NSAutoreleasePool	*pool = nil;
+        while( ([expireTime timeIntervalSinceReferenceDate] -[NSDate timeIntervalSinceReferenceDate]) > 0 )
+        {
+            //[pool release];
+            //pool = [[NSAutoreleasePool alloc] init];
+
+            NSEvent*	currEvent = [NSApp nextEventMatchingMask: NSLeftMouseUpMask | NSRightMouseUpMask | NSOtherMouseUpMask
+                                     | NSLeftMouseDraggedMask | NSRightMouseDraggedMask | NSOtherMouseDraggedMask
+                                                    untilDate: expireTime inMode: NSEventTrackingRunLoopMode dequeue: YES];
+            if( currEvent )
+            {
+                switch( [currEvent type] )
+                {
+                    case NSLeftMouseUp:
+                    case NSRightMouseUp:
+                    case NSOtherMouseUp:
+                    {
+                        //[pool release];
+                        return PXIsDragStartMouseReleased;	// Mouse released within the wait time.
+                        break;
+                    }
+
+                    case NSLeftMouseDragged:
+                    case NSRightMouseDragged:
+                    case NSOtherMouseDragged:
+                    {
+                        NSPoint	newPos = [currEvent locationInWindow];
+                        CGFloat	xMouseMovement = CGFLOATABS(newPos.x -startPos.x);
+                        CGFloat	yMouseMovement = CGFLOATABS(newPos.y -startPos.y);
+                        if( xMouseMovement > 2 or yMouseMovement > 2 )
+                        {
+                            //[pool release];
+                            return (xMouseMovement > yMouseMovement) ? PXIsDragStartMouseMovedHorizontally : PXIsDragStartMouseMovedVertically;	// Mouse moved within the wait time, probably a drag!
+                        }
+                        break;
+                    }
+                }
+            }
+            
+        }
+        
+        //[pool release];
+    }
 	return PXIsDragStartTimedOut;	// If they held the mouse that long, they probably wanna drag.
 }
 
@@ -321,7 +323,7 @@ static PXIsDragStartResult PXIsDragStart( NSEvent *startEvent, NSTimeInterval th
 	
 	// Now draw all cells into the image at the proper relative position:
 	NSSize		imageSize = NSMakeSize( maxX -minX, maxY -minY);
-	NSImage*	dragImage = [[[NSImage alloc] initWithSize: imageSize] autorelease];
+	NSImage*	dragImage = [[NSImage alloc] initWithSize: imageSize];
 	
 	[dragImage lockFocus];
     

@@ -51,11 +51,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [caClassification release];
-    [super dealloc];
-}
 
 -(void)awakeFromNib
 {
@@ -69,7 +64,7 @@
     [predicateEditor addRow:self];
     
     // sort descriptor for transactions view
-    NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey: @"statement.date" ascending: NO] autorelease];
+    NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey: @"statement.date" ascending: NO];
     NSArray				*sds = [NSArray arrayWithObject:sd];
     [assignPreviewController setSortDescriptors: sds];
     
@@ -177,7 +172,7 @@
     NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: @"statement.purpose CONTAINS[c] ''"];
     if([pred class] != [NSCompoundPredicate class]) {
         NSCompoundPredicate* comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: [NSArray arrayWithObjects: pred, nil]];
-        pred = [comp autorelease];
+        pred = comp;
     }
     [predicateEditor setObjectValue: pred];
     
@@ -420,7 +415,7 @@
         NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: s];
         if([pred class] != [NSCompoundPredicate class]) {
             NSCompoundPredicate* comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: [NSArray arrayWithObjects: pred, nil]];
-            pred = [comp autorelease];
+            pred = comp;
         }
         [predicateEditor setObjectValue: pred];
         [self calculateCatAssignPredicate];

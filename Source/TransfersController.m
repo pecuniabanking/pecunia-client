@@ -65,7 +65,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
 }
 
-@property (nonatomic, assign) TransfersController *controller;
+@property (nonatomic, unsafe_unretained) TransfersController *controller;
 
 @end
 
@@ -85,7 +85,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {    
 }
 
-@property (nonatomic, assign) TransfersController *controller;
+@property (nonatomic, unsafe_unretained) TransfersController *controller;
 
 @end
 
@@ -140,7 +140,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
 }
 
-@property (nonatomic, assign) TransfersController *controller;
+@property (nonatomic, unsafe_unretained) TransfersController *controller;
 
 @end
 
@@ -420,13 +420,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 @synthesize transferFormular;
 @synthesize dropToEditRejected;
 
-- (void)dealloc
-{
-	[formatter release];
-    [calendarWindow release];
-   
-	[super dealloc];
-}
 
 - (void)awakeFromNib
 {
@@ -448,7 +441,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [transactionController setManagedObjectContext: MOAssistant.assistant.context];
 
 	// Sort transfer list views by date (newest first).
-	NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO] autorelease];
+	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
 	NSArray *sds = [NSArray arrayWithObject: sd];
 	[pendingTransfers setSortDescriptors: sds];
 	[finishedTransfers setSortDescriptors: sds];
@@ -523,7 +516,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (NSMenuItem*)createItemForAccountSelector: (BankAccount *)account
 {
-    NSMenuItem *item = [[[NSMenuItem alloc] initWithTitle: [account localName] action: nil keyEquivalent: @""] autorelease];
+    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle: [account localName] action: nil keyEquivalent: @""];
     item.representedObject = account;
     
     return item;
@@ -548,7 +541,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSMenu *sourceMenu = [sourceAccountSelector menu];
     
     Category *category = [Category bankRoot];
-	NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES] autorelease];
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
 	NSArray *sortDescriptors = [NSArray arrayWithObject: sortDescriptor];
     NSArray *institutes = [[category children] sortedArrayUsingDescriptors: sortDescriptors];
     
@@ -613,7 +606,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     NSMenu *targetMenu = [targetAccountSelector menu];
     
-	NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES] autorelease];
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
 	NSArray *sortDescriptors = [NSArray arrayWithObject: sortDescriptor];
     NSArray *siblingAccounts = [[sourceAccount siblings] sortedArrayUsingDescriptors: sortDescriptors];
     NSInteger selectedItem = 0;
@@ -645,7 +638,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (BOOL)prepareTransferOfType: (TransferType)type
 {
     if ([transactionController editingInProgress]) {
-        NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+        NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText: NSLocalizedString(@"AP413", @"")];
         [alert runModal];
 
@@ -779,14 +772,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     [sheet orderOut: nil];
     if (returnCode == NSRunStoppedResponse) {
-        NSArray *transfers = (NSArray *)contextInfo;
+        NSArray *transfers = (__bridge NSArray *)contextInfo;
         
         NSUInteger counter = 0;
         for (Transfer *transfer in transfers) {
             NSString *actualName = (counter++ == 0) ? [templateName stringValue] : [NSString stringWithFormat: @"%@ %li", [templateName stringValue], counter];
             [transactionController saveTransfer: transfer asTemplateWithName: actualName];
         }
-        [transfers release];
         
         NSManagedObjectContext *context = MOAssistant.assistant.context;
         NSError *error = nil;
@@ -861,7 +853,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
            modalForWindow: [mainView window]
             modalDelegate: self
            didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
-              contextInfo: [transfers retain]]; // Will be released in the didEndSelector.
+              contextInfo: (__bridge void *)(transfers)];
         return;
     }
     
@@ -1016,7 +1008,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSArray *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
     
     if (transfers.count > 1) {
-        NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+        NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText: NSLocalizedString(@"AP414", @"")];
         [alert runModal];
         
@@ -1054,7 +1046,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     if ([transactionController editingInProgress]) {
         dropToEditRejected = YES;
-        NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+        NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText: NSLocalizedString(@"AP413", @"")];
         [alert runModal];
         
@@ -1450,7 +1442,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     [[calendarButton window] removeChildWindow: calendarWindow];
     [calendarWindow orderOut: self];
-    [calendarWindow release];
     calendarWindow = nil;
 }
 

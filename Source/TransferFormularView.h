@@ -25,9 +25,9 @@
 }
 
 @property (nonatomic, assign) BOOL draggable;
-@property (nonatomic, retain) NSImage *icon;
+@property (nonatomic, strong) NSImage *icon;
 @property (nonatomic, assign) NSUInteger bottomArea;
 @property (nonatomic, assign) NSRect draggingArea;
-@property (nonatomic, assign) TransfersController *controller;
+@property (nonatomic, unsafe_unretained) TransfersController *controller;
 
 @end

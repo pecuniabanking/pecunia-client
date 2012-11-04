@@ -26,9 +26,9 @@ int gNSStringGeometricsTypesetterBehavior = NSTypesetterLatestBehavior ;
 		[layoutManager glyphRangeForTextContainer:textContainer] ;
 		
 		answer = [layoutManager usedRectForTextContainer:textContainer].size ;
-		[textStorage release] ;
-		[textContainer release] ;
-		[layoutManager release] ;
+		 ;
+		 ;
+		 ;
 		
 		// In case we changed it above, set typesetterBehavior back
 		// to the default value.
@@ -64,7 +64,7 @@ int gNSStringGeometricsTypesetterBehavior = NSTypesetterLatestBehavior ;
 															   attributes:attributes] ;
 	answer = [astr sizeForWidth:width
 						 height:height] ;
-	[astr release] ;
+	 ;
 	
 	return answer ;
 }

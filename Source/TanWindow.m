@@ -92,10 +92,5 @@
 	return result;
 }
 
-- (void)dealloc
-{
-    [text release ];
-    [super dealloc ];
-}
 
 @end

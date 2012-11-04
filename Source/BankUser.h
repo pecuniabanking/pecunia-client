@@ -22,25 +22,25 @@ typedef enum {
     RegisterResult regResult;
 }
 
-@property (nonatomic, retain) NSString * bankCode;
-@property (nonatomic, retain) NSString * bankName;
-@property (nonatomic, retain) NSString * bankURL;
-@property (nonatomic, retain) NSNumber * checkCert;
-@property (nonatomic, retain) NSNumber * noBase64;
-@property (nonatomic, retain) NSNumber * tanMediaFetched;
-@property (nonatomic, retain) NSString * country;
-@property (nonatomic, retain) NSString * customerId;
-@property (nonatomic, retain) NSString * hbciVersion;
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSString * port;
-@property (nonatomic, retain) NSString * userId;
-@property (nonatomic, retain) NSString * chipCardId;
-@property (nonatomic, retain) TanMethod * preferredTanMethod;
-@property (nonatomic, retain) NSMutableSet* tanMedia;
-@property (nonatomic, retain) NSMutableSet* tanMethods;
-@property (nonatomic, retain) NSNumber *ddvPortIdx;
-@property (nonatomic, retain) NSNumber *ddvReaderIdx;
-@property (nonatomic, retain) NSNumber *secMethod;
+@property (nonatomic, strong) NSString * bankCode;
+@property (nonatomic, strong) NSString * bankName;
+@property (nonatomic, strong) NSString * bankURL;
+@property (nonatomic, strong) NSNumber * checkCert;
+@property (nonatomic, strong) NSNumber * noBase64;
+@property (nonatomic, strong) NSNumber * tanMediaFetched;
+@property (nonatomic, strong) NSString * country;
+@property (nonatomic, strong) NSString * customerId;
+@property (nonatomic, strong) NSString * hbciVersion;
+@property (nonatomic, strong) NSString * name;
+@property (nonatomic, strong) NSString * port;
+@property (nonatomic, strong) NSString * userId;
+@property (nonatomic, strong) NSString * chipCardId;
+@property (nonatomic, strong) TanMethod * preferredTanMethod;
+@property (nonatomic, strong) NSMutableSet* tanMedia;
+@property (nonatomic, strong) NSMutableSet* tanMethods;
+@property (nonatomic, strong) NSNumber *ddvPortIdx;
+@property (nonatomic, strong) NSNumber *ddvReaderIdx;
+@property (nonatomic, strong) NSNumber *secMethod;
 
 @property (nonatomic, assign) RegisterResult regResult;
 

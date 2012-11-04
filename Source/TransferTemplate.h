@@ -15,19 +15,19 @@
 
 -(NSString*)purpose;
 
-@property (nonatomic, retain) NSString * currency;
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSString * purpose1;
-@property (nonatomic, retain) NSString * purpose2;
-@property (nonatomic, retain) NSString * purpose3;
-@property (nonatomic, retain) NSString * purpose4;
-@property (nonatomic, retain) NSString * remoteAccount;
-@property (nonatomic, retain) NSString * remoteBankCode;
-@property (nonatomic, retain) NSString * remoteBIC;
-@property (nonatomic, retain) NSString * remoteCountry;
-@property (nonatomic, retain) NSString * remoteIBAN;
-@property (nonatomic, retain) NSString * remoteName;
-@property (nonatomic, retain) NSString * remoteSuffix;
-@property (nonatomic, retain) NSDecimalNumber * value;
-@property (nonatomic, retain) NSNumber * type;
+@property (nonatomic, strong) NSString * currency;
+@property (nonatomic, strong) NSString * name;
+@property (nonatomic, strong) NSString * purpose1;
+@property (nonatomic, strong) NSString * purpose2;
+@property (nonatomic, strong) NSString * purpose3;
+@property (nonatomic, strong) NSString * purpose4;
+@property (nonatomic, strong) NSString * remoteAccount;
+@property (nonatomic, strong) NSString * remoteBankCode;
+@property (nonatomic, strong) NSString * remoteBIC;
+@property (nonatomic, strong) NSString * remoteCountry;
+@property (nonatomic, strong) NSString * remoteIBAN;
+@property (nonatomic, strong) NSString * remoteName;
+@property (nonatomic, strong) NSString * remoteSuffix;
+@property (nonatomic, strong) NSDecimalNumber * value;
+@property (nonatomic, strong) NSNumber * type;
 @end

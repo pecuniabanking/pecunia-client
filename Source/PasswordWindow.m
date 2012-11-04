@@ -26,7 +26,7 @@
     NSString *s = [x stringByReplacingOccurrencesOfString:@"\n" withString:@"<br>" ];
     NSData *d = [s dataUsingEncoding:NSISOLatin1StringEncoding ];
     text = [[NSAttributedString alloc ] initWithHTML:d documentAttributes:NULL ];
-	title = [y retain];
+	title = y;
 	active = YES;
 	return self;
 }
@@ -114,11 +114,5 @@
     hidePasswortSave = YES;
 }
 
--(void)dealloc
-{
-    [text release ];
-    [title release ];
-    [super dealloc ];
-}
 
 @end

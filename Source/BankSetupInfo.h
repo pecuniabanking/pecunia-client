@@ -17,11 +17,11 @@
     NSNumber    *tanlen_max;
 }
 
-@property (nonatomic, retain) NSString *info_userid;
-@property (nonatomic, retain) NSString *info_customerid;
-@property (nonatomic, retain) NSNumber *pinlen_min;
-@property (nonatomic, retain) NSNumber *pinlen_max;
-@property (nonatomic, retain) NSNumber *tanlen_max;
+@property (nonatomic, strong) NSString *info_userid;
+@property (nonatomic, strong) NSString *info_customerid;
+@property (nonatomic, strong) NSNumber *pinlen_min;
+@property (nonatomic, strong) NSNumber *pinlen_max;
+@property (nonatomic, strong) NSNumber *tanlen_max;
 
 @end
 

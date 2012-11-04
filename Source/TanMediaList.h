@@ -14,8 +14,8 @@
     NSArray     *mediaList;
 }
 
-@property (nonatomic, retain) NSString *tanOption;
-@property (nonatomic, retain) NSArray *mediaList;
+@property (nonatomic, strong) NSString *tanOption;
+@property (nonatomic, strong) NSArray *mediaList;
 
 @end
 

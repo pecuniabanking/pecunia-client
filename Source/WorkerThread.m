@@ -23,13 +23,13 @@ NSThread *workerThread = nil;
 
 +(void)threadMain: (id)data
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 	
-    NSRunLoop *loop = [NSRunLoop currentRunLoop ];
+        NSRunLoop *loop = [NSRunLoop currentRunLoop ];
 	[loop addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
 	while(![workerThread isCancelled ]) [loop run ];
 	
-    [pool release];
+    }
 }
 
 +(NSThread*)thread

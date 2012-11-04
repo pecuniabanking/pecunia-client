@@ -14,8 +14,8 @@
 
 }
 
-@property (nonatomic, retain) NSDecimalNumber * budget;
-@property (nonatomic, retain) NSDate * date;
-@property (nonatomic, retain) Category * category;
+@property (nonatomic, strong) NSDecimalNumber * budget;
+@property (nonatomic, strong) NSDate * date;
+@property (nonatomic, strong) Category * category;
 
 @end

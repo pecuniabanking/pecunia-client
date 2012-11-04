@@ -97,7 +97,6 @@
 		NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:fillStartingColor endingColor:fillEndingColor];
 		//[gradient drawInRect:self.bounds angle:90];
     [gradient drawInBezierPath: borderPath angle: 90];
-		[gradient release];
 	}
 	else
 	{
@@ -141,8 +140,7 @@
 {
 	if (fillColor != color) 
 	{
-        [fillColor release];
-        fillColor = [color retain];
+        fillColor = color;
 		
 		[self setNeedsDisplay:YES];
     }
@@ -152,8 +150,7 @@
 {
 	if (fillStartingColor != color) 
 	{
-        [fillStartingColor release];
-        fillStartingColor = [color retain];
+        fillStartingColor = color;
 		
 		[self setNeedsDisplay:YES];
     }
@@ -163,8 +160,7 @@
 {
 	if (fillEndingColor != color) 
 	{
-        [fillEndingColor release];
-        fillEndingColor = [color retain];
+        fillEndingColor = color;
 		
 		[self setNeedsDisplay:YES];
     }
@@ -174,8 +170,7 @@
 {
 	if (topBorderColor != color) 
 	{
-        [topBorderColor release];
-        topBorderColor = [color retain];
+        topBorderColor = color;
 		
 		[self setNeedsDisplay:YES];
     }
@@ -185,22 +180,11 @@
 {
 	if (bottomBorderColor != color) 
 	{
-        [bottomBorderColor release];
-        bottomBorderColor = [color retain];
+        bottomBorderColor = color;
 		
 		[self setNeedsDisplay:YES];
     }
 }
 
-- (void)dealloc
-{
-	[fillColor release];
-	[fillStartingColor release];
-	[fillEndingColor release];
-	[topBorderColor release];
-	[bottomBorderColor release];
-	
-	[super dealloc];
-}
 
 @end

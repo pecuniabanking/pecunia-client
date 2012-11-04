@@ -34,8 +34,8 @@
 
 }
 
-@property(nonatomic, retain) NSMutableDictionary * currentSignOptions;
-@property(nonatomic, retain) SigningOption *currentSigningOption;
+@property(nonatomic, strong) NSMutableDictionary * currentSignOptions;
+@property(nonatomic, strong) SigningOption *currentSigningOption;
 
 -(void)startSession;
 -(NSString*)getPassword;

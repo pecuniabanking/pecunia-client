@@ -34,7 +34,6 @@ static HDIWrapper *_wrapper = nil;
 	NSMutableArray *arguments = [NSMutableArray arrayWithArray: [@"/usr/bin/hdiutil create -type SPARSE -encryption -size 100m -fs HFS+J -layout NONE -volname PecuniaData" componentsSeparatedByString:@" "] ];
 	if(encr) [arguments insertObject: @"AES-256" atIndex:5 ]; else [arguments insertObject: @"AES-128" atIndex:5 ];
 	[arguments addObject: path ];
-	[wrapper release ];
 	wrapper = [[AMShellWrapper alloc ] initWithController: self 
 												inputPipe:nil
 											   outputPipe:nil
@@ -47,8 +46,8 @@ static HDIWrapper *_wrapper = nil;
 	input = [input stringByAppendingString: @"\n" ];
 	done = NO;
 	hasError = NO;
-	if(errorMessage) { [errorMessage release ]; errorMessage = nil; }
-	if(output) { [output release ]; output = nil; }
+	if(errorMessage) {  errorMessage = nil; }
+	if(output) {  output = nil; }
 	if(wrapper) [wrapper startProcess ];
 	else {
 		NSLog(@"hdiutil create could not be started");
@@ -66,7 +65,6 @@ static HDIWrapper *_wrapper = nil;
 	[arguments addObject: path ];
 	if(!browsable) [arguments insertObject: @"-nobrowse" atIndex: 2 ];
 	
-	[wrapper release ];
 	wrapper = [[AMShellWrapper alloc ] initWithController: self 
 												inputPipe:nil
 											   outputPipe:nil
@@ -79,8 +77,8 @@ static HDIWrapper *_wrapper = nil;
 	done = NO;
 	hasError = NO;
 	attached = NO;
-	if(errorMessage) { [errorMessage release ]; errorMessage = nil; }
-	if(output) { [output release ]; output = nil; }
+	if(errorMessage) {  errorMessage = nil; }
+	if(output) {  output = nil; }
 	if(wrapper) [wrapper startProcess ];
 	else {
 		NSLog(@"hdiutil attach could not be started");
@@ -91,9 +89,7 @@ static HDIWrapper *_wrapper = nil;
 	
 	if(!hasError) {
 		NSRange r = [output rangeOfString: @"/Volumes" ];
-		[volumePath release ];
 		volumePath = [output substringFromIndex: r.location ];
-		[volumePath retain ];
 		attached = YES;
 		return YES;
 	}
@@ -106,7 +102,6 @@ static HDIWrapper *_wrapper = nil;
 	NSMutableArray *arguments = [NSMutableArray arrayWithArray: [@"/usr/bin/hdiutil detach -force" componentsSeparatedByString:@" "] ];
 	[arguments addObject: volumePath ];
 	
-	[wrapper release ];
 	wrapper = [[AMShellWrapper alloc ] initWithController: self 
 												inputPipe:nil
 											   outputPipe:nil
@@ -117,8 +112,8 @@ static HDIWrapper *_wrapper = nil;
 	
 	done = NO;
 	hasError = NO;
-	if(errorMessage) { [errorMessage release ]; errorMessage = nil; }
-	if(output) { [output release ]; output = nil; }
+	if(errorMessage) {  errorMessage = nil; }
+	if(output) {  output = nil; }
 	if(wrapper) [wrapper startProcess ];
 	else {
 		NSLog(@"hdiutil detach could not be started");
@@ -144,15 +139,6 @@ static HDIWrapper *_wrapper = nil;
 
 
 
--(void)dealloc
-{
-	[super dealloc ];
-	[wrapper release ];
-	[volumePath release ];
-	[output release ];
-	[errorMessage release ];
-	[super dealloc ];
-}
 
 +(HDIWrapper*)wrapper
 {
@@ -169,9 +155,8 @@ static HDIWrapper *_wrapper = nil;
 //	NSLog(@"%@", outp);
 	NSString *s = [outp stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet ] ];
 	if(output) {
-		[output autorelease ];
-		output = [[output stringByAppendingString: s ] retain ];
-	} else output = [s retain ];
+		output = [output stringByAppendingString: s ];
+	} else output = s;
 }
 
 - (void)appendError:(NSString *)error
@@ -180,9 +165,8 @@ static HDIWrapper *_wrapper = nil;
 //	NSLog(@"%@", error);
 	NSString *err = [error stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet ] ];
 	if(errorMessage) {
-		[errorMessage autorelease ];
-		errorMessage = [[errorMessage stringByAppendingString: err ] retain ];
-	} else errorMessage = [err retain ];
+		errorMessage = [errorMessage stringByAppendingString: err ];
+	} else errorMessage = err;
 	hasError = YES;
 }
 

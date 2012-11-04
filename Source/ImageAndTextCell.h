@@ -55,11 +55,11 @@
     BOOL isDisabled;
 }
 
-@property (nonatomic, retain) NSColor           *swatchColor;
-@property (nonatomic, retain) NSImage			*image;
-@property (nonatomic, retain) NSString			*currency;
-@property (nonatomic, retain) NSDecimalNumber	*amount;
-@property (nonatomic, retain) NSNumberFormatter	*amountFormatter; // TODO: why not using the cell's formatter?
+@property (nonatomic, strong) NSColor           *swatchColor;
+@property (nonatomic, strong) NSImage			*image;
+@property (nonatomic, strong) NSString			*currency;
+@property (nonatomic, strong) NSDecimalNumber	*amount;
+@property (nonatomic, strong) NSNumberFormatter	*amountFormatter; // TODO: why not using the cell's formatter?
 
 - (void)setValues: (NSDecimalNumber*)aAmount currency: (NSString*)aCurrency unread: (NSInteger)unread disabled: (BOOL)disabled isRoot: (BOOL)root;
 - (void)setMaxUnread: (NSInteger)n;

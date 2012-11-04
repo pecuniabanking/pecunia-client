@@ -16,10 +16,9 @@
 
 - (void)dealloc
 {
-	[function release], function = nil;
-	[description release], description = nil;
+	function = nil;
+	description = nil;
 
-	[super dealloc];
 }
 
 -(id)initDefault: (NSNumber*) func

@@ -64,7 +64,7 @@
 
 -(IBAction)createSettings:(id)sender
 {
-	ImportSettingsController *controller = [[[ImportSettingsController alloc] initWitSettings: nil] autorelease];
+	ImportSettingsController *controller = [[ImportSettingsController alloc] initWitSettings: nil];
 	int res = [NSApp runModalForWindow:[controller window ] ];
 	if (res) return;
 	[self updateSettingsController ];	
@@ -88,7 +88,7 @@
 {
 	ImportSettings *settings = [self selectedSettings ];
 	
-	ImportSettingsController *controller = [[[ImportSettingsController alloc] initWitSettings: settings] autorelease];
+	ImportSettingsController *controller = [[ImportSettingsController alloc] initWitSettings: settings];
 	[NSApp runModalForWindow:[controller window ] ];
 }
 
@@ -332,15 +332,13 @@
 	}
 	
 	
-	self.importResult = [[[BankQueryResult alloc ] init ] autorelease ];
+	self.importResult = [[BankQueryResult alloc ] init ];
 	self.importResult.statements = statements;
 	self.importResult.accountNumber = settings.accountNumber;
 	self.importResult.bankCode = settings.bankCode;
 	self.importResult.isImport = YES;
 	self.importResult.account = account;
 	
-	[dateFormatter release ];
-	[numberFormatter release ];
 	[[self window ] close ];
 	[NSApp stopModalWithCode:0 ];
 
@@ -369,8 +367,7 @@
 
 - (void)dealloc
 {
-	[importResult release], importResult = nil;
-	[super dealloc];
+	importResult = nil;
 }
 
 

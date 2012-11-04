@@ -61,14 +61,16 @@ typedef enum _MAWindowPosition {
     
     @private
     NSColor *_MABackgroundColor;
-    __weak NSView *_view;
-    __weak NSWindow *_window;
     NSPoint _point;
     MAWindowPosition _side;
     float _distance;
     NSRect _viewFrame;
     BOOL _resizing;
 }
+
+@property (nonatomic, unsafe_unretained) NSView *view;
+@property (nonatomic, unsafe_unretained) NSWindow *window;
+
 
 /*
  Initialization methods
@@ -95,29 +97,29 @@ typedef enum _MAWindowPosition {
             Default: 0.
  */
 
-- (MAAttachedWindow *)initWithView:(NSView *)view           // designated initializer
+- (MAAttachedWindow *)initWithView:(NSView *)aView           // designated initializer
                    attachedToPoint:(NSPoint)point 
-                          inWindow:(NSWindow *)window 
+                          inWindow:(NSWindow *)aWindow
                             onSide:(MAWindowPosition)side 
                         atDistance:(float)distance;
-- (MAAttachedWindow *)initWithView:(NSView *)view 
+- (MAAttachedWindow *)initWithView:(NSView *)aView
                    attachedToPoint:(NSPoint)point 
-                          inWindow:(NSWindow *)window 
+                          inWindow:(NSWindow *)aWindow
                         atDistance:(float)distance;
-- (MAAttachedWindow *)initWithView:(NSView *)view 
+- (MAAttachedWindow *)initWithView:(NSView *)aView
                    attachedToPoint:(NSPoint)point 
                             onSide:(MAWindowPosition)side 
                         atDistance:(float)distance;
-- (MAAttachedWindow *)initWithView:(NSView *)view 
+- (MAAttachedWindow *)initWithView:(NSView *)aView
                    attachedToPoint:(NSPoint)point 
                         atDistance:(float)distance;
-- (MAAttachedWindow *)initWithView:(NSView *)view 
+- (MAAttachedWindow *)initWithView:(NSView *)aView
                    attachedToPoint:(NSPoint)point 
-                          inWindow:(NSWindow *)window;
+                          inWindow:(NSWindow *)aWindow;
 - (MAAttachedWindow *)initWithView:(NSView *)view 
                    attachedToPoint:(NSPoint)point 
                             onSide:(MAWindowPosition)side;
-- (MAAttachedWindow *)initWithView:(NSView *)view 
+- (MAAttachedWindow *)initWithView:(NSView *)aView
                    attachedToPoint:(NSPoint)point;
 
 // Accessor methods

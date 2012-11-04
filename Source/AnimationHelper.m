@@ -43,7 +43,6 @@
     
     [animation startAnimation];
     
-    [animation release];
 }
 
 /**
@@ -141,7 +140,6 @@
     NSBitmapImageRep* rep = [[NSBitmapImageRep alloc] initWithFocusedViewRect: NSMakeRect(0.0, 0.0, frame.size.width, frame.size.height)];
     [[self contentView] unlockFocus];
     [image addRepresentation: rep];
-    [rep release];
 
     // If the content view is layer-backed the above initWithFocusedViewRect call won't get the content
     // of the view (seems it doesn't work for CALayers). So we need a second call that captures the
@@ -172,7 +170,6 @@
                     operation: NSCompositeCopy
                      fraction: 1];
         [image unlockFocus];
-        [subImage release];
     }
     
     ZoomWindow *zoomWindow = [[ZoomWindow alloc] initWithContentRect: rect
@@ -194,8 +191,6 @@
     [imageView setAutoresizingMask: NSViewWidthSizable | NSViewHeightSizable];
     
     [zoomWindow setContentView: imageView];
-    [image release];	
-    [imageView release];
     
     [self setOneShot: isOneShot];
     
@@ -294,7 +289,6 @@
     
     [animation startAnimation];
     
-    [animation release];
     
 	[zoomWindow close];
 }

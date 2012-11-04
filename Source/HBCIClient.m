@@ -27,37 +27,17 @@ static HBCIClient *client = nil;
 
 -(id)init
 {
-	self = [super init ];
-	if(self == nil) return nil;
-	
-#ifdef HBCI4JAVA
-	controller = [[HBCIController alloc] init];
-#endif
-	
-#ifdef AQBANKING
-	controller = [[ABController alloc] init];
-#endif
-
+	self = [super init];
+	if (self != nil) {
+        controller = [[HBCIController alloc] init];
+    }
 	return self;
 }
 
--(void)dealloc
-{
-#ifdef HBCI4JAVA
-    // Cast needed as the protocol itself doesn't support -release.
-	[(HBCIController*)controller release];
-#endif
-	
-#ifdef AQBANKING
-	[(ABController*)controller release];
-#endif
 
-	[super dealloc ];
-}
-
--(PecuniaError*)initHBCI
+-(PecuniaError*)initalizeHBCI
 {
-	return [controller initHBCI ];
+	return [controller initalizeHBCI ];
 }
 
 -(NSArray*)supportedVersions
@@ -122,25 +102,27 @@ static HBCIClient *client = nil;
 	return [controller countries ];
 }
 
--(TransactionLimits*)limitsForType:(TransferType)tt account:(BankAccount*)account country:(NSString*)ctry
+-(TransactionLimits*)limitsForType: (TransferType)tt account: (BankAccount*)account country: (NSString*)ctry
 {
 	return [controller limitsForType:tt account:account country:ctry ];
 }
 
--(TransactionLimits*)standingOrderLimitsForAccount:(BankAccount*)account action:(StandingOrderAction)action
+-(TransactionLimits*)standingOrderLimitsForAccount: (BankAccount*)account action: (StandingOrderAction)action
 {
 	return [controller standingOrderLimitsForAccount:account action:action ];
 }
 
 +(HBCIClient*)hbciClient
 {
-	if(client == nil) client = [[HBCIClient alloc ] init ];
+	if (client == nil) {
+        client = [[HBCIClient alloc] init];
+    }
 	return client;
 }
 
--(void)getStatements:(NSArray*)resultList
+-(void)getStatements: (NSArray*)resultList
 {
-	[controller getStatements:resultList ];
+	[controller getStatements: resultList];
 	// get statements in separate thread
 //	[bridge performSelector:@selector(statementsForAccounts:) onThread:[WorkerThread thread ] withObject:resultList waitUntilDone:NO ];
 //	[bridge statementsForAccounts:resultList ];

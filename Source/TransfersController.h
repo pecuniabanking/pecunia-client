@@ -40,7 +40,7 @@
     NSString *currentDragDataType;
 }
 
-@property (nonatomic, assign) TransfersController *controller;
+@property (nonatomic, unsafe_unretained) TransfersController *controller;
 
 - (NSRect)dropTargetFrame;
 - (void)hideFormular;
@@ -106,8 +106,8 @@
     CalendarWindow* calendarWindow;
 }
 
-@property (assign) IBOutlet TransferFormularView *transferFormular;
-@property (assign) IBOutlet NSTextField *dragToHereLabel;
+@property (unsafe_unretained) IBOutlet TransferFormularView *transferFormular;
+@property (unsafe_unretained) IBOutlet NSTextField *dragToHereLabel;
 @property (nonatomic, assign) BOOL dropToEditRejected;
 
 - (IBAction)sendTransfers: (id)sender;

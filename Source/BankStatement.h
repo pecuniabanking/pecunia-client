@@ -41,51 +41,51 @@
 +(void)setClassificationContext: (ClassificationContext*)cc;
 +(void)initCategoriesCache;
 
-@property (nonatomic, retain) NSDate *valutaDate;
-@property (nonatomic, retain) NSDate *date;
+@property (nonatomic, strong) NSDate *valutaDate;
+@property (nonatomic, strong) NSDate *date;
 
-@property (nonatomic, retain) NSDecimalNumber *value;
-@property (nonatomic, retain) NSDecimalNumber *nassValue;
-@property (nonatomic, retain) NSDecimalNumber *charge;
-@property (nonatomic, retain) NSDecimalNumber *saldo;
+@property (nonatomic, strong) NSDecimalNumber *value;
+@property (nonatomic, strong) NSDecimalNumber *nassValue;
+@property (nonatomic, strong) NSDecimalNumber *charge;
+@property (nonatomic, strong) NSDecimalNumber *saldo;
 
 
-@property (nonatomic, retain) NSString *remoteName;
-@property (nonatomic, retain) NSString *remoteIBAN;
-@property (nonatomic, retain) NSString *remoteBIC;
-@property (nonatomic, retain) NSString *remoteBankCode;
-@property (nonatomic, retain) NSString *remoteBankLocation;
-@property (nonatomic, retain) NSString *remoteBankName;
-@property (nonatomic, retain) NSString *remoteAccount;
-@property (nonatomic, retain) NSString *remoteCountry;
-@property (nonatomic, retain) NSString *purpose;
-@property (nonatomic, retain) NSString *localSuffix;
-@property (nonatomic, retain) NSString *remoteSuffix;
+@property (nonatomic, strong) NSString *remoteName;
+@property (nonatomic, strong) NSString *remoteIBAN;
+@property (nonatomic, strong) NSString *remoteBIC;
+@property (nonatomic, strong) NSString *remoteBankCode;
+@property (nonatomic, strong) NSString *remoteBankLocation;
+@property (nonatomic, strong) NSString *remoteBankName;
+@property (nonatomic, strong) NSString *remoteAccount;
+@property (nonatomic, strong) NSString *remoteCountry;
+@property (nonatomic, strong) NSString *purpose;
+@property (nonatomic, strong) NSString *localSuffix;
+@property (nonatomic, strong) NSString *remoteSuffix;
 
-@property (nonatomic, retain, readonly) NSString * categoriesDescription;
+@property (nonatomic, strong, readonly) NSString * categoriesDescription;
 
-@property (nonatomic, retain) NSString *localBankCode, *localAccount;
-@property (nonatomic, retain) NSString *customerReference;
-@property (nonatomic, retain) NSString *bankReference;
-@property (nonatomic, retain) NSString *transactionText;
-@property (nonatomic, retain) NSNumber *transactionCode;
-@property (nonatomic, retain) NSString *currency;
-@property (nonatomic, retain) NSString *primaNota;
-@property (nonatomic, readonly) NSString *note;
+@property (nonatomic, strong) NSString *localBankCode, *localAccount;
+@property (nonatomic, strong) NSString *customerReference;
+@property (nonatomic, strong) NSString *bankReference;
+@property (nonatomic, strong) NSString *transactionText;
+@property (nonatomic, strong) NSNumber *transactionCode;
+@property (nonatomic, strong) NSString *currency;
+@property (nonatomic, strong) NSString *primaNota;
+@property (unsafe_unretained, nonatomic, readonly) NSString *note;
 
-@property (nonatomic, retain) NSString *additional;
-@property (nonatomic, retain) NSNumber *hashNumber;
-@property (nonatomic, retain) NSNumber *isAssigned;		// assigned to >= 100%
-@property (nonatomic, retain) NSNumber *isManual;
-@property (nonatomic, retain) NSNumber *isStorno;
-@property (nonatomic, retain) NSNumber *isNew;
+@property (nonatomic, strong) NSString *additional;
+@property (nonatomic, strong) NSNumber *hashNumber;
+@property (nonatomic, strong) NSNumber *isAssigned;		// assigned to >= 100%
+@property (nonatomic, strong) NSNumber *isManual;
+@property (nonatomic, strong) NSNumber *isStorno;
+@property (nonatomic, strong) NSNumber *isNew;
 
-@property (nonatomic, retain) NSString * ref1;
-@property (nonatomic, retain) NSString * ref2;
-@property (nonatomic, retain) NSString * ref3;
-@property (nonatomic, retain) NSString * ref4;
+@property (nonatomic, strong) NSString * ref1;
+@property (nonatomic, strong) NSString * ref2;
+@property (nonatomic, strong) NSString * ref3;
+@property (nonatomic, strong) NSString * ref4;
 
-@property (nonatomic, retain) BankAccount *account;
+@property (nonatomic, strong) BankAccount *account;
 
 @end
 

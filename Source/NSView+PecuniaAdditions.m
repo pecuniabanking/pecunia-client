@@ -66,14 +66,14 @@
     
     [[self layer] renderInContext: context];
     CGImageRef img = CGBitmapContextCreateImage(context);
-    NSImage* image = [[[NSImage alloc] initWithCGImage: img size: bounds.size] autorelease];
+    NSImage* image = [[NSImage alloc] initWithCGImage: img size: bounds.size];
     
     NSImageView* canvas = [[NSImageView alloc] initWithFrame: bounds];
     [canvas setImage: image];
     
     CFRelease(img);
     CFRelease(context);
-    return [canvas autorelease];
+    return canvas;
 }
 
 @end

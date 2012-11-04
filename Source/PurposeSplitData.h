@@ -17,11 +17,11 @@
 	NSString	*remoteAccount;
 	NSString	*remoteBankCode;
 	BOOL		converted;
-	BankStatement *statement;
+	BankStatement *__unsafe_unretained statement;
 }
 
 @property (nonatomic, assign) BOOL converted;
-@property (nonatomic, assign) BankStatement *statement;
+@property (nonatomic, unsafe_unretained) BankStatement *statement;
 @property (nonatomic, copy) NSString *purposeNew;
 @property (nonatomic, copy) NSString *purposeOld;
 @property (nonatomic, copy) NSString *remoteName;

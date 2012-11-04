@@ -17,7 +17,7 @@
 	
 }
 
-@property (nonatomic, retain) BankQueryResult *importResult;
+@property (nonatomic, strong) BankQueryResult *importResult;
 
 -(IBAction)createSettings:(id)sender;
 -(IBAction)changeSettings:(id)sender;

@@ -74,7 +74,7 @@
     MAAttachedWindow* helpWindow;
 }
 
-@property (nonatomic, retain) Category* category;
+@property (nonatomic, strong) Category* category;
 
 - (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
 

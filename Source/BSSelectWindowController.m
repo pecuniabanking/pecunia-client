@@ -20,7 +20,7 @@
 -(id)initWithResults: (NSArray*)list
 {
 	self = [super initWithWindowNibName:@"BSSelectWindow"];
-	resultList = [list retain];
+	resultList = list;
 	return self;
 }
 
@@ -39,7 +39,7 @@
 	}
 	
 	// sort descriptor for statements view
-	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
+	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[statementsView setSortDescriptors: sds ];
 }
@@ -84,11 +84,6 @@
 	[NSApp stopModal];
 }
 
--(void)dealloc
-{
-	[resultList release ];
-	[super dealloc ];
-}
 
 
 @end

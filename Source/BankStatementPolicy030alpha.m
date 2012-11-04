@@ -17,7 +17,7 @@
 {
 	NSManagedObjectContext *context = [manager destinationContext ];
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext:context];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
 	NSArray *statements = [context executeFetchRequest:request error:error];
     

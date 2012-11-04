@@ -67,14 +67,6 @@
     [progressController stop ];
 }
 
--(void)dealloc
-{
-    [bridge release ];
-    [bankInfo release ];
-    [countries release ];
-    [progressController release ];
-    [super dealloc ];
-}
 
 -(void)readCountryInfos
 {
@@ -91,7 +83,7 @@
     NSString *line;
     for(line in lines) {
         NSArray *infos = [line componentsSeparatedByString: @";" ];
-        Country *country = [[[Country alloc ] init ] autorelease ];
+        Country *country = [[Country alloc ] init ];
         country.code = [infos objectAtIndex: 2 ];
         country.name = [infos objectAtIndex:0 ];
         country.currency = [infos objectAtIndex:3 ];
@@ -131,7 +123,7 @@ NSString *escapeSpecial(NSString *s)
     if(val) [cmd appendFormat:@"<%@>%@</%@>", tag, s, tag ];
 }
 
--(PecuniaError*)initHBCI
+-(PecuniaError*)initalizeHBCI
 {
     PecuniaError *error=nil;
     NSString *ppDir = [[MOAssistant assistant] passportDirectory ];
@@ -371,7 +363,7 @@ NSString *escapeSpecial(NSString *s)
 
 -(TransactionLimits*)limitsForType:(TransferType)tt account:(BankAccount*)account country:(NSString*)ctry
 {
-    TransactionLimits *limits = [[[TransactionLimits alloc ] init ] autorelease ];
+    TransactionLimits *limits = [[TransactionLimits alloc ] init ];
     NSString *jobName = [self jobNameForType: tt ];
     NSDictionary *restr = [self getRestrictionsForJob:jobName account:account ];
     if (restr) {
@@ -400,7 +392,7 @@ NSString *escapeSpecial(NSString *s)
 
 -(TransactionLimits*)standingOrderLimitsForAccount:(BankAccount*)account action:(StandingOrderAction)action
 {
-    TransactionLimits *limits = [[[TransactionLimits alloc ] init ] autorelease ];
+    TransactionLimits *limits = [[TransactionLimits alloc ] init ];
     NSString *jobName = nil;
     switch (action) {
         case stord_change: jobName = @"DauerEdit"; break;
@@ -618,7 +610,7 @@ NSString *escapeSpecial(NSString *s)
     PecuniaError *err = nil;
     Transfer *transfer;
     NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] initWithDateFormat: @"%Y-%m-%d" allowNaturalLanguage: NO] autorelease];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] initWithDateFormat: @"%Y-%m-%d" allowNaturalLanguage: NO];
     NSMutableDictionary *accountTransferRegister = [NSMutableDictionary dictionaryWithCapacity: 10];
     
     // Group transfers by BankAccount
@@ -870,9 +862,9 @@ NSString *escapeSpecial(NSString *s)
 
 -(void)getStatements:(NSArray*)resultList
 {
-    bankQueryResults = [resultList retain ];
+    bankQueryResults = resultList;
     NSMutableString	*cmd = [NSMutableString stringWithFormat:@"<command name=\"getAllStatements\"><accinfolist type=\"list\">" ];
-    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO];
     
     BankQueryResult *result;
     for(result in resultList) {
@@ -893,7 +885,7 @@ NSString *escapeSpecial(NSString *s)
         if (maxStatDays == 0) maxStatDays = 90;
         
         if (result.account.latestTransferDate == nil) {
-            result.account.latestTransferDate = [[[NSDate alloc] initWithTimeInterval: -86400 * maxStatDays sinceDate: [NSDate date]] autorelease];
+            result.account.latestTransferDate = [[NSDate alloc] initWithTimeInterval: -86400 * maxStatDays sinceDate: [NSDate date]];
         }
         
         if (result.account.latestTransferDate != nil) {
@@ -901,7 +893,6 @@ NSString *escapeSpecial(NSString *s)
             NSDate *fromDate = [[NSDate alloc ] initWithTimeInterval:-605000 sinceDate:result.account.latestTransferDate ];
             fromString = [dateFormatter stringFromDate:fromDate ];
             if (fromString) [cmd appendFormat:@"<fromDate>%@</fromDate>", fromString ];
-            [fromDate release ];
         }
         [cmd appendFormat:@"<userId>%@</userId></accinfo>", result.userId ];
     }
@@ -956,13 +947,12 @@ NSString *escapeSpecial(NSString *s)
         NSNotification *notification = [NSNotification notificationWithName:PecuniaStatementsNotification object:bankQueryResults ];
         [[NSNotificationCenter defaultCenter ] postNotification:notification ];
     }
-    [bankQueryResults release ];
 }
 
 
 -(void)getStandingOrders:(NSArray*)resultList
 {
-    bankQueryResults = [resultList retain ];
+    bankQueryResults = resultList;
     NSMutableString	*cmd = [NSMutableString stringWithFormat:@"<command name=\"getAllStandingOrders\"><accinfolist type=\"list\">" ];
     
     for(BankQueryResult *result in resultList) {
@@ -991,7 +981,7 @@ NSString *escapeSpecial(NSString *s)
 
 -(void)prepareCommand:(NSMutableString*)cmd forStandingOrder:(StandingOrder*)stord
 {
-    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO] autorelease];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO];
     
     [self appendTag: @"bankCode" withValue: stord.account.bankCode to: cmd ];
     [self appendTag: @"accountNumber" withValue: stord.account.accountNumber to: cmd ];
@@ -1252,7 +1242,7 @@ NSString *escapeSpecial(NSString *s)
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"user = %@", user];
-    NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entityDescription];
     [request setPredicate:predicate ];
     

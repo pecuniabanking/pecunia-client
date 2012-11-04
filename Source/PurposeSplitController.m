@@ -113,7 +113,7 @@
 	if (account) {
 		[purposeController removeObjects:[purposeController arrangedObjects ]];
 		for (BankStatement *stat in [account mutableSetValueForKey:@"statements"]) {
-			PurposeSplitData *data = [[[PurposeSplitData alloc ] init ] autorelease ];
+			PurposeSplitData *data = [[PurposeSplitData alloc ] init ];
 			if (stat.additional) {
 				// data already converted
 				data.purposeOld = stat.additional;

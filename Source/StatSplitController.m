@@ -31,7 +31,7 @@
 	[currentStat setContent:statement ];
 	[self setValue:statement.nassValue forKey:@"residualAmount" ];
 	
-	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"localName" ascending:YES] autorelease];
+	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"localName" ascending:YES];
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[catController setSortDescriptors: sds ];
 	

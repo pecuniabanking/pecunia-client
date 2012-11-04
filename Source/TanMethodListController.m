@@ -25,10 +25,9 @@
 
 -(void)dealloc
 {
-	[selectedMethod release], selectedMethod = nil;
-	[tanMethods release], tanMethods = nil;
+	selectedMethod = nil;
+	tanMethods = nil;
 
-	[super dealloc ];
 }
 
 -(IBAction)ok:(id)sender

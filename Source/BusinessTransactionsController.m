@@ -29,7 +29,7 @@
         NSString* path = [[NSBundle mainBundle] resourcePath];
         path = [path stringByAppendingString: @"/HBCI business transactions.csv"];
 	
-        allTransactions = [[NSMutableDictionary dictionary] retain];
+        allTransactions = [NSMutableDictionary dictionary];
         NSError* error = nil;
         NSString* content = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
         if (error) {
@@ -48,7 +48,7 @@
         }
         
         NSArray* sortedTransactions = [transactions sortedArrayUsingSelector: @selector(localizedCaseInsensitiveCompare:)];
-        transactionList = [[NSMutableArray array] retain];
+        transactionList = [NSMutableArray array];
         for (size_t i = 0; i < [sortedTransactions count]; i++) {
             NSString* description = [allTransactions objectForKey: [sortedTransactions objectAtIndex: i]];
             if (description == nil) {
@@ -60,12 +60,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-    [allTransactions release];
-    [transactionList release];
-    [super dealloc];
-}
 
 - (IBAction)endSheet: (id)sender
 {

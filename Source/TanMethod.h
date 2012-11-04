@@ -14,17 +14,17 @@
 
 }
 
-@property (nonatomic, retain) NSString * identifier;
-@property (nonatomic, retain) NSString * inputInfo;
-@property (nonatomic, retain) NSNumber * maxTanLength;
-@property (nonatomic, retain) NSString * method;
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSString * needTanMedia;
-@property (nonatomic, retain) NSString * process;
-@property (nonatomic, retain) NSString * zkaMethodName;
-@property (nonatomic, retain) NSString * zkaMethodVersion;
-@property (nonatomic, retain) TanMedium * preferredMedium;
-@property (nonatomic, retain) BankUser * user;
+@property (nonatomic, strong) NSString * identifier;
+@property (nonatomic, strong) NSString * inputInfo;
+@property (nonatomic, strong) NSNumber * maxTanLength;
+@property (nonatomic, strong) NSString * method;
+@property (nonatomic, strong) NSString * name;
+@property (nonatomic, strong) NSString * needTanMedia;
+@property (nonatomic, strong) NSString * process;
+@property (nonatomic, strong) NSString * zkaMethodName;
+@property (nonatomic, strong) NSString * zkaMethodVersion;
+@property (nonatomic, strong) TanMedium * preferredMedium;
+@property (nonatomic, strong) BankUser * user;
 
 @end
 

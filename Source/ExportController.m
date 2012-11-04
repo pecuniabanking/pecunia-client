@@ -31,7 +31,7 @@ static ExportController *exportController = nil;
 {
 	self = [super init ];
 	exportController = self;
-	selectedFields = [[NSMutableArray arrayWithCapacity: 10 ] retain ];
+	selectedFields = [NSMutableArray arrayWithCapacity: 10 ];
 	return self;
 }
 
@@ -109,7 +109,7 @@ static ExportController *exportController = nil;
 		ShortDate *to_Date = [ShortDate dateWithDate: toDate ];
 		
 		// addObjectsFromArray
-		NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:NO] autorelease];
+		NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:NO];
 		for (Category *currentCategory in cats) {
 			NSArray* stats = [currentCategory statementsFrom: from_Date to: to_Date withChildren: withChildren];
 			stats = [stats sortedArrayUsingDescriptors: [NSArray arrayWithObject: sd]];
@@ -119,7 +119,6 @@ static ExportController *exportController = nil;
 			}
 		}
 		
-		[dateFormatter release ];
 		
 		if([res writeToFile: [[sp URL] path] atomically: NO encoding: NSUTF8StringEncoding error: &error ] == NO) {
 			NSAlert *alert = [NSAlert alertWithError:error];

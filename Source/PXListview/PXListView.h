@@ -49,9 +49,9 @@
     BOOL _updating;
 }
 
-@property (nonatomic, assign) IBOutlet id <PXListViewDelegate> delegate;
+@property (nonatomic, unsafe_unretained) IBOutlet id <PXListViewDelegate> delegate;
 
-@property (nonatomic, retain) NSIndexSet *selectedRows;
+@property (nonatomic, strong) NSIndexSet *selectedRows;
 @property (nonatomic, assign) NSInteger selectedRow; // If nothing is selected -1 is returned
 
 @property (nonatomic, assign) BOOL allowsEmptySelection;

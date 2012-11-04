@@ -29,11 +29,10 @@
 
 - (void)dealloc
 {
-	[name release], name = nil;
-	[children release], children = nil;
-	[values release], values = nil;
-	[periodValues release ], periodValues = nil;
-	[super dealloc];
+	name = nil;
+	children = nil;
+	values = nil;
+	periodValues = nil;
 }
 
 @end

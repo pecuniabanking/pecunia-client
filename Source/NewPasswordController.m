@@ -25,12 +25,6 @@
 	return self;
 }
 
--(void)dealloc
-{
-	[text release ];
-	[title release ];
-	[super dealloc ];
-}
 
 -(void)windowWillClose:(NSNotification *)aNotification
 {

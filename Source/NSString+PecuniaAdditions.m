@@ -32,7 +32,7 @@
         return [NSString string];
     }
     
-    NSString *result = [[[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding] autorelease];
+    NSString *result = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
     if (result == nil) {
         const unsigned char *dataBuffer = (const unsigned char *)[data bytes];
         
@@ -51,7 +51,7 @@
 {
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil ];
     NSAttributedString *result = [[NSAttributedString alloc ] initWithString:self attributes:attrs];
-    return [result autorelease ];
+    return result;
 }
 
 

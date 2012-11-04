@@ -31,9 +31,7 @@ Category *catRoot = nil;
 Category *bankRoot = nil;
 Category *nassRoot = nil;
 
-ShortDate *catFromDate = nil;
-ShortDate *catToDate = nil;
-BOOL	updateSent = NO;
+BOOL updateSent = NO;
 
 // balance: sum of own statements
 // catSum: sum of balance and child's catSums
@@ -54,11 +52,6 @@ BOOL	updateSent = NO;
 
 @synthesize categoryColor;
 
-- (void)dealloc
-{
-    [catColor release];
-    [super dealloc];
-}
 
 -(void)updateInvalidBalances
 {
@@ -77,8 +70,14 @@ BOOL	updateSent = NO;
     if([self.isBalanceValid boolValue ] == NO) {
         NSDecimalNumber	*balance = [NSDecimalNumber zero ];
         
-        if([self isBankAccount ]) stats = [[self mutableSetValueForKey: @"assignments" ] allObjects ];
-        else stats = [self statementsFrom: catFromDate to: catToDate withChildren: NO ];
+        if ([self isBankAccount]) {
+            stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
+        } else {
+            NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+            stats = [self statementsFrom: [ShortDate dateWithDate: [defaults objectForKey: @"startReportDate"]]
+                                      to: [ShortDate dateWithDate: [defaults objectForKey: @"endReportDate"]]
+                            withChildren: NO];
+        }
         
         StatCatAssignment *stat = nil;
         for(stat in stats) {
@@ -109,8 +108,15 @@ BOOL	updateSent = NO;
     // now handle self
     NSDecimalNumber	*balance = [NSDecimalNumber zero ];
     
-    if([self isBankAccount ]) stats = [[self mutableSetValueForKey: @"assignments" ] allObjects ];
-    else stats = [self statementsFrom: catFromDate to: catToDate withChildren: NO ];
+    if ([self isBankAccount]) {
+        stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
+    }
+    else {
+        NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+        stats = [self statementsFrom: [ShortDate dateWithDate: [defaults objectForKey: @"startReportDate"]]
+                                  to: [ShortDate dateWithDate: [defaults objectForKey: @"endReportDate"]]
+                        withChildren: NO];
+    }
     
     for(StatCatAssignment *stat in stats) {
         if(stat.value != nil) balance = [balance decimalNumberByAdding: stat.value]; else stat.value = [NSDecimalNumber zero ];
@@ -123,7 +129,7 @@ BOOL	updateSent = NO;
     if(![self isBankAccount ]) return [self mutableSetValueForKey: @"assignments" ];
     if(self.accountNumber) return [self mutableSetValueForKey: @"assignments" ];
     // combine statements
-    NSMutableSet *stats = [[[NSMutableSet alloc ] init ] autorelease ];
+    NSMutableSet *stats = [[NSMutableSet alloc ] init ];
     NSSet *childs = [self allChildren ];
     NSEnumerator *enumerator = [childs objectEnumerator];
     Category *cat;
@@ -370,7 +376,7 @@ BOOL	updateSent = NO;
 
 -(NSSet*)allChildren
 {
-    NSMutableSet* childs = [[[NSMutableSet alloc ] init ] autorelease ];
+    NSMutableSet* childs = [[NSMutableSet alloc ] init ];
     
     NSSet* myChildren = [self children ];
     NSEnumerator *enumerator = [myChildren objectEnumerator];
@@ -623,18 +629,18 @@ BOOL	updateSent = NO;
 
     if (self.catRepColor == nil) {
         if (self == [Category bankRoot]) {
-            catColor = [[NSColor colorWithDeviceWhite: 0.12 alpha: 1] retain];
+            catColor = [NSColor colorWithDeviceWhite: 0.12 alpha: 1];
         } else {
             if (self == [Category catRoot]) {
-                catColor = [[NSColor colorWithDeviceWhite: 0.24 alpha: 1] retain];
+                catColor = [NSColor colorWithDeviceWhite: 0.24 alpha: 1];
             } else {
                 if (self == [Category nassRoot]) {
-                    catColor = [[NSColor colorWithDeviceWhite: 0.36 alpha: 1] retain];
+                    catColor = [NSColor colorWithDeviceWhite: 0.36 alpha: 1];
                 } else {
                     if ([self isBankAccount]) {
-                        catColor = [[NSColor nextDefaultAccountColor] retain];
+                        catColor = [NSColor nextDefaultAccountColor];
                     } else {
-                        catColor = [[NSColor nextDefaultCategoryColor] retain];
+                        catColor = [NSColor nextDefaultCategoryColor];
                     }
                 }
             }
@@ -646,15 +652,13 @@ BOOL	updateSent = NO;
         NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
         [archiver encodeObject: catColor forKey: @"color"];
         [archiver finishEncoding];
-        [archiver release];
         
         self.catRepColor = data;
     } else {
         if (catColor == nil) {
             NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData: self.catRepColor];
-            catColor = [[unarchiver decodeObjectForKey: @"color"] retain];
+            catColor = [unarchiver decodeObjectForKey: @"color"];
             [unarchiver finishDecoding];
-            [unarchiver release];
         }
     }
     
@@ -664,15 +668,13 @@ BOOL	updateSent = NO;
 -(void)setCategoryColor: (NSColor*)color
 {
     if (catColor != color) {
-        [catColor release];
-        catColor = [color retain];
+        catColor = color;
         
         NSMutableData* data = [NSMutableData data];
         
         NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
         [archiver encodeObject: catColor forKey: @"color"];
         [archiver finishEncoding];
-        [archiver release];
         
         self.catRepColor = data;
     }
@@ -748,52 +750,13 @@ BOOL	updateSent = NO;
     if (updateSent) return;
     [[self catRoot ] updateInvalidBalances ]; 
     [[self catRoot ] rollup ]; 
-    //	[[self catRoot ] performSelector:@selector(updateInvalidBalances) withObject:nil afterDelay:0 ]; 
-    //	[[self catRoot ] performSelector:@selector(rollup) withObject:nil afterDelay:0 ]; 
 }
 
 +(void)setCatReportFrom: (ShortDate*)fDate to: (ShortDate*)tDate
 {
-    [catFromDate release ];
-    [catToDate release ];
-    catFromDate = [fDate retain ];
-    catToDate = [tDate retain ];
-}
-
-+(void)setMonthFromDate: (ShortDate*)date
-{
-    [catFromDate release ];
-    catFromDate = [ShortDate dateWithYear: [date year ] month: [date month ] day: 1 ];
-    [catFromDate retain ];
-}
-
-+(void)setYearFromDate: (ShortDate*)date
-{
-    [catFromDate release ];
-    catFromDate = [ShortDate dateWithYear: [date year ] month: 1 day: 1 ];
-    [catFromDate retain ];
-}
-
-+(void)setQuarterFromDate: (ShortDate*)date
-{
-    int month = 1;
-    [catFromDate release ];
-    switch([date month ]) {
-        case 1:
-        case 2:
-        case 3: month = 1; break;
-        case 4:
-        case 5:
-        case 6: month = 4; break;
-        case 7:
-        case 8:
-        case 9: month = 7; break;
-        case 10:
-        case 11:
-        case 12: month = 10; break;
-    }
-    catFromDate = [ShortDate dateWithYear: [date year ] month: month day: 1 ];
-    [catFromDate retain ];
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject: fDate.lowDate forKey: @"startReportDate"];
+    [defaults setObject: tDate.lowDate forKey: @"endReportDate"];
 }
 
 @end

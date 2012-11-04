@@ -18,15 +18,6 @@
 @synthesize userId;
 
 
--(void)dealloc
-{
-	[command release ];
-	[message release ];
-	[proposal release ];
-	[bankCode release ];
-	[userId release ];
-	[super dealloc ];
-}
 
 -(void)setReason: (NSString*)res
 {

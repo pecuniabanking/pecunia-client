@@ -42,7 +42,7 @@
     CPTLimitBand* selector;
 }
 
-@property (nonatomic, retain) CPTLimitBand* selector;
+@property (nonatomic, strong) CPTLimitBand* selector;
 
 @end
 
@@ -105,7 +105,7 @@
     MAAttachedWindow* helpWindow;
 }
 
-@property (nonatomic, retain) Category* category;
+@property (nonatomic, strong) Category* category;
 
 @property (nonatomic, readwrite) CGFloat barWidth;
 @property (nonatomic, readwrite) GroupingInterval groupingInterval;

@@ -19,6 +19,20 @@
 
 #import "GraphicsAdditions.h"
 
+CGColorRef CGColorCreateFromNSColor(NSColor *color)
+{
+    // First convert the given color to a color with an RGB colorspace in case we use a pattern
+    // or named color space. No-op if the color is already using RGB.
+    NSColor *deviceColor = [color colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
+    CGColorSpaceRef colorspace = [[deviceColor colorSpace] CGColorSpace];
+    const NSInteger nComponents = [deviceColor numberOfComponents];
+
+    CGFloat components[nComponents];
+    [deviceColor getComponents: components];
+
+    return CGColorCreate(colorspace, components);
+}
+
 @implementation NSColor (PecuniaAdditions)
 
 static NSMutableArray* defaultAccountColors;
@@ -30,9 +44,9 @@ static NSMutableDictionary* applicationColors;
     // Generate our random seed.
     srandom(time(NULL));
 	
-    defaultAccountColors = [[NSMutableArray arrayWithCapacity: 10] retain];
-    defaultCategoryColors = [[NSMutableArray arrayWithCapacity: 10] retain];
-    applicationColors = [[NSMutableDictionary dictionary] retain];
+    defaultAccountColors = [NSMutableArray arrayWithCapacity: 10];
+    defaultCategoryColors = [NSMutableArray arrayWithCapacity: 10];
+    applicationColors = [NSMutableDictionary dictionary];
 	
 	NSString *path = [[NSBundle mainBundle] resourcePath];
 	path = [path stringByAppendingString: @"/Colors.acf"];
@@ -110,7 +124,7 @@ static NSMutableDictionary* applicationColors;
     if ([defaultAccountColors count] > 0) {
         // To return the color with a refcount of 1 (autoreleased), we need to retain it
         // here as the ref count is decreased when it is removed from the default colors array.
-        NSColor* result = [[defaultAccountColors objectAtIndex: 0] retain];
+        NSColor* result = [defaultAccountColors objectAtIndex: 0];
         [defaultAccountColors removeObjectAtIndex: 0];
         
         return result;
@@ -133,7 +147,7 @@ static NSMutableDictionary* applicationColors;
     }
 
     if ([defaultCategoryColors count] > 0) {
-        NSColor* result = [[defaultCategoryColors objectAtIndex: 0] retain];
+        NSColor* result = [defaultCategoryColors objectAtIndex: 0];
         [defaultCategoryColors removeObjectAtIndex: 0];
         
         return result;
@@ -181,9 +195,7 @@ static NSMutableDictionary* applicationColors;
     CGFloat components[nComponents];
     [color getComponents: components];
     
-    CGColorRef c = CGColorCreate(colorspace, components);
-    
-    return (CGColorRef)[(id)c autorelease];
+    return CGColorCreate(colorspace, components);
 }
 
 #pragma clang diagnostic pop
@@ -221,7 +233,7 @@ extern CGPathRef CGContextCopyPath(CGContextRef context);
 
 static void CGPathCallback(void *info, const CGPathElement *element)
 {
-    NSBezierPath *path = info;
+    NSBezierPath *path = CFBridgingRelease(info);
     CGPoint *points = element->points;
     
     switch (element->type)
@@ -262,7 +274,7 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 + (NSBezierPath *)bezierPathWithCGPath:(CGPathRef)pathRef
 {
     NSBezierPath *path = [NSBezierPath bezierPath];
-    CGPathApply(pathRef, path, CGPathCallback);
+    CGPathApply(pathRef, (__bridge void *)(path), CGPathCallback);
     
     return path;
 }
@@ -313,7 +325,6 @@ static void CGPathCallback(void *info, const CGPathElement *element)
     NSBezierPath *path = [self copy];
     CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
     CGPathRef pathRef = [path cgPath];
-    [path release];
     
     CGContextSaveGState(context);
     
@@ -394,8 +405,6 @@ static void CGPathCallback(void *info, const CGPathElement *element)
     
     [NSGraphicsContext restoreGraphicsState];
     
-    [path release];
-    [shadow release];
 }
 
 // Credit for the next two methods goes to Matt Gemmell

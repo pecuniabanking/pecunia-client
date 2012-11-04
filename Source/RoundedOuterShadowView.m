@@ -34,10 +34,6 @@
     return self;
 }
 
-- (void) dealloc
-{
-    [super dealloc];
-}
 
 // Shared objects.
 static NSShadow* borderShadow = nil;
@@ -84,8 +80,7 @@ static NSShadow* borderShadow = nil;
 - (void)setIndicatorColor: (NSColor*)color
 {
     if (indicatorColor != color) {
-        [indicatorColor release];
-        indicatorColor = [color retain];
+        indicatorColor = color;
         [self setNeedsDisplay: YES];
     }
 }

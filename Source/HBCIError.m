@@ -14,12 +14,6 @@
 @synthesize msg;
 @synthesize code;
 
--(void)dealloc
-{
-	[msg release ];
-	[code release ];
-	[super dealloc ];
-}
 
 -(PecuniaError*)toPecuniaError
 {

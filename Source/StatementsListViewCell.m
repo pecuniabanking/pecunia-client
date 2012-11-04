@@ -75,21 +75,13 @@ extern NSString *StatementTypeKey;
     self = [super initWithFrame: frame];
     if (self != nil)
     {
-        whiteAttributes = [[NSDictionary dictionaryWithObjectsAndKeys:
+        whiteAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                             [NSColor whiteColor], NSForegroundColorAttributeName, nil
-                           ] retain
-                          ];
+                           ];
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [positiveAttributes release];
-    [negativeAttributes release];
-    [whiteAttributes release];
-	[super dealloc];
-}
 
 - (void) setHeaderHeight: (int) aHeaderHeight
 {
@@ -133,7 +125,7 @@ static CurrencyValueTransformer* currencyTransformer;
     [transactionTypeLabel setToolTip: [details objectForKey: StatementTransactionTextKey]];
     
     if (currencyTransformer == nil)
-        currencyTransformer = [[[CurrencyValueTransformer alloc] init] retain];
+        currencyTransformer = [[CurrencyValueTransformer alloc] init];
     
     id currency = [details objectForKey: StatementCurrencyKey];
     NSString* symbol = [currencyTransformer transformedValue: currency];
@@ -150,15 +142,13 @@ static CurrencyValueTransformer* currencyTransformer;
                            negativeNumbers: (NSDictionary*) _negativeAttributes
 {
     if (positiveAttributes != _positiveAttributes) {
-        [positiveAttributes release];
-        positiveAttributes = [_positiveAttributes retain];
+        positiveAttributes = _positiveAttributes;
         [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
         [[[saldoLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
     }
     
     if (negativeAttributes != _negativeAttributes) {
-        [positiveAttributes release];
-        negativeAttributes = [_negativeAttributes retain];
+        negativeAttributes = _negativeAttributes;
         [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
         [[[saldoLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
     }
@@ -316,9 +306,9 @@ static NSImage* stripeImage;
 		if (hasUnassignedValue) {
             NSColor *color = [PreferenceController notAssignedRowColor];
             if (color) {
-                NSGradient* aGradient = [[[NSGradient alloc]
+                NSGradient* aGradient = [[NSGradient alloc]
                                           initWithColorsAndLocations:color, (CGFloat)-0.1, [NSColor whiteColor], (CGFloat)1.1,
-                                          nil] autorelease];
+                                          nil];
                 
                 [aGradient drawInBezierPath:path angle:90.0];
                 isUnassignedColored = YES;
@@ -327,9 +317,9 @@ static NSImage* stripeImage;
         if (isNew) {
             NSColor *color = [PreferenceController newStatementRowColor];
             if (color) {
-                NSGradient* aGradient = [[[NSGradient alloc]
+                NSGradient* aGradient = [[NSGradient alloc]
                                           initWithColorsAndLocations:color, (CGFloat)-0.1, [NSColor whiteColor], (CGFloat)1.1,
-                                          nil] autorelease];
+                                          nil];
                 
                 [aGradient drawInBezierPath:path angle:90.0];
             }

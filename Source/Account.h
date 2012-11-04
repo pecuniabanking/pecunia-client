@@ -42,20 +42,20 @@
 -(BOOL)isEqual: (id)obj;
 
 
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *bankName;
-@property (nonatomic, retain) NSString *bankCode;
-@property (nonatomic, retain) NSString *accountNumber;
-@property (nonatomic, retain) NSString *ownerName;
-@property (nonatomic, retain) NSString *currency;
-@property (nonatomic, retain) NSString *country;
-@property (nonatomic, retain) NSString *iban;
-@property (nonatomic, retain) NSString *bic;
-@property (nonatomic, retain) NSString *userId;
-@property (nonatomic, retain) NSString *customerId;
-@property (nonatomic, retain) NSString *subNumber;
-@property (nonatomic, retain) NSNumber *type;
-@property (nonatomic, retain) NSArray  *supportedJobs;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *bankName;
+@property (nonatomic, strong) NSString *bankCode;
+@property (nonatomic, strong) NSString *accountNumber;
+@property (nonatomic, strong) NSString *ownerName;
+@property (nonatomic, strong) NSString *currency;
+@property (nonatomic, strong) NSString *country;
+@property (nonatomic, strong) NSString *iban;
+@property (nonatomic, strong) NSString *bic;
+@property (nonatomic, strong) NSString *userId;
+@property (nonatomic, strong) NSString *customerId;
+@property (nonatomic, strong) NSString *subNumber;
+@property (nonatomic, strong) NSNumber *type;
+@property (nonatomic, strong) NSArray  *supportedJobs;
 
 @property (nonatomic, assign) BOOL substInternalTransfers;
 @property (nonatomic, assign) BOOL collTransfer;

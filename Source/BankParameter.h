@@ -16,10 +16,10 @@
     NSString            *upd_raw;
 }
 
-@property (nonatomic, retain) NSString *bpd_raw;
-@property (nonatomic, retain) NSString *upd_raw;
-@property (nonatomic, retain) NSDictionary *bpd;
-@property (nonatomic, retain) NSDictionary *upd;
+@property (nonatomic, strong) NSString *bpd_raw;
+@property (nonatomic, strong) NSString *upd_raw;
+@property (nonatomic, strong) NSDictionary *bpd;
+@property (nonatomic, strong) NSDictionary *upd;
 
 @end
 

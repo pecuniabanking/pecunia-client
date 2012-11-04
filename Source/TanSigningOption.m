@@ -18,12 +18,11 @@
 
 - (void)dealloc
 {
-	[tanMethod release], tanMethod = nil;
-	[tanMethodName release], tanMethodName = nil;
-	[tanMediumName release], tanMediumName = nil;
-	[mobileNumber release], mobileNumber = nil;
+	tanMethod = nil;
+	tanMethodName = nil;
+	tanMediumName = nil;
+	mobileNumber = nil;
 
-	[super dealloc];
 }
 
 - (NSString*)description

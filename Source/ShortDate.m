@@ -27,16 +27,15 @@ NSCalendar *calendar = nil;
 {
     self = [super init];
     if (self != nil) {
-        components = [[[ShortDate calendar] components: NSYearCalendarUnit | NSMonthCalendarUnit |
+        components = [[ShortDate calendar] components: NSYearCalendarUnit | NSMonthCalendarUnit |
                        NSDayCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit
-                                              fromDate: date]
-                      retain];
+                                              fromDate: date];
         
         // Make a copy of the given date set to midnight. We need that for various computations.
         components.hour = 0;
         components.minute = 0;
         components.second = 0;
-        inner = [[calendar dateFromComponents: components] retain];
+        inner = [calendar dateFromComponents: components];
     }        
     return self;
 }
@@ -53,7 +52,7 @@ NSCalendar *calendar = nil;
         components.minute = 0;
         components.second = 0;
 
-        inner = [[[ShortDate calendar] dateFromComponents: components] retain];
+        inner = [[ShortDate calendar] dateFromComponents: components];
     }
     return self;
 }
@@ -63,17 +62,11 @@ NSCalendar *calendar = nil;
     self = [super init];
     if (self != nil) {
         // TODO: retain needed?
-        components = [[coder decodeObjectForKey: @"components"] retain];
+        components = [coder decodeObjectForKey: @"components"];
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [inner release];
-    [components release];
-    [super dealloc];
-}
 
 - (void)encodeWithCoder: (NSCoder*)coder
 {
@@ -83,7 +76,7 @@ NSCalendar *calendar = nil;
 
 - (id)copyWithZone: (NSZone *)zone
 {
-    return [self retain];
+    return self;
 }
 
 - (NSDate*)lowDate
@@ -214,7 +207,6 @@ NSCalendar *calendar = nil;
     comps.minute = NSUndefinedDateComponent;
     comps.second = NSUndefinedDateComponent;
     NSDate* date = [calendar dateFromComponents: comps];
-    [comps release];
     
     return [ShortDate dateWithDate: date];
 }
@@ -249,7 +241,7 @@ NSCalendar *calendar = nil;
 
 - (NSString*)description
 {
-    NSDateFormatter *df = [[[NSDateFormatter alloc] init] autorelease];
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateStyle: NSDateFormatterMediumStyle];
     [df setTimeStyle: NSDateFormatterNoStyle];
     
@@ -325,7 +317,7 @@ NSCalendar *calendar = nil;
 + (ShortDate*)dateWithDate: (NSDate*)date
 {
     ShortDate *res = [[ShortDate alloc] initWithDate: date];
-    return [res autorelease];
+    return res;
 }
 
 + (ShortDate*)currentDate
@@ -337,7 +329,7 @@ NSCalendar *calendar = nil;
 + (ShortDate*)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d
 {
     ShortDate *res = [[ShortDate alloc] initWithYear: y month: m day: d ];
-    return [res autorelease];
+    return res;
 }
 
 + (ShortDate*)distantFuture
@@ -353,7 +345,7 @@ NSCalendar *calendar = nil;
 +(NSCalendar*)calendar
 {
     if (calendar == nil) {
-        calendar = [[[NSCalendar alloc] initWithCalendarIdentifier:  NSGregorianCalendar] retain];
+        calendar = [[NSCalendar alloc] initWithCalendarIdentifier:  NSGregorianCalendar];
         calendar.firstWeekday = 2; // Set monday as first day of week.
         calendar.locale = [NSLocale currentLocale];
         calendar.minimumDaysInFirstWeek = 4; // According to DIN 1355-1/ISO 8601.

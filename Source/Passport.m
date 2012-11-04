@@ -24,20 +24,6 @@
 @synthesize base64;
 @synthesize checkCert;
 
--(void)dealloc
-{
-	[name release ];
-	[bankCode release ];
-	[bankName release ];
-	[userId release ];
-	[customerId release ];
-	[host release ];
-	[version release ];
-	[tanMethod release ];
-	[port release ];
-	[tanMethods release ];
-	[super dealloc ];
-}
 
 -(BOOL)isEqual: (id)obj
 {

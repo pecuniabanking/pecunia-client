@@ -96,7 +96,6 @@
 			  value: [self colorForLevel: level ]
 			  range: NSMakeRange(0, [s length ]) ];
 	[[logView textStorage ] appendAttributedString: s ];
-	[s release ];
 	
 	[logView moveToEndOfDocument: self ];
 	[logView display];

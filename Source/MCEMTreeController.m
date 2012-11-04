@@ -35,7 +35,7 @@
 	NSIndexPath *path = [self reverseIndexPathForObject: obj inArray: nodes ];
 	if(path == nil) return nil;
 	// IndexPath umdrehen
-	NSIndexPath *newPath = [[[NSIndexPath alloc ] init] autorelease];
+	NSIndexPath *newPath = [[NSIndexPath alloc ] init];
 	for(i=[path length ]-1; i>=0; i--) newPath = [newPath indexPathByAddingIndex: [path indexAtPosition:i ] ]; 
 	return newPath;
 }

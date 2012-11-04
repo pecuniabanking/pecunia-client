@@ -22,7 +22,7 @@
 @interface LaunchParameters : NSObject {
 }
 
-@property (nonatomic, retain) NSString *dataFile;
+@property (nonatomic, strong) NSString *dataFile;
 @property (nonatomic, assign) BOOL debugServer;
 
 +(LaunchParameters*)parameters;

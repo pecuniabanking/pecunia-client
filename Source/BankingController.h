@@ -139,8 +139,8 @@
 }
 
 @property(nonatomic, copy) NSDecimalNumber *saveValue;
-@property(nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property(nonatomic, retain) DockIconController *dockIconController;
+@property(nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property(nonatomic, strong) DockIconController *dockIconController;
 
 - (IBAction)addAccount: (id)sender;
 - (IBAction)changeAccount: (id)sender;

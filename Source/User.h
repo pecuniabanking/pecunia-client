@@ -43,12 +43,12 @@
     NSArray         *accounts;
 }
 
-@property (nonatomic, retain) NSMutableArray *tanMethodList;
+@property (nonatomic, strong) NSMutableArray *tanMethodList;
 @property (nonatomic, assign) BOOL forceSSL3;
 @property (nonatomic, assign) BOOL noBase64;
 @property (nonatomic, assign) BOOL checkCert;
-@property (nonatomic, retain) NSString* hbciVersion;
-@property (nonatomic, retain) NSNumber* tanMethodNumber;
+@property (nonatomic, strong) NSString* hbciVersion;
+@property (nonatomic, strong) NSNumber* tanMethodNumber;
 @property (nonatomic, copy) NSString* tanMethodDescription;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *country;
@@ -60,7 +60,7 @@
 @property (nonatomic, copy) NSString *bankName;
 @property (nonatomic, copy) NSString *port;
 @property (nonatomic, copy) NSString *chipCardId;
-@property (nonatomic, retain) NSArray *accounts;
+@property (nonatomic, strong) NSArray *accounts;
 
 -(BOOL)isEqual: (User*)obj;
 

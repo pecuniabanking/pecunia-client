@@ -23,6 +23,8 @@
 #import "Transfer.h"
 #import "Category.h"
 
+#import "BankAccount.h"
+
 extern NSString *StatementDateKey;
 extern NSString *StatementTurnoversKey;
 extern NSString *StatementRemoteNameKey;
@@ -99,13 +101,8 @@ extern NSString *TransferReadyForUseDataType;
     }
 
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
-    [observedObject release];
     
-    [dateFormatter release];
-    [calendar release];
-    [numberFormatter release];
     
-    [super dealloc];
 }
 
 #pragma mark -
@@ -120,8 +117,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 {
     if ([binding isEqualToString: @"dataSource"])
     {
-        [observedObject release];
-        observedObject = [observableObject retain];
+        observedObject = observableObject;
         dataSource = [observableObject valueForKey: keyPath];
         
         // One binding for the array, to get notifications about insertion and deletions.

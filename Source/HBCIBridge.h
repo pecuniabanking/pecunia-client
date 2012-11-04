@@ -21,6 +21,8 @@
 
 @class ResultParser;
 @class CallbackParser;
+@class LogParser;
+
 @class HBCIError;
 @class PecuniaError;
 @class CallbackData;
@@ -29,6 +31,7 @@
 {
     ResultParser	*rp;
     CallbackParser	*cp;
+    LogParser       *lp;
     
     NSPipe		*inPipe;
     NSPipe		*outPipe;

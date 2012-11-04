@@ -123,7 +123,6 @@ static LogController	*_logController = nil;
 			  value: [self colorForLevel: level]
 			  range: NSMakeRange(0, [s length])];
 	[[logView textStorage ] appendAttributedString: s ];
-	[s release ];
 	
 	[logView moveToEndOfDocument: self ];
 	[logView display];
@@ -213,9 +212,9 @@ static LogController	*_logController = nil;
     // This creates a URL string by adding percent escapes. Since the URL is
     // just being used locally, I don't know if this is always necessary,
     // however I thought it would be a good idea to stick to standards.
-    NSURL *url = [NSURL URLWithString:[(NSString*)
-                                       CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)mailtoLink,
-                                                                               NULL, NULL, kCFStringEncodingUTF8) autorelease]];
+    NSURL *url = [NSURL URLWithString:(NSString*)
+                                       CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)mailtoLink,
+                                                                               NULL, NULL, kCFStringEncodingUTF8))];
     
     // This just opens the URL in the workspace, to be opened up by Mail.app,
     // with data already entered in the subject, to and body fields.
@@ -224,13 +223,12 @@ static LogController	*_logController = nil;
 
 -(void)clearLog: (id)sender
 {
-	[[logView textStorage ] setAttributedString: [[[NSAttributedString alloc] initWithString: @""] autorelease]];
+	[[logView textStorage ] setAttributedString: [[NSAttributedString alloc] initWithString: @""]];
 }
 
 -(void)dealloc
 {
 	_logController = nil;
-	[super dealloc ];
 }
 
 @end

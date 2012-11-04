@@ -32,7 +32,7 @@
 	statements = [[NSMutableArray alloc ] initWithCapacity:100 ];
 	for(StatCatAssignment *stat in stats) [statements addObject:stat ];
 
-	NSSortDescriptor	*sd = [[[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:YES] autorelease];
+	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:YES];
 	NSArray				*sds = [NSArray arrayWithObject:sd];
 	[statements sortUsingDescriptors:sds ];
 
@@ -89,7 +89,7 @@
         NSFont *font = [NSFont fontWithName:@"Helvetica-Oblique" size:9 ];
         NSDictionary *attr2 = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil ];
         NSMutableAttributedString *as2 = [[NSMutableAttributedString alloc ] initWithString:[@"\n" stringByAppendingString:stat.userInfo ] attributes: attr2 ];
-        [as appendAttributedString:[as2 autorelease] ];
+        [as appendAttributedString:as2 ];
     }
     
     // Kategorien
@@ -100,11 +100,11 @@
             NSFont *font = [NSFont fontWithName:@"Helvetica-Oblique" size:8 ];
             NSDictionary *attr2 = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil ];
             NSMutableAttributedString *as2 = [[NSMutableAttributedString alloc ] initWithString:cs attributes: attr2 ];
-            [as appendAttributedString:[as2 autorelease] ];
+            [as appendAttributedString:as2 ];
         }
     }
     
-	return [as autorelease ];
+	return as;
 }
 
 
@@ -166,7 +166,7 @@
 	if (stat == nil) return;
 	BankAccount *account = stat.statement.account;
 	NSString *s = [NSString stringWithFormat:@"Konto: %@\tBLZ: %@\t%@", account.accountNumber, account.bankCode, account.bankName ];
-	NSAttributedString *as = [[[NSAttributedString alloc ] initWithString:s attributes: attributes ] autorelease ];
+	NSAttributedString *as = [[NSAttributedString alloc ] initWithString:s attributes: attributes ];
 	headerFrame.origin.y += 1;
 	headerFrame.origin.x += padding;
 	[as drawInRect:headerFrame ];
@@ -176,7 +176,7 @@
 	headerFrame = NSMakeRect(0, baseHeight+20, dateWidth, 25);
 //	[NSBezierPath strokeRect:headerFrame ];
 	[NSBezierPath strokeLineFromPoint:NSMakePoint(hBase, baseHeight+20) toPoint:NSMakePoint(hBase, baseHeight+45) ];
-	as = [[[NSAttributedString alloc ] initWithString:@"Datum\nValuta" attributes: attributes] autorelease];
+	as = [[NSAttributedString alloc ] initWithString:@"Datum\nValuta" attributes: attributes];
 	headerFrame.origin.y += 1;
 	headerFrame.origin.x += padding;
 	[as drawInRect:headerFrame ];
@@ -186,7 +186,7 @@
 	headerFrame = NSMakeRect(dateWidth, baseHeight+20, purposeWidth, 25);
 //	[NSBezierPath strokeRect:headerFrame ];
 	[NSBezierPath strokeLineFromPoint:NSMakePoint(hBase, baseHeight+20) toPoint:NSMakePoint(hBase, baseHeight+45) ];
-	as = [[[NSAttributedString alloc ] initWithString:@"Buchungstext\nBuchungshinweis" attributes: attributes] autorelease];
+	as = [[NSAttributedString alloc ] initWithString:@"Buchungstext\nBuchungshinweis" attributes: attributes];
 	headerFrame.origin.y += 1;
 	headerFrame.origin.x += padding;
 	[as drawInRect:headerFrame ];
@@ -196,7 +196,7 @@
 	headerFrame = NSMakeRect(dateWidth+purposeWidth, baseHeight+20, amountWidth, 25);
 //	[NSBezierPath strokeRect:headerFrame ];
 	[NSBezierPath strokeLineFromPoint:NSMakePoint(hBase, baseHeight+20) toPoint:NSMakePoint(hBase, baseHeight+45) ];
-	as = [[[NSAttributedString alloc ] initWithString:[NSString stringWithFormat: @"Belastungen\nin %@", account.currency ] attributes: attributes] autorelease];
+	as = [[NSAttributedString alloc ] initWithString:[NSString stringWithFormat: @"Belastungen\nin %@", account.currency ] attributes: attributes];
 	headerFrame.origin.y += 1;
 	headerFrame.origin.x += padding;
 	[as drawInRect:headerFrame ];
@@ -206,7 +206,7 @@
 	headerFrame = NSMakeRect(dateWidth+purposeWidth+amountWidth, baseHeight+20, amountWidth, 25);
 //	[NSBezierPath strokeRect:headerFrame ];
 	[NSBezierPath strokeLineFromPoint:NSMakePoint(hBase, baseHeight+20) toPoint:NSMakePoint(hBase, baseHeight+45) ];
-	as = [[[NSAttributedString alloc ] initWithString:[NSString stringWithFormat: @"Gutschriften\nin %@", account.currency ] attributes: attributes] autorelease];
+	as = [[NSAttributedString alloc ] initWithString:[NSString stringWithFormat: @"Gutschriften\nin %@", account.currency ] attributes: attributes];
 	headerFrame.origin.y += 1;
 	headerFrame.origin.x += padding;
 	[as drawInRect:headerFrame ];
@@ -214,7 +214,7 @@
 	// balance
 	headerFrame = NSMakeRect(dateWidth+purposeWidth+2*amountWidth, baseHeight+20, amountWidth, 25);
 //	[NSBezierPath strokeRect:headerFrame ];
-	as = [[[NSAttributedString alloc ] initWithString:[NSString stringWithFormat: @"Zwischensaldo\nin %@", account.currency ] attributes: attributes] autorelease];
+	as = [[NSAttributedString alloc ] initWithString:[NSString stringWithFormat: @"Zwischensaldo\nin %@", account.currency ] attributes: attributes];
 	headerFrame.origin.y += 1;
 	headerFrame.origin.x += padding;
 	[as drawInRect:headerFrame ];
@@ -247,7 +247,7 @@
 	BOOL   isNegative;
 		
 	NSParagraphStyle *ps = [NSParagraphStyle defaultParagraphStyle ];
-	NSMutableParagraphStyle *mps = [[ps mutableCopy] autorelease];
+	NSMutableParagraphStyle *mps = [ps mutableCopy];
 	[mps setAlignment:NSRightTextAlignment ];
 	
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
@@ -366,12 +366,12 @@
 -(void)drawPageBorderWithSize:(NSSize)borderSize
 {
 	NSString *s;
-	NSDateFormatter *df = [[[NSDateFormatter alloc ] init ] autorelease ];
+	NSDateFormatter *df = [[NSDateFormatter alloc ] init ];
 	[df setDateStyle: NSDateFormatterMediumStyle ];
 	[df setTimeStyle: NSDateFormatterMediumStyle ];
 	
 	NSParagraphStyle *ps = [NSParagraphStyle defaultParagraphStyle ];
-	NSMutableParagraphStyle *mps = [[ps mutableCopy] autorelease];
+	NSMutableParagraphStyle *mps = [ps mutableCopy];
 	[mps setAlignment:NSRightTextAlignment ];
 	
 	NSRect frame = [self frame ];
@@ -403,14 +403,5 @@
 	[self setFrame:frame ];
 }
 
--(void)dealloc
-{
-	[dateFormatter release ];
-	[numberFormatter release ];
-	[debitNumberFormatter release ];
-	[statements release ];
-	[super dealloc ];
-	
-}
 
 @end
