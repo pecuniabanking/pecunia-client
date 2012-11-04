@@ -75,13 +75,13 @@
 	StatusBarController *sc = [StatusBarController controller ];
 	[sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP80", @""), count ] removeAfter:120 ];
 
-	[[self window ] close ];
+	[NSApp stopModal];
 }
 
 -(IBAction)cancel: (id)sender
 {
 	[[BankingController controller ] requestFinished: nil ];
-	[[self window ] close ];
+	[NSApp stopModal];
 }
 
 -(void)dealloc

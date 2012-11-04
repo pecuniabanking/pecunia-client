@@ -147,7 +147,9 @@
 	}
 	NSString *content = [NSString stringWithContentsOfFile:dataFilename encoding: enc error: &error ];
 	NSArray *lines = [content componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet ] ];
-	
+
+    // TODO: check error and show message if needed!
+    
 	int ignoreLines = 0;
 	if (settings.ignoreLines) {
 		ignoreLines = [settings.ignoreLines intValue ];
@@ -357,7 +359,7 @@
 	//	[sp setRequiredFileType:@"txt"];
 	
 	/* display the NSSavePanel */
-    [op setDirectoryURL: [NSURL URLWithString: NSHomeDirectory()]];
+    [op setDirectoryURL: [NSURL fileURLWithPath: NSHomeDirectory() isDirectory: YES]];
 	runResult = [op runModal];
 	
 	if (runResult == NSOKButton) {

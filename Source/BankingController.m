@@ -884,7 +884,7 @@ static BOOL runningOnLionOrLater = NO;
     
     if((check || isImport) && noStatements == FALSE) {
         BSSelectWindowController *selectWindowController = [[[BSSelectWindowController alloc] initWithResults: resultList] autorelease];
-        [selectWindowController showWindow: self];
+        [NSApp runModalForWindow: [selectWindowController window]];
     } else {
         @try {
             for(result in resultList) {
