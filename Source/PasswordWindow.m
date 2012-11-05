@@ -1,10 +1,21 @@
-//
-//  PasswordWindow.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 23.05.09.
-//  Copyright 2009 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "PasswordWindow.h"
 #import "BWGradientBox.h"
@@ -22,10 +33,7 @@
 -(id)initWithText: (NSString *)x title: (NSString *)y
 {
 	self = [super initWithWindowNibName:@"PasswordWindow"];
-    
-    NSString *s = [x stringByReplacingOccurrencesOfString:@"\n" withString:@"<br>" ];
-    NSData *d = [s dataUsingEncoding:NSISOLatin1StringEncoding ];
-    text = [[NSAttributedString alloc ] initWithHTML:d documentAttributes:NULL ];
+    text = x;
 	title = y;
 	active = YES;
 	return self;

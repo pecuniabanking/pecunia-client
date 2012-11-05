@@ -112,7 +112,8 @@ static BOOL runningOnLionOrLater = NO;
         mainTabItems = [NSMutableDictionary dictionaryWithCapacity:10];
         
         // TODO: make lower limit configurable?
-        [Category setCatReportFrom: [ShortDate dateWithYear: 2009 month:1 day:1] to: [ShortDate distantFuture]];
+        // Do we need this?
+        //[Category setCatReportFrom: [ShortDate dateWithYear: 2009 month:1 day:1] to: [ShortDate distantFuture]];
         
         // Load context & model.
         @try {
@@ -578,8 +579,6 @@ static BOOL runningOnLionOrLater = NO;
     }
     //	[categoryController remove: self];
     [[Category bankRoot] rollup];
-    
-    //	[accountsView setNeedsDisplay: YES];
 }
 
 -(BOOL)cleanupBankNodes
@@ -1322,6 +1321,9 @@ static BOOL runningOnLionOrLater = NO;
                 [rightSplitter setFrame: frame];
                 [[rightPane animator] replaceSubview: currentView with: rightSplitter];
                 currentSection = nil;
+                
+                // update values in category tree to reflect time slicer interval again
+                [timeSlicer updateDelegate];
                 pageHasChanged = YES;
             }
             
@@ -1347,6 +1349,9 @@ static BOOL runningOnLionOrLater = NO;
             }
 
             [graph1Button setImage: [NSImage imageNamed: @"graph1-active"]];
+
+            // update values in category tree to reflect time slicer interval again
+            [timeSlicer updateDelegate];
             break;
         case 2:
             if (categoryReportingController == nil) {
@@ -1372,6 +1377,9 @@ static BOOL runningOnLionOrLater = NO;
                 }
                 pageHasChanged = YES;
             }
+            
+            // update values in category tree to reflect time slicer interval again
+            [timeSlicer updateDelegate];
             
             [graph2Button setImage: [NSImage imageNamed: @"graph2-active"]];
             break;
@@ -1433,6 +1441,9 @@ static BOOL runningOnLionOrLater = NO;
                 pageHasChanged = YES;
             }
             
+            // update values in category tree to reflect time slicer interval again
+            [timeSlicer updateDelegate];
+           
             [rulesButton setImage: [NSImage imageNamed: @"rules-active"]];
             break;
     }
@@ -2187,19 +2198,16 @@ static BOOL runningOnLionOrLater = NO;
     return @"AccMainTimeSlice";
 }
 
--(void)timeSliceManager: (TimeSliceManager*)tsm changedIntervalFrom: (ShortDate*)from to: (ShortDate*)to
+-(void)timeSliceManager: (TimeSliceManager*)tsm changedIntervalFrom:(ShortDate*)from to:(ShortDate*)to
 {
     if (self.managedObjectContext == nil) return;
     int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]];
     if(idx) return;
-    Category *cat = [Category catRoot];
-    [Category setCatReportFrom: from to: to];
+    [Category setCatReportFrom:from to:to];
+    
     // change filter
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(statement.date => %@) AND (statement.date <= %@)", [from lowDate], [to highDate]];
     [categoryAssignments setFilterPredicate: predicate];
-    
-    [cat rebuildValues];
-    [cat rollup];
     
     // Update current section if the default is not active.
     if (currentSection != nil) {

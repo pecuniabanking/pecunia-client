@@ -834,7 +834,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 
                         totalSpendings = [totalSpendings decimalNumberByAdding: value];
                         break;
-                    case NSOrderedSame:
+                    case NSOrderedSame: break; // don't list categories with value 0
                     case NSOrderedDescending:
                         [earningsCategories addObject: pieData];
                         [sortedEarningValues addObject: [value abs]];

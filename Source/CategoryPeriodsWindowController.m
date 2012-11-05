@@ -87,6 +87,7 @@
     toIndex = 1;
     sortAscending = NO;
     sortIndex = 0;
+    groupingInterval = GroupByMonths;
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *values = [userDefaults objectForKey: @"categoryPeriods"];
@@ -408,7 +409,8 @@
     [self updateLimitLabel: toText index: toIndex];
     
     // Remaining data is loaded on demand.
-    
+    [self performSelectorInBackground:@selector(updateOutline) withObject:nil];
+    //[self updateOutline];
     [valueGrid reloadData];
     [valueGrid setNeedsDisplay: YES];
 }
@@ -555,13 +557,13 @@
     [sortControl setImage: sortImage forSegment: sortIndex];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *values = [userDefaults objectForKey: @"categoryPeriods"];
+    NSMutableDictionary *values = [[userDefaults objectForKey: @"categoryPeriods"] mutableCopy];
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 2];
-        [userDefaults setObject: values forKey: @"categoryPeriods"];
     }
     [values setValue: [NSNumber numberWithInt: sortIndex] forKey: @"sortIndex"];
     [values setValue: [NSNumber numberWithBool: sortAscending] forKey: @"sortAscending"];
+    [userDefaults setObject: values forKey: @"categoryPeriods"];
     
     NSString *key;
     switch (sortIndex) {
@@ -590,6 +592,28 @@
      [NSArray arrayWithObject: [[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
 }
 
+- (void)updateOutline
+{
+    ShortDate *fromDate = [dates objectAtIndex:fromIndex];
+    ShortDate *toDate = [dates objectAtIndex:toIndex];
+    
+    switch (groupingInterval) {
+        case GroupByMonths:
+            toDate = [toDate lastDayInMonth];
+            break;
+        case GroupByQuarters:
+            toDate = [toDate lastDayInQuarter];
+            break;
+        case GroupByYears:
+            toDate = [toDate lastDayInYear];
+            break;
+        default:
+            break;
+    }
+    
+    [Category setCatReportFrom:fromDate to:toDate];
+}
+
 #pragma mark -
 #pragma mark Interface Builder Actions
 
@@ -600,12 +624,12 @@
     groupingInterval = [sender intValue];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary* values = [userDefaults objectForKey: @"categoryPeriods"];
+    NSMutableDictionary* values = [[userDefaults objectForKey: @"categoryPeriods"] mutableCopy];
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 1];
-        [userDefaults setObject: values forKey: @"categoryPeriods"];
     }
     [values setValue: [NSNumber numberWithInt: groupingInterval] forKey: @"grouping"];
+    [userDefaults setObject: values forKey: @"categoryPeriods"];
     
     [self updateData];
 }
@@ -628,13 +652,14 @@
     [self updateLimitLabel: fromText index: fromIndex];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary* values = [userDefaults objectForKey: @"categoryPeriods"];
+    NSMutableDictionary* values = [[userDefaults objectForKey: @"categoryPeriods"] mutableCopy];
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 1];
-        [userDefaults setObject: values forKey: @"categoryPeriods"];
     }
     [values setValue: [NSNumber numberWithInt: fromIndex] forKey: @"fromIndex"];
+    [userDefaults setObject: values forKey: @"categoryPeriods"];
     
+    [self updateOutline];
     [valueGrid reloadData];
 }
 
@@ -657,13 +682,14 @@
     [self updateLimitLabel: toText index: toIndex];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary* values = [userDefaults objectForKey: @"categoryPeriods"];
+    NSMutableDictionary* values = [[userDefaults objectForKey: @"categoryPeriods"] mutableCopy];
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 1];
-        [userDefaults setObject: values forKey: @"categoryPeriods"];
     }
     [values setValue: [NSNumber numberWithInt: toIndex] forKey: @"toIndex"];
+    [userDefaults setObject: values forKey: @"categoryPeriods"];
     
+    [self updateOutline];
     [valueGrid reloadData];
 }
 

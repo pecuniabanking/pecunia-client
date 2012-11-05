@@ -867,6 +867,8 @@ NSString *escapeSpecial(NSString *s)
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO];
     
     BankQueryResult *result;
+    
+    [self startProgress];
     for(result in resultList) {
         // check if user is registered
         PecuniaError *error = nil;
@@ -903,7 +905,7 @@ NSString *escapeSpecial(NSString *s)
         [cmd appendFormat:@"<userId>%@</userId></accinfo>", result.userId ];
     }
     [cmd appendString:@"</accinfolist></command>" ];
-    [self startProgress ];
+    //[self startProgress ];
     [bridge asyncCommand: cmd sender: self ];
 }
 

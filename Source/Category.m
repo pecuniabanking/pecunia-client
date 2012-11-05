@@ -31,6 +31,9 @@ Category *catRoot = nil;
 Category *bankRoot = nil;
 Category *nassRoot = nil;
 
+ShortDate *startReportDate = nil;
+ShortDate *endReportDate = nil;
+
 BOOL updateSent = NO;
 
 // balance: sum of own statements
@@ -73,9 +76,11 @@ BOOL updateSent = NO;
         if ([self isBankAccount]) {
             stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
         } else {
-            NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-            stats = [self statementsFrom: [ShortDate dateWithDate: [defaults objectForKey: @"startReportDate"]]
-                                      to: [ShortDate dateWithDate: [defaults objectForKey: @"endReportDate"]]
+            //NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+            assert(startReportDate != nil);
+            assert(endReportDate != nil);
+            stats = [self statementsFrom: startReportDate //[ShortDate dateWithDate: [defaults objectForKey: @"startReportDate"]]
+                                      to: endReportDate //[ShortDate dateWithDate: [defaults objectForKey: @"endReportDate"]]
                             withChildren: NO];
         }
         
@@ -112,9 +117,11 @@ BOOL updateSent = NO;
         stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
     }
     else {
-        NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-        stats = [self statementsFrom: [ShortDate dateWithDate: [defaults objectForKey: @"startReportDate"]]
-                                  to: [ShortDate dateWithDate: [defaults objectForKey: @"endReportDate"]]
+        //NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+        assert(startReportDate != nil);
+        assert(endReportDate != nil);
+        stats = [self statementsFrom: startReportDate //[ShortDate dateWithDate: [defaults objectForKey: @"startReportDate"]]
+                                  to: endReportDate //[ShortDate dateWithDate: [defaults objectForKey: @"endReportDate"]]
                         withChildren: NO];
     }
     
@@ -748,15 +755,28 @@ BOOL updateSent = NO;
 +(void)updateCatValues
 {
     if (updateSent) return;
-    [[self catRoot ] updateInvalidBalances ]; 
+    [[self catRoot ] updateInvalidBalances ];
     [[self catRoot ] rollup ]; 
 }
 
 +(void)setCatReportFrom: (ShortDate*)fDate to: (ShortDate*)tDate
 {
+    if (startReportDate != nil && endReportDate != nil) {
+        if ([startReportDate isEqual:fDate] && [endReportDate isEqual:tDate]) {
+            return;
+        }
+    }
+    
+    startReportDate = fDate;
+    endReportDate = tDate;
+    [[self catRoot ] rebuildValues ];
+    [[self catRoot ] rollup ];
+
+    /*
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject: fDate.lowDate forKey: @"startReportDate"];
     [defaults setObject: tDate.lowDate forKey: @"endReportDate"];
+    */
 }
 
 @end
