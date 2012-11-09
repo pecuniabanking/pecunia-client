@@ -997,6 +997,7 @@ static BOOL runningOnLionOrLater = NO;
     NSRect frame = [[bankUserController window] frame];
     frame = NSInsetRect(frame, 0.5 * frame.size.width, 0.5 * frame.size.height);
     [[bankUserController window] zoomInFromRect: frame withFade: NO makeKey: YES];
+    [[bankUserController window] makeKeyAndOrderFront:self];
 }
 
 -(IBAction)editPreferences:(id)sender
