@@ -30,6 +30,7 @@
 - (BOOL)canAcceptDropFor: (id)sender context: (id<NSDraggingInfo>)info;
 - (void)concludeDropOperation: (id)sender context: (id<NSDraggingInfo>)info;
 - (BOOL)startTransferFromTemplate: (TransferTemplate *)template;
+- (void)deleteSelectionFrom: (id)sender;
 
 @end
 
@@ -40,13 +41,11 @@
     
     NSDateFormatter *dateFormatter;
     NSCalendar *calendar;
-    
-    id<TransfersActionDelegate> owner; // The member "delegate" is already defined.
 }
 
-@property (nonatomic, retain) id<TransfersActionDelegate> owner;
+@property (nonatomic, strong) id<TransfersActionDelegate> owner; // The member "delegate" is already defined.
 @property (nonatomic, readonly) NSNumberFormatter *numberFormatter;
-@property (nonatomic, retain) NSArray *dataSource;
+@property (nonatomic, strong) NSArray *dataSource;
 
 @end
 

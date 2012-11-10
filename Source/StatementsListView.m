@@ -49,12 +49,7 @@ extern NSString *StatementTypeKey;
 @synthesize autoResetNew;
 @synthesize disableSelection;
 @synthesize showHeaders;
-
-+ (void)initialize
-{
-    [self exposeBinding: @"dataSource"];
-    [self exposeBinding: @"valueArray"];
-}
+@synthesize dataSource;
 
 - (void)awakeFromNib
 {
@@ -70,6 +65,28 @@ extern NSString *StatementTypeKey;
     showHeaders = YES;
 }
 
+- (void) dealloc
+{
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.date"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteName"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.floatingPurpose"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.userInfo"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.categoryDescription"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.value"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.saldo"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.currency"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.valutaDate"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteName"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteBankCode"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteAccount"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteBankName"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteIBAN"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteBIC"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.transactionText"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.account.categoryColor"];
+
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
+}
 
 - (NSNumberFormatter*)numberFormatter
 {
@@ -83,34 +100,59 @@ extern NSString *StatementTypeKey;
 #pragma mark -
 #pragma mark Bindings, KVO and KVC
 
-- (NSArray*)dataSource
-{
-	return _dataSource;
-}
+static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
-- (void)setDataSource: (NSArray*)array
+- (void)bind: (NSString *)binding
+    toObject: (id)observableObject
+ withKeyPath: (NSString *)keyPath
+     options: (NSDictionary *)options
 {
-    if (_dataSource != array)
+    if ([binding isEqualToString: @"dataSource"])
     {
-        _dataSource = array;
-        
-        [self reloadData];
+        observedObject = observableObject;
+        dataSource = [observableObject valueForKey: keyPath];
+
+        // One binding for the array, to get notifications about insertion and deletions.
+        [observableObject addObserver: self
+                           forKeyPath: @"arrangedObjects"
+                              options: 0
+                              context: DataSourceBindingContext];
+
+        // Bindings to specific attributes to get notified about changes to each of them
+        // (for all objects in the array).
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.date" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteName" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.floatingPurpose" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.userInfo" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.categoryDescription" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.value" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.saldo" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.currency" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.valutaDate" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteName" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteBankCode" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteAccount" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteBankName" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteIBAN" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteBIC" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.transactionText" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.account.categoryColor" options: 0 context: nil];
+
+    } else {
+        [super bind: binding toObject: observableObject withKeyPath: keyPath options: options];
     }
 }
 
-/**
- * The value array is part of the data source we have but we cannot listen directly to changes
- * in the data source, so we use the value array as proxy.
- */
-- (NSArray*)valueArray
+- (void)observeValueForKeyPath: (NSString *)keyPath
+                      ofObject: (id)object
+                        change: (NSDictionary *)change
+                       context: (void *)context
 {
-    return _valueArray;
-}
-
-- (void)setValueArray: (NSArray*)array
-{
-    _valueArray = array;
-    [self reloadData];
+    if (context == DataSourceBindingContext) {
+        [self reloadData];
+    } else {
+        [self updateVisibleCells];
+    }
 }
 
 #pragma mark -
@@ -119,7 +161,7 @@ extern NSString *StatementTypeKey;
 - (NSUInteger)numberOfRowsInListView: (PXListView*)aListView
 {
 #pragma unused(aListView)
-	return [_dataSource count];
+	return [dataSource count];
 }
 
 - (id)formatValue: (id)value capitalize: (BOOL)capitalize
@@ -154,8 +196,8 @@ extern NSString *StatementTypeKey;
     BOOL result = (row == 0);
     if (!result)
     {
-        BankStatement *statement = (BankStatement*)[[_dataSource objectAtIndex: row] valueForKey: @"statement"];
-        BankStatement *previousStatement = (BankStatement*)[[_dataSource objectAtIndex: row - 1] valueForKey: @"statement"];
+        BankStatement *statement = (BankStatement*)[[dataSource objectAtIndex: row] valueForKey: @"statement"];
+        BankStatement *previousStatement = (BankStatement*)[[dataSource objectAtIndex: row - 1] valueForKey: @"statement"];
         
         result = [[ShortDate dateWithDate: statement.date] compare: [ShortDate dateWithDate: previousStatement.date]] != NSOrderedSame;
     }
@@ -169,13 +211,13 @@ extern NSString *StatementTypeKey;
 - (int) countSameDatesFromRow: (NSUInteger)row
 {
     int result = 1;
-    id statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];
+    id statement = [[dataSource objectAtIndex: row] valueForKey: @"statement"];
     ShortDate* currentDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
     
-    NSUInteger totalCount = [_dataSource count];
+    NSUInteger totalCount = [dataSource count];
     while (++row < totalCount)
     {
-        statement = [[_dataSource objectAtIndex: row] valueForKey: @"statement"];
+        statement = [[dataSource objectAtIndex: row] valueForKey: @"statement"];
         ShortDate* nextDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
         if ([currentDate compare: nextDate] != NSOrderedSame)
             break;
@@ -189,7 +231,7 @@ extern NSString *StatementTypeKey;
 
 - (void) fillCell: (StatementsListViewCell*)cell forRow: (NSUInteger)row
 {
-    id statement = [[_dataSource objectAtIndex: row] statement];
+    id statement = [[dataSource objectAtIndex: row] statement];
     
     NSDate* currentDate = [statement valueForKey: @"date"];
     
@@ -207,7 +249,7 @@ extern NSString *StatementTypeKey;
                              turnoversString, StatementTurnoversKey,
                              [self formatValue: [statement remoteName] capitalize: YES], StatementRemoteNameKey,
                              [self formatValue: [statement floatingPurpose] capitalize: YES], StatementPurposeKey,
-                             [self formatValue: [[_dataSource objectAtIndex: row] userInfo] capitalize: YES], StatementNoteKey,
+                             [self formatValue: [[dataSource objectAtIndex: row] userInfo] capitalize: YES], StatementNoteKey,
                              [self formatValue: [statement categoriesDescription] capitalize: NO], StatementCategoriesKey,
                              [self formatValue: [statement value] capitalize: NO], StatementValueKey,
                              [self formatValue: [statement saldo] capitalize: NO], StatementSaldoKey,
@@ -220,7 +262,7 @@ extern NSString *StatementTypeKey;
     [cell setIsNew: [[statement isNew] boolValue]];
     
     if (self.showAssignedIndicators) {
-        id test = [[_dataSource objectAtIndex: row] classify];
+        id test = [[dataSource objectAtIndex: row] classify];
         [cell showActivator: YES markActive: test != nil];
     } else {
         [cell showActivator: NO markActive: NO];
@@ -339,6 +381,16 @@ extern NSString *StatementTypeKey;
     draggedIndexes = nil;
 }
 
+/**
+ * Triggered when KVO notifies us about changes.
+ */
+- (void)updateVisibleCells
+{
+    NSArray *cells = [self visibleCells];
+    for (StatementsListViewCell *cell in cells)
+        [self fillCell: cell forRow: [cell row]];
+}
+
 #pragma mark -
 #pragma mark Drag'n drop
 
@@ -366,7 +418,7 @@ extern NSString* const BankStatementDataType;
     do {
 		count = [rowIndexes getIndexes: indexes maxCount: 30 inIndexRange: &range];
 		for (i = 0; i < count; i++) {
-			stat = [_dataSource objectAtIndex: indexes[i]];
+			stat = [dataSource objectAtIndex: indexes[i]];
 			NSURL *uri = [[stat objectID] URIRepresentation];
 			[uris addObject: uri];
 		}

@@ -126,7 +126,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                               options: 0
                               context: DataSourceBindingContext];
         
-        // Bindings to specific attributes to get notfied about changes to each of them
+        // Bindings to specific attributes to get notified about changes to each of them
         // (for all objects in the array).
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteName" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.date" options: 0 context: nil];
@@ -185,7 +185,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 #define CELL_HEIGHT 49
 
-- (void) fillCell: (TransfersListViewCell*)cell forRow: (NSUInteger)row
+- (void)fillCell: (TransfersListViewCell*)cell forRow: (NSUInteger)row
 {
     Transfer *transfer = [dataSource objectAtIndex: row];
     
@@ -340,6 +340,19 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 {
     [[NSCursor arrowCursor] set];
     [super draggingExited: info];
+}
+
+#pragma mark -
+#pragma mark Keyboard handling
+
+- (void)deleteToBeginningOfLine: (id)sender
+{
+    [owner deleteSelectionFrom: self];
+}
+
+- (void)deleteForward: (id)sender
+{
+    [owner deleteSelectionFrom: self];
 }
 
 @end

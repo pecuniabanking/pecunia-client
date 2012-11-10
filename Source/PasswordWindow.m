@@ -103,7 +103,7 @@
 
 -(void)windowDidLoad
 {
-	[inputText setAttributedStringValue: text];
+	[inputText setStringValue: text];
 	[[self window] setTitle: title];
 }
 

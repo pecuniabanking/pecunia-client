@@ -469,9 +469,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [listViewFormatter setTextAttributesForPositiveValues: positiveAttributes];
     [listViewFormatter setTextAttributesForNegativeValues: negativeAttributes];
 
-    // Actually, the values for the bound property and the key path don't matter as the listview has
-    // a very clear understanding what it needs to bind to. It's just there to make the listviews
-    // establish their bindings.
     pendingTransfersListView.owner = self;
     [pendingTransfersListView bind: @"dataSource" toObject: pendingTransfers withKeyPath: @"arrangedObjects" options: nil];
 
@@ -484,10 +481,14 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [listViewFormatter setTextAttributesForNegativeValues: negativeAttributes];
     
     [finishedTransfersListView bind: @"dataSource" toObject: finishedTransfers withKeyPath: @"arrangedObjects" options: nil];
-    
+    [finishedTransfers bind: @"selectionIndexes" toObject: finishedTransfersListView withKeyPath: @"selectedRows" options: nil];
+    [finishedTransfersListView bind: @"selectedRows" toObject: finishedTransfers withKeyPath: @"selectionIndexes" options: nil];
+
     transferTemplateListView.owner = self;
     [transferTemplateListView bind: @"dataSource" toObject: transactionController.templateController withKeyPath: @"arrangedObjects" options: nil];
-    
+    [transactionController.templateController bind: @"selectionIndexes" toObject: transferTemplateListView withKeyPath: @"selectedRows" options: nil];
+    [transferTemplateListView bind: @"selectedRows" toObject: transactionController.templateController withKeyPath: @"selectionIndexes" options: nil];
+
     rightPane.controller = self;
     [rightPane registerForDraggedTypes: [NSArray arrayWithObjects: TransferPredefinedTemplateDataType,
                                          TransferDataType, TransferReadyForUseDataType, TransferTemplateDataType, nil]];
@@ -990,7 +991,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             [context deleteObject: template];
         }
     }
-        
+
     if (![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -1454,6 +1455,58 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
         transactionController.currentTransfer.valutaDate = executionDatePicker.dateValue;
         transactionController.currentTransfer.type = [NSNumber numberWithInt:TransferTypeDated];
+    }
+}
+
+/**
+ * Triggered by the listview when the user pressed the forward delete button or the backward delete button
+ * in conjunction with the command key.
+ */
+- (void)deleteSelectionFrom: (id)sender
+{
+    NSArray *selection;
+    if (sender == transferTemplateListView) {
+        selection = transactionController.templateController.selectedObjects;
+    } else if (sender == pendingTransfersListView) {
+        selection = pendingTransfers.selectedObjects;
+    } else {
+        selection = finishedTransfers.selectedObjects;
+    }
+    
+    if (selection.count == 0) {
+        return;
+    }
+
+    NSString *warningTitle;
+    if (sender != transferTemplateListView) {
+        warningTitle = (selection.count == 1) ? NSLocalizedString(@"AP417", @"") : NSLocalizedString(@"AP418", @"");
+    } else {
+        warningTitle = (selection.count == 1) ? NSLocalizedString(@"AP421", @"") : NSLocalizedString(@"AP422", @"");
+    }
+    NSString *warningText = (selection.count == 1) ? NSLocalizedString(@"AP419", @"") : NSLocalizedString(@"AP420", @"");
+    int res = NSRunAlertPanel(NSLocalizedString(warningTitle, @""),
+                              NSLocalizedString(warningText, @""),
+                              NSLocalizedString(@"cancel", @""),
+                              NSLocalizedString(@"delete", @""),
+                              nil);
+    if (res != NSAlertAlternateReturn) {
+        return;
+    }
+
+    if (sender == transferTemplateListView) {
+        [transactionController.templateController removeObjects: selection];
+    } else if (sender == pendingTransfersListView) {
+        [pendingTransfers removeObjects: selection];
+    } else {
+        [finishedTransfers removeObjects: selection];
+    }
+
+	NSError *error = nil;
+	NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
     }
 }
 

@@ -28,10 +28,9 @@
 
 @interface StatementsListView : PXListView <PXListViewDelegate, StatementsListViewNotificationProtocol>
 {
-    @private
-    NSArray* _dataSource;
-    NSArray* _valueArray;
-    
+@private
+    id observedObject;
+
     NSDateFormatter* _dateFormatter;
     NSNumberFormatter* _numberFormatter;
     NSCalendar* _calendar;
@@ -44,18 +43,13 @@
 }
 
 @property (nonatomic, assign) BOOL showAssignedIndicators;
-@property (nonatomic, retain) id owner;
+@property (nonatomic, strong) id owner;
 @property (nonatomic, assign) BOOL autoResetNew;
 @property (nonatomic, assign) BOOL disableSelection;
 @property (nonatomic, assign) BOOL showHeaders;
+@property (nonatomic, strong) NSArray *dataSource;
 
 - (NSNumberFormatter*) numberFormatter;
-
-- (NSArray*)dataSource;
-- (void)setDataSource: (NSArray*)source;
-
-- (NSArray*)valueArray;
-- (void)setValueArray: (NSArray*)array;
 
 - (void)updateSelectedCells;
 - (void)updateDraggedCells;

@@ -1979,14 +1979,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<object class="NSTextField" id="518948935">
 						<reference key="NSNextResponder" ref="950231999"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{453, 374}, {37, 19}}</string>
+						<string key="NSFrame">{{444, 374}, {46, 19}}</string>
 						<reference key="NSSuperview" ref="950231999"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="128761018"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="671117647">
-							<int key="NSCellFlags">67108928</int>
-							<int key="NSCellFlags2">71305280</int>
+							<int key="NSCellFlags">68157504</int>
+							<int key="NSCellFlags2">71308352</int>
 							<string key="NSContents">Saldo</string>
 							<reference key="NSSupport" ref="130060645"/>
 							<reference key="NSControlView" ref="518948935"/>
