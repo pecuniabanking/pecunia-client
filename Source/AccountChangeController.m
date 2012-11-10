@@ -85,7 +85,7 @@
 	} else {
         // no manual account
         // check if collective transfers are available - if not, disable collection transfer method popup
-        BOOL collTransferSupported = [[HBCIClient hbciClient ] isTransferSupported:TransferTypeCollectiveCredit forAccount:account];
+        BOOL collTransferSupported = [[HBCIClient hbciClient ] isTransferSupported:TransferTypeCollectiveCredit forAccount:changedAccount];
         if (collTransferSupported == NO) {
             NSMenuItem *item = [collTransferButton itemAtIndex:0];
             [item setTitle:NSLocalizedString(@"AP428",@"")];

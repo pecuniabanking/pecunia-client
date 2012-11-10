@@ -53,7 +53,7 @@
 			<object class="NSWindowTemplate" id="428511902">
 				<int key="NSWindowStyleMask">1</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{927, 640}, {801, 408}}</string>
+				<string key="NSWindowRect">{{927, 763}, {801, 408}}</string>
 				<int key="NSWTFlags">611844096</int>
 				<string key="NSWindowTitle">Konto ändern</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -850,7 +850,7 @@
 					<reference key="NSNextKeyView" ref="908959367"/>
 					<bool key="NSViewIsLayerTreeHost">YES</bool>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -2480,8 +2480,8 @@
 							<reference ref="106293360"/>
 							<reference ref="95367612"/>
 							<reference ref="846336187"/>
-							<reference ref="942495820"/>
 							<reference ref="724487999"/>
+							<reference ref="942495820"/>
 						</array>
 						<reference key="parent" ref="523379319"/>
 					</object>
@@ -2735,7 +2735,7 @@
 				<string key="28.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="29.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="3.IBNSWindowAutoPositionCentersHorizontal"/>
-				<boolean value="YES" key="3.IBNSWindowAutoPositionCentersVertical"/>
+				<boolean value="NO" key="3.IBNSWindowAutoPositionCentersVertical"/>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="3.IBWindowTemplateEditedContentRect">{{270, 905}, {801, 408}}</string>
 				<integer value="1" key="3.NSWindowTemplate.visibleAtLaunch"/>
@@ -2916,10 +2916,6 @@
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
 			<integer value="1060" key="NS.object.0"/>
-		</object>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
-			<real value="1070" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>

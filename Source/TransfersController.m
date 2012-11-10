@@ -27,7 +27,7 @@
 #import "BankAccount.h"
 #import "TransferPrintView.h"
 #import "TransferTemplate.h"
-
+#import "TransactionLimits.h"
 #import "TransferFormularView.h"
 #import "GradientButtonCell.h"
 
@@ -1413,13 +1413,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
 	transactionController.currentTransfer.account = account;
     
-    
     if (account.currency.length == 0) {
         transactionController.currentTransfer.currency = @"EUR";
     } else {
         transactionController.currentTransfer.currency = account.currency;
     }
     [self updateTargetAccountSelector];
+    [self updateLimits];
 }
 
 - (IBAction)targetAccountChanged: (id)sender
@@ -1453,11 +1453,53 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         [calendarButton setEnabled: YES];
 
         transactionController.currentTransfer.valutaDate = executionDatePicker.dateValue;
+        transactionController.currentTransfer.type = [NSNumber numberWithInt:TransferTypeDated];
     }
 }
 
 #pragma mark -
 #pragma mark Other application logic
+
+- (void)updateLimits
+{
+    // currentTransfer must be valid
+    limits = [[HBCIClient hbciClient] limitsForType:transactionController.currentTransfer.type.intValue
+                                            account:transactionController.currentTransfer.account
+                                            country:transactionController.currentTransfer.remoteCountry];
+    
+    [purpose2 setHidden: limits.maxLinesPurpose < 2 && limits.maxLinesPurpose > 0];
+    [purpose3 setHidden: limits.maxLinesPurpose < 3 && limits.maxLinesPurpose > 0];
+    [purpose4 setHidden: limits.maxLinesPurpose < 4 && limits.maxLinesPurpose > 0];
+    
+    if (limits.maxLinesPurpose > 0) {
+        if (limits.maxLinesPurpose < 2 && transactionController.currentTransfer.purpose2 && [transactionController.currentTransfer.purpose2 length] > 0) {
+            transactionController.currentTransfer.purpose2 = nil;
+        }
+        if (limits.maxLinesPurpose < 3 && transactionController.currentTransfer.purpose3 && [transactionController.currentTransfer.purpose3 length] > 0) {
+            transactionController.currentTransfer.purpose3 = nil;
+        }
+        if (limits.maxLinesPurpose < 4 && transactionController.currentTransfer.purpose4 && [transactionController.currentTransfer.purpose4 length] > 0) {
+            transactionController.currentTransfer.purpose4 = nil;
+        }
+    }
+    
+    // check if dated is allowed
+    // At the moment this is only possible for Standard Transfers
+    TransferType tt = transactionController.currentTransfer.type.intValue;
+    BOOL allowsDated = NO;
+    if (tt == TransferTypeStandard || tt == TransferTypeDated) {
+        if ([[HBCIClient hbciClient] isTransferSupported:TransferTypeDated forAccount:transactionController.currentTransfer.account]) {
+            [executeAtDateRadioButton setEnabled:YES];
+            allowsDated = YES;
+        }
+    }
+    if (allowsDated == NO) {
+        [executeAtDateRadioButton setEnabled:NO];
+        [executionDatePicker setEnabled: NO];
+        [calendarButton setEnabled: NO];
+    }
+}
+
 
 - (void)releaseCalendarWindow
 {
@@ -1522,6 +1564,23 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 #pragma mark -
 #pragma mark Other delegate methods
+
+-(void)controlTextDidChange: (NSNotification*)aNotification
+{
+	NSTextField	*te = [aNotification object ];
+	NSUInteger maxLen;
+	
+	if(te == purpose1 || te == purpose2 || te == purpose3 || te == purpose4) maxLen = limits.maxLenPurpose;
+	else if(te == receiverComboBox) maxLen = limits.maxLengthRemoteName;
+	else return;
+	
+	if ([[te stringValue ] length ] > maxLen) {
+		[te setStringValue:  [[te stringValue ] substringToIndex: maxLen ] ];
+		NSBeep();
+		return;
+	};
+	return;
+}
 
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {

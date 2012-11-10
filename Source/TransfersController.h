@@ -32,6 +32,7 @@
 @class DragImageView;
 @class DeleteTransferTargetView;
 @class BankAccount;
+@class TransactionLimits;
 
 @interface TransferTemplateDragDestination : NSView
 {
@@ -56,41 +57,45 @@
 	IBOutlet TransactionController  *transactionController;
     IBOutlet TransfersListView      *finishedTransfersListView;
     IBOutlet TransfersListView      *pendingTransfersListView;
-    IBOutlet TransferTemplatesListView *transferTemplateListView;
-    IBOutlet TransferTemplateDragDestination *rightPane;
+    IBOutlet TransferTemplatesListView          *transferTemplateListView;
+    IBOutlet TransferTemplateDragDestination    *rightPane;
 
-    IBOutlet NSTextField   *titleText;
-    IBOutlet NSTextField   *receiverText;
-    IBOutlet NSPopUpButton *sourceAccountSelector;
-    IBOutlet NSPopUpButton *targetAccountSelector;
-    IBOutlet NSComboBox    *receiverComboBox;
-    IBOutlet NSTextField   *amountCurrencyText;
-    IBOutlet NSTextField   *amountField;
-    IBOutlet NSTextField   *accountText;
-    IBOutlet NSTextField   *accountNumber;
-    IBOutlet NSTextField   *bankCodeText;
-    IBOutlet NSTextField   *bankCode;
-    IBOutlet NSTextField   *saldoText;
-    IBOutlet NSTextField   *saldoCurrencyText;
-    IBOutlet NSTextField   *targetCountryText;
-    IBOutlet NSPopUpButton *targetCountrySelector;
-    IBOutlet NSTextField   *feeText;
-    IBOutlet NSPopUpButton *feeSelector;
-    IBOutlet NSTextField   *bankDescription;
+    IBOutlet NSTextField    *titleText;
+    IBOutlet NSTextField    *receiverText;
+    IBOutlet NSPopUpButton  *sourceAccountSelector;
+    IBOutlet NSPopUpButton  *targetAccountSelector;
+    IBOutlet NSComboBox     *receiverComboBox;
+    IBOutlet NSTextField    *amountCurrencyText;
+    IBOutlet NSTextField    *amountField;
+    IBOutlet NSTextField    *accountText;
+    IBOutlet NSTextField    *accountNumber;
+    IBOutlet NSTextField    *bankCodeText;
+    IBOutlet NSTextField    *bankCode;
+    IBOutlet NSTextField    *saldoText;
+    IBOutlet NSTextField    *saldoCurrencyText;
+    IBOutlet NSTextField    *targetCountryText;
+    IBOutlet NSPopUpButton  *targetCountrySelector;
+    IBOutlet NSTextField    *feeText;
+    IBOutlet NSPopUpButton  *feeSelector;
+    IBOutlet NSTextField    *bankDescription;
+    IBOutlet NSTextField    *purpose1;
+    IBOutlet NSTextField    *purpose2;
+    IBOutlet NSTextField    *purpose3;
+    IBOutlet NSTextField    *purpose4;
     
-    IBOutlet NSTextField   *executionText;
-    IBOutlet NSButton      *executeImmediatelyRadioButton;
-    IBOutlet NSTextField   *executeImmediatelyText;
-    IBOutlet NSButton      *executeAtDateRadioButton;
-    IBOutlet NSDatePicker  *executionDatePicker;
-    IBOutlet NSView        *calendarView;
-    IBOutlet NSButton      *calendarButton;
-    IBOutlet NSDatePicker  *calendar;
+    IBOutlet NSTextField    *executionText;
+    IBOutlet NSButton       *executeImmediatelyRadioButton;
+    IBOutlet NSTextField    *executeImmediatelyText;
+    IBOutlet NSButton       *executeAtDateRadioButton;
+    IBOutlet NSDatePicker   *executionDatePicker;
+    IBOutlet NSView         *calendarView;
+    IBOutlet NSButton       *calendarButton;
+    IBOutlet NSDatePicker   *calendar;
     
-    IBOutlet NSButton      *queueItButton;
-    IBOutlet NSButton      *doItButton;
-    IBOutlet NSButton      *sendTransfersButton;
-    IBOutlet NSTextField   *templateName;
+    IBOutlet NSButton       *queueItButton;
+    IBOutlet NSButton       *doItButton;
+    IBOutlet NSButton       *sendTransfersButton;
+    IBOutlet NSTextField    *templateName;
     
     IBOutlet DragImageView  *transferInternalImage;
     IBOutlet DragImageView  *transferNormalImage;
@@ -102,8 +107,10 @@
     IBOutlet NSTabView      *transferTab;
     
 @private
-	NSNumberFormatter *formatter;
-    CalendarWindow* calendarWindow;
+	NSNumberFormatter   *formatter;
+    CalendarWindow      *calendarWindow;
+    TransactionLimits   *limits;
+
 }
 
 @property (unsafe_unretained) IBOutlet TransferFormularView *transferFormular;
