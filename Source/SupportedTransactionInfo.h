@@ -19,12 +19,23 @@
 
 #import <Cocoa/Cocoa.h>
 
+/*
+TransferTypeStandard,
+TransferTypeEU,
+TransferTypeDated,
+TransferTypeInternal,
+TransferTypeDebit,
+TransferTypeSEPA,
+TransferTypeCollectiveCredit,
+TransferTypeCollectiveDebit
+*/
+
 typedef enum {
     TransactionType_TransferStandard = 0,
+    TransactionType_TransferEU,
     TransactionType_TransferDated,
     TransactionType_TransferInternal,
     TransactionType_TransferDebit,
-    TransactionType_TransferEU,
     TransactionType_TransferSEPA,
     TransactionType_StandingOrder,
 } TransactionType;

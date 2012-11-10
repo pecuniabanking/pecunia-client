@@ -410,7 +410,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 @interface TransfersController (private)
 - (void)updateSourceAccountSelector;
-- (void)prepareSourceAccountSelector: (BankAccount *)account;
+- (void)prepareSourceAccountSelector:(BankAccount *)account forTransferType:(TransferType)transferType;
 - (void)updateTargetAccountSelector;
 - (void)storeReceiverInMRUList;
 @end
@@ -528,13 +528,17 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
  */
 - (void)updateSourceAccountSelector
 {
-    [self prepareSourceAccountSelector: sourceAccountSelector.selectedItem.representedObject];
+    Transfer *currentTransfer = transactionController.currentTransfer;
+    if (currentTransfer != nil) {
+        [self prepareSourceAccountSelector: sourceAccountSelector.selectedItem.representedObject forTransferType:currentTransfer.type.intValue];
+    }
 }
 
 /**
  * Refreshes the content of the source account selector and selects the given account (if found).
  */
-- (void)prepareSourceAccountSelector: (BankAccount *)selectedAccount
+
+- (void)prepareSourceAccountSelector: (BankAccount *)selectedAccount forTransferType:(TransferType)transferType
 {
     [sourceAccountSelector removeAllItems];
     
@@ -555,13 +559,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             continue;
         }
         
-        NSMenuItem *item = [self createItemForAccountSelector: (BankAccount *)currentInstitute];
-        [sourceMenu addItem: item];
-        [item setEnabled: NO];
-
-        NSArray *accounts = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
-        NSEnumerator *accountEnumerator = [accounts objectEnumerator];
-        Category *currentAccount;
+        NSArray         *accounts = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
+        NSMutableArray  *validAccounts = [NSMutableArray arrayWithCapacity:10];
+        NSEnumerator    *accountEnumerator = [accounts objectEnumerator];
+        Category        *currentAccount;
+        
         while ((currentAccount = [accountEnumerator nextObject])) {
             if (![currentAccount isKindOfClass: [BankAccount class]]) {
                 continue;
@@ -573,13 +575,27 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             if ([account.isManual boolValue]) {
                 continue;
             }
-
-            item = [self createItemForAccountSelector: account];
-            [item setEnabled: YES];
-            item.indentationLevel = 1;
+            
+            // check if the accout supports the current transfer type
+            if ([[HBCIClient hbciClient] isTransferSupported:transferType forAccount:account] == NO) {
+                continue;
+            }
+            
+            [validAccounts addObject:account];
+        }
+        
+        if ([validAccounts count] > 0) {
+            NSMenuItem *item = [self createItemForAccountSelector: (BankAccount *)currentInstitute];
             [sourceMenu addItem: item];
-            if (currentAccount == selectedAccount)
-                selectedItem = sourceMenu.numberOfItems - 1;
+            [item setEnabled: NO];
+            for (BankAccount *account in validAccounts) {
+                NSMenuItem *item = [self createItemForAccountSelector: account];
+                [item setEnabled: YES];
+                item.indentationLevel = 1;
+                [sourceMenu addItem: item];
+                if (account == selectedAccount)
+                    selectedItem = sourceMenu.numberOfItems - 1;
+            }
         }
     }
     
@@ -1071,7 +1087,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         TransferType transferType = [[pasteboard stringForType: TransferPredefinedTemplateDataType] intValue];
         BOOL result = [transactionController newTransferOfType: transferType];
         if (result) {
-            [self prepareSourceAccountSelector: nil];
+            [self prepareSourceAccountSelector: nil forTransferType:transferType];
         }
         return result;
     }
@@ -1092,7 +1108,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         TransferTemplate *template = (TransferTemplate *)[context objectWithID: objectId];
         BOOL result = [transactionController newTransferFromTemplate: template];
         if (result) {
-            [self prepareSourceAccountSelector: nil];
+            [self prepareSourceAccountSelector: nil forTransferType:template.type.intValue];
         }
         return result;
     }
@@ -1107,7 +1123,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         [pendingTransfers prepareContent];
     }
     if (result) {
-        [self prepareSourceAccountSelector: transfer.account];
+        [self prepareSourceAccountSelector: transfer.account forTransferType:transfer.type.intValue];
     }
     return result;
 }
@@ -1241,7 +1257,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         transfer.remoteName = @"Frank Emminghaus";
         transfer.purpose1 = @"Spende fuer Pecunia";
         
-        [self prepareSourceAccountSelector: nil];
+        [self prepareSourceAccountSelector: nil forTransferType:TransferTypeStandard];
     }
     
     [rightPane showFormular];
@@ -1256,7 +1272,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     BOOL result = [transactionController newTransferOfType: TransferTypeStandard];
     if (result) {
-        [self prepareSourceAccountSelector: account];
+        [self prepareSourceAccountSelector: account forTransferType:TransferTypeStandard];
         [rightPane showFormular];
     }
     return result;
@@ -1264,13 +1280,14 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (BOOL)startTransferFromTemplate: (TransferTemplate *)template
 {
-    if (![self prepareTransferOfType: template.type.intValue]) {
+    TransferType type = template.type.intValue;
+    if (![self prepareTransferOfType:type]) {
         return NO;
     }
     
     BOOL result = [transactionController newTransferFromTemplate: template];
     if (result) {
-        [self prepareSourceAccountSelector: nil];
+        [self prepareSourceAccountSelector: nil forTransferType:type];
         [rightPane showFormular];
     }
     return result;
@@ -1395,6 +1412,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [saldoText setObjectValue: [account catSum]];
     
 	transactionController.currentTransfer.account = account;
+    
+    
     if (account.currency.length == 0) {
         transactionController.currentTransfer.currency = @"EUR";
     } else {

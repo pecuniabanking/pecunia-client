@@ -307,13 +307,65 @@ NSString *escapeSpecial(NSString *s)
 
 -(BOOL)isTransferSupported:(TransferType)tt forAccount:(BankAccount*)account
 {
-    NSString *jobName = [self jobNameForType: tt ];
-    return [self isJobSupported: jobName forAccount: account ];
+    TransactionType transactionType;
+    switch (tt) {
+        case TransferTypeStandard:
+        case TransferTypeCollectiveCredit: transactionType = TransactionType_TransferStandard; break;
+        case TransferTypeEU: transactionType = TransactionType_TransferEU; break;
+        case TransferTypeDated: transactionType = TransactionType_TransferDated; break;
+        case TransferTypeInternal: transactionType = TransactionType_TransferInternal;break;
+        case TransferTypeSEPA: transactionType = TransactionType_TransferSEPA; break;
+        case TransferTypeDebit:
+        case TransferTypeCollectiveDebit: transactionType = TransactionType_TransferDebit; break;
+    }
+    
+    NSError *error=nil;
+    if (tt == TransferTypeCollectiveCredit || tt == TransferTypeCollectiveDebit) {
+        
+    }
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSPredicate *predicate = nil;
+    if (tt == TransferTypeCollectiveCredit || tt == TransferTypeCollectiveDebit) {
+        predicate = [NSPredicate predicateWithFormat:@"account = %@ AND type = %d AND allowsCollective = 1", account, transactionType];
+    } else {
+        predicate = [NSPredicate predicateWithFormat:@"account = %@ AND type = %d", account, transactionType];
+    }
+
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	[request setEntity:entityDescription];
+    [request setPredicate:predicate];
+    
+    NSArray *result = [context executeFetchRequest:request error:&error];
+    if (error != nil) {
+        return NO;
+    }
+    
+    if ([result count] == 0) {
+        return NO;
+    }
+    return YES;
 }
 
 -(BOOL)isStandingOrderSupportedForAccount:(BankAccount*)account
 {
-    return [self isJobSupported:@"DauerNew" forAccount:account ];
+    NSError *error=nil;
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND type = %d", account, TransactionType_StandingOrder];
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	[request setEntity:entityDescription];
+    [request setPredicate:predicate];
+    
+    NSArray *result = [context executeFetchRequest:request error:&error];
+    if (error != nil) {
+        return NO;
+    }
+    
+    if ([result count] == 0) {
+        return NO;
+    }
+    return YES;
 }
 
 -(NSDictionary*)getRestrictionsForJob:(NSString*)jobname account:(BankAccount*)account
@@ -1290,7 +1342,7 @@ NSString *escapeSpecial(NSString *s)
             }
         }
         
-        // todo as soon as we support management of standing orders
+        // todo as soon as we support management of dated transfers
         if ([supportedJobNames containsObject:@"TermUeb" ] == YES) {
             SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
             tinfo.account = account;
