@@ -7,13 +7,39 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "Source/HBCIBridge.m"
-         timestampString = "373729983.618642"
+         filePath = "Source/TransfersController.m"
+         timestampString = "374260308.247005"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "132"
-         endingLineNumber = "132"
-         landmarkName = "-parse:"
+         startingLineNumber = "958"
+         endingLineNumber = "958"
+         landmarkName = "-concludeDropDeleteOperation:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Source/TransfersController.m"
+         timestampString = "374260308.247005"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "491"
+         endingLineNumber = "491"
+         landmarkName = "-awakeFromNib"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Source/TransfersController.m"
+         timestampString = "374260585.798858"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1496"
+         endingLineNumber = "1496"
+         landmarkName = "-deleteSelectionFrom:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

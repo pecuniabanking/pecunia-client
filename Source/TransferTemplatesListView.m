@@ -328,4 +328,17 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     [super draggingExited: info];
 }
 
+#pragma mark -
+#pragma mark Keyboard handling
+
+- (void)deleteToBeginningOfLine: (id)sender
+{
+    [owner deleteSelectionFrom: self];
+}
+
+- (void)deleteForward: (id)sender
+{
+    [owner deleteSelectionFrom: self];
+}
+
 @end

@@ -185,7 +185,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 #define CELL_HEIGHT 49
 
-- (void) fillCell: (TransfersListViewCell*)cell forRow: (NSUInteger)row
+- (void)fillCell: (TransfersListViewCell*)cell forRow: (NSUInteger)row
 {
     Transfer *transfer = [dataSource objectAtIndex: row];
     
@@ -340,6 +340,19 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 {
     [[NSCursor arrowCursor] set];
     [super draggingExited: info];
+}
+
+#pragma mark -
+#pragma mark Keyboard handling
+
+- (void)deleteToBeginningOfLine: (id)sender
+{
+    [owner deleteSelectionFrom: self];
+}
+
+- (void)deleteForward: (id)sender
+{
+    [owner deleteSelectionFrom: self];
 }
 
 @end
