@@ -714,10 +714,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [bankDescription setHidden: type != TransferTypeStandard];
     
     if (remoteAccountKey != nil) {
-        [accountNumber bind: @"value" toObject: transactionController.currentTransferController withKeyPath: remoteAccountKey options: nil];
+        NSDictionary *options = [NSDictionary dictionaryWithObject:@"RemoveWhitespaceTransformer" forKey:NSValueTransformerNameBindingOption];
+        [accountNumber bind: @"value" toObject: transactionController.currentTransferController withKeyPath: remoteAccountKey options: options];
     }
     if (remoteBankCodeKey != nil) {
-        [bankCode bind: @"value" toObject: transactionController.currentTransferController withKeyPath: remoteBankCodeKey options: nil];
+        NSDictionary *options = [NSDictionary dictionaryWithObject:@"RemoveWhitespaceTransformer" forKey:NSValueTransformerNameBindingOption];
+        [bankCode bind: @"value" toObject: transactionController.currentTransferController withKeyPath: remoteBankCodeKey options: options];
     }
 
     // TODO: adjust formatters for bank code and account number fields depending on the type.

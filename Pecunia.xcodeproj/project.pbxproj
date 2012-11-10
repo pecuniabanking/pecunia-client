@@ -232,6 +232,7 @@
 		B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */; };
 		B183625C15E2DAFE003B93ED /* GradientBoxWithLabels.m in Sources */ = {isa = PBXBuildFile; fileRef = B183625B15E2DAFE003B93ED /* GradientBoxWithLabels.m */; };
 		B1872EFD163DD7B7003A8C14 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1872EFC163DD7B7003A8C14 /* Security.framework */; };
+		B1872F1B164AF52D003A8C14 /* RemoveWhitespaceTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = B1872F1A164AF52D003A8C14 /* RemoveWhitespaceTransformer.m */; };
 		B189782E0ECF47CA00D20503 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
 		B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B18978860ED0B2E800D20503 /* StatementDetails.m */; };
 		B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B20550CC6A51B00B0B02C /* NewBankUserController.m */; };
@@ -694,6 +695,8 @@
 		B183625A15E2DAFE003B93ED /* GradientBoxWithLabels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientBoxWithLabels.h; sourceTree = "<group>"; };
 		B183625B15E2DAFE003B93ED /* GradientBoxWithLabels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientBoxWithLabels.m; sourceTree = "<group>"; };
 		B1872EFC163DD7B7003A8C14 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		B1872F19164AF52D003A8C14 /* RemoveWhitespaceTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoveWhitespaceTransformer.h; sourceTree = "<group>"; };
+		B1872F1A164AF52D003A8C14 /* RemoveWhitespaceTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoveWhitespaceTransformer.m; sourceTree = "<group>"; };
 		B189782C0ECF47CA00D20503 /* Country.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Country.h; sourceTree = "<group>"; tabWidth = 4; };
 		B189782D0ECF47CA00D20503 /* Country.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Country.m; sourceTree = "<group>"; tabWidth = 4; };
 		B18978850ED0B2E800D20503 /* StatementDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementDetails.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1543,6 +1546,8 @@
 				27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */,
 				27CF0A6B15F260F200F48203 /* NSButton+PecuniaAdditions.h */,
 				27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */,
+				B1872F19164AF52D003A8C14 /* RemoveWhitespaceTransformer.h */,
+				B1872F1A164AF52D003A8C14 /* RemoveWhitespaceTransformer.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -2031,6 +2036,7 @@
 				27A41A5515F3C9340043BB68 /* OrdersListViewCell.m in Sources */,
 				B179916C15F7D2B4005AB39A /* LicenseWindowController.m in Sources */,
 				B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */,
+				B1872F1B164AF52D003A8C14 /* RemoveWhitespaceTransformer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2062,7 +2068,6 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Frameworks\"";
@@ -2113,7 +2118,6 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Frameworks\"";
@@ -2155,7 +2159,6 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Frameworks\"";
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
