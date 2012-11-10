@@ -1417,7 +1417,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="NSNextResponder" ref="950231999"/>
 						<int key="NSvFlags">292</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrame">{{145, 69}, {27, 32}}</string>
+						<string key="NSFrame">{{153, 69}, {27, 32}}</string>
 						<reference key="NSSuperview" ref="950231999"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -1617,10 +1617,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<object class="NSTextField" id="939431196">
 						<reference key="NSNextResponder" ref="950231999"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{198, 76}, {112, 19}}</string>
+						<string key="NSFrame">{{196, 76}, {112, 19}}</string>
 						<reference key="NSSuperview" ref="950231999"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="482214103"/>
+						<reference key="NSNextKeyView" ref="87113499"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="628857151">
 							<int key="NSCellFlags">68157504</int>
@@ -2687,7 +2687,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="679028200"/>
 					</object>
-					<int key="connectionID">667</int>
+					<int key="connectionID">668</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -2695,7 +2695,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="80530115"/>
 					</object>
-					<int key="connectionID">668</int>
+					<int key="connectionID">670</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -2703,7 +2703,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="55252013"/>
 					</object>
-					<int key="connectionID">669</int>
+					<int key="connectionID">672</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -2961,7 +2961,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="source" ref="546657345"/>
 						<reference key="destination" ref="1001"/>
 					</object>
-					<int key="connectionID">670</int>
+					<int key="connectionID">667</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -3045,7 +3045,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="source" ref="679028200"/>
 						<reference key="destination" ref="1001"/>
 					</object>
-					<int key="connectionID">671</int>
+					<int key="connectionID">669</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -3069,7 +3069,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="source" ref="80530115"/>
 						<reference key="destination" ref="1001"/>
 					</object>
-					<int key="connectionID">672</int>
+					<int key="connectionID">671</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -5443,7 +5443,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">iCarousel</string>
-					<string key="superclassName">NSView</string>
+					<string key="superclassName">UIView</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="dataSource">id</string>
 						<string key="delegate">id</string>
