@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Source/TransfersController.m"
-         timestampString = "374260308.247005"
+         timestampString = "374265332.591434"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "958"
-         endingLineNumber = "958"
+         startingLineNumber = "955"
+         endingLineNumber = "955"
          landmarkName = "-concludeDropDeleteOperation:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Source/TransfersController.m"
-         timestampString = "374260308.247005"
+         timestampString = "374265332.591434"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "491"
-         endingLineNumber = "491"
+         startingLineNumber = "488"
+         endingLineNumber = "488"
          landmarkName = "-awakeFromNib"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Source/TransfersController.m"
-         timestampString = "374260585.798858"
+         timestampString = "374265332.591434"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1496"
-         endingLineNumber = "1496"
+         startingLineNumber = "1493"
+         endingLineNumber = "1493"
          landmarkName = "-deleteSelectionFrom:"
          landmarkType = "5">
       </FileBreakpoint>

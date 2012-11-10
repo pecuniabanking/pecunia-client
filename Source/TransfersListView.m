@@ -126,7 +126,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                               options: 0
                               context: DataSourceBindingContext];
         
-        // Bindings to specific attributes to get notfied about changes to each of them
+        // Bindings to specific attributes to get notified about changes to each of them
         // (for all objects in the array).
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteName" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.date" options: 0 context: nil];

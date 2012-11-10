@@ -469,9 +469,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [listViewFormatter setTextAttributesForPositiveValues: positiveAttributes];
     [listViewFormatter setTextAttributesForNegativeValues: negativeAttributes];
 
-    // Actually, the values for the bound property and the key path don't matter as the listview has
-    // a very clear understanding what it needs to bind to. It's just there to make the listviews
-    // establish their bindings.
     pendingTransfersListView.owner = self;
     [pendingTransfersListView bind: @"dataSource" toObject: pendingTransfers withKeyPath: @"arrangedObjects" options: nil];
 

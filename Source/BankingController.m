@@ -246,7 +246,6 @@ static BOOL runningOnLionOrLater = NO;
     
     // Setup statements listview.
     [statementsListView bind: @"dataSource" toObject: categoryAssignments withKeyPath: @"arrangedObjects" options: nil];
-    [statementsListView bind: @"valueArray" toObject: categoryAssignments withKeyPath: @"arrangedObjects.value" options: nil];
     
     // Bind controller to selectedRow property and the listview to the controller's selectedIndex property to get notified about selection changes.
     [categoryAssignments bind: @"selectionIndexes" toObject: statementsListView withKeyPath: @"selectedRows" options: nil];
