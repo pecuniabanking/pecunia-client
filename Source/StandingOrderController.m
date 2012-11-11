@@ -255,11 +255,13 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
         [p setHidden: TRUE ];
         [p setStringValue:@"" ];
     } else [p setHidden: FALSE ];
+    
 	p = [mainView viewWithTag: 3 ];
 	if(num < 3) {
         [p setHidden: TRUE ];
         [p setStringValue:@"" ];        
     } else [p setHidden: FALSE ];
+    
 	p = [mainView viewWithTag: 2 ];
 	if(num < 2) {
         [p setHidden: TRUE ];
@@ -451,13 +453,11 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
             continue;
         }
         
-        NSMenuItem *item = [self createItemForAccountSelector: (BankAccount *)currentInstitute];
-        [sourceMenu addItem: item];
-        [item setEnabled: NO];
-        
         NSArray *accountsForInstitute = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
+        NSMutableArray  *validAccounts = [NSMutableArray arrayWithCapacity:10];
         NSEnumerator *accountEnumerator = [accountsForInstitute objectEnumerator];
         Category *currentAccount;
+        
         while ((currentAccount = [accountEnumerator nextObject])) {
             if (![currentAccount isKindOfClass: [BankAccount class]]) {
                 continue;
@@ -470,15 +470,25 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
                 continue;
             }
             
-            item = [self createItemForAccountSelector: account];
-            [item setEnabled: YES];
-            item.indentationLevel = 1;
+            [validAccounts addObject:account];
+        }
+        
+        if ([validAccounts count] > 0) {
+            NSMenuItem *item = [self createItemForAccountSelector: (BankAccount *)currentInstitute];
             [sourceMenu addItem: item];
-            if (currentAccount == selectedAccount)
-                selectedItem = sourceMenu.numberOfItems - 1;
+            [item setEnabled: NO];
+            for (BankAccount *account in validAccounts) {
+                item = [self createItemForAccountSelector: account];
+                [item setEnabled: YES];
+                item.indentationLevel = 1;
+                [sourceMenu addItem: item];
+                if (currentAccount == selectedAccount)
+                    selectedItem = sourceMenu.numberOfItems - 1;
+            }
+            
         }
     }
-    
+        
     if (sourceMenu.numberOfItems > 1) {
         [sourceAccountSelector selectItemAtIndex: selectedItem];
     } else {
@@ -886,8 +896,34 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     }
     [self preparePurposeFields];
     
-    // todo: update order to meet (new) limits
+    // update to new limits
+    StandingOrderPeriod period = [currentOrder.period intValue];
     
+    if (period == stord_weekly && currentLimits.allowWeekly == NO) {
+        // todo: change to month cycle if week cycle is not allowed
+        //[monthCell performClick:self];
+        [monthCell setState:NSOnState];
+        currentOrder.period = [NSNumber numberWithInt:stord_monthly];
+    }
+    
+    if (period == stord_weekly) {
+        [self enableWeekly: YES];
+        [weekCell setState: NSOnState];
+        [monthCell setState: NSOffState];
+        [self updateWeekCycles];
+        [weekCyclesPopup setEnabled: currentLimits.allowChangeCycle];
+        [execDaysWeekPopup setEnabled: currentLimits.allowChangeExecDay];
+    } else {
+        [self enableWeekly: NO];
+        [weekCell setState: NSOffState];
+        [monthCell setState: NSOnState];
+        [self updateMonthCycles];
+        [monthCyclesPopup setEnabled: currentLimits.allowChangeCycle];
+        [execDaysMonthPopup setEnabled: currentLimits.allowChangeExecDay];
+    }
+    
+    [weekCell setEnabled: currentLimits.allowWeekly];
+    [monthCell setEnabled: currentLimits.allowMonthly];    
 }
 
 - (void)ordersNotification: (NSNotification*)notification
