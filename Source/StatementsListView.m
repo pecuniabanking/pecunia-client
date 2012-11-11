@@ -22,6 +22,7 @@
 #import "StatCatAssignment.h"
 #import "ShortDate.h"
 #import "BankStatement.h"
+#import "BankAccount.h"
 
 extern NSString *StatementDateKey;
 extern NSString *StatementTurnoversKey;
@@ -67,23 +68,23 @@ extern NSString *StatementTypeKey;
 
 - (void) dealloc
 {
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.date"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteName"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.floatingPurpose"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.date"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteName"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.floatingPurpose"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.userInfo"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.categoryDescription"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.value"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.saldo"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.currency"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.valutaDate"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteName"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteBankCode"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteAccount"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteBankName"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteIBAN"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteBIC"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.transactionText"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.account.categoryColor"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.categoryDescription"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.value"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.saldo"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.currency"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.valutaDate"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteName"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteBankCode"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteAccount"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteBankName"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteIBAN"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteBIC"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.transactionText"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.category.categoryColor"];
 
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
 }
@@ -120,23 +121,23 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
         // Bindings to specific attributes to get notified about changes to each of them
         // (for all objects in the array).
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.date" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteName" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.floatingPurpose" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.date" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteName" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.floatingPurpose" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.userInfo" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.categoryDescription" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.value" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.saldo" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.currency" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.valutaDate" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteName" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteBankCode" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteAccount" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteBankName" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteIBAN" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteBIC" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.transactionText" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.account.categoryColor" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.categoryDescription" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.value" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.saldo" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.currency" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.valutaDate" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteName" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteBankCode" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteAccount" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteBankName" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteIBAN" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteBIC" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.transactionText" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.category.categoryColor" options: 0 context: nil];
 
     } else {
         [super bind: binding toObject: observableObject withKeyPath: keyPath options: options];
@@ -255,6 +256,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                              [self formatValue: [statement saldo] capitalize: NO], StatementSaldoKey,
                              [self formatValue: [statement currency] capitalize: NO], StatementCurrencyKey,
                              [self formatValue: [statement transactionText] capitalize: YES], StatementTransactionTextKey,
+                             [[[dataSource objectAtIndex: row] category] categoryColor], StatementColorKey,
                              [NSNumber numberWithInt: row], StatementIndexKey,
                              nil];
     

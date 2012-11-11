@@ -22,8 +22,6 @@
 
 @implementation RoundedOuterShadowView
 
-@synthesize indicatorColor;
-
 - (id) initWithFrame: (NSRect) frameRect
 {
     self = [super initWithFrame: frameRect];
@@ -64,25 +62,8 @@ static NSShadow* borderShadow = nil;
     
     [NSGraphicsContext restoreGraphicsState];
 
-    if (indicatorColor != nil) {
-        [borderPath setClip];
-        [self.indicatorColor set];
-        NSRect barRect = bounds;
-        barRect.origin.y = 8;
-        barRect.size.height = 8;
-        NSRectFill(barRect);
-    }
-
     // Draw Text Fields
     [self drawTextFields];
-}
-
-- (void)setIndicatorColor: (NSColor*)color
-{
-    if (indicatorColor != color) {
-        indicatorColor = color;
-        [self setNeedsDisplay: YES];
-    }
 }
 
 @end

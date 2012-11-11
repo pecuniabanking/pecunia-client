@@ -1069,8 +1069,6 @@ static BOOL runningOnLionOrLater = NO;
     AccountChangeController *changeController = [[AccountChangeController alloc] initWithAccount: (BankAccount*)cat];
     int res = [NSApp runModalForWindow: [changeController window]];
     if(res) {
-        statementsListViewHost.indicatorColor = [cat categoryColor];
-        
         // account was changed
         NSError *error = nil;
         // save updates
@@ -1540,7 +1538,6 @@ static BOOL runningOnLionOrLater = NO;
     [categoryController removeObserver: self forKeyPath: @"arrangedObjects.catSum"];
     [categoryAssignments removeObserver: self forKeyPath: @"selectionIndexes"];
     [statementsListView unbind: @"dataSource"];
-    [statementsListView unbind: @"valueArray"];
     [categoryAssignments unbind: @"selectionIndexes"];
     [statementsListView unbind: @"selectedRows"];
 
@@ -1917,8 +1914,6 @@ static BOOL runningOnLionOrLater = NO;
     } else {
         [valueField setDrawsBackground: NO];
     }
-    
-    statementsListViewHost.indicatorColor = [cat categoryColor];
     
     // Update current section if the default is not active.
     if (currentSection != nil) {

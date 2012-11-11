@@ -134,6 +134,8 @@ static CurrencyValueTransformer* currencyTransformer;
     [saldoCurrencyLabel setStringValue: symbol];
     [[[saldoLabel cell] formatter] setCurrencyCode: currency];
 
+    categoryColor = [details valueForKey: StatementColorKey];
+
     [self selectionChanged];
     [self setNeedsDisplay: YES];
 }
@@ -270,6 +272,8 @@ static NSImage* stripeImage;
     stripeImage = [NSImage imageNamed: @"slanted_stripes.png"];
 }
 
+#define DENT_SIZE 4
+
 - (void)drawRect:(NSRect)dirtyRect
 {
     BOOL isUnassignedColored = NO;
@@ -281,20 +285,56 @@ static NSImage* stripeImage;
     NSGraphicsContext *context = [NSGraphicsContext currentContext];
     [context saveGraphicsState];
     
-    NSBezierPath* path;
     NSRect bounds = [self bounds];
     if (headerHeight > 0) {
-        path = [NSBezierPath bezierPathWithRect: NSMakeRect(bounds.origin.x,
-                                                            bounds.size.height - headerHeight,
-                                                            bounds.size.width,
-                                                            headerHeight)];
+        NSBezierPath *path = [NSBezierPath bezierPathWithRect: NSMakeRect(bounds.origin.x,
+                                                                          bounds.size.height - headerHeight,
+                                                                          bounds.size.width,
+                                                                          headerHeight)];
         [headerGradient drawInBezierPath: path angle: 90.0];
         bounds.size.height -= headerHeight;
     }
-	path = [NSBezierPath bezierPathWithRect: bounds];
-    
+
     if ([self isSelected]) {
-        [innerGradientSelected drawInBezierPath: path angle: 90.0];
+        NSBezierPath *path = [NSBezierPath bezierPath];
+
+        [path moveToPoint: NSMakePoint(bounds.origin.x + 7, bounds.origin.y)];
+        [path lineToPoint: NSMakePoint(bounds.origin.x + bounds.size.width, bounds.origin.y)];
+        [path lineToPoint: NSMakePoint(bounds.origin.x + bounds.size.width, bounds.origin.y + bounds.size.height)];
+        [path lineToPoint: NSMakePoint(bounds.origin.x + 7, bounds.origin.y + bounds.size.height)];
+
+        // Add a number of dents (triangles) to the left side of the path. Since our height might not be a multiple
+        // of the dent height we distribute the remaining pixels to the first and last dent.
+        CGFloat y = bounds.origin.y + bounds.size.height - 0.5;
+        CGFloat x = bounds.origin.x + 7.5;
+        NSUInteger dentCount = bounds.size.height / DENT_SIZE;
+        if (dentCount > 0) {
+            NSUInteger remaining = bounds.size.height - DENT_SIZE * dentCount;
+
+            NSUInteger i = 0;
+            NSUInteger dentHeight = DENT_SIZE + remaining / 2;
+            remaining -= remaining / 2;
+
+            // First dent.
+            [path lineToPoint: NSMakePoint(x + DENT_SIZE, y - dentHeight / 2)];
+            [path lineToPoint: NSMakePoint(x, y - dentHeight)];
+            y -= dentHeight;
+
+            // Intermediate dents.
+            for (i = 1; i < dentCount - 1; i++) {
+                [path lineToPoint: NSMakePoint(x + DENT_SIZE, y - DENT_SIZE / 2)];
+                [path lineToPoint: NSMakePoint(x, y - DENT_SIZE)];
+                y -= DENT_SIZE;
+            }
+
+            // Last dent.
+            dentHeight = DENT_SIZE + remaining;
+            [path lineToPoint: NSMakePoint(x + DENT_SIZE, y - dentHeight / 2)];
+            [path lineToPoint: NSMakePoint(x, y - dentHeight)];
+
+            [innerGradientSelected drawInBezierPath: path angle: 90.0];
+        }
+
         if (hasUnassignedValue) {
             NSColor *color = [PreferenceController notAssignedRowColor];
             if (color) {
@@ -302,6 +342,8 @@ static NSImage* stripeImage;
             }
         }
     } else {
+        NSBezierPath *path = [NSBezierPath bezierPathWithRect: bounds];
+
         [innerGradient drawInBezierPath: path angle: 90.0];
 		if (hasUnassignedValue) {
             NSColor *color = [PreferenceController notAssignedRowColor];
@@ -326,8 +368,15 @@ static NSImage* stripeImage;
         }
     }
     
+    if (categoryColor != nil) {
+        [categoryColor set];
+        NSRect colorRect = bounds;
+        colorRect.size.width = 5;
+        [NSBezierPath fillRect: colorRect];
+    }
+
     [[NSColor colorWithDeviceWhite: 0 / 255.0 alpha: 1] set];
-    path = [NSBezierPath bezierPath];
+    NSBezierPath *path = [NSBezierPath bezierPath];
     [path setLineWidth: 1];
     
     // Separator lines in front of every text in the main part.
@@ -374,11 +423,9 @@ static NSImage* stripeImage;
         }
     }
     
-    // TextFelder zeichnen
-    [self drawTextFields ];
+    [self drawTextFields];
     
     [context restoreGraphicsState];
-    
 }
 
 @end

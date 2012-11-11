@@ -70,6 +70,7 @@ extern NSString *StatementNoteKey;
     NSDictionary *positiveAttributes;
     NSDictionary *negativeAttributes;
     NSDictionary *whiteAttributes;
+    NSColor *categoryColor;
 }
 
 @property (nonatomic, strong) id delegate;

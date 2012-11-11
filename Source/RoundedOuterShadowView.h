@@ -21,9 +21,6 @@
 #import "NSView+PecuniaAdditions.h"
 
 @interface RoundedOuterShadowView : NSView {
-    NSColor* indicatorColor;
 }
-
-@property (nonatomic, readwrite, strong) NSColor* indicatorColor;
 
 @end
