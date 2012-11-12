@@ -93,6 +93,7 @@ static CallbackHandler *callbackHandler = nil;
                                                                                 title: @"Bitte Passwort eingeben" ];
     int res = [NSApp runModalForWindow: [pwController window]];
     if(res) {
+        errorOccured = YES;
         return @"<abort>";
     }
     passwd = [pwController result];
@@ -157,7 +158,10 @@ static CallbackHandler *callbackHandler = nil;
     [pwWindow closeWindow];
     if(res == 0) {
         return [pwWindow result];
-    } else return @"<abort>";
+    } else {
+        errorOccured = YES; // don't save PIN
+        return @"<abort>";
+    }
 }
 
 -(NSString*)getTan:(CallbackData*)data
@@ -170,7 +174,6 @@ static CallbackHandler *callbackHandler = nil;
             return [controller tan ];
         } else return  @"<abort>";
     }
-    
     
     TanWindow *tanWindow = [[TanWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP98", @""), data.userId, data.message]];
     int res = [NSApp runModalForWindow: [tanWindow window]];
