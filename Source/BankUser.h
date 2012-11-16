@@ -9,17 +9,11 @@
 #import <Cocoa/Cocoa.h>
 #import "SigningOption.h"
 
-typedef enum {
-    Reg_notchecked = 0,
-    Reg_ok,
-    Reg_failed
-} RegisterResult;
-
 @class TanMedium;
 @class TanMethod;
 
 @interface BankUser : NSManagedObject {
-    RegisterResult regResult;
+    BOOL    isRegistered;
 }
 
 @property (nonatomic, strong) NSString * bankCode;
@@ -42,7 +36,7 @@ typedef enum {
 @property (nonatomic, strong) NSNumber *ddvReaderIdx;
 @property (nonatomic, strong) NSNumber *secMethod;
 
-@property (nonatomic, assign) RegisterResult regResult;
+@property (nonatomic, assign) BOOL isRegistered;
 
 -(void)updateTanMethods:(NSArray*)methods;
 -(void)updateTanMedia:(NSArray*)media;

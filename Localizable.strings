@@ -199,6 +199,9 @@
 "AP187" = "Daten konnten nicht entschlüsselt werden";
 "AP188" = "Die Verschlüsselung wurde aufgehoben";
 "AP189" = "Die Pecunia-Datendatei wurde erfolgreich verschlüsselt";
+"AP190" = "Unbekannte Bankkennung";
+"AP191" = "Die Bankkennung %@ für die Bankleitzahl %@ ist nicht vorhanden. Bitte legen Sie sie erneut an";
+"AP192" = "Die Daten wurden erfolgreich migriert";
 
 // Callback and backend.
 // AP350..AP399

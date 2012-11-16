@@ -47,7 +47,7 @@
 @dynamic secMethod;
 @dynamic chipCardId;
 
-@synthesize regResult;
+@synthesize isRegistered;
 
 -(id)copyWithZone: (NSZone *)zone
 {
@@ -307,6 +307,13 @@
 		[[MessageLog log ] addMessage:[error localizedDescription ] withLevel:LogLevel_Warning];
 		return nil;
 	}
+    if ([bankUsers count] == 0) {
+        NSRunAlertPanel(NSLocalizedString(@"AP190", @""),
+                        NSLocalizedString(@"AP191",@""),
+                        NSLocalizedString(@"ok",@""),
+                        nil, nil, userId, bankCode);
+        return nil;
+    }
 	return [bankUsers lastObject];
 }
 

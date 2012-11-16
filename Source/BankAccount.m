@@ -26,6 +26,7 @@
 #import "PurposeSplitRule.h"
 #import "PurposeSplitController.h"
 #import "BankUser.h"
+#import "MessageLog.h"
 
 @implementation BankAccount
 
@@ -583,7 +584,11 @@
 // Wenn es mehrere Benutzerkennungen pro Bankkonto gibt muss das hier möglicherweise angepasst werden
 -(BankUser*)defaultBankUser
 {
-    if (self.userId == nil) return nil;
+    if (self.userId == nil) {
+        NSString *msg = [NSString stringWithFormat:@"Account %@: userId is nil, default user cannot be retrieved!", self.accountNumber];
+        [[MessageLog log] addMessage:msg withLevel:LogLevel_Error];
+        return nil;
+    }
     return [BankUser userWithId:self.userId bankCode:self.bankCode ];
 }
 

@@ -2938,11 +2938,18 @@ static BOOL runningOnLionOrLater = NO;
         [request setPredicate:predicate];
         NSArray *accounts = [context executeFetchRequest:request error:&error];
         
+        // assign users to accounts and issue a message if an assigned user is not found
+        NSMutableSet *invalidUsers = [NSMutableSet setWithCapacity:10];
         for(BankAccount *account in accounts) {
+            if ([invalidUsers containsObject:account.userId]) {
+                continue;
+            }
             BankUser *user = [BankUser userWithId:account.userId bankCode:account.bankCode ];
             if (user) {
                 NSMutableSet *users = [account mutableSetValueForKey:@"users" ];
                 [users addObject:user ];
+            } else {
+                [invalidUsers addObject:account.userId];
             }
         }
 	
@@ -2966,6 +2973,15 @@ static BOOL runningOnLionOrLater = NO;
         }	
 	        
         [defaults setBool:YES forKey:@"Migrated10"];
+        
+        // success message
+        if ([users count] > 0 && [bankUsers count] > 0) {
+            NSRunAlertPanel(NSLocalizedString(@"AP183", @""),
+                            NSLocalizedString(@"AP192", @""),
+                            NSLocalizedString(@"ok", @"Ok"),
+                            nil, nil
+                            );
+        }
     }
 }
 

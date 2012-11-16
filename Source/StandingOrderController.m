@@ -900,10 +900,8 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     StandingOrderPeriod period = [currentOrder.period intValue];
     
     if (period == stord_weekly && currentLimits.allowWeekly == NO) {
-        // todo: change to month cycle if week cycle is not allowed
-        //[monthCell performClick:self];
-        [monthCell setState:NSOnState];
         currentOrder.period = [NSNumber numberWithInt:stord_monthly];
+        period = stord_monthly;
     }
     
     if (period == stord_weekly) {

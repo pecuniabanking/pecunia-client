@@ -24,6 +24,7 @@
 #import "StatCatAssignment.h"
 #import "ShortDate.h"
 #import "MCEMDecimalNumberAdditions.h"
+#import "MessageLog.h"
 
 static ClassificationContext* classContext = nil;
 static NSArray*	catCache = nil;
@@ -151,9 +152,14 @@ BOOL stringEqual(NSString *a, NSString *b)
 	//assign categories
 	for (Category* cat in catCache) {
 		NSPredicate* pred = [NSPredicate predicateWithFormat: cat.rule ];
-		if([pred evaluateWithObject: stat ]) {
-			[self assignToCategory: cat ];
-		}
+        @try {
+            if([pred evaluateWithObject: stat ]) {
+                [self assignToCategory: cat ];
+            }
+        }
+        @catch (NSException *exception) {
+            [[MessageLog log] addMessage:[NSString stringWithFormat:@"Error in rule: %@", cat.rule] withLevel:LogLevel_Error];
+        }
 	}
 	[self updateAssigned ];
 }

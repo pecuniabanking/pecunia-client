@@ -608,12 +608,11 @@ NSString *escapeSpecial(NSString *s)
     [CallbackHandler handler ].currentSigningOption = option;
     
     // Registriere gewählten User
-    BankUser *user = [BankUser userWithId:option.userId bankCode:transfer.account.bankCode ];
+    BankUser *user = [self getBankUserForId:option.userId bankCode:transfer.account.bankCode];
     if (user == nil) {
         return [PecuniaError errorWithMessage: [NSString stringWithFormat: NSLocalizedString(@"424",@""), option.userId ] title:NSLocalizedString(@"AP355",@"")  ];
     }
     
-    if ([self registerBankUser:user error:&err] == NO) return err;
     if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
     
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendCollectiveTransfer\">" ];
@@ -687,16 +686,11 @@ NSString *escapeSpecial(NSString *s)
         [CallbackHandler handler ].currentSigningOption = option;
         
         // Registriere gewählten User
-        BankUser *user = [BankUser userWithId:option.userId bankCode:account.bankCode ];
+        BankUser *user = [self getBankUserForId:option.userId bankCode:account.bankCode];
         if (user == nil) {
             continue;
         }
-        if ([self registerBankUser:user error:&err] == NO) {
-            if (err) {
-                [err alertPanel ];
-            }
-            continue;
-        }
+
         if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
         
         NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfers\"><transfers type=\"list\">" ];
@@ -923,20 +917,13 @@ NSString *escapeSpecial(NSString *s)
     [self startProgress];
     for(result in resultList) {
         // check if user is registered
-        PecuniaError *error = nil;
-        BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode ];
-        if (user == nil) continue;
-        if ([self registerBankUser:user error:&error] == NO) {
-            if (error) {
-                [error alertPanel ];
-            }
+        BankUser *user = [self getBankUserForId:result.userId bankCode:result.bankCode];
+        if (user == nil) {
             continue;
-        };
+        }
         
         [cmd appendFormat:@"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>", result.bankCode, result.accountNumber ];
         [self appendTag:@"subNumber" withValue:result.accountSubnumber to:cmd ];
-        
-        
         
         NSInteger maxStatDays = 0;
         if ([[NSUserDefaults standardUserDefaults ] boolForKey:@"limitStatsAge"]) {
@@ -1017,15 +1004,8 @@ NSString *escapeSpecial(NSString *s)
     
     for(BankQueryResult *result in resultList) {
         // check if user is registered
-        PecuniaError *error = nil;
-        BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode ];
+        BankUser *user = [self getBankUserForId:result.userId bankCode:result.bankCode];
         if (user == nil) continue;
-        if ([self registerBankUser:user error:&error] == NO) {
-            if (error) {
-                [error alertPanel ];
-            }
-            continue;
-        };
         
         [cmd appendString:@"<accinfo>" ];
         [self appendTag: @"bankCode" withValue: result.bankCode to: cmd ];
@@ -1106,18 +1086,12 @@ NSString *escapeSpecial(NSString *s)
         [CallbackHandler handler ].currentSigningOption = option;
         
         // Registriere gewählten User
-        BankUser *user = [BankUser userWithId:option.userId bankCode:account.bankCode ];
+        BankUser *user = [self getBankUserForId:option.userId bankCode:account.bankCode];
         if (user == nil) {
             continue;
         }
-        if ([self registerBankUser:user error:&err] == NO) {
-            if (err) {
-                [err alertPanel ];
-            }
-            continue;
-        };
-        if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
         
+        if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
     
         for(StandingOrder *stord in [accountTransferRegister objectForKey: account]) {
             
@@ -1593,8 +1567,28 @@ NSString *escapeSpecial(NSString *s)
     return nil;
 }
 
+- (BankUser*)getBankUserForId:(NSString*)userId bankCode:(NSString*)bankCode
+{
+    PecuniaError *err=nil;
+    BankUser *user = [BankUser userWithId:userId bankCode:bankCode ];
+    if (user == nil) {
+        return nil;
+    }
+    if ([self registerBankUser:user error:&err] == NO) {
+        if (err) {
+            [err alertPanel ];
+        }
+        return nil;
+    }
+    return user;
+}
+
 - (BOOL)registerBankUser:(BankUser*)user error:(PecuniaError**)error
 {
+    if (user.isRegistered) {
+        return YES;
+    }
+    
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"registerUser\">" ];
     
     SecurityMethod secMethod = [user.secMethod intValue ];
@@ -1619,6 +1613,7 @@ NSString *escapeSpecial(NSString *s)
     NSNumber *isOk = [bridge syncCommand: cmd error: error];
     
     if (*error == nil && [isOk boolValue ] == YES) {
+        user.isRegistered = YES;
         return YES;
     } else {
         if (*error == nil) {
