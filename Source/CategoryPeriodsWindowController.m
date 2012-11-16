@@ -149,7 +149,7 @@
     valueGrid.showSelectionRing = NO;
     
     [statementsListView bind: @"dataSource" toObject: statementsController withKeyPath: @"arrangedObjects" options: nil];
-    [statementsListView bind: @"valueArray" toObject: statementsController withKeyPath: @"arrangedObjects.value" options: nil];
+    //[statementsListView bind: @"valueArray" toObject: statementsController withKeyPath: @"arrangedObjects.value" options: nil];
     
     // Bind controller to selectedRow property and the listview to the controller's selectedIndex property to get notified about selection changes.
     [statementsController bind: @"selectionIndexes" toObject: statementsListView withKeyPath: @"selectedRows" options: nil];
@@ -409,8 +409,8 @@
     [self updateLimitLabel: toText index: toIndex];
     
     // Remaining data is loaded on demand.
-    [self performSelectorInBackground:@selector(updateOutline) withObject:nil];
-    //[self updateOutline];
+    //[self performSelectorInBackground:@selector(updateOutline) withObject:nil]; // <- this is leaking objects
+    [self updateOutline];
     [valueGrid reloadData];
     [valueGrid setNeedsDisplay: YES];
 }
@@ -594,6 +594,10 @@
 
 - (void)updateOutline
 {
+    if ([dates count] == 0) {
+        return;
+    }
+     
     ShortDate *fromDate = [dates objectAtIndex:fromIndex];
     ShortDate *toDate = [dates objectAtIndex:toIndex];
     

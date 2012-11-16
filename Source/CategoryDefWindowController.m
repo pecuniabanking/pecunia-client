@@ -70,7 +70,7 @@
     
     // Setup statements listview.
     [statementsListView bind: @"dataSource" toObject: assignPreviewController withKeyPath: @"arrangedObjects" options: nil];
-    [statementsListView bind: @"valueArray" toObject: assignPreviewController withKeyPath: @"arrangedObjects.value" options: nil];
+    //[statementsListView bind: @"valueArray" toObject: assignPreviewController withKeyPath: @"arrangedObjects.value" options: nil];
     
     // Some appealing colors for (positive and negative) values.
     NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:

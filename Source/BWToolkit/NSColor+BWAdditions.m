@@ -14,7 +14,11 @@
 - (void)bwDrawPixelThickLineAtPosition:(int)posInPixels withInset:(int)insetInPixels inRect:(NSRect)aRect inView:(NSView *)view horizontal:(BOOL)isHorizontal flip:(BOOL)shouldFlip
 {
 	// Convert the given rectangle from points to pixels
-	aRect = [view convertRectToBacking:aRect];
+    if ([view respondsToSelector:@selector(convertRectToBacking:)]) {
+        aRect = [view convertRectToBacking:aRect];
+    } else {
+        aRect = [view convertRectToBase:aRect];
+    }
 	
 	// Round up the rect's values to integers
 	aRect = NSIntegralRect(aRect);
@@ -35,7 +39,11 @@
 	NSSize sizeInPixels = aRect.size;
 	
 	// Convert the rect back to points for drawing
-	aRect = [view convertRectFromBacking:aRect];
+    if ([view respondsToSelector:@selector(convertRectFromBacking:)]) {
+        aRect = [view convertRectFromBacking:aRect];
+    } else {
+        aRect = [view convertRectFromBase:aRect];
+    }
 	
 	// Flip the position so it's at the other side of the rect
 	if (shouldFlip)
@@ -46,8 +54,15 @@
 			posInPixels = sizeInPixels.width - posInPixels - 1;
 	}
 	
-	float posInPoints = posInPixels / [[NSScreen mainScreen] backingScaleFactor];
-	float insetInPoints = insetInPixels / [[NSScreen mainScreen] backingScaleFactor];
+	float posInPoints;
+	float insetInPoints;
+    if ([[NSScreen mainScreen] respondsToSelector:@selector(backingScaleFactor)]) {
+        posInPoints = posInPixels / [[NSScreen mainScreen] backingScaleFactor];
+        insetInPoints = insetInPixels / [[NSScreen mainScreen] backingScaleFactor];
+    } else {
+        posInPoints = 1;
+        insetInPoints = 1;
+    }
 	
 	// Calculate line start and end points
 	float startX, startY, endX, endY;
