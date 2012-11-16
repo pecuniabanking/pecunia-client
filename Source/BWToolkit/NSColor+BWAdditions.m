@@ -8,13 +8,19 @@
 
 #import "NSColor+BWAdditions.h"
 
+extern BOOL runningOnLionOrLater;
+
 @implementation NSColor (BWAdditions)
 
 //  Use this method to draw 1 px wide lines independent of scale factor. Handy for resolution independent drawing. Still needs some work - there are issues with drawing at the edges of views.
 - (void)bwDrawPixelThickLineAtPosition:(int)posInPixels withInset:(int)insetInPixels inRect:(NSRect)aRect inView:(NSView *)view horizontal:(BOOL)isHorizontal flip:(BOOL)shouldFlip
 {
 	// Convert the given rectangle from points to pixels
-	aRect = [view convertRectToBacking:aRect];
+    if (runningOnLionOrLater) {
+        aRect = [view convertRectToBacking: aRect];
+    } else {
+        aRect = [view convertRectToBase: aRect];
+    }
 	
 	// Round up the rect's values to integers
 	aRect = NSIntegralRect(aRect);
@@ -35,8 +41,12 @@
 	NSSize sizeInPixels = aRect.size;
 	
 	// Convert the rect back to points for drawing
-	aRect = [view convertRectFromBacking:aRect];
-	
+    if (runningOnLionOrLater) {
+        aRect = [view convertRectFromBacking:aRect];
+    } else {
+        aRect = [view convertRectFromBase: aRect];
+    }
+
 	// Flip the position so it's at the other side of the rect
 	if (shouldFlip)
 	{
@@ -46,9 +56,17 @@
 			posInPixels = sizeInPixels.width - posInPixels - 1;
 	}
 	
-	float posInPoints = posInPixels / [[NSScreen mainScreen] backingScaleFactor];
-	float insetInPoints = insetInPixels / [[NSScreen mainScreen] backingScaleFactor];
-	
+	float posInPoints;
+	float insetInPoints;
+
+    if (runningOnLionOrLater) {
+        posInPoints = posInPixels / [[NSScreen mainScreen] backingScaleFactor];
+        insetInPoints = insetInPixels / [[NSScreen mainScreen] backingScaleFactor];
+    } else {
+        posInPoints = posInPixels / [[NSScreen mainScreen] userSpaceScaleFactor];
+        insetInPoints = insetInPixels / [[NSScreen mainScreen] userSpaceScaleFactor];
+    }
+
 	// Calculate line start and end points
 	float startX, startY, endX, endY;
 	

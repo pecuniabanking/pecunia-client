@@ -25,7 +25,6 @@
 "retry" = "Eingabe wiederholen";
 "yes" = "Ja";
 "no" = "Nein";
-"nolater" = "Nein, später";
 "transfers" = "Überweisungen";
 "transfers_info" = "Überweisungen";
 "accounts" = "Konten";
@@ -202,6 +201,62 @@
 "AP190" = "Unbekannte Bankkennung";
 "AP191" = "Die Bankkennung %@ für die Bankleitzahl %@ ist nicht vorhanden. Bitte legen Sie sie erneut an";
 "AP192" = "Die Daten wurden erfolgreich migriert";
+
+// Bank accounts + users
+// AP200..AP249
+"AP200" = "Nein, nicht jetzt";
+
+// Categories
+// AP250..AP349
+"AP250" = "1. Ausgaben";
+"AP251" = "+1.1 Ausgaben (regelmäßig)";
+"AP252" = "++1.1.1 Nebenkosten";
+"AP253" = "++1.1.2Hausratversicherung";
+"AP254" = "++1.1.3 Wohngebäudeversicherung";
+"AP255" = "++1.1.4 Urlaub";
+"AP256" = "++1.1.5 Vereine + Gewerkschaft";
+"AP257" = "++1.1.6 Privathaftpflicht";
+"AP258" = "++1.1.7 Rechtsschutz";
+"AP259" = "++1.1.8 Berufsunfähigkeitsversicherung";
+
+"AP260" = "+1.2 Ausgaben (monatlich)";
+"AP261" = "++1.2.1 Miete";
+"AP262" = "++1.2.2 Energie";
+"AP263" = "++1.2.3 Kredit";
+"AP264" = "++1.2.4 Entsorgung";
+"AP265" = "++1.2.5 Lebensversicherung";
+"AP266" = "++1.2.6 Pensionskasse";
+"AP267" = "++1.2.7 Risikolebensversicherung";
+"AP268" = "++1.2.8 Krankenvesicherung";
+
+"AP269" = "+1.3 Ausgaben (variabel)";
+"AP270" = "++1.3.1 Auto";
+"AP271" = "+++1.3.1.1 Tanken";
+"AP272" = "+++1.3.1.2 Anschaffungen + Reparaturen";
+"AP273" = "+++1.3.1.3 Versicherungen + Steuern";
+"AP274" = "++1.3.2 Bücher + Zeitschriften";
+"AP275" = "++1.3.3 Gesundheit";
+"AP276" = "+++1.3.3.1 Arzneimittel";
+"AP277" = "+++1.3.3.2 Behandlungen";
+"AP278" = "++1.3.4 Lebensmittel";
+"AP279" = "++1.3.5 Sonstige Einkäufe";
+"AP280" = "++1.3.6 Sonstiges";
+"AP281" = "++1.3.7 Kleidung";
+"AP282" = "++1.3.8 Konto";
+"AP283" = "++1.3.9 Medien";
+"AP284" = "+++1.3.9.1 Fernsehen";
+"AP285" = "+++1.3.9.2 Handys";
+"AP286" = "+++1.3.9.3 Internet";
+"AP297" = "++1.3.10 Schule";
+
+"AP288" = "2. Einnahmen";
+"AP289" = "+2.1 Depot";
+"AP290" = "+2.2 Gehalt";
+"AP291" = "+2.3 Zinsen";
+"AP292" = "+2.4 Haus";
+"AP293" = "++2.4.1 Miete";
+"AP294" = "++2.4.2 Nebenkosten";
+"AP300" = "294"; // Sentinel
 
 // Callback and backend.
 // AP350..AP399

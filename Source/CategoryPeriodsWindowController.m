@@ -149,7 +149,6 @@
     valueGrid.showSelectionRing = NO;
     
     [statementsListView bind: @"dataSource" toObject: statementsController withKeyPath: @"arrangedObjects" options: nil];
-    [statementsListView bind: @"valueArray" toObject: statementsController withKeyPath: @"arrangedObjects.value" options: nil];
     
     // Bind controller to selectedRow property and the listview to the controller's selectedIndex property to get notified about selection changes.
     [statementsController bind: @"selectionIndexes" toObject: statementsListView withKeyPath: @"selectedRows" options: nil];

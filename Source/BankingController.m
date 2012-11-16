@@ -79,7 +79,7 @@ NSString* const CategoryDataType = @"CategoryDataType";
 
 static BankingController *bankinControllerInstance;
 
-static BOOL runningOnLionOrLater = NO;
+BOOL runningOnLionOrLater = NO;
 
 @interface BankingController (Private)
 
@@ -1022,26 +1022,20 @@ static BOOL runningOnLionOrLater = NO;
 #pragma mark -
 #pragma mark Account management
 
--(IBAction)addAccount: (id)sender
+-( IBAction)addAccount: (id)sender
 {
     NSString *bankCode = nil;
-    Category* cat = [self currentSelection];
-    if(cat != nil) {
-        if([cat isBankAccount] == YES && [cat isRoot] == NO) bankCode = [cat valueForKey: @"bankCode"];
+    Category *cat = [self currentSelection];
+    if (cat != nil) {
+        if ([cat isBankAccount] && ![cat isRoot]) {
+            bankCode = [cat valueForKey: @"bankCode"];
+        }
     }
-    
-    // check if there is any User
-    if([[BankUser allUsers ] count] == 0) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP37", @"Account cannot be created"), 
-                                  NSLocalizedString(@"AP38", @"Please setup Bank ID first"), 
-                                  NSLocalizedString(@"ok", @"Ok"), 
-                                  NSLocalizedString(@"AP39", @"Setup Bank ID") , nil);
-        if(res == NSAlertAlternateReturn) [self editBankUsers: self];
-        return;
-    }
-    
+
     AccountDefController *defController = [[AccountDefController alloc] init];
-    if (bankCode) [defController setBankCode: bankCode name: [cat valueForKey: @"bankName"]];
+    if (bankCode) {
+        [defController setBankCode: bankCode name: [cat valueForKey: @"bankName"]];
+    }
     
     int res = [NSApp runModalForWindow: [defController window]];
     if(res) {
@@ -2434,6 +2428,15 @@ static BOOL runningOnLionOrLater = NO;
     [NSApp runModalForWindow: [splitController window]];
 }
 
+/**
+ * Creates a set of default categories, which are quite common. For now these categories are hardcoded here
+ * but this could be changed to a more flexible approach using an external file.
+ */
+- (void)createDefaultCategories
+{
+
+}
+
 #pragma mark -
 #pragma mark Miscellaneous code
 
@@ -2651,21 +2654,25 @@ static BOOL runningOnLionOrLater = NO;
     [self migrate];
 }
 
--(void)applicationDidFinishLaunching:(NSNotification *)aNotification
+- (void)applicationDidFinishLaunching: (NSNotification *)aNotification
 {
     [self checkForAutoSync];
-    
-    // check if there are bank users
-    NSArray *users = [BankUser allUsers];
-    if ([users count] == 0) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP39", @""),
-                                  NSLocalizedString(@"AP185", @""),
-                                  NSLocalizedString(@"yes", @"Yes"),
-                                  NSLocalizedString(@"nolater", @"No, later"),
+
+    // Add default categories if there aren't any but the predefined ones.
+    if (Category.catRoot.children.count == 1) {
+        [self createDefaultCategories];
+    }
+
+    // Check if there are any bank users or at least manual accounts.
+    if (BankUser.allUsers.count == 0 && Category.bankRoot.children.count == 0) {
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP39", nil),
+                                  NSLocalizedString(@"AP185", nil),
+                                  NSLocalizedString(@"yes", nil),
+                                  NSLocalizedString(@"AP200", nil),
                                   nil
                                   );
         if (res == NSAlertDefaultReturn) {
-            [self editBankUsers:self];
+            [self editBankUsers: self];
         }
     }
 }

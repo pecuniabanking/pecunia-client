@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">12C60</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
@@ -3387,7 +3387,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																		<string key="NSFrame">{{0, 313}, {834, 287}}</string>
 																		<reference key="NSSuperview" ref="774779502"/>
 																		<reference key="NSWindow"/>
-																		<reference key="NSNextKeyView" ref="520886359"/>
+																		<reference key="NSNextKeyView"/>
 																		<string key="NSClassName">StatementDetails</string>
 																	</object>
 																</array>
@@ -15993,7 +15993,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6502</int>
+			<int key="maxID">6504</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
