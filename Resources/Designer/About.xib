@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">11D50</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
-		<string key="IBDocument.AppKitVersion">1138.32</string>
-		<string key="IBDocument.HIToolboxVersion">568.00</string>
+		<int key="IBDocument.SystemTarget">1080</int>
+		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">2182</string>
+			<string key="NS.object.0">2844</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
-			<string>NSTextField</string>
-			<string>NSView</string>
-			<string>NSWindowTemplate</string>
-			<string>NSTextFieldCell</string>
-			<string>NSScrollView</string>
-			<string>NSTextView</string>
+			<string>NSCustomObject</string>
 			<string>NSImageCell</string>
 			<string>NSImageView</string>
+			<string>NSScrollView</string>
 			<string>NSScroller</string>
-			<string>NSCustomObject</string>
+			<string>NSTextField</string>
+			<string>NSTextFieldCell</string>
+			<string>NSTextView</string>
+			<string>NSView</string>
+			<string>NSWindowTemplate</string>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -64,7 +64,7 @@
 							<string key="NSReuseIdentifierKey">_NS:4068</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="937070247">
-								<int key="NSCellFlags">68288064</int>
+								<int key="NSCellFlags">68157504</int>
 								<int key="NSCellFlags2">272630784</int>
 								<string key="NSContents">€</string>
 								<object class="NSFont" key="NSSupport">
@@ -88,6 +88,7 @@
 									<bytes key="NSWhite">MCAwLjEwMDAwMDAwMTUAA</bytes>
 								</object>
 							</object>
+							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 						</object>
 						<object class="NSTextField" id="728958657">
 							<reference key="NSNextResponder" ref="620967888"/>
@@ -99,7 +100,7 @@
 							<string key="NSReuseIdentifierKey">_NS:4068</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="676654939">
-								<int key="NSCellFlags">67239424</int>
+								<int key="NSCellFlags">67108864</int>
 								<int key="NSCellFlags2">272629760</int>
 								<string key="NSContents">Version</string>
 								<object class="NSFont" key="NSSupport">
@@ -115,6 +116,7 @@
 									<bytes key="NSRGB">MC4zNDUzNjA4MTU1IDAuMzM3NDkzNzQ3NSAwLjMwMzE2MjY5NAA</bytes>
 								</object>
 							</object>
+							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 						</object>
 						<object class="NSTextField" id="1010126591">
 							<reference key="NSNextResponder" ref="620967888"/>
@@ -125,7 +127,7 @@
 							<string key="NSReuseIdentifierKey">_NS:4068</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="432300117">
-								<int key="NSCellFlags">67239424</int>
+								<int key="NSCellFlags">67108864</int>
 								<int key="NSCellFlags2">272629760</int>
 								<string key="NSContents">Copyright</string>
 								<object class="NSFont" key="NSSupport">
@@ -141,6 +143,7 @@
 									<bytes key="NSRGB">MC4zNDUzNjA4MTU1IDAuMzM3NDkzNzQ3NSAwLjMwMzE2MjY5NAA</bytes>
 								</object>
 							</object>
+							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 						</object>
 						<object class="NSImageView" id="127039268">
 							<reference key="NSNextResponder" ref="620967888"/>
@@ -159,7 +162,7 @@
 							<reference key="NSNextKeyView" ref="150180705"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSImageCell" key="NSCell" id="822038688">
-								<int key="NSCellFlags">130560</int>
+								<int key="NSCellFlags">134217728</int>
 								<int key="NSCellFlags2">33554432</int>
 								<object class="NSCustomResource" key="NSContents">
 									<string key="NSClassName">NSImage</string>
@@ -170,6 +173,7 @@
 								<int key="NSStyle">0</int>
 								<bool key="NSAnimates">YES</bool>
 							</object>
+							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 							<bool key="NSEditable">YES</bool>
 						</object>
 						<object class="NSTextField" id="150180705">
@@ -182,7 +186,7 @@
 							<string key="NSReuseIdentifierKey">_NS:4068</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="688068601">
-								<int key="NSCellFlags">68288064</int>
+								<int key="NSCellFlags">68157504</int>
 								<int key="NSCellFlags2">272630784</int>
 								<string key="NSContents">Pecunia</string>
 								<object class="NSFont" key="NSSupport">
@@ -198,6 +202,7 @@
 									<bytes key="NSRGB">MC4zNDUzNjA4MTU1IDAuMzM3NDkzNzQ3NSAwLjMwMzE2MjY5NAA</bytes>
 								</object>
 							</object>
+							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 						</object>
 						<object class="NSScrollView" id="646640682">
 							<reference key="NSNextResponder" ref="620967888"/>
@@ -210,7 +215,7 @@
 										<object class="NSTextView" id="5143494">
 											<reference key="NSNextResponder" ref="545110416"/>
 											<int key="NSvFlags">2322</int>
-											<string key="NSFrame">{{0, 9}, {353, 29}}</string>
+											<string key="NSFrameSize">{353, 183}</string>
 											<reference key="NSSuperview" ref="545110416"/>
 											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="953813345"/>
@@ -226,7 +231,7 @@
 													<array class="NSMutableArray" key="NSTextContainers">
 														<reference ref="308092860"/>
 													</array>
-													<int key="NSLMFlags">134</int>
+													<int key="NSLMFlags">166</int>
 													<nil key="NSDelegate"/>
 												</object>
 												<reference key="NSTextView" ref="5143494"/>
@@ -234,7 +239,7 @@
 												<int key="NSTCFlags">1</int>
 											</object>
 											<object class="NSTextViewSharedData" key="NSSharedData">
-												<int key="NSFlags">67121125</int>
+												<int key="NSFlags">12261</int>
 												<int key="NSTextCheckingTypes">0</int>
 												<nil key="NSMarkedAttributes"/>
 												<object class="NSColor" key="NSBackgroundColor">
@@ -276,7 +281,6 @@
 											</object>
 											<int key="NSTVFlags">6</int>
 											<string key="NSMaxSize">{463, 10000000}</string>
-											<string key="NSMinize">{223, 29}</string>
 											<nil key="NSDelegate"/>
 										</object>
 									</array>
@@ -314,11 +318,12 @@
 								<object class="NSScroller" id="141446859">
 									<reference key="NSNextResponder" ref="646640682"/>
 									<int key="NSvFlags">256</int>
-									<string key="NSFrame">{{338, 0}, {15, 183}}</string>
+									<string key="NSFrame">{{337, 0}, {16, 183}}</string>
 									<reference key="NSSuperview" ref="646640682"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="395605273"/>
 									<string key="NSReuseIdentifierKey">_NS:1512</string>
+									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 									<reference key="NSTarget" ref="646640682"/>
 									<string key="NSAction">_doScroller:</string>
 									<double key="NSCurValue">1</double>
@@ -332,6 +337,7 @@
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="545110416"/>
 									<string key="NSReuseIdentifierKey">_NS:1514</string>
+									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 									<int key="NSsFlags">1</int>
 									<reference key="NSTarget" ref="646640682"/>
 									<string key="NSAction">_doScroller:</string>
@@ -348,6 +354,9 @@
 							<reference key="NSVScroller" ref="141446859"/>
 							<reference key="NSHScroller" ref="953813345"/>
 							<reference key="NSContentView" ref="545110416"/>
+							<double key="NSMinMagnification">0.25</double>
+							<double key="NSMaxMagnification">4</double>
+							<double key="NSMagnification">1</double>
 						</object>
 					</array>
 					<string key="NSFrameSize">{610, 283}</string>
@@ -356,9 +365,10 @@
 					<reference key="NSNextKeyView" ref="127039268"/>
 					<string key="NSReuseIdentifierKey">_NS:103</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
 				<string key="NSMinSize">{610, 299}</string>
 				<string key="NSMaxSize">{610, 299}</string>
+				<int key="NSWindowAnimationBehavior">3</int>
 				<bool key="NSWindowIsRestorable">NO</bool>
 			</object>
 		</array>
@@ -607,42 +617,36 @@
 						<string key="activateAccountPage:">id</string>
 						<string key="activateMainPage:">id</string>
 						<string key="addAccount:">id</string>
-						<string key="addCategory:">id</string>
 						<string key="addStatement:">id</string>
-						<string key="catPeriodView:">id</string>
 						<string key="changeAccount:">id</string>
 						<string key="deleteAccount:">id</string>
+						<string key="deleteAllData:">id</string>
 						<string key="deleteStatement:">id</string>
-						<string key="doSearch:">id</string>
 						<string key="donate:">id</string>
 						<string key="editBankUsers:">id</string>
 						<string key="editPreferences:">id</string>
 						<string key="enqueueRequest:">id</string>
 						<string key="export:">id</string>
+						<string key="filterStatements:">id</string>
+						<string key="generateData:">id</string>
+						<string key="getAccountBalance:">id</string>
 						<string key="import:">id</string>
-						<string key="insertCategory:">id</string>
-						<string key="listUsers:">id</string>
 						<string key="manageCategories:">id</string>
-						<string key="manageTransferTemplates:">id</string>
 						<string key="printDocument:">id</string>
 						<string key="repairSaldo:">id</string>
 						<string key="resetIsNewStatements:">id</string>
-						<string key="save:">id</string>
 						<string key="showAboutPanel:">id</string>
-						<string key="showInfo:">id</string>
-						<string key="showInput:">id</string>
 						<string key="showLicense:">id</string>
 						<string key="showLog:">id</string>
+						<string key="sortingChanged:">id</string>
 						<string key="splitPurpose:">id</string>
 						<string key="splitStatement:">id</string>
-						<string key="standingOrders:">id</string>
-						<string key="transferView:">id</string>
+						<string key="toggleFullscreenIfSupported:">id</string>
 						<string key="transfer_dated:">id</string>
 						<string key="transfer_eu:">id</string>
 						<string key="transfer_internal:">id</string>
 						<string key="transfer_local:">id</string>
 						<string key="transfer_sepa:">id</string>
-						<string key="updateAllAccounts:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="activateAccountPage:">
@@ -657,16 +661,8 @@
 							<string key="name">addAccount:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="addCategory:">
-							<string key="name">addCategory:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="addStatement:">
 							<string key="name">addStatement:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="catPeriodView:">
-							<string key="name">catPeriodView:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="changeAccount:">
@@ -677,12 +673,12 @@
 							<string key="name">deleteAccount:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="deleteStatement:">
-							<string key="name">deleteStatement:</string>
+						<object class="IBActionInfo" key="deleteAllData:">
+							<string key="name">deleteAllData:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="doSearch:">
-							<string key="name">doSearch:</string>
+						<object class="IBActionInfo" key="deleteStatement:">
+							<string key="name">deleteStatement:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="donate:">
@@ -705,24 +701,24 @@
 							<string key="name">export:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="filterStatements:">
+							<string key="name">filterStatements:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="generateData:">
+							<string key="name">generateData:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="getAccountBalance:">
+							<string key="name">getAccountBalance:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="import:">
 							<string key="name">import:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="insertCategory:">
-							<string key="name">insertCategory:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="listUsers:">
-							<string key="name">listUsers:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="manageCategories:">
 							<string key="name">manageCategories:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="manageTransferTemplates:">
-							<string key="name">manageTransferTemplates:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="printDocument:">
@@ -737,20 +733,8 @@
 							<string key="name">resetIsNewStatements:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="save:">
-							<string key="name">save:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="showAboutPanel:">
 							<string key="name">showAboutPanel:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showInfo:">
-							<string key="name">showInfo:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showInput:">
-							<string key="name">showInput:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="showLicense:">
@@ -761,6 +745,10 @@
 							<string key="name">showLog:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="sortingChanged:">
+							<string key="name">sortingChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="splitPurpose:">
 							<string key="name">splitPurpose:</string>
 							<string key="candidateClassName">id</string>
@@ -769,12 +757,8 @@
 							<string key="name">splitStatement:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="standingOrders:">
-							<string key="name">standingOrders:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="transferView:">
-							<string key="name">transferView:</string>
+						<object class="IBActionInfo" key="toggleFullscreenIfSupported:">
+							<string key="name">toggleFullscreenIfSupported:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="transfer_dated:">
@@ -797,44 +781,47 @@
 							<string key="name">transfer_sepa:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="updateAllAccounts:">
-							<string key="name">updateAllAccounts:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="aboutText">NSTextView</string>
 						<string key="aboutWindow">NSPanel</string>
+						<string key="accountsScrollView">SynchronousScrollView</string>
 						<string key="accountsView">CategoryView</string>
 						<string key="assignPreviewController">NSArrayController</string>
 						<string key="assignValueField">NSTextField</string>
 						<string key="assignValueWindow">NSWindow</string>
 						<string key="catActions">NSSegmentedControl</string>
+						<string key="categoryAssignments">NSArrayController</string>
 						<string key="categoryController">MCEMTreeController</string>
+						<string key="computingButton">NSButton</string>
 						<string key="copyrightText">NSTextField</string>
+						<string key="developerMenu">NSMenuItem</string>
 						<string key="earningsField">NSTextField</string>
 						<string key="gradient">BWGradientBox</string>
+						<string key="graph1Button">NSButton</string>
+						<string key="graph2Button">NSButton</string>
 						<string key="headerValueField">NSTextField</string>
+						<string key="licenseWindow">NSWindow</string>
 						<string key="lockImage">NSImageView</string>
 						<string key="mainTabView">NSTabView</string>
 						<string key="mainVSplit">NSSplitView</string>
 						<string key="mainWindow">NSWindow</string>
 						<string key="nassValueField">NSTextField</string>
-						<string key="predicateEditor">NSPredicateEditor</string>
 						<string key="remoteNameLabel">NSTextField</string>
 						<string key="rightPane">NSView</string>
 						<string key="rightSplitter">NSSplitView</string>
-						<string key="searchField">NSSearchField</string>
-						<string key="searchItem">NSToolbarItem</string>
-						<string key="sideToolbar">SideToolbarView</string>
+						<string key="rulesButton">NSButton</string>
+						<string key="sideBar">RoundedSidebar</string>
+						<string key="sortControl">NSSegmentedControl</string>
 						<string key="spendingsField">NSTextField</string>
+						<string key="statementDetails">StatementDetails</string>
+						<string key="statementsButton">NSButton</string>
 						<string key="statementsListView">StatementsListView</string>
 						<string key="statementsListViewHost">RoundedOuterShadowView</string>
 						<string key="timeSlicer">TimeSliceManager</string>
-						<string key="toolbar">NSToolbar</string>
-						<string key="transactionController">NSArrayController</string>
-						<string key="transferListController">TransferListController</string>
-						<string key="transferWindowController">TransactionController</string>
+						<string key="toggleFullscreenItem">NSMenuItem</string>
+						<string key="toolbarButtons">NSSegmentedControl</string>
+						<string key="transactionController">TransactionController</string>
 						<string key="turnoversField">NSTextField</string>
 						<string key="valueField">NSTextField</string>
 						<string key="versionText">NSTextField</string>
@@ -847,6 +834,10 @@
 						<object class="IBToOneOutletInfo" key="aboutWindow">
 							<string key="name">aboutWindow</string>
 							<string key="candidateClassName">NSPanel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="accountsScrollView">
+							<string key="name">accountsScrollView</string>
+							<string key="candidateClassName">SynchronousScrollView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="accountsView">
 							<string key="name">accountsView</string>
@@ -868,13 +859,25 @@
 							<string key="name">catActions</string>
 							<string key="candidateClassName">NSSegmentedControl</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="categoryAssignments">
+							<string key="name">categoryAssignments</string>
+							<string key="candidateClassName">NSArrayController</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="categoryController">
 							<string key="name">categoryController</string>
 							<string key="candidateClassName">MCEMTreeController</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="computingButton">
+							<string key="name">computingButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="copyrightText">
 							<string key="name">copyrightText</string>
 							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="developerMenu">
+							<string key="name">developerMenu</string>
+							<string key="candidateClassName">NSMenuItem</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="earningsField">
 							<string key="name">earningsField</string>
@@ -884,9 +887,21 @@
 							<string key="name">gradient</string>
 							<string key="candidateClassName">BWGradientBox</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="graph1Button">
+							<string key="name">graph1Button</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="graph2Button">
+							<string key="name">graph2Button</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="headerValueField">
 							<string key="name">headerValueField</string>
 							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="licenseWindow">
+							<string key="name">licenseWindow</string>
+							<string key="candidateClassName">NSWindow</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="lockImage">
 							<string key="name">lockImage</string>
@@ -908,10 +923,6 @@
 							<string key="name">nassValueField</string>
 							<string key="candidateClassName">NSTextField</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="predicateEditor">
-							<string key="name">predicateEditor</string>
-							<string key="candidateClassName">NSPredicateEditor</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="remoteNameLabel">
 							<string key="name">remoteNameLabel</string>
 							<string key="candidateClassName">NSTextField</string>
@@ -924,21 +935,29 @@
 							<string key="name">rightSplitter</string>
 							<string key="candidateClassName">NSSplitView</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="searchField">
-							<string key="name">searchField</string>
-							<string key="candidateClassName">NSSearchField</string>
+						<object class="IBToOneOutletInfo" key="rulesButton">
+							<string key="name">rulesButton</string>
+							<string key="candidateClassName">NSButton</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="searchItem">
-							<string key="name">searchItem</string>
-							<string key="candidateClassName">NSToolbarItem</string>
+						<object class="IBToOneOutletInfo" key="sideBar">
+							<string key="name">sideBar</string>
+							<string key="candidateClassName">RoundedSidebar</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="sideToolbar">
-							<string key="name">sideToolbar</string>
-							<string key="candidateClassName">SideToolbarView</string>
+						<object class="IBToOneOutletInfo" key="sortControl">
+							<string key="name">sortControl</string>
+							<string key="candidateClassName">NSSegmentedControl</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="spendingsField">
 							<string key="name">spendingsField</string>
 							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="statementDetails">
+							<string key="name">statementDetails</string>
+							<string key="candidateClassName">StatementDetails</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="statementsButton">
+							<string key="name">statementsButton</string>
+							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="statementsListView">
 							<string key="name">statementsListView</string>
@@ -952,20 +971,16 @@
 							<string key="name">timeSlicer</string>
 							<string key="candidateClassName">TimeSliceManager</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="toolbar">
-							<string key="name">toolbar</string>
-							<string key="candidateClassName">NSToolbar</string>
+						<object class="IBToOneOutletInfo" key="toggleFullscreenItem">
+							<string key="name">toggleFullscreenItem</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toolbarButtons">
+							<string key="name">toolbarButtons</string>
+							<string key="candidateClassName">NSSegmentedControl</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="transactionController">
 							<string key="name">transactionController</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="transferListController">
-							<string key="name">transferListController</string>
-							<string key="candidateClassName">TransferListController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="transferWindowController">
-							<string key="name">transferWindowController</string>
 							<string key="candidateClassName">TransactionController</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="turnoversField">
@@ -1030,11 +1045,19 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">SideToolbarView</string>
+					<string key="className">RoundedSidebar</string>
 					<string key="superclassName">NSView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SideToolbarView.h</string>
+						<string key="minorKey">./Classes/RoundedSidebar.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">StatementDetails</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/StatementDetails.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1043,6 +1066,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/StatementsListView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SynchronousScrollView</string>
+					<string key="superclassName">NSScrollView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SynchronousScrollView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1072,6 +1103,7 @@
 						<string key="delegate">id</string>
 						<string key="fromPicker">NSDatePicker</string>
 						<string key="toPicker">NSDatePicker</string>
+						<string key="upDown">NSSegmentedControl</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="control">
@@ -1089,6 +1121,10 @@
 						<object class="IBToOneOutletInfo" key="toPicker">
 							<string key="name">toPicker</string>
 							<string key="candidateClassName">NSDatePicker</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="upDown">
+							<string key="name">upDown</string>
+							<string key="candidateClassName">NSSegmentedControl</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -1139,12 +1175,12 @@
 						<string key="chargeBox">NSComboBox</string>
 						<string key="countryButton">NSPopUpButton</string>
 						<string key="countryController">NSArrayController</string>
+						<string key="currentTransferController">NSObjectController</string>
 						<string key="executionDatePicker">NSDatePicker</string>
 						<string key="foreignHelpView">NSView</string>
 						<string key="standardHelpView">NSView</string>
 						<string key="templateController">NSArrayController</string>
 						<string key="templatesDraw">NSDrawer</string>
-						<string key="transferController">NSObjectController</string>
 						<string key="transferEUWindow">NSWindow</string>
 						<string key="transferInternalWindow">NSWindow</string>
 						<string key="transferLocalWindow">NSWindow</string>
@@ -1171,6 +1207,10 @@
 							<string key="name">countryController</string>
 							<string key="candidateClassName">NSArrayController</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="currentTransferController">
+							<string key="name">currentTransferController</string>
+							<string key="candidateClassName">NSObjectController</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="executionDatePicker">
 							<string key="name">executionDatePicker</string>
 							<string key="candidateClassName">NSDatePicker</string>
@@ -1190,10 +1230,6 @@
 						<object class="IBToOneOutletInfo" key="templatesDraw">
 							<string key="name">templatesDraw</string>
 							<string key="candidateClassName">NSDrawer</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="transferController">
-							<string key="name">transferController</string>
-							<string key="candidateClassName">NSObjectController</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="transferEUWindow">
 							<string key="name">transferEUWindow</string>
@@ -1215,62 +1251,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/TransactionController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">TransferListController</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="changeTransfer:">id</string>
-						<string key="deleteTransfers:">id</string>
-						<string key="sendTransfers:">id</string>
-						<string key="transferDoubleClicked:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="changeTransfer:">
-							<string key="name">changeTransfer:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="deleteTransfers:">
-							<string key="name">deleteTransfers:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="sendTransfers:">
-							<string key="name">sendTransfers:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="transferDoubleClicked:">
-							<string key="name">transferDoubleClicked:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="selAmountField">NSTextField</string>
-						<string key="transferController">NSArrayController</string>
-						<string key="transferView">NSTableView</string>
-						<string key="transferWindowController">TransactionController</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="selAmountField">
-							<string key="name">selAmountField</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="transferController">
-							<string key="name">transferController</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="transferView">
-							<string key="name">transferView</string>
-							<string key="candidateClassName">NSTableView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="transferWindowController">
-							<string key="name">transferWindowController</string>
-							<string key="candidateClassName">TransactionController</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/TransferListController.h</string>
 					</object>
 				</object>
 			</array>

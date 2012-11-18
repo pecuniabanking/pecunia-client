@@ -88,6 +88,8 @@ BOOL runningOnLionOrLater = NO;
 - (void)updateSorting;
 - (void)switchMainPage:(NSUInteger)page;
 
+- (void)determineDefaultIconForCategory: (Category *)category;
+
 @end
 
 @implementation BankingController
@@ -110,10 +112,6 @@ BOOL runningOnLionOrLater = NO;
         requestRunning = NO;
         statementsBound = YES;
         mainTabItems = [NSMutableDictionary dictionaryWithCapacity:10];
-        
-        // TODO: make lower limit configurable?
-        // Do we need this?
-        //[Category setCatReportFrom: [ShortDate dateWithYear: 2009 month:1 day:1] to: [ShortDate distantFuture]];
         
         // Load context & model.
         @try {
@@ -275,6 +273,10 @@ BOOL runningOnLionOrLater = NO;
         [mainWindow setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
         [toggleFullscreenItem setHidden: NO];
     }
+#endif
+
+#ifdef DEBUG
+    [developerMenu setHidden: NO];
 #endif
 }
 
@@ -1048,9 +1050,10 @@ BOOL runningOnLionOrLater = NO;
             [alert runModal];
             return;
         }
+
+        [categoryController rearrangeObjects];
+        [self updateBalances];
     }
-    [categoryController rearrangeObjects];
-    [self updateBalances];
 }
 
 -(IBAction)changeAccount: (id)sender
@@ -1062,17 +1065,18 @@ BOOL runningOnLionOrLater = NO;
     
     AccountChangeController *changeController = [[AccountChangeController alloc] initWithAccount: (BankAccount*)cat];
     int res = [NSApp runModalForWindow: [changeController window]];
-    if(res) {
+    if (res) {
         // account was changed
         NSError *error = nil;
+
         // save updates
         if([self.managedObjectContext save: &error] == NO) {
             NSAlert *alert = [NSAlert alertWithError:error];
             [alert runModal];
             return;
         }
+        [categoryController rearrangeObjects];
     }
-    [categoryController rearrangeObjects];
 }
 
 -(IBAction)deleteAccount:(id)sender
@@ -1931,14 +1935,16 @@ BOOL runningOnLionOrLater = NO;
     
     cell.swatchColor = cat.categoryColor;
     
-    if (categoryImage == nil) {
-        categoryImage = [NSImage imageNamed: @"catdef5_16.png"];
+    if (moneyImage == nil) {
         moneyImage = [NSImage imageNamed: @"money_18.png"];
         moneySyncImage = [NSImage imageNamed: @"money_sync_18.png"];
-        folderImage = [NSImage imageNamed: @"Bank.png"];
+        folderImage = [NSImage imageNamed: @"icon95-1"];
     }
-    
-    [cell setImage: categoryImage];
+
+    if (cat.categoryIcon == nil) {
+        [self determineDefaultIconForCategory: cat];
+    }
+    [cell setImage: [NSImage imageNamed: cat.categoryIcon]];
     
     NSInteger numberUnread = 0;
     
@@ -2429,12 +2435,162 @@ BOOL runningOnLionOrLater = NO;
 }
 
 /**
- * Creates a set of default categories, which are quite common. For now these categories are hardcoded here
- * but this could be changed to a more flexible approach using an external file.
+ * Creates a set of default categories, which are quite common. These categories are defined in localizable.strings.
  */
 - (void)createDefaultCategories
 {
+    NSString *sentinel = NSLocalizedString(@"AP300", nil); // Upper limit.
+    if (sentinel == nil || sentinel.length == 0) {
+        return;
+    }
 
+    NSUInteger lower = 250;
+    NSUInteger upper = [sentinel intValue];
+    if (upper <= lower) {
+        return;
+    }
+
+    NSUInteger lastLevel = 0;
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    Category *current = [Category nassRoot];
+
+    for (NSUInteger i = lower; i <= upper; i++) {
+        NSString *key = [NSString stringWithFormat: @"AP%lu", i];
+        NSString *name = NSLocalizedString(key, nil);
+
+        // Count leading plus chars (they determine the nesting level) and remove them.
+        NSUInteger level = 0;
+        while ([name characterAtIndex: level] == '+') {
+            level++;
+        }
+        if (level > 0) {
+            name = [name substringFromIndex: level];
+        }
+
+        Category *child = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
+        child.name = name;
+        if (level < lastLevel) {
+            // Go up the parent chain as many levels as indicated.
+            while (lastLevel > level) {
+                current = current.parent;
+                lastLevel--;
+            }
+            child.parent = current.parent;
+        } else {
+            if (level > lastLevel) {
+                // Go down one level (there must never be level increases with more than one step).
+                child.parent = current;
+                lastLevel++;
+            } else {
+                // Add new sibling to the current node.
+                child.parent = current.parent;
+            }
+        }
+        current = child;
+    }
+
+    // TODO: add rules to each category
+}
+
+/**
+ * Takes the (localized) title of the given category and determines an icon for it from the default collection.
+ */
+- (void)determineDefaultIconForCategory: (Category *)category
+{
+    if (defaultIcons == nil) {
+        NSMutableArray *entries = [NSMutableArray arrayWithCapacity: 100];
+
+        NSBundle *mainBundle = [NSBundle mainBundle];
+        NSString *path = [mainBundle pathForResource: @"category-icon-defaults" ofType: @"txt"];
+        NSError *error = nil;
+        NSString *s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
+        if (error) {
+            NSLog(@"Error reading default category icon assignments file at %@\n%@", path, [error localizedFailureReason]);
+        } else {
+            NSArray *lines = [s componentsSeparatedByString: @"\n"];
+            for (__strong NSString *line in lines) {
+                NSRange hashPosition = [line rangeOfString: @"#"];
+                if (hashPosition.length > 0) {
+                    line = [line substringToIndex: hashPosition.location];
+                }
+                line = [line stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+                if (line.length == 0) {
+                    continue;
+                }
+
+                NSArray *components = [line componentsSeparatedByString: @"="];
+                if (components.count < 2) {
+                    continue;
+                }
+                NSString *icon = [[components objectAtIndex: 0] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+                NSArray *keywordArray = [[components objectAtIndex: 1] componentsSeparatedByString: @","];
+
+                NSMutableArray *keywords = [NSMutableArray arrayWithCapacity: keywordArray.count];
+                for (__strong NSString *keyword in keywordArray) {
+                    keyword = [keyword stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+                    if (keyword.length == 0) {
+                        continue;
+                    }
+                    [keywords addObject: keyword];
+                }
+                NSDictionary *entry = [NSDictionary dictionaryWithObjectsAndKeys: icon, @"icon", keywords, @"keywords", nil];
+                [entries addObject: entry];
+            }
+        }
+
+        defaultIcons = entries;
+    }
+
+    // Finding a default icon means to compare the category title with all the keywords we have in our defaultIcons
+    // list. For flexibility we also compare substrings. Exact matches get priority though. If there's more than one hit
+    // of the same priority then that wins which has fewer keywords assigned (so is likely more specialized).
+    NSString *name = category.name;
+    if ([name hasPrefix: @"++"]) {
+        // One of the predefined root notes. They don't have an image.
+        category.categoryIcon = @"";
+        return;
+    }
+
+    NSString *bestMatch = @"";
+    BOOL exactMatch = NO;
+    NSUInteger currentCount = 1000; // Number of keywords assigned to the best match so far.
+    for (NSDictionary *entry in defaultIcons) {
+        NSArray *keywords = [entry objectForKey: @"keywords"];
+        for (NSString *keyword in keywords) {
+            if ([keyword caseInsensitiveCompare: @"Default"] == NSOrderedSame && bestMatch.length == 0) {
+                // No match so far, but we found the default entry. Keep this as first best match.
+                bestMatch = [entry objectForKey: @"icon"];
+                continue;
+            }
+            NSRange range = [name rangeOfString: keyword options: NSCaseInsensitiveSearch];
+            if (range.length == 0) {
+                continue; // No match at all.
+            }
+
+            if (range.length == name.length) {
+                // Exact match. If there wasn't any exact match before then use this one as the current
+                // best match, ignoring any previous partial matches.
+                if (!exactMatch || keywords.count < currentCount) {
+                    exactMatch = YES;
+                    bestMatch = [entry objectForKey: @"icon"];
+                    currentCount = keywords.count;
+                }
+
+                // If there current keyword count is 1 then we can't get any better. So stop here with what we have.
+                if (currentCount == 1) {
+                    category.categoryIcon = bestMatch;
+                    return;
+                }
+            } else {
+                // Only consider this partial match if we haven't had any exact match so far.
+                if (!exactMatch && keywords.count < currentCount) {
+                    bestMatch = [entry objectForKey: @"icon"];
+                    currentCount = keywords.count;
+                }
+            }
+        }
+    }
+    category.categoryIcon = bestMatch;
 }
 
 #pragma mark -
@@ -2875,14 +3031,9 @@ BOOL runningOnLionOrLater = NO;
                                      ]];
         [copyrightText setStringValue: [mainBundle objectForInfoDictionaryKey: @"NSHumanReadableCopyright"]];
         gradient.fillColor = [NSColor whiteColor];
-        
-        // Delayed show gives the about window time to finish initialization. Otherwise it will
-        // simply pop up without animation first time it is shown.
-        [aboutWindow performSelector: @selector(fadeIn) withObject: nil afterDelay: 0.05];
-        return;
     }
     
-    [aboutWindow fadeIn];
+    [aboutWindow orderFront: self];
 }
 
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
@@ -2898,6 +3049,15 @@ BOOL runningOnLionOrLater = NO;
         [mainWindow toggleFullScreen: mainWindow];
     }
 #endif
+}
+
+#pragma mark -
+#pragma mark Developer tools
+
+- (IBAction)deleteAllData:(id)sender {
+}
+
+- (IBAction)generateData:(id)sender {
 }
 
 -(void)migrate

@@ -53,6 +53,7 @@
 -(IBAction)securitySettings:(id)sender;
 -(IBAction)exportSettings:(id)sender;
 -(IBAction)printSettings:(id)sender;
+- (IBAction)colorSettings:(id)sender;
 
 -(IBAction)removePINs: (id)sender;
 -(IBAction)colorButtonsChanged: (id)sender;
@@ -62,5 +63,7 @@
 
 +(NSColor*)notAssignedRowColor;
 +(NSColor*)newStatementRowColor;
+
++ (BOOL)showCategoryColorsInTree;
 
 @end

@@ -40,6 +40,8 @@
     BOOL showAssignedIndicators;
     id owner;
     BOOL autoResetNew;
+    BOOL pendingReload;  // Set when a notification arrived to completely reload the listview.
+    BOOL pendingRefresh; // Set when there was already a notification to refresh visible cells (for property changes).
 }
 
 @property (nonatomic, assign) BOOL showAssignedIndicators;

@@ -41,6 +41,9 @@
     
     NSDateFormatter *dateFormatter;
     NSCalendar *calendar;
+
+    BOOL pendingReload;
+    BOOL pendingRefresh;
 }
 
 @property (nonatomic, strong) id<TransfersActionDelegate> owner; // The member "delegate" is already defined.

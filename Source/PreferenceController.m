@@ -29,8 +29,9 @@
 static NSMutableDictionary *statementColors = nil;
 static NSArray *exportFields = nil;
 
-#define SYNCH_HEIGHT 330
+#define SYNCH_HEIGHT 310
 #define SEC_HEIGHT 280
+#define COLORS_HEIGHT 240
 #define EXP_HEIGHT 375
 #define PRINT_HEIGHT 200
 
@@ -323,15 +324,20 @@ void updateColorCache()
     [self setHeight: SEC_HEIGHT ];
 }
 
+- (IBAction)colorSettings:(id)sender {
+    [mainTab selectTabViewItemAtIndex: 2];
+    [self setHeight: COLORS_HEIGHT];
+}
+
 -(IBAction)exportSettings:(id)sender
 {
-    [mainTab selectTabViewItemAtIndex:2 ];
+    [mainTab selectTabViewItemAtIndex: 3];
     [self setHeight: EXP_HEIGHT ];
 }
 
 -(IBAction)printSettings:(id)sender
 {
-    [mainTab selectTabViewItemAtIndex:3 ];
+    [mainTab selectTabViewItemAtIndex: 4];
     [self setHeight: PRINT_HEIGHT ];
 }
 
@@ -384,5 +390,10 @@ void updateColorCache()
 	return [statementColors objectForKey: _newStatementColor ];
 }
 
++ (BOOL)showCategoryColorsInTree
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	return [defaults boolForKey: @"showCatColorsInTree"];
+}
 
 @end
