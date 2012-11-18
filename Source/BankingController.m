@@ -1941,10 +1941,10 @@ BOOL runningOnLionOrLater = NO;
         folderImage = [NSImage imageNamed: @"icon95-1"];
     }
 
-    if (cat.categoryIcon == nil) {
+    if (cat.iconName == nil) {
         [self determineDefaultIconForCategory: cat];
     }
-    [cell setImage: [NSImage imageNamed: cat.categoryIcon]];
+    [cell setImage: [NSImage imageNamed: cat.iconName]];
     
     NSInteger numberUnread = 0;
     
@@ -2547,7 +2547,7 @@ BOOL runningOnLionOrLater = NO;
     NSString *name = category.name;
     if ([name hasPrefix: @"++"]) {
         // One of the predefined root notes. They don't have an image.
-        category.categoryIcon = @"";
+        category.iconName = @"";
         return;
     }
 
@@ -2578,7 +2578,7 @@ BOOL runningOnLionOrLater = NO;
 
                 // If there current keyword count is 1 then we can't get any better. So stop here with what we have.
                 if (currentCount == 1) {
-                    category.categoryIcon = bestMatch;
+                    category.iconName = bestMatch;
                     return;
                 }
             } else {
@@ -2590,7 +2590,7 @@ BOOL runningOnLionOrLater = NO;
             }
         }
     }
-    category.categoryIcon = bestMatch;
+    category.iconName = bestMatch;
 }
 
 #pragma mark -

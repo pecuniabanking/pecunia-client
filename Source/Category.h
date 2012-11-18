@@ -60,7 +60,7 @@ typedef enum {
 @property (nonatomic, strong) NSDecimalNumber * balance;
 @property (nonatomic, strong) NSData * catRepColor;
 @property (nonatomic, strong) NSNumber * noCatRep;
-@property (nonatomic, strong) NSString *categoryIcon;
+@property (nonatomic) NSString *iconName;
 
 @property (nonatomic, strong) NSColor *categoryColor; // Unarchived catRepColor.
 

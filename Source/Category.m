@@ -52,7 +52,7 @@ BOOL updateSent = NO;
 @dynamic balance;
 @dynamic noCatRep;
 @dynamic catRepColor;
-@synthesize categoryIcon;
+@dynamic iconName;
 
 @synthesize categoryColor;
 
