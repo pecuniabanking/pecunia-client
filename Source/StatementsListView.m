@@ -84,7 +84,6 @@ extern NSString *StatementTypeKey;
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteIBAN"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteBIC"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.transactionText"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.category.categoryColor"];
 
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
 }
@@ -137,7 +136,6 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteIBAN" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteBIC" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.transactionText" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.category.categoryColor" options: 0 context: nil];
 
     } else {
         [super bind: binding toObject: observableObject withKeyPath: keyPath options: options];
@@ -149,10 +147,25 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                         change: (NSDictionary *)change
                        context: (void *)context
 {
+    // Coalesce many notifications into one.
     if (context == DataSourceBindingContext) {
-        [self reloadData];
+        [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
+        pendingRefresh = YES;
+        [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
     } else {
-        [self updateVisibleCells];
+        // If there's already a full reload pending do nothing.
+        if (!pendingReload) {
+            // If there's another property change pending cancel it and do a full reload instead.
+            if (pendingRefresh) {
+                pendingRefresh = NO;
+                [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
+                pendingReload = YES;
+                [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
+            } else {
+                pendingRefresh = YES;
+                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.1];
+            }
+        }
     }
 }
 
@@ -161,6 +174,8 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (NSUInteger)numberOfRowsInListView: (PXListView*)aListView
 {
+    pendingReload = NO;
+    
 #pragma unused(aListView)
 	return [dataSource count];
 }
@@ -388,6 +403,8 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
  */
 - (void)updateVisibleCells
 {
+    pendingRefresh = NO;
+    
     NSArray *cells = [self visibleCells];
     for (StatementsListViewCell *cell in cells)
         [self fillCell: cell forRow: [cell row]];

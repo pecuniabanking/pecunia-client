@@ -211,7 +211,7 @@
 "AP250" = "1. Ausgaben";
 "AP251" = "+1.1 Ausgaben (regelmäßig)";
 "AP252" = "++1.1.1 Nebenkosten";
-"AP253" = "++1.1.2Hausratversicherung";
+"AP253" = "++1.1.2 Hausratversicherung";
 "AP254" = "++1.1.3 Wohngebäudeversicherung";
 "AP255" = "++1.1.4 Urlaub";
 "AP256" = "++1.1.5 Vereine + Gewerkschaft";
@@ -247,7 +247,7 @@
 "AP284" = "+++1.3.9.1 Fernsehen";
 "AP285" = "+++1.3.9.2 Handys";
 "AP286" = "+++1.3.9.3 Internet";
-"AP297" = "++1.3.10 Schule";
+"AP287" = "++1.3.10 Schule";
 
 "AP288" = "2. Einnahmen";
 "AP289" = "+2.1 Depot";
