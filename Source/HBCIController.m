@@ -850,6 +850,12 @@ NSString *escapeSpecial(NSString *s)
         user.chipCardId = usr.chipCardId;
     }
     
+    if (secMethod == SecMethod_PinTan) {
+        user.hbciVersion = usr.hbciVersion;
+        user.bankName = usr.bankName;
+        user.customerId = usr.customerId;
+    }
+    
     // Update user's accounts
     [self updateBankAccounts:usr.accounts forUser:user];
     

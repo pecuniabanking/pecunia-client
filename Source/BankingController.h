@@ -96,6 +96,7 @@
     IBOutlet RoundedSidebar     *sideBar;
     
     IBOutlet NSMenuItem         *toggleFullscreenItem;
+    IBOutlet NSMenuItem         *developerMenu;
     
     IBOutlet TransactionController *transactionController;
     IBOutlet NSWindow              *licenseWindow;
@@ -115,7 +116,6 @@
     NSDecimalNumber        *saveValue;
     NSCursor               *splitCursor;
     
-    NSImage *categoryImage;
     NSImage *moneyImage;
     NSImage *moneySyncImage;
     NSImage *folderImage;
@@ -136,6 +136,8 @@
     // Sorting statements.
     NSInteger sortIndex;
     BOOL sortAscending;
+
+    NSArray *defaultIcons; // Associations between categories and their default icons.
 }
 
 @property(nonatomic, copy) NSDecimalNumber *saveValue;
@@ -148,67 +150,70 @@
 - (IBAction)editPreferences: (id)sender;
 - (IBAction)sortingChanged: (id)sender;
 
--(IBAction)activateMainPage: (id)sender;
+- (IBAction)activateMainPage: (id)sender;
 - (IBAction)activateAccountPage: (id)sender;
 
--(IBAction)enqueueRequest: (id)sender;
--(IBAction)editBankUsers:(id)sender;
--(IBAction)export: (id)sender;
--(IBAction)import: (id)sender;
+- (IBAction)enqueueRequest: (id)sender;
+- (IBAction)editBankUsers:(id)sender;
+- (IBAction)export: (id)sender;
+- (IBAction)import: (id)sender;
 
--(IBAction)transfer_local: (id)sender;
--(IBAction)transfer_eu: (id)sender;
--(IBAction)transfer_sepa: (id)sender;
--(IBAction)transfer_dated: (id)sender;
--(IBAction)transfer_internal: (id)sender;
+- (IBAction)transfer_local: (id)sender;
+- (IBAction)transfer_eu: (id)sender;
+- (IBAction)transfer_sepa: (id)sender;
+- (IBAction)transfer_dated: (id)sender;
+- (IBAction)transfer_internal: (id)sender;
 
--(IBAction)donate: (id)sender;
--(IBAction)splitPurpose:(id)sender;
+- (IBAction)donate: (id)sender;
+- (IBAction)splitPurpose:(id)sender;
 
--(IBAction)filterStatements: (id)sender;
+- (IBAction)filterStatements: (id)sender;
 
--(IBAction)manageCategories:(id)sender;
+- (IBAction)manageCategories:(id)sender;
 
--(IBAction)deleteStatement: (id)sender;
--(IBAction)splitStatement: (id)sender;
--(IBAction)addStatement: (id)sender;
--(IBAction)showLicense: (id)sender;
--(IBAction)resetIsNewStatements:(id)sender;
+- (IBAction)deleteStatement: (id)sender;
+- (IBAction)splitStatement: (id)sender;
+- (IBAction)addStatement: (id)sender;
+- (IBAction)showLicense: (id)sender;
+- (IBAction)resetIsNewStatements:(id)sender;
 
--(IBAction)printDocument:(id)sender;
--(IBAction)repairSaldo:(id)sender;
--(IBAction)getAccountBalance:(id)sender;
+- (IBAction)printDocument:(id)sender;
+- (IBAction)repairSaldo:(id)sender;
+- (IBAction)getAccountBalance:(id)sender;
 
--(IBAction)showLog:(id)sender;
--(IBAction)showAboutPanel:(id)sender;
+- (IBAction)showLog:(id)sender;
+- (IBAction)showAboutPanel:(id)sender;
 - (IBAction)toggleFullscreenIfSupported: (id)sender;
 
--(void)windowWillClose:(NSNotification *)aNotification;
--(NSArray*)selectedNodes;
--(BankAccount*)selectBankAccountWithNumber:(NSString*)accNum bankCode:(NSString*)code;
--(void)awakeFromNib;
--(int)AccSize;
--(void)statementsNotification: (NSNotification*)notification;
--(Category*)getBankingRoot;
+- (IBAction)deleteAllData: (id)sender;
+- (IBAction)generateData: (id)sender;
+
+- (void)windowWillClose:(NSNotification *)aNotification;
+- (NSArray*)selectedNodes;
+- (BankAccount*)selectBankAccountWithNumber:(NSString*)accNum bankCode:(NSString*)code;
+- (void)awakeFromNib;
+- (int)AccSize;
+- (void)statementsNotification: (NSNotification*)notification;
+- (Category*)getBankingRoot;
 //-(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts;
 //-(void)updateBankAccounts:(NSArray *)hbciAccounts forUser:(BankUser*)user;
--(void)updateBalances;
--(void)updateNotAssignedCategory;
--(void)requestFinished: (NSArray*)resultList;
--(BOOL)requestRunning;
--(void)setEncrypted:(BOOL)encrypted;
+- (void)updateBalances;
+- (void)updateNotAssignedCategory;
+- (void)requestFinished: (NSArray*)resultList;
+- (BOOL)requestRunning;
+- (void)setEncrypted:(BOOL)encrypted;
 
--(Category*)currentSelection;
--(void)repairCategories;
--(void)setRestart;
--(void)syncAllAccounts;
--(void)publishContext;
--(void)updateUnread;
--(BOOL)checkForUnhandledTransfersAndSend;
--(void)migrate;
--(void)checkBalances:(NSArray*)resultList;
--(void)setHBCIAccounts;
+- (Category*)currentSelection;
+- (void)repairCategories;
+- (void)setRestart;
+- (void)syncAllAccounts;
+- (void)publishContext;
+- (void)updateUnread;
+- (BOOL)checkForUnhandledTransfersAndSend;
+- (void)migrate;
+- (void)checkBalances:(NSArray*)resultList;
+- (void)setHBCIAccounts;
 
-+(BankingController*)controller;
++ (BankingController*)controller;
 
 @end

@@ -7,9 +7,12 @@
 
 #import "MAAttachedWindow.h"
 
+extern BOOL runningOnLionOrLater;
+
 #define MAATTACHEDWINDOW_DEFAULT_BACKGROUND_COLOR [NSColor colorWithCalibratedWhite:0.1 alpha:0.75]
 #define MAATTACHEDWINDOW_DEFAULT_BORDER_COLOR [NSColor whiteColor]
-#define MAATTACHEDWINDOW_SCALE_FACTOR [[NSScreen mainScreen] backingScaleFactor]
+#define MAATTACHEDWINDOW_SCALE_FACTOR \
+  ((runningOnLionOrLater) ? [[NSScreen mainScreen] userSpaceScaleFactor] : [[NSScreen mainScreen] backingScaleFactor])
 
 float _scaleFactor()
 {

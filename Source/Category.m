@@ -27,9 +27,9 @@
 
 #import "GraphicsAdditions.h"
 
-Category *catRoot = nil;
-Category *bankRoot = nil;
-Category *nassRoot = nil;
+static Category *catRoot = nil;
+static Category *bankRoot = nil;
+static Category *nassRoot = nil;
 
 ShortDate *startReportDate = nil;
 ShortDate *endReportDate = nil;
@@ -52,6 +52,7 @@ BOOL updateSent = NO;
 @dynamic balance;
 @dynamic noCatRep;
 @dynamic catRepColor;
+@synthesize categoryIcon;
 
 @synthesize categoryColor;
 
@@ -633,7 +634,7 @@ BOOL updateSent = NO;
     // Assign a default color if none has been set so far.
     // Root categories get different dark gray default colors. Others either get one of the predefined
     // colors or a random one if no color is left from the set of predefined colors.
-
+    [self willAccessValueForKey: @"categoryColor"];
     if (self.catRepColor == nil) {
         if (self == [Category bankRoot]) {
             catColor = [NSColor colorWithDeviceWhite: 0.12 alpha: 1];
@@ -668,13 +669,16 @@ BOOL updateSent = NO;
             [unarchiver finishDecoding];
         }
     }
-    
+
+    [self didAccessValueForKey: @"categoryColor"];
+
     return catColor;
 }
 
 -(void)setCategoryColor: (NSColor*)color
 {
     if (catColor != color) {
+        [self willChangeValueForKey: @"categoryColor"];
         catColor = color;
         
         NSMutableData* data = [NSMutableData data];
@@ -684,6 +688,7 @@ BOOL updateSent = NO;
         [archiver finishEncoding];
         
         self.catRepColor = data;
+        [self didChangeValueForKey: @"categoryColor"];
     }
 }
 

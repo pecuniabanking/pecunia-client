@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">12C60</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
@@ -1980,7 +1980,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{737, 34}, {71, 185}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView"/>
+																				<reference key="NSNextKeyView" ref="569487988"/>
 																				<bool key="NSEnabled">YES</bool>
 																				<object class="NSImageCell" key="NSCell" id="972627458">
 																					<int key="NSCellFlags">134217728</int>
@@ -3408,7 +3408,10 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																	<double key="NSShadowHoriz">1</double>
 																	<double key="NSShadowVert">1</double>
 																	<double key="NSShadowBlurRadius">2</double>
-																	<reference key="NSShadowColor" ref="1053514231"/>
+																	<object class="NSColor" key="NSShadowColor" id="116857464">
+																		<int key="NSColorSpace">3</int>
+																		<bytes key="NSWhite">MCAwLjUAA</bytes>
+																	</object>
 																</object>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSTextFieldCell" key="NSCell" id="219230248">
@@ -4512,6 +4515,37 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 								<object class="NSMenuItem" id="561930904">
 									<reference key="NSMenu" ref="510173018"/>
 									<string key="NSTitle">Verwendungszweck splitten</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
+								</object>
+							</array>
+						</object>
+					</object>
+					<object class="NSMenuItem" id="790902056">
+						<reference key="NSMenu" ref="254323704"/>
+						<bool key="NSIsHidden">YES</bool>
+						<string key="NSTitle">Developer</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="883146705"/>
+						<reference key="NSMixedImage" ref="237878853"/>
+						<string key="NSAction">submenuAction:</string>
+						<object class="NSMenu" key="NSSubmenu" id="423868800">
+							<string key="NSTitle">Developer</string>
+							<array class="NSMutableArray" key="NSMenuItems">
+								<object class="NSMenuItem" id="607594135">
+									<reference key="NSMenu" ref="423868800"/>
+									<string key="NSTitle">Alle Daten löschen...</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
+								</object>
+								<object class="NSMenuItem" id="85020612">
+									<reference key="NSMenu" ref="423868800"/>
+									<string key="NSTitle">Daten generieren...</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="883146705"/>
@@ -9310,6 +9344,30 @@ wGw</bytes>
 					<int key="connectionID">6497</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">developerMenu</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="790902056"/>
+					</object>
+					<int key="connectionID">6509</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">deleteAllData:</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="607594135"/>
+					</object>
+					<int key="connectionID">6511</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">generateData:</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="85020612"/>
+					</object>
+					<int key="connectionID">6512</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">contentSet: selection.assignments</string>
 						<reference key="source" ref="107188715"/>
@@ -11681,6 +11739,7 @@ wGw</bytes>
 							<reference ref="216333307"/>
 							<reference ref="259204391"/>
 							<reference ref="132594700"/>
+							<reference ref="790902056"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">MainMenu</string>
@@ -15281,6 +15340,33 @@ wGw</bytes>
 						<reference key="object" ref="376623175"/>
 						<reference key="parent" ref="675481013"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6506</int>
+						<reference key="object" ref="790902056"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="423868800"/>
+						</array>
+						<reference key="parent" ref="254323704"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6507</int>
+						<reference key="object" ref="423868800"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="85020612"/>
+							<reference ref="607594135"/>
+						</array>
+						<reference key="parent" ref="790902056"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6508</int>
+						<reference key="object" ref="85020612"/>
+						<reference key="parent" ref="423868800"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6510</int>
+						<reference key="object" ref="607594135"/>
+						<reference key="parent" ref="423868800"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -15728,7 +15814,7 @@ wGw</bytes>
 				<string key="575.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="576.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="2" key="576.IBViewIntegration.shadowBlurRadius"/>
-				<reference key="576.IBViewIntegration.shadowColor" ref="1053514231"/>
+				<reference key="576.IBViewIntegration.shadowColor" ref="116857464"/>
 				<real value="1" key="576.IBViewIntegration.shadowOffsetHeight"/>
 				<real value="1" key="576.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="577.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -15946,6 +16032,10 @@ wGw</bytes>
 				<string key="6494.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6495.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6502.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6506.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6507.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6508.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6510.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="74.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="77.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="78.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -15993,7 +16083,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6502</int>
+			<int key="maxID">6512</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -16015,6 +16105,7 @@ wGw</bytes>
 						<string key="addStatement:">id</string>
 						<string key="changeAccount:">id</string>
 						<string key="deleteAccount:">id</string>
+						<string key="deleteAllData:">id</string>
 						<string key="deleteStatement:">id</string>
 						<string key="donate:">id</string>
 						<string key="editBankUsers:">id</string>
@@ -16022,6 +16113,7 @@ wGw</bytes>
 						<string key="enqueueRequest:">id</string>
 						<string key="export:">id</string>
 						<string key="filterStatements:">id</string>
+						<string key="generateData:">id</string>
 						<string key="getAccountBalance:">id</string>
 						<string key="import:">id</string>
 						<string key="manageCategories:">id</string>
@@ -16066,6 +16158,10 @@ wGw</bytes>
 							<string key="name">deleteAccount:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="deleteAllData:">
+							<string key="name">deleteAllData:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="deleteStatement:">
 							<string key="name">deleteStatement:</string>
 							<string key="candidateClassName">id</string>
@@ -16092,6 +16188,10 @@ wGw</bytes>
 						</object>
 						<object class="IBActionInfo" key="filterStatements:">
 							<string key="name">filterStatements:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="generateData:">
+							<string key="name">generateData:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="getAccountBalance:">
@@ -16180,6 +16280,7 @@ wGw</bytes>
 						<string key="categoryController">MCEMTreeController</string>
 						<string key="computingButton">NSButton</string>
 						<string key="copyrightText">NSTextField</string>
+						<string key="developerMenu">NSMenuItem</string>
 						<string key="earningsField">NSTextField</string>
 						<string key="gradient">BWGradientBox</string>
 						<string key="graph1Button">NSButton</string>
@@ -16258,6 +16359,10 @@ wGw</bytes>
 						<object class="IBToOneOutletInfo" key="copyrightText">
 							<string key="name">copyrightText</string>
 							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="developerMenu">
+							<string key="name">developerMenu</string>
+							<string key="candidateClassName">NSMenuItem</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="earningsField">
 							<string key="name">earningsField</string>

@@ -153,10 +153,25 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                         change: (NSDictionary *)change
                        context: (void *)context
 {
+    // Coalesce many notifications into one.
     if (context == DataSourceBindingContext) {
-        [self reloadData];
+        [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
+        pendingRefresh = YES;
+        [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
     } else {
-        [self updateVisibleCells];
+        // If there's already a full reload pending do nothing.
+        if (!pendingReload) {
+            // If there's another property change pending cancel it and do a full reload instead.
+            if (pendingRefresh) {
+                pendingRefresh = NO;
+                [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
+                pendingReload = YES;
+                [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
+            } else {
+                pendingRefresh = YES;
+                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.1];
+            }
+        }
     }
 }
 

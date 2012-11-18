@@ -40,6 +40,7 @@
 
 #import "ImageAndTextCell.h"
 #import "GraphicsAdditions.h"
+#import "PreferenceController.h"
 
 // Layout constants
 #define MIN_BADGE_WIDTH           22.0 //The minimum badge width for each item (default 22.0)
@@ -175,7 +176,7 @@ static NSGradient* selectionGradient = nil;
         }
     
     // Draw category color swatch.
-    if (swatchColor != nil) {
+    if ([PreferenceController showCategoryColorsInTree] && swatchColor != nil) {
         NSRect swatchRect = cellFrame;
         CGFloat swatchWidth = 3;
         swatchRect.size = NSMakeSize(swatchWidth, SWATCH_SIZE);
@@ -199,23 +200,26 @@ static NSGradient* selectionGradient = nil;
     // Draw cell symbol if there is one.
     if (image != nil)
     {
-        NSSize iconSize;
+        // Let Cocoa pick an icon size that fits for the cell.
+        NSSize iconSize = NSMakeSize(cellFrame.size.height - 2, cellFrame.size.height - 2);
         NSRect iconFrame;
         
-        iconSize = [image size];
         NSDivideRect(cellFrame, &iconFrame, &cellFrame, ICON_SPACING + iconSize.width + ICON_SPACING, NSMinXEdge);
         
         iconFrame.size = iconSize;
         
         iconFrame.origin.x += ICON_SPACING;
         iconFrame.origin.y += floor((cellFrame.size.height - iconFrame.size.height) / 2);
-        
+
+        [[NSGraphicsContext currentContext] setImageInterpolation: NSImageInterpolationHigh];
+
         [image drawInRect: iconFrame
                  fromRect: NSZeroRect
-                operation: NSCompositeSourceOver
+                operation: [self isHighlighted] ? NSCompositePlusLighter : NSCompositeSourceOver
                  fraction: 1.0
            respectFlipped: YES
                     hints: nil];
+
     }
     else
     {
@@ -296,7 +300,7 @@ static NSGradient* selectionGradient = nil;
         // Selected and root items can never be disabled.
         NSColor *textColor = [NSColor whiteColor];
         
-        NSFont *textFont = [NSFont fontWithName: @"Lucida Grande Bold" size: 12];
+        NSFont *textFont = [NSFont fontWithName: @"Lucida Grande" size: 12];
         attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                       textFont, NSFontAttributeName,
                       textColor, NSForegroundColorAttributeName,
