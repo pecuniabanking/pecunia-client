@@ -62,6 +62,8 @@
 @property (nonatomic, strong) NSURL *dataDirURL;
 @property (nonatomic, strong) NSURL *pecuniaFileURL;
 
+- (void)clearAllData;
+
 -(void)loadModel;
 -(void)relocate;
 //-(BOOL)relocateStoreToLocation: (NSString*)path;
@@ -83,6 +85,7 @@
 -(NSManagedObjectContext*)context;
 -(NSManagedObjectModel*)model;
 -(NSManagedObjectContext*)memContext;
+
 +(MOAssistant*)assistant;
 
 @end

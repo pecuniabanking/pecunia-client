@@ -201,6 +201,8 @@
 "AP190" = "Unbekannte Bankkennung";
 "AP191" = "Die Bankkennung %@ für die Bankleitzahl %@ ist nicht vorhanden. Bitte legen Sie sie erneut an";
 "AP192" = "Die Daten wurden erfolgreich migriert";
+"AP193" = "Alle Daten löschen";
+"AP194" = "Achtung: alle Daten, wie Umsätze, Konten, Kategorien und Regeln werde gelöscht. Es sollte ein Backup der Datendatei existieren (z.B. über Time Machine), da sonst alle Daten unwiederbringlich verloren sind.\n\nMöchten Sie Ihre Daten wirklich löschen?";
 
 // Bank accounts + users
 // AP200..AP249

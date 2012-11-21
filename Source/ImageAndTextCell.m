@@ -226,7 +226,7 @@ static NSGradient* selectionGradient = nil;
         cellFrame.size.width -= ICON_SPACING;
         cellFrame.origin.x   += ICON_SPACING;
     }
-    
+
     // Reserve space for badges.
     if (maxUnread > 0)
     {
@@ -288,28 +288,34 @@ static NSGradient* selectionGradient = nil;
         amountwithCurrencyFrame.origin.y += (cellFrame.size.height - stringSize.height) / 2;	
         amountwithCurrencyFrame.size.height = stringSize.height;
         amountwithCurrencyFrame.size.width -= ROW_RIGHT_MARGIN;
+        cellFrame.size.width -= ROW_RIGHT_MARGIN;
         
         [amountWithCurrency	drawInRect:amountwithCurrencyFrame];    
     }
     
-    
     // Cell text color.
     NSAttributedString *cellStringWithFormat;
+    NSColor *textColor;
+
+    // Setting the attributed string below will reset all paragraph settings to defaults.
+    // So we have to add those we changed to this attributed string too.
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
     if (isRoot || [self isHighlighted])
     {
         // Selected and root items can never be disabled.
-        NSColor *textColor = [NSColor whiteColor];
-        
-        NSFont *textFont = [NSFont fontWithName: @"Lucida Grande" size: 12];
+        textColor = [NSColor whiteColor];
+
         attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                      textFont, NSFontAttributeName,
+                      [self font], NSFontAttributeName,
                       textColor, NSForegroundColorAttributeName,
+                      paragraphStyle, NSParagraphStyleAttributeName,
                       nil
                       ];
        cellStringWithFormat = [[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
-                                                               attributes: attributes];
+                                                              attributes: attributes];
     } else {
-        NSColor *textColor = [NSColor colorWithCalibratedWhite: 40 / 255.0 alpha: 1];
+        textColor = [NSColor colorWithCalibratedWhite: 40 / 255.0 alpha: 1];
         
         if (isDisabled) {
             textColor = [NSColor applicationColorForKey: @"Disabled Tree Item Color"];
@@ -317,13 +323,14 @@ static NSGradient* selectionGradient = nil;
         attributes = [NSDictionary dictionaryWithObjectsAndKeys:
                       [self font], NSFontAttributeName,
                       textColor, NSForegroundColorAttributeName,
+                      paragraphStyle, NSParagraphStyleAttributeName,
                       nil
                       ];
         cellStringWithFormat = [[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
-                                                                attributes: attributes];
+                                                               attributes: attributes];
     }
     [self setAttributedStringValue: cellStringWithFormat];
-    
+
     [super drawWithFrame: cellFrame inView: controlView];
 }
 

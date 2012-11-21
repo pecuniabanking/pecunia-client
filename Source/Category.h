@@ -103,10 +103,7 @@ typedef enum {
 +(Category*)nassRoot;
 +(void)updateCatValues;
 +(void)setCatReportFrom: (ShortDate*)fDate to: (ShortDate*)tDate;
++ (void)recreateRoots;
++ (void)createDefaultCategories;
 
 @end
-
-// coalesce these into one @interface Category (CoreDataGeneratedAccessors) section
-@interface Category (CoreDataGeneratedAccessors)
-@end
-
