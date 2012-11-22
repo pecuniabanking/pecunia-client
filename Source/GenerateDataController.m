@@ -23,6 +23,8 @@
 #include "Category.h"
 #include "BankAccount.h"
 
+#include "GrowlNotification.h"
+
 @interface GenerateDataController ()
 
 @end
@@ -136,7 +138,7 @@
 
             // To each bank root add a few accounts. The actual number depends on the data amount flag.
             NSMutableArray *accountList = [NSMutableArray array];
-            NSUInteger accountCount = highVolume ? 10 : 3;
+            NSUInteger accountCount = arc4random() %  (highVolume ? 10 : 3);
             while (accountList.count < accountCount) {
                 NSUInteger randomIndex = arc4random() % [accounts count];
                 NSString *value = [accounts objectAtIndex: randomIndex];
@@ -174,6 +176,11 @@
 			[alert runModal];
 			return;
 		}
+
+        [GrowlNotification showMessage: NSLocalizedString(@"AP501", nil)
+                             withTitle: NSLocalizedString(@"AP500", nil)
+                               context: @"Data Generation"];
+        [NSApp stopModal];
     }
 }
 

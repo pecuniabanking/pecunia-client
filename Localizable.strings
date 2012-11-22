@@ -319,5 +319,10 @@
 "AP461" = "Es gibt noch Änderungen in Daueraufträgen die nicht an die Bank gesendet wurden. Diese Änderungen gehen durch das Abrufen der Daueraufträge verloren.";
 "AP462" = "Trotzdem abrufen";
 
+// Growl messages.
+// AP500..AP549
+"AP500" = "Daten Erzeugung";
+"AP501" = "Demo Daten wurden erstellt";
+
 // Use a new block of IDs for next set of strings!
-// AP500..AP559
+// AP550..AP599
