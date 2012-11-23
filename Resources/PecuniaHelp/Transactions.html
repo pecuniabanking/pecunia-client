@@ -29,8 +29,8 @@ Sie können mit der gleichen Funktion auch versehentlich erfasste Umsätze lösc
 <h4>Umsätze kategorisieren</h4>
 In der Kontensicht können Sie Umsätze per Drag'n Drop Kategorien zuordnen. 
 Dazu ziehen Sie einen Umsatz von der Konto-Umsatzliste auf eine Kategorie im linken Kategoriebaum. 
-Sie können grundsätzlich ein Umsatz auch mehreren Kategorien zuordnen. 
-Dann ist jedoch zu beachten, dass der Umsatz im Kategoriebaum auch mehrfach vorkommt (d.h. die Kategoriesumme ist nur begrenzt interpretierbar).
+Sie können grundsätzlich einen Umsatz auch mehreren Kategorien zuordnen.
+Dabei ist dann jedoch zu beachten, dass der Umsatz im Kategoriebaum auch mehrfach vorkommt (d.h. die Kategoriesumme ist nur begrenzt interpretierbar).
 Umsätze können auch gesplittet werden, d.h. es können verschiedene Teile des Umsatzes verschiedenen Kategorien zugeordnet werden. 
 Für eine genaue Beschreibung siehe <a href="#TransactionSplit">Umsätze splitten</a>. 
 
@@ -46,7 +46,7 @@ Dann wird nämlich genau wie in der Kategoriesicht ein Umsatz in die neue Katego
  
 <a name="TransactionSplit"></a>
 <h4>Umsätze splitten</h4>
-Sie können Umsätze gleichzeitig mehreren Kategorien zuordnen. 
+Sie können Umsätze gleichzeitig mehreren Kategorien zuordnen bzw. splitten.
 Dies ist z.B. sinnvoll bei Kreditkartenumsätzen oder anderen Avisen. 
 Dazu haben Sie 2 Möglichkeiten:
 <ul>
@@ -87,17 +87,7 @@ Im Reiter <i>Export</i> wählen Sie die auszugebenden Felder sowie das Trennzeic
 
 <a name="Import"></a>
 <h4>Umsätze importieren</h4>
-Aus anderen Anwendungen oder von der Bank erhaltene Umsätze können in Pecunia importiert werden. 
-Wählen Sie dazu im Menü <i>Umsatz/Umsätze importieren</i>. 
-Im nachfolgenden Dialog müssen Sie zunächst ein Importmodul und ein Importprofil wählen. 
-Die Module bestimmen die grundsätzliche Struktur der Datendatei, wie z.B. CSV oder SWIFT. 
-In der Regel werden die Daten in CSV-Dateien vorhanden sein, so dass hier das CSV-Modul zu wählen ist. 
-Neben dem Modul benötigt Pecunia noch ein Importprofil, das für CSV z.B. den genauen Aufbau der Datei definiert. 
-Profile müssen in der Regel manuell angelegt und eingetragen werden. 
-In der <a href="http://debugmode.de/trac/pecunia/wiki/PecuniaWiki">Pecunia-Wiki</a> gibt es ein Beispiel für ein solches Importprofil. 
-<br>
-Pecunia besitzt derzeit noch keinen Profilgenerator, so dass die Erstellung des Importprofils noch manuell durchgeführt werden muss. 
-Bei größerem Interesse wird jedoch ein solcher Profilgenerator entwickelt werden. 
+ 
 
 <a name="PurposeSplit"></a>
 <h4>Verwendungszweck splitten</h4>
@@ -106,16 +96,16 @@ Mit Pecunia haben Sie die Möglichkeit, diese Informationen zu entschlüsseln un
 Dazu ist eine einmalige Einrichtung nötig. 
 Wählen Sie dazu im Menü <i>Umsatz/Verwendungszweck splitten...</i>. 
 Im folgenden Dialog wählen Sie zunächst das betroffene Konto aus. 
-Für jedes Empfängerfeld (Name, Konto, BLZ) gibt es Felder mit der man die Position und die Länge im Verwendungszweck bestimmen kann. 
+Für jedes Empfängerfeld (Name, Konto, BLZ) gibt es Felder mit denen man die Position und die Länge der Information im Verwendungszweck bestimmen kann.
 Bei der Sparda-Bank steht z.B. der Empfängername ab Position 0 und ist 27 Zeichen lang. 
 Der eigentliche Verwendungszweck beginnt dann an Position 27.
-In der Vorschau können Sie simulieren, wie sich ihre Einstellungen auf bereits vorhandene Umsätze auswirken. 
-Drücken Sie dazu auf <i>Berechnen</i>. 
+In der Vorschau können Sie simulieren, wie sich Ihre Einstellungen auf bereits vorhandene Umsätze auswirken.
+Drücken Sie dazu auf <i>Simulieren</i>.
 Wenn Sie fertig sind und das Ergebnis korrekt aussieht, drücken Sie auf <i>Umsetzen</i>. 
 Damit werden alle Daten umgesetzt und die Einstellungen für spätere Umsatzabrufe gespeichert. 
 <br>
 Sie können auch später noch die Regeln ändern. 
-Durch Setzen des Kennzeichens <i>Bereits umgesetzte Daten erneut bearbeiten</i> werden dann prinzipiell alle Umsätze nach den neuen Regeln umgesetzt, ansonsten nur die, die noch nicht umgesetzt wurden.  
+Durch Setzen des Kennzeichens <i>Bereits umgesetzte Daten erneut bearbeiten</i> werden dann prinzipiell alle Umsätze nach den neuen Regeln umgesetzt, ansonsten nur solche, die noch nicht umgesetzt wurden.
 
  
 </div>

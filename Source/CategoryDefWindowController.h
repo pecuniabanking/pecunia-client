@@ -61,6 +61,7 @@
 - (void)calculateCatAssignPredicate;
 
 - (void)activationChanged: (BOOL)active forIndex: (NSUInteger)index;
+- (BOOL)categoryShouldChange;
 
 // PecuniaSectionItem protocol.
 - (NSView*)mainView;

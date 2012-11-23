@@ -227,7 +227,7 @@
     }
 }
 
-- (BOOL)selectionShouldChangeInOutlineView:(NSOutlineView *)outlineView
+- (BOOL)categoryShouldChange
 {
     if (currentCategory == nil) {
         return YES;

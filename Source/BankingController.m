@@ -1737,6 +1737,9 @@ BOOL runningOnLionOrLater = NO;
             if ([category isBankAccount]) {
                 return NO;
             }
+            if ([categoryDefinitionController categoryShouldChange] == NO) {
+                return NO;
+            }
         }
     }
     
