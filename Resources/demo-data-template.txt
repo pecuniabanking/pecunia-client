@@ -1,0 +1,112 @@
+[General]
+Income
+
+[Banks]
+Maledivische Nationalbank
+Deutsche Bank
+Bank of Scottland
+Bastler- und Tüftlerbank Kleinwülferode
+Barclays
+中国银行
+Bank of America
+भारतीय रिज़र्व बैंक
+Sparkasse Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch
+
+[Accounts]
+Girokonto
+Mein Konto
+Elfriedes Konto
+Hal 2000
+Hauskonto
+Pecunia Spendenkonto
+Sparkonto
+現在のアカウントのクレジット
+Parkkonto
+Überträge
+חשבון השקעה
+Kautionen
+Verein "Lokomotiven Heute"
+карма́нные де́ньги
+निवेश
+
+[Principals]
+Elektromeister Stefan Hohlmeier
+Wetten und mehr, Ihr Anbieter unabhängiger Wetten im Netz
+Pressestelle der Stadt Berlin, Bürgermeisteramt, Registrar Peter Altmeier-Hohenopfer
+Heinrich Heine, Karlsruhe
+C&A Online Shop
+Paypal
+Klarmobil GmbH
+Kreditkartenabrechnung
+Enviam
+Amazon Services Europe SA
+Kaufland sagt danke
+Heise Zeitschriften Verlag
+3 Suisse Int., 52052 Aachen
+Verlagsgruppe Weltbild GmbH
+Luitpold Apotheke, Inh. K.
+Dr. med Katrin Gomon
+Airp.FRA Heinemann DF&TV
+Alice und O2 sagen danke
+Aral Limbach-Hohensteiner
+Congstar GmbH
+Schwimmsport und Tauchsportverein Limbach-Oberfrohna
+Amexo Karten-Org.FFM
+Naturstromhandel GmbH
+Bartmeister
+Hanse Merkur Versicherungen
+Zweckverband Frohnbach
+Regionaler Zweckverband Wasserversorgung
+Nuernberger Versicherungen
+Deurag
+Allianz Pensionskasse AG
+Nemian Life
+Gothaer Allg. Vers. AG
+Mieter
+Hauptkasse Sachc442 12345
+Oracle Deutschland
+Xquisit Chemnitz
+Zalando GmbH
+Jet-Tank. 5691, Limbach-Obe
+Rundfunk ARD, ZDF, DRADIO
+O2 My Handy
+ADAC Schutzbrief AG
+Panke Sprachreisen GmbH
+Continentale/Europa Verbund
+Alte Leipziger Versicherung
+Toom Baumarkt dankt 234234234234
+Flughafen Leipzig/Halle G
+Haenig Bauzentrum
+Stadtkasse Limbach-Oberfrohde
+EC-POS EMV 1 1  GEB.EU 0,00
+Lederwaren Exclusiv Dresdde
+Tanzschule Koehler-Schimmel
+Dipl-Med. St. Eccarius
+Neue Apotheke EV Limbach-OB
+MCC Medical Carecaptial AG
+Bucher Reisen GmbH
+Naturstein Thomas Burgstaed
+
+[Purposes]
+
+[Notes]
+Das hat ja gerade nochmal so funktioniert.
+Noch so eine Überweisung und ich bin total Pleite. Hätte ich doch nur auf meine Mutter gehört.
+Und wieder eine Rate weg.
+Rückmeldung an das Bauamt notwendig.
+Mein neues MacBook Pro Retina.
+Die karierten Strümpfe für Ingrids Geburtstag.
+Een meer bier, asseblie
+Edhe një birrë, të lutem
+واحد بيرة كمان من فضلك
+Ուրիջ մեկ պիրա, հաձիս
+Beste garagardo bat, mesedez
+Molim vas, još jedno pivo
+Beer ta buu htut pay bar
+Una altra cervesa, si us plau
+请 再来一瓶啤酒
+Molim vas, dajte mi jos jedno pivo
+Ještě jedno pivo, prosím
+En øl til, tak 	Een oel til, tack
+Nog één biertje, graag 	Nog een beer-t, grahg
+Üks õlu veel, palun

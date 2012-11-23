@@ -560,11 +560,49 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     return YES;
 }
 
+/**
+ * Clears the entire data in the context. Same as if you just remove the sqlite file manually, but
+ * you can immediately start adding new data after return, without restarting the application.
+ */
+- (void)clearAllData
+{
+    NSURL *storeURL = [[context persistentStoreCoordinator] URLForPersistentStore: [[[context persistentStoreCoordinator] persistentStores] lastObject]];
 
+    // Exclusive access please. Drop pending changes.
+    [context lock];
+    [context reset];
+
+    // Delete the store from the current context.
+    NSError *error;
+    if ([[context persistentStoreCoordinator] removePersistentStore: [[[context persistentStoreCoordinator] persistentStores] lastObject]
+                                                              error: &error])
+    {
+        // Quick and effective: remove the file containing the data.
+        [[NSFileManager defaultManager] removeItemAtURL:storeURL error: &error];
+
+        // Now recreate it.
+        NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [NSNumber numberWithBool: YES], NSMigratePersistentStoresAutomaticallyOption,
+                                 [NSNumber numberWithBool: YES], NSInferMappingModelAutomaticallyOption,
+                                 nil];
+        [[context persistentStoreCoordinator] addPersistentStoreWithType: NSSQLiteStoreType
+                                                           configuration: nil
+                                                                     URL: storeURL
+                                                                 options: options
+                                                                   error: &error];
+        //recreates the persistent store
+    }
+    [context unlock];
+    if (error != nil || ![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
+}
 
 -(void)loadModel
-{	
-    
+{
+
     NSURL *momURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Accounts" ofType:@"momd"]];
     model = [[NSManagedObjectModel alloc] initWithContentsOfURL:momURL];
 }

@@ -60,7 +60,7 @@ typedef enum {
 @property (nonatomic, strong) NSDecimalNumber * balance;
 @property (nonatomic, strong) NSData * catRepColor;
 @property (nonatomic, strong) NSNumber * noCatRep;
-@property (nonatomic, strong) NSString *categoryIcon;
+@property (nonatomic) NSString *iconName;
 
 @property (nonatomic, strong) NSColor *categoryColor; // Unarchived catRepColor.
 
@@ -103,10 +103,7 @@ typedef enum {
 +(Category*)nassRoot;
 +(void)updateCatValues;
 +(void)setCatReportFrom: (ShortDate*)fDate to: (ShortDate*)tDate;
++ (void)recreateRoots;
++ (void)createDefaultCategories;
 
 @end
-
-// coalesce these into one @interface Category (CoreDataGeneratedAccessors) section
-@interface Category (CoreDataGeneratedAccessors)
-@end
-

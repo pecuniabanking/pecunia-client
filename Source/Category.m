@@ -27,9 +27,9 @@
 
 #import "GraphicsAdditions.h"
 
-static Category *catRoot = nil;
-static Category *bankRoot = nil;
-static Category *nassRoot = nil;
+static Category *catRootSingleton = nil;
+static Category *bankRootSingleton = nil;
+static Category *notAssignedRootSingleton = nil;
 
 ShortDate *startReportDate = nil;
 ShortDate *endReportDate = nil;
@@ -52,7 +52,7 @@ BOOL updateSent = NO;
 @dynamic balance;
 @dynamic noCatRep;
 @dynamic catRepColor;
-@synthesize categoryIcon;
+@dynamic iconName;
 
 @synthesize categoryColor;
 
@@ -618,7 +618,7 @@ BOOL updateSent = NO;
 {
     Category *parent;
     if ([cat isBankAccount]) return NO;
-    if (cat == nassRoot) return NO;
+    if (cat == notAssignedRootSingleton) return NO;
     
     // check for cycles
     parent = cat.parent;
@@ -695,7 +695,7 @@ BOOL updateSent = NO;
 +(Category*)bankRoot
 {
     NSError *error = nil;
-    if(bankRoot) return bankRoot;
+    if(bankRootSingleton) return bankRootSingleton;
     
     NSManagedObjectContext	*context = [[MOAssistant assistant ] context ];
     NSManagedObjectModel	*model   = [[MOAssistant assistant ] model ];
@@ -710,17 +710,17 @@ BOOL updateSent = NO;
     if([cats count ] > 0) return [cats objectAtIndex: 0 ];
     
     // create Root object
-    bankRoot = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
-    [bankRoot setValue: @"++bankroot" forKey: @"name" ];
-    [bankRoot setValue: [NSNumber numberWithBool: YES ] forKey: @"isBankAcc" ];
-    return bankRoot;
+    bankRootSingleton = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
+    [bankRootSingleton setValue: @"++bankroot" forKey: @"name" ];
+    [bankRootSingleton setValue: [NSNumber numberWithBool: YES ] forKey: @"isBankAcc" ];
+    return bankRootSingleton;
 }
 
 
 +(Category*)catRoot
 {
     NSError *error = nil;
-    if(catRoot) return catRoot;
+    if(catRootSingleton) return catRootSingleton;
     
     NSManagedObjectContext	*context = [[MOAssistant assistant ] context ];
     NSManagedObjectModel	*model   = [[MOAssistant assistant ] model ];
@@ -736,25 +736,37 @@ BOOL updateSent = NO;
     if([cats count ] > 0) return [cats objectAtIndex: 0 ];
     
     // create Category Root object
-    catRoot = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
-    [catRoot setValue: @"++catroot" forKey: @"name" ];
-    [catRoot setValue: [NSNumber numberWithBool: NO ] forKey: @"isBankAcc" ];
-    return catRoot;
+    catRootSingleton = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
+    [catRootSingleton setValue: @"++catroot" forKey: @"name" ];
+    [catRootSingleton setValue: [NSNumber numberWithBool: NO ] forKey: @"isBankAcc" ];
+    return catRootSingleton;
 }
 
 +(Category*)nassRoot
 {
     NSError *error = nil;
-    if(nassRoot) return nassRoot;
+    if(notAssignedRootSingleton) return notAssignedRootSingleton;
     
-    NSManagedObjectContext	*context = [[MOAssistant assistant ] context ];
-    NSManagedObjectModel	*model   = [[MOAssistant assistant ] model ];
+    NSManagedObjectContext	*context = [[MOAssistant assistant ] context];
+    NSManagedObjectModel	*model   = [[MOAssistant assistant ] model];
     
-    NSFetchRequest *request = [model fetchRequestTemplateForName:@"getNassRoot"];
-    NSArray *cats = [context executeFetchRequest:request error:&error];
-    if( error != nil || cats == nil || [cats count ] == 0) return nil;
-    nassRoot = [cats objectAtIndex: 0 ];
-    return nassRoot;
+    NSFetchRequest *request = [model fetchRequestTemplateForName: @"getNassRoot"];
+    NSArray *cats = [context executeFetchRequest: request error: &error];
+    if( error != nil || cats == nil) {
+        return nil;
+    }
+
+    if ([cats count ] > 0) {
+        notAssignedRootSingleton = [cats objectAtIndex: 0];
+    } else {
+        Category *notAssignedRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
+                                                                           inManagedObjectContext: context];
+        [notAssignedRootSingleton setPrimitiveValue: @"++nassroot" forKey: @"name"];
+        [notAssignedRootSingleton setValue: [NSNumber numberWithBool: NO] forKey: @"isBankAcc"];
+        [notAssignedRootSingleton setValue: catRootSingleton forKey: @"parent"];
+    }
+
+    return notAssignedRootSingleton;
 }
 
 +(void)updateCatValues
@@ -784,4 +796,78 @@ BOOL updateSent = NO;
     */
 }
 
+/**
+ * Recreate the 3 implicit root categories. Called when the entire managed context was cleared.
+ */
++ (void)recreateRoots
+{
+    catRootSingleton = nil, [self catRoot];
+    bankRootSingleton = nil, [self bankRoot];
+    notAssignedRootSingleton = nil, [self nassRoot];
+}
+
+/**
+ * Creates a set of default categories, which are quite common. These categories are defined in localizable.strings.
+ */
++ (void)createDefaultCategories
+{
+    NSString *sentinel = NSLocalizedString(@"AP300", nil); // Upper limit.
+    if (sentinel == nil || sentinel.length == 0) {
+        return;
+    }
+
+    NSUInteger lower = 250;
+    NSUInteger upper = [sentinel intValue];
+    if (upper <= lower) {
+        return;
+    }
+
+    NSUInteger lastLevel = 0;
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    Category *current = [Category nassRoot];
+
+    for (NSUInteger i = lower; i <= upper; i++) {
+        NSString *key = [NSString stringWithFormat: @"AP%lu", i];
+        NSString *name = NSLocalizedString(key, nil);
+
+        // Count leading plus chars (they determine the nesting level) and remove them.
+        NSUInteger level = 0;
+        while ([name characterAtIndex: level] == '+') {
+            level++;
+        }
+        if (level > 0) {
+            name = [name substringFromIndex: level];
+        }
+
+        Category *child = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
+        child.name = name;
+        if (level < lastLevel) {
+            // Go up the parent chain as many levels as indicated.
+            while (lastLevel > level) {
+                current = current.parent;
+                lastLevel--;
+            }
+            child.parent = current.parent;
+        } else {
+            if (level > lastLevel) {
+                // Go down one level (there must never be level increases with more than one step).
+                child.parent = current;
+                lastLevel++;
+            } else {
+                // Add new sibling to the current node.
+                child.parent = current.parent;
+            }
+        }
+        current = child;
+    }
+
+    // TODO: add rules to each category
+
+    NSError *error;
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
+}
 @end

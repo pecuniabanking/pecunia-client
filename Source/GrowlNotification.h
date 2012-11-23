@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,20 +17,12 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
-@interface StatusBarController : NSObject {
-@private
-	IBOutlet NSProgressIndicator	*progressIndicator;
-	IBOutlet NSTextField			*messageField;
-}
+#import <Growl/Growl.h>
 
-+ (StatusBarController*)controller;
+@interface GrowlNotification : NSObject <GrowlApplicationBridgeDelegate>
 
-- (void)startSpinning;
-- (void)stopSpinning;
-- (void)setMessage: (NSString*)message removeAfter: (int)secs;
-- (void)clearMessage;
-
++ (void)showMessage: (NSString *)message withTitle: (NSString *)title context: (NSString *)context;
 
 @end

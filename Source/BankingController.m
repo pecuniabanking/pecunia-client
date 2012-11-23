@@ -73,6 +73,8 @@
 #import "User.h"
 #import "BankUser.h"
 
+#import "GenerateDataController.h"
+
 // Pasteboard data types.
 NSString* const BankStatementDataType = @"BankStatementDataType";
 NSString* const CategoryDataType = @"CategoryDataType";
@@ -620,7 +622,7 @@ BOOL runningOnLionOrLater = NO;
     return obj;
 }
 
-
+// XXX: is this still required? Looks like a fix for a previous bug.
 -(void)repairCategories
 {
     NSError		*error = nil;
@@ -1944,10 +1946,10 @@ BOOL runningOnLionOrLater = NO;
         folderImage = [NSImage imageNamed: @"icon95-1"];
     }
 
-    if (cat.categoryIcon == nil) {
+    if (cat.iconName == nil) {
         [self determineDefaultIconForCategory: cat];
     }
-    [cell setImage: [NSImage imageNamed: cat.categoryIcon]];
+    [cell setImage: [NSImage imageNamed: cat.iconName]];
     
     NSInteger numberUnread = 0;
     
@@ -2442,57 +2444,7 @@ BOOL runningOnLionOrLater = NO;
  */
 - (void)createDefaultCategories
 {
-    NSString *sentinel = NSLocalizedString(@"AP300", nil); // Upper limit.
-    if (sentinel == nil || sentinel.length == 0) {
-        return;
-    }
-
-    NSUInteger lower = 250;
-    NSUInteger upper = [sentinel intValue];
-    if (upper <= lower) {
-        return;
-    }
-
-    NSUInteger lastLevel = 0;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
-    Category *current = [Category nassRoot];
-
-    for (NSUInteger i = lower; i <= upper; i++) {
-        NSString *key = [NSString stringWithFormat: @"AP%lu", i];
-        NSString *name = NSLocalizedString(key, nil);
-
-        // Count leading plus chars (they determine the nesting level) and remove them.
-        NSUInteger level = 0;
-        while ([name characterAtIndex: level] == '+') {
-            level++;
-        }
-        if (level > 0) {
-            name = [name substringFromIndex: level];
-        }
-
-        Category *child = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
-        child.name = name;
-        if (level < lastLevel) {
-            // Go up the parent chain as many levels as indicated.
-            while (lastLevel > level) {
-                current = current.parent;
-                lastLevel--;
-            }
-            child.parent = current.parent;
-        } else {
-            if (level > lastLevel) {
-                // Go down one level (there must never be level increases with more than one step).
-                child.parent = current;
-                lastLevel++;
-            } else {
-                // Add new sibling to the current node.
-                child.parent = current.parent;
-            }
-        }
-        current = child;
-    }
-
-    // TODO: add rules to each category
+    [Category createDefaultCategories];
 }
 
 /**
@@ -2550,7 +2502,7 @@ BOOL runningOnLionOrLater = NO;
     NSString *name = category.name;
     if ([name hasPrefix: @"++"]) {
         // One of the predefined root notes. They don't have an image.
-        category.categoryIcon = @"";
+        category.iconName = @"";
         return;
     }
 
@@ -2579,9 +2531,9 @@ BOOL runningOnLionOrLater = NO;
                     currentCount = keywords.count;
                 }
 
-                // If there current keyword count is 1 then we can't get any better. So stop here with what we have.
+                // If the current keyword count is 1 then we can't get any better. So stop here with what we have.
                 if (currentCount == 1) {
-                    category.categoryIcon = bestMatch;
+                    category.iconName = bestMatch;
                     return;
                 }
             } else {
@@ -2593,7 +2545,7 @@ BOOL runningOnLionOrLater = NO;
             }
         }
     }
-    category.categoryIcon = bestMatch;
+    category.iconName = bestMatch;
 }
 
 #pragma mark -
@@ -3057,11 +3009,28 @@ BOOL runningOnLionOrLater = NO;
 #pragma mark -
 #pragma mark Developer tools
 
-- (IBAction)deleteAllData:(id)sender {
+- (IBAction)deleteAllData: (id)sender {
+    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP193", nil),
+                                      NSLocalizedString(@"AP194", nil),
+                                      NSLocalizedString(@"no", nil),
+                                      NSLocalizedString(@"yes", nil),
+                                      nil
+                                      );
+    if (res != NSAlertAlternateReturn) {
+        return;
+    }
+
+    [MOAssistant.assistant clearAllData];
+    [Category recreateRoots];
 }
 
-- (IBAction)generateData:(id)sender {
+- (IBAction)generateData: (id)sender {
+    GenerateDataController *generator = [[GenerateDataController alloc] init];
+    [NSApp runModalForWindow: generator.window];
 }
+
+#pragma mark -
+#pragma mark Other stuff
 
 -(void)migrate
 {

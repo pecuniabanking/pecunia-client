@@ -201,6 +201,8 @@
 "AP190" = "Unbekannte Bankkennung";
 "AP191" = "Die Bankkennung %@ für die Bankleitzahl %@ ist nicht vorhanden. Bitte legen Sie sie erneut an";
 "AP192" = "Die Daten wurden erfolgreich migriert";
+"AP193" = "Alle Daten löschen";
+"AP194" = "Achtung: alle Daten, wie Umsätze, Konten, Kategorien und Regeln werde gelöscht. Es sollte ein Backup der Datendatei existieren (z.B. über Time Machine), da sonst alle Daten unwiederbringlich verloren sind.\n\nMöchten Sie Ihre Daten wirklich löschen?";
 
 // Bank accounts + users
 // AP200..AP249
@@ -317,5 +319,10 @@
 "AP461" = "Es gibt noch Änderungen in Daueraufträgen die nicht an die Bank gesendet wurden. Diese Änderungen gehen durch das Abrufen der Daueraufträge verloren.";
 "AP462" = "Trotzdem abrufen";
 
+// Growl messages.
+// AP500..AP549
+"AP500" = "Daten Erzeugung";
+"AP501" = "Demo Daten wurden erstellt";
+
 // Use a new block of IDs for next set of strings!
-// AP500..AP559
+// AP550..AP599

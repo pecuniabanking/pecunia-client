@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,18 +19,14 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface StatusBarController : NSObject {
-@private
-	IBOutlet NSProgressIndicator	*progressIndicator;
-	IBOutlet NSTextField			*messageField;
-}
+@interface GenerateDataController : NSWindowController
 
-+ (StatusBarController*)controller;
+@property (strong) IBOutlet NSTextField *path;
+@property (strong) IBOutlet NSButtonCell *highVolumeRadioButton;
+@property (strong) IBOutlet NSButton *removeOldDataCheckBox;
 
-- (void)startSpinning;
-- (void)stopSpinning;
-- (void)setMessage: (NSString*)message removeAfter: (int)secs;
-- (void)clearMessage;
-
+- (IBAction)selectFile: (id)sender;
+- (IBAction)close: (id)sender;
+- (IBAction)start: (id)sender;
 
 @end
