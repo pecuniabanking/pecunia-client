@@ -132,7 +132,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
     _cellYOffsets = NULL;
 	
 	[_selectedRows removeAllIndexes];
-    _lastSelectedRow = -1;
+    _selectionAnchor = -1;
 	
 	if([delegate conformsToProtocol:@protocol(PXListViewDelegate)])
 	{

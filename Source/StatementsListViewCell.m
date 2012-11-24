@@ -240,6 +240,7 @@ static CurrencyValueTransformer* currencyTransformer;
 {
     [self setNeedsDisplay: YES];
 }
+
 - (IBAction)activationChanged: (id)sender
 {
     if ([self.delegate conformsToProtocol: @protocol(StatementsListViewNotificationProtocol)]) {

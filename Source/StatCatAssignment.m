@@ -96,7 +96,9 @@
 			return;
 		}
 	}
-	
+
+    [context processPendingChanges];
+
 	self.category = tcat;
 	if (tcat == ncat || scat == ncat) {
         [self.statement updateAssigned];
@@ -114,9 +116,10 @@
 		[context deleteObject:stat ];
 		stat = nil;
 	} else [context deleteObject: self ];
+
 	// important: do changes to the graph since updateAssigned counts on an updated graph
-	[context processPendingChanges ];
-	if (stat) [stat updateAssigned ];
+	[context processPendingChanges];
+	if (stat) [stat updateAssigned];
 	[cat invalidateBalance ];
 }
 

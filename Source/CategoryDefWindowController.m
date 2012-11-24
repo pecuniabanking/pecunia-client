@@ -70,8 +70,14 @@
     
     // Setup statements listview.
     [statementsListView bind: @"dataSource" toObject: assignPreviewController withKeyPath: @"arrangedObjects" options: nil];
-    //[statementsListView bind: @"valueArray" toObject: assignPreviewController withKeyPath: @"arrangedObjects.value" options: nil];
-    
+
+    // The assignments list listens to selection changes in the statements listview (and vice versa).
+    [assignPreviewController bind: @"selectionIndexes" toObject: statementsListView withKeyPath: @"selectedRows" options: nil];
+    [statementsListView bind: @"selectedRows" toObject: assignPreviewController withKeyPath: @"selectionIndexes" options: nil];
+
+    // We listen to selection changes in the list.
+    [assignPreviewController addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
+
     // Some appealing colors for (positive and negative) values.
     NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                         [NSColor applicationColorForKey: @"Positive Cash"], NSForegroundColorAttributeName,
@@ -280,26 +286,48 @@
     [self calculateCatAssignPredicate];
 }
 
-- (void)assignToCategory: (StatCatAssignment*)assignment 
-{
+- (IBAction)assignEntries:(id)sender {
+    NSArray *entries = assignPreviewController.selectedObjects;
+    if (entries.count == 0) {
+        entries = assignPreviewController.arrangedObjects;
+    }
+    for (StatCatAssignment *entry in entries) {
+        [entry.statement assignAmount: [entry value] toCategory: currentCategory];
+    }
+
+    [currentCategory invalidateBalance];
+    [Category updateCatValues];
+
+    // Explicitly reload the listview. When removing from a category it happens automatically.
+    // Not so when adding, though.
+    [statementsListView reloadData];
+
     NSError* error;
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
+}
+
+- (void)assignToCategory: (StatCatAssignment*)assignment
+{
     if (currentCategory == nil) {
         return;
     }
-    
+
     [assignment.statement assignAmount: [assignment value] toCategory: currentCategory];
     
     [currentCategory invalidateBalance];
     [Category updateCatValues];
     
-    // Explicitly reload the listview. When removing from a category it happens automatically.
-    // Not so when adding, though.
     [statementsListView reloadData];
     
-    // save updates
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    if([context save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError:error];
+    NSError* error;
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return;
     }
@@ -351,6 +379,21 @@
 - (CGFloat)splitView: (NSSplitView *)splitView constrainMaxCoordinate: (CGFloat)proposedMax ofSubviewAt: (NSInteger)dividerIndex
 {
     return NSHeight([splitView frame]) - 200;
+}
+
+#pragma mark -
+#pragma mark KVO
+
+- (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context
+{
+    if (object == assignPreviewController) {
+        if (assignPreviewController.selectedObjects.count == 0) {
+            assignEntriesButton.title = NSLocalizedString(@"AP550", @"");
+        } else {
+            assignEntriesButton.title = NSLocalizedString(@"AP551", @"");
+        }
+        [assignEntriesButton setEnabled: [assignPreviewController.arrangedObjects count] > 0];
+    }
 }
 
 #pragma mark -

@@ -150,7 +150,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     // Coalesce many notifications into one.
     if (context == DataSourceBindingContext) {
         [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
-        pendingRefresh = YES;
+        pendingReload = YES;
         [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
     } else {
         // If there's already a full reload pending do nothing.
@@ -165,6 +165,10 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                 pendingRefresh = YES;
                 [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.1];
             }
+        } else {
+            // Reschedule the reload call.
+            [NSObject cancelPreviousPerformRequestsWithTarget: self];
+            [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
         }
     }
 }
@@ -364,41 +368,6 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 }
 
 /**
- * Used to set all values for the current cells again, for changes not covered by KVO.
- */
-- (void)updateSelectedCells
-{
-    NSIndexSet* selection = [self selectedRows];
-    NSUInteger index = [selection firstIndex];
-    while (index != NSNotFound) {
-        StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
-        [self fillCell: cell forRow: index];
-        index = [selection indexGreaterThanIndex: index];
-    }
-}
-
-/**
- * Used to set all values for the those cells that were dragged previously, for changes not covered by KVO.
- */
-- (void)updateDraggedCells
-{
-    if (draggedIndexes == nil)
-        return;
-    
-    NSUInteger index = [draggedIndexes firstIndex];
-    while (index != NSNotFound) {
-        StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
-        
-        // The cell can actually have been removed
-        if (cell != nil)
-            [self fillCell: cell forRow: index];
-        index = [draggedIndexes indexGreaterThanIndex: index];
-    }
-    
-    draggedIndexes = nil;
-}
-
-/**
  * Triggered when KVO notifies us about changes.
  */
 - (void)updateVisibleCells
@@ -408,6 +377,34 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     NSArray *cells = [self visibleCells];
     for (StatementsListViewCell *cell in cells)
         [self fillCell: cell forRow: [cell row]];
+}
+
+/**
+ * Activates all selected cells. If no cell is selected then all cells are activated.
+ * Implicitly makes all cells show the activator.
+ */
+- (void)activateCells
+{
+    activating = YES;
+    @try {
+        NSIndexSet* selection = [self selectedRows];
+        if (selection.count > 0) {
+            NSUInteger index = [selection firstIndex];
+            while (index != NSNotFound) {
+                StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
+                [cell showActivator: YES markActive: YES];
+                index = [selection indexGreaterThanIndex: index];
+            }
+        } else {
+            for (NSUInteger index = 0; index < [dataSource count]; index++)  {
+                StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
+                [cell showActivator: YES markActive: YES];
+            }
+        }
+    }
+    @finally {
+        activating = NO;
+    }
 }
 
 #pragma mark -
@@ -459,9 +456,11 @@ extern NSString* const BankStatementDataType;
 
 - (void)cellActivationChanged: (BOOL)state forIndex: (NSUInteger)index
 {
-    // Simply forward the notification to the notification delegate if any is set.
-    if ([self.owner respondsToSelector: @selector(activationChanged:forIndex:)]) {
-        [self.owner activationChanged: state forIndex: index];
+    if (!activating) {
+        // Simply forward the notification to the notification delegate if any is set.
+        if ([self.owner respondsToSelector: @selector(activationChanged:forIndex:)]) {
+            [self.owner activationChanged: state forIndex: index];
+        }
     }
 }
 

@@ -27,7 +27,7 @@ CGColorRef CGColorCreateFromNSColor(NSColor *color);
 + (NSColor*)nextDefaultCategoryColor;
 + (NSColor*)applicationColorForKey: (NSString*)key;
 
-- (CGColorRef)CGColor; // There's an NSColor implementation starting with 10.8.
+- (CGColorRef)asCGColor; // There's an NSColor CGColor implementation starting with 10.8.
 
 @end
 
