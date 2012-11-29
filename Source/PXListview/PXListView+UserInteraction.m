@@ -192,49 +192,67 @@ static PXIsDragStartResult PXIsDragStart( NSEvent *startEvent, NSTimeInterval th
     [[self window] makeFirstResponder:self];
     
     BOOL		tryDraggingAgain = YES;
-    BOOL		shouldToggle = theEvent == nil || ([theEvent modifierFlags] & NSCommandKeyMask) || ([theEvent modifierFlags] & NSShiftKeyMask);	// +++ Shift should really be a continuous selection.
+    BOOL		shouldToggle = theEvent == nil || ([theEvent modifierFlags] & NSCommandKeyMask);
+    BOOL        rangeSelect = (theEvent != nil) && ([theEvent modifierFlags] & NSShiftKeyMask);
     BOOL		isSelected = [_selectedRows containsIndex: [theCell row]];
-    NSIndexSet	*clickedIndexSet = [NSIndexSet indexSetWithIndex: [theCell row]];
+    NSInteger   clickedRow = [theCell row];
+    NSIndexSet	*clickedIndexSet = [NSIndexSet indexSetWithIndex: clickedRow];
     
     // If a cell is already selected, we can drag it out, in which case we shouldn't toggle it:
     if( theEvent && isSelected && [self attemptDragWithMouseDown: theEvent inCell: theCell] )
         return;
-    
-    if( _allowsMultipleSelection )
-    {
-        if( isSelected && shouldToggle )
-        {
-            if( [_selectedRows count] == 1 && !_allowsEmptySelection )
-                return;
-            [self deselectRowIndexes: clickedIndexSet];
+
+    if (!shouldToggle && !rangeSelect) {
+        // General case. No modifier pressed. If not yet selected select it. Remove all other selected rows.
+        if (!isSelected) {
+            [self selectRowIndexes: clickedIndexSet byExtendingSelection: NO];
+        } else {
+            // If already selected remove all other selections but keep this selected.
+            // If there's no other selection do nothing.
+            if (_selectedRows.count != 1) {
+                [self selectRowIndexes: clickedIndexSet byExtendingSelection: NO];
+                tryDraggingAgain = NO;
+            }
         }
-        else if( !isSelected && shouldToggle )
-            [self selectRowIndexes: clickedIndexSet byExtendingSelection: YES];
-        else if( !isSelected && !shouldToggle )
-            [self selectRowIndexes: clickedIndexSet byExtendingSelection: NO];
-        else if( isSelected && !shouldToggle && [_selectedRows count] != 1 )
-        {
-            [self selectRowIndexes: clickedIndexSet byExtendingSelection: NO];
-            tryDraggingAgain = NO;
+        _selectionAnchor = clickedRow;
+    } else {
+        // Modifier pressed. Toggle is preferred over range select.
+        if (shouldToggle) {
+            if (isSelected && (_selectedRows.count > 1 || _allowsEmptySelection)) {
+                // The only selected row should be removed from the selection. Don't remove it
+                // however, if it is not allowed to have an empty selection.
+                [self deselectRowIndexes: clickedIndexSet];
+                tryDraggingAgain = NO;
+            } else {
+                // Add row to selection.
+                if (_selectedRows.count == 0 || _allowsMultipleSelection) {
+                    [self selectRowIndexes: clickedIndexSet byExtendingSelection: YES];
+                }
+            }
+            _selectionAnchor = clickedRow;
+        } else {
+            // Range selection. The most complicated case. It means: select all nodes from the selection anchor
+            // to the clicked row. Remove all rows outside this range from the selection. If multiselection is not
+            // enabled then ignore the request. If there's no range anchor yet then act as if no modifier was pressed.
+            if (!_allowsMultipleSelection) {
+                if (!isSelected) {
+                    tryDraggingAgain = NO;
+                }
+            } else {
+                if (_selectionAnchor == -1) {
+                    _selectionAnchor = clickedRow;
+                } else {
+                    NSRange range = NSMakeRange((clickedRow < _selectionAnchor) ? clickedRow : _selectionAnchor,
+                                                abs(clickedRow - _selectionAnchor) + 1);
+                    clickedIndexSet = [NSIndexSet indexSetWithIndexesInRange: range];
+                }
+                [self selectRowIndexes: clickedIndexSet byExtendingSelection: NO];
+            }
         }
     }
-    else if( shouldToggle && _allowsEmptySelection )
-    {
-        if( isSelected )
-        {
-            [self deselectRowIndexes: clickedIndexSet];
-            tryDraggingAgain = NO;
-        }
-        else
-            [self selectRowIndexes: clickedIndexSet byExtendingSelection: NO];
-    }
-    else
-    {
-        [self selectRowIndexes: clickedIndexSet byExtendingSelection: NO];
-    }
-    
+
     // If a user selects a cell, they need to be able to drag it off right away, so check for that case here:
-    if( tryDraggingAgain && theEvent && [_selectedRows containsIndex: [theCell row]] )
+    if( tryDraggingAgain && theEvent && [_selectedRows containsIndex: clickedRow] )
         [self attemptDragWithMouseDown: theEvent inCell: theCell];
 }
 

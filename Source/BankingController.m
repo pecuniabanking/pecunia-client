@@ -1856,7 +1856,7 @@ BOOL runningOnLionOrLater = NO;
         // update values including rollup
         [Category updateCatValues];
         
-        [statementsListView updateDraggedCells];
+        //[statementsListView updateVisibleCells];
     } else {
         NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data];        
         NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
@@ -1865,7 +1865,6 @@ BOOL runningOnLionOrLater = NO;
         [scat setValue: cat forKey: @"parent"];
         [[Category catRoot] rollup];
     }
-    //	[accountsView setNeedsDisplay: YES];
     
     // save updates
     if([self.managedObjectContext save: &error] == NO) {
@@ -2291,7 +2290,7 @@ BOOL runningOnLionOrLater = NO;
             {
                 [cat invalidateBalance];
                 [Category updateCatValues];
-                [statementsListView updateSelectedCells];
+                [statementsListView updateVisibleCells];
             }
         }
     }

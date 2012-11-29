@@ -324,5 +324,10 @@
 "AP500" = "Daten Erzeugung";
 "AP501" = "Demo Daten wurden erstellt";
 
-// Use a new block of IDs for next set of strings!
+// Category assignments.
 // AP550..AP599
+"AP550" = "Alle Einträge zuweisen";
+"AP551" = "Ausgewählte Einträge zuweisen";
+
+// Use a new block of IDs for next set of strings!
+// AP600..AP649

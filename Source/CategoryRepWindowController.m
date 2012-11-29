@@ -1115,7 +1115,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     }
 
     categoryInfoLayer.text = [NSString stringWithFormat: @" %@ ", category];
-    categoryInfoLayer.backgroundColor = [color CGColor];
+    categoryInfoLayer.backgroundColor = [color asCGColor];
     
     [infoLayer sizeToFit];
 }
