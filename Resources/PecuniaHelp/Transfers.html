@@ -7,56 +7,36 @@
 <body>
 <div style="font-family: Helvetica; font-size:90%">
 <a name="Transfers"></a>
-<h3>Überweisungen durchführen</h3>
-Sie können in Pecunia Standardüberweisungen (Inlandsüberweisungen), Terminierte Überweisungen und EU-Überweisungen durchführen. 
-Um eine Überweisung durchzuführen wählen sie zuerst das Konto aus, das belastet werden soll und wählen dann eine der folgenden Überweisungsoptionen:
+<h1>Die Überweisungssicht</h1>
+    <div align="center"><img src="gfx/Transfers_scaled.png"></img></div><br>
+    In der Überweisungssicht erstellen und verwalten Sie Überweisungen und Überweisungsvorlagen. Die Überweissungssicht besteht aus 3 Bereichen:
+    <ul>
+        <li>Im Bereich links oben sehen Sie eine Liste aller noch nicht an die Bank übermittelten Überweisungen. Wenn Sie auf die Schaltfläche <i>Alle Aufträge senden</i> klicken werden die Aufträge zur Bank gesendet. Existieren für ein Konto mehrere Überweisungen, prüft Pecunia die Kontoeinstellungen bezüglich Sammelverarbeitung. Ist im Konto angegeben, dass Sammelüberweisungen auf Anfrage oder immer durchgeführt werden sollen, werden die Umsätze für das Konto zusammengefasst und als eine Sammelüberweisung gesendet.
+        </li>
+        <li>Im Bereich links unten sehen Sie die Liste der bereits gesendeten Überweisungen bzw. die Liste der Überweisungsvorlagen. Die Listen können über die Schaltflächen <i>Abgeschlossen</i> bzw. <i>Vorlagen</i> umgeschaltet werden.
+        </li>
+        <li>Im Bereich rechts erstellen Sie Überweisungen. Sie haben die Wahl zwischen Standardüberweisung (Inlandsüberweisung), Umbuchung, EU-Auslandsüberweisung (ohne Meldeteil) und SEPA-Überweisung. Wählen Sie den gewünschten Typ indem Sie das entsprechende Muster in den Bearbeitungsbereich rechts unten ziehen. Bestimmen sie dann das Konto, welches belastet werden soll und füllen Sie die Felder auf dem Überweisungsformular. Wenn das Konto bzw. der Geschäftsvorfall eine Terminierung erlaubt, können Sie im Formular unten ein Zieldatum eintragen.<br>
+        Wenn Sie mit der Überweisung fertig sind, können Sie sie entweder direkt senden (<i>Sofort Senden</i>) oder in die Warteschlange stellen (<i>Zur Warteschlange</i>).
+        </li>
+    </ul>
+        
+    
+<h2>Arbeiten mit Überweisungsvorlagen</h2>
+Sie erstellen eine Überweisungsvorlage indem Sie einfach eine Überweisung aus dem Arbeitsbereich in die Vorlagen-Liste ziehen. Es erscheint ein Dialog, in dem Sie einen Namen für die Vorlage bestimmen. Mit dem Namen können Sie später die Vorlage leichter finden.<br>
+Sie können auch aus bereits abgeschlossenen Überweisungen Vorlagen erzeugen. Ziehen Sie dazu einfach eine abgeschlossene Überweisung in den Arbeitsbereich und danach in die Vorlagenliste.<br>
+Arbeiten Sie wann immer möglich mit Überweisungsvorlagen, sie die Gefahr von Falscheingaben minimieren. Bitte beachten Sie dass die Bank nicht haftet wenn Sie versehentlich eine falsche Kontonummer oder Bankleitzahl eintragen.
 
 <table cellspacing = "10">
 <tr>
-<td style="vertical-align: top"><img style="width: 32px; height: 32px;" alt="Inlandsüberweisung" src="gfx/Transfer_32.png"></img></td>
-<td>Anlegen einer Inlandsüberweisung.
+<td style="vertical-align: top"><img style="width: 48px; height: 48px;" alt="Achtung!" src="gfx/exclamation.png"></img></td>
+<td>
+Prüfen Sie Ihre Vorlagen von Zeit zu Zeit, da auch Unternehmen und Behörden gelegentlich ihre Kontoverbindungen ändern. In der Regel sind dann zwar die alten Verbindungen noch eine Weile aktiv, aber eben nicht für immer. 
 </td>
 </tr>
-<tr>
-<td style="vertical-align: top"><img style="width: 32px; height: 32px;" alt="Terminierte Überweisung" src="gfx/Transfer_Dated_32.png"></img></td>
-<td>Anlegen einer Terminierten Überweisung. Hier müssen Sie ein Datum eingeben, zu dem die Überweisung ausgeführt werden soll.
-</td>
-</tr>
-<tr>
-<td style="vertical-align: top"><img style="width: 32px; height: 32px;" alt="EU-Überweisung" src="gfx/EUTransfer_32.png"></img></td>
-<td>Anlegen einer EU-Überweisung. Hier müssen Sie ein IBAN und BIC des Empfängers spezifizieren.
-</td>
-</tr>
+</table> 
 
-</table>
-
-Im anschließenden Überweisungsdialog geben Sie wie gewohnt die Überweisungsdaten an. 
-Wählen Sie <i>Nächste Überweisung</i> wenn Sie für das gleiche Konto eine weitere Überweisung anlegen möchten und <i>Fertig</i> wenn Sie keine weiteren Überweisungen mehr anlegen möchten.
-<table cellspacing = "10">
-<tr>
-<td style="vertical-align: top"><img style="width: 32px; height: 32px;" alt="Überweisungsvorlagen" src="gfx/Transfer_help.png"></img></td>
-<td>Überweisungen können als Vorlage markiert und später über die Vorlagenauswahl kopiert werden. 
-Dies ist <b>dringend</b> zu empfehlen wenn regelmäßig Überweisungen an gleiche Empfänger durchgeführt werden, da es das Risiko der Fehleingabe minimiert. 
-Die Bank haftet nämlich nicht für Überweisungen, die versehentlich an falsche Konten geschickt wurden. 
-<br></br>
-Im Überweisungsdialog können Sie die Überweisung als Vorlage (<i>Sichern als Vorlage unter</i>) speichern und sie dann später unter dem gewählten Namen wiederfinden. 
-</td>
-</tr>
-</table>
-Die Überweisungen werden nicht direkt an die Bank gesendet sondern zunächst in der Überweisungsliste gesammelt. 
-Dort können sie dann geprüft und ggfs. gesammelt an die Bank übermittelt werden. 
-Wenn Sie Pecunia schließen und es befinden sich noch nicht gesendete Überweisungen in der Überweisungsliste, wird eine entsprechende Informationsmeldung ausgegeben.
-<br><br>
-Sie können für jedes Konto über <i>Konto/ändern...</i> bestimmen, ob die Überweisungen gebündelt als Sammelüberweisung oder einzeln an die Bank gesendet werden.
-Beide Verfahren haben Vor- und Nachteile. 
-Bei der Sammelüberweisung können Sie viele Überweisungen mit einer einzigen TAN versenden. 
-Die Bank weist dann aber auch nur einen Sammelumsatz aus, so dass die Informationen über die einzelnen Buchungen verloren gehen.
-
-<a name="ManageTemplates"></a>
-<h4>Überweisungsvorlagen verwalten</h4>
-Sie können über das Menü <i>Bank/Überweisungsvorlagen...</i> Ihre Überweisungsvorlagen bearbeiten. 
-Jede Überweisung hat einen Namen bzw. eine Beschreibung, damit sie später bei der Überweisung schnell gefunden werden kann. 
-Sie können über die Buttonleiste unter der Liste Vorlagen anlegen, löschen und ändern. 
+<h2>Drucken der Überweisungsliste</h2>
+Über <i>Konto/Drucken…</i> drucken Sie eine Liste aller abgeschlossenen Überweisungen. Es ist derzeit nicht möglich, nur einen Teil der Überweisungen zu drucken. Sie können aber später bei der Druckausgabe die zu druckenden Seiten eingrenzen.
 
 </div>
 </body>

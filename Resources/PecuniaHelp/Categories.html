@@ -9,11 +9,11 @@
 <a name="Categories"></a>
 <table>
 <tr>
-<td><img style="width: 48px; height: 48px;" alt="Pecunia" src="gfx/catdef4.png"></td>
-<td><h3>Kategorien</h3></td>
+<td><img style="width: 32px; height: 32px;" alt="Pecunia" src="gfx/rules-active.png"></td>
+<td><h1>Kategoriepflege</h1></td>
 </tr>
 </table>
-Die Kategorie-Sicht besteht aus drei Teilen:
+Die Kategoriepflege besteht aus drei Teilen:
 <ul>
 <li>Im Kategorie-Baum auf der linken Seite sehen Sie die Hierarchie der bisher definierten Kategorien. 
 Sie können über die Buttonleiste unten Kategorien einfügen und löschen. 
@@ -29,8 +29,8 @@ In der Vorschau sehen Sie die Umsätze, die zur oben definierten Regel passen.
 </ul>
 
 <a name="CategoryMaintenance"></a>
-<h4>Kategoriepflege</h4>
-Kategorien können sowohl in der Kategorie- als auch in der Kontensicht angelegt, geändert und gelöscht werden. 
+<h2>Kategoriepflege</h2>
+Kategorien können sowohl in der Kategorie- als auch in der Umsatzsicht angelegt, geändert und gelöscht werden. 
 Die Vorgehensweise ist immer gleich.
 <table cellspacing = "10">
 <tr>
@@ -51,15 +51,15 @@ Die Vorgehensweise ist immer gleich.
 </table>
 Sie können Kategorien im Kategoriebaum per Drag'n Drop auch an eine andere Stelle verschieben.
 
-<h4>Regeln pflegen</h4>
+<h2>Regeln pflegen</h2>
 Für jede Kategorie kann eine Regel gepflege werden. 
 Die Regel kann dazu verwendet werden, um Umsätze manuell oder automatisch zuzuordnen. 
 <br>
-Für eine manuelle Zuordnung definiert man eine Regel ohne sie an der Kategorie zu speichern. 
-In der Vorschau können Sie dann aus der Treffermenge ausgewählte Umsätze manuell zuordnen. Dazu ziehen Sie die gewünschten Umsätze auf die Kategorie. Alternativ kann man auch mehrere Umsätze markieren und sie dann über <i>Umsätze zuordnen</i> der gewählten Kategorie zuordnen.
+Um Umsätze manuell zuzuordnen definieren Sie eine Regel ohne sie an der Kategorie zu speichern. 
+In der Vorschau können Sie dann aus der Treffermenge ausgewählte Umsätze manuell zuordnen. Dazu ziehen Sie die gewünschten Umsätze auf die Kategorie oder aktivieren sie durch Klick auf das Auswahlfeld im der Umsatzanzeige. 
 <br><br>
 Für eine automatische Zuordnung speichert man die Regel. 
-Dann wird sie beim <u>nächsten</u> Umsatzabruf berücksichtigt und passende Umsätze automatisch der Kategorie zugeordnet. Das gilt jedoch nicht für bereits existierende Umsätze, diese müssen manuell zugeordnet werden. Wenn die definierte Regel genau passt können Sie dazu einfach alle Umsätze in der Vorschau markieren und mittels <i>Umsätze zuordnen</i> der ausgewählten Kategorie zuordnen.
+Dann wird sie beim <u>nächsten</u> Umsatzabruf berücksichtigt und passende Umsätze automatisch der Kategorie zugeordnet. Das gilt jedoch nicht für bereits existierende Umsätze, diese müssen manuell zugeordnet werden. Wenn die definierte Regel genau passt können Sie dazu einfach alle Umsätze in der Vorschau markieren und der ausgewählten Kategorie zuordnen.
 <br><br>
 Für die Definition der Regeln stehen die Felder <i>Verwendungszweck, Empfänger, Empfängerkonto</i> sowie <i>Eigenes Konto</i> zur Verfügung.
 Für diese Felder können Zeichenkettenoperatoren angewendet werden, wie etwa <i>beginnt mit</i> oder <i>beinhaltet</i>. 
@@ -68,18 +68,18 @@ Auch reguläre Ausdrücke sind möglich.
 Nach Definition einer Regel werden die passenden Umsätze in der Vorschau angezeigt. 
 Ist das Kennzeichen <i>woanders zugeordnete Umsätze ausblenden</i> markiert, werden nur Umsätze angezeigt, die noch keiner anderen Kategorie zugeordnet sind.
 
-<h4>Umsätze zuordnen</h4>
-In der Vorschau werden die Umsätze, die bereits der Kategorie zugeordnet sind, durch einen grünen Haken gekennzeichnet. 
-Die Zuordnung kann gelöscht werden indem man die entsprechenden Umsätze markiert und dann auf den Button <i>Zuordnung löschen</i> drückt.
+<h2>Umsätze zuordnen</h2>
+In der Vorschau werden die Umsätze, die bereits der Kategorie zugeordnet sind, durch ein markiertes Auswahlfeld gekennzeichnet. 
+Die Zuordnung kann gelöscht werden indem man das Kennzeichen zurücksetzt.
 Noch nicht zugeordnete Umsätze können auf folgende Arten zugewiesen werden: 
 <ul>
-<li>Markieren Sie die gewünschten Umsätze und drücken Sie anschließend auf den Button <i>Umsätze zuordnen</i>. 
+<li>Markieren Sie die gewünschten Umsätze durch das Auswahlfeld. 
 Die markierten Umsätze werden dann der ausgewählten Kategorie zugeordnet.
 <br><br>
 </li>
 <li>
 Markieren Sie die gewünschten Umsätze und ziehen Sie sie per Drag'n Drop auf eine beliebige Kategorie im Kategoriebaum. 
-Sind die Umsätze der aktuell ausgewählten Kategorie bereits zugeordnet, dann wird die Zuordnung auf die neue Kategorie (das Ziel des Drag'n Drop) verschoben (d.h. die Zuordnung zur alten Kategorie wird gelöscht). 
+Sind die Umsätze der aktuell ausgewählten Kategorie bereits zugeordnet, dann wird die Zuordnung auf die neue Kategorie (das Ziel des Drag'n Drop) <u>verschoben</u> (d.h. die Zuordnung zur alten Kategorie wird gelöscht). 
 Durch Drücken der Optionstaste während des Drag'n Drop-Vorgangs kann man erreichen, dass die Zuordnung zur neuen Kategorie additiv erfolgt, d.h. die Umsätze sind danach sowohl der alten als auch der neuen Kategorie zugeordnet. 
 </li>
 </ul>

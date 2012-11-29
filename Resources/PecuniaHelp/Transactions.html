@@ -6,10 +6,10 @@
 </head>
 <body>
 <div style="font-family: Helvetica; font-size:90%">
-<h3>Umsätze verwalten</h3>
+<h1>Umsätze verwalten</h1>
 
 <a name="TransactionCreate"></a>
-<h4>Umsätze anlegen</h4>
+<h2>Umsätze anlegen</h2>
 Sie können für manuelle Konten Umsätze anlegen. Wählen Sie dazu im Menü <i>Umsatz/neu...</i>. 
 Im anschließend erscheinenden Dialogfenster können sie alle Daten des Umsatzes erfassen. Sie können auch gleich eine Kategorie zuordnen.
 <br>
@@ -20,13 +20,13 @@ Die im Dialog erfassten Umsätze werden gemäß Buchungsdatum in die Liste der U
 Der Kontosaldo wird automatisch fortgeschrieben.
 
 <a name="TransactionDelete"></a>
-<h4>Umsatz löschen</h4>
+<h2>Umsatz löschen</h2>
 Manchmal kann es vorkommen, dass die Duplettenprüfung Umsätze nicht richtig erkennt und dann Umsätze doppelt vorhanden sind. 
 In diesem Fall können Sie über das Menü <i>Umsatz/Löschen</i> den doppelten Umsatz löschen. 
 Sie können mit der gleichen Funktion auch versehentlich erfasste Umsätze löschen.
 
 <a name="TransactionCategorize"></a>
-<h4>Umsätze kategorisieren</h4>
+<h2>Umsätze kategorisieren</h2>
 In der Kontensicht können Sie Umsätze per Drag'n Drop Kategorien zuordnen. 
 Dazu ziehen Sie einen Umsatz von der Konto-Umsatzliste auf eine Kategorie im linken Kategoriebaum. 
 Sie können grundsätzlich einen Umsatz auch mehreren Kategorien zuordnen.
@@ -45,7 +45,7 @@ Dann wird nämlich genau wie in der Kategoriesicht ein Umsatz in die neue Katego
 </table> 
  
 <a name="TransactionSplit"></a>
-<h4>Umsätze splitten</h4>
+<h2>Umsätze splitten</h2>
 Sie können Umsätze gleichzeitig mehreren Kategorien zuordnen bzw. splitten.
 Dies ist z.B. sinnvoll bei Kreditkartenumsätzen oder anderen Avisen. 
 Dazu haben Sie 2 Möglichkeiten:
@@ -63,7 +63,7 @@ Die Änderungen im Dialog werden direkt aktiv, verlassen Sie den Dialog indem Si
 </li>
 </ul>
 
-<h4>Zusatzinformationen erfassen</h4>
+<h2>Zusatzinformationen erfassen</h2>
 Sie können für jeden Umsatz Zusatzinformationen erfassen, z.B. auf dem Detailbild zum Umsatz in der Kontensicht. 
 Genau genommen können Sie nicht nur für jeden Umsatz Zusatzinformationen erfassen sondern für jede Zuordnung eines Umsatzes zu einer Kategorie. 
 Damit haben Sie die Möglichkeit z.B. bei Kreditkartenumsätzen die Verwendung bei jeder zugeordneten Kategorie zu dokumentieren. 
@@ -71,7 +71,7 @@ Zur Vereinfachung der Pflege werden Zusatzinformationen, die bei einem Konto-Ums
 Genauso wird bei einer Zuordnung eines Konto-Umsatzes zu einer Kategorie eine im Umsatz bereits gepflege Information in die Kategorie übernommen und kann dort ggfs. überschrieben werden. 
 
 <a name="Export"></a>
-<h4>Umsätze exportieren</h4>
+<h2>Umsätze exportieren</h2>
 Sie können Umsätze eines Kontos oder einer Kategorie über das Menü <i>Umsatz/Umsätze exportieren</i> in eine Datei exportieren. 
 Im nachfolgenden Speichern-Dialog wählen Sie die Zieldatei und den gewünschten Zeitraum aus. 
 Außerdem können Sie bestimmen, ob die Umsätze von Unterknoten des gewählten Knotens mit einbezogen werden sollen oder nicht.
@@ -86,11 +86,21 @@ Im Reiter <i>Export</i> wählen Sie die auszugebenden Felder sowie das Trennzeic
 </table> 
 
 <a name="Import"></a>
-<h4>Umsätze importieren</h4>
- 
+<h2>Umsätze importieren</h2>
+Um Umsätze im CSV-Format in Pecunia zu importieren wählen Sie <i>Umsatz/Umsätze importieren…</i>. Es erscheint ein Dialogfenster, in dem Sie die Importeinstellungen sowie die zu importierende CSV-Datei angeben können. Sie können hier auch neue Importeinstellungen erstellen oder bestehende ändern.
+
+<h3>Importeinstellungen pflegen</h3>
+Mit den Importeinstellungen geben Sie Pecunia Informationen über den Aufbau der zu importierenden Daten. Sie können mehrere Importeinstellungen pflegen, etwa wenn Sie Umsätze mehrerer externer Konten importieren möchten.<br>
+Zunächst einmal müssen Sie bestimmen, in welcher Reihenfolge Informationen wie Buchungsdatum, Betrag, Verwendungszweck usw. in der Datei stehen. Dazu müssen Sie die Datei analysieren. Manchmal sind die Spalten auch mit Überschriften versehen, aus denen man die Information ableiten kann. In der Tabelle <i>Felder in der Datendatei</i> tragen Sie nun nacheinander ein welche Information in welcher Spalte der Importdatei steht. Dabei ist wichtig, dass die Reihenfolge in der Tabelle exakt der Reihenfolge in der Datei entspricht. Ist in der Datendatei eine Spalte enthalten für die es in Pecunia kein Feld gibt, wählen Sie <i>Unbestimmt</i>.<br>
+Als nächstes geben Sie das Trennzeichen an, das in der Datei verwendet wird. Wichtig: Komma und Punkt können nicht verwendet werden, da diese Zeichen in Beträgen vorkommen. Wählen Sie dann das verwendete Datumsformat sowie die Zeichenkodierung. Die Zeichenkodierung ist in der Regel 8859-1. Wenn die Datendatei keines der angegebenen Datumformate hat können Sie auch ein eigenes Datumformat eintragen. Die Formatzeichenkette muss dabei der Spezifikation im Unicode Technical Standard #35 entsprechen (Date Format Patterns).<br>
+Bitte geben Sie außerdem an, wie viele Zeilen übersprungen werden sollen, d.h. ab welcher Zeile die eigentlichen Umsätze beginnen. Zählen Sie auch eine etwaige Überschriftenzeile dazu.<br>
+Bestimmen Sie abschließend das Konto auf das die Umsätze gebucht werden sollen. Wenn die Importdatei immer den gleichen Namen hat können sie ihn ebenfalls in den Einstellungen speichern und müssen ihn somit im Importdialog nicht mehr angeben.
+
+
+
 
 <a name="PurposeSplit"></a>
-<h4>Verwendungszweck splitten</h4>
+<h2>Verwendungszweck splitten</h2>
 Manche Banken verschlüsseln Empfängerinformationen wie Empfängername, Konto etc. im Verwendungszweck. 
 Mit Pecunia haben Sie die Möglichkeit, diese Informationen zu entschlüsseln und in die richtigen Felder zu übertragen. 
 Dazu ist eine einmalige Einrichtung nötig. 
