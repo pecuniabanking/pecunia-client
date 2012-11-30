@@ -213,7 +213,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     
     if (isSandboxed) {
         if (dataDir != nil) {
-            if ([dataDir hasPrefix:@"/Users/"] && [dataDir hasSuffix:@"/Library/Application Support/Pecunia/Data"]) {
+            if ([dataDir hasSuffix:@"/Library/Application Support/Pecunia/Data"]) {
                 // it's the default directory, set the DataDir to nil
                 [defaults setValue: nil forKey: dataDirKey ];
                 dataDir = defaultDataDir;

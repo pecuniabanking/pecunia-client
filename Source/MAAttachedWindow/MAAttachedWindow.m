@@ -14,12 +14,22 @@ extern BOOL runningOnLionOrLater;
 #define MAATTACHEDWINDOW_SCALE_FACTOR \
   ((runningOnLionOrLater) ? [[NSScreen mainScreen] userSpaceScaleFactor] : [[NSScreen mainScreen] backingScaleFactor])
 
+float _scaleFactor()
+{
+    if ([[NSScreen mainScreen] respondsToSelector:@selector(backingScaleFactor)]) {
+        return [[NSScreen mainScreen] backingScaleFactor];
+    } else {
+        return [[NSScreen mainScreen] userSpaceScaleFactor];
+    }
+}
+
 @interface MAAttachedWindow (MAPrivateMethods)
 
 // Geometry
 - (void)_updateGeometry;
 - (MAWindowPosition)_bestSideForAutomaticPosition;
 - (float)_arrowInset;
+- (float)_scaleFactor;
 
 // Drawing
 - (void)_updateBackground;
@@ -36,6 +46,15 @@ extern BOOL runningOnLionOrLater;
 @synthesize window;
 
 #pragma mark Initializers
+
+- (float)scaleFactor
+{
+    if ([[NSScreen mainScreen] respondsToSelector:@selector(backingScaleFactor)]) {
+        return [[NSScreen mainScreen] backingScaleFactor];
+    } else {
+        return [[NSScreen mainScreen] userSpaceScaleFactor];
+    }
+}
 
 
 - (MAAttachedWindow *)initWithView:(NSView *)aView
@@ -185,18 +204,18 @@ extern BOOL runningOnLionOrLater;
     contentRect.size = [view frame].size;
     
     // Account for viewMargin.
-    _viewFrame = NSMakeRect(viewMargin * MAATTACHEDWINDOW_SCALE_FACTOR,
-                            viewMargin * MAATTACHEDWINDOW_SCALE_FACTOR,
+    _viewFrame = NSMakeRect(viewMargin * _scaleFactor(),
+                            viewMargin * _scaleFactor(),
                             [view frame].size.width, [view frame].size.height);
     contentRect = NSInsetRect(contentRect, 
-                              -viewMargin * MAATTACHEDWINDOW_SCALE_FACTOR, 
-                              -viewMargin * MAATTACHEDWINDOW_SCALE_FACTOR);
+                              -viewMargin * _scaleFactor(), 
+                              -viewMargin * _scaleFactor());
     
     // Account for arrowHeight in new window frame.
     // Note: we always leave room for the arrow, even if it currently set to 
     // not be shown. This is so it can easily be toggled whilst the window 
     // is visible, without altering the window's frame origin point.
-    float scaledArrowHeight = arrowHeight * MAATTACHEDWINDOW_SCALE_FACTOR;
+    float scaledArrowHeight = arrowHeight * _scaleFactor();
     switch (_side) {
         case MAPositionLeft:
         case MAPositionLeftTop:
@@ -319,10 +338,10 @@ extern BOOL runningOnLionOrLater;
     }
     NSPoint pointOnScreen = (self.window) ? [self.window convertBaseToScreen:_point] : _point;
     NSSize viewSize = [view frame].size;
-    viewSize.width += (viewMargin * MAATTACHEDWINDOW_SCALE_FACTOR) * 2.0;
-    viewSize.height += (viewMargin * MAATTACHEDWINDOW_SCALE_FACTOR) * 2.0;
+    viewSize.width += (viewMargin * _scaleFactor()) * 2.0;
+    viewSize.height += (viewMargin * _scaleFactor()) * 2.0;
     MAWindowPosition side = MAPositionBottom; // By default, position us centered below.
-    float scaledArrowHeight = (arrowHeight * MAATTACHEDWINDOW_SCALE_FACTOR) + _distance;
+    float scaledArrowHeight = (arrowHeight * _scaleFactor()) + _distance;
     
     // We'd like to display directly below the specified point, since this gives a 
     // sense of a relationship between the point and this window. Check there's room.
@@ -414,7 +433,7 @@ extern BOOL runningOnLionOrLater;
 - (float)_arrowInset
 {
     float cornerInset = (drawsRoundCornerBesideArrow) ? cornerRadius : 0;
-    return (cornerInset + (arrowBaseWidth / 2.0)) * MAATTACHEDWINDOW_SCALE_FACTOR;
+    return (cornerInset + (arrowBaseWidth / 2.0)) * _scaleFactor();
 }
 
 
@@ -454,7 +473,7 @@ extern BOOL runningOnLionOrLater;
     // Draw border if appropriate.
     if (borderWidth > 0) {
         // Double the borderWidth since we're drawing inside the path.
-        [bgPath setLineWidth:(borderWidth * 2.0) * MAATTACHEDWINDOW_SCALE_FACTOR];
+        [bgPath setLineWidth:(borderWidth * 2.0) * _scaleFactor()];
         [borderColor set];
         [bgPath stroke];
     }
@@ -478,7 +497,7 @@ extern BOOL runningOnLionOrLater;
      6. cornerRadius
      */
     
-    float scaleFactor = MAATTACHEDWINDOW_SCALE_FACTOR;
+    float scaleFactor = _scaleFactor();
     float scaledRadius = cornerRadius * scaleFactor;
     float scaledArrowWidth = arrowBaseWidth * scaleFactor;
     float halfArrowWidth = scaledArrowWidth / 2.0;
@@ -665,7 +684,7 @@ extern BOOL runningOnLionOrLater;
         return;
     }
     
-    float scaleFactor = MAATTACHEDWINDOW_SCALE_FACTOR;
+    float scaleFactor = _scaleFactor();
     float scaledArrowWidth = arrowBaseWidth * scaleFactor;
     float halfArrowWidth = scaledArrowWidth / 2.0;
     float scaledArrowHeight = arrowHeight * scaleFactor;

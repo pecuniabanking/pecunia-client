@@ -90,23 +90,21 @@
         [NSApp terminate: self];
     }
     
-    [task setLaunchPath: @"/usr/bin/java" ];
+    NSString *bundlePath = [[NSBundle mainBundle ] bundlePath ];
+    NSString *jarPath = [bundlePath stringByAppendingString:@"/Contents/HBCIServer.jar" ];
+    NSString *launchPath = [bundlePath stringByAppendingString:@"/Contents/Plugins/jdk1.7.0_07.jdk/Contents/Home/bin/java"];
+    
+    //[task setLaunchPath: @"/usr/bin/java" ];
+    [task setLaunchPath: launchPath];
     //	[task setEnvironment: [NSDictionary dictionaryWithObjectsAndKeys: @"/users/emmi/workspace/HBCIServer", @"CLASSPATH", nil ] ];
     
-    NSString *bundlePath = [[NSBundle mainBundle ] bundlePath ];
-    NSString *launchPath = [bundlePath stringByAppendingString:@"/Contents/HBCIServer.jar" ];
+    [task setArguments: [NSArray arrayWithObjects: @"-jar", jarPath, nil ] ];
     
+    /*
     if ([LaunchParameters parameters ].debugServer) {
-        [task setArguments: [NSArray arrayWithObjects: @"-Xdebug", @"-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005", @"-jar", launchPath, nil ] ];
-    } else [task setArguments: [NSArray arrayWithObjects: @"-jar", launchPath, nil ] ];
-    
-    /*	
-     [[NSNotificationCenter defaultCenter] addObserver:self 
-     selector:@selector(getData:) 
-     name: NSFileHandleReadCompletionNotification 
-     object: [[task standardOutput] fileHandleForReading]];
-     */	
-    //    [[[task standardOutput] fileHandleForReading] readInBackgroundAndNotify];
+        [task setArguments: [NSArray arrayWithObjects: @"-Xdebug", @"-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005", @"-jar", jarPath, nil ] ];
+    } else [task setArguments: [NSArray arrayWithObjects: @"-jar", jarPath, nil ] ];
+    */
     
     // launch the task asynchronously
     [task launch];
@@ -115,11 +113,6 @@
         // consume jvm status message
         [[inPipe fileHandleForReading ] availableData ];
     }
-    
-    // init 
-    //	NSString *cmd = @"<command name=\"init\"><path>/users/emmi/workspace/HBCIServer</path></command>.\n";
-    //	[[outPipe fileHandleForWriting ] writeData: [cmd dataUsingEncoding: NSUTF8StringEncoding ] ];
-    //	[self receive ];
 }
 
 

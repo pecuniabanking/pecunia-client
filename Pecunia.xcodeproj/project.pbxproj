@@ -395,6 +395,7 @@
 		B1D4500E147844C3008DD256 /* AccountCreate.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D4500D147844C3008DD256 /* AccountCreate.xib */; };
 		B1D4506E147848D3008DD256 /* AccountMaintenance.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D4506D147848D3008DD256 /* AccountMaintenance.xib */; };
 		B1D6C9EE0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */; };
+		B1DE0769165FB554004FFC8A /* jre.zip in Resources */ = {isa = PBXBuildFile; fileRef = B1DE0768165FB554004FFC8A /* jre.zip */; };
 		B1E8119D0FF6863D00BF7451 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165DFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		B1E811A20FF6874F00BF7451 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1F454370F101E7500BAF4E8 /* Localizable.strings */; };
 		B1E811F00FF68B3700BF7451 /* PecuniaHelp in Resources */ = {isa = PBXBuildFile; fileRef = B1E811D70FF68B3700BF7451 /* PecuniaHelp */; };
@@ -1001,6 +1002,7 @@
 		B1D4506D147848D3008DD256 /* AccountMaintenance.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountMaintenance.xib; sourceTree = "<group>"; };
 		B1D6C9EC0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMOutlineViewLayout.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMOutlineViewLayout.m; sourceTree = "<group>"; tabWidth = 4; };
+		B1DE0768165FB554004FFC8A /* jre.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = jre.zip; sourceTree = "<group>"; };
 		B1E811D70FF68B3700BF7451 /* PecuniaHelp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PecuniaHelp; sourceTree = "<group>"; };
 		B1EC7B251508077100813E1A /* TanSigningOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanSigningOption.h; sourceTree = "<group>"; };
 		B1EC7B261508077100813E1A /* TanSigningOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanSigningOption.m; sourceTree = "<group>"; };
@@ -1514,6 +1516,7 @@
 				B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */,
 				27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */,
 				B15FCCEE141422A3000738B6 /* HBCIServer.jar */,
+				B1DE0768165FB554004FFC8A /* jre.zip */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
 				B1F454370F101E7500BAF4E8 /* Localizable.strings */,
@@ -2292,6 +2295,7 @@
 				277B47881659081E008D410A /* icon98-1.icns in Resources */,
 				277B47891659081E008D410A /* icon99-1.icns in Resources */,
 				277B478C16593643008D410A /* category-icon-defaults.txt in Resources */,
+				B1DE0769165FB554004FFC8A /* jre.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2309,7 +2313,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# copylibs.sh\n# Pecunia\n#\n# Created by Frank Emminghaus on 11.07.12.\n# Copyright 2012 Frank Emminghaus. All rights reserved.\necho \"$TARGET_BUILD_DIR/Pecunia.app/Contents/\"\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/pcsc-ctapi-wrapper.dylib\"\nif [ $? -ne 0 ]; then\n  echo \"copy libs\"\n  cp \"$SRCROOT/Resources/pcsc-ctapi-wrapper.dylib\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents\"\n  cp \"$SRCROOT/Resources/libhbci4java-card-mac-os-x-10.6.jnilib\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents\"\nfi\n";
+			shellScript = "#!/bin/sh\n\n# copylibs.sh\n# Pecunia\n#\n# Created by Frank Emminghaus on 11.07.12.\n# Copyright 2012 Frank Emminghaus. All rights reserved.\necho \"$TARGET_BUILD_DIR/Pecunia.app/Contents/\"\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/pcsc-ctapi-wrapper.dylib\"\nif [ $? -ne 0 ]; then\n  echo \"copy libs\"\n  cp \"$SRCROOT/Resources/pcsc-ctapi-wrapper.dylib\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents\"\n  cp \"$SRCROOT/Resources/libhbci4java-card-mac-os-x-10.6.jnilib\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns\"\nif [ $? -ne 0 ]; then\n  echo \"create plugins directory\"\n  mkdir \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns/jdk1.7.0_07.jdk\"\nif [ $? -ne 0 ]; then\n  echo \"copy java runtime\"\n  unzip \"$SRCROOT/Resources/jre.zip\" -d \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

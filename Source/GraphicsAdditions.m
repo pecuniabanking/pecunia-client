@@ -178,12 +178,7 @@ static NSMutableDictionary* applicationColors;
     return [NSColor blackColor];
 }
 
-// Suppress warning about this method reimplementing a same named function in the primary class,
-// as this is available not before 10.8.
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
-
-- (CGColorRef)CGColor
+- (CGColorRef)asCGColor
 {
     // First convert ourselve to a color with an RGB colorspace in case we use a pattern
     // or named color space. If we are already using an RGB colorspace then a reference
@@ -197,8 +192,6 @@ static NSMutableDictionary* applicationColors;
     
     return CGColorCreate(colorspace, components);
 }
-
-#pragma clang diagnostic pop
 
 @end
 

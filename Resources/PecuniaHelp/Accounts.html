@@ -7,7 +7,7 @@
 <body>
 <div style="font-family: Helvetica; font-size:90%">
 <a name="AccountMaintenance"></a>
-<h3>Konten pflegen</h3>
+<h1>Konten pflegen</h1>
 Pecunia unterscheidet zwei Arten von Konten: Bankkonten und manuelle Konten. 
 Bankkonten sind einer Bankkennung zugeordnet, manuelle Konten nicht. 
 Das heißt aber nicht, dass manuelle Bankkonten nicht einem realen Bankkonto entsprechen können. 
@@ -17,37 +17,32 @@ Es gibt aber auch Banken, die keine Kontoinformationen zur Verfügung stellen.
 Dann müssen die Konten manuell eingerichtet werden (mit Bankkennung!).
 
 <a name="AccountCreate"></a>
-<h4>Konto anlegen</h4>
+<h2>Konto anlegen</h2>
 Konten können über das Menü <i>Konto/neu...</i> angelegt werden. 
 Im folgenden Dialog geben Sie die Informationen zu Ihrem Konto ein. 
-Als erstes müssen Sie eine Bankkennung zuordnen. 
-Wählen Sie <i>Keine (manuelle Kontoverwaltung)</i> für ein manuelles Konto.
+Dazu ordnen Sie als erstes eine Bankkennung zu.
+Wählen Sie <i>Keine (manuelle Kontoverwaltung)</i> wenn Sie ein manuelles Konto anlegen möchten.
 <br>
 Für Bankkonten  haben Sie zusätzlich folgende Optionen:
 <ul>
-<li><i><b>Daueraufträge:</b></i> Für das Konto können Daueraufträge definiert werden.
-<br>
-Diese Information wird zwar grundsätzlich von der Bank gesendet, jedoch gibt es viele Banken die sich nicht 100%ig an die HBCI-Spezifikation halten. 
-Daher muss die Information hier hinterlegt werden, damit Daueraufträge definiert werden können.
-<br><br>
 </li>
 <li><i><b>Kein automatischer Umsatzabruf:</b></i> Umsätze werden nur dann geladen, wenn nur das Konto markiert ist. 
-Insbesondere bei automatischen Abrufen, etwa bei Programmstart, wird dieses Konto nicht berücksichtigt.
+Insbesondere bei automatischen Abrufen, etwa bei Programmstart, wird dieses Konto nicht berücksichtigt. Setzen Sie das Kennzeichen auch für Konten, für die noch kein Umsatzabruf unterstützt wird (z.B. Kreditkartenkonten).
 <br><br>
 </li>
 </ul>
 
 Bei manuellen Konten geben Sie für Kontonummer und Bankleitzahl die entsprechenden Daten ein, wenn das Konto real existiert. 
-Hat das manuelle Konto keine Entsprechung als reales Konto, können Sie beliebige Werte als Bankleitzahl und Kontonummer eintragen (z.B. BLZ=9 für alle Geldkonten). 
+Hat das manuelle Konto keine Entsprechung als reales Konto, können Sie beliebige Werte in die Felder Bankleitzahl und Kontonummer eintragen (z.B. BLZ=9 für alle Geldkonten).
 <br>
 Zusätzlich können Sie bei manuellen Konten einen Anfangssaldo und eine Übertragungsregel definieren. 
 Die Übertragungsregel hat den Zweck manuelle Nebenkonten zu pflegen. Die Funktionsweise solcher Nebenkonten wird nachfolgenden erklärt.
 
-<h4>Manuelle Nebenkonten</h4>
+<h2>Manuelle Nebenkonten</h2>
 Manuelle Neben- oder Geldkonten repräsentieren Geldbestände, die nicht auf einer Bank liegen bzw. für die ein HBCI-Zugriff nicht möglich ist. 
 Diese Konten haben die Besonderheit, dass ein (mehr oder weniger regelmäßiger) Transfer vom Bankkonto auf den Bestand umgebucht wird. 
 Diese Umbuchung wird auf dem Bankkonto durch einen entsprechenden Umsatz sichtbar. 
-Dieser Umsatz teilt sich dann in der Regel in viele kleine Umsätze auf, die aber anhand des Bankkontos nicht sichtbar sind. 
+Dieser Umsatz teilt sich dann in der Regel in viele kleine Umsätze auf, die aber auf dem Bankkonto nicht sichtbar sind.
 Um mit solchen Umsätzen umzugehen gibt es zwei Möglichkeiten:
 <ul>
 <li>Die Umsätze werden gesplittet, d.h. auf mehrere Kategorien aufgeteilt.</li>
@@ -62,16 +57,27 @@ Auf dem Nebenkonto können die Einzelausgaben dann als manuelle Umsätze eingetr
 Für den Transfer der Bankumsätze auf das manuelle Nebenkonto kann eine Regel definiert werden. 
 Die Definition der Übertragungsregel erfolgt analog der Regelpflege für die Zuordnung zu Kategorien, mit der Einschränkung dass nur die Felder <i>Konto</i> und <i>Verwendungszweck</i> zur Verfügung stehen.
  
-<h4>Konto ändern</h4>
+<h2>Konto ändern</h2>
 Sie können bestimmte (nicht alle) Attribute eines Kontos nachträglich ändern. Dazu wählen Sie im Menü <i>Konto/ändern...</i>. 
-Im nachfolgenden Dialog können sie die eingabebereiten Felder ändern. 
-Der Dialog hat im wesentlichen den gleichen Aufbau wie bei <i><a href="#AccountCreate">Konto anlegen</a></i> beschrieben.
+Im folgenden Dialog können sie die eingabebereiten Felder ändern.
+Der Dialog hat im wesentlichen den gleichen Aufbau wie unter <i><a href="#AccountCreate">Konto anlegen</a></i> beschrieben.
 
-<h4>Konto löschen</h4>
+<a name="AccountDelete"/>
+<h2>Konto löschen</h2>
 Sie können ein markiertes Konto über das Menü <i>Konto/löschen</i> aus Pecunia löschen. 
-Wenn das Konto bereits Bankumsätze hat, erscheint ein Bestätigungsdialog. 
-In diesem Dialog müssen Sie entscheiden, ob die Umsätze, die bereits Kategorien zugeordnet sind, behalten werden sollen. 
+Wenn das Konto bereits Bankumsätze besitzt, erscheint ein Bestätigungsdialog.
+In diesem Dialog müssen Sie entscheiden, ob Sie die Umsätze, die bereits Kategorien zugeordnet sind, behalten möchten.
 In der Regel ist diese Frage mit <i>Ja</i> zu beantworten. Ansonsten werden sich die Kategoriewerte entsprechend ändern.
+    
+    <table cellspacing = "10">
+        <tr>
+            <td style="vertical-align: top"><img style="width: 48px; height: 48px;" alt="Achtung!" src="gfx/exclamation.png"></img></td>
+            <td>
+                Sie sollten die Konten nur dann löschen, wenn noch keine Umsätze vorhanden sind oder Sie die Umsätze nicht mehr benötigen.
+                Das Löschen der Konten kann nicht mehr rückgängig gemacht werden!
+            </td>
+        </tr>
+    </table>
 
 </div>
 </body>

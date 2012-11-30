@@ -32,11 +32,11 @@
 {
     IBOutlet NSArrayController	*assignPreviewController;
     IBOutlet NSPredicateEditor	*predicateEditor;
-	IBOutlet NSView				*rightSplitContent;
     IBOutlet NSView             *topView;
     IBOutlet StatementsListView *statementsListView;
     IBOutlet NSButton           *saveButton;
     IBOutlet NSButton           *discardButton;
+    IBOutlet NSButton           *assignEntriesButton;
     
     IBOutlet BWGradientBox      *predicatesBackground;
 	
@@ -51,16 +51,19 @@
 
 @property (nonatomic, strong) TimeSliceManager* timeSliceManager;
 @property (nonatomic, strong) Category* category;
+@property (strong) IBOutlet NSSplitView *splitter;
 
-- (IBAction)predicateEditorChanged:(id)sender;
-- (IBAction)saveRule:(id)sender;
-- (IBAction)deleteRule:(id)sender;
-- (IBAction)hideAssignedChanged:(id)sender;
+- (IBAction)predicateEditorChanged: (id)sender;
+- (IBAction)saveRule: (id)sender;
+- (IBAction)deleteRule: (id)sender;
+- (IBAction)hideAssignedChanged: (id)sender;
+- (IBAction)assignEntries: (id)sender;
 
 - (void)setManagedObjectContext: (NSManagedObjectContext*)context;
 - (void)calculateCatAssignPredicate;
 
 - (void)activationChanged: (BOOL)active forIndex: (NSUInteger)index;
+- (BOOL)categoryShouldChange;
 
 // PecuniaSectionItem protocol.
 - (NSView*)mainView;

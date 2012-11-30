@@ -36,7 +36,7 @@
 
 	BOOL _allowsEmptySelection;
 	BOOL _allowsMultipleSelection;
-    NSInteger _lastSelectedRow;
+    NSInteger _selectionAnchor;
     
 	BOOL _verticalMotionCanBeginDrag;
     
