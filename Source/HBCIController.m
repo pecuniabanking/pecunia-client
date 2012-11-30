@@ -159,7 +159,7 @@ NSString *escapeSpecial(NSString *s)
     BankParameter *bp=nil;
     
     if ([self registerBankUser:user error:&error]) {
-        NSString *cmd = [NSString stringWithFormat: @"<command name=\"getBankParameterRaw\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
+        NSString *cmd = [NSString stringWithFormat: @"<command name=\"getBankParameterRaw\"><userBankCode>%@</userBankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
         bp = [bridge syncCommand:cmd error:&error ];
     }
     if (error) {
@@ -201,7 +201,7 @@ NSString *escapeSpecial(NSString *s)
     PecuniaError *error=nil;
     NSArray *accs=nil;
     if ([self registerBankUser:user error:&error]) {
-        NSString *cmd = [NSString stringWithFormat: @"<command name=\"getAccounts\"><bankCode>%@</bankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
+        NSString *cmd = [NSString stringWithFormat: @"<command name=\"getAccounts\"><userBankCode>%@</userBankCode><userId>%@</userId></command>", user.bankCode, user.userId ];
         accs = [bridge syncCommand: cmd error:&error ];
     }
     if (error != nil) {
@@ -295,8 +295,8 @@ NSString *escapeSpecial(NSString *s)
     }
     
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"isJobSupported\">" ];
-    [self appendTag: @"bankCode" withValue: account.bankCode to: cmd ];
     [self appendTag: @"userId" withValue: account.userId to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
     [self appendTag: @"jobName" withValue: jobName to: cmd ];
     [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd ];
     [self appendTag: @"subNumber" withValue: account.accountSuffix to:cmd ];
@@ -385,8 +385,8 @@ NSString *escapeSpecial(NSString *s)
     }
     
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getJobRestrictions\">" ];
-    [self appendTag: @"bankCode" withValue: account.bankCode to: cmd ];
-    [self appendTag: @"userId" withValue: account.userId to: cmd ];
+    [self appendTag: @"userId" withValue: user.userId to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
     [self appendTag: @"jobName" withValue: jobname to: cmd ];
     [cmd appendString: @"</command>" ];
     result = [bridge syncCommand: cmd error: &error ];
@@ -620,7 +620,8 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"accountNumber" withValue: transfer.account.accountNumber to: cmd];
     [self appendTag: @"subNumber" withValue: transfer.account.accountSuffix to: cmd];
     [self appendTag: @"customerId" withValue: transfer.account.customerId to: cmd];
-    [self appendTag: @"userId" withValue: transfer.account.userId to: cmd];
+    [self appendTag: @"userId" withValue: user.userId to: cmd];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
     [cmd appendString:@"<transfers type=\"list\">" ];
     for(transfer in transfers) {
         [cmd appendString: @"<transfer>"];
@@ -700,7 +701,8 @@ NSString *escapeSpecial(NSString *s)
             [self appendTag: @"accountNumber" withValue: transfer.account.accountNumber to: cmd];
             [self appendTag: @"subNumber" withValue: transfer.account.accountSuffix to: cmd];
             [self appendTag: @"customerId" withValue: transfer.account.customerId to: cmd];
-            [self appendTag: @"userId" withValue: transfer.account.userId to: cmd];
+            [self appendTag: @"userId" withValue: user.userId to: cmd];
+            [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
             [self appendTag: @"remoteAccount" withValue: transfer.remoteAccount to: cmd];
             [self appendTag: @"remoteBankCode" withValue: transfer.remoteBankCode to: cmd];
             [self appendTag: @"remoteName" withValue: transfer.remoteName to: cmd];
@@ -812,7 +814,7 @@ NSString *escapeSpecial(NSString *s)
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"addUser\">" ];
 
     [self appendTag: @"name" withValue: user.name to: cmd ];
-    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
     [self appendTag: @"customerId" withValue: user.customerId to: cmd ];
     [self appendTag: @"userId" withValue: user.userId to: cmd ];
     [self appendTag: @"version" withValue: user.hbciVersion to: cmd ];
@@ -878,7 +880,7 @@ NSString *escapeSpecial(NSString *s)
     PecuniaError *error=nil;
     
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"deletePassport\">" ];
-    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
     [self appendTag: @"userId" withValue: user.userId to: cmd ];
 
     SecurityMethod secMethod = [user.secMethod intValue ];
@@ -947,7 +949,9 @@ NSString *escapeSpecial(NSString *s)
             fromString = [dateFormatter stringFromDate:fromDate ];
             if (fromString) [cmd appendFormat:@"<fromDate>%@</fromDate>", fromString ];
         }
-        [cmd appendFormat:@"<userId>%@</userId></accinfo>", result.userId ];
+        [self appendTag:@"userId" withValue:user.userId to:cmd];
+        [self appendTag:@"userBankCode" withValue:user.bankCode to:cmd ];
+        [cmd appendString:@"</accinfo>"];
     }
     [cmd appendString:@"</accinfolist></command>" ];
     //[self startProgress ];
@@ -1017,7 +1021,8 @@ NSString *escapeSpecial(NSString *s)
         [self appendTag: @"bankCode" withValue: result.bankCode to: cmd ];
         [self appendTag: @"accountNumber" withValue: result.accountNumber to: cmd ];
         [self appendTag: @"subNumber" withValue:result.accountSubnumber to:cmd ];
-        [self appendTag: @"userId" withValue: result.userId to: cmd ];
+        [self appendTag: @"userId" withValue: user.userId to: cmd ];
+        [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
         [cmd appendString:@"</accinfo>" ];
     }
     [cmd appendString:@"</accinfolist></command>" ];
@@ -1025,7 +1030,7 @@ NSString *escapeSpecial(NSString *s)
     [bridge asyncCommand: cmd sender: self ];
 }
 
--(void)prepareCommand:(NSMutableString*)cmd forStandingOrder:(StandingOrder*)stord
+-(void)prepareCommand:(NSMutableString*)cmd forStandingOrder:(StandingOrder*)stord user:(BankUser*)user
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%d" allowNaturalLanguage:NO];
     
@@ -1033,7 +1038,8 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"accountNumber" withValue: stord.account.accountNumber to: cmd ];
     [self appendTag: @"subNumber" withValue: stord.account.accountSuffix to:cmd ];
     [self appendTag: @"customerId" withValue: stord.account.customerId to: cmd ];
-    [self appendTag: @"userId" withValue: stord.account.userId to: cmd ];
+    [self appendTag: @"userId" withValue: user.userId to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
     [self appendTag: @"remoteAccount" withValue: stord.remoteAccount to: cmd ];
     [self appendTag: @"remoteBankCode" withValue: stord.remoteBankCode to: cmd ];
     [self appendTag: @"remoteName" withValue: stord.remoteName to: cmd ];
@@ -1110,7 +1116,7 @@ NSString *escapeSpecial(NSString *s)
             if (stord.orderKey == nil) {
                 // create standing order
                 NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"addStandingOrder\">" ];
-                [self prepareCommand:cmd forStandingOrder:stord ];			
+                [self prepareCommand:cmd forStandingOrder:stord user:user];
                 [cmd appendString: @"</command>" ];
                 
                 NSDictionary *result = [bridge syncCommand: cmd error: &err  ];
@@ -1127,7 +1133,7 @@ NSString *escapeSpecial(NSString *s)
             } else if ([stord.toDelete boolValue ] == YES) {
                 // delete standing order
                 NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"deleteStandingOrder\">" ];
-                [self prepareCommand:cmd forStandingOrder:stord ];
+                [self prepareCommand:cmd forStandingOrder:stord user:user];
                 if (stord.orderKey) {
                     [self appendTag:@"orderId" withValue:stord.orderKey to:cmd ];
                 }
@@ -1146,7 +1152,7 @@ NSString *escapeSpecial(NSString *s)
             } else {
                 // change standing order
                 NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"changeStandingOrder\">" ];
-                [self prepareCommand:cmd forStandingOrder:stord ];
+                [self prepareCommand:cmd forStandingOrder:stord user:user];
                 [self appendTag:@"orderId" withValue:stord.orderKey to:cmd ];			
                 [cmd appendString: @"</command>" ];
                 
@@ -1387,7 +1393,7 @@ NSString *escapeSpecial(NSString *s)
     if([self registerBankUser:user error:&error] == NO) return error;
 
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"updateBankData\">" ];
-    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
     [self appendTag: @"customerId" withValue: user.customerId to: cmd ];
     [self appendTag: @"userId" withValue: user.userId to: cmd ];
     [cmd appendString: @"</command>" ];
@@ -1419,7 +1425,7 @@ NSString *escapeSpecial(NSString *s)
     if([self registerBankUser:user error:&error] == NO) return error;
 
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"resetPinTanMethod\">" ];
-    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
     [self appendTag: @"userId" withValue: user.userId to: cmd ];
     [cmd appendString: @"</command>" ];
     
@@ -1443,7 +1449,8 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"bankCode" withValue: msg.account.bankCode to: cmd ];
     [self appendTag: @"accountNumber" withValue: msg.account.accountNumber to:cmd ];
     [self appendTag: @"subNumber" withValue: msg.account.accountSuffix to:cmd ];
-    [self appendTag: @"userId" withValue: msg.account.userId to: cmd ];
+    [self appendTag: @"userId" withValue: user.userId to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
     [self appendTag: @"head" withValue: msg.header to: cmd ];
     [self appendTag: @"body" withValue: msg.message to: cmd ];
     [self appendTag: @"recpt" withValue: msg.receipient to: cmd ];
@@ -1478,7 +1485,8 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"bankCode" withValue: account.bankCode to: cmd ];
     [self appendTag: @"accountNumber" withValue: account.accountNumber to:cmd ];
     [self appendTag: @"subNumber" withValue: account.accountSuffix to:cmd ];
-    [self appendTag: @"userId" withValue: account.userId to: cmd ];
+    [self appendTag: @"userId" withValue: user.userId to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
     [cmd appendString: @"</command>" ];
 	
     NSDictionary *result = [bridge syncCommand: cmd error: &error ];
@@ -1510,7 +1518,7 @@ NSString *escapeSpecial(NSString *s)
     if([self registerBankUser:user error:&error] == NO) return error;
 
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getTANMethods\">" ];
-    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
     [self appendTag: @"userId" withValue: user.userId to: cmd ];
     [cmd appendString: @"</command>" ];
     
@@ -1536,10 +1544,10 @@ NSString *escapeSpecial(NSString *s)
     } 
     
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getSupportedBusinessTransactions\">" ];
-    [self appendTag: @"bankCode" withValue: account.bankCode to: cmd];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
     [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd];
     [self appendTag: @"subNumber" withValue: account.accountSuffix to: cmd];
-    [self appendTag: @"userId" withValue: account.userId to: cmd];
+    [self appendTag: @"userId" withValue: user.userId to: cmd];
     [cmd appendString: @"</command>" ];
 
     NSArray* result = [bridge syncCommand: cmd error: &error];
@@ -1558,7 +1566,7 @@ NSString *escapeSpecial(NSString *s)
 
     StatusBarController *sbController = [StatusBarController controller ];
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getTANMediaList\">" ];
-    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
     [self appendTag: @"userId" withValue: user.userId to: cmd ];
     [cmd appendString: @"</command>" ];
     
@@ -1613,7 +1621,7 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"version" withValue: user.hbciVersion to: cmd];
     [self appendTag: @"userId" withValue: user.userId to: cmd];
     [self appendTag: @"customerId" withValue: user.customerId to: cmd ];
-    [self appendTag: @"bankCode" withValue: user.bankCode to: cmd];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
     [cmd appendString: @"</command>" ];
     
     NSNumber *isOk = [bridge syncCommand: cmd error: error];

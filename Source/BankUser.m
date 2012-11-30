@@ -293,6 +293,9 @@
 	return bankUsers;
 }
 
+// important: bankCode of BankUser and bankCode of accounts can be different!
+// for that reason, if we don't find a user with the same bankCode we look for one with just the same
+// userId
 +(BankUser*)userWithId:(NSString*)userId bankCode:(NSString*)bankCode
 {
 	NSError *error=nil;
@@ -300,7 +303,7 @@
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankUser" inManagedObjectContext:context];
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	[request setEntity:entityDescription];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userId = %@ AND bankCode = %@", userId, bankCode ];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userId = %@", userId];
 	[request setPredicate:predicate ];
 	NSArray *bankUsers = [context executeFetchRequest:request error:&error];
 	if(error) {
@@ -314,6 +317,15 @@
                         nil, nil, userId, bankCode);
         return nil;
     }
+    
+    // do we have a user with the right bankCode?
+    for (BankUser *user in bankUsers) {
+        if ([user.bankCode isEqualToString:bankCode]) {
+            return user;
+        }
+    }
+    
+    // no - take the last one
 	return [bankUsers lastObject];
 }
 

@@ -270,12 +270,46 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 -(void)migrate10
 {
+    NSError *error = nil;
+
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL migrated10 = [defaults boolForKey:@"Migrated10"];
+    if (migrated10 == NO) {
+        if (isDefaultDir == NO) {
+            // issue message
+            return;
+        }
+        
+        // check for encryption / sparseimage file
+        NSURL *oldURLStandard = [self.dataDirURL URLByAppendingPathComponent:@"accounts.sqlite"];
+        NSURL *oldURLEncr = [self.dataDirURL URLByAppendingPathComponent:@"accounts.sparseimage"];
+        
+        BOOL wasEncrypted = NO;
+        if ([fm fileExistsAtPath:[oldURLEncr path]]) {
+            // encrypted file exists, check if unencrypted file exists as well and is older
+            if ([fm fileExistsAtPath:[oldURLStandard path]]) {
+                // yes, now we have to check the dates
+                NSDictionary *standardAttrs = [fm attributesOfItemAtPath:[oldURLStandard path] error:&error];
+                NSDictionary *encrAttrs = [fm attributesOfItemAtPath:[oldURLEncr path] error:&error];
+                NSDate *standardDate = [standardAttrs objectForKey:NSFileModificationDate];
+                NSDate *encrDate = [encrAttrs objectForKey:NSFileModificationDate];
+                if ([encrDate compare:standardDate] == NSOrderedDescending) {
+                    wasEncrypted = YES;
+                }
+            } else {
+                wasEncrypted = YES;
+            }
+        }
+        if (wasEncrypted) {
+            // issue Message
+        }
+    }
+    
     if (isDefaultDir == NO) {
         return;
     }
     
-    NSError *error = nil;
-    NSFileManager *fm = [NSFileManager defaultManager];
     NSURL *accURL = [self.pecuniaFileURL URLByAppendingPathComponent:_dataFileCrypted];
     if ([fm fileExistsAtPath:[accURL path]] == NO) {
         accURL = [self.pecuniaFileURL URLByAppendingPathComponent:_dataFileStandard];
