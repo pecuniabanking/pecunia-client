@@ -100,6 +100,7 @@
     
     IBOutlet TransactionController *transactionController;
     IBOutlet NSWindow              *licenseWindow;
+    IBOutlet NSButton              *toggleDetailsButton;
     
 @private
     NSMutableDictionary    *mainTabItems;
@@ -115,6 +116,7 @@
     BOOL                   autoSyncRunning;
     NSDecimalNumber        *saveValue;
     NSCursor               *splitCursor;
+    NSUInteger             lastSplitterPosition;  // Last position of the right splitter.
     
     NSImage *moneyImage;
     NSImage *moneySyncImage;
@@ -184,6 +186,7 @@
 - (IBAction)showLog:(id)sender;
 - (IBAction)showAboutPanel:(id)sender;
 - (IBAction)toggleFullscreenIfSupported: (id)sender;
+- (IBAction)toggleDetailsPane: (id)sender;
 
 - (IBAction)deleteAllData: (id)sender;
 - (IBAction)generateData: (id)sender;

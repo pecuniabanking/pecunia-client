@@ -40,21 +40,25 @@ static NSGradient* innerGradient = nil;
 
 - (void) drawRect: (NSRect) rect
 {
+    NSRect bounds = [self bounds];
+    if (bounds.size.width <= 20 || bounds.size.height <= 20) {
+        return;
+    }
+    
     // Initialize shared objects.
-    if (borderShadow == nil)
-    {
-    borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.5]
-                                            offset: NSMakeSize(3, -3)
-                                        blurRadius: 8.0];
-      innerGradient = [[NSGradient alloc] initWithColorsAndLocations: 
-                       [NSColor colorWithDeviceRed: 240 / 255.0 green: 231 / 255.0 blue: 209 / 255.0 alpha: 1], 
-                       (CGFloat) 0,
-                       [NSColor whiteColor], 
-                       (CGFloat) 1,
-                       nil];
+    if (borderShadow == nil) {
+        borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.5]
+                                                offset: NSMakeSize(3, -3)
+                                            blurRadius: 8.0];
+        innerGradient = [[NSGradient alloc] initWithColorsAndLocations:
+                         [NSColor colorWithDeviceRed: 240 / 255.0 green: 231 / 255.0 blue: 209 / 255.0 alpha: 1],
+                         (CGFloat) 0,
+                         [NSColor whiteColor],
+                         (CGFloat) 1,
+                         nil];
     }
 
-    NSBezierPath* borderPath = [NSBezierPath bezierPathWithRoundedRect: NSInsetRect([self bounds], 10, 10) xRadius: 8 yRadius: 8];
+    NSBezierPath* borderPath = [NSBezierPath bezierPathWithRoundedRect: NSInsetRect(bounds, 10, 10) xRadius: 8 yRadius: 8];
     [NSGraphicsContext saveGraphicsState];
     [borderShadow set];
     [[NSColor whiteColor] set];
@@ -63,20 +67,20 @@ static NSGradient* innerGradient = nil;
     [borderPath addClip];
 
     [innerGradient drawInBezierPath: borderPath angle: 95.0];
-
+/*
     // The image overlay. Scale it with the height of the view.
-    CGFloat scaleFactor = ([self bounds].size.height - 40) / [backgroundImage size].height;
-    NSRect targetRect = NSMakeRect([self bounds].size.width - 400, 10, scaleFactor * [backgroundImage size].width,
-                                 [self bounds].size.height - 40);
+    CGFloat scaleFactor = (bounds.size.height - 40) / [backgroundImage size].height;
+    NSRect targetRect = NSMakeRect(bounds.size.width - 400, 10, scaleFactor * [backgroundImage size].width,
+                                   bounds.size.height - 40);
     [backgroundImage drawInRect: targetRect fromRect: NSZeroRect operation: NSCompositeSourceOver fraction: 0.15];
-
+*/
     // Assigned categories bar background.
     [[NSColor colorWithDeviceWhite: 0.25 alpha: 1] set];
-    targetRect = NSMakeRect(10, 28, [self bounds].size.width, 30);
+    NSRect targetRect = NSMakeRect(10, 28, bounds.size.width, 30);
     [NSBezierPath fillRect: targetRect];
 
     // TextFelder zeichnen
-    [self drawTextFields ];
+    [self drawTextFields];
 }
 
 @end
