@@ -261,7 +261,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     // if it's the default data dir: check if the pecunia datafile already exists - if not, create it
     if (isDefaultDir) {
         if ([fm fileExistsAtPath:[self.pecuniaFileURL path]] == NO) {
-            NSDictionary *attributes = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:0700] forKey:NSFilePosixPermissions];
+            NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:0700], NSFilePosixPermissions, [NSNumber numberWithBool:YES], NSFileExtensionHidden, nil ];
             [fm createDirectoryAtPath: [self.pecuniaFileURL path] withIntermediateDirectories: YES attributes: attributes error: &error ];
             if(error) @throw error;
         }
