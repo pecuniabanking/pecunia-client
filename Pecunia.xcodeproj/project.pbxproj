@@ -401,8 +401,6 @@
 		B1E811F00FF68B3700BF7451 /* PecuniaHelp in Resources */ = {isa = PBXBuildFile; fileRef = B1E811D70FF68B3700BF7451 /* PecuniaHelp */; };
 		B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EC7B261508077100813E1A /* TanSigningOption.m */; };
 		B1EFA8030D5CE7BA007FD9C3 /* CCDLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EFA8020D5CE7BA007FD9C3 /* CCDLayoutAdditions.m */; };
-		B1F458210F2516C200BAF4E8 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1F458200F2516C200BAF4E8 /* Sparkle.framework */; };
-		B1F4582E0F25171A00BAF4E8 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B1F458200F2516C200BAF4E8 /* Sparkle.framework */; };
 		B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */; };
 		B1F4587E0F2907BD00BAF4E8 /* AccountChangeController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountChangeController.m */; };
 		B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F459EB0F2E480700BAF4E8 /* BankInfo.m */; };
@@ -438,7 +436,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				27C7B48F14755A8300BD4F56 /* CorePlot.framework in Copy Frameworks */,
-				B1F4582E0F25171A00BAF4E8 /* Sparkle.framework in Copy Frameworks */,
 				2701A852165E87B100A9A1C7 /* Growl.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
@@ -1044,7 +1041,6 @@
 				B1872EFD163DD7B7003A8C14 /* Security.framework in Frameworks */,
 				27C7B49214755AE200BD4F56 /* CorePlot.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				B1F458210F2516C200BAF4E8 /* Sparkle.framework in Frameworks */,
 				B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */,
 				27E79FCB145AFCB3007C0AE3 /* QuartzCore.framework in Frameworks */,
 			);
@@ -2561,6 +2557,7 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -2601,6 +2598,7 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -2640,6 +2638,7 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;

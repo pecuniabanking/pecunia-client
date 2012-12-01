@@ -203,6 +203,8 @@
 "AP192" = "Die Daten wurden erfolgreich migriert";
 "AP193" = "Alle Daten löschen";
 "AP194" = "Achtung: alle Daten, wie Umsätze, Konten, Kategorien und Regeln werde gelöscht. Es sollte ein Backup der Datendatei existieren (z.B. über Time Machine), da sonst alle Daten unwiederbringlich verloren sind.\n\nMöchten Sie Ihre Daten wirklich löschen?";
+"AP195" = "Die Pecunia-Datendatei ist nicht im Default-Verzeichnis gespeichert. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
+"AP196" = "Die Pecunia-Datendatei ist verschlüsselt. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
 
 // Bank accounts + users
 // AP200..AP249

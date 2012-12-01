@@ -40,7 +40,7 @@
 	<key>CFBundleSignature</key>
 	<string>EMMI</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.1</string>
+	<string>1.0.2</string>
 	<key>HPDBookIconPath</key>
 	<string>Vespasian</string>
 	<key>LSApplicationCategoryType</key>
@@ -49,8 +49,6 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>SUFeedURL</key>
-	<string>http://www.pecuniabanking.de/appcast10.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 </dict>

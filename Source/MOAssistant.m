@@ -234,7 +234,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                 [defaults setValue:nil forKey:dataDirKey];
                 dataDir = defaultDataDir;
             } else {
-                defaultDataDir = NO;
+                isDefaultDir = NO;
             }
         }
     }
@@ -259,7 +259,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     self.tempDir = NSTemporaryDirectory();
     
     // if it's the default data dir: check if the pecunia datafile already exists - if not, create it
-    if (defaultDataDir) {
+    if (isDefaultDir) {
         if ([fm fileExistsAtPath:[self.pecuniaFileURL path]] == NO) {
             NSDictionary *attributes = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:0700] forKey:NSFilePosixPermissions];
             [fm createDirectoryAtPath: [self.pecuniaFileURL path] withIntermediateDirectories: YES attributes: attributes error: &error ];
@@ -277,8 +277,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     BOOL migrated10 = [defaults boolForKey:@"Migrated10"];
     if (migrated10 == NO) {
         if (isDefaultDir == NO) {
-            // issue message
-            return;
+            @throw [PecuniaError errorWithText:NSLocalizedString(@"AP195", @"")];
         }
         
         // check for encryption / sparseimage file
@@ -302,7 +301,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             }
         }
         if (wasEncrypted) {
-            // issue Message
+            @throw [PecuniaError errorWithText:NSLocalizedString(@"AP196", @"")];
         }
     }
     
@@ -317,9 +316,9 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             // the data store is empty - try to migrate
             NSURL *oldURL = [self.dataDirURL URLByAppendingPathComponent:[self.dataFilename stringByReplacingOccurrencesOfString:@"pecuniadata" withString:@"sqlite"]];
             if ([fm fileExistsAtPath:[oldURL path]] == YES) {
-                [fm copyItemAtPath:[oldURL path] toPath:[accURL path] error:&error];
+                [fm moveItemAtPath:[oldURL path] toPath:[accURL path] error:&error];
                 if (error != nil) {
-                    NSLog(@"Copy of old accounts file %@ to new location (%@) failed.", oldURL, accURL);
+                    NSLog(@"Move of old accounts file %@ to new location (%@) failed.", oldURL, accURL);
                 }
             }
         }
