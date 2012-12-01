@@ -114,7 +114,7 @@ static float scaleFactor = 1.0f;
 
 - (void)awakeFromNib
 {
-	scaleFactor = [[NSScreen mainScreen] userSpaceScaleFactor];
+    scaleFactor = [self.window backingScaleFactor];
 }
 
 - (void)drawDividerInRect:(NSRect)aRect
@@ -167,7 +167,7 @@ static float scaleFactor = 1.0f;
     NSRect destRect = NSMakeRect(startX,startY,dimpleDimension,dimpleDimension);
 	
 	// Draw at pixel bounds 
-	destRect = [self convertRectToBase:destRect];
+	destRect = [self convertRectToBacking: destRect];
 	destRect.origin.x = floor(destRect.origin.x);
 	
 	double param, fractPart, intPart;
@@ -175,7 +175,7 @@ static float scaleFactor = 1.0f;
 	fractPart = modf(param, &intPart);
 	if (fractPart < 0.99)
 		destRect.origin.y = floor(destRect.origin.y);
-	destRect = [self convertRectFromBase:destRect];
+	destRect = [self convertRectFromBacking: destRect];
 	
 	if (scaleFactor == 1)
 	{

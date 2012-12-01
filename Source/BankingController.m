@@ -2018,6 +2018,18 @@ BOOL runningOnLionOrLater = NO;
     return proposedMax;
 }
 
+- (CGFloat)splitView:(NSSplitView *)splitView constrainSplitPosition:(CGFloat)proposedPosition ofSubviewAt:(NSInteger)dividerIndex
+{
+    // This function is called only when dragging the divider with the mouse. If the details pane is currently collapsed
+    // then it is automatically shown when dragging the divider. So we have to reset our interal state.
+    if (lastSplitterPosition > 0) {
+        lastSplitterPosition = 0;
+        [toggleDetailsButton setImage: [NSImage imageNamed: @"hide"]];
+    }
+
+    return proposedPosition;
+}
+
 #pragma mark -
 #pragma mark Sorting and searching statements
 
@@ -3005,6 +3017,24 @@ BOOL runningOnLionOrLater = NO;
 #endif
 }
 
+- (IBAction)toggleDetailsPane: (id)sender
+{
+    NSView *firstChild = [rightSplitter.subviews objectAtIndex: 0];
+    if (lastSplitterPosition == 0) {
+        [statementDetails.animator setHidden: YES];
+        lastSplitterPosition = NSHeight(firstChild.frame);
+        [toggleDetailsButton setImage: [NSImage imageNamed: @"show"]];
+        [rightSplitter adjustSubviews];
+    } else {
+        [statementDetails.animator setHidden: NO];
+        NSRect frame = firstChild.frame;
+        frame.size.height = lastSplitterPosition;
+        firstChild.frame = frame;
+        lastSplitterPosition = 0;
+        [toggleDetailsButton setImage: [NSImage imageNamed: @"hide"]];
+    }
+}
+
 #pragma mark -
 #pragma mark Developer tools
 
@@ -3160,7 +3190,7 @@ BOOL runningOnLionOrLater = NO;
                     [remoteNameLabel setStringValue: NSLocalizedString(@"AP135", "")];
                 }
                 
-                [statementDetails setNeedsDisplay:YES ];
+                [statementDetails setNeedsDisplay: YES];
                 [self updateStatusbar];
             }
         }
