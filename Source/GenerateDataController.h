@@ -20,10 +20,20 @@
 #import <Cocoa/Cocoa.h>
 
 @interface GenerateDataController : NSWindowController
+{
+    NSCalendar *calendar;
+}
 
 @property (strong) IBOutlet NSTextField *path;
-@property (strong) IBOutlet NSButtonCell *highVolumeRadioButton;
 @property (strong) IBOutlet NSButton *removeOldDataCheckBox;
+@property (strong) IBOutlet NSProgressIndicator *progressIndicator;
+@property (strong) IBOutlet NSTextField *totalCountLabel;
+
+@property (assign) NSUInteger startYear;
+@property (assign) NSUInteger endYear;
+@property (assign) NSUInteger bankCount;
+@property (assign) NSUInteger maxAccountsPerBank;
+@property (assign) NSUInteger numberOfStatementsPerBank;
 
 - (IBAction)selectFile: (id)sender;
 - (IBAction)close: (id)sender;

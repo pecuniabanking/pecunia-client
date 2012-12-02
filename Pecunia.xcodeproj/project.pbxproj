@@ -712,7 +712,7 @@
 		27E662B415A09BD9002F9277 /* TransferTemplateListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferTemplateListViewCell.h; sourceTree = "<group>"; };
 		27E662B515A09BDA002F9277 /* TransferTemplateListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferTemplateListViewCell.m; sourceTree = "<group>"; };
 		27E68C48165CF7DA005EBE66 /* GenerateDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateDataController.h; sourceTree = "<group>"; };
-		27E68C49165CF7DA005EBE66 /* GenerateDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateDataController.m; sourceTree = "<group>"; };
+		27E68C49165CF7DA005EBE66 /* GenerateDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateDataController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CorePlot.framework; path = Frameworks/CorePlot.framework; sourceTree = "<group>"; };
 		27E80D461551AC9600BB1AF8 /* transfer-normal-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-normal-preview.png"; sourceTree = "<group>"; };
 		27EB308314B22CB000ABE3A6 /* Bank large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bank large.png"; sourceTree = "<group>"; };
@@ -2554,7 +2554,6 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
-				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -2595,7 +2594,6 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
-				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -2635,7 +2633,6 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
-				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;

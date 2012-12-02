@@ -30,62 +30,65 @@ Verein "Lokomotiven Heute"
 निवेश
 
 [Principals]
-Elektromeister Stefan Hohlmeier
-Wetten und mehr, Ihr Anbieter unabhängiger Wetten im Netz
-Pressestelle der Stadt Berlin, Bürgermeisteramt, Registrar Peter Altmeier-Hohenopfer
-Heinrich Heine, Karlsruhe
-C&A Online Shop
-Paypal
-Klarmobil GmbH
-Kreditkartenabrechnung
-Enviam
-Amazon Services Europe SA
-Kaufland sagt danke
-Heise Zeitschriften Verlag
-3 Suisse Int., 52052 Aachen
-Verlagsgruppe Weltbild GmbH
-Luitpold Apotheke, Inh. K.
-Dr. med Katrin Gomon
-Airp.FRA Heinemann DF&TV
-Alice und O2 sagen danke
-Aral Limbach-Hohensteiner
-Congstar GmbH
-Schwimmsport und Tauchsportverein Limbach-Oberfrohna
-Amexo Karten-Org.FFM
-Naturstromhandel GmbH
-Bartmeister
-Hanse Merkur Versicherungen
-Zweckverband Frohnbach
-Regionaler Zweckverband Wasserversorgung
-Nuernberger Versicherungen
-Deurag
-Allianz Pensionskasse AG
-Nemian Life
-Gothaer Allg. Vers. AG
-Mieter
-Hauptkasse Sachc442 12345
-Oracle Deutschland
-Xquisit Chemnitz
-Zalando GmbH
-Jet-Tank. 5691, Limbach-Obe
-Rundfunk ARD, ZDF, DRADIO
-O2 My Handy
-ADAC Schutzbrief AG
-Panke Sprachreisen GmbH
-Continentale/Europa Verbund
-Alte Leipziger Versicherung
-Toom Baumarkt dankt 234234234234
-Flughafen Leipzig/Halle G
-Haenig Bauzentrum
-Stadtkasse Limbach-Oberfrohde
-EC-POS EMV 1 1  GEB.EU 0,00
-Lederwaren Exclusiv Dresdde
-Tanzschule Koehler-Schimmel
-Dipl-Med. St. Eccarius
-Neue Apotheke EV Limbach-OB
-MCC Medical Carecaptial AG
-Bucher Reisen GmbH
-Naturstein Thomas Burgstaed
+# Fields are: principal:lowest value:highest value:frequency ([1-9] [d]ay, [w]eek], [m]onth, [q]uarter, [y]ear):category keywords:purpose
+Elektromeister Stefan Hohlmeier:-600:-50:20y:Sonstiges:Auftrag 123, Reparatur Außenleitung
+Wetten und mehr, Ihr Anbieter unabhängiger Wetten im Netz:-333:-20:5m:Sonstiges:Monatsgebühr
+Pressestelle der Stadt Berlin, Bürgermeisteramt, Registrar Peter Altmeier-Hohenopfer:-200:+500:10y:Sonstiges:Antrag auf bauliche Veränderung
+Heinrich Heine, Karlsruhe:-250:-50:20m:Kleidung:6947321291238 KLARA MONTGOMERY\nDATUM xx.yy.zzzz, 17.44 UHR\n1.TAN 127543
+C&A Online Shop:-250:-50:20m:Kleidung:11065754654654141203080002 ELV9052987 xx.yy zz.zz ME1 UNT00000SS0002 
+Paypal:-250:-50:20m:Sonstige Einkäufe:QQI5ZZJ2654321G PP*1252*PP\n * STEAM GAMES, IHR EINKAUF\n BEI STEAM GAMES\n125555TX0365QY
+Klarmobil GmbH:-20:-20:1m:Handys:1051957118/140362222487\nWIR SAGEN DANKE.\nRG/GS-NR.F12011113561
+Kreditkartenabrechnung:-750:-50:1m:Konto:VISA-ABR. 1234568909876543
+Enviam:-130:-130:1m:Energie:ENVIAM BELEG 09539999938\n233334444\nRUDI UND KLARA MONTGOMERY
+Amazon Services Europe SA:-250:-50:50m:Bücher:0583606530824370
+Kaufland sagt danke:-120:-80:1w:Lebensmittel:ELV61306653 xx.xx yy.yy ME1
+Heise Zeitschriften Verlag:-70:-70:5y:Bücher:3092384098234 10283471 CT\nR. MONTGOMERY\nDATUM xx.yy.zzzz, 13.18 UHR\n1.TAN 352469
+3 Suisse Int., 52052 Aachen:-250:-50:50m:Kleidung:6947321291238 KLARA MONTGOMERY\nDATUM xx.yy.zzzz, 17.44 UHR\n1.TAN 127543
+Verlagsgruppe Weltbild GmbH:-500:-150:30q:Bücher:KD.-NR. 0470134087234681\nDATUM xx.yy.zzzz, 19.08 UHR\n1.TAN 294558
+Luitpold Apotheke, Inh. K.:-150:-30:20q:Arzneimittel:KD.-NR. 0470134087234681\nDATUM xx.yy.zzzz, 19.08 UHR\n1.TAN 294558
+Dr. med Katrin Gomon:-250:-50:10q:Behandlungen:RECHNUNG 12/205\nDATUM xx.yy.zzzz, 09.49 UHR
+Airp.FRA Heinemann DF&TV:-90:-70:5y:Sonstiges:171020191033137141200020570\nELV65452435 xx.yy 20.19 ME1
+Alice und O2 sagen danke:-15:-10:1m:Handys:00321654427 DE198798738\nRECHNUNG M211155557 V\nOM xx.yy.zzzz
+Aral Limbach-Hohensteiner:-80:-70:10m:Tanken:046546546724514120ß981450\nOLV71026312 xx.yy 16.00 ME1
+Congstar GmbH:-15:-12:1m:Internet:BELEG 3123412381\nKUNDENNUMMER 87484443\nRG 2991235432 VOM xx.yy.zz
+Schwimmsport und Tauchsportverein Limbach-Oberfrohna:-30:-30:2y:Vereine:MITGLIEDSBEITRAG zzzz\nVIELEN DANK
+Amexco Karten-Org.FFM:-1250:-800:5y:Sonstiges:KARTE NR. 4150-88830-0547
+Naturstromhandel GmbH:-750:-50:1m:Energie:K-NR. 2123442-1 yy/zzzz STR
+Bartmeister:-260:-90:30y:Sonstiges:Whiskey and more sagt Danke
+Hanse Merkur Versicherungen:-550:-520:1m:Krankenversicherung:KRANKENVERSICHERUNG
+Zweckverband Frohnbach:-110:-90:2y:Entsorgung:12 NIEDERSCHLAGSWASSERGEBUe\n10223/GORER STRAßE
+Regionaler Zweckverband Wasserversorgung:-130:-80:2y:Entsorgung:ABWASSER
+Nuernberger Versicherungen:-65:-50:5y:Lebensversicherung:12654655636 NUERNBERGER\n       51,13  08173094871234\nNLV LEBENSVERS.
+Deurag:-65:-50:5y:Privathaftpflicht:PRIVATHAFTPFLICHT
+Allianz Pensionskasse AG:-50:-50:1m:Pensionskasse:6/952300/565   11332
+Nemian Life:-65:-50:5y:Risikolebensversicherung:PRAMIE PLP 4U   LP039871\nAWV-MELDEPFLICHT BEACHTEN\nHOTLINE BUNDESBANK.\n(0800) 1234-111
+Gothaer Allg. Vers. AG:-65:-50:5y:Hausrat:53.100.39873     xx.yy.zz\nHAUSRAT-VERSICHERUNG\n-V-
+Mieter:+300:+500:10y:Nebenkosten:NEBENKOSTENABRECHNUNG
+Hauptkasse 12345:+2610:+2610:1m:Gehalt:Bezüge
+Überflieger AG:+4532:+4532:1m:Gehalt:Gehalt
+Xquisit Chemnitz:-450:-30:30q:Kleidung:EC 56546582 220912132198765
+Zalando GmbH:-150:-50:30q:Kleidung:6947321291238 KLARA MONTGOMERY\nDATUM xx.yy.zzzz, 17.44 UHR\n1.TAN 127543
+Jet-Tank. 5691, Limbach-Obe:-65:-50:20q:Tanken:EC 56546582 220912132198765
+Rundfunk ARD, ZDF, DRADIO:-50:-50:1q:Fernsehen:251235 20787878787870\nRUNDFUNK yy.zzzz - yy.zzzz\nNOTGOMERY,KLARA\nVIELEN DANK FUER IHRE\nRUNDFUNKGEBUEHREN
+O2 My Handy:-48:-30:1m:Handys:33230923094600333333334\n1231236/1344532355/01
+ADAC Schutzbrief AG:-180:-100:1y:Rechtsschutz:IHRE KONTONR. 11120398461\nNR.0147 /xx.yy.zz\n170,00 SKONTO 0,0%\nADAC-AUSLANDS-KRANKENSCHUTZ\n, SCHADENERSTATTUNG
+Panke Sprachreisen GmbH:-350:-150:5y:Urlaub:6947321291238 KLARA MONTGOMERY\nDATUM xx.yy.zzzz, 17.44 UHR\n1.TAN 127543
+Continentale/Europa Verbund:-65:-50:1y:Hausratversicherung
+Alte Leipziger Versicherung:-65:-50:1y:Wohngebäudeversicherung
+Toom Baumarkt dankt 234234234234:-500:-150:10y:Sonstige Einkäufe
+Flughafen Leipzig/Halle G:-120:-100:5y:Sonstiges
+Haenig Bauzentrum:-2500:-1000:10y:Sonstige Einkäufe
+Stadtkasse Limbach-Oberfrohde:-200:-200:10y:Steuern
+EC-POS EMV 1 1  GEB.EU 0,00:-200:-200:30y:Konto
+Lederwaren Exclusiv Dresdde:-365:-250:30y:Kleidung:6947321291238 KLARA MONTGOMERY\nDATUM xx.yy.zzzz, 17.44 UHR\n1.TAN 127543
+Tanzschule Koehler-Schimmel:-165:-150:10y:Sonstiges
+Dipl-Med. St. Eccarius:-100:-30:30y:Behandlungen
+Neue Apotheke EV Limbach-OB:-65:-30:2y:Arzneimittel
+MCC Medical Carecaptial AG:-200:-50:20y:Behandlungen
+Bucher Reisen GmbH:-165:-150:5y:Urlaub
+Naturstein Thomas Burgstaed:-700:-550:10y:Sonstige Einkäufe
+Spende für Pecunia:5:25:10q:Pecunia
+#Aktien:500:1000:1m:Ausgleich:Konto
 
 [Purposes]
 
