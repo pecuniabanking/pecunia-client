@@ -410,7 +410,9 @@
                             statement.valutaDate = date;
                             statement.remoteCountry = @"de";
                             statement.value = value;
-                            statement.purpose = [dictionary objectForKey: @"purpose"];
+                            NSString *purpose = [dictionary objectForKey: @"purpose"];
+                            statement.purpose = [purpose stringByReplacingOccurrencesOfString: @"\\n" withString: @"\n"];
+                            statement.transactionText = NSLocalizedString(@"AP407", nil);
                             statement.remoteName = [dictionary objectForKey: @"principal"];
                             NSString *remoteAccount = [NSString stringWithFormat: @"%u", arc4random()];
                             if (remoteAccount.length > 10) {
