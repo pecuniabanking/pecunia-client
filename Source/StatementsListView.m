@@ -163,7 +163,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                 [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
             } else {
                 pendingRefresh = YES;
-                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.1];
+                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
             }
         } else {
             // Reschedule the reload call.
@@ -251,9 +251,9 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (void) fillCell: (StatementsListViewCell*)cell forRow: (NSUInteger)row
 {
-    id statement = [[dataSource objectAtIndex: row] statement];
+    StatCatAssignment *stat = (StatCatAssignment*)[dataSource objectAtIndex: row];
     
-    NSDate* currentDate = [statement valueForKey: @"date"];
+    NSDate* currentDate = stat.statement.date;
     
     // Count how many statements have been booked for the current date.
     int turnovers = [self countSameDatesFromRow: row];
@@ -267,20 +267,20 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     NSDictionary *details = [NSDictionary dictionaryWithObjectsAndKeys:
                              [self formatValue: currentDate capitalize: NO], StatementDateKey,
                              turnoversString, StatementTurnoversKey,
-                             [self formatValue: [statement remoteName] capitalize: YES], StatementRemoteNameKey,
-                             [self formatValue: [statement floatingPurpose] capitalize: YES], StatementPurposeKey,
-                             [self formatValue: [[dataSource objectAtIndex: row] userInfo] capitalize: YES], StatementNoteKey,
-                             [self formatValue: [statement categoriesDescription] capitalize: NO], StatementCategoriesKey,
-                             [self formatValue: [statement value] capitalize: NO], StatementValueKey,
-                             [self formatValue: [statement saldo] capitalize: NO], StatementSaldoKey,
-                             [self formatValue: [statement currency] capitalize: NO], StatementCurrencyKey,
-                             [self formatValue: [statement transactionText] capitalize: YES], StatementTransactionTextKey,
-                             [[[dataSource objectAtIndex: row] category] categoryColor], StatementColorKey,
+                             [self formatValue: stat.statement.remoteName capitalize: YES], StatementRemoteNameKey,
+                             [self formatValue: stat.statement.floatingPurpose capitalize: YES], StatementPurposeKey,
+                             [self formatValue: stat.userInfo capitalize: YES], StatementNoteKey,
+                             [self formatValue: [stat.statement categoriesDescription] capitalize: NO], StatementCategoriesKey,
+                             [self formatValue: stat.value capitalize: NO], StatementValueKey,
+                             [self formatValue: stat.statement.saldo capitalize: NO], StatementSaldoKey,
+                             [self formatValue: stat.statement.currency capitalize: NO], StatementCurrencyKey,
+                             [self formatValue: stat.statement.transactionText capitalize: YES], StatementTransactionTextKey,
+                             [stat.category categoryColor], StatementColorKey,
                              [NSNumber numberWithInt: row], StatementIndexKey,
                              nil];
     
     [cell setDetails: details];
-    [cell setIsNew: [[statement isNew] boolValue]];
+    [cell setIsNew: [stat.statement.isNew boolValue]];
     
     if (self.showAssignedIndicators) {
         id test = [[dataSource objectAtIndex: row] classify];
@@ -289,7 +289,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
         [cell showActivator: NO markActive: NO];
     }
     
-    NSDecimalNumber* nassValue = [statement nassValue];
+    NSDecimalNumber* nassValue = stat.statement.nassValue;
     cell.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
     
     // Set the size of the cell, depending on if we show its header or not.

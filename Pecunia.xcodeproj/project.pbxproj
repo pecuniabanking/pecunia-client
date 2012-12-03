@@ -275,7 +275,6 @@
 		B14C6003114848E1009324A6 /* BankStatementController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14C6002114848E1009324A6 /* BankStatementController.xib */; };
 		B14C61BB115AB4FB009324A6 /* BankStatementPolicy030.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C61BA115AB4FB009324A6 /* BankStatementPolicy030.m */; };
 		B14C6225115C04FA009324A6 /* 030.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B14C6224115C04FA009324A6 /* 030.xcmappingmodel */; };
-		B14C629B115E00AA009324A6 /* MigrationManagerWorkaround.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C629A115E00AA009324A6 /* MigrationManagerWorkaround.m */; };
 		B14C630E11629C7D009324A6 /* CategoryPolicy030.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C630D11629C7D009324A6 /* CategoryPolicy030.m */; };
 		B14D4C5F13DB5F3200843BE6 /* HBCIBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C5E13DB5F3200843BE6 /* HBCIBridge.m */; };
 		B14D4C6413DB5FC200843BE6 /* CallbackData.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6113DB5FC200843BE6 /* CallbackData.m */; };
@@ -347,8 +346,6 @@
 		B196E03D0FABA2CC00509748 /* WorkerThread.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E03C0FABA2CC00509748 /* WorkerThread.m */; };
 		B196E0940FACE15F00509748 /* BSSelectWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E0930FACE15F00509748 /* BSSelectWindowController.m */; };
 		B196E1B20FB4CFE200509748 /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E1B10FB4CFE200509748 /* StatusBarController.m */; };
-		B196E22C0FB8AFCD00509748 /* AMShellWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E22A0FB8AFCD00509748 /* AMShellWrapper.m */; };
-		B196E2310FB8B12E00509748 /* HDIWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E2300FB8B12E00509748 /* HDIWrapper.m */; };
 		B197C3E413C3A28F0025F137 /* MCEMDecimalNumberAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */; };
 		B19822DD0E6F304A001C4C70 /* CategoryAnalysisWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */; };
 		B19A85F00F3CC3D3000FE9B3 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */; };
@@ -798,8 +795,6 @@
 		B14C61B9115AB4FB009324A6 /* BankStatementPolicy030.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14C61BA115AB4FB009324A6 /* BankStatementPolicy030.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPolicy030.m; sourceTree = "<group>"; tabWidth = 4; };
 		B14C6224115C04FA009324A6 /* 030.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 030.xcmappingmodel; sourceTree = "<group>"; };
-		B14C6299115E00AA009324A6 /* MigrationManagerWorkaround.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MigrationManagerWorkaround.h; sourceTree = "<group>"; tabWidth = 4; };
-		B14C629A115E00AA009324A6 /* MigrationManagerWorkaround.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MigrationManagerWorkaround.m; sourceTree = "<group>"; tabWidth = 4; };
 		B14C630C11629C7D009324A6 /* CategoryPolicy030.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPolicy030.h; sourceTree = "<group>"; tabWidth = 4; };
 		B14C630D11629C7D009324A6 /* CategoryPolicy030.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPolicy030.m; sourceTree = "<group>"; tabWidth = 4; };
 		B14D4C5D13DB5F3200843BE6 /* HBCIBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HBCIBridge.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -931,10 +926,6 @@
 		B196E0930FACE15F00509748 /* BSSelectWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BSSelectWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B196E1B00FB4CFE200509748 /* StatusBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatusBarController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B196E1B10FB4CFE200509748 /* StatusBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatusBarController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B196E22A0FB8AFCD00509748 /* AMShellWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AMShellWrapper.m; sourceTree = "<group>"; tabWidth = 4; };
-		B196E22B0FB8AFCD00509748 /* AMShellWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AMShellWrapper.h; sourceTree = "<group>"; tabWidth = 4; };
-		B196E22F0FB8B12E00509748 /* HDIWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = HDIWrapper.h; sourceTree = "<group>"; tabWidth = 4; };
-		B196E2300FB8B12E00509748 /* HDIWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = HDIWrapper.m; sourceTree = "<group>"; tabWidth = 4; };
 		B197C3E213C3A28F0025F137 /* MCEMDecimalNumberAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMDecimalNumberAdditions.h; sourceTree = "<group>"; tabWidth = 4; };
 		B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMDecimalNumberAdditions.m; sourceTree = "<group>"; tabWidth = 4; };
 		B19822DB0E6F304A001C4C70 /* CategoryAnalysisWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryAnalysisWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1876,8 +1867,6 @@
 				27C7B503147FC47400278131 /* Numbers and Dates */,
 				27C7B502147FC44100278131 /* Controls and Layouts */,
 				27C7B501147FC41900278131 /* Drawing + Colors */,
-				B14C6299115E00AA009324A6 /* MigrationManagerWorkaround.h */,
-				B14C629A115E00AA009324A6 /* MigrationManagerWorkaround.m */,
 				27C883C515E0EBCE007572F0 /* NSString+PecuniaAdditions.h */,
 				27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */,
 				27CF0A6B15F260F200F48203 /* NSButton+PecuniaAdditions.h */,
@@ -1959,10 +1948,6 @@
 				B196E03C0FABA2CC00509748 /* WorkerThread.m */,
 				B132FADD0F9CFD0000263F3B /* TimeSliceManager.h */,
 				B132FADE0F9CFD0000263F3B /* TimeSliceManager.m */,
-				B196E22B0FB8AFCD00509748 /* AMShellWrapper.h */,
-				B196E22A0FB8AFCD00509748 /* AMShellWrapper.m */,
-				B196E22F0FB8B12E00509748 /* HDIWrapper.h */,
-				B196E2300FB8B12E00509748 /* HDIWrapper.m */,
 				B137BF4512D5004C00D0394C /* MessageLog.h */,
 				B137BF4612D5004C00D0394C /* MessageLog.m */,
 				B17FE3C114C9F17400F6FAFE /* LaunchParameters.h */,
@@ -2341,8 +2326,6 @@
 				B196E03D0FABA2CC00509748 /* WorkerThread.m in Sources */,
 				B196E0940FACE15F00509748 /* BSSelectWindowController.m in Sources */,
 				B196E1B20FB4CFE200509748 /* StatusBarController.m in Sources */,
-				B196E22C0FB8AFCD00509748 /* AMShellWrapper.m in Sources */,
-				B196E2310FB8B12E00509748 /* HDIWrapper.m in Sources */,
 				B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */,
 				B1A6E8350FC890E400566C55 /* PasswordWindow.m in Sources */,
 				B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */,
@@ -2359,7 +2342,6 @@
 				B14C60011148467A009324A6 /* BankStatementController.m in Sources */,
 				B14C61BB115AB4FB009324A6 /* BankStatementPolicy030.m in Sources */,
 				B14C6225115C04FA009324A6 /* 030.xcmappingmodel in Sources */,
-				B14C629B115E00AA009324A6 /* MigrationManagerWorkaround.m in Sources */,
 				B14C630E11629C7D009324A6 /* CategoryPolicy030.m in Sources */,
 				B1A1377411B6FD9400622D6C /* AccountDefController.m in Sources */,
 				B1762BD911EE4AE600F70263 /* TransfersController.m in Sources */,
