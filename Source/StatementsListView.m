@@ -228,7 +228,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
  * Looks through the statement array starting with "row" and counts how many entries follow it with the 
  * same date (time is not compared).
  */
-- (int) countSameDatesFromRow: (NSUInteger)row
+- (int)countSameDatesFromRow: (NSUInteger)row
 {
     int result = 1;
     id statement = [[dataSource objectAtIndex: row] valueForKey: @"statement"];

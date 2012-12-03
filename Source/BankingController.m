@@ -2018,13 +2018,15 @@ BOOL runningOnLionOrLater = NO;
     return proposedMax;
 }
 
-- (CGFloat)splitView:(NSSplitView *)splitView constrainSplitPosition:(CGFloat)proposedPosition ofSubviewAt:(NSInteger)dividerIndex
+- (CGFloat)splitView: (NSSplitView *)splitView constrainSplitPosition: (CGFloat)proposedPosition ofSubviewAt: (NSInteger)dividerIndex
 {
-    // This function is called only when dragging the divider with the mouse. If the details pane is currently collapsed
-    // then it is automatically shown when dragging the divider. So we have to reset our interal state.
-    if (lastSplitterPosition > 0) {
-        lastSplitterPosition = 0;
-        [toggleDetailsButton setImage: [NSImage imageNamed: @"hide"]];
+    if (splitView == rightSplitter) {
+        // This function is called only when dragging the divider with the mouse. If the details pane is currently collapsed
+        // then it is automatically shown when dragging the divider. So we have to reset our interal state.
+        if (lastSplitterPosition > 0) {
+            lastSplitterPosition = 0;
+            [toggleDetailsButton setImage: [NSImage imageNamed: @"hide"]];
+    }
     }
 
     return proposedPosition;
