@@ -1993,6 +1993,11 @@ BOOL runningOnLionOrLater = NO;
              isRoot: itemIsRoot];
 }
 
+- (CGFloat)outlineView: (NSOutlineView *)outlineView heightOfRowByItem:(id)item
+{
+    return 22;
+}
+
 #pragma mark -
 #pragma mark Splitview delegate methods
 

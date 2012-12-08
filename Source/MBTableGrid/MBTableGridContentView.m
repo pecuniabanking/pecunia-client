@@ -545,7 +545,7 @@
 	NSRect rect = NSMakeRect(0, 0, [self frame].size.width, [[self tableGrid] defaultCellSize].height);
 	
   if (rowIndex >= 0) {
-    rect.origin.y += 20.0 * rowIndex;
+    rect.origin.y += rect.size.height * rowIndex;
   }
 	
 	return rect;

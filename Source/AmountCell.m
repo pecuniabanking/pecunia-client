@@ -27,7 +27,7 @@
 @synthesize currency;
 @synthesize formatter;
 
--(id)initTextCell: (NSString *)aString
+- (id)initTextCell: (NSString *)aString
 {
     if ((self = [super initTextCell: aString])) {
         formatter = [[NSNumberFormatter alloc] init];
@@ -41,8 +41,8 @@
                                              nil
                                              ];
         self.fullyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                                    [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat) 0,
-                                    [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 1,
+                                    [NSColor applicationColorForKey: @"Cell Selection Gradient (high)"], (CGFloat) 0,
+                                    [NSColor applicationColorForKey: @"Cell Selection Gradient (low)"], (CGFloat) 1,
                                     nil
                                     ];
     }
@@ -71,18 +71,19 @@
 - (void)drawInteriorWithFrame: (NSRect)cellFrame inView: (NSView *)controlView
 {
     NSColor *textColor;
-    if ([self.objectValue compare: [NSDecimalNumber zero]] != NSOrderedAscending) {
-        textColor = [NSColor applicationColorForKey: @"Positive Cash"];
-    } else {
-        textColor  = [NSColor applicationColorForKey: @"Negative Cash"];
-    }
-    if (self.isInSelectedRow && self.isInSelectedColumn) {
+    if (self.isInSelectedRow || self.isInSelectedColumn) {
         textColor  = [NSColor whiteColor];
+    } else {
+        if ([self.objectValue compare: [NSDecimalNumber zero]] != NSOrderedAscending) {
+            textColor = [NSColor applicationColorForKey: @"Positive Cash"];
+        } else {
+            textColor  = [NSColor applicationColorForKey: @"Negative Cash"];
+        }
     }
     NSMutableDictionary *attrs = [[[self attributedStringValue] attributesAtIndex: 0 effectiveRange: NULL] mutableCopy];
     
-    // If this cell is fully selected then make the text bold.
-    if (self.isInSelectedRow && self.isInSelectedColumn) {
+    // If this cell is selected then make the text bold.
+    if (self.isInSelectedRow || self.isInSelectedColumn) {
         NSFontManager *manager = [NSFontManager sharedFontManager];
         NSFont *font = [attrs objectForKey: NSFontAttributeName];
         font = [manager convertFont: font toHaveTrait: NSBoldFontMask];
@@ -96,8 +97,7 @@
     
         cellFrame.origin.x += CELL_BOUNDS;
         cellFrame.size.width -= 2 * CELL_BOUNDS;
-        cellFrame.origin.y++;
-        cellFrame.size.height--;
+        cellFrame.origin.y += 2;
         [s drawInRect: cellFrame];
     }
 }

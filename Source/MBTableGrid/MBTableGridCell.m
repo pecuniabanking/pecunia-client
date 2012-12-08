@@ -64,9 +64,9 @@
     NSBezierPath *selectionOutline = [NSBezierPath bezierPathWithRoundedRect: fillRect xRadius: 4 yRadius: 4];
 
     NSShadow *shadow = [[NSShadow alloc] init];
-    [shadow setShadowColor: [NSColor colorWithCalibratedWhite: 0 alpha: 0.5]];
-    [shadow setShadowBlurRadius: 2];
-    //   [shadow setShadowOffset: NSMakeSize(1, -1)];
+    [shadow setShadowColor: [NSColor colorWithCalibratedWhite: 0 alpha: 0.25]];
+    [shadow setShadowBlurRadius: 3];
+    [shadow setShadowOffset: NSMakeSize(1, -1)];
     [shadow set];
     [[NSColor whiteColor] set];
     [selectionOutline fill];
@@ -95,7 +95,7 @@
     NSRectFill(bottomLine);
   }
   [NSGraphicsContext restoreGraphicsState];
-	[self drawInteriorWithFrame:cellFrame inView:controlView];
+  [self drawInteriorWithFrame:cellFrame inView:controlView];
 }
 
 @end

@@ -73,12 +73,6 @@
 - (void)dealloc
 {
     self.outline = nil; // Will remove self from default notification center.
-    
-    selectedDates = nil;
-    minDate = nil;
-    maxDate = nil;
-    managedObjectContext = nil;
-    
 }
 
 -(void)awakeFromNib
@@ -122,7 +116,7 @@
     toSlider.intValue = toIndex;
     [self updateLimitLabel: toText index: toIndex];
     
-    valueGrid.defaultCellSize = NSMakeSize(100, 20);
+    valueGrid.defaultCellSize = NSMakeSize(100, 22);
     [valueGrid.rowHeaderView setHidden: YES];
     
     AmountCell *cell = [[AmountCell alloc] initTextCell: @""];
@@ -144,12 +138,11 @@
     [formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
     [formatter setLocale: [NSLocale currentLocale]];
     [formatter setCurrencySymbol: @""];
-    
+
     valueGrid.allowsMultipleSelection = NO;
     valueGrid.showSelectionRing = NO;
     
     [statementsListView bind: @"dataSource" toObject: statementsController withKeyPath: @"arrangedObjects" options: nil];
-    //[statementsListView bind: @"valueArray" toObject: statementsController withKeyPath: @"arrangedObjects.value" options: nil];
     
     // Bind controller to selectedRow property and the listview to the controller's selectedIndex property to get notified about selection changes.
     [statementsController bind: @"selectionIndexes" toObject: statementsListView withKeyPath: @"selectedRows" options: nil];
