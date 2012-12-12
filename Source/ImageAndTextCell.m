@@ -153,8 +153,8 @@ static NSGradient* selectionGradient = nil;
                           [NSColor colorWithDeviceWhite: 60 / 256.0 alpha: 1], (CGFloat) 1,
                           nil];
         selectionGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                             [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat) 0,
-                             [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 1,
+                             [NSColor applicationColorForKey: @"Cell Selection Gradient (high)"], (CGFloat) 0,
+                             [NSColor applicationColorForKey: @"Cell Selection Gradient (low)"], (CGFloat) 1,
                              nil
                              ];
     }
@@ -167,7 +167,7 @@ static NSGradient* selectionGradient = nil;
     NSBezierPath* selectionOutline = [NSBezierPath bezierPathWithRoundedRect: selectionRect xRadius: 3 yRadius: 3];
     if ([self isHighlighted]) {
         // Fill selection rectangle for selected entries.
-        [selectionGradient drawInBezierPath: selectionOutline angle: 90];
+        [selectionGradient drawInRect: selectionRect angle: 90];
     }
     else
         if (isRoot) {
@@ -200,8 +200,7 @@ static NSGradient* selectionGradient = nil;
     // Draw cell symbol if there is one.
     if (image != nil)
     {
-        // Let Cocoa pick an icon size that fits for the cell.
-        NSSize iconSize = NSMakeSize(cellFrame.size.height - 2, cellFrame.size.height - 2);
+        NSSize iconSize = NSMakeSize(16, 16);
         NSRect iconFrame;
         
         NSDivideRect(cellFrame, &iconFrame, &cellFrame, ICON_SPACING + iconSize.width + ICON_SPACING, NSMinXEdge);
@@ -211,11 +210,9 @@ static NSGradient* selectionGradient = nil;
         iconFrame.origin.x += ICON_SPACING;
         iconFrame.origin.y += floor((cellFrame.size.height - iconFrame.size.height) / 2);
 
-        [[NSGraphicsContext currentContext] setImageInterpolation: NSImageInterpolationHigh];
-
         [image drawInRect: iconFrame
                  fromRect: NSZeroRect
-                operation: [self isHighlighted] ? NSCompositePlusLighter : NSCompositeSourceOver
+                operation: NSCompositeSourceOver
                  fraction: 1.0
            respectFlipped: YES
                     hints: nil];
@@ -226,6 +223,8 @@ static NSGradient* selectionGradient = nil;
         cellFrame.size.width -= ICON_SPACING;
         cellFrame.origin.x   += ICON_SPACING;
     }
+
+    cellFrame.size.height--; // Seems to be a necessary correction for vertical alignment.
 
     // Reserve space for badges.
     if (maxUnread > 0)
@@ -290,7 +289,7 @@ static NSGradient* selectionGradient = nil;
         amountwithCurrencyFrame.size.width -= ROW_RIGHT_MARGIN;
         cellFrame.size.width -= ROW_RIGHT_MARGIN;
         
-        [amountWithCurrency	drawInRect:amountwithCurrencyFrame];    
+        [amountWithCurrency	drawInRect: amountwithCurrencyFrame];    
     }
     
     // Cell text color.

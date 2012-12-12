@@ -41,9 +41,9 @@ static NSShadow* borderShadow = nil;
                                                 offset: NSMakeSize(1, -1)
                                             blurRadius: 3.0];
     }
-    
+
     [NSGraphicsContext saveGraphicsState];
-    
+
     // First the background.
     NSColor* color;
     if (background != nil) {
@@ -53,7 +53,7 @@ static NSShadow* borderShadow = nil;
     }
     [color setFill];
     [NSBezierPath fillRect: [self bounds]];
-    
+
     NSRect dropTargetFrame = [rightPane dropTargetFrame];
     
     // Draw the target area for drop operations from the preview images or one of the transfer
@@ -78,7 +78,7 @@ static NSShadow* borderShadow = nil;
     [transform translateXBy: 3 yBy: -3];
     [dragTargetPath transformUsingAffineTransform: transform];
     [dragTargetPath stroke];
-    
+
     // Draw a highlight effect over everything.
     NSGradient *highlight = [[NSGradient alloc] initWithStartingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.3]
                                                           endingColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0]];
@@ -87,7 +87,7 @@ static NSShadow* borderShadow = nil;
     NSPoint centerPoint = NSMakePoint(NSMidX(self.bounds), height + 1);
     NSPoint otherPoint = NSMakePoint(centerPoint.x, height);
     [highlight drawFromCenter: centerPoint radius: 1 toCenter: otherPoint radius: height options: 0];
-    
+
     [NSGraphicsContext restoreGraphicsState];
 }
 

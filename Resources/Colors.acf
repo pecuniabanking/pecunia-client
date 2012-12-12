@@ -55,15 +55,15 @@ Positive Gradient (low)
 Negative Cash
 52171 50372 45746
 Disabled Tree Item Color
-62194 60395 55512
-Table Background Main
-62194 57311 44204
-Table Background Alternate
+50115 52428 57568
+Cell Selection Gradient (high)
+37779 41120 47802
+Cell Selection Gradient (low)
 24158 41891 57311
 Selection Gradient (high)
 13621 30583 49858
 Selection Gradient (low)
-65535 64764 62194
+37779 41120 47802
 Grid Partial Selection
 15420 15420 15420
 Small Background Gradient (low)

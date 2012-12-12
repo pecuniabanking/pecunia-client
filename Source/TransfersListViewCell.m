@@ -60,10 +60,19 @@ extern NSString *StatementTypeKey;
         whiteAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                             [NSColor whiteColor], NSForegroundColorAttributeName, nil
                             ];
+        [self addObserver: self forKeyPath: @"row" options: 0 context: nil];
     }
     return self;
 }
 
+- (void)observeValueForKeyPath: (NSString *)keyPath
+                      ofObject: (id)object
+                        change: (NSDictionary *)change
+                       context: (void *)context
+{
+    [self selectionChanged];
+    [self setNeedsDisplay: YES];
+}
 
 static CurrencyValueTransformer* currencyTransformer;
 
@@ -106,9 +115,6 @@ static CurrencyValueTransformer* currencyTransformer;
     NSString *symbol = [currencyTransformer transformedValue: currency];
     [currencyLabel setStringValue: symbol];
     [[[valueLabel cell] formatter] setCurrencyCode: currency]; // Important for proper display of the value, even without currency.
-
-    [self selectionChanged];
-    [self setNeedsDisplay: YES];
 }
 
 - (void)setTextAttributesForPositivNumbers: (NSDictionary*) _positiveAttributes

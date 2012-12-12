@@ -587,7 +587,11 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 	
 	if(![self inLiveResize]||[self usesLiveResize])
 	{
-		[_visibleCells removeAllObjects];
+        // ml: enqueue all visible cells for faster updates.
+        NSArray *cells = [_visibleCells copy];
+        for (PXListViewCell *cell in cells) {
+            [self enqueueCell: cell];
+        }
 		[[self documentView] setSubviews:[NSArray array]];
 		
 		[self cacheCellLayout];

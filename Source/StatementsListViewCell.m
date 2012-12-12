@@ -78,12 +78,21 @@ extern NSString *StatementTypeKey;
         whiteAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                             [NSColor whiteColor], NSForegroundColorAttributeName, nil
                            ];
+        [self addObserver: self forKeyPath: @"row" options: 0 context: nil];
     }
     return self;
 }
 
+- (void)observeValueForKeyPath: (NSString *)keyPath
+                      ofObject: (id)object
+                        change: (NSDictionary *)change
+                       context: (void *)context
+{
+    [self selectionChanged];
+    [self setNeedsDisplay: YES];
+}
 
-- (void) setHeaderHeight: (int) aHeaderHeight
+- (void)setHeaderHeight: (int) aHeaderHeight
 {
     headerHeight = aHeaderHeight;
     if (headerHeight > 0) {
@@ -135,9 +144,6 @@ static CurrencyValueTransformer* currencyTransformer;
     [[[saldoLabel cell] formatter] setCurrencyCode: currency];
 
     categoryColor = [details valueForKey: StatementColorKey];
-
-    [self selectionChanged];
-    [self setNeedsDisplay: YES];
 }
 
 - (void)setTextAttributesForPositivNumbers: (NSDictionary*) _positiveAttributes
