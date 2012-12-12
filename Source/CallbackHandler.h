@@ -30,12 +30,13 @@
 	BOOL			errorOccured;
 
     NotificationWindowController    *notificationController;
-    SigningOption   *currentSigningOption;
-
+    SigningOption                   *currentSigningOption;
 }
 
-@property(nonatomic, strong) NSMutableDictionary * currentSignOptions;
+@property(nonatomic, strong) NSMutableDictionary *currentSignOptions;
 @property(nonatomic, strong) SigningOption *currentSigningOption;
+@property(nonatomic, strong) NotificationWindowController *notificationController;
+
 
 -(void)startSession;
 -(NSString*)getPassword;

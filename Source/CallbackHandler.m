@@ -42,6 +42,7 @@ static CallbackHandler *callbackHandler = nil;
 
 @implementation CallbackHandler
 @synthesize currentSigningOption;
+@synthesize notificationController;
 
 -(void)startSession
 {
@@ -227,8 +228,8 @@ static CallbackHandler *callbackHandler = nil;
     if ([data.command isEqualToString:@"needChipcard" ]) {
         notificationController = [[NotificationWindowController alloc ] initWithMessage:NSLocalizedString(@"AP350", @"") 
                                                                                   title:NSLocalizedString(@"AP357", @"") ];
-        //[notificationController showWindow:self ];
-        [self performSelector:@selector(showNotificationWindow) withObject:nil afterDelay:0.5 ];
+        [notificationController showWindow:self ];
+        //[self performSelector:@selector(showNotificationWindow) withObject:nil afterDelay:0.5 ];
     }
     if ([data.command isEqualToString:@"haveChipcard" ]) {
         [[notificationController window ] close ];
@@ -250,7 +251,8 @@ static CallbackHandler *callbackHandler = nil;
 
 -(void)showNotificationWindow
 {
-    [notificationController showWindow:self ];    
+    [notificationController showWindow:self ];
+    [[notificationController window] makeKeyAndOrderFront:self];
 }
 
 -(void)setErrorOccured

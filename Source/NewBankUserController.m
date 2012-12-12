@@ -105,6 +105,7 @@
 	if(code != 0) {
         [currentUserController remove:self ];
     }
+    [[self window] makeKeyAndOrderFront:self];
 }
 
 -(void)getBankSetupInfo

@@ -298,6 +298,7 @@
 		B17072D50D4BD35D00FBF186 /* TransactionLimits.m in Sources */ = {isa = PBXBuildFile; fileRef = B17072D40D4BD35D00FBF186 /* TransactionLimits.m */; };
 		B17074870D55104000FBF186 /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17074860D55104000FBF186 /* PreferenceController.m */; };
 		B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = B17078F810EA5E6100A974E7 /* StatCatAssignment.m */; };
+		B170C16E167689310047FD42 /* java.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = B170C16D167689310047FD42 /* java.entitlements */; };
 		B1762BD911EE4AE600F70263 /* TransfersController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1762BD811EE4AE600F70263 /* TransfersController.m */; };
 		B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728AF1502D0D300256898 /* BankSetupInfo.m */; };
 		B17728D71504ABC700256898 /* TanMedium.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728D61504ABC700256898 /* TanMedium.m */; };
@@ -837,6 +838,7 @@
 		B17074860D55104000FBF186 /* PreferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17078F710EA5E6100A974E7 /* StatCatAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatCatAssignment.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17078F810EA5E6100A974E7 /* StatCatAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatCatAssignment.m; sourceTree = "<group>"; tabWidth = 4; };
+		B170C16D167689310047FD42 /* java.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = java.entitlements; sourceTree = "<group>"; };
 		B1762BD711EE4AE600F70263 /* TransfersController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransfersController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1762BD811EE4AE600F70263 /* TransfersController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17728AE1502D0D300256898 /* BankSetupInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankSetupInfo.h; sourceTree = "<group>"; };
@@ -1521,6 +1523,7 @@
 				27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */,
 				B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */,
 				277B478A1659363F008D410A /* category-icon-defaults.txt */,
+				B170C16D167689310047FD42 /* java.entitlements */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -2268,6 +2271,7 @@
 				27D5763F16626C5300761132 /* hide@2x.png in Resources */,
 				27D57642166277CB00761132 /* show.png in Resources */,
 				27D57643166277CB00761132 /* show@2x.png in Resources */,
+				B170C16E167689310047FD42 /* java.entitlements in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2536,6 +2540,7 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -2576,6 +2581,7 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -2615,6 +2621,7 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
