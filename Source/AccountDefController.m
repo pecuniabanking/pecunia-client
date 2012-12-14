@@ -17,6 +17,7 @@
 	account.currency = @"EUR";
 	account.country = @"DE";
 	account.name = @"Neues Konto";
+    success = NO;
 	return self;
 }
 
@@ -90,12 +91,19 @@
 	}
 }
 
+-(void)windowWillClose:(NSNotification*)notification
+{
+    if (success == YES) {
+        [NSApp stopModalWithCode: 1 ];
+    } else {
+        [NSApp stopModalWithCode: 0 ];
+    }
+}
 
 -(IBAction)cancel:(id)sender 
 {
-    [self close ];
 	[moc reset ];
-	[NSApp stopModalWithCode: 0 ];
+    [self close ];
 }
 
 -(IBAction)ok:(id)sender
@@ -174,7 +182,8 @@
 	}
 
 	[moc reset ];
-	[NSApp stopModalWithCode: 1 ];
+    success = YES;
+    [self close ];
 }
 
 -(void)controlTextDidEndEditing:(NSNotification *)aNotification

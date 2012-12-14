@@ -928,6 +928,7 @@ BOOL runningOnLionOrLater = NO;
         
         // redraw accounts view
         [accountsView setNeedsDisplay:YES];
+        [rightPane setNeedsDisplay:YES];
         
         [categoryAssignments rearrangeObjects];
     }
@@ -2420,7 +2421,8 @@ BOOL runningOnLionOrLater = NO;
         if (sel != nil && [sel count] == 1) {
             StatSplitController *splitController = [[StatSplitController alloc] initWithStatement: [[sel objectAtIndex:0] statement]
                                                                                                view: accountsView];
-            [splitController showWindow:mainWindow];
+            [NSApp runModalForWindow:[splitController window]];
+            //[splitController showWindow:mainWindow];
         }
     }
 }

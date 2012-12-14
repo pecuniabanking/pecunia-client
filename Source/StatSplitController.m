@@ -42,6 +42,11 @@
 	[[self window ] center ];
 }
 
+- (void)windowWillClose:(NSNotification *)notification
+{
+    [NSApp stopModal];
+}
+
 -(void)addAssignment:(id)sender
 {
 	[statement assignAmount: statement.nassValue toCategory:nil ];

@@ -21,6 +21,7 @@
 	NSManagedObjectContext			*moc;
 	BankAccount						*account;
 	BankAccount						*newAccount;
+    BOOL                            success;
 }
 
 - (id)init;

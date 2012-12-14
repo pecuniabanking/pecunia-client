@@ -110,6 +110,7 @@
 	NSNumberFormatter   *formatter;
     CalendarWindow      *calendarWindow;
     TransactionLimits   *limits;
+    NSArray             *draggedTransfers;
 
 }
 

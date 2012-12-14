@@ -791,10 +791,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     [sheet orderOut: nil];
     if (returnCode == NSRunStoppedResponse) {
-        NSArray *transfers = (__bridge NSArray *)contextInfo;
-        
         NSUInteger counter = 0;
-        for (Transfer *transfer in transfers) {
+        for (Transfer *transfer in draggedTransfers) {
             NSString *actualName = (counter++ == 0) ? [templateName stringValue] : [NSString stringWithFormat: @"%@ %li", [templateName stringValue], counter];
             [transactionController saveTransfer: transfer asTemplateWithName: actualName];
         }
@@ -842,7 +840,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSManagedObjectContext *context = MOAssistant.assistant.context;
     
     if (sender == transferTemplateListView) {
-        NSArray *transfers;
         if (type == TransferReadyForUseDataType) {
             // If this is an edited transfer then finish the edit operation first
             // (and do so the validation) before using it as template.
@@ -850,7 +847,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                 return;
             }
             [rightPane hideFormular];
-            transfers = [NSArray arrayWithObject: transactionController.currentTransfer];
+            draggedTransfers = [NSArray arrayWithObject: transactionController.currentTransfer];
         } else {
             NSData *data = [pasteboard dataForType: type];
             NSArray *urls = [NSKeyedUnarchiver unarchiveObjectWithData: data];
@@ -863,16 +860,16 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                 }
                 [mutableTransfers addObject: [context objectWithID: objectId]];
             }
-            transfers = mutableTransfers;
+            draggedTransfers = mutableTransfers;
         }
         
         // Use the remote name of the first transfer as default for the template name.
-        templateName.stringValue = [[transfers objectAtIndex: 0] remoteName];
+        templateName.stringValue = [[draggedTransfers objectAtIndex: 0] remoteName];
         [NSApp beginSheet: templateNameSheet
            modalForWindow: [mainView window]
             modalDelegate: self
            didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
-              contextInfo: (__bridge void *)(transfers)];
+              contextInfo: nil];
         return;
     }
     
