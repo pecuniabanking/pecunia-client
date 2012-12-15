@@ -111,7 +111,6 @@
     CalendarWindow      *calendarWindow;
     TransactionLimits   *limits;
     NSArray             *draggedTransfers;
-
 }
 
 @property (unsafe_unretained) IBOutlet TransferFormularView *transferFormular;

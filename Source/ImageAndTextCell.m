@@ -131,8 +131,8 @@
 
 
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
-    NSRect titleRect = [self titleRectForBounds:cellFrame];
-    [[self attributedStringValue] drawInRect:titleRect];
+    NSRect titleRect = [self titleRectForBounds: cellFrame];
+    [[self attributedStringValue] drawInRect: titleRect];
 }
 - (void)selectWithFrame:(NSRect)aRect inView: (NSView*)controlView editor: (NSText*)textObj delegate: (id)anObject start: (NSInteger)selStart length: (NSInteger)selLength;
 {
@@ -149,12 +149,12 @@ static NSGradient* selectionGradient = nil;
 {
     if (headerGradient == nil) {
         headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                          [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat) 0,
-                          [NSColor colorWithDeviceWhite: 60 / 256.0 alpha: 1], (CGFloat) 1,
+                          [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], 0.0,
+                          [NSColor colorWithDeviceWhite: 60 / 256.0 alpha: 1], 1.0,
                           nil];
         selectionGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                             [NSColor applicationColorForKey: @"Cell Selection Gradient (high)"], (CGFloat) 0,
-                             [NSColor applicationColorForKey: @"Cell Selection Gradient (low)"], (CGFloat) 1,
+                             [NSColor applicationColorForKey: @"Cell Selection Gradient (high)"], 0.0,
+                             [NSColor applicationColorForKey: @"Cell Selection Gradient (low)"], 1.0,
                              nil
                              ];
     }
@@ -351,11 +351,8 @@ static NSGradient* selectionGradient = nil;
         width = MIN_BADGE_WIDTH;
     }
     
-    
     return NSMakeSize(width, BADGE_HEIGHT);
 }
-
-
 
 - (void)drawBadgeInRect:(NSRect)badgeFrame
 {
@@ -407,11 +404,12 @@ static NSGradient* selectionGradient = nil;
     } else badgeWidth = 0;
 }
 
-
 - (NSSize)cellSize
 {
+    // TODO: This is acting weird. Needs to be replaced.
+    // This code is only used when a tooltip is about to be displayed.
     NSSize cellSize = [super cellSize];
-    cellSize.width += (image ? [image size].width : 0) + 3;
+    cellSize.width += 40; //(image ? 16 + ICON_SPACING : 0) + 3;
     return cellSize;
 }
 

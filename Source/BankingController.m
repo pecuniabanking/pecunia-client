@@ -46,7 +46,7 @@
 #import	"StatSplitController.h"
 #import "ShortDate.h"
 #import "BankStatementController.h"
-#import "AccountChangeController.h"
+#import "AccountMaintenanceController.h"
 #import "PurposeSplitController.h"
 #import "TransferTemplateController.h"
 
@@ -54,6 +54,8 @@
 #import "CategoryRepWindowController.h"
 #import "CategoryDefWindowController.h"
 #import "CategoryPeriodsWindowController.h"
+#import "CategoryMaintenanceController.h"
+
 #import "TransfersController.h"
 
 #import "BankStatementPrintView.h"
@@ -203,7 +205,7 @@ BOOL runningOnLionOrLater = NO;
     [self setNumberFormatForCell: [headerValueField cell] positive: positiveAttributes negative: negativeAttributes];
     [self setNumberFormatForCell: [nassValueField cell] positive: positiveAttributes negative: negativeAttributes];
     
-    // Edit an account by double clicking it.
+    // Edit accounts/categories when double clicking on a node.
     [accountsView setDoubleAction: @selector(changeAccount:)];
     [accountsView setTarget: self];
     
@@ -1061,25 +1063,29 @@ BOOL runningOnLionOrLater = NO;
 
 -(IBAction)changeAccount: (id)sender
 {
+    // In order to let KVO selection changes work properly when double clicking a node other than
+    // the current one we have to run the modal dialogs after the runloop has finished its round.
+    [self performSelector: @selector(doChangeAccount) withObject: nil afterDelay: 0];
+}
+
+- (void)doChangeAccount
+{
     Category* cat = [self currentSelection];
-    if (cat == nil || ![cat isBankAccount] || [cat accountNumber] == nil) {
+    if (cat == nil) {
         return;
     }
-    
-    AccountChangeController *changeController = [[AccountChangeController alloc] initWithAccount: (BankAccount*)cat];
-    int res = [NSApp runModalForWindow: [changeController window]];
-    if (res) {
-        // account was changed
-        NSError *error = nil;
 
-        // save updates
-        if([self.managedObjectContext save: &error] == NO) {
-            NSAlert *alert = [NSAlert alertWithError:error];
-            [alert runModal];
-            return;
-        }
-        [categoryController rearrangeObjects];
+    if (!cat.isBankAccount) {
+        CategoryMaintenanceController *changeController = [[CategoryMaintenanceController alloc] initWithCategory: cat];
+        [NSApp runModalForWindow: [changeController window]];
+        return;
     }
+
+    if (cat.accountNumber != nil) {
+        AccountMaintenanceController *changeController = [[AccountMaintenanceController alloc] initWithAccount: (BankAccount*)cat];
+        [NSApp runModalForWindow: [changeController window]];
+    }
+    // Changes are stored in the controllers.
 }
 
 -(IBAction)deleteAccount:(id)sender

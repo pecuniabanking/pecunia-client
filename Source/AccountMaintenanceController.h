@@ -23,14 +23,10 @@
 @class BusinessTransactionsController;
 @class BWGradientBox;
 
-@interface AccountChangeController : NSWindowController {
+@interface AccountMaintenanceController : NSWindowController {
     IBOutlet NSObjectController		*accountController;
-    IBOutlet NSPopUpButton			*dropDown;
 	IBOutlet NSTextField			*bicField;
 	IBOutlet NSTextField			*bankCodeField;
-	IBOutlet NSTextField			*bankNameField;
-	IBOutlet NSButton				*collTransferCheck;
-	IBOutlet NSButton				*stordCheck;
 	IBOutlet NSPredicateEditor		*predicateEditor;
 	
 	IBOutlet NSBox					*boxView;
@@ -40,7 +36,7 @@
     IBOutlet BWGradientBox          *backgroundGradient;
     IBOutlet NSPopUpButton          *collTransferButton;
 
-    @private
+@private
 	NSManagedObjectContext			*moc;
 	BankAccount						*account;
 	BankAccount						*changedAccount;

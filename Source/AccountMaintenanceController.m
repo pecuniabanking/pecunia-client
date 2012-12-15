@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-#import "AccountChangeController.h"
+#import "AccountMaintenanceController.h"
 #import "BankAccount.h"
 #import "MOAssistant.h"
 #import "BankInfo.h"
@@ -29,14 +29,14 @@
 
 #import "BusinessTransactionsController.h"
 
-@implementation AccountChangeController
+@implementation AccountMaintenanceController
 
--(id)initWithAccount: (BankAccount*)acc
+- (id)initWithAccount: (BankAccount*)acc
 {
-	self = [super initWithWindowNibName:@"AccountMaintenance"];
-	moc = [[MOAssistant assistant ] memContext ];
+	self = [super initWithWindowNibName: @"AccountMaintenance"];
+	moc = MOAssistant.assistant.memContext;
 
-	account = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount" inManagedObjectContext:moc ];
+	account = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount" inManagedObjectContext: moc];
 	
 	changedAccount = acc;
 	account.bankCode = acc.bankCode;
@@ -52,16 +52,16 @@
 	account.isStandingOrderSupported = acc.isStandingOrderSupported;
     account.noAutomaticQuery = acc.noAutomaticQuery;
 	account.userId = acc.userId;
-    account.catRepColor = acc.catRepColor;
+    account.categoryColor = acc.categoryColor;
 
 	return self;
 }
 
-
--(void)awakeFromNib
+- (void)awakeFromNib
 {
-	if ([changedAccount.isManual boolValue] == YES) {
-		[boxView replaceSubview:accountAddView with:manAccountAddView ];
+	if ([changedAccount.isManual boolValue]) {
+        manAccountAddView.frame = accountAddView.frame;
+		[boxView replaceSubview: accountAddView with: manAccountAddView];
 
 		[predicateEditor addRow:self ];
 		NSString* s = changedAccount.rule;
@@ -143,34 +143,15 @@
 		[[HBCIClient hbciClient ] changeAccount:changedAccount ];
 	}
 
-	[moc reset ];
-	[NSApp stopModalWithCode: 1 ];
+	[moc reset];
+	[NSApp stopModalWithCode: 1];
 }
 
-- (IBAction)predicateEditorChanged:(id)sender
-{	
-//	if(awaking) return;
-	// check NSApp currentEvent for the return key
-    NSEvent* event = [NSApp currentEvent];
-    if ([event type] == NSKeyDown)
-	{
-		NSString* characters = [event characters];
-		if ([characters length] > 0 && [characters characterAtIndex:0] == 0x0D)
-		{
-/*			
-			[self calculateCatAssignPredicate ];
-			ruleChanged = YES;
-*/ 
-		}
-    }
-    // if the user deleted the first row, then add it again - no sense leaving the user with no rows
+- (IBAction)predicateEditorChanged: (id)sender
+{
+    // If the user deleted the first row, then add it again - no sense leaving the user with no rows.
     if ([predicateEditor numberOfRows] == 0)
 		[predicateEditor addRow:self];
-}
-
-- (void)ruleEditorRowsDidChange:(NSNotification *)notification
-{
-//	[self calculateCatAssignPredicate ];
 }
 
 -(BOOL)check

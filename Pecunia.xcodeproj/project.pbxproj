@@ -215,6 +215,8 @@
 		27DD4AC5150B60A4006C2370 /* HBCI business transactions.csv in Resources */ = {isa = PBXBuildFile; fileRef = 27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */; };
 		27DD4AFE150B6F84006C2370 /* BWGradientBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DD4AFD150B6F84006C2370 /* BWGradientBox.m */; };
 		27DD4B09150B6FD0006C2370 /* NSColor+BWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DD4B08150B6FD0006C2370 /* NSColor+BWAdditions.m */; };
+		27DFFD9216739C0000848CD2 /* CategoryMaintenance.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27DFFD9116739C0000848CD2 /* CategoryMaintenance.xib */; };
+		27DFFD9616739DAE00848CD2 /* CategoryMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DFFD9516739DAE00848CD2 /* CategoryMaintenanceController.m */; };
 		27E1693B149F6E5C00089103 /* help-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E1693A149F6E5C00089103 /* help-button.png */; };
 		27E1699A149F90D900089103 /* About.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E16999149F90D900089103 /* About.xib */; };
 		27E169D8149FA01600089103 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27E169D7149FA01600089103 /* Credits.rtf */; };
@@ -396,7 +398,7 @@
 		B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EC7B261508077100813E1A /* TanSigningOption.m */; };
 		B1EFA8030D5CE7BA007FD9C3 /* CCDLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EFA8020D5CE7BA007FD9C3 /* CCDLayoutAdditions.m */; };
 		B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */; };
-		B1F4587E0F2907BD00BAF4E8 /* AccountChangeController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountChangeController.m */; };
+		B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
 		B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F459EB0F2E480700BAF4E8 /* BankInfo.m */; };
 		B1F527050C3C1D5800BE3DFC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* Category.m */; };
 		B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB50981209EA52004DCD6A /* PurposeSplitController.m */; };
@@ -698,6 +700,9 @@
 		27DD4AFD150B6F84006C2370 /* BWGradientBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWGradientBox.m; sourceTree = "<group>"; };
 		27DD4B07150B6FD0006C2370 /* NSColor+BWAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+BWAdditions.h"; sourceTree = "<group>"; };
 		27DD4B08150B6FD0006C2370 /* NSColor+BWAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+BWAdditions.m"; sourceTree = "<group>"; };
+		27DFFD9116739C0000848CD2 /* CategoryMaintenance.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryMaintenance.xib; sourceTree = "<group>"; };
+		27DFFD9416739DAE00848CD2 /* CategoryMaintenanceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryMaintenanceController.h; sourceTree = "<group>"; };
+		27DFFD9516739DAE00848CD2 /* CategoryMaintenanceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryMaintenanceController.m; sourceTree = "<group>"; };
 		27E1693A149F6E5C00089103 /* help-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-button.png"; sourceTree = "<group>"; };
 		27E16999149F90D900089103 /* About.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = About.xib; sourceTree = "<group>"; };
 		27E169D7149FA01600089103 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
@@ -723,7 +728,7 @@
 		27FA4A1A154D5AB9002A5ED0 /* BankingController+Tabs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BankingController+Tabs.m"; sourceTree = "<group>"; };
 		27FA4A1D154D5F16002A5ED0 /* Transfers.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Transfers.xib; sourceTree = "<group>"; };
 		27FD58C91437569B0074B378 /* StatementsListView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementsListView.h; sourceTree = "<group>"; tabWidth = 4; };
-		27FD58CA1437569B0074B378 /* StatementsListView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsListView.m; sourceTree = "<group>"; tabWidth = 4; };
+		27FD58CA1437569B0074B378 /* StatementsListView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsListView.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -999,8 +1004,8 @@
 		B1F454370F101E7500BAF4E8 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = ../Localizable.strings; sourceTree = "<group>"; };
 		B1F458200F2516C200BAF4E8 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
 		B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
-		B1F4587C0F2907BD00BAF4E8 /* AccountChangeController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AccountChangeController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B1F4587D0F2907BD00BAF4E8 /* AccountChangeController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AccountChangeController.m; sourceTree = "<group>"; tabWidth = 4; };
+		B1F4587C0F2907BD00BAF4E8 /* AccountMaintenanceController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AccountMaintenanceController.h; sourceTree = "<group>"; tabWidth = 4; };
+		B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AccountMaintenanceController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1F459EA0F2E480700BAF4E8 /* BankInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankInfo.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1F459EB0F2E480700BAF4E8 /* BankInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankInfo.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1F527030C3C1D5800BE3DFC /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1391,6 +1396,15 @@
 			path = BWToolkit;
 			sourceTree = "<group>";
 		};
+		27DFFD9316739C9900848CD2 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				27DFFD9416739DAE00848CD2 /* CategoryMaintenanceController.h */,
+				27DFFD9516739DAE00848CD2 /* CategoryMaintenanceController.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		27E5534E146ED854001DE9BE /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1410,18 +1424,19 @@
 				27E16999149F90D900089103 /* About.xib */,
 				B1D4500D147844C3008DD256 /* AccountCreate.xib */,
 				B1D4506D147848D3008DD256 /* AccountMaintenance.xib */,
-				277C84921657F6DB0090D46D /* GenerateDataController.xib */,
 				B14C6002114848E1009324A6 /* BankStatementController.xib */,
 				B1D4500A14784443008DD256 /* BankUser.xib */,
 				B1D4500714784412008DD256 /* BSSelectWindow.xib */,
 				B17729AC1504D63200256898 /* BusinessTransactionsWindow.xib */,
 				B1AFA8801295C5D800B115A7 /* CategoryAnalysis.xib */,
 				27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */,
+				27DFFD9116739C0000848CD2 /* CategoryMaintenance.xib */,
 				B14587A11289DCB700848683 /* CategoryPeriods.xib */,
 				B1AFA836129479BA00B115A7 /* CategoryReporting.xib */,
 				B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */,
 				B1D45004147843D0008DD256 /* Donation.xib */,
 				2703DE26146EE6AB0083CBA2 /* ExportPopup.xib */,
+				277C84921657F6DB0090D46D /* GenerateDataController.xib */,
 				B134365A12ECBD54006C4687 /* GenericImportWindow.xib */,
 				B1AA633014096E6600ADE1D0 /* ImportSettings.xib */,
 				B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */,
@@ -1808,8 +1823,8 @@
 			children = (
 				B1A1377211B6FD9400622D6C /* AccountDefController.h */,
 				B1A1377311B6FD9400622D6C /* AccountDefController.m */,
-				B1F4587C0F2907BD00BAF4E8 /* AccountChangeController.h */,
-				B1F4587D0F2907BD00BAF4E8 /* AccountChangeController.m */,
+				B1F4587C0F2907BD00BAF4E8 /* AccountMaintenanceController.h */,
+				B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */,
 			);
 			name = Accounts;
 			sourceTree = "<group>";
@@ -1883,11 +1898,12 @@
 		B1FE0DCB106583F8005B3800 /* WindowController */ = {
 			isa = PBXGroup;
 			children = (
+				B1C7B193130B12870091CD72 /* Accounts */,
+				27DFFD9316739C9900848CD2 /* Categories */,
+				B1C7B194130B12F80091CD72 /* ImExport */,
 				B1C7B189130B10BF0091CD72 /* MainWindow */,
 				B1C7B196130B13730091CD72 /* Password */,
 				B1C7B195130B133B0091CD72 /* Statements */,
-				B1C7B194130B12F80091CD72 /* ImExport */,
-				B1C7B193130B12870091CD72 /* Accounts */,
 				B1C7B18A130B11070091CD72 /* Transfers */,
 				B18B20540CC6A51B00B0B02C /* NewBankUserController.h */,
 				B18B20550CC6A51B00B0B02C /* NewBankUserController.m */,
@@ -2272,6 +2288,7 @@
 				27D57642166277CB00761132 /* show.png in Resources */,
 				27D57643166277CB00761132 /* show@2x.png in Resources */,
 				B170C16E167689310047FD42 /* java.entitlements in Resources */,
+				27DFFD9216739C0000848CD2 /* CategoryMaintenance.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2321,7 +2338,7 @@
 				B1D6C9EE0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m in Sources */,
 				B189782E0ECF47CA00D20503 /* Country.m in Sources */,
 				B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */,
-				B1F4587E0F2907BD00BAF4E8 /* AccountChangeController.m in Sources */,
+				B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */,
 				B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */,
 				B19A85F00F3CC3D3000FE9B3 /* Keychain.m in Sources */,
 				B132F8D10F93DC0D00263F3B /* MCEMTreeController.m in Sources */,
@@ -2464,6 +2481,7 @@
 				27D57651166297AE00761132 /* BWAnchoredButton.m in Sources */,
 				27D57652166297AE00761132 /* BWAnchoredButtonBar.m in Sources */,
 				27D57655166297D400761132 /* NSView+BWAdditions.m in Sources */,
+				27DFFD9616739DAE00848CD2 /* CategoryMaintenanceController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2540,7 +2558,6 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
-				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -2581,7 +2598,6 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
-				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -2621,7 +2637,6 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
-				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
