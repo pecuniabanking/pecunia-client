@@ -6,6 +6,9 @@
 #import "HBCIClient.h"
 #import "BankingController.h"
 
+#define HEIGHT_MANUAL 465
+#define HEIGHT_STANDARD 345
+
 @implementation AccountDefController
 
 -(id)init
@@ -27,6 +30,15 @@
 	account.bankName = name;
 }
 
+-(void)setHeight:(int)h
+{
+    NSWindow *window = [self window ] ;
+    NSRect frame = [window frame ];
+    int pos = frame.origin.y + frame.size.height;
+    frame.size.height = h;
+    frame.origin.y = pos - h;
+    [window setFrame:frame display:YES animate:YES ];
+}
 
 -(void)awakeFromNib
 {
@@ -55,6 +67,7 @@
 	
 	// fill proposal values
 	[self dropChanged: self ];
+    [self setHeight:HEIGHT_STANDARD];
 }
 
 -(IBAction)dropChanged: (id)sender
@@ -73,20 +86,25 @@
 		}
 
 		[bankCodeField setEditable: NO ];
-		[bankCodeField setBezeled: NO ];
+		//[bankCodeField setBezeled: NO ];
 		
 		if (currentAddView != accountAddView) {
+            [self setHeight:HEIGHT_STANDARD];
+            NSRect frame = [manAccountAddView frame];
 			[boxView replaceSubview:manAccountAddView with:accountAddView ];
 			currentAddView = accountAddView;
+            [currentAddView setFrame:frame];
 		}
 	} else {
 		[bankCodeField setEditable: YES ];
-		[bankCodeField setBezeled: YES ];
+		//[bankCodeField setBezeled: YES ];
 
 		if (currentAddView != manAccountAddView) {
+            [self setHeight:HEIGHT_MANUAL];
+            NSRect frame = [accountAddView frame];
 			[boxView replaceSubview:accountAddView with:manAccountAddView ];
 			currentAddView = manAccountAddView;
-			[manAccountAddView setFrameOrigin:NSMakePoint(0, 10) ];
+            [currentAddView setFrame:frame];
 		}
 	}
 }

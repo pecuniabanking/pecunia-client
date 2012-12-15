@@ -80,16 +80,6 @@
     [task setStandardOutput: inPipe ];
     [task setStandardInput: outPipe ];
     
-    // check if java is present
-    if ([[NSFileManager defaultManager ] fileExistsAtPath:@"/usr/bin/java"] == NO) {
-        NSRunCriticalAlertPanel(NSLocalizedString(@"AP130", @""), 
-                                NSLocalizedString(@"AP131", @""), 
-                                NSLocalizedString(@"ok", @""), 
-                                nil, 
-                                nil);
-        [NSApp terminate: self];
-    }
-    
     NSString *bundlePath = [[NSBundle mainBundle ] bundlePath ];
     NSString *jarPath = [bundlePath stringByAppendingString:@"/Contents/HBCIServer.jar" ];
     NSString *launchPath = [bundlePath stringByAppendingString:@"/Contents/Plugins/jdk1.7.0_07.jdk/Contents/Home/bin/java"];

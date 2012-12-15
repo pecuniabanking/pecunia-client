@@ -492,12 +492,18 @@
 			return NO;
 		}
 		// check IBAN
+
+        // transfer IBAN & BIC to uppercase
+        currentTransfer.remoteIBAN = [currentTransfer.remoteIBAN uppercaseString];
+        currentTransfer.remoteBIC = [currentTransfer.remoteBIC uppercaseString];
+
 		if([[HBCIClient hbciClient ] checkIBAN: currentTransfer.remoteIBAN ] == NO) {
 			NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
 							NSLocalizedString(@"AP26", @"IBAN is not valid"),
 							NSLocalizedString(@"retry", @"Retry"), nil, nil);
 			return NO;
 		}
+        
 	}
 	
 	if(activeType == TransferTypeStandard || activeType == TransferTypeDated || activeType == TransferTypeDebit) {
