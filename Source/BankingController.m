@@ -81,6 +81,10 @@
 NSString* const BankStatementDataType = @"BankStatementDataType";
 NSString* const CategoryDataType = @"CategoryDataType";
 
+// Notification and dictionary key for category color change notifications.
+NSString* const CategoryColorNotification = @"CategoryColorNotification";
+NSString* const CategoryKey = @"CategoryKey";
+
 static BankingController *bankinControllerInstance;
 
 BOOL runningOnLionOrLater = NO;
@@ -236,8 +240,13 @@ BOOL runningOnLionOrLater = NO;
     // register Drag'n Drop
     [accountsView registerForDraggedTypes: [NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil]];
     
-    // set lock image
+    // Set lock image.
+    NSString *path = [[NSBundle mainBundle] pathForResource: @"icon72-1"
+                                                     ofType: @"icns"
+                                                inDirectory: @"Collections/1"];
+    lockImage.image = [[NSImage alloc] initWithContentsOfFile: path];
     [self setEncrypted: [[MOAssistant assistant] encrypted]];
+
     [mainWindow setContentMinSize:NSMakeSize(800, 450)];
     splitCursor = [[NSCursor alloc] initWithImage:[NSImage imageNamed: @"cursor.png"] hotSpot:NSMakePoint(0, 0)];
     [WorkerThread init];
@@ -1955,8 +1964,20 @@ BOOL runningOnLionOrLater = NO;
     if (cat.iconName == nil) {
         [self determineDefaultIconForCategory: cat];
     }
-    [cell setImage: [NSImage imageNamed: cat.iconName]];
-    
+
+    if ([cat.iconName length] > 0) {
+        NSString *path;
+        if ([cat.iconName isAbsolutePath]) {
+            path = cat.iconName;
+        } else {
+            NSString* subfolder = [cat.iconName stringByDeletingLastPathComponent];
+            path = [[NSBundle mainBundle] pathForResource: [cat.iconName lastPathComponent]
+                                                   ofType: @"icns"
+                                              inDirectory: subfolder];
+        }
+        [cell setImage: [[NSImage alloc] initWithContentsOfFile: path]];
+    }
+
     NSInteger numberUnread = 0;
     
     if ([cat isBankAccount] && cat.accountNumber == nil) {
@@ -2571,7 +2592,9 @@ BOOL runningOnLionOrLater = NO;
             }
         }
     }
-    category.iconName = bestMatch;
+
+    // The icon determined is one of the default collection.
+    category.iconName = [@"Collections/1/" stringByAppendingString: bestMatch];
 }
 
 #pragma mark -
@@ -2819,9 +2842,9 @@ BOOL runningOnLionOrLater = NO;
     [self syncAllAccounts];
 }
 
--(void)setEncrypted:(BOOL)encrypted
+-(void)setEncrypted: (BOOL)encrypted
 {
-    if(encrypted) [lockImage setHidden:NO]; else [lockImage setHidden:YES];
+    [lockImage setHidden: !encrypted];
 }
 
 - (BOOL)checkForUnhandledTransfersAndSend

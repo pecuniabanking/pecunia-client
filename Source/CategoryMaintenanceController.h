@@ -21,23 +21,37 @@
 
 @class Category;
 @class BWGradientBox;
+@class DoubleClickImageView;
+@class MAAttachedWindow;
 
-@interface CategoryMaintenanceController : NSWindowController {
-    IBOutlet NSObjectController		*categoryController;
-    IBOutlet NSPopUpButton			*dropDown;
-
-    IBOutlet BWGradientBox          *topGradient;
-    IBOutlet BWGradientBox          *backgroundGradient;
+@interface CategoryMaintenanceController : NSWindowController <NSImageDelegate>
+{
+    IBOutlet NSObjectController *categoryController;
+    IBOutlet BWGradientBox      *topGradient;
+    IBOutlet BWGradientBox      *backgroundGradient;
 
 @private
-	NSManagedObjectContext			*moc;
-	Category						*category;
-	Category						*changedCategory;
+	NSManagedObjectContext *moc;
+	Category               *category;
+	Category               *changedCategory;
+    NSMutableArray         *iconCollection;
+
+    BOOL fadeInProgress; // YES if we are currently fading out the popup.
+    MAAttachedWindow *imageLibraryPopupWindow;
 }
 
+@property (strong) IBOutlet DoubleClickImageView *categoryIcon;
+@property (strong) IBOutlet NSImageView *smallCategoryIcon;
+@property (strong) IBOutlet NSView *imageLibraryPopup;
+@property (strong) IBOutlet NSArrayController *iconCollectionController;
+@property (strong) NSArray *iconCollection;
+
 - (id)initWithCategory: (Category*)aCategory;
+- (void)imageDoubleClicked: (id)sender;
 
 - (IBAction)cancel: (id)sender;
 - (IBAction)ok: (id)sender;
+- (IBAction)acceptImage:(id)sender;
+- (IBAction)cancelImage:(id)sender;
 
 @end

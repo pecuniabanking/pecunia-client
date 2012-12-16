@@ -26,6 +26,7 @@
 #import "CurrencyValueTransformer.h"
 #import "PreferenceController.h"
 #import "GraphicsAdditions.h"
+#import "Category.h"
 
 extern NSString *StatementDateKey;
 extern NSString *StatementTurnoversKey;
@@ -45,6 +46,9 @@ extern NSString *StatementRemoteBankCodeKey;
 extern NSString *StatementRemoteIBANKey;
 extern NSString *StatementRemoteBICKey;
 extern NSString *StatementTypeKey;
+
+extern NSString* const CategoryColorNotification;
+extern NSString* const CategoryKey;
 
 @implementation NoAnimationTextField
 
@@ -70,7 +74,7 @@ extern NSString *StatementTypeKey;
 
 #pragma mark Init/Dealloc
 
--(id)initWithFrame: (NSRect)frame
+- (id)initWithFrame: (NSRect)frame
 {
     self = [super initWithFrame: frame];
     if (self != nil)
@@ -79,8 +83,23 @@ extern NSString *StatementTypeKey;
                             [NSColor whiteColor], NSForegroundColorAttributeName, nil
                            ];
         [self addObserver: self forKeyPath: @"row" options: 0 context: nil];
+        [NSNotificationCenter.defaultCenter addObserverForName: CategoryColorNotification
+                                                        object: nil
+                                                         queue: nil
+                                                    usingBlock: ^(NSNotification *notifictation)
+           {
+               Category *category = [notifictation.userInfo objectForKey: CategoryKey];
+               categoryColor = category.categoryColor;
+               [self display];
+           }
+         ];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [NSNotificationCenter.defaultCenter removeObserver: self];
 }
 
 - (void)observeValueForKeyPath: (NSString *)keyPath

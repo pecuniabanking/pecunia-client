@@ -243,12 +243,10 @@
 	}
 
     [[NSAnimationContext currentContext] setDuration: duration];
-    /* Completion handler aren't available before 10.7.
     [[NSAnimationContext currentContext] setCompletionHandler:^{
         [self orderOut: nil];
         [self setAlphaValue: 1.f];
     }];
-     */
     [[self animator] setAlphaValue: 0.f];
     [NSAnimationContext endGrouping];
 }

@@ -29,6 +29,9 @@
 
 #import "BusinessTransactionsController.h"
 
+extern NSString* const CategoryColorNotification;
+extern NSString* const CategoryKey;
+
 @implementation AccountMaintenanceController
 
 - (id)initWithAccount: (BankAccount*)acc
@@ -94,7 +97,8 @@
     }
 
     
-    // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
+    // Manually set up properties which cannot be set via user defined runtime attributes
+    // (Color type is not available pre 10.7).
     topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
     topGradient.fillEndingColor = [NSColor colorWithCalibratedWhite: 99 / 255.0 alpha: 1];
     backgroundGradient.fillColor = [NSColor whiteColor];
@@ -102,15 +106,24 @@
 
 -(IBAction)cancel:(id)sender 
 {
-    [self close ];
-	[moc reset ];
-	[NSApp stopModalWithCode: 0 ];
+    if ([NSColorPanel sharedColorPanelExists]) {
+        [[NSColorPanel sharedColorPanel] close];
+    }
+    [self close];
+	[moc reset];
+	[NSApp stopModalWithCode: 0];
 }
 
 -(IBAction)ok:(id)sender
 {
-	[accountController commitEditing ];
-	if([self check ] == NO) return;
+    if ([NSColorPanel sharedColorPanelExists]) {
+        [[NSColorPanel sharedColorPanel] close];
+    }
+
+	[accountController commitEditing];
+	if (![self check]) {
+        return;
+    }
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	
 	// update common data
@@ -130,7 +143,11 @@
         changedAccount.accountSuffix = account.accountSuffix;
     }
 
-    [self close ];
+    NSDictionary *info = [NSDictionary dictionaryWithObject: changedAccount forKey: CategoryKey];
+    [NSNotificationCenter.defaultCenter postNotificationName: CategoryColorNotification
+                                                      object: self
+                                                    userInfo: info];
+    [self close];
 
 	// save all
 	NSError *error=nil;

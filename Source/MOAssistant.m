@@ -611,7 +611,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                                                               error: &error])
     {
         // Quick and effective: remove the file containing the data.
-        [[NSFileManager defaultManager] removeItemAtURL:storeURL error: &error];
+        [[NSFileManager defaultManager] removeItemAtURL: storeURL error: &error];
 
         // Now recreate it.
         NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -623,7 +623,6 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                                                                      URL: storeURL
                                                                  options: options
                                                                    error: &error];
-        //recreates the persistent store
     }
     [context unlock];
     if (error != nil || ![context save: &error]) {
