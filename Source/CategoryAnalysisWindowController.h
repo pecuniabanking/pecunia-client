@@ -47,7 +47,7 @@
 @end
 
 @interface CategoryAnalysisWindowController : NSObject <PecuniaSectionItem, CPTScatterPlotDataSource,
-  CPTPlotSpaceDelegate, CPTPlotDataSource, CPTBarPlotDelegate>
+  CPTPlotSpaceDelegate, CPTPlotDataSource, CPTBarPlotDelegate, CPTAnimationDelegate>
 {
 	IBOutlet NSView* topView;
 
@@ -62,7 +62,7 @@
     IBOutlet NSTextField* helpText;
     IBOutlet BWGradientBox *selectionBox;
 
-    @private
+@private
 	CPTXYGraph* mainGraph;
     CPTXYGraph* turnoversGraph;
     CPTXYGraph* selectionGraph;
@@ -95,7 +95,7 @@
 	ShortDate* toDate;
     double lastInfoTimePoint;             // The time point for which the info text was last updated.
     bool doingGraphUpdates;
-    
+
     CGFloat barWidth;
     NSDecimalNumber* totalMinValue;       // The minimum value of the currently selected category.
     NSDecimalNumber* totalMaxValue;       // Ditto for maximum.
@@ -103,6 +103,9 @@
     GroupingInterval groupingInterval;
     
     MAAttachedWindow* helpWindow;
+
+    // Temporary values for animations.
+    float newMainYInterval;
 }
 
 @property (nonatomic, strong) Category* category;

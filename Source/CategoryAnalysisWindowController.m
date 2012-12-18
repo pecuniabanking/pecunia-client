@@ -471,6 +471,13 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     plot.shadowRadius = 3.0;
     plot.shadowOffset = CGSizeMake(2, -2);
     plot.shadowOpacity = 0.75;
+     /*
+    CPTMutableShadow *shadow = [CPTMutableShadow shadow];
+    shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 0 blue: 0 alpha: 0.75];
+    shadow.shadowBlurRadius = 3.0;
+    shadow.shadowOffset = CGSizeMake(2, -2);
+    plot.shadow = shadow;
+     */
 }
 
 - (void)setupMainAxes
@@ -516,7 +523,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     mainGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame: NSRectToCGRect(mainHostView.bounds)];
     CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
     [mainGraph applyTheme: theme];
-    mainGraph.zPosition = 100;
+    //mainGraph.zPosition = 100;
     mainHostView.hostedGraph = mainGraph;
     
     // Setup scatter plot space
@@ -544,12 +551,12 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
-
+/*
     frame.shadowColor = CGColorCreateGenericGray(0, 1);
     frame.shadowRadius = 2.0;
     frame.shadowOffset = CGSizeMake(1, -1);
     frame.shadowOpacity = 0.25;
-  
+  */
     CPTFill* fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1]];
     frame.fill = fill;
     
@@ -639,7 +646,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     turnoversGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame: NSRectToCGRect(turnoversHostView.bounds)];
     CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
     [turnoversGraph applyTheme: theme];
-    turnoversGraph.zPosition = -100;
+    //turnoversGraph.zPosition = -100;
     turnoversHostView.hostedGraph = turnoversGraph;
     
     // Setup scatter plot space
@@ -667,12 +674,12 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
-    
+    /*
     frame.shadowColor = CGColorCreateGenericGray(0, 1);
     frame.shadowRadius = 2.0;
     frame.shadowOffset = CGSizeMake(1, -1);
     frame.shadowOpacity = 0.25;
-    
+    */
     [self setupTurnoversAxes];
     
     // The second y axis is used as the current location identifier.
@@ -751,7 +758,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     selectionGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame: NSRectToCGRect(selectionHostView.bounds)];
     CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
     [selectionGraph applyTheme: theme];
-    selectionGraph.zPosition = -100;
+    //selectionGraph.zPosition = -100;
     selectionHostView.hostedGraph = selectionGraph;
 
     selectionGraph.fill = nil;
@@ -759,13 +766,13 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     selectionGraph.paddingTop = 0;
     selectionGraph.paddingRight = 0;
     selectionGraph.paddingBottom = 0;
-    
+
     // Setup scatter plot space
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)selectionGraph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = YES;
     plotSpace.delegate = self;
     
-    // Frame setup (background, border).
+    // Frame setup (background, border, shadow).
     CPTPlotAreaFrame* frame = selectionGraph.plotAreaFrame;
     frame.paddingLeft = 30;
     frame.paddingRight = 10;
@@ -780,13 +787,13 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
                              ];
     gradient.angle = -87.0;
     CPTFill* gradientFill = [CPTFill fillWithGradient: gradient];
-
     frame.fill = gradientFill;
-    
-    frame.shadowColor = CGColorCreateGenericGray(0, 1);
-    frame.shadowRadius = 3.0;
-    frame.shadowOffset = CGSizeMake(2, -2);
-    frame.shadowOpacity = 0.7;
+
+    CPTMutableShadow *shadow = [CPTMutableShadow shadow];
+    shadow.shadowColor = [CPTColor yellowColor];
+    shadow.shadowBlurRadius = 3.0;
+    shadow.shadowOffset = CGSizeMake(2, -2);
+    frame.shadow = shadow;
 
     [self setupSelectionAxes];
 }
@@ -1139,7 +1146,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     NSDecimalNumber* maxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(max)];
     NSDecimalNumber* roundedMinValue = [minValue roundToUpperOuter];
     NSDecimalNumber* roundedMaxValue = [maxValue roundToUpperOuter];
-    
+
     CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
     
     float animationDuration = 0.3;
@@ -1168,26 +1175,22 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     if (NSDecimalCompare(&oldInterval, &newInterval) == NSOrderedAscending) {
         y.majorIntervalLength = newInterval;
         y.minorTicksPerInterval = [self minorTicksFromInterval: interval];
+        newMainYInterval = -1;
+    } else {
+        newMainYInterval = interval; // Keep this temporarily in this ivar. It is applied at the end of the animation.
     }
-
-    CorePlotXYRangeAnimation* animation = [[CorePlotXYRangeAnimation alloc] initWithDuration: animationDuration
-                                                                              animationCurve: NSAnimationEaseInOut
-                                                                                   plotSpace: plotSpace
-                                                                                        axis: axisSet.yAxis
-                                                                                   forXRange: NO];
-    animation.animationBlockingMode = NSAnimationBlocking;
-    animation.targetPosition = [roundedMinValue doubleValue];
-    animation.targetLength = [[roundedMaxValue decimalNumberBySubtracting: roundedMinValue] doubleValue];
-    [animation startAnimation];
-
-    y.majorIntervalLength = newInterval;
-    y.minorTicksPerInterval = [self minorTicksFromInterval: interval];
 
     CPTPlotRange* plotRange = [CPTPlotRange plotRangeWithLocation: [roundedMinValue decimalValue]
                                                            length: [[roundedMaxValue decimalNumberBySubtracting: roundedMinValue] decimalValue]];
-    
-    plotSpace.globalYRange = plotRange;
 
+    [CPTAnimation animate: plotSpace
+                 property: @"yRange"
+            fromPlotRange: plotSpace.yRange
+              toPlotRange: plotRange
+                 duration: animationDuration
+                withDelay: 0
+           animationCurve: CPTAnimationCurveCubicInOut
+                 delegate: self];
 }
 
 - (void)updateMainGraph
@@ -1391,6 +1394,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         CGRect frame = CGRectMake(0.5, 0.5, 120, 50);
         infoLayer = [(ColumnLayoutCorePlotLayer*)[ColumnLayoutCorePlotLayer alloc] initWithFrame: frame];
         infoLayer.hidden = YES;
+
         infoLayer.paddingTop = 10;
         infoLayer.paddingBottom = 10;
         infoLayer.paddingLeft = 15;
@@ -1401,7 +1405,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         infoLayer.shadowRadius = 5.0;
         infoLayer.shadowOffset = CGSizeMake(2, -2);
         infoLayer.shadowOpacity = 0.75;
-        
+
         CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
         lineStyle.lineWidth = 2;
         lineStyle.lineColor = [CPTColor whiteColor];
@@ -1469,16 +1473,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         infoText = [NSString stringWithFormat: @"%@\n%@", dateDescription, [NSString stringWithFormat: NSLocalizedString(@"AP133", @""), turnovers]];
     }
     dateInfoLayer.text = infoText;
-    
-    // Resize the info layer so that it fits its contents.
-    CGRect infoBounds = infoLayer.bounds;
-    infoBounds.size = [dateInfoLayer sizeThatFits];
-    CGSize size = valueInfoLayer.hidden ? CGSizeMake(0, 0) : [valueInfoLayer sizeThatFits];
-    if (size.width > infoBounds.size.width)
-        infoBounds.size.width = size.width;
-    infoBounds.size.width += infoLayer.paddingLeft + infoLayer.paddingRight + infoLayer.borderLineStyle.lineWidth;
-    infoBounds.size.height += infoLayer.paddingTop + infoLayer.paddingBottom + infoLayer.spacing + size.height + infoLayer.borderLineStyle.lineWidth;
-    infoLayer.bounds = infoBounds;
+    [infoLayer sizeToFit];
 }
 
 - (void)updateInfoLayerPosition
@@ -1802,7 +1797,39 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 }
 
 #pragma mark -
-#pragma mark Plot Delegate Methods
+#pragma mark Coreplot delegate methods
+
+- (void)animationDidFinish: (CPTAnimationOperation *)operation
+{
+    if (operation.boundObject == mainGraph.defaultPlotSpace) {
+        // Animation of the main graph vertical plot space.
+        // We can now set the final interval length and tick count.
+        if (newMainYInterval > 0) {
+            CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
+            CPTXYAxis* y = axisSet.yAxis;
+
+            y.majorIntervalLength = CPTDecimalFromFloat(newMainYInterval);
+            y.minorTicksPerInterval = [self minorTicksFromInterval: newMainYInterval];
+            newMainYInterval = 0;
+        }
+    }
+}
+
+- (void)animationCancelled: (CPTAnimationOperation *)operation
+{
+    if (operation.boundObject == mainGraph.defaultPlotSpace) {
+        // Animation of the main graph vertical plot space.
+        // We can now set the final interval length and tick count.
+        if (newMainYInterval > 0) {
+            CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
+            CPTXYAxis* y = axisSet.yAxis;
+
+            y.majorIntervalLength = CPTDecimalFromFloat(newMainYInterval);
+            y.minorTicksPerInterval = [self minorTicksFromInterval: newMainYInterval];
+            newMainYInterval = 0;
+        }
+    }
+}
 
 #pragma mark -
 #pragma mark Plot Data Source Methods

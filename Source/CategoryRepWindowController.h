@@ -28,7 +28,8 @@
 @class Category;
 @class MAAttachedWindow;
 
-@interface CategoryRepWindowController : NSObject <PecuniaSectionItem, CPTPlotSpaceDelegate, CPTPieChartDataSource, CPTBarPlotDelegate>
+@interface CategoryRepWindowController : NSObject <PecuniaSectionItem, CPTPlotSpaceDelegate, CPTPieChartDataSource,
+  CPTBarPlotDelegate, CPTAnimationDelegate>
 {
     IBOutlet NSView* topView;
     IBOutlet PecuniaGraphHost* pieChartHost;
@@ -45,11 +46,9 @@
     CPTBarPlot* spendingsMiniPlot;
     
     NSPoint lastMousePosition;
-    CGFloat lastMouseDistance; // Distinance of the mouse from the center of the current plot.
     CGFloat lastAngle;
-    CPTPieChart* currentPlot;
-    NSPoint currentPlotCenter; // Center of the current plot. Only valid if currentPlot is not nil.
-    
+    CPTPieChart* currentPlot;             // Plot, which is hit while left mouse button is pressed.
+
     ColumnLayoutCorePlotLayer* infoLayer; // Content layer of the info annotation.
     CPTAnnotation* infoAnnotation;        // The host of the info layer placed in the plot area.
     CPTTextLayer* categoryInfoLayer;
@@ -67,11 +66,16 @@
     
     NSInteger earningsExplosionIndex;
     NSInteger spendingsExplosionIndex;
-    NSInteger lastEarningsIndex;
-    NSInteger lastSpendingsIndex;
     BOOL inMouseMoveHandling;
     
     MAAttachedWindow* helpWindow;
+
+    // Animation support.
+    CPTAnimationOperation *earningsAngleAnimation;
+    CPTAnimationOperation *spendingsAngleAnimation;
+
+    NSArrayController *earningsPlotRadialOffsets;
+    NSArrayController *spendingsPlotRadialOffsets;
 }
 
 @property (nonatomic, strong) Category* category;

@@ -6,8 +6,8 @@
 @class CPTFill;
 @class CPTRangePlot;
 
-///	@ingroup plotBindingsRangePlot
-///	@{
+/// @ingroup plotBindingsRangePlot
+/// @{
 extern NSString *const CPTRangePlotBindingXValues;
 extern NSString *const CPTRangePlotBindingYValues;
 extern NSString *const CPTRangePlotBindingHighValues;
@@ -15,10 +15,10 @@ extern NSString *const CPTRangePlotBindingLowValues;
 extern NSString *const CPTRangePlotBindingLeftValues;
 extern NSString *const CPTRangePlotBindingRightValues;
 extern NSString *const CPTRangePlotBindingBarLineStyles;
-///	@}
+/// @}
 
 /**
- *	@brief Enumeration of range plot data source field types
+ *  @brief Enumeration of range plot data source field types
  **/
 typedef enum _CPTRangePlotField {
     CPTRangePlotFieldX,     ///< X values.
@@ -33,76 +33,77 @@ CPTRangePlotField;
 #pragma mark -
 
 /**
- *	@brief A range plot data source.
+ *  @brief A range plot data source.
  **/
 @protocol CPTRangePlotDataSource<CPTPlotDataSource>
 @optional
 
-///	@name Bar Style
+/// @name Bar Style
 /// @{
 
-/**	@brief (Optional) Gets a range of bar line styles for the given range plot.
- *	@param plot The range plot.
- *	@param indexRange The range of the data indexes of interest.
- *	@return An array of line styles.
+/** @brief @optional Gets a range of bar line styles for the given range plot.
+ *  @param plot The range plot.
+ *  @param indexRange The range of the data indexes of interest.
+ *  @return An array of line styles.
  **/
 -(NSArray *)barLineStylesForRangePlot:(CPTRangePlot *)plot recordIndexRange:(NSRange)indexRange;
 
-/**	@brief (Optional) Gets a bar line style for the given range plot.
- *	This method will not be called if
- *	@link CPTRangePlotDataSource::barLineStylesForRangePlot:recordIndexRange: -barLineStylesForRangePlot:recordIndexRange: @endlink
- *	is also implemented in the datasource.
- *	@param plot The range plot.
- *	@param index The data index of interest.
- *	@return The bar line style for the bar with the given index. If the data source returns <code>nil</code>, the default line style is used.
- *	If the data source returns an NSNull object, no line is drawn.
+/** @brief @optional Gets a bar line style for the given range plot.
+ *  This method will not be called if
+ *  @link CPTRangePlotDataSource::barLineStylesForRangePlot:recordIndexRange: -barLineStylesForRangePlot:recordIndexRange: @endlink
+ *  is also implemented in the datasource.
+ *  @param plot The range plot.
+ *  @param idx The data index of interest.
+ *  @return The bar line style for the bar with the given index. If the data source returns @nil, the default line style is used.
+ *  If the data source returns an NSNull object, no line is drawn.
  **/
--(CPTLineStyle *)barLineStyleForRangePlot:(CPTRangePlot *)plot recordIndex:(NSUInteger)index;
+-(CPTLineStyle *)barLineStyleForRangePlot:(CPTRangePlot *)plot recordIndex:(NSUInteger)idx;
 
-///	@}
+/// @}
 
 @end
 
 #pragma mark -
 
 /**
- *	@brief Range plot delegate.
+ *  @brief Range plot delegate.
  **/
 @protocol CPTRangePlotDelegate<CPTPlotDelegate>
 
 @optional
 
-///	@name Point Selection
+/// @name Point Selection
 /// @{
 
-/**	@brief (Optional) Informs the delegate that a bar was
- *	@if MacOnly clicked. @endif
- *	@if iOSOnly touched. @endif
- *	@param plot The range plot.
- *	@param index The index of the
- *	@if MacOnly clicked bar. @endif
- *	@if iOSOnly touched bar. @endif
+/** @brief @optional Informs the delegate that a bar was
+ *  @if MacOnly clicked. @endif
+ *  @if iOSOnly touched. @endif
+ *  @param plot The range plot.
+ *  @param idx The index of the
+ *  @if MacOnly clicked bar. @endif
+ *  @if iOSOnly touched bar. @endif
  **/
--(void)rangePlot:(CPTRangePlot *)plot rangeWasSelectedAtRecordIndex:(NSUInteger)index;
+-(void)rangePlot:(CPTRangePlot *)plot rangeWasSelectedAtRecordIndex:(NSUInteger)idx;
 
-/**	@brief (Optional) Informs the delegate that a bar was
- *	@if MacOnly clicked. @endif
- *	@if iOSOnly touched. @endif
- *	@param plot The range plot.
- *	@param index The index of the
- *	@if MacOnly clicked bar. @endif
- *	@if iOSOnly touched bar. @endif
+/** @brief @optional Informs the delegate that a bar was
+ *  @if MacOnly clicked. @endif
+ *  @if iOSOnly touched. @endif
+ *  @param plot The range plot.
+ *  @param idx The index of the
+ *  @if MacOnly clicked bar. @endif
+ *  @if iOSOnly touched bar. @endif
  *  @param event The event that triggered the selection.
  **/
--(void)rangePlot:(CPTRangePlot *)plot rangeWasSelectedAtRecordIndex:(NSUInteger)index withEvent:(CPTNativeEvent *)event;
+-(void)rangePlot:(CPTRangePlot *)plot rangeWasSelectedAtRecordIndex:(NSUInteger)idx withEvent:(CPTNativeEvent *)event;
 
-///	@}
+/// @}
 
 @end
 
 #pragma mark -
 
 @interface CPTRangePlot : CPTPlot {
+    @private
     CPTLineStyle *barLineStyle;
     CGFloat barWidth;
     CGFloat gapHeight;
@@ -110,13 +111,15 @@ CPTRangePlotField;
     CPTFill *areaFill;
 }
 
-/// @name Bar Appearance
+/// @name Appearance
 /// @{
 @property (nonatomic, readwrite, copy) CPTLineStyle *barLineStyle;
-@property (nonatomic, readwrite) CGFloat barWidth, gapHeight, gapWidth;
-///	@}
+@property (nonatomic, readwrite) CGFloat barWidth;
+@property (nonatomic, readwrite) CGFloat gapHeight;
+@property (nonatomic, readwrite) CGFloat gapWidth;
+/// @}
 
-/// @name Area Fill
+/// @name Drawing
 /// @{
 @property (nonatomic, copy) CPTFill *areaFill;
 /// @}

@@ -161,29 +161,10 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 
 @synthesize category = currentCategory;
 
-- (id)init
-{
-    self = [super init];
-    if (self != nil) {    
-    }        
-    return self;
-}
-
--(void)dealloc
-{
-    
-    fromDate = nil;
-    toDate = nil;
-    
-
-}
-
 - (void)awakeFromNib
 {
     earningsExplosionIndex = NSNotFound;
     spendingsExplosionIndex = NSNotFound;
-    lastEarningsIndex = NSNotFound;
-    lastSpendingsIndex = NSNotFound;
 
     spendingsCategories = [NSMutableArray arrayWithCapacity: 10];
     earningsCategories = [NSMutableArray arrayWithCapacity: 10];
@@ -202,7 +183,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     earningsPlot.startAngle = [userDefaults floatForKey: @"earningsRotation"];
     spendingsPlot.startAngle = [userDefaults floatForKey: @"spendingsRotation"];
-    
+
     // Help text.
     NSBundle* mainBundle = [NSBundle mainBundle];
     NSString* path = [mainBundle pathForResource: @"category-reporting-help" ofType: @"rtf"];
@@ -243,11 +224,12 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
-
+/*
     frame.shadowColor = CGColorCreateGenericGray(0, 1);
     frame.shadowRadius = 2.0;
     frame.shadowOffset = CGSizeMake(1, -1);
     frame.shadowOpacity = 0.25;
+ */
 //    frame.fill = nil;
   
 	CPTMutableLineStyle* pieLineStyle = [CPTMutableLineStyle lineStyle];
@@ -256,6 +238,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     
 	// First pie chart for earnings.
 	earningsPlot = [[CPTPieChart alloc] init];
+    earningsPlot.hidden = YES;
 	earningsPlot.dataSource = self;
 	earningsPlot.delegate = self;
 	earningsPlot.pieRadius = 150;
@@ -266,17 +249,29 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 	earningsPlot.sliceDirection = CPTPieDirectionClockwise;
     earningsPlot.centerAnchor = CGPointMake(0.25, 0.6);
     earningsPlot.alignsPointsToPixels = YES;
-	
+
     CPTMutableShadow* shadow = [[CPTMutableShadow alloc] init];
     shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 0 blue: 0 alpha: 0.3];
     shadow.shadowBlurRadius = 5.0;
     shadow.shadowOffset = CGSizeMake(3, -3);
     earningsPlot.shadow = shadow;
 
+    // For the radial offests we use a binding with an array controller and a simple backing array for storage.
+    earningsPlotRadialOffsets = [[NSArrayController alloc] init];
+    earningsPlotRadialOffsets.objectClass = [NSNumber class];
+    earningsPlotRadialOffsets.content = [NSMutableArray arrayWithCapacity: 10];
+    earningsPlotRadialOffsets.automaticallyRearrangesObjects = NO;
+
+    [earningsPlot bind: CPTPieChartBindingPieSliceRadialOffsets
+              toObject: earningsPlotRadialOffsets
+           withKeyPath: @"arrangedObjects"
+               options: nil];
+
 	[pieChartGraph addPlot: earningsPlot];
-    
+
 	// Second pie chart for spendings.
 	spendingsPlot = [[CPTPieChart alloc] init];
+    spendingsPlot.hidden = YES;
 	spendingsPlot.dataSource = self;
 	spendingsPlot.delegate = self;
 	spendingsPlot.pieRadius = 150;
@@ -289,6 +284,14 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     spendingsPlot.alignsPointsToPixels = YES;
 	
     spendingsPlot.shadow = shadow;
+
+    spendingsPlotRadialOffsets = [[NSArrayController alloc] init];
+    spendingsPlotRadialOffsets.objectClass = [NSNumber class];
+    spendingsPlotRadialOffsets.automaticallyRearrangesObjects = NO;
+
+    [spendingsPlot bind: CPTPieChartBindingPieSliceRadialOffsets
+               toObject: spendingsPlotRadialOffsets
+            withKeyPath: @"arrangedObjects" options: nil];
 
 	[pieChartGraph addPlot: spendingsPlot];
 }
@@ -591,7 +594,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 
 	return newLayer;
 }
-
+/*
 -(CGFloat)radialOffsetForPieChart:(CPTPieChart *)pieChart recordIndex: (NSUInteger)index
 {
     if (inMouseMoveHandling) {
@@ -616,7 +619,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     
     return result;
 }
-
+*/
 - (CPTFill*)sliceFillForPieChart: (CPTPieChart*)pieChart recordIndex: (NSUInteger)index
 {
     NSColor* color = nil;
@@ -669,10 +672,6 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     shadow.shadowBlurRadius = 5.0;
     shadow.shadowOffset = CGSizeMake(2, -2);
     currentPlot.shadow = shadow;
-
-    CGRect bounds = plot.plotArea.bounds;
-    currentPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * plot.centerAnchor.x,
-                                    bounds.origin.y + bounds.size.height * plot.centerAnchor.y);
 }
 
 /**
@@ -683,7 +682,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 {
     BOOL needEarningsLabelAdjustment = NO;
     BOOL needSpendingsLabelAdjustment = NO;
-    
+
     if ([[notification name] isEqualToString: PecuniaHitNotification]) {
         NSDictionary* parameters = [notification userInfo];
         NSString* type = [parameters objectForKey: @"type"];
@@ -691,10 +690,19 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
         NSNumber* x = [parameters objectForKey: @"x"];
         NSNumber* y = [parameters objectForKey: @"y"];
         
+        CGRect bounds = earningsPlot.plotArea.bounds;
+        NSPoint earningsPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * earningsPlot.centerAnchor.x,
+                                                 bounds.origin.y + bounds.size.height * earningsPlot.centerAnchor.y);
+        
+        bounds = earningsPlot.plotArea.bounds;
+        NSPoint spendingsPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * spendingsPlot.centerAnchor.x,
+                                                  bounds.origin.y + bounds.size.height * spendingsPlot.centerAnchor.y);
+        
+        NSPoint center = currentPlot == spendingsPlot ? spendingsPlotCenter : earningsPlotCenter;
+        
         if (isMouseDown) {
             lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
-            lastMouseDistance = sqrt(pow(lastMousePosition.x - currentPlotCenter.x, 2) + pow(lastMousePosition.y - currentPlotCenter.y, 2));
-            lastAngle = atan2(lastMousePosition.y - currentPlotCenter.y, lastMousePosition.x - currentPlotCenter.x);
+            lastAngle = atan2(lastMousePosition.y - center.y, lastMousePosition.x - center.x);
         } else {
             if ([type isEqualToString: @"mouseUp"]) {
                 if (currentPlot != nil) {
@@ -715,23 +723,45 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
             } else {
                 if ([type isEqualToString: @"mouseDragged"]) {
                     lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
-                    lastMouseDistance = sqrt(pow(lastMousePosition.x - currentPlotCenter.x, 2) + pow(lastMousePosition.y - currentPlotCenter.y, 2));
-                    
-                    CGFloat newAngle = atan2(lastMousePosition.y - currentPlotCenter.y, lastMousePosition.x - currentPlotCenter.x);
+                    CGFloat newAngle = atan2(lastMousePosition.y - center.y, lastMousePosition.x - center.x);
                     currentPlot.startAngle += newAngle - lastAngle;
                     lastAngle = newAngle;
                 } else {
                     if ([type isEqualToString: @"mouseMoved"]) {
                         inMouseMoveHandling = YES;
-
                         BOOL hideInfo = YES;
-    
+
                         lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
-                        NSInteger slice = [earningsPlot dataIndexFromInteractionPoint: lastMousePosition];
-                        BOOL needInfoUpdate = lastEarningsIndex != slice;
-                        lastEarningsIndex = slice;
-                        if ([earningsCategories count] > 1 && earningsExplosionIndex != slice) {
-                            earningsExplosionIndex = slice;
+                        CGFloat mouseDistance = sqrt(pow(lastMousePosition.x - earningsPlotCenter.x, 2) +
+                                                     pow(lastMousePosition.y - earningsPlotCenter.y, 2));
+                        CGFloat newAngle = atan2(lastMousePosition.y - earningsPlotCenter.y,
+                                                 lastMousePosition.x - earningsPlotCenter.x);
+
+                        // The message dataIndexFromInteractionPoint returns a slice for a given position however
+                        // respects the radial offset of slices, leading so to quickly alternating values
+                        // when the mouse is an area which is covered by a not-offset slice but not when this slice
+                        // is radially offset. Hence we apply our own hit testing here.
+                        NSInteger slice = [earningsPlot pieSliceIndexAtAngle: newAngle];
+                        if (mouseDistance < earningsPlot.pieInnerRadius || mouseDistance > earningsPlot.pieRadius) {
+                            slice = NSNotFound;
+                        }
+                        
+                        BOOL needInfoUpdate = earningsExplosionIndex != slice;
+                        if (needInfoUpdate && earningsExplosionIndex != NSNotFound) {
+                            // Setting individual entries in the array doesn't trigger KVO, so
+                            // we replace the array (which is very small) every time a new slice is hit.
+                            NSMutableArray *content = earningsPlotRadialOffsets.content;
+                            content[earningsExplosionIndex] = [NSNumber numberWithInt: 0];
+                            earningsPlotRadialOffsets.content = content;
+                            needEarningsLabelAdjustment = YES;
+                        }
+                        earningsExplosionIndex = slice;
+
+                        // Explode the slice only if there are more than one entries.
+                        if (needInfoUpdate && slice != NSNotFound && [earningsCategories count] > 1) {
+                            NSMutableArray *content = earningsPlotRadialOffsets.content;
+                            content[earningsExplosionIndex] = [NSNumber numberWithInt: 10];
+                            earningsPlotRadialOffsets.content = content;
                             needEarningsLabelAdjustment = YES;
                         }
                         if (slice != NSNotFound) {
@@ -741,13 +771,30 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
                                 hideInfo = NO;
                             }
                         } else {
-                            slice = [spendingsPlot dataIndexFromInteractionPoint: lastMousePosition];
-                            needInfoUpdate |= lastSpendingsIndex != slice;
-                            lastSpendingsIndex = slice;
-                            if ([spendingsCategories count] > 1 && spendingsExplosionIndex != slice) {
-                                spendingsExplosionIndex = slice;
+                            mouseDistance = sqrt(pow(lastMousePosition.x - spendingsPlotCenter.x, 2) +
+                                                 pow(lastMousePosition.y - spendingsPlotCenter.y, 2));
+                            newAngle = atan2(lastMousePosition.y - spendingsPlotCenter.y,
+                                             lastMousePosition.x - spendingsPlotCenter.x);
+
+                            slice = [spendingsPlot pieSliceIndexAtAngle: newAngle];
+                            if (mouseDistance < spendingsPlot.pieInnerRadius || mouseDistance > spendingsPlot.pieRadius) {
+                                slice = NSNotFound;
+                            }
+
+                            needInfoUpdate |= spendingsExplosionIndex != slice;
+                            if (needInfoUpdate && spendingsExplosionIndex != NSNotFound) {
+                                NSMutableArray *content = spendingsPlotRadialOffsets.content;
+                                content[spendingsExplosionIndex] = [NSNumber numberWithInt: 0];
+                                spendingsPlotRadialOffsets.content = content;
                                 needSpendingsLabelAdjustment = YES;
-                                [spendingsPlot repositionAllLabelAnnotations];
+                            }
+                            spendingsExplosionIndex = slice;
+
+                            if (needInfoUpdate && slice != NSNotFound && [earningsCategories count] > 1) {
+                                NSMutableArray *content = spendingsPlotRadialOffsets.content;
+                                content[spendingsExplosionIndex] = [NSNumber numberWithInt: 10];
+                                spendingsPlotRadialOffsets.content = content;
+                                needSpendingsLabelAdjustment = YES;
                             }
                             if (slice != NSNotFound) {
                                 if ([spendingsCategories count] > 0) {
@@ -775,7 +822,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
             }
         }
     }
-    
+
     if (needEarningsLabelAdjustment) {
         [earningsPlot repositionAllLabelAnnotations];
         [earningsPlot setNeedsLayout];
@@ -796,7 +843,10 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     [earningsCategories removeAllObjects];
     [sortedSpendingValues removeAllObjects];
     [sortedEarningValues removeAllObjects];
-    
+
+    earningsPlotRadialOffsets.content = [NSMutableArray arrayWithCapacity: 10];
+    spendingsPlotRadialOffsets.content = [NSMutableArray arrayWithCapacity: 10];
+
     if (currentCategory == nil) {
         return;
     }
@@ -874,6 +924,14 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
         [sortedEarningValues sortUsingDescriptors: [NSArray arrayWithObject: sortDescriptor]];
         [sortedSpendingValues sortUsingDescriptors: [NSArray arrayWithObject: sortDescriptor]];
     }
+
+    for (NSUInteger i = 0; i < earningsCategories.count; i ++) {
+        [earningsPlotRadialOffsets addObject: [NSNumber numberWithInt: 0]];
+    }
+    for (NSUInteger i = 0; i < spendingsCategories.count; i ++) {
+        [spendingsPlotRadialOffsets addObject: [NSNumber numberWithInt: 0]];
+    }
+
     [self updatePlotsEarnings: [totalEarnings floatValue] spendings: [totalSpendings floatValue]];
     [self updateMiniPlotAxes];
 }
@@ -921,24 +979,23 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     }
 
     // Scale the radii between sensible limits.
-    CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath: @"pieRadius"];
-    animation.toValue = [NSNumber numberWithFloat: 40 + spendingsShare * 150];
-    animation.fillMode = kCAFillModeForwards;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseOut];
-    [animation setValue: spendingsPlot forKey: @"plot"];
-    animation.delegate = self;
-    animation.duration = 0.5;
-    [spendingsPlot addAnimation: animation forKey: @"spendingsAnimateRadius"];
+    [CPTAnimation animate: earningsPlot
+                 property: @"pieRadius"
+                     from: earningsPlot.pieRadius
+                       to: 40 + earningsShare * 150
+                 duration: 0.4
+                withDelay: 0
+           animationCurve: CPTAnimationCurveQuinticInOut
+                 delegate: nil];
 
-    animation = [CABasicAnimation animationWithKeyPath: @"pieRadius"];
-    animation.toValue = [NSNumber numberWithFloat: 40 + earningsShare * 150];
-    animation.fillMode = kCAFillModeForwards;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseOut];
-    [animation setValue: earningsPlot forKey: @"plot"];
-    animation.delegate = self;
-    animation.duration = 0.5;
-    [earningsPlot addAnimation: animation forKey: @"earningsAnimateRadius"];
-
+    [CPTAnimation animate: spendingsPlot
+                 property: @"pieRadius"
+                     from: spendingsPlot.pieRadius
+                       to: 40 + spendingsShare * 150
+                 duration: 0.4
+                withDelay: 0.15
+           animationCurve: CPTAnimationCurveQuinticInOut
+                 delegate: nil];
 }
 
 - (void)updateMiniPlotAxes
@@ -1010,17 +1067,6 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     }
 }
 
-- (void)animationDidStop: (CAAnimation*)anim finished: (BOOL)flag
-{
-    if (flag) {
-        CABasicAnimation* animation = (CABasicAnimation*)anim;
-        CPTPieChart* plot = [animation valueForKey: @"plot"];
-        if ([animation.keyPath isEqualToString: @"pieRadius"]) {
-            plot.pieRadius = [animation.toValue floatValue];
-        }
-    }
-}
-
 #pragma mark -
 #pragma mark Info field handling
 
@@ -1051,8 +1097,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
         CGRect frame = CGRectMake(0.5, 0.5, 120, 50);
         infoLayer = [(ColumnLayoutCorePlotLayer*)[ColumnLayoutCorePlotLayer alloc] initWithFrame: frame];
         infoLayer.hidden = YES;
-        infoLayer.masksToBorder = YES;
-        
+
         infoLayer.paddingTop = 1;
         infoLayer.paddingBottom = 3;
         infoLayer.paddingLeft = 12;
@@ -1063,7 +1108,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
         infoLayer.shadowRadius = 5.0;
         infoLayer.shadowOffset = CGSizeMake(2, -2);
         infoLayer.shadowOpacity = 0.75;
-        
+
         CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
         lineStyle.lineWidth = 2;
         lineStyle.lineColor = [CPTColor whiteColor];
@@ -1207,6 +1252,43 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 }
 
 #pragma mark -
+#pragma mark Plot animation events
+
+- (void)animationDidStart: (CPTAnimationOperation *)operation
+{
+    if (operation == earningsAngleAnimation) {
+        earningsPlot.hidden = NO;
+    }
+    if (operation == spendingsAngleAnimation) {
+        spendingsPlot.hidden = NO;
+    }
+}
+
+- (void)animationDidFinish: (CPTAnimationOperation *)operation
+{
+    if (operation == earningsAngleAnimation) {
+        earningsPlot.endAngle = NAN;
+        earningsAngleAnimation = nil;
+    }
+    if (operation == spendingsAngleAnimation) {
+        spendingsPlot.endAngle = NAN;
+        spendingsAngleAnimation = nil;
+    }
+}
+
+- (void)animationCancelled: (CPTAnimationOperation *)operation
+{
+    if (operation == earningsAngleAnimation) {
+        earningsPlot.endAngle = NAN;
+        earningsAngleAnimation = nil;
+    }
+    if (operation == spendingsAngleAnimation) {
+        spendingsPlot.endAngle = NAN;
+        spendingsAngleAnimation = nil;
+    }
+}
+
+#pragma mark -
 #pragma mark PecuniaSectionItem protocol
 
 - (void)print
@@ -1248,6 +1330,24 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     fromDate = from;
     toDate = to;
     [self updateValues];
+
+    earningsAngleAnimation = [CPTAnimation animate: earningsPlot
+                                          property: @"endAngle"
+                                              from: earningsPlot.startAngle + 2.0 * M_PI
+                                                to: earningsPlot.startAngle
+                                          duration: 0.5
+                                         withDelay: 0
+                                    animationCurve: CPTAnimationCurveQuadraticInOut
+                                          delegate: self];
+
+    spendingsAngleAnimation = [CPTAnimation animate: spendingsPlot
+                                           property: @"endAngle"
+                                               from: spendingsPlot.startAngle + 2.0 * M_PI
+                                                 to: spendingsPlot.startAngle
+                                           duration: 0.5
+                                          withDelay: 0
+                                     animationCurve: CPTAnimationCurveQuadraticInOut
+                                           delegate: self];
 }
 
 - (void)setCategory: (Category*)newCategory

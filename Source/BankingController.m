@@ -1465,7 +1465,6 @@ BOOL runningOnLionOrLater = NO;
     if (pageHasChanged) {
         if (currentSection != nil) {
             currentSection.category = [self currentSelection];
-            [currentSection setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
             [currentSection activate];
         }
         [accountsView setNeedsDisplay];
