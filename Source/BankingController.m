@@ -191,6 +191,11 @@ BOOL runningOnLionOrLater = NO;
     if ([userDefaults objectForKey: @"mainSortAscending" ]) {
         sortAscending = [[userDefaults objectForKey: @"mainSortAscending"] boolValue];
     }
+    lastSplitterPosition = [[userDefaults objectForKey: @"rightSplitterPosition"] intValue];
+    if (lastSplitterPosition > 0) {
+        // The details pane was collapsed when Pecunia closed last time.
+        [toggleDetailsButton setImage: [NSImage imageNamed: @"show"]];
+    }
 
     [self updateSorting];
     
@@ -1261,6 +1266,11 @@ BOOL runningOnLionOrLater = NO;
     }
 }
 
+- (void) updateDetailsPaneButton
+{
+    toggleDetailsButton.hidden = (toolbarButtons.selectedSegment != 0) || (currentSection != nil);
+}
+
 - (IBAction)activateMainPage: (id)sender
 {
     [self switchMainPage: [sender selectedSegment]];
@@ -1295,6 +1305,7 @@ BOOL runningOnLionOrLater = NO;
     }
     
     [self updateStatusbar];
+    [self updateDetailsPaneButton];
 }
 
 - (IBAction)activateAccountPage: (id)sender
@@ -1469,6 +1480,7 @@ BOOL runningOnLionOrLater = NO;
         }
         [accountsView setNeedsDisplay];
     }
+    [self updateDetailsPaneButton];
 }
 
 #pragma mark -
@@ -1545,6 +1557,9 @@ BOOL runningOnLionOrLater = NO;
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
     NSError	*error = nil;
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setValue: [NSNumber numberWithInt: lastSplitterPosition] forKey: @"rightSplitterPosition"];
     
     [currentSection deactivate];
     [accountsView saveLayout];
