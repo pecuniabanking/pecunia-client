@@ -130,8 +130,8 @@
     CategoryDefWindowController      *categoryDefinitionController;
     CategoryPeriodsWindowController  *categoryPeriodsController;
 
-    TransfersController              *transfersController;
-    StandingOrderController       *standingOrderController;
+    TransfersController     *transfersController;
+    StandingOrderController *standingOrderController;
     
     id<PecuniaSectionItem> currentSection;
     
@@ -142,9 +142,17 @@
     NSArray *defaultIcons; // Associations between categories and their default icons.
 }
 
+@property (unsafe_unretained) IBOutlet NSMenuItem *toggleBalancesItem;
+@property (unsafe_unretained) IBOutlet NSMenuItem *toggleRecursiveStatementsItem;
+@property (unsafe_unretained) IBOutlet NSMenuItem *toggleDetailsPaneItem;
+
 @property(nonatomic, copy) NSDecimalNumber *saveValue;
 @property(nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property(nonatomic, strong) DockIconController *dockIconController;
+
+@property (nonatomic, assign) BOOL showBalances;
+@property (nonatomic, assign) BOOL showRecursiveStatements;
+@property (nonatomic, assign) BOOL showDetailsPane;
 
 - (IBAction)addAccount: (id)sender;
 - (IBAction)changeAccount: (id)sender;
@@ -188,6 +196,8 @@
 - (IBAction)toggleFullscreenIfSupported: (id)sender;
 - (IBAction)toggleDetailsPane: (id)sender;
 
+- (IBAction)toggleFeature:(id)sender;
+
 - (IBAction)deleteAllData: (id)sender;
 - (IBAction)generateData: (id)sender;
 
@@ -198,8 +208,6 @@
 - (int)AccSize;
 - (void)statementsNotification: (NSNotification*)notification;
 - (Category*)getBankingRoot;
-//-(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts;
-//-(void)updateBankAccounts:(NSArray *)hbciAccounts forUser:(BankUser*)user;
 - (void)updateBalances;
 - (void)updateNotAssignedCategory;
 - (void)requestFinished: (NSArray*)resultList;

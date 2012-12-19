@@ -134,8 +134,9 @@ BOOL updateSent = NO;
 
 -(NSMutableSet*)combinedStatements
 {
-    if(![self isBankAccount ]) return [self mutableSetValueForKey: @"assignments" ];
-    if(self.accountNumber) return [self mutableSetValueForKey: @"assignments" ];
+    //if(![self isBankAccount ]) return [self mutableSetValueForKey: @"assignments" ];
+    //if(self.accountNumber) return [self mutableSetValueForKey: @"assignments" ];
+    
     // combine statements
     NSMutableSet *stats = [[NSMutableSet alloc ] init ];
     NSSet *childs = [self allChildren ];
@@ -408,6 +409,28 @@ BOOL updateSent = NO;
 }
 
 /**
+ * Returns a list of all statements for this category, including sub categories.
+ */
+-(NSSet*)allStatements
+{
+    NSMutableSet* result = [NSMutableSet setWithSet: [self mutableSetValueForKey: @"assignments" ]];
+    NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
+
+    if ([childs count] > 0)
+    {
+        NSEnumerator* enumerator = [childs objectEnumerator];
+        Category* child;
+
+        while ((child = [enumerator nextObject]))
+        {
+            [result unionSet: [child allStatements]];
+        }
+    }
+
+    return result;
+}
+
+/**
  * Collects a history of the saldo movement for this category over time.
  * This is usually only meaningful for bank accounts.
  * The resulting arrays are sorted by ascending date.
@@ -417,7 +440,7 @@ BOOL updateSent = NO;
                      balanceCounts: (NSArray**)counts
                       withGrouping: (GroupingInterval)interval
 {
-    NSArray* stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
+    NSArray* stats = [[self allStatements] allObjects];
     NSArray* sortedStats = [stats sortedArrayUsingSelector: @selector(compareDate:)];
     
     NSUInteger count = [stats count];
@@ -520,29 +543,6 @@ BOOL updateSent = NO;
     *minDate = currentMinDate;
     *maxDate = currentMaxDate;
 }
-
-/**
- * Returns a list of all statements for this category, including sub categories.
- */
--(NSSet*)allStatements
-{
-    NSMutableSet* result = [NSMutableSet setWithSet: [self mutableSetValueForKey: @"assignments" ]];
-    NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
-    
-    if ([childs count] > 0)
-    {
-        NSEnumerator* enumerator = [childs objectEnumerator];
-        Category* child;
-        
-        while ((child = [enumerator nextObject]))
-        {
-            [result unionSet: [child allStatements]];
-        }
-    }
-    
-    return result;	
-}
-
 
 /**
  * Collects a full history of turnover values over time, including all sub categories.

@@ -80,7 +80,6 @@ typedef enum {
 -(BOOL)isNotAssignedCategory;
 -(BOOL)checkMoveToCategory:(Category*)cat;
 
-//-(void)setLocalName: (NSString*)name;
 -(NSMutableSet*)children;
 -(NSSet*)allChildren;
 -(NSSet*)siblings;

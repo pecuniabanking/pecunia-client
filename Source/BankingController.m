@@ -183,18 +183,35 @@ BOOL runningOnLionOrLater = NO;
 {
     sortAscending = NO;
     sortIndex = 0;
-    
+
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults objectForKey: @"mainSortIndex" ]) {
         sortControl.selectedSegment = [[userDefaults objectForKey: @"mainSortIndex"] intValue];
     }
+
     if ([userDefaults objectForKey: @"mainSortAscending" ]) {
         sortAscending = [[userDefaults objectForKey: @"mainSortAscending"] boolValue];
     }
+
     lastSplitterPosition = [[userDefaults objectForKey: @"rightSplitterPosition"] intValue];
     if (lastSplitterPosition > 0) {
         // The details pane was collapsed when Pecunia closed last time.
         [toggleDetailsButton setImage: [NSImage imageNamed: @"show"]];
+    }
+    self.toggleDetailsPaneItem.state = lastSplitterPosition > 0 ? NSOffState : NSOnState;
+
+    if ([userDefaults objectForKey: @"recursiveTransactions"]) {
+        BOOL recursive = [[userDefaults objectForKey: @"recursiveTransactions"] boolValue];
+        self.toggleRecursiveStatementsItem.state = recursive ? NSOnState : NSOffState;
+    }
+    [self updateCategoryAssignments: [self currentSelection]];
+
+    if ([userDefaults objectForKey: @"showBalances"]) {
+        BOOL showBalances = [[userDefaults objectForKey: @"showBalances"] boolValue];
+        self.toggleBalancesItem.state = showBalances ? NSOnState : NSOffState;
+        if (!showBalances) { // Default is balances on.
+            [self toggleFeature: self.toggleBalancesItem];
+        }
     }
 
     [self updateSorting];
@@ -252,7 +269,6 @@ BOOL runningOnLionOrLater = NO;
     lockImage.image = [[NSImage alloc] initWithContentsOfFile: path];
     [self setEncrypted: [[MOAssistant assistant] encrypted]];
 
-    [mainWindow setContentMinSize:NSMakeSize(800, 450)];
     splitCursor = [[NSCursor alloc] initWithImage:[NSImage imageNamed: @"cursor.png"] hotSpot:NSMakePoint(0, 0)];
     [WorkerThread init];
     
@@ -274,9 +290,9 @@ BOOL runningOnLionOrLater = NO;
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
 
-     // Content views are dynamically exchanged with proper retain/release.
-                            // The right splitter is the initial control and needs an own retain to avoid losing it
-                            // on the next switch.
+    // Content views are dynamically exchanged.
+    // The right splitter is the initial control and needs an own retain to avoid losing it
+    // on the next switch.
     
     currentSection = nil; // The right splitter, which is by default active is not a regular section.
     toolbarButtons.selectedSegment = 0;
@@ -345,188 +361,6 @@ BOOL runningOnLionOrLater = NO;
         [pecError alertPanel];
     }
 }
-
-/*
--(BankAccount*)getBankNodeWithAccount: (Account*)acc inAccounts: (NSMutableArray*)bankAccounts
-{
-    BankAccount *bankNode = [BankAccount bankRootForCode: acc.bankCode];
-    
-    if(bankNode == nil) {
-        Category *root = [Category bankRoot];
-        if(root == nil) return nil;
-        // create bank node
-        bankNode = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount" inManagedObjectContext:self.managedObjectContext];
-        bankNode.name = acc.bankName;
-        bankNode.bankCode = acc.bankCode;
-        bankNode.currency = acc.currency;
-        bankNode.bic = acc.bic;
-        bankNode.isBankAcc = [NSNumber numberWithBool: YES];
-        bankNode.parent = root;
-        if(bankAccounts) [bankAccounts addObject: bankNode];
-    }
-    return bankNode;
-}
-
--(void)updateBankAccounts:(NSArray *)hbciAccounts forUser:(BankUser*)user
-{
-    NSError *error=nil;
-    BOOL found;
-    
-    if (hbciAccounts == nil) {
-        hbciAccounts = [[HBCIClient hbciClient] getAccountsForUser:user];
-    }
-    
-    NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
-    NSArray *tmpAccounts = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if( error != nil || tmpAccounts == nil) {
-        NSAlert *alert = [NSAlert alertWithError:error];
-        [alert runModal];
-        return;
-    }
-    NSMutableArray*	bankAccounts = [NSMutableArray arrayWithArray: tmpAccounts];
-
-    for (Account *acc in hbciAccounts) {
-        BankAccount *account;
-        
-        //lookup
-        found = NO;
-        for (account in bankAccounts) {
-			if ([account.bankCode isEqual: acc.bankCode ] && [account.accountNumber isEqual: acc.accountNumber ] && 
-                ((account.accountSuffix == nil && acc.subNumber == nil) || [account.accountSuffix isEqual: acc.subNumber ])) {
-                found = YES;
-                break;
-            }
-        }
-        if (found) {
-            // Update the user id if there is none assigned yet or if it differs.
-            if (account.userId == nil || ![account.userId isEqualToString: acc.userId]) {
-                account.userId = acc.userId;
-                account.customerId = acc.customerId;
-                NSMutableSet *users = [account mutableSetValueForKey: @"users"];
-                [users addObject: user];
-            }
-            if (acc.bic != nil) {
-                account.bic = acc.bic;
-            }
-            if (acc.iban != nil) {
-                account.iban = acc.iban;
-            }
-            
-        } else {
-            // Account was not found: create it.
-            BankAccount* bankRoot = [self getBankNodeWithAccount: acc inAccounts: bankAccounts];
-            if(bankRoot == nil) return;
-            BankAccount	*bankAccount = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount"
-                                                                     inManagedObjectContext:self.managedObjectContext];
-            
-            bankAccount.accountNumber = acc.accountNumber;
-            bankAccount.name = acc.name;
-            bankAccount.bankCode = acc.bankCode;
-            bankAccount.bankName = acc.bankName;
-            bankAccount.currency = acc.currency;
-            bankAccount.country = acc.country;
-            bankAccount.owner = acc.ownerName;
-            bankAccount.userId = acc.userId;
-            bankAccount.customerId = acc.customerId;
-            bankAccount.isBankAcc = [NSNumber numberWithBool: YES];
-            bankAccount.accountSuffix = acc.subNumber;
-            bankAccount.bic = acc.bic;
-            bankAccount.iban = acc.iban;
-            bankAccount.type = acc.type;
-            //			bankAccount.uid = [NSNumber numberWithUnsignedInt: [acc uid]];
-            //			bankAccount.type = [NSNumber numberWithUnsignedInt: [acc type]];
-            
-            // links
-            bankAccount.parent = bankRoot;
-            NSMutableSet *users = [bankAccount mutableSetValueForKey:@"users" ];
-            [users addObject:user ];
-        } 
-    }
-    // save updates
-    if([self.managedObjectContext save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError:error];
-        [alert runModal];
-        return;
-    }
-}
-*/
-/*
--(void)updateBankAccounts:(NSArray*)hbciAccounts
-{
-    NSError	*error = nil;
-    BOOL found;
-    
-    if (hbciAccounts == nil) {
-        // collect all accounts of all users
-        NSArray *users = [BankUser allUsers];
-        hbciAccounts = [NSArray array];
-        for(BankUser *user in users) {
-            NSArray *userAccounts = [[HBCIClient hbciClient] getAccountsForUser:user];
-            hbciAccounts = [hbciAccounts arrayByAddingObjectsFromArray:userAccounts];
-        }
-    }
-    
-    NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
-    NSArray *tmpAccounts = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if( error != nil || tmpAccounts == nil) {
-        NSAlert *alert = [NSAlert alertWithError:error];
-        [alert runModal];
-        return;
-    }
-    NSMutableArray*	bankAccounts = [NSMutableArray arrayWithArray: tmpAccounts];
-    
-    for (Account *acc in hbciAccounts) {
-        BankAccount *account;
-        
-        //lookup
-        found = NO;
-        for (account in bankAccounts) {
-			if ([account.bankCode isEqual: acc.bankCode ] && [account.accountNumber isEqual: acc.accountNumber ] && 
-                ((account.accountSuffix == nil && acc.subNumber == nil) || [account.accountSuffix isEqual: acc.subNumber ])) {
-                found = YES;
-                break;
-            }
-        }
-        if (found == YES) {
-            // Account was found: update user- and customer-id
-            account.userId = acc.userId;
-            account.customerId = acc.customerId;
-            account.collTransfer = [NSNumber numberWithBool:acc.collTransfer];
-        } else {
-            // Account was not found: create it
-            BankAccount* bankRoot = [self getBankNodeWithAccount: acc inAccounts: bankAccounts];
-            if(bankRoot == nil) return;
-            BankAccount	*bankAccount = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount"
-                                                                     inManagedObjectContext:self.managedObjectContext];
-            
-            bankAccount.accountNumber = acc.accountNumber;
-            bankAccount.name = acc.name;
-            bankAccount.bankCode = acc.bankCode;
-            bankAccount.bankName = acc.bankName;
-            bankAccount.currency = acc.currency;
-            bankAccount.country = acc.country;
-            bankAccount.owner = acc.ownerName;
-            bankAccount.userId = acc.userId;
-            bankAccount.customerId = acc.customerId;
-            bankAccount.isBankAcc = [NSNumber numberWithBool: YES];
-            bankAccount.accountSuffix = acc.subNumber;
-            bankAccount.type = acc.type;
-            //			bankAccount.uid = [NSNumber numberWithUnsignedInt: [acc uid]];
-            //			bankAccount.type = [NSNumber numberWithUnsignedInt: [acc type]];
-            
-            // link
-            bankAccount.parent = bankRoot;
-        } 
-        
-    }
-    // save updates
-    if([self.managedObjectContext save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError:error];
-        [alert runModal];
-        return;
-    }
-}
- */
 
 -(NSIndexPath*)indexPathForCategory: (Category*)cat inArray: (NSArray*)nodes
 {
@@ -1014,9 +848,6 @@ BOOL runningOnLionOrLater = NO;
         bankUserController = [[NewBankUserController alloc] initForController: self];
     }
 
-    NSRect frame = [[bankUserController window] frame];
-    frame = NSInsetRect(frame, 0.5 * frame.size.width, 0.5 * frame.size.height);
-    [[bankUserController window] zoomInFromRect: frame withFade: NO makeKey: YES];
     [[bankUserController window] makeKeyAndOrderFront:self];
 }
 
@@ -1560,7 +1391,11 @@ BOOL runningOnLionOrLater = NO;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setValue: [NSNumber numberWithInt: lastSplitterPosition] forKey: @"rightSplitterPosition"];
-    
+    [userDefaults setValue: [NSNumber numberWithBool: self.toggleRecursiveStatementsItem.state == NSOnState ? YES : NO]
+                    forKey: @"recursiveTransactions"];
+    [userDefaults setValue: [NSNumber numberWithBool: self.toggleBalancesItem.state == NSOnState ? YES : NO]
+                    forKey: @"showBalances"];
+
     [currentSection deactivate];
     [accountsView saveLayout];
     
@@ -1905,27 +1740,35 @@ BOOL runningOnLionOrLater = NO;
     return YES;
 }
 
+- (void)updateCategoryAssignments: (Category *)category
+{
+    if ((category == nil) || (self.managedObjectContext == nil))
+        return;
+
+    if (self.toggleRecursiveStatementsItem.state == NSOnState) {
+        if (statementsBound) {
+            [categoryAssignments unbind: @"contentSet"];
+            statementsBound = NO;
+        }
+        [categoryAssignments setContent: [category combinedStatements]];
+    } else {
+        if (!statementsBound) {
+            [categoryAssignments bind: @"contentSet"
+                             toObject: categoryController
+                          withKeyPath: @"selection.assignments"
+                              options: nil];
+            statementsBound = YES;
+        }
+
+    }
+}
 
 -(void)outlineViewSelectionDidChange:(NSNotification *)aNotification
 {
     Category *cat = [self currentSelection];
     
-    if ((cat == nil) || (self.managedObjectContext == nil))
-        return;
-    
-    if ([cat isBankAccount] && cat.accountNumber == nil) {
-        if (statementsBound) {
-            [categoryAssignments unbind:@"contentSet"];
-            statementsBound = NO;
-        }
-        [categoryAssignments setContent: [cat combinedStatements]];
-    } else {
-        if (statementsBound == NO) {
-            [categoryAssignments bind:@"contentSet" toObject:categoryController withKeyPath:@"selection.assignments" options:nil];
-            statementsBound = YES;
-        }
-    }
-    
+    [self updateCategoryAssignments: cat];
+
     // set states of categorie Actions Control
     [catActions setEnabled: [cat isRemoveable] forSegment: 2];
     [catActions setEnabled: [cat isInsertable] forSegment: 1];
@@ -2463,7 +2306,6 @@ BOOL runningOnLionOrLater = NO;
             StatSplitController *splitController = [[StatSplitController alloc] initWithStatement: [[sel objectAtIndex:0] statement]
                                                                                                view: accountsView];
             [NSApp runModalForWindow:[splitController window]];
-            //[splitController showWindow:mainWindow];
         }
     }
 }
@@ -2802,8 +2644,8 @@ BOOL runningOnLionOrLater = NO;
     }
     
     // Display main window
-    [mainWindow display ];
-    [mainWindow makeKeyAndOrderFront:self ];
+    [mainWindow display];
+    [mainWindow makeKeyAndOrderFront: self];
     
     // Open encrypted database
     if ([[MOAssistant assistant] encrypted]) {
@@ -3077,6 +2919,7 @@ BOOL runningOnLionOrLater = NO;
         lastSplitterPosition = NSHeight(firstChild.frame);
         [toggleDetailsButton setImage: [NSImage imageNamed: @"show"]];
         [rightSplitter adjustSubviews];
+        self.toggleDetailsPaneItem.state = NSOffState;
     } else {
         [statementDetails.animator setHidden: NO];
         NSRect frame = firstChild.frame;
@@ -3084,6 +2927,23 @@ BOOL runningOnLionOrLater = NO;
         firstChild.frame = frame;
         lastSplitterPosition = 0;
         [toggleDetailsButton setImage: [NSImage imageNamed: @"hide"]];
+        self.toggleDetailsPaneItem.state = NSOnState;
+    }
+}
+
+- (IBAction)toggleFeature: (id)sender
+{
+    if (sender == self.toggleRecursiveStatementsItem) {
+        if (self.toggleRecursiveStatementsItem.state == NSOnState) {
+            self.toggleRecursiveStatementsItem.state = NSOffState;
+        } else {
+            self.toggleRecursiveStatementsItem.state = NSOnState;
+        }
+        [self updateCategoryAssignments: [self currentSelection]];
+    } else if (sender == self.toggleDetailsPaneItem) {
+        [self toggleDetailsPane: nil];
+    } else if(sender == self.toggleBalancesItem) {
+        
     }
 }
 

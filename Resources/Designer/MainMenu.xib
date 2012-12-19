@@ -52,7 +52,6 @@
 			<string>NSToolbarFlexibleSpaceItem</string>
 			<string>NSToolbarItem</string>
 			<string>NSTreeController</string>
-			<string>NSUserDefaultsController</string>
 			<string>NSView</string>
 			<string>NSWindowTemplate</string>
 		</array>
@@ -196,7 +195,7 @@
 					<array key="NSToolbarIBSelectableItems" id="0"/>
 				</object>
 				<nil key="NSUserInterfaceItemIdentifier"/>
-				<string key="NSWindowContentMinSize">{1280, 800}</string>
+				<string key="NSWindowContentMinSize">{1100, 700}</string>
 				<object class="NSView" key="NSWindowView" id="996798234">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">274</int>
@@ -3865,7 +3864,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 					<reference key="NSNextKeyView" ref="768391083"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
-				<string key="NSMinSize">{1280, 851}</string>
+				<string key="NSMinSize">{1100, 751}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">mcmain</string>
 				<bool key="NSAutorecalculatesContentBorderThicknessMinY">NO</bool>
@@ -4224,6 +4223,61 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 											</object>
 										</array>
 									</object>
+								</object>
+							</array>
+						</object>
+					</object>
+					<object class="NSMenuItem" id="115235777">
+						<reference key="NSMenu" ref="254323704"/>
+						<string key="NSTitle">Anzeige</string>
+						<string key="NSKeyEquiv"/>
+						<int key="NSKeyEquivModMask">1048576</int>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="883146705"/>
+						<reference key="NSMixedImage" ref="237878853"/>
+						<string key="NSAction">submenuAction:</string>
+						<object class="NSMenu" key="NSSubmenu" id="678233615">
+							<string key="NSTitle">Anzeige</string>
+							<array class="NSMutableArray" key="NSMenuItems">
+								<object class="NSMenuItem" id="107966411">
+									<reference key="NSMenu" ref="678233615"/>
+									<string key="NSTitle">Salden</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<int key="NSState">1</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
+								</object>
+								<object class="NSMenuItem" id="280999419">
+									<reference key="NSMenu" ref="678233615"/>
+									<string key="NSTitle">Untergeordnete Überweisungen</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<int key="NSState">1</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
+								</object>
+								<object class="NSMenuItem" id="675925675">
+									<reference key="NSMenu" ref="678233615"/>
+									<bool key="NSIsDisabled">YES</bool>
+									<bool key="NSIsSeparator">YES</bool>
+									<string key="NSTitle"/>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
+								</object>
+								<object class="NSMenuItem" id="110196758">
+									<reference key="NSMenu" ref="678233615"/>
+									<string key="NSTitle">Detailsfenster</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<int key="NSState">1</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
 								</object>
 							</array>
 						</object>
@@ -7662,9 +7716,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 			<object class="NSCustomObject" id="529235046">
 				<string key="NSClassName">TimeSliceManager</string>
 			</object>
-			<object class="NSUserDefaultsController" id="385779557">
-				<bool key="NSSharedInstance">YES</bool>
-			</object>
 			<object class="NSArrayController" id="324043321">
 				<array class="NSMutableArray" key="NSDeclaredKeys">
 					<string>name</string>
@@ -9394,6 +9445,54 @@ wGw</bytes>
 						<reference key="destination" ref="576757191"/>
 					</object>
 					<int key="connectionID">6520</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">toggleFeature:</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="107966411"/>
+					</object>
+					<int key="connectionID">6553</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">toggleFeature:</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="280999419"/>
+					</object>
+					<int key="connectionID">6554</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">toggleRecursiveStatementsItem</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="280999419"/>
+					</object>
+					<int key="connectionID">6556</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">toggleDetailsPaneItem</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="110196758"/>
+					</object>
+					<int key="connectionID">6557</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">toggleFeature:</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="110196758"/>
+					</object>
+					<int key="connectionID">6558</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">toggleBalancesItem</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="107966411"/>
+					</object>
+					<int key="connectionID">6559</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -11765,6 +11864,7 @@ wGw</bytes>
 							<reference ref="259204391"/>
 							<reference ref="132594700"/>
 							<reference ref="790902056"/>
+							<reference ref="115235777"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">MainMenu</string>
@@ -13525,11 +13625,6 @@ wGw</bytes>
 						<reference key="object" ref="529235046"/>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">AccMainSlicer</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">4638</int>
-						<reference key="object" ref="385779557"/>
-						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">4740</int>
@@ -15381,6 +15476,45 @@ wGw</bytes>
 						<reference key="object" ref="469519529"/>
 						<reference key="parent" ref="576757191"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6526</int>
+						<reference key="object" ref="115235777"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="678233615"/>
+						</array>
+						<reference key="parent" ref="254323704"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6527</int>
+						<reference key="object" ref="678233615"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="107966411"/>
+							<reference ref="280999419"/>
+							<reference ref="110196758"/>
+							<reference ref="675925675"/>
+						</array>
+						<reference key="parent" ref="115235777"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6528</int>
+						<reference key="object" ref="107966411"/>
+						<reference key="parent" ref="678233615"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6530</int>
+						<reference key="object" ref="280999419"/>
+						<reference key="parent" ref="678233615"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6532</int>
+						<reference key="object" ref="110196758"/>
+						<reference key="parent" ref="678233615"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6534</int>
+						<reference key="object" ref="675925675"/>
+						<reference key="parent" ref="678233615"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -15714,7 +15848,6 @@ wGw</bytes>
 				<string key="4598.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="4599.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="4624.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="4638.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="4690.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="4740.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="4741.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -16050,6 +16183,20 @@ wGw</bytes>
 				<string key="6510.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6515.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6516.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6526.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6527.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6528.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<object class="NSMutableDictionary" key="6530.IBAttributePlaceholdersKey">
+					<string key="NS.key.0">ToolTip</string>
+					<object class="IBToolTipAttribute" key="NS.object.0">
+						<string key="name">ToolTip</string>
+						<reference key="object" ref="280999419"/>
+						<string key="toolTip">Neben den Umsätzen des ausgewählten Eintrags werden auch Umsätze untergeordneter Konten/Kategorien in der Liste angezeigt</string>
+					</object>
+				</object>
+				<string key="6530.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6532.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6534.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="74.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="77.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="78.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -16097,7 +16244,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6521</int>
+			<int key="maxID">6559</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -16140,7 +16287,9 @@ wGw</bytes>
 						<string key="sortingChanged:">id</string>
 						<string key="splitPurpose:">id</string>
 						<string key="splitStatement:">id</string>
+						<string key="switchRecursiveTransactionDisplay:">id</string>
 						<string key="toggleDetailsPane:">id</string>
+						<string key="toggleFeature:">id</string>
 						<string key="toggleFullscreenIfSupported:">id</string>
 						<string key="transfer_dated:">id</string>
 						<string key="transfer_eu:">id</string>
@@ -16257,8 +16406,16 @@ wGw</bytes>
 							<string key="name">splitStatement:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="switchRecursiveTransactionDisplay:">
+							<string key="name">switchRecursiveTransactionDisplay:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="toggleDetailsPane:">
 							<string key="name">toggleDetailsPane:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="toggleFeature:">
+							<string key="name">toggleFeature:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="toggleFullscreenIfSupported:">
@@ -16311,6 +16468,7 @@ wGw</bytes>
 						<string key="mainVSplit">NSSplitView</string>
 						<string key="mainWindow">NSWindow</string>
 						<string key="nassValueField">NSTextField</string>
+						<string key="recursiveTransactionCheckBox">NSButton</string>
 						<string key="remoteNameLabel">NSTextField</string>
 						<string key="rightPane">NSView</string>
 						<string key="rightSplitter">NSSplitView</string>
@@ -16323,8 +16481,12 @@ wGw</bytes>
 						<string key="statementsListView">StatementsListView</string>
 						<string key="statementsListViewHost">RoundedOuterShadowView</string>
 						<string key="timeSlicer">TimeSliceManager</string>
+						<string key="toggleBalancesItem">NSMenuItem</string>
 						<string key="toggleDetailsButton">NSButton</string>
+						<string key="toggleDetailsPaneItem">NSMenuItem</string>
 						<string key="toggleFullscreenItem">NSMenuItem</string>
+						<string key="toggleRecursiveStatementsItem">NSMenuItem</string>
+						<string key="toggleSaldoItem">NSMenuItem</string>
 						<string key="toolbarButtons">NSSegmentedControl</string>
 						<string key="transactionController">TransactionController</string>
 						<string key="turnoversField">NSTextField</string>
@@ -16428,6 +16590,10 @@ wGw</bytes>
 							<string key="name">nassValueField</string>
 							<string key="candidateClassName">NSTextField</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="recursiveTransactionCheckBox">
+							<string key="name">recursiveTransactionCheckBox</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="remoteNameLabel">
 							<string key="name">remoteNameLabel</string>
 							<string key="candidateClassName">NSTextField</string>
@@ -16476,12 +16642,28 @@ wGw</bytes>
 							<string key="name">timeSlicer</string>
 							<string key="candidateClassName">TimeSliceManager</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="toggleBalancesItem">
+							<string key="name">toggleBalancesItem</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="toggleDetailsButton">
 							<string key="name">toggleDetailsButton</string>
 							<string key="candidateClassName">NSButton</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="toggleDetailsPaneItem">
+							<string key="name">toggleDetailsPaneItem</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="toggleFullscreenItem">
 							<string key="name">toggleFullscreenItem</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toggleRecursiveStatementsItem">
+							<string key="name">toggleRecursiveStatementsItem</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toggleSaldoItem">
+							<string key="name">toggleSaldoItem</string>
 							<string key="candidateClassName">NSMenuItem</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="toolbarButtons">
