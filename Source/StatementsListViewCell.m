@@ -79,6 +79,11 @@ extern NSString* const CategoryKey;
     self = [super initWithFrame: frame];
     if (self != nil)
     {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setLocale: [NSLocale currentLocale]];
+        [dateFormatter setDateStyle: kCFDateFormatterFullStyle];
+        [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
+
         whiteAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                             [NSColor whiteColor], NSForegroundColorAttributeName, nil
                            ];
@@ -130,8 +135,11 @@ static CurrencyValueTransformer* currencyTransformer;
 - (void)setDetails: (NSDictionary*) details
 {
     index = [[details objectForKey: StatementIndexKey] intValue];
-    
-    [dateLabel setStringValue: [details objectForKey: StatementDateKey]];
+
+    NSDate *date = [details objectForKey: StatementDateKey];
+    dateFormatter.dateStyle = kCFDateFormatterFullStyle;
+
+    [dateLabel setStringValue: [dateFormatter stringFromDate: date]];
     [turnoversLabel setStringValue: [details objectForKey: StatementTurnoversKey]];
     
     [remoteNameLabel setStringValue: [details objectForKey: StatementRemoteNameKey]];
@@ -163,6 +171,14 @@ static CurrencyValueTransformer* currencyTransformer;
     [[[saldoLabel cell] formatter] setCurrencyCode: currency];
 
     categoryColor = [details valueForKey: StatementColorKey];
+
+    // Dynamically updated fields.
+    dateFormatter.dateFormat = @"eee";
+    self.weekdayLabel.stringValue = [dateFormatter stringFromDate: date];
+    dateFormatter.dateFormat = @"d";
+    self.dayLabel.stringValue = [dateFormatter stringFromDate: date];
+    dateFormatter.dateFormat = @"MMM";
+    self.monthLabel.stringValue = [dateFormatter stringFromDate: date];
 }
 
 - (void)setTextAttributesForPositivNumbers: (NSDictionary*) _positiveAttributes
@@ -234,6 +250,10 @@ static CurrencyValueTransformer* currencyTransformer;
         [transactionTypeLabel setTextColor: [NSColor whiteColor]];
         [noteLabel setTextColor: [NSColor whiteColor]];
         [saldoCaption setTextColor: [NSColor whiteColor]];
+
+        [self.weekdayLabel setTextColor: [NSColor whiteColor]];
+        [self.dayLabel setTextColor: [NSColor whiteColor]];
+        [self.monthLabel setTextColor: [NSColor whiteColor]];
     } else {
         [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
         [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
@@ -252,6 +272,10 @@ static CurrencyValueTransformer* currencyTransformer;
         [saldoCaption setTextColor: paleColor];
         [currencyLabel setTextColor: paleColor];
         [saldoCurrencyLabel setTextColor: paleColor];
+
+        [self.weekdayLabel setTextColor: paleColor];
+        [self.dayLabel setTextColor: paleColor];
+        [self.monthLabel setTextColor: paleColor];
     }
 }
 
@@ -407,17 +431,17 @@ static NSImage* stripeImage;
     
     // Separator lines in front of every text in the main part.
     CGFloat left = [remoteNameLabel frame].origin.x + 0.5;
-    [path moveToPoint: NSMakePoint(left - 4, 10)];
-    [path lineToPoint: NSMakePoint(left - 4, 39)];
+    [path moveToPoint: NSMakePoint(left - 5, 10)];
+    [path lineToPoint: NSMakePoint(left - 5, 39)];
     left = [purposeLabel frame].origin.x + 0.5;
-    [path moveToPoint: NSMakePoint(left - 4, 10)];
-    [path lineToPoint: NSMakePoint(left - 4, 39)];
+    [path moveToPoint: NSMakePoint(left - 5, 10)];
+    [path lineToPoint: NSMakePoint(left - 5, 39)];
     left = [categoriesLabel frame].origin.x + 0.5;
-    [path moveToPoint: NSMakePoint(left - 4, 10)];
-    [path lineToPoint: NSMakePoint(left - 4, 39)];
+    [path moveToPoint: NSMakePoint(left - 5, 10)];
+    [path lineToPoint: NSMakePoint(left - 5, 39)];
     left = [valueLabel frame].origin.x + 0.5;
-    [path moveToPoint: NSMakePoint(left - 4, 10)];
-    [path lineToPoint: NSMakePoint(left - 4, 39)];
+    [path moveToPoint: NSMakePoint(left - 5, 10)];
+    [path lineToPoint: NSMakePoint(left - 5, 39)];
     
     // Left, right and bottom lines.
     [path moveToPoint: NSMakePoint(0, 0)];

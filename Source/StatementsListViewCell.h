@@ -66,12 +66,16 @@ extern NSString *StatementNoteKey;
     BOOL hasUnassignedValue;
     int  headerHeight;
     NSUInteger index;
-    
+
+    NSDateFormatter *dateFormatter;
     NSDictionary *positiveAttributes;
     NSDictionary *negativeAttributes;
     NSDictionary *whiteAttributes;
     NSColor *categoryColor;
 }
+@property (strong) IBOutlet NSTextField *weekdayLabel;
+@property (strong) IBOutlet NSTextField *dayLabel;
+@property (strong) IBOutlet NSTextField *monthLabel;
 
 @property (nonatomic, strong) id delegate;
 @property (nonatomic, assign) BOOL hasUnassignedValue;

@@ -265,7 +265,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     
     cell.delegate = self;
     NSDictionary *details = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [self formatValue: currentDate capitalize: NO], StatementDateKey,
+                             currentDate, StatementDateKey,
                              turnoversString, StatementTurnoversKey,
                              [self formatValue: stat.statement.remoteName capitalize: YES], StatementRemoteNameKey,
                              [self formatValue: stat.statement.floatingPurpose capitalize: YES], StatementPurposeKey,
