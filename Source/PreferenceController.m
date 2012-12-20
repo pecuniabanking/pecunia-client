@@ -85,7 +85,7 @@ void updateColorCache()
 		}
 	}
 	MOAssistant *assistant = [MOAssistant assistant ];
-	encrypt = [assistant encrypted ];
+	encrypt = [assistant encrypted];
 	[self setValue: [NSNumber numberWithBool: [assistant encrypted ] ] forKey: @"encrypt" ];
     
     // erstes Tab setzen
@@ -93,7 +93,7 @@ void updateColorCache()
     [mainTab selectTabViewItemAtIndex:0 ];
     [mainTab setTabViewType:NSNoTabsNoBorder ];
     
-    [self setHeight:SYNCH_HEIGHT ];
+    [self setHeight: SYNCH_HEIGHT];
     
     // Export-Feldseparator
     NSString *expSep = [defaults stringForKey:_exportSeparator ];
@@ -107,6 +107,18 @@ void updateColorCache()
         if ([expSep isEqualToString:@"|"]) {
             [expRadioMatrix setState:NSOnState atRow:2 column:0];
         }
+    }
+
+    // Fix icons in the toolbar. Those in subfolders of the Resources folder are not found automatically.
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    for (NSToolbarItem *item in toolBar.items) {
+        NSString *path = [[NSBundle mainBundle] pathForResource: item.image.name
+                                                         ofType: @"icns"
+                                                    inDirectory: @"Collections/1"];
+        if ([fileManager fileExistsAtPath: path]) {
+            item.image = [[NSImage alloc] initWithContentsOfFile: path];
+        }
+
     }
 }
 

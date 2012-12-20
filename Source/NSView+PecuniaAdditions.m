@@ -22,23 +22,6 @@
 
 @implementation NSView (PecuniaAdditions)
 
-
-- (void)drawTextFields
-{
-    // Manually draw all text fields to avoid font problems with layer-backed views.
-    NSArray *views = [self subviews];
-    for (NSView *view in views) {
-        if ([view isKindOfClass: [NSTextField class]]) {
-            NSTextField *field = (NSTextField *)view;
-            if ([field isEnabled] && [field isHidden]) {
-                NSRect r = [view frame];
-                NSAttributedString *as = [[field cell] attributedStringValue];
-                [as drawInRect: r];
-            }
-        }
-    }
-}
-
 /**
  * Returns an offscreen view containing all visual elements of this view for printing,
  * including CALayer content. Useful only for views that are layer-backed.
@@ -78,12 +61,3 @@
 
 @end
 
-@implementation CustomTextDrawingView
-
-- (void)drawRect:(NSRect)dirtyRect
-{
-    [super drawRect: dirtyRect];
-    [self drawTextFields];
-}
-
-@end

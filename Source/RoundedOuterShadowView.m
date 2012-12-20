@@ -61,9 +61,6 @@ static NSShadow* borderShadow = nil;
     [borderPath fill];
     
     [NSGraphicsContext restoreGraphicsState];
-
-    // Draw Text Fields
-    [self drawTextFields];
 }
 
 @end

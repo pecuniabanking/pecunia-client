@@ -1,3 +1,22 @@
+/**
+ * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
+
 #import "AccountDefController.h"
 #import "BankAccount.h"
 #import "MOAssistant.h"
@@ -6,8 +25,10 @@
 #import "HBCIClient.h"
 #import "BankingController.h"
 
-#define HEIGHT_MANUAL 465
-#define HEIGHT_STANDARD 345
+#include "BWGradientBox.h"
+
+#define HEIGHT_MANUAL 545
+#define HEIGHT_STANDARD 465
 
 @implementation AccountDefController
 
@@ -66,8 +87,14 @@
 	[predicateEditor addRow:self ];
 	
 	// fill proposal values
-	[self dropChanged: self ];
-    [self setHeight:HEIGHT_STANDARD];
+	[self dropChanged: self];
+    [self setHeight: HEIGHT_STANDARD];
+
+    // Manually set up properties which cannot be set via user defined runtime attributes
+    // (Color type is not available pre 10.7).
+    topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
+    topGradient.fillEndingColor = [NSColor colorWithCalibratedWhite: 99 / 255.0 alpha: 1];
+    backgroundGradient.fillColor = [NSColor whiteColor];
 }
 
 -(IBAction)dropChanged: (id)sender
@@ -89,7 +116,7 @@
 		//[bankCodeField setBezeled: NO ];
 		
 		if (currentAddView != accountAddView) {
-            [self setHeight:HEIGHT_STANDARD];
+            [self setHeight: HEIGHT_STANDARD];
             NSRect frame = [manAccountAddView frame];
 			[boxView replaceSubview:manAccountAddView with:accountAddView ];
 			currentAddView = accountAddView;
@@ -100,7 +127,7 @@
 		//[bankCodeField setBezeled: YES ];
 
 		if (currentAddView != manAccountAddView) {
-            [self setHeight:HEIGHT_MANUAL];
+            [self setHeight: HEIGHT_MANUAL];
             NSRect frame = [accountAddView frame];
 			[boxView replaceSubview:accountAddView with:manAccountAddView ];
 			currentAddView = manAccountAddView;
@@ -109,25 +136,35 @@
 	}
 }
 
--(void)windowWillClose:(NSNotification*)notification
+- (void)windowWillClose:(NSNotification*)notification
 {
-    if (success == YES) {
-        [NSApp stopModalWithCode: 1 ];
+    if (success) {
+        [NSApp stopModalWithCode: 1];
     } else {
-        [NSApp stopModalWithCode: 0 ];
+        [NSApp stopModalWithCode: 0];
     }
 }
 
--(IBAction)cancel:(id)sender 
+- (IBAction)cancel:(id)sender
 {
-	[moc reset ];
-    [self close ];
+    if ([NSColorPanel sharedColorPanelExists]) {
+        [[NSColorPanel sharedColorPanel] close];
+    }
+
+	[moc reset];
+    [self close];
 }
 
--(IBAction)ok:(id)sender
+- (IBAction)ok: (id)sender
 {
-	[accountController commitEditing ];
-	if([self check ] == NO) return;
+    if ([NSColorPanel sharedColorPanelExists]) {
+        [[NSColorPanel sharedColorPanel] close];
+    }
+
+	[accountController commitEditing];
+	if (![self check]) {
+        return;
+    }
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 
 	BankUser *user = nil;
@@ -184,6 +221,7 @@
 		newAccount.name = account.name;
 		newAccount.currency = account.currency;
 		newAccount.country = account.country;
+        newAccount.catRepColor = account.catRepColor;
 	}
 
     [self close ];

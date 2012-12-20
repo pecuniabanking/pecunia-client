@@ -78,9 +78,6 @@ static NSGradient* innerGradient = nil;
     [[NSColor colorWithDeviceWhite: 0.25 alpha: 1] set];
     NSRect targetRect = NSMakeRect(10, 28, bounds.size.width, 30);
     [NSBezierPath fillRect: targetRect];
-
-    // TextFelder zeichnen
-    [self drawTextFields];
 }
 
 @end

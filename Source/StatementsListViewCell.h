@@ -88,6 +88,7 @@ extern NSString *StatementNoteKey;
 - (void)setDetails: (NSDictionary*) details;
 - (void)setIsNew: (BOOL) flag;
 - (void)showActivator: (BOOL)flag markActive: (BOOL)active;
+- (void)showBalance: (BOOL)flag;
 - (void)selectionChanged;
 
 - (void)setTextAttributesForPositivNumbers: (NSDictionary*) positiveAttributes

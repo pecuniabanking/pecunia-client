@@ -274,9 +274,6 @@ static NSGradient* innerGradientSelected;
         [innerGradient drawInBezierPath: path angle: 90.0];
     }
     
-    // draw Text Fields
-    [self drawTextFields ];
-    
     [context restoreGraphicsState];
 }
 

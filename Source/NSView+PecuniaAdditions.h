@@ -22,16 +22,6 @@
 
 @interface NSView (PecuniaAdditions)
 
-- (void)drawTextFields;    
 - (NSView*)printViewForLayerBackedView;
-
-@end
-
-/**
- * A view which can be used as base class of standard views in a xib file
- * to draw text fields. Use this for any layer-backed view if isn't already
- * a custom view (in which case this custom view must explicitly call drawTextFields).
- */
-@interface CustomTextDrawingView : NSView
 
 @end

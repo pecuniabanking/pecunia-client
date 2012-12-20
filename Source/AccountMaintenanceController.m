@@ -96,7 +96,6 @@ extern NSString* const CategoryKey;
         }
     }
 
-    
     // Manually set up properties which cannot be set via user defined runtime attributes
     // (Color type is not available pre 10.7).
     topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];

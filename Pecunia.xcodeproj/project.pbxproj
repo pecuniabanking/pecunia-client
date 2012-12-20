@@ -236,7 +236,6 @@
 		B1835C1B15D2A1F4003B93ED /* Chipcard.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1715D2A1F4003B93ED /* Chipcard.png */; };
 		B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1835D3415D521B5003B93ED /* 101.xcmappingmodel */; };
 		B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */; };
-		B183625C15E2DAFE003B93ED /* GradientBoxWithLabels.m in Sources */ = {isa = PBXBuildFile; fileRef = B183625B15E2DAFE003B93ED /* GradientBoxWithLabels.m */; };
 		B1872EFD163DD7B7003A8C14 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1872EFC163DD7B7003A8C14 /* Security.framework */; };
 		B1872F1B164AF52D003A8C14 /* RemoveWhitespaceTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = B1872F1A164AF52D003A8C14 /* RemoveWhitespaceTransformer.m */; };
 		B189782E0ECF47CA00D20503 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
@@ -709,8 +708,6 @@
 		B1835D3415D521B5003B93ED /* 101.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 101.xcmappingmodel; sourceTree = "<group>"; };
 		B18361FB15E23D3F003B93ED /* NSView+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+PecuniaAdditions.m"; sourceTree = "<group>"; };
-		B183625A15E2DAFE003B93ED /* GradientBoxWithLabels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientBoxWithLabels.h; sourceTree = "<group>"; };
-		B183625B15E2DAFE003B93ED /* GradientBoxWithLabels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientBoxWithLabels.m; sourceTree = "<group>"; };
 		B1872EFC163DD7B7003A8C14 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B1872F19164AF52D003A8C14 /* RemoveWhitespaceTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoveWhitespaceTransformer.h; sourceTree = "<group>"; };
 		B1872F1A164AF52D003A8C14 /* RemoveWhitespaceTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoveWhitespaceTransformer.m; sourceTree = "<group>"; };
@@ -994,8 +991,6 @@
 				2716FE4C152381A60015A753 /* SynchronousScrollView.m */,
 				27B9868315769132008907F3 /* GradientButtonCell.h */,
 				27B9868415769132008907F3 /* GradientButtonCell.m */,
-				B183625A15E2DAFE003B93ED /* GradientBoxWithLabels.h */,
-				B183625B15E2DAFE003B93ED /* GradientBoxWithLabels.m */,
 			);
 			name = "Controls and Layouts";
 			sourceTree = "<group>";
@@ -2053,7 +2048,6 @@
 				B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */,
 				27C883C715E0EBCE007572F0 /* NSString+PecuniaAdditions.m in Sources */,
 				B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */,
-				B183625C15E2DAFE003B93ED /* GradientBoxWithLabels.m in Sources */,
 				A652533515E39A92000C2989 /* TanWindow.m in Sources */,
 				B17E5C8415EFFC03008527C8 /* 102.xcmappingmodel in Sources */,
 				B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */,

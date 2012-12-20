@@ -95,7 +95,7 @@ extern NSString* const CategoryKey;
            {
                Category *category = [notifictation.userInfo objectForKey: CategoryKey];
                categoryColor = category.categoryColor;
-               [self display];
+               [self setNeedsDisplay: YES];
            }
          ];
     }
@@ -285,6 +285,13 @@ static CurrencyValueTransformer* currencyTransformer;
     [checkbox setState: active ? NSOnState : NSOffState];
 }
 
+- (void)showBalance: (BOOL)flag
+{
+    [saldoCaption setHidden: !flag];
+    [saldoLabel setHidden: !flag];
+    [saldoCurrencyLabel setHidden: !flag];
+}
+
 - (void)refresh
 {
     [self setNeedsDisplay: YES];
@@ -472,8 +479,6 @@ static NSImage* stripeImage;
             area.origin.x += stripeImage.size.width;
         }
     }
-    
-    [self drawTextFields];
     
     [context restoreGraphicsState];
 }

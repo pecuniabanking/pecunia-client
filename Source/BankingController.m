@@ -208,7 +208,6 @@ BOOL runningOnLionOrLater = NO;
 
     if ([userDefaults objectForKey: @"showBalances"]) {
         BOOL showBalances = [[userDefaults objectForKey: @"showBalances"] boolValue];
-        self.toggleBalancesItem.state = showBalances ? NSOnState : NSOffState;
         if (!showBalances) { // Default is balances on.
             [self toggleFeature: self.toggleBalancesItem];
         }
@@ -1175,7 +1174,7 @@ BOOL runningOnLionOrLater = NO;
             if (currentSection != nil) {
                 [currentSection deactivate];
                 [rightSplitter setFrame: frame];
-                [[rightPane animator] replaceSubview: currentView with: rightSplitter];
+                [rightPane replaceSubview: currentView with: rightSplitter];
                 currentSection = nil;
                 
                 // update values in category tree to reflect time slicer interval again
@@ -1198,7 +1197,7 @@ BOOL runningOnLionOrLater = NO;
             if (currentSection != categoryAnalysisController) {
                 [currentSection deactivate];
                 [[categoryAnalysisController mainView] setFrame: frame];
-                [[rightPane animator] replaceSubview: currentView with: [categoryAnalysisController mainView]];
+                [rightPane replaceSubview: currentView with: [categoryAnalysisController mainView]];
                 currentSection = categoryAnalysisController;
                 [categoryAnalysisController updateTrackingAreas];
                 pageHasChanged = YES;
@@ -1222,7 +1221,7 @@ BOOL runningOnLionOrLater = NO;
             if (currentSection != categoryReportingController) {
                 [currentSection deactivate];
                 [[categoryReportingController mainView] setFrame: frame];
-                [[rightPane animator] replaceSubview: currentView with: [categoryReportingController mainView]];
+                [rightPane replaceSubview: currentView with: [categoryReportingController mainView]];
                 currentSection = categoryReportingController;
                 
                 // If a category is selected currently which has no child categories then move the
@@ -1254,7 +1253,7 @@ BOOL runningOnLionOrLater = NO;
             if (currentSection != categoryPeriodsController) {
                 [currentSection deactivate];
                 [[categoryPeriodsController mainView] setFrame: frame];
-                [[rightPane animator] replaceSubview: currentView with: [categoryPeriodsController mainView]];
+                [rightPane replaceSubview: currentView with: [categoryPeriodsController mainView]];
                 currentSection = categoryPeriodsController;
                 
                 // In order to be able to line up the category entries with the grid we hide the bank
@@ -1285,7 +1284,7 @@ BOOL runningOnLionOrLater = NO;
             if (currentSection != categoryDefinitionController) {
                 [currentSection deactivate];
                 [[categoryDefinitionController mainView] setFrame: frame];
-                [[rightPane animator] replaceSubview: currentView with: [categoryDefinitionController mainView]];
+                [rightPane replaceSubview: currentView with: [categoryDefinitionController mainView]];
                 currentSection = categoryDefinitionController;
                 
                 // If a bank account is currently selected then switch to the not-assigned category.
@@ -2915,13 +2914,13 @@ BOOL runningOnLionOrLater = NO;
 {
     NSView *firstChild = [rightSplitter.subviews objectAtIndex: 0];
     if (lastSplitterPosition == 0) {
-        [statementDetails.animator setHidden: YES];
+        [statementDetails setHidden: YES];
         lastSplitterPosition = NSHeight(firstChild.frame);
         [toggleDetailsButton setImage: [NSImage imageNamed: @"show"]];
         [rightSplitter adjustSubviews];
         self.toggleDetailsPaneItem.state = NSOffState;
     } else {
-        [statementDetails.animator setHidden: NO];
+        [statementDetails setHidden: NO];
         NSRect frame = firstChild.frame;
         frame.size.height = lastSplitterPosition;
         firstChild.frame = frame;
@@ -2933,6 +2932,8 @@ BOOL runningOnLionOrLater = NO;
 
 - (IBAction)toggleFeature: (id)sender
 {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
     if (sender == self.toggleRecursiveStatementsItem) {
         if (self.toggleRecursiveStatementsItem.state == NSOnState) {
             self.toggleRecursiveStatementsItem.state = NSOffState;
@@ -2940,10 +2941,25 @@ BOOL runningOnLionOrLater = NO;
             self.toggleRecursiveStatementsItem.state = NSOnState;
         }
         [self updateCategoryAssignments: [self currentSelection]];
-    } else if (sender == self.toggleDetailsPaneItem) {
-        [self toggleDetailsPane: nil];
-    } else if(sender == self.toggleBalancesItem) {
-        
+        [userDefaults setValue: [NSNumber numberWithBool: self.toggleRecursiveStatementsItem.state == NSOnState ? YES : NO]
+                        forKey: @"recursiveTransactions"];
+    } else {
+        if (sender == self.toggleDetailsPaneItem) {
+            [self toggleDetailsPane: nil];
+            [userDefaults setValue: [NSNumber numberWithInt: lastSplitterPosition] forKey: @"rightSplitterPosition"];
+        } else {
+            if(sender == self.toggleBalancesItem) {
+                if (self.toggleBalancesItem.state == NSOnState) {
+                    self.toggleBalancesItem.state = NSOffState;
+                } else {
+                    self.toggleBalancesItem.state = NSOnState;
+                }
+                [userDefaults setValue: [NSNumber numberWithBool: self.toggleBalancesItem.state == NSOnState ? YES : NO]
+                                forKey: @"showBalances"];
+
+                [statementsListView updateBalanceVisibility];
+            }
+        }
     }
 }
 

@@ -39,10 +39,11 @@
     
     BOOL showAssignedIndicators;
     id owner;
+    BOOL showBalances;
     BOOL autoResetNew;
     BOOL pendingReload;  // Set when a notification arrived to completely reload the listview.
     BOOL pendingRefresh; // Set when there was already a notification to refresh visible cells (for property changes).
-    BOOL activating; // Set when a cells are activated programmatically (so we don't send notifications around).
+    BOOL activating;     // Set when a cells are activated programmatically (so we don't send notifications around).
 }
 
 @property (nonatomic, assign) BOOL showAssignedIndicators;
@@ -56,5 +57,6 @@
 
 - (void)updateVisibleCells;
 - (void)activateCells;
+- (void)updateBalanceVisibility;
 
 @end

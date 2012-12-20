@@ -64,6 +64,13 @@ extern NSString *StatementTypeKey;
     autoResetNew = YES;
     disableSelection = NO;
     showHeaders = YES;
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    showBalances = YES;
+    if ([userDefaults objectForKey: @"showBalances"]) {
+        showBalances = [[userDefaults objectForKey: @"showBalances"] boolValue];
+    }
+
 }
 
 - (void) dealloc
@@ -305,6 +312,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     
     [cell setTextAttributesForPositivNumbers: [[self numberFormatter] textAttributesForPositiveValues]
                              negativeNumbers: [[self numberFormatter ] textAttributesForNegativeValues]];
+    [cell showBalance: showBalances];
     
 }
 
@@ -377,6 +385,20 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     NSArray *cells = [self visibleCells];
     for (StatementsListViewCell *cell in cells)
         [self fillCell: cell forRow: [cell row]];
+}
+
+/**
+ * Triggered by the banking controller when the user changed the setting for showing/hiding balances.
+ */
+- (void)updateBalanceVisibility
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults objectForKey: @"showBalances"]) {
+        showBalances = [[userDefaults objectForKey: @"showBalances"] boolValue];
+    }
+    NSArray *cells = [self visibleCells];
+    for (StatementsListViewCell *cell in cells)
+        [cell showBalance: showBalances];
 }
 
 /**
