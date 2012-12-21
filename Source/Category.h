@@ -64,44 +64,45 @@ typedef enum {
 
 @property (nonatomic, strong) NSColor *categoryColor; // Unarchived catRepColor.
 
--(void)updateInvalidBalances;
--(void)invalidateBalance;
--(NSDecimalNumber*)rollup;
--(void)rebuildValues;
+- (void)updateInvalidBalances;
+- (void)invalidateBalance;
+- (NSDecimalNumber*)rollup;
+- (void)rebuildValues;
 
--(NSString*)name;
--(NSString*)accountNumber;
--(BOOL)isRoot;
--(BOOL)isBankAccount;
--(BOOL)isBankingRoot;
--(BOOL)isEditable;
--(BOOL)isRemoveable;
--(BOOL)isInsertable;
--(BOOL)isNotAssignedCategory;
--(BOOL)checkMoveToCategory:(Category*)cat;
+- (NSString*)name;
+- (NSString*)accountNumber;
+- (BOOL)isRoot;
+- (BOOL)isBankAccount;
+- (BOOL)isBankingRoot;
+- (BOOL)isEditable;
+- (BOOL)isRemoveable;
+- (BOOL)isInsertable;
+- (BOOL)isNotAssignedCategory;
+- (BOOL)checkMoveToCategory:(Category*)cat;
 
--(NSMutableSet*)children;
--(NSSet*)allChildren;
--(NSSet*)siblings;
--(NSUInteger)balanceHistoryToDates: (NSArray**)dates
-                          balances: (NSArray**)balances
-                     balanceCounts: (NSArray**)counts
-                      withGrouping: (GroupingInterval)interval;
--(NSUInteger)categoryHistoryToDates: (NSArray**)dates
+- (NSMutableSet*)children;
+- (NSSet*)allCategories;
+- (NSSet*)siblings;
+- (NSUInteger)balanceHistoryToDates: (NSArray**)dates
                            balances: (NSArray**)balances
                       balanceCounts: (NSArray**)counts
                        withGrouping: (GroupingInterval)interval;
+- (NSUInteger)categoryHistoryToDates: (NSArray**)dates
+                            balances: (NSArray**)balances
+                       balanceCounts: (NSArray**)counts
+                        withGrouping: (GroupingInterval)interval;
 - (void)getDatesMin: (ShortDate**)minDate max: (ShortDate**)maxDate;
 
--(NSDecimalNumber*)valuesOfType: (CatValueType)type from: (ShortDate*)fromDate to: (ShortDate*)toDate;
--(NSArray*)statementsFrom: (ShortDate*)fromDate to: (ShortDate*)toDate withChildren: (BOOL)c;
--(NSMutableSet*)combinedStatements;
+- (NSDecimalNumber*)valuesOfType: (CatValueType)type from: (ShortDate*)fromDate to: (ShortDate*)toDate;
+- (NSArray*)statementsFrom: (ShortDate*)fromDate to: (ShortDate*)toDate withChildren: (BOOL)c;
+- (NSMutableSet*)allAssignments;
+- (void)updateAllAssignments;
 
-+(Category*)bankRoot;
-+(Category*)catRoot;
-+(Category*)nassRoot;
-+(void)updateCatValues;
-+(void)setCatReportFrom: (ShortDate*)fDate to: (ShortDate*)tDate;
++ (Category*)bankRoot;
++ (Category*)catRoot;
++ (Category*)nassRoot;
++ (void)updateCatValues;
++ (void)setCatReportFrom: (ShortDate*)fDate to: (ShortDate*)tDate;
 + (void)recreateRoots;
 + (void)createDefaultCategories;
 

@@ -118,7 +118,6 @@ BOOL runningOnLionOrLater = NO;
         bankinControllerInstance = self;
         restart = NO;
         requestRunning = NO;
-        statementsBound = YES;
         mainTabItems = [NSMutableDictionary dictionaryWithCapacity:10];
         
         // Load context & model.
@@ -753,10 +752,10 @@ BOOL runningOnLionOrLater = NO;
     requestRunning = NO;
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: YES];
     
-    if(resultList != nil) {
-        Category *cat = [self currentSelection];
-        if(cat && [cat isBankAccount] && cat.accountNumber == nil) [categoryAssignments setContent: [cat combinedStatements]];
-        
+    if (resultList != nil) {
+        [self updateCategoryAssignments: [self currentSelection]];
+        //if(cat && [cat isBankAccount] && cat.accountNumber == nil) [categoryAssignments setContent: [cat combinedStatements]];
+
         BankQueryResult *result;
         NSDate *maxDate = nil;
         for(result in resultList) {
@@ -1679,8 +1678,9 @@ BOOL runningOnLionOrLater = NO;
     NSString *type = [pboard availableTypeFromArray:[NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil]];
     if(type == nil) return NO;
     NSData *data = [pboard dataForType: type];
-    
-    if([type isEqual: BankStatementDataType]) {
+
+    BOOL needListViewUpdate = NO;
+    if ([type isEqual: BankStatementDataType]) {
         NSDragOperation mask = [info draggingSourceOperationMask];
         NSArray *uris = [NSKeyedUnarchiver unarchiveObjectWithData: data];
         
@@ -1689,14 +1689,13 @@ BOOL runningOnLionOrLater = NO;
             if(moID == nil) continue;
             StatCatAssignment *stat = (StatCatAssignment*)[self.managedObjectContext objectWithID: moID];
             
-            if([[self currentSelection] isBankAccount]) {
+            if ([[self currentSelection] isBankAccount]) {
                 // if already assigned or copy modifier is pressed, copy the complete bank statement amount - else assign residual amount (move)
                 if ([cat isBankAccount]) {
                     // drop on a manual account
                     BankAccount *account = (BankAccount*)cat;
                     [account copyStatement:stat.statement];
                     [[Category bankRoot] rollup];
-                    
                 } else {
                     if(mask == NSDragOperationCopy || [stat.statement.isAssigned boolValue]) [stat.statement assignToCategory: cat];
                     else if(mask == NSDragOperationGeneric) {
@@ -1709,18 +1708,24 @@ BOOL runningOnLionOrLater = NO;
                         residual = [NSDecimalNumber decimalNumberWithDecimal: [[assignValueField objectValue] decimalValue]];
                         if (negate) residual = [[NSDecimalNumber zero] decimalNumberBySubtracting:residual];				
                         [stat.statement assignAmount:residual toCategory:cat];
+                        needListViewUpdate = YES;
                     } else [stat.statement assignAmount: stat.statement.nassValue toCategory: cat];
                 }
+
+                // KVO takes care for changes in the category part of the tree. But for accounts the assignments
+                // list is not changed by this operation, so we need a manual trigger for screen updates.
+                needListViewUpdate = YES;
             } else {
-                if(mask == NSDragOperationCopy) [stat.statement assignAmount: stat.value toCategory: cat];
-                else [stat moveToCategory: cat];
+                if (mask == NSDragOperationCopy) {
+                    [stat.statement assignAmount: stat.value toCategory: cat];
+                } else {
+                    [stat moveToCategory: cat];
+                }
             }
         }
         
         // update values including rollup
         [Category updateCatValues];
-        
-        //[statementsListView updateVisibleCells];
     } else {
         NSURL *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data];        
         NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
@@ -1731,10 +1736,19 @@ BOOL runningOnLionOrLater = NO;
     }
     
     // save updates
-    if([self.managedObjectContext save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError:error];
+    if (![self.managedObjectContext save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return NO;
+    }
+
+    if (needListViewUpdate) {
+        // Updating the assignments (statments) list kills the current selection, so we preserve it here.
+        // Reassigning it after the update has the neat side effect that the details pane is properly updated too.
+        NSUInteger selection = categoryAssignments.selectionIndex;
+        categoryAssignments.selectionIndex = NSNotFound;
+        [statementsListView reloadData];
+        categoryAssignments.selectionIndex = selection;
     }
     return YES;
 }
@@ -1743,13 +1757,13 @@ BOOL runningOnLionOrLater = NO;
 {
     if ((category == nil) || (self.managedObjectContext == nil))
         return;
-
+/* TODO: remove if the pure binding based approach fully works as intended.
     if (self.toggleRecursiveStatementsItem.state == NSOnState) {
         if (statementsBound) {
             [categoryAssignments unbind: @"contentSet"];
             statementsBound = NO;
         }
-        [categoryAssignments setContent: [category combinedStatements]];
+        [categoryAssignments setContent: [category allAssignments]];
     } else {
         if (!statementsBound) {
             [categoryAssignments bind: @"contentSet"
@@ -1759,6 +1773,19 @@ BOOL runningOnLionOrLater = NO;
             statementsBound = YES;
         }
 
+    }
+ */
+    [categoryAssignments unbind: @"contentSet"];
+    if (self.toggleRecursiveStatementsItem.state == NSOnState) {
+        [categoryAssignments bind: @"contentSet"
+                         toObject: categoryController
+                      withKeyPath: @"selection.allAssignments"
+                          options: nil];
+    } else {
+        [categoryAssignments bind: @"contentSet"
+                         toObject: categoryController
+                      withKeyPath: @"selection.assignments"
+                          options: nil];
     }
 }
 
@@ -2203,12 +2230,12 @@ BOOL runningOnLionOrLater = NO;
     }
 }
 
--(void)setRestart
+- (void)setRestart
 {
     restart = YES;
 }
 
--(IBAction)deleteStatement: (id)sender
+- (IBAction)deleteStatement: (id)sender
 {
     BOOL duplicate = NO;
     NSError *error = nil;
@@ -2269,7 +2296,8 @@ BOOL runningOnLionOrLater = NO;
         // special behaviour for top bank accounts
         if(account.accountNumber == nil) {
             [self.managedObjectContext processPendingChanges];
-            [categoryAssignments setContent: [account combinedStatements]];
+            //[categoryAssignments setContent: [account combinedStatements]];
+            [self updateCategoryAssignments: account];
         }
         
         // rebuild saldos - only for manual accounts

@@ -277,7 +277,11 @@ BOOL stringEqual(NSString *a, NSString *b)
 	while ((stat = [iter nextObject]) != nil) {
 		if(stat.category == ncat) {
 			if(assigned || [stat.value compare: value ] != NSOrderedSame) [ncat invalidateBalance ];
-			if(assigned) [context deleteObject: stat ]; else stat.value = value;
+			if (assigned) {
+                [context deleteObject: stat ];
+            } else {
+                stat.value = value;
+            }
 			found = YES;
 			break;
 		}

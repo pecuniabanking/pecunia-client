@@ -100,6 +100,11 @@
     [context processPendingChanges];
 
 	self.category = tcat;
+
+    // This call doesn't actually update anything but triggers a KVO notification about this assignment change.
+    // TODO: do we need a similar call for the old category?
+    [self.category updateAllAssignments];
+
 	if (tcat == ncat || scat == ncat) {
         [self.statement updateAssigned];
     }

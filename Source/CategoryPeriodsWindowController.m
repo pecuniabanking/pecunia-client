@@ -486,7 +486,7 @@
         }
         
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category IN %@ AND statement.date >= %@ AND statement.date <= %@",
-                                  [self.category allChildren], [selFromDate lowDate], [selToDate highDate]];
+                                  [self.category allCategories], [selFromDate lowDate], [selToDate highDate]];
         [statementsController setFetchPredicate: predicate];
         [statementsController prepareContent];	
 

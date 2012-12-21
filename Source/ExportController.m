@@ -116,7 +116,7 @@ static ExportController *exportController = nil;
         numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
 		
 		NSMutableString* res = [NSMutableString stringWithCapacity: 1000 ];
-		NSArray* cats = [[cat allChildren ] allObjects ];
+		NSArray* cats = [[cat allCategories ] allObjects ];
 
 		ShortDate *from_Date = [ShortDate dateWithDate: fromDate ];
 		ShortDate *to_Date = [ShortDate dateWithDate: toDate ];

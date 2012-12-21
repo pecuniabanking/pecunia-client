@@ -169,7 +169,7 @@
             return;
         }
 
-        NSSet *categories = Category.catRoot.allChildren;
+        NSSet *categories = Category.catRoot.allCategories;
         
         // Precompute details for principals.
         NSMutableArray *parsedPrincipals = [NSMutableArray arrayWithCapacity: principals.count];

@@ -77,11 +77,10 @@ BOOL updateSent = NO;
         if ([self isBankAccount]) {
             stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
         } else {
-            //NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
             assert(startReportDate != nil);
             assert(endReportDate != nil);
-            stats = [self statementsFrom: startReportDate //[ShortDate dateWithDate: [defaults objectForKey: @"startReportDate"]]
-                                      to: endReportDate //[ShortDate dateWithDate: [defaults objectForKey: @"endReportDate"]]
+            stats = [self statementsFrom: startReportDate
+                                      to: endReportDate
                             withChildren: NO];
         }
         
@@ -118,11 +117,10 @@ BOOL updateSent = NO;
         stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
     }
     else {
-        //NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
         assert(startReportDate != nil);
         assert(endReportDate != nil);
-        stats = [self statementsFrom: startReportDate //[ShortDate dateWithDate: [defaults objectForKey: @"startReportDate"]]
-                                  to: endReportDate //[ShortDate dateWithDate: [defaults objectForKey: @"endReportDate"]]
+        stats = [self statementsFrom: startReportDate
+                                  to: endReportDate
                         withChildren: NO];
     }
     
@@ -130,22 +128,6 @@ BOOL updateSent = NO;
         if(stat.value != nil) balance = [balance decimalNumberByAdding: stat.value]; else stat.value = [NSDecimalNumber zero ];
     }
     self.balance = balance;
-}
-
--(NSMutableSet*)combinedStatements
-{
-    //if(![self isBankAccount ]) return [self mutableSetValueForKey: @"assignments" ];
-    //if(self.accountNumber) return [self mutableSetValueForKey: @"assignments" ];
-    
-    // combine statements
-    NSMutableSet *stats = [[NSMutableSet alloc ] init ];
-    NSSet *childs = [self allChildren ];
-    NSEnumerator *enumerator = [childs objectEnumerator];
-    Category *cat;
-    while ((cat = [enumerator nextObject]) != nil) {
-        [stats unionSet: [cat mutableSetValueForKey: @"assignments"]];
-    }
-    return stats;
 }
 
 -(NSDecimalNumber*)rollup
@@ -382,52 +364,53 @@ BOOL updateSent = NO;
     return [self mutableSetValueForKey: @"children" ];
 }
 
-
--(NSSet*)allChildren
+/**
+ * Returns a set consisting of this category plus all its children, grand children etc.
+ */
+-(NSSet*)allCategories
 {
-    NSMutableSet* childs = [[NSMutableSet alloc ] init ];
+    NSMutableSet* result = [[NSMutableSet alloc] init];
     
-    NSSet* myChildren = [self children ];
-    NSEnumerator *enumerator = [myChildren objectEnumerator];
-    Category	 *cx;
-    
-    while ((cx = [enumerator nextObject])) {
-        NSSet* sub = [cx allChildren ];
-        [childs unionSet: sub ];
+    for (Category *child in [self children]) {
+        [result unionSet: [child allCategories]];
     }
-    [childs addObject: self ];
-    return childs;
+    [result addObject: self];
+    return result;
 }
 
--(NSSet*)siblings
+/**
+ * Returns a set consisting of all sibling categories of this one.
+ */
+- (NSSet*)siblings
 {
     Category* parent = self.parent;
-    if(parent == nil) return nil;
-    NSMutableSet* set = [NSMutableSet setWithSet: [parent mutableSetValueForKey: @"children" ] ];
-    [set removeObject: self ];
+    if (parent == nil) {
+        return nil;
+    }
+    NSMutableSet* set = [NSMutableSet setWithSet: [parent mutableSetValueForKey: @"children"]];
+    [set removeObject: self];
     return set;
 }
 
 /**
- * Returns a list of all statements for this category, including sub categories.
+ * Returns all assignments from this category plus all of those from the child and grand child etc. categories.
  */
--(NSSet*)allStatements
+- (NSMutableSet*)allAssignments
 {
-    NSMutableSet* result = [NSMutableSet setWithSet: [self mutableSetValueForKey: @"assignments" ]];
-    NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
-
-    if ([childs count] > 0)
-    {
-        NSEnumerator* enumerator = [childs objectEnumerator];
-        Category* child;
-
-        while ((child = [enumerator nextObject]))
-        {
-            [result unionSet: [child allStatements]];
-        }
+    NSMutableSet *result = [[NSMutableSet alloc] init];
+    for (Category *category in [self allCategories]) {
+        [result unionSet: [category mutableSetValueForKey: @"assignments"]];
     }
-
     return result;
+}
+
+/**
+ * Used to get the KVO chain into moving when an assignment in this category changed.
+ */
+- (void)updateAllAssignments
+{
+    [self willChangeValueForKey: @"allAssignments"];
+    [self didChangeValueForKey: @"allAssignments"];
 }
 
 /**
@@ -435,15 +418,15 @@ BOOL updateSent = NO;
  * This is usually only meaningful for bank accounts.
  * The resulting arrays are sorted by ascending date.
  */
--(NSUInteger)balanceHistoryToDates: (NSArray**)dates
-                          balances: (NSArray**)balances
-                     balanceCounts: (NSArray**)counts
-                      withGrouping: (GroupingInterval)interval
+- (NSUInteger)balanceHistoryToDates: (NSArray**)dates
+                           balances: (NSArray**)balances
+                      balanceCounts: (NSArray**)counts
+                       withGrouping: (GroupingInterval)interval
 {
-    NSArray* stats = [[self allStatements] allObjects];
-    NSArray* sortedStats = [stats sortedArrayUsingSelector: @selector(compareDate:)];
+    NSArray* assignments = [[self allAssignments] allObjects];
+    NSArray* sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
     
-    NSUInteger count = [stats count];
+    NSUInteger count = [assignments count];
     NSMutableArray* dateArray = [NSMutableArray arrayWithCapacity: count];
     NSMutableArray* balanceArray = [NSMutableArray arrayWithCapacity: count];
     NSMutableArray* countArray = [NSMutableArray arrayWithCapacity: count];
@@ -452,8 +435,8 @@ BOOL updateSent = NO;
         ShortDate* lastDate = nil;
         int balanceCount = 1;
         NSDecimalNumber* lastSaldo = nil;
-        for (NSUInteger i = 0; i < [stats count]; i++) {
-            StatCatAssignment* assignment = [sortedStats objectAtIndex: i];
+        for (NSUInteger i = 0; i < count; i++) {
+            StatCatAssignment* assignment = [sortedAssignments objectAtIndex: i];
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
             
             switch (interval) {
@@ -552,10 +535,10 @@ BOOL updateSent = NO;
                       balanceCounts: (NSArray**)counts
                        withGrouping: (GroupingInterval)interval
 {
-    NSArray* stats = [[self allStatements] allObjects];
-    NSArray* sortedStats = [stats sortedArrayUsingSelector: @selector(compareDate:)];
+    NSArray* statements = [[self allAssignments] allObjects];
+    NSArray* sortedAssignments = [statements sortedArrayUsingSelector: @selector(compareDate:)];
     
-    NSUInteger count = [stats count];
+    NSUInteger count = [statements count];
     NSMutableArray* dateArray = [NSMutableArray arrayWithCapacity: count];
     NSMutableArray* balanceArray = [NSMutableArray arrayWithCapacity: count];
     NSMutableArray* countArray = [NSMutableArray arrayWithCapacity: count];
@@ -564,7 +547,7 @@ BOOL updateSent = NO;
         ShortDate* lastDate = nil;
         int balanceCount = 0;
         NSDecimalNumber* currentValue = [NSDecimalNumber zero];
-        for (StatCatAssignment* assignment in sortedStats) {
+        for (StatCatAssignment* assignment in sortedAssignments) {
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
             
             switch (interval) {
