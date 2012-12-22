@@ -918,7 +918,7 @@ BOOL runningOnLionOrLater = NO;
         return;
     }
 
-    if (!cat.isBankAccount) {
+    if (!cat.isBankAccount && cat != Category.nassRoot && cat != Category.catRoot) {
         CategoryMaintenanceController *changeController = [[CategoryMaintenanceController alloc] initWithCategory: cat];
         [NSApp runModalForWindow: [changeController window]];
         return;
@@ -1753,42 +1753,6 @@ BOOL runningOnLionOrLater = NO;
     return YES;
 }
 
-- (void)updateCategoryAssignments: (Category *)category
-{
-    if ((category == nil) || (self.managedObjectContext == nil))
-        return;
-/* TODO: remove if the pure binding based approach fully works as intended.
-    if (self.toggleRecursiveStatementsItem.state == NSOnState) {
-        if (statementsBound) {
-            [categoryAssignments unbind: @"contentSet"];
-            statementsBound = NO;
-        }
-        [categoryAssignments setContent: [category allAssignments]];
-    } else {
-        if (!statementsBound) {
-            [categoryAssignments bind: @"contentSet"
-                             toObject: categoryController
-                          withKeyPath: @"selection.assignments"
-                              options: nil];
-            statementsBound = YES;
-        }
-
-    }
- */
-    [categoryAssignments unbind: @"contentSet"];
-    if (self.toggleRecursiveStatementsItem.state == NSOnState) {
-        [categoryAssignments bind: @"contentSet"
-                         toObject: categoryController
-                      withKeyPath: @"selection.allAssignments"
-                          options: nil];
-    } else {
-        [categoryAssignments bind: @"contentSet"
-                         toObject: categoryController
-                      withKeyPath: @"selection.assignments"
-                          options: nil];
-    }
-}
-
 -(void)outlineViewSelectionDidChange:(NSNotification *)aNotification
 {
     Category *cat = [self currentSelection];
@@ -1811,7 +1775,7 @@ BOOL runningOnLionOrLater = NO;
     if (editable)
     {
         [valueField setDrawsBackground: YES];
-        [valueField setBackgroundColor:[NSColor whiteColor]];
+        [valueField setBackgroundColor: [NSColor whiteColor]];
     } else {
         [valueField setDrawsBackground: NO];
     }
@@ -1854,11 +1818,17 @@ BOOL runningOnLionOrLater = NO;
             path = cat.iconName;
         } else {
             NSString* subfolder = [cat.iconName stringByDeletingLastPathComponent];
-            path = [[NSBundle mainBundle] pathForResource: [cat.iconName lastPathComponent]
-                                                   ofType: @"icns"
-                                              inDirectory: subfolder];
+            if (subfolder.length > 0) {
+                path = [[NSBundle mainBundle] pathForResource: [cat.iconName lastPathComponent]
+                                                       ofType: @"icns"
+                                                  inDirectory: subfolder];
+            }
         }
-        [cell setImage: [[NSImage alloc] initWithContentsOfFile: path]];
+        if (path != nil) {
+            [cell setImage: [[NSImage alloc] initWithContentsOfFile: path]];
+        }
+    } else {
+        [cell setImage: nil];
     }
 
     NSInteger numberUnread = 0;
@@ -2058,6 +2028,42 @@ BOOL runningOnLionOrLater = NO;
     }
     for (BankStatement *stat in stats) {
         [stat updateAssigned];
+    }
+}
+
+- (void)updateCategoryAssignments: (Category *)category
+{
+    if ((category == nil) || (self.managedObjectContext == nil))
+        return;
+    /* TODO: remove if the pure binding based approach fully works as intended.
+    if (self.toggleRecursiveStatementsItem.state == NSOnState) {
+        if (statementsBound) {
+            [categoryAssignments unbind: @"contentSet"];
+            statementsBound = NO;
+        }
+        [categoryAssignments setContent: [category allAssignments]];
+    } else {
+        if (!statementsBound) {
+            [categoryAssignments bind: @"contentSet"
+                             toObject: categoryController
+                          withKeyPath: @"selection.assignments"
+                              options: nil];
+            statementsBound = YES;
+        }
+        
+    }
+     */
+    [categoryAssignments unbind: @"contentSet"];
+    if (self.toggleRecursiveStatementsItem.state == NSOnState) {
+        [categoryAssignments bind: @"contentSet"
+                         toObject: categoryController
+                      withKeyPath: @"selection.allAssignments"
+                          options: nil];
+    } else {
+        [categoryAssignments bind: @"contentSet"
+                         toObject: categoryController
+                      withKeyPath: @"selection.assignments"
+                          options: nil];
     }
 }
 

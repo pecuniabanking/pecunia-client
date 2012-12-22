@@ -471,13 +471,14 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     plot.shadowRadius = 3.0;
     plot.shadowOffset = CGSizeMake(2, -2);
     plot.shadowOpacity = 0.75;
-     /*
+     //    */
+/*
     CPTMutableShadow *shadow = [CPTMutableShadow shadow];
     shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 0 blue: 0 alpha: 0.75];
     shadow.shadowBlurRadius = 3.0;
     shadow.shadowOffset = CGSizeMake(2, -2);
     plot.shadow = shadow;
-     */
+    // */
 }
 
 - (void)setupMainAxes

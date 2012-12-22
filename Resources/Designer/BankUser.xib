@@ -250,7 +250,7 @@
 							<reference key="NSSuperview" ref="295136492"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1018647423"/>
-							<string key="NSClassName">GradientBoxWithLabels</string>
+							<string key="NSClassName">BWGradientBox</string>
 						</object>
 						<object class="NSImageView" id="720133094">
 							<reference key="NSNextResponder" ref="295136492"/>
@@ -303,7 +303,7 @@
 									<int key="NSfFlags">1044</int>
 								</object>
 								<reference key="NSControlView" ref="714844827"/>
-								<int key="NSButtonFlags">-2034483200</int>
+								<int key="NSButtonFlags">-2034352128</int>
 								<int key="NSButtonFlags2">129</int>
 								<string key="NSAlternateContents"/>
 								<string key="NSKeyEquivalent"/>
@@ -327,7 +327,7 @@
 								<string key="NSContents">BP ausgeben</string>
 								<reference key="NSSupport" ref="175963918"/>
 								<reference key="NSControlView" ref="403410077"/>
-								<int key="NSButtonFlags">-2034483200</int>
+								<int key="NSButtonFlags">-2034352128</int>
 								<int key="NSButtonFlags2">129</int>
 								<string key="NSAlternateContents"/>
 								<string key="NSKeyEquivalent"/>
@@ -4470,7 +4470,7 @@
 				<string key="590.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="591.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="592.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="6.CustomClassName">GradientBoxWithLabels</string>
+				<string key="6.CustomClassName">BWGradientBox</string>
 				<object class="NSMutableDictionary" key="6.IBAttributePlaceholdersKey">
 					<string key="NS.key.0">IBUserDefinedRuntimeAttributesPlaceholderName</string>
 					<object class="IBUserDefinedRuntimeAttributesPlaceholder" key="NS.object.0">
@@ -4657,14 +4657,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">GradientBoxWithLabels</string>
-					<string key="superclassName">BWGradientBox</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GradientBoxWithLabels.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
