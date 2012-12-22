@@ -1508,6 +1508,69 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 }
 
 #pragma mark -
+#pragma mark Search/Filtering
+
+-(IBAction)filterStatements: (id)sender
+{
+    NSString *searchString = [sender stringValue];
+
+    if ([searchString length] == 0) {
+        [finishedTransfers setFilterPredicate: nil];
+    } else {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"currency contains[c] %@ or "
+                                  "purpose1 contains[c] %@ or "
+                                  "purpose2 contains[c] %@ or "
+                                  "purpose3 contains[c] %@ or "
+                                  "purpose4 contains[c] %@ or "
+                                  "remoteAccount contains[c] %@ or "
+                                  "remoteAddrCity contains[c] %@ or "
+                                  "remoteAddrPhone contains[c] %@ or "
+                                  "remoteAddrStreet contains[c] %@ or "
+                                  "remoteAddrZip contains[c] %@ or "
+                                  "remoteBankCode contains[c] %@ or "
+                                  "remoteBankName contains[c] %@ or "
+                                  "remoteBIC contains[c] %@ or "
+                                  "remoteCountry contains[c] %@ or "
+                                  "remoteIBAN contains[c] %@ or "
+                                  "remoteName contains[c] %@ or "
+                                  "remoteSuffix contains[c] %@ or "
+                                  "value = %@",
+                                  searchString, searchString, searchString, searchString, searchString, searchString,
+                                  searchString, searchString, searchString, searchString, searchString, searchString,
+                                  searchString, searchString, searchString, searchString, searchString,
+                                  [NSDecimalNumber decimalNumberWithString: searchString locale: [NSLocale currentLocale]]
+                                 ];
+        [finishedTransfers setFilterPredicate: predicate];
+    }
+}
+
+-(IBAction)filterTemplates: (id)sender
+{
+    NSString *searchString = [sender stringValue];
+
+    if ([searchString length] == 0) {
+        [transactionController.templateController setFilterPredicate: nil];
+    } else {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"currency contains[c] %@ or "
+                                  "purpose contains[c] %@ or "
+                                  "remoteAccount contains[c] %@ or "
+                                  "remoteBankCode contains[c] %@ or "
+                                  "remoteBIC contains[c] %@ or "
+                                  "remoteCountry contains[c] %@ or "
+                                  "remoteIBAN contains[c] %@ or "
+                                  "remoteName contains[c] %@ or "
+                                  "remoteSuffix contains[c] %@ or "
+                                  "value = %@",
+                                  searchString, searchString, searchString,
+                                  searchString, searchString, searchString,
+                                  searchString, searchString, searchString,
+                                  [NSDecimalNumber decimalNumberWithString: searchString locale: [NSLocale currentLocale]]
+                                  ];
+        [transactionController.templateController setFilterPredicate: predicate];
+    }
+}
+
+#pragma mark -
 #pragma mark Other application logic
 
 - (void)updateLimits

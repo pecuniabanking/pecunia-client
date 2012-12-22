@@ -1961,7 +1961,9 @@ BOOL runningOnLionOrLater = NO;
     } else {
         NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or userInfo contains[c] %@ or value = %@",
                              searchName, searchName, searchName, [NSDecimalNumber decimalNumberWithString:searchName locale: [NSLocale currentLocale]]];
-        if(pred) [categoryAssignments setFilterPredicate: pred];
+        if (pred != nil) {
+            [categoryAssignments setFilterPredicate: pred];
+        }
     }
 }
 

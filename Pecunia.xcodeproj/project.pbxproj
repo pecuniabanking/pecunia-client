@@ -648,7 +648,7 @@
 		B17078F810EA5E6100A974E7 /* StatCatAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatCatAssignment.m; sourceTree = "<group>"; tabWidth = 4; };
 		B170C16D167689310047FD42 /* java.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = java.entitlements; sourceTree = "<group>"; };
 		B1762BD711EE4AE600F70263 /* TransfersController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransfersController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B1762BD811EE4AE600F70263 /* TransfersController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersController.m; sourceTree = "<group>"; tabWidth = 4; };
+		B1762BD811EE4AE600F70263 /* TransfersController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B17728AE1502D0D300256898 /* BankSetupInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankSetupInfo.h; sourceTree = "<group>"; };
 		B17728AF1502D0D300256898 /* BankSetupInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankSetupInfo.m; sourceTree = "<group>"; };
 		B17728D51504ABC700256898 /* TanMedium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanMedium.h; sourceTree = "<group>"; };

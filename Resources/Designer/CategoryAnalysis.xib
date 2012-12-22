@@ -47,9 +47,10 @@
 						<array class="NSMutableArray" key="NSSubviews">
 							<object class="NSTextField" id="1021311809">
 								<reference key="NSNextResponder" ref="482997190"/>
-								<int key="NSvFlags">-2147483356</int>
+								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{320, 12}, {38, 14}}</string>
 								<reference key="NSSuperview" ref="482997190"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="453422652"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTextFieldCell" key="NSCell" id="114470793">
@@ -80,9 +81,10 @@
 							</object>
 							<object class="NSTextField" id="176847592">
 								<reference key="NSNextResponder" ref="482997190"/>
-								<int key="NSvFlags">-2147483356</int>
+								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{158, 12}, {51, 14}}</string>
 								<reference key="NSSuperview" ref="482997190"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="156880939"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTextFieldCell" key="NSCell" id="36953397">
@@ -98,9 +100,10 @@
 							</object>
 							<object class="NSTextField" id="156880939">
 								<reference key="NSNextResponder" ref="482997190"/>
-								<int key="NSvFlags">-2147483356</int>
+								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{234, 12}, {58, 14}}</string>
 								<reference key="NSSuperview" ref="482997190"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1021311809"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTextFieldCell" key="NSCell" id="215149609">
@@ -116,9 +119,10 @@
 							</object>
 							<object class="NSTextField" id="765143241">
 								<reference key="NSNextResponder" ref="482997190"/>
-								<int key="NSvFlags">-2147483356</int>
+								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{83, 12}, {54, 14}}</string>
 								<reference key="NSSuperview" ref="482997190"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="176847592"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTextFieldCell" key="NSCell" id="784681695">
@@ -134,9 +138,10 @@
 							</object>
 							<object class="NSTextField" id="361957723">
 								<reference key="NSNextResponder" ref="482997190"/>
-								<int key="NSvFlags">-2147483356</int>
+								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{20, 43}, {327, 17}}</string>
 								<reference key="NSSuperview" ref="482997190"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="82933493"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTextFieldCell" key="NSCell" id="1042260959">
@@ -159,6 +164,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{21, 27}, {325, 17}}</string>
 								<reference key="NSSuperview" ref="482997190"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="99725995"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSliderCell" key="NSCell" id="325263370">
@@ -179,9 +185,10 @@
 							</object>
 							<object class="NSTextField" id="99725995">
 								<reference key="NSNextResponder" ref="482997190"/>
-								<int key="NSvFlags">-2147483356</int>
+								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{16, 12}, {38, 14}}</string>
 								<reference key="NSSuperview" ref="482997190"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="765143241"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTextFieldCell" key="NSCell" id="912587568">
@@ -198,8 +205,9 @@
 						</array>
 						<string key="NSFrame">{{20, 21}, {366, 73}}</string>
 						<reference key="NSSuperview" ref="789461123"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="361957723"/>
-						<string key="NSClassName">GradientBoxWithLabels</string>
+						<string key="NSClassName">BWGradientBox</string>
 					</object>
 					<object class="NSButton" id="453422652">
 						<reference key="NSNextResponder" ref="789461123"/>
@@ -207,6 +215,8 @@
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{792, 19}, {34, 34}}</string>
 						<reference key="NSSuperview" ref="789461123"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="280416032">
 							<int key="NSCellFlags">67108864</int>
@@ -236,6 +246,7 @@
 						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{31, 425}, {794, 13}}</string>
 						<reference key="NSSuperview" ref="789461123"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="995110149"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="766229250">
@@ -248,7 +259,6 @@
 								<int key="NSfFlags">16</int>
 							</object>
 							<reference key="NSControlView" ref="106037953"/>
-							<bool key="NSDrawsBackground">YES</bool>
 							<reference key="NSBackgroundColor" ref="485516357"/>
 							<object class="NSColor" key="NSTextColor">
 								<int key="NSColorSpace">1</int>
@@ -262,6 +272,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{25, 461}, {436, 75}}</string>
 						<reference key="NSSuperview" ref="789461123"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="243050325"/>
 						<string key="NSClassName">PecuinaSelectionGraphHost</string>
 					</object>
@@ -270,6 +281,7 @@
 						<int key="NSvFlags">8466</int>
 						<string key="NSFrame">{{25, 222}, {792, 202}}</string>
 						<reference key="NSSuperview" ref="789461123"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="852932228"/>
 						<bool key="NSViewIsLayerTreeHost">YES</bool>
 						<string key="NSClassName">PecuinaGraphHost</string>
@@ -279,14 +291,16 @@
 						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{25, 101}, {792, 113}}</string>
 						<reference key="NSSuperview" ref="789461123"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="482997190"/>
 						<string key="NSClassName">PecuinaGraphHost</string>
 					</object>
 					<object class="NSTextField" id="1073262302">
 						<reference key="NSNextResponder" ref="789461123"/>
-						<int key="NSvFlags">-2147483383</int>
+						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{562, 502}, {229, 44}}</string>
 						<reference key="NSSuperview" ref="789461123"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="106037953"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="319377337">
@@ -312,6 +326,7 @@
 						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{407, 478}, {404, 77}}</string>
 						<reference key="NSSuperview" ref="789461123"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1073262302"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="1067887062">
@@ -335,6 +350,7 @@
 				</array>
 				<string key="NSFrameSize">{845, 572}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="412768895"/>
 				<bool key="NSViewIsLayerTreeHost">YES</bool>
 				<string key="NSClassName">RoundedOuterShadowView</string>
@@ -756,7 +772,121 @@
 			<nil key="sourceID"/>
 			<int key="maxID">281</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">BWGradientBox</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/BWGradientBox.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">CPTGraphHostingView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/CPTGraphHostingView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">CategoryAnalysisWindowController</string>
+					<string key="superclassName">NSObject</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="setGrouping:">id</string>
+						<string key="toggleHelp:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="setGrouping:">
+							<string key="name">setGrouping:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="toggleHelp:">
+							<string key="name">toggleHelp:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="groupingSlider">NSSlider</string>
+						<string key="helpButton">NSButton</string>
+						<string key="helpContentView">NSView</string>
+						<string key="helpText">NSTextField</string>
+						<string key="mainHostView">PecuinaGraphHost</string>
+						<string key="selectionBox">BWGradientBox</string>
+						<string key="selectionHostView">PecuinaSelectionGraphHost</string>
+						<string key="topView">NSView</string>
+						<string key="turnoversHostView">PecuinaGraphHost</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="groupingSlider">
+							<string key="name">groupingSlider</string>
+							<string key="candidateClassName">NSSlider</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="helpButton">
+							<string key="name">helpButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="helpContentView">
+							<string key="name">helpContentView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="helpText">
+							<string key="name">helpText</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mainHostView">
+							<string key="name">mainHostView</string>
+							<string key="candidateClassName">PecuinaGraphHost</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="selectionBox">
+							<string key="name">selectionBox</string>
+							<string key="candidateClassName">BWGradientBox</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="selectionHostView">
+							<string key="name">selectionHostView</string>
+							<string key="candidateClassName">PecuinaSelectionGraphHost</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="topView">
+							<string key="name">topView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="turnoversHostView">
+							<string key="name">turnoversHostView</string>
+							<string key="candidateClassName">PecuinaGraphHost</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/CategoryAnalysisWindowController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">PecuinaGraphHost</string>
+					<string key="superclassName">CPTGraphHostingView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/PecuinaGraphHost.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">PecuinaSelectionGraphHost</string>
+					<string key="superclassName">PecuinaGraphHost</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/PecuinaSelectionGraphHost.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">RoundedOuterShadowView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/RoundedOuterShadowView.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
