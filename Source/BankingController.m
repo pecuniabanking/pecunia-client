@@ -212,6 +212,13 @@ BOOL runningOnLionOrLater = NO;
         }
     }
 
+    if ([userDefaults objectForKey: @"showHeadersInLists"]) {
+        BOOL showHeaders = [[userDefaults objectForKey: @"showHeadersInLists"] boolValue];
+        if (!showHeaders) { // Default is to show headers.
+            [self toggleFeature: self.toggleHeadersItem];
+        }
+    }
+
     [self updateSorting];
     
     NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -2984,7 +2991,7 @@ BOOL runningOnLionOrLater = NO;
             [self toggleDetailsPane: nil];
             [userDefaults setValue: [NSNumber numberWithInt: lastSplitterPosition] forKey: @"rightSplitterPosition"];
         } else {
-            if(sender == self.toggleBalancesItem) {
+            if (sender == self.toggleBalancesItem) {
                 if (self.toggleBalancesItem.state == NSOnState) {
                     self.toggleBalancesItem.state = NSOffState;
                 } else {
@@ -2994,6 +3001,18 @@ BOOL runningOnLionOrLater = NO;
                                 forKey: @"showBalances"];
 
                 [statementsListView updateBalanceVisibility];
+            } else {
+                if (sender == self.toggleHeadersItem) {
+                    if (self.toggleHeadersItem.state == NSOnState) {
+                        self.toggleHeadersItem.state = NSOffState;
+                    } else {
+                        self.toggleHeadersItem.state = NSOnState;
+                    }
+                    [userDefaults setValue: [NSNumber numberWithBool: self.toggleHeadersItem.state == NSOnState ? YES : NO]
+                                    forKey: @"showHeadersInLists"];
+                    statementsListView.showHeaders = self.toggleHeadersItem.state == NSOnState ? YES : NO;
+                    [statementsListView reloadData];
+                }
             }
         }
     }
@@ -3175,25 +3194,31 @@ BOOL runningOnLionOrLater = NO;
     NSString *key;
     switch (sortIndex) {
         case 1:
-            statementsListView.showHeaders = false;
+            statementsListView.showHeaders = NO;
             key = @"statement.remoteName";
             break;
         case 2:
-            statementsListView.showHeaders = false;
+            statementsListView.showHeaders = NO;
             key = @"statement.purpose";
             break;
         case 3:
-            statementsListView.showHeaders = false;
+            statementsListView.showHeaders = NO;
             key = @"statement.categoriesDescription";
             break;
         case 4:
-            statementsListView.showHeaders = false;
+            statementsListView.showHeaders = NO;
             key = @"statement.value";
             break;
         default:
-            statementsListView.showHeaders = true;
+        {
+            BOOL showHeaders = YES;
+            if ([userDefaults objectForKey: @"showHeadersInLists"]) {
+                showHeaders = [[userDefaults objectForKey: @"showHeadersInLists"] boolValue];
+            }
+            statementsListView.showHeaders = showHeaders;
             key = @"statement.date";
             break;
+        }
     }
     [categoryAssignments setSortDescriptors:
      [NSArray arrayWithObject: [[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];

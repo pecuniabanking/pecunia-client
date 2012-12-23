@@ -4259,6 +4259,16 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 									<reference key="NSOnImage" ref="883146705"/>
 									<reference key="NSMixedImage" ref="237878853"/>
 								</object>
+								<object class="NSMenuItem" id="1069604930">
+									<reference key="NSMenu" ref="678233615"/>
+									<string key="NSTitle">Kopfzeilen in Listen</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<int key="NSState">1</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
+								</object>
 								<object class="NSMenuItem" id="675925675">
 									<reference key="NSMenu" ref="678233615"/>
 									<bool key="NSIsDisabled">YES</bool>
@@ -9494,6 +9504,22 @@ wGw</bytes>
 						<reference key="destination" ref="107966411"/>
 					</object>
 					<int key="connectionID">6559</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">toggleFeature:</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="1069604930"/>
+					</object>
+					<int key="connectionID">6561</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">toggleHeadersItem</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="1069604930"/>
+					</object>
+					<int key="connectionID">6562</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -15493,6 +15519,7 @@ wGw</bytes>
 							<reference ref="280999419"/>
 							<reference ref="110196758"/>
 							<reference ref="675925675"/>
+							<reference ref="1069604930"/>
 						</array>
 						<reference key="parent" ref="115235777"/>
 					</object>
@@ -15514,6 +15541,11 @@ wGw</bytes>
 					<object class="IBObjectRecord">
 						<int key="objectID">6534</int>
 						<reference key="object" ref="675925675"/>
+						<reference key="parent" ref="678233615"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6560</int>
+						<reference key="object" ref="1069604930"/>
 						<reference key="parent" ref="678233615"/>
 					</object>
 				</array>
@@ -16198,6 +16230,7 @@ wGw</bytes>
 				<string key="6530.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6532.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6534.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6560.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="74.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="77.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="78.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -16245,7 +16278,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6559</int>
+			<int key="maxID">6562</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -16480,6 +16513,7 @@ wGw</bytes>
 						<string key="toggleDetailsButton">NSButton</string>
 						<string key="toggleDetailsPaneItem">NSMenuItem</string>
 						<string key="toggleFullscreenItem">NSMenuItem</string>
+						<string key="toggleHeadersItem">NSMenuItem</string>
 						<string key="toggleRecursiveStatementsItem">NSMenuItem</string>
 						<string key="toolbarButtons">NSSegmentedControl</string>
 						<string key="transactionController">TransactionController</string>
@@ -16646,6 +16680,10 @@ wGw</bytes>
 						</object>
 						<object class="IBToOneOutletInfo" key="toggleFullscreenItem">
 							<string key="name">toggleFullscreenItem</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toggleHeadersItem">
+							<string key="name">toggleHeadersItem</string>
 							<string key="candidateClassName">NSMenuItem</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="toggleRecursiveStatementsItem">
