@@ -769,14 +769,8 @@ BOOL updateSent = NO;
     
     startReportDate = fDate;
     endReportDate = tDate;
-    [[self catRoot ] rebuildValues ];
-    [[self catRoot ] rollup ];
-
-    /*
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject: fDate.lowDate forKey: @"startReportDate"];
-    [defaults setObject: tDate.lowDate forKey: @"endReportDate"];
-    */
+    [[self catRoot] rebuildValues];
+    [[self catRoot] rollup];
 }
 
 /**

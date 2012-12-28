@@ -23,7 +23,7 @@
 #import "StatementsListViewCell.h"
 
 #import "GraphicsAdditions.h"
-#import "CurrencyValueTransformer.h"
+#import "ValueTransformers.h"
 #import "PreferenceController.h"
 #import "GraphicsAdditions.h"
 #import "Category.h"

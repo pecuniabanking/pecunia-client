@@ -22,7 +22,7 @@
 #import "TransfersListViewCell.h"
 
 #import "GraphicsAdditions.h"
-#import "CurrencyValueTransformer.h"
+#import "ValueTransformers.h"
 
 extern NSString *StatementDateKey;
 extern NSString *StatementTurnoversKey;

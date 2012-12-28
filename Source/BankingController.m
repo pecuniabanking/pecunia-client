@@ -726,26 +726,27 @@ BOOL runningOnLionOrLater = NO;
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     BOOL check = [defaults boolForKey: @"manualTransactionCheck"];
     
-    if((check || isImport) && noStatements == FALSE) {
+    if ((check) && !noStatements) {
         BSSelectWindowController *selectWindowController = [[BSSelectWindowController alloc] initWithResults: resultList];
         [NSApp runModalForWindow: [selectWindowController window]];
     } else {
         @try {
-            for(result in resultList) {
-                    count += [result.account updateFromQueryResult: result];
-                }
+            for (result in resultList) {
+                count += [result.account updateFromQueryResult: result];
+            }
         }
         @catch (NSException * e) {
-            [[MessageLog log ] addMessage:e.reason withLevel:LogLevel_Error];
+            [[MessageLog log ] addMessage: e.reason withLevel: LogLevel_Error];
         }
-        if (autoSyncRunning == YES) [self checkBalances:resultList];
+        if (autoSyncRunning) {
+            [self checkBalances: resultList];
+        }
         [self requestFinished: resultList];
         
-        // status message
         [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP80", @""), count] removeAfter:120 ];
     }
     autoSyncRunning = NO;
-    
+
     NSSound* doneSound = [NSSound soundNamed: @"done.mp3"];
     if (doneSound != nil)
         [doneSound play];
@@ -1334,30 +1335,12 @@ BOOL runningOnLionOrLater = NO;
 -(IBAction)import: (id)sender
 {
     ImportController *controller = [[ImportController alloc] init];
-    int res = [NSApp runModalForWindow:[controller window]];
+    int res = [NSApp runModalForWindow: [controller window]];
     if (res == 0) {
         NSArray *results = [NSArray arrayWithObject: controller.importResult];
-        NSNotification *notif = [NSNotification notificationWithName:PecuniaStatementsNotification object: results ];
-        [self statementsNotification:notif];
+        NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: results];
+        [self statementsNotification: notification];
     }
-    
-#ifdef AQBANKING	
-    NSError *error=nil;
-    
-    GenericImportController *con = [[GenericImportController alloc] init];
-    
-    int res = [NSApp runModalForWindow: [con window]];
-    if(res) {
-        // save updates
-        if([self.managedObjectContext save: &error] == NO) {
-            NSAlert *alert = [NSAlert alertWithError:error];
-            [alert runModal];
-            return;
-        }
-    }
-    [self updateBalances];
-#endif	
-    
 }
 
 
@@ -2006,7 +1989,6 @@ BOOL runningOnLionOrLater = NO;
         
         if ([item action] == @selector(deleteStatement:)) {
             if ([cat isBankAccount] == NO) return NO;
-            if ([[categoryAssignments selectedObjects] count] != 1) return NO;
         }
         if ([item action] == @selector(splitStatement:)) {
             if ([[categoryAssignments selectedObjects] count] != 1) return NO;
@@ -2252,91 +2234,114 @@ BOOL runningOnLionOrLater = NO;
 
 - (IBAction)deleteStatement: (id)sender
 {
-    BOOL duplicate = NO;
-    NSError *error = nil;
     BankAccount *account = (BankAccount*)[self currentSelection];
-    if(account == nil) return;
-    
-    // get selected statement
-    NSArray *stats = [categoryAssignments selectedObjects];
-    if([stats count] != 1) return;
-    BankStatement *stat = [[stats objectAtIndex:0] statement];
-    
-    // check if statement is duplicate. Select all statements with same date
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:self.managedObjectContext];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:entityDescription];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date = %@)", account, stat.date ];
-    [request setPredicate:predicate];
-    stats = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if(error) {
-        NSAlert *alert = [NSAlert alertWithError:error];
-        [alert runModal];
+    if (account == nil) {
         return;
     }
     
-    BankStatement *iter;
-    for(iter in stats) {
-        if(iter != stat && [iter matches: stat]) {
-            duplicate = YES;
-            break;
+    // Process all selected assignments. If only a single assignment is selected then do an extra round
+    // regarding duplication check and confirmation from the user. Otherwise just confirm the delete operation as such.
+    NSArray *assignments = [categoryAssignments selectedObjects];
+    BOOL doDuplicateCheck = assignments.count == 1;
+
+    if (!doDuplicateCheck) {
+        int result = NSRunAlertPanel(NSLocalizedString(@"AP68a", nil),
+                                     NSLocalizedString(@"AP70a", nil),
+                                     NSLocalizedString(@"yes", nil),
+                                     NSLocalizedString(@"no", nil),
+                                     nil, assignments.count);
+        if (result != NSAlertDefaultReturn) {
+            return;
         }
     }
-    
-    int res;
-    BOOL deleteStatement = NO;
-    if(duplicate) {
-        res = NSRunAlertPanel(NSLocalizedString(@"AP68", @""),
-                              NSLocalizedString(@"AP69", @""),
-                              NSLocalizedString(@"yes", @"Yes"),
-                              NSLocalizedString(@"no", @"No"),
-                              nil);
-        if(res == NSAlertDefaultReturn) {
-            deleteStatement = YES;
-        }
-    } else {
-        res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP68", @""),
-                                      NSLocalizedString(@"AP70", @""),
-                                      NSLocalizedString(@"no", @"No"),
-                                      NSLocalizedString(@"yes", @"Yes"),
-                                      nil);
-        if(res == NSAlertAlternateReturn) {
-            deleteStatement = YES;
-        }
-    }
-    
-    if (deleteStatement == YES) {
-        [self.managedObjectContext deleteObject: stat];
-        
-        // special behaviour for top bank accounts
-        if(account.accountNumber == nil) {
-            [self.managedObjectContext processPendingChanges];
-            //[categoryAssignments setContent: [account combinedStatements]];
-            [self updateCategoryAssignments: account];
-        }
-        
-        // rebuild saldos - only for manual accounts
-        if (account.userId == nil) {
-            NSPredicate *saldoPredicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date > %@)", account, stat.date ];
-            [request setPredicate: saldoPredicate];
-            stats = [self.managedObjectContext executeFetchRequest:request error:&error];
-            if(error) {
-                NSAlert *alert = [NSAlert alertWithError:error];
+
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: self.managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+
+    for (StatCatAssignment *assignment in assignments) {
+        BankStatement *statement = assignment.statement;
+
+        NSError *error = nil;
+        BOOL deleteStatement = NO;
+
+        if (doDuplicateCheck) {
+            // Check if this statement is a duplicate. Select all statements with same date.
+            NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date = %@)", account, statement.date];
+            [request setPredicate: predicate];
+
+            NSArray *possibleDuplicates = [self.managedObjectContext executeFetchRequest: request error:&error];
+            if (error) {
+                NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
                 return;
             }
-            
-            for(BankStatement *s in stats) {
-                s.saldo = [s.saldo decimalNumberBySubtracting:stat.value];
+
+            BOOL hasDuplicate = NO;
+            for (BankStatement *possibleDuplicate in possibleDuplicates) {
+                if (possibleDuplicate != statement && [possibleDuplicate matches: statement]) {
+                    hasDuplicate = YES;
+                    break;
+                }
             }
-            
-            account.balance = [account.balance decimalNumberBySubtracting:stat.value];
-            [[Category bankRoot] rollup];
+
+            int res;
+            if (hasDuplicate) {
+                res = NSRunAlertPanel(NSLocalizedString(@"AP68", nil),
+                                      NSLocalizedString(@"AP69", nil),
+                                      NSLocalizedString(@"yes", nil),
+                                      NSLocalizedString(@"no", nil),
+                                      nil);
+                if (res == NSAlertDefaultReturn) {
+                    deleteStatement = YES;
+                }
+            } else {
+                res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP68", nil),
+                                              NSLocalizedString(@"AP70", nil),
+                                              NSLocalizedString(@"no", nil),
+                                              NSLocalizedString(@"yes", nil),
+                                              nil);
+                if(res == NSAlertAlternateReturn) {
+                    deleteStatement = YES;
+                }
+            }
+        } else {
+            deleteStatement = YES;
         }
-        
-        //		[self.managedObjectContext deleteObject: stat];
+
+        if (deleteStatement == YES) {
+            [self.managedObjectContext deleteObject: statement];
+
+            // Rebuild balances - only for manual accounts.
+            if (account.userId == nil) {
+                NSPredicate *balancePredicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date > %@)", account, statement.date];
+                request.predicate = balancePredicate;
+                NSArray *remainingStatements = [self.managedObjectContext executeFetchRequest: request error: &error];
+                if (error != nil) {
+                    NSAlert *alert = [NSAlert alertWithError: error];
+                    [alert runModal];
+                    return;
+                }
+
+                for (BankStatement *remainingStatement in remainingStatements) {
+                    remainingStatement.saldo = [remainingStatement.saldo decimalNumberBySubtracting: statement.value];
+                }
+
+                account.balance = [account.balance decimalNumberBySubtracting: statement.value];
+            }
+        }
     }
+
+    // Cleanup.
+    [account rebuildValues];
     
+    // Special behaviour for top bank accounts
+    if (account.accountNumber == nil) {
+        [self.managedObjectContext processPendingChanges];
+        [self updateCategoryAssignments: account];
+    }
+
+    [[Category bankRoot] rollup];
 }
 
 -(void)splitStatement:(id)sender

@@ -1,80 +1,141 @@
-//
-//  ImportSettings.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 27.08.11.
-//  Copyright 2011 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "ImportSettings.h"
-
 
 @implementation ImportSettings
 
 @synthesize name;
 @synthesize fields;
-@synthesize sepRadioIndex;
-@synthesize sepChar;
-@synthesize dateFormatIndex;
-@synthesize dateFormatString;
-@synthesize charEncodingIndex;
+@synthesize fieldSeparator;
+@synthesize dateFormat;
+@synthesize decimalSeparator;
+@synthesize encoding;
 @synthesize ignoreLines;
 @synthesize accountNumber;
 @synthesize accountSuffix;
 @synthesize bankCode;
+@synthesize type;
+
+@synthesize isDirty;
 @synthesize fileName;
 
-
--(id)initWithCoder:(NSCoder *)aDecoder
+- (id)init
 {
-	self = [super init ];
-	self.name = [aDecoder decodeObjectForKey:@"name" ];
-	self.fields = [aDecoder decodeObjectForKey:@"fields" ];
-	self.sepRadioIndex = [aDecoder decodeObjectForKey:@"sepRadioIndex" ];
-	self.sepChar = [aDecoder decodeObjectForKey:@"sepChar" ];
-	self.dateFormatIndex = [aDecoder decodeObjectForKey:@"dateFormatIndex" ];
-	self.dateFormatString = [aDecoder decodeObjectForKey:@"dateFormatString" ];
-	self.charEncodingIndex = [aDecoder decodeObjectForKey:@"charEncodingIndex" ];
-	self.ignoreLines = [aDecoder decodeObjectForKey:@"ignoreLines" ];
-	self.accountNumber = [aDecoder decodeObjectForKey:@"accountNumber" ];
-	self.bankCode = [aDecoder decodeObjectForKey:@"bankCode" ];
-	self.fileName = [aDecoder decodeObjectForKey:@"fileName" ];
-    self.accountSuffix = [aDecoder decodeObjectForKey:@"accountSuffix" ];
+    self = [super init];
+    if (self != nil) {
+        name = @"";
+        fields = [NSArray array];
+        fieldSeparator = @",";
+        dateFormat = @"dd.MM.yyyy";
+
+        NSLocale *locale = NSLocale.currentLocale;
+        decimalSeparator = [locale objectForKey: NSLocaleDecimalSeparator];
+
+        encoding = [NSNumber numberWithInt: NSISOLatin1StringEncoding];
+        ignoreLines = [NSNumber numberWithInt: 0];
+        accountNumber = @"";
+        accountSuffix = @"";
+        bankCode = @"";
+        type = [NSNumber numberWithInt: SettingsTypeCSV];
+        
+        isDirty = YES;
+        fileName = @"";
+
+        [self updateBindings];
+    }
+    return self;
+}
+
+- (id)initWithCoder: (NSCoder *)aDecoder
+{
+	self = [self init];
+	name = [aDecoder decodeObjectForKey: @"name"];
+	fields = [aDecoder decodeObjectForKey: @"fields"];
+	fieldSeparator = [aDecoder decodeObjectForKey: @"sepChar"];
+	dateFormat = [aDecoder decodeObjectForKey: @"dateFormatString"];
+    decimalSeparator = [aDecoder decodeObjectForKey: @"decimalSeparator"];
+	encoding = [aDecoder decodeObjectForKey: @"encoding"];
+	ignoreLines = [aDecoder decodeObjectForKey: @"ignoreLines"];
+	accountNumber = [aDecoder decodeObjectForKey: @"accountNumber"];
+	bankCode = [aDecoder decodeObjectForKey: @"bankCode"];
+    accountSuffix = [aDecoder decodeObjectForKey: @"accountSuffix"];
+    type = [aDecoder decodeObjectForKey: @"type"];
+    isDirty = NO;
+
 	return self;
 }
 
--(void)encodeWithCoder:(NSCoder *)aCoder
+- (void)encodeWithCoder: (NSCoder *)aCoder
 {
-	[aCoder encodeObject:name forKey: @"name" ];
-	[aCoder encodeObject:fields forKey:@"fields" ];
-	[aCoder encodeObject:sepRadioIndex forKey:@"sepRadioIndex" ];
-	[aCoder encodeObject:sepChar forKey:@"sepChar" ];
-	[aCoder encodeObject:dateFormatIndex forKey:@"dateFormatIndex" ];
-	[aCoder encodeObject:dateFormatString forKey:@"dateFormatString" ];
-	[aCoder encodeObject:charEncodingIndex forKey:@"charEncodingIndex" ];
-	[aCoder encodeObject:ignoreLines forKey:@"ignoreLines" ];
-	[aCoder encodeObject:accountNumber forKey:@"accountNumber" ];
-	[aCoder encodeObject:bankCode forKey:@"bankCode" ];
-	[aCoder encodeObject:fileName forKey:@"fileName" ];
-    [aCoder encodeObject:accountSuffix forKey: @"accountSuffix" ];
+	[aCoder encodeObject: name forKey: @"name"];
+	[aCoder encodeObject: fields forKey: @"fields"];
+	[aCoder encodeObject: fieldSeparator forKey: @"sepChar"];
+	[aCoder encodeObject: dateFormat forKey: @"dateFormatString"];
+	[aCoder encodeObject: decimalSeparator forKey: @"decimalSeparator"];
+	[aCoder encodeObject: encoding forKey: @"encoding"];
+	[aCoder encodeObject: ignoreLines forKey: @"ignoreLines"];
+	[aCoder encodeObject: accountNumber forKey: @"accountNumber"];
+	[aCoder encodeObject: bankCode forKey: @"bankCode"];
+    [aCoder encodeObject: accountSuffix forKey: @"accountSuffix"];
+    [aCoder encodeObject: type forKey: @"type"];
+    isDirty = NO;
 }
 
+- (void)updateBindings
+{
+    [self addObserver: self forKeyPath: @"name" options: 0 context: nil];
+    [self addObserver: self forKeyPath: @"fields" options: 0 context: nil];
+    [self addObserver: self forKeyPath: @"fieldSeparator" options: 0 context: nil];
+    [self addObserver: self forKeyPath: @"dateFormat" options: 0 context: nil];
+    [self addObserver: self forKeyPath: @"decimalSeparator" options: 0 context: nil];
+    [self addObserver: self forKeyPath: @"encoding" options: 0 context: nil];
+    [self addObserver: self forKeyPath: @"ignoreLines" options: 0 context: nil];
+    [self addObserver: self forKeyPath: @"accountNumber" options: 0 context: nil];
+    [self addObserver: self forKeyPath: @"accountSuffix" options: 0 context: nil];
+    [self addObserver: self forKeyPath: @"bankCode" options: 0 context: nil];
+    [self addObserver: self forKeyPath: @"type" options: 0 context: nil];
+}
 
 - (void)dealloc
 {
-	name = nil;
-	fields = nil;
-	sepRadioIndex = nil;
-	sepChar = nil;
-	dateFormatIndex = nil;
-	dateFormatString = nil;
-	charEncodingIndex = nil;
-	ignoreLines = nil;
-	accountNumber = nil;
-    accountSuffix = nil;
-	bankCode = nil;
-	fileName = nil;
+    [self removeObserver: self forKeyPath: @"name"];
+    [self removeObserver: self forKeyPath: @"fields"];
+    [self removeObserver: self forKeyPath: @"fieldSeparator"];
+    [self removeObserver: self forKeyPath: @"dateFormat"];
+    [self removeObserver: self forKeyPath: @"decimalSeparator"];
+    [self removeObserver: self forKeyPath: @"encoding"];
+    [self removeObserver: self forKeyPath: @"ignoreLines"];
+    [self removeObserver: self forKeyPath: @"accountNumber"];
+    [self removeObserver: self forKeyPath: @"accountSuffix"];
+    [self removeObserver: self forKeyPath: @"bankCode"];
+    [self removeObserver: self forKeyPath: @"type"];
+}
 
+- (void)observeValueForKeyPath: (NSString *)keyPath
+                      ofObject: (id)object
+                        change: (NSDictionary *)change
+                       context: (void *)context
+{
+    [self willChangeValueForKey: @"isDirty"];
+    isDirty = YES;
+    [self didChangeValueForKey: @"isDirty"];
 }
 
 @end

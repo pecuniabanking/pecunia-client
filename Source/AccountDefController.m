@@ -249,13 +249,15 @@
 	if([te tag ] == 100) {
 		BOOL wasEditable = [bankNameField isEditable ];
 		BankAccount *bankRoot = [BankAccount bankRootForCode:[te stringValue ] ];
-		[bankNameField setEditable:NO ];
-		[bankNameField setBezeled:NO ];
+		[bankNameField setEditable: NO];
+		[bankNameField setBezeled: NO];
+        bankNameField.drawsBackground = NO;
 		if (bankRoot == nil) {
 			NSString *name = [[HBCIClient hbciClient  ] bankNameForCode: [te stringValue ] inCountry: account.country ];
 			if ([name isEqualToString:NSLocalizedString(@"unknown",@"") ]) {
-				[bankNameField setEditable:YES ];
-				[bankNameField setBezeled:YES ];
+				[bankNameField setEditable: YES];
+				[bankNameField setBezeled: YES];
+                bankNameField.drawsBackground = YES;
 				if (wasEditable == NO) account.bankName = name;
 			} else account.bankName = name;
 		} else {

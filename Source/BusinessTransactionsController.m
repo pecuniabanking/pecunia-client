@@ -60,6 +60,18 @@
 	return self;
 }
 
+- (IBAction)copyToPasteboard: (id)sender
+{
+    NSString *text = @"";
+    for (NSArray *entry in transactionList) {
+        text = [text stringByAppendingFormat: @"%@\t%@\n", entry[0], entry[1]];
+    }
+
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    [pasteboard clearContents];
+    [pasteboard setString: text forType: NSPasteboardTypeString];
+}
+
 
 - (IBAction)endSheet: (id)sender
 {
