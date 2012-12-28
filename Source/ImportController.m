@@ -19,7 +19,6 @@
 
 #import "ImportController.h"
 #import "MOAssistant.h"
-#import "ImportSettingsController.h"
 #import "ImportSettings.h"
 #import "MessageLog.h"
 #import "BankStatement.h"
