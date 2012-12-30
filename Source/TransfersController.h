@@ -86,6 +86,7 @@
     IBOutlet NSTextField    *executionText;
     IBOutlet NSButton       *executeImmediatelyRadioButton;
     IBOutlet NSTextField    *executeImmediatelyText;
+    IBOutlet NSTextField    *executeAtDateLabel;
     IBOutlet NSButton       *executeAtDateRadioButton;
     IBOutlet NSDatePicker   *executionDatePicker;
     IBOutlet NSView         *calendarView;

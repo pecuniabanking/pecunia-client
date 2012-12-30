@@ -23,5 +23,6 @@
 
 + (NSString *)stringWithData: (NSData *)data;
 - (NSAttributedString*)attributedStringWithFont:(NSFont*)font;
+- (NSString*)stringByRemovingWhitespaces:(NSString*)s;
 
 @end

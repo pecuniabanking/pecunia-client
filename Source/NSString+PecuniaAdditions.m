@@ -54,5 +54,19 @@
     return result;
 }
 
+- (NSString*)stringByRemovingWhitespaces:(NSString*)s
+{
+    if (s == nil) {
+        return nil;
+    }
+    NSString *result = @"";
+    NSArray *components = [s componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    for (NSString *str in components) {
+        result = [result stringByAppendingString:str];
+    }
+    return result;
+}
+
+
 
 @end

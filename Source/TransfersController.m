@@ -30,7 +30,7 @@
 #import "TransactionLimits.h"
 #import "TransferFormularView.h"
 #import "GradientButtonCell.h"
-
+#import "NSString+PecuniaAdditions.h"
 #import "GraphicsAdditions.h"
 #import "AnimationHelper.h"
 
@@ -728,7 +728,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [feeText setHidden: !isEUTransfer];
     [feeSelector setHidden: !isEUTransfer];
     
-    [bankDescription setHidden: type != TransferTypeStandard];
+    [bankDescription setHidden: type == TransferTypeEU];
     
     if (remoteAccountKey != nil) {
         NSDictionary *options = [NSDictionary dictionaryWithObject:@"RemoveWhitespaceTransformer" forKey:NSValueTransformerNameBindingOption];
@@ -752,6 +752,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [executeImmediatelyRadioButton setHidden: !canBeTerminated];
     [executeImmediatelyText setHidden: !canBeTerminated];
     [executeAtDateRadioButton setHidden: !canBeTerminated];
+    [executeAtDateLabel setHidden: !canBeTerminated];
     [executionDatePicker setHidden: !canBeTerminated];
     [calendarButton setHidden: !canBeTerminated];
     
@@ -1698,18 +1699,29 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
 	NSTextField	*textField = [aNotification object];
-	NSString *bankName;
-	
-	if (textField != bankCode) {
-        return;
+	NSString *bankName = nil;
+
+	if (textField == bankCode || textField == accountNumber) {
+        NSString *s = [textField stringValue];
+        s = [s stringByRemovingWhitespaces:s];
+        s = [s uppercaseString];
+        [textField setStringValue:s];
     }
-	
-	if (transactionController.currentTransfer.type.intValue == TransferTypeEU) {
-		bankName = [[HBCIClient hbciClient] bankNameForBIC: [textField stringValue]
-                                                 inCountry: transactionController.currentTransfer.remoteCountry];
+    
+	if (transactionController.currentTransfer.type.intValue == TransferTypeEU ||
+        transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
+        if (textField == accountNumber) {
+            NSString *s = [textField stringValue];
+            if ([s hasPrefix:@"DE"]) {
+                bankName = [[HBCIClient hbciClient] bankNameForCode: [s substringWithRange: NSMakeRange(4, 8) ]
+                                                          inCountry: transactionController.currentTransfer.remoteCountry];
+            }
+        }
 	} else {
-		bankName = [[HBCIClient hbciClient] bankNameForCode: [textField stringValue]
-                                                  inCountry: transactionController.currentTransfer.remoteCountry];
+        if (textField == bankCode) {
+            bankName = [[HBCIClient hbciClient] bankNameForCode: [textField stringValue]
+                                                      inCountry: transactionController.currentTransfer.remoteCountry];
+        }
  	}
 	if (bankName != nil) {
         transactionController.currentTransfer.remoteBankName = bankName;
