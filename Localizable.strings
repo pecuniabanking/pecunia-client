@@ -111,8 +111,10 @@
 "AP66" = "Falsche PIN";
 "AP67" = "Sie haben für die Kontenkennung %@ die PIN %@ eingegeben. Die PIN wurde von der Bank zurückgewiesen.";
 "AP68" = "Kontoumsatz löschen";
+"AP68a" = "Kontoumsätze löschen";
 "AP69" = "Für den gewählten Kontoumsatz wurde ein Duplikat gefunden. Möchten Sie den Umsatz löschen?";
 "AP70" = "Für den gewählten Kontoumsatz wurde kein Duplikat gefunden. Der Umsatz geht unwiderruflich verloren. Möchten Sie ihn trotzdem löschen?";
+"AP70a" = "Die ausgewählten %lu Umsätze gehen unwiderruflich verloren. Möchten Sie diese trotzdem löschen?";
 "AP71" = "Kontoumsätze exportieren";
 "AP72" = "Bitte bestimmen Sie zuerst in den Einstellungen die zu exportierenden Felder.";
 "AP73" = "Die Anmeldung bei der Bank war nicht erfolgreich. Meistens sind fehlerhafte Angeben von Kundennummer, Benutzer oder HBCI-URL die Ursache. Bitte überprüfen Sie ihre Angaben und setzen Sie sich ggfs. mir Ihrer Bank in Verbindung.";
@@ -163,13 +165,9 @@
 "AP119" = "Kontowarnung";
 "AP120" = "Eines Ihrer Konten hat zu wenig Guthaben bzw. ist ins Minus gekommen!";
 "AP121" = "Bitte einen Verwendungszweck angeben";
-"AP122" = "Importeinstellungen mit dem Namen %@ existieren bereits. Möchten Sie sie überschreiben?";
 "AP123" = "Speichern nicht erfolgreich";
 "AP124" = "Die Datei %@ konnte nicht gespeichert werden!";
 "AP125" = "Bitte Konto auswählen";
-"AP126" = "Die Angabe einer Importdatei fehlt";
-"AP127" = "Importfehler";
-"AP128" = "Datei %@ existiert nicht!";
 "AP130" = "Java nicht gefunden";
 "AP131" = "Für die Ausführung von Pecunia ist Java Version 1.6.0 oder höher erforderlich. Auf Ihrem System ist Java nicht installiert. Bitte installieren Sie zunächst die Java Runtime Umgebung (JRE)";
 "AP132" = "1 Umsatz";
@@ -331,5 +329,37 @@
 "AP550" = "Alle Einträge zuweisen";
 "AP551" = "Ausgewählte Einträge zuweisen";
 
-// Use a new block of IDs for next set of strings!
+// Import and export.
 // AP600..AP649
+"AP600" = "Importeinstellungen mit dem Namen %@ existieren bereits. Möchten Sie sie überschreiben?";
+"AP601" = "Die Angabe einer Importdatei fehlt";
+"AP602" = "Importfehler";
+"AP603" = "Datei %@ existiert nicht!";
+"AP604" = "Wertstellung";
+"AP605" = "Buchungsdatum";
+"AP606" = "Betrag";
+"AP607" = "Auftraggeber/Begünstigter";
+"AP608" = "IBAN";
+"AP609" = "BIC";
+"AP610" = "BLZ";
+"AP611" = "Bankname";
+"AP612" = "Konto";
+"AP613" = "Land";
+"AP614" = "Verwendungszweck";
+"AP615" = "Unterkonto";
+"AP616" = "Buchungstext";
+"AP617" = "Währung";
+"AP618" = "Ignorieren";
+"AP619" = "Fehler beim Lesen der Einstellungen";
+"AP620" = "Die Datei %@ konnte nicht gelesen werden, weshalb die ausgewählten Einstellungen nicht zur Verfügung stehen.";
+"AP621" = "Neue Einstellungen";
+"AP622" = "Einstellungen löschen";
+"AP623" = "Die gewählten Einstellungen werden unwiderbringlich gelöscht. Wollen Sie das wirklich tun?";
+"AP624" = "<a href=\"http://www.unicode.org/reports/tr35/tr35-10.html#Date_Format_Patterns\">Details</a>";
+"AP625" = "Dateien oder Verzeichnisse für den Import auswählen";
+"AP626" = "Importdaten werden untersucht...";
+"AP627" = "Die Vorbereitungen sind abgeschlossen. Wählen Sie einen Importbereich und klicken Sie dann \"Import Starten\"";
+"AP628" = "Während der Verarbeitung ist ein schwerwiegender Fehler aufgetreten. Bitte versichern Sie sich, dass die angegebenen Dateien, Einstellungen und Feldzuordnungen korrekt sind.";
+
+// Use a new block of IDs for next set of strings!
+// AP650..AP699

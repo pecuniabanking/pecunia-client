@@ -19,16 +19,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BusinessTransactionsController : NSWindowController {
+@interface NSAttributedString (PecuniaAdditions)
 
-    @private
-    NSMutableArray* transactionList;
-    NSMutableDictionary* allTransactions;
-}
-
-- (IBAction)endSheet: (id)sender;
-
-- (id)initWithTransactions: (NSArray*)transactions;
-- (IBAction)copyToPasteboard: (id)sender;
++ (NSAttributedString *)hyperlinkFromString: (NSString*)inString withURL: (NSURL*)aURL  underlined: (BOOL)underlined;
++ (NSAttributedString *)stringFromHTML: (NSString *)html withFont: (NSFont *)font;
 
 @end

@@ -345,8 +345,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
  */
 @interface CategoryAnalysisWindowController(Private)
 
-- (void)updateValues;
-- (void)clearGraphs;
+- (void)sanitizeDates;
 
 - (void)setupMainGraph;
 - (void)setupTurnoversGraph;
@@ -361,7 +360,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 - (void)updateSelectionGraph;
 - (void)updateSelectionDisplay;
 
-- (void)updateGraphs;
+- (void)regenerateGraphs;
 
 - (int)majorTickCount;
 - (void)hideHelp;
@@ -383,6 +382,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     self = [super init];
     if (self != nil) {
         barWidth = 15;
+        statistics = [NSMutableDictionary dictionaryWithCapacity: 10];
     }
     return self;
 }
@@ -395,12 +395,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     free(positiveBalances);
     free(balanceCounts);
     free(selectionBalances);
-
-    
-
-    
-    
-    
 }
 
 -(void)awakeFromNib
@@ -413,10 +407,9 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     }
     
     [self setupMainGraph];
-    [self setupTurnoversGraph];
     [self setupSelectionGraph];
-    [self updateGraphs];
-    
+    [self setupTurnoversGraph];
+
     // Help text.
     NSBundle* mainBundle = [NSBundle mainBundle];
     NSString* path = [mainBundle pathForResource: @"category-analysis-help" ofType: @"rtf"];
@@ -967,9 +960,10 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
  * overall size of the range. This is a bit tricky as we want sharp and easy intervals
  * for optimal perceptibility. The given range is already rounded up to two most significant digits.
  */
-- (float)intervalFromRange: (NSDecimalNumber*) range
+- (float)intervalFromRange: (NSDecimalNumber*) range forTurnovers: (BOOL)lesserValues
 {
     int digitCount = [range numberOfDigits];
+
     NSDecimal value = [range decimalValue];
     NSDecimal hundred = [[NSNumber numberWithInt: 100] decimalValue];
     if (NSDecimalCompare(&value, &hundred) == NSOrderedDescending) {
@@ -977,20 +971,25 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         NSDecimalMultiplyByPowerOf10(&value, &value, -digitCount + 2, NSRoundDown);
     }
     double convertedValue = [[NSDecimalNumber decimalNumberWithDecimal: value] doubleValue];
-    if (convertedValue < 10) {
-        return pow(10, digitCount - 1);
-    }
-    if (convertedValue == 10) {
-        return 2 * pow(10, digitCount - 2);
-    }
-    if (convertedValue <= 15) {
-        return 3 * pow(10, digitCount - 2);
-    }
-    if (convertedValue <= 45) {
-        return 5 * pow(10, digitCount - 2);
+    if (digitCount < 2) {
+        return convertedValue <= 5 ? 1 : 2;
     }
 
-    return pow(10, digitCount - 1);
+    double base = lesserValues ? 20 : 10;
+    if (convertedValue < 10) {
+        return pow(base, digitCount - 1);
+    }
+    if (convertedValue == 10) {
+        return 2 * pow(base, digitCount - 2);
+    }
+    if (convertedValue <= 15) {
+        return 3 * pow(base, digitCount - 2);
+    }
+    if (convertedValue <= 45) {
+        return 5 * pow(base, digitCount - 2);
+    }
+
+    return pow(base, digitCount - 1);
 }
 
 /**
@@ -1108,45 +1107,41 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
  */
 - (void)updateVerticalMainGraphRange
 {
-    double min = 0;
-    double max = 0;
     CPTXYPlotSpace* plotSpace = (id)mainGraph.defaultPlotSpace;
 
+    NSUInteger startIndex = 0;
+    NSUInteger endIndex = 0;
+
     if (rawCount > 0) {
-        
-        NSUInteger units = round(plotSpace.xRange.locationDouble);
-        NSUInteger startIndex = [self findIndexForTimePoint: units];
-        if (![mainCategory isBankAccount] && timePoints[startIndex] < units) {
-            // The search routine for an index is left affine, that is, the lower indices are prefered
-            // when a time point is between two time indices.
-            // For scatterplots this is ok, but we need to correct it for bar plots to only consider
-            // what is visible.
-            ++startIndex;
-        }
-        units = round(plotSpace.xRange.endDouble);
-        NSUInteger endIndex = [self findIndexForTimePoint: units] + 1;
-        
-        if (startIndex >= endIndex) {
-            // Don't change the plot range if we are in a time range that doesn't contain values.
-            return;
-        }
-        
-        for (NSUInteger i = startIndex; i < endIndex; i++) {
-            if (totalBalances[i] < min) {
-                min = totalBalances[i];
-            }
-            if (totalBalances[i] > max) {
-                max = totalBalances[i];
+        NSUInteger units = floor(plotSpace.xRange.locationDouble);
+
+        // Scatter plots go over a (horizontal) range, so even if the actual time point is out of view
+        // parts of the area representing the value can still be visible so we round down the position value.
+        // Bar plots however appear around a time point (+-10%).
+        if (![mainCategory isBankAccount] ) {
+            double fraction = plotSpace.xRange.locationDouble - (double)units;
+            if (fraction > 0.1) {
+                units++;
             }
         }
-    } else {
-        max = [totalMaxValue doubleValue];
+        startIndex = [self findIndexForTimePoint: units];
+
+        units = floor(plotSpace.xRange.endDouble);
+        if (![mainCategory isBankAccount]) {
+            double fraction = (double)units - plotSpace.xRange.endDouble;
+            if (fraction < 0.1) {
+                units++;
+            }
+        }
+        endIndex = [self findIndexForTimePoint: units];
     }
-    
-    NSDecimalNumber* minValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(min)];
-    NSDecimalNumber* maxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(max)];
-    NSDecimalNumber* roundedMinValue = [minValue roundToUpperOuter];
-    NSDecimalNumber* roundedMaxValue = [maxValue roundToUpperOuter];
+
+    [self computeLocalStatisticsFrom: startIndex to: endIndex];
+
+    if (startIndex >= endIndex) {
+        // Don't change the plot range if we are in a time range that doesn't contain values.
+        return;
+    }
 
     CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
     
@@ -1159,13 +1154,13 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTXYAxis* y = axisSet.yAxis;
 
     // Let the larger area (negative or positive) determine the size of the major tick range.
-    NSDecimalNumber* minAbsolute = [roundedMinValue abs];
-    NSDecimalNumber* maxAbsolute = [roundedMaxValue abs];
+    NSDecimalNumber* minAbsolute = [roundedLocalMinValue abs];
+    NSDecimalNumber* maxAbsolute = [roundedLocalMaxValue abs];
     float interval;
     if ([minAbsolute compare: maxAbsolute] == NSOrderedDescending) {
-        interval = [self intervalFromRange: minAbsolute];
+        interval = [self intervalFromRange: minAbsolute forTurnovers: NO];
     } else {
-        interval = [self intervalFromRange: maxAbsolute];
+        interval = [self intervalFromRange: maxAbsolute forTurnovers: NO];
     }
     
     // Apply new interval length and minor ticks now only if they lead to equal or less labels.
@@ -1181,8 +1176,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         newMainYInterval = interval; // Keep this temporarily in this ivar. It is applied at the end of the animation.
     }
 
-    CPTPlotRange* plotRange = [CPTPlotRange plotRangeWithLocation: [roundedMinValue decimalValue]
-                                                           length: [[roundedMaxValue decimalNumberBySubtracting: roundedMinValue] decimalValue]];
+    CPTPlotRange* plotRange = [CPTPlotRange plotRangeWithLocation: roundedLocalMinValue.decimalValue
+                                                           length: [[roundedLocalMaxValue decimalNumberBySubtracting: roundedLocalMinValue] decimalValue]];
 
     [CPTAnimation animate: plotSpace
                  property: @"yRange"
@@ -1279,21 +1274,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     CPTXYAxisSet* axisSet = (id)turnoversGraph.axisSet;
     
-    // Vertical range.
-    double maxTurnoversCount = 0;
-    
-    for (NSUInteger i = 0; i < rawCount; i++) {
-        if (balanceCounts[i] > maxTurnoversCount)
-            maxTurnoversCount = balanceCounts[i];
-    }
-    
-    // Ensure we have a value >= 1 to have a pleasant plot, even without values.
-    if (maxTurnoversCount < 1) {
-        maxTurnoversCount = 1;
-    }
-    
-    NSDecimalNumber* roundedMax = [[NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(maxTurnoversCount)] roundToUpperOuter];
-    plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromInt(0) length: [roundedMax decimalValue]];
+    plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromInt(0) length: [roundedMaxTurnovers decimalValue]];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
     
@@ -1301,7 +1282,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTXYAxis* y = axisSet.yAxis;
     y.visibleRange = plotRange;
     
-    float interval = [self intervalFromRange: roundedMax];
+    float interval = [self intervalFromRange: roundedMaxTurnovers forTurnovers: YES];
     y.majorIntervalLength = CPTDecimalFromFloat(interval);
     y.minorTicksPerInterval = 0;
 }
@@ -1331,17 +1312,193 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTXYAxisSet* axisSet = (id)selectionGraph.axisSet;
 
     // Vertical range.
-    NSDecimalNumber* roundedMinValue = [totalMinValue roundToUpperOuter];
-    NSDecimalNumber* roundedMaxValue = [totalMaxValue roundToUpperOuter];
-    
-    plotRange = [CPTPlotRange plotRangeWithLocation: [roundedMinValue decimalValue]
-                                             length: [[roundedMaxValue decimalNumberBySubtracting: roundedMinValue] decimalValue]];
+    plotRange = [CPTPlotRange plotRangeWithLocation: roundedTotalMinValue.decimalValue
+                                             length: [[roundedTotalMaxValue decimalNumberBySubtracting: roundedTotalMinValue] decimalValue]];
     plotSpace.globalYRange = plotRange;
     plotSpace.yRange = plotRange;
     
     // Set the y axis lines depending on the maximum value.
     CPTXYAxis* y = axisSet.yAxis;
     y.visibleRange = plotRange;
+}
+
+#pragma mark -
+#pragma mark Statistics
+
+int double_compare(const void *value1, const void *value2)
+{
+    double v1 = *(double*)value1;
+    double v2 = *(double*)value2;
+    if (v1 < v2) {
+        return -1;
+    }
+    if (v1 > v2) {
+        return 1;
+    }
+    return 0;
+}
+
+- (void)computeTotalStatistics
+{
+    double min = 1e100;
+    double max = -1e100;
+    double maxTurnovers = 0;
+    double sum = 0;
+    double squareSum = 0;
+    double median = 0;
+
+    NSUInteger count = 0;
+    if (rawCount > 0) {
+        // The total count value includes a dummy value at the end. We don't want this to weight our results.
+        count = rawCount - 1;
+
+        double *sortedBalances = malloc(count * sizeof(double));
+        memcpy(sortedBalances, totalBalances, count * sizeof(double));
+        qsort(sortedBalances, count, sizeof(double), double_compare);
+        if ((count & 1) != 0) { // Odd/even handling is slightly different.
+            median = sortedBalances[count / 2];
+        } else {
+            median = (sortedBalances[count / 2] + sortedBalances[count / 2 - 1]) / 2.0;
+        }
+        free(sortedBalances);
+        
+        for (NSUInteger i = 0; i < count; i++) {
+            if (totalBalances[i] > max) {
+                max = totalBalances[i];
+            }
+            if (totalBalances[i] < min) {
+                min = totalBalances[i];
+            }
+            sum += totalBalances[i];
+            squareSum += totalBalances[i] * totalBalances[i];
+            if (balanceCounts[i] > maxTurnovers) {
+                maxTurnovers = balanceCounts[i];
+            }
+        }
+
+        [statistics setObject: [NSNumber numberWithDouble: min] forKey: @"totalMinValue"];
+        [statistics setObject: [NSNumber numberWithDouble: max] forKey: @"totalMaxValue"];
+        [statistics setObject: [NSNumber numberWithDouble: sum / count] forKey: @"totalMeanValue"];
+        [statistics setObject: [NSNumber numberWithDouble: median] forKey: @"totalMedian"];
+        
+        if (!mainCategory.isBankAccount) {
+            [statistics setObject: [NSNumber numberWithDouble: sum] forKey: @"totalSum"];
+        } else {
+            [statistics removeObjectForKey: @"totalSum"];
+        }
+    } else {
+        [statistics removeObjectForKey: @"totalMinValue"];
+        [statistics removeObjectForKey: @"totalMaxValue"];
+        [statistics removeObjectForKey: @"totalMeanValue"];
+        [statistics removeObjectForKey: @"totalMedian"];
+        [statistics removeObjectForKey: @"totalSum"];
+    }
+
+    if (count > 1) {
+        double deviationFactor = (squareSum - sum * sum / count) / (count - 1);
+        if (deviationFactor < 0) {
+            deviationFactor = 0; // Can become < 0 because of rounding errors.
+        }
+        [statistics setObject: [NSNumber numberWithDouble: sqrt(deviationFactor)] forKey: @"totalStandardDeviation"];
+    } else {
+        [statistics removeObjectForKey: @"totalStandardDeviation"];
+    }
+
+    // Compute some special values for the graphs which directly depend on global stats.
+    // Make sure we always show the base line in a graph.
+    if (min > 0) {
+        min = 0;
+    }
+    if (max < 0) {
+        max = 0;
+    }
+    if (max - min < 10) {
+        max = min + 10; // Ensure a minimum range for the graphs.
+    }
+    NSDecimal decimalMinValue = CPTDecimalFromDouble(min);
+    NSDecimal decimalMaxValue = CPTDecimalFromDouble(max);
+    roundedTotalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundToUpperOuter];
+    roundedTotalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundToUpperOuter];
+
+    if (maxTurnovers < 1) {
+        maxTurnovers = 1;
+    }
+    NSDecimal decimalTurnoversValue = CPTDecimalFromDouble(maxTurnovers);
+    roundedMaxTurnovers = [[NSDecimalNumber decimalNumberWithDecimal: decimalTurnoversValue] roundToUpperOuter];
+}
+
+- (void)computeLocalStatisticsFrom: (NSUInteger)fromIndex to: (NSUInteger)toIndex
+{
+    double min = 1e100;
+    double max = -1e100;
+    double sum = 0;
+    double squareSum = 0;
+    double median = 0;
+
+    NSUInteger count = toIndex - fromIndex + 1;
+    if (toIndex > fromIndex) {
+        double *sortedBalances = malloc(count * sizeof(double));
+        memcpy(sortedBalances, &totalBalances[fromIndex], count * sizeof(double));
+        qsort(sortedBalances, count, sizeof(double), double_compare);
+        if ((count & 1) != 0) { // Odd/even handling is slightly different.
+            median = sortedBalances[count / 2];
+        } else {
+            median = (sortedBalances[count / 2] + sortedBalances[count / 2 - 1]) / 2.0;
+        }
+        free(sortedBalances);
+
+        for (NSUInteger i = fromIndex; i <= toIndex; i++) {
+            if (totalBalances[i] > max) {
+                max = totalBalances[i];
+            }
+            if (totalBalances[i] < min) {
+                min = totalBalances[i];
+            }
+            sum += totalBalances[i];
+            squareSum += totalBalances[i] * totalBalances[i];
+        }
+
+        [statistics setObject: [NSNumber numberWithDouble: min] forKey: @"localMinValue"];
+        [statistics setObject: [NSNumber numberWithDouble: max] forKey: @"localMaxValue"];
+        [statistics setObject: [NSNumber numberWithDouble: sum / count] forKey: @"localMeanValue"];
+        [statistics setObject: [NSNumber numberWithDouble: median] forKey: @"localMedian"];
+
+        if (!mainCategory.isBankAccount) {
+            [statistics setObject: [NSNumber numberWithDouble: sum] forKey: @"localSum"];
+        } else {
+            [statistics removeObjectForKey: @"localSum"];
+        }
+    } else {
+        [statistics removeObjectForKey: @"localMinValue"];
+        [statistics removeObjectForKey: @"localMaxValue"];
+        [statistics removeObjectForKey: @"localMeanValue"];
+        [statistics removeObjectForKey: @"localMedian"];
+        [statistics removeObjectForKey: @"localSum"];
+    }
+
+    if (count > 1) {
+        double deviationFactor = (squareSum - sum * sum / count) / (count - 1);
+        if (deviationFactor < 0) {
+            deviationFactor = 0; // Can become < 0 because of rounding errors.
+        }
+        [statistics setObject: [NSNumber numberWithDouble: sqrt(deviationFactor)] forKey: @"localStandardDeviation"];
+    } else {
+        [statistics removeObjectForKey: @"localStandardDeviation"];
+    }
+
+    if (min > 0) {
+        min = 0;
+    }
+    if (max < 0) {
+        max = 0;
+    }
+    if (max - min < 10) {
+        max = min + 10; // Ensure a minimum range for the graphs.
+    }
+    NSDecimal decimalMinValue = CPTDecimalFromDouble(min);
+    NSDecimal decimalMaxValue = CPTDecimalFromDouble(max);
+    roundedLocalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundToUpperOuter];
+    roundedLocalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundToUpperOuter];
 }
 
 #pragma mark -
@@ -1749,7 +1906,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
             [self updateSelectionDisplay];
 
             // Adjust vertical graph ranges after a short delay.
-            [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.1];
+            [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
 
             if (!keepInfoLayerHidden && !fromSelectionGraph) {
                 [self updateTrackLinesAndInfoAnnotation: center];
@@ -1777,7 +1934,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
                     [self updateTimeRangeVariables];
                     [self updateSelectionDisplay];
                     
-                    [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.1];
+                    [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
                 }
             }
 
@@ -1887,27 +2044,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 #pragma mark -
 #pragma mark General graph routines
 
-- (void)updateValues
+- (void)sanitizeDates
 {
-    if (rawCount > 0) {
-        double minDoubleValue = 0;
-        double maxDoubleValue = 0;
-        for (NSUInteger i = 0; i < rawCount; i++) {
-            if (totalBalances[i] > maxDoubleValue) {
-                maxDoubleValue = totalBalances[i];
-            }
-            if (totalBalances[i] < minDoubleValue) {
-                minDoubleValue = totalBalances[i];
-            }
-        }
-        
-        totalMinValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(minDoubleValue)];
-        totalMaxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromDouble(maxDoubleValue)];
-    } else {
-        // totalMinValue is already set to zero in clearGraphs.
-        totalMaxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(100)];
-    }
-    
     // Update the selected range so that its length corresponds to the minimum length
     // and it doesn't start before the first date in the date array. It might go beyond the
     // available data, which is handled elsewhere.
@@ -1941,29 +2079,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     }
 }
 
-- (void)clearGraphs
-{
-    NSArray* plots = mainGraph.allPlots;
-    for (CPTPlot* plot in plots) {
-        [mainGraph removePlot: plot];
-    }
-    plots = turnoversGraph.allPlots;
-    for (CPTPlot* plot in plots) {
-        [turnoversGraph removePlot: plot];
-    }
-    plots = selectionGraph.allPlots;
-    for (CPTPlot* plot in plots) {
-        [selectionGraph removePlot: plot];
-    }
-    
-    mainGraph.defaultPlotSpace.allowsUserInteraction = NO;
-    turnoversGraph.defaultPlotSpace.allowsUserInteraction = NO;
-    selectionGraph.defaultPlotSpace.allowsUserInteraction = NO;
-
-    totalMaxValue = [NSDecimalNumber zero];
-    totalMinValue = [NSDecimalNumber zero];
-}
-
 - (void)reloadData
 {
     [self hideHelp];
@@ -1992,128 +2107,138 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         selectionTimePoints = nil;
     }
     
+    NSArray* plots = [mainGraph.allPlots copy];
+    for (CPTPlot* plot in plots) {
+        [mainGraph removePlot: plot];
+    }
+    plots = [turnoversGraph.allPlots copy];
+    for (CPTPlot* plot in plots) {
+        [turnoversGraph removePlot: plot];
+    }
+    plots = [selectionGraph.allPlots copy];
+    for (CPTPlot* plot in plots) {
+        [selectionGraph removePlot: plot];
+    }
+
     referenceDate = [ShortDate currentDate];
     
-    if (mainCategory == nil)
-        return;
-    
-    NSArray *dates = nil;
-    NSArray *balances = nil;
-    NSArray *turnovers = nil;
-    if (mainCategory.isBankAccount) {
-        [mainCategory balanceHistoryToDates: &dates
-                                   balances: &balances
-                              balanceCounts: &turnovers
-                               withGrouping: groupingInterval];
-    } else {
-        [mainCategory categoryHistoryToDates: &dates
-                                    balances: &balances
-                               balanceCounts: &turnovers
-                                withGrouping: groupingInterval];
-    }
-    
-    if (dates != nil)
-    {
-        // Convert the data to the internal representations.
-        // We add one to the total number as we need it (mostly) in scatter plots to
-        // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
-        rawCount = [dates count] + 1;
-        
-        // Convert the dates to distance units from a reference date.
-        timePoints = malloc(rawCount * sizeof(double));
-        referenceDate = [dates objectAtIndex: 0];
-        int index = 0;
-        for (ShortDate *date in dates) {
-            timePoints[index++] = [self distanceFromDate: referenceDate toDate: date];
+    if (mainCategory != nil) {
+        NSArray *dates = nil;
+        NSArray *balances = nil;
+        NSArray *turnovers = nil;
+        if (mainCategory.isBankAccount) {
+            [mainCategory balanceHistoryToDates: &dates
+                                       balances: &balances
+                                  balanceCounts: &turnovers
+                                   withGrouping: groupingInterval];
+        } else {
+            [mainCategory categoryHistoryToDates: &dates
+                                        balances: &balances
+                                   balanceCounts: &turnovers
+                                    withGrouping: groupingInterval];
         }
-        timePoints[index] = timePoints[index - 1] + 1000; // A date far in the future.
-        
-        // Convert all NSDecimalNumbers to double for better performance.
-        totalBalances = malloc(rawCount * sizeof(double));
-        positiveBalances = malloc(rawCount * sizeof(double));
-        negativeBalances = malloc(rawCount * sizeof(double));
-        
-        index = 0;
-        for (NSDecimalNumber *value in balances) {
-            double doubleValue = [value doubleValue];
-            totalBalances[index] = doubleValue;
-            if (doubleValue < 0) {
-                positiveBalances[index] = 0;
-                negativeBalances[index] = doubleValue;
-            } else {
-                positiveBalances[index] = doubleValue;
-                negativeBalances[index] = 0;
+
+        if (dates != nil)
+        {
+            // Convert the data to the internal representations.
+            // We add one to the total number as we need it (mostly) in scatter plots to
+            // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
+            rawCount = [dates count] + 1;
+
+            // Convert the dates to distance units from a reference date.
+            timePoints = malloc(rawCount * sizeof(double));
+            referenceDate = [dates objectAtIndex: 0];
+            int index = 0;
+            for (ShortDate *date in dates) {
+                timePoints[index++] = [self distanceFromDate: referenceDate toDate: date];
             }
-            index++;
-        }
-        
-        // Now the turnovers.
-        balanceCounts = malloc(rawCount * sizeof(double));
-        index = 0;
-        for (NSDecimalNumber *value in turnovers) {
-            balanceCounts[index++] = [value doubleValue];
-        }
-        
-        // The value in the extra field is never used, but serves only as additional data point.
-        totalBalances[index] = 0;
-        positiveBalances[index] = 0;
-        negativeBalances[index] = 0;
-        balanceCounts[index] = 0;
-        
-        // Sample data for the selection plot. Use only as many values as needed to fill the window.
-        CPTPlotAreaFrame *frame = selectionGraph.plotAreaFrame;
-        selectionSampleCount = frame.bounds.size.width - frame.paddingLeft - frame.paddingRight;
-        int datapointsPerSample = rawCount / selectionSampleCount; // Count only discrete values.
-        
-        // Don't sample the data if there aren't at least twice as many values as needed to show.
-        if (datapointsPerSample > 1) {
-            // The computed sample count leaves us with some missing values (discrete math).
-            // The systematic error is rawCount - trunc(rawCount / windowSize) * windowSize and the
-            // maximum systematic error being almost windowSize.
-            // To minimize this error we compute the maximum number of samples that fit into the
-            // full range leaving us with a systematic error of
-            //   rawCount - (rawCount / trunc(rawCount / windowSize)) * windowSize
-            // which is at most the sample size.
-            selectionSampleCount = rawCount / datapointsPerSample;
-            
-            selectionBalances = malloc(selectionSampleCount * sizeof(double));
-            selectionTimePoints = malloc(selectionSampleCount * sizeof(double));
-            
-            // Pick the largest value in the sample window as sampled representation.
-            for (NSUInteger i = 0; i < rawCount; i++) {
-                NSUInteger sampleIndex = i / datapointsPerSample;
-                if (i % datapointsPerSample == 0) {
-                    selectionBalances[sampleIndex] = totalBalances[i];
-                    selectionTimePoints[sampleIndex] = timePoints[i];
+            timePoints[index] = timePoints[index - 1] + 1000; // A date far in the future.
+
+            // Convert all NSDecimalNumbers to double for better performance.
+            totalBalances = malloc(rawCount * sizeof(double));
+            positiveBalances = malloc(rawCount * sizeof(double));
+            negativeBalances = malloc(rawCount * sizeof(double));
+
+            index = 0;
+            for (NSDecimalNumber *value in balances) {
+                double doubleValue = [value doubleValue];
+                totalBalances[index] = doubleValue;
+                if (doubleValue < 0) {
+                    positiveBalances[index] = 0;
+                    negativeBalances[index] = doubleValue;
                 } else {
-                    if (totalBalances[i] > selectionBalances[sampleIndex]) {
+                    positiveBalances[index] = doubleValue;
+                    negativeBalances[index] = 0;
+                }
+                index++;
+            }
+
+            // Now the turnovers.
+            balanceCounts = malloc(rawCount * sizeof(double));
+            index = 0;
+            for (NSDecimalNumber *value in turnovers) {
+                balanceCounts[index++] = [value doubleValue];
+            }
+
+            // The value in the extra field is never used, but serves only as additional data point.
+            totalBalances[index] = 0;
+            positiveBalances[index] = 0;
+            negativeBalances[index] = 0;
+            balanceCounts[index] = 0;
+
+            // Sample data for the selection plot. Use only as many values as needed to fill the window.
+            CPTPlotAreaFrame *frame = selectionGraph.plotAreaFrame;
+            selectionSampleCount = frame.bounds.size.width - frame.paddingLeft - frame.paddingRight;
+            int datapointsPerSample = rawCount / selectionSampleCount; // Count only discrete values.
+
+            // Don't sample the data if there aren't at least twice as many values as needed to show.
+            if (datapointsPerSample > 1) {
+                // The computed sample count leaves us with some missing values (discrete math).
+                // The systematic error is rawCount - trunc(rawCount / windowSize) * windowSize and the
+                // maximum systematic error being almost windowSize.
+                // To minimize this error we compute the maximum number of samples that fit into the
+                // full range leaving us with a systematic error of
+                //   rawCount - (rawCount / trunc(rawCount / windowSize)) * windowSize
+                // which is at most the sample size.
+                selectionSampleCount = rawCount / datapointsPerSample;
+
+                selectionBalances = malloc(selectionSampleCount * sizeof(double));
+                selectionTimePoints = malloc(selectionSampleCount * sizeof(double));
+
+                // Pick the largest value in the sample window as sampled representation.
+                for (NSUInteger i = 0; i < rawCount; i++) {
+                    NSUInteger sampleIndex = i / datapointsPerSample;
+                    if (i % datapointsPerSample == 0) {
                         selectionBalances[sampleIndex] = totalBalances[i];
                         selectionTimePoints[sampleIndex] = timePoints[i];
+                    } else {
+                        if (totalBalances[i] > selectionBalances[sampleIndex]) {
+                            selectionBalances[sampleIndex] = totalBalances[i];
+                            selectionTimePoints[sampleIndex] = timePoints[i];
+                        }
                     }
                 }
             }
         }
     }
     
-    [self updateValues];
+    [self sanitizeDates];
+    [self computeTotalStatistics];
 
     [mainGraph reloadData];
     [turnoversGraph reloadData];
     [selectionGraph reloadData];
 }
 
-- (void)updateGraphs
+- (void)regenerateGraphs
 {
     [NSObject cancelPreviousPerformRequestsWithTarget: self];
         
-    [self clearGraphs];
     [self reloadData];
     
-    if (rawCount > 0) {
-        mainGraph.defaultPlotSpace.allowsUserInteraction = YES;
-        turnoversGraph.defaultPlotSpace.allowsUserInteraction = YES;
-        selectionGraph.defaultPlotSpace.allowsUserInteraction = YES;
-    };
+    mainGraph.defaultPlotSpace.allowsUserInteraction = rawCount > 0;
+    turnoversGraph.defaultPlotSpace.allowsUserInteraction = rawCount > 0;
+    selectionGraph.defaultPlotSpace.allowsUserInteraction = rawCount > 0;
 
     [self setupMainPlots];
     [self setupTurnoversPlot];
@@ -2166,23 +2291,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [mutableValues setValue: [NSNumber numberWithInt: groupingInterval] forKey: @"grouping"];
     [userDefaults setObject: mutableValues forKey: @"categoryAnalysis"];
 
-    [self reloadData];
-    
-    if (rawCount == 0) {
-        [self clearGraphs];
-        totalMaxValue = [NSDecimalNumber decimalNumberWithDecimal: CPTDecimalFromInt(100)];
-    } else {
-        mainGraph.defaultPlotSpace.allowsUserInteraction = YES;
-        turnoversGraph.defaultPlotSpace.allowsUserInteraction = YES;
-        selectionGraph.defaultPlotSpace.allowsUserInteraction = YES;
-    }
-    
-    [self updateMainGraph];
-    [self updateTurnoversGraph];
-    [self updateSelectionGraph];
-    [self updateSelectionDisplay];
-    
-    [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
+    [self regenerateGraphs];
 }
 
 - (IBAction)toggleHelp: (id)sender
@@ -2258,24 +2367,41 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     [NSObject cancelPreviousPerformRequestsWithTarget: self];
         
     fromDate = from;
-    
     toDate = to;
 
-    [self updateValues];
+    [self sanitizeDates];
+
+    // Reset the temporary values.
+    NSDecimal one = CPTDecimalFromDouble(1);
+    if (roundedTotalMinValue == nil) {
+        roundedTotalMinValue = [NSDecimalNumber decimalNumberWithDecimal: one];
+    }
+    if (roundedTotalMaxValue == nil) {
+        roundedTotalMaxValue = [NSDecimalNumber decimalNumberWithDecimal: one];
+    }
+    if (roundedLocalMinValue == nil) {
+        roundedLocalMinValue = [NSDecimalNumber decimalNumberWithDecimal: one];
+    }
+    if (roundedLocalMaxValue == nil) {
+        roundedLocalMaxValue = [NSDecimalNumber decimalNumberWithDecimal: one];
+    }
+    if (roundedMaxTurnovers == nil) {
+        roundedMaxTurnovers = [NSDecimalNumber decimalNumberWithDecimal: one];
+    }
 
     [self updateMainGraph];
     [self updateTurnoversGraph];
     [self updateSelectionGraph];
     [self updateSelectionDisplay];
     
-    [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.1];
+    [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
 }
 
-- (void)setCategory:(Category *)newCategory
+- (void)setCategory: (Category *)newCategory
 {
     if (mainCategory != newCategory) {
         mainCategory = newCategory;
-        [self updateGraphs];
+        [self regenerateGraphs];
     }
 }
 

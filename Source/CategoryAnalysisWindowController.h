@@ -97,15 +97,30 @@
     bool doingGraphUpdates;
 
     CGFloat barWidth;
-    NSDecimalNumber* totalMinValue;       // The minimum value of the currently selected category.
-    NSDecimalNumber* totalMaxValue;       // Ditto for maximum.
-    
+
+     // For the graph ranges.
+    NSDecimalNumber *roundedTotalMinValue;
+    NSDecimalNumber *roundedTotalMaxValue;
+    NSDecimalNumber *roundedLocalMinValue;
+    NSDecimalNumber *roundedLocalMaxValue;
+    NSDecimalNumber *roundedMaxTurnovers;
+
     GroupingInterval groupingInterval;
     
     MAAttachedWindow* helpWindow;
 
     // Temporary values for animations.
     float newMainYInterval;
+
+    NSMutableDictionary *statistics;     // All values are NSNumber.
+    /*
+    double totalMinValue;           // The minimum value of the currently selected category.
+    double totalMaxValue;           // Ditto for maximum.
+    double totalMeanValue;
+    double totalMeanVariation;
+    double totalMedian;
+    double totalStandardDeviation;
+     */
 }
 
 @property (nonatomic, strong) Category* category;
