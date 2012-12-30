@@ -1,70 +1,72 @@
-//
-//  TransactionLimits.h
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 26.01.08.
-//  Copyright 2008 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
-@interface TransactionLimits : NSObject {
-	int		maxLenRemoteName;
-	int		maxLinesRemoteName;
-	int		maxLenPurpose;
-	int		maxLinesPurpose;
-	double	localLimit;
-	double  foreignLimit;
-	int		minSetupTime;
-	int		maxSetupTime;
-	
-	NSArray			*allowedTextKeys;
-	
-	// Standing Orders
-	NSArray			*weekCycles;
-	NSArray			*monthCycles;
-	NSArray			*execDaysWeek;
-	NSArray			*execDaysMonth;
-	BOOL			allowMonthly;
-	BOOL			allowWeekly;
-	BOOL			allowChangeRemoteName;
-	BOOL			allowChangeRemoteAccount;
-	BOOL			allowChangeValue;
-	BOOL			allowChangePurpose;
-	BOOL			allowChangeFirstExecDate;
-	BOOL			allowChangeLastExecDate;
-	BOOL			allowChangeCycle;
-	BOOL			allowChangePeriod;
-	BOOL			allowChangeExecDay;
-}
+@class BankAccount, BankUser;
 
-@property (nonatomic, strong) NSArray *weekCycles;
-@property (nonatomic, strong) NSArray *monthCycles;
-@property (nonatomic, strong) NSArray *execDaysWeek;
-@property (nonatomic, strong) NSArray *execDaysMonth;
-@property (nonatomic, assign) BOOL allowMonthly;
-@property (nonatomic, assign) BOOL allowWeekly;
-@property (nonatomic, assign) BOOL allowChangeRemoteName;
-@property (nonatomic, assign) BOOL allowChangeRemoteAccount;
-@property (nonatomic, assign) BOOL allowChangeValue;
-@property (nonatomic, assign) BOOL allowChangePurpose;
-@property (nonatomic, assign) BOOL allowChangeFirstExecDate;
-@property (nonatomic, assign) BOOL allowChangeLastExecDate;
-@property (nonatomic, assign) BOOL allowChangeCycle;
-@property (nonatomic, assign) BOOL allowChangePeriod;
-@property (nonatomic, assign) BOOL allowChangeExecDay;
-@property (nonatomic, assign) int maxLenRemoteName;
-@property (nonatomic, assign) int maxLinesRemoteName;
-@property (nonatomic, assign) int maxLenPurpose;
-@property (nonatomic, assign) int maxLinesPurpose;
-@property (nonatomic, assign) double localLimit;
-@property (nonatomic, assign) double foreignLimit;
-@property (nonatomic, assign) int minSetupTime;
-@property (nonatomic, assign) int maxSetupTime;
-@property (nonatomic, strong) NSArray *allowedTextKeys;
+@interface TransactionLimits : NSManagedObject
+
+@property (nonatomic)           BOOL        allowChangeLastExecDate;
+@property (nonatomic)           BOOL        allowChangeCycle;
+@property (nonatomic)           BOOL        allowWeekly;
+@property (nonatomic)           BOOL        allowChangeRemoteAccount;
+@property (nonatomic)           BOOL        allowChangePurpose;
+@property (nonatomic)           BOOL        allowChangeExecDay;
+@property (nonatomic)           BOOL        allowChangePeriod;
+@property (nonatomic)           BOOL        allowChangeValue;
+@property (nonatomic)           BOOL        allowChangeFirstExecDate;
+@property (nonatomic)           BOOL        allowMonthly;
+@property (nonatomic)           BOOL        allowChangeRemoteName;
+@property (nonatomic)           int16_t     maxLenPurpose;
+@property (nonatomic)           int16_t     maxSetupTime;
+@property (nonatomic)           int16_t     minSetupTime;
+@property (nonatomic)           int16_t     maxLenRemoteName;
+@property (nonatomic)           int16_t     maxLinesPurpose;
+@property (nonatomic)           int16_t     maxLinesRemoteName;
+@property (nonatomic, retain)   NSString *  execDaysMonthString;
+@property (nonatomic, retain)   NSString *  monthCyclesString;
+@property (nonatomic, retain)   NSString *  jobName;
+@property (nonatomic, retain)   NSString *  allowedTextKeysString;
+@property (nonatomic, retain)   NSString *  execDaysWeekString;
+@property (nonatomic, retain)   NSString *  weekCyclesString;
+
+//@property (nonatomic, retain)   NSDecimalNumber *   localLimit;
+@property (nonatomic)           double              localLimit;
+//@property (nonatomic, retain)   NSDecimalNumber *   foreignLimit;
+@property (nonatomic)           double              foreignLimit;
+@property (nonatomic, retain)   BankAccount *       account;
+@property (nonatomic, retain)   BankUser *          user;
+
+@property (nonatomic, readonly, strong)   NSArray *weekCycles;
+@property (nonatomic, readonly, strong)   NSArray *monthCycles;
+@property (nonatomic, readonly, strong)   NSArray *execDaysWeek;
+@property (nonatomic, readonly, strong)   NSArray *execDaysMonth;
+@property (nonatomic, readonly, strong)   NSArray *allowedTextKeys;
 
 -(int)maxLengthRemoteName;
 -(int)maxLengthPurpose;
+
+-(void)setLimitsWithData:(NSDictionary*)limits;
+
+
 
 @end
 

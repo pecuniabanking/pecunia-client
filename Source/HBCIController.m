@@ -1,10 +1,21 @@
-//
-//  HBCIController.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 24.07.11.
-//  Copyright 2011 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "HBCIController.h"
 
@@ -393,6 +404,43 @@ NSString *escapeSpecial(NSString *s)
     return result;
 }
 
+-(TransactionLimits*)getLimitsForJob:(NSString*)jobName account:(BankAccount*)account
+{
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    TransactionLimits *limits = nil;
+    
+    if (account == nil) {
+        return nil;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"TransactionLimits" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND user = %@ AND jobName = %@", account, [account defaultBankUser], jobName];
+    [fetchRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (fetchedObjects == nil || [fetchedObjects count] == 0) {
+        // get restrictions and insert
+        NSDictionary *restr = [self getRestrictionsForJob:jobName account:account ];
+        if (restr) {
+            limits = (TransactionLimits*)[NSEntityDescription insertNewObjectForEntityForName:@"TransactionLimits" inManagedObjectContext:context];
+            limits.jobName = jobName;
+            limits.account = account;
+            limits.user = [account defaultBankUser];
+            [limits setLimitsWithData:restr];
+            
+            [context save:&error];
+        }
+    } else {
+        limits = [fetchedObjects lastObject];
+    }
+    return limits;
+}
+
+
 -(NSArray*)allowedCountriesForAccount:(BankAccount*)account
 {
     NSMutableArray *res = [NSMutableArray arrayWithCapacity:20 ];
@@ -415,169 +463,21 @@ NSString *escapeSpecial(NSString *s)
 
 -(TransactionLimits*)limitsForType:(TransferType)tt account:(BankAccount*)account country:(NSString*)ctry
 {
-    TransactionLimits *limits = [[TransactionLimits alloc ] init ];
     NSString *jobName = [self jobNameForType: tt ];
-    NSDictionary *restr = [self getRestrictionsForJob:jobName account:account ];
-    if (restr) {
-        limits.allowedTextKeys = [restr valueForKey:@"textKeys" ];
-        
-        limits.maxLenPurpose = 27;
-        limits.maxLenRemoteName = 27;
-        limits.maxLinesRemoteName = 2;
-        NSString *s = [restr valueForKey:@"maxusage" ];
-        if (s) {
-            limits.maxLinesPurpose = [s intValue ];
-        } else {
-            limits.maxLinesPurpose = 2;
-        }
-        s = [restr valueForKey:@"minpreptime" ];
-        if (s) {
-            limits.minSetupTime = [s intValue ];
-        }
-        s = [restr valueForKey:@"maxpreptime" ];
-        if (s) {
-            limits.maxSetupTime = [s intValue ];
-        }
-    }
-    return limits;
+    return [self getLimitsForJob:jobName account:account];
 }
 
 -(TransactionLimits*)standingOrderLimitsForAccount:(BankAccount*)account action:(StandingOrderAction)action
 {
-    TransactionLimits *limits = [[TransactionLimits alloc ] init ];
-    NSString *jobName = nil;
+    NSString                *jobName = nil;
+
     switch (action) {
         case stord_change: jobName = @"DauerEdit"; break;
         case stord_create: jobName = @"DauerNew"; break;
         case stord_delete: jobName = @"DauerDel"; break;
     }
     if (jobName == nil) return nil;
-    NSDictionary *restr = [self getRestrictionsForJob:jobName account:account ];
-    if (restr) {
-        limits.allowedTextKeys = [restr valueForKey:@"textKeys" ];
-        
-        limits.maxLenPurpose = 27;
-        limits.maxLenRemoteName = 27;
-        limits.maxLinesRemoteName = 2;
-        NSString *s = [restr valueForKey:@"maxusage" ];
-        if (s) {
-            limits.maxLinesPurpose = [s intValue ];
-        } else {
-            limits.maxLinesPurpose = 2;
-        }
-        s = [restr valueForKey:@"minpretime" ];
-        if (s) {
-            limits.minSetupTime = [s intValue ];
-        }
-        s = [restr valueForKey:@"maxpretime" ];
-        if (s) {
-            limits.maxSetupTime = [s intValue ];
-        }
-        
-        s = [restr valueForKey:@"dayspermonth" ];
-        if (s) {
-            NSMutableArray *execDays = [NSMutableArray arrayWithCapacity:30 ];
-            while ([s length ] > 0) {
-                [execDays addObject: [s substringToIndex:2 ] ];
-                s = [s substringFromIndex:2 ];
-            }
-            limits.execDaysMonth = execDays;
-        }
-        
-        s = [restr valueForKey:@"daysperweek" ];
-        if (s) {
-            NSMutableArray *execDays = [NSMutableArray arrayWithCapacity:7 ];
-            while ([s length ] > 0) {
-                [execDays addObject: [s substringToIndex:1 ] ];
-                s = [s substringFromIndex:1 ];
-            }
-            limits.execDaysWeek = execDays;
-        }
-        
-        s = [restr valueForKey:@"turnusmonths" ];
-        if (s) {
-            NSMutableArray *cycles = [NSMutableArray arrayWithCapacity:12 ];
-            while ([s length ] > 0) {
-                [cycles addObject: [s substringToIndex:2 ] ];
-                s = [s substringFromIndex:2 ];
-            }
-            limits.monthCycles = cycles;
-        }
-        
-        s = [restr valueForKey:@"turnusweeks" ];
-        if (s) {
-            NSMutableArray *cycles = [NSMutableArray arrayWithCapacity:12 ];
-            while ([s length ] > 0) {
-                [cycles addObject: [s substringToIndex:2 ] ];
-                s = [s substringFromIndex:2 ];
-            }
-            limits.weekCycles = cycles;
-        }
-        
-        limits.allowMonthly = YES;
-        if (limits.execDaysWeek == nil || limits.weekCycles == nil) limits.allowWeekly = NO; else limits.allowWeekly = YES;
-        
-        if (action == stord_change) {
-            s = [restr valueForKey:@"recktoeditable" ];
-            limits.allowChangeRemoteAccount = NO;
-            if (s) {
-                if ([s isEqualToString:@"J" ]) limits.allowChangeRemoteAccount = YES;
-            }
-            s = [restr valueForKey:@"recnameeditable" ];
-            limits.allowChangeRemoteName = NO;
-            if (s) {
-                if ([s isEqualToString:@"J" ]) limits.allowChangeRemoteName = YES;
-            }
-            s = [restr valueForKey:@"usageeditable" ];
-            limits.allowChangePurpose = NO;
-            if (s) {
-                if ([s isEqualToString:@"J" ]) limits.allowChangePurpose = YES;
-            }
-            s = [restr valueForKey:@"firstexeceditable" ];
-            limits.allowChangeFirstExecDate = NO;
-            if (s) {
-                if ([s isEqualToString:@"J" ]) limits.allowChangeFirstExecDate = YES;
-            }
-            s = [restr valueForKey:@"lastexeceditable" ];
-            limits.allowChangeLastExecDate = NO;
-            if (s) {
-                if ([s isEqualToString:@"J" ]) limits.allowChangeLastExecDate = YES;
-            }
-            s = [restr valueForKey:@"timeuniteditable" ];
-            limits.allowChangePeriod = NO;
-            if (s) {
-                if ([s isEqualToString:@"J" ]) limits.allowChangePeriod = YES;
-            }
-            s = [restr valueForKey:@"turnuseditable" ];
-            limits.allowChangeCycle = NO;
-            if (s) {
-                if ([s isEqualToString:@"J" ]) limits.allowChangeCycle = YES;
-            }
-            s = [restr valueForKey:@"execdayeditable" ];
-            limits.allowChangeExecDay = NO;
-            if (s) {
-                if ([s isEqualToString:@"J" ]) limits.allowChangeExecDay = YES;
-            }
-            s = [restr valueForKey:@"valueeditable" ];
-            limits.allowChangeValue = NO;
-            if (s) {
-                if ([s isEqualToString:@"J" ]) limits.allowChangeValue = YES;
-            }
-        } else {
-            limits.allowChangeRemoteName = YES;
-            limits.allowChangeRemoteAccount = YES;
-            limits.allowChangePurpose = YES;
-            limits.allowChangeValue = YES;
-            limits.allowChangePeriod = YES;
-            limits.allowChangeLastExecDate = YES;
-            limits.allowChangeFirstExecDate = YES;
-            limits.allowChangeExecDay = YES;
-            limits.allowChangeCycle = YES;
-        }
-        
-        
-    }
-    return limits;
+    return [self getLimitsForJob:jobName account:account];
 }
 
 -(PecuniaError*)sendCollectiveTransfer:(NSArray*)transfers

@@ -98,11 +98,13 @@
     
     // launch the task asynchronously
     [task launch];
-    
+
+    /*
     if ([LaunchParameters parameters ].debugServer) {
         // consume jvm status message
         [[inPipe fileHandleForReading ] availableData ];
     }
+     */
 }
 
 
