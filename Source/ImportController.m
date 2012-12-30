@@ -1175,7 +1175,7 @@
             NSString *value = [aCell stringValue];
             if ([field isEqualToString: @"value"]) {
                 NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: value] decimalValue]];
-                [aCell setObjectValue: number];
+                [aCell setObjectValue: [number rounded]];
                 if ([number isEqualTo: [NSDecimalNumber notANumber]]) {
                     color = [NSColor redColor];
                 } else {
