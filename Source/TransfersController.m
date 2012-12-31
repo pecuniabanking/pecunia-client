@@ -1386,6 +1386,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (IBAction)calendarChanged: (id)sender
 {
     executionDatePicker.dateValue = [sender dateValue];
+    transactionController.currentTransfer.valutaDate = [sender dateValue];
     [self hideCalendarWindow];
 }
 
