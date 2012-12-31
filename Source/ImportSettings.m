@@ -41,19 +41,19 @@
     self = [super init];
     if (self != nil) {
         name = @"";
-        fields = [NSArray array];
+        fields = @[];
         fieldSeparator = @",";
         dateFormat = @"dd.MM.yyyy";
 
         NSLocale *locale = NSLocale.currentLocale;
         decimalSeparator = [locale objectForKey: NSLocaleDecimalSeparator];
 
-        encoding = [NSNumber numberWithInt: NSISOLatin1StringEncoding];
-        ignoreLines = [NSNumber numberWithInt: 0];
+        encoding = @(NSISOLatin1StringEncoding);
+        ignoreLines = @0;
         accountNumber = @"";
         accountSuffix = @"";
         bankCode = @"";
-        type = [NSNumber numberWithInt: SettingsTypeCSV];
+        type = @(SettingsTypeCSV);
         
         isDirty = YES;
         fileName = @"";

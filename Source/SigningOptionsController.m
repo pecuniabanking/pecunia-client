@@ -25,7 +25,7 @@
 
 -(void)awakeFromNib
 {
-    NSTableColumn* column = [[optionsView tableColumns] objectAtIndex:0];
+    NSTableColumn* column = [optionsView tableColumns][0];
     SigningOptionsViewCell* cell = [[SigningOptionsViewCell alloc] init];
     [column setDataCell: cell];
 /*    

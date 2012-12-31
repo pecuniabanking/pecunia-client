@@ -178,7 +178,7 @@
 
     // sortieren
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"tanMethodName" ascending: YES];
-	NSArray *sortDescriptors = [NSArray arrayWithObject: sortDescriptor];
+	NSArray *sortDescriptors = @[sortDescriptor];
     return [options sortedArrayUsingDescriptors:sortDescriptors ];
 }
 
@@ -274,7 +274,7 @@
     if (idx < 0) return;
     NSArray *options = [self getTanSigningOptions ];
     
-    [self setpreferredSigningOption:[options objectAtIndex:idx ] ];
+    [self setpreferredSigningOption:options[idx] ];
 }
 
 

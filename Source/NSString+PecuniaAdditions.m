@@ -49,7 +49,7 @@
 
 - (NSAttributedString*)attributedStringWithFont:(NSFont*)font
 {
-    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil ];
+    NSDictionary *attrs = @{NSFontAttributeName: font};
     NSAttributedString *result = [[NSAttributedString alloc ] initWithString:self attributes:attrs];
     return result;
 }

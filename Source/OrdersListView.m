@@ -204,7 +204,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (void) fillCell: (OrdersListViewCell*)cell forRow: (NSUInteger)row
 {
-    StandingOrder *order = [dataSource objectAtIndex: row];
+    StandingOrder *order = dataSource[row];
     
     // Update the bank name in case it isn't set yet.
     if (order.remoteBankName == nil && order.remoteBankCode != nil && order.account != nil && order.account.country != nil) {
@@ -214,24 +214,22 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
         }
     }
     
-    NSDictionary *details = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [NSNumber numberWithInt: row], StatementIndexKey,
-                             [self safeAndFormattedValue: order.firstExecDate], OrderFirstExecDateKey,
-                             [self safeAndFormattedValue: order.nextExecDate], StatementDateKey,
-                             [self safeAndFormattedValue: order.lastExecDate], OrderLastExecDateKey,
-                             [self safeAndFormattedValue: order.remoteName], StatementRemoteNameKey,
-                             [self safeAndFormattedValue: order.purpose], StatementPurposeKey,
-                             [self safeAndFormattedValue: order.value], StatementValueKey,
-                             [self safeAndFormattedValue: order.currency], StatementCurrencyKey,
-                             [self safeAndFormattedValue: order.remoteBankName], StatementRemoteBankNameKey,
-                             [self safeAndFormattedValue: order.remoteBankCode], StatementRemoteBankCodeKey,
-                             [self safeAndFormattedValue: order.remoteAccount], StatementRemoteAccountKey,
-                             [self safeAndFormattedValue: order.type], StatementTypeKey,
-                             order.isChanged, OrderIsChangedKey,
-                             order.toDelete, OrderPendingDeletionKey,
-                             order.isSent, OrderIsSentKey,
-                             [order.account categoryColor], StatementColorKey,
-                             nil];
+    NSDictionary *details = @{StatementIndexKey: @((int)row),
+                             OrderFirstExecDateKey: [self safeAndFormattedValue: order.firstExecDate],
+                             StatementDateKey: [self safeAndFormattedValue: order.nextExecDate],
+                             OrderLastExecDateKey: [self safeAndFormattedValue: order.lastExecDate],
+                             StatementRemoteNameKey: [self safeAndFormattedValue: order.remoteName],
+                             StatementPurposeKey: [self safeAndFormattedValue: order.purpose],
+                             StatementValueKey: [self safeAndFormattedValue: order.value],
+                             StatementCurrencyKey: [self safeAndFormattedValue: order.currency],
+                             StatementRemoteBankNameKey: [self safeAndFormattedValue: order.remoteBankName],
+                             StatementRemoteBankCodeKey: [self safeAndFormattedValue: order.remoteBankCode],
+                             StatementRemoteAccountKey: [self safeAndFormattedValue: order.remoteAccount],
+                             StatementTypeKey: [self safeAndFormattedValue: order.type],
+                             OrderIsChangedKey: order.isChanged,
+                             OrderPendingDeletionKey: order.toDelete,
+                             OrderIsSentKey: order.isSent,
+                             StatementColorKey: [order.account categoryColor]};
     
     [cell setDetails: details];
     
@@ -300,7 +298,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     // Collect the ids of all selected transfers and put them on the dragboard.
     NSUInteger index = [rowIndexes firstIndex];
     while (index != NSNotFound) {
-        StandingOrder *order = [dataSource objectAtIndex: index];
+        StandingOrder *order = dataSource[index];
         NSURL *url = [[order objectID] URIRepresentation];
         [draggedTransfers addObject: url];
         
@@ -308,7 +306,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     }
     
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: draggedTransfers];
-    [dragPasteboard declareTypes: [NSArray arrayWithObject: OrderDataType] owner: self];
+    [dragPasteboard declareTypes: @[OrderDataType] owner: self];
     [dragPasteboard setData: data forType: OrderDataType];
     
     return YES;

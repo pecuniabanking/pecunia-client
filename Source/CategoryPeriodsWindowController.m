@@ -86,21 +86,21 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *values = [userDefaults objectForKey: @"categoryPeriods"];
     if (values) {
-        if ([values objectForKey: @"fromIndex" ]) {
-            fromIndex = [[values objectForKey: @"fromIndex" ] intValue];
+        if (values[@"fromIndex"]) {
+            fromIndex = [values[@"fromIndex"] intValue];
         }
-        if ([values objectForKey: @"toIndex" ]) {
-            toIndex = [[values objectForKey: @"toIndex" ] intValue];
+        if (values[@"toIndex"]) {
+            toIndex = [values[@"toIndex"] intValue];
         }
-        if ([values objectForKey: @"grouping" ]) {
-            groupingInterval = [[values objectForKey: @"grouping"] intValue];
+        if (values[@"grouping"]) {
+            groupingInterval = [values[@"grouping"] intValue];
             groupingSlider.intValue = groupingInterval;
         }
-        if ([values objectForKey: @"sortIndex" ]) {
-            sortControl.selectedSegment = [[values objectForKey: @"sortIndex"] intValue];
+        if (values[@"sortIndex"]) {
+            sortControl.selectedSegment = [values[@"sortIndex"] intValue];
         }
-        if ([values objectForKey: @"sortAscending" ]) {
-            sortAscending = ![[values objectForKey: @"sortAscending"] boolValue];
+        if (values[@"sortAscending"]) {
+            sortAscending = ![values[@"sortAscending"] boolValue];
         }
     }
     [self updateSorting];
@@ -122,14 +122,8 @@
     AmountCell *cell = [[AmountCell alloc] initTextCell: @""];
     [cell setAlignment: NSRightTextAlignment];
     valueGrid.cell = cell;
-    NSDictionary *positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor applicationColorForKey: @"Positive Cash"], NSForegroundColorAttributeName,
-                                        nil
-                                        ];
-    NSDictionary *negativeAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor applicationColorForKey: @"Negative Cash"], NSForegroundColorAttributeName,
-                                        nil
-                                        ];
+    NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
+    NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
     
     NSNumberFormatter *formatter = cell.formatter;
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
@@ -186,17 +180,17 @@
 
 - (id)tableGrid: (MBTableGrid *)aTableGrid objectValueForColumn: (NSUInteger)columnIndex row: (NSUInteger)rowIndex
 {
-    NSArray* rowValues = [balances objectAtIndex: rowIndex];
+    NSArray* rowValues = balances[rowIndex];
     if (rowValues.count == 0) {
         [self loadDataForIndex: rowIndex];
-        rowValues = [balances objectAtIndex: rowIndex];
+        rowValues = balances[rowIndex];
     }
     Category *cat = [[outline itemAtRow: rowIndex] representedObject];
     AmountCell *cell = valueGrid.cell;
     cell.currency = cat.currency;
     
     columnIndex +=  fromIndex;
-	return ([rowValues count] > columnIndex) ? [rowValues objectAtIndex: columnIndex] : @"";
+	return ([rowValues count] > columnIndex) ? rowValues[columnIndex] : @"";
 }
 
 - (void)tableGrid: (MBTableGrid *)aTableGrid setObjectValue: (id)anObject forColumn: (NSUInteger)columnIndex row: (NSUInteger)rowIndex
@@ -206,7 +200,7 @@
 
 - (NSString *) tableGrid: (MBTableGrid*)aTableGrid headerStringForColumn: (NSUInteger)columnIndex
 {
-    ShortDate* date = [dates objectAtIndex: columnIndex + fromIndex];
+    ShortDate* date = dates[columnIndex + fromIndex];
     NSString* title;
         
     switch (groupingInterval) {
@@ -347,8 +341,8 @@
     NSInteger rowCount = outline.numberOfRows - 1;
     
     for (int i = 0; i < rowCount; i++) {
-        [balances addObject: [NSArray array]];
-        [turnovers addObject: [NSArray array]];
+        [balances addObject: @[]];
+        [turnovers addObject: @[]];
     }
     
     if (rowCount > 0) {
@@ -421,22 +415,22 @@
                     withGrouping: groupingInterval];
     
     if (nodeDates == nil) {
-        nodeDates = [NSArray array]; // Just to avoid frequent checks in the loop below.
+        nodeDates = @[]; // Just to avoid frequent checks in the loop below.
     }
     // Dates for this category might not correspond to the display range (i.e. no value for all dates)
     // so move the existing values to the appropriate array index and fill the rest with 0.
     NSMutableArray *balanceArray = [NSMutableArray arrayWithCapacity: [dates count]];
     NSUInteger dateIndex = 0;
     for (ShortDate *date in dates) {
-        if (dateIndex >= [nodeDates count] || [date compare: [nodeDates objectAtIndex: dateIndex]] == NSOrderedAscending) {
+        if (dateIndex >= [nodeDates count] || [date compare: nodeDates[dateIndex]] == NSOrderedAscending) {
             [balanceArray addObject: [NSDecimalNumber zero]];
         } else {
-            [balanceArray addObject: [nodeBalances objectAtIndex: dateIndex]];
+            [balanceArray addObject: nodeBalances[dateIndex]];
             dateIndex++;
         }
     }
     
-    [balances replaceObjectAtIndex: index withObject: balanceArray];
+    balances[index] = balanceArray;
 }
 
 - (void)showStatementList: (NSRect)cellBounds
@@ -471,7 +465,7 @@
 {
     if (detailsPopupWindow != nil) {
         NSInteger columnIndex = valueGrid.selectedColumnIndexes.firstIndex;
-        ShortDate *selFromDate = [dates objectAtIndex: columnIndex + fromIndex];
+        ShortDate *selFromDate = dates[columnIndex + fromIndex];
         ShortDate *selToDate;
         switch (groupingInterval) {
             case GroupByYears:
@@ -527,7 +521,7 @@
     if (dates.count == 0) {
         field.stringValue = @"--";
     } else {
-        ShortDate* date = [dates objectAtIndex: index];
+        ShortDate* date = dates[index];
         switch (groupingInterval) {
             case GroupByYears:
                 field.stringValue = [date yearDescription];
@@ -554,8 +548,8 @@
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 2];
     }
-    [values setValue: [NSNumber numberWithInt: sortIndex] forKey: @"sortIndex"];
-    [values setValue: [NSNumber numberWithBool: sortAscending] forKey: @"sortAscending"];
+    [values setValue: @(sortIndex) forKey: @"sortIndex"];
+    [values setValue: @(sortAscending) forKey: @"sortAscending"];
     [userDefaults setObject: values forKey: @"categoryPeriods"];
     
     NSString *key;
@@ -582,7 +576,7 @@
             break;
     }
     [statementsController setSortDescriptors:
-     [NSArray arrayWithObject: [[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
+     @[[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
 }
 
 - (void)updateOutline
@@ -591,8 +585,8 @@
         return;
     }
      
-    ShortDate *fromDate = [dates objectAtIndex:fromIndex];
-    ShortDate *toDate = [dates objectAtIndex:toIndex];
+    ShortDate *fromDate = dates[fromIndex];
+    ShortDate *toDate = dates[toIndex];
     
     switch (groupingInterval) {
         case GroupByMonths:
@@ -625,7 +619,7 @@
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 1];
     }
-    [values setValue: [NSNumber numberWithInt: groupingInterval] forKey: @"grouping"];
+    [values setValue: @((int)groupingInterval) forKey: @"grouping"];
     [userDefaults setObject: values forKey: @"categoryPeriods"];
     
     [self updateData];
@@ -635,7 +629,7 @@
 {
     [self hideStatementList];
     
-    NSUInteger fromPosition = [sender intValue];
+    int fromPosition = [sender intValue];
     if (fromIndex == fromPosition) {
         return;
     }
@@ -653,7 +647,7 @@
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 1];
     }
-    [values setValue: [NSNumber numberWithInt: fromIndex] forKey: @"fromIndex"];
+    [values setValue: @(fromIndex) forKey: @"fromIndex"];
     [userDefaults setObject: values forKey: @"categoryPeriods"];
     
     [self updateOutline];
@@ -664,7 +658,7 @@
 {
     [self hideStatementList];
     
-    NSUInteger toPosition = [sender intValue];
+    int toPosition = [sender intValue];
     if (toIndex == toPosition) {
         return;
     }
@@ -683,7 +677,7 @@
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 1];
     }
-    [values setValue: [NSNumber numberWithInt: toIndex] forKey: @"toIndex"];
+    [values setValue: @(toIndex) forKey: @"toIndex"];
     [userDefaults setObject: values forKey: @"categoryPeriods"];
     
     [self updateOutline];

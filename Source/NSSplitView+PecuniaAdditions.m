@@ -26,8 +26,8 @@
 
 - (void)animateDividerToPosition: (CGFloat)dividerPosition
 {
-    NSView *view0 = [[self subviews] objectAtIndex: 0];
-    NSView *view1 = [[self subviews] objectAtIndex: 1];
+    NSView *view0 = [self subviews][0];
+    NSView *view1 = [self subviews][1];
     NSRect view0Rect = [view0 frame];
     NSRect view1Rect = [view1 frame];
     NSRect overalRect = [self frame];

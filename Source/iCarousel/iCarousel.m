@@ -350,7 +350,7 @@ CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (UIView *)itemViewAtIndex:(NSInteger)index
 {
-    return [itemViews objectForKey:[NSNumber numberWithInteger:index]];
+    return itemViews[@(index)];
 }
 
 - (UIView *)currentItemView
@@ -363,7 +363,7 @@ CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     NSInteger index = [[itemViews allValues] indexOfObject:view];
     if (index != NSNotFound)
     {
-        return [[[itemViews allKeys] objectAtIndex:index] integerValue];
+        return [[itemViews allKeys][index] integerValue];
     }
     return NSNotFound;
 }
@@ -380,7 +380,7 @@ CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)setItemView:(UIView *)view forIndex:(NSInteger)index
 {
-    [(NSMutableDictionary *)itemViews setObject:view forKey:[NSNumber numberWithInteger:index]];
+    ((NSMutableDictionary *)itemViews)[@(index)] = view;
 }
 
 - (void)removeViewAtIndex:(NSInteger)index
@@ -391,11 +391,11 @@ CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         NSInteger i = [number integerValue];
         if (i < index)
         {
-            [newItemViews setObject:[itemViews objectForKey:number] forKey:number];
+            newItemViews[number] = itemViews[number];
         }
         else if (i > index)
         {
-            [newItemViews setObject:[itemViews objectForKey:number] forKey:[NSNumber numberWithInteger:i - 1]];
+            newItemViews[@(i - 1)] = itemViews[number];
         }
     }
     self.itemViews = newItemViews;
@@ -409,11 +409,11 @@ CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
         NSInteger i = [number integerValue];
         if (i < index)
         {
-            [newItemViews setObject:[itemViews objectForKey:number] forKey:number];
+            newItemViews[number] = itemViews[number];
         }
         else
         {
-            [newItemViews setObject:[itemViews objectForKey:number] forKey:[NSNumber numberWithInteger:i + 1]];
+            newItemViews[@(i + 1)] = itemViews[number];
         }
     }
     if (view)
@@ -851,7 +851,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     for (NSNumber *number in itemViews)
     {
         NSInteger index = [number integerValue];
-        UIView *view = [itemViews objectForKey:number];
+        UIView *view = itemViews[number];
         [self transformItemView:view atIndex:index];
 #ifdef ICAROUSEL_IOS
         view.userInteractionEnabled = (!centerItemWhenSelected || index == self.currentItemIndex);
@@ -1137,7 +1137,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
         {
             index = [self clampedIndex:index];
         }
-        [visibleIndices addObject:[NSNumber numberWithInteger:index]];
+        [visibleIndices addObject:@(index)];
     }
     
     //remove offscreen views
@@ -1145,7 +1145,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     {
         if (![visibleIndices containsObject:number])
         {
-            UIView *view = [itemViews objectForKey:number];
+            UIView *view = itemViews[number];
             if ([number integerValue] < 0 || [number integerValue] >= numberOfItems)
             {
                 [self queuePlaceholderView:view];
@@ -1162,7 +1162,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     //add onscreen views
     for (NSNumber *number in visibleIndices)
     {
-        UIView *view = [itemViews objectForKey:number];
+        UIView *view = itemViews[number];
         if (view == nil)
         {
             [self loadViewAtIndex:[number integerValue]];

@@ -49,17 +49,17 @@
 	
 	for( i = 0; i < count; i++ )
 	{
-		frame = NSRectFromString( [viewRects objectAtIndex: i] );
+		frame = NSRectFromString( viewRects[i] );
 		if( NSIsEmptyRect( frame ) )
 		{
-			frame = [[views objectAtIndex: i] frame];
+			frame = [views[i] frame];
 			if( [self isVertical] )
 				frame.size.width = 0;
 			else
 				frame.size.height = 0;
 		}
 		
-		[[views objectAtIndex: i] setFrame: frame];
+		[views[i] setFrame: frame];
 	}
 }
 

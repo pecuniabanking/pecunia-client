@@ -41,20 +41,20 @@
                 if ([values count] < 2) {
                     continue;
                 }
-                NSString* abbreviation = [[values objectAtIndex: 0] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\"" ]];
-                NSString* description = [[values objectAtIndex: 1] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\"" ]];
-                [allTransactions setObject: description forKey: abbreviation];
+                NSString* abbreviation = [values[0] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\"" ]];
+                NSString* description = [values[1] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\"" ]];
+                allTransactions[abbreviation] = description;
             }
         }
         
         NSArray* sortedTransactions = [transactions sortedArrayUsingSelector: @selector(localizedCaseInsensitiveCompare:)];
         transactionList = [NSMutableArray array];
         for (size_t i = 0; i < [sortedTransactions count]; i++) {
-            NSString* description = [allTransactions objectForKey: [sortedTransactions objectAtIndex: i]];
+            NSString* description = allTransactions[sortedTransactions[i]];
             if (description == nil) {
                 description = NSLocalizedString(@"AP174", "no info");
             }
-            [transactionList addObject: [NSArray arrayWithObjects: [sortedTransactions objectAtIndex: i], description, nil]];
+            [transactionList addObject: @[sortedTransactions[i], description]];
         }
     }
 	return self;
@@ -87,9 +87,9 @@
 - (id)tableView: (NSTableView *)aTableView objectValueForTableColumn: (NSTableColumn *)aTableColumn row: (NSInteger)rowIndex
 {
     if ([aTableColumn.identifier isEqualTo: @"abbreviation"]) {
-        return [[transactionList objectAtIndex: rowIndex] objectAtIndex: 0];
+        return transactionList[rowIndex][0];
     } else {
-        return [[transactionList objectAtIndex: rowIndex] objectAtIndex: 1];
+        return transactionList[rowIndex][1];
     }
 }
 

@@ -43,7 +43,7 @@
 	
     self.transfers = [transfersToPrint mutableCopy ];
 	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
-	NSArray				*sds = [NSArray arrayWithObject:sd];
+	NSArray				*sds = @[sd];
 	[self.transfers sortUsingDescriptors:sds ];
     
 	statHeights = (int*)malloc([self.transfers count ]*sizeof(int));
@@ -160,7 +160,7 @@
 	int h = 45;
 	int height;
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	[attributes setObject:[NSFont userFontOfSize:9 ] forKey:NSFontAttributeName ];
+	attributes[NSFontAttributeName] = [NSFont userFontOfSize:9 ];
 	
 	NSRect r = [@"01.01.\n10.10." boundingRectWithSize:dateSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes ];
 	minStatHeight = r.size.height;	
@@ -209,7 +209,7 @@
 	
 	// Attributes for header text
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	[attributes setObject:[NSFont fontWithName:@"Helvetica-Bold" size:9 ] forKey:NSFontAttributeName ];
+	attributes[NSFontAttributeName] = [NSFont fontWithName:@"Helvetica-Bold" size:9 ];
 	[NSBezierPath setDefaultLineWidth:0.5 ];
 	
 	// first header rect
@@ -277,7 +277,7 @@
 	
 	// Header
 	NSMutableDictionary *headerAttributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	[headerAttributes setObject:[NSFont fontWithName:@"Helvetica Bold Oblique" size:16 ] forKey:NSFontAttributeName ];
+	headerAttributes[NSFontAttributeName] = [NSFont fontWithName:@"Helvetica Bold Oblique" size:16 ];
 	//[headerAttributes setObject:mps forKey:NSParagraphStyleAttributeName ];
     NSRect rect = NSMakeRect(leftMargin, topMargin-30, pageWidth, 25);
 	//rect.size.width-=10;
@@ -285,13 +285,13 @@
 	
 	// Footer
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	[attributes setObject:[NSFont fontWithName:@"Helvetica-Bold" size:9 ] forKey:NSFontAttributeName ];
+	attributes[NSFontAttributeName] = [NSFont fontWithName:@"Helvetica-Bold" size:9 ];
 	
 	rect = NSMakeRect(leftMargin, topMargin+pageHeight+VERT_PADDING, pageWidth, 20);
 	s = [NSString stringWithFormat:@"Erstellt am %@", [df stringFromDate:[NSDate date ] ] ];
 	[s drawInRect:rect withAttributes:attributes ];
 	
-	[attributes setObject:mps forKey:NSParagraphStyleAttributeName ];
+	attributes[NSParagraphStyleAttributeName] = mps;
 	s = [NSString stringWithFormat:@"Seite %li von %i", [[NSPrintOperation currentOperation ] currentPage], totalPages ];
 	[s drawInRect:rect withAttributes:attributes ];
 	
@@ -315,11 +315,11 @@
 	[mps setAlignment:NSRightTextAlignment ];
 	
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	[attributes setObject:[NSFont userFontOfSize:9 ] forKey:NSFontAttributeName ];
+	attributes[NSFontAttributeName] = [NSFont userFontOfSize:9 ];
 	
 	NSMutableDictionary *amountAttributes = [NSMutableDictionary dictionaryWithCapacity:2 ];
-	[amountAttributes setObject:[NSFont fontWithName:@"Lucida Grande" size:10 ] forKey:NSFontAttributeName ];
-	[amountAttributes setObject:mps forKey:NSParagraphStyleAttributeName ];
+	amountAttributes[NSFontAttributeName] = [NSFont fontWithName:@"Lucida Grande" size:10 ];
+	amountAttributes[NSParagraphStyleAttributeName] = mps;
 	
 	size.width = purposeWidth-2*padding;
 	size.height = 400;

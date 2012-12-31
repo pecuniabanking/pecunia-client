@@ -98,15 +98,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [super viewDidMoveToSuperview];
 
     // Register for types that can be deleted.
-    [self registerForDraggedTypes: [NSArray arrayWithObjects: TransferDataType, TransferReadyForUseDataType,
-                                    TransferTemplateDataType, nil]];
+    [self registerForDraggedTypes: @[TransferDataType, TransferReadyForUseDataType,
+                                    TransferTemplateDataType]];
 }
 
 - (NSDragOperation)draggingEntered: (id <NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType,
-                                                          TransferReadyForUseDataType, TransferTemplateDataType, nil]];
+    NSString *type = [pasteboard availableTypeFromArray: @[TransferDataType,
+                                                          TransferReadyForUseDataType, TransferTemplateDataType]];
     if (type == nil) {
         return NSDragOperationNone;
     }
@@ -272,12 +272,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
     currentDragDataType = [pasteboard availableTypeFromArray:
-                           [NSArray arrayWithObjects:
-                             TransferDataType,
+                           @[TransferDataType,
                              TransferPredefinedTemplateDataType,
                              TransferReadyForUseDataType,
-                             TransferTemplateDataType,
-                            nil]];
+                             TransferTemplateDataType]];
     return NSDragOperationNone;
 }
 
@@ -442,18 +440,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 	// Sort transfer list views by date (newest first).
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
-	NSArray *sds = [NSArray arrayWithObject: sd];
+	NSArray *sds = @[sd];
 	[pendingTransfers setSortDescriptors: sds];
 	[finishedTransfers setSortDescriptors: sds];
 	
-    NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor applicationColorForKey: @"Positive Cash"], NSForegroundColorAttributeName,
-                                        nil
-                                        ];
-    NSDictionary* negativeAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor applicationColorForKey: @"Negative Cash"], NSForegroundColorAttributeName,
-                                        nil
-                                        ];
+    NSDictionary* positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
+    NSDictionary* negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
     
 	formatter = [[NSNumberFormatter alloc] init];
 	[formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
@@ -490,8 +482,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [transferTemplateListView bind: @"selectedRows" toObject: transactionController.templateController withKeyPath: @"selectionIndexes" options: nil];
 
     rightPane.controller = self;
-    [rightPane registerForDraggedTypes: [NSArray arrayWithObjects: TransferPredefinedTemplateDataType,
-                                         TransferDataType, TransferReadyForUseDataType, TransferTemplateDataType, nil]];
+    [rightPane registerForDraggedTypes: @[TransferPredefinedTemplateDataType,
+                                         TransferDataType, TransferReadyForUseDataType, TransferTemplateDataType]];
 
     executeImmediatelyRadioButton.target = self;
     executeImmediatelyRadioButton.action = @selector(executionTimeChanged:);
@@ -547,7 +539,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     Category *category = [Category bankRoot];
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
-	NSArray *sortDescriptors = [NSArray arrayWithObject: sortDescriptor];
+	NSArray *sortDescriptors = @[sortDescriptor];
     NSArray *institutes = [[category children] sortedArrayUsingDescriptors: sortDescriptors];
     
     // Convert list of accounts in their institutes branches to a flat list
@@ -624,7 +616,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSMenu *targetMenu = [targetAccountSelector menu];
     
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
-	NSArray *sortDescriptors = [NSArray arrayWithObject: sortDescriptor];
+	NSArray *sortDescriptors = @[sortDescriptor];
     NSArray *siblingAccounts = [[sourceAccount siblings] sortedArrayUsingDescriptors: sortDescriptors];
     NSInteger selectedItem = 0;
     for (BankAccount *account in siblingAccounts) {
@@ -731,11 +723,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [bankDescription setHidden: type == TransferTypeEU];
     
     if (remoteAccountKey != nil) {
-        NSDictionary *options = [NSDictionary dictionaryWithObject:@"RemoveWhitespaceTransformer" forKey:NSValueTransformerNameBindingOption];
+        NSDictionary *options = @{NSValueTransformerNameBindingOption: @"RemoveWhitespaceTransformer"};
         [accountNumber bind: @"value" toObject: transactionController.currentTransferController withKeyPath: remoteAccountKey options: options];
     }
     if (remoteBankCodeKey != nil) {
-        NSDictionary *options = [NSDictionary dictionaryWithObject:@"RemoveWhitespaceTransformer" forKey:NSValueTransformerNameBindingOption];
+        NSDictionary *options = @{NSValueTransformerNameBindingOption: @"RemoveWhitespaceTransformer"};
         [bankCode bind: @"value" toObject: transactionController.currentTransferController withKeyPath: remoteBankCodeKey options: options];
     }
 
@@ -768,7 +760,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *values = [userDefaults dictionaryForKey: @"transfers"];
     if (values != nil) {
-        id previousReceivers = [values objectForKey: @"previousReceivers"];
+        id previousReceivers = values[@"previousReceivers"];
         if ([previousReceivers isKindOfClass: [NSArray class]]) {
             [receiverComboBox addItemsWithObjectValues: previousReceivers];
         }
@@ -819,7 +811,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     if (sender == pendingTransfersListView || sender == transferTemplateListView) {
         NSPasteboard *pasteboard = [info draggingPasteboard];
-        NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType, TransferReadyForUseDataType, nil]];
+        NSString *type = [pasteboard availableTypeFromArray: @[TransferDataType, TransferReadyForUseDataType]];
         return type != nil;
     }
     
@@ -833,7 +825,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (void)concludeDropOperation: (id)sender context: (id<NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType, TransferReadyForUseDataType, nil]];
+    NSString *type = [pasteboard availableTypeFromArray: @[TransferDataType, TransferReadyForUseDataType]];
     if (type == nil) {
         return;
     }
@@ -848,7 +840,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                 return;
             }
             [rightPane hideFormular];
-            draggedTransfers = [NSArray arrayWithObject: transactionController.currentTransfer];
+            draggedTransfers = @[transactionController.currentTransfer];
         } else {
             NSData *data = [pasteboard dataForType: type];
             NSArray *urls = [NSKeyedUnarchiver unarchiveObjectWithData: data];
@@ -865,7 +857,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         }
         
         // Use the remote name of the first transfer as default for the template name.
-        templateName.stringValue = [[draggedTransfers objectAtIndex: 0] remoteName];
+        templateName.stringValue = [draggedTransfers[0] remoteName];
         [NSApp beginSheet: templateNameSheet
            modalForWindow: [mainView window]
             modalDelegate: self
@@ -888,7 +880,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                 continue;
             }
             Transfer *transfer = (Transfer *)[context objectWithID: objectId];
-            transfer.isSent = [NSNumber numberWithBool: (sender == finishedTransfersListView)];
+            transfer.isSent = @((BOOL)(sender == finishedTransfersListView));
         }
         
         NSError *error = nil;
@@ -909,8 +901,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (BOOL)concludeDropDeleteOperation: (id<NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: TransferDataType,
-                                                          TransferReadyForUseDataType, TransferTemplateDataType, nil]];
+    NSString *type = [pasteboard availableTypeFromArray: @[TransferDataType,
+                                                          TransferReadyForUseDataType, TransferTemplateDataType]];
     if (type == nil) {
         return NO;
     }
@@ -1005,11 +997,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
     NSString *type = [pasteboard availableTypeFromArray:
-                      [NSArray arrayWithObjects:
-                        TransferDataType,
+                      @[TransferDataType,
                         TransferPredefinedTemplateDataType,
-                        TransferTemplateDataType,
-                       nil]];
+                        TransferTemplateDataType]];
     if (type == nil) {
         return NO;
     }
@@ -1072,11 +1062,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     NSPasteboard *pasteboard = [info draggingPasteboard];
     NSString *type = [pasteboard availableTypeFromArray:
-                      [NSArray arrayWithObjects:
-                        TransferDataType,
+                      @[TransferDataType,
                         TransferPredefinedTemplateDataType,
-                        TransferTemplateDataType,
-                       nil]];
+                        TransferTemplateDataType]];
     if (type == nil) {
         return NO;
     }
@@ -1155,10 +1143,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             [singleTransfers addObject:transfer ];
             continue;
         }
-        NSMutableArray *collTransfers = [transfersByAccount objectForKey:account ];
+        NSMutableArray *collTransfers = transfersByAccount[account];
         if (collTransfers == nil) {
-            [transfersByAccount setObject:[NSMutableArray arrayWithCapacity:10 ] forKey:account ];
-            collTransfers = [transfersByAccount objectForKey:account ];
+            transfersByAccount[account] = [NSMutableArray arrayWithCapacity:10 ];
+            collTransfers = transfersByAccount[account];
         }
         [collTransfers addObject:transfer ];
     }
@@ -1168,7 +1156,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         BOOL collectiveTransfer = YES;
         
         // sort out single transfers (only one transfer per account)
-        NSArray *collTransfers = [transfersByAccount objectForKey:account ];
+        NSArray *collTransfers = transfersByAccount[account];
         if ([collTransfers count ] == 1) {
             collectiveTransfer = NO;
         }
@@ -1332,7 +1320,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     // Can never be called if editing is not in progress, but better safe than sorry.
     if ([self editingInProgress] && [transactionController finishCurrentTransfer]) {
-        NSArray* transfers = [NSArray arrayWithObject: transactionController.currentTransfer];
+        NSArray* transfers = @[transactionController.currentTransfer];
         [self doSendTransfers: transfers];
         [rightPane hideFormular];
     }
@@ -1445,14 +1433,14 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         // Remove valuta date, which is used to automatically switch to the dated type of the
         // transfer (in the transaction controller). Set the transfer type accordingly in case it was changed.
         transactionController.currentTransfer.valutaDate = nil;
-        transactionController.currentTransfer.type = [NSNumber numberWithInt: TransferTypeStandard];
+        transactionController.currentTransfer.type = @(TransferTypeStandard);
     } else {
         executeImmediatelyRadioButton.state = NSOffState;
         [executionDatePicker setEnabled: YES];
         [calendarButton setEnabled: YES];
 
         transactionController.currentTransfer.valutaDate = executionDatePicker.dateValue;
-        transactionController.currentTransfer.type = [NSNumber numberWithInt:TransferTypeDated];
+        transactionController.currentTransfer.type = @(TransferTypeDated);
     }
 }
 
@@ -1653,7 +1641,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
     
     NSString *newValue = receiverComboBox.stringValue;
-    id previousReceivers = [values objectForKey: @"previousReceivers"];
+    id previousReceivers = values[@"previousReceivers"];
     NSMutableArray *mutableReceivers;
     if (![previousReceivers isKindOfClass: [NSArray class]]) {
         mutableReceivers = [NSMutableArray arrayWithObject: newValue];
@@ -1672,7 +1660,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         }
     }
     
-    [mutableValues setObject: mutableReceivers forKey: @"previousReceivers"];
+    mutableValues[@"previousReceivers"] = mutableReceivers;
     [userDefaults setObject: mutableValues forKey: @"transfers"];
 }
 

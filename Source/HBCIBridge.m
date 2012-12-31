@@ -88,7 +88,7 @@
     [task setLaunchPath: launchPath];
     //	[task setEnvironment: [NSDictionary dictionaryWithObjectsAndKeys: @"/users/emmi/workspace/HBCIServer", @"CLASSPATH", nil ] ];
     
-    [task setArguments: [NSArray arrayWithObjects: @"-jar", jarPath, nil ] ];
+    [task setArguments: @[@"-jar", jarPath] ];
     
     /*
     if ([LaunchParameters parameters ].debugServer) {
@@ -120,7 +120,7 @@
 
 - (void)getData: (NSNotification *)aNotification
 {
-    NSData *data = [[aNotification userInfo] objectForKey:NSFileHandleNotificationDataItem];
+    NSData *data = [aNotification userInfo][NSFileHandleNotificationDataItem];
     // If the length of the data is zero, then the task is basically over - there is nothing
     // more to get from the handle so we may as well shut down.
     if ([data length] > 0)

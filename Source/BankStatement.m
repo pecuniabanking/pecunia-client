@@ -268,7 +268,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 	} else {
 		 if([value compare: [NSDecimalNumber zero ]] != NSOrderedAscending) assigned = YES; // fully assigned
 	}
-	self.isAssigned = [NSNumber numberWithBool:assigned ];
+	self.isAssigned = @(assigned);
 	
 	// update not assigned part
 	if(assigned == NO) self.nassValue = value; else self.nassValue = [NSDecimalNumber zero ];

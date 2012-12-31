@@ -15,14 +15,14 @@
 +(NSError*)errorWithText: (NSString*)msg
 {
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	if(msg) [userInfo setObject: msg forKey:NSLocalizedDescriptionKey];
+	if(msg) userInfo[NSLocalizedDescriptionKey] = msg;
 	return [NSError errorWithDomain:@"de.pecuniabanking.ErrorDomain" code:1 userInfo:userInfo];
 }
 
 +(PecuniaError*)errorWithCode:(ErrorCode)code message:(NSString*)msg
 {
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	if(msg) [userInfo setObject: msg forKey:NSLocalizedDescriptionKey];
+	if(msg) userInfo[NSLocalizedDescriptionKey] = msg;
 	PecuniaError *error = [[PecuniaError alloc ] initWithDomain: @"de.pecuniabanking.ErrorDomain" code:code userInfo:userInfo ];
 	return error;
 }
@@ -30,7 +30,7 @@
 +(PecuniaError*)errorWithMessage:(NSString*)msg title:(NSString*)title
 {
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	if(msg) [userInfo setObject: msg forKey:NSLocalizedDescriptionKey];
+	if(msg) userInfo[NSLocalizedDescriptionKey] = msg;
 	PecuniaError *error = [[PecuniaError alloc ] initWithDomain: @"de.pecuniabanking.ErrorDomain" code:err_gen userInfo:userInfo ];
     if (title) error.title = title;
 	return error;    

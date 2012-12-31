@@ -94,7 +94,7 @@
 //	NSLog(@"endElement: %@", elementName);
 	if([elementName isEqualToString: @"object" ] || [elementName isEqualToString: @"cdObject" ] || [elementName isEqualToString: @"dictionary" ]) {
 		if(prev >= 0) {
-			id obj = [stack objectAtIndex: prev ];
+			id obj = stack[prev];
 			if([obj isKindOfClass: [NSMutableArray class ] ]) {
 				[obj addObject: [stack lastObject ] ];
 				[stack removeLastObject ];
@@ -124,26 +124,26 @@
 				[stack removeLastObject ];
 				[stack addObject: value ];
 			} else if([currentType isEqualToString: @"long" ]) {
-				NSNumber *value = [NSNumber numberWithLong: (long)[[stack lastObject ] longLongValue ] ];
+				NSNumber *value = @((long)[[stack lastObject ] longLongValue ]);
 				[stack removeLastObject ];
 				[stack addObject: value ];
 			} else if([currentType isEqualToString: @"boole" ]) {
 				NSNumber *value;
 				NSString *s = [stack lastObject ];
-				if([s isEqualToString: @"yes" ]) value = [NSNumber numberWithBool: YES ]; else value = [NSNumber numberWithBool: NO ];
+				if([s isEqualToString: @"yes" ]) value = @YES; else value = @NO;
 				[stack removeLastObject ];
 				[stack addObject: value ];
 			} else if ([currentType isEqualToString:@"int" ]) {
 				NSNumber *value;
 				NSString *s = [stack lastObject ];
-				value = [NSNumber numberWithInteger:[s integerValue ] ];
+				value = @([s integerValue ]);
 				[stack removeLastObject ];
 				[stack addObject:value ];
 			}
 		}
 		
 		if(prev >= 0) {
-			id obj = [stack objectAtIndex: prev ];
+			id obj = stack[prev];
 			if([obj isKindOfClass: [NSMutableArray class ] ]) {
 				[obj addObject: [stack lastObject ] ];
 				[stack removeLastObject ];

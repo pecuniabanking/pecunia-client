@@ -100,7 +100,7 @@
 {
 	int idx = [comboBox indexOfSelectedItem ];
 	if(idx < 0) idx = 0;
-	BankAccount *acc = [[accountsController arrangedObjects ] objectAtIndex: idx];
+	BankAccount *acc = [accountsController arrangedObjects ][idx];
 	if (acc) {
 		account = acc;
 		// fetch new statements

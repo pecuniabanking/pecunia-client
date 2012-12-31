@@ -28,8 +28,8 @@
 										   error:(NSError**)error
 {
 	// get source object
-	NSArray *sources = [manager sourceInstancesForEntityMappingNamed:[mapping name] destinationInstances:[NSArray arrayWithObject:dInstance ] ];
-	NSManagedObject *source = [sources objectAtIndex:0 ];
+	NSArray *sources = [manager sourceInstancesForEntityMappingNamed:[mapping name] destinationInstances:@[dInstance] ];
+	NSManagedObject *source = sources[0];
 	NSSet *cats = [ source mutableSetValueForKey:@"categories" ];
 	NSManagedObject *cat;
 	if ([cats count ] == 0) {
@@ -40,16 +40,16 @@
 	for(cat in cats) {
 		NSManagedObject *target;
 		if([[cat valueForKey: @"isBankAcc" ] boolValue ]) {
-			NSArray *targets = [manager destinationInstancesForEntityMappingNamed: @"BankAccountToBankAccount" sourceInstances:[NSArray arrayWithObject:cat ] ];
-			target = [targets objectAtIndex:0 ];
+			NSArray *targets = [manager destinationInstancesForEntityMappingNamed: @"BankAccountToBankAccount" sourceInstances:@[cat] ];
+			target = targets[0];
 			// maintain account relationship
 			[dInstance setValue:target forKey: @"account" ];
 		} else {
-			NSArray *targets = [manager destinationInstancesForEntityMappingNamed: @"CategoryToCategory" sourceInstances:[NSArray arrayWithObject:cat ] ];
-			target = [targets objectAtIndex:0 ];
+			NSArray *targets = [manager destinationInstancesForEntityMappingNamed: @"CategoryToCategory" sourceInstances:@[cat] ];
+			target = targets[0];
 			NSString *catName = [cat valueForKey:@"name" ];
 			if ([catName isEqualToString:@"++nassroot" ] == NO) {
-				[dInstance setValue:[NSNumber numberWithBool:YES ] forKey:@"isAssigned" ];
+				[dInstance setValue:@YES forKey:@"isAssigned" ];
 				[dInstance setValue:[NSDecimalNumber zero ] forKey:@"nassValue" ];
 			}
 		}
@@ -88,7 +88,7 @@
 		}
 		NSSortDescriptor *sd = [[NSSortDescriptor alloc ] initWithKey: @"date" ascending: NO ];
 		NSArray *statarray = [stats allObjects ];
-		NSArray *statements = [statarray sortedArrayUsingDescriptors: [NSArray arrayWithObject: sd ] ];
+		NSArray *statements = [statarray sortedArrayUsingDescriptors: @[sd] ];
 		NSDecimalNumber *saldo = [account valueForKey: @"balance" ];
 		NSManagedObject *stat;
 		NSDate *date = nil;
@@ -98,7 +98,7 @@
 		}
 		NSTimeInterval j=1;
 		for (NSInteger i = [statements count] - 1; i >= 0; i--) {
-			stat = [statements objectAtIndex:i ];
+			stat = statements[i];
 			if (date == nil) date = [stat valueForKey: @"date" ];
 			else {
 				if ([date isEqualToDate:[stat valueForKey: @"date" ] ]) {
@@ -110,7 +110,7 @@
 			}
 		}
 		if ([statements count ] > 0) {
-			stat = [statements objectAtIndex:0 ];
+			stat = statements[0];
 			[account setValue: [stat valueForKey:@"date" ] forKey:@"latestTransferDate" ];
 		}
 	}

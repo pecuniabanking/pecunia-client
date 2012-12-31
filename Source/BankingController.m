@@ -221,14 +221,8 @@ BOOL runningOnLionOrLater = NO;
 
     [self updateSorting];
     
-    NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor applicationColorForKey: @"Positive Cash"], NSForegroundColorAttributeName,
-                                        nil
-                                       ];
-    NSDictionary* negativeAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor applicationColorForKey: @"Negative Cash"], NSForegroundColorAttributeName,
-                                        nil
-                                       ];
+    NSDictionary* positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
+    NSDictionary* negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
     
     NSTableColumn* tableColumn;
     
@@ -257,7 +251,7 @@ BOOL runningOnLionOrLater = NO;
     
     // sort descriptor for accounts view
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-    NSArray *sds = [NSArray arrayWithObject:sd];
+    NSArray *sds = @[sd];
     [categoryController setSortDescriptors: sds];
     
     // status (content) bar
@@ -265,7 +259,7 @@ BOOL runningOnLionOrLater = NO;
     [mainWindow setContentBorderThickness: 30.0f forEdge: NSMinYEdge];
     
     // register Drag'n Drop
-    [accountsView registerForDraggedTypes: [NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil]];
+    [accountsView registerForDraggedTypes: @[BankStatementDataType, CategoryDataType]];
     
     // Set lock image.
     NSString *path = [[NSBundle mainBundle] pathForResource: @"icon72-1"
@@ -467,13 +461,13 @@ BOOL runningOnLionOrLater = NO;
         [alert runModal];
         return nil;
     }
-    if([cats count] > 0) return [cats objectAtIndex: 0];
+    if([cats count] > 0) return cats[0];
     
     // create Root object
     Category *obj = [NSEntityDescription insertNewObjectForEntityForName:@"Category"
                                                   inManagedObjectContext:self.managedObjectContext];
     [obj setValue: @"++bankroot" forKey: @"name"];
-    [obj setValue: [NSNumber numberWithBool: YES] forKey: @"isBankAcc"];
+    [obj setValue: @YES forKey: @"isBankAcc"];
     return obj;
 }
 
@@ -527,7 +521,7 @@ BOOL runningOnLionOrLater = NO;
         Category *obj = [NSEntityDescription insertNewObjectForEntityForName:@"Category"
                                                       inManagedObjectContext:self.managedObjectContext];
         [obj setValue: @"++catroot" forKey: @"name"];
-        [obj setValue: [NSNumber numberWithBool: NO] forKey: @"isBankAcc"];
+        [obj setValue: @NO forKey: @"isBankAcc"];
         catRoot = obj;
     }
     
@@ -549,7 +543,7 @@ BOOL runningOnLionOrLater = NO;
         Category *obj = [NSEntityDescription insertNewObjectForEntityForName:@"Category"
                                                       inManagedObjectContext:self.managedObjectContext];
         [obj setPrimitiveValue: @"++nassroot" forKey: @"name"];
-        [obj setValue: [NSNumber numberWithBool: NO] forKey: @"isBankAcc"];
+        [obj setValue: @NO forKey: @"isBankAcc"];
         [obj setValue: catRoot forKey: @"parent"];
         
         [self updateNotAssignedCategory];
@@ -616,7 +610,7 @@ BOOL runningOnLionOrLater = NO;
             }
         } else {
             // a node was selected
-            selectedNodes = [NSArray arrayWithObjects: cat, nil];
+            selectedNodes = @[cat];
         }
         // now select accounts from nodes
         BankAccount *account;
@@ -827,8 +821,7 @@ BOOL runningOnLionOrLater = NO;
 -(BankAccount*)selectBankAccountWithNumber:(NSString*)accNum bankCode:(NSString*)code
 {
     NSError *error = nil;
-    NSDictionary *subst = [NSDictionary dictionaryWithObjectsAndKeys:
-                           accNum, @"ACCNT", code, @"BCODE", nil];
+    NSDictionary *subst = @{@"ACCNT": accNum, @"BCODE": code};
     NSFetchRequest *fetchRequest =
     [model fetchRequestFromTemplateWithName:@"bankAccountByID" substitutionVariables:subst];
     NSArray *results =
@@ -839,7 +832,7 @@ BOOL runningOnLionOrLater = NO;
         return nil;
     }
     if(results == nil || [results count] != 1) return nil;
-    return [results objectAtIndex: 0];
+    return results[0];
 }
 
 
@@ -1337,7 +1330,7 @@ BOOL runningOnLionOrLater = NO;
     ImportController *controller = [[ImportController alloc] init];
     int res = [NSApp runModalForWindow: [controller window]];
     if (res == 0) {
-        NSArray *results = [NSArray arrayWithObject: controller.importResult];
+        NSArray *results = @[controller.importResult];
         NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: results];
         [self statementsNotification: notification];
     }
@@ -1378,10 +1371,10 @@ BOOL runningOnLionOrLater = NO;
     NSError	*error = nil;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setValue: [NSNumber numberWithInt: lastSplitterPosition] forKey: @"rightSplitterPosition"];
-    [userDefaults setValue: [NSNumber numberWithBool: self.toggleRecursiveStatementsItem.state == NSOnState ? YES : NO]
+    [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
+    [userDefaults setValue: @((BOOL)(self.toggleRecursiveStatementsItem.state == NSOnState))
                     forKey: @"recursiveTransactions"];
-    [userDefaults setValue: [NSNumber numberWithBool: self.toggleBalancesItem.state == NSOnState ? YES : NO]
+    [userDefaults setValue: @((BOOL)(self.toggleBalancesItem.state == NSOnState))
                     forKey: @"showBalances"];
 
     [currentSection deactivate];
@@ -1422,10 +1415,10 @@ BOOL runningOnLionOrLater = NO;
     if(restart) {
         NSProcessInfo *info = [NSProcessInfo processInfo];
         NSArray *args = [info arguments];
-        NSString *path = [args objectAtIndex:0];
+        NSString *path = args[0];
         if(path) {
             int pid = [info processIdentifier];
-            [NSTask launchedTaskWithLaunchPath:path arguments:[NSArray arrayWithObjects:path, [NSString stringWithFormat:@"%d", pid], nil]];
+            [NSTask launchedTaskWithLaunchPath:path arguments:@[path, [NSString stringWithFormat:@"%d", pid]]];
         }
     }
     
@@ -1560,7 +1553,7 @@ BOOL runningOnLionOrLater = NO;
     if (sel == nil || [sel count] != 1) {
         return nil;
     }
-    return [sel objectAtIndex: 0];
+    return sel[0];
 }
 
 #pragma mark -
@@ -1605,14 +1598,14 @@ BOOL runningOnLionOrLater = NO;
 {
     Category		*cat;
     
-    cat = [[items objectAtIndex:0] representedObject];
+    cat = [items[0] representedObject];
     if(cat == nil) return NO;
     if([cat isBankAccount]) return NO;
     if([cat isRoot]) return NO;
     if(cat == [Category nassRoot]) return NO;
     NSURL *uri = [[cat objectID] URIRepresentation];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: uri];
-    [pboard declareTypes:[NSArray arrayWithObject: CategoryDataType] owner:self];
+    [pboard declareTypes:@[CategoryDataType] owner:self];
     [pboard setData:data forType: CategoryDataType];
     return YES;
 }
@@ -1628,7 +1621,7 @@ BOOL runningOnLionOrLater = NO;
     if(cat == nil) return NSDragOperationNone;
     [[NSCursor arrowCursor] set];
     
-    NSString *type = [pboard availableTypeFromArray:[NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil]];
+    NSString *type = [pboard availableTypeFromArray:@[BankStatementDataType, CategoryDataType]];
     if(type == nil) return NO;
     if([type isEqual: BankStatementDataType]) {
         if([cat isBankAccount]) {
@@ -1665,7 +1658,7 @@ BOOL runningOnLionOrLater = NO;
     NSError *error;
     Category *cat = (Category*)[item representedObject];
     NSPasteboard *pboard = [info draggingPasteboard];
-    NSString *type = [pboard availableTypeFromArray:[NSArray arrayWithObjects: BankStatementDataType, CategoryDataType, nil]];
+    NSString *type = [pboard availableTypeFromArray:@[BankStatementDataType, CategoryDataType]];
     if(type == nil) return NO;
     NSData *data = [pboard dataForType: type];
 
@@ -2152,7 +2145,7 @@ BOOL runningOnLionOrLater = NO;
     if([aNotification object] == valueField) {
         NSArray *sel = [categoryAssignments selectedObjects];
         if(sel && [sel count] == 1) {
-            StatCatAssignment *stat = [sel objectAtIndex:0];
+            StatCatAssignment *stat = sel[0];
             self.saveValue = stat.value;
         }
     }
@@ -2176,7 +2169,7 @@ BOOL runningOnLionOrLater = NO;
         NSArray *sel = [categoryAssignments selectedObjects];
         if(sel && [sel count] == 1)
         {
-            StatCatAssignment *stat = [sel objectAtIndex:0];
+            StatCatAssignment *stat = sel[0];
             
             // do some checks
             // amount must have correct sign
@@ -2350,7 +2343,7 @@ BOOL runningOnLionOrLater = NO;
     if (idx == 0) {
         NSArray *sel = [categoryAssignments selectedObjects];
         if (sel != nil && [sel count] == 1) {
-            StatSplitController *splitController = [[StatSplitController alloc] initWithStatement: [[sel objectAtIndex:0] statement]
+            StatSplitController *splitController = [[StatSplitController alloc] initWithStatement: [sel[0] statement]
                                                                                                view: accountsView];
             [NSApp runModalForWindow:[splitController window]];
         }
@@ -2427,8 +2420,8 @@ BOOL runningOnLionOrLater = NO;
                 if (components.count < 2) {
                     continue;
                 }
-                NSString *icon = [[components objectAtIndex: 0] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
-                NSArray *keywordArray = [[components objectAtIndex: 1] componentsSeparatedByString: @","];
+                NSString *icon = [components[0] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+                NSArray *keywordArray = [components[1] componentsSeparatedByString: @","];
 
                 NSMutableArray *keywords = [NSMutableArray arrayWithCapacity: keywordArray.count];
                 for (__strong NSString *keyword in keywordArray) {
@@ -2438,7 +2431,7 @@ BOOL runningOnLionOrLater = NO;
                     }
                     [keywords addObject: keyword];
                 }
-                NSDictionary *entry = [NSDictionary dictionaryWithObjectsAndKeys: icon, @"icon", keywords, @"keywords", nil];
+                NSDictionary *entry = @{@"icon": icon, @"keywords": keywords};
                 [entries addObject: entry];
             }
         }
@@ -2460,11 +2453,11 @@ BOOL runningOnLionOrLater = NO;
     BOOL exactMatch = NO;
     NSUInteger currentCount = 1000; // Number of keywords assigned to the best match so far.
     for (NSDictionary *entry in defaultIcons) {
-        NSArray *keywords = [entry objectForKey: @"keywords"];
+        NSArray *keywords = entry[@"keywords"];
         for (NSString *keyword in keywords) {
             if ([keyword caseInsensitiveCompare: @"Default"] == NSOrderedSame && bestMatch.length == 0) {
                 // No match so far, but we found the default entry. Keep this as first best match.
-                bestMatch = [entry objectForKey: @"icon"];
+                bestMatch = entry[@"icon"];
                 continue;
             }
             NSRange range = [name rangeOfString: keyword options: NSCaseInsensitiveSearch];
@@ -2477,7 +2470,7 @@ BOOL runningOnLionOrLater = NO;
                 // best match, ignoring any previous partial matches.
                 if (!exactMatch || keywords.count < currentCount) {
                     exactMatch = YES;
-                    bestMatch = [entry objectForKey: @"icon"];
+                    bestMatch = entry[@"icon"];
                     currentCount = keywords.count;
                 }
 
@@ -2489,7 +2482,7 @@ BOOL runningOnLionOrLater = NO;
             } else {
                 // Only consider this partial match if we haven't had any exact match so far.
                 if (!exactMatch && keywords.count < currentCount) {
-                    bestMatch = [entry objectForKey: @"icon"];
+                    bestMatch = entry[@"icon"];
                     currentCount = keywords.count;
                 }
             }
@@ -2860,7 +2853,7 @@ BOOL runningOnLionOrLater = NO;
         }
         default:
         {
-            id <PecuniaSectionItem> item = [mainTabItems objectForKey: [[mainTabView selectedTabViewItem] identifier]];
+            id <PecuniaSectionItem> item = mainTabItems[[[mainTabView selectedTabViewItem] identifier]];
             [item print];
         }
     }
@@ -2912,7 +2905,7 @@ BOOL runningOnLionOrLater = NO;
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1"];
     [request setPredicate:predicate];
     NSArray *statements = [context executeFetchRequest:request error:&error];
-    for(BankStatement *stat in statements) stat.isNew = [NSNumber numberWithBool:NO];
+    for(BankStatement *stat in statements) stat.isNew = @NO;
     
     // save updates
     if([self.managedObjectContext save: &error] == NO) {
@@ -2960,7 +2953,7 @@ BOOL runningOnLionOrLater = NO;
 
 - (IBAction)toggleDetailsPane: (id)sender
 {
-    NSView *firstChild = [rightSplitter.subviews objectAtIndex: 0];
+    NSView *firstChild = (rightSplitter.subviews)[0];
     if (lastSplitterPosition == 0) {
         [statementDetails setHidden: YES];
         lastSplitterPosition = NSHeight(firstChild.frame);
@@ -2989,12 +2982,12 @@ BOOL runningOnLionOrLater = NO;
             self.toggleRecursiveStatementsItem.state = NSOnState;
         }
         [self updateCategoryAssignments: [self currentSelection]];
-        [userDefaults setValue: [NSNumber numberWithBool: self.toggleRecursiveStatementsItem.state == NSOnState ? YES : NO]
+        [userDefaults setValue: @((BOOL)(self.toggleRecursiveStatementsItem.state == NSOnState))
                         forKey: @"recursiveTransactions"];
     } else {
         if (sender == self.toggleDetailsPaneItem) {
             [self toggleDetailsPane: nil];
-            [userDefaults setValue: [NSNumber numberWithInt: lastSplitterPosition] forKey: @"rightSplitterPosition"];
+            [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
         } else {
             if (sender == self.toggleBalancesItem) {
                 if (self.toggleBalancesItem.state == NSOnState) {
@@ -3002,7 +2995,7 @@ BOOL runningOnLionOrLater = NO;
                 } else {
                     self.toggleBalancesItem.state = NSOnState;
                 }
-                [userDefaults setValue: [NSNumber numberWithBool: self.toggleBalancesItem.state == NSOnState ? YES : NO]
+                [userDefaults setValue: @((BOOL)(self.toggleBalancesItem.state == NSOnState))
                                 forKey: @"showBalances"];
 
                 [statementsListView updateBalanceVisibility];
@@ -3013,7 +3006,7 @@ BOOL runningOnLionOrLater = NO;
                     } else {
                         self.toggleHeadersItem.state = NSOnState;
                     }
-                    [userDefaults setValue: [NSNumber numberWithBool: self.toggleHeadersItem.state == NSOnState ? YES : NO]
+                    [userDefaults setValue: @((BOOL)(self.toggleHeadersItem.state == NSOnState))
                                     forKey: @"showHeadersInLists"];
                     statementsListView.showHeaders = self.toggleHeadersItem.state == NSOnState ? YES : NO;
                     [statementsListView reloadData];
@@ -3078,11 +3071,11 @@ BOOL runningOnLionOrLater = NO;
 				bankUser.bankURL = user.bankURL;
 				bankUser.port = user.port;
 				bankUser.hbciVersion = user.hbciVersion;
-				bankUser.checkCert = [NSNumber numberWithBool:user.checkCert];
+				bankUser.checkCert = @(user.checkCert);
 				bankUser.country = user.country;
 				bankUser.userId = user.userId;
 				bankUser.customerId = user.customerId;
-                bankUser.secMethod = [NSNumber numberWithInt:SecMethod_PinTan ];
+                bankUser.secMethod = @(SecMethod_PinTan);
 			}
 		}
         
@@ -3161,7 +3154,7 @@ BOOL runningOnLionOrLater = NO;
                         BankAccount* account = (BankAccount*)stat.category;
                         if ([stat.statement.isNew boolValue])
                         {
-                            stat.statement.isNew = [NSNumber numberWithBool: NO];
+                            stat.statement.isNew = @NO;
                             account.unread = account.unread - 1;
                             if (account.unread == 0) {
                                 [self updateUnread];
@@ -3193,8 +3186,8 @@ BOOL runningOnLionOrLater = NO;
     [sortControl setImage: sortImage forSegment: sortIndex];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setValue: [NSNumber numberWithInt: sortIndex] forKey: @"mainSortIndex"];
-    [userDefaults setValue: [NSNumber numberWithBool: sortAscending] forKey: @"mainSortAscending"];
+    [userDefaults setValue: @((int)sortIndex) forKey: @"mainSortIndex"];
+    [userDefaults setValue: @(sortAscending) forKey: @"mainSortAscending"];
     
     NSString *key;
     switch (sortIndex) {
@@ -3226,7 +3219,7 @@ BOOL runningOnLionOrLater = NO;
         }
     }
     [categoryAssignments setSortDescriptors:
-     [NSArray arrayWithObject: [[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
+     @[[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
 }
 
 +(BankingController*)controller

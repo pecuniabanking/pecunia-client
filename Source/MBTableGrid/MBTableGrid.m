@@ -243,7 +243,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	if (!pboardTypes) {
 		types = [NSMutableArray array];
 	}
-	[types addObjectsFromArray:[NSArray arrayWithObjects:MBTableGridColumnDataType, MBTableGridRowDataType, nil]];
+	[types addObjectsFromArray:@[MBTableGridColumnDataType, MBTableGridRowDataType]];
 	
 	[super registerForDraggedTypes:types];
 	
@@ -351,7 +351,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 
 - (void)keyDown:(NSEvent *)theEvent
 {
-	[self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
+	[self interpretKeyEvents:@[theEvent]];
 }
 
 /*- (void)interpretKeyEvents:(NSArray *)eventArray
@@ -853,7 +853,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 				NSIndexSet *newColumns = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(startIndex, length)];
 				
 				// Post the notification
-				[[NSNotificationCenter defaultCenter] postNotificationName:MBTableGridDidMoveColumnsNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:draggedColumns, @"OldColumns", newColumns, @"NewColumns", nil]];
+				[[NSNotificationCenter defaultCenter] postNotificationName:MBTableGridDidMoveColumnsNotification object:self userInfo:@{@"OldColumns": draggedColumns, @"NewColumns": newColumns}];
 			
 				// Change the selection to reflect the newly-dragged columns
 				self.selectedColumnIndexes = newColumns;
@@ -884,7 +884,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 				NSIndexSet *newRows = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(startIndex, length)];
 				
 				// Post the notification
-				[[NSNotificationCenter defaultCenter] postNotificationName:MBTableGridDidMoveRowsNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:draggedRows, @"OldRows", newRows, @"NewRows", nil]];
+				[[NSNotificationCenter defaultCenter] postNotificationName:MBTableGridDidMoveRowsNotification object:self userInfo:@{@"OldRows": draggedRows, @"NewRows": newRows}];
 				
 				// Change the selection to reflect the newly-dragged rows
 				self.selectedRowIndexes = newRows;
@@ -1178,8 +1178,8 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		NSColor *topColor = [NSColor colorWithDeviceWhite:0.95 alpha:1.0];
 		NSColor *borderColor = [NSColor colorWithDeviceWhite:0.65 alpha:1.0];
 		
-		NSGradient *topGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:topGradientTop, topGradientBottom, nil]];
-		NSGradient *bottomGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:bottomGradientTop, bottomGradientBottom, nil]];
+		NSGradient *topGradient = [[NSGradient alloc] initWithColors:@[topGradientTop, topGradientBottom]];
+		NSGradient *bottomGradient = [[NSGradient alloc] initWithColors:@[bottomGradientTop, bottomGradientBottom]];
 		
 		NSRect topRect = NSMakeRect(NSMinX(aRect), 0, NSWidth(aRect), NSHeight(aRect)/2);
 		NSRect bottomRect = NSMakeRect(NSMinX(aRect), NSMidY(aRect)-0.5, NSWidth(aRect), NSHeight(aRect)/2+0.5);
@@ -1211,8 +1211,8 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		NSColor *sideColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.4];
 		NSColor *borderColor = [NSColor colorWithDeviceWhite:0.65 alpha:1.0];
 		
-		NSGradient *topGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:topGradientTop, topGradientBottom, nil]];
-		NSGradient *bottomGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:bottomGradientTop, bottomGradientBottom, nil]];
+		NSGradient *topGradient = [[NSGradient alloc] initWithColors:@[topGradientTop, topGradientBottom]];
+		NSGradient *bottomGradient = [[NSGradient alloc] initWithColors:@[bottomGradientTop, bottomGradientBottom]];
 	
 		NSRect leftRect = NSMakeRect(NSMinX(aRect), NSMinY(aRect), NSWidth(aRect)/2, NSHeight(aRect));
 		NSRect rightRect = NSMakeRect(NSMidX(aRect)-0.5, NSMinY(aRect), NSWidth(aRect)/2+0.5, NSHeight(aRect));
@@ -1245,8 +1245,8 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		NSColor *sideColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.4];
 		NSColor *borderColor = [NSColor colorWithDeviceWhite:0.65 alpha:1.0];
 		
-		NSGradient *topGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:topGradientTop, topGradientBottom, nil]];
-		NSGradient *bottomGradient = [[NSGradient alloc] initWithColors:[NSArray arrayWithObjects:bottomGradientTop, bottomGradientBottom, nil]];
+		NSGradient *topGradient = [[NSGradient alloc] initWithColors:@[topGradientTop, topGradientBottom]];
+		NSGradient *bottomGradient = [[NSGradient alloc] initWithColors:@[bottomGradientTop, bottomGradientBottom]];
 		
 		// Divide the frame in two
 		NSRect mainRect = aRect;
@@ -1381,7 +1381,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	location.y += [dragImage size].height;
 	
 	NSPasteboard *pboard = [NSPasteboard pasteboardWithName:NSDragPboard];
-	[pboard declareTypes:[NSArray arrayWithObjects:MBTableGridColumnDataType, nil] owner:self];
+	[pboard declareTypes:@[MBTableGridColumnDataType] owner:self];
 	
 	BOOL shouldDrag = NO;
 	if([[self dataSource] respondsToSelector:@selector(tableGrid:writeColumnsWithIndexes:toPasteboard:)]) {
@@ -1405,7 +1405,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	location.y += [dragImage size].height;
 	
 	NSPasteboard *pboard = [NSPasteboard pasteboardWithName:NSDragPboard];
-	[pboard declareTypes:[NSArray arrayWithObjects:MBTableGridRowDataType, nil] owner:self];
+	[pboard declareTypes:@[MBTableGridRowDataType] owner:self];
 	
 	BOOL shouldDrag = NO;
 	if([[self dataSource] respondsToSelector:@selector(tableGrid:writeRowsWithIndexes:toPasteboard:)]) {

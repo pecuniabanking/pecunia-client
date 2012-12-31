@@ -30,7 +30,7 @@
     NSDictionary *attrs = [attrTitle fontAttributesInRange: range];
     NSColor *textColor = [NSColor controlTextColor];
     if (attrs) {
-        textColor = [attrs objectForKey: NSForegroundColorAttributeName];
+        textColor = attrs[NSForegroundColorAttributeName];
     }
     return textColor;
 }
@@ -60,7 +60,7 @@
     NSDictionary *attrs = [attrTitle fontAttributesInRange: range];
     NSColor *textColor = [NSColor controlTextColor];
     if (attrs) {
-        textColor = [attrs objectForKey: NSForegroundColorAttributeName];
+        textColor = attrs[NSForegroundColorAttributeName];
     }
     return textColor;
 }

@@ -74,13 +74,13 @@ static NSGradient* innerGradientSelected;
 
         
     // Bankkennung
-    NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys: txtFont14, NSFontAttributeName, textColor, NSForegroundColorAttributeName, nil ];
+    NSDictionary *attributes = @{NSFontAttributeName: txtFont14, NSForegroundColorAttributeName: textColor};
     as = [[NSMutableAttributedString alloc] initWithString: [[self objectValue ] userName ] attributes: attributes];
     drawRect = NSMakeRect(80, cellFrame.origin.y+LINE1_Y, 150, 18);
     [as	drawInRect:drawRect ];
     
     // Sicherheitsverfahren
-    attributes = [[NSDictionary alloc] initWithObjectsAndKeys: txtFont12, NSFontAttributeName, textColor, NSForegroundColorAttributeName, nil ];
+    attributes = @{NSFontAttributeName: txtFont12, NSForegroundColorAttributeName: textColor};
     
     if (secMethod == SecMethod_PinTan) {
         as = [[NSMutableAttributedString alloc] initWithString: @"HBCI PIN/TAN" attributes: attributes];
@@ -96,7 +96,7 @@ static NSGradient* innerGradientSelected;
         NSString *medium = [[self objectValue ] tanMediumName ];
                 
         // Label
-        attributes = [[NSDictionary alloc] initWithObjectsAndKeys: txtFont10, NSFontAttributeName, labelColor, NSForegroundColorAttributeName, nil ];
+        attributes = @{NSFontAttributeName: txtFont10, NSForegroundColorAttributeName: labelColor};
         as = [[NSMutableAttributedString alloc] initWithString: @"TAN-Methode:" attributes: attributes];
         drawRect = NSMakeRect(230, cellFrame.origin.y+LINE1_Y+4, 80, 16);
         [as	drawInRect:drawRect ];
@@ -108,7 +108,7 @@ static NSGradient* innerGradientSelected;
         }
         
         // TAN-Methode
-        attributes = [[NSDictionary alloc] initWithObjectsAndKeys: txtFont13, NSFontAttributeName, textColor, NSForegroundColorAttributeName, nil ];
+        attributes = @{NSFontAttributeName: txtFont13, NSForegroundColorAttributeName: textColor};
         as = [[NSMutableAttributedString alloc] initWithString: [[self objectValue ] tanMethodName ] attributes: attributes];
         drawRect = NSMakeRect(310, cellFrame.origin.y+LINE1_Y, 130, 16);
         [as	drawInRect:drawRect ];
@@ -153,13 +153,13 @@ static NSGradient* innerGradientSelected;
     
     if (secMethod == SecMethod_DDV) {
         // Label
-        attributes = [[NSDictionary alloc] initWithObjectsAndKeys: txtFont10, NSFontAttributeName, labelColor, NSForegroundColorAttributeName, nil ];
+        attributes = @{NSFontAttributeName: txtFont10, NSForegroundColorAttributeName: labelColor};
         as = [[NSMutableAttributedString alloc] initWithString: @"Kartennummer:" attributes: attributes];
         drawRect = NSMakeRect(230, cellFrame.origin.y+LINE1_Y+4, 80, 16);
         [as	drawInRect:drawRect ];
         
         // Kartennummer
-        attributes = [[NSDictionary alloc] initWithObjectsAndKeys: txtFont13, NSFontAttributeName, textColor, NSForegroundColorAttributeName, nil ];
+        attributes = @{NSFontAttributeName: txtFont13, NSForegroundColorAttributeName: textColor};
         as = [[NSMutableAttributedString alloc] initWithString: [[self objectValue ] cardId ] attributes: attributes];
         drawRect = NSMakeRect(310, cellFrame.origin.y+LINE1_Y, 130, 16);
         [as	drawInRect:drawRect ];

@@ -33,7 +33,7 @@
 -(IBAction)ok:(id)sender
 {
 	NSArray *sel = [tanMethodController selectedObjects ];
-	TanMethodOld *method = [sel objectAtIndex:0 ];
+	TanMethodOld *method = sel[0];
 	self.selectedMethod = method.function;
 	
 	[NSApp stopModalWithCode:0 ];

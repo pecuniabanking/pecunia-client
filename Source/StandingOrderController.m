@@ -55,13 +55,13 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [super viewDidMoveToSuperview];
     
     // Register for types that can be deleted.
-    [self registerForDraggedTypes: [NSArray arrayWithObjects: OrderDataType, nil]];
+    [self registerForDraggedTypes: @[OrderDataType]];
 }
 
 - (NSDragOperation)draggingEntered: (id <NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: OrderDataType, nil]];
+    NSString *type = [pasteboard availableTypeFromArray: @[OrderDataType]];
     if (type == nil) {
         return NSDragOperationNone;
     }
@@ -110,17 +110,15 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	self = [super init];
 	if (self != nil) {
         managedObjectContext = MOAssistant.assistant.context;
-        weekDays = [NSArray arrayWithObjects:
-                     NSLocalizedString(@"AP10030", nil),
+        weekDays = @[NSLocalizedString(@"AP10030", nil),
                      NSLocalizedString(@"AP10031", nil),
                      NSLocalizedString(@"AP10032", nil),
                      NSLocalizedString(@"AP10033", nil),
                      NSLocalizedString(@"AP10034", nil),
                      NSLocalizedString(@"AP10035", nil),
-                     NSLocalizedString(@"AP10036", nil),
-                     nil];
+                     NSLocalizedString(@"AP10036", nil)];
         accounts = [[NSMutableArray alloc] initWithCapacity: 10];
-        self.requestRunning = [NSNumber numberWithBool: NO];
+        self.requestRunning = @NO;
     }
     
 	return self;
@@ -145,14 +143,8 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [ordersListView setAllowsMultipleSelection: NO];
     
     // TODO: do we really need the "negative cash color"? Standing orders can always only be positive, can't they?
-    NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor applicationColorForKey: @"Positive Cash"], NSForegroundColorAttributeName,
-                                        nil
-                                        ];
-    NSDictionary* negativeAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor applicationColorForKey: @"Negative Cash"], NSForegroundColorAttributeName,
-                                        nil
-                                        ];
+    NSDictionary* positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
+    NSDictionary* negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
     
     NSNumberFormatter* listViewFormatter = [ordersListView numberFormatter];
     [listViewFormatter setTextAttributesForPositiveValues: positiveAttributes];
@@ -161,7 +153,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     
 	// Sort order list by change date (newest first).
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO];
-	NSArray *sds = [NSArray arrayWithObject: sd];
+	NSArray *sds = @[sd];
 	[orderController setSortDescriptors: sds];
     
     
@@ -218,9 +210,9 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 -(NSString*)weekDayToString:(int)day
 {
 	if (day > 0 && day < 8) {
-		return [weekDays objectAtIndex:day-1 ];
+		return weekDays[day-1];
 	}
-	return [weekDays objectAtIndex:1 ];;
+	return weekDays[1];;
 }
 
 -(int)stringToMonthDay:(NSString*)s
@@ -233,8 +225,8 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 -(void)initCycles
 {
-	currentOrder.cycle = [NSNumber numberWithInt: 1];
-	currentOrder.executionDay = [NSNumber numberWithInt: 1];
+	currentOrder.cycle = @1;
+	currentOrder.executionDay = @1;
 }
 
 -(int)stringToWeekDay:(NSString*)s
@@ -440,7 +432,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     
     Category *category = [Category bankRoot];
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
-	NSArray *sortDescriptors = [NSArray arrayWithObject: sortDescriptor];
+	NSArray *sortDescriptors = @[sortDescriptor];
     NSArray *institutes = [[category children] sortedArrayUsingDescriptors: sortDescriptors];
     
     // Convert list of accounts in their institutes branches to a flat list
@@ -502,12 +494,12 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	if (period == stord_weekly) {
 		self.oldWeekDay = currentOrder.executionDay;
 		self.oldWeekCycle = currentOrder.cycle;
-		if(oldMonthDay) currentOrder.executionDay = oldMonthDay; else currentOrder.executionDay = [NSNumber numberWithInt:1 ];
-		if(oldMonthCycle) currentOrder.cycle = oldMonthCycle; else currentOrder.cycle = [NSNumber numberWithInt:1 ];
+		if(oldMonthDay) currentOrder.executionDay = oldMonthDay; else currentOrder.executionDay = @1;
+		if(oldMonthCycle) currentOrder.cycle = oldMonthCycle; else currentOrder.cycle = @1;
 	}
 	[self enableWeekly:NO ];
-	currentOrder.period = [NSNumber numberWithInt:stord_monthly ];
-	currentOrder.isChanged = [NSNumber numberWithBool: YES];
+	currentOrder.period = @(stord_monthly);
+	currentOrder.isChanged = @YES;
 	[self updateMonthCycles ];
 }
 
@@ -517,54 +509,54 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	if (period == stord_monthly) {
 		self.oldMonthDay = currentOrder.executionDay;
 		self.oldMonthCycle = currentOrder.cycle;
-		if(oldWeekDay) currentOrder.executionDay = oldWeekDay; else currentOrder.executionDay = [NSNumber numberWithInt:1 ];
-		if(oldWeekCycle) currentOrder.cycle = oldWeekCycle; else currentOrder.cycle = [NSNumber numberWithInt:1 ];
+		if(oldWeekDay) currentOrder.executionDay = oldWeekDay; else currentOrder.executionDay = @1;
+		if(oldWeekCycle) currentOrder.cycle = oldWeekCycle; else currentOrder.cycle = @1;
 	}
 	[self enableWeekly:YES ];
-	currentOrder.period = [NSNumber numberWithInt:stord_weekly ];
-	currentOrder.isChanged = [NSNumber numberWithBool: YES];
+	currentOrder.period = @(stord_weekly);
+	currentOrder.isChanged = @YES;
 	[self updateWeekCycles ];
 	
 }
 
 -(IBAction)monthCycleChanged: (id)sender
 {
-    NSInteger idx = [monthCyclesPopup indexOfSelectedItem];
+    int idx = [monthCyclesPopup indexOfSelectedItem];
     if (currentLimits.monthCycles == nil || currentLimits.monthCycles.count == 0 || [[currentLimits.monthCycles lastObject] intValue] == 0) {
-        currentOrder.cycle = [NSNumber numberWithInt:idx + 1];
+        currentOrder.cycle = @(idx + 1);
     } else {
-        NSString *c = [currentLimits.monthCycles objectAtIndex:idx];
-        currentOrder.cycle = [NSNumber numberWithInt:[c intValue]];
+        NSString *c = (currentLimits.monthCycles)[idx];
+        currentOrder.cycle = @([c intValue]);
     }
     
 	//currentOrder.cycle = [NSNumber numberWithInt:[[monthCyclesPopup titleOfSelectedItem ] intValue ] ];
-	currentOrder.isChanged = [NSNumber numberWithBool: YES];
+	currentOrder.isChanged = @YES;
 }
 
 -(IBAction)monthDayChanged: (id)sender
 {
-	currentOrder.executionDay = [NSNumber numberWithInt:[self stringToMonthDay:[execDaysMonthPopup titleOfSelectedItem ] ]];
-	currentOrder.isChanged = [NSNumber numberWithBool: YES];
+	currentOrder.executionDay = @([self stringToMonthDay:[execDaysMonthPopup titleOfSelectedItem ] ]);
+	currentOrder.isChanged = @YES;
 }
 
 -(IBAction)weekCycleChanged: (id)sender
 {
-    NSInteger idx = [weekCyclesPopup indexOfSelectedItem];
+    int idx = [weekCyclesPopup indexOfSelectedItem];
     if (currentLimits.weekCycles == nil || currentLimits.weekCycles.count == 0 || [[currentLimits.weekCycles lastObject] intValue] == 0) {
-        currentOrder.cycle = [NSNumber numberWithInt:idx + 1];
+        currentOrder.cycle = @(idx + 1);
     } else {
-        NSString *c = [currentLimits.weekCycles objectAtIndex:idx];
-        currentOrder.cycle = [NSNumber numberWithInt:[c intValue]];
+        NSString *c = (currentLimits.weekCycles)[idx];
+        currentOrder.cycle = @([c intValue]);
     }
 
-	currentOrder.cycle = [NSNumber numberWithInt:[[weekCyclesPopup titleOfSelectedItem ] intValue ] ];
-	currentOrder.isChanged = [NSNumber numberWithBool: YES];
+	currentOrder.cycle = @([[weekCyclesPopup titleOfSelectedItem ] intValue ]);
+	currentOrder.isChanged = @YES;
 }
 
 -(IBAction)weekDayChanged: (id)sender
 {
-	currentOrder.executionDay = [NSNumber numberWithInt: [self stringToWeekDay:[execDaysWeekPopup titleOfSelectedItem ] ]];
-	currentOrder.isChanged = [NSNumber numberWithBool: YES];
+	currentOrder.executionDay = @([self stringToWeekDay:[execDaysWeekPopup titleOfSelectedItem ] ]);
+	currentOrder.isChanged = @YES;
 }
 
 - (IBAction)add: (id)sender
@@ -581,10 +573,10 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     } else {
         order.currency = account.currency;
     }
-    order.period = [NSNumber numberWithInt: stord_monthly];
-    order.cycle = [NSNumber numberWithInt: 1];
-    order.executionDay = [NSNumber numberWithInt: 1];
-    order.isChanged = [NSNumber numberWithBool: YES];
+    order.period = @(stord_monthly);
+    order.cycle = @1;
+    order.executionDay = @1;
+    order.isChanged = @YES;
     ShortDate *startDate = [[ShortDate currentDate] firstDayInMonth];
     order.firstExecDate = [[startDate dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit] lowDate];
     order.lastExecDate = [[ShortDate dateWithYear: 2999 month: 12 day: 31] lowDate];
@@ -594,12 +586,12 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 - (IBAction)firstExecDateChanged: (id)sender
 {
-	currentOrder.isChanged = [NSNumber numberWithBool: YES];
+	currentOrder.isChanged = @YES;
 }
 
 - (IBAction)lastExecDateChanged: (id)sender
 {
-	currentOrder.isChanged = [NSNumber numberWithBool: YES];
+	currentOrder.isChanged = @YES;
 }
 
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification
@@ -613,13 +605,13 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
             currentOrder.remoteBankName = bankName;
         }
 	}
-	currentOrder.isChanged = [NSNumber numberWithBool: YES];
+	currentOrder.isChanged = @YES;
 }
 
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
     if ([currentOrder.isChanged boolValue] == NO) {
-        currentOrder.isChanged = [NSNumber numberWithBool: YES];
+        currentOrder.isChanged = @YES;
     }
 }
 
@@ -701,14 +693,14 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
         if ([stord.isSent boolValue ] == YES && stord.orderKey == nil) continue;
         
 		if (![self checkOrder: stord]) {
-			[orderController setSelectedObjects: [NSArray arrayWithObject: stord]];
+			[orderController setSelectedObjects: @[stord]];
 			return;
 		}
 	}
 	
 	StatusBarController *sc = [StatusBarController controller];
 	[sc startSpinning];
-	self.requestRunning = [NSNumber numberWithBool: YES];
+	self.requestRunning = @YES;
 	[sc setMessage: NSLocalizedString(@"AP460", nil) removeAfter: 0];
     
     NSMutableArray *sendOrders = [NSMutableArray arrayWithCapacity:[orders count]];
@@ -727,7 +719,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	if (hbciError != nil) {
 		[sc stopSpinning];
 		[sc clearMessage];
-		self.requestRunning = [NSNumber numberWithBool: NO];
+		self.requestRunning = @NO;
 
 		[hbciError alertPanel];
 		return;
@@ -752,7 +744,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	
     [sc stopSpinning];
     [sc clearMessage];
-    self.requestRunning = [NSNumber numberWithBool: NO];
+    self.requestRunning = @NO;
 
 	// save updates
 	if ([managedObjectContext save: &error] == NO) {
@@ -856,7 +848,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     
 	StatusBarController *sc = [StatusBarController controller];
 	[sc startSpinning];
-	self.requestRunning = [NSNumber numberWithBool: YES];
+	self.requestRunning = @YES;
 	[sc setMessage: NSLocalizedString(@"AP459", nil) removeAfter: 0];
 	[[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(ordersNotification:)
@@ -900,7 +892,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     StandingOrderPeriod period = [currentOrder.period intValue];
     
     if (period == stord_weekly && currentLimits.allowWeekly == NO) {
-        currentOrder.period = [NSNumber numberWithInt:stord_monthly];
+        currentOrder.period = @(stord_monthly);
         period = stord_monthly;
     }
     
@@ -935,7 +927,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	if (resultList == nil) {
 		[sc stopSpinning];
 		[sc clearMessage];
-		self.requestRunning = [NSNumber numberWithBool: NO];
+		self.requestRunning = @NO;
 		return;
 	}
     
@@ -954,7 +946,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	
 	[sc stopSpinning];
 	[sc clearMessage];
-	self.requestRunning = [NSNumber numberWithBool: NO];
+	self.requestRunning = @NO;
 }
 
 #pragma mark -
@@ -972,10 +964,10 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
             [self disableCycles];
             return;
         }
-        if (currentOrder == [selection objectAtIndex: 0]) {
+        if (currentOrder == selection[0]) {
             return;
         }
-        self.currentOrder = [selection objectAtIndex: 0];
+        self.currentOrder = selection[0];
         
         oldWeekDay = nil;
         oldWeekCycle = nil;
@@ -1019,7 +1011,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *values = [userDefaults dictionaryForKey: @"transfers"];
         if (values != nil) {
-            id previousReceivers = [values objectForKey: @"previousReceivers"];
+            id previousReceivers = values[@"previousReceivers"];
             if ([previousReceivers isKindOfClass: [NSArray class]]) {
                 [receiverComboBox addItemsWithObjectValues: previousReceivers];
             }
@@ -1041,7 +1033,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 - (BOOL)concludeDropDeleteOperation: (id<NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray: [NSArray arrayWithObjects: OrderDataType, nil]];
+    NSString *type = [pasteboard availableTypeFromArray: @[OrderDataType]];
     if (type == nil) {
         return NO;
     }
@@ -1083,7 +1075,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
         return NO;
     }
     
-    order.toDelete = [NSNumber numberWithBool: YES];
+    order.toDelete = @YES;
     
     return YES;
 }

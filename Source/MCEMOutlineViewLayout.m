@@ -50,7 +50,7 @@
 	[defaults setObject: data forKey: [NSString stringWithFormat: @"NSOutlineView SD %@", [self autosaveName ]] ];
 	
 	NSArray* columns = [self tableColumns ];
-	NSTableColumn* tc = [columns objectAtIndex: 0 ];
+	NSTableColumn* tc = columns[0];
 	[defaults setFloat: [tc width ] forKey: [NSString stringWithFormat: @"NSOutlineView OW %@", [self autosaveName ]] ];
 	[defaults setInteger: [self selectedRow ] forKey: [NSString stringWithFormat: @"NSOutlineView SEL %@", [self autosaveName ]]];
 	
@@ -69,7 +69,7 @@
 	float w = [defaults floatForKey: [NSString stringWithFormat: @"NSOutlineView SD %@", [self autosaveName ]] ];
 	if(w > 0) {
 		NSArray* columns = [self tableColumns ];
-		NSTableColumn* tc = [columns objectAtIndex: 0 ];
+		NSTableColumn* tc = columns[0];
 		[tc setWidth: w ];
 	}
 	

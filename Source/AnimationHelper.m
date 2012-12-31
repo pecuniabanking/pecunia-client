@@ -19,20 +19,16 @@
 {
     NSDictionary *oldFadeOut = nil;
     if (oldView != nil) {
-        oldFadeOut = [NSDictionary dictionaryWithObjectsAndKeys:
-                      oldView, NSViewAnimationTargetKey,
-                      NSViewAnimationFadeOutEffect,
-                      NSViewAnimationEffectKey, nil];
+        oldFadeOut = @{NSViewAnimationTargetKey: oldView,
+                      NSViewAnimationEffectKey: NSViewAnimationFadeOutEffect};
     }
     
     NSDictionary *newFadeIn;
-    newFadeIn = [NSDictionary dictionaryWithObjectsAndKeys:
-                 newView, NSViewAnimationTargetKey,
-                 NSViewAnimationFadeInEffect,
-                 NSViewAnimationEffectKey, nil];
+    newFadeIn = @{NSViewAnimationTargetKey: newView,
+                 NSViewAnimationEffectKey: NSViewAnimationFadeInEffect};
     
     NSArray *animations;
-    animations = [NSArray arrayWithObjects: newFadeIn, oldFadeOut, nil];
+    animations = @[newFadeIn, oldFadeOut];
     
     NSViewAnimation *animation;
     animation = [[NSViewAnimation alloc]
@@ -265,19 +261,15 @@
 
     NSDictionary *fadeWindow = nil;
     if (fade) {
-        fadeWindow = [NSDictionary dictionaryWithObjectsAndKeys:
-                      zoomWindow, NSViewAnimationTargetKey,
-                      NSViewAnimationFadeOutEffect, NSViewAnimationEffectKey,
-                      nil];
+        fadeWindow = @{NSViewAnimationTargetKey: zoomWindow,
+                      NSViewAnimationEffectKey: NSViewAnimationFadeOutEffect};
     }
     
-    NSDictionary *resizeWindow = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  zoomWindow, NSViewAnimationTargetKey,
-                                  [NSValue valueWithRect: endRect], NSViewAnimationEndFrameKey,
-                                  nil];
+    NSDictionary *resizeWindow = @{NSViewAnimationTargetKey: zoomWindow,
+                                  NSViewAnimationEndFrameKey: [NSValue valueWithRect: endRect]};
     
     NSArray *animations;
-    animations = [NSArray arrayWithObjects: resizeWindow, fadeWindow, nil];
+    animations = @[resizeWindow, fadeWindow];
     
     NSViewAnimation *animation;
     animation = [[NSViewAnimation alloc] initWithViewAnimations: animations];
@@ -304,13 +296,13 @@
     
     NSRect rect1 = NSMakeRect(NSMinX(frame) - frame.size.width * vigourOfShake, NSMinY(frame), frame.size.width, frame.size.height);
     NSRect rect2 = NSMakeRect(NSMinX(frame) + frame.size.width * vigourOfShake, NSMinY(frame), frame.size.width, frame.size.height);
-    NSArray *array = [NSArray arrayWithObjects: [NSValue valueWithRect: rect1], [NSValue valueWithRect: rect2], nil];
+    NSArray *array = @[[NSValue valueWithRect: rect1], [NSValue valueWithRect: rect2]];
     [animation setValues: array];
     
     [animation setDuration: duration];
     [animation setRepeatCount: numberOfShakes];
     
-    [self setAnimations: [NSDictionary dictionaryWithObject: animation forKey: @"frame"]];
+    [self setAnimations: @{@"frame": animation}];
     [[self animator] setFrame: frame display: NO];
 }
 
@@ -325,8 +317,8 @@
     self.hidden = NO;
     if (self.opacity < 1) {
         CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
-        animation.fromValue = [NSNumber numberWithFloat: 0];
-        animation.toValue = [NSNumber numberWithFloat: 1];
+        animation.fromValue = @0.0f;
+        animation.toValue = @1.0f;
         animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
         [animation setValue: @"fadeIn" forKey: @"action"];
         
@@ -339,8 +331,8 @@
 {
     if (self.opacity > 0) {
         CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
-        animation.fromValue = [NSNumber numberWithFloat: 1];
-        animation.toValue = [NSNumber numberWithFloat: 0];
+        animation.fromValue = @1.0f;
+        animation.toValue = @0.0f;
         animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
         animation.delegate = self;
         [animation setValue: @"fadeOut" forKey: @"action"];

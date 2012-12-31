@@ -36,18 +36,14 @@
 }
 
 - (NSDictionary *)registrationDictionaryForGrowl {
-	NSDictionary *notificationsWithDescriptions = [NSDictionary dictionaryWithObjectsAndKeys:
-												   PecuniaNotificationDescription, PecuniaNotification,
-                                                   nil];
+	NSDictionary *notificationsWithDescriptions = @{PecuniaNotification: PecuniaNotificationDescription};
 
 	NSArray *allNotifications = [notificationsWithDescriptions allKeys];
 	NSMutableArray *defaultNotifications = [allNotifications mutableCopy];
-	NSDictionary *regDict = [NSDictionary dictionaryWithObjectsAndKeys:
-							 @"Pecunia", GROWL_APP_NAME,
-							 allNotifications, GROWL_NOTIFICATIONS_ALL,
-							 defaultNotifications,	GROWL_NOTIFICATIONS_DEFAULT,
-							 notificationsWithDescriptions,	GROWL_NOTIFICATIONS_HUMAN_READABLE_NAMES,
-							 nil];
+	NSDictionary *regDict = @{GROWL_APP_NAME: @"Pecunia",
+							 GROWL_NOTIFICATIONS_ALL: allNotifications,
+							 GROWL_NOTIFICATIONS_DEFAULT: defaultNotifications,
+							 GROWL_NOTIFICATIONS_HUMAN_READABLE_NAMES: notificationsWithDescriptions};
 
 	return regDict;
 }

@@ -93,7 +93,7 @@ BOOL updateSent = NO;
             if(curr != nil && [curr length ] > 0) self.currency = curr;
         }
         self.balance = balance;
-        self.isBalanceValid = [NSNumber numberWithBool: YES ];
+        self.isBalanceValid = @YES;
     }
 }
 
@@ -151,7 +151,7 @@ BOOL updateSent = NO;
 
 -(void)invalidateBalance
 {
-    self.isBalanceValid = [NSNumber numberWithBool: NO ];
+    self.isBalanceValid = @NO;
 }
 
 
@@ -436,7 +436,7 @@ BOOL updateSent = NO;
         int balanceCount = 1;
         NSDecimalNumber* lastSaldo = nil;
         for (NSUInteger i = 0; i < count; i++) {
-            StatCatAssignment* assignment = [sortedAssignments objectAtIndex: i];
+            StatCatAssignment* assignment = sortedAssignments[i];
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
             
             switch (interval) {
@@ -463,7 +463,7 @@ BOOL updateSent = NO;
                 {
                     [dateArray addObject: lastDate];
                     [balanceArray addObject: lastSaldo];
-                    [countArray addObject: [NSNumber numberWithInt: balanceCount]];
+                    [countArray addObject: @(balanceCount)];
                     balanceCount = 1;
                     lastDate = date;
                 }
@@ -477,7 +477,7 @@ BOOL updateSent = NO;
         if (lastDate != nil) {
             [dateArray addObject: lastDate];
             [balanceArray addObject: lastSaldo];
-            [countArray addObject: [NSNumber numberWithInt: balanceCount]];
+            [countArray addObject: @(balanceCount)];
         }            
         *dates = dateArray;
         *balances = balanceArray;
@@ -512,7 +512,7 @@ BOOL updateSent = NO;
     NSArray* sortedStats = [stats sortedArrayUsingSelector: @selector(compareDate:)];
     
     if ([sortedStats count] > 0) {
-        StatCatAssignment* assignment = [sortedStats objectAtIndex: 0];
+        StatCatAssignment* assignment = sortedStats[0];
         ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
         if ([date compare: currentMinDate] == NSOrderedAscending) {
             currentMinDate = date;
@@ -571,7 +571,7 @@ BOOL updateSent = NO;
             {
                 [dateArray addObject: lastDate];
                 [balanceArray addObject: currentValue];
-                [countArray addObject: [NSNumber numberWithInt: balanceCount]];
+                [countArray addObject: @(balanceCount)];
                 balanceCount = 1;
                 lastDate = date;
                 currentValue = assignment.statement.value;
@@ -587,7 +587,7 @@ BOOL updateSent = NO;
         }
         [dateArray addObject: lastDate];
         [balanceArray addObject: currentValue];
-        [countArray addObject: [NSNumber numberWithInt: balanceCount]];
+        [countArray addObject: @(balanceCount)];
         
         *dates = dateArray;
         *balances = balanceArray;
@@ -690,12 +690,12 @@ BOOL updateSent = NO;
         [alert runModal];
         return nil;
     }
-    if([cats count ] > 0) return [cats objectAtIndex: 0 ];
+    if([cats count ] > 0) return cats[0];
     
     // create Root object
     bankRootSingleton = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
     [bankRootSingleton setValue: @"++bankroot" forKey: @"name" ];
-    [bankRootSingleton setValue: [NSNumber numberWithBool: YES ] forKey: @"isBankAcc" ];
+    [bankRootSingleton setValue: @YES forKey: @"isBankAcc" ];
     return bankRootSingleton;
 }
 
@@ -716,12 +716,12 @@ BOOL updateSent = NO;
         [alert runModal];
         return nil;
     }
-    if([cats count ] > 0) return [cats objectAtIndex: 0 ];
+    if([cats count ] > 0) return cats[0];
     
     // create Category Root object
     catRootSingleton = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
     [catRootSingleton setValue: @"++catroot" forKey: @"name" ];
-    [catRootSingleton setValue: [NSNumber numberWithBool: NO ] forKey: @"isBankAcc" ];
+    [catRootSingleton setValue: @NO forKey: @"isBankAcc" ];
     return catRootSingleton;
 }
 
@@ -740,12 +740,12 @@ BOOL updateSent = NO;
     }
 
     if ([cats count ] > 0) {
-        notAssignedRootSingleton = [cats objectAtIndex: 0];
+        notAssignedRootSingleton = cats[0];
     } else {
         Category *notAssignedRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
                                                                            inManagedObjectContext: context];
         [notAssignedRootSingleton setPrimitiveValue: @"++nassroot" forKey: @"name"];
-        [notAssignedRootSingleton setValue: [NSNumber numberWithBool: NO] forKey: @"isBankAcc"];
+        [notAssignedRootSingleton setValue: @NO forKey: @"isBankAcc"];
         [notAssignedRootSingleton setValue: catRootSingleton forKey: @"parent"];
     }
 

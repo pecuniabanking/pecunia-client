@@ -78,7 +78,7 @@ extern NSString *TransferReadyForUseDataType;
     [super awakeFromNib];
     
     [self setDelegate: self];
-    [self registerForDraggedTypes: [NSArray arrayWithObjects: TransferDataType, TransferReadyForUseDataType, nil]];
+    [self registerForDraggedTypes: @[TransferDataType, TransferReadyForUseDataType]];
 }
 
 - (void) dealloc
@@ -202,27 +202,25 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (void)fillCell: (TransfersListViewCell*)cell forRow: (NSUInteger)row
 {
-    Transfer *transfer = [dataSource objectAtIndex: row];
+    Transfer *transfer = dataSource[row];
     
     NSDate *date = transfer.valutaDate;
     if (date == nil) {
         date = transfer.date;
     }
-    NSDictionary *details = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [NSNumber numberWithInt: row], StatementIndexKey,
-                             [self safeAndFormattedValue: date], StatementDateKey,
-                             [self safeAndFormattedValue: transfer.remoteName], StatementRemoteNameKey,
-                             [self safeAndFormattedValue: transfer.purpose], StatementPurposeKey,
-                             [self safeAndFormattedValue: transfer.value], StatementValueKey,
-                             [self safeAndFormattedValue: transfer.currency], StatementCurrencyKey,
-                             [self safeAndFormattedValue: transfer.remoteBankName], StatementRemoteBankNameKey,
-                             [self safeAndFormattedValue: transfer.remoteBankCode], StatementRemoteBankCodeKey,
-                             [self safeAndFormattedValue: transfer.remoteIBAN], StatementRemoteIBANKey,
-                             [self safeAndFormattedValue: transfer.remoteBIC], StatementRemoteBICKey,
-                             [self safeAndFormattedValue: transfer.remoteAccount], StatementRemoteAccountKey,
-                             [self safeAndFormattedValue: transfer.type], StatementTypeKey,
-                             [transfer.account categoryColor], StatementColorKey,
-                             nil];
+    NSDictionary *details = @{StatementIndexKey: @((int)row),
+                             StatementDateKey: [self safeAndFormattedValue: date],
+                             StatementRemoteNameKey: [self safeAndFormattedValue: transfer.remoteName],
+                             StatementPurposeKey: [self safeAndFormattedValue: transfer.purpose],
+                             StatementValueKey: [self safeAndFormattedValue: transfer.value],
+                             StatementCurrencyKey: [self safeAndFormattedValue: transfer.currency],
+                             StatementRemoteBankNameKey: [self safeAndFormattedValue: transfer.remoteBankName],
+                             StatementRemoteBankCodeKey: [self safeAndFormattedValue: transfer.remoteBankCode],
+                             StatementRemoteIBANKey: [self safeAndFormattedValue: transfer.remoteIBAN],
+                             StatementRemoteBICKey: [self safeAndFormattedValue: transfer.remoteBIC],
+                             StatementRemoteAccountKey: [self safeAndFormattedValue: transfer.remoteAccount],
+                             StatementTypeKey: [self safeAndFormattedValue: transfer.type],
+                             StatementColorKey: [transfer.account categoryColor]};
     
     [cell setDetails: details];
     
@@ -291,7 +289,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     // Collect the ids of all selected transfers and put them on the dragboard.
     NSUInteger index = [rowIndexes firstIndex];
     while (index != NSNotFound) {
-        Transfer *transfer = [dataSource objectAtIndex: index];
+        Transfer *transfer = dataSource[index];
         NSURL *url = [[transfer objectID] URIRepresentation];
         [draggedTransfers addObject: url];
 
@@ -299,7 +297,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     }
     
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: draggedTransfers];
-    [dragPasteboard declareTypes: [NSArray arrayWithObject: TransferDataType] owner: self];
+    [dragPasteboard declareTypes: @[TransferDataType] owner: self];
     [dragPasteboard setData: data forType: TransferDataType];
     [owner draggingStartsFor: self];
 

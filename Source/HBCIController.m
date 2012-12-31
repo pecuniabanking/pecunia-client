@@ -95,10 +95,10 @@
     for(line in lines) {
         NSArray *infos = [line componentsSeparatedByString: @";" ];
         Country *country = [[Country alloc ] init ];
-        country.code = [infos objectAtIndex: 2 ];
-        country.name = [infos objectAtIndex:0 ];
-        country.currency = [infos objectAtIndex:3 ];
-        [countries setObject:country forKey:country.code ];
+        country.code = infos[2];
+        country.name = infos[0];
+        country.currency = infos[3];
+        countries[country.code] = country;
     }
 }
 
@@ -155,11 +155,11 @@ NSString *escapeSpecial(NSString *s)
 {
     PecuniaError *error=nil;
     
-    BankInfo *info = [bankInfo objectForKey: bankCode ];
+    BankInfo *info = bankInfo[bankCode];
     if(info == nil) {
         NSString *cmd = [NSString stringWithFormat: @"<command name=\"getBankInfo\"><bankCode>%@</bankCode></command>", bankCode ];
         info = [bridge syncCommand: cmd error: &error ];
-        if(error == nil && info) [bankInfo setObject: info forKey: bankCode ]; else return nil;
+        if(error == nil && info) bankInfo[bankCode] = info; else return nil;
     }
     return info;
 }
@@ -225,7 +225,7 @@ NSString *escapeSpecial(NSString *s)
 -(PecuniaError*)addAccount: (BankAccount*)account forUser: (BankUser*)user
 {
     account.customerId = user.customerId;
-    return [self setAccounts:[NSArray arrayWithObject:account ] ];
+    return [self setAccounts:@[account] ];
 }
 
 -(PecuniaError*)setAccounts:(NSArray*)bankAccounts
@@ -451,7 +451,7 @@ NSString *escapeSpecial(NSString *s)
     // get texts for allowed countries - build up PopUpButton data
     for(s in countryInfo) {
         NSArray *comps = [s componentsSeparatedByString: @";" ];
-        Country  *country = [countries valueForKey:[comps objectAtIndex:0 ] ];
+        Country  *country = [countries valueForKey:comps[0] ];
         if(country != nil) [res addObject:country ];
     }
     if ([res count ] == 0) {
@@ -548,7 +548,7 @@ NSString *escapeSpecial(NSString *s)
     NSNumber *isOk = [bridge syncCommand: cmd error: &err];
     [self stopProgress ];
     if (err == nil && [isOk boolValue ] == YES) {
-        for(transfer in transfers) transfer.isSent = [NSNumber numberWithBool:YES ];
+        for(transfer in transfers) transfer.isSent = @YES;
     }
     return err;
 }
@@ -568,10 +568,10 @@ NSString *escapeSpecial(NSString *s)
     // Group transfers by BankAccount
     for (transfer in transfers) {
         BankAccount *account = transfer.account;
-        NSMutableArray *accountTransfers = [accountTransferRegister objectForKey: account];
+        NSMutableArray *accountTransfers = accountTransferRegister[account];
         if (accountTransfers == nil) {
             accountTransfers = [NSMutableArray arrayWithCapacity: 10];
-            [accountTransferRegister setObject: accountTransfers forKey: account];
+            accountTransferRegister[account] = accountTransfers;
         }
         [accountTransfers addObject: transfer];
     }
@@ -595,7 +595,7 @@ NSString *escapeSpecial(NSString *s)
         if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
         
         NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfers\"><transfers type=\"list\">" ];
-        for (transfer in [accountTransferRegister objectForKey: account]) {
+        for (transfer in accountTransferRegister[account]) {
             [cmd appendString: @"<transfer>"];
             [self appendTag: @"bankCode" withValue: transfer.account.bankCode to: cmd];
             [self appendTag: @"accountNumber" withValue: transfer.account.accountNumber to: cmd];
@@ -669,7 +669,7 @@ NSString *escapeSpecial(NSString *s)
             NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
             Transfer *transfer = (Transfer*)[context objectWithID: moID];
             if (result.isOk) {
-                transfer.isSent = [NSNumber numberWithBool: YES];
+                transfer.isSent = @YES;
             } else {
                 allSent = NO;
             }
@@ -872,7 +872,7 @@ NSString *escapeSpecial(NSString *s)
             }
             // saldo of the last statement is current saldo
             if ([res.statements count ] > 0) {
-                BankStatement *stat = [res.statements objectAtIndex: [res.statements count ] - 1 ];
+                BankStatement *stat = (res.statements)[[res.statements count ] - 1];
                 iResult.balance = stat.saldo;
                 /*				
                  // ensure order by refining posting date
@@ -980,10 +980,10 @@ NSString *escapeSpecial(NSString *s)
     // Group transfers by BankAccount
     for (StandingOrder *stord in orders) {
         BankAccount *account = stord.account;
-        NSMutableArray *accountTransfers = [accountTransferRegister objectForKey: account];
+        NSMutableArray *accountTransfers = accountTransferRegister[account];
         if (accountTransfers == nil) {
             accountTransfers = [NSMutableArray arrayWithCapacity: 10];
-            [accountTransferRegister setObject: accountTransfers forKey: account];
+            accountTransferRegister[account] = accountTransfers;
         }
         [accountTransfers addObject: stord];
     }
@@ -1005,7 +1005,7 @@ NSString *escapeSpecial(NSString *s)
         
         if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
     
-        for(StandingOrder *stord in [accountTransferRegister objectForKey: account]) {
+        for(StandingOrder *stord in accountTransferRegister[account]) {
             
             // todo: don't send unchanged orders
             if ([stord.isChanged boolValue] == NO && [stord.toDelete boolValue ] == NO) continue;
@@ -1028,7 +1028,7 @@ NSString *escapeSpecial(NSString *s)
                 stord.isSent = [result valueForKey:@"isOk" ];
                 stord.orderKey = [result valueForKey:@"orderId" ];
                 if (stord.isSent) {
-                    stord.isChanged = [NSNumber numberWithBool:NO ];
+                    stord.isChanged = @NO;
                 }
             } else if ([stord.toDelete boolValue ] == YES) {
                 // delete standing order
@@ -1064,7 +1064,7 @@ NSString *escapeSpecial(NSString *s)
                 }
                 stord.isSent = result;
                 if ([result boolValue ] == YES) {
-                    stord.isChanged = [NSNumber numberWithBool:NO ];
+                    stord.isChanged = @NO;
                 }
             }		
         }
@@ -1087,7 +1087,7 @@ NSString *escapeSpecial(NSString *s)
         bankNode.bankCode = acc.bankCode;
         bankNode.currency = acc.currency;
         bankNode.bic = acc.bic;
-        bankNode.isBankAcc = [NSNumber numberWithBool: YES];
+        bankNode.isBankAcc = @YES;
         bankNode.parent = root;
         if(bankAccounts) [bankAccounts addObject: bankNode];
     }
@@ -1159,7 +1159,7 @@ NSString *escapeSpecial(NSString *s)
             bankAccount.owner = acc.ownerName;
             bankAccount.userId = acc.userId;
             bankAccount.customerId = acc.customerId;
-            bankAccount.isBankAcc = [NSNumber numberWithBool: YES];
+            bankAccount.isBankAcc = @YES;
             bankAccount.accountSuffix = acc.subNumber;
             bankAccount.bic = acc.bic;
             bankAccount.iban = acc.iban;
@@ -1213,18 +1213,18 @@ NSString *escapeSpecial(NSString *s)
             SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
             tinfo.account = account;
             tinfo.user = user;
-            tinfo.type = [NSNumber numberWithInt:TransactionType_TransferStandard ];
+            tinfo.type = @(TransactionType_TransferStandard);
             
             // Parameters
             if ([supportedJobNames containsObject:@"TermUeb" ] == YES) {
-                tinfo.allowsDated = [NSNumber numberWithBool:YES];
+                tinfo.allowsDated = @YES;
             } else {
-                tinfo.allowsDated = [NSNumber numberWithBool:NO];
+                tinfo.allowsDated = @NO;
             }
             if ([supportedJobNames containsObject:@"MultiUeb" ] == YES) {
-                tinfo.allowsCollective = [NSNumber numberWithBool:YES];
+                tinfo.allowsCollective = @YES;
             } else {
-                tinfo.allowsCollective = [NSNumber numberWithBool:NO];
+                tinfo.allowsCollective = @NO;
             }
         }
         
@@ -1233,53 +1233,53 @@ NSString *escapeSpecial(NSString *s)
             SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
             tinfo.account = account;
             tinfo.user = user;
-            tinfo.type = [NSNumber numberWithInt:TransactionType_TransferDated ];
+            tinfo.type = @(TransactionType_TransferDated);
         }
         
         if ([supportedJobNames containsObject:@"UebForeign" ] == YES) {
             SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
             tinfo.account = account;
             tinfo.user = user;
-            tinfo.type = [NSNumber numberWithInt:TransactionType_TransferEU ];
+            tinfo.type = @(TransactionType_TransferEU);
         }
         
         if ([supportedJobNames containsObject:@"UebSEPA" ] == YES) {
             SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
             tinfo.account = account;
             tinfo.user = user;
-            tinfo.type = [NSNumber numberWithInt:TransactionType_TransferSEPA ];
+            tinfo.type = @(TransactionType_TransferSEPA);
         }
         
         if ([supportedJobNames containsObject:@"Umb" ] == YES) {
             SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
             tinfo.account = account;
             tinfo.user = user;
-            tinfo.type = [NSNumber numberWithInt:TransactionType_TransferInternal ];
+            tinfo.type = @(TransactionType_TransferInternal);
         }
         
         if ([supportedJobNames containsObject:@"Last" ] == YES) {
             SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
             tinfo.account = account;
             tinfo.user = user;
-            tinfo.type = [NSNumber numberWithInt:TransactionType_TransferDebit ];
+            tinfo.type = @(TransactionType_TransferDebit);
         }
         
         if ([supportedJobNames containsObject:@"DauerNew" ] == YES) {
             SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
             tinfo.account = account;
             tinfo.user = user;
-            tinfo.type = [NSNumber numberWithInt:TransactionType_StandingOrder ];
+            tinfo.type = @(TransactionType_StandingOrder);
             
             // Parameters
             if ([supportedJobNames containsObject:@"DauerEdit" ] == YES) {
-                tinfo.allowsChange = [NSNumber numberWithBool:YES];
+                tinfo.allowsChange = @YES;
             } else {
-                tinfo.allowsChange = [NSNumber numberWithBool:NO];
+                tinfo.allowsChange = @NO;
             }
             if ([supportedJobNames containsObject:@"DauerDel" ] == YES) {
-                tinfo.allowesDelete = [NSNumber numberWithBool:YES];
+                tinfo.allowesDelete = @YES;
             } else {
-                tinfo.allowesDelete = [NSNumber numberWithBool:NO];
+                tinfo.allowesDelete = @NO;
             }
         }
     }
@@ -1362,7 +1362,7 @@ NSString *escapeSpecial(NSString *s)
     if(error) return error;
 
     if ([result boolValue ] == YES) {
-        msg.isSent = [NSNumber numberWithBool:YES ];
+        msg.isSent = @YES;
     } else {
         error = [PecuniaError errorWithCode:0 message: NSLocalizedString(@"AP172", @"") ];
     }
@@ -1477,7 +1477,7 @@ NSString *escapeSpecial(NSString *s)
     [sbController clearMessage ];
     if (error) return error;
     [user updateTanMedia:mediaList.mediaList ];
-    user.tanMediaFetched = [NSNumber numberWithBool:YES ];
+    user.tanMediaFetched = @YES;
     return nil;
 }
 
@@ -1508,7 +1508,7 @@ NSString *escapeSpecial(NSString *s)
     SecurityMethod secMethod = [user.secMethod intValue ];
     if (secMethod == SecMethod_DDV) {
         [self appendTag: @"passportType" withValue: @"DDV" to: cmd];
-        user.tanMediaFetched = [NSNumber numberWithBool:YES ];
+        user.tanMediaFetched = @YES;
         [self appendTag: @"ddvPortIdx" withValue: [user.ddvPortIdx stringValue ] to: cmd];
         [self appendTag: @"ddvReaderIdx" withValue: [user.ddvReaderIdx stringValue ] to: cmd];
         [self appendTag: @"host" withValue: user.bankURL to: cmd ];

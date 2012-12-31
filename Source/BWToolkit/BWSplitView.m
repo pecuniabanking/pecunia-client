@@ -239,7 +239,7 @@ static float scaleFactor = 1.0f;
 	int index = [self collapsibleSubviewIndex];
 	
 	if (index >= 0)
-		return [[self subviews] objectAtIndex:index];
+		return [self subviews][index];
 	else
 		return nil;
 }
@@ -313,7 +313,7 @@ static float scaleFactor = 1.0f;
 	if ([self hasCollapsibleSubview])
 	{
 		NSMutableDictionary *tempMinValues = [[self minValues] mutableCopy];
-		[tempMinValues setObject:minSize forKey:[NSNumber numberWithInt:[[self subviews] indexOfObject:[self collapsibleSubview]]]];
+		tempMinValues[[NSNumber numberWithInt:[[self subviews] indexOfObject:[self collapsibleSubview]]]] = minSize;
 		[self setMinValues:tempMinValues];
 	}
 }
@@ -348,7 +348,7 @@ static float scaleFactor = 1.0f;
 	// Check to see if the collapsible subview has a minimum width/height and record it.
 	// We'll later remove the min size temporarily while animating and then restore it.
 	BOOL hasMinSize = NO;
-	NSNumber *minSize = [minValues objectForKey:[NSNumber numberWithInt:[[self subviews] indexOfObject:[self collapsibleSubview]]]];
+	NSNumber *minSize = minValues[[NSNumber numberWithInt:[[self subviews] indexOfObject:[self collapsibleSubview]]]];
 	minSize = [minSize copy];
 	
 	if (minSize != nil || [minSize intValue] != 0)
@@ -415,7 +415,7 @@ static float scaleFactor = 1.0f;
 			if (hasMinSize)
 				[self performSelector:@selector(setMinSizeForCollapsibleSubview:) withObject:minSize afterDelay:[self animationDuration]];
 			
-			[self performSelector:@selector(setCollapsibleSubviewCollapsedHelper:) withObject:[NSNumber numberWithBool:YES] afterDelay:[self animationDuration]];
+			[self performSelector:@selector(setCollapsibleSubviewCollapsedHelper:) withObject:@YES afterDelay:[self animationDuration]];
 		}
 		else
 		{
@@ -454,7 +454,7 @@ static float scaleFactor = 1.0f;
 			if (hasMinSize)
 				[self performSelector:@selector(setMinSizeForCollapsibleSubview:) withObject:minSize afterDelay:[self animationDuration]];
 			
-			[self performSelector:@selector(setCollapsibleSubviewCollapsedHelper:) withObject:[NSNumber numberWithBool:YES] afterDelay:[self animationDuration]];
+			[self performSelector:@selector(setCollapsibleSubviewCollapsedHelper:) withObject:@YES afterDelay:[self animationDuration]];
 		}
 		else
 		{
@@ -476,7 +476,7 @@ static float scaleFactor = 1.0f;
 	
 	isAnimating = YES;
 	[self performSelector:@selector(animationEnded) withObject:nil afterDelay:[self animationDuration]];
-	[self performSelector:@selector(restoreAutoresizesSubviews:) withObject:[NSNumber numberWithBool:autoresizesSubviews] afterDelay:[self animationDuration]];
+	[self performSelector:@selector(restoreAutoresizesSubviews:) withObject:@(autoresizesSubviews) afterDelay:[self animationDuration]];
 	
 	[self performSelector:@selector(resizeAndAdjustSubviews) withObject:nil afterDelay:[self animationDuration]];
 }
@@ -590,7 +590,7 @@ static float scaleFactor = 1.0f;
 	CGFloat maxValue = [self subviewMaximumSize:offset];
 	if (maxValue != FLT_MAX)
 	{
-		NSView *subview = [[self subviews] objectAtIndex:offset];
+		NSView *subview = [self subviews][offset];
 		CGFloat originCoord = [self isVertical] ? [subview frame].origin.x : [subview frame].origin.y;
 		
 		newMaxFromThisSubview = originCoord + maxValue;
@@ -603,7 +603,7 @@ static float scaleFactor = 1.0f;
 		CGFloat minValue = [self subviewMinimumSize:nextOffset];
 		if (minValue != 0)
 		{
-			NSView *subview = [[self subviews] objectAtIndex:nextOffset];
+			NSView *subview = [self subviews][nextOffset];
 			CGFloat endCoord = [self isVertical] ? [subview frame].origin.x + [subview frame].size.width : [subview frame].origin.y + [subview frame].size.height;
 			
 			newMaxFromNextSubview = endCoord - minValue - [self dividerThickness];
@@ -633,7 +633,7 @@ static float scaleFactor = 1.0f;
 	CGFloat minValue = [self subviewMinimumSize:offset];
 	if (minValue != 0)
 	{
-		NSView *subview = [[self subviews] objectAtIndex:offset];
+		NSView *subview = [self subviews][offset];
 		CGFloat originCoord = [self isVertical] ? [subview frame].origin.x : [subview frame].origin.y;
 		
 		newMinFromThisSubview = originCoord + minValue;
@@ -646,7 +646,7 @@ static float scaleFactor = 1.0f;
 		CGFloat maxValue = [self subviewMaximumSize:nextOffset];
 		if (maxValue != FLT_MAX)
 		{
-			NSView *subview = [[self subviews] objectAtIndex:nextOffset];
+			NSView *subview = [self subviews][nextOffset];
 			CGFloat endCoord = [self isVertical] ? [subview frame].origin.x + [subview frame].size.width : [subview frame].origin.y + [subview frame].size.height;
 			
 			newMaxFromNextSubview = endCoord - maxValue - [self dividerThickness];
@@ -743,12 +743,12 @@ static float scaleFactor = 1.0f;
 
 - (CGFloat)subviewMinimumSize:(int)subviewIndex;
 {
-	NSNumber *minNum = [minValues objectForKey:[NSNumber numberWithInt:subviewIndex]];
+	NSNumber *minNum = minValues[@(subviewIndex)];
 	if (!minNum)
 		return 0;
 	
 	int units = 0;
-	NSNumber *unitsNum = [minUnits objectForKey:[NSNumber numberWithInt:subviewIndex]];
+	NSNumber *unitsNum = minUnits[@(subviewIndex)];
 	if (unitsNum)
 		units = [unitsNum intValue];
 	
@@ -778,12 +778,12 @@ static float scaleFactor = 1.0f;
 
 - (CGFloat)subviewMaximumSize:(int)subviewIndex;
 {
-	NSNumber *maxNum = [maxValues objectForKey:[NSNumber numberWithInt:subviewIndex]];
+	NSNumber *maxNum = maxValues[@(subviewIndex)];
 	if (!maxNum)
 		return FLT_MAX;
 	
 	int units = 0;
-	NSNumber *unitsNum = [maxUnits objectForKey:[NSNumber numberWithInt:subviewIndex]];
+	NSNumber *unitsNum = maxUnits[@(subviewIndex)];
 	if (unitsNum)
 		units = [unitsNum intValue];
 	
@@ -848,19 +848,17 @@ static float scaleFactor = 1.0f;
 			CGFloat size = [self isVertical] ? [subview frame].size.width : [subview frame].size.height;
 			CGFloat proportion = (resizableTotal > 0) ? (size / resizableTotal) : 0;
 			
-			[preferredProportions setObject:[NSNumber numberWithFloat:proportion]
-									 forKey:[NSNumber numberWithInt:index]];
+			preferredProportions[@(index)] = [NSNumber numberWithFloat:proportion];
 			
-			[stateArray addObject:[NSNumber numberWithBool:YES]];
+			[stateArray addObject:@YES];
 		}
 		else
 		{
 			CGFloat size = [self isVertical] ? [subview frame].size.width : [subview frame].size.height;
 			
-			[preferredSizes setObject:[NSNumber numberWithFloat:size]
-							   forKey:[NSNumber numberWithInt:index]];
+			preferredSizes[@(index)] = [NSNumber numberWithFloat:size];
 			
-			[stateArray addObject:[NSNumber numberWithBool:NO]];
+			[stateArray addObject:@NO];
 		}
 	}
 	
@@ -893,7 +891,7 @@ static float scaleFactor = 1.0f;
 	{
 		int index = [[self subviews] indexOfObject:subview];
 		
-		if ([self subviewIsResizable:subview] != [[[self stateForLastPreferredCalculations] objectAtIndex:index] boolValue])
+		if ([self subviewIsResizable:subview] != [[self stateForLastPreferredCalculations][index] boolValue])
 			return NO;
 	}
 	
@@ -910,7 +908,7 @@ static float scaleFactor = 1.0f;
 	NSMutableDictionary *preferredProportions = [[self resizableSubviewPreferredProportion] mutableCopy];
 	NSMutableDictionary *preferredSizes = [[self nonresizableSubviewPreferredSize] mutableCopy];
 	
-	NSNumber *key = [NSNumber numberWithInt:[self collapsibleSubviewIndex]];
+	NSNumber *key = @([self collapsibleSubviewIndex]);
 	NSView *subview = [self collapsibleSubview];
 	
 	// If the collapsible subview is collapsed, we put aside its preferred propotion/size
@@ -920,7 +918,7 @@ static float scaleFactor = 1.0f;
 		
 		if (!resizable)
 		{
-			NSNumber *sizeNum = [preferredSizes objectForKey:key];
+			NSNumber *sizeNum = preferredSizes[key];
 			if (sizeNum)
 			{
 				if (RESIZE_DEBUG_LOGS) NSLog(@"removing collapsible view from preferred sizes");
@@ -933,7 +931,7 @@ static float scaleFactor = 1.0f;
 		}
 		else
 		{
-			NSNumber *proportionNum = [preferredProportions objectForKey:key];
+			NSNumber *proportionNum = preferredProportions[key];
 			if (proportionNum)
 			{
 				if (RESIZE_DEBUG_LOGS) NSLog(@"removing collapsible view from preferred proportions");
@@ -951,10 +949,10 @@ static float scaleFactor = 1.0f;
 				{
 					for (NSNumber *pkey in [preferredProportions allKeys])
 					{
-						CGFloat oldProportion = [[preferredProportions objectForKey:pkey] floatValue];
+						CGFloat oldProportion = [preferredProportions[pkey] floatValue];
 						CGFloat newPropotion = oldProportion / proportionTotal;
 						
-						[preferredProportions setObject:[NSNumber numberWithFloat:newPropotion] forKey:pkey];
+						preferredProportions[pkey] = [NSNumber numberWithFloat:newPropotion];
 					}
 				}
 			}
@@ -1038,8 +1036,7 @@ static float scaleFactor = 1.0f;
 	// Special case for the collapsible subview
 	if ([self collapsibleSubviewIsCollapsed])
 	{
-		[newSubviewSizes setObject:[NSNumber numberWithFloat:0.0]
-							forKey:[NSNumber numberWithInt:[self collapsibleSubviewIndex]]];
+		newSubviewSizes[@([self collapsibleSubviewIndex])] = @0.0f;
 	}
 	
 	// Set non-resizable subviews to preferred size
@@ -1053,7 +1050,7 @@ static float scaleFactor = 1.0f;
 	{
 		resizableSubviewCounter++;
 		
-		CGFloat proportion = [[resizableSubviewPreferredProportion objectForKey:key] floatValue];
+		CGFloat proportion = [resizableSubviewPreferredProportion[key] floatValue];
 		CGFloat size = roundf(proportion * resizableSubviewsTotalAvailableSize);
 		resizableSubviewAvailableSizeUsed += size;
 		
@@ -1063,7 +1060,7 @@ static float scaleFactor = 1.0f;
 			size += (resizableSubviewsTotalAvailableSize - resizableSubviewAvailableSizeUsed);
 		}
 		
-		[newSubviewSizes setObject:[NSNumber numberWithFloat:size] forKey:key];
+		newSubviewSizes[key] = [NSNumber numberWithFloat:size];
 	}
 	if (RESIZE_DEBUG_LOGS) NSLog(@"newSubviewSizes after resizable proportional resizing: %@", newSubviewSizes);
 	
@@ -1071,15 +1068,15 @@ static float scaleFactor = 1.0f;
 	
 	// Make array of all the resizable subviews indexes
 	NSMutableArray *resizableSubviewIndexes = [[resizableSubviewPreferredProportion allKeys] mutableCopy];
-	[resizableSubviewIndexes sortUsingDescriptors:[NSArray arrayWithObject: [[NSSortDescriptor alloc] initWithKey:@"self" ascending:YES]]];
+	[resizableSubviewIndexes sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"self" ascending:YES]]];
 	
 	// Loop until none of the resizable subviews' constraints are violated
 	CGFloat proportionTotal = 1;
 	CGFloat resizableSubviewsRemainingAvailableSize = resizableSubviewsTotalAvailableSize;
 	for (NSUInteger i = 0; i < [resizableSubviewIndexes count]; i++)
 	{
-		NSNumber *key = [resizableSubviewIndexes objectAtIndex:i];
-		CGFloat size = [[newSubviewSizes objectForKey:key] floatValue];
+		NSNumber *key = resizableSubviewIndexes[i];
+		CGFloat size = [newSubviewSizes[key] floatValue];
 		CGFloat minSize = [self subviewMinimumSize:[key intValue]];
 		CGFloat maxSize = [self subviewMaximumSize:[key intValue]];
 		
@@ -1094,22 +1091,22 @@ static float scaleFactor = 1.0f;
 			if (RESIZE_DEBUG_LOGS) NSLog(@"resizable subview %@ was %@, set to %f", key, (underMin ? @"under min" : @"over max"), constrainedSize);
 			
 			// Give subview constrained size and remove from array
-			[newSubviewSizes setObject:[NSNumber numberWithFloat:constrainedSize] forKey:key];
+			newSubviewSizes[key] = [NSNumber numberWithFloat:constrainedSize];
 			[resizableSubviewIndexes removeObject:key];
 			
 			// Adjust total proportion and remaining available size
-			proportionTotal -= [[resizableSubviewPreferredProportion objectForKey:key] floatValue];
+			proportionTotal -= [resizableSubviewPreferredProportion[key] floatValue];
 			resizableSubviewsRemainingAvailableSize -= underMin ? minSize : maxSize;
 			
 			// Recalculate remaining subview sizes
 			CGFloat resizableSubviewRemainingSizeUsed = 0;
 			for (NSUInteger j = 0; j < [resizableSubviewIndexes count]; j++)
 			{
-				NSNumber *jKey = [resizableSubviewIndexes objectAtIndex:j];
+				NSNumber *jKey = resizableSubviewIndexes[j];
 				
 				CGFloat proportion = 0;
 				if (proportionTotal > 0)
-					proportion = [[resizableSubviewPreferredProportion objectForKey:jKey] floatValue] / proportionTotal;
+					proportion = [resizableSubviewPreferredProportion[jKey] floatValue] / proportionTotal;
 				else
 					proportion = 1.0 / [resizableSubviewIndexes count];
 				
@@ -1122,7 +1119,7 @@ static float scaleFactor = 1.0f;
 					size += (resizableSubviewsRemainingAvailableSize - resizableSubviewRemainingSizeUsed);
 				}
 				
-				[newSubviewSizes setObject:[NSNumber numberWithFloat:size] forKey:jKey];
+				newSubviewSizes[jKey] = [NSNumber numberWithFloat:size];
 				
 				// Reset outer loop to start from beginning
 				i = -1;
@@ -1143,9 +1140,9 @@ static float scaleFactor = 1.0f;
 		NSMutableDictionary *nonresizableSubviewPreferredProportion = [NSMutableDictionary dictionary];
 		for (NSNumber *key in [nonresizableSubviewPreferredSize allKeys])
 		{
-			CGFloat proportion = [[nonresizableSubviewPreferredSize objectForKey:key] floatValue] / nonresizableSubviewsTotalPreferredSize;
+			CGFloat proportion = [nonresizableSubviewPreferredSize[key] floatValue] / nonresizableSubviewsTotalPreferredSize;
 			
-			[nonresizableSubviewPreferredProportion setObject:[NSNumber numberWithFloat:proportion] forKey:key];
+			nonresizableSubviewPreferredProportion[key] = [NSNumber numberWithFloat:proportion];
 		}
 		
 		// ResizableSubviewsRemainingAvailableSize is the amount of adjustment needed
@@ -1159,7 +1156,7 @@ static float scaleFactor = 1.0f;
 		{
 			nonresizableSubviewCounter++;
 			
-			CGFloat proportion = [[nonresizableSubviewPreferredProportion objectForKey:key] floatValue];
+			CGFloat proportion = [nonresizableSubviewPreferredProportion[key] floatValue];
 			CGFloat size = roundf(proportion * nonresizableSubviewsRemainingAvailableSize);
 			nonresizableSubviewAvailableSizeUsed += size;
 			
@@ -1169,20 +1166,20 @@ static float scaleFactor = 1.0f;
 				size += (nonresizableSubviewsRemainingAvailableSize - nonresizableSubviewAvailableSizeUsed);
 			}
 			
-			[newSubviewSizes setObject:[NSNumber numberWithFloat:size] forKey:key];
+			newSubviewSizes[key] = [NSNumber numberWithFloat:size];
 		}
 		if (RESIZE_DEBUG_LOGS) NSLog(@"newSubviewSizes after nonresizable proportional resizing: %@", newSubviewSizes);
 		
 		// Make array of all the non-resizable subviews indexes
 		NSMutableArray *nonresizableSubviewIndexes = [[nonresizableSubviewPreferredSize allKeys] mutableCopy];
-		[nonresizableSubviewIndexes sortUsingDescriptors:[NSArray arrayWithObject: [[NSSortDescriptor alloc] initWithKey:@"self" ascending:YES]]];
+		[nonresizableSubviewIndexes sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"self" ascending:YES]]];
 		
 		// Loop until none of the non-resizable subviews' constraints are violated
 		CGFloat proportionTotal = 1;
 		for (NSUInteger i = 0; i < [nonresizableSubviewIndexes count]; i++)
 		{
-			NSNumber *key = [nonresizableSubviewIndexes objectAtIndex:i];
-			CGFloat size = [[newSubviewSizes objectForKey:key] floatValue];
+			NSNumber *key = nonresizableSubviewIndexes[i];
+			CGFloat size = [newSubviewSizes[key] floatValue];
 			CGFloat minSize = [self subviewMinimumSize:[key intValue]];
 			CGFloat maxSize = [self subviewMaximumSize:[key intValue]];
 			
@@ -1197,22 +1194,22 @@ static float scaleFactor = 1.0f;
 				if (RESIZE_DEBUG_LOGS) NSLog(@"nonresizable subview %@ was %@, set to %f", key, (underMin ? @"under min" : @"over max"), constrainedSize);
 				
 				// Give subview constrained size and remove from array
-				[newSubviewSizes setObject:[NSNumber numberWithFloat:constrainedSize] forKey:key];
+				newSubviewSizes[key] = [NSNumber numberWithFloat:constrainedSize];
 				[nonresizableSubviewIndexes removeObject:key];
 				
 				// Adjust total proportion and remaining available size
-				proportionTotal -= [[nonresizableSubviewPreferredProportion objectForKey:key] floatValue];
+				proportionTotal -= [nonresizableSubviewPreferredProportion[key] floatValue];
 				nonresizableSubviewsRemainingAvailableSize -= underMin ? minSize : maxSize;
 				
 				// Recalculate remaining subview sizes
 				CGFloat nonresizableSubviewRemainingSizeUsed = 0;
 				for (NSUInteger j = 0; j < [nonresizableSubviewIndexes count]; j++)
 				{
-					NSNumber *jKey = [nonresizableSubviewIndexes objectAtIndex:j];
+					NSNumber *jKey = nonresizableSubviewIndexes[j];
 					
 					CGFloat proportion = 0;
 					if (proportionTotal > 0)
-						proportion = [[nonresizableSubviewPreferredProportion objectForKey:jKey] floatValue] / proportionTotal;
+						proportion = [nonresizableSubviewPreferredProportion[jKey] floatValue] / proportionTotal;
 					else
 						proportion = 1.0 / [nonresizableSubviewIndexes count];
 					
@@ -1225,7 +1222,7 @@ static float scaleFactor = 1.0f;
 						size += (nonresizableSubviewsRemainingAvailableSize - nonresizableSubviewRemainingSizeUsed);
 					}
 					
-					[newSubviewSizes setObject:[NSNumber numberWithFloat:size] forKey:jKey];
+					newSubviewSizes[jKey] = [NSNumber numberWithFloat:size];
 					
 					// Reset outer loop to start from beginning
 					i = -1;
@@ -1254,7 +1251,7 @@ static float scaleFactor = 1.0f;
 			{
 				NSNumber *key = [NSNumber numberWithInt:k];
 				
-				CGFloat currentSize = [[newSubviewSizes objectForKey:key] floatValue];
+				CGFloat currentSize = [newSubviewSizes[key] floatValue];
 				
 				CGFloat proportion = currentSize / allSubviewTotalCurrentSize;
 				CGFloat size = roundf(proportion * allSubviewTotalSize);
@@ -1266,7 +1263,7 @@ static float scaleFactor = 1.0f;
 					size += allSubviewTotalSize - allSubviewRemainingSizeUsed;
 				}
 				
-				[newSubviewSizes setObject:[NSNumber numberWithFloat:size] forKey:key];	
+				newSubviewSizes[key] = [NSNumber numberWithFloat:size];	
 			}
 			if (RESIZE_DEBUG_LOGS) NSLog(@"newSubviewSizes after all subviews forced adjustment: %@", newSubviewSizes);
 		}
@@ -1280,8 +1277,8 @@ static float scaleFactor = 1.0f;
 	CGFloat position = 0;
 	for (NSUInteger i = 0; i < [[self subviews] count]; i++)
 	{
-		NSView *subview = [[self subviews] objectAtIndex:i];
-		CGFloat size = [[newSubviewSizes objectForKey:[NSNumber numberWithInt:i]] floatValue];
+		NSView *subview = [self subviews][i];
+		CGFloat size = [newSubviewSizes[[NSNumber numberWithInt:i]] floatValue];
 		
 		NSRect subviewFrame = NSZeroRect;
 		

@@ -136,7 +136,7 @@
     id<PecuniaSectionItem> currentSection;
     
     // Sorting statements.
-    NSInteger sortIndex;
+    int sortIndex;
     BOOL sortAscending;
 
     NSArray *defaultIcons; // Associations between categories and their default icons.

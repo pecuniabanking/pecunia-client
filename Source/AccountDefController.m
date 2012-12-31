@@ -101,7 +101,7 @@
 {
 	int idx = [dropDown indexOfSelectedItem ];
 	if(idx < 0) idx = 0;
-	BankUser *user = [[users arrangedObjects ] objectAtIndex: idx];
+	BankUser *user = [users arrangedObjects ][idx];
 
 	if(idx > 0) {
 		account.bankName = user.bankName;
@@ -169,7 +169,7 @@
 
 	BankUser *user = nil;
 	int idx = [dropDown indexOfSelectedItem ];
-	if(idx > 0) user = [[users arrangedObjects ] objectAtIndex:idx ];
+	if(idx > 0) user = [users arrangedObjects ][idx];
 
 	// account is new - create entity in productive context
 	BankAccount *bankRoot = [BankAccount bankRootForCode: account.bankCode ];
@@ -184,7 +184,7 @@
 			bankRoot.currency = account.currency;
 			bankRoot.country = account.country;
 			bankRoot.bic = account.bic;
-			bankRoot.isBankAcc = [NSNumber numberWithBool: YES ];
+			bankRoot.isBankAcc = @YES;
 			// parent
 			bankRoot.parent = root;
 		} else bankRoot = nil;
@@ -196,20 +196,20 @@
 		newAccount.bankCode = account.bankCode;
 		newAccount.bankName = account.bankName;
 		if(user) {
-			newAccount.isManual = [NSNumber numberWithBool:NO ];
+			newAccount.isManual = @NO;
 			newAccount.userId = user.userId;
 			newAccount.customerId = user.customerId;
 			newAccount.collTransferMethod = account.collTransferMethod;
 			newAccount.isStandingOrderSupported = account.isStandingOrderSupported;
 		} else {
-			newAccount.isManual = [NSNumber numberWithBool:YES ];	
+			newAccount.isManual = @YES;	
 			newAccount.balance = account.balance;
 			NSPredicate* predicate = [predicateEditor objectValue];
 			if(predicate) newAccount.rule = [predicate description ];
 		}
 		
 		newAccount.parent = bankRoot;
-		newAccount.isBankAcc = [NSNumber numberWithBool:YES ];
+		newAccount.isBankAcc = @YES;
 	}
 	
 	if(newAccount) {

@@ -32,7 +32,7 @@
 	[self setValue:statement.nassValue forKey:@"residualAmount" ];
 	
 	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"localName" ascending:YES];
-	NSArray				*sds = [NSArray arrayWithObject:sd];
+	NSArray				*sds = @[sd];
 	[catController setSortDescriptors: sds ];
 	
 }
@@ -57,7 +57,7 @@
 {
 	NSArray *sel = [splitStatController selectedObjects ];
 	if (sel && [sel count] == 1) {
-		StatCatAssignment *stat = [sel objectAtIndex:0 ];
+		StatCatAssignment *stat = sel[0];
 		[stat remove ];
 		[self setValue: statement.nassValue forKey:@"residualAmount" ];
 	}
@@ -69,12 +69,12 @@
 	if([aNotification object ] == splitView) {
 		int idx = [splitView editedColumn ];
 		if(idx < 0) return;
-		NSTableColumn *col = [[splitView tableColumns ] objectAtIndex:idx];
+		NSTableColumn *col = [splitView tableColumns ][idx];
 		if (![[col identifier ] isEqualToString: @"value" ]) return;
 		
 		NSArray *sel = [splitStatController selectedObjects ];
 		if(sel && [sel count ] == 1) {
-			StatCatAssignment *stat = [sel objectAtIndex:0 ];
+			StatCatAssignment *stat = sel[0];
 			// ensure statement.value and stat.value have the same sign
 			if ([statement.value compare: [NSDecimalNumber zero ] ] != [stat.value compare: [NSDecimalNumber zero ] ]) {
 				stat.value = [stat.value decimalNumberByMultiplyingBy: [NSDecimalNumber decimalNumberWithString:@"-1" ] ];

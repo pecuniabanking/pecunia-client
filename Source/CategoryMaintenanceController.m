@@ -55,7 +55,7 @@ extern NSString* const CategoryKey;
 - (void)concludeDragOperation: (id <NSDraggingInfo>)sender
 {
     // Read image path for later processing.
-    NSString *path = [[[sender draggingPasteboard] propertyListForType: @"NSFilenamesPboardType"] objectAtIndex: 0];
+    NSString *path = [[sender draggingPasteboard] propertyListForType: @"NSFilenamesPboardType"][0];
     [super concludeDragOperation: sender];
     self.image.name = path;
 }
@@ -169,7 +169,7 @@ extern NSString* const CategoryKey;
         NSString* fileName = [[path lastPathComponent] stringByDeletingPathExtension];
         NSImage *image = [[NSImage alloc] initWithContentsOfFile: path];
         image.name = fileName;
-        [self.iconCollectionController addObject: [NSDictionary dictionaryWithObjectsAndKeys: image, @"icon", nil]];
+        [self.iconCollectionController addObject: @{@"icon": image}];
     }
 }
 
@@ -226,7 +226,7 @@ extern NSString* const CategoryKey;
     imageLibraryPopupWindow = nil;
 
     NSArray *selection = self.iconCollectionController.selectedObjects;
-    self.categoryIcon.image = [[selection objectAtIndex: 0] objectForKey: @"icon"];
+    self.categoryIcon.image = selection[0][@"icon"];
 }
 
 - (IBAction)cancelImage: (id)sender
@@ -270,7 +270,7 @@ extern NSString* const CategoryKey;
         changedCategory.iconName = [@"Collections/1/" stringByAppendingString: image.name];
     }
 
-    NSDictionary *info = [NSDictionary dictionaryWithObject: changedCategory forKey: CategoryKey];
+    NSDictionary *info = @{CategoryKey: changedCategory};
     [NSNotificationCenter.defaultCenter postNotificationName: CategoryColorNotification
                                                       object: self
                                                     userInfo: info];

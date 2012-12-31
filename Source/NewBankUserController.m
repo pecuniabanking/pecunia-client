@@ -57,7 +57,7 @@
 - (void)awakeFromNib
 {
 	[hbciVersions setContent:[[HBCIClient hbciClient] supportedVersions]];
-	[hbciVersions setSelectedObjects:[NSArray arrayWithObject:@"220"]];
+	[hbciVersions setSelectedObjects:@[@"220"]];
     
     // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
     topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
@@ -141,12 +141,12 @@
         NSInteger idx = [secMethodPopup indexOfSelectedItem ];
         if (idx == 1) {
             secMethod = SecMethod_DDV;
-            currentUser.ddvPortIdx = [NSNumber numberWithInt:1 ];
-            currentUser.ddvReaderIdx = [NSNumber numberWithInt:0 ];
+            currentUser.ddvPortIdx = @1;
+            currentUser.ddvReaderIdx = @0;
         } else {
             secMethod = SecMethod_PinTan;
         }
-        currentUser.secMethod = [NSNumber numberWithInt:secMethod ];
+        currentUser.secMethod = @((int)secMethod);
     }
     
     // PinTan-Zugang 
@@ -160,7 +160,7 @@
         }
         
         if (step == 2) {
-            // jetzt schauen, ob wir Infos �ber die Bank haben
+            // jetzt schauen, ob wir Infos ‚Äö√†√∂¬¨‚à´ber die Bank haben
             BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
             if (bi) {
                 currentUser.hbciVersion = bi.pinTanVersion;
@@ -373,7 +373,7 @@
             NSMutableArray *options = [[user getSigningOptions ] mutableCopy ];
             
             if ([options count ] > 1) {
-                // F�ge virtuelle Methode "Beim Senden festlegen" hinzu
+                // F‚Äö√†√∂¬¨‚à´ge virtuelle Methode "Beim Senden festlegen" hinzu
                 SigningOption *option = [[SigningOption alloc ] init ];
                 option.secMethod = SecMethod_PinTan;
                 option.userId = user.userId;
@@ -499,8 +499,8 @@
         
         // Defaultwerte setzen
         BankUser *user = [currentUserController content ];
-        user.ddvPortIdx = [NSNumber numberWithInt:1 ];
-        user.ddvReaderIdx = [NSNumber numberWithInt:0 ];
+        user.ddvPortIdx = @1;
+        user.ddvReaderIdx = @0;
 
         for(NSView *view in views) {
 			if ([view tag ] >= 100) {
@@ -508,7 +508,7 @@
 			}
 		}
         
-        // Gr��e setzen
+        // Gr‚Äö√†√∂‚Äö√†√á‚Äö√†√∂‚àö¬∫e setzen
 		NSRect frame = [userSheet frame ];
         frame.size.height += 20; frame.origin.y -= 20;
 		[[userSheet animator ] setFrame: frame display: YES ];
@@ -618,7 +618,7 @@
         // remove user from all related bank accounts
         NSMutableSet *accounts = [user mutableSetValueForKey:@"accounts" ];
         for (BankAccount *account in accounts) {
-            // pr�fen ob die userId gel�scht oder ge�ndert werden muss
+            // pr‚Äö√†√∂¬¨‚à´fen ob die userId gel‚Äö√†√∂‚Äö√†√áscht oder ge‚Äö√†√∂¬¨√ündert werden muss
             if ([account.userId isEqualToString: user.userId ]) {
                 NSMutableSet *users = [account mutableSetValueForKey:@"users" ];
                 account.userId = nil;

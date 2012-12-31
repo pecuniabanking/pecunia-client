@@ -37,7 +37,7 @@
 			[item setView: [standingOrderController mainView]];
 			[mainTabView addTabViewItem: item];
 			[mainTabView selectTabViewItem: item];
-			[mainTabItems setObject: standingOrderController forKey: StandingOrderTabIdentifier];
+			mainTabItems[StandingOrderTabIdentifier] = standingOrderController;
 			[standingOrderController prepare];
 		}
 	} else {
@@ -56,7 +56,7 @@
 			[item setView: [transfersController mainView]];
 			[mainTabView addTabViewItem: item];
 			[mainTabView selectTabViewItem: item];
-			[mainTabItems setObject: transfersController forKey: TransfersTabIdentifier];
+			mainTabItems[TransfersTabIdentifier] = transfersController;
 			[transfersController prepare];
 		}
 	} else {

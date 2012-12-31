@@ -57,9 +57,7 @@ extern NSString *StatementTypeKey;
     self = [super initWithFrame: frame];
     if (self != nil)
     {
-        whiteAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                            [NSColor whiteColor], NSForegroundColorAttributeName, nil
-                            ];
+        whiteAttributes = @{NSForegroundColorAttributeName: [NSColor whiteColor]};
         [self addObserver: self forKeyPath: @"row" options: 0 context: nil];
     }
     return self;
@@ -78,8 +76,8 @@ static CurrencyValueTransformer* currencyTransformer;
 
 - (void)setDetails: (NSDictionary *)details
 {
-    index = [[details objectForKey: StatementIndexKey] intValue];
-    type = [[details objectForKey: StatementTypeKey] intValue];
+    index = [details[StatementIndexKey] intValue];
+    type = [details[StatementTypeKey] intValue];
     
     [dateLabel setStringValue: [details valueForKey: StatementDateKey]];
     
@@ -203,15 +201,13 @@ static CurrencyValueTransformer* currencyTransformer;
     // Construct a formatted string for the accunt label.
     NSMutableAttributedString *accountString = [[NSMutableAttributedString alloc] init];
     NSFont *normalFont = [NSFont fontWithName: @"LucidaGrande" size: 11];
-    NSDictionary *normalAttributes = [NSDictionary dictionaryWithObjectsAndKeys: normalFont, NSFontAttributeName,
-                                      isSelected ? [NSColor whiteColor] : paleColor, NSForegroundColorAttributeName,
-                                      nil];
+    NSDictionary *normalAttributes = @{NSFontAttributeName: normalFont,
+                                      NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};
     
     NSFontManager *fontManager = [NSFontManager sharedFontManager];
     NSFont *boldFont = [fontManager convertFont: normalFont toHaveTrait: NSBoldFontMask];
-    NSDictionary *boldAttributes = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName,
-                                    isSelected ? [NSColor whiteColor] : [NSColor blackColor], NSForegroundColorAttributeName,
-                                    nil];
+    NSDictionary *boldAttributes = @{NSFontAttributeName: boldFont,
+                                    NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : [NSColor blackColor]};
     
     [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: accountTitle
                                                                             attributes: normalAttributes]
@@ -236,10 +232,9 @@ static CurrencyValueTransformer* currencyTransformer;
     [paragraphStyle setMaximumLineHeight: 12];
     
     normalFont = [NSFont fontWithName: @"LucidaGrande" size: 10];
-    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys: paragraphStyle, NSParagraphStyleAttributeName,
-                                normalFont, NSFontAttributeName,
-                                isSelected ? [NSColor whiteColor] : paleColor, NSForegroundColorAttributeName,
-                                nil];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName: paragraphStyle,
+                                NSFontAttributeName: normalFont,
+                                NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};
     
     [purposeString addAttributes: attributes range: NSMakeRange(0, [purposeString length])];
     [purposeLabel setAttributedStringValue: purposeString];

@@ -33,7 +33,7 @@
 
     // Next make the text appear with an underline.
     if (underlined) {
-        [attrString addAttribute: NSUnderlineStyleAttributeName value: [NSNumber numberWithInt: NSSingleUnderlineStyle] range: range];
+        [attrString addAttribute: NSUnderlineStyleAttributeName value: @(NSSingleUnderlineStyle) range: range];
     }
     [attrString endEditing];
 
