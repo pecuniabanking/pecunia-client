@@ -790,7 +790,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
                             }
                             spendingsExplosionIndex = slice;
 
-                            if (needInfoUpdate && slice != NSNotFound && [earningsCategories count] > 1) {
+                            if (needInfoUpdate && slice != NSNotFound && [spendingsCategories count] > 1) {
                                 NSMutableArray *content = spendingsPlotRadialOffsets.content;
                                 content[spendingsExplosionIndex] = @10;
                                 spendingsPlotRadialOffsets.content = content;
@@ -1059,7 +1059,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
         // We need to delay the release of the help window
         // otherwise it will just disappear instead to fade out.
         // With 10.7 and completion handlers it would be way more elegant.
-        [NSTimer scheduledTimerWithTimeInterval: .25
+        [NSTimer scheduledTimerWithTimeInterval: .5
                                          target: self 
                                        selector: @selector(releaseHelpWindow)
                                        userInfo: nil
