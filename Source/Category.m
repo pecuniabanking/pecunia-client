@@ -158,7 +158,6 @@ BOOL updateSent = NO;
 -(NSDecimalNumber*)valuesOfType: (CatValueType)type from: (ShortDate*)fromDate to: (ShortDate*)toDate
 {
     NSDecimalNumber* result = [NSDecimalNumber zero];
-    NSMutableSet* stats = [self mutableSetValueForKey: @"assignments"];
     NSMutableSet* childs = [self mutableSetValueForKey: @"children"];
     
     if ([childs count] > 0)
@@ -172,6 +171,20 @@ BOOL updateSent = NO;
         }
     }
     
+    // fetch all relevant statements
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"StatCatAssignment" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSDate *from = [fromDate lowDate];
+    NSDate *to = [toDate highDate];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category = %@ and statement.date >= %@ and statement.date <= %@", self, from, to];
+    [fetchRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *stats = [context executeFetchRequest:fetchRequest error:&error];
+    
     if ([stats count] > 0)
     {
         NSDecimalNumber* zero = [NSDecimalNumber zero];
@@ -183,24 +196,20 @@ BOOL updateSent = NO;
             case cat_all:
                 while ((stat = [enumerator nextObject]))
                 {
-                    ShortDate* date = [ShortDate dateWithDate: stat.statement.date];
-                    if ([date isBetween: fromDate and: toDate])
-                        result = [result decimalNumberByAdding: stat.value];
+                    result = [result decimalNumberByAdding: stat.value];
                 }
                 break;
             case cat_earnings:
                 while ((stat = [enumerator nextObject]))
                 {
-                    ShortDate* date = [ShortDate dateWithDate: stat.statement.date];
-                    if ([date isBetween: fromDate and: toDate] && ([stat.value compare: zero] == NSOrderedDescending))
+                    if ([stat.value compare: zero] == NSOrderedDescending)
                         result = [result decimalNumberByAdding: stat.value];
                 }
                 break;
             case cat_spendings:
                 while ((stat = [enumerator nextObject]))
                 {
-                    ShortDate* date = [ShortDate dateWithDate: stat.statement.date];
-                    if ([date isBetween: fromDate and: toDate] && ([stat.value compare: zero] == NSOrderedAscending))
+                    if ([stat.value compare: zero] == NSOrderedAscending)
                         result = [result decimalNumberByAdding: stat.value];
                 }
                 break;
@@ -209,9 +218,7 @@ BOOL updateSent = NO;
                 int turnovers = 0;
                 while ((stat = [enumerator nextObject]))
                 {
-                    ShortDate* date = [ShortDate dateWithDate: stat.statement.date];
-                    if ([date isBetween: fromDate and: toDate])
-                        turnovers++;
+                    turnovers++;
                 }
                 result = [result decimalNumberByAdding: [NSDecimalNumber decimalNumberWithMantissa: turnovers
                                                                                           exponent: 0
@@ -225,9 +232,7 @@ BOOL updateSent = NO;
 
 -(NSArray*)statementsFrom: (ShortDate*)fromDate to: (ShortDate*)toDate withChildren: (BOOL)c
 {
-    NSMutableArray	*result = [NSMutableArray arrayWithCapacity: 100 ];
-    
-    NSMutableSet* stats = [self mutableSetValueForKey: @"assignments" ];
+    NSMutableArray	*result = [NSMutableArray arrayWithCapacity: 100 ];    
     NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
     
     if(c == YES && [childs count ] > 0) {
@@ -239,15 +244,22 @@ BOOL updateSent = NO;
             [result addObjectsFromArray: [cat statementsFrom: fromDate to: toDate withChildren: YES ] ];
         }
     }
+
+    // fetch all relevant statements
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"StatCatAssignment" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSDate *from = [fromDate lowDate];
+    NSDate *to = [toDate highDate];
     
-    if([stats count ] > 0) {
-        NSEnumerator *enumerator = [stats objectEnumerator ];
-        StatCatAssignment *stat;
-        while ((stat = [enumerator nextObject])) {
-            ShortDate *date = [ShortDate dateWithDate: stat.statement.date ];
-            if(![date isBetween: fromDate and: toDate ]) continue;
-            [result addObject: stat ];
-        }
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category = %@ and statement.date >= %@ and statement.date <= %@", self, from, to];
+    [fetchRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (fetchedObjects != nil) {
+        [result addObjectsFromArray:fetchedObjects];
     }
     return result;	
 }
@@ -397,9 +409,23 @@ BOOL updateSent = NO;
  */
 - (NSMutableSet*)allAssignments
 {
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSSet *allCats = [self allCategories];
     NSMutableSet *result = [[NSMutableSet alloc] init];
-    for (Category *category in [self allCategories]) {
-        [result unionSet: [category mutableSetValueForKey: @"assignments"]];
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"StatCatAssignment" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSDate *from = [startReportDate lowDate];
+    NSDate *to = [endReportDate highDate];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category in %@ and statement.date >= %@ and statement.date <= %@", allCats, from, to];
+    [fetchRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (fetchedObjects != nil) {
+        [result addObjectsFromArray:fetchedObjects];
     }
     return result;
 }

@@ -119,7 +119,8 @@ BOOL runningOnLionOrLater = NO;
         restart = NO;
         requestRunning = NO;
         mainTabItems = [NSMutableDictionary dictionaryWithCapacity:10];
-        
+
+/*
         // Load context & model.
         @try {
             model = [[MOAssistant assistant] model];
@@ -130,7 +131,7 @@ BOOL runningOnLionOrLater = NO;
             [alert runModal];
             [NSApp terminate: self];
         }
-        
+*/        
         @try {
             client = [HBCIClient hbciClient];
             PecuniaError *error = [client initalizeHBCI];
@@ -337,10 +338,10 @@ BOOL runningOnLionOrLater = NO;
     // update unread information
     [self updateUnread];
     
-    [categoryController fetchWithRequest: nil merge: NO error: &error];
     [transactionController setManagedObjectContext: managedObjectContext];
     [timeSlicer updateDelegate];
     [self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
+    [categoryController fetchWithRequest: nil merge: NO error: &error];
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext:self.managedObjectContext];
 }
 
@@ -2694,6 +2695,11 @@ BOOL runningOnLionOrLater = NO;
     [mainWindow display];
     [mainWindow makeKeyAndOrderFront: self];
     
+    StatusBarController *sc = [StatusBarController controller];
+    [sc startSpinning];
+    [sc setMessage: NSLocalizedString(@"AP110", @"Open database...") removeAfter:0];
+    
+/*
     // Open encrypted database
     if ([[MOAssistant assistant] encrypted]) {
         StatusBarController *sc = [StatusBarController controller];
@@ -2715,10 +2721,56 @@ BOOL runningOnLionOrLater = NO;
     }
     
     [self migrate];
+ */
 }
 
 - (void)applicationDidFinishLaunching: (NSNotification *)aNotification
 {
+    StatusBarController *sc = [StatusBarController controller];
+    
+    // Load context & model.
+    @try {
+        model = [[MOAssistant assistant] model];
+        self.managedObjectContext = [[MOAssistant assistant] context];
+    }
+    @catch (NSError* error) {
+        NSAlert *alert = [NSAlert alertWithError:error];
+        [alert runModal];
+        [NSApp terminate: self];
+    }
+ 
+    // Open encrypted database
+    if ([[MOAssistant assistant] encrypted]) {
+        StatusBarController *sc = [StatusBarController controller];
+        [sc startSpinning];
+        [sc setMessage: NSLocalizedString(@"AP110", @"Open database...") removeAfter:0];
+        
+        @try {
+            [[MOAssistant assistant] decrypt];
+            self.managedObjectContext = [[MOAssistant assistant] context];
+        }
+        @catch(NSError* error) {
+            NSAlert *alert = [NSAlert alertWithError:error];
+            [alert runModal];
+            [NSApp terminate: self];
+        }
+        [self publishContext];
+        [sc stopSpinning];
+        [sc clearMessage];
+    }
+    
+    [self migrate];
+    
+    [self publishContext];
+    [sc stopSpinning];
+    [sc clearMessage];
+
+    
+    // Display main window
+    [mainWindow display];
+    [mainWindow makeKeyAndOrderFront: self];
+    
+    
     [self checkForAutoSync];
 
     // Add default categories if there aren't any but the predefined ones.
