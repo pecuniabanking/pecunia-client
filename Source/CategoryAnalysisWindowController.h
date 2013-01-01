@@ -89,6 +89,7 @@
     double *positiveBalances;             // A balance value for each time point (positive main plot).
     double *negativeBalances;             // A balance value for each time point (negative main plot).
     double *balanceCounts;                // The number balances per unit for each time point.
+    double *movingAverage;                // Linear weighted moving average values.
     NSNumberFormatter* infoTextFormatter;
 
 	ShortDate* fromDate;

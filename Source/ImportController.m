@@ -87,7 +87,7 @@
 {
     Encoding *result = [[Encoding alloc] init];
     result.caption = caption;
-    result.value = [NSNumber numberWithInt: value];
+    result.value = @((int)value);
     return result;
 }
 
@@ -304,8 +304,8 @@
     [self setupTokenField];
     [self setupEncodings];
 
-    [importValuesTable registerForDraggedTypes: [NSArray arrayWithObjects: NSPasteboardTypeString, nil]];
-    [fileOutlineView registerForDraggedTypes: [NSArray arrayWithObject: (NSString*)kUTTypeFileURL]];
+    [importValuesTable registerForDraggedTypes: @[NSPasteboardTypeString]];
+    [fileOutlineView registerForDraggedTypes: @[(NSString*)kUTTypeFileURL]];
     
     // Make the date format label a link to the format description. The following two settings are necessary to make this work.
     [dateFormatLinkLabel setAllowsEditingTextAttributes: YES];
@@ -313,7 +313,7 @@
     NSString *help = NSLocalizedString(@"AP624", nil);
     [dateFormatLinkLabel setAttributedStringValue: [NSAttributedString stringFromHTML: help withFont: [dateFormatLinkLabel font]]];
 
-	[self performSelector: @selector(initialSelection) withObject: nil afterDelay: 0.1 inModes: [NSArray arrayWithObject: NSModalPanelRunLoopMode]];
+	[self performSelector: @selector(initialSelection) withObject: nil afterDelay: 0.1 inModes: @[NSModalPanelRunLoopMode]];
 }
 
 /**
@@ -535,7 +535,7 @@
                 if ([field hasPrefix: @"'" ]) {
                     field = [field stringByTrimmingCharactersInSet: singleQuoteCharset];
                 }
-                [entry setObject: field forKey: [NSString stringWithFormat: @"%lu", j]];
+                entry[[NSString stringWithFormat: @"%lu", j]] = field;
             }
             [importValues addObject: entry];
         }
@@ -609,7 +609,7 @@
     // Ensure there are valid values if anything is missing.
     updating = YES;
     if (currentSettings.fields == nil) {
-        currentSettings.fields = [NSArray array];
+        currentSettings.fields = @[];
     }
     if (currentSettings.fieldSeparator == nil) {
         currentSettings.fieldSeparator = @",";
@@ -618,10 +618,10 @@
         currentSettings.dateFormat = @"dd.MM.yyyy";
     }
     if (currentSettings.encoding == nil) {
-        currentSettings.encoding = [NSNumber numberWithInt: NSISOLatin1StringEncoding];
+        currentSettings.encoding = @(NSISOLatin1StringEncoding);
     }
     if (currentSettings.ignoreLines == nil) {
-        currentSettings.ignoreLines = [NSNumber numberWithInt: 0];
+        currentSettings.ignoreLines = @0;
     }
     if (currentSettings.accountNumber == nil) {
         currentSettings.accountNumber = @"";
@@ -630,7 +630,7 @@
         currentSettings.bankCode = @"";
     }
     if (currentSettings.type == nil) {
-        currentSettings.type = [NSNumber numberWithInt: SettingsTypeCSV];
+        currentSettings.type = @(SettingsTypeCSV);
     }
     if (currentSettings.decimalSeparator == nil) {
         NSLocale *locale = NSLocale.currentLocale;
@@ -650,7 +650,7 @@
     // Select the correct encoding.
     for (Encoding *encoding in encodingsController.arrangedObjects) {
         if ([encoding.value isEqualToNumber: currentSettings.encoding]) {
-            [encodingsController setSelectedObjects: [NSArray arrayWithObject: encoding]];
+            [encodingsController setSelectedObjects: @[encoding]];
             break;
         }
     }
@@ -660,7 +660,7 @@
     for (BankAccount *account in accountsController.arrangedObjects) {
         if ([account.accountNumber isEqualToString: currentSettings.accountNumber]) {
             found = YES;
-            [accountsController setSelectedObjects: [NSArray arrayWithObject: account]];
+            [accountsController setSelectedObjects: @[account]];
             break;
         }
     }
@@ -802,7 +802,7 @@
                         }
                     }
                     if (object != nil) {
-                        [entry setObject: object forKey: property];
+                        entry[property] = object;
                     }
                 }
                 [parsedValues addObject: entry];
@@ -844,14 +844,14 @@
 	
 	// check sorting of statements and re-sort if necessary
 	if ([statements count ] > 0) {
-		BankStatement *first = [statements objectAtIndex:0 ];
+		BankStatement *first = statements[0];
 		BankStatement *last = [statements lastObject ];
 		if ([first.date compare: last.date ] == NSOrderedDescending) {
 			// resort
 			NSMutableArray *newStats = [NSMutableArray arrayWithCapacity:100 ];
 			int j;
 			for(j = [statements count ]-1; j>=0; j--) {
-				[newStats addObject: [statements objectAtIndex:j ] ];
+				[newStats addObject: statements[j] ];
 			} 
 			statements = newStats;
 		}
@@ -1143,11 +1143,8 @@
          childIndex: (NSInteger)index
 {
     NSPasteboard* pasteboard = info.draggingPasteboard;
-    NSArray* urls = [pasteboard readObjectsForClasses: [NSArray arrayWithObject: [NSURL class]]
-                                              options: [NSDictionary dictionaryWithObjectsAndKeys:
-                                                        [NSNumber numberWithBool: YES], NSPasteboardURLReadingFileURLsOnlyKey,
-                                                        nil
-                                                       ]
+    NSArray* urls = [pasteboard readObjectsForClasses: @[[NSURL class]]
+                                              options: @{NSPasteboardURLReadingFileURLsOnlyKey: @YES}
                      ];
 
     for (NSURL *url in urls) {

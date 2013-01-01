@@ -74,8 +74,8 @@ static MessageLog *_messageLog;
 
 - (void)addMessageFromDict: (NSDictionary*)data
 {
-	LogLevel level = (LogLevel)[[data objectForKey: @"level"] intValue];
-	[self addMessage: [data objectForKey: @"message"] withLevel: level];
+	LogLevel level = (LogLevel)[data[@"level"] intValue];
+	[self addMessage: data[@"message"] withLevel: level];
 }
 
 - (void)setLevel: (LogLevel)level

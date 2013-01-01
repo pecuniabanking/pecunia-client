@@ -48,9 +48,9 @@
 	NSMutableArray         *selectedDates;
 	ShortDate              *minDate;
 	ShortDate              *maxDate;
-    NSUInteger             fromIndex;
-    NSUInteger             toIndex;
-    NSInteger              sortIndex;
+    int                    fromIndex;
+    int                    toIndex;
+    int                    sortIndex;
     BOOL                   sortAscending;
 	NSManagedObjectContext *managedObjectContext;
 

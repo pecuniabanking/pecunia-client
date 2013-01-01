@@ -63,7 +63,7 @@
 	for(method in tanMethodList) {
 		if([method.function intValue ] == [tanMethodNumber intValue ]) return method;
 	}
-	return [tanMethodList objectAtIndex:0 ];
+	return tanMethodList[0];
 }
 
 -(void)setTanMethod: (TanMethodOld*)tm

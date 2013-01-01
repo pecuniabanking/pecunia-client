@@ -58,14 +58,14 @@
     
     // default: hide values that are already assigned elsewhere
     hideAssignedValues = YES;
-    [self setValue:[NSNumber numberWithBool:YES] forKey: @"hideAssignedValues"];
+    [self setValue:@YES forKey: @"hideAssignedValues"];
     
     caClassification = [[CatAssignClassification alloc] init];
     [predicateEditor addRow:self];
     
     // sort descriptor for transactions view
     NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey: @"statement.date" ascending: NO];
-    NSArray				*sds = [NSArray arrayWithObject:sd];
+    NSArray				*sds = @[sd];
     [assignPreviewController setSortDescriptors: sds];
     
     // Setup statements listview.
@@ -79,14 +79,8 @@
     [assignPreviewController addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
 
     // Some appealing colors for (positive and negative) values.
-    NSDictionary* positiveAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor applicationColorForKey: @"Positive Cash"], NSForegroundColorAttributeName,
-                                        nil
-                                       ];
-    NSDictionary* negativeAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSColor applicationColorForKey: @"Negative Cash"], NSForegroundColorAttributeName,
-                                        nil
-                                       ];
+    NSDictionary* positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
+    NSDictionary* negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
 
     statementsListView.owner = self;
     statementsListView.showAssignedIndicators = YES;
@@ -177,7 +171,7 @@
     }
     NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: @"statement.purpose CONTAINS[c] ''"];
     if([pred class] != [NSCompoundPredicate class]) {
-        NSCompoundPredicate* comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: [NSArray arrayWithObjects: pred, nil]];
+        NSCompoundPredicate* comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: @[pred]];
         pred = comp;
     }
     [predicateEditor setObjectValue: pred];
@@ -205,19 +199,19 @@
     
     // Not assigned statements
     pred = [NSPredicate predicateWithFormat: @"(category = %@)", [Category nassRoot]];
-    pred = [NSCompoundPredicate andPredicateWithSubpredicates: [NSArray arrayWithObjects: pred, predicate, nil]];
+    pred = [NSCompoundPredicate andPredicateWithSubpredicates: @[pred, predicate]];
     [orPreds addObject: pred];
     
     // already assigned statements 
     if(!hideAssignedValues) {
         pred = [NSPredicate predicateWithFormat: @"(category.isBankAccount = 0)"];
-        pred = [NSCompoundPredicate andPredicateWithSubpredicates: [NSArray arrayWithObjects: pred, predicate, nil]];
+        pred = [NSCompoundPredicate andPredicateWithSubpredicates: @[pred, predicate]];
         [orPreds addObject: pred];
     }
     
     compoundPredicate = [NSCompoundPredicate orPredicateWithSubpredicates: orPreds];
     pred = [timeSliceManager predicateForField: @"date"];
-    compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: [NSArray arrayWithObjects: compoundPredicate, pred, nil]];
+    compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[compoundPredicate, pred]];
     
     
     // update classification Context
@@ -358,7 +352,7 @@
 
 - (void)activationChanged: (BOOL)active forIndex: (NSUInteger)index
 {
-    StatCatAssignment* assignment = [[assignPreviewController arrangedObjects] objectAtIndex: index];
+    StatCatAssignment* assignment = [assignPreviewController arrangedObjects][index];
     if (assignment != nil) {
         if (active) {
             [self assignToCategory: assignment];
@@ -457,7 +451,7 @@
         if(s == nil) s = @"statement.purpose CONTAINS[c] ''";
         NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: s];
         if([pred class] != [NSCompoundPredicate class]) {
-            NSCompoundPredicate* comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: [NSArray arrayWithObjects: pred, nil]];
+            NSCompoundPredicate* comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: @[pred]];
             pred = comp;
         }
         [predicateEditor setObjectValue: pred];

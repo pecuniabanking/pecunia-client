@@ -84,7 +84,7 @@
 - (IBAction)selectFile:(id)sender {
     NSOpenPanel *panel = [NSOpenPanel openPanel];
     [panel setAllowsMultipleSelection: NO];
-    [panel setAllowedFileTypes: [NSArray arrayWithObject: @"txt"]];
+    [panel setAllowedFileTypes: @[@"txt"]];
     NSInteger result = [panel runModal];
     if (result == NSFileHandlingPanelOKButton) {
         [self.path setStringValue: panel.URL.path];
@@ -136,7 +136,7 @@
             if ([line hasPrefix: @"["] && [line hasSuffix: @"]"]) {
                 // Starting new block.
                 if (entries != nil) {
-                    [blocks setObject: entries forKey: blockName];
+                    blocks[blockName] = entries;
                 }
                 entries = [NSMutableArray array];
                 blockName = [line substringWithRange: NSMakeRange(1, line.length - 2)];
@@ -159,12 +159,12 @@
         }
 
         // Once all data is read start by generating bank users and accounts.
-        NSArray *banks = [blocks objectForKey: @"Banks"];
+        NSArray *banks = blocks[@"Banks"];
         if (banks.count == 0) {
             return;
         }
 
-        NSArray *principals = [blocks objectForKey: @"Principals"];
+        NSArray *principals = blocks[@"Principals"];
         if (principals.count == 0) {
             return;
         }
@@ -181,17 +181,17 @@
 
             // Fields are: principal:lowest value:highest value:frequency ([1-9] [d]ay, [w]eek], [m]onth,
             //   [q]uarter, [y]ear):category keywords:purpose
-            NSString *principal = [parts objectAtIndex: 0];
-            double lowBound = [[parts objectAtIndex: 1] doubleValue];
-            double highBound = [[parts objectAtIndex: 2] doubleValue];
-            NSString *frequency = [parts objectAtIndex: 3];
+            NSString *principal = parts[0];
+            double lowBound = [parts[1] doubleValue];
+            double highBound = [parts[2] doubleValue];
+            NSString *frequency = parts[3];
             NSString *keywords = @"";
             if (parts.count > 4) {
-                keywords = [parts objectAtIndex: 4]; // Optional
+                keywords = parts[4]; // Optional
             }
             NSString *purpose = @"";
             if (parts.count > 5) {
-                purpose = [parts objectAtIndex: 5]; // Optional
+                purpose = parts[5]; // Optional
             }
             if (principal.length == 0 || (lowBound == 0 && highBound == 0) || frequency.length < 2) {
                 continue; // Ignore entries that are not properly specified.
@@ -199,10 +199,10 @@
             NSString *count = [frequency substringWithRange: NSMakeRange(0, frequency.length - 1)];
             NSString *unit = [frequency substringFromIndex: frequency.length - 1];
             NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                        [parts objectAtIndex: 0], @"principal",
-                                        [NSNumber numberWithDouble: lowBound * 100], @"minBound",
-                                        [NSNumber numberWithInteger: (NSInteger)(highBound - lowBound) * 100], @"delta",
-                                        [NSNumber numberWithInt: [count intValue]], @"count",
+                                        parts[0], @"principal",
+                                        @(lowBound * 100), @"minBound",
+                                        @((NSInteger)(highBound - lowBound) * 100), @"delta",
+                                        @([count intValue]), @"count",
                                         unit, @"unit",
                                         keywords, @"keywords",
                                         purpose, @"purpose",
@@ -213,12 +213,12 @@
             return;
         }
 
-        NSArray *accounts = [blocks objectForKey: @"Accounts"];
+        NSArray *accounts = blocks[@"Accounts"];
 
         Category *root = [Category bankRoot];
         for (NSUInteger i = 0; i < bankCount; i++) {
             NSInteger randomIndex = arc4random_uniform(banks.count);
-            NSString *bank = [banks objectAtIndex: randomIndex];
+            NSString *bank = banks[randomIndex];
 
             BankUser *user = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser"
                                                            inManagedObjectContext: context];
@@ -228,11 +228,11 @@
             user.bankURL = @"http://noip.com";
             user.port = @"1";
             user.hbciVersion = @"2.2";
-            user.checkCert = [NSNumber numberWithBool: YES];
+            user.checkCert = @YES;
             user.country = @"DE";
             user.userId = @"0987654321";
             user.customerId = @"";
-            user.secMethod = [NSNumber numberWithInt: SecMethod_PinTan];
+            user.secMethod = @(SecMethod_PinTan);
 
             // Add account for this bank (actually the bank root to which the real accounts are attached).
             BankAccount *bankRoot = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount"
@@ -242,7 +242,7 @@
             bankRoot.bankCode = user.bankCode;
             bankRoot.currency = @"EUR";
             bankRoot.country = user.country;
-            bankRoot.isBankAcc = [NSNumber numberWithBool: YES];
+            bankRoot.isBankAcc = @YES;
             bankRoot.parent = root;
 
             // To each bank root add a few accounts. The actual number depends on the data amount flag.
@@ -250,7 +250,7 @@
             NSUInteger accountCount = 1 + arc4random_uniform(maxAccountsPerBank);
             while (accountList.count < accountCount) {
                 NSUInteger randomIndex = arc4random_uniform(accounts.count);
-                NSString *value = [accounts objectAtIndex: randomIndex];
+                NSString *value = accounts[randomIndex];
                 if (![accountList containsObject: value]) {
                     [accountList addObject: value];
                 }
@@ -261,14 +261,14 @@
                                                                         inManagedObjectContext: context];
                 newAccount.bankCode = user.bankCode;
                 newAccount.bankName = user.bankName;
-                newAccount.isManual = [NSNumber numberWithBool: YES];
+                newAccount.isManual = @YES;
                 newAccount.userId = user.userId;
                 newAccount.customerId = user.customerId;
                 //newAccount.collTransferMethod = account.collTransferMethod;
-                newAccount.isStandingOrderSupported = [NSNumber numberWithBool: YES];
+                newAccount.isStandingOrderSupported = @YES;
 
                 newAccount.parent = bankRoot;
-                newAccount.isBankAcc = [NSNumber numberWithBool: YES];
+                newAccount.isBankAcc = @YES;
 
                 //newAccount.iban = account.iban;
                 //newAccount.bic = account.bic;
@@ -280,7 +280,7 @@
 
                 // Current balance of the account. Saldos are computed backwards starting with this value.
                 double dBalance = ((double)arc4random_uniform(500000) - 250000) / 100.0;
-                NSNumber *balance = [NSNumber numberWithDouble: dBalance];
+                NSNumber *balance = @(dBalance);
                 newAccount.balance = [NSDecimalNumber decimalNumberWithDecimal: balance.decimalValue];
             }
         }
@@ -296,8 +296,8 @@
 
                 // Reset all counters and start over.
                 for (NSMutableDictionary *dictionary in parsedPrincipals) {
-                    NSUInteger count = [[dictionary objectForKey: @"count"] integerValue];
-                    [dictionary setObject: [NSNumber numberWithInt: count] forKey: @"remaining"];
+                    int count = [dictionary[@"count"] intValue];
+                    dictionary[@"remaining"] = @(count);
                 }
                 
                 while (yearlyLimit > 0) {
@@ -305,11 +305,11 @@
                     // or no principal has a count > 0 anymore.
                     BOOL foundEntry = NO;
                     for (NSMutableDictionary *dictionary in parsedPrincipals) {
-                        NSUInteger remaining = [[dictionary objectForKey: @"remaining"] integerValue];
+                        int remaining = [dictionary[@"remaining"] intValue];
                         if (remaining == 0) {
                             continue;
                         } else {
-                            [dictionary setObject: [NSNumber numberWithInt: remaining - 1] forKey: @"remaining"];
+                            dictionary[@"remaining"] = @(remaining - 1);
                             foundEntry = YES;
                         }
 
@@ -319,11 +319,11 @@
                         if (randomIndex < 0) {
                             randomIndex = 0;
                         }
-                        BankAccount *account = [accounts objectAtIndex: randomIndex];
+                        BankAccount *account = accounts[randomIndex];
                         
-                        double minBound = [[dictionary objectForKey: @"minBound"] doubleValue];
-                        NSInteger delta = [[dictionary objectForKey: @"delta"] integerValue];
-                        NSString *unit = [dictionary objectForKey: @"unit"];
+                        double minBound = [dictionary[@"minBound"] doubleValue];
+                        NSInteger delta = [dictionary[@"delta"] integerValue];
+                        NSString *unit = dictionary[@"unit"];
 
                         NSDateComponents *components = [[NSDateComponents alloc] init];
                         [components setYear: year];
@@ -348,7 +348,7 @@
 
                         for (NSUInteger dateOffset = 0; dateOffset < dateUnitMax; dateOffset++) {
                             NSUInteger randomPart = arc4random_uniform(delta);
-                            NSDecimalNumber *value = [NSDecimalNumber decimalNumberWithDecimal: [[NSNumber numberWithDouble: (minBound + randomPart) / 100.0] decimalValue]];
+                            NSDecimalNumber *value = [NSDecimalNumber decimalNumberWithDecimal: [@((minBound + randomPart) / 100.0) decimalValue]];
 
                             NSDate *date;
                             switch ([unit characterAtIndex: 0]) {
@@ -405,15 +405,15 @@
                             statement.currency = account.currency;
                             statement.localAccount = account.accountNumber;
                             statement.localBankCode = account.bankCode;
-                            statement.isManual = [NSNumber numberWithBool: YES];
+                            statement.isManual = @YES;
                             statement.date = date;
                             statement.valutaDate = date;
                             statement.remoteCountry = @"de";
                             statement.value = value;
-                            NSString *purpose = [dictionary objectForKey: @"purpose"];
+                            NSString *purpose = dictionary[@"purpose"];
                             statement.purpose = [purpose stringByReplacingOccurrencesOfString: @"\\n" withString: @"\n"];
                             statement.transactionText = NSLocalizedString(@"AP407", nil);
-                            statement.remoteName = [dictionary objectForKey: @"principal"];
+                            statement.remoteName = dictionary[@"principal"];
                             NSString *remoteAccount = [NSString stringWithFormat: @"%u", arc4random()];
                             if (remoteAccount.length > 10) {
                                 statement.remoteAccount = [remoteAccount substringWithRange: NSMakeRange(0, 10)];
@@ -423,7 +423,7 @@
 
                             [statement addToAccount: account];
 
-                            NSArray *keywords = [[dictionary objectForKey: @"keywords"] componentsSeparatedByString: @","];
+                            NSArray *keywords = [dictionary[@"keywords"] componentsSeparatedByString: @","];
                             if (keywords.count > 0) {
                                 // Assign this statement to all categories which contain any of the keywords.
                                 NSSet *matchingCategories = [categories objectsPassingTest: ^BOOL(id obj, BOOL *stop) {

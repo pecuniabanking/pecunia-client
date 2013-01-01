@@ -202,9 +202,9 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
         if (capitalize) {
             NSMutableArray *words = [[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
             for (NSUInteger i = 0; i < [words count]; i++) {
-                NSString *word = [words objectAtIndex: i];
+                NSString *word = words[i];
                 if (i == 0 || [word length] > 3) {
-                    [words replaceObjectAtIndex: i withObject: [word capitalizedString]];
+                    words[i] = [word capitalizedString];
                 }
             }
             value = [words componentsJoinedByString: @" "];
@@ -223,8 +223,8 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     BOOL result = (row == 0);
     if (!result)
     {
-        BankStatement *statement = (BankStatement*)[[dataSource objectAtIndex: row] valueForKey: @"statement"];
-        BankStatement *previousStatement = (BankStatement*)[[dataSource objectAtIndex: row - 1] valueForKey: @"statement"];
+        BankStatement *statement = (BankStatement*)[dataSource[row] valueForKey: @"statement"];
+        BankStatement *previousStatement = (BankStatement*)[dataSource[row - 1] valueForKey: @"statement"];
         
         result = [[ShortDate dateWithDate: statement.date] compare: [ShortDate dateWithDate: previousStatement.date]] != NSOrderedSame;
     }
@@ -238,13 +238,13 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 - (int)countSameDatesFromRow: (NSUInteger)row
 {
     int result = 1;
-    id statement = [[dataSource objectAtIndex: row] valueForKey: @"statement"];
+    id statement = [dataSource[row] valueForKey: @"statement"];
     ShortDate* currentDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
     
     NSUInteger totalCount = [dataSource count];
     while (++row < totalCount)
     {
-        statement = [[dataSource objectAtIndex: row] valueForKey: @"statement"];
+        statement = [dataSource[row] valueForKey: @"statement"];
         ShortDate* nextDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
         if ([currentDate compare: nextDate] != NSOrderedSame)
             break;
@@ -258,7 +258,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (void) fillCell: (StatementsListViewCell*)cell forRow: (NSUInteger)row
 {
-    StatCatAssignment *stat = (StatCatAssignment*)[dataSource objectAtIndex: row];
+    StatCatAssignment *stat = (StatCatAssignment*)dataSource[row];
     
     NSDate* currentDate = stat.statement.date;
     
@@ -271,26 +271,24 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
         turnoversString = NSLocalizedString(@"AP132", @"");
     
     cell.delegate = self;
-    NSDictionary *details = [NSDictionary dictionaryWithObjectsAndKeys:
-                             currentDate, StatementDateKey,
-                             turnoversString, StatementTurnoversKey,
-                             [self formatValue: stat.statement.remoteName capitalize: YES], StatementRemoteNameKey,
-                             [self formatValue: stat.statement.floatingPurpose capitalize: YES], StatementPurposeKey,
-                             [self formatValue: stat.userInfo capitalize: YES], StatementNoteKey,
-                             [self formatValue: [stat.statement categoriesDescription] capitalize: NO], StatementCategoriesKey,
-                             [self formatValue: stat.value capitalize: NO], StatementValueKey,
-                             [self formatValue: stat.statement.saldo capitalize: NO], StatementSaldoKey,
-                             [self formatValue: stat.statement.currency capitalize: NO], StatementCurrencyKey,
-                             [self formatValue: stat.statement.transactionText capitalize: YES], StatementTransactionTextKey,
-                             [stat.category categoryColor], StatementColorKey,
-                             [NSNumber numberWithInt: row], StatementIndexKey,
-                             nil];
+    NSDictionary *details = @{StatementDateKey: currentDate,
+                             StatementTurnoversKey: turnoversString,
+                             StatementRemoteNameKey: [self formatValue: stat.statement.remoteName capitalize: YES],
+                             StatementPurposeKey: [self formatValue: stat.statement.floatingPurpose capitalize: YES],
+                             StatementNoteKey: [self formatValue: stat.userInfo capitalize: YES],
+                             StatementCategoriesKey: [self formatValue: [stat.statement categoriesDescription] capitalize: NO],
+                             StatementValueKey: [self formatValue: stat.value capitalize: NO],
+                             StatementSaldoKey: [self formatValue: stat.statement.saldo capitalize: NO],
+                             StatementCurrencyKey: [self formatValue: stat.statement.currency capitalize: NO],
+                             StatementTransactionTextKey: [self formatValue: stat.statement.transactionText capitalize: YES],
+                             StatementColorKey: [stat.category categoryColor],
+                             StatementIndexKey: @((int)row)};
     
     [cell setDetails: details];
     [cell setIsNew: [stat.statement.isNew boolValue]];
     
     if (self.showAssignedIndicators) {
-        id test = [[dataSource objectAtIndex: row] classify];
+        id test = [dataSource[row] classify];
         [cell showActivator: YES markActive: test != nil];
     } else {
         [cell showActivator: NO markActive: NO];
@@ -456,14 +454,14 @@ extern NSString* const BankStatementDataType;
     do {
 		count = [rowIndexes getIndexes: indexes maxCount: 30 inIndexRange: &range];
 		for (i = 0; i < count; i++) {
-			stat = [dataSource objectAtIndex: indexes[i]];
+			stat = dataSource[indexes[i]];
 			NSURL *uri = [[stat objectID] URIRepresentation];
 			[uris addObject: uri];
 		}
 	} while (count > 0);    
     
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: uris];
-    [dragPasteboard declareTypes:[NSArray arrayWithObject: BankStatementDataType] owner: self];
+    [dragPasteboard declareTypes:@[BankStatementDataType] owner: self];
     [dragPasteboard setData:data forType: BankStatementDataType];
 
     return YES;

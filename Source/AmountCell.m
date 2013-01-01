@@ -85,11 +85,11 @@
     // If this cell is selected then make the text bold.
     if (self.isInSelectedRow || self.isInSelectedColumn) {
         NSFontManager *manager = [NSFontManager sharedFontManager];
-        NSFont *font = [attrs objectForKey: NSFontAttributeName];
+        NSFont *font = attrs[NSFontAttributeName];
         font = [manager convertFont: font toHaveTrait: NSBoldFontMask];
-        [attrs setObject: font forKey: NSFontAttributeName];
+        attrs[NSFontAttributeName] = font;
     }
-    [attrs setObject: textColor forKey: NSForegroundColorAttributeName];
+    attrs[NSForegroundColorAttributeName] = textColor;
     [formatter setCurrencyCode: currency];
     NSString *str = [formatter stringFromNumber: self.objectValue];
     if (str != nil) {

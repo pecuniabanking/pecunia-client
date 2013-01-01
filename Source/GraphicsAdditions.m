@@ -19,6 +19,10 @@
 
 #import "GraphicsAdditions.h"
 
+/**
+ * Creates a CGColorRef from an NSColor. The caller is reponsible for releasing the result
+ * using CGColorRelease.
+ */
 CGColorRef CGColorCreateFromNSColor(NSColor *color)
 {
     // First convert the given color to a color with an RGB colorspace in case we use a pattern
@@ -92,9 +96,9 @@ static NSMutableDictionary* applicationColors;
                     return;
                 }
                 
-                NSColor* color = [NSColor colorWithDeviceRed: [[components objectAtIndex: 0] intValue] / 65535.0
-                                                       green: [[components objectAtIndex: 1] intValue] / 65535.0
-                                                        blue: [[components objectAtIndex: 2] intValue] / 65535.0
+                NSColor* color = [NSColor colorWithDeviceRed: [components[0] intValue] / 65535.0
+                                                       green: [components[1] intValue] / 65535.0
+                                                        blue: [components[2] intValue] / 65535.0
                                                        alpha: 1];
                 if ([line hasPrefix: @"Default Account Color"]) {
                     [defaultAccountColors addObject: color];
@@ -124,7 +128,7 @@ static NSMutableDictionary* applicationColors;
     if ([defaultAccountColors count] > 0) {
         // To return the color with a refcount of 1 (autoreleased), we need to retain it
         // here as the ref count is decreased when it is removed from the default colors array.
-        NSColor* result = [defaultAccountColors objectAtIndex: 0];
+        NSColor* result = defaultAccountColors[0];
         [defaultAccountColors removeObjectAtIndex: 0];
         
         return result;
@@ -147,7 +151,7 @@ static NSMutableDictionary* applicationColors;
     }
 
     if ([defaultCategoryColors count] > 0) {
-        NSColor* result = [defaultCategoryColors objectAtIndex: 0];
+        NSColor* result = defaultCategoryColors[0];
         [defaultCategoryColors removeObjectAtIndex: 0];
         
         return result;

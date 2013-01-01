@@ -74,7 +74,7 @@ extern NSString *TransferReadyForUseDataType;
     [super awakeFromNib];
     
     [self setDelegate: self];
-    [self registerForDraggedTypes: [NSArray arrayWithObjects: TransferDataType, TransferReadyForUseDataType, nil]];
+    [self registerForDraggedTypes: @[TransferDataType, TransferReadyForUseDataType]];
 }
 
 - (void) dealloc
@@ -168,21 +168,19 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (void) fillCell: (TransferTemplateListViewCell*)cell forRow: (NSUInteger)row
 {
-    TransferTemplate *template = [dataSource objectAtIndex: row];
+    TransferTemplate *template = dataSource[row];
     
-    NSDictionary *details = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [NSNumber numberWithInt: row], StatementIndexKey,
-                             [self formatValue: template.name], TemplateNameKey,
-                             [self formatValue: template.remoteName], StatementRemoteNameKey,
-                             [self formatValue: template.purpose], StatementPurposeKey,
-                             [self formatValue: template.value], StatementValueKey,
-                             [self formatValue: template.currency], StatementCurrencyKey,
-                             [self formatValue: template.remoteBankCode], StatementRemoteBankCodeKey,
-                             [self formatValue: template.remoteIBAN], StatementRemoteIBANKey,
-                             [self formatValue: template.remoteBIC], StatementRemoteBICKey,
-                             [self formatValue: template.remoteAccount], StatementRemoteAccountKey,
-                             template.type, StatementTypeKey,
-                             nil];
+    NSDictionary *details = @{StatementIndexKey: @((int)row),
+                             TemplateNameKey: [self formatValue: template.name],
+                             StatementRemoteNameKey: [self formatValue: template.remoteName],
+                             StatementPurposeKey: [self formatValue: template.purpose],
+                             StatementValueKey: [self formatValue: template.value],
+                             StatementCurrencyKey: [self formatValue: template.currency],
+                             StatementRemoteBankCodeKey: [self formatValue: template.remoteBankCode],
+                             StatementRemoteIBANKey: [self formatValue: template.remoteIBAN],
+                             StatementRemoteBICKey: [self formatValue: template.remoteBIC],
+                             StatementRemoteAccountKey: [self formatValue: template.remoteAccount],
+                             StatementTypeKey: template.type};
     
     [cell setDetails: details];
     
@@ -235,7 +233,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (void)listView: (PXListView*)aListView rowDoubleClicked: (NSUInteger)rowIndex
 {
-    TransferTemplate *template = [dataSource objectAtIndex: rowIndex];
+    TransferTemplate *template = dataSource[rowIndex];
     [owner startTransferFromTemplate: template];
 }
 
@@ -262,7 +260,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     // Collect the ids of all selected transfers and put them on the dragboard.
     NSUInteger index = [rowIndexes firstIndex];
     while (index != NSNotFound) {
-        TransferTemplate *template = [dataSource objectAtIndex: index];
+        TransferTemplate *template = dataSource[index];
         NSURL *url = [[template objectID] URIRepresentation];
         [draggedTemplates addObject: url];
 
@@ -270,7 +268,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     }
     
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: draggedTemplates];
-    [dragPasteboard declareTypes: [NSArray arrayWithObject: TransferTemplateDataType] owner: self];
+    [dragPasteboard declareTypes: @[TransferTemplateDataType] owner: self];
     [dragPasteboard setData: data forType: TransferTemplateDataType];
     [owner draggingStartsFor: self];
 

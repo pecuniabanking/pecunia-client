@@ -6,7 +6,7 @@ AboutMessage:
 Names: Partial
 Rows: 12
 Columns: 12
-Entries: 29
+Entries: 40
 Prefix: 
 Suffix: 
 Type: Process
@@ -43,6 +43,28 @@ Default Category Color 8
 Default Category Color 9
 44461 58082 45232
 Default Category Color 10
+30840 30840 30840
+Positive Plot Gradient (high)
+15420 15420 15420
+Positive Plot Gradient (low)
+49858 17733 12079
+Negative Plot Gradient (high)
+49858 17733 12079
+Negative Plot Gradient (low)
+5911 31868 60652
+Turnovers Plot Gradient (high)
+4626 24929 47545
+Turnovers Plot Gradient (low)
+65535 65535 65535
+Selection Plot Gradient (high)
+65535 65535 65535
+Selection Plot Gradient (low)
+34438 39321 17219
+Selection Band
+33410 42919 0
+Bank Account Average Line
+0 0 0
+Category Average Line
 22616 32896 8738
 Positive Cash light
 15420 26214 6425

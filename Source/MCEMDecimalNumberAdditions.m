@@ -33,7 +33,7 @@ static NSDecimalNumberHandler *numberHandler = nil;
 
 - (int)numberOfDigits
 {
-    NSDecimal zero = [[NSNumber numberWithInt: 0] decimalValue];
+    NSDecimal zero = [@0 decimalValue];
     
     NSDecimal value = [self decimalValue];
     value._isNegative = 0;
@@ -42,7 +42,7 @@ static NSDecimalNumberHandler *numberHandler = nil;
     }
     
     int result = 0;
-    NSDecimal one = [[NSNumber numberWithInt: 1] decimalValue];
+    NSDecimal one = [@1 decimalValue];
     while (NSDecimalCompare(&value, &one) != NSOrderedAscending)
     {
         result++;
@@ -64,8 +64,8 @@ static NSDecimalNumberHandler *numberHandler = nil;
     
     // First determine the most significant digit. That forms our base. But only if the overall
     // value is >= 10.
-    NSDecimal ten = [[NSNumber numberWithInt: 10] decimalValue];
-    NSDecimal five = [[NSNumber numberWithInt: 5] decimalValue];
+    NSDecimal ten = [@10 decimalValue];
+    NSDecimal five = [@5 decimalValue];
     if (NSDecimalCompare(&second, &ten) == NSOrderedAscending) {
         NSDecimalRound(&value, &value, 1, NSRoundUp);
     } else {
@@ -83,12 +83,12 @@ static NSDecimalNumberHandler *numberHandler = nil;
         // See if the second MSD is below or above 5. In the latter case increase the MSD by one
         // and return this as the rounded value.
         if (msdIs5Orlarger || NSDecimalCompare(&second, &five) == NSOrderedDescending) {
-            NSDecimal offset = [[NSNumber numberWithInt: 1] decimalValue];
+            NSDecimal offset = [@1 decimalValue];
             NSDecimalMultiplyByPowerOf10(&offset, &offset, digits - 1, NSRoundDown);
             NSDecimalAdd(&value, &value, &offset, NSRoundDown);
         } else {
             // The second MSD is < 5, so we round it up to 5 and add this to the overall value.
-            NSDecimal offset = [[NSNumber numberWithInt: 5] decimalValue];
+            NSDecimal offset = [@5 decimalValue];
             NSDecimalMultiplyByPowerOf10(&offset, &offset, digits - 2, NSRoundDown);
             NSDecimalAdd(&value, &value, &offset, NSRoundDown);
         }

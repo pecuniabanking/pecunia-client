@@ -49,7 +49,7 @@ static NSMutableDictionary* cache;
   {
     [formatter setFormat: @"0.00¤"];
     [formatter setCurrencyCode: value];
-    NSString* symbol = [formatter stringFromNumber: [NSNumber numberWithInt: 0]];
+    NSString* symbol = [formatter stringFromNumber: @0];
     
     result = [symbol substringFromIndex: [symbol length] - 1];
     [cache setValue: result forKey: value];
@@ -72,9 +72,9 @@ static NSMutableDictionary* cache;
 - (id)transformedValue: (id)value
 {
     if ([value count] > 1) {
-        return [NSNumber numberWithBool: YES];
+        return @YES;
     }
-    return [NSNumber numberWithBool: NO];
+    return @NO;
 }
 
 @end
@@ -91,9 +91,9 @@ static NSMutableDictionary* cache;
 - (id)transformedValue: (id)value
 {
     if ([value count] <= 1) {
-        return [NSNumber numberWithBool: YES];
+        return @YES;
     }
-    return [NSNumber numberWithBool: NO];
+    return @NO;
 }
 
 @end

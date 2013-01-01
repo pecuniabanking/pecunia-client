@@ -84,16 +84,14 @@ extern NSString* const CategoryKey;
         [dateFormatter setDateStyle: kCFDateFormatterFullStyle];
         [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
 
-        whiteAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                            [NSColor whiteColor], NSForegroundColorAttributeName, nil
-                           ];
+        whiteAttributes = @{NSForegroundColorAttributeName: [NSColor whiteColor]};
         [self addObserver: self forKeyPath: @"row" options: 0 context: nil];
         [NSNotificationCenter.defaultCenter addObserverForName: CategoryColorNotification
                                                         object: nil
                                                          queue: nil
                                                     usingBlock: ^(NSNotification *notifictation)
            {
-               Category *category = [notifictation.userInfo objectForKey: CategoryKey];
+               Category *category = (notifictation.userInfo)[CategoryKey];
                categoryColor = category.categoryColor;
                [self setNeedsDisplay: YES];
            }
@@ -134,36 +132,36 @@ static CurrencyValueTransformer* currencyTransformer;
 
 - (void)setDetails: (NSDictionary*) details
 {
-    index = [[details objectForKey: StatementIndexKey] intValue];
+    index = [details[StatementIndexKey] intValue];
 
-    NSDate *date = [details objectForKey: StatementDateKey];
+    NSDate *date = details[StatementDateKey];
     dateFormatter.dateStyle = kCFDateFormatterFullStyle;
 
     [dateLabel setStringValue: [dateFormatter stringFromDate: date]];
-    [turnoversLabel setStringValue: [details objectForKey: StatementTurnoversKey]];
+    [turnoversLabel setStringValue: details[StatementTurnoversKey]];
     
-    [remoteNameLabel setStringValue: [details objectForKey: StatementRemoteNameKey]];
-    [remoteNameLabel setToolTip: [details objectForKey: StatementRemoteNameKey]];
+    [remoteNameLabel setStringValue: details[StatementRemoteNameKey]];
+    [remoteNameLabel setToolTip: details[StatementRemoteNameKey]];
     
-    [purposeLabel setStringValue: [details objectForKey: StatementPurposeKey]];
-    [purposeLabel setToolTip: [details objectForKey: StatementPurposeKey]];
+    [purposeLabel setStringValue: details[StatementPurposeKey]];
+    [purposeLabel setToolTip: details[StatementPurposeKey]];
     
-    [noteLabel setStringValue: [details objectForKey: StatementNoteKey]];
-    [noteLabel setToolTip: [details objectForKey: StatementNoteKey]];
+    [noteLabel setStringValue: details[StatementNoteKey]];
+    [noteLabel setToolTip: details[StatementNoteKey]];
     
-    [categoriesLabel setStringValue: [details objectForKey: StatementCategoriesKey]];
-    [categoriesLabel setToolTip: [details objectForKey: StatementCategoriesKey]];
+    [categoriesLabel setStringValue: details[StatementCategoriesKey]];
+    [categoriesLabel setToolTip: details[StatementCategoriesKey]];
     
-    [valueLabel setObjectValue: [details objectForKey: StatementValueKey]];
-    [saldoLabel setObjectValue: [details objectForKey: StatementSaldoKey]];
+    [valueLabel setObjectValue: details[StatementValueKey]];
+    [saldoLabel setObjectValue: details[StatementSaldoKey]];
     
-    [transactionTypeLabel setObjectValue: [details objectForKey: StatementTransactionTextKey]];
-    [transactionTypeLabel setToolTip: [details objectForKey: StatementTransactionTextKey]];
+    [transactionTypeLabel setObjectValue: details[StatementTransactionTextKey]];
+    [transactionTypeLabel setToolTip: details[StatementTransactionTextKey]];
     
     if (currencyTransformer == nil)
         currencyTransformer = [[CurrencyValueTransformer alloc] init];
     
-    id currency = [details objectForKey: StatementCurrencyKey];
+    id currency = details[StatementCurrencyKey];
     NSString* symbol = [currencyTransformer transformedValue: currency];
     [currencyLabel setStringValue: symbol];
     [[[valueLabel cell] formatter] setCurrencyCode: currency]; // Important for proper display of the value, even without currency.

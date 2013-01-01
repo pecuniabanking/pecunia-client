@@ -33,7 +33,7 @@
 	for(StatCatAssignment *stat in stats) [statements addObject:stat ];
 
 	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:YES];
-	NSArray				*sds = [NSArray arrayWithObject:sd];
+	NSArray				*sds = @[sd];
 	[statements sortUsingDescriptors:sds ];
 
 	statHeights = (int*)malloc([statements count ]*sizeof(int));
@@ -81,13 +81,13 @@
 	}
 	[s appendString:stat.statement.purpose ];
 
-    NSDictionary *attr1 = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont userFontOfSize:9 ], NSFontAttributeName, nil ];
+    NSDictionary *attr1 = @{NSFontAttributeName: [NSFont userFontOfSize:9 ]};
     NSMutableAttributedString *as = [[NSMutableAttributedString alloc ] initWithString:s attributes: attr1 ];
     
     // Zusatzinfo
     if (stat.userInfo != nil && printUserInfo) {
         NSFont *font = [NSFont fontWithName:@"Helvetica-Oblique" size:9 ];
-        NSDictionary *attr2 = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil ];
+        NSDictionary *attr2 = @{NSFontAttributeName: font};
         NSMutableAttributedString *as2 = [[NSMutableAttributedString alloc ] initWithString:[@"\n" stringByAppendingString:stat.userInfo ] attributes: attr2 ];
         [as appendAttributedString:as2 ];
     }
@@ -98,7 +98,7 @@
         if (cs != nil && [cs length ] > 0) {
             cs = [NSString stringWithFormat:@"\n*(%@)", cs ];
             NSFont *font = [NSFont fontWithName:@"Helvetica-Oblique" size:8 ];
-            NSDictionary *attr2 = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil ];
+            NSDictionary *attr2 = @{NSFontAttributeName: font};
             NSMutableAttributedString *as2 = [[NSMutableAttributedString alloc ] initWithString:cs attributes: attr2 ];
             [as appendAttributedString:as2 ];
         }
@@ -118,7 +118,7 @@
 	int h = 65;
 	int height;
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	[attributes setObject:[NSFont userFontOfSize:9 ] forKey:NSFontAttributeName ];
+	attributes[NSFontAttributeName] = [NSFont userFontOfSize:9 ];
 	
 	NSRect r = [@"01.01.\n10.10." boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes ];
 	minStatHeight = r.size.height;	
@@ -151,7 +151,7 @@
 	
 	// Attributes for header text
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	[attributes setObject:[NSFont fontWithName:@"Helvetica-Bold" size:9 ] forKey:NSFontAttributeName ];
+	attributes[NSFontAttributeName] = [NSFont fontWithName:@"Helvetica-Bold" size:9 ];
 	[NSBezierPath setDefaultLineWidth:0.5 ];
 	
 	// first header rect
@@ -162,7 +162,7 @@
 	[NSBezierPath strokeLineFromPoint:NSMakePoint(0, baseHeight+20) toPoint:NSMakePoint(pageWidth, baseHeight+20) ];
 	
 	// first header text
-	StatCatAssignment *stat = [statements objectAtIndex:0 ];
+	StatCatAssignment *stat = statements[0];
 	if (stat == nil) return;
 	BankAccount *account = stat.statement.account;
 	NSString *s = [NSString stringWithFormat:@"Konto: %@\tBLZ: %@\t%@", account.accountNumber, account.bankCode, account.bankName ];
@@ -251,11 +251,11 @@
 	[mps setAlignment:NSRightTextAlignment ];
 	
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	[attributes setObject:[NSFont userFontOfSize:9 ] forKey:NSFontAttributeName ];
+	attributes[NSFontAttributeName] = [NSFont userFontOfSize:9 ];
 	
 	NSMutableDictionary *amountAttributes = [NSMutableDictionary dictionaryWithCapacity:2 ];
-	[amountAttributes setObject:[NSFont userFontOfSize:9 ] forKey:NSFontAttributeName ];
-	[amountAttributes setObject:mps forKey:NSParagraphStyleAttributeName ];
+	amountAttributes[NSFontAttributeName] = [NSFont userFontOfSize:9 ];
+	amountAttributes[NSParagraphStyleAttributeName] = mps;
 	
 	NSDecimalNumber *debitSum = [NSDecimalNumber zero];
 	NSDecimalNumber *creditSum = [NSDecimalNumber zero];
@@ -275,7 +275,7 @@
 	[@"Anfangssaldo:" drawInRect:rect withAttributes:attributes ];
 	rect.origin.x = dateWidth+purposeWidth+2*amountWidth+padding;
 	rect.size.width = amountWidth-2*padding;
-	StatCatAssignment *stat = [statements objectAtIndex:0 ];
+	StatCatAssignment *stat = statements[0];
 	NSDecimalNumber *startSaldo = [stat.statement.saldo decimalNumberBySubtracting:stat.value ];
 	[[numberFormatter stringFromNumber:startSaldo ] drawInRect:rect withAttributes:amountAttributes ];
 	h+=15;
@@ -382,19 +382,19 @@
 	// Header
 	NSRect rect = NSMakeRect(leftMargin, topMargin-30, pageWidth, 25);
 	NSMutableDictionary *headerAttributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	[headerAttributes setObject:[NSFont fontWithName:@"Helvetica Bold Oblique" size:16 ] forKey:NSFontAttributeName ];
+	headerAttributes[NSFontAttributeName] = [NSFont fontWithName:@"Helvetica Bold Oblique" size:16 ];
 	rect.size.width-=10;
 	[@"Kontoauszug" drawInRect:rect withAttributes:headerAttributes ];
 	
 	// Footer
 	NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	[attributes setObject:[NSFont fontWithName:@"Helvetica-Bold" size:9 ] forKey:NSFontAttributeName ];
+	attributes[NSFontAttributeName] = [NSFont fontWithName:@"Helvetica-Bold" size:9 ];
 	
 	rect = NSMakeRect(leftMargin, topMargin+pageHeight+5, pageWidth, 20);
 	s = [NSString stringWithFormat:@"Erstellt am %@", [df stringFromDate:[NSDate date ] ] ];
 	[s drawInRect:rect withAttributes:attributes ];
 	
-	[attributes setObject:mps forKey:NSParagraphStyleAttributeName ];
+	attributes[NSParagraphStyleAttributeName] = mps;
 	s = [NSString stringWithFormat:@"Seite %li von %i", [[NSPrintOperation currentOperation ] currentPage], totalPages ];
 	[s drawInRect:rect withAttributes:attributes ];
 	

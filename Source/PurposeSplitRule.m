@@ -31,16 +31,16 @@
 	if ([tokens count ] != 2) return nil;
 	
 	// first part is version info, skip
-	NSString *s = [tokens objectAtIndex:1 ];
+	NSString *s = tokens[1];
 	tokens = [s componentsSeparatedByString:@"," ];
 	if ([tokens count ] != 7) return nil;
-	ePos = [[tokens objectAtIndex:0 ] intValue ];
-	eLen = [[tokens objectAtIndex:1 ] intValue ];
-	kPos = [[tokens objectAtIndex:2 ] intValue ];
-	kLen = [[tokens objectAtIndex:3 ] intValue ];
-	bPos = [[tokens objectAtIndex:4 ] intValue ];
-	bLen = [[tokens objectAtIndex:5 ] intValue ];
-	vPos = [[tokens objectAtIndex:6 ] intValue ];
+	ePos = [tokens[0] intValue ];
+	eLen = [tokens[1] intValue ];
+	kPos = [tokens[2] intValue ];
+	kLen = [tokens[3] intValue ];
+	bPos = [tokens[4] intValue ];
+	bLen = [tokens[5] intValue ];
+	vPos = [tokens[6] intValue ];
 	return self;
 }
 

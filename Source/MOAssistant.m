@@ -157,7 +157,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         [op setCanChooseFiles:YES];
         [op setCanCreateDirectories:NO];
         [op setDirectoryURL:self.dataDirURL];
-        [op setAllowedFileTypes:[NSArray arrayWithObject:@"pecuniadata"]];
+        [op setAllowedFileTypes:@[@"pecuniadata"]];
         [op setExtensionHidden:YES];
         [op setNameFieldStringValue:self.dataFilename];
         
@@ -261,7 +261,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     // if it's the default data dir: check if the pecunia datafile already exists - if not, create it
     if (isDefaultDir) {
         if ([fm fileExistsAtPath:[self.pecuniaFileURL path]] == NO) {
-            NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:0700], NSFilePosixPermissions, [NSNumber numberWithBool:YES], NSFileExtensionHidden, nil ];
+            NSDictionary *attributes = @{NSFilePosixPermissions: @0700, NSFileExtensionHidden: @YES};
             [fm createDirectoryAtPath: [self.pecuniaFileURL path] withIntermediateDirectories: YES attributes: attributes error: &error ];
             if(error) @throw error;
         }
@@ -291,8 +291,8 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                 // yes, now we have to check the dates
                 NSDictionary *standardAttrs = [fm attributesOfItemAtPath:[oldURLStandard path] error:&error];
                 NSDictionary *encrAttrs = [fm attributesOfItemAtPath:[oldURLEncr path] error:&error];
-                NSDate *standardDate = [standardAttrs objectForKey:NSFileModificationDate];
-                NSDate *encrDate = [encrAttrs objectForKey:NSFileModificationDate];
+                NSDate *standardDate = standardAttrs[NSFileModificationDate];
+                NSDate *encrDate = encrAttrs[NSFileModificationDate];
                 if ([encrDate compare:standardDate] == NSOrderedDescending) {
                     wasEncrypted = YES;
                 }
@@ -614,10 +614,8 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         [[NSFileManager defaultManager] removeItemAtURL: storeURL error: &error];
 
         // Now recreate it.
-        NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-                                 [NSNumber numberWithBool: YES], NSMigratePersistentStoresAutomaticallyOption,
-                                 [NSNumber numberWithBool: YES], NSInferMappingModelAutomaticallyOption,
-                                 nil];
+        NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
+                                 NSInferMappingModelAutomaticallyOption: @YES};
         [[context persistentStoreCoordinator] addPersistentStoreWithType: NSSQLiteStoreType
                                                            configuration: nil
                                                                      URL: storeURL
@@ -651,8 +649,8 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     [coord addPersistentStoreWithType: NSSQLiteStoreType
                         configuration: nil
                                   URL: accountsURL
-                              options: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES ], NSMigratePersistentStoresAutomaticallyOption,
-                                        [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil ]
+                              options: @{NSMigratePersistentStoresAutomaticallyOption: @YES,
+                                        NSInferMappingModelAutomaticallyOption: @YES}
                                 error: &error];
     
     
@@ -686,7 +684,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 	NSSavePanel *panel = [NSSavePanel savePanel ];
     [panel setNameFieldStringValue:self.dataFilename];
     [panel setCanCreateDirectories:YES];
-    [panel setAllowedFileTypes:[NSArray arrayWithObject:@"pecuniadata"]];
+    [panel setAllowedFileTypes:@[@"pecuniadata"]];
     if (isDefaultDir == NO) {
         [panel setDirectoryURL:self.dataDirURL];
     }

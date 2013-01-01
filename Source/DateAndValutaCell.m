@@ -32,7 +32,7 @@
 		NSMutableDictionary *attrs = [[[self attributedStringValue ] attributesAtIndex: 0 effectiveRange: NULL] mutableCopy];
 		NSString *str = [formatter stringFromDate:valuta ];
 		NSFont *txtFont = [NSFont fontWithName: @"Lucida Grande" size: 10 ];
-		[attrs setObject:txtFont forKey:NSFontAttributeName ];
+		attrs[NSFontAttributeName] = txtFont;
 		
 		NSAttributedString *s = [[NSAttributedString alloc ] initWithString:str attributes: attrs];
 		

@@ -91,11 +91,8 @@ static NSGradient *blackGradient;
         if (!self.isEnabled) {
             textColor = [NSColor grayColor];
         }
-        NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    textColor, NSForegroundColorAttributeName,
-                                    paragraphStyle, NSParagraphStyleAttributeName,
-                                    nil
-                                    ];
+        NSDictionary *attributes = @{NSForegroundColorAttributeName: textColor,
+                                    NSParagraphStyleAttributeName: paragraphStyle};
         NSAttributedString *cellStringWithFormat = [[NSAttributedString alloc] initWithString: [self title]
                                                                                     attributes: attributes];
         [cellStringWithFormat drawInRect: NSInsetRect(cellFrame, 10, 4)];

@@ -1,6 +1,6 @@
 /*
  ImageAndTextCell.m
- Copyright � 2006, Apple Computer, Inc., all rights reserved.
+ Copyright ¬¨¬®¬¨¬Æ¬¨¬®¬¨¬© 2006, Apple Computer, Inc., all rights reserved.
  
  Subclass of NSTextFieldCell which can display text and an image simultaneously.
  */
@@ -13,7 +13,7 @@
  redistribute this Apple software.
  
  In consideration of your agreement to abide by the following terms, and subject to these 
- terms, Apple grants you a personal, non-exclusive license, under Apple�s copyrights in 
+ terms, Apple grants you a personal, non-exclusive license, under Apple‚Äö√Ñ√∂‚àö√ë‚àö‚àÇ‚Äö√†√∂‚àö√´‚Äö√†√∂¬¨‚Ä¢s copyrights in 
  this original Apple software (the "Apple Software"), to use, reproduce, modify and 
  redistribute the Apple Software, with or without modifications, in source and/or binary 
  forms; provided that if you redistribute the Apple Software in its entirety and without 
@@ -263,15 +263,12 @@ static NSGradient* selectionGradient = nil;
         } else {
             fontAttributes = [amountFormatter textAttributesForNegativeValues];
         }
-        valueColor = (NSColor*)[fontAttributes objectForKey: NSForegroundColorAttributeName];
+        valueColor = (NSColor*)fontAttributes[NSForegroundColorAttributeName];
     }
 
     NSFont *txtFont = [NSFont fontWithName: @"Lucida Grande" size: 13];
-    NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                txtFont, NSFontAttributeName,
-                                valueColor, NSForegroundColorAttributeName,
-                                nil
-                                ];
+    NSDictionary *attributes = @{NSFontAttributeName: txtFont,
+                                NSForegroundColorAttributeName: valueColor};
     
     [amountFormatter setCurrencyCode: currency];
     NSString *amountString = [amountFormatter stringFromNumber:amount ];
@@ -305,12 +302,9 @@ static NSGradient* selectionGradient = nil;
         // Selected and root items can never be disabled.
         textColor = [NSColor whiteColor];
 
-        attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                      [self font], NSFontAttributeName,
-                      textColor, NSForegroundColorAttributeName,
-                      paragraphStyle, NSParagraphStyleAttributeName,
-                      nil
-                      ];
+        attributes = @{NSFontAttributeName: [self font],
+                      NSForegroundColorAttributeName: textColor,
+                      NSParagraphStyleAttributeName: paragraphStyle};
        cellStringWithFormat = [[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
                                                               attributes: attributes];
     } else {
@@ -319,12 +313,9 @@ static NSGradient* selectionGradient = nil;
         if (isDisabled) {
             textColor = [NSColor applicationColorForKey: @"Disabled Tree Item Color"];
         }   
-        attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                      [self font], NSFontAttributeName,
-                      textColor, NSForegroundColorAttributeName,
-                      paragraphStyle, NSParagraphStyleAttributeName,
-                      nil
-                      ];
+        attributes = @{NSFontAttributeName: [self font],
+                      NSForegroundColorAttributeName: textColor,
+                      NSParagraphStyleAttributeName: paragraphStyle};
         cellStringWithFormat = [[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
                                                                attributes: attributes];
     }
@@ -339,7 +330,7 @@ static NSGradient* selectionGradient = nil;
 - (NSSize)sizeOfBadge:(NSInteger)unread
 {
     
-    NSAttributedString *badgeAttrString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%li", unread ]																	  attributes:[NSDictionary dictionaryWithObjectsAndKeys:BADGE_FONT, NSFontAttributeName, nil]];
+    NSAttributedString *badgeAttrString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%li", unread ]																	  attributes:@{NSFontAttributeName: BADGE_FONT}];
     
     NSSize stringSize = [badgeAttrString size];
     
@@ -378,8 +369,8 @@ static NSGradient* selectionGradient = nil;
     }
     
     
-    attributes = [[NSDictionary alloc] initWithObjectsAndKeys:BADGE_FONT, NSFontAttributeName,
-                  textColor, NSForegroundColorAttributeName, nil];
+    attributes = @{NSFontAttributeName: BADGE_FONT,
+                  NSForegroundColorAttributeName: textColor};
     
     
     [backgroundColor set];

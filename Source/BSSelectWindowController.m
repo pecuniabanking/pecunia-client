@@ -32,15 +32,14 @@
 		NSCell	*cell = [tc dataCell ];
 		NSNumberFormatter	*form = [cell formatter ];
 		if(form) {
-			NSDictionary *newAttrs = [NSDictionary dictionaryWithObjectsAndKeys: 
-									  [NSColor colorWithDeviceRed: 0.09 green: 0.7 blue: 0 alpha: 100], @"NSColor", nil ];
+			NSDictionary *newAttrs = @{@"NSColor": [NSColor colorWithDeviceRed: 0.09 green: 0.7 blue: 0 alpha: 100]};
 			[form setTextAttributesForPositiveValues: newAttrs ];
 		}
 	}
 	
 	// sort descriptor for statements view
 	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
-	NSArray				*sds = [NSArray arrayWithObject:sd];
+	NSArray				*sds = @[sd];
 	[statementsView setSortDescriptors: sds ];
 }
 

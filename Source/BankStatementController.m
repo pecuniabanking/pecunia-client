@@ -53,10 +53,10 @@
 		currentStatement.currency = account.currency;
 		currentStatement.localAccount = account.accountNumber;
 		currentStatement.localBankCode = account.bankCode;
-		currentStatement.isManual = [NSNumber numberWithBool: YES ];
+		currentStatement.isManual = @YES;
 		if ([accountStatements count] > 0) {
-			currentStatement.date = [[accountStatements objectAtIndex:0 ] date ];
-			currentStatement.valutaDate = [[accountStatements objectAtIndex:0 ] valutaDate ];
+			currentStatement.date = [accountStatements[0] date ];
+			currentStatement.valutaDate = [accountStatements[0] valutaDate ];
 		} else {
 			currentStatement.date = [NSDate date ];
 			currentStatement.valutaDate = [NSDate date ];
@@ -70,12 +70,12 @@
 -(void)arrangeStatements
 {
 	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
-	NSArray				*sds = [NSArray arrayWithObject:sd];
+	NSArray				*sds = @[sd];
 
 	NSMutableSet *statements = [account mutableSetValueForKey:@"statements" ];
 	self.accountStatements = [[statements allObjects ] sortedArrayUsingDescriptors:sds ];
 	
-	if([self.accountStatements count ] >0) lastStatement = [self.accountStatements objectAtIndex:0 ]; else lastStatement = nil;
+	if([self.accountStatements count ] >0) lastStatement = (self.accountStatements)[0]; else lastStatement = nil;
 	
 }
 
@@ -87,7 +87,7 @@
 	}
 	
 	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"localName" ascending:YES];
-	NSArray				*sds = [NSArray arrayWithObject:sd];
+	NSArray				*sds = @[sd];
 	[categoriesController setSortDescriptors: sds ];
 	
 }
@@ -148,7 +148,7 @@
 	// assign to category
 	NSInteger idx = [categoriesController selectionIndex ];
 	if (idx != NSNotFound) {
-		Category *cat = [[categoriesController arrangedObjects ] objectAtIndex:idx];
+		Category *cat = [categoriesController arrangedObjects ][idx];
 		[newStatement assignToCategory:cat ];
 	}
 	
@@ -183,7 +183,7 @@
 	currentStatement.currency = account.currency;
 	currentStatement.localAccount = account.accountNumber;
 	currentStatement.localBankCode = account.bankCode;
-	currentStatement.isManual = [NSNumber numberWithBool: YES ];
+	currentStatement.isManual = @YES;
 	currentStatement.date = [dateField dateValue ];
 	currentStatement.valutaDate = [valutaField dateValue ];
 	currentStatement.remoteCountry = @"de";

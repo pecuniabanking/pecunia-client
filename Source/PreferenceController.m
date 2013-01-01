@@ -42,14 +42,14 @@ void updateColorCache()
 	BOOL markNotAssigned = [defaults boolForKey: @"markNAStatements" ];
 	if(markNotAssigned) {
 		NSData *colorData = [defaults objectForKey: _notAssignedColor ];
-		if(colorData == nil) [statementColors setObject: [NSColor colorWithDeviceRed: 0.918 green: 1.0 blue: 0.258 alpha: 1.0 ] forKey: _notAssignedColor ];
-		else [statementColors setObject: [NSKeyedUnarchiver unarchiveObjectWithData: colorData ] forKey: _notAssignedColor ];
+		if(colorData == nil) statementColors[_notAssignedColor] = [NSColor colorWithDeviceRed: 0.918 green: 1.0 blue: 0.258 alpha: 1.0 ];
+		else statementColors[_notAssignedColor] = [NSKeyedUnarchiver unarchiveObjectWithData: colorData ];
 	} else [statementColors removeObjectForKey: _notAssignedColor ];
 	BOOL markNewStatements = [defaults boolForKey: @"markNewStatements" ];
 	if(markNewStatements) {
 		NSData *colorData = [defaults objectForKey: _newStatementColor ];
-		if(colorData == nil) [statementColors setObject: [NSColor colorWithDeviceRed: 0.207 green: 0.684 blue: 0.984 alpha: 1.0 ] forKey: _newStatementColor ];
-		else [statementColors setObject: [NSKeyedUnarchiver unarchiveObjectWithData: colorData ] forKey: _newStatementColor ];
+		if(colorData == nil) statementColors[_newStatementColor] = [NSColor colorWithDeviceRed: 0.207 green: 0.684 blue: 0.984 alpha: 1.0 ];
+		else statementColors[_newStatementColor] = [NSKeyedUnarchiver unarchiveObjectWithData: colorData ];
 	} else [statementColors removeObjectForKey: _newStatementColor ];
 }
 
@@ -60,12 +60,12 @@ void updateColorCache()
 	self = [super initWithWindowNibName:@"Preferences"];
 	mainWindow = nil;
 	colorsChanged = NO;
-	exportFields = [NSArray arrayWithObjects: @"valutaDate", @"date", @"value", @"saldo", @"currency", @"localAccount", 
+	exportFields = @[@"valutaDate", @"date", @"value", @"saldo", @"currency", @"localAccount", 
 					@"localBankCode", @"localName", @"localCountry",
 					@"localSuffix", @"remoteName", @"floatingPurpose", @"note", @"remoteAccount", @"remoteBankCode", 
 					@"remoteBankName", @"remoteBankLocation", @"remoteIBAN", @"remoteBIC", @"remoteSuffix",
 					@"customerReference", @"bankReference", @"transactionText", @"primaNota",
-					@"transactionCode", @"categoriesDescription", nil ];
+					@"transactionCode", @"categoriesDescription"];
 	return self;
 }
 
@@ -74,7 +74,7 @@ void updateColorCache()
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
 	NSArray	*fields = [defaults objectForKey: @"Exporter.fields" ];
 	if(fields != nil) {
-		NSTableColumn *col = [[fieldTable tableColumns ] objectAtIndex:0 ];
+		NSTableColumn *col = [fieldTable tableColumns ][0];
 		NSComboBoxCell *cell = [col dataCell ];
 		
 		for(NSString *field in fields) {
@@ -86,7 +86,7 @@ void updateColorCache()
 	}
 	MOAssistant *assistant = [MOAssistant assistant ];
 	encrypt = [assistant encrypted];
-	[self setValue: [NSNumber numberWithBool: [assistant encrypted ] ] forKey: @"encrypt" ];
+	[self setValue: @([assistant encrypted ]) forKey: @"encrypt" ];
     
     // erstes Tab setzen
     [toolBar setSelectedItemIdentifier: @"synch" ];
@@ -152,12 +152,12 @@ void updateColorCache()
 	NSArray	*columns = [fieldTable tableColumns ];
 	NSMutableArray	*fields = [NSMutableArray arrayWithCapacity: 25 ];
 	
-	NSTableColumn *col = [columns objectAtIndex:0 ];
+	NSTableColumn *col = columns[0];
 	NSComboBoxCell *cell = [col dataCell ];
 	
 	for (NSDictionary *dict in content) {
 		idx = [cell indexOfItemWithObjectValue: [dict valueForKey: @"fieldName" ] ];
-		if(idx >=0) [fields addObject: [exportFields objectAtIndex:idx ] ];
+		if(idx >=0) [fields addObject: exportFields[idx] ];
 	}
 	if([fields count ]>0) {
 		NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
@@ -253,7 +253,7 @@ void updateColorCache()
 		}
 	}
 	// No success
-	[self setValue: [NSNumber numberWithBool: NO ] forKey: @"encrypt" ];
+	[self setValue: @NO forKey: @"encrypt" ];
 }
 
 -(IBAction)cancelSheet:(id)sender
@@ -393,13 +393,13 @@ void updateColorCache()
 +(NSColor*)notAssignedRowColor
 {
 	if(statementColors == nil) updateColorCache();
-	return [statementColors objectForKey: _notAssignedColor ];
+	return statementColors[_notAssignedColor];
 }
 
 +(NSColor*)newStatementRowColor
 {
 	if(statementColors == nil) updateColorCache();
-	return [statementColors objectForKey: _newStatementColor ];
+	return statementColors[_newStatementColor];
 }
 
 + (BOOL)showCategoryColorsInTree

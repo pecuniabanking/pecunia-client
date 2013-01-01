@@ -71,7 +71,7 @@ extern NSString* const CategoryKey;
 		if(s) {
 			NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: s ];
 			if([pred class ] != [NSCompoundPredicate class ]) {
-				NSCompoundPredicate* comp = [[NSCompoundPredicate alloc ] initWithType: NSOrPredicateType subpredicates: [NSArray arrayWithObjects: pred, nil ]];
+				NSCompoundPredicate* comp = [[NSCompoundPredicate alloc ] initWithType: NSOrPredicateType subpredicates: @[pred]];
 				pred = comp;
 			}
 			[predicateEditor setObjectValue: pred ];
@@ -142,7 +142,7 @@ extern NSString* const CategoryKey;
         changedAccount.accountSuffix = account.accountSuffix;
     }
 
-    NSDictionary *info = [NSDictionary dictionaryWithObject: changedAccount forKey: CategoryKey];
+    NSDictionary *info = @{CategoryKey: changedAccount};
     [NSNotificationCenter.defaultCenter postNotificationName: CategoryColorNotification
                                                       object: self
                                                     userInfo: info];

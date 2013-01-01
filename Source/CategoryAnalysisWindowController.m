@@ -96,32 +96,32 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     if (distance != 0)
     {
         // A trackpad gesture (usually two-finger swipe).
-        [parameters setObject: @"plotMoveSwipe" forKey: @"type"];
+        parameters[@"type"] = @"plotMoveSwipe";
 
-        NSNumber* location = [NSNumber numberWithDouble: plotSpace.xRange.locationDouble - plotSpace.xRange.lengthDouble * distance / 100];
-        [parameters setObject: location forKey: @"plotXLocation"];
+        NSNumber* location = @(plotSpace.xRange.locationDouble - plotSpace.xRange.lengthDouble * distance / 100);
+        parameters[@"plotXLocation"] = location;
         
-        NSNumber* range = [NSNumber numberWithDouble: CPTDecimalDoubleValue(plotSpace.xRange.length)];
-        [parameters setObject: range forKey: @"plotXRange"];
+        NSNumber* range = @(CPTDecimalDoubleValue(plotSpace.xRange.length));
+        parameters[@"plotXRange"] = range;
     }
     else 
     {
-        [parameters setObject: @"plotScale" forKey: @"type"];
+        parameters[@"type"] = @"plotScale";
         
         distance = [theEvent deltaY];
         
         // Range location and size.
-        NSNumber* location = [NSNumber numberWithDouble: plotSpace.xRange.locationDouble];
-        [parameters setObject: location forKey: @"plotXLocation"];
+        NSNumber* location = @(plotSpace.xRange.locationDouble);
+        parameters[@"plotXLocation"] = location;
 
-        NSNumber* range = [NSNumber numberWithDouble: plotSpace.xRange.lengthDouble * (1 + distance / 100)];
-        [parameters setObject: range forKey: @"plotXRange"];
+        NSNumber* range = @(plotSpace.xRange.lengthDouble * (1 + distance / 100));
+        parameters[@"plotXRange"] = range;
     }
     
     // Current mouse position.
     CGPoint mouseLocation = NSPointToCGPoint([self convertPoint: [theEvent locationInWindow] fromView: nil]);
     CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
-    [parameters setObject: [NSNumber numberWithFloat: pointInHostedGraph.x] forKey: @"mousePosition"];
+    parameters[@"mousePosition"] = @(pointInHostedGraph.x);
     
     [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
 }
@@ -138,21 +138,21 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     }
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
-   [parameters setObject: @"plotScale" forKey: @"type"];
+   parameters[@"type"] = @"plotScale";
 
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
     CGFloat relativeScale = [theEvent magnification];
     
-    NSNumber* location = [NSNumber numberWithDouble: plotSpace.xRange.locationDouble];
-    [parameters setObject: location forKey: @"plotXLocation"];
+    NSNumber* location = @(plotSpace.xRange.locationDouble);
+    parameters[@"plotXLocation"] = location;
 
-    NSNumber* range = [NSNumber numberWithDouble: plotSpace.xRange.lengthDouble * (1 - relativeScale)];
-    [parameters setObject: range forKey: @"plotXRange"];
+    NSNumber* range = @(plotSpace.xRange.lengthDouble * (1 - relativeScale));
+    parameters[@"plotXRange"] = range;
 
     CGPoint mouseLocation = NSPointToCGPoint([self convertPoint: [theEvent locationInWindow] fromView: nil]);
     CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
-    [parameters setObject: [NSNumber numberWithFloat: pointInHostedGraph.x] forKey: @"mousePosition"];
+    parameters[@"mousePosition"] = @(pointInHostedGraph.x);
     
     [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
 }
@@ -167,14 +167,14 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     }
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
-    [parameters setObject: @"trackLineMove" forKey: @"type"];
+    parameters[@"type"] = @"trackLineMove";
     
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
     NSPoint location = [self convertPoint: [theEvent locationInWindow] fromView: nil];
     CGPoint mouseLocation = NSPointToCGPoint(location);
     CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
-    [parameters setObject: [NSNumber numberWithFloat: pointInHostedGraph.x] forKey: @"location"];
+    parameters[@"location"] = @(pointInHostedGraph.x);
     [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
 }
 
@@ -189,15 +189,15 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
-    [parameters setObject: @"plotMoveDrag" forKey: @"type"];
+    parameters[@"type"] = @"plotMoveDrag";
     
     CGFloat distance = [theEvent deltaX];
     
-    NSNumber* location = [NSNumber numberWithDouble: plotSpace.xRange.locationDouble - plotSpace.xRange.lengthDouble * distance / 1000];
-    [parameters setObject: location forKey: @"plotXLocation"];
+    NSNumber* location = @(plotSpace.xRange.locationDouble - plotSpace.xRange.lengthDouble * distance / 1000);
+    parameters[@"plotXLocation"] = location;
     
-    NSNumber* range = [NSNumber numberWithDouble: CPTDecimalDoubleValue(plotSpace.xRange.length)];
-    [parameters setObject: range forKey: @"plotXRange"];
+    NSNumber* range = @(CPTDecimalDoubleValue(plotSpace.xRange.length));
+    parameters[@"plotXRange"] = range;
     [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
 }
 
@@ -231,34 +231,34 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     if (subtype == NSTabletPointEventSubtype)
     {
         // A trackpad gesture (usually two-finger swipe).
-        [parameters setObject: @"plotMoveSwipe" forKey: @"type"];
+        parameters[@"type"] = @"plotMoveSwipe";
 
         CGFloat distance = [theEvent deltaX];
 
-        NSNumber* location = [NSNumber numberWithDouble: selector.range.locationDouble + plotSpace.xRange.lengthDouble * distance / 100];
-        [parameters setObject: location forKey: @"plotXLocation"];
+        NSNumber* location = @(selector.range.locationDouble + plotSpace.xRange.lengthDouble * distance / 100);
+        parameters[@"plotXLocation"] = location;
         
-        NSNumber* range = [NSNumber numberWithDouble: CPTDecimalDoubleValue(selector.range.length)];
-        [parameters setObject: range forKey: @"plotXRange"];
+        NSNumber* range = @(CPTDecimalDoubleValue(selector.range.length));
+        parameters[@"plotXRange"] = range;
     }
     else 
     {
-        [parameters setObject: @"plotScale" forKey: @"type"];
+        parameters[@"type"] = @"plotScale";
         
         CGFloat distance = [theEvent deltaY];
         
         // Range location and size.
-        NSNumber* location = [NSNumber numberWithDouble: selector.range.locationDouble];
-        [parameters setObject: location forKey: @"plotXLocation"];
+        NSNumber* location = @(selector.range.locationDouble);
+        parameters[@"plotXLocation"] = location;
 
-        NSNumber* range = [NSNumber numberWithDouble: selector.range.lengthDouble * (1 + distance / 100)];
-        [parameters setObject: range forKey: @"plotXRange"];
+        NSNumber* range = @(selector.range.lengthDouble * (1 + distance / 100));
+        parameters[@"plotXRange"] = range;
     }
     
     // Current mouse position.
     CGPoint mouseLocation = NSPointToCGPoint([self convertPoint: [theEvent locationInWindow] fromView: nil]);
     CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
-    [parameters setObject: [NSNumber numberWithFloat: pointInHostedGraph.x] forKey: @"mousePosition"];
+    parameters[@"mousePosition"] = @(pointInHostedGraph.x);
     
     [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
 }
@@ -277,19 +277,19 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
-   [parameters setObject: @"plotScale" forKey: @"type"];
+   parameters[@"type"] = @"plotScale";
 
     CGFloat relativeScale = [theEvent magnification];
     
-    NSNumber* location = [NSNumber numberWithDouble: selector.range.locationDouble];
-    [parameters setObject: location forKey: @"plotXLocation"];
+    NSNumber* location = @(selector.range.locationDouble);
+    parameters[@"plotXLocation"] = location;
 
-    NSNumber* range = [NSNumber numberWithDouble: selector.range.lengthDouble * (1 - relativeScale)];
-    [parameters setObject: range forKey: @"plotXRange"];
+    NSNumber* range = @(selector.range.lengthDouble * (1 - relativeScale));
+    parameters[@"plotXRange"] = range;
 
     CGPoint mouseLocation = NSPointToCGPoint([self convertPoint: [theEvent locationInWindow] fromView: nil]);
     CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
-    [parameters setObject: [NSNumber numberWithFloat: pointInHostedGraph.x] forKey: @"mousePosition"];
+    parameters[@"mousePosition"] = @(pointInHostedGraph.x);
     
     [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
 }
@@ -309,15 +309,15 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
-    [parameters setObject: @"plotMoveCenter" forKey: @"type"];
+    parameters[@"type"] = @"plotMoveCenter";
     
-    NSNumber* range = [NSNumber numberWithDouble: selector.range.lengthDouble];
-    [parameters setObject: range forKey: @"plotXRange"];
+    NSNumber* range = @(selector.range.lengthDouble);
+    parameters[@"plotXRange"] = range;
 
     // Current mouse position as new center.
     CGPoint mouseLocation = NSPointToCGPoint([self convertPoint: [theEvent locationInWindow] fromView: nil]);
     CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
-    [parameters setObject: [NSNumber numberWithFloat: pointInHostedGraph.x] forKey: @"location"];
+    parameters[@"location"] = @(pointInHostedGraph.x);
     
     [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
 }
@@ -402,7 +402,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* values = [userDefaults dictionaryForKey: @"categoryAnalysis"];
     if (values != nil) {
-        groupingInterval = [[values objectForKey: @"grouping"] intValue];
+        groupingInterval = [values[@"grouping"] intValue];
         groupingSlider.intValue = groupingInterval;
     }
     
@@ -463,7 +463,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     plot.shadowColor = CGColorCreateGenericGray(0, 1);
     plot.shadowRadius = 3.0;
     plot.shadowOffset = CGSizeMake(2, -2);
-    plot.shadowOpacity = 0.75;
+    plot.shadowOpacity = 0.5;
      //    */
 /*
     CPTMutableShadow *shadow = [CPTMutableShadow shadow];
@@ -571,10 +571,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     lineStyle.lineWidth = 1;
     lineStyle.lineColor = [CPTColor colorWithGenericGray: 64 / 255.0];
     lineStyle.lineCap = kCGLineCapRound;
-    lineStyle.dashPattern = lineStyle.dashPattern = [NSArray arrayWithObjects:
-                                                     [NSNumber numberWithFloat: 10.0f],
-                                                     [NSNumber numberWithFloat: 5.0f],
-                                                     nil];
+    lineStyle.dashPattern = lineStyle.dashPattern = @[@10.0f,
+                                                     @5.0f];
     mainIndicatorLine.axisLineStyle = lineStyle;
     mainIndicatorLine.majorTickLineStyle = nil;
     
@@ -584,7 +582,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
     CPTXYAxis* x = axisSet.xAxis;
     CPTXYAxis* y = axisSet.yAxis;
-    axisSet.axes = [NSArray arrayWithObjects: x, y, mainIndicatorLine, nil];
+    axisSet.axes = @[x, y, mainIndicatorLine];
 }
 
 - (void)setupTurnoversAxes
@@ -690,10 +688,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
     lineStyle.lineWidth = 1;
     lineStyle.lineColor = [CPTColor colorWithGenericGray: 64 / 255.0];
-    lineStyle.dashPattern = lineStyle.dashPattern = [NSArray arrayWithObjects:
-                                                     [NSNumber numberWithFloat: 10.0f],
-                                                     [NSNumber numberWithFloat: 5.0f],
-                                                     nil];
+    lineStyle.dashPattern = lineStyle.dashPattern = @[@10.0f,
+                                                     @5.0f];
     turnoversIndicatorLine.axisLineStyle = lineStyle;
     turnoversIndicatorLine.majorTickLineStyle = nil;
     
@@ -701,7 +697,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTXYAxisSet* axisSet = (id)turnoversGraph.axisSet;
     CPTXYAxis* x = axisSet.xAxis;
     CPTXYAxis* y = axisSet.yAxis;
-    axisSet.axes = [NSArray arrayWithObjects: x, y, turnoversIndicatorLine, nil];
+    axisSet.axes = @[x, y, turnoversIndicatorLine];
 }
 
 - (void)setupSelectionAxes
@@ -840,31 +836,30 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 {
     [mainGraph removePlotWithIdentifier: @"positivePlot"];
     [mainGraph removePlotWithIdentifier: @"negativePlot"];
+    [mainGraph removePlotWithIdentifier: @"averagePlot"];
 
     // The main graph contains two plots, one for the positive values (with a gray fill)
     // and the other one for negative values (with a red fill).
     // Depending on whether we view a bank account or a normal category either line or bar plots are used.
     if (mainCategory != nil) {
-        CPTGradient* positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 120 / 255.0
-                                                                                                           green: 120 / 255.0
-                                                                                                            blue: 120 / 255.0
-                                                                                                           alpha: 0.75]
-                                                                    endingColor: [CPTColor colorWithComponentRed: 60 / 255.0
-                                                                                                           green: 60 / 255.0
-                                                                                                            blue: 60 / 255.0
-                                                                                                           alpha: 1]
+        CGColorRef gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (high)"] colorWithAlphaComponent: 0.75]);
+        CGColorRef gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (low)"] colorWithAlphaComponent: 1]);
+        CPTGradient* positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
+                                                                    endingColor: [CPTColor colorWithCGColor: gradientLowColor]
                                          ];
+        CGColorRelease(gradientHighColor);
+        CGColorRelease(gradientLowColor);
+
         positiveGradient.angle = -90.0;
         CPTFill* positiveGradientFill = [CPTFill fillWithGradient: positiveGradient];
-        CPTGradient* negativeGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 194 / 255.0
-                                                                                                           green: 69 / 255.0
-                                                                                                            blue: 47 / 255.0
-                                                                                                           alpha: 1]
-                                                                    endingColor: [CPTColor colorWithComponentRed: 194 / 255.0
-                                                                                                           green: 69 / 255.0
-                                                                                                            blue: 47 / 255.0
-                                                                                                           alpha: 0.9]
+
+        gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Negative Plot Gradient (high)"] colorWithAlphaComponent: 1]);
+        gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Negative Plot Gradient (low)"] colorWithAlphaComponent: 0.9]);
+        CPTGradient* negativeGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
+                                                                    endingColor: [CPTColor colorWithCGColor: gradientLowColor]
                                          ];
+        CGColorRelease(gradientHighColor);
+        CGColorRelease(gradientLowColor);
         
         negativeGradient.angle = -90.0;
         CPTFill* negativeGradientFill = [CPTFill fillWithGradient: negativeGradient];
@@ -896,6 +891,39 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         [self setupShadowForPlot: plot];
         
         [mainGraph addPlot: plot];
+
+        // Moving average plot.
+        CPTScatterPlot* averagePlot = [self createScatterPlotWithFill: nil];
+        averagePlot.interpolation = CPTScatterPlotInterpolationCurved;
+        averagePlot.identifier = @"averagePlot";
+
+        CPTMutableLineStyle* lineStyle = [[CPTMutableLineStyle alloc] init];
+        CGColorRef lineColor;
+        if (mainCategory.isBankAccount) {
+            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Bank Account Average Line"]);
+        } else {
+            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Category Average Line"]);
+        }
+        lineStyle.lineColor = [CPTColor colorWithCGColor: lineColor];
+        CGColorRelease(lineColor);
+
+        lineStyle.lineWidth = 1;
+        lineStyle.dashPattern = [NSArray arrayWithObjects: @8.0f, @2.5f, nil];
+        averagePlot.dataLineStyle = lineStyle;
+
+        // Line "border".
+        CPTMutableShadow *shadow = [CPTMutableShadow shadow];
+        if (mainCategory.isBankAccount) {
+            shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 0 blue: 0 alpha: 0.75];
+            shadow.shadowBlurRadius = 2.0;
+        } else {
+            shadow.shadowColor = [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1];
+            shadow.shadowBlurRadius = 5.0;
+        }
+        shadow.shadowOffset = CGSizeMake(0, 0);
+        averagePlot.shadow = shadow;
+
+        [mainGraph addPlot: averagePlot];
     }
     
     [self updateMainGraph];
@@ -905,15 +933,14 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 {
     [turnoversGraph removePlotWithIdentifier: @"turnoversPlot"];
 
-    CPTGradient* areaGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 23 / 255.0
-                                                                                                   green: 124 / 255.0
-                                                                                                    blue: 236 / 255.0
-                                                                                                   alpha: 0.75]
-                                                            endingColor: [CPTColor colorWithComponentRed: 18 / 255.0
-                                                                                                   green: 97 / 255.0
-                                                                                                    blue: 185 / 255.0
-                                                                                                   alpha: 0.75]
+    CGColorRef gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Turnovers Plot Gradient (high)"] colorWithAlphaComponent: 0.75]);
+    CGColorRef gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Turnovers Plot Gradient (low)"] colorWithAlphaComponent: 0.75]);
+    CPTGradient* areaGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
+                                                            endingColor: [CPTColor colorWithCGColor: gradientLowColor]
                                  ];
+    CGColorRelease(gradientHighColor);
+    CGColorRelease(gradientLowColor);
+
     areaGradient.angle = -90.0;
     CPTFill* areaGradientFill = [CPTFill fillWithGradient: areaGradient];
     CPTBarPlot* barPlot = [self createBarPlotWithFill: areaGradientFill withBorder: YES];
@@ -933,17 +960,16 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     // The selection plot always contains the full range of values as it is used to select a subrange
     // for main and turnovers graphs.
     if (mainCategory != nil) {
-        CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 255 / 255.0
-                                                                                                   green: 255 / 255.0
-                                                                                                    blue: 255 / 255.0
-                                                                                                   alpha: 0.80]
-                                                            endingColor: [CPTColor colorWithComponentRed: 255 / 255.0
-                                                                                                   green: 255 / 255.0
-                                                                                                    blue: 255 / 255.0
-                                                                                                   alpha: 0.9]
-                                 ];
-        gradient.angle = 90.0;
-        CPTFill* gradientFill = [CPTFill fillWithGradient: gradient];
+        CGColorRef gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Selection Plot Gradient (high)"] colorWithAlphaComponent: 0.8]);
+        CGColorRef gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Selection Plot Gradient (low)"] colorWithAlphaComponent: 0.9]);
+        CPTGradient* areaGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
+                                                                endingColor: [CPTColor colorWithCGColor: gradientLowColor]
+                                     ];
+        CGColorRelease(gradientHighColor);
+        CGColorRelease(gradientLowColor);
+
+        areaGradient.angle = 90.0;
+        CPTFill* gradientFill = [CPTFill fillWithGradient: areaGradient];
         
         CPTPlot* plot = [self createScatterPlotWithFill: gradientFill];
         
@@ -965,7 +991,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     int digitCount = [range numberOfDigits];
 
     NSDecimal value = [range decimalValue];
-    NSDecimal hundred = [[NSNumber numberWithInt: 100] decimalValue];
+    NSDecimal hundred = [@100 decimalValue];
     if (NSDecimalCompare(&value, &hundred) == NSOrderedDescending) {
         // The range is > 100 so scale it down so it falls into that range.
         NSDecimalMultiplyByPowerOf10(&value, &value, -digitCount + 2, NSRoundDown);
@@ -1000,7 +1026,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 {
     NSDecimal value = CPTDecimalFromFloat(interval);
     int digitCount = [[NSDecimalNumber decimalNumberWithDecimal: value] numberOfDigits];
-    NSDecimal hundred = [[NSNumber numberWithInt: 100] decimalValue];
+    NSDecimal hundred = [@100 decimalValue];
     if (NSDecimalCompare(&value, &hundred) == NSOrderedDescending) {
         // The range is > 100 so scale it down so it falls into that range.
         NSDecimalMultiplyByPowerOf10(&value, &value, -digitCount + 2, NSRoundDown);
@@ -1300,7 +1326,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         totalUnits = [self majorTickCount];
     };
     
-    // Set the available plot space depending on the min, max and day values we found. Extend both range by a few precent for more appeal.
     CPTXYPlotSpace* plotSpace = (id)selectionGraph.defaultPlotSpace;
     
     // Horizontal range.
@@ -1338,6 +1363,8 @@ int double_compare(const void *value1, const void *value2)
     return 0;
 }
 
+#define MOVING_AVERAGE_WIDTH 5
+
 - (void)computeTotalStatistics
 {
     double min = 1e100;
@@ -1347,10 +1374,13 @@ int double_compare(const void *value1, const void *value2)
     double squareSum = 0;
     double median = 0;
 
-    NSUInteger count = 0;
+    int count = 0;
     if (rawCount > 0) {
         // The total count value includes a dummy value at the end. We don't want this to weight our results.
-        count = rawCount - 1;
+        count = rawCount;
+        if (mainCategory.isBankAccount) {
+            count--;
+        }
 
         double *sortedBalances = malloc(count * sizeof(double));
         memcpy(sortedBalances, totalBalances, count * sizeof(double));
@@ -1362,7 +1392,7 @@ int double_compare(const void *value1, const void *value2)
         }
         free(sortedBalances);
         
-        for (NSUInteger i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             if (totalBalances[i] > max) {
                 max = totalBalances[i];
             }
@@ -1376,13 +1406,13 @@ int double_compare(const void *value1, const void *value2)
             }
         }
 
-        [statistics setObject: [NSNumber numberWithDouble: min] forKey: @"totalMinValue"];
-        [statistics setObject: [NSNumber numberWithDouble: max] forKey: @"totalMaxValue"];
-        [statistics setObject: [NSNumber numberWithDouble: sum / count] forKey: @"totalMeanValue"];
-        [statistics setObject: [NSNumber numberWithDouble: median] forKey: @"totalMedian"];
+        statistics[@"totalMinValue"] = @(min);
+        statistics[@"totalMaxValue"] = @(max);
+        statistics[@"totalMeanValue"] = @(sum / count);
+        statistics[@"totalMedian"] = @(median);
         
         if (!mainCategory.isBankAccount) {
-            [statistics setObject: [NSNumber numberWithDouble: sum] forKey: @"totalSum"];
+            statistics[@"totalSum"] = @(sum);
         } else {
             [statistics removeObjectForKey: @"totalSum"];
         }
@@ -1399,9 +1429,27 @@ int double_compare(const void *value1, const void *value2)
         if (deviationFactor < 0) {
             deviationFactor = 0; // Can become < 0 because of rounding errors.
         }
-        [statistics setObject: [NSNumber numberWithDouble: sqrt(deviationFactor)] forKey: @"totalStandardDeviation"];
+        statistics[@"totalStandardDeviation"] = @(sqrt(deviationFactor));
     } else {
         [statistics removeObjectForKey: @"totalStandardDeviation"];
+    }
+
+    // Moving average values with linear weighting.
+    double weightFactor = 2.0 / MOVING_AVERAGE_WIDTH / (MOVING_AVERAGE_WIDTH + 1);
+    for (int t = 0; t < (int)rawCount; t++) {
+        double average = 0;
+        for (int i = 0; i < MOVING_AVERAGE_WIDTH; i++) {
+            int sourceIndex = t - MOVING_AVERAGE_WIDTH + i;
+            if (sourceIndex < 0) {
+                sourceIndex = 0;
+            } else {
+                if (sourceIndex >= count) {
+                    sourceIndex = count - 1;
+                }
+            }
+            average += (i + 1) * totalBalances[sourceIndex];
+        }
+        movingAverage[t] = weightFactor * average;
     }
 
     // Compute some special values for the graphs which directly depend on global stats.
@@ -1458,13 +1506,13 @@ int double_compare(const void *value1, const void *value2)
             squareSum += totalBalances[i] * totalBalances[i];
         }
 
-        [statistics setObject: [NSNumber numberWithDouble: min] forKey: @"localMinValue"];
-        [statistics setObject: [NSNumber numberWithDouble: max] forKey: @"localMaxValue"];
-        [statistics setObject: [NSNumber numberWithDouble: sum / count] forKey: @"localMeanValue"];
-        [statistics setObject: [NSNumber numberWithDouble: median] forKey: @"localMedian"];
+        statistics[@"localMinValue"] = @(min);
+        statistics[@"localMaxValue"] = @(max);
+        statistics[@"localMeanValue"] = @(sum / count);
+        statistics[@"localMedian"] = @(median);
 
         if (!mainCategory.isBankAccount) {
-            [statistics setObject: [NSNumber numberWithDouble: sum] forKey: @"localSum"];
+            statistics[@"localSum"] = @(sum);
         } else {
             [statistics removeObjectForKey: @"localSum"];
         }
@@ -1481,7 +1529,7 @@ int double_compare(const void *value1, const void *value2)
         if (deviationFactor < 0) {
             deviationFactor = 0; // Can become < 0 because of rounding errors.
         }
-        [statistics setObject: [NSNumber numberWithDouble: sqrt(deviationFactor)] forKey: @"localStandardDeviation"];
+        statistics[@"localStandardDeviation"] = @(sqrt(deviationFactor));
     } else {
         [statistics removeObjectForKey: @"localStandardDeviation"];
     }
@@ -1530,9 +1578,9 @@ int double_compare(const void *value1, const void *value2)
  */
 - (void)updateMainInfo: (NSDictionary*)values
 {
-    ShortDate *date = [values objectForKey: @"date"];
-    id balance = [values objectForKey: @"balance"];
-    int turnovers = [[values objectForKey: @"turnovers"] intValue];
+    ShortDate *date = values[@"date"];
+    id balance = values[@"balance"];
+    int turnovers = [values[@"turnovers"] intValue];
     
     
     if (infoTextFormatter == nil)
@@ -1780,17 +1828,17 @@ int double_compare(const void *value1, const void *value2)
         lastInfoTimePoint = timePoint;
 
         NSMutableDictionary *values = [NSMutableDictionary dictionary];
-        [values setObject: [self dateByAddingUnits: referenceDate count: timePoint] forKey: @"date"];
+        values[@"date"] = [self dateByAddingUnits: referenceDate count: timePoint];
         id balance;
         int turnovers = 0;
         if (dateHit) {
-            balance = [NSNumber numberWithDouble: totalBalances[index]];
+            balance = @(totalBalances[index]);
             turnovers = balanceCounts[index];
         } else {
-            balance = [mainCategory isBankAccount] ? [NSNumber numberWithDouble: totalBalances[index]] : (id)[NSNull null];
+            balance = [mainCategory isBankAccount] ? @(totalBalances[index]) : (id)[NSNull null];
         }
-        [values setObject: balance forKey: @"balance"];
-        [values setObject: [NSNumber numberWithInt: turnovers] forKey: @"turnovers"];
+        values[@"balance"] = balance;
+        values[@"turnovers"] = @(turnovers);
 
         // Update the info layer content, but after a short delay. This will be canceled if new
         // update request arrive in the meantime (circumventing so too many updates that slow down the display).
@@ -1813,10 +1861,9 @@ int double_compare(const void *value1, const void *value2)
     CPTXYAxis* x = axisSet.xAxis;
     
     [x removeBackgroundLimitBand: selectionBand];
-    CPTFill* bandFill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 134 / 255.0
-                                                                          green: 153 / 255.0
-                                                                           blue: 67 / 255.0
-                                                                          alpha: 1]];
+    CGColorRef bandColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Selection Band"]);
+    CPTFill* bandFill = [CPTFill fillWithColor: [CPTColor colorWithCGColor: bandColor]];
+    CGColorRelease(bandColor);
     
     NSDecimal fromPoint = [self distanceAsDecimalFromDate: referenceDate toDate: fromDate];
     selectionBand = [CPTLimitBand limitBandWithRange:
@@ -1851,7 +1898,7 @@ int double_compare(const void *value1, const void *value2)
         [NSObject cancelPreviousPerformRequestsWithTarget: self];
         
         NSDictionary* parameters = [notification userInfo];
-        NSString* type = [parameters objectForKey: @"type"];
+        NSString* type = parameters[@"type"];
         
         CPTXYPlotSpace* sourcePlotSpace = notification.object;
         BOOL fromSelectionGraph = (sourcePlotSpace == selectionGraph.defaultPlotSpace);
@@ -1866,13 +1913,13 @@ int double_compare(const void *value1, const void *value2)
                 }
             }
             
-            NSNumber* location = [parameters objectForKey: @"plotXLocation"];
-            NSNumber* range = [parameters objectForKey: @"plotXRange"];
-            NSNumber* lowRange = [NSNumber numberWithInt: [self majorTickCount]];
+            NSNumber* location = parameters[@"plotXLocation"];
+            NSNumber* range = parameters[@"plotXRange"];
+            NSNumber* lowRange = @([self majorTickCount]);
             if ([range compare: lowRange] == NSOrderedAscending)
                 range = lowRange;
             
-            NSNumber* center = [parameters objectForKey: @"mousePosition"];
+            NSNumber* center = parameters[@"mousePosition"];
 
             // Apply new plot location and range to all relevant graphs.
             // If this is a scale event then adjust the location so that the center is at the mouse
@@ -1895,7 +1942,7 @@ int double_compare(const void *value1, const void *value2)
                 CGFloat oldRange = fromSelectionGraph ? selectionBand.range.lengthDouble : sourcePlotSpace.xRange.lengthDouble;
                 CGFloat newRange = [range floatValue];
                 CGFloat offset = (oldRange - newRange) * (timePoint - [location floatValue]) / oldRange;
-                location = [NSNumber numberWithFloat: [location  floatValue] + offset];
+                location = @([location  floatValue] + offset);
             }
             
             [self applyRangeLocationToPlotSpace: (id)mainGraph.defaultPlotSpace location: location range: range];
@@ -1913,19 +1960,19 @@ int double_compare(const void *value1, const void *value2)
             }
         } else {
             if ([type isEqualToString: @"trackLineMove"]) {
-                NSNumber* location = [parameters objectForKey: @"location"];
+                NSNumber* location = parameters[@"location"];
                 [self updateTrackLinesAndInfoAnnotation: location];
             } else {
                 if ([type isEqualToString: @"plotMoveCenter"]) {
-                    NSNumber* location = [parameters objectForKey: @"location"];
-                    NSNumber* range = [parameters objectForKey: @"plotXRange"];
+                    NSNumber* location = parameters[@"location"];
+                    NSNumber* range = parameters[@"plotXRange"];
 
                     CGPoint point = CGPointMake([location floatValue], 0);
                     
                     NSDecimal dataPoint[2];
                     [sourcePlotSpace plotPoint: dataPoint forPlotAreaViewPoint: point];
                     double timePoint = CPTDecimalDoubleValue(dataPoint[0]);
-                    location = [NSNumber numberWithDouble: timePoint - [range doubleValue] / 2];
+                    location = @(timePoint - [range doubleValue] / 2);
 
                     [self applyRangeLocationToPlotSpace: (id)mainGraph.defaultPlotSpace location: location range: range];
                     [self applyRangeLocationToPlotSpace: (id)turnoversGraph.defaultPlotSpace location: location range: range];
@@ -1997,7 +2044,11 @@ int double_compare(const void *value1, const void *value2)
     if ([plot graph] == selectionGraph && selectionBalances != nil) {
         return selectionSampleCount;
     }
-    
+
+    NSString* identifier = (id)plot.identifier;
+    if ([identifier isEqualToString: @"averagePlot"] && rawCount > 0) {
+        return rawCount;
+    }
     return rawCount;
 }
 
@@ -2022,7 +2073,11 @@ int double_compare(const void *value1, const void *value2)
         if ([identifier isEqualToString: @"positivePlot"]) {
             return &positiveBalances[indexRange.location];
         } else {
-            return &negativeBalances[indexRange.location];
+            if ([identifier isEqualToString: @"negativePlot"]) {
+                return &negativeBalances[indexRange.location];
+            } else {
+                return &movingAverage[indexRange.location];
+            }
         }
     }
     
@@ -2106,7 +2161,10 @@ int double_compare(const void *value1, const void *value2)
         free(selectionTimePoints);
         selectionTimePoints = nil;
     }
-    
+
+    free(movingAverage);
+    movingAverage = nil;
+
     NSArray* plots = [mainGraph.allPlots copy];
     for (CPTPlot* plot in plots) {
         [mainGraph removePlot: plot];
@@ -2126,11 +2184,13 @@ int double_compare(const void *value1, const void *value2)
         NSArray *dates = nil;
         NSArray *balances = nil;
         NSArray *turnovers = nil;
+        BOOL extraEntry = NO;
         if (mainCategory.isBankAccount) {
             [mainCategory balanceHistoryToDates: &dates
                                        balances: &balances
                                   balanceCounts: &turnovers
                                    withGrouping: groupingInterval];
+            extraEntry = YES;
         } else {
             [mainCategory categoryHistoryToDates: &dates
                                         balances: &balances
@@ -2143,21 +2203,24 @@ int double_compare(const void *value1, const void *value2)
             // Convert the data to the internal representations.
             // We add one to the total number as we need it (mostly) in scatter plots to
             // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
-            rawCount = [dates count] + 1;
+            rawCount = [dates count] + (extraEntry ? 1 : 0);
 
             // Convert the dates to distance units from a reference date.
             timePoints = malloc(rawCount * sizeof(double));
-            referenceDate = [dates objectAtIndex: 0];
+            referenceDate = dates[0];
             int index = 0;
             for (ShortDate *date in dates) {
                 timePoints[index++] = [self distanceFromDate: referenceDate toDate: date];
             }
-            timePoints[index] = timePoints[index - 1] + 1000; // A date far in the future.
+            if (extraEntry) {
+                timePoints[index] = timePoints[index - 1] + 5;
+            }
 
             // Convert all NSDecimalNumbers to double for better performance.
             totalBalances = malloc(rawCount * sizeof(double));
             positiveBalances = malloc(rawCount * sizeof(double));
             negativeBalances = malloc(rawCount * sizeof(double));
+            movingAverage = malloc(rawCount * sizeof(double));
 
             index = 0;
             for (NSDecimalNumber *value in balances) {
@@ -2181,10 +2244,12 @@ int double_compare(const void *value1, const void *value2)
             }
 
             // The value in the extra field is never used, but serves only as additional data point.
-            totalBalances[index] = 0;
-            positiveBalances[index] = 0;
-            negativeBalances[index] = 0;
-            balanceCounts[index] = 0;
+            if (extraEntry) {
+                totalBalances[index] = 0;
+                positiveBalances[index] = 0;
+                negativeBalances[index] = 0;
+                balanceCounts[index] = 0;
+            }
 
             // Sample data for the selection plot. Use only as many values as needed to fill the window.
             CPTPlotAreaFrame *frame = selectionGraph.plotAreaFrame;
@@ -2288,7 +2353,7 @@ int double_compare(const void *value1, const void *value2)
     } else {
         mutableValues = [values mutableCopy];
     }
-    [mutableValues setValue: [NSNumber numberWithInt: groupingInterval] forKey: @"grouping"];
+    [mutableValues setValue: @((int)groupingInterval) forKey: @"grouping"];
     [userDefaults setObject: mutableValues forKey: @"categoryAnalysis"];
 
     [self regenerateGraphs];

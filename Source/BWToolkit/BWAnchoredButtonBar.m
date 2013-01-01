@@ -187,7 +187,7 @@ static float scaleFactor = 0.0f;
 	
 	if ([[self subviews] count] > 0)
 	{
-		rightMostView = [[self subviews] objectAtIndex:0];
+		rightMostView = [self subviews][0];
 		
 		NSView *currentSubview = nil;
 		for (currentSubview in [self subviews])

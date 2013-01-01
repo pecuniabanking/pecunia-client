@@ -53,11 +53,11 @@ TimeSliceManager *timeSliceManager = nil;
 	if(_autosaveName) {
 		NSDictionary *values = [userDefaults objectForKey: _autosaveName ];
 		if(values) {
-			type = [[values objectForKey: @"type" ] intValue ];
-			year = [[values objectForKey: @"year" ] intValue ];
-			month = [[values objectForKey: @"month" ] intValue ];
-			self._fromDate = [ShortDate dateWithDate: [values objectForKey: @"fromDate" ] ];
-			self._toDate = [ShortDate dateWithDate: [values objectForKey:@"toDate" ] ];
+			type = [values[@"type"] intValue ];
+			year = [values[@"year"] intValue ];
+			month = [values[@"month"] intValue ];
+			self._fromDate = [ShortDate dateWithDate: values[@"fromDate"] ];
+			self._toDate = [ShortDate dateWithDate: values[@"toDate"] ];
 			quarter = (month-1) / 3;
 			savedValues = YES;
 		}
@@ -93,9 +93,9 @@ TimeSliceManager *timeSliceManager = nil;
 {
 	if(!_autosaveName) return;
 	NSMutableDictionary *values = [NSMutableDictionary dictionaryWithCapacity:5 ];
-	[values setValue: [NSNumber numberWithInt: type ] forKey: @"type" ];
-	[values setValue: [NSNumber numberWithInt: year ] forKey: @"year" ];
-	[values setValue: [NSNumber numberWithInt: month ] forKey: @"month" ];
+	[values setValue: @((int)type) forKey: @"type" ];
+	[values setValue: @((int)year) forKey: @"year" ];
+	[values setValue: @((int)month) forKey: @"month" ];
 	[values setValue: [_fromDate lowDate] forKey: @"fromDate" ];
 	[values setValue: [_toDate highDate ] forKey: @"toDate" ];
 	
@@ -247,7 +247,7 @@ TimeSliceManager *timeSliceManager = nil;
 	}
 	
 	// year
-	[control setLabel: [[NSNumber numberWithInt: year ] description ] forSegment: 0 ];
+	[control setLabel: [@((int)year) description] forSegment: 0];
 	
 	// quarter
 	NSString *quarterString = [NSString stringWithFormat: @"Q%.1lu", quarter+1 ];
@@ -256,7 +256,7 @@ TimeSliceManager *timeSliceManager = nil;
 	// month
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	NSArray* months = [dateFormatter monthSymbols ];
-	[control setLabel: [months objectAtIndex:month-1] forSegment: 2 ];
+	[control setLabel: months[month-1] forSegment: 2 ];
 }
 
 -(void)updatePickers

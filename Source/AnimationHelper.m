@@ -1,10 +1,21 @@
-//
-//  AnimationHelper.m
-//  Pecunia
-//
-//  Created by Mike Lischke on 28.11.11.
-//  Copyright 2011 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "AnimationHelper.h"
 
@@ -19,20 +30,16 @@
 {
     NSDictionary *oldFadeOut = nil;
     if (oldView != nil) {
-        oldFadeOut = [NSDictionary dictionaryWithObjectsAndKeys:
-                      oldView, NSViewAnimationTargetKey,
-                      NSViewAnimationFadeOutEffect,
-                      NSViewAnimationEffectKey, nil];
+        oldFadeOut = @{NSViewAnimationTargetKey: oldView,
+                      NSViewAnimationEffectKey: NSViewAnimationFadeOutEffect};
     }
     
     NSDictionary *newFadeIn;
-    newFadeIn = [NSDictionary dictionaryWithObjectsAndKeys:
-                 newView, NSViewAnimationTargetKey,
-                 NSViewAnimationFadeInEffect,
-                 NSViewAnimationEffectKey, nil];
+    newFadeIn = @{NSViewAnimationTargetKey: newView,
+                 NSViewAnimationEffectKey: NSViewAnimationFadeInEffect};
     
     NSArray *animations;
-    animations = [NSArray arrayWithObjects: newFadeIn, oldFadeOut, nil];
+    animations = @[newFadeIn, oldFadeOut];
     
     NSViewAnimation *animation;
     animation = [[NSViewAnimation alloc]
@@ -243,10 +250,6 @@
 	}
 
     [[NSAnimationContext currentContext] setDuration: duration];
-    [[NSAnimationContext currentContext] setCompletionHandler:^{
-        [self orderOut: nil];
-        [self setAlphaValue: 1.f];
-    }];
     [[self animator] setAlphaValue: 0.f];
     [NSAnimationContext endGrouping];
 }
@@ -265,19 +268,15 @@
 
     NSDictionary *fadeWindow = nil;
     if (fade) {
-        fadeWindow = [NSDictionary dictionaryWithObjectsAndKeys:
-                      zoomWindow, NSViewAnimationTargetKey,
-                      NSViewAnimationFadeOutEffect, NSViewAnimationEffectKey,
-                      nil];
+        fadeWindow = @{NSViewAnimationTargetKey: zoomWindow,
+                      NSViewAnimationEffectKey: NSViewAnimationFadeOutEffect};
     }
     
-    NSDictionary *resizeWindow = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  zoomWindow, NSViewAnimationTargetKey,
-                                  [NSValue valueWithRect: endRect], NSViewAnimationEndFrameKey,
-                                  nil];
+    NSDictionary *resizeWindow = @{NSViewAnimationTargetKey: zoomWindow,
+                                  NSViewAnimationEndFrameKey: [NSValue valueWithRect: endRect]};
     
     NSArray *animations;
-    animations = [NSArray arrayWithObjects: resizeWindow, fadeWindow, nil];
+    animations = @[resizeWindow, fadeWindow];
     
     NSViewAnimation *animation;
     animation = [[NSViewAnimation alloc] initWithViewAnimations: animations];
@@ -304,13 +303,13 @@
     
     NSRect rect1 = NSMakeRect(NSMinX(frame) - frame.size.width * vigourOfShake, NSMinY(frame), frame.size.width, frame.size.height);
     NSRect rect2 = NSMakeRect(NSMinX(frame) + frame.size.width * vigourOfShake, NSMinY(frame), frame.size.width, frame.size.height);
-    NSArray *array = [NSArray arrayWithObjects: [NSValue valueWithRect: rect1], [NSValue valueWithRect: rect2], nil];
+    NSArray *array = @[[NSValue valueWithRect: rect1], [NSValue valueWithRect: rect2]];
     [animation setValues: array];
     
     [animation setDuration: duration];
     [animation setRepeatCount: numberOfShakes];
     
-    [self setAnimations: [NSDictionary dictionaryWithObject: animation forKey: @"frame"]];
+    [self setAnimations: @{@"frame": animation}];
     [[self animator] setFrame: frame display: NO];
 }
 
@@ -325,8 +324,8 @@
     self.hidden = NO;
     if (self.opacity < 1) {
         CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
-        animation.fromValue = [NSNumber numberWithFloat: 0];
-        animation.toValue = [NSNumber numberWithFloat: 1];
+        animation.fromValue = @0.0f;
+        animation.toValue = @1.0f;
         animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
         [animation setValue: @"fadeIn" forKey: @"action"];
         
@@ -339,8 +338,8 @@
 {
     if (self.opacity > 0) {
         CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
-        animation.fromValue = [NSNumber numberWithFloat: 1];
-        animation.toValue = [NSNumber numberWithFloat: 0];
+        animation.fromValue = @1.0f;
+        animation.toValue = @0.0f;
         animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut];
         animation.delegate = self;
         [animation setValue: @"fadeOut" forKey: @"action"];

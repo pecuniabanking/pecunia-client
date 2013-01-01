@@ -46,7 +46,7 @@
     if ([value intValue] == 0)
         return value;
     
-    return [NSNumber numberWithInt: [value intValue] - 1];
+    return @([value intValue] - 1);
 }
 
 - (id)reverseTransformedValue: (id)value
@@ -54,7 +54,7 @@
     if (value == nil)
         return nil;
     
-    return [NSNumber numberWithInt: [value intValue] + 1];
+    return @([value intValue] + 1);
 }
 
 @end
@@ -69,12 +69,12 @@
 {
 	// sort descriptor for transactions view
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-	NSArray *sds = [NSArray arrayWithObject:sd];
+	NSArray *sds = @[sd];
 	[countryController setSortDescriptors: sds];
 
 	// sort descriptor for template view
 	sd = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-	sds = [NSArray arrayWithObject:sd];
+	sds = @[sd];
 	[templateController setSortDescriptors: sds];
 }
 
@@ -164,7 +164,7 @@
 				[countryController setSelectionIndex:idx ];
 			}
 		} else {
-			selectedCountry = [(Country*)[[countryController arrangedObjects ] objectAtIndex:0] code ];
+			selectedCountry = [(Country*)[countryController arrangedObjects ][0] code ];
 			[countryController setSelectionIndex:0 ];
 		}
 		[self updateLimits ];
@@ -237,7 +237,7 @@
     account = nil;
 	transferType = type;
     currentTransfer = [NSEntityDescription insertNewObjectForEntityForName: @"Transfer" inManagedObjectContext: context];
-    currentTransfer.type = [NSNumber numberWithInt: transferType];
+    currentTransfer.type = @((int)transferType);
     currentTransfer.changeState = TransferChangeNew;
     [self prepareTransfer];
     [currentTransferController setContent: currentTransfer];
@@ -397,7 +397,7 @@
     //       a single transfer type could cover all of them.
     //       Should probably either just use the valuta date too in the server or add a new flag.
     if (currentTransfer.valutaDate != nil) {
-        currentTransfer.type = [NSNumber numberWithInt: TransferTypeDated];
+        currentTransfer.type = @(TransferTypeDated);
     }
     
     NSError *error = nil;
@@ -643,7 +643,7 @@
 	currentTransfer.account = account;
 	currentTransfer.currency = account.currency;
 	if([currentTransfer.currency isEqualToString: @"" ]) currentTransfer.currency = @"EUR";
-	currentTransfer.type = [NSNumber numberWithInt: transferType ];
+	currentTransfer.type = @((int)transferType);
 	
 	[currentTransferController setContent: currentTransfer];
 
@@ -675,7 +675,7 @@
 			[[logController window ] orderFront:self ];
 		}
 		
-		[[HBCIClient hbciClient ] sendTransfers: [NSArray arrayWithObject: currentTransfer ] ];
+		[[HBCIClient hbciClient ] sendTransfers: @[currentTransfer] ];
 	}
 
 	// save updates
@@ -788,14 +788,14 @@
 		// get account from combo
 		int idx = [accountBox indexOfSelectedItem ];
 		if(idx < 0) { NSBeep(); return NO; }
-		currentTransfer.remoteAccount = [[internalAccounts objectAtIndex: idx ] accountNumber ];
-		currentTransfer.remoteBankCode = [[internalAccounts objectAtIndex: idx ] bankCode ];
+		currentTransfer.remoteAccount = [internalAccounts[idx] accountNumber ];
+		currentTransfer.remoteBankCode = [internalAccounts[idx] bankCode ];
 		currentTransfer.remoteBankName = account.bankName;
 	}
 	if(transferType == TransferTypeEU) {
 		int idx = [countryButton indexOfSelectedItem ];
 		if(idx < 0) { NSBeep(); return NO; }
-		currentTransfer.chargedBy = [NSNumber numberWithInt: [chargeBox indexOfSelectedItem ] + 1 ];
+		currentTransfer.chargedBy = @((int)[chargeBox indexOfSelectedItem] + 1);
 	}
 	[currentTransferController commitEditing ];
 	if([self validateCurrentTransfer ] == NO) return NO;
@@ -932,7 +932,7 @@
 	NSString *bankName = nil;
 	
 	if(selection && [selection count ] > 0) {
-		TransferTemplate*	template = (TransferTemplate*)[selection objectAtIndex: 0 ];
+		TransferTemplate*	template = (TransferTemplate*)selection[0];
 		[currentTransfer copyFromTemplate: template withLimits: limits ];
 		
 		// get Bank Name

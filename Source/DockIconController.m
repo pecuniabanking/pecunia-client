@@ -40,7 +40,7 @@
 -(void)managedObjectContextChanged:(NSNotification *)notification
 {
 	NSDictionary *userInfoDictionary = [notification userInfo];
-    NSSet *updatedObjects = [userInfoDictionary objectForKey:NSUpdatedObjectsKey];
+    NSSet *updatedObjects = userInfoDictionary[NSUpdatedObjectsKey];
 	
 	NSEnumerator *enumerator = [updatedObjects objectEnumerator];
 	id value;

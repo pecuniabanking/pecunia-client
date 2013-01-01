@@ -121,8 +121,8 @@ static CallbackHandler *callbackHandler = nil;
     for(meth in meths) {
         TanMethodOld *tanMethod = [[TanMethodOld alloc ] init ];
         NSArray *list = [meth componentsSeparatedByString: @":" ];
-        tanMethod.function = [NSNumber numberWithInteger:[[list objectAtIndex:0 ] integerValue ] ];
-        tanMethod.description = [list objectAtIndex:1 ];
+        tanMethod.function = @([list[0] integerValue ]);
+        tanMethod.description = list[1];
         [tanMethods addObject: tanMethod ];
     }
     
@@ -222,7 +222,7 @@ static CallbackHandler *callbackHandler = nil;
     }
     if ([data.command isEqualToString:@"instMessage" ]) {
         NSNotification *notification = [NSNotification notificationWithName:PecuniaInstituteMessageNotification 
-                                                                     object:[NSDictionary dictionaryWithObjectsAndKeys:data.bankCode, @"bankCode", data.message, @"message", nil ] ];
+                                                                     object:@{@"bankCode": data.bankCode, @"message": data.message} ];
         [[NSNotificationCenter defaultCenter ] postNotification:notification ];
     }
     if ([data.command isEqualToString:@"needChipcard" ]) {

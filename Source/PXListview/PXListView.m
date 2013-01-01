@@ -122,7 +122,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 	NSUInteger numCells = [_visibleCells count];
 	for (NSUInteger i = 0; i < numCells; i++)
 	{
-		PXListViewCell *cell = [_visibleCells objectAtIndex:i];
+		PXListViewCell *cell = _visibleCells[i];
 		[_reusableCells addObject:cell];
 		[cell setHidden:YES];
 	}
@@ -174,7 +174,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 	//Search backwards looking for a match since removing from end of array is generally quicker
 	for(NSUInteger i = [_reusableCells count]; i>0;i--)
 	{
-		PXListViewCell *cell = [_reusableCells objectAtIndex: (i-1)];
+		PXListViewCell *cell = _reusableCells[(i-1)];
 		
 		if([[cell reusableIdentifier] isEqualToString:identifier])
 		{
@@ -314,7 +314,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 		// We'll have to rebuild all the cells:
 		[_reusableCells addObjectsFromArray:_visibleCells];
 		[_visibleCells removeAllObjects];
-		[[self documentView] setSubviews:[NSArray array]];
+		[[self documentView] setSubviews:@[]];
 		[self addCellsFromVisibleRange];
 	}
 	else
@@ -335,7 +335,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 		{
 			for(NSUInteger i = visibleRange.location; i > _currentRange.location; i--)
 			{
-				[self enqueueCell:[_visibleCells objectAtIndex:0]];
+				[self enqueueCell:_visibleCells[0]];
 			}
 		}
 		
@@ -592,7 +592,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
         for (PXListViewCell *cell in cells) {
             [self enqueueCell: cell];
         }
-		[[self documentView] setSubviews:[NSArray array]];
+		[[self documentView] setSubviews:@[]];
 		
 		[self cacheCellLayout];
 		[self addCellsFromVisibleRange];
@@ -650,7 +650,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 {
     //Change the layout of the cells
     [_visibleCells removeAllObjects];
-    [[self documentView] setSubviews:[NSArray array]];
+    [[self documentView] setSubviews:@[]];
     
     [self cacheCellLayout];
     [self addCellsFromVisibleRange];
@@ -749,7 +749,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 	}
 	else if( [attribute isEqualToString: NSAccessibilityEnabledAttribute] )
 	{
-		return [NSNumber numberWithBool: YES];
+		return @YES;
 	}
 	else
 		return [super accessibilityAttributeValue: attribute];

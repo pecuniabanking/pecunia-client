@@ -182,7 +182,7 @@
 	}
 	else if( [attribute isEqualToString: NSAccessibilityEnabledAttribute] )
 	{
-		return [NSNumber numberWithBool: YES];
+		return @YES;
 	}
 	else
 		return [super accessibilityAttributeValue: attribute];
@@ -191,7 +191,7 @@
 
 -(NSArray *)	accessibilityActionNames
 {
-	return [NSArray arrayWithObjects: NSAccessibilityPressAction, nil];
+	return @[NSAccessibilityPressAction];
 }
 
 
