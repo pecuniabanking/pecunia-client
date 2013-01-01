@@ -19,6 +19,10 @@
 
 #import "GraphicsAdditions.h"
 
+/**
+ * Creates a CGColorRef from an NSColor. The caller is reponsible for releasing the result
+ * using CGColorRelease.
+ */
 CGColorRef CGColorCreateFromNSColor(NSColor *color)
 {
     // First convert the given color to a color with an RGB colorspace in case we use a pattern

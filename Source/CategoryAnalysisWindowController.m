@@ -463,7 +463,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     plot.shadowColor = CGColorCreateGenericGray(0, 1);
     plot.shadowRadius = 3.0;
     plot.shadowOffset = CGSizeMake(2, -2);
-    plot.shadowOpacity = 0.75;
+    plot.shadowOpacity = 0.5;
      //    */
 /*
     CPTMutableShadow *shadow = [CPTMutableShadow shadow];
@@ -836,31 +836,30 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 {
     [mainGraph removePlotWithIdentifier: @"positivePlot"];
     [mainGraph removePlotWithIdentifier: @"negativePlot"];
+    [mainGraph removePlotWithIdentifier: @"averagePlot"];
 
     // The main graph contains two plots, one for the positive values (with a gray fill)
     // and the other one for negative values (with a red fill).
     // Depending on whether we view a bank account or a normal category either line or bar plots are used.
     if (mainCategory != nil) {
-        CPTGradient* positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 120 / 255.0
-                                                                                                           green: 120 / 255.0
-                                                                                                            blue: 120 / 255.0
-                                                                                                           alpha: 0.75]
-                                                                    endingColor: [CPTColor colorWithComponentRed: 60 / 255.0
-                                                                                                           green: 60 / 255.0
-                                                                                                            blue: 60 / 255.0
-                                                                                                           alpha: 1]
+        CGColorRef gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (high)"] colorWithAlphaComponent: 0.75]);
+        CGColorRef gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (low)"] colorWithAlphaComponent: 1]);
+        CPTGradient* positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
+                                                                    endingColor: [CPTColor colorWithCGColor: gradientLowColor]
                                          ];
+        CGColorRelease(gradientHighColor);
+        CGColorRelease(gradientLowColor);
+
         positiveGradient.angle = -90.0;
         CPTFill* positiveGradientFill = [CPTFill fillWithGradient: positiveGradient];
-        CPTGradient* negativeGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 194 / 255.0
-                                                                                                           green: 69 / 255.0
-                                                                                                            blue: 47 / 255.0
-                                                                                                           alpha: 1]
-                                                                    endingColor: [CPTColor colorWithComponentRed: 194 / 255.0
-                                                                                                           green: 69 / 255.0
-                                                                                                            blue: 47 / 255.0
-                                                                                                           alpha: 0.9]
+
+        gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Negative Plot Gradient (high)"] colorWithAlphaComponent: 1]);
+        gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Negative Plot Gradient (low)"] colorWithAlphaComponent: 0.9]);
+        CPTGradient* negativeGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
+                                                                    endingColor: [CPTColor colorWithCGColor: gradientLowColor]
                                          ];
+        CGColorRelease(gradientHighColor);
+        CGColorRelease(gradientLowColor);
         
         negativeGradient.angle = -90.0;
         CPTFill* negativeGradientFill = [CPTFill fillWithGradient: negativeGradient];
@@ -892,6 +891,39 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         [self setupShadowForPlot: plot];
         
         [mainGraph addPlot: plot];
+
+        // Moving average plot.
+        CPTScatterPlot* averagePlot = [self createScatterPlotWithFill: nil];
+        averagePlot.interpolation = CPTScatterPlotInterpolationCurved;
+        averagePlot.identifier = @"averagePlot";
+
+        CPTMutableLineStyle* lineStyle = [[CPTMutableLineStyle alloc] init];
+        CGColorRef lineColor;
+        if (mainCategory.isBankAccount) {
+            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Bank Account Average Line"]);
+        } else {
+            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Category Average Line"]);
+        }
+        lineStyle.lineColor = [CPTColor colorWithCGColor: lineColor];
+        CGColorRelease(lineColor);
+
+        lineStyle.lineWidth = 1;
+        lineStyle.dashPattern = [NSArray arrayWithObjects: @8.0f, @2.5f, nil];
+        averagePlot.dataLineStyle = lineStyle;
+
+        // Line "border".
+        CPTMutableShadow *shadow = [CPTMutableShadow shadow];
+        if (mainCategory.isBankAccount) {
+            shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 0 blue: 0 alpha: 0.75];
+            shadow.shadowBlurRadius = 2.0;
+        } else {
+            shadow.shadowColor = [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1];
+            shadow.shadowBlurRadius = 5.0;
+        }
+        shadow.shadowOffset = CGSizeMake(0, 0);
+        averagePlot.shadow = shadow;
+
+        [mainGraph addPlot: averagePlot];
     }
     
     [self updateMainGraph];
@@ -901,15 +933,14 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 {
     [turnoversGraph removePlotWithIdentifier: @"turnoversPlot"];
 
-    CPTGradient* areaGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 23 / 255.0
-                                                                                                   green: 124 / 255.0
-                                                                                                    blue: 236 / 255.0
-                                                                                                   alpha: 0.75]
-                                                            endingColor: [CPTColor colorWithComponentRed: 18 / 255.0
-                                                                                                   green: 97 / 255.0
-                                                                                                    blue: 185 / 255.0
-                                                                                                   alpha: 0.75]
+    CGColorRef gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Turnovers Plot Gradient (high)"] colorWithAlphaComponent: 0.75]);
+    CGColorRef gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Turnovers Plot Gradient (low)"] colorWithAlphaComponent: 0.75]);
+    CPTGradient* areaGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
+                                                            endingColor: [CPTColor colorWithCGColor: gradientLowColor]
                                  ];
+    CGColorRelease(gradientHighColor);
+    CGColorRelease(gradientLowColor);
+
     areaGradient.angle = -90.0;
     CPTFill* areaGradientFill = [CPTFill fillWithGradient: areaGradient];
     CPTBarPlot* barPlot = [self createBarPlotWithFill: areaGradientFill withBorder: YES];
@@ -929,17 +960,16 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     // The selection plot always contains the full range of values as it is used to select a subrange
     // for main and turnovers graphs.
     if (mainCategory != nil) {
-        CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: 255 / 255.0
-                                                                                                   green: 255 / 255.0
-                                                                                                    blue: 255 / 255.0
-                                                                                                   alpha: 0.80]
-                                                            endingColor: [CPTColor colorWithComponentRed: 255 / 255.0
-                                                                                                   green: 255 / 255.0
-                                                                                                    blue: 255 / 255.0
-                                                                                                   alpha: 0.9]
-                                 ];
-        gradient.angle = 90.0;
-        CPTFill* gradientFill = [CPTFill fillWithGradient: gradient];
+        CGColorRef gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Selection Plot Gradient (high)"] colorWithAlphaComponent: 0.8]);
+        CGColorRef gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Selection Plot Gradient (low)"] colorWithAlphaComponent: 0.9]);
+        CPTGradient* areaGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
+                                                                endingColor: [CPTColor colorWithCGColor: gradientLowColor]
+                                     ];
+        CGColorRelease(gradientHighColor);
+        CGColorRelease(gradientLowColor);
+
+        areaGradient.angle = 90.0;
+        CPTFill* gradientFill = [CPTFill fillWithGradient: areaGradient];
         
         CPTPlot* plot = [self createScatterPlotWithFill: gradientFill];
         
@@ -1296,7 +1326,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         totalUnits = [self majorTickCount];
     };
     
-    // Set the available plot space depending on the min, max and day values we found. Extend both range by a few precent for more appeal.
     CPTXYPlotSpace* plotSpace = (id)selectionGraph.defaultPlotSpace;
     
     // Horizontal range.
@@ -1334,6 +1363,8 @@ int double_compare(const void *value1, const void *value2)
     return 0;
 }
 
+#define MOVING_AVERAGE_WIDTH 5
+
 - (void)computeTotalStatistics
 {
     double min = 1e100;
@@ -1343,10 +1374,13 @@ int double_compare(const void *value1, const void *value2)
     double squareSum = 0;
     double median = 0;
 
-    NSUInteger count = 0;
+    int count = 0;
     if (rawCount > 0) {
         // The total count value includes a dummy value at the end. We don't want this to weight our results.
-        count = rawCount - 1;
+        count = rawCount;
+        if (mainCategory.isBankAccount) {
+            count--;
+        }
 
         double *sortedBalances = malloc(count * sizeof(double));
         memcpy(sortedBalances, totalBalances, count * sizeof(double));
@@ -1358,7 +1392,7 @@ int double_compare(const void *value1, const void *value2)
         }
         free(sortedBalances);
         
-        for (NSUInteger i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             if (totalBalances[i] > max) {
                 max = totalBalances[i];
             }
@@ -1398,6 +1432,24 @@ int double_compare(const void *value1, const void *value2)
         statistics[@"totalStandardDeviation"] = @(sqrt(deviationFactor));
     } else {
         [statistics removeObjectForKey: @"totalStandardDeviation"];
+    }
+
+    // Moving average values with linear weighting.
+    double weightFactor = 2.0 / MOVING_AVERAGE_WIDTH / (MOVING_AVERAGE_WIDTH + 1);
+    for (int t = 0; t < (int)rawCount; t++) {
+        double average = 0;
+        for (int i = 0; i < MOVING_AVERAGE_WIDTH; i++) {
+            int sourceIndex = t - MOVING_AVERAGE_WIDTH + i;
+            if (sourceIndex < 0) {
+                sourceIndex = 0;
+            } else {
+                if (sourceIndex >= count) {
+                    sourceIndex = count - 1;
+                }
+            }
+            average += (i + 1) * totalBalances[sourceIndex];
+        }
+        movingAverage[t] = weightFactor * average;
     }
 
     // Compute some special values for the graphs which directly depend on global stats.
@@ -1809,10 +1861,9 @@ int double_compare(const void *value1, const void *value2)
     CPTXYAxis* x = axisSet.xAxis;
     
     [x removeBackgroundLimitBand: selectionBand];
-    CPTFill* bandFill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 134 / 255.0
-                                                                          green: 153 / 255.0
-                                                                           blue: 67 / 255.0
-                                                                          alpha: 1]];
+    CGColorRef bandColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Selection Band"]);
+    CPTFill* bandFill = [CPTFill fillWithColor: [CPTColor colorWithCGColor: bandColor]];
+    CGColorRelease(bandColor);
     
     NSDecimal fromPoint = [self distanceAsDecimalFromDate: referenceDate toDate: fromDate];
     selectionBand = [CPTLimitBand limitBandWithRange:
@@ -1993,7 +2044,11 @@ int double_compare(const void *value1, const void *value2)
     if ([plot graph] == selectionGraph && selectionBalances != nil) {
         return selectionSampleCount;
     }
-    
+
+    NSString* identifier = (id)plot.identifier;
+    if ([identifier isEqualToString: @"averagePlot"] && rawCount > 0) {
+        return rawCount;
+    }
     return rawCount;
 }
 
@@ -2018,7 +2073,11 @@ int double_compare(const void *value1, const void *value2)
         if ([identifier isEqualToString: @"positivePlot"]) {
             return &positiveBalances[indexRange.location];
         } else {
-            return &negativeBalances[indexRange.location];
+            if ([identifier isEqualToString: @"negativePlot"]) {
+                return &negativeBalances[indexRange.location];
+            } else {
+                return &movingAverage[indexRange.location];
+            }
         }
     }
     
@@ -2102,7 +2161,10 @@ int double_compare(const void *value1, const void *value2)
         free(selectionTimePoints);
         selectionTimePoints = nil;
     }
-    
+
+    free(movingAverage);
+    movingAverage = nil;
+
     NSArray* plots = [mainGraph.allPlots copy];
     for (CPTPlot* plot in plots) {
         [mainGraph removePlot: plot];
@@ -2122,11 +2184,13 @@ int double_compare(const void *value1, const void *value2)
         NSArray *dates = nil;
         NSArray *balances = nil;
         NSArray *turnovers = nil;
+        BOOL extraEntry = NO;
         if (mainCategory.isBankAccount) {
             [mainCategory balanceHistoryToDates: &dates
                                        balances: &balances
                                   balanceCounts: &turnovers
                                    withGrouping: groupingInterval];
+            extraEntry = YES;
         } else {
             [mainCategory categoryHistoryToDates: &dates
                                         balances: &balances
@@ -2139,7 +2203,7 @@ int double_compare(const void *value1, const void *value2)
             // Convert the data to the internal representations.
             // We add one to the total number as we need it (mostly) in scatter plots to
             // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
-            rawCount = [dates count] + 1;
+            rawCount = [dates count] + (extraEntry ? 1 : 0);
 
             // Convert the dates to distance units from a reference date.
             timePoints = malloc(rawCount * sizeof(double));
@@ -2148,12 +2212,15 @@ int double_compare(const void *value1, const void *value2)
             for (ShortDate *date in dates) {
                 timePoints[index++] = [self distanceFromDate: referenceDate toDate: date];
             }
-            timePoints[index] = timePoints[index - 1] + 1000; // A date far in the future.
+            if (extraEntry) {
+                timePoints[index] = timePoints[index - 1] + 5;
+            }
 
             // Convert all NSDecimalNumbers to double for better performance.
             totalBalances = malloc(rawCount * sizeof(double));
             positiveBalances = malloc(rawCount * sizeof(double));
             negativeBalances = malloc(rawCount * sizeof(double));
+            movingAverage = malloc(rawCount * sizeof(double));
 
             index = 0;
             for (NSDecimalNumber *value in balances) {
@@ -2177,10 +2244,12 @@ int double_compare(const void *value1, const void *value2)
             }
 
             // The value in the extra field is never used, but serves only as additional data point.
-            totalBalances[index] = 0;
-            positiveBalances[index] = 0;
-            negativeBalances[index] = 0;
-            balanceCounts[index] = 0;
+            if (extraEntry) {
+                totalBalances[index] = 0;
+                positiveBalances[index] = 0;
+                negativeBalances[index] = 0;
+                balanceCounts[index] = 0;
+            }
 
             // Sample data for the selection plot. Use only as many values as needed to fill the window.
             CPTPlotAreaFrame *frame = selectionGraph.plotAreaFrame;
