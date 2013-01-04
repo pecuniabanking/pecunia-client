@@ -63,8 +63,10 @@ typedef enum {
 @property (nonatomic) NSString *iconName;
 
 @property (nonatomic, strong) NSColor *categoryColor; // Unarchived catRepColor.
+@property (nonatomic, strong) NSMutableArray *reportedAssignments; // assignments between start and end report date
+@property (nonatomic, readonly, weak) NSMutableSet *boundAssignments; // assignments bound to / displayed in a statements table view
 
-- (void)updateInvalidBalances;
+- (void)updateInvalidCategoryValues;
 - (void)invalidateBalance;
 - (NSDecimalNumber*)rollup;
 - (void)rebuildValues;
@@ -94,9 +96,9 @@ typedef enum {
 - (void)getDatesMin: (ShortDate**)minDate max: (ShortDate**)maxDate;
 
 - (NSDecimalNumber*)valuesOfType: (CatValueType)type from: (ShortDate*)fromDate to: (ShortDate*)toDate;
-- (NSArray*)statementsFrom: (ShortDate*)fromDate to: (ShortDate*)toDate withChildren: (BOOL)c;
+- (NSArray*)assignmentsFrom: (ShortDate*)fromDate to: (ShortDate*)toDate withChildren: (BOOL)c;
 - (NSMutableSet*)allAssignments;
-- (void)updateAllAssignments;
+- (void)updateBoundAssignments;
 
 + (Category*)bankRoot;
 + (Category*)catRoot;

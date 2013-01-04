@@ -55,11 +55,17 @@ BOOL updateSent = NO;
 @dynamic iconName;
 
 @synthesize categoryColor;
+@synthesize reportedAssignments;  // assignments that are between start and end report date
 
-
--(void)updateInvalidBalances
+// if the value of a category (sum of assignments between start and end report date) is not valid (isBalanceValid) it is recalculated
+// the value of a category is stored in the balance field
+- (void)updateInvalidCategoryValues
 {
-    NSArray *stats;
+    // only for categories
+    if ([self isBankAccount] == YES) {
+        return;
+    }
+    
     NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
     if([childs count ] > 0) {
         // first handle children
@@ -67,22 +73,20 @@ BOOL updateSent = NO;
         Category	 *cat;
         
         while ((cat = [enumerator nextObject])) {
-            [cat updateInvalidBalances ];
+            [cat updateInvalidCategoryValues ];
         }
     }
+    
     // now handle self
     if([self.isBalanceValid boolValue ] == NO) {
+        NSArray *stats = nil;
         NSDecimalNumber	*balance = [NSDecimalNumber zero ];
         
-        if ([self isBankAccount]) {
-            stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
-        } else {
-            assert(startReportDate != nil);
-            assert(endReportDate != nil);
-            stats = [self statementsFrom: startReportDate
-                                      to: endReportDate
-                            withChildren: NO];
-        }
+        assert(startReportDate != nil);
+        assert(endReportDate != nil);
+        stats = [self assignmentsFrom: startReportDate
+                                  to: endReportDate
+                        withChildren: NO];
         
         StatCatAssignment *stat = nil;
         for(stat in stats) {
@@ -97,9 +101,15 @@ BOOL updateSent = NO;
     }
 }
 
+// rebuild all category values due to a change in the reporting period
+// also updates assignments cache
 -(void)rebuildValues
 {
-    NSArray *stats;
+    if ([self isBankAccount] == YES) {
+        return;
+    }
+    
+    NSArray *stats=nil;
     NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
     if([childs count ] > 0) {
         // first handle children
@@ -113,16 +123,12 @@ BOOL updateSent = NO;
     // now handle self
     NSDecimalNumber	*balance = [NSDecimalNumber zero ];
     
-    if ([self isBankAccount]) {
-        stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
-    }
-    else {
-        assert(startReportDate != nil);
-        assert(endReportDate != nil);
-        stats = [self statementsFrom: startReportDate
-                                  to: endReportDate
-                        withChildren: NO];
-    }
+    assert(startReportDate != nil);
+    assert(endReportDate != nil);
+    self.reportedAssignments = nil;  // clear cache
+    stats = [self assignmentsFrom: startReportDate
+                              to: endReportDate
+                    withChildren: NO];
     
     for(StatCatAssignment *stat in stats) {
         if(stat.value != nil) balance = [balance decimalNumberByAdding: stat.value]; else stat.value = [NSDecimalNumber zero ];
@@ -130,6 +136,7 @@ BOOL updateSent = NO;
     self.balance = balance;
 }
 
+// rollup category values and account balances 
 -(NSDecimalNumber*)rollup
 {
     NSDecimalNumber *res;
@@ -138,7 +145,7 @@ BOOL updateSent = NO;
     NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
     NSEnumerator *enumerator = [childs objectEnumerator];
     res = self.balance;
-    while ((cat = [enumerator nextObject])) { res = [res decimalNumberByAdding: [cat rollup ] ]; cat_old = cat; }
+    while ((cat = [enumerator nextObject])) { res = [res decimalNumberByAdding: [cat rollup]]; cat_old = cat; }
     self.catSum = res;
     if(cat_old) {
         NSString *curr = cat_old.currency;
@@ -154,7 +161,7 @@ BOOL updateSent = NO;
     self.isBalanceValid = @NO;
 }
 
-
+// value of expenses, earnings or turnovers for a specified period
 -(NSDecimalNumber*)valuesOfType: (CatValueType)type from: (ShortDate*)fromDate to: (ShortDate*)toDate
 {
     NSDecimalNumber* result = [NSDecimalNumber zero];
@@ -171,20 +178,7 @@ BOOL updateSent = NO;
         }
     }
     
-    // fetch all relevant statements
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"StatCatAssignment" inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    NSDate *from = [fromDate lowDate];
-    NSDate *to = [toDate highDate];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category = %@ and statement.date >= %@ and statement.date <= %@", self, from, to];
-    [fetchRequest setPredicate:predicate];
-    
-    NSError *error = nil;
-    NSArray *stats = [context executeFetchRequest:fetchRequest error:&error];
-    
+    NSArray *stats = [self assignmentsFrom:fromDate to:toDate withChildren:NO];
     if ([stats count] > 0)
     {
         NSDecimalNumber* zero = [NSDecimalNumber zero];
@@ -230,21 +224,32 @@ BOOL updateSent = NO;
     return result;
 }
 
--(NSArray*)statementsFrom: (ShortDate*)fromDate to: (ShortDate*)toDate withChildren: (BOOL)c
+// returns all assignments for the specified period
+// if the period equals the reporting period, the assignments are cached / retrieved from cache
+// the cache always only contains assignments directly belonging to the current category, not those from child categories!
+-(NSArray*)assignmentsFrom: (ShortDate*)fromDate to: (ShortDate*)toDate withChildren: (BOOL)c
 {
     NSMutableArray	*result = [NSMutableArray arrayWithCapacity: 100 ];    
-    NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
     
-    if(c == YES && [childs count ] > 0) {
-        // first handle children
-        NSEnumerator *enumerator = [childs objectEnumerator];
-        Category	 *cat;
-        
-        while ((cat = [enumerator nextObject])) {
-            [result addObjectsFromArray: [cat statementsFrom: fromDate to: toDate withChildren: YES ] ];
+    if (c == YES) {
+        NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
+        if([childs count ] > 0) {
+            // first handle children
+            NSEnumerator *enumerator = [childs objectEnumerator];
+            Category	 *cat;
+            
+            while ((cat = [enumerator nextObject])) {
+                [result addObjectsFromArray: [cat assignmentsFrom: fromDate to: toDate withChildren: YES ] ];
+            }
         }
     }
 
+    // check if we can take the assignments from cache
+    if ([fromDate isEqual:startReportDate] && [toDate isEqual:endReportDate] && self.reportedAssignments != nil) {
+        [result addObjectsFromArray:self.reportedAssignments];
+        return result;
+    }
+    
     // fetch all relevant statements
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -261,7 +266,30 @@ BOOL updateSent = NO;
     if (fetchedObjects != nil) {
         [result addObjectsFromArray:fetchedObjects];
     }
+    // cache assignments
+    if ([fromDate isEqual:startReportDate] && [toDate isEqual:endReportDate]) {
+        self.reportedAssignments = [fetchedObjects mutableCopy];
+    }
     return result;	
+}
+
+// update reported assignment caches due to a change of the reporting period
+- (void)updateReportedAssignments
+{
+    NSMutableSet* childs = [self mutableSetValueForKey: @"children" ];
+    if([childs count ] > 0) {
+        // first handle children
+        NSEnumerator *enumerator = [childs objectEnumerator];
+        Category	 *cat;
+        
+        while ((cat = [enumerator nextObject])) {
+            [cat updateReportedAssignments];
+        }
+    }
+    
+    // now handle self
+    self.reportedAssignments=nil;
+    [self assignmentsFrom:startReportDate to:endReportDate withChildren:NO];
 }
 
 
@@ -404,6 +432,15 @@ BOOL updateSent = NO;
     return set;
 }
 
+// returns a set of all assignments displayed in the transaction list for this category
+// takes setting "recursiveTransactions" into account, i.e. whether also assignments of sub categories should be displayed
+- (NSMutableSet*)boundAssignments
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *assignments = [self assignmentsFrom:startReportDate to:endReportDate withChildren:[defaults boolForKey:@"recursiveTransactions"]];
+    return [NSMutableSet setWithArray:assignments];
+}
+
 /**
  * Returns all assignments from this category plus all of those from the child and grand child etc. categories.
  */
@@ -417,9 +454,7 @@ BOOL updateSent = NO;
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"StatCatAssignment" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     
-    NSDate *from = [startReportDate lowDate];
-    NSDate *to = [endReportDate highDate];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category in %@ and statement.date >= %@ and statement.date <= %@", allCats, from, to];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category in %@", allCats];
     [fetchRequest setPredicate:predicate];
     
     NSError *error = nil;
@@ -433,10 +468,10 @@ BOOL updateSent = NO;
 /**
  * Used to get the KVO chain into moving when an assignment in this category changed.
  */
-- (void)updateAllAssignments
+- (void)updateBoundAssignments
 {
-    [self willChangeValueForKey: @"allAssignments"];
-    [self didChangeValueForKey: @"allAssignments"];
+    [self willChangeValueForKey: @"boundAssignments"];
+    [self didChangeValueForKey: @"boundAssignments"];
 }
 
 /**
@@ -619,7 +654,6 @@ BOOL updateSent = NO;
         *balances = balanceArray;
         *counts = countArray;
     }
-    
     return count;
 }
 
@@ -781,7 +815,7 @@ BOOL updateSent = NO;
 +(void)updateCatValues
 {
     if (updateSent) return;
-    [[self catRoot ] updateInvalidBalances ];
+    [[self catRoot ] updateInvalidCategoryValues ];
     [[self catRoot ] rollup ]; 
 }
 
@@ -797,6 +831,7 @@ BOOL updateSent = NO;
     endReportDate = tDate;
     [[self catRoot] rebuildValues];
     [[self catRoot] rollup];
+    [[self bankRoot]updateReportedAssignments];
 }
 
 /**

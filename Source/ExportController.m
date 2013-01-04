@@ -124,7 +124,7 @@ static ExportController *exportController = nil;
 		// addObjectsFromArray
 		NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"statement.date" ascending:NO];
 		for (Category *currentCategory in cats) {
-			NSArray* stats = [currentCategory statementsFrom: from_Date to: to_Date withChildren: withChildren];
+			NSArray* stats = [currentCategory assignmentsFrom:from_Date to:to_Date withChildren:withChildren];
 			stats = [stats sortedArrayUsingDescriptors: @[sd]];
 			for (StatCatAssignment *stat in stats) {
 				NSString* s = [stat stringForFields:fields usingDateFormatter:dateFormatter numberFormatter:numberFormatter];

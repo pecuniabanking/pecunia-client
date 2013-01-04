@@ -63,7 +63,7 @@ TimeSliceManager *timeSliceManager = nil;
 		}
 	}
 	if(!savedValues) {
-		ShortDate *date = [ShortDate dateWithDate: [NSDate date ] ];
+		ShortDate *date = [ShortDate dateWithDate: [NSDate date]];
 		year = [date year ];
 		type = slice_month;
 		month = [date month ];
@@ -133,6 +133,7 @@ TimeSliceManager *timeSliceManager = nil;
 		case slice_quarter: date = [ShortDate dateWithYear: year month: quarter*3+1 day: 1 ]; break;
 		case slice_month: date = [ShortDate dateWithYear: year month: month day: 1 ]; break;
 		case slice_none: date = _fromDate;
+        case slice_all: date = [ShortDate dateWithDate:[NSDate distantPast]];
 	}
 	if(_minDate) {
 		if([_minDate compare: date ] == NSOrderedDescending) return _minDate; else return date;
@@ -156,6 +157,7 @@ TimeSliceManager *timeSliceManager = nil;
 			break;
 		}
 		case slice_none: date = _toDate;
+        case slice_all: date = [ShortDate dateWithDate:[NSDate distantFuture]];
 	}
 	if(_maxDate) {
 		if([_maxDate compare: date ] == NSOrderedAscending) return _maxDate; else return date;
@@ -247,16 +249,16 @@ TimeSliceManager *timeSliceManager = nil;
 	}
 	
 	// year
-	[control setLabel: [@((int)year) description] forSegment: 0];
+	[control setLabel: [@((int)year) description] forSegment: slice_year];
 	
 	// quarter
 	NSString *quarterString = [NSString stringWithFormat: @"Q%.1lu", quarter+1 ];
-	[control setLabel: quarterString forSegment: 1 ];
+	[control setLabel: quarterString forSegment: slice_quarter];
 	
 	// month
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	NSArray* months = [dateFormatter monthSymbols ];
-	[control setLabel: months[month-1] forSegment: 2 ];
+	[control setLabel: months[month-1] forSegment: slice_month];
 }
 
 -(void)updatePickers
@@ -321,7 +323,7 @@ TimeSliceManager *timeSliceManager = nil;
 
 -(IBAction)timeSliceUpDown: (id)sender
 {
-	if(type != slice_none) {
+	if(type != slice_none && type != slice_all) {
 		if([sender selectedSegment] == 0) [self stepDown ]; else [self stepUp ];
 		[self updateControl ];
 		[self updatePickers ];

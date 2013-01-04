@@ -199,13 +199,17 @@
     
     // Not assigned statements
     pred = [NSPredicate predicateWithFormat: @"(category = %@)", [Category nassRoot]];
-    pred = [NSCompoundPredicate andPredicateWithSubpredicates: @[pred, predicate]];
+    if (predicate != nil) {
+        pred = [NSCompoundPredicate andPredicateWithSubpredicates: @[pred, predicate]];
+    }
     [orPreds addObject: pred];
     
     // already assigned statements 
     if(!hideAssignedValues) {
         pred = [NSPredicate predicateWithFormat: @"(category.isBankAccount = 0)"];
-        pred = [NSCompoundPredicate andPredicateWithSubpredicates: @[pred, predicate]];
+        if (predicate != nil) {
+            pred = [NSCompoundPredicate andPredicateWithSubpredicates: @[pred, predicate]];
+        }
         [orPreds addObject: pred];
     }
     

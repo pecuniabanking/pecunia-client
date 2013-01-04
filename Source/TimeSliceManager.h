@@ -21,7 +21,8 @@
 
 typedef enum {
 	slice_none = -1,
-	slice_year = 0,
+    slice_all = 0,
+	slice_year,
 	slice_quarter,
 	slice_month,
 } SliceType;

@@ -570,7 +570,7 @@ BOOL runningOnLionOrLater = NO;
         return;
     }
     for (Category* cat in cats) {
-        if([cat isBankingRoot] == NO) [cat updateInvalidBalances];
+        if([cat isBankingRoot] == NO) [cat updateInvalidCategoryValues];
         [cat rollup];
     }
     
@@ -2036,7 +2036,14 @@ BOOL runningOnLionOrLater = NO;
         
     }
      */
+    
     [categoryAssignments unbind: @"contentSet"];
+    [categoryAssignments bind: @"contentSet"
+                     toObject: categoryController
+                  withKeyPath: @"selection.boundAssignments"
+                      options: nil];
+    
+    /*
     if (self.toggleRecursiveStatementsItem.state == NSOnState) {
         [categoryAssignments bind: @"contentSet"
                          toObject: categoryController
@@ -2048,6 +2055,7 @@ BOOL runningOnLionOrLater = NO;
                       withKeyPath: @"selection.assignments"
                           options: nil];
     }
+    */ 
 }
 
 - (void)deleteCategory: (id)sender
@@ -2125,9 +2133,13 @@ BOOL runningOnLionOrLater = NO;
     if(idx) return;
     [Category setCatReportFrom:from to:to];
     
+    // todo: remove filter stuff
     // change filter
+    /*
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(statement.date => %@) AND (statement.date <= %@)", [from lowDate], [to highDate]];
     [categoryAssignments setFilterPredicate: predicate];
+    */
+    [[self currentSelection] updateBoundAssignments];
     
     // Update current section if the default is not active.
     if (currentSection != nil) {
