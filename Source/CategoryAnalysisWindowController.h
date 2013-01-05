@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -92,6 +92,8 @@
     double *movingAverage;                // Linear weighted moving average values.
     NSNumberFormatter* infoTextFormatter;
 
+    NSMutableDictionary *mainInfoValues;
+
 	ShortDate* fromDate;
 	ShortDate* toDate;
     double lastInfoTimePoint;             // The time point for which the info text was last updated.
@@ -114,14 +116,6 @@
     float newMainYInterval;
 
     NSMutableDictionary *statistics;     // All values are NSNumber.
-    /*
-    double totalMinValue;           // The minimum value of the currently selected category.
-    double totalMaxValue;           // Ditto for maximum.
-    double totalMeanValue;
-    double totalMeanVariation;
-    double totalMedian;
-    double totalStandardDeviation;
-     */
 }
 
 @property (nonatomic, strong) Category* category;

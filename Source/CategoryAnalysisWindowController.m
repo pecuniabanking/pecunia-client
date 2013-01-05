@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -93,8 +93,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     // tell apart. The event's subtype is in both cases NSTablePointerEventSubtype (which it should not
     // for wheel events). So, to get this still working we use the x delta, which is 0 for wheel events.
     CGFloat distance = [theEvent deltaX];
-    if (distance != 0)
-    {
+    if ([theEvent deltaY] == 0) {
         // A trackpad gesture (usually two-finger swipe).
         parameters[@"type"] = @"plotMoveSwipe";
 
@@ -103,9 +102,8 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         
         NSNumber* range = @(CPTDecimalDoubleValue(plotSpace.xRange.length));
         parameters[@"plotXRange"] = range;
-    }
-    else 
-    {
+    } else {
+        // Real scroll wheel events always have a y delta != 0.
         parameters[@"type"] = @"plotScale";
         
         distance = [theEvent deltaY];
@@ -119,11 +117,18 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     }
     
     // Current mouse position.
-    CGPoint mouseLocation = NSPointToCGPoint([self convertPoint: [theEvent locationInWindow] fromView: nil]);
-    CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
-    parameters[@"mousePosition"] = @(pointInHostedGraph.x);
-    
-    [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
+    if (distance != 0) {
+        CGPoint mouseLocation = NSPointToCGPoint([self convertPoint: [theEvent locationInWindow] fromView: nil]);
+        CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
+        parameters[@"mousePosition"] = @(pointInHostedGraph.x);
+
+        [center postNotificationName: PecuniaGraphLayoutChangeNotification object: plotSpace userInfo: parameters];
+    }
+}
+
+- (void)swipeWithEvent:(NSEvent *)event
+{
+    // Not reliable, depending on system settings.
 }
 
 /**
@@ -193,7 +198,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     CGFloat distance = [theEvent deltaX];
     
-    NSNumber* location = @(plotSpace.xRange.locationDouble - plotSpace.xRange.lengthDouble * distance / 1000);
+    NSNumber* location = @(plotSpace.xRange.locationDouble - plotSpace.xRange.lengthDouble * distance / self.hostedGraph.bounds.size.width);
     parameters[@"plotXLocation"] = location;
     
     NSNumber* range = @(CPTDecimalDoubleValue(plotSpace.xRange.length));
@@ -383,6 +388,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     if (self != nil) {
         barWidth = 15;
         statistics = [NSMutableDictionary dictionaryWithCapacity: 10];
+        mainInfoValues = [NSMutableDictionary dictionaryWithCapacity: 5];
     }
     return self;
 }
@@ -395,6 +401,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     free(positiveBalances);
     free(balanceCounts);
     free(selectionBalances);
+    free(movingAverage);
 }
 
 -(void)awakeFromNib
@@ -1363,7 +1370,7 @@ int double_compare(const void *value1, const void *value2)
     return 0;
 }
 
-#define MOVING_AVERAGE_WIDTH 5
+#define MOVING_AVERAGE_WIDTH 10
 
 - (void)computeTotalStatistics
 {
@@ -1468,8 +1475,8 @@ int double_compare(const void *value1, const void *value2)
     roundedTotalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundToUpperOuter];
     roundedTotalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundToUpperOuter];
 
-    if (maxTurnovers < 1) {
-        maxTurnovers = 1;
+    if (maxTurnovers < 5) {
+        maxTurnovers = 5;
     }
     NSDecimal decimalTurnoversValue = CPTDecimalFromDouble(maxTurnovers);
     roundedMaxTurnovers = [[NSDecimalNumber decimalNumberWithDecimal: decimalTurnoversValue] roundToUpperOuter];
@@ -1574,13 +1581,13 @@ int double_compare(const void *value1, const void *value2)
 }
 
 /**
- * Updates the info annotation with the given values.
+ * Updates the info annotation with the current main info values.
  */
-- (void)updateMainInfo: (NSDictionary*)values
+- (void)updateMainInfo
 {
-    ShortDate *date = values[@"date"];
-    id balance = values[@"balance"];
-    int turnovers = [values[@"turnovers"] intValue];
+    ShortDate *date = mainInfoValues[@"date"];
+    id balance = mainInfoValues[@"balance"];
+    int turnovers = [mainInfoValues[@"turnovers"] intValue];
     
     
     if (infoTextFormatter == nil)
@@ -1770,14 +1777,10 @@ int double_compare(const void *value1, const void *value2)
     // Check if the time point is within the visible range.
     if (rawCount == 0 || timePoint < plotSpace.xRange.minLimitDouble ||
         timePoint > plotSpace.xRange.maxLimitDouble) {
-        [infoLayer fadeOut];
-        [mainIndicatorLine fadeOut];
-        [turnoversIndicatorLine fadeOut];
+        [self hideInfoComponents];
         return;
     } else {
-        [infoLayer fadeIn];
-        [mainIndicatorLine fadeIn];
-        [turnoversIndicatorLine fadeIn];
+        [self showInfoComponents];
     }
 
     // Find closest point in our time points that is before the computed time value.
@@ -1811,10 +1814,6 @@ int double_compare(const void *value1, const void *value2)
             }
         }
     }
-    
-    if (!dateHit && (timePoint == timePointAtIndex)) {
-        dateHit = YES;
-    }
 
     // If there wasn't a date hit (i.e. the current position is at an actual value) then
     // use the date left to the position (not rounded), so we show the unit properly til
@@ -1825,10 +1824,10 @@ int double_compare(const void *value1, const void *value2)
 
     if (lastInfoTimePoint == 0 || (timePoint != lastInfoTimePoint) || dateHit)
     {
+        [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateMainInfo) object: nil];
         lastInfoTimePoint = timePoint;
 
-        NSMutableDictionary *values = [NSMutableDictionary dictionary];
-        values[@"date"] = [self dateByAddingUnits: referenceDate count: timePoint];
+        mainInfoValues[@"date"] = [self dateByAddingUnits: referenceDate count: timePoint];
         id balance;
         int turnovers = 0;
         if (dateHit) {
@@ -1837,12 +1836,12 @@ int double_compare(const void *value1, const void *value2)
         } else {
             balance = [mainCategory isBankAccount] ? @(totalBalances[index]) : (id)[NSNull null];
         }
-        values[@"balance"] = balance;
-        values[@"turnovers"] = @(turnovers);
+        mainInfoValues[@"balance"] = balance;
+        mainInfoValues[@"turnovers"] = @(turnovers);
 
         // Update the info layer content, but after a short delay. This will be canceled if new
         // update request arrive in the meantime (circumventing so too many updates that slow down the display).
-        [self performSelector: @selector(updateMainInfo:) withObject: values afterDelay: 0.1];
+        [self performSelector: @selector(updateMainInfo) withObject: nil afterDelay: 0.1];
     }
 
     // Position the indicator line to the given location in main and turnovers graphs.
@@ -1861,17 +1860,18 @@ int double_compare(const void *value1, const void *value2)
     CPTXYAxis* x = axisSet.xAxis;
     
     [x removeBackgroundLimitBand: selectionBand];
-    CGColorRef bandColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Selection Band"]);
-    CPTFill* bandFill = [CPTFill fillWithColor: [CPTColor colorWithCGColor: bandColor]];
-    CGColorRelease(bandColor);
-    
-    NSDecimal fromPoint = [self distanceAsDecimalFromDate: referenceDate toDate: fromDate];
-    selectionBand = [CPTLimitBand limitBandWithRange:
-                      [CPTPlotRange plotRangeWithLocation: fromPoint
-                                                   length: CPTDecimalSubtract([self distanceAsDecimalFromDate: referenceDate toDate: toDate], fromPoint)]
-                                                 fill: bandFill];
-    [x addBackgroundLimitBand: selectionBand];
-    selectionHostView.selector = selectionBand;
+    if (rawCount > 0) {
+        CGColorRef bandColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Selection Band"]);
+        CPTFill* bandFill = [CPTFill fillWithColor: [CPTColor colorWithCGColor: bandColor]];
+        CGColorRelease(bandColor);
+
+        // The select band is an exact equivalent of the main range.
+        CPTXYPlotSpace* plotSpace = (id)mainGraph.defaultPlotSpace;
+        selectionBand = [CPTLimitBand limitBandWithRange: plotSpace.xRange
+                                                    fill: bandFill];
+        [x addBackgroundLimitBand: selectionBand];
+        selectionHostView.selector = selectionBand;
+    }
 }
 
 - (void)updateTimeRangeVariables
@@ -1895,7 +1895,7 @@ int double_compare(const void *value1, const void *value2)
     {
         doingGraphUpdates = YES;
         
-        [NSObject cancelPreviousPerformRequestsWithTarget: self];
+        [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateVerticalMainGraphRange) object: nil];
         
         NSDictionary* parameters = [notification userInfo];
         NSString* type = parameters[@"type"];
@@ -1904,15 +1904,11 @@ int double_compare(const void *value1, const void *value2)
         BOOL fromSelectionGraph = (sourcePlotSpace == selectionGraph.defaultPlotSpace);
         BOOL isDragMove = [type isEqualToString: @"plotMoveDrag"];
         BOOL isScale = [type isEqualToString: @"plotScale"];
-        BOOL keepInfoLayerHidden = NO;
         if ([type isEqualToString: @"plotMoveSwipe"] || isDragMove || isScale) {
-            if (isDragMove || isScale) {
-                keepInfoLayerHidden = YES;
-                if (!infoLayer.hidden) {
-                    [infoLayer fadeOut];
-                }
+            if (!infoLayer.hidden) {
+                [self hideInfoComponents];
             }
-            
+
             NSNumber* location = parameters[@"plotXLocation"];
             NSNumber* range = parameters[@"plotXRange"];
             NSNumber* lowRange = @([self majorTickCount]);
@@ -1954,10 +1950,11 @@ int double_compare(const void *value1, const void *value2)
 
             // Adjust vertical graph ranges after a short delay.
             [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
-
+/*
             if (!keepInfoLayerHidden && !fromSelectionGraph) {
                 [self updateTrackLinesAndInfoAnnotation: center];
             }
+ */
         } else {
             if ([type isEqualToString: @"trackLineMove"]) {
                 NSNumber* location = parameters[@"location"];
@@ -1996,9 +1993,7 @@ int double_compare(const void *value1, const void *value2)
  */
 - (void)mouseLeftGraph: (NSNotification*)notification
 {
-    [infoLayer fadeOut];
-    [mainIndicatorLine fadeOut];
-    [turnoversIndicatorLine fadeOut];
+    [self hideInfoComponents];
 }
 
 #pragma mark -
@@ -2297,7 +2292,7 @@ int double_compare(const void *value1, const void *value2)
 
 - (void)regenerateGraphs
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget: self];
+    [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateVerticalMainGraphRange) object: nil];
         
     [self reloadData];
     
@@ -2334,6 +2329,20 @@ int double_compare(const void *value1, const void *value2)
                                        userInfo: nil
                                         repeats: NO];
     }
+}
+
+- (void)showInfoComponents
+{
+    [infoLayer fadeIn];
+    [mainIndicatorLine fadeIn];
+    [turnoversIndicatorLine fadeIn];
+}
+
+- (void)hideInfoComponents
+{
+    [infoLayer fadeOut];
+    [mainIndicatorLine fadeOut];
+    [turnoversIndicatorLine fadeOut];
 }
 
 #pragma mark -
@@ -2429,7 +2438,7 @@ int double_compare(const void *value1, const void *value2)
  */
 - (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget: self];
+    [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateVerticalMainGraphRange) object: nil];
         
     fromDate = from;
     toDate = to;

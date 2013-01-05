@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -49,7 +49,9 @@ static StatusBarController *controller = nil;
     [GrowlNotification showMessage: message withTitle: nil context: @"status"];
 	[messageField setStringValue: message];
 
-    [self performSelector: @selector(clearMessage) withObject: nil afterDelay: secs];
+    if (secs > 0) {
+        [self performSelector: @selector(clearMessage) withObject: nil afterDelay: secs];
+    }
 }
 
 - (void)clearMessage

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -204,7 +204,6 @@ BOOL runningOnLionOrLater = NO;
         BOOL recursive = [[userDefaults objectForKey: @"recursiveTransactions"] boolValue];
         self.toggleRecursiveStatementsItem.state = recursive ? NSOnState : NSOffState;
     }
-    [self updateCategoryAssignments: [self currentSelection]];
 
     if ([userDefaults objectForKey: @"showBalances"]) {
         BOOL showBalances = [[userDefaults objectForKey: @"showBalances"] boolValue];
@@ -271,7 +270,9 @@ BOOL runningOnLionOrLater = NO;
 
     splitCursor = [[NSCursor alloc] initWithImage:[NSImage imageNamed: @"cursor.png"] hotSpot:NSMakePoint(0, 0)];
     [WorkerThread init];
-    
+
+    [categoryAssignments bind: @"contentSet" toObject: categoryController withKeyPath: @"selection.boundAssignments" options: nil];
+
     // todo [self migrate];
     [categoryController addObserver: self forKeyPath: @"arrangedObjects.catSum" options: 0 context: nil];
     [categoryAssignments addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
@@ -756,8 +757,7 @@ BOOL runningOnLionOrLater = NO;
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: YES];
     
     if (resultList != nil) {
-        [self updateCategoryAssignments: [self currentSelection]];
-        //if(cat && [cat isBankAccount] && cat.accountNumber == nil) [categoryAssignments setContent: [cat combinedStatements]];
+        [[self currentSelection] updateBoundAssignments];
 
         BankQueryResult *result;
         NSDate *maxDate = nil;
@@ -1740,9 +1740,8 @@ BOOL runningOnLionOrLater = NO;
 -(void)outlineViewSelectionDidChange:(NSNotification *)aNotification
 {
     Category *cat = [self currentSelection];
+    [cat updateBoundAssignments];
     
-    [self updateCategoryAssignments: cat];
-
     // set states of categorie Actions Control
     [catActions setEnabled: [cat isRemoveable] forSegment: 2];
     [catActions setEnabled: [cat isInsertable] forSegment: 1];
@@ -2012,50 +2011,6 @@ BOOL runningOnLionOrLater = NO;
     for (BankStatement *stat in stats) {
         [stat updateAssigned];
     }
-}
-
-- (void)updateCategoryAssignments: (Category *)category
-{
-    if ((category == nil) || (self.managedObjectContext == nil))
-        return;
-    /* TODO: remove if the pure binding based approach fully works as intended.
-    if (self.toggleRecursiveStatementsItem.state == NSOnState) {
-        if (statementsBound) {
-            [categoryAssignments unbind: @"contentSet"];
-            statementsBound = NO;
-        }
-        [categoryAssignments setContent: [category allAssignments]];
-    } else {
-        if (!statementsBound) {
-            [categoryAssignments bind: @"contentSet"
-                             toObject: categoryController
-                          withKeyPath: @"selection.assignments"
-                              options: nil];
-            statementsBound = YES;
-        }
-        
-    }
-     */
-    
-    [categoryAssignments unbind: @"contentSet"];
-    [categoryAssignments bind: @"contentSet"
-                     toObject: categoryController
-                  withKeyPath: @"selection.boundAssignments"
-                      options: nil];
-    
-    /*
-    if (self.toggleRecursiveStatementsItem.state == NSOnState) {
-        [categoryAssignments bind: @"contentSet"
-                         toObject: categoryController
-                      withKeyPath: @"selection.allAssignments"
-                          options: nil];
-    } else {
-        [categoryAssignments bind: @"contentSet"
-                         toObject: categoryController
-                      withKeyPath: @"selection.assignments"
-                          options: nil];
-    }
-    */ 
 }
 
 - (void)deleteCategory: (id)sender
@@ -2344,7 +2299,7 @@ BOOL runningOnLionOrLater = NO;
     // Special behaviour for top bank accounts
     if (account.accountNumber == nil) {
         [self.managedObjectContext processPendingChanges];
-        [self updateCategoryAssignments: account];
+        [account updateBoundAssignments];
     }
 
     [[Category bankRoot] rollup];
@@ -2396,7 +2351,7 @@ BOOL runningOnLionOrLater = NO;
 }
 
 /**
- * Creates a set of default categories, which are quite common. These categories are defined in localizable.strings.
+ * Creates a set of default categories, which are quite common. These categories are defined in Localizable.strings.
  */
 - (void)createDefaultCategories
 {
@@ -3045,9 +3000,9 @@ BOOL runningOnLionOrLater = NO;
         } else {
             self.toggleRecursiveStatementsItem.state = NSOnState;
         }
-        [self updateCategoryAssignments: [self currentSelection]];
         [userDefaults setValue: @((BOOL)(self.toggleRecursiveStatementsItem.state == NSOnState))
                         forKey: @"recursiveTransactions"];
+        [[self currentSelection] updateBoundAssignments];
     } else {
         if (sender == self.toggleDetailsPaneItem) {
             [self toggleDetailsPane: nil];

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -63,7 +63,6 @@ extern NSString *StatementTypeKey;
     [_dateFormatter setTimeStyle: NSDateFormatterNoStyle];
     autoResetNew = YES;
     disableSelection = NO;
-    showHeaders = YES;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     showBalances = YES;
@@ -71,6 +70,10 @@ extern NSString *StatementTypeKey;
         showBalances = [[userDefaults objectForKey: @"showBalances"] boolValue];
     }
 
+    showHeaders = YES;
+    if ([userDefaults objectForKey: @"showHeadersInLists"]) {
+        showHeaders = [[userDefaults objectForKey: @"showHeadersInLists"] boolValue];
+    }
 }
 
 - (void) dealloc
