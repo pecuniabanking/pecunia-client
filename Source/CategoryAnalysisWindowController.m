@@ -172,7 +172,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     }
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
-    parameters[@"type"] = @"trackLineMove";
+    parameters[@"type"] = @"mouseMove";
     
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
@@ -1370,7 +1370,7 @@ int double_compare(const void *value1, const void *value2)
     return 0;
 }
 
-#define MOVING_AVERAGE_WIDTH 10
+#define MOVING_AVERAGE_WIDTH 9
 
 - (void)computeTotalStatistics
 {
@@ -1950,13 +1950,8 @@ int double_compare(const void *value1, const void *value2)
 
             // Adjust vertical graph ranges after a short delay.
             [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
-/*
-            if (!keepInfoLayerHidden && !fromSelectionGraph) {
-                [self updateTrackLinesAndInfoAnnotation: center];
-            }
- */
         } else {
-            if ([type isEqualToString: @"trackLineMove"]) {
+            if ([type isEqualToString: @"mouseMove"]) {
                 NSNumber* location = parameters[@"location"];
                 [self updateTrackLinesAndInfoAnnotation: location];
             } else {

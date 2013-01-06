@@ -35,6 +35,7 @@
 #import <tgmath.h>
 
 static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
+static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
 @interface PecuniaGraphHost : CPTGraphHostingView
 {
@@ -63,6 +64,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 {
     self = [super initWithFrame: frameRect];
     [self updateTrackingArea];
+
     return self;
 }
 
@@ -132,6 +134,14 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     [self sendMouseNotification: theEvent withParameters: parameters];
 }
 
+- (void)viewDidChangeBackingProperties
+{
+    [super viewDidChangeBackingProperties];
+
+    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    [center postNotificationName: PecuniaBackingStoreNotification object: nil userInfo: nil];
+}
+
 @end;
 
 //--------------------------------------------------------------------------------------------------
@@ -195,6 +205,10 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mouseHit:)
                                                  name: PecuniaHitNotification
+                                               object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(backingStoreChanged:)
+                                                 name: PecuniaBackingStoreNotification
                                                object: nil];
 }
 
@@ -324,8 +338,13 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     earningsMiniPlot.barWidthsAreInViewCoordinates = NO;
     earningsMiniPlot.alignsPointsToPixels = YES;
 
-    CPTImage* image = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: @"hatch 1" ofType: @"png"]];
-    image.scale = 4.3;
+    CPTImage* image = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: @"hatch-1" ofType: @"png"]];
+    CGFloat scaleFactor = 1;
+    NSScreen *screen = [NSScreen mainScreen];
+    if ([screen respondsToSelector: @selector(backingScaleFactor)]) {
+        scaleFactor = screen.backingScaleFactor;
+    }
+    image.scale = scaleFactor * 4.3;
     image.tiled = YES;
     earningsMiniPlot.fill = [CPTFill fillWithImage: image];
     
@@ -540,7 +559,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
                 return @((int)index);
             }
             if (fieldEnum == CPTBarPlotFieldBarTip) {
-                return sortedEarningValues[index];
+                return sortedEarningValues[index][@"value"];
             }
             break;
         case SPENDINGS_SMALL_PLOT_ID:
@@ -548,7 +567,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
                 return @((int)index);
             }
             if (fieldEnum == CPTBarPlotFieldBarTip) {
-                return sortedSpendingValues[index];
+                return sortedSpendingValues[index][@"value"];
             }
             break;
     }
@@ -594,32 +613,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 
 	return newLayer;
 }
-/*
--(CGFloat)radialOffsetForPieChart:(CPTPieChart *)pieChart recordIndex: (NSUInteger)index
-{
-    if (inMouseMoveHandling) {
-        return 0;
-    }
-                        
-    CGFloat result = 0.0;
-    
-    switch ([(NSNumber*)pieChart.identifier intValue])
-    {
-        case EARNINGS_PLOT_ID:
-            if ((NSInteger)index == earningsExplosionIndex) {
-                result = 10.0;
-            }
-            break;
-        case SPENDINGS_PLOT_ID:
-            if ((NSInteger)index == spendingsExplosionIndex) {
-                result = 10.0;
-            }
-            break;
-    }
-    
-    return result;
-}
-*/
+
 - (CPTFill*)sliceFillForPieChart: (CPTPieChart*)pieChart recordIndex: (NSUInteger)index
 {
     NSColor* color = nil;
@@ -630,14 +624,14 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
             if (index < [earningsCategories count]) {
                 color = earningsCategories[index][@"color"];
             } else {
-                color = [NSColor colorWithCalibratedWhite: 0.8 alpha: 1];
+                color = [NSColor colorWithCalibratedRed: 0.8 green: 0.8 blue: 0.8 alpha: 1];
             }
             break;
         case SPENDINGS_PLOT_ID:
             if (index < [spendingsCategories count]) {
                 color = spendingsCategories[index][@"color"];
             } else {
-                color = [NSColor colorWithCalibratedWhite: 0.8 alpha: 1];
+                color = [NSColor colorWithCalibratedRed: 0.8 green: 0.8 blue: 0.8 alpha: 1];
             }
             break;
     }
@@ -646,13 +640,16 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
         return (id)[NSNull null];
     }
 
-    CGColorRef highlightColor = CGColorCreateFromNSColor([color highlightWithLevel: 0.5]);
-    CGColorRef endColor = CGColorCreateFromNSColor(color);
-    CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: highlightColor]
-                                                        endingColor: [CPTColor colorWithCGColor: endColor]
+    NSColor *highlightColor = [color highlightWithLevel: 0.5];
+    CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: highlightColor.redComponent
+                                                                                               green: highlightColor.greenComponent
+                                                                                                blue: highlightColor.blueComponent
+                                                                                               alpha: highlightColor.alphaComponent]
+                                                        endingColor: [CPTColor colorWithComponentRed: color.redComponent
+                                                                                               green: color.greenComponent
+                                                                                                blue: color.blueComponent
+                                                                                               alpha: color.alphaComponent]
                              ];
-    CGColorRelease(highlightColor);
-    CGColorRelease(endColor);
 
     gradient.angle = -45.0;
     CPTFill* gradientFill = [CPTFill fillWithGradient: gradient];
@@ -660,8 +657,45 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     return gradientFill;
 }
 
-#pragma mark -
-#pragma mark Controller logic
+- (CPTFill *)barFillForBarPlot: (CPTBarPlot *)barPlot recordIndex: (NSUInteger)index
+{
+    NSColor* color = nil;
+
+    switch ([(NSNumber*)barPlot.identifier intValue])
+    {
+        case EARNINGS_SMALL_PLOT_ID:
+            index = [sortedEarningValues[index][@"index"] intValue];
+            if ((NSInteger)index == earningsExplosionIndex) {
+                color = earningsCategories[index][@"color"];
+            } else {
+                return nil;
+            }
+            break;
+        case SPENDINGS_SMALL_PLOT_ID:
+            index = [sortedSpendingValues[index][@"index"] intValue];
+            if ((NSInteger)index == spendingsExplosionIndex) {
+                color = spendingsCategories[index][@"color"];
+            } else {
+                return nil;
+            }
+            break;
+    }
+
+    NSColor *highlightColor = [color highlightWithLevel: 0.5];
+    CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: highlightColor.redComponent
+                                                                                               green: highlightColor.greenComponent
+                                                                                                blue: highlightColor.blueComponent
+                                                                                               alpha: 0.5]
+                                                        endingColor: [CPTColor colorWithComponentRed: color.redComponent
+                                                                                               green: color.greenComponent
+                                                                                                blue: color.blueComponent
+                                                                                               alpha: 0.5]
+                             ];
+
+    gradient.angle = -90.0;
+
+    return [CPTFill fillWithGradient: gradient];
+}
 
 - (void)pieChart: (CPTPieChart*)plot sliceWasSelectedAtRecordIndex: (NSUInteger)index
 {
@@ -674,152 +708,160 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     currentPlot.shadow = shadow;
 }
 
+#pragma mark -
+#pragma mark Controller logic
+
+#define SLICE_OFFSET 10
+
 /**
- * Handler method for notifications sent from the graph host windows if something in the graphs need
- * adjustment, mostly due to user input.
+ * Event handler specifically for mouse moves.
  */
-- (void)mouseHit: (NSNotification*)notification
+- (void)handleMouseMove: (NSDictionary *)parameters
 {
     BOOL needEarningsLabelAdjustment = NO;
     BOOL needSpendingsLabelAdjustment = NO;
 
-    if ([[notification name] isEqualToString: PecuniaHitNotification]) {
-        NSDictionary* parameters = [notification userInfo];
-        NSString* type = parameters[@"type"];
-        BOOL isMouseDown = [type isEqualToString: @"mouseDown"];
-        NSNumber* x = parameters[@"x"];
-        NSNumber* y = parameters[@"y"];
-        
-        CGRect bounds = earningsPlot.plotArea.bounds;
-        NSPoint earningsPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * earningsPlot.centerAnchor.x,
-                                                 bounds.origin.y + bounds.size.height * earningsPlot.centerAnchor.y);
-        
-        bounds = earningsPlot.plotArea.bounds;
-        NSPoint spendingsPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * spendingsPlot.centerAnchor.x,
-                                                  bounds.origin.y + bounds.size.height * spendingsPlot.centerAnchor.y);
-        
-        NSPoint center = currentPlot == spendingsPlot ? spendingsPlotCenter : earningsPlotCenter;
-        
-        if (isMouseDown) {
-            lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
-            lastAngle = atan2(lastMousePosition.y - center.y, lastMousePosition.x - center.x);
-        } else {
-            if ([type isEqualToString: @"mouseUp"]) {
-                if (currentPlot != nil) {
-                    CPTMutableShadow* shadow = [[CPTMutableShadow alloc] init];
-                    shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 0 blue: 0 alpha: 0.3];
-                    shadow.shadowBlurRadius = 5.0;
-                    shadow.shadowOffset = CGSizeMake(3, -3);
-                    currentPlot.shadow = shadow;
-                    
-                    currentPlot = nil;
-                }
-                
-                // Store current values.
-                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-                [userDefaults setFloat: earningsPlot.startAngle forKey: @"earningsRotation"];
-                [userDefaults setFloat: spendingsPlot.startAngle forKey: @"spendingsRotation"];
-                
-            } else {
-                if ([type isEqualToString: @"mouseDragged"]) {
-                    lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
-                    CGFloat newAngle = atan2(lastMousePosition.y - center.y, lastMousePosition.x - center.x);
-                    currentPlot.startAngle += newAngle - lastAngle;
-                    lastAngle = newAngle;
-                } else {
-                    if ([type isEqualToString: @"mouseMoved"]) {
-                        inMouseMoveHandling = YES;
-                        BOOL hideInfo = YES;
+    NSNumber* x = parameters[@"x"];
+    NSNumber* y = parameters[@"y"];
 
-                        lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
-                        CGFloat mouseDistance = sqrt(pow(lastMousePosition.x - earningsPlotCenter.x, 2) +
-                                                     pow(lastMousePosition.y - earningsPlotCenter.y, 2));
-                        CGFloat newAngle = atan2(lastMousePosition.y - earningsPlotCenter.y,
-                                                 lastMousePosition.x - earningsPlotCenter.x);
+    CGRect bounds = earningsPlot.plotArea.bounds;
+    NSPoint earningsPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * earningsPlot.centerAnchor.x,
+                                             bounds.origin.y + bounds.size.height * earningsPlot.centerAnchor.y);
+    NSRect earningsPlotFrame = NSMakeRect(earningsPlotCenter.x - earningsPlot.pieRadius - SLICE_OFFSET - 5,
+                                          earningsPlotCenter.y - earningsPlot.pieRadius - SLICE_OFFSET - 5,
+                                          2 * (earningsPlot.pieRadius + SLICE_OFFSET + 5), 2 * (earningsPlot.pieRadius + SLICE_OFFSET + 5));
 
-                        // The message dataIndexFromInteractionPoint returns a slice for a given position however
-                        // respects the radial offset of slices, leading so to quickly alternating values
-                        // when the mouse is an area which is covered by a not-offset slice but not when this slice
-                        // is radially offset. Hence we apply our own hit testing here.
-                        NSInteger slice = [earningsPlot pieSliceIndexAtAngle: newAngle];
-                        if (mouseDistance < earningsPlot.pieInnerRadius || mouseDistance > earningsPlot.pieRadius) {
-                            slice = NSNotFound;
-                        }
-                        
-                        BOOL needInfoUpdate = earningsExplosionIndex != slice;
-                        if (needInfoUpdate && earningsExplosionIndex != NSNotFound) {
-                            // Setting individual entries in the array doesn't trigger KVO, so
-                            // we replace the array (which is very small) every time a new slice is hit.
-                            NSMutableArray *content = earningsPlotRadialOffsets.content;
-                            content[earningsExplosionIndex] = @0;
-                            earningsPlotRadialOffsets.content = content;
-                            needEarningsLabelAdjustment = YES;
-                        }
-                        earningsExplosionIndex = slice;
+    bounds = earningsPlot.plotArea.bounds;
+    NSPoint spendingsPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * spendingsPlot.centerAnchor.x,
+                                              bounds.origin.y + bounds.size.height * spendingsPlot.centerAnchor.y);
+    NSRect spendingsPlotFrame = NSMakeRect(spendingsPlotCenter.x - spendingsPlot.pieRadius - SLICE_OFFSET,
+                                           spendingsPlotCenter.y - spendingsPlot.pieRadius - SLICE_OFFSET,
+                                           2 * (spendingsPlot.pieRadius + SLICE_OFFSET), 2 * (spendingsPlot.pieRadius + SLICE_OFFSET));
 
-                        // Explode the slice only if there are more than one entries.
-                        if (needInfoUpdate && slice != NSNotFound && [earningsCategories count] > 1) {
-                            NSMutableArray *content = earningsPlotRadialOffsets.content;
-                            content[earningsExplosionIndex] = @10;
-                            earningsPlotRadialOffsets.content = content;
-                            needEarningsLabelAdjustment = YES;
-                        }
-                        if (slice != NSNotFound) {
-                            // The found slice can be the dummy slice, so check again.
-                            if ([earningsCategories count] > 0) {
-                                [self showInfoFor: [earningsCategories[slice] valueForKey: @"name"]];
-                                hideInfo = NO;
-                            }
-                        } else {
-                            mouseDistance = sqrt(pow(lastMousePosition.x - spendingsPlotCenter.x, 2) +
-                                                 pow(lastMousePosition.y - spendingsPlotCenter.y, 2));
-                            newAngle = atan2(lastMousePosition.y - spendingsPlotCenter.y,
-                                             lastMousePosition.x - spendingsPlotCenter.x);
+    inMouseMoveHandling = YES;
+    BOOL needInfoUpdate =  NO;
+    BOOL hideInfo = YES;
 
-                            slice = [spendingsPlot pieSliceIndexAtAngle: newAngle];
-                            if (mouseDistance < spendingsPlot.pieInnerRadius || mouseDistance > spendingsPlot.pieRadius) {
-                                slice = NSNotFound;
-                            }
+    lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
 
-                            needInfoUpdate |= spendingsExplosionIndex != slice;
-                            if (needInfoUpdate && spendingsExplosionIndex != NSNotFound) {
-                                NSMutableArray *content = spendingsPlotRadialOffsets.content;
-                                content[spendingsExplosionIndex] = @0;
-                                spendingsPlotRadialOffsets.content = content;
-                                needSpendingsLabelAdjustment = YES;
-                            }
-                            spendingsExplosionIndex = slice;
+    // Hovering over the mini plots has the same effect as for the pie charts.
+    NSInteger slice = [earningsMiniPlot dataIndexFromInteractionPoint: lastMousePosition];
+    if (slice != NSNotFound) {
+        slice = [sortedEarningValues[slice][@"index"] intValue]; // Translate sorted index into category index.
+    }
 
-                            if (needInfoUpdate && slice != NSNotFound && [spendingsCategories count] > 1) {
-                                NSMutableArray *content = spendingsPlotRadialOffsets.content;
-                                content[spendingsExplosionIndex] = @10;
-                                spendingsPlotRadialOffsets.content = content;
-                                needSpendingsLabelAdjustment = YES;
-                            }
-                            if (slice != NSNotFound) {
-                                if ([spendingsCategories count] > 0) {
-                                    [self showInfoFor: [spendingsCategories[slice] valueForKey: @"name"]];
-                                    hideInfo = NO;
-                                }
-                            }
-                        }
-                        inMouseMoveHandling = NO;
-                        
-                        if (needInfoUpdate) {
-                            if (hideInfo) {
-                                NSPoint parkPosition = infoLayer.position;
-                                parkPosition.y = pieChartGraph.bounds.size.height - 2 * infoLayer.bounds.size.height;
-                                [infoLayer slideTo: parkPosition inTime: 0.5];
-                                [infoLayer fadeOut];
-                            } else {
-                                [infoLayer fadeIn]; // Does nothing if the layer is already visible.
-                                [self updateInfoLayerPosition];
-                            }
-                        }
-                    }
-                }
+    if ((slice != NSNotFound) || NSPointInRect(lastMousePosition, earningsPlotFrame)) {
+        if (slice == NSNotFound) {
+            CGFloat mouseDistance = sqrt(pow(lastMousePosition.x - earningsPlotCenter.x, 2) +
+                                         pow(lastMousePosition.y - earningsPlotCenter.y, 2));
+            CGFloat newAngle = atan2(lastMousePosition.y - earningsPlotCenter.y,
+                                     lastMousePosition.x - earningsPlotCenter.x);
 
+            // The message dataIndexFromInteractionPoint returns a slice for a given position however
+            // respects the radial offset of slices, leading so to quickly alternating values
+            // when the mouse is an area which is covered by a not-offset slice but not when this slice
+            // is radially offset. Hence we apply our own hit testing here.
+            slice = [earningsPlot pieSliceIndexAtAngle: newAngle];
+            if (mouseDistance < earningsPlot.pieInnerRadius || mouseDistance > earningsPlot.pieRadius) {
+                slice = NSNotFound;
             }
+        }
+
+        needInfoUpdate = earningsExplosionIndex != slice;
+
+        // Explode the slice only if there are more than one entries.
+        if (needInfoUpdate && slice != NSNotFound) {
+            if ([earningsCategories count] > 0) {
+                [self showInfoFor: [earningsCategories[slice] valueForKey: @"name"]];
+                hideInfo = NO;
+
+                if (earningsCategories.count > 1) {
+                    NSMutableArray *content = earningsPlotRadialOffsets.content;
+                    content[slice] = @SLICE_OFFSET;
+                    earningsPlotRadialOffsets.content = content;
+                    needEarningsLabelAdjustment = YES;
+                }
+            }
+        }
+    }
+
+    // Move last offset slice back if we left the chart or hit nothing.
+    if (earningsExplosionIndex != slice && earningsExplosionIndex != NSNotFound) {
+        needInfoUpdate = YES;
+
+        // Setting individual entries in the array doesn't trigger KVO, so
+        // we replace the array (which is very small) every time a new slice is hit.
+        NSMutableArray *content = earningsPlotRadialOffsets.content;
+        content[earningsExplosionIndex] = @0;
+        earningsPlotRadialOffsets.content = content;
+        needEarningsLabelAdjustment = YES;
+    }
+    if (earningsExplosionIndex != slice) {
+        earningsExplosionIndex = slice;
+        [earningsMiniPlot reloadData];
+    }
+
+    slice = [spendingsMiniPlot dataIndexFromInteractionPoint: lastMousePosition];
+    if (slice != NSNotFound) {
+        slice = [sortedSpendingValues[slice][@"index"] intValue];
+    }
+
+    if ((slice != NSNotFound) || NSPointInRect(lastMousePosition, spendingsPlotFrame)) {
+        if (slice == NSNotFound) {
+            CGFloat mouseDistance = sqrt(pow(lastMousePosition.x - spendingsPlotCenter.x, 2) +
+                                         pow(lastMousePosition.y - spendingsPlotCenter.y, 2));
+            CGFloat newAngle = atan2(lastMousePosition.y - spendingsPlotCenter.y,
+                                     lastMousePosition.x - spendingsPlotCenter.x);
+
+            slice = [spendingsPlot pieSliceIndexAtAngle: newAngle];
+            if (mouseDistance < spendingsPlot.pieInnerRadius || mouseDistance > spendingsPlot.pieRadius) {
+                slice = NSNotFound;
+            }
+        }
+
+        needInfoUpdate |= spendingsExplosionIndex != slice;
+        if (needInfoUpdate && slice != NSNotFound) {
+
+            if ([spendingsCategories count] > 1) {
+                NSMutableArray *content = spendingsPlotRadialOffsets.content;
+                content[slice] = @SLICE_OFFSET;
+                spendingsPlotRadialOffsets.content = content;
+                needSpendingsLabelAdjustment = YES;
+            }
+        }
+        if (slice != NSNotFound) {
+            if ([spendingsCategories count] > 0) {
+                [self showInfoFor: spendingsCategories[slice][@"name"]];
+                hideInfo = NO;
+            }
+        }
+    }
+
+    if (spendingsExplosionIndex != slice && spendingsExplosionIndex != NSNotFound) {
+        needInfoUpdate = YES;
+        NSMutableArray *content = spendingsPlotRadialOffsets.content;
+        content[spendingsExplosionIndex] = @0;
+        spendingsPlotRadialOffsets.content = content;
+        needSpendingsLabelAdjustment = YES;
+    }
+    
+    if (spendingsExplosionIndex != slice) {
+        spendingsExplosionIndex = slice;
+        [spendingsMiniPlot reloadData];
+    }
+
+
+    inMouseMoveHandling = NO;
+
+    if (needInfoUpdate) {
+        if (hideInfo) {
+            NSPoint parkPosition = infoLayer.position;
+            parkPosition.y = pieChartGraph.bounds.size.height - 2 * infoLayer.bounds.size.height;
+            [infoLayer slideTo: parkPosition inTime: 0.5];
+            [infoLayer fadeOut];
+        } else {
+            [infoLayer fadeIn]; // Does nothing if the layer is already visible.
+            [self updateInfoLayerPosition];
         }
     }
 
@@ -835,10 +877,91 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     }
 }
 
+/**
+ * Handler method for notifications sent from the graph host windows if something in the graphs need
+ * adjustment, mostly due to user input.
+ */
+- (void)mouseHit: (NSNotification*)notification
+{
+    if ([[notification name] isEqualToString: PecuniaHitNotification]) {
+        NSDictionary* parameters = [notification userInfo];
+        NSString* type = parameters[@"type"];
+
+        if ([type isEqualToString: @"mouseMoved"]) {
+            [self handleMouseMove: parameters];
+
+            return;
+        }
+
+        NSNumber* x = parameters[@"x"];
+        NSNumber* y = parameters[@"y"];
+
+        CGRect bounds = earningsPlot.plotArea.bounds;
+        NSPoint earningsPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * earningsPlot.centerAnchor.x,
+                                                 bounds.origin.y + bounds.size.height * earningsPlot.centerAnchor.y);
+
+        bounds = earningsPlot.plotArea.bounds;
+        NSPoint spendingsPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * spendingsPlot.centerAnchor.x,
+                                                  bounds.origin.y + bounds.size.height * spendingsPlot.centerAnchor.y);
+        
+        NSPoint center = currentPlot == spendingsPlot ? spendingsPlotCenter : earningsPlotCenter;
+
+        if ([type isEqualToString: @"mouseDown"]) {
+            lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
+            lastAngle = atan2(lastMousePosition.y - center.y, lastMousePosition.x - center.x);
+
+            return;
+        }
+
+        if ([type isEqualToString: @"mouseUp"]) {
+            if (currentPlot != nil) {
+                CPTMutableShadow* shadow = [[CPTMutableShadow alloc] init];
+                shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 0 blue: 0 alpha: 0.3];
+                shadow.shadowBlurRadius = 5.0;
+                shadow.shadowOffset = CGSizeMake(3, -3);
+                currentPlot.shadow = shadow;
+
+                currentPlot = nil;
+            }
+
+            // Store current angle values.
+            NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setFloat: earningsPlot.startAngle forKey: @"earningsRotation"];
+            [userDefaults setFloat: spendingsPlot.startAngle forKey: @"spendingsRotation"];
+
+            return;
+        }
+
+        if ([type isEqualToString: @"mouseDragged"]) {
+            lastMousePosition = NSMakePoint([x floatValue], [y floatValue]);
+            CGFloat newAngle = atan2(lastMousePosition.y - center.y, lastMousePosition.x - center.x);
+            currentPlot.startAngle += newAngle - lastAngle;
+            lastAngle = newAngle;
+        }
+    }
+}
+
+/**
+ * Triggered when the backing store or color scheme changed. Reload resolution dependent stuff.
+ */
+- (void)backingStoreChanged: (NSNotification*)notification
+{
+    CPTImage* image = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: @"hatch-1" ofType: @"png"]];
+    CGFloat scaleFactor = 1;
+    NSScreen *screen = [NSScreen mainScreen];
+    if ([screen respondsToSelector: @selector(backingScaleFactor)]) {
+        scaleFactor = screen.backingScaleFactor;
+    }
+    image.scale = scaleFactor * 4.3;
+    image.tiled = YES;
+    earningsMiniPlot.fill = [CPTFill fillWithImage: image];
+    spendingsMiniPlot.fill = [CPTFill fillWithImage: image];
+}
+
 - (void)updateValues
 {
     [self hideHelp];
-    
+
     [spendingsCategories removeAllObjects];
     [earningsCategories removeAllObjects];
     [sortedSpendingValues removeAllObjects];
@@ -854,16 +977,14 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     NSMutableSet* childs = [currentCategory mutableSetValueForKey: @"children"];
     NSDecimalNumber* totalEarnings = [NSDecimalNumber zero];
     NSDecimalNumber* totalSpendings = [NSDecimalNumber zero];
-    
+
     if ([childs count] > 0) {
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         BOOL balance = [userDefaults boolForKey: @"balanceCategories"];
-        
-        NSEnumerator* enumerator = [childs objectEnumerator];
-        NSDecimalNumber* zero = [NSDecimalNumber zero];
-        Category* childCategory;
 
-        while ((childCategory = [enumerator nextObject])) {
+        NSDecimalNumber* zero = [NSDecimalNumber zero];
+
+        for (Category *childCategory in childs) {
             NSDecimalNumber* spendings = [childCategory valuesOfType: cat_spendings from: fromDate to: toDate];
             NSDecimalNumber* earnings = [childCategory valuesOfType: cat_earnings from: fromDate to: toDate];
             
@@ -871,7 +992,7 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
                 NSDecimalNumber* value = [earnings decimalNumberByAdding: spendings];
 
                 NSMutableDictionary* pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
-                pieData[@"name"] = [childCategory localName ];
+                pieData[@"name"] = [childCategory localName];
                 pieData[@"value"] = value;
                 pieData[@"currency"] = currentCategory.currency;
                 pieData[@"color"] = childCategory.categoryColor;
@@ -880,15 +1001,17 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
                 {
                     case NSOrderedAscending:
                         [spendingsCategories addObject: pieData];
-                        [sortedSpendingValues addObject: [value abs]];
+                        [sortedSpendingValues addObject: @{@"index": [NSNumber numberWithInt: spendingsCategories.count - 1],
+                                                           @"value": [value abs]}];
 
                         totalSpendings = [totalSpendings decimalNumberByAdding: value];
                         break;
-                    case NSOrderedSame: break; // don't list categories with value 0
+                    case NSOrderedSame: break; // Don't list categories with value 0.
                     case NSOrderedDescending:
                         [earningsCategories addObject: pieData];
-                        [sortedEarningValues addObject: [value abs]];
-                        
+                        [sortedEarningValues addObject: @{@"index": [NSNumber numberWithInt: earningsCategories.count - 1],
+                                                          @"value": [value abs]}];
+
                         totalEarnings = [totalEarnings decimalNumberByAdding: value];
                         break;
                 }
@@ -897,38 +1020,41 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
                 totalEarnings = [totalEarnings decimalNumberByAdding: earnings];
                 if ([spendings compare: zero] != NSOrderedSame) {
                     NSMutableDictionary* pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
-                    pieData[@"name"] = [childCategory localName ];
+                    pieData[@"name"] = [childCategory localName];
                     pieData[@"value"] = spendings;
                     pieData[@"currency"] = currentCategory.currency;
                     pieData[@"color"] = childCategory.categoryColor;
                     
                     [spendingsCategories addObject: pieData];
-                    [sortedSpendingValues addObject: [spendings abs]];
+                    [sortedSpendingValues addObject: @{@"index": [NSNumber numberWithInt: spendingsCategories.count - 1],
+                                                       @"value": [spendings abs]}];
+
                 }
-                
+
                 if ([earnings compare: zero] != NSOrderedSame) {
                     NSMutableDictionary* pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
-                    pieData[@"name"] = [childCategory localName ];
+                    pieData[@"name"] = [childCategory localName];
                     pieData[@"value"] = earnings;
                     pieData[@"currency"] = currentCategory.currency;
                     pieData[@"color"] = childCategory.categoryColor;
                     
                     [earningsCategories addObject: pieData];
-                    [sortedEarningValues addObject: [earnings abs]];
+                    [sortedEarningValues addObject: @{@"index": [NSNumber numberWithInt: earningsCategories.count - 1],
+                                                      @"value": [earnings abs]}];
                 }
             }
         }
         
         // The sorted arrays contain values for the mini plots.
-        NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"floatValue" ascending: NO];
+        NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO];
         [sortedEarningValues sortUsingDescriptors: @[sortDescriptor]];
         [sortedSpendingValues sortUsingDescriptors: @[sortDescriptor]];
     }
 
-    for (NSUInteger i = 0; i < earningsCategories.count; i ++) {
+    for (NSUInteger i = 0; i < earningsCategories.count; i++) {
         [earningsPlotRadialOffsets addObject: @0];
     }
-    for (NSUInteger i = 0; i < spendingsCategories.count; i ++) {
+    for (NSUInteger i = 0; i < spendingsCategories.count; i++) {
         [spendingsPlotRadialOffsets addObject: @0];
     }
 
@@ -940,8 +1066,8 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
 {
     // Adjust miniplot ranges depending on the sorted values.
     float tipValue = 1;
-    if ([sortedEarningValues count] > 0) {
-        tipValue = [sortedEarningValues[0] floatValue];
+    if (sortedEarningValues.count > 0) {
+        tipValue = [sortedEarningValues[0][@"value"] floatValue];
     }
     CPTXYPlotSpace* barPlotSpace = (CPTXYPlotSpace*)earningsMiniPlot.plotSpace;
     
@@ -953,8 +1079,8 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     barPlotSpace.yRange = plotRange;
 
     tipValue = 1;
-    if ([sortedSpendingValues count] > 0) {
-        tipValue = [sortedSpendingValues[0] floatValue];
+    if (sortedSpendingValues.count > 0) {
+        tipValue = [sortedSpendingValues[0][@"value"] floatValue];
     }
     barPlotSpace = (CPTXYPlotSpace*)spendingsMiniPlot.plotSpace;
     
@@ -1005,8 +1131,8 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
     float range;
 
     // Earnings plot axes.
-    if ([sortedEarningValues count] > 0) {
-        range = [sortedEarningValues[0] floatValue];
+    if (sortedEarningValues.count > 0) {
+        range = [sortedEarningValues[0][@"value"] floatValue];
     } else {
         CPTXYPlotSpace* barPlotSpace = (CPTXYPlotSpace*)earningsMiniPlot.plotSpace;
         range = barPlotSpace.yRange.lengthDouble / 5;
@@ -1025,8 +1151,8 @@ static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
                                                       length: CPTDecimalFromFloat(1.27 * range)];
     
     // Spendings plot axes.
-    if ([sortedSpendingValues count] > 0) {
-        range = [sortedSpendingValues[0] floatValue];
+    if (sortedSpendingValues.count > 0) {
+        range = [sortedSpendingValues[0][@"value"] floatValue];
     } else {
         CPTXYPlotSpace* barPlotSpace = (CPTXYPlotSpace*)spendingsMiniPlot.plotSpace;
         range = barPlotSpace.yRange.lengthDouble / 5;

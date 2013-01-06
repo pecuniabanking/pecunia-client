@@ -72,7 +72,7 @@
 		2780E50D151B229700CB86CE /* category-reporting-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC74A814A102800082495C /* category-reporting-help.rtf */; };
 		2780E50E151B229700CB86CE /* category-analysis-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC73D314A0C0680082495C /* category-analysis-help.rtf */; };
 		2788C8BA1455C3CE00225939 /* ValueTransformers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788C8B91455C3CE00225939 /* ValueTransformers.m */; };
-		2790545014A37F59001380A3 /* hatch 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2790544F14A37F59001380A3 /* hatch 1.png */; };
+		2790545014A37F59001380A3 /* hatch-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2790544F14A37F59001380A3 /* hatch-1.png */; };
 		2792CB3414840506006A510A /* AnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2792CB3314840506006A510A /* AnimationHelper.m */; };
 		27955AFF140C0603008369C9 /* GraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27955AFE140C0603008369C9 /* GraphicsAdditions.m */; };
 		279A785D1539D8EB00443854 /* TransfersListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 279A785C1539D8EB00443854 /* TransfersListView.m */; };
@@ -438,7 +438,7 @@
 		277C84921657F6DB0090D46D /* GenerateDataController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GenerateDataController.xib; sourceTree = "<group>"; };
 		2788C8B81455C3CE00225939 /* ValueTransformers.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ValueTransformers.h; sourceTree = "<group>"; tabWidth = 4; };
 		2788C8B91455C3CE00225939 /* ValueTransformers.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ValueTransformers.m; sourceTree = "<group>"; tabWidth = 4; };
-		2790544F14A37F59001380A3 /* hatch 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hatch 1.png"; sourceTree = "<group>"; };
+		2790544F14A37F59001380A3 /* hatch-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hatch-1.png"; sourceTree = "<group>"; };
 		2792CB3214840506006A510A /* AnimationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AnimationHelper.h; sourceTree = "<group>"; tabWidth = 4; };
 		2792CB3314840506006A510A /* AnimationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationHelper.m; sourceTree = "<group>"; tabWidth = 4; };
 		27955AFD140C0603008369C9 /* GraphicsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsAdditions.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1383,6 +1383,7 @@
 				27F30886143E282700A10FCE /* new.png */,
 				270DC2E41680D3000053D530 /* new@2x.png */,
 				27D57641166277CB00761132 /* show@2x.png */,
+				2790544F14A37F59001380A3 /* hatch-1.png */,
 				27D5763C16626C5300761132 /* hide.png */,
 				27D5763D16626C5300761132 /* hide@2x.png */,
 				2719CD83160F5B45004B37C0 /* donate2.jpg */,
@@ -1428,7 +1429,6 @@
 				272BF53E14B770A100628805 /* Tresor.png */,
 				27EB308314B22CB000ABE3A6 /* Bank large.png */,
 				27D3168F14A8C81B002F500D /* blue arrow.png */,
-				2790544F14A37F59001380A3 /* hatch 1.png */,
 				27E1693A149F6E5C00089103 /* help-button.png */,
 				2708DA041493DB3300758A6B /* rules.png */,
 				2700B91B148BC58700E18BBE /* computing.png */,
@@ -1812,7 +1812,7 @@
 				27E1693B149F6E5C00089103 /* help-button.png in Resources */,
 				27E1699A149F90D900089103 /* About.xib in Resources */,
 				27E169D8149FA01600089103 /* Credits.rtf in Resources */,
-				2790545014A37F59001380A3 /* hatch 1.png in Resources */,
+				2790545014A37F59001380A3 /* hatch-1.png in Resources */,
 				27D3169014A8C81B002F500D /* blue arrow.png in Resources */,
 				27EB308414B22CB000ABE3A6 /* Bank large.png in Resources */,
 				272BF53F14B770A100628805 /* Tresor.png in Resources */,
@@ -2242,6 +2242,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_VERSION = "";
@@ -2257,6 +2258,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2270,6 +2272,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
