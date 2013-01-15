@@ -1127,10 +1127,19 @@ BOOL runningOnLionOrLater = NO;
             break;
         }
         case 2: {
+            [currentSection deactivate];
             [transfersController deactivate];
             [self activateStandingOrdersTab];
             toolbarButtons.selectedSegment = 2;
             
+            break;
+        }
+        case 3: {
+            [currentSection deactivate];
+            [transfersController deactivate];
+            [self activateDebitsTab];
+            toolbarButtons.selectedSegment = 3;
+
             break;
         }
     }

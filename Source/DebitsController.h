@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,28 +20,27 @@
 #import <Cocoa/Cocoa.h>
 
 #import "Transfer.h"
-#import "TransfersListview.h"
-#import "TransferTemplatesListview.h"
+#import "DebitsListview.h"
 #import "PecuniaTabItem.h"
 
-@class TransactionController;
-@class TransfersController;
-@class TransferFormularView;
-
-@class TransferCalendarWindow;
-@class DragImageView;
-@class DeleteTransferTargetView;
+@class DebitCalendarWindow;
+@class DebitDragImageView;
+@class DeleteDebitTargetView;
 @class BankAccount;
 @class TransactionLimits;
 
-@interface TransferTemplateDragDestination : NSView
+@class TransactionController;
+@class DebitsController;
+@class DebitFormularView;
+
+@interface DebitTemplateDragDestination : NSView
 {
 @private
     BOOL formularVisible;
     NSString *currentDragDataType;
 }
 
-@property (nonatomic, unsafe_unretained) TransfersController *controller;
+@property (nonatomic, unsafe_unretained) DebitsController *controller;
 
 - (NSRect)dropTargetFrame;
 - (void)hideFormular;
@@ -49,20 +48,18 @@
 
 @end
 
-@interface TransfersController : NSObject <PecuniaTabItem, NSWindowDelegate, NSTextFieldDelegate, TransfersActionDelegate>
+@interface DebitsController : NSObject <PecuniaTabItem, NSWindowDelegate, NSTextFieldDelegate, DebitsActionDelegate>
 {
     IBOutlet NSView                 *mainView;
-	IBOutlet NSArrayController      *finishedTransfers;
-	IBOutlet NSArrayController      *pendingTransfers;
+	IBOutlet NSArrayController      *finishedDebits;
+	IBOutlet NSArrayController      *pendingDebits;
 	IBOutlet TransactionController  *transactionController;
-    IBOutlet TransfersListView      *finishedTransfersListView;
-    IBOutlet TransfersListView      *pendingTransfersListView;
-    IBOutlet TransferTemplatesListView          *transferTemplateListView;
-    IBOutlet TransferTemplateDragDestination    *rightPane;
+    IBOutlet DebitsListView         *finishedDebitsListView;
+    IBOutlet DebitsListView         *pendingDebitsListView;
+    IBOutlet DebitTemplateDragDestination *rightPane;
 
     IBOutlet NSTextField    *titleText;
     IBOutlet NSTextField    *receiverText;
-    IBOutlet NSPopUpButton  *sourceAccountSelector;
     IBOutlet NSPopUpButton  *targetAccountSelector;
     IBOutlet NSComboBox     *receiverComboBox;
     IBOutlet NSTextField    *amountCurrencyText;
@@ -95,49 +92,40 @@
     
     IBOutlet NSButton       *queueItButton;
     IBOutlet NSButton       *doItButton;
-    IBOutlet NSButton       *sendTransfersButton;
-    IBOutlet NSTextField    *templateName;
+    IBOutlet NSButton       *sendDebitsButton;
+
+    IBOutlet DebitDragImageView  *debitImage;
+    IBOutlet DeleteDebitTargetView *debitDeleteImage;
     
-    IBOutlet DragImageView  *transferInternalImage;
-    IBOutlet DragImageView  *transferNormalImage;
-    IBOutlet DragImageView  *transferEUImage;
-    IBOutlet DragImageView  *transferSEPAImage;
-    IBOutlet DeleteTransferTargetView *transferDeleteImage;
-    
-    IBOutlet NSPanel        *templateNameSheet;
-    IBOutlet NSTabView      *transferTab;
+    IBOutlet NSTabView      *debitTab;
     
 @private
-	NSNumberFormatter      *formatter;
-    TransferCalendarWindow *calendarWindow;
-    TransactionLimits      *limits;
-    NSArray                *draggedTransfers;
+	NSNumberFormatter   *formatter;
+    DebitCalendarWindow *calendarWindow;
+    TransactionLimits   *limits;
+    NSArray             *draggedDebits;
 }
 
-@property (unsafe_unretained) IBOutlet TransferFormularView *transferFormular;
+@property (unsafe_unretained) IBOutlet DebitFormularView *debitFormular;
 @property (unsafe_unretained) IBOutlet NSTextField *dragToHereLabel;
 @property (nonatomic, assign) BOOL dropToEditRejected;
 
-- (IBAction)sendTransfers: (id)sender;
+- (IBAction)sendDebits: (id)sender;
 - (IBAction)showCalendar: (id)sender;
-- (IBAction)sourceAccountChanged: (id)sender;
 - (IBAction)targetAccountChanged: (id)sender;
 - (IBAction)calendarChanged: (id)sender;
-- (IBAction)queueTransfer: (id)sender;
-- (IBAction)sendTransfer: (id)sender;
-- (IBAction)saveTemplate: (id)sender;
-- (IBAction)cancelCreateTemplate: (id)sender;
+- (IBAction)queueDebit: (id)sender;
+- (IBAction)sendDebit: (id)sender;
 
 - (void)hideCalendarWindow;
 
-- (void)draggingStartsFor: (TransfersListView *)sender;
-- (BOOL)prepareTransferOfType: (TransferType)type;
+- (void)draggingStartsFor: (DebitsListView *)sender;
+- (BOOL)prepareDebitOfType: (TransferType)type;
 - (BOOL)prepareEditingFromDragging: (id<NSDraggingInfo>)info;
 - (BOOL)startEditingFromDragging: (id<NSDraggingInfo>)info;
 - (BOOL)concludeDropDeleteOperation: (id<NSDraggingInfo>)info;
 - (void)cancelEditing;
 - (BOOL)editingInProgress;
-- (void)startDonationTransfer;
-- (BOOL)startTransferOfType: (TransferType)type withAccount:(BankAccount*)account;
+- (BOOL)startDebitOfType: (TransferType)type withAccount:(BankAccount*)account;
 
 @end

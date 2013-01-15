@@ -80,11 +80,18 @@
 		279A78621539DD5400443854 /* TransfersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 279A78611539DD5400443854 /* TransfersListViewCell.xib */; };
 		279BF27D15726BF0006C1B9A /* green-slanted-stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 279BF27C15726BF0006C1B9A /* green-slanted-stripes.png */; };
 		279BF27F15729175006C1B9A /* calendar.png in Resources */ = {isa = PBXBuildFile; fileRef = 279BF27E15729175006C1B9A /* calendar.png */; };
+		27A3DA1816A1C71D00FD7335 /* Debits.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A3DA1716A1C71D00FD7335 /* Debits.xib */; };
+		27A3DA1B16A1C91500FD7335 /* DebitsListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A3DA1A16A1C91500FD7335 /* DebitsListViewCell.xib */; };
+		27A3DA2316A1C99C00FD7335 /* DebitsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A3DA1E16A1C99C00FD7335 /* DebitsController.m */; };
+		27A3DA2416A1C99C00FD7335 /* DebitsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A3DA2016A1C99C00FD7335 /* DebitsListView.m */; };
+		27A3DA2516A1C99C00FD7335 /* DebitsListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A3DA2216A1C99C00FD7335 /* DebitsListViewCell.m */; };
+		27A3DA2816A1CB8000FD7335 /* DebitFormularView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A3DA2716A1CB8000FD7335 /* DebitFormularView.m */; };
 		27A41A4F15F3C7750043BB68 /* OrdersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A41A4E15F3C7750043BB68 /* OrdersListViewCell.xib */; };
 		27A41A5415F3C9340043BB68 /* OrdersListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A41A5115F3C9340043BB68 /* OrdersListView.m */; };
 		27A41A5515F3C9340043BB68 /* OrdersListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A41A5315F3C9340043BB68 /* OrdersListViewCell.m */; };
 		27A659C51604D8C500C737E8 /* send16.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A659C21604D8C500C737E8 /* send16.png */; };
 		27A659CB1604D8D200C737E8 /* delete16.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A659C81604D8D200C737E8 /* delete16.png */; };
+		27B1DF9816A2E0A2007A1112 /* blue-slanted-stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B1DF9716A2E0A2007A1112 /* blue-slanted-stripes.png */; };
 		27B56887159743B10064A28B /* basket.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B56886159743B10064A28B /* basket.png */; };
 		27B9868515769132008907F3 /* GradientButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B9868415769132008907F3 /* GradientButtonCell.m */; };
 		27BB1A1A14D4739900A2C8A7 /* CategoryDefinition.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */; };
@@ -450,6 +457,16 @@
 		279A78611539DD5400443854 /* TransfersListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransfersListViewCell.xib; sourceTree = "<group>"; };
 		279BF27C15726BF0006C1B9A /* green-slanted-stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-slanted-stripes.png"; sourceTree = "<group>"; };
 		279BF27E15729175006C1B9A /* calendar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calendar.png; sourceTree = "<group>"; };
+		27A3DA1716A1C71D00FD7335 /* Debits.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Debits.xib; sourceTree = "<group>"; };
+		27A3DA1A16A1C91500FD7335 /* DebitsListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DebitsListViewCell.xib; sourceTree = "<group>"; };
+		27A3DA1D16A1C99C00FD7335 /* DebitsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebitsController.h; sourceTree = "<group>"; };
+		27A3DA1E16A1C99C00FD7335 /* DebitsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebitsController.m; sourceTree = "<group>"; wrapsLines = 0; };
+		27A3DA1F16A1C99C00FD7335 /* DebitsListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebitsListView.h; sourceTree = "<group>"; };
+		27A3DA2016A1C99C00FD7335 /* DebitsListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebitsListView.m; sourceTree = "<group>"; wrapsLines = 0; };
+		27A3DA2116A1C99C00FD7335 /* DebitsListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebitsListViewCell.h; sourceTree = "<group>"; };
+		27A3DA2216A1C99C00FD7335 /* DebitsListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebitsListViewCell.m; sourceTree = "<group>"; };
+		27A3DA2616A1CB8000FD7335 /* DebitFormularView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebitFormularView.h; sourceTree = "<group>"; };
+		27A3DA2716A1CB8000FD7335 /* DebitFormularView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebitFormularView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27A41A4E15F3C7750043BB68 /* OrdersListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrdersListViewCell.xib; sourceTree = "<group>"; };
 		27A41A5015F3C9340043BB68 /* OrdersListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdersListView.h; sourceTree = "<group>"; };
 		27A41A5115F3C9340043BB68 /* OrdersListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdersListView.m; sourceTree = "<group>"; };
@@ -458,6 +475,7 @@
 		27A659C21604D8C500C737E8 /* send16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send16.png; sourceTree = "<group>"; };
 		27A659C81604D8D200C737E8 /* delete16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete16.png; sourceTree = "<group>"; };
 		27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Pecunia.entitlements; path = ../Pecunia.entitlements; sourceTree = "<group>"; };
+		27B1DF9716A2E0A2007A1112 /* blue-slanted-stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue-slanted-stripes.png"; sourceTree = "<group>"; };
 		27B56886159743B10064A28B /* basket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = basket.png; sourceTree = "<group>"; };
 		27B9868315769132008907F3 /* GradientButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientButtonCell.h; sourceTree = "<group>"; };
 		27B9868415769132008907F3 /* GradientButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientButtonCell.m; sourceTree = "<group>"; };
@@ -940,6 +958,21 @@
 			name = Animation;
 			sourceTree = "<group>";
 		};
+		27A3DA1C16A1C96A00FD7335 /* Debits */ = {
+			isa = PBXGroup;
+			children = (
+				27A3DA2616A1CB8000FD7335 /* DebitFormularView.h */,
+				27A3DA2716A1CB8000FD7335 /* DebitFormularView.m */,
+				27A3DA1D16A1C99C00FD7335 /* DebitsController.h */,
+				27A3DA1E16A1C99C00FD7335 /* DebitsController.m */,
+				27A3DA1F16A1C99C00FD7335 /* DebitsListView.h */,
+				27A3DA2016A1C99C00FD7335 /* DebitsListView.m */,
+				27A3DA2116A1C99C00FD7335 /* DebitsListViewCell.h */,
+				27A3DA2216A1C99C00FD7335 /* DebitsListViewCell.m */,
+			);
+			name = Debits;
+			sourceTree = "<group>";
+		};
 		27C7B501147FC41900278131 /* Drawing + Colors */ = {
 			isa = PBXGroup;
 			children = (
@@ -1123,6 +1156,8 @@
 				B14587A11289DCB700848683 /* CategoryPeriods.xib */,
 				B1AFA836129479BA00B115A7 /* CategoryReporting.xib */,
 				B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */,
+				27A3DA1716A1C71D00FD7335 /* Debits.xib */,
+				27A3DA1A16A1C91500FD7335 /* DebitsListViewCell.xib */,
 				B1D45004147843D0008DD256 /* Donation.xib */,
 				2703DE26146EE6AB0083CBA2 /* ExportPopup.xib */,
 				277C84921657F6DB0090D46D /* GenerateDataController.xib */,
@@ -1142,12 +1177,12 @@
 				B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */,
 				275C07DA1438776000D97415 /* StatementsListViewCell.xib */,
 				B1A59497113182DA00FD8CB8 /* StatSplitController.xib */,
-				279A78611539DD5400443854 /* TransfersListViewCell.xib */,
-				27E662B015A09B24002F9277 /* TransferTemplateListViewCell.xib */,
 				B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */,
 				B1D44FE7147841DA008DD256 /* TanMethods.xib */,
 				27FA4A1D154D5F16002A5ED0 /* Transfers.xib */,
+				279A78611539DD5400443854 /* TransfersListViewCell.xib */,
 				B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */,
+				27E662B015A09B24002F9277 /* TransferTemplateListViewCell.xib */,
 			);
 			path = Designer;
 			sourceTree = "<group>";
@@ -1373,6 +1408,7 @@
 			isa = PBXGroup;
 			children = (
 				27649721167D2A73006770A9 /* Collections */,
+				27B1DF9716A2E0A2007A1112 /* blue-slanted-stripes.png */,
 				27E2353B168A228D0050276E /* csv.png */,
 				27E2353C168A228D0050276E /* csv@2x.png */,
 				27E2353D168A228D0050276E /* pdf.png */,
@@ -1590,6 +1626,7 @@
 			children = (
 				B1C7B193130B12870091CD72 /* Accounts */,
 				27DFFD9316739C9900848CD2 /* Categories */,
+				27A3DA1C16A1C96A00FD7335 /* Debits */,
 				B1C7B194130B12F80091CD72 /* ImExport */,
 				B1C7B189130B10BF0091CD72 /* MainWindow */,
 				B1C7B196130B13730091CD72 /* Password */,
@@ -1885,6 +1922,9 @@
 				27E23540168A228D0050276E /* csv@2x.png in Resources */,
 				27E23541168A228D0050276E /* pdf.png in Resources */,
 				27E23542168A228D0050276E /* pdf@2x.png in Resources */,
+				27A3DA1816A1C71D00FD7335 /* Debits.xib in Resources */,
+				27A3DA1B16A1C91500FD7335 /* DebitsListViewCell.xib in Resources */,
+				27B1DF9816A2E0A2007A1112 /* blue-slanted-stripes.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2076,6 +2116,10 @@
 				27D57655166297D400761132 /* NSView+BWAdditions.m in Sources */,
 				27DFFD9616739DAE00848CD2 /* CategoryMaintenanceController.m in Sources */,
 				270C1A0F168B3CAC000E25FF /* NSAttributedString+PecuniaAdditions.m in Sources */,
+				27A3DA2316A1C99C00FD7335 /* DebitsController.m in Sources */,
+				27A3DA2416A1C99C00FD7335 /* DebitsListView.m in Sources */,
+				27A3DA2516A1C99C00FD7335 /* DebitsListViewCell.m in Sources */,
+				27A3DA2816A1CB8000FD7335 /* DebitFormularView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

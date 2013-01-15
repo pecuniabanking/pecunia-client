@@ -33,6 +33,7 @@
 @class TimeSliceManager;
 @class CategoryView;
 @class TransfersController;
+@class DebitsController;
 @class DockIconController;
 
 @class StatementsListView;
@@ -132,6 +133,7 @@
 
     TransfersController     *transfersController;
     StandingOrderController *standingOrderController;
+    DebitsController        *debitsController;
     
     id<PecuniaSectionItem> currentSection;
     
