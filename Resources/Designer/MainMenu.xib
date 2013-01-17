@@ -99,9 +99,11 @@
 							<string key="NSToolbarItemPaletteLabel">Buttons</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSSegmentedControl" key="NSToolbarItemView" id="805917942">
-								<nil key="NSNextResponder"/>
+								<reference key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{0, 14}, {398, 25}}</string>
+								<string key="NSFrame">{{0, 14}, {529, 25}}</string>
+								<reference key="NSSuperview"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSegmentedCell" key="NSCell" id="848648286">
@@ -132,6 +134,11 @@
 											<string key="NSSegmentItemLabel">Daueraufträge</string>
 											<int key="NSSegmentItemImageScaling">0</int>
 										</object>
+										<object class="NSSegmentItem">
+											<double key="NSSegmentItemWidth">130</double>
+											<string key="NSSegmentItemLabel">Lastschriften</string>
+											<int key="NSSegmentItemImageScaling">0</int>
+										</object>
 									</array>
 									<int key="NSSelectedSegment">1</int>
 									<int key="NSSegmentStyle">2</int>
@@ -142,7 +149,7 @@
 							<nil key="NSToolbarItemTarget"/>
 							<nil key="NSToolbarItemAction"/>
 							<string key="NSToolbarItemMinSize">{104, 25}</string>
-							<string key="NSToolbarItemMaxSize">{467, 25}</string>
+							<string key="NSToolbarItemMaxSize">{529, 25}</string>
 							<bool key="NSToolbarItemEnabled">YES</bool>
 							<bool key="NSToolbarItemAutovalidates">YES</bool>
 							<int key="NSToolbarItemTag">0</int>
@@ -16212,7 +16219,7 @@ wGw</bytes>
 				<string key="6488.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6489.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6493.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<integer value="0" key="6494.IBNSSegmentedControlInspectorSelectedSegmentMetadataKey"/>
+				<integer value="3" key="6494.IBNSSegmentedControlInspectorSelectedSegmentMetadataKey"/>
 				<string key="6494.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6495.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6502.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>

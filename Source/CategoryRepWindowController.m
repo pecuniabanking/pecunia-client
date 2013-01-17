@@ -640,15 +640,19 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
         return (id)[NSNull null];
     }
 
-    NSColor *highlightColor = [color highlightWithLevel: 0.5];
+    // First convert the given color to a color with an RGB colorspace in case we use a pattern
+    // or named color space. No-op if the color is already using RGB.
+    NSColor *deviceColor = [color colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
+
+    NSColor *highlightColor = [deviceColor highlightWithLevel: 0.5];
     CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: highlightColor.redComponent
                                                                                                green: highlightColor.greenComponent
                                                                                                 blue: highlightColor.blueComponent
                                                                                                alpha: highlightColor.alphaComponent]
-                                                        endingColor: [CPTColor colorWithComponentRed: color.redComponent
-                                                                                               green: color.greenComponent
-                                                                                                blue: color.blueComponent
-                                                                                               alpha: color.alphaComponent]
+                                                        endingColor: [CPTColor colorWithComponentRed: deviceColor.redComponent
+                                                                                               green: deviceColor.greenComponent
+                                                                                                blue: deviceColor.blueComponent
+                                                                                               alpha: deviceColor.alphaComponent]
                              ];
 
     gradient.angle = -45.0;
@@ -1001,7 +1005,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                 {
                     case NSOrderedAscending:
                         [spendingsCategories addObject: pieData];
-                        [sortedSpendingValues addObject: @{@"index": [NSNumber numberWithInt: spendingsCategories.count - 1],
+                        [sortedSpendingValues addObject: @{@"index": @((int)spendingsCategories.count - 1),
                                                            @"value": [value abs]}];
 
                         totalSpendings = [totalSpendings decimalNumberByAdding: value];
@@ -1009,7 +1013,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                     case NSOrderedSame: break; // Don't list categories with value 0.
                     case NSOrderedDescending:
                         [earningsCategories addObject: pieData];
-                        [sortedEarningValues addObject: @{@"index": [NSNumber numberWithInt: earningsCategories.count - 1],
+                        [sortedEarningValues addObject: @{@"index": @((int)earningsCategories.count - 1),
                                                           @"value": [value abs]}];
 
                         totalEarnings = [totalEarnings decimalNumberByAdding: value];
@@ -1026,7 +1030,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                     pieData[@"color"] = childCategory.categoryColor;
                     
                     [spendingsCategories addObject: pieData];
-                    [sortedSpendingValues addObject: @{@"index": [NSNumber numberWithInt: spendingsCategories.count - 1],
+                    [sortedSpendingValues addObject: @{@"index": @((int)spendingsCategories.count - 1),
                                                        @"value": [spendings abs]}];
 
                 }
@@ -1039,7 +1043,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                     pieData[@"color"] = childCategory.categoryColor;
                     
                     [earningsCategories addObject: pieData];
-                    [sortedEarningValues addObject: @{@"index": [NSNumber numberWithInt: earningsCategories.count - 1],
+                    [sortedEarningValues addObject: @{@"index": @((int)earningsCategories.count - 1),
                                                       @"value": [earnings abs]}];
                 }
             }

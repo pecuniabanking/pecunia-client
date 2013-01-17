@@ -21,9 +21,11 @@
 
 #import "TransfersController.h"
 #import "StandingOrderController.h"
+#import "DebitsController.h"
 
 #define TransfersTabIdentifier @"transfers"
 #define StandingOrderTabIdentifier @"standingOrders"
+#define DebitsTabIdentifier @"debits"
 
 @implementation BankingController (Tabs)
 
@@ -62,6 +64,25 @@
 	} else {
 		[mainTabView selectTabViewItemAtIndex: index];
         [transfersController activate];
+	}
+}
+
+- (void)activateDebitsTab
+{
+	NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: DebitsTabIdentifier];
+	if (index == NSNotFound) {
+		debitsController = [[DebitsController alloc] init];
+		if ([NSBundle loadNibNamed: @"Debits" owner: debitsController]) {
+			NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: DebitsTabIdentifier];
+			[item setView: [debitsController mainView]];
+			[mainTabView addTabViewItem: item];
+			[mainTabView selectTabViewItem: item];
+			mainTabItems[DebitsTabIdentifier] = debitsController;
+			[debitsController prepare];
+		}
+	} else {
+		[mainTabView selectTabViewItemAtIndex: index];
+        [debitsController activate];
 	}
 }
 

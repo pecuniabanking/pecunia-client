@@ -522,7 +522,12 @@
         NSUInteger columnCount = 0;
         importValues = [NSMutableArray arrayWithCapacity: (currentLines.count >= ignoredLines) ? currentLines.count - ignoredLines : 0];
         for (NSUInteger i = ignoredLines; i < currentLines.count; i++) {
-            NSArray *fields = [currentLines[i] componentsSeparatedByString: separator];
+            NSString *line = [currentLines[i] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+            if (line.length == 0) {
+                continue;
+            }
+            
+            NSArray *fields = [line componentsSeparatedByString: separator];
             if (fields.count > columnCount) {
                 columnCount = fields.count;
             }
@@ -742,7 +747,13 @@
                     return;
                 }
 
-                NSArray *fields = [lines[index] componentsSeparatedByString: separator];
+                NSString *line = [lines[index] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+                if (line.length == 0) {
+                    index++;
+                    continue;
+                }
+                
+                NSArray *fields = [line componentsSeparatedByString: separator];
                 NSMutableDictionary *entry = [NSMutableDictionary dictionary];
                 for (NSUInteger j = 0; j < fields.count; j++) {
                     if (stopProcessing) {
@@ -802,7 +813,28 @@
                         }
                     }
                     if (object != nil) {
-                        entry[property] = object;
+                        if (entry[property] == nil) {
+                            entry[property] = object;
+                        } else {
+                            // If there's already a value then the user selected the same tag for different fields.
+                            // This is sometimes necessary to collect split values, however both object types
+                            // must be the same to be acceptable.
+                            if ([entry[property] isKindOfClass: [object class]]) {
+                                if ([object isKindOfClass: [NSString class]]) {
+                                    entry[property] = [NSString stringWithFormat: @"%@ %@", entry[property], object];
+                                } else if ([object isKindOfClass: [NSDecimalNumber class]]) {
+                                    entry[property] = [entry[property] decimalNumberByAdding: object];
+                                } else {
+                                    errorCount++;
+                                    [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, multiple fields are set to the same import type but cannot be combined: %@",
+                                                      file, index, property] withLevel: LogLevel_Error];
+                                }
+                            } else {
+                                errorCount++;
+                                [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, multiple fields are set to the same import type but have different types: %@",
+                                                  file, index, property] withLevel: LogLevel_Error];
+                            }
+                        }
                     }
                 }
                 [parsedValues addObject: entry];

@@ -915,7 +915,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
         CGColorRelease(lineColor);
 
         lineStyle.lineWidth = 1;
-        lineStyle.dashPattern = [NSArray arrayWithObjects: @8.0f, @2.5f, nil];
+        lineStyle.dashPattern = @[@8.0f, @2.5f];
         averagePlot.dataLineStyle = lineStyle;
 
         // Line "border".
@@ -1795,7 +1795,7 @@ int double_compare(const void *value1, const void *value2)
         NSDecimal snapPoint[2] = {0, 0};
         snapPoint[0] = CPTDecimalFromDouble(timePointAtIndex);
         CGPoint targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint];
-        if (abs(targetPoint.x - actualLocation) <= barWidth) {
+        if (abs(targetPoint.x - actualLocation) <= barWidth / 2) {
             actualLocation = targetPoint.x;
             timePoint = timePointAtIndex;
             dateHit = YES;

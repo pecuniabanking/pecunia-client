@@ -306,7 +306,9 @@
 			for(stat in oldStatements) {
 				if ([stat.date compare:firstNewStat.date ] == NSOrderedDescending) {
 					found = YES;
-					newSaldo = [stat.saldo decimalNumberBySubtracting:stat.value ];
+                    if (stat.value != nil) {
+                        newSaldo = [stat.saldo decimalNumberBySubtracting: stat.value];
+                    }
 				}
 				if (found) {
 					[mergedStatements addObject:stat ];
@@ -321,7 +323,9 @@
 			[mergedStatements sortUsingDescriptors:sds ];
 			// sum up saldo
 			for(stat in mergedStatements) {
-				newSaldo = [newSaldo decimalNumberByAdding: stat.value ];
+                if (stat.value != nil) {
+                    newSaldo = [newSaldo decimalNumberByAdding: stat.value];
+                }
 				stat.saldo = newSaldo;
 			}
 			self.balance = newSaldo;

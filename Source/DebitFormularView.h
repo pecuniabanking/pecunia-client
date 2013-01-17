@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,12 +19,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "BankingController.h"
+@class DebitsController;
 
-@interface BankingController (Tabs) 
+@interface DebitFormularView : NSView {
+}
 
-- (void)activateTransfersTab;
-- (void)activateStandingOrdersTab;
-- (void)activateDebitsTab;
+@property (nonatomic, assign) BOOL draggable;
+@property (nonatomic, strong) NSImage *icon;
+@property (nonatomic, assign) NSUInteger bottomArea;
+@property (nonatomic, assign) NSRect draggingArea;
+@property (nonatomic, unsafe_unretained) DebitsController *controller;
 
 @end
