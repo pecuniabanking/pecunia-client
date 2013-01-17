@@ -33,6 +33,7 @@
 
 -(NSString*)stringForFields:(NSArray*)fields usingDateFormatter:(NSDateFormatter*)dateFormatter numberFormatter:(NSNumberFormatter*)numberFormatter;
 -(void)moveToCategory:(Category*)tcat;
+-(void)moveAmount:(NSDecimalNumber*)amount toCategory:(Category*)tcat;
 -(void)remove;
 -(NSComparisonResult)compareDate: (StatCatAssignment*)stat;
 

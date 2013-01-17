@@ -34,6 +34,7 @@
 #import "AccountDefController.h"
 #import "TimeSliceManager.h"
 #import "MCEMTreeController.h"
+#import "MCEMDecimalNumberAdditions.h"
 #import "WorkerThread.h"
 #import "BSSelectWindowController.h"
 #import "StatusBarController.h"
@@ -1702,6 +1703,21 @@ BOOL runningOnLionOrLater = NO;
             } else {
                 if (mask == NSDragOperationCopy) {
                     [stat.statement assignAmount: stat.value toCategory: cat];
+                } else if (mask == NSDragOperationGeneric) {
+                    // split 
+                    BOOL negate = NO;
+                    NSDecimalNumber *amount = stat.value;
+                    if ([amount compare:[NSDecimalNumber zero]] == NSOrderedAscending) negate = YES;
+                    if (negate) amount = [[NSDecimalNumber zero] decimalNumberBySubtracting:amount];
+                    [assignValueField setObjectValue:amount];
+                    [NSApp runModalForWindow: assignValueWindow];
+                    amount = [NSDecimalNumber decimalNumberWithDecimal: [[assignValueField objectValue] decimalValue]];
+                    if (negate) amount = [[NSDecimalNumber zero] decimalNumberBySubtracting:amount];
+                    // now we have the amount that should be assigned to the target category
+                    if ([amount abs] <= [stat.value abs]) {
+                        [stat moveAmount:amount toCategory:cat];
+                        needListViewUpdate = YES;
+                    }
                 } else {
                     [stat moveToCategory: cat];
                 }
@@ -2687,11 +2703,13 @@ BOOL runningOnLionOrLater = NO;
 - (void)applicationDidFinishLaunching: (NSNotification *)aNotification
 {
     StatusBarController *sc = [StatusBarController controller];
+    MOAssistant *assistant = [MOAssistant assistant];
     
     // Load context & model.
     @try {
-        model = [[MOAssistant assistant] model];
-        self.managedObjectContext = [[MOAssistant assistant] context];
+        model = [assistant model];
+        [assistant initDatafile:nil]; // use default data file
+        self.managedObjectContext = [assistant context];
     }
     @catch (NSError* error) {
         NSAlert *alert = [NSAlert alertWithError:error];
@@ -2700,14 +2718,14 @@ BOOL runningOnLionOrLater = NO;
     }
  
     // Open encrypted database
-    if ([[MOAssistant assistant] encrypted]) {
+    if ([assistant encrypted]) {
         StatusBarController *sc = [StatusBarController controller];
         [sc startSpinning];
         [sc setMessage: NSLocalizedString(@"AP110", @"Open database...") removeAfter:0];
         
         @try {
-            [[MOAssistant assistant] decrypt];
-            self.managedObjectContext = [[MOAssistant assistant] context];
+            [assistant decrypt];
+            self.managedObjectContext = [assistant context];
         }
         @catch(NSError* error) {
             NSAlert *alert = [NSAlert alertWithError:error];
@@ -2957,7 +2975,7 @@ BOOL runningOnLionOrLater = NO;
 
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
 {
-    // todo
+    [[MOAssistant assistant] initDatafile:filename];
     return YES;
 }
 

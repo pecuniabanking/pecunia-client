@@ -66,6 +66,66 @@
 	return res;
 }
 
+-(void)moveAmount:(NSDecimalNumber*)amount toCategory:(Category*)tcat
+{
+	StatCatAssignment *stat;
+	Category *scat = self.category;
+    
+    if ([amount abs] > [self.value abs]) {
+        amount = self.value;
+    }
+    if (tcat == scat) {
+        return;
+    }
+    
+	// check if there is already an entry for the statement in tcat
+	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+	NSMutableSet* stats = [self.statement mutableSetValueForKey: @"assignments" ];
+	
+	// if assignment already done, add value
+    BOOL assignmentDone = NO;
+	for (stat in stats) {
+		if(stat.category == tcat) {
+			stat.value = [stat.value decimalNumberByAdding: amount ];
+			// value must never be higher than statement's value
+			if([[stat.value abs] compare: [stat.statement.value abs] ] == NSOrderedDescending) stat.value = stat.statement.value;
+			[stat.statement updateAssigned ];
+			[scat invalidateBalance ];
+			[tcat invalidateBalance ];
+            assignmentDone = YES;
+            /*
+			if (self != stat) {
+                [context deleteObject: self ];
+            }
+            */ 
+			return;
+		}
+	}
+
+    // if assignment is not done yet, create it
+    if (assignmentDone == NO) {
+        stat = [NSEntityDescription insertNewObjectForEntityForName:@"StatCatAssignment" inManagedObjectContext:context ];
+        stat.userInfo = self.userInfo;
+        stat.category = tcat;
+        stat.statement = self.statement;
+        stat.value = amount;
+    }
+
+    // adjust self
+    self.value = [self.value decimalNumberBySubtracting:amount];
+    if ([self.value compare:[NSDecimalNumber zero]] == NSOrderedSame) {
+        [context deleteObject:self];
+    }
+    
+    [context processPendingChanges];
+
+    [tcat updateBoundAssignments];
+    [scat updateBoundAssignments];
+    
+	[scat invalidateBalance];
+	[tcat invalidateBalance];
+}
+
 -(void)moveToCategory:(Category*)tcat
 {
 	StatCatAssignment *stat;

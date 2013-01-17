@@ -63,30 +63,25 @@
 @property (nonatomic, strong) NSURL *pecuniaFileURL;
 
 - (void)clearAllData;
+- (void)loadModel;
+- (void)relocate;
+- (BOOL)decrypt;
+- (void)shutdown;
+- (BOOL)encrypted;
+- (BOOL)encryptDataWithPassword: (NSString*)password;
+- (BOOL)stopEncryption;
+- (void)checkPaths;
+- (void)checkSandboxed;
+- (void)initDatafile:(NSString*)path;
 
--(void)loadModel;
--(void)relocate;
-//-(BOOL)relocateStoreToLocation: (NSString*)path;
-//-(BOOL)openImage;
--(BOOL)decrypt;
-//-(BOOL)relocateToPath: (NSString*)path;
--(void)shutdown;
--(BOOL)encrypted;
--(BOOL)encryptDataWithPassword: (NSString*)password;
--(BOOL)stopEncryption;
-//-(BOOL)isEncryptedImageAtPath:(NSString*)path;
-//-(NSString*)dataFileNameAtPath:(NSString*)path;
--(void)checkPaths;
--(void)checkSandboxed;
-
--(NSString*)passportDirectory;
+- (NSString*)passportDirectory;
 
 
--(NSManagedObjectContext*)context;
--(NSManagedObjectModel*)model;
--(NSManagedObjectContext*)memContext;
+- (NSManagedObjectContext*)context;
+- (NSManagedObjectModel*)model;
+- (NSManagedObjectContext*)memContext;
 
-+(MOAssistant*)assistant;
++ (MOAssistant*)assistant;
 
 @end
 

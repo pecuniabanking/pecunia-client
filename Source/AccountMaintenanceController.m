@@ -201,11 +201,7 @@ extern NSString* const CategoryKey;
 - (IBAction)showSupportedBusinessTransactions: (id)sender
 {
 	NSArray* result = [[HBCIClient hbciClient] getSupportedBusinessTransactions: account];
-	if (result == nil) {
-        PecuniaError* error = [PecuniaError errorWithCode: 0 message: NSLocalizedString(@"AP173", @"")];
-        [error alertPanel];
-    }
-	else {
+	if (result != nil) {
         if (supportedTransactionsSheet == nil) {
             transactionsController = [[BusinessTransactionsController alloc] initWithTransactions: result];
             supportedTransactionsSheet = [transactionsController window];
