@@ -353,6 +353,9 @@ BOOL stringEqual(NSString *a, NSString *b)
     
 	[cat invalidateBalance];
 	[ncat invalidateBalance];
+    
+    [cat updateBoundAssignments];
+    [ncat updateBoundAssignments];
 }
 
 +(void)setClassificationContext: (ClassificationContext*)cc

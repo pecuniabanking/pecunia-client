@@ -119,11 +119,11 @@
     
     [context processPendingChanges];
 
-    [tcat updateBoundAssignments];
-    [scat updateBoundAssignments];
-    
 	[scat invalidateBalance];
 	[tcat invalidateBalance];
+    
+    [tcat updateBoundAssignments];
+    [scat updateBoundAssignments];
 }
 
 -(void)moveToCategory:(Category*)tcat
@@ -148,11 +148,14 @@
 			// value must never be higher than statement's value
 			if([[stat.value abs] compare: [stat.statement.value abs] ] == NSOrderedDescending) stat.value = stat.statement.value;
 			[stat.statement updateAssigned ];
-			[scat invalidateBalance ];
-			[tcat invalidateBalance ];
 			if (self != stat) {
                 [context deleteObject: self ];
+                [context processPendingChanges];
             }
+			[scat invalidateBalance ];
+			[tcat invalidateBalance ];
+            [tcat updateBoundAssignments];
+            [scat updateBoundAssignments];
 			return;
 		}
 	}
@@ -160,6 +163,9 @@
     [context processPendingChanges];
 
 	self.category = tcat;
+
+	[scat invalidateBalance];
+	[tcat invalidateBalance];
 
     // This call doesn't actually update anything but triggers a KVO notification about this assignment change.
     // TODO: do we need a similar call for the old category?
@@ -169,8 +175,6 @@
 	if (tcat == ncat || scat == ncat) {
         [self.statement updateAssigned];
     }
-	[scat invalidateBalance];
-	[tcat invalidateBalance];
 }
 
 -(void)remove
@@ -187,6 +191,7 @@
 	[context processPendingChanges];
 	if (stat) [stat updateAssigned];
 	[cat invalidateBalance ];
+    [cat updateBoundAssignments];
 }
 
 

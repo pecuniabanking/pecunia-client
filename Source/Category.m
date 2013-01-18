@@ -159,6 +159,7 @@ BOOL updateSent = NO;
 -(void)invalidateBalance
 {
     self.isBalanceValid = @NO;
+    self.reportedAssignments = nil; // also remove cache
 }
 
 // value of expenses, earnings or turnovers for a specified period

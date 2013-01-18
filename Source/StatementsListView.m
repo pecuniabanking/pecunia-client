@@ -265,6 +265,10 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     
     NSDate* currentDate = stat.statement.date;
     
+    if (currentDate == nil) {
+        return;
+    }
+    
     // Count how many statements have been booked for the current date.
     int turnovers = [self countSameDatesFromRow: row];
     NSString* turnoversString;
