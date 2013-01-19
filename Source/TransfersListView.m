@@ -208,6 +208,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     if (date == nil) {
         date = transfer.date;
     }
+    NSColor *color = [transfer.account categoryColor];
     NSDictionary *details = @{StatementIndexKey: @((int)row),
                              StatementDateKey: [self safeAndFormattedValue: date],
                              StatementRemoteNameKey: [self safeAndFormattedValue: transfer.remoteName],
@@ -220,7 +221,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                              StatementRemoteBICKey: [self safeAndFormattedValue: transfer.remoteBIC],
                              StatementRemoteAccountKey: [self safeAndFormattedValue: transfer.remoteAccount],
                              StatementTypeKey: [self safeAndFormattedValue: transfer.type],
-                             StatementColorKey: [transfer.account categoryColor]};
+                             StatementColorKey: (color != nil) ? color : [NSNull null]};
     
     [cell setDetails: details];
     

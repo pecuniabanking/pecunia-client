@@ -70,7 +70,7 @@
 							<int key="NSCellFlags2">33554432</int>
 							<object class="NSCustomResource" key="NSContents">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">delete16</string>
+								<string key="NSResourceName">delete</string>
 							</object>
 							<int key="NSAlign">0</int>
 							<int key="NSScale">2</int>
@@ -107,7 +107,7 @@
 							<int key="NSCellFlags2">33554432</int>
 							<object class="NSCustomResource" key="NSContents">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">send16</string>
+								<string key="NSResourceName">send</string>
 							</object>
 							<int key="NSAlign">0</int>
 							<int key="NSScale">2</int>
@@ -250,7 +250,7 @@
 							<int key="NSCellFlags2">33554432</int>
 							<object class="NSCustomResource" key="NSContents">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">edit16</string>
+								<string key="NSResourceName">edit</string>
 							</object>
 							<int key="NSAlign">0</int>
 							<int key="NSScale">2</int>
@@ -311,6 +311,7 @@
 						<string key="NSFrame">{{609, 0}, {16, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="232929193">
 							<int key="NSCellFlags">68157504</int>
@@ -1161,9 +1162,9 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="delete16">{16, 16}</string>
-			<string key="edit16">{16, 16}</string>
-			<string key="send16">{16, 16}</string>
+			<string key="delete">{16, 16}</string>
+			<string key="edit">{128, 128}</string>
+			<string key="send">{16, 16}</string>
 		</dictionary>
 	</data>
 </archive>

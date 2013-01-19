@@ -80,7 +80,6 @@
     IBOutlet NSTextField    *purpose3;
     IBOutlet NSTextField    *purpose4;
     
-    IBOutlet NSTextField    *executionText;
     IBOutlet NSButton       *executeImmediatelyRadioButton;
     IBOutlet NSTextField    *executeImmediatelyText;
     IBOutlet NSTextField    *executeAtDateLabel;
@@ -116,6 +115,7 @@
 - (IBAction)calendarChanged: (id)sender;
 - (IBAction)queueDebit: (id)sender;
 - (IBAction)sendDebit: (id)sender;
+- (IBAction)deleteDebit: (id)sender;
 
 - (void)hideCalendarWindow;
 

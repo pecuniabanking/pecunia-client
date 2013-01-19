@@ -506,7 +506,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [transferSEPAImage setFrameCenterRotation: -10];
     
     transferDeleteImage.controller = self;
-    
+
+    // Keep current row positions as set in the xib, so we can properly adjust control positions.
+    // For now we don't need row 0 (the row with the receiver controls).
+    rowPositions[1] = [[transferFormular viewWithTag: 11] frame].origin.y;
+    rowPositions[2] = [[transferFormular viewWithTag: 21] frame].origin.y;
+    rowPositions[3] = [[transferFormular viewWithTag: 31] frame].origin.y;
 }
 
 - (NSMenuItem*)createItemForAccountSelector: (BankAccount *)account
@@ -548,22 +553,22 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     // usable by the selector.
     NSEnumerator *institutesEnumerator = [institutes objectEnumerator];
     Category *currentInstitute;
-    NSInteger selectedItem = 1; // By default the first entry after the first institute entry is selected.
+    NSInteger selectedItem = -1; // By default no entry is selected.
     while ((currentInstitute = [institutesEnumerator nextObject])) {
         if (![currentInstitute isKindOfClass: [BankAccount class]]) {
             continue;
         }
         
-        NSArray         *accounts = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
-        NSMutableArray  *validAccounts = [NSMutableArray arrayWithCapacity:10];
-        NSEnumerator    *accountEnumerator = [accounts objectEnumerator];
-        Category        *currentAccount;
+        NSArray        *accounts = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
+        NSMutableArray *validAccounts = [NSMutableArray arrayWithCapacity: 10];
+        NSEnumerator   *accountEnumerator = [accounts objectEnumerator];
+        Category       *currentAccount;
         
         while ((currentAccount = [accountEnumerator nextObject])) {
             if (![currentAccount isKindOfClass: [BankAccount class]]) {
                 continue;
             }
-            
+
             BankAccount *account = (BankAccount *)currentAccount;
             
             // Exclude manual accounts from the list.
@@ -620,7 +625,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
 	NSArray *sortDescriptors = @[sortDescriptor];
     NSArray *siblingAccounts = [[sourceAccount siblings] sortedArrayUsingDescriptors: sortDescriptors];
-    NSInteger selectedItem = 0;
+    NSInteger selectedItem = -1;
     for (BankAccount *account in siblingAccounts) {
 
         // Exclude manual accounts from the list.
@@ -768,6 +773,68 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         }
     }
 
+    // Finally adjust controls so that no empty row is shown.
+    BOOL row1Hidden = [[transferFormular viewWithTag: 11] isHidden];
+    BOOL row2Hidden = [[transferFormular viewWithTag: 21] isHidden];
+
+    NSUInteger row2Position = rowPositions[2];
+    if (row1Hidden) {
+        row2Position = rowPositions[1];
+    }
+
+    NSUInteger row3Position = rowPositions[3];
+    if (row1Hidden || row2Hidden) {
+        if (row1Hidden && row2Hidden) {
+            row3Position = rowPositions[1];
+        } else {
+            row3Position = rowPositions[2];
+        }
+    }
+
+    if (!row2Hidden) {
+        // Labels.
+        NSView *view = [transferFormular viewWithTag: 20];
+        NSRect newFrame = view.frame;
+        newFrame.origin.y = row2Position + 3;
+        view.frame = newFrame;
+
+        view = [transferFormular viewWithTag: 22];
+        newFrame = view.frame;
+        newFrame.origin.y = row2Position + 3;
+        view.frame = newFrame;
+
+        // Edit controls.
+        view = [transferFormular viewWithTag: 21];
+        newFrame = view.frame;
+        newFrame.origin.y = row2Position;
+        view.frame = newFrame;
+
+        view = [transferFormular viewWithTag: 23];
+        newFrame = view.frame;
+        newFrame.origin.y = row2Position;
+        view.frame = newFrame;
+    }
+    
+    { // 3rd row.
+        // Labels.
+        NSView *view = [transferFormular viewWithTag: 30];
+        NSRect newFrame = view.frame;
+        newFrame.origin.y = row3Position + 2;
+        view.frame = newFrame;
+
+        view = [transferFormular viewWithTag: 32];
+        newFrame = view.frame;
+        newFrame.origin.y = row3Position;
+        view.frame = newFrame;
+
+        // Edit controls.
+        view = [transferFormular viewWithTag: 31];
+        newFrame = view.frame;
+        newFrame.origin.y = row3Position;
+        view.frame = newFrame;
+
+    }
+    
     return YES;
 }
 
@@ -940,6 +1007,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         Transfer *transfer = transactionController.currentTransfer;
         [self cancelEditing];
         [context deleteObject: transfer];
+
+        if (![context save: &error]) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+        }
+
         return YES;
     }
     
@@ -1328,6 +1401,39 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 }
 
+- (IBAction)deleteTransfer:(id)sender
+{
+    // If we are deleting a new transfer then silently cancel editing and remove the formular from screen.
+    if (transactionController.currentTransfer.changeState == TransferChangeNew) {
+        [self cancelEditing];
+        return;
+    }
+
+	NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    int res = NSRunAlertPanel(NSLocalizedString(@"AP417", @""),
+                              NSLocalizedString(@"AP419", @""),
+                              NSLocalizedString(@"cancel", @""),
+                              NSLocalizedString(@"delete", @""),
+                              nil);
+    if (res != NSAlertAlternateReturn) {
+        return;
+    }
+
+    // We are throwing away the currently being edited transfer which was already placed in the
+    // pending transfers queue but brought back for editing. This time the user wants it deleted.
+    [rightPane hideFormular];
+    Transfer *transfer = transactionController.currentTransfer;
+    [self cancelEditing];
+    [context deleteObject: transfer];
+
+	NSError *error = nil;
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+    }
+}
+
 - (IBAction)saveTemplate: (id)sender
 {
     NSString *name = templateName.stringValue;
@@ -1397,16 +1503,27 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (![self editingInProgress]) {
         return;
     }
+
+    BOOL accountSelected = [sender selectedItem] != nil;
+    for (NSUInteger row = 0; row <= 5; row++) {
+        for (NSUInteger index = 0; index < 5; index++) {
+            [[transferFormular viewWithTag: row * 10 + index] setEnabled: accountSelected];
+        }
+    }
     
-    BankAccount *account = [sender selectedItem].representedObject;
-    [saldoText setObjectValue: [account catSum]];
-    
-	transactionController.currentTransfer.account = account;
-    
-    if (account.currency.length == 0) {
-        transactionController.currentTransfer.currency = @"EUR";
+    if (!accountSelected) {
+        [saldoText setObjectValue: @""];
     } else {
-        transactionController.currentTransfer.currency = account.currency;
+        BankAccount *account = [sender selectedItem].representedObject;
+        [saldoText setObjectValue: [account catSum]];
+
+        transactionController.currentTransfer.account = account;
+
+        if (account.currency.length == 0) {
+            transactionController.currentTransfer.currency = @"EUR";
+        } else {
+            transactionController.currentTransfer.currency = account.currency;
+        }
     }
     [self updateTargetAccountSelector];
     [self updateLimits];
@@ -1543,16 +1660,14 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if ([searchString length] == 0) {
         [transactionController.templateController setFilterPredicate: nil];
     } else {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"currency contains[c] %@ or "
-                                  "purpose contains[c] %@ or "
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"purpose contains[c] %@ or "
                                   "remoteAccount contains[c] %@ or "
                                   "remoteBankCode contains[c] %@ or "
                                   "remoteBIC contains[c] %@ or "
                                   "remoteCountry contains[c] %@ or "
                                   "remoteIBAN contains[c] %@ or "
                                   "remoteName contains[c] %@ or "
-                                  "remoteSuffix contains[c] %@ or "
-                                  "value = %@",
+                                  "remoteSuffix contains[c] %@",
                                   searchString, searchString, searchString,
                                   searchString, searchString, searchString,
                                   searchString, searchString, searchString,

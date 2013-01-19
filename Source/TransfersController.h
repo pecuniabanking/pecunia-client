@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -112,6 +112,7 @@
     TransferCalendarWindow *calendarWindow;
     TransactionLimits      *limits;
     NSArray                *draggedTransfers;
+    NSUInteger             rowPositions[4];
 }
 
 @property (unsafe_unretained) IBOutlet TransferFormularView *transferFormular;
@@ -125,6 +126,7 @@
 - (IBAction)calendarChanged: (id)sender;
 - (IBAction)queueTransfer: (id)sender;
 - (IBAction)sendTransfer: (id)sender;
+- (IBAction)deleteTransfer: (id)sender;
 - (IBAction)saveTemplate: (id)sender;
 - (IBAction)cancelCreateTemplate: (id)sender;
 

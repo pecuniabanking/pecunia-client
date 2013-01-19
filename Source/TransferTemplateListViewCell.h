@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -28,9 +28,6 @@
     IBOutlet NSTextField *accountLabel;
     IBOutlet NSTextField *remoteNameLabel;
     IBOutlet NSTextField *purposeLabel;
-    IBOutlet NSTextField *valueLabel;
-    IBOutlet NSTextField *currencyLabel;
-    IBOutlet NSTextField *valueTitle;
     IBOutlet NSTextField *templateName;
 
 @private
@@ -50,8 +47,6 @@
 
 - (void)setDetails: (NSDictionary *)details;
 
-- (void)setTextAttributesForPositivNumbers: (NSDictionary*)positiveAttributes
-                           negativeNumbers: (NSDictionary*)negativeAttributes;
 - (void)selectionChanged;
 
 @end

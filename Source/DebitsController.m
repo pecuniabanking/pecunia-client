@@ -608,7 +608,6 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     //   - Standard consolidated company/normal debits/transfers
     // TODO: the bank has a final word if termination is available, so include this here.
     BOOL canBeTerminated = (type == TransferTypeStandard) || (type == TransferTypeDated); // || (type == TransferTypeSEPA) || (type == TransferTypeDebit);
-    [executionText setHidden: !canBeTerminated];
     [executeImmediatelyRadioButton setHidden: !canBeTerminated];
     [executeImmediatelyText setHidden: !canBeTerminated];
     [executeAtDateRadioButton setHidden: !canBeTerminated];
@@ -749,6 +748,11 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         Transfer *transfer = transactionController.currentTransfer;
         [self cancelEditing];
         [context deleteObject: transfer];
+
+        if (![context save: &error]) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+        }
         return YES;
     }
     
@@ -1081,6 +1085,39 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         NSArray* debits = @[transactionController.currentTransfer];
         [self doSendTransfers: debits];
         [rightPane hideFormular];
+    }
+}
+
+- (IBAction)deleteDebit: (id)sender
+{
+    // If we are deleting a new transfer then silently cancel editing and remove the formular from screen.
+    if (transactionController.currentTransfer.changeState == TransferChangeNew) {
+        [self cancelEditing];
+        return;
+    }
+
+	NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    int res = NSRunAlertPanel(NSLocalizedString(@"AP417", @""),
+                              NSLocalizedString(@"AP419", @""),
+                              NSLocalizedString(@"cancel", @""),
+                              NSLocalizedString(@"delete", @""),
+                              nil);
+    if (res != NSAlertAlternateReturn) {
+        return;
+    }
+
+    // We are throwing away the currently being edited transfer which was already placed in the
+    // pending transfers queue but brought back for editing. This time the user wants it deleted.
+    [rightPane hideFormular];
+    Transfer *transfer = transactionController.currentTransfer;
+    [self cancelEditing];
+    [context deleteObject: transfer];
+
+	NSError *error = nil;
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
     }
 }
 

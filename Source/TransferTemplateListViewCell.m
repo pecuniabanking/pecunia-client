@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -73,8 +73,6 @@ extern NSString *TemplateNameKey;
     [self setNeedsDisplay: YES];
 }
 
-static CurrencyValueTransformer* currencyTransformer;
-
 - (void)setDetails: (NSDictionary *)details
 {
     index = [details[StatementIndexKey] intValue];
@@ -85,9 +83,6 @@ static CurrencyValueTransformer* currencyTransformer;
     [remoteNameLabel setToolTip: [details valueForKey: StatementRemoteNameKey]];
 
     [purposeLabel setToolTip: [details valueForKey: StatementPurposeKey]];
-    
-    [valueLabel setObjectValue: [details valueForKey: StatementValueKey]];
-    
     
     // For the remote bank code and account number we either use the german bank details or
     // IBAN/BIC, depending on the type.
@@ -100,30 +95,9 @@ static CurrencyValueTransformer* currencyTransformer;
         remoteAccount = [[details valueForKey: StatementRemoteAccountKey] copy];
     }
     purpose = [[details valueForKey: StatementPurposeKey] copy];
-    
-    if (currencyTransformer == nil)
-        currencyTransformer = [[CurrencyValueTransformer alloc] init];
-    
-    NSString *currency = [details valueForKey: StatementCurrencyKey];
-    NSString *symbol = [currencyTransformer transformedValue: currency];
-    [currencyLabel setStringValue: symbol];
-    [[[valueLabel cell] formatter] setCurrencyCode: currency]; // Important for proper display of the value, even without currency.
 
     [self selectionChanged];
     [self setNeedsDisplay: YES];
-}
-
-- (void)setTextAttributesForPositivNumbers: (NSDictionary*) _positiveAttributes
-                           negativeNumbers: (NSDictionary*) _negativeAttributes
-{
-    if (positiveAttributes != _positiveAttributes) {
-        positiveAttributes = _positiveAttributes;
-        [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
-    }
-    if (negativeAttributes != _negativeAttributes) {
-        negativeAttributes = _negativeAttributes;
-        [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
-    }
 }
 
 #pragma mark -
@@ -136,8 +110,6 @@ static CurrencyValueTransformer* currencyTransformer;
     [accountLabel setStringValue: @""];
     [remoteNameLabel setStringValue: @""];
     [purposeLabel setStringValue: @""];
-    [valueLabel setObjectValue: @""];
-    [currencyLabel setObjectValue: @""];
 }
 
 #pragma mark -
@@ -152,28 +124,15 @@ static CurrencyValueTransformer* currencyTransformer;
     
     NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text Color"];
     if (isSelected) {
-        [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: whiteAttributes];
-        [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: whiteAttributes];
-        
         [templateName setTextColor: [NSColor whiteColor]];
         [remoteNameLabel setTextColor: [NSColor whiteColor]];
         [purposeLabel setTextColor: [NSColor whiteColor]];
-        [valueLabel setTextColor: [NSColor whiteColor]]; // Need to set both the label itself as well as its cell formatter.
         [accountLabel setTextColor: [NSColor whiteColor]];
-        [currencyLabel setTextColor: [NSColor whiteColor]];
-        [valueTitle setTextColor: [NSColor whiteColor]];
     } else {
-        [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
-        [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
-        
         [templateName setTextColor: [NSColor controlTextColor]];
         [remoteNameLabel setTextColor: [NSColor controlTextColor]];
         [accountLabel setTextColor: [NSColor controlTextColor]];
-        [valueLabel setTextColor: [NSColor controlTextColor]];
-        
         [purposeLabel setTextColor: paleColor];
-        [currencyLabel setTextColor: paleColor];
-        [valueTitle setTextColor: paleColor];
     }
     
     // The account label is constructed from two values and formatted.
