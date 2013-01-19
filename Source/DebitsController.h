@@ -103,6 +103,7 @@
     DebitCalendarWindow *calendarWindow;
     TransactionLimits   *limits;
     NSArray             *draggedDebits;
+    NSUInteger          rowPositions[4];
 }
 
 @property (unsafe_unretained) IBOutlet DebitFormularView *debitFormular;
