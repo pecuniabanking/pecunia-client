@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -47,10 +47,10 @@
     IBOutlet NSPopUpButton          *sourceAccountSelector;
     IBOutlet NSComboBox             *receiverComboBox;
     IBOutlet DeleteOrderTargetView  *deleteImage;
-	
+    IBOutlet NSButton               *deleteButton;
+
 @private
 	NSManagedObjectContext			*managedObjectContext;
-	NSMutableArray					*accounts;
 	NSArray							*weekDays;
 	TransactionLimits				*currentLimits;
 	StandingOrder					*currentOrder;
@@ -72,7 +72,6 @@
 @property (nonatomic, strong) StandingOrder *currentOrder;
 
 - (NSView*)mainView;
-- (void)initAccounts;
 - (void)disableCycles;
 
 - (IBAction)monthCycle: (id)sender;
@@ -87,8 +86,8 @@
 - (IBAction)update: (id)sender;
 - (IBAction)getOrders: (id)sender;
 
-- (void)initAccounts;
 - (BOOL)concludeDropDeleteOperation: (id<NSDraggingInfo>)info;
+- (IBAction)deleteOrder: (id)sender;
 
 @end
 

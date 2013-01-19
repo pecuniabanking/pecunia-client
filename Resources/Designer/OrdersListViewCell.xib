@@ -11,6 +11,8 @@
 			<string key="NS.object.0">2844</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
+			<string>NSButton</string>
+			<string>NSButtonCell</string>
 			<string>NSCustomObject</string>
 			<string>NSCustomView</string>
 			<string>NSImageCell</string>
@@ -40,45 +42,39 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="NSImageView" id="259437229">
+					<object class="NSButton" id="439208117">
 						<reference key="NSNextResponder" ref="1005"/>
-						<int key="NSvFlags">292</int>
-						<set class="NSMutableSet" key="NSDragTypes">
-							<string>Apple PDF pasteboard type</string>
-							<string>Apple PICT pasteboard type</string>
-							<string>Apple PNG pasteboard type</string>
-							<string>NSFilenamesPboardType</string>
-							<string>NeXT Encapsulated PostScript v1.2 pasteboard type</string>
-							<string>NeXT TIFF v4.0 pasteboard type</string>
-						</set>
-						<string key="NSFrame">{{17, 11}, {16, 16}}</string>
+						<int key="NSvFlags">268</int>
+						<array class="NSMutableArray" key="NSSubviews"/>
+						<string key="NSFrame">{{18, 13}, {16, 16}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="341251399"/>
-						<object class="NSShadow" key="NSViewShadow">
-							<double key="NSShadowHoriz">1</double>
-							<double key="NSShadowVert">-1</double>
-							<double key="NSShadowBlurRadius">1</double>
-							<object class="NSColor" key="NSShadowColor" id="428471831">
-								<int key="NSColorSpace">3</int>
-								<bytes key="NSWhite">MCAwLjUAA</bytes>
-							</object>
-						</object>
+						<reference key="NSNextKeyView"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="NSEnabled">YES</bool>
-						<object class="NSImageCell" key="NSCell" id="857931567">
-							<int key="NSCellFlags">134217728</int>
-							<int key="NSCellFlags2">33554432</int>
-							<object class="NSCustomResource" key="NSContents">
+						<object class="NSButtonCell" key="NSCell" id="53394718">
+							<int key="NSCellFlags">67108864</int>
+							<int key="NSCellFlags2">134217728</int>
+							<string key="NSContents"/>
+							<object class="NSFont" key="NSSupport">
+								<string key="NSName">LucidaGrande</string>
+								<double key="NSSize">13</double>
+								<int key="NSfFlags">1044</int>
+							</object>
+							<string key="NSCellIdentifier">_NS:9</string>
+							<reference key="NSControlView" ref="439208117"/>
+							<int key="NSButtonFlags">-2039201792</int>
+							<int key="NSButtonFlags2">6</int>
+							<object class="NSCustomResource" key="NSNormalImage">
 								<string key="NSClassName">NSImage</string>
 								<string key="NSResourceName">delete</string>
 							</object>
-							<int key="NSAlign">0</int>
-							<int key="NSScale">2</int>
-							<int key="NSStyle">0</int>
-							<bool key="NSAnimates">NO</bool>
+							<string key="NSAlternateContents"/>
+							<string key="NSKeyEquivalent"/>
+							<int key="NSPeriodicDelay">200</int>
+							<int key="NSPeriodicInterval">25</int>
 						</object>
 						<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
-						<bool key="NSEditable">YES</bool>
 					</object>
 					<object class="NSImageView" id="212308580">
 						<reference key="NSNextResponder" ref="1005"/>
@@ -99,7 +95,10 @@
 							<double key="NSShadowHoriz">1</double>
 							<double key="NSShadowVert">-1</double>
 							<double key="NSShadowBlurRadius">1</double>
-							<reference key="NSShadowColor" ref="428471831"/>
+							<object class="NSColor" key="NSShadowColor" id="428471831">
+								<int key="NSColorSpace">3</int>
+								<bytes key="NSWhite">MCAwLjUAA</bytes>
+							</object>
 						</object>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSImageCell" key="NSCell" id="208589385">
@@ -120,7 +119,7 @@
 					<object class="NSTextField" id="240843410">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{436, 25}, {125, 18}}</string>
+						<string key="NSFrame">{{438, 25}, {125, 18}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="927892627"/>
@@ -185,7 +184,7 @@
 					<object class="NSTextField" id="388751458">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{436, 39}, {126, 18}}</string>
+						<string key="NSFrame">{{438, 39}, {126, 18}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="279559397"/>
@@ -193,7 +192,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="947901127">
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">71309312</int>
-							<string key="NSContents">nächste</string>
+							<string key="NSContents">nächste:</string>
 							<reference key="NSSupport" ref="24"/>
 							<reference key="NSControlView" ref="388751458"/>
 							<reference key="NSBackgroundColor" ref="609700460"/>
@@ -210,7 +209,7 @@
 						<string key="NSFrame">{{558, 39}, {60, 18}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="259437229"/>
+						<reference key="NSNextKeyView" ref="439208117"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="135147446">
 							<int key="NSCellFlags">67108928</int>
@@ -334,7 +333,7 @@
 					<object class="NSTextField" id="279559397">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{449, 53}, {113, 18}}</string>
+						<string key="NSFrame">{{451, 53}, {113, 18}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="777174345"/>
@@ -652,11 +651,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">deleteImage</string>
+						<string key="label">deleteButton</string>
 						<reference key="source" ref="1005"/>
-						<reference key="destination" ref="259437229"/>
+						<reference key="destination" ref="439208117"/>
 					</object>
-					<int key="connectionID">161</int>
+					<int key="connectionID">164</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">cancelDeletion:</string>
+						<reference key="source" ref="1005"/>
+						<reference key="destination" ref="439208117"/>
+					</object>
+					<int key="connectionID">165</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -704,7 +711,7 @@
 							<reference ref="947566693"/>
 							<reference ref="992290495"/>
 							<reference ref="212308580"/>
-							<reference ref="259437229"/>
+							<reference ref="439208117"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -914,17 +921,17 @@
 						<reference key="parent" ref="212308580"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">158</int>
-						<reference key="object" ref="259437229"/>
+						<int key="objectID">162</int>
+						<reference key="object" ref="439208117"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="857931567"/>
+							<reference ref="53394718"/>
 						</array>
 						<reference key="parent" ref="1005"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">159</int>
-						<reference key="object" ref="857931567"/>
-						<reference key="parent" ref="259437229"/>
+						<int key="objectID">163</int>
+						<reference key="object" ref="53394718"/>
+						<reference key="parent" ref="439208117"/>
 					</object>
 				</array>
 			</object>
@@ -981,22 +988,17 @@
 				<real value="-1" key="156.IBViewIntegration.shadowOffsetHeight"/>
 				<real value="1" key="156.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="157.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="158.CustomClassName">NoAnimationImageView</string>
-				<object class="NSMutableDictionary" key="158.IBAttributePlaceholdersKey">
+				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<object class="NSMutableDictionary" key="162.IBAttributePlaceholdersKey">
 					<string key="NS.key.0">ToolTip</string>
 					<object class="IBToolTipAttribute" key="NS.object.0">
 						<string key="name">ToolTip</string>
-						<reference key="object" ref="259437229"/>
-						<string key="toolTip">Dieser Auftrag wurde gelöscht. Die Änderungen werden durch einen Klick auf "Änderungen Senden" zur Bank transferiert.</string>
+						<reference key="object" ref="439208117"/>
+						<string key="toolTip">Löschanforderung für diesen Dauerauftrag aufheben.</string>
 					</object>
 				</object>
-				<string key="158.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<real value="1" key="158.IBViewIntegration.shadowBlurRadius"/>
-				<reference key="158.IBViewIntegration.shadowColor" ref="428471831"/>
-				<real value="-1" key="158.IBViewIntegration.shadowOffsetHeight"/>
-				<real value="1" key="158.IBViewIntegration.shadowOffsetWidth"/>
-				<string key="159.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="162.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="163.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<integer value="1040" key="22.IBNumberFormatterBehaviorMetadataKey"/>
 				<boolean value="YES" key="22.IBNumberFormatterLocalizesFormatMetadataKey"/>
 				<real value="-1234.75" key="22.IBNumberFormatterSampleNumberKey"/>
@@ -1027,7 +1029,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">161</int>
+			<int key="maxID">165</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1050,11 +1052,22 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">OrdersListViewCell</string>
 					<string key="superclassName">PXListViewCell</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">cancelDeletion:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">cancelDeletion:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">cancelDeletion:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="accountLabel">NSTextField</string>
 						<string key="bankNameLabel">NSTextField</string>
 						<string key="currencyLabel">NSTextField</string>
-						<string key="deleteImage">NSImageView</string>
+						<string key="deleteButton">NSButton</string>
 						<string key="editImage">NSImageView</string>
 						<string key="firstDateLabel">NSTextField</string>
 						<string key="firstDateTitle">NSTextField</string>
@@ -1081,9 +1094,9 @@
 							<string key="name">currencyLabel</string>
 							<string key="candidateClassName">NSTextField</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="deleteImage">
-							<string key="name">deleteImage</string>
-							<string key="candidateClassName">NSImageView</string>
+						<object class="IBToOneOutletInfo" key="deleteButton">
+							<string key="name">deleteButton</string>
+							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="editImage">
 							<string key="name">editImage</string>
@@ -1163,7 +1176,7 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="delete">{16, 16}</string>
-			<string key="edit">{128, 128}</string>
+			<string key="edit">{16, 16}</string>
 			<string key="send">{16, 16}</string>
 		</dictionary>
 	</data>

@@ -60,8 +60,6 @@ extern NSString *StatementNoteKey;
     IBOutlet NSButton *checkbox;
 
 @private
-    id<StatementsListViewNotificationProtocol> delegate;
-    
     BOOL isNew;
     BOOL hasUnassignedValue;
     int  headerHeight;

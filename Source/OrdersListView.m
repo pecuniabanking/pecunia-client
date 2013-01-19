@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -61,6 +61,7 @@ extern NSString* OrderDataType;
 
 @implementation OrdersListView
 
+@synthesize owner;
 @synthesize numberFormatter;
 @synthesize dataSource;
 
@@ -213,7 +214,9 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
             order.remoteBankName = bankName;
         }
     }
-    
+
+    cell.delegate = self;
+    NSColor *color = [order.account categoryColor];
     NSDictionary *details = @{StatementIndexKey: @((int)row),
                              OrderFirstExecDateKey: [self safeAndFormattedValue: order.firstExecDate],
                              StatementDateKey: [self safeAndFormattedValue: order.nextExecDate],
@@ -229,7 +232,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                              OrderIsChangedKey: order.isChanged,
                              OrderPendingDeletionKey: order.toDelete,
                              OrderIsSentKey: order.isSent,
-                             StatementColorKey: [order.account categoryColor]};
+                             StatementColorKey: (color != nil) ? color : [NSNull null]};
     
     [cell setDetails: details];
     
@@ -283,6 +286,17 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     NSArray *cells = [self visibleCells];
     for (OrdersListViewCell *cell in cells)
         [self fillCell: cell forRow: [cell row]];
+}
+
+#pragma mark -
+#pragma mark OrdersListViewNotificationProtocol
+
+- (void)cancelDeletionForIndex: (NSUInteger)index
+{
+    // Simply forward the notification to the notification delegate if any is set.
+    if ([self.owner respondsToSelector: @selector(cancelDeletionForIndex:)]) {
+        [self.owner cancelDeletionForIndex: index];
+    }
 }
 
 #pragma mark -

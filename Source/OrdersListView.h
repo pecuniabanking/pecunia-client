@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,10 +21,11 @@
 
 #import "PXListView.h"
 #import "ShortDate.h"
+#import "OrdersListViewCell.h"
 
 @class OrdersListView;
 
-@interface OrdersListView : PXListView <PXListViewDelegate>
+@interface OrdersListView : PXListView <PXListViewDelegate, OrdersListViewNotificationProtocol>
 {
 @private
     id observedObject;
@@ -33,6 +34,7 @@
     ShortDate *hunderedYearsLater;
 }
 
+@property (nonatomic, retain) id owner;
 @property (nonatomic, readonly) NSNumberFormatter *numberFormatter;
 @property (nonatomic, retain) NSArray *dataSource;
 

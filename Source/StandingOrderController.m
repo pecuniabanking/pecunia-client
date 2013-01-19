@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -65,6 +65,19 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     if (type == nil) {
         return NSDragOperationNone;
     }
+
+    NSData *data = [pasteboard dataForType: type];
+    NSArray *entries = [NSKeyedUnarchiver unarchiveObjectWithData: data];
+
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectID *objectId = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: [entries lastObject]];
+    if (objectId == nil) {
+        return NSDragOperationNone;
+    }
+    StandingOrder *order = (StandingOrder *)[context objectWithID: objectId];
+    if ([order.toDelete boolValue]) {
+        return NSDragOperationNone; // Don't allow to delete this order if it is already marked for deletion.
+    }
     
     [[NSCursor disappearingItemCursor] set];
     return NSDragOperationDelete;
@@ -117,13 +130,11 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
                      NSLocalizedString(@"AP10034", nil),
                      NSLocalizedString(@"AP10035", nil),
                      NSLocalizedString(@"AP10036", nil)];
-        accounts = [[NSMutableArray alloc] initWithCapacity: 10];
         self.requestRunning = @NO;
     }
     
 	return self;
 }
-
 
 -(void)awakeFromNib
 {
@@ -132,10 +143,8 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     monthCell.textColor = [NSColor whiteColor];
     weekCell.textColor = [NSColor whiteColor];
 
-	[self initAccounts];
     [self disableCycles];
-	[accountsController setContent: accounts];
-    
+
     [self updateSourceAccountSelector];
     
     [ordersListView setCellSpacing: 0];
@@ -156,6 +165,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	NSArray *sds = @[sd];
 	[orderController setSortDescriptors: sds];
     
+    ordersListView.owner = self;
     
     // Actually, the values for the bound property and the key path don't matter as the listview has
     // a very clear understanding what it needs to bind to. It's just there to make the listview
@@ -177,26 +187,6 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     deleteImage.controller = self;
     
     initializing = NO;
-}
-
--(void)initAccounts
-{
-	NSError *error = nil;
-	
-	[accounts removeAllObjects];
-	NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: managedObjectContext];
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	[request setEntity: entityDescription];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND isStandingOrderSupported == 1" ];
-	[request setPredicate: predicate];
-	NSArray *selectedAccounts = [managedObjectContext executeFetchRequest: request error: &error];
-	if (error == nil) {
-		for (BankAccount *account in selectedAccounts) {
-			if ([[HBCIClient hbciClient] isStandingOrderSupportedForAccount: account]) {
-				[accounts addObject: account];
-			}
-		}
-	}	
 }
 
 -(NSString*)monthDayToString: (int)day
@@ -242,23 +232,29 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	int num = (t = currentLimits.maxLinesPurpose)? t : 2;
 	NSTextField* p;
 	
-	p = (NSTextField*)[mainView viewWithTag: 4 ];
-	if(num < 4) {
-        [p setHidden: TRUE ];
-        [p setStringValue:@"" ];
-    } else [p setHidden: FALSE ];
+	p = (NSTextField*)[mainView viewWithTag: 43];
+	if (num < 4) {
+        [p setHidden: YES];
+        [p setStringValue: @"" ];
+    } else {
+        [p setHidden: NO];
+    }
     
-	p = [mainView viewWithTag: 3 ];
-	if(num < 3) {
-        [p setHidden: TRUE ];
-        [p setStringValue:@"" ];        
-    } else [p setHidden: FALSE ];
+	p = [mainView viewWithTag: 42];
+    if (num < 3) {
+        [p setHidden: YES];
+        [p setStringValue: @"" ];
+    } else {
+        [p setHidden: NO];
+    }
     
-	p = [mainView viewWithTag: 2 ];
-	if(num < 2) {
-        [p setHidden: TRUE ];
-        [p setStringValue:@"" ];
-    } else [p setHidden: FALSE ];
+	p = [mainView viewWithTag: 41];
+	if (num < 2) {
+        [p setHidden: YES];
+        [p setStringValue: @""];
+    } else {
+        [p setHidden: NO];
+    }
 }
 
 
@@ -437,32 +433,28 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     
     // Convert list of accounts in their institutes branches to a flat list
     // usable by the selector.
-    NSEnumerator *institutesEnumerator = [institutes objectEnumerator];
-    Category *currentInstitute;
-    NSInteger selectedItem = 1; // By default the first entry after the first institute entry is selected.
-    while ((currentInstitute = [institutesEnumerator nextObject])) {
+    NSInteger selectedItem = -1;
+    for (Category * currentInstitute in institutes) {
         if (![currentInstitute isKindOfClass: [BankAccount class]]) {
             continue;
         }
         
         NSArray *accountsForInstitute = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
-        NSMutableArray  *validAccounts = [NSMutableArray arrayWithCapacity:10];
-        NSEnumerator *accountEnumerator = [accountsForInstitute objectEnumerator];
-        Category *currentAccount;
-        
-        while ((currentAccount = [accountEnumerator nextObject])) {
+        NSMutableArray *validAccounts = [NSMutableArray arrayWithCapacity: 10];
+
+        for (Category *currentAccount in accountsForInstitute) {
             if (![currentAccount isKindOfClass: [BankAccount class]]) {
                 continue;
             }
-            
+
             BankAccount *account = (BankAccount *)currentAccount;
-            
+
             // Exclude manual accounts and those that don't support standing orders from the list.
-            if ([account.isManual boolValue] || ![[HBCIClient hbciClient] isStandingOrderSupportedForAccount: account]) {
+            if ([[account isManual] boolValue] || ![[HBCIClient hbciClient] isStandingOrderSupportedForAccount: account]) {
                 continue;
             }
             
-            [validAccounts addObject:account];
+            [validAccounts addObject: account];
         }
         
         if ([validAccounts count] > 0) {
@@ -474,7 +466,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
                 [item setEnabled: YES];
                 item.indentationLevel = 1;
                 [sourceMenu addItem: item];
-                if (currentAccount == selectedAccount)
+                if (account == selectedAccount)
                     selectedItem = sourceMenu.numberOfItems - 1;
             }
             
@@ -486,6 +478,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     } else {
         [sourceAccountSelector selectItemAtIndex: -1];
     }
+    [self sourceAccountChanged: sourceAccountSelector];
 }
 
 -(IBAction)monthCycle: (id)sender
@@ -561,18 +554,9 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 - (IBAction)add: (id)sender
 {
-	[self initAccounts];
     StandingOrder *order = [NSEntityDescription insertNewObjectForEntityForName: @"StandingOrder"
                                                          inManagedObjectContext: managedObjectContext];
     
-    BankAccount *account = [sourceAccountSelector selectedItem].representedObject;
-    
-	order.account = account;
-    if (account.currency.length == 0) {
-        order.currency = @"EUR";
-    } else {
-        order.currency = account.currency;
-    }
     order.period = @(stord_monthly);
     order.cycle = @1;
     order.executionDay = @1;
@@ -582,6 +566,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     order.lastExecDate = [[ShortDate dateWithYear: 2999 month: 12 day: 31] lowDate];
     
     [orderController addObject: order];
+    [self prepareSourceAccountSelector: nil];
 }
 
 - (IBAction)firstExecDateChanged: (id)sender
@@ -761,60 +746,8 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [[mainView window] makeFirstResponder: sender];
 
 	NSMutableArray *resultList = nil;
-/*    
-	NSError *error = nil;
-	BankAccount *account;
-
-    [self initAccounts];
-	
-	if ([accounts count] == 0) {
-		// no accounts for StandingOrder found...check?
-		int res = NSRunAlertPanel(NSLocalizedString(@"AP108", @""), 
-								  NSLocalizedString(@"AP109", @""),
-								  NSLocalizedString(@"yes", @"Yes"), 
-								  NSLocalizedString(@"no", @"No"), nil);
-		if (res == NSAlertDefaultReturn) {
-			NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: managedObjectContext];
-			NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
-			[request setEntity: entityDescription];
-			NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND isManual = FALSE" ];
-			[request setPredicate: predicate];
-			NSArray *selectedAccounts = [managedObjectContext executeFetchRequest:request error:&error];
-			if (selectedAccounts) {
-				resultList = [NSMutableArray arrayWithCapacity: [selectedAccounts count]];
-				for(account in selectedAccounts) {
-					if ([[HBCIClient hbciClient ] isStandingOrderSupportedForAccount:account]) {
-						if (account.userId) {
-							BankQueryResult *result = [[BankQueryResult alloc ] init ];
-							result.accountNumber = account.accountNumber;
-                            result.accountSubnumber = account.accountSuffix;
-							result.bankCode = account.bankCode;
-							result.userId = account.userId;
-							result.account = account;
-							account.isStandingOrderSupported = [NSNumber numberWithBool:YES ];
-							[resultList addObject: [result autorelease] ];
-						}					
-					}
-				}
-			}
-		} else return;
-	} else {
-		resultList = [NSMutableArray arrayWithCapacity: [accounts count]];
-		for (account in accounts) {
-			if (account.userId) {
-				BankQueryResult *result = [[BankQueryResult alloc] init];
-				result.accountNumber = account.accountNumber;
-                result.accountSubnumber = account.accountSuffix;
-				result.bankCode = account.bankCode;
-				result.userId = account.userId;
-				result.account = account;
-				[resultList addObject: [result autorelease]];
-			}
-		}
-	}
-*/
-    for (StandingOrder *stord in [orderController arrangedObjects ]) {
-        if ([stord.isChanged boolValue] == YES) {
+    for (StandingOrder *stord in [orderController arrangedObjects]) {
+        if ([stord.isChanged boolValue]) {
             int res = NSRunAlertPanel(NSLocalizedString(@"AP16", @""), 
                                       NSLocalizedString(@"AP461", @""),
                                       NSLocalizedString(@"AP462", @""), 
@@ -826,13 +759,12 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
             }
         }
     }
-    
-    
+
     resultList = [NSMutableArray arrayWithCapacity: 10];
-    NSMenu *menu = [sourceAccountSelector menu ];
-    NSArray *items = [menu itemArray ];
+    NSMenu *menu = [sourceAccountSelector menu];
+    NSArray *items = [menu itemArray];
     for (NSMenuItem *item in items) {
-        if ([item.representedObject isKindOfClass:[BankAccount class ]]) {
+        if ([item.representedObject isKindOfClass: [BankAccount class]]) {
             BankAccount *account = (BankAccount*)item.representedObject;
 			if (account.userId) {
 				BankQueryResult *result = [[BankQueryResult alloc] init];
@@ -856,14 +788,6 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
                                                object: nil];
 
 	[[HBCIClient hbciClient] getStandingOrders: resultList];
-/*
-	// Next remove orders without ID.
-	for (StandingOrder *order in [orderController arrangedObjects]) {
-		if (order.orderKey == nil) {
-            [managedObjectContext deleteObject: order];
-        }
-	}
-*/ 
 }
 
 #pragma mark -
@@ -871,49 +795,61 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 - (IBAction)sourceAccountChanged: (id)sender
 {
-    BankAccount *account = [sender selectedItem].representedObject;
-    
-	currentOrder.account = account;
-    if (account.currency.length == 0) {
-        currentOrder.currency = @"EUR";
+    BOOL accountSelected = [sender selectedItem] != nil;
+    for (NSUInteger row = 0; row <= 5; row++) {
+        for (NSUInteger index = 0; index < 5; index++) {
+            [[standingOrderForm viewWithTag: row * 10 + index] setEnabled: accountSelected];
+        }
+    }
+
+    if (accountSelected) {
+        BankAccount *account = [sender selectedItem].representedObject;
+
+        currentOrder.account = account;
+        if (account.currency.length == 0) {
+            currentOrder.currency = @"EUR";
+        } else {
+            currentOrder.currency = account.currency;
+        }
+
+        // re-calculate limits and check
+        if (currentOrder.orderKey == nil) {
+            self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
+        } else {
+            self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
+        }
+        [self preparePurposeFields];
+
+        // update to new limits
+        StandingOrderPeriod period = [currentOrder.period intValue];
+
+        if (period == stord_weekly && currentLimits.allowWeekly == NO) {
+            currentOrder.period = @(stord_monthly);
+            period = stord_monthly;
+        }
+
+        if (period == stord_weekly) {
+            [self enableWeekly: YES];
+            [weekCell setState: NSOnState];
+            [monthCell setState: NSOffState];
+            [self updateWeekCycles];
+            [weekCyclesPopup setEnabled: currentLimits.allowChangeCycle];
+            [execDaysWeekPopup setEnabled: currentLimits.allowChangeExecDay];
+        } else {
+            [self enableWeekly: NO];
+            [weekCell setState: NSOffState];
+            [monthCell setState: NSOnState];
+            [self updateMonthCycles];
+            [monthCyclesPopup setEnabled: currentLimits.allowChangeCycle];
+            [execDaysMonthPopup setEnabled: currentLimits.allowChangeExecDay];
+        }
+        
+        [weekCell setEnabled: currentLimits.allowWeekly];
+        [monthCell setEnabled: currentLimits.allowMonthly];
     } else {
-        currentOrder.currency = account.currency;
+        [weekCell setEnabled: NO];
+        [monthCell setEnabled: NO];
     }
-    
-    // re-calculate limits and check
-    if (currentOrder.orderKey == nil) {
-        self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
-    } else {
-        self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
-    }
-    [self preparePurposeFields];
-    
-    // update to new limits
-    StandingOrderPeriod period = [currentOrder.period intValue];
-    
-    if (period == stord_weekly && currentLimits.allowWeekly == NO) {
-        currentOrder.period = @(stord_monthly);
-        period = stord_monthly;
-    }
-    
-    if (period == stord_weekly) {
-        [self enableWeekly: YES];
-        [weekCell setState: NSOnState];
-        [monthCell setState: NSOffState];
-        [self updateWeekCycles];
-        [weekCyclesPopup setEnabled: currentLimits.allowChangeCycle];
-        [execDaysWeekPopup setEnabled: currentLimits.allowChangeExecDay];
-    } else {
-        [self enableWeekly: NO];
-        [weekCell setState: NSOffState];
-        [monthCell setState: NSOnState];
-        [self updateMonthCycles];
-        [monthCyclesPopup setEnabled: currentLimits.allowChangeCycle];
-        [execDaysMonthPopup setEnabled: currentLimits.allowChangeExecDay];
-    }
-    
-    [weekCell setEnabled: currentLimits.allowWeekly];
-    [monthCell setEnabled: currentLimits.allowMonthly];    
 }
 
 - (void)ordersNotification: (NSNotification*)notification
@@ -968,7 +904,9 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
             return;
         }
         self.currentOrder = selection[0];
-        
+
+        deleteButton.hidden = [currentOrder.toDelete boolValue];
+
         oldWeekDay = nil;
         oldWeekCycle = nil;
         oldMonthDay =  nil;
@@ -1027,6 +965,40 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 #pragma mark -
 #pragma mark Drag and drop
 
+- (BOOL)doDeletionOfOrder: (StandingOrder *)order
+{
+    // If there is no order key yet then we are deleting a newly created standing order, which
+    // has not yet been sent to the bank. So we can simply remove it from the controller.
+    if (order.orderKey == nil) {
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP454", nil),
+                                  NSLocalizedString(@"AP458", nil),
+                                  NSLocalizedString(@"cancel", nil),
+                                  NSLocalizedString(@"yes", nil),
+                                  nil);
+        if (res != NSAlertAlternateReturn) {
+            return NO;
+        }
+        [orderController remove: self]; // The order is currently selected.
+        return YES;
+    }
+
+    // Otherwise ask to mark the order for deletion. It gets then deleted when all changes are
+    // sent to the bank.
+    int res = NSRunAlertPanel(NSLocalizedString(@"AP454", nil),
+                              NSLocalizedString(@"AP455", nil),
+                              NSLocalizedString(@"cancel", nil),
+                              NSLocalizedString(@"AP456", nil),
+                              nil);
+    if (res != NSAlertAlternateReturn) {
+        return NO;
+    }
+
+    order.toDelete = @YES;
+    deleteButton.hidden = YES;
+
+    return YES;
+}
+
 /**
  * Called when the user drags transfers to the waste basket, which represents a delete operation.
  */
@@ -1049,35 +1021,20 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     }
     StandingOrder *order = (StandingOrder *)[context objectWithID: objectId];
 
-    // If there is no order key yet then we are deleting a newly created standing order, which
-    // has not yet been sent to the bank. So we can simply remove it from the controller.
-    if (order.orderKey == nil) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP454", nil),
-                                  NSLocalizedString(@"AP458", nil),
-                                  NSLocalizedString(@"cancel", nil),
-                                  NSLocalizedString(@"yes", nil),
-                                  nil);
-        if (res != NSAlertAlternateReturn) {
-            return NO;
-        }
-        [orderController remove: self]; // The order is currently selected.
-        return YES;
+    return [self doDeletionOfOrder: order];
+}
+
+- (IBAction)deleteOrder: (id)sender
+{
+    [self doDeletionOfOrder: currentOrder];
+}
+
+- (void)cancelDeletionForIndex: (NSUInteger)index
+{
+    [orderController.arrangedObjects[index] setToDelete: @NO];
+    if (orderController.arrangedObjects[index] == currentOrder) {
+        deleteButton.hidden = NO;
     }
-    
-    // Otherwise ask to mark the order for deletion. It gets then deleted when all changes are
-    // sent to the bank.
-    int res = NSRunAlertPanel(NSLocalizedString(@"AP454", nil),
-                              NSLocalizedString(@"AP455", nil),
-                              NSLocalizedString(@"cancel", nil),
-                              NSLocalizedString(@"AP456", nil),
-                              nil);
-    if (res != NSAlertAlternateReturn) {
-        return NO;
-    }
-    
-    order.toDelete = @YES;
-    
-    return YES;
 }
 
 #pragma mark -

@@ -800,7 +800,7 @@
 		B1AFA9351299C15900B115A7 /* StandingOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrder.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1AFA9F6129EEA3900B115A7 /* Orders.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Orders.xib; sourceTree = "<group>"; };
 		B1AFAA0312A061C100B115A7 /* StandingOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrderController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B1AFAA0412A061C100B115A7 /* StandingOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrderController.m; sourceTree = "<group>"; tabWidth = 4; };
+		B1AFAA0412A061C100B115A7 /* StandingOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrderController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1B417DD13F06AD200BEEC8F /* TanMediaWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TanMediaWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TanMediaWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TanMediaWindow.xib; sourceTree = "<group>"; };
