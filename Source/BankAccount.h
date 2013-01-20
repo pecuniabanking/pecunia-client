@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -42,16 +42,20 @@ typedef enum {
 -(NSDate*)latestTransferDate;
 
 
--(void)evaluateQueryResult: (BankQueryResult*)res;
--(int)updateFromQueryResult: (BankQueryResult*)result;
--(void)updateStandingOrders:(NSArray*)orders;
--(void)copyStatement:(BankStatement*)stat;
--(void)copyStatementsToManualAccounts:(NSArray*)statements;
--(void)updateBalanceWithValue:(NSDecimalNumber*)value;
--(void)repairStatementBalances;
--(NSDate*)nextDateForDate:(NSDate*)date;
--(NSInteger)calcUnread;
--(BankUser*)defaultBankUser;
+- (void)evaluateQueryResult: (BankQueryResult*)res;
+- (int)updateFromQueryResult: (BankQueryResult*)result;
+- (void)updateStandingOrders: (NSArray*)orders;
+- (void)copyStatement: (BankStatement*)stat;
+- (void)copyStatementsToManualAccounts: (NSArray*)statements;
+- (void)updateBalanceWithValue: (NSDecimalNumber*)value;
+- (void)repairStatementBalances;
+- (NSDate*)nextDateForDate: (NSDate*)date;
+- (NSInteger)calcUnread;
+- (BankUser*)defaultBankUser;
+- (NSUInteger)balanceHistoryToDates: (NSArray**)dates
+                           balances: (NSArray**)balances
+                      balanceCounts: (NSArray**)counts
+                       withGrouping: (GroupingInterval)interval;
 
 +(BankAccount*)bankRootForCode:(NSString*)bankCode;
 +(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code;

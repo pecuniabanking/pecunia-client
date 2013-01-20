@@ -2176,10 +2176,11 @@ int double_compare(const void *value1, const void *value2)
         NSArray *turnovers = nil;
         BOOL extraEntry = NO;
         if (mainCategory.isBankAccount) {
-            [mainCategory balanceHistoryToDates: &dates
-                                       balances: &balances
-                                  balanceCounts: &turnovers
-                                   withGrouping: groupingInterval];
+            BankAccount *account = (BankAccount*)mainCategory;
+            [account balanceHistoryToDates: &dates
+                                  balances: &balances
+                             balanceCounts: &turnovers
+                              withGrouping: groupingInterval];
             extraEntry = YES;
         } else {
             [mainCategory categoryHistoryToDates: &dates

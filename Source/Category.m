@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -433,13 +433,15 @@ BOOL updateSent = NO;
     return set;
 }
 
-// returns a set of all assignments displayed in the transaction list for this category
-// takes setting "recursiveTransactions" into account, i.e. whether also assignments of sub categories should be displayed
+/**
+ * Returns a set of all assignments displayed in the transaction list for this category.
+ * Takes setting "recursiveTransactions" into account, i.e. whether also assignments of sub categories should be displayed.
+ */
 - (NSMutableSet*)boundAssignments
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSArray *assignments = [self assignmentsFrom:startReportDate to:endReportDate withChildren:[defaults boolForKey:@"recursiveTransactions"]];
-    return [NSMutableSet setWithArray:assignments];
+    NSArray *assignments = [self assignmentsFrom: startReportDate to: endReportDate withChildren: [defaults boolForKey: @"recursiveTransactions"]];
+    return [NSMutableSet setWithArray: assignments];
 }
 
 /**
@@ -447,16 +449,16 @@ BOOL updateSent = NO;
  */
 - (NSMutableSet*)allAssignments
 {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
     NSSet *allCats = [self allCategories];
     NSMutableSet *result = [[NSMutableSet alloc] init];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"StatCatAssignment" inManagedObjectContext:context];
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"StatCatAssignment" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category in %@", allCats];
-    [fetchRequest setPredicate:predicate];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category in %@", allCats];
+    [fetchRequest setPredicate: predicate];
     
     NSError *error = nil;
     NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
@@ -473,80 +475,6 @@ BOOL updateSent = NO;
 {
     [self willChangeValueForKey: @"boundAssignments"];
     [self didChangeValueForKey: @"boundAssignments"];
-}
-
-/**
- * Collects a history of the saldo movement for this category over time.
- * This is usually only meaningful for bank accounts.
- * The resulting arrays are sorted by ascending date.
- */
-- (NSUInteger)balanceHistoryToDates: (NSArray**)dates
-                           balances: (NSArray**)balances
-                      balanceCounts: (NSArray**)counts
-                       withGrouping: (GroupingInterval)interval
-{
-    NSArray* assignments = [[self allAssignments] allObjects];
-    NSArray* sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
-    
-    NSUInteger count = [assignments count];
-    NSMutableArray* dateArray = [NSMutableArray arrayWithCapacity: count];
-    NSMutableArray* balanceArray = [NSMutableArray arrayWithCapacity: count];
-    NSMutableArray* countArray = [NSMutableArray arrayWithCapacity: count];
-    if (count > 0)
-    {
-        ShortDate* lastDate = nil;
-        int balanceCount = 1;
-        NSDecimalNumber* lastSaldo = nil;
-        for (NSUInteger i = 0; i < count; i++) {
-            StatCatAssignment* assignment = sortedAssignments[i];
-            ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
-            
-            switch (interval) {
-                case GroupByWeeks:
-                    date = [date firstDayInWeek];
-                    break;
-                case GroupByMonths:
-                    date = [date firstDayInMonth];
-                    break;
-                case GroupByQuarters:
-                    date = [date firstDayInQuarter];
-                    break;
-                case GroupByYears:
-                    date = [date firstDayInYear];
-                    break;
-                default:
-                    break;
-            }            
-
-            if (lastDate == nil) {
-                lastDate = date;
-            } else {
-                if ([lastDate compare: date] != NSOrderedSame)
-                {
-                    [dateArray addObject: lastDate];
-                    [balanceArray addObject: lastSaldo];
-                    [countArray addObject: @(balanceCount)];
-                    balanceCount = 1;
-                    lastDate = date;
-                }
-                else
-                {
-                    balanceCount++;
-                }
-            }                
-            lastSaldo = assignment.statement.saldo;
-        }
-        if (lastDate != nil) {
-            [dateArray addObject: lastDate];
-            [balanceArray addObject: lastSaldo];
-            [countArray addObject: @(balanceCount)];
-        }            
-        *dates = dateArray;
-        *balances = balanceArray;
-        *counts = countArray;
-    }
-    
-    return count;
 }
 
 /**
