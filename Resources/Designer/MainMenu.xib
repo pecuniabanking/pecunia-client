@@ -52,6 +52,7 @@
 			<string>NSToolbarFlexibleSpaceItem</string>
 			<string>NSToolbarItem</string>
 			<string>NSTreeController</string>
+			<string>NSUserDefaultsController</string>
 			<string>NSView</string>
 			<string>NSWindowTemplate</string>
 		</array>
@@ -99,11 +100,9 @@
 							<string key="NSToolbarItemPaletteLabel">Buttons</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSSegmentedControl" key="NSToolbarItemView" id="805917942">
-								<reference key="NSNextResponder"/>
+								<nil key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {529, 25}}</string>
-								<reference key="NSSuperview"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSegmentedCell" key="NSCell" id="848648286">
@@ -4251,9 +4250,9 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 						<object class="NSMenu" key="NSSubmenu" id="678233615">
 							<string key="NSTitle">Anzeige</string>
 							<array class="NSMutableArray" key="NSMenuItems">
-								<object class="NSMenuItem" id="107966411">
+								<object class="NSMenuItem" id="280999419">
 									<reference key="NSMenu" ref="678233615"/>
-									<string key="NSTitle">Salden</string>
+									<string key="NSTitle">Untergeordnete Überweisungen</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -4261,9 +4260,29 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 									<reference key="NSOnImage" ref="883146705"/>
 									<reference key="NSMixedImage" ref="237878853"/>
 								</object>
-								<object class="NSMenuItem" id="280999419">
+								<object class="NSMenuItem" id="725927613">
 									<reference key="NSMenu" ref="678233615"/>
-									<string key="NSTitle">Untergeordnete Überweisungen</string>
+									<bool key="NSIsDisabled">YES</bool>
+									<bool key="NSIsSeparator">YES</bool>
+									<string key="NSTitle"/>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
+								</object>
+								<object class="NSMenuItem" id="775563244">
+									<reference key="NSMenu" ref="678233615"/>
+									<string key="NSTitle">Automatische Groß-/Kleinschreibung</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<int key="NSState">1</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
+								</object>
+								<object class="NSMenuItem" id="107966411">
+									<reference key="NSMenu" ref="678233615"/>
+									<string key="NSTitle">Salden</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -8698,6 +8717,9 @@ wGw</bytes>
 			<object class="NSCustomObject" id="746258675">
 				<string key="NSClassName">LicenseWindowController</string>
 			</object>
+			<object class="NSUserDefaultsController" id="781564242">
+				<bool key="NSSharedInstance">YES</bool>
+			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<array class="NSMutableArray" key="connectionRecords">
@@ -9470,30 +9492,6 @@ wGw</bytes>
 					<int key="connectionID">6520</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleFeature:</string>
-						<reference key="source" ref="674635667"/>
-						<reference key="destination" ref="107966411"/>
-					</object>
-					<int key="connectionID">6553</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleFeature:</string>
-						<reference key="source" ref="674635667"/>
-						<reference key="destination" ref="280999419"/>
-					</object>
-					<int key="connectionID">6554</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">toggleRecursiveStatementsItem</string>
-						<reference key="source" ref="674635667"/>
-						<reference key="destination" ref="280999419"/>
-					</object>
-					<int key="connectionID">6556</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">toggleDetailsPaneItem</string>
 						<reference key="source" ref="674635667"/>
@@ -9508,30 +9506,6 @@ wGw</bytes>
 						<reference key="destination" ref="110196758"/>
 					</object>
 					<int key="connectionID">6558</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">toggleBalancesItem</string>
-						<reference key="source" ref="674635667"/>
-						<reference key="destination" ref="107966411"/>
-					</object>
-					<int key="connectionID">6559</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleFeature:</string>
-						<reference key="source" ref="674635667"/>
-						<reference key="destination" ref="1069604930"/>
-					</object>
-					<int key="connectionID">6561</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">toggleHeadersItem</string>
-						<reference key="source" ref="674635667"/>
-						<reference key="destination" ref="1069604930"/>
-					</object>
-					<int key="connectionID">6562</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -11813,6 +11787,70 @@ wGw</bytes>
 						<reference key="destination" ref="501414264"/>
 					</object>
 					<int key="connectionID">6484</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.showBalances</string>
+						<reference key="source" ref="107966411"/>
+						<reference key="destination" ref="781564242"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="107966411"/>
+							<reference key="NSDestination" ref="781564242"/>
+							<string key="NSLabel">value: values.showBalances</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.showBalances</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">6586</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.recursiveTransactions</string>
+						<reference key="source" ref="280999419"/>
+						<reference key="destination" ref="781564242"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="280999419"/>
+							<reference key="NSDestination" ref="781564242"/>
+							<string key="NSLabel">value: values.recursiveTransactions</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.recursiveTransactions</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">6589</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.showHeadersInLists</string>
+						<reference key="source" ref="1069604930"/>
+						<reference key="destination" ref="781564242"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1069604930"/>
+							<reference key="NSDestination" ref="781564242"/>
+							<string key="NSLabel">value: values.showHeadersInLists</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.showHeadersInLists</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">6583</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.autoCasing</string>
+						<reference key="source" ref="775563244"/>
+						<reference key="destination" ref="781564242"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="775563244"/>
+							<reference key="NSDestination" ref="781564242"/>
+							<string key="NSLabel">value: values.autoCasing</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.autoCasing</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">6580</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -15528,10 +15566,12 @@ wGw</bytes>
 						<reference key="object" ref="678233615"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="107966411"/>
-							<reference ref="280999419"/>
 							<reference ref="110196758"/>
 							<reference ref="675925675"/>
+							<reference ref="280999419"/>
 							<reference ref="1069604930"/>
+							<reference ref="725927613"/>
+							<reference ref="775563244"/>
 						</array>
 						<reference key="parent" ref="115235777"/>
 					</object>
@@ -15559,6 +15599,22 @@ wGw</bytes>
 						<int key="objectID">6560</int>
 						<reference key="object" ref="1069604930"/>
 						<reference key="parent" ref="678233615"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6574</int>
+						<reference key="object" ref="725927613"/>
+						<reference key="parent" ref="678233615"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6575</int>
+						<reference key="object" ref="775563244"/>
+						<reference key="parent" ref="678233615"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6577</int>
+						<reference key="object" ref="781564242"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">Shared User Defaults Controller</string>
 					</object>
 				</array>
 			</object>
@@ -16244,6 +16300,9 @@ wGw</bytes>
 				<string key="6532.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6534.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6560.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6574.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6575.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6577.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="74.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="77.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="78.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -16291,7 +16350,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6573</int>
+			<int key="maxID">6589</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -16522,12 +16581,10 @@ wGw</bytes>
 						<string key="statementsListView">StatementsListView</string>
 						<string key="statementsListViewHost">RoundedOuterShadowView</string>
 						<string key="timeSlicer">TimeSliceManager</string>
-						<string key="toggleBalancesItem">NSMenuItem</string>
 						<string key="toggleDetailsButton">NSButton</string>
 						<string key="toggleDetailsPaneItem">NSMenuItem</string>
 						<string key="toggleFullscreenItem">NSMenuItem</string>
 						<string key="toggleHeadersItem">NSMenuItem</string>
-						<string key="toggleRecursiveStatementsItem">NSMenuItem</string>
 						<string key="toolbarButtons">NSSegmentedControl</string>
 						<string key="transactionController">TransactionController</string>
 						<string key="turnoversField">NSTextField</string>
@@ -16679,10 +16736,6 @@ wGw</bytes>
 							<string key="name">timeSlicer</string>
 							<string key="candidateClassName">TimeSliceManager</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="toggleBalancesItem">
-							<string key="name">toggleBalancesItem</string>
-							<string key="candidateClassName">NSMenuItem</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="toggleDetailsButton">
 							<string key="name">toggleDetailsButton</string>
 							<string key="candidateClassName">NSButton</string>
@@ -16697,10 +16750,6 @@ wGw</bytes>
 						</object>
 						<object class="IBToOneOutletInfo" key="toggleHeadersItem">
 							<string key="name">toggleHeadersItem</string>
-							<string key="candidateClassName">NSMenuItem</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="toggleRecursiveStatementsItem">
-							<string key="name">toggleRecursiveStatementsItem</string>
 							<string key="candidateClassName">NSMenuItem</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="toolbarButtons">

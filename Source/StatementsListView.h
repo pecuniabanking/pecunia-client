@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -31,32 +31,34 @@
 @private
     id observedObject;
 
-    NSDateFormatter* _dateFormatter;
-    NSNumberFormatter* _numberFormatter;
-    NSCalendar* _calendar;
+    NSDateFormatter* dateFormatter;
+    NSNumberFormatter* numberFormatter;
     
     NSIndexSet* draggedIndexes;
     
     BOOL showAssignedIndicators;
     id owner;
-    BOOL showBalances;
     BOOL autoResetNew;
     BOOL pendingReload;  // Set when a notification arrived to completely reload the listview.
     BOOL pendingRefresh; // Set when there was already a notification to refresh visible cells (for property changes).
     BOOL activating;     // Set when a cells are activated programmatically (so we don't send notifications around).
+
+    // This are cached user settings.
+    BOOL showBalances;
+    BOOL showHeaders;
+    BOOL autoCasing;
 }
 
 @property (nonatomic, assign) BOOL showAssignedIndicators;
 @property (nonatomic, strong) id owner;
 @property (nonatomic, assign) BOOL autoResetNew;
 @property (nonatomic, assign) BOOL disableSelection;
-@property (nonatomic, assign) BOOL showHeaders;
 @property (nonatomic, strong) NSArray *dataSource;
+@property (nonatomic, assign) BOOL canShowHeaders; // Headers can be switched off temporarily.
 
 - (NSNumberFormatter*) numberFormatter;
 
 - (void)updateVisibleCells;
 - (void)activateCells;
-- (void)updateBalanceVisibility;
 
 @end

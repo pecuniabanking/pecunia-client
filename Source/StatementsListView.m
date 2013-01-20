@@ -49,30 +49,49 @@ extern NSString *StatementTypeKey;
 @synthesize owner;
 @synthesize autoResetNew;
 @synthesize disableSelection;
-@synthesize showHeaders;
 @synthesize dataSource;
+@synthesize canShowHeaders;
+
+static void *DataSourceBindingContext = (void *)@"DataSourceContext";
+static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
     [self setDelegate: self];
-    _dateFormatter = [[NSDateFormatter alloc] init];
-    [_dateFormatter setLocale: [NSLocale currentLocale]];
-    [_dateFormatter setDateStyle: kCFDateFormatterFullStyle];
-    [_dateFormatter setTimeStyle: NSDateFormatterNoStyle];
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setLocale: [NSLocale currentLocale]];
+    [dateFormatter setDateStyle: kCFDateFormatterFullStyle];
+    [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
     autoResetNew = YES;
     disableSelection = NO;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
+    [userDefaults addObserver: self forKeyPath: @"showBalances" options: 0 context: UserDefaultsBindingContext];
     showBalances = YES;
     if ([userDefaults objectForKey: @"showBalances"]) {
-        showBalances = [[userDefaults objectForKey: @"showBalances"] boolValue];
+        showBalances = [userDefaults boolForKey: @"showBalances"];
+    } else {
+        [userDefaults setBool: YES forKey: @"showBalances"];
     }
 
+    [userDefaults addObserver: self forKeyPath: @"showHeadersInLists" options: 0 context: UserDefaultsBindingContext];
     showHeaders = YES;
+    canShowHeaders = YES;
     if ([userDefaults objectForKey: @"showHeadersInLists"]) {
-        showHeaders = [[userDefaults objectForKey: @"showHeadersInLists"] boolValue];
+        showHeaders = [userDefaults boolForKey: @"showHeadersInLists"];
+    } else {
+        [userDefaults setBool: YES forKey: @"showHeadersInLists"];
+    }
+
+    [userDefaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
+    autoCasing = YES;
+    if ([userDefaults objectForKey: @"autoCasing"]) {
+        autoCasing = [userDefaults boolForKey: @"autoCasing"];
+    } else {
+        [userDefaults setBool: YES forKey: @"autoCasing"];
     }
 }
 
@@ -96,21 +115,24 @@ extern NSString *StatementTypeKey;
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.transactionText"];
 
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObserver: self forKeyPath: @"showHeadersInLists"];
+    [userDefaults removeObserver: self forKeyPath: @"showBalances"];
+    [userDefaults removeObserver: self forKeyPath: @"autoCasing"];
 }
 
 - (NSNumberFormatter*)numberFormatter
 {
-    // Cannot place this in awakeFromLib as it accessed by other awakeFromNib methods and might not
+    // Cannot place this in awakeFromNib as it accessed by other awakeFromNib methods and might not
     // be ready yet by then.
-    if (_numberFormatter == nil)
-        _numberFormatter = [[NSNumberFormatter alloc] init];
-    return _numberFormatter;
+    if (numberFormatter == nil)
+        numberFormatter = [[NSNumberFormatter alloc] init];
+    return numberFormatter;
 }
 
 #pragma mark -
 #pragma mark Bindings, KVO and KVC
-
-static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (void)bind: (NSString *)binding
     toObject: (id)observableObject
@@ -146,7 +168,6 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteIBAN" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteBIC" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.transactionText" options: 0 context: nil];
-
     } else {
         [super bind: binding toObject: observableObject withKeyPath: keyPath options: options];
     }
@@ -158,28 +179,59 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                        context: (void *)context
 {
     // Coalesce many notifications into one.
+    if (context == UserDefaultsBindingContext) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if ([keyPath isEqualToString: @"showHeadersInLists"]) {
+            showHeaders = [userDefaults boolForKey: @"showHeadersInLists"];
+
+            [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
+            pendingReload = YES;
+            [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
+            return;
+        }
+
+        if ([keyPath isEqualToString: @"showBalances"]) {
+            showBalances = [userDefaults boolForKey: @"showBalances"];
+            if (!pendingRefresh && !pendingReload) {
+                [self updateBalanceVisibility];
+            }
+        }
+
+        if ([keyPath isEqualToString: @"autoCasing"]) {
+            autoCasing = [userDefaults boolForKey: @"autoCasing"];
+            if (!pendingRefresh && !pendingReload) {
+                pendingRefresh = YES;
+                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
+            }
+        }
+
+        return;
+    }
+
     if (context == DataSourceBindingContext) {
         [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
         pendingReload = YES;
         [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
-    } else {
-        // If there's already a full reload pending do nothing.
-        if (!pendingReload) {
-            // If there's another property change pending cancel it and do a full reload instead.
-            if (pendingRefresh) {
-                pendingRefresh = NO;
-                [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
-                pendingReload = YES;
-                [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
-            } else {
-                pendingRefresh = YES;
-                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
-            }
-        } else {
-            // Reschedule the reload call.
-            [NSObject cancelPreviousPerformRequestsWithTarget: self];
+
+        return;
+    }
+    
+    // If there's already a full reload pending do nothing.
+    if (!pendingReload) {
+        // If there's another property change pending cancel it and do a full reload instead.
+        if (pendingRefresh) {
+            pendingRefresh = NO;
+            [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
+            pendingReload = YES;
             [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
+        } else {
+            pendingRefresh = YES;
+            [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
         }
+    } else {
+        // Reschedule the reload call.
+        [NSObject cancelPreviousPerformRequestsWithTarget: self];
+        [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
     }
 }
 
@@ -200,17 +252,19 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
         value = @"";
     else
     {
-        if ([value isKindOfClass: [NSDate class]])
-            value = [_dateFormatter stringFromDate: value];
-        if (capitalize) {
-            NSMutableArray *words = [[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
-            for (NSUInteger i = 0; i < [words count]; i++) {
-                NSString *word = words[i];
-                if (i == 0 || [word length] > 3) {
-                    words[i] = [word capitalizedString];
+        if ([value isKindOfClass: [NSDate class]]) {
+            value = [dateFormatter stringFromDate: value];
+        } else {
+            if (capitalize && autoCasing) {
+                NSMutableArray *words = [[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
+                for (NSUInteger i = 0; i < [words count]; i++) {
+                    NSString *word = words[i];
+                    if (i == 0 || [word length] > 3) {
+                        words[i] = [word capitalizedString];
+                    }
                 }
+                value = [words componentsJoinedByString: @" "];
             }
-            value = [words componentsJoinedByString: @" "];
         }
     }
     
@@ -219,7 +273,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (BOOL)showsHeaderForRow: (NSUInteger)row
 {
-    if (!showHeaders) {
+    if (!showHeaders || !canShowHeaders) {
         return false;
     }
     
@@ -397,10 +451,6 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
  */
 - (void)updateBalanceVisibility
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults objectForKey: @"showBalances"]) {
-        showBalances = [[userDefaults objectForKey: @"showBalances"] boolValue];
-    }
     NSArray *cells = [self visibleCells];
     for (StatementsListViewCell *cell in cells)
         [cell showBalance: showBalances];
