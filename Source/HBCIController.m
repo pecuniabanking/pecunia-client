@@ -870,24 +870,45 @@ NSString *escapeSpecial(NSString *s)
 				if([iResult.accountNumber isEqualToString: res.accountNumber ] && [iResult.bankCode isEqualToString: res.bankCode ] &&
                    ((iResult.accountSubnumber == nil && res.accountSubnumber == nil) || [iResult.accountSubnumber isEqualToString: res.accountSubnumber ])) break;
             }
-            // saldo of the last statement is current saldo
-            if ([res.statements count ] > 0) {
-                BankStatement *stat = (res.statements)[[res.statements count ] - 1];
-                iResult.balance = stat.saldo;
-                /*				
-                 // ensure order by refining posting date
-                 int seconds;
-                 NSDate *oldDate = [NSDate distantPast ];
-                 for(stat in res.statements) {
-                 if([stat.date compare: oldDate ] != NSOrderedSame) {
-                 seconds = 0;
-                 oldDate = stat.date;
-                 } else seconds += 100;
-                 if(seconds > 0) stat.date = [[[NSDate alloc ] initWithTimeInterval: seconds sinceDate: stat.date ] autorelease ];
-                 }
-                 */ 
-                iResult.statements = res.statements;
+            
+            if (res.ccNumber != nil) {
+                // Credit Card Statements, balance field is filled with current account balance
+                iResult.balance = res.balance;
+                iResult.ccNumber = res.ccNumber;
+                iResult.lastSettleDate = res.lastSettleDate;
+                for (BankStatement *stat in res.statements) {
+                    stat.saldo = res.balance;
+                    res.balance = [res.balance decimalNumberBySubtracting:stat.value];
+                }
+                // reverse order
+                int idx;
+                NSMutableArray *statements = [NSMutableArray arrayWithCapacity:50];
+                for (idx = [res.statements count]-1; idx >= 0; idx--) {
+                    [statements addObject:res.statements[idx]];
+                }
+                iResult.statements = statements;
+            } else {
+                // Standard Statements
+                // saldo of the last statement is current saldo
+                if ([res.statements count ] > 0) {
+                    BankStatement *stat = (res.statements)[[res.statements count ] - 1];
+                    iResult.balance = stat.saldo;
+                    /*
+                     // ensure order by refining posting date
+                     int seconds;
+                     NSDate *oldDate = [NSDate distantPast ];
+                     for(stat in res.statements) {
+                     if([stat.date compare: oldDate ] != NSOrderedSame) {
+                     seconds = 0;
+                     oldDate = stat.date;
+                     } else seconds += 100;
+                     if(seconds > 0) stat.date = [[[NSDate alloc ] initWithTimeInterval: seconds sinceDate: stat.date ] autorelease ];
+                     }
+                     */
+                    iResult.statements = res.statements;
+                }
             }
+            
             if ([res.standingOrders count ] > 0) {
                 iResult.standingOrders = res.standingOrders;
             }
@@ -1281,6 +1302,34 @@ NSString *escapeSpecial(NSString *s)
             } else {
                 tinfo.allowesDelete = @NO;
             }
+        }
+        
+        if ([supportedJobNames containsObject:@"KUmsAll"] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = @(TransactionType_BankStatements);
+        }
+        
+        if ([supportedJobNames containsObject:@"KKUmsAll"] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = @(TransactionType_CCStatements);
+        }
+        
+        if ([supportedJobNames containsObject:@"KKSettleList"] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = @(TransactionType_CCSettlementList);
+        }
+        
+        if ([supportedJobNames containsObject:@"KKSettleReq"] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = @(TransactionType_CCSettlement);
         }
     }
     return nil;

@@ -24,6 +24,11 @@
 @class Category;
 @class StatCatAssignment;
 
+typedef enum {
+    StatementType_Standard = 0,
+    StatementType_CreditCard
+} BankStatementType;
+
 @interface BankStatement : NSManagedObject {
 	
 //	BankAccount *account;
@@ -53,8 +58,10 @@
 
 @property (nonatomic, strong) NSDate *valutaDate;
 @property (nonatomic, strong) NSDate *date;
+@property (nonatomic, strong) NSDate *docDate;
 
 @property (nonatomic, strong) NSDecimalNumber *value;
+@property (nonatomic, strong) NSDecimalNumber *origValue;
 @property (nonatomic, strong) NSDecimalNumber *nassValue;
 @property (nonatomic, strong) NSDecimalNumber *charge;
 @property (nonatomic, strong) NSDecimalNumber *saldo;
@@ -72,6 +79,15 @@
 @property (nonatomic, strong) NSString *localSuffix;
 @property (nonatomic, strong) NSString *remoteSuffix;
 
+@property (nonatomic, strong) NSString *ccNumberUms;
+@property (nonatomic, strong) NSString *ccChargeKey;
+@property (nonatomic, strong) NSString *ccChargeForeign;
+@property (nonatomic, strong) NSString *ccChargeTerminal;
+@property (nonatomic, strong) NSString *ccSettlementRef;
+@property (nonatomic, strong) NSString *origCurrency;
+@property (nonatomic, strong) NSNumber *isSettled;
+
+
 @property (nonatomic, strong, readonly) NSString * categoriesDescription;
 
 @property (nonatomic, strong) NSString *localBankCode, *localAccount;
@@ -85,6 +101,7 @@
 
 @property (nonatomic, strong) NSString *additional;
 @property (nonatomic, strong) NSNumber *hashNumber;
+@property (nonatomic, strong) NSNumber *type;
 @property (nonatomic, strong) NSNumber *isAssigned;		// assigned to >= 100%
 @property (nonatomic, strong) NSNumber *isManual;
 @property (nonatomic, strong) NSNumber *isStorno;

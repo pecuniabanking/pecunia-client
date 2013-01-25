@@ -46,11 +46,13 @@ static NSArray*	catCache = nil;
 @dynamic additional;
 @dynamic isAssigned;	// assigned to >= 100%
 @dynamic account;
-@dynamic hashNumber;
+@dynamic hashNumber, type;
 @dynamic isManual;
 @dynamic isStorno;
 @dynamic isNew;
 @dynamic ref1, ref2, ref3, ref4;
+
+@dynamic docDate, origValue, origCurrency, isSettled, ccNumberUms, ccChargeForeign, ccChargeTerminal, ccChargeKey, ccSettlementRef;
 
 
 BOOL stringEqualIgnoreWhitespace(NSString *a, NSString *b)

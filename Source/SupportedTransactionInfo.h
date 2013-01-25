@@ -38,6 +38,10 @@ typedef enum {
     TransactionType_TransferDebit,
     TransactionType_TransferSEPA,
     TransactionType_StandingOrder,
+    TransactionType_BankStatements,
+    TransactionType_CCStatements,
+    TransactionType_CCSettlementList,
+    TransactionType_CCSettlement
 } TransactionType;
 
 @class BankAccount;

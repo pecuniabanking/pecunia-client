@@ -602,6 +602,7 @@
 		B132F91E0F96594000263F3B /* ShortDate.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ShortDate.m; sourceTree = "<group>"; tabWidth = 4; };
 		B132FADD0F9CFD0000263F3B /* TimeSliceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TimeSliceManager.h; sourceTree = "<group>"; tabWidth = 4; };
 		B132FADE0F9CFD0000263F3B /* TimeSliceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TimeSliceManager.m; sourceTree = "<group>"; tabWidth = 4; };
+		B1342CED16ADDFB7000F5737 /* Accounts 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Accounts 8.xcdatamodel"; sourceTree = "<group>"; };
 		B134357112EB7FDF006C4687 /* cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cursor.png; sourceTree = "<group>"; };
 		B136AAD60FCF1C4A007A643F /* MCEMTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMTableView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B136AAD70FCF1C4A007A643F /* MCEMTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMTableView.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -2353,6 +2354,7 @@
 		27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B1342CED16ADDFB7000F5737 /* Accounts 8.xcdatamodel */,
 				A68AEBBA1658ED6100CF8184 /* Accounts 7.xcdatamodel */,
 				27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */,
 				27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */,
