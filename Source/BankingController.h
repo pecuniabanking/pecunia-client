@@ -102,7 +102,7 @@
     IBOutlet TransactionController *transactionController;
     IBOutlet NSWindow              *licenseWindow;
     IBOutlet NSButton              *toggleDetailsButton;
-    
+
 @private
     NSMutableDictionary    *mainTabItems;
     NSManagedObjectContext *managedObjectContext;
@@ -144,10 +144,7 @@
     NSArray *defaultIcons; // Associations between categories and their default icons.
 }
 
-@property (unsafe_unretained) IBOutlet NSMenuItem *toggleBalancesItem;
-@property (unsafe_unretained) IBOutlet NSMenuItem *toggleRecursiveStatementsItem;
 @property (unsafe_unretained) IBOutlet NSMenuItem *toggleDetailsPaneItem;
-@property (unsafe_unretained) IBOutlet NSMenuItem *toggleHeadersItem;
 
 @property(nonatomic, copy) NSDecimalNumber *saveValue;
 @property(nonatomic, strong) NSManagedObjectContext *managedObjectContext;

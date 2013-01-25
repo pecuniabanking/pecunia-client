@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -57,14 +57,12 @@ extern NSString *TransferReadyForUseDataType;
 @implementation TransferTemplatesListView
 
 @synthesize owner;
-@synthesize numberFormatter;
 @synthesize dataSource;
 
 - (id)initWithCoder: (NSCoder*)decoder
 {
     self = [super initWithCoder: decoder];
     if (self != nil) {
-        numberFormatter = [[NSNumberFormatter alloc] init];
     }
     return self;
 }
@@ -86,8 +84,6 @@ extern NSString *TransferReadyForUseDataType;
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.purpose2"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.purpose3"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.purpose4"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.value"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.currency"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteBankCode"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteAccount"];
 
@@ -126,8 +122,6 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.purpose2" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.purpose3" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.purpose4" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.value" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.currency" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteBankCode" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteAccount" options: 0 context: nil];
     } else {
@@ -174,8 +168,6 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                              TemplateNameKey: [self formatValue: template.name],
                              StatementRemoteNameKey: [self formatValue: template.remoteName],
                              StatementPurposeKey: [self formatValue: template.purpose],
-                             StatementValueKey: [self formatValue: template.value],
-                             StatementCurrencyKey: [self formatValue: template.currency],
                              StatementRemoteBankCodeKey: [self formatValue: template.remoteBankCode],
                              StatementRemoteIBANKey: [self formatValue: template.remoteIBAN],
                              StatementRemoteBICKey: [self formatValue: template.remoteBIC],
@@ -187,10 +179,6 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     NSRect frame = [cell frame];
     frame.size.height = CELL_HEIGHT;
     [cell setFrame: frame];
-    
-    [cell setTextAttributesForPositivNumbers: [[self numberFormatter] textAttributesForPositiveValues]
-                             negativeNumbers: [[self numberFormatter ] textAttributesForNegativeValues]];
-    
 }
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -23,6 +23,10 @@
 #import "StandingOrder.h"
 #import "NSView+PecuniaAdditions.h"
 
+@protocol OrdersListViewNotificationProtocol
+- (void)cancelDeletionForIndex: (NSUInteger)index;
+@end
+
 @interface OrdersListViewCell : PXListViewCell
 {
 	IBOutlet NSTextField *firstDateLabel;
@@ -40,7 +44,7 @@
     IBOutlet NSTextField *nextDateTitle;
     IBOutlet NSImageView *editImage;
     IBOutlet NSImageView *sendImage;
-    IBOutlet NSImageView *deleteImage;
+    IBOutlet NSButton    *deleteButton;
 
 @private
     NSColor *categoryColor;
@@ -57,8 +61,11 @@
     NSUInteger index;
 }
 
-- (void)setDetails: (NSDictionary *)details;
+@property (nonatomic, strong) id delegate;
 
+- (IBAction)cancelDeletion:(id)sender;
+
+- (void)setDetails: (NSDictionary *)details;
 - (void)setTextAttributesForPositivNumbers: (NSDictionary*)positiveAttributes
                            negativeNumbers: (NSDictionary*)negativeAttributes;
 - (void)selectionChanged;

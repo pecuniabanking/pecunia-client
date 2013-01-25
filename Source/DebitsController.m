@@ -453,6 +453,12 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     debitImage.controller = self;
     [debitImage setFrameCenterRotation: -10];
     debitDeleteImage.controller = self;
+
+    // Keep current row positions as set in the xib, so we can properly adjust control positions.
+    // For now we don't need row 0 (the row with the receiver controls).
+    rowPositions[1] = [[debitFormular viewWithTag: 11] frame].origin.y;
+    rowPositions[2] = [[debitFormular viewWithTag: 21] frame].origin.y;
+    rowPositions[3] = [[debitFormular viewWithTag: 31] frame].origin.y;
 }
 
 - (NSMenuItem*)createItemForAccountSelector: (BankAccount *)account
@@ -608,7 +614,6 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     //   - Standard consolidated company/normal debits/transfers
     // TODO: the bank has a final word if termination is available, so include this here.
     BOOL canBeTerminated = (type == TransferTypeStandard) || (type == TransferTypeDated); // || (type == TransferTypeSEPA) || (type == TransferTypeDebit);
-    [executionText setHidden: !canBeTerminated];
     [executeImmediatelyRadioButton setHidden: !canBeTerminated];
     [executeImmediatelyText setHidden: !canBeTerminated];
     [executeAtDateRadioButton setHidden: !canBeTerminated];
@@ -634,6 +639,68 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         }
     }
 
+    // Finally adjust controls so that no empty row is shown.
+    BOOL row1Hidden = [[debitFormular viewWithTag: 11] isHidden];
+    BOOL row2Hidden = [[debitFormular viewWithTag: 21] isHidden];
+
+    NSUInteger row2Position = rowPositions[2];
+    if (row1Hidden) {
+        row2Position = rowPositions[1];
+    }
+
+    NSUInteger row3Position = rowPositions[3];
+    if (row1Hidden || row2Hidden) {
+        if (row1Hidden && row2Hidden) {
+            row3Position = rowPositions[1];
+        } else {
+            row3Position = rowPositions[2];
+        }
+    }
+
+    if (!row2Hidden) {
+        // Labels.
+        NSView *view = [debitFormular viewWithTag: 20];
+        NSRect newFrame = view.frame;
+        newFrame.origin.y = row2Position + 3;
+        view.frame = newFrame;
+
+        view = [debitFormular viewWithTag: 22];
+        newFrame = view.frame;
+        newFrame.origin.y = row2Position + 3;
+        view.frame = newFrame;
+
+        // Edit controls.
+        view = [debitFormular viewWithTag: 21];
+        newFrame = view.frame;
+        newFrame.origin.y = row2Position;
+        view.frame = newFrame;
+
+        view = [debitFormular viewWithTag: 23];
+        newFrame = view.frame;
+        newFrame.origin.y = row2Position;
+        view.frame = newFrame;
+    }
+
+    { // 3rd row.
+      // Labels.
+        NSView *view = [debitFormular viewWithTag: 30];
+        NSRect newFrame = view.frame;
+        newFrame.origin.y = row3Position + 2;
+        view.frame = newFrame;
+
+        view = [debitFormular viewWithTag: 32];
+        newFrame = view.frame;
+        newFrame.origin.y = row3Position;
+        view.frame = newFrame;
+
+        // Edit controls.
+        view = [debitFormular viewWithTag: 31];
+        newFrame = view.frame;
+        newFrame.origin.y = row3Position;
+        view.frame = newFrame;
+        
+    }
+    
     return YES;
 }
 
@@ -749,6 +816,11 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         Transfer *transfer = transactionController.currentTransfer;
         [self cancelEditing];
         [context deleteObject: transfer];
+
+        if (![context save: &error]) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+        }
         return YES;
     }
     
@@ -1084,6 +1156,39 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     }
 }
 
+- (IBAction)deleteDebit: (id)sender
+{
+    // If we are deleting a new transfer then silently cancel editing and remove the formular from screen.
+    if (transactionController.currentTransfer.changeState == TransferChangeNew) {
+        [self cancelEditing];
+        return;
+    }
+
+	NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    int res = NSRunAlertPanel(NSLocalizedString(@"AP417", @""),
+                              NSLocalizedString(@"AP419", @""),
+                              NSLocalizedString(@"cancel", @""),
+                              NSLocalizedString(@"delete", @""),
+                              nil);
+    if (res != NSAlertAlternateReturn) {
+        return;
+    }
+
+    // We are throwing away the currently being edited transfer which was already placed in the
+    // pending transfers queue but brought back for editing. This time the user wants it deleted.
+    [rightPane hideFormular];
+    Transfer *transfer = transactionController.currentTransfer;
+    [self cancelEditing];
+    [context deleteObject: transfer];
+
+	NSError *error = nil;
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+    }
+}
+
 - (IBAction)showCalendar: (id)sender
 {
     if (calendarWindow == nil) {
@@ -1139,17 +1244,28 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         return;
     }
     
-    BankAccount *account = [sender selectedItem].representedObject;
-    [saldoText setObjectValue: [account catSum]];
-    
-	transactionController.currentTransfer.account = account;
-    
-    if (account.currency.length == 0) {
-        transactionController.currentTransfer.currency = @"EUR";
-    } else {
-        transactionController.currentTransfer.currency = account.currency;
+    BOOL accountSelected = [sender selectedItem] != nil;
+    for (NSUInteger row = 0; row <= 5; row++) {
+        for (NSUInteger index = 0; index < 5; index++) {
+            [[debitFormular viewWithTag: row * 10 + index] setEnabled: accountSelected];
+        }
     }
-    [self updateLimits];
+
+    if (!accountSelected) {
+        [saldoText setObjectValue: @""];
+    } else {
+        BankAccount *account = [sender selectedItem].representedObject;
+        [saldoText setObjectValue: [account catSum]];
+
+        transactionController.currentTransfer.account = account;
+
+        if (account.currency.length == 0) {
+            transactionController.currentTransfer.currency = @"EUR";
+        } else {
+            transactionController.currentTransfer.currency = account.currency;
+        }
+        [self updateLimits];
+    }
 }
 
 - (IBAction)executionTimeChanged: (id)sender

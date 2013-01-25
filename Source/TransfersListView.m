@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -47,6 +47,9 @@ extern NSString *StatementTypeKey;
 extern NSString *TransferDataType;
 extern NSString *TransferReadyForUseDataType;
 
+static void *DataSourceBindingContext = (void *)@"DataSourceContext";
+static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
+
 @interface TransfersListView (Private)
 
 - (void)updateVisibleCells;
@@ -79,6 +82,13 @@ extern NSString *TransferReadyForUseDataType;
     
     [self setDelegate: self];
     [self registerForDraggedTypes: @[TransferDataType, TransferReadyForUseDataType]];
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
+    autoCasing = YES;
+    if ([userDefaults objectForKey: @"autoCasing"]) {
+        autoCasing = [userDefaults boolForKey: @"autoCasing"];
+    }
 }
 
 - (void) dealloc
@@ -102,13 +112,12 @@ extern NSString *TransferReadyForUseDataType;
 
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
     
-    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObserver: self forKeyPath: @"autoCasing"];
 }
 
 #pragma mark -
 #pragma mark Bindings, KVO and KVC
-
-static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (void)bind: (NSString *)binding
     toObject: (id)observableObject
@@ -154,23 +163,38 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                        context: (void *)context
 {
     // Coalesce many notifications into one.
+    if (context == UserDefaultsBindingContext) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if ([keyPath isEqualToString: @"autoCasing"]) {
+            autoCasing = [userDefaults boolForKey: @"autoCasing"];
+            if (!pendingRefresh && !pendingReload) {
+                pendingRefresh = YES;
+                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
+            }
+        }
+        
+        return;
+    }
+    
     if (context == DataSourceBindingContext) {
         [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
-        pendingRefresh = YES;
+        pendingReload = YES;
         [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
-    } else {
-        // If there's already a full reload pending do nothing.
-        if (!pendingReload) {
-            // If there's another property change pending cancel it and do a full reload instead.
-            if (pendingRefresh) {
-                pendingRefresh = NO;
-                [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
-                pendingReload = YES;
-                [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
-            } else {
-                pendingRefresh = YES;
-                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.1];
-            }
+
+        return;
+    }
+
+    // If there's already a full reload pending do nothing.
+    if (!pendingReload) {
+        // If there's another property change pending cancel it and do a full reload instead.
+        if (pendingRefresh) {
+            pendingRefresh = NO;
+            [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
+            pendingReload = YES;
+            [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
+        } else {
+            pendingRefresh = YES;
+            [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.1];
         }
     }
 }
@@ -180,6 +204,8 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (NSUInteger)numberOfRowsInListView: (PXListView*)aListView
 {
+    pendingReload = NO;
+    
 #pragma unused(aListView)
 	return [dataSource count];
 }
@@ -208,6 +234,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     if (date == nil) {
         date = transfer.date;
     }
+    NSColor *color = [transfer.account categoryColor];
     NSDictionary *details = @{StatementIndexKey: @((int)row),
                              StatementDateKey: [self safeAndFormattedValue: date],
                              StatementRemoteNameKey: [self safeAndFormattedValue: transfer.remoteName],
@@ -220,7 +247,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                              StatementRemoteBICKey: [self safeAndFormattedValue: transfer.remoteBIC],
                              StatementRemoteAccountKey: [self safeAndFormattedValue: transfer.remoteAccount],
                              StatementTypeKey: [self safeAndFormattedValue: transfer.type],
-                             StatementColorKey: [transfer.account categoryColor]};
+                             StatementColorKey: (color != nil) ? color : [NSNull null]};
     
     [cell setDetails: details];
     
@@ -271,6 +298,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
  */
 - (void)updateVisibleCells
 {
+    pendingRefresh = NO;
     NSArray *cells = [self visibleCells];
     for (TransfersListViewCell *cell in cells)
         [self fillCell: cell forRow: [cell row]];

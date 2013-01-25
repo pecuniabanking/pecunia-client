@@ -80,7 +80,6 @@
     IBOutlet NSTextField    *purpose3;
     IBOutlet NSTextField    *purpose4;
     
-    IBOutlet NSTextField    *executionText;
     IBOutlet NSButton       *executeImmediatelyRadioButton;
     IBOutlet NSTextField    *executeImmediatelyText;
     IBOutlet NSTextField    *executeAtDateLabel;
@@ -104,6 +103,7 @@
     DebitCalendarWindow *calendarWindow;
     TransactionLimits   *limits;
     NSArray             *draggedDebits;
+    NSUInteger          rowPositions[4];
 }
 
 @property (unsafe_unretained) IBOutlet DebitFormularView *debitFormular;
@@ -116,6 +116,7 @@
 - (IBAction)calendarChanged: (id)sender;
 - (IBAction)queueDebit: (id)sender;
 - (IBAction)sendDebit: (id)sender;
+- (IBAction)deleteDebit: (id)sender;
 
 - (void)hideCalendarWindow;
 

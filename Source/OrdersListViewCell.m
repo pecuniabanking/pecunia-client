@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013 Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -64,6 +64,8 @@ extern NSString *OrderIsSentKey;
 
 @implementation OrdersListViewCell
 
+@synthesize delegate;
+
 + (id)defaultAnimationForKey: (NSString *)key
 {
     return nil;
@@ -81,6 +83,12 @@ extern NSString *OrderIsSentKey;
     return self;
 }
 
+- (IBAction)cancelDeletion: (id)sender
+{
+    if ([self.delegate conformsToProtocol: @protocol(OrdersListViewNotificationProtocol)]) {
+        [self.delegate cancelDeletionForIndex: index];
+    }
+}
 
 static CurrencyValueTransformer* currencyTransformer;
 
@@ -106,8 +114,9 @@ static CurrencyValueTransformer* currencyTransformer;
     remoteBankCode = [[details valueForKey: StatementRemoteBankCodeKey] copy];
     remoteAccount = [[details valueForKey: StatementRemoteAccountKey] copy];
     purpose = [[details valueForKey: StatementPurposeKey] copy];
-    
-    categoryColor = [details valueForKey: StatementColorKey];
+
+    id color = [details valueForKey: StatementColorKey];
+    categoryColor = (color == [NSNull null] ? nil : color);
     
     if (currencyTransformer == nil)
         currencyTransformer = [[CurrencyValueTransformer alloc] init];
@@ -119,7 +128,7 @@ static CurrencyValueTransformer* currencyTransformer;
 
     [editImage setHidden: ![[details valueForKey: OrderIsChangedKey] boolValue]];
     [sendImage setHidden: ![[details valueForKey: OrderIsSentKey] boolValue]];
-    [deleteImage setHidden: ![[details valueForKey: OrderPendingDeletionKey] boolValue]];
+    [deleteButton setHidden: ![[details valueForKey: OrderPendingDeletionKey] boolValue]];
     
     [self selectionChanged];
     [self setNeedsDisplay: YES];
@@ -261,7 +270,7 @@ static CurrencyValueTransformer* currencyTransformer;
 static NSGradient* innerGradient;
 static NSGradient* innerGradientSelected;
 
-- (void) setupDrawStructures
+- (void)setupDrawStructures
 {
     innerGradient = [[NSGradient alloc] initWithColorsAndLocations:
                      [NSColor colorWithDeviceRed: 240 / 255.0 green: 240 / 255.0 blue: 240 / 255.0 alpha: 1], (CGFloat) 0.2,

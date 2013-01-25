@@ -104,7 +104,8 @@ static CurrencyValueTransformer* currencyTransformer;
     }
     purpose = [[details valueForKey: StatementPurposeKey] copy];
 
-    categoryColor = [details valueForKey: StatementColorKey];
+    id color = [details valueForKey: StatementColorKey];
+    categoryColor = (color == [NSNull null]) ? nil : color;
     
     if (currencyTransformer == nil)
         currencyTransformer = [[CurrencyValueTransformer alloc] init];

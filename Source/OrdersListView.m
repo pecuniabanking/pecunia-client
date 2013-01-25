@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -59,8 +59,12 @@ extern NSString* OrderDataType;
 
 @end
 
+static void *DataSourceBindingContext = (void *)@"DataSourceContext";
+static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
+
 @implementation OrdersListView
 
+@synthesize owner;
 @synthesize numberFormatter;
 @synthesize dataSource;
 
@@ -84,6 +88,13 @@ extern NSString* OrderDataType;
     [super awakeFromNib];
     
     [self setDelegate: self];
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
+    autoCasing = YES;
+    if ([userDefaults objectForKey: @"autoCasing"]) {
+        autoCasing = [userDefaults boolForKey: @"autoCasing"];
+    }
 }
 
 - (void) dealloc
@@ -108,13 +119,12 @@ extern NSString* OrderDataType;
 
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
     
-    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObserver: self forKeyPath: @"autoCasing"];
 }
 
 #pragma mark -
 #pragma mark Bindings, KVO and KVC
-
-static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (void)bind: (NSString *)binding
     toObject: (id)observableObject
@@ -163,11 +173,40 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                         change: (NSDictionary *)change
                        context: (void *)context
 {
+    // Coalesce many notifications into one.
+    if (context == UserDefaultsBindingContext) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if ([keyPath isEqualToString: @"autoCasing"]) {
+            autoCasing = [userDefaults boolForKey: @"autoCasing"];
+            if (!pendingRefresh && !pendingReload) {
+                pendingRefresh = YES;
+                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
+            }
+        }
+
+        return;
+    }
+
     if (context == DataSourceBindingContext) {
-        [self reloadData];
-    } else {
-        [NSObject cancelPreviousPerformRequestsWithTarget: self];
-        [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.25];
+        [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
+        pendingReload = YES;
+        [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
+
+        return;
+    }
+
+    // If there's already a full reload pending do nothing.
+    if (!pendingReload) {
+        // If there's another property change pending cancel it and do a full reload instead.
+        if (pendingRefresh) {
+            pendingRefresh = NO;
+            [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
+            pendingReload = YES;
+            [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
+        } else {
+            pendingRefresh = YES;
+            [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.1];
+        }
     }
 }
 
@@ -176,11 +215,13 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
 - (NSUInteger)numberOfRowsInListView: (PXListView*)aListView
 {
+    pendingReload = NO;
+    
 #pragma unused(aListView)
 	return [dataSource count];
 }
 
-- (id)safeAndFormattedValue: (id)value
+- (id)formatValue: (id)value capitalize: (BOOL)capitalize
 {
     if (value == nil || [value isKindOfClass: [NSNull class]])
         value = @"";
@@ -193,6 +234,17 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                 value = @"--";
             } else {
                 value = [dateFormatter stringFromDate: value];
+            }
+        } else {
+            if (capitalize && autoCasing) {
+                NSMutableArray *words = [[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
+                for (NSUInteger i = 0; i < [words count]; i++) {
+                    NSString *word = words[i];
+                    if (i == 0 || [word length] > 3) {
+                        words[i] = [word capitalizedString];
+                    }
+                }
+                value = [words componentsJoinedByString: @" "];
             }
         }
     }
@@ -213,23 +265,25 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
             order.remoteBankName = bankName;
         }
     }
-    
+
+    cell.delegate = self;
+    NSColor *color = [order.account categoryColor];
     NSDictionary *details = @{StatementIndexKey: @((int)row),
-                             OrderFirstExecDateKey: [self safeAndFormattedValue: order.firstExecDate],
-                             StatementDateKey: [self safeAndFormattedValue: order.nextExecDate],
-                             OrderLastExecDateKey: [self safeAndFormattedValue: order.lastExecDate],
-                             StatementRemoteNameKey: [self safeAndFormattedValue: order.remoteName],
-                             StatementPurposeKey: [self safeAndFormattedValue: order.purpose],
-                             StatementValueKey: [self safeAndFormattedValue: order.value],
-                             StatementCurrencyKey: [self safeAndFormattedValue: order.currency],
-                             StatementRemoteBankNameKey: [self safeAndFormattedValue: order.remoteBankName],
-                             StatementRemoteBankCodeKey: [self safeAndFormattedValue: order.remoteBankCode],
-                             StatementRemoteAccountKey: [self safeAndFormattedValue: order.remoteAccount],
-                             StatementTypeKey: [self safeAndFormattedValue: order.type],
+                             OrderFirstExecDateKey: [self formatValue: order.firstExecDate capitalize: NO],
+                             StatementDateKey: [self formatValue: order.nextExecDate capitalize: NO],
+                             OrderLastExecDateKey: [self formatValue: order.lastExecDate capitalize: NO],
+                             StatementRemoteNameKey: [self formatValue: order.remoteName capitalize: YES],
+                             StatementPurposeKey: [self formatValue: order.purpose capitalize: YES],
+                             StatementValueKey: [self formatValue: order.value capitalize: NO],
+                             StatementCurrencyKey: [self formatValue: order.currency capitalize: NO],
+                             StatementRemoteBankNameKey: [self formatValue: order.remoteBankName capitalize: YES],
+                             StatementRemoteBankCodeKey: [self formatValue: order.remoteBankCode capitalize: NO],
+                             StatementRemoteAccountKey: [self formatValue: order.remoteAccount capitalize: YES],
+                             StatementTypeKey: [self formatValue: order.type capitalize: NO],
                              OrderIsChangedKey: order.isChanged,
                              OrderPendingDeletionKey: order.toDelete,
                              OrderIsSentKey: order.isSent,
-                             StatementColorKey: [order.account categoryColor]};
+                             StatementColorKey: (color != nil) ? color : [NSNull null]};
     
     [cell setDetails: details];
     
@@ -280,9 +334,21 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
  */
 - (void)updateVisibleCells
 {
+    pendingRefresh = NO;
     NSArray *cells = [self visibleCells];
     for (OrdersListViewCell *cell in cells)
         [self fillCell: cell forRow: [cell row]];
+}
+
+#pragma mark -
+#pragma mark OrdersListViewNotificationProtocol
+
+- (void)cancelDeletionForIndex: (NSUInteger)index
+{
+    // Simply forward the notification to the notification delegate if any is set.
+    if ([self.owner respondsToSelector: @selector(cancelDeletionForIndex:)]) {
+        [self.owner cancelDeletionForIndex: index];
+    }
 }
 
 #pragma mark -

@@ -555,23 +555,23 @@
     NSString *key;
     switch (sortIndex) {
         case 1:
-            statementsListView.showHeaders = false;
+            statementsListView.canShowHeaders = false;
             key = @"statement.remoteName";
             break;
         case 2:
-            statementsListView.showHeaders = false;
+            statementsListView.canShowHeaders = false;
             key = @"statement.purpose";
             break;
         case 3:
-            statementsListView.showHeaders = false;
+            statementsListView.canShowHeaders = false;
             key = @"statement.categoriesDescription";
             break;
         case 4:
-            statementsListView.showHeaders = false;
+            statementsListView.canShowHeaders = false;
             key = @"statement.value";
             break;
         default:
-            statementsListView.showHeaders = true;
+            statementsListView.canShowHeaders = true;
             key = @"statement.valutaDate";
             break;
     }

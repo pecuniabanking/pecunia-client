@@ -86,6 +86,8 @@ NSString* const CategoryDataType = @"CategoryDataType";
 NSString* const CategoryColorNotification = @"CategoryColorNotification";
 NSString* const CategoryKey = @"CategoryKey";
 
+static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
+
 static BankingController *bankinControllerInstance;
 
 BOOL runningOnLionOrLater = NO;
@@ -119,25 +121,13 @@ BOOL runningOnLionOrLater = NO;
         bankinControllerInstance = self;
         restart = NO;
         requestRunning = NO;
-        mainTabItems = [NSMutableDictionary dictionaryWithCapacity:10];
+        mainTabItems = [NSMutableDictionary dictionaryWithCapacity: 10];
 
-/*
-        // Load context & model.
-        @try {
-            model = [[MOAssistant assistant] model];
-            self.managedObjectContext = [[MOAssistant assistant] context];
-        }
-        @catch (NSError* error) {
-            NSAlert *alert = [NSAlert alertWithError:error];
-            [alert runModal];
-            [NSApp terminate: self];
-        }
-*/        
         @try {
             client = [HBCIClient hbciClient];
             PecuniaError *error = [client initalizeHBCI];
             if (error != nil) {
-                [error alertPanel ];
+                [error alertPanel];
                 [NSApp terminate: self];
                 
             }
@@ -158,7 +148,11 @@ BOOL runningOnLionOrLater = NO;
     return self;
 }
 
-//--------------------------------------------------------------------------------------------------
+- (void)dealloc
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObserver: self forKeyPath: @"recursiveTransactions"];
+}
 
 - (void)setNumberFormatForCell: (NSCell*) cell positive: (NSDictionary*) positive
                       negative: (NSDictionary*) negative
@@ -186,6 +180,8 @@ BOOL runningOnLionOrLater = NO;
     sortIndex = 0;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults addObserver: self forKeyPath: @"recursiveTransactions" options: 0 context: UserDefaultsBindingContext];
+
     if ([userDefaults objectForKey: @"mainSortIndex" ]) {
         sortControl.selectedSegment = [[userDefaults objectForKey: @"mainSortIndex"] intValue];
     }
@@ -200,25 +196,6 @@ BOOL runningOnLionOrLater = NO;
         [toggleDetailsButton setImage: [NSImage imageNamed: @"show"]];
     }
     self.toggleDetailsPaneItem.state = lastSplitterPosition > 0 ? NSOffState : NSOnState;
-
-    if ([userDefaults objectForKey: @"recursiveTransactions"]) {
-        BOOL recursive = [[userDefaults objectForKey: @"recursiveTransactions"] boolValue];
-        self.toggleRecursiveStatementsItem.state = recursive ? NSOnState : NSOffState;
-    }
-
-    if ([userDefaults objectForKey: @"showBalances"]) {
-        BOOL showBalances = [[userDefaults objectForKey: @"showBalances"] boolValue];
-        if (!showBalances) { // Default is balances on.
-            [self toggleFeature: self.toggleBalancesItem];
-        }
-    }
-
-    if ([userDefaults objectForKey: @"showHeadersInLists"]) {
-        BOOL showHeaders = [[userDefaults objectForKey: @"showHeadersInLists"] boolValue];
-        if (!showHeaders) { // Default is to show headers.
-            [self toggleFeature: self.toggleHeadersItem];
-        }
-    }
 
     [self updateSorting];
     
@@ -1383,10 +1360,6 @@ BOOL runningOnLionOrLater = NO;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
-    [userDefaults setValue: @((BOOL)(self.toggleRecursiveStatementsItem.state == NSOnState))
-                    forKey: @"recursiveTransactions"];
-    [userDefaults setValue: @((BOOL)(self.toggleBalancesItem.state == NSOnState))
-                    forKey: @"showBalances"];
 
     [currentSection deactivate];
     [accountsView saveLayout];
@@ -3021,44 +2994,9 @@ BOOL runningOnLionOrLater = NO;
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 
-    if (sender == self.toggleRecursiveStatementsItem) {
-        if (self.toggleRecursiveStatementsItem.state == NSOnState) {
-            self.toggleRecursiveStatementsItem.state = NSOffState;
-        } else {
-            self.toggleRecursiveStatementsItem.state = NSOnState;
-        }
-        [userDefaults setValue: @((BOOL)(self.toggleRecursiveStatementsItem.state == NSOnState))
-                        forKey: @"recursiveTransactions"];
-        [[self currentSelection] updateBoundAssignments];
-    } else {
-        if (sender == self.toggleDetailsPaneItem) {
-            [self toggleDetailsPane: nil];
-            [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
-        } else {
-            if (sender == self.toggleBalancesItem) {
-                if (self.toggleBalancesItem.state == NSOnState) {
-                    self.toggleBalancesItem.state = NSOffState;
-                } else {
-                    self.toggleBalancesItem.state = NSOnState;
-                }
-                [userDefaults setValue: @((BOOL)(self.toggleBalancesItem.state == NSOnState))
-                                forKey: @"showBalances"];
-
-                [statementsListView updateBalanceVisibility];
-            } else {
-                if (sender == self.toggleHeadersItem) {
-                    if (self.toggleHeadersItem.state == NSOnState) {
-                        self.toggleHeadersItem.state = NSOffState;
-                    } else {
-                        self.toggleHeadersItem.state = NSOnState;
-                    }
-                    [userDefaults setValue: @((BOOL)(self.toggleHeadersItem.state == NSOnState))
-                                    forKey: @"showHeadersInLists"];
-                    statementsListView.showHeaders = self.toggleHeadersItem.state == NSOnState ? YES : NO;
-                    [statementsListView reloadData];
-                }
-            }
-        }
+    if (sender == self.toggleDetailsPaneItem) {
+        [self toggleDetailsPane: nil];
+        [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
     }
 }
 
@@ -3180,46 +3118,54 @@ BOOL runningOnLionOrLater = NO;
     }
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context
 {
+    if (context == UserDefaultsBindingContext) {
+        if ([keyPath isEqualToString: @"recursiveTransactions"]) {
+            [[self currentSelection] updateBoundAssignments];
+        }
+        return;
+    }
+
     if (object == categoryController) {
         [accountsView setNeedsDisplay: YES];
-    } else {
-        if (object == categoryAssignments) {
-            if ([keyPath compare: @"selectionIndexes"] == NSOrderedSame) {
-                // Selection did change. If the currently selected entry is a new one remove the "new" mark.
-                NSEnumerator *enumerator = [[categoryAssignments selectedObjects] objectEnumerator];
-                StatCatAssignment* stat = nil;
-                NSDecimalNumber* firstValue = nil;
-                while ((stat = [enumerator nextObject]) != nil) {
-                    if (firstValue == nil) {
-                        firstValue = stat.statement.value;
-                    }
-                    if ([stat.category isBankAccount] && ![stat.category isRoot])
+        return;
+    }
+
+    if (object == categoryAssignments) {
+        if ([keyPath compare: @"selectionIndexes"] == NSOrderedSame) {
+            // Selection did change. If the currently selected entry is a new one remove the "new" mark.
+            NSEnumerator *enumerator = [[categoryAssignments selectedObjects] objectEnumerator];
+            StatCatAssignment* stat = nil;
+            NSDecimalNumber* firstValue = nil;
+            while ((stat = [enumerator nextObject]) != nil) {
+                if (firstValue == nil) {
+                    firstValue = stat.statement.value;
+                }
+                if ([stat.category isBankAccount] && ![stat.category isRoot])
+                {
+                    BankAccount* account = (BankAccount*)stat.category;
+                    if ([stat.statement.isNew boolValue])
                     {
-                        BankAccount* account = (BankAccount*)stat.category;
-                        if ([stat.statement.isNew boolValue])
-                        {
-                            stat.statement.isNew = @NO;
-                            account.unread = account.unread - 1;
-                            if (account.unread == 0) {
-                                [self updateUnread];
-                            }
-                            [accountsView setNeedsDisplay: YES];
+                        stat.statement.isNew = @NO;
+                        account.unread = account.unread - 1;
+                        if (account.unread == 0) {
+                            [self updateUnread];
                         }
+                        [accountsView setNeedsDisplay: YES];
                     }
                 }
-                
-                // Check for the type of transaction and adjust remote name display accordingly.
-                if ([firstValue compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
-                    [remoteNameLabel setStringValue: NSLocalizedString(@"AP134", "")];
-                } else {
-                    [remoteNameLabel setStringValue: NSLocalizedString(@"AP135", "")];
-                }
-                
-                [statementDetails setNeedsDisplay: YES];
-                [self updateStatusbar];
             }
+
+            // Check for the type of transaction and adjust remote name display accordingly.
+            if ([firstValue compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
+                [remoteNameLabel setStringValue: NSLocalizedString(@"AP134", "")];
+            } else {
+                [remoteNameLabel setStringValue: NSLocalizedString(@"AP135", "")];
+            }
+
+            [statementDetails setNeedsDisplay: YES];
+            [self updateStatusbar];
         }
     }
 }
@@ -3238,34 +3184,29 @@ BOOL runningOnLionOrLater = NO;
     NSString *key;
     switch (sortIndex) {
         case 1:
-            statementsListView.showHeaders = NO;
+            statementsListView.canShowHeaders = NO;
             key = @"statement.remoteName";
             break;
         case 2:
-            statementsListView.showHeaders = NO;
+            statementsListView.canShowHeaders = NO;
             key = @"statement.purpose";
             break;
         case 3:
-            statementsListView.showHeaders = NO;
+            statementsListView.canShowHeaders = NO;
             key = @"statement.categoriesDescription";
             break;
         case 4:
-            statementsListView.showHeaders = NO;
+            statementsListView.canShowHeaders = NO;
             key = @"statement.value";
             break;
         default:
         {
-            BOOL showHeaders = YES;
-            if ([userDefaults objectForKey: @"showHeadersInLists"]) {
-                showHeaders = [[userDefaults objectForKey: @"showHeadersInLists"] boolValue];
-            }
-            statementsListView.showHeaders = showHeaders;
+            statementsListView.canShowHeaders = YES;
             key = @"statement.date";
             break;
         }
     }
-    [categoryAssignments setSortDescriptors:
-     @[[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
+    [categoryAssignments setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
 }
 
 +(BankingController*)controller

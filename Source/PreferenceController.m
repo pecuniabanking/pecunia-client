@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -122,29 +122,6 @@ void updateColorCache()
     }
 }
 
-/*
--(IBAction) ok: (id) sender
-{
-	int i, idx;
-	NSArray	*content = [fieldController content ];
-	NSArray	*columns = [fieldTable tableColumns ];
-	NSMutableArray	*indxs = [NSMutableArray arrayWithCapacity: 25 ];
-	
-	NSTableColumn *col = [columns objectAtIndex:0 ];
-	NSComboBoxCell *cell = [col dataCell ];
-	
-	for(i=0; i<[content count ]; i++) {
-		NSDictionary	*dict = [content objectAtIndex:i ];
-		idx = [cell indexOfItemWithObjectValue: [dict valueForKey: @"fieldName" ] ];
-		if(idx >=0) [indxs addObject: [NSNumber numberWithInt:idx ] ];
-	}
-	if([indxs count ]>0) {
-		NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
-		[defaults setObject: indxs forKey: @"Exporter.fields.indices" ];
-	}
-	[[self window] close];
-}
-*/
 -(void)windowWillClose:(NSNotification *)aNotification
 {
 	int idx;

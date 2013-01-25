@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -85,10 +85,6 @@ typedef enum {
 - (NSMutableSet*)children;
 - (NSSet*)allCategories;
 - (NSSet*)siblings;
-- (NSUInteger)balanceHistoryToDates: (NSArray**)dates
-                           balances: (NSArray**)balances
-                      balanceCounts: (NSArray**)counts
-                       withGrouping: (GroupingInterval)interval;
 - (NSUInteger)categoryHistoryToDates: (NSArray**)dates
                             balances: (NSArray**)balances
                        balanceCounts: (NSArray**)counts
