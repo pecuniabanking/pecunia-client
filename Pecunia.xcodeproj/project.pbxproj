@@ -159,6 +159,8 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		A652533515E39A92000C2989 /* TanWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A652533415E39A92000C2989 /* TanWindow.m */; };
+		A694637016B52D1A006D9D43 /* CCSettlementList.m in Sources */ = {isa = PBXBuildFile; fileRef = A694636F16B52D1A006D9D43 /* CCSettlementList.m */; };
+		A6DB72E416B53C6100B44133 /* CreditCardSettlement.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB72E316B53C6100B44133 /* CreditCardSettlement.m */; };
 		A6E9242A15E38FFE00FA09A3 /* TanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E9242915E38FFE00FA09A3 /* TanWindow.xib */; };
 		B1014AEE101643C800ABA1FF /* TanMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014AED101643C800ABA1FF /* TanMethod.m */; };
 		B1014BEC1018E87B00ABA1FF /* save.ico in Resources */ = {isa = PBXBuildFile; fileRef = B1014BEB1018E87B00ABA1FF /* save.ico */; };
@@ -579,6 +581,10 @@
 		A652533315E39A76000C2989 /* TanWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanWindow.h; sourceTree = "<group>"; };
 		A652533415E39A92000C2989 /* TanWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanWindow.m; sourceTree = "<group>"; };
 		A68AEBBA1658ED6100CF8184 /* Accounts 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 7.xcdatamodel"; sourceTree = "<group>"; };
+		A694636E16B52D1A006D9D43 /* CCSettlementList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSettlementList.h; sourceTree = "<group>"; };
+		A694636F16B52D1A006D9D43 /* CCSettlementList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSettlementList.m; sourceTree = "<group>"; };
+		A6DB72E216B53C6100B44133 /* CreditCardSettlement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditCardSettlement.h; sourceTree = "<group>"; };
+		A6DB72E316B53C6100B44133 /* CreditCardSettlement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditCardSettlement.m; sourceTree = "<group>"; };
 		A6E9242915E38FFE00FA09A3 /* TanWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TanWindow.xib; sourceTree = "<group>"; };
 		B1014AEC101643C800ABA1FF /* TanMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TanMethod.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1014AED101643C800ABA1FF /* TanMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TanMethod.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -611,7 +617,7 @@
 		B132F91E0F96594000263F3B /* ShortDate.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ShortDate.m; sourceTree = "<group>"; tabWidth = 4; };
 		B132FADD0F9CFD0000263F3B /* TimeSliceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TimeSliceManager.h; sourceTree = "<group>"; tabWidth = 4; };
 		B132FADE0F9CFD0000263F3B /* TimeSliceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TimeSliceManager.m; sourceTree = "<group>"; tabWidth = 4; };
-		B1342CED16ADDFB7000F5737 /* Accounts 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Accounts 8.xcdatamodel"; sourceTree = "<group>"; };
+		B1342CED16ADDFB7000F5737 /* Accounts 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 8.xcdatamodel"; sourceTree = "<group>"; };
 		B134357112EB7FDF006C4687 /* cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cursor.png; sourceTree = "<group>"; };
 		B136AAD60FCF1C4A007A643F /* MCEMTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMTableView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B136AAD70FCF1C4A007A643F /* MCEMTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMTableView.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1318,6 +1324,8 @@
 				B1EC7B261508077100813E1A /* TanSigningOption.m */,
 				B183586015CDC064003B93ED /* SigningOption.h */,
 				B183586115CDC064003B93ED /* SigningOption.m */,
+				A694636E16B52D1A006D9D43 /* CCSettlementList.h */,
+				A694636F16B52D1A006D9D43 /* CCSettlementList.m */,
 			);
 			name = HBCIBackend;
 			sourceTree = "<group>";
@@ -1666,6 +1674,8 @@
 		B1FE0DCD106585DC005B3800 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
+				A6DB72E216B53C6100B44133 /* CreditCardSettlement.h */,
+				A6DB72E316B53C6100B44133 /* CreditCardSettlement.m */,
 				B124F09D0C36F3E8001065C2 /* BankStatement.h */,
 				B124F09E0C36F3E8001065C2 /* BankStatement.m */,
 				B1F527030C3C1D5800BE3DFC /* Category.h */,
@@ -2137,6 +2147,8 @@
 				27A3DA2416A1C99C00FD7335 /* DebitsListView.m in Sources */,
 				27A3DA2516A1C99C00FD7335 /* DebitsListViewCell.m in Sources */,
 				27A3DA2816A1CB8000FD7335 /* DebitFormularView.m in Sources */,
+				A694637016B52D1A006D9D43 /* CCSettlementList.m in Sources */,
+				A6DB72E416B53C6100B44133 /* CreditCardSettlement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

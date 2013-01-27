@@ -31,6 +31,12 @@ typedef enum {
     CTM_ask
 } CollectiveTransferMethod;
 
+typedef enum {
+    AccountType_Standard = 0,
+    AccountType_CreditCart
+} BankAccountType;
+
+
 @interface BankAccount : Category<NSCopying> {
 	NSDate				*newLatestTransferDate;
 	PurposeSplitRule	*purposeSplitRule;
