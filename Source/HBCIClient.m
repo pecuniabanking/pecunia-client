@@ -224,4 +224,15 @@ static HBCIClient *client = nil;
     return [controller sendCollectiveTransfer:(NSArray*)transfers ];
 }
 
+-(CreditCardSettlement*)getCreditCardSettlement:(NSString*)settleId forAccount:(BankAccount*)account
+{
+    return [controller getCreditCardSettlement:settleId forAccount:account];
+}
+
+-(CCSettlementList*)getCCSettlementListForAccount:(BankAccount*)account
+{
+    return [controller getCCSettlementListForAccount:account];
+}
+
+
 @end

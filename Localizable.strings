@@ -168,7 +168,7 @@
 "AP123" = "Speichern nicht erfolgreich";
 "AP124" = "Die Datei %@ konnte nicht gespeichert werden!";
 "AP125" = "Bitte Konto auswählen";
-"AP130" = "Java nicht gefunden";
+"AP130" = "Hinweis";
 "AP131" = "Für die Ausführung von Pecunia ist Java Version 1.6.0 oder höher erforderlich. Auf Ihrem System ist Java nicht installiert. Bitte installieren Sie zunächst die Java Runtime Umgebung (JRE)";
 "AP132" = "1 Umsatz";
 "AP133" = "%u Umsätze";
@@ -203,6 +203,8 @@
 "AP194" = "Achtung: alle Daten, wie Umsätze, Konten, Kategorien und Regeln werde gelöscht. Es sollte ein Backup der Datendatei existieren (z.B. über Time Machine), da sonst alle Daten unwiederbringlich verloren sind.\n\nMöchten Sie Ihre Daten wirklich löschen?";
 "AP195" = "Die Pecunia-Datendatei ist nicht im Default-Verzeichnis gespeichert. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
 "AP196" = "Die Pecunia-Datendatei ist verschlüsselt. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
+"AP197" = "Es wurden %d neue Abrechnungen geladen";
+"AP197.2" = "Es liegen keine (neuen) Abrechnungen vor";
 
 // Bank accounts + users
 // AP200..AP249

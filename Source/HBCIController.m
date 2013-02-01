@@ -50,6 +50,8 @@
 #import "SigningOption.h"
 #import "CallbackHandler.h"
 #import "SupportedTransactionInfo.h"
+#import "CCSettlementList.h"
+#import "CreditCardSettlement.h"
 
 @implementation HBCIController
 
@@ -813,6 +815,80 @@ NSString *escapeSpecial(NSString *s)
     return nil;
 }
 
+-(CCSettlementList*)getCCSettlementListForAccount:(BankAccount*)account
+{
+    PecuniaError *error=nil;
+    NSMutableString	*cmd = [NSMutableString stringWithFormat:@"<command name=\"getCCSettlementList\">" ];
+
+    [self startProgress ];
+    
+    BankUser *user = [account defaultBankUser ];
+    if (user == nil) return nil;
+    
+    // BankUser registrieren
+    if([self registerBankUser:user error:&error] == NO) {
+        [error alertPanel];
+        return nil;
+    }
+    
+    [self appendTag: @"bankCode" withValue: account.bankCode to: cmd ];
+    [self appendTag: @"accountNumber" withValue: account.accountNumber to:cmd ];
+    [self appendTag: @"subNumber" withValue: account.accountSuffix to:cmd ];
+    [self appendTag: @"userId" withValue: user.userId to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
+    [cmd appendString: @"</command>" ];
+	
+    CCSettlementList *result = [bridge syncCommand: cmd error: &error ];
+    [self stopProgress ];
+    
+    if(error) {
+        [error alertPanel];
+        return nil;
+    }
+	if (result == nil) {
+		[[MessageLog log ] addMessage: @"Unexpected result for getCCSettlementList: nil" withLevel: LogLevel_Error  ];
+		return nil;
+	}
+    return result;
+}
+
+-(CreditCardSettlement*)getCreditCardSettlement:(NSString*)settleId forAccount:(BankAccount*)account
+{
+    PecuniaError *error=nil;
+    NSMutableString	*cmd = [NSMutableString stringWithFormat:@"<command name=\"getCCSettlement\">" ];
+    
+    [self startProgress ];
+    
+    BankUser *user = [account defaultBankUser ];
+    if (user == nil) return nil;
+    
+    // BankUser registrieren
+    if([self registerBankUser:user error:&error] == NO) {
+        [error alertPanel];
+        return nil;
+    }
+    
+    [self appendTag: @"settleID" withValue: settleId to: cmd ];
+    [self appendTag: @"bankCode" withValue: account.bankCode to: cmd ];
+    [self appendTag: @"accountNumber" withValue: account.accountNumber to:cmd ];
+    [self appendTag: @"subNumber" withValue: account.accountSuffix to:cmd ];
+    [self appendTag: @"userId" withValue: user.userId to: cmd ];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
+    [cmd appendString: @"</command>" ];
+	
+    CreditCardSettlement *result = [bridge syncCommand: cmd error: &error ];
+    [self stopProgress ];
+    
+    if(error) {
+        [error alertPanel];
+        return nil;
+    }
+	if (result == nil) {
+		[[MessageLog log ] addMessage: @"Unexpected result for getCCSettlement: nil" withLevel: LogLevel_Error  ];
+		return nil;
+	}
+    return result;
+}
 
 -(void)getStatements:(NSArray*)resultList
 {

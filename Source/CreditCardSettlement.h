@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSDecimalNumber * endBalance;
 @property (nonatomic, strong) NSString * ccNumber;
+@property (nonatomic, strong) NSString * ccAccount;
 @property (nonatomic, strong) NSDecimalNumber * startBalance;
 @property (nonatomic, strong) NSDate *settleDate;
 @property (nonatomic, strong) NSDecimalNumber * value;

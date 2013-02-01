@@ -139,7 +139,15 @@
 				value = @([s integerValue ]);
 				[stack removeLastObject ];
 				[stack addObject:value ];
-			}
+			} else if ([currentType isEqualToString:@"binary"]) {
+                NSString *s = [stack lastObject];
+                CFErrorRef error = NULL;
+                SecTransformRef decoder = SecDecodeTransformCreate(kSecBase64Encoding, &error);
+                SecTransformSetAttribute(decoder, kSecTransformInputAttributeName, (__bridge CFTypeRef)([s dataUsingEncoding:NSUTF8StringEncoding]), &error);
+                CFDataRef decodedData = SecTransformExecute(decoder, &error);
+                [stack removeLastObject];
+                [stack addObject:(__bridge id)(decodedData)];
+            }
 		}
 		
 		if(prev >= 0) {

@@ -309,6 +309,10 @@
 		B1D4506E147848D3008DD256 /* AccountMaintenance.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D4506D147848D3008DD256 /* AccountMaintenance.xib */; };
 		B1D6C9EE0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */; };
 		B1DE0769165FB554004FFC8A /* jre.zip in Resources */ = {isa = PBXBuildFile; fileRef = B1DE0768165FB554004FFC8A /* jre.zip */; };
+		B1E3E4B116BB02C800DC1638 /* CreditCardSettlement.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E3E4B016BB02C800DC1638 /* CreditCardSettlement.xib */; };
+		B1E3E4B416BB05CD00DC1638 /* CreditCardSettlementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */; };
+		B1E3E4BC16BC49F600DC1638 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1E3E4BB16BC49F600DC1638 /* Quartz.framework */; };
+		B1E3E4BE16BC6DE500DC1638 /* noccsettlements.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B1E3E4BD16BC6DE500DC1638 /* noccsettlements.pdf */; };
 		B1E8119D0FF6863D00BF7451 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165DFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		B1E811A20FF6874F00BF7451 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1F454370F101E7500BAF4E8 /* Localizable.strings */; };
 		B1E811F00FF68B3700BF7451 /* PecuniaHelp in Resources */ = {isa = PBXBuildFile; fileRef = B1E811D70FF68B3700BF7451 /* PecuniaHelp */; };
@@ -835,6 +839,11 @@
 		B1D6C9EC0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMOutlineViewLayout.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMOutlineViewLayout.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1DE0768165FB554004FFC8A /* jre.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = jre.zip; sourceTree = "<group>"; };
+		B1E3E4B016BB02C800DC1638 /* CreditCardSettlement.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreditCardSettlement.xib; sourceTree = "<group>"; };
+		B1E3E4B216BB05CD00DC1638 /* CreditCardSettlementController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditCardSettlementController.h; sourceTree = "<group>"; };
+		B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditCardSettlementController.m; sourceTree = "<group>"; };
+		B1E3E4BB16BC49F600DC1638 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = ../../../../System/Library/Frameworks/Quartz.framework; sourceTree = "<group>"; };
+		B1E3E4BD16BC6DE500DC1638 /* noccsettlements.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = noccsettlements.pdf; sourceTree = "<group>"; };
 		B1E811D70FF68B3700BF7451 /* PecuniaHelp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PecuniaHelp; sourceTree = "<group>"; };
 		B1EC7B251508077100813E1A /* TanSigningOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanSigningOption.h; sourceTree = "<group>"; };
 		B1EC7B261508077100813E1A /* TanSigningOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanSigningOption.m; sourceTree = "<group>"; };
@@ -878,6 +887,7 @@
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */,
 				27E79FCB145AFCB3007C0AE3 /* QuartzCore.framework in Frameworks */,
+				B1E3E4BC16BC49F600DC1638 /* Quartz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -887,6 +897,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1E3E4BB16BC49F600DC1638 /* Quartz.framework */,
 				2701A84C165E832C00A9A1C7 /* Growl.framework */,
 				27D302A81538857900D6A2CC /* ChromiumTabs.framework */,
 				B1F458200F2516C200BAF4E8 /* Sparkle.framework */,
@@ -1198,6 +1209,7 @@
 				279A78611539DD5400443854 /* TransfersListViewCell.xib */,
 				B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */,
 				27E662B015A09B24002F9277 /* TransferTemplateListViewCell.xib */,
+				B1E3E4B016BB02C800DC1638 /* CreditCardSettlement.xib */,
 			);
 			path = Designer;
 			sourceTree = "<group>";
@@ -1273,6 +1285,7 @@
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
 				B1F454370F101E7500BAF4E8 /* Localizable.strings */,
 				27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */,
+				B1E3E4BD16BC6DE500DC1638 /* noccsettlements.pdf */,
 				B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */,
 				277B478A1659363F008D410A /* category-icon-defaults.txt */,
 				B170C16D167689310047FD42 /* java.entitlements */,
@@ -1667,6 +1680,8 @@
 				B177297D1504CE1B00256898 /* BusinessTransactionsController.h */,
 				27E68C48165CF7DA005EBE66 /* GenerateDataController.h */,
 				27E68C49165CF7DA005EBE66 /* GenerateDataController.m */,
+				B1E3E4B216BB05CD00DC1638 /* CreditCardSettlementController.h */,
+				B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */,
 			);
 			name = WindowController;
 			sourceTree = "<group>";
@@ -1952,6 +1967,8 @@
 				2765D42716AAD5AB00FF371E /* send@2x.png in Resources */,
 				2765D42A16AAD7C100FF371E /* delete2.png in Resources */,
 				2765D42B16AAD7C100FF371E /* delete2@2x.png in Resources */,
+				B1E3E4B116BB02C800DC1638 /* CreditCardSettlement.xib in Resources */,
+				B1E3E4BE16BC6DE500DC1638 /* noccsettlements.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2149,6 +2166,7 @@
 				27A3DA2816A1CB8000FD7335 /* DebitFormularView.m in Sources */,
 				A694637016B52D1A006D9D43 /* CCSettlementList.m in Sources */,
 				A6DB72E416B53C6100B44133 /* CreditCardSettlement.m in Sources */,
+				B1E3E4B416BB05CD00DC1638 /* CreditCardSettlementController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2190,7 +2208,10 @@
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Frameworks\"",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2240,7 +2261,10 @@
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Frameworks\"",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_PASCAL_STRINGS = YES;
@@ -2279,7 +2303,10 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Frameworks\"",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_PASCAL_STRINGS = YES;

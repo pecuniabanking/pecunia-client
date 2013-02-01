@@ -14,6 +14,7 @@
 
 @dynamic endBalance;
 @dynamic ccNumber;
+@dynamic ccAccount;
 @dynamic startBalance;
 @dynamic settleDate;
 @dynamic value;

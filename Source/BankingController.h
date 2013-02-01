@@ -201,6 +201,8 @@
 - (IBAction)deleteAllData: (id)sender;
 - (IBAction)generateData: (id)sender;
 
+- (IBAction)creditCardSettlements:(id)sender;
+
 - (void)windowWillClose:(NSNotification *)aNotification;
 - (NSArray*)selectedNodes;
 - (BankAccount*)selectBankAccountWithNumber:(NSString*)accNum bankCode:(NSString*)code;

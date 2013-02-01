@@ -77,6 +77,7 @@
 #import "BankUser.h"
 
 #import "GenerateDataController.h"
+#import "CreditCardSettlementController.h"
 
 // Pasteboard data types.
 NSString* const BankStatementDataType = @"BankStatementDataType";
@@ -3022,6 +3023,20 @@ BOOL runningOnLionOrLater = NO;
     GenerateDataController *generator = [[GenerateDataController alloc] init];
     [NSApp runModalForWindow: generator.window];
 }
+
+- (IBAction)creditCardSettlements:(id)sender
+{
+    BankAccount *account = [self selectedBankAccount];
+    if (account == nil) {
+        return;
+    }
+
+    CreditCardSettlementController *controller = [[CreditCardSettlementController alloc] init];
+    controller.account = account;
+    
+    [NSApp runModalForWindow:[controller window]];
+}
+
 
 #pragma mark -
 #pragma mark Other stuff

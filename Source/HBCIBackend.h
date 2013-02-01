@@ -34,6 +34,8 @@
 @class CustomerMessage;
 @class TanMediaList;
 @class BankSetupInfo;
+@class CCSettlementList;
+@class CreditCardSettlement;
 
 @protocol HBCIBackend
 
@@ -79,6 +81,9 @@
 -(NSArray*)getSupportedBusinessTransactions: (BankAccount*)account;
 
 -(PecuniaError*)setLogLevel:(LogLevel)level;
+
+-(CreditCardSettlement*)getCreditCardSettlement:(NSString*)settleId forAccount:(BankAccount*)account;
+-(CCSettlementList*)getCCSettlementListForAccount:(BankAccount*)account;
 
 -(NSArray*)getOldBankUsers;
 -(NSDictionary*)countries;
