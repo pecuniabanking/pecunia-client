@@ -318,6 +318,27 @@ NSString *escapeSpecial(NSString *s)
     if(result) return [result boolValue ]; else return NO;
 }
 
+-(BOOL)isTransactionSupported:(TransactionType)tt forAccount:(BankAccount*)account
+{
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND type = %d", account, tt];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"SupportedTransactionInfo" inManagedObjectContext:context];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	[request setEntity:entityDescription];
+    [request setPredicate:predicate];
+    
+    NSError *error=nil;
+    NSArray *result = [context executeFetchRequest:request error:&error];
+    if (error != nil) {
+        return NO;
+    }
+    
+    if ([result count] == 0) {
+        return NO;
+    }
+    return YES;
+}
+
 -(BOOL)isTransferSupported:(TransferType)tt forAccount:(BankAccount*)account
 {
     TransactionType transactionType;

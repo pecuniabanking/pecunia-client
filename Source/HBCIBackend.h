@@ -21,6 +21,7 @@
 #import "MessageLog.h"
 #import "Transfer.h"
 #import "StandingOrder.h"
+#import "SupportedTransactionInfo.h"
 
 #define PecuniaStatementsNotification @"PecuniaStatementsNotification"
 #define PecuniaInstituteMessageNotification @"PecuniaInstMessageNotification"
@@ -57,6 +58,7 @@
 
 -(BOOL)isTransferSupported:(TransferType)tt forAccount:(BankAccount*)account;
 -(BOOL)isStandingOrderSupportedForAccount:(BankAccount*)account;
+-(BOOL)isTransactionSupported:(TransactionType)tt forAccount:(BankAccount*)account;
 -(NSArray*)allowedCountriesForAccount:(BankAccount*)account;
 -(TransactionLimits*)limitsForType:(TransferType)tt account:(BankAccount*)account country:(NSString*)ctry;
 -(TransactionLimits*)standingOrderLimitsForAccount:(BankAccount*)account action:(StandingOrderAction)action;

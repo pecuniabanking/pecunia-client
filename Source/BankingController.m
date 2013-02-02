@@ -1952,6 +1952,7 @@ BOOL runningOnLionOrLater = NO;
         if ([item action] == @selector(donate:)) return NO;
         if ([item action] == @selector(deleteStatement:)) return NO;
         if ([item action] == @selector(addStatement:)) return NO;
+        if ([item action] == @selector(creditCardSettlements:)) return NO;
     }
     
     if(idx == 0) {
@@ -1968,14 +1969,21 @@ BOOL runningOnLionOrLater = NO;
             if ([item action] == @selector(addStatement:)) return NO;
         }
         if ([cat isKindOfClass:[BankAccount class]] ) {
-            if ([[(BankAccount*)cat isManual] boolValue] == YES) {
+            BankAccount *account = (BankAccount*)cat;
+            if ([[account isManual] boolValue] == YES) {
                 if ([item action] == @selector(transfer_local:)) return NO;
                 if ([item action] == @selector(transfer_eu:)) return NO;
                 if ([item action] == @selector(transfer_sepa:)) return NO;
                 if ([item action] == @selector(transfer_dated:)) return NO;
                 if ([item action] == @selector(transfer_internal:)) return NO;
+                if ([item action] == @selector(creditCardSettlements:)) return NO;
             } else {
                 if ([item action] == @selector(addStatement:)) return NO;
+                if ([item action] == @selector(creditCardSettlements:)) {
+                    if ([[HBCIClient hbciClient] isTransactionSupported:TransactionType_CCSettlement forAccount:account] == NO) {
+                        return NO;
+                    }
+                }
             }
         }
         

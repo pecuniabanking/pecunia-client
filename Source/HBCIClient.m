@@ -234,5 +234,11 @@ static HBCIClient *client = nil;
     return [controller getCCSettlementListForAccount:account];
 }
 
+-(BOOL)isTransactionSupported:(TransactionType)tt forAccount:(BankAccount*)account
+{
+    return [controller isTransactionSupported:tt forAccount:account];
+}
+
+
 
 @end

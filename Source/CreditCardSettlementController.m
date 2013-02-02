@@ -164,12 +164,6 @@
         newNum = 0;
     }
     
-    if (newNum > 0) {
-        NSRunAlertPanel(NSLocalizedString(@"AP27", @""), NSLocalizedString(@"AP197", @""), NSLocalizedString(@"ok", @"Ok"), nil, nil, newNum);
-    } else {
-        NSRunAlertPanel(NSLocalizedString(@"AP130", @""), NSLocalizedString(@"AP197.2", @""), NSLocalizedString(@"ok", @"Ok"), nil, nil);
-    }
-    
     // show latest document
     [self readSettlements];
     if ([settlements count] > 0) {
@@ -180,7 +174,12 @@
         [pdfView setDocument:document];
     }
     [self enableButtons];
-
+    
+    if (newNum > 0) {
+        NSRunAlertPanel(NSLocalizedString(@"AP27", @""), NSLocalizedString(@"AP197", @""), NSLocalizedString(@"ok", @"Ok"), nil, nil, newNum);
+    } else {
+        NSRunAlertPanel(NSLocalizedString(@"AP130", @""), NSLocalizedString(@"AP197.2", @""), NSLocalizedString(@"ok", @"Ok"), nil, nil);
+    }
 }
 
 
