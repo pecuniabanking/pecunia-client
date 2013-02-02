@@ -531,7 +531,12 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)mainGraph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = YES;
     plotSpace.delegate = self;
-    
+
+    CPTPlotRange* plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
+                                                           length: CPTDecimalFromDouble(100)];
+    plotSpace.globalYRange = plotRange;
+    plotSpace.yRange = plotRange;
+
     // Border style.
     CPTMutableLineStyle* frameStyle = [CPTMutableLineStyle lineStyle];
     frameStyle.lineWidth = 1;
@@ -1213,6 +1218,14 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
                                                            length: [[roundedLocalMaxValue decimalNumberBySubtracting: roundedLocalMinValue] decimalValue]];
 
     [CPTAnimation animate: plotSpace
+                 property: @"globalYRange"
+            fromPlotRange: plotSpace.globalYRange
+              toPlotRange: plotRange
+                 duration: animationDuration
+                withDelay: 0
+           animationCurve: CPTAnimationCurveCubicInOut
+                 delegate: self];
+    [CPTAnimation animate: plotSpace
                  property: @"yRange"
             fromPlotRange: plotSpace.yRange
               toPlotRange: plotRange
@@ -1370,8 +1383,6 @@ int double_compare(const void *value1, const void *value2)
     return 0;
 }
 
-#define MOVING_AVERAGE_WIDTH 9
-
 - (void)computeTotalStatistics
 {
     double min = 1e100;
@@ -1441,12 +1452,12 @@ int double_compare(const void *value1, const void *value2)
         [statistics removeObjectForKey: @"totalStandardDeviation"];
     }
 
-    // Moving average values with linear weighting.
-    double weightFactor = 2.0 / MOVING_AVERAGE_WIDTH / (MOVING_AVERAGE_WIDTH + 1);
-    for (int t = 0; t < (int)rawCount; t++) {
+    // Moving average values.
+    int width = count / 4;
+    for (int t = 0; t < count; t++) {
         double average = 0;
-        for (int i = 0; i < MOVING_AVERAGE_WIDTH; i++) {
-            int sourceIndex = t - MOVING_AVERAGE_WIDTH + i;
+        for (int i = -width / 2; i < width / 2; i++) {
+            int sourceIndex = t + i;
             if (sourceIndex < 0) {
                 sourceIndex = 0;
             } else {
@@ -1454,9 +1465,9 @@ int double_compare(const void *value1, const void *value2)
                     sourceIndex = count - 1;
                 }
             }
-            average += (i + 1) * totalBalances[sourceIndex];
+            average += totalBalances[sourceIndex];
         }
-        movingAverage[t] = weightFactor * average;
+        movingAverage[t] = average / width;
     }
 
     // Compute some special values for the graphs which directly depend on global stats.

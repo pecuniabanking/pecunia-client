@@ -44,12 +44,6 @@ static MOAssistant	*assistant = nil;
 static NSString *dataDirKey = @"DataDir";
 static NSString *dataFilenameKey = @"dataFilename";
 
-static NSString *extensionStandard = @".sqlite";
-static NSString *extensionCrypted = @".sqlcrypt";
-static NSString *extensionPackage = @".pecuniadata";
-static NSString *_dataFile = @"/accounts.sqlite";
-static NSString *_imageFile = @"/PecuniaData.sparseimage";
-
 static NSString *_dataFileStandard = @"accounts.sqlite";
 static NSString *_dataFileCrypted = @"accounts.sqlcrypt";
 
