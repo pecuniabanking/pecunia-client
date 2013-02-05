@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -31,8 +31,9 @@ NSCalendar *calendar = nil;
                        NSDayCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit
                                               fromDate: date];
         
-        // Make a copy of the given date set to midnight. We need that for various computations.
-        components.hour = 0;
+        // Make a copy of the given date set to noon (not midnight as this can produce timezone problems).
+        // We need that for various computations.
+        components.hour = 12;
         components.minute = 0;
         components.second = 0;
         inner = [calendar dateFromComponents: components];
@@ -48,7 +49,7 @@ NSCalendar *calendar = nil;
         components.year = y;
         components.month = m;
         components.day = d;
-        components.hour = 0;
+        components.hour = 12;
         components.minute = 0;
         components.second = 0;
 
@@ -81,7 +82,10 @@ NSCalendar *calendar = nil;
 
 - (NSDate*)lowDate
 {
-    return inner;
+    components.hour = 0;
+    components.minute = 0;
+    components.second = 0;
+    return [[ShortDate calendar] dateFromComponents: components];
 }
 
 - (NSDate*)highDate
@@ -184,12 +188,16 @@ NSCalendar *calendar = nil;
 - (ShortDate*)dateByAddingUnits: (int)units byUnit: (int)calendarUnit
 {
     NSDateComponents* comps = [components copy];
-    
+
+    // In order to avoid rounding up months to the next higher one if the original day value is beyond
+    // the allowed number of days in the target month we compute using the first day in the month
+    // and adjust the day afterwards.
     switch (calendarUnit) {
         case NSYearCalendarUnit:
             comps.year += units;
             break;
         case NSMonthCalendarUnit:
+            comps.day = 1;
             comps.month += units;
             break;
         case NSWeekdayCalendarUnit:
@@ -200,13 +208,25 @@ NSCalendar *calendar = nil;
             comps.day += 7 * units;
             break;
         case NSQuarterCalendarUnit:
+            comps.day = 1;
             comps.month += 3 * units;
             break;
     }
-    comps.hour = NSUndefinedDateComponent;
-    comps.minute = NSUndefinedDateComponent;
-    comps.second = NSUndefinedDateComponent;
+    comps.hour = 12;
+    comps.minute = 0;
+    comps.second = 0;
     NSDate* date = [calendar dateFromComponents: comps];
+
+    switch (calendarUnit) {
+        case NSMonthCalendarUnit:
+        case NSQuarterCalendarUnit:
+        {
+            NSRange r = [calendar rangeOfUnit: NSDayCalendarUnit inUnit: NSMonthCalendarUnit forDate: date];
+            NSInteger day = ((NSInteger)r.length < components.day) ? r.length : components.day;
+            date = [date dateByAddingTimeInterval: (day - 1) * 24 * 3600];
+            break;
+        }
+    }
     
     return [ShortDate dateWithDate: date];
 }

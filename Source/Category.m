@@ -692,10 +692,12 @@ BOOL updateSent = NO;
 +(Category*)catRoot
 {
     NSError *error = nil;
-    if(catRootSingleton) return catRootSingleton;
+    if (catRootSingleton) {
+        return catRootSingleton;
+    }
     
-    NSManagedObjectContext	*context = [[MOAssistant assistant ] context ];
-    NSManagedObjectModel	*model   = [[MOAssistant assistant ] model ];
+    NSManagedObjectContext	*context = MOAssistant.assistant.context;
+    NSManagedObjectModel	*model   = MOAssistant.assistant.model;
     
     if (context == nil) return nil;
     NSFetchRequest *request = [model fetchRequestTemplateForName:@"getCategoryRoot"];
@@ -705,7 +707,10 @@ BOOL updateSent = NO;
         [alert runModal];
         return nil;
     }
-    if([cats count ] > 0) return cats[0];
+    if ([cats count ] > 0) {
+        catRootSingleton = cats[0];
+        return cats[0];
+    }
     
     // create Category Root object
     catRootSingleton = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];

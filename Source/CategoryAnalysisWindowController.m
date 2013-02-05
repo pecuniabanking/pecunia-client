@@ -1392,25 +1392,18 @@ int double_compare(const void *value1, const void *value2)
     double squareSum = 0;
     double median = 0;
 
-    int count = 0;
     if (rawCount > 0) {
-        // The total count value includes a dummy value at the end. We don't want this to weight our results.
-        count = rawCount;
-        if (mainCategory.isBankAccount) {
-            count--;
-        }
-
-        double *sortedBalances = malloc(count * sizeof(double));
-        memcpy(sortedBalances, totalBalances, count * sizeof(double));
-        qsort(sortedBalances, count, sizeof(double), double_compare);
-        if ((count & 1) != 0) { // Odd/even handling is slightly different.
-            median = sortedBalances[count / 2];
+        double *sortedBalances = malloc(rawCount * sizeof(double));
+        memcpy(sortedBalances, totalBalances, rawCount * sizeof(double));
+        qsort(sortedBalances, rawCount, sizeof(double), double_compare);
+        if ((rawCount & 1) != 0) { // Odd/even handling is slightly different.
+            median = sortedBalances[rawCount / 2];
         } else {
-            median = (sortedBalances[count / 2] + sortedBalances[count / 2 - 1]) / 2.0;
+            median = (sortedBalances[rawCount / 2] + sortedBalances[rawCount / 2 - 1]) / 2.0;
         }
         free(sortedBalances);
         
-        for (int i = 0; i < count; i++) {
+        for (NSUInteger i = 0; i < rawCount; i++) {
             if (totalBalances[i] > max) {
                 max = totalBalances[i];
             }
@@ -1426,7 +1419,7 @@ int double_compare(const void *value1, const void *value2)
 
         statistics[@"totalMinValue"] = @(min);
         statistics[@"totalMaxValue"] = @(max);
-        statistics[@"totalMeanValue"] = @(sum / count);
+        statistics[@"totalMeanValue"] = @(sum / rawCount);
         statistics[@"totalMedian"] = @(median);
         
         if (!mainCategory.isBankAccount) {
@@ -1442,8 +1435,8 @@ int double_compare(const void *value1, const void *value2)
         [statistics removeObjectForKey: @"totalSum"];
     }
 
-    if (count > 1) {
-        double deviationFactor = (squareSum - sum * sum / count) / (count - 1);
+    if (rawCount > 1) {
+        double deviationFactor = (squareSum - sum * sum / rawCount) / (rawCount - 1);
         if (deviationFactor < 0) {
             deviationFactor = 0; // Can become < 0 because of rounding errors.
         }
@@ -1453,16 +1446,20 @@ int double_compare(const void *value1, const void *value2)
     }
 
     // Moving average values.
-    int width = count / 4;
-    for (int t = 0; t < count; t++) {
+    int width = rawCount < 12 ? 3 : rawCount / 4;
+    if (width % 2 == 0) {
+        width++; // Make it always an uneven number.
+    }
+
+    for (NSUInteger t = 0; t < rawCount; t++) {
         double average = 0;
-        for (int i = -width / 2; i < width / 2; i++) {
+        for (int i = -width / 2; i <= width / 2; i++) {
             int sourceIndex = t + i;
             if (sourceIndex < 0) {
                 sourceIndex = 0;
             } else {
-                if (sourceIndex >= count) {
-                    sourceIndex = count - 1;
+                if (sourceIndex >= (int)rawCount) {
+                    sourceIndex = rawCount - 1;
                 }
             }
             average += totalBalances[sourceIndex];
@@ -2215,7 +2212,7 @@ int double_compare(const void *value1, const void *value2)
                 timePoints[index++] = [self distanceFromDate: referenceDate toDate: date];
             }
             if (extraEntry) {
-                timePoints[index] = timePoints[index - 1] + 5;
+                timePoints[index] = timePoints[index - 1] + 15;
             }
 
             // Convert all NSDecimalNumbers to double for better performance.
@@ -2245,12 +2242,13 @@ int double_compare(const void *value1, const void *value2)
                 balanceCounts[index++] = [value doubleValue];
             }
 
-            // The value in the extra field is never used, but serves only as additional data point.
+            // The value in the extra field duplicates the value of the second last field
+            // to aid in computation of the moving average.
             if (extraEntry) {
-                totalBalances[index] = 0;
-                positiveBalances[index] = 0;
-                negativeBalances[index] = 0;
-                balanceCounts[index] = 0;
+                totalBalances[index] = totalBalances[index - 1];
+                positiveBalances[index] = positiveBalances[index - 1];
+                negativeBalances[index] = negativeBalances[index - 1];
+                balanceCounts[index] = balanceCounts[index - 1];
             }
 
             // Sample data for the selection plot. Use only as many values as needed to fill the window.
