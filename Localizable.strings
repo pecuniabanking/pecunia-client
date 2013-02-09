@@ -237,7 +237,7 @@
 "AP270" = "++1.3.1 Auto";
 "AP271" = "+++1.3.1.1 Tanken|statement.purpose CONTAINS[cd] \"Tank\" OR statement.purpose CONTAINS[cd] \"Shell\" OR statement.purpose CONTAINS[cd] \"Aral\" OR statement.purpose CONTAINS[cd] \"Total\" OR statement.purpose CONTAINS[cd] \"Esso\"";
 "AP272" = "+++1.3.1.2 Anschaffungen + Reparaturen|statement.purpose CONTAINS[cd] \"Werkstatt\" OR statement.purpose CONTAINS[cd] \"Reparatur\"";
-"AP273" = "+++1.3.1.3 Versicherungen + Steuern|statement.purpose CONTAINS[cd] \"Kasko\" OR statement.purpose CONTAINS[cd] \"KFZ Steuer\" OR userInfo CONTAINS[cd] \"KFZ Steuer\" OR statement.purpose CONTAINS[cd] \"ADAC\" OR statement.purpose CONTAINS[cd] \"AVD\"";
+"AP273" = "+++1.3.1.3 Versicherungen + Steuern|statement.purpose CONTAINS[cd] \"Kasko\" OR statement.purpose CONTAINS[cd] \"KFZ Steuer\" OR statement.purpose CONTAINS[cd] \"ADAC\" OR statement.purpose CONTAINS[cd] \"AVD\"";
 "AP274" = "++1.3.2 Bücher + Zeitschriften|statement.purpose CONTAINS[cd] \"Weltbild\" OR statement.purpose CONTAINS[cd] \"c't\" OR statement.purpose CONTAINS[cd] \"Spotlight\" OR statement.purpose CONTAINS[cd] \"Thalia\" OR statement.purpose CONTAINS[cd] \"Abo\"";
 "AP275" = "++1.3.3 Gesundheit";
 "AP276" = "+++1.3.3.1 Arzneimittel|statement.purpose CONTAINS[cd] \"Apotheke\"";
