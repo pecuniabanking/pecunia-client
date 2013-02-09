@@ -122,6 +122,7 @@ BOOL runningOnLionOrLater = NO;
         bankinControllerInstance = self;
         restart = NO;
         requestRunning = NO;
+        terminationCheckDone = NO;
         mainTabItems = [NSMutableDictionary dictionaryWithCapacity: 10];
 
         @try {
@@ -1335,12 +1336,18 @@ BOOL runningOnLionOrLater = NO;
     return YES;
 }
 
-- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
+- (BOOL)canTerminate
 {
     // Check if there are unsent or unfinished transfers. Send unsent transfers if the users says so.
     BOOL canClose = [self checkForUnhandledTransfersAndSend];
     if (!canClose) {
-        return NSTerminateCancel;
+        return NO;
+    }
+    
+    // check if there are BankUsers. If not, don't show the donation popup
+    NSArray *users = [BankUser allUsers];
+    if ([users count] == 0) {
+        return YES;
     }
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
@@ -1351,10 +1358,22 @@ BOOL runningOnLionOrLater = NO;
         BOOL donate = [controller run];
         if (donate) {
             [self performSelector: @selector(donate:) withObject: self afterDelay: 0.0];
-            return NSTerminateCancel;
+            return NO;
         }
     }
-    //	[[MOAssistant assistant] shutdown];
+    return YES;
+}
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
+{
+    if (terminationCheckDone == YES) {
+        return NSTerminateNow;
+    }
+    
+    if ([self canTerminate] == NO) {
+        terminationCheckDone = NO;
+        return NSTerminateCancel;
+    }
     return NSTerminateNow;
 }
 
@@ -3253,6 +3272,15 @@ BOOL runningOnLionOrLater = NO;
         }
     }
     [categoryAssignments setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
+}
+
+-(BOOL)windowShouldClose:(id)sender
+{
+    if ([self canTerminate] == NO) {
+        return NO;
+    }
+    terminationCheckDone = YES;
+    return YES;
 }
 
 +(BankingController*)controller
