@@ -800,9 +800,14 @@ BOOL updateSent = NO;
 
     for (NSUInteger i = lower; i <= upper; i++) {
         NSString *key = [NSString stringWithFormat: @"AP%lu", i];
-        NSString *name = NSLocalizedString(key, nil);
+        NSString *entry = NSLocalizedString(key, nil);
+        NSArray *values = [entry componentsSeparatedByString: @"|"];
+        if (values.count < 1) {
+            continue;
+        }
 
         // Count leading plus chars (they determine the nesting level) and remove them.
+        NSString *name = values[0];
         NSUInteger level = 0;
         while ([name characterAtIndex: level] == '+') {
             level++;
@@ -813,6 +818,9 @@ BOOL updateSent = NO;
 
         Category *child = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
         child.name = name;
+        if (values.count > 1) {
+            child.rule = values[1];
+        }
         if (level < lastLevel) {
             // Go up the parent chain as many levels as indicated.
             while (lastLevel > level) {
@@ -832,8 +840,6 @@ BOOL updateSent = NO;
         }
         current = child;
     }
-
-    // TODO: add rules to each category
 
     NSError *error;
     if (![context save: &error]) {
