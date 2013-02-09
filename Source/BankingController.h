@@ -75,7 +75,8 @@
     IBOutlet NSTextField        *remoteNameLabel;
     IBOutlet NSSplitView        *rightSplitter;
     IBOutlet NSView             *rightPane;
-    IBOutlet StatementDetails   *statementDetails;
+    IBOutlet StatementDetails   *standardDetails;
+    IBOutlet StatementDetails   *creditCardDetails;
     IBOutlet RoundedOuterShadowView *statementsListViewHost;
     IBOutlet NSSegmentedControl *toolbarButtons;
     
@@ -137,6 +138,9 @@
     
     id<PecuniaSectionItem> currentSection;
     
+    // current statement details
+    StatementDetails   *statementDetails;
+
     // Sorting statements.
     int sortIndex;
     BOOL sortAscending;

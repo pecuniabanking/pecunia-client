@@ -180,6 +180,9 @@ BOOL runningOnLionOrLater = NO;
     sortAscending = NO;
     sortIndex = 0;
 
+    // set standard details
+    statementDetails = standardDetails;
+    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults addObserver: self forKeyPath: @"recursiveTransactions" options: 0 context: UserDefaultsBindingContext];
 
@@ -3187,6 +3190,26 @@ BOOL runningOnLionOrLater = NO;
                 [remoteNameLabel setStringValue: NSLocalizedString(@"AP135", "")];
             }
 
+            // need to switch details view?
+            NSArray *assignments = [categoryAssignments selectedObjects];
+            if ([assignments count] > 0) {
+                StatCatAssignment *stat = assignments[0];
+                if ([stat.statement.type intValue] == StatementType_CreditCard && statementDetails == standardDetails) {
+                    // switch to credit card details
+                    NSRect frame = [statementDetails frame];
+                    [creditCardDetails setFrame:frame];
+                    [rightSplitter replaceSubview:statementDetails with:creditCardDetails];
+                    statementDetails = creditCardDetails;
+                }
+                if ([stat.statement.type intValue] == StatementType_Standard && statementDetails == creditCardDetails) {
+                    //switch to standard details
+                    NSRect frame = [statementDetails frame];
+                    [standardDetails setFrame:frame];
+                    [rightSplitter replaceSubview:statementDetails with:standardDetails];
+                    statementDetails = standardDetails;
+                }
+            }
+            
             [statementDetails setNeedsDisplay: YES];
             [self updateStatusbar];
         }
