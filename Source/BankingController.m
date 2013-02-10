@@ -202,7 +202,7 @@ BOOL runningOnLionOrLater = NO;
     self.toggleDetailsPaneItem.state = lastSplitterPosition > 0 ? NSOffState : NSOnState;
 
     [self updateSorting];
-    
+
     NSDictionary* positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
     NSDictionary* negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
     
@@ -211,7 +211,8 @@ BOOL runningOnLionOrLater = NO;
     [self setNumberFormatForCell: [valueField cell] positive: positiveAttributes negative: negativeAttributes];
     [self setNumberFormatForCell: [headerValueField cell] positive: positiveAttributes negative: negativeAttributes];
     [self setNumberFormatForCell: [nassValueField cell] positive: positiveAttributes negative: negativeAttributes];
-    
+    [self setNumberFormatForCell: [sumValueField cell] positive: positiveAttributes negative: negativeAttributes];
+
     // Edit accounts/categories when double clicking on a node.
     [accountsView setDoubleAction: @selector(changeAccount:)];
     [accountsView setTarget: self];
@@ -1066,10 +1067,6 @@ BOOL runningOnLionOrLater = NO;
         
         [spendingsField setValue: spendingsValue forKey: @"objectValue"];
         [earningsField setValue: earningsValue forKey: @"objectValue"];
-        if (turnovers != 1)
-            [turnoversField setStringValue: [NSString stringWithFormat: NSLocalizedString(@"AP133", @"%u turnovers"), turnovers]];
-        else
-            [turnoversField setStringValue: NSLocalizedString(@"AP132", @"1 turnover")];
     }
     else
     {
