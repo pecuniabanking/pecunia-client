@@ -165,6 +165,14 @@ static CallbackHandler *callbackHandler = nil;
     }
 }
 
+-(void)removePin:(CallbackData*)data
+{
+    currentPwService = @"Pecunia PIN";
+    NSString *s = [NSString stringWithFormat: @"PIN_%@_%@", data.bankCode, data.userId ];
+    [Keychain deletePasswordForService:@"Pecunia PIN" account:s];
+    errorOccured = YES;
+}
+
 -(NSString*)getTan:(CallbackData*)data
 {
     if (data.proposal && [data.proposal length ] > 0) {
@@ -244,6 +252,9 @@ static CallbackHandler *callbackHandler = nil;
     if ([data.command isEqualToString:@"haveHardPin" ]) {
         [[notificationController window ] close ];
         notificationController = nil;
+    }
+    if ([data.command isEqualToString:@"wrongPin" ]) {
+        [self removePin:data];
     }
     
     return @"";

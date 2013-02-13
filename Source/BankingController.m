@@ -2667,6 +2667,7 @@ BOOL runningOnLionOrLater = NO;
 
 -(void)applicationWillFinishLaunching:(NSNotification *)notification
 {
+    /*
     // Check License Agreement
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
     BOOL licenseAgreed = [defaults boolForKey:@"licenseAgreed" ];
@@ -2679,6 +2680,7 @@ BOOL runningOnLionOrLater = NO;
             [defaults setBool:YES forKey:@"licenseAgreed" ];
         }
     }
+    */
     
     // Display main window
     [mainWindow display];
