@@ -436,7 +436,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [pendingTransfersListView bind: @"selectedRows" toObject: pendingTransfers withKeyPath: @"selectionIndexes" options: nil];
     
     finishedTransfers.managedObjectContext = MOAssistant.assistant.context;
-    finishedTransfers.filterPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = YES", acceptedTypes];
+    finishedTransfersPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = YES", acceptedTypes];
+    finishedTransfers.filterPredicate = finishedTransfersPredicate;
 
     [transactionController setManagedObjectContext: MOAssistant.assistant.context];
 
@@ -1624,7 +1625,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSString *searchString = [sender stringValue];
 
     if ([searchString length] == 0) {
-        [finishedTransfers setFilterPredicate: nil];
+        [finishedTransfers setFilterPredicate: finishedTransfersPredicate];
     } else {
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"currency contains[c] %@ or "
                                   "purpose1 contains[c] %@ or "
@@ -1649,7 +1650,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                                   searchString, searchString, searchString, searchString, searchString,
                                   [NSDecimalNumber decimalNumberWithString: searchString locale: [NSLocale currentLocale]]
                                  ];
-        [finishedTransfers setFilterPredicate: predicate];
+        NSPredicate *comp = [NSCompoundPredicate andPredicateWithSubpredicates:@[finishedTransfersPredicate, predicate]];
+        [finishedTransfers setFilterPredicate: comp];
     }
 }
 
