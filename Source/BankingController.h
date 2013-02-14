@@ -117,6 +117,7 @@
     BOOL                   requestRunning;
     BOOL                   statementsBound;
     BOOL                   autoSyncRunning;
+    BOOL                   terminationCheckDone;
     NSDecimalNumber        *saveValue;
     NSCursor               *splitCursor;
     NSUInteger             lastSplitterPosition;  // Last position of the right splitter.
