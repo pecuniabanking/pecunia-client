@@ -160,7 +160,7 @@ extern NSString* const CategoryKey;
                                           inDirectory: subfolder];
     }
     self.categoryIcon.image = [[NSImage alloc] initWithContentsOfFile: path];
-    self.categoryIcon.image.name = category.iconName;
+    self.categoryIcon.image.name = [category.iconName lastPathComponent];
 
     // Set up the icon collection with all icons in our (first) internal collection.
     NSArray *paths = [NSBundle.mainBundle pathsForResourcesOfType: @"icns" inDirectory: @"Collections/1"];
@@ -226,7 +226,9 @@ extern NSString* const CategoryKey;
     imageLibraryPopupWindow = nil;
 
     NSArray *selection = self.iconCollectionController.selectedObjects;
-    self.categoryIcon.image = selection[0][@"icon"];
+    if ([selection count] > 0) {
+        self.categoryIcon.image = selection[0][@"icon"];
+    }
 }
 
 - (IBAction)cancelImage: (id)sender
@@ -263,11 +265,13 @@ extern NSString* const CategoryKey;
     changedCategory.categoryColor = category.categoryColor;
 
     NSImage *image = self.categoryIcon.image;
-    if ([image.name isAbsolutePath]) {
-        changedCategory.iconName = image.name;
-    } else {
-        // A library icon was selected. Construct the relative path.
-        changedCategory.iconName = [@"Collections/1/" stringByAppendingString: image.name];
+    if (image != nil && image.name != nil) {
+        if ([image.name isAbsolutePath]) {
+            changedCategory.iconName = image.name;
+        } else {
+            // A library icon was selected. Construct the relative path.
+            changedCategory.iconName = [@"Collections/1/" stringByAppendingString: image.name];
+        }
     }
 
     NSDictionary *info = @{CategoryKey: changedCategory};

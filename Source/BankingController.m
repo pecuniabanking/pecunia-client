@@ -1826,10 +1826,14 @@ BOOL runningOnLionOrLater = NO;
                 path = [[NSBundle mainBundle] pathForResource: [cat.iconName lastPathComponent]
                                                        ofType: @"icns"
                                                   inDirectory: subfolder];
+            } else {
+                [cell setImage:nil];
             }
         }
         if (path != nil) {
             [cell setImage: [[NSImage alloc] initWithContentsOfFile: path]];
+        } else {
+            [cell setImage:nil];
         }
     } else {
         [cell setImage: nil];
