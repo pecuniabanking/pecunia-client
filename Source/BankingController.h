@@ -66,6 +66,7 @@
     IBOutlet NSImageView        *lockImage;
     IBOutlet NSTextField        *valueField;
     IBOutlet NSTextField        *headerValueField;
+    IBOutlet NSTextField        *sumValueField;
     IBOutlet NSTextField        *nassValueField;
     IBOutlet NSWindow           *assignValueWindow;
     IBOutlet NSTextField        *assignValueField;
