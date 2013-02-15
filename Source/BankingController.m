@@ -122,7 +122,6 @@ BOOL runningOnLionOrLater = NO;
         bankinControllerInstance = self;
         restart = NO;
         requestRunning = NO;
-        terminationCheckDone = NO;
         mainTabItems = [NSMutableDictionary dictionaryWithCapacity: 10];
 
         @try {
@@ -850,9 +849,11 @@ BOOL runningOnLionOrLater = NO;
     if (window == assignValueWindow) {
         [NSApp stopModalWithCode:0 ];
     }
+    /*
     if (window == mainWindow) {
         [NSApp terminate:self ];
     }
+    */
 }
 
 #pragma mark -
@@ -1363,12 +1364,7 @@ BOOL runningOnLionOrLater = NO;
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    if (terminationCheckDone == YES) {
-        return NSTerminateNow;
-    }
-    
     if ([self canTerminate] == NO) {
-        terminationCheckDone = NO;
         return NSTerminateCancel;
     }
     return NSTerminateNow;
@@ -1473,6 +1469,15 @@ BOOL runningOnLionOrLater = NO;
 
 -(IBAction)donate: (id)sender
 {
+    // check if there are any bank users
+    NSArray *users = [BankUser allUsers];
+    if (users == nil || users.count == 0) {
+        NSRunAlertPanel(NSLocalizedString(@"AP91", @""),
+                        NSLocalizedString(@"AP38", @""), 
+                        NSLocalizedString(@"ok", @"Ok"), nil, nil);
+        return;
+    }
+    
     // Switch to the transfers page.
     [self switchMainPage: 1];
 
@@ -1990,6 +1995,7 @@ BOOL runningOnLionOrLater = NO;
             if ([item action] == @selector(transfer_dated:)) return NO;
             if ([item action] == @selector(transfer_internal:)) return NO;
             if ([item action] == @selector(addStatement:)) return NO;
+            if ([item action] == @selector(creditCardSettlements:)) return NO;
         }
         if ([cat isKindOfClass:[BankAccount class]] ) {
             BankAccount *account = (BankAccount*)cat;
@@ -3275,15 +3281,6 @@ BOOL runningOnLionOrLater = NO;
         }
     }
     [categoryAssignments setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
-}
-
--(BOOL)windowShouldClose:(id)sender
-{
-    if ([self canTerminate] == NO) {
-        return NO;
-    }
-    terminationCheckDone = YES;
-    return YES;
 }
 
 +(BankingController*)controller
