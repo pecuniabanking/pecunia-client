@@ -156,19 +156,21 @@ extern NSString* const CategoryKey;
     [categoryIcon addObserver: self forKeyPath: @"image" options: 0 context: nil];
     categoryIcon.controller = self;
 
-    NSString *path;
-    if ([category.iconName isAbsolutePath]) {
-        path = category.iconName;
-    } else {
-        NSString* subfolder = [category.iconName stringByDeletingLastPathComponent];
-        path = [[NSBundle mainBundle] pathForResource: [category.iconName lastPathComponent]
-                                               ofType: @"icns"
-                                          inDirectory: subfolder];
-    }
+    if (category.iconName.length > 0) {
+        NSString *path;
+        if ([category.iconName isAbsolutePath]) {
+            path = category.iconName;
+        } else {
+            NSString* subfolder = [category.iconName stringByDeletingLastPathComponent];
+            path = [[NSBundle mainBundle] pathForResource: [category.iconName lastPathComponent]
+                                                   ofType: @"icns"
+                                              inDirectory: subfolder];
+        }
 
-    // Might leave the image at nil if the path is wrong or the image could not be loaded.
-    categoryIcon.image = [[NSImage alloc] initWithContentsOfFile: path];
-    categoryIcon.image.name = [category.iconName lastPathComponent];
+        // Might leave the image at nil if the path is wrong or the image could not be loaded.
+        categoryIcon.image = [[NSImage alloc] initWithContentsOfFile: path];
+        categoryIcon.image.name = [category.iconName lastPathComponent];
+    }
 
     // Set up the icon collection with all icons in our (first) internal collection.
     NSArray *paths = [NSBundle.mainBundle pathsForResourcesOfType: @"icns" inDirectory: @"Collections/1"];
