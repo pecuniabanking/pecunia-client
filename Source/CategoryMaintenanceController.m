@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -119,6 +119,10 @@ extern NSString* const CategoryKey;
 
 @implementation CategoryMaintenanceController
 
+@synthesize categoryIcon;
+@synthesize smallCategoryIcon;
+@synthesize imageLibraryPopup;
+@synthesize iconCollectionController;
 @synthesize iconCollection;
 
 - (id)initWithCategory: (Category*)aCategory
@@ -134,6 +138,8 @@ extern NSString* const CategoryKey;
         category.currency = aCategory.currency;
         category.categoryColor = aCategory.categoryColor;
         category.iconName = aCategory.iconName;
+        category.isHidden = aCategory.isHidden;
+        category.noCatRep = aCategory.noCatRep;
     }
 	return self;
 }
@@ -147,8 +153,8 @@ extern NSString* const CategoryKey;
     backgroundGradient.fillColor = [NSColor whiteColor];
 
     iconCollection = [NSMutableArray arrayWithCapacity: 100];
-    [self.categoryIcon addObserver: self forKeyPath: @"image" options: 0 context: nil];
-    self.categoryIcon.controller = self;
+    [categoryIcon addObserver: self forKeyPath: @"image" options: 0 context: nil];
+    categoryIcon.controller = self;
 
     NSString *path;
     if ([category.iconName isAbsolutePath]) {
@@ -159,8 +165,10 @@ extern NSString* const CategoryKey;
                                                ofType: @"icns"
                                           inDirectory: subfolder];
     }
-    self.categoryIcon.image = [[NSImage alloc] initWithContentsOfFile: path];
-    self.categoryIcon.image.name = [category.iconName lastPathComponent];
+
+    // Might leave the image at nil if the path is wrong or the image could not be loaded.
+    categoryIcon.image = [[NSImage alloc] initWithContentsOfFile: path];
+    categoryIcon.image.name = [category.iconName lastPathComponent];
 
     // Set up the icon collection with all icons in our (first) internal collection.
     NSArray *paths = [NSBundle.mainBundle pathsForResourcesOfType: @"icns" inDirectory: @"Collections/1"];
@@ -169,7 +177,7 @@ extern NSString* const CategoryKey;
         NSString* fileName = [[path lastPathComponent] stringByDeletingPathExtension];
         NSImage *image = [[NSImage alloc] initWithContentsOfFile: path];
         image.name = fileName;
-        [self.iconCollectionController addObject: @{@"icon": image}];
+        [iconCollectionController addObject: @{@"icon": image}];
     }
 }
 
@@ -181,17 +189,17 @@ extern NSString* const CategoryKey;
                         change: (NSDictionary *)change
                        context: (void *)context
 {
-    self.smallCategoryIcon.image = self.categoryIcon.image;
+    smallCategoryIcon.image = categoryIcon.image;
 }
 
 - (void)openImageLibrary
 {
     if (imageLibraryPopupWindow == nil) {
-        NSRect bounds = self.categoryIcon.bounds;
+        NSRect bounds = categoryIcon.bounds;
         NSPoint targetPoint = NSMakePoint(NSMidX(bounds),
                                           NSMidY(bounds));
-        targetPoint = [self.categoryIcon convertPoint: targetPoint toView: nil];
-        imageLibraryPopupWindow = [[MAAttachedWindow alloc] initWithView: self.imageLibraryPopup
+        targetPoint = [categoryIcon convertPoint: targetPoint toView: nil];
+        imageLibraryPopupWindow = [[MAAttachedWindow alloc] initWithView: imageLibraryPopup
                                                          attachedToPoint: targetPoint
                                                                 inWindow: self.window
                                                                   onSide: MAPositionAutomatic
@@ -225,9 +233,9 @@ extern NSString* const CategoryKey;
     [self.window removeChildWindow: imageLibraryPopupWindow];
     imageLibraryPopupWindow = nil;
 
-    NSArray *selection = self.iconCollectionController.selectedObjects;
+    NSArray *selection = iconCollectionController.selectedObjects;
     if ([selection count] > 0) {
-        self.categoryIcon.image = selection[0][@"icon"];
+        categoryIcon.image = selection[0][@"icon"];
     }
 }
 
@@ -243,7 +251,9 @@ extern NSString* const CategoryKey;
     if ([NSColorPanel sharedColorPanelExists]) {
         [[NSColorPanel sharedColorPanel] close];
     }
-    [self.categoryIcon removeObserver: self forKeyPath: @"image"];
+
+    [categoryIcon removeObserver: self forKeyPath: @"image"];
+
 
     [self close];
 	[moc reset];
@@ -255,16 +265,20 @@ extern NSString* const CategoryKey;
     if ([NSColorPanel sharedColorPanelExists]) {
         [[NSColorPanel sharedColorPanel] close];
     }
-    [self.categoryIcon removeObserver: self forKeyPath: @"image"];
+
+    [categoryIcon removeObserver: self forKeyPath: @"image"];
 
 	[categoryController commitEditing];
 	NSManagedObjectContext *context = MOAssistant.assistant.context;
 	
 	// Take changes over.
 	changedCategory.localName = category.localName;
+    changedCategory.currency = category.currency;
     changedCategory.categoryColor = category.categoryColor;
+    changedCategory.isHidden = category.isHidden;
+    changedCategory.noCatRep = category.noCatRep;
 
-    NSImage *image = self.categoryIcon.image;
+    NSImage *image = categoryIcon.image;
     if (image != nil && image.name != nil) {
         if ([image.name isAbsolutePath]) {
             changedCategory.iconName = image.name;
@@ -272,6 +286,8 @@ extern NSString* const CategoryKey;
             // A library icon was selected. Construct the relative path.
             changedCategory.iconName = [@"Collections/1/" stringByAppendingString: image.name];
         }
+    } else {
+        changedCategory.iconName = @""; // An empty string denotes a category without icon.
     }
 
     NSDictionary *info = @{CategoryKey: changedCategory};
@@ -289,6 +305,11 @@ extern NSString* const CategoryKey;
 
 	[moc reset];
 	[NSApp stopModalWithCode: 1];
+}
+
+- (IBAction)removeIcon: (id)sender {
+    categoryIcon.image = nil;
+    smallCategoryIcon.image = nil;
 }
 
 @end

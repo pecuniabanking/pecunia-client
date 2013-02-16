@@ -61,6 +61,7 @@ typedef enum {
 @property (nonatomic, strong) NSData * catRepColor;
 @property (nonatomic, strong) NSNumber * noCatRep;
 @property (nonatomic) NSString *iconName;
+@property (nonatomic, assign) BOOL isHidden;
 
 @property (nonatomic, strong) NSColor *categoryColor; // Unarchived catRepColor.
 @property (nonatomic, strong) NSMutableArray *reportedAssignments; // assignments between start and end report date

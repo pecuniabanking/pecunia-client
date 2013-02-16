@@ -72,7 +72,6 @@
     IBOutlet NSTextField        *assignValueField;
     IBOutlet NSTextField        *earningsField;
     IBOutlet NSTextField        *spendingsField;
-    IBOutlet NSTextField        *turnoversField;
     IBOutlet NSTextField        *remoteNameLabel;
     IBOutlet NSSplitView        *rightSplitter;
     IBOutlet NSView             *rightPane;

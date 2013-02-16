@@ -53,6 +53,7 @@ BOOL updateSent = NO;
 @dynamic noCatRep;
 @dynamic catRepColor;
 @dynamic iconName;
+@dynamic isHidden;
 
 @synthesize categoryColor;
 @synthesize reportedAssignments;  // assignments that are between start and end report date

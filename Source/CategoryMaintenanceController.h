@@ -36,7 +36,6 @@
 	Category               *changedCategory;
     NSMutableArray         *iconCollection;
 
-    BOOL fadeInProgress; // YES if we are currently fading out the popup.
     MAAttachedWindow *imageLibraryPopupWindow;
 }
 

@@ -1074,7 +1074,6 @@ BOOL runningOnLionOrLater = NO;
     {
         [spendingsField setStringValue: @""];
         [earningsField setStringValue: @""];
-        [turnoversField setStringValue: @""];
     }
 }
 
@@ -1833,9 +1832,10 @@ BOOL runningOnLionOrLater = NO;
             }
         }
         if (path != nil) {
+            // Also assigns nil if the path doesn't exist or the referenced file cannot be used as image.
             [cell setImage: [[NSImage alloc] initWithContentsOfFile: path]];
         } else {
-            [cell setImage:nil];
+            [cell setImage: nil];
         }
     } else {
         [cell setImage: nil];
@@ -3038,6 +3038,32 @@ BOOL runningOnLionOrLater = NO;
         [self toggleDetailsPane: nil];
         [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
     }
+}
+
+- (void)reapplyDefaultIconsForCategory: (Category *)category
+{
+    for (Category *child in category.children) {
+        if ([child.name hasPrefix: @"++"]) {
+            continue;
+        }
+        [self determineDefaultIconForCategory: child];
+        [self reapplyDefaultIconsForCategory: child];
+    }
+}
+
+- (IBAction)resetCategoryIcons: (id)sender
+{
+    int res = NSRunAlertPanel(NSLocalizedString(@"AP301", nil),
+                              NSLocalizedString(@"AP302", nil),
+                              NSLocalizedString(@"no", nil),
+                              NSLocalizedString(@"yes", nil),
+                              nil
+                              );
+    if (res != NSAlertAlternateReturn) {
+        return;
+    }
+    [self reapplyDefaultIconsForCategory: Category.catRoot];
+    [accountsView setNeedsDisplay: YES];
 }
 
 #pragma mark -

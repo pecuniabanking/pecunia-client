@@ -1793,7 +1793,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																					<object class="NSTextField" id="485555588">
 																						<reference key="NSNextResponder" ref="475239580"/>
 																						<int key="NSvFlags">289</int>
-																						<string key="NSFrame">{{419, 20}, {56, 17}}</string>
+																						<string key="NSFrame">{{419, 20}, {59, 17}}</string>
 																						<reference key="NSSuperview" ref="475239580"/>
 																						<reference key="NSWindow"/>
 																						<reference key="NSNextKeyView" ref="1056755445"/>
@@ -1812,7 +1812,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																					<object class="NSTextField" id="630285757">
 																						<reference key="NSNextResponder" ref="475239580"/>
 																						<int key="NSvFlags">289</int>
-																						<string key="NSFrame">{{637, 18}, {30, 11}}</string>
+																						<string key="NSFrame">{{633, 15}, {41, 11}}</string>
 																						<reference key="NSSuperview" ref="475239580"/>
 																						<reference key="NSWindow"/>
 																						<reference key="NSNextKeyView" ref="572286259"/>
@@ -1821,10 +1821,10 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																						<object class="NSTextFieldCell" key="NSCell" id="539472459">
 																							<int key="NSCellFlags">68157504</int>
 																							<int key="NSCellFlags2">272630784</int>
-																							<string key="NSContents">Aus</string>
+																							<string key="NSContents">Auswahl</string>
 																							<object class="NSFont" key="NSSupport">
 																								<string key="NSName">LucidaGrande</string>
-																								<double key="NSSize">9</double>
+																								<double key="NSSize">8</double>
 																								<int key="NSfFlags">16</int>
 																							</object>
 																							<string key="NSCellIdentifier">_NS:1535</string>
@@ -3580,7 +3580,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{131, 34}, {646, 18}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView"/>
+																				<reference key="NSNextKeyView" ref="569487988"/>
 																				<bool key="NSEnabled">YES</bool>
 																				<object class="NSTextFieldCell" key="NSCell" id="82837621">
 																					<int key="NSCellFlags">68157504</int>
@@ -4547,6 +4547,24 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<int key="NSState">1</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
+								</object>
+								<object class="NSMenuItem" id="209798417">
+									<reference key="NSMenu" ref="678233615"/>
+									<bool key="NSIsDisabled">YES</bool>
+									<bool key="NSIsSeparator">YES</bool>
+									<string key="NSTitle"/>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
+								</object>
+								<object class="NSMenuItem" id="675911812">
+									<reference key="NSMenu" ref="678233615"/>
+									<string key="NSTitle">Alle Kategorie Icons zurücksetzen...</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="883146705"/>
 									<reference key="NSMixedImage" ref="237878853"/>
 								</object>
@@ -7193,7 +7211,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{213, 107}</string>
 				<object class="NSView" key="NSWindowView" id="308267023">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<array class="NSMutableArray" key="NSSubviews">
 						<object class="NSTextField" id="1053536881">
@@ -7685,6 +7703,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						</object>
 					</array>
 					<string key="NSFrameSize">{394, 429}</string>
+					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
 				<string key="NSMinSize">{213, 129}</string>
@@ -11163,12 +11182,12 @@ wGw</bytes>
 					<int key="connectionID">6834</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">turnoversField</string>
+					<object class="IBActionConnection" key="connection">
+						<string key="label">resetCategoryIcons:</string>
 						<reference key="source" ref="674635667"/>
-						<reference key="destination" ref="485555588"/>
+						<reference key="destination" ref="675911812"/>
 					</object>
-					<int key="connectionID">6118</int>
+					<int key="connectionID">6864</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -13230,10 +13249,14 @@ wGw</bytes>
 							<string key="NSLabel">value: arrangedObjects.@count</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">arrangedObjects.@count</string>
+							<dictionary key="NSOptions">
+								<string key="NSNoSelectionPlaceholder">0</string>
+								<string key="NSNullPlaceholder">0</string>
+							</dictionary>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">6846</int>
+					<int key="connectionID">6867</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -13918,10 +13941,14 @@ wGw</bytes>
 							<string key="NSLabel">value: selectedObjects.@count</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">selectedObjects.@count</string>
+							<dictionary key="NSOptions">
+								<string key="NSNoSelectionPlaceholder">0</string>
+								<string key="NSNullPlaceholder">0</string>
+							</dictionary>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">6858</int>
+					<int key="connectionID">6868</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -17639,6 +17666,8 @@ wGw</bytes>
 							<reference ref="1069604930"/>
 							<reference ref="725927613"/>
 							<reference ref="775563244"/>
+							<reference ref="209798417"/>
+							<reference ref="675911812"/>
 						</array>
 						<reference key="parent" ref="115235777"/>
 					</object>
@@ -18243,6 +18272,16 @@ wGw</bytes>
 						<int key="objectID">6860</int>
 						<reference key="object" ref="449767201"/>
 						<reference key="parent" ref="1056755445"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6862</int>
+						<reference key="object" ref="209798417"/>
+						<reference key="parent" ref="678233615"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6863</int>
+						<reference key="object" ref="675911812"/>
+						<reference key="parent" ref="678233615"/>
 					</object>
 				</array>
 			</object>
@@ -19038,6 +19077,8 @@ wGw</bytes>
 				<string key="6856.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6859.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6860.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6862.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6863.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="74.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="77.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="78.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -19085,7 +19126,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6861</int>
+			<int key="maxID">6868</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -19122,6 +19163,7 @@ wGw</bytes>
 						<string key="manageCategories:">id</string>
 						<string key="printDocument:">id</string>
 						<string key="repairSaldo:">id</string>
+						<string key="resetCategoryIcons:">id</string>
 						<string key="resetIsNewStatements:">id</string>
 						<string key="showAboutPanel:">id</string>
 						<string key="showLicense:">id</string>
@@ -19221,6 +19263,10 @@ wGw</bytes>
 						</object>
 						<object class="IBActionInfo" key="repairSaldo:">
 							<string key="name">repairSaldo:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="resetCategoryIcons:">
+							<string key="name">resetCategoryIcons:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="resetIsNewStatements:">
@@ -19328,7 +19374,6 @@ wGw</bytes>
 						<string key="toggleFullscreenItem">NSMenuItem</string>
 						<string key="toolbarButtons">NSSegmentedControl</string>
 						<string key="transactionController">TransactionController</string>
-						<string key="turnoversField">NSTextField</string>
 						<string key="valueField">NSTextField</string>
 						<string key="versionText">NSTextField</string>
 					</dictionary>
@@ -19504,10 +19549,6 @@ wGw</bytes>
 						<object class="IBToOneOutletInfo" key="transactionController">
 							<string key="name">transactionController</string>
 							<string key="candidateClassName">TransactionController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="turnoversField">
-							<string key="name">turnoversField</string>
-							<string key="candidateClassName">NSTextField</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="valueField">
 							<string key="name">valueField</string>

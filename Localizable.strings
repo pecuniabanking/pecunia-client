@@ -262,6 +262,9 @@
 "AP294" = "++2.4.2 Nebenkosten|statement.remoteName CONTAINS[cd] \"Nebenkosten\"";
 "AP300" = "294"; // Sentinel
 
+"AP301" = "Kategorie Icons zurücksetzen";
+"AP302" = "Alle Icons, die den Kategorien zugewiesen wurden werden gelöscht und durch ein Standardbild erstetzt. Jetzt durchführen?";
+
 // Callback and backend.
 // AP350..AP399
 "AP350" = "Bitte legen Sie Ihre Chipkarte in das Chipkarten-Terminal ein";
