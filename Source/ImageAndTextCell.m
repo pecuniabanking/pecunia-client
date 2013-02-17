@@ -1,41 +1,27 @@
-/*
- ImageAndTextCell.m
- Copyright ¬¨¬®¬¨¬Æ¬¨¬®¬¨¬© 2006, Apple Computer, Inc., all rights reserved.
- 
- Subclass of NSTextFieldCell which can display text and an image simultaneously.
+/**
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
  */
 
 /*
- IMPORTANT:  This Apple software is supplied to you by Apple Computer, Inc. ("Apple") in
- consideration of your agreement to the following terms, and your use, installation, 
- modification or redistribution of this Apple software constitutes acceptance of these 
- terms.  If you do not agree with these terms, please do not use, install, modify or 
- redistribute this Apple software.
+ Based on ImageAndTextCell.m, supplied by Apple as example code.
+ Copyright (c) 2006, Apple Computer, Inc., all rights reserved.
  
- In consideration of your agreement to abide by the following terms, and subject to these 
- terms, Apple grants you a personal, non-exclusive license, under Apple‚Äö√Ñ√∂‚àö√ë‚àö‚àÇ‚Äö√†√∂‚àö√´‚Äö√†√∂¬¨‚Ä¢s copyrights in 
- this original Apple software (the "Apple Software"), to use, reproduce, modify and 
- redistribute the Apple Software, with or without modifications, in source and/or binary 
- forms; provided that if you redistribute the Apple Software in its entirety and without 
- modifications, you must retain this notice and the following text and disclaimers in all 
- such redistributions of the Apple Software.  Neither the name, trademarks, service marks 
- or logos of Apple Computer, Inc. may be used to endorse or promote products derived from 
- the Apple Software without specific prior written permission from Apple. Except as expressly
- stated in this notice, no other rights or licenses, express or implied, are granted by Apple
- herein, including but not limited to any patent rights that may be infringed by your 
- derivative works or by other works in which the Apple Software may be incorporated.
- 
- The Apple Software is provided by Apple on an "AS IS" basis.  APPLE MAKES NO WARRANTIES, 
- EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, 
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS 
- USE AND OPERATION ALONE OR IN COMBINATION WITH YOUR PRODUCTS.
- 
- IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL OR CONSEQUENTIAL 
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS 
- OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, 
- REPRODUCTION, MODIFICATION AND/OR DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED AND 
- WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR 
- OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ Subclass of NSTextFieldCell which can display text and an image simultaneously.
  */
 
 #import "ImageAndTextCell.h"
@@ -109,14 +95,21 @@
         return NSZeroRect;
 }
 
-- (void)setValues: (NSDecimalNumber*)aAmount currency: (NSString*)aCurrency unread: (NSInteger)unread
-         disabled: (BOOL)disabled isRoot: (BOOL)root
+- (void)setValues: (NSDecimalNumber*)aAmount
+         currency: (NSString*)aCurrency
+           unread: (NSInteger)unread
+         disabled: (BOOL)disabled
+           isRoot: (BOOL)root
+         isHidden: (BOOL)hidden
+        isIgnored: (BOOL)ignored
 {
     currency = aCurrency;
     amount = aAmount;
     countUnread = unread;
     isRoot = root;
     isDisabled = disabled;
+    isHidden = hidden;
+    isIgnored = ignored;
     
     return;
 }
@@ -182,14 +175,20 @@ static NSGradient* selectionGradient = nil;
         swatchRect.size = NSMakeSize(swatchWidth, SWATCH_SIZE);
         swatchRect.origin.y += floor((cellFrame.size.height - SWATCH_SIZE) / 2);
         swatchRect.origin.x += 3;
-        [swatchColor setFill];
+        if (isHidden) {
+            [[swatchColor colorWithAlphaComponent: 0.4] setFill];
+        } else {
+            [swatchColor setFill];
+        }
         [NSBezierPath fillRect: swatchRect];
 
         // Draw a border for entries with a darker background.
         if ([self isHighlighted] || isRoot) {
-            swatchRect.origin.x += 0.5;
-            swatchRect.origin.y += 0.5;
-            [[NSColor colorWithDeviceWhite: 1 alpha: 0.75] setStroke];
+            swatchRect.size.width++;
+            swatchRect.size.height++;
+            swatchRect.origin.x -= 0.5;
+            swatchRect.origin.y -= 0.5;
+            [[NSColor colorWithDeviceWhite: 1 alpha: (isHidden ? 0.4 : 0.75)] setStroke];
             [NSBezierPath strokeRect: swatchRect];
         }
 
@@ -213,7 +212,7 @@ static NSGradient* selectionGradient = nil;
         [image drawInRect: iconFrame
                  fromRect: NSZeroRect
                 operation: NSCompositeSourceOver
-                 fraction: 1.0
+                 fraction: isHidden ? 0.4 : 1.0
            respectFlipped: YES
                     hints: nil];
 
@@ -266,6 +265,10 @@ static NSGradient* selectionGradient = nil;
         valueColor = (NSColor*)fontAttributes[NSForegroundColorAttributeName];
     }
 
+    if (isIgnored) {
+        valueColor = [valueColor colorWithAlphaComponent: 0.4];
+    }
+    
     NSFont *txtFont = [NSFont fontWithName: @"Lucida Grande" size: 13];
     NSDictionary *attributes = @{NSFontAttributeName: txtFont,
                                 NSForegroundColorAttributeName: valueColor};
@@ -301,6 +304,9 @@ static NSGradient* selectionGradient = nil;
     {
         // Selected and root items can never be disabled.
         textColor = [NSColor whiteColor];
+        if (isHidden) {
+            textColor = [textColor colorWithAlphaComponent: 0.4];
+        }
 
         attributes = @{NSFontAttributeName: [self font],
                       NSForegroundColorAttributeName: textColor,
@@ -313,6 +319,10 @@ static NSGradient* selectionGradient = nil;
         if (isDisabled) {
             textColor = [NSColor applicationColorForKey: @"Disabled Tree Item Color"];
         }   
+        if (isHidden) {
+            textColor = [textColor colorWithAlphaComponent: 0.4];
+        }
+
         attributes = @{NSFontAttributeName: [self font],
                       NSForegroundColorAttributeName: textColor,
                       NSParagraphStyleAttributeName: paragraphStyle};

@@ -4490,6 +4490,14 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 									<reference key="NSOnImage" ref="883146705"/>
 									<reference key="NSMixedImage" ref="237878853"/>
 								</object>
+								<object class="NSMenuItem" id="335672961">
+									<reference key="NSMenu" ref="678233615"/>
+									<string key="NSTitle">Versteckte Konten + Kategorien anzeigen</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
+								</object>
 								<object class="NSMenuItem" id="725927613">
 									<reference key="NSMenu" ref="678233615"/>
 									<bool key="NSIsDisabled">YES</bool>
@@ -7211,7 +7219,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{213, 107}</string>
 				<object class="NSView" key="NSWindowView" id="308267023">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<array class="NSMutableArray" key="NSSubviews">
 						<object class="NSTextField" id="1053536881">
@@ -7703,7 +7711,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						</object>
 					</array>
 					<string key="NSFrameSize">{394, 429}</string>
-					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
 				<string key="NSMinSize">{213, 129}</string>
@@ -13950,6 +13957,22 @@ wGw</bytes>
 					</object>
 					<int key="connectionID">6868</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.showHiddenCategories</string>
+						<reference key="source" ref="335672961"/>
+						<reference key="destination" ref="781564242"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="335672961"/>
+							<reference key="NSDestination" ref="781564242"/>
+							<string key="NSLabel">value: values.showHiddenCategories</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.showHiddenCategories</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">6871</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -17668,6 +17691,7 @@ wGw</bytes>
 							<reference ref="775563244"/>
 							<reference ref="209798417"/>
 							<reference ref="675911812"/>
+							<reference ref="335672961"/>
 						</array>
 						<reference key="parent" ref="115235777"/>
 					</object>
@@ -18281,6 +18305,11 @@ wGw</bytes>
 					<object class="IBObjectRecord">
 						<int key="objectID">6863</int>
 						<reference key="object" ref="675911812"/>
+						<reference key="parent" ref="678233615"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6869</int>
+						<reference key="object" ref="335672961"/>
 						<reference key="parent" ref="678233615"/>
 					</object>
 				</array>
@@ -19079,6 +19108,7 @@ wGw</bytes>
 				<string key="6860.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6862.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6863.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6869.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="74.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="77.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="78.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -19126,7 +19156,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6868</int>
+			<int key="maxID">6871</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -19163,7 +19193,6 @@ wGw</bytes>
 						<string key="manageCategories:">id</string>
 						<string key="printDocument:">id</string>
 						<string key="repairSaldo:">id</string>
-						<string key="resetCategoryIcons:">id</string>
 						<string key="resetIsNewStatements:">id</string>
 						<string key="showAboutPanel:">id</string>
 						<string key="showLicense:">id</string>
@@ -19263,10 +19292,6 @@ wGw</bytes>
 						</object>
 						<object class="IBActionInfo" key="repairSaldo:">
 							<string key="name">repairSaldo:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="resetCategoryIcons:">
-							<string key="name">resetCategoryIcons:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="resetIsNewStatements:">

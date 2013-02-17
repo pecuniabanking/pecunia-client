@@ -222,6 +222,8 @@
 		newAccount.currency = account.currency;
 		newAccount.country = account.country;
         newAccount.catRepColor = account.catRepColor;
+        newAccount.isHidden = account.isHidden;
+        newAccount.noCatRep = account.noCatRep;
 	}
 
     [self close ];

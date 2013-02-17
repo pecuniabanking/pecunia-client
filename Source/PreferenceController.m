@@ -31,7 +31,7 @@ static NSArray *exportFields = nil;
 
 #define SYNCH_HEIGHT 310
 #define SEC_HEIGHT 280
-#define COLORS_HEIGHT 240
+#define DISPLAY_HEIGHT 300
 #define EXP_HEIGHT 375
 #define PRINT_HEIGHT 200
 
@@ -315,7 +315,7 @@ void updateColorCache()
 
 - (IBAction)colorSettings:(id)sender {
     [mainTab selectTabViewItemAtIndex: 2];
-    [self setHeight: COLORS_HEIGHT];
+    [self setHeight: DISPLAY_HEIGHT];
 }
 
 -(IBAction)exportSettings:(id)sender
@@ -383,6 +383,12 @@ void updateColorCache()
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	return [defaults boolForKey: @"showCatColorsInTree"];
+}
+
++ (BOOL)showHiddenCategories
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	return [defaults boolForKey: @"showHiddenCategories"];
 }
 
 @end

@@ -290,7 +290,7 @@
 
         // Add transactions to each account of a bank.
         for (BankAccount *bank in root.children) {
-            NSArray *accounts = bank.children.objectEnumerator.allObjects;
+            NSArray *accounts = [bank.children allObjects];
             for (NSUInteger year = startYear; year <= endYear; year++) {
                 NSUInteger yearlyLimit = numberOfStatementsPerBank;
 
@@ -315,7 +315,7 @@
 
                         // Randomly pick one of the accounts in this bank. Prefer the first one as most important.
                         // It gets most of the transactions.
-                        NSInteger randomIndex = (NSInteger)arc4random_uniform(bank.children.count + 6) - 6;
+                        NSInteger randomIndex = (NSInteger)arc4random_uniform([bank.children count] + 6) - 6;
                         if (randomIndex < 0) {
                             randomIndex = 0;
                         }

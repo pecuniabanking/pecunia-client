@@ -47,6 +47,7 @@ typedef enum {
     
 @private
     NSColor *catColor;
+    NSUInteger hiddenChildren; // Keep track of hidden child count to optimize handling.
 }
 
 @property (nonatomic, strong) NSString * rule;
@@ -64,7 +65,7 @@ typedef enum {
 @property (nonatomic, assign) BOOL isHidden;
 
 @property (nonatomic, strong) NSColor *categoryColor; // Unarchived catRepColor.
-@property (nonatomic, strong) NSMutableArray *reportedAssignments; // assignments between start and end report date
+@property (nonatomic, strong) NSArray *reportedAssignments; // assignments between start and end report date
 @property (nonatomic, readonly, weak) NSMutableSet *boundAssignments; // assignments bound to / displayed in a statements table view
 
 - (void)updateInvalidCategoryValues;
@@ -83,7 +84,7 @@ typedef enum {
 - (BOOL)isNotAssignedCategory;
 - (BOOL)checkMoveToCategory:(Category*)cat;
 
-- (NSMutableSet*)children;
+- (id)children;
 - (NSSet*)allCategories;
 - (NSSet*)siblings;
 - (NSUInteger)categoryHistoryToDates: (NSArray**)dates

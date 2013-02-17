@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -33,37 +33,38 @@
 	NSWindow					*mainWindow;
 	
 	// encryption sheet
-	NSString	*password;
-	BOOL		savePassword;
-	BOOL		encrypt;
-	BOOL		colorsChanged;
+	NSString *password;
+	BOOL      savePassword;
+	BOOL      encrypt;
+	BOOL      colorsChanged;
 }
 
--(IBAction)changeFileLocation: (id)sender;
+- (IBAction)changeFileLocation: (id)sender;
 
--(IBAction)encryptData: (id)sender;
--(IBAction)cancelSheet:(id)sender;
--(IBAction)endSheet: (id)sender;
+- (IBAction)encryptData: (id)sender;
+- (IBAction)cancelSheet:(id)sender;
+- (IBAction)endSheet: (id)sender;
 
--(IBAction)expSepTab:(id)sender;
--(IBAction)expSepSemi:(id)sender;
--(IBAction)expSepLine:(id)sender;
+- (IBAction)expSepTab:(id)sender;
+- (IBAction)expSepSemi:(id)sender;
+- (IBAction)expSepLine:(id)sender;
 
--(IBAction)synchSettings:(id)sender;
--(IBAction)securitySettings:(id)sender;
--(IBAction)exportSettings:(id)sender;
--(IBAction)printSettings:(id)sender;
+- (IBAction)synchSettings:(id)sender;
+- (IBAction)securitySettings:(id)sender;
+- (IBAction)exportSettings:(id)sender;
+- (IBAction)printSettings:(id)sender;
 - (IBAction)colorSettings:(id)sender;
 
--(IBAction)removePINs: (id)sender;
--(IBAction)colorButtonsChanged: (id)sender;
+- (IBAction)removePINs: (id)sender;
+- (IBAction)colorButtonsChanged: (id)sender;
 
--(void)setMainWindow: (NSWindow*)main;
--(void)setHeight:(int)h;
+- (void)setMainWindow: (NSWindow*)main;
+- (void)setHeight:(int)h;
 
-+(NSColor*)notAssignedRowColor;
-+(NSColor*)newStatementRowColor;
++ (NSColor*)notAssignedRowColor;
++ (NSColor*)newStatementRowColor;
 
 + (BOOL)showCategoryColorsInTree;
++ (BOOL)showHiddenCategories;
 
 @end

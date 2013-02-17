@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -56,6 +56,8 @@ extern NSString* const CategoryKey;
     account.noAutomaticQuery = acc.noAutomaticQuery;
 	account.userId = acc.userId;
     account.categoryColor = acc.categoryColor;
+    account.isHidden = acc.isHidden;
+    account.noCatRep = acc.noCatRep;
 
 	return self;
 }
@@ -134,6 +136,8 @@ extern NSString* const CategoryKey;
 	changedAccount.isStandingOrderSupported = account.isStandingOrderSupported;
     changedAccount.noAutomaticQuery = account.noAutomaticQuery;
     changedAccount.catRepColor = account.catRepColor;
+    changedAccount.isHidden = account.isHidden;
+    changedAccount.noCatRep = account.noCatRep;
 	
 	if ([changedAccount.isManual boolValue] == YES) {
 		NSPredicate* predicate = [predicateEditor objectValue];

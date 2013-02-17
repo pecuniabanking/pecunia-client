@@ -185,6 +185,7 @@ BOOL runningOnLionOrLater = NO;
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults addObserver: self forKeyPath: @"recursiveTransactions" options: 0 context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
 
     if ([userDefaults objectForKey: @"mainSortIndex" ]) {
         sortControl.selectedSegment = [[userDefaults objectForKey: @"mainSortIndex"] intValue];
@@ -908,12 +909,16 @@ BOOL runningOnLionOrLater = NO;
     if (!cat.isBankAccount && cat != Category.nassRoot && cat != Category.catRoot) {
         CategoryMaintenanceController *changeController = [[CategoryMaintenanceController alloc] initWithCategory: cat];
         [NSApp runModalForWindow: [changeController window]];
+        [categoryController prepareContent]; // Visibility of a category could have changed.
+        [Category.catRoot rollup]; // Category could have switched its noCatRep property.
         return;
     }
 
     if (cat.accountNumber != nil) {
         AccountMaintenanceController *changeController = [[AccountMaintenanceController alloc] initWithAccount: (BankAccount*)cat];
         [NSApp runModalForWindow: [changeController window]];
+        [categoryController prepareContent];
+        [Category.bankRoot rollup];
     }
     // Changes are stored in the controllers.
 }
@@ -1877,11 +1882,13 @@ BOOL runningOnLionOrLater = NO;
         [cell setImage: nil];
     }
     
-    [cell setValues: [cat catSum]
+    [cell setValues: cat.catSum
            currency: cat.currency
              unread: numberUnread
            disabled: itemIsDisabled
-             isRoot: itemIsRoot];
+             isRoot: itemIsRoot
+           isHidden: cat.isHidden
+          isIgnored: cat.noCatRep.boolValue];
 }
 
 - (CGFloat)outlineView: (NSOutlineView *)outlineView heightOfRowByItem:(id)item
@@ -2774,12 +2781,12 @@ BOOL runningOnLionOrLater = NO;
     [self checkForAutoSync];
 
     // Add default categories if there aren't any but the predefined ones.
-    if (Category.catRoot.children.count == 1) {
+    if ([Category.catRoot.children count] == 1) {
         [self createDefaultCategories];
     }
 
     // Check if there are any bank users or at least manual accounts.
-    if (BankUser.allUsers.count == 0 && Category.bankRoot.children.count == 0) {
+    if (BankUser.allUsers.count == 0 && [Category.bankRoot.children count] == 0) {
         int res = NSRunAlertPanel(NSLocalizedString(@"AP39", nil),
                                   NSLocalizedString(@"AP185", nil),
                                   NSLocalizedString(@"yes", nil),
@@ -3203,6 +3210,10 @@ BOOL runningOnLionOrLater = NO;
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"recursiveTransactions"]) {
             [[self currentSelection] updateBoundAssignments];
+        } else {
+            if ([keyPath isEqualToString: @"showHiddenCategories"]) {
+                [categoryController prepareContent];
+            }
         }
         return;
     }
