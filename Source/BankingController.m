@@ -1369,7 +1369,7 @@ BOOL runningOnLionOrLater = NO;
     return NSTerminateNow;
 }
 
-- (void)applicationWillTerminate:(NSNotification *)aNotification
+- (void)applicationWillTerminate: (NSNotification *)aNotification
 {
     NSError	*error = nil;
 
@@ -1401,10 +1401,12 @@ BOOL runningOnLionOrLater = NO;
     if ([categoryPeriodsController respondsToSelector: @selector(terminate)]) {
         [categoryPeriodsController terminate];
     }
+
+    dockIconController = nil;
     
     if (self.managedObjectContext) {
-        if([self.managedObjectContext save: &error] == NO) {
-            NSAlert *alert = [NSAlert alertWithError:error];
+        if ([self.managedObjectContext save: &error] == NO) {
+            NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
             return;
         }
