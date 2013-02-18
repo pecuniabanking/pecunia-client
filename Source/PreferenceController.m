@@ -31,7 +31,7 @@ static NSArray *exportFields = nil;
 
 #define SYNCH_HEIGHT 310
 #define SEC_HEIGHT 280
-#define DISPLAY_HEIGHT 300
+#define DISPLAY_HEIGHT 320
 #define EXP_HEIGHT 375
 #define PRINT_HEIGHT 200
 
@@ -262,6 +262,11 @@ void updateColorCache()
 	}
 	
 	password = passw1;
+    
+    if (savePassword) {
+        [Keychain setPassword: password forService: @"Pecunia" account: @"DataFile" store: savePassword];
+    }
+
 	[encryptionSheet orderOut: sender ];
 	[NSApp endSheet: encryptionSheet returnCode: 0 ];
 }
