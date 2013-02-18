@@ -1,22 +1,28 @@
-//
-//  DockIconController.h
-//  Pecunia
-//
-//  Created by Eike Wolgast on 04.06.11.
-//  Copyright 2011 Frank Emminghaus. All rights reserved.
-//
-
-#import <Cocoa/Cocoa.h>
-#import <BankStatement.h>
+/**
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 @interface DockIconController : NSObject {
 
-	NSManagedObjectContext *managedObjectContext;
-	NSInteger				badgeValue;
+    NSManagedObjectContext *managedObjectContext;
+    NSInteger               badgeValue;
 }
 
--(DockIconController*)initWithManagedObjectContext: (NSManagedObjectContext *) objectContext;
--(void)managedObjectContextChanged:(NSNotification *)notification;
--(NSInteger)numberUnread;
--(void)drawIconBadge;
+- (DockIconController*)initWithManagedObjectContext: (NSManagedObjectContext *)objectContext;
+
 @end

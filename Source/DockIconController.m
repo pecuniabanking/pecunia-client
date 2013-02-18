@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,83 +18,69 @@
  */
 
 #import "DockIconController.h"
-
+#import "BankStatement.h"
 
 @implementation DockIconController
 
 
--(DockIconController*)initWithManagedObjectContext: (NSManagedObjectContext *) objectContext
+- (DockIconController*)initWithManagedObjectContext: (NSManagedObjectContext *)objectContext
 {
-	if (!(self = [super init])) return nil;
-	managedObjectContext = objectContext;
-	
-	[[NSNotificationCenter defaultCenter]  addObserver:self
-											  selector:@selector(managedObjectContextChanged:)
-												  name:NSManagedObjectContextObjectsDidChangeNotification
-												object:managedObjectContext];
-	
-	[self drawIconBadge];
+    self = [super init];
+    if (self != nil) {
+        managedObjectContext = objectContext;
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(managedObjectContextChanged:)
+                                                     name: NSManagedObjectContextObjectsDidChangeNotification
+                                                   object: nil];
+        [self updateBadge];
+    }
 	return self;
 }
 
--(void)managedObjectContextChanged:(NSNotification *)notification
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
+- (void)managedObjectContextChanged: (NSNotification *)notification
 {
 	NSDictionary *userInfoDictionary = [notification userInfo];
     NSSet *updatedObjects = userInfoDictionary[NSUpdatedObjectsKey];
 	
-	NSEnumerator *enumerator = [updatedObjects objectEnumerator];
-	id value;
-	
-    BOOL bankStatementUpdated = FALSE;
-	
-	while ((value = [enumerator nextObject])) {
-		if ([value isKindOfClass:[BankStatement class]]) {
-			bankStatementUpdated = TRUE;
+ 	for (id value in updatedObjects) {
+		if ([value isKindOfClass: [BankStatement class]]) {
+			[self updateBadge];
 			break;
 		}
 	}
-	
-	if (bankStatementUpdated)
-	{	
-		[self drawIconBadge];
-	}
-	
-	return;
 }
 
--(NSInteger)numberUnread
+- (NSInteger)numberUnread
 {
 	NSError *error = nil;
-	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"BankStatement" inManagedObjectContext:managedObjectContext];
+	NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement"
+                                                          inManagedObjectContext: managedObjectContext];
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	[request setEntity:entityDescription];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1", self ];
-	[request setPredicate:predicate];
-	NSArray *statements = [managedObjectContext executeFetchRequest:request error:&error];
-	return [statements count ];
+	[request setEntity: entityDescription];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1", self];
+	[request setPredicate: predicate];
+	NSArray *statements = [managedObjectContext executeFetchRequest:request error: &error];
+	return [statements count];
 }
 
--(void)drawIconBadge
+- (void)updateBadge
 {
 	NSInteger newBadgeValue = [self numberUnread];
 	
-	if (badgeValue == newBadgeValue)
-	{
-		return;
-	}
-	else
-	{
+	if (badgeValue != newBadgeValue) {
 		badgeValue = newBadgeValue;
 		if (newBadgeValue == 0) {
-			[[[NSApplication sharedApplication] dockTile] setBadgeLabel:@""];
+			[NSApplication.sharedApplication.dockTile setBadgeLabel: @""];
 		}
 		else {
-			[[[NSApplication sharedApplication] dockTile] setBadgeLabel:[NSString stringWithFormat:@"%li", badgeValue]];
+			[NSApplication.sharedApplication.dockTile setBadgeLabel: [NSString stringWithFormat: @"%li", badgeValue]];
 		}
-		
-		
 	}
-	return;
 }
 
 @end
