@@ -616,6 +616,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
  */
 - (void)updateTargetAccountSelector
 {
+    if (transactionController.currentTransfer.type.intValue != TransferTypeInternal) {
+        return;
+    }
+    
     BankAccount *currentAccount = targetAccountSelector.selectedItem.representedObject;
     BankAccount *sourceAccount = sourceAccountSelector.selectedItem.representedObject;
     

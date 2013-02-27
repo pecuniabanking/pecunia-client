@@ -41,6 +41,89 @@
 	return result;
 }
 
+- (NSData*)decodeBase64:(NSData*)data
+{
+    char        *source = (char*)data.bytes;
+    char        *ret = malloc(data.length);
+    NSUInteger  retlen=0;
+    
+    int     needFromFirst=6;
+    int     needFromSecond=2;
+    BOOL    abort=FALSE;
+    int     byteCounter=0;
+    char    values[2];
+    
+    for (NSUInteger readPos=0;readPos<data.length;readPos++) {
+        values[0]=0;
+        values[1]=0;
+        
+        for (int step=0;step<2;step++) {
+            char value=0;
+            
+            while ((readPos+step)<data.length) {
+                value=source[readPos+step];
+                
+                if ((value>='0'&&value<='9')||
+                    (value>='A'&&value<='Z')||
+                    (value>='a'&&value<='z')||
+                    value=='+'||value=='/'||value=='=') {
+                    break;
+                }
+                
+                readPos++;
+            }
+            
+            if (!((value>='0'&&value<='9')||
+                  (value>='A'&&value<='Z')||
+                  (value>='a'&&value<='z')||
+                  value=='+'||value=='/')) {
+                
+                abort=true;
+                break;
+            }
+            
+            if (value=='/') {
+                value=63;
+            } else if (value=='+') {
+                value=62;
+            } else if (value<='9') {
+                value=52+value-'0';
+            } else if (value<='Z') {
+                value=value-'A';
+            } else {
+                value=26+value-'a';
+                
+            }
+            if (step==0) {
+                values[0]=(value<<(8-needFromFirst))&0xFF;
+            } else {
+                values[1]=(value>>(6-needFromSecond))&0xFF;
+            }
+        }
+        
+        if (abort) {
+            break;
+        }
+        
+        ret[retlen++]=(values[0]|values[1]);
+        
+        if ((byteCounter&3)==2) {
+            readPos++;
+            byteCounter++;
+            needFromFirst=6;
+            needFromSecond=2;
+        } else {
+            needFromFirst=6-needFromSecond;
+            needFromSecond=8-needFromFirst;
+        }
+        
+        byteCounter++;
+    }
+    
+    NSData *retData = [[NSData alloc] initWithBytes:ret length:retlen];
+    free(ret);
+    return retData;
+}
 
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
@@ -141,12 +224,17 @@
 				[stack addObject:value ];
 			} else if ([currentType isEqualToString:@"binary"]) {
                 NSString *s = [stack lastObject];
+                /*
                 CFErrorRef error = NULL;
                 SecTransformRef decoder = SecDecodeTransformCreate(kSecBase64Encoding, &error);
                 SecTransformSetAttribute(decoder, kSecTransformInputAttributeName, (__bridge CFTypeRef)([s dataUsingEncoding:NSUTF8StringEncoding]), &error);
                 CFDataRef decodedData = SecTransformExecute(decoder, &error);
                 [stack removeLastObject];
                 [stack addObject:(__bridge id)(decodedData)];
+                */
+                NSData *decodedData = [self decodeBase64:[s dataUsingEncoding:NSUTF8StringEncoding]];
+                [stack removeLastObject];
+                [stack addObject:decodedData];
             }
 		}
 		

@@ -412,7 +412,7 @@ BOOL updateSent = NO;
     if (parent == nil) {
         return nil;
     }
-    NSMutableSet* set = [[parent mutableSetValueForKey: @"children"] copy];
+    NSMutableSet* set = [[parent mutableSetValueForKey: @"children"] mutableCopy];
     [set removeObject: self];
     if (!PreferenceController.showHiddenCategories) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isHidden = NO"];
