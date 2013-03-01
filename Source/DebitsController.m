@@ -640,8 +640,8 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     }
 
     // Finally adjust controls so that no empty row is shown.
-    BOOL row1Hidden = [[debitFormular viewWithTag: 11] isHidden];
-    BOOL row2Hidden = [[debitFormular viewWithTag: 21] isHidden];
+    BOOL row1Hidden = [(NSView*)[debitFormular viewWithTag: 11] isHidden];
+    BOOL row2Hidden = [(NSView*)[debitFormular viewWithTag: 21] isHidden];
 
     NSUInteger row2Position = rowPositions[2];
     if (row1Hidden) {

@@ -141,7 +141,7 @@ BOOL updateSent = NO;
         if (!category.noCatRep.boolValue) {
             res = [res decimalNumberByAdding: childResult];
         }
-        if (category.isHidden) {
+        if (category.isHidden.boolValue == YES) {
             hiddenChildren++;
         }
     }
@@ -391,7 +391,7 @@ BOOL updateSent = NO;
  */
 -(NSSet*)allCategories
 {
-    if (self.isHidden && !PreferenceController.showHiddenCategories) {
+    if (self.isHidden.boolValue && !PreferenceController.showHiddenCategories) {
         return [NSSet set];
     }
     NSMutableSet* result = [[NSMutableSet alloc] init];

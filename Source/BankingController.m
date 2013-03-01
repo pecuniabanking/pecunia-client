@@ -1889,7 +1889,7 @@ BOOL runningOnLionOrLater = NO;
              unread: numberUnread
            disabled: itemIsDisabled
              isRoot: itemIsRoot
-           isHidden: cat.isHidden
+           isHidden: cat.isHidden.boolValue
           isIgnored: cat.noCatRep.boolValue];
 }
 

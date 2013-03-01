@@ -758,10 +758,14 @@ NSString *escapeSpecial(NSString *s)
     }
     
     [cmd appendString: @"</command>" ];
+
+    progressController.forceHidden = YES;
+    [self startProgress];
     
     // create bank user at the bank
     User* usr = [bridge syncCommand: cmd error: &error ];
     if (error) {
+        [self stopProgress];
         return error;
     }
     
@@ -786,14 +790,23 @@ NSString *escapeSpecial(NSString *s)
     
     // update supported transactions
     error = [self updateSupportedTransactionsForAccounts:usr.accounts user:user];
-    if(error != nil) return error;    
+    if(error != nil) {
+        [self stopProgress];
+        return error;
+    }
     
     // also update TAN media and TAN methods
     if (secMethod == SecMethod_PinTan) {
         error = [self updateTanMethodsForUser:user ];
-        if(error != nil) return error;
+        if(error != nil) {
+            [self stopProgress];
+            return error;
+        }
         error = [self updateTanMediaForUser:user ];
-        if(error != nil) return error;
+        if(error != nil) {
+            [self stopProgress];
+            return error;
+        }
     }
     return nil;
 }
@@ -878,8 +891,6 @@ NSString *escapeSpecial(NSString *s)
     PecuniaError *error=nil;
     NSMutableString	*cmd = [NSMutableString stringWithFormat:@"<command name=\"getCCSettlement\">" ];
     
-    [self startProgress ];
-    
     BankUser *user = [account defaultBankUser ];
     if (user == nil) return nil;
     
@@ -897,6 +908,8 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd ];
     [cmd appendString: @"</command>" ];
 	
+    [self startProgress ];
+
     CreditCardSettlement *result = [bridge syncCommand: cmd error: &error ];
     [self stopProgress ];
     

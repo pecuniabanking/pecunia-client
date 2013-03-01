@@ -14,10 +14,13 @@
     IBOutlet NSButton               *closeButton;
     IBOutlet NSProgressIndicator    *progressIndicator;
 	BOOL                            isHidden;
+    BOOL                            forceHidden;
 	MessageLog                      *messageLog;
     LogLevel                        maxLevel;
     
 }
+
+@property(nonatomic, assign) BOOL forceHidden;
 
 -(IBAction)cancel:(id)sender;
 -(void)stop;

@@ -779,8 +779,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 
     // Finally adjust controls so that no empty row is shown.
-    BOOL row1Hidden = [[transferFormular viewWithTag: 11] isHidden];
-    BOOL row2Hidden = [[transferFormular viewWithTag: 21] isHidden];
+    BOOL row1Hidden = [(NSView*)[transferFormular viewWithTag: 11] isHidden];
+    BOOL row2Hidden = [(NSView*)[transferFormular viewWithTag: 21] isHidden];
 
     NSUInteger row2Position = rowPositions[2];
     if (row1Hidden) {

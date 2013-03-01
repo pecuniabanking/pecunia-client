@@ -21,10 +21,13 @@
 
 @implementation ProgressWindowController
 
+@synthesize forceHidden;
+
 -(id)init
 {
 	self = [super initWithWindowNibName:@"ProgressWindow"];
 	messageLog = [MessageLog log ];
+    forceHidden = NO;
 	return self;
 }
 
@@ -46,6 +49,9 @@
 	[messageLog registerLogUI:self ];
     maxLevel = LogLevel_Verbous;
 	isHidden = [defaults boolForKey:@"hideProgressWindow" ];
+    if (forceHidden == YES) {
+        isHidden = YES;
+    }
     if (isHidden == NO) {
         [self showWindow:self ];
         [[self window ] orderFront:self ];
@@ -107,6 +113,8 @@
     BOOL closeWindow = [defaults boolForKey:@"closeProgressOnSuccess" ];
     
 	[messageLog unregisterLogUI: self ];
+    self.forceHidden = NO;
+    
 	if(isHidden == NO) {
         [progressIndicator stopAnimation: self];
 	}
