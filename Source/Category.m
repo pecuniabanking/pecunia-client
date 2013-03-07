@@ -333,7 +333,6 @@ BOOL updateSent = NO;
         if(r.location == 0) return NO;
     }
     return YES;
-    //	return [self isMemberOfClass: [Category class ] ];
 }
 
 -(BOOL)isRemoveable

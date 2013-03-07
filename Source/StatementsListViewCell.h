@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -57,8 +57,10 @@ extern NSString *StatementNoteKey;
     IBOutlet NSTextField *saldoLabel;
     IBOutlet NSTextField *saldoCurrencyLabel;
     IBOutlet NSTextField *transactionTypeLabel;
-    IBOutlet NSButton *checkbox;
-
+    IBOutlet NSButton    *checkbox;
+    IBOutlet NSTextField *dayLabel;
+    IBOutlet NSTextField *monthLabel;
+    
 @private
     BOOL isNew;
     BOOL hasUnassignedValue;
@@ -66,30 +68,19 @@ extern NSString *StatementNoteKey;
     NSUInteger index;
 
     NSDateFormatter *dateFormatter;
-    NSDictionary *positiveAttributes;
-    NSDictionary *negativeAttributes;
     NSDictionary *whiteAttributes;
     NSColor *categoryColor;
 }
-@property (strong) IBOutlet NSTextField *weekdayLabel;
-@property (strong) IBOutlet NSTextField *dayLabel;
-@property (strong) IBOutlet NSTextField *monthLabel;
 
 @property (nonatomic, strong) id delegate;
 @property (nonatomic, assign) BOOL hasUnassignedValue;
 
 - (IBAction)activationChanged: (id)sender;
 
-- (void)setDetails: (NSDictionary*) details;
-
 - (void)setHeaderHeight: (int) aHeaderHeight;
 - (void)setDetails: (NSDictionary*) details;
 - (void)setIsNew: (BOOL) flag;
 - (void)showActivator: (BOOL)flag markActive: (BOOL)active;
-- (void)showBalance: (BOOL)flag;
 - (void)selectionChanged;
-
-- (void)setTextAttributesForPositivNumbers: (NSDictionary*) positiveAttributes
-                           negativeNumbers: (NSDictionary*) negativeAttributes;
 
 @end

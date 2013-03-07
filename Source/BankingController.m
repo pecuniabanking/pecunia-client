@@ -87,7 +87,8 @@ NSString* const CategoryDataType = @"CategoryDataType";
 NSString* const CategoryColorNotification = @"CategoryColorNotification";
 NSString* const CategoryKey = @"CategoryKey";
 
-static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
+// KVO contexts.
+void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 
 static BankingController *bankinControllerInstance;
 
@@ -153,6 +154,8 @@ BOOL runningOnLionOrLater = NO;
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObserver: self forKeyPath: @"recursiveTransactions"];
+    [userDefaults removeObserver: self forKeyPath: @"showHiddenCategories"];
+    [userDefaults removeObserver: self forKeyPath: @"colors"];
 }
 
 - (void)setNumberFormatForCell: (NSCell*) cell positive: (NSDictionary*) positive
@@ -186,6 +189,7 @@ BOOL runningOnLionOrLater = NO;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults addObserver: self forKeyPath: @"recursiveTransactions" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
 
     if ([userDefaults objectForKey: @"mainSortIndex" ]) {
         sortControl.selectedSegment = [[userDefaults objectForKey: @"mainSortIndex"] intValue];
@@ -203,33 +207,21 @@ BOOL runningOnLionOrLater = NO;
     self.toggleDetailsPaneItem.state = lastSplitterPosition > 0 ? NSOffState : NSOnState;
 
     [self updateSorting];
-
-    NSDictionary* positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
-    NSDictionary* negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
-    
-    NSTableColumn* tableColumn;
-    
-    [self setNumberFormatForCell: [valueField cell] positive: positiveAttributes negative: negativeAttributes];
-    [self setNumberFormatForCell: [headerValueField cell] positive: positiveAttributes negative: negativeAttributes];
-    [self setNumberFormatForCell: [nassValueField cell] positive: positiveAttributes negative: negativeAttributes];
-    [self setNumberFormatForCell: [sumValueField cell] positive: positiveAttributes negative: negativeAttributes];
+    [self updateValueColors];
 
     // Edit accounts/categories when double clicking on a node.
     [accountsView setDoubleAction: @selector(changeAccount:)];
     [accountsView setTarget: self];
-    
-    tableColumn = [accountsView tableColumnWithIdentifier: @"name"];
-    if(tableColumn)
-    {
+
+    NSTableColumn* tableColumn = [accountsView tableColumnWithIdentifier: @"name"];
+    if (tableColumn) {
         ImageAndTextCell *cell = (ImageAndTextCell*)[tableColumn dataCell];
-        if (cell)
-        {
+        if (cell) {
             [cell setFont: [NSFont fontWithName: @"Lucida Grande" size: 13]];
-            [self setNumberFormatForCell: cell positive: positiveAttributes negative: negativeAttributes];
             
             // update unread information
             NSInteger maxUnread = [BankAccount maxUnread];
-            [cell setMaxUnread:maxUnread];
+            [cell setMaxUnread: maxUnread];
         }
     }
     
@@ -271,9 +263,6 @@ BOOL runningOnLionOrLater = NO;
     [statementsListView setCellSpacing: 0];
     [statementsListView setAllowsEmptySelection: YES];
     [statementsListView setAllowsMultipleSelection: YES];
-    NSNumberFormatter* formatter = [statementsListView numberFormatter];
-    [formatter setTextAttributesForPositiveValues: positiveAttributes];
-    [formatter setTextAttributesForNegativeValues: negativeAttributes];
 
     // Content views are dynamically exchanged.
     // The right splitter is the initial control and needs an own retain to avoid losing it
@@ -837,9 +826,8 @@ BOOL runningOnLionOrLater = NO;
 
 -(IBAction)editPreferences:(id)sender
 {
-    if(!prefController) { 
+    if (!prefController) {
         prefController = [[PreferenceController alloc] init];
-        [prefController setMainWindow: mainWindow];
     }
     [prefController showWindow: self];
 }
@@ -850,11 +838,6 @@ BOOL runningOnLionOrLater = NO;
     if (window == assignValueWindow) {
         [NSApp stopModalWithCode:0 ];
     }
-    /*
-    if (window == mainWindow) {
-        [NSApp terminate:self ];
-    }
-    */
 }
 
 #pragma mark -
@@ -3075,6 +3058,111 @@ BOOL runningOnLionOrLater = NO;
     [accountsView setNeedsDisplay: YES];
 }
 
+/**
+ * Applies the positive and negative cash color values to various fields.
+ */
+- (void)updateValueColors
+{
+    NSDictionary* positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
+    NSDictionary* negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
+
+    [self setNumberFormatForCell: [valueField cell] positive: positiveAttributes negative: negativeAttributes];
+    [valueField setNeedsDisplay];
+    [self setNumberFormatForCell: [headerValueField cell] positive: positiveAttributes negative: negativeAttributes];
+    [headerValueField setNeedsDisplay];
+    [self setNumberFormatForCell: [nassValueField cell] positive: positiveAttributes negative: negativeAttributes];
+    [nassValueField setNeedsDisplay];
+    [self setNumberFormatForCell: [sumValueField cell] positive: positiveAttributes negative: negativeAttributes];
+    [sumValueField setNeedsDisplay];
+}
+
+#pragma mark -
+#pragma mark KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context
+{
+    if (context == UserDefaultsBindingContext) {
+        if ([keyPath isEqualToString: @"recursiveTransactions"]) {
+            [[self currentSelection] updateBoundAssignments];
+            return;
+        }
+
+        if ([keyPath isEqualToString: @"showHiddenCategories"]) {
+            [categoryController prepareContent];
+            return;
+        }
+
+        if ([keyPath isEqualToString: @"colors"]) {
+            [self updateValueColors];
+            return;
+        }
+
+        return;
+    }
+
+    if (object == categoryController) {
+        [accountsView setNeedsDisplay: YES];
+        return;
+    }
+
+    if (object == categoryAssignments) {
+        if ([keyPath compare: @"selectionIndexes"] == NSOrderedSame) {
+            // Selection did change. If the currently selected entry is a new one remove the "new" mark.
+            NSEnumerator *enumerator = [[categoryAssignments selectedObjects] objectEnumerator];
+            StatCatAssignment* stat = nil;
+            NSDecimalNumber* firstValue = nil;
+            while ((stat = [enumerator nextObject]) != nil) {
+                if (firstValue == nil) {
+                    firstValue = stat.statement.value;
+                }
+                if ([stat.category isBankAccount] && ![stat.category isRoot])
+                {
+                    BankAccount* account = (BankAccount*)stat.category;
+                    if ([stat.statement.isNew boolValue])
+                    {
+                        stat.statement.isNew = @NO;
+                        account.unread = account.unread - 1;
+                        if (account.unread == 0) {
+                            [self updateUnread];
+                        }
+                        [accountsView setNeedsDisplay: YES];
+                    }
+                }
+            }
+
+            // Check for the type of transaction and adjust remote name display accordingly.
+            if ([firstValue compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
+                [remoteNameLabel setStringValue: NSLocalizedString(@"AP134", "")];
+            } else {
+                [remoteNameLabel setStringValue: NSLocalizedString(@"AP135", "")];
+            }
+
+            // need to switch details view?
+            NSArray *assignments = [categoryAssignments selectedObjects];
+            if ([assignments count] > 0) {
+                StatCatAssignment *stat = assignments[0];
+                if ([stat.statement.type intValue] == StatementType_CreditCard && statementDetails == standardDetails) {
+                    // switch to credit card details
+                    NSRect frame = [statementDetails frame];
+                    [creditCardDetails setFrame:frame];
+                    [rightSplitter replaceSubview:statementDetails with:creditCardDetails];
+                    statementDetails = creditCardDetails;
+                }
+                if ([stat.statement.type intValue] == StatementType_Standard && statementDetails == creditCardDetails) {
+                    //switch to standard details
+                    NSRect frame = [statementDetails frame];
+                    [standardDetails setFrame:frame];
+                    [rightSplitter replaceSubview:statementDetails with:standardDetails];
+                    statementDetails = standardDetails;
+                }
+            }
+
+            [statementDetails setNeedsDisplay: YES];
+            [self updateStatusbar];
+        }
+    }
+}
+
 #pragma mark -
 #pragma mark Developer tools
 
@@ -3203,82 +3291,6 @@ BOOL runningOnLionOrLater = NO;
                             NSLocalizedString(@"ok", @"Ok"),
                             nil, nil
                             );
-        }
-    }
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context
-{
-    if (context == UserDefaultsBindingContext) {
-        if ([keyPath isEqualToString: @"recursiveTransactions"]) {
-            [[self currentSelection] updateBoundAssignments];
-        } else {
-            if ([keyPath isEqualToString: @"showHiddenCategories"]) {
-                [categoryController prepareContent];
-            }
-        }
-        return;
-    }
-
-    if (object == categoryController) {
-        [accountsView setNeedsDisplay: YES];
-        return;
-    }
-
-    if (object == categoryAssignments) {
-        if ([keyPath compare: @"selectionIndexes"] == NSOrderedSame) {
-            // Selection did change. If the currently selected entry is a new one remove the "new" mark.
-            NSEnumerator *enumerator = [[categoryAssignments selectedObjects] objectEnumerator];
-            StatCatAssignment* stat = nil;
-            NSDecimalNumber* firstValue = nil;
-            while ((stat = [enumerator nextObject]) != nil) {
-                if (firstValue == nil) {
-                    firstValue = stat.statement.value;
-                }
-                if ([stat.category isBankAccount] && ![stat.category isRoot])
-                {
-                    BankAccount* account = (BankAccount*)stat.category;
-                    if ([stat.statement.isNew boolValue])
-                    {
-                        stat.statement.isNew = @NO;
-                        account.unread = account.unread - 1;
-                        if (account.unread == 0) {
-                            [self updateUnread];
-                        }
-                        [accountsView setNeedsDisplay: YES];
-                    }
-                }
-            }
-
-            // Check for the type of transaction and adjust remote name display accordingly.
-            if ([firstValue compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
-                [remoteNameLabel setStringValue: NSLocalizedString(@"AP134", "")];
-            } else {
-                [remoteNameLabel setStringValue: NSLocalizedString(@"AP135", "")];
-            }
-
-            // need to switch details view?
-            NSArray *assignments = [categoryAssignments selectedObjects];
-            if ([assignments count] > 0) {
-                StatCatAssignment *stat = assignments[0];
-                if ([stat.statement.type intValue] == StatementType_CreditCard && statementDetails == standardDetails) {
-                    // switch to credit card details
-                    NSRect frame = [statementDetails frame];
-                    [creditCardDetails setFrame:frame];
-                    [rightSplitter replaceSubview:statementDetails with:creditCardDetails];
-                    statementDetails = creditCardDetails;
-                }
-                if ([stat.statement.type intValue] == StatementType_Standard && statementDetails == creditCardDetails) {
-                    //switch to standard details
-                    NSRect frame = [statementDetails frame];
-                    [standardDetails setFrame:frame];
-                    [rightSplitter replaceSubview:statementDetails with:standardDetails];
-                    statementDetails = standardDetails;
-                }
-            }
-            
-            [statementDetails setNeedsDisplay: YES];
-            [self updateStatusbar];
         }
     }
 }

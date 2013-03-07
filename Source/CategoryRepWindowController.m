@@ -1290,7 +1290,9 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     }
 
     categoryInfoLayer.text = [NSString stringWithFormat: @" %@ ", category];
-    categoryInfoLayer.backgroundColor = [color asCGColor];
+    CGColorRef cgColor = CGColorCreateFromNSColor(color);
+    categoryInfoLayer.backgroundColor = cgColor;
+    CGColorRelease(cgColor);
     
     [infoLayer sizeToFit];
 }

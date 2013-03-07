@@ -78,19 +78,12 @@
     // We listen to selection changes in the list.
     [assignPreviewController addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
 
-    // Some appealing colors for (positive and negative) values.
-    NSDictionary* positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
-    NSDictionary* negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
-
     statementsListView.owner = self;
     statementsListView.showAssignedIndicators = YES;
     statementsListView.autoResetNew = NO;
     [statementsListView setCellSpacing: 0];
     [statementsListView setAllowsEmptySelection: YES];
     [statementsListView setAllowsMultipleSelection: YES];
-    NSNumberFormatter* formatter = [statementsListView numberFormatter];
-    [formatter setTextAttributesForPositiveValues: positiveAttributes];
-    [formatter setTextAttributesForNegativeValues: negativeAttributes];
 
     predicatesBackground.fillColor = [NSColor colorWithCalibratedWhite: 233 / 255.0 alpha: 1];
     

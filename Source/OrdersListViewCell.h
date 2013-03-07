@@ -48,8 +48,6 @@
 
 @private
     NSColor *categoryColor;
-    NSDictionary *positiveAttributes;
-    NSDictionary *negativeAttributes;
     NSDictionary *whiteAttributes;
     
     // Need to keep these values from the details dictionary to rebuild the attributed string
@@ -63,11 +61,7 @@
 
 @property (nonatomic, strong) id delegate;
 
-- (IBAction)cancelDeletion:(id)sender;
-
 - (void)setDetails: (NSDictionary *)details;
-- (void)setTextAttributesForPositivNumbers: (NSDictionary*)positiveAttributes
-                           negativeNumbers: (NSDictionary*)negativeAttributes;
 - (void)selectionChanged;
 
 @end

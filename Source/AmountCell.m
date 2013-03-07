@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,6 +22,8 @@
 
 #define CELL_BOUNDS 3
 
+extern void *UserDefaultsBindingContext;
+
 @implementation AmountCell
 
 @synthesize currency;
@@ -29,22 +31,17 @@
 
 - (id)initTextCell: (NSString *)aString
 {
-    if ((self = [super initTextCell: aString])) {
+    self = [super initTextCell: aString];
+    if (self != nil) {
         formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
         [formatter setLocale: [NSLocale currentLocale]];
         [formatter setCurrencySymbol: @""];
-        
-        self.partiallyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                                             [NSColor applicationColorForKey: @"Grid Partial Selection"], (CGFloat) 0,
-                                             [NSColor applicationColorForKey: @"Grid Partial Selection"], (CGFloat) 1,
-                                             nil
-                                             ];
-        self.fullyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                                    [NSColor applicationColorForKey: @"Cell Selection Gradient (high)"], (CGFloat) 0,
-                                    [NSColor applicationColorForKey: @"Cell Selection Gradient (low)"], (CGFloat) 1,
-                                    nil
-                                    ];
+
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
+
+        [self updateColors];
     }
     return  self;
 }
@@ -59,13 +56,44 @@
     return self;
 }
 
+- (void)dealloc
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObserver: self forKeyPath: @"colors"];
+}
 
 - (id)copyWithZone:(NSZone *)zone
 {
     AmountCell *cell = (AmountCell*)[super copyWithZone:zone];
-    cell->formatter = formatter;
-    cell->currency = currency;
+    cell.formatter = formatter;
+    cell.currency = currency;
     return cell;
+}
+
+- (void)observeValueForKeyPath: (NSString *)keyPath
+                      ofObject: (id)object
+                        change: (NSDictionary *)change
+                       context: (void *)context
+{
+    if (context == UserDefaultsBindingContext) {
+        if ([keyPath isEqualToString: @"colors"]) {
+            [self updateColors];
+        }
+    }
+}
+
+- (void)updateColors
+{
+    self.partiallyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
+                                         [NSColor applicationColorForKey: @"Grid Partial Selection"], 0.0,
+                                         [NSColor applicationColorForKey: @"Grid Partial Selection"], 1.0,
+                                         nil
+                                         ];
+    self.fullyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
+                                     [NSColor applicationColorForKey: @"Cell Selection Gradient (high)"], 0.0,
+                                     [NSColor applicationColorForKey: @"Cell Selection Gradient (low)"], 1.0,
+                                     nil
+                                     ];
 }
 
 - (void)drawInteriorWithFrame: (NSRect)cellFrame inView: (NSView *)controlView

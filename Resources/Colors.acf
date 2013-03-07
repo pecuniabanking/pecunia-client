@@ -6,7 +6,7 @@ AboutMessage:
 Names: Partial
 Rows: 12
 Columns: 12
-Entries: 40
+Entries: 39
 Prefix: 
 Suffix: 
 Type: Process
@@ -65,31 +65,29 @@ Selection Band
 Bank Account Average Line
 0 0 0
 Category Average Line
-22616 32896 8738
-Positive Cash light
 15420 26214 6425
 Positive Cash
-30840 30840 30840
-Positive Gradient (high)
-15420 15420 15420
-Positive Gradient (low)
 49858 17733 12079
 Negative Cash
 52171 50372 45746
-Disabled Tree Item Color
+Disabled Tree Item
 50115 52428 57568
 Cell Selection Gradient (high)
 37779 41120 47802
 Cell Selection Gradient (low)
+37779 41120 47802
+Grid Partial Selection
 24158 41891 57311
 Selection Gradient (high)
 13621 30583 49858
 Selection Gradient (low)
-37779 41120 47802
-Grid Partial Selection
 15420 15420 15420
 Small Background Gradient (low)
 25700 25700 25700
 Small Background Gradient (high)
 36751 36751 33153
-Pale Text Color
+Pale Text
+13621 44975 64764
+Unread Transfer
+60395 65535 16962
+Uncategorized Transfer

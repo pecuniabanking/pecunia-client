@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -37,8 +37,6 @@
 
 @private
     NSColor *categoryColor;
-    NSDictionary *positiveAttributes;
-    NSDictionary *negativeAttributes;
     NSDictionary *whiteAttributes;
     
     // Need to keep these values from the details dictionary to rebuild the attributed string
@@ -52,9 +50,6 @@
 }
 
 - (void)setDetails: (NSDictionary *)details;
-
-- (void)setTextAttributesForPositivNumbers: (NSDictionary*)positiveAttributes
-                           negativeNumbers: (NSDictionary*)negativeAttributes;
 - (void)selectionChanged;
 
 @end

@@ -366,5 +366,55 @@
 "AP627" = "Die Vorbereitungen sind abgeschlossen. Wählen Sie einen Importbereich und klicken Sie dann \"Import Starten\"";
 "AP628" = "Während der Verarbeitung ist ein schwerwiegender Fehler aufgetreten. Bitte versichern Sie sich, dass die angegebenen Dateien, Einstellungen und Feldzuordnungen korrekt sind.";
 
+// Preferences
+// AP650..AP749
+"AP650" = "Standardkontenfarben";
+"AP651" = "Standardkategorienfarben";
+"AP652" = "Farben in Grafiken";
+"AP653" = "Allgemeine Farben im Programm";
+
+"AP660" = "Standardkontenfarbe 1";
+"AP661" = "Standardkontenfarbe 2";
+"AP662" = "Standardkontenfarbe 3";
+"AP663" = "Standardkontenfarbe 4";
+"AP664" = "Standardkontenfarbe 5";
+
+"AP680" = "Standardkkategorienfarbe 1";
+"AP681" = "Standardkkategorienfarbe 2";
+"AP682" = "Standardkkategorienfarbe 3";
+"AP683" = "Standardkkategorienfarbe 4";
+"AP684" = "Standardkkategorienfarbe 5";
+"AP685" = "Standardkkategorienfarbe 6";
+"AP686" = "Standardkkategorienfarbe 7";
+"AP687" = "Standardkkategorienfarbe 8";
+"AP688" = "Standardkkategorienfarbe 9";
+"AP689" = "Standardkkategorienfarbe 10";
+
+"AP700" = "Gradientfarbe 1 für positive Werte (Umsatzdiagramm)";
+"AP701" = "Gradientfarbe 2 für positive Werte (Umsatzdiagramm)";
+"AP702" = "Gradientfarbe 1 für negative Werte (Umsatzdiagramm)";
+"AP703" = "Gradientfarbe 2 für negative Werte (Umsatzdiagramm)";
+"AP704" = "Gradientfarbe 1 (Diagram Anzahl Umsätze)";
+"AP705" = "Gradientfarbe 2 (Diagram Anzahl Umsätze)";
+"AP706" = "Gradientfarbe 1 (Auswahlminidiagramm)";
+"AP707" = "Gradientfarbe 2 (Auswahlminidiagramm)";
+"AP708" = "Auswahlband (Auswahlminidiagramm)";
+"AP709" = "Durchschnittslinie (Konten)";
+"AP710" = "Durchschnittslinie (Kategorien)";
+
+"AP720" = "Positiver Betrag";
+"AP721" = "Negativer Betrag";
+"AP722" = "Deaktivierte Einträge (Kategorienbaum)";
+"AP723" = "Auswahlfarbe 1 (Umsatztabelle, Kategorienbaum)";
+"AP724" = "Auswahlfarbe 2 (Umsatztabelle, Kategorienbaum)";
+"AP725" = "Spalten-/Zeilenauswahl (Umsatztabelle)";
+"AP726" = "Auswahlfarbe 1 (Umsatzlisten)";
+"AP727" = "Auswahlfarbe 2 (Umsatzlisten)";
+"AP728" = "Gradientfarbe 1 für Hintergründe (z.B. Auswahldiagramm)";
+"AP729" = "Gradientfarbe 2 für Hintergründe (z.B. Auswahldiagramm)";
+"AP730" = "Blasser Text (z.B. Datum in Umsatzlisten)";
+"AP731" = "Hintergrund neue Umstätze (wenn aktiviert)";
+"AP732" = "Hintergrund Umsätze ohne Kategoriezuordnung (wenn aktiviert)";
+
 // Use a new block of IDs for next set of strings!
-// AP650..AP699
+// AP750..AP799

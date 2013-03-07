@@ -48,7 +48,6 @@
 }
 
 @property (nonatomic, strong) id<TransfersActionDelegate> owner; // The member "delegate" is already defined.
-@property (nonatomic, readonly) NSNumberFormatter *numberFormatter;
 @property (nonatomic, strong) NSArray *dataSource;
 
 @end

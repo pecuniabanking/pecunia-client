@@ -19,7 +19,29 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface PreferenceController : NSWindowController {
+#import "PXListView.h"
+
+@class BWGradientBox;
+
+@interface ColorListViewCell : PXListViewCell
+{
+@private
+    IBOutlet NSTextField *caption;
+    IBOutlet NSColorWell *colorWell;
+    IBOutlet NSTextField *htmlText;
+    IBOutlet NSTextField *rgbText;
+    IBOutlet NSTextField *headerText;
+
+    NSString *colorKey;
+    BOOL      showHeader;
+}
+
+- (void)configureWithString: (NSString*)config;
+
+@end
+
+@interface PreferenceController : NSWindowController <PXListViewDelegate> {
+@private
 	IBOutlet NSArrayController	*fieldController;
 	IBOutlet NSTableView		*fieldTable;
 	IBOutlet NSWindow			*encryptionSheet;
@@ -30,39 +52,34 @@
     IBOutlet NSToolbar          *toolBar;
     IBOutlet NSMatrix           *expRadioMatrix;
     IBOutlet NSView             *contentView;
-	NSWindow					*mainWindow;
-	
+    IBOutlet PXListView         *colorListView;
+
 	// encryption sheet
 	NSString *password;
 	BOOL      savePassword;
 	BOOL      encrypt;
-	BOOL      colorsChanged;
 }
 
 - (IBAction)changeFileLocation: (id)sender;
 
 - (IBAction)encryptData: (id)sender;
-- (IBAction)cancelSheet:(id)sender;
+- (IBAction)cancelSheet: (id)sender;
 - (IBAction)endSheet: (id)sender;
 
 - (IBAction)expSepTab:(id)sender;
 - (IBAction)expSepSemi:(id)sender;
 - (IBAction)expSepLine:(id)sender;
 
-- (IBAction)synchSettings:(id)sender;
-- (IBAction)securitySettings:(id)sender;
-- (IBAction)exportSettings:(id)sender;
-- (IBAction)printSettings:(id)sender;
-- (IBAction)colorSettings:(id)sender;
+- (IBAction)synchSettings: (id)sender;
+- (IBAction)securitySettings: (id)sender;
+- (IBAction)exportSettings: (id)sender;
+- (IBAction)printSettings: (id)sender;
+- (IBAction)colorSettings: (id)sender;
+- (IBAction)displaySettings: (id)sender;
 
 - (IBAction)removePINs: (id)sender;
-- (IBAction)colorButtonsChanged: (id)sender;
 
-- (void)setMainWindow: (NSWindow*)main;
 - (void)setHeight:(int)h;
-
-+ (NSColor*)notAssignedRowColor;
-+ (NSColor*)newStatementRowColor;
 
 + (BOOL)showCategoryColorsInTree;
 + (BOOL)showHiddenCategories;

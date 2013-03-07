@@ -47,6 +47,8 @@
 
 #define SWATCH_SIZE               14
 
+extern void *UserDefaultsBindingContext;
+
 @implementation ImageAndTextCell
 
 @synthesize swatchColor;
@@ -57,27 +59,42 @@
 
 - (id)initWithCoder: (NSCoder*)decoder
 {
-    if ((self = [super initWithCoder:decoder]))
-    {    
+    self = [super initWithCoder: decoder];
+    if (self != nil) {
         amountFormatter = [[NSNumberFormatter alloc] init];
         [amountFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];
         [amountFormatter setLocale: [NSLocale currentLocale]];
         [amountFormatter setCurrencySymbol: @""];
         maxUnread = 0;
         badgeWidth = BADGE_SPACE;
+
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
     }
     return self;
 }
 
-
 - (id)copyWithZone: (NSZone *)zone
 {
     ImageAndTextCell *cell = (ImageAndTextCell *)[super copyWithZone: zone];
-    cell->image = image;
-    cell->amountFormatter = amountFormatter;
-    cell->amount = amount;
-    cell->currency = currency;
+    cell.image = image;
+    cell.amountFormatter = amountFormatter;
+    cell.amount = amount;
+    cell.currency = currency;
     return cell;
+}
+
+- (void)observeValueForKeyPath: (NSString *)keyPath
+                      ofObject: (id)object
+                        change: (NSDictionary *)change
+                       context: (void *)context
+{
+    if (context == UserDefaultsBindingContext) {
+        if ([keyPath isEqualToString: @"colors"]) {
+            [self setupGradients];
+            [[self controlView] setNeedsDisplay: YES];
+        }
+    }
 }
 
 - (NSRect)imageFrameForCellFrame:(NSRect)cellFrame
@@ -122,11 +139,11 @@
     return titleFrame;
 }
 
-
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
     NSRect titleRect = [self titleRectForBounds: cellFrame];
     [[self attributedStringValue] drawInRect: titleRect];
 }
+
 - (void)selectWithFrame:(NSRect)aRect inView: (NSView*)controlView editor: (NSText*)textObj delegate: (id)anObject start: (NSInteger)selStart length: (NSInteger)selLength;
 {
     NSRect textFrame, imageFrame;
@@ -138,18 +155,23 @@
 static NSGradient* headerGradient = nil;
 static NSGradient* selectionGradient = nil;
 
+- (void)setupGradients
+{
+    headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
+                      [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], 0.0,
+                      [NSColor colorWithDeviceWhite: 60 / 256.0 alpha: 1], 1.0,
+                      nil];
+    selectionGradient = [[NSGradient alloc] initWithColorsAndLocations:
+                         [NSColor applicationColorForKey: @"Cell Selection Gradient (high)"], 0.0,
+                         [NSColor applicationColorForKey: @"Cell Selection Gradient (low)"], 1.0,
+                         nil
+                         ];
+}
+
 - (void)drawWithFrame: (NSRect)cellFrame inView: (NSView *)controlView
 {
     if (headerGradient == nil) {
-        headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                          [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], 0.0,
-                          [NSColor colorWithDeviceWhite: 60 / 256.0 alpha: 1], 1.0,
-                          nil];
-        selectionGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                             [NSColor applicationColorForKey: @"Cell Selection Gradient (high)"], 0.0,
-                             [NSColor applicationColorForKey: @"Cell Selection Gradient (low)"], 1.0,
-                             nil
-                             ];
+        [self setupGradients];
     }
     
     // Draw selection rectangle.
@@ -258,9 +280,10 @@ static NSGradient* selectionGradient = nil;
     } else {
         NSDictionary* fontAttributes;
         if ([amount compare: [NSDecimalNumber zero]] != NSOrderedAscending) {
-            fontAttributes = [amountFormatter textAttributesForPositiveValues];
+            fontAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
         } else {
             fontAttributes = [amountFormatter textAttributesForNegativeValues];
+            fontAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
         }
         valueColor = (NSColor*)fontAttributes[NSForegroundColorAttributeName];
     }
@@ -274,14 +297,13 @@ static NSGradient* selectionGradient = nil;
                                 NSForegroundColorAttributeName: valueColor};
     
     [amountFormatter setCurrencyCode: currency];
-    NSString *amountString = [amountFormatter stringFromNumber:amount ];
+    NSString *amountString = [amountFormatter stringFromNumber: amount];
     
     NSAttributedString *amountWithCurrency = [[NSMutableAttributedString alloc] initWithString: amountString attributes: attributes];
     NSSize stringSize = [amountWithCurrency size];	
     
     // Draw sum only if the cell is large enough.
-    if (cellFrame.size.width > 150)
-    {
+    if (cellFrame.size.width > 150) {
         NSDivideRect(cellFrame, &amountwithCurrencyFrame, &cellFrame, stringSize.width + ROW_RIGHT_MARGIN, NSMaxXEdge);
         
         amountwithCurrencyFrame.origin.y += (cellFrame.size.height - stringSize.height) / 2;	
@@ -317,7 +339,7 @@ static NSGradient* selectionGradient = nil;
         textColor = [NSColor colorWithCalibratedWhite: 40 / 255.0 alpha: 1];
         
         if (isDisabled) {
-            textColor = [NSColor applicationColorForKey: @"Disabled Tree Item Color"];
+            textColor = [NSColor applicationColorForKey: @"Disabled Tree Item"];
         }   
         if (isHidden) {
             textColor = [textColor colorWithAlphaComponent: 0.4];

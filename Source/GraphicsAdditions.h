@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -25,9 +25,10 @@ CGColorRef CGColorCreateFromNSColor(NSColor *color);
 
 + (NSColor*)nextDefaultAccountColor;
 + (NSColor*)nextDefaultCategoryColor;
-+ (NSColor*)applicationColorForKey: (NSString*)key;
 
-- (CGColorRef)asCGColor; // There's an NSColor CGColor implementation starting with 10.8.
++ (NSColor*)applicationColorForKey: (NSString*)key;
++ (void)setApplicationColor: (NSColor*)color forKey: (NSString*)key;
++ (void)resetApplicationColorForKey: (NSString*)key;
 
 @end
 

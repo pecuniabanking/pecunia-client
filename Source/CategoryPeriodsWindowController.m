@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2010, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -35,6 +35,8 @@
 #import "AnimationHelper.h"
 #import "SynchronousScrollView.h"
 #import "StatementsListview.h"
+
+extern void *UserDefaultsBindingContext;
 
 @interface CategoryPeriodsWindowController (Private)
 
@@ -73,6 +75,9 @@
 - (void)dealloc
 {
     self.outline = nil; // Will remove self from default notification center.
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObserver: self forKeyPath: @"colors"];
 }
 
 -(void)awakeFromNib
@@ -122,12 +127,8 @@
     AmountCell *cell = [[AmountCell alloc] initTextCell: @""];
     [cell setAlignment: NSRightTextAlignment];
     valueGrid.cell = cell;
-    NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
-    NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
-    
+
     NSNumberFormatter *formatter = cell.formatter;
-    [formatter setTextAttributesForPositiveValues: positiveAttributes];
-    [formatter setTextAttributesForNegativeValues: negativeAttributes];
 
     [formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
     [formatter setLocale: [NSLocale currentLocale]];
@@ -147,10 +148,6 @@
     statementsListView.allowsMultipleSelection = NO;
     statementsListView.disableSelection = YES;
     
-    formatter = [statementsListView numberFormatter];
-    [formatter setTextAttributesForPositiveValues: positiveAttributes];
-    [formatter setTextAttributesForNegativeValues: negativeAttributes];
-    
     selectionBox.hasGradient = YES;
     selectionBox.fillStartingColor = [NSColor applicationColorForKey: @"Small Background Gradient (low)"];
     selectionBox.fillEndingColor = [NSColor applicationColorForKey: @"Small Background Gradient (high)"];
@@ -160,6 +157,31 @@
     shadow.shadowOffset = NSMakeSize(1, -1);
     shadow.shadowBlurRadius = 3;
     selectionBox.shadow = shadow;
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
+}
+
+#pragma mark -
+#pragma mark KVO
+
+- (void)observeValueForKeyPath: (NSString *)keyPath
+                      ofObject: (id)object
+                        change: (NSDictionary *)change
+                       context: (void *)context
+{
+    if (context == UserDefaultsBindingContext) {
+        if ([keyPath isEqualToString: @"colors"]) {
+            [self updateColors];
+            [selectionBox setNeedsDisplay: YES];
+        }
+    }
+}
+
+- (void)updateColors
+{
+    selectionBox.fillStartingColor = [NSColor applicationColorForKey: @"Small Background Gradient (low)"];
+    selectionBox.fillEndingColor = [NSColor applicationColorForKey: @"Small Background Gradient (high)"];
 }
 
 #pragma mark -

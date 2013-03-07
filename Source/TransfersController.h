@@ -108,14 +108,13 @@
     IBOutlet NSTabView      *transferTab;
     
 @private
-	NSNumberFormatter      *formatter;
     TransferCalendarWindow *calendarWindow;
     TransactionLimits      *limits;
     NSArray                *draggedTransfers;
     NSUInteger             rowPositions[4];
     
-    NSPredicate             *finishedTransfersPredicate;
-    NSPredicate             *tempatesPredicate;
+    NSPredicate            *finishedTransfersPredicate;
+    NSPredicate            *tempatesPredicate;
 }
 
 @property (unsafe_unretained) IBOutlet TransferFormularView *transferFormular;

@@ -88,8 +88,6 @@ extern NSString *TransferReadyForUseDataType;
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteAccount"];
 
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
-    
-    
 }
 
 #pragma mark -

@@ -36,6 +36,8 @@
 static NSString* const PecuniaGraphLayoutChangeNotification = @"PecuniaGraphLayoutChange";
 static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouseExited";
 
+extern void *UserDefaultsBindingContext;
+
 //--------------------------------------------------------------------------------------------------
 
 @implementation PecuinaGraphHost
@@ -395,6 +397,9 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
 
 -(void)dealloc 
 {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObserver: self forKeyPath: @"colors"];
+
     free(timePoints);
     free(totalBalances);
     free(negativeBalances);
@@ -444,6 +449,23 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
                                              selector: @selector(mouseLeftGraph:)
                                                  name: PecuniaGraphMouseExitedNotification
                                                object: nil];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
+}
+
+#pragma mark -
+#pragma mark KVO
+
+- (void)observeValueForKeyPath: (NSString *)keyPath
+                      ofObject: (id)object
+                        change: (NSDictionary *)change
+                       context: (void *)context
+{
+    if (context == UserDefaultsBindingContext) {
+        if ([keyPath isEqualToString: @"colors"]) {
+            [self updateColors];
+        }
+    }
 }
 
 #pragma mark -
@@ -471,14 +493,6 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     plot.shadowRadius = 3.0;
     plot.shadowOffset = CGSizeMake(2, -2);
     plot.shadowOpacity = 0.5;
-     //    */
-/*
-    CPTMutableShadow *shadow = [CPTMutableShadow shadow];
-    shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 0 blue: 0 alpha: 0.75];
-    shadow.shadowBlurRadius = 3.0;
-    shadow.shadowOffset = CGSizeMake(2, -2);
-    plot.shadow = shadow;
-    // */
 }
 
 - (void)setupMainAxes
@@ -557,12 +571,12 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
-/*
-    frame.shadowColor = CGColorCreateGenericGray(0, 1);
-    frame.shadowRadius = 2.0;
-    frame.shadowOffset = CGSizeMake(1, -1);
-    frame.shadowOpacity = 0.25;
-  */
+
+    mainGraph.shadowColor = CGColorCreateGenericGray(0, 1);
+    mainGraph.shadowRadius = 2.0;
+    mainGraph.shadowOffset = CGSizeMake(1, -1);
+    mainGraph.shadowOpacity = 0.3;
+
     CPTFill* fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1]];
     frame.fill = fill;
     
@@ -639,7 +653,7 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     // Graph title, use y axis label for this.
     textStyle.textAlignment = CPTTextAlignmentCenter;
-    textStyle.fontSize = 12.0;
+    textStyle.fontSize = 10.0;
     y.titleTextStyle = textStyle;
     y.title = NSLocalizedString(@"transfers", @"");
     y.titleOffset = 60;
@@ -678,12 +692,12 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
-    /*
-    frame.shadowColor = CGColorCreateGenericGray(0, 1);
-    frame.shadowRadius = 2.0;
-    frame.shadowOffset = CGSizeMake(1, -1);
-    frame.shadowOpacity = 0.25;
-    */
+
+    turnoversGraph.shadowColor = CGColorCreateGenericGray(0, 1);
+    turnoversGraph.shadowRadius = 2.0;
+    turnoversGraph.shadowOffset = CGSizeMake(1, -1);
+    turnoversGraph.shadowOpacity = 0.3;
+
     [self setupTurnoversAxes];
     
     // The second y axis is used as the current location identifier.
@@ -791,11 +805,10 @@ static NSString* const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouse
     CPTFill* gradientFill = [CPTFill fillWithGradient: gradient];
     frame.fill = gradientFill;
 
-    CPTMutableShadow *shadow = [CPTMutableShadow shadow];
-    shadow.shadowColor = [CPTColor yellowColor];
-    shadow.shadowBlurRadius = 3.0;
-    shadow.shadowOffset = CGSizeMake(2, -2);
-    frame.shadow = shadow;
+    selectionGraph.shadowColor = CGColorCreateGenericGray(0, 1);
+    selectionGraph.shadowRadius = 2.0;
+    selectionGraph.shadowOffset = CGSizeMake(1, -1);
+    selectionGraph.shadowOpacity = 0.5;
 
     [self setupSelectionAxes];
 }
@@ -2348,6 +2361,103 @@ int double_compare(const void *value1, const void *value2)
     [infoLayer fadeOut];
     [mainIndicatorLine fadeOut];
     [turnoversIndicatorLine fadeOut];
+}
+
+/**
+ * Called if the user changed any of the application colors.
+ */
+- (void)updateColors
+{
+    selectionBox.fillStartingColor = [NSColor applicationColorForKey: @"Small Background Gradient (low)"];
+    selectionBox.fillEndingColor = [NSColor applicationColorForKey: @"Small Background Gradient (high)"];
+
+    if (mainCategory != nil) {
+        CGColorRef gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (high)"] colorWithAlphaComponent: 0.75]);
+        CGColorRef gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (low)"] colorWithAlphaComponent: 1]);
+        CPTGradient* positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
+                                                                    endingColor: [CPTColor colorWithCGColor: gradientLowColor]
+                                         ];
+        CGColorRelease(gradientHighColor);
+        CGColorRelease(gradientLowColor);
+
+        positiveGradient.angle = -90.0;
+        CPTFill* positiveGradientFill = [CPTFill fillWithGradient: positiveGradient];
+
+        CPTPlot* plot = [mainGraph plotWithIdentifier: @"positivePlot"];
+        if (mainCategory.isBankAccount) {
+            CPTScatterPlot *linePlot = (CPTScatterPlot*)plot;
+            linePlot.areaFill = positiveGradientFill;
+        } else {
+            CPTBarPlot *barPlot = (CPTBarPlot*)plot;
+            barPlot.fill = positiveGradientFill;
+        }
+
+        gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Negative Plot Gradient (high)"] colorWithAlphaComponent: 1]);
+        gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Negative Plot Gradient (low)"] colorWithAlphaComponent: 0.9]);
+        CPTGradient* negativeGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
+                                                                    endingColor: [CPTColor colorWithCGColor: gradientLowColor]
+                                         ];
+        CGColorRelease(gradientHighColor);
+        CGColorRelease(gradientLowColor);
+
+        negativeGradient.angle = -90.0;
+        CPTFill* negativeGradientFill = [CPTFill fillWithGradient: negativeGradient];
+
+        plot = [mainGraph plotWithIdentifier: @"negativePlot"];
+
+        if (mainCategory.isBankAccount) {
+            CPTScatterPlot *linePlot = (CPTScatterPlot*)plot;
+            linePlot.areaFill = negativeGradientFill;
+        } else {
+            CPTBarPlot *barPlot = (CPTBarPlot*)plot;
+            barPlot.fill = negativeGradientFill;
+        }
+
+        CPTScatterPlot *scatterPlot = (CPTScatterPlot*)[mainGraph plotWithIdentifier: @"averagePlot"];
+        CPTMutableLineStyle* lineStyle = [[CPTMutableLineStyle alloc] init];
+        CGColorRef lineColor;
+        if (mainCategory.isBankAccount) {
+            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Bank Account Average Line"]);
+        } else {
+            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Category Average Line"]);
+        }
+        lineStyle.lineColor = [CPTColor colorWithCGColor: lineColor];
+        CGColorRelease(lineColor);
+
+        lineStyle.lineWidth = 1;
+        lineStyle.dashPattern = @[@8.0f, @2.5f];
+
+        scatterPlot.dataLineStyle = lineStyle;
+
+        CPTBarPlot* barPlot = (CPTBarPlot*)[turnoversGraph plotWithIdentifier: @"turnoversPlot"];
+
+        gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Turnovers Plot Gradient (high)"] colorWithAlphaComponent: 0.75]);
+        gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Turnovers Plot Gradient (low)"] colorWithAlphaComponent: 0.75]);
+        CPTGradient* areaGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
+                                                                endingColor: [CPTColor colorWithCGColor: gradientLowColor]
+                                     ];
+        CGColorRelease(gradientHighColor);
+        CGColorRelease(gradientLowColor);
+
+        areaGradient.angle = -90.0;
+        CPTFill* areaGradientFill = [CPTFill fillWithGradient: areaGradient];
+        barPlot.fill = areaGradientFill;
+
+        scatterPlot = (CPTScatterPlot*)[selectionGraph plotWithIdentifier: @"selectionPlot"];
+
+        gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Selection Plot Gradient (high)"] colorWithAlphaComponent: 0.8]);
+        gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Selection Plot Gradient (low)"] colorWithAlphaComponent: 0.9]);
+        areaGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
+                                                   endingColor: [CPTColor colorWithCGColor: gradientLowColor]
+                                     ];
+        CGColorRelease(gradientHighColor);
+        CGColorRelease(gradientLowColor);
+
+        areaGradient.angle = 90.0;
+        CPTFill* gradientFill = [CPTFill fillWithGradient: areaGradient];
+
+        scatterPlot.areaFill = gradientFill;
+    }
 }
 
 #pragma mark -

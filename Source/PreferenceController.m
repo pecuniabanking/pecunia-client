@@ -17,55 +17,119 @@
  * 02110-1301  USA
  */
 
+#import <QuartzCore/QuartzCore.h>
+
+#import "BWGradientBox.h"
+
 #import "PreferenceController.h"
 #import "MOAssistant.h"
 #import "Keychain.h"
 #import "BankingController.h"
 
-#define _newStatementColor @"newStatementColor"
-#define _notAssignedColor @"notAssignedColor"
+#import "GraphicsAdditions.h"
+
 #define _exportSeparator @"exportSeparator"
 
-static NSMutableDictionary *statementColors = nil;
 static NSArray *exportFields = nil;
 
 #define SYNCH_HEIGHT 310
 #define SEC_HEIGHT 280
 #define DISPLAY_HEIGHT 320
+#define COLOR_HEIGHT 450
 #define EXP_HEIGHT 375
 #define PRINT_HEIGHT 200
 
-void updateColorCache()
+@implementation ColorListViewCell
+
+- (void)configureWithString: (NSString*)config
 {
-	if(statementColors == nil) statementColors = [NSMutableDictionary dictionaryWithCapacity: 5 ];
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	BOOL markNotAssigned = [defaults boolForKey: @"markNAStatements" ];
-	if(markNotAssigned) {
-		NSData *colorData = [defaults objectForKey: _notAssignedColor ];
-		if(colorData == nil) statementColors[_notAssignedColor] = [NSColor colorWithDeviceRed: 0.918 green: 1.0 blue: 0.258 alpha: 1.0 ];
-		else statementColors[_notAssignedColor] = [NSKeyedUnarchiver unarchiveObjectWithData: colorData ];
-	} else [statementColors removeObjectForKey: _notAssignedColor ];
-	BOOL markNewStatements = [defaults boolForKey: @"markNewStatements" ];
-	if(markNewStatements) {
-		NSData *colorData = [defaults objectForKey: _newStatementColor ];
-		if(colorData == nil) statementColors[_newStatementColor] = [NSColor colorWithDeviceRed: 0.207 green: 0.684 blue: 0.984 alpha: 1.0 ];
-		else statementColors[_newStatementColor] = [NSKeyedUnarchiver unarchiveObjectWithData: colorData ];
-	} else [statementColors removeObjectForKey: _newStatementColor ];
+    NSArray *values = [config componentsSeparatedByString: @"|"];
+    colorKey = values[1];
+    colorWell.color = [NSColor applicationColorForKey: colorKey];
+    [self updateColorText];
+
+    if (values.count > 2) {
+        showHeader = YES;
+        headerText.stringValue = NSLocalizedString(values[2], nil);
+    } else {
+        showHeader = NO;
+    }
+
+    NSMutableAttributedString *captionString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(values[0], nil)];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setMaximumLineHeight: 12];
+
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName: paragraphStyle};
+
+    [captionString addAttributes: attributes range: NSMakeRange(0, [captionString length])];
+    caption.attributedStringValue = captionString;
 }
+
+- (IBAction)resetToDefault: (id)sender
+{
+    [NSColor resetApplicationColorForKey: colorKey];
+    colorWell.color = [NSColor applicationColorForKey: colorKey];
+    [self updateColorText];
+}
+
+- (IBAction)colorChanged:(id)sender
+{
+    [NSColor setApplicationColor: colorWell.color forKey: colorKey];
+    [self updateColorText];
+}
+
+- (void)updateColorText
+{
+    NSColor *color = [colorWell.color colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
+    int  red = color.redComponent * 255;
+    int  green = color.greenComponent * 255;
+    int  blue = color.blueComponent * 255;
+
+    rgbText.stringValue = [NSString stringWithFormat: @"R: %3i G: %3i B: %3i", red, green, blue];
+    htmlText.stringValue = [NSString stringWithFormat: @"HTML: #%.2X%.2X%.2X", red, green, blue];
+}
+
+static NSGradient* headerGradient;
+
+- (void)setupDrawStructures
+{
+    headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
+                      [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat) 0,
+                      [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], (CGFloat) 1,
+                      nil];
+}
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+    if (headerGradient == nil) {
+        [self setupDrawStructures];
+    }
+
+    NSRect bounds = [self bounds];
+    if (showHeader) {
+        NSBezierPath *path = [NSBezierPath bezierPathWithRect: NSMakeRect(bounds.origin.x,
+                                                                          bounds.size.height - 18,
+                                                                          bounds.size.width,
+                                                                          18)];
+        [headerGradient drawInBezierPath: path angle: 90.0];
+    }
+}
+
+@end
 
 @implementation PreferenceController
 
 -(id)init
 {
-	self = [super initWithWindowNibName:@"Preferences"];
-	mainWindow = nil;
-	colorsChanged = NO;
-	exportFields = @[@"valutaDate", @"date", @"value", @"saldo", @"currency", @"localAccount", 
-					@"localBankCode", @"localName", @"localCountry",
-					@"localSuffix", @"remoteName", @"floatingPurpose", @"note", @"remoteAccount", @"remoteBankCode", 
-					@"remoteBankName", @"remoteBankLocation", @"remoteIBAN", @"remoteBIC", @"remoteSuffix",
-					@"customerReference", @"bankReference", @"transactionText", @"primaNota",
-					@"transactionCode", @"categoriesDescription"];
+	self = [super initWithWindowNibName: @"Preferences"];
+    if (self != nil) {
+        exportFields = @[@"valutaDate", @"date", @"value", @"saldo", @"currency", @"localAccount",
+                         @"localBankCode", @"localName", @"localCountry",
+                         @"localSuffix", @"remoteName", @"floatingPurpose", @"note", @"remoteAccount", @"remoteBankCode",
+                         @"remoteBankName", @"remoteBankLocation", @"remoteIBAN", @"remoteBIC", @"remoteSuffix",
+                         @"customerReference", @"bankReference", @"transactionText", @"primaNota",
+                         @"transactionCode", @"categoriesDescription"];
+    }
 	return self;
 }
 
@@ -118,8 +182,11 @@ void updateColorCache()
         if ([fileManager fileExistsAtPath: path]) {
             item.image = [[NSImage alloc] initWithContentsOfFile: path];
         }
-
     }
+
+    colorListView.delegate = self;
+    [colorListView reloadData];
+
 }
 
 -(void)windowWillClose:(NSNotification *)aNotification
@@ -133,36 +200,31 @@ void updateColorCache()
 	NSComboBoxCell *cell = [col dataCell ];
 	
 	for (NSDictionary *dict in content) {
-		idx = [cell indexOfItemWithObjectValue: [dict valueForKey: @"fieldName" ] ];
-		if(idx >=0) [fields addObject: exportFields[idx] ];
+		idx = [cell indexOfItemWithObjectValue: dict[@"fieldName"]];
+		if (idx >= 0) {
+            [fields addObject: exportFields[idx]];
+        }
 	}
-	if([fields count ]>0) {
+	if (fields.count > 0) {
 		NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
 		[defaults setObject: fields forKey: @"Exporter.fields" ];
 	}
-    if(colorsChanged) {
-		updateColorCache();
-		[[mainWindow contentView ] display ];
-		colorsChanged = NO;
-	}
-}
-
--(IBAction)colorButtonsChanged: (id)sender
-{
-	colorsChanged = YES;
 }
 
 // remove keychain values of all accounts
 -(IBAction)removePINs: (id)sender
 {
-	int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP33", @"Remove PINs from Keychain"),
-									  NSLocalizedString(@"AP34", @"All PINs are removed from the Keychain. Do you want to continue?"),
-									  NSLocalizedString(@"no", @"No"),
-									  NSLocalizedString(@"yes", @"Yes"), nil
+	int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP33", nil),
+									  NSLocalizedString(@"AP34", nil),
+									  NSLocalizedString(@"no", nil),
+									  NSLocalizedString(@"yes", nil),
+                                      nil
 									  );
-	if(res != NSAlertAlternateReturn) return;
+	if (res != NSAlertAlternateReturn) {
+        return;
+    }
 	
-	[Keychain deletePasswordsForService:@"Pecunia PIN" ];
+	[Keychain deletePasswordsForService: @"Pecunia PIN"];
 }
 
 -(IBAction)changeFileLocation: (id)sender
@@ -215,10 +277,10 @@ void updateColorCache()
 		 returnCode: (int)code
 		contextInfo: (void*)context
 {
-	if(code == 0) {
+	if (code == 0) {
 		// now create 
 		MOAssistant *assistant = [MOAssistant assistant];
-		if([assistant encryptDataWithPassword: password]) {
+		if ([assistant encryptDataWithPassword: password]) {
 			[encryptButton setEnabled: NO ];
 			[[BankingController controller ] setEncrypted: YES ];
             NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
@@ -233,7 +295,7 @@ void updateColorCache()
 	[self setValue: @NO forKey: @"encrypt" ];
 }
 
--(IBAction)cancelSheet:(id)sender
+-(IBAction)cancelSheet:( id)sender
 {
 	[encryptionSheet orderOut: sender ];
 	[NSApp endSheet: encryptionSheet returnCode: 1 ];
@@ -243,7 +305,7 @@ void updateColorCache()
 {
 	NSString *passw1 = [passw1Field stringValue ];
 	NSString *passw2 = [passw2Field stringValue ];
-	if([passw1 length ] < 8) {
+	if ([passw1 length ] < 8) {
 		NSRunAlertPanel(NSLocalizedString(@"AP46", @""), 
 						NSLocalizedString(@"AP47", @""),
 						NSLocalizedString(@"ok", @"Ok"), 
@@ -252,7 +314,7 @@ void updateColorCache()
 		return;
 	}
 	
-	if([passw1 isEqualToString: passw2] == NO) {
+	if ([passw1 isEqualToString: passw2] == NO) {
 		NSRunAlertPanel(NSLocalizedString(@"AP46", @""), 
 						NSLocalizedString(@"AP48", @""),
 						NSLocalizedString(@"ok", @"Ok"), 
@@ -267,121 +329,84 @@ void updateColorCache()
         [Keychain setPassword: password forService: @"Pecunia" account: @"DataFile" store: savePassword];
     }
 
-	[encryptionSheet orderOut: sender ];
-	[NSApp endSheet: encryptionSheet returnCode: 0 ];
+	[encryptionSheet orderOut: sender];
+	[NSApp endSheet: encryptionSheet returnCode: 0];
 }
 
--(void)setMainWindow: (NSWindow*)main
+-(IBAction)expSepTab: (id)sender
 {
-	mainWindow = main;
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject: @"\t" forKey: _exportSeparator];
 }
 
--(IBAction)expSepTab:(id)sender
+-(IBAction)expSepSemi: (id)sender
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	[defaults setObject:@"\t" forKey:_exportSeparator ];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject: @";" forKey: _exportSeparator];
 }
 
--(IBAction)expSepSemi:(id)sender
+-(IBAction)expSepLine: (id)sender
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	[defaults setObject:@";" forKey:_exportSeparator ];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject: @"|" forKey: _exportSeparator];
 }
 
--(IBAction)expSepLine:(id)sender
+-(void)setHeight: (int)h
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	[defaults setObject:@"|" forKey:_exportSeparator ];
-}
-
--(void)setHeight:(int)h
-{
-    NSWindow *window = [self window ] ;
-    NSRect frame = [window frame ];
-    [contentView removeFromSuperview ];
+    NSWindow *window = [self window];
+    NSRect frame = window.frame;
     int pos = frame.origin.y + frame.size.height;
     frame.size.height = h;
     frame.origin.y = pos - h;
-    [window setFrame:frame display:YES animate:YES ];
-    [window setContentView:contentView ];
+    [window setFrame: frame display: YES animate: YES];
 }
 
 -(IBAction)synchSettings:(id)sender
 {
-    [mainTab selectTabViewItemAtIndex:0 ];
+    [mainTab selectTabViewItemAtIndex: 0];
     [self setHeight: SYNCH_HEIGHT ];
 }
 
 -(IBAction)securitySettings:(id)sender
 {
-    [mainTab selectTabViewItemAtIndex:1 ];    
+    [mainTab selectTabViewItemAtIndex: 1];
     [self setHeight: SEC_HEIGHT ];
 }
 
-- (IBAction)colorSettings:(id)sender {
+- (IBAction)displaySettings:(id)sender {
     [mainTab selectTabViewItemAtIndex: 2];
     [self setHeight: DISPLAY_HEIGHT];
 }
 
+- (IBAction)colorSettings:(id)sender {
+    [mainTab selectTabViewItemAtIndex: 3];
+    [self setHeight: COLOR_HEIGHT];
+}
+
 -(IBAction)exportSettings:(id)sender
 {
-    [mainTab selectTabViewItemAtIndex: 3];
+    [mainTab selectTabViewItemAtIndex: 4];
     [self setHeight: EXP_HEIGHT ];
 }
 
 -(IBAction)printSettings:(id)sender
 {
-    [mainTab selectTabViewItemAtIndex: 4];
+    [mainTab selectTabViewItemAtIndex: 5];
     [self setHeight: PRINT_HEIGHT ];
+}
+
+- (IBAction)resetAllColors: (id)sender
+{
+    for (unsigned i = 0; i < sizeof(colorEntries) / sizeof(colorEntries[0]); i++) {
+        NSArray *values = [[NSString stringWithUTF8String: colorEntries[i]] componentsSeparatedByString: @"|"];
+        [NSColor resetApplicationColorForKey: values[1]];
+    }
+    [colorListView reloadData];
 }
 
 -(void)tabView:(NSTabView*)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
     [[self window ] setTitle:[tabViewItem label ] ];
-}
-
--(NSColor*)notAssignedColor
-{
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	NSData *colorData = [defaults objectForKey: _notAssignedColor ];
-	if(!colorData) return [NSColor colorWithDeviceRed: 0.918 green: 1.0 blue: 0.258 alpha: 1.0 ];
-	return [NSKeyedUnarchiver unarchiveObjectWithData: colorData ];
-}
-
--(void)setNotAssignedColor: (NSColor*)color
-{
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject: color ];
-	[defaults setObject: colorData forKey: _notAssignedColor ];
-	colorsChanged = YES;
-}
-
--(NSColor*)newStatementColor
-{
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	NSData *colorData = [defaults objectForKey: _newStatementColor ];
-	if(!colorData) return [NSColor colorWithDeviceRed: 0.207 green: 0.684 blue: 0.984 alpha: 1.0 ];
-	return [NSKeyedUnarchiver unarchiveObjectWithData: colorData ];
-}
-
--(void)setNewStatementColor: (NSColor*)color
-{
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-	NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject: color ];
-	[defaults setObject: colorData forKey: _newStatementColor ];
-	colorsChanged = YES;
-}
-
-+(NSColor*)notAssignedRowColor
-{
-	if(statementColors == nil) updateColorCache();
-	return statementColors[_notAssignedColor];
-}
-
-+(NSColor*)newStatementRowColor
-{
-	if(statementColors == nil) updateColorCache();
-	return statementColors[_newStatementColor];
 }
 
 + (BOOL)showCategoryColorsInTree
@@ -394,6 +419,90 @@ void updateColorCache()
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	return [defaults boolForKey: @"showHiddenCategories"];
+}
+
+#pragma mark -
+#pragma mark ListView delegate protocol
+
+static char *colorEntries[] = {
+    "AP660|Default Account Color 1|AP650",
+    "AP661|Default Account Color 2",
+    "AP662|Default Account Color 3",
+    "AP663|Default Account Color 4",
+    "AP664|Default Account Color 5",
+    "AP680|Default Category Color 1|AP651",
+    "AP681|Default Category Color 2",
+    "AP682|Default Category Color 3",
+    "AP683|Default Category Color 4",
+    "AP684|Default Category Color 5",
+    "AP685|Default Category Color 6",
+    "AP686|Default Category Color 7",
+    "AP687|Default Category Color 8",
+    "AP688|Default Category Color 9",
+    "AP689|Default Category Color 10",
+    "AP700|Positive Plot Gradient (high)|AP652",
+    "AP701|Positive Plot Gradient (low)",
+    "AP702|Negative Plot Gradient (high)",
+    "AP703|Negative Plot Gradient (low)",
+    "AP704|Turnovers Plot Gradient (high)",
+    "AP705|Turnovers Plot Gradient (low)",
+    "AP706|Selection Plot Gradient (high)",
+    "AP707|Selection Plot Gradient (low)",
+    "AP708|Selection Band",
+    "AP709|Bank Account Average Line",
+    "AP710|Category Average Line",
+    "AP720|Positive Cash|AP653",
+    "AP721|Negative Cash",
+    "AP722|Disabled Tree Item",
+    "AP723|Cell Selection Gradient (high)",
+    "AP724|Cell Selection Gradient (low)",
+    "AP725|Grid Partial Selection",
+    "AP726|Selection Gradient (high)",
+    "AP727|Selection Gradient (low)",
+    "AP728|Small Background Gradient (high)",
+    "AP729|Small Background Gradient (low)",
+    "AP730|Pale Text",
+    "AP731|Unread Transfer",
+    "AP732|Uncategorized Transfer",
+};
+
+- (NSUInteger)numberOfRowsInListView: (PXListView*)listView
+{
+    return sizeof(colorEntries) / sizeof(colorEntries[0]);
+}
+
+- (CGFloat)listView: (PXListView*)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
+{
+    return (row == 0 || row == 5 || row == 15 || row == 26) ? 50 : 40;
+}
+
+- (NSRange)listView: (PXListView*)aListView rangeOfDraggedRow: (NSUInteger)row
+{
+    return NSMakeRange(0, 0);
+}
+
+- (PXListViewCell*)listView: (PXListView*)aListView cellForRow: (NSUInteger)row
+{
+	ColorListViewCell* cell = (ColorListViewCell*)[aListView dequeueCellWithReusableIdentifier: @"colorcell"];
+
+	if (!cell) {
+        cell = [ColorListViewCell cellLoadedFromNibNamed: @"Preferences" reusableIdentifier: @"colorcell"];
+    }
+
+    [cell configureWithString: [NSString stringWithUTF8String: colorEntries[row]]];
+    return cell;
+}
+
+- (bool)listView:(PXListView*)aListView shouldSelectRows: (NSIndexSet *)rows byExtendingSelection:(BOOL)shouldExtend
+{
+    return NO;
+}
+
+- (BOOL)listView: (PXListView*)aListView writeRowsWithIndexes: (NSIndexSet*)rowIndexes
+    toPasteboard: (NSPasteboard*)dragPasteboard
+       slideBack: (BOOL *)slideBack
+{
+    return NO; // No dragging please.
 }
 
 @end

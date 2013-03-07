@@ -53,7 +53,7 @@ extern NSString *StatementTypeKey;
 @synthesize canShowHeaders;
 
 static void *DataSourceBindingContext = (void *)@"DataSourceContext";
-static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
+extern void *UserDefaultsBindingContext;
 
 - (void)awakeFromNib
 {
@@ -67,31 +67,27 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     autoResetNew = YES;
     disableSelection = NO;
 
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    [userDefaults addObserver: self forKeyPath: @"showBalances" options: 0 context: UserDefaultsBindingContext];
-    showBalances = YES;
-    if ([userDefaults objectForKey: @"showBalances"]) {
-        showBalances = [userDefaults boolForKey: @"showBalances"];
-    } else {
-        [userDefaults setBool: YES forKey: @"showBalances"];
+    if ([defaults objectForKey: @"showBalances"] == nil) {
+        [defaults setBool: YES forKey: @"showBalances"];
     }
 
-    [userDefaults addObserver: self forKeyPath: @"showHeadersInLists" options: 0 context: UserDefaultsBindingContext];
+    [defaults addObserver: self forKeyPath: @"showHeadersInLists" options: 0 context: UserDefaultsBindingContext];
     showHeaders = YES;
     canShowHeaders = YES;
-    if ([userDefaults objectForKey: @"showHeadersInLists"]) {
-        showHeaders = [userDefaults boolForKey: @"showHeadersInLists"];
+    if ([defaults objectForKey: @"showHeadersInLists"] != nil) {
+        showHeaders = [defaults boolForKey: @"showHeadersInLists"];
     } else {
-        [userDefaults setBool: YES forKey: @"showHeadersInLists"];
+        [defaults setBool: YES forKey: @"showHeadersInLists"];
     }
 
-    [userDefaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
+    [defaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
     autoCasing = YES;
-    if ([userDefaults objectForKey: @"autoCasing"]) {
-        autoCasing = [userDefaults boolForKey: @"autoCasing"];
+    if ([defaults objectForKey: @"autoCasing"] != nil) {
+        autoCasing = [defaults boolForKey: @"autoCasing"];
     } else {
-        [userDefaults setBool: YES forKey: @"autoCasing"];
+        [defaults setBool: YES forKey: @"autoCasing"];
     }
 }
 
@@ -116,19 +112,9 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
 
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults removeObserver: self forKeyPath: @"showHeadersInLists"];
-    [userDefaults removeObserver: self forKeyPath: @"showBalances"];
-    [userDefaults removeObserver: self forKeyPath: @"autoCasing"];
-}
-
-- (NSNumberFormatter*)numberFormatter
-{
-    // Cannot place this in awakeFromNib as it accessed by other awakeFromNib methods and might not
-    // be ready yet by then.
-    if (numberFormatter == nil)
-        numberFormatter = [[NSNumberFormatter alloc] init];
-    return numberFormatter;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObserver: self forKeyPath: @"showHeadersInLists"];
+    [defaults removeObserver: self forKeyPath: @"autoCasing"];
 }
 
 #pragma mark -
@@ -190,13 +176,6 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
             return;
         }
 
-        if ([keyPath isEqualToString: @"showBalances"]) {
-            showBalances = [userDefaults boolForKey: @"showBalances"];
-            if (!pendingRefresh && !pendingReload) {
-                [self updateBalanceVisibility];
-            }
-        }
-
         if ([keyPath isEqualToString: @"autoCasing"]) {
             autoCasing = [userDefaults boolForKey: @"autoCasing"];
             if (!pendingRefresh && !pendingReload) {
@@ -216,7 +195,6 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
         return;
     }
     
-    // If there's already a full reload pending do nothing.
     if (!pendingReload) {
         // If there's another property change pending cancel it and do a full reload instead.
         if (pendingRefresh) {
@@ -367,12 +345,8 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     } else {
         [cell setHeaderHeight: 0];
     }
+
     [cell setFrame: frame];
-    
-    [cell setTextAttributesForPositivNumbers: [[self numberFormatter] textAttributesForPositiveValues]
-                             negativeNumbers: [[self numberFormatter ] textAttributesForNegativeValues]];
-    [cell showBalance: showBalances];
-    
 }
 
 /**
@@ -444,16 +418,6 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     NSArray *cells = [self visibleCells];
     for (StatementsListViewCell *cell in cells)
         [self fillCell: cell forRow: [cell row]];
-}
-
-/**
- * Triggered by the banking controller when the user changed the setting for showing/hiding balances.
- */
-- (void)updateBalanceVisibility
-{
-    NSArray *cells = [self visibleCells];
-    for (StatementsListViewCell *cell in cells)
-        [cell showBalance: showBalances];
 }
 
 /**

@@ -102,6 +102,8 @@
 		27B56887159743B10064A28B /* basket.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B56886159743B10064A28B /* basket.png */; };
 		27B9868515769132008907F3 /* GradientButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B9868415769132008907F3 /* GradientButtonCell.m */; };
 		27BB1A1A14D4739900A2C8A7 /* CategoryDefinition.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */; };
+		27C202FD16E3894100D696BF /* reset.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C202FB16E3894100D696BF /* reset.png */; };
+		27C202FE16E3894100D696BF /* reset@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C202FC16E3894100D696BF /* reset@2x.png */; };
 		27C3B78915E37CD9008B8DB3 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C3B78815E37CD9008B8DB3 /* refresh.png */; };
 		27C78793143622920095F1DA /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27C78792143622920095F1DA /* ProgressWindow.xib */; };
 		27C78796143623080095F1DA /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C78795143623080095F1DA /* ProgressWindowController.m */; };
@@ -438,14 +440,14 @@
 		275C07E01438779700D97415 /* PXListView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; name = PXListView.m; path = PXListview/PXListView.m; sourceTree = "<group>"; tabWidth = 4; };
 		275C07E11438779700D97415 /* PXListView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; name = "PXListView+Private.h"; path = "PXListview/PXListView+Private.h"; sourceTree = "<group>"; tabWidth = 4; };
 		275C07E21438779700D97415 /* PXListView+UserInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; name = "PXListView+UserInteraction.h"; path = "PXListview/PXListView+UserInteraction.h"; sourceTree = "<group>"; tabWidth = 4; };
-		275C07E31438779700D97415 /* PXListView+UserInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; name = "PXListView+UserInteraction.m"; path = "PXListview/PXListView+UserInteraction.m"; sourceTree = "<group>"; tabWidth = 4; };
+		275C07E31438779700D97415 /* PXListView+UserInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; name = "PXListView+UserInteraction.m"; path = "PXListview/PXListView+UserInteraction.m"; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		275C07E41438779700D97415 /* PXListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; name = PXListViewCell.h; path = PXListview/PXListViewCell.h; sourceTree = "<group>"; tabWidth = 4; };
 		275C07E51438779700D97415 /* PXListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; name = PXListViewCell.m; path = PXListview/PXListViewCell.m; sourceTree = "<group>"; tabWidth = 4; };
 		275C07E61438779700D97415 /* PXListViewCell+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; name = "PXListViewCell+Private.h"; path = "PXListview/PXListViewCell+Private.h"; sourceTree = "<group>"; tabWidth = 4; };
 		275C07E71438779700D97415 /* PXListViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; name = PXListViewDelegate.h; path = PXListview/PXListViewDelegate.h; sourceTree = "<group>"; tabWidth = 4; };
 		275C07E81438779700D97415 /* PXListViewDropHighlight.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; name = PXListViewDropHighlight.h; path = PXListview/PXListViewDropHighlight.h; sourceTree = "<group>"; tabWidth = 4; };
 		275C07ED143877C800D97415 /* StatementsListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementsListViewCell.h; sourceTree = "<group>"; tabWidth = 4; };
-		275C07EE143877C800D97415 /* StatementsListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsListViewCell.m; sourceTree = "<group>"; tabWidth = 4; };
+		275C07EE143877C800D97415 /* StatementsListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsListViewCell.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		27649721167D2A73006770A9 /* Collections */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Collections; sourceTree = "<group>"; };
 		2764B63415443C6600FF0B73 /* computing-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "computing-active.png"; sourceTree = "<group>"; };
 		2764B63515443C6600FF0B73 /* graph1-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graph1-active.png"; sourceTree = "<group>"; };
@@ -470,7 +472,7 @@
 		27955AFE140C0603008369C9 /* GraphicsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = GraphicsAdditions.m; sourceTree = "<group>"; tabWidth = 4; };
 		279A785B1539D8BE00443854 /* TransfersListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransfersListView.h; sourceTree = "<group>"; };
 		279A785C1539D8EB00443854 /* TransfersListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersListView.m; sourceTree = "<group>"; };
-		279A785E1539DA0300443854 /* TransfersListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersListViewCell.m; sourceTree = "<group>"; };
+		279A785E1539DA0300443854 /* TransfersListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersListViewCell.m; sourceTree = "<group>"; wrapsLines = 0; };
 		279A78601539DA1300443854 /* TransfersListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransfersListViewCell.h; sourceTree = "<group>"; };
 		279A78611539DD5400443854 /* TransfersListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransfersListViewCell.xib; sourceTree = "<group>"; };
 		279BF27C15726BF0006C1B9A /* green-slanted-stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-slanted-stripes.png"; sourceTree = "<group>"; };
@@ -482,14 +484,14 @@
 		27A3DA1F16A1C99C00FD7335 /* DebitsListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebitsListView.h; sourceTree = "<group>"; };
 		27A3DA2016A1C99C00FD7335 /* DebitsListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebitsListView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27A3DA2116A1C99C00FD7335 /* DebitsListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebitsListViewCell.h; sourceTree = "<group>"; };
-		27A3DA2216A1C99C00FD7335 /* DebitsListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebitsListViewCell.m; sourceTree = "<group>"; };
+		27A3DA2216A1C99C00FD7335 /* DebitsListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebitsListViewCell.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27A3DA2616A1CB8000FD7335 /* DebitFormularView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebitFormularView.h; sourceTree = "<group>"; };
 		27A3DA2716A1CB8000FD7335 /* DebitFormularView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebitFormularView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27A41A4E15F3C7750043BB68 /* OrdersListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrdersListViewCell.xib; sourceTree = "<group>"; };
 		27A41A5015F3C9340043BB68 /* OrdersListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdersListView.h; sourceTree = "<group>"; };
 		27A41A5115F3C9340043BB68 /* OrdersListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdersListView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27A41A5215F3C9340043BB68 /* OrdersListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdersListViewCell.h; sourceTree = "<group>"; };
-		27A41A5315F3C9340043BB68 /* OrdersListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdersListViewCell.m; sourceTree = "<group>"; };
+		27A41A5315F3C9340043BB68 /* OrdersListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdersListViewCell.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27A659C21604D8C500C737E8 /* send.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send.png; sourceTree = "<group>"; };
 		27A659C81604D8D200C737E8 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Pecunia.entitlements; path = ../Pecunia.entitlements; sourceTree = "<group>"; };
@@ -498,6 +500,8 @@
 		27B9868315769132008907F3 /* GradientButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientButtonCell.h; sourceTree = "<group>"; };
 		27B9868415769132008907F3 /* GradientButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientButtonCell.m; sourceTree = "<group>"; };
 		27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryDefinition.xib; sourceTree = "<group>"; };
+		27C202FB16E3894100D696BF /* reset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reset.png; sourceTree = "<group>"; };
+		27C202FC16E3894100D696BF /* reset@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reset@2x.png"; sourceTree = "<group>"; };
 		27C3B78815E37CD9008B8DB3 /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
 		27C78792143622920095F1DA /* ProgressWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressWindow.xib; sourceTree = "<group>"; };
 		27C78794143623080095F1DA /* ProgressWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -563,7 +567,7 @@
 		27E662B215A09BD9002F9277 /* TransferTemplatesListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferTemplatesListView.h; sourceTree = "<group>"; };
 		27E662B315A09BD9002F9277 /* TransferTemplatesListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferTemplatesListView.m; sourceTree = "<group>"; };
 		27E662B415A09BD9002F9277 /* TransferTemplateListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferTemplateListViewCell.h; sourceTree = "<group>"; };
-		27E662B515A09BDA002F9277 /* TransferTemplateListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferTemplateListViewCell.m; sourceTree = "<group>"; };
+		27E662B515A09BDA002F9277 /* TransferTemplateListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferTemplateListViewCell.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27E68C48165CF7DA005EBE66 /* GenerateDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateDataController.h; sourceTree = "<group>"; };
 		27E68C49165CF7DA005EBE66 /* GenerateDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateDataController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CorePlot.framework; path = Frameworks/CorePlot.framework; sourceTree = "<group>"; };
@@ -690,7 +694,7 @@
 		B17072D30D4BD35D00FBF186 /* TransactionLimits.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransactionLimits.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17072D40D4BD35D00FBF186 /* TransactionLimits.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionLimits.m; sourceTree = "<group>"; tabWidth = 4; };
 		B17074850D55104000FBF186 /* PreferenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B17074860D55104000FBF186 /* PreferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceController.m; sourceTree = "<group>"; tabWidth = 4; };
+		B17074860D55104000FBF186 /* PreferenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B17078F710EA5E6100A974E7 /* StatCatAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatCatAssignment.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17078F810EA5E6100A974E7 /* StatCatAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatCatAssignment.m; sourceTree = "<group>"; tabWidth = 4; };
 		B170C16D167689310047FD42 /* java.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = java.entitlements; sourceTree = "<group>"; };
@@ -1429,6 +1433,8 @@
 			isa = PBXGroup;
 			children = (
 				27649721167D2A73006770A9 /* Collections */,
+				27C202FB16E3894100D696BF /* reset.png */,
+				27C202FC16E3894100D696BF /* reset@2x.png */,
 				27B1DF9716A2E0A2007A1112 /* blue-slanted-stripes.png */,
 				27E2353B168A228D0050276E /* csv.png */,
 				27E2353C168A228D0050276E /* csv@2x.png */,
@@ -1964,6 +1970,8 @@
 				B1E3E4BE16BC6DE500DC1638 /* noccsettlements.pdf in Resources */,
 				2791FBD616CFCA4C00953116 /* delete3.png in Resources */,
 				2791FBD716CFCA4C00953116 /* delete3@2x.png in Resources */,
+				27C202FD16E3894100D696BF /* reset.png in Resources */,
+				27C202FE16E3894100D696BF /* reset@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

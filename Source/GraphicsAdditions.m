@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -39,18 +39,16 @@ CGColorRef CGColorCreateFromNSColor(NSColor *color)
 
 @implementation NSColor (PecuniaAdditions)
 
-static NSMutableArray* defaultAccountColors;
-static NSMutableArray* defaultCategoryColors;
-static NSMutableDictionary* applicationColors;
+static NSMutableDictionary* defaultColors;
+static NSMutableDictionary* userColors;
 
 + (void)loadApplicationColors
 {
     // Generate our random seed.
     srandom(time(NULL));
 	
-    defaultAccountColors = [NSMutableArray arrayWithCapacity: 10];
-    defaultCategoryColors = [NSMutableArray arrayWithCapacity: 10];
-    applicationColors = [NSMutableDictionary dictionary];
+    defaultColors = [NSMutableDictionary dictionaryWithCapacity: 10];
+    userColors = [NSMutableDictionary dictionaryWithCapacity: 10];
 	
 	NSString *path = [[NSBundle mainBundle] resourcePath];
 	path = [path stringByAppendingString: @"/Colors.acf"];
@@ -82,7 +80,7 @@ static NSMutableDictionary* applicationColors;
                     }
                 }
                 if (line == nil) {
-                    return;
+                    break;
                 }
                 
                 NSArray* components = [line componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
@@ -93,26 +91,25 @@ static NSMutableDictionary* applicationColors;
                     }
                 }
                 if (line == nil) {
-                    return;
+                    break;
                 }
                 
                 NSColor* color = [NSColor colorWithDeviceRed: [components[0] intValue] / 65535.0
                                                        green: [components[1] intValue] / 65535.0
                                                         blue: [components[2] intValue] / 65535.0
                                                        alpha: 1];
-                if ([line hasPrefix: @"Default Account Color"]) {
-                    [defaultAccountColors addObject: color];
-                } else {
-                    if ([line hasPrefix: @"Default Category Color"]) {
-                        [defaultCategoryColors addObject: color];
-                    } else {
-                        // Everything else goes into the color dictionary.
-                        [applicationColors setValue: color forKey: line];
-                    }
-                }
+                defaultColors[line] = color;
             }
         }
 	}
+
+    // Load colors overwritten by the user.
+    NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+    NSDictionary *colors = [defaults objectForKey: @"colors"];
+    for (NSString *key in colors.allKeys) {
+        NSData *colorData = colors[key];
+        userColors[key] = [NSKeyedUnarchiver unarchiveObjectWithData: colorData];
+    }
 }
 
 /**
@@ -121,20 +118,25 @@ static NSMutableDictionary* applicationColors;
  */
 + (NSColor*)nextDefaultAccountColor
 {
-    if (defaultAccountColors == nil) {
+    if (defaultColors == nil) {
         [self loadApplicationColors];
     }
 
-    if ([defaultAccountColors count] > 0) {
-        // To return the color with a refcount of 1 (autoreleased), we need to retain it
-        // here as the ref count is decreased when it is removed from the default colors array.
-        NSColor* result = defaultAccountColors[0];
-        [defaultAccountColors removeObjectAtIndex: 0];
-        
-        return result;
+    static int nextAccountColorIndex = 1;
+
+    NSString *key = [NSString stringWithFormat: @"Default Account Color %i", nextAccountColorIndex];
+    NSColor *color = userColors[key];
+    if (color != nil) {
+        nextAccountColorIndex++;
+        return color;
+    }
+    color = defaultColors[key];
+    if (color != nil) {
+        nextAccountColorIndex++;
+        return color;
     }
 
-    // No colors left. Generate a random one (here with an accent on blue).
+    // No default colors left. Generate a random one (here with an accent on blue).
     return [NSColor colorWithDeviceRed: (96 + random() % 64) / 255.0
                                  green: (96 + random() % 64) / 255.0
                                   blue: (192 + random() % 63) / 255.0
@@ -146,18 +148,25 @@ static NSMutableDictionary* applicationColors;
  */
 + (NSColor*)nextDefaultCategoryColor
 {
-    if (defaultCategoryColors == nil) {
+    if (defaultColors == nil) {
         [self loadApplicationColors];
     }
 
-    if ([defaultCategoryColors count] > 0) {
-        NSColor* result = defaultCategoryColors[0];
-        [defaultCategoryColors removeObjectAtIndex: 0];
-        
-        return result;
-    }
+    static int nextCategoryColorIndex = 1;
 
-    // Also here, if no colors are left generate random ones. Take back the blue component a bit
+    NSString *key = [NSString stringWithFormat: @"Default Category Color %i", nextCategoryColorIndex];
+    NSColor *color = userColors[key];
+    if (color != nil) {
+        nextCategoryColorIndex++;
+        return color;
+    }
+    color = defaultColors[key];
+    if (color != nil) {
+        nextCategoryColorIndex++;
+        return color;
+    }
+    
+    // Also here, if no default colors are left generate random ones. Take back the blue component a bit
     // so we can use bluish tints rather for account colors.
     return [NSColor colorWithDeviceRed: (32 + random() % 200) / 255.0
                                  green: (32 + random() % 200) / 255.0
@@ -172,29 +181,56 @@ static NSMutableDictionary* applicationColors;
  */
 + (NSColor*)applicationColorForKey: (NSString*)key
 {
-    if (applicationColors == nil) {
+    if (defaultColors == nil) {
         [self loadApplicationColors];
     }
-    NSColor* color = [applicationColors valueForKey: key];
-    if (color != nil)
-        return color;
     
+    NSColor* color = [userColors valueForKey: key];
+    if (color != nil) {
+        return color;
+    }
+    
+    color = [defaultColors valueForKey: key];
+    if (color != nil) {
+        return color;
+    }
+
     return [NSColor blackColor];
 }
 
-- (CGColorRef)asCGColor
+/**
+ * Stores the given color under the given key as customized user color (which overrides the default color).
+ */
++ (void)setApplicationColor: (NSColor*)color forKey: (NSString*)key
 {
-    // First convert ourselve to a color with an RGB colorspace in case we use a pattern
-    // or named color space. If we are already using an RGB colorspace then a reference
-    // to ourselve is returned.
-    NSColor *color = [self colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
-    CGColorSpaceRef colorspace = [[color colorSpace] CGColorSpace];
-    const NSInteger nComponents = [color numberOfComponents];
-    
-    CGFloat components[nComponents];
-    [color getComponents: components];
-    
-    return CGColorCreate(colorspace, components);
+    if (defaultColors == nil) {
+        [self loadApplicationColors];
+    }
+
+    NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+    NSMutableDictionary *colors = [[defaults objectForKey: @"colors"]  mutableCopy];
+    if (colors == nil) {
+        colors = [NSMutableDictionary dictionaryWithCapacity: 10];
+    }
+    userColors[key] = color;
+    NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject: color];
+    colors[key] = colorData;
+    [defaults setObject: colors forKey: @"colors"];
+}
+
+/**
+ * Removes the color with the given key from the user settings thereby making the default value active again.
+ */
++ (void)resetApplicationColorForKey: (NSString*)key
+{
+    [userColors removeObjectForKey: key];
+
+    NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+    NSMutableDictionary *colors = [[defaults objectForKey: @"colors"]  mutableCopy];
+    if (colors != nil) {
+        [colors removeObjectForKey: key];
+        [defaults setObject: colors forKey: @"colors"];
+    }
 }
 
 @end
@@ -220,13 +256,6 @@ static NSMutableDictionary* applicationColors;
 }
 
 @end
-
-// Remove/comment out this line of you don't want to use undocumented functions.
-#define MCBEZIER_USE_PRIVATE_FUNCTION
-
-#ifdef MCBEZIER_USE_PRIVATE_FUNCTION
-extern CGPathRef CGContextCopyPath(CGContextRef context);
-#endif
 
 static void CGPathCallback(void *info, const CGPathElement *element)
 {
@@ -318,7 +347,6 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 
 - (NSBezierPath *)pathWithStrokeWidth: (CGFloat)strokeWidth
 {
-#ifdef MCBEZIER_USE_PRIVATE_FUNCTION
     NSBezierPath *path = [self copy];
     CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
     CGPathRef pathRef = [path cgPath];
@@ -339,9 +367,6 @@ static void CGPathCallback(void *info, const CGPathElement *element)
     CFRelease(strokedPathRef);
     
     return strokedPath;
-#else
-    return nil;
-#endif//MCBEZIER_USE_PRIVATE_FUNCTION
 }
 
 - (void)fillWithInnerShadow: (NSShadow *)shadow borderOnly: (BOOL) borderOnly

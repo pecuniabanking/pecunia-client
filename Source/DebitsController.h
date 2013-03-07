@@ -99,7 +99,6 @@
     IBOutlet NSTabView      *debitTab;
     
 @private
-	NSNumberFormatter   *formatter;
     DebitCalendarWindow *calendarWindow;
     TransactionLimits   *limits;
     NSArray             *draggedDebits;

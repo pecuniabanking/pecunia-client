@@ -154,7 +154,7 @@ static CurrencyValueTransformer* currencyTransformer;
     // listview (which will later be assigned to this cell anyway).
     BOOL isSelected = [self.listView.selectedRows containsIndex: index];
     
-    NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text Color"];
+    NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text"];
     if (isSelected) {
         [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: whiteAttributes];
         [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: whiteAttributes];

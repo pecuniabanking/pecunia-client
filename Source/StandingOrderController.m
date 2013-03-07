@@ -151,15 +151,6 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [ordersListView setAllowsEmptySelection: NO];
     [ordersListView setAllowsMultipleSelection: NO];
     
-    // TODO: do we really need the "negative cash color"? Standing orders can always only be positive, can't they?
-    NSDictionary* positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
-    NSDictionary* negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
-    
-    NSNumberFormatter* listViewFormatter = [ordersListView numberFormatter];
-    [listViewFormatter setTextAttributesForPositiveValues: positiveAttributes];
-    [listViewFormatter setTextAttributesForNegativeValues: negativeAttributes];
-    
-    
 	// Sort order list by change date (newest first).
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO];
 	NSArray *sds = @[sd];

@@ -48,7 +48,7 @@ extern NSString *TransferDataType;
 extern NSString *TransferReadyForUseDataType;
 
 static void *DataSourceBindingContext = (void *)@"DataSourceContext";
-static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
+extern void *UserDefaultsBindingContext;
 
 @interface TransfersListView (Private)
 
@@ -59,7 +59,6 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 @implementation TransfersListView
 
 @synthesize owner;
-@synthesize numberFormatter;
 @synthesize dataSource;
 
 - (id)initWithCoder: (NSCoder*)decoder
@@ -70,8 +69,6 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
         [dateFormatter setLocale: [NSLocale currentLocale]];
         [dateFormatter setDateStyle: kCFDateFormatterShortStyle];
         [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
-        
-        numberFormatter = [[NSNumberFormatter alloc] init];
     }
     return self;
 }
@@ -254,10 +251,6 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     NSRect frame = [cell frame];
     frame.size.height = CELL_HEIGHT;
     [cell setFrame: frame];
-    
-    [cell setTextAttributesForPositivNumbers: [[self numberFormatter] textAttributesForPositiveValues]
-                             negativeNumbers: [[self numberFormatter ] textAttributesForNegativeValues]];
-    
 }
 
 - (PXListViewCell*)listView: (PXListView*)aListView cellForRow: (NSUInteger)row

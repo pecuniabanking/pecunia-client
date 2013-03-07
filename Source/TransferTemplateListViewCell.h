@@ -31,8 +31,6 @@
     IBOutlet NSTextField *templateName;
 
 @private
-    NSDictionary *positiveAttributes;
-    NSDictionary *negativeAttributes;
     NSDictionary *whiteAttributes;
     
     // Need to keep these values from the details dictionary to rebuild the attributed string
@@ -46,7 +44,6 @@
 }
 
 - (void)setDetails: (NSDictionary *)details;
-
 - (void)selectionChanged;
 
 @end

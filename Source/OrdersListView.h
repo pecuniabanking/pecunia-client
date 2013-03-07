@@ -39,7 +39,6 @@
 }
 
 @property (nonatomic, retain) id owner;
-@property (nonatomic, readonly) NSNumberFormatter *numberFormatter;
 @property (nonatomic, retain) NSArray *dataSource;
 
 @end

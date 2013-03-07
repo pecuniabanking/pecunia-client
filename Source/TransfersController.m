@@ -447,22 +447,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 	[pendingTransfers setSortDescriptors: sds];
 	[finishedTransfers setSortDescriptors: sds];
 	
-    NSDictionary* positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
-    NSDictionary* negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
-    
-	formatter = [[NSNumberFormatter alloc] init];
-	[formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
-	[formatter setLocale: [NSLocale currentLocale]];
-	[formatter setCurrencySymbol: @""];
-    [formatter setTextAttributesForPositiveValues: positiveAttributes];
-    [formatter setTextAttributesForNegativeValues: negativeAttributes];
-    
     [pendingTransfersListView setCellSpacing: 0];
     [pendingTransfersListView setAllowsEmptySelection: YES];
     [pendingTransfersListView setAllowsMultipleSelection: YES];
-    NSNumberFormatter* listViewFormatter = [pendingTransfersListView numberFormatter];
-    [listViewFormatter setTextAttributesForPositiveValues: positiveAttributes];
-    [listViewFormatter setTextAttributesForNegativeValues: negativeAttributes];
 
     pendingTransfersListView.owner = self;
     [pendingTransfersListView bind: @"dataSource" toObject: pendingTransfers withKeyPath: @"arrangedObjects" options: nil];
@@ -471,10 +458,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [finishedTransfersListView setCellSpacing: 0];
     [finishedTransfersListView setAllowsEmptySelection: YES];
     [finishedTransfersListView setAllowsMultipleSelection: YES];
-    listViewFormatter = [finishedTransfersListView numberFormatter];
-    [listViewFormatter setTextAttributesForPositiveValues: positiveAttributes];
-    [listViewFormatter setTextAttributesForNegativeValues: negativeAttributes];
-    
+
     [finishedTransfersListView bind: @"dataSource" toObject: finishedTransfers withKeyPath: @"arrangedObjects" options: nil];
     [finishedTransfers bind: @"selectionIndexes" toObject: finishedTransfersListView withKeyPath: @"selectedRows" options: nil];
     [finishedTransfersListView bind: @"selectedRows" toObject: finishedTransfers withKeyPath: @"selectionIndexes" options: nil];

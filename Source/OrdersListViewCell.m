@@ -49,6 +49,8 @@ extern NSString *OrderIsChangedKey;
 extern NSString *OrderPendingDeletionKey;
 extern NSString *OrderIsSentKey;
 
+extern void *UserDefaultsBindingContext;
+
 @interface NoAnimationImageView : NSImageView
 
 @end
@@ -79,8 +81,36 @@ extern NSString *OrderIsSentKey;
     if (self != nil)
     {
         whiteAttributes = @{NSForegroundColorAttributeName: [NSColor whiteColor]};
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObserver: self forKeyPath: @"colors"];
+}
+
+- (void)observeValueForKeyPath: (NSString *)keyPath
+                      ofObject: (id)object
+                        change: (NSDictionary *)change
+                       context: (void *)context
+{
+    if (context == UserDefaultsBindingContext) {
+        if ([keyPath isEqualToString: @"colors"]) {
+            [self updateTextColors];
+            [self updateDrawColors];
+
+            BOOL isSelected = [self.listView.selectedRows containsIndex: index];
+            if (!isSelected) {
+                [self constructAccountAndPurposeText];
+            }
+            
+            [self setNeedsDisplay: YES];
+        }
+    }
 }
 
 - (IBAction)cancelDeletion: (id)sender
@@ -134,19 +164,6 @@ static CurrencyValueTransformer* currencyTransformer;
     [self setNeedsDisplay: YES];
 }
 
-- (void)setTextAttributesForPositivNumbers: (NSDictionary*) _positiveAttributes
-                           negativeNumbers: (NSDictionary*) _negativeAttributes
-{
-    if (positiveAttributes != _positiveAttributes) {
-        positiveAttributes = _positiveAttributes;
-        [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
-    }
-    if (negativeAttributes != _negativeAttributes) {
-        negativeAttributes = _negativeAttributes;
-        [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
-    }
-}
-
 #pragma mark -
 #pragma mark Reuse
 
@@ -173,14 +190,12 @@ static CurrencyValueTransformer* currencyTransformer;
     // listview (which will later be assigned to this cell anyway).
     BOOL isSelected = [self.listView.selectedRows containsIndex: index];
     
-    NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text Color"];
     if (isSelected) {
         [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: whiteAttributes];
         [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: whiteAttributes];
-        
+
         [remoteNameLabel setTextColor: [NSColor whiteColor]];
         [purposeLabel setTextColor: [NSColor whiteColor]];
-        [valueLabel setTextColor: [NSColor whiteColor]]; // Need to set both the label itself as well as its cell formatter.
         [accountLabel setTextColor: [NSColor whiteColor]];
         [bankNameLabel setTextColor: [NSColor whiteColor]];
         [currencyLabel setTextColor: [NSColor whiteColor]];
@@ -192,16 +207,33 @@ static CurrencyValueTransformer* currencyTransformer;
         [nextDateTitle setTextColor: [NSColor whiteColor]];
         [lastDateTitle setTextColor: [NSColor whiteColor]];
     } else {
-        [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
-        [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
-        
         [remoteNameLabel setTextColor: [NSColor controlTextColor]];
         [accountLabel setTextColor: [NSColor controlTextColor]];
         [firstDateLabel setTextColor: [NSColor controlTextColor]];
         [nextDateLabel setTextColor: [NSColor controlTextColor]];
         [lastDateLabel setTextColor: [NSColor controlTextColor]];
-        [valueLabel setTextColor: [NSColor controlTextColor]];
-        
+
+        [self updateTextColors];
+    }
+
+    [self constructAccountAndPurposeText];
+}
+
+/**
+ * Called when the user changes a color. We update here only those colors that are customizable.
+ */
+- (void)updateTextColors
+{
+    BOOL isSelected = [self.listView.selectedRows containsIndex: index];
+
+    if (!isSelected) {
+        NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
+        NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
+
+        [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
+        [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
+
+        NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text"];
         [bankNameLabel setTextColor: paleColor];
         [purposeLabel setTextColor: paleColor];
         [currencyLabel setTextColor: paleColor];
@@ -210,13 +242,22 @@ static CurrencyValueTransformer* currencyTransformer;
         [nextDateTitle setTextColor: paleColor];
         [lastDateTitle setTextColor: paleColor];
     }
-    
+}
+
+/**
+ * The account label is constructed from several values and includes different formatting.
+ */
+- (void)constructAccountAndPurposeText
+{
+    NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text"];
+    BOOL isSelected = [self.listView.selectedRows containsIndex: index];
+
     // The account label is constructed from two values and formatted.
     NSString *accountTitle;
     NSString *bankCodeTitle;
     accountTitle = [NSString stringWithFormat: @"%@ ", NSLocalizedString(@"AP401", @"")];
     bankCodeTitle = [NSString stringWithFormat: @"\t%@ ", NSLocalizedString(@"AP400", @"")];
-    
+
     [accountLabel setToolTip: [NSString stringWithFormat: @"%@%@%@%@",
                                accountTitle, remoteAccount, bankCodeTitle, remoteBankCode]];
 
@@ -224,26 +265,26 @@ static CurrencyValueTransformer* currencyTransformer;
     NSMutableAttributedString *accountString = [[NSMutableAttributedString alloc] init];
     NSFont *normalFont = [NSFont fontWithName: @"LucidaGrande" size: 11];
     NSDictionary *normalAttributes = @{NSFontAttributeName: normalFont,
-                                      NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};
-    
+                                       NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};
+
     NSFontManager *fontManager = [NSFontManager sharedFontManager];
     NSFont *boldFont = [fontManager convertFont: normalFont toHaveTrait: NSBoldFontMask];
     NSDictionary *boldAttributes = @{NSFontAttributeName: boldFont,
-                                    NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : [NSColor blackColor]};
-    
+                                     NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : [NSColor blackColor]};
+
     [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: accountTitle
-                                                                            attributes: normalAttributes]
+                                                                           attributes: normalAttributes]
      ];
     [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: remoteAccount
-                                                                            attributes: boldAttributes]
+                                                                           attributes: boldAttributes]
      ];
     [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: bankCodeTitle
-                                                                            attributes: normalAttributes]
+                                                                           attributes: normalAttributes]
      ];
     [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: remoteBankCode
-                                                                            attributes: boldAttributes]
+                                                                           attributes: boldAttributes]
      ];
-    
+
     [accountLabel setAttributedStringValue: accountString];
 
     // The default line height for a multiline label is too large so we convert the given string
@@ -252,12 +293,12 @@ static CurrencyValueTransformer* currencyTransformer;
     NSMutableAttributedString *purposeString = [[NSMutableAttributedString alloc] initWithString: purpose];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setMaximumLineHeight: 12];
-    
+
     normalFont = [NSFont fontWithName: @"LucidaGrande" size: 10];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName: paragraphStyle,
-                                NSFontAttributeName: normalFont,
-                                NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};
-    
+                                 NSFontAttributeName: normalFont,
+                                 NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};
+
     [purposeString addAttributes: attributes range: NSMakeRange(0, [purposeString length])];
     [purposeLabel setAttributedStringValue: purposeString];
 }
@@ -270,16 +311,21 @@ static CurrencyValueTransformer* currencyTransformer;
 static NSGradient* innerGradient;
 static NSGradient* innerGradientSelected;
 
+- (void)updateDrawColors
+{
+    innerGradientSelected = [[NSGradient alloc] initWithColorsAndLocations:
+                             [NSColor applicationColorForKey: @"Selection Gradient (low)"], 0.0,
+                             [NSColor applicationColorForKey: @"Selection Gradient (high)"], 1.0,
+                             nil];
+}
+
 - (void)setupDrawStructures
 {
     innerGradient = [[NSGradient alloc] initWithColorsAndLocations:
                      [NSColor colorWithDeviceRed: 240 / 255.0 green: 240 / 255.0 blue: 240 / 255.0 alpha: 1], (CGFloat) 0.2,
                      [NSColor whiteColor], (CGFloat) 0.8,
                      nil];
-    innerGradientSelected = [[NSGradient alloc] initWithColorsAndLocations:
-                             [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat) 0,
-                             [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat) 1,
-                             nil];
+    [self updateDrawColors];
 }
 
 #define DENT_SIZE 4

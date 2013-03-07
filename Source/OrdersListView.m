@@ -65,7 +65,6 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 @implementation OrdersListView
 
 @synthesize owner;
-@synthesize numberFormatter;
 @synthesize dataSource;
 
 - (id)initWithCoder: (NSCoder*)decoder
@@ -77,7 +76,6 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
         [dateFormatter setDateStyle: kCFDateFormatterShortStyle];
         [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
         
-        numberFormatter = [[NSNumberFormatter alloc] init];
         hunderedYearsLater = [[ShortDate currentDate] dateByAddingUnits: 100 byUnit: NSYearCalendarUnit];
     }
     return self;
@@ -290,10 +288,6 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     NSRect frame = [cell frame];
     frame.size.height = CELL_HEIGHT;
     [cell setFrame: frame];
-    
-    [cell setTextAttributesForPositivNumbers: [[self numberFormatter] textAttributesForPositiveValues]
-                             negativeNumbers: [[self numberFormatter ] textAttributesForNegativeValues]];
-    
 }
 
 - (PXListViewCell*)listView: (PXListView*)aListView cellForRow: (NSUInteger)row

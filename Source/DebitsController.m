@@ -406,22 +406,9 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 	[pendingDebits setSortDescriptors: sds];
 	[finishedDebits setSortDescriptors: sds];
 	
-    NSDictionary* positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
-    NSDictionary* negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
-    
-	formatter = [[NSNumberFormatter alloc] init];
-	[formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
-	[formatter setLocale: [NSLocale currentLocale]];
-	[formatter setCurrencySymbol: @""];
-    [formatter setTextAttributesForPositiveValues: positiveAttributes];
-    [formatter setTextAttributesForNegativeValues: negativeAttributes];
-    
     [pendingDebitsListView setCellSpacing: 0];
     [pendingDebitsListView setAllowsEmptySelection: YES];
     [pendingDebitsListView setAllowsMultipleSelection: YES];
-    NSNumberFormatter* listViewFormatter = [pendingDebitsListView numberFormatter];
-    [listViewFormatter setTextAttributesForPositiveValues: positiveAttributes];
-    [listViewFormatter setTextAttributesForNegativeValues: negativeAttributes];
 
     pendingDebitsListView.owner = self;
     [pendingDebitsListView bind: @"dataSource" toObject: pendingDebits withKeyPath: @"arrangedObjects" options: nil];
@@ -430,9 +417,6 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     [finishedDebitsListView setCellSpacing: 0];
     [finishedDebitsListView setAllowsEmptySelection: YES];
     [finishedDebitsListView setAllowsMultipleSelection: YES];
-    listViewFormatter = [finishedDebitsListView numberFormatter];
-    [listViewFormatter setTextAttributesForPositiveValues: positiveAttributes];
-    [listViewFormatter setTextAttributesForNegativeValues: negativeAttributes];
     
     [finishedDebitsListView bind: @"dataSource" toObject: finishedDebits withKeyPath: @"arrangedObjects" options: nil];
     [finishedDebits bind: @"selectionIndexes" toObject: finishedDebitsListView withKeyPath: @"selectedRows" options: nil];

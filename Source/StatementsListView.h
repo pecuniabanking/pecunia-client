@@ -32,8 +32,6 @@
     id observedObject;
 
     NSDateFormatter* dateFormatter;
-    NSNumberFormatter* numberFormatter;
-    
     NSIndexSet* draggedIndexes;
     
     BOOL showAssignedIndicators;
@@ -43,8 +41,7 @@
     BOOL pendingRefresh; // Set when there was already a notification to refresh visible cells (for property changes).
     BOOL activating;     // Set when a cells are activated programmatically (so we don't send notifications around).
 
-    // This are cached user settings.
-    BOOL showBalances;
+    // These are cached user settings.
     BOOL showHeaders;
     BOOL autoCasing;
 }
@@ -55,8 +52,6 @@
 @property (nonatomic, assign) BOOL disableSelection;
 @property (nonatomic, strong) NSArray *dataSource;
 @property (nonatomic, assign) BOOL canShowHeaders; // Headers can be switched off temporarily.
-
-- (NSNumberFormatter*) numberFormatter;
 
 - (void)updateVisibleCells;
 - (void)activateCells;
