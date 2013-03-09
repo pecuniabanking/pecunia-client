@@ -135,7 +135,7 @@ extern NSString* const CategoryKey;
 	changedAccount.collTransferMethod = account.collTransferMethod;
 	changedAccount.isStandingOrderSupported = account.isStandingOrderSupported;
     changedAccount.noAutomaticQuery = account.noAutomaticQuery;
-    changedAccount.catRepColor = account.catRepColor;
+    changedAccount.categoryColor = account.categoryColor;
     changedAccount.isHidden = account.isHidden;
     changedAccount.noCatRep = account.noCatRep;
 	
