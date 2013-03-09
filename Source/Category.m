@@ -524,6 +524,13 @@ BOOL updateSent = NO;
         int balanceCount = 0;
         NSDecimalNumber* currentValue = [NSDecimalNumber zero];
         for (StatCatAssignment* assignment in sortedAssignments) {
+            // Ignore categories that are hidden, except if this is the parent category.
+            if (assignment.category != self) {
+                if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
+                    continue;
+                }
+            }
+
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
             
             switch (interval) {

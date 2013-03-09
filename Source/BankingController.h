@@ -119,6 +119,7 @@
     NSDecimalNumber        *saveValue;
     NSCursor               *splitCursor;
     NSUInteger             lastSplitterPosition;  // Last position of the right splitter.
+    BOOL                   shuttingDown;
     
     NSImage *moneyImage;
     NSImage *moneySyncImage;

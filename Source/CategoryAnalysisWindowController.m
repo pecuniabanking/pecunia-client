@@ -1189,11 +1189,6 @@ extern void *UserDefaultsBindingContext;
 
     [self computeLocalStatisticsFrom: startIndex to: endIndex];
 
-    if (startIndex >= endIndex) {
-        // Don't change the plot range if we are in a time range that doesn't contain values.
-        return;
-    }
-
     CPTXYAxisSet* axisSet = (id)mainGraph.axisSet;
     
     float animationDuration = 0.3;
@@ -1568,13 +1563,22 @@ int double_compare(const void *value1, const void *value2)
     if (max < 0) {
         max = 0;
     }
-    if (max - min < 10) {
-        max = min + 10; // Ensure a minimum range for the graphs.
+    BOOL useDefault = max - min < 10;
+    if (useDefault) {
+        if (max - min == 0) {
+            max = min + 120; // Empty set.
+        } else {
+            max = min + 10; // Round the range up to 10.
+        }
     }
     NSDecimal decimalMinValue = CPTDecimalFromDouble(min);
     NSDecimal decimalMaxValue = CPTDecimalFromDouble(max);
     roundedLocalMinValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundToUpperOuter];
-    roundedLocalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundToUpperOuter];
+    if (useDefault) {
+        roundedLocalMaxValue = [NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue];
+    } else {
+        roundedLocalMaxValue = [[NSDecimalNumber decimalNumberWithDecimal: decimalMaxValue] roundToUpperOuter];
+    }
 }
 
 #pragma mark -
@@ -1752,7 +1756,7 @@ int double_compare(const void *value1, const void *value2)
  * The search is left-affine, that is, if the time point to search is between two existing points the 
  * lower point will always be returned.
  */
-- (NSUInteger)findIndexForTimePoint: (NSUInteger)timePoint
+- (NSInteger)findIndexForTimePoint: (NSUInteger)timePoint
 {
     if (rawCount == 0)
         return -1;
@@ -1784,6 +1788,10 @@ int double_compare(const void *value1, const void *value2)
  */
 - (void)updateTrackLinesAndInfoAnnotation: (NSNumber*)location
 {
+    if (rawCount < 2) {
+        return;
+    }
+    
     BOOL snap = YES;
     CGFloat actualLocation = [location floatValue];
     
@@ -1806,8 +1814,8 @@ int double_compare(const void *value1, const void *value2)
 
     // Find closest point in our time points that is before the computed time value.
     int units = round(timePoint);
-    NSUInteger index = [self findIndexForTimePoint: units];
-    double timePointAtIndex = timePoints[index];
+    NSInteger index = [self findIndexForTimePoint: units];
+    double timePointAtIndex = index < 0 ? 0 : timePoints[index];
     BOOL dateHit = NO;
     
     // The found index might not be one matching exactly the current date. In order to ease
@@ -1822,7 +1830,7 @@ int double_compare(const void *value1, const void *value2)
             dateHit = YES;
         } else {
             // The found index is not close enough. Try the next date point if there is one.
-            if (index < rawCount - 1) {
+            if (index < (NSInteger)rawCount - 1) {
                 timePointAtIndex = timePoints[index + 1];
                 snapPoint[0] = CPTDecimalFromDouble(timePointAtIndex);
                 targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint];
@@ -2219,7 +2227,7 @@ int double_compare(const void *value1, const void *value2)
 
             // Convert the dates to distance units from a reference date.
             timePoints = malloc(rawCount * sizeof(double));
-            referenceDate = dates[0];
+            referenceDate = (dates.count > 0) ? dates[0] : [ShortDate currentDate];
             int index = 0;
             for (ShortDate *date in dates) {
                 timePoints[index++] = [self distanceFromDate: referenceDate toDate: date];

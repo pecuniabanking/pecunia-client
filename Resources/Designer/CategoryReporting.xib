@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1080</int>
 		<string key="IBDocument.SystemVersion">12C3006</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
+		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">2844</string>
+			<string key="NS.object.0">3084</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -58,6 +58,8 @@
 								</object>
 								<string key="NSFrame">{{792, 19}, {34, 34}}</string>
 								<reference key="NSSuperview" ref="432692187"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="24054533">
 									<int key="NSCellFlags">67108864</int>
@@ -85,14 +87,15 @@
 							<object class="NSTextField" id="129691178">
 								<reference key="NSNextResponder" ref="432692187"/>
 								<int key="NSvFlags">265</int>
-								<string key="NSFrame">{{639, 508}, {155, 44}}</string>
+								<string key="NSFrame">{{581, 508}, {178, 44}}</string>
 								<reference key="NSSuperview" ref="432692187"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="58726937"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTextFieldCell" key="NSCell" id="30415472">
 									<int key="NSCellFlags">68157504</int>
 									<int key="NSCellFlags2">272634944</int>
-									<string key="NSContents">Report</string>
+									<string key="NSContents">Vergleich</string>
 									<object class="NSFont" key="NSSupport">
 										<string key="NSName">LucidaGrande-Bold</string>
 										<double key="NSSize">36</double>
@@ -118,14 +121,15 @@
 							<object class="NSTextField" id="877325225">
 								<reference key="NSNextResponder" ref="432692187"/>
 								<int key="NSvFlags">265</int>
-								<string key="NSFrame">{{589, 475}, {224, 77}}</string>
+								<string key="NSFrame">{{500, 475}, {313, 77}}</string>
 								<reference key="NSSuperview" ref="432692187"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="129691178"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSTextFieldCell" key="NSCell" id="953998323">
 									<int key="NSCellFlags">68157504</int>
 									<int key="NSCellFlags2">272634944</int>
-									<string key="NSContents">Report</string>
+									<string key="NSContents">Vergleich</string>
 									<object class="NSFont" key="NSSupport">
 										<string key="NSName">LucidaGrande-Bold</string>
 										<double key="NSSize">64</double>
@@ -145,6 +149,7 @@
 								<int key="NSvFlags">8466</int>
 								<string key="NSFrame">{{25, 62}, {792, 410}}</string>
 								<reference key="NSSuperview" ref="432692187"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="312840956"/>
 								<bool key="NSViewIsLayerTreeHost">YES</bool>
 								<string key="NSClassName">PecuniaGraphHost</string>
@@ -157,7 +162,8 @@
 								</object>
 								<string key="NSFrame">{{25, 27}, {95, 18}}</string>
 								<reference key="NSSuperview" ref="432692187"/>
-								<reference key="NSNextKeyView" ref="373492951"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="381320435">
 									<int key="NSCellFlags">-2080374784</int>
@@ -188,6 +194,7 @@
 						</object>
 						<string key="NSFrameSize">{845, 572}</string>
 						<reference key="NSSuperview" ref="588716815"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="877325225"/>
 						<bool key="NSViewIsLayerTreeHost">YES</bool>
 						<string key="NSClassName">RoundedOuterShadowView</string>
@@ -195,6 +202,7 @@
 				</object>
 				<string key="NSFrameSize">{844, 572}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="432692187"/>
 			</object>
 			<object class="NSUserDefaultsController" id="803099976">
@@ -536,7 +544,128 @@
 			<nil key="sourceID"/>
 			<int key="maxID">131</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">CPTGraphHostingView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/CPTGraphHostingView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">CategoryRepWindowController</string>
+					<string key="superclassName">NSObject</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>balancingRuleChanged:</string>
+							<string>toggleHelp:</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>balancingRuleChanged:</string>
+							<string>toggleHelp:</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">balancingRuleChanged:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">toggleHelp:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>helpButton</string>
+							<string>helpContentView</string>
+							<string>helpText</string>
+							<string>pieChartHost</string>
+							<string>topView</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSButton</string>
+							<string>NSView</string>
+							<string>NSTextField</string>
+							<string>PecuniaGraphHost</string>
+							<string>NSView</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>helpButton</string>
+							<string>helpContentView</string>
+							<string>helpText</string>
+							<string>pieChartHost</string>
+							<string>topView</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">helpButton</string>
+								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">helpContentView</string>
+								<string key="candidateClassName">NSView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">helpText</string>
+								<string key="candidateClassName">NSTextField</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">pieChartHost</string>
+								<string key="candidateClassName">PecuniaGraphHost</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">topView</string>
+								<string key="candidateClassName">NSView</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/CategoryRepWindowController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">PecuniaGraphHost</string>
+					<string key="superclassName">CPTGraphHostingView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/PecuniaGraphHost.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">RoundedOuterShadowView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/RoundedOuterShadowView.h</string>
+					</object>
+				</object>
+			</object>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">

@@ -670,7 +670,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
         case EARNINGS_SMALL_PLOT_ID:
             index = [sortedEarningValues[index][@"index"] intValue];
             if ((NSInteger)index == earningsExplosionIndex) {
-                color = earningsCategories[index][@"color"];
+                color = [earningsCategories[index][@"color"] colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
             } else {
                 return nil;
             }
@@ -678,7 +678,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
         case SPENDINGS_SMALL_PLOT_ID:
             index = [sortedSpendingValues[index][@"index"] intValue];
             if ((NSInteger)index == spendingsExplosionIndex) {
-                color = spendingsCategories[index][@"color"];
+                color = [spendingsCategories[index][@"color"] colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
             } else {
                 return nil;
             }
@@ -989,6 +989,10 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
         NSDecimalNumber* zero = [NSDecimalNumber zero];
 
         for (Category *childCategory in childs) {
+            if ([childCategory.isHidden boolValue] || [childCategory.noCatRep boolValue]) {
+                continue;
+            }
+            
             NSDecimalNumber* spendings = [childCategory valuesOfType: cat_spendings from: fromDate to: toDate];
             NSDecimalNumber* earnings = [childCategory valuesOfType: cat_earnings from: fromDate to: toDate];
             
@@ -1461,6 +1465,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 {
     fromDate = from;
     toDate = to;
+
     [self updateValues];
 
     earningsAngleAnimation = [CPTAnimation animate: earningsPlot

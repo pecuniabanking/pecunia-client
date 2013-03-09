@@ -516,6 +516,13 @@
         // them up on each time point to get the total balance.
         NSMutableDictionary *currentBalances = [NSMutableDictionary dictionaryWithCapacity: 5];
         for (StatCatAssignment* assignment in sortedAssignments) {
+            // Ignore categories that are hidden, except if this is the parent category.
+            if (assignment.category != self) {
+                if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
+                    continue;
+                }
+            }
+
             ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
 
             switch (interval) {

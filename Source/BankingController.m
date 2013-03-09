@@ -1169,7 +1169,7 @@ BOOL runningOnLionOrLater = NO;
                     NSView* view = [categoryAnalysisController mainView];
                     view.frame = frame;
                 }
-                [categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+                //[categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
             }
 
             if (currentSection != categoryAnalysisController) {
@@ -1211,7 +1211,7 @@ BOOL runningOnLionOrLater = NO;
                 pageHasChanged = YES;
             }
             
-            // update values in category tree to reflect time slicer interval again
+            // Update values in category tree to reflect time slicer interval again.
             [timeSlicer updateDelegate];
             
             [graph2Button setImage: [NSImage imageNamed: @"graph2-active"]];
@@ -1224,7 +1224,7 @@ BOOL runningOnLionOrLater = NO;
                     view.frame = frame;
                     [categoryPeriodsController connectScrollViews: accountsScrollView];
                 }
-                [categoryPeriodsController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+                //[categoryPeriodsController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
                 categoryPeriodsController.outline = accountsView;
             }
             
@@ -1257,7 +1257,7 @@ BOOL runningOnLionOrLater = NO;
                 }
                 [categoryDefinitionController setManagedObjectContext: self.managedObjectContext];
                 categoryDefinitionController.timeSliceManager = timeSlicer;
-                [categoryDefinitionController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+                //[categoryDefinitionController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
             }
             if (currentSection != categoryDefinitionController) {
                 [currentSection deactivate];
@@ -1359,6 +1359,8 @@ BOOL runningOnLionOrLater = NO;
 
 - (void)applicationWillTerminate: (NSNotification *)aNotification
 {
+    shuttingDown = YES;
+    
     NSError	*error = nil;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -1749,8 +1751,12 @@ BOOL runningOnLionOrLater = NO;
     return YES;
 }
 
--(void)outlineViewSelectionDidChange:(NSNotification *)aNotification
+- (void)outlineViewSelectionDidChange: (NSNotification *)aNotification
 {
+    if (shuttingDown) {
+        return;
+    }
+
     Category *cat = [self currentSelection];
     [cat updateBoundAssignments];
     
