@@ -25,7 +25,7 @@
 #import "MOAssistant.h"
 #import "Keychain.h"
 #import "BankingController.h"
-
+#import "PasswordWindow.h"
 #import "GraphicsAdditions.h"
 
 #define _exportSeparator @"exportSeparator"
@@ -252,6 +252,7 @@ static NSGradient* headerGradient;
 			  contextInfo: NULL ];
 
     } else {
+        // stop encryption
         int res = NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
                                   NSLocalizedString(@"AP79", @""),
                                   NSLocalizedString(@"no", @"No"),
@@ -259,6 +260,32 @@ static NSGradient* headerGradient;
                                   nil);
 		if(res == NSAlertAlternateReturn) {
 			MOAssistant *assistant = [MOAssistant assistant ];
+            
+            BOOL passwordOk = NO;
+            PasswordWindow *pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP54", @"")
+                                                                      title: NSLocalizedString(@"AP53", @"")];
+            [pwWindow disablePasswordSave];
+            while (passwordOk == NO) {
+                [[self window] makeKeyAndOrderFront:self];
+                int res = [NSApp runModalForWindow: [pwWindow window]];
+                if(res) {
+                    [pwWindow closeWindow];
+                    [[self window] makeKeyAndOrderFront:self];
+                    [self setValue: @YES forKey: @"encrypt" ];
+                    return;
+                }
+                
+                NSString *passwd = [pwWindow result];
+                if (passwd != nil) {
+                    passwordOk = [assistant checkDataPassword:passwd];
+                }
+                if (passwordOk == NO) {
+                    [pwWindow retry];
+                }
+                
+            }
+            [pwWindow closeWindow];
+            
 			if([assistant stopEncryption ])	{
                 [[BankingController controller ] setEncrypted: NO ];
                 [Keychain deletePasswordForService:@"Pecunia" account:@"DataFile"];
@@ -267,7 +294,6 @@ static NSGradient* headerGradient;
                                 NSLocalizedString(@"ok", @"Ok"),
                                 nil,
                                 nil);
-
             }
 		}
     }

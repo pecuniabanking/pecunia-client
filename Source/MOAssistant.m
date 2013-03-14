@@ -36,8 +36,6 @@
 @synthesize dataDirURL;
 @synthesize dataFilename;
 @synthesize pecuniaFileURL;
-@synthesize dataPassword;
-
 
 static MOAssistant	*assistant = nil;
 
@@ -72,6 +70,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     isEncrypted = NO;
     isDefaultDir = YES;
     decryptionDone = NO;
+    passwordKeyValid = NO;
     
     // do we run in a Sandbox?
     [self checkSandboxed];
@@ -385,12 +384,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 -(BOOL)encrypt
 {
-    // first get key from password
-    unsigned char key[32];
     int i;
-    
-    NSData *data = [self.dataPassword dataUsingEncoding:NSUTF8StringEncoding];
-    CC_SHA256([data bytes], (unsigned int)[data length], key);
     
     // read accounts file
     NSData *fileData = [NSData dataWithContentsOfURL:self.accountsURL];
@@ -399,18 +393,18 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     char checkData[64];
 
     for (i = 0; i<32; i++) {
-        checkData[2*i] = key[i];
+        checkData[2*i] = dataPasswordKey[i];
         checkData[2*i+1] = clearBytes[4*i+100];
     }
     
     // now encrypt check data
     CCCryptorStatus status;
     size_t encryptedSize;
-    status = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, key, 32, NULL, checkData, 63, encryptedBytes, 64, &encryptedSize);
+    status = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, checkData, 63, encryptedBytes, 64, &encryptedSize);
 
     // now encrypt file data
     if (status == kCCSuccess) {
-        status = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, key, 32, NULL, clearBytes, (unsigned int)[fileData length], encryptedBytes+64, (unsigned int)[fileData length]+16, &encryptedSize);
+        status = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, clearBytes, (unsigned int)[fileData length], encryptedBytes+64, (unsigned int)[fileData length]+16, &encryptedSize);
     }
     
     if (status != kCCSuccess) {
@@ -454,16 +448,14 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 -(BOOL)decrypt
 {
     BOOL savePassword = NO;
-    NSString *passwd;
+    NSString *passwd = nil;
     
     // read encrypted file
     NSURL *sourceURL = [pecuniaFileURL URLByAppendingPathComponent:_dataFileCrypted];
     NSData *fileData = [NSData dataWithContentsOfURL:sourceURL];
     char *decryptedBytes = malloc([fileData length]);
-    unsigned char key[32];
-
     
-    if (self.dataPassword == nil) {
+    if (passwordKeyValid == NO) {
         passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
         if(passwd == nil) {
             BOOL passwordOk = NO;
@@ -478,12 +470,13 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                 
                 // first get key from password
                 NSData *data = [passwd dataUsingEncoding:NSUTF8StringEncoding];
-                CC_SHA256([data bytes], (unsigned int)[data length], key);
+                CC_SHA256([data bytes], (unsigned int)[data length], dataPasswordKey);
+                passwordKeyValid = YES;
                 
                 // check if password is correct, first decrypt check data
                 CCCryptorStatus status;
                 size_t decryptedSize;
-                status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, key, 32, NULL, [fileData bytes], 64, decryptedBytes, 64, &decryptedSize);
+                status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, [fileData bytes], 64, decryptedBytes, 64, &decryptedSize);
                 if (status != kCCSuccess) {
                     NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
                                     NSLocalizedString(@"AP187", @""),
@@ -499,7 +492,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                 int i;
                 passwordOk = YES;
                 for (i=0; i<32; i++) {
-                    if (key[i] != decryptedBytes[2*i]) {
+                    if (dataPasswordKey[i] != decryptedBytes[2*i]) {
                         // password is wrong
                         passwordOk = NO;
                         [pwWindow retry];
@@ -509,19 +502,13 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             }
             [pwWindow closeWindow];
         }
-    } else {
-        passwd = self.dataPassword;
     }
-    
-    // first get key from password
-    NSData *data = [passwd dataUsingEncoding:NSUTF8StringEncoding];
-    CC_SHA256([data bytes], (unsigned int)[data length], key);
     
     // now decrypt
     CCCryptorStatus status;
     size_t decryptedSize;
     char *encryptedBytes = (char*)[fileData bytes];
-    status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, key, 32, NULL, encryptedBytes+64, (unsigned int)[fileData length]-64, decryptedBytes, (unsigned int)[fileData length]-64, &decryptedSize);
+    status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, encryptedBytes+64, (unsigned int)[fileData length]-64, decryptedBytes, (unsigned int)[fileData length]-64, &decryptedSize);
     
     if (status != kCCSuccess) {
         NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
@@ -547,8 +534,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 
     // if everything was successful, we can save the password
-    self.dataPassword = passwd;
-    if (savePassword) {
+    if (savePassword && passwd != nil) {
         [Keychain setPassword: passwd forService: @"Pecunia" account: @"DataFile" store: savePassword];
     }
     
@@ -558,8 +544,11 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 -(BOOL)encryptDataWithPassword: (NSString*)password
 {
+    // first get key from password
+    NSData *data = [password dataUsingEncoding:NSUTF8StringEncoding];
+    CC_SHA256([data bytes], (unsigned int)[data length], dataPasswordKey);
+    passwordKeyValid = YES;
     
-    self.dataPassword = password;
     if ([self encrypt] == NO) {
         return NO;
     }
@@ -671,13 +660,20 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
     if (isEncrypted && decryptionDone == NO) return;
     
+    NSDictionary *pragmaOptions = nil;
+    NSMutableDictionary *storeOptions = [NSMutableDictionary dictionary];
+    [storeOptions setDictionary:@{NSMigratePersistentStoresAutomaticallyOption: @YES,NSInferMappingModelAutomaticallyOption: @YES}];
+    if (isEncrypted) {
+        pragmaOptions = @{@"synchronous":@"NORMAL", @"fullfsync":@"1"};
+        [storeOptions setObject:pragmaOptions forKey:NSSQLitePragmasOption];
+    }
+    
     NSPersistentStoreCoordinator *coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: model];
     
     [coord addPersistentStoreWithType: NSSQLiteStoreType
                         configuration: nil
                                   URL: accountsURL
-                              options: @{NSMigratePersistentStoresAutomaticallyOption: @YES,
-                                        NSInferMappingModelAutomaticallyOption: @YES}
+                              options: storeOptions
                                 error: &error];
     
     
@@ -798,7 +794,6 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         // decrypt store and set accountsURL
         if (isEncrypted) {
             self.accountsURL = [[NSURL fileURLWithPath:tempDir] URLByAppendingPathComponent:_dataFileStandard];
-            self.dataPassword = nil;
             [self decrypt];
         }
         
@@ -817,6 +812,17 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 }
 
+- (BOOL)checkDataPassword:(NSString*)password
+{
+    unsigned char key[32];
+    
+    NSData *data = [password dataUsingEncoding:NSUTF8StringEncoding];
+    CC_SHA256([data bytes], (unsigned int)[data length], key);
+    
+    return memcmp(key, dataPasswordKey, 32) == 0;
+}
+
+
 -(NSManagedObjectContext*)context
 { 
     if(context == nil) [self loadContext];
@@ -833,13 +839,6 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     if(assistant) return assistant;
     assistant = [[MOAssistant alloc] init];
     return assistant;
-}
-
--(void)dealloc
-{
-    assistant = nil;
-    accountsURL = nil;
-
 }
 
 @end

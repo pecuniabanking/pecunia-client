@@ -89,7 +89,9 @@
 
 -(void)closeWindow
 {
-	[[self window ] close ];
+    if (active) {
+        [[self window ] close ];
+    }
 }
 
 -(void)windowWillClose:(NSNotification *)aNotification
@@ -98,6 +100,7 @@
 		result = [inputField stringValue];
 		if([result length] == 0) [NSApp stopModalWithCode:1];
 		else [NSApp stopModalWithCode:0];
+        active = NO;
 	}
 }
 

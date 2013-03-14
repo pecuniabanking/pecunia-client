@@ -44,9 +44,9 @@
     // temporary directory
 	NSString					*tempDir;
     
-    NSString                    *dataPassword;
+    unsigned char               dataPasswordKey[32];
     
-    
+    BOOL                        passwordKeyValid;
 	BOOL						isEncrypted;
 	BOOL						decryptionDone;
     BOOL                        isSandboxed;
@@ -57,7 +57,6 @@
 @property (nonatomic, copy) NSString *importerDir;
 @property (nonatomic, copy) NSString *tempDir;
 @property (nonatomic, copy) NSString *dataFilename;
-@property (nonatomic, copy) NSString *dataPassword;
 @property (nonatomic, strong) NSURL *accountsURL;
 @property (nonatomic, strong) NSURL *dataDirURL;
 @property (nonatomic, strong) NSURL *pecuniaFileURL;
@@ -70,6 +69,7 @@
 - (BOOL)encrypted;
 - (BOOL)encryptDataWithPassword: (NSString*)password;
 - (BOOL)stopEncryption;
+- (BOOL)checkDataPassword:(NSString*)password;
 - (void)checkPaths;
 - (void)checkSandboxed;
 - (void)initDatafile:(NSString*)path;

@@ -32,6 +32,7 @@
 #import "NSString+PecuniaAdditions.h"
 #import "GraphicsAdditions.h"
 #import "AnimationHelper.h"
+#import "BankingController.h"
 
 #import "MAAttachedWindow.h"
 
@@ -528,6 +529,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [sourceAccountSelector removeAllItems];
     
     NSMenu *sourceMenu = [sourceAccountSelector menu];
+    
+    // use current selection if no bank account is given
+    if (selectedAccount == nil) {
+        BankingController *controller = [BankingController controller];
+        Category *cat = [controller currentSelection];
+        if (cat != nil && [cat isBankAccount] == YES) {
+            selectedAccount = (BankAccount*)cat;
+        }
+    }
     
     Category *category = [Category bankRoot];
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
