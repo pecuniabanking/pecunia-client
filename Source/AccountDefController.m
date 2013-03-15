@@ -27,8 +27,8 @@
 
 #include "BWGradientBox.h"
 
-#define HEIGHT_MANUAL 545
-#define HEIGHT_STANDARD 465
+#define HEIGHT_MANUAL 550
+#define HEIGHT_STANDARD 530
 
 @implementation AccountDefController
 
@@ -88,7 +88,6 @@
 	
 	// fill proposal values
 	[self dropChanged: self];
-    [self setHeight: HEIGHT_STANDARD];
 
     // Manually set up properties which cannot be set via user defined runtime attributes
     // (Color type is not available pre 10.7).

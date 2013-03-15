@@ -58,6 +58,7 @@ extern NSString* const CategoryKey;
     account.categoryColor = acc.categoryColor;
     account.isHidden = acc.isHidden;
     account.noCatRep = acc.noCatRep;
+    account.balance = acc.balance;
 
 	return self;
 }
@@ -65,6 +66,13 @@ extern NSString* const CategoryKey;
 - (void)awakeFromNib
 {
 	if ([changedAccount.isManual boolValue]) {
+        int deltaHeight = [manAccountAddView frame ].size.height - [accountAddView frame ].size.height;
+        
+        // change window size
+        NSRect frame = [[self window] frame];
+        frame.size.height += deltaHeight;
+        [[self window] setFrame:frame display:YES];
+
         manAccountAddView.frame = accountAddView.frame;
 		[boxView replaceSubview: accountAddView with: manAccountAddView];
 
@@ -78,15 +86,6 @@ extern NSString* const CategoryKey;
 			}
 			[predicateEditor setObjectValue: pred ];
 		}
-        
-        // change window size
-        int deltaHeight = [manAccountAddView frame ].size.height - [accountAddView frame ].size.height;
-        NSRect frame = [[self window] frame];
-        frame.size.height += deltaHeight;
-        [[self window] setFrame:frame display:YES];
-        frame = [manAccountAddView frame];
-        frame.origin.y -= deltaHeight;
-        [manAccountAddView setFrame:frame];
 	} else {
         // no manual account
         // check if collective transfers are available - if not, disable collection transfer method popup
@@ -142,7 +141,12 @@ extern NSString* const CategoryKey;
 	if ([changedAccount.isManual boolValue] == YES) {
 		NSPredicate* predicate = [predicateEditor objectValue];
 		if(predicate) changedAccount.rule = [predicate description ];
-	} else {        
+        if ([changedAccount.balance compare:account.balance] != NSOrderedSame) {
+            changedAccount.balance = account.balance;
+            [[Category bankRoot] rollup];
+        }
+        changedAccount.balance = account.balance;
+	} else {
         changedAccount.accountSuffix = account.accountSuffix;
     }
 
