@@ -132,7 +132,7 @@ TimeSliceManager *timeSliceManager = nil;
 		case slice_year: date = [ShortDate dateWithYear: year month: 1 day: 1 ]; break;
 		case slice_quarter: date = [ShortDate dateWithYear: year month: quarter*3+1 day: 1 ]; break;
 		case slice_month: date = [ShortDate dateWithYear: year month: month day: 1 ]; break;
-		case slice_none: date = _fromDate;
+		case slice_none: date = _fromDate; break;
         case slice_all: date = [ShortDate dateWithDate:[NSDate distantPast]];
 	}
 	if(_minDate) {
@@ -156,7 +156,7 @@ TimeSliceManager *timeSliceManager = nil;
 			date = [ShortDate dateWithYear: year month: month day: day ];
 			break;
 		}
-		case slice_none: date = _toDate;
+		case slice_none: date = _toDate; break;
         case slice_all: date = [ShortDate dateWithDate:[NSDate distantFuture]];
 	}
 	if(_maxDate) {
