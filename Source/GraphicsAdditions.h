@@ -30,6 +30,8 @@ CGColorRef CGColorCreateFromNSColor(NSColor *color);
 + (void)setApplicationColor: (NSColor*)color forKey: (NSString*)key;
 + (void)resetApplicationColorForKey: (NSString*)key;
 
+- (NSColor*)colorWithChangedBrightness: (CGFloat)factor;
+
 @end
 
 /**

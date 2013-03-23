@@ -411,6 +411,7 @@ extern void *UserDefaultsBindingContext;
 
 -(void)awakeFromNib
 {
+    [topView.window useOptimizedDrawing: YES];
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* values = [userDefaults dictionaryForKey: @"categoryAnalysis"];
     if (values != nil) {
@@ -2205,18 +2206,12 @@ int double_compare(const void *value1, const void *value2)
         NSArray *turnovers = nil;
         BOOL extraEntry = NO;
         if (mainCategory.isBankAccount) {
-            BankAccount *account = (BankAccount*)mainCategory;
-            [account balanceHistoryToDates: &dates
-                                  balances: &balances
-                             balanceCounts: &turnovers
-                              withGrouping: groupingInterval];
             extraEntry = YES;
-        } else {
-            [mainCategory categoryHistoryToDates: &dates
-                                        balances: &balances
-                                   balanceCounts: &turnovers
-                                    withGrouping: groupingInterval];
         }
+        [mainCategory historyToDates: &dates
+                            balances: &balances
+                       balanceCounts: &turnovers
+                        withGrouping: groupingInterval];
 
         if (dates != nil)
         {
@@ -2334,26 +2329,11 @@ int double_compare(const void *value1, const void *value2)
     [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
 }
 
-- (void)releaseHelpWindow
-{
-    [[helpButton window] removeChildWindow: helpWindow];
-    [helpWindow orderOut: self];
-    helpWindow = nil;
-}
-
 - (void)hideHelp
 {
-    if (helpWindow != nil) {
+    if (helpVisible) {
+        helpVisible = NO;
         [helpWindow fadeOut];
-        
-        // We need to delay the release of the help window
-        // otherwise it will just disappear instead to fade out.
-        // With 10.7 and completion handlers it would be way more elegant.
-        [NSTimer scheduledTimerWithTimeInterval: .5
-                                         target: self 
-                                       selector: @selector(releaseHelpWindow)
-                                       userInfo: nil
-                                        repeats: NO];
     }
 }
 
@@ -2493,27 +2473,33 @@ int double_compare(const void *value1, const void *value2)
 
 - (IBAction)toggleHelp: (id)sender
 {
-    if (!helpWindow) {
+    if (!helpVisible) {
+        helpVisible = YES;
         NSPoint buttonPoint = NSMakePoint(NSMidX([helpButton frame]),
                                           NSMidY([helpButton frame]));
         buttonPoint = [topView convertPoint: buttonPoint toView: nil];
-        helpWindow = [[MAAttachedWindow alloc] initWithView: helpContentView 
-                                                attachedToPoint: buttonPoint 
-                                                       inWindow: [topView window] 
-                                                         onSide: MAPositionTopLeft 
+        if (helpWindow == nil) {
+            helpWindow = [[MAAttachedWindow alloc] initWithView: helpContentView
+                                                attachedToPoint: buttonPoint
+                                                       inWindow: topView.window
+                                                         onSide: MAPositionTopLeft
                                                      atDistance: 20];
-        
-        [helpWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 0.2 alpha: 1]];
-        [helpWindow setViewMargin: 10];
-        [helpWindow setBorderWidth: 0];
-        [helpWindow setCornerRadius: 10];
-        [helpWindow setHasArrow: YES];
-        [helpWindow setDrawsRoundCornerBesideArrow: YES];
 
-        [helpWindow setAlphaValue: 0];
-        [[helpButton window] addChildWindow: helpWindow ordered: NSWindowAbove];
+            [helpWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 0.2 alpha: 1]];
+            [helpWindow setViewMargin: 10];
+            [helpWindow setBorderWidth: 0];
+            [helpWindow setCornerRadius: 10];
+            [helpWindow setHasArrow: YES];
+            [helpWindow setDrawsRoundCornerBesideArrow: YES];
+
+            [helpWindow setAlphaValue: 0];
+            [topView.window addChildWindow: helpWindow ordered: NSWindowAbove];
+        } else {
+            [helpWindow setPoint: buttonPoint side: MAPositionTopLeft];
+        }
         [helpWindow fadeIn];
-     
+        [topView.window addChildWindow: helpWindow ordered: NSWindowAbove];
+
     } else {
         [self hideHelp];
     }

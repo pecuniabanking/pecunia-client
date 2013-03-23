@@ -451,21 +451,6 @@ static NSGradient* headerGradient;
 #pragma mark ListView delegate protocol
 
 static char *colorEntries[] = {
-    "AP660|Default Account Color 1|AP650",
-    "AP661|Default Account Color 2",
-    "AP662|Default Account Color 3",
-    "AP663|Default Account Color 4",
-    "AP664|Default Account Color 5",
-    "AP680|Default Category Color 1|AP651",
-    "AP681|Default Category Color 2",
-    "AP682|Default Category Color 3",
-    "AP683|Default Category Color 4",
-    "AP684|Default Category Color 5",
-    "AP685|Default Category Color 6",
-    "AP686|Default Category Color 7",
-    "AP687|Default Category Color 8",
-    "AP688|Default Category Color 9",
-    "AP689|Default Category Color 10",
     "AP700|Positive Plot Gradient (high)|AP652",
     "AP701|Positive Plot Gradient (low)",
     "AP702|Negative Plot Gradient (high)",
@@ -499,7 +484,7 @@ static char *colorEntries[] = {
 
 - (CGFloat)listView: (PXListView*)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
 {
-    return (row == 0 || row == 5 || row == 15 || row == 26) ? 50 : 40;
+    return (row == 0 || row == 11) ? 50 : 40;
 }
 
 - (NSRange)listView: (PXListView*)aListView rangeOfDraggedRow: (NSUInteger)row

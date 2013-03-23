@@ -208,6 +208,205 @@ BOOL updateSent = NO;
     return result;
 }
 
+/**
+ * Fills date and turnover arrays with turnover counts of the given year (grouped by day) and returns the
+ * maximum turnover value found.
+ * Note: turnover counts are of type double.
+ */
+- (NSUInteger)turnoversForYear: (unsigned)year toDates: (NSArray **)dates turnovers: (NSArray **)turnovers recursive: (BOOL)recursive
+{
+    ShortDate *startDate = [ShortDate dateWithYear: year month: 1 day: 1];
+    ShortDate *endDate = [ShortDate dateWithYear: year month: 12 day: 31];
+
+    NSUInteger maxTurnover = 0;
+
+    NSArray *assignments = [self assignmentsFrom: startDate to: endDate withChildren: recursive];
+    NSArray* sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
+
+    NSUInteger count = assignments.count;
+    NSMutableArray* dateArray = [NSMutableArray arrayWithCapacity: count];
+    NSMutableArray* countArray = [NSMutableArray arrayWithCapacity: count];
+    if (count > 0)
+    {
+        ShortDate* lastDate = nil;
+        double balanceCount = 0;
+        for (StatCatAssignment* assignment in sortedAssignments) {
+            // Ignore categories that are hidden, except if this is the parent category.
+            if (assignment.category != self) {
+                if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
+                    continue;
+                }
+            }
+
+            ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
+            if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame)
+            {
+                [dateArray addObject: lastDate];
+                [countArray addObject: @(balanceCount)];
+                if (balanceCount > maxTurnover) {
+                    maxTurnover = balanceCount;
+                }
+                balanceCount = 1;
+                lastDate = date;
+            }
+            else
+            {
+                if (lastDate == nil) {
+                    lastDate = date;
+                }
+                balanceCount++;
+            }
+        }
+        [dateArray addObject: lastDate];
+        [countArray addObject: @(balanceCount)];
+        if (balanceCount > maxTurnover) {
+            maxTurnover = balanceCount;
+        }
+
+        *dates = dateArray;
+        *turnovers = countArray;
+    }
+
+    return maxTurnover;
+}
+
+/**
+ * Fills date and values arrays with absolute turnover values of the given year (grouped by day) and returns the
+ * maximum absolute value found.
+ * Note: turnover values are of type double.
+ */
+- (double)absoluteValuesForYear: (unsigned)year
+                        toDates: (NSArray **)dates
+                         values: (NSArray **)values
+                      recursive: (BOOL)recursive
+{
+    ShortDate *startDate = [ShortDate dateWithYear: year month: 1 day: 1];
+    ShortDate *endDate = [ShortDate dateWithYear: year month: 12 day: 31];
+
+    double maxSum = 0;
+
+    NSArray *assignments = [self assignmentsFrom: startDate to: endDate withChildren: recursive];
+    NSArray* sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
+
+    NSUInteger count = assignments.count;
+    NSMutableArray* dateArray = [NSMutableArray arrayWithCapacity: count];
+    NSMutableArray* valuesArray = [NSMutableArray arrayWithCapacity: count];
+    if (count > 0)
+    {
+        ShortDate* lastDate = nil;
+        double sum = 0;
+        for (StatCatAssignment* assignment in sortedAssignments) {
+            // Ignore categories that are hidden, except if this is the parent category.
+            if (assignment.category != self) {
+                if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
+                    continue;
+                }
+            }
+
+            ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
+            if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame)
+            {
+                [dateArray addObject: lastDate];
+                [valuesArray addObject: @(sum)];
+                if (sum > maxSum) {
+                    maxSum = sum;
+                }
+                sum = fabs([assignment.value doubleValue]);
+                lastDate = date;
+            }
+            else
+            {
+                if (lastDate == nil) {
+                    lastDate = date;
+                }
+                sum += fabs([assignment.value doubleValue]);
+            }
+        }
+        [dateArray addObject: lastDate];
+        [valuesArray addObject: @(sum)];
+        if (sum > maxSum) {
+            maxSum = sum;
+        }
+
+        *dates = dateArray;
+        *values = valuesArray;
+    }
+    
+    return maxSum;
+}
+
+/**
+ * Fills date and values arrays with turnover amounts of the given year (grouped by day) and returns the
+ * maximum turnover value found.
+ * Note: turnover values are of type double.
+ */
+- (HighLowValues)valuesForYear: (unsigned)year
+                       toDates: (NSArray **)dates
+                        values: (NSArray **)values
+                     recursive: (BOOL)recursive
+{
+    ShortDate *startDate = [ShortDate dateWithYear: year month: 1 day: 1];
+    ShortDate *endDate = [ShortDate dateWithYear: year month: 12 day: 31];
+
+    HighLowValues limits = {1e100, -1e100}; // Should this not be enough one day we want a 1% share
+                                            // from the user's managed money in Pecunia ;-)
+
+    NSArray *assignments = [self assignmentsFrom: startDate to: endDate withChildren: recursive];
+    NSArray* sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
+
+    NSUInteger count = assignments.count;
+    NSMutableArray* dateArray = [NSMutableArray arrayWithCapacity: count];
+    NSMutableArray* valuesArray = [NSMutableArray arrayWithCapacity: count];
+    if (count > 0)
+    {
+        ShortDate* lastDate = nil;
+        double sum = 0;
+        for (StatCatAssignment* assignment in sortedAssignments) {
+            // Ignore categories that are hidden, except if this is the parent category.
+            if (assignment.category != self) {
+                if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
+                    continue;
+                }
+            }
+
+            ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
+            if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame)
+            {
+                [dateArray addObject: lastDate];
+                [valuesArray addObject: @(sum)];
+                if (sum > limits.high) {
+                    limits.high = sum;
+                }
+                if (sum < limits.low) {
+                    limits.low = sum;
+                }
+                sum = [assignment.value doubleValue];
+                lastDate = date;
+            }
+            else
+            {
+                if (lastDate == nil) {
+                    lastDate = date;
+                }
+                sum += [assignment.value doubleValue];
+            }
+        }
+        [dateArray addObject: lastDate];
+        [valuesArray addObject: @(sum)];
+        if (sum > limits.high) {
+            limits.high = sum;
+        }
+        if (sum < limits.low) {
+            limits.low = sum;
+        }
+
+        *dates = dateArray;
+        *values = valuesArray;
+    }
+    
+    return limits;
+}
+
 // returns all assignments for the specified period
 // if the period equals the reporting period, the assignments are cached / retrieved from cache
 // the cache always only contains assignments directly belonging to the current category, not those from child categories!
@@ -506,10 +705,10 @@ BOOL updateSent = NO;
 /**
  * Collects a full history of turnover values over time, including all sub categories.
  */
--(NSUInteger)categoryHistoryToDates: (NSArray**)dates
-                           balances: (NSArray**)balances
-                      balanceCounts: (NSArray**)counts
-                       withGrouping: (GroupingInterval)interval
+-(NSUInteger)historyToDates: (NSArray**)dates
+                   balances: (NSArray**)balances
+              balanceCounts: (NSArray**)counts
+               withGrouping: (GroupingInterval)interval
 {
     NSArray* statements = [[self allAssignments] allObjects];
     NSArray* sortedAssignments = [statements sortedArrayUsingSelector: @selector(compareDate:)];

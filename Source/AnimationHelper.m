@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -215,24 +215,35 @@
     [NSAnimationContext endGrouping];
 }
 
-- (void)zoomInFromRect: (NSRect)startRect withFade: (BOOL)fade makeKey: (BOOL)makeKey
+- (void)zoomInWithOvershot: (NSRect)overshotFrame withFade: (BOOL)fade makeKey: (BOOL)makeKey
 {
-    if ([self isVisible]) {
-        return;
-    }
-    
-    [self setAlphaValue: 1];
+    [self setAlphaValue: 0];
+
     NSRect frame = [self frame];
-    NSRect overshotFrame = NSInsetRect(frame, -0.07 * frame.size.width, -0.07 * frame.size.height);
-    ZoomWindow *zoomWindow = [self createZoomWindowWithRect: startRect];
+    ZoomWindow *zoomWindow = [self createZoomWindowWithRect: frame];
     
     [zoomWindow orderFront: self];
-    
-    zoomWindow.animationTimeMultiplier = 0.35;
-    [zoomWindow setFrame: overshotFrame display: YES animate: YES];
-    zoomWindow.animationTimeMultiplier = 0.25;
+
+    zoomWindow.alphaValue = 0;
+    NSDictionary *windowResize = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  zoomWindow, NSViewAnimationTargetKey,
+                                  [NSValue valueWithRect: overshotFrame], NSViewAnimationEndFrameKey,
+                                  NSViewAnimationFadeInEffect, NSViewAnimationEffectKey,
+                                  nil];
+
+    NSArray *animations = [NSArray arrayWithObjects: windowResize, nil];
+    NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations: animations];
+
+    [animation setAnimationBlockingMode: NSAnimationBlocking];
+    [animation setAnimationCurve: NSAnimationEaseIn];
+    [animation setDuration: 0.2];
+    [animation startAnimation];
+
+    zoomWindow.animationTimeMultiplier = 0.5;
     [zoomWindow setFrame: frame display: YES animate: YES];
     
+    [self setAlphaValue: 1];
+
     if (makeKey) {
         [self makeKeyAndOrderFront: self];
     } else {
@@ -248,8 +259,13 @@
     if (([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) != 0) {
 		duration = 3;
 	}
-
     [[NSAnimationContext currentContext] setDuration: duration];
+
+    __block __unsafe_unretained NSWindow *bself = self;
+    [[NSAnimationContext currentContext] setCompletionHandler:^{
+        [bself orderOut: nil];
+        [bself setAlphaValue: 1.f];
+    }];
     [[self animator] setAlphaValue: 0.f];
     [NSAnimationContext endGrouping];
 }
@@ -285,7 +301,6 @@
     [animation setDuration: [zoomWindow animationResizeTime: endRect]];
     
     [animation startAnimation];
-    
     
 	[zoomWindow close];
 }

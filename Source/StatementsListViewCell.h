@@ -35,8 +35,6 @@ extern NSString *StatementTransactionTextKey;
 extern NSString *StatementIndexKey;
 extern NSString *StatementNoteKey;
 
-@interface NoAnimationTextField : NSTextField
-@end
 
 @protocol StatementsListViewNotificationProtocol
 - (void)cellActivationChanged: (BOOL)state forIndex: (NSUInteger)index;

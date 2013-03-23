@@ -111,6 +111,7 @@
     GroupingInterval groupingInterval;
     
     MAAttachedWindow* helpWindow;
+    BOOL helpVisible;
 
     // Temporary values for animations.
     float newMainYInterval;

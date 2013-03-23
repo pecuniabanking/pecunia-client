@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -47,6 +47,8 @@
 
 - (BOOL)isEqual: (ShortDate*)date;
 - (NSUInteger)hash;
+- (int)daysToDate: (ShortDate*)toDate;
+- (int)monthsToDate: (ShortDate*)toDate;
 - (int)daysInMonth;
 
 - (NSString*)description;
@@ -61,8 +63,11 @@
 - (ShortDate*)lastDayInMonth;
 - (ShortDate*)firstDayInQuarter;
 - (ShortDate*)lastDayInQuarter;
+- (NSInteger)dayInWeek;
 - (ShortDate*)firstDayInWeek;
 - (ShortDate*)lastDayInWeek;
+
+- (BOOL)isFirstDayInMonth;
 
 + (ShortDate*)dateWithDate: (NSDate*)date;
 + (ShortDate*)currentDate;

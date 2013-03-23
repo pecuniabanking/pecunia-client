@@ -416,5 +416,11 @@
 "AP731" = "Hintergrund neue Umstätze (wenn aktiviert)";
 "AP732" = "Hintergrund Umsätze ohne Kategoriezuordnung (wenn aktiviert)";
 
-// Use a new block of IDs for next set of strings!
+// Heat maps
 // AP750..AP799
+"AP750" = "Keine Umsätze";
+"AP751" = "Block";
+"AP752" = "Streifen";
+
+// Use a new block of IDs for next set of strings!
+// AP800..AP849

@@ -44,6 +44,7 @@
 @class CategoryDefWindowController;
 @class CategoryPeriodsWindowController;
 @class StandingOrderController;
+@class CategoryHeatMapController;
 
 @class RoundedSidebar;
 @class SideToolbarView;
@@ -95,6 +96,7 @@
     IBOutlet NSButton           *graph2Button;
     IBOutlet NSButton           *computingButton;
     IBOutlet NSButton           *rulesButton;
+    IBOutlet NSButton           *heatMapButton;
     IBOutlet RoundedSidebar     *sideBar;
     
     IBOutlet NSMenuItem         *toggleFullscreenItem;
@@ -132,11 +134,11 @@
     CategoryRepWindowController      *categoryReportingController;
     CategoryDefWindowController      *categoryDefinitionController;
     CategoryPeriodsWindowController  *categoryPeriodsController;
+    TransfersController              *transfersController;
+    StandingOrderController          *standingOrderController;
+    DebitsController                 *debitsController;
+    CategoryHeatMapController        *heatMapController;
 
-    TransfersController     *transfersController;
-    StandingOrderController *standingOrderController;
-    DebitsController        *debitsController;
-    
     id<PecuniaSectionItem> currentSection;
     
     // current statement details

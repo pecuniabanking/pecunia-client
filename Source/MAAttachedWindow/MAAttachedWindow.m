@@ -16,11 +16,14 @@ extern BOOL runningOnLionOrLater;
 
 float _scaleFactor()
 {
+    return 1;
+    /* ml: doesn't work as expected, a scale factor of 1 works just fine, even on retina displays.
     if ([[NSScreen mainScreen] respondsToSelector:@selector(backingScaleFactor)]) {
         return [[NSScreen mainScreen] backingScaleFactor];
     } else {
         return [[NSScreen mainScreen] userSpaceScaleFactor];
     }
+     */
 }
 
 @interface MAAttachedWindow (MAPrivateMethods)
@@ -761,9 +764,13 @@ float _scaleFactor()
 
 - (BOOL)canBecomeKeyWindow
 {
-    return YES;
+    return _canBecomeKey;
 }
 
+- (void)setCanBecomeKey: (BOOL)value
+{
+    _canBecomeKey = value;
+}
 
 - (BOOL)isExcludedFromWindowsMenu
 {

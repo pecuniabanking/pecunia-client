@@ -56,6 +56,7 @@
 #import "CategoryDefWindowController.h"
 #import "CategoryPeriodsWindowController.h"
 #import "CategoryMaintenanceController.h"
+#import "CategoryHeatMapController.h"
 
 #import "TransfersController.h"
 
@@ -1131,7 +1132,8 @@ BOOL runningOnLionOrLater = NO;
     [graph2Button setImage: [NSImage imageNamed: @"graph2"]];
     [computingButton setImage: [NSImage imageNamed: @"computing"]];
     [rulesButton setImage: [NSImage imageNamed: @"rules"]];
-    
+    [heatMapButton setImage: [NSImage imageNamed: @"heat-map"]];
+
     // Reset fetch predicate for the tree controller if we are switching away from
     // the category periods view.
     if (currentSection != nil && currentSection == categoryPeriodsController && [sender tag] != 3) {
@@ -1143,6 +1145,10 @@ BOOL runningOnLionOrLater = NO;
         [self performSelector: @selector(restoreBankAccountItemsStates) withObject: nil afterDelay: 0.1];
         
         [timeSlicer showControls: YES];
+    }
+
+    if (currentSection != nil && currentSection == heatMapController && [sender tag] != 6) {
+        [timeSlicer setYearOnlyMode: NO];
     }
 
     NSRect frame = [currentView frame];
@@ -1169,7 +1175,7 @@ BOOL runningOnLionOrLater = NO;
                     NSView* view = [categoryAnalysisController mainView];
                     view.frame = frame;
                 }
-                //[categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+                [categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
             }
 
             if (currentSection != categoryAnalysisController) {
@@ -1224,7 +1230,7 @@ BOOL runningOnLionOrLater = NO;
                     view.frame = frame;
                     [categoryPeriodsController connectScrollViews: accountsScrollView];
                 }
-                //[categoryPeriodsController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+                [categoryPeriodsController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
                 categoryPeriodsController.outline = accountsView;
             }
             
@@ -1248,6 +1254,7 @@ BOOL runningOnLionOrLater = NO;
             
             [computingButton setImage: [NSImage imageNamed: @"computing-active"]];
             break;
+
         case 4:
             if (categoryDefinitionController == nil) {
                 categoryDefinitionController = [[CategoryDefWindowController alloc] init];
@@ -1257,7 +1264,7 @@ BOOL runningOnLionOrLater = NO;
                 }
                 [categoryDefinitionController setManagedObjectContext: self.managedObjectContext];
                 categoryDefinitionController.timeSliceManager = timeSlicer;
-                //[categoryDefinitionController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+                [categoryDefinitionController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
             }
             if (currentSection != categoryDefinitionController) {
                 [currentSection deactivate];
@@ -1279,6 +1286,26 @@ BOOL runningOnLionOrLater = NO;
            
             [rulesButton setImage: [NSImage imageNamed: @"rules-active"]];
             break;
+
+        case 6:
+            if (heatMapController == nil) {
+                heatMapController = [[CategoryHeatMapController alloc] init];
+                if ([NSBundle loadNibNamed: @"CategoryHeatMap" owner: heatMapController]) {
+                    heatMapController.mainView.frame = frame;
+                }
+                [heatMapController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+            }
+            if (currentSection != heatMapController) {
+                [currentSection deactivate];
+                heatMapController.mainView.frame = frame;
+                [rightPane replaceSubview: currentView with: heatMapController.mainView];
+                currentSection = heatMapController;
+                pageHasChanged = YES;
+            }
+            [timeSlicer setYearOnlyMode: YES];
+            [heatMapButton setImage: [NSImage imageNamed: @"heat-map-active"]];
+            break;
+
     }
 
     if (pageHasChanged) {

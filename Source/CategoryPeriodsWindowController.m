@@ -308,19 +308,6 @@ extern void *UserDefaultsBindingContext;
 #pragma mark -
 #pragma mark Additional Stuff
 
--(void)print
-{
-    NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
-    [printInfo setTopMargin: 45];
-    [printInfo setBottomMargin: 45];
-    [printInfo setHorizontalPagination: NSFitPagination];
-    [printInfo setVerticalPagination: NSAutoPagination];
-    NSPrintOperation *printOp;
-    printOp = [NSPrintOperation printOperationWithView: printView printInfo: printInfo];
-    [printOp setShowsPrintPanel: YES];
-    [printOp runOperation];	
-}
-
 - (void)connectScrollViews: (SynchronousScrollView *)other
 {
     [valueGrid.contentScrollView setSynchronizedScrollView: other];
@@ -431,11 +418,11 @@ extern void *UserDefaultsBindingContext;
     NSArray *nodeDates = nil;
     NSArray *nodeBalances = nil;
     NSArray *nodeTurnovers = nil;
-    [item categoryHistoryToDates: &nodeDates
-                        balances: &nodeBalances
-                   balanceCounts: &nodeTurnovers
-                    withGrouping: groupingInterval];
-    
+    [item historyToDates: &nodeDates
+                balances: &nodeBalances
+           balanceCounts: &nodeTurnovers
+            withGrouping: groupingInterval];
+
     if (nodeDates == nil) {
         nodeDates = @[]; // Just to avoid frequent checks in the loop below.
     }
@@ -738,6 +725,19 @@ extern void *UserDefaultsBindingContext;
 #pragma mark PecuniaSectionItem protocol
 
 @synthesize category;
+
+-(void)print
+{
+    NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
+    [printInfo setTopMargin: 45];
+    [printInfo setBottomMargin: 45];
+    [printInfo setHorizontalPagination: NSFitPagination];
+    [printInfo setVerticalPagination: NSAutoPagination];
+    NSPrintOperation *printOp;
+    printOp = [NSPrintOperation printOperationWithView: printView printInfo: printInfo];
+    [printOp setShowsPrintPanel: YES];
+    [printOp runOperation];
+}
 
 -(NSView*)mainView
 {

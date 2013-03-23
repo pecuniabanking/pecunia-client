@@ -58,10 +58,10 @@ typedef enum {
 - (NSDate*)nextDateForDate: (NSDate*)date;
 - (NSInteger)calcUnread;
 - (BankUser*)defaultBankUser;
-- (NSUInteger)balanceHistoryToDates: (NSArray**)dates
-                           balances: (NSArray**)balances
-                      balanceCounts: (NSArray**)counts
-                       withGrouping: (GroupingInterval)interval;
+- (NSUInteger)historyToDates: (NSArray**)dates
+                    balances: (NSArray**)balances
+               balanceCounts: (NSArray**)counts
+                withGrouping: (GroupingInterval)interval;
 
 +(BankAccount*)bankRootForCode:(NSString*)bankCode;
 +(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code;

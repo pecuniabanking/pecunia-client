@@ -40,6 +40,11 @@ typedef enum {
     GroupByYears
 } GroupingInterval;
 
+typedef struct {
+    double low;
+    double high;
+} HighLowValues;
+
 @class ShortDate;
 @class CategoryReportingNode;
 
@@ -87,13 +92,26 @@ typedef enum {
 - (id)children;
 - (NSSet*)allCategories;
 - (NSSet*)siblings;
-- (NSUInteger)categoryHistoryToDates: (NSArray**)dates
-                            balances: (NSArray**)balances
-                       balanceCounts: (NSArray**)counts
-                        withGrouping: (GroupingInterval)interval;
+- (NSUInteger)historyToDates: (NSArray**)dates
+                    balances: (NSArray**)balances
+               balanceCounts: (NSArray**)counts
+                withGrouping: (GroupingInterval)interval;
 - (void)getDatesMin: (ShortDate**)minDate max: (ShortDate**)maxDate;
 
 - (NSDecimalNumber*)valuesOfType: (CatValueType)type from: (ShortDate*)fromDate to: (ShortDate*)toDate;
+- (NSUInteger)turnoversForYear: (unsigned)year
+                       toDates: (NSArray **)dates
+                     turnovers: (NSArray **)turnovers
+                     recursive: (BOOL)recursive;
+- (double)absoluteValuesForYear: (unsigned)year
+                        toDates: (NSArray **)dates
+                         values: (NSArray **)values
+                      recursive: (BOOL)recursive;
+- (HighLowValues)valuesForYear: (unsigned)year
+                       toDates: (NSArray **)dates
+                        values: (NSArray **)values
+                     recursive: (BOOL)recursive;
+
 - (NSArray*)assignmentsFrom: (ShortDate*)fromDate to: (ShortDate*)toDate withChildren: (BOOL)c;
 - (NSMutableSet*)allAssignments;
 - (void)updateBoundAssignments;

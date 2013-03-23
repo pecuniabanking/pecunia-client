@@ -223,6 +223,34 @@
 														<reference key="NSNextResponder" ref="1067880127"/>
 														<int key="NSvFlags">256</int>
 														<array class="NSMutableArray" key="NSSubviews">
+															<object class="NSButton" id="97371554">
+																<reference key="NSNextResponder" ref="339995800"/>
+																<int key="NSvFlags">269</int>
+																<string key="NSFrame">{{171, 638}, {24, 24}}</string>
+																<reference key="NSSuperview" ref="339995800"/>
+																<reference key="NSWindow"/>
+																<reference key="NSNextKeyView" ref="567527841"/>
+																<int key="NSTag">6</int>
+																<bool key="NSEnabled">YES</bool>
+																<object class="NSButtonCell" key="NSCell" id="91967193">
+																	<int key="NSCellFlags">-2080374784</int>
+																	<int key="NSCellFlags2">134217728</int>
+																	<string key="NSContents"/>
+																	<reference key="NSSupport" ref="831196016"/>
+																	<reference key="NSControlView" ref="97371554"/>
+																	<int key="NSButtonFlags">-935051264</int>
+																	<int key="NSButtonFlags2">2</int>
+																	<object class="NSCustomResource" key="NSNormalImage">
+																		<string key="NSClassName">NSImage</string>
+																		<string key="NSResourceName">heat-map</string>
+																	</object>
+																	<string key="NSAlternateContents"/>
+																	<string key="NSKeyEquivalent"/>
+																	<int key="NSPeriodicDelay">400</int>
+																	<int key="NSPeriodicInterval">75</int>
+																</object>
+																<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+															</object>
 															<object class="NSButton" id="67883172">
 																<reference key="NSNextResponder" ref="339995800"/>
 																<int key="NSvFlags">268</int>
@@ -257,11 +285,11 @@
 															<object class="NSButton" id="896834163">
 																<reference key="NSNextResponder" ref="339995800"/>
 																<int key="NSvFlags">269</int>
-																<string key="NSFrame">{{269, 638}, {24, 24}}</string>
+																<string key="NSFrame">{{303, 638}, {24, 24}}</string>
 																<reference key="NSSuperview" ref="339995800"/>
 																<reference key="NSWindow"/>
 																<reference key="NSNextKeyView" ref="143471938"/>
-																<int key="NSTag">4</int>
+																<int key="NSTag">5</int>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSButtonCell" key="NSCell" id="1057364859">
 																	<int key="NSCellFlags">-2080374784</int>
@@ -285,7 +313,7 @@
 															<object class="NSButton" id="951256953">
 																<reference key="NSNextResponder" ref="339995800"/>
 																<int key="NSvFlags">269</int>
-																<string key="NSFrame">{{237, 638}, {24, 24}}</string>
+																<string key="NSFrame">{{271, 638}, {24, 24}}</string>
 																<reference key="NSSuperview" ref="339995800"/>
 																<reference key="NSWindow"/>
 																<reference key="NSNextKeyView" ref="896834163"/>
@@ -313,7 +341,7 @@
 															<object class="NSButton" id="205971814">
 																<reference key="NSNextResponder" ref="339995800"/>
 																<int key="NSvFlags">269</int>
-																<string key="NSFrame">{{204, 638}, {24, 24}}</string>
+																<string key="NSFrame">{{238, 638}, {24, 24}}</string>
 																<reference key="NSSuperview" ref="339995800"/>
 																<reference key="NSWindow"/>
 																<reference key="NSNextKeyView" ref="951256953"/>
@@ -341,7 +369,7 @@
 															<object class="NSButton" id="567527841">
 																<reference key="NSNextResponder" ref="339995800"/>
 																<int key="NSvFlags">269</int>
-																<string key="NSFrame">{{171, 638}, {24, 24}}</string>
+																<string key="NSFrame">{{205, 638}, {24, 24}}</string>
 																<reference key="NSSuperview" ref="339995800"/>
 																<reference key="NSWindow"/>
 																<reference key="NSNextKeyView" ref="205971814"/>
@@ -372,7 +400,7 @@
 																<string key="NSFrame">{{137, 638}, {24, 24}}</string>
 																<reference key="NSSuperview" ref="339995800"/>
 																<reference key="NSWindow"/>
-																<reference key="NSNextKeyView" ref="567527841"/>
+																<reference key="NSNextKeyView" ref="97371554"/>
 																<int key="NSTag">1</int>
 																<bool key="NSEnabled">YES</bool>
 																<object class="NSButtonCell" key="NSCell" id="197322025">
@@ -11197,6 +11225,22 @@ wGw</bytes>
 					<int key="connectionID">6864</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">activateAccountPage:</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="97371554"/>
+					</object>
+					<int key="connectionID">6875</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">heatMapButton</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="97371554"/>
+					</object>
+					<int key="connectionID">6876</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">contentSet: selection.reportedAssignments</string>
 						<reference key="source" ref="107188715"/>
@@ -16669,6 +16713,7 @@ wGw</bytes>
 							<reference ref="205971814"/>
 							<reference ref="896834163"/>
 							<reference ref="67883172"/>
+							<reference ref="97371554"/>
 						</array>
 						<reference key="parent" ref="1067880127"/>
 					</object>
@@ -18312,6 +18357,19 @@ wGw</bytes>
 						<reference key="object" ref="335672961"/>
 						<reference key="parent" ref="678233615"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6872</int>
+						<reference key="object" ref="97371554"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="91967193"/>
+						</array>
+						<reference key="parent" ref="339995800"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6873</int>
+						<reference key="object" ref="91967193"/>
+						<reference key="parent" ref="97371554"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -19109,6 +19167,16 @@ wGw</bytes>
 				<string key="6862.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6863.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="6869.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<object class="NSMutableDictionary" key="6872.IBAttributePlaceholdersKey">
+					<string key="NS.key.0">ToolTip</string>
+					<object class="IBToolTipAttribute" key="NS.object.0">
+						<string key="name">ToolTip</string>
+						<reference key="object" ref="97371554"/>
+						<string key="toolTip">Übersicht</string>
+					</object>
+				</object>
+				<string key="6872.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="6873.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="74.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="77.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="78.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -19156,7 +19224,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">6871</int>
+			<int key="maxID">6876</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -19193,6 +19261,7 @@ wGw</bytes>
 						<string key="manageCategories:">id</string>
 						<string key="printDocument:">id</string>
 						<string key="repairSaldo:">id</string>
+						<string key="resetCategoryIcons:">id</string>
 						<string key="resetIsNewStatements:">id</string>
 						<string key="showAboutPanel:">id</string>
 						<string key="showLicense:">id</string>
@@ -19294,6 +19363,10 @@ wGw</bytes>
 							<string key="name">repairSaldo:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="resetCategoryIcons:">
+							<string key="name">resetCategoryIcons:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="resetIsNewStatements:">
 							<string key="name">resetIsNewStatements:</string>
 							<string key="candidateClassName">id</string>
@@ -19375,6 +19448,7 @@ wGw</bytes>
 						<string key="graph1Button">NSButton</string>
 						<string key="graph2Button">NSButton</string>
 						<string key="headerValueField">NSTextField</string>
+						<string key="heatMapButton">NSButton</string>
 						<string key="licenseWindow">NSWindow</string>
 						<string key="lockImage">NSImageView</string>
 						<string key="mainTabView">NSTabView</string>
@@ -19478,6 +19552,10 @@ wGw</bytes>
 						<object class="IBToOneOutletInfo" key="headerValueField">
 							<string key="name">headerValueField</string>
 							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="heatMapButton">
+							<string key="name">heatMapButton</string>
+							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="licenseWindow">
 							<string key="name">licenseWindow</string>
@@ -19997,6 +20075,7 @@ wGw</bytes>
 			<string key="donate">{24, 24}</string>
 			<string key="graph1">{24, 24}</string>
 			<string key="graph2">{24, 24}</string>
+			<string key="heat-map">{24, 24}</string>
 			<string key="hide">{16, 16}</string>
 			<string key="ins-8">{12, 12}</string>
 			<string key="minus-8">{8, 8}</string>
