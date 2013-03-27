@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -25,8 +25,7 @@
 - (id) initWithFrame: (NSRect) frameRect
 {
     self = [super initWithFrame: frameRect];
-    if (self != nil)
-    {
+    if (self != nil) {
     }
     
     return self;
@@ -41,11 +40,10 @@ static NSShadow* borderShadow = nil;
     [NSGraphicsContext saveGraphicsState];
     
     // Initialize shared objects.
-    if (borderShadow == nil)
-    {
+    if (borderShadow == nil) {
         borderShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithDeviceWhite: 0 alpha: 0.5]
-                                                offset: NSMakeSize(3, -3)
-                                            blurRadius: 8.0];
+                                                offset: NSMakeSize(1, -1)
+                                            blurRadius: 5.0];
     }
     
     // Outer bounds with shadow.
@@ -55,7 +53,7 @@ static NSShadow* borderShadow = nil;
     bounds.origin.x += 10;
     bounds.origin.y += 10;
 
-    NSBezierPath* borderPath = [NSBezierPath bezierPathWithRoundedRect: bounds xRadius: 8 yRadius: 8];
+    NSBezierPath* borderPath = [NSBezierPath bezierPathWithRoundedRect: bounds xRadius: 5 yRadius: 5];
     [borderShadow set];
     [[NSColor whiteColor] set];
     [borderPath fill];

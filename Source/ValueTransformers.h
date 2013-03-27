@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -28,5 +28,9 @@
 @end
 
 @interface OneOrLessToBoolValueTransformer : NSValueTransformer
+
+@end
+
+@interface ExactlyOneToBoolValueTransformer : NSValueTransformer
 
 @end

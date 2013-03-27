@@ -420,7 +420,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
             return;
     
   // ml: added manual KVO notification.
-  [self willChangeValueForKey: @"selectedRow"];
+  //[self willChangeValueForKey: @"selectedRow"];
   [self willChangeValueForKey: @"selectedRows"];
   
   NSMutableIndexSet *updatedCellIndexes = [NSMutableIndexSet indexSet];
@@ -433,7 +433,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 	[_selectedRows addIndexes:rows];
     [updatedCellIndexes addIndexes:rows]; 
 
-  [self didChangeValueForKey: @"selectedRow"];
+    //[self didChangeValueForKey: @"selectedRow"];
   [self didChangeValueForKey: @"selectedRows"];
     
 	NSArray *updatedCells = [self visibleCellsForRowIndexes:updatedCellIndexes];
@@ -449,13 +449,13 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 - (void)deselectRowIndexes:(NSIndexSet*)rows
 {
     // ml: added manual KVO notification.
-    [self willChangeValueForKey: @"selectedRow"];
+    //[self willChangeValueForKey: @"selectedRow"];
     [self willChangeValueForKey: @"selectedRows"];
     
 	NSArray *oldSelectedCells = [self visibleCellsForRowIndexes:rows];
 	[_selectedRows removeIndexes:rows];
 	
-    [self didChangeValueForKey: @"selectedRow"];
+    //[self didChangeValueForKey: @"selectedRow"];
     [self didChangeValueForKey: @"selectedRows"];
     
 	for(PXListViewCell *oldSelectedCell in oldSelectedCells)

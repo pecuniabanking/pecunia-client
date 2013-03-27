@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -51,6 +51,12 @@
 @class BWGradientBox;
 @class SynchronousScrollView;
 @class StatementDetails;
+
+@class AttachmentImageView;
+
+@interface PecuniaSplitView : NSSplitView
+- (NSColor *)dividerColor;
+@end
 
 @interface BankingController : NSObject
 {
@@ -105,6 +111,11 @@
     IBOutlet TransactionController *transactionController;
     IBOutlet NSWindow              *licenseWindow;
     IBOutlet NSButton              *toggleDetailsButton;
+
+    IBOutlet AttachmentImageView *attachement1;
+    IBOutlet AttachmentImageView *attachement2;
+    IBOutlet AttachmentImageView *attachement3;
+    IBOutlet AttachmentImageView *attachement4;
 
 @private
     NSMutableDictionary    *mainTabItems;
@@ -202,8 +213,8 @@
 - (IBAction)showAboutPanel:(id)sender;
 - (IBAction)toggleFullscreenIfSupported: (id)sender;
 - (IBAction)toggleDetailsPane: (id)sender;
-
 - (IBAction)toggleFeature:(id)sender;
+- (IBAction)clearAttachment: (id)sender;
 
 - (IBAction)deleteAllData: (id)sender;
 - (IBAction)generateData: (id)sender;

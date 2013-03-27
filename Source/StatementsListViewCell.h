@@ -75,10 +75,11 @@ extern NSString *StatementNoteKey;
 
 - (IBAction)activationChanged: (id)sender;
 
-- (void)setHeaderHeight: (int) aHeaderHeight;
-- (void)setDetails: (NSDictionary*) details;
-- (void)setIsNew: (BOOL) flag;
+- (void)setHeaderHeight: (int)aHeaderHeight;
+- (void)setDetails: (NSDictionary*)details;
+- (void)setIsNew: (BOOL)flag;
 - (void)showActivator: (BOOL)flag markActive: (BOOL)active;
 - (void)selectionChanged;
+- (void)showBalance: (BOOL)flag;
 
 @end

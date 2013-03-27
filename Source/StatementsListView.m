@@ -291,7 +291,7 @@ extern void *UserDefaultsBindingContext;
 #define CELL_BODY_HEIGHT 49
 #define CELL_HEADER_HEIGHT 20
 
-- (void) fillCell: (StatementsListViewCell*)cell forRow: (NSUInteger)row
+- (void)fillCell: (StatementsListViewCell*)cell forRow: (NSUInteger)row
 {
     StatCatAssignment *stat = (StatCatAssignment*)dataSource[row];
     
@@ -335,7 +335,9 @@ extern void *UserDefaultsBindingContext;
     
     NSDecimalNumber* nassValue = stat.statement.nassValue;
     cell.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
-    
+
+    [cell showBalance: [NSUserDefaults.standardUserDefaults boolForKey: @"showBalances"]];
+
     // Set the size of the cell, depending on if we show its header or not.
     NSRect frame = [cell frame];
     frame.size.height = CELL_BODY_HEIGHT;
