@@ -44,6 +44,9 @@
     // temporary directory
 	NSString					*tempDir;
     
+    // Idle Timer to lock application/encrypted data file
+    NSTimer                     *idleTimer;
+    
     unsigned char               dataPasswordKey[32];
     
     BOOL                        passwordKeyValid;
@@ -51,6 +54,7 @@
 	BOOL						decryptionDone;
     BOOL                        isSandboxed;
     BOOL                        isDefaultDir;
+    BOOL                        maxIdleTimeExceeded;
 }
 
 @property (nonatomic, copy) NSString *ppDir;

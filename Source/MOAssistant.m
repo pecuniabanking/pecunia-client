@@ -26,6 +26,7 @@
 #import "LaunchParameters.h"
 #import <CommonCrypto/CommonCryptor.h>
 #import <CommonCrypto/CommonDigest.h>
+#import "BankingController.h"
 
 @implementation MOAssistant
 
@@ -81,9 +82,62 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     // migrate old stores
     [self migrate10];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startIdle) name:NSApplicationDidResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopIdle) name:NSApplicationDidBecomeActiveNotification object:nil];
+    
+    idleTimer = nil;
     model = nil; 
     context = nil;
     return self;
+}
+
+- (void)startIdle
+{
+    if (isEncrypted) {
+        idleTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(maxIdleTimeExceeded) userInfo:nil repeats:NO];
+        maxIdleTimeExceeded = NO;
+    }
+}
+
+- (void)stopIdle
+{
+    if (isEncrypted == NO) {
+        return;
+    }
+    [idleTimer invalidate];
+    idleTimer = nil;
+    
+    if (maxIdleTimeExceeded ) {
+        // check password again
+        passwordKeyValid = NO;
+        [self decrypt];
+        [self loadContext];
+        
+        [[BankingController controller] publishContext];
+    }
+}
+
+- (void)maxIdleTimeExceeded
+{
+    if (isEncrypted == NO) {
+        return;
+    }
+    
+    maxIdleTimeExceeded = YES;
+    NSError *error=nil;
+
+    // disconnect and encrypt database
+    NSPersistentStoreCoordinator *coord = [context persistentStoreCoordinator];
+    NSArray *stores = [coord persistentStores];
+    NSPersistentStore *store;
+    for(store in stores) {
+        [coord removePersistentStore: store error: &error];
+    }
+    if(error) {
+        NSAlert *alert = [NSAlert alertWithError:error];
+        [alert runModal];
+    }
+    [self encrypt];
 }
 
 // initializes the data file (can be default data file from preferences or
@@ -668,7 +722,13 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         [storeOptions setObject:pragmaOptions forKey:NSSQLitePragmasOption];
     }
     
-    NSPersistentStoreCoordinator *coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: model];
+    NSPersistentStoreCoordinator *coord = nil;
+    
+    if (context != nil && [context persistentStoreCoordinator] != nil) {
+        coord = [context persistentStoreCoordinator];
+    } else {
+        coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: model];
+    }
     
     [coord addPersistentStoreWithType: NSSQLiteStoreType
                         configuration: nil
@@ -679,8 +739,10 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     
     if( error != nil ) @throw error;
     
-    context = [[NSManagedObjectContext alloc] init];
-    [context setPersistentStoreCoordinator: coord];
+    if (context == nil) {
+        context = [[NSManagedObjectContext alloc] init];
+        [context setPersistentStoreCoordinator: coord];
+    }
 }
 
 -(NSManagedObjectContext*)memContext
