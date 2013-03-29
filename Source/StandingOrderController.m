@@ -123,13 +123,15 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	self = [super init];
 	if (self != nil) {
         managedObjectContext = MOAssistant.assistant.context;
-        weekDays = @[NSLocalizedString(@"AP10030", nil),
-                     NSLocalizedString(@"AP10031", nil),
-                     NSLocalizedString(@"AP10032", nil),
-                     NSLocalizedString(@"AP10033", nil),
-                     NSLocalizedString(@"AP10034", nil),
-                     NSLocalizedString(@"AP10035", nil),
-                     NSLocalizedString(@"AP10036", nil)];
+
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        weekDays = formatter.weekdaySymbols;
+        NSUInteger firstWeekdayIndex = [NSCalendar.currentCalendar firstWeekday] - 1;
+        if (firstWeekdayIndex > 0) {
+            weekDays = [[weekDays subarrayWithRange: NSMakeRange(firstWeekdayIndex, 7 - firstWeekdayIndex)]
+                        arrayByAddingObjectsFromArray: [weekDays subarrayWithRange: NSMakeRange(0, firstWeekdayIndex)]];
+        }
+
         self.requestRunning = @NO;
     }
     
@@ -188,7 +190,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	else return [NSString stringWithFormat: @"%d." , day];
 }
 
--(NSString*)weekDayToString:(int)day
+- (NSString*)weekDayToString: (int)day
 {
 	if (day > 0 && day < 8) {
 		return weekDays[day-1];
@@ -196,7 +198,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	return weekDays[1];;
 }
 
--(int)stringToMonthDay:(NSString*)s
+- (int)stringToMonthDay:(NSString*)s
 {
 	if ([s isEqualToString:@"Ultimo-2" ]) return 97;
 	else if ([s isEqualToString:@"Ultimo-1" ]) return 98;
@@ -204,18 +206,18 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	else return [[s substringToIndex:[s length ] - 1 ] intValue ];
 }
 
--(void)initCycles
+- (void)initCycles
 {
 	currentOrder.cycle = @1;
 	currentOrder.executionDay = @1;
 }
 
--(int)stringToWeekDay:(NSString*)s
+- (int)stringToWeekDay: (NSString*)s
 {
 	return [weekDays indexOfObject: s] + 1;
 }
 
--(void)preparePurposeFields
+- (void)preparePurposeFields
 {
 	int t;
 	if(currentLimits == nil) return;
@@ -249,7 +251,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 }
 
 
--(void)enableWeekly:(BOOL)weekly
+- (void)enableWeekly: (BOOL)weekly
 {
 	if (weekly) {
 		[execDaysMonthPopup setTitle:@"" ];
@@ -264,7 +266,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	[weekCyclesPopup setEnabled:weekly ];
 }
 
--(void)disableCycles
+- (void)disableCycles
 {
 	[execDaysMonthPopup setEnabled:NO ];
 	[monthCyclesPopup setEnabled:NO ];
@@ -274,19 +276,19 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [monthCell setEnabled:NO ];
 }
 
--(void)updateWeekCycles
+- (void)updateWeekCycles
 {
     NSInteger selectedIndex = 0;
     NSInteger currentCycle = currentOrder.cycle.intValue;
     NSMutableArray *weekCycles = [NSMutableArray arrayWithCapacity: 52];
     
     if (currentLimits.weekCycles == nil || currentLimits.weekCycles.count == 0 || [[currentLimits.weekCycles lastObject] intValue] == 0) {
-        [weekCycles addObject: NSLocalizedString(@"AP451",  @"")];
+        [weekCycles addObject: NSLocalizedString(@"AP451",  nil)];
         if (currentCycle == 1) {
             selectedIndex = 0;
         }
         for(int i = 2; i <= 52; i++) {
-            [weekCycles addObject:[NSString stringWithFormat: NSLocalizedString(@"AP453",  @""), i]];
+            [weekCycles addObject:[NSString stringWithFormat: NSLocalizedString(@"AP453",  nil), i]];
             if (i == currentCycle) {
                 selectedIndex = i-1;
             }
@@ -295,9 +297,9 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
         NSInteger index = 0;
         for (NSString *s in currentLimits.weekCycles) {
             if (s.intValue == 1) {
-                [weekCycles addObject: NSLocalizedString(@"AP451",  @"")];
+                [weekCycles addObject: NSLocalizedString(@"AP451",  nil)];
             } else {
-                [weekCycles addObject: [NSString stringWithFormat: NSLocalizedString(@"AP453",  @""), s.intValue]];
+                [weekCycles addObject: [NSString stringWithFormat: NSLocalizedString(@"AP453",  nil), s.intValue]];
             }
             if (s.intValue == currentCycle) {
                 selectedIndex = index;
@@ -323,19 +325,19 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [execDaysWeekPopup selectItemWithTitle: [self weekDayToString: currentOrder.executionDay.intValue]];
 }
 
--(void)updateMonthCycles
+- (void)updateMonthCycles
 {
     NSInteger selectedIndex = 0;
     NSInteger currentCycle = currentOrder.cycle.intValue;
 	NSMutableArray *monthCycles = [NSMutableArray arrayWithCapacity: 12];
     
 	if (currentLimits.monthCycles == nil || currentLimits.monthCycles.count == 0 || [[currentLimits.monthCycles lastObject] intValue] == 0) {
-        [monthCycles addObject: NSLocalizedString(@"AP450",  @"")];
+        [monthCycles addObject: NSLocalizedString(@"AP450",  nil)];
         if (currentCycle == 1) {
             selectedIndex = 0;
         }
 		for (NSInteger i = 2; i <= 12; i++) {
-            [monthCycles addObject: [NSString stringWithFormat: NSLocalizedString(@"AP452",  @""), i]];
+            [monthCycles addObject: [NSString stringWithFormat: NSLocalizedString(@"AP452",  nil), i]];
             if (i == currentCycle) {
                 selectedIndex = i-1;
             }
@@ -344,9 +346,9 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
         NSInteger index = 0;
 		for (NSString *s in currentLimits.monthCycles) {
             if (s.intValue == 1) {
-                [monthCycles addObject: NSLocalizedString(@"AP450",  @"")];
+                [monthCycles addObject: NSLocalizedString(@"AP450",  nil)];
             } else {
-                [monthCycles addObject: [NSString stringWithFormat: NSLocalizedString(@"AP452",  @""), s.intValue]];
+                [monthCycles addObject: [NSString stringWithFormat: NSLocalizedString(@"AP452",  nil), s.intValue]];
             }
             if (s.intValue == currentCycle) {
                 selectedIndex = index;
@@ -382,7 +384,6 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     return item;
 }
 
-
 /**
  * Refreshes the content of the source account selector.
  * An attempt is made to keep the current selection.
@@ -392,7 +393,9 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [self prepareSourceAccountSelector: sourceAccountSelector.selectedItem.representedObject];
 }
 
-// update the selected item of the account selector with currentObject's account
+/**
+ * Updates the selected item of the account selector with currentObject's account.
+ */
 - (void)updateSourceAccountSelection
 {
     NSInteger selectedItem = 0;
@@ -472,7 +475,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     [self sourceAccountChanged: sourceAccountSelector];
 }
 
--(IBAction)monthCycle: (id)sender
+- (IBAction)monthCycle: (id)sender
 {
 	StandingOrderPeriod period = [currentOrder.period intValue ];
 	if (period == stord_weekly) {
@@ -487,7 +490,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	[self updateMonthCycles ];
 }
 
--(IBAction)weekCycle: (id)sender
+- (IBAction)weekCycle: (id)sender
 {
 	StandingOrderPeriod period = [currentOrder.period intValue ];
 	if (period == stord_monthly) {
@@ -503,7 +506,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	
 }
 
--(IBAction)monthCycleChanged: (id)sender
+- (IBAction)monthCycleChanged: (id)sender
 {
     int idx = [monthCyclesPopup indexOfSelectedItem];
     if (currentLimits.monthCycles == nil || currentLimits.monthCycles.count == 0 || [[currentLimits.monthCycles lastObject] intValue] == 0) {
@@ -513,17 +516,16 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
         currentOrder.cycle = @([c intValue]);
     }
     
-	//currentOrder.cycle = [NSNumber numberWithInt:[[monthCyclesPopup titleOfSelectedItem ] intValue ] ];
 	currentOrder.isChanged = @YES;
 }
 
--(IBAction)monthDayChanged: (id)sender
+- (IBAction)monthDayChanged: (id)sender
 {
 	currentOrder.executionDay = @([self stringToMonthDay:[execDaysMonthPopup titleOfSelectedItem ] ]);
 	currentOrder.isChanged = @YES;
 }
 
--(IBAction)weekCycleChanged: (id)sender
+- (IBAction)weekCycleChanged: (id)sender
 {
     int idx = [weekCyclesPopup indexOfSelectedItem];
     if (currentLimits.weekCycles == nil || currentLimits.weekCycles.count == 0 || [[currentLimits.weekCycles lastObject] intValue] == 0) {
@@ -537,7 +539,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	currentOrder.isChanged = @YES;
 }
 
--(IBAction)weekDayChanged: (id)sender
+- (IBAction)weekDayChanged: (id)sender
 {
 	currentOrder.executionDay = @([self stringToWeekDay:[execDaysWeekPopup titleOfSelectedItem ] ]);
 	currentOrder.isChanged = @YES;
@@ -584,7 +586,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	currentOrder.isChanged = @YES;
 }
 
-- (void)controlTextDidChange:(NSNotification *)aNotification
+- (void)controlTextDidChange: (NSNotification *)aNotification
 {
     if ([currentOrder.isChanged boolValue] == NO) {
         currentOrder.isChanged = @YES;
@@ -597,45 +599,45 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	NSNumber		*value;
 	
 	if(stord.remoteName == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP8", @"Please enter a receiver"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP54", nil),
+						NSLocalizedString(@"ok", nil), nil, nil);
 		return NO;
 	}
 	// do not check remote account for EU transfers, instead IBAN
 	if(stord.remoteAccount == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-						NSLocalizedString(@"AP9", @"Please enter an account number"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP55", nil),
+						NSLocalizedString(@"ok", nil), nil, nil);
 		return NO;
 	}
 	
 	if(stord.remoteBankCode == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP10", @"Please enter a bank code"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP56", nil),
+						NSLocalizedString(@"ok", nil), nil, nil);
 		return NO;
 	}
 		
 	if( (value = stord.value) == nil ) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP11", @"Please enter a value"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP57", nil),
+						NSLocalizedString(@"ok", nil), nil, nil);
 		return NO;
 	}
 	
 	if([value doubleValue ] <= 0) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP12", @"Please enter a value greater 0"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP58", nil),
+						NSLocalizedString(@"ok", nil), nil, nil);
 		return NO;
 	}
 	
 	// purpose?
 	if (stord.purpose1 == nil || [stord.purpose1 length ] == 0) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP121", @"Please enter a purpose"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP76", nil),
+						NSLocalizedString(@"ok", nil), nil, nil);
 		return NO;
 	}
 				
@@ -644,9 +646,9 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 									   inCountry: @"DE" ];
 	
 	if(res == NO) {
-		NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-						NSLocalizedString(@"AP13", @"Account number is not valid"),
-						NSLocalizedString(@"retry", @"Retry"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+						NSLocalizedString(@"AP60", nil),
+						NSLocalizedString(@"AP61", nil), nil, nil);
 		return NO;
 	}
 
@@ -709,10 +711,10 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	[request setPredicate: predicate];
 	NSArray *stords = [managedObjectContext executeFetchRequest: request error: &error];
 	if ([stords count ] > 0) {
-		int res = NSRunAlertPanel(NSLocalizedString(@"AP115", @""), 
-								  NSLocalizedString(@"AP116", @""),
-								  NSLocalizedString(@"yes", @"Yes"), 
-								  NSLocalizedString(@"no", @"No"), nil);
+		int res = NSRunAlertPanel(NSLocalizedString(@"AP463", nil), 
+								  NSLocalizedString(@"AP464", nil),
+								  NSLocalizedString(@"AP3", nil), 
+								  NSLocalizedString(@"AP4", nil), nil);
 		if (res == NSAlertDefaultReturn) {
 			[self performSelector: @selector(getOrders:) withObject: self afterDelay: 0];
 		}
@@ -739,10 +741,10 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 	NSMutableArray *resultList = nil;
     for (StandingOrder *stord in [orderController arrangedObjects]) {
         if ([stord.isChanged boolValue]) {
-            int res = NSRunAlertPanel(NSLocalizedString(@"AP16", @""), 
-                                      NSLocalizedString(@"AP461", @""),
-                                      NSLocalizedString(@"AP462", @""), 
-                                      NSLocalizedString(@"cancel", @"Cancel"), nil);
+            int res = NSRunAlertPanel(NSLocalizedString(@"AP6", nil), 
+                                      NSLocalizedString(@"AP461", nil),
+                                      NSLocalizedString(@"AP462", nil), 
+                                      NSLocalizedString(@"AP2", nil), nil);
             if (res == NSAlertAlternateReturn) {
                 return;
             } else {
@@ -963,8 +965,8 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     if (order.orderKey == nil) {
         int res = NSRunAlertPanel(NSLocalizedString(@"AP454", nil),
                                   NSLocalizedString(@"AP458", nil),
-                                  NSLocalizedString(@"cancel", nil),
-                                  NSLocalizedString(@"yes", nil),
+                                  NSLocalizedString(@"AP2", nil),
+                                  NSLocalizedString(@"AP3", nil),
                                   nil);
         if (res != NSAlertAlternateReturn) {
             return NO;
@@ -977,7 +979,7 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
     // sent to the bank.
     int res = NSRunAlertPanel(NSLocalizedString(@"AP454", nil),
                               NSLocalizedString(@"AP455", nil),
-                              NSLocalizedString(@"cancel", nil),
+                              NSLocalizedString(@"AP2", nil),
                               NSLocalizedString(@"AP456", nil),
                               nil);
     if (res != NSAlertAlternateReturn) {
@@ -1031,12 +1033,12 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 #pragma mark -
 #pragma mark PecuniaTabItem protocol
 
--(NSView*)mainView
+- (NSView*)mainView
 {
 	return mainView;
 }
 
--(void)print
+- (void)print
 {
 }
 
@@ -1049,11 +1051,11 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 {
 }
 
--(void)prepare
+- (void)prepare
 {
 }
 
--(void)terminate
+- (void)terminate
 {
 }
 

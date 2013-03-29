@@ -470,10 +470,10 @@ BOOL updateSent = NO;
     NSString *n = [self primitiveValueForKey:@"name"];
     [self didAccessValueForKey:@"name"];
     if(self.parent == nil) {
-        if([n isEqualToString: @"++bankroot" ]) return NSLocalizedString(@"banking_root", @"");
-        if([n isEqualToString: @"++catroot" ]) return NSLocalizedString(@"category_root", @"");
+        if([n isEqualToString: @"++bankroot" ]) return NSLocalizedString(@"AP8", nil);
+        if([n isEqualToString: @"++catroot" ]) return NSLocalizedString(@"AP9", nil);
     }
-    if([n isEqualToString: @"++nassroot" ]) return NSLocalizedString(@"nass_root", @"");
+    if([n isEqualToString: @"++nassroot" ]) return NSLocalizedString(@"AP12", nil);
     return n;
 }
 

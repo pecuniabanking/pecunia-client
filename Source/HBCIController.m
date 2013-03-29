@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -199,7 +199,7 @@ NSString *escapeSpecial(NSString *s)
 -(NSString*)bankNameForCode:(NSString*)bankCode inCountry:(NSString*)country
 {
     BankInfo *info = [self infoForBankCode: bankCode inCountry:country ];
-    if(info==nil || info.name == nil) return NSLocalizedString(@"unknown",@"- unknown -");
+    if(info==nil || info.name == nil) return NSLocalizedString(@"AP13", nil);
     return info.name;
 }
 
@@ -514,13 +514,7 @@ NSString *escapeSpecial(NSString *s)
     transfer = [transfers lastObject ];
     for(Transfer *transf in transfers) {
         if (transfer.account != transf.account) {
-            return [PecuniaError errorWithMessage:NSLocalizedString(@"424",@"") title:NSLocalizedString(@"AP423",@"") ];
-            /*
-            NSRunAlertPanel(NSLocalizedString(@"423", @""), 
-                            NSLocalizedString(@"424",@""), 
-                            NSLocalizedString(@"ok",@""));
-            return;
-            */
+            return [PecuniaError errorWithMessage:NSLocalizedString(@"424", nil) title:NSLocalizedString(@"AP423", nil) ];
         }
     }
 
@@ -533,7 +527,7 @@ NSString *escapeSpecial(NSString *s)
     // Registriere gewählten User
     BankUser *user = [self getBankUserForId:option.userId bankCode:transfer.account.bankCode];
     if (user == nil) {
-        return [PecuniaError errorWithMessage: [NSString stringWithFormat: NSLocalizedString(@"424",@""), option.userId ] title:NSLocalizedString(@"AP355",@"")  ];
+        return [PecuniaError errorWithMessage: [NSString stringWithFormat: NSLocalizedString(@"424", nil), option.userId ] title:NSLocalizedString(@"AP355", nil)  ];
     }
     
     if ([user.tanMediaFetched boolValue] == NO) [self updateTanMediaForUser:user ];
@@ -1326,7 +1320,7 @@ NSString *escapeSpecial(NSString *s)
     // remove existing
     NSArray *result = [context executeFetchRequest:request error:&error];
     if (error) {
-        return [PecuniaError errorWithMessage:[error localizedDescription ] title:NSLocalizedString(@"AP182",@"")];
+        return [PecuniaError errorWithMessage:[error localizedDescription ] title:NSLocalizedString(@"AP204", nil)];
     }
     
     for(SupportedTransactionInfo *tinfo in result) {
@@ -1523,7 +1517,7 @@ NSString *escapeSpecial(NSString *s)
     if ([result boolValue ] == YES) {
         msg.isSent = @YES;
     } else {
-        error = [PecuniaError errorWithCode:0 message: NSLocalizedString(@"AP172", @"") ];
+        error = [PecuniaError errorWithCode:0 message: NSLocalizedString(@"AP158", nil) ];
     }
     return error;
 }
@@ -1566,7 +1560,7 @@ NSString *escapeSpecial(NSString *s)
 			return nil;
 		}
 	} else {
-		error = [PecuniaError errorWithCode:0 message: NSLocalizedString(@"AP402", @"") ];
+		error = [PecuniaError errorWithCode:0 message: NSLocalizedString(@"AP402", nil) ];
 	}
 	return error;
 }
@@ -1629,7 +1623,7 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"userId" withValue: user.userId to: cmd ];
     [cmd appendString: @"</command>" ];
     
-    [sbController setMessage:NSLocalizedString(@"AP175", @"") removeAfter:0];
+    [sbController setMessage:NSLocalizedString(@"AP213", nil) removeAfter:0];
     [sbController startSpinning ];
     TanMediaList *mediaList = [bridge syncCommand: cmd error: &error ];
     [sbController stopSpinning ];
@@ -1690,7 +1684,7 @@ NSString *escapeSpecial(NSString *s)
         return YES;
     } else {
         if (*error == nil) {
-            *error = [PecuniaError errorWithMessage:[NSString stringWithFormat:NSLocalizedString(@"AP356",@""), user.userId ] title:NSLocalizedString(@"AP355",@"") ];
+            *error = [PecuniaError errorWithMessage:[NSString stringWithFormat:NSLocalizedString(@"AP356", nil), user.userId ] title:NSLocalizedString(@"AP355", nil) ];
         }
         return NO;
     }   
@@ -1725,9 +1719,9 @@ NSString *escapeSpecial(NSString *s)
         }
     }
     if ([options count ] == 0) {
-        NSRunAlertPanel(NSLocalizedString(@"AP352", @""),
-                        NSLocalizedString(@"AP353",@""),
-                        NSLocalizedString(@"ok",@""), 
+        NSRunAlertPanel(NSLocalizedString(@"AP352", nil),
+                        NSLocalizedString(@"AP353", nil),
+                        NSLocalizedString(@"ok", nil), 
                         nil, nil, account.accountNumber);
         return nil;
     }

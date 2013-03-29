@@ -1,10 +1,21 @@
-//
-//  TransferTemplateController.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 26.09.10.
-//  Copyright 2010 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "TransferTemplateController.h"
 #import "TransferTemplate.h"
@@ -59,41 +70,41 @@
 	int res;
 	
 	if(template.remoteName == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP8", @"Please enter a receiver"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP54", nil),
+						NSLocalizedString(@"ok", nil), nil, nil);
 		return NO;
 	}
 	// do not check remote account for EU transfers, instead IBAN
 	if(transferType != TransferTypeEU && transferType != TransferTypeSEPA) {
 		if(template.remoteAccount == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-							NSLocalizedString(@"AP9", @"Please enter an account number"),
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+							NSLocalizedString(@"AP55", nil),
+							NSLocalizedString(@"ok", nil), nil, nil);
 			return NO;
 		}
 	} else {
 		// EU or SEPA transfer
 		if(template.remoteIBAN == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-							NSLocalizedString(@"AP24", @"Please enter a valid IBAN"),
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+							NSLocalizedString(@"AP68", nil),
+							NSLocalizedString(@"ok", nil), nil, nil);
 			return NO;
 		}
 		// check IBAN
 		if([[HBCIClient hbciClient ] checkIBAN: template.remoteIBAN ] == NO) {
-			NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-							NSLocalizedString(@"AP26", @"IBAN is not valid"),
-							NSLocalizedString(@"retry", @"Retry"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP59", nil), 
+							NSLocalizedString(@"AP70", nil),
+							NSLocalizedString(@"AP61", nil), nil, nil);
 			return NO;
 		}
 	}
 	
 	if(transferType == TransferTypeSEPA) {
 		if(template.remoteBIC == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-							NSLocalizedString(@"AP25", @"Please enter valid bank identification code (BIC)"),
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP50", nil), 
+							NSLocalizedString(@"AP69", nil),
+							NSLocalizedString(@"ok", nil), nil, nil);
 			return NO;
 		}
 	}
@@ -111,9 +122,9 @@
 											   inCountry: template.remoteCountry ];
 			
 			if(res == NO) {
-				NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-								NSLocalizedString(@"AP13", @"Account number is not valid"),
-								NSLocalizedString(@"retry", @"Retry"), nil, nil);
+				NSRunAlertPanel(NSLocalizedString(@"AP59", nil), 
+								NSLocalizedString(@"AP60", nil),
+								NSLocalizedString(@"AP61", nil), nil, nil);
 				return NO;
 			}
 		}
@@ -139,10 +150,10 @@
 
 -(void)delete:(id)sender
 {
-	int res = NSRunAlertPanel(NSLocalizedString(@"AP104", @""), 
-							  NSLocalizedString(@"AP105", @""),
-							  NSLocalizedString(@"yes", @"Yes"), 
-							  NSLocalizedString(@"no", @"No"), nil);
+	int res = NSRunAlertPanel(NSLocalizedString(@"AP107", nil), 
+							  NSLocalizedString(@"AP433", nil),
+							  NSLocalizedString(@"AP3", nil), 
+							  NSLocalizedString(@"AP4", nil), nil);
 	if (res == NSAlertDefaultReturn) {
 		[templateController remove:sender ];
 	}
@@ -178,7 +189,7 @@
 	editMode = YES;
 }
 
--(void)edit:(id)sender
+- (void)edit: (id)sender
 {
 	if (editMode == NO) {
 		[cancelButton setHidden:YES ];
@@ -186,10 +197,10 @@
 	}
 }
 
--(void)add:(id)sender
+- (void)add: (id)sender
 {
 	TransferTemplate *template = [NSEntityDescription insertNewObjectForEntityForName:@"TransferTemplate" inManagedObjectContext:context ];
-	template.name = NSLocalizedString(@"AP106", @"");
+	template.name = NSLocalizedString(@"AP434", nil);
 	template.currency = @"EUR";
 	[templateController addObject:template ];
 	
@@ -205,7 +216,7 @@
 	[cancelButton setHidden:NO ];
 }
 
--(IBAction)finished:(id)sender
+- (IBAction)finished: (id)sender
 {
 	NSArray *sel = [templateController selectedObjects ];
 	if (sel == nil || [sel count ] == 0) return;

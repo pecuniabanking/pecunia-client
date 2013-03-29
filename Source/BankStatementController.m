@@ -1,10 +1,21 @@
-//
-//  BankStatementController.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 10.03.10.
-//  Copyright 2010 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "BankStatementController.h"
 #import "BankAccount.h"
@@ -290,29 +301,13 @@
 
 -(BOOL)check
 {
-	BOOL			res;
-/*	
-	if([currentStatement valueForKey: @"remoteName" ] == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP8", @"Please enter a receiver"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
-		return NO;
-	}
-*/	
+	BOOL res;
 	if (currentStatement.value == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP11", @"Please enter a value"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP57", nil),
+						NSLocalizedString(@"AP1", nil), nil, nil);
 		return NO;
 	}
-/*	
-	if([value doubleValue ] <= 0) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP12", @"Please enter a value greater 0"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
-		return NO;
-	}
-*/	
 	if (currentStatement.remoteAccount && currentStatement.remoteBankCode) {
 		res = [[HBCIClient hbciClient ] checkAccount: currentStatement.remoteAccount 
 											 forBank: currentStatement.remoteBankCode
@@ -320,9 +315,9 @@
 		
 		
 		if(res == NO) {
-			NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-							NSLocalizedString(@"AP13", @"Account number is not valid"),
-							NSLocalizedString(@"retry", @"Retry"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+							NSLocalizedString(@"AP60", nil),
+							NSLocalizedString(@"AP61", nil), nil, nil);
 			return NO;
 		}
 	}

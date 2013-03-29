@@ -214,10 +214,10 @@ static NSGradient* headerGradient;
 // remove keychain values of all accounts
 -(IBAction)removePINs: (id)sender
 {
-	int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP33", nil),
-									  NSLocalizedString(@"AP34", nil),
-									  NSLocalizedString(@"no", nil),
-									  NSLocalizedString(@"yes", nil),
+	int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP165", nil),
+									  NSLocalizedString(@"AP166", nil),
+									  NSLocalizedString(@"AP4", nil),
+									  NSLocalizedString(@"AP3", nil),
                                       nil
 									  );
 	if (res != NSAlertAlternateReturn) {
@@ -253,17 +253,17 @@ static NSGradient* headerGradient;
 
     } else {
         // stop encryption
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
-                                  NSLocalizedString(@"AP79", @""),
-                                  NSLocalizedString(@"no", @"No"),
-                                  NSLocalizedString(@"yes", @"Yes"),
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                                  NSLocalizedString(@"AP161", nil),
+                                  NSLocalizedString(@"AP4", nil),
+                                  NSLocalizedString(@"AP3", nil),
                                   nil);
 		if(res == NSAlertAlternateReturn) {
 			MOAssistant *assistant = [MOAssistant assistant ];
             
             BOOL passwordOk = NO;
-            PasswordWindow *pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP54", @"")
-                                                                      title: NSLocalizedString(@"AP53", @"")];
+            PasswordWindow *pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP163", nil)
+                                                                      title: NSLocalizedString(@"AP162", nil)];
             [pwWindow disablePasswordSave];
             while (passwordOk == NO) {
                 [[self window] makeKeyAndOrderFront:self];
@@ -289,9 +289,9 @@ static NSGradient* headerGradient;
 			if([assistant stopEncryption ])	{
                 [[BankingController controller ] setEncrypted: NO ];
                 [Keychain deletePasswordForService:@"Pecunia" account:@"DataFile"];
-                NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
-                                NSLocalizedString(@"AP188", @""),
-                                NSLocalizedString(@"ok", @"Ok"),
+                NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                                NSLocalizedString(@"AP154", nil),
+                                NSLocalizedString(@"ok", nil),
                                 nil,
                                 nil);
             }
@@ -309,9 +309,9 @@ static NSGradient* headerGradient;
 		if ([assistant encryptDataWithPassword: password]) {
 			[encryptButton setEnabled: NO ];
 			[[BankingController controller ] setEncrypted: YES ];
-            NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
-                            NSLocalizedString(@"AP189", @""),
-                            NSLocalizedString(@"ok", @"Ok"),
+            NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                            NSLocalizedString(@"AP155", nil),
+                            NSLocalizedString(@"ok", nil),
                             nil,
                             nil);
 			return;
@@ -332,18 +332,18 @@ static NSGradient* headerGradient;
 	NSString *passw1 = [passw1Field stringValue ];
 	NSString *passw2 = [passw2Field stringValue ];
 	if ([passw1 length ] < 8) {
-		NSRunAlertPanel(NSLocalizedString(@"AP46", @""), 
-						NSLocalizedString(@"AP47", @""),
-						NSLocalizedString(@"ok", @"Ok"), 
+		NSRunAlertPanel(NSLocalizedString(@"AP167", nil), 
+						NSLocalizedString(@"AP168", nil),
+						NSLocalizedString(@"ok", nil), 
 						nil,
 						nil);
 		return;
 	}
 	
 	if ([passw1 isEqualToString: passw2] == NO) {
-		NSRunAlertPanel(NSLocalizedString(@"AP46", @""), 
-						NSLocalizedString(@"AP48", @""),
-						NSLocalizedString(@"ok", @"Ok"), 
+		NSRunAlertPanel(NSLocalizedString(@"AP167", nil), 
+						NSLocalizedString(@"AP169", nil),
+						NSLocalizedString(@"ok", nil), 
 						nil,
 						nil);
 		return;

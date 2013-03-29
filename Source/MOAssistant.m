@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -300,7 +300,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     BOOL migrated10 = [defaults boolForKey:@"Migrated10"];
     if (migrated10 == NO) {
         if (isDefaultDir == NO) {
-            @throw [PecuniaError errorWithText:NSLocalizedString(@"AP195", @"")];
+            @throw [PecuniaError errorWithText:NSLocalizedString(@"AP159", nil)];
         }
         
         // check for encryption / sparseimage file
@@ -324,7 +324,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             }
         }
         if (wasEncrypted) {
-            @throw [PecuniaError errorWithText:NSLocalizedString(@"AP196", @"")];
+            @throw [PecuniaError errorWithText:NSLocalizedString(@"AP160", nil)];
         }
     }
     
@@ -408,9 +408,9 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
     
     if (status != kCCSuccess) {
-        NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
-                        NSLocalizedString(@"AP186", @""),
-                        NSLocalizedString(@"ok", @"Ok"),
+        NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                        NSLocalizedString(@"AP152", nil),
+                        NSLocalizedString(@"ok", nil),
                         nil,
                         nil);
         NSLog(@"CCCrypt failure: %d", status);
@@ -423,9 +423,9 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     free(encryptedBytes);
     NSURL *targetURL = [pecuniaFileURL URLByAppendingPathComponent:_dataFileCrypted];
     if ([encryptedData writeToURL:targetURL atomically:NO] == NO) {
-        NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
-                        NSLocalizedString(@"AP124", @""),
-                        NSLocalizedString(@"ok", @"Ok"),
+        NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                        NSLocalizedString(@"AP111", nil),
+                        NSLocalizedString(@"ok", nil),
                         nil,
                         nil,
                         [targetURL path]);
@@ -459,8 +459,8 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
         if(passwd == nil) {
             BOOL passwordOk = NO;
-            PasswordWindow *pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP54", @"")
-                                                                       title: NSLocalizedString(@"AP53", @"")];
+            PasswordWindow *pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP163", nil)
+                                                                       title: NSLocalizedString(@"AP162", nil)];
             while (passwordOk == NO) {
                 int res = [NSApp runModalForWindow: [pwWindow window]];
                 if(res) [NSApp terminate: self];
@@ -478,9 +478,9 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                 size_t decryptedSize;
                 status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, [fileData bytes], 64, decryptedBytes, 64, &decryptedSize);
                 if (status != kCCSuccess) {
-                    NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
-                                    NSLocalizedString(@"AP187", @""),
-                                    NSLocalizedString(@"ok", @"Ok"),
+                    NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                                    NSLocalizedString(@"AP153", nil),
+                                    NSLocalizedString(@"ok", nil),
                                     nil,
                                     nil);
                     NSLog(@"CCCrypt failure: %d", status);
@@ -511,9 +511,9 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, encryptedBytes+64, (unsigned int)[fileData length]-64, decryptedBytes, (unsigned int)[fileData length]-64, &decryptedSize);
     
     if (status != kCCSuccess) {
-        NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
-                        NSLocalizedString(@"AP187", @""),
-                        NSLocalizedString(@"ok", @"Ok"),
+        NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                        NSLocalizedString(@"AP153", nil),
+                        NSLocalizedString(@"ok", nil),
                         nil,
                         nil);
         NSLog(@"CCCrypt failure: %d", status);
@@ -524,9 +524,9 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     NSData *decryptedData = [NSData dataWithBytes:decryptedBytes length:decryptedSize];
     free(decryptedBytes);
     if ([decryptedData writeToURL:accountsURL atomically:NO] == NO) {
-        NSRunAlertPanel(NSLocalizedString(@"AP46", @""),
-                        NSLocalizedString(@"AP124", @""),
-                        NSLocalizedString(@"ok", @"Ok"),
+        NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                        NSLocalizedString(@"AP111", nil),
+                        NSLocalizedString(@"ok", nil),
                         nil,
                         nil,
                         [accountsURL path]);
@@ -724,11 +724,11 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     // first check if data file already exists at target position
     BOOL useExisting = NO;
     if ([fm fileExistsAtPath:[newFilePathURL path]]) {
-        int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP42", @""),
-                                          NSLocalizedString(@"AP59", @""),
-                                          NSLocalizedString(@"cancel", @""),
-                                          NSLocalizedString(@"AP61", @""),
-                                          NSLocalizedString(@"AP60", @""),
+        int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP11", nil),
+                                          NSLocalizedString(@"AP164", nil),
+                                          NSLocalizedString(@"AP2", nil),
+                                          NSLocalizedString(@"AP15", nil),
+                                          NSLocalizedString(@"AP14", nil),
                                           [newFilePathURL path]
                                           );
 

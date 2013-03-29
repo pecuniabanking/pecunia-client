@@ -1,10 +1,21 @@
-//
-//  CreditCardSettlementController.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 31.01.13.
-//  Copyright (c) 2013 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "CreditCardSettlementController.h"
 #import "HBCIClient.h"
@@ -176,9 +187,13 @@
     [self enableButtons];
     
     if (newNum > 0) {
-        NSRunAlertPanel(NSLocalizedString(@"AP27", @""), NSLocalizedString(@"AP197", @""), NSLocalizedString(@"ok", @"Ok"), nil, nil, newNum);
+        NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
+                        NSLocalizedString(@"AP116", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil, newNum);
     } else {
-        NSRunAlertPanel(NSLocalizedString(@"AP130", @""), NSLocalizedString(@"AP197.2", @""), NSLocalizedString(@"ok", @"Ok"), nil, nil);
+        NSRunAlertPanel(NSLocalizedString(@"AP72", nil),
+                        NSLocalizedString(@"AP117", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
     }
 }
 

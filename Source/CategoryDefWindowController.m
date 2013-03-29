@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -113,9 +113,9 @@
             [NSPredicate predicateWithFormat:rule ];
         }
         @catch (NSException * e) {
-            NSRunAlertPanel(NSLocalizedString(@"AP180", @""),
-                            NSLocalizedString(@"AP181", @""),
-                            NSLocalizedString(@"ok", @"Ok"),
+            NSRunAlertPanel(NSLocalizedString(@"AP113", nil),
+                            NSLocalizedString(@"AP75", nil),
+                            NSLocalizedString(@"AP1", nil),
                             nil, nil,
                             e.reason
                             );
@@ -143,10 +143,10 @@
         return;
     }
     
-    int res = NSRunAlertPanel(NSLocalizedString(@"AP77", @""),
-                              NSLocalizedString(@"AP78", @""),
-                              NSLocalizedString(@"yes", @"Yes"),
-                              NSLocalizedString(@"no", @"No"),
+    int res = NSRunAlertPanel(NSLocalizedString(@"AP307", nil),
+                              NSLocalizedString(@"AP308", nil),
+                              NSLocalizedString(@"AP3", nil),
+                              NSLocalizedString(@"AP4", nil),
                               nil,
                               [currentCategory localName]
                               );
@@ -231,10 +231,10 @@
     }
     
     if (ruleChanged) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP75", @""),
-                                  NSLocalizedString(@"AP76", @""),
-                                  NSLocalizedString(@"yes", @"Yes"),
-                                  NSLocalizedString(@"no", @"No"),
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP305", nil),
+                                  NSLocalizedString(@"AP306", nil),
+                                  NSLocalizedString(@"AP3", nil),
+                                  NSLocalizedString(@"AP4", nil),
                                   nil,
                                   [currentCategory localName]
                                   );
@@ -379,9 +379,9 @@
 {
     if (object == assignPreviewController) {
         if (assignPreviewController.selectedObjects.count == 0) {
-            assignEntriesButton.title = NSLocalizedString(@"AP550", @"");
+            assignEntriesButton.title = NSLocalizedString(@"AP550", nil);
         } else {
-            assignEntriesButton.title = NSLocalizedString(@"AP551", @"");
+            assignEntriesButton.title = NSLocalizedString(@"AP551", nil);
         }
         [assignEntriesButton setEnabled: [assignPreviewController.arrangedObjects count] > 0];
     }

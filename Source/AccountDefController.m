@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -69,7 +69,7 @@
 	NSMutableArray* hbciUsers = [NSMutableArray arrayWithArray: [BankUser allUsers ] ];
 	// add special User
 	BankUser *noUser  = [NSEntityDescription insertNewObjectForEntityForName:@"BankUser" inManagedObjectContext:moc ];
-	noUser.name = NSLocalizedString(@"AP101", @"");
+	noUser.name = NSLocalizedString(@"AP813", nil);
 	[hbciUsers insertObject:noUser atIndex:0 ];
 	
 	[users setContent: hbciUsers ];
@@ -255,7 +255,7 @@
         bankNameField.drawsBackground = NO;
 		if (bankRoot == nil) {
 			NSString *name = [[HBCIClient hbciClient  ] bankNameForCode: [te stringValue ] inCountry: account.country ];
-			if ([name isEqualToString:NSLocalizedString(@"unknown",@"") ]) {
+			if ([name isEqualToString:NSLocalizedString(@"AP13", nil) ]) {
 				[bankNameField setEditable: YES];
 				[bankNameField setBezeled: YES];
                 bankNameField.drawsBackground = YES;
@@ -291,16 +291,16 @@
 -(BOOL)check
 {
 	if(account.accountNumber == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-						NSLocalizedString(@"AP9", @"Please enter an account number"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP55", nil),
+						NSLocalizedString(@"AP1", nil), nil, nil);
 		return NO;
 	}
 	
 	if(account.bankCode == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP10", @"Please enter a bank code"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP56", nil),
+						NSLocalizedString(@"AP1", nil), nil, nil);
 		return NO;
 	}
 	
@@ -314,18 +314,18 @@
 	
 	
 	if([hbciClient checkIBAN: account.iban ] == NO) {
-		NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-						NSLocalizedString(@"AP26", @"IBAN is not valid"),
-						NSLocalizedString(@"retry", @"Retry"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP59", nil), 
+						NSLocalizedString(@"AP70", nil),
+						NSLocalizedString(@"AP61", nil), nil, nil);
 		return NO;
 	}
 	
 	// check account number
 	res = [hbciClient checkAccount: account.accountNumber forBank: account.bankCode inCountry:account.country ];
 	if(res == NO) {
-		NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-						NSLocalizedString(@"AP13", @"Account number is not valid"),
-						NSLocalizedString(@"retry", @"Retry"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP59", nil), 
+						NSLocalizedString(@"AP60", nil),
+						NSLocalizedString(@"AP61", nil), nil, nil);
 		return NO;
 	}
 

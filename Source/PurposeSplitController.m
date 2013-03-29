@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -25,7 +25,7 @@
 
 @implementation PurposeSplitController
 
--(id)initWithAccount:(BankAccount*)acc
+- (id)initWithAccount: (BankAccount*)acc
 {
 	self = [super initWithWindowNibName:@"PurposeSplitWindow"];
 	context = [[MOAssistant assistant ] context];
@@ -34,7 +34,7 @@
 	return self;
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
 	int idx = 0;
 	NSError *error;
@@ -51,25 +51,25 @@
 	}
 }
 
--(void)windowWillClose:(NSNotification *)aNotification
+- (void)windowWillClose: (NSNotification *)aNotification
 {
 	[NSApp stopModalWithCode: actionResult ];
 }
 
--(IBAction)cancel:(id)sender
+- (IBAction)cancel: (id)sender
 {
 	actionResult = 0;
 	[self close ];
 }
 
--(IBAction)ok:(id)sender
+- (IBAction)ok: (id)sender
 {
 	NSError *error = nil;
 	
-	int res = NSRunAlertPanel(NSLocalizedString(@"AP102", @""), 
-							  NSLocalizedString(@"AP103", @""),
-							  NSLocalizedString(@"no", @"No"), 
-							  NSLocalizedString(@"yes", @"Yes"), 
+	int res = NSRunAlertPanel(NSLocalizedString(@"AP102", nil), 
+							  NSLocalizedString(@"AP103.a", nil),
+							  NSLocalizedString(@"AP4", nil), 
+							  NSLocalizedString(@"AP3", nil),
 							  nil);
 
 	if(res == NSAlertAlternateReturn) {
@@ -96,7 +96,7 @@
 	}
 }
 
--(IBAction)comboChanged:(id)sender
+- (IBAction)comboChanged: (id)sender
 {
 	int idx = [comboBox indexOfSelectedItem ];
 	if(idx < 0) idx = 0;
@@ -108,7 +108,7 @@
 	}
 }
 
--(void)getStatements
+- (void)getStatements
 {
 	if (account) {
 		[purposeController removeObjects:[purposeController arrangedObjects ]];
@@ -131,7 +131,7 @@
 	}
 }
 
--(void)calculate:(id)sender
+- (void)calculate: (id)sender
 {
 	NSRange eRange;
 	NSRange kRange;
@@ -145,29 +145,6 @@
 	bRange.length = bLen;
 
 	[[sender window] makeFirstResponder:nil];
-	
-/*	
-	NSString *s = NSStringFromRange(eRange);
-	s = [s stringByAppendingString:NSStringFromRange(kRange) ];
-	
-	s = [ePosField stringValue ];
-	if (s) eRange.location = [s intValue ]; else eRange.location = 0;
-	s = [eLenField stringValue ];
-	if (s) eRange.length = [s intValue ]; else eRange.length = 0;
-	
-	s = [kPosField stringValue ];
-	if (s) kRange.location = [s intValue ]; else kRange.location = 0;
-	s = [kLenField stringValue ];
-	if (s) kRange.length = [s intValue ]; else kRange.length = 0;
-
-	s = [bPosField stringValue ];
-	if (s) bRange.location = [s intValue ]; else bRange.location = 0;
-	s = [bLenField stringValue ];
-	if (s) bRange.length = [s intValue ]; else bRange.length = 0;
-
-	s = [vPosField stringValue ];
-	if (s) vPos = [s intValue ];
-*/
 	
 	for (PurposeSplitData *data in [purposeController arrangedObjects ]) {
 		if (eRange.length) {

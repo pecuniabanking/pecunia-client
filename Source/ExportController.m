@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -43,23 +43,8 @@ static ExportController *exportController = nil;
 
 -(NSArray*)exportedFields
 {
-/*	
-	int i;
-	NSArray *fields = [NSArray arrayWithObjects: @"valutaDate", @"date", @"value", @"currency", @"localAccount", 
-					   @"localBankCode", @"localName", @"localCountry",
-					   @"localSuffix", @"localBranch", @"remoteName", @"purpose", @"remoteAccount", @"remoteBankCode", 
-					   @"remoteBankName", @"remoteBankLocation", @"remoteIBAN", @"remoteBranch", @"remoteSuffix",
-					   @"transactionKey", @"customerReference", @"bankReference", @"transactionText", @"primaNota",
-					   @"textKey", @"transactionCode", @"categories", nil ];
-*/	
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
 	return [defaults objectForKey: @"Exporter.fields" ];
-/*	
-	if(indxs == nil || [indxs count] == 0 ) return nil;
-	NSMutableArray	*result = [NSMutableArray arrayWithCapacity:20 ];
-	for(i=0; i<[indxs count ]; i++) [result addObject: [fields objectAtIndex: [[indxs objectAtIndex:i ] intValue ] ] ];
-	return result;
-*/ 
 }
 
 -(void)startExport: (Category*)cat fromDate:(ShortDate*)from toDate:(ShortDate*)to
@@ -73,9 +58,9 @@ static ExportController *exportController = nil;
 	// which fields shall be exported?
 	NSArray	*fields = [self exportedFields ];
 	if(fields == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP71", @""),
-						NSLocalizedString(@"AP72", @""),
-						NSLocalizedString(@"ok", @"Ok"),
+		NSRunAlertPanel(NSLocalizedString(@"AP810", nil),
+						NSLocalizedString(@"AP104", nil),
+						NSLocalizedString(@"AP1", nil),
 						nil,
 						nil);
 		return;
@@ -143,9 +128,9 @@ static ExportController *exportController = nil;
         [defaults setValue:[[sp directoryURL] path] forKey:@"lastExportDirectory"];
         
 		// issue success message
-		NSRunInformationalAlertPanel(NSLocalizedString(@"AP71", @""),
-									 NSLocalizedString(@"AP74", @""),
-									 NSLocalizedString(@"ok", @"Ok"),
+		NSRunInformationalAlertPanel(NSLocalizedString(@"AP810", nil),
+									 NSLocalizedString(@"AP811", nil),
+									 NSLocalizedString(@"ok", nil),
 									 nil, nil,
 									 [[sp URL] path]
 									 );

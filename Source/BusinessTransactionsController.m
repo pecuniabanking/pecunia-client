@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -52,7 +52,7 @@
         for (size_t i = 0; i < [sortedTransactions count]; i++) {
             NSString* description = allTransactions[sortedTransactions[i]];
             if (description == nil) {
-                description = NSLocalizedString(@"AP174", "no info");
+                description = NSLocalizedString(@"AP112", nil);
             }
             [transactionList addObject: @[sortedTransactions[i], description]];
         }

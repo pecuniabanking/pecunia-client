@@ -255,8 +255,8 @@ static CurrencyValueTransformer* currencyTransformer;
     // The account label is constructed from two values and formatted.
     NSString *accountTitle;
     NSString *bankCodeTitle;
-    accountTitle = [NSString stringWithFormat: @"%@ ", NSLocalizedString(@"AP401", @"")];
-    bankCodeTitle = [NSString stringWithFormat: @"\t%@ ", NSLocalizedString(@"AP400", @"")];
+    accountTitle = [NSString stringWithFormat: @"%@ ", NSLocalizedString(@"AP401", nil)];
+    bankCodeTitle = [NSString stringWithFormat: @"\t%@ ", NSLocalizedString(@"AP400", nil)];
 
     [accountLabel setToolTip: [NSString stringWithFormat: @"%@%@%@%@",
                                accountTitle, remoteAccount, bankCodeTitle, remoteBankCode]];
