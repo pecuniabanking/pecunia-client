@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -34,13 +34,8 @@ typedef enum {
     NSInteger quarter;
     NSUInteger month;
     SliceType type;
-    
-    ShortDate   *_minDate;
-    ShortDate   *_maxDate;
-    ShortDate   *_fromDate;
-    ShortDate   *_toDate;
-    NSString    *_autosaveName;
-    
+    SliceType lastType; // Cache for the type in year-mode.
+
     IBOutlet NSDatePicker *fromPicker;
     IBOutlet NSDatePicker *toPicker;
     
@@ -51,38 +46,36 @@ typedef enum {
     NSMutableArray *controls;
 }
 
-@property (nonatomic, strong) ShortDate *_minDate;
-@property (nonatomic, strong) ShortDate *_maxDate;
-@property (nonatomic, strong) ShortDate *_fromDate;
-@property (nonatomic, strong) ShortDate *_toDate;
-@property (nonatomic, strong) NSString  *_autosaveName;
+@property (nonatomic, strong) ShortDate *minDate;
+@property (nonatomic, strong) ShortDate *maxDate;
+@property (nonatomic, strong) ShortDate *fromDate;
+@property (nonatomic, strong) ShortDate *toDate;
+@property (nonatomic, strong) NSString  *autosaveName;
 
--(id)initWithYear: (int)y month: (int)m;
--(ShortDate*)lowerBounds;
--(ShortDate*)upperBounds;
--(void)stepUp;
--(void)stepDown;
--(void)stepIn: (ShortDate*)date;
--(void)setMinDate: (ShortDate*)date;
--(void)setMaxDate: (ShortDate*)date;
+- (id)initWithYear: (int)y month: (int)m;
 
--(void)updateControl;
--(void)updateDelegate;
--(void)updatePickers;
+- (ShortDate*)lowerBounds;
+- (ShortDate*)upperBounds;
+- (void)stepUp;
+- (void)stepDown;
+- (void)stepIn: (ShortDate*)date;
+- (void)setMinDate: (ShortDate*)date;
+- (void)setMaxDate: (ShortDate*)date;
 
--(IBAction)dateChanged: (id)sender;
--(IBAction)timeSliceChanged: (id)sender;
--(IBAction)timeSliceUpDown: (id)sender;
+- (void)updateControl;
+- (void)updateDelegate;
+- (void)updatePickers;
 
--(void)save;
--(NSPredicate*)predicateForField: (NSString*)field;
--(NSString*)description;
+- (IBAction)dateChanged: (id)sender;
+- (IBAction)timeSliceChanged: (id)sender;
+- (IBAction)timeSliceUpDown: (id)sender;
+
+- (void)save;
+- (NSPredicate*)predicateForField: (NSString*)field;
+- (NSString*)description;
 
 - (void)showControls: (BOOL)show;
-
-//+(void)initialize;
-+(TimeSliceManager*)defaultManager;
-
+- (void)setYearOnlyMode: (BOOL)show;
 
 @end
 

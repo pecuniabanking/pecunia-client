@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -25,46 +25,50 @@
  */
 @implementation SynchronousScrollView
 
-- (void)setSynchronizedScrollView:(NSScrollView*)scrollview
+- (void)setSynchronizedScrollView: (NSScrollView*)scrollview
 {
-  NSView *synchronizedContentView;
-  
-  [self stopSynchronizing];
-  synchronizedScrollView = scrollview;
-  synchronizedContentView = [synchronizedScrollView contentView];
-  [synchronizedContentView setPostsBoundsChangedNotifications:YES];
-  
-  [[NSNotificationCenter defaultCenter] addObserver: self
-                                           selector: @selector(synchronizedViewContentBoundsDidChange:)
-                                               name: NSViewBoundsDidChangeNotification
-                                             object: synchronizedContentView];
+    [self.contentView setCopiesOnScroll: YES];
+    
+    NSView *synchronizedContentView;
+
+    [self stopSynchronizing];
+    synchronizedScrollView = scrollview;
+    synchronizedContentView = [synchronizedScrollView contentView];
+    [synchronizedContentView setPostsBoundsChangedNotifications:YES];
+
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(synchronizedViewContentBoundsDidChange:)
+                                                 name: NSViewBoundsDidChangeNotification
+                                               object: synchronizedContentView];
 }
 
-- (void)synchronizedViewContentBoundsDidChange:(NSNotification *)notification
+- (void)synchronizedViewContentBoundsDidChange: (NSNotification *)notification
 {
-  NSClipView *changedContentView  =[notification object];
-  NSPoint changedBoundsOrigin = [changedContentView documentVisibleRect].origin;
-  NSPoint curOffset = [[self contentView] bounds].origin;
-  NSPoint newOffset = curOffset;
+    NSClipView *changedContentView  =[notification object];
+    NSPoint changedBoundsOrigin = [changedContentView documentVisibleRect].origin;
+    NSPoint curOffset = [[self contentView] bounds].origin;
+    NSPoint newOffset = curOffset;
 
-  // We only sync vertically.
-  newOffset.y = changedBoundsOrigin.y;
-  if (!NSEqualPoints(curOffset, changedBoundsOrigin)) {
-    [[self contentView] scrollToPoint: newOffset];
-    [self reflectScrolledClipView: [self contentView]];
-  }
+    // We only sync vertically.
+    if (newOffset.y != changedBoundsOrigin.y) {
+        newOffset.y = changedBoundsOrigin.y;
+        if (!NSEqualPoints(curOffset, changedBoundsOrigin)) {
+            [[self contentView] scrollToPoint: newOffset];
+            [self reflectScrolledClipView: [self contentView]];
+        }
+    }
 }
 
 - (void)stopSynchronizing
 {
-  if (synchronizedScrollView != nil) {
-    NSView* synchronizedContentView = [synchronizedScrollView contentView];
+    if (synchronizedScrollView != nil) {
+        NSView* synchronizedContentView = [synchronizedScrollView contentView];
 
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: NSViewBoundsDidChangeNotification
-                                                  object: synchronizedContentView];
-    synchronizedScrollView = nil;
-  }
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                        name: NSViewBoundsDidChangeNotification
+                                                      object: synchronizedContentView];
+        synchronizedScrollView = nil;
+    }
 }
 
 @end

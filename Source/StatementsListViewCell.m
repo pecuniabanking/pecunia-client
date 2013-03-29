@@ -53,15 +53,6 @@ extern NSString* const CategoryKey;
 static void *SetRowBindingContext = (void *)@"SetRowContext";
 extern void *UserDefaultsBindingContext;
 
-@implementation NoAnimationTextField
-
-+ (id)defaultAnimationForKey: (NSString *)key
-{
-    return nil;
-}
-
-@end
-
 @implementation StatementsListViewCell
 
 @synthesize delegate;

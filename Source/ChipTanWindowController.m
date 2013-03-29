@@ -9,11 +9,11 @@
 #import "ChipTanWindowController.h"
 #import "FlickerView.h"
 
-#define FREQ_MAX 50
+#define FREQ_MAX 70
 #define FREQ_MIN 10
 #define FREQ_DEFAULT 20
 
-#define FLICKER_SIZE_MIN 30
+#define FLICKER_SIZE_MIN 20
 #define FLICKER_SIZE_MAX 60
 #define FLICKER_SIZE_DEFAULT 45
 

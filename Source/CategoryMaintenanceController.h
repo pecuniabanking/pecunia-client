@@ -46,7 +46,7 @@
 @property (strong) NSArray *iconCollection;
 
 - (id)initWithCategory: (Category*)aCategory;
-- (void)imageDoubleClicked: (id)sender;
+- (IBAction)selectImage: (id)sender;
 
 - (IBAction)cancel: (id)sender;
 - (IBAction)ok: (id)sender;

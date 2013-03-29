@@ -233,6 +233,16 @@ static NSMutableDictionary* userColors;
     }
 }
 
+- (NSColor*)colorWithChangedBrightness: (CGFloat)factor
+{
+    NSColor *deviceColor = [self colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
+    factor *= deviceColor.brightnessComponent;
+    return [NSColor colorWithCalibratedHue: deviceColor.hueComponent
+                                saturation: deviceColor.saturationComponent
+                                brightness: factor
+                                     alpha: deviceColor.alphaComponent];
+}
+
 @end
 
 

@@ -66,6 +66,7 @@ typedef enum _MAWindowPosition {
     float _distance;
     NSRect _viewFrame;
     BOOL _resizing;
+    BOOL _canBecomeKey;
 }
 
 @property (nonatomic, unsafe_unretained) NSView *view;
@@ -143,6 +144,8 @@ typedef enum _MAWindowPosition {
 - (void)setBackgroundImage:(NSImage *)value;
 - (NSColor *)windowBackgroundColor;                    // See note 4 below.
 - (void)setBackgroundColor:(NSColor *)value;
+
+- (void)setCanBecomeKey: (BOOL)value;
 
 /*
  Notes regarding accessor methods:

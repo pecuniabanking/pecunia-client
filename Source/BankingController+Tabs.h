@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -26,5 +26,6 @@
 - (void)activateTransfersTab;
 - (void)activateStandingOrdersTab;
 - (void)activateDebitsTab;
+- (void)activateHeatMapTab;
 
 @end

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -38,7 +38,7 @@
 @interface NSWindow (PecuniaAdditions)
 
 - (void)fadeIn;
-- (void)zoomInFromRect: (NSRect)startRect withFade: (BOOL)fade makeKey: (BOOL)makeKey;
+- (void)zoomInWithOvershot: (NSRect)overshotFrame withFade: (BOOL)fade makeKey: (BOOL)makeKey;
 - (void)fadeOut;
 - (void)zoomOffToRect: (NSRect)endRect withFade: (BOOL)fade;
 

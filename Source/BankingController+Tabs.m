@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,10 +22,12 @@
 #import "TransfersController.h"
 #import "StandingOrderController.h"
 #import "DebitsController.h"
+#import "CategoryHeatMapController.h"
 
 #define TransfersTabIdentifier @"transfers"
 #define StandingOrderTabIdentifier @"standingOrders"
 #define DebitsTabIdentifier @"debits"
+#define HeatMapTabIdentifier @"heatMap"
 
 @implementation BankingController (Tabs)
 
@@ -86,5 +88,23 @@
 	}
 }
 
+- (void)activateHeatMapTab
+{
+	NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: HeatMapTabIdentifier];
+	if (index == NSNotFound) {
+		heatMapController = [[CategoryHeatMapController alloc] init];
+		if ([NSBundle loadNibNamed: @"CategoryHeatMap" owner: heatMapController]) {
+			NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: HeatMapTabIdentifier];
+			item.view =  heatMapController.mainView;
+			[mainTabView addTabViewItem: item];
+			[mainTabView selectTabViewItem: item];
+			mainTabItems[HeatMapTabIdentifier] = heatMapController;
+			[heatMapController prepare];
+		}
+	} else {
+		[mainTabView selectTabViewItemAtIndex: index];
+        [heatMapController activate];
+	}
+}
 
 @end

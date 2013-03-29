@@ -53,7 +53,9 @@ NSCalendar *calendar = nil;
         components.minute = 0;
         components.second = 0;
 
-        inner = [[ShortDate calendar] dateFromComponents: components];
+        inner = [calendar dateFromComponents: components];
+        components = [calendar components: NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit
+                                 fromDate: inner];
     }
     return self;
 }
@@ -142,10 +144,9 @@ NSCalendar *calendar = nil;
     return components.year * 372 + components.month * 31 + components.day;
 }
 
-
 - (int)daysToDate: (ShortDate*)toDate
 {
-    NSDateComponents *comps = [calendar components:NSDayCalendarUnit fromDate: self.lowDate toDate: toDate.lowDate  options: 0];
+    NSDateComponents *comps = [calendar components: NSDayCalendarUnit fromDate: self.lowDate toDate: toDate.lowDate  options: 0];
     return [comps day];
 }
 
@@ -320,11 +321,20 @@ NSCalendar *calendar = nil;
     return [lastMonth lastDayInMonth ];
 }
 
+- (NSInteger)dayInWeek
+{
+    return components.weekday;
+}
+
 - (ShortDate*)firstDayInWeek
 {
     NSDateComponents *comps = [calendar components: NSWeekdayCalendarUnit fromDate: [self lowDate]];
-    
-    return [self dateByAddingUnits: (calendar.firstWeekday - [comps weekday]) byUnit: NSWeekdayCalendarUnit];
+
+    NSInteger offset = calendar.firstWeekday - [comps weekday];
+    if (offset > 0) {
+        offset -= 7;
+    }
+    return [self dateByAddingUnits: offset byUnit: NSWeekdayCalendarUnit];
 }
 
 - (ShortDate*)lastDayInWeek
@@ -332,6 +342,11 @@ NSCalendar *calendar = nil;
     NSDateComponents *comps = [calendar components: NSWeekdayCalendarUnit fromDate: [self lowDate]];
     
     return [self dateByAddingUnits: (7 - [comps weekday]) byUnit: NSWeekdayCalendarUnit];
+}
+
+- (BOOL)isFirstDayInMonth
+{
+    return components.day == 1;
 }
 
 + (ShortDate*)dateWithDate: (NSDate*)date

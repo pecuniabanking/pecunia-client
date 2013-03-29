@@ -33,8 +33,9 @@
 #import "GraphicsAdditions.h"
 #import "AnimationHelper.h"
 #import "BankingController.h"
-
+#import "TimeSliceManager.h"
 #import "MAAttachedWindow.h"
+#import "ShortDate.h"
 
 // Keys for details dictionary used for transfers + statements listviews.
 NSString *StatementDateKey            = @"date";             // NSDate
@@ -438,7 +439,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     finishedTransfers.managedObjectContext = MOAssistant.assistant.context;
     finishedTransfersPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = YES", acceptedTypes];
-    finishedTransfers.filterPredicate = finishedTransfersPredicate;
+    NSPredicate *filter = [NSPredicate predicateWithFormat:@"date >= %@ AND date <= %@", timeSlicer.lowerBounds.lowDate, timeSlicer.upperBounds.highDate ];
+    finishedTransfers.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[finishedTransfersPredicate, filter]];
 
     [transactionController setManagedObjectContext: MOAssistant.assistant.context];
 
@@ -507,6 +509,22 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     return item;
 }
+
+
+-(NSString*)autosaveNameForTimeSlicer: (TimeSliceManager*)tsm
+{
+    return @"FinishedTransfersSlicer";
+}
+
+- (void)timeSliceManager: (TimeSliceManager*)tsm changedIntervalFrom:(ShortDate*)from to:(ShortDate*)to
+{
+    if (finishedTransfersPredicate != nil) {
+        NSPredicate *filter = [NSPredicate predicateWithFormat:@"date >= %@ AND date <= %@", from.lowDate, to.highDate ];
+        NSPredicate *comp = [NSCompoundPredicate andPredicateWithSubpredicates:@[finishedTransfersPredicate, filter]];
+        [finishedTransfers setFilterPredicate: comp];
+    }
+}
+
 
 /**
  * Refreshes the content of the source account selector.

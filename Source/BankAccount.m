@@ -495,10 +495,10 @@
  * Collects a history of the balances of this account and all its children over time.
  * The resulting arrays are sorted by ascending date.
  */
-- (NSUInteger)balanceHistoryToDates: (NSArray**)dates
-                           balances: (NSArray**)balances
-                      balanceCounts: (NSArray**)counts
-                       withGrouping: (GroupingInterval)interval
+- (NSUInteger)historyToDates: (NSArray**)dates
+                    balances: (NSArray**)balances
+               balanceCounts: (NSArray**)counts
+                withGrouping: (GroupingInterval)interval
 {
     NSArray* assignments = [[self allAssignments] allObjects];
     NSArray* sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];

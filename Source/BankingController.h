@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -44,12 +44,19 @@
 @class CategoryDefWindowController;
 @class CategoryPeriodsWindowController;
 @class StandingOrderController;
+@class CategoryHeatMapController;
 
 @class RoundedSidebar;
 @class SideToolbarView;
 @class BWGradientBox;
 @class SynchronousScrollView;
 @class StatementDetails;
+
+@class AttachmentImageView;
+
+@interface PecuniaSplitView : NSSplitView
+- (NSColor *)dividerColor;
+@end
 
 @interface BankingController : NSObject
 {
@@ -95,6 +102,7 @@
     IBOutlet NSButton           *graph2Button;
     IBOutlet NSButton           *computingButton;
     IBOutlet NSButton           *rulesButton;
+    IBOutlet NSButton           *heatMapButton;
     IBOutlet RoundedSidebar     *sideBar;
     
     IBOutlet NSMenuItem         *toggleFullscreenItem;
@@ -103,6 +111,11 @@
     IBOutlet TransactionController *transactionController;
     IBOutlet NSWindow              *licenseWindow;
     IBOutlet NSButton              *toggleDetailsButton;
+
+    IBOutlet AttachmentImageView *attachement1;
+    IBOutlet AttachmentImageView *attachement2;
+    IBOutlet AttachmentImageView *attachement3;
+    IBOutlet AttachmentImageView *attachement4;
 
 @private
     NSMutableDictionary    *mainTabItems;
@@ -132,11 +145,11 @@
     CategoryRepWindowController      *categoryReportingController;
     CategoryDefWindowController      *categoryDefinitionController;
     CategoryPeriodsWindowController  *categoryPeriodsController;
+    TransfersController              *transfersController;
+    StandingOrderController          *standingOrderController;
+    DebitsController                 *debitsController;
+    CategoryHeatMapController        *heatMapController;
 
-    TransfersController     *transfersController;
-    StandingOrderController *standingOrderController;
-    DebitsController        *debitsController;
-    
     id<PecuniaSectionItem> currentSection;
     
     // current statement details
@@ -200,8 +213,8 @@
 - (IBAction)showAboutPanel:(id)sender;
 - (IBAction)toggleFullscreenIfSupported: (id)sender;
 - (IBAction)toggleDetailsPane: (id)sender;
-
 - (IBAction)toggleFeature:(id)sender;
+- (IBAction)clearAttachment: (id)sender;
 
 - (IBAction)deleteAllData: (id)sender;
 - (IBAction)generateData: (id)sender;

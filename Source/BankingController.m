@@ -56,6 +56,7 @@
 #import "CategoryDefWindowController.h"
 #import "CategoryPeriodsWindowController.h"
 #import "CategoryMaintenanceController.h"
+#import "CategoryHeatMapController.h"
 
 #import "TransfersController.h"
 
@@ -93,6 +94,202 @@ void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 static BankingController *bankinControllerInstance;
 
 BOOL runningOnLionOrLater = NO;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+@implementation PecuniaSplitView
+
+- (NSColor *)dividerColor
+{
+    return [NSColor clearColor];
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+
+static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
+
+@interface AttachmentImageView : NSImageView <NSDraggingDestination>
+{
+@private
+    id observedObject;
+    NSString *observedKeyPath;
+}
+
+@property (nonatomic, strong) NSString *reference;
+
+@end
+
+@implementation AttachmentImageView
+
+@synthesize reference;
+
++ (void)initialize
+{
+    [self exposeBinding: @"reference"];
+}
+
+- (void)awakeFromNib
+{
+    [self unregisterDraggedTypes];
+    [self registerForDraggedTypes: [NSArray arrayWithObjects: NSStringPboardType, NSFilenamesPboardType, nil]];
+}
+
+- (void)mouseDown: (NSEvent *)event {
+    if ([[self target] respondsToSelector: [self action]]) {
+        [NSApp sendAction: [self action] to: [self target] from: self];
+    }
+}
+
+- (void)resetCursorRects
+{
+    [super resetCursorRects];
+    [self addCursorRect: [self bounds] cursor:
+       self.isEditable ? [NSCursor pointingHandCursor] : [NSCursor operationNotAllowedCursor]];
+}
+
+- (NSDragOperation)draggingEntered: (id <NSDraggingInfo>)sender
+{
+    return self.isEditable ? NSDragOperationLink : NSDragOperationNone;
+}
+
+- (BOOL)prepareForDragOperation: (id <NSDraggingInfo>)sender
+{
+    return YES;
+}
+
+- (BOOL)performDragOperation: (id <NSDraggingInfo>)sender
+{
+    return YES;
+}
+
+- (BOOL)wantsPeriodicDraggingUpdates
+{
+    return NO;
+}
+
+- (void)concludeDragOperation: (id<NSDraggingInfo>)sender
+{
+    NSURL *url;
+
+    NSArray *types = [[sender draggingPasteboard] types];
+    if ([types containsObject: NSURLPboardType] || [types containsObject: NSFilenamesPboardType]) {
+        url = [NSURL URLFromPasteboard: [sender draggingPasteboard]];
+    } else {
+        // Just some text. See if we can make a URL from it.
+        NSString *text = [[sender draggingPasteboard] stringForType: NSStringPboardType];
+        if (text.length > 0) {
+            url = [NSURL URLWithString: text];
+            if (url == nil) {
+                // Not a valid web URL. Try using it as file name.
+                // Of course the file must exist to be accepted.
+                if ([NSFileManager.defaultManager fileExistsAtPath: text]) {
+                    url = [NSURL fileURLWithPath: text];
+                }
+            }
+        }
+    }
+
+    if (url == nil) {
+        return;
+    }
+
+    self.reference = url.absoluteString;
+    [observedObject setValue: url.absoluteString forKeyPath: observedKeyPath];
+}
+
+- (void)setReference: (id)value
+{
+    [self.window invalidateCursorRectsForView: self];
+    
+    if (value == NSNoSelectionMarker || value == NSMultipleValuesMarker || value == nil) {
+        self.image = nil;
+        if (value == nil) {
+            self.toolTip = NSLocalizedString(@"AP199", nil);
+        } else {
+            self.toolTip = nil;
+        }
+
+        return;
+    }
+
+    NSURL *url = [NSURL URLWithString: value];
+
+    // Ensure we always have a scheme in the URL. Assume file as default.
+    if (url.scheme == nil) {
+        url = [NSURL URLWithString: [NSString stringWithFormat: @"file://localhost/%@", value]];
+    }
+
+    reference = url.absoluteString;
+
+    if (url.isFileURL) {
+        self.toolTip = [NSString stringWithFormat: @"%@\n\n%@", url.path, NSLocalizedString(@"AP199.2", nil)];
+
+        NSString *fileName = url.path;
+        NSString *extension = fileName.pathExtension;
+
+        NSImage *image;
+
+        // Display images as such. Exclude pdf files manually as they qualify as images too.
+        // (It's such a nonsense to show the content of the first pdf page as icon <sigh>.)
+        if (![extension isCaseInsensitiveLike: @"pdf"]) {
+            NSArray *types = NSImage.imageFileTypes;
+            if ([types containsObject: extension]) {
+                image = [[NSImage alloc] initWithContentsOfFile: fileName];
+                if (image != nil) {
+                    self.image = image;
+                    return;
+                }
+            }
+        }
+
+        // Anything else. Get the system's icon for it. If there's no extension use the entire path.
+        if (extension.length == 0) {
+            image = [NSWorkspace.sharedWorkspace iconForFile: fileName];
+        } else {
+            image = [[NSWorkspace sharedWorkspace] iconForFileType: extension];
+        }
+        image.size = NSMakeSize(128, 128); // Lower resolution is automatically used, depending on available space.
+        self.image = image;
+        
+
+    } else {
+        self.toolTip = [NSString stringWithFormat: @"%@\n\n%@", reference, NSLocalizedString(@"AP199.2", nil)];
+        NSImage *image = [[NSWorkspace sharedWorkspace] iconForFileType: @"html"];
+        image.size = NSMakeSize(128, 128);
+        self.image = image;
+    }
+}
+
+- (void)bind: (NSString *)binding
+    toObject: (id)observableObject
+ withKeyPath: (NSString *)keyPath
+     options: (NSDictionary *)options
+{
+    if ([binding isEqualToString: @"reference"])
+    {
+        observedObject = observableObject;
+        observedKeyPath = keyPath;
+        [observableObject addObserver: self forKeyPath: keyPath options: 0 context: AttachmentBindingContext];
+    } else {
+        [super bind: binding toObject: observableObject withKeyPath: keyPath options: options];
+    }
+}
+
+- (void)observeValueForKeyPath: (NSString *)keyPath
+                      ofObject: (id)object
+                        change: (NSDictionary *)change
+                       context: (void *)context
+{
+    if (context == AttachmentBindingContext) {
+        self.reference = [observedObject valueForKeyPath: observedKeyPath];
+    }
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
 
 @interface BankingController (Private)
 
@@ -267,9 +464,14 @@ BOOL runningOnLionOrLater = NO;
     // Content views are dynamically exchanged.
     // The right splitter is the initial control and needs an own retain to avoid losing it
     // on the next switch.
-    
+
     currentSection = nil; // The right splitter, which is by default active is not a regular section.
     toolbarButtons.selectedSegment = 0;
+
+    [attachement1 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref1" options: nil];
+    [attachement2 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref2" options: nil];
+    [attachement3 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref3" options: nil];
+    [attachement4 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref4" options: nil];
 
     if (self.managedObjectContext) {
         [self publishContext];
@@ -1131,7 +1333,8 @@ BOOL runningOnLionOrLater = NO;
     [graph2Button setImage: [NSImage imageNamed: @"graph2"]];
     [computingButton setImage: [NSImage imageNamed: @"computing"]];
     [rulesButton setImage: [NSImage imageNamed: @"rules"]];
-    
+    [heatMapButton setImage: [NSImage imageNamed: @"heat-map"]];
+
     // Reset fetch predicate for the tree controller if we are switching away from
     // the category periods view.
     if (currentSection != nil && currentSection == categoryPeriodsController && [sender tag] != 3) {
@@ -1143,6 +1346,10 @@ BOOL runningOnLionOrLater = NO;
         [self performSelector: @selector(restoreBankAccountItemsStates) withObject: nil afterDelay: 0.1];
         
         [timeSlicer showControls: YES];
+    }
+
+    if (currentSection != nil && currentSection == heatMapController && [sender tag] != 6) {
+        [timeSlicer setYearOnlyMode: NO];
     }
 
     NSRect frame = [currentView frame];
@@ -1169,7 +1376,7 @@ BOOL runningOnLionOrLater = NO;
                     NSView* view = [categoryAnalysisController mainView];
                     view.frame = frame;
                 }
-                //[categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+                [categoryAnalysisController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
             }
 
             if (currentSection != categoryAnalysisController) {
@@ -1224,7 +1431,7 @@ BOOL runningOnLionOrLater = NO;
                     view.frame = frame;
                     [categoryPeriodsController connectScrollViews: accountsScrollView];
                 }
-                //[categoryPeriodsController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+                [categoryPeriodsController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
                 categoryPeriodsController.outline = accountsView;
             }
             
@@ -1248,6 +1455,7 @@ BOOL runningOnLionOrLater = NO;
             
             [computingButton setImage: [NSImage imageNamed: @"computing-active"]];
             break;
+
         case 4:
             if (categoryDefinitionController == nil) {
                 categoryDefinitionController = [[CategoryDefWindowController alloc] init];
@@ -1257,7 +1465,7 @@ BOOL runningOnLionOrLater = NO;
                 }
                 [categoryDefinitionController setManagedObjectContext: self.managedObjectContext];
                 categoryDefinitionController.timeSliceManager = timeSlicer;
-                //[categoryDefinitionController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+                [categoryDefinitionController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
             }
             if (currentSection != categoryDefinitionController) {
                 [currentSection deactivate];
@@ -1279,6 +1487,26 @@ BOOL runningOnLionOrLater = NO;
            
             [rulesButton setImage: [NSImage imageNamed: @"rules-active"]];
             break;
+
+        case 6:
+            if (heatMapController == nil) {
+                heatMapController = [[CategoryHeatMapController alloc] init];
+                if ([NSBundle loadNibNamed: @"CategoryHeatMap" owner: heatMapController]) {
+                    heatMapController.mainView.frame = frame;
+                }
+                [heatMapController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+            }
+            if (currentSection != heatMapController) {
+                [currentSection deactivate];
+                heatMapController.mainView.frame = frame;
+                [rightPane replaceSubview: currentView with: heatMapController.mainView];
+                currentSection = heatMapController;
+                pageHasChanged = YES;
+            }
+            [timeSlicer setYearOnlyMode: YES];
+            [heatMapButton setImage: [NSImage imageNamed: @"heat-map-active"]];
+            break;
+
     }
 
     if (pageHasChanged) {
@@ -1758,17 +1986,14 @@ BOOL runningOnLionOrLater = NO;
     }
 
     Category *cat = [self currentSelection];
-    [cat updateBoundAssignments];
-    
+
     // set states of categorie Actions Control
     [catActions setEnabled: [cat isRemoveable] forSegment: 2];
     [catActions setEnabled: [cat isInsertable] forSegment: 1];
     
     BOOL editable = NO;
-    if(![cat isBankAccount] && cat != [Category nassRoot] && cat != [Category catRoot]) {
-        editable = YES;
-        NSArray *sel = [categoryAssignments selectedObjects];
-        if(sel && [sel count] > 0) editable = YES;
+    if (![cat isBankAccount] && cat != [Category nassRoot] && cat != [Category catRoot]) {
+        editable = categoryAssignments.selectedObjects.count == 1;
     }
     
     // value field
@@ -1786,8 +2011,6 @@ BOOL runningOnLionOrLater = NO;
         currentSection.category = cat;
     }
 
-    [rightPane setNeedsDisplay:YES ];
-    [self updateStatusbar];
 }
 
 - (void)outlineView: (NSOutlineView *)outlineView willDisplayCell: (ImageAndTextCell*)cell
@@ -3036,6 +3259,95 @@ BOOL runningOnLionOrLater = NO;
         [self toggleDetailsPane: nil];
         [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
     }
+}
+
+- (IBAction)attachmentClicked: (id)sender
+{
+    AttachmentImageView *image;
+    BankStatement *statement = [categoryAssignments.selectedObjects.lastObject statement];
+
+    switch ([sender tag]) {
+        case 0:
+            image = attachement1;
+            break;
+        case 1:
+            image = attachement2;
+            break;
+        case 2:
+            image = attachement3;
+            break;
+        case 3:
+            image = attachement4;
+            break;
+    }
+    
+    if (image.reference == nil) {
+        // No attachment yet. Allow adding one if editing is possible.
+        if (categoryAssignments.selectedObjects.count == 1) {
+            NSOpenPanel *panel = [NSOpenPanel openPanel];
+            panel.title = NSLocalizedString(@"AP198", nil);
+            panel.canChooseDirectories = NO;
+            panel.canChooseFiles = YES;
+            panel.allowsMultipleSelection = NO;
+
+            int runResult = [panel runModal];
+            if (runResult == NSOKButton) {
+                image.reference = [panel.URLs.lastObject absoluteString];
+                switch ([sender tag]) {
+                    case 0:
+                        statement.ref1 = image.reference;
+                        break;
+                    case 1:
+                        statement.ref2 = image.reference;
+                        break;
+                    case 2:
+                        statement.ref3 = image.reference;
+                        break;
+                    case 3:
+                        statement.ref4 = image.reference;
+                        break;
+                }            }
+        }
+    } else {
+        NSURL *url = [NSURL URLWithString: image.reference];
+
+        if (url.isFileURL) {
+            [NSWorkspace.sharedWorkspace openFile: url.path];
+        } else {
+            [NSWorkspace.sharedWorkspace openURL: url];
+        }
+    }
+}
+
+- (IBAction)clearAttachment:(id)sender
+{
+    if (categoryAssignments.selectedObjects.count != 1) {
+        return;
+    }
+
+    switch ([sender tag]) {
+        case 0:
+            attachement1.image = nil;
+            [categoryAssignments.selectedObjects.lastObject statement].ref1 = nil;
+            break;
+        case 1:
+            attachement2.image = nil;
+            [categoryAssignments.selectedObjects.lastObject statement].ref2 = nil;
+            break;
+        case 2:
+            attachement3.image = nil;
+            [categoryAssignments.selectedObjects.lastObject statement].ref3 = nil;
+            break;
+        case 3:
+            attachement4.image = nil;
+            [categoryAssignments.selectedObjects.lastObject statement].ref4 = nil;
+            break;
+    }
+}
+
+- (BOOL)canEditAttachment
+{
+    return categoryAssignments.selectedObjects.count == 1;
 }
 
 - (void)reapplyDefaultIconsForCategory: (Category *)category

@@ -33,6 +33,7 @@
 @class DeleteTransferTargetView;
 @class BankAccount;
 @class TransactionLimits;
+@class TimeSliceManager;
 
 @interface TransferTemplateDragDestination : NSView
 {
@@ -102,7 +103,8 @@
     IBOutlet DragImageView  *transferNormalImage;
     IBOutlet DragImageView  *transferEUImage;
     IBOutlet DragImageView  *transferSEPAImage;
-    IBOutlet DeleteTransferTargetView *transferDeleteImage;
+    IBOutlet DeleteTransferTargetView   *transferDeleteImage;
+    IBOutlet TimeSliceManager           *timeSlicer;
     
     IBOutlet NSPanel        *templateNameSheet;
     IBOutlet NSTabView      *transferTab;

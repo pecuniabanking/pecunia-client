@@ -41,8 +41,8 @@ extern NSString* const CategoryKey;
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-    if (theEvent.clickCount > 1) {
-        [controller imageDoubleClicked: self];
+    if ([[self target] respondsToSelector: [self action]]) {
+        [NSApp sendAction: [self action] to: [self target] from: self];
     }
 }
 
@@ -82,7 +82,7 @@ extern NSString* const CategoryKey;
 
 - (NSView *)hitTest: (NSPoint)aPoint
 {
-  // Don't allow any mouse clicks for subviews in this NSBox (necessary for making this box selectable).
+    // Don't allow any mouse clicks for subviews in this NSBox (necessary for making this box selectable).
 	if (NSPointInRect(aPoint, [self convertRect: [self bounds] toView: [self superview]])) {
         return self;
     } else {
@@ -224,7 +224,7 @@ extern NSString* const CategoryKey;
 #pragma mark -
 #pragma mark Event handling
 
-- (void)imageDoubleClicked: (id)sender
+- (IBAction)selectImage: (id)sender
 {
     [self openImageLibrary];
 }

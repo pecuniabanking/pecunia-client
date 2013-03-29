@@ -99,3 +99,23 @@ static NSMutableDictionary* cache;
 @end
 
 //----------------------------------------------------------------------------------------------------------------------
+
+@implementation ExactlyOneToBoolValueTransformer
+
++ (BOOL)allowsReverseTransformation
+{
+    return NO;
+}
+
+- (id)transformedValue: (id)value
+{
+    if ([value count] == 1) {
+        return @YES;
+    }
+    return @NO;
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+

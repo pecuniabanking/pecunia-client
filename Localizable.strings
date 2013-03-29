@@ -205,6 +205,9 @@
 "AP196" = "Die Pecunia-Datendatei ist verschlüsselt. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
 "AP197" = "Es wurden %d neue Abrechnungen geladen";
 "AP197.2" = "Es liegen keine (neuen) Abrechnungen vor";
+"AP198" = "Datei auswählen";
+"AP199" = "Klicken, um eine Datei auszuwählen. Dateien und URLs können auch direkt hierher gezogen werden";
+"AP199.2" = "Klicken, um den Anhang anzusehen";
 
 // Bank accounts + users
 // AP200..AP249
@@ -416,5 +419,11 @@
 "AP731" = "Hintergrund neue Umstätze (wenn aktiviert)";
 "AP732" = "Hintergrund Umsätze ohne Kategoriezuordnung (wenn aktiviert)";
 
-// Use a new block of IDs for next set of strings!
+// Heat maps
 // AP750..AP799
+"AP750" = "Keine Umsätze";
+"AP751" = "Block";
+"AP752" = "Streifen";
+
+// Use a new block of IDs for next set of strings!
+// AP800..AP849

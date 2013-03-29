@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1080</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">2844</string>
+			<string key="NS.object.0">3084</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSArrayController</string>
@@ -289,6 +289,7 @@
 						<string key="NSFrame">{{896, 50}, {193, 44}}</string>
 						<reference key="NSSuperview" ref="148167949"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="1002362630">
 							<int key="NSCellFlags">68157504</int>
@@ -302,23 +303,8 @@
 							<reference key="NSControlView" ref="857855529"/>
 							<reference key="NSBackgroundColor" ref="951366494"/>
 							<object class="NSColor" key="NSTextColor">
-								<int key="NSColorSpace">1</int>
-								<bytes key="NSRGB">MC44OTM2NTY0MzI2IDAuNTk2NDI4MDM2NyAwLjEzODA4NDk2MwA</bytes>
-								<object class="NSColorSpace" key="NSCustomColorSpace" id="502493435">
-									<object class="NSMutableData" key="NSICC">
-										<bytes key="NS.bytes">AAACKEFEQkUCEAAAbW50clJHQiBYWVogB9AACAALABMANAAYYWNzcEFQUEwAAAAAbm9uZQAAAAAAAAAA
-AAAAAAAAAAAAAPbWAAEAAAAA0y1BREJFLlTRCzksrEciZGm6Lqlb2AAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAKY3BydAAAAPwAAAAyZGVzYwAAATAAAABkd3RwdAAAAZQAAAAUYmtwdAAAAagAAAAU
-clRSQwAAAbwAAAAOZ1RSQwAAAcwAAAAOYlRSQwAAAdwAAAAOclhZWgAAAewAAAAUZ1hZWgAAAgAAAAAU
-YlhZWgAAAhQAAAAUdGV4dAAAAABDb3B5cmlnaHQgMjAwMCBBZG9iZSBTeXN0ZW1zIEluY29ycG9yYXRl
-ZAAAAGRlc2MAAAAAAAAACkFwcGxlIFJHQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABYWVogAAAAAAAA81EAAQAA
-AAEWzFhZWiAAAAAAAAAAAAAAAAAAAAAAY3VydgAAAAAAAAABAc0AAGN1cnYAAAAAAAAAAQHNAABjdXJ2
-AAAAAAAAAAEBzQAAWFlaIAAAAAAAAHm9AABBUgAABLlYWVogAAAAAAAAVvgAAKwvAAAdA1hZWiAAAAAA
-AAAmIgAAEn8AALFwA</bytes>
-									</object>
-								</object>
-								<characters key="NSComponents">0.8847485781 0.5897764564 0.09329365939 1</characters>
+								<int key="NSColorSpace">2</int>
+								<bytes key="NSRGB">MC44MTg2MzAyNDY0IDAuMzAwMzgyMDcxMiAwAA</bytes>
 							</object>
 						</object>
 						<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -343,23 +329,23 @@ AAAmIgAAEn8AALFwA</bytes>
 							<reference key="NSControlView" ref="334174236"/>
 							<reference key="NSBackgroundColor" ref="951366494"/>
 							<object class="NSColor" key="NSTextColor">
-								<int key="NSColorSpace">1</int>
-								<bytes key="NSRGB">MC44OTM2NTY0MzI2IDAuNTk2NDI4MDM2NyAwLjEzODA4NDk2MyAwLjEwMDAwMDAwMTUAA</bytes>
-								<reference key="NSCustomColorSpace" ref="502493435"/>
-								<characters key="NSComponents">0.8847485781 0.5897764564 0.09329365939 0.1000000015</characters>
+								<int key="NSColorSpace">2</int>
+								<bytes key="NSRGB">MC44MTg2MzAyNDY0IDAuMzAwMzgyMDcxMiAwIDAuMQA</bytes>
 							</object>
 						</object>
 						<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 					</object>
 					<object class="NSCustomView" id="950255970">
 						<reference key="NSNextResponder" ref="148167949"/>
-						<int key="NSvFlags">274</int>
+						<int key="NSvFlags">4370</int>
 						<string key="NSFrame">{{30, 113}, {1046, 545}}</string>
 						<reference key="NSSuperview" ref="148167949"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="816165749"/>
 						<object class="NSShadow" key="NSViewShadow">
-							<double key="NSShadowBlurRadius">4</double>
+							<double key="NSShadowHoriz">1</double>
+							<double key="NSShadowVert">1</double>
+							<double key="NSShadowBlurRadius">2</double>
 							<object class="NSColor" key="NSShadowColor" id="653942505">
 								<int key="NSColorSpace">3</int>
 								<bytes key="NSWhite">MCAwLjc1AA</bytes>
@@ -845,7 +831,6 @@ AAAmIgAAEn8AALFwA</bytes>
 							<reference ref="432706194"/>
 						</array>
 						<reference key="parent" ref="148167949"/>
-						<string key="objectName">Label large (Auswertung)</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">261</int>
@@ -1096,10 +1081,10 @@ AAAmIgAAEn8AALFwA</bytes>
 				<string key="-3.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="238.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<real value="4" key="238.IBViewIntegration.shadowBlurRadius"/>
+				<real value="2" key="238.IBViewIntegration.shadowBlurRadius"/>
 				<reference key="238.IBViewIntegration.shadowColor" ref="653942505"/>
-				<real value="0.0" key="238.IBViewIntegration.shadowOffsetHeight"/>
-				<real value="0.0" key="238.IBViewIntegration.shadowOffsetWidth"/>
+				<real value="1" key="238.IBViewIntegration.shadowOffsetHeight"/>
+				<real value="1" key="238.IBViewIntegration.shadowOffsetWidth"/>
 				<string key="246.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<real value="1" key="246.IBViewIntegration.shadowBlurRadius"/>
 				<reference key="246.IBViewIntegration.shadowColor" ref="738221666"/>
@@ -1156,7 +1141,7 @@ AAAmIgAAEn8AALFwA</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">312</int>
+			<int key="maxID">339</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
