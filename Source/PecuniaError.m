@@ -1,10 +1,21 @@
-//
-//  PecuniaError.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 15.05.09.
-//  Copyright 2009 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "PecuniaError.h"
 #import "MessageLog.h"
@@ -40,19 +51,19 @@
 -(void)alertPanel
 {
 	// HBCI Errors
-	if(self.code < err_gen && self.title == nil) self.title = NSLocalizedString(@"AP7", @"HBCI error occured!");
+	if(self.code < err_gen && self.title == nil) self.title = NSLocalizedString(@"AP53", nil);
 
 	NSString *message = nil;
 	switch(self.code) {
-		case err_hbci_abort : message = NSLocalizedString(@"AP93", @"User abort"); break;
+		case err_hbci_abort : message = NSLocalizedString(@"AP106", nil); break;
 		case err_hbci_gen   : message = [self localizedDescription ]; break;
-		case err_hbci_passwd: message = NSLocalizedString(@"AP94", @"The password entered was wrong"); break;
-		case err_hbci_param : message = [NSString stringWithFormat: NSLocalizedString(@"AP95", @"Missing HBCI-Information: %@"), [self localizedDescription ] ]; break;
+		case err_hbci_passwd: message = NSLocalizedString(@"AP170", nil); break;
+		case err_hbci_param : message = [NSString stringWithFormat: NSLocalizedString(@"AP359", nil), [self localizedDescription ] ]; break;
         default             : message = [self localizedDescription ]; break;
 	}
 
 	if(message && title) {
-		NSRunAlertPanel(title, message,	NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(title, message,	NSLocalizedString(@"ok", nil), nil, nil);
 	} else NSLog(@"Unhandled alert: %@", [self localizedDescription ]);
     
 }
@@ -61,10 +72,10 @@
 {
 	NSString *message = nil;
 	switch(self.code) {
-		case err_hbci_abort : message = NSLocalizedString(@"AP93", @"User abort"); break;
+		case err_hbci_abort : message = NSLocalizedString(@"AP106", nil); break;
 		case err_hbci_gen   : message = [self localizedDescription ]; break;
-		case err_hbci_passwd: message = NSLocalizedString(@"AP94", @"The password entered was wrong"); break;
-		case err_hbci_param : message = [NSString stringWithFormat: NSLocalizedString(@"AP95", @"Missing HBCI-Information: %@"), [self localizedDescription ] ]; break;
+		case err_hbci_passwd: message = NSLocalizedString(@"AP170", nil); break;
+		case err_hbci_param : message = [NSString stringWithFormat: NSLocalizedString(@"AP359", nil), [self localizedDescription ] ]; break;
         default             : message = [self localizedDescription ]; break;
 	}    
     [[MessageLog log] addMessage: message withLevel: LogLevel_Error];

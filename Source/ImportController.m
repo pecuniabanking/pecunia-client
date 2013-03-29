@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -1002,8 +1002,8 @@
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject: currentSettings];
 	BOOL successful = [data writeToFile: currentSettings.fileName atomically: YES];
 	if (!successful) {
-		NSRunCriticalAlertPanel(NSLocalizedString(@"AP123", nil),
-								NSLocalizedString(@"AP124", nil),
+		NSRunCriticalAlertPanel(NSLocalizedString(@"AP110", nil),
+								NSLocalizedString(@"AP111", nil),
 								NSLocalizedString(@"ok", nil),
 								nil, nil,
 								currentSettings.fileName);
@@ -1034,10 +1034,10 @@
 
             // Check if file already exists and issue warning.
             if ([[NSFileManager defaultManager] fileExistsAtPath: fileName]) {
-                int res = NSRunAlertPanel(NSLocalizedString(@"AP16", @""),
-                                          NSLocalizedString(@"AP600", @""),
-                                          NSLocalizedString(@"no", @""),
-                                          NSLocalizedString(@"yes", @""),
+                int res = NSRunAlertPanel(NSLocalizedString(@"AP6", nil),
+                                          NSLocalizedString(@"AP600", nil),
+                                          NSLocalizedString(@"AP4", nil),
+                                          NSLocalizedString(@"AP3", nil),
                                           nil,
                                           fileName);
                 if (res == NSAlertDefaultReturn) {
@@ -1093,10 +1093,10 @@
 
 	NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist" , MOAssistant.assistant.importerDir, settingName];
 
-    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP622", @""),
-                                      NSLocalizedString(@"AP623", @""),
-                                      NSLocalizedString(@"cancel", @""),
-                                      NSLocalizedString(@"delete", @""),
+    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP622", nil),
+                                      NSLocalizedString(@"AP623", nil),
+                                      NSLocalizedString(@"AP2", nil),
+                                      NSLocalizedString(@"AP10", nil),
                                       nil, nil
                                       );
     if (res != NSAlertAlternateReturn) {

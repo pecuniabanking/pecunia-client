@@ -92,7 +92,7 @@ extern NSString* const CategoryKey;
         BOOL collTransferSupported = [[HBCIClient hbciClient ] isTransferSupported:TransferTypeCollectiveCredit forAccount:changedAccount];
         if (collTransferSupported == NO) {
             NSMenuItem *item = [collTransferButton itemAtIndex:0];
-            [item setTitle:NSLocalizedString(@"AP428",@"")];
+            [item setTitle:NSLocalizedString(@"AP428", nil)];
             [collTransferButton setEnabled:NO ];
         }
     }
@@ -178,24 +178,24 @@ extern NSString* const CategoryKey;
 		[predicateEditor addRow:self];
 }
 
--(BOOL)check
+- (BOOL)check
 {	
 	// check IBAN
 	HBCIClient *hbciClient = [HBCIClient hbciClient ];	
 	
 	if([hbciClient checkIBAN: account.iban ] == NO) {
-		NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-						NSLocalizedString(@"AP26", @"IBAN is not valid"),
-						NSLocalizedString(@"retry", @"Retry"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP59", nil), 
+						NSLocalizedString(@"AP70", nil),
+						NSLocalizedString(@"AP61", nil), nil, nil);
 		return NO;
 	}
 	
     if (![changedAccount.accountSuffix isEqualToString:account.accountSuffix ]) {
         if (changedAccount.accountSuffix != nil || account.accountSuffix != nil) {
-            int result = NSRunAlertPanel(NSLocalizedString(@"AP119", @""), 
-                                         NSLocalizedString(@"AP179", @""),
-                                         NSLocalizedString(@"no", @"No"), 
-                                         NSLocalizedString(@"yes", @"Yes"), nil);
+            int result = NSRunAlertPanel(NSLocalizedString(@"AP814", nil), 
+                                         NSLocalizedString(@"AP205", nil),
+                                         NSLocalizedString(@"AP4", nil), 
+                                         NSLocalizedString(@"AP3", nil), nil);
             if (result == NSAlertDefaultReturn) {
                 account.accountSuffix = changedAccount.accountSuffix;
                 return NO;

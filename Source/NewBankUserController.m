@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -154,7 +154,7 @@
         if ([self check ] == NO) return;
 
         if (step == 1) {
-            [self startProgressWithMessage: NSLocalizedString(@"AP177", @"") ];
+            [self startProgressWithMessage: NSLocalizedString(@"AP212", nil) ];
             [self performSelector:@selector(getBankSetupInfo) withObject:nil afterDelay:0 ];
             return;
         }
@@ -171,7 +171,7 @@
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
             
             // User anlegen
-            [self startProgressWithMessage: NSLocalizedString(@"AP178", @"") ];
+            [self startProgressWithMessage: NSLocalizedString(@"AP157", nil) ];
             PecuniaError *error = [[HBCIClient hbciClient ] addBankUser: currentUser];
             if (error) {
                 [self stopProgress ];
@@ -208,7 +208,7 @@
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
         
             // User anlegen
-            [self startProgressWithMessage: NSLocalizedString(@"AP178", @"") ];
+            [self startProgressWithMessage: NSLocalizedString(@"AP157", nil) ];
             PecuniaError *error = [[HBCIClient hbciClient ] addBankUser: currentUser];
             if (error) {
                 [self stopProgress ];
@@ -289,15 +289,15 @@
 
     if (step == 1) {
         if (currentUser.bankCode == nil) {
-            NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-                            NSLocalizedString(@"AP2", @"Please enter bank code"),
-                            NSLocalizedString(@"ok", @"Ok"), nil, nil);
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP51", nil),
+                            NSLocalizedString(@"ok", nil), nil, nil);
             return NO;
         }
         if (currentUser.name == nil) {
-            NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-                            NSLocalizedString(@"AP176", @"Please enter name"),
-                            NSLocalizedString(@"ok", @"Ok"), nil, nil);
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP214", nil),
+                            NSLocalizedString(@"ok", nil), nil, nil);
             return NO;
         }
     }
@@ -305,20 +305,12 @@
     
     if (step == 2) {
         if ([currentUser userId] == nil) {
-            NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-                            NSLocalizedString(@"AP3", @"Please enter user id"),
-                            NSLocalizedString(@"ok", @"Ok"), nil, nil);
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP52", nil),
+                            NSLocalizedString(@"ok", nil), nil, nil);
             return NO;
         }
     }
-    /*
-	if ([currentUser bankURL] == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP6", @"Please enter bank server URL"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
-		return NO;
-	}
-     */
 	return YES;
 }
 
@@ -691,9 +683,9 @@
     if ([user.secMethod intValue ] == SecMethod_PinTan) {
         [self updateTanMethods ];
     }
-    NSRunAlertPanel(NSLocalizedString(@"AP27", @"Success"), 
-                    NSLocalizedString(@"AP28", @"Bank parameter have been updated successfully"), 
-                    NSLocalizedString(@"ok", @"Ok"), nil, nil);
+    NSRunAlertPanel(NSLocalizedString(@"AP71", nil), 
+                    NSLocalizedString(@"AP100", nil),
+                    NSLocalizedString(@"ok", nil), nil, nil);
 }
 
 @end

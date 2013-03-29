@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -447,7 +447,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     titleStyle.fontName = @"Zapfino";
     titleStyle.fontSize = 16;
     titleStyle.color = [CPTColor colorWithComponentRed: 0 / 255.0 green: 104 / 255.0 blue: 181 / 255.0 alpha: 0.5];
-    CPTAxisTitle* title = [[CPTAxisTitle alloc] initWithText: NSLocalizedString(@"AP64", @"") textStyle: titleStyle];
+    CPTAxisTitle* title = [[CPTAxisTitle alloc] initWithText: NSLocalizedString(@"AP16", nil) textStyle: titleStyle];
     x1.axisTitle = title;
     x1.titleOffset = -180;
     x1.titleLocation = CPTDecimalFromFloat(15);
@@ -477,7 +477,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     x2.coordinate = CPTCoordinateX;
     x2.plotSpace = spendingsMiniPlot.plotSpace;
 
-    title = [[CPTAxisTitle alloc] initWithText: NSLocalizedString(@"AP65", @"") textStyle: titleStyle];
+    title = [[CPTAxisTitle alloc] initWithText: NSLocalizedString(@"AP17", nil) textStyle: titleStyle];
     x2.axisTitle = title;
     x2.titleOffset = -180;
     x2.titleLocation = CPTDecimalFromFloat(36);

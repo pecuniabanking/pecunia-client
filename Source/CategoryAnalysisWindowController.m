@@ -530,7 +530,7 @@ extern void *UserDefaultsBindingContext;
     textStyle.textAlignment = CPTTextAlignmentCenter;
     textStyle.fontSize = 14.0;
     y.titleTextStyle = textStyle;
-    y.title = NSLocalizedString(@"AP136", @"");
+    y.title = NSLocalizedString(@"AP210", nil);
     y.titleOffset = 60;
 }
 
@@ -656,7 +656,7 @@ extern void *UserDefaultsBindingContext;
     textStyle.textAlignment = CPTTextAlignmentCenter;
     textStyle.fontSize = 10.0;
     y.titleTextStyle = textStyle;
-    y.title = NSLocalizedString(@"transfers", @"");
+    y.title = NSLocalizedString(@"AP5", nil);
     y.titleOffset = 60;
 }
 
@@ -766,7 +766,7 @@ extern void *UserDefaultsBindingContext;
     textStyle.fontSize = 10.0;
     textStyle.textAlignment = CPTTextAlignmentCenter;
     y.titleTextStyle = textStyle;
-    y.title = NSLocalizedString(@"AP137", @"");
+    y.title = NSLocalizedString(@"AP211", nil);
     y.titleOffset = 8;
 }
 
@@ -1707,9 +1707,9 @@ int double_compare(const void *value1, const void *value2)
     }
     
     if (turnovers == 1) {
-        infoText = [NSString stringWithFormat: @"%@\n%@", dateDescription, NSLocalizedString(@"AP132", @"")];
+        infoText = [NSString stringWithFormat: @"%@\n%@", dateDescription, NSLocalizedString(@"AP206", nil)];
     } else {
-        infoText = [NSString stringWithFormat: @"%@\n%@", dateDescription, [NSString stringWithFormat: NSLocalizedString(@"AP133", @""), turnovers]];
+        infoText = [NSString stringWithFormat: @"%@\n%@", dateDescription, [NSString stringWithFormat: NSLocalizedString(@"AP207", nil), turnovers]];
     }
     dateInfoLayer.text = infoText;
     [infoLayer sizeToFit];

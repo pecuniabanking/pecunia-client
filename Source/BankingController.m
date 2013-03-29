@@ -206,7 +206,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     if (value == NSNoSelectionMarker || value == NSMultipleValuesMarker || value == nil) {
         self.image = nil;
         if (value == nil) {
-            self.toolTip = NSLocalizedString(@"AP199", nil);
+            self.toolTip = NSLocalizedString(@"AP119", nil);
         } else {
             self.toolTip = nil;
         }
@@ -224,7 +224,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     reference = url.absoluteString;
 
     if (url.isFileURL) {
-        self.toolTip = [NSString stringWithFormat: @"%@\n\n%@", url.path, NSLocalizedString(@"AP199.2", nil)];
+        self.toolTip = [NSString stringWithFormat: @"%@\n\n%@", url.path, NSLocalizedString(@"AP120", nil)];
 
         NSString *fileName = url.path;
         NSString *extension = fileName.pathExtension;
@@ -255,7 +255,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         
 
     } else {
-        self.toolTip = [NSString stringWithFormat: @"%@\n\n%@", reference, NSLocalizedString(@"AP199.2", nil)];
+        self.toolTip = [NSString stringWithFormat: @"%@\n\n%@", reference, NSLocalizedString(@"AP120", nil)];
         NSImage *image = [[NSWorkspace sharedWorkspace] iconForFileType: @"html"];
         image.size = NSMakeSize(128, 128);
         self.image = image;
@@ -811,17 +811,17 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     BankAccount *account;
     for (account in selectedAccounts) if(account.userId == nil && ([account.isManual boolValue] == NO)) nInactive++;
     if (nInactive == [selectedAccounts count]) {
-        NSRunAlertPanel(NSLocalizedString(@"AP87", @""), 
-                        NSLocalizedString(@"AP88", @""), 
-                        NSLocalizedString(@"ok", @"Ok"),
+        NSRunAlertPanel(NSLocalizedString(@"AP87", nil), 
+                        NSLocalizedString(@"AP215", nil), 
+                        NSLocalizedString(@"AP1", nil),
                         nil, nil
                         );
         return;
     }
     if(nInactive > 0) {
-        NSRunAlertPanel(NSLocalizedString(@"AP89", @""), 
-                        NSLocalizedString(@"AP90", @""), 
-                        NSLocalizedString(@"ok", @"Ok"),
+        NSRunAlertPanel(NSLocalizedString(@"AP216", nil), 
+                        NSLocalizedString(@"AP217", nil), 
+                        NSLocalizedString(@"AP1", nil),
                         nil, nil,
                         nInactive,
                         [selectedAccounts count]
@@ -854,7 +854,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: NO];
     StatusBarController *sc = [StatusBarController controller];
     [sc startSpinning];
-    [sc setMessage: NSLocalizedString(@"AP41", @"Load statements...") removeAfter:0];
+    [sc setMessage: NSLocalizedString(@"AP219", nil) removeAfter:0];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statementsNotification:) name:PecuniaStatementsNotification object:nil];
     [[HBCIClient hbciClient] getStatements: resultList];
@@ -914,7 +914,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         }
         [self requestFinished: resultList];
         
-        [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP80", @""), count] removeAfter:120 ];
+        [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), count] removeAfter:120 ];
     }
     autoSyncRunning = NO;
 
@@ -981,9 +981,9 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         }
     }
     if (alert == YES) {
-        NSRunAlertPanel(NSLocalizedString(@"AP119", @""), 
-                        NSLocalizedString(@"AP120", @""), 
-                        NSLocalizedString(@"ok", @"Ok"),
+        NSRunAlertPanel(NSLocalizedString(@"AP814", nil), 
+                        NSLocalizedString(@"AP815", nil), 
+                        NSLocalizedString(@"AP1", nil),
                         nil, nil
                         );
     }
@@ -1108,7 +1108,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     // Changes are stored in the controllers.
 }
 
--(IBAction)deleteAccount:(id)sender
+- (IBAction)deleteAccount:(id)sender
 {
     NSError	*error = nil;
     Category* cat = [self currentSelection];
@@ -1119,10 +1119,10 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     BankAccount *account = (BankAccount*)cat;
     
     // issue a confirmation
-    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @""),
-                                      NSLocalizedString(@"AP100", @""),
-                                      NSLocalizedString(@"no", @""),
-                                      NSLocalizedString(@"yes", @""),
+    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP802", nil),
+                                      NSLocalizedString(@"AP812", nil),
+                                      NSLocalizedString(@"AP4", nil),
+                                      NSLocalizedString(@"AP3", nil),
                                       nil,
                                       account.accountNumber
                                       );
@@ -1143,11 +1143,11 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         }
         
         if (hasAssignment) {
-            int alertResult = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @""),
-                                                      NSLocalizedString(@"AP29", @""),
-                                                      NSLocalizedString(@"yes", @""),
-                                                      NSLocalizedString(@"no", @""),
-                                                      NSLocalizedString(@"cancel", @""),
+            int alertResult = NSRunCriticalAlertPanel(NSLocalizedString(@"AP802", nil),
+                                                      NSLocalizedString(@"AP801", nil),
+                                                      NSLocalizedString(@"AP3", nil),
+                                                      NSLocalizedString(@"AP4", nil),
+                                                      NSLocalizedString(@"AP2", nil),
                                                       account.accountNumber
                                                       );
             if (alertResult == NSAlertDefaultReturn) {
@@ -1168,72 +1168,6 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         return;
     }
 }
-
-/*
--(void)removeDeletedAccounts
-{
-    NSError	*error = nil;
-    BOOL	flg_update=NO;
-    
-    NSFetchRequest *request = [model fetchRequestTemplateForName:@"allBankAccounts"];
-    NSArray *bankAccounts = [self.managedObjectContext executeFetchRequest:request error:&error];
-    if( error != nil || bankAccounts == nil) {
-        NSAlert *alert = [NSAlert alertWithError:error];
-        [alert runModal];
-        return;
-    }
-    NSArray *hbciAccounts = [[HBCIClient hbciClient] accounts];
-    for(BankAccount *account in bankAccounts) {
-        BOOL found = NO;
-        for(Account *acc in hbciAccounts) {
-            if ([acc.accountNumber isEqualToString: account.accountNumber] && [acc.bankCode isEqualToString:account.bankCode]) {
-                found = YES;
-                break;
-            }
-        }
-        if (found == NO) {
-            // Accounts will be deleted - keep Statements ?
-            BOOL keepAssignedStatements = NO;
-            NSMutableSet *stats = [account mutableSetValueForKey: @"statements"];
-            if(stats && [stats count] > 0) {
-                BOOL hasAssignment;
-                
-                // check if transactions are assigned
-                for(BankStatement* stat in stats) {
-                    if ([stat hasAssignment]) {
-                        hasAssignment = YES;
-                        break;
-                    }
-                }
-                
-                if (hasAssignment) {
-                    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP30", @""),
-                                                      NSLocalizedString(@"AP29", @""),
-                                                      NSLocalizedString(@"yes", @""),
-                                                      NSLocalizedString(@"no", @""),
-                                                      nil,
-                                                      account.accountNumber
-                                                      );
-                    if (res == NSAlertDefaultReturn) {
-                        keepAssignedStatements = YES;
-                    } else keepAssignedStatements = NO;
-                }
-            }
-            [self removeBankAccount:account keepAssignedStatements:keepAssignedStatements];
-            flg_update = YES;
-        }
-    }
-    
-    // save updates
-    if(flg_update == YES) {
-        if([self.managedObjectContext save: &error] == NO) {
-            NSAlert *alert = [NSAlert alertWithError:error];
-            [alert runModal];
-            return;
-        }
-    }
-}
-*/
 
 #pragma mark -
 #pragma mark Page switching
@@ -1691,9 +1625,9 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     // check if there are any bank users
     NSArray *users = [BankUser allUsers];
     if (users == nil || users.count == 0) {
-        NSRunAlertPanel(NSLocalizedString(@"AP91", @""),
-                        NSLocalizedString(@"AP38", @""), 
-                        NSLocalizedString(@"ok", @"Ok"), nil, nil);
+        NSRunAlertPanel(NSLocalizedString(@"AP105", nil),
+                        NSLocalizedString(@"AP803", nil), 
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return;
     }
     
@@ -1737,9 +1671,9 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     // check if bic and iban is defined
     if (account != nil) {
         if(account.iban == nil || account.bic == nil) {
-            NSRunAlertPanel(NSLocalizedString(@"AP35", @"Incomplete data"), 
-                            [NSString stringWithFormat: NSLocalizedString(@"AP36", @"Missing IBAN or BIC for account %@"), account.accountNumber ], 
-                            NSLocalizedString(@"ok", @"Ok"), nil, nil);
+            NSRunAlertPanel(NSLocalizedString(@"AP101", nil), 
+                            [NSString stringWithFormat: NSLocalizedString(@"AP77", nil), account.accountNumber ], 
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return;
         }
     }
@@ -1760,9 +1694,9 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     // check if bic and iban is defined
     if (account != nil) {
         if(account.iban == nil || account.bic == nil) {
-            NSRunAlertPanel(NSLocalizedString(@"AP35", @"Incomplete data"), 
-                            [NSString stringWithFormat: NSLocalizedString(@"AP36", @"Missing IBAN or BIC for account %@"), account.accountNumber ], 
-                            NSLocalizedString(@"ok", @"Ok"), nil, nil);
+            NSRunAlertPanel(NSLocalizedString(@"AP101", nil), 
+                            [NSString stringWithFormat: NSLocalizedString(@"AP77", nil), account.accountNumber ], 
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return;
         }
     }
@@ -2280,10 +2214,10 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     StatCatAssignment *stat;
     
     if([stats count] > 0) {
-        int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP84", @"Delete category"),
-                                          NSLocalizedString(@"AP85", @"Category '%@' still has %d assigned transactions. Do you want to proceed anyway?"),
-                                          NSLocalizedString(@"no", @"No"),
-                                          NSLocalizedString(@"yes", @"Yes"),
+        int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP303", nil),
+                                          NSLocalizedString(@"AP304", nil),
+                                          NSLocalizedString(@"AP4", nil),
+                                          NSLocalizedString(@"AP3", nil),
                                           nil,
                                           [cat localName],
                                           [stats count],
@@ -2463,10 +2397,10 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     BOOL doDuplicateCheck = assignments.count == 1;
 
     if (!doDuplicateCheck) {
-        int result = NSRunAlertPanel(NSLocalizedString(@"AP68a", nil),
-                                     NSLocalizedString(@"AP70a", nil),
-                                     NSLocalizedString(@"yes", nil),
-                                     NSLocalizedString(@"no", nil),
+        int result = NSRunAlertPanel(NSLocalizedString(@"AP806", nil),
+                                     NSLocalizedString(@"AP809", nil),
+                                     NSLocalizedString(@"AP3", nil),
+                                     NSLocalizedString(@"AP4", nil),
                                      nil, assignments.count);
         if (result != NSAlertDefaultReturn) {
             return;
@@ -2505,19 +2439,19 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
             int res;
             if (hasDuplicate) {
-                res = NSRunAlertPanel(NSLocalizedString(@"AP68", nil),
-                                      NSLocalizedString(@"AP69", nil),
-                                      NSLocalizedString(@"yes", nil),
-                                      NSLocalizedString(@"no", nil),
+                res = NSRunAlertPanel(NSLocalizedString(@"AP805", nil),
+                                      NSLocalizedString(@"AP807", nil),
+                                      NSLocalizedString(@"AP3", nil),
+                                      NSLocalizedString(@"AP4", nil),
                                       nil);
                 if (res == NSAlertDefaultReturn) {
                     deleteStatement = YES;
                 }
             } else {
-                res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP68", nil),
-                                              NSLocalizedString(@"AP70", nil),
-                                              NSLocalizedString(@"no", nil),
-                                              NSLocalizedString(@"yes", nil),
+                res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP805", nil),
+                                              NSLocalizedString(@"AP808", nil),
+                                              NSLocalizedString(@"AP4", nil),
+                                              NSLocalizedString(@"AP3", nil),
                                               nil);
                 if(res == NSAlertAlternateReturn) {
                     deleteStatement = YES;
@@ -2803,7 +2737,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: NO];
     StatusBarController *sc = [StatusBarController controller];
     [sc startSpinning];
-    [sc setMessage: NSLocalizedString(@"AP41", @"Load statements...") removeAfter:0];
+    [sc setMessage: NSLocalizedString(@"AP219", nil) removeAfter:0];
     
     // get statements in separate thread
     autoSyncRunning = YES;
@@ -2916,14 +2850,14 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     
     StatusBarController *sc = [StatusBarController controller];
     [sc startSpinning];
-    [sc setMessage: NSLocalizedString(@"AP110", @"Open database...") removeAfter:0];
+    [sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter:0];
     
 /*
     // Open encrypted database
     if ([[MOAssistant assistant] encrypted]) {
         StatusBarController *sc = [StatusBarController controller];
         [sc startSpinning];
-        [sc setMessage: NSLocalizedString(@"AP110", @"Open database...") removeAfter:0];
+        [sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter:0];
         
         @try {
             [[MOAssistant assistant] decrypt];
@@ -2964,7 +2898,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     if ([assistant encrypted]) {
         StatusBarController *sc = [StatusBarController controller];
         [sc startSpinning];
-        [sc setMessage: NSLocalizedString(@"AP110", @"Open database...") removeAfter:0];
+        [sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter:0];
         
         @try {
             [assistant decrypt];
@@ -3001,10 +2935,10 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
     // Check if there are any bank users or at least manual accounts.
     if (BankUser.allUsers.count == 0 && [Category.bankRoot.children count] == 0) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP39", nil),
-                                  NSLocalizedString(@"AP185", nil),
-                                  NSLocalizedString(@"yes", nil),
-                                  NSLocalizedString(@"AP200", nil),
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP804", nil),
+                                  NSLocalizedString(@"AP151", nil),
+                                  NSLocalizedString(@"AP3", nil),
+                                  NSLocalizedString(@"AP800", nil),
                                   nil
                                   );
         if (res == NSAlertDefaultReturn) {
@@ -3027,10 +2961,10 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 {
     // Check for a new transfer not yet finished.
     if ([transfersController editingInProgress]) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP114", @""),
-                                  NSLocalizedString(@"AP111.2", @""),
-                                  NSLocalizedString(@"AP411", @""),
-                                  NSLocalizedString(@"AP113", @""),
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP109", nil),
+                                  NSLocalizedString(@"AP431", nil),
+                                  NSLocalizedString(@"AP411", nil),
+                                  NSLocalizedString(@"AP412", nil),
                                   nil
                                   );
         if (res == NSAlertAlternateReturn) {
@@ -3051,11 +2985,11 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     NSArray *transfers = [self.managedObjectContext executeFetchRequest: request error: &error];
     if (error || [transfers count] == 0) return YES;
     
-    int res = NSRunAlertPanel(NSLocalizedString(@"AP114", @""),
-                              NSLocalizedString(@"AP111", @""),
-                              NSLocalizedString(@"close anyway", @""),
-                              NSLocalizedString(@"AP113", @""),
-                              NSLocalizedString(@"AP112", @""),
+    int res = NSRunAlertPanel(NSLocalizedString(@"AP109", nil),
+                              NSLocalizedString(@"AP430", nil),
+                              NSLocalizedString(@"AP7", nil),
+                              NSLocalizedString(@"AP412", nil),
+                              NSLocalizedString(@"AP432", nil),
                               nil
                               );
     if (res == NSAlertDefaultReturn)
@@ -3285,7 +3219,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         // No attachment yet. Allow adding one if editing is possible.
         if (categoryAssignments.selectedObjects.count == 1) {
             NSOpenPanel *panel = [NSOpenPanel openPanel];
-            panel.title = NSLocalizedString(@"AP198", nil);
+            panel.title = NSLocalizedString(@"AP118", nil);
             panel.canChooseDirectories = NO;
             panel.canChooseFiles = YES;
             panel.allowsMultipleSelection = NO;
@@ -3365,8 +3299,8 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 {
     int res = NSRunAlertPanel(NSLocalizedString(@"AP301", nil),
                               NSLocalizedString(@"AP302", nil),
-                              NSLocalizedString(@"no", nil),
-                              NSLocalizedString(@"yes", nil),
+                              NSLocalizedString(@"AP4", nil),
+                              NSLocalizedString(@"AP3", nil),
                               nil
                               );
     if (res != NSAlertAlternateReturn) {
@@ -3450,9 +3384,9 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
             // Check for the type of transaction and adjust remote name display accordingly.
             if ([firstValue compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
-                [remoteNameLabel setStringValue: NSLocalizedString(@"AP134", "")];
+                [remoteNameLabel setStringValue: NSLocalizedString(@"AP208", nil)];
             } else {
-                [remoteNameLabel setStringValue: NSLocalizedString(@"AP135", "")];
+                [remoteNameLabel setStringValue: NSLocalizedString(@"AP209", nil)];
             }
 
             // need to switch details view?
@@ -3485,10 +3419,10 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 #pragma mark Developer tools
 
 - (IBAction)deleteAllData: (id)sender {
-    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP193", nil),
-                                      NSLocalizedString(@"AP194", nil),
-                                      NSLocalizedString(@"no", nil),
-                                      NSLocalizedString(@"yes", nil),
+    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP114", nil),
+                                      NSLocalizedString(@"AP115", nil),
+                                      NSLocalizedString(@"AP4", nil),
+                                      NSLocalizedString(@"AP3", nil),
                                       nil
                                       );
     if (res != NSAlertAlternateReturn) {
@@ -3590,9 +3524,9 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         // BankUser update BPD
         bankUsers = [BankUser allUsers ];
         if ([bankUsers count ] > 0) {
-            NSRunAlertPanel(NSLocalizedString(@"AP183", @""),
-                            NSLocalizedString(@"AP184", @""),
-                            NSLocalizedString(@"ok", @"Ok"),
+            NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
+                            NSLocalizedString(@"AP203", nil),
+                            NSLocalizedString(@"AP1", nil),
                             nil, nil
                             );
             for (BankUser *user in [BankUser allUsers]) {
@@ -3604,9 +3538,9 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         
         // success message
         if ([users count] > 0 && [bankUsers count] > 0) {
-            NSRunAlertPanel(NSLocalizedString(@"AP183", @""),
-                            NSLocalizedString(@"AP192", @""),
-                            NSLocalizedString(@"ok", @"Ok"),
+            NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
+                            NSLocalizedString(@"AP156", nil),
+                            NSLocalizedString(@"AP1", nil),
                             nil, nil
                             );
         }

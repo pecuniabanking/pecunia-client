@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -420,7 +420,7 @@
  */
 - (BOOL)validateCharacters: (NSString*)s
 {
-    NSCharacterSet *cs = [NSCharacterSet characterSetWithCharactersInString: NSLocalizedString(@"AP0", @"")];
+    NSCharacterSet *cs = [NSCharacterSet characterSetWithCharactersInString: NSLocalizedString(@"AP200", nil)];
     
     if (s == nil || [s length] == 0) {
         return YES;
@@ -428,9 +428,9 @@
     
     for (NSUInteger i = 0; i < [s length]; i++) {
         if ([cs characterIsMember: [s characterAtIndex: i]] == NO) {
-            NSRunAlertPanel(NSLocalizedString(@"AP170", @""), 
-                            NSLocalizedString(@"AP171", @""), 
-                            NSLocalizedString(@"ok", @"Ok"), 
+            NSRunAlertPanel(NSLocalizedString(@"AP73", nil),
+                            NSLocalizedString(@"AP74", nil), 
+                            NSLocalizedString(@"ok", nil),
                             nil,
                             nil,
                             [s characterAtIndex:i ]);
@@ -470,25 +470,25 @@
     }
     
 	if(currentTransfer.remoteName == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP8", @"Please enter a receiver"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP54", nil),
+						NSLocalizedString(@"ok", nil), nil, nil);
 		return NO;
 	}
 	// do not check remote account for EU transfers, instead IBAN
 	if (activeType != TransferTypeEU && activeType != TransferTypeSEPA) {
 		if(currentTransfer.remoteAccount == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-							NSLocalizedString(@"AP9", @"Please enter an account number"),
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+							NSLocalizedString(@"AP55", nil),
+							NSLocalizedString(@"ok", nil), nil, nil);
 			return NO;
 		}
 	} else {
 		// EU or SEPA transfer
 		if(currentTransfer.remoteIBAN == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"),
-							NSLocalizedString(@"AP24", @"Please enter a valid IBAN"),
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+							NSLocalizedString(@"AP68", nil),
+							NSLocalizedString(@"ok", nil), nil, nil);
 			return NO;
 		}
 		// check IBAN
@@ -498,9 +498,9 @@
         currentTransfer.remoteBIC = [currentTransfer.remoteBIC uppercaseString];
 
 		if([[HBCIClient hbciClient ] checkIBAN: currentTransfer.remoteIBAN ] == NO) {
-			NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-							NSLocalizedString(@"AP26", @"IBAN is not valid"),
-							NSLocalizedString(@"retry", @"Retry"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+							NSLocalizedString(@"AP70", nil),
+							NSLocalizedString(@"AP61", nil), nil, nil);
 			return NO;
 		}
         
@@ -508,40 +508,40 @@
 	
 	if(activeType == TransferTypeStandard || activeType == TransferTypeDated || activeType == TransferTypeDebit) {
 		if(currentTransfer.remoteBankCode == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-							NSLocalizedString(@"AP10", @"Please enter a bank code"),
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+							NSLocalizedString(@"AP56", nil),
+							NSLocalizedString(@"ok", nil), nil, nil);
 			return NO;
 		}
 	}
 	
 	if(activeType == TransferTypeSEPA) {
 		if(currentTransfer.remoteBIC == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-							NSLocalizedString(@"AP25", @"Please enter valid bank identification code (BIC)"),
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+							NSLocalizedString(@"AP69", nil),
+							NSLocalizedString(@"ok", nil), nil, nil);
 			return NO;
 		}
 	}
 	
 	if( (value = currentTransfer.value) == nil ) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP11", @"Please enter a value"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP57", nil),
+						NSLocalizedString(@"ok", nil), nil, nil);
 		return NO;
 	}
 	if([value doubleValue ] <= 0) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP12", @"Please enter a value greater 0"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP58", nil),
+						NSLocalizedString(@"ok", nil), nil, nil);
 		return NO;
 	}
 	
 	// purpose?
 	if (currentTransfer.purpose1 == nil || [currentTransfer.purpose1 length ] == 0) {
-		NSRunAlertPanel(NSLocalizedString(@"AP1", @"Missing data"), 
-						NSLocalizedString(@"AP121", @"Please enter a purpose"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+						NSLocalizedString(@"AP76", nil),
+						NSLocalizedString(@"ok", nil), nil, nil);
 		return NO;
 	}
     
@@ -553,9 +553,9 @@
         [gregorian components:NSWeekdayCalendarUnit fromDate:currentTransfer.valutaDate ];
         int weekday = [weekdayComponents weekday];
         if (weekday == 1 || weekday == 7) {
-			NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-							NSLocalizedString(@"AP425", @""),
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP59", nil), 
+							NSLocalizedString(@"AP425", nil),
+							NSLocalizedString(@"ok", nil), nil, nil);
 			return NO;
         }
     }
@@ -566,17 +566,17 @@
 		double		limit = 0.0;
 		
 		if(![curr isEqual: foreignCurr ] && ![curr isEqual: @"EUR" ] && ![curr isEqual: account.currency ]) {
-			NSRunAlertPanel(NSLocalizedString(@"AP22", @"Currency not allowed"), 
-							[NSString stringWithFormat: NSLocalizedString(@"AP23", @"The transfer currency is not allowed"), [limits localLimit ] ], 
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP67", nil), 
+							[NSString stringWithFormat: NSLocalizedString(@"AP63", nil), [limits localLimit ] ], 
+							NSLocalizedString(@"ok", nil), nil, nil);
 			return NO;
 		}
 		
 		if([curr isEqual: foreignCurr ] && limits) limit = [limits foreignLimit ]; else limit = [limits localLimit ];
 		if(limit > 0 && [value doubleValue ] > limit) {
-			NSRunAlertPanel(NSLocalizedString(@"AP20", @"Amount too high"), 
-							[NSString stringWithFormat: NSLocalizedString(@"AP21", @"The transfer amount must not be higher than %.2f"), [limits localLimit ] ], 
-							NSLocalizedString(@"ok", @"Ok"), nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"AP66", nil), 
+							[NSString stringWithFormat: NSLocalizedString(@"AP62", nil), [limits localLimit ] ], 
+							NSLocalizedString(@"ok", nil), nil, nil);
 			return NO;
 		}
 	}
@@ -595,9 +595,9 @@
 											   inCountry: currentTransfer.remoteCountry ];
             
 			if(res == NO) {
-				NSRunAlertPanel(NSLocalizedString(@"wrong_input", @"Wrong input"), 
-								NSLocalizedString(@"AP13", @"Account number is not valid"),
-								NSLocalizedString(@"retry", @"Retry"), nil, nil);
+				NSRunAlertPanel(NSLocalizedString(@"AP59", nil), 
+								NSLocalizedString(@"AP60", nil),
+								NSLocalizedString(@"AP61", nil), nil, nil);
 				return NO;
 			}
 		}
@@ -627,16 +627,16 @@
 
 	// check for availability
 	if([[HBCIClient hbciClient ] isTransferSupported: tt forAccount: acc ] == NO) {
-		NSRunAlertPanel(NSLocalizedString(@"AP18", @"Job is not supported"), 
-						NSLocalizedString(@"AP19", @"This kind of transfer is not supported by your bank for the selected account"),
-						NSLocalizedString(@"ok", @"Ok"), nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"AP64", nil), 
+						NSLocalizedString(@"AP65", nil),
+						NSLocalizedString(@"ok", nil), nil, nil);
 		return;
 	}
 
 	transferType = tt;
 	account = acc;
 	
-	currentTransfer = [NSEntityDescription insertNewObjectForEntityForName:@"Transfer" inManagedObjectContext: context];
+	currentTransfer = [NSEntityDescription insertNewObjectForEntityForName: @"Transfer" inManagedObjectContext: context];
 	
 	[self prepareTransfer];
 
@@ -881,16 +881,9 @@
 	return YES;
 }
 
-
--(void)windowWillClose:(NSNotification *)aNotification
+-(void)windowWillClose: (NSNotification *)aNotification
 {
 	donation = NO;
-/*	
-	if([transactions count ] == 0)	{
-		[NSApp stopModalWithCode:1];
-		[transactions release ];
-	}
-*/ 
 }
 
 -(void)controlTextDidEndEditing:(NSNotification *)aNotification

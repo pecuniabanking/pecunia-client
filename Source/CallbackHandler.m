@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -56,8 +56,8 @@ static CallbackHandler *callbackHandler = nil;
     NSString* passwd = [Keychain passwordForService: currentPwService account: currentPwAccount ];
     if(passwd == nil) {
         if(pwWindow == nil) {
-            pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP54", @"")
-                                                      title: NSLocalizedString(@"AP53", @"")];
+            pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP163", nil)
+                                                      title: NSLocalizedString(@"AP162", nil)];
             
         } else [pwWindow retry ];
         
@@ -151,7 +151,7 @@ static CallbackHandler *callbackHandler = nil;
     if(passwd) return passwd;
     
     if(pwWindow == nil) {
-        pwWindow = [[PasswordWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP96", @""), data.userId ]
+        pwWindow = [[PasswordWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP171", nil), data.userId ]
                                                   title: @"Bitte PIN eingeben" ];
         
     } else [pwWindow retry ];
@@ -184,7 +184,7 @@ static CallbackHandler *callbackHandler = nil;
         } else return  @"<abort>";
     }
     
-    TanWindow *tanWindow = [[TanWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP98", @""), data.userId, data.message]];
+    TanWindow *tanWindow = [[TanWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP172", nil), data.userId, data.message]];
     int res = [NSApp runModalForWindow: [tanWindow window]];
     [tanWindow close ];
     if(res == 0) {
@@ -234,8 +234,8 @@ static CallbackHandler *callbackHandler = nil;
         [[NSNotificationCenter defaultCenter ] postNotification:notification ];
     }
     if ([data.command isEqualToString:@"needChipcard" ]) {
-        notificationController = [[NotificationWindowController alloc ] initWithMessage:NSLocalizedString(@"AP350", @"") 
-                                                                                  title:NSLocalizedString(@"AP357", @"") ];
+        notificationController = [[NotificationWindowController alloc ] initWithMessage:NSLocalizedString(@"AP350", nil)
+                                                                                  title:NSLocalizedString(@"AP357", nil) ];
         [notificationController showWindow:self ];
         //[self performSelector:@selector(showNotificationWindow) withObject:nil afterDelay:0.5 ];
     }
@@ -245,8 +245,8 @@ static CallbackHandler *callbackHandler = nil;
     }
     
     if ([data.command isEqualToString:@"needHardPin" ]) {
-        notificationController = [[NotificationWindowController alloc ] initWithMessage:NSLocalizedString(@"AP351", @"") 
-                                                                                  title:NSLocalizedString(@"AP357", @"") ];
+        notificationController = [[NotificationWindowController alloc ] initWithMessage:NSLocalizedString(@"AP351", nil)
+                                                                                  title:NSLocalizedString(@"AP357", nil) ];
         [notificationController showWindow:self ];
     }
     if ([data.command isEqualToString:@"haveHardPin" ]) {

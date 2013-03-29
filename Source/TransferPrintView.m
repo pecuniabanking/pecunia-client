@@ -1,10 +1,21 @@
-//
-//  TransferPrintView.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 31.08.12.
-//  Copyright (c) 2012 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "TransferPrintView.h"
 #import "Transfer.h"
@@ -89,19 +100,19 @@
     NSString *typeString = nil;
     switch (type) {
         case TransferTypeStandard:
-            typeString = NSLocalizedString(@"AP404",@"");
+            typeString = NSLocalizedString(@"AP404", nil);
             break;
         case TransferTypeDated:
-            typeString = NSLocalizedString(@"AP429",@"");
+            typeString = NSLocalizedString(@"AP429", nil);
             break;
         case TransferTypeSEPA:
-            typeString = NSLocalizedString(@"AP406",@"");
+            typeString = NSLocalizedString(@"AP406", nil);
             break;
         case TransferTypeEU:
-            typeString = NSLocalizedString(@"AP405",@"");
+            typeString = NSLocalizedString(@"AP405", nil);
             break;
         case TransferTypeDebit:
-            typeString = NSLocalizedString(@"AP407",@"");
+            typeString = NSLocalizedString(@"AP407", nil);
             break;
         default:
             typeString = @"";

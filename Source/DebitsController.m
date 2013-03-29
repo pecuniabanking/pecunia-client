@@ -545,7 +545,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 {
     if ([transactionController editingInProgress]) {
         NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText: NSLocalizedString(@"AP413", @"")];
+        [alert setMessageText: NSLocalizedString(@"AP413", nil)];
         [alert runModal];
 
         return NO;
@@ -557,10 +557,10 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     // Only debit transfer types must be passed in here.
     switch (type) {
         case TransferTypeDebit:
-            [titleText setStringValue: NSLocalizedString(@"AP407", @"")];
-            [receiverText setStringValue: NSLocalizedString(@"AP134", @"")];
-            [accountText setStringValue: NSLocalizedString(@"AP401", @"")];
-            [bankCodeText setStringValue: NSLocalizedString(@"AP400", @"")];
+            [titleText setStringValue: NSLocalizedString(@"AP407", nil)];
+            [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
+            [accountText setStringValue: NSLocalizedString(@"AP401", nil)];
+            [bankCodeText setStringValue: NSLocalizedString(@"AP400", nil)];
             debitFormular.icon = [NSImage imageNamed: @"debit-transfer-icon.png"];
             remoteAccountKey = @"selection.remoteAccount";
             remoteBankCodeKey = @"selection.remoteBankCode";
@@ -785,10 +785,10 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 	NSManagedObjectContext *context = MOAssistant.assistant.context;
 	
     if (type == DebitReadyForUseDataType) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP417", @""), 
-                                  NSLocalizedString(@"AP419", @""),
-                                  NSLocalizedString(@"cancel", @""), 
-                                  NSLocalizedString(@"delete", @""), 
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil), 
+                                  NSLocalizedString(@"AP419", nil),
+                                  NSLocalizedString(@"AP2", nil),
+                                  NSLocalizedString(@"AP10", nil),
                                   nil);
         if (res != NSAlertAlternateReturn) {
             return NO;
@@ -813,15 +813,15 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     
     NSString *warningTitle;
     if (type == DebitDataType) {
-        warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP417", @"") : NSLocalizedString(@"AP418", @"");
+        warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP417", nil) : NSLocalizedString(@"AP418", nil);
     } else {
-        warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP421", @"") : NSLocalizedString(@"AP422", @"");
+        warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP421", nil) : NSLocalizedString(@"AP422", nil);
     }
-    NSString *warningText = (entries.count == 1) ? NSLocalizedString(@"AP419", @"") : NSLocalizedString(@"AP420", @"");
-    int res = NSRunAlertPanel(NSLocalizedString(warningTitle, @""), 
-                              NSLocalizedString(warningText, @""),
-                              NSLocalizedString(@"cancel", @""), 
-                              NSLocalizedString(@"delete", @""), 
+    NSString *warningText = (entries.count == 1) ? NSLocalizedString(@"AP419", nil) : NSLocalizedString(@"AP420", nil);
+    int res = NSRunAlertPanel(NSLocalizedString(warningTitle, nil), 
+                              NSLocalizedString(warningText, nil),
+                              NSLocalizedString(@"AP2", nil),
+                              NSLocalizedString(@"AP10", nil),
                               nil);
     if (res != NSAlertAlternateReturn) {
         return NO;
@@ -880,7 +880,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     
     if (transfers.count > 1) {
         NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText: NSLocalizedString(@"AP414", @"")];
+        [alert setMessageText: NSLocalizedString(@"AP414", nil)];
         [alert runModal];
         
         return NO;
@@ -918,7 +918,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     if ([transactionController editingInProgress]) {
         dropToEditRejected = YES;
         NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText: NSLocalizedString(@"AP413", @"")];
+        [alert setMessageText: NSLocalizedString(@"AP413", nil)];
         [alert runModal];
         
         return NO;
@@ -1014,10 +1014,10 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         
         // now ask for accounts with method "ask"
         if ([account.collTransferMethod intValue] == CTM_ask) {
-            NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP426", @""), 
-                                            NSLocalizedString(@"AP427", @""), 
-                                            NSLocalizedString(@"no", @"No"), 
-                                            NSLocalizedString(@"yes", @"Yes"), 
+            NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP426", nil), 
+                                            NSLocalizedString(@"AP427", nil), 
+                                            NSLocalizedString(@"AP4", nil), 
+                                            NSLocalizedString(@"AP3", nil),
                                             nil,
                                             account.accountNumber);
             if (res == NSAlertDefaultReturn) {
@@ -1150,10 +1150,10 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 
 	NSManagedObjectContext *context = MOAssistant.assistant.context;
 
-    int res = NSRunAlertPanel(NSLocalizedString(@"AP417", @""),
-                              NSLocalizedString(@"AP419", @""),
-                              NSLocalizedString(@"cancel", @""),
-                              NSLocalizedString(@"delete", @""),
+    int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
+                              NSLocalizedString(@"AP419", nil),
+                              NSLocalizedString(@"AP2", nil),
+                              NSLocalizedString(@"AP10", nil),
                               nil);
     if (res != NSAlertAlternateReturn) {
         return;
@@ -1291,12 +1291,12 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     }
 
     NSString *warningTitle;
-    warningTitle = (selection.count == 1) ? NSLocalizedString(@"AP421", @"") : NSLocalizedString(@"AP422", @"");
-    NSString *warningText = (selection.count == 1) ? NSLocalizedString(@"AP419", @"") : NSLocalizedString(@"AP420", @"");
-    int res = NSRunAlertPanel(NSLocalizedString(warningTitle, @""),
-                              NSLocalizedString(warningText, @""),
-                              NSLocalizedString(@"cancel", @""),
-                              NSLocalizedString(@"delete", @""),
+    warningTitle = (selection.count == 1) ? NSLocalizedString(@"AP421", nil) : NSLocalizedString(@"AP422", nil);
+    NSString *warningText = (selection.count == 1) ? NSLocalizedString(@"AP419", nil) : NSLocalizedString(@"AP420", nil);
+    int res = NSRunAlertPanel(NSLocalizedString(warningTitle, nil),
+                              NSLocalizedString(warningText, nil),
+                              NSLocalizedString(@"AP2", nil),
+                              NSLocalizedString(@"AP10", nil),
                               nil);
     if (res != NSAlertAlternateReturn) {
         return;
@@ -1544,9 +1544,9 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 {
     if (object == pendingDebits) {
         if (pendingDebits.selectedObjects.count == 0) {
-            sendDebitsButton.title = NSLocalizedString(@"AP415", @"");
+            sendDebitsButton.title = NSLocalizedString(@"AP415", nil);
         } else {
-            sendDebitsButton.title = NSLocalizedString(@"AP416", @"");
+            sendDebitsButton.title = NSLocalizedString(@"AP416", nil);
         }
         [sendDebitsButton setEnabled: [pendingDebits.arrangedObjects count] > 0];
     }

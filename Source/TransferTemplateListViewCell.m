@@ -187,11 +187,11 @@ extern void *UserDefaultsBindingContext;
     NSString *accountTitle;
     NSString *bankCodeTitle;
     if (type == TransferTypeEU || type == TransferTypeSEPA) {
-        accountTitle = [NSString stringWithFormat: @"%@ ", NSLocalizedString(@"AP409", @"")];
-        bankCodeTitle = [NSString stringWithFormat: @"\t%@ ", NSLocalizedString(@"AP410", @"")];
+        accountTitle = [NSString stringWithFormat: @"%@ ", NSLocalizedString(@"AP409", nil)];
+        bankCodeTitle = [NSString stringWithFormat: @"\t%@ ", NSLocalizedString(@"AP410", nil)];
     } else {
-        accountTitle = [NSString stringWithFormat: @"%@ ", NSLocalizedString(@"AP401", @"")];
-        bankCodeTitle = [NSString stringWithFormat: @"\t%@ ", NSLocalizedString(@"AP400", @"")];
+        accountTitle = [NSString stringWithFormat: @"%@ ", NSLocalizedString(@"AP401", nil)];
+        bankCodeTitle = [NSString stringWithFormat: @"\t%@ ", NSLocalizedString(@"AP400", nil)];
     }
 
     [accountLabel setToolTip: [NSString stringWithFormat: @"%@%@%@%@",

@@ -1063,7 +1063,7 @@ static NSFont *smallNumberFont;
     }
 
     if (currentAssignments.count == 0) {
-        cell.remoteNameText.stringValue = NSLocalizedString(@"AP750", @"");
+        cell.remoteNameText.stringValue = NSLocalizedString(@"AP750", nil);
         cell.valueText.hidden = YES;
         cell.currencyText.hidden = YES;
         cell.categoryColor = nil;

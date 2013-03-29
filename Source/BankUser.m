@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -311,9 +311,9 @@
 		return nil;
 	}
     if ([bankUsers count] == 0) {
-        NSRunAlertPanel(NSLocalizedString(@"AP190", @""),
-                        NSLocalizedString(@"AP191",@""),
-                        NSLocalizedString(@"ok",@""),
+        NSRunAlertPanel(NSLocalizedString(@"AP201", nil),
+                        NSLocalizedString(@"AP202", nil),
+                        NSLocalizedString(@"AP1", nil),
                         nil, nil, userId, bankCode);
         return nil;
     }

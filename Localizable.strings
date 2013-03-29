@@ -1,217 +1,126 @@
-// XXX: refactor keys and split messages into groups.
-
 // Common strings.
-// AP0..AP99
+// AP0..AP49
+"AP1" = "Ok";
+"AP2" = "Abbrechen";
+"AP3" = "Ja";
+"AP4" = "Nein";
+"AP5" = "Überweisungen";
+"AP6" = "Warnung";
+"AP7" = "Dennoch Beenden";
+"AP8" = "KONTEN";
+"AP9" = "KATEGORIEN";
+"AP10" = "Löschen";
+"AP11" = "Warnung";
+"AP12" = " Nicht zugeordnet";
+"AP13" = "Nicht bekannt";
+"AP14" = "Verwenden";
+"AP15" = "Überschreiben";
+"AP16" = "Einnahmen";
+"AP17" = "Ausgaben";
 
-"AP0" = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß 0123456789.,&-/+*$%";
-"EUR" = "€";
-"close" = "Schließen";
-"AP1" = "Eingabe unvollständig";
-"AP2" = "Bitte Bankleitzahl eingeben";
-"ok" = "Ok";
-"cancel" = "Abbrechen";
-"AP3" = "Bitte Benutzerkennung eingeben";
-"AP4" = "Bitte Kundennummer eingeben";
-"AP5" = "Bitte PIN/TAN-Kennung eingeben";
-"AP6" = "Bitte Bankserver-URL eingeben";
-"AP7" = "HBCI-Fehler aufgetreten!";
-"AP8" = "Bitte Empfänger eingeben";
-"AP9" = "Bitte Kontonummer eingeben";
-"AP10" = "Bitte Bankleitzahl eingeben";
-"AP11" = "Bitte Betrag eingeben";
-"AP12" = "Bitte Betrag größer 0 eingeben";
-"wrong_input" = "Falsche Eingabe";
-"AP13" = "Die Kontonummer ist nicht gültig";
-"retry" = "Eingabe wiederholen";
-"yes" = "Ja";
-"no" = "Nein";
-"transfers" = "Überweisungen";
-"transfers_info" = "Überweisungen";
-"accounts" = "Konten";
-"accounts_info" = "Kontensicht";
-"AP16" = "Warnung";
-"AP17" = "Der Bankkennung sind noch Konten zugeordnet. Möchten Sie die zugeordneten Konten löschen?";
-"close anyway" = "Dennoch Beenden";
-"banking_root" = "BANKKONTEN";
-"category_root" = "KATEGORIEN";
-"delete" = "Löschen";
+// Validation strings.
+// AP50..AP99
+"AP50" = "Eingabe unvollständig";
+"AP51" = "Bitte Bankleitzahl eingeben";
+"AP52" = "Bitte Benutzerkennung eingeben";
+"AP53" = "HBCI-Fehler aufgetreten!";
+"AP54" = "Bitte Empfänger eingeben";
+"AP55" = "Bitte Kontonummer eingeben";
+"AP56" = "Bitte Bankleitzahl eingeben";
+"AP57" = "Bitte Betrag eingeben";
+"AP58" = "Bitte Betrag größer 0 eingeben";
+"AP59" = "Falsche Eingabe";
+"AP60" = "Die Kontonummer ist nicht gültig";
+"AP61" = "Eingabe wiederholen";
+"AP62" = "Der Überweisungsbetrag darf nicht höher als %.2f sein";
+"AP63" = "Die angegebene Zielwährung kann nicht verwendet werden";
+"AP64" = "Transaktion wird nicht unterstützt";
+"AP65" = "Für das gewählte Konto wird diese Art der Überweisung nicht von Ihrer Bank unterstützt";
+"AP66" = "Betrag ist zu hoch";
+"AP67" = "Währung nicht erlaubt";
+"AP68" = "Bitte eine gültige IBAN eingeben";
+"AP69" = "Bitte Bankidentifizierung (BIC) eingeben";
+"AP70" = "Die eingegebene IBAN ist nicht gültig";
+"AP71" = "Erfolg";
+"AP72" = "Hinweis";
+"AP73" = "Ungültiges Zeichen";
+"AP74" = "Das Zeichen '%C' ist im Verwendungszweck und Empfängernamen nicht erlaubt!";
+"AP75" = "Die Regel konnte nicht interpretiert werden, vermutlich sind Sonderzeichen enthalten. Der Parser meldet folgendes Problem: %@";
+"AP76" = "Bitte einen Verwendungszweck angeben";
+"AP77" = "IBAN und/oder BIC sind für das Konto %@ nicht eingetragen";
 
-"AP10030" = "Montag"; // TODO: renumber when refactoring of the other strings has been finished.
-"AP10031" = "Dienstag";
-"AP10032" = "Mittwoch";
-"AP10033" = "Donnerstag";
-"AP10034" = "Freitag";
-"AP10035" = "Samstag";
-"AP10036" = "Sonntag";
-
-// General messages.
-// AP100..AP199
-"AP100" = "Kritisch";
-"AP101" = "Fehler";
-"AP102" = "Warnung";
-"AP103" = "Notiz";
-"AP104" = "Information";
-"AP105" = "Debug";
-"AP106" = "Alle Meldungen";
-"display_log" = "Meldungen";
-"log_info" = "Meldungen ausgeben";
-"nass_root" = " Nicht zugeordnet";
-"category_rules" = "Umsatzregeln";
-"rules_info" = "Umsatzregeln bearbeiten";
-"unknown" = "Nicht bekannt";
-"change_account" = "Konto ändern";
-"AP18" = "Transaktion wird nicht unterstützt";
-"AP19" = "Für das gewählte Konto wird diese Art der Überweisung nicht von Ihrer Bank unterstützt";
-"AP20" = "Betrag ist zu hoch";
-"AP21" = "Der Überweisungsbetrag darf nicht höher als %.2f sein";
-"AP22" = "Währung nicht erlaubt";
-"AP23" = "Die angegebene Zielwährung kann nicht verwendet werden";
-"AP24" = "Bitte eine gültige IBAN eingeben";
-"AP25" = "Bitte Bankidentifizierung (BIC) eingeben";
-"AP26" = "Die eingegebene IBAN ist nicht gültig";
-"AP27" = "Erfolg";
-"AP28" = "Bankparameter wurden erfolgreich aktualisiert";
-"AP29" = "Für das Konto %@ gibt es Umsätze die Kategorien zugeordnet sind. Sie können diese Umsätze behalten, so dass die Kategoriewerte nicht verändert werden. Möchten Sie diese Umsätze behalten?";
-"AP30" = "Konto löschen";
-"AP31" = "Löschen nicht möglich";
-"AP32" = "Das Backend konnte das gewählte Konto nicht löschen";
-"AP33" = "PINs aus dem Schlüsselbund entfernen";
-"AP34" = "Es werden alle PINs aus dem Schlüsselbund entfernt. Möchten Sie fortfahren?";
-"AP35" = "Daten unvollständig";
-"AP36" = "IBAN und/oder BIC sind für das Konto %@ nicht eingetragen";
-"AP37" = "Konto anlegen nicht möglich";
-"AP38" = "Bitte legen Sie zuerst eine Bankkennung an";
-"AP39" = "Bankkennung anlegen";
-"AP40" = "Bankkennung konnte ermittelt werden, HBCI meldet jedoch einen Fehler bei der Reinitialisierung";
-"AP41" = "Kontoumsätze holen...";
-"AP42" = "Pecunia-Datenverzeichnis ändern";
-"AP43" = "Im Verzeichnis %@ existieren bereits Pecunia-Daten. Sollen sie überschrieben werden?";
-"AP44" = "Die Pecunia-Datendatei konnte nicht in das Verzeichnis %@ kopiert werden";
-"AP45" = "Die Pecunia-Datendatei (%@) wurde nicht gefunden";
-"AP46" = "Pecunia Sicherheit";
-"AP47" = "Das von Ihnen gewählte Passwort ist nicht sicher. Bitte wählen Sie ein Passwort mit mindestens 8 Zeichen";
-"AP48" = "Die angegebenen Passwörter stimmen nicht überein";
-"AP49" = "Die Datei %@ konnte nicht angelegt werden";
-"AP50" = "Die Datei %@ existiert nicht";
-"AP51" = "Zugriff auf Datendatei nicht möglich: %@";
-"AP52" = "Für weitere Informationen siehe Anwendungslog";
-"AP53" = "Sicherheitsabfrage";
-"AP54" = "Bitte geben Sie das Pecunia-Password (Password der Datenablage) ein";
-"AP55" = "Die Datei %@ existiert bereits. Möchten Sie sie verwenden?";
-"AP56" = "Der Umzug der Pecunia-Daten war nicht erfolgreich. Es wird auf die alte Datenablage zurückgegriffen";
-"AP57" = "Die Änderung des Speicherorts wird erst beim nächsten Neustart wirksam. Möchten Sie Pecunia jetzt neu starten?";
-"AP58" = "Es existiert bereits eine verschlüsselte Datendatei (%@), die am %@ zuletzt verwendet wurde. Möchten Sie die Datei verwenden oder eine neue mit den derzeitigen Daten anlegen?";
-"AP59" = "Die Datei %@ existiert bereits. Möchten Sie die Datei überschreiben oder verwenden?";
-"AP60" = "Verwenden";
-"AP61" = "Überschreiben";
-"AP62" = "Neue anlegen";
-"AP63" = "Die verschlüsselte Datendatei wird beim nächsten Neustart verwendet. Möchten Sie Pecunia jetzt neu starten?";
-"AP64" = "Einnahmen";
-"AP65" = "Ausgaben";
-"AP66" = "Falsche PIN";
-"AP67" = "Sie haben für die Kontenkennung %@ die PIN %@ eingegeben. Die PIN wurde von der Bank zurückgewiesen.";
-"AP68" = "Kontoumsatz löschen";
-"AP68a" = "Kontoumsätze löschen";
-"AP69" = "Für den gewählten Kontoumsatz wurde ein Duplikat gefunden. Möchten Sie den Umsatz löschen?";
-"AP70" = "Für den gewählten Kontoumsatz wurde kein Duplikat gefunden. Der Umsatz geht unwiderruflich verloren. Möchten Sie ihn trotzdem löschen?";
-"AP70a" = "Die ausgewählten %lu Umsätze gehen unwiderruflich verloren. Möchten Sie diese trotzdem löschen?";
-"AP71" = "Kontoumsätze exportieren";
-"AP72" = "Bitte bestimmen Sie zuerst in den Einstellungen die zu exportierenden Felder.";
-"AP73" = "Die Anmeldung bei der Bank war nicht erfolgreich. Meistens sind fehlerhafte Angeben von Kundennummer, Benutzer oder HBCI-URL die Ursache. Bitte überprüfen Sie ihre Angaben und setzen Sie sich ggfs. mir Ihrer Bank in Verbindung.";
-"AP74" = "Die Kontoumsätze wurden erfolgreich in die Datei %@ geschrieben";
-"AP75" = "Regel sichern";
-"AP76" = "Die Regel für die Kategorie %@ wurde verändert. Möchten Sie die Regel für die Kategorie sichern?";
-"AP77" = "Regel löschen";
-"AP78" = "Möchten Sie die Regel für die Kategorie %@ wirklich löschen?";
-"AP79" = "Möchten Sie die Verschlüsselung Ihrer Konto- und Umsatzdaten wirklich aufheben?";
-"AP80" = "Es wurden %d neue Umsätze geladen";
-"AP81" = "Verschlüsselung erfolgreich";
-"AP82" = "Sie können jetzt die unverschlüsselte Datei %@ löschen bzw. zur Datensicherung an einem sicheren Ort aufbewahren";
-"AP83" = "Unbekannt";
-"AP84" = "Kategorie löschen";
-"AP85" = "Der Kategorie '%@' sind noch %d Umsätze zugeordnet. Möchten Sie die Kategorie wirklich löschen?";
-"AP86" = "Die Bankkennung konnte nicht gelöscht werden";
-"AP87" = "Kontenabfrage nicht möglich";
-"AP88" = "Keines der ausgewählten Konten besitzt eine Bankkennung";
-"AP89" = "Kontenabfrage nur eingeschränkt möglich";
-"AP90" = "Für %d von %d der ausgewählten Konten kann keine Kontenabfrage durchgeführt werden, da sie keine Bankkennung besitzen";
-"AP91" = "Spenden";
-"AP92" = "Danke dass Sie spenden möchten. Bitte wählen Sie das Bankkonto aus von dem Sie aus spenden möchten und wählen Sie dann die Funktion erneut";
-"AP93" = "Abbruch durch Benutzer";
-"AP94" = "Das eingegebene Passwort ist falsch";
-"AP95" = "Fehlende HBCI-Information: %@";
-"AP96" = "Bitte geben Sie die PIN für Benutzerkennung %@ ein";
-"AP97" = "Aktion nicht möglich da bereits eine andere HBCI-Anfrage verarbeitet wird";
-"AP98" = "Bitte geben Sie die TAN für Benutzerkennung %@ ein: %@";
-"AP99" = "HBCI-Aktion ist nicht möglich, da der HBCI-Dienst beendet wurde bzw. nicht gestartet werden kann";
-"AP100" = "Möchten Sie das Konto %@ wirklich löschen?";
-"AP101" = "Keine (manuelle Kontoverwaltung)";
+// General + miscellaneous messages.
+// AP100..AP149
+"AP100" = "Bankparameter wurden erfolgreich aktualisiert";
+"AP101" = "Daten unvollständig";
 "AP102" = "Datenumsetzung bestätigen";
 "AP103" = "Die Daten werden jetzt umgesetzt. Dieser Vorgang kann nicht rückgängig gemacht werden. Bitte stellen Sie sicher, dass eine Datensicherung vorhanden ist. Möchten Sie die Daten jetzt umsetzen?";
-"AP104" = "Bestätigung";
-"AP105" = "Möchten Sie die Überweisungsvorlage löschen?";
-"AP106" = "Neue Überweisungsvorlage";
-"AP107" = "Konten für Benutzerkennung %@ wurden erfolgreich aktualisiert";
-"AP108" = "Daueraufträge abrufen";
-"AP109" = "Es sind zur Zeit keine Konten für die Verwendung mit Daueraufträgen gekennzeichnet. Möchten Sie dass Pecunia nun prüft, welche Konten Daueraufträge unterstützen?";
-"AP110" = "Datenbank wird geöffnet...";
-"AP111" = "Es gibt noch nicht gesendete Überweisungsaufträge in der Überweisungsliste.\nMöchten Sie Pecunia dennoch beenden?\n\nHinweis: Die Aufträge können auch später noch gesendet werden.\n";
-"AP111.2" = "Sie haben eine neue Überweisung begonnen ohne sie zu beenden. Wenn Sie Pecunia jetzt schließen wird diese Überweisung verworfen. Was wollen Sie tun?";
-"AP112" = "Jetzt senden";
-"AP113" = "Überweisungsseite";
-"AP114" = "Pecunia beenden";
-"AP115" = "Dauerauftrag einrichten";
-"AP116" = "Bei mindestens einem Dauerauftrag wurde die Auftrags-ID nicht übermittelt. Möchten Sie die Daueraufträge mit der Bank abgleichen?";
-"AP119" = "Kontowarnung";
-"AP120" = "Eines Ihrer Konten hat zu wenig Guthaben bzw. ist ins Minus gekommen!";
-"AP121" = "Bitte einen Verwendungszweck angeben";
-"AP123" = "Speichern nicht erfolgreich";
-"AP124" = "Die Datei %@ konnte nicht gespeichert werden!";
-"AP125" = "Bitte Konto auswählen";
-"AP130" = "Hinweis";
-"AP131" = "Für die Ausführung von Pecunia ist Java Version 1.6.0 oder höher erforderlich. Auf Ihrem System ist Java nicht installiert. Bitte installieren Sie zunächst die Java Runtime Umgebung (JRE)";
-"AP132" = "1 Umsatz";
-"AP133" = "%u Umsätze";
-"AP134" = "Empfänger:";
-"AP135" = "Auftraggeber:";
-"AP136" = "Salden und Umsätze";
-"AP137" = "Übersicht";
-"AP170" = "Ungültiges Zeichen";
-"AP171" = "Das Zeichen '%C' ist im Verwendungszweck und Empfängernamen nicht erlaubt!";
-"AP172" = "Die Kundenmeldung konnte nicht erfolgreich versendet werden";
-"AP173" = "Bei der Ermittlung der unterstützten Geschäftsvorfälle ist ein unbekannter Fehler aufgetreten";
-"AP174" = "Keine Information verfügbar";
-"AP175" = "Ermittle TAN-Medium-Informationen...";
-"AP176" = "Bitte geben Sie einen Namen für die Bankkennung ein. Der Name dient zur Unterscheidung der verschiedenen Bankkennungen und ist frei wählbar";
-"AP177" = "Verbindung mit der Bank aufbauen...";
-"AP178" = "Bankkennung abrufen und einrichten...";
-"AP179" = "Wenn Sie die Unterkonto-Information ändern können Sie das Konto ggfs. nicht mehr verwenden. Möchten Sie die Information trotzdem ändern?";
-"AP180" = "Speichern nicht möglich";
-"AP181" = "Die Regel konnte nicht interpretiert werden, vermutlich sind Sonderzeichen enthalten. Der Parser meldet folgendes Problem: %@";
-"AP182" = "Selektion unterstützte Geschäftsvorfälle";
-"AP183" = "Datenmigration";
-"AP184" = "Pecunia ermittelt jetzt für jede Bankkennung Informationen über erlaubte Geschäftsvorfälle, TAN-Methoden etc. Dazu müssen Sie evtl. Ihre PINs eingeben (falls nicht im Schlüsselbund gespeichert).";
-"AP185" = "Willkommen bei Pecunia. Um mit Ihrer Bank kommunizieren zu können müssen Sie zunächst eine sogenannte 'Bankkennung' anlegen. Mit der Bankkennung identifizieren Sie sich bei der Bank. Möchten Sie nun eine Bankkennung anlegen?";
-"AP186" = "Daten konnten nicht verschlüsselt werden";
-"AP187" = "Daten konnten nicht entschlüsselt werden";
-"AP188" = "Die Verschlüsselung wurde aufgehoben";
-"AP189" = "Die Pecunia-Datendatei wurde erfolgreich verschlüsselt";
-"AP190" = "Unbekannte Bankkennung";
-"AP191" = "Die Bankkennung %@ für die Bankleitzahl %@ ist nicht vorhanden. Bitte legen Sie sie erneut an";
-"AP192" = "Die Daten wurden erfolgreich migriert";
-"AP193" = "Alle Daten löschen";
-"AP194" = "Achtung: alle Daten, wie Umsätze, Konten, Kategorien und Regeln werde gelöscht. Es sollte ein Backup der Datendatei existieren (z.B. über Time Machine), da sonst alle Daten unwiederbringlich verloren sind.\n\nMöchten Sie Ihre Daten wirklich löschen?";
-"AP195" = "Die Pecunia-Datendatei ist nicht im Default-Verzeichnis gespeichert. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
-"AP196" = "Die Pecunia-Datendatei ist verschlüsselt. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
-"AP197" = "Es wurden %d neue Abrechnungen geladen";
-"AP197.2" = "Es liegen keine (neuen) Abrechnungen vor";
-"AP198" = "Datei auswählen";
-"AP199" = "Klicken, um eine Datei auszuwählen. Dateien und URLs können auch direkt hierher gezogen werden";
-"AP199.2" = "Klicken, um den Anhang anzusehen";
+"AP104" = "Bitte bestimmen Sie zuerst in den Einstellungen die zu exportierenden Felder.";
+"AP105" = "Spenden";
+"AP106" = "Abbruch durch Benutzer";
+"AP107" = "Bestätigung";
+"AP108" = "Datenbank wird geöffnet...";
+"AP109" = "Pecunia beenden";
+"AP110" = "Speichern nicht erfolgreich";
+"AP111" = "Die Datei %@ konnte nicht gespeichert werden!";
+"AP112" = "Keine Information verfügbar";
+"AP113" = "Speichern nicht möglich";
+"AP114" = "Alle Daten löschen";
+"AP115" = "Achtung: alle Daten, wie Umsätze, Konten, Kategorien und Regeln werden gelöscht. Es sollte ein Backup der Datendatei existieren (z.B. über Time Machine), da sonst alle Daten unwiederbringlich verloren sind.\n\nMöchten Sie Ihre Daten wirklich löschen?";
+"AP116" = "Es wurden %d neue Abrechnungen geladen";
+"AP117" = "Es liegen keine (neuen) Abrechnungen vor";
+"AP118" = "Datei auswählen";
+"AP119" = "Klicken, um eine Datei auszuwählen. Dateien und URLs können auch direkt hierher gezogen werden";
+"AP120" = "Klicken, um den Anhang anzusehen";
 
-// Bank accounts + users
+// Banking setup, migration, encryption, security.
+// AP150..AP199
+"AP150" = "Datenmigration";
+"AP151" = "Willkommen bei Pecunia. Um mit Ihrer Bank kommunizieren zu können müssen Sie zunächst eine sogenannte 'Bankkennung' anlegen. Mit der Bankkennung identifizieren Sie sich bei der Bank. Möchten Sie nun eine Bankkennung anlegen?";
+"AP152" = "Daten konnten nicht verschlüsselt werden";
+"AP153" = "Daten konnten nicht entschlüsselt werden";
+"AP154" = "Die Verschlüsselung wurde aufgehoben";
+"AP155" = "Die Pecunia-Datendatei wurde erfolgreich verschlüsselt";
+"AP156" = "Die Daten wurden erfolgreich migriert";
+"AP157" = "Bankkennung abrufen und einrichten...";
+"AP158" = "Die Kundenmeldung konnte nicht erfolgreich versendet werden";
+"AP159" = "Die Pecunia-Datendatei ist nicht im Default-Verzeichnis gespeichert. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
+"AP160" = "Die Pecunia-Datendatei ist verschlüsselt. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
+"AP161" = "Möchten Sie die Verschlüsselung Ihrer Konto- und Umsatzdaten wirklich aufheben?";
+"AP162" = "Sicherheitsabfrage";
+"AP163" = "Bitte geben Sie das Pecunia-Password (Password der Datenablage) ein";
+"AP164" = "Die Datei %@ existiert bereits. Möchten Sie die Datei überschreiben oder verwenden?";
+"AP165" = "PINs aus dem Schlüsselbund entfernen";
+"AP166" = "Es werden alle PINs aus dem Schlüsselbund entfernt. Möchten Sie fortfahren?";
+"AP167" = "Pecunia Sicherheit";
+"AP168" = "Das von Ihnen gewählte Passwort ist nicht sicher. Bitte wählen Sie ein Passwort mit mindestens 8 Zeichen";
+"AP169" = "Die angegebenen Passwörter stimmen nicht überein";
+"AP170" = "Das eingegebene Passwort ist falsch";
+"AP171" = "Bitte geben Sie die PIN für Benutzerkennung %@ ein";
+"AP172" = "Bitte geben Sie die TAN für Benutzerkennung %@ ein: %@";
+
+// Banking common + business transactions
 // AP200..AP249
-"AP200" = "Nein, nicht jetzt";
+"AP200" = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß 0123456789.,&-/+*$%";
+"AP201" = "Unbekannte Bankkennung";
+"AP202" = "Die Bankkennung %@ für die Bankleitzahl %@ ist nicht vorhanden. Bitte legen Sie sie erneut an";
+"AP203" = "Pecunia ermittelt jetzt für jede Bankkennung Informationen über erlaubte Geschäftsvorfälle, TAN-Methoden etc. Dazu müssen Sie evtl. Ihre PINs eingeben (falls nicht im Schlüsselbund gespeichert).";
+"AP204" = "Selektion unterstützte Geschäftsvorfälle";
+"AP205" = "Wenn Sie die Unterkonto-Information ändern können Sie das Konto ggfs. nicht mehr verwenden. Möchten Sie die Information trotzdem ändern?";
+"AP206" = "1 Umsatz";
+"AP207" = "%u Umsätze";
+"AP208" = "Empfänger:";
+"AP209" = "Auftraggeber:";
+"AP210" = "Salden und Umsätze";
+"AP211" = "Übersicht";
+"AP212" = "Verbindung mit der Bank aufbauen...";
+"AP213" = "Ermittle TAN-Medium-Informationen...";
+"AP214" = "Bitte geben Sie einen Namen für die Bankkennung ein. Der Name dient zur Unterscheidung der verschiedenen Bankkennungen und ist frei wählbar";
+"AP215" = "Keines der ausgewählten Konten besitzt eine Bankkennung";
+"AP216" = "Kontenabfrage nur eingeschränkt möglich";
+"AP217" = "Für %d von %d der ausgewählten Konten kann keine Kontenabfrage durchgeführt werden, da sie keine Bankkennung besitzen";
+"AP218" = "Es wurden %d neue Umsätze geladen";
+"AP219" = "Kontoumsätze holen...";
 
 // Categories
 // AP250..AP349
@@ -267,6 +176,12 @@
 
 "AP301" = "Kategorie Icons zurücksetzen";
 "AP302" = "Alle Icons, die den Kategorien zugewiesen wurden werden gelöscht und durch ein Standardbild erstetzt. Jetzt durchführen?";
+"AP303" = "Kategorie löschen";
+"AP304" = "Der Kategorie '%@' sind noch %d Umsätze zugeordnet. Möchten Sie die Kategorie wirklich löschen?";
+"AP305" = "Regel sichern";
+"AP306" = "Die Regel für die Kategorie %@ wurde verändert. Möchten Sie die Regel für die Kategorie sichern?";
+"AP307" = "Regel löschen";
+"AP308" = "Möchten Sie die Regel für die Kategorie %@ wirklich löschen?";
 
 // Callback and backend.
 // AP350..AP399
@@ -278,6 +193,8 @@
 "AP355" = "Benutzerkennung anmelden";
 "AP356" = "Benutzerkennung %@ konnte nicht angemeldet werden (Details siehe Nachrichtenlog).";
 "AP357" = "Chipkarten-Terminal";
+"AP358" = "HBCI-Aktion ist nicht möglich, da der HBCI-Dienst beendet wurde bzw. nicht gestartet werden kann";
+"AP359" = "Fehlende HBCI-Information: %@";
 
 // Transfers.
 // AP400..AP449
@@ -293,6 +210,7 @@
 "AP409" = "IBAN";
 "AP410" = "BIC";
 "AP411" = "Bearbeitung abbrechen";
+"AP412" = "Überweisungsseite";
 "AP413" = "Beenden Sie bitte zunächst die aktuelle Überweisung.";
 "AP414" = "Es kann immer nur eine Überweisung bearbeitet werden. Wählen Sie deshalb nur einen einzigen Eintrag aus der Liste.";
 "AP415" = "Alle Aufträge senden";
@@ -310,6 +228,11 @@
 "AP427" = "Möchten Sie die Überweisungen von Konto %@ als Sammelüberweisung ausführen?";
 "AP428" = "Nicht unterstützt";
 "AP429" = "Terminierte Überweisung";
+"AP430" = "Es gibt noch nicht gesendete Überweisungsaufträge in der Überweisungsliste.\nMöchten Sie Pecunia dennoch beenden?\n\nHinweis: Die Aufträge können auch später noch gesendet werden.\n";
+"AP431" = "Sie haben eine neue Überweisung begonnen ohne sie zu beenden. Wenn Sie Pecunia jetzt schließen wird diese Überweisung verworfen. Was wollen Sie tun?";
+"AP432" = "Jetzt senden";
+"AP433" = "Möchten Sie die Überweisungsvorlage löschen?";
+"AP434" = "Neue Überweisungsvorlage";
 
 // Standing orders.
 // AP450..AP499
@@ -326,6 +249,8 @@
 "AP460" = "Änderungen senden ...";
 "AP461" = "Es gibt noch Änderungen in Daueraufträgen die nicht an die Bank gesendet wurden. Diese Änderungen gehen durch das Abrufen der Daueraufträge verloren.";
 "AP462" = "Trotzdem abrufen";
+"AP463" = "Dauerauftrag einrichten";
+"AP464" = "Bei mindestens einem Dauerauftrag wurde die Auftrags-ID nicht übermittelt. Möchten Sie die Daueraufträge mit der Bank abgleichen?";
 
 // Growl messages.
 // AP500..AP549
@@ -425,5 +350,25 @@
 "AP751" = "Block";
 "AP752" = "Streifen";
 
-// Use a new block of IDs for next set of strings!
+// Bank accounts + users
 // AP800..AP849
+"AP800" = "Nein, nicht jetzt";
+"AP801" = "Für das Konto %@ gibt es Umsätze die Kategorien zugeordnet sind. Sie können diese Umsätze behalten, so dass die Kategoriewerte nicht verändert werden. Möchten Sie diese Umsätze behalten?";
+"AP802" = "Konto löschen";
+"AP803" = "Bitte legen Sie zuerst eine Bankkennung an";
+"AP804" = "Bankkennung anlegen";
+"AP805" = "Kontoumsatz löschen";
+"AP806" = "Kontoumsätze löschen";
+"AP807" = "Für den gewählten Kontoumsatz wurde ein Duplikat gefunden. Möchten Sie den Umsatz löschen?";
+"AP808" = "Für den gewählten Kontoumsatz wurde kein Duplikat gefunden. Der Umsatz geht unwiderruflich verloren. Möchten Sie ihn trotzdem löschen?";
+"AP809" = "Die ausgewählten %lu Umsätze gehen unwiderruflich verloren. Möchten Sie diese trotzdem löschen?";
+"AP810" = "Kontoumsätze exportieren";
+"AP811" = "Die Kontoumsätze wurden erfolgreich in die Datei %@ geschrieben";
+"AP812" = "Möchten Sie das Konto %@ wirklich löschen?";
+"AP813" = "Keine (manuelle Kontoverwaltung)";
+"AP814" = "Kontowarnung";
+"AP815" = "Eines Ihrer Konten hat zu wenig Guthaben bzw. ist ins Minus gekommen!";
+
+// Use a new block of IDs for next set of strings!
+// AP850..AP899
+

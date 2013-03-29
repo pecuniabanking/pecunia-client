@@ -305,9 +305,9 @@ extern void *UserDefaultsBindingContext;
     int turnovers = [self countSameDatesFromRow: row];
     NSString* turnoversString;
     if (turnovers != 1)
-        turnoversString = [NSString stringWithFormat: NSLocalizedString(@"AP133", @""), turnovers];
+        turnoversString = [NSString stringWithFormat: NSLocalizedString(@"AP207", nil), turnovers];
     else
-        turnoversString = NSLocalizedString(@"AP132", @"");
+        turnoversString = NSLocalizedString(@"AP206", nil);
     
     cell.delegate = self;
     NSDictionary *details = @{StatementDateKey: currentDate,

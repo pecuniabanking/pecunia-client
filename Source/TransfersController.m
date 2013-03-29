@@ -672,7 +672,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     if ([transactionController editingInProgress]) {
         NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText: NSLocalizedString(@"AP413", @"")];
+        [alert setMessageText: NSLocalizedString(@"AP413", nil)];
         [alert runModal];
 
         return NO;
@@ -682,45 +682,45 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSString *remoteBankCodeKey;
     switch (type) {
         case TransferTypeInternal:
-            [titleText setStringValue: NSLocalizedString(@"AP403", @"")];
-            [receiverText setStringValue: NSLocalizedString(@"AP408", @"")];
+            [titleText setStringValue: NSLocalizedString(@"AP403", nil)];
+            [receiverText setStringValue: NSLocalizedString(@"AP408", nil)];
             transferFormular.icon = [NSImage imageNamed: @"internal-transfer-icon.png"];
             remoteAccountKey = @"selection.remoteAccount";
             remoteBankCodeKey = @"selection.remoteBankCode";
             break;
         case TransferTypeStandard:
         case TransferTypeDated: // TODO: needs to be handled differently, for all the various terminated flavours.
-            [titleText setStringValue: NSLocalizedString(@"AP404", @"")];
-            [receiverText setStringValue: NSLocalizedString(@"AP134", @"")];
-            [accountText setStringValue: NSLocalizedString(@"AP401", @"")];
-            [bankCodeText setStringValue: NSLocalizedString(@"AP400", @"")];
+            [titleText setStringValue: NSLocalizedString(@"AP404", nil)];
+            [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
+            [accountText setStringValue: NSLocalizedString(@"AP401", nil)];
+            [bankCodeText setStringValue: NSLocalizedString(@"AP400", nil)];
             transferFormular.icon = [NSImage imageNamed: @"standard-transfer-icon.png"];
             remoteAccountKey = @"selection.remoteAccount";
             remoteBankCodeKey = @"selection.remoteBankCode";
             break;
         case TransferTypeEU:
-            [titleText setStringValue: NSLocalizedString(@"AP405", @"")];
-            [receiverText setStringValue: NSLocalizedString(@"AP134", @"")];
-            [accountText setStringValue: NSLocalizedString(@"AP409", @"")];
-            [bankCodeText setStringValue: NSLocalizedString(@"AP410", @"")];
+            [titleText setStringValue: NSLocalizedString(@"AP405", nil)];
+            [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
+            [accountText setStringValue: NSLocalizedString(@"AP409", nil)];
+            [bankCodeText setStringValue: NSLocalizedString(@"AP410", nil)];
             transferFormular.icon = [NSImage imageNamed: @"eu-transfer-icon.png"];
             remoteAccountKey = @"selection.remoteIBAN";
             remoteBankCodeKey = @"selection.remoteBIC";
             break;
         case TransferTypeSEPA:
-            [titleText setStringValue: NSLocalizedString(@"AP406", @"")];
-            [receiverText setStringValue: NSLocalizedString(@"AP134", @"")];
-            [accountText setStringValue: NSLocalizedString(@"AP409", @"")];
-            [bankCodeText setStringValue: NSLocalizedString(@"AP410", @"")];
+            [titleText setStringValue: NSLocalizedString(@"AP406", nil)];
+            [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
+            [accountText setStringValue: NSLocalizedString(@"AP409", nil)];
+            [bankCodeText setStringValue: NSLocalizedString(@"AP410", nil)];
             transferFormular.icon = [NSImage imageNamed: @"sepa-transfer-icon.png"];
             remoteAccountKey = @"selection.remoteIBAN";
             remoteBankCodeKey = @"selection.remoteBIC";
             break;
         case TransferTypeDebit:
-            [titleText setStringValue: NSLocalizedString(@"AP407", @"")];
-            [receiverText setStringValue: NSLocalizedString(@"AP134", @"")];
-            [accountText setStringValue: NSLocalizedString(@"AP401", @"")];
-            [bankCodeText setStringValue: NSLocalizedString(@"AP400", @"")];
+            [titleText setStringValue: NSLocalizedString(@"AP407", nil)];
+            [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
+            [accountText setStringValue: NSLocalizedString(@"AP401", nil)];
+            [bankCodeText setStringValue: NSLocalizedString(@"AP400", nil)];
             transferFormular.icon = [NSImage imageNamed: @"debit-transfer-icon.png"];
             remoteAccountKey = @"selection.remoteAccount";
             remoteBankCodeKey = @"selection.remoteBankCode";
@@ -1009,10 +1009,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 	NSManagedObjectContext *context = MOAssistant.assistant.context;
 	
     if (type == TransferReadyForUseDataType) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP417", @""), 
-                                  NSLocalizedString(@"AP419", @""),
-                                  NSLocalizedString(@"cancel", @""), 
-                                  NSLocalizedString(@"delete", @""), 
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil), 
+                                  NSLocalizedString(@"AP419", nil),
+                                  NSLocalizedString(@"AP2", nil),
+                                  NSLocalizedString(@"AP10", nil),
                                   nil);
         if (res != NSAlertAlternateReturn) {
             return NO;
@@ -1038,15 +1038,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     NSString *warningTitle;
     if (type == TransferDataType) {
-        warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP417", @"") : NSLocalizedString(@"AP418", @"");
+        warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP417", nil) : NSLocalizedString(@"AP418", nil);
     } else {
-        warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP421", @"") : NSLocalizedString(@"AP422", @"");
+        warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP421", nil) : NSLocalizedString(@"AP422", nil);
     }
-    NSString *warningText = (entries.count == 1) ? NSLocalizedString(@"AP419", @"") : NSLocalizedString(@"AP420", @"");
-    int res = NSRunAlertPanel(NSLocalizedString(warningTitle, @""), 
-                              NSLocalizedString(warningText, @""),
-                              NSLocalizedString(@"cancel", @""), 
-                              NSLocalizedString(@"delete", @""), 
+    NSString *warningText = (entries.count == 1) ? NSLocalizedString(@"AP419", nil) : NSLocalizedString(@"AP420", nil);
+    int res = NSRunAlertPanel(NSLocalizedString(warningTitle, nil), 
+                              NSLocalizedString(warningText, nil),
+                              NSLocalizedString(@"AP2", nil),
+                              NSLocalizedString(@"AP10", nil),
                               nil);
     if (res != NSAlertAlternateReturn) {
         return NO;
@@ -1108,7 +1108,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     
     if (transfers.count > 1) {
         NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText: NSLocalizedString(@"AP414", @"")];
+        [alert setMessageText: NSLocalizedString(@"AP414", nil)];
         [alert runModal];
         
         return NO;
@@ -1146,7 +1146,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if ([transactionController editingInProgress]) {
         dropToEditRejected = YES;
         NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText: NSLocalizedString(@"AP413", @"")];
+        [alert setMessageText: NSLocalizedString(@"AP413", nil)];
         [alert runModal];
         
         return NO;
@@ -1255,10 +1255,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         
         // now ask for accounts with method "ask"
         if ([account.collTransferMethod intValue] == CTM_ask) {
-            NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP426", @""), 
-                                            NSLocalizedString(@"AP427", @""), 
-                                            NSLocalizedString(@"no", @"No"), 
-                                            NSLocalizedString(@"yes", @"Yes"), 
+            NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP426", nil), 
+                                            NSLocalizedString(@"AP427", nil), 
+                                            NSLocalizedString(@"AP4", nil), 
+                                            NSLocalizedString(@"AP3", nil),
                                             nil,
                                             account.accountNumber);
             if (res == NSAlertDefaultReturn) {
@@ -1428,10 +1428,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 	NSManagedObjectContext *context = MOAssistant.assistant.context;
 
-    int res = NSRunAlertPanel(NSLocalizedString(@"AP417", @""),
-                              NSLocalizedString(@"AP419", @""),
-                              NSLocalizedString(@"cancel", @""),
-                              NSLocalizedString(@"delete", @""),
+    int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
+                              NSLocalizedString(@"AP419", nil),
+                              NSLocalizedString(@"AP2", nil),
+                              NSLocalizedString(@"AP10", nil),
                               nil);
     if (res != NSAlertAlternateReturn) {
         return;
@@ -1602,15 +1602,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
     NSString *warningTitle;
     if (sender != transferTemplateListView) {
-        warningTitle = (selection.count == 1) ? NSLocalizedString(@"AP417", @"") : NSLocalizedString(@"AP418", @"");
+        warningTitle = (selection.count == 1) ? NSLocalizedString(@"AP417", nil) : NSLocalizedString(@"AP418", nil);
     } else {
-        warningTitle = (selection.count == 1) ? NSLocalizedString(@"AP421", @"") : NSLocalizedString(@"AP422", @"");
+        warningTitle = (selection.count == 1) ? NSLocalizedString(@"AP421", nil) : NSLocalizedString(@"AP422", nil);
     }
-    NSString *warningText = (selection.count == 1) ? NSLocalizedString(@"AP419", @"") : NSLocalizedString(@"AP420", @"");
-    int res = NSRunAlertPanel(NSLocalizedString(warningTitle, @""),
-                              NSLocalizedString(warningText, @""),
-                              NSLocalizedString(@"cancel", @""),
-                              NSLocalizedString(@"delete", @""),
+    NSString *warningText = (selection.count == 1) ? NSLocalizedString(@"AP419", nil) : NSLocalizedString(@"AP420", nil);
+    int res = NSRunAlertPanel(NSLocalizedString(warningTitle, nil),
+                              NSLocalizedString(warningText, nil),
+                              NSLocalizedString(@"AP2", nil),
+                              NSLocalizedString(@"AP10", nil),
                               nil);
     if (res != NSAlertAlternateReturn) {
         return;
@@ -1859,9 +1859,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     if (object == pendingTransfers) {
         if (pendingTransfers.selectedObjects.count == 0) {
-            sendTransfersButton.title = NSLocalizedString(@"AP415", @"");
+            sendTransfersButton.title = NSLocalizedString(@"AP415", nil);
         } else {
-            sendTransfersButton.title = NSLocalizedString(@"AP416", @"");
+            sendTransfersButton.title = NSLocalizedString(@"AP416", nil);
         }
         [sendTransfersButton setEnabled: [pendingTransfers.arrangedObjects count] > 0];
     }

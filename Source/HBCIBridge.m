@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -234,7 +234,7 @@
     
     // HBCIServer is not running
     if ([task isRunning ] == NO) {
-        *err = [PecuniaError errorWithCode:1 message: NSLocalizedString(@"AP99", nil) ];
+        *err = [PecuniaError errorWithCode:1 message: NSLocalizedString(@"AP358", nil) ];
         return nil;
     }
     
@@ -265,7 +265,7 @@
     
     // HBCIServer is not running
     if ([task isRunning ] == NO) {
-        //		*err = [PecuniaError errorWithCode:1 message: NSLocalizedString(@"AP99", nil) ];
+        //		*err = [PecuniaError errorWithCode:1 message: NSLocalizedString(@"AP358", nil) ];
         return;
     }
     NSString *command = [cmd stringByAppendingString: @".\n" ];
