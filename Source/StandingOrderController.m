@@ -35,6 +35,7 @@
 #import "AnimationHelper.h"
 
 #import "NSButton+PecuniaAdditions.h"
+#import "MCEMDecimalNumberAdditions.h"
 
 NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing order to the bin.
 
@@ -597,6 +598,9 @@ NSString* const OrderDataType = @"OrderDataType"; // For dragging an existing or
 {
 	BOOL			res;
 	NSNumber		*value;
+    
+    // avoid rounding issues
+    stord.value = [stord.value rounded];
 	
 	if(stord.remoteName == nil) {
 		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),

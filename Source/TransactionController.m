@@ -27,6 +27,7 @@
 #import "Country.h"
 #import "TransferTemplate.h"
 #import "LogController.h"
+#import "MCEMDecimalNumberAdditions.h"
 
 /**
  * Transform zero-based selector indices to one-based chargedBy property values for transfers.
@@ -388,6 +389,9 @@
 {
 	[currentTransferController commitEditing];
     
+    // prevent rounding issues
+    currentTransfer.value = [currentTransfer.value rounded];
+	
     if (![self validateCurrentTransfer]) {
         return NO;
     }
@@ -799,7 +803,7 @@
 	}
 	[currentTransferController commitEditing ];
 	if([self validateCurrentTransfer ] == NO) return NO;
-	
+    
 	// save as template (if name given)
 	[self saveTemplate ];
 	

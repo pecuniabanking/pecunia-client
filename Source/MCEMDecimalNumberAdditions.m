@@ -20,6 +20,7 @@
 #import "MCEMDecimalNumberAdditions.h"
 
 static NSDecimalNumberHandler *numberHandler = nil;
+static NSDecimalNumberHandler *outboundHandler = nil;
 
 
 @implementation NSDecimalNumber (PecuniaAdditions)
@@ -99,7 +100,7 @@ static NSDecimalNumberHandler *numberHandler = nil;
     return [NSDecimalNumber decimalNumberWithDecimal: value];
 }
 
--(NSDecimalNumber*)rounded
+- (NSDecimalNumber*)rounded
 {
 	if (numberHandler == nil) {
 		numberHandler = [[NSDecimalNumberHandler alloc] initWithRoundingMode: NSRoundPlain 
@@ -111,6 +112,19 @@ static NSDecimalNumberHandler *numberHandler = nil;
 	}
 	
 	return [self decimalNumberByRoundingAccordingToBehavior: numberHandler];	
+}
+
+- (NSDecimalNumber*)outboundNumber
+{
+	if (outboundHandler == nil) {
+		outboundHandler = [[NSDecimalNumberHandler alloc] initWithRoundingMode: NSRoundPlain
+                                                                       scale: 0
+                                                            raiseOnExactness: YES
+                                                             raiseOnOverflow: YES
+                                                            raiseOnUnderflow: YES
+                                                         raiseOnDivideByZero: YES];
+	}
+    return [self decimalNumberByMultiplyingByPowerOf10:2 withBehavior:outboundHandler];
 }
 
 @end

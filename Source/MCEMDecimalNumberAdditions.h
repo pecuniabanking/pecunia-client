@@ -44,4 +44,7 @@
 /** Standard rounding with scale 2 */
 - (NSDecimalNumber*)rounded;
 
+/* Multiplies with 100 and rounds with no digits. Used to convert values to be sent to server */
+- (NSDecimalNumber*)outboundNumber;
+
 @end

@@ -52,6 +52,7 @@
 #import "SupportedTransactionInfo.h"
 #import "CCSettlementList.h"
 #import "CreditCardSettlement.h"
+#import "MCEMDecimalNumberAdditions.h"
 
 @implementation HBCIController
 
@@ -665,8 +666,7 @@ NSString *escapeSpecial(NSString *s)
             }
             
             [self appendTag: @"type" withValue: type to: cmd];
-            NSDecimalNumber *val = [transfer.value decimalNumberByMultiplyingByPowerOf10: 2];
-            [self appendTag: @"value" withValue: [val stringValue] to: cmd];
+            [self appendTag: @"value" withValue: [[transfer.value outboundNumber] stringValue] to: cmd];
             
             NSURL *uri = [[transfer objectID] URIRepresentation];
             [self appendTag: @"transferId" withValue: [uri absoluteString] to: cmd];
@@ -1074,8 +1074,7 @@ NSString *escapeSpecial(NSString *s)
     [self appendTag: @"purpose4" withValue: stord.purpose4 to: cmd ];
     [self appendTag: @"currency" withValue: stord.currency to: cmd ];
     [self appendTag: @"remoteCountry" withValue: @"DE" to: cmd ];
-    NSDecimalNumber *val = [stord.value decimalNumberByMultiplyingByPowerOf10:2 ];
-    [self appendTag: @"value" withValue: [val stringValue ] to: cmd ];
+    [self appendTag: @"value" withValue: [[stord.value outboundNumber] stringValue] to: cmd];
     
     [self appendTag: @"firstExecDate" withValue: [dateFormatter stringFromDate:stord.firstExecDate ] to: cmd ];
     if (stord.lastExecDate) {
