@@ -33,7 +33,8 @@
 static NSArray *exportFields = nil;
 
 #define SYNCH_HEIGHT 310
-#define SEC_HEIGHT 280
+#define SEC_HEIGHT 260
+#define LOC_HEIGHT 260
 #define DISPLAY_HEIGHT 320
 #define COLOR_HEIGHT 450
 #define EXP_HEIGHT 375
@@ -233,6 +234,17 @@ static NSGradient* headerGradient;
     [assistant relocate];
 }
 
+- (IBAction)restoreFileLocation:(id)sender
+{
+    [[MOAssistant assistant] relocateToStandard];
+}
+
+- (IBAction)openFileLocation:(id)sender
+{
+    [[NSWorkspace sharedWorkspace] openURL: [MOAssistant assistant ].dataDirURL];
+}
+
+
 -(IBAction)encryptData: (id)sender
 {
     if (encrypt) {
@@ -399,25 +411,31 @@ static NSGradient* headerGradient;
     [self setHeight: SEC_HEIGHT ];
 }
 
-- (IBAction)displaySettings:(id)sender {
+-(IBAction)locationSettings:(id)sender
+{
     [mainTab selectTabViewItemAtIndex: 2];
+    [self setHeight: LOC_HEIGHT];
+}
+
+- (IBAction)displaySettings:(id)sender {
+    [mainTab selectTabViewItemAtIndex: 3];
     [self setHeight: DISPLAY_HEIGHT];
 }
 
 - (IBAction)colorSettings:(id)sender {
-    [mainTab selectTabViewItemAtIndex: 3];
+    [mainTab selectTabViewItemAtIndex: 4];
     [self setHeight: COLOR_HEIGHT];
 }
 
 -(IBAction)exportSettings:(id)sender
 {
-    [mainTab selectTabViewItemAtIndex: 4];
+    [mainTab selectTabViewItemAtIndex: 5];
     [self setHeight: EXP_HEIGHT ];
 }
 
 -(IBAction)printSettings:(id)sender
 {
-    [mainTab selectTabViewItemAtIndex: 5];
+    [mainTab selectTabViewItemAtIndex: 6];
     [self setHeight: PRINT_HEIGHT ];
 }
 

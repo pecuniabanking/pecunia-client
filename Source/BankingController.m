@@ -477,6 +477,8 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         [self publishContext];
     }
     
+    [MOAssistant assistant].mainContentView = [mainWindow contentView];
+    
     // Setup full screen mode support on Lion+.
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_6
     if (runningOnLionOrLater) {

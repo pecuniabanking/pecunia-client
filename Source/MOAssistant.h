@@ -24,6 +24,10 @@
 	NSManagedObjectContext		*context;
 	NSManagedObjectContext		*memContext;
 	NSManagedObjectModel		*model;
+    
+    // LockView
+    NSView                      *lockView;
+    NSView                      *mainContentView;
 	
     // Location (external/internal) of data file (directory & filename)
     NSURL                       *dataDirURL;
@@ -64,10 +68,12 @@
 @property (nonatomic, strong) NSURL *accountsURL;
 @property (nonatomic, strong) NSURL *dataDirURL;
 @property (nonatomic, strong) NSURL *pecuniaFileURL;
+@property (nonatomic, strong) NSView *mainContentView;
 
 - (void)clearAllData;
 - (void)loadModel;
 - (void)relocate;
+- (void)relocateToStandard;
 - (BOOL)decrypt;
 - (void)shutdown;
 - (BOOL)encrypted;
