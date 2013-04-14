@@ -161,16 +161,16 @@ static NSGradient* headerGradient;
     [self setHeight: SYNCH_HEIGHT];
     
     // Export-Feldseparator
-    NSString *expSep = [defaults stringForKey:_exportSeparator ];
+    NSString *expSep = [defaults stringForKey: _exportSeparator];
     if (expSep) {
-        if ([expSep isEqualToString:@"\t"]) {
-            [expRadioMatrix setState:NSOnState atRow:0 column:0];
+        if ([expSep isEqualToString: @"\t"]) {
+            [expRadioMatrix setState: NSOnState atRow: 0 column: 0];
         }
-        if ([expSep isEqualToString:@";"]) {
-            [expRadioMatrix setState:NSOnState atRow:1 column:0];
+        if ([expSep isEqualToString: @";"]) {
+            [expRadioMatrix setState: NSOnState atRow: 1 column: 0];
         }
-        if ([expSep isEqualToString:@"|"]) {
-            [expRadioMatrix setState:NSOnState atRow:2 column:0];
+        if ([expSep isEqualToString: @"|"]) {
+            [expRadioMatrix setState: NSOnState atRow: 2 column: 0];
         }
     }
 
@@ -442,7 +442,7 @@ static NSGradient* headerGradient;
 - (IBAction)resetAllColors: (id)sender
 {
     for (unsigned i = 0; i < sizeof(colorEntries) / sizeof(colorEntries[0]); i++) {
-        NSArray *values = [[NSString stringWithUTF8String: colorEntries[i]] componentsSeparatedByString: @"|"];
+        NSArray *values = [@(colorEntries[i]) componentsSeparatedByString: @"|"];
         [NSColor resetApplicationColorForKey: values[1]];
     }
     [colorListView reloadData];
@@ -518,7 +518,7 @@ static char *colorEntries[] = {
         cell = [ColorListViewCell cellLoadedFromNibNamed: @"Preferences" reusableIdentifier: @"colorcell"];
     }
 
-    [cell configureWithString: [NSString stringWithUTF8String: colorEntries[row]]];
+    [cell configureWithString: @(colorEntries[row])];
     return cell;
 }
 

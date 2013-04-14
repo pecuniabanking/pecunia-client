@@ -778,7 +778,7 @@ BOOL updateSent = NO;
     return count;
 }
 
--(BOOL)checkMoveToCategory:(Category*)cat
+- (BOOL)checkMoveToCategory:(Category*)cat
 {
     Category *parent;
     if ([cat isBankAccount]) return NO;
@@ -793,7 +793,7 @@ BOOL updateSent = NO;
     return YES;
 }
 
--(NSColor*)categoryColor
+- (NSColor*)categoryColor
 {
     // Assign a default color if none has been set so far.
     // Root categories get different dark gray default colors. Others either get one of the predefined
@@ -839,9 +839,9 @@ BOOL updateSent = NO;
     return catColor;
 }
 
--(void)setCategoryColor: (NSColor*)color
+- (void)setCategoryColor: (NSColor*)color
 {
-    if (catColor != color) {
+    if (![catColor isEqualTo: color]) {
         [self willChangeValueForKey: @"categoryColor"];
         catColor = color;
         
@@ -856,7 +856,7 @@ BOOL updateSent = NO;
     }
 }
 
-+(Category*)bankRoot
++ (Category*)bankRoot
 {
     NSError *error = nil;
     if(bankRootSingleton) return bankRootSingleton;

@@ -6,7 +6,7 @@ AboutMessage:
 Names: Partial
 Rows: 12
 Columns: 12
-Entries: 39
+Entries: 84
 Prefix: 
 Suffix: 
 Type: Process
@@ -23,6 +23,96 @@ Default Account Color 3
 Default Account Color 4
 23387 24158 40349
 Default Account Color 5
+43176 21588 29298
+Default Tag Color 1
+62194 18504 34695
+Default Tag Color 2
+65535 17990 25700
+Default Tag Color 3
+57311 13364 14906
+Default Tag Color 4
+61937 30326 35723
+Default Tag Color 5
+63993 47031 43947
+Default Tag Color 6
+65535 35723 29812
+Default Tag Color 7
+59367 20303 10280
+Default Tag Color 8
+54484 30069 21331
+Default Tag Color 9
+43947 11051 4369
+Default Tag Color 10
+48316 34952 28784
+Default Tag Color 11
+52942 43176 37265
+Default Tag Color 12
+49858 42148 29812
+Default Tag Color 13
+39064 35209 23130
+Default Tag Color 14
+55769 49087 28527
+Default Tag Color 15
+56540 52942 34695
+Default Tag Color 16
+65535 56283 41120
+Default Tag Color 17
+65278 50115 38807
+Default Tag Color 18
+59367 55512 44975
+Default Tag Color 19
+65535 53713 27499
+Default Tag Color 20
+65278 58596 34181
+Default Tag Color 21
+62194 58596 39835
+Default Tag Color 22
+62194 61166 33410
+Default Tag Color 23
+61680 62194 46774
+Default Tag Color 24
+61423 61423 57568
+Default Tag Color 25
+59110 59110 50886
+Default Tag Color 26
+54998 48573 11565
+Default Tag Color 27
+48830 50629 23387
+Default Tag Color 28
+48316 52942 47802
+Default Tag Color 29
+43433 57054 47802
+Default Tag Color 30
+25700 51657 35980
+Default Tag Color 31
+36237 50629 38550
+Default Tag Color 32
+43176 52428 33924
+Default Tag Color 33
+33924 44204 30840
+Default Tag Color 34
+26214 37522 32125
+Default Tag Color 35
+8995 45746 40606
+Default Tag Color 36
+31868 53970 51914
+Default Tag Color 37
+46003 56540 57054
+Default Tag Color 38
+39064 50372 46003
+Default Tag Color 39
+32896 42919 44204
+Default Tag Color 40
+24672 45232 49344
+Default Tag Color 41
+0 41891 48316
+Default Tag Color 42
+5911 35209 39835
+Default Tag Color 43
+32125 42919 48830
+Default Tag Color 44
+32125 31868 32639
+Default Tag Color 45
 59110 26471 0
 Default Category Color 1
 29812 46517 16705

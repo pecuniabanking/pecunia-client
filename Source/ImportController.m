@@ -124,7 +124,7 @@
     
     [detailsView removeFromSuperviewWithoutNeedingDisplay];
     NSRect frame = self.frame;
-    frame.size.height = 160; // Origional height without details view.
+    frame.size.height = 160; // Original height without details view.
     self.contentSize = frame.size;
 
     processingTaskLabel.stringValue = NSLocalizedString(@"AP626", nil);
@@ -1304,7 +1304,7 @@
                         change: (NSDictionary *)change
                        context: (void *)context
 {
-    if ([keyPath compare: @"selection.isDirty"] == NSOrderedSame) {
+    if ([keyPath isEqualToString: @"selection.isDirty"]) {
         [self updatePreview];
         return;
     }

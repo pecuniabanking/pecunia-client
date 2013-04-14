@@ -805,7 +805,6 @@ float _scaleFactor()
     [self _redisplay];
 }
 
-
 #pragma mark Accessors
 
 

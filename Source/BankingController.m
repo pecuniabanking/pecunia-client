@@ -26,8 +26,8 @@
 #import "Category.h"
 #import "PreferenceController.h"
 #import "MOAssistant.h"
-#import "TransactionController.h"
 #import "LogController.h"
+#import "TagView.h"
 #import "CatAssignClassification.h"
 #import "ExportController.h"
 #import "MCEMOutlineViewLayout.h"
@@ -69,6 +69,7 @@
 #import "StatementDetails.h"
 #import "RoundedOuterShadowView.h"
 #import "SideToolbarView.h"
+#include "ColorPopup.h"
 
 #import "AnimationHelper.h"
 #import "GraphicsAdditions.h"
@@ -79,6 +80,8 @@
 
 #import "GenerateDataController.h"
 #import "CreditCardSettlementController.h"
+
+#import "Tag.h"
 
 // Pasteboard data types.
 NSString* const BankStatementDataType = @"BankStatementDataType";
@@ -99,9 +102,64 @@ BOOL runningOnLionOrLater = NO;
 
 @implementation PecuniaSplitView
 
+@synthesize fixedIndex;
+
+- (id)initWithCoder: (NSCoder *)aDecoder
+{
+    self = [super initWithCoder: aDecoder];
+    if (self != nil) {
+        fixedIndex = NSNotFound;
+    }
+    return self;
+}
+
+- (void)awakeFromNib
+{
+}
+
 - (NSColor *)dividerColor
 {
     return [NSColor clearColor];
+}
+
+- (void)resizeSubviewsWithOldSize: (NSSize)oldSize
+{
+    if (fixedIndex == NSNotFound || fixedIndex >= self.subviews.count || self.subviews.count != 2) {
+        [super resizeSubviewsWithOldSize: oldSize];
+    } else {
+        // Fixed size support currently only for 2 subviews.
+        NSSize totalSize = self.bounds.size;
+        NSUInteger variableIndex = fixedIndex == 0 ? 1 : 0;
+        NSSize fixedSize = [self.subviews[fixedIndex] frame].size;
+
+        if ([(NSView *)(self.subviews[fixedIndex]) isHidden]) {
+            fixedSize = NSZeroSize;
+        }
+
+        if (self.isVertical) {
+            NSSize size;
+            size.height = totalSize.height;
+            size.width = totalSize.width - self.dividerThickness - fixedSize.width;
+            [self.subviews[variableIndex] setFrameSize: size];
+            size.width = [self.subviews[fixedIndex] frame].size.width;
+            [self.subviews[fixedIndex] setFrameSize: size];
+            if (fixedIndex == 1) {
+                NSPoint origin = NSMakePoint(totalSize.width - fixedSize.width, 0);
+                [self.subviews[fixedIndex] setFrameOrigin: origin];
+            }
+        } else {
+            NSSize size;
+            size.width = totalSize.width;
+            size.height = totalSize.height - self.dividerThickness - fixedSize.height;
+            [self.subviews[variableIndex] setFrameSize: size];
+            size.height = [self.subviews[fixedIndex] frame].size.height;
+            [self.subviews[fixedIndex] setFrameSize: size];
+            if (fixedIndex == 1) {
+                NSPoint origin = NSMakePoint(0, totalSize.height - fixedSize.height);
+                [self.subviews[fixedIndex] setFrameOrigin: origin];
+            }
+        }
+    }
 }
 
 @end
@@ -133,7 +191,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 - (void)awakeFromNib
 {
     [self unregisterDraggedTypes];
-    [self registerForDraggedTypes: [NSArray arrayWithObjects: NSStringPboardType, NSFilenamesPboardType, nil]];
+    [self registerForDraggedTypes: @[NSStringPboardType, NSFilenamesPboardType]];
 }
 
 - (void)mouseDown: (NSEvent *)event {
@@ -399,7 +457,9 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     lastSplitterPosition = [[userDefaults objectForKey: @"rightSplitterPosition"] intValue];
     if (lastSplitterPosition > 0) {
         // The details pane was collapsed when Pecunia closed last time.
+        [statementDetails setHidden: YES];
         [toggleDetailsButton setImage: [NSImage imageNamed: @"show"]];
+        [rightSplitter adjustSubviews];
     }
     self.toggleDetailsPaneItem.state = lastSplitterPosition > 0 ? NSOffState : NSOnState;
 
@@ -422,10 +482,9 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         }
     }
     
-    // sort descriptor for accounts view
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-    NSArray *sds = @[sd];
-    [categoryController setSortDescriptors: sds];
+    // Sort descriptor for accounts view.
+    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
+    [categoryController setSortDescriptors: @[sd]];
     
     // status (content) bar
     [mainWindow setAutorecalculatesContentBorderThickness: NO forEdge: NSMinYEdge];
@@ -434,11 +493,20 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     // register Drag'n Drop
     [accountsView registerForDraggedTypes: @[BankStatementDataType, CategoryDataType]];
     
-    // Set lock image.
+    // Set a number images that use a collection (and hence are are not automatically found).
     NSString *path = [[NSBundle mainBundle] pathForResource: @"icon72-1"
                                                      ofType: @"icns"
                                                 inDirectory: @"Collections/1"];
-    lockImage.image = [[NSImage alloc] initWithContentsOfFile: path];
+    if ([NSFileManager.defaultManager fileExistsAtPath: path]) {
+        lockImage.image = [[NSImage alloc] initWithContentsOfFile: path];
+    }
+    path = [[NSBundle mainBundle] pathForResource: @"icon14-1"
+                                           ofType: @"icns"
+                                      inDirectory: @"Collections/1"];
+    if ([NSFileManager.defaultManager fileExistsAtPath: path]) {
+        tagButton.image = [[NSImage alloc] initWithContentsOfFile: path];
+    }
+
     [self setEncrypted: [[MOAssistant assistant] encrypted]];
 
     splitCursor = [[NSCursor alloc] initWithImage:[NSImage imageNamed: @"cursor.png"] hotSpot:NSMakePoint(0, 0)];
@@ -468,17 +536,22 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     currentSection = nil; // The right splitter, which is by default active is not a regular section.
     toolbarButtons.selectedSegment = 0;
 
+    if (self.managedObjectContext) {
+        [self publishContext];
+    }
+
+    [MOAssistant assistant].mainContentView = [mainWindow contentView];
+
     [attachement1 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref1" options: nil];
     [attachement2 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref2" options: nil];
     [attachement3 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref3" options: nil];
     [attachement4 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref4" options: nil];
 
-    if (self.managedObjectContext) {
-        [self publishContext];
-    }
-    
-    [MOAssistant assistant].mainContentView = [mainWindow contentView];
-    
+    sd = [[NSSortDescriptor alloc] initWithKey: @"order" ascending: YES];
+	[statementTags setSortDescriptors: @[sd]];
+	[tagsController setSortDescriptors: @[sd]];
+    tagButton.bordered = NO;
+
     // Setup full screen mode support on Lion+.
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_6
     if (runningOnLionOrLater) {
@@ -496,10 +569,12 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 -(void)publishContext
 {
     NSError *error=nil;
-    
-    [categoryController setManagedObjectContext: self.managedObjectContext];
-    [categoryAssignments setManagedObjectContext: self.managedObjectContext];
-    
+
+    categoryController.managedObjectContext = self.managedObjectContext;
+    categoryAssignments.managedObjectContext = self.managedObjectContext;
+    tagsController.managedObjectContext = self.managedObjectContext;
+    [tagsController prepareContent];
+
     // repair Category Root
     [self repairCategories];
     
@@ -510,7 +585,6 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     // update unread information
     [self updateUnread];
     
-    [transactionController setManagedObjectContext: managedObjectContext];
     [timeSlicer updateDelegate];
     [self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
     [categoryController fetchWithRequest: nil merge: NO error: &error];
@@ -1036,11 +1110,19 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     [prefController showWindow: self];
 }
 
--(void)windowWillClose:(NSNotification *)aNotification
+- (IBAction)showTagPopup: (id)sender
 {
-    id window = [aNotification object ];
+    NSButton *button = sender;
+    NSPoint point = [mainWindow.contentView convertPoint: NSMakePoint(button.bounds.size.width / 2, button.bounds.size.height / 2)
+                                                fromView: button];
+    [tagViewPopup showTagPopupAt: point withOwner: button.window];
+}
+
+-(void)windowWillClose: (NSNotification *)aNotification
+{
+    id window = [aNotification object];
     if (window == assignValueWindow) {
-        [NSApp stopModalWithCode:0 ];
+        [NSApp stopModalWithCode: 0];
     }
 }
 
@@ -1582,26 +1664,25 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 }
 
 // workaround for strange outlineView collapsing...
--(void)restoreAccountsView
+- (void)restoreAccountsView
 {
     [accountsView restoreAll];
 }
 
--(int)AccSize
+- (int)AccSize
 {
     return 20;
 }
 
--(IBAction)showLog:(id)sender
+- (IBAction)showLog: (id)sender
 {
-    //	[logController performSelector:@selector(showWindow:) onThread:[WorkerThread thread] withObject:nil waitUntilDone:NO];
-    [logController setLogLevel:LogLevel_Verbous];
+    [logController setLogLevel: LogLevel_Verbous];
     [logController showWindow: self];
 }
 
--(BankAccount*)selectedBankAccount
+- (BankAccount*)selectedBankAccount
 {
-    Category	*cat = [self currentSelection];
+    Category *cat = [self currentSelection];
     if(cat == nil) return nil;
     if([cat isMemberOfClass: [Category class]]) return nil;
     
@@ -1612,17 +1693,19 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
 -(IBAction)transfer_local: (id)sender
 {
-    BankAccount* account = [self selectedBankAccount ];
-    if (account != nil && [[account isManual ] boolValue] == YES) return;
-    
+    BankAccount* account = self.selectedBankAccount;
+    if (account != nil && [account.isManual boolValue]) {
+        return;
+    }
+
     // Switch to the transfers page.
-    [self switchMainPage:1];
+    [self switchMainPage: 1];
     
     // Start local transfer
     [transfersController startTransferOfType:TransferTypeStandard withAccount:account];
 }
 
--(IBAction)donate: (id)sender
+- (IBAction)donate: (id)sender
 {
     // check if there are any bank users
     NSArray *users = [BankUser allUsers];
@@ -1641,40 +1724,46 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 }
 
 
--(IBAction)transfer_internal: (id)sender
+- (IBAction)transfer_internal: (id)sender
 {
-    BankAccount* account = [self selectedBankAccount ];
-    if (account != nil && [[account isManual ] boolValue] == YES) return;
+    BankAccount* account = self.selectedBankAccount;
+    if (account != nil && [account.isManual boolValue]) {
+        return;
+    }
     
+    // Switch to the transfers page.
+    [self switchMainPage: 1];
+    
+    // Start local transfer
+    [transfersController startTransferOfType: TransferTypeInternal withAccount: account];
+}
+
+- (IBAction)transfer_dated: (id)sender
+{
+    BankAccount* account = self.selectedBankAccount;
+    if (account != nil && [account.isManual boolValue]) {
+        return;
+    }
+
     // Switch to the transfers page.
     [self switchMainPage:1];
     
     // Start local transfer
-    [transfersController startTransferOfType:TransferTypeInternal withAccount:account];
+    [transfersController startTransferOfType: TransferTypeDated withAccount: account];
 }
 
--(IBAction)transfer_dated: (id)sender
+- (IBAction)transfer_eu: (id)sender
 {
-    BankAccount* account = [self selectedBankAccount ];
-    if (account != nil && [[account isManual ] boolValue] == YES) return;
+    BankAccount* account = self.selectedBankAccount;
+    if (account != nil && [account.isManual boolValue]) {
+        return;
+    }
 
-    // Switch to the transfers page.
-    [self switchMainPage:1];
-    
-    // Start local transfer
-    [transfersController startTransferOfType:TransferTypeDated withAccount:account];
-}
-
--(IBAction)transfer_eu: (id)sender
-{
-    BankAccount* account = [self selectedBankAccount ];
-    if (account != nil && [[account isManual ] boolValue] == YES) return;
-    
     // check if bic and iban is defined
     if (account != nil) {
         if(account.iban == nil || account.bic == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP101", nil), 
-                            [NSString stringWithFormat: NSLocalizedString(@"AP77", nil), account.accountNumber ], 
+                            [NSString stringWithFormat: NSLocalizedString(@"AP77", nil), account.accountNumber], 
                             NSLocalizedString(@"AP1", nil), nil, nil);
             return;
         }
@@ -1687,31 +1776,32 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     [transfersController startTransferOfType:TransferTypeEU withAccount:account];
 }
 
--(IBAction)transfer_sepa: (id)sender
+- (IBAction)transfer_sepa: (id)sender
 {
-    
-    BankAccount* account = [self selectedBankAccount ];
-    if (account != nil && [[account isManual ] boolValue] == YES) return;
-    
+    BankAccount* account = self.selectedBankAccount;
+    if (account != nil && [account.isManual boolValue]) {
+        return;
+    }
+
     // check if bic and iban is defined
     if (account != nil) {
         if(account.iban == nil || account.bic == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP101", nil), 
-                            [NSString stringWithFormat: NSLocalizedString(@"AP77", nil), account.accountNumber ], 
+                            [NSString stringWithFormat: NSLocalizedString(@"AP77", nil), account.accountNumber], 
                             NSLocalizedString(@"AP1", nil), nil, nil);
             return;
         }
     }
     
     // Switch to the transfers page.
-    [self switchMainPage:1];
+    [self switchMainPage: 1];
     
     // Start local transfer
     [transfersController startTransferOfType:TransferTypeSEPA withAccount:account];
 }
 
 
--(Category*)currentSelection
+- (Category*)currentSelection
 {
     NSArray* sel = [categoryController selectedObjects];
     if (sel == nil || [sel count] != 1) {
@@ -2544,14 +2634,6 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 }
 
 /**
- * Creates a set of default categories, which are quite common. These categories are defined in Localizable.strings.
- */
-- (void)createDefaultCategories
-{
-    [Category createDefaultCategories];
-}
-
-/**
  * Takes the (localized) title of the given category and determines an icon for it from the default collection.
  */
 - (void)determineDefaultIconForCategory: (Category *)category
@@ -2852,7 +2934,18 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     
     StatusBarController *sc = [StatusBarController controller];
     [sc startSpinning];
-    [sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter:0];
+    [sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter: 0];
+
+    rightSplitter.fixedIndex = 1;
+    mainVSplit.fixedIndex = 0;
+
+    tagViewPopup.datasource = tagsController;
+    tagViewPopup.defaultFont = [NSFont fontWithName: @"HelveticaNeue" size: 10];
+    tagViewPopup.canCreateNewTags = YES;
+
+    tagsField.datasource = statementTags;
+    tagsField.defaultFont = [NSFont fontWithName: @"HelveticaNeue" size: 10];
+    tagsField.canCreateNewTags = YES;
     
 /*
     // Open encrypted database
@@ -2923,16 +3016,27 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     [sc clearMessage];
 
     
-    // Display main window
+    // Display main window.
     [mainWindow display];
     [mainWindow makeKeyAndOrderFront: self];
     
     
     [self checkForAutoSync];
 
+    // Add default tags if there are none yet.
+    NSError *error = nil;
+    NSFetchRequest *request = [model fetchRequestTemplateForName: @"allTags"];
+    NSUInteger count = [self.managedObjectContext countForFetchRequest: request error: &error];
+    if (error != nil) {
+        NSLog(@"Error reading tags: %@", error.localizedDescription);
+    }
+    if (count == 0) {
+        [Tag createDefaultTags];
+    }
+
     // Add default categories if there aren't any but the predefined ones.
     if ([Category.catRoot.children count] == 1) {
-        [self createDefaultCategories];
+        [Category createDefaultCategories];
     }
 
     // Check if there are any bank users or at least manual accounts.
@@ -3181,6 +3285,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         NSRect frame = firstChild.frame;
         frame.size.height = lastSplitterPosition;
         firstChild.frame = frame;
+        [rightSplitter adjustSubviews];
         lastSplitterPosition = 0;
         [toggleDetailsButton setImage: [NSImage imageNamed: @"hide"]];
         self.toggleDetailsPaneItem.state = NSOnState;
@@ -3361,7 +3466,10 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
     if (object == categoryAssignments) {
         if ([keyPath compare: @"selectionIndexes"] == NSOrderedSame) {
-            // Selection did change. If the currently selected entry is a new one remove the "new" mark.
+            // Selection did change.
+            [tagViewPopup closeTagPopup];
+
+            // If the currently selected entry is a new one remove the "new" mark.
             NSEnumerator *enumerator = [[categoryAssignments selectedObjects] objectEnumerator];
             StatCatAssignment* stat = nil;
             NSDecimalNumber* firstValue = nil;

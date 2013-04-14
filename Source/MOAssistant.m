@@ -739,7 +739,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     [storeOptions setDictionary:@{NSMigratePersistentStoresAutomaticallyOption: @YES,NSInferMappingModelAutomaticallyOption: @YES}];
     if (isEncrypted) {
         pragmaOptions = @{@"synchronous":@"NORMAL", @"fullfsync":@"1"};
-        [storeOptions setObject:pragmaOptions forKey:NSSQLitePragmasOption];
+        storeOptions[NSSQLitePragmasOption] = pragmaOptions;
     }
     
     NSPersistentStoreCoordinator *coord = nil;

@@ -935,7 +935,7 @@ static NSFont *smallNumberFont;
         [popupWindow zoomInWithOvershot: frame withFade: YES makeKey: NO];
 
         // Hiding the window removes it from the parent window, so we need to add it again
-        // to have it always on topo.
+        // to have it always on top.
         [mainView.window addChildWindow: popupWindow ordered: NSWindowAbove];
     }
 }

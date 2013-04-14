@@ -296,27 +296,8 @@
 
 // Preferences
 // AP650..AP749
-"AP650" = "Standardkontenfarben";
-"AP651" = "Standardkategorienfarben";
 "AP652" = "Farben in Grafiken";
 "AP653" = "Allgemeine Farben im Programm";
-
-"AP660" = "Standardkontenfarbe 1";
-"AP661" = "Standardkontenfarbe 2";
-"AP662" = "Standardkontenfarbe 3";
-"AP663" = "Standardkontenfarbe 4";
-"AP664" = "Standardkontenfarbe 5";
-
-"AP680" = "Standardkkategorienfarbe 1";
-"AP681" = "Standardkkategorienfarbe 2";
-"AP682" = "Standardkkategorienfarbe 3";
-"AP683" = "Standardkkategorienfarbe 4";
-"AP684" = "Standardkkategorienfarbe 5";
-"AP685" = "Standardkkategorienfarbe 6";
-"AP686" = "Standardkkategorienfarbe 7";
-"AP687" = "Standardkkategorienfarbe 8";
-"AP688" = "Standardkkategorienfarbe 9";
-"AP689" = "Standardkkategorienfarbe 10";
 
 "AP700" = "Gradientfarbe 1 für positive Werte (Umsatzdiagramm)";
 "AP701" = "Gradientfarbe 2 für positive Werte (Umsatzdiagramm)";
@@ -369,6 +350,52 @@
 "AP814" = "Kontowarnung";
 "AP815" = "Eines Ihrer Konten hat zu wenig Guthaben bzw. ist ins Minus gekommen!";
 
+// Tags
+// AP850..AP949
+"AP850" = "Ausgabe";
+"AP851" = "Kredit";
+"AP852" = "Miete";
+"AP853" = "Urlaub";
+"AP854" = "Nebenkosten";
+"AP855" = "Hausratversicherung";
+"AP856" = "Wohngebäudeversicherung";
+"AP857" = "Privathaftpflicht";
+"AP858" = "Rechtsschutz";
+"AP859" = "Lebensversicherung";
+"AP860" = "Risikolebensversicherung";
+"AP861" = "Krankenvesicherung";
+"AP862" = "Verein";
+"AP863" = "Gewerkschaft";
+"AP864" = "Spende";
+"AP865" = "Energie";
+"AP866" = "Entsorgung";
+"AP867" = "Pensionskasse";
+"AP868" = "Auto";
+"AP869" = "Tanken";
+"AP870" = "Anschaffung";
+"AP871" = "Reparatur";
+"AP872" = "Gesundheit";
+"AP873" = "Arzneimittel";
+"AP874" = "Behandlungen";
+"AP875" = "Lebensmittel";
+"AP876" = "Kleidung";
+"AP877" = "Fernsehen";
+"AP878" = "Handy";
+"AP879" = "Internet";
+"AP880" = "Schule";
+"AP881" = "Haus";
+"AP882" = "Konto";
+"AP883" = "Buch";
+"AP884" = "Zeitschrift";
+"AP885" = "Mahnung";
+"AP886" = "Mit Rechnung";
+"AP887" = "Depot";
+"AP888" = "Gehalt";
+"AP889" = "Zinsen";
+"AP890" = "Nebenkosten";
+"AP891" = "Einnahme";
+"AP900" = "891"; // Sentinel
+
 // Use a new block of IDs for next set of strings!
-// AP850..AP899
+// AP950..AP999
 

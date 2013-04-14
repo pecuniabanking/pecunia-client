@@ -125,12 +125,7 @@ static NSMutableDictionary* userColors;
     static int nextAccountColorIndex = 1;
 
     NSString *key = [NSString stringWithFormat: @"Default Account Color %i", nextAccountColorIndex];
-    NSColor *color = userColors[key];
-    if (color != nil) {
-        nextAccountColorIndex++;
-        return color;
-    }
-    color = defaultColors[key];
+    NSColor *color = defaultColors[key];
     if (color != nil) {
         nextAccountColorIndex++;
         return color;
@@ -155,12 +150,7 @@ static NSMutableDictionary* userColors;
     static int nextCategoryColorIndex = 1;
 
     NSString *key = [NSString stringWithFormat: @"Default Category Color %i", nextCategoryColorIndex];
-    NSColor *color = userColors[key];
-    if (color != nil) {
-        nextCategoryColorIndex++;
-        return color;
-    }
-    color = defaultColors[key];
+    NSColor *color = defaultColors[key];
     if (color != nil) {
         nextCategoryColorIndex++;
         return color;
@@ -171,6 +161,30 @@ static NSMutableDictionary* userColors;
     return [NSColor colorWithDeviceRed: (32 + random() % 200) / 255.0
                                  green: (32 + random() % 200) / 255.0
                                   blue: (32 + random() % 100) / 255.0
+                                 alpha: 1];
+}
+
+/**
+ * Like nextDefaultAccountColor but for categories.
+ */
++ (NSColor*)nextDefaultTagColor
+{
+    if (defaultColors == nil) {
+        [self loadApplicationColors];
+    }
+
+    static int nextTagColorIndex = 1;
+
+    NSString *key = [NSString stringWithFormat: @"Default Tag Color %i", nextTagColorIndex];
+    NSColor *color = defaultColors[key];
+    if (color != nil) {
+        nextTagColorIndex++;
+        return color;
+    }
+
+    return [NSColor colorWithDeviceRed: (64 + random() % 190) / 255.0
+                                 green: (64 + random() % 190) / 255.0
+                                  blue: (64 + random() % 190) / 255.0
                                  alpha: 1];
 }
 
@@ -240,6 +254,16 @@ static NSMutableDictionary* userColors;
     return [NSColor colorWithCalibratedHue: deviceColor.hueComponent
                                 saturation: deviceColor.saturationComponent
                                 brightness: factor
+                                     alpha: deviceColor.alphaComponent];
+}
+
+- (NSColor*)colorWithChangedSaturation: (CGFloat)factor
+{
+    NSColor *deviceColor = [self colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
+    factor *= deviceColor.saturationComponent;
+    return [NSColor colorWithCalibratedHue: deviceColor.hueComponent
+                                saturation: factor
+                                brightness: deviceColor.brightnessComponent
                                      alpha: deviceColor.alphaComponent];
 }
 

@@ -27,7 +27,6 @@
 @class NewBankUserController;
 @class PreferenceController;
 @class LogController;
-@class TransactionController;
 @class Category;
 @class MCEMTreeController;
 @class TimeSliceManager;
@@ -53,9 +52,13 @@
 @class StatementDetails;
 
 @class AttachmentImageView;
+@class TagView;
 
 @interface PecuniaSplitView : NSSplitView
 - (NSColor *)dividerColor;
+
+@property NSUInteger fixedIndex; // The index of the subview that should not be resized when the splitview size changes.
+
 @end
 
 @interface BankingController : NSObject
@@ -66,7 +69,7 @@
     IBOutlet CategoryView       *accountsView;
     IBOutlet MCEMTreeController *categoryController;
     IBOutlet SynchronousScrollView *accountsScrollView;
-    IBOutlet NSSplitView        *mainVSplit;
+    IBOutlet PecuniaSplitView   *mainVSplit;
     IBOutlet NSArrayController  *assignPreviewController;
     IBOutlet TimeSliceManager   *timeSlicer;
     IBOutlet NSSegmentedControl *catActions;
@@ -80,7 +83,7 @@
     IBOutlet NSTextField        *earningsField;
     IBOutlet NSTextField        *spendingsField;
     IBOutlet NSTextField        *remoteNameLabel;
-    IBOutlet NSSplitView        *rightSplitter;
+    IBOutlet PecuniaSplitView   *rightSplitter;
     IBOutlet NSView             *rightPane;
     IBOutlet StatementDetails   *standardDetails;
     IBOutlet StatementDetails   *creditCardDetails;
@@ -108,9 +111,14 @@
     IBOutlet NSMenuItem         *toggleFullscreenItem;
     IBOutlet NSMenuItem         *developerMenu;
     
-    IBOutlet TransactionController *transactionController;
-    IBOutlet NSWindow              *licenseWindow;
-    IBOutlet NSButton              *toggleDetailsButton;
+    IBOutlet NSWindow           *licenseWindow;
+    IBOutlet NSButton           *toggleDetailsButton;
+    IBOutlet NSArrayController  *statementTags;
+    IBOutlet NSArrayController  *tagsController;
+    IBOutlet NSButton           *tagButton;
+    IBOutlet TagView            *tagsField;
+    IBOutlet TagView            *tagViewPopup;
+    IBOutlet NSScrollView       *tagViewHost;
 
     IBOutlet AttachmentImageView *attachement1;
     IBOutlet AttachmentImageView *attachement2;

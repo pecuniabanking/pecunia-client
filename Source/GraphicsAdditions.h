@@ -25,12 +25,14 @@ CGColorRef CGColorCreateFromNSColor(NSColor *color);
 
 + (NSColor*)nextDefaultAccountColor;
 + (NSColor*)nextDefaultCategoryColor;
++ (NSColor*)nextDefaultTagColor;
 
 + (NSColor*)applicationColorForKey: (NSString*)key;
 + (void)setApplicationColor: (NSColor*)color forKey: (NSString*)key;
 + (void)resetApplicationColorForKey: (NSString*)key;
 
 - (NSColor*)colorWithChangedBrightness: (CGFloat)factor;
+- (NSColor*)colorWithChangedSaturation: (CGFloat)factor;
 
 @end
 

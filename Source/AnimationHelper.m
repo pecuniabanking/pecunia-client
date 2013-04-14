@@ -221,17 +221,15 @@
 
     NSRect frame = [self frame];
     ZoomWindow *zoomWindow = [self createZoomWindowWithRect: frame];
-    
+    zoomWindow.alphaValue = 0;
+
     [zoomWindow orderFront: self];
 
-    zoomWindow.alphaValue = 0;
-    NSDictionary *windowResize = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  zoomWindow, NSViewAnimationTargetKey,
-                                  [NSValue valueWithRect: overshotFrame], NSViewAnimationEndFrameKey,
-                                  NSViewAnimationFadeInEffect, NSViewAnimationEffectKey,
-                                  nil];
+    NSDictionary *windowResize = @{NSViewAnimationTargetKey: zoomWindow,
+                                  NSViewAnimationEndFrameKey: [NSValue valueWithRect: overshotFrame],
+                                  NSViewAnimationEffectKey: NSViewAnimationFadeInEffect};
 
-    NSArray *animations = [NSArray arrayWithObjects: windowResize, nil];
+    NSArray *animations = @[windowResize];
     NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations: animations];
 
     [animation setAnimationBlockingMode: NSAnimationBlocking];
@@ -260,12 +258,14 @@
 		duration = 3;
 	}
     [[NSAnimationContext currentContext] setDuration: duration];
-
-    __block __unsafe_unretained NSWindow *bself = self;
-    [[NSAnimationContext currentContext] setCompletionHandler:^{
+/*
+    __block NSWindow *bself = self;
+    [[NSAnimationContext currentContext] setCompletionHandler: ^{
         [bself orderOut: nil];
         [bself setAlphaValue: 1.f];
+        bself = nil;
     }];
+ */
     [[self animator] setAlphaValue: 0.f];
     [NSAnimationContext endGrouping];
 }

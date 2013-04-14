@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -30,9 +30,6 @@ typedef enum {
 } BankStatementType;
 
 @interface BankStatement : NSManagedObject {
-	
-//	BankAccount *account;
-//	BOOL		isNew;
 }
 
 -(BOOL)matches: (BankStatement*)stat;
@@ -113,6 +110,7 @@ typedef enum {
 @property (nonatomic, strong) NSString * ref4;
 
 @property (nonatomic, strong) BankAccount *account;
+@property (nonatomic, strong) NSSet *tags;
 
 @end
 

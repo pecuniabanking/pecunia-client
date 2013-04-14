@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="BankAccount" representedClassName="BankAccount" parentEntity="Category" syncable="YES">
+        <attribute name="accountNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="accountSuffix" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bankCode" attributeType="String" syncable="YES"/>
+        <attribute name="bankName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bic" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="collTransferMethod" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="customerId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iban" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isManual" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isStandingOrderSupported" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="latestTransferDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="noAutomaticQuery" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="owner" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="splitRule" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="ccSettlements" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CreditCardSettlement" inverseName="account" inverseEntity="CreditCardSettlement" indexed="YES" syncable="YES"/>
+        <relationship name="standingOrders" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StandingOrder" inverseName="account" inverseEntity="StandingOrder" indexed="YES" syncable="YES"/>
+        <relationship name="statements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BankStatement" inverseName="account" inverseEntity="BankStatement" indexed="YES" syncable="YES"/>
+        <relationship name="supportedJobs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SupportedTransactionInfo" inverseName="account" inverseEntity="SupportedTransactionInfo" indexed="YES" syncable="YES"/>
+        <relationship name="transactionLimits" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TransactionLimits" inverseName="account" inverseEntity="TransactionLimits" indexed="YES" syncable="YES"/>
+        <relationship name="transfers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Transfer" inverseName="account" inverseEntity="Transfer" indexed="YES" syncable="YES"/>
+        <relationship name="userMessages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CustomerMessage" inverseName="account" inverseEntity="CustomerMessage" indexed="YES" syncable="YES"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BankUser" inverseName="accounts" inverseEntity="BankUser" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="BankMessage" representedClassName="BankMessage" syncable="YES">
+        <attribute name="bankCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="BankStatement" representedClassName="BankStatement" syncable="YES">
+        <attribute name="additional" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bankReference" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ccChargeForeign" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ccChargeKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ccChargeTerminal" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ccNumberUms" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ccSettlementRef" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="charge" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="currency" optional="YES" attributeType="String" maxValueString="3" syncable="YES"/>
+        <attribute name="customerReference" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="docDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="hashNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="isAssigned" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isManual" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isNew" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isSettled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isStorno" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="localAccount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localBankCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localSuffix" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nassValue" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="origCurrency" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="origValue" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="primaNota" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purpose" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ref1" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ref2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ref3" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ref4" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteAccount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteBankCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteBankLocation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteBankName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteBIC" optional="YES" attributeType="String" minValueString="0" maxValueString="11" syncable="YES"/>
+        <attribute name="remoteCountry" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteIBAN" optional="YES" attributeType="String" minValueString="0" maxValueString="34" syncable="YES"/>
+        <attribute name="remoteName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteSuffix" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="saldo" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="transactionCode" optional="YES" attributeType="String" minValueString="3" maxValueString="3" defaultValueString="000" syncable="YES"/>
+        <attribute name="transactionText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Decimal" syncable="YES"/>
+        <attribute name="valutaDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="account" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankAccount" inverseName="statements" inverseEntity="BankAccount" indexed="YES" syncable="YES"/>
+        <relationship name="assignments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatCatAssignment" inverseName="statement" inverseEntity="StatCatAssignment" indexed="YES" syncable="YES"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="statements" inverseEntity="Tag" syncable="YES"/>
+    </entity>
+    <entity name="BankUser" representedClassName="BankUser" syncable="YES">
+        <attribute name="bankCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bankName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bankURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="checkCert" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="chipCardId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="customerId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ddvPortIdx" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="ddvReaderIdx" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="hbciVersion" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="noBase64" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="port" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="secMethod" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="tanMediaFetched" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BankAccount" inverseName="users" inverseEntity="BankAccount" indexed="YES" syncable="YES"/>
+        <relationship name="preferredTanMethod" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="TanMethod" inverseName="preferredForUser" inverseEntity="TanMethod" indexed="YES" syncable="YES"/>
+        <relationship name="supportedJobs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SupportedTransactionInfo" inverseName="user" inverseEntity="SupportedTransactionInfo" indexed="YES" syncable="YES"/>
+        <relationship name="tanMedia" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TanMedium" inverseName="user" inverseEntity="TanMedium" indexed="YES" syncable="YES"/>
+        <relationship name="tanMethods" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TanMethod" inverseName="user" inverseEntity="TanMethod" indexed="YES" syncable="YES"/>
+        <relationship name="transactionLimits" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TransactionLimits" inverseName="user" inverseEntity="TransactionLimits" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="Category" representedClassName="Category" syncable="YES">
+        <attribute name="balance" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="catRepColor" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="catSum" optional="YES" transient="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="currency" optional="YES" attributeType="String" maxValueString="3" defaultValueString="EUR" syncable="YES"/>
+        <attribute name="iconName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isBalanceValid" optional="YES" transient="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="isBankAcc" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isHidden" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isNotCounted" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="localName" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" defaultValueString="Neue Kategorie" syncable="YES"/>
+        <attribute name="noCatRep" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="rule" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="validTo" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="assignments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatCatAssignment" inverseName="category" inverseEntity="StatCatAssignment" indexed="YES" syncable="YES"/>
+        <relationship name="budget" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CategoryBudget" inverseName="category" inverseEntity="CategoryBudget" indexed="YES" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Category" inverseName="parent" inverseEntity="Category" indexed="YES" syncable="YES"/>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="children" inverseEntity="Category" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="CategoryBudget" representedClassName="CategoryBudget" syncable="YES">
+        <attribute name="budget" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="category" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="budget" inverseEntity="Category" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="CreditCardSettlement" representedClassName="CreditCardSettlement" syncable="YES">
+        <attribute name="ackCode" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="ccAccount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ccNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currency" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="document" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="endBalance" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="firstReceive" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="nextSettleDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="settleDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="settleID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="startBalance" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <relationship name="account" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankAccount" inverseName="ccSettlements" inverseEntity="BankAccount" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="CustomerMessage" representedClassName="CustomerMessage" syncable="YES">
+        <attribute name="accountNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bankCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="header" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isSent" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="receipient" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="account" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankAccount" inverseName="userMessages" inverseEntity="BankAccount" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="StandingOrder" representedClassName="StandingOrder" syncable="YES">
+        <attribute name="changeDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="currency" optional="YES" attributeType="String" minValueString="0" maxValueString="3" syncable="YES"/>
+        <attribute name="cycle" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="executionDay" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="firstExecDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="isChanged" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isSent" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="lastExecDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="localAccount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localBankCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nextExecDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="orderKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="period" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="purpose1" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purpose2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purpose3" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purpose4" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteAccount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteBankCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteBankName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteSuffix" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="subType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="toDelete" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <relationship name="account" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankAccount" inverseName="standingOrders" inverseEntity="BankAccount" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="StatCatAssignment" representedClassName="StatCatAssignment" syncable="YES">
+        <attribute name="userInfo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <relationship name="category" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="assignments" inverseEntity="Category" indexed="YES" syncable="YES"/>
+        <relationship name="statement" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankStatement" inverseName="assignments" inverseEntity="BankStatement" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="SupportedTransactionInfo" representedClassName="SupportedTransactionInfo" syncable="YES">
+        <attribute name="allowesDelete" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="allowsChange" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowsCollective" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowsDated" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowsList" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="account" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankAccount" inverseName="supportedJobs" inverseEntity="BankAccount" indexed="YES" syncable="YES"/>
+        <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankUser" inverseName="supportedJobs" inverseEntity="BankUser" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="Tag" representedClassName="Tag" syncable="YES">
+        <attribute name="caption" attributeType="String" syncable="YES"/>
+        <attribute name="color" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="statements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BankStatement" inverseName="tags" inverseEntity="BankStatement" syncable="YES"/>
+    </entity>
+    <entity name="TanMedium" representedClassName="TanMedium" syncable="YES">
+        <attribute name="activatedOn" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="cardNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cardSeqNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cardType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="freeTans" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="lastUse" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="mobileNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mobileNumberSecure" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tanListNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="validFrom" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="validTo" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="preferredForMethod" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="TanMethod" inverseName="preferredMedium" inverseEntity="TanMethod" indexed="YES" syncable="YES"/>
+        <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankUser" inverseName="tanMedia" inverseEntity="BankUser" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="TanMethod" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inputInfo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="maxTanLength" optional="YES" attributeType="Integer 16" defaultValueString="99" syncable="YES"/>
+        <attribute name="method" optional="YES" attributeType="String" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="needTanMedia" optional="YES" attributeType="String" defaultValueString="0" syncable="YES"/>
+        <attribute name="process" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zkaMethodName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zkaMethodVersion" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="preferredForUser" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankUser" inverseName="preferredTanMethod" inverseEntity="BankUser" indexed="YES" syncable="YES"/>
+        <relationship name="preferredMedium" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="TanMedium" inverseName="preferredForMethod" inverseEntity="TanMedium" indexed="YES" syncable="YES"/>
+        <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankUser" inverseName="tanMethods" inverseEntity="BankUser" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="TransactionLimits" representedClassName="TransactionLimits" syncable="YES">
+        <attribute name="allowChangeCycle" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowChangeExecDay" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowChangeFirstExecDate" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowChangeLastExecDate" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowChangePeriod" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowChangePurpose" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowChangeRemoteAccount" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowChangeRemoteName" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowChangeValue" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowedTextKeysString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="allowMonthly" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="allowWeekly" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="execDaysMonthString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="execDaysWeekString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="foreignLimit" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="jobName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localLimit" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="maxLenPurpose" optional="YES" attributeType="Integer 16" defaultValueString="27" syncable="YES"/>
+        <attribute name="maxLenRemoteName" optional="YES" attributeType="Integer 16" defaultValueString="27" syncable="YES"/>
+        <attribute name="maxLinesPurpose" optional="YES" attributeType="Integer 16" defaultValueString="1" syncable="YES"/>
+        <attribute name="maxLinesRemoteName" optional="YES" attributeType="Integer 16" defaultValueString="2" syncable="YES"/>
+        <attribute name="maxSetupTime" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="minSetupTime" optional="YES" attributeType="Integer 16" defaultValueString="3" syncable="YES"/>
+        <attribute name="monthCyclesString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="weekCyclesString" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="account" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankAccount" inverseName="transactionLimits" inverseEntity="BankAccount" indexed="YES" syncable="YES"/>
+        <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankUser" inverseName="transactionLimits" inverseEntity="BankUser" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="Transfer" representedClassName="Transfer" syncable="YES">
+        <attribute name="chargedBy" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="currency" optional="YES" attributeType="String" minValueString="0" maxValueString="3" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="effectiveDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="isSent" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isTemplate" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="localAccount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localBankCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localSuffix" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="orderKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purpose1" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purpose2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purpose3" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purpose4" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteAccount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteAddrCity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteAddrPhone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteAddrStreet" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteAddrZip" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteBankCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteBankName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteBIC" optional="YES" attributeType="String" minValueString="0" maxValueString="11" syncable="YES"/>
+        <attribute name="remoteCountry" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteIBAN" optional="YES" attributeType="String" minValueString="0" maxValueString="34" syncable="YES"/>
+        <attribute name="remoteName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteSuffix" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="subType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="usedTAN" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Decimal" syncable="YES"/>
+        <attribute name="valutaDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="account" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankAccount" inverseName="transfers" inverseEntity="BankAccount" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="TransferTemplate" representedClassName="TransferTemplate" syncable="YES">
+        <attribute name="currency" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localAccount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localBankCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localSuffix" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purpose1" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purpose2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purpose3" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purpose4" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteAccount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteBankCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteBIC" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteCountry" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteIBAN" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteSuffix" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <fetchRequest name="allBankAccounts" entity="BankAccount" predicateString="accountNumber != &quot;&quot;"/>
+    <fetchRequest name="allTags" entity="Tag"/>
+    <fetchRequest name="bankAccountByID" entity="BankAccount" predicateString="bankCode == $BCODE AND accountNumber == $ACCNT"/>
+    <fetchRequest name="bankAccountsWithNodes" entity="BankAccount" predicateString="isBankAcc == 1"/>
+    <fetchRequest name="bankNodes" entity="BankAccount" predicateString="isBankAcc == 1 AND accountNumber == nil"/>
+    <fetchRequest name="categories" entity="Category" predicateString="isBankAcc == 0 AND rule != nil AND parent != nil"/>
+    <fetchRequest name="getBankingRoot" entity="Category" predicateString="isBankAcc == 1 AND parent == nil"/>
+    <fetchRequest name="getCategoryRoot" entity="Category" predicateString="isBankAcc == 0 AND parent == nil"/>
+    <fetchRequest name="getNassRoot" entity="Category" predicateString="isBankAcc == 0 AND name == &quot;++nassroot&quot;"/>
+    <fetchRequest name="getRootNodes" entity="Category" predicateString="parent == nil"/>
+    <fetchRequest name="statementsByAccount" entity="BankStatement" predicateString="fromBank.bankCode == $BCODE AND fromBank.accountNumber == $ACCNT"/>
+    <fetchRequest name="tagWithCaption" entity="Tag" predicateString="caption == $caption"/>
+    <elements>
+        <element name="BankAccount" positionX="27" positionY="342" width="144" height="435"/>
+        <element name="BankMessage" positionX="216" positionY="342" width="128" height="90"/>
+        <element name="BankStatement" positionX="412" positionY="9" width="108.314" height="780"/>
+        <element name="BankUser" positionX="34" positionY="810" width="128" height="373"/>
+        <element name="Category" positionX="27" positionY="12" width="96" height="315"/>
+        <element name="CategoryBudget" positionX="216" positionY="162" width="128" height="90"/>
+        <element name="CreditCardSettlement" positionX="216" positionY="441" width="128" height="255"/>
+        <element name="CustomerMessage" positionX="574" positionY="576" width="128" height="150"/>
+        <element name="StandingOrder" positionX="718" positionY="288" width="128" height="465"/>
+        <element name="StatCatAssignment" positionX="223" positionY="9" width="111.036" height="105"/>
+        <element name="SupportedTransactionInfo" positionX="205" positionY="792" width="128" height="165"/>
+        <element name="Tag" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="TanMedium" positionX="538" positionY="792" width="128" height="285"/>
+        <element name="TanMethod" positionX="376" positionY="792" width="128" height="225"/>
+        <element name="TransactionLimits" positionX="720" positionY="783" width="126" height="75"/>
+        <element name="Transfer" positionX="576" positionY="9" width="96" height="540"/>
+        <element name="TransferTemplate" positionX="720" positionY="9" width="108" height="315"/>
+    </elements>
+</model>
