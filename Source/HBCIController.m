@@ -1010,6 +1010,10 @@ NSString *escapeSpecial(NSString *s)
                      }
                      */
                     iResult.statements = res.statements;
+                } else {
+                    if (res.balance != nil) {
+                        iResult.balance = res.balance;
+                    }
                 }
             }
             

@@ -607,7 +607,7 @@
         [[MessageLog log] addMessage: [NSString stringWithFormat: @"Import settings file not found: %@", fileName] withLevel: LogLevel_Warning];
         NSRunAlertPanel(NSLocalizedString(@"AP619", nil),
                         NSLocalizedString(@"AP620", nil),
-                        NSLocalizedString(@"Ok", nil),
+                        NSLocalizedString(@"ok", nil),
                         nil, nil, fileName);
 	}
 

@@ -1,4 +1,6 @@
 // Common strings.
+"ok" = "Ok";
+
 // AP0..AP49
 "AP1" = "Ok";
 "AP2" = "Abbrechen";
@@ -48,6 +50,7 @@
 "AP75" = "Die Regel konnte nicht interpretiert werden, vermutlich sind Sonderzeichen enthalten. Der Parser meldet folgendes Problem: %@";
 "AP76" = "Bitte einen Verwendungszweck angeben";
 "AP77" = "IBAN und/oder BIC sind für das Konto %@ nicht eingetragen";
+"AP78" = "Aktion nicht möglich da bereits eine andere HBCI-Anfrage verarbeitet wird";
 
 // General + miscellaneous messages.
 // AP100..AP149

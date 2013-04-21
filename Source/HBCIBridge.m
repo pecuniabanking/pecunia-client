@@ -82,7 +82,7 @@
     
     NSString *bundlePath = [[NSBundle mainBundle ] bundlePath ];
     NSString *jarPath = [bundlePath stringByAppendingString:@"/Contents/HBCIServer.jar" ];
-    NSString *launchPath = [bundlePath stringByAppendingString:@"/Contents/Plugins/jdk1.7.0_07.jdk/Contents/Home/bin/java"];
+    NSString *launchPath = [bundlePath stringByAppendingString:@"/Contents/Plugins/jre/Contents/Home/bin/java"];
     
     //[task setLaunchPath: @"/usr/bin/java" ];
     [task setLaunchPath: launchPath];
@@ -240,7 +240,7 @@
     
     if(running == YES) {
         // async command is still running
-        *err = [PecuniaError errorWithCode:1 message: NSLocalizedString(@"AP97", nil) ];
+        *err = [PecuniaError errorWithCode:1 message: NSLocalizedString(@"AP78", nil) ];
         return nil;
     }
     NSString *command = [cmd stringByAppendingString: @".\n" ];

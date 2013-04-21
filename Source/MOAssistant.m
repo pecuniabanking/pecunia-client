@@ -95,7 +95,7 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 - (void)startIdle
 {
-    if (isEncrypted && maxIdleTimeExceeded == NO) {
+    if (isEncrypted && maxIdleTimeExceeded == NO && decryptionDone == YES) {
         NSError *error=nil;
         [context save:&error];
         if (error != nil) {
