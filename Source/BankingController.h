@@ -113,12 +113,15 @@
     
     IBOutlet NSWindow           *licenseWindow;
     IBOutlet NSButton           *toggleDetailsButton;
+
     IBOutlet NSArrayController  *statementTags;
     IBOutlet NSArrayController  *tagsController;
     IBOutlet NSButton           *tagButton;
     IBOutlet TagView            *tagsField;
     IBOutlet TagView            *tagViewPopup;
-    IBOutlet NSScrollView       *tagViewHost;
+    IBOutlet NSView             *tagViewHost;
+    IBOutlet NSViewController   *tagPopoverController;
+    IBOutlet NSPopover          *tagPopover;
 
     IBOutlet AttachmentImageView *attachement1;
     IBOutlet AttachmentImageView *attachement2;

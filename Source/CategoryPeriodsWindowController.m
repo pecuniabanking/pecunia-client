@@ -19,7 +19,6 @@
 
 #import "MBTableGrid/MBTableGrid.h"
 #import "MBTableGrid/MBTableGridHeaderView.h"
-#import "MAAttachedWindow.h"
 #import "BWGradientBox.h"
 
 #import "CategoryPeriodsWindowController.h"
@@ -41,7 +40,6 @@ extern void *UserDefaultsBindingContext;
 @interface CategoryPeriodsWindowController (Private)
 
 - (void)loadDataForIndex: (NSInteger)index;
-- (void)hideStatementList;
 - (void)showStatementList: (NSRect)cellBounds;
 - (void)updateStatementList: (NSRect)cellBounds;
 - (void)updateData;
@@ -250,11 +248,11 @@ extern void *UserDefaultsBindingContext;
  */
 - (BOOL)tableGrid: (MBTableGrid *)aTableGrid shouldEditColumn: (NSUInteger)columnIndex row: (NSUInteger)rowIndex
 {
-    if (detailsPopupWindow != nil) {
-        [self hideStatementList];
+    if (detailsPopover.shown) {
+        [detailsPopover performClose: self];
     } else {
         id item = [outline itemAtRow: rowIndex + 1];
-        self.category = [item representedObject];
+        self.selectedCategory = [item representedObject];
         [self showStatementList: [valueGrid frameOfCellAtColumn: columnIndex row: rowIndex]];
     }
     return false;
@@ -262,8 +260,8 @@ extern void *UserDefaultsBindingContext;
 
 - (void)cancelEditForTableGrid: (MBTableGrid *)aTableGrid
 {
-    if (detailsPopupWindow != nil) {
-        [self hideStatementList];
+    if (detailsPopover.shown) {
+        [detailsPopover performClose: self];
     }
 }
 
@@ -273,7 +271,6 @@ extern void *UserDefaultsBindingContext;
     NSIndexSet *selectedRows;
     if (valueGrid.selectedRowIndexes.count == 0) {
         selectedRows = [NSIndexSet indexSet];
-        [self hideStatementList];
     } else {
         selectedRows = [NSIndexSet indexSetWithIndex: valueGrid.selectedRowIndexes.firstIndex + 1];
     }
@@ -284,7 +281,7 @@ extern void *UserDefaultsBindingContext;
     if (selectedRows.count > 0) {
         NSUInteger columnIndex = valueGrid.selectedColumnIndexes.firstIndex;
         id item = [outline itemAtRow: selectedRows.firstIndex];
-        self.category = [item representedObject];
+        self.selectedCategory = [item representedObject];
         [self updateStatementList: [valueGrid frameOfCellAtColumn: columnIndex row: selectedRows.firstIndex - 1]];
     }
 }
@@ -341,8 +338,6 @@ extern void *UserDefaultsBindingContext;
     if (!active) {
         return;
     }
-    
-    [self hideStatementList];
     
     [dates removeAllObjects];
     [balances removeAllObjects];
@@ -444,35 +439,14 @@ extern void *UserDefaultsBindingContext;
 
 - (void)showStatementList: (NSRect)cellBounds
 {
-    if (detailsPopupWindow == nil) {
-        NSPoint targetPoint = NSMakePoint(NSMidX(cellBounds),
-                                          NSMidY(cellBounds));
-        targetPoint = [valueGrid convertPoint: targetPoint toView: nil];
-        detailsPopupWindow = [[MAAttachedWindow alloc] initWithView: statementDetailsView 
-                                                    attachedToPoint: targetPoint 
-                                                           inWindow: [valueGrid window] 
-                                                             onSide: MAPositionAutomatic 
-                                                         atDistance: 11];
-        
-        [detailsPopupWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.8]];
-        [detailsPopupWindow setViewMargin: 1];
-        [detailsPopupWindow setBorderWidth: 1];
-        [detailsPopupWindow setBorderColor: [NSColor colorWithCalibratedWhite: 0 alpha: 0.3]];
-        [detailsPopupWindow setCornerRadius: 10];
-        [detailsPopupWindow setHasArrow: YES];
-        [detailsPopupWindow setDrawsRoundCornerBesideArrow: YES];
-        
-        [self updateStatementList: cellBounds];
-        
-        [detailsPopupWindow setAlphaValue: 0];
-        [[valueGrid window] addChildWindow: detailsPopupWindow ordered: NSWindowAbove];
-        [detailsPopupWindow fadeIn];
+    if (!detailsPopover.shown) {
+        [detailsPopover showRelativeToRect: cellBounds ofView: valueGrid preferredEdge: NSMinYEdge];
     }
 }
 
 - (void)updateStatementList: (NSRect)cellBounds
 {
-    if (detailsPopupWindow != nil) {
+    if (detailsPopover.shown) {
         NSInteger columnIndex = valueGrid.selectedColumnIndexes.firstIndex;
         ShortDate *selFromDate = dates[columnIndex + fromIndex];
         ShortDate *selToDate;
@@ -489,39 +463,11 @@ extern void *UserDefaultsBindingContext;
         }
         
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category IN %@ AND statement.date >= %@ AND statement.date <= %@",
-                                  [self.category allCategories], [selFromDate lowDate], [selToDate highDate]];
+                                  [self.selectedCategory allCategories], [selFromDate lowDate], [selToDate highDate]];
         [statementsController setFetchPredicate: predicate];
         [statementsController prepareContent];	
 
-        NSPoint targetPoint = NSMakePoint(NSMidX(cellBounds),
-                                          NSMidY(cellBounds));
-        targetPoint = [valueGrid convertPoint: targetPoint toView: nil];
-        [detailsPopupWindow setPoint: targetPoint side: MAPositionAutomatic];
-    }    
-}
-
-- (void)releaseStatementList
-{
-    [[valueGrid window] removeChildWindow: detailsPopupWindow];
-    [detailsPopupWindow orderOut: self];
-    detailsPopupWindow = nil;
-    fadeInProgress = NO;
-}
-
-- (void)hideStatementList
-{
-    if (detailsPopupWindow != nil && !fadeInProgress) {
-        fadeInProgress = YES;
-        [detailsPopupWindow fadeOut];
-        
-        // We need to delay the release of the help window
-        // otherwise it will just disappear instead to fade out.
-        // With 10.7 and completion handlers it would be way more elegant.
-        [NSTimer scheduledTimerWithTimeInterval: 0.5
-                                         target: self 
-                                       selector: @selector(releaseStatementList)
-                                       userInfo: nil
-                                        repeats: NO];
+        [detailsPopover showRelativeToRect: cellBounds ofView: valueGrid preferredEdge: NSMinYEdge];
     }
 }
 
@@ -619,8 +565,6 @@ extern void *UserDefaultsBindingContext;
 
 - (IBAction)setGrouping: (id)sender
 {
-    [self hideStatementList];
-    
     groupingInterval = [sender intValue];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -636,8 +580,6 @@ extern void *UserDefaultsBindingContext;
 
 - (IBAction)fromChanged: (id)sender
 {
-    [self hideStatementList];
-    
     int fromPosition = [sender intValue];
     if (fromIndex == fromPosition) {
         return;
@@ -665,8 +607,6 @@ extern void *UserDefaultsBindingContext;
 
 - (IBAction)toChanged: (id)sender
 {
-    [self hideStatementList];
-    
     int toPosition = [sender intValue];
     if (toIndex == toPosition) {
         return;
@@ -724,7 +664,7 @@ extern void *UserDefaultsBindingContext;
 #pragma mark -
 #pragma mark PecuniaSectionItem protocol
 
-@synthesize category;
+@synthesize selectedCategory;
 
 -(void)print
 {
@@ -756,7 +696,6 @@ extern void *UserDefaultsBindingContext;
 
 - (void)deactivate
 {
-    [self hideStatementList];
     active = NO;
 }
 

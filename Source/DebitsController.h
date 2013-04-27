@@ -23,7 +23,6 @@
 #import "DebitsListview.h"
 #import "PecuniaTabItem.h"
 
-@class DebitCalendarWindow;
 @class DebitDragImageView;
 @class DeleteDebitTargetView;
 @class BankAccount;
@@ -99,7 +98,6 @@
     IBOutlet NSTabView      *debitTab;
     
 @private
-    DebitCalendarWindow *calendarWindow;
     TransactionLimits   *limits;
     NSArray             *draggedDebits;
     NSUInteger          rowPositions[4];
@@ -116,8 +114,6 @@
 - (IBAction)queueDebit: (id)sender;
 - (IBAction)sendDebit: (id)sender;
 - (IBAction)deleteDebit: (id)sender;
-
-- (void)hideCalendarWindow;
 
 - (void)draggingStartsFor: (DebitsListView *)sender;
 - (BOOL)prepareDebitOfType: (TransferType)type;

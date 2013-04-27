@@ -22,25 +22,7 @@
 
 #import "MOAssistant.h"
 #import "GraphicsAdditions.h"
-#import "AnimationHelper.h"
 #import "ColorPopup.h"
-
-#include "MAAttachedWindow.h"
-
-@interface TagPopupWindow : MAAttachedWindow
-@property (assign) id owner;
-@end
-
-@implementation TagPopupWindow
-
-- (void)cancelOperation: (id)sender
-{
-    [self.owner closeTagPopup];
-}
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------
 
 @interface TagAttachment : NSTextAttachment
 @property (strong) id representedObject;
@@ -194,12 +176,13 @@
             TagAttachment *attachment = [[owner textStorage] attribute: NSAttachmentAttributeName
                                                                atIndex: owner.hotTagIndex
                                                         effectiveRange: nil];
+            NSRect bounds = [owner.layoutManager boundingRectForGlyphRange: NSMakeRange(owner.hotTagIndex, 1)
+                                                           inTextContainer: owner.textContainer];
             editedTag = attachment.representedObject;
             ColorPopup.sharedColorPopup.color = editedTag.tagColor;
             ColorPopup.sharedColorPopup.target = self;
             ColorPopup.sharedColorPopup.action = @selector(colorChanged:);
-            [ColorPopup.sharedColorPopup popupAtPosition: [theEvent locationInWindow]
-                                               withOwner: owner.window];
+            [ColorPopup.sharedColorPopup popupRelativeToRect: bounds ofView: owner];
             
             return NO;
         }
@@ -219,8 +202,10 @@
 
 @interface TagView ()
 {
-    TagPopupWindow *popupWindow;
+    NSPopover *tagPopover;
+    NSViewController *tagPopoverController;
 }
+
 @end
 
 @implementation TagView
@@ -241,6 +226,7 @@
     hotTagIndex = NSNotFound;
     canCreateNewTags = NO;
 
+    tagPopoverController = [[NSViewController alloc] init];
     [self setSelectedTextAttributes: nil];
 }
 
@@ -754,65 +740,35 @@ sourceOperationMaskForDraggingContext: (NSDraggingContext)context
     return YES;
 }
 
+- (void)createPopoverWithHost: (NSView *)host
+{
+    tagPopoverController.view = host;
+
+    tagPopover = [[NSPopover alloc] init];
+    tagPopover.contentViewController = tagPopoverController;
+    tagPopover.behavior = NSPopoverBehaviorSemitransient;
+    tagPopover.delegate = self;
+}
+
 /**
  * Displays a popover window with a tag view to select tags from and edit them.
  */
-- (void)showTagPopupAt: (NSPoint)position withOwner: (NSWindow *)owner
+- (void)showTagPopupAt: (NSRect)rect forView: (NSView *)owner host: (NSView *)host
 {
-    if (popupWindow != nil) {
-        [self closeTagPopup];
+    if (tagPopover.shown) {
         return;
     }
 
-    NSView *view = self.superview.superview;
-    if (![view isKindOfClass: [NSScrollView class]])
-        view = self;
-    popupWindow = [[TagPopupWindow alloc] initWithView: view
-                                       attachedToPoint: position
-                                              inWindow: owner
-                                                onSide: MAPositionTop
-                                            atDistance: 10];
-    popupWindow.owner = self;
-    popupWindow.isVisible = NO;
-    popupWindow.canBecomeKey = YES;
-    popupWindow.backgroundColor = [NSColor whiteColor];
-    popupWindow.viewMargin = 20;
-    popupWindow.borderWidth = 0;
-    popupWindow.cornerRadius = 8;
-    popupWindow.hasArrow = YES;
-    popupWindow.arrowHeight = 10;
-    popupWindow.drawsRoundCornerBesideArrow = YES;
-
-    [owner addChildWindow: popupWindow ordered: NSWindowAbove];
-
-    NSRect frame = popupWindow.frame;
-    frame.size.width += 40;
-    frame.size.height += 100;
-    frame.origin.x -= 20;
-    [popupWindow zoomInWithOvershot: frame withFade: YES makeKey: YES];
+    [self createPopoverWithHost: host];
+    [tagPopover showRelativeToRect: rect ofView: owner preferredEdge: NSMinYEdge];
 }
 
-- (void)windowDidResignKey: (NSNotification *)aNotification
-{
-    [self closeTagPopup];
-}
+#pragma mark -
+#pragma mark Popover Delegate Methods
 
-- (void)closeTagPopup
+- (void)popoverDidClose:(NSNotification *)notification
 {
-    if (popupWindow == nil) {
-        return;
-    }
-    
-	[popupWindow fadeOut];
-    [self performSelector: @selector(performCloseCleanUp)
-               withObject: nil
-               afterDelay: [[NSAnimationContext currentContext] duration]];
-}
-
-- (void)performCloseCleanUp
-{
-    [popupWindow.parentWindow removeChildWindow: popupWindow];
-    popupWindow = nil;
+    tagPopover = nil;
 }
 
 @end

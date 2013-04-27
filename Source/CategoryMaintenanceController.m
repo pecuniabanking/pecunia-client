@@ -23,7 +23,6 @@
 #include "AnimationHelper.h"
 
 #import "BWGradientBox.h"
-#import "MAAttachedWindow.h"
 
 extern NSString* const CategoryColorNotification;
 extern NSString* const CategoryKey;
@@ -196,28 +195,8 @@ extern NSString* const CategoryKey;
 
 - (void)openImageLibrary
 {
-    if (imageLibraryPopupWindow == nil) {
-        NSRect bounds = categoryIcon.bounds;
-        NSPoint targetPoint = NSMakePoint(NSMidX(bounds),
-                                          NSMidY(bounds));
-        targetPoint = [categoryIcon convertPoint: targetPoint toView: nil];
-        imageLibraryPopupWindow = [[MAAttachedWindow alloc] initWithView: imageLibraryPopup
-                                                         attachedToPoint: targetPoint
-                                                                inWindow: self.window
-                                                                  onSide: MAPositionAutomatic
-                                                              atDistance: 20];
-
-        [imageLibraryPopupWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.8]];
-        [imageLibraryPopupWindow setViewMargin: 1];
-        [imageLibraryPopupWindow setBorderWidth: 1];
-        [imageLibraryPopupWindow setCornerRadius: 10];
-        [imageLibraryPopupWindow setHasArrow: YES];
-        [imageLibraryPopupWindow setDrawsRoundCornerBesideArrow: YES];
-
-        [imageLibraryPopupWindow setAlphaValue: 0];
-        [self.window addChildWindow: imageLibraryPopupWindow ordered: NSWindowAbove];
-        [imageLibraryPopupWindow fadeIn];
-        [imageLibraryPopupWindow makeKeyWindow];
+    if (!imageLibraryPopover.shown) {
+        [imageLibraryPopover showRelativeToRect: categoryIcon.bounds ofView: categoryIcon preferredEdge: NSMinYEdge];
     }
 }
 
@@ -231,9 +210,7 @@ extern NSString* const CategoryKey;
 
 - (IBAction)acceptImage: (id)sender
 {
-    [imageLibraryPopupWindow fadeOut];
-    [self.window removeChildWindow: imageLibraryPopupWindow];
-    imageLibraryPopupWindow = nil;
+    [imageLibraryPopover performClose: sender];
 
     NSArray *selection = iconCollectionController.selectedObjects;
     if ([selection count] > 0) {
@@ -243,9 +220,7 @@ extern NSString* const CategoryKey;
 
 - (IBAction)cancelImage: (id)sender
 {
-    [imageLibraryPopupWindow fadeOut];
-    [self.window removeChildWindow: imageLibraryPopupWindow];
-    imageLibraryPopupWindow = nil;
+    [imageLibraryPopover performClose: sender];
 }
 
 - (IBAction)cancel: (id)sender

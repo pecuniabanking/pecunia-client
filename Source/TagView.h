@@ -22,7 +22,7 @@
 @class BWGradientBox;
 @class TagAttachmentCell;
 
-@interface TagView : NSTextView <NSTextViewDelegate>
+@interface TagView : NSTextView <NSTextViewDelegate,  NSPopoverDelegate>
 {
 @private
     BOOL updatingContent;
@@ -36,7 +36,6 @@
 @property (nonatomic, strong) NSFont *defaultFont; // NSText's font setting is ignored by NSTextView.
 @property (assign) BOOL canCreateNewTags;
 
-- (void)showTagPopupAt: (NSPoint)position withOwner: (NSWindow *)owner;
-- (void)closeTagPopup;
+- (void)showTagPopupAt: (NSRect)rect forView: (NSView *)owner host: (NSView *)host;
 
 @end

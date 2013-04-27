@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2700B6AC148B814500E18BBE /* SideToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2700B6AB148B814500E18BBE /* SideToolbarView.m */; };
 		2700B91F148BC58700E18BBE /* computing.png in Resources */ = {isa = PBXBuildFile; fileRef = 2700B91B148BC58700E18BBE /* computing.png */; };
 		2700B920148BC58700E18BBE /* graph1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2700B91C148BC58700E18BBE /* graph1.png */; };
 		2700B921148BC58700E18BBE /* graph2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2700B91D148BC58700E18BBE /* graph2.png */; };
@@ -97,6 +96,7 @@
 		279D963716EFB6AF004FCAC4 /* heat-map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 279D963616EFB6AF004FCAC4 /* heat-map@2x.png */; };
 		279D963A16EFB744004FCAC4 /* heat-map-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 279D963816EFB744004FCAC4 /* heat-map-active.png */; };
 		279D963B16EFB744004FCAC4 /* heat-map-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 279D963916EFB744004FCAC4 /* heat-map-active@2x.png */; };
+		27A0098917205B4800D61FE9 /* RuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A0098817205B4800D61FE9 /* RuleEditor.xib */; };
 		27A3DA1816A1C71D00FD7335 /* Debits.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A3DA1716A1C71D00FD7335 /* Debits.xib */; };
 		27A3DA1B16A1C91500FD7335 /* DebitsListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A3DA1A16A1C91500FD7335 /* DebitsListViewCell.xib */; };
 		27A3DA2316A1C99C00FD7335 /* DebitsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A3DA1E16A1C99C00FD7335 /* DebitsController.m */; };
@@ -124,7 +124,6 @@
 		27C883C715E0EBCE007572F0 /* NSString+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */; };
 		27C930F6149508280055EAD5 /* Colors.acf in Resources */ = {isa = PBXBuildFile; fileRef = 27C930F5149508280055EAD5 /* Colors.acf */; };
 		27CBA24516F60EFB00C2AC04 /* AdditionalControls.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CBA24416F60EFB00C2AC04 /* AdditionalControls.m */; };
-		27CC732614A09E060082495C /* MAAttachedWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC732514A09E060082495C /* MAAttachedWindow.m */; };
 		27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */; };
 		27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */; };
 		27D1172B15288C3600CD7E83 /* background-pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D1172A15288C3600CD7E83 /* background-pattern.png */; };
@@ -379,8 +378,6 @@
 		089C165DFE840E0CC02AAC07 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = ../InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		2700B6AA148B814500E18BBE /* SideToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = SideToolbarView.h; sourceTree = "<group>"; tabWidth = 4; };
-		2700B6AB148B814500E18BBE /* SideToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = SideToolbarView.m; sourceTree = "<group>"; tabWidth = 4; };
 		2700B91B148BC58700E18BBE /* computing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = computing.png; sourceTree = "<group>"; };
 		2700B91C148BC58700E18BBE /* graph1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graph1.png; sourceTree = "<group>"; };
 		2700B91D148BC58700E18BBE /* graph2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graph2.png; sourceTree = "<group>"; };
@@ -504,6 +501,7 @@
 		279D963616EFB6AF004FCAC4 /* heat-map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heat-map@2x.png"; sourceTree = "<group>"; };
 		279D963816EFB744004FCAC4 /* heat-map-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heat-map-active.png"; sourceTree = "<group>"; };
 		279D963916EFB744004FCAC4 /* heat-map-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heat-map-active@2x.png"; sourceTree = "<group>"; };
+		27A0098817205B4800D61FE9 /* RuleEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RuleEditor.xib; sourceTree = "<group>"; };
 		27A3DA1716A1C71D00FD7335 /* Debits.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Debits.xib; sourceTree = "<group>"; };
 		27A3DA1A16A1C91500FD7335 /* DebitsListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DebitsListViewCell.xib; sourceTree = "<group>"; };
 		27A3DA1D16A1C99C00FD7335 /* DebitsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebitsController.h; sourceTree = "<group>"; };
@@ -542,8 +540,6 @@
 		27C930F5149508280055EAD5 /* Colors.acf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Colors.acf; sourceTree = "<group>"; };
 		27CBA24316F60EFB00C2AC04 /* AdditionalControls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdditionalControls.h; sourceTree = "<group>"; };
 		27CBA24416F60EFB00C2AC04 /* AdditionalControls.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdditionalControls.m; sourceTree = "<group>"; };
-		27CC732414A09E060082495C /* MAAttachedWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MAAttachedWindow.h; path = MAAttachedWindow/MAAttachedWindow.h; sourceTree = "<group>"; };
-		27CC732514A09E060082495C /* MAAttachedWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MAAttachedWindow.m; path = MAAttachedWindow/MAAttachedWindow.m; sourceTree = "<group>"; };
 		27CC73D414A0C0680082495C /* German */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = German; path = "German.lproj/category-analysis-help.rtf"; sourceTree = SOURCE_ROOT; };
 		27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NS(Attributed)String+Geometrics.h"; sourceTree = "<group>"; };
 		27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NS(Attributed)String+Geometrics.m"; sourceTree = "<group>"; };
@@ -1055,8 +1051,6 @@
 				274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */,
 				27150D9E140ABDAC000841E2 /* RoundedSidebar.h */,
 				27150D9F140ABDAC000841E2 /* RoundedSidebar.m */,
-				2700B6AA148B814500E18BBE /* SideToolbarView.h */,
-				2700B6AB148B814500E18BBE /* SideToolbarView.m */,
 				B18978850ED0B2E800D20503 /* StatementDetails.h */,
 				B18978860ED0B2E800D20503 /* StatementDetails.m */,
 				27028DCD1539B58700AEB651 /* TransfersBackgroundView.h */,
@@ -1127,21 +1121,11 @@
 				27DD4AFB150B6F84006C2370 /* BWToolkit */,
 				2706F2001556C3BE0011A20E /* OnOffButton */,
 				2736DD531514F6680066917C /* MBTableGrid */,
-				27CC732714A09E0B0082495C /* MAAttachedWindow */,
 				275C07DC1438777900D97415 /* PXListview */,
 				27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */,
 				27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */,
 			);
 			name = "3rd Party";
-			sourceTree = "<group>";
-		};
-		27CC732714A09E0B0082495C /* MAAttachedWindow */ = {
-			isa = PBXGroup;
-			children = (
-				27CC732414A09E060082495C /* MAAttachedWindow.h */,
-				27CC732514A09E060082495C /* MAAttachedWindow.m */,
-			);
-			name = MAAttachedWindow;
 			sourceTree = "<group>";
 		};
 		27CC73CD14A0BFF40082495C /* Inline Help */ = {
@@ -1215,6 +1199,7 @@
 				B17729AC1504D63200256898 /* BusinessTransactionsWindow.xib */,
 				B1AFA8801295C5D800B115A7 /* CategoryAnalysis.xib */,
 				27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */,
+				27A0098817205B4800D61FE9 /* RuleEditor.xib */,
 				27DCC81716EB8E640070E241 /* CategoryHeatMap.xib */,
 				27DFFD9116739C0000848CD2 /* CategoryMaintenance.xib */,
 				B14587A11289DCB700848683 /* CategoryPeriods.xib */,
@@ -2024,6 +2009,7 @@
 				27EEC8E316F4D2950000A1A9 /* category-heatmap-help.rtf in Resources */,
 				2784DAEE16FDBDFF00E054D2 /* gray-hatch.png in Resources */,
 				2784DAF016FDC62C00E054D2 /* gray-hatch@2x.png in Resources */,
+				27A0098917205B4800D61FE9 /* RuleEditor.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2153,8 +2139,6 @@
 				27C7B2F61475466600BD4F56 /* ColumnLayoutCorePlotLayer.m in Sources */,
 				27C7B506147FC50300278131 /* PecuniaPlotTimeFormatter.m in Sources */,
 				2792CB3414840506006A510A /* AnimationHelper.m in Sources */,
-				2700B6AC148B814500E18BBE /* SideToolbarView.m in Sources */,
-				27CC732614A09E060082495C /* MAAttachedWindow.m in Sources */,
 				27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */,
 				B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */,
 				B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */,
@@ -2305,7 +2289,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Resources\"",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
@@ -2348,7 +2332,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Resources\"",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;
@@ -2390,7 +2374,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Resources\"",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = Pecunia;

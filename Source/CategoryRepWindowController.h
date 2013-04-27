@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -26,7 +26,6 @@
 @class ShortDate;
 @class PecuniaGraphHost;
 @class Category;
-@class MAAttachedWindow;
 
 @interface CategoryRepWindowController : NSObject <PecuniaSectionItem, CPTPlotSpaceDelegate, CPTPieChartDataSource,
   CPTBarPlotDelegate, CPTAnimationDelegate>
@@ -37,6 +36,7 @@
     IBOutlet NSButton* helpButton;
     IBOutlet NSView* helpContentView;
     IBOutlet NSTextField* helpText;
+    IBOutlet NSPopover *helpPopover;
     
 @private
     CPTXYGraph* pieChartGraph;
@@ -60,15 +60,12 @@
     NSMutableArray* sortedSpendingValues;
     NSMutableArray* earningsCategories;
     NSMutableArray* sortedEarningValues;
-    Category* currentCategory;
     ShortDate* fromDate;
     ShortDate* toDate;
     
     NSInteger earningsExplosionIndex;
     NSInteger spendingsExplosionIndex;
     BOOL inMouseMoveHandling;
-    
-    MAAttachedWindow* helpWindow;
 
     // Animation support.
     CPTAnimationOperation *earningsAngleAnimation;
@@ -78,12 +75,11 @@
     NSArrayController *spendingsPlotRadialOffsets;
 }
 
-@property (nonatomic, strong) Category* category;
+@property (nonatomic, weak) Category* selectedCategory;
 
 - (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
 
 - (IBAction)balancingRuleChanged: (id)sender;
-- (IBAction)toggleHelp: (id)sender;
 
 // PecuniaSectionItem protocol.
 - (NSView*)mainView;

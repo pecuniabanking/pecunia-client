@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -45,12 +45,10 @@
 	BOOL hideAssignedValues;
 	BOOL ruleChanged;
 	BOOL awaking;
-    
-    Category* currentCategory;
 }
 
 @property (nonatomic, strong) TimeSliceManager* timeSliceManager;
-@property (nonatomic, strong) Category* category;
+@property (nonatomic, weak) Category* selectedCategory;
 @property (strong) IBOutlet NSSplitView *splitter;
 
 - (IBAction)predicateEditorChanged: (id)sender;

@@ -31,7 +31,7 @@
 
 -(NSComparisonResult)compareDate: (StatCatAssignment*)stat
 {
-	return [self.statement.date compare: stat.statement.date ];
+	return [self.statement.valutaDate compare: stat.statement.valutaDate];
 }
 
 -(NSString*)stringForFields: (NSArray*)fields usingDateFormatter:(NSDateFormatter*)dateFormatter numberFormatter:(NSNumberFormatter*)numberFormatter

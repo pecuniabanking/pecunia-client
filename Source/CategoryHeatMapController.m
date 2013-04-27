@@ -23,8 +23,6 @@
 #import "AnimationHelper.h"
 #import "GraphicsAdditions.h"
 
-#import "NS(Attributed)String+Geometrics.h"
-#import "MAAttachedWindow.h"
 #import "StatCatAssignment.h"
 #import "BankStatement.h"
 
@@ -35,9 +33,7 @@
 
 @interface CategoryHeatMapController (Private)
 
-- (void)hideValuePopup;
-- (void)showValuePopupForDate: (ShortDate*)date atPosition: (NSPoint)position forView: (NSView*)view;
-- (BOOL)isPopupVisible;
+- (void)showValuePopupForDate: (ShortDate*)date relativeToRect: (NSRect)area forView: (NSView*)view;
 
 @end
 
@@ -193,34 +189,32 @@
     NSPoint location = [self convertPoint: windowLocation fromView: nil];
 
     CategoryHeatMapController *controller = [(HeatMapView*)self.superview controller];
-    if (controller.isPopupVisible) {
-        [controller hideValuePopup];
-        return;
-    }
 
     if (NSPointInRect(location, valueArea)) {
         location.x -= valueArea.origin.x;
         location.y -= valueArea.origin.y;
 
+        NSRect cellArea;
         if (currentType == HeatMapBlockType) {
-            NSUInteger cellWidth = (valueArea.size.width) / 7.0;
-            NSUInteger cellHeight = (valueArea.size.height) / 6.0;
+            cellArea.size.width = valueArea.size.width / 7;
+            cellArea.size.height = valueArea.size.height / 6;
 
-            NSUInteger weekDay = (NSUInteger)location.x / cellWidth;
-            NSUInteger week = (NSUInteger)location.y / cellHeight;
+            NSUInteger weekDay = (NSUInteger)location.x / cellArea.size.width;
+            NSUInteger week = (NSUInteger)location.y / cellArea.size.height;
             self.selectedDate = [date dateByAddingUnits: week * 7 + weekDay byUnit: NSDayCalendarUnit];
 
-            windowLocation.x += (weekDay + 1) * cellWidth - (NSUInteger)location.x;
-            windowLocation.y += (NSUInteger)location.y - (week + 0.5) * cellHeight;
+            cellArea.origin.x = valueArea.origin.x + weekDay * cellArea.size.width;
+            cellArea.origin.y = valueArea.origin.y + week * cellArea.size.height;
         } else {
             location.y -= 5;
-            CGFloat cellHeight = floor((valueArea.size.height - 10) / 37.0);
-            NSUInteger day = location.y / cellHeight;
+            cellArea.size.height = floor((valueArea.size.height - 10) / 37.0);
+            cellArea.size.width = valueArea.size.width;
+            NSUInteger day = location.y / cellArea.size.height;
             self.selectedDate = [date dateByAddingUnits: day byUnit: NSDayCalendarUnit];
-            windowLocation.x += valueArea.size.width - (NSUInteger)location.x;
-            windowLocation.y += (NSUInteger)location.y - (day + 0.5) * cellHeight;
+            cellArea.origin.x = valueArea.origin.x;
+            cellArea.origin.y = valueArea.origin.y + day * cellArea.size.height + 5;
         }
-        [controller showValuePopupForDate: selectedDate atPosition: windowLocation forView: self];
+        [controller showValuePopupForDate: selectedDate relativeToRect: cellArea forView: self];
     } else {
         self.selectedDate = nil;
     }
@@ -716,7 +710,6 @@ static NSFont *smallNumberFont;
 - (void)mouseDown: (NSEvent *)theEvent
 {
     [self resetSelectedDate: nil];
-    [self.controller hideValuePopup];
 }
 
 - (void)drawRect:(NSRect)dirtyRect
@@ -787,7 +780,7 @@ static NSFont *smallNumberFont;
 @implementation CategoryHeatMapController
 
 @synthesize mainView;
-@synthesize category;
+@synthesize selectedCategory;
 
 - (void)awakeFromNib
 {
@@ -799,11 +792,11 @@ static NSFont *smallNumberFont;
     NSString* path = [mainBundle pathForResource: @"category-heatmap-help" ofType: @"rtf"];
     NSAttributedString* text = [[NSAttributedString alloc] initWithPath: path documentAttributes: NULL];
     [helpText setAttributedStringValue: text];
-    float height = [text heightForWidth: helpText.bounds.size.width];
-    helpContentView.frame = NSMakeRect(0, 0, helpText.bounds.size.width, height);
+    NSRect bounds = [text boundingRectWithSize: NSMakeSize(helpText.bounds.size.width, 0) options: NSStringDrawingUsesLineFragmentOrigin];
+    helpContentView.frame = NSMakeRect(0, 0, helpText.bounds.size.width + 20, bounds.size.height + 20);
 
     heatMapView.controller = self;
-    [popupList reloadData];
+    [valuePopupList reloadData];
 
     switchTypeButtonCell.offSwitchLabel = NSLocalizedString(@"AP751", nil);
     switchTypeButtonCell.onSwitchLabel = NSLocalizedString(@"AP752", nil);
@@ -811,8 +804,6 @@ static NSFont *smallNumberFont;
 
 - (void)updateValues
 {
-    [self hideValuePopup];
-
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     BOOL recursive = [userDefaults boolForKey: @"recursiveTransactions"];
     NSArray *values;
@@ -823,7 +814,7 @@ static NSFont *smallNumberFont;
         {
             [formatter setFormat: @"#,##0.##"];
 
-            limits.high = [currentCategory turnoversForYear: currentYear toDates: &dates turnovers: &values recursive: recursive];
+            limits.high = [selectedCategory turnoversForYear: currentYear toDates: &dates turnovers: &values recursive: recursive];
 
             // Make sure we have a minimal max value so that we don't show a low number of statements as hot.
             if (limits.high < 10) {
@@ -835,7 +826,7 @@ static NSFont *smallNumberFont;
         {
             [formatter setFormat: @"#,##0.## ¤"];
 
-            limits.high = [currentCategory absoluteValuesForYear: currentYear toDates: &dates values: &values recursive: recursive];
+            limits.high = [selectedCategory absoluteValuesForYear: currentYear toDates: &dates values: &values recursive: recursive];
 
             if (limits.high < 1000) {
                 limits.high = 1000;
@@ -846,7 +837,7 @@ static NSFont *smallNumberFont;
         {
             [formatter setFormat: @"#,##0.## ¤"];
 
-            limits = [currentCategory valuesForYear: currentYear toDates: &dates values: &values recursive: recursive];
+            limits = [selectedCategory valuesForYear: currentYear toDates: &dates values: &values recursive: recursive];
 
             if (limits.high < 1000) {
                 limits.high = 1000;
@@ -870,83 +861,34 @@ static NSFont *smallNumberFont;
     perMonthText.stringValue = [formatter stringFromNumber: @(sum.doubleValue / 12.0)];
 }
 
-- (BOOL)isPopupVisible
-{
-    return popupVisible;
-}
-
-- (void)hideValuePopup
-{
-    if (popupVisible) {
-        [popupWindow fadeOut];
-        popupVisible = NO;
-    }
-}
-
-- (void)showValuePopupForDate: (ShortDate*)date atPosition: (NSPoint)position forView: (NSView*)view
+- (void)showValuePopupForDate: (ShortDate*)date relativeToRect: (NSRect)area forView: (NSView*)view
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     BOOL recursive = [userDefaults boolForKey: @"recursiveTransactions"];
-    currentAssignments = [currentCategory assignmentsFrom: date to: date withChildren: recursive];
-    [popupList reloadData];
-    NSRect frame = popupView.frame;
+    currentAssignments = [selectedCategory assignmentsFrom: date to: date withChildren: recursive];
+    [valuePopupList reloadData];
+
+    NSRect frame = valuePopupList.frame;
+    frame.origin = NSMakePoint(2, 2);
     if (currentAssignments.count < 6) {
         frame.size.height = MAX(currentAssignments.count, 1) * 21;
     } else {
         frame.size.height = 5 * 21;
     }
-    popupView.frame = frame;
-    [popupView display];
 
-    if (!popupVisible) {
-        popupVisible = YES;
-        [self hideHelp];
-
-        if (popupWindow == nil) {
-            popupWindow = [[MAAttachedWindow alloc] initWithView: popupView
-                                                 attachedToPoint: position
-                                                        inWindow: mainView.window
-                                                          onSide: MAPositionRight
-                                                      atDistance: 0];
-
-            [popupWindow setBackgroundColor: [NSColor whiteColor]];
-            [popupWindow setViewMargin: 5];
-            [popupWindow setBorderWidth: 0.5];
-            [popupWindow setBorderColor: [NSColor colorWithCalibratedWhite: 0.5 alpha: 0.3]];
-            [popupWindow setCornerRadius: 6];
-            [popupWindow setHasArrow: YES];
-            [popupWindow setArrowHeight: 10];
-            [popupWindow setDrawsRoundCornerBesideArrow: YES];
-
-            popupWindow.canBecomeKey = NO;
-            
-            // Need to add it now to have the layout be computed properly.
-            [mainView.window addChildWindow: popupWindow ordered: NSWindowAbove];
-        } else {
-            [popupWindow setPoint: position side: MAPositionRight];
-            [popupWindow display];
-        }
-
-        NSRect frame = popupWindow.frame;
-        frame.size.width += 100;
-        frame.size.height += 10;
-        frame.origin.y -= 5;
-        popupWindow.isVisible = NO;
-        [popupWindow zoomInWithOvershot: frame withFade: YES makeKey: NO];
-
-        // Hiding the window removes it from the parent window, so we need to add it again
-        // to have it always on top.
-        [mainView.window addChildWindow: popupWindow ordered: NSWindowAbove];
+    NSSize contentSize = frame.size;
+    contentSize.width += 4; // Border left/right.
+    contentSize.height += 4; // Ditto for top/bottom.
+    if (contentSize.height < 26) {
+        contentSize.height = 26;
     }
+    valuePopupList.frame = frame;
+    statementsPopover.contentSize = contentSize;
+
+    [statementsPopover showRelativeToRect: area ofView: view preferredEdge: NSMaxXEdge];
+    valuePopupList.frameOrigin = frame.origin; // Set the origin again, as NSPopover messes this up.
 }
 
-- (void)hideHelp
-{
-    if (helpVisible) {
-        [helpWindow fadeOut];
-        helpVisible = NO;
-    }
-}
 #pragma mark -
 #pragma mark IB Actions
 
@@ -955,47 +897,15 @@ static NSFont *smallNumberFont;
     [self updateValues];
 }
 
-- (IBAction)toggleHelp:(id)sender
+- (IBAction)showHelp: (id)sender
 {
-    if (!helpVisible) {
-        helpVisible = YES;
-        if (popupVisible) {
-            [self hideValuePopup];
-        }
-        NSPoint buttonPoint = NSMakePoint(NSMidX([helpButton frame]),
-                                          NSMidY([helpButton frame]));
-        buttonPoint = [mainView convertPoint: buttonPoint toView: nil];
-
-        if (helpWindow == nil) {
-            helpWindow = [[MAAttachedWindow alloc] initWithView: helpContentView
-                                                attachedToPoint: buttonPoint
-                                                       inWindow: mainView.window
-                                                         onSide: MAPositionTopLeft
-                                                     atDistance: 20];
-
-            [helpWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 0.2 alpha: 1]];
-            [helpWindow setViewMargin: 10];
-            [helpWindow setBorderWidth: 0];
-            [helpWindow setCornerRadius: 10];
-            [helpWindow setHasArrow: YES];
-            [helpWindow setDrawsRoundCornerBesideArrow: YES];
-
-            [mainView.window addChildWindow: helpWindow ordered: NSWindowAbove];
-        } else {
-            [helpWindow setPoint: buttonPoint side: MAPositionTopLeft];
-        }
-        [helpWindow fadeIn];
-        [mainView.window addChildWindow: helpWindow ordered: NSWindowAbove];
-    } else {
-        [helpWindow fadeOut];
-        helpVisible = NO;
+    if (!helpPopover.shown) {
+        [helpPopover showRelativeToRect: helpButton.bounds ofView: helpButton preferredEdge: NSMinYEdge];
     }
 }
 
 - (IBAction)switchType: (id)sender
 {
-    [self hideHelp];
-    [self hideValuePopup];
     [[heatMapView animator] setAlphaValue: 0];
     [self performSelector: @selector(doSwitchType:) withObject: sender afterDelay: 0.3];
 }
@@ -1096,11 +1006,6 @@ static NSFont *smallNumberFont;
 
 - (void)deactivate
 {
-    if (helpVisible) {
-        helpVisible = NO;
-        [helpWindow fadeOut];
-    }
-    [self hideValuePopup];
 }
 
 - (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
@@ -1117,8 +1022,6 @@ static NSFont *smallNumberFont;
 
 - (void)print
 {
-    [self hideValuePopup];
-
     NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
     [printInfo setTopMargin: 45];
     [printInfo setBottomMargin: 45];
@@ -1131,15 +1034,17 @@ static NSFont *smallNumberFont;
     [printOp runOperation];
 }
 
-- (void)setCategory: (Category *)theCategory
+- (void)setSelectedCategory: (Category *)theCategory
 {
-    for (NSView *view in heatMapView.subviews) {
-        [(HeatMapCalendar*)view setContentAlpha: 0];
-    }
-    currentCategory = theCategory;
-    [self updateValues];
-    for (NSView *view in heatMapView.subviews) {
-        [view.animator setContentAlpha: 1];
+    if (selectedCategory != theCategory) {
+        for (NSView *view in heatMapView.subviews) {
+            [(HeatMapCalendar*)view setContentAlpha: 0];
+        }
+        selectedCategory = theCategory;
+        [self updateValues];
+        for (NSView *view in heatMapView.subviews) {
+            [view.animator setContentAlpha: 1];
+        }
     }
 }
 

@@ -40,7 +40,7 @@
 @implementation CategoryDefWindowController
 
 @synthesize timeSliceManager;
-@synthesize category = currentCategory;
+@synthesize selectedCategory;
 
 - (id)init
 {
@@ -101,7 +101,7 @@
 {
     NSError* error;
     
-    if (currentCategory == nil) {
+    if (selectedCategory == nil) {
         return;
     }
     
@@ -122,7 +122,7 @@
             return;
         }
         
-        [currentCategory setValue: rule forKey: @"rule"];
+        [selectedCategory setValue: rule forKey: @"rule"];
         
         // save updates
         NSManagedObjectContext *context = [[MOAssistant assistant] context];
@@ -139,7 +139,7 @@
 {
     NSError* error;
     
-    if (currentCategory == nil) {
+    if (selectedCategory == nil) {
         return;
     }
     
@@ -148,11 +148,11 @@
                               NSLocalizedString(@"AP3", nil),
                               NSLocalizedString(@"AP4", nil),
                               nil,
-                              [currentCategory localName]
+                              [selectedCategory localName]
                               );
     if (res != NSAlertDefaultReturn) return;
     
-    [currentCategory setValue: nil forKey: @"rule"];
+    [selectedCategory setValue: nil forKey: @"rule"];
     ruleChanged = NO;
     
     // save updates
@@ -178,14 +178,14 @@
     NSPredicate* compoundPredicate = nil;
     
     // first add selected category
-    if (currentCategory == nil) {
+    if (selectedCategory == nil) {
         return;
     }
     
     NSMutableArray *orPreds = [NSMutableArray arrayWithCapacity: 5];
     
-    if ([currentCategory valueForKey: @"parent"] != nil) {
-        pred = [NSPredicate predicateWithFormat: @"(category = %@)", currentCategory];
+    if ([selectedCategory valueForKey: @"parent"] != nil) {
+        pred = [NSPredicate predicateWithFormat: @"(category = %@)", selectedCategory];
         [orPreds addObject: pred];
     }
     NSPredicate* predicate = [predicateEditor objectValue];
@@ -212,10 +212,10 @@
     
     
     // update classification Context
-    if (currentCategory == [Category nassRoot]) {
+    if (selectedCategory == [Category nassRoot]) {
         [caClassification setCategory: nil];
     } else {
-        [caClassification setCategory: currentCategory];
+        [caClassification setCategory: selectedCategory];
     }
     
     // set new fetch predicate
@@ -226,7 +226,7 @@
 
 - (BOOL)categoryShouldChange
 {
-    if (currentCategory == nil) {
+    if (selectedCategory == nil) {
         return YES;
     }
     
@@ -236,7 +236,7 @@
                                   NSLocalizedString(@"AP3", nil),
                                   NSLocalizedString(@"AP4", nil),
                                   nil,
-                                  [currentCategory localName]
+                                  [selectedCategory localName]
                                   );
         if (res == NSAlertDefaultReturn) {
             [self saveRule: self];
@@ -283,10 +283,10 @@
         entries = assignPreviewController.arrangedObjects;
     }
     for (StatCatAssignment *entry in entries) {
-        [entry.statement assignAmount: [entry value] toCategory: currentCategory];
+        [entry.statement assignAmount: [entry value] toCategory: selectedCategory];
     }
 
-    [currentCategory invalidateBalance];
+    [selectedCategory invalidateBalance];
     [Category updateCatValues];
 
     // Explicitly reload the listview. When removing from a category it happens automatically.
@@ -304,13 +304,13 @@
 
 - (void)assignToCategory: (StatCatAssignment*)assignment
 {
-    if (currentCategory == nil) {
+    if (selectedCategory == nil) {
         return;
     }
 
-    [assignment.statement assignAmount: [assignment value] toCategory: currentCategory];
+    [assignment.statement assignAmount: [assignment value] toCategory: selectedCategory];
     
-    [currentCategory invalidateBalance];
+    [selectedCategory invalidateBalance];
     [Category updateCatValues];
     
     [statementsListView reloadData];
@@ -327,14 +327,14 @@
 - (void)unassignFromCategory: (StatCatAssignment*)assignment 
 {
     NSError* error;
-    if (currentCategory == nil) {
+    if (selectedCategory == nil) {
         return;
     }
     
     [assignment remove];
     [assignPreviewController rearrangeObjects];
     
-    [currentCategory invalidateBalance];
+    [selectedCategory invalidateBalance];
     [Category updateCatValues];
     
     // save updates
@@ -429,12 +429,12 @@
     [self calculateCatAssignPredicate];
 }
 
-- (void)setCategory:(Category *)newCategory
+- (void)setSelectedCategory: (Category *)newCategory
 {
-    if (currentCategory != newCategory) {
-        currentCategory = newCategory;
+    if (selectedCategory != newCategory) {
+        selectedCategory = newCategory;
 
-        if (currentCategory == [Category nassRoot] || currentCategory == [Category catRoot]) {
+        if (selectedCategory == [Category nassRoot] || selectedCategory == [Category catRoot]) {
             [[[[predicateEditor superview] superview] animator] setHidden: YES];
             [[saveButton animator] setHidden: YES];
             [[discardButton animator] setHidden: YES];
@@ -444,7 +444,7 @@
             [[discardButton animator] setHidden: NO];
         }
         
-        NSString* s = [currentCategory valueForKey: @"rule"];
+        NSString* s = [selectedCategory valueForKey: @"rule"];
         if(s == nil) s = @"statement.purpose CONTAINS[c] ''";
         NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: s];
         if([pred class] != [NSCompoundPredicate class]) {

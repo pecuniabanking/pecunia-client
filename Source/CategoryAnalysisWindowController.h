@@ -27,7 +27,6 @@
 
 @class Category;
 @class ShortDate;
-@class MAAttachedWindow;
 @class BWGradientBox;
 
 @interface PecuinaGraphHost : CPTGraphHostingView
@@ -60,6 +59,8 @@
     IBOutlet NSButton* helpButton;
     IBOutlet NSView* helpContentView;
     IBOutlet NSTextField* helpText;
+    IBOutlet NSPopover *helpPopover;
+    
     IBOutlet BWGradientBox *selectionBox;
 
 @private
@@ -74,8 +75,6 @@
     CPTTextLayer* valueInfoLayer;
     CPTLimitBand* selectionBand;
     
-    Category* mainCategory;
-
 	ShortDate *referenceDate;             // The date at which the time points start.
 
     NSUInteger rawCount;                  // Raw number of values we have.
@@ -110,16 +109,13 @@
 
     GroupingInterval groupingInterval;
     
-    MAAttachedWindow* helpWindow;
-    BOOL helpVisible;
-
     // Temporary values for animations.
     float newMainYInterval;
 
     NSMutableDictionary *statistics;     // All values are NSNumber.
 }
 
-@property (nonatomic, strong) Category* category;
+@property (nonatomic, weak) Category* selectedCategory;
 
 @property (nonatomic, readwrite) CGFloat barWidth;
 @property (nonatomic, readwrite) GroupingInterval groupingInterval;
@@ -129,7 +125,6 @@
 - (void)updateTrackingAreas;
 
 - (IBAction)setGrouping: (id)sender;
-- (IBAction)toggleHelp: (id)sender;
 
 // PecuniaSectionItem protocol.
 - (NSView*)mainView;

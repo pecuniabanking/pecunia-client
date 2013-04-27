@@ -19,16 +19,13 @@
 
 #import "BankingController+Tabs.h" // Includes BankingController.h
 
-#import "Account.h"
 #import "NewBankUserController.h"
 #import "BankStatement.h"
 #import "BankAccount.h"
-#import "Category.h"
 #import "PreferenceController.h"
 #import "MOAssistant.h"
 #import "LogController.h"
 #import "TagView.h"
-#import "CatAssignClassification.h"
 #import "ExportController.h"
 #import "MCEMOutlineViewLayout.h"
 #import "AccountDefController.h"
@@ -44,8 +41,9 @@
 #import "HBCIClient.h"
 #import "StatCatAssignment.h"
 #import "PecuniaError.h"
-#import	"StatSplitController.h"
 #import "ShortDate.h"
+
+#import	"StatSplitController.h"
 #import "BankStatementController.h"
 #import "AccountMaintenanceController.h"
 #import "PurposeSplitController.h"
@@ -62,25 +60,19 @@
 
 #import "BankStatementPrintView.h"
 #import "DockIconController.h"
+#import "GenerateDataController.h"
+#import "CreditCardSettlementController.h"
 
 #import "ImportController.h"
 #import "ImageAndTextCell.h"
 #import "StatementsListview.h"
 #import "StatementDetails.h"
-#import "RoundedOuterShadowView.h"
-#import "SideToolbarView.h"
 #include "ColorPopup.h"
 
-#import "AnimationHelper.h"
 #import "GraphicsAdditions.h"
 #import "BWGradientBox.h"
 
 #import "User.h"
-#import "BankUser.h"
-
-#import "GenerateDataController.h"
-#import "CreditCardSettlementController.h"
-
 #import "Tag.h"
 
 // Pasteboard data types.
@@ -95,8 +87,6 @@ NSString* const CategoryKey = @"CategoryKey";
 void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 
 static BankingController *bankinControllerInstance;
-
-BOOL runningOnLionOrLater = NO;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -349,17 +339,6 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
 //----------------------------------------------------------------------------------------------------------------------
 
-@interface BankingController (Private)
-
-- (void)saveBankAccountItemsStates;
-- (void)restoreBankAccountItemsStates;
-- (void)updateSorting;
-- (void)switchMainPage:(NSUInteger)page;
-
-- (void)determineDefaultIconForCategory: (Category *)category;
-
-@end
-
 @implementation BankingController
 
 @synthesize saveValue;
@@ -396,12 +375,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         }
         
         logController = [LogController logController];
-        
-        int macVersion;
-        if (Gestalt(gestaltSystemVersion, &macVersion) == noErr) {
-            runningOnLionOrLater = macVersion > MAC_OS_X_VERSION_10_6;
-        }
-    }    
+    }
     return self;
 }
 
@@ -553,12 +527,9 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     tagButton.bordered = NO;
 
     // Setup full screen mode support on Lion+.
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_6
-    if (runningOnLionOrLater) {
-        [mainWindow setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
-        [toggleFullscreenItem setHidden: NO];
-    }
-#endif
+    // TODO: can be done in the xib.
+    [mainWindow setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
+    [toggleFullscreenItem setHidden: NO];
 
 #ifdef DEBUG
     [developerMenu setHidden: NO];
@@ -1113,9 +1084,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 - (IBAction)showTagPopup: (id)sender
 {
     NSButton *button = sender;
-    NSPoint point = [mainWindow.contentView convertPoint: NSMakePoint(button.bounds.size.width / 2, button.bounds.size.height / 2)
-                                                fromView: button];
-    [tagViewPopup showTagPopupAt: point withOwner: button.window];
+    [tagViewPopup showTagPopupAt: button.bounds forView: button host: tagViewHost];
 }
 
 -(void)windowWillClose: (NSNotification *)aNotification
@@ -1529,7 +1498,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
     if (pageHasChanged) {
         if (currentSection != nil) {
-            currentSection.category = [self currentSelection];
+            currentSection.selectedCategory = [self currentSelection];
             [currentSection activate];
         }
         [accountsView setNeedsDisplay];
@@ -2034,7 +2003,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     
     // Update current section if the default is not active.
     if (currentSection != nil) {
-        currentSection.category = cat;
+        currentSection.selectedCategory = cat;
     }
 
 }
@@ -3020,7 +2989,6 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     [mainWindow display];
     [mainWindow makeKeyAndOrderFront: self];
     
-    
     [self checkForAutoSync];
 
     // Add default tags if there are none yet.
@@ -3264,11 +3232,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
 - (IBAction)toggleFullscreenIfSupported: (id)sender
 {
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_6
-    if (runningOnLionOrLater) {
-        [mainWindow toggleFullScreen: mainWindow];
-    }
-#endif
+    [mainWindow toggleFullScreen: mainWindow];
 }
 
 - (IBAction)toggleDetailsPane: (id)sender
@@ -3467,7 +3431,6 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     if (object == categoryAssignments) {
         if ([keyPath compare: @"selectionIndexes"] == NSOrderedSame) {
             // Selection did change.
-            [tagViewPopup closeTagPopup];
 
             // If the currently selected entry is a new one remove the "new" mark.
             NSEnumerator *enumerator = [[categoryAssignments selectedObjects] objectEnumerator];

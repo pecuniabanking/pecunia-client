@@ -49,7 +49,6 @@ typedef enum {
 
 @end
 
-@class MAAttachedWindow;
 @class OnOffSwitchControlCell;
 
 @interface CategoryHeatMapController : NSObject <PecuniaSectionItem, PXListViewDelegate>
@@ -61,30 +60,27 @@ typedef enum {
     IBOutlet NSButton* helpButton;
     IBOutlet NSView* helpContentView;
     IBOutlet NSTextField* helpText;
+    IBOutlet NSPopover *helpPopover;
 
     IBOutlet NSTextField *perDayText;
     IBOutlet NSTextField *perMonthText;
 
-    IBOutlet NSView *popupView;
-    IBOutlet PXListView *popupList;
+    IBOutlet NSPopover *statementsPopover;
+    IBOutlet PXListView *valuePopupList;
+
     IBOutlet OnOffSwitchControlCell *switchTypeButtonCell;
     
 @private
     unsigned currentYear;
-    Category *currentCategory;
     NSNumberFormatter *formatter;
 
     NSArray *currentAssignments;   // Assignments for the day we show the popup for.
-    MAAttachedWindow* popupWindow;
-    BOOL popupVisible;
-    MAAttachedWindow* helpWindow;
-    BOOL helpVisible;
 }
 
 @property (strong) IBOutlet NSView *mainView;
 
 // PecuniaSectionItem protocol
-@property (nonatomic, strong) Category* category;
+@property (nonatomic, weak) Category* selectedCategory;
 
 - (void)activate;
 - (void)deactivate;

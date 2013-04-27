@@ -30,8 +30,6 @@
 #import "AnimationHelper.h"
 #import "MCEMDecimalNumberAdditions.h"
 
-#import "MAAttachedWindow.h"
-
 #import <tgmath.h>
 
 static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
@@ -155,7 +153,6 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 - (void)updateValues;
 - (void)updatePlotsEarnings: (float)earnings spendings: (float)spendings;
 - (void)updateMiniPlotAxes;
-- (void)hideHelp;
 
 - (void)showInfoFor: (NSString*)category;
 - (void)updateInfoLayerPosition;
@@ -169,7 +166,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
 @implementation CategoryRepWindowController
 
-@synthesize category = currentCategory;
+@synthesize selectedCategory;
 
 - (void)awakeFromNib
 {
@@ -199,8 +196,8 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     NSString* path = [mainBundle pathForResource: @"category-reporting-help" ofType: @"rtf"];
     NSAttributedString* text = [[NSAttributedString alloc] initWithPath: path documentAttributes: NULL];
     [helpText setAttributedStringValue: text];
-    float height = [text heightForWidth: helpText.bounds.size.width];
-    helpContentView.frame = NSMakeRect(0, 0, helpText.bounds.size.width, height);
+    NSRect bounds = [text boundingRectWithSize: NSMakeSize(helpText.bounds.size.width, 0) options: NSStringDrawingUsesLineFragmentOrigin];
+    helpContentView.frame = NSMakeRect(0, 0, helpText.bounds.size.width + 20, bounds.size.height + 20);
 
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mouseHit:)
@@ -964,8 +961,6 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
 - (void)updateValues
 {
-    [self hideHelp];
-
     [spendingsCategories removeAllObjects];
     [earningsCategories removeAllObjects];
     [sortedSpendingValues removeAllObjects];
@@ -974,11 +969,11 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     earningsPlotRadialOffsets.content = [NSMutableArray arrayWithCapacity: 10];
     spendingsPlotRadialOffsets.content = [NSMutableArray arrayWithCapacity: 10];
 
-    if (currentCategory == nil) {
+    if (selectedCategory == nil) {
         return;
     }
     
-    NSMutableSet* childs = [currentCategory mutableSetValueForKey: @"children"];
+    NSMutableSet* childs = [selectedCategory mutableSetValueForKey: @"children"];
     NSDecimalNumber* totalEarnings = [NSDecimalNumber zero];
     NSDecimalNumber* totalSpendings = [NSDecimalNumber zero];
 
@@ -1002,7 +997,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                 NSMutableDictionary* pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
                 pieData[@"name"] = [childCategory localName];
                 pieData[@"value"] = value;
-                pieData[@"currency"] = currentCategory.currency;
+                pieData[@"currency"] = selectedCategory.currency;
                 pieData[@"color"] = childCategory.categoryColor;
 
                 switch ([value compare: zero])
@@ -1030,7 +1025,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                     NSMutableDictionary* pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
                     pieData[@"name"] = [childCategory localName];
                     pieData[@"value"] = spendings;
-                    pieData[@"currency"] = currentCategory.currency;
+                    pieData[@"currency"] = selectedCategory.currency;
                     pieData[@"color"] = childCategory.categoryColor;
                     
                     [spendingsCategories addObject: pieData];
@@ -1043,7 +1038,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                     NSMutableDictionary* pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
                     pieData[@"name"] = [childCategory localName];
                     pieData[@"value"] = earnings;
-                    pieData[@"currency"] = currentCategory.currency;
+                    pieData[@"currency"] = selectedCategory.currency;
                     pieData[@"color"] = childCategory.categoryColor;
                     
                     [earningsCategories addObject: pieData];
@@ -1178,29 +1173,6 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     
 }
 
-- (void)releaseHelpWindow
-{
-    [[helpButton window] removeChildWindow: helpWindow];
-    [helpWindow orderOut: self];
-    helpWindow = nil;
-}
-
-- (void)hideHelp
-{
-    if (helpWindow != nil) {
-        [helpWindow fadeOut];
-        
-        // We need to delay the release of the help window
-        // otherwise it will just disappear instead to fade out.
-        // With 10.7 and completion handlers it would be way more elegant.
-        [NSTimer scheduledTimerWithTimeInterval: .5
-                                         target: self 
-                                       selector: @selector(releaseHelpWindow)
-                                       userInfo: nil
-                                        repeats: NO];
-    }
-}
-
 #pragma mark -
 #pragma mark Info field handling
 
@@ -1216,7 +1188,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 {
     if (infoTextFormatter == nil)
     {
-        NSString* currency = (currentCategory == nil) ? @"EUR" : [currentCategory currency];
+        NSString* currency = (selectedCategory == nil) ? @"EUR" : [selectedCategory currency];
         infoTextFormatter = [[NSNumberFormatter alloc] init];
         infoTextFormatter.usesSignificantDigits = NO;
         infoTextFormatter.minimumFractionDigits = 2;
@@ -1359,31 +1331,10 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     [self updateValues];
 }
 
-- (IBAction)toggleHelp: (id)sender
+- (IBAction)showHelp: (id)sender
 {
-    if (!helpWindow) {
-        NSPoint buttonPoint = NSMakePoint(NSMidX([helpButton frame]),
-                                          NSMidY([helpButton frame]));
-        buttonPoint = [topView convertPoint: buttonPoint toView: nil];
-        helpWindow = [[MAAttachedWindow alloc] initWithView: helpContentView 
-                                            attachedToPoint: buttonPoint 
-                                                   inWindow: [topView window] 
-                                                     onSide: MAPositionTopLeft 
-                                                 atDistance: 20];
-        
-        [helpWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 0.2 alpha: 1]];
-        [helpWindow setViewMargin: 10];
-        [helpWindow setBorderWidth: 0];
-        [helpWindow setCornerRadius: 10];
-        [helpWindow setHasArrow: YES];
-        [helpWindow setDrawsRoundCornerBesideArrow: YES];
-
-        [helpWindow setAlphaValue: 0];
-        [[helpButton window] addChildWindow: helpWindow ordered: NSWindowAbove];
-        [helpWindow fadeIn];
-     
-    } else {
-        [self hideHelp];
+    if (!helpPopover.shown) {
+        [helpPopover showRelativeToRect: helpButton.bounds ofView: helpButton preferredEdge: NSMinYEdge];
     }
 }
 
@@ -1458,7 +1409,6 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
 - (void)deactivate
 {
-    [self hideHelp];
 }
 
 - (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
@@ -1487,10 +1437,12 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                                            delegate: self];
 }
 
-- (void)setCategory: (Category*)newCategory
+- (void)setSelectedCategory: (Category*)newCategory
 {
-    currentCategory = newCategory;
-    [self updateValues];
+    if (selectedCategory != newCategory) {
+        selectedCategory = newCategory;
+        [self updateValues];
+    }
 }
 
 @end

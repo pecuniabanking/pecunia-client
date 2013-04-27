@@ -320,6 +320,15 @@
 		} else {
             break;
         }
+
+        // Fix dates while we are at it.
+        if (stat.date == nil) {
+            stat.date = stat.valutaDate;
+        } else {
+            if (stat.valutaDate == nil) {
+                stat.valutaDate = stat.date;
+            }
+        }
     }
 }
 
@@ -523,7 +532,7 @@
                 }
             }
 
-            ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
+            ShortDate* date = [ShortDate dateWithDate: assignment.statement.valutaDate];
 
             switch (interval) {
                 case GroupByWeeks:

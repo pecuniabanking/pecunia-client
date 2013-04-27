@@ -25,25 +25,6 @@
 
 #import "ColorPopup.h"
 
-#import "MAAttachedWindow.h"
-#import "AnimationHelper.h"
-
-@interface ColorPopupWindow : MAAttachedWindow
-@property (assign) id owner;
-@end
-
-@implementation ColorPopupWindow
-
-- (void)cancelOperation: (id)sender
-{
-    //[self resignKeyWindow]; // The popup listens to this action and closes the window.
-    [self.owner close];
-}
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------
-
 @interface ColorPopup ()
 
 @property (nonatomic) NSColorPanel *colorPanel;
@@ -55,7 +36,11 @@
 {
 @private
     BOOL isVisible;
-    ColorPopupWindow *popupWindow;
+
+    NSViewController *colorPopoverController;
+    NSPopover *colorPopover;
+    NSView *colorPopoverHostingView;
+
     NSView *contentView;
     BFIconTabBar *tabBar;
 }
@@ -64,6 +49,8 @@
 
 #pragma mark -
 #pragma mark Initialization & Destruction
+
+#define TABBAR_HEIGHT 40
 
 + (ColorPopup *)sharedColorPopup
 {
@@ -80,6 +67,38 @@
     self = [super init];
     if (self != nil) {
         self.colorPanel = NSColorPanel.sharedColorPanel;
+
+        colorPopoverController = [[NSViewController alloc] init];
+
+        NSRect hostingFrame = [self.colorPanel.contentView bounds];
+        hostingFrame.size.height += TABBAR_HEIGHT; // Fixed value. We cannot ask the toolbar for it.
+        colorPopoverHostingView = [[NSView alloc] initWithFrame: hostingFrame];
+        colorPopoverController.view = colorPopoverHostingView;
+
+        // Create a copy of the color panel's toolbar items, since we cannot relocate them to our hosting view.
+        NSToolbar *toolbar = self.colorPanel.toolbar;
+        NSMutableArray *tabbarItems = [[NSMutableArray alloc] initWithCapacity: toolbar.items.count];
+        NSUInteger selectedIndex = 0;
+        for (NSUInteger i = 0; i < toolbar.items.count; i++) {
+            NSToolbarItem *toolbarItem = toolbar.items[i];
+            NSImage *image = toolbarItem.image;
+
+            BFIconTabBarItem *tabbarItem = [[BFIconTabBarItem alloc] initWithIcon: image tooltip: toolbarItem.toolTip];
+            [tabbarItems addObject: tabbarItem];
+
+            if ([toolbarItem.itemIdentifier isEqualToString: toolbar.selectedItemIdentifier]) {
+                selectedIndex = i;
+            }
+        }
+
+        tabBar = [[BFIconTabBar alloc] init];
+        tabBar.delegate = self;
+        tabBar.items = tabbarItems;
+        tabBar.frame = CGRectMake(0.0f, colorPopoverHostingView.bounds.size.height - TABBAR_HEIGHT,
+                                  colorPopoverHostingView.bounds.size.width, TABBAR_HEIGHT);
+        tabBar.autoresizingMask = NSViewWidthSizable | NSViewMinYMargin;
+        [tabBar selectIndex: selectedIndex];
+        [colorPopoverHostingView addSubview: tabBar];
 	}
     return self;
 }
@@ -100,16 +119,20 @@
 	}
 }
 
-#define TABBAR_HEIGHT 40
-
-- (void)popupAtPosition: (NSPoint)position withOwner: (NSWindow*)owner
+- (void)createPopover
 {
-	// Close the popup if it is currently visible.
-	if (isVisible) {
-		[self close];
-        return;
-	}
+    colorPopover = [[NSPopover alloc] init];
+    colorPopover.contentViewController = colorPopoverController;
+    colorPopover.behavior = NSPopoverBehaviorTransient;
+    colorPopover.delegate = self;
+}
 
+- (void)popupRelativeToRect: (NSRect)rect ofView: (NSView*)view
+{
+    if (colorPopover.shown) {
+        return;
+    }
+    
     isVisible = YES;
 
     // Remove the shared color panel if it is visible currently as we are rehosting parts of it to our popup.
@@ -117,82 +140,37 @@
 		[NSColorPanel.sharedColorPanel orderOut: self];
 	}
 
-    // Relocate the content view from the shared color panel to a hosting view we can use
-    // in the attached window.
-    NSToolbar *toolbar = self.colorPanel.toolbar;
-    NSRect hostingFrame = [self.colorPanel.contentView bounds];
-    hostingFrame.size.height += TABBAR_HEIGHT; // Fixed value. We cannot ask the toolbar for it.
-    NSView *hostingView = [[NSView alloc] initWithFrame: hostingFrame];
-
-	NSMutableArray *tabbarItems = [[NSMutableArray alloc] initWithCapacity: toolbar.items.count];
-	NSUInteger selectedIndex = 0;
-	for (NSUInteger i = 0; i < toolbar.items.count; i++) {
-		NSToolbarItem *toolbarItem = toolbar.items[i];
-		NSImage *image = toolbarItem.image;
-
-		BFIconTabBarItem *tabbarItem = [[BFIconTabBarItem alloc] initWithIcon: image tooltip: toolbarItem.toolTip];
-		[tabbarItems addObject: tabbarItem];
-
-		if ([toolbarItem.itemIdentifier isEqualToString: toolbar.selectedItemIdentifier]) {
-			selectedIndex = i;
-		}
-	}
-
-	// Create a toolbar replica (we cannot use NSToolbar in a window without title).
-	tabBar = [[BFIconTabBar alloc] init];
-	tabBar.delegate = self;
-	tabBar.items = tabbarItems;
-	tabBar.frame = CGRectMake(0.0f, hostingView.bounds.size.height - TABBAR_HEIGHT, hostingView.bounds.size.width, TABBAR_HEIGHT);
-	tabBar.autoresizingMask = NSViewWidthSizable | NSViewMinYMargin;
-	[tabBar selectIndex: selectedIndex];
-	[hostingView addSubview: tabBar];
-
-	// Add the color picker view.
+    // Relocate the content view from the shared color panel to a hosting view.
     contentView = self.colorPanel.contentView;
-	[hostingView addSubview: contentView];
+	[colorPopoverHostingView addSubview: contentView];
 
     if (color != nil) {
         self.colorPanel.color = color;
     }
     self.colorPanel.showsAlpha = YES;
 
+    NSString *selectedIdentifier = self.colorPanel.toolbar.selectedItemIdentifier;
+    NSUInteger selectedIndex = 0;
+    for (NSToolbarItem *item in self.colorPanel.toolbar.items) {
+        if ([item.itemIdentifier isEqualToString: selectedIdentifier]) {
+            break;
+        }
+        selectedIndex++;
+    }
+    [tabBar selectIndex: selectedIndex];
+    
 	// Find and remove the color swatch resize dimple, because it crashes if used outside of a panel.
 	NSArray *panelSubviews = [NSArray arrayWithArray: contentView.subviews];
+    Class dimpleClass = NSClassFromString(@"NSColorPanelResizeDimple");
 	for (NSView *subview in panelSubviews) {
-		if ([subview isKindOfClass: NSClassFromString(@"NSColorPanelResizeDimple")]) {
+		if ([subview isKindOfClass: dimpleClass]) {
 			[subview removeFromSuperview];
 		}
 	}
 
-    popupWindow = [[ColorPopupWindow alloc] initWithView: hostingView
-                                         attachedToPoint: position
-                                                inWindow: owner
-                                                  onSide: MAPositionAutomatic
-                                              atDistance: 10];
-    popupWindow.owner = self;
-    popupWindow.isVisible = NO;
-    popupWindow.canBecomeKey = YES;
-    popupWindow.backgroundColor = [NSColor whiteColor];
-    popupWindow.viewMargin = 0;
-    popupWindow.borderWidth = 0;
-    popupWindow.cornerRadius = 3;
-    popupWindow.hasArrow = YES;
-    popupWindow.arrowHeight = 10;
-    popupWindow.drawsRoundCornerBesideArrow = YES;
-
-    [owner addChildWindow: popupWindow ordered: NSWindowAbove];
-
-    NSRect frame = popupWindow.frame;
-    frame.size.width += 40;
-    frame.size.height += 100;
-    frame.origin.x -= 20;
-    [popupWindow zoomInWithOvershot: frame withFade: YES makeKey: YES];
-
+    [self createPopover];
     [self.colorPanel addObserver: self forKeyPath: @"color" options: NSKeyValueObservingOptionNew context: NULL];
-    [NSNotificationCenter.defaultCenter addObserver: self
-                                           selector: @selector(windowDidResignKey:)
-                                               name: NSWindowDidResignKeyNotification
-                                             object: popupWindow];
+    [colorPopover showRelativeToRect: rect ofView: view preferredEdge: NSMaxYEdge];
 }
 
 // Forward the selection action message to the color panel.
@@ -211,11 +189,6 @@
     }
 }
 
-- (void)windowDidResignKey: (NSNotification *)aNotification
-{
-    [self close];
-}
-
 - (void)removeTargetAndAction
 {
 	self.target = nil;
@@ -232,7 +205,6 @@
                        removeTarget: (BOOL)removeTarget
                      removeObserver: (BOOL)removeObserver
 {
-    [NSNotificationCenter.defaultCenter removeObserver: self];
 	if (removeTarget) {
 		[self removeTargetAndAction];
 	}
@@ -240,22 +212,12 @@
 		[self.colorPanel removeObserver: self forKeyPath: @"color"];
 	}
 
-	[popupWindow fadeOut];
-    [self performSelector: @selector(performCloseCleanUp)
-               withObject: nil
-               afterDelay: [[NSAnimationContext currentContext] duration]];
-
 	if (deactivate) {
 		[self deactivateColorWell];
 	}
-    isVisible = NO;
-}
-
-- (void)performCloseCleanUp
-{
     self.colorPanel.contentView = contentView;
-    [popupWindow.parentWindow removeChildWindow: popupWindow];
-    popupWindow = nil;
+    colorPopover = nil;
+    isVisible = NO;
 }
 
 - (void)close
@@ -279,6 +241,14 @@
 #pragma clang diagnostic pop
 		}
 	}
+}
+
+#pragma mark -
+#pragma mark Popover Delegate Methods
+
+- (void)popoverDidClose: (NSNotification *)notification
+{
+    [self close];
 }
 
 @end

@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2010, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -25,7 +25,6 @@
 @class ShortDate;
 @class MBTableGrid;
 @class SynchronousScrollView;
-@class MAAttachedWindow;
 @class StatementsListView;
 @class BWGradientBox;
 
@@ -43,8 +42,9 @@
     IBOutlet StatementsListView *statementsListView;
     IBOutlet BWGradientBox      *selectionBox;
     IBOutlet NSSegmentedControl *sortControl;
+    IBOutlet NSPopover          *detailsPopover;
 
-    @private
+@private
 	NSMutableArray         *selectedDates;
 	ShortDate              *minDate;
 	ShortDate              *maxDate;
@@ -62,9 +62,6 @@
     GroupingInterval groupingInterval;
 
     BOOL active; // YES if we are the active section.
-    BOOL fadeInProgress; // YES if we are currently fading out the popup.
-    
-   MAAttachedWindow *detailsPopupWindow;
 }
 
 @property (nonatomic, unsafe_unretained) NSOutlineView* outline; // The controlling outline.
@@ -78,7 +75,7 @@
 - (void)connectScrollViews: (SynchronousScrollView *)other;
 
 // PecuniaSectionItem protocol
-@property (nonatomic, strong) Category* category;
+@property (nonatomic, weak) Category* selectedCategory;
 
 - (NSView*)mainView;
 - (void)activate;

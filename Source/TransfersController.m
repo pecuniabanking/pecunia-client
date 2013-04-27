@@ -34,7 +34,6 @@
 #import "AnimationHelper.h"
 #import "BankingController.h"
 #import "TimeSliceManager.h"
-#import "MAAttachedWindow.h"
 #import "ShortDate.h"
 
 // Keys for details dictionary used for transfers + statements listviews.
@@ -61,26 +60,6 @@ NSString* const TransferPredefinedTemplateDataType = @"TransferPredefinedTemplat
 NSString* const TransferDataType = @"TransferDataType"; // For dragging an existing transfer (sent or not).
 extern NSString *TransferReadyForUseDataType;     // For dragging an edited transfer.
 extern NSString *TransferTemplateDataType;        // For dragging one of the stored templates.
-
-@interface TransferCalendarWindow : MAAttachedWindow
-{
-}
-
-@property (nonatomic, unsafe_unretained) TransfersController *controller;
-
-@end
-
-@implementation TransferCalendarWindow
-
-@synthesize controller;
-
-- (void)cancelOperation:(id)sender
-{
-    [controller hideCalendarWindow];
-}
-@end
-
-//--------------------------------------------------------------------------------------------------
 
 @interface DeleteTransferTargetView : NSImageView
 {    
@@ -1468,51 +1447,22 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (IBAction)showCalendar: (id)sender
 {
-    if (calendarWindow == nil) {
-        NSPoint buttonPoint = NSMakePoint(NSMidX([sender frame]),
-                                          NSMidY([sender frame]));
-        buttonPoint = [transferFormular convertPoint: buttonPoint toView: nil];
-        calendarWindow = (id)[[TransferCalendarWindow alloc] initWithView: calendarView
-                                                          attachedToPoint: buttonPoint
-                                                                 inWindow: [transferFormular window]
-                                                                   onSide: MAPositionTopLeft
-                                                               atDistance: 20];
-
-        [calendarWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.9]];
-        [calendarWindow setViewMargin: 0];
-        [calendarWindow setBorderWidth: 0];
-        [calendarWindow setCornerRadius: 10];
-        [calendarWindow setHasArrow: YES];
-        [calendarWindow setDrawsRoundCornerBesideArrow: YES];
-        
-        [calendarWindow setAlphaValue: 0];
-        [[sender window] addChildWindow: calendarWindow ordered: NSWindowAbove];
-        [calendarWindow fadeIn];
-        [calendarWindow makeKeyWindow];
-        calendarWindow.delegate = self;
-        calendarWindow.controller = self;
+    if (!calendarPopover.shown) {
         [calendar setDateValue: executionDatePicker.dateValue];
+        [calendarPopover showRelativeToRect: [sender bounds] ofView: sender preferredEdge: NSMinYEdge];
     }
-}
-
-/**
- * Called from the calendarWindow.
- */
-- (void)windowDidResignKey: (NSNotification *)notification
-{
-    [self hideCalendarWindow];
 }
 
 - (void)keyDown:(NSEvent *)theEvent
 {
-    [self hideCalendarWindow];
+    [calendarPopover performClose: self];
 }
 
 - (IBAction)calendarChanged: (id)sender
 {
     executionDatePicker.dateValue = [sender dateValue];
     transactionController.currentTransfer.valutaDate = [sender dateValue];
-    [self hideCalendarWindow];
+    [calendarPopover performClose: sender];
 }
 
 - (IBAction)sourceAccountChanged: (id)sender
@@ -1738,29 +1688,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 }
 
-
-- (void)releaseCalendarWindow
-{
-    [[calendarButton window] removeChildWindow: calendarWindow];
-    [calendarWindow orderOut: self];
-    calendarWindow = nil;
-}
-
-- (void)hideCalendarWindow
-{
-    if (calendarWindow != nil) {
-        [calendarWindow fadeOut];
-        
-        // We need to delay the release of the calendar window
-        // otherwise it will just disappear instead to fade out.
-        [NSTimer scheduledTimerWithTimeInterval: .5
-                                         target: self 
-                                       selector: @selector(releaseCalendarWindow)
-                                       userInfo: nil
-                                        repeats: NO];
-    }
-}
-
 /**
  * Stores the current value of the receiver edit field in the MRU list used for lookup
  * of previously entered receivers. The list is kept at no more than 15 entries and no duplicates.
@@ -1886,7 +1813,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (void)deactivate
 {
-    [self hideCalendarWindow];
 }
 
 - (void)terminate

@@ -32,8 +32,6 @@
 #import "GraphicsAdditions.h"
 #import "AnimationHelper.h"
 
-#import "MAAttachedWindow.h"
-
 extern NSString *StatementDateKey;
 extern NSString *StatementTurnoversKey;
 extern NSString *StatementRemoteNameKey;
@@ -56,26 +54,6 @@ extern NSString *StatementTypeKey;
 NSString* const DebitPredefinedTemplateDataType = @"DebitPredefinedTemplateDataType"; // For dragging one of the "menu" template images.
 NSString* const DebitDataType = @"DebitDataType"; // For dragging an existing debit (sent or not).
 extern NSString *DebitReadyForUseDataType;        // For dragging an edited transfer.
-
-@interface DebitCalendarWindow : MAAttachedWindow
-{
-}
-
-@property (nonatomic, unsafe_unretained) DebitsController *controller;
-
-@end
-
-@implementation DebitCalendarWindow
-
-@synthesize controller;
-
-- (void)cancelOperation:(id)sender
-{
-    [controller hideCalendarWindow];
-}
-@end
-
-//--------------------------------------------------------------------------------------------------
 
 @interface DeleteDebitTargetView : NSImageView
 {    
@@ -1175,51 +1153,13 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 
 - (IBAction)showCalendar: (id)sender
 {
-    if (calendarWindow == nil) {
-        NSPoint buttonPoint = NSMakePoint(NSMidX([sender frame]),
-                                          NSMidY([sender frame]));
-        buttonPoint = [debitFormular convertPoint: buttonPoint toView: nil];
-        calendarWindow = (id)[[DebitCalendarWindow alloc] initWithView: calendarView
-                                                       attachedToPoint: buttonPoint
-                                                              inWindow: [debitFormular window]
-                                                                onSide: MAPositionTopLeft
-                                                            atDistance: 20];
-
-        [calendarWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.9]];
-        [calendarWindow setViewMargin: 0];
-        [calendarWindow setBorderWidth: 0];
-        [calendarWindow setCornerRadius: 10];
-        [calendarWindow setHasArrow: YES];
-        [calendarWindow setDrawsRoundCornerBesideArrow: YES];
-        
-        [calendarWindow setAlphaValue: 0];
-        [[sender window] addChildWindow: calendarWindow ordered: NSWindowAbove];
-        [calendarWindow fadeIn];
-        [calendarWindow makeKeyWindow];
-        calendarWindow.delegate = self;
-        calendarWindow.controller = self;
-        [calendar setDateValue: executionDatePicker.dateValue];
-    }
-}
-
-/**
- * Called from the calendarWindow.
- */
-- (void)windowDidResignKey: (NSNotification *)notification
-{
-    [self hideCalendarWindow];
-}
-
-- (void)keyDown:(NSEvent *)theEvent
-{
-    [self hideCalendarWindow];
 }
 
 - (IBAction)calendarChanged: (id)sender
 {
     executionDatePicker.dateValue = [sender dateValue];
     transactionController.currentTransfer.valutaDate = [sender dateValue];
-    [self hideCalendarWindow];
+    //[self hideCalendarWindow];
 }
 
 - (IBAction)targetAccountChanged: (id)sender
@@ -1423,29 +1363,6 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     }
 }
 
-
-- (void)releaseCalendarWindow
-{
-    [[calendarButton window] removeChildWindow: calendarWindow];
-    [calendarWindow orderOut: self];
-    calendarWindow = nil;
-}
-
-- (void)hideCalendarWindow
-{
-    if (calendarWindow != nil) {
-        [calendarWindow fadeOut];
-        
-        // We need to delay the release of the calendar window
-        // otherwise it will just disappear instead to fade out.
-        [NSTimer scheduledTimerWithTimeInterval: .5
-                                         target: self 
-                                       selector: @selector(releaseCalendarWindow)
-                                       userInfo: nil
-                                        repeats: NO];
-    }
-}
-
 /**
  * Stores the current value of the receiver edit field in the MRU list used for lookup
  * of previously entered receivers. The list is kept at no more than 15 entries and no duplicates.
@@ -1571,7 +1488,6 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 
 - (void)deactivate
 {
-    [self hideCalendarWindow];
 }
 
 - (void)terminate

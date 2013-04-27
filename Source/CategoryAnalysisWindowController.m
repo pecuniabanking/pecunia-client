@@ -27,10 +27,8 @@
 #import "MCEMDecimalNumberAdditions.h"
 #import "GraphicsAdditions.h"
 #import "NSView+PecuniaAdditions.h"
-#import "NS(Attributed)String+Geometrics.h"
 #import "AnimationHelper.h"
 
-#import "MAAttachedWindow.h"
 #import "BWGradientBox.h"
 
 static NSString* const PecuniaGraphLayoutChangeNotification = @"PecuniaGraphLayoutChange";
@@ -370,7 +368,6 @@ extern void *UserDefaultsBindingContext;
 - (void)regenerateGraphs;
 
 - (int)majorTickCount;
-- (void)hideHelp;
 - (NSUInteger)findIndexForTimePoint: (NSUInteger)timePoint;
 
 @end
@@ -379,7 +376,7 @@ extern void *UserDefaultsBindingContext;
 
 @implementation CategoryAnalysisWindowController
 
-@synthesize category = mainCategory;
+@synthesize selectedCategory;
 
 @synthesize barWidth; // The width of all bars in either the main or the turnovers bar.
 @synthesize groupingInterval;
@@ -428,8 +425,8 @@ extern void *UserDefaultsBindingContext;
     NSString* path = [mainBundle pathForResource: @"category-analysis-help" ofType: @"rtf"];
     NSAttributedString* text = [[NSAttributedString alloc] initWithPath: path documentAttributes: NULL];
     [helpText setAttributedStringValue: text];
-    float height = [text heightForWidth: helpText.bounds.size.width];
-    helpContentView.frame = NSMakeRect(0, 0, helpText.bounds.size.width, height);
+    NSRect bounds = [text boundingRectWithSize: NSMakeSize(helpText.bounds.size.width, 0) options: NSStringDrawingUsesLineFragmentOrigin];
+    helpContentView.frame = NSMakeRect(0, 0, helpText.bounds.size.width + 20, bounds.size.height + 20);
 
     selectionBox.hasGradient = YES;
     selectionBox.fillStartingColor = [NSColor applicationColorForKey: @"Small Background Gradient (low)"];
@@ -867,7 +864,7 @@ extern void *UserDefaultsBindingContext;
     // The main graph contains two plots, one for the positive values (with a gray fill)
     // and the other one for negative values (with a red fill).
     // Depending on whether we view a bank account or a normal category either line or bar plots are used.
-    if (mainCategory != nil) {
+    if (selectedCategory != nil) {
         CGColorRef gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (high)"] colorWithAlphaComponent: 0.75]);
         CGColorRef gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (low)"] colorWithAlphaComponent: 1]);
         CPTGradient* positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
@@ -891,7 +888,7 @@ extern void *UserDefaultsBindingContext;
         CPTFill* negativeGradientFill = [CPTFill fillWithGradient: negativeGradient];
         
         CPTPlot* plot;
-        if (mainCategory.isBankAccount) {
+        if (selectedCategory.isBankAccount) {
             plot = [self createScatterPlotWithFill: positiveGradientFill];
         } else {
             plot = [self createBarPlotWithFill: positiveGradientFill withBorder: YES];
@@ -907,7 +904,7 @@ extern void *UserDefaultsBindingContext;
         [mainGraph addPlot: plot];
         
         // The negative plot.
-        if (mainCategory.isBankAccount) {
+        if (selectedCategory.isBankAccount) {
             plot = [self createScatterPlotWithFill: negativeGradientFill];
         } else {
             plot = [self createBarPlotWithFill: negativeGradientFill withBorder: YES];
@@ -925,7 +922,7 @@ extern void *UserDefaultsBindingContext;
 
         CPTMutableLineStyle* lineStyle = [[CPTMutableLineStyle alloc] init];
         CGColorRef lineColor;
-        if (mainCategory.isBankAccount) {
+        if (selectedCategory.isBankAccount) {
             lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Bank Account Average Line"]);
         } else {
             lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Category Average Line"]);
@@ -939,7 +936,7 @@ extern void *UserDefaultsBindingContext;
 
         // Line "border".
         CPTMutableShadow *shadow = [CPTMutableShadow shadow];
-        if (mainCategory.isBankAccount) {
+        if (selectedCategory.isBankAccount) {
             shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 0 blue: 0 alpha: 0.75];
             shadow.shadowBlurRadius = 2.0;
         } else {
@@ -985,7 +982,7 @@ extern void *UserDefaultsBindingContext;
 
     // The selection plot always contains the full range of values as it is used to select a subrange
     // for main and turnovers graphs.
-    if (mainCategory != nil) {
+    if (selectedCategory != nil) {
         CGColorRef gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Selection Plot Gradient (high)"] colorWithAlphaComponent: 0.8]);
         CGColorRef gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Selection Plot Gradient (low)"] colorWithAlphaComponent: 0.9]);
         CPTGradient* areaGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
@@ -1170,7 +1167,7 @@ extern void *UserDefaultsBindingContext;
         // Scatter plots go over a (horizontal) range, so even if the actual time point is out of view
         // parts of the area representing the value can still be visible so we round down the position value.
         // Bar plots however appear around a time point (+-10%).
-        if (![mainCategory isBankAccount] ) {
+        if (![selectedCategory isBankAccount] ) {
             double fraction = plotSpace.xRange.locationDouble - (double)units;
             if (fraction > 0.1) {
                 units++;
@@ -1179,7 +1176,7 @@ extern void *UserDefaultsBindingContext;
         startIndex = [self findIndexForTimePoint: units];
 
         units = floor(plotSpace.xRange.endDouble);
-        if (![mainCategory isBankAccount]) {
+        if (![selectedCategory isBankAccount]) {
             double fraction = (double)units - plotSpace.xRange.endDouble;
             if (fraction < 0.1) {
                 units++;
@@ -1298,7 +1295,7 @@ extern void *UserDefaultsBindingContext;
     x.labelFormatter = timeFormatter;
 
     // The currency of the main category can change so update the y axis label formatter as well.
-    NSString* currency = (mainCategory == nil) ? @"EUR" : [mainCategory currency];
+    NSString* currency = (selectedCategory == nil) ? @"EUR" : [selectedCategory currency];
     NSNumberFormatter* currencyFormatter = [[NSNumberFormatter alloc] init];
     currencyFormatter.usesSignificantDigits = YES;
     currencyFormatter.minimumFractionDigits = 0;
@@ -1431,7 +1428,7 @@ int double_compare(const void *value1, const void *value2)
         statistics[@"totalMeanValue"] = @(sum / rawCount);
         statistics[@"totalMedian"] = @(median);
         
-        if (!mainCategory.isBankAccount) {
+        if (!selectedCategory.isBankAccount) {
             statistics[@"totalSum"] = @(sum);
         } else {
             [statistics removeObjectForKey: @"totalSum"];
@@ -1535,7 +1532,7 @@ int double_compare(const void *value1, const void *value2)
         statistics[@"localMeanValue"] = @(sum / count);
         statistics[@"localMedian"] = @(median);
 
-        if (!mainCategory.isBankAccount) {
+        if (!selectedCategory.isBankAccount) {
             statistics[@"localSum"] = @(sum);
         } else {
             [statistics removeObjectForKey: @"localSum"];
@@ -1618,7 +1615,7 @@ int double_compare(const void *value1, const void *value2)
     
     if (infoTextFormatter == nil)
     {
-        NSString* currency = (mainCategory == nil) ? @"EUR" : [mainCategory currency];
+        NSString* currency = (selectedCategory == nil) ? @"EUR" : [selectedCategory currency];
         infoTextFormatter = [[NSNumberFormatter alloc] init];
         infoTextFormatter.usesSignificantDigits = NO;
         infoTextFormatter.minimumFractionDigits = 2;
@@ -1864,7 +1861,7 @@ int double_compare(const void *value1, const void *value2)
             balance = @(totalBalances[index]);
             turnovers = balanceCounts[index];
         } else {
-            balance = [mainCategory isBankAccount] ? @(totalBalances[index]) : (id)[NSNull null];
+            balance = [selectedCategory isBankAccount] ? @(totalBalances[index]) : (id)[NSNull null];
         }
         mainInfoValues[@"balance"] = balance;
         mainInfoValues[@"turnovers"] = @(turnovers);
@@ -1925,8 +1922,6 @@ int double_compare(const void *value1, const void *value2)
     {
         doingGraphUpdates = YES;
         
-        [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateVerticalMainGraphRange) object: nil];
-        
         NSDictionary* parameters = [notification userInfo];
         NSString* type = parameters[@"type"];
         
@@ -1935,6 +1930,8 @@ int double_compare(const void *value1, const void *value2)
         BOOL isDragMove = [type isEqualToString: @"plotMoveDrag"];
         BOOL isScale = [type isEqualToString: @"plotScale"];
         if ([type isEqualToString: @"plotMoveSwipe"] || isDragMove || isScale) {
+            [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateVerticalMainGraphRange) object: nil];
+
             if (!infoLayer.hidden) {
                 [self hideInfoComponents];
             }
@@ -1986,6 +1983,8 @@ int double_compare(const void *value1, const void *value2)
                 [self updateTrackLinesAndInfoAnnotation: location];
             } else {
                 if ([type isEqualToString: @"plotMoveCenter"]) {
+                    [NSObject cancelPreviousPerformRequestsWithTarget: self selector: @selector(updateVerticalMainGraphRange) object: nil];
+                    
                     NSNumber* location = parameters[@"location"];
                     NSNumber* range = parameters[@"plotXRange"];
 
@@ -2156,8 +2155,6 @@ int double_compare(const void *value1, const void *value2)
 
 - (void)reloadData
 {
-    [self hideHelp];
-    
     rawCount = 0;
     free(timePoints);
     timePoints = nil;
@@ -2200,18 +2197,18 @@ int double_compare(const void *value1, const void *value2)
 
     referenceDate = [ShortDate currentDate];
     
-    if (mainCategory != nil) {
+    if (selectedCategory != nil) {
         NSArray *dates = nil;
         NSArray *balances = nil;
         NSArray *turnovers = nil;
         BOOL extraEntry = NO;
-        if (mainCategory.isBankAccount) {
+        if (selectedCategory.isBankAccount) {
             extraEntry = YES;
         }
-        [mainCategory historyToDates: &dates
-                            balances: &balances
-                       balanceCounts: &turnovers
-                        withGrouping: groupingInterval];
+        [selectedCategory historyToDates: &dates
+                                balances: &balances
+                           balanceCounts: &turnovers
+                            withGrouping: groupingInterval];
 
         if (dates != nil)
         {
@@ -2329,14 +2326,6 @@ int double_compare(const void *value1, const void *value2)
     [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
 }
 
-- (void)hideHelp
-{
-    if (helpVisible) {
-        helpVisible = NO;
-        [helpWindow fadeOut];
-    }
-}
-
 - (void)showInfoComponents
 {
     [infoLayer fadeIn];
@@ -2359,7 +2348,7 @@ int double_compare(const void *value1, const void *value2)
     selectionBox.fillStartingColor = [NSColor applicationColorForKey: @"Small Background Gradient (low)"];
     selectionBox.fillEndingColor = [NSColor applicationColorForKey: @"Small Background Gradient (high)"];
 
-    if (mainCategory != nil) {
+    if (selectedCategory != nil) {
         CGColorRef gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (high)"] colorWithAlphaComponent: 0.75]);
         CGColorRef gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (low)"] colorWithAlphaComponent: 1]);
         CPTGradient* positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
@@ -2372,7 +2361,7 @@ int double_compare(const void *value1, const void *value2)
         CPTFill* positiveGradientFill = [CPTFill fillWithGradient: positiveGradient];
 
         CPTPlot* plot = [mainGraph plotWithIdentifier: @"positivePlot"];
-        if (mainCategory.isBankAccount) {
+        if (selectedCategory.isBankAccount) {
             CPTScatterPlot *linePlot = (CPTScatterPlot*)plot;
             linePlot.areaFill = positiveGradientFill;
         } else {
@@ -2393,7 +2382,7 @@ int double_compare(const void *value1, const void *value2)
 
         plot = [mainGraph plotWithIdentifier: @"negativePlot"];
 
-        if (mainCategory.isBankAccount) {
+        if (selectedCategory.isBankAccount) {
             CPTScatterPlot *linePlot = (CPTScatterPlot*)plot;
             linePlot.areaFill = negativeGradientFill;
         } else {
@@ -2404,7 +2393,7 @@ int double_compare(const void *value1, const void *value2)
         CPTScatterPlot *scatterPlot = (CPTScatterPlot*)[mainGraph plotWithIdentifier: @"averagePlot"];
         CPTMutableLineStyle* lineStyle = [[CPTMutableLineStyle alloc] init];
         CGColorRef lineColor;
-        if (mainCategory.isBankAccount) {
+        if (selectedCategory.isBankAccount) {
             lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Bank Account Average Line"]);
         } else {
             lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Category Average Line"]);
@@ -2471,37 +2460,10 @@ int double_compare(const void *value1, const void *value2)
     [self regenerateGraphs];
 }
 
-- (IBAction)toggleHelp: (id)sender
+- (IBAction)showHelp: (id)sender
 {
-    if (!helpVisible) {
-        helpVisible = YES;
-        NSPoint buttonPoint = NSMakePoint(NSMidX([helpButton frame]),
-                                          NSMidY([helpButton frame]));
-        buttonPoint = [topView convertPoint: buttonPoint toView: nil];
-        if (helpWindow == nil) {
-            helpWindow = [[MAAttachedWindow alloc] initWithView: helpContentView
-                                                attachedToPoint: buttonPoint
-                                                       inWindow: topView.window
-                                                         onSide: MAPositionTopLeft
-                                                     atDistance: 20];
-
-            [helpWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 0.2 alpha: 1]];
-            [helpWindow setViewMargin: 10];
-            [helpWindow setBorderWidth: 0];
-            [helpWindow setCornerRadius: 10];
-            [helpWindow setHasArrow: YES];
-            [helpWindow setDrawsRoundCornerBesideArrow: YES];
-
-            [helpWindow setAlphaValue: 0];
-            [topView.window addChildWindow: helpWindow ordered: NSWindowAbove];
-        } else {
-            [helpWindow setPoint: buttonPoint side: MAPositionTopLeft];
-        }
-        [helpWindow fadeIn];
-        [topView.window addChildWindow: helpWindow ordered: NSWindowAbove];
-
-    } else {
-        [self hideHelp];
+    if (!helpPopover.shown) {
+        [helpPopover showRelativeToRect: helpButton.bounds ofView: helpButton preferredEdge: NSMinYEdge];
     }
 }
 
@@ -2538,7 +2500,6 @@ int double_compare(const void *value1, const void *value2)
 
 - (void)deactivate
 {
-    [self hideHelp];
 }
 
 /**
@@ -2580,10 +2541,10 @@ int double_compare(const void *value1, const void *value2)
     [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
 }
 
-- (void)setCategory: (Category *)newCategory
+- (void)setSelectedCategory: (Category *)newCategory
 {
-    if (mainCategory != newCategory) {
-        mainCategory = newCategory;
+    if (selectedCategory != newCategory) {
+        selectedCategory = newCategory;
         [self regenerateGraphs];
     }
 }

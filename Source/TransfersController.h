@@ -28,7 +28,6 @@
 @class TransfersController;
 @class TransferFormularView;
 
-@class TransferCalendarWindow;
 @class DragImageView;
 @class DeleteTransferTargetView;
 @class BankAccount;
@@ -58,8 +57,8 @@
 	IBOutlet TransactionController  *transactionController;
     IBOutlet TransfersListView      *finishedTransfersListView;
     IBOutlet TransfersListView      *pendingTransfersListView;
-    IBOutlet TransferTemplatesListView          *transferTemplateListView;
-    IBOutlet TransferTemplateDragDestination    *rightPane;
+    IBOutlet TransferTemplatesListView       *transferTemplateListView;
+    IBOutlet TransferTemplateDragDestination *rightPane;
 
     IBOutlet NSTextField    *titleText;
     IBOutlet NSTextField    *receiverText;
@@ -93,6 +92,7 @@
     IBOutlet NSView         *calendarView;
     IBOutlet NSButton       *calendarButton;
     IBOutlet NSDatePicker   *calendar;
+    IBOutlet NSPopover      *calendarPopover;
     
     IBOutlet NSButton       *queueItButton;
     IBOutlet NSButton       *doItButton;
@@ -103,14 +103,13 @@
     IBOutlet DragImageView  *transferNormalImage;
     IBOutlet DragImageView  *transferEUImage;
     IBOutlet DragImageView  *transferSEPAImage;
-    IBOutlet DeleteTransferTargetView   *transferDeleteImage;
-    IBOutlet TimeSliceManager           *timeSlicer;
+    IBOutlet DeleteTransferTargetView *transferDeleteImage;
+    IBOutlet TimeSliceManager         *timeSlicer;
     
     IBOutlet NSPanel        *templateNameSheet;
     IBOutlet NSTabView      *transferTab;
     
 @private
-    TransferCalendarWindow *calendarWindow;
     TransactionLimits      *limits;
     NSArray                *draggedTransfers;
     NSUInteger             rowPositions[4];
@@ -133,8 +132,6 @@
 - (IBAction)deleteTransfer: (id)sender;
 - (IBAction)saveTemplate: (id)sender;
 - (IBAction)cancelCreateTemplate: (id)sender;
-
-- (void)hideCalendarWindow;
 
 - (void)draggingStartsFor: (TransfersListView *)sender;
 - (BOOL)prepareTransferOfType: (TransferType)type;

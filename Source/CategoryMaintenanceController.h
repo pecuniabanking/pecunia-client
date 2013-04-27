@@ -22,21 +22,19 @@
 @class Category;
 @class BWGradientBox;
 @class DoubleClickImageView;
-@class MAAttachedWindow;
 
 @interface CategoryMaintenanceController : NSWindowController <NSImageDelegate>
 {
     IBOutlet NSObjectController *categoryController;
     IBOutlet BWGradientBox      *topGradient;
     IBOutlet BWGradientBox      *backgroundGradient;
+    IBOutlet NSPopover          *imageLibraryPopover;
 
 @private
 	NSManagedObjectContext *moc;
 	Category               *category;
 	Category               *changedCategory;
     NSMutableArray         *iconCollection;
-
-    MAAttachedWindow *imageLibraryPopupWindow;
 }
 
 @property (strong) IBOutlet DoubleClickImageView *categoryIcon;
@@ -50,7 +48,7 @@
 
 - (IBAction)cancel: (id)sender;
 - (IBAction)ok: (id)sender;
-- (IBAction)acceptImage:(id)sender;
-- (IBAction)cancelImage:(id)sender;
+- (IBAction)acceptImage: (id)sender;
+- (IBAction)cancelImage: (id)sender;
 
 @end
