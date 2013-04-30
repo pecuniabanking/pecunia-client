@@ -21,7 +21,6 @@
 
 #import "PecuniaSectionItem.h"
 
-@class CatAssignClassification;
 @class Category;
 @class StatementsListView;
 @class TimeSliceManager;
@@ -40,15 +39,15 @@
     
     IBOutlet BWGradientBox      *predicatesBackground;
 	
-	CatAssignClassification* caClassification;
     TimeSliceManager* timeSliceManager;
-	BOOL hideAssignedValues;
 	BOOL ruleChanged;
 	BOOL awaking;
 }
 
 @property (nonatomic, strong) TimeSliceManager* timeSliceManager;
 @property (nonatomic, weak) Category* selectedCategory;
+@property bool hideAssignedValues;
+
 @property (strong) IBOutlet NSSplitView *splitter;
 
 - (IBAction)predicateEditorChanged: (id)sender;

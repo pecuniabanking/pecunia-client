@@ -178,71 +178,99 @@
 
 -(int)updateFromQueryResult: (BankQueryResult*)result
 {
-	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
-	BankStatement	*stat;
-	NSDate			*ltd = self.latestTransferDate;
-	NSDate			*date = nil;
-	ShortDate		*currentDate = nil;
-	NSMutableArray	*newStatements = [NSMutableArray arrayWithCapacity:50 ];
+	NSManagedObjectContext *context = MOAssistant.assistant.context;
+	BankStatement *stat;
+	NSDate *ltd = self.latestTransferDate;
+	ShortDate *currentDate = nil;
+	NSMutableArray *newStatements = [NSMutableArray arrayWithCapacity: 50];
 
 	result.oldBalance = self.balance;
-	if(result.balance) self.balance = result.balance;
-	if(result.statements == nil) return 0;
+	if (result.balance) {
+        self.balance = result.balance;
+    }
+	if (result.statements == nil) {
+        return 0;
+    }
 	
-	// rearrange statements by day
+	// Give statements at the given day a little offset each so they always sort the same way.
+    // Without that statements within the same day can be reordered randomly as they have no time
+    // part by default (which would cause trouble once the balance is computed and stored).
 	NSDictionary *oldDayStats = [self statementsByDay:self.dbStatements ];
 
-	// statements must be properly sorted !!! (regarding HBCI)
+	// Statements must be properly sorted!
+	NSDate *date;
 	for (stat in result.statements) {
-		if([stat.isNew boolValue] == NO) continue;
+		if (![stat.isNew boolValue]) {
+            continue;
+        }
 		
-		// now copy statement
+		// Copy statement.
 		NSEntityDescription *entity = [stat entity];
 		NSArray *attributeKeys = [[entity attributesByName] allKeys];
-		NSDictionary *attributeValues = [stat dictionaryWithValuesForKeys:attributeKeys];
+		NSDictionary *attributeValues = [stat dictionaryWithValuesForKeys: attributeKeys];
 		
-		BankStatement *stmt = [NSEntityDescription insertNewObjectForEntityForName:@"BankStatement"
-															inManagedObjectContext:context];
+		BankStatement *stmt = [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement"
+															inManagedObjectContext: context];
 		
-		[stmt setValuesForKeysWithDictionary:attributeValues];
+		[stmt setValuesForKeysWithDictionary :attributeValues];
 		stmt.isNew = @YES;
-		
+
+        // Sanity check for the date.
+        if (stmt.valutaDate == nil) {
+            if (stmt.date != nil) {
+                stmt.valutaDate = stmt.date;
+            } else {
+                stmt.valutaDate = [NSDate date];
+            }
+        }
 		// check for old statements
-		ShortDate *stmtDate = [ShortDate dateWithDate:stmt.date ];
+		ShortDate *stmtDate = [ShortDate dateWithDate: stmt.valutaDate];
 		
-		if (currentDate == nil || [stmtDate isEqual:currentDate ] == NO) {
-			// get start date
+		if (currentDate == nil || ![stmtDate isEqual: currentDate]) {
+			// New day found. See if this day is already in the existing statements and if so
+            // take the last one for that day, so we continue from there.
 			NSArray *oldStats = oldDayStats[stmtDate];
 			if (oldStats == nil) {
-				date = stmt.date;
+				date = stmt.valutaDate;
 			} else {
 				date = nil;
-				for(BankStatement *oldStat in oldStats) {
-					if (date == nil || [date compare:oldStat.date ] == NSOrderedAscending) {
-						date = oldStat.date;
+                
+                // Find the last statement for that day.
+				for (BankStatement *oldStat in oldStats) {
+					if (date == nil || [date compare:oldStat.date] == NSOrderedAscending) {
+						date = oldStat.valutaDate;
+                        if (date == nil) {
+                            date = oldStat.date;
+                        }
 					}
 				}
-				date = [[NSDate alloc ] initWithTimeInterval:10 sinceDate: date ];
+
+                // Advance to a time after the last statement.
+				date = [[NSDate alloc] initWithTimeInterval: 10 sinceDate: date];
 			}
 			currentDate = stmtDate;
 		}
 		
-		stmt.date = date;
-		date = [[NSDate alloc ] initWithTimeInterval:10 sinceDate: date ];
+		stmt.valutaDate = date;
+        if (stmt.date == nil) {
+            stmt.date = date;
+        }
+		date = [[NSDate alloc] initWithTimeInterval: 10 sinceDate: date];
 		
-		[newStatements addObject: stmt ];
+		[newStatements addObject: stmt];
 		[stmt addToAccount: self ];
-		if(ltd == nil || [ltd compare: stmt.date ] == NSOrderedAscending) ltd = stmt.date;
+		if (ltd == nil || [ltd compare: stmt.date] == NSOrderedAscending) {
+            ltd = stmt.valutaDate;
+        }
 	}		
 	
-	if ([newStatements count ] > 0) {
+	if (newStatements.count > 0) {
 		if (result.balance == nil) {
 			// no balance given - calculate new balance
-			NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
-			NSArray				*sds = @[sd];
-			[newStatements sortUsingDescriptors:sds ];
+			NSArray *sds = @[[[NSSortDescriptor alloc] initWithKey: @"date" ascending: YES]];
+			[newStatements sortUsingDescriptors: sds];
 			NSMutableArray *oldStatements = [self.dbStatements mutableCopy];
-			[oldStatements sortUsingDescriptors:sds ];
+			[oldStatements sortUsingDescriptors:sds ]; // XXX: is it really necessary to resort existing statements again?
 			
 			// find earliest old that is later than first new
 			BankStatement *firstNewStat = newStatements[0];
@@ -262,12 +290,12 @@
 				}
 			}
 
-			if(found == NO) {
+			if (!found) {
 				newBalance = self.balance;
 			}
 
-			[mergedStatements addObjectsFromArray:newStatements ];
-			[mergedStatements sortUsingDescriptors:sds ];
+			[mergedStatements addObjectsFromArray: newStatements];
+			[mergedStatements sortUsingDescriptors: sds];
 			// Sum up balances.
 			for(stat in mergedStatements) {
                 if (stat.value != nil) {

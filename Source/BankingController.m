@@ -911,9 +911,9 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 {
     BankQueryResult *result;
     StatusBarController *sc = [StatusBarController controller];
-    BOOL			noStatements = YES;
-    BOOL			isImport = NO;
-    int				count = 0;
+    BOOL noStatements = YES;
+    BOOL isImport = NO;
+    int count = 0;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PecuniaStatementsNotification object:nil];
     
@@ -926,17 +926,15 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     }
     
     // get Proposals
-    for(result in resultList) {
+    for (result in resultList) {
         NSArray *stats = result.statements;
         if([stats count] > 0) {
-            noStatements = FALSE;
+            noStatements = NO;
             [result.account evaluateQueryResult: result];
         }
         if (result.isImport) isImport = YES;
         [result.account updateStandingOrders: result.standingOrders];
     }
-    
-    [BankStatement initCategoriesCache];
     
     [sc stopSpinning];
     [sc clearMessage];
@@ -944,7 +942,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     BOOL check = [defaults boolForKey: @"manualTransactionCheck"];
     
-    if ((check) && !noStatements) {
+    if (check && !noStatements) {
         BSSelectWindowController *selectWindowController = [[BSSelectWindowController alloc] initWithResults: resultList];
         [NSApp runModalForWindow: [selectWindowController window]];
     } else {
@@ -961,7 +959,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         }
         [self requestFinished: resultList];
         
-        [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), count] removeAfter:120 ];
+        [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), count] removeAfter: 120];
     }
     autoSyncRunning = NO;
 
@@ -1461,7 +1459,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
                 currentSection = categoryDefinitionController;
                 
                 // If a bank account is currently selected then switch to the not-assigned category.
-                // Bankaccounts don't use rules.
+                // Bankaccounts don't use rules for assigning transfers to them.
                 Category* category = [self currentSelection];
                 if ([category isBankAccount]) {
                     [categoryController setSelectedObject: Category.nassRoot];

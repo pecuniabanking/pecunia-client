@@ -26,15 +26,7 @@
 
 @implementation BankStatementController
 
-
-- (void)dealloc
-{
-	accountStatements = nil;
-
-}
-
 @synthesize accountStatements;
-
 
 -(id)initWithAccount: (BankAccount*)acc statement:(BankStatement*)stat
 {
@@ -90,20 +82,17 @@
 	
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
-	[statementController setContent:currentStatement ];
+	[statementController setContent: currentStatement];
 	if (negateValue) {
-		[valueField setTextColor:[NSColor redColor ] ];
+		[valueField setTextColor: [NSColor redColor]];
 	}
 	
-	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"localName" ascending:YES];
-	NSArray				*sds = @[sd];
-	[categoriesController setSortDescriptors: sds ];
-	
+	[categoriesController setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES]]];
 }
 
--(void)saveStatement
+- (void)saveStatement
 {
 	NSEntityDescription *entity = [currentStatement entity];
 	NSArray				*attributeKeys = [[entity attributesByName] allKeys];
@@ -133,7 +122,7 @@
 			break;
 		}
 	}
-	
+
 	// adjust balance of later statements
 	for(stat in accountStatements) {
 		// stat.date > newStatement.date
@@ -156,7 +145,7 @@
 		[[Category bankRoot ] rollup ];
 	}
 	
-	// assign to category
+	// Manually assign to a category. Doesn't affect automatic assignments based on rules.
 	NSInteger idx = [categoriesController selectionIndex ];
 	if (idx != NSNotFound) {
 		Category *cat = [categoriesController arrangedObjects ][idx];

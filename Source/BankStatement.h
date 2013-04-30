@@ -35,7 +35,6 @@ typedef enum {
 -(BOOL)matches: (BankStatement*)stat;
 -(BOOL)matchesAndRepair: (BankStatement*)stat;
 
--(NSObject*)classify;
 -(NSComparisonResult)compareValuta: (BankStatement*)stat;
 
 -(void)assignToCategory:(Category*)cat;
@@ -50,7 +49,6 @@ typedef enum {
 
 -(NSString*)floatingPurpose;
 
-+(void)setClassificationContext: (ClassificationContext*)cc;
 +(void)initCategoriesCache;
 
 @property (nonatomic, strong) NSDate *valutaDate;

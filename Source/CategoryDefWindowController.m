@@ -19,7 +19,6 @@
 
 #import "CategoryDefWindowController.h"
 
-#import "CatAssignClassification.h"
 #import "TimeSliceManager.h"
 #import "BankStatement.h"
 #import "MOAssistant.h"
@@ -34,34 +33,32 @@
 
 #import "BWGradientBox.h"
 
-#define BankStatementDataType	@"BankStatementDataType"
-#define CategoryDataType		@"CategoryDataType"
+#define BankStatementDataType @"BankStatementDataType"
+#define CategoryDataType      @"CategoryDataType"
 
 @implementation CategoryDefWindowController
 
 @synthesize timeSliceManager;
 @synthesize selectedCategory;
+@synthesize hideAssignedValues;
 
 - (id)init
 {
     self = [super init];
     if (self != nil) {
-        ruleChanged = NO;
     }
     return self;
 }
-
 
 -(void)awakeFromNib
 {
     awaking = YES;
     
-    // default: hide values that are already assigned elsewhere
-    hideAssignedValues = YES;
-    [self setValue:@YES forKey: @"hideAssignedValues"];
-    
-    caClassification = [[CatAssignClassification alloc] init];
-    [predicateEditor addRow:self];
+    // Hide values that are already assigned elsewhere, by default.
+    // Intentionally use the property to have KVO working for the checkbox that mirrors this state.
+    self.hideAssignedValues = YES;
+
+    [predicateEditor addRow: self];
     
     // sort descriptor for transactions view
     NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey: @"statement.date" ascending: NO];
@@ -209,14 +206,6 @@
     compoundPredicate = [NSCompoundPredicate orPredicateWithSubpredicates: orPreds];
     pred = [timeSliceManager predicateForField: @"date"];
     compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[compoundPredicate, pred]];
-    
-    
-    // update classification Context
-    if (selectedCategory == [Category nassRoot]) {
-        [caClassification setCategory: nil];
-    } else {
-        [caClassification setCategory: selectedCategory];
-    }
     
     // set new fetch predicate
     if (compoundPredicate) {
@@ -412,7 +401,6 @@
 
 -(void)prepare
 {
-    [BankStatement setClassificationContext: caClassification];
     [self calculateCatAssignPredicate];
 }
 

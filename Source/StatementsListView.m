@@ -293,9 +293,12 @@ extern void *UserDefaultsBindingContext;
 
 - (void)fillCell: (StatementsListViewCell*)cell forRow: (NSUInteger)row
 {
-    StatCatAssignment *stat = (StatCatAssignment*)dataSource[row];
+    StatCatAssignment *assignment = (StatCatAssignment*)dataSource[row];
     
-    NSDate* currentDate = stat.statement.date;
+    NSDate* currentDate = assignment.statement.valutaDate;
+    if (currentDate == nil) {
+        currentDate = assignment.statement.date; // Should not be necessary, but still...
+    }
     
     if (currentDate == nil) {
         return;
@@ -312,28 +315,28 @@ extern void *UserDefaultsBindingContext;
     cell.delegate = self;
     NSDictionary *details = @{StatementDateKey: currentDate,
                              StatementTurnoversKey: turnoversString,
-                             StatementRemoteNameKey: [self formatValue: stat.statement.remoteName capitalize: YES],
-                             StatementPurposeKey: [self formatValue: stat.statement.floatingPurpose capitalize: YES],
-                             StatementNoteKey: [self formatValue: stat.userInfo capitalize: YES],
-                             StatementCategoriesKey: [self formatValue: [stat.statement categoriesDescription] capitalize: NO],
-                             StatementValueKey: [self formatValue: stat.value capitalize: NO],
-                             StatementSaldoKey: [self formatValue: stat.statement.saldo capitalize: NO],
-                             StatementCurrencyKey: [self formatValue: stat.statement.currency capitalize: NO],
-                             StatementTransactionTextKey: [self formatValue: stat.statement.transactionText capitalize: YES],
-                             StatementColorKey: [stat.category categoryColor],
+                             StatementRemoteNameKey: [self formatValue: assignment.statement.remoteName capitalize: YES],
+                             StatementPurposeKey: [self formatValue: assignment.statement.floatingPurpose capitalize: YES],
+                             StatementNoteKey: [self formatValue: assignment.userInfo capitalize: YES],
+                             StatementCategoriesKey: [self formatValue: [assignment.statement categoriesDescription] capitalize: NO],
+                             StatementValueKey: [self formatValue: assignment.value capitalize: NO],
+                             StatementSaldoKey: [self formatValue: assignment.statement.saldo capitalize: NO],
+                             StatementCurrencyKey: [self formatValue: assignment.statement.currency capitalize: NO],
+                             StatementTransactionTextKey: [self formatValue: assignment.statement.transactionText capitalize: YES],
+                             StatementColorKey: [assignment.category categoryColor],
                              StatementIndexKey: @((int)row)};
     
     [cell setDetails: details];
-    [cell setIsNew: [stat.statement.isNew boolValue]];
+    [cell setIsNew: [assignment.statement.isNew boolValue]];
     
     if (self.showAssignedIndicators) {
-        id test = [dataSource[row] classify];
-        [cell showActivator: YES markActive: test != nil];
+        bool activate = assignment.category != nil && assignment.category != Category.nassRoot;
+        [cell showActivator: YES markActive: activate];
     } else {
         [cell showActivator: NO markActive: NO];
     }
     
-    NSDecimalNumber* nassValue = stat.statement.nassValue;
+    NSDecimalNumber* nassValue = assignment.statement.nassValue;
     cell.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
 
     [cell showBalance: [NSUserDefaults.standardUserDefaults boolForKey: @"showBalances"]];

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,7 +18,6 @@
  */
 
 #import "BankStatement.h"
-#import "ClassificationContext.h"
 #import "Category.h"
 #import "MOAssistant.h"
 #import "StatCatAssignment.h"
@@ -26,7 +25,6 @@
 #import "MCEMDecimalNumberAdditions.h"
 #import "MessageLog.h"
 
-static ClassificationContext* classContext = nil;
 static NSArray*	catCache = nil;
 
 @implementation BankStatement
@@ -129,49 +127,55 @@ BOOL stringEqual(NSString *a, NSString *b)
 	if(result) return result; else return @"";
 }
 
--(void)addToAccount: (BankAccount*)account
+/**
+ * Central point for assigning statements to their account. Here we a mapping between the account (category)
+ * and ourselve. After that we run all defined rules for assigning to categories and other actions.
+ */
+- (void)addToAccount: (BankAccount*)account
 {
-	if(account == nil) return;
+	if (account == nil) {
+        return;
+    }
 	
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	
-	// create StatCatAssignment
-	StatCatAssignment *stat = [NSEntityDescription insertNewObjectForEntityForName:@"StatCatAssignment" inManagedObjectContext:context ];
+	// Create new to-many relationship between the account and the statement (ourselve) and keep that in our
+    // assignments set.
+	StatCatAssignment *stat = [NSEntityDescription insertNewObjectForEntityForName: @"StatCatAssignment"
+                                                            inManagedObjectContext: context];
 	stat.value = self.value;
 	stat.category = (Category*)account;
 	stat.statement = self;
 	
 	self.account = account;
-	NSMutableSet* stats = [self mutableSetValueForKey: @"assignments" ];
-	[stats addObject: stat ];
+	NSMutableSet* stats = [self mutableSetValueForKey: @"assignments"];
+	[stats addObject: stat];
 	
-	// adjust posting date for manual postings
-/*
-	if ([self.isManual boolValue ] == YES) {
-		self.date = [account nextDateForDate:self.date ];
-	}	
-*/	
-	//assign categories
+	// Initialize the categories cache if not yet done and run all category rules.
+    if (catCache == nil) {
+        [BankStatement initCategoriesCache];
+    }
 	for (Category* cat in catCache) {
-		NSPredicate* pred = [NSPredicate predicateWithFormat: cat.rule ];
+		NSPredicate* pred = [NSPredicate predicateWithFormat: cat.rule];
         @try {
-            if([pred evaluateWithObject: stat ]) {
-                [self assignToCategory: cat ];
+            if ([pred evaluateWithObject: stat]) {
+                [self assignToCategory: cat];
             }
         }
         @catch (NSException *exception) {
-            [[MessageLog log] addMessage:[NSString stringWithFormat:@"Error in rule: %@", cat.rule] withLevel:LogLevel_Error];
+            [[MessageLog log] addMessage: [NSString stringWithFormat: @"Error in rule: %@", cat.rule]
+                               withLevel: LogLevel_Error];
         }
 	}
-	[self updateAssigned ];
+
+    // Run the general rules.
+    
+    // See if there is some value left that is not yet assigned to a category.
+	[self updateAssigned];
 }
 
 -(BOOL)matches: (BankStatement*)stat
 {
-/*	
-	if([self.hashNumber isEqual: stat.hashNumber ]) return YES;
-	return NO;
-*/ 
 	ShortDate *d1 = [ShortDate dateWithDate:self.date ];
 	ShortDate *d2 = [ShortDate dateWithDate:stat.date ];
 	
@@ -360,22 +364,6 @@ BOOL stringEqual(NSString *a, NSString *b)
     [ncat updateBoundAssignments];
 }
 
-+(void)setClassificationContext: (ClassificationContext*)cc
-{
-	classContext = cc;
-}
-
-+(ClassificationContext*)classificationContext
-{
-	return classContext;
-}
-
-
--(NSObject*)classify
-{
-	return [classContext classify: self ];
-}
-
 -(NSComparisonResult)compareValuta: (BankStatement*)stat
 {
 	return [self.valutaDate compare: stat.valutaDate ];
@@ -384,15 +372,14 @@ BOOL stringEqual(NSString *a, NSString *b)
 +(void)initCategoriesCache
 {
 	NSError* error = nil;
-	NSManagedObjectContext* context = [[MOAssistant assistant ] context ];
-	NSManagedObjectModel*	model   = [[MOAssistant assistant ] model ];
-
+	NSManagedObjectContext *context = MOAssistant.assistant.context;
+	NSManagedObjectModel *model = MOAssistant.assistant.model;
 	
 	catCache = nil;
-	NSFetchRequest *request = [model fetchRequestTemplateForName:@"categories"];
-	catCache = [context executeFetchRequest:request error:&error];
+	NSFetchRequest *request = [model fetchRequestTemplateForName: @"categories"];
+	catCache = [context executeFetchRequest: request error: &error];
 	if( error != nil || catCache == nil) {
-		NSAlert *alert = [NSAlert alertWithError:error];
+		NSAlert *alert = [NSAlert alertWithError: error];
 		[alert runModal];
 		return;
 	}

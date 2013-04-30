@@ -272,8 +272,6 @@
 		B189782E0ECF47CA00D20503 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
 		B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B18978860ED0B2E800D20503 /* StatementDetails.m */; };
 		B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B20550CC6A51B00B0B02C /* NewBankUserController.m */; };
-		B18B31760E3E454C00F0D2BF /* ClassificationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B31750E3E454C00F0D2BF /* ClassificationContext.m */; };
-		B18B31790E3E463C00F0D2BF /* CatAssignClassification.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B31780E3E463C00F0D2BF /* CatAssignClassification.m */; };
 		B18EA36A0E4B8C0100A53FD4 /* ExportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18EA3690E4B8C0100A53FD4 /* ExportController.m */; };
 		B1927D250C52B5CD00B4D390 /* Transfer.m in Sources */ = {isa = PBXBuildFile; fileRef = B1927D240C52B5CD00B4D390 /* Transfer.m */; };
 		B192FDC20E8434D500B53380 /* CategoryRepWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */; };
@@ -788,10 +786,6 @@
 		B18978860ED0B2E800D20503 /* StatementDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatementDetails.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B18B20540CC6A51B00B0B02C /* NewBankUserController.h */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = NewBankUserController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B18B20550CC6A51B00B0B02C /* NewBankUserController.m */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = NewBankUserController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B18B31740E3E454C00F0D2BF /* ClassificationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ClassificationContext.h; sourceTree = "<group>"; tabWidth = 4; };
-		B18B31750E3E454C00F0D2BF /* ClassificationContext.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ClassificationContext.m; sourceTree = "<group>"; tabWidth = 4; };
-		B18B31770E3E463C00F0D2BF /* CatAssignClassification.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CatAssignClassification.h; sourceTree = "<group>"; tabWidth = 4; };
-		B18B31780E3E463C00F0D2BF /* CatAssignClassification.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CatAssignClassification.m; sourceTree = "<group>"; tabWidth = 4; };
 		B18EA3680E4B8C0100A53FD4 /* ExportController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ExportController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B18EA3690E4B8C0100A53FD4 /* ExportController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ExportController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1927D230C52B5CD00B4D390 /* Transfer.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Transfer.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1199,7 +1193,6 @@
 				B17729AC1504D63200256898 /* BusinessTransactionsWindow.xib */,
 				B1AFA8801295C5D800B115A7 /* CategoryAnalysis.xib */,
 				27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */,
-				27A0098817205B4800D61FE9 /* RuleEditor.xib */,
 				27DCC81716EB8E640070E241 /* CategoryHeatMap.xib */,
 				27DFFD9116739C0000848CD2 /* CategoryMaintenance.xib */,
 				B14587A11289DCB700848683 /* CategoryPeriods.xib */,
@@ -1225,6 +1218,7 @@
 				B1D44FEE14784213008DD256 /* Preferences.xib */,
 				27C78792143622920095F1DA /* ProgressWindow.xib */,
 				B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */,
+				27A0098817205B4800D61FE9 /* RuleEditor.xib */,
 				275C07DA1438776000D97415 /* StatementsListViewCell.xib */,
 				B1A59497113182DA00FD8CB8 /* StatSplitController.xib */,
 				B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */,
@@ -1372,7 +1366,6 @@
 				B1FE0DCD106585DC005B3800 /* Core Data */,
 				B1FE0DCB106583F8005B3800 /* WindowController */,
 				B1FE0DC8106583A3005B3800 /* Extensions */,
-				B1FE0DD710658824005B3800 /* Classification */,
 			);
 			name = Classes;
 			path = Source;
@@ -1770,17 +1763,6 @@
 			name = Service;
 			sourceTree = "<group>";
 		};
-		B1FE0DD710658824005B3800 /* Classification */ = {
-			isa = PBXGroup;
-			children = (
-				B18B31770E3E463C00F0D2BF /* CatAssignClassification.h */,
-				B18B31780E3E463C00F0D2BF /* CatAssignClassification.m */,
-				B18B31740E3E454C00F0D2BF /* ClassificationContext.h */,
-				B18B31750E3E454C00F0D2BF /* ClassificationContext.m */,
-			);
-			name = Classification;
-			sourceTree = "<group>";
-		};
 		B1FE0DD81065885D005B3800 /* Basic */ = {
 			isa = PBXGroup;
 			children = (
@@ -2050,8 +2032,6 @@
 				B1A035750D8C77FC00072442 /* LogController.m in Sources */,
 				B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */,
 				B14D6DEF0DEC9C9100C2B220 /* CategoryView.m in Sources */,
-				B18B31760E3E454C00F0D2BF /* ClassificationContext.m in Sources */,
-				B18B31790E3E463C00F0D2BF /* CatAssignClassification.m in Sources */,
 				B1029E120E3FA1D700CC681B /* CategoryDefWindowController.m in Sources */,
 				B18EA36A0E4B8C0100A53FD4 /* ExportController.m in Sources */,
 				B19822DD0E6F304A001C4C70 /* CategoryAnalysisWindowController.m in Sources */,

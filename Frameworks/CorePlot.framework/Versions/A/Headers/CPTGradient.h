@@ -4,7 +4,6 @@
 /// @file
 
 #import "CPTDefinitions.h"
-#import <Foundation/Foundation.h>
 
 /**
  *  @brief A structure representing one node in a linked list of RGBA colors.
@@ -47,11 +46,26 @@ CPTGradientType;
     CGFunctionRef gradientFunction;
     CGFloat angle; // angle in degrees
     CPTGradientType gradientType;
+    CGPoint startAnchor;
+    CGPoint endAnchor;
 }
 
+/// @name Gradient Type
+/// @{
 @property (nonatomic, readonly, assign) CPTGradientBlendingMode blendingMode;
-@property (nonatomic, readwrite, assign) CGFloat angle;
 @property (nonatomic, readwrite, assign) CPTGradientType gradientType;
+/// @}
+
+/// @name Axial Gradients
+/// @{
+@property (nonatomic, readwrite, assign) CGFloat angle;
+/// @}
+
+/// @name Radial Gradients
+/// @{
+@property (nonatomic, readwrite, assign) CGPoint startAnchor;
+@property (nonatomic, readwrite, assign) CGPoint endAnchor;
+/// @}
 
 /// @name Factory Methods
 /// @{

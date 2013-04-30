@@ -795,9 +795,8 @@
                             [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, date is invalid: %@",
                                               file, index, field] withLevel: LogLevel_Error];
                             errorCount++;
+                            object = nil;
                         }
-
-                        object = [dateFormatter dateFromString: field];
                     } else {
                         if ([property isEqualToString: @"value"]) {
                             object = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: field] decimalValue]];
