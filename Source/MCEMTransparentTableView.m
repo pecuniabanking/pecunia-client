@@ -11,13 +11,13 @@
 
 @implementation MCEMTransparentTableView
 
-- (BOOL)isOpaque {
-	
+- (BOOL)isOpaque
+{
     return NO;
 }
 
-- (void)drawBackgroundInClipRect:(NSRect)clipRect {
-	
+- (void)drawBackgroundInClipRect: (NSRect)clipRect
+{
     // don't draw a background rect
 }
 

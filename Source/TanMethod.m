@@ -23,4 +23,3 @@
 @dynamic user;
 
 @end
-

@@ -10,9 +10,9 @@
 
 
 @interface NotificationWindowController : NSWindowController {
-    IBOutlet    NSTextField *messageField;
-    NSString    *message;
-    NSString    *title;
+    IBOutlet NSTextField *messageField;
+    NSString             *message;
+    NSString             *title;
 
 }
 
@@ -20,8 +20,7 @@
 @property (nonatomic, copy) NSString *title;
 
 
--(IBAction)ok:(id)sender;
--(id)initWithMessage:(NSString*)msg title:(NSString*)header;
+- (IBAction)ok: (id)sender;
+- (id)initWithMessage: (NSString *)msg title: (NSString *)header;
 
 @end
-

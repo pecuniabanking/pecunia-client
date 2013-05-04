@@ -21,10 +21,10 @@
 #import "ShortDate.h"
 #import "Category.h"
 
-@interface NSObject(TimeSliceManager)
+@interface NSObject (TimeSliceManager)
 
-- (NSString*)autosaveNameForTimeSlicer: (TimeSliceManager*)tsm;
-- (void)timeSliceManager: (TimeSliceManager*)tsm changedIntervalFrom: (ShortDate*)from to: (ShortDate*)to;
+- (NSString *)autosaveNameForTimeSlicer: (TimeSliceManager *)tsm;
+- (void)timeSliceManager: (TimeSliceManager *)tsm changedIntervalFrom: (ShortDate *)from to: (ShortDate *)to;
 
 @end
 
@@ -49,7 +49,7 @@
     return self;
 }
 
-- (id)initWithCoder: (NSCoder*)coder
+- (id)initWithCoder: (NSCoder *)coder
 {
     self = [super init];
     if (self != nil) {
@@ -63,7 +63,7 @@
     return self;
 }
 
-- (void)encodeWithCoder: (NSCoder*)coder
+- (void)encodeWithCoder: (NSCoder *)coder
 {
     [coder encodeInt: type forKey: @"type"];
     [coder encodeInt: year forKey: @"year"];
@@ -73,7 +73,7 @@
     [coder encodeObject: toDate forKey: @"toDate"];
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
     BOOL savedValues = NO;
 
@@ -114,7 +114,7 @@
     }
 }
 
--(void)save
+- (void)save
 {
     if (autosaveName == nil) {
         return;
@@ -131,7 +131,7 @@
     [userDefaults setObject: values forKey: autosaveName];
 }
 
--(ShortDate*)lowerBounds
+- (ShortDate *)lowerBounds
 {
     ShortDate *date;
     switch (type) {
@@ -167,7 +167,7 @@
     }
 }
 
-- (ShortDate*)upperBounds
+- (ShortDate *)upperBounds
 {
     ShortDate *date;
     switch (type) {
@@ -183,7 +183,7 @@
 
         case slice_month: {
             ShortDate *tdate = [ShortDate dateWithYear: year month: month day: 1];
-            int day = tdate.daysInMonth;
+            int       day = tdate.daysInMonth;
             date = [ShortDate dateWithYear: year month: month day: day];
             break;
         }
@@ -193,9 +193,9 @@
             break;
 
         case slice_all:
-            date = [ShortDate dateWithDate:[NSDate distantFuture]];
+            date = [ShortDate dateWithDate: [NSDate distantFuture]];
             break;
-	}
+    }
 
     if (maxDate) {
         if ([maxDate compare: date] == NSOrderedAscending) {
@@ -300,7 +300,7 @@
     }
 }
 
-- (void)stepIn: (ShortDate*)date
+- (void)stepIn: (ShortDate *)date
 {
     BOOL stepped = NO;
 
@@ -329,11 +329,13 @@
     if (type == slice_none) {
         // first deactivate timeSlicer
         int idx = [control selectedSegment];
-        if (idx >= 0) [control setSelected: NO forSegment: idx];
+        if (idx >= 0) {
+            [control setSelected: NO forSegment: idx];
+        }
     }
 
     // year
-    [control setLabel: [@((int)year) description] forSegment: slice_year];
+    [control setLabel: [@((int)year)description] forSegment: slice_year];
 
     // quarter
     NSString *quarterString = [NSString stringWithFormat: @"Q%.1lu", quarter + 1];
@@ -341,7 +343,7 @@
 
     // month
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    NSArray* months = [dateFormatter monthSymbols];
+    NSArray         *months = [dateFormatter monthSymbols];
     [control setLabel: months[month - 1] forSegment: slice_month];
 }
 
@@ -366,7 +368,7 @@
     }
 }
 
-- (void)setMinDate: (ShortDate*)date
+- (void)setMinDate: (ShortDate *)date
 {
     minDate = date;
     if (fromPicker != nil) {
@@ -374,7 +376,7 @@
     }
 }
 
-- (void)setMaxDate: (ShortDate*)date
+- (void)setMaxDate: (ShortDate *)date
 {
     maxDate = date;
     if (toPicker != nil) {
@@ -400,7 +402,9 @@
     SliceType t = [sender selectedSegment];
     switch (t) {
         case slice_year: break;
+
         case slice_month: break;
+
         case slice_quarter: {
             NSUInteger l = quarter * 3 + 1;
             NSUInteger u = quarter * 3 + 3;
@@ -409,6 +413,7 @@
             }
             break;
         }
+
         default:
             break;
     }
@@ -435,13 +440,13 @@
     }
 }
 
-- (NSPredicate*)predicateForField: (NSString*)field
+- (NSPredicate *)predicateForField: (NSString *)field
 {
     NSPredicate *pred = [NSPredicate predicateWithFormat: @"(statement.%K => %@) AND (statement.%K <= %@)", field, [[self lowerBounds] lowDate], field, [[self upperBounds] highDate]];
     return pred;
 }
 
-- (NSString*)description
+- (NSString *)description
 {
     return [NSString stringWithFormat: @"%@ - %@", [self lowerBounds],  [self upperBounds]];
 }

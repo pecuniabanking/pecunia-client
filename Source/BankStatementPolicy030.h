@@ -10,18 +10,17 @@
 
 
 @interface BankStatementPolicy030 : NSEntityMigrationPolicy {
-
 }
 
--(BOOL)createRelationshipsForDestinationInstance:(NSManagedObject *)dInstance 
-								   entityMapping:(NSEntityMapping *)mapping 
-										 manager:(NSMigrationManager *)manager 
-										   error:(NSError **)error;
+- (BOOL)createRelationshipsForDestinationInstance: (NSManagedObject *)dInstance
+                                    entityMapping: (NSEntityMapping *)mapping
+                                          manager: (NSMigrationManager *)manager
+                                            error: (NSError **)error;
 
--(BOOL)endRelationshipCreationForEntityMapping:(NSEntityMapping *)mapping 
-									   manager:(NSMigrationManager *)manager 
-										 error:(NSError **)error;
+- (BOOL)endRelationshipCreationForEntityMapping: (NSEntityMapping *)mapping
+                                        manager: (NSMigrationManager *)manager
+                                          error: (NSError **)error;
 
--(NSString*)convertGVCode:(NSNumber*)n;
+- (NSString *)convertGVCode: (NSNumber *)n;
 
 @end

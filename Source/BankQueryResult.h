@@ -22,34 +22,34 @@
 @class BankAccount;
 
 @interface BankQueryResult : NSObject {
-	NSString		*accountNumber;
-    NSString        *accountSubnumber;
-	NSString		*bankCode;
-	NSString		*userId;
-	NSString		*currency;
-    NSString        *ccNumber;
-    NSDate          *lastSettleDate;
-	NSDecimalNumber	*balance;
-	NSDecimalNumber	*oldBalance;
-	NSMutableArray	*statements;
-	NSMutableArray  *standingOrders;
-	BOOL			isImport;
-	BankAccount		*__unsafe_unretained account;
+    NSString                                     *accountNumber;
+    NSString                                     *accountSubnumber;
+    NSString                                     *bankCode;
+    NSString                                     *userId;
+    NSString                                     *currency;
+    NSString                                     *ccNumber;
+    NSDate                                       *lastSettleDate;
+    NSDecimalNumber                              *balance;
+    NSDecimalNumber                              *oldBalance;
+    NSMutableArray                               *statements;
+    NSMutableArray                               *standingOrders;
+    BOOL                                         isImport;
+    BankAccount             *__unsafe_unretained account;
 }
 
-@property (copy) NSString *accountNumber;
-@property (copy) NSString *accountSubnumber;
-@property (copy) NSString *bankCode;
-@property (copy) NSString *currency;
-@property (copy) NSString *userId;
-@property (copy) NSString *ccNumber;
-@property (copy) NSDate   *lastSettleDate;
-@property (copy) NSDecimalNumber *balance;
-@property (copy) NSDecimalNumber *oldBalance;
-@property (copy) NSMutableArray *statements;
-@property (copy) NSMutableArray *standingOrders;
+@property (copy) NSString                 *accountNumber;
+@property (copy) NSString                 *accountSubnumber;
+@property (copy) NSString                 *bankCode;
+@property (copy) NSString                 *currency;
+@property (copy) NSString                 *userId;
+@property (copy) NSString                 *ccNumber;
+@property (copy) NSDate                   *lastSettleDate;
+@property (copy) NSDecimalNumber          *balance;
+@property (copy) NSDecimalNumber          *oldBalance;
+@property (copy) NSMutableArray           *statements;
+@property (copy) NSMutableArray           *standingOrders;
 @property (unsafe_unretained) BankAccount *account;
-@property (assign) BOOL isImport;
+@property (assign) BOOL                   isImport;
 
 
 

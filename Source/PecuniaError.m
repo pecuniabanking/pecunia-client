@@ -23,63 +23,79 @@
 @implementation PecuniaError
 @synthesize title;
 
-+(NSError*)errorWithText: (NSString*)msg
++ (NSError *)errorWithText: (NSString *)msg
 {
-	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	if(msg) userInfo[NSLocalizedDescriptionKey] = msg;
-	return [NSError errorWithDomain:@"de.pecuniabanking.ErrorDomain" code:1 userInfo:userInfo];
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity: 1];
+    if (msg) {
+        userInfo[NSLocalizedDescriptionKey] = msg;
+    }
+    return [NSError errorWithDomain: @"de.pecuniabanking.ErrorDomain" code: 1 userInfo: userInfo];
 }
 
-+(PecuniaError*)errorWithCode:(ErrorCode)code message:(NSString*)msg
++ (PecuniaError *)errorWithCode: (ErrorCode)code message: (NSString *)msg
 {
-	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	if(msg) userInfo[NSLocalizedDescriptionKey] = msg;
-	PecuniaError *error = [[PecuniaError alloc ] initWithDomain: @"de.pecuniabanking.ErrorDomain" code:code userInfo:userInfo ];
-	return error;
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity: 1];
+    if (msg) {
+        userInfo[NSLocalizedDescriptionKey] = msg;
+    }
+    PecuniaError *error = [[PecuniaError alloc] initWithDomain: @"de.pecuniabanking.ErrorDomain" code: code userInfo: userInfo];
+    return error;
 }
 
-+(PecuniaError*)errorWithMessage:(NSString*)msg title:(NSString*)title
++ (PecuniaError *)errorWithMessage: (NSString *)msg title: (NSString *)title
 {
-	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1 ];
-	if(msg) userInfo[NSLocalizedDescriptionKey] = msg;
-	PecuniaError *error = [[PecuniaError alloc ] initWithDomain: @"de.pecuniabanking.ErrorDomain" code:err_gen userInfo:userInfo ];
-    if (title) error.title = title;
-	return error;    
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity: 1];
+    if (msg) {
+        userInfo[NSLocalizedDescriptionKey] = msg;
+    }
+    PecuniaError *error = [[PecuniaError alloc] initWithDomain: @"de.pecuniabanking.ErrorDomain" code: err_gen userInfo: userInfo];
+    if (title) {
+        error.title = title;
+    }
+    return error;
 }
 
-
--(void)alertPanel
+- (void)alertPanel
 {
-	// HBCI Errors
-	if(self.code < err_gen && self.title == nil) self.title = NSLocalizedString(@"AP53", nil);
+    // HBCI Errors
+    if (self.code < err_gen && self.title == nil) {
+        self.title = NSLocalizedString(@"AP53", nil);
+    }
 
-	NSString *message = nil;
-	switch(self.code) {
-		case err_hbci_abort : message = NSLocalizedString(@"AP106", nil); break;
-		case err_hbci_gen   : message = [self localizedDescription ]; break;
-		case err_hbci_passwd: message = NSLocalizedString(@"AP170", nil); break;
-		case err_hbci_param : message = [NSString stringWithFormat: NSLocalizedString(@"AP359", nil), [self localizedDescription ] ]; break;
-        default             : message = [self localizedDescription ]; break;
-	}
+    NSString *message = nil;
+    switch (self.code) {
+        case err_hbci_abort: message = NSLocalizedString(@"AP106", nil); break;
 
-	if(message && title) {
-		NSRunAlertPanel(title, message,	NSLocalizedString(@"ok", nil), nil, nil);
-	} else NSLog(@"Unhandled alert: %@", [self localizedDescription ]);
-    
+        case err_hbci_gen: message = [self localizedDescription]; break;
+
+        case err_hbci_passwd: message = NSLocalizedString(@"AP170", nil); break;
+
+        case err_hbci_param: message = [NSString stringWithFormat: NSLocalizedString(@"AP359", nil), [self localizedDescription]]; break;
+
+        default: message = [self localizedDescription]; break;
+    }
+
+    if (message && title) {
+        NSRunAlertPanel(title, message, NSLocalizedString(@"ok", nil), nil, nil);
+    } else {NSLog(@"Unhandled alert: %@", [self localizedDescription]); }
+
 }
 
--(void)logMessage
+- (void)logMessage
 {
-	NSString *message = nil;
-	switch(self.code) {
-		case err_hbci_abort : message = NSLocalizedString(@"AP106", nil); break;
-		case err_hbci_gen   : message = [self localizedDescription ]; break;
-		case err_hbci_passwd: message = NSLocalizedString(@"AP170", nil); break;
-		case err_hbci_param : message = [NSString stringWithFormat: NSLocalizedString(@"AP359", nil), [self localizedDescription ] ]; break;
-        default             : message = [self localizedDescription ]; break;
-	}    
+    NSString *message = nil;
+    switch (self.code) {
+        case err_hbci_abort: message = NSLocalizedString(@"AP106", nil); break;
+
+        case err_hbci_gen: message = [self localizedDescription]; break;
+
+        case err_hbci_passwd: message = NSLocalizedString(@"AP170", nil); break;
+
+        case err_hbci_param: message = [NSString stringWithFormat: NSLocalizedString(@"AP359", nil), [self localizedDescription]]; break;
+
+        default: message = [self localizedDescription]; break;
+    }
     [[MessageLog log] addMessage: message withLevel: LogLevel_Error];
 }
-
 
 @end

@@ -10,13 +10,11 @@
 
 
 @interface FlickerView : NSView {
-	char code;
-	int size;
+    char code;
+    int  size;
 }
 
-@property (nonatomic, assign) int size;
+@property (nonatomic, assign) int  size;
 @property (nonatomic, assign) char code;
 
 @end
-
-

@@ -11,7 +11,7 @@
 
 @interface NSSplitView (CCDLayoutAdditions)
 
-- (void)storeLayoutWithName: (NSString*)name;
-- (void)loadLayoutWithName: (NSString*)name;
+- (void)storeLayoutWithName: (NSString *)name;
+- (void)loadLayoutWithName: (NSString *)name;
 
 @end

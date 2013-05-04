@@ -17,16 +17,16 @@ typedef enum {
 } ErrorCode;
 
 @interface PecuniaError : NSError {
-    NSString    *title;
+    NSString *title;
 }
 
-@property(nonatomic,strong) NSString *title;
+@property (nonatomic, strong) NSString *title;
 
-+(NSError*)errorWithText:(NSString*)msg;
-+(PecuniaError*)errorWithCode:(ErrorCode)code message:(NSString*)msg;
-+(PecuniaError*)errorWithMessage:(NSString*)msg title:(NSString*)title;
++ (NSError *)errorWithText: (NSString *)msg;
++ (PecuniaError *)errorWithCode: (ErrorCode)code message: (NSString *)msg;
++ (PecuniaError *)errorWithMessage: (NSString *)msg title: (NSString *)title;
 
--(void)alertPanel;
--(void)logMessage;
+- (void)alertPanel;
+- (void)logMessage;
 
 @end

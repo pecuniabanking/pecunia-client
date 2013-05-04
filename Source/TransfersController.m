@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -56,13 +56,13 @@ NSString *StatementRemoteIBANKey      = @"iban";             // NSString
 NSString *StatementRemoteBICKey       = @"bic";              // NSString
 NSString *StatementTypeKey            = @"type";             // NSNumber
 
-NSString* const TransferPredefinedTemplateDataType = @"TransferPredefinedTemplateDataType"; // For dragging one of the "menu" template images.
-NSString* const TransferDataType = @"TransferDataType"; // For dragging an existing transfer (sent or not).
+NSString *const TransferPredefinedTemplateDataType = @"TransferPredefinedTemplateDataType"; // For dragging one of the "menu" template images.
+NSString *const TransferDataType = @"TransferDataType"; // For dragging an existing transfer (sent or not).
 extern NSString *TransferReadyForUseDataType;     // For dragging an edited transfer.
 extern NSString *TransferTemplateDataType;        // For dragging one of the stored templates.
 
 @interface DeleteTransferTargetView : NSImageView
-{    
+{
 }
 
 @property (nonatomic, unsafe_unretained) TransfersController *controller;
@@ -79,14 +79,14 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
     // Register for types that can be deleted.
     [self registerForDraggedTypes: @[TransferDataType, TransferReadyForUseDataType,
-                                    TransferTemplateDataType]];
+     TransferTemplateDataType]];
 }
 
 - (NSDragOperation)draggingEntered: (id <NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray: @[TransferDataType,
-                                                          TransferReadyForUseDataType, TransferTemplateDataType]];
+    NSString     *type = [pasteboard availableTypeFromArray: @[TransferDataType,
+                          TransferReadyForUseDataType, TransferTemplateDataType]];
     if (type == nil) {
         return NSDragOperationNone;
     }
@@ -117,7 +117,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
 @private
     BOOL canDrag;
-    
+
 }
 
 @property (nonatomic, unsafe_unretained) TransfersController *controller;
@@ -137,20 +137,24 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             case 0:
                 type = TransferTypeInternal;
                 break;
+
             case 2:
                 type = TransferTypeEU;
                 break;
+
             case 3:
                 type = TransferTypeSEPA;
                 break;
+
             case 4:
                 return; // Not yet implemented.
                 break;
+
             default:
                 type = TransferTypeStandard;
                 break;
         }
-        
+
         if (![controller startTransferOfType: type withAccount: nil]) {
             [super mouseDown: theEvent];
         }
@@ -163,7 +167,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [super mouseDown: theEvent];
 }
 
-- (void)mouseUp:(NSEvent *)theEvent
+- (void)mouseUp: (NSEvent *)theEvent
 {
     [super mouseUp: theEvent];
     canDrag = NO;
@@ -175,34 +179,38 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         [super mouseDragged: theEvent];
         return;
     }
-    
+
     TransferType type;
     switch (self.tag) {
         case 0:
             type = TransferTypeInternal;
             break;
+
         case 2:
             type = TransferTypeEU;
             break;
+
         case 3:
             type = TransferTypeSEPA;
             break;
+
         case 4:
             return; // Not yet implemented.
             break;
+
         default:
             type = TransferTypeStandard;
             break;
     }
-    
+
     if ([controller prepareTransferOfType: type]) {
         NSPasteboard *pasteBoard = [NSPasteboard pasteboardWithUniqueName];
         [pasteBoard setString: [NSString stringWithFormat: @"%i", type] forType: TransferPredefinedTemplateDataType];
-        
+
         NSPoint location;
         location.x = 0;
         location.y = 0;
-        
+
         [self dragImage: [self image]
                      at: location
                  offset: NSZeroSize
@@ -213,9 +221,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 }
 
-- (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal
+- (NSDragOperation)draggingSourceOperationMaskForLocal: (BOOL)isLocal
 {
-    return isLocal ? NSDragOperationCopy : NSDragOperationNone; 
+    return isLocal ? NSDragOperationCopy : NSDragOperationNone;
 }
 
 - (BOOL)ignoreModifierKeysWhileDragging
@@ -236,7 +244,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 @synthesize controller;
 
-- (id)initWithFrame:(NSRect)frameRect
+- (id)initWithFrame: (NSRect)frameRect
 {
     self = [super initWithFrame: frameRect];
     if (self != nil) {
@@ -253,9 +261,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSPasteboard *pasteboard = [info draggingPasteboard];
     currentDragDataType = [pasteboard availableTypeFromArray:
                            @[TransferDataType,
-                             TransferPredefinedTemplateDataType,
-                             TransferReadyForUseDataType,
-                             TransferTemplateDataType]];
+                           TransferPredefinedTemplateDataType,
+                           TransferReadyForUseDataType,
+                           TransferTemplateDataType]];
     return NSDragOperationNone;
 }
 
@@ -264,24 +272,23 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (currentDragDataType == nil) {
         return NSDragOperationNone;
     }
-    
+
     NSPoint location = info.draggingLocation;
     if (NSPointInRect(location, [self dropTargetFrame])) {
-        
         // Mouse is within our drag target area.
         if ((currentDragDataType == TransferDataType || currentDragDataType == TransferPredefinedTemplateDataType
              || currentDragDataType == TransferTemplateDataType)
             && [controller editingInProgress]) {
             return NSDragOperationNone;
         }
-        
+
         // User is dragging either a template or an existing transfer around.
         // The controller tells us if a transfer can be edited right now.
         if (formularVisible) {
             // We have already checked editing is possible when we come here.
             return NSDragOperationCopy;
         }
-        
+
         // Check if we can start a new editing process.
         if ([controller prepareEditingFromDragging: info]) {
             [self showFormular];
@@ -322,7 +329,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSPoint location = info.draggingLocation;
     if (NSPointInRect(location, [self dropTargetFrame])) {
         if (currentDragDataType == TransferReadyForUseDataType) {
-            
             // Nothing to do for this type.
             return false;
         }
@@ -354,7 +360,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     dragTargetFrame.size.height = 350;
     dragTargetFrame.origin.x += 65;
     dragTargetFrame.origin.y += 35;
-    
+
     return dragTargetFrame;
 }
 
@@ -377,7 +383,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         formularFrame.origin.x = (self.bounds.size.width - formularFrame.size.width) / 2 - 10;
         formularFrame.origin.y = 0;
         controller.transferFormular.frame = formularFrame;
-        
+
         [[self animator] addSubview: controller.transferFormular];
     }
 }
@@ -388,7 +394,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 @interface TransfersController (private)
 - (void)updateSourceAccountSelector;
-- (void)prepareSourceAccountSelector:(BankAccount *)account forTransferType:(TransferType)transferType;
+- (void)prepareSourceAccountSelector: (BankAccount *)account forTransferType: (TransferType)transferType;
 - (void)updateTargetAccountSelector;
 - (void)storeReceiverInMRUList;
 @end
@@ -403,32 +409,32 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     [[mainView window] setInitialFirstResponder: receiverComboBox];
 
-    NSArray *acceptedTypes = @[@(TransferTypeInternal), @(TransferTypeStandard), @(TransferTypeEU),	@(TransferTypeDated),
-	    @(TransferTypeSEPA)];
+    NSArray *acceptedTypes = @[@(TransferTypeInternal), @(TransferTypeStandard), @(TransferTypeEU),     @(TransferTypeDated),
+                               @(TransferTypeSEPA)];
     pendingTransfers.managedObjectContext = MOAssistant.assistant.context;
     pendingTransfers.filterPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = NO and changeState = %d",
                                         acceptedTypes, TransferChangeUnchanged];
-    
+
     // We listen to selection changes in the pending transfers list.
     [pendingTransfers addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
-    
+
     // The pending transfers list listens to selection changes in the transfers listview (and vice versa).
     [pendingTransfers bind: @"selectionIndexes" toObject: pendingTransfersListView withKeyPath: @"selectedRows" options: nil];
     [pendingTransfersListView bind: @"selectedRows" toObject: pendingTransfers withKeyPath: @"selectionIndexes" options: nil];
-    
+
     finishedTransfers.managedObjectContext = MOAssistant.assistant.context;
     finishedTransfersPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = YES", acceptedTypes];
-    NSPredicate *filter = [NSPredicate predicateWithFormat:@"date >= %@ AND date <= %@", timeSlicer.lowerBounds.lowDate, timeSlicer.upperBounds.highDate ];
-    finishedTransfers.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[finishedTransfersPredicate, filter]];
+    NSPredicate *filter = [NSPredicate predicateWithFormat: @"date >= %@ AND date <= %@", timeSlicer.lowerBounds.lowDate, timeSlicer.upperBounds.highDate];
+    finishedTransfers.filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[finishedTransfersPredicate, filter]];
 
     [transactionController setManagedObjectContext: MOAssistant.assistant.context];
 
-	// Sort transfer list views by date (newest first).
-	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
-	NSArray *sds = @[sd];
-	[pendingTransfers setSortDescriptors: sds];
-	[finishedTransfers setSortDescriptors: sds];
-	
+    // Sort transfer list views by date (newest first).
+    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
+    NSArray          *sds = @[sd];
+    [pendingTransfers setSortDescriptors: sds];
+    [finishedTransfers setSortDescriptors: sds];
+
     [pendingTransfersListView setCellSpacing: 0];
     [pendingTransfersListView setAllowsEmptySelection: YES];
     [pendingTransfersListView setAllowsMultipleSelection: YES];
@@ -452,7 +458,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
     rightPane.controller = self;
     [rightPane registerForDraggedTypes: @[TransferPredefinedTemplateDataType,
-                                         TransferDataType, TransferReadyForUseDataType, TransferTemplateDataType]];
+     TransferDataType, TransferReadyForUseDataType, TransferTemplateDataType]];
 
     executeImmediatelyRadioButton.target = self;
     executeImmediatelyRadioButton.action = @selector(executionTimeChanged:);
@@ -462,7 +468,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     transferFormular.controller = self;
     transferFormular.draggable = YES;
     bankCode.delegate = self;
-    
+
     transferInternalImage.controller = self;
     [transferInternalImage setFrameCenterRotation: -10];
     transferNormalImage.controller = self;
@@ -471,7 +477,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [transferEUImage setFrameCenterRotation: -10];
     transferSEPAImage.controller = self;
     [transferSEPAImage setFrameCenterRotation: -10];
-    
+
     transferDeleteImage.controller = self;
 
     // Keep current row positions as set in the xib, so we can properly adjust control positions.
@@ -481,29 +487,27 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     rowPositions[3] = [[transferFormular viewWithTag: 31] frame].origin.y;
 }
 
-- (NSMenuItem*)createItemForAccountSelector: (BankAccount *)account
+- (NSMenuItem *)createItemForAccountSelector: (BankAccount *)account
 {
     NSMenuItem *item = [[NSMenuItem alloc] initWithTitle: [account localName] action: nil keyEquivalent: @""];
     item.representedObject = account;
-    
+
     return item;
 }
 
-
--(NSString*)autosaveNameForTimeSlicer: (TimeSliceManager*)tsm
+- (NSString *)autosaveNameForTimeSlicer: (TimeSliceManager *)tsm
 {
     return @"FinishedTransfersSlicer";
 }
 
-- (void)timeSliceManager: (TimeSliceManager*)tsm changedIntervalFrom:(ShortDate*)from to:(ShortDate*)to
+- (void)timeSliceManager: (TimeSliceManager *)tsm changedIntervalFrom: (ShortDate *)from to: (ShortDate *)to
 {
     if (finishedTransfersPredicate != nil) {
-        NSPredicate *filter = [NSPredicate predicateWithFormat:@"date >= %@ AND date <= %@", from.lowDate, to.highDate ];
-        NSPredicate *comp = [NSCompoundPredicate andPredicateWithSubpredicates:@[finishedTransfersPredicate, filter]];
+        NSPredicate *filter = [NSPredicate predicateWithFormat: @"date >= %@ AND date <= %@", from.lowDate, to.highDate];
+        NSPredicate *comp = [NSCompoundPredicate andPredicateWithSubpredicates: @[finishedTransfersPredicate, filter]];
         [finishedTransfers setFilterPredicate: comp];
     }
 }
-
 
 /**
  * Refreshes the content of the source account selector.
@@ -513,7 +517,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     Transfer *currentTransfer = transactionController.currentTransfer;
     if (currentTransfer != nil) {
-        [self prepareSourceAccountSelector: sourceAccountSelector.selectedItem.representedObject forTransferType:currentTransfer.type.intValue];
+        [self prepareSourceAccountSelector: sourceAccountSelector.selectedItem.representedObject forTransferType: currentTransfer.type.intValue];
     }
 }
 
@@ -521,61 +525,61 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
  * Refreshes the content of the source account selector and selects the given account (if found).
  */
 
-- (void)prepareSourceAccountSelector: (BankAccount *)selectedAccount forTransferType:(TransferType)transferType
+- (void)prepareSourceAccountSelector: (BankAccount *)selectedAccount forTransferType: (TransferType)transferType
 {
     [sourceAccountSelector removeAllItems];
-    
+
     NSMenu *sourceMenu = [sourceAccountSelector menu];
-    
+
     // use current selection if no bank account is given
     if (selectedAccount == nil) {
         BankingController *controller = [BankingController controller];
-        Category *cat = [controller currentSelection];
+        Category          *cat = [controller currentSelection];
         if (cat != nil && [cat isBankAccount] == YES) {
-            selectedAccount = (BankAccount*)cat;
+            selectedAccount = (BankAccount *)cat;
         }
     }
-    
-    Category *category = [Category bankRoot];
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
-	NSArray *sortDescriptors = @[sortDescriptor];
-    NSArray *institutes = [[category children] sortedArrayUsingDescriptors: sortDescriptors];
-    
+
+    Category         *category = [Category bankRoot];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
+    NSArray          *sortDescriptors = @[sortDescriptor];
+    NSArray          *institutes = [[category children] sortedArrayUsingDescriptors: sortDescriptors];
+
     // Convert list of accounts in their institutes branches to a flat list
     // usable by the selector.
     NSEnumerator *institutesEnumerator = [institutes objectEnumerator];
-    Category *currentInstitute;
-    NSInteger selectedItem = -1; // By default no entry is selected.
+    Category     *currentInstitute;
+    NSInteger    selectedItem = -1; // By default no entry is selected.
     while ((currentInstitute = [institutesEnumerator nextObject])) {
         if (![currentInstitute isKindOfClass: [BankAccount class]]) {
             continue;
         }
-        
+
         NSArray        *accounts = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
         NSMutableArray *validAccounts = [NSMutableArray arrayWithCapacity: 10];
         NSEnumerator   *accountEnumerator = [accounts objectEnumerator];
         Category       *currentAccount;
-        
+
         while ((currentAccount = [accountEnumerator nextObject])) {
             if (![currentAccount isKindOfClass: [BankAccount class]]) {
                 continue;
             }
 
             BankAccount *account = (BankAccount *)currentAccount;
-            
+
             // Exclude manual accounts from the list.
             if ([account.isManual boolValue]) {
                 continue;
             }
-            
+
             // check if the accout supports the current transfer type
-            if ([[HBCIClient hbciClient] isTransferSupported:transferType forAccount:account] == NO) {
+            if ([[HBCIClient hbciClient] isTransferSupported: transferType forAccount: account] == NO) {
                 continue;
             }
-            
-            [validAccounts addObject:account];
+
+            [validAccounts addObject: account];
         }
-        
+
         if ([validAccounts count] > 0) {
             NSMenuItem *item = [self createItemForAccountSelector: (BankAccount *)currentInstitute];
             [sourceMenu addItem: item];
@@ -585,12 +589,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                 [item setEnabled: YES];
                 item.indentationLevel = 1;
                 [sourceMenu addItem: item];
-                if (account == selectedAccount)
+                if (account == selectedAccount) {
                     selectedItem = sourceMenu.numberOfItems - 1;
+                }
             }
         }
     }
-    
+
     if (sourceMenu.numberOfItems > 1) {
         [sourceAccountSelector selectItemAtIndex: selectedItem];
     } else {
@@ -610,20 +615,19 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (transactionController.currentTransfer.type.intValue != TransferTypeInternal) {
         return;
     }
-    
+
     BankAccount *currentAccount = targetAccountSelector.selectedItem.representedObject;
     BankAccount *sourceAccount = sourceAccountSelector.selectedItem.representedObject;
-    
-    [targetAccountSelector removeAllItems];
-    
-    NSMenu *targetMenu = [targetAccountSelector menu];
-    
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
-	NSArray *sortDescriptors = @[sortDescriptor];
-    NSArray *siblingAccounts = [[sourceAccount siblings] sortedArrayUsingDescriptors: sortDescriptors];
-    NSInteger selectedItem = -1;
-    for (BankAccount *account in siblingAccounts) {
 
+    [targetAccountSelector removeAllItems];
+
+    NSMenu *targetMenu = [targetAccountSelector menu];
+
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
+    NSArray          *sortDescriptors = @[sortDescriptor];
+    NSArray          *siblingAccounts = [[sourceAccount siblings] sortedArrayUsingDescriptors: sortDescriptors];
+    NSInteger        selectedItem = -1;
+    for (BankAccount *account in siblingAccounts) {
         // Exclude manual accounts from the list.
         if ([account.isManual boolValue]) {
             continue;
@@ -633,8 +637,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         [item setEnabled: YES];
         item.indentationLevel = 1;
         [targetMenu addItem: item];
-        if (currentAccount == account)
+        if (currentAccount == account) {
             selectedItem = targetMenu.numberOfItems - 1;
+        }
     }
     if (targetMenu.numberOfItems > 1) {
         [targetAccountSelector selectItemAtIndex: selectedItem];
@@ -656,7 +661,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
         return NO;
     }
-    
+
     NSString *remoteAccountKey;
     NSString *remoteBankCodeKey;
     switch (type) {
@@ -667,6 +672,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteAccountKey = @"selection.remoteAccount";
             remoteBankCodeKey = @"selection.remoteBankCode";
             break;
+
         case TransferTypeStandard:
         case TransferTypeDated: // TODO: needs to be handled differently, for all the various terminated flavours.
             [titleText setStringValue: NSLocalizedString(@"AP404", nil)];
@@ -677,6 +683,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteAccountKey = @"selection.remoteAccount";
             remoteBankCodeKey = @"selection.remoteBankCode";
             break;
+
         case TransferTypeEU:
             [titleText setStringValue: NSLocalizedString(@"AP405", nil)];
             [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
@@ -686,6 +693,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteAccountKey = @"selection.remoteIBAN";
             remoteBankCodeKey = @"selection.remoteBIC";
             break;
+
         case TransferTypeSEPA:
             [titleText setStringValue: NSLocalizedString(@"AP406", nil)];
             [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
@@ -695,6 +703,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteAccountKey = @"selection.remoteIBAN";
             remoteBankCodeKey = @"selection.remoteBIC";
             break;
+
         case TransferTypeDebit:
             [titleText setStringValue: NSLocalizedString(@"AP407", nil)];
             [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
@@ -704,11 +713,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteAccountKey = @"selection.remoteAccount";
             remoteBankCodeKey = @"selection.remoteBankCode";
             break;
+
         case TransferTypeCollectiveCredit:
         case TransferTypeCollectiveDebit:
             return NO; // Not needed as individual transfer template type.
     }
-    
+
     BOOL isInternal = (type == TransferTypeInternal);
     [targetAccountSelector setHidden: !isInternal];
     [receiverComboBox setHidden: isInternal];
@@ -722,9 +732,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [targetCountrySelector setHidden: !isEUTransfer];
     [feeText setHidden: !isEUTransfer];
     [feeSelector setHidden: !isEUTransfer];
-    
+
     [bankDescription setHidden: type == TransferTypeEU];
-    
+
     if (remoteAccountKey != nil) {
         NSDictionary *options = @{NSValueTransformerNameBindingOption: @"RemoveWhitespaceTransformer"};
         [accountNumber bind: @"value" toObject: transactionController.currentTransferController withKeyPath: remoteAccountKey options: options];
@@ -735,7 +745,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 
     // TODO: adjust formatters for bank code and account number fields depending on the type.
-    
+
     // These business transactions support termination:
     //   - SEPA company/normal single debit/transfer
     //   - SEPA consolidated company/normal debits/transfers
@@ -750,7 +760,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [executeAtDateLabel setHidden: !canBeTerminated];
     [executionDatePicker setHidden: !canBeTerminated];
     [calendarButton setHidden: !canBeTerminated];
-    
+
     executeAtDateRadioButton.state = (type == TransferTypeDated) ? NSOnState : NSOffState;
     executeImmediatelyRadioButton.state = (type == TransferTypeDated) ? NSOffState : NSOnState;
 
@@ -761,7 +771,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     // Load the set of previously entered text for the receiver combo box.
     [receiverComboBox removeAllItems];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *values = [userDefaults dictionaryForKey: @"transfers"];
+    NSDictionary   *values = [userDefaults dictionaryForKey: @"transfers"];
     if (values != nil) {
         id previousReceivers = values[@"previousReceivers"];
         if ([previousReceivers isKindOfClass: [NSArray class]]) {
@@ -770,8 +780,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 
     // Finally adjust controls so that no empty row is shown.
-    BOOL row1Hidden = [(NSView*)[transferFormular viewWithTag: 11] isHidden];
-    BOOL row2Hidden = [(NSView*)[transferFormular viewWithTag: 21] isHidden];
+    BOOL row1Hidden = [(NSView *)[transferFormular viewWithTag: 11] isHidden];
+    BOOL row2Hidden = [(NSView *)[transferFormular viewWithTag: 21] isHidden];
 
     NSUInteger row2Position = rowPositions[2];
     if (row1Hidden) {
@@ -810,8 +820,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         newFrame.origin.y = row2Position;
         view.frame = newFrame;
     }
-    
-    { // 3rd row.
+
+    {   // 3rd row.
         // Labels.
         NSView *view = [transferFormular viewWithTag: 30];
         NSRect newFrame = view.frame;
@@ -830,7 +840,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         view.frame = newFrame;
 
     }
-    
+
     return YES;
 }
 
@@ -854,10 +864,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             NSString *actualName = (counter++ == 0) ? [templateName stringValue] : [NSString stringWithFormat: @"%@ %li", [templateName stringValue], counter];
             [transactionController saveTransfer: transfer asTemplateWithName: actualName];
         }
-        
         NSManagedObjectContext *context = MOAssistant.assistant.context;
-        NSError *error = nil;
-        if ([context save: &error ] == NO) {
+        NSError                *error = nil;
+        if ([context save: &error] == NO) {
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
         }
@@ -873,13 +882,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         // Can accept drops only from other transfers list views.
         return info.draggingSource == pendingTransfersListView;
     }
-    
+
     if (sender == pendingTransfersListView || sender == transferTemplateListView) {
         NSPasteboard *pasteboard = [info draggingPasteboard];
-        NSString *type = [pasteboard availableTypeFromArray: @[TransferDataType, TransferReadyForUseDataType]];
+        NSString     *type = [pasteboard availableTypeFromArray: @[TransferDataType, TransferReadyForUseDataType]];
         return type != nil;
     }
-    
+
     return NO;
 }
 
@@ -890,13 +899,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (void)concludeDropOperation: (id)sender context: (id<NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray: @[TransferDataType, TransferReadyForUseDataType]];
+    NSString     *type = [pasteboard availableTypeFromArray: @[TransferDataType, TransferReadyForUseDataType]];
     if (type == nil) {
         return;
     }
-    
+
     NSManagedObjectContext *context = MOAssistant.assistant.context;
-    
+
     if (sender == transferTemplateListView) {
         if (type == TransferReadyForUseDataType) {
             // If this is an edited transfer then finish the edit operation first
@@ -907,10 +916,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             [rightPane hideFormular];
             draggedTransfers = @[transactionController.currentTransfer];
         } else {
-            NSData *data = [pasteboard dataForType: type];
-            NSArray *urls = [NSKeyedUnarchiver unarchiveObjectWithData: data];
+            NSData         *data = [pasteboard dataForType: type];
+            NSArray        *urls = [NSKeyedUnarchiver unarchiveObjectWithData: data];
             NSMutableArray *mutableTransfers = [NSMutableArray array];
-            
+
             for (NSURL *url in urls) {
                 NSManagedObjectID *objectId = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: url];
                 if (objectId == nil) {
@@ -920,25 +929,25 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             }
             draggedTransfers = mutableTransfers;
         }
-        
+
         // Use the remote name of the first transfer as default for the template name.
         templateName.stringValue = [draggedTransfers[0] remoteName];
-        [NSApp beginSheet: templateNameSheet
-           modalForWindow: [mainView window]
-            modalDelegate: self
-           didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
-              contextInfo: nil];
+        [NSApp  beginSheet: templateNameSheet
+            modalForWindow: [mainView window]
+             modalDelegate: self
+            didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
+               contextInfo: nil];
         return;
     }
-    
+
     if (type == TransferReadyForUseDataType) {
         if ([transactionController finishCurrentTransfer]) {
             [rightPane hideFormular];
         }
     } else {
-        NSData *data = [pasteboard dataForType: type];
+        NSData  *data = [pasteboard dataForType: type];
         NSArray *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
-        
+
         for (NSURL *url in transfers) {
             NSManagedObjectID *objectId = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: url];
             if (objectId == nil) {
@@ -947,14 +956,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             Transfer *transfer = (Transfer *)[context objectWithID: objectId];
             transfer.isSent = @((BOOL)(sender == finishedTransfersListView));
         }
-        
         NSError *error = nil;
-        if ([context save: &error ] == NO) {
+        if ([context save: &error] == NO) {
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
         }
     }
-    
+
     // Changing the status doesn't refresh the data controllers - so trigger this manually.
     [pendingTransfers prepareContent];
     [finishedTransfers prepareContent];
@@ -966,29 +974,29 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (BOOL)concludeDropDeleteOperation: (id<NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray: @[TransferDataType,
-                                                          TransferReadyForUseDataType, TransferTemplateDataType]];
+    NSString     *type = [pasteboard availableTypeFromArray: @[TransferDataType,
+                          TransferReadyForUseDataType, TransferTemplateDataType]];
     if (type == nil) {
         return NO;
     }
-    
+
     if (dropToEditRejected) {
         // No delete operation + animation if the drop was rejected.
         return NO;
     }
-    
+
     // If we are deleting a new transfer then silently cancel editing and remove the formular from screen.
     if ((type == TransferReadyForUseDataType) && transactionController.currentTransfer.changeState == TransferChangeNew) {
         [self cancelEditing];
         return YES;
     }
-    
-    
-	NSError *error = nil;
-	NSManagedObjectContext *context = MOAssistant.assistant.context;
-	
+
+
+    NSError                *error = nil;
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+
     if (type == TransferReadyForUseDataType) {
-        int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil), 
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
                                   NSLocalizedString(@"AP419", nil),
                                   NSLocalizedString(@"AP2", nil),
                                   NSLocalizedString(@"AP10", nil),
@@ -996,7 +1004,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         if (res != NSAlertAlternateReturn) {
             return NO;
         }
-        
+
         // We are throwing away the currently being edited transfer which was already placed in the
         // pending transfers queue but brought back for editing. This time the user wants it deleted.
         [rightPane hideFormular];
@@ -1011,10 +1019,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
         return YES;
     }
-    
-    NSData *data = [pasteboard dataForType: type];
+
+    NSData  *data = [pasteboard dataForType: type];
     NSArray *entries = [NSKeyedUnarchiver unarchiveObjectWithData: data];
-    
+
     NSString *warningTitle;
     if (type == TransferDataType) {
         warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP417", nil) : NSLocalizedString(@"AP418", nil);
@@ -1022,15 +1030,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         warningTitle = (entries.count == 1) ? NSLocalizedString(@"AP421", nil) : NSLocalizedString(@"AP422", nil);
     }
     NSString *warningText = (entries.count == 1) ? NSLocalizedString(@"AP419", nil) : NSLocalizedString(@"AP420", nil);
-    int res = NSRunAlertPanel(NSLocalizedString(warningTitle, nil), 
-                              NSLocalizedString(warningText, nil),
-                              NSLocalizedString(@"AP2", nil),
-                              NSLocalizedString(@"AP10", nil),
-                              nil);
+    int      res = NSRunAlertPanel(NSLocalizedString(warningTitle, nil),
+                                   NSLocalizedString(warningText, nil),
+                                   NSLocalizedString(@"AP2", nil),
+                                   NSLocalizedString(@"AP10", nil),
+                                   nil);
     if (res != NSAlertAlternateReturn) {
         return NO;
     }
-    
+
     if (type == TransferDataType) {
         // Pending or finished transfers.
         for (NSURL *url in entries) {
@@ -1067,43 +1075,43 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (BOOL)prepareEditingFromDragging: (id<NSDraggingInfo>)info
 {
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray:
-                      @[TransferDataType,
-                        TransferPredefinedTemplateDataType,
-                        TransferTemplateDataType]];
+    NSString     *type = [pasteboard availableTypeFromArray:
+                          @[TransferDataType,
+                          TransferPredefinedTemplateDataType,
+                          TransferTemplateDataType]];
     if (type == nil) {
         return NO;
     }
-    
+
     // Dragging a template does not require any more action here.
     if (type == TransferPredefinedTemplateDataType) {
         return YES;
     }
-    
-	NSManagedObjectContext *context = MOAssistant.assistant.context;
-    
-    NSData *data = [pasteboard dataForType: type];
+
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    NSData  *data = [pasteboard dataForType: type];
     NSArray *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
-    
+
     if (transfers.count > 1) {
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText: NSLocalizedString(@"AP414", nil)];
         [alert runModal];
-        
+
         return NO;
     }
-    
-    NSURL *url = [transfers lastObject];
+
+    NSURL             *url = [transfers lastObject];
     NSManagedObjectID *objectId = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: url];
     if (objectId == nil) {
         return NO;
     }
-    
+
     Transfer *transfer = (Transfer *)[context objectWithID: objectId];
     if (![self prepareTransferOfType: [[transfer valueForKey: @"type"] intValue]]) {
         return NO;
     }
-    
+
     BOOL isTerminated = transfer.type.intValue == TransferTypeDated;
 
     if (isTerminated) {
@@ -1127,35 +1135,35 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText: NSLocalizedString(@"AP413", nil)];
         [alert runModal];
-        
+
         return NO;
     }
-    
+
     NSPasteboard *pasteboard = [info draggingPasteboard];
-    NSString *type = [pasteboard availableTypeFromArray:
-                      @[TransferDataType,
-                        TransferPredefinedTemplateDataType,
-                        TransferTemplateDataType]];
+    NSString     *type = [pasteboard availableTypeFromArray:
+                          @[TransferDataType,
+                          TransferPredefinedTemplateDataType,
+                          TransferTemplateDataType]];
     if (type == nil) {
         return NO;
     }
-    
+
     if (type == TransferPredefinedTemplateDataType) {
         // A new transfer from the template "menu".
         TransferType transferType = [[pasteboard stringForType: TransferPredefinedTemplateDataType] intValue];
-        BOOL result = [transactionController newTransferOfType: transferType];
+        BOOL         result = [transactionController newTransferOfType: transferType];
         if (result) {
-            [self prepareSourceAccountSelector: nil forTransferType:transferType];
+            [self prepareSourceAccountSelector: nil forTransferType: transferType];
         }
         return result;
     }
 
     // A previous check has been performed already to ensure only one entry was dragged.
-	NSManagedObjectContext *context = MOAssistant.assistant.context;
-    
-    NSData *data = [pasteboard dataForType: type];
-    NSArray *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
-    NSURL *url = [transfers lastObject];
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    NSData            *data = [pasteboard dataForType: type];
+    NSArray           *transfers = [NSKeyedUnarchiver unarchiveObjectWithData: data];
+    NSURL             *url = [transfers lastObject];
     NSManagedObjectID *objectId = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: url];
     if (objectId == nil) {
         return NO;
@@ -1164,15 +1172,15 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (type == TransferTemplateDataType) {
         // A new transfer from a stored template.
         TransferTemplate *template = (TransferTemplate *)[context objectWithID: objectId];
-        BOOL result = [transactionController newTransferFromTemplate: template];
+        BOOL             result = [transactionController newTransferFromTemplate: template];
         if (result) {
-            [self prepareSourceAccountSelector: nil forTransferType:template.type.intValue];
+            [self prepareSourceAccountSelector: nil forTransferType: template.type.intValue];
         }
         return result;
     }
-    
+
     Transfer *transfer = (Transfer *)[context objectWithID: objectId];
-    BOOL result;
+    BOOL     result;
     if (transfer.isSent.intValue == 1) {
         // If this transfer was already sent then create a new transfer from this one.
         result = [transactionController newTransferFromExistingTransfer: transfer];
@@ -1181,14 +1189,14 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         [pendingTransfers prepareContent];
     }
     if (result) {
-        [self prepareSourceAccountSelector: transfer.account forTransferType:transfer.type.intValue];
+        [self prepareSourceAccountSelector: transfer.account forTransferType: transfer.type.intValue];
     }
     return result;
 }
 
 - (void)cancelEditing
 {
-	// Cancel an ongoing transfer creation (if there is one).
+    // Cancel an ongoing transfer creation (if there is one).
     if (transactionController.editingInProgress) {
         [transactionController cancelCurrentTransfer];
 
@@ -1199,44 +1207,43 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (BOOL)editingInProgress
 {
-    return transactionController.editingInProgress;  
+    return transactionController.editingInProgress;
 }
 
 // checks in the given list of transfers which of them can/should be sent as collective transfers and sends them
 // returns the list of transfers still to be sent
-- (NSArray*)doSendCollectiveTransfers:(NSArray*)transfers
+- (NSArray *)doSendCollectiveTransfers: (NSArray *)transfers
 {
-    NSMutableArray *singleTransfers = [NSMutableArray arrayWithCapacity:20 ];
-    NSMutableDictionary *transfersByAccount = [NSMutableDictionary dictionaryWithCapacity:10 ];
+    NSMutableArray      *singleTransfers = [NSMutableArray arrayWithCapacity: 20];
+    NSMutableDictionary *transfersByAccount = [NSMutableDictionary dictionaryWithCapacity: 10];
     for (Transfer *transfer in transfers) {
         BankAccount *account = transfer.account;
         if ([account.collTransferMethod intValue] == CTM_none) {
-            [singleTransfers addObject:transfer ];
+            [singleTransfers addObject: transfer];
             continue;
         }
         NSMutableArray *collTransfers = transfersByAccount[account];
         if (collTransfers == nil) {
-            transfersByAccount[account] = [NSMutableArray arrayWithCapacity:10 ];
+            transfersByAccount[account] = [NSMutableArray arrayWithCapacity: 10];
             collTransfers = transfersByAccount[account];
         }
-        [collTransfers addObject:transfer ];
+        [collTransfers addObject: transfer];
     }
-    
     // check accounts and transfers
-    for (BankAccount *account in [transfersByAccount allKeys ]) {
+    for (BankAccount *account in [transfersByAccount allKeys]) {
         BOOL collectiveTransfer = YES;
-        
+
         // sort out single transfers (only one transfer per account)
         NSArray *collTransfers = transfersByAccount[account];
-        if ([collTransfers count ] == 1) {
+        if ([collTransfers count] == 1) {
             collectiveTransfer = NO;
         }
-        
+
         // now ask for accounts with method "ask"
         if ([account.collTransferMethod intValue] == CTM_ask) {
-            NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP426", nil), 
-                                            NSLocalizedString(@"AP427", nil), 
-                                            NSLocalizedString(@"AP4", nil), 
+            NSInteger res = NSRunAlertPanel(NSLocalizedString(@"AP426", nil),
+                                            NSLocalizedString(@"AP427", nil),
+                                            NSLocalizedString(@"AP4", nil),
                                             NSLocalizedString(@"AP3", nil),
                                             nil,
                                             account.accountNumber);
@@ -1244,22 +1251,21 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                 collectiveTransfer = NO;
             }
         }
-        
+
         if (collectiveTransfer == NO) {
             // do not create collective transfer for this account
             for (Transfer *transfer in collTransfers) {
-                [singleTransfers addObject:transfer ];
+                [singleTransfers addObject: transfer];
             }
-            [transfersByAccount removeObjectForKey:account ];
+            [transfersByAccount removeObjectForKey: account];
         } else {
             // now send collective transfer
-            PecuniaError *error = [[HBCIClient hbciClient ] sendCollectiveTransfer:collTransfers];
+            PecuniaError *error = [[HBCIClient hbciClient] sendCollectiveTransfer: collTransfers];
             if (error) {
-                [error logMessage ];
+                [error logMessage];
             }
         }
     }
-    
     // return array of single transfers
     return singleTransfers;
 }
@@ -1267,31 +1273,31 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 /**
  * Sends the given transfers out.
  */
-- (void)doSendTransfers: (NSArray*)transfers
+- (void)doSendTransfers: (NSArray *)transfers
 {
     if (transfers.count == 0) {
         return;
     }
-    
+
     // Show log output if wanted.
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    BOOL showLog = [defaults boolForKey: @"logForTransfers"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL           showLog = [defaults boolForKey: @"logForTransfers"];
     if (showLog) {
         LogController *logController = [LogController logController];
         [logController showWindow: self];
         [[logController window] orderFront: self];
     }
-    
+
     // first check for collective transfers
-    transfers = [self doSendCollectiveTransfers:transfers ];
-    
+    transfers = [self doSendCollectiveTransfers: transfers];
+
     BOOL sent = [[HBCIClient hbciClient] sendTransfers: transfers];
     if (sent) {
         // Save updates and refresh UI.
-        NSError *error = nil;
+        NSError                *error = nil;
         NSManagedObjectContext *context = MOAssistant.assistant.context;
         if (![context save: &error]) {
-            NSAlert *alert = [NSAlert alertWithError:error];
+            NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
             return;
         }
@@ -1305,7 +1311,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (![self prepareTransferOfType: TransferTypeStandard]) {
         return;
     }
-    
+
     BOOL result = [transactionController newTransferOfType: TransferTypeStandard];
     if (result) {
         Transfer *transfer = transactionController.currentTransfer;
@@ -1314,20 +1320,20 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         transfer.remoteBankName = [[HBCIClient hbciClient] bankNameForCode: @"12030000" inCountry: @"de"];
         transfer.remoteName = @"Frank Emminghaus";
         transfer.purpose1 = @"Spende fuer Pecunia";
-        
-        [self prepareSourceAccountSelector: nil forTransferType:TransferTypeStandard];
+
+        [self prepareSourceAccountSelector: nil forTransferType: TransferTypeStandard];
     }
-    
+
     [rightPane showFormular];
     [amountField.window makeFirstResponder: amountField];
 }
 
-- (BOOL)startTransferOfType: (TransferType)type withAccount:(BankAccount*)account
+- (BOOL)startTransferOfType: (TransferType)type withAccount: (BankAccount *)account
 {
     if (![self prepareTransferOfType: type]) {
         return NO;
     }
-    
+
     BOOL result = [transactionController newTransferOfType: type];
     if (result) {
         [self prepareSourceAccountSelector: account forTransferType: type];
@@ -1339,13 +1345,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (BOOL)startTransferFromTemplate: (TransferTemplate *)template
 {
     TransferType type = template.type.intValue;
-    if (![self prepareTransferOfType:type]) {
+    if (![self prepareTransferOfType: type]) {
         return NO;
     }
-    
+
     BOOL result = [transactionController newTransferFromTemplate: template];
     if (result) {
-        [self prepareSourceAccountSelector: nil forTransferType:type];
+        [self prepareSourceAccountSelector: nil forTransferType: type];
         [rightPane showFormular];
     }
     return result;
@@ -1360,7 +1366,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
  */
 - (IBAction)sendTransfers: (id)sender
 {
-    NSArray* transfers = pendingTransfers.selectedObjects;
+    NSArray *transfers = pendingTransfers.selectedObjects;
     if (transfers == nil || transfers.count == 0) {
         transfers = pendingTransfers.arrangedObjects;
     }
@@ -1375,7 +1381,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (IBAction)queueTransfer: (id)sender
 {
     [self storeReceiverInMRUList];
-    
+
     if ([transactionController finishCurrentTransfer]) {
         [rightPane hideFormular];
         [pendingTransfers prepareContent];
@@ -1388,16 +1394,16 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (IBAction)sendTransfer: (id)sender
 {
     [self storeReceiverInMRUList];
-    
+
     // Can never be called if editing is not in progress, but better safe than sorry.
     if ([self editingInProgress] && [transactionController finishCurrentTransfer]) {
-        NSArray* transfers = @[transactionController.currentTransfer];
+        NSArray *transfers = @[transactionController.currentTransfer];
         [self doSendTransfers: transfers];
         [rightPane hideFormular];
     }
 }
 
-- (IBAction)deleteTransfer:(id)sender
+- (IBAction)deleteTransfer: (id)sender
 {
     // If we are deleting a new transfer then silently cancel editing and remove the formular from screen.
     if (transactionController.currentTransfer.changeState == TransferChangeNew) {
@@ -1405,7 +1411,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return;
     }
 
-	NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
 
     int res = NSRunAlertPanel(NSLocalizedString(@"AP417", nil),
                               NSLocalizedString(@"AP419", nil),
@@ -1423,7 +1429,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [self cancelEditing];
     [context deleteObject: transfer];
 
-	NSError *error = nil;
+    NSError *error = nil;
     if (![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -1453,7 +1459,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 }
 
-- (void)keyDown:(NSEvent *)theEvent
+- (void)keyDown: (NSEvent *)theEvent
 {
     [calendarPopover performClose: self];
 }
@@ -1477,7 +1483,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             [[transferFormular viewWithTag: row * 10 + index] setEnabled: accountSelected];
         }
     }
-    
     if (!accountSelected) {
         [saldoText setObjectValue: @""];
     } else {
@@ -1501,7 +1506,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (![self editingInProgress] || transactionController.currentTransfer.type.intValue != TransferTypeInternal) {
         return;
     }
-    
+
     BankAccount *account = targetAccountSelector.selectedItem.representedObject;
     transactionController.currentTransfer.remoteName = account.owner;
     transactionController.currentTransfer.remoteAccount = account.accountNumber;
@@ -1545,7 +1550,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     } else {
         selection = finishedTransfers.selectedObjects;
     }
-    
+
     if (selection.count == 0) {
         return;
     }
@@ -1557,11 +1562,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         warningTitle = (selection.count == 1) ? NSLocalizedString(@"AP421", nil) : NSLocalizedString(@"AP422", nil);
     }
     NSString *warningText = (selection.count == 1) ? NSLocalizedString(@"AP419", nil) : NSLocalizedString(@"AP420", nil);
-    int res = NSRunAlertPanel(NSLocalizedString(warningTitle, nil),
-                              NSLocalizedString(warningText, nil),
-                              NSLocalizedString(@"AP2", nil),
-                              NSLocalizedString(@"AP10", nil),
-                              nil);
+    int      res = NSRunAlertPanel(NSLocalizedString(warningTitle, nil),
+                                   NSLocalizedString(warningText, nil),
+                                   NSLocalizedString(@"AP2", nil),
+                                   NSLocalizedString(@"AP10", nil),
+                                   nil);
     if (res != NSAlertAlternateReturn) {
         return;
     }
@@ -1574,8 +1579,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         [finishedTransfers removeObjects: selection];
     }
 
-	NSError *error = nil;
-	NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSError                *error = nil;
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
 
     if (![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
@@ -1586,7 +1591,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 #pragma mark -
 #pragma mark Search/Filtering
 
--(IBAction)filterStatements: (id)sender
+- (IBAction)filterStatements: (id)sender
 {
     NSString *searchString = [sender stringValue];
 
@@ -1615,13 +1620,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                                   searchString, searchString, searchString, searchString, searchString, searchString,
                                   searchString, searchString, searchString, searchString, searchString,
                                   [NSDecimalNumber decimalNumberWithString: searchString locale: [NSLocale currentLocale]]
-                                 ];
-        NSPredicate *comp = [NSCompoundPredicate andPredicateWithSubpredicates:@[finishedTransfersPredicate, predicate]];
+                                  ];
+        NSPredicate *comp = [NSCompoundPredicate andPredicateWithSubpredicates: @[finishedTransfersPredicate, predicate]];
         [finishedTransfers setFilterPredicate: comp];
     }
 }
 
--(IBAction)filterTemplates: (id)sender
+- (IBAction)filterTemplates: (id)sender
 {
     NSString *searchString = [sender stringValue];
 
@@ -1651,14 +1656,14 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (void)updateLimits
 {
     // currentTransfer must be valid
-    limits = [[HBCIClient hbciClient] limitsForType:transactionController.currentTransfer.type.intValue
-                                            account:transactionController.currentTransfer.account
-                                            country:transactionController.currentTransfer.remoteCountry];
-    
+    limits = [[HBCIClient hbciClient] limitsForType: transactionController.currentTransfer.type.intValue
+                                            account: transactionController.currentTransfer.account
+                                            country: transactionController.currentTransfer.remoteCountry];
+
     [purpose2 setHidden: limits.maxLinesPurpose < 2 && limits.maxLinesPurpose > 0];
     [purpose3 setHidden: limits.maxLinesPurpose < 3 && limits.maxLinesPurpose > 0];
     [purpose4 setHidden: limits.maxLinesPurpose < 4 && limits.maxLinesPurpose > 0];
-    
+
     if (limits.maxLinesPurpose > 0) {
         if (limits.maxLinesPurpose < 2 && transactionController.currentTransfer.purpose2 && [transactionController.currentTransfer.purpose2 length] > 0) {
             transactionController.currentTransfer.purpose2 = nil;
@@ -1670,19 +1675,19 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             transactionController.currentTransfer.purpose4 = nil;
         }
     }
-    
+
     // check if dated is allowed
     // At the moment this is only possible for Standard Transfers
     TransferType tt = transactionController.currentTransfer.type.intValue;
-    BOOL allowsDated = NO;
+    BOOL         allowsDated = NO;
     if (tt == TransferTypeStandard || tt == TransferTypeDated) {
-        if ([[HBCIClient hbciClient] isTransferSupported:TransferTypeDated forAccount:transactionController.currentTransfer.account]) {
-            [executeAtDateRadioButton setEnabled:YES];
+        if ([[HBCIClient hbciClient] isTransferSupported: TransferTypeDated forAccount: transactionController.currentTransfer.account]) {
+            [executeAtDateRadioButton setEnabled: YES];
             allowsDated = YES;
         }
     }
     if (allowsDated == NO) {
-        [executeAtDateRadioButton setEnabled:NO];
+        [executeAtDateRadioButton setEnabled: NO];
         [executionDatePicker setEnabled: NO];
         [calendarButton setEnabled: NO];
     }
@@ -1694,17 +1699,17 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
  */
 - (void)storeReceiverInMRUList
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *values = [userDefaults dictionaryForKey: @"transfers"];
+    NSUserDefaults      *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary        *values = [userDefaults dictionaryForKey: @"transfers"];
     NSMutableDictionary *mutableValues;
     if (values == nil) {
         mutableValues = [NSMutableDictionary dictionary];
     } else {
         mutableValues = [values mutableCopy];
     }
-    
-    NSString *newValue = receiverComboBox.stringValue;
-    id previousReceivers = values[@"previousReceivers"];
+
+    NSString       *newValue = receiverComboBox.stringValue;
+    id             previousReceivers = values[@"previousReceivers"];
     NSMutableArray *mutableReceivers;
     if (![previousReceivers isKindOfClass: [NSArray class]]) {
         mutableReceivers = [NSMutableArray arrayWithObject: newValue];
@@ -1722,7 +1727,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             [mutableReceivers removeObjectsInRange: unwantedEntries];
         }
     }
-    
+
     mutableValues[@"previousReceivers"] = mutableReceivers;
     [userDefaults setObject: mutableValues forKey: @"transfers"];
 }
@@ -1730,51 +1735,53 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 #pragma mark -
 #pragma mark Other delegate methods
 
--(void)controlTextDidChange: (NSNotification*)aNotification
+- (void)controlTextDidChange: (NSNotification *)aNotification
 {
-	NSTextField	*te = [aNotification object ];
-	NSUInteger maxLen;
-	
-	if(te == purpose1 || te == purpose2 || te == purpose3 || te == purpose4) maxLen = limits.maxLenPurpose;
-	else if(te == receiverComboBox) maxLen = limits.maxLengthRemoteName;
-	else return;
-	
-	if ([[te stringValue ] length ] > maxLen) {
-		[te setStringValue:  [[te stringValue ] substringToIndex: maxLen ] ];
-		NSBeep();
-		return;
-	};
-	return;
+    NSTextField *te = [aNotification object];
+    NSUInteger  maxLen;
+
+    if (te == purpose1 || te == purpose2 || te == purpose3 || te == purpose4) {
+        maxLen = limits.maxLenPurpose;
+    } else if (te == receiverComboBox) {
+        maxLen = limits.maxLengthRemoteName;
+    } else {return; }
+
+    if ([[te stringValue] length] > maxLen) {
+        [te setStringValue:  [[te stringValue] substringToIndex: maxLen]];
+        NSBeep();
+        return;
+    }
+    return;
 }
 
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
-	NSTextField	*textField = [aNotification object];
-	NSString *bankName = nil;
+    NSTextField *textField = [aNotification object];
+    NSString    *bankName = nil;
 
-	if (textField == bankCode || textField == accountNumber) {
+    if (textField == bankCode || textField == accountNumber) {
         NSString *s = [textField stringValue];
-        s = [s stringByRemovingWhitespaces:s];
+        s = [s stringByRemovingWhitespaces: s];
         s = [s uppercaseString];
-        [textField setStringValue:s];
+        [textField setStringValue: s];
     }
-    
-	if (transactionController.currentTransfer.type.intValue == TransferTypeEU ||
+
+    if (transactionController.currentTransfer.type.intValue == TransferTypeEU ||
         transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
         if (textField == accountNumber) {
             NSString *s = [textField stringValue];
-            if ([s hasPrefix:@"DE"]) {
-                bankName = [[HBCIClient hbciClient] bankNameForCode: [s substringWithRange: NSMakeRange(4, 8) ]
+            if ([s hasPrefix: @"DE"]) {
+                bankName = [[HBCIClient hbciClient] bankNameForCode: [s substringWithRange: NSMakeRange(4, 8)]
                                                           inCountry: transactionController.currentTransfer.remoteCountry];
             }
         }
-	} else {
+    } else {
         if (textField == bankCode) {
             bankName = [[HBCIClient hbciClient] bankNameForCode: [textField stringValue]
                                                       inCountry: transactionController.currentTransfer.remoteCountry];
         }
- 	}
-	if (bankName != nil) {
+    }
+    if (bankName != nil) {
         transactionController.currentTransfer.remoteBankName = bankName;
     }
 }
@@ -1822,22 +1829,22 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (void)print
 {
-    NSInteger idx = [transferTab indexOfTabViewItem:[transferTab selectedTabViewItem]];
+    NSInteger idx = [transferTab indexOfTabViewItem: [transferTab selectedTabViewItem]];
     if (idx == NSNotFound) {
         return;
     }
-    
+
     if (idx == 0) {
         // transfers
-        NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
+        NSPrintInfo *printInfo = [NSPrintInfo sharedPrintInfo];
         [printInfo setTopMargin: 45];
         [printInfo setBottomMargin: 45];
         NSPrintOperation *printOp;
-        NSView *view = [[TransferPrintView alloc] initWithTransfers:[finishedTransfers arrangedObjects ] printInfo:printInfo];
-        printOp = [NSPrintOperation printOperationWithView:view printInfo: printInfo];
+        NSView           *view = [[TransferPrintView alloc] initWithTransfers: [finishedTransfers arrangedObjects] printInfo: printInfo];
+        printOp = [NSPrintOperation printOperationWithView: view printInfo: printInfo];
         [printOp setShowsPrintPanel: YES];
         [printOp runOperation];
-        
+
     }
 }
 

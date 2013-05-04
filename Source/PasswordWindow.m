@@ -22,108 +22,108 @@
 
 @implementation PasswordWindow
 
--(id)init
+- (id)init
 {
-	self = [super initWithWindowNibName:@"PasswordWindow"];
-	active = YES;
+    self = [super initWithWindowNibName: @"PasswordWindow"];
+    active = YES;
     hidePasswortSave = NO;
-	return self;
+    return self;
 }
 
--(id)initWithText: (NSString *)x title: (NSString *)y
+- (id)initWithText: (NSString *)x title: (NSString *)y
 {
-	self = [super initWithWindowNibName:@"PasswordWindow"];
+    self = [super initWithWindowNibName: @"PasswordWindow"];
     text = x;
-	title = y;
-	active = YES;
-	return self;
+    title = y;
+    active = YES;
+    return self;
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
     if (hidePasswortSave) {
-        [savePasswordButton setHidden:YES ];
+        [savePasswordButton setHidden: YES];
     }
-    
+
     // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
     topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
     topGradient.fillEndingColor = [NSColor colorWithCalibratedWhite: 99 / 255.0 alpha: 1];
     backgroundGradient.fillColor = [NSColor whiteColor];
 }
 
--(void)controlTextDidEndEditing:(NSNotification *)aNotification
+- (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
-//	[self close];
-	result = [inputField stringValue];
-	if([result length] == 0) NSBeep();
-	else {
-		active = NO;
-		//[self closeWindow ];
-		[NSApp stopModalWithCode:0];
-	}
+    //	[self close];
+    result = [inputField stringValue];
+    if ([result length] == 0) {
+        NSBeep();
+    } else {
+        active = NO;
+        //[self closeWindow ];
+        [NSApp stopModalWithCode: 0];
+    }
 }
 
--(void)retry
+- (void)retry
 {
-	[self showWindow:self ];
-	active = YES;
-	NSBeep();
-	[inputField setStringValue: @"" ];
-    
+    [self showWindow: self];
+    active = YES;
+    NSBeep();
+    [inputField setStringValue: @""];
+
     shakeCount = 0;
     while (shakeCount < 10) {
         NSRect frame = [[self window] frame];
         if ((shakeCount % 2) == 1) {
             frame.origin.x -= 10;
-            [[self window] setFrame:frame display:YES];
+            [[self window] setFrame: frame display: YES];
             usleep(50000);
         } else {
             frame.origin.x += 10;
-            [[self window] setFrame:frame display:YES];
+            [[self window] setFrame: frame display: YES];
             usleep(50000);
         }
         shakeCount++;
     }
 }
 
-
--(void)closeWindow
+- (void)closeWindow
 {
     if (active) {
-        [[self window ] close ];
+        [[self window] close];
     }
 }
 
--(void)windowWillClose:(NSNotification *)aNotification
+- (void)windowWillClose: (NSNotification *)aNotification
 {
-	if(active) {
-		result = [inputField stringValue];
-		if([result length] == 0) [NSApp stopModalWithCode:1];
-		else [NSApp stopModalWithCode:0];
+    if (active) {
+        result = [inputField stringValue];
+        if ([result length] == 0) {
+            [NSApp stopModalWithCode: 1];
+        } else {[NSApp stopModalWithCode: 0]; }
         active = NO;
-	}
+    }
 }
 
--(void)windowDidLoad
+- (void)windowDidLoad
 {
-	[inputText setStringValue: text];
-	[[self window] setTitle: title];
+    [inputText setStringValue: text];
+    [[self window] setTitle: title];
 }
 
--(NSString*)result
+- (NSString *)result
 {
-	return result;
+    return result;
 }
 
--(BOOL)shouldSavePassword
+- (BOOL)shouldSavePassword
 {
-	return savePassword;
+    return savePassword;
 }
 
--(void)disablePasswordSave
+- (void)disablePasswordSave
 {
     hidePasswortSave = YES;
 }
-
 
 @end

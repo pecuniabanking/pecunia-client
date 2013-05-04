@@ -14,33 +14,34 @@
 @synthesize message;
 @synthesize title;
 
--(id)initWithMessage:(NSString*)msg title:(NSString*)header
+- (id)initWithMessage: (NSString *)msg title: (NSString *)header
 {
-	self = [super initWithWindowNibName: @"NotificationWindow" ];
-	if(self == nil) return nil;
-	
-	self.message = msg;
+    self = [super initWithWindowNibName: @"NotificationWindow"];
+    if (self == nil) {
+        return nil;
+    }
+
+    self.message = msg;
     self.title = header;
-	return self;
+    return self;
 }
 
--(void)awakeFromNib 
+- (void)awakeFromNib
 {
-    [messageField setStringValue:message ];
-    [[self window ] setTitle:title ];
-//    [[self window ] makeKeyAndOrderFront:self ];
+    [messageField setStringValue: message];
+    [[self window] setTitle: title];
+    //    [[self window ] makeKeyAndOrderFront:self ];
 }
 
--(IBAction)ok:(id)sender
+- (IBAction)ok: (id)sender
 {
-    [[self window ] close ];
+    [[self window] close];
 }
 
 - (void)dealloc
 {
-	message = nil;
-	title = nil;
+    message = nil;
+    title = nil;
 }
 
 @end
-

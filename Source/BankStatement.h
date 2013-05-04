@@ -32,24 +32,24 @@ typedef enum {
 @interface BankStatement : NSManagedObject {
 }
 
--(BOOL)matches: (BankStatement*)stat;
--(BOOL)matchesAndRepair: (BankStatement*)stat;
+- (BOOL)matches: (BankStatement *)stat;
+- (BOOL)matchesAndRepair: (BankStatement *)stat;
 
--(NSComparisonResult)compareValuta: (BankStatement*)stat;
+- (NSComparisonResult)compareValuta: (BankStatement *)stat;
 
--(void)assignToCategory:(Category*)cat;
--(void)assignAmount: (NSDecimalNumber*)value toCategory:(Category*)cat;
--(void)updateAssigned;
--(BOOL)hasAssignment;
--(NSDecimalNumber*)residualAmount;
--(StatCatAssignment*)bankAssignment;
--(void)changeValueTo:(NSDecimalNumber*)val;
+- (void)assignToCategory: (Category *)cat;
+- (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)cat;
+- (void)updateAssigned;
+- (BOOL)hasAssignment;
+- (NSDecimalNumber *)residualAmount;
+- (StatCatAssignment *)bankAssignment;
+- (void)changeValueTo: (NSDecimalNumber *)val;
 
--(void)addToAccount: (BankAccount*)account;
+- (void)addToAccount: (BankAccount *)account;
 
--(NSString*)floatingPurpose;
+- (NSString *)floatingPurpose;
 
-+(void)initCategoriesCache;
++ (void)initCategoriesCache;
 
 @property (nonatomic, strong) NSDate *valutaDate;
 @property (nonatomic, strong) NSDate *date;
@@ -83,32 +83,32 @@ typedef enum {
 @property (nonatomic, strong) NSNumber *isSettled;
 
 
-@property (nonatomic, strong, readonly) NSString * categoriesDescription;
+@property (nonatomic, strong, readonly) NSString *categoriesDescription;
 
-@property (nonatomic, strong) NSString *localBankCode, *localAccount;
-@property (nonatomic, strong) NSString *customerReference;
-@property (nonatomic, strong) NSString *bankReference;
-@property (nonatomic, strong) NSString *transactionText;
-@property (nonatomic, strong) NSNumber *transactionCode;
-@property (nonatomic, strong) NSString *currency;
-@property (nonatomic, strong) NSString *primaNota;
+@property (nonatomic, strong) NSString                      *localBankCode, *localAccount;
+@property (nonatomic, strong) NSString                      *customerReference;
+@property (nonatomic, strong) NSString                      *bankReference;
+@property (nonatomic, strong) NSString                      *transactionText;
+@property (nonatomic, strong) NSNumber                      *transactionCode;
+@property (nonatomic, strong) NSString                      *currency;
+@property (nonatomic, strong) NSString                      *primaNota;
 @property (unsafe_unretained, nonatomic, readonly) NSString *note;
 
 @property (nonatomic, strong) NSString *additional;
 @property (nonatomic, strong) NSNumber *hashNumber;
 @property (nonatomic, strong) NSNumber *type;
-@property (nonatomic, strong) NSNumber *isAssigned;		// assigned to >= 100%
+@property (nonatomic, strong) NSNumber *isAssigned;             // assigned to >= 100%
 @property (nonatomic, strong) NSNumber *isManual;
 @property (nonatomic, strong) NSNumber *isStorno;
 @property (nonatomic, strong) NSNumber *isNew;
 
-@property (nonatomic, strong) NSString * ref1;
-@property (nonatomic, strong) NSString * ref2;
-@property (nonatomic, strong) NSString * ref3;
-@property (nonatomic, strong) NSString * ref4;
+@property (nonatomic, strong) NSString *ref1;
+@property (nonatomic, strong) NSString *ref2;
+@property (nonatomic, strong) NSString *ref3;
+@property (nonatomic, strong) NSString *ref4;
 
 @property (nonatomic, strong) BankAccount *account;
-@property (nonatomic, strong) NSSet *tags;
+@property (nonatomic, strong) NSSet       *tags;
 
 @end
 

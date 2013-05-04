@@ -10,7 +10,6 @@
 
 
 @interface SigningOptionsTableView : NSTableView {
-
 }
 
 @end

@@ -19,13 +19,12 @@
 
 - (void)dealloc
 {
-	info_userid = nil;
-	info_customerid = nil;
-	pinlen_min = nil;
-	pinlen_max = nil;
-	tanlen_max = nil;
+    info_userid = nil;
+    info_customerid = nil;
+    pinlen_min = nil;
+    pinlen_max = nil;
+    tanlen_max = nil;
 
 }
 
 @end
-

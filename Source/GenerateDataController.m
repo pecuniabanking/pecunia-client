@@ -50,14 +50,14 @@
         maxAccountsPerBank = 3;
         numberOfStatementsPerBank = 650;
     }
-    
+
     return self;
 }
 
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    
+
     self.progressIndicator.doubleValue = 0;
     [self updateTotalCount];
 }
@@ -76,12 +76,13 @@
     [self updateTotalCount];
 }
 
-- (IBAction)stepperChanged:(id)sender
+- (IBAction)stepperChanged: (id)sender
 {
     [self updateTotalCount];
 }
 
-- (IBAction)selectFile:(id)sender {
+- (IBAction)selectFile: (id)sender
+{
     NSOpenPanel *panel = [NSOpenPanel openPanel];
     [panel setAllowsMultipleSelection: NO];
     [panel setAllowedFileTypes: @[@"txt"]];
@@ -91,7 +92,8 @@
     }
 }
 
-- (IBAction)close:(id)sender {
+- (IBAction)close: (id)sender
+{
     [NSApp stopModal];
 }
 
@@ -113,16 +115,17 @@
     return [calendar dateFromComponents: components];
 }
 
-- (IBAction)start:(id)sender {
-    NSError *error;
+- (IBAction)start: (id)sender
+{
+    NSError  *error;
     NSString *path = self.path.stringValue;
     NSString *s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
     if (error) {
         NSLog(@"Error reading demo data template file at %@\n%@", path, [error localizedFailureReason]);
     } else {
         NSMutableDictionary *blocks = [NSMutableDictionary dictionary];
-        NSString *blockName = @"";
-        NSMutableArray *entries;
+        NSString            *blockName = @"";
+        NSMutableArray      *entries;
 
         NSArray *lines = [s componentsSeparatedByString: @"\n"];
         for (NSString *line in lines) {
@@ -132,7 +135,7 @@
             if ([line hasPrefix: @"#"]) {
                 continue; // Comment line.
             }
-            
+
             if ([line hasPrefix: @"["] && [line hasSuffix: @"]"]) {
                 // Starting new block.
                 if (entries != nil) {
@@ -145,7 +148,6 @@
             }
             [entries addObject: line];
         }
-
         [self.progressIndicator setIndeterminate: YES];
         [self.progressIndicator startAnimation: self];
 
@@ -170,7 +172,7 @@
         }
 
         NSSet *categories = Category.catRoot.allCategories;
-        
+
         // Precompute details for principals.
         NSMutableArray *parsedPrincipals = [NSMutableArray arrayWithCapacity: principals.count];
         for (NSString *principal in principals) {
@@ -182,8 +184,8 @@
             // Fields are: principal:lowest value:highest value:frequency ([1-9] [d]ay, [w]eek], [m]onth,
             //   [q]uarter, [y]ear):category keywords:purpose
             NSString *principal = parts[0];
-            double lowBound = [parts[1] doubleValue];
-            double highBound = [parts[2] doubleValue];
+            double   lowBound = [parts[1] doubleValue];
+            double   highBound = [parts[2] doubleValue];
             NSString *frequency = parts[3];
             NSString *keywords = @"";
             if (parts.count > 4) {
@@ -196,17 +198,17 @@
             if (principal.length == 0 || (lowBound == 0 && highBound == 0) || frequency.length < 2) {
                 continue; // Ignore entries that are not properly specified.
             }
-            NSString *count = [frequency substringWithRange: NSMakeRange(0, frequency.length - 1)];
-            NSString *unit = [frequency substringFromIndex: frequency.length - 1];
+            NSString            *count = [frequency substringWithRange: NSMakeRange(0, frequency.length - 1)];
+            NSString            *unit = [frequency substringFromIndex: frequency.length - 1];
             NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                        parts[0], @"principal",
-                                        @(lowBound * 100), @"minBound",
-                                        @((NSInteger)(highBound - lowBound) * 100), @"delta",
-                                        @([count intValue]), @"count",
-                                        unit, @"unit",
-                                        keywords, @"keywords",
-                                        purpose, @"purpose",
-                                        nil];
+                                               parts[0], @"principal",
+                                               @(lowBound * 100), @"minBound",
+                                               @((NSInteger)(highBound - lowBound) * 100), @"delta",
+                                               @([count intValue]), @"count",
+                                               unit, @"unit",
+                                               keywords, @"keywords",
+                                               purpose, @"purpose",
+                                               nil];
             [parsedPrincipals addObject: dictionary];
         }
         if (parsedPrincipals.count == 0) {
@@ -218,7 +220,7 @@
         Category *root = [Category bankRoot];
         for (NSUInteger i = 0; i < bankCount; i++) {
             NSInteger randomIndex = arc4random_uniform(banks.count);
-            NSString *bank = banks[randomIndex];
+            NSString  *bank = banks[randomIndex];
 
             BankUser *user = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser"
                                                            inManagedObjectContext: context];
@@ -247,10 +249,10 @@
 
             // To each bank root add a few accounts. The actual number depends on the data amount flag.
             NSMutableArray *accountList = [NSMutableArray array];
-            NSUInteger accountCount = 1 + arc4random_uniform(maxAccountsPerBank);
+            NSUInteger     accountCount = 1 + arc4random_uniform(maxAccountsPerBank);
             while (accountList.count < accountCount) {
                 NSUInteger randomIndex = arc4random_uniform(accounts.count);
-                NSString *value = accounts[randomIndex];
+                NSString   *value = accounts[randomIndex];
                 if (![accountList containsObject: value]) {
                     [accountList addObject: value];
                 }
@@ -279,12 +281,11 @@
                 newAccount.country = bankRoot.country;
 
                 // Current balance of the account. Saldos are computed backwards starting with this value.
-                double dBalance = ((double)arc4random_uniform(500000) - 250000) / 100.0;
+                double   dBalance = ((double)arc4random_uniform(500000) - 250000) / 100.0;
                 NSNumber *balance = @(dBalance);
                 newAccount.balance = [NSDecimalNumber decimalNumberWithDecimal: balance.decimalValue];
             }
         }
-
         [self.progressIndicator setIndeterminate: NO];
         self.progressIndicator.maxValue = (endYear - startYear + 1) * numberOfStatementsPerBank * banks.count;
 
@@ -299,7 +300,6 @@
                     int count = [dictionary[@"count"] intValue];
                     dictionary[@"remaining"] = @(count);
                 }
-                
                 while (yearlyLimit > 0) {
                     // Walk the principals list repeatedly until we added the required amount of statements
                     // or no principal has a count > 0 anymore.
@@ -320,10 +320,10 @@
                             randomIndex = 0;
                         }
                         BankAccount *account = accounts[randomIndex];
-                        
-                        double minBound = [dictionary[@"minBound"] doubleValue];
+
+                        double    minBound = [dictionary[@"minBound"] doubleValue];
                         NSInteger delta = [dictionary[@"delta"] integerValue];
-                        NSString *unit = dictionary[@"unit"];
+                        NSString  *unit = dictionary[@"unit"];
 
                         NSDateComponents *components = [[NSDateComponents alloc] init];
                         [components setYear: year];
@@ -332,37 +332,42 @@
                         switch ([unit characterAtIndex: 0]) {
                             case 'y':
                                 break;
+
                             case 'q':
                                 dateUnitMax = 4;
                                 break;
+
                             case 'm':
                                 dateUnitMax = 12;
                                 break;
+
                             case 'w':
                                 dateUnitMax = 52;
                                 break;
+
                             case 'd':
                                 dateUnitMax = 365;
                                 break;
                         }
 
                         for (NSUInteger dateOffset = 0; dateOffset < dateUnitMax; dateOffset++) {
-                            NSUInteger randomPart = arc4random_uniform(delta);
-                            NSDecimalNumber *value = [NSDecimalNumber decimalNumberWithDecimal: [@((minBound + randomPart) / 100.0) decimalValue]];
+                            NSUInteger      randomPart = arc4random_uniform(delta);
+                            NSDecimalNumber *value = [NSDecimalNumber decimalNumberWithDecimal: [@((minBound + randomPart) / 100.0)decimalValue]];
 
                             NSDate *date;
                             switch ([unit characterAtIndex: 0]) {
                                 case 'y': {
-                                    NSDate *firstDayOfYear = [self firstDayOfYear: year];
-                                    NSDate *firstDayOfNextYear = [self firstDayOfYear: year + 1];
+                                    NSDate           *firstDayOfYear = [self firstDayOfYear: year];
+                                    NSDate           *firstDayOfNextYear = [self firstDayOfYear: year + 1];
                                     NSDateComponents *temp = [calendar components: NSDayCalendarUnit
                                                                          fromDate: firstDayOfYear
-                                                                           toDate:firstDayOfNextYear
+                                                                           toDate: firstDayOfNextYear
                                                                           options: 0];
                                     [components setDay: 1 + arc4random_uniform(temp.day)];
                                     date = [calendar dateFromComponents: components];
                                     break;
                                 }
+
                                 case 'q': {
                                     NSDate *firstDayOfYear = [self firstDayOfYear: year];
                                     NSDate *firstDayOfQuarter = [self firstDayOfQuarter: dateOffset + 1
@@ -375,12 +380,13 @@
                                                                                      inYear: year];
                                     NSDateComponents *temp = [calendar components: NSDayCalendarUnit
                                                                          fromDate: firstDayOfQuarter
-                                                                           toDate:firstDayOfNextQuarter
+                                                                           toDate: firstDayOfNextQuarter
                                                                           options: 0];
                                     [components setDay: tempBase.day + 1 + arc4random_uniform(temp.day)];
                                     date = [calendar dateFromComponents: components];
                                     break;
                                 }
+
                                 case 'm': {
                                     [components setMonth: dateOffset + 1];
                                     NSRange r = [calendar rangeOfUnit: NSDayCalendarUnit
@@ -390,10 +396,12 @@
                                     date = [calendar dateFromComponents: components];
                                     break;
                                 }
+
                                 case 'w':
                                     [components setDay: 7 * dateOffset + 1 + arc4random_uniform(7)];
                                     date = [calendar dateFromComponents: components];
                                     break;
+
                                 case 'd':
                                     [components setDay: dateOffset];
                                     date = [calendar dateFromComponents: components];
@@ -426,7 +434,7 @@
                             NSArray *keywords = [dictionary[@"keywords"] componentsSeparatedByString: @","];
                             if (keywords.count > 0) {
                                 // Assign this statement to all categories which contain any of the keywords.
-                                NSSet *matchingCategories = [categories objectsPassingTest: ^BOOL(id obj, BOOL *stop) {
+                                NSSet *matchingCategories = [categories objectsPassingTest: ^BOOL (id obj, BOOL *stop) {
                                     for (NSString *keyword in keywords) {
                                         return [[obj name] rangeOfString: keyword].length > 0;
                                     }
@@ -447,26 +455,23 @@
                         }
 
                     }
-
                     if (!foundEntry) {
                         [self.progressIndicator incrementBy: yearlyLimit];
                         yearlyLimit = 0; // No principals left, so go to the next year.
                     }
                 }
             }
-
             for (BankAccount *account in accounts) {
                 [account repairStatementBalances];
             }
         }
-
         [root rollup];
-        
-		if (![context save: &error]) {
-			NSAlert *alert = [NSAlert alertWithError: error];
-			[alert runModal];
-			return;
-		}
+
+        if (![context save: &error]) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+            return;
+        }
         [self.progressIndicator stopAnimation: self];
 
         [GrowlNotification showMessage: NSLocalizedString(@"AP501", nil)

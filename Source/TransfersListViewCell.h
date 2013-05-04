@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -25,7 +25,7 @@
 
 @interface TransfersListViewCell : PXListViewCell
 {
-	IBOutlet NSTextField *dateLabel;
+    IBOutlet NSTextField *dateLabel;
     IBOutlet NSTextField *accountLabel;
     IBOutlet NSTextField *bankNameLabel;
     IBOutlet NSTextField *remoteNameLabel;
@@ -36,16 +36,16 @@
     IBOutlet NSTextField *dateTitle;
 
 @private
-    NSColor *categoryColor;
+    NSColor      *categoryColor;
     NSDictionary *whiteAttributes;
-    
+
     // Need to keep these values from the details dictionary to rebuild the attributed string
     // for the account label depending on whether we are selected or not.
     NSString *remoteBankCode;
     NSString *remoteAccount;
     NSString *purpose;
-    
-    NSUInteger index;
+
+    NSUInteger   index;
     TransferType type;
 }
 

@@ -38,54 +38,54 @@ typedef enum {
 
 
 @interface BankAccount : Category<NSCopying> {
-	NSDate				*newLatestTransferDate;
-	PurposeSplitRule	*purposeSplitRule;
-	NSArray				*dbStatements;
-	NSInteger           unread;
+    NSDate           *newLatestTransferDate;
+    PurposeSplitRule *purposeSplitRule;
+    NSArray          *dbStatements;
+    NSInteger        unread;
 }
 
-@property (nonatomic, strong) NSArray *dbStatements;
+@property (nonatomic, strong) NSArray          *dbStatements;
 @property (nonatomic, strong) PurposeSplitRule *purposeSplitRule;
 
-@property (nonatomic, strong) NSDate * latestTransferDate;
-@property (nonatomic, strong) NSString * country;
-@property (nonatomic, strong) NSString * bankName;
-@property (nonatomic, strong) NSString * bankCode;
-@property (nonatomic, strong) NSString * bic;
-@property (nonatomic, strong) NSString * iban;
-@property (nonatomic, strong) NSString * userId;
-@property (nonatomic, strong) NSString * customerId;
-@property (nonatomic, strong) NSString * accountNumber;
-@property (nonatomic, strong) NSString * owner;
-@property (nonatomic, strong) NSNumber * uid;
-@property (nonatomic, strong) NSNumber * type;
-@property (nonatomic, strong) NSDecimalNumber * balance;
-@property (nonatomic, strong) NSNumber * noAutomaticQuery;
-@property (nonatomic, strong) NSNumber * collTransferMethod;
-@property (nonatomic, strong) NSNumber * isManual;
-@property (nonatomic, strong) NSNumber * isStandingOrderSupported;
-@property (nonatomic, strong) NSString * splitRule;
-@property (nonatomic, strong) NSString * accountSuffix;
-@property (nonatomic, assign) NSInteger unread;
-@property (nonatomic, strong) NSSet* users;
+@property (nonatomic, strong) NSDate          *latestTransferDate;
+@property (nonatomic, strong) NSString        *country;
+@property (nonatomic, strong) NSString        *bankName;
+@property (nonatomic, strong) NSString        *bankCode;
+@property (nonatomic, strong) NSString        *bic;
+@property (nonatomic, strong) NSString        *iban;
+@property (nonatomic, strong) NSString        *userId;
+@property (nonatomic, strong) NSString        *customerId;
+@property (nonatomic, strong) NSString        *accountNumber;
+@property (nonatomic, strong) NSString        *owner;
+@property (nonatomic, strong) NSNumber        *uid;
+@property (nonatomic, strong) NSNumber        *type;
+@property (nonatomic, strong) NSDecimalNumber *balance;
+@property (nonatomic, strong) NSNumber        *noAutomaticQuery;
+@property (nonatomic, strong) NSNumber        *collTransferMethod;
+@property (nonatomic, strong) NSNumber        *isManual;
+@property (nonatomic, strong) NSNumber        *isStandingOrderSupported;
+@property (nonatomic, strong) NSString        *splitRule;
+@property (nonatomic, strong) NSString        *accountSuffix;
+@property (nonatomic, assign) NSInteger       unread;
+@property (nonatomic, strong) NSSet           *users;
 
-- (NSString*)bankCode;
-- (NSDate*)latestTransferDate;
+- (NSString *)bankCode;
+- (NSDate *)latestTransferDate;
 
-- (void)evaluateQueryResult: (BankQueryResult*)res;
-- (int)updateFromQueryResult: (BankQueryResult*)result;
-- (void)updateStandingOrders: (NSArray*)orders;
-- (void)copyStatement: (BankStatement*)stat;
-- (void)copyStatementsToManualAccounts: (NSArray*)statements;
-- (void)updateBalanceWithValue: (NSDecimalNumber*)value;
+- (void)evaluateQueryResult: (BankQueryResult *)res;
+- (int)updateFromQueryResult: (BankQueryResult *)result;
+- (void)updateStandingOrders: (NSArray *)orders;
+- (void)copyStatement: (BankStatement *)stat;
+- (void)copyStatementsToManualAccounts: (NSArray *)statements;
+- (void)updateBalanceWithValue: (NSDecimalNumber *)value;
 - (void)repairStatementBalances;
-- (NSDate*)nextDateForDate: (NSDate*)date;
+- (NSDate *)nextDateForDate: (NSDate *)date;
 - (NSInteger)calcUnread;
-- (BankUser*)defaultBankUser;
+- (BankUser *)defaultBankUser;
 
-+ (BankAccount*)bankRootForCode:(NSString*)bankCode;
-+ (BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code;
-+ (BankAccount*)accountWithNumber:(NSString*)number subNumber:(NSString*)subNumber bankCode:(NSString*)code;
++ (BankAccount *)bankRootForCode: (NSString *)bankCode;
++ (BankAccount *)accountWithNumber: (NSString *)number bankCode: (NSString *)code;
++ (BankAccount *)accountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code;
 + (NSInteger)maxUnread;
 
 @end

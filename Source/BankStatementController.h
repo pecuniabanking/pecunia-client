@@ -12,42 +12,41 @@
 @class BankStatement;
 
 @interface BankStatementController : NSWindowController {
-	IBOutlet NSObjectController		*statementController;
-	IBOutlet NSObjectController		*accountController;
-	IBOutlet NSArrayController		*categoriesController;
-	IBOutlet NSDatePicker			*dateField;
-	IBOutlet NSDatePicker			*valutaField;
-	IBOutlet NSTextField			*saldoField;
-	IBOutlet NSTextField			*valueField;
-	
-	BankAccount				*account;
-	NSManagedObjectContext	*memContext;
-	NSManagedObjectContext	*context;
-	BankStatement			*currentStatement;
-	NSString				*bankName;
-	BOOL					firstStatement;
-	NSDate					*lastDate;
-	BankStatement			*lastStatement;
-	NSArray					*accountStatements;
-	int						actionResult;
-	BOOL					negateValue;
-	BOOL					valueChanged;
+    IBOutlet NSObjectController *statementController;
+    IBOutlet NSObjectController *accountController;
+    IBOutlet NSArrayController  *categoriesController;
+    IBOutlet NSDatePicker       *dateField;
+    IBOutlet NSDatePicker       *valutaField;
+    IBOutlet NSTextField        *saldoField;
+    IBOutlet NSTextField        *valueField;
+
+    BankAccount            *account;
+    NSManagedObjectContext *memContext;
+    NSManagedObjectContext *context;
+    BankStatement          *currentStatement;
+    NSString               *bankName;
+    BOOL                   firstStatement;
+    NSDate                 *lastDate;
+    BankStatement          *lastStatement;
+    NSArray                *accountStatements;
+    int                    actionResult;
+    BOOL                   negateValue;
+    BOOL                   valueChanged;
 }
 
 @property (nonatomic, copy) NSArray *accountStatements;
 
--(id)initWithAccount: (BankAccount*)acc statement:(BankStatement*)stat;
+- (id)initWithAccount: (BankAccount *)acc statement: (BankStatement *)stat;
 
 
--(IBAction)cancel: (id)sender;
--(IBAction)next: (id)sender;
--(IBAction)done: (id)sender;
--(IBAction)dateChanged:(id)sender;
--(IBAction)negateValueChanged:(id)sender;
+- (IBAction)cancel: (id)sender;
+- (IBAction)next: (id)sender;
+- (IBAction)done: (id)sender;
+- (IBAction)dateChanged: (id)sender;
+- (IBAction)negateValueChanged: (id)sender;
 
--(BOOL)check;
--(void)arrangeStatements;
--(void)updateSaldo;
+- (BOOL)check;
+- (void)arrangeStatements;
+- (void)updateSaldo;
 
 @end
-

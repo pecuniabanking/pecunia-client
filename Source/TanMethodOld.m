@@ -27,22 +27,20 @@
 
 - (void)dealloc
 {
-	function = nil;
-	description = nil;
+    function = nil;
+    description = nil;
 
 }
 
--(id)initDefault: (NSNumber*) func
+- (id)initDefault: (NSNumber *)func
 {
-	self = [super init ];
-	if(self == nil) return nil;
-	self.function = func;
-	self.description = NSLocalizedString(@"AP13", nil);
-	return self;
+    self = [super init];
+    if (self == nil) {
+        return nil;
+    }
+    self.function = func;
+    self.description = NSLocalizedString(@"AP13", nil);
+    return self;
 }
-
-
-
 
 @end
-

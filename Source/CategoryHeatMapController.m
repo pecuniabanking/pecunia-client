@@ -33,7 +33,7 @@
 
 @interface CategoryHeatMapController (Private)
 
-- (void)showValuePopupForDate: (ShortDate*)date relativeToRect: (NSRect)area forView: (NSView*)view;
+- (void)showValuePopupForDate: (ShortDate *)date relativeToRect: (NSRect)area forView: (NSView *)view;
 
 @end
 
@@ -50,10 +50,10 @@
 - (void)drawRect: (NSRect)dirtyRect
 {
     if (self.categoryColor != nil) {
-        NSColor *startingColor  = self.categoryColor;
-        NSColor *endingColor = [startingColor colorWithAlphaComponent: 0.75];
+        NSColor    *startingColor  = self.categoryColor;
+        NSColor    *endingColor = [startingColor colorWithAlphaComponent: 0.75];
         NSGradient *gradient = [[NSGradient alloc] initWithStartingColor: startingColor endingColor: endingColor];
-        NSRect colorMark = NSInsetRect(self.bounds, 3, 3);
+        NSRect     colorMark = NSInsetRect(self.bounds, 3, 3);
         colorMark.size.width = 3;
         [gradient drawInRect: colorMark angle: 90];
     }
@@ -62,33 +62,33 @@
 @end
 
 @interface HeatMapView (Private)
-- (void)resetSelectedDate: (HeatMapCalendar*)sender;
+- (void)resetSelectedDate: (HeatMapCalendar *)sender;
 @end;
 
 @interface HeatMapCalendar : NSView
 {
 @private
-    NSUInteger month;
-    NSUInteger year;
+    NSUInteger  month;
+    NSUInteger  year;
     HeatMapType currentType;
-    
+
     HighLowValues limits; // Largest/smallest value found for the entire year (used for determining
                           // color scale factor.
-    NSArray *values;      // The actual values (for the entire year, use only the month that matters here)
-    NSArray *dates;       // Values and dates are shared between all calendar views.
-    int type;             // Type of the display: 0 - boxed months 1 - lined up months
+    NSArray   *values;    // The actual values (for the entire year, use only the month that matters here)
+    NSArray   *dates;     // Values and dates are shared between all calendar views.
+    int       type;       // Type of the display: 0 - boxed months 1 - lined up months
     ShortDate *selectedDate;
-    
-    ShortDate *date;
-    NSString *monthName;
+
+    ShortDate       *date;
+    NSString        *monthName;
     NSDateFormatter *dateFormatter;
 
     CGFloat contentAlpha;
-    NSRect valueArea;
+    NSRect  valueArea;
 }
 
-@property (nonatomic, assign) CGFloat contentAlpha;
-@property (nonatomic, strong) ShortDate *selectedDate; // nil if not selected.
+@property (nonatomic, assign) CGFloat     contentAlpha;
+@property (nonatomic, strong) ShortDate   *selectedDate; // nil if not selected.
 @property (nonatomic, assign) HeatMapType type;
 
 @end
@@ -141,7 +141,7 @@
     [self setNeedsDisplay: YES];
 }
 
-- (void)setValues: (NSArray *)theValues dates: (NSArray*)theDates limits: (HighLowValues)theLimits forType: (int)theType
+- (void)setValues: (NSArray *)theValues dates: (NSArray *)theDates limits: (HighLowValues)theLimits forType: (int)theType
 {
     // Values and dates arrays must have the same number entries.
     values = theValues;
@@ -164,7 +164,7 @@
     [self setNeedsDisplay: YES];
 }
 
-- (void)setSelectedDate: (ShortDate*)value
+- (void)setSelectedDate: (ShortDate *)value
 {
     BOOL change = NO;
     if (selectedDate == nil) {
@@ -179,7 +179,7 @@
     if (change) {
         selectedDate = value;
         [self display];
-        [(HeatMapView*)self.superview resetSelectedDate: self];
+        [(HeatMapView *)self.superview resetSelectedDate : self];
     }
 }
 
@@ -188,7 +188,7 @@
     NSPoint windowLocation = theEvent.locationInWindow;
     NSPoint location = [self convertPoint: windowLocation fromView: nil];
 
-    CategoryHeatMapController *controller = [(HeatMapView*)self.superview controller];
+    CategoryHeatMapController *controller = [(HeatMapView *)self.superview controller];
 
     if (NSPointInRect(location, valueArea)) {
         location.x -= valueArea.origin.x;
@@ -227,11 +227,11 @@ static NSColor *frameColor;
 static NSColor *monthNameColor;
 static NSColor *grayColor;
 
-static NSFont *monthNameFont;
+static NSFont       *monthNameFont;
 static NSDictionary *monthTextAttributes;
 
-static NSFont *smallFont;
-static NSColor *smallTextColor;
+static NSFont       *smallFont;
+static NSColor      *smallTextColor;
 static NSDictionary *smallTextAttributes;
 
 static NSFont *normalNumberFont;
@@ -316,7 +316,6 @@ static NSFont *smallNumberFont;
         [path lineToPoint: NSMakePoint(NSMaxX(valueArea), round(offset) + 0.5)];
         offset += cellHeight;
     }
-
     [gridColor set];
     [path stroke];
 
@@ -328,7 +327,7 @@ static NSFont *smallNumberFont;
     }
 
     ShortDate *today = [ShortDate currentDate];
-    NSRect dayRect = NSMakeRect(valueArea.origin.x - 1, valueArea.origin.y, cellWidth + 1, cellHeight + 1);
+    NSRect    dayRect = NSMakeRect(valueArea.origin.x - 1, valueArea.origin.y, cellWidth + 1, cellHeight + 1);
 
     // Next are month name, week numbers and day names.
     [monthName drawAtPoint: NSMakePoint(20, 0) withAttributes: monthTextAttributes];
@@ -341,7 +340,6 @@ static NSFont *smallNumberFont;
         offset += dayRect.size.height - 1;
         workDate = [workDate dateByAddingUnits: 1 byUnit: NSWeekCalendarUnit];
     }
-
     [dateFormatter setDateFormat: @"EEE"];
     NSDate *dayNameDate = date.lowDate;
     offset = valueArea.origin.x + 8;
@@ -351,7 +349,6 @@ static NSFont *smallNumberFont;
         dayNameDate = [dayNameDate dateByAddingTimeInterval: 24 * 3600];
         offset += dayRect.size.width - 1;
     }
-
     NSBezierPath *clipPath = [NSBezierPath bezierPathWithRect: NSInsetRect(valueArea, 1, 1)];
     [clipPath setClip];
 
@@ -366,12 +363,13 @@ static NSFont *smallNumberFont;
 
         for (NSUInteger day = 0; day < 7; day++) {
             NSGradient *gradient;
-            NSColor *startingColor;
-            NSColor *endingColor;
+            NSColor    *startingColor;
+            NSColor    *endingColor;
             if (workDate.month == month) {
                 // Find the next date in our data that is the same or larger than the work date.
-                while (index < dates.count && [(ShortDate*)dates[index] compare: workDate] == NSOrderedAscending)
+                while (index < dates.count && [(ShortDate *)dates[index] compare : workDate] == NSOrderedAscending) {
                     index++;
+                }
 
                 if ([today isEqual: workDate]) {
                     startingColor = [NSColor applicationColorForKey: @"Selection Gradient (high)"];
@@ -443,7 +441,7 @@ static NSFont *smallNumberFont;
                 textColor = transparentTextColor;
             }
 
-            NSString *text = [NSString stringWithFormat: @"%i", workDate.day];
+            NSString     *text = [NSString stringWithFormat: @"%i", workDate.day];
             NSDictionary *attributes = @{NSParagraphStyleAttributeName: paragraphStyle,
                                          NSForegroundColorAttributeName: textColor,
                                          NSFontAttributeName: numberFont};
@@ -468,16 +466,16 @@ static NSFont *smallNumberFont;
     valueArea.size.height -= 40;
     valueArea.size.width = 20;
     valueArea.origin.x = floor((self.bounds.size.width - valueArea.size.width) / 2);
-    
+
     NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect: valueArea xRadius: 3 yRadius: 3];
 
-    NSColor *startColor = [NSColor colorWithCalibratedWhite: 0.9 alpha: 0.8];
-    NSColor *endColor = [NSColor colorWithCalibratedWhite: 1 alpha: 0.8];
+    NSColor    *startColor = [NSColor colorWithCalibratedWhite: 0.9 alpha: 0.8];
+    NSColor    *endColor = [NSColor colorWithCalibratedWhite: 1 alpha: 0.8];
     NSGradient *mainGradient = [[NSGradient alloc] initWithStartingColor: startColor endingColor: endColor];
     [mainGradient drawInBezierPath: path angle: 0];
 
     CGFloat cellHeight = floor((valueArea.size.height - 10) / 37.0); // 5 * 7 + 2 days (after the last weekend).
-    NSRect dayRect = NSMakeRect(valueArea.origin.x, valueArea.origin.y + 5, valueArea.size.width, cellHeight);
+    NSRect  dayRect = NSMakeRect(valueArea.origin.x, valueArea.origin.y + 5, valueArea.size.width, cellHeight);
 
     smallTextAttributes = @{NSForegroundColorAttributeName: smallTextColor,
                             NSFontAttributeName: smallFont};
@@ -489,18 +487,19 @@ static NSFont *smallNumberFont;
     CGFloat gradientStartAlpha = 0.5;
     CGFloat gradientEndAlpha = 0.8;
 
-    ShortDate *today = [ShortDate currentDate];
-    ShortDate *workDate = [date copy];
+    ShortDate  *today = [ShortDate currentDate];
+    ShortDate  *workDate = [date copy];
     NSUInteger index = 0;
     for (NSUInteger day = 0; day < 37; day++) {
         NSGradient *gradient;
-        NSColor *startingColor;
-        NSColor *endingColor;
-        
+        NSColor    *startingColor;
+        NSColor    *endingColor;
+
         if (workDate.month == month) {
             // Find the next date in our data that is the same or larger than the work date.
-            while (index < dates.count && [(ShortDate*)dates[index] compare: workDate] == NSOrderedAscending)
+            while (index < dates.count && [(ShortDate *)dates[index] compare : workDate] == NSOrderedAscending) {
                 index++;
+            }
 
             if ([today isEqual: workDate]) {
                 startingColor = [NSColor applicationColorForKey: @"Selection Gradient (high)"];
@@ -567,7 +566,7 @@ static NSFont *smallNumberFont;
             }
 
             NSString *text;
-            NSFont *numberFont = normalNumberFont;
+            NSFont   *numberFont = normalNumberFont;
             if (workDate.dayInWeek == 1 || workDate.dayInWeek == 7 || workDate.isFirstDayInMonth) {
                 text = [NSString stringWithFormat: @"%i", workDate.day];
             } else {
@@ -587,7 +586,6 @@ static NSFont *smallNumberFont;
         workDate = [workDate dateByAddingUnits: 1 byUnit: NSDayCalendarUnit];
         dayRect.origin.y += cellHeight;
     }
-
     [[NSColor colorWithCalibratedWhite: 0.7 alpha: 1] setFill];
     NSFrameRect(valueArea);
 }
@@ -602,6 +600,7 @@ static NSFont *smallNumberFont;
         case HeatMapBlockType:
             [self drawBlockMap];
             break;
+
         case HeatMapStripeType:
             [self drawStripeMap];
             break;
@@ -613,7 +612,7 @@ static NSFont *smallNumberFont;
 //------------------------------------------------------------------------------------------------------------
 
 #define HORIZONTAL_SPACING 20
-#define VERTICAL_SPACING 20
+#define VERTICAL_SPACING   20
 
 @implementation HeatMapView
 
@@ -632,7 +631,7 @@ static NSFont *smallNumberFont;
 
     NSUInteger month = 1;
     for (NSView *view in self.subviews) {
-        [(HeatMapCalendar*)view setMonth: month++];
+        [(HeatMapCalendar *)view setMonth : month++];
     }
 }
 
@@ -640,7 +639,7 @@ static NSFont *smallNumberFont;
 {
     mapType = value;
     for (NSView *view in self.subviews) {
-        [(HeatMapCalendar*)view setType: value];
+        [(HeatMapCalendar *)view setType : value];
     }
     [self resizeSubviewsWithOldSize: NSZeroSize];
     [self setNeedsDisplay: YES];
@@ -650,7 +649,7 @@ static NSFont *smallNumberFont;
 {
     currentYear = value;
     for (NSView *view in self.subviews) {
-        HeatMapCalendar* calendar = (HeatMapCalendar*)view;
+        HeatMapCalendar *calendar = (HeatMapCalendar *)view;
         calendar.year = value;
         calendar.contentAlpha = 0;
     }
@@ -676,6 +675,7 @@ static NSFont *smallNumberFont;
             }
             break;
         }
+
         case HeatMapStripeType: {
             CGFloat offset = 100;
             CGFloat calendarWidth = (bounds.size.width - 11 * HORIZONTAL_SPACING - offset) / 12.0;
@@ -691,7 +691,7 @@ static NSFont *smallNumberFont;
     }
 }
 
-- (void)resetSelectedDate: (HeatMapCalendar*)sender
+- (void)resetSelectedDate: (HeatMapCalendar *)sender
 {
     if (resettingDate) {
         return;
@@ -699,7 +699,7 @@ static NSFont *smallNumberFont;
 
     resettingDate = YES;
     for (NSView *view in self.subviews) {
-        HeatMapCalendar *calendar = (HeatMapCalendar*)view;
+        HeatMapCalendar *calendar = (HeatMapCalendar *)view;
         if (calendar != sender) {
             calendar.selectedDate = nil;
         }
@@ -712,7 +712,7 @@ static NSFont *smallNumberFont;
     [self resetSelectedDate: nil];
 }
 
-- (void)drawRect:(NSRect)dirtyRect
+- (void)drawRect: (NSRect)dirtyRect
 {
     if (mapType != HeatMapStripeType) {
         return;
@@ -744,22 +744,21 @@ static NSFont *smallNumberFont;
 
         offset += 7 * cellHeight;
     }
-
     // Print week numbers.
     bounds.origin.x += 100;
     bounds.size.width -= 100;
 
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setAlignment: NSRightTextAlignment];
-    NSFont *font = [NSFont fontWithName: @"HelveticaNeue-Italic" size: 20];
-    NSDictionary * attributes = @{NSParagraphStyleAttributeName: paragraphStyle,
-                                  NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite: 0 alpha: 0.15],
-                                  NSFontAttributeName: font};
+    NSFont       *font = [NSFont fontWithName: @"HelveticaNeue-Italic" size: 20];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName: paragraphStyle,
+                                 NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite: 0 alpha: 0.15],
+                                 NSFontAttributeName: font};
 
     CGFloat calendarWidth = (bounds.size.width - 11 * HORIZONTAL_SPACING) / 12.0;
     CGFloat offsetX = bounds.origin.x + 6;
     for (NSUInteger month = 1; month <= 12; month++) {
-        CGFloat offsetY = floor(bounds.origin.y) + 3 * cellHeight + 6;
+        CGFloat   offsetY = floor(bounds.origin.y) + 3 * cellHeight + 6;
         ShortDate *workDate = [ShortDate dateWithYear: currentYear month: month day: 1];
         for (NSUInteger week = 0; week < 5; week++) {
             NSString *weekString = [NSString stringWithFormat: @"%i", workDate.week];
@@ -786,11 +785,11 @@ static NSFont *smallNumberFont;
 {
     formatter = [[NSNumberFormatter alloc] init];
     [formatter setLocale: NSLocale.currentLocale];
-    
+
     // Help text.
-    NSBundle* mainBundle = [NSBundle mainBundle];
-    NSString* path = [mainBundle pathForResource: @"category-heatmap-help" ofType: @"rtf"];
-    NSAttributedString* text = [[NSAttributedString alloc] initWithPath: path documentAttributes: NULL];
+    NSBundle           *mainBundle = [NSBundle mainBundle];
+    NSString           *path = [mainBundle pathForResource: @"category-heatmap-help" ofType: @"rtf"];
+    NSAttributedString *text = [[NSAttributedString alloc] initWithPath: path documentAttributes: NULL];
     [helpText setAttributedStringValue: text];
     NSRect bounds = [text boundingRectWithSize: NSMakeSize(helpText.bounds.size.width, 0) options: NSStringDrawingUsesLineFragmentOrigin];
     helpContentView.frame = NSMakeRect(0, 0, helpText.bounds.size.width + 20, bounds.size.height + 20);
@@ -805,13 +804,12 @@ static NSFont *smallNumberFont;
 - (void)updateValues
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL recursive = [userDefaults boolForKey: @"recursiveTransactions"];
-    NSArray *values;
-    NSArray *dates;
-    HighLowValues limits = {0, 0};
+    BOOL           recursive = [userDefaults boolForKey: @"recursiveTransactions"];
+    NSArray        *values;
+    NSArray        *dates;
+    HighLowValues  limits = {0, 0};
     switch (dataSourceSwitch.selectedSegment) {
-        case 0:
-        {
+        case 0: {
             [formatter setFormat: @"#,##0.##"];
 
             limits.high = [selectedCategory turnoversForYear: currentYear toDates: &dates turnovers: &values recursive: recursive];
@@ -822,8 +820,8 @@ static NSFont *smallNumberFont;
             }
             break;
         }
-        case 1:
-        {
+
+        case 1: {
             [formatter setFormat: @"#,##0.## ¤"];
 
             limits.high = [selectedCategory absoluteValuesForYear: currentYear toDates: &dates values: &values recursive: recursive];
@@ -833,8 +831,8 @@ static NSFont *smallNumberFont;
             }
             break;
         }
-        case 2:
-        {
+
+        case 2: {
             [formatter setFormat: @"#,##0.## ¤"];
 
             limits = [selectedCategory valuesForYear: currentYear toDates: &dates values: &values recursive: recursive];
@@ -850,21 +848,20 @@ static NSFont *smallNumberFont;
     }
 
     for (NSView *view in heatMapView.subviews) {
-        HeatMapCalendar *calendar = (HeatMapCalendar*)view;
+        HeatMapCalendar *calendar = (HeatMapCalendar *)view;
         [calendar setValues: values dates: dates limits: limits forType: 0];
     }
-
-    NSNumber *sum = [values valueForKeyPath: @"@sum.self"];
-    ShortDate *date = [ShortDate dateWithYear: currentYear month: 1 day: 1];
+    NSNumber   *sum = [values valueForKeyPath: @"@sum.self"];
+    ShortDate  *date = [ShortDate dateWithYear: currentYear month: 1 day: 1];
     NSUInteger dayCount = [date daysToDate: [ShortDate dateWithYear: currentYear + 1 month: 1 day: 1]];
     perDayText.stringValue = [formatter stringFromNumber: @(sum.doubleValue / dayCount)];
     perMonthText.stringValue = [formatter stringFromNumber: @(sum.doubleValue / 12.0)];
 }
 
-- (void)showValuePopupForDate: (ShortDate*)date relativeToRect: (NSRect)area forView: (NSView*)view
+- (void)showValuePopupForDate: (ShortDate *)date relativeToRect: (NSRect)area forView: (NSView *)view
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL recursive = [userDefaults boolForKey: @"recursiveTransactions"];
+    BOOL           recursive = [userDefaults boolForKey: @"recursiveTransactions"];
     currentAssignments = [selectedCategory assignmentsFrom: date to: date withChildren: recursive];
     [valuePopupList reloadData];
 
@@ -913,11 +910,12 @@ static NSFont *smallNumberFont;
 - (void)doSwitchType: (id)sender
 {
     OnOffSwitchControl *button = sender;
-    
+
     switch ([button state]) {
         case NSOffState:
             heatMapView.mapType = HeatMapBlockType;
             break;
+
         case NSOnState:
             heatMapView.mapType = HeatMapStripeType;
             break;
@@ -928,7 +926,7 @@ static NSFont *smallNumberFont;
 #pragma mark -
 #pragma mark PXListViewDelegate protocol
 
-- (NSUInteger)numberOfRowsInListView: (PXListView*)aListView
+- (NSUInteger)numberOfRowsInListView: (PXListView *)aListView
 {
     if (currentAssignments.count == 0) {
         return 1; // A single entry saying there's nothing to show.
@@ -936,12 +934,12 @@ static NSFont *smallNumberFont;
     return currentAssignments.count;
 }
 
-- (CGFloat)listView:(PXListView*)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
+- (CGFloat)listView: (PXListView *)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
 {
     return 21;
 }
 
-- (NSRange)listView: (PXListView*)aListView rangeOfDraggedRow: (NSUInteger)row
+- (NSRange)listView: (PXListView *)aListView rangeOfDraggedRow: (NSUInteger)row
 {
     return NSMakeRange(0, 0);
 }
@@ -949,7 +947,7 @@ static NSFont *smallNumberFont;
 - (id)formatValue: (id)value
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL autoCasing = [userDefaults boolForKey: @"autoCasing"];
+    BOOL           autoCasing = [userDefaults boolForKey: @"autoCasing"];
 
     if (autoCasing) {
         NSMutableArray *words = [[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
@@ -964,11 +962,11 @@ static NSFont *smallNumberFont;
     return value;
 }
 
-- (PXListViewCell*)listView: (PXListView*)aListView cellForRow: (NSUInteger)row
+- (PXListViewCell *)listView: (PXListView *)aListView cellForRow: (NSUInteger)row
 {
-	ValuePopupCell* cell = (ValuePopupCell*)[aListView dequeueCellWithReusableIdentifier: @"valueCell"];
+    ValuePopupCell *cell = (ValuePopupCell *)[aListView dequeueCellWithReusableIdentifier: @"valueCell"];
 
-	if (!cell) {
+    if (!cell) {
         cell = [ValuePopupCell cellLoadedFromNibNamed: @"CategoryHeatMap" reusableIdentifier: @"valueCell"];
     }
 
@@ -992,7 +990,7 @@ static NSFont *smallNumberFont;
     return cell;
 }
 
-- (bool)listView:(PXListView*)aListView shouldSelectRows: (NSIndexSet *)rows byExtendingSelection:(BOOL)shouldExtend
+- (bool)listView: (PXListView *)aListView shouldSelectRows: (NSIndexSet *)rows byExtendingSelection: (BOOL)shouldExtend
 {
     return NO;
 }
@@ -1008,7 +1006,7 @@ static NSFont *smallNumberFont;
 {
 }
 
-- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
+- (void)setTimeRangeFrom: (ShortDate *)from to: (ShortDate *)to
 {
     currentYear = from.year;
     yearLabel.objectValue = [NSString stringWithFormat: @"%i", currentYear];
@@ -1022,12 +1020,12 @@ static NSFont *smallNumberFont;
 
 - (void)print
 {
-    NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
+    NSPrintInfo *printInfo = [NSPrintInfo sharedPrintInfo];
     [printInfo setTopMargin: 45];
     [printInfo setBottomMargin: 45];
     [printInfo setHorizontalPagination: NSFitPagination];
     [printInfo setVerticalPagination: NSAutoPagination];
-    
+
     NSPrintOperation *printOp;
     printOp = [NSPrintOperation printOperationWithView: mainView printInfo: printInfo];
     [printOp setShowsPrintPanel: YES];
@@ -1038,7 +1036,7 @@ static NSFont *smallNumberFont;
 {
     if (selectedCategory != theCategory) {
         for (NSView *view in heatMapView.subviews) {
-            [(HeatMapCalendar*)view setContentAlpha: 0];
+            [(HeatMapCalendar *)view setContentAlpha : 0];
         }
         selectedCategory = theCategory;
         [self updateValues];

@@ -10,7 +10,6 @@
 
 
 @interface MCEMBorderedView : NSView {
-
 }
 
 @end

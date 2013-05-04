@@ -10,9 +10,8 @@
 
 
 @interface CategoryPolicy030 : NSEntityMigrationPolicy {
-
 }
 
--(NSString*)convertRule: (NSString*)rule;
+- (NSString *)convertRule: (NSString *)rule;
 
 @end

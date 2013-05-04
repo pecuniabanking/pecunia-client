@@ -23,35 +23,33 @@
 
 - (void)dealloc
 {
-	userId = nil;
-	userName = nil;
-	cardId = nil;
-	tanMethod = nil;
-	tanMethodName = nil;
-	tanMediumName = nil;
+    userId = nil;
+    userName = nil;
+    cardId = nil;
+    tanMethod = nil;
+    tanMethodName = nil;
+    tanMediumName = nil;
     tanMediumCategory = nil;
-	mobileNumber = nil;    
+    mobileNumber = nil;
 }
 
--(id)copyWithZone:(NSZone*)zone
+- (id)copyWithZone: (NSZone *)zone
 {
     return self;
 }
 
-- (NSString*)description
+- (NSString *)description
 {
     if (secMethod == SecMethod_PinTan) {
         if (tanMediumName) {
-            return [NSString stringWithFormat:@"%@ (%@)", tanMethodName, tanMediumName ];
+            return [NSString stringWithFormat: @"%@ (%@)", tanMethodName, tanMediumName];
         } else {
             return tanMethodName;
         }
     } else {
-        return [NSString stringWithFormat:@"Chipkarte: %@", cardId ];
+        return [NSString stringWithFormat: @"Chipkarte: %@", cardId];
     }
 
 }
 
-
 @end
-

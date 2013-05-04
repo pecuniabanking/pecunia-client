@@ -17,22 +17,21 @@
 @class SigningOption;
 
 @interface HBCIController : NSObject <HBCIBackend> {
-	
-	HBCIBridge                  *bridge;
-    ProgressWindowController    *progressController;
-	NSMutableDictionary         *bankInfo;
-	NSMutableDictionary         *countries;
-	NSArray                     *bankQueryResults;
-	int                         currentQuery;	
+    HBCIBridge               *bridge;
+    ProgressWindowController *progressController;
+    NSMutableDictionary      *bankInfo;
+    NSMutableDictionary      *countries;
+    NSArray                  *bankQueryResults;
+    int                      currentQuery;
 }
 
--(void)readCountryInfos;
+- (void)readCountryInfos;
 
--(void)asyncCommandCompletedWithResult:(id)result error:(PecuniaError*)err;
--(BOOL)registerBankUser:(BankUser*)user error:(PecuniaError**)err;
--(void)updateBankAccounts:(NSArray*)hbciAccounts forUser:(BankUser*)user;
--(PecuniaError*)updateSupportedTransactionsForAccounts:(NSArray*)accounts user:(BankUser*)user;
--(SigningOption*)signingOptionForAccount:(BankAccount*)account;
+- (void)asyncCommandCompletedWithResult: (id)result error: (PecuniaError *)err;
+- (BOOL)registerBankUser: (BankUser *)user error: (PecuniaError **)err;
+- (void)updateBankAccounts: (NSArray *)hbciAccounts forUser: (BankUser *)user;
+- (PecuniaError *)updateSupportedTransactionsForAccounts: (NSArray *)accounts user: (BankUser *)user;
+- (SigningOption *)signingOptionForAccount: (BankAccount *)account;
 
 
 @end

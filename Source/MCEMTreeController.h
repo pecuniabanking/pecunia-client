@@ -10,12 +10,10 @@
 
 
 @interface MCEMTreeController : NSTreeController {
-
-
 }
 
--(NSIndexPath*)indexPathForObject: (id)obj;
--(BOOL)setSelectedObject: (id)obj;
--(void)resort;
+- (NSIndexPath *)indexPathForObject: (id)obj;
+- (BOOL)setSelectedObject: (id)obj;
+- (void)resort;
 
 @end

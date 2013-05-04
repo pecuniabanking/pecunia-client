@@ -24,73 +24,74 @@
 
 - (id)init
 {
-	self = [super initWithWindowNibName:@"TanWindow"];
-	active = YES;
-	return self;
+    self = [super initWithWindowNibName: @"TanWindow"];
+    active = YES;
+    return self;
 }
 
 - (id)initWithText: (NSString *)x;
 {
-	self = [super initWithWindowNibName:@"TanWindow"];
-    
-    NSString *s = [x stringByReplacingOccurrencesOfString:@"\n" withString:@"<br>" ];
-    NSData *d = [s dataUsingEncoding:NSISOLatin1StringEncoding ];
-    text = [[NSAttributedString alloc ] initWithHTML:d documentAttributes:NULL ];
-	active = YES;
-	return self;
+    self = [super initWithWindowNibName: @"TanWindow"];
+
+    NSString *s = [x stringByReplacingOccurrencesOfString: @"\n" withString: @"<br>"];
+    NSData   *d = [s dataUsingEncoding: NSISOLatin1StringEncoding];
+    text = [[NSAttributedString alloc] initWithHTML: d documentAttributes: NULL];
+    active = YES;
+    return self;
 }
 
 - (void)awakeFromNib
 {
-    NSRect boundingRect = [text boundingRectWithSize:NSMakeSize(400, 800) options:NSStringDrawingUsesLineFragmentOrigin];
-    
+    NSRect boundingRect = [text boundingRectWithSize: NSMakeSize(400, 800) options: NSStringDrawingUsesLineFragmentOrigin];
+
     if (boundingRect.size.height > 97) {
         NSRect frame = [[self window] frame];
         frame.size.height += boundingRect.size.height - 97;
-        [[self window] setFrame:frame display:YES];
+        [[self window] setFrame: frame display: YES];
     }
-    
+
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL showTAN = [defaults boolForKey:@"showTAN"];
+    BOOL           showTAN = [defaults boolForKey: @"showTAN"];
     if (showTAN) {
-        [[self window] makeFirstResponder:inputField];
+        [[self window] makeFirstResponder: inputField];
     } else {
-        [[self window] makeFirstResponder:secureInputField];
+        [[self window] makeFirstResponder: secureInputField];
     }
 }
 
-- (void)controlTextDidEndEditing:(NSNotification *)aNotification
+- (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
-	if([result length] == 0) NSBeep();
-	else {
-		active = NO;
-		[self closeWindow ];
-		[NSApp stopModalWithCode:0];
-	}
+    if ([result length] == 0) {
+        NSBeep();
+    } else {
+        active = NO;
+        [self closeWindow];
+        [NSApp stopModalWithCode: 0];
+    }
 }
 
 - (void)closeWindow
 {
-	[[self window ] close ];
+    [[self window] close];
 }
 
-- (void)windowWillClose:(NSNotification *)aNotification
+- (void)windowWillClose: (NSNotification *)aNotification
 {
-	if(active) {
-		if([result length] == 0) [NSApp stopModalWithCode:1];
-		else [NSApp stopModalWithCode:0];
-	}
+    if (active) {
+        if ([result length] == 0) {
+            [NSApp stopModalWithCode: 1];
+        } else {[NSApp stopModalWithCode: 0]; }
+    }
 }
 
 - (void)windowDidLoad
 {
-	[inputText setAttributedStringValue: text];
+    [inputText setAttributedStringValue: text];
 }
 
-- (NSString*)result
+- (NSString *)result
 {
-	return result;
+    return result;
 }
-
 
 @end

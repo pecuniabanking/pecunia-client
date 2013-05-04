@@ -13,19 +13,19 @@
 
 @interface CreditCardSettlement : NSManagedObject
 
-@property (nonatomic, strong) NSDecimalNumber * endBalance;
-@property (nonatomic, strong) NSString * ccNumber;
-@property (nonatomic, strong) NSString * ccAccount;
-@property (nonatomic, strong) NSDecimalNumber * startBalance;
-@property (nonatomic, strong) NSDate *settleDate;
-@property (nonatomic, strong) NSDecimalNumber * value;
-@property (nonatomic, strong) NSString * text;
-@property (nonatomic, strong) NSString * settleID;
-@property (nonatomic, strong) NSDate *nextSettleDate;
-@property (nonatomic, strong) NSString * currency;
-@property (nonatomic, strong) NSDate *firstReceive;
-@property (nonatomic, strong) NSData * document;
-@property (nonatomic, strong) NSData * ackCode;
-@property (nonatomic, strong) BankAccount *account;
+@property (nonatomic, strong) NSDecimalNumber *endBalance;
+@property (nonatomic, strong) NSString        *ccNumber;
+@property (nonatomic, strong) NSString        *ccAccount;
+@property (nonatomic, strong) NSDecimalNumber *startBalance;
+@property (nonatomic, strong) NSDate          *settleDate;
+@property (nonatomic, strong) NSDecimalNumber *value;
+@property (nonatomic, strong) NSString        *text;
+@property (nonatomic, strong) NSString        *settleID;
+@property (nonatomic, strong) NSDate          *nextSettleDate;
+@property (nonatomic, strong) NSString        *currency;
+@property (nonatomic, strong) NSDate          *firstReceive;
+@property (nonatomic, strong) NSData          *document;
+@property (nonatomic, strong) NSData          *ackCode;
+@property (nonatomic, strong) BankAccount     *account;
 
 @end

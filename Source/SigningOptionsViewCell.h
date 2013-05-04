@@ -10,7 +10,6 @@
 
 
 @interface SigningOptionsViewCell : NSCell {
-
 }
 
 @end

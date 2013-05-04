@@ -24,10 +24,10 @@
     NSCalendar *calendar;
 }
 
-@property (strong) IBOutlet NSTextField *path;
-@property (strong) IBOutlet NSButton *removeOldDataCheckBox;
+@property (strong) IBOutlet NSTextField         *path;
+@property (strong) IBOutlet NSButton            *removeOldDataCheckBox;
 @property (strong) IBOutlet NSProgressIndicator *progressIndicator;
-@property (strong) IBOutlet NSTextField *totalCountLabel;
+@property (strong) IBOutlet NSTextField         *totalCountLabel;
 
 @property (assign) NSUInteger startYear;
 @property (assign) NSUInteger endYear;

@@ -15,13 +15,12 @@
 @synthesize currency;
 @synthesize code;
 
--(void)dealloc
+- (void)dealloc
 {
-	name = nil;
-	currency = nil;
-	code = nil;
+    name = nil;
+    currency = nil;
+    code = nil;
 
 }
 
 @end
-

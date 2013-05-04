@@ -23,9 +23,8 @@
 }
 
 @property (nonatomic, strong) NSString *dataFile;
-@property (nonatomic, assign) BOOL debugServer;
+@property (nonatomic, assign) BOOL     debugServer;
 
-+(LaunchParameters*)parameters;
++ (LaunchParameters *)parameters;
 
 @end
-

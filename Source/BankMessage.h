@@ -10,12 +10,10 @@
 
 
 @interface BankMessage : NSManagedObject {
-
 }
 
-@property (nonatomic, strong) NSString * bankCode;
-@property (nonatomic, strong) NSDate * date;
-@property (nonatomic, strong) NSString * message;
+@property (nonatomic, strong) NSString *bankCode;
+@property (nonatomic, strong) NSDate   *date;
+@property (nonatomic, strong) NSString *message;
 
 @end
-

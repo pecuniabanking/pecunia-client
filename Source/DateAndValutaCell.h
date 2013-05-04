@@ -10,12 +10,12 @@
 
 
 @interface DateAndValutaCell : NSTextFieldCell {
-	NSDate			*valuta;
-	NSDateFormatter	*formatter;
+    NSDate          *valuta;
+    NSDateFormatter *formatter;
 }
 
-@property(nonatomic, strong) NSDate *valuta;
-@property(nonatomic, strong) NSDateFormatter *formatter;
+@property (nonatomic, strong) NSDate          *valuta;
+@property (nonatomic, strong) NSDateFormatter *formatter;
 
 
 @end

@@ -21,15 +21,13 @@
 
 - (void)dealloc
 {
-	remoteName = nil;
-	remoteAccount = nil;
-	remoteBankCode = nil;
-	purposeNew = nil;
-	purposeOld = nil;
-	statement = nil;
+    remoteName = nil;
+    remoteAccount = nil;
+    remoteBankCode = nil;
+    purposeNew = nil;
+    purposeOld = nil;
+    statement = nil;
 
 }
 
 @end
-
-

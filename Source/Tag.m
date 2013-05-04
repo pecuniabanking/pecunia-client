@@ -49,13 +49,12 @@
 
     // First remove any existing tag.
     NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSManagedObjectModel *model = MOAssistant.assistant.model;
-    NSFetchRequest *request = [model fetchRequestTemplateForName: @"allTags"];
-    NSArray *existingTags = [context executeFetchRequest: request error: &error];
+    NSManagedObjectModel   *model = MOAssistant.assistant.model;
+    NSFetchRequest         *request = [model fetchRequestTemplateForName: @"allTags"];
+    NSArray                *existingTags = [context executeFetchRequest: request error: &error];
     for (Tag *tag in existingTags) {
         [context deleteObject: tag];
     }
-
     for (int i = lower; i <= upper; i++) {
         NSString *key = [NSString stringWithFormat: @"AP%u", i];
         NSString *entry = NSLocalizedString(key, nil);
@@ -65,7 +64,6 @@
         tag.caption = entry;
         tag.tagColor = [NSColor nextDefaultTagColor];
     }
-
     if (![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -73,10 +71,10 @@
     }
 }
 
-+ (Tag*)createTagWithCaption: (NSString *)caption index: (NSUInteger)index
++ (Tag *)createTagWithCaption: (NSString *)caption index: (NSUInteger)index
 {
     NSManagedObjectContext *context = MOAssistant.assistant.context;
-    Tag *tag = [NSEntityDescription insertNewObjectForEntityForName: @"Tag" inManagedObjectContext: context];
+    Tag                    *tag = [NSEntityDescription insertNewObjectForEntityForName: @"Tag" inManagedObjectContext: context];
     tag.order = @(index);
     tag.caption = caption;
     tag.tagColor = [NSColor nextDefaultTagColor];
@@ -84,13 +82,13 @@
     return tag;
 }
 
-+ (Tag*)tagWithCaption: (NSString *)caption
++ (Tag *)tagWithCaption: (NSString *)caption
 {
-    NSError *error = nil;
+    NSError                *error = nil;
     NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSManagedObjectModel *model = MOAssistant.assistant.model;
+    NSManagedObjectModel   *model = MOAssistant.assistant.model;
 
-    NSDictionary *substitution = @{@"caption": caption};
+    NSDictionary   *substitution = @{@"caption": caption};
     NSFetchRequest *request = [model fetchRequestFromTemplateWithName: @"tagWithCaption"
                                                 substitutionVariables: substitution];
     NSArray *tags = [context executeFetchRequest: request error: &error];
@@ -106,11 +104,11 @@
  */
 - (void)sortBefore: (Tag *)target
 {
-    NSError *error = nil;
+    NSError                *error = nil;
     NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSManagedObjectModel *model = MOAssistant.assistant.model;
-    NSFetchRequest *request = [model fetchRequestTemplateForName: @"allTags"];
-    NSArray *tags = [context executeFetchRequest: request error: &error];
+    NSManagedObjectModel   *model = MOAssistant.assistant.model;
+    NSFetchRequest         *request = [model fetchRequestTemplateForName: @"allTags"];
+    NSArray                *tags = [context executeFetchRequest: request error: &error];
 
     NSInteger sourceOrder = self.order.integerValue;
     NSInteger targetOrder = (target == nil) ? tags.count : target.order.integerValue;
@@ -121,7 +119,7 @@
     }
 
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"order" ascending: YES];
-	tags = [tags sortedArrayUsingDescriptors: @[sd]];
+    tags = [tags sortedArrayUsingDescriptors: @[sd]];
 
     if (sourceOrder < targetOrder) {
         // Moving tag towards the end.
@@ -167,23 +165,23 @@
     }
 }
 
-- (NSColor*)tagColor
+- (NSColor *)tagColor
 {
     [self willAccessValueForKey: @"tagColor"];
     if (self.color == nil) {
         tagColor = [NSColor nextDefaultTagColor];
 
         // Archive the just determined color.
-        NSMutableData* data = [NSMutableData data];
+        NSMutableData *data = [NSMutableData data];
 
-        NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
+        NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
         [archiver encodeObject: tagColor forKey: @"color"];
         [archiver finishEncoding];
 
         self.color = data;
     } else {
         if (tagColor == nil) {
-            NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData: self.color];
+            NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData: self.color];
             tagColor = [unarchiver decodeObjectForKey: @"color"];
             [unarchiver finishDecoding];
         }
@@ -194,15 +192,15 @@
     return tagColor;
 }
 
-- (void)setTagColor: (NSColor*)color
+- (void)setTagColor: (NSColor *)color
 {
     if (![tagColor isEqualTo: color]) {
         [self willChangeValueForKey: @"tagColor"];
         tagColor = color;
 
-        NSMutableData* data = [NSMutableData data];
+        NSMutableData *data = [NSMutableData data];
 
-        NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
+        NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
         [archiver encodeObject: tagColor forKey: @"color"];
         [archiver finishEncoding];
 

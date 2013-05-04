@@ -14,29 +14,28 @@ typedef enum {
 } SecurityMethod;
 
 @interface SigningOption : NSObject {
-    SecurityMethod  secMethod;
-    
-    NSString    *tanMethod;
-    NSString    *tanMethodName;
-    NSString    *tanMediumName;
-    NSString    *tanMediumCategory;
-    NSString    *mobileNumber;
-    NSString    *userId;
-    NSString    *userName;
-    NSString    *cardId;
-    
+    SecurityMethod secMethod;
+
+    NSString *tanMethod;
+    NSString *tanMethodName;
+    NSString *tanMediumName;
+    NSString *tanMediumCategory;
+    NSString *mobileNumber;
+    NSString *userId;
+    NSString *userName;
+    NSString *cardId;
+
 }
 
-@property (nonatomic, copy) NSString *userId;
-@property (nonatomic, copy) NSString *userName;
-@property (nonatomic, copy) NSString *cardId;
-@property (nonatomic, copy) NSString *tanMethod;
-@property (nonatomic, copy) NSString *tanMethodName;
-@property (nonatomic, copy) NSString *tanMediumName;
-@property (nonatomic, copy) NSString *tanMediumCategory;
-@property (nonatomic, copy) NSString *mobileNumber;
+@property (nonatomic, copy) NSString         *userId;
+@property (nonatomic, copy) NSString         *userName;
+@property (nonatomic, copy) NSString         *cardId;
+@property (nonatomic, copy) NSString         *tanMethod;
+@property (nonatomic, copy) NSString         *tanMethodName;
+@property (nonatomic, copy) NSString         *tanMediumName;
+@property (nonatomic, copy) NSString         *tanMediumCategory;
+@property (nonatomic, copy) NSString         *mobileNumber;
 @property (nonatomic, assign) SecurityMethod secMethod;
 
 
 @end
-

@@ -38,18 +38,33 @@
 @dynamic localAccount;
 @dynamic localBankCode;
 
--(NSString*)purpose
+- (NSString *)purpose
 {
-	NSMutableString* s = [NSMutableString stringWithCapacity: 100 ];
-	if(self.purpose1) { [s appendString: self.purpose1 ]; }
-	if(self.purpose2) { [s appendString: @" " ]; [s appendString: self.purpose2 ]; }
-	if(self.purpose3) { [s appendString: @" " ]; [s appendString: self.purpose3 ]; }
-	if(self.purpose4) { [s appendString: @" " ]; [s appendString: self.purpose4 ]; }
-	
-	return s;
+    NSMutableString *s = [NSMutableString stringWithCapacity: 100];
+    if (self.purpose1) {
+        [s appendString: self.purpose1];
+    }
+    if (self.purpose2) {
+        [s appendString: @" "]; [s appendString: self.purpose2];
+    }
+    if (self.purpose3) {
+        [s appendString: @" "]; [s appendString: self.purpose3];
+    }
+    if (self.purpose4) {
+        [s appendString: @" "]; [s appendString: self.purpose4];
+    }
+
+    return s;
 }
 
--(void)setJobId: (unsigned int) jid { jobId = jid; }
--(unsigned int)jobId { return jobId; };
+- (void)setJobId: (unsigned int)jid
+{
+    jobId = jid;
+}
+
+- (unsigned int)jobId
+{
+    return jobId;
+}
 
 @end

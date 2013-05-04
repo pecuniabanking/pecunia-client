@@ -20,15 +20,15 @@
 #import <Cocoa/Cocoa.h>
 
 /*
-TransferTypeStandard,
-TransferTypeEU,
-TransferTypeDated,
-TransferTypeInternal,
-TransferTypeDebit,
-TransferTypeSEPA,
-TransferTypeCollectiveCredit,
-TransferTypeCollectiveDebit
-*/
+ TransferTypeStandard,
+ TransferTypeEU,
+ TransferTypeDated,
+ TransferTypeInternal,
+ TransferTypeDebit,
+ TransferTypeSEPA,
+ TransferTypeCollectiveCredit,
+ TransferTypeCollectiveDebit
+ */
 
 typedef enum {
     TransactionType_TransferStandard = 0,
@@ -48,16 +48,15 @@ typedef enum {
 @class BankUser;
 
 @interface SupportedTransactionInfo : NSManagedObject {
-
 }
 
-@property (nonatomic, strong) NSNumber * allowsChange;
-@property (nonatomic, strong) NSNumber * allowsCollective;
-@property (nonatomic, strong) NSNumber * allowsDated;
-@property (nonatomic, strong) NSNumber * allowsList;
-@property (nonatomic, strong) NSNumber * type;
-@property (nonatomic, strong) NSNumber * allowesDelete;
+@property (nonatomic, strong) NSNumber *allowsChange;
+@property (nonatomic, strong) NSNumber *allowsCollective;
+@property (nonatomic, strong) NSNumber *allowsDated;
+@property (nonatomic, strong) NSNumber *allowsList;
+@property (nonatomic, strong) NSNumber *type;
+@property (nonatomic, strong) NSNumber *allowesDelete;
 
 @property (nonatomic, strong) BankAccount *account;
-@property (nonatomic, strong) BankUser *user;
+@property (nonatomic, strong) BankUser    *user;
 @end

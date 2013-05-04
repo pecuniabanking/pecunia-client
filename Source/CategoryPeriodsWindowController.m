@@ -1,16 +1,16 @@
-/** 
+/**
  * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -43,7 +43,7 @@ extern void *UserDefaultsBindingContext;
 - (void)showStatementList: (NSRect)cellBounds;
 - (void)updateStatementList: (NSRect)cellBounds;
 - (void)updateData;
-- (void)updateLimitLabel: (NSTextField *)field index: (NSUInteger) index;
+- (void)updateLimitLabel: (NSTextField *)field index: (NSUInteger)index;
 - (void)updateSorting;
 
 @end
@@ -55,7 +55,7 @@ extern void *UserDefaultsBindingContext;
 #pragma mark -
 #pragma mark Initialization and Deallocation
 
--(id)init
+- (id)init
 {
     self = [super init];
     if (self != nil) {
@@ -66,7 +66,7 @@ extern void *UserDefaultsBindingContext;
         selectedDates = [NSMutableArray array];
         managedObjectContext = [[MOAssistant assistant] context];
     }
-    
+
     return self;
 }
 
@@ -78,16 +78,16 @@ extern void *UserDefaultsBindingContext;
     [userDefaults removeObserver: self forKeyPath: @"colors"];
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
-	fromIndex = 0;
+    fromIndex = 0;
     toIndex = 1;
     sortAscending = NO;
     sortIndex = 0;
     groupingInterval = GroupByMonths;
-    
+
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *values = [userDefaults objectForKey: @"categoryPeriods"];
+    NSDictionary   *values = [userDefaults objectForKey: @"categoryPeriods"];
     if (values) {
         if (values[@"fromIndex"]) {
             fromIndex = [values[@"fromIndex"] intValue];
@@ -107,21 +107,21 @@ extern void *UserDefaultsBindingContext;
         }
     }
     [self updateSorting];
-    
+
     if (toIndex < fromIndex) {
         toIndex = fromIndex;
     }
-    
+
     [fromSlider setContinuous: YES];
     fromSlider.intValue = fromIndex;
     [self updateLimitLabel: fromText index: fromIndex];
     [toSlider setContinuous: YES];
     toSlider.intValue = toIndex;
     [self updateLimitLabel: toText index: toIndex];
-    
+
     valueGrid.defaultCellSize = NSMakeSize(100, 22);
     [valueGrid.rowHeaderView setHidden: YES];
-    
+
     AmountCell *cell = [[AmountCell alloc] initTextCell: @""];
     [cell setAlignment: NSRightTextAlignment];
     valueGrid.cell = cell;
@@ -134,18 +134,18 @@ extern void *UserDefaultsBindingContext;
 
     valueGrid.allowsMultipleSelection = NO;
     valueGrid.showSelectionRing = NO;
-    
+
     [statementsListView bind: @"dataSource" toObject: statementsController withKeyPath: @"arrangedObjects" options: nil];
-    
+
     // Bind controller to selectedRow property and the listview to the controller's selectedIndex property to get notified about selection changes.
     [statementsController bind: @"selectionIndexes" toObject: statementsListView withKeyPath: @"selectedRows" options: nil];
     [statementsListView bind: @"selectedRows" toObject: statementsController withKeyPath: @"selectionIndexes" options: nil];
-    
+
     statementsListView.cellSpacing = 0;
     statementsListView.allowsEmptySelection = YES;
     statementsListView.allowsMultipleSelection = NO;
     statementsListView.disableSelection = YES;
-    
+
     selectionBox.hasGradient = YES;
     selectionBox.fillStartingColor = [NSColor applicationColorForKey: @"Small Background Gradient (low)"];
     selectionBox.fillEndingColor = [NSColor applicationColorForKey: @"Small Background Gradient (high)"];
@@ -185,9 +185,9 @@ extern void *UserDefaultsBindingContext;
 #pragma mark -
 #pragma mark MBTableGrid Delegate Methods
 
-- (NSUInteger)numberOfRowsInTableGrid: (MBTableGrid*)aTableGrid
+- (NSUInteger)numberOfRowsInTableGrid: (MBTableGrid *)aTableGrid
 {
-	return outline.numberOfRows - 1; // Leave out the top category node.
+    return outline.numberOfRows - 1;     // Leave out the top category node.
 }
 
 - (NSUInteger)numberOfColumnsInTableGrid: (MBTableGrid *)aTableGrid
@@ -195,22 +195,22 @@ extern void *UserDefaultsBindingContext;
     if (dates.count == 0) {
         return 0;
     }
-	return toIndex - fromIndex + 1;
+    return toIndex - fromIndex + 1;
 }
 
 - (id)tableGrid: (MBTableGrid *)aTableGrid objectValueForColumn: (NSUInteger)columnIndex row: (NSUInteger)rowIndex
 {
-    NSArray* rowValues = balances[rowIndex];
+    NSArray *rowValues = balances[rowIndex];
     if (rowValues.count == 0) {
         [self loadDataForIndex: rowIndex];
         rowValues = balances[rowIndex];
     }
-    Category *cat = [[outline itemAtRow: rowIndex] representedObject];
+    Category   *cat = [[outline itemAtRow: rowIndex] representedObject];
     AmountCell *cell = valueGrid.cell;
     cell.currency = cat.currency;
-    
+
     columnIndex +=  fromIndex;
-	return ([rowValues count] > columnIndex) ? rowValues[columnIndex] : @"";
+    return ([rowValues count] > columnIndex) ? rowValues[columnIndex] : @"";
 }
 
 - (void)tableGrid: (MBTableGrid *)aTableGrid setObjectValue: (id)anObject forColumn: (NSUInteger)columnIndex row: (NSUInteger)rowIndex
@@ -218,28 +218,30 @@ extern void *UserDefaultsBindingContext;
     // Only needed to have the grid call us for editing.
 }
 
-- (NSString *) tableGrid: (MBTableGrid*)aTableGrid headerStringForColumn: (NSUInteger)columnIndex
+- (NSString *)tableGrid: (MBTableGrid *)aTableGrid headerStringForColumn: (NSUInteger)columnIndex
 {
-    ShortDate* date = dates[columnIndex + fromIndex];
-    NSString* title;
-        
+    ShortDate *date = dates[columnIndex + fromIndex];
+    NSString  *title;
+
     switch (groupingInterval) {
         case GroupByYears:
             title = [date yearDescription];
             break;
+
         case GroupByQuarters:
             title = [date quarterYearDescription];
             break;
+
         default:
             title = [date monthYearDescription];
             break;
-    }	
+    }
     return title;
 }
 
 - (BOOL)tableGrid: (MBTableGrid *)aTableGrid canMoveColumns: (NSIndexSet *)columnIndexes toIndex: (NSUInteger)index
 {
-	return YES;
+    return YES;
 }
 
 /**
@@ -274,13 +276,13 @@ extern void *UserDefaultsBindingContext;
     } else {
         selectedRows = [NSIndexSet indexSetWithIndex: valueGrid.selectedRowIndexes.firstIndex + 1];
     }
-    
+
     if (![selectedRows isEqualToIndexSet: [outline selectedRowIndexes]]) {
         [outline selectRowIndexes: selectedRows byExtendingSelection: NO];
     }
     if (selectedRows.count > 0) {
         NSUInteger columnIndex = valueGrid.selectedColumnIndexes.firstIndex;
-        id item = [outline itemAtRow: selectedRows.firstIndex];
+        id         item = [outline itemAtRow: selectedRows.firstIndex];
         self.selectedCategory = [item representedObject];
         [self updateStatementList: [valueGrid frameOfCellAtColumn: columnIndex row: selectedRows.firstIndex - 1]];
     }
@@ -333,22 +335,21 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
--(void)updateData
+- (void)updateData
 {
     if (!active) {
         return;
     }
-    
+
     [dates removeAllObjects];
     [balances removeAllObjects];
     [turnovers removeAllObjects];
     NSInteger rowCount = outline.numberOfRows - 1;
-    
+
     for (int i = 0; i < rowCount; i++) {
         [balances addObject: @[]];
         [turnovers addObject: @[]];
     }
-    
     if (rowCount > 0) {
         // Fill the dates array with dates that fill the entire range of available values.
         ShortDate *min = minDate;
@@ -359,30 +360,34 @@ extern void *UserDefaultsBindingContext;
                 minDate = [min firstDayInYear];
                 maxDate = [max firstDayInYear];
                 break;
+
             case GroupByQuarters:
                 minDate = [min firstDayInQuarter];
                 maxDate = [max firstDayInQuarter];
                 break;
+
             default:
                 minDate = [min firstDayInMonth];
                 maxDate = [max firstDayInMonth];
         }
 
-        ShortDate* date = minDate;
+        ShortDate *date = minDate;
         while ([date compare: maxDate] != NSOrderedDescending) {
             [dates addObject: date];
             switch (groupingInterval) {
                 case GroupByYears:
                     date = [date dateByAddingUnits: 1 byUnit: NSYearCalendarUnit];
                     break;
+
                 case GroupByQuarters:
                     date = [date dateByAddingUnits: 1 byUnit: NSQuarterCalendarUnit];
                     break;
+
                 default:
                     date = [date dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit];
             }
         }
-        
+
     }
 
     fromSlider.maxValue = dates.count - 1;
@@ -391,14 +396,14 @@ extern void *UserDefaultsBindingContext;
         fromSlider.intValue = fromIndex;
     }
     [self updateLimitLabel: fromText index: fromIndex];
-    
+
     toSlider.maxValue = dates.count - 1;
     if (toIndex > toSlider.maxValue) {
         toIndex = toSlider.maxValue;
         fromSlider.intValue = toIndex;
     }
     [self updateLimitLabel: toText index: toIndex];
-    
+
     // Remaining data is loaded on demand.
     //[self performSelectorInBackground:@selector(updateOutline) withObject:nil]; // <- this is leaking objects
     [self updateOutline];
@@ -406,10 +411,10 @@ extern void *UserDefaultsBindingContext;
     [valueGrid setNeedsDisplay: YES];
 }
 
-- (void)loadDataForIndex: (NSInteger) index
+- (void)loadDataForIndex: (NSInteger)index
 {
     Category *item = [[outline itemAtRow: index + 1] representedObject];
-    
+
     NSArray *nodeDates = nil;
     NSArray *nodeBalances = nil;
     NSArray *nodeTurnovers = nil;
@@ -425,7 +430,7 @@ extern void *UserDefaultsBindingContext;
     // Dates for this category might not correspond to the display range (i.e. no value for all dates)
     // so move the existing values to the appropriate array index and fill the rest with 0.
     NSMutableArray *balanceArray = [NSMutableArray arrayWithCapacity: [dates count]];
-    NSUInteger dateIndex = 0;
+    NSUInteger     dateIndex = 0;
     for (ShortDate *date in dates) {
         if (dateIndex >= [nodeDates count] || [date compare: nodeDates[dateIndex]] == NSOrderedAscending) {
             [balanceArray addObject: [NSDecimalNumber zero]];
@@ -434,7 +439,6 @@ extern void *UserDefaultsBindingContext;
             dateIndex++;
         }
     }
-    
     balances[index] = balanceArray;
 }
 
@@ -455,41 +459,45 @@ extern void *UserDefaultsBindingContext;
             case GroupByYears:
                 selToDate = [selFromDate lastDayInYear];
                 break;
+
             case GroupByQuarters:
                 selToDate = [selFromDate lastDayInQuarter];
                 break;
+
             default:
                 selToDate = [selFromDate lastDayInMonth];
                 break;
         }
-        
+
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category IN %@ AND statement.date >= %@ AND statement.date <= %@",
                                   [self.selectedCategory allCategories], [selFromDate lowDate], [selToDate highDate]];
         [statementsController setFetchPredicate: predicate];
-        [statementsController prepareContent];	
+        [statementsController prepareContent];
 
         [detailsPopover showRelativeToRect: cellBounds ofView: valueGrid preferredEdge: NSMinYEdge];
     }
 }
 
-- (void)updateLimitLabel: (NSTextField *)field index: (NSUInteger) index
+- (void)updateLimitLabel: (NSTextField *)field index: (NSUInteger)index
 {
     if (dates.count == 0) {
         field.stringValue = @"--";
     } else {
-        ShortDate* date = dates[index];
+        ShortDate *date = dates[index];
         switch (groupingInterval) {
             case GroupByYears:
                 field.stringValue = [date yearDescription];
                 break;
+
             case GroupByQuarters:
                 field.stringValue = [date quarterYearDescription];
                 break;
+
             default:
                 field.stringValue = [date monthYearDescription];
                 break;
-        }	
-    }   
+        }
+    }
 }
 
 - (void)updateSorting
@@ -498,8 +506,8 @@ extern void *UserDefaultsBindingContext;
     sortIndex = [sortControl selectedSegment];
     NSImage *sortImage = sortAscending ? [NSImage imageNamed: @"sort-indicator-inc"] : [NSImage imageNamed: @"sort-indicator-dec"];
     [sortControl setImage: sortImage forSegment: sortIndex];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
+    NSUserDefaults      *userDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary *values = [[userDefaults objectForKey: @"categoryPeriods"] mutableCopy];
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 2];
@@ -507,25 +515,29 @@ extern void *UserDefaultsBindingContext;
     [values setValue: @(sortIndex) forKey: @"sortIndex"];
     [values setValue: @(sortAscending) forKey: @"sortAscending"];
     [userDefaults setObject: values forKey: @"categoryPeriods"];
-    
+
     NSString *key;
     switch (sortIndex) {
         case 1:
             statementsListView.canShowHeaders = false;
             key = @"statement.remoteName";
             break;
+
         case 2:
             statementsListView.canShowHeaders = false;
             key = @"statement.purpose";
             break;
+
         case 3:
             statementsListView.canShowHeaders = false;
             key = @"statement.categoriesDescription";
             break;
+
         case 4:
             statementsListView.canShowHeaders = false;
             key = @"statement.value";
             break;
+
         default:
             statementsListView.canShowHeaders = true;
             key = @"statement.date";
@@ -540,25 +552,28 @@ extern void *UserDefaultsBindingContext;
     if ([dates count] == 0) {
         return;
     }
-     
+
     ShortDate *fromDate = dates[fromIndex];
     ShortDate *toDate = dates[toIndex];
-    
+
     switch (groupingInterval) {
         case GroupByMonths:
             toDate = [toDate lastDayInMonth];
             break;
+
         case GroupByQuarters:
             toDate = [toDate lastDayInQuarter];
             break;
+
         case GroupByYears:
             toDate = [toDate lastDayInYear];
             break;
+
         default:
             break;
     }
-    
-    [Category setCatReportFrom:fromDate to:toDate];
+
+    [Category setCatReportFrom: fromDate to: toDate];
 }
 
 #pragma mark -
@@ -567,15 +582,15 @@ extern void *UserDefaultsBindingContext;
 - (IBAction)setGrouping: (id)sender
 {
     groupingInterval = [sender intValue];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary* values = [[userDefaults objectForKey: @"categoryPeriods"] mutableCopy];
+
+    NSUserDefaults      *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *values = [[userDefaults objectForKey: @"categoryPeriods"] mutableCopy];
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 1];
     }
     [values setValue: @((int)groupingInterval) forKey: @"grouping"];
     [userDefaults setObject: values forKey: @"categoryPeriods"];
-    
+
     [self updateData];
 }
 
@@ -591,17 +606,17 @@ extern void *UserDefaultsBindingContext;
         toSlider.intValue = toIndex;
         [self updateLimitLabel: toText index: toIndex];
     }
-    
+
     [self updateLimitLabel: fromText index: fromIndex];
 
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary* values = [[userDefaults objectForKey: @"categoryPeriods"] mutableCopy];
+    NSUserDefaults      *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *values = [[userDefaults objectForKey: @"categoryPeriods"] mutableCopy];
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 1];
     }
     [values setValue: @(fromIndex) forKey: @"fromIndex"];
     [userDefaults setObject: values forKey: @"categoryPeriods"];
-    
+
     [self updateOutline];
     [valueGrid reloadData];
 }
@@ -612,33 +627,33 @@ extern void *UserDefaultsBindingContext;
     if (toIndex == toPosition) {
         return;
     }
-    
+
     toIndex = toPosition;
     if (toIndex < fromIndex) {
         fromIndex = toIndex;
         fromSlider.intValue = fromIndex;
         [self updateLimitLabel: fromText index: fromIndex];
     }
-    
+
     [self updateLimitLabel: toText index: toIndex];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary* values = [[userDefaults objectForKey: @"categoryPeriods"] mutableCopy];
+
+    NSUserDefaults      *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *values = [[userDefaults objectForKey: @"categoryPeriods"] mutableCopy];
     if (values == nil) {
         values = [NSMutableDictionary dictionaryWithCapacity: 1];
     }
     [values setValue: @(toIndex) forKey: @"toIndex"];
     [userDefaults setObject: values forKey: @"categoryPeriods"];
-    
+
     [self updateOutline];
     [valueGrid reloadData];
 }
 
 - (IBAction)filterStatements: (id)sender
 {
-    NSTextField	*field = sender;
-    NSString *text = [field stringValue];
-    
+    NSTextField *field = sender;
+    NSString    *text = [field stringValue];
+
     if ([text length] == 0) {
         [statementsController setFilterPredicate: nil];
     } else {
@@ -667,9 +682,9 @@ extern void *UserDefaultsBindingContext;
 
 @synthesize selectedCategory;
 
--(void)print
+- (void)print
 {
-    NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
+    NSPrintInfo *printInfo = [NSPrintInfo sharedPrintInfo];
     [printInfo setTopMargin: 45];
     [printInfo setBottomMargin: 45];
     [printInfo setHorizontalPagination: NSFitPagination];
@@ -680,7 +695,7 @@ extern void *UserDefaultsBindingContext;
     [printOp runOperation];
 }
 
--(NSView*)mainView
+- (NSView *)mainView
 {
     return mainView;
 }
@@ -688,7 +703,7 @@ extern void *UserDefaultsBindingContext;
 - (void)activate
 {
     active = YES;
-    
+
     // Reload the grid data, but not before the current run loop ended. Otherwise we end
     // up with a wrong number of rows (predicate changes in the tree controller are applied to the
     // outline not before the end of the current run loop.
@@ -700,11 +715,8 @@ extern void *UserDefaultsBindingContext;
     active = NO;
 }
 
-- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
+- (void)setTimeRangeFrom: (ShortDate *)from to: (ShortDate *)to
 {
 }
 
 @end
-
-
-

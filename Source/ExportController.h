@@ -12,17 +12,17 @@
 @class ShortDate;
 
 @interface ExportController : NSObject {
-	NSDate		*fromDate;
-	NSDate		*toDate;
-	BOOL		withChildren;
-	
-	Category	*category;
-	
-	IBOutlet NSView		*accessoryView;
-	IBOutlet NSMutableArray	*selectedFields;
+    NSDate *fromDate;
+    NSDate *toDate;
+    BOOL   withChildren;
+
+    Category *category;
+
+    IBOutlet NSView         *accessoryView;
+    IBOutlet NSMutableArray *selectedFields;
 }
 
--(void)startExport: (Category*)cat fromDate:(ShortDate*)from toDate:(ShortDate*)to;
-+(ExportController*)controller;
+- (void)startExport: (Category *)cat fromDate: (ShortDate *)from toDate: (ShortDate *)to;
++ (ExportController *)controller;
 
 @end

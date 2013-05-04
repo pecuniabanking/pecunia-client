@@ -10,10 +10,10 @@
 
 
 @interface DonationMessageController : NSWindowController {
-	BOOL donate;
+    BOOL donate;
 }
 
--(IBAction)donate: (id)sender;
--(IBAction)later: (id)sender;
--(BOOL)run;
+- (IBAction)donate: (id)sender;
+- (IBAction)later: (id)sender;
+- (BOOL)run;
 @end

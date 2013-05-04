@@ -12,34 +12,37 @@ NSThread *workerThread = nil;
 
 @implementation WorkerThread
 
-+(void)init
++ (void)init
 {
-	if(workerThread) return;
-	workerThread = [[NSThread alloc] initWithTarget:self
-										   selector:@selector(threadMain:)
-											 object:nil];
-	[workerThread start ];
+    if (workerThread) {
+        return;
+    }
+    workerThread = [[NSThread alloc] initWithTarget: self
+                                           selector: @selector(threadMain:)
+                                             object: nil];
+    [workerThread start];
 }
 
-+(void)threadMain: (id)data
++ (void)threadMain: (id)data
 {
-	@autoreleasepool {
-	
-        NSRunLoop *loop = [NSRunLoop currentRunLoop ];
-	[loop addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
-	while(![workerThread isCancelled ]) [loop run ];
-	
+    @autoreleasepool {
+        NSRunLoop *loop = [NSRunLoop currentRunLoop];
+        [loop addPort: [NSMachPort port] forMode: NSDefaultRunLoopMode];
+        while (![workerThread isCancelled]) {
+            [loop run];
+        }
+
     }
 }
 
-+(NSThread*)thread
++ (NSThread *)thread
 {
-	return workerThread;
+    return workerThread;
 }
 
-+(void)finish
++ (void)finish
 {
-	[workerThread cancel ];
+    [workerThread cancel];
 }
 
 @end

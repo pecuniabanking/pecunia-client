@@ -7,20 +7,19 @@
  *
  */
 /*
-typedef enum {
-	log_alert = 0,
-	log_error,
-	log_warning,
-	log_notice,
-	log_info,
-	log_debug,
-	log_all,
-} LogLevel;
+ typedef enum {
+ log_alert = 0,
+ log_error,
+ log_warning,
+ log_notice,
+ log_info,
+ log_debug,
+ log_all,
+ } LogLevel;
 
-@protocol MessageLog
+ @protocol MessageLog
 
--(void)addLog:(NSString*)msg withLevel:(LogLevel)level;
+ -(void)addLog:(NSString*)msg withLevel:(LogLevel)level;
 
-@end
-*/
-
+ @end
+ */

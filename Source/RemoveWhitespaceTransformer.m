@@ -10,23 +10,30 @@
 
 @implementation RemoveWhitespaceTransformer
 
-+ (Class)transformedValueClass { return [NSString class]; }
-+ (BOOL)allowsReverseTransformation { return YES; }
++ (Class)transformedValueClass
+{
+    return [NSString class];
+}
 
-- (id)reverseTransformedValue:(id)value
++ (BOOL)allowsReverseTransformation
+{
+    return YES;
+}
+
+- (id)reverseTransformedValue: (id)value
 {
     if (value == nil) {
         return nil;
     }
     NSString *result = @"";
-    NSArray *components = [value componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSArray  *components = [value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     for (NSString *s in components) {
-        result = [result stringByAppendingString:s];
+        result = [result stringByAppendingString: s];
     }
     return result;
 }
 
-- (id)transformedValue:(id)value
+- (id)transformedValue: (id)value
 {
     return value;
 }

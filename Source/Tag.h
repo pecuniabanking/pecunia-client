@@ -29,15 +29,15 @@
 }
 
 @property (nonatomic, retain) NSString *caption;
-@property (nonatomic, retain) NSData *color;
+@property (nonatomic, retain) NSData   *color;
 @property (nonatomic, retain) NSNumber *order;
-@property (nonatomic, retain) NSSet *statements;
+@property (nonatomic, retain) NSSet    *statements;
 
 @property (nonatomic, strong) NSColor *tagColor;
 
 + (void)createDefaultTags;
-+ (Tag*)createTagWithCaption: (NSString *)caption index: (NSUInteger)index;
-+ (Tag*)tagWithCaption: (NSString *)caption;
++ (Tag *)createTagWithCaption: (NSString *)caption index: (NSUInteger)index;
++ (Tag *)tagWithCaption: (NSString *)caption;
 
 - (void)sortBefore: (Tag *)target;
 

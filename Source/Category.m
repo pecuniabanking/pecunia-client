@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -67,21 +67,19 @@ BOOL updateSent = NO;
     if (self.isBankAccount) {
         return;
     }
-    
     for (Category *category in self.children) {
         [category updateInvalidCategoryValues];
     }
-
     if (!self.isBalanceValid.boolValue) {
-        NSArray *stats = nil;
-        NSDecimalNumber	*balance = [NSDecimalNumber zero ];
-        
+        NSArray         *stats = nil;
+        NSDecimalNumber *balance = [NSDecimalNumber zero];
+
         assert(startReportDate != nil);
         assert(endReportDate != nil);
         stats = [self assignmentsFrom: startReportDate
                                    to: endReportDate
                          withChildren: NO];
-        
+
         StatCatAssignment *stat = nil;
         for (stat in stats) {
             balance = [balance decimalNumberByAdding: stat.value];
@@ -104,21 +102,19 @@ BOOL updateSent = NO;
     if ([self isBankAccount]) {
         return;
     }
-    
     for (Category *cat in self.children) {
         [cat rebuildValues];
     }
-
     // now handle self
-    NSDecimalNumber	*balance = NSDecimalNumber.zero;
-    
+    NSDecimalNumber *balance = NSDecimalNumber.zero;
+
     assert(startReportDate != nil);
     assert(endReportDate != nil);
     self.reportedAssignments = nil;  // clear cache
     NSArray *assignments = [self assignmentsFrom: startReportDate
                                               to: endReportDate
                                     withChildren: NO];
-    
+
     for (StatCatAssignment *assignment in assignments) {
         if (assignment.value != nil) {
             balance = [balance decimalNumberByAdding: assignment.value];
@@ -132,7 +128,7 @@ BOOL updateSent = NO;
 /**
  * Collect hierarchical values like overall balance, hidden children etc.
  */
-- (NSDecimalNumber*)rollup
+- (NSDecimalNumber *)rollup
 {
     NSDecimalNumber *res = self.balance;
     hiddenChildren = 0;
@@ -159,45 +155,46 @@ BOOL updateSent = NO;
     return res;
 }
 
--(void)invalidateBalance
+- (void)invalidateBalance
 {
     self.isBalanceValid = @NO;
     self.reportedAssignments = nil; // also remove cache
 }
 
 // value of expenses, earnings or turnovers for a specified period
--(NSDecimalNumber*)valuesOfType: (CatValueType)type from: (ShortDate*)fromDate to: (ShortDate*)toDate
+- (NSDecimalNumber *)valuesOfType: (CatValueType)type from: (ShortDate *)fromDate to: (ShortDate *)toDate
 {
-    NSDecimalNumber* result = [NSDecimalNumber zero];
+    NSDecimalNumber *result = [NSDecimalNumber zero];
 
     for (Category *category in self.children) {
         result = [result decimalNumberByAdding: [category valuesOfType: type from: fromDate to: toDate]];
     }
-
     NSArray *assignments = [self assignmentsFrom: fromDate to: toDate withChildren: NO];
-    if ([assignments count] > 0)
-    {
-        switch (type)
-        {
+    if ([assignments count] > 0) {
+        switch (type) {
             case cat_all:
                 for (StatCatAssignment *assignment in assignments) {
                     result = [result decimalNumberByAdding: assignment.value];
                 }
                 break;
+
             case cat_earnings:
                 for (StatCatAssignment *assignment in assignments) {
-                    if ([assignment.value compare: NSDecimalNumber.zero] == NSOrderedDescending)
+                    if ([assignment.value compare: NSDecimalNumber.zero] == NSOrderedDescending) {
                         result = [result decimalNumberByAdding: assignment.value];
+                    }
                 }
                 break;
+
             case cat_spendings:
                 for (StatCatAssignment *assignment in assignments) {
-                    if ([assignment.value compare: NSDecimalNumber.zero] == NSOrderedAscending)
+                    if ([assignment.value compare: NSDecimalNumber.zero] == NSOrderedAscending) {
                         result = [result decimalNumberByAdding: assignment.value];
+                    }
                 }
                 break;
-            case cat_turnovers:
-            {
+
+            case cat_turnovers: {
                 result = [result decimalNumberByAdding: [NSDecimalNumber decimalNumberWithMantissa: assignments.count
                                                                                           exponent: 0
                                                                                         isNegative: NO]];
@@ -221,26 +218,23 @@ BOOL updateSent = NO;
     NSUInteger maxTurnover = 0;
 
     NSArray *assignments = [self assignmentsFrom: startDate to: endDate withChildren: recursive];
-    NSArray* sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
+    NSArray *sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
 
-    NSUInteger count = assignments.count;
-    NSMutableArray* dateArray = [NSMutableArray arrayWithCapacity: count];
-    NSMutableArray* countArray = [NSMutableArray arrayWithCapacity: count];
-    if (count > 0)
-    {
-        ShortDate* lastDate = nil;
-        double balanceCount = 0;
-        for (StatCatAssignment* assignment in sortedAssignments) {
+    NSUInteger     count = assignments.count;
+    NSMutableArray *dateArray = [NSMutableArray arrayWithCapacity: count];
+    NSMutableArray *countArray = [NSMutableArray arrayWithCapacity: count];
+    if (count > 0) {
+        ShortDate *lastDate = nil;
+        double    balanceCount = 0;
+        for (StatCatAssignment *assignment in sortedAssignments) {
             // Ignore categories that are hidden, except if this is the parent category.
             if (assignment.category != self) {
                 if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
                     continue;
                 }
             }
-
-            ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
-            if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame)
-            {
+            ShortDate *date = [ShortDate dateWithDate: assignment.statement.date];
+            if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame) {
                 [dateArray addObject: lastDate];
                 [countArray addObject: @(balanceCount)];
                 if (balanceCount > maxTurnover) {
@@ -248,9 +242,7 @@ BOOL updateSent = NO;
                 }
                 balanceCount = 1;
                 lastDate = date;
-            }
-            else
-            {
+            } else {
                 if (lastDate == nil) {
                     lastDate = date;
                 }
@@ -262,11 +254,9 @@ BOOL updateSent = NO;
         if (balanceCount > maxTurnover) {
             maxTurnover = balanceCount;
         }
-
         *dates = dateArray;
         *turnovers = countArray;
     }
-
     return maxTurnover;
 }
 
@@ -286,26 +276,23 @@ BOOL updateSent = NO;
     double maxSum = 0;
 
     NSArray *assignments = [self assignmentsFrom: startDate to: endDate withChildren: recursive];
-    NSArray* sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
+    NSArray *sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
 
-    NSUInteger count = assignments.count;
-    NSMutableArray* dateArray = [NSMutableArray arrayWithCapacity: count];
-    NSMutableArray* valuesArray = [NSMutableArray arrayWithCapacity: count];
-    if (count > 0)
-    {
-        ShortDate* lastDate = nil;
-        double sum = 0;
-        for (StatCatAssignment* assignment in sortedAssignments) {
+    NSUInteger     count = assignments.count;
+    NSMutableArray *dateArray = [NSMutableArray arrayWithCapacity: count];
+    NSMutableArray *valuesArray = [NSMutableArray arrayWithCapacity: count];
+    if (count > 0) {
+        ShortDate *lastDate = nil;
+        double    sum = 0;
+        for (StatCatAssignment *assignment in sortedAssignments) {
             // Ignore categories that are hidden, except if this is the parent category.
             if (assignment.category != self) {
                 if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
                     continue;
                 }
             }
-
-            ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
-            if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame)
-            {
+            ShortDate *date = [ShortDate dateWithDate: assignment.statement.date];
+            if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame) {
                 [dateArray addObject: lastDate];
                 [valuesArray addObject: @(sum)];
                 if (sum > maxSum) {
@@ -313,9 +300,7 @@ BOOL updateSent = NO;
                 }
                 sum = fabs([assignment.value doubleValue]);
                 lastDate = date;
-            }
-            else
-            {
+            } else {
                 if (lastDate == nil) {
                     lastDate = date;
                 }
@@ -327,11 +312,9 @@ BOOL updateSent = NO;
         if (sum > maxSum) {
             maxSum = sum;
         }
-
         *dates = dateArray;
         *values = valuesArray;
     }
-    
     return maxSum;
 }
 
@@ -348,30 +331,29 @@ BOOL updateSent = NO;
     ShortDate *startDate = [ShortDate dateWithYear: year month: 1 day: 1];
     ShortDate *endDate = [ShortDate dateWithYear: year month: 12 day: 31];
 
-    HighLowValues limits = {1e100, -1e100}; // Should this not be enough one day we want a 1% share
-                                            // from the user's managed money in Pecunia ;-)
+    HighLowValues limits = {
+        1e100, -1e100
+    };                                        // Should this not be enough one day we want a 1% share
+                                              // from the user's managed money in Pecunia ;-)
 
     NSArray *assignments = [self assignmentsFrom: startDate to: endDate withChildren: recursive];
-    NSArray* sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
+    NSArray *sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
 
-    NSUInteger count = assignments.count;
-    NSMutableArray* dateArray = [NSMutableArray arrayWithCapacity: count];
-    NSMutableArray* valuesArray = [NSMutableArray arrayWithCapacity: count];
-    if (count > 0)
-    {
-        ShortDate* lastDate = nil;
-        double sum = 0;
-        for (StatCatAssignment* assignment in sortedAssignments) {
+    NSUInteger     count = assignments.count;
+    NSMutableArray *dateArray = [NSMutableArray arrayWithCapacity: count];
+    NSMutableArray *valuesArray = [NSMutableArray arrayWithCapacity: count];
+    if (count > 0) {
+        ShortDate *lastDate = nil;
+        double    sum = 0;
+        for (StatCatAssignment *assignment in sortedAssignments) {
             // Ignore categories that are hidden, except if this is the parent category.
             if (assignment.category != self) {
                 if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
                     continue;
                 }
             }
-
-            ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
-            if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame)
-            {
+            ShortDate *date = [ShortDate dateWithDate: assignment.statement.date];
+            if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame) {
                 [dateArray addObject: lastDate];
                 [valuesArray addObject: @(sum)];
                 if (sum > limits.high) {
@@ -382,9 +364,7 @@ BOOL updateSent = NO;
                 }
                 sum = [assignment.value doubleValue];
                 lastDate = date;
-            }
-            else
-            {
+            } else {
                 if (lastDate == nil) {
                     lastDate = date;
                 }
@@ -399,54 +379,50 @@ BOOL updateSent = NO;
         if (sum < limits.low) {
             limits.low = sum;
         }
-
         *dates = dateArray;
         *values = valuesArray;
     }
-    
     return limits;
 }
 
 // returns all assignments for the specified period
 // if the period equals the reporting period, the assignments are cached / retrieved from cache
 // the cache always only contains assignments directly belonging to the current category, not those from child categories!
--(NSArray*)assignmentsFrom: (ShortDate*)fromDate to: (ShortDate*)toDate withChildren: (BOOL)includeChildren
+- (NSArray *)assignmentsFrom: (ShortDate *)fromDate to: (ShortDate *)toDate withChildren: (BOOL)includeChildren
 {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity: 100];
-    
+
     if (includeChildren) {
         for (Category *category in self.children) {
             [result addObjectsFromArray: [category assignmentsFrom: fromDate to: toDate withChildren: YES]];
         }
     }
-
     // check if we can take the assignments from cache
     if ([fromDate isEqual: startReportDate] && [toDate isEqual: endReportDate] && self.reportedAssignments != nil) {
         [result addObjectsFromArray: self.reportedAssignments];
         return result;
     }
-    
     // fetch all relevant statements
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"StatCatAssignment" inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
+    NSFetchRequest         *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription    *entity = [NSEntityDescription entityForName: @"StatCatAssignment" inManagedObjectContext: context];
+    [fetchRequest setEntity: entity];
     NSDate *from = [fromDate lowDate];
     NSDate *to = [toDate highDate];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category = %@ and statement.date >= %@ and statement.date <= %@", self, from, to];
-    [fetchRequest setPredicate:predicate];
-    
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category = %@ and statement.date >= %@ and statement.date <= %@", self, from, to];
+    [fetchRequest setPredicate: predicate];
+
     NSError *error = nil;
-    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    NSArray *fetchedObjects = [context executeFetchRequest: fetchRequest error: &error];
     if (fetchedObjects != nil) {
-        [result addObjectsFromArray:fetchedObjects];
+        [result addObjectsFromArray: fetchedObjects];
     }
     // cache assignments
     if ([fromDate isEqual: startReportDate] && [toDate isEqual: endReportDate]) {
         self.reportedAssignments = [fetchedObjects copy];
     }
-    return result;	
+    return result;
 }
 
 // update reported assignment caches due to a change of the reporting period
@@ -455,25 +431,32 @@ BOOL updateSent = NO;
     for (Category *category in self.children) {
         [category updateReportedAssignments];
     }
-
     // now handle self
     self.reportedAssignments = nil;
     [self assignmentsFrom: startReportDate to: endReportDate withChildren: NO];
 }
 
-
--(NSString*)accountNumber { return nil; }
-
--(NSString*)localName
+- (NSString *)accountNumber
 {
-    [self willAccessValueForKey:@"name"];
-    NSString *n = [self primitiveValueForKey:@"name"];
-    [self didAccessValueForKey:@"name"];
-    if(self.parent == nil) {
-        if([n isEqualToString: @"++bankroot" ]) return NSLocalizedString(@"AP8", nil);
-        if([n isEqualToString: @"++catroot" ]) return NSLocalizedString(@"AP9", nil);
+    return nil;
+}
+
+- (NSString *)localName
+{
+    [self willAccessValueForKey: @"name"];
+    NSString *n = [self primitiveValueForKey: @"name"];
+    [self didAccessValueForKey: @"name"];
+    if (self.parent == nil) {
+        if ([n isEqualToString: @"++bankroot"]) {
+            return NSLocalizedString(@"AP8", nil);
+        }
+        if ([n isEqualToString: @"++catroot"]) {
+            return NSLocalizedString(@"AP9", nil);
+        }
     }
-    if([n isEqualToString: @"++nassroot" ]) return NSLocalizedString(@"AP12", nil);
+    if ([n isEqualToString: @"++nassroot"]) {
+        return NSLocalizedString(@"AP12", nil);
+    }
     return n;
 }
 
@@ -481,66 +464,75 @@ BOOL updateSent = NO;
  * Sets the name of this category to the given value. Checks are done to ensure that the overall
  * structure will not be broken.
  */
--(void)setLocalName: (NSString*)name
+- (void)setLocalName: (NSString *)name
 {
-    if (name == nil)
+    if (name == nil) {
         return;
-    
+    }
     [self willAccessValueForKey: @"name"];
     NSString *n = [self primitiveValueForKey: @"name"];
     [self didAccessValueForKey: @"name"];
-    
+
     // Check for special node names denoting certain built-in elements and refuse to rename them.
-    if (n != nil)
-    {
+    if (n != nil) {
         // The existing name must have a value for this check to work properly.
         NSRange r = [n rangeOfString: @"++"];
-        if (r.location == 0)
+        if (r.location == 0) {
             return;
+        }
     }
-    
     // Check also the new name so it doesn't use our special syntax to denote such elements.
     NSRange r = [name rangeOfString: @"++"];
-    if (r.location == 0)
+    if (r.location == 0) {
         return;
-    
+    }
     [self setValue: name forKey: @"name"];
 }
 
--(BOOL)isRoot
+- (BOOL)isRoot
 {
     return self.parent == nil;
 }
 
--(BOOL)isBankAccount
+- (BOOL)isBankAccount
 {
-    return [self.isBankAcc boolValue ];
+    return [self.isBankAcc boolValue];
 }
 
--(BOOL)isBankingRoot
+- (BOOL)isBankingRoot
 {
-    if( self.parent == nil ) return [self.isBankAcc boolValue ];
+    if (self.parent == nil) {
+        return [self.isBankAcc boolValue];
+    }
     return NO;
 }
 
--(BOOL)isEditable
+- (BOOL)isEditable
 {
-    if(self.parent == nil) return NO;
-    NSString *n = [self primitiveValueForKey:@"name"];
-    if(n != nil) {
-        NSRange r = [n rangeOfString: @"++" ];
-        if(r.location == 0) return NO;
+    if (self.parent == nil) {
+        return NO;
+    }
+    NSString *n = [self primitiveValueForKey: @"name"];
+    if (n != nil) {
+        NSRange r = [n rangeOfString: @"++"];
+        if (r.location == 0) {
+            return NO;
+        }
     }
     return YES;
 }
 
--(BOOL)isRemoveable
+- (BOOL)isRemoveable
 {
-    if(self.parent == nil) return NO;
-    NSString *n = [self primitiveValueForKey:@"name"];
-    if(n != nil) {
-        NSRange r = [n rangeOfString: @"++" ];
-        if(r.location == 0) return NO;
+    if (self.parent == nil) {
+        return NO;
+    }
+    NSString *n = [self primitiveValueForKey: @"name"];
+    if (n != nil) {
+        NSRange r = [n rangeOfString: @"++"];
+        if (r.location == 0) {
+            return NO;
+        }
     }
     if ([self.children count] > 0) {
         return NO;
@@ -548,7 +540,7 @@ BOOL updateSent = NO;
     return [self isMemberOfClass: [Category class]];
 }
 
--(BOOL)isInsertable
+- (BOOL)isInsertable
 {
     if (self.isBankAcc.boolValue) {
         return NO;
@@ -560,7 +552,7 @@ BOOL updateSent = NO;
     return TRUE;
 }
 
--(BOOL)isRequestable
+- (BOOL)isRequestable
 {
     if (![self isBankAccount]) {
         return NO;
@@ -568,16 +560,16 @@ BOOL updateSent = NO;
     return ![BankingController.controller requestRunning];
 }
 
--(BOOL)isNotAssignedCategory
+- (BOOL)isNotAssignedCategory
 {
-    return self == [Category nassRoot ];
+    return self == [Category nassRoot];
 }
 
--(id)children
+- (id)children
 {
     if (hiddenChildren > 0 && !PreferenceController.showHiddenCategories) {
         NSMutableSet *children = [[self mutableSetValueForKey: @"children"] mutableCopy];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isHidden = NO"];
+        NSPredicate  *predicate = [NSPredicate predicateWithFormat: @"isHidden = NO"];
         [children filterUsingPredicate: predicate];
         return children;
     }
@@ -587,13 +579,13 @@ BOOL updateSent = NO;
 /**
  * Returns a set consisting of this category plus all its children, grand children etc.
  */
--(NSSet*)allCategories
+- (NSSet *)allCategories
 {
     if (self.isHidden.boolValue && !PreferenceController.showHiddenCategories) {
         return [NSSet set];
     }
-    NSMutableSet* result = [[NSMutableSet alloc] init];
-    
+    NSMutableSet *result = [[NSMutableSet alloc] init];
+
     for (Category *child in self.children) {
         [result unionSet: [child allCategories]];
     }
@@ -604,13 +596,13 @@ BOOL updateSent = NO;
 /**
  * Returns a set consisting of all sibling categories of this one.
  */
-- (NSSet*)siblings
+- (NSSet *)siblings
 {
-    Category* parent = self.parent;
+    Category *parent = self.parent;
     if (parent == nil) {
         return nil;
     }
-    NSMutableSet* set = [[parent mutableSetValueForKey: @"children"] mutableCopy];
+    NSMutableSet *set = [[parent mutableSetValueForKey: @"children"] mutableCopy];
     [set removeObject: self];
     if (!PreferenceController.showHiddenCategories) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isHidden = NO"];
@@ -623,33 +615,33 @@ BOOL updateSent = NO;
  * Returns a set of all assignments displayed in the transaction list for this category.
  * Takes setting "recursiveTransactions" into account, i.e. whether also assignments of sub categories should be displayed.
  */
-- (NSMutableSet*)boundAssignments
+- (NSMutableSet *)boundAssignments
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSArray *assignments = [self assignmentsFrom: startReportDate to: endReportDate withChildren: [defaults boolForKey: @"recursiveTransactions"]];
+    NSArray        *assignments = [self assignmentsFrom: startReportDate to: endReportDate withChildren: [defaults boolForKey: @"recursiveTransactions"]];
     return [NSMutableSet setWithArray: assignments];
 }
 
 /**
  * Returns all assignments from this category plus all of those from the children and grand children etc. categories.
  */
-- (NSMutableSet*)allAssignments
+- (NSMutableSet *)allAssignments
 {
     NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSSet *allCats = [self allCategories];
-    NSMutableSet *result = [[NSMutableSet alloc] init];
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName: @"StatCatAssignment" inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    
+    NSSet                  *allCats = [self allCategories];
+    NSMutableSet           *result = [[NSMutableSet alloc] init];
+
+    NSFetchRequest      *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"StatCatAssignment" inManagedObjectContext: context];
+    [fetchRequest setEntity: entity];
+
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category in %@", allCats];
     [fetchRequest setPredicate: predicate];
-    
+
     NSError *error = nil;
-    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    NSArray *fetchedObjects = [context executeFetchRequest: fetchRequest error: &error];
     if (fetchedObjects != nil) {
-        [result addObjectsFromArray:fetchedObjects];
+        [result addObjectsFromArray: fetchedObjects];
     }
     return result;
 }
@@ -668,11 +660,11 @@ BOOL updateSent = NO;
  */
 - (void)getDatesMin: (ShortDate **)minDate max: (ShortDate **)maxDate
 {
-    ShortDate* currentMinDate = [ShortDate currentDate];
-    ShortDate* currentMaxDate = [ShortDate currentDate];
-    
+    ShortDate *currentMinDate = [ShortDate currentDate];
+    ShortDate *currentMaxDate = [ShortDate currentDate];
+
     // First get the dates from all child categories and then compare them to dates of this one.
-    for (Category* category in self.children) {
+    for (Category *category in self.children) {
         ShortDate *localMin, *localMax;
         [category getDatesMin: &localMin max: &localMax];
         if ([localMin compare: currentMinDate] == NSOrderedAscending) {
@@ -682,13 +674,12 @@ BOOL updateSent = NO;
             currentMaxDate = localMax;
         }
     }
-    
-    NSArray* stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
-    NSArray* sortedStats = [stats sortedArrayUsingSelector: @selector(compareDate:)];
-    
+    NSArray *stats = [[self mutableSetValueForKey: @"assignments"] allObjects];
+    NSArray *sortedStats = [stats sortedArrayUsingSelector: @selector(compareDate:)];
+
     if ([sortedStats count] > 0) {
-        StatCatAssignment* assignment = sortedStats[0];
-        ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
+        StatCatAssignment *assignment = sortedStats[0];
+        ShortDate         *date = [ShortDate dateWithDate: assignment.statement.date];
         if ([date compare: currentMinDate] == NSOrderedAscending) {
             currentMinDate = date;
         }
@@ -707,22 +698,21 @@ BOOL updateSent = NO;
  * @param sumUp Determines if balances are summed up over the grouping period or if the last value
  *              in that period is returned in the balances array.
  */
--(NSUInteger)historyToDates: (NSArray**)dates
-                   balances: (NSArray**)balances
-              balanceCounts: (NSArray**)counts
-               withGrouping: (GroupingInterval)interval
-                      sumUp: (BOOL)sumUp
+- (NSUInteger)historyToDates: (NSArray **)dates
+                    balances: (NSArray **)balances
+               balanceCounts: (NSArray **)counts
+                withGrouping: (GroupingInterval)interval
+                       sumUp: (BOOL)sumUp
 {
-    NSArray* statements = [[self allAssignments] allObjects];
-    NSArray* sortedAssignments = [statements sortedArrayUsingSelector: @selector(compareDate:)];
-    
-    NSUInteger count = [statements count];
-    NSMutableArray* dateArray = [NSMutableArray arrayWithCapacity: count];
-    NSMutableArray* balanceArray = [NSMutableArray arrayWithCapacity: count];
-    NSMutableArray* countArray = [NSMutableArray arrayWithCapacity: count];
-    if (count > 0)
-    {
-        ShortDate* lastDate = nil;
+    NSArray *statements = [[self allAssignments] allObjects];
+    NSArray *sortedAssignments = [statements sortedArrayUsingSelector: @selector(compareDate:)];
+
+    NSUInteger     count = [statements count];
+    NSMutableArray *dateArray = [NSMutableArray arrayWithCapacity: count];
+    NSMutableArray *balanceArray = [NSMutableArray arrayWithCapacity: count];
+    NSMutableArray *countArray = [NSMutableArray arrayWithCapacity: count];
+    if (count > 0) {
+        ShortDate *lastDate = nil;
 
         if (sumUp) {
             int balanceCount = 1;
@@ -730,29 +720,32 @@ BOOL updateSent = NO;
             // We have to keep the current balance for each participating account as we have to sum
             // them up on each time point to get the total balance.
             NSMutableDictionary *currentBalances = [NSMutableDictionary dictionaryWithCapacity: 5];
-            for (StatCatAssignment* assignment in sortedAssignments) {
+            for (StatCatAssignment *assignment in sortedAssignments) {
                 // Ignore categories that are hidden, except if this is the parent category.
                 if (assignment.category != self) {
                     if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
                         continue;
                     }
                 }
-
-                ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
+                ShortDate *date = [ShortDate dateWithDate: assignment.statement.date];
 
                 switch (interval) {
                     case GroupByWeeks:
                         date = [date lastDayInWeek];
                         break;
+
                     case GroupByMonths:
                         date = [date lastDayInMonth];
                         break;
+
                     case GroupByQuarters:
                         date = [date lastDayInQuarter];
                         break;
+
                     case GroupByYears:
                         date = [date lastDayInYear];
                         break;
+
                     default:
                         break;
                 }
@@ -775,11 +768,9 @@ BOOL updateSent = NO;
                         balanceCount++;
                     }
                 }
-
                 // Use the category's object id as unique key as Category itself is not suitable.
                 currentBalances[assignment.category.objectID] = assignment.statement.saldo;
             }
-
             if (lastDate != nil) {
                 [dateArray addObject: lastDate];
 
@@ -791,46 +782,46 @@ BOOL updateSent = NO;
                 [countArray addObject: @(balanceCount)];
             }
         } else {
-            int balanceCount = 0;
-            NSDecimalNumber* currentValue = [NSDecimalNumber zero];
-            for (StatCatAssignment* assignment in sortedAssignments) {
+            int             balanceCount = 0;
+            NSDecimalNumber *currentValue = [NSDecimalNumber zero];
+            for (StatCatAssignment *assignment in sortedAssignments) {
                 // Ignore categories that are hidden, except if this is the parent category.
                 if (assignment.category != self) {
                     if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
                         continue;
                     }
                 }
-
-                ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
+                ShortDate *date = [ShortDate dateWithDate: assignment.statement.date];
 
                 switch (interval) {
                     case GroupByWeeks:
                         date = [date firstDayInWeek];
                         break;
+
                     case GroupByMonths:
                         date = [date firstDayInMonth];
                         break;
+
                     case GroupByQuarters:
                         date = [date firstDayInQuarter];
                         break;
+
                     case GroupByYears:
                         date = [date firstDayInYear];
                         break;
+
                     default:
                         break;
                 }
 
-                if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame)
-                {
+                if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame) {
                     [dateArray addObject: lastDate];
                     [balanceArray addObject: currentValue];
                     [countArray addObject: @(balanceCount)];
                     balanceCount = 1;
                     lastDate = date;
                     currentValue = assignment.statement.value;
-                }
-                else
-                {
+                } else {
                     if (lastDate == nil) {
                         lastDate = date;
                     }
@@ -842,7 +833,6 @@ BOOL updateSent = NO;
             [balanceArray addObject: currentValue];
             [countArray addObject: @(balanceCount)];
         }
-
         *dates = dateArray;
         *balances = balanceArray;
         *counts = countArray;
@@ -850,22 +840,27 @@ BOOL updateSent = NO;
     return count;
 }
 
-- (BOOL)checkMoveToCategory:(Category*)cat
+- (BOOL)checkMoveToCategory: (Category *)cat
 {
     Category *parent;
-    if ([cat isBankAccount]) return NO;
-    if (cat == notAssignedRootSingleton) return NO;
-    
+    if ([cat isBankAccount]) {
+        return NO;
+    }
+    if (cat == notAssignedRootSingleton) {
+        return NO;
+    }
     // check for cycles
     parent = cat.parent;
     while (parent != nil) {
-        if (parent == self) return NO;
+        if (parent == self) {
+            return NO;
+        }
         parent = parent.parent;
     }
     return YES;
 }
 
-- (NSColor*)categoryColor
+- (NSColor *)categoryColor
 {
     // Assign a default color if none has been set so far.
     // Root categories get different dark gray default colors. Others either get one of the predefined
@@ -889,115 +884,114 @@ BOOL updateSent = NO;
                 }
             }
         }
-        
         // Archive the just determined color.
-        NSMutableData* data = [NSMutableData data];
+        NSMutableData *data = [NSMutableData data];
 
-        NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
+        NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
         [archiver encodeObject: catColor forKey: @"color"];
         [archiver finishEncoding];
-        
+
         self.catRepColor = data;
     } else {
         if (catColor == nil) {
-            NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData: self.catRepColor];
+            NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData: self.catRepColor];
             catColor = [unarchiver decodeObjectForKey: @"color"];
             [unarchiver finishDecoding];
         }
     }
-
     [self didAccessValueForKey: @"categoryColor"];
 
     return catColor;
 }
 
-- (void)setCategoryColor: (NSColor*)color
+- (void)setCategoryColor: (NSColor *)color
 {
     if (![catColor isEqualTo: color]) {
         [self willChangeValueForKey: @"categoryColor"];
         catColor = color;
-        
-        NSMutableData* data = [NSMutableData data];
-        
-        NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
+
+        NSMutableData *data = [NSMutableData data];
+
+        NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData: data];
         [archiver encodeObject: catColor forKey: @"color"];
         [archiver finishEncoding];
-        
+
         self.catRepColor = data;
         [self didChangeValueForKey: @"categoryColor"];
     }
 }
 
-+ (Category*)bankRoot
++ (Category *)bankRoot
 {
     NSError *error = nil;
-    if(bankRootSingleton) return bankRootSingleton;
-    
-    NSManagedObjectContext	*context = [[MOAssistant assistant ] context ];
-    NSManagedObjectModel	*model   = [[MOAssistant assistant ] model ];
-    
-    NSFetchRequest *request = [model fetchRequestTemplateForName:@"getBankingRoot"];
-    NSArray *cats = [context executeFetchRequest:request error:&error];
-    if( error != nil || cats == nil) {
-        NSAlert *alert = [NSAlert alertWithError:error];
+    if (bankRootSingleton) {
+        return bankRootSingleton;
+    }
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectModel   *model   = [[MOAssistant assistant] model];
+
+    NSFetchRequest *request = [model fetchRequestTemplateForName: @"getBankingRoot"];
+    NSArray        *cats = [context executeFetchRequest: request error: &error];
+    if (error != nil || cats == nil) {
+        NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return nil;
     }
-    if([cats count ] > 0) return cats[0];
-    
+    if ([cats count] > 0) {
+        return cats[0];
+    }
     // create Root object
-    bankRootSingleton = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
-    [bankRootSingleton setValue: @"++bankroot" forKey: @"name" ];
-    [bankRootSingleton setValue: @YES forKey: @"isBankAcc" ];
+    bankRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
+    [bankRootSingleton setValue: @"++bankroot" forKey: @"name"];
+    [bankRootSingleton setValue: @YES forKey: @"isBankAcc"];
     return bankRootSingleton;
 }
 
-
-+(Category*)catRoot
++ (Category *)catRoot
 {
     NSError *error = nil;
     if (catRootSingleton) {
         return catRootSingleton;
     }
-    
-    NSManagedObjectContext	*context = MOAssistant.assistant.context;
-    NSManagedObjectModel	*model   = MOAssistant.assistant.model;
-    
-    if (context == nil) return nil;
-    NSFetchRequest *request = [model fetchRequestTemplateForName:@"getCategoryRoot"];
-    NSArray *cats = [context executeFetchRequest:request error:&error];
-    if( error != nil || cats == nil) {
-        NSAlert *alert = [NSAlert alertWithError:error];
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSManagedObjectModel   *model   = MOAssistant.assistant.model;
+
+    if (context == nil) {
+        return nil;
+    }
+    NSFetchRequest *request = [model fetchRequestTemplateForName: @"getCategoryRoot"];
+    NSArray        *cats = [context executeFetchRequest: request error: &error];
+    if (error != nil || cats == nil) {
+        NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return nil;
     }
-    if ([cats count ] > 0) {
+    if ([cats count] > 0) {
         catRootSingleton = cats[0];
         return cats[0];
     }
-    
     // create Category Root object
-    catRootSingleton = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
-    [catRootSingleton setValue: @"++catroot" forKey: @"name" ];
-    [catRootSingleton setValue: @NO forKey: @"isBankAcc" ];
+    catRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
+    [catRootSingleton setValue: @"++catroot" forKey: @"name"];
+    [catRootSingleton setValue: @NO forKey: @"isBankAcc"];
     return catRootSingleton;
 }
 
-+(Category*)nassRoot
++ (Category *)nassRoot
 {
     NSError *error = nil;
-    if(notAssignedRootSingleton) return notAssignedRootSingleton;
-    
-    NSManagedObjectContext	*context = [[MOAssistant assistant ] context];
-    NSManagedObjectModel	*model   = [[MOAssistant assistant ] model];
-    
+    if (notAssignedRootSingleton) {
+        return notAssignedRootSingleton;
+    }
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectModel   *model   = [[MOAssistant assistant] model];
+
     NSFetchRequest *request = [model fetchRequestTemplateForName: @"getNassRoot"];
-    NSArray *cats = [context executeFetchRequest: request error: &error];
-    if( error != nil || cats == nil) {
+    NSArray        *cats = [context executeFetchRequest: request error: &error];
+    if (error != nil || cats == nil) {
         return nil;
     }
-
-    if ([cats count ] > 0) {
+    if ([cats count] > 0) {
         notAssignedRootSingleton = cats[0];
     } else {
         Category *notAssignedRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
@@ -1006,25 +1000,25 @@ BOOL updateSent = NO;
         [notAssignedRootSingleton setValue: @NO forKey: @"isBankAcc"];
         [notAssignedRootSingleton setValue: catRootSingleton forKey: @"parent"];
     }
-
     return notAssignedRootSingleton;
 }
 
-+(void)updateCatValues
++ (void)updateCatValues
 {
-    if (updateSent) return;
-    [[self catRoot ] updateInvalidCategoryValues ];
-    [[self catRoot ] rollup ]; 
+    if (updateSent) {
+        return;
+    }
+    [[self catRoot] updateInvalidCategoryValues];
+    [[self catRoot] rollup];
 }
 
-+(void)setCatReportFrom: (ShortDate*)fDate to: (ShortDate*)tDate
++ (void)setCatReportFrom: (ShortDate *)fDate to: (ShortDate *)tDate
 {
     if (startReportDate != nil && endReportDate != nil) {
-        if ([startReportDate isEqual:fDate] && [endReportDate isEqual:tDate]) {
+        if ([startReportDate isEqual: fDate] && [endReportDate isEqual: tDate]) {
             return;
         }
     }
-    
     startReportDate = fDate;
     endReportDate = tDate;
     [[self catRoot] rebuildValues];
@@ -1051,27 +1045,24 @@ BOOL updateSent = NO;
     if (sentinel == nil || sentinel.length == 0) {
         return;
     }
-
     NSUInteger lower = 250;
     NSUInteger upper = [sentinel intValue];
     if (upper <= lower) {
         return;
     }
-
-    NSUInteger lastLevel = 0;
+    NSUInteger             lastLevel = 0;
     NSManagedObjectContext *context = MOAssistant.assistant.context;
-    Category *current = [Category nassRoot];
+    Category               *current = [Category nassRoot];
 
     for (NSUInteger i = lower; i <= upper; i++) {
         NSString *key = [NSString stringWithFormat: @"AP%lu", i];
         NSString *entry = NSLocalizedString(key, nil);
-        NSArray *values = [entry componentsSeparatedByString: @"|"];
+        NSArray  *values = [entry componentsSeparatedByString: @"|"];
         if (values.count < 1) {
             continue;
         }
-
         // Count leading plus chars (they determine the nesting level) and remove them.
-        NSString *name = values[0];
+        NSString   *name = values[0];
         NSUInteger level = 0;
         while ([name characterAtIndex: level] == '+') {
             level++;
@@ -1079,7 +1070,6 @@ BOOL updateSent = NO;
         if (level > 0) {
             name = [name substringFromIndex: level];
         }
-
         Category *child = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
         child.name = name;
         if (values.count > 1) {
@@ -1104,7 +1094,6 @@ BOOL updateSent = NO;
         }
         current = child;
     }
-
     NSError *error;
     if (![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];

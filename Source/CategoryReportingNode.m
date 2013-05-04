@@ -17,23 +17,24 @@
 @synthesize periodValues;
 @synthesize category;
 
--(id)init
+- (id)init
 {
-	self = [super init ];
-	if (self == nil) return nil;
-	self.children = [NSMutableSet setWithCapacity:5 ];
-	self.values = [NSMutableDictionary dictionaryWithCapacity:20 ];
-	self.periodValues = [NSMutableDictionary dictionaryWithCapacity:20 ];
-	return self;
+    self = [super init];
+    if (self == nil) {
+        return nil;
+    }
+    self.children = [NSMutableSet setWithCapacity: 5];
+    self.values = [NSMutableDictionary dictionaryWithCapacity: 20];
+    self.periodValues = [NSMutableDictionary dictionaryWithCapacity: 20];
+    return self;
 }
 
 - (void)dealloc
 {
-	name = nil;
-	children = nil;
-	values = nil;
-	periodValues = nil;
+    name = nil;
+    children = nil;
+    values = nil;
+    periodValues = nil;
 }
 
 @end
-

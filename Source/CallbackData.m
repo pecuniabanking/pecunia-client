@@ -19,15 +19,14 @@
 
 
 
--(void)setReason: (NSString*)res
+- (void)setReason: (NSString *)res
 {
-	reason = [res intValue ];
+    reason = [res intValue];
 }
 
--(void)setType: (NSString*)t
+- (void)setType: (NSString *)t
 {
-	type = [t intValue ];
+    type = [t intValue];
 }
-
 
 @end

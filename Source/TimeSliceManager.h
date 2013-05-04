@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -20,29 +20,29 @@
 #import <Cocoa/Cocoa.h>
 
 typedef enum {
-	slice_none = -1,
+    slice_none = -1,
     slice_all = 0,
-	slice_year,
-	slice_quarter,
-	slice_month,
+    slice_year,
+    slice_quarter,
+    slice_month,
 } SliceType;
 
 @class ShortDate;
 
 @interface TimeSliceManager : NSObject {
     NSUInteger year;
-    NSInteger quarter;
+    NSInteger  quarter;
     NSUInteger month;
-    SliceType type;
-    SliceType lastType; // Cache for the type in year-mode.
+    SliceType  type;
+    SliceType  lastType; // Cache for the type in year-mode.
 
     IBOutlet NSDatePicker *fromPicker;
     IBOutlet NSDatePicker *toPicker;
-    
-    IBOutlet id delegate;
+
+    IBOutlet id                 delegate;
     IBOutlet NSSegmentedControl *control;
     IBOutlet NSSegmentedControl *upDown;
-    
+
     NSMutableArray *controls;
 }
 
@@ -54,13 +54,13 @@ typedef enum {
 
 - (id)initWithYear: (int)y month: (int)m;
 
-- (ShortDate*)lowerBounds;
-- (ShortDate*)upperBounds;
+- (ShortDate *)lowerBounds;
+- (ShortDate *)upperBounds;
 - (void)stepUp;
 - (void)stepDown;
-- (void)stepIn: (ShortDate*)date;
-- (void)setMinDate: (ShortDate*)date;
-- (void)setMaxDate: (ShortDate*)date;
+- (void)stepIn: (ShortDate *)date;
+- (void)setMinDate: (ShortDate *)date;
+- (void)setMaxDate: (ShortDate *)date;
 
 - (void)updateControl;
 - (void)updateDelegate;
@@ -71,8 +71,8 @@ typedef enum {
 - (IBAction)timeSliceUpDown: (id)sender;
 
 - (void)save;
-- (NSPredicate*)predicateForField: (NSString*)field;
-- (NSString*)description;
+- (NSPredicate *)predicateForField: (NSString *)field;
+- (NSString *)description;
 
 - (void)showControls: (BOOL)show;
 - (void)setYearOnlyMode: (BOOL)show;

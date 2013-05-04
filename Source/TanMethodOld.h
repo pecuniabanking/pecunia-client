@@ -10,15 +10,14 @@
 
 
 @interface TanMethodOld : NSObject {
-    NSNumber    *function;
-    NSString    *description;
+    NSNumber *function;
+    NSString *description;
 
 }
 
 @property (nonatomic, strong) NSNumber *function;
-@property (nonatomic, copy) NSString *description;
+@property (nonatomic, copy) NSString   *description;
 
--(id)initDefault: (NSNumber*) func;
+- (id)initDefault: (NSNumber *)func;
 
 @end
-

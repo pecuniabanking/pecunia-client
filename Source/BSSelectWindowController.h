@@ -10,14 +10,14 @@
 
 
 @interface BSSelectWindowController : NSWindowController {
-	NSArray						*resultList;
-	IBOutlet NSArrayController	*statController;
-	IBOutlet NSTableView		*statementsView;
+    NSArray                    *resultList;
+    IBOutlet NSArrayController *statController;
+    IBOutlet NSTableView       *statementsView;
 }
 
--(id)initWithResults: (NSArray*)list;
+- (id)initWithResults: (NSArray *)list;
 
--(IBAction)ok: (id)sender;
--(IBAction)cancel: (id)sender;
+- (IBAction)ok: (id)sender;
+- (IBAction)cancel: (id)sender;
 
 @end

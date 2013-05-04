@@ -10,25 +10,22 @@
 
 
 @interface TanMethodListController : NSWindowController {
+    IBOutlet NSWindow          *tanMethodSheet;
+    IBOutlet NSArrayController *tanMethodController;
 
-	IBOutlet NSWindow				*tanMethodSheet;
-	IBOutlet NSArrayController		*tanMethodController;
-
-	NSArray							*tanMethods;
-	NSNumber						*selectedMethod;
+    NSArray  *tanMethods;
+    NSNumber *selectedMethod;
 
 }
 
-@property (nonatomic, copy) NSArray *tanMethods;
+@property (nonatomic, copy) NSArray    *tanMethods;
 @property (nonatomic, strong) NSNumber *selectedMethod;
 
 
--(id)initWithMethods:(NSArray*)methods;
+- (id)initWithMethods: (NSArray *)methods;
 
--(IBAction)ok:(id)sender;
+- (IBAction)ok: (id)sender;
 
--(NSNumber*)selectedMethod;
+- (NSNumber *)selectedMethod;
 
 @end
-
-

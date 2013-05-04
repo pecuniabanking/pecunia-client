@@ -13,20 +13,20 @@
 
 @interface CreditCardSettlementController : NSWindowController
 {
-    IBOutlet PDFView *pdfView;
+    IBOutlet PDFView  *pdfView;
     IBOutlet NSButton *prevButton;
     IBOutlet NSButton *nextButton;
-    
+
     BankAccount *account;
     NSArray     *settlements;
     NSUInteger  currentIndex;
 }
 
-@property(nonatomic, strong) BankAccount *account;
-@property(nonatomic, strong) NSArray     *settlements;
+@property (nonatomic, strong) BankAccount *account;
+@property (nonatomic, strong) NSArray     *settlements;
 
-- (IBAction)next:(id)sender;
-- (IBAction)prev:(id)sender;
-- (IBAction)updateSettlements:(id)sender;
+- (IBAction)next: (id)sender;
+- (IBAction)prev: (id)sender;
+- (IBAction)updateSettlements: (id)sender;
 
 @end

@@ -13,31 +13,29 @@
 
 - (void)awakeFromNib
 {
-    NSURL *url = [[NSBundle mainBundle] URLForResource:@"gpl-2.0-standalone" withExtension:@"html"];
-    NSAttributedString *as = [[NSAttributedString alloc ] initWithURL:url documentAttributes:NULL];
-    [[licenseView textStorage ] appendAttributedString:as];
-    
+    NSURL              *url = [[NSBundle mainBundle] URLForResource: @"gpl-2.0-standalone" withExtension: @"html"];
+    NSAttributedString *as = [[NSAttributedString alloc] initWithURL: url documentAttributes: NULL];
+    [[licenseView textStorage] appendAttributedString: as];
+
     //NSString *path = [[NSBundle mainBundle] pathForResource: @"gpl-2.0-standalone" ofType: @"html"];
-    
+
 }
 
-- (IBAction)accept:(id)sender
+- (IBAction)accept: (id)sender
 {
-    [ window close ];
-    [NSApp stopModalWithCode:0 ];
+    [window close];
+    [NSApp stopModalWithCode: 0];
 }
 
-- (IBAction)decline:(id)sender
+- (IBAction)decline: (id)sender
 {
-    [ window close ];
-    [NSApp stopModalWithCode:1 ];    
+    [window close];
+    [NSApp stopModalWithCode: 1];
 }
 
-- (void)windowWillClose:(NSNotification*)aNotification
+- (void)windowWillClose: (NSNotification *)aNotification
 {
-	[NSApp stopModalWithCode:1 ];    
+    [NSApp stopModalWithCode: 1];
 }
-
-
 
 @end

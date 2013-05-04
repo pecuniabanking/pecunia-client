@@ -11,9 +11,9 @@
 
 @implementation SigningOptionsTableView
 /*
-- (void)highlightSelectionInClipRect:(NSRect)rect
-{
-    // Stop the table from drawing a selection background. We do that in the image cell.
-}
-*/
+ - (void)highlightSelectionInClipRect:(NSRect)rect
+ {
+ // Stop the table from drawing a selection background. We do that in the image cell.
+ }
+ */
 @end

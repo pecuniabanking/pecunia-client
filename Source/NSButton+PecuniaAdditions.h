@@ -26,13 +26,13 @@
 @interface NSButton (PecuniaAdditions)
 
 - (NSColor *)textColor;
-- (void)setTextColor:(NSColor *)textColor;
+- (void)setTextColor: (NSColor *)textColor;
 
 @end
 
 @interface NSButtonCell (PecuniaAdditions)
 
 - (NSColor *)textColor;
-- (void)setTextColor:(NSColor *)textColor;
+- (void)setTextColor: (NSColor *)textColor;
 
 @end

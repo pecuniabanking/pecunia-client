@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -50,21 +50,21 @@
     return self;
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
     awaking = YES;
-    
+
     // Hide values that are already assigned elsewhere, by default.
     // Intentionally use the property to have KVO working for the checkbox that mirrors this state.
     self.hideAssignedValues = YES;
 
     [predicateEditor addRow: self];
-    
+
     // sort descriptor for transactions view
-    NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey: @"statement.date" ascending: NO];
-    NSArray				*sds = @[sd];
+    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"statement.date" ascending: NO];
+    NSArray          *sds = @[sd];
     [assignPreviewController setSortDescriptors: sds];
-    
+
     // Setup statements listview.
     [statementsListView bind: @"dataSource" toObject: assignPreviewController withKeyPath: @"arrangedObjects" options: nil];
 
@@ -83,33 +83,32 @@
     [statementsListView setAllowsMultipleSelection: YES];
 
     predicatesBackground.fillColor = [NSColor colorWithCalibratedWhite: 233 / 255.0 alpha: 1];
-    
+
     awaking = NO;
 }
 
--(void)setManagedObjectContext:(NSManagedObjectContext*)context
+- (void)setManagedObjectContext: (NSManagedObjectContext *)context
 {
     [assignPreviewController setManagedObjectContext: context];
     [assignPreviewController prepareContent];
 }
 
-
-- (IBAction)saveRule:(id)sender 
+- (IBAction)saveRule: (id)sender
 {
-    NSError* error;
-    
+    NSError *error;
+
     if (selectedCategory == nil) {
         return;
     }
-    
-    NSPredicate* predicate = [predicateEditor objectValue];
-    if(predicate) {
+
+    NSPredicate *predicate = [predicateEditor objectValue];
+    if (predicate) {
         // check predicate
-        NSString *rule = [predicate description ];
+        NSString *rule = [predicate description];
         @try {
-            [NSPredicate predicateWithFormat:rule ];
+            [NSPredicate predicateWithFormat: rule];
         }
-        @catch (NSException * e) {
+        @catch (NSException *e) {
             NSRunAlertPanel(NSLocalizedString(@"AP113", nil),
                             NSLocalizedString(@"AP75", nil),
                             NSLocalizedString(@"AP1", nil),
@@ -118,13 +117,13 @@
                             );
             return;
         }
-        
+
         [selectedCategory setValue: rule forKey: @"rule"];
-        
+
         // save updates
         NSManagedObjectContext *context = [[MOAssistant assistant] context];
-        if([context save: &error] == NO) {
-            NSAlert *alert = [NSAlert alertWithError:error];
+        if ([context save: &error] == NO) {
+            NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
             return;
         }
@@ -132,14 +131,14 @@
     }
 }
 
-- (IBAction)deleteRule:(id)sender
+- (IBAction)deleteRule: (id)sender
 {
-    NSError* error;
-    
+    NSError *error;
+
     if (selectedCategory == nil) {
         return;
     }
-    
+
     int res = NSRunAlertPanel(NSLocalizedString(@"AP307", nil),
                               NSLocalizedString(@"AP308", nil),
                               NSLocalizedString(@"AP3", nil),
@@ -147,66 +146,68 @@
                               nil,
                               [selectedCategory localName]
                               );
-    if (res != NSAlertDefaultReturn) return;
-    
+    if (res != NSAlertDefaultReturn) {
+        return;
+    }
+
     [selectedCategory setValue: nil forKey: @"rule"];
     ruleChanged = NO;
-    
+
     // save updates
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    if([context save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError:error];
+    if ([context save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return;
     }
-    NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: @"statement.purpose CONTAINS[c] ''"];
-    if([pred class] != [NSCompoundPredicate class]) {
-        NSCompoundPredicate* comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: @[pred]];
+    NSPredicate *pred = [NSCompoundPredicate predicateWithFormat: @"statement.purpose CONTAINS[c] ''"];
+    if ([pred class] != [NSCompoundPredicate class]) {
+        NSCompoundPredicate *comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: @[pred]];
         pred = comp;
     }
     [predicateEditor setObjectValue: pred];
-    
+
     [self calculateCatAssignPredicate];
 }
 
--(void)calculateCatAssignPredicate
+- (void)calculateCatAssignPredicate
 {
-    NSPredicate* pred = nil;
-    NSPredicate* compoundPredicate = nil;
-    
+    NSPredicate *pred = nil;
+    NSPredicate *compoundPredicate = nil;
+
     // first add selected category
     if (selectedCategory == nil) {
         return;
     }
-    
+
     NSMutableArray *orPreds = [NSMutableArray arrayWithCapacity: 5];
-    
+
     if ([selectedCategory valueForKey: @"parent"] != nil) {
         pred = [NSPredicate predicateWithFormat: @"(category = %@)", selectedCategory];
         [orPreds addObject: pred];
     }
-    NSPredicate* predicate = [predicateEditor objectValue];
-    
+    NSPredicate *predicate = [predicateEditor objectValue];
+
     // Not assigned statements
     pred = [NSPredicate predicateWithFormat: @"(category = %@)", [Category nassRoot]];
     if (predicate != nil) {
         pred = [NSCompoundPredicate andPredicateWithSubpredicates: @[pred, predicate]];
     }
     [orPreds addObject: pred];
-    
-    // already assigned statements 
-    if(!hideAssignedValues) {
+
+    // already assigned statements
+    if (!hideAssignedValues) {
         pred = [NSPredicate predicateWithFormat: @"(category.isBankAccount = 0)"];
         if (predicate != nil) {
             pred = [NSCompoundPredicate andPredicateWithSubpredicates: @[pred, predicate]];
         }
         [orPreds addObject: pred];
     }
-    
+
     compoundPredicate = [NSCompoundPredicate orPredicateWithSubpredicates: orPreds];
     pred = [timeSliceManager predicateForField: @"date"];
     compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[compoundPredicate, pred]];
-    
+
     // set new fetch predicate
     if (compoundPredicate) {
         [assignPreviewController setFilterPredicate: compoundPredicate];
@@ -218,7 +219,7 @@
     if (selectedCategory == nil) {
         return YES;
     }
-    
+
     if (ruleChanged) {
         int res = NSRunAlertPanel(NSLocalizedString(@"AP305", nil),
                                   NSLocalizedString(@"AP306", nil),
@@ -235,38 +236,36 @@
     return YES;
 }
 
-
-- (IBAction)predicateEditorChanged:(id)sender
-{	
+- (IBAction)predicateEditorChanged: (id)sender
+{
     if (awaking) {
         return;
     }
-    
+
     // check NSApp currentEvent for the return key
-    NSEvent* event = [NSApp currentEvent];
-    if ([event type] == NSKeyDown)
-    {
-        NSString* characters = [event characters];
-        if ([characters length] > 0 && [characters characterAtIndex:0] == 0x0D)
-        {
+    NSEvent *event = [NSApp currentEvent];
+    if ([event type] == NSKeyDown) {
+        NSString *characters = [event characters];
+        if ([characters length] > 0 && [characters characterAtIndex: 0] == 0x0D) {
             [self calculateCatAssignPredicate];
             ruleChanged = YES;
         }
     }
-    
+
 }
 
-- (void)ruleEditorRowsDidChange:(NSNotification *)notification
+- (void)ruleEditorRowsDidChange: (NSNotification *)notification
 {
     [self calculateCatAssignPredicate];
 }
 
-- (IBAction)hideAssignedChanged:(id)sender
+- (IBAction)hideAssignedChanged: (id)sender
 {
     [self calculateCatAssignPredicate];
 }
 
-- (IBAction)assignEntries:(id)sender {
+- (IBAction)assignEntries: (id)sender
+{
     NSArray *entries = assignPreviewController.selectedObjects;
     if (entries.count == 0) {
         entries = assignPreviewController.arrangedObjects;
@@ -274,7 +273,6 @@
     for (StatCatAssignment *entry in entries) {
         [entry.statement assignAmount: [entry value] toCategory: selectedCategory];
     }
-
     [selectedCategory invalidateBalance];
     [Category updateCatValues];
 
@@ -282,7 +280,7 @@
     // Not so when adding, though.
     [statementsListView reloadData];
 
-    NSError* error;
+    NSError                *error;
     NSManagedObjectContext *context = MOAssistant.assistant.context;
     if (![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
@@ -291,20 +289,20 @@
     }
 }
 
-- (void)assignToCategory: (StatCatAssignment*)assignment
+- (void)assignToCategory: (StatCatAssignment *)assignment
 {
     if (selectedCategory == nil) {
         return;
     }
 
     [assignment.statement assignAmount: [assignment value] toCategory: selectedCategory];
-    
+
     [selectedCategory invalidateBalance];
     [Category updateCatValues];
-    
+
     [statementsListView reloadData];
-    
-    NSError* error;
+
+    NSError                *error;
     NSManagedObjectContext *context = MOAssistant.assistant.context;
     if (![context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
@@ -313,32 +311,32 @@
     }
 }
 
-- (void)unassignFromCategory: (StatCatAssignment*)assignment 
+- (void)unassignFromCategory: (StatCatAssignment *)assignment
 {
-    NSError* error;
+    NSError *error;
     if (selectedCategory == nil) {
         return;
     }
-    
+
     [assignment remove];
     [assignPreviewController rearrangeObjects];
-    
+
     [selectedCategory invalidateBalance];
     [Category updateCatValues];
-    
+
     // save updates
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    if([context save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError:error];
+    if ([context save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return;
     }
-    
+
 }
 
 - (void)activationChanged: (BOOL)active forIndex: (NSUInteger)index
 {
-    StatCatAssignment* assignment = [assignPreviewController arrangedObjects][index];
+    StatCatAssignment *assignment = [assignPreviewController arrangedObjects][index];
     if (assignment != nil) {
         if (active) {
             [self assignToCategory: assignment];
@@ -381,7 +379,7 @@
 
 - (void)print
 {
-    NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
+    NSPrintInfo *printInfo = [NSPrintInfo sharedPrintInfo];
     [printInfo setTopMargin: 45];
     [printInfo setBottomMargin: 45];
     [printInfo setHorizontalPagination: NSFitPagination];
@@ -394,12 +392,12 @@
     [printOp runOperation];
 }
 
--(NSView*)mainView
+- (NSView *)mainView
 {
     return topView;
 }
 
--(void)prepare
+- (void)prepare
 {
     [self calculateCatAssignPredicate];
 }
@@ -412,7 +410,7 @@
 {
 }
 
-- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
+- (void)setTimeRangeFrom: (ShortDate *)from to: (ShortDate *)to
 {
     [self calculateCatAssignPredicate];
 }
@@ -431,12 +429,14 @@
             [[saveButton animator] setHidden: NO];
             [[discardButton animator] setHidden: NO];
         }
-        
-        NSString* s = [selectedCategory valueForKey: @"rule"];
-        if(s == nil) s = @"statement.purpose CONTAINS[c] ''";
-        NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: s];
-        if([pred class] != [NSCompoundPredicate class]) {
-            NSCompoundPredicate* comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: @[pred]];
+
+        NSString *s = [selectedCategory valueForKey: @"rule"];
+        if (s == nil) {
+            s = @"statement.purpose CONTAINS[c] ''";
+        }
+        NSPredicate *pred = [NSCompoundPredicate predicateWithFormat: s];
+        if ([pred class] != [NSCompoundPredicate class]) {
+            NSCompoundPredicate *comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: @[pred]];
             pred = comp;
         }
         [predicateEditor setObjectValue: pred];

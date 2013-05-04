@@ -10,9 +10,8 @@
 
 
 @interface MCEMTableView : NSTableView {
-
 }
 
-- (void)drawRow:(int)rowIndex clipRect:(NSRect)clipRect;
+- (void)drawRow: (int)rowIndex clipRect: (NSRect)clipRect;
 
 @end

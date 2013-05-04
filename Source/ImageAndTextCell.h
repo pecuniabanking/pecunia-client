@@ -29,29 +29,29 @@
 @interface ImageAndTextCell : NSTextFieldCell
 {
 @private
-	
-    NSImage *image;
-    NSString *currency;
+
+    NSImage           *image;
+    NSString          *currency;
     NSNumberFormatter *amountFormatter;
-    NSDecimalNumber *amount;
-	
+    NSDecimalNumber   *amount;
+
     NSInteger countUnread;
     NSInteger maxUnread;
     NSInteger badgeWidth;
-    BOOL isRoot;
-    BOOL isDisabled;
-    BOOL isHidden;
-    BOOL isIgnored;  // Not included in overall computation.
+    BOOL      isRoot;
+    BOOL      isDisabled;
+    BOOL      isHidden;
+    BOOL      isIgnored; // Not included in overall computation.
 }
 
 @property (nonatomic, strong) NSColor           *swatchColor;
-@property (nonatomic, strong) NSImage			*image;
-@property (nonatomic, strong) NSString			*currency;
-@property (nonatomic, strong) NSDecimalNumber	*amount;
-@property (nonatomic, strong) NSNumberFormatter	*amountFormatter; // TODO: why not using the cell's formatter?
+@property (nonatomic, strong) NSImage           *image;
+@property (nonatomic, strong) NSString          *currency;
+@property (nonatomic, strong) NSDecimalNumber   *amount;
+@property (nonatomic, strong) NSNumberFormatter *amountFormatter; // TODO: why not using the cell's formatter?
 
-- (void)setValues: (NSDecimalNumber*)aAmount
-         currency: (NSString*)aCurrency
+- (void)setValues: (NSDecimalNumber *)aAmount
+         currency: (NSString *)aCurrency
            unread: (NSInteger)unread
          disabled: (BOOL)disabled
            isRoot: (BOOL)root
@@ -59,13 +59,10 @@
         isIgnored: (BOOL)ignored;
 
 - (void)setMaxUnread: (NSInteger)n;
-- (void)drawWithFrame: (NSRect)cellFrame inView: (NSView*)controlView;
+- (void)drawWithFrame: (NSRect)cellFrame inView: (NSView *)controlView;
 - (NSSize)cellSize;
 
 - (NSSize)sizeOfBadge: (NSInteger)unread;
 - (void)drawBadgeInRect: (NSRect)badgeFrame;
 
 @end
-
-
-

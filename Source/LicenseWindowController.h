@@ -10,12 +10,12 @@
 
 
 @interface LicenseWindowController : NSObject {
-    IBOutlet    NSTextView  *licenseView;
-    IBOutlet    NSWindow    *window;
+    IBOutlet NSTextView *licenseView;
+    IBOutlet NSWindow   *window;
 
 }
 
-- (IBAction)accept:(id)sender;
-- (IBAction)decline:(id)sender;
+- (IBAction)accept: (id)sender;
+- (IBAction)decline: (id)sender;
 
 @end

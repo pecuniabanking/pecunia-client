@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -36,34 +36,33 @@
 
 - (BOOL)check;
 - (void)prepareUserSheet;
-- (void)startProgressWithMessage:(NSString*)msg;
+- (void)startProgressWithMessage: (NSString *)msg;
 - (void)stopProgress;
 
 @end
 
 @implementation NewBankUserController
 
-- (id)initForController: (BankingController*)con
+- (id)initForController: (BankingController *)con
 {
-	self = [super initWithWindowNibName:@"BankUser"];
-	bankController = con;
-	bankUsers = [[BankUser allUsers ] mutableCopy];
-	context = [[MOAssistant assistant ] context ];
+    self = [super initWithWindowNibName: @"BankUser"];
+    bankController = con;
+    bankUsers = [[BankUser allUsers] mutableCopy];
+    context = [[MOAssistant assistant] context];
     triedFirst = NO;
-	return self;
+    return self;
 }
-
 
 - (void)awakeFromNib
 {
-	[hbciVersions setContent:[[HBCIClient hbciClient] supportedVersions]];
-	[hbciVersions setSelectedObjects:@[@"220"]];
-    
+    [hbciVersions setContent: [[HBCIClient hbciClient] supportedVersions]];
+    [hbciVersions setSelectedObjects: @[@"220"]];
+
     // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
     topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
     topGradient.fillEndingColor = [NSColor colorWithCalibratedWhite: 99 / 255.0 alpha: 1];
     backgroundGradient.fillColor = [NSColor whiteColor];
-    
+
     // Sicherheitsverfahren
     currentBox = pinTanBox;
 }
@@ -71,74 +70,74 @@
 #pragma mark -
 #pragma mark Data handling
 
--(BankUser*)selectedUser
+- (BankUser *)selectedUser
 {
-	NSArray	*selection = [bankUserController selectedObjects];
-	if (selection == nil || [selection count] < 1) {
+    NSArray *selection = [bankUserController selectedObjects];
+    if (selection == nil || [selection count] < 1) {
         return nil;
     }
-	return [selection lastObject];
+    return [selection lastObject];
 }
 
 #pragma mark -
 #pragma mark Window/sheet handling
 
-- (void)startProgressWithMessage:(NSString*)msg
+- (void)startProgressWithMessage: (NSString *)msg
 {
-	[msgField setStringValue:msg ];
-	[msgField display ];
-	[progressIndicator setUsesThreadedAnimation: YES];
-	[progressIndicator startAnimation: self];
+    [msgField setStringValue: msg];
+    [msgField display];
+    [progressIndicator setUsesThreadedAnimation: YES];
+    [progressIndicator startAnimation: self];
 }
 
 - (void)stopProgress
 {
-	[progressIndicator stopAnimation: self ];
-	[msgField setStringValue:@"" ];
+    [progressIndicator stopAnimation: self];
+    [msgField setStringValue: @""];
 
 }
 
-- (void)userSheetDidEnd: (NSWindow*)sheet
-			 returnCode: (int)code 
-			contextInfo: (void*)context
+- (void)userSheetDidEnd: (NSWindow *)sheet
+             returnCode: (int)code
+            contextInfo: (void *)context
 {
-	if(code != 0) {
-        [currentUserController remove:self ];
+    if (code != 0) {
+        [currentUserController remove: self];
     }
-    [[self window] makeKeyAndOrderFront:self];
+    [[self window] makeKeyAndOrderFront: self];
 }
 
--(void)getBankSetupInfo
+- (void)getBankSetupInfo
 {
-    BankUser *currentUser = [currentUserController content ];
+    BankUser *currentUser = [currentUserController content];
 
-    BankSetupInfo *info = [[HBCIClient hbciClient ] getBankSetupInfo:currentUser.bankCode ];
+    BankSetupInfo *info = [[HBCIClient hbciClient] getBankSetupInfo: currentUser.bankCode];
     if (info != nil) {
         if (info.info_userid) {
-            NSTextField *field = [[groupBox contentView ] viewWithTag:100];
-            [field setStringValue:info.info_userid ];
+            NSTextField *field = [[groupBox contentView] viewWithTag: 100];
+            [field setStringValue: info.info_userid];
         }
         if (info.info_customerid) {
-            NSTextField *field = [[groupBox contentView ] viewWithTag:120];
-            [field setStringValue:info.info_customerid ];
+            NSTextField *field = [[groupBox contentView] viewWithTag: 120];
+            [field setStringValue: info.info_customerid];
         }
     }
-	[self stopProgress ];
+    [self stopProgress];
     step = 2;
-    NSView *view = [[groupBox contentView ] viewWithTag:110];
-    [userSheet makeFirstResponder:view ];
-    
-    [self prepareUserSheet ];
+    NSView *view = [[groupBox contentView] viewWithTag: 110];
+    [userSheet makeFirstResponder: view];
+
+    [self prepareUserSheet];
 }
 
-- (IBAction)ok:(id)sender
+- (IBAction)ok: (id)sender
 {
-    [currentUserController commitEditing ];
-    
-    BankUser *currentUser = [currentUserController content ];
-    
+    [currentUserController commitEditing];
+
+    BankUser *currentUser = [currentUserController content];
+
     if (step == 0) {
-        NSInteger idx = [secMethodPopup indexOfSelectedItem ];
+        NSInteger idx = [secMethodPopup indexOfSelectedItem];
         if (idx == 1) {
             secMethod = SecMethod_DDV;
             currentUser.ddvPortIdx = @1;
@@ -148,17 +147,19 @@
         }
         currentUser.secMethod = @((int)secMethod);
     }
-    
-    // PinTan-Zugang 
-    if (secMethod == SecMethod_PinTan) {
-        if ([self check ] == NO) return;
 
-        if (step == 1) {
-            [self startProgressWithMessage: NSLocalizedString(@"AP212", nil) ];
-            [self performSelector:@selector(getBankSetupInfo) withObject:nil afterDelay:0 ];
+    // PinTan-Zugang
+    if (secMethod == SecMethod_PinTan) {
+        if ([self check] == NO) {
             return;
         }
-        
+
+        if (step == 1) {
+            [self startProgressWithMessage: NSLocalizedString(@"AP212", nil)];
+            [self performSelector: @selector(getBankSetupInfo) withObject: nil afterDelay: 0];
+            return;
+        }
+
         if (step == 2) {
             // jetzt schauen, ob wir Infos ‚Äö√†√∂¬¨‚à´ber die Bank haben
             BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
@@ -167,32 +168,30 @@
                 currentUser.bankURL = bi.pinTanURL;
             }
         }
-        
+
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
-            
             // User anlegen
-            [self startProgressWithMessage: NSLocalizedString(@"AP157", nil) ];
-            PecuniaError *error = [[HBCIClient hbciClient ] addBankUser: currentUser];
+            [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
+            PecuniaError *error = [[HBCIClient hbciClient] addBankUser: currentUser];
             if (error) {
-                [self stopProgress ];
+                [self stopProgress];
                 [error alertPanel];
-            }
-            else {
+            } else {
                 // TAN-Optionen aktualisieren
-                [self updateTanMethods ];                
-                [self stopProgress ];
-                
+                [self updateTanMethods];
+                [self stopProgress];
+
                 [userSheet orderOut: sender];
                 [NSApp endSheet: userSheet returnCode: 0];
             }
         }
     }
-    
+
     // DDV-Zugang
     if (secMethod == SecMethod_DDV) {
         if (step == 1) {
             // BankInfos holen
-            BankInfo *bi = [[HBCIClient hbciClient ] infoForBankCode:currentUser.bankCode inCountry:@"DE"];
+            BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
             if (bi) {
                 currentUser.hbciVersion = bi.hbciVersion;
                 currentUser.bankURL = bi.host;
@@ -203,79 +202,80 @@
                 step = 4;
             }
         }
-        
-            
+
+
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
-        
             // User anlegen
-            [self startProgressWithMessage: NSLocalizedString(@"AP157", nil) ];
-            PecuniaError *error = [[HBCIClient hbciClient ] addBankUser: currentUser];
+            [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
+            PecuniaError *error = [[HBCIClient hbciClient] addBankUser: currentUser];
             if (error) {
-                [self stopProgress ];
+                [self stopProgress];
                 if (step == 2) {
                 } else {
-                    [error alertPanel ];
+                    [error alertPanel];
                 }
-            }
-            else {
-                [self stopProgress ];
+            } else {
+                [self stopProgress];
                 [userSheet orderOut: sender];
                 [NSApp endSheet: userSheet returnCode: 0];
                 return;
             }
         }
     }
-    
+
     if (step < 6) {
-		step += 1;
-	}
-	[self prepareUserSheet ];
+        step += 1;
+    }
+    [self prepareUserSheet];
 }
 
-- (IBAction)cancelSheet:(id)sender
+- (IBAction)cancelSheet: (id)sender
 {
-	[userSheet orderOut: sender];
-	[NSApp endSheet: userSheet returnCode: 1];
+    [userSheet orderOut: sender];
+    [NSApp endSheet: userSheet returnCode: 1];
 }
 
--(IBAction)secMethodChanged:(id)sender
+- (IBAction)secMethodChanged: (id)sender
 {
-    [self ok:sender ];
+    [self ok: sender];
 }
 
-- (IBAction)tanOptionChanged:(id)sender
+- (IBAction)tanOptionChanged: (id)sender
 {
     NSArray *sel = [tanSigningOptions selectedObjects];
-    if ([sel count ] != 1) return;
-    SigningOption *option = [sel lastObject ];
-    BankUser *user = [self selectedUser ];
+    if ([sel count] != 1) {
+        return;
+    }
+    SigningOption *option = [sel lastObject];
+    BankUser      *user = [self selectedUser];
     if (user) {
-        if ([user.secMethod intValue ] == SecMethod_PinTan) {
-            [user setpreferredSigningOption:option ];
+        if ([user.secMethod intValue] == SecMethod_PinTan) {
+            [user setpreferredSigningOption: option];
         }
     }
 }
 
-
 - (void)endSheet: (id)sender
 {
-	[currentUserController commitEditing];
-	if([self check] == NO) return;
-	[userSheet orderOut: sender];
-	[NSApp endSheet: userSheet returnCode: 0];
+    [currentUserController commitEditing];
+    if ([self check] == NO) {
+        return;
+    }
+    [userSheet orderOut: sender];
+    [NSApp endSheet: userSheet returnCode: 0];
 }
 
-- (BOOL)windowShouldClose:(id)sender
+- (BOOL)windowShouldClose: (id)sender
 {
-	[NSApp stopModalWithCode: 1];
-	return YES;
+    [NSApp stopModalWithCode: 1];
+    return YES;
 }
 
-- (void)windowDidBecomeKey:(NSNotification *)notification
+- (void)windowDidBecomeKey: (NSNotification *)notification
 {
     NSArray *users = [BankUser allUsers];
     if ([users count] == 0 && triedFirst == NO) {
-        [self addEntry:self];
+        [self addEntry: self];
         triedFirst = YES;
     }
 }
@@ -285,7 +285,7 @@
 
 - (BOOL)check
 {
-    BankUser *currentUser = [currentUserController content ];
+    BankUser *currentUser = [currentUserController content];
 
     if (step == 1) {
         if (currentUser.bankCode == nil) {
@@ -301,8 +301,8 @@
             return NO;
         }
     }
-    
-    
+
+
     if (step == 2) {
         if ([currentUser userId] == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
@@ -311,379 +311,384 @@
             return NO;
         }
     }
-	return YES;
+    return YES;
 }
 
--(void)controlTextDidChange:(NSNotification *)aNotification
+- (void)controlTextDidChange: (NSNotification *)aNotification
 {
-	NSTextField	*te = [aNotification object];
-	NSString *s = [te stringValue];
-    BankUser *currentUser = [currentUserController content ];
-    
-    if ([te tag ] == 10) {
-        NSString *bankCode = [s stringByReplacingOccurrencesOfString:@" " withString:@"" ];
-        if ([bankCode length ] == 8) {
+    NSTextField *te = [aNotification object];
+    NSString    *s = [te stringValue];
+    BankUser    *currentUser = [currentUserController content];
+
+    if ([te tag] == 10) {
+        NSString *bankCode = [s stringByReplacingOccurrencesOfString: @" " withString: @""];
+        if ([bankCode length] == 8) {
             BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: bankCode inCountry: @"DE"];
             if (bi) {
                 currentUser.name = bi.name;
-                [okButton setKeyEquivalent:@"\r" ];
+                [okButton setKeyEquivalent: @"\r"];
             }
         }
     }
-	if ([te tag ] == 110) {
-		if ([s length ] > 0) {
-			NSString *k = [okButton keyEquivalent ];
-			if ([k isEqualToString:@"\r" ] == NO) {
-				[okButton setKeyEquivalent:@"\r" ];
-			}
-		}
-	}
-	
+    if ([te tag] == 110) {
+        if ([s length] > 0) {
+            NSString *k = [okButton keyEquivalent];
+            if ([k isEqualToString: @"\r"] == NO) {
+                [okButton setKeyEquivalent: @"\r"];
+            }
+        }
+    }
+
 }
 
--(void)controlTextDidEndEditing:(NSNotification *)aNotification
+- (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
     /*
-	NSTextField	*te = [aNotification object];
-	NSString *bankCode = [te stringValue];
-    BankUser *currentUser = [currentUserController content ];
-    
-	BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: bankCode inCountry: @"DE"];
-	if (bi) {
-        currentUser.bankName = bi.name;
-        currentUser.bankURL = bi.pinTanURL;
-        currentUser.hbciVersion = bi.pinTanVersion;
-	}
+     NSTextField	*te = [aNotification object];
+     NSString *bankCode = [te stringValue];
+     BankUser *currentUser = [currentUserController content ];
+
+     BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: bankCode inCountry: @"DE"];
+     if (bi) {
+     currentUser.bankName = bi.name;
+     currentUser.bankURL = bi.pinTanURL;
+     currentUser.hbciVersion = bi.pinTanVersion;
+     }
      */
 }
 
--(void)updateTanMethods
+- (void)updateTanMethods
 {
-    BankUser *user = [self selectedUser ];
+    BankUser *user = [self selectedUser];
     if (user) {
-        if ([user.secMethod intValue ] == SecMethod_PinTan) {
-            NSMutableArray *options = [[user getSigningOptions ] mutableCopy ];
-            
-            if ([options count ] > 1) {
+        if ([user.secMethod intValue] == SecMethod_PinTan) {
+            NSMutableArray *options = [[user getSigningOptions] mutableCopy];
+
+            if ([options count] > 1) {
                 // F‚Äö√†√∂¬¨‚à´ge virtuelle Methode "Beim Senden festlegen" hinzu
-                SigningOption *option = [[SigningOption alloc ] init ];
+                SigningOption *option = [[SigningOption alloc] init];
                 option.secMethod = SecMethod_PinTan;
                 option.userId = user.userId;
                 option.userName = user.name;
                 option.tanMethod = @"100";
                 option.tanMethodName = @"Beim Senden festlegen";
-                [options addObject:option ];
+                [options addObject: option];
             }
-            [tanSigningOptions setContent:options ];
+            [tanSigningOptions setContent: options];
         } else {
-            [tanSigningOptions setContent:[user getSigningOptions ] ];
+            [tanSigningOptions setContent: [user getSigningOptions]];
         }
-        [tanSigningOptions setSelectionIndex:[user getpreferredSigningOptionIdx ] ];
-    }    
+        [tanSigningOptions setSelectionIndex: [user getpreferredSigningOptionIdx]];
+    }
 }
 
-- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+- (void)tableViewSelectionDidChange: (NSNotification *)aNotification
 {
-    [self updateTanMethods ];
+    [self updateTanMethods];
 }
 
 #pragma mark -
 #pragma mark IB action section
 
-- (IBAction)close:(id)sender
+- (IBAction)close: (id)sender
 {
     [[self window] orderOut: self];
 }
 
-- (IBAction)add:(id)sender
+- (IBAction)add: (id)sender
 {
-	[[self window] close];
+    [[self window] close];
 }
 
-- (IBAction)allSettings:(id)sender
+- (IBAction)allSettings: (id)sender
 {
-    if (step > 3) return;
-    
-    BankUser *currentUser = [currentUserController content ];
-    if (currentUser.hbciVersion == nil) currentUser.hbciVersion = @"220";
-    
-	NSArray *views = [[groupBox contentView ] subviews ];
-    for(NSView *view in views) {
-        if ([view tag ] >= 100) {
-            [[view animator] setHidden:NO ];
+    if (step > 3) {
+        return;
+    }
+
+    BankUser *currentUser = [currentUserController content];
+    if (currentUser.hbciVersion == nil) {
+        currentUser.hbciVersion = @"220";
+    }
+
+    NSArray *views = [[groupBox contentView] subviews];
+    for (NSView *view in views) {
+        if ([view tag] >= 100) {
+            [[view animator] setHidden: NO];
         }
     }
-    
-    NSRect frame = [userSheet frame ];
-    if(step == 2)  {
+    NSRect frame = [userSheet frame];
+    if (step == 2) {
         frame.size.height += 119; frame.origin.y -= 119;
     } else {
         frame.size.height += 183; frame.origin.y -= 183;
     }
-    [[userSheet animator] setFrame: frame display: YES ];
-    
-    
+    [[userSheet animator] setFrame: frame display: YES];
+
+
     step = 4;
 }
 
 - (void)prepareUserSheet_PinTan
 {
-   	NSArray *views = [[pinTanBox contentView ] subviews ];
-	
-	if (step == 1) {
-        NSView *contentView = [userSheet contentView ];
-        [contentView replaceSubview:currentBox with: pinTanBox ];
-        currentBox = pinTanBox;
-        [pinTanBox setFrame:[secSelectBox frame ] ];
-        
-		for(NSView *view in views) {
-			if ([view tag ] >= 100) {
-				[view setHidden:YES ];
-			}
-		}
-        
-		NSRect frame = [userSheet frame ];
-//		frame.size.height = 406;
-//		frame.size.height -= 183; frame.origin.y += 183;
-        frame.size.height += 17; frame.origin.y -= 17;
-		[[userSheet animator ] setFrame: frame display: YES ];
-        
-        [userSheet makeFirstResponder: [contentView viewWithTag:10 ] ];
-	}
-	if (step == 2) {
-		for(NSView *view in views) {
-			if ([view tag ] >= 100 && [view tag ] <= 110) {
-				[[view animator] setHidden:NO ];
-			}
-		}
-        
-		NSRect frame = [userSheet frame ];
-		frame.size.height += 32; frame.origin.y -= 32;
-		[[userSheet animator] setFrame: frame display: YES ];
+    NSArray *views = [[pinTanBox contentView] subviews];
 
-        [userSheet makeFirstResponder: [[userSheet contentView ] viewWithTag:110 ] ];
-	}
-	if (step == 3) {
-		for(NSView *view in views) {
-			if ([view tag ] > 110) {
-				[[view animator] setHidden:NO ];
-			}
-		}
-        
-		NSRect frame = [userSheet frame ];
-		frame.size.height += 151; frame.origin.y -= 151;
-		[[userSheet animator] setFrame: frame display: YES ];
-	}			
-    
+    if (step == 1) {
+        NSView *contentView = [userSheet contentView];
+        [contentView replaceSubview: currentBox with: pinTanBox];
+        currentBox = pinTanBox;
+        [pinTanBox setFrame: [secSelectBox frame]];
+
+        for (NSView *view in views) {
+            if ([view tag] >= 100) {
+                [view setHidden: YES];
+            }
+        }
+        NSRect frame = [userSheet frame];
+        //		frame.size.height = 406;
+        //		frame.size.height -= 183; frame.origin.y += 183;
+        frame.size.height += 17; frame.origin.y -= 17;
+        [[userSheet animator] setFrame: frame display: YES];
+
+        [userSheet makeFirstResponder: [contentView viewWithTag: 10]];
+    }
+    if (step == 2) {
+        for (NSView *view in views) {
+            if ([view tag] >= 100 && [view tag] <= 110) {
+                [[view animator] setHidden: NO];
+            }
+        }
+        NSRect frame = [userSheet frame];
+        frame.size.height += 32; frame.origin.y -= 32;
+        [[userSheet animator] setFrame: frame display: YES];
+
+        [userSheet makeFirstResponder: [[userSheet contentView] viewWithTag: 110]];
+    }
+    if (step == 3) {
+        for (NSView *view in views) {
+            if ([view tag] > 110) {
+                [[view animator] setHidden: NO];
+            }
+        }
+        NSRect frame = [userSheet frame];
+        frame.size.height += 151; frame.origin.y -= 151;
+        [[userSheet animator] setFrame: frame display: YES];
+    }
+
 }
 
 - (void)prepareUserSheet_DDV
 {
-    NSArray *views = [[ddvBox contentView ] subviews ];
+    NSArray *views = [[ddvBox contentView] subviews];
 
     if (step == 1) {
-        
         // zur DDV-Box wechseln
-        NSView *contentView = [userSheet contentView ];
-        [contentView replaceSubview:currentBox with: ddvBox ];
+        NSView *contentView = [userSheet contentView];
+        [contentView replaceSubview: currentBox with: ddvBox];
         currentBox = ddvBox;
-        [ddvBox setFrame:[secSelectBox frame ] ];   
-        
+        [ddvBox setFrame: [secSelectBox frame]];
+
         // Defaultwerte setzen
-        BankUser *user = [currentUserController content ];
+        BankUser *user = [currentUserController content];
         user.ddvPortIdx = @1;
         user.ddvReaderIdx = @0;
 
-        for(NSView *view in views) {
-			if ([view tag ] >= 100) {
-				[view setHidden:YES ];
-			}
-		}
-        
+        for (NSView *view in views) {
+            if ([view tag] >= 100) {
+                [view setHidden: YES];
+            }
+        }
         // Gr‚Äö√†√∂‚Äö√†√á‚Äö√†√∂‚àö¬∫e setzen
-		NSRect frame = [userSheet frame ];
+        NSRect frame = [userSheet frame];
         frame.size.height += 20; frame.origin.y -= 20;
-		[[userSheet animator ] setFrame: frame display: YES ];
-        [userSheet makeFirstResponder: [contentView viewWithTag:10 ] ];
+        [[userSheet animator] setFrame: frame display: YES];
+        [userSheet makeFirstResponder: [contentView viewWithTag: 10]];
     }
     if (step == 2) {
-		for(NSView *view in views) {
-			if ([view tag ] >= 100 && [view tag ] <= 110) {
-				[[view animator] setHidden:NO ];
-			}
-		}
-        
-		NSRect frame = [userSheet frame ];
-		frame.size.height += 32; frame.origin.y -= 32;
-		[[userSheet animator] setFrame: frame display: YES ];
-        [userSheet makeFirstResponder: [[userSheet contentView ] viewWithTag:110 ] ];
-	}
-	if (step == 3) {
-		for(NSView *view in views) {
-			if ([view tag ] > 110 && [view tag ] <= 130) {
-				[[view animator] setHidden:NO ];
-			}
-		}
-        
-		NSRect frame = [userSheet frame ];
-		frame.size.height += 64; frame.origin.y -= 64;
-		[[userSheet animator] setFrame: frame display: YES ];
-	}
-	if (step == 4) {
-		for(NSView *view in views) {
-			if ([view tag ] > 110) {
-				[[view animator] setHidden:NO ];
-			}
-		}
-        
-		NSRect frame = [userSheet frame ];
-		frame.size.height += 87; frame.origin.y -= 87;
-		[[userSheet animator] setFrame: frame display: YES ];
-	}
-	if (step == 5) {
-		for(NSView *view in views) {
-			if ([view tag ] >= 110) {
-				[[view animator] setHidden:NO ];
-			}
-		}
-        
-		NSRect frame = [userSheet frame ];
-		frame.size.height += 183; frame.origin.y -= 183;
-		[[userSheet animator] setFrame: frame display: YES ];
-	}
-    
-    
+        for (NSView *view in views) {
+            if ([view tag] >= 100 && [view tag] <= 110) {
+                [[view animator] setHidden: NO];
+            }
+        }
+        NSRect frame = [userSheet frame];
+        frame.size.height += 32; frame.origin.y -= 32;
+        [[userSheet animator] setFrame: frame display: YES];
+        [userSheet makeFirstResponder: [[userSheet contentView] viewWithTag: 110]];
+    }
+    if (step == 3) {
+        for (NSView *view in views) {
+            if ([view tag] > 110 && [view tag] <= 130) {
+                [[view animator] setHidden: NO];
+            }
+        }
+        NSRect frame = [userSheet frame];
+        frame.size.height += 64; frame.origin.y -= 64;
+        [[userSheet animator] setFrame: frame display: YES];
+    }
+    if (step == 4) {
+        for (NSView *view in views) {
+            if ([view tag] > 110) {
+                [[view animator] setHidden: NO];
+            }
+        }
+        NSRect frame = [userSheet frame];
+        frame.size.height += 87; frame.origin.y -= 87;
+        [[userSheet animator] setFrame: frame display: YES];
+    }
+    if (step == 5) {
+        for (NSView *view in views) {
+            if ([view tag] >= 110) {
+                [[view animator] setHidden: NO];
+            }
+        }
+        NSRect frame = [userSheet frame];
+        frame.size.height += 183; frame.origin.y -= 183;
+        [[userSheet animator] setFrame: frame display: YES];
+    }
+
+
 }
 
 - (void)prepareUserSheet
 {
     //[okButton setKeyEquivalent:@"\r" ];
     if (step == 0) {
-		NSRect frame = [userSheet frame ];
-		frame.size.height = 406;
-		frame.size.height -= 200; frame.origin.y += 200;
-		[userSheet setFrame: frame display: YES ];
-        
-        NSView *contentView = [userSheet contentView ];
+        NSRect frame = [userSheet frame];
+        frame.size.height = 406;
+        frame.size.height -= 200; frame.origin.y += 200;
+        [userSheet setFrame: frame display: YES];
+
+        NSView *contentView = [userSheet contentView];
         if (currentBox != secSelectBox) {
-            [contentView replaceSubview:currentBox with:secSelectBox ];
+            [contentView replaceSubview: currentBox with: secSelectBox];
             currentBox = secSelectBox;
-            [secSelectBox setFrame:NSMakeRect(110,60,549,120) ];
+            [secSelectBox setFrame: NSMakeRect(110, 60, 549, 120)];
         }
-        
+
         return;
     }
-    
-    if (secMethod == SecMethod_PinTan) [self prepareUserSheet_PinTan ];
-    if (secMethod == SecMethod_DDV) [self prepareUserSheet_DDV ];
- }
 
-- (IBAction)addEntry:(id)sender
-{
-    BankUser *user = [NSEntityDescription insertNewObjectForEntityForName:@"BankUser" inManagedObjectContext:context ];
-    [currentUserController setContent:user ];
-	
-	step = 0;
-        
-	[self prepareUserSheet ];
-    
-	[NSApp beginSheet: userSheet
-	   modalForWindow: [self window ]
-		modalDelegate: self
-	   didEndSelector: @selector(userSheetDidEnd:returnCode:contextInfo:)
-		  contextInfo: NULL ];
+    if (secMethod == SecMethod_PinTan) {
+        [self prepareUserSheet_PinTan];
+    }
+    if (secMethod == SecMethod_DDV) {
+        [self prepareUserSheet_DDV];
+    }
 }
 
-- (IBAction)removeEntry:(id)sender
+- (IBAction)addEntry: (id)sender
 {
-    NSError *error=nil;
-    
-	BankUser* user = [self selectedUser];
-	if (user == nil) return;
-	
-    if (user.userId == nil) {
-		[bankUserController remove: self];
+    BankUser *user = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser" inManagedObjectContext: context];
+    [currentUserController setContent: user];
+
+    step = 0;
+
+    [self prepareUserSheet];
+
+    [NSApp  beginSheet: userSheet
+        modalForWindow: [self window]
+         modalDelegate: self
+        didEndSelector: @selector(userSheetDidEnd:returnCode:contextInfo:)
+           contextInfo: NULL];
+}
+
+- (IBAction)removeEntry: (id)sender
+{
+    NSError *error = nil;
+
+    BankUser *user = [self selectedUser];
+    if (user == nil) {
         return;
     }
-    
-	if([[HBCIClient hbciClient] deleteBankUser: user] == TRUE) {
+
+    if (user.userId == nil) {
+        [bankUserController remove: self];
+        return;
+    }
+
+    if ([[HBCIClient hbciClient] deleteBankUser: user] == TRUE) {
         // remove user from all related bank accounts
-        NSMutableSet *accounts = [user mutableSetValueForKey:@"accounts" ];
+        NSMutableSet *accounts = [user mutableSetValueForKey: @"accounts"];
         for (BankAccount *account in accounts) {
             // pr‚Äö√†√∂¬¨‚à´fen ob die userId gel‚Äö√†√∂‚Äö√†√áscht oder ge‚Äö√†√∂¬¨√ündert werden muss
-            if ([account.userId isEqualToString: user.userId ]) {
-                NSMutableSet *users = [account mutableSetValueForKey:@"users" ];
+            if ([account.userId isEqualToString: user.userId]) {
+                NSMutableSet *users = [account mutableSetValueForKey: @"users"];
                 account.userId = nil;
                 account.customerId = nil;
-                for(BankUser *accUser in users) {
-                    if ([accUser.userId isEqualToString: user.userId ] == NO) {
+                for (BankUser *accUser in users) {
+                    if ([accUser.userId isEqualToString: user.userId] == NO) {
                         account.userId = accUser.userId;
                         account.customerId = accUser.customerId;
                     }
                 }
             }
         }
-		[bankUserController remove: self];
-        [self updateTanMethods ];
-        
+        [bankUserController remove: self];
+        [self updateTanMethods];
+
         // save updates
-        if([context save: &error] == NO) {
-            NSAlert *alert = [NSAlert alertWithError:error];
+        if ([context save: &error] == NO) {
+            NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
             return;
         }
-	}
+    }
 }
 
--(IBAction)changePinTanMethod:(id)sender
+- (IBAction)changePinTanMethod: (id)sender
 {
-	BankUser *user = [self selectedUser];
-	if(user == nil) return;
-	 PecuniaError *error = [[HBCIClient hbciClient] changePinTanMethodForUser:user];
-	if (error) {
-		[error alertPanel];
+    BankUser *user = [self selectedUser];
+    if (user == nil) {
         return;
-	}
-}
-
--(IBAction)printBankParameter:(id)sender
-{
-	BankUser *user = [self selectedUser];
-	if (user == nil) return;
-	LogController *logController = [LogController logController];
-	MessageLog *messageLog = [MessageLog log];
-//	[[logController window] makeKeyAndOrderFront:self];
-	[logController showWindow:self];
-	[logController setLogLevel:LogLevel_Info];
-	BankParameter *bp = [[HBCIClient hbciClient] getBankParameterForUser: user];
-	if (bp == nil) {
-		[messageLog addMessage:@"Bankparameter konnten nicht ermittelt werden" withLevel:LogLevel_Error];
-		return;
-	}
-	[messageLog addMessage:@"Bankparameterdaten:" withLevel:LogLevel_Info];
-    [messageLog addMessage: bp.bpd_raw withLevel:LogLevel_Notice];
-    
-	[messageLog addMessage:@"Anwenderparameterdaten:" withLevel:LogLevel_Info];
-    [messageLog addMessage: bp.upd_raw withLevel:LogLevel_Notice];
-}
-
-
-- (IBAction)updateBankParameter: (id)sender
-{
-	BankUser *user = [self selectedUser];
-	if(user == nil) return;
-	
-	PecuniaError *error = [[HBCIClient hbciClient] updateBankDataForUser: user];
-	if(error) {
+    }
+    PecuniaError *error = [[HBCIClient hbciClient] changePinTanMethodForUser: user];
+    if (error) {
         [error alertPanel];
         return;
     }
-    
-    // update TAN methods list
-    if ([user.secMethod intValue ] == SecMethod_PinTan) {
-        [self updateTanMethods ];
+}
+
+- (IBAction)printBankParameter: (id)sender
+{
+    BankUser *user = [self selectedUser];
+    if (user == nil) {
+        return;
     }
-    NSRunAlertPanel(NSLocalizedString(@"AP71", nil), 
+    LogController *logController = [LogController logController];
+    MessageLog    *messageLog = [MessageLog log];
+    //	[[logController window] makeKeyAndOrderFront:self];
+    [logController showWindow: self];
+    [logController setLogLevel: LogLevel_Info];
+    BankParameter *bp = [[HBCIClient hbciClient] getBankParameterForUser: user];
+    if (bp == nil) {
+        [messageLog addMessage: @"Bankparameter konnten nicht ermittelt werden" withLevel: LogLevel_Error];
+        return;
+    }
+    [messageLog addMessage: @"Bankparameterdaten:" withLevel: LogLevel_Info];
+    [messageLog addMessage: bp.bpd_raw withLevel: LogLevel_Notice];
+
+    [messageLog addMessage: @"Anwenderparameterdaten:" withLevel: LogLevel_Info];
+    [messageLog addMessage: bp.upd_raw withLevel: LogLevel_Notice];
+}
+
+- (IBAction)updateBankParameter: (id)sender
+{
+    BankUser *user = [self selectedUser];
+    if (user == nil) {
+        return;
+    }
+
+    PecuniaError *error = [[HBCIClient hbciClient] updateBankDataForUser: user];
+    if (error) {
+        [error alertPanel];
+        return;
+    }
+
+    // update TAN methods list
+    if ([user.secMethod intValue] == SecMethod_PinTan) {
+        [self updateTanMethods];
+    }
+    NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
                     NSLocalizedString(@"AP100", nil),
                     NSLocalizedString(@"ok", nil), nil, nil);
 }

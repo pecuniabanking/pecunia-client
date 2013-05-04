@@ -27,20 +27,19 @@ enum SettingsType {
 @interface ImportSettings : NSObject <NSCoding> {
 }
 
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSArray *fields;
-@property (nonatomic, copy) NSString *fieldSeparator;
-@property (nonatomic, copy) NSString *dateFormat;
-@property (nonatomic, copy) NSString *decimalSeparator;
+@property (nonatomic, copy) NSString   *name;
+@property (nonatomic, copy) NSArray    *fields;
+@property (nonatomic, copy) NSString   *fieldSeparator;
+@property (nonatomic, copy) NSString   *dateFormat;
+@property (nonatomic, copy) NSString   *decimalSeparator;
 @property (nonatomic, strong) NSNumber *encoding;
 @property (nonatomic, strong) NSNumber *ignoreLines;
-@property (nonatomic, copy) NSString *accountNumber;
-@property (nonatomic, copy) NSString *accountSuffix;
-@property (nonatomic, copy) NSString *bankCode;
+@property (nonatomic, copy) NSString   *accountNumber;
+@property (nonatomic, copy) NSString   *accountSuffix;
+@property (nonatomic, copy) NSString   *bankCode;
 @property (nonatomic, strong) NSNumber *type; // csv, pdf
 
-@property (assign) BOOL isDirty;
+@property (assign) BOOL   isDirty;
 @property (copy) NSString *fileName;
 
 @end
-

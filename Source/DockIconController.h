@@ -18,11 +18,10 @@
  */
 
 @interface DockIconController : NSObject {
-
     NSManagedObjectContext *managedObjectContext;
-    NSInteger               badgeValue;
+    NSInteger              badgeValue;
 }
 
-- (DockIconController*)initWithManagedObjectContext: (NSManagedObjectContext *)objectContext;
+- (DockIconController *)initWithManagedObjectContext: (NSManagedObjectContext *)objectContext;
 
 @end

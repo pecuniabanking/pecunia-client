@@ -10,11 +10,10 @@
 
 
 @interface WorkerThread : NSObject {
-
 }
 
-+(void)init;
-+(NSThread*)thread;
-+(void)finish;
++ (void)init;
++ (NSThread *)thread;
++ (void)finish;
 
 @end

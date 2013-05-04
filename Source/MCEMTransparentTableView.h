@@ -10,7 +10,6 @@
 
 
 @interface MCEMTransparentTableView : NSTableView {
-
 }
 
 @end

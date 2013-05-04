@@ -10,22 +10,22 @@
 
 
 @interface NewPasswordController : NSWindowController {
-	IBOutlet NSTextField	*passwordText;
-	IBOutlet NSTextField	*passwordField1;
-	IBOutlet NSTextField	*passwordField2;
-	IBOutlet NSButton		*okButton;
-	
-	NSString	*text;
-	NSString	*title;
-	NSString	*result;
-	
-}
--(id)initWithText: (NSString* )x title: (NSString *)y;
--(void)windowWillClose:(NSNotification *)aNotification;
--(void)windowDidLoad;
--(NSString*)result;
+    IBOutlet NSTextField *passwordText;
+    IBOutlet NSTextField *passwordField1;
+    IBOutlet NSTextField *passwordField2;
+    IBOutlet NSButton    *okButton;
 
--(IBAction)ok:(id)sender;
--(IBAction)cancel:(id)sender;
+    NSString *text;
+    NSString *title;
+    NSString *result;
+
+}
+- (id)initWithText: (NSString *)x title: (NSString *)y;
+- (void)windowWillClose: (NSNotification *)aNotification;
+- (void)windowDidLoad;
+- (NSString *)result;
+
+- (IBAction)ok: (id)sender;
+- (IBAction)cancel: (id)sender;
 
 @end

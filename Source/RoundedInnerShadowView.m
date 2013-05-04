@@ -15,29 +15,28 @@
  */
 @implementation RoundedInnerShadowView
 
-static NSShadow* innerShadow = nil;
+static NSShadow *innerShadow = nil;
 
 - (void)drawRect: (NSRect)dirtyRect
 {
-  NSGraphicsContext *context = [NSGraphicsContext currentContext];
-  [context saveGraphicsState];
+    NSGraphicsContext *context = [NSGraphicsContext currentContext];
+    [context saveGraphicsState];
 
-  NSBezierPath* path = [NSBezierPath bezierPathWithRoundedRect: [self bounds] xRadius: 8 yRadius: 8];
+    NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect: [self bounds] xRadius: 8 yRadius: 8];
 
 
-  [[NSColor colorWithDeviceWhite: 1 alpha: 0.35] set];
-  [path fill];
-  
-  if (innerShadow == nil)
-  {
-    innerShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithCalibratedWhite: 0.0 alpha: .40]
-                                           offset: NSMakeSize(2.0, -1.0)
-                                       blurRadius: 4.0];
-  }
+    [[NSColor colorWithDeviceWhite: 1 alpha: 0.35] set];
+    [path fill];
 
-  [path fillWithInnerShadow: innerShadow borderOnly: NO];
+    if (innerShadow == nil) {
+        innerShadow = [[NSShadow alloc] initWithColor: [NSColor colorWithCalibratedWhite: 0.0 alpha: .40]
+                                               offset: NSMakeSize(2.0, -1.0)
+                                           blurRadius: 4.0];
+    }
 
-  [context restoreGraphicsState];
+    [path fillWithInnerShadow: innerShadow borderOnly: NO];
+
+    [context restoreGraphicsState];
 }
 
 @end

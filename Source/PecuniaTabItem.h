@@ -19,7 +19,7 @@
 @required
 
 - (void)print;
-- (NSView*)mainView;
+- (NSView *)mainView;
 - (void)activate;
 - (void)deactivate;
 

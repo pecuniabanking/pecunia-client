@@ -35,16 +35,16 @@
 
 @protocol BFIconTabBarDelegate <NSObject>
 
-- (void)tabBarChangedSelection:(BFIconTabBar *)tabbar;
+- (void)tabBarChangedSelection: (BFIconTabBar *)tabbar;
 
 @end
 
 
 @interface BFIconTabBar : NSControl
 
-@property (nonatomic, strong) NSMutableArray *items;
-@property (nonatomic) CGFloat itemWidth;
-@property (nonatomic) BOOL multipleSelection;
+@property (nonatomic, strong) NSMutableArray                               *items;
+@property (nonatomic) CGFloat                                              itemWidth;
+@property (nonatomic) BOOL                                                 multipleSelection;
 @property (nonatomic, unsafe_unretained) IBOutlet id<BFIconTabBarDelegate> delegate;
 
 - (BFIconTabBarItem *)selectedItem;
@@ -53,24 +53,24 @@
 - (NSIndexSet *)selectedIndexes;
 
 - (IBAction)selectAll;
-- (void)selectIndex:(NSUInteger)index;
-- (void)selectItem:(BFIconTabBarItem *)item;
-- (void)selectIndexes:(NSIndexSet *)indexes byExtendingSelection:(BOOL)extending;
+- (void)selectIndex: (NSUInteger)index;
+- (void)selectItem: (BFIconTabBarItem *)item;
+- (void)selectIndexes: (NSIndexSet *)indexes byExtendingSelection: (BOOL)extending;
 
 - (IBAction)deselectAll;
-- (void)deselectIndex:(NSUInteger)index;
-- (void)deselectIndexes:(NSIndexSet *)indexes;
+- (void)deselectIndex: (NSUInteger)index;
+- (void)deselectIndexes: (NSIndexSet *)indexes;
 
 @end
 
 
 @interface BFIconTabBarItem : NSObject
 
-@property (nonatomic, strong) NSImage *icon;
-@property (nonatomic, copy) NSString *tooltip;
+@property (nonatomic, strong) NSImage                 *icon;
+@property (nonatomic, copy) NSString                  *tooltip;
 @property (nonatomic, unsafe_unretained) BFIconTabBar *tabBar;
 
-- (id)initWithIcon:(NSImage *)image tooltip:(NSString *)tooltipString;
-+ (BFIconTabBarItem *)itemWithIcon:(NSImage *)image tooltip:(NSString *)tooltipString;
+- (id)initWithIcon: (NSImage *)image tooltip: (NSString *)tooltipString;
++ (BFIconTabBarItem *)itemWithIcon: (NSImage *)image tooltip: (NSString *)tooltipString;
 
 @end

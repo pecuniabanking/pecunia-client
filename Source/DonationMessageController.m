@@ -11,38 +11,38 @@
 
 @implementation DonationMessageController
 
--(id)init
+- (id)init
 {
-	self = [super initWithWindowNibName:@"Donation"];
-	donate = YES;
-	return self;
+    self = [super initWithWindowNibName: @"Donation"];
+    donate = YES;
+    return self;
 }
 
--(BOOL)run
+- (BOOL)run
 {
-	[[self window ] center ];
-	int res = [NSApp runModalForWindow: [self window ] ];
-    if(res == 0) return YES; else return NO;
+    [[self window] center];
+    int res = [NSApp runModalForWindow: [self window]];
+    if (res == 0) {
+        return YES;
+    } else {return NO; }
 }
 
--(void)windowWillClose:(NSNotification *)aNotification
+- (void)windowWillClose: (NSNotification *)aNotification
 {
-	if(donate) [NSApp stopModalWithCode:0];
-	else [NSApp stopModalWithCode:1];
+    if (donate) {
+        [NSApp stopModalWithCode: 0];
+    } else {[NSApp stopModalWithCode: 1]; }
 }
 
-
--(IBAction)donate: (id)sender
+- (IBAction)donate: (id)sender
 {
-	[self close ];
+    [self close];
 }
 
--(IBAction)later: (id)sender
+- (IBAction)later: (id)sender
 {
-	donate = NO;
-	[self close ];
+    donate = NO;
+    [self close];
 }
-
-
 
 @end

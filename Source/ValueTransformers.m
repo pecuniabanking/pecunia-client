@@ -23,39 +23,38 @@
 
 + (BOOL)allowsReverseTransformation
 {
-  return NO;
+    return NO;
 }
 
 // Shared instance.
-static NSNumberFormatter* formatter;
-static NSMutableDictionary* cache;
+static NSNumberFormatter   *formatter;
+static NSMutableDictionary *cache;
 
 - (id)transformedValue: (id)value
 {
-  if (value == nil)
-    return nil;
-  
-  if (formatter == nil)
-  {
-    formatter = [[NSNumberFormatter alloc] init];
-    [formatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
-    [formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
-    
-    cache = [[NSMutableDictionary alloc] init];
-  }
-  
-  id result = [cache valueForKey: value];
-  if (result == nil)
-  {
-    [formatter setFormat: @"0.00¤"];
-    [formatter setCurrencyCode: value];
-    NSString* symbol = [formatter stringFromNumber: @0];
-    
-    result = [symbol substringFromIndex: [symbol length] - 1];
-    [cache setValue: result forKey: value];
-  }
-  
-  return result;
+    if (value == nil) {
+        return nil;
+    }
+
+    if (formatter == nil) {
+        formatter = [[NSNumberFormatter alloc] init];
+        [formatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
+        [formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
+
+        cache = [[NSMutableDictionary alloc] init];
+    }
+
+    id result = [cache valueForKey: value];
+    if (result == nil) {
+        [formatter setFormat: @"0.00¤"];
+        [formatter setCurrencyCode: value];
+        NSString *symbol = [formatter stringFromNumber: @0];
+
+        result = [symbol substringFromIndex: [symbol length] - 1];
+        [cache setValue: result forKey: value];
+    }
+
+    return result;
 }
 
 @end
@@ -118,4 +117,3 @@ static NSMutableDictionary* cache;
 @end
 
 //----------------------------------------------------------------------------------------------------------------------
-

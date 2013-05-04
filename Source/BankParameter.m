@@ -18,13 +18,11 @@
 
 - (void)dealloc
 {
-	bpd = nil;
-	upd = nil;
-	bpd_raw = nil;
-	upd_raw = nil;
+    bpd = nil;
+    upd = nil;
+    bpd_raw = nil;
+    upd_raw = nil;
 
 }
 
 @end
-
-

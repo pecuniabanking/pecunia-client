@@ -10,12 +10,11 @@
 
 
 @interface TanMediaList : NSObject {
-    NSString    *tanOption;
-    NSArray     *mediaList;
+    NSString *tanOption;
+    NSArray  *mediaList;
 }
 
 @property (nonatomic, strong) NSString *tanOption;
-@property (nonatomic, strong) NSArray *mediaList;
+@property (nonatomic, strong) NSArray  *mediaList;
 
 @end
-

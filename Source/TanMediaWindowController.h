@@ -9,16 +9,16 @@
 #import <Cocoa/Cocoa.h>
 
 @interface TanMediaWindowController : NSWindowController {
-	IBOutlet NSTextField	*messageField;
-	IBOutlet NSComboBox		*tanMediaCombo;
-	
-	NSString	*message;
-	NSString	*tanMedia;
-	NSString	*userId;
-	NSString	*bankCode;
-	BOOL		active;
+    IBOutlet NSTextField *messageField;
+    IBOutlet NSComboBox  *tanMediaCombo;
+
+    NSString *message;
+    NSString *tanMedia;
+    NSString *userId;
+    NSString *bankCode;
+    BOOL     active;
 }
--(id)initWithUser:(NSString*)usrId bankCode:(NSString*)code message:(NSString*)msg;
+- (id)initWithUser: (NSString *)usrId bankCode: (NSString *)code message: (NSString *)msg;
 
 @property (nonatomic, copy) NSString *message;
 @property (nonatomic, copy) NSString *tanMedia;
@@ -26,4 +26,3 @@
 @property (nonatomic, copy) NSString *bankCode;
 
 @end
-

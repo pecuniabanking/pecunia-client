@@ -25,7 +25,7 @@
 #import "ColorPopup.h"
 
 @interface TagAttachment : NSTextAttachment
-@property (strong) id representedObject;
+@property (strong) id   representedObject;
 @property (assign) BOOL selected;
 @end;
 
@@ -56,7 +56,7 @@
                                                        atIndex: charIndex
                                                 effectiveRange: nil];
 
-    Tag *tag = attachment.representedObject;
+    Tag  *tag = attachment.representedObject;
     BOOL hot = owner.hotTagIndex == charIndex;
 
     // We don't really set an alpha value for the color but explicitely blend it to white with the
@@ -77,7 +77,7 @@
     cellFrame.origin.y = (int)cellFrame.origin.y + 0.5;
     cellFrame.size.width -= 2;
     cellFrame.size.height -= 2;
-    CGFloat radius = cellFrame.size.height / 2.0;
+    CGFloat      radius = cellFrame.size.height / 2.0;
     NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect: cellFrame xRadius: radius yRadius: radius];
     [gradient drawInBezierPath: path angle: 90];
 
@@ -97,7 +97,7 @@
     [[tag.tagColor colorWithAlphaComponent: 0.5] set];
     [path fill];
     [path removeAllPoints];
-    [path moveToPoint: NSMakePoint(cellFrame.origin.x - 10 , 0.5 + cellFrame.origin.y + (cellFrame.size.height - 5) / 2)];
+    [path moveToPoint: NSMakePoint(cellFrame.origin.x - 10, 0.5 + cellFrame.origin.y + (cellFrame.size.height - 5) / 2)];
     [path relativeLineToPoint: NSMakePoint(7, 0)];
     [path relativeLineToPoint: NSMakePoint(-3.5, 5)];
     [path relativeLineToPoint: NSMakePoint(-3.5, -5)];
@@ -107,8 +107,8 @@
 
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
-    NSColor *textColor = attachment.selected ? [NSColor whiteColor] : [NSColor colorWithCalibratedWhite: 0 alpha: 0.75];
-    NSFont *font = self.font != nil ? self.font : owner.defaultFont;
+    NSColor      *textColor = attachment.selected ? [NSColor whiteColor] : [NSColor colorWithCalibratedWhite: 0 alpha: 0.75];
+    NSFont       *font = self.font != nil ? self.font : owner.defaultFont;
     NSDictionary *attributes = @{NSFontAttributeName: font,
                                  NSParagraphStyleAttributeName: paragraphStyle,
                                  NSForegroundColorAttributeName: textColor};
@@ -166,7 +166,6 @@
             inRect: (NSRect)cellFrame
             ofView: (NSView *)controlView
       untilMouseUp: (BOOL)flag
-
 {
     NSPoint mousePosition = [owner convertPoint: [theEvent locationInWindow] fromView: nil];
     if (mousePosition.x - cellFrame.origin.x < TAG_ARROW_AREA_WIDTH) {
@@ -183,7 +182,7 @@
             ColorPopup.sharedColorPopup.target = self;
             ColorPopup.sharedColorPopup.action = @selector(colorChanged:);
             [ColorPopup.sharedColorPopup popupRelativeToRect: bounds ofView: owner];
-            
+
             return NO;
         }
     }
@@ -202,7 +201,7 @@
 
 @interface TagView ()
 {
-    NSPopover *tagPopover;
+    NSPopover        *tagPopover;
     NSViewController *tagPopoverController;
 }
 
@@ -287,14 +286,14 @@
         [super setSelectedRanges: ranges affinity: affinity stillSelecting: stillSelectingFlag];
         return;
     }
-    
+
     // Show selected background only for plain text, no attachment, no line end.
     // Mark attachments as selected instead. They draw their selection state differently.
     // We can only have a single selected range.
 
     if (self.textStorage.length > 0) {
         NSRange range = self.selectedRange;
-        for (NSUInteger i = range.location; i < range.location + range.length;) {
+        for (NSUInteger i = range.location; i < range.location + range.length; ) {
             NSRange effectiveRange;
             [self.textStorage attribute: NSAttachmentAttributeName
                                 atIndex: i
@@ -303,11 +302,10 @@
                                        forCharacterRange: effectiveRange];
             i += effectiveRange.length;
         }
-
         NSMutableArray *selectedTags = [NSMutableArray arrayWithCapacity: range.length];
         range = [ranges.lastObject rangeValue];
-        for (NSUInteger i = range.location; i < range.location + range.length;) {
-            NSRange effectiveRange;
+        for (NSUInteger i = range.location; i < range.location + range.length; ) {
+            NSRange       effectiveRange;
             TagAttachment *attachment = [self.textStorage attribute: NSAttachmentAttributeName
                                                             atIndex: i
                                                      effectiveRange: &effectiveRange];
@@ -320,9 +318,8 @@
             }
             i += effectiveRange.length;
         }
-
         [datasource setSelectedObjects: selectedTags];
-     }
+    }
 
     // Let super set the insertion point and update the selectedRange(s) members.
     [super setSelectedRanges: ranges affinity: affinity stillSelecting: stillSelectingFlag];
@@ -333,10 +330,10 @@
 {
     // Two runs here. We need to remove the selection before we change the content, but we should not remove
     // it if nothing is to convert. So check first if there's actually something to convert.
-    BOOL needConversion = NO;
+    BOOL       needConversion = NO;
     NSUInteger i = 0;
-    for (; i < self.textStorage.length;) {
-        NSRange effectiveRange;
+    for (; i < self.textStorage.length; ) {
+        NSRange       effectiveRange;
         TagAttachment *attachment = [self.textStorage attribute: NSAttachmentAttributeName
                                                         atIndex: i
                                                  effectiveRange: &effectiveRange];
@@ -346,12 +343,11 @@
         }
         i += effectiveRange.length;
     }
-
     if (needConversion) {
         [self setSelectedRange: NSMakeRange(i + 1, 0)];
 
-        for (NSUInteger i = 0; i < self.textStorage.length;) {
-            NSRange effectiveRange;
+        for (NSUInteger i = 0; i < self.textStorage.length; ) {
+            NSRange       effectiveRange;
             TagAttachment *attachment = [self.textStorage attribute: NSAttachmentAttributeName
                                                             atIndex: i
                                                      effectiveRange: &effectiveRange];
@@ -388,7 +384,7 @@
     if (updatingContent) {
         return;
     }
-    
+
     if ([keyPath isEqualToString: @"arrangedObjects"]) {
         updatingContent = YES;
 
@@ -403,15 +399,14 @@
             NSAttributedString *text = [NSAttributedString attributedStringWithAttachment: attachment];
             [newText appendAttributedString: text];
         }
-        
         self.textStorage.attributedString = newText;
         updatingContent = NO;
         return;
     }
 
     if ([keyPath isEqualToString: @"selectedObjects"]) {
-        for (NSUInteger i = 0; i < self.textStorage.length;) {
-            NSRange effectiveRange;
+        for (NSUInteger i = 0; i < self.textStorage.length; ) {
+            NSRange       effectiveRange;
             TagAttachment *attachment = [self.textStorage attribute: NSAttachmentAttributeName
                                                             atIndex: i
                                                      effectiveRange: &effectiveRange];
@@ -420,7 +415,6 @@
             }
             i += effectiveRange.length;
         }
-
         [self setNeedsDisplay: YES];
         return;
     }
@@ -429,7 +423,7 @@
         [self setNeedsDisplay: YES];
         return;
     }
-    
+
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
@@ -439,10 +433,10 @@
     [self updateTargetDropIndexAtPoint: [self convertPoint: [theEvent locationInWindow] fromView: nil]];
 }
 
-- (void)mouseExited: (NSEvent*)theEvent
+- (void)mouseExited: (NSEvent *)theEvent
 {
     [super mouseExited: theEvent];
-    
+
     if (hotTagIndex != NSNotFound) {
         NSRect bounds = [self.layoutManager boundingRectForGlyphRange: NSMakeRange(hotTagIndex, 1)
                                                       inTextContainer: self.textContainer];
@@ -495,12 +489,12 @@
     if (range.length == 0) {
         return;
     }
-    
+
     NSMutableArray *candiates = [NSMutableArray arrayWithCapacity: range.length];
     NSMutableArray *ranges = [NSMutableArray arrayWithCapacity: range.length];
 
-    for (NSUInteger i = range.location; i < range.location + range.length;) {
-        NSRange effectiveRange;
+    for (NSUInteger i = range.location; i < range.location + range.length; ) {
+        NSRange       effectiveRange;
         TagAttachment *attachment = [self.textStorage attribute: NSAttachmentAttributeName
                                                         atIndex: i
                                                  effectiveRange: &effectiveRange];
@@ -511,16 +505,13 @@
         }
         i += effectiveRange.length;
     }
-
     updatingContent = YES;
     for (NSValue *value in ranges.reverseObjectEnumerator) {
         [self.textStorage deleteCharactersInRange: value.rangeValue];
     }
-
     for (id element in candiates) {
         [datasource removeObject: element];
     }
-
     range.length = 0;
     self.selectedRange = range;
     updatingContent = NO;
@@ -576,11 +567,11 @@
     // If we end up with a selection that touches any of the attachments then check if there's
     // text that must be converted to a new tag.
     NSRange range = self.selectedRange;
-    BOOL needScan = NO;
+    BOOL    needScan = NO;
 
     if (range.length > 0) {
-        for (NSUInteger i = range.location; i < range.location + range.length;) {
-            NSRange effectiveRange;
+        for (NSUInteger i = range.location; i < range.location + range.length; ) {
+            NSRange       effectiveRange;
             TagAttachment *attachment = [self.textStorage attribute: NSAttachmentAttributeName
                                                             atIndex: i
                                                      effectiveRange: &effectiveRange];
@@ -602,10 +593,10 @@
     return datasource.selectedObjects.count == 0;
 }
 
-- (void)textView: (NSTextView *)textView
-   clickedOnCell: (id <NSTextAttachmentCell>)cell
-          inRect: (NSRect)cellFrame
-         atIndex: (NSUInteger)charIndex
+- (void) textView: (NSTextView *)textView
+    clickedOnCell: (id <NSTextAttachmentCell>)cell
+           inRect: (NSRect)cellFrame
+          atIndex: (NSUInteger)charIndex
 {
     TagAttachment *attachment = [self.textStorage attribute: NSAttachmentAttributeName
                                                     atIndex: charIndex
@@ -616,8 +607,8 @@
 #pragma mark -
 #pragma mark Drag and drop
 
-- (NSDragOperation)draggingSession: (NSDraggingSession *)session
-sourceOperationMaskForDraggingContext: (NSDraggingContext)context
+- (NSDragOperation)       draggingSession: (NSDraggingSession *)session
+    sourceOperationMaskForDraggingContext: (NSDraggingContext)context
 {
     switch (context) {
         case NSDraggingContextOutsideApplication:
@@ -642,7 +633,7 @@ sourceOperationMaskForDraggingContext: (NSDraggingContext)context
  */
 - (NSUInteger)updateTargetDropIndexAtPoint: (NSPoint)point
 {
-    CGFloat fraction;
+    CGFloat    fraction;
     NSUInteger index = [self.layoutManager glyphIndexForPoint: point
                                               inTextContainer: self.textContainer
                                fractionOfDistanceThroughGlyph: &fraction];
@@ -685,13 +676,13 @@ sourceOperationMaskForDraggingContext: (NSDraggingContext)context
 - (BOOL)performDragOperation: (id<NSDraggingInfo>)sender
 {
     hotTagIndex = NSNotFound;
-    
+
     NSPasteboard *pasteboard = sender.draggingPasteboard;
-    NSPoint location = [self convertPoint: sender.draggingLocation fromView: nil];
-    CGFloat fraction;
-    NSUInteger targetIndex = [self.layoutManager glyphIndexForPoint: location
-                                                    inTextContainer: self.textContainer
-                                     fractionOfDistanceThroughGlyph: &fraction];
+    NSPoint      location = [self convertPoint: sender.draggingLocation fromView: nil];
+    CGFloat      fraction;
+    NSUInteger   targetIndex = [self.layoutManager glyphIndexForPoint: location
+                                                      inTextContainer: self.textContainer
+                                       fractionOfDistanceThroughGlyph: &fraction];
 
     if (fraction > 0.5) {
         // Fraction determines the position relative to the target glyph.
@@ -714,14 +705,14 @@ sourceOperationMaskForDraggingContext: (NSDraggingContext)context
         }
 
         TagAttachment *attachment = [self.textStorage attribute: NSAttachmentAttributeName
-                                         atIndex: sourceDragIndex
-                                  effectiveRange: nil];
+                                                        atIndex: sourceDragIndex
+                                                 effectiveRange: nil];
         [attachment.representedObject sortBefore: target];
     } else {
         // Something was dragged in from outside.
         if ([sender.draggingSource isKindOfClass: [TagView class]]) {
             // It's a tag.
-            TagView *source = sender.draggingSource;
+            TagView       *source = sender.draggingSource;
             TagAttachment *attachment = [source.textStorage attribute: NSAttachmentAttributeName
                                                               atIndex: source->sourceDragIndex
                                                        effectiveRange: nil];
@@ -766,7 +757,7 @@ sourceOperationMaskForDraggingContext: (NSDraggingContext)context
 #pragma mark -
 #pragma mark Popover Delegate Methods
 
-- (void)popoverDidClose:(NSNotification *)notification
+- (void)popoverDidClose: (NSNotification *)notification
 {
     tagPopover = nil;
 }

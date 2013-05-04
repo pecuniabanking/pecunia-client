@@ -9,13 +9,12 @@
 #import <Cocoa/Cocoa.h>
 
 @interface Keychain : NSObject {
-
 }
 
-+(NSString*)passwordForService:(NSString*)service account:(NSString*)account;
-+(BOOL)setPassword:(NSString*)password forService:(NSString*)service account:(NSString*)account store:(BOOL)store;
-+(void)deletePasswordsForService: (NSString*)service;
-+(void)deletePasswordForService:(NSString*)service account:(NSString*)account;
-+(void)clearCache;
++ (NSString *)passwordForService: (NSString *)service account: (NSString *)account;
++ (BOOL)setPassword: (NSString *)password forService: (NSString *)service account: (NSString *)account store: (BOOL)store;
++ (void)deletePasswordsForService: (NSString *)service;
++ (void)deletePasswordForService: (NSString *)service account: (NSString *)account;
++ (void)clearCache;
 
 @end

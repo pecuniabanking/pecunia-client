@@ -11,24 +11,22 @@
 @class BankStatement;
 
 @interface PurposeSplitData : NSObject {
-	NSString	*purposeNew;
-	NSString	*purposeOld;
-	NSString	*remoteName;
-	NSString	*remoteAccount;
-	NSString	*remoteBankCode;
-	BOOL		converted;
-	BankStatement *__unsafe_unretained statement;
+    NSString                           *purposeNew;
+    NSString                           *purposeOld;
+    NSString                           *remoteName;
+    NSString                           *remoteAccount;
+    NSString                           *remoteBankCode;
+    BOOL                               converted;
+    BankStatement *__unsafe_unretained statement;
 }
 
-@property (nonatomic, assign) BOOL converted;
+@property (nonatomic, assign) BOOL                     converted;
 @property (nonatomic, unsafe_unretained) BankStatement *statement;
-@property (nonatomic, copy) NSString *purposeNew;
-@property (nonatomic, copy) NSString *purposeOld;
-@property (nonatomic, copy) NSString *remoteName;
-@property (nonatomic, copy) NSString *remoteAccount;
-@property (nonatomic, copy) NSString *remoteBankCode;
+@property (nonatomic, copy) NSString                   *purposeNew;
+@property (nonatomic, copy) NSString                   *purposeOld;
+@property (nonatomic, copy) NSString                   *remoteName;
+@property (nonatomic, copy) NSString                   *remoteAccount;
+@property (nonatomic, copy) NSString                   *remoteBankCode;
 
 
 @end
-
-

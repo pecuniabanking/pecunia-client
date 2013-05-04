@@ -9,9 +9,9 @@
 #import <Cocoa/Cocoa.h>
 
 @interface Country : NSObject {
-	NSString	*name;
-	NSString	*currency;
-	NSString	*code;
+    NSString *name;
+    NSString *currency;
+    NSString *code;
 }
 
 @property (nonatomic, copy) NSString *name;
@@ -20,4 +20,3 @@
 
 
 @end
-

@@ -11,56 +11,57 @@
 
 @implementation NewPasswordController
 
--(id)init
+- (id)init
 {
-	self = [super initWithWindowNibName:@"NewPasswordWindow"];
-	return self;
+    self = [super initWithWindowNibName: @"NewPasswordWindow"];
+    return self;
 }
 
--(id)initWithText: (NSString *)x title: (NSString *)y
+- (id)initWithText: (NSString *)x title: (NSString *)y
 {
-	self = [super initWithWindowNibName:@"NewPasswordWindow"];
+    self = [super initWithWindowNibName: @"NewPasswordWindow"];
     text = [x copy];
-	title = [y copy];
-	return self;
+    title = [y copy];
+    return self;
 }
 
-
--(void)windowWillClose:(NSNotification *)aNotification
+- (void)windowWillClose: (NSNotification *)aNotification
 {
-	if(result == nil) [NSApp stopModalWithCode:1];
+    if (result == nil) {
+        [NSApp stopModalWithCode: 1];
+    }
 }
 
--(void)windowDidLoad
+- (void)windowDidLoad
 {
-	[passwordText setStringValue: text];
-	[[self window] setTitle: title];
+    [passwordText setStringValue: text];
+    [[self window] setTitle: title];
 }
 
--(IBAction)ok:(id)sender
+- (IBAction)ok: (id)sender
 {
-	result = [passwordField1 stringValue];
-	[NSApp stopModalWithCode:0];
-	[[self window ] close ];
+    result = [passwordField1 stringValue];
+    [NSApp stopModalWithCode: 0];
+    [[self window] close];
 }
 
--(IBAction)cancel:(id)sender
+- (IBAction)cancel: (id)sender
 {
-	[[self window ] close ];
+    [[self window] close];
 }
 
--(NSString*)result
+- (NSString *)result
 {
-	return result;
+    return result;
 }
 
--(void)controlTextDidChange:(NSNotification *)aNotification
+- (void)controlTextDidChange: (NSNotification *)aNotification
 {
-	NSString *pw1 = [passwordField1 stringValue];
-	NSString *pw2 = [passwordField2 stringValue];
-	if(pw1 && pw2 && [pw1 isEqualToString: pw2 ] && [pw1 length ]>4) [okButton setEnabled: YES ]; else [okButton setEnabled: NO ];
+    NSString *pw1 = [passwordField1 stringValue];
+    NSString *pw2 = [passwordField2 stringValue];
+    if (pw1 && pw2 && [pw1 isEqualToString: pw2] && [pw1 length] > 4) {
+        [okButton setEnabled: YES];
+    } else {[okButton setEnabled: NO]; }
 }
-
-
 
 @end

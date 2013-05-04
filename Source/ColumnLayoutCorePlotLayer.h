@@ -10,13 +10,13 @@
 #import <CorePlot/CorePlot.h>
 
 @interface ColumnLayoutCorePlotLayer : CPTBorderedLayer {
-  CGFloat spacing;
+    CGFloat spacing;
 
 }
 
 @property (nonatomic, readwrite) CGFloat spacing;
 
--(void)layoutSublayers;
--(void)sizeToFit;
+- (void)layoutSublayers;
+- (void)sizeToFit;
 
 @end

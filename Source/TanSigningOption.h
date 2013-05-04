@@ -10,10 +10,10 @@
 
 
 @interface TanSigningOption : NSObject {
-    NSString    *tanMethod;
-    NSString    *tanMethodName;
-    NSString    *tanMediumName;
-    NSString    *mobileNumber;
+    NSString *tanMethod;
+    NSString *tanMethodName;
+    NSString *tanMediumName;
+    NSString *mobileNumber;
 }
 
 @property (nonatomic, copy) NSString *tanMethod;
@@ -22,4 +22,3 @@
 @property (nonatomic, copy) NSString *mobileNumber;
 
 @end
-

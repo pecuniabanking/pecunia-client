@@ -10,11 +10,11 @@
 
 
 @interface BankSetupInfo : NSObject {
-    NSString    *info_userid;
-    NSString    *info_customerid;
-    NSNumber    *pinlen_min;
-    NSNumber    *pinlen_max;
-    NSNumber    *tanlen_max;
+    NSString *info_userid;
+    NSString *info_customerid;
+    NSNumber *pinlen_min;
+    NSNumber *pinlen_max;
+    NSNumber *tanlen_max;
 }
 
 @property (nonatomic, strong) NSString *info_userid;
@@ -24,4 +24,3 @@
 @property (nonatomic, strong) NSNumber *tanlen_max;
 
 @end
-

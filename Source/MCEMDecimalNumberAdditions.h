@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -34,17 +34,17 @@
  * the MSD.
  * Examples: 12 => 15, 17 => 20, 45 => 50, 61 => 70, 123456 => 150000, -77000 => -80000.
  */
--(NSDecimalNumber*)roundToUpperOuter;
+- (NSDecimalNumber *)roundToUpperOuter;
 
 /**
  * Returns the receiver value without a sign (i.e. as a positive value).
  */
-- (NSDecimalNumber*)abs;
+- (NSDecimalNumber *)abs;
 
 /** Standard rounding with scale 2 */
-- (NSDecimalNumber*)rounded;
+- (NSDecimalNumber *)rounded;
 
 /* Multiplies with 100 and rounds with no digits. Used to convert values to be sent to server */
-- (NSDecimalNumber*)outboundNumber;
+- (NSDecimalNumber *)outboundNumber;
 
 @end

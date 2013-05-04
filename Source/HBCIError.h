@@ -11,14 +11,14 @@
 @class PecuniaError;
 
 @interface HBCIError : NSObject {
-	NSString	*msg;
-	NSString	*code;
+    NSString *msg;
+    NSString *code;
 }
 
 @property (copy) NSString *msg;
 @property (copy) NSString *code;
 
--(PecuniaError*)toPecuniaError;
+- (PecuniaError *)toPecuniaError;
 
 
 @end

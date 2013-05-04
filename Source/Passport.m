@@ -25,15 +25,18 @@
 @synthesize checkCert;
 
 
--(BOOL)isEqual: (id)obj
+- (BOOL)isEqual: (id)obj
 {
-	if([bankCode isEqual: ((Passport*)obj)->bankCode ] && [userId isEqual: ((Passport*)obj)->userId ]) return YES;
-	else return NO;
+    if ([bankCode isEqual: ((Passport *)obj)->bankCode] && [userId isEqual: ((Passport *)obj)->userId]) {
+        return YES;
+    } else {return NO; }
 }
 
--(void)setFilter: (NSString*)filter
+- (void)setFilter: (NSString *)filter
 {
-	if([filter isEqualToString: @"Base64" ]) base64 = YES; else base64 = NO;
+    if ([filter isEqualToString: @"Base64"]) {
+        base64 = YES;
+    } else {base64 = NO; }
 }
 
 @end

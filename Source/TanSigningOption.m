@@ -18,21 +18,20 @@
 
 - (void)dealloc
 {
-	tanMethod = nil;
-	tanMethodName = nil;
-	tanMediumName = nil;
-	mobileNumber = nil;
+    tanMethod = nil;
+    tanMethodName = nil;
+    tanMediumName = nil;
+    mobileNumber = nil;
 
 }
 
-- (NSString*)description
+- (NSString *)description
 {
     if (tanMediumName) {
-        return [NSString stringWithFormat:@"%@ (%@)", tanMethodName, tanMediumName ];
+        return [NSString stringWithFormat: @"%@ (%@)", tanMethodName, tanMediumName];
     } else {
         return tanMethodName;
     }
 }
 
 @end
-

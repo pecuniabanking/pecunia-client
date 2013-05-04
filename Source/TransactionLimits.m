@@ -52,111 +52,131 @@
 @dynamic account;
 @dynamic user;
 
--(int)maxLengthRemoteName
+- (int)maxLengthRemoteName
 {
-	return self.maxLenRemoteName * self.maxLinesRemoteName;
+    return self.maxLenRemoteName * self.maxLinesRemoteName;
 }
 
--(int)maxLengthPurpose
+- (int)maxLengthPurpose
 {
-	return self.maxLenPurpose * self.maxLinesPurpose;
+    return self.maxLenPurpose * self.maxLinesPurpose;
 }
 
--(void)setLimitsWithData:(NSDictionary*)limits
+- (void)setLimitsWithData: (NSDictionary *)limits
 {
-    NSArray *textKeys = [limits valueForKey:@"textKeys" ];
+    NSArray *textKeys = [limits valueForKey: @"textKeys"];
     if (textKeys) {
-        self.allowedTextKeysString = [textKeys componentsJoinedByString:@":"];
+        self.allowedTextKeysString = [textKeys componentsJoinedByString: @":"];
     }
-    
-    NSString *s = [limits valueForKey:@"maxusage" ];
+
+    NSString *s = [limits valueForKey: @"maxusage"];
     if (s) {
-        self.maxLinesPurpose = [s intValue ];
+        self.maxLinesPurpose = [s intValue];
     } else {
         self.maxLinesPurpose = 2;
     }
-    s = [limits valueForKey:@"minpreptime" ];
+    s = [limits valueForKey: @"minpreptime"];
     if (s) {
-        self.minSetupTime = [s intValue ];
+        self.minSetupTime = [s intValue];
     }
-    s = [limits valueForKey:@"maxpreptime" ];
+    s = [limits valueForKey: @"maxpreptime"];
     if (s) {
-        self.maxSetupTime = [s intValue ];
+        self.maxSetupTime = [s intValue];
     }
-    
+
     // now check all limits for Standing orders
-    if ([self.jobName hasPrefix:@"Dauer"] == NO) {
+    if ([self.jobName hasPrefix: @"Dauer"] == NO) {
         return;
     }
-    
-    s = [limits valueForKey:@"dayspermonth" ];
+
+    s = [limits valueForKey: @"dayspermonth"];
     if (s) {
         self.execDaysMonthString = s;
     }
-    
-    s = [limits valueForKey:@"daysperweek" ];
+
+    s = [limits valueForKey: @"daysperweek"];
     if (s) {
         self.execDaysWeekString = s;
     }
-    
-    s = [limits valueForKey:@"turnusmonths" ];
+
+    s = [limits valueForKey: @"turnusmonths"];
     if (s) {
         self.monthCyclesString = s;
     }
-    
-    s = [limits valueForKey:@"turnusweeks" ];
+
+    s = [limits valueForKey: @"turnusweeks"];
     if (s) {
         self.weekCyclesString = s;
     }
-    
+
     self.allowMonthly = YES;
-    if (self.execDaysWeekString == nil || self.weekCyclesString == nil) self.allowWeekly = NO; else self.allowWeekly = YES;
-    
+    if (self.execDaysWeekString == nil || self.weekCyclesString == nil) {
+        self.allowWeekly = NO;
+    } else {self.allowWeekly = YES; }
+
     if ([self.jobName isEqualToString: @"DauerEdit"]) {
-        s = [limits valueForKey:@"recktoeditable" ];
+        s = [limits valueForKey: @"recktoeditable"];
         self.allowChangeRemoteAccount = NO;
         if (s) {
-            if ([s isEqualToString:@"J" ]) self.allowChangeRemoteAccount = YES;
+            if ([s isEqualToString: @"J"]) {
+                self.allowChangeRemoteAccount = YES;
+            }
         }
-        s = [limits valueForKey:@"recnameeditable" ];
+        s = [limits valueForKey: @"recnameeditable"];
         self.allowChangeRemoteName = NO;
         if (s) {
-            if ([s isEqualToString:@"J" ]) self.allowChangeRemoteName = YES;
+            if ([s isEqualToString: @"J"]) {
+                self.allowChangeRemoteName = YES;
+            }
         }
-        s = [limits valueForKey:@"usageeditable" ];
+        s = [limits valueForKey: @"usageeditable"];
         self.allowChangePurpose = NO;
         if (s) {
-            if ([s isEqualToString:@"J" ]) self.allowChangePurpose = YES;
+            if ([s isEqualToString: @"J"]) {
+                self.allowChangePurpose = YES;
+            }
         }
-        s = [limits valueForKey:@"firstexeceditable" ];
+        s = [limits valueForKey: @"firstexeceditable"];
         self.allowChangeFirstExecDate = NO;
         if (s) {
-            if ([s isEqualToString:@"J" ]) self.allowChangeFirstExecDate = YES;
+            if ([s isEqualToString: @"J"]) {
+                self.allowChangeFirstExecDate = YES;
+            }
         }
-        s = [limits valueForKey:@"lastexeceditable" ];
+        s = [limits valueForKey: @"lastexeceditable"];
         self.allowChangeLastExecDate = NO;
         if (s) {
-            if ([s isEqualToString:@"J" ]) self.allowChangeLastExecDate = YES;
+            if ([s isEqualToString: @"J"]) {
+                self.allowChangeLastExecDate = YES;
+            }
         }
-        s = [limits valueForKey:@"timeuniteditable" ];
+        s = [limits valueForKey: @"timeuniteditable"];
         self.allowChangePeriod = NO;
         if (s) {
-            if ([s isEqualToString:@"J" ]) self.allowChangePeriod = YES;
+            if ([s isEqualToString: @"J"]) {
+                self.allowChangePeriod = YES;
+            }
         }
-        s = [limits valueForKey:@"turnuseditable" ];
+        s = [limits valueForKey: @"turnuseditable"];
         self.allowChangeCycle = NO;
         if (s) {
-            if ([s isEqualToString:@"J" ]) self.allowChangeCycle = YES;
+            if ([s isEqualToString: @"J"]) {
+                self.allowChangeCycle = YES;
+            }
         }
-        s = [limits valueForKey:@"execdayeditable" ];
+        s = [limits valueForKey: @"execdayeditable"];
         self.allowChangeExecDay = NO;
         if (s) {
-            if ([s isEqualToString:@"J" ]) self.allowChangeExecDay = YES;
+            if ([s isEqualToString: @"J"]) {
+                self.allowChangeExecDay = YES;
+            }
         }
-        s = [limits valueForKey:@"valueeditable" ];
+        s = [limits valueForKey: @"valueeditable"];
         self.allowChangeValue = NO;
         if (s) {
-            if ([s isEqualToString:@"J" ]) self.allowChangeValue = YES;
+            if ([s isEqualToString: @"J"]) {
+                self.allowChangeValue = YES;
+            }
         }
     } else {
         self.allowChangeRemoteName = YES;
@@ -171,65 +191,61 @@
     }
 }
 
-- (NSArray*)monthCycles
+- (NSArray *)monthCycles
 {
-    NSMutableArray *cycles = [NSMutableArray arrayWithCapacity:12 ];
+    NSMutableArray *cycles = [NSMutableArray arrayWithCapacity: 12];
     if (self.monthCyclesString != nil) {
         NSString *s = [self.monthCyclesString copy];
-        while ([s length ] > 0) {
-            [cycles addObject: [s substringToIndex:2 ] ];
-            s = [s substringFromIndex:2 ];
+        while ([s length] > 0) {
+            [cycles addObject: [s substringToIndex: 2]];
+            s = [s substringFromIndex: 2];
         }
     }
     return cycles;
 }
 
-- (NSArray*)weekCycles
+- (NSArray *)weekCycles
 {
-    NSMutableArray *cycles = [NSMutableArray arrayWithCapacity:12 ];
+    NSMutableArray *cycles = [NSMutableArray arrayWithCapacity: 12];
     if (self.weekCyclesString != nil) {
         NSString *s = [self.weekCyclesString copy];
-        while ([s length ] > 0) {
-            [cycles addObject: [s substringToIndex:2 ] ];
-            s = [s substringFromIndex:2 ];
+        while ([s length] > 0) {
+            [cycles addObject: [s substringToIndex: 2]];
+            s = [s substringFromIndex: 2];
         }
     }
     return cycles;
 }
 
-- (NSArray*)execDaysMonth
+- (NSArray *)execDaysMonth
 {
-    NSMutableArray *execDays = [NSMutableArray arrayWithCapacity:30 ];
+    NSMutableArray *execDays = [NSMutableArray arrayWithCapacity: 30];
     if (self.execDaysMonthString != nil) {
         NSString *s = [self.execDaysMonthString copy];
-        while ([s length ] > 0) {
-            [execDays addObject: [s substringToIndex:2 ] ];
-            s = [s substringFromIndex:2 ];
+        while ([s length] > 0) {
+            [execDays addObject: [s substringToIndex: 2]];
+            s = [s substringFromIndex: 2];
         }
     }
     return execDays;
 }
 
-- (NSArray*)execDaysWeek
+- (NSArray *)execDaysWeek
 {
-    NSMutableArray *execDays = [NSMutableArray arrayWithCapacity:7 ];
+    NSMutableArray *execDays = [NSMutableArray arrayWithCapacity: 7];
     if (self.execDaysWeekString != nil) {
         NSString *s = [self.execDaysWeekString copy];
-        while ([s length ] > 0) {
-            [execDays addObject: [s substringToIndex:1 ] ];
-            s = [s substringFromIndex:1 ];
+        while ([s length] > 0) {
+            [execDays addObject: [s substringToIndex: 1]];
+            s = [s substringFromIndex: 1];
         }
     }
     return execDays;
 }
 
-- (NSArray*)allowedTextKeys
+- (NSArray *)allowedTextKeys
 {
-    return [self.allowedTextKeysString componentsSeparatedByString:@":"];
+    return [self.allowedTextKeysString componentsSeparatedByString: @":"];
 }
 
-
 @end
-
-
-

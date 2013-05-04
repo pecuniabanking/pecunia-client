@@ -16,10 +16,9 @@
 
 - (void)dealloc
 {
-	tanOption = nil;
-	mediaList = nil;
+    tanOption = nil;
+    mediaList = nil;
 
 }
 
 @end
-

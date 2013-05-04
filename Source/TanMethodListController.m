@@ -14,49 +14,49 @@
 @synthesize tanMethods;
 @synthesize selectedMethod;
 
--(id)initWithMethods:(NSArray*)methods
+- (id)initWithMethods: (NSArray *)methods
 {
-	self = [super initWithWindowNibName: @"TanMethods" ];
-	if(self == nil) return nil;
-	
-	self.tanMethods = methods;
-	return self;
+    self = [super initWithWindowNibName: @"TanMethods"];
+    if (self == nil) {
+        return nil;
+    }
+
+    self.tanMethods = methods;
+    return self;
 }
 
--(void)dealloc
+- (void)dealloc
 {
-	selectedMethod = nil;
-	tanMethods = nil;
+    selectedMethod = nil;
+    tanMethods = nil;
 
 }
 
--(IBAction)ok:(id)sender
+- (IBAction)ok: (id)sender
 {
-	NSArray *sel = [tanMethodController selectedObjects ];
-	TanMethodOld *method = sel[0];
-	self.selectedMethod = method.function;
-	
-	[NSApp stopModalWithCode:0 ];
-	[[self window ] close ];
+    NSArray      *sel = [tanMethodController selectedObjects];
+    TanMethodOld *method = sel[0];
+    self.selectedMethod = method.function;
+
+    [NSApp stopModalWithCode: 0];
+    [[self window] close];
 }
 
--(void)windowWillClose:(NSNotification *)aNotification
+- (void)windowWillClose: (NSNotification *)aNotification
 {
-	if(selectedMethod == nil) [NSApp stopModalWithCode:1];
+    if (selectedMethod == nil) {
+        [NSApp stopModalWithCode: 1];
+    }
 }
 
--(void)windowDidLoad
+- (void)windowDidLoad
 {
-	[tanMethodController setContent: tanMethods];
+    [tanMethodController setContent: tanMethods];
 }
 
-
--(NSNumber*)selectedMethod
+- (NSNumber *)selectedMethod
 {
-	return selectedMethod;
+    return selectedMethod;
 }
-
 
 @end
-
-

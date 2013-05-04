@@ -10,11 +10,10 @@
 
 
 @interface BankStatementPolicy030alpha : NSEntityMigrationPolicy {
-
 }
 
--(BOOL)endRelationshipCreationForEntityMapping:(NSEntityMapping *)mapping 
-									   manager:(NSMigrationManager *)manager 
-										 error:(NSError **)error;
+- (BOOL)endRelationshipCreationForEntityMapping: (NSEntityMapping *)mapping
+                                        manager: (NSMigrationManager *)manager
+                                          error: (NSError **)error;
 
 @end

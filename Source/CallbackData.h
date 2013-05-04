@@ -10,13 +10,13 @@
 
 
 @interface CallbackData : NSObject {
-	NSString	*bankCode;
-	NSString	*userId;
-	NSString	*message;
-	NSString	*proposal;
-	NSString	*command;
-	int			reason;
-	int			type;
+    NSString *bankCode;
+    NSString *userId;
+    NSString *message;
+    NSString *proposal;
+    NSString *command;
+    int      reason;
+    int      type;
 }
 
 @property (copy) NSString *bankCode;
@@ -25,7 +25,7 @@
 @property (copy) NSString *command;
 @property (copy) NSString *userId;
 
--(void)setReason: (NSString*)res;
--(void)setType: (NSString*)t;
+- (void)setReason: (NSString *)res;
+- (void)setType: (NSString *)t;
 
 @end

@@ -23,7 +23,7 @@
 @implementation DockIconController
 
 
-- (DockIconController*)initWithManagedObjectContext: (NSManagedObjectContext *)objectContext
+- (DockIconController *)initWithManagedObjectContext: (NSManagedObjectContext *)objectContext
 {
     self = [super init];
     if (self != nil) {
@@ -34,7 +34,7 @@
                                                    object: nil];
         [self updateBadge];
     }
-	return self;
+    return self;
 }
 
 - (void)dealloc
@@ -44,43 +44,42 @@
 
 - (void)managedObjectContextChanged: (NSNotification *)notification
 {
-	NSDictionary *userInfoDictionary = [notification userInfo];
-    NSSet *updatedObjects = userInfoDictionary[NSUpdatedObjectsKey];
-	
- 	for (id value in updatedObjects) {
-		if ([value isKindOfClass: [BankStatement class]]) {
-			[self updateBadge];
-			break;
-		}
-	}
+    NSDictionary *userInfoDictionary = [notification userInfo];
+    NSSet        *updatedObjects = userInfoDictionary[NSUpdatedObjectsKey];
+
+    for (id value in updatedObjects) {
+        if ([value isKindOfClass: [BankStatement class]]) {
+            [self updateBadge];
+            break;
+        }
+    }
 }
 
 - (NSInteger)numberUnread
 {
-	NSError *error = nil;
-	NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement"
-                                                          inManagedObjectContext: managedObjectContext];
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	[request setEntity: entityDescription];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1", self];
-	[request setPredicate: predicate];
-	NSArray *statements = [managedObjectContext executeFetchRequest:request error: &error];
-	return [statements count];
+    NSError             *error = nil;
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement"
+                                                         inManagedObjectContext: managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1", self];
+    [request setPredicate: predicate];
+    NSArray *statements = [managedObjectContext executeFetchRequest: request error: &error];
+    return [statements count];
 }
 
 - (void)updateBadge
 {
-	NSInteger newBadgeValue = [self numberUnread];
-	
-	if (badgeValue != newBadgeValue) {
-		badgeValue = newBadgeValue;
-		if (newBadgeValue == 0) {
-			[NSApplication.sharedApplication.dockTile setBadgeLabel: @""];
-		}
-		else {
-			[NSApplication.sharedApplication.dockTile setBadgeLabel: [NSString stringWithFormat: @"%li", badgeValue]];
-		}
-	}
+    NSInteger newBadgeValue = [self numberUnread];
+
+    if (badgeValue != newBadgeValue) {
+        badgeValue = newBadgeValue;
+        if (newBadgeValue == 0) {
+            [NSApplication.sharedApplication.dockTile setBadgeLabel: @""];
+        } else {
+            [NSApplication.sharedApplication.dockTile setBadgeLabel: [NSString stringWithFormat: @"%li", badgeValue]];
+        }
+    }
 }
 
 @end

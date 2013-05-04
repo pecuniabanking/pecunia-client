@@ -23,12 +23,12 @@
 
 @interface ColorPopup : NSObject <BFIconTabBarDelegate, NSPopoverDelegate>
 
-@property (nonatomic) id target;
-@property (nonatomic) SEL action;
+@property (nonatomic) id              target;
+@property (nonatomic) SEL             action;
 @property (nonatomic, strong) NSColor *color;
 
 + (ColorPopup *)sharedColorPopup;
 
-- (void)popupRelativeToRect: (NSRect)rect ofView: (NSView*)view;
+- (void)popupRelativeToRect: (NSRect)rect ofView: (NSView *)view;
 
 @end

@@ -10,17 +10,15 @@
 
 
 @interface BankParameter : NSObject {
-	NSDictionary		*bpd;
-	NSDictionary		*upd;
-    NSString            *bpd_raw;
-    NSString            *upd_raw;
+    NSDictionary *bpd;
+    NSDictionary *upd;
+    NSString     *bpd_raw;
+    NSString     *upd_raw;
 }
 
-@property (nonatomic, strong) NSString *bpd_raw;
-@property (nonatomic, strong) NSString *upd_raw;
+@property (nonatomic, strong) NSString     *bpd_raw;
+@property (nonatomic, strong) NSString     *upd_raw;
 @property (nonatomic, strong) NSDictionary *bpd;
 @property (nonatomic, strong) NSDictionary *upd;
 
 @end
-
-

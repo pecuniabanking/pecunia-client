@@ -20,7 +20,7 @@
 /*
  Based on ImageAndTextCell.m, supplied by Apple as example code.
  Copyright (c) 2006, Apple Computer, Inc., all rights reserved.
- 
+
  Subclass of NSTextFieldCell which can display text and an image simultaneously.
  */
 
@@ -29,23 +29,23 @@
 #import "PreferenceController.h"
 
 // Layout constants
-#define MIN_BADGE_WIDTH           22.0 //The minimum badge width for each item (default 22.0)
-#define BADGE_HEIGHT              14.0 //The badge height for each item (default 14.0)
-#define BADGE_MARGIN              5.0  //The spacing between the badge and the cell for that row
-#define ROW_RIGHT_MARGIN          5.0  //The spacing between the right edge of the badge and the edge of the table column
-#define ICON_SPACING              3.0  //The spacing between the icon and it's adjacent cell
-#define DISCLOSURE_TRIANGLE_SPACE 18.0 //The indentation reserved for disclosure triangles for non-group items
-#define BADGE_SPACE               40
+#define MIN_BADGE_WIDTH                     22.0 //The minimum badge width for each item (default 22.0)
+#define BADGE_HEIGHT                        14.0 //The badge height for each item (default 14.0)
+#define BADGE_MARGIN                        5.0 //The spacing between the badge and the cell for that row
+#define ROW_RIGHT_MARGIN                    5.0 //The spacing between the right edge of the badge and the edge of the table column
+#define ICON_SPACING                        3.0 //The spacing between the icon and it's adjacent cell
+#define DISCLOSURE_TRIANGLE_SPACE           18.0 //The indentation reserved for disclosure triangles for non-group items
+#define BADGE_SPACE                         40
 
 // Drawing constants
 #define BADGE_BACKGROUND_COLOR              [NSColor colorWithCalibratedRed: (152 / 255.0) green: (168 / 255.0) blue: (202 / 255.0) alpha: 1]
-#define BADGE_HIDDEN_BACKGROUND_COLOR       [NSColor colorWithDeviceWhite:(180 / 255.0) alpha: 1]
+#define BADGE_HIDDEN_BACKGROUND_COLOR       [NSColor colorWithDeviceWhite: (180 / 255.0) alpha: 1]
 #define BADGE_SELECTED_TEXT_COLOR           [NSColor keyboardFocusIndicatorColor]
-#define BADGE_SELECTED_UNFOCUSED_TEXT_COLOR [NSColor colorWithCalibratedRed: (153 / 255.0) green: (169 / 255.0) blue: (203/255.0) alpha: 1]
+#define BADGE_SELECTED_UNFOCUSED_TEXT_COLOR [NSColor colorWithCalibratedRed: (153 / 255.0) green: (169 / 255.0) blue: (203 / 255.0) alpha: 1]
 #define BADGE_SELECTED_HIDDEN_TEXT_COLOR    [NSColor colorWithCalibratedWhite: (170 / 255.0) alpha: 1]
 #define BADGE_FONT                          [NSFont boldSystemFontOfSize: 11]
 
-#define SWATCH_SIZE               14
+#define SWATCH_SIZE                         14
 
 extern void *UserDefaultsBindingContext;
 
@@ -57,7 +57,7 @@ extern void *UserDefaultsBindingContext;
 @synthesize amount;
 @synthesize amountFormatter;
 
-- (id)initWithCoder: (NSCoder*)decoder
+- (id)initWithCoder: (NSCoder *)decoder
 {
     self = [super initWithCoder: decoder];
     if (self != nil) {
@@ -97,23 +97,22 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (NSRect)imageFrameForCellFrame:(NSRect)cellFrame
+- (NSRect)imageFrameForCellFrame: (NSRect)cellFrame
 {
-    if (image != nil)
-    {
+    if (image != nil) {
         NSRect imageFrame;
         imageFrame.size = [image size];
         imageFrame.origin = cellFrame.origin;
         imageFrame.origin.x += 3;
         imageFrame.origin.y += ceil((cellFrame.size.height - imageFrame.size.height) / 2);
         return imageFrame;
-    }
-    else
+    } else {
         return NSZeroRect;
+    }
 }
 
-- (void)setValues: (NSDecimalNumber*)aAmount
-         currency: (NSString*)aCurrency
+- (void)setValues: (NSDecimalNumber *)aAmount
+         currency: (NSString *)aCurrency
            unread: (NSInteger)unread
          disabled: (BOOL)disabled
            isRoot: (BOOL)root
@@ -127,7 +126,7 @@ extern void *UserDefaultsBindingContext;
     isDisabled = disabled;
     isHidden = hidden;
     isIgnored = ignored;
-    
+
     return;
 }
 
@@ -139,21 +138,22 @@ extern void *UserDefaultsBindingContext;
     return titleFrame;
 }
 
-- (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
+- (void)drawInteriorWithFrame: (NSRect)cellFrame inView: (NSView *)controlView
+{
     NSRect titleRect = [self titleRectForBounds: cellFrame];
     [[self attributedStringValue] drawInRect: titleRect];
 }
 
-- (void)selectWithFrame:(NSRect)aRect inView: (NSView*)controlView editor: (NSText*)textObj delegate: (id)anObject start: (NSInteger)selStart length: (NSInteger)selLength;
+- (void)selectWithFrame: (NSRect)aRect inView: (NSView *)controlView editor: (NSText *)textObj delegate: (id)anObject start: (NSInteger)selStart length: (NSInteger)selLength;
 {
     NSRect textFrame, imageFrame;
-    NSDivideRect (aRect, &imageFrame, &textFrame, image==nil?0:20, NSMinXEdge);
-    [super selectWithFrame: textFrame inView: controlView editor:textObj delegate:anObject start:selStart length:selLength];
+    NSDivideRect(aRect, &imageFrame, &textFrame, image == nil ? 0 : 20, NSMinXEdge);
+    [super selectWithFrame: textFrame inView: controlView editor: textObj delegate: anObject start: selStart length: selLength];
 }
 
 // Shared objects.
-static NSGradient* headerGradient = nil;
-static NSGradient* selectionGradient = nil;
+static NSGradient *headerGradient = nil;
+static NSGradient *selectionGradient = nil;
 
 - (void)setupGradients
 {
@@ -173,26 +173,25 @@ static NSGradient* selectionGradient = nil;
     if (headerGradient == nil) {
         [self setupGradients];
     }
-    
+
     // Draw selection rectangle.
     NSRect selectionRect = cellFrame;
     selectionRect.size.width = [controlView bounds].size.width;
     selectionRect.origin.x = 0;
-    
-    NSBezierPath* selectionOutline = [NSBezierPath bezierPathWithRoundedRect: selectionRect xRadius: 3 yRadius: 3];
+
+    NSBezierPath *selectionOutline = [NSBezierPath bezierPathWithRoundedRect: selectionRect xRadius: 3 yRadius: 3];
     if ([self isHighlighted]) {
         // Fill selection rectangle for selected entries.
         [selectionGradient drawInRect: selectionRect angle: 90];
-    }
-    else
+    } else
         if (isRoot) {
             // Fill constant background for unselected root entries.
             [headerGradient drawInBezierPath: selectionOutline angle: 90];
         }
-    
+
     // Draw category color swatch.
     if ([PreferenceController showCategoryColorsInTree] && swatchColor != nil) {
-        NSRect swatchRect = cellFrame;
+        NSRect  swatchRect = cellFrame;
         CGFloat swatchWidth = 3;
         swatchRect.size = NSMakeSize(swatchWidth, SWATCH_SIZE);
         swatchRect.origin.y += floor((cellFrame.size.height - SWATCH_SIZE) / 2);
@@ -217,30 +216,27 @@ static NSGradient* selectionGradient = nil;
         cellFrame.size.width -= swatchWidth  + 4;
         cellFrame.origin.x += swatchWidth + 4;
     }
-    
+
     // Draw cell symbol if there is one.
-    if (image != nil)
-    {
+    if (image != nil) {
         NSSize iconSize = NSMakeSize(16, 16);
         NSRect iconFrame;
-        
+
         NSDivideRect(cellFrame, &iconFrame, &cellFrame, ICON_SPACING + iconSize.width + ICON_SPACING, NSMinXEdge);
-        
+
         iconFrame.size = iconSize;
-        
+
         iconFrame.origin.x += ICON_SPACING;
         iconFrame.origin.y += floor((cellFrame.size.height - iconFrame.size.height) / 2);
 
-        [image drawInRect: iconFrame
-                 fromRect: NSZeroRect
-                operation: NSCompositeSourceOver
-                 fraction: isHidden ? 0.4 : 1.0
-           respectFlipped: YES
-                    hints: nil];
+        [image  drawInRect: iconFrame
+                  fromRect: NSZeroRect
+                 operation: NSCompositeSourceOver
+                  fraction: isHidden ? 0.4: 1.0
+            respectFlipped: YES
+                     hints: nil];
 
-    }
-    else
-    {
+    } else {
         cellFrame.size.width -= ICON_SPACING;
         cellFrame.origin.x   += ICON_SPACING;
     }
@@ -248,82 +244,79 @@ static NSGradient* selectionGradient = nil;
     cellFrame.size.height--; // Seems to be a necessary correction for vertical alignment.
 
     // Reserve space for badges.
-    if (maxUnread > 0)
-    {
+    if (maxUnread > 0) {
         NSRect badgeFrame;
         NSDivideRect(cellFrame, &badgeFrame, &cellFrame, badgeWidth, NSMaxXEdge);
-        
+
         // Number of unread entries.
-        if (countUnread > 0)
-        {	
+        if (countUnread > 0) {
             // Draw Badge with number unread messages.
             NSSize badgeSize = [self sizeOfBadge: countUnread];
-            
+
             NSRect badgeNumberFrame;
             NSDivideRect(badgeFrame, &badgeNumberFrame, &badgeFrame, badgeSize.width + ROW_RIGHT_MARGIN, NSMaxXEdge);
-            
-            badgeNumberFrame.origin.y += (badgeNumberFrame.size.height - badgeSize.height)/2;
+
+            badgeNumberFrame.origin.y += (badgeNumberFrame.size.height - badgeSize.height) / 2;
             badgeNumberFrame.size.width -= ROW_RIGHT_MARGIN;
-            
+
             badgeNumberFrame.size.height = badgeSize.height;
-            
+
             [self drawBadgeInRect: badgeNumberFrame];
         }
     }
-    
+
     // Sum and currency text color.
     NSRect amountwithCurrencyFrame;
-    
-    NSColor* valueColor;
+
+    NSColor *valueColor;
     if ([self isHighlighted] || isRoot) {
         valueColor = [NSColor whiteColor];
     } else {
-        NSDictionary* fontAttributes;
+        NSDictionary *fontAttributes;
         if ([amount compare: [NSDecimalNumber zero]] != NSOrderedAscending) {
-            fontAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
+            fontAttributes = @{NSForegroundColorAttributeName : [NSColor applicationColorForKey: @"Positive Cash"]};
         } else {
             fontAttributes = [amountFormatter textAttributesForNegativeValues];
             fontAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
         }
-        valueColor = (NSColor*)fontAttributes[NSForegroundColorAttributeName];
+        valueColor = (NSColor *)fontAttributes[NSForegroundColorAttributeName];
     }
 
     if (isIgnored) {
         valueColor = [valueColor colorWithAlphaComponent: 0.4];
     }
-    
-    NSFont *txtFont = [NSFont fontWithName: @"Lucida Grande" size: 13];
+
+    NSFont       *txtFont = [NSFont fontWithName: @"Lucida Grande" size: 13];
     NSDictionary *attributes = @{NSFontAttributeName: txtFont,
-                                NSForegroundColorAttributeName: valueColor};
-    
+                                 NSForegroundColorAttributeName: valueColor};
+
     [amountFormatter setCurrencyCode: currency];
     NSString *amountString = [amountFormatter stringFromNumber: amount];
-    
+
     NSAttributedString *amountWithCurrency = [[NSMutableAttributedString alloc] initWithString: amountString attributes: attributes];
-    NSSize stringSize = [amountWithCurrency size];	
-    
+    NSSize             stringSize = [amountWithCurrency size];
+
     // Draw sum only if the cell is large enough.
     if (cellFrame.size.width > 150) {
         NSDivideRect(cellFrame, &amountwithCurrencyFrame, &cellFrame, stringSize.width + ROW_RIGHT_MARGIN, NSMaxXEdge);
-        
-        amountwithCurrencyFrame.origin.y += (cellFrame.size.height - stringSize.height) / 2;	
+
+        amountwithCurrencyFrame.origin.y += (cellFrame.size.height - stringSize.height) / 2;
         amountwithCurrencyFrame.size.height = stringSize.height;
         amountwithCurrencyFrame.size.width -= ROW_RIGHT_MARGIN;
         cellFrame.size.width -= ROW_RIGHT_MARGIN;
-        
-        [amountWithCurrency	drawInRect: amountwithCurrencyFrame];    
+
+        [amountWithCurrency drawInRect: amountwithCurrencyFrame];
     }
-    
+
     // Cell text color.
     NSAttributedString *cellStringWithFormat;
-    NSColor *textColor;
+    NSColor            *textColor;
 
     // Setting the attributed string below will reset all paragraph settings to defaults.
     // So we have to add those we changed to this attributed string too.
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
-    if (isRoot || [self isHighlighted])
-    {
+    if (isRoot || [self isHighlighted]) {
         // Selected and root items can never be disabled.
         textColor = [NSColor whiteColor];
         if (isHidden) {
@@ -331,23 +324,23 @@ static NSGradient* selectionGradient = nil;
         }
 
         attributes = @{NSFontAttributeName: [self font],
-                      NSForegroundColorAttributeName: textColor,
-                      NSParagraphStyleAttributeName: paragraphStyle};
-       cellStringWithFormat = [[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
-                                                              attributes: attributes];
+                       NSForegroundColorAttributeName: textColor,
+                       NSParagraphStyleAttributeName: paragraphStyle};
+        cellStringWithFormat = [[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
+                                                               attributes: attributes];
     } else {
         textColor = [NSColor colorWithCalibratedWhite: 40 / 255.0 alpha: 1];
-        
+
         if (isDisabled) {
             textColor = [NSColor applicationColorForKey: @"Disabled Tree Item"];
-        }   
+        }
         if (isHidden) {
             textColor = [textColor colorWithAlphaComponent: 0.4];
         }
 
         attributes = @{NSFontAttributeName: [self font],
-                      NSForegroundColorAttributeName: textColor,
-                      NSParagraphStyleAttributeName: paragraphStyle};
+                       NSForegroundColorAttributeName: textColor,
+                       NSParagraphStyleAttributeName: paragraphStyle};
         cellStringWithFormat = [[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
                                                                attributes: attributes];
     }
@@ -359,72 +352,68 @@ static NSGradient* selectionGradient = nil;
 #pragma mark -
 #pragma mark Badge mit Zahlen
 
-- (NSSize)sizeOfBadge:(NSInteger)unread
+- (NSSize)sizeOfBadge: (NSInteger)unread
 {
-    
-    NSAttributedString *badgeAttrString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%li", unread ]																	  attributes:@{NSFontAttributeName: BADGE_FONT}];
-    
+    NSAttributedString *badgeAttrString = [[NSAttributedString alloc] initWithString: [NSString stringWithFormat: @"%li", unread]                                                                                                                                          attributes: @{NSFontAttributeName: BADGE_FONT}];
+
     NSSize stringSize = [badgeAttrString size];
-    
+
     // Calculate the width needed to display the text or the minimum width if it's smaller.
-    CGFloat width = stringSize.width+(2*BADGE_MARGIN);
-    
-    if(width < MIN_BADGE_WIDTH)
-    {
+    CGFloat width = stringSize.width + (2 * BADGE_MARGIN);
+
+    if (width < MIN_BADGE_WIDTH) {
         width = MIN_BADGE_WIDTH;
     }
-    
+
     return NSMakeSize(width, BADGE_HEIGHT);
 }
 
-- (void)drawBadgeInRect:(NSRect)badgeFrame
+- (void)drawBadgeInRect: (NSRect)badgeFrame
 {
     //id rowItem = [self itemAtRow:rowIndex];
-    
-    NSBezierPath *badgePath = [NSBezierPath bezierPathWithRoundedRect:badgeFrame
-                                                              xRadius:(BADGE_HEIGHT/2.0)
-                                                              yRadius:(BADGE_HEIGHT/2.0)];
-    
+
+    NSBezierPath *badgePath = [NSBezierPath bezierPathWithRoundedRect: badgeFrame
+                                                              xRadius: (BADGE_HEIGHT / 2.0)
+                                                              yRadius: (BADGE_HEIGHT / 2.0)];
+
     //Set the attributes based on the row state
     NSDictionary *attributes;
-    NSColor *backgroundColor;
-    NSColor *textColor;
-    
-    if([self isHighlighted ])
-    {
+    NSColor      *backgroundColor;
+    NSColor      *textColor;
+
+    if ([self isHighlighted]) {
         backgroundColor = [NSColor whiteColor];
         textColor       = BADGE_SELECTED_TEXT_COLOR;
-    }
-    else {
+    } else {
         backgroundColor = BADGE_BACKGROUND_COLOR;
         textColor       = [NSColor whiteColor];
     }
-    
-    
+
+
     attributes = @{NSFontAttributeName: BADGE_FONT,
-                  NSForegroundColorAttributeName: textColor};
-    
-    
+                   NSForegroundColorAttributeName: textColor};
+
+
     [backgroundColor set];
     [badgePath fill];
-    
+
     //Draw the badge text
-    NSAttributedString *badgeAttrString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%li", countUnread ] 
-                                                                          attributes:attributes];
-    NSSize stringSize = [badgeAttrString size];
-    NSPoint badgeTextPoint = NSMakePoint(NSMidX(badgeFrame)-(stringSize.width/2.0),		//Center in the badge frame
-                                         NSMidY(badgeFrame)-(stringSize.height/2.0));	//Center in the badge frame
-    [badgeAttrString drawAtPoint:badgeTextPoint];
-    
+    NSAttributedString *badgeAttrString = [[NSAttributedString alloc] initWithString: [NSString stringWithFormat: @"%li", countUnread]
+                                                                          attributes: attributes];
+    NSSize  stringSize = [badgeAttrString size];
+    NSPoint badgeTextPoint = NSMakePoint(NSMidX(badgeFrame) - (stringSize.width / 2.0),             //Center in the badge frame
+                                         NSMidY(badgeFrame) - (stringSize.height / 2.0));   //Center in the badge frame
+    [badgeAttrString drawAtPoint: badgeTextPoint];
+
 }
 
-- (void)setMaxUnread:(NSInteger)n
+- (void)setMaxUnread: (NSInteger)n
 {
     maxUnread = n;
     if (n > 0) {
-        NSSize badgeSize = [self sizeOfBadge:n ];
+        NSSize badgeSize = [self sizeOfBadge: n];
         badgeWidth = badgeSize.width + ROW_RIGHT_MARGIN;
-    } else badgeWidth = 0;
+    } else {badgeWidth = 0; }
 }
 
 - (NSSize)cellSize
@@ -436,11 +425,11 @@ static NSGradient* selectionGradient = nil;
     return cellSize;
 }
 
-- (NSText *)setUpFieldEditorAttributes:(NSText *)textObj
+- (NSText *)setUpFieldEditorAttributes: (NSText *)textObj
 {
-    NSText* result = [super setUpFieldEditorAttributes: textObj];
+    NSText *result = [super setUpFieldEditorAttributes: textObj];
     [result setDrawsBackground: YES];
-    
+
     return result;
 }
 

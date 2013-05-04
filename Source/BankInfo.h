@@ -9,22 +9,22 @@
 #import <Cocoa/Cocoa.h>
 
 @interface BankInfo : NSObject {
-	NSString	*country;
-	NSString	*branch;
-	NSString	*bankCode;
-	NSString	*bic;
-	NSString	*name;
-	NSString	*location;
-	NSString	*street;
-	NSString	*city;
-	NSString	*region;
-	NSString	*phone;
-	NSString	*email;
-	NSString	*host;
-	NSString	*pinTanURL;
-	NSString	*pinTanVersion;
-    NSString    *hbciVersion;
-	NSString    *website;
+    NSString *country;
+    NSString *branch;
+    NSString *bankCode;
+    NSString *bic;
+    NSString *name;
+    NSString *location;
+    NSString *street;
+    NSString *city;
+    NSString *region;
+    NSString *phone;
+    NSString *email;
+    NSString *host;
+    NSString *pinTanURL;
+    NSString *pinTanVersion;
+    NSString *hbciVersion;
+    NSString *website;
 }
 
 @property (nonatomic, strong) NSString *country;

@@ -9,19 +9,19 @@
 #import <Cocoa/Cocoa.h>
 
 @interface Passport : NSObject {
-	NSString	*name;
-	NSString	*bankCode;
-	NSString	*bankName;
-	NSString	*userId;
-	NSString	*customerId;
-	NSString	*host;
-//	NSString	*filter;
-	NSString	*version;
-	NSString	*tanMethod;
-	NSString	*port;
-	NSArray		*tanMethods;
-	BOOL		base64;
-	BOOL		checkCert;
+    NSString *name;
+    NSString *bankCode;
+    NSString *bankName;
+    NSString *userId;
+    NSString *customerId;
+    NSString *host;
+    //	NSString	*filter;
+    NSString *version;
+    NSString *tanMethod;
+    NSString *port;
+    NSArray  *tanMethods;
+    BOOL     base64;
+    BOOL     checkCert;
 }
 
 @property (copy) NSString *name;
@@ -31,15 +31,15 @@
 @property (copy) NSString *customerId;
 @property (copy) NSString *host;
 //@property (copy) NSString *filter;
-@property (copy) NSString *version;
-@property (copy) NSString *tanMethod;
-@property (copy) NSString *port;
+@property (copy) NSString  *version;
+@property (copy) NSString  *tanMethod;
+@property (copy) NSString  *port;
 @property (strong) NSArray *tanMethods;
-@property (assign) BOOL base64;
-@property (assign) BOOL checkCert;
+@property (assign) BOOL    base64;
+@property (assign) BOOL    checkCert;
 
--(void)setFilter: (NSString*)filter;
--(BOOL)isEqual: (id)obj;
+- (void)setFilter: (NSString *)filter;
+- (BOOL)isEqual: (id)obj;
 
 
 @end

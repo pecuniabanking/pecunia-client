@@ -23,25 +23,24 @@
 @class BankStatement;
 
 @interface StatCatAssignment : NSManagedObject {
-
 }
 
-@property (nonatomic) NSString *userInfo;
+@property (nonatomic) NSString                *userInfo;
 @property (nonatomic, strong) NSDecimalNumber *value;
-@property (nonatomic) Category *category;
-@property (nonatomic, strong) BankStatement *statement;
+@property (nonatomic) Category                *category;
+@property (nonatomic, strong) BankStatement   *statement;
 
--(NSString*)stringForFields:(NSArray*)fields usingDateFormatter:(NSDateFormatter*)dateFormatter numberFormatter:(NSNumberFormatter*)numberFormatter;
--(void)moveToCategory:(Category*)tcat;
--(void)moveAmount:(NSDecimalNumber*)amount toCategory:(Category*)tcat;
--(void)remove;
--(NSComparisonResult)compareDate: (StatCatAssignment*)stat;
+- (NSString *)stringForFields: (NSArray *)fields usingDateFormatter: (NSDateFormatter *)dateFormatter numberFormatter: (NSNumberFormatter *)numberFormatter;
+- (void)moveToCategory: (Category *)tcat;
+- (void)moveAmount: (NSDecimalNumber *)amount toCategory: (Category *)tcat;
+- (void)remove;
+- (NSComparisonResult)compareDate: (StatCatAssignment *)stat;
 
 @end
 
 @interface StatCatAssignment (CoreDataGeneratedPrimitiveAccessors)
 
 - (Category *)primitiveCategory;
-- (void)setPrimitiveCategory:(Category *)value;
+- (void)setPrimitiveCategory: (Category *)value;
 
 @end

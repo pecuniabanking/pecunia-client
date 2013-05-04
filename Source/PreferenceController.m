@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -32,17 +32,17 @@
 
 static NSArray *exportFields = nil;
 
-#define SYNCH_HEIGHT 310
-#define SEC_HEIGHT 260
-#define LOC_HEIGHT 260
-#define DISPLAY_HEIGHT 320
-#define COLOR_HEIGHT 450
-#define EXP_HEIGHT 375
-#define PRINT_HEIGHT 200
+#define SYNCH_HEIGHT     310
+#define SEC_HEIGHT       260
+#define LOC_HEIGHT       260
+#define DISPLAY_HEIGHT   320
+#define COLOR_HEIGHT     450
+#define EXP_HEIGHT       375
+#define PRINT_HEIGHT     200
 
 @implementation ColorListViewCell
 
-- (void)configureWithString: (NSString*)config
+- (void)configureWithString: (NSString *)config
 {
     NSArray *values = [config componentsSeparatedByString: @"|"];
     colorKey = values[1];
@@ -57,7 +57,7 @@ static NSArray *exportFields = nil;
     }
 
     NSMutableAttributedString *captionString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(values[0], nil)];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    NSMutableParagraphStyle   *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setMaximumLineHeight: 12];
 
     NSDictionary *attributes = @{NSParagraphStyleAttributeName: paragraphStyle};
@@ -73,7 +73,7 @@ static NSArray *exportFields = nil;
     [self updateColorText];
 }
 
-- (IBAction)colorChanged:(id)sender
+- (IBAction)colorChanged: (id)sender
 {
     [NSColor setApplicationColor: colorWell.color forKey: colorKey];
     [self updateColorText];
@@ -82,25 +82,25 @@ static NSArray *exportFields = nil;
 - (void)updateColorText
 {
     NSColor *color = [colorWell.color colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
-    int  red = color.redComponent * 255;
-    int  green = color.greenComponent * 255;
-    int  blue = color.blueComponent * 255;
+    int     red = color.redComponent * 255;
+    int     green = color.greenComponent * 255;
+    int     blue = color.blueComponent * 255;
 
     rgbText.stringValue = [NSString stringWithFormat: @"R: %3i G: %3i B: %3i", red, green, blue];
     htmlText.stringValue = [NSString stringWithFormat: @"HTML: #%.2X%.2X%.2X", red, green, blue];
 }
 
-static NSGradient* headerGradient;
+static NSGradient *headerGradient;
 
 - (void)setupDrawStructures
 {
     headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                      [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat) 0,
-                      [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], (CGFloat) 1,
+                      [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat)0,
+                      [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], (CGFloat)1,
                       nil];
 }
 
-- (void)drawRect:(NSRect)dirtyRect
+- (void)drawRect: (NSRect)dirtyRect
 {
     if (headerGradient == nil) {
         [self setupDrawStructures];
@@ -120,9 +120,9 @@ static NSGradient* headerGradient;
 
 @implementation PreferenceController
 
--(id)init
+- (id)init
 {
-	self = [super initWithWindowNibName: @"Preferences"];
+    self = [super initWithWindowNibName: @"Preferences"];
     if (self != nil) {
         exportFields = @[@"valutaDate", @"date", @"value", @"saldo", @"currency", @"localAccount",
                          @"localBankCode", @"localName", @"localCountry",
@@ -131,35 +131,35 @@ static NSGradient* headerGradient;
                          @"customerReference", @"bankReference", @"transactionText", @"primaNota",
                          @"transactionCode", @"categoriesDescription"];
     }
-	return self;
+    return self;
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
-	NSArray	*fields = [defaults objectForKey: @"Exporter.fields" ];
-	if(fields != nil) {
-		NSTableColumn *col = [fieldTable tableColumns ][0];
-		NSComboBoxCell *cell = [col dataCell ];
-		
-		for(NSString *field in fields) {
-			int idx = [exportFields indexOfObject:field ];
-			NSString* name = [cell itemObjectValueAtIndex: idx ];
-			NSMutableDictionary *item = [NSMutableDictionary dictionaryWithObject:name forKey:@"fieldName" ];
-			[fieldController addObject: item ];
-		}
-	}
-	MOAssistant *assistant = [MOAssistant assistant ];
-	encrypt = [assistant encrypted];
-	[self setValue: @([assistant encrypted ]) forKey: @"encrypt" ];
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray        *fields = [defaults objectForKey: @"Exporter.fields"];
+    if (fields != nil) {
+        NSTableColumn  *col = [fieldTable tableColumns][0];
+        NSComboBoxCell *cell = [col dataCell];
+
+        for (NSString *field in fields) {
+            int                 idx = [exportFields indexOfObject: field];
+            NSString            *name = [cell itemObjectValueAtIndex: idx];
+            NSMutableDictionary *item = [NSMutableDictionary dictionaryWithObject: name forKey: @"fieldName"];
+            [fieldController addObject: item];
+        }
+    }
+    MOAssistant *assistant = [MOAssistant assistant];
+    encrypt = [assistant encrypted];
+    [self setValue: @([assistant encrypted]) forKey: @"encrypt"];
+
     // erstes Tab setzen
-    [toolBar setSelectedItemIdentifier: @"synch" ];
-    [mainTab selectTabViewItemAtIndex:0 ];
-    [mainTab setTabViewType:NSNoTabsNoBorder ];
-    
+    [toolBar setSelectedItemIdentifier: @"synch"];
+    [mainTab selectTabViewItemAtIndex: 0];
+    [mainTab setTabViewType: NSNoTabsNoBorder];
+
     [self setHeight: SYNCH_HEIGHT];
-    
+
     // Export-Feldseparator
     NSString *expSep = [defaults stringForKey: _exportSeparator];
     if (expSep) {
@@ -184,84 +184,82 @@ static NSGradient* headerGradient;
             item.image = [[NSImage alloc] initWithContentsOfFile: path];
         }
     }
-
     colorListView.delegate = self;
     [colorListView reloadData];
 
 }
 
--(void)windowWillClose:(NSNotification *)aNotification
+- (void)windowWillClose: (NSNotification *)aNotification
 {
-	int idx;
-	NSArray	*content = [fieldController content ];
-	NSArray	*columns = [fieldTable tableColumns ];
-	NSMutableArray	*fields = [NSMutableArray arrayWithCapacity: 25 ];
-	
-	NSTableColumn *col = columns[0];
-	NSComboBoxCell *cell = [col dataCell ];
-	
-	for (NSDictionary *dict in content) {
-		idx = [cell indexOfItemWithObjectValue: dict[@"fieldName"]];
-		if (idx >= 0) {
+    int            idx;
+    NSArray        *content = [fieldController content];
+    NSArray        *columns = [fieldTable tableColumns];
+    NSMutableArray *fields = [NSMutableArray arrayWithCapacity: 25];
+
+    NSTableColumn  *col = columns[0];
+    NSComboBoxCell *cell = [col dataCell];
+
+    for (NSDictionary *dict in content) {
+        idx = [cell indexOfItemWithObjectValue: dict[@"fieldName"]];
+        if (idx >= 0) {
             [fields addObject: exportFields[idx]];
         }
-	}
-	if (fields.count > 0) {
-		NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
-		[defaults setObject: fields forKey: @"Exporter.fields" ];
-	}
+    }
+    if (fields.count > 0) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject: fields forKey: @"Exporter.fields"];
+    }
 }
 
 // remove keychain values of all accounts
--(IBAction)removePINs: (id)sender
+- (IBAction)removePINs: (id)sender
 {
-	int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP165", nil),
-									  NSLocalizedString(@"AP166", nil),
-									  NSLocalizedString(@"AP4", nil),
-									  NSLocalizedString(@"AP3", nil),
+    int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP165", nil),
+                                      NSLocalizedString(@"AP166", nil),
+                                      NSLocalizedString(@"AP4", nil),
+                                      NSLocalizedString(@"AP3", nil),
                                       nil
-									  );
-	if (res != NSAlertAlternateReturn) {
+                                      );
+    if (res != NSAlertAlternateReturn) {
         return;
     }
-	
-	[Keychain deletePasswordsForService: @"Pecunia PIN"];
+
+    [Keychain deletePasswordsForService: @"Pecunia PIN"];
 }
 
--(IBAction)changeFileLocation: (id)sender
+- (IBAction)changeFileLocation: (id)sender
 {
-	MOAssistant *assistant = [MOAssistant assistant ];
+    MOAssistant *assistant = [MOAssistant assistant];
     [assistant relocate];
 }
 
-- (IBAction)restoreFileLocation:(id)sender
+- (IBAction)restoreFileLocation: (id)sender
 {
     [[MOAssistant assistant] relocateToStandard];
 }
 
-- (IBAction)openFileLocation:(id)sender
+- (IBAction)openFileLocation: (id)sender
 {
-    [[NSWorkspace sharedWorkspace] openURL: [MOAssistant assistant ].dataDirURL];
+    [[NSWorkspace sharedWorkspace] openURL: [MOAssistant assistant].dataDirURL];
 }
 
-
--(IBAction)encryptData: (id)sender
+- (IBAction)encryptData: (id)sender
 {
     if (encrypt) {
         // check if passwort is already defined. If yes, it must(!) be taken
-		NSString *passwd = [Keychain passwordForService:@"Pecunia" account:@"DataFile" ];
-		if (passwd != nil) {
-			[passw1Field setStringValue:passwd ];
-			[passw2Field setStringValue:passwd ];
-			[passw1Field setEnabled:NO ];
-			[passw2Field setEnabled:NO ];
-		}
-		
-		[NSApp beginSheet: encryptionSheet
-		   modalForWindow: [self window ]
-			modalDelegate: self
-		   didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
-			  contextInfo: NULL ];
+        NSString *passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
+        if (passwd != nil) {
+            [passw1Field setStringValue: passwd];
+            [passw2Field setStringValue: passwd];
+            [passw1Field setEnabled: NO];
+            [passw2Field setEnabled: NO];
+        }
+
+        [NSApp  beginSheet: encryptionSheet
+            modalForWindow: [self window]
+             modalDelegate: self
+            didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
+               contextInfo: NULL];
 
     } else {
         // stop encryption
@@ -270,199 +268,201 @@ static NSGradient* headerGradient;
                                   NSLocalizedString(@"AP4", nil),
                                   NSLocalizedString(@"AP3", nil),
                                   nil);
-		if(res == NSAlertAlternateReturn) {
-			MOAssistant *assistant = [MOAssistant assistant ];
-            
-            BOOL passwordOk = NO;
+        if (res == NSAlertAlternateReturn) {
+            MOAssistant *assistant = [MOAssistant assistant];
+
+            BOOL           passwordOk = NO;
             PasswordWindow *pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP163", nil)
                                                                       title: NSLocalizedString(@"AP162", nil)];
             [pwWindow disablePasswordSave];
             while (passwordOk == NO) {
-                [[self window] makeKeyAndOrderFront:self];
+                [[self window] makeKeyAndOrderFront: self];
                 int res = [NSApp runModalForWindow: [pwWindow window]];
-                if(res) {
+                if (res) {
                     [pwWindow closeWindow];
-                    [[self window] makeKeyAndOrderFront:self];
-                    [self setValue: @YES forKey: @"encrypt" ];
+                    [[self window] makeKeyAndOrderFront: self];
+                    [self setValue: @YES forKey: @"encrypt"];
                     return;
                 }
-                
+
                 NSString *passwd = [pwWindow result];
                 if (passwd != nil) {
-                    passwordOk = [assistant checkDataPassword:passwd];
+                    passwordOk = [assistant checkDataPassword: passwd];
                 }
                 if (passwordOk == NO) {
                     [pwWindow retry];
                 }
-                
+
             }
             [pwWindow closeWindow];
-            
-			if([assistant stopEncryption ])	{
-                [[BankingController controller ] setEncrypted: NO ];
-                [Keychain deletePasswordForService:@"Pecunia" account:@"DataFile"];
+
+            if ([assistant stopEncryption]) {
+                [[BankingController controller] setEncrypted: NO];
+                [Keychain deletePasswordForService: @"Pecunia" account: @"DataFile"];
                 NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                                 NSLocalizedString(@"AP154", nil),
                                 NSLocalizedString(@"ok", nil),
                                 nil,
                                 nil);
             }
-		}
+        }
     }
 }
 
-- (void)sheetDidEnd: (NSWindow*)sheet
-		 returnCode: (int)code
-		contextInfo: (void*)context
+- (void)sheetDidEnd: (NSWindow *)sheet
+         returnCode: (int)code
+        contextInfo: (void *)context
 {
-	if (code == 0) {
-		// now create 
-		MOAssistant *assistant = [MOAssistant assistant];
-		if ([assistant encryptDataWithPassword: password]) {
-			[encryptButton setEnabled: NO ];
-			[[BankingController controller ] setEncrypted: YES ];
+    if (code == 0) {
+        // now create
+        MOAssistant *assistant = [MOAssistant assistant];
+        if ([assistant encryptDataWithPassword: password]) {
+            [encryptButton setEnabled: NO];
+            [[BankingController controller] setEncrypted: YES];
             NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                             NSLocalizedString(@"AP155", nil),
                             NSLocalizedString(@"ok", nil),
                             nil,
                             nil);
-			return;
-		}
-	}
-	// No success
-	[self setValue: @NO forKey: @"encrypt" ];
+            return;
+        }
+    }
+    // No success
+    [self setValue: @NO forKey: @"encrypt"];
 }
 
--(IBAction)cancelSheet:( id)sender
+- (IBAction)cancelSheet: (id)sender
 {
-	[encryptionSheet orderOut: sender ];
-	[NSApp endSheet: encryptionSheet returnCode: 1 ];
+    [encryptionSheet orderOut: sender];
+    [NSApp endSheet: encryptionSheet returnCode: 1];
 }
 
--(IBAction)endSheet: (id)sender
+- (IBAction)endSheet: (id)sender
 {
-	NSString *passw1 = [passw1Field stringValue ];
-	NSString *passw2 = [passw2Field stringValue ];
-	if ([passw1 length ] < 8) {
-		NSRunAlertPanel(NSLocalizedString(@"AP167", nil), 
-						NSLocalizedString(@"AP168", nil),
-						NSLocalizedString(@"ok", nil), 
-						nil,
-						nil);
-		return;
-	}
-	
-	if ([passw1 isEqualToString: passw2] == NO) {
-		NSRunAlertPanel(NSLocalizedString(@"AP167", nil), 
-						NSLocalizedString(@"AP169", nil),
-						NSLocalizedString(@"ok", nil), 
-						nil,
-						nil);
-		return;
-	}
-	
-	password = passw1;
-    
+    NSString *passw1 = [passw1Field stringValue];
+    NSString *passw2 = [passw2Field stringValue];
+    if ([passw1 length] < 8) {
+        NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                        NSLocalizedString(@"AP168", nil),
+                        NSLocalizedString(@"ok", nil),
+                        nil,
+                        nil);
+        return;
+    }
+
+    if ([passw1 isEqualToString: passw2] == NO) {
+        NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                        NSLocalizedString(@"AP169", nil),
+                        NSLocalizedString(@"ok", nil),
+                        nil,
+                        nil);
+        return;
+    }
+
+    password = passw1;
+
     if (savePassword) {
         [Keychain setPassword: password forService: @"Pecunia" account: @"DataFile" store: savePassword];
     }
 
-	[encryptionSheet orderOut: sender];
-	[NSApp endSheet: encryptionSheet returnCode: 0];
+    [encryptionSheet orderOut: sender];
+    [NSApp endSheet: encryptionSheet returnCode: 0];
 }
 
--(IBAction)expSepTab: (id)sender
+- (IBAction)expSepTab: (id)sender
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: @"\t" forKey: _exportSeparator];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject: @"\t" forKey: _exportSeparator];
 }
 
--(IBAction)expSepSemi: (id)sender
+- (IBAction)expSepSemi: (id)sender
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: @";" forKey: _exportSeparator];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject: @";" forKey: _exportSeparator];
 }
 
--(IBAction)expSepLine: (id)sender
+- (IBAction)expSepLine: (id)sender
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject: @"|" forKey: _exportSeparator];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject: @"|" forKey: _exportSeparator];
 }
 
--(void)setHeight: (int)h
+- (void)setHeight: (int)h
 {
     NSWindow *window = [self window];
-    NSRect frame = window.frame;
-    int pos = frame.origin.y + frame.size.height;
+    NSRect   frame = window.frame;
+    int      pos = frame.origin.y + frame.size.height;
     frame.size.height = h;
     frame.origin.y = pos - h;
     [window setFrame: frame display: YES animate: YES];
 }
 
--(IBAction)synchSettings:(id)sender
+- (IBAction)synchSettings: (id)sender
 {
     [mainTab selectTabViewItemAtIndex: 0];
-    [self setHeight: SYNCH_HEIGHT ];
+    [self setHeight: SYNCH_HEIGHT];
 }
 
--(IBAction)securitySettings:(id)sender
+- (IBAction)securitySettings: (id)sender
 {
     [mainTab selectTabViewItemAtIndex: 1];
-    [self setHeight: SEC_HEIGHT ];
+    [self setHeight: SEC_HEIGHT];
 }
 
--(IBAction)locationSettings:(id)sender
+- (IBAction)locationSettings: (id)sender
 {
     [mainTab selectTabViewItemAtIndex: 2];
     [self setHeight: LOC_HEIGHT];
 }
 
-- (IBAction)displaySettings:(id)sender {
+- (IBAction)displaySettings: (id)sender
+{
     [mainTab selectTabViewItemAtIndex: 3];
     [self setHeight: DISPLAY_HEIGHT];
 }
 
-- (IBAction)colorSettings:(id)sender {
+- (IBAction)colorSettings: (id)sender
+{
     [mainTab selectTabViewItemAtIndex: 4];
     [self setHeight: COLOR_HEIGHT];
 }
 
--(IBAction)exportSettings:(id)sender
+- (IBAction)exportSettings: (id)sender
 {
     [mainTab selectTabViewItemAtIndex: 5];
-    [self setHeight: EXP_HEIGHT ];
+    [self setHeight: EXP_HEIGHT];
 }
 
--(IBAction)printSettings:(id)sender
+- (IBAction)printSettings: (id)sender
 {
     [mainTab selectTabViewItemAtIndex: 6];
-    [self setHeight: PRINT_HEIGHT ];
+    [self setHeight: PRINT_HEIGHT];
 }
 
 - (IBAction)resetAllColors: (id)sender
 {
     for (unsigned i = 0; i < sizeof(colorEntries) / sizeof(colorEntries[0]); i++) {
-        NSArray *values = [@(colorEntries[i]) componentsSeparatedByString: @"|"];
+        NSArray *values = [@(colorEntries[i])componentsSeparatedByString : @"|"];
         [NSColor resetApplicationColorForKey: values[1]];
     }
     [colorListView reloadData];
 }
 
--(void)tabView:(NSTabView*)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
+- (void)tabView: (NSTabView *)tabView didSelectTabViewItem: (NSTabViewItem *)tabViewItem
 {
-    [[self window ] setTitle:[tabViewItem label ] ];
+    [[self window] setTitle: [tabViewItem label]];
 }
 
 + (BOOL)showCategoryColorsInTree
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	return [defaults boolForKey: @"showCatColorsInTree"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults boolForKey: @"showCatColorsInTree"];
 }
 
 + (BOOL)showHiddenCategories
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	return [defaults boolForKey: @"showHiddenCategories"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults boolForKey: @"showHiddenCategories"];
 }
 
 #pragma mark -
@@ -495,26 +495,26 @@ static char *colorEntries[] = {
     "AP732|Uncategorized Transfer",
 };
 
-- (NSUInteger)numberOfRowsInListView: (PXListView*)listView
+- (NSUInteger)numberOfRowsInListView: (PXListView *)listView
 {
     return sizeof(colorEntries) / sizeof(colorEntries[0]);
 }
 
-- (CGFloat)listView: (PXListView*)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
+- (CGFloat)listView: (PXListView *)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
 {
     return (row == 0 || row == 11) ? 50 : 40;
 }
 
-- (NSRange)listView: (PXListView*)aListView rangeOfDraggedRow: (NSUInteger)row
+- (NSRange)listView: (PXListView *)aListView rangeOfDraggedRow: (NSUInteger)row
 {
     return NSMakeRange(0, 0);
 }
 
-- (PXListViewCell*)listView: (PXListView*)aListView cellForRow: (NSUInteger)row
+- (PXListViewCell *)listView: (PXListView *)aListView cellForRow: (NSUInteger)row
 {
-	ColorListViewCell* cell = (ColorListViewCell*)[aListView dequeueCellWithReusableIdentifier: @"colorcell"];
+    ColorListViewCell *cell = (ColorListViewCell *)[aListView dequeueCellWithReusableIdentifier: @"colorcell"];
 
-	if (!cell) {
+    if (!cell) {
         cell = [ColorListViewCell cellLoadedFromNibNamed: @"Preferences" reusableIdentifier: @"colorcell"];
     }
 
@@ -522,13 +522,13 @@ static char *colorEntries[] = {
     return cell;
 }
 
-- (bool)listView:(PXListView*)aListView shouldSelectRows: (NSIndexSet *)rows byExtendingSelection:(BOOL)shouldExtend
+- (bool)listView: (PXListView *)aListView shouldSelectRows: (NSIndexSet *)rows byExtendingSelection: (BOOL)shouldExtend
 {
     return NO;
 }
 
-- (BOOL)listView: (PXListView*)aListView writeRowsWithIndexes: (NSIndexSet*)rowIndexes
-    toPasteboard: (NSPasteboard*)dragPasteboard
+- (BOOL)listView: (PXListView *)aListView writeRowsWithIndexes: (NSIndexSet *)rowIndexes
+    toPasteboard: (NSPasteboard *)dragPasteboard
        slideBack: (BOOL *)slideBack
 {
     return NO; // No dragging please.

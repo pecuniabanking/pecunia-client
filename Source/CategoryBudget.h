@@ -11,11 +11,10 @@
 @class Category;
 
 @interface CategoryBudget : NSManagedObject {
-
 }
 
-@property (nonatomic, strong) NSDecimalNumber * budget;
-@property (nonatomic, strong) NSDate * date;
-@property (nonatomic, strong) Category * category;
+@property (nonatomic, strong) NSDecimalNumber *budget;
+@property (nonatomic, strong) NSDate          *date;
+@property (nonatomic, strong) Category        *category;
 
 @end

@@ -29,14 +29,13 @@
 
 @required
 
-@property (nonatomic, weak) Category* selectedCategory;
+@property (nonatomic, weak) Category *selectedCategory;
 
 - (void)print;
-- (NSView*)mainView;
+- (NSView *)mainView;
 - (void)activate;
 - (void)deactivate;
 
-- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
+- (void)setTimeRangeFrom: (ShortDate *)from to: (ShortDate *)to;
 
 @end
-

@@ -12,18 +12,18 @@
 @class BankAccount;
 
 @interface SigningOptionsController : NSWindowController {
-    IBOutlet NSTableView        *optionsView;
-    IBOutlet NSArrayController  *optionsController;
-    
-    NSArray     *options;
-    NSString    *accountNumber;
-    
+    IBOutlet NSTableView       *optionsView;
+    IBOutlet NSArrayController *optionsController;
+
+    NSArray  *options;
+    NSString *accountNumber;
+
 }
 
--(IBAction)ok:(id)sender;
--(IBAction)cancel:(id)sender;
+- (IBAction)ok: (id)sender;
+- (IBAction)cancel: (id)sender;
 
--(id)initWithSigningOptions:(NSArray*)opts forAccount:(BankAccount*)acc;
--(SigningOption*)selectedOption;
+- (id)initWithSigningOptions: (NSArray *)opts forAccount: (BankAccount *)acc;
+- (SigningOption *)selectedOption;
 
 @end

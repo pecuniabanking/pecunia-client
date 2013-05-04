@@ -10,25 +10,25 @@
 @class TransferTemplate;
 
 @interface TransferTemplateController : NSWindowController {
-	NSManagedObjectContext		*context;
-	IBOutlet NSArrayController	*templateController;
-	IBOutlet NSArrayController	*countryController;
-	IBOutlet NSView				*standardView;
-	IBOutlet NSView				*euView;
-	IBOutlet NSView				*boxView;
-	IBOutlet NSTableView		*tableView;
-	IBOutlet NSSegmentedControl	*segmentView;
-	IBOutlet NSView				*scrollView;
-	IBOutlet NSButton			*cancelButton;
-	
-	NSView						*currentView;
-    NSPoint						subViewPos;
-	BOOL						editMode;
+    NSManagedObjectContext      *context;
+    IBOutlet NSArrayController  *templateController;
+    IBOutlet NSArrayController  *countryController;
+    IBOutlet NSView             *standardView;
+    IBOutlet NSView             *euView;
+    IBOutlet NSView             *boxView;
+    IBOutlet NSTableView        *tableView;
+    IBOutlet NSSegmentedControl *segmentView;
+    IBOutlet NSView             *scrollView;
+    IBOutlet NSButton           *cancelButton;
+
+    NSView  *currentView;
+    NSPoint subViewPos;
+    BOOL    editMode;
 }
 
--(IBAction)segButtonPressed:(id)sender;
--(IBAction)finished:(id)sender;
--(IBAction)countryChanged:(id)sender;
--(IBAction)cancel:(id)sender;
+- (IBAction)segButtonPressed: (id)sender;
+- (IBAction)finished: (id)sender;
+- (IBAction)countryChanged: (id)sender;
+- (IBAction)cancel: (id)sender;
 
 @end

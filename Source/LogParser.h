@@ -12,11 +12,11 @@
 
 @interface LogParser : NSObject <NSXMLParserDelegate> {
     NSMutableString *currentValue;
-    int				level;
-    id				parent;
-    
+    int             level;
+    id              parent;
+
 }
 
--(id)initWithParent: (id)par level:(NSString*)lev;
+- (id)initWithParent: (id)par level: (NSString *)lev;
 
 @end

@@ -11,18 +11,17 @@
 @class Category;
 
 @interface CategoryReportingNode : NSObject {
-	NSString			*name;
-	NSMutableSet		*children;
-	NSMutableDictionary	*values;
-	NSMutableDictionary *periodValues;
-	Category			*__unsafe_unretained category;
+    NSString                                             *name;
+    NSMutableSet                                         *children;
+    NSMutableDictionary                                  *values;
+    NSMutableDictionary                                  *periodValues;
+    Category                        *__unsafe_unretained category;
 }
 
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, strong) NSMutableSet *children;
+@property (nonatomic, copy) NSString              *name;
+@property (nonatomic, strong) NSMutableSet        *children;
 @property (nonatomic, strong) NSMutableDictionary *values;
 @property (nonatomic, strong) NSMutableDictionary *periodValues;
 @property (nonatomic, unsafe_unretained) Category *category;
 
 @end
-

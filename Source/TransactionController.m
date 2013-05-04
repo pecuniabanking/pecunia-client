@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -41,20 +41,23 @@
 
 - (id)transformedValue: (id)value
 {
-    if (value == nil)
+    if (value == nil) {
         return nil;
-    
-    if ([value intValue] == 0)
+    }
+
+    if ([value intValue] == 0) {
         return value;
-    
+    }
+
     return @([value intValue] - 1);
 }
 
 - (id)reverseTransformedValue: (id)value
 {
-    if (value == nil)
+    if (value == nil) {
         return nil;
-    
+    }
+
     return @([value intValue] + 1);
 }
 
@@ -66,169 +69,193 @@
 @synthesize currentTransferController;
 @synthesize templateController;
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
-	// sort descriptor for transactions view
-	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-	NSArray *sds = @[sd];
-	[countryController setSortDescriptors: sds];
+    // sort descriptor for transactions view
+    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
+    NSArray          *sds = @[sd];
+    [countryController setSortDescriptors: sds];
 
-	// sort descriptor for template view
-	sd = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-	sds = @[sd];
-	[templateController setSortDescriptors: sds];
+    // sort descriptor for template view
+    sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
+    sds = @[sd];
+    [templateController setSortDescriptors: sds];
 }
 
--(void)setManagedObjectContext: (NSManagedObjectContext*)context
+- (void)setManagedObjectContext: (NSManagedObjectContext *)context
 {
-	[templateController setManagedObjectContext: context];
-	[templateController prepareContent];
-	[currentTransferController setManagedObjectContext: context];
+    [templateController setManagedObjectContext: context];
+    [templateController prepareContent];
+    [currentTransferController setManagedObjectContext: context];
 }
 
 - (void)updateLimits
 {
-	limits = [[HBCIClient hbciClient] limitsForType: transferType account: account country: selectedCountry];
+    limits = [[HBCIClient hbciClient] limitsForType: transferType account: account country: selectedCountry];
 }
 
--(void)templateDoubleClicked: (id)sender
+- (void)templateDoubleClicked: (id)sender
 {
-	int row = [sender clickedRow ];
-	if(row<0) return;
-	[self getDataFromTemplate: sender ];
+    int row = [sender clickedRow];
+    if (row < 0) {
+        return;
+    }
+    [self getDataFromTemplate: sender];
 }
 
--(void)prepareTransfer
+- (void)prepareTransfer
 {
-	//NSPredicate	*pred;
+    //NSPredicate	*pred;
 
     // set drawer content
     switch (transferType) {
         case TransferTypeStandard:
         case TransferTypeDated: {
-            [templatesDraw setContentView: standardHelpView ];
-            [templatesDraw setParentWindow: transferLocalWindow ];
+            [templatesDraw setContentView: standardHelpView];
+            [templatesDraw setParentWindow: transferLocalWindow];
             break;
         }
+
         case TransferTypeEU: {
-            [templatesDraw setContentView: foreignHelpView ];
-            [templatesDraw setParentWindow: transferEUWindow ];
+            [templatesDraw setContentView: foreignHelpView];
+            [templatesDraw setParentWindow: transferEUWindow];
             break;
         }
+
         case TransferTypeSEPA: {
-            [templatesDraw setContentView: foreignHelpView ];
-            [templatesDraw setParentWindow: transferSEPAWindow ];
-            break;            
+            [templatesDraw setContentView: foreignHelpView];
+            [templatesDraw setParentWindow: transferSEPAWindow];
+            break;
         }
+
         default:
             break;
     }
-        
+
     /*
-	// set template filter
-	if(transferType == TransferTypeStandard || transferType == TransferTypeDated) pred = [NSPredicate predicateWithFormat: @"type = 0 OR type = 2" ];
-	else pred = [NSPredicate predicateWithFormat: @"type = 1 or type = 5" ];
-	[templateController setFilterPredicate: pred];
-	*/
-    
-	if(transferType == TransferTypeInternal) {
-		internalAccounts = [[account siblings ] allObjects ];
-		[accountBox removeAllItems ];
-		for (BankAccount *acc in internalAccounts) {
-			[accountBox addItemWithObjectValue: acc.name ];
-		}
-		NSString* selectedAccount = currentTransfer.remoteAccount;
-		if(selectedAccount != nil) [accountBox selectItemWithObjectValue: selectedAccount ];
-	}
-	
-	// update limits
-	if(transferType != TransferTypeEU) {
-		selectedCountry = nil;
-		[self updateLimits ];
-		currentTransfer.remoteCountry = account.country;
-	} else {
-		NSArray *allowedCountries = [[HBCIClient hbciClient ] allowedCountriesForAccount: account ];
-		[countryController setContent:allowedCountries ];
-		// sort descriptor for transactions view
-		[countryController rearrangeObjects ];
+     // set template filter
+     if(transferType == TransferTypeStandard || transferType == TransferTypeDated) pred = [NSPredicate predicateWithFormat: @"type = 0 OR type = 2" ];
+     else pred = [NSPredicate predicateWithFormat: @"type = 1 or type = 5" ];
+     [templateController setFilterPredicate: pred];
+     */
 
-		if (selectedCountry) {
-			int idx=0;
-			BOOL found = NO;
-			for (Country *country in [countryController arrangedObjects ]) {
-				if (country.code == selectedCountry) {
-					found = YES;
-					break;
-				} else idx = idx+1;
-			}
-			if (found) {
-				[countryController setSelectionIndex:idx ];
-			}
-		} else {
-			selectedCountry = [(Country*)[countryController arrangedObjects ][0] code ];
-			[countryController setSelectionIndex:0 ];
-		}
-		[self updateLimits ];
-		currentTransfer.remoteCountry = selectedCountry;
+    if (transferType == TransferTypeInternal) {
+        internalAccounts = [[account siblings] allObjects];
+        [accountBox removeAllItems];
+        for (BankAccount *acc in internalAccounts) {
+            [accountBox addItemWithObjectValue: acc.name];
+        }
+        NSString *selectedAccount = currentTransfer.remoteAccount;
+        if (selectedAccount != nil) {
+            [accountBox selectItemWithObjectValue: selectedAccount];
+        }
+    }
 
-	}
-	
-	// set default values
-	if(transferType == TransferTypeDated) {
-		int setupTime;
-		if(limits) setupTime = [limits minSetupTime ]; else setupTime = 2;
-		NSDate	*date = [NSDate dateWithTimeIntervalSinceNow: setupTime*86400 ];
-		NSDate	*transferDate = currentTransfer.valutaDate;
-		if(transferDate == nil || [transferDate compare: date ] == NSOrderedAscending) {
-			//			[transfer setValue: date forKey: @"date" ];
-			currentTransfer.valutaDate = date;
-		}
-		[executionDatePicker setMinDate: date ];
-		setupTime = [limits maxSetupTime ];
-		if(setupTime > 0) {
-			date = [NSDate dateWithTimeIntervalSinceNow: setupTime*86400 ];
-			[executionDatePicker setMaxDate: date ];
-		}
-	}
-	
-	// set charged party
-	if(transferType == TransferTypeEU) {
-		int idx = [currentTransfer.chargedBy intValue ];
-		if(idx>0) [chargeBox selectItemAtIndex: idx-1 ]; else [chargeBox selectItemAtIndex: 0 ];
-	}
-	
-	// set date
-	currentTransfer.date = [NSDate date ];
-	
-	// set right window
-	switch(transferType) {
-		case TransferTypeStandard: window = transferLocalWindow; break;
-		case TransferTypeDated: window = transferLocalWindow; break;
-		case TransferTypeEU: window = transferEUWindow; break;
+    // update limits
+    if (transferType != TransferTypeEU) {
+        selectedCountry = nil;
+        [self updateLimits];
+        currentTransfer.remoteCountry = account.country;
+    } else {
+        NSArray *allowedCountries = [[HBCIClient hbciClient] allowedCountriesForAccount: account];
+        [countryController setContent: allowedCountries];
+        // sort descriptor for transactions view
+        [countryController rearrangeObjects];
+
+        if (selectedCountry) {
+            int  idx = 0;
+            BOOL found = NO;
+            for (Country *country in [countryController arrangedObjects]) {
+                if (country.code == selectedCountry) {
+                    found = YES;
+                    break;
+                } else {idx = idx + 1; }
+            }
+            if (found) {
+                [countryController setSelectionIndex: idx];
+            }
+        } else {
+            selectedCountry = [(Country *)[countryController arrangedObjects][0] code];
+            [countryController setSelectionIndex: 0];
+        }
+        [self updateLimits];
+        currentTransfer.remoteCountry = selectedCountry;
+
+    }
+
+    // set default values
+    if (transferType == TransferTypeDated) {
+        int setupTime;
+        if (limits) {
+            setupTime = [limits minSetupTime];
+        } else {setupTime = 2; }
+        NSDate *date = [NSDate dateWithTimeIntervalSinceNow: setupTime * 86400];
+        NSDate *transferDate = currentTransfer.valutaDate;
+        if (transferDate == nil || [transferDate compare: date] == NSOrderedAscending) {
+            //			[transfer setValue: date forKey: @"date" ];
+            currentTransfer.valutaDate = date;
+        }
+        [executionDatePicker setMinDate: date];
+        setupTime = [limits maxSetupTime];
+        if (setupTime > 0) {
+            date = [NSDate dateWithTimeIntervalSinceNow: setupTime * 86400];
+            [executionDatePicker setMaxDate: date];
+        }
+    }
+
+    // set charged party
+    if (transferType == TransferTypeEU) {
+        int idx = [currentTransfer.chargedBy intValue];
+        if (idx > 0) {
+            [chargeBox selectItemAtIndex: idx - 1];
+        } else {[chargeBox selectItemAtIndex: 0]; }
+    }
+
+    // set date
+    currentTransfer.date = [NSDate date];
+
+    // set right window
+    switch (transferType) {
+        case TransferTypeStandard: window = transferLocalWindow; break;
+
+        case TransferTypeDated: window = transferLocalWindow; break;
+
+        case TransferTypeEU: window = transferEUWindow; break;
+
         case TransferTypeSEPA: window = transferSEPAWindow; break;
-		case TransferTypeInternal: window = transferInternalWindow; break;
+
+        case TransferTypeInternal: window = transferInternalWindow; break;
+
         case TransferTypeDebit: break; // TODO
+
         case TransferTypeCollectiveCredit: break; // TODO
+
         case TransferTypeCollectiveDebit: break; // TODO
-	};
-	
-	if(transferType != TransferTypeEU && transferType != TransferTypeSEPA) [self preparePurposeFields ];
-	if(transferType == TransferTypeStandard) [self hideTransferDate: YES ];
-	if(transferType == TransferTypeDated) [self hideTransferDate: NO ];
-	
+    }
+
+    if (transferType != TransferTypeEU && transferType != TransferTypeSEPA) {
+        [self preparePurposeFields];
+    }
+    if (transferType == TransferTypeStandard) {
+        [self hideTransferDate: YES];
+    }
+    if (transferType == TransferTypeDated) {
+        [self hideTransferDate: NO];
+    }
+
     //	if(/*transferType == TransferTypeEU || */donation) [window makeFirstResponder: [[window contentView ] viewWithTag: 11 ] ];
-	
-    [[[templatesDraw contentView ] viewWithTag:10 ] setDoubleAction:@selector(templateDoubleClicked:) ];
+
+    [[[templatesDraw contentView] viewWithTag: 10] setDoubleAction: @selector(templateDoubleClicked:)];
 }
 
 - (BOOL)newTransferOfType: (TransferType)type
 {
-    NSError *error = nil;
+    NSError                *error = nil;
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
 
     // Save any previous change.
     if ([context  hasChanges]) {
-        if([context save: &error ] == NO) {
+        if ([context save: &error] == NO) {
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
             return NO;
@@ -236,7 +263,7 @@
     }
 
     account = nil;
-	transferType = type;
+    transferType = type;
     currentTransfer = [NSEntityDescription insertNewObjectForEntityForName: @"Transfer" inManagedObjectContext: context];
     currentTransfer.type = @((int)transferType);
     currentTransfer.changeState = TransferChangeNew;
@@ -246,53 +273,53 @@
     return YES;
 }
 
-- (BOOL)editExistingTransfer: (Transfer*)transfer
+- (BOOL)editExistingTransfer: (Transfer *)transfer
 {
-    NSError *error = nil;
+    NSError                *error = nil;
     NSManagedObjectContext *context = MOAssistant.assistant.context;
-    
+
     // Save any previous change.
     if ([context  hasChanges]) {
         if ([context save: &error] == NO) {
-            NSAlert *alert = [NSAlert alertWithError:error];
+            NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
             return NO;
         }
     }
-	
-	transferType = [transfer.type intValue];
-	account = transfer.account;
-	
-	if (transferType == TransferTypeEU) {
-		[self setValue: transfer.remoteCountry forKey: @"selectedCountry"];
-	}
-	
-	currentTransfer = transfer;
-	[self prepareTransfer];
+
+    transferType = [transfer.type intValue];
+    account = transfer.account;
+
+    if (transferType == TransferTypeEU) {
+        [self setValue: transfer.remoteCountry forKey: @"selectedCountry"];
+    }
+
+    currentTransfer = transfer;
+    [self prepareTransfer];
     currentTransfer.changeState = TransferChangeEditing;
-	
-	[currentTransferController setContent: transfer];
-    
+
+    [currentTransferController setContent: transfer];
+
     return YES;
 }
 
-- (BOOL)newTransferFromExistingTransfer: (Transfer*)transfer
+- (BOOL)newTransferFromExistingTransfer: (Transfer *)transfer
 {
     if (![self newTransferOfType: [transfer.type intValue]]) {
         return NO;
     }
-        
-	transferType = [transfer.type intValue];
-	account = transfer.account;
-	
-	if (transferType == TransferTypeEU) {
-		[self setValue: transfer.remoteCountry forKey: @"selectedCountry"];
-	}
-	
-	[self prepareTransfer];
+
+    transferType = [transfer.type intValue];
+    account = transfer.account;
+
+    if (transferType == TransferTypeEU) {
+        [self setValue: transfer.remoteCountry forKey: @"selectedCountry"];
+    }
+
+    [self prepareTransfer];
     [currentTransfer copyFromTransfer: transfer withLimits: limits];
     currentTransfer.changeState = TransferChangeNew;
-    
+
     // Determine the remote bank name again.
     NSString *bankName;
     if (transferType == TransferTypeEU) {
@@ -301,23 +328,23 @@
         bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode inCountry: currentTransfer.remoteCountry];
     }
     if (bankName != nil) {
-        currentTransfer.remoteBankName = bankName;		   
+        currentTransfer.remoteBankName = bankName;
     }
     return YES;
 }
 
-- (BOOL)newTransferFromTemplate: (TransferTemplate*)template
+- (BOOL)newTransferFromTemplate: (TransferTemplate *)template
 {
     if (![self newTransferOfType: [template.type intValue]]) {
         return NO;
     }
-    
-	transferType = [template.type intValue];
-	
-	[self prepareTransfer];
+
+    transferType = [template.type intValue];
+
+    [self prepareTransfer];
     [currentTransfer copyFromTemplate: template withLimits: nil];
     currentTransfer.changeState = TransferChangeNew;
-    
+
     // Determine the remote bank name again.
     NSString *bankName;
     if (transferType == TransferTypeEU) {
@@ -326,12 +353,12 @@
         bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode inCountry: currentTransfer.remoteCountry];
     }
     if (bankName != nil) {
-        currentTransfer.remoteBankName = bankName;		   
+        currentTransfer.remoteBankName = bankName;
     }
     return YES;
 }
 
-- (void)saveTransfer: (Transfer*)transfer asTemplateWithName: (NSString *)name
+- (void)saveTransfer: (Transfer *)transfer asTemplateWithName: (NSString *)name
 {
     if (name == nil) {
         return;
@@ -340,24 +367,24 @@
     if (name.length == 0) {
         return;
     }
-    
-	NSManagedObjectContext	*context = templateController.managedObjectContext;
-	TransferTemplate *template = [NSEntityDescription insertNewObjectForEntityForName: @"TransferTemplate" inManagedObjectContext: context];
-	template.name = name;
+
+    NSManagedObjectContext *context = templateController.managedObjectContext;
+    TransferTemplate       *template = [NSEntityDescription insertNewObjectForEntityForName: @"TransferTemplate" inManagedObjectContext: context];
+    template.name = name;
     template.type = transfer.type;
-	template.remoteAccount = transfer.remoteAccount;
-	template.remoteBankCode = transfer.remoteBankCode;
-	template.remoteName = transfer.remoteName;
-	template.purpose1 = transfer.purpose1;
-	template.purpose2 = transfer.purpose2;
-	template.purpose3 = transfer.purpose3;
-	template.purpose4 = transfer.purpose4;
-	template.remoteIBAN = transfer.remoteIBAN;
-	template.remoteBIC = transfer.remoteBIC;
-	template.remoteCountry = transfer.remoteCountry;
-	template.value = transfer.value;
-	template.currency = transfer.currency;
-    
+    template.remoteAccount = transfer.remoteAccount;
+    template.remoteBankCode = transfer.remoteBankCode;
+    template.remoteName = transfer.remoteName;
+    template.purpose1 = transfer.purpose1;
+    template.purpose2 = transfer.purpose2;
+    template.purpose3 = transfer.purpose3;
+    template.purpose4 = transfer.purpose4;
+    template.remoteIBAN = transfer.remoteIBAN;
+    template.remoteBIC = transfer.remoteBIC;
+    template.remoteCountry = transfer.remoteCountry;
+    template.value = transfer.value;
+    template.currency = transfer.currency;
+
     // TODO: Save the context?
 }
 
@@ -387,15 +414,15 @@
  */
 - (BOOL)finishCurrentTransfer
 {
-	[currentTransferController commitEditing];
-    
+    [currentTransferController commitEditing];
+
     // prevent rounding issues
     currentTransfer.value = [currentTransfer.value rounded];
-	
+
     if (![self validateCurrentTransfer]) {
         return NO;
     }
-    
+
     // Change the transfer's type to a terminated transfer if a valuta date is given.
     // TODO: solve terminated transfers differently. There are too many combinations possible as that
     //       a single transfer type could cover all of them.
@@ -403,45 +430,45 @@
     if (currentTransfer.valutaDate != nil) {
         currentTransfer.type = @(TransferTypeDated);
     }
-    
-    NSError *error = nil;
-	NSManagedObjectContext	*context = MOAssistant.assistant.context;
-	if (![context save: &error]) {
-		NSAlert *alert = [NSAlert alertWithError: error];
-		[alert runModal];
-		return NO;
-	}
-	
+
+    NSError                *error = nil;
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return NO;
+    }
+
     currentTransfer.changeState = TransferChangeUnchanged;
     currentTransferController.content = nil;
-    
-	return YES;
+
+    return YES;
 }
 
 /**
  * Checks if the given string contains any character that is not allowed and alerts the
  * user if so.
  */
-- (BOOL)validateCharacters: (NSString*)s
+- (BOOL)validateCharacters: (NSString *)s
 {
     NSCharacterSet *cs = [NSCharacterSet characterSetWithCharactersInString: NSLocalizedString(@"AP200", nil)];
-    
+
     if (s == nil || [s length] == 0) {
         return YES;
     }
-    
+
     for (NSUInteger i = 0; i < [s length]; i++) {
         if ([cs characterIsMember: [s characterAtIndex: i]] == NO) {
             NSRunAlertPanel(NSLocalizedString(@"AP73", nil),
-                            NSLocalizedString(@"AP74", nil), 
+                            NSLocalizedString(@"AP74", nil),
                             NSLocalizedString(@"ok", nil),
                             nil,
                             nil,
-                            [s characterAtIndex:i ]);
+                            [s characterAtIndex: i]);
             return NO;
         }
     }
-    return YES;    
+    return YES;
 }
 
 /**
@@ -450,13 +477,13 @@
  */
 - (BOOL)validateCurrentTransfer
 {
-	BOOL res;
-	NSNumber *value;
+    BOOL         res;
+    NSNumber     *value;
     TransferType activeType = transferType;
     if (currentTransfer.valutaDate != nil) {
         activeType = TransferTypeDated;
     }
-    
+
     if (![self validateCharacters: currentTransfer.purpose1]) {
         return NO;
     }
@@ -472,141 +499,142 @@
     if (![self validateCharacters: currentTransfer.remoteName]) {
         return NO;
     }
-    
-	if(currentTransfer.remoteName == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-						NSLocalizedString(@"AP54", nil),
-						NSLocalizedString(@"ok", nil), nil, nil);
-		return NO;
-	}
-	// do not check remote account for EU transfers, instead IBAN
-	if (activeType != TransferTypeEU && activeType != TransferTypeSEPA) {
-		if(currentTransfer.remoteAccount == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-							NSLocalizedString(@"AP55", nil),
-							NSLocalizedString(@"ok", nil), nil, nil);
-			return NO;
-		}
-	} else {
-		// EU or SEPA transfer
-		if(currentTransfer.remoteIBAN == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-							NSLocalizedString(@"AP68", nil),
-							NSLocalizedString(@"ok", nil), nil, nil);
-			return NO;
-		}
-		// check IBAN
+
+    if (currentTransfer.remoteName == nil) {
+        NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                        NSLocalizedString(@"AP54", nil),
+                        NSLocalizedString(@"ok", nil), nil, nil);
+        return NO;
+    }
+    // do not check remote account for EU transfers, instead IBAN
+    if (activeType != TransferTypeEU && activeType != TransferTypeSEPA) {
+        if (currentTransfer.remoteAccount == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP55", nil),
+                            NSLocalizedString(@"ok", nil), nil, nil);
+            return NO;
+        }
+    } else {
+        // EU or SEPA transfer
+        if (currentTransfer.remoteIBAN == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP68", nil),
+                            NSLocalizedString(@"ok", nil), nil, nil);
+            return NO;
+        }
+        // check IBAN
 
         // transfer IBAN & BIC to uppercase
         currentTransfer.remoteIBAN = [currentTransfer.remoteIBAN uppercaseString];
         currentTransfer.remoteBIC = [currentTransfer.remoteBIC uppercaseString];
 
-		if([[HBCIClient hbciClient ] checkIBAN: currentTransfer.remoteIBAN ] == NO) {
-			NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
-							NSLocalizedString(@"AP70", nil),
-							NSLocalizedString(@"AP61", nil), nil, nil);
-			return NO;
-		}
-        
-	}
-	
-	if(activeType == TransferTypeStandard || activeType == TransferTypeDated || activeType == TransferTypeDebit) {
-		if(currentTransfer.remoteBankCode == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-							NSLocalizedString(@"AP56", nil),
-							NSLocalizedString(@"ok", nil), nil, nil);
-			return NO;
-		}
-	}
-	
-	if(activeType == TransferTypeSEPA) {
-		if(currentTransfer.remoteBIC == nil) {
-			NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-							NSLocalizedString(@"AP69", nil),
-							NSLocalizedString(@"ok", nil), nil, nil);
-			return NO;
-		}
-	}
-	
-	if( (value = currentTransfer.value) == nil ) {
-		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-						NSLocalizedString(@"AP57", nil),
-						NSLocalizedString(@"ok", nil), nil, nil);
-		return NO;
-	}
-	if([value doubleValue ] <= 0) {
-		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-						NSLocalizedString(@"AP58", nil),
-						NSLocalizedString(@"ok", nil), nil, nil);
-		return NO;
-	}
-	
-	// purpose?
-	if (currentTransfer.purpose1 == nil || [currentTransfer.purpose1 length ] == 0) {
-		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-						NSLocalizedString(@"AP76", nil),
-						NSLocalizedString(@"ok", nil), nil, nil);
-		return NO;
-	}
-    
-    // Prüfen, ob das Zieldatum auf ein Wochenende fällt
-    if(transferType == TransferTypeDated) {
-        NSCalendar *gregorian = [[NSCalendar alloc]
-                                 initWithCalendarIdentifier:NSGregorianCalendar];
-        NSDateComponents *weekdayComponents =
-        [gregorian components:NSWeekdayCalendarUnit fromDate:currentTransfer.valutaDate ];
-        int weekday = [weekdayComponents weekday];
-        if (weekday == 1 || weekday == 7) {
-			NSRunAlertPanel(NSLocalizedString(@"AP59", nil), 
-							NSLocalizedString(@"AP425", nil),
-							NSLocalizedString(@"ok", nil), nil, nil);
-			return NO;
+        if ([[HBCIClient hbciClient] checkIBAN: currentTransfer.remoteIBAN] == NO) {
+            NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+                            NSLocalizedString(@"AP70", nil),
+                            NSLocalizedString(@"AP61", nil), nil, nil);
+            return NO;
+        }
+
+    }
+
+    if (activeType == TransferTypeStandard || activeType == TransferTypeDated || activeType == TransferTypeDebit) {
+        if (currentTransfer.remoteBankCode == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP56", nil),
+                            NSLocalizedString(@"ok", nil), nil, nil);
+            return NO;
         }
     }
-	
-	if (activeType == TransferTypeEU) {
-		NSString	*foreignCurr = [[[countryController selectedObjects ] lastObject ] currency ];
-		NSString	*curr = currentTransfer.currency;
-		double		limit = 0.0;
-		
-		if(![curr isEqual: foreignCurr ] && ![curr isEqual: @"EUR" ] && ![curr isEqual: account.currency ]) {
-			NSRunAlertPanel(NSLocalizedString(@"AP67", nil), 
-							[NSString stringWithFormat: NSLocalizedString(@"AP63", nil), [limits localLimit ] ], 
-							NSLocalizedString(@"ok", nil), nil, nil);
-			return NO;
-		}
-		
-		if([curr isEqual: foreignCurr ] && limits) limit = [limits foreignLimit ]; else limit = [limits localLimit ];
-		if(limit > 0 && [value doubleValue ] > limit) {
-			NSRunAlertPanel(NSLocalizedString(@"AP66", nil), 
-							[NSString stringWithFormat: NSLocalizedString(@"AP62", nil), [limits localLimit ] ], 
-							NSLocalizedString(@"ok", nil), nil, nil);
-			return NO;
-		}
-	}
-	
-	
-	// verify account and bank information
-	if(activeType != TransferTypeEU) {
-		// verify accounts, but only for available countries
-		if([currentTransfer.remoteCountry caseInsensitiveCompare: @"de" ] == NSOrderedSame ||
-		   [currentTransfer.remoteCountry caseInsensitiveCompare: @"at" ] == NSOrderedSame ||
-		   [currentTransfer.remoteCountry caseInsensitiveCompare: @"ch" ] == NSOrderedSame ||
-		   [currentTransfer.remoteCountry caseInsensitiveCompare: @"ca" ] == NSOrderedSame) {
-            
-			res = [[HBCIClient hbciClient ] checkAccount: currentTransfer.remoteAccount 
-												 forBank: currentTransfer.remoteBankCode 
-											   inCountry: currentTransfer.remoteCountry ];
-            
-			if(res == NO) {
-				NSRunAlertPanel(NSLocalizedString(@"AP59", nil), 
-								NSLocalizedString(@"AP60", nil),
-								NSLocalizedString(@"AP61", nil), nil, nil);
-				return NO;
-			}
-		}
-	}
-	return YES;
+
+    if (activeType == TransferTypeSEPA) {
+        if (currentTransfer.remoteBIC == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP69", nil),
+                            NSLocalizedString(@"ok", nil), nil, nil);
+            return NO;
+        }
+    }
+
+    if ( (value = currentTransfer.value) == nil) {
+        NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                        NSLocalizedString(@"AP57", nil),
+                        NSLocalizedString(@"ok", nil), nil, nil);
+        return NO;
+    }
+    if ([value doubleValue] <= 0) {
+        NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                        NSLocalizedString(@"AP58", nil),
+                        NSLocalizedString(@"ok", nil), nil, nil);
+        return NO;
+    }
+
+    // purpose?
+    if (currentTransfer.purpose1 == nil || [currentTransfer.purpose1 length] == 0) {
+        NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                        NSLocalizedString(@"AP76", nil),
+                        NSLocalizedString(@"ok", nil), nil, nil);
+        return NO;
+    }
+
+    // Prüfen, ob das Zieldatum auf ein Wochenende fällt
+    if (transferType == TransferTypeDated) {
+        NSCalendar *gregorian = [[NSCalendar alloc]
+                                 initWithCalendarIdentifier: NSGregorianCalendar];
+        NSDateComponents *weekdayComponents =
+        [gregorian components: NSWeekdayCalendarUnit fromDate: currentTransfer.valutaDate];
+        int weekday = [weekdayComponents weekday];
+        if (weekday == 1 || weekday == 7) {
+            NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+                            NSLocalizedString(@"AP425", nil),
+                            NSLocalizedString(@"ok", nil), nil, nil);
+            return NO;
+        }
+    }
+
+    if (activeType == TransferTypeEU) {
+        NSString *foreignCurr = [[[countryController selectedObjects] lastObject] currency];
+        NSString *curr = currentTransfer.currency;
+        double   limit = 0.0;
+
+        if (![curr isEqual: foreignCurr] && ![curr isEqual: @"EUR"] && ![curr isEqual: account.currency]) {
+            NSRunAlertPanel(NSLocalizedString(@"AP67", nil),
+                            [NSString stringWithFormat: NSLocalizedString(@"AP63", nil), [limits localLimit]],
+                            NSLocalizedString(@"ok", nil), nil, nil);
+            return NO;
+        }
+
+        if ([curr isEqual: foreignCurr] && limits) {
+            limit = [limits foreignLimit];
+        } else {limit = [limits localLimit]; }
+        if (limit > 0 && [value doubleValue] > limit) {
+            NSRunAlertPanel(NSLocalizedString(@"AP66", nil),
+                            [NSString stringWithFormat: NSLocalizedString(@"AP62", nil), [limits localLimit]],
+                            NSLocalizedString(@"ok", nil), nil, nil);
+            return NO;
+        }
+    }
+
+
+    // verify account and bank information
+    if (activeType != TransferTypeEU) {
+        // verify accounts, but only for available countries
+        if ([currentTransfer.remoteCountry caseInsensitiveCompare: @"de"] == NSOrderedSame ||
+            [currentTransfer.remoteCountry caseInsensitiveCompare: @"at"] == NSOrderedSame ||
+            [currentTransfer.remoteCountry caseInsensitiveCompare: @"ch"] == NSOrderedSame ||
+            [currentTransfer.remoteCountry caseInsensitiveCompare: @"ca"] == NSOrderedSame) {
+            res = [[HBCIClient hbciClient] checkAccount: currentTransfer.remoteAccount
+                                                forBank: currentTransfer.remoteBankCode
+                                              inCountry: currentTransfer.remoteCountry];
+
+            if (res == NO) {
+                NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+                                NSLocalizedString(@"AP60", nil),
+                                NSLocalizedString(@"AP61", nil), nil, nil);
+                return NO;
+            }
+        }
+    }
+    return YES;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -614,360 +642,401 @@
 #pragma mark -
 #pragma mark Old transfer handling code
 
-- (void)transferOfType: (TransferType)tt forAccount: (BankAccount*)acc
+- (void)transferOfType: (TransferType)tt forAccount: (BankAccount *)acc
 {
-	NSError *error = nil;
-	NSManagedObjectContext	*context = [[MOAssistant assistant ] context];
-	
-	// save changed done with previous actions
-	if ([context  hasChanges ]) {
-		// save updates
-		if([context save: &error ] == NO) {
-			NSAlert *alert = [NSAlert alertWithError:error];
-			[alert runModal];
-			return;
-		}
-	}	
+    NSError                *error = nil;
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
 
-	// check for availability
-	if([[HBCIClient hbciClient ] isTransferSupported: tt forAccount: acc ] == NO) {
-		NSRunAlertPanel(NSLocalizedString(@"AP64", nil), 
-						NSLocalizedString(@"AP65", nil),
-						NSLocalizedString(@"ok", nil), nil, nil);
-		return;
-	}
+    // save changed done with previous actions
+    if ([context  hasChanges]) {
+        // save updates
+        if ([context save: &error] == NO) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+            return;
+        }
+    }
 
-	transferType = tt;
-	account = acc;
-	
-	currentTransfer = [NSEntityDescription insertNewObjectForEntityForName: @"Transfer" inManagedObjectContext: context];
-	
-	[self prepareTransfer];
+    // check for availability
+    if ([[HBCIClient hbciClient] isTransferSupported: tt forAccount: acc] == NO) {
+        NSRunAlertPanel(NSLocalizedString(@"AP64", nil),
+                        NSLocalizedString(@"AP65", nil),
+                        NSLocalizedString(@"ok", nil), nil, nil);
+        return;
+    }
 
-	currentTransfer.account = account;
-	currentTransfer.currency = account.currency;
-	if([currentTransfer.currency isEqualToString: @"" ]) currentTransfer.currency = @"EUR";
-	currentTransfer.type = @((int)transferType);
-	
-	[currentTransferController setContent: currentTransfer];
+    transferType = tt;
+    account = acc;
 
-/*
-	[self preparePurposeFields ];
-	if(transferType == TransferTypeLocal) [self hideTransferDate: YES ];
-	else [self hideTransferDate: NO ];
-*/	
-	int res = [NSApp runModalForWindow: window ];
-	if(res == 1) {
-		if([context hasChanges ]) [context rollback ];
-		return;
-	}
-	
-	// save updates
-	if([context save: &error ] == NO) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-		return;
-	}
-	
-	if (res == 2) {
-		// show log if wanted
-		NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults ];
-		BOOL showLog = [defaults boolForKey: @"logForTransfers" ];
-		if (showLog) {
-			LogController *logController = [LogController logController ];
-			[logController showWindow:self ];
-			[[logController window ] orderFront:self ];
-		}
-		
-		[[HBCIClient hbciClient ] sendTransfers: @[currentTransfer] ];
-	}
+    currentTransfer = [NSEntityDescription insertNewObjectForEntityForName: @"Transfer" inManagedObjectContext: context];
 
-	// save updates
-	if([context save: &error ] == NO) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-		return;
-	}
+    [self prepareTransfer];
+
+    currentTransfer.account = account;
+    currentTransfer.currency = account.currency;
+    if ([currentTransfer.currency isEqualToString: @""]) {
+        currentTransfer.currency = @"EUR";
+    }
+    currentTransfer.type = @((int)transferType);
+
+    [currentTransferController setContent: currentTransfer];
+
+    /*
+     [self preparePurposeFields ];
+     if(transferType == TransferTypeLocal) [self hideTransferDate: YES ];
+     else [self hideTransferDate: NO ];
+     */
+    int res = [NSApp runModalForWindow: window];
+    if (res == 1) {
+        if ([context hasChanges]) {
+            [context rollback];
+        }
+        return;
+    }
+
+    // save updates
+    if ([context save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
+
+    if (res == 2) {
+        // show log if wanted
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        BOOL           showLog = [defaults boolForKey: @"logForTransfers"];
+        if (showLog) {
+            LogController *logController = [LogController logController];
+            [logController showWindow: self];
+            [[logController window] orderFront: self];
+        }
+
+        [[HBCIClient hbciClient] sendTransfers: @[currentTransfer]];
+    }
+
+    // save updates
+    if ([context save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
 }
 
-- (void)donateWithAccount: (BankAccount*)acc
+- (void)donateWithAccount: (BankAccount *)acc
 {
-	donation = YES;
-	[self transferOfType: TransferTypeStandard forAccount: acc ];
+    donation = YES;
+    [self transferOfType: TransferTypeStandard forAccount: acc];
 }
 
-
--(void)hideTransferDate: (BOOL)hide
+- (void)hideTransferDate: (BOOL)hide
 {
-	NSView*	cView = [window contentView ];
-	NSView* p;
-	
-	p = [cView viewWithTag: 20 ];
-	[p setHidden: hide ];
-	p = [cView viewWithTag: 21 ];
-	[p setHidden: hide ];
+    NSView *cView = [window contentView];
+    NSView *p;
+
+    p = [cView viewWithTag: 20];
+    [p setHidden: hide];
+    p = [cView viewWithTag: 21];
+    [p setHidden: hide];
 }
 
-- (void)changeTransfer:(Transfer*)tf
+- (void)changeTransfer: (Transfer *)tf
 {
-	NSError		*error=nil;
-	NSManagedObjectContext	*context = [[MOAssistant assistant ] context];
+    NSError                *error = nil;
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
 
-	// save changed done with previous actions
-	if ([context  hasChanges ]) {
-		// save updates
-		if([context save: &error ] == NO) {
-			NSAlert *alert = [NSAlert alertWithError:error];
-			[alert runModal];
-			return;
-		}
-	}	
-	
-	transferType = [tf.type intValue ];
-	account = tf.account;
-	
-	if (transferType == TransferTypeEU) {
-		[self setValue: tf.remoteCountry forKey:@"selectedCountry" ];
-	}
-	
-	currentTransfer = tf;
-	[self prepareTransfer];
-	
-	[currentTransferController setContent: tf ];
-	
-	//hide "next"-button
-	NSView	*cv = [window contentView ];
-	NSView	*bv = [cv viewWithTag: 50 ];
-	[bv setHidden: YES ];
-	
-	int res = [NSApp runModalForWindow: window ];
-	[bv setHidden: NO ];
-	if(res == 1) {
-		if([context hasChanges ]) [context rollback ];
-		return;
-	}
-	
-	// save updates
-	if([context save: &error ] == NO) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-		return;
-	}
+    // save changed done with previous actions
+    if ([context  hasChanges]) {
+        // save updates
+        if ([context save: &error] == NO) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+            return;
+        }
+    }
+
+    transferType = [tf.type intValue];
+    account = tf.account;
+
+    if (transferType == TransferTypeEU) {
+        [self setValue: tf.remoteCountry forKey: @"selectedCountry"];
+    }
+
+    currentTransfer = tf;
+    [self prepareTransfer];
+
+    [currentTransferController setContent: tf];
+
+    //hide "next"-button
+    NSView *cv = [window contentView];
+    NSView *bv = [cv viewWithTag: 50];
+    [bv setHidden: YES];
+
+    int res = [NSApp runModalForWindow: window];
+    [bv setHidden: NO];
+    if (res == 1) {
+        if ([context hasChanges]) {
+            [context rollback];
+        }
+        return;
+    }
+
+    // save updates
+    if ([context save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
 }
 
--(void)saveTemplate
+- (void)saveTemplate
 {
-	NSManagedObjectContext	*context = [[MOAssistant assistant ] context ];
-	TransferTemplate *template;
-	
-	NSTextField *templateField = (NSTextField*)[[window contentView ] viewWithTag:200 ];
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    TransferTemplate       *template;
 
-	NSString *name = [templateField stringValue ];
-	if (name == nil || [name length ] == 0) return;
-    name = [name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet ] ];
-	if (name == nil || [name length ] == 0) return;
+    NSTextField *templateField = (NSTextField *)[[window contentView] viewWithTag: 200];
 
-	template = [NSEntityDescription insertNewObjectForEntityForName:@"TransferTemplate" inManagedObjectContext: context];
-	template.name = name;
+    NSString *name = [templateField stringValue];
+    if (name == nil || [name length] == 0) {
+        return;
+    }
+    name = [name stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (name == nil || [name length] == 0) {
+        return;
+    }
+
+    template = [NSEntityDescription insertNewObjectForEntityForName: @"TransferTemplate" inManagedObjectContext: context];
+    template.name = name;
     template.type = currentTransfer.type;
-	template.remoteAccount = currentTransfer.remoteAccount;
-	template.remoteBankCode = currentTransfer.remoteBankCode;
-	template.remoteName = currentTransfer.remoteName;
-	template.purpose1 = currentTransfer.purpose1;
-	template.purpose2 = currentTransfer.purpose2;
-	template.purpose3 = currentTransfer.purpose3;
-	template.purpose4 = currentTransfer.purpose4;
-	template.remoteIBAN = currentTransfer.remoteIBAN;
-	template.remoteBIC = currentTransfer.remoteBIC;
-	template.remoteCountry = currentTransfer.remoteCountry;
-	template.value = currentTransfer.value;
-	template.currency = currentTransfer.currency;
-	
-	[templateField setStringValue:@"" ];
+    template.remoteAccount = currentTransfer.remoteAccount;
+    template.remoteBankCode = currentTransfer.remoteBankCode;
+    template.remoteName = currentTransfer.remoteName;
+    template.purpose1 = currentTransfer.purpose1;
+    template.purpose2 = currentTransfer.purpose2;
+    template.purpose3 = currentTransfer.purpose3;
+    template.purpose4 = currentTransfer.purpose4;
+    template.remoteIBAN = currentTransfer.remoteIBAN;
+    template.remoteBIC = currentTransfer.remoteBIC;
+    template.remoteCountry = currentTransfer.remoteCountry;
+    template.value = currentTransfer.value;
+    template.currency = currentTransfer.currency;
+
+    [templateField setStringValue: @""];
 }
 
--(BOOL)finalizeTransfer
+- (BOOL)finalizeTransfer
 {
-	if(transferType == TransferTypeInternal) {
-		// get account from combo
-		int idx = [accountBox indexOfSelectedItem ];
-		if(idx < 0) { NSBeep(); return NO; }
-		currentTransfer.remoteAccount = [internalAccounts[idx] accountNumber ];
-		currentTransfer.remoteBankCode = [internalAccounts[idx] bankCode ];
-		currentTransfer.remoteBankName = account.bankName;
-	}
-	if(transferType == TransferTypeEU) {
-		int idx = [countryButton indexOfSelectedItem ];
-		if(idx < 0) { NSBeep(); return NO; }
-		currentTransfer.chargedBy = @((int)[chargeBox indexOfSelectedItem] + 1);
-	}
-	[currentTransferController commitEditing ];
-	if([self validateCurrentTransfer ] == NO) return NO;
-    
-	// save as template (if name given)
-	[self saveTemplate ];
-	
-	return YES;
+    if (transferType == TransferTypeInternal) {
+        // get account from combo
+        int idx = [accountBox indexOfSelectedItem];
+        if (idx < 0) {
+            NSBeep(); return NO;
+        }
+        currentTransfer.remoteAccount = [internalAccounts[idx] accountNumber];
+        currentTransfer.remoteBankCode = [internalAccounts[idx] bankCode];
+        currentTransfer.remoteBankName = account.bankName;
+    }
+    if (transferType == TransferTypeEU) {
+        int idx = [countryButton indexOfSelectedItem];
+        if (idx < 0) {
+            NSBeep(); return NO;
+        }
+        currentTransfer.chargedBy = @((int)[chargeBox indexOfSelectedItem] + 1);
+    }
+    [currentTransferController commitEditing];
+    if ([self validateCurrentTransfer] == NO) {
+        return NO;
+    }
+
+    // save as template (if name given)
+    [self saveTemplate];
+
+    return YES;
 }
 
-- (IBAction)sendTransfer:(id)sender
-{	
-	if ([self finalizeTransfer ] == NO) return;
-	
-	[templatesDraw close: self ];
-	[window close ];
-	[currentTransferController setContent:nil ];	
-	[NSApp stopModalWithCode:2];
-}
-
-- (IBAction)transferFinished:(id)sender
+- (IBAction)sendTransfer: (id)sender
 {
-	if ([self finalizeTransfer ] == NO) return;
+    if ([self finalizeTransfer] == NO) {
+        return;
+    }
 
-	[templatesDraw close: self ];
-	[window close ];
-	[currentTransferController setContent:nil ];	
-	[NSApp stopModalWithCode:0];
+    [templatesDraw close: self];
+    [window close];
+    [currentTransferController setContent: nil];
+    [NSApp stopModalWithCode: 2];
 }
 
-- (IBAction)nextTransfer:(id)sender
+- (IBAction)transferFinished: (id)sender
 {
-	NSManagedObjectContext	*context = [[MOAssistant assistant ] context ];
-	NSError *error=nil;
-	
-	if ([self finalizeTransfer ] == NO) return;
-	
-	// save updates
-	if([context save: &error ] == NO) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-		return;
-	}
-	
-	currentTransfer = [NSEntityDescription insertNewObjectForEntityForName:@"Transfer"
-											 inManagedObjectContext: context];
-	
-	// defaults
-	if(transferType == TransferTypeDated) {
-		int setupTime;
-		if(limits) setupTime = [limits minSetupTime ]; else setupTime = 2;
-		NSDate	*date = [NSDate dateWithTimeIntervalSinceNow: setupTime*86400 ];
-		currentTransfer.date = date;
-	}
-	
-	// set date
-	currentTransfer.date = [NSDate date ];
+    if ([self finalizeTransfer] == NO) {
+        return;
+    }
 
-	currentTransfer.account = account;
-	currentTransfer.currency = account.currency;
-	if([currentTransfer.currency isEqualToString: @"" ]) currentTransfer.currency = @"EUR";
-	
-	if(transferType == TransferTypeEU) currentTransfer.remoteCountry = selectedCountry; else currentTransfer.remoteCountry = account.country;
-
-	[currentTransferController setContent: currentTransfer ];
-
-	[window makeFirstResponder: [[window contentView ] viewWithTag: 10 ] ];
+    [templatesDraw close: self];
+    [window close];
+    [currentTransferController setContent: nil];
+    [NSApp stopModalWithCode: 0];
 }
 
-- (IBAction)cancel:(id)sender
+- (IBAction)nextTransfer: (id)sender
 {
-	[templatesDraw close: self ];
-	[window close ];
-	[currentTransferController setContent:nil ];	
-	[NSApp stopModalWithCode:1];
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSError                *error = nil;
+
+    if ([self finalizeTransfer] == NO) {
+        return;
+    }
+
+    // save updates
+    if ([context save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
+
+    currentTransfer = [NSEntityDescription insertNewObjectForEntityForName: @"Transfer"
+                                                    inManagedObjectContext: context];
+
+    // defaults
+    if (transferType == TransferTypeDated) {
+        int setupTime;
+        if (limits) {
+            setupTime = [limits minSetupTime];
+        } else {setupTime = 2; }
+        NSDate *date = [NSDate dateWithTimeIntervalSinceNow: setupTime * 86400];
+        currentTransfer.date = date;
+    }
+
+    // set date
+    currentTransfer.date = [NSDate date];
+
+    currentTransfer.account = account;
+    currentTransfer.currency = account.currency;
+    if ([currentTransfer.currency isEqualToString: @""]) {
+        currentTransfer.currency = @"EUR";
+    }
+
+    if (transferType == TransferTypeEU) {
+        currentTransfer.remoteCountry = selectedCountry;
+    } else {currentTransfer.remoteCountry = account.country; }
+
+    [currentTransferController setContent: currentTransfer];
+
+    [window makeFirstResponder: [[window contentView] viewWithTag: 10]];
 }
 
--(BOOL)windowShouldClose:(id)sender
+- (IBAction)cancel: (id)sender
 {
-    [templatesDraw close ];
-	[NSApp stopModalWithCode:1];
-	[currentTransferController setContent:nil ];	
-	return YES;
+    [templatesDraw close: self];
+    [window close];
+    [currentTransferController setContent: nil];
+    [NSApp stopModalWithCode: 1];
 }
 
--(void)windowWillClose: (NSNotification *)aNotification
+- (BOOL)windowShouldClose: (id)sender
 {
-	donation = NO;
+    [templatesDraw close];
+    [NSApp stopModalWithCode: 1];
+    [currentTransferController setContent: nil];
+    return YES;
 }
 
--(void)controlTextDidEndEditing:(NSNotification *)aNotification
+- (void)windowWillClose: (NSNotification *)aNotification
 {
-	NSTextField	*te = [aNotification object ];
-	NSString	*bankName;
-	
-	if([te tag] != 100) return;
-	
-	if(transferType == TransferTypeEU) {
-		bankName = [[HBCIClient hbciClient] bankNameForBIC: [te stringValue] inCountry: currentTransfer.remoteCountry];
-	} else {
-		bankName = [[HBCIClient hbciClient] bankNameForCode: [te stringValue] inCountry: currentTransfer.remoteCountry];
- 	}
-	if(bankName) currentTransfer.remoteBankName = bankName;
+    donation = NO;
 }
 
--(void)controlTextDidChange: (NSNotification*)aNotification
+- (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
-	NSTextField	*te = [aNotification object ];
-	NSUInteger maxLen;
-	
-	if([te tag ] < 10) maxLen = [limits maxLenPurpose ];
-	else if([te tag ] == 10) maxLen = [limits maxLengthRemoteName ];
-	else if([te tag ] == 20) maxLen = 52;
-	else return;
-	
-	if ([[te stringValue ] length ] > maxLen) { 
-		[te setStringValue:  [[te stringValue ] substringToIndex: maxLen ] ];
-		NSBeep();
-		return; 
-	};
-	return;
+    NSTextField *te = [aNotification object];
+    NSString    *bankName;
+
+    if ([te tag] != 100) {
+        return;
+    }
+
+    if (transferType == TransferTypeEU) {
+        bankName = [[HBCIClient hbciClient] bankNameForBIC: [te stringValue] inCountry: currentTransfer.remoteCountry];
+    } else {
+        bankName = [[HBCIClient hbciClient] bankNameForCode: [te stringValue] inCountry: currentTransfer.remoteCountry];
+    }
+    if (bankName) {
+        currentTransfer.remoteBankName = bankName;
+    }
 }
 
-- (IBAction)getDataFromTemplate:(id)sender
+- (void)controlTextDidChange: (NSNotification *)aNotification
 {
-	NSArray	*selection = [templateController selectedObjects ];
-	NSString *bankName = nil;
-	
-	if(selection && [selection count ] > 0) {
-		TransferTemplate*	template = (TransferTemplate*)selection[0];
-		[currentTransfer copyFromTemplate: template withLimits: limits ];
-		
-		// get Bank Name
-		if(transferType == TransferTypeEU) {
-			bankName = [[HBCIClient hbciClient  ] bankNameForBIC: currentTransfer.remoteBIC inCountry: currentTransfer.remoteCountry ];
-		} else {
-			bankName = [[HBCIClient hbciClient  ] bankNameForCode: currentTransfer.remoteBankCode inCountry: currentTransfer.remoteCountry ];
-		}
-		if(bankName) currentTransfer.remoteBankName = bankName;		
-	}
+    NSTextField *te = [aNotification object];
+    NSUInteger  maxLen;
+
+    if ([te tag] < 10) {
+        maxLen = [limits maxLenPurpose];
+    } else if ([te tag] == 10) {
+        maxLen = [limits maxLengthRemoteName];
+    } else if ([te tag] == 20) {
+        maxLen = 52;
+    } else {return; }
+
+    if ([[te stringValue] length] > maxLen) {
+        [te setStringValue:  [[te stringValue] substringToIndex: maxLen]];
+        NSBeep();
+        return;
+    }
+    return;
 }
 
--(void)preparePurposeFields
+- (IBAction)getDataFromTemplate: (id)sender
 {
-	int t;
-	if(limits == nil) return;
-	NSView*	cView = [window contentView ];
-	
-	int num = (t = limits.maxLinesPurpose)?t:2;
-	NSView* p;
-	
-	p = [cView viewWithTag: 4 ];
-	if(num < 4) [p setHidden: TRUE ]; else [p setHidden: FALSE ];
-	p = [cView viewWithTag: 3 ];
-	if(num < 3) [p setHidden: TRUE ]; else [p setHidden: FALSE ];
-	p = [cView viewWithTag: 2 ];
-	if(num < 2) [p setHidden: TRUE ]; else [p setHidden: FALSE ];
+    NSArray  *selection = [templateController selectedObjects];
+    NSString *bankName = nil;
+
+    if (selection && [selection count] > 0) {
+        TransferTemplate *template = (TransferTemplate *)selection[0];
+        [currentTransfer copyFromTemplate: template withLimits: limits];
+
+        // get Bank Name
+        if (transferType == TransferTypeEU) {
+            bankName = [[HBCIClient hbciClient] bankNameForBIC: currentTransfer.remoteBIC inCountry: currentTransfer.remoteCountry];
+        } else {
+            bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode inCountry: currentTransfer.remoteCountry];
+        }
+        if (bankName) {
+            currentTransfer.remoteBankName = bankName;
+        }
+    }
 }
 
-
-- (IBAction)countryDidChange:(id)sender
+- (void)preparePurposeFields
 {
-	selectedCountry = [(Country*)[[countryController selectedObjects] lastObject ] code ];
-	[self updateLimits ];
-	[self preparePurposeFields ];
-	currentTransfer.remoteCountry = selectedCountry;
+    int t;
+    if (limits == nil) {
+        return;
+    }
+    NSView *cView = [window contentView];
+
+    int    num = (t = limits.maxLinesPurpose) ? t : 2;
+    NSView *p;
+
+    p = [cView viewWithTag: 4];
+    if (num < 4) {
+        [p setHidden: TRUE];
+    } else {[p setHidden: FALSE]; }
+    p = [cView viewWithTag: 3];
+    if (num < 3) {
+        [p setHidden: TRUE];
+    } else {[p setHidden: FALSE]; }
+    p = [cView viewWithTag: 2];
+    if (num < 2) {
+        [p setHidden: TRUE];
+    } else {[p setHidden: FALSE]; }
 }
 
-
+- (IBAction)countryDidChange: (id)sender
+{
+    selectedCountry = [(Country *)[[countryController selectedObjects] lastObject] code];
+    [self updateLimits];
+    [self preparePurposeFields];
+    currentTransfer.remoteCountry = selectedCountry;
+}
 
 @end

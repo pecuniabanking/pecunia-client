@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -26,38 +26,36 @@
  * Returns an offscreen view containing all visual elements of this view for printing,
  * including CALayer content. Useful only for views that are layer-backed.
  */
-- (NSView*)printViewForLayerBackedView;
+- (NSView *)printViewForLayerBackedView;
 {
     NSRect bounds = self.bounds;
-    int bitmapBytesPerRow = 4 * bounds.size.width;
-    
+    int    bitmapBytesPerRow = 4 * bounds.size.width;
+
     CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
-    CGContextRef context = CGBitmapContextCreate (NULL,
-                                                  bounds.size.width,
-                                                  bounds.size.height,
-                                                  8,
-                                                  bitmapBytesPerRow,
-                                                  colorSpace,
-                                                  kCGImageAlphaPremultipliedLast);
+    CGContextRef    context = CGBitmapContextCreate(NULL,
+                                                    bounds.size.width,
+                                                    bounds.size.height,
+                                                    8,
+                                                    bitmapBytesPerRow,
+                                                    colorSpace,
+                                                    kCGImageAlphaPremultipliedLast);
     CGColorSpaceRelease(colorSpace);
-    
-    if (context == NULL)
-    {
+
+    if (context == NULL) {
         NSLog(@"getPrintViewForLayerBackedView: Failed to create context.");
         return nil;
     }
-    
+
     [[self layer] renderInContext: context];
     CGImageRef img = CGBitmapContextCreateImage(context);
-    NSImage* image = [[NSImage alloc] initWithCGImage: img size: bounds.size];
-    
-    NSImageView* canvas = [[NSImageView alloc] initWithFrame: bounds];
+    NSImage    *image = [[NSImage alloc] initWithCGImage: img size: bounds.size];
+
+    NSImageView *canvas = [[NSImageView alloc] initWithFrame: bounds];
     [canvas setImage: image];
-    
+
     CFRelease(img);
     CFRelease(context);
     return canvas;
 }
 
 @end
-

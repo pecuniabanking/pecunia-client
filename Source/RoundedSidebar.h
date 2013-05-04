@@ -9,7 +9,6 @@
 #import <Cocoa/Cocoa.h>
 
 @interface RoundedSidebar : NSView {
-
 }
 
 @end

@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -31,11 +31,11 @@
 @private
     id observedObject;
 
-    NSDateFormatter* dateFormatter;
-    NSIndexSet* draggedIndexes;
-    
+    NSDateFormatter *dateFormatter;
+    NSIndexSet      *draggedIndexes;
+
     BOOL showAssignedIndicators;
-    id owner;
+    id   owner;
     BOOL autoResetNew;
     BOOL pendingReload;  // Set when a notification arrived to completely reload the listview.
     BOOL pendingRefresh; // Set when there was already a notification to refresh visible cells (for property changes).
@@ -46,12 +46,12 @@
     BOOL autoCasing;
 }
 
-@property (nonatomic, assign) BOOL showAssignedIndicators;
-@property (nonatomic, strong) id owner;
-@property (nonatomic, assign) BOOL autoResetNew;
-@property (nonatomic, assign) BOOL disableSelection;
+@property (nonatomic, assign) BOOL    showAssignedIndicators;
+@property (nonatomic, strong) id      owner;
+@property (nonatomic, assign) BOOL    autoResetNew;
+@property (nonatomic, assign) BOOL    disableSelection;
 @property (nonatomic, strong) NSArray *dataSource;
-@property (nonatomic, assign) BOOL canShowHeaders; // Headers can be switched off temporarily.
+@property (nonatomic, assign) BOOL    canShowHeaders; // Headers can be switched off temporarily.
 
 - (void)updateVisibleCells;
 - (void)activateCells;

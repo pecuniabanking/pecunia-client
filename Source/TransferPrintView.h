@@ -21,32 +21,32 @@
 
 @interface TransferPrintView : NSView
 {
-    NSSize	paperSize;
-	int		purposeWidth;
-	int		topMargin;
-	int		bottomMargin;
-	int		leftMargin;
-	int		rightMargin;
-	int		pageHeight;
-	int		pageWidth;
-	int		dateWidth;
-	int		amountWidth;
-    int     bankAddressWidth;
-	int		padding;
-	int		minStatHeight;
-	int		totalPages;
-	int		currentPage;
-    
-	NSMutableArray  *transfers;
-	int				*statHeights;
-	
-	NSDateFormatter *dateFormatter;
-	NSNumberFormatter *numberFormatter;
-	NSNumberFormatter *debitNumberFormatter;
-    
+    NSSize paperSize;
+    int    purposeWidth;
+    int    topMargin;
+    int    bottomMargin;
+    int    leftMargin;
+    int    rightMargin;
+    int    pageHeight;
+    int    pageWidth;
+    int    dateWidth;
+    int    amountWidth;
+    int    bankAddressWidth;
+    int    padding;
+    int    minStatHeight;
+    int    totalPages;
+    int    currentPage;
+
+    NSMutableArray *transfers;
+    int            *statHeights;
+
+    NSDateFormatter   *dateFormatter;
+    NSNumberFormatter *numberFormatter;
+    NSNumberFormatter *debitNumberFormatter;
+
 }
 
-@property(nonatomic, strong) NSMutableArray *transfers;
+@property (nonatomic, strong) NSMutableArray *transfers;
 
 - (id)initWithTransfers: (NSArray *)transfersToPrint printInfo: (NSPrintInfo *)pi;
 

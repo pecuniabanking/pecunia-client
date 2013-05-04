@@ -10,12 +10,12 @@
 
 
 @interface TransferResult : NSObject {
-	NSString	*transferId;
-	BOOL		isOk;
+    NSString *transferId;
+    BOOL     isOk;
 }
 
 @property (copy) NSString *transferId;
-@property (assign) BOOL isOk;
+@property (assign) BOOL   isOk;
 
 
 

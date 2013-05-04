@@ -9,11 +9,11 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface NSOutlineView (MCEMOutlineViewLayout) 
+@interface NSOutlineView (MCEMOutlineViewLayout)
 
--(NSString*)persistentObjectForItem: (id)item;
--(void)restoreExpandedItems;	
--(void)saveLayout;
--(void)restoreLayout;
--(void)restoreAll;
+- (NSString *)persistentObjectForItem: (id)item;
+- (void)restoreExpandedItems;
+- (void)saveLayout;
+- (void)restoreLayout;
+- (void)restoreAll;
 @end

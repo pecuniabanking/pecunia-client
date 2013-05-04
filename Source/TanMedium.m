@@ -26,4 +26,3 @@
 @dynamic user;
 
 @end
-

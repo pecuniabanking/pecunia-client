@@ -21,19 +21,18 @@
 
 
 @interface TanWindow : NSWindowController {
+    IBOutlet NSTextField *inputText;
+    IBOutlet NSTextField *inputField;
+    IBOutlet NSTextField *secureInputField;
 
-	IBOutlet NSTextField	*inputText;
-	IBOutlet NSTextField	*inputField;
-    IBOutlet NSTextField    *secureInputField;
-	
-	NSAttributedString      *text;
-	NSString                *result;
-	BOOL                    active;
-	
+    NSAttributedString *text;
+    NSString           *result;
+    BOOL               active;
+
 }
 
-- (id)initWithText:(NSString*)x;
+- (id)initWithText: (NSString *)x;
 - (void)closeWindow;
-- (NSString*)result;
+- (NSString *)result;
 
 @end

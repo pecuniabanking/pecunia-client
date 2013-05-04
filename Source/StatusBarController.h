@@ -21,15 +21,15 @@
 
 @interface StatusBarController : NSObject {
 @private
-	IBOutlet NSProgressIndicator	*progressIndicator;
-	IBOutlet NSTextField			*messageField;
+    IBOutlet NSProgressIndicator *progressIndicator;
+    IBOutlet NSTextField         *messageField;
 }
 
-+ (StatusBarController*)controller;
++ (StatusBarController *)controller;
 
 - (void)startSpinning;
 - (void)stopSpinning;
-- (void)setMessage: (NSString*)message removeAfter: (int)secs;
+- (void)setMessage: (NSString *)message removeAfter: (int)secs;
 - (void)clearMessage;
 
 

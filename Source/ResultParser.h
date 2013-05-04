@@ -12,15 +12,15 @@
 
 @interface ResultParser : NSObject <NSXMLParserDelegate> {
     NSMutableString *currentValue;
-    HBCIBridge	*parent;
-    id result;
-    
-    NSMutableArray	*stack;
+    HBCIBridge      *parent;
+    id              result;
+
+    NSMutableArray  *stack;
     NSDateFormatter *dateFormatter;
-    NSString		*currentType;
+    NSString        *currentType;
 }
 
--(id)result;
--(id)initWithParent: (HBCIBridge*)par;
+- (id)result;
+- (id)initWithParent: (HBCIBridge *)par;
 
 @end

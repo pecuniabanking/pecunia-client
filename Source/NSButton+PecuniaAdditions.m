@@ -25,21 +25,21 @@
 - (NSColor *)textColor
 {
     NSAttributedString *attrTitle = [self attributedTitle];
-    int len = [attrTitle length];
-    NSRange range = NSMakeRange(0, MIN(len, 1)); // take color from first char
-    NSDictionary *attrs = [attrTitle fontAttributesInRange: range];
-    NSColor *textColor = [NSColor controlTextColor];
+    int                len = [attrTitle length];
+    NSRange            range = NSMakeRange(0, MIN(len, 1)); // take color from first char
+    NSDictionary       *attrs = [attrTitle fontAttributesInRange: range];
+    NSColor            *textColor = [NSColor controlTextColor];
     if (attrs) {
         textColor = attrs[NSForegroundColorAttributeName];
     }
     return textColor;
 }
 
-- (void)setTextColor:(NSColor *)textColor
+- (void)setTextColor: (NSColor *)textColor
 {
     NSMutableAttributedString *attrTitle = [[NSMutableAttributedString alloc]
                                             initWithAttributedString: [self attributedTitle]];
-    int len = [attrTitle length];
+    int     len = [attrTitle length];
     NSRange range = NSMakeRange(0, len);
     [attrTitle addAttribute: NSForegroundColorAttributeName
                       value: textColor
@@ -55,21 +55,21 @@
 - (NSColor *)textColor
 {
     NSAttributedString *attrTitle = [self attributedTitle];
-    int len = [attrTitle length];
-    NSRange range = NSMakeRange(0, MIN(len, 1)); // take color from first char
-    NSDictionary *attrs = [attrTitle fontAttributesInRange: range];
-    NSColor *textColor = [NSColor controlTextColor];
+    int                len = [attrTitle length];
+    NSRange            range = NSMakeRange(0, MIN(len, 1)); // take color from first char
+    NSDictionary       *attrs = [attrTitle fontAttributesInRange: range];
+    NSColor            *textColor = [NSColor controlTextColor];
     if (attrs) {
         textColor = attrs[NSForegroundColorAttributeName];
     }
     return textColor;
 }
 
-- (void)setTextColor:(NSColor *)textColor
+- (void)setTextColor: (NSColor *)textColor
 {
     NSMutableAttributedString *attrTitle = [[NSMutableAttributedString alloc]
                                             initWithAttributedString: [self attributedTitle]];
-    int len = [attrTitle length];
+    int     len = [attrTitle length];
     NSRange range = NSMakeRange(0, len);
     [attrTitle addAttribute: NSForegroundColorAttributeName
                       value: textColor
@@ -79,4 +79,3 @@
 }
 
 @end
-

@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -31,19 +31,19 @@
     IBOutlet NSPopover          *imageLibraryPopover;
 
 @private
-	NSManagedObjectContext *moc;
-	Category               *category;
-	Category               *changedCategory;
+    NSManagedObjectContext *moc;
+    Category               *category;
+    Category               *changedCategory;
     NSMutableArray         *iconCollection;
 }
 
 @property (strong) IBOutlet DoubleClickImageView *categoryIcon;
-@property (strong) IBOutlet NSImageView *smallCategoryIcon;
-@property (strong) IBOutlet NSView *imageLibraryPopup;
-@property (strong) IBOutlet NSArrayController *iconCollectionController;
-@property (strong) NSArray *iconCollection;
+@property (strong) IBOutlet NSImageView          *smallCategoryIcon;
+@property (strong) IBOutlet NSView               *imageLibraryPopup;
+@property (strong) IBOutlet NSArrayController    *iconCollectionController;
+@property (strong) NSArray                       *iconCollection;
 
-- (id)initWithCategory: (Category*)aCategory;
+- (id)initWithCategory: (Category *)aCategory;
 - (IBAction)selectImage: (id)sender;
 
 - (IBAction)cancel: (id)sender;

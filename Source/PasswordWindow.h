@@ -24,34 +24,33 @@
 @class BWGradientBox;
 
 @interface PasswordWindow : NSWindowController {
+    IBOutlet NSTextField *inputText;
+    IBOutlet NSTextField *inputField;
+    IBOutlet NSButton    *savePasswordButton;
 
-	IBOutlet NSTextField	*inputText;
-	IBOutlet NSTextField	*inputField;
-    IBOutlet NSButton       *savePasswordButton;
-	
-	NSString                *text;
-	NSString                *title;
-	NSString                *result;
-    IBOutlet BWGradientBox  *topGradient;
-    IBOutlet BWGradientBox  *backgroundGradient;
-    NSTimer                 *shakeTimer;
+    NSString               *text;
+    NSString               *title;
+    NSString               *result;
+    IBOutlet BWGradientBox *topGradient;
+    IBOutlet BWGradientBox *backgroundGradient;
+    NSTimer                *shakeTimer;
 
-	BOOL		savePassword;
-	BOOL		active;
-    BOOL        hidePasswortSave;
-    BOOL        retry;
-    
-    int         shakeCount;
+    BOOL savePassword;
+    BOOL active;
+    BOOL hidePasswortSave;
+    BOOL retry;
+
+    int shakeCount;
 }
 
--(id)initWithText: (NSString* )x title: (NSString *)y;
--(void)controlTextDidEndEditing:(NSNotification *)aNotification;
--(void)windowWillClose:(NSNotification *)aNotification;
--(void)windowDidLoad;
--(void)closeWindow;
--(NSString*)result;
--(BOOL)shouldSavePassword;
--(void)retry;
--(void)disablePasswordSave;
+- (id)initWithText: (NSString *)x title: (NSString *)y;
+- (void)controlTextDidEndEditing: (NSNotification *)aNotification;
+- (void)windowWillClose: (NSNotification *)aNotification;
+- (void)windowDidLoad;
+- (void)closeWindow;
+- (NSString *)result;
+- (BOOL)shouldSavePassword;
+- (void)retry;
+- (void)disablePasswordSave;
 
 @end

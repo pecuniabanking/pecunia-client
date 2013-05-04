@@ -15,9 +15,9 @@
 @synthesize code;
 
 
--(PecuniaError*)toPecuniaError
+- (PecuniaError *)toPecuniaError
 {
-	return [PecuniaError errorWithCode: [self.code intValue ] message: msg ];
+    return [PecuniaError errorWithCode: [self.code intValue] message: msg];
 }
 
 @end

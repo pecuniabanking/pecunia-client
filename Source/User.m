@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -42,54 +42,55 @@
 @synthesize chipCardId;
 @synthesize accounts;
 
--(id)init
+- (id)init
 {
-	self = [super init ];
-	if (self == nil) return nil;
-	return self;
+    self = [super init];
+    if (self == nil) {
+        return nil;
+    }
+    return self;
 }
 
-
--(BOOL)isEqual: (User*)obj
+- (BOOL)isEqual: (User *)obj
 {
-	return ([self.userId isEqualToString: obj->userId ] && 
-			[self.bankCode isEqualToString:obj->bankCode ] &&
-			[self.customerId isEqualToString: obj->customerId ] );
+    return [self.userId isEqualToString: obj->userId] &&
+    [self.bankCode isEqualToString: obj->bankCode] &&
+    [self.customerId isEqualToString: obj->customerId];
 }
 
--(TanMethodOld*)tanMethod
-{ 
-	TanMethodOld *method;
-	for(method in tanMethodList) {
-		if([method.function intValue ] == [tanMethodNumber intValue ]) return method;
-	}
-	return tanMethodList[0];
+- (TanMethodOld *)tanMethod
+{
+    TanMethodOld *method;
+    for (method in tanMethodList) {
+        if ([method.function intValue] == [tanMethodNumber intValue]) {
+            return method;
+        }
+    }
+    return tanMethodList[0];
 }
 
--(void)setTanMethod: (TanMethodOld*)tm
+- (void)setTanMethod: (TanMethodOld *)tm
 {
-	self.tanMethodNumber = tm.function;
-//todo	[[HBCIClient hbciClient ] changePinTanMethodForUser:self method:tanMethodNumber ];
+    self.tanMethodNumber = tm.function;
+    //todo	[[HBCIClient hbciClient ] changePinTanMethodForUser:self method:tanMethodNumber ];
 }
 
-
--(void)dealloc
+- (void)dealloc
 {
-	name = nil;
-	country = nil;
-	bankCode = nil;
-	userId = nil;
-	customerId = nil;
-	mediumId = nil;
-	bankURL = nil;
-	bankName = nil;
-	tanMethodList = nil;
-	tanMethodNumber = nil;
-	hbciVersion = nil;
-	port = nil;
+    name = nil;
+    country = nil;
+    bankCode = nil;
+    userId = nil;
+    customerId = nil;
+    mediumId = nil;
+    bankURL = nil;
+    bankName = nil;
+    tanMethodList = nil;
+    tanMethodNumber = nil;
+    hbciVersion = nil;
+    port = nil;
     chipCardId = nil;
     accounts = nil;
 }
 
 @end
-

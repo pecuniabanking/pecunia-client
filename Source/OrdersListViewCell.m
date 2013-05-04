@@ -1,16 +1,16 @@
-/** 
+/**
  * Copyright (c) 2012, 2013 Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -75,11 +75,10 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark Init/Dealloc
 
--(id)initWithFrame: (NSRect)frame
+- (id)initWithFrame: (NSRect)frame
 {
     self = [super initWithFrame: frame];
-    if (self != nil)
-    {
+    if (self != nil) {
         whiteAttributes = @{NSForegroundColorAttributeName: [NSColor whiteColor]};
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
@@ -107,7 +106,7 @@ extern void *UserDefaultsBindingContext;
             if (!isSelected) {
                 [self constructAccountAndPurposeText];
             }
-            
+
             [self setNeedsDisplay: YES];
         }
     }
@@ -120,37 +119,38 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-static CurrencyValueTransformer* currencyTransformer;
+static CurrencyValueTransformer *currencyTransformer;
 
 - (void)setDetails: (NSDictionary *)details
 {
     index = [details[StatementIndexKey] intValue];
-    
+
     [firstDateLabel setStringValue: [details valueForKey: OrderFirstExecDateKey]];
     [nextDateLabel setStringValue: [details valueForKey: StatementDateKey]];
     [lastDateLabel setStringValue: [details valueForKey: OrderLastExecDateKey]];
-    
+
     [remoteNameLabel setStringValue: [details valueForKey: StatementRemoteNameKey]];
     [remoteNameLabel setToolTip: [details valueForKey: StatementRemoteNameKey]];
 
     [purposeLabel setToolTip: [details valueForKey: StatementPurposeKey]];
-    
+
     [valueLabel setObjectValue: [details valueForKey: StatementValueKey]];
-    
+
     [bankNameLabel setStringValue: [details valueForKey: StatementRemoteBankNameKey]];
     [bankNameLabel setToolTip: [details valueForKey: StatementRemoteBankNameKey]];
-    
-    
+
+
     remoteBankCode = [[details valueForKey: StatementRemoteBankCodeKey] copy];
     remoteAccount = [[details valueForKey: StatementRemoteAccountKey] copy];
     purpose = [[details valueForKey: StatementPurposeKey] copy];
 
     id color = [details valueForKey: StatementColorKey];
     categoryColor = (color == [NSNull null] ? nil : color);
-    
-    if (currencyTransformer == nil)
+
+    if (currencyTransformer == nil) {
         currencyTransformer = [[CurrencyValueTransformer alloc] init];
-    
+    }
+
     NSString *currency = [details valueForKey: StatementCurrencyKey];
     NSString *symbol = [currencyTransformer transformedValue: currency];
     [currencyLabel setStringValue: symbol];
@@ -159,7 +159,7 @@ static CurrencyValueTransformer* currencyTransformer;
     [editImage setHidden: ![[details valueForKey: OrderIsChangedKey] boolValue]];
     [sendImage setHidden: ![[details valueForKey: OrderIsSentKey] boolValue]];
     [deleteButton setHidden: ![[details valueForKey: OrderPendingDeletionKey] boolValue]];
-    
+
     [self selectionChanged];
     [self setNeedsDisplay: YES];
 }
@@ -189,7 +189,7 @@ static CurrencyValueTransformer* currencyTransformer;
     // the normal check for selection fails. We use instead the index we get from the owning
     // listview (which will later be assigned to this cell anyway).
     BOOL isSelected = [self.listView.selectedRows containsIndex: index];
-    
+
     if (isSelected) {
         [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: whiteAttributes];
         [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: whiteAttributes];
@@ -250,7 +250,7 @@ static CurrencyValueTransformer* currencyTransformer;
 - (void)constructAccountAndPurposeText
 {
     NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text"];
-    BOOL isSelected = [self.listView.selectedRows containsIndex: index];
+    BOOL    isSelected = [self.listView.selectedRows containsIndex: index];
 
     // The account label is constructed from two values and formatted.
     NSString *accountTitle;
@@ -263,14 +263,14 @@ static CurrencyValueTransformer* currencyTransformer;
 
     // Construct a formatted string for the account label.
     NSMutableAttributedString *accountString = [[NSMutableAttributedString alloc] init];
-    NSFont *normalFont = [NSFont fontWithName: @"LucidaGrande" size: 11];
-    NSDictionary *normalAttributes = @{NSFontAttributeName: normalFont,
-                                       NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};
+    NSFont                    *normalFont = [NSFont fontWithName: @"LucidaGrande" size: 11];
+    NSDictionary              *normalAttributes = @{NSFontAttributeName: normalFont,
+                                                    NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};
 
     NSFontManager *fontManager = [NSFontManager sharedFontManager];
-    NSFont *boldFont = [fontManager convertFont: normalFont toHaveTrait: NSBoldFontMask];
-    NSDictionary *boldAttributes = @{NSFontAttributeName: boldFont,
-                                     NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : [NSColor blackColor]};
+    NSFont        *boldFont = [fontManager convertFont: normalFont toHaveTrait: NSBoldFontMask];
+    NSDictionary  *boldAttributes = @{NSFontAttributeName: boldFont,
+                                      NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : [NSColor blackColor]};
 
     [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: accountTitle
                                                                            attributes: normalAttributes]
@@ -291,7 +291,7 @@ static CurrencyValueTransformer* currencyTransformer;
     // so it can have paragraph styles. At the same time we need to apply font size and color
     // explicitly as calling [s drawInRect] doesn't otherwise apply the same formatting as automatic drawing would.
     NSMutableAttributedString *purposeString = [[NSMutableAttributedString alloc] initWithString: purpose];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    NSMutableParagraphStyle   *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setMaximumLineHeight: 12];
 
     normalFont = [NSFont fontWithName: @"LucidaGrande" size: 10];
@@ -308,8 +308,8 @@ static CurrencyValueTransformer* currencyTransformer;
     [self setNeedsDisplay: YES];
 }
 
-static NSGradient* innerGradient;
-static NSGradient* innerGradientSelected;
+static NSGradient *innerGradient;
+static NSGradient *innerGradientSelected;
 
 - (void)updateDrawColors
 {
@@ -322,22 +322,23 @@ static NSGradient* innerGradientSelected;
 - (void)setupDrawStructures
 {
     innerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                     [NSColor colorWithDeviceRed: 240 / 255.0 green: 240 / 255.0 blue: 240 / 255.0 alpha: 1], (CGFloat) 0.2,
-                     [NSColor whiteColor], (CGFloat) 0.8,
+                     [NSColor colorWithDeviceRed: 240 / 255.0 green: 240 / 255.0 blue: 240 / 255.0 alpha: 1], (CGFloat)0.2,
+                     [NSColor whiteColor], (CGFloat)0.8,
                      nil];
     [self updateDrawColors];
 }
 
 #define DENT_SIZE 4
 
-- (void)drawRect:(NSRect)dirtyRect
+- (void)drawRect: (NSRect)dirtyRect
 {
-    if (innerGradient == nil)
+    if (innerGradient == nil) {
         [self setupDrawStructures];
-    
+    }
+
     NSGraphicsContext *context = [NSGraphicsContext currentContext];
     [context saveGraphicsState];
-    
+
     NSRect bounds = [self bounds];
     if ([self isSelected]) {
         NSBezierPath *path = [NSBezierPath bezierPath];
@@ -345,59 +346,58 @@ static NSGradient* innerGradientSelected;
         [path lineToPoint: NSMakePoint(bounds.origin.x + bounds.size.width, bounds.origin.y)];
         [path lineToPoint: NSMakePoint(bounds.origin.x + bounds.size.width, bounds.origin.y + bounds.size.height)];
         [path lineToPoint: NSMakePoint(bounds.origin.x + 7, bounds.origin.y + bounds.size.height)];
-        
+
         // Add a number of dents (triangles) to the left side of the path. Since our height might not be a multiple
         // of the dent height we distribute the remaining pixels to the first and last dent.
-        CGFloat y = bounds.origin.y + bounds.size.height - 0.5;
-        CGFloat x = bounds.origin.x + 7.5;
+        CGFloat    y = bounds.origin.y + bounds.size.height - 0.5;
+        CGFloat    x = bounds.origin.x + 7.5;
         NSUInteger dentCount = bounds.size.height / DENT_SIZE;
         if (dentCount > 0) {
             NSUInteger remaining = bounds.size.height - DENT_SIZE * dentCount;
-            
+
             NSUInteger i = 0;
             NSUInteger dentHeight = DENT_SIZE + remaining / 2;
             remaining -= remaining / 2;
-            
+
             // First dent.
             [path lineToPoint: NSMakePoint(x + DENT_SIZE, y - dentHeight / 2)];
             [path lineToPoint: NSMakePoint(x, y - dentHeight)];
             y -= dentHeight;
-            
+
             // Intermediate dents.
             for (i = 1; i < dentCount - 1; i++) {
                 [path lineToPoint: NSMakePoint(x + DENT_SIZE, y - DENT_SIZE / 2)];
                 [path lineToPoint: NSMakePoint(x, y - DENT_SIZE)];
                 y -= DENT_SIZE;
             }
-            
             // Last dent.
             dentHeight = DENT_SIZE + remaining;
             [path lineToPoint: NSMakePoint(x + DENT_SIZE, y - dentHeight / 2)];
             [path lineToPoint: NSMakePoint(x, y - dentHeight)];
-            
+
             [innerGradientSelected drawInBezierPath: path angle: 90.0];
         }
     } else {
         NSBezierPath *path = [NSBezierPath bezierPathWithRect: bounds];
         [innerGradient drawInBezierPath: path angle: 90.0];
     }
-    
+
     if (categoryColor != nil) {
         [categoryColor set];
         NSRect colorRect = bounds;
         colorRect.size.width = 5;
         [NSBezierPath fillRect: colorRect];
     }
-    
+
     [[NSColor colorWithDeviceWhite: 0 / 255.0 alpha: 1] set];
     NSBezierPath *path = [NSBezierPath bezierPath];
     [path setLineWidth: 1];
-    
+
     // Separator line between main text part and the rest.
     CGFloat left = [valueTitle frame].origin.x + 0.5;
     [path moveToPoint: NSMakePoint(left - 6, 10)];
     [path lineToPoint: NSMakePoint(left - 6, bounds.size.height - 10)];
-    
+
     // Left, right and bottom lines.
     [path moveToPoint: NSMakePoint(0, 0)];
     [path lineToPoint: NSMakePoint(0, bounds.size.height)];
@@ -407,7 +407,7 @@ static NSGradient* innerGradientSelected;
     [path lineToPoint: NSMakePoint(bounds.size.width, 0)];
     [[NSColor colorWithDeviceWhite: 210 / 255.0 alpha: 1] set];
     [path stroke];
-    
+
     [context restoreGraphicsState];
 }
 

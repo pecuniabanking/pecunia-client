@@ -27,6 +27,6 @@
     int calendarUnit;
 }
 
-- (id)initWithDateFormatter: (NSDateFormatter*)aDateFormatter calendarUnit: (int)unit;
+- (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (int)unit;
 
 @end
