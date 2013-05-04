@@ -1451,26 +1451,29 @@ int double_compare(const void *value1, const void *value2)
         [statistics removeObjectForKey: @"totalStandardDeviation"];
     }
 
-    // Moving average values.
-    int width = rawCount < 12 ? 3 : rawCount / 4;
-    if (width % 2 == 0) {
-        width++; // Make it always an uneven number.
-    }
-
+    // Moving average values. Doesn't work so well for grouping with empty ranges (mostly grouping by day).
+    // Consider using techniques to compute intermittent values (e.g. via Poisson distribution).
+    int m = rawCount < 10 ? rawCount / 2 : 5;
     for (NSUInteger t = 0; t < rawCount; t++) {
         double average = 0;
-        for (int i = -width / 2; i <= width / 2; i++) {
+        for (int i = -m; i <= m; i++) {
             int sourceIndex = t + i;
             if (sourceIndex < 0) {
                 sourceIndex = 0;
             } else {
                 if (sourceIndex >= (int)rawCount) {
-                    sourceIndex = rawCount - 1;
+                    // At the end of the list fold back to half the window size, making so these
+                    // values repeating at the end (assuming the same values appear in the future).
+                    // This is really a rough estimate and should be replaced as soon as we have a forecast.
+                    sourceIndex -= m;
+                    if (sourceIndex < 0) {
+                        sourceIndex = 0;
+                    }
                 }
             }
             average += totalBalances[sourceIndex];
         }
-        movingAverage[t] = average / width;
+        movingAverage[t] = average / (2 * m + 1);
     }
 
     // Compute some special values for the graphs which directly depend on global stats.
@@ -2208,7 +2211,8 @@ int double_compare(const void *value1, const void *value2)
         [selectedCategory historyToDates: &dates
                                 balances: &balances
                            balanceCounts: &turnovers
-                            withGrouping: groupingInterval];
+                            withGrouping: groupingInterval
+                                   sumUp: extraEntry];
 
         if (dates != nil)
         {

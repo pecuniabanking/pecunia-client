@@ -416,7 +416,8 @@ extern void *UserDefaultsBindingContext;
     [item historyToDates: &nodeDates
                 balances: &nodeBalances
            balanceCounts: &nodeTurnovers
-            withGrouping: groupingInterval];
+            withGrouping: groupingInterval
+                   sumUp: item.isBankAccount];
 
     if (nodeDates == nil) {
         nodeDates = @[]; // Just to avoid frequent checks in the loop below.
@@ -527,7 +528,7 @@ extern void *UserDefaultsBindingContext;
             break;
         default:
             statementsListView.canShowHeaders = true;
-            key = @"statement.valutaDate";
+            key = @"statement.date";
             break;
     }
     [statementsController setSortDescriptors:

@@ -258,14 +258,12 @@
 		duration = 3;
 	}
     [[NSAnimationContext currentContext] setDuration: duration];
-/*
     __block NSWindow *bself = self;
     [[NSAnimationContext currentContext] setCompletionHandler: ^{
         [bself orderOut: nil];
         [bself setAlphaValue: 1.f];
         bself = nil;
     }];
- */
     [[self animator] setAlphaValue: 0.f];
     [NSAnimationContext endGrouping];
 }

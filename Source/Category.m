@@ -704,11 +704,14 @@ BOOL updateSent = NO;
 
 /**
  * Collects a full history of turnover values over time, including all sub categories.
+ * @param sumUp Determines if balances are summed up over the grouping period or if the last value
+ *              in that period is returned in the balances array.
  */
 -(NSUInteger)historyToDates: (NSArray**)dates
                    balances: (NSArray**)balances
               balanceCounts: (NSArray**)counts
                withGrouping: (GroupingInterval)interval
+                      sumUp: (BOOL)sumUp
 {
     NSArray* statements = [[self allAssignments] allObjects];
     NSArray* sortedAssignments = [statements sortedArrayUsingSelector: @selector(compareDate:)];
@@ -720,57 +723,126 @@ BOOL updateSent = NO;
     if (count > 0)
     {
         ShortDate* lastDate = nil;
-        int balanceCount = 0;
-        NSDecimalNumber* currentValue = [NSDecimalNumber zero];
-        for (StatCatAssignment* assignment in sortedAssignments) {
-            // Ignore categories that are hidden, except if this is the parent category.
-            if (assignment.category != self) {
-                if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
-                    continue;
+
+        if (sumUp) {
+            int balanceCount = 1;
+
+            // We have to keep the current balance for each participating account as we have to sum
+            // them up on each time point to get the total balance.
+            NSMutableDictionary *currentBalances = [NSMutableDictionary dictionaryWithCapacity: 5];
+            for (StatCatAssignment* assignment in sortedAssignments) {
+                // Ignore categories that are hidden, except if this is the parent category.
+                if (assignment.category != self) {
+                    if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
+                        continue;
+                    }
                 }
-            }
 
-            ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
-            
-            switch (interval) {
-                case GroupByWeeks:
-                    date = [date firstDayInWeek];
-                    break;
-                case GroupByMonths:
-                    date = [date firstDayInMonth];
-                    break;
-                case GroupByQuarters:
-                    date = [date firstDayInQuarter];
-                    break;
-                case GroupByYears:
-                    date = [date firstDayInYear];
-                    break;
-                default:
-                    break;
-            }            
+                ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
 
-            if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame)
-            {
-                [dateArray addObject: lastDate];
-                [balanceArray addObject: currentValue];
-                [countArray addObject: @(balanceCount)];
-                balanceCount = 1;
-                lastDate = date;
-                currentValue = assignment.statement.value;
-            }
-            else
-            {
+                switch (interval) {
+                    case GroupByWeeks:
+                        date = [date lastDayInWeek];
+                        break;
+                    case GroupByMonths:
+                        date = [date lastDayInMonth];
+                        break;
+                    case GroupByQuarters:
+                        date = [date lastDayInQuarter];
+                        break;
+                    case GroupByYears:
+                        date = [date lastDayInYear];
+                        break;
+                    default:
+                        break;
+                }
+
                 if (lastDate == nil) {
                     lastDate = date;
+                } else {
+                    if ([lastDate compare: date] != NSOrderedSame) {
+                        [dateArray addObject: lastDate];
+
+                        NSDecimalNumber *totalBalance = [NSDecimalNumber zero];
+                        for (NSDecimalNumber *balance in currentBalances.allValues) {
+                            totalBalance = [totalBalance decimalNumberByAdding: balance];
+                        }
+                        [balanceArray addObject: totalBalance];
+                        [countArray addObject: @(balanceCount)];
+                        balanceCount = 1;
+                        lastDate = date;
+                    } else {
+                        balanceCount++;
+                    }
                 }
-                balanceCount++;
-                currentValue = [currentValue decimalNumberByAdding: assignment.statement.value];
+
+                // Use the category's object id as unique key as Category itself is not suitable.
+                currentBalances[assignment.category.objectID] = assignment.statement.saldo;
             }
+
+            if (lastDate != nil) {
+                [dateArray addObject: lastDate];
+
+                NSDecimalNumber *totalBalance = [NSDecimalNumber zero];
+                for (NSDecimalNumber *balance in currentBalances.allValues) {
+                    totalBalance = [totalBalance decimalNumberByAdding: balance];
+                }
+                [balanceArray addObject: totalBalance];
+                [countArray addObject: @(balanceCount)];
+            }
+        } else {
+            int balanceCount = 0;
+            NSDecimalNumber* currentValue = [NSDecimalNumber zero];
+            for (StatCatAssignment* assignment in sortedAssignments) {
+                // Ignore categories that are hidden, except if this is the parent category.
+                if (assignment.category != self) {
+                    if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
+                        continue;
+                    }
+                }
+
+                ShortDate* date = [ShortDate dateWithDate: assignment.statement.date];
+
+                switch (interval) {
+                    case GroupByWeeks:
+                        date = [date firstDayInWeek];
+                        break;
+                    case GroupByMonths:
+                        date = [date firstDayInMonth];
+                        break;
+                    case GroupByQuarters:
+                        date = [date firstDayInQuarter];
+                        break;
+                    case GroupByYears:
+                        date = [date firstDayInYear];
+                        break;
+                    default:
+                        break;
+                }
+
+                if ((lastDate != nil) && [lastDate compare: date] != NSOrderedSame)
+                {
+                    [dateArray addObject: lastDate];
+                    [balanceArray addObject: currentValue];
+                    [countArray addObject: @(balanceCount)];
+                    balanceCount = 1;
+                    lastDate = date;
+                    currentValue = assignment.statement.value;
+                }
+                else
+                {
+                    if (lastDate == nil) {
+                        lastDate = date;
+                    }
+                    balanceCount++;
+                    currentValue = [currentValue decimalNumberByAdding: assignment.statement.value];
+                }
+            }
+            [dateArray addObject: lastDate];
+            [balanceArray addObject: currentValue];
+            [countArray addObject: @(balanceCount)];
         }
-        [dateArray addObject: lastDate];
-        [balanceArray addObject: currentValue];
-        [countArray addObject: @(balanceCount)];
-        
+
         *dates = dateArray;
         *balances = balanceArray;
         *counts = countArray;

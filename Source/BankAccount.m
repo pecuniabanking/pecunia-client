@@ -224,23 +224,23 @@
             }
         }
 		// check for old statements
-		ShortDate *stmtDate = [ShortDate dateWithDate: stmt.valutaDate];
+		ShortDate *stmtDate = [ShortDate dateWithDate: stmt.date];
 		
 		if (currentDate == nil || ![stmtDate isEqual: currentDate]) {
 			// New day found. See if this day is already in the existing statements and if so
             // take the last one for that day, so we continue from there.
 			NSArray *oldStats = oldDayStats[stmtDate];
 			if (oldStats == nil) {
-				date = stmt.valutaDate;
+				date = stmt.date;
 			} else {
 				date = nil;
                 
                 // Find the last statement for that day.
 				for (BankStatement *oldStat in oldStats) {
-					if (date == nil || [date compare:oldStat.date] == NSOrderedAscending) {
-						date = oldStat.valutaDate;
+					if (date == nil || [date compare: oldStat.date] == NSOrderedAscending) {
+						date = oldStat.date;
                         if (date == nil) {
-                            date = oldStat.date;
+                            date = oldStat.valutaDate;
                         }
 					}
 				}
@@ -251,16 +251,16 @@
 			currentDate = stmtDate;
 		}
 		
-		stmt.valutaDate = date;
-        if (stmt.date == nil) {
-            stmt.date = date;
+		stmt.date = date;
+        if (stmt.valutaDate == nil) {
+            stmt.valutaDate = date;
         }
 		date = [[NSDate alloc] initWithTimeInterval: 10 sinceDate: date];
 		
 		[newStatements addObject: stmt];
 		[stmt addToAccount: self ];
 		if (ltd == nil || [ltd compare: stmt.date] == NSOrderedAscending) {
-            ltd = stmt.valutaDate;
+            ltd = stmt.date;
         }
 	}		
 	
@@ -528,99 +528,7 @@
     return [BankUser userWithId:self.userId bankCode:self.bankCode ];
 }
 
-/**
- * Collects a history of the balances of this account and all its children over time.
- * The resulting arrays are sorted by ascending date.
- */
-- (NSUInteger)historyToDates: (NSArray**)dates
-                    balances: (NSArray**)balances
-               balanceCounts: (NSArray**)counts
-                withGrouping: (GroupingInterval)interval
-{
-    NSArray* assignments = [[self allAssignments] allObjects];
-    NSArray* sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
-
-    NSUInteger count = [assignments count];
-    NSMutableArray* dateArray = [NSMutableArray arrayWithCapacity: count];
-    NSMutableArray* balanceArray = [NSMutableArray arrayWithCapacity: count];
-    NSMutableArray* countArray = [NSMutableArray arrayWithCapacity: count];
-    if (count > 0)
-    {
-        ShortDate* lastDate = nil;
-        int balanceCount = 1;
-
-        // We have to keep the current balance for each participating account as we have to sum
-        // them up on each time point to get the total balance.
-        NSMutableDictionary *currentBalances = [NSMutableDictionary dictionaryWithCapacity: 5];
-        for (StatCatAssignment* assignment in sortedAssignments) {
-            // Ignore categories that are hidden, except if this is the parent category.
-            if (assignment.category != self) {
-                if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
-                    continue;
-                }
-            }
-
-            ShortDate* date = [ShortDate dateWithDate: assignment.statement.valutaDate];
-
-            switch (interval) {
-                case GroupByWeeks:
-                    date = [date lastDayInWeek];
-                    break;
-                case GroupByMonths:
-                    date = [date lastDayInMonth];
-                    break;
-                case GroupByQuarters:
-                    date = [date lastDayInQuarter];
-                    break;
-                case GroupByYears:
-                    date = [date lastDayInYear];
-                    break;
-                default:
-                    break;
-            }
-
-            if (lastDate == nil) {
-                lastDate = date;
-            } else {
-                if ([lastDate compare: date] != NSOrderedSame) {
-                    [dateArray addObject: lastDate];
-
-                    NSDecimalNumber *totalBalance = [NSDecimalNumber zero];
-                    for (NSDecimalNumber *balance in currentBalances.allValues) {
-                        totalBalance = [totalBalance decimalNumberByAdding: balance];
-                    }
-                    [balanceArray addObject: totalBalance];
-                    [countArray addObject: @(balanceCount)];
-                    balanceCount = 1;
-                    lastDate = date;
-                } else {
-                    balanceCount++;
-                }
-            }
-
-            // Use the category's object id as unique key as Category itself is not suitable.
-            currentBalances[assignment.category.objectID] = assignment.statement.saldo;
-        }
-
-        if (lastDate != nil) {
-            [dateArray addObject: lastDate];
-
-            NSDecimalNumber *totalBalance = [NSDecimalNumber zero];
-            for (NSDecimalNumber *balance in currentBalances.allValues) {
-                totalBalance = [totalBalance decimalNumberByAdding: balance];
-            }
-            [balanceArray addObject: totalBalance];
-            [countArray addObject: @(balanceCount)];
-        }
-        *dates = dateArray;
-        *balances = balanceArray;
-        *counts = countArray;
-    }
-
-    return count;
-}
-
-+(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code
++ (BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code
 {
 	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
 	NSManagedObjectModel *model = [[MOAssistant assistant ] model ];

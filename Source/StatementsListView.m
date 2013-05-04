@@ -295,9 +295,9 @@ extern void *UserDefaultsBindingContext;
 {
     StatCatAssignment *assignment = (StatCatAssignment*)dataSource[row];
     
-    NSDate* currentDate = assignment.statement.valutaDate;
+    NSDate* currentDate = assignment.statement.date;
     if (currentDate == nil) {
-        currentDate = assignment.statement.date; // Should not be necessary, but still...
+        currentDate = assignment.statement.valutaDate; // Should not be necessary, but still...
     }
     
     if (currentDate == nil) {

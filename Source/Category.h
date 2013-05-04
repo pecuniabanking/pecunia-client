@@ -95,7 +95,8 @@ typedef struct {
 - (NSUInteger)historyToDates: (NSArray**)dates
                     balances: (NSArray**)balances
                balanceCounts: (NSArray**)counts
-                withGrouping: (GroupingInterval)interval;
+                withGrouping: (GroupingInterval)interval
+                       sumUp: (BOOL)sumUp;
 - (void)getDatesMin: (ShortDate**)minDate max: (ShortDate**)maxDate;
 
 - (NSDecimalNumber*)valuesOfType: (CatValueType)type from: (ShortDate*)fromDate to: (ShortDate*)toDate;

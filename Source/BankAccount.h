@@ -44,30 +44,6 @@ typedef enum {
 	NSInteger           unread;
 }
 
--(NSString*)bankCode;
--(NSDate*)latestTransferDate;
-
-
-- (void)evaluateQueryResult: (BankQueryResult*)res;
-- (int)updateFromQueryResult: (BankQueryResult*)result;
-- (void)updateStandingOrders: (NSArray*)orders;
-- (void)copyStatement: (BankStatement*)stat;
-- (void)copyStatementsToManualAccounts: (NSArray*)statements;
-- (void)updateBalanceWithValue: (NSDecimalNumber*)value;
-- (void)repairStatementBalances;
-- (NSDate*)nextDateForDate: (NSDate*)date;
-- (NSInteger)calcUnread;
-- (BankUser*)defaultBankUser;
-- (NSUInteger)historyToDates: (NSArray**)dates
-                    balances: (NSArray**)balances
-               balanceCounts: (NSArray**)counts
-                withGrouping: (GroupingInterval)interval;
-
-+(BankAccount*)bankRootForCode:(NSString*)bankCode;
-+(BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code;
-+(BankAccount*)accountWithNumber:(NSString*)number subNumber:(NSString*)subNumber bankCode:(NSString*)code;
-+(NSInteger)maxUnread;
-
 @property (nonatomic, strong) NSArray *dbStatements;
 @property (nonatomic, strong) PurposeSplitRule *purposeSplitRule;
 
@@ -92,6 +68,25 @@ typedef enum {
 @property (nonatomic, strong) NSString * accountSuffix;
 @property (nonatomic, assign) NSInteger unread;
 @property (nonatomic, strong) NSSet* users;
+
+- (NSString*)bankCode;
+- (NSDate*)latestTransferDate;
+
+- (void)evaluateQueryResult: (BankQueryResult*)res;
+- (int)updateFromQueryResult: (BankQueryResult*)result;
+- (void)updateStandingOrders: (NSArray*)orders;
+- (void)copyStatement: (BankStatement*)stat;
+- (void)copyStatementsToManualAccounts: (NSArray*)statements;
+- (void)updateBalanceWithValue: (NSDecimalNumber*)value;
+- (void)repairStatementBalances;
+- (NSDate*)nextDateForDate: (NSDate*)date;
+- (NSInteger)calcUnread;
+- (BankUser*)defaultBankUser;
+
++ (BankAccount*)bankRootForCode:(NSString*)bankCode;
++ (BankAccount*)accountWithNumber:(NSString*)number bankCode:(NSString*)code;
++ (BankAccount*)accountWithNumber:(NSString*)number subNumber:(NSString*)subNumber bankCode:(NSString*)code;
++ (NSInteger)maxUnread;
 
 @end
 
