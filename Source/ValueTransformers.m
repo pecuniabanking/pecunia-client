@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -117,3 +117,38 @@ static NSMutableDictionary *cache;
 @end
 
 //----------------------------------------------------------------------------------------------------------------------
+
+@implementation RemoveWhitespaceTransformer
+
++ (Class)transformedValueClass
+{
+    return [NSString class];
+}
+
++ (BOOL)allowsReverseTransformation
+{
+    return YES;
+}
+
+- (id)reverseTransformedValue: (id)value
+{
+    if (value == nil) {
+        return nil;
+    }
+    NSString *result = @"";
+    NSArray  *components = [value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    for (NSString *s in components) {
+        result = [result stringByAppendingString: s];
+    }
+    return result;
+}
+
+- (id)transformedValue: (id)value
+{
+    return value;
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+

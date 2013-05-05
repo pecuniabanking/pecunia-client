@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -24,10 +24,10 @@
 @interface TransferFormularView : NSView {
 }
 
-@property (nonatomic, assign) BOOL                           draggable;
-@property (nonatomic, strong) NSImage                        *icon;
-@property (nonatomic, assign) NSUInteger                     bottomArea;
-@property (nonatomic, assign) NSRect                         draggingArea;
-@property (nonatomic, unsafe_unretained) TransfersController *controller;
+@property (nonatomic, assign) BOOL              draggable;
+@property (nonatomic, strong) NSImage           *icon;
+@property (nonatomic, assign) NSUInteger        bottomArea;
+@property (nonatomic, assign) NSRect            draggingArea;
+@property (nonatomic, weak) TransfersController *controller;
 
 @end

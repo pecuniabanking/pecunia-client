@@ -19,18 +19,10 @@
 
 #import "TanMethodOld.h"
 
-
 @implementation TanMethodOld
 
 @synthesize function;
 @synthesize description;
-
-- (void)dealloc
-{
-    function = nil;
-    description = nil;
-
-}
 
 - (id)initDefault: (NSNumber *)func
 {

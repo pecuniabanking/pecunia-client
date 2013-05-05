@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,17 +18,6 @@
  */
 
 #import <Cocoa/Cocoa.h>
-
-/*
- TransferTypeStandard,
- TransferTypeEU,
- TransferTypeDated,
- TransferTypeInternal,
- TransferTypeDebit,
- TransferTypeSEPA,
- TransferTypeCollectiveCredit,
- TransferTypeCollectiveDebit
- */
 
 typedef enum {
     TransactionType_TransferStandard = 0,

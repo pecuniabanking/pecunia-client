@@ -259,7 +259,6 @@
 		B183586215CDC064003B93ED /* SigningOption.m in Sources */ = {isa = PBXBuildFile; fileRef = B183586115CDC064003B93ED /* SigningOption.m */; };
 		B1835C0F15D2A1A2003B93ED /* SigningOptionsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1835C0915D2A1A2003B93ED /* SigningOptionsViewCell.m */; };
 		B1835C1015D2A1A2003B93ED /* SigningOptionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1835C0A15D2A1A2003B93ED /* SigningOptionsController.m */; };
-		B1835C1115D2A1A2003B93ED /* SigningOptionsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1835C0D15D2A1A2003B93ED /* SigningOptionsTableView.m */; };
 		B1835C1315D2A1C6003B93ED /* SigningOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1215D2A1C6003B93ED /* SigningOptions.xib */; };
 		B1835C1815D2A1F4003B93ED /* Kobil.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1415D2A1F4003B93ED /* Kobil.png */; };
 		B1835C1915D2A1F4003B93ED /* iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1515D2A1F4003B93ED /* iPhone.png */; };
@@ -268,7 +267,6 @@
 		B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1835D3415D521B5003B93ED /* 101.xcmappingmodel */; };
 		B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */; };
 		B1872EFD163DD7B7003A8C14 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1872EFC163DD7B7003A8C14 /* Security.framework */; };
-		B1872F1B164AF52D003A8C14 /* RemoveWhitespaceTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = B1872F1A164AF52D003A8C14 /* RemoveWhitespaceTransformer.m */; };
 		B189782E0ECF47CA00D20503 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
 		B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B18978860ED0B2E800D20503 /* StatementDetails.m */; };
 		B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B20550CC6A51B00B0B02C /* NewBankUserController.m */; };
@@ -767,8 +765,6 @@
 		B1835C0A15D2A1A2003B93ED /* SigningOptionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SigningOptionsController.m; sourceTree = "<group>"; };
 		B1835C0B15D2A1A2003B93ED /* SigningOptionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigningOptionsController.h; sourceTree = "<group>"; };
 		B1835C0C15D2A1A2003B93ED /* SigningOptionsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigningOptionsViewCell.h; sourceTree = "<group>"; };
-		B1835C0D15D2A1A2003B93ED /* SigningOptionsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SigningOptionsTableView.m; sourceTree = "<group>"; };
-		B1835C0E15D2A1A2003B93ED /* SigningOptionsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SigningOptionsTableView.h; sourceTree = "<group>"; };
 		B1835C1215D2A1C6003B93ED /* SigningOptions.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SigningOptions.xib; sourceTree = "<group>"; };
 		B1835C1415D2A1F4003B93ED /* Kobil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Kobil.png; sourceTree = "<group>"; };
 		B1835C1515D2A1F4003B93ED /* iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone.png; sourceTree = "<group>"; };
@@ -778,8 +774,6 @@
 		B18361FB15E23D3F003B93ED /* NSView+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		B1872EFC163DD7B7003A8C14 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		B1872F19164AF52D003A8C14 /* RemoveWhitespaceTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoveWhitespaceTransformer.h; sourceTree = "<group>"; };
-		B1872F1A164AF52D003A8C14 /* RemoveWhitespaceTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoveWhitespaceTransformer.m; sourceTree = "<group>"; };
 		B189782C0ECF47CA00D20503 /* Country.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Country.h; sourceTree = "<group>"; tabWidth = 4; };
 		B189782D0ECF47CA00D20503 /* Country.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = Country.m; sourceTree = "<group>"; tabWidth = 4; };
 		B18978850ED0B2E800D20503 /* StatementDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementDetails.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -838,7 +832,6 @@
 		B1B41C8B14005B5B00BEEC8F /* BankParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankParameter.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CountryInfo.txt; sourceTree = "<group>"; };
 		B1C0359A1720911D0007C1F5 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
-		B1C72D4D124A993B00D1D78D /* LogLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = LogLevel.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 030alpha.xcmappingmodel; sourceTree = "<group>"; };
 		B1C7AFFD12FE0BAB0091CD72 /* BankStatementPolicy030alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030alpha.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPolicy030alpha.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1097,8 +1090,6 @@
 		27C7B503147FC47400278131 /* Numbers and Dates */ = {
 			isa = PBXGroup;
 			children = (
-				B1872F19164AF52D003A8C14 /* RemoveWhitespaceTransformer.h */,
-				B1872F1A164AF52D003A8C14 /* RemoveWhitespaceTransformer.m */,
 				B197C3E213C3A28F0025F137 /* MCEMDecimalNumberAdditions.h */,
 				B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */,
 				2788C8B81455C3CE00225939 /* ValueTransformers.h */,
@@ -1432,8 +1423,6 @@
 				B1835C0A15D2A1A2003B93ED /* SigningOptionsController.m */,
 				B1835C0C15D2A1A2003B93ED /* SigningOptionsViewCell.h */,
 				B1835C0915D2A1A2003B93ED /* SigningOptionsViewCell.m */,
-				B1835C0E15D2A1A2003B93ED /* SigningOptionsTableView.h */,
-				B1835C0D15D2A1A2003B93ED /* SigningOptionsTableView.m */,
 				27C78794143623080095F1DA /* ProgressWindowController.h */,
 				27C78795143623080095F1DA /* ProgressWindowController.m */,
 				B14D4C7113DB608D00843BE6 /* TanMethodListController.h */,
@@ -1772,7 +1761,6 @@
 				B132F91E0F96594000263F3B /* ShortDate.m */,
 				B1FB509C1209F68E004DCD6A /* PurposeSplitData.h */,
 				B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */,
-				B1C72D4D124A993B00D1D78D /* LogLevel.h */,
 				B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */,
 				B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */,
 			);
@@ -2155,7 +2143,6 @@
 				B183586215CDC064003B93ED /* SigningOption.m in Sources */,
 				B1835C0F15D2A1A2003B93ED /* SigningOptionsViewCell.m in Sources */,
 				B1835C1015D2A1A2003B93ED /* SigningOptionsController.m in Sources */,
-				B1835C1115D2A1A2003B93ED /* SigningOptionsTableView.m in Sources */,
 				B1835D3515D521B5003B93ED /* 101.xcmappingmodel in Sources */,
 				27C883C715E0EBCE007572F0 /* NSString+PecuniaAdditions.m in Sources */,
 				B18361FD15E23D3F003B93ED /* NSView+PecuniaAdditions.m in Sources */,
@@ -2167,7 +2154,6 @@
 				27A41A5515F3C9340043BB68 /* OrdersListViewCell.m in Sources */,
 				B179916C15F7D2B4005AB39A /* LicenseWindowController.m in Sources */,
 				B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */,
-				B1872F1B164AF52D003A8C14 /* RemoveWhitespaceTransformer.m in Sources */,
 				27E68C4A165CF7DA005EBE66 /* GenerateDataController.m in Sources */,
 				2701A84B165E827F00A9A1C7 /* GrowlNotification.m in Sources */,
 				27D576461662819E00761132 /* NSSplitView+PecuniaAdditions.m in Sources */,

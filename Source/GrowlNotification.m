@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,8 +19,7 @@
 
 #import "GrowlNotification.h"
 
-#define PecuniaNotification            @"Pecunia Notification"
-#define PecuniaNotificationDescription NSLocalizedString(@"Pecunia Notification", nil)
+#define PecuniaNotification @"Pecunia Notification"
 
 @implementation GrowlNotification
 
@@ -38,7 +37,7 @@
 
 - (NSDictionary *)registrationDictionaryForGrowl
 {
-    NSDictionary *notificationsWithDescriptions = @{PecuniaNotification: PecuniaNotificationDescription};
+    NSDictionary *notificationsWithDescriptions = @{PecuniaNotification: NSLocalizedString(@"Pecunia Notification", nil)};
 
     NSArray        *allNotifications = [notificationsWithDescriptions allKeys];
     NSMutableArray *defaultNotifications = [allNotifications mutableCopy];
