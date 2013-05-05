@@ -38,7 +38,7 @@
     BOOL autoCasing;
 }
 
-@property (nonatomic, retain) id      owner;
-@property (nonatomic, retain) NSArray *dataSource;
+@property (nonatomic, strong) id      owner;
+@property (nonatomic, strong) NSArray *dataSource;
 
 @end

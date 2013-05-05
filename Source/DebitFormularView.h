@@ -24,10 +24,10 @@
 @interface DebitFormularView : NSView {
 }
 
-@property (nonatomic, assign) BOOL                        draggable;
-@property (nonatomic, strong) NSImage                     *icon;
-@property (nonatomic, assign) NSUInteger                  bottomArea;
-@property (nonatomic, assign) NSRect                      draggingArea;
-@property (nonatomic, unsafe_unretained) DebitsController *controller;
+@property (nonatomic, assign) BOOL           draggable;
+@property (nonatomic, strong) NSImage        *icon;
+@property (nonatomic, assign) NSUInteger     bottomArea;
+@property (nonatomic, assign) NSRect         draggingArea;
+@property (nonatomic, weak) DebitsController *controller;
 
 @end

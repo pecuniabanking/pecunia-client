@@ -65,7 +65,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
 }
 
-@property (nonatomic, unsafe_unretained) TransfersController *controller;
+@property (nonatomic, weak) TransfersController *controller;
 
 @end
 
@@ -120,7 +120,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 }
 
-@property (nonatomic, unsafe_unretained) TransfersController *controller;
+@property (nonatomic, weak) TransfersController *controller;
 
 @end
 

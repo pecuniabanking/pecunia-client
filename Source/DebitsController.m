@@ -59,7 +59,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 {
 }
 
-@property (nonatomic, unsafe_unretained) DebitsController *controller;
+@property (nonatomic, weak) DebitsController *controller;
 
 @end
 
@@ -112,7 +112,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 
 }
 
-@property (nonatomic, unsafe_unretained) DebitsController *controller;
+@property (nonatomic, weak) DebitsController *controller;
 
 @end
 

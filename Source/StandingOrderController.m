@@ -43,7 +43,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 {
 }
 
-@property (nonatomic, unsafe_unretained) StandingOrderController *controller;
+@property (nonatomic, weak) StandingOrderController *controller;
 
 @end
 

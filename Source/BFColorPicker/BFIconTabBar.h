@@ -42,10 +42,10 @@
 
 @interface BFIconTabBar : NSControl
 
-@property (nonatomic, strong) NSMutableArray                               *items;
-@property (nonatomic) CGFloat                                              itemWidth;
-@property (nonatomic) BOOL                                                 multipleSelection;
-@property (nonatomic, unsafe_unretained) IBOutlet id<BFIconTabBarDelegate> delegate;
+@property (nonatomic, strong) NSMutableArray                  *items;
+@property (nonatomic) CGFloat                                 itemWidth;
+@property (nonatomic) BOOL                                    multipleSelection;
+@property (nonatomic, weak) IBOutlet id<BFIconTabBarDelegate> delegate;
 
 - (BFIconTabBarItem *)selectedItem;
 - (NSInteger)selectedIndex;
@@ -66,9 +66,9 @@
 
 @interface BFIconTabBarItem : NSObject
 
-@property (nonatomic, strong) NSImage                 *icon;
-@property (nonatomic, copy) NSString                  *tooltip;
-@property (nonatomic, unsafe_unretained) BFIconTabBar *tabBar;
+@property (nonatomic, strong) NSImage    *icon;
+@property (nonatomic, copy) NSString     *tooltip;
+@property (nonatomic, weak) BFIconTabBar *tabBar;
 
 - (id)initWithIcon: (NSImage *)image tooltip: (NSString *)tooltipString;
 + (BFIconTabBarItem *)itemWithIcon: (NSImage *)image tooltip: (NSString *)tooltipString;

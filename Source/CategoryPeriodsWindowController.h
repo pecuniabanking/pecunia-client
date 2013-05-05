@@ -64,7 +64,7 @@
     BOOL active; // YES if we are the active section.
 }
 
-@property (nonatomic, unsafe_unretained) NSOutlineView *outline; // The controlling outline.
+@property (nonatomic, weak) NSOutlineView *outline; // The controlling outline.
 
 - (IBAction)setGrouping: (id)sender;
 - (IBAction)fromChanged: (id)sender;

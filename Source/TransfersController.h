@@ -41,7 +41,7 @@
     NSString *currentDragDataType;
 }
 
-@property (nonatomic, unsafe_unretained) TransfersController *controller;
+@property (nonatomic, weak) TransfersController *controller;
 
 - (NSRect)dropTargetFrame;
 - (void)hideFormular;
@@ -118,9 +118,9 @@
     NSPredicate *tempatesPredicate;
 }
 
-@property (unsafe_unretained) IBOutlet TransferFormularView *transferFormular;
-@property (unsafe_unretained) IBOutlet NSTextField          *dragToHereLabel;
-@property (nonatomic, assign) BOOL                          dropToEditRejected;
+@property (weak) IBOutlet TransferFormularView *transferFormular;
+@property (weak) IBOutlet NSTextField          *dragToHereLabel;
+@property (nonatomic, assign) BOOL             dropToEditRejected;
 
 - (IBAction)sendTransfers: (id)sender;
 - (IBAction)showCalendar: (id)sender;

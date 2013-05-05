@@ -173,7 +173,7 @@
     NSArray *defaultIcons; // Associations between categories and their default icons.
 }
 
-@property (unsafe_unretained) IBOutlet NSMenuItem *toggleDetailsPaneItem;
+@property (weak) IBOutlet NSMenuItem *toggleDetailsPaneItem;
 
 @property (nonatomic, copy) NSDecimalNumber          *saveValue;
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;

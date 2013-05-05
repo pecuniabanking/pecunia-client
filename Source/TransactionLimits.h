@@ -41,17 +41,17 @@
 @property (nonatomic)           int16_t  maxLenRemoteName;
 @property (nonatomic)           int16_t  maxLinesPurpose;
 @property (nonatomic)           int16_t  maxLinesRemoteName;
-@property (nonatomic, retain)   NSString *execDaysMonthString;
-@property (nonatomic, retain)   NSString *monthCyclesString;
-@property (nonatomic, retain)   NSString *jobName;
-@property (nonatomic, retain)   NSString *allowedTextKeysString;
-@property (nonatomic, retain)   NSString *execDaysWeekString;
-@property (nonatomic, retain)   NSString *weekCyclesString;
+@property (nonatomic, strong)   NSString *execDaysMonthString;
+@property (nonatomic, strong)   NSString *monthCyclesString;
+@property (nonatomic, strong)   NSString *jobName;
+@property (nonatomic, strong)   NSString *allowedTextKeysString;
+@property (nonatomic, strong)   NSString *execDaysWeekString;
+@property (nonatomic, strong)   NSString *weekCyclesString;
 
 @property (nonatomic)           double localLimit;
 @property (nonatomic)           double      foreignLimit;
-@property (nonatomic, retain)   BankAccount *account;
-@property (nonatomic, retain)   BankUser    *user;
+@property (nonatomic, strong)   BankAccount *account;
+@property (nonatomic, strong)   BankUser    *user;
 
 @property (nonatomic, readonly, strong)   NSArray *weekCycles;
 @property (nonatomic, readonly, strong)   NSArray *monthCycles;

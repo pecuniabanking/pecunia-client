@@ -111,10 +111,10 @@ typedef enum {
 	MBTableGridHeaderCell *headerCell;
 	
 	/* Data Source */
-	IBOutlet id <MBTableGridDataSource> __unsafe_unretained dataSource;
+	IBOutlet id <MBTableGridDataSource> __weak dataSource;
 	
 	/* Delegate */
-	IBOutlet id <MBTableGridDelegate> __unsafe_unretained delegate;
+	IBOutlet id <MBTableGridDelegate> __weak delegate;
 	
 	/* Headers */
 	NSScrollView *columnHeaderScrollView;
@@ -298,7 +298,7 @@ typedef enum {
  *
  * @see			delegate
  */
-@property(unsafe_unretained) id <MBTableGridDataSource> dataSource;
+@property(weak) id <MBTableGridDataSource> dataSource;
 
 /**
  * @brief		The object that acts as the delegate of the 
@@ -309,7 +309,7 @@ typedef enum {
  *
  * @see			dataSource
  */
-@property (nonatomic, unsafe_unretained) id <MBTableGridDelegate> delegate;
+@property (nonatomic, weak) id <MBTableGridDelegate> delegate;
 
 /**
  * @brief	The default size for a cell (which determines the width of columns and the height of rows.

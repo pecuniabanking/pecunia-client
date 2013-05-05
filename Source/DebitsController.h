@@ -39,7 +39,7 @@
     NSString *currentDragDataType;
 }
 
-@property (nonatomic, unsafe_unretained) DebitsController *controller;
+@property (nonatomic, weak) DebitsController *controller;
 
 - (NSRect)dropTargetFrame;
 - (void)hideFormular;
@@ -103,9 +103,9 @@
     NSUInteger        rowPositions[4];
 }
 
-@property (unsafe_unretained) IBOutlet DebitFormularView *debitFormular;
-@property (unsafe_unretained) IBOutlet NSTextField       *dragToHereLabel;
-@property (nonatomic, assign) BOOL                       dropToEditRejected;
+@property (weak) IBOutlet DebitFormularView *debitFormular;
+@property (weak) IBOutlet NSTextField       *dragToHereLabel;
+@property (nonatomic, assign) BOOL          dropToEditRejected;
 
 - (IBAction)sendDebits: (id)sender;
 - (IBAction)showCalendar: (id)sender;

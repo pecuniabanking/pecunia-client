@@ -504,10 +504,6 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     [statementsListView setAllowsEmptySelection: YES];
     [statementsListView setAllowsMultipleSelection: YES];
 
-    // Content views are dynamically exchanged.
-    // The right splitter is the initial control and needs an own retain to avoid losing it
-    // on the next switch.
-
     currentSection = nil; // The right splitter, which is by default active is not a regular section.
     toolbarButtons.selectedSegment = 0;
 

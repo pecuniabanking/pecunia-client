@@ -22,7 +22,7 @@
 @interface SynchronousScrollView : NSScrollView
 {
 @private
-    NSScrollView *synchronizedScrollView; // not retained
+    NSScrollView *__weak synchronizedScrollView;
 }
 
 - (void)setSynchronizedScrollView: (NSScrollView *)scrollview;

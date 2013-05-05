@@ -57,9 +57,9 @@
     BOOL donation;
 }
 
-@property (unsafe_unretained, nonatomic, readonly) Transfer *currentTransfer;
-@property (nonatomic, strong) IBOutlet NSObjectController   *currentTransferController;
-@property (nonatomic, strong) IBOutlet NSArrayController    *templateController;
+@property (nonatomic, weak, readonly) Transfer            *currentTransfer;
+@property (nonatomic, strong) IBOutlet NSObjectController *currentTransferController;
+@property (nonatomic, strong) IBOutlet NSArrayController  *templateController;
 
 - (BOOL)newTransferOfType: (TransferType)type;
 - (BOOL)editExistingTransfer: (Transfer *)transfer;

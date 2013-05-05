@@ -28,10 +28,10 @@
     NSColor *tagColor;
 }
 
-@property (nonatomic, retain) NSString *caption;
-@property (nonatomic, retain) NSData   *color;
-@property (nonatomic, retain) NSNumber *order;
-@property (nonatomic, retain) NSSet    *statements;
+@property (nonatomic, strong) NSString *caption;
+@property (nonatomic, strong) NSData   *color;
+@property (nonatomic, strong) NSNumber *order;
+@property (nonatomic, strong) NSSet    *statements;
 
 @property (nonatomic, strong) NSColor *tagColor;
 

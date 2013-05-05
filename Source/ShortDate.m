@@ -64,7 +64,6 @@ NSCalendar *calendar = nil;
 {
     self = [super init];
     if (self != nil) {
-        // TODO: retain needed?
         components = [coder decodeObjectForKey: @"components"];
     }
     return self;
