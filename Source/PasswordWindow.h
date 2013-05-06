@@ -1,7 +1,5 @@
-//
-//  PasswordWindow.h
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -24,34 +22,33 @@
 @class BWGradientBox;
 
 @interface PasswordWindow : NSWindowController {
+    IBOutlet NSTextField *inputText;
+    IBOutlet NSTextField *inputField;
+    IBOutlet NSButton    *savePasswordButton;
 
-	IBOutlet NSTextField	*inputText;
-	IBOutlet NSTextField	*inputField;
-    IBOutlet NSButton       *savePasswordButton;
-	
-	NSString                *text;
-	NSString                *title;
-	NSString                *result;
-    IBOutlet BWGradientBox  *topGradient;
-    IBOutlet BWGradientBox  *backgroundGradient;
-    NSTimer                 *shakeTimer;
+    NSString               *text;
+    NSString               *title;
+    NSString               *result;
+    IBOutlet BWGradientBox *topGradient;
+    IBOutlet BWGradientBox *backgroundGradient;
+    NSTimer                *shakeTimer;
 
-	BOOL		savePassword;
-	BOOL		active;
-    BOOL        hidePasswortSave;
-    BOOL        retry;
-    
-    int         shakeCount;
+    BOOL savePassword;
+    BOOL active;
+    BOOL hidePasswortSave;
+    BOOL retry;
+
+    int shakeCount;
 }
 
--(id)initWithText: (NSString* )x title: (NSString *)y;
--(void)controlTextDidEndEditing:(NSNotification *)aNotification;
--(void)windowWillClose:(NSNotification *)aNotification;
--(void)windowDidLoad;
--(void)closeWindow;
--(NSString*)result;
--(BOOL)shouldSavePassword;
--(void)retry;
--(void)disablePasswordSave;
+- (id)initWithText: (NSString *)x title: (NSString *)y;
+- (void)controlTextDidEndEditing: (NSNotification *)aNotification;
+- (void)windowWillClose: (NSNotification *)aNotification;
+- (void)windowDidLoad;
+- (void)closeWindow;
+- (NSString *)result;
+- (BOOL)shouldSavePassword;
+- (void)retry;
+- (void)disablePasswordSave;
 
 @end

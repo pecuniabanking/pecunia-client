@@ -21,14 +21,14 @@
 
 @interface CCSettlementList : NSObject
 {
-    NSString    *ccNumber;
-    NSString    *ccAccount;
-    NSArray     *settlementInfos;
+    NSString *ccNumber;
+    NSString *ccAccount;
+    NSArray  *settlementInfos;
 }
 
-@property(nonatomic) NSString *ccNumber;
-@property(nonatomic) NSString *ccAccount;
-@property(nonatomic) NSArray *settlementInfos;
+@property (nonatomic) NSString *ccNumber;
+@property (nonatomic) NSString *ccAccount;
+@property (nonatomic) NSArray  *settlementInfos;
 
 @end
 
@@ -42,11 +42,11 @@
     NSString        *currency;
 }
 
-@property(nonatomic) NSString *settleID;
-@property(nonatomic) NSNumber *received;
-@property(nonatomic) NSDate *settleDate;
-@property(nonatomic) NSDate *firstReceive;
-@property(nonatomic) NSDecimalNumber *value;
-@property(nonatomic) NSString *currency;
+@property (nonatomic) NSString        *settleID;
+@property (nonatomic) NSNumber        *received;
+@property (nonatomic) NSDate          *settleDate;
+@property (nonatomic) NSDate          *firstReceive;
+@property (nonatomic) NSDecimalNumber *value;
+@property (nonatomic) NSString        *currency;
 
 @end

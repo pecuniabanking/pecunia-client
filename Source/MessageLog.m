@@ -1,16 +1,16 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -28,12 +28,14 @@ static MessageLog *_messageLog;
 
 - (id)init
 {
-	self = [super init ];
-	if (self == nil) return nil;
-	formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat: @"HH:mm:ss.SSS"];
+    self = [super init];
+    if (self == nil) {
+        return nil;
+    }
+    formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat: @"HH:mm:ss.SSS"];
     logUIs = [[NSMutableSet alloc] initWithCapacity: 5];
-	return self;
+    return self;
 }
 
 - (void)registerLogUI: (id<MessageLogUI>)ui
@@ -54,16 +56,16 @@ static MessageLog *_messageLog;
     }
 }
 
-- (void)addMessage: (NSString*)msg withLevel: (LogLevel)level
+- (void)addMessage: (NSString *)msg withLevel: (LogLevel)level
 {
-	if ([logUIs count] == 0 && !forceConsole) {
-        return;   
+    if ([logUIs count] == 0 && !forceConsole) {
+        return;
     }
-	NSDate *date = [NSDate date];
-	NSString *message = [NSString stringWithFormat: @"<%@> %@\n", [formatter stringFromDate: date] , msg];
-	if (forceConsole) {
-		NSLog(@"%@", message);
-	}
+    NSDate   *date = [NSDate date];
+    NSString *message = [NSString stringWithFormat: @"<%@> %@\n", [formatter stringFromDate: date], msg];
+    if (forceConsole) {
+        NSLog(@"%@", message);
+    }
 
     @synchronized(logUIs) {
         for (id<MessageLogUI> logUI in logUIs) {
@@ -72,27 +74,24 @@ static MessageLog *_messageLog;
     }
 }
 
-- (void)addMessageFromDict: (NSDictionary*)data
+- (void)addMessageFromDict: (NSDictionary *)data
 {
-	LogLevel level = (LogLevel)[data[@"level"] intValue];
-	[self addMessage: data[@"message"] withLevel: level];
+    LogLevel level = (LogLevel)[data[@"level"] intValue];
+    [self addMessage: data[@"message"] withLevel: level];
 }
 
 - (void)setLevel: (LogLevel)level
 {
-	currentLevel = level;
-	// todo
+    currentLevel = level;
+    // todo
 }
 
-
-
-+ (MessageLog*)log
++ (MessageLog *)log
 {
-	if (_messageLog == nil) {
-		_messageLog = [[MessageLog alloc] init];
-	}
-	return _messageLog;
+    if (_messageLog == nil) {
+        _messageLog = [[MessageLog alloc] init];
+    }
+    return _messageLog;
 }
-
 
 @end

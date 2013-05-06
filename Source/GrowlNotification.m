@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,7 +20,6 @@
 #import "GrowlNotification.h"
 
 #define PecuniaNotification @"Pecunia Notification"
-#define PecuniaNotificationDescription  NSLocalizedString(@"Pecunia Notification", nil)
 
 @implementation GrowlNotification
 
@@ -28,38 +27,40 @@
 {
     self = [super init];
     if (self != nil) {
-		Class bridge = NSClassFromString(@"GrowlApplicationBridge");
-		if ([bridge respondsToSelector:@selector(setGrowlDelegate:)])
-			[bridge performSelector: @selector(setGrowlDelegate:) withObject: self];
+        Class bridge = NSClassFromString(@"GrowlApplicationBridge");
+        if ([bridge respondsToSelector: @selector(setGrowlDelegate:)]) {
+            [bridge performSelector: @selector(setGrowlDelegate:) withObject: self];
+        }
     }
     return self;
 }
 
-- (NSDictionary *)registrationDictionaryForGrowl {
-	NSDictionary *notificationsWithDescriptions = @{PecuniaNotification: PecuniaNotificationDescription};
+- (NSDictionary *)registrationDictionaryForGrowl
+{
+    NSDictionary *notificationsWithDescriptions = @{PecuniaNotification: NSLocalizedString(@"Pecunia Notification", nil)};
 
-	NSArray *allNotifications = [notificationsWithDescriptions allKeys];
-	NSMutableArray *defaultNotifications = [allNotifications mutableCopy];
-	NSDictionary *regDict = @{GROWL_APP_NAME: @"Pecunia",
-							 GROWL_NOTIFICATIONS_ALL: allNotifications,
-							 GROWL_NOTIFICATIONS_DEFAULT: defaultNotifications,
-							 GROWL_NOTIFICATIONS_HUMAN_READABLE_NAMES: notificationsWithDescriptions};
+    NSArray        *allNotifications = [notificationsWithDescriptions allKeys];
+    NSMutableArray *defaultNotifications = [allNotifications mutableCopy];
+    NSDictionary   *regDict = @{GROWL_APP_NAME: @"Pecunia",
+                                GROWL_NOTIFICATIONS_ALL: allNotifications,
+                                GROWL_NOTIFICATIONS_DEFAULT: defaultNotifications,
+                                GROWL_NOTIFICATIONS_HUMAN_READABLE_NAMES: notificationsWithDescriptions};
 
-	return regDict;
+    return regDict;
 }
 
-static NSData* pecuniaLogo(void)
+static NSData * pecuniaLogo(void)
 {
-	static NSData* pecuniaLogoData = nil;
+    static NSData *pecuniaLogoData = nil;
 
-	if (pecuniaLogoData == nil) {
-		NSString *path = [[NSBundle mainBundle] pathForImageResource: @"Vespasian"];
-		if (path) {
-			pecuniaLogoData = [[NSData alloc] initWithContentsOfFile: path];
+    if (pecuniaLogoData == nil) {
+        NSString *path = [[NSBundle mainBundle] pathForImageResource: @"Vespasian"];
+        if (path) {
+            pecuniaLogoData = [[NSData alloc] initWithContentsOfFile: path];
         }
-	}
+    }
 
-	return pecuniaLogoData;
+    return pecuniaLogoData;
 }
 
 static GrowlNotification *singleton;
@@ -73,10 +74,10 @@ static GrowlNotification *singleton;
     if (singleton == nil) {
         singleton = [[GrowlNotification alloc] init];
     }
-    
-	Class bridge = NSClassFromString(@"GrowlApplicationBridge");
-	if ([bridge respondsToSelector: @selector(notifyWithTitle:description:notificationName:iconData:priority:isSticky:clickContext:identifier:)])
-		[bridge notifyWithTitle: title
+
+    Class bridge = NSClassFromString(@"GrowlApplicationBridge");
+    if ([bridge respondsToSelector: @selector(notifyWithTitle:description:notificationName:iconData:priority:isSticky:clickContext:identifier:)]) {
+        [bridge notifyWithTitle: title
                     description: message
                notificationName: PecuniaNotification
                        iconData: pecuniaLogo()
@@ -84,8 +85,8 @@ static GrowlNotification *singleton;
                        isSticky: NO
                    clickContext: nil
                      identifier: context];
-	
-}
+    }
 
+}
 
 @end

@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -30,16 +30,14 @@
 #import "AnimationHelper.h"
 #import "MCEMDecimalNumberAdditions.h"
 
-#import "MAAttachedWindow.h"
-
 #import <tgmath.h>
 
-static NSString* const PecuniaHitNotification = @"PecuniaMouseHit";
-static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
+static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
+static NSString *const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
 @interface PecuniaGraphHost : CPTGraphHostingView
 {
-    NSTrackingArea* trackingArea; // To get mouse events, regardless of responder or key window state.
+    NSTrackingArea *trackingArea; // To get mouse events, regardless of responder or key window state.
 }
 
 @end
@@ -48,19 +46,18 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
 - (void)updateTrackingArea
 {
-    if (trackingArea != nil)
-    {
+    if (trackingArea != nil) {
         [self removeTrackingArea: trackingArea];
     }
 
     trackingArea = [[NSTrackingArea alloc] initWithRect: NSRectFromCGRect(self.hostedGraph.plotAreaFrame.frame)
-                                                 options: NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveInActiveApp
-                                                   owner: self
-                                                userInfo: nil];
+                                                options: NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveInActiveApp
+                                                  owner: self
+                                               userInfo: nil];
     [self addTrackingArea: trackingArea];
 }
 
-- (id)initWithFrame:(NSRect)frameRect
+- (id)initWithFrame: (NSRect)frameRect
 {
     self = [super initWithFrame: frameRect];
     [self updateTrackingArea];
@@ -76,19 +73,19 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 - (void)updateTrackingAreas
 {
     [super updateTrackingAreas];
-    
+
     [self updateTrackingArea];
 }
 
-- (BOOL) acceptsFirstResponder
+- (BOOL)acceptsFirstResponder
 {
-  return YES;
+    return YES;
 }
 
-- (void)sendMouseNotification: (NSEvent*)theEvent withParameters: (NSMutableDictionary*)parameters
+- (void)sendMouseNotification: (NSEvent *)theEvent withParameters: (NSMutableDictionary *)parameters
 {
-    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
-    
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+
     NSPoint location = [self convertPoint: [theEvent locationInWindow] fromView: nil];
     CGPoint mouseLocation = NSPointToCGPoint(location);
     CGPoint pointInHostedGraph = [self.layer convertPoint: mouseLocation toLayer: self.hostedGraph.plotAreaFrame.plotArea];
@@ -98,38 +95,38 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     [center postNotificationName: PecuniaHitNotification object: nil userInfo: parameters];
 }
 
-- (void)mouseMoved: (NSEvent*)theEvent
+- (void)mouseMoved: (NSEvent *)theEvent
 {
     [super mouseMoved: theEvent];
-    
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"type"] = @"mouseMoved";
     [self sendMouseNotification: theEvent withParameters: parameters];
 }
 
-- (void)mouseDown: (NSEvent*)theEvent
+- (void)mouseDown: (NSEvent *)theEvent
 {
     [super mouseDown: theEvent];
-    
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"type"] = @"mouseDown";
     [self sendMouseNotification: theEvent withParameters: parameters];
 }
 
-- (void)mouseDragged: (NSEvent*)theEvent
+- (void)mouseDragged: (NSEvent *)theEvent
 {
     [super mouseDragged: theEvent];
-    
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"type"] = @"mouseDragged";
     [self sendMouseNotification: theEvent withParameters: parameters];
 }
 
-- (void)mouseUp: (NSEvent*)theEvent
+- (void)mouseUp: (NSEvent *)theEvent
 {
     [super mouseUp: theEvent];
-    
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"type"] = @"mouseUp";
     [self sendMouseNotification: theEvent withParameters: parameters];
 }
@@ -138,7 +135,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 {
     [super viewDidChangeBackingProperties];
 
-    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center postNotificationName: PecuniaBackingStoreNotification object: nil userInfo: nil];
 }
 
@@ -146,7 +143,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
 //--------------------------------------------------------------------------------------------------
 
-@interface CategoryRepWindowController(Private)
+@interface CategoryRepWindowController (Private)
 
 - (void)setupPieCharts;
 - (void)setupMiniPlots;
@@ -155,21 +152,20 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 - (void)updateValues;
 - (void)updatePlotsEarnings: (float)earnings spendings: (float)spendings;
 - (void)updateMiniPlotAxes;
-- (void)hideHelp;
 
-- (void)showInfoFor: (NSString*)category;
+- (void)showInfoFor: (NSString *)category;
 - (void)updateInfoLayerPosition;
 
 @end
 
-#define SPENDINGS_PLOT_ID 0
-#define EARNINGS_PLOT_ID 1
+#define SPENDINGS_PLOT_ID       0
+#define EARNINGS_PLOT_ID        1
 #define SPENDINGS_SMALL_PLOT_ID 2
-#define EARNINGS_SMALL_PLOT_ID 3
+#define EARNINGS_SMALL_PLOT_ID  3
 
 @implementation CategoryRepWindowController
 
-@synthesize category = currentCategory;
+@synthesize selectedCategory;
 
 - (void)awakeFromNib
 {
@@ -182,25 +178,25 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     sortedEarningValues = [NSMutableArray arrayWithCapacity: 10];
 
     // Set up the pie charts and restore their transformations.
-    pieChartGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame: NSRectToCGRect(pieChartHost.bounds)];
+    pieChartGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame : NSRectToCGRect(pieChartHost.bounds)];
     CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
     [pieChartGraph applyTheme: theme];
     pieChartHost.hostedGraph = pieChartGraph;
-    
+
     [self setupMiniPlots];
     [self setupPieCharts];
-    
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     earningsPlot.startAngle = [userDefaults floatForKey: @"earningsRotation"];
     spendingsPlot.startAngle = [userDefaults floatForKey: @"spendingsRotation"];
 
     // Help text.
-    NSBundle* mainBundle = [NSBundle mainBundle];
-    NSString* path = [mainBundle pathForResource: @"category-reporting-help" ofType: @"rtf"];
-    NSAttributedString* text = [[NSAttributedString alloc] initWithPath: path documentAttributes: NULL];
+    NSBundle           *mainBundle = [NSBundle mainBundle];
+    NSString           *path = [mainBundle pathForResource: @"category-reporting-help" ofType: @"rtf"];
+    NSAttributedString *text = [[NSAttributedString alloc] initWithPath: path documentAttributes: NULL];
     [helpText setAttributedStringValue: text];
-    float height = [text heightForWidth: helpText.bounds.size.width];
-    helpContentView.frame = NSMakeRect(0, 0, helpText.bounds.size.width, height);
+    NSRect bounds = [text boundingRectWithSize: NSMakeSize(helpText.bounds.size.width, 0) options: NSStringDrawingUsesLineFragmentOrigin];
+    helpContentView.frame = NSMakeRect(0, 0, helpText.bounds.size.width + 20, bounds.size.height + 20);
 
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mouseHit:)
@@ -217,54 +213,54 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)pieChartGraph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = NO; // Disallow coreplot interaction (will do unwanted manipulations).
     plotSpace.delegate = self;
-    
-	// Graph padding
+
+    // Graph padding
     pieChartGraph.paddingLeft = 0;
     pieChartGraph.paddingTop = 0;
     pieChartGraph.paddingRight = 0;
     pieChartGraph.paddingBottom = 0;
     pieChartGraph.fill = nil;
-    
-    CPTPlotAreaFrame* frame = pieChartGraph.plotAreaFrame;
+
+    CPTPlotAreaFrame *frame = pieChartGraph.plotAreaFrame;
     frame.paddingLeft = 10;
     frame.paddingRight = 10;
     frame.paddingTop = 10;
     frame.paddingBottom = 10;
-    
+
     // Border style.
-    CPTMutableLineStyle* frameStyle = [CPTMutableLineStyle lineStyle];
+    CPTMutableLineStyle *frameStyle = [CPTMutableLineStyle lineStyle];
     frameStyle.lineWidth = 1;
     frameStyle.lineColor = [[CPTColor colorWithGenericGray: 0] colorWithAlphaComponent: 0.5];
-    
+
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
-/*
-    frame.shadowColor = CGColorCreateGenericGray(0, 1);
-    frame.shadowRadius = 2.0;
-    frame.shadowOffset = CGSizeMake(1, -1);
-    frame.shadowOpacity = 0.25;
- */
-//    frame.fill = nil;
-  
-	CPTMutableLineStyle* pieLineStyle = [CPTMutableLineStyle lineStyle];
-	pieLineStyle.lineColor = [CPTColor colorWithGenericGray: 1];
+    /*
+     frame.shadowColor = CGColorCreateGenericGray(0, 1);
+     frame.shadowRadius = 2.0;
+     frame.shadowOffset = CGSizeMake(1, -1);
+     frame.shadowOpacity = 0.25;
+     */
+    //    frame.fill = nil;
+
+    CPTMutableLineStyle *pieLineStyle = [CPTMutableLineStyle lineStyle];
+    pieLineStyle.lineColor = [CPTColor colorWithGenericGray: 1];
     pieLineStyle.lineWidth = 2;
-    
-	// First pie chart for earnings.
-	earningsPlot = [[CPTPieChart alloc] init];
+
+    // First pie chart for earnings.
+    earningsPlot = [[CPTPieChart alloc] init];
     earningsPlot.hidden = YES;
-	earningsPlot.dataSource = self;
-	earningsPlot.delegate = self;
-	earningsPlot.pieRadius = 150;
-	earningsPlot.pieInnerRadius = 30;
-	earningsPlot.identifier = @EARNINGS_PLOT_ID;
-	earningsPlot.borderLineStyle = pieLineStyle;
-	earningsPlot.startAngle = 0;
-	earningsPlot.sliceDirection = CPTPieDirectionClockwise;
+    earningsPlot.dataSource = self;
+    earningsPlot.delegate = self;
+    earningsPlot.pieRadius = 150;
+    earningsPlot.pieInnerRadius = 30;
+    earningsPlot.identifier = @EARNINGS_PLOT_ID;
+    earningsPlot.borderLineStyle = pieLineStyle;
+    earningsPlot.startAngle = 0;
+    earningsPlot.sliceDirection = CPTPieDirectionClockwise;
     earningsPlot.centerAnchor = CGPointMake(0.25, 0.6);
     earningsPlot.alignsPointsToPixels = YES;
 
-    CPTMutableShadow* shadow = [[CPTMutableShadow alloc] init];
+    CPTMutableShadow *shadow = [[CPTMutableShadow alloc] init];
     shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 0 blue: 0 alpha: 0.3];
     shadow.shadowBlurRadius = 5.0;
     shadow.shadowOffset = CGSizeMake(3, -3);
@@ -281,22 +277,22 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
            withKeyPath: @"arrangedObjects"
                options: nil];
 
-	[pieChartGraph addPlot: earningsPlot];
+    [pieChartGraph addPlot: earningsPlot];
 
-	// Second pie chart for spendings.
-	spendingsPlot = [[CPTPieChart alloc] init];
+    // Second pie chart for spendings.
+    spendingsPlot = [[CPTPieChart alloc] init];
     spendingsPlot.hidden = YES;
-	spendingsPlot.dataSource = self;
-	spendingsPlot.delegate = self;
-	spendingsPlot.pieRadius = 150;
-	spendingsPlot.pieInnerRadius = 30;
-	spendingsPlot.identifier = @SPENDINGS_PLOT_ID;
-	spendingsPlot.borderLineStyle = pieLineStyle;
-	spendingsPlot.startAngle = 0;
-	spendingsPlot.sliceDirection = CPTPieDirectionClockwise;
+    spendingsPlot.dataSource = self;
+    spendingsPlot.delegate = self;
+    spendingsPlot.pieRadius = 150;
+    spendingsPlot.pieInnerRadius = 30;
+    spendingsPlot.identifier = @SPENDINGS_PLOT_ID;
+    spendingsPlot.borderLineStyle = pieLineStyle;
+    spendingsPlot.startAngle = 0;
+    spendingsPlot.sliceDirection = CPTPieDirectionClockwise;
     spendingsPlot.centerAnchor = CGPointMake(0.75, 0.6);
     spendingsPlot.alignsPointsToPixels = YES;
-	
+
     spendingsPlot.shadow = shadow;
 
     spendingsPlotRadialOffsets = [[NSArrayController alloc] init];
@@ -307,7 +303,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                toObject: spendingsPlotRadialOffsets
             withKeyPath: @"arrangedObjects" options: nil];
 
-	[pieChartGraph addPlot: spendingsPlot];
+    [pieChartGraph addPlot: spendingsPlot];
 }
 
 /**
@@ -316,30 +312,30 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 - (void)setupMiniPlots
 {
     // Mini plots are placed below the pie charts, so we need a separate plot space for each.
-    CPTXYPlotSpace* barPlotSpace = [[CPTXYPlotSpace alloc] init];
+    CPTXYPlotSpace *barPlotSpace = [[CPTXYPlotSpace alloc] init];
 
     // Ranges are set later.
     [pieChartGraph addPlotSpace: barPlotSpace];
-    CPTPlotRange* range = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0) length: CPTDecimalFromFloat(40)];
+    CPTPlotRange *range = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0) length: CPTDecimalFromFloat(40)];
     barPlotSpace.globalXRange = range;
     barPlotSpace.xRange = range;
-    
+
     // Small earnings bar plot.
     earningsMiniPlot = [[CPTBarPlot alloc] init];
 
-    CPTMutableLineStyle* barLineStyle = [[CPTMutableLineStyle alloc] init];
+    CPTMutableLineStyle *barLineStyle = [[CPTMutableLineStyle alloc] init];
     barLineStyle.lineWidth = 1.0;
     barLineStyle.lineColor = [CPTColor colorWithComponentRed: 0 / 255.0 green: 104 / 255.0 blue: 181 / 255.0 alpha: 0.3];
     earningsMiniPlot.lineStyle = barLineStyle;
-    
+
     earningsMiniPlot.barsAreHorizontal = NO;
     earningsMiniPlot.barWidth = CPTDecimalFromDouble(1);
     earningsMiniPlot.barCornerRadius = 0;
     earningsMiniPlot.barWidthsAreInViewCoordinates = NO;
     earningsMiniPlot.alignsPointsToPixels = YES;
 
-    CPTImage* image = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: @"hatch-1" ofType: @"png"]];
-    CGFloat scaleFactor = 1;
+    CPTImage *image = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: @"hatch-1" ofType: @"png"]];
+    CGFloat  scaleFactor = 1;
     NSScreen *screen = [NSScreen mainScreen];
     if ([screen respondsToSelector: @selector(backingScaleFactor)]) {
         scaleFactor = screen.backingScaleFactor;
@@ -347,7 +343,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     image.scale = scaleFactor * 4.3;
     image.tiled = YES;
     earningsMiniPlot.fill = [CPTFill fillWithImage: image];
-    
+
     earningsMiniPlot.baseValue = CPTDecimalFromFloat(0.0f);
     earningsMiniPlot.dataSource = self;
     earningsMiniPlot.barOffset = CPTDecimalFromFloat(4);
@@ -361,12 +357,12 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     [pieChartGraph addPlotSpace: barPlotSpace];
     barPlotSpace.globalXRange = range;
     barPlotSpace.xRange = range;
-    
+
     // Small earnings bar plot.
     spendingsMiniPlot = [[CPTBarPlot alloc] init];
 
     spendingsMiniPlot.lineStyle = barLineStyle;
-    
+
     spendingsMiniPlot.barsAreHorizontal = NO;
     spendingsMiniPlot.barWidth = CPTDecimalFromDouble(1);
     spendingsMiniPlot.barCornerRadius = 0;
@@ -374,7 +370,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     spendingsMiniPlot.alignsPointsToPixels = YES;
 
     spendingsMiniPlot.fill = [CPTFill fillWithImage: image];
-    
+
     spendingsMiniPlot.baseValue = CPTDecimalFromFloat(0);
     spendingsMiniPlot.dataSource = self;
     spendingsMiniPlot.barOffset = CPTDecimalFromFloat(24);
@@ -387,14 +383,14 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 /**
  * Initialize a pair of xy axes.
  */
-- (void)setupMiniPlotAxisX: (CPTXYAxis*)x y: (CPTXYAxis*)y offset: (float)offset
+- (void)setupMiniPlotAxisX: (CPTXYAxis *)x y: (CPTXYAxis *)y offset: (float)offset
 {
     x.majorTickLineStyle = nil;
     x.minorTickLineStyle = nil;
     x.labelTextStyle = nil;
     x.labelingPolicy = CPTAxisLabelingPolicyEqualDivisions;
 
-    CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
+    CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
     lineStyle.lineColor = [CPTColor colorWithComponentRed: 0 / 255.0 green: 104 / 255.0 blue: 181 / 255.0 alpha: 0.08];
 
     x.axisLineStyle = lineStyle;
@@ -405,23 +401,23 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     y.labelingPolicy = CPTAxisLabelingPolicyFixedInterval;
     y.majorTickLineStyle = nil;
     y.minorTickLineStyle = nil;
-    
+
     y.axisLineStyle = lineStyle;
     y.majorGridLineStyle = lineStyle;
     y.minorGridLineStyle = nil;
 
     // Finally the line caps.
-    CPTLineCap* lineCap = [CPTLineCap sweptArrowPlotLineCap];
+    CPTLineCap *lineCap = [CPTLineCap sweptArrowPlotLineCap];
     lineCap.size = CGSizeMake(6, 14);
 
-    CPTColor* capColor = [CPTColor colorWithComponentRed: 0 / 255.0 green: 104 / 255.0 blue: 181 / 255.0 alpha: 0.5];
-    
+    CPTColor *capColor = [CPTColor colorWithComponentRed: 0 / 255.0 green: 104 / 255.0 blue: 181 / 255.0 alpha: 0.5];
+
     lineStyle.lineColor = capColor;
     lineCap.fill = [CPTFill fillWithColor: capColor];
     lineCap.lineStyle = lineStyle;
     x.axisLineCapMax = lineCap;
     y.axisLineCapMax = lineCap;
-    
+
     x.preferredNumberOfMajorTicks = 22;
     y.orthogonalCoordinateDecimal = CPTDecimalFromFloat(offset);
     y.gridLinesRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(offset - 0.5)
@@ -436,44 +432,44 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 {
     // For the mini plots we use own axes for each plot. This will also cause two separate grids
     // to be shown.
-    CPTXYAxisSet* axisSet = (id)pieChartGraph.axisSet;
+    CPTXYAxisSet *axisSet = (id)pieChartGraph.axisSet;
 
     // Re-use the predefined axis set for the earnings mini plot.
-    CPTXYAxis* x1 = axisSet.xAxis;
+    CPTXYAxis *x1 = axisSet.xAxis;
     x1.plotSpace = earningsMiniPlot.plotSpace;
-    
+
     // The x-axis title is used as graph title + we use an arrow image.
-    CPTMutableTextStyle* titleStyle = [[CPTMutableTextStyle alloc] init];
+    CPTMutableTextStyle *titleStyle = [[CPTMutableTextStyle alloc] init];
     titleStyle.fontName = @"Zapfino";
     titleStyle.fontSize = 16;
     titleStyle.color = [CPTColor colorWithComponentRed: 0 / 255.0 green: 104 / 255.0 blue: 181 / 255.0 alpha: 0.5];
-    CPTAxisTitle* title = [[CPTAxisTitle alloc] initWithText: NSLocalizedString(@"AP16", nil) textStyle: titleStyle];
+    CPTAxisTitle *title = [[CPTAxisTitle alloc] initWithText: NSLocalizedString(@"AP16", nil) textStyle: titleStyle];
     x1.axisTitle = title;
     x1.titleOffset = -180;
     x1.titleLocation = CPTDecimalFromFloat(15);
     //x1.titleRotation = -0.05;
-    
-    CPTImage* arrowImage = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: @"blue arrow" ofType: @"png"]];
-    CPTLayer* imageLayer = [[CPTLayer alloc] init];
+
+    CPTImage *arrowImage = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: @"blue arrow" ofType: @"png"]];
+    CPTLayer *imageLayer = [[CPTLayer alloc] init];
     imageLayer.contents = (id)[arrowImage image];
 
-    CPTLayerAnnotation* arrow = [[CPTLayerAnnotation alloc] initWithAnchorLayer: title.contentLayer];
+    CPTLayerAnnotation *arrow = [[CPTLayerAnnotation alloc] initWithAnchorLayer: title.contentLayer];
     arrow.rectAnchor = CPTRectAnchorTopLeft;
     arrow.displacement = CGPointMake(-15, -50);
-    
-    CPTBorderedLayer* layer = [[CPTBorderedLayer alloc] initWithFrame: CGRectMake(0, 0, 24, 27)];
-    layer.fill = [CPTFill fillWithImage: arrowImage]; 
-    
+
+    CPTBorderedLayer *layer = [[CPTBorderedLayer alloc] initWithFrame: CGRectMake(0, 0, 24, 27)];
+    layer.fill = [CPTFill fillWithImage: arrowImage];
+
     arrow.contentLayer = layer;
     [earningsMiniPlot addAnnotation: arrow];
-    
-    CPTXYAxis* y1 = axisSet.yAxis;
+
+    CPTXYAxis *y1 = axisSet.yAxis;
     y1.plotSpace = earningsMiniPlot.plotSpace;
 
     [self setupMiniPlotAxisX: x1 y: y1 offset: 3.25];
 
     // Axes for the spendings mini plot are new created.
-    CPTXYAxis* x2 = [[CPTXYAxis alloc] init];
+    CPTXYAxis *x2 = [[CPTXYAxis alloc] init];
     x2.coordinate = CPTCoordinateX;
     x2.plotSpace = spendingsMiniPlot.plotSpace;
 
@@ -486,74 +482,76 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     arrow = [[CPTLayerAnnotation alloc] initWithAnchorLayer: title.contentLayer];
     arrow.rectAnchor = CPTRectAnchorTopLeft;
     arrow.displacement = CGPointMake(-15, -50);
-    
+
     layer = [[CPTBorderedLayer alloc] initWithFrame: CGRectMake(0, 0, 24, 27)];
-    layer.fill = [CPTFill fillWithImage: arrowImage]; 
-    
+    layer.fill = [CPTFill fillWithImage: arrowImage];
+
     arrow.contentLayer = layer;
     [earningsMiniPlot addAnnotation: arrow];
 
-    CPTXYAxis* y2 = [[CPTXYAxis alloc] init];
+    CPTXYAxis *y2 = [[CPTXYAxis alloc] init];
     y2.coordinate = CPTCoordinateY;
     y2.plotSpace = spendingsMiniPlot.plotSpace;
 
     [self setupMiniPlotAxisX: x2 y: y2 offset: 23.25];
-    
+
     pieChartGraph.axisSet.axes = @[x1, y1, x2, y2];
 }
 
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
-- (NSUInteger)numberOfRecordsForPlot: (CPTPlot*)plot
+- (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot
 {
-    switch ([(NSNumber*)plot.identifier intValue])
-    {
+    switch ([(NSNumber *)plot.identifier intValue]) {
         case EARNINGS_PLOT_ID:
             if ([earningsCategories count] > 0) {
                 return [earningsCategories count];
             } else {
                 return 1; // A single dummy value to show an inactive pie chart.
             }
+
         case SPENDINGS_PLOT_ID:
             if ([spendingsCategories count] > 0) {
                 return [spendingsCategories count];
             } else {
                 return 1;
             }
+
         case EARNINGS_SMALL_PLOT_ID:
             return [sortedEarningValues count];
+
         case SPENDINGS_SMALL_PLOT_ID:
             return [sortedSpendingValues count];
+
         default:
             return 0;
     }
 }
 
-- (NSNumber*)numberForPlot: (CPTPlot*)plot field: (NSUInteger)fieldEnum recordIndex: (NSUInteger)index
+- (NSNumber *)numberForPlot: (CPTPlot *)plot field: (NSUInteger)fieldEnum recordIndex: (NSUInteger)index
 {
-    switch ([(NSNumber*)plot.identifier intValue])
-    {
+    switch ([(NSNumber *)plot.identifier intValue]) {
         case EARNINGS_PLOT_ID:
             if (fieldEnum == CPTPieChartFieldSliceWidth) {
                 if ([earningsCategories count] > 0) {
                     return earningsCategories[index][@"value"];
-                }
-                else {
+                } else {
                     return @1;
                 }
             }
             break;
+
         case SPENDINGS_PLOT_ID:
             if (fieldEnum == CPTPieChartFieldSliceWidth) {
                 if ([spendingsCategories count] > 0) {
                     return spendingsCategories[index][@"value"];
-                }
-                else {
+                } else {
                     return @1;
                 }
             }
             break;
+
         case EARNINGS_SMALL_PLOT_ID:
             if (fieldEnum == CPTBarPlotFieldBarLocation) {
                 return @((int)index);
@@ -562,6 +560,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                 return sortedEarningValues[index][@"value"];
             }
             break;
+
         case SPENDINGS_SMALL_PLOT_ID:
             if (fieldEnum == CPTBarPlotFieldBarLocation) {
                 return @((int)index);
@@ -575,9 +574,9 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     return (id)[NSNull null];
 }
 
-- (CPTLayer*)dataLabelForPlot: (CPTPlot*)plot recordIndex: (NSUInteger)index
+- (CPTLayer *)dataLabelForPlot: (CPTPlot *)plot recordIndex: (NSUInteger)index
 {
-	static CPTMutableTextStyle* labelStyle = nil;
+    static CPTMutableTextStyle *labelStyle = nil;
 
     if (!labelStyle) {
         labelStyle = [[CPTMutableTextStyle alloc] init];
@@ -585,11 +584,10 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
         labelStyle.fontName = @"LucidaGrande";
         labelStyle.fontSize = 10;
     }
-    
-    CPTTextLayer* newLayer = (id)[NSNull null];
 
-    switch ([(NSNumber*)plot.identifier intValue])
-    {
+    CPTTextLayer *newLayer = (id)[NSNull null];
+
+    switch ([(NSNumber *)plot.identifier intValue]) {
         case EARNINGS_PLOT_ID:
             if ([earningsCategories count] > 0) {
                 newLayer = [[CPTTextLayer alloc] initWithText: earningsCategories[index][@"name"] style: labelStyle];
@@ -597,6 +595,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                 newLayer = [[CPTTextLayer alloc] initWithText: @"" style: labelStyle];
             }
             break;
+
         case SPENDINGS_PLOT_ID:
             if ([spendingsCategories count] > 0) {
                 newLayer = [[CPTTextLayer alloc] initWithText: spendingsCategories[index][@"name"] style: labelStyle];
@@ -604,22 +603,23 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                 newLayer = [[CPTTextLayer alloc] initWithText: @"" style: labelStyle];
             }
             break;
+
         case EARNINGS_SMALL_PLOT_ID:
             // No labels for the mini plots.
             break;
+
         case SPENDINGS_SMALL_PLOT_ID:
             break;
     }
 
-	return newLayer;
+    return newLayer;
 }
 
-- (CPTFill*)sliceFillForPieChart: (CPTPieChart*)pieChart recordIndex: (NSUInteger)index
+- (CPTFill *)sliceFillForPieChart: (CPTPieChart *)pieChart recordIndex: (NSUInteger)index
 {
-    NSColor* color = nil;
-    
-    switch ([(NSNumber*)pieChart.identifier intValue])
-    {
+    NSColor *color = nil;
+
+    switch ([(NSNumber *)pieChart.identifier intValue]) {
         case EARNINGS_PLOT_ID:
             if (index < [earningsCategories count]) {
                 color = earningsCategories[index][@"color"];
@@ -627,6 +627,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                 color = [NSColor colorWithCalibratedRed: 0.8 green: 0.8 blue: 0.8 alpha: 1];
             }
             break;
+
         case SPENDINGS_PLOT_ID:
             if (index < [spendingsCategories count]) {
                 color = spendingsCategories[index][@"color"];
@@ -635,7 +636,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
             }
             break;
     }
-    
+
     if (color == nil) {
         return (id)[NSNull null];
     }
@@ -644,8 +645,8 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     // or named color space. No-op if the color is already using RGB.
     NSColor *deviceColor = [color colorUsingColorSpace: [NSColorSpace deviceRGBColorSpace]];
 
-    NSColor *highlightColor = [deviceColor highlightWithLevel: 0.5];
-    CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: highlightColor.redComponent
+    NSColor     *highlightColor = [deviceColor highlightWithLevel: 0.5];
+    CPTGradient *gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: highlightColor.redComponent
                                                                                                green: highlightColor.greenComponent
                                                                                                 blue: highlightColor.blueComponent
                                                                                                alpha: highlightColor.alphaComponent]
@@ -656,17 +657,16 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                              ];
 
     gradient.angle = -45.0;
-    CPTFill* gradientFill = [CPTFill fillWithGradient: gradient];
+    CPTFill *gradientFill = [CPTFill fillWithGradient: gradient];
 
     return gradientFill;
 }
 
 - (CPTFill *)barFillForBarPlot: (CPTBarPlot *)barPlot recordIndex: (NSUInteger)index
 {
-    NSColor* color = nil;
+    NSColor *color = nil;
 
-    switch ([(NSNumber*)barPlot.identifier intValue])
-    {
+    switch ([(NSNumber *)barPlot.identifier intValue]) {
         case EARNINGS_SMALL_PLOT_ID:
             index = [sortedEarningValues[index][@"index"] intValue];
             if ((NSInteger)index == earningsExplosionIndex) {
@@ -675,6 +675,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                 return nil;
             }
             break;
+
         case SPENDINGS_SMALL_PLOT_ID:
             index = [sortedSpendingValues[index][@"index"] intValue];
             if ((NSInteger)index == spendingsExplosionIndex) {
@@ -685,8 +686,8 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
             break;
     }
 
-    NSColor *highlightColor = [color highlightWithLevel: 0.5];
-    CPTGradient* gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: highlightColor.redComponent
+    NSColor     *highlightColor = [color highlightWithLevel: 0.5];
+    CPTGradient *gradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithComponentRed: highlightColor.redComponent
                                                                                                green: highlightColor.greenComponent
                                                                                                 blue: highlightColor.blueComponent
                                                                                                alpha: 0.5]
@@ -701,11 +702,11 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     return [CPTFill fillWithGradient: gradient];
 }
 
-- (void)pieChart: (CPTPieChart*)plot sliceWasSelectedAtRecordIndex: (NSUInteger)index
+- (void)pieChart: (CPTPieChart *)plot sliceWasSelectedAtRecordIndex: (NSUInteger)index
 {
     currentPlot = plot;
 
-    CPTMutableShadow* shadow = [[CPTMutableShadow alloc] init];
+    CPTMutableShadow *shadow = [[CPTMutableShadow alloc] init];
     shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 44 / 255.0 blue: 179 / 255.0 alpha: 0.75];
     shadow.shadowBlurRadius = 5.0;
     shadow.shadowOffset = CGSizeMake(2, -2);
@@ -725,10 +726,10 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     BOOL needEarningsLabelAdjustment = NO;
     BOOL needSpendingsLabelAdjustment = NO;
 
-    NSNumber* x = parameters[@"x"];
-    NSNumber* y = parameters[@"y"];
+    NSNumber *x = parameters[@"x"];
+    NSNumber *y = parameters[@"y"];
 
-    CGRect bounds = earningsPlot.plotArea.bounds;
+    CGRect  bounds = earningsPlot.plotArea.bounds;
     NSPoint earningsPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * earningsPlot.centerAnchor.x,
                                              bounds.origin.y + bounds.size.height * earningsPlot.centerAnchor.y);
     NSRect earningsPlotFrame = NSMakeRect(earningsPlotCenter.x - earningsPlot.pieRadius - SLICE_OFFSET - 5,
@@ -825,7 +826,6 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
         needInfoUpdate |= spendingsExplosionIndex != slice;
         if (needInfoUpdate && slice != NSNotFound) {
-
             if ([spendingsCategories count] > 1) {
                 NSMutableArray *content = spendingsPlotRadialOffsets.content;
                 content[slice] = @SLICE_OFFSET;
@@ -848,7 +848,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
         spendingsPlotRadialOffsets.content = content;
         needSpendingsLabelAdjustment = YES;
     }
-    
+
     if (spendingsExplosionIndex != slice) {
         spendingsExplosionIndex = slice;
         [spendingsMiniPlot reloadData];
@@ -885,11 +885,11 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
  * Handler method for notifications sent from the graph host windows if something in the graphs need
  * adjustment, mostly due to user input.
  */
-- (void)mouseHit: (NSNotification*)notification
+- (void)mouseHit: (NSNotification *)notification
 {
     if ([[notification name] isEqualToString: PecuniaHitNotification]) {
-        NSDictionary* parameters = [notification userInfo];
-        NSString* type = parameters[@"type"];
+        NSDictionary *parameters = [notification userInfo];
+        NSString     *type = parameters[@"type"];
 
         if ([type isEqualToString: @"mouseMoved"]) {
             [self handleMouseMove: parameters];
@@ -897,17 +897,17 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
             return;
         }
 
-        NSNumber* x = parameters[@"x"];
-        NSNumber* y = parameters[@"y"];
+        NSNumber *x = parameters[@"x"];
+        NSNumber *y = parameters[@"y"];
 
-        CGRect bounds = earningsPlot.plotArea.bounds;
+        CGRect  bounds = earningsPlot.plotArea.bounds;
         NSPoint earningsPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * earningsPlot.centerAnchor.x,
                                                  bounds.origin.y + bounds.size.height * earningsPlot.centerAnchor.y);
 
         bounds = earningsPlot.plotArea.bounds;
         NSPoint spendingsPlotCenter = CGPointMake(bounds.origin.x + bounds.size.width * spendingsPlot.centerAnchor.x,
                                                   bounds.origin.y + bounds.size.height * spendingsPlot.centerAnchor.y);
-        
+
         NSPoint center = currentPlot == spendingsPlot ? spendingsPlotCenter : earningsPlotCenter;
 
         if ([type isEqualToString: @"mouseDown"]) {
@@ -919,7 +919,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
         if ([type isEqualToString: @"mouseUp"]) {
             if (currentPlot != nil) {
-                CPTMutableShadow* shadow = [[CPTMutableShadow alloc] init];
+                CPTMutableShadow *shadow = [[CPTMutableShadow alloc] init];
                 shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 0 blue: 0 alpha: 0.3];
                 shadow.shadowBlurRadius = 5.0;
                 shadow.shadowOffset = CGSizeMake(3, -3);
@@ -929,7 +929,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
             }
 
             // Store current angle values.
-            NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             [userDefaults setFloat: earningsPlot.startAngle forKey: @"earningsRotation"];
             [userDefaults setFloat: spendingsPlot.startAngle forKey: @"spendingsRotation"];
 
@@ -948,10 +948,10 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 /**
  * Triggered when the backing store or color scheme changed. Reload resolution dependent stuff.
  */
-- (void)backingStoreChanged: (NSNotification*)notification
+- (void)backingStoreChanged: (NSNotification *)notification
 {
-    CPTImage* image = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: @"hatch-1" ofType: @"png"]];
-    CGFloat scaleFactor = 1;
+    CPTImage *image = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: @"hatch-1" ofType: @"png"]];
+    CGFloat  scaleFactor = 1;
     NSScreen *screen = [NSScreen mainScreen];
     if ([screen respondsToSelector: @selector(backingScaleFactor)]) {
         scaleFactor = screen.backingScaleFactor;
@@ -964,8 +964,6 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
 - (void)updateValues
 {
-    [self hideHelp];
-
     [spendingsCategories removeAllObjects];
     [earningsCategories removeAllObjects];
     [sortedSpendingValues removeAllObjects];
@@ -974,51 +972,52 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     earningsPlotRadialOffsets.content = [NSMutableArray arrayWithCapacity: 10];
     spendingsPlotRadialOffsets.content = [NSMutableArray arrayWithCapacity: 10];
 
-    if (currentCategory == nil) {
+    if (selectedCategory == nil) {
         return;
     }
-    
-    NSMutableSet* childs = [currentCategory mutableSetValueForKey: @"children"];
-    NSDecimalNumber* totalEarnings = [NSDecimalNumber zero];
-    NSDecimalNumber* totalSpendings = [NSDecimalNumber zero];
+
+    NSMutableSet    *childs = [selectedCategory mutableSetValueForKey: @"children"];
+    NSDecimalNumber *totalEarnings = [NSDecimalNumber zero];
+    NSDecimalNumber *totalSpendings = [NSDecimalNumber zero];
 
     if ([childs count] > 0) {
-        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-        BOOL balance = [userDefaults boolForKey: @"balanceCategories"];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        BOOL           balance = [userDefaults boolForKey: @"balanceCategories"];
 
-        NSDecimalNumber* zero = [NSDecimalNumber zero];
+        NSDecimalNumber *zero = [NSDecimalNumber zero];
 
         for (Category *childCategory in childs) {
             if ([childCategory.isHidden boolValue] || [childCategory.noCatRep boolValue]) {
                 continue;
             }
-            
-            NSDecimalNumber* spendings = [childCategory valuesOfType: cat_spendings from: fromDate to: toDate];
-            NSDecimalNumber* earnings = [childCategory valuesOfType: cat_earnings from: fromDate to: toDate];
-            
-            if (balance) {
-                NSDecimalNumber* value = [earnings decimalNumberByAdding: spendings];
 
-                NSMutableDictionary* pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
+            NSDecimalNumber *spendings = [childCategory valuesOfType: cat_spendings from: fromDate to: toDate];
+            NSDecimalNumber *earnings = [childCategory valuesOfType: cat_earnings from: fromDate to: toDate];
+
+            if (balance) {
+                NSDecimalNumber *value = [earnings decimalNumberByAdding: spendings];
+
+                NSMutableDictionary *pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
                 pieData[@"name"] = [childCategory localName];
                 pieData[@"value"] = value;
-                pieData[@"currency"] = currentCategory.currency;
+                pieData[@"currency"] = selectedCategory.currency;
                 pieData[@"color"] = childCategory.categoryColor;
 
-                switch ([value compare: zero])
-                {
+                switch ([value compare: zero]) {
                     case NSOrderedAscending:
                         [spendingsCategories addObject: pieData];
                         [sortedSpendingValues addObject: @{@"index": @((int)spendingsCategories.count - 1),
-                                                           @"value": [value abs]}];
+                         @"value": [value abs]}];
 
                         totalSpendings = [totalSpendings decimalNumberByAdding: value];
                         break;
+
                     case NSOrderedSame: break; // Don't list categories with value 0.
+
                     case NSOrderedDescending:
                         [earningsCategories addObject: pieData];
                         [sortedEarningValues addObject: @{@"index": @((int)earningsCategories.count - 1),
-                                                          @"value": [value abs]}];
+                         @"value": [value abs]}];
 
                         totalEarnings = [totalEarnings decimalNumberByAdding: value];
                         break;
@@ -1027,34 +1026,33 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                 totalSpendings = [totalSpendings decimalNumberByAdding: spendings];
                 totalEarnings = [totalEarnings decimalNumberByAdding: earnings];
                 if ([spendings compare: zero] != NSOrderedSame) {
-                    NSMutableDictionary* pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
+                    NSMutableDictionary *pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
                     pieData[@"name"] = [childCategory localName];
                     pieData[@"value"] = spendings;
-                    pieData[@"currency"] = currentCategory.currency;
+                    pieData[@"currency"] = selectedCategory.currency;
                     pieData[@"color"] = childCategory.categoryColor;
-                    
+
                     [spendingsCategories addObject: pieData];
                     [sortedSpendingValues addObject: @{@"index": @((int)spendingsCategories.count - 1),
-                                                       @"value": [spendings abs]}];
+                     @"value": [spendings abs]}];
 
                 }
 
                 if ([earnings compare: zero] != NSOrderedSame) {
-                    NSMutableDictionary* pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
+                    NSMutableDictionary *pieData = [NSMutableDictionary dictionaryWithCapacity: 4];
                     pieData[@"name"] = [childCategory localName];
                     pieData[@"value"] = earnings;
-                    pieData[@"currency"] = currentCategory.currency;
+                    pieData[@"currency"] = selectedCategory.currency;
                     pieData[@"color"] = childCategory.categoryColor;
-                    
+
                     [earningsCategories addObject: pieData];
                     [sortedEarningValues addObject: @{@"index": @((int)earningsCategories.count - 1),
-                                                      @"value": [earnings abs]}];
+                     @"value": [earnings abs]}];
                 }
             }
         }
-        
         // The sorted arrays contain values for the mini plots.
-        NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO];
         [sortedEarningValues sortUsingDescriptors: @[sortDescriptor]];
         [sortedSpendingValues sortUsingDescriptors: @[sortDescriptor]];
     }
@@ -1065,7 +1063,6 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     for (NSUInteger i = 0; i < spendingsCategories.count; i++) {
         [spendingsPlotRadialOffsets addObject: @0];
     }
-
     [self updatePlotsEarnings: [totalEarnings floatValue] spendings: [totalSpendings floatValue]];
     [self updateMiniPlotAxes];
 }
@@ -1077,11 +1074,11 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     if (sortedEarningValues.count > 0) {
         tipValue = [sortedEarningValues[0][@"value"] floatValue];
     }
-    CPTXYPlotSpace* barPlotSpace = (CPTXYPlotSpace*)earningsMiniPlot.plotSpace;
-    
+    CPTXYPlotSpace *barPlotSpace = (CPTXYPlotSpace *)earningsMiniPlot.plotSpace;
+
     // Make the range 5 times larger than the largest value in the array
     // to compress the plot to 20% of the total height of the graph.
-    CPTPlotRange* plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
+    CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
                                                            length: CPTDecimalFromFloat(5 * tipValue)];
     barPlotSpace.globalYRange = plotRange;
     barPlotSpace.yRange = plotRange;
@@ -1090,8 +1087,8 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     if (sortedSpendingValues.count > 0) {
         tipValue = [sortedSpendingValues[0][@"value"] floatValue];
     }
-    barPlotSpace = (CPTXYPlotSpace*)spendingsMiniPlot.plotSpace;
-    
+    barPlotSpace = (CPTXYPlotSpace *)spendingsMiniPlot.plotSpace;
+
     plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
                                              length: CPTDecimalFromFloat(5 * tipValue)];
     barPlotSpace.globalYRange = plotRange;
@@ -1134,22 +1131,22 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
 - (void)updateMiniPlotAxes
 {
-    CPTAxisSet* axisSet = pieChartGraph.axisSet;
-    
+    CPTAxisSet *axisSet = pieChartGraph.axisSet;
+
     float range;
 
     // Earnings plot axes.
     if (sortedEarningValues.count > 0) {
         range = [sortedEarningValues[0][@"value"] floatValue];
     } else {
-        CPTXYPlotSpace* barPlotSpace = (CPTXYPlotSpace*)earningsMiniPlot.plotSpace;
+        CPTXYPlotSpace *barPlotSpace = (CPTXYPlotSpace *)earningsMiniPlot.plotSpace;
         range = barPlotSpace.yRange.lengthDouble / 5;
     }
-    
+
     // The magic numbers are empirically determined ratios to restrict the
     // plots in the lower area of the graph and have a constant grid line interval.
-    CPTXYAxis* x = (axisSet.axes)[0];
-    CPTXYAxis* y = (axisSet.axes)[1];
+    CPTXYAxis *x = (axisSet.axes)[0];
+    CPTXYAxis *y = (axisSet.axes)[1];
     y.majorIntervalLength = CPTDecimalFromFloat(0.16 * range);
     x.gridLinesRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
                                                     length: CPTDecimalFromFloat(1.18 * range)];
@@ -1157,15 +1154,15 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                                                   length: CPTDecimalFromFloat(1.18 * range)];
     y.visibleAxisRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
                                                       length: CPTDecimalFromFloat(1.27 * range)];
-    
+
     // Spendings plot axes.
     if (sortedSpendingValues.count > 0) {
         range = [sortedSpendingValues[0][@"value"] floatValue];
     } else {
-        CPTXYPlotSpace* barPlotSpace = (CPTXYPlotSpace*)spendingsMiniPlot.plotSpace;
+        CPTXYPlotSpace *barPlotSpace = (CPTXYPlotSpace *)spendingsMiniPlot.plotSpace;
         range = barPlotSpace.yRange.lengthDouble / 5;
     }
-    
+
     x = (axisSet.axes)[2];
     y = (axisSet.axes)[3];
     y.majorIntervalLength = CPTDecimalFromFloat(0.16 * range);
@@ -1175,30 +1172,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                                                   length: CPTDecimalFromFloat(1.18 * range)];
     y.visibleAxisRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromFloat(0)
                                                       length: CPTDecimalFromFloat(1.27 * range)];
-    
-}
 
-- (void)releaseHelpWindow
-{
-    [[helpButton window] removeChildWindow: helpWindow];
-    [helpWindow orderOut: self];
-    helpWindow = nil;
-}
-
-- (void)hideHelp
-{
-    if (helpWindow != nil) {
-        [helpWindow fadeOut];
-        
-        // We need to delay the release of the help window
-        // otherwise it will just disappear instead to fade out.
-        // With 10.7 and completion handlers it would be way more elegant.
-        [NSTimer scheduledTimerWithTimeInterval: .5
-                                         target: self 
-                                       selector: @selector(releaseHelpWindow)
-                                       userInfo: nil
-                                        repeats: NO];
-    }
 }
 
 #pragma mark -
@@ -1207,16 +1181,15 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 /**
  * Updates the info annotation with the given values.
  */
-- (void)updateInfoLayerForCategory: (NSString*)category
-                          earnings: (NSDecimalNumber*)earnings
+- (void)updateInfoLayerForCategory: (NSString *)category
+                          earnings: (NSDecimalNumber *)earnings
                 earningsPercentage: (CGFloat)earningsPercentage
-                         spendings: (NSDecimalNumber*)spendings
+                         spendings: (NSDecimalNumber *)spendings
                spendingsPercentage: (CGFloat)spendingsPercentage
-                             color: (NSColor*)color
+                             color: (NSColor *)color
 {
-    if (infoTextFormatter == nil)
-    {
-        NSString* currency = (currentCategory == nil) ? @"EUR" : [currentCategory currency];
+    if (infoTextFormatter == nil) {
+        NSString *currency = (selectedCategory == nil) ? @"EUR" : [selectedCategory currency];
         infoTextFormatter = [[NSNumberFormatter alloc] init];
         infoTextFormatter.usesSignificantDigits = NO;
         infoTextFormatter.minimumFractionDigits = 2;
@@ -1224,12 +1197,11 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
         infoTextFormatter.currencyCode = currency;
         infoTextFormatter.zeroSymbol = [NSString stringWithFormat: @"0 %@", infoTextFormatter.currencySymbol];
     }
-    
+
     // Prepare the info layer if not yet done.
-    if (infoLayer == nil)
-    {
+    if (infoLayer == nil) {
         CGRect frame = CGRectMake(0.5, 0.5, 120, 50);
-        infoLayer = [(ColumnLayoutCorePlotLayer*)[ColumnLayoutCorePlotLayer alloc] initWithFrame: frame];
+        infoLayer = [(ColumnLayoutCorePlotLayer *)[ColumnLayoutCorePlotLayer alloc] initWithFrame : frame];
         infoLayer.hidden = YES;
 
         infoLayer.paddingTop = 1;
@@ -1243,20 +1215,20 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
         infoLayer.shadowOffset = CGSizeMake(2, -2);
         infoLayer.shadowOpacity = 0.75;
 
-        CPTMutableLineStyle* lineStyle = [CPTMutableLineStyle lineStyle];
+        CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
         lineStyle.lineWidth = 2;
         lineStyle.lineColor = [CPTColor whiteColor];
-        CPTFill* fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 0.1 green: 0.1 blue: 0.1 alpha: 0.75]];
+        CPTFill *fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 0.1 green: 0.1 blue: 0.1 alpha: 0.75]];
         infoLayer.borderLineStyle = lineStyle;
         infoLayer.fill = fill;
         infoLayer.cornerRadius = 10;
-        
-        CPTMutableTextStyle* textStyle = [CPTMutableTextStyle textStyle];
+
+        CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
         textStyle.fontName = @"LucidaGrande-Bold";
         textStyle.fontSize = 14;
         textStyle.color = [CPTColor whiteColor];
         textStyle.textAlignment = CPTTextAlignmentRight;
-        
+
         spendingsInfoLayer = [[CPTTextLayer alloc] initWithText: @"" style: textStyle];
         [infoLayer addSublayer: spendingsInfoLayer];
 
@@ -1268,18 +1240,19 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
         textStyle.fontSize = 14;
         textStyle.color = [CPTColor whiteColor];
         textStyle.textAlignment = CPTTextAlignmentCenter;
-        
+
         categoryInfoLayer = [[CPTTextLayer alloc] initWithText: @"" style: textStyle];
         categoryInfoLayer.cornerRadius = 3;
         [infoLayer addSublayer: categoryInfoLayer];
-        
+
         // We can also prepare the annotation which hosts the info layer but don't add it to the plot area yet.
         // When we switch the plots it won't show up otherwise unless we add it on demand.
         infoAnnotation = [[CPTAnnotation alloc] init];
         infoAnnotation.contentLayer = infoLayer;
     }
-    if (![pieChartGraph.annotations containsObject: infoAnnotation])
-        [pieChartGraph addAnnotation: infoAnnotation]; 
+    if (![pieChartGraph.annotations containsObject: infoAnnotation]) {
+        [pieChartGraph addAnnotation: infoAnnotation];
+    }
 
     if (earnings != nil) {
         earningsInfoLayer.text = [NSString stringWithFormat: @"+%@ | %d %%", [infoTextFormatter stringFromNumber: earnings], (int)round(100 * earningsPercentage)];
@@ -1297,32 +1270,33 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     CGColorRef cgColor = CGColorCreateFromNSColor(color);
     categoryInfoLayer.backgroundColor = cgColor;
     CGColorRelease(cgColor);
-    
+
     [infoLayer sizeToFit];
 }
 
 - (void)updateInfoLayerPosition
 {
     CGRect frame = pieChartGraph.frame;
-    
+
     CGPoint infoLayerLocation;
     infoLayerLocation.x = frame.origin.x + frame.size.width / 2;
     infoLayerLocation.y = frame.size.height - infoLayer.bounds.size.height / 2 - 10;
-    
-    if (infoLayer.position.x != infoLayerLocation.x || infoLayer.position.y != infoLayerLocation.y)
+
+    if (infoLayer.position.x != infoLayerLocation.x || infoLayer.position.y != infoLayerLocation.y) {
         [infoLayer slideTo: infoLayerLocation inTime: 0.15];
+    }
 }
 
 /**
  * Collects earnings and spendings for the given category and computes its share of the total
  * spendings/earnings. This is then displayed in the info window.
  */
-- (void)showInfoFor: (NSString*)category
+- (void)showInfoFor: (NSString *)category
 {
-    NSDecimalNumber* earnings = [NSDecimalNumber zero];
-    NSDecimalNumber* totalEarnings = [NSDecimalNumber zero];
-    NSColor* color = nil;
-    for (NSDictionary* entry in earningsCategories) {
+    NSDecimalNumber *earnings = [NSDecimalNumber zero];
+    NSDecimalNumber *totalEarnings = [NSDecimalNumber zero];
+    NSColor         *color = nil;
+    for (NSDictionary *entry in earningsCategories) {
         if ([[entry valueForKey: @"name"] isEqualToString: category]) {
             earnings = [entry valueForKey: @"value"];
             color = [entry valueForKey: @"color"];
@@ -1330,10 +1304,10 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
         totalEarnings = [totalEarnings decimalNumberByAdding: [entry valueForKey: @"value"]];
     }
     CGFloat earningsShare = ([totalEarnings floatValue] != 0) ? [earnings floatValue] / [totalEarnings floatValue] : 0;
-    
-    NSDecimalNumber* spendings = [NSDecimalNumber zero];
-    NSDecimalNumber* totalSpendings = [NSDecimalNumber zero];
-    for (NSDictionary* entry in spendingsCategories) {
+
+    NSDecimalNumber *spendings = [NSDecimalNumber zero];
+    NSDecimalNumber *totalSpendings = [NSDecimalNumber zero];
+    for (NSDictionary *entry in spendingsCategories) {
         if ([[entry valueForKey: @"name"] isEqualToString: category]) {
             spendings = [entry valueForKey: @"value"];
             color = [entry valueForKey: @"color"];
@@ -1341,14 +1315,14 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
         totalSpendings = [totalSpendings decimalNumberByAdding: [entry valueForKey: @"value"]];
     }
     CGFloat spendingsShare = ([totalSpendings floatValue] != 0) ? [spendings floatValue] / [totalSpendings floatValue] : 0;
-    
+
     [self updateInfoLayerForCategory: category
                             earnings: earnings
                   earningsPercentage: earningsShare
                            spendings: spendings
                  spendingsPercentage: spendingsShare
                                color: color];
-    
+
 }
 
 #pragma mark -
@@ -1359,31 +1333,10 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     [self updateValues];
 }
 
-- (IBAction)toggleHelp: (id)sender
+- (IBAction)showHelp: (id)sender
 {
-    if (!helpWindow) {
-        NSPoint buttonPoint = NSMakePoint(NSMidX([helpButton frame]),
-                                          NSMidY([helpButton frame]));
-        buttonPoint = [topView convertPoint: buttonPoint toView: nil];
-        helpWindow = [[MAAttachedWindow alloc] initWithView: helpContentView 
-                                            attachedToPoint: buttonPoint 
-                                                   inWindow: [topView window] 
-                                                     onSide: MAPositionTopLeft 
-                                                 atDistance: 20];
-        
-        [helpWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 0.2 alpha: 1]];
-        [helpWindow setViewMargin: 10];
-        [helpWindow setBorderWidth: 0];
-        [helpWindow setCornerRadius: 10];
-        [helpWindow setHasArrow: YES];
-        [helpWindow setDrawsRoundCornerBesideArrow: YES];
-
-        [helpWindow setAlphaValue: 0];
-        [[helpButton window] addChildWindow: helpWindow ordered: NSWindowAbove];
-        [helpWindow fadeIn];
-     
-    } else {
-        [self hideHelp];
+    if (!helpPopover.shown) {
+        [helpPopover showRelativeToRect: helpButton.bounds ofView: helpButton preferredEdge: NSMinYEdge];
     }
 }
 
@@ -1429,7 +1382,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
 - (void)print
 {
-    NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
+    NSPrintInfo *printInfo = [NSPrintInfo sharedPrintInfo];
     [printInfo setTopMargin: 45];
     [printInfo setBottomMargin: 45];
     [printInfo setHorizontalPagination: NSFitPagination];
@@ -1442,7 +1395,7 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     [printOp runOperation];
 }
 
-- (NSView*)mainView
+- (NSView *)mainView
 {
     return topView;
 }
@@ -1458,10 +1411,9 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
 - (void)deactivate
 {
-    [self hideHelp];
 }
 
-- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to
+- (void)setTimeRangeFrom: (ShortDate *)from to: (ShortDate *)to
 {
     fromDate = from;
     toDate = to;
@@ -1487,11 +1439,12 @@ static NSString* const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
                                            delegate: self];
 }
 
-- (void)setCategory: (Category*)newCategory
+- (void)setSelectedCategory: (Category *)newCategory
 {
-    currentCategory = newCategory;
-    [self updateValues];
+    if (selectedCategory != newCategory) {
+        selectedCategory = newCategory;
+        [self updateValues];
+    }
 }
 
 @end
-

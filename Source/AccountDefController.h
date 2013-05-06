@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -23,37 +23,37 @@
 @class BWGradientBox;
 
 @interface AccountDefController : NSWindowController {
-    IBOutlet NSObjectController		*accountController;
-    IBOutlet BWGradientBox          *backgroundGradient;
-    IBOutlet BWGradientBox          *topGradient;
-    IBOutlet NSPopUpButton			*dropDown;
-    IBOutlet NSArrayController		*users;
-	IBOutlet NSTextField			*bicField;
-	IBOutlet NSTextField			*bankCodeField;
-	IBOutlet NSTextField			*bankNameField;
-	IBOutlet NSTextField			*balanceField;
-	IBOutlet NSTextField			*balanceLabel;
-	IBOutlet NSPredicateEditor		*predicateEditor;
-	
-	IBOutlet NSBox					*boxView;
-	IBOutlet NSView					*manAccountAddView;
-	IBOutlet NSView					*accountAddView;
+    IBOutlet NSObjectController *accountController;
+    IBOutlet BWGradientBox      *backgroundGradient;
+    IBOutlet BWGradientBox      *topGradient;
+    IBOutlet NSPopUpButton      *dropDown;
+    IBOutlet NSArrayController  *users;
+    IBOutlet NSTextField        *bicField;
+    IBOutlet NSTextField        *bankCodeField;
+    IBOutlet NSTextField        *bankNameField;
+    IBOutlet NSTextField        *balanceField;
+    IBOutlet NSTextField        *balanceLabel;
+    IBOutlet NSPredicateEditor  *predicateEditor;
 
-	NSView							*currentAddView;
-	
-	NSManagedObjectContext			*moc;
-	BankAccount						*account;
-	BankAccount						*newAccount;
-    BOOL                            success;
+    IBOutlet NSBox  *boxView;
+    IBOutlet NSView *manAccountAddView;
+    IBOutlet NSView *accountAddView;
+
+    NSView *currentAddView;
+
+    NSManagedObjectContext *moc;
+    BankAccount            *account;
+    BankAccount            *newAccount;
+    BOOL                   success;
 }
 
 - (id)init;
 - (BOOL)check;
-- (void)setBankCode: (NSString*)code name: (NSString*)name;
+- (void)setBankCode: (NSString *)code name: (NSString *)name;
 
-- (IBAction)cancel:(id)sender;
-- (IBAction)ok:(id)sender;
+- (IBAction)cancel: (id)sender;
+- (IBAction)ok: (id)sender;
 - (IBAction)dropChanged: (id)sender;
-- (IBAction)predicateEditorChanged:(id)sender;
+- (IBAction)predicateEditorChanged: (id)sender;
 
 @end

@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -54,7 +54,7 @@
 
 @synthesize changeState;
 
-- (id)initWithEntity: (NSEntityDescription *)entity insertIntoManagedObjectContext: (NSManagedObjectContext *)context; 
+- (id)initWithEntity: (NSEntityDescription *)entity insertIntoManagedObjectContext: (NSManagedObjectContext *)context;
 {
     self = [super initWithEntity: entity insertIntoManagedObjectContext: context];
     if (self != nil) {
@@ -63,118 +63,133 @@
     return self;
 }
 
--(NSString*)purpose
+- (NSString *)purpose
 {
-	NSMutableString* s = [NSMutableString stringWithCapacity: 100 ];
-	if(self.purpose1) { [s appendString: self.purpose1 ]; }
-	if(self.purpose2) { [s appendString: @" " ]; [s appendString: self.purpose2 ]; }
-	if(self.purpose3) { [s appendString: @" " ]; [s appendString: self.purpose3 ]; }
-	if(self.purpose4) { [s appendString: @" " ]; [s appendString: self.purpose4 ]; }
-	
-	return s;
+    NSMutableString *s = [NSMutableString stringWithCapacity: 100];
+    if (self.purpose1) {
+        [s appendString: self.purpose1];
+    }
+    if (self.purpose2) {
+        [s appendString: @" "]; [s appendString: self.purpose2];
+    }
+    if (self.purpose3) {
+        [s appendString: @" "]; [s appendString: self.purpose3];
+    }
+    if (self.purpose4) {
+        [s appendString: @" "]; [s appendString: self.purpose4];
+    }
+
+    return s;
 }
 
-- (void)copyFromTemplate: (TransferTemplate*)t withLimits: (TransactionLimits*)limits
+- (void)copyFromTemplate: (TransferTemplate *)t withLimits: (TransactionLimits *)limits
 {
-	NSString *s;
-	NSUInteger maxLen = [limits maxLenRemoteName] * [limits maxLinesRemoteName];
-	s = t.remoteName;
-	if (maxLen > 0 && [s length] > maxLen) {
-       s = [s substringToIndex:maxLen]; 
-    }
-	self.remoteName = s;
-	
-	maxLen = [limits maxLenPurpose];
-	int num = [limits maxLinesPurpose];
-	
-	s = t.purpose1;
-	if (maxLen > 0 && [s length] > maxLen) {
+    NSString   *s;
+    NSUInteger maxLen = [limits maxLenRemoteName] * [limits maxLinesRemoteName];
+    s = t.remoteName;
+    if (maxLen > 0 && [s length] > maxLen) {
         s = [s substringToIndex: maxLen];
     }
-	self.purpose1 = s;
-	
-	if (num == 0 || num > 1) {
-		s = t.purpose2;
-		if (maxLen > 0 && [s length] > maxLen) {
+    self.remoteName = s;
+
+    maxLen = [limits maxLenPurpose];
+    int num = [limits maxLinesPurpose];
+
+    s = t.purpose1;
+    if (maxLen > 0 && [s length] > maxLen) {
+        s = [s substringToIndex: maxLen];
+    }
+    self.purpose1 = s;
+
+    if (num == 0 || num > 1) {
+        s = t.purpose2;
+        if (maxLen > 0 && [s length] > maxLen) {
             s = [s substringToIndex: maxLen];
         }
-		self.purpose2 = s;
-	}
-	
-	if (num == 0 || num > 2) {
-		s = t.purpose3;
-		if (maxLen > 0 && [s length] > maxLen) {
+        self.purpose2 = s;
+    }
+
+    if (num == 0 || num > 2) {
+        s = t.purpose3;
+        if (maxLen > 0 && [s length] > maxLen) {
             s = [s substringToIndex: maxLen];
         }
-		self.purpose3 = s;
-	}
-	
-	if (num == 0 || num > 3) {
-		s = t.purpose4;
-		if (maxLen > 0 && [s length] > maxLen) {
+        self.purpose3 = s;
+    }
+
+    if (num == 0 || num > 3) {
+        s = t.purpose4;
+        if (maxLen > 0 && [s length] > maxLen) {
             s = [s substringToIndex: maxLen];
         }
-		self.purpose4 = s;
-	}
-	
-	self.remoteAccount = t.remoteAccount;
-	self.remoteBankCode = t.remoteBankCode;
-	self.remoteIBAN = t.remoteIBAN;
-	self.remoteBIC = t.remoteBIC;
+        self.purpose4 = s;
+    }
+
+    self.remoteAccount = t.remoteAccount;
+    self.remoteBankCode = t.remoteBankCode;
+    self.remoteIBAN = t.remoteIBAN;
+    self.remoteBIC = t.remoteBIC;
     // No value by intention.
 }
 
-- (void)copyFromTransfer: (Transfer*)other withLimits: (TransactionLimits*)limits
+- (void)copyFromTransfer: (Transfer *)other withLimits: (TransactionLimits *)limits
 {
-	NSString *s;
-	NSUInteger maxLen = limits.maxLenRemoteName * limits.maxLinesRemoteName;
-	s = other.remoteName;
-	if (s.length > maxLen) {
+    NSString   *s;
+    NSUInteger maxLen = limits.maxLenRemoteName * limits.maxLinesRemoteName;
+    s = other.remoteName;
+    if (s.length > maxLen) {
         s = [s substringToIndex: maxLen];
     }
-	self.remoteName = s;
-	
-	maxLen = [limits maxLenPurpose];
-	int num = [limits maxLinesPurpose];
-	
-	s = other.purpose1;
-	if (s.length > maxLen) {
+    self.remoteName = s;
+
+    maxLen = [limits maxLenPurpose];
+    int num = [limits maxLinesPurpose];
+
+    s = other.purpose1;
+    if (s.length > maxLen) {
         s = [s substringToIndex: maxLen];
     }
-	self.purpose1 = s;
-	
-	if (num > 1) {
-		s = other.purpose2;
-		if (s.length > maxLen) {
-            s = [s substringToIndex: maxLen];   
+    self.purpose1 = s;
+
+    if (num > 1) {
+        s = other.purpose2;
+        if (s.length > maxLen) {
+            s = [s substringToIndex: maxLen];
         }
-		self.purpose2 = s;
-	}
-	
-	if (num > 2) {
-		s = other.purpose3;
-		if (s.length > maxLen) {
-            s = [s substringToIndex: maxLen];   
+        self.purpose2 = s;
+    }
+
+    if (num > 2) {
+        s = other.purpose3;
+        if (s.length > maxLen) {
+            s = [s substringToIndex: maxLen];
         }
-		self.purpose3 = s;
-	}
-	
-	if (num > 3) {
-		s = other.purpose4;
-		if (s.length > maxLen) {
-            s = [s substringToIndex: maxLen];   
+        self.purpose3 = s;
+    }
+
+    if (num > 3) {
+        s = other.purpose4;
+        if (s.length > maxLen) {
+            s = [s substringToIndex: maxLen];
         }
-		self.purpose4 = s;
-	}
-	
-	self.remoteAccount = other.remoteAccount;
-	self.remoteBankCode = other.remoteBankCode;
-	self.remoteIBAN = other.remoteIBAN;
-	self.remoteBIC = other.remoteBIC;
-	self.value = other.value;
+        self.purpose4 = s;
+    }
+
+    self.remoteAccount = other.remoteAccount;
+    self.remoteBankCode = other.remoteBankCode;
+    self.remoteIBAN = other.remoteIBAN;
+    self.remoteBIC = other.remoteBIC;
+    self.value = other.value;
 }
 
--(void)setJobId: (unsigned int) jid { jobId = jid; }
--(unsigned int)jobId { return jobId; };
+- (void)setJobId: (unsigned int)jid
+{
+    jobId = jid;
+}
+
+- (unsigned int)jobId
+{
+    return jobId;
+}
 
 @end

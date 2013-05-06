@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -29,71 +29,71 @@
 
 #import "BusinessTransactionsController.h"
 
-extern NSString* const CategoryColorNotification;
-extern NSString* const CategoryKey;
+extern NSString *const CategoryColorNotification;
+extern NSString *const CategoryKey;
 
 @implementation AccountMaintenanceController
 
-- (id)initWithAccount: (BankAccount*)acc
+- (id)initWithAccount: (BankAccount *)acc
 {
-	self = [super initWithWindowNibName: @"AccountMaintenance"];
-	moc = MOAssistant.assistant.memContext;
+    self = [super initWithWindowNibName: @"AccountMaintenance"];
+    moc = MOAssistant.assistant.memContext;
 
-	account = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount" inManagedObjectContext: moc];
-	
-	changedAccount = acc;
-	account.bankCode = acc.bankCode;
-	account.accountNumber = acc.accountNumber;
+    account = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount" inManagedObjectContext: moc];
+
+    changedAccount = acc;
+    account.bankCode = acc.bankCode;
+    account.accountNumber = acc.accountNumber;
     account.accountSuffix = acc.accountSuffix;
-	account.owner = acc.owner;
-	account.bankName = acc.bankName;
-	account.name = acc.name;
-	account.bic = acc.bic;
-	account.iban = acc.iban;
-	account.currency = acc.currency;
-	account.collTransferMethod = acc.collTransferMethod;
-	account.isStandingOrderSupported = acc.isStandingOrderSupported;
+    account.owner = acc.owner;
+    account.bankName = acc.bankName;
+    account.name = acc.name;
+    account.bic = acc.bic;
+    account.iban = acc.iban;
+    account.currency = acc.currency;
+    account.collTransferMethod = acc.collTransferMethod;
+    account.isStandingOrderSupported = acc.isStandingOrderSupported;
     account.noAutomaticQuery = acc.noAutomaticQuery;
-	account.userId = acc.userId;
+    account.userId = acc.userId;
     account.categoryColor = acc.categoryColor;
     account.isHidden = acc.isHidden;
     account.noCatRep = acc.noCatRep;
     account.balance = acc.balance;
 
-	return self;
+    return self;
 }
 
 - (void)awakeFromNib
 {
-	if ([changedAccount.isManual boolValue]) {
-        int deltaHeight = [manAccountAddView frame ].size.height - [accountAddView frame ].size.height;
-        
+    if ([changedAccount.isManual boolValue]) {
+        int deltaHeight = [manAccountAddView frame].size.height - [accountAddView frame].size.height;
+
         // change window size
         NSRect frame = [[self window] frame];
         frame.size.height += deltaHeight;
-        [[self window] setFrame:frame display:YES];
+        [[self window] setFrame: frame display: YES];
 
         manAccountAddView.frame = accountAddView.frame;
-		[boxView replaceSubview: accountAddView with: manAccountAddView];
+        [boxView replaceSubview: accountAddView with: manAccountAddView];
 
-		[predicateEditor addRow:self ];
-		NSString* s = changedAccount.rule;
-		if(s) {
-			NSPredicate* pred = [NSCompoundPredicate predicateWithFormat: s ];
-			if([pred class ] != [NSCompoundPredicate class ]) {
-				NSCompoundPredicate* comp = [[NSCompoundPredicate alloc ] initWithType: NSOrPredicateType subpredicates: @[pred]];
-				pred = comp;
-			}
-			[predicateEditor setObjectValue: pred ];
-		}
-	} else {
+        [predicateEditor addRow: self];
+        NSString *s = changedAccount.rule;
+        if (s) {
+            NSPredicate *pred = [NSCompoundPredicate predicateWithFormat: s];
+            if ([pred class] != [NSCompoundPredicate class]) {
+                NSCompoundPredicate *comp = [[NSCompoundPredicate alloc] initWithType: NSOrPredicateType subpredicates: @[pred]];
+                pred = comp;
+            }
+            [predicateEditor setObjectValue: pred];
+        }
+    } else {
         // no manual account
         // check if collective transfers are available - if not, disable collection transfer method popup
-        BOOL collTransferSupported = [[HBCIClient hbciClient ] isTransferSupported:TransferTypeCollectiveCredit forAccount:changedAccount];
+        BOOL collTransferSupported = [[HBCIClient hbciClient] isTransferSupported: TransferTypeCollectiveCredit forAccount: changedAccount];
         if (collTransferSupported == NO) {
-            NSMenuItem *item = [collTransferButton itemAtIndex:0];
-            [item setTitle:NSLocalizedString(@"AP428", nil)];
-            [collTransferButton setEnabled:NO ];
+            NSMenuItem *item = [collTransferButton itemAtIndex: 0];
+            [item setTitle: NSLocalizedString(@"AP428", nil)];
+            [collTransferButton setEnabled: NO];
         }
     }
 
@@ -104,49 +104,51 @@ extern NSString* const CategoryKey;
     backgroundGradient.fillColor = [NSColor whiteColor];
 }
 
--(IBAction)cancel:(id)sender 
+- (IBAction)cancel: (id)sender
 {
     if ([NSColorPanel sharedColorPanelExists]) {
         [[NSColorPanel sharedColorPanel] close];
     }
     [self close];
-	[moc reset];
-	[NSApp stopModalWithCode: 0];
+    [moc reset];
+    [NSApp stopModalWithCode: 0];
 }
 
--(IBAction)ok:(id)sender
+- (IBAction)ok: (id)sender
 {
     if ([NSColorPanel sharedColorPanelExists]) {
         [[NSColorPanel sharedColorPanel] close];
     }
 
-	[accountController commitEditing];
-	if (![self check]) {
+    [accountController commitEditing];
+    if (![self check]) {
         return;
     }
-	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
-	
-	// update common data
-	changedAccount.iban = account.iban;
-	changedAccount.bic = account.bic;
-	changedAccount.owner = account.owner;
-	changedAccount.name = account.name;
-	changedAccount.collTransferMethod = account.collTransferMethod;
-	changedAccount.isStandingOrderSupported = account.isStandingOrderSupported;
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+
+    // update common data
+    changedAccount.iban = account.iban;
+    changedAccount.bic = account.bic;
+    changedAccount.owner = account.owner;
+    changedAccount.name = account.name;
+    changedAccount.collTransferMethod = account.collTransferMethod;
+    changedAccount.isStandingOrderSupported = account.isStandingOrderSupported;
     changedAccount.noAutomaticQuery = account.noAutomaticQuery;
     changedAccount.categoryColor = account.categoryColor;
     changedAccount.isHidden = account.isHidden;
     changedAccount.noCatRep = account.noCatRep;
-	
-	if ([changedAccount.isManual boolValue] == YES) {
-		NSPredicate* predicate = [predicateEditor objectValue];
-		if(predicate) changedAccount.rule = [predicate description ];
-        if ([changedAccount.balance compare:account.balance] != NSOrderedSame) {
+
+    if ([changedAccount.isManual boolValue] == YES) {
+        NSPredicate *predicate = [predicateEditor objectValue];
+        if (predicate) {
+            changedAccount.rule = [predicate description];
+        }
+        if ([changedAccount.balance compare: account.balance] != NSOrderedSame) {
             changedAccount.balance = account.balance;
             [[Category bankRoot] rollup];
         }
         changedAccount.balance = account.balance;
-	} else {
+    } else {
         changedAccount.accountSuffix = account.accountSuffix;
     }
 
@@ -156,45 +158,46 @@ extern NSString* const CategoryKey;
                                                     userInfo: info];
     [self close];
 
-	// save all
-	NSError *error=nil;
-	if([context save: &error ] == NO) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-	}
-	
-	if (changedAccount.userId) {
-		[[HBCIClient hbciClient ] changeAccount:changedAccount ];
-	}
+    // save all
+    NSError *error = nil;
+    if ([context save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+    }
 
-	[moc reset];
-	[NSApp stopModalWithCode: 1];
+    if (changedAccount.userId) {
+        [[HBCIClient hbciClient] changeAccount: changedAccount];
+    }
+
+    [moc reset];
+    [NSApp stopModalWithCode: 1];
 }
 
 - (IBAction)predicateEditorChanged: (id)sender
 {
     // If the user deleted the first row, then add it again - no sense leaving the user with no rows.
-    if ([predicateEditor numberOfRows] == 0)
-		[predicateEditor addRow:self];
+    if ([predicateEditor numberOfRows] == 0) {
+        [predicateEditor addRow: self];
+    }
 }
 
 - (BOOL)check
-{	
-	// check IBAN
-	HBCIClient *hbciClient = [HBCIClient hbciClient ];	
-	
-	if([hbciClient checkIBAN: account.iban ] == NO) {
-		NSRunAlertPanel(NSLocalizedString(@"AP59", nil), 
-						NSLocalizedString(@"AP70", nil),
-						NSLocalizedString(@"AP61", nil), nil, nil);
-		return NO;
-	}
-	
-    if (![changedAccount.accountSuffix isEqualToString:account.accountSuffix ]) {
+{
+    // check IBAN
+    HBCIClient *hbciClient = [HBCIClient hbciClient];
+
+    if ([hbciClient checkIBAN: account.iban] == NO) {
+        NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+                        NSLocalizedString(@"AP70", nil),
+                        NSLocalizedString(@"AP61", nil), nil, nil);
+        return NO;
+    }
+
+    if (![changedAccount.accountSuffix isEqualToString: account.accountSuffix]) {
         if (changedAccount.accountSuffix != nil || account.accountSuffix != nil) {
-            int result = NSRunAlertPanel(NSLocalizedString(@"AP814", nil), 
+            int result = NSRunAlertPanel(NSLocalizedString(@"AP814", nil),
                                          NSLocalizedString(@"AP205", nil),
-                                         NSLocalizedString(@"AP4", nil), 
+                                         NSLocalizedString(@"AP4", nil),
                                          NSLocalizedString(@"AP3", nil), nil);
             if (result == NSAlertDefaultReturn) {
                 account.accountSuffix = changedAccount.accountSuffix;
@@ -202,24 +205,24 @@ extern NSString* const CategoryKey;
             }
         }
     }
-    
-	return YES;
+
+    return YES;
 }
 
 - (IBAction)showSupportedBusinessTransactions: (id)sender
 {
-	NSArray* result = [[HBCIClient hbciClient] getSupportedBusinessTransactions: account];
-	if (result != nil) {
+    NSArray *result = [[HBCIClient hbciClient] getSupportedBusinessTransactions: account];
+    if (result != nil) {
         if (supportedTransactionsSheet == nil) {
             transactionsController = [[BusinessTransactionsController alloc] initWithTransactions: result];
             supportedTransactionsSheet = [transactionsController window];
         }
-        
-        [NSApp beginSheet: supportedTransactionsSheet
-           modalForWindow: [self window]
-            modalDelegate: nil
-           didEndSelector: nil
-              contextInfo: nil];
+
+        [NSApp  beginSheet: supportedTransactionsSheet
+            modalForWindow: [self window]
+             modalDelegate: nil
+            didEndSelector: nil
+               contextInfo: nil];
     }
 }
 

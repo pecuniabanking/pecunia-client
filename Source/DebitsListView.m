@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -59,7 +59,7 @@ extern NSString *TransferReadyForUseDataType;
 @synthesize numberFormatter;
 @synthesize dataSource;
 
-- (id)initWithCoder: (NSCoder*)decoder
+- (id)initWithCoder: (NSCoder *)decoder
 {
     self = [super initWithCoder: decoder];
     if (self != nil) {
@@ -67,7 +67,7 @@ extern NSString *TransferReadyForUseDataType;
         [dateFormatter setLocale: [NSLocale currentLocale]];
         [dateFormatter setDateStyle: kCFDateFormatterShortStyle];
         [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
-        
+
         numberFormatter = [[NSNumberFormatter alloc] init];
     }
     return self;
@@ -76,12 +76,12 @@ extern NSString *TransferReadyForUseDataType;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+
     [self setDelegate: self];
     [self registerForDraggedTypes: @[TransferDataType, TransferReadyForUseDataType]];
 }
 
-- (void) dealloc
+- (void)dealloc
 {
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteName"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.date"];
@@ -101,8 +101,8 @@ extern NSString *TransferReadyForUseDataType;
     }
 
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
-    
-    
+
+
 }
 
 #pragma mark -
@@ -110,22 +110,21 @@ extern NSString *TransferReadyForUseDataType;
 
 static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 
-- (void)bind: (NSString *)binding
-    toObject: (id)observableObject
- withKeyPath: (NSString *)keyPath
-     options: (NSDictionary *)options
+- (void)   bind: (NSString *)binding
+       toObject: (id)observableObject
+    withKeyPath: (NSString *)keyPath
+        options: (NSDictionary *)options
 {
-    if ([binding isEqualToString: @"dataSource"])
-    {
+    if ([binding isEqualToString: @"dataSource"]) {
         observedObject = observableObject;
         dataSource = [observableObject valueForKey: keyPath];
-        
+
         // One binding for the array, to get notifications about insertion and deletions.
         [observableObject addObserver: self
                            forKeyPath: @"arrangedObjects"
                               options: 0
                               context: DataSourceBindingContext];
-        
+
         // Bindings to specific attributes to get notified about changes to each of them
         // (for all objects in the array).
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteName" options: 0 context: nil];
@@ -178,89 +177,88 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 #pragma mark -
 #pragma mark PXListViewDelegate protocol implementation
 
-- (NSUInteger)numberOfRowsInListView: (PXListView*)aListView
+- (NSUInteger)numberOfRowsInListView: (PXListView *)aListView
 {
 #pragma unused(aListView)
-	return [dataSource count];
+    return [dataSource count];
 }
 
 - (id)safeAndFormattedValue: (id)value
 {
-    if (value == nil || [value isKindOfClass: [NSNull class]])
+    if (value == nil || [value isKindOfClass: [NSNull class]]) {
         value = @"";
-    else
-    {
+    } else {
         if ([value isKindOfClass: [NSDate class]]) {
             value = [dateFormatter stringFromDate: value];
         }
     }
-    
+
     return value;
 }
 
 #define CELL_HEIGHT 49
 
-- (void)fillCell: (DebitsListViewCell*)cell forRow: (NSUInteger)row
+- (void)fillCell: (DebitsListViewCell *)cell forRow: (NSUInteger)row
 {
     Transfer *transfer = dataSource[row];
-    
+
     NSDate *date = transfer.valutaDate;
     if (date == nil) {
         date = transfer.date;
     }
     NSDictionary *details = @{StatementIndexKey: @((int)row),
-                             StatementDateKey: [self safeAndFormattedValue: date],
-                             StatementRemoteNameKey: [self safeAndFormattedValue: transfer.remoteName],
-                             StatementPurposeKey: [self safeAndFormattedValue: transfer.purpose],
-                             StatementValueKey: [self safeAndFormattedValue: transfer.value],
-                             StatementCurrencyKey: [self safeAndFormattedValue: transfer.currency],
-                             StatementRemoteBankNameKey: [self safeAndFormattedValue: transfer.remoteBankName],
-                             StatementRemoteBankCodeKey: [self safeAndFormattedValue: transfer.remoteBankCode],
-                             StatementRemoteIBANKey: [self safeAndFormattedValue: transfer.remoteIBAN],
-                             StatementRemoteBICKey: [self safeAndFormattedValue: transfer.remoteBIC],
-                             StatementRemoteAccountKey: [self safeAndFormattedValue: transfer.remoteAccount],
-                             StatementTypeKey: [self safeAndFormattedValue: transfer.type],
-                             StatementColorKey: [transfer.account categoryColor]};
-    
+                              StatementDateKey: [self safeAndFormattedValue: date],
+                              StatementRemoteNameKey: [self safeAndFormattedValue: transfer.remoteName],
+                              StatementPurposeKey: [self safeAndFormattedValue: transfer.purpose],
+                              StatementValueKey: [self safeAndFormattedValue: transfer.value],
+                              StatementCurrencyKey: [self safeAndFormattedValue: transfer.currency],
+                              StatementRemoteBankNameKey: [self safeAndFormattedValue: transfer.remoteBankName],
+                              StatementRemoteBankCodeKey: [self safeAndFormattedValue: transfer.remoteBankCode],
+                              StatementRemoteIBANKey: [self safeAndFormattedValue: transfer.remoteIBAN],
+                              StatementRemoteBICKey: [self safeAndFormattedValue: transfer.remoteBIC],
+                              StatementRemoteAccountKey: [self safeAndFormattedValue: transfer.remoteAccount],
+                              StatementTypeKey: [self safeAndFormattedValue: transfer.type],
+                              StatementColorKey: [transfer.account categoryColor]};
+
     [cell setDetails: details];
-    
+
     NSRect frame = [cell frame];
     frame.size.height = CELL_HEIGHT;
     [cell setFrame: frame];
-    
+
     [cell setTextAttributesForPositivNumbers: [[self numberFormatter] textAttributesForPositiveValues]
-                             negativeNumbers: [[self numberFormatter ] textAttributesForNegativeValues]];
-    
+                             negativeNumbers: [[self numberFormatter] textAttributesForNegativeValues]];
+
 }
 
-- (PXListViewCell*)listView: (PXListView*)aListView cellForRow: (NSUInteger)row
+- (PXListViewCell *)listView: (PXListView *)aListView cellForRow: (NSUInteger)row
 {
-	DebitsListViewCell* cell = (DebitsListViewCell*)[aListView dequeueCellWithReusableIdentifier: @"debit-cell"];
-	
-	if (!cell) {
-		cell = [DebitsListViewCell cellLoadedFromNibNamed: @"DebitsListViewCell" reusableIdentifier: @"debit-cell"];
+    DebitsListViewCell *cell = (DebitsListViewCell *)[aListView dequeueCellWithReusableIdentifier: @"debit-cell"];
+
+    if (!cell) {
+        cell = [DebitsListViewCell cellLoadedFromNibNamed: @"DebitsListViewCell" reusableIdentifier: @"debit-cell"];
         cell.listView = self;
-	}
-	
+    }
+
     [self fillCell: cell forRow: row];
-    
+
     return cell;
 }
 
-- (CGFloat)listView: (PXListView*)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
+- (CGFloat)listView: (PXListView *)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
 {
     return CELL_HEIGHT;
 }
 
-- (NSRange)listView: (PXListView*)aListView rangeOfDraggedRow: (NSUInteger)row
+- (NSRange)listView: (PXListView *)aListView rangeOfDraggedRow: (NSUInteger)row
 {
-    return NSMakeRange(0, CELL_HEIGHT);    
+    return NSMakeRange(0, CELL_HEIGHT);
 }
 
-- (void)listViewSelectionDidChange:(NSNotification*)aNotification
+- (void)listViewSelectionDidChange: (NSNotification *)aNotification
 {
     // Also let every entry check its selection state, in case internal states must be updated.
-    NSArray* cells = [self visibleCells];
+    NSArray *cells = [self visibleCells];
     for (DebitsListViewCell *cell in cells) {
         [cell selectionChanged];
     }
@@ -272,30 +270,31 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 - (void)updateVisibleCells
 {
     NSArray *cells = [self visibleCells];
-    for (DebitsListViewCell *cell in cells)
+    for (DebitsListViewCell *cell in cells) {
         [self fillCell: cell forRow: [cell row]];
+    }
 }
 
 #pragma mark -
 #pragma mark Drag'n drop
 
-- (BOOL)listView: (PXListView*)aListView writeRowsWithIndexes: (NSIndexSet*)rowIndexes
-    toPasteboard: (NSPasteboard*)dragPasteboard
-       slideBack: (BOOL*)slideBack
+- (BOOL)listView: (PXListView *)aListView writeRowsWithIndexes: (NSIndexSet *)rowIndexes
+    toPasteboard: (NSPasteboard *)dragPasteboard
+       slideBack: (BOOL *)slideBack
 {
     *slideBack = YES;
-	NSMutableArray *draggedTransfers = [NSMutableArray arrayWithCapacity: 5];
-    
+    NSMutableArray *draggedTransfers = [NSMutableArray arrayWithCapacity: 5];
+
     // Collect the ids of all selected transfers and put them on the dragboard.
     NSUInteger index = [rowIndexes firstIndex];
     while (index != NSNotFound) {
         Transfer *transfer = dataSource[index];
-        NSURL *url = [[transfer objectID] URIRepresentation];
+        NSURL    *url = [[transfer objectID] URIRepresentation];
         [draggedTransfers addObject: url];
 
         index = [rowIndexes indexGreaterThanIndex: index];
     }
-    
+
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: draggedTransfers];
     [dragPasteboard declareTypes: @[TransferDataType] owner: self];
     [dragPasteboard setData: data forType: TransferDataType];
@@ -336,15 +335,15 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     }
 }
 
-- (BOOL)listView: (PXListView *)aListView
-      acceptDrop:(id<NSDraggingInfo>)info
-             row: (NSUInteger)row
-   dropHighlight: (NSUInteger)highlight
+- (BOOL) listView: (PXListView *)aListView
+       acceptDrop: (id<NSDraggingInfo>)info
+              row: (NSUInteger)row
+    dropHighlight: (NSUInteger)highlight
 {
     if (info.draggingSource == self) {
         return NO;
     }
-    
+
     [owner concludeDropOperation: self context: info];
     return YES;
 }

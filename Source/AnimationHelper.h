@@ -25,12 +25,12 @@
 @interface AnimationHelper : NSObject {
 }
 
-+ (void)crossFadeFromView: (NSView*)oldView
-                   toView: (NSView*)newView
++ (void)crossFadeFromView: (NSView *)oldView
+                   toView: (NSView *)newView
              withDuration: (float)duration;
 
-+ (void)switchFromView: (NSView*)from
-                toView: (NSView*)to
++ (void)switchFromView: (NSView *)from
+                toView: (NSView *)to
              withSlide: (BOOL)doSlide;
 
 @end
@@ -51,4 +51,3 @@
 - (void)slideTo: (CGPoint)newPosition inTime: (CGFloat)time;
 
 @end
-

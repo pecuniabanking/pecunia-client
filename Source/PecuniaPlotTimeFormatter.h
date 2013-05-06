@@ -21,12 +21,12 @@
 #import <CorePlot/CorePlot.h>
 
 /**
- * Enhancement of the coreplot time formatter, which allows to use days instead of seconds.
+ * Enhancement of the coreplot time formatter, which allows to use other time units instead just seconds.
  */
 @interface PecuniaPlotTimeFormatter : CPTTimeFormatter {
     int calendarUnit;
 }
 
-- (id)initWithDateFormatter: (NSDateFormatter*)aDateFormatter calendarUnit: (int)unit;
+- (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (int)unit;
 
 @end

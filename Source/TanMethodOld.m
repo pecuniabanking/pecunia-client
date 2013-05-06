@@ -19,30 +19,20 @@
 
 #import "TanMethodOld.h"
 
-
 @implementation TanMethodOld
 
 @synthesize function;
 @synthesize description;
 
-- (void)dealloc
+- (id)initDefault: (NSNumber *)func
 {
-	function = nil;
-	description = nil;
-
+    self = [super init];
+    if (self == nil) {
+        return nil;
+    }
+    self.function = func;
+    self.description = NSLocalizedString(@"AP13", nil);
+    return self;
 }
-
--(id)initDefault: (NSNumber*) func
-{
-	self = [super init ];
-	if(self == nil) return nil;
-	self.function = func;
-	self.description = NSLocalizedString(@"AP13", nil);
-	return self;
-}
-
-
-
 
 @end
-

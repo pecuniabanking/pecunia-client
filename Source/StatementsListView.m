@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -58,7 +58,7 @@ extern void *UserDefaultsBindingContext;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+
     [self setDelegate: self];
     dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setLocale: [NSLocale currentLocale]];
@@ -91,7 +91,7 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (void) dealloc
+- (void)dealloc
 {
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.date"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteName"];
@@ -120,13 +120,12 @@ extern void *UserDefaultsBindingContext;
 #pragma mark -
 #pragma mark Bindings, KVO and KVC
 
-- (void)bind: (NSString *)binding
-    toObject: (id)observableObject
- withKeyPath: (NSString *)keyPath
-     options: (NSDictionary *)options
+- (void)   bind: (NSString *)binding
+       toObject: (id)observableObject
+    withKeyPath: (NSString *)keyPath
+        options: (NSDictionary *)options
 {
-    if ([binding isEqualToString: @"dataSource"])
-    {
+    if ([binding isEqualToString: @"dataSource"]) {
         observedObject = observableObject;
         dataSource = [observableObject valueForKey: keyPath];
 
@@ -194,7 +193,7 @@ extern void *UserDefaultsBindingContext;
 
         return;
     }
-    
+
     if (!pendingReload) {
         // If there's another property change pending cancel it and do a full reload instead.
         if (pendingRefresh) {
@@ -216,20 +215,19 @@ extern void *UserDefaultsBindingContext;
 #pragma mark -
 #pragma mark PXListViewDelegate protocoll implementation
 
-- (NSUInteger)numberOfRowsInListView: (PXListView*)aListView
+- (NSUInteger)numberOfRowsInListView: (PXListView *)aListView
 {
     pendingReload = NO;
-    
+
 #pragma unused(aListView)
-	return [dataSource count];
+    return [dataSource count];
 }
 
 - (id)formatValue: (id)value capitalize: (BOOL)capitalize
 {
-    if (value == nil || [value isKindOfClass: [NSNull class]])
+    if (value == nil || [value isKindOfClass: [NSNull class]]) {
         value = @"";
-    else
-    {
+    } else {
         if ([value isKindOfClass: [NSDate class]]) {
             value = [dateFormatter stringFromDate: value];
         } else {
@@ -245,7 +243,7 @@ extern void *UserDefaultsBindingContext;
             }
         }
     }
-    
+
     return value;
 }
 
@@ -254,86 +252,89 @@ extern void *UserDefaultsBindingContext;
     if (!showHeaders || !canShowHeaders) {
         return false;
     }
-    
+
     BOOL result = (row == 0);
-    if (!result)
-    {
-        BankStatement *statement = (BankStatement*)[dataSource[row] valueForKey: @"statement"];
-        BankStatement *previousStatement = (BankStatement*)[dataSource[row - 1] valueForKey: @"statement"];
-        
+    if (!result) {
+        BankStatement *statement = (BankStatement *)[dataSource[row] valueForKey: @"statement"];
+        BankStatement *previousStatement = (BankStatement *)[dataSource[row - 1] valueForKey: @"statement"];
+
         result = [[ShortDate dateWithDate: statement.date] compare: [ShortDate dateWithDate: previousStatement.date]] != NSOrderedSame;
     }
     return result;
 }
 
 /**
- * Looks through the statement array starting with "row" and counts how many entries follow it with the 
+ * Looks through the statement array starting with "row" and counts how many entries follow it with the
  * same date (time is not compared).
  */
 - (int)countSameDatesFromRow: (NSUInteger)row
 {
-    int result = 1;
-    id statement = [dataSource[row] valueForKey: @"statement"];
-    ShortDate* currentDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
-    
+    int       result = 1;
+    id        statement = [dataSource[row] valueForKey: @"statement"];
+    ShortDate *currentDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
+
     NSUInteger totalCount = [dataSource count];
-    while (++row < totalCount)
-    {
+    while (++row < totalCount) {
         statement = [dataSource[row] valueForKey: @"statement"];
-        ShortDate* nextDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
-        if ([currentDate compare: nextDate] != NSOrderedSame)
+        ShortDate *nextDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
+        if ([currentDate compare: nextDate] != NSOrderedSame) {
             break;
+        }
         result++;
     }
     return result;
 }
 
-#define CELL_BODY_HEIGHT 49
+#define CELL_BODY_HEIGHT   49
 #define CELL_HEADER_HEIGHT 20
 
-- (void)fillCell: (StatementsListViewCell*)cell forRow: (NSUInteger)row
+- (void)fillCell: (StatementsListViewCell *)cell forRow: (NSUInteger)row
 {
-    StatCatAssignment *stat = (StatCatAssignment*)dataSource[row];
-    
-    NSDate* currentDate = stat.statement.date;
-    
+    StatCatAssignment *assignment = (StatCatAssignment *)dataSource[row];
+
+    NSDate *currentDate = assignment.statement.date;
+    if (currentDate == nil) {
+        currentDate = assignment.statement.valutaDate; // Should not be necessary, but still...
+    }
+
     if (currentDate == nil) {
         return;
     }
-    
+
     // Count how many statements have been booked for the current date.
-    int turnovers = [self countSameDatesFromRow: row];
-    NSString* turnoversString;
-    if (turnovers != 1)
+    int      turnovers = [self countSameDatesFromRow: row];
+    NSString *turnoversString;
+    if (turnovers != 1) {
         turnoversString = [NSString stringWithFormat: NSLocalizedString(@"AP207", nil), turnovers];
-    else
+    } else {
         turnoversString = NSLocalizedString(@"AP206", nil);
-    
+    }
+
     cell.delegate = self;
     NSDictionary *details = @{StatementDateKey: currentDate,
-                             StatementTurnoversKey: turnoversString,
-                             StatementRemoteNameKey: [self formatValue: stat.statement.remoteName capitalize: YES],
-                             StatementPurposeKey: [self formatValue: stat.statement.floatingPurpose capitalize: YES],
-                             StatementNoteKey: [self formatValue: stat.userInfo capitalize: YES],
-                             StatementCategoriesKey: [self formatValue: [stat.statement categoriesDescription] capitalize: NO],
-                             StatementValueKey: [self formatValue: stat.value capitalize: NO],
-                             StatementSaldoKey: [self formatValue: stat.statement.saldo capitalize: NO],
-                             StatementCurrencyKey: [self formatValue: stat.statement.currency capitalize: NO],
-                             StatementTransactionTextKey: [self formatValue: stat.statement.transactionText capitalize: YES],
-                             StatementColorKey: [stat.category categoryColor],
-                             StatementIndexKey: @((int)row)};
-    
+                              StatementTurnoversKey: turnoversString,
+                              StatementRemoteNameKey: [self formatValue: assignment.statement.remoteName capitalize: YES],
+                              StatementPurposeKey: [self formatValue: assignment.statement.floatingPurpose capitalize: YES],
+                              StatementNoteKey: [self formatValue: assignment.userInfo capitalize: YES],
+                              StatementCategoriesKey: [self formatValue: [assignment.statement categoriesDescription] capitalize: NO],
+                              StatementValueKey: [self formatValue: assignment.value capitalize: NO],
+                              StatementSaldoKey: [self formatValue: assignment.statement.saldo capitalize: NO],
+                              StatementCurrencyKey: [self formatValue: assignment.statement.currency capitalize: NO],
+                              StatementTransactionTextKey: [self formatValue: assignment.statement.transactionText capitalize: YES],
+                              StatementColorKey: [assignment.category categoryColor],
+                              StatementIndexKey: @((int)row)};
+
     [cell setDetails: details];
-    [cell setIsNew: [stat.statement.isNew boolValue]];
-    
+    [cell setIsNew: [assignment.statement.isNew boolValue]];
+
     if (self.showAssignedIndicators) {
-        id test = [dataSource[row] classify];
-        [cell showActivator: YES markActive: test != nil];
+        bool activate = assignment.category != nil && assignment.category != Category.nassRoot;
+        [cell showActivator: YES markActive: activate];
     } else {
         [cell showActivator: NO markActive: NO];
     }
-    
-    NSDecimalNumber* nassValue = stat.statement.nassValue;
+
+    NSDecimalNumber *nassValue = assignment.statement.nassValue;
     cell.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
 
     [cell showBalance: [NSUserDefaults.standardUserDefaults boolForKey: @"showBalances"]];
@@ -353,23 +354,23 @@ extern void *UserDefaultsBindingContext;
 
 /**
  * Called by the PXListView when it needs to set up a new visual cell. This method uses enqueued cells
- * to avoid creating potentially many cells. This way we can have many entries but still only as many 
+ * to avoid creating potentially many cells. This way we can have many entries but still only as many
  * cells as fit in the window.
  */
-- (PXListViewCell*)listView: (PXListView*)aListView cellForRow: (NSUInteger)row
+- (PXListViewCell *)listView: (PXListView *)aListView cellForRow: (NSUInteger)row
 {
-	StatementsListViewCell* cell = (StatementsListViewCell*)[aListView dequeueCellWithReusableIdentifier: @"statcell"];
-	
-	if (!cell) {
-		cell = [StatementsListViewCell cellLoadedFromNibNamed: @"StatementsListViewCell" reusableIdentifier: @"statcell"];
-	}
-	
+    StatementsListViewCell *cell = (StatementsListViewCell *)[aListView dequeueCellWithReusableIdentifier: @"statcell"];
+
+    if (!cell) {
+        cell = [StatementsListViewCell cellLoadedFromNibNamed: @"StatementsListViewCell" reusableIdentifier: @"statcell"];
+    }
+
     [self fillCell: cell forRow: row];
-    
+
     return cell;
 }
 
-- (CGFloat)listView: (PXListView*)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
+- (CGFloat)listView: (PXListView *)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
 {
     if (!forDragging && [self showsHeaderForRow: row]) {
         return CELL_BODY_HEIGHT + CELL_HEADER_HEIGHT;
@@ -377,35 +378,35 @@ extern void *UserDefaultsBindingContext;
     return CELL_BODY_HEIGHT;
 }
 
-- (NSRange)listView: (PXListView*)aListView rangeOfDraggedRow: (NSUInteger)row
+- (NSRange)listView: (PXListView *)aListView rangeOfDraggedRow: (NSUInteger)row
 {
     if ([self showsHeaderForRow: row]) {
         return NSMakeRange(CELL_HEADER_HEIGHT, CELL_BODY_HEIGHT);
     }
-    return NSMakeRange(0, CELL_BODY_HEIGHT);    
+    return NSMakeRange(0, CELL_BODY_HEIGHT);
 }
 
-- (void)listViewSelectionDidChange:(NSNotification*)aNotification
+- (void)listViewSelectionDidChange: (NSNotification *)aNotification
 {
     if (autoResetNew) {
         // A selected statement automatically loses the "new" state (if auto reset is enabled).
-        NSIndexSet* selection = [self selectedRows];
+        NSIndexSet *selection = [self selectedRows];
         NSUInteger index = [selection firstIndex];
         while (index != NSNotFound) {
-            StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
+            StatementsListViewCell *cell = (id)[self cellForRowAtIndex : index];
             [cell setIsNew: NO];
             index = [selection indexGreaterThanIndex: index];
         }
     }
-    
+
     // Also let every entry check its selection state, in case internal states must be updated.
-    NSArray* cells = [self visibleCells];
+    NSArray *cells = [self visibleCells];
     for (StatementsListViewCell *cell in cells) {
         [cell selectionChanged];
     }
 }
 
-- (bool)listView:(PXListView*)aListView shouldSelectRows: (NSIndexSet *)rows byExtendingSelection:(BOOL)shouldExtend
+- (bool)listView: (PXListView *)aListView shouldSelectRows: (NSIndexSet *)rows byExtendingSelection: (BOOL)shouldExtend
 {
     return !self.disableSelection;
 }
@@ -416,10 +417,11 @@ extern void *UserDefaultsBindingContext;
 - (void)updateVisibleCells
 {
     pendingRefresh = NO;
-    
+
     NSArray *cells = [self visibleCells];
-    for (StatementsListViewCell *cell in cells)
+    for (StatementsListViewCell *cell in cells) {
         [self fillCell: cell forRow: [cell row]];
+    }
 }
 
 /**
@@ -430,17 +432,17 @@ extern void *UserDefaultsBindingContext;
 {
     activating = YES;
     @try {
-        NSIndexSet* selection = [self selectedRows];
+        NSIndexSet *selection = [self selectedRows];
         if (selection.count > 0) {
             NSUInteger index = [selection firstIndex];
             while (index != NSNotFound) {
-                StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
+                StatementsListViewCell *cell = (id)[self cellForRowAtIndex : index];
                 [cell showActivator: YES markActive: YES];
                 index = [selection indexGreaterThanIndex: index];
             }
         } else {
-            for (NSUInteger index = 0; index < [dataSource count]; index++)  {
-                StatementsListViewCell *cell = (id)[self cellForRowAtIndex: index];
+            for (NSUInteger index = 0; index < [dataSource count]; index++) {
+                StatementsListViewCell *cell = (id)[self cellForRowAtIndex : index];
                 [cell showActivator: YES markActive: YES];
             }
         }
@@ -453,48 +455,48 @@ extern void *UserDefaultsBindingContext;
 #pragma mark -
 #pragma mark Drag'n drop
 
-extern NSString* const BankStatementDataType;
+extern NSString *const BankStatementDataType;
 
-- (BOOL)listView: (PXListView*)aListView writeRowsWithIndexes: (NSIndexSet*)rowIndexes
-    toPasteboard: (NSPasteboard*)dragPasteboard
+- (BOOL)listView: (PXListView *)aListView writeRowsWithIndexes: (NSIndexSet *)rowIndexes
+    toPasteboard: (NSPasteboard *)dragPasteboard
        slideBack: (BOOL *)slideBack
 {
     *slideBack = YES;
-    
+
     // Keep a copy of the selected indexes as the selection is removed during the drag operation,
     // but we need to update the selected cells then.
     draggedIndexes = [rowIndexes copy];
-    
-    NSUInteger indexes[30], count, i;
-	NSRange range;
-	StatCatAssignment* stat;
-	NSMutableArray* uris = [NSMutableArray arrayWithCapacity: 30];
-    
+
+    NSUInteger        indexes[30], count, i;
+    NSRange           range;
+    StatCatAssignment *stat;
+    NSMutableArray    *uris = [NSMutableArray arrayWithCapacity: 30];
+
     range.location = 0;
-	range.length = 100000;
-    
+    range.length = 100000;
+
     // Copy the row numbers to the pasteboard.
     do {
-		count = [rowIndexes getIndexes: indexes maxCount: 30 inIndexRange: &range];
-		for (i = 0; i < count; i++) {
-			stat = dataSource[indexes[i]];
-			NSURL *uri = [[stat objectID] URIRepresentation];
-			[uris addObject: uri];
-		}
-	} while (count > 0);    
-    
+        count = [rowIndexes getIndexes: indexes maxCount: 30 inIndexRange: &range];
+        for (i = 0; i < count; i++) {
+            stat = dataSource[indexes[i]];
+            NSURL *uri = [[stat objectID] URIRepresentation];
+            [uris addObject: uri];
+        }
+    } while (count > 0);
+
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: uris];
-    [dragPasteboard declareTypes:@[BankStatementDataType] owner: self];
-    [dragPasteboard setData:data forType: BankStatementDataType];
+    [dragPasteboard declareTypes: @[BankStatementDataType] owner: self];
+    [dragPasteboard setData: data forType: BankStatementDataType];
 
     return YES;
 }
 
 // TODO: doesn't seem to have any effect, remove?
-- (NSDragOperation)listView: (PXListView*)aListView validateDrop: (id <NSDraggingInfo>)info proposedRow: (NSUInteger)row
+- (NSDragOperation)listView: (PXListView *)aListView validateDrop: (id <NSDraggingInfo>)info proposedRow: (NSUInteger)row
       proposedDropHighlight: (PXListViewDropHighlight)dropHighlight;
 {
-	return NSDragOperationCopy;
+    return NSDragOperationCopy;
 }
 
 - (void)cellActivationChanged: (BOOL)state forIndex: (NSUInteger)index

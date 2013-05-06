@@ -1,6 +1,5 @@
 #import "CPTDefinitions.h"
 #import "CPTPlot.h"
-#import <Foundation/Foundation.h>
 
 /// @file
 
@@ -99,6 +98,13 @@ CPTPieDirection;
  *  @return The title text for the legend entry for the point with the given index.
  **/
 -(NSString *)legendTitleForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx;
+
+/** @brief @optional Gets the styled legend title for the given pie chart slice.
+ *  @param pieChart The pie chart.
+ *  @param idx The data index of interest.
+ *  @return The styled title text for the legend entry for the point with the given index.
+ **/
+-(NSAttributedString *)attributedLegendTitleForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx;
 
 /// @}
 @end

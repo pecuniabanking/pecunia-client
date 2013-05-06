@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -24,10 +24,10 @@
     NSCalendar *calendar;
 }
 
-@property (strong) IBOutlet NSTextField *path;
-@property (strong) IBOutlet NSButton *removeOldDataCheckBox;
+@property (strong) IBOutlet NSTextField         *path;
+@property (strong) IBOutlet NSButton            *removeOldDataCheckBox;
 @property (strong) IBOutlet NSProgressIndicator *progressIndicator;
-@property (strong) IBOutlet NSTextField *totalCountLabel;
+@property (strong) IBOutlet NSTextField         *totalCountLabel;
 
 @property (assign) NSUInteger startYear;
 @property (assign) NSUInteger endYear;

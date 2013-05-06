@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -33,23 +33,25 @@
 
 @implementation HBCIBridge
 
--(id)init
+- (id)init
 {
-    self = [super init ];
-    if(self == nil) return nil;
+    self = [super init];
+    if (self == nil) {
+        return nil;
+    }
     running = NO;
-    
+
     return self;
 }
 
--(NSPipe*)outPipe
+- (NSPipe *)outPipe
 {
     return outPipe;
 }
 
--(void)setResult: (id)res
+- (void)setResult: (id)res
 {
-    if([res isKindOfClass: [HBCIError class ] ]) {
+    if ([res isKindOfClass: [HBCIError class]]) {
         result = nil;
         error = res;
     } else {
@@ -58,63 +60,60 @@
     }
 }
 
--(id)result
+- (id)result
 {
     return result;
 }
 
--(HBCIError*)error
+- (HBCIError *)error
 {
     return error;
 }
 
-
--(void)startup
+- (void)startup
 {
     task = [[NSTask alloc] init];
     // The output of stdout and stderr is sent to a pipe so that we can catch it later
     // and send it along to the controller; notice that we don't bother to do anything with stdin,
     // so this class isn't as useful for a task that you need to send info to, not just receive.
-    inPipe = [NSPipe pipe ];
-    outPipe = [NSPipe pipe ];
-    [task setStandardOutput: inPipe ];
-    [task setStandardInput: outPipe ];
-    
-    NSString *bundlePath = [[NSBundle mainBundle ] bundlePath ];
-    NSString *jarPath = [bundlePath stringByAppendingString:@"/Contents/HBCIServer.jar" ];
-    NSString *launchPath = [bundlePath stringByAppendingString:@"/Contents/Plugins/jre/Contents/Home/bin/java"];
-    
+    inPipe = [NSPipe pipe];
+    outPipe = [NSPipe pipe];
+    [task setStandardOutput: inPipe];
+    [task setStandardInput: outPipe];
+
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+    NSString *jarPath = [bundlePath stringByAppendingString: @"/Contents/HBCIServer.jar"];
+    NSString *launchPath = [bundlePath stringByAppendingString: @"/Contents/Plugins/jre/Contents/Home/bin/java"];
+
     //[task setLaunchPath: @"/usr/bin/java" ];
     [task setLaunchPath: launchPath];
     //	[task setEnvironment: [NSDictionary dictionaryWithObjectsAndKeys: @"/users/emmi/workspace/HBCIServer", @"CLASSPATH", nil ] ];
-    
-    [task setArguments: @[@"-jar", jarPath] ];
-    
+
+    [task setArguments: @[@"-jar", jarPath]];
+
     /*
-    if ([LaunchParameters parameters ].debugServer) {
-        [task setArguments: [NSArray arrayWithObjects: @"-Xdebug", @"-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005", @"-jar", jarPath, nil ] ];
-    } else [task setArguments: [NSArray arrayWithObjects: @"-jar", jarPath, nil ] ];
-    */
-    
+     if ([LaunchParameters parameters ].debugServer) {
+     [task setArguments: [NSArray arrayWithObjects: @"-Xdebug", @"-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005", @"-jar", jarPath, nil ] ];
+     } else [task setArguments: [NSArray arrayWithObjects: @"-jar", jarPath, nil ] ];
+     */
+
     // launch the task asynchronously
     [task launch];
 
     /*
-    if ([LaunchParameters parameters ].debugServer) {
-        // consume jvm status message
-        [[inPipe fileHandleForReading ] availableData ];
-    }
+     if ([LaunchParameters parameters ].debugServer) {
+     // consume jvm status message
+     [[inPipe fileHandleForReading ] availableData ];
+     }
      */
 }
 
-
-
--(void)parse: (NSString*)cmd
+- (void)parse: (NSString *)cmd
 {
     //	NSLog(@"String to parse: %@", cmd);
     NSXMLParser *parser = [[NSXMLParser alloc] initWithData: [cmd dataUsingEncoding: NSUTF8StringEncoding]];
     [parser setDelegate: self];
-    [parser setShouldResolveExternalEntities:YES];
+    [parser setShouldResolveExternalEntities: YES];
     [parser parse];
 }
 
@@ -123,158 +122,163 @@
     NSData *data = [aNotification userInfo][NSFileHandleNotificationDataItem];
     // If the length of the data is zero, then the task is basically over - there is nothing
     // more to get from the handle so we may as well shut down.
-    if ([data length] > 0)
-    {
+    if ([data length] > 0) {
         // Send the data on to the controller; we can't just use +stringWithUTF8String: here
         // because -[data bytes] is not necessarily a properly terminated string.
         // -initWithData:encoding: on the other hand checks -[data length]
         NSString *s = [NSString stringWithData: data];
-        
+
         // Receive log
-        [[MessageLog log ] addMessage:s withLevel:LogLevel_Verbous ];
-        
-        if(asyncString == nil)  asyncString = [[NSMutableString alloc ] init ];
-        if([s hasSuffix: @">." ]) {
-            [asyncString appendString: [s substringToIndex: [s length ] -1  ] ];
+        [[MessageLog log] addMessage: s withLevel: LogLevel_Verbous];
+
+        if (asyncString == nil) {
+            asyncString = [[NSMutableString alloc] init];
+        }
+        if ([s hasSuffix: @">."]) {
+            [asyncString appendString: [s substringToIndex: [s length] - 1]];
         } else {
-            [asyncString appendString: s ];
+            [asyncString appendString: s];
             // command is not yet complete: go on
             [[aNotification object] readInBackgroundAndNotify];
             return;
         }
-        
-        NSRange r = [asyncString rangeOfString: @">\n.<" ];
+
+        NSRange    r = [asyncString rangeOfString: @">\n.<"];
         NSUInteger offset = 0;
         NSUInteger length = [asyncString length];
-        while (r.location != NSNotFound)
-        {
+        while (r.location != NSNotFound) {
             [self parse: [asyncString substringWithRange: NSMakeRange(offset, r.location - offset + 1)]];
             offset = r.location + 3;
             r = [asyncString rangeOfString: @">\n.<" options: 0 range: NSMakeRange(offset, length - offset)];
         }
-        
-        if (length > offset)
+
+        if (length > offset) {
             [self parse: [asyncString substringWithRange: NSMakeRange(offset, length - offset)]];
-        [asyncString setString: @"" ];
-        
-        if(resultExists == YES) {
+        }
+        [asyncString setString: @""];
+
+        if (resultExists == YES) {
             PecuniaError *err = nil;
-            if(error) err = [error toPecuniaError ];
-            [[CallbackHandler handler ] finishPasswordEntry ];
+            if (error) {
+                err = [error toPecuniaError];
+            }
+            [[CallbackHandler handler] finishPasswordEntry];
             //running = NO;
-            [asyncSender asyncCommandCompletedWithResult: result error: err ];
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleReadCompletionNotification object: [inPipe fileHandleForReading]];
+            [asyncSender asyncCommandCompletedWithResult: result error: err];
+            [[NSNotificationCenter defaultCenter] removeObserver: self name: NSFileHandleReadCompletionNotification object: [inPipe fileHandleForReading]];
             running = NO;
-        } else [[aNotification object] readInBackgroundAndNotify];
+        } else {[[aNotification object] readInBackgroundAndNotify]; }
     } else {
-        if (resultExists == NO) [[aNotification object] readInBackgroundAndNotify];
+        if (resultExists == NO) {
+            [[aNotification object] readInBackgroundAndNotify];
+        }
     }
 }
 
-
--(void)receive
+- (void)receive
 {
-    NSMutableString *cmd = [[NSMutableString alloc ] init ];
-    
-    while(resultExists == NO) {
-        while(TRUE) {
+    NSMutableString *cmd = [[NSMutableString alloc] init];
+
+    while (resultExists == NO) {
+        while (TRUE) {
             NSData *data = [[inPipe fileHandleForReading] availableData];
-            
+
             NSString *s = [NSString stringWithData: data];
-            
+
             // Log the message.
             [[MessageLog log] addMessage: s withLevel: LogLevel_Verbous];
-            
-            if ([s hasSuffix: @">." ]) {
+
+            if ([s hasSuffix: @">."]) {
                 [cmd appendString: [s substringToIndex: [s length] - 1]];
                 break;
             } else {
                 [cmd appendString: s];
             }
         }
-        
-        NSRange r = [cmd rangeOfString: @">\n.<" ];
+
+        NSRange    r = [cmd rangeOfString: @">\n.<"];
         NSUInteger offset = 0;
         NSUInteger length = [cmd length];
-        while (r.location != NSNotFound)
-        {
+        while (r.location != NSNotFound) {
             [self parse: [cmd substringWithRange: NSMakeRange(offset, r.location - offset + 1)]];
             offset = r.location + 3;
             r = [cmd rangeOfString: @">\n.<" options: 0 range: NSMakeRange(offset, length - offset)];
         }
-        
-        if (length > offset)
+
+        if (length > offset) {
             [self parse: [cmd substringWithRange: NSMakeRange(offset, length - offset)]];
-        [cmd setString: @"" ];
+        }
+        [cmd setString: @""];
     }
 }
 
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
+- (void)parser: (NSXMLParser *)parser didStartElement: (NSString *)elementName namespaceURI: (NSString *)namespaceURI qualifiedName: (NSString *)qName attributes: (NSDictionary *)attributeDict
 {
-    if([elementName isEqualToString: @"callback" ]) {
-        cp = [[CallbackParser alloc ] initWithParent: self command: [attributeDict valueForKey:  @"command"]];
-        [parser setDelegate: cp ];
-    } else if([elementName isEqualToString: @"result" ]) {
-        rp = [[ResultParser alloc ] initWithParent: self];
-        [parser setDelegate: rp ];
+    if ([elementName isEqualToString: @"callback"]) {
+        cp = [[CallbackParser alloc] initWithParent: self command: [attributeDict valueForKey:  @"command"]];
+        [parser setDelegate: cp];
+    } else if ([elementName isEqualToString: @"result"]) {
+        rp = [[ResultParser alloc] initWithParent: self];
+        [parser setDelegate: rp];
         resultExists = YES;
-    } else if([elementName isEqualToString: @"log" ]) {
-        lp = [[LogParser alloc ] initWithParent: self level: [attributeDict valueForKey: @"level"]];
-        [parser setDelegate: lp ];
+    } else if ([elementName isEqualToString: @"log"]) {
+        lp = [[LogParser alloc] initWithParent: self level: [attributeDict valueForKey: @"level"]];
+        [parser setDelegate: lp];
     }
-    
+
 }
 
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
+- (void)parser: (NSXMLParser *)parser didEndElement: (NSString *)elementName namespaceURI: (NSString *)namespaceURI qualifiedName: (NSString *)qName
+{
 }
 
--(id)syncCommand: (NSString*)cmd error:(PecuniaError**)err
+- (id)syncCommand: (NSString *)cmd error: (PecuniaError **)err
 {
     result = nil; error = nil; resultExists = NO;
-    
+
     // HBCIServer is not running
-    if ([task isRunning ] == NO) {
-        *err = [PecuniaError errorWithCode:1 message: NSLocalizedString(@"AP358", nil) ];
+    if ([task isRunning] == NO) {
+        *err = [PecuniaError errorWithCode: 1 message: NSLocalizedString(@"AP358", nil)];
         return nil;
     }
-    
-    if(running == YES) {
+
+    if (running == YES) {
         // async command is still running
-        *err = [PecuniaError errorWithCode:1 message: NSLocalizedString(@"AP78", nil) ];
+        *err = [PecuniaError errorWithCode: 1 message: NSLocalizedString(@"AP78", nil)];
         return nil;
     }
-    NSString *command = [cmd stringByAppendingString: @".\n" ];
-    
+    NSString *command = [cmd stringByAppendingString: @".\n"];
+
     // todo: startSession hier ist nur die erste Näherung
-    [[CallbackHandler handler ] startSession ];
+    [[CallbackHandler handler] startSession];
     // Send Log
-    [[MessageLog log ] addMessage:cmd withLevel:LogLevel_Verbous ];
-    [[outPipe fileHandleForWriting ] writeData: [command dataUsingEncoding: NSUTF8StringEncoding ] ];
-    [self receive ];
-    [[CallbackHandler handler ] finishPasswordEntry ];
-    if(error) {
-        *err = [error toPecuniaError ];
+    [[MessageLog log] addMessage: cmd withLevel: LogLevel_Verbous];
+    [[outPipe fileHandleForWriting] writeData: [command dataUsingEncoding: NSUTF8StringEncoding]];
+    [self receive];
+    [[CallbackHandler handler] finishPasswordEntry];
+    if (error) {
+        *err = [error toPecuniaError];
         return nil;
     }
     return result;
 }
 
--(void)asyncCommand:(NSString*)cmd sender:(id)sender
+- (void)asyncCommand: (NSString *)cmd sender: (id)sender
 {
     result = nil; error = nil; resultExists = NO;
-    
+
     // HBCIServer is not running
-    if ([task isRunning ] == NO) {
+    if ([task isRunning] == NO) {
         //		*err = [PecuniaError errorWithCode:1 message: NSLocalizedString(@"AP358", nil) ];
         return;
     }
-    NSString *command = [cmd stringByAppendingString: @".\n" ];
+    NSString *command = [cmd stringByAppendingString: @".\n"];
     // Send Log
-    [[MessageLog log ] addMessage:cmd withLevel:LogLevel_Verbous ];
-    [[outPipe fileHandleForWriting ] writeData: [command dataUsingEncoding: NSUTF8StringEncoding ] ];
+    [[MessageLog log] addMessage: cmd withLevel: LogLevel_Verbous];
+    [[outPipe fileHandleForWriting] writeData: [command dataUsingEncoding: NSUTF8StringEncoding]];
     //	[[inPipe fileHandleForReading] readInBackgroundAndNotify ];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getData:) name: NSFileHandleReadCompletionNotification object: [inPipe fileHandleForReading]];
-    [[inPipe fileHandleForReading] readInBackgroundAndNotify ];
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(getData:) name: NSFileHandleReadCompletionNotification object: [inPipe fileHandleForReading]];
+    [[inPipe fileHandleForReading] readInBackgroundAndNotify];
     asyncSender = sender;
     running = YES;
 }

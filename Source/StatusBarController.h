@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,15 +21,15 @@
 
 @interface StatusBarController : NSObject {
 @private
-	IBOutlet NSProgressIndicator	*progressIndicator;
-	IBOutlet NSTextField			*messageField;
+    IBOutlet NSProgressIndicator *progressIndicator;
+    IBOutlet NSTextField         *messageField;
 }
 
-+ (StatusBarController*)controller;
++ (StatusBarController *)controller;
 
 - (void)startSpinning;
 - (void)stopSpinning;
-- (void)setMessage: (NSString*)message removeAfter: (int)secs;
+- (void)setMessage: (NSString *)message removeAfter: (int)secs;
 - (void)clearMessage;
 
 

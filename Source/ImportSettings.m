@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -54,7 +54,7 @@
         accountSuffix = @"";
         bankCode = @"";
         type = @(SettingsTypeCSV);
-        
+
         isDirty = YES;
         fileName = @"";
 
@@ -65,34 +65,34 @@
 
 - (id)initWithCoder: (NSCoder *)aDecoder
 {
-	self = [self init];
-	name = [aDecoder decodeObjectForKey: @"name"];
-	fields = [aDecoder decodeObjectForKey: @"fields"];
-	fieldSeparator = [aDecoder decodeObjectForKey: @"sepChar"];
-	dateFormat = [aDecoder decodeObjectForKey: @"dateFormatString"];
+    self = [self init];
+    name = [aDecoder decodeObjectForKey: @"name"];
+    fields = [aDecoder decodeObjectForKey: @"fields"];
+    fieldSeparator = [aDecoder decodeObjectForKey: @"sepChar"];
+    dateFormat = [aDecoder decodeObjectForKey: @"dateFormatString"];
     decimalSeparator = [aDecoder decodeObjectForKey: @"decimalSeparator"];
-	encoding = [aDecoder decodeObjectForKey: @"encoding"];
-	ignoreLines = [aDecoder decodeObjectForKey: @"ignoreLines"];
-	accountNumber = [aDecoder decodeObjectForKey: @"accountNumber"];
-	bankCode = [aDecoder decodeObjectForKey: @"bankCode"];
+    encoding = [aDecoder decodeObjectForKey: @"encoding"];
+    ignoreLines = [aDecoder decodeObjectForKey: @"ignoreLines"];
+    accountNumber = [aDecoder decodeObjectForKey: @"accountNumber"];
+    bankCode = [aDecoder decodeObjectForKey: @"bankCode"];
     accountSuffix = [aDecoder decodeObjectForKey: @"accountSuffix"];
     type = [aDecoder decodeObjectForKey: @"type"];
     isDirty = NO;
 
-	return self;
+    return self;
 }
 
 - (void)encodeWithCoder: (NSCoder *)aCoder
 {
-	[aCoder encodeObject: name forKey: @"name"];
-	[aCoder encodeObject: fields forKey: @"fields"];
-	[aCoder encodeObject: fieldSeparator forKey: @"sepChar"];
-	[aCoder encodeObject: dateFormat forKey: @"dateFormatString"];
-	[aCoder encodeObject: decimalSeparator forKey: @"decimalSeparator"];
-	[aCoder encodeObject: encoding forKey: @"encoding"];
-	[aCoder encodeObject: ignoreLines forKey: @"ignoreLines"];
-	[aCoder encodeObject: accountNumber forKey: @"accountNumber"];
-	[aCoder encodeObject: bankCode forKey: @"bankCode"];
+    [aCoder encodeObject: name forKey: @"name"];
+    [aCoder encodeObject: fields forKey: @"fields"];
+    [aCoder encodeObject: fieldSeparator forKey: @"sepChar"];
+    [aCoder encodeObject: dateFormat forKey: @"dateFormatString"];
+    [aCoder encodeObject: decimalSeparator forKey: @"decimalSeparator"];
+    [aCoder encodeObject: encoding forKey: @"encoding"];
+    [aCoder encodeObject: ignoreLines forKey: @"ignoreLines"];
+    [aCoder encodeObject: accountNumber forKey: @"accountNumber"];
+    [aCoder encodeObject: bankCode forKey: @"bankCode"];
     [aCoder encodeObject: accountSuffix forKey: @"accountSuffix"];
     [aCoder encodeObject: type forKey: @"type"];
     isDirty = NO;
@@ -139,4 +139,3 @@
 }
 
 @end
-

@@ -26,28 +26,28 @@ static StatusBarController *controller = nil;
 
 - (void)awakeFromNib
 {
-	controller = self;
+    controller = self;
 }
 
 - (void)startSpinning
 {
-	[progressIndicator setHidden: NO];
-	[progressIndicator setUsesThreadedAnimation: YES];
-	[progressIndicator startAnimation: self];
+    [progressIndicator setHidden: NO];
+    [progressIndicator setUsesThreadedAnimation: YES];
+    [progressIndicator startAnimation: self];
 }
 
--( void)stopSpinning
+- (void)stopSpinning
 {
-	[progressIndicator stopAnimation: self];
-	[progressIndicator setHidden: YES];
+    [progressIndicator stopAnimation: self];
+    [progressIndicator setHidden: YES];
 }
 
-- (void)setMessage: (NSString*)message removeAfter: (int)secs
+- (void)setMessage: (NSString *)message removeAfter: (int)secs
 {
     [NSObject cancelPreviousPerformRequestsWithTarget: self];
 
     [GrowlNotification showMessage: message withTitle: nil context: @"status"];
-	[messageField setStringValue: message];
+    [messageField setStringValue: message];
 
     if (secs > 0) {
         [self performSelector: @selector(clearMessage) withObject: nil afterDelay: secs];
@@ -56,13 +56,12 @@ static StatusBarController *controller = nil;
 
 - (void)clearMessage
 {
-	[messageField setStringValue: @"" ];
+    [messageField setStringValue: @""];
 }
 
-+ (StatusBarController*)controller
++ (StatusBarController *)controller
 {
-	return controller;
+    return controller;
 }
-
 
 @end

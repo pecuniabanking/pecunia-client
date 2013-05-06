@@ -34,3 +34,7 @@
 @interface ExactlyOneToBoolValueTransformer : NSValueTransformer
 
 @end
+
+@interface RemoveWhitespaceTransformer : NSValueTransformer
+
+@end

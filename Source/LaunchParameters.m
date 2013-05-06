@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -31,41 +31,41 @@ static LaunchParameters *parameters = nil;
 - (void)parseParameters
 {
     // Customize data file name and other parameters.
-    BOOL altFile = NO;
+    BOOL    altFile = NO;
     NSArray *args = [[NSProcessInfo processInfo] arguments];
     for (NSString *s in args) {
-        if ([s hasPrefix:@"-f" ]) {
+        if ([s hasPrefix: @"-f"]) {
             altFile = YES;
             NSString *name = [s substringFromIndex: 2];
             if (name == nil || [name length] == 0) {
                 continue;
-            }
-            else {
-                self.dataFile = [name stringByAppendingString:extensionPackage];
+            } else {
+                self.dataFile = [name stringByAppendingString: extensionPackage];
                 altFile = NO;
             }
         }
         if (altFile) {
             // If there's a space between -f and the file name we end up here.
             altFile = NO;
-            if (s == nil || [s length ] == 0) continue;
-            self.dataFile = [s stringByAppendingString:extensionPackage];
+            if (s == nil || [s length] == 0) {
+                continue;
+            }
+            self.dataFile = [s stringByAppendingString: extensionPackage];
         }
-        
+
         if ([s isEqualToString: @"-dServer"]) {
             debugServer = YES;
         }
     }
 }
 
-+(LaunchParameters*)parameters
++ (LaunchParameters *)parameters
 {
     if (parameters == nil) {
         parameters = [[LaunchParameters alloc] init];
     }
     return parameters;
 }
-
 
 - (id)init
 {
@@ -78,9 +78,8 @@ static LaunchParameters *parameters = nil;
 
 - (void)dealloc
 {
-	dataFile = nil;
+    dataFile = nil;
 
 }
 
 @end
-

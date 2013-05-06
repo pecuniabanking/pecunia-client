@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -76,14 +76,14 @@
 
 @interface Encoding : NSObject
 
-@property (copy) NSString *caption;
+@property (copy) NSString   *caption;
 @property (strong) NSNumber *value;
 
 @end
 
 @implementation Encoding
 
-+ (Encoding *)encodingWithCaption: (NSString*)caption andValue: (NSStringEncoding)value
++ (Encoding *)encodingWithCaption: (NSString *)caption andValue: (NSStringEncoding)value
 {
     Encoding *result = [[Encoding alloc] init];
     result.caption = caption;
@@ -97,14 +97,14 @@
 
 @interface ProcessingPanel : NSPanel <NSWindowDelegate> {
     IBOutlet NSProgressIndicator *progressBar;
-    IBOutlet NSTextField *processingTaskLabel;
-    IBOutlet NSButton *startButton;
-    IBOutlet NSView *detailsView;
-    IBOutlet NSTextField *errorsLabel;
-    IBOutlet NSMatrix *dateRadioGroup;
-    IBOutlet NSDatePicker *fromDatePicker;
-    IBOutlet NSDatePicker *toDatePicker;
-    IBOutlet NSTextField *dateWarnLabel;
+    IBOutlet NSTextField         *processingTaskLabel;
+    IBOutlet NSButton            *startButton;
+    IBOutlet NSView              *detailsView;
+    IBOutlet NSTextField         *errorsLabel;
+    IBOutlet NSMatrix            *dateRadioGroup;
+    IBOutlet NSDatePicker        *fromDatePicker;
+    IBOutlet NSDatePicker        *toDatePicker;
+    IBOutlet NSTextField         *dateWarnLabel;
 
 @private
     BOOL done;
@@ -121,7 +121,7 @@
 - (void)prepare
 {
     done = NO;
-    
+
     [detailsView removeFromSuperviewWithoutNeedingDisplay];
     NSRect frame = self.frame;
     frame.size.height = 160; // Original height without details view.
@@ -262,7 +262,7 @@
 
 - (id)init
 {
-	self = [super initWithWindowNibName: @"ImportWindow"];
+    self = [super initWithWindowNibName: @"ImportWindow"];
     if (self != nil) {
         importValues = [NSMutableArray arrayWithCapacity: 10];
         textFont = [NSFont fontWithName: @"AndaleMono" size: 11];
@@ -270,7 +270,7 @@
         managedObjectContext = MOAssistant.assistant.context;
         fileNames = [NSMutableSet setWithCapacity: 10];
     }
-	return self;
+    return self;
 }
 
 - (void)dealloc
@@ -281,14 +281,14 @@
 - (void)awakeFromNib
 {
     processingSheet.controller = self;
-    
-	dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setFormatterBehavior: NSDateFormatterBehavior10_4];
 
-	numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
-	[numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
-	[numberFormatter setLocale: [NSLocale currentLocale]];
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setFormatterBehavior: NSDateFormatterBehavior10_4];
+
+    numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
+    [numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
+    [numberFormatter setLocale: [NSLocale currentLocale]];
 
     backgroundGradient.fillColor = [NSColor whiteColor];
     topGradient.fillStartingColor = [NSColor colorWithCalibratedWhite: 59 / 255.0 alpha: 1];
@@ -305,15 +305,15 @@
     [self setupEncodings];
 
     [importValuesTable registerForDraggedTypes: @[NSPasteboardTypeString]];
-    [fileOutlineView registerForDraggedTypes: @[(NSString*)kUTTypeFileURL]];
-    
+    [fileOutlineView registerForDraggedTypes: @[(NSString *)kUTTypeFileURL]];
+
     // Make the date format label a link to the format description. The following two settings are necessary to make this work.
     [dateFormatLinkLabel setAllowsEditingTextAttributes: YES];
     [dateFormatLinkLabel setSelectable: YES];
     NSString *help = NSLocalizedString(@"AP624", nil);
     [dateFormatLinkLabel setAttributedStringValue: [NSAttributedString stringFromHTML: help withFont: [dateFormatLinkLabel font]]];
 
-	[self performSelector: @selector(initialSelection) withObject: nil afterDelay: 0.1 inModes: @[NSModalPanelRunLoopMode]];
+    [self performSelector: @selector(initialSelection) withObject: nil afterDelay: 0.1 inModes: @[NSModalPanelRunLoopMode]];
 }
 
 /**
@@ -322,7 +322,7 @@
 - (void)setupTokenField
 {
     NSMutableArray *tokens = [NSMutableArray arrayWithCapacity: 20];
-    ColumnToken *token = [[ColumnToken alloc] init];
+    ColumnToken    *token = [[ColumnToken alloc] init];
     token.caption = NSLocalizedString(@"AP604", nil);
     token.property = @"valutaDate";
     [tokens addObject: token];
@@ -441,10 +441,10 @@
 
 - (void)updateSettingsController
 {
-	NSError *error = nil;
-	NSArray *files = [NSFileManager.defaultManager contentsOfDirectoryAtPath: MOAssistant.assistant.importerDir
+    NSError *error = nil;
+    NSArray *files = [NSFileManager.defaultManager contentsOfDirectoryAtPath: MOAssistant.assistant.importerDir
                                                                        error: &error];
-	if (error != nil) {
+    if (error != nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return;
@@ -452,14 +452,14 @@
 
     NSMutableArray *names = [NSMutableArray arrayWithCapacity: 10];
     for (NSString *file in files) {
-        if ([file hasSuffix: @".plist" ]) {
+        if ([file hasSuffix: @".plist"]) {
             [names addObject: [file substringToIndex: [file length] - 6]];
         }
     }
     if (names.count == 0) {
         // Create a default setting if none are stored yet.
         [names addObject: NSLocalizedString(@"AP621", nil)];
-        NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist" , MOAssistant.assistant.importerDir, NSLocalizedString(@"AP621", nil)];
+        NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.assistant.importerDir, NSLocalizedString(@"AP621", nil)];
         currentSettings = importSettingsController.content;
         currentSettings.fileName = fileName;
         currentSettings.isDirty = YES;
@@ -487,7 +487,7 @@
 
     @try {
         if ([NSFileManager.defaultManager fileExistsAtPath: currentFile]) {
-            NSError *error = nil;
+            NSError  *error = nil;
             NSString *content = [NSString stringWithContentsOfFile: currentFile
                                                           encoding: currentSettings.encoding.integerValue
                                                              error: &error];
@@ -503,7 +503,7 @@
 
         dateFormatter.dateFormat = currentSettings.dateFormat;
 
-        NSString *text = @"";
+        NSString   *text = @"";
         NSUInteger ignoredLines = currentSettings.ignoreLines.intValue;
         for (NSUInteger i = 0; i < ignoredLines; i++) {
             if (i >= currentLines.count) {
@@ -520,13 +520,13 @@
             separator = @"";
         }
         NSUInteger columnCount = 0;
-        importValues = [NSMutableArray arrayWithCapacity: (currentLines.count >= ignoredLines) ? currentLines.count - ignoredLines : 0];
+        importValues = [NSMutableArray arrayWithCapacity: (currentLines.count >= ignoredLines) ? currentLines.count - ignoredLines: 0];
         for (NSUInteger i = ignoredLines; i < currentLines.count; i++) {
             NSString *line = [currentLines[i] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
             if (line.length == 0) {
                 continue;
             }
-            
+
             NSArray *fields = [line componentsSeparatedByString: separator];
             if (fields.count > columnCount) {
                 columnCount = fields.count;
@@ -534,17 +534,16 @@
             NSMutableDictionary *entry = [NSMutableDictionary dictionary];
             for (NSUInteger j = 0; j < fields.count; j++) {
                 NSString *field = fields[j];
-                if ([field hasPrefix: @"\"" ]) {
+                if ([field hasPrefix: @"\""]) {
                     field = [field stringByTrimmingCharactersInSet: doubleQuoteCharset];
                 }
-                if ([field hasPrefix: @"'" ]) {
+                if ([field hasPrefix: @"'"]) {
                     field = [field stringByTrimmingCharactersInSet: singleQuoteCharset];
                 }
                 entry[[NSString stringWithFormat: @"%lu", j]] = field;
             }
             [importValues addObject: entry];
         }
-
         importValuesController.content = importValues;
 
         // Columns setup.
@@ -552,7 +551,6 @@
         for (NSTableColumn *column in columns) {
             [importValuesTable removeTableColumn: column];
         }
-
         for (NSUInteger i = 0; i < columnCount; i++) {
             NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier: [NSString stringWithFormat: @"%lu", i]];
 
@@ -580,10 +578,10 @@
             [column.headerCell setStringValue: heading];
             [column.dataCell setFont: textFont];
             [importValuesTable addTableColumn: column];
-            [column bind: @"value"
-                toObject: importValuesController
-             withKeyPath: [NSString stringWithFormat: @"arrangedObjects.%lu", i]
-                 options: nil];
+            [column    bind: @"value"
+                   toObject: importValuesController
+                withKeyPath: [NSString stringWithFormat: @"arrangedObjects.%lu", i]
+                    options: nil];
         }
     }
     @finally {
@@ -596,20 +594,20 @@
 
 - (IBAction)settingSelectionChanged: (id)sender
 {
-	NSString *settingName = [[storedSettingsController selectedObjects] lastObject];
-	if (settingName == nil) {
+    NSString *settingName = [[storedSettingsController selectedObjects] lastObject];
+    if (settingName == nil) {
         return;
     }
 
-	NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist" , MOAssistant.assistant.importerDir, settingName];
-	currentSettings = [NSKeyedUnarchiver unarchiveObjectWithFile: fileName];
-	if (currentSettings == nil) {
+    NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.assistant.importerDir, settingName];
+    currentSettings = [NSKeyedUnarchiver unarchiveObjectWithFile: fileName];
+    if (currentSettings == nil) {
         [[MessageLog log] addMessage: [NSString stringWithFormat: @"Import settings file not found: %@", fileName] withLevel: LogLevel_Warning];
         NSRunAlertPanel(NSLocalizedString(@"AP619", nil),
                         NSLocalizedString(@"AP620", nil),
                         NSLocalizedString(@"ok", nil),
                         nil, nil, fileName);
-	}
+    }
 
     // Ensure there are valid values if anything is missing.
     updating = YES;
@@ -659,7 +657,6 @@
             break;
         }
     }
-
     // Select the correct account.
     BOOL found = NO;
     for (BankAccount *account in accountsController.arrangedObjects) {
@@ -687,13 +684,13 @@
 
 - (IBAction)cancel: (id)sender
 {
-	[[self window] close];
-	[NSApp stopModalWithCode: 1];
+    [[self window] close];
+    [NSApp stopModalWithCode: 1];
 }
 
-- (void)windowWillClose:(NSNotification*)aNotification
+- (void)windowWillClose: (NSNotification *)aNotification
 {
-	[NSApp stopModalWithCode: 1];
+    [NSApp stopModalWithCode: 1];
 }
 
 /**
@@ -702,13 +699,13 @@
  */
 - (void)preprocessValues: (id)object
 {
-    NSArray *lines;
+    NSArray        *lines;
     NSCharacterSet *doubleQuoteCharset = [NSCharacterSet characterSetWithCharactersInString: @"\""];
     NSCharacterSet *singleQuoteCharset = [NSCharacterSet characterSetWithCharactersInString: @"'"];
 
-    NSDate *minDate = nil;
-    NSDate *maxDate = nil;
-    MessageLog	*log = [MessageLog log];
+    NSDate     *minDate = nil;
+    NSDate     *maxDate = nil;
+    MessageLog *log = [MessageLog log];
     NSUInteger errorCount = 0;
 
     @try {
@@ -719,7 +716,7 @@
             }
 
             if ([NSFileManager.defaultManager fileExistsAtPath: file]) {
-                NSError *error = nil;
+                NSError  *error = nil;
                 NSString *content = [NSString stringWithContentsOfFile: file
                                                               encoding: currentSettings.encoding.integerValue
                                                                  error: &error];
@@ -737,7 +734,7 @@
             dateFormatter.dateFormat = currentSettings.dateFormat;
 
             NSUInteger index = currentSettings.ignoreLines.intValue;
-            NSString *separator = currentSettings.fieldSeparator;
+            NSString   *separator = currentSettings.fieldSeparator;
             if (separator == nil) {
                 separator = @"";
             }
@@ -752,8 +749,8 @@
                     index++;
                     continue;
                 }
-                
-                NSArray *fields = [line componentsSeparatedByString: separator];
+
+                NSArray             *fields = [line componentsSeparatedByString: separator];
                 NSMutableDictionary *entry = [NSMutableDictionary dictionary];
                 for (NSUInteger j = 0; j < fields.count; j++) {
                     if (stopProcessing) {
@@ -771,10 +768,10 @@
                     }
 
                     NSString *field = fields[j];
-                    if ([field hasPrefix: @"\"" ]) {
+                    if ([field hasPrefix: @"\""]) {
                         field = [field stringByTrimmingCharactersInSet: doubleQuoteCharset];
                     }
-                    if ([field hasPrefix: @"'" ]) {
+                    if ([field hasPrefix: @"'"]) {
                         field = [field stringByTrimmingCharactersInSet: singleQuoteCharset];
                     }
 
@@ -795,9 +792,8 @@
                             [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, date is invalid: %@",
                                               file, index, field] withLevel: LogLevel_Error];
                             errorCount++;
+                            object = nil;
                         }
-
-                        object = [dateFormatter dateFromString: field];
                     } else {
                         if ([property isEqualToString: @"value"]) {
                             object = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: field] decimalValue]];
@@ -809,7 +805,7 @@
                             } else {
                                 object = [object rounded];
                             }
-                            
+
                         }
                     }
                     if (object != nil) {
@@ -838,7 +834,7 @@
                     }
                 }
                 [parsedValues addObject: entry];
-                
+
                 index++;
             }
         }
@@ -851,50 +847,50 @@
 
 - (void)startImport
 {
-	BankAccount *account = [BankAccount accountWithNumber: currentSettings.accountNumber subNumber: currentSettings.accountSuffix bankCode: currentSettings.bankCode ];
-	
-	NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 100];
-	for (NSDictionary *entry in parsedValues) {
-		BankStatement *statement = [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement"
+    BankAccount *account = [BankAccount accountWithNumber: currentSettings.accountNumber subNumber: currentSettings.accountSuffix bankCode: currentSettings.bankCode];
+
+    NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 100];
+    for (NSDictionary *entry in parsedValues) {
+        BankStatement *statement = [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement"
                                                                  inManagedObjectContext: managedObjectContext];
 
         [entry enumerateKeysAndObjectsUsingBlock:
-            ^(id key, id obj, BOOL *stop) {
-                [statement setValue: obj forKey: key];
-            }
-        ];
+         ^(id key, id obj, BOOL *stop) {
+             [statement setValue: obj forKey: key];
+         }
 
-		statement.localBankCode = currentSettings.bankCode;
-		statement.localAccount = currentSettings.accountNumber;
-		
-		if (statement.currency == nil) {
-			statement.currency = account.currency;
-		}
-		
-		[statements addObject: statement];
-	}
-	
-	// check sorting of statements and re-sort if necessary
-	if ([statements count ] > 0) {
-		BankStatement *first = statements[0];
-		BankStatement *last = [statements lastObject ];
-		if ([first.date compare: last.date ] == NSOrderedDescending) {
-			// resort
-			NSMutableArray *newStats = [NSMutableArray arrayWithCapacity:100 ];
-			int j;
-			for(j = [statements count ]-1; j>=0; j--) {
-				[newStats addObject: statements[j] ];
-			} 
-			statements = newStats;
-		}
-	}	
-	
-	importResult = [[BankQueryResult alloc] init];
-	importResult.statements = statements;
-	importResult.accountNumber = currentSettings.accountNumber;
-	importResult.bankCode = currentSettings.bankCode;
-	importResult.isImport = YES;
-	importResult.account = account;
+         ];
+
+        statement.localBankCode = currentSettings.bankCode;
+        statement.localAccount = currentSettings.accountNumber;
+
+        if (statement.currency == nil) {
+            statement.currency = account.currency;
+        }
+
+        [statements addObject: statement];
+    }
+    // check sorting of statements and re-sort if necessary
+    if ([statements count] > 0) {
+        BankStatement *first = statements[0];
+        BankStatement *last = [statements lastObject];
+        if ([first.date compare: last.date] == NSOrderedDescending) {
+            // resort
+            NSMutableArray *newStats = [NSMutableArray arrayWithCapacity: 100];
+            int            j;
+            for (j = [statements count] - 1; j >= 0; j--) {
+                [newStats addObject: statements[j]];
+            }
+            statements = newStats;
+        }
+    }
+
+    importResult = [[BankQueryResult alloc] init];
+    importResult.statements = statements;
+    importResult.accountNumber = currentSettings.accountNumber;
+    importResult.bankCode = currentSettings.bankCode;
+    importResult.isImport = YES;
+    importResult.account = account;
 }
 
 - (IBAction)startProcessing: (id)sender
@@ -902,11 +898,11 @@
     [processingSheet prepare];
 
     stopProcessing = NO;
-    [NSApp beginSheet: processingSheet
-       modalForWindow: [self window]
-        modalDelegate: self
-       didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
-          contextInfo: PROCESSING_CONTEXT];
+    [NSApp  beginSheet: processingSheet
+        modalForWindow: [self window]
+         modalDelegate: self
+        didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
+           contextInfo: PROCESSING_CONTEXT];
 }
 
 /**
@@ -966,8 +962,8 @@
 - (IBAction)addRemoveFile: (id)sender
 {
     int clickedSegment = [sender selectedSegment];
-    switch(clickedSegment) {
-        case 0: {
+    switch (clickedSegment) {
+        case 0 : {
             // Add new files.
             NSOpenPanel *panel = [NSOpenPanel openPanel];
             panel.title = NSLocalizedString(@"AP625", nil);
@@ -983,10 +979,11 @@
             }
             break;
         }
+
         case 1: {
             NSArray *selection = fileTreeController.selectedObjects;
             [self removeFileEntries: selection];
-            
+
             NSArray *entries = [fileTreeController.selectionIndexPaths copy];
             [fileTreeController removeObjectsAtArrangedObjectIndexPaths: entries];
             break;
@@ -999,27 +996,26 @@
 {
     [importSettingsController commitEditing];
 
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject: currentSettings];
-	BOOL successful = [data writeToFile: currentSettings.fileName atomically: YES];
-	if (!successful) {
-		NSRunCriticalAlertPanel(NSLocalizedString(@"AP110", nil),
-								NSLocalizedString(@"AP111", nil),
-								NSLocalizedString(@"ok", nil),
-								nil, nil,
-								currentSettings.fileName);
-	} else {
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject: currentSettings];
+    BOOL   successful = [data writeToFile: currentSettings.fileName atomically: YES];
+    if (!successful) {
+        NSRunCriticalAlertPanel(NSLocalizedString(@"AP110", nil),
+                                NSLocalizedString(@"AP111", nil),
+                                NSLocalizedString(@"ok", nil),
+                                nil, nil,
+                                currentSettings.fileName);
+    } else {
         currentSettings.isDirty = NO;
     }
 }
 
-
 - (IBAction)saveSettingsAs: (id)sender
 {
-    [NSApp beginSheet: newSettingsNameSheet
-       modalForWindow: [self window]
-        modalDelegate: self
-       didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
-          contextInfo: SAVE_AS_CONTEXT];
+    [NSApp  beginSheet: newSettingsNameSheet
+        modalForWindow: [self window]
+         modalDelegate: self
+        didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
+           contextInfo: SAVE_AS_CONTEXT];
 }
 
 - (void)sheetDidEnd: (NSWindow *)sheet returnCode: (NSInteger)returnCode contextInfo: (void *)contextInfo
@@ -1030,7 +1026,7 @@
         if (returnCode == NSRunStoppedResponse) {
             [importSettingsController commitEditing];
 
-            NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist" , MOAssistant.assistant.importerDir, settingsNameField.stringValue];
+            NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.assistant.importerDir, settingsNameField.stringValue];
 
             // Check if file already exists and issue warning.
             if ([[NSFileManager defaultManager] fileExistsAtPath: fileName]) {
@@ -1059,7 +1055,7 @@
             }
         }
     }
-    
+
     if (contextInfo == PROCESSING_CONTEXT) {
         if (returnCode == NSRunStoppedResponse) {
             [self startImport];
@@ -1084,14 +1080,14 @@
     [NSApp endSheet: newSettingsNameSheet returnCode: NSRunAbortedResponse];
 }
 
-- (IBAction)removeSettingEntry:(id)sender
+- (IBAction)removeSettingEntry: (id)sender
 {
     NSString *settingName = [[storedSettingsController selectedObjects] lastObject];
-	if (settingName == nil) {
+    if (settingName == nil) {
         return;
     }
 
-	NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist" , MOAssistant.assistant.importerDir, settingName];
+    NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.assistant.importerDir, settingName];
 
     int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP622", nil),
                                       NSLocalizedString(@"AP623", nil),
@@ -1149,7 +1145,7 @@
     [cell setImage: [[item representedObject] icon]];
 }
 
--(void)outlineViewSelectionDidChange: (NSNotification *)aNotification
+- (void)outlineViewSelectionDidChange: (NSNotification *)aNotification
 {
     FileEntry *entry = [[fileOutlineView itemAtRow: [fileOutlineView selectedRow]] representedObject];
     if (!entry.isFolder) {
@@ -1174,25 +1170,24 @@
                item: (id)item
          childIndex: (NSInteger)index
 {
-    NSPasteboard* pasteboard = info.draggingPasteboard;
-    NSArray* urls = [pasteboard readObjectsForClasses: @[[NSURL class]]
-                                              options: @{NSPasteboardURLReadingFileURLsOnlyKey: @YES}
-                     ];
+    NSPasteboard *pasteboard = info.draggingPasteboard;
+    NSArray      *urls = [pasteboard readObjectsForClasses: @[[NSURL class]]
+                                                   options: @{NSPasteboardURLReadingFileURLsOnlyKey: @YES}
+                          ];
 
     for (NSURL *url in urls) {
         [self addFileEntryForPath: url.path atParent: nil];
     }
-
     return YES;
 }
 
 #pragma mark -
 #pragma mark Table view delegate methods
 
-- (void)tableView: (NSTableView *)aTableView
-  willDisplayCell: (id)aCell
-   forTableColumn: (NSTableColumn *)aTableColumn
-              row: (NSInteger)rowIndex
+- (void)  tableView: (NSTableView *)aTableView
+    willDisplayCell: (id)aCell
+     forTableColumn: (NSTableColumn *)aTableColumn
+                row: (NSInteger)rowIndex
 {
     NSColor *color = [NSColor grayColor];
     [aCell setEditable: NO];
@@ -1212,7 +1207,7 @@
                 }
             } else {
                 if ([field isEqualToString: @"date"] || [field isEqualToString: @"valutaDate"]) {
-                    id parsedObject;
+                    id      parsedObject;
                     NSRange range = NSMakeRange(0, value.length);
                     if ([dateFormatter getObjectValue: &parsedObject
                                             forString: value
@@ -1252,9 +1247,9 @@
     if (aTableView.selectedColumn > -1) {
         NSPasteboard *pasteboard = info.draggingPasteboard;
 
-        NSString *tokenText = [pasteboard stringForType: NSPasteboardTypeString];
-        NSArray *entries = [tokenText componentsSeparatedByString: @":"];
-        NSUInteger index = aTableView.selectedColumn;
+        NSString       *tokenText = [pasteboard stringForType: NSPasteboardTypeString];
+        NSArray        *entries = [tokenText componentsSeparatedByString: @":"];
+        NSUInteger     index = aTableView.selectedColumn;
         NSMutableArray *newFields = [currentSettings.fields mutableCopy];
         if (newFields == nil) {
             newFields = [NSMutableArray arrayWithCapacity: 10];
@@ -1291,7 +1286,7 @@
 - (BOOL)tokenField: (NSTokenField *)tokenField writeRepresentedObjects: (NSArray *)objects toPasteboard: (NSPasteboard *)pboard
 {
     ColumnToken *token = [objects lastObject];
-    NSString *data = [NSString stringWithFormat: @"%@:%@", token.caption, token.property];
+    NSString    *data = [NSString stringWithFormat: @"%@:%@", token.caption, token.property];
     [pboard setString: data forType: NSPasteboardTypeString];
     return true;
 }
@@ -1312,4 +1307,3 @@
 }
 
 @end
-

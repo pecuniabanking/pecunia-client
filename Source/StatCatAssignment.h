@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -23,25 +23,24 @@
 @class BankStatement;
 
 @interface StatCatAssignment : NSManagedObject {
-
 }
 
-@property (nonatomic) NSString *userInfo;
+@property (nonatomic) NSString                *userInfo;
 @property (nonatomic, strong) NSDecimalNumber *value;
-@property (nonatomic) Category *category;
-@property (nonatomic, strong) BankStatement *statement;
+@property (nonatomic) Category                *category;
+@property (nonatomic, strong) BankStatement   *statement;
 
--(NSString*)stringForFields:(NSArray*)fields usingDateFormatter:(NSDateFormatter*)dateFormatter numberFormatter:(NSNumberFormatter*)numberFormatter;
--(void)moveToCategory:(Category*)tcat;
--(void)moveAmount:(NSDecimalNumber*)amount toCategory:(Category*)tcat;
--(void)remove;
--(NSComparisonResult)compareDate: (StatCatAssignment*)stat;
+- (NSString *)stringForFields: (NSArray *)fields usingDateFormatter: (NSDateFormatter *)dateFormatter numberFormatter: (NSNumberFormatter *)numberFormatter;
+- (void)moveToCategory: (Category *)tcat;
+- (void)moveAmount: (NSDecimalNumber *)amount toCategory: (Category *)tcat;
+- (void)remove;
+- (NSComparisonResult)compareDate: (StatCatAssignment *)stat;
 
 @end
 
 @interface StatCatAssignment (CoreDataGeneratedPrimitiveAccessors)
 
 - (Category *)primitiveCategory;
-- (void)setPrimitiveCategory:(Category *)value;
+- (void)setPrimitiveCategory: (Category *)value;
 
 @end

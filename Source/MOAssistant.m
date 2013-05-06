@@ -39,7 +39,7 @@
 @synthesize pecuniaFileURL;
 @synthesize mainContentView;
 
-static MOAssistant	*assistant = nil;
+static MOAssistant *assistant = nil;
 
 static NSString *dataDirKey = @"DataDir";
 static NSString *dataFilenameKey = @"dataFilename";
@@ -47,78 +47,82 @@ static NSString *dataFilenameKey = @"dataFilename";
 static NSString *_dataFileStandard = @"accounts.sqlite";
 static NSString *_dataFileCrypted = @"accounts.sqlcrypt";
 
-static NSString* lDir = @"~/Library/Application Support/Pecunia/Data";
-static NSString* pDir = @"~/Library/Application Support/Pecunia/Passports";
-static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
+static NSString *lDir = @"~/Library/Application Support/Pecunia/Data";
+static NSString *pDir = @"~/Library/Application Support/Pecunia/Passports";
+static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
--(id)init
+- (id)init
 {
     self = [super init];
     if (self == nil) {
         return nil;
     }
-    NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults];
-    
-    self.dataFilename = [defaults valueForKey:dataFilenameKey];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    self.dataFilename = [defaults valueForKey: dataFilenameKey];
     if (self.dataFilename == nil) {
         self.dataFilename = @"accounts.pecuniadata";
     }
-    
+
     // customize data file name
     if ([LaunchParameters parameters].dataFile) {
         self.dataFilename = [LaunchParameters parameters].dataFile;
     }
-    
+
     isEncrypted = NO;
     isDefaultDir = YES;
     decryptionDone = NO;
     passwordKeyValid = NO;
-    
+
     // do we run in a Sandbox?
     [self checkSandboxed];
-    
+
     // create default directories if necessary
     [self checkPaths];
-    
+
     // migrate old stores
     [self migrate10];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startIdle) name:NSApplicationDidResignActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopIdle) name:NSApplicationDidBecomeActiveNotification object:nil];
-    
+
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(startIdle) name: NSApplicationDidResignActiveNotification object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(stopIdle) name: NSApplicationDidBecomeActiveNotification object: nil];
+
     idleTimer = nil;
-    model = nil; 
+    model = nil;
     context = nil;
-    
+
     return self;
 }
 
 - (void)startIdle
 {
     if (isEncrypted && maxIdleTimeExceeded == NO && decryptionDone == YES) {
-        NSError *error=nil;
-        [context save:&error];
+        NSError *error = nil;
+        [context save: &error];
         if (error != nil) {
             NSLog(@"Pecunia save error: %@", error.localizedDescription);
             return;
         }
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSUInteger idx = [defaults integerForKey:@"lockTimeIndex"];
-        NSUInteger seconds = 0;
-        
+        NSUInteger     idx = [defaults integerForKey: @"lockTimeIndex"];
+        NSUInteger     seconds = 0;
+
         switch (idx) {
             case 1: seconds = 10; break;
+
             case 2: seconds = 30; break;
+
             case 3: seconds = 60; break;
+
             case 4: seconds = 180; break;
+
             case 5: seconds = 600; break;
-                
+
             default:
                 break;
         }
-        
+
         if (seconds > 0) {
-            idleTimer = [NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(maxIdleTimeExceeded) userInfo:nil repeats:NO];
+            idleTimer = [NSTimer scheduledTimerWithTimeInterval: seconds target: self selector: @selector(maxIdleTimeExceeded) userInfo: nil repeats: NO];
         }
         maxIdleTimeExceeded = NO;
     }
@@ -131,14 +135,14 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
     [idleTimer invalidate];
     idleTimer = nil;
-    
-    if (maxIdleTimeExceeded ) {
+
+    if (maxIdleTimeExceeded) {
         // check password again
         passwordKeyValid = NO;
         [self decrypt];
         [lockView removeFromSuperview];
-        
-        [[NSApp mainWindow] makeKeyAndOrderFront:nil];
+
+        [[NSApp mainWindow] makeKeyAndOrderFront: nil];
         maxIdleTimeExceeded = NO;
     }
 }
@@ -148,145 +152,145 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     if (isEncrypted == NO) {
         return;
     }
-    
+
     maxIdleTimeExceeded = YES;
 
     // encrypt database (but do not disconnect store)
     [self encrypt];
-    
+
     // Show lock view
-    lockView = [[MainBackgroundView alloc] initWithFrame:[mainContentView frame]];
-    [lockView setAlphaValue:0.7];
-    [mainContentView addSubview:lockView];
+    lockView = [[MainBackgroundView alloc] initWithFrame: [mainContentView frame]];
+    [lockView setAlphaValue: 0.7];
+    [mainContentView addSubview: lockView];
 }
 
 // initializes the data file (can be default data file from preferences or
 // from Finder integration)
-- (void)initDatafile:(NSString*)path
+- (void)initDatafile: (NSString *)path
 {
     if (context != nil) {
         abort();
     }
-    
+
     if (self.accountsURL != nil) {
         // data file already defined
         return;
     }
-    
+
     if (path == nil) {
         // use standard path (as defined in Preferences)
         [self accessSandbox];
     } else {
         // use other data file at startup
-        NSURL *fileURL = [NSURL fileURLWithPath:path];
+        NSURL *fileURL = [NSURL fileURLWithPath: path];
         self.dataFilename = [fileURL lastPathComponent];
-        
+
         isDefaultDir = NO;
-        
+
         self.dataDirURL = [fileURL URLByDeletingLastPathComponent];
         self.pecuniaFileURL = fileURL;
     }
-    
+
     isEncrypted = [self checkIsEncrypted];
 
     if (isEncrypted == NO) {
-        self.accountsURL = [self.pecuniaFileURL URLByAppendingPathComponent:_dataFileStandard];
+        self.accountsURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
     } else {
-        self.accountsURL = [[NSURL fileURLWithPath:tempDir] URLByAppendingPathComponent:_dataFileStandard];
+        self.accountsURL = [[NSURL fileURLWithPath: tempDir] URLByAppendingPathComponent: _dataFileStandard];
     }
 }
 
--(void)checkSandboxed
+- (void)checkSandboxed
 {
     NSString *homeDir = [@"~" stringByExpandingTildeInPath];
-    if ([homeDir hasSuffix:@"de.pecuniabanking.pecunia/Data"]) {
+    if ([homeDir hasSuffix: @"de.pecuniabanking.pecunia/Data"]) {
         isSandboxed = YES;
     } else {
         isSandboxed = NO;
     }
 }
 
--(void)updateDefaults
+- (void)updateDefaults
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue:self.dataFilename forKey:dataFilenameKey];
+    [defaults setValue: self.dataFilename forKey: dataFilenameKey];
     if (isDefaultDir == NO) {
-        [defaults setValue:[[self.dataDirURL path] stringByReplacingOccurrencesOfString:@"file://localhost" withString:@""] forKey:dataDirKey];
+        [defaults setValue: [[self.dataDirURL path] stringByReplacingOccurrencesOfString: @"file://localhost" withString: @""] forKey: dataDirKey];
     } else {
-        [defaults setValue:nil forKey:dataDirKey];
+        [defaults setValue: nil forKey: dataDirKey];
     }
 }
 
--(void)accessSandbox
+- (void)accessSandbox
 {
-    NSError *error=nil;
-    
+    NSError *error = nil;
+
     if (isSandboxed == NO || isDefaultDir == YES) {
         return;
     }
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
+
     // we need a security scoped Bookmark
-    NSURL *url=nil;
-    NSData *bookmark = [defaults objectForKey:@"accountsBookmark"];
+    NSURL  *url = nil;
+    NSData *bookmark = [defaults objectForKey: @"accountsBookmark"];
     if (bookmark != nil) {
-        NSError *error=nil;
-        url = [NSURL URLByResolvingBookmarkData:bookmark options:NSURLBookmarkResolutionWithSecurityScope relativeToURL:nil bookmarkDataIsStale:NULL error:&error];
+        NSError *error = nil;
+        url = [NSURL URLByResolvingBookmarkData: bookmark options: NSURLBookmarkResolutionWithSecurityScope relativeToURL: nil bookmarkDataIsStale: NULL error: &error];
         if (error != nil) {
             url = nil;
         }
     }
     if (url != nil) {
         // check if path is the same
-        NSString *currentPath = [[dataDirURL URLByAppendingPathComponent:self.dataFilename] path];
-        if ([currentPath isEqualToString:[url path]] == NO) {
+        NSString *currentPath = [[dataDirURL URLByAppendingPathComponent: self.dataFilename] path];
+        if ([currentPath isEqualToString: [url path]] == NO) {
             url = nil;
         }
     }
-    
+
     if (url) {
         [url startAccessingSecurityScopedResource];
     } else {
         // start an open file dialog to get a SSB
         NSOpenPanel *op = [NSOpenPanel openPanel];
-        [op setAllowsMultipleSelection:NO];
-        [op setCanChooseDirectories:NO];
-        [op setCanChooseFiles:YES];
-        [op setCanCreateDirectories:NO];
-        [op setDirectoryURL:self.dataDirURL];
-        [op setAllowedFileTypes:@[@"pecuniadata"]];
-        [op setExtensionHidden:YES];
-        [op setNameFieldStringValue:self.dataFilename];
-        
+        [op setAllowsMultipleSelection: NO];
+        [op setCanChooseDirectories: NO];
+        [op setCanChooseFiles: YES];
+        [op setCanCreateDirectories: NO];
+        [op setDirectoryURL: self.dataDirURL];
+        [op setAllowedFileTypes: @[@"pecuniadata"]];
+        [op setExtensionHidden: YES];
+        [op setNameFieldStringValue: self.dataFilename];
+
         NSInteger result = [op runModal];
         if (result ==  NSFileHandlingPanelCancelButton) {
             // todo: Abbruch
-            [NSApp terminate:nil];
+            [NSApp terminate: nil];
             return;
         }
-        
+
         url = [op URL];
-        NSData *bookmark = [url bookmarkDataWithOptions:NSURLBookmarkCreationWithSecurityScope includingResourceValuesForKeys:nil relativeToURL:nil error:&error];
+        NSData *bookmark = [url bookmarkDataWithOptions: NSURLBookmarkCreationWithSecurityScope includingResourceValuesForKeys: nil relativeToURL: nil error: &error];
         if (error != nil) {
             @throw error;
         } else {
-            [defaults setValue:bookmark forKey:@"accountsBookmark"];
+            [defaults setValue: bookmark forKey: @"accountsBookmark"];
         }
-        
+
         self.dataDirURL = [op directoryURL];
         self.dataFilename = [url lastPathComponent];
-        
+
         [self updateDefaults];
     }
 }
 
--(BOOL)checkIsEncrypted
+- (BOOL)checkIsEncrypted
 {
-    NSFileManager	*fm = [NSFileManager defaultManager];
-    NSURL *dataFileURL = [self.dataDirURL URLByAppendingPathComponent:self.dataFilename];
-    NSURL *accountsFileURL = [dataFileURL URLByAppendingPathComponent:_dataFileCrypted];
-    
-    if ([fm fileExistsAtPath:[accountsFileURL path]]) {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSURL         *dataFileURL = [self.dataDirURL URLByAppendingPathComponent: self.dataFilename];
+    NSURL         *accountsFileURL = [dataFileURL URLByAppendingPathComponent: _dataFileCrypted];
+
+    if ([fm fileExistsAtPath: [accountsFileURL path]]) {
         return YES;
     } else {
         return NO;
@@ -296,21 +300,23 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 - (void)checkPaths
 {
     // create default paths
-    NSFileManager	*fm = [NSFileManager defaultManager];
-    NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults];
-    NSError *error = nil;
-    
+    NSFileManager  *fm = [NSFileManager defaultManager];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSError        *error = nil;
+
     NSString *defaultDataDir = [lDir stringByExpandingTildeInPath];
-    if([fm fileExistsAtPath: defaultDataDir] == NO) {
+    if ([fm fileExistsAtPath: defaultDataDir] == NO) {
         [fm createDirectoryAtPath: defaultDataDir withIntermediateDirectories: YES attributes: nil error: &error];
-        if(error) @throw error;
+        if (error) {
+            @throw error;
+        }
     }
 
     NSString *dataDir = [defaults valueForKey: dataDirKey];
-    
+
     if (isSandboxed) {
         if (dataDir != nil) {
-            if ([dataDir hasSuffix:@"/Library/Application Support/Pecunia/Data"]) {
+            if ([dataDir hasSuffix: @"/Library/Application Support/Pecunia/Data"]) {
                 // it's the default directory, set the DataDir to nil
                 [defaults setValue: nil forKey: dataDirKey];
                 dataDir = defaultDataDir;
@@ -327,70 +333,76 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             dataDir = defaultDataDir;
         } else {
             // check if it is the default directory
-            if ([dataDir hasPrefix:defaultDataDir]) {
-                [defaults setValue:nil forKey:dataDirKey];
+            if ([dataDir hasPrefix: defaultDataDir]) {
+                [defaults setValue: nil forKey: dataDirKey];
                 dataDir = defaultDataDir;
             } else {
                 isDefaultDir = NO;
             }
         }
     }
-    self.dataDirURL = [NSURL fileURLWithPath:dataDir];
-    self.pecuniaFileURL = [self.dataDirURL URLByAppendingPathComponent:self.dataFilename];
-	
+    self.dataDirURL = [NSURL fileURLWithPath: dataDir];
+    self.pecuniaFileURL = [self.dataDirURL URLByAppendingPathComponent: self.dataFilename];
+
     // Passport directory
     self.ppDir = [pDir stringByExpandingTildeInPath];
-    if([fm fileExistsAtPath: ppDir] == NO) {
+    if ([fm fileExistsAtPath: ppDir] == NO) {
         [fm createDirectoryAtPath: ppDir withIntermediateDirectories: YES attributes: nil error: &error];
-        if(error) @throw error;
+        if (error) {
+            @throw error;
+        }
     }
-    
+
     // ImExporter Directory
     self.importerDir = [iDir stringByExpandingTildeInPath];
-    if([fm fileExistsAtPath: importerDir] == NO) {
+    if ([fm fileExistsAtPath: importerDir] == NO) {
         [fm createDirectoryAtPath: importerDir withIntermediateDirectories: YES attributes: nil error: &error];
-        if(error) @throw error;
+        if (error) {
+            @throw error;
+        }
     }
-    
+
     // Temporary Directory
     self.tempDir = NSTemporaryDirectory();
-    
+
     // if it's the default data dir: check if the pecunia datafile already exists - if not, create it
     if (isDefaultDir) {
-        if ([fm fileExistsAtPath:[self.pecuniaFileURL path]] == NO) {
+        if ([fm fileExistsAtPath: [self.pecuniaFileURL path]] == NO) {
             NSDictionary *attributes = @{NSFilePosixPermissions: @0700, NSFileExtensionHidden: @YES};
             [fm createDirectoryAtPath: [self.pecuniaFileURL path] withIntermediateDirectories: YES attributes: attributes error: &error];
-            if(error) @throw error;
+            if (error) {
+                @throw error;
+            }
         }
     }
 }
 
--(void)migrate10
+- (void)migrate10
 {
     NSError *error = nil;
 
-    NSFileManager *fm = [NSFileManager defaultManager];
+    NSFileManager  *fm = [NSFileManager defaultManager];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL migrated10 = [defaults boolForKey:@"Migrated10"];
+    BOOL           migrated10 = [defaults boolForKey: @"Migrated10"];
     if (migrated10 == NO) {
         if (isDefaultDir == NO) {
-            @throw [PecuniaError errorWithText:NSLocalizedString(@"AP159", nil)];
+            @throw [PecuniaError errorWithText: NSLocalizedString(@"AP159", nil)];
         }
-        
+
         // check for encryption / sparseimage file
-        NSURL *oldURLStandard = [self.dataDirURL URLByAppendingPathComponent:@"accounts.sqlite"];
-        NSURL *oldURLEncr = [self.dataDirURL URLByAppendingPathComponent:@"accounts.sparseimage"];
-        
+        NSURL *oldURLStandard = [self.dataDirURL URLByAppendingPathComponent: @"accounts.sqlite"];
+        NSURL *oldURLEncr = [self.dataDirURL URLByAppendingPathComponent: @"accounts.sparseimage"];
+
         BOOL wasEncrypted = NO;
-        if ([fm fileExistsAtPath:[oldURLEncr path]]) {
+        if ([fm fileExistsAtPath: [oldURLEncr path]]) {
             // encrypted file exists, check if unencrypted file exists as well and is older
-            if ([fm fileExistsAtPath:[oldURLStandard path]]) {
+            if ([fm fileExistsAtPath: [oldURLStandard path]]) {
                 // yes, now we have to check the dates
-                NSDictionary *standardAttrs = [fm attributesOfItemAtPath:[oldURLStandard path] error:&error];
-                NSDictionary *encrAttrs = [fm attributesOfItemAtPath:[oldURLEncr path] error:&error];
-                NSDate *standardDate = standardAttrs[NSFileModificationDate];
-                NSDate *encrDate = encrAttrs[NSFileModificationDate];
-                if ([encrDate compare:standardDate] == NSOrderedDescending) {
+                NSDictionary *standardAttrs = [fm attributesOfItemAtPath: [oldURLStandard path] error: &error];
+                NSDictionary *encrAttrs = [fm attributesOfItemAtPath: [oldURLEncr path] error: &error];
+                NSDate       *standardDate = standardAttrs[NSFileModificationDate];
+                NSDate       *encrDate = encrAttrs[NSFileModificationDate];
+                if ([encrDate compare: standardDate] == NSOrderedDescending) {
                     wasEncrypted = YES;
                 }
             } else {
@@ -398,22 +410,22 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             }
         }
         if (wasEncrypted) {
-            @throw [PecuniaError errorWithText:NSLocalizedString(@"AP160", nil)];
+            @throw [PecuniaError errorWithText: NSLocalizedString(@"AP160", nil)];
         }
     }
-    
+
     if (isDefaultDir == NO) {
         return;
     }
-    
-    NSURL *accURL = [self.pecuniaFileURL URLByAppendingPathComponent:_dataFileCrypted];
-    if ([fm fileExistsAtPath:[accURL path]] == NO) {
-        accURL = [self.pecuniaFileURL URLByAppendingPathComponent:_dataFileStandard];
-        if ([fm fileExistsAtPath:[accURL path]] == NO) {
+
+    NSURL *accURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
+    if ([fm fileExistsAtPath: [accURL path]] == NO) {
+        accURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
+        if ([fm fileExistsAtPath: [accURL path]] == NO) {
             // the data store is empty - try to migrate
-            NSURL *oldURL = [self.dataDirURL URLByAppendingPathComponent:[self.dataFilename stringByReplacingOccurrencesOfString:@"pecuniadata" withString:@"sqlite"]];
-            if ([fm fileExistsAtPath:[oldURL path]] == YES) {
-                [fm moveItemAtPath:[oldURL path] toPath:[accURL path] error:&error];
+            NSURL *oldURL = [self.dataDirURL URLByAppendingPathComponent: [self.dataFilename stringByReplacingOccurrencesOfString: @"pecuniadata" withString: @"sqlite"]];
+            if ([fm fileExistsAtPath: [oldURL path]] == YES) {
+                [fm moveItemAtPath: [oldURL path] toPath: [accURL path] error: &error];
                 if (error != nil) {
                     NSLog(@"Move of old accounts file %@ to new location (%@) failed.", oldURL, accURL);
                 }
@@ -422,65 +434,64 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 }
 
--(NSString*)passportDirectory
+- (NSString *)passportDirectory
 {
     return ppDir;
 }
 
--(void)shutdown
+- (void)shutdown
 {
-    NSError *error=nil;
+    NSError *error = nil;
 
     NSPersistentStoreCoordinator *coord = [context persistentStoreCoordinator];
-    NSArray *stores = [coord persistentStores];
-    NSPersistentStore *store;
-    for(store in stores) {
+    NSArray                      *stores = [coord persistentStores];
+    NSPersistentStore            *store;
+    for (store in stores) {
         [coord removePersistentStore: store error: &error];
     }
-    if(error) {
-        NSAlert *alert = [NSAlert alertWithError:error];
+    if (error) {
+        NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
     }
 
     if (isEncrypted) {
         [self encrypt];
     }
-    
+
     if (isSandboxed && dataDirURL) {
         [dataDirURL stopAccessingSecurityScopedResource];
     }
 }
 
--(BOOL)encrypted
+- (BOOL)encrypted
 {
     return isEncrypted;
 }
 
--(BOOL)encrypt
+- (BOOL)encrypt
 {
     int i;
-    
-    // read accounts file
-    NSData *fileData = [NSData dataWithContentsOfURL:self.accountsURL];
-    char *encryptedBytes = malloc([fileData length]+80);
-    char *clearBytes = (char*)[fileData bytes];
-    char checkData[64];
 
-    for (i = 0; i<32; i++) {
-        checkData[2*i] = dataPasswordKey[i];
-        checkData[2*i+1] = clearBytes[4*i+100];
+    // read accounts file
+    NSData *fileData = [NSData dataWithContentsOfURL: self.accountsURL];
+    char   *encryptedBytes = malloc([fileData length] + 80);
+    char   *clearBytes = (char *)[fileData bytes];
+    char   checkData[64];
+
+    for (i = 0; i < 32; i++) {
+        checkData[2 * i] = dataPasswordKey[i];
+        checkData[2 * i + 1] = clearBytes[4 * i + 100];
     }
-    
     // now encrypt check data
     CCCryptorStatus status;
-    size_t encryptedSize;
+    size_t          encryptedSize;
     status = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, checkData, 63, encryptedBytes, 64, &encryptedSize);
 
     // now encrypt file data
     if (status == kCCSuccess) {
-        status = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, clearBytes, (unsigned int)[fileData length], encryptedBytes+64, (unsigned int)[fileData length]+16, &encryptedSize);
+        status = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, clearBytes, (unsigned int)[fileData length], encryptedBytes + 64, (unsigned int)[fileData length] + 16, &encryptedSize);
     }
-    
+
     if (status != kCCSuccess) {
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP152", nil),
@@ -491,12 +502,12 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         free(encryptedBytes);
         return NO;
     }
-    
+
     // write encrypted content to pecunia data file
-    NSData *encryptedData = [NSData dataWithBytes:encryptedBytes length:encryptedSize+64];
+    NSData *encryptedData = [NSData dataWithBytes: encryptedBytes length: encryptedSize + 64];
     free(encryptedBytes);
-    NSURL *targetURL = [pecuniaFileURL URLByAppendingPathComponent:_dataFileCrypted];
-    if ([encryptedData writeToURL:targetURL atomically:NO] == NO) {
+    NSURL *targetURL = [pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
+    if ([encryptedData writeToURL: targetURL atomically: NO] == NO) {
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP111", nil),
                         NSLocalizedString(@"ok", nil),
@@ -505,30 +516,30 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                         [targetURL path]);
         return NO;
     }
-    
+
     // now remove uncrypted file
     NSFileManager *fm = [NSFileManager defaultManager];
-    NSError *error=nil;
-    [fm removeItemAtPath:[accountsURL path] error:&error];
+    NSError       *error = nil;
+    [fm removeItemAtPath: [accountsURL path] error: &error];
     if (error != nil) {
-        NSAlert *alert = [NSAlert alertWithError:error];
+        NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return NO;
     }
-    
+
     return YES;
 }
 
--(BOOL)decrypt
+- (BOOL)decrypt
 {
-    BOOL savePassword = NO;
+    BOOL     savePassword = NO;
     NSString *passwd = nil;
-    
+
     // read encrypted file
-    NSURL *sourceURL = [pecuniaFileURL URLByAppendingPathComponent:_dataFileCrypted];
-    NSData *fileData = [NSData dataWithContentsOfURL:sourceURL];
-    char *decryptedBytes = malloc([fileData length]);
-    
+    NSURL  *sourceURL = [pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
+    NSData *fileData = [NSData dataWithContentsOfURL: sourceURL];
+    char   *decryptedBytes = malloc([fileData length]);
+
     if (passwordKeyValid == NO) {
         PasswordWindow *pwWindow = nil;
         BOOL passwordOk = NO;
@@ -588,13 +599,13 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         } // while
         [pwWindow closeWindow];
     }
-    
+
     // now decrypt
     CCCryptorStatus status;
-    size_t decryptedSize;
-    char *encryptedBytes = (char*)[fileData bytes];
-    status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, encryptedBytes+64, (unsigned int)[fileData length]-64, decryptedBytes, (unsigned int)[fileData length]-64, &decryptedSize);
-    
+    size_t          decryptedSize;
+    char            *encryptedBytes = (char *)[fileData bytes];
+    status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, encryptedBytes + 64, (unsigned int)[fileData length] - 64, decryptedBytes, (unsigned int)[fileData length] - 64, &decryptedSize);
+
     if (status != kCCSuccess) {
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP153", nil),
@@ -605,10 +616,10 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         free(decryptedBytes);
         return NO;
     }
-    
-    NSData *decryptedData = [NSData dataWithBytes:decryptedBytes length:decryptedSize];
+
+    NSData *decryptedData = [NSData dataWithBytes: decryptedBytes length: decryptedSize];
     free(decryptedBytes);
-    if ([decryptedData writeToURL:accountsURL atomically:NO] == NO) {
+    if ([decryptedData writeToURL: accountsURL atomically: NO] == NO) {
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP111", nil),
                         NSLocalizedString(@"ok", nil),
@@ -622,72 +633,72 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     if (savePassword && passwd != nil) {
         [Keychain setPassword: passwd forService: @"Pecunia" account: @"DataFile" store: savePassword];
     }
-    
+
     decryptionDone = YES;
     return YES;
 }
 
--(BOOL)encryptDataWithPassword: (NSString*)password
+- (BOOL)encryptDataWithPassword: (NSString *)password
 {
     // first get key from password
-    NSData *data = [password dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [password dataUsingEncoding: NSUTF8StringEncoding];
     CC_SHA256([data bytes], (unsigned int)[data length], dataPasswordKey);
     passwordKeyValid = YES;
-    
+
     if ([self encrypt] == NO) {
         return NO;
     }
-    
-    self.accountsURL = [[NSURL fileURLWithPath:tempDir] URLByAppendingPathComponent:_dataFileStandard];
+
+    self.accountsURL = [[NSURL fileURLWithPath: tempDir] URLByAppendingPathComponent: _dataFileStandard];
     isEncrypted = YES;
     [self decrypt];
-    
+
     // set coordinator and stores
     NSPersistentStoreCoordinator *coord = [context persistentStoreCoordinator];
-    NSArray *stores = [coord persistentStores];
-    NSPersistentStore *store;
-    for(store in stores) {
+    NSArray                      *stores = [coord persistentStores];
+    NSPersistentStore            *store;
+    for (store in stores) {
         [coord setURL: accountsURL forPersistentStore: store];
     }
-    
     return YES;
 }
 
--(BOOL)stopEncryption
+- (BOOL)stopEncryption
 {
-    if(!isEncrypted) return NO;
-    
+    if (!isEncrypted) {
+        return NO;
+    }
+
     NSFileManager *fm = [NSFileManager defaultManager];
-    NSError *error=nil;
-    
+    NSError       *error = nil;
+
     // move unencrypted file
-    NSURL *targetURL = [pecuniaFileURL URLByAppendingPathComponent:_dataFileStandard];
-    [fm moveItemAtPath:[accountsURL path] toPath:[targetURL path] error:&error];
+    NSURL *targetURL = [pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
+    [fm moveItemAtPath: [accountsURL path] toPath: [targetURL path] error: &error];
     if (error != nil) {
-        NSAlert *alert = [NSAlert alertWithError:error];
+        NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return NO;
     }
 
     self.accountsURL = targetURL;
     isEncrypted = NO;
-    
+
     // remove encrypted file
-    targetURL = [pecuniaFileURL URLByAppendingPathComponent:_dataFileCrypted];
-    [fm removeItemAtPath:[targetURL path] error:&error];
+    targetURL = [pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
+    [fm removeItemAtPath: [targetURL path] error: &error];
     if (error != nil) {
-        NSAlert *alert = [NSAlert alertWithError:error];
+        NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
     }
-    
+
     // set coordinator and stores
     NSPersistentStoreCoordinator *coord = [context persistentStoreCoordinator];
-    NSArray *stores = [coord persistentStores];
-    NSPersistentStore *store;
-    for(store in stores) {
+    NSArray                      *stores = [coord persistentStores];
+    NSPersistentStore            *store;
+    for (store in stores) {
         [coord setURL: accountsURL forPersistentStore: store];
     }
-    
     return YES;
 }
 
@@ -706,14 +717,13 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     // Delete the store from the current context.
     NSError *error;
     if ([[context persistentStoreCoordinator] removePersistentStore: [[[context persistentStoreCoordinator] persistentStores] lastObject]
-                                                              error: &error])
-    {
+                                                              error: &error]) {
         // Quick and effective: remove the file containing the data.
         [[NSFileManager defaultManager] removeItemAtURL: storeURL error: &error];
 
         // Now recreate it.
         NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
-                                 NSInferMappingModelAutomaticallyOption: @YES};
+                                  NSInferMappingModelAutomaticallyOption: @YES};
         [[context persistentStoreCoordinator] addPersistentStoreWithType: NSSQLiteStoreType
                                                            configuration: nil
                                                                      URL: storeURL
@@ -728,86 +738,97 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 }
 
--(void)loadModel
+- (void)loadModel
 {
-
-    NSURL *momURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Accounts" ofType:@"momd"]];
-    model = [[NSManagedObjectModel alloc] initWithContentsOfURL:momURL];
+    NSURL *momURL = [NSURL fileURLWithPath: [[NSBundle mainBundle] pathForResource: @"Accounts" ofType: @"momd"]];
+    model = [[NSManagedObjectModel alloc] initWithContentsOfURL: momURL];
 }
 
--(void)loadContext
+- (void)loadContext
 {
-    NSError	*error = nil;
-    
-    if (model == nil) [self loadModel];
+    NSError *error = nil;
+
+    if (model == nil) {
+        [self loadModel];
+    }
     if (accountsURL == nil) {
         return;
     }
-    if (isEncrypted && decryptionDone == NO) return;
-    
-    NSDictionary *pragmaOptions = nil;
+    if (isEncrypted && decryptionDone == NO) {
+        return;
+    }
+
+    NSDictionary        *pragmaOptions = nil;
     NSMutableDictionary *storeOptions = [NSMutableDictionary dictionary];
-    [storeOptions setDictionary:@{NSMigratePersistentStoresAutomaticallyOption: @YES,NSInferMappingModelAutomaticallyOption: @YES}];
+    [storeOptions setDictionary: @{NSMigratePersistentStoresAutomaticallyOption: @YES, NSInferMappingModelAutomaticallyOption: @YES}];
     if (isEncrypted) {
-        pragmaOptions = @{@"synchronous":@"NORMAL", @"fullfsync":@"1"};
+        pragmaOptions = @{@"synchronous": @"NORMAL", @"fullfsync": @"1"};
         storeOptions[NSSQLitePragmasOption] = pragmaOptions;
     }
-    
+
     NSPersistentStoreCoordinator *coord = nil;
-    
+
     if (context != nil && [context persistentStoreCoordinator] != nil) {
         coord = [context persistentStoreCoordinator];
     } else {
         coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: model];
     }
-    
+
     [coord addPersistentStoreWithType: NSSQLiteStoreType
                         configuration: nil
                                   URL: accountsURL
                               options: storeOptions
                                 error: &error];
-    
-    
-    if( error != nil ) @throw error;
-    
+
+
+    if (error != nil) {
+        @throw error;
+    }
+
     if (context == nil) {
         context = [[NSManagedObjectContext alloc] init];
         [context setPersistentStoreCoordinator: coord];
     }
 }
 
-- (NSManagedObjectContext*)memContext
+- (NSManagedObjectContext *)memContext
 {
     NSError *error = nil;
-    if(memContext) return memContext;
-    if(model == nil) return nil;
-    
+    if (memContext) {
+        return memContext;
+    }
+    if (model == nil) {
+        return nil;
+    }
+
     NSPersistentStoreCoordinator *coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: model];
-    
+
     [coord addPersistentStoreWithType: NSInMemoryStoreType configuration: nil URL: nil options: nil error: &error];
-    if( error != nil ) @throw error;
+    if (error != nil) {
+        @throw error;
+    }
     memContext = [[NSManagedObjectContext alloc] init];
     [memContext setPersistentStoreCoordinator: coord];
     return memContext;
 }
 
-- (void)relocateToURL:(NSURL*)newFilePathURL
+- (void)relocateToURL: (NSURL *)newFilePathURL
 {
-    // check if it is already 
-    if ([newFilePathURL isEqual:dataDirURL]) {
+    // check if it is already
+    if ([newFilePathURL isEqual: dataDirURL]) {
         return;
     }
 
-    NSFileManager *fm = [NSFileManager defaultManager];
+    NSFileManager  *fm = [NSFileManager defaultManager];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSError *error=nil;
+    NSError        *error = nil;
 
     NSString *newFilename = [newFilePathURL lastPathComponent];
-    NSURL *newDataDirURL = [newFilePathURL URLByDeletingLastPathComponent];
-    
+    NSURL    *newDataDirURL = [newFilePathURL URLByDeletingLastPathComponent];
+
     // first check if data file already exists at target position
     BOOL useExisting = NO;
-    if ([fm fileExistsAtPath:[newFilePathURL path]]) {
+    if ([fm fileExistsAtPath: [newFilePathURL path]]) {
         int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP11", nil),
                                           NSLocalizedString(@"AP164", nil),
                                           NSLocalizedString(@"AP2", nil),
@@ -815,150 +836,154 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                                           NSLocalizedString(@"AP14", nil),
                                           [newFilePathURL path]
                                           );
-        
+
         if (res == NSAlertDefaultReturn) {
             return;
         }
         if (res == NSAlertAlternateReturn) {
             // remove existing file
-            [fm removeItemAtPath:[newFilePathURL path] error:&error];
+            [fm removeItemAtPath: [newFilePathURL path] error: &error];
             if (error != nil) {
-                NSAlert *alert = [NSAlert alertWithError:error];
+                NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
                 return;
             }
         }
-        
+
         if (res == NSAlertOtherReturn && isEncrypted) {
             // if current store is encrypted first remove it
-            [fm removeItemAtPath:[self.accountsURL path] error:&error];
+            [fm removeItemAtPath: [self.accountsURL path] error: &error];
             if (error != nil) {
-                NSAlert *alert = [NSAlert alertWithError:error];
+                NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
                 return;
             }
         }
-        
+
         if (res == NSAlertOtherReturn) {
             useExisting = YES;
         }
     }
-    
+
     // check if the new data path is the default data path
-    NSURL *defaultDataURL = [NSURL fileURLWithPath:[lDir stringByExpandingTildeInPath]];
-    if ([newDataDirURL isEqual:defaultDataURL]) {
+    NSURL *defaultDataURL = [NSURL fileURLWithPath: [lDir stringByExpandingTildeInPath]];
+    if ([newDataDirURL isEqual: defaultDataURL]) {
         isDefaultDir = YES;
     } else {
         isDefaultDir = NO;
     }
-    
+
     // move pecunia file with all included files
-    [fm moveItemAtPath:[pecuniaFileURL path] toPath:[newFilePathURL path] error:&error];
+    [fm moveItemAtPath: [pecuniaFileURL path] toPath: [newFilePathURL path] error: &error];
     if (error != nil) {
-        NSAlert *alert = [NSAlert alertWithError:error];
+        NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return;
     }
-    
+
     // set file and directory variables
     self.dataDirURL = newDataDirURL;
     self.dataFilename = newFilename;
     self.pecuniaFileURL = newFilePathURL;
-    
+
     [self updateDefaults];
-    
+
     // get SCB
     if (isDefaultDir == NO) {
-        NSData *bookmark = [self.pecuniaFileURL bookmarkDataWithOptions:NSURLBookmarkCreationWithSecurityScope includingResourceValuesForKeys:nil relativeToURL:nil error:&error];
+        NSData *bookmark = [self.pecuniaFileURL bookmarkDataWithOptions: NSURLBookmarkCreationWithSecurityScope includingResourceValuesForKeys: nil relativeToURL: nil error: &error];
         if (error != nil) {
-            NSAlert *alert = [NSAlert alertWithError:error];
+            NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
         } else {
-            [defaults setValue:bookmark forKey:@"accountsBookmark"];
+            [defaults setValue: bookmark forKey: @"accountsBookmark"];
         }
     }
-    
+
     // now use new store
     if (useExisting) {
         // new store should be used instead of old one. Check if it is a crypted store. If yes, decrypt it
         isEncrypted = [self checkIsEncrypted];
-        
+
         // decrypt store and set accountsURL
         if (isEncrypted) {
-            self.accountsURL = [[NSURL fileURLWithPath:tempDir] URLByAppendingPathComponent:_dataFileStandard];
+            self.accountsURL = [[NSURL fileURLWithPath: tempDir] URLByAppendingPathComponent: _dataFileStandard];
             [self decrypt];
         }
     }
-    
+
     if (isEncrypted == NO) {
-        self.accountsURL = [self.pecuniaFileURL URLByAppendingPathComponent:_dataFileStandard];
+        self.accountsURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
     }
-    
+
     // set coordinator and stores
     NSPersistentStoreCoordinator *coord = [context persistentStoreCoordinator];
-    NSArray *stores = [coord persistentStores];
-    NSPersistentStore *store;
-    for(store in stores) {
+    NSArray                      *stores = [coord persistentStores];
+    NSPersistentStore            *store;
+    for (store in stores) {
         [coord setURL: self.accountsURL forPersistentStore: store];
     }
 }
 
 - (void)relocate
 {
-	NSSavePanel *panel = [NSSavePanel savePanel];
-    [panel setNameFieldStringValue:self.dataFilename];
-    [panel setCanCreateDirectories:YES];
-    [panel setAllowedFileTypes:@[@"pecuniadata"]];
+    NSSavePanel *panel = [NSSavePanel savePanel];
+    [panel setNameFieldStringValue: self.dataFilename];
+    [panel setCanCreateDirectories: YES];
+    [panel setAllowedFileTypes: @[@"pecuniadata"]];
     if (isDefaultDir == NO) {
-        [panel setDirectoryURL:self.dataDirURL];
+        [panel setDirectoryURL: self.dataDirURL];
     }
-    
+
     NSInteger result = [panel runModal];
     if (result == NSFileHandlingPanelCancelButton) {
         return;
     }
-    
-    [self relocateToURL:[panel URL]];
+
+    [self relocateToURL: [panel URL]];
 }
 
 - (void)relocateToStandard
 {
     NSString *defaultDataDir = [lDir stringByExpandingTildeInPath];
-    NSURL *dataURL = [NSURL fileURLWithPath:defaultDataDir isDirectory:YES];
-    NSURL *dataFileURL = [dataURL URLByAppendingPathComponent:dataFilename];
-    
-    [self relocateToURL:dataFileURL];
+    NSURL    *dataURL = [NSURL fileURLWithPath: defaultDataDir isDirectory: YES];
+    NSURL    *dataFileURL = [dataURL URLByAppendingPathComponent: dataFilename];
+
+    [self relocateToURL: dataFileURL];
 }
 
-- (BOOL)checkDataPassword:(NSString*)password
+- (BOOL)checkDataPassword: (NSString *)password
 {
     unsigned char key[32];
-    
-    NSData *data = [password dataUsingEncoding:NSUTF8StringEncoding];
+
+    NSData *data = [password dataUsingEncoding: NSUTF8StringEncoding];
     CC_SHA256([data bytes], (unsigned int)[data length], key);
-    
+
     return memcmp(key, dataPasswordKey, 32) == 0;
 }
 
-
--(NSManagedObjectContext*)context
-{ 
-    if(context == nil) [self loadContext];
+- (NSManagedObjectContext *)context
+{
+    if (context == nil) {
+        [self loadContext];
+    }
     return context;
 }
 
--(NSManagedObjectModel*)model 
-{ 
-    if(model == nil) [self loadModel];
+- (NSManagedObjectModel *)model
+{
+    if (model == nil) {
+        [self loadModel];
+    }
     return model;
 }
 
-+(MOAssistant*)assistant
++ (MOAssistant *)assistant
 {
-    if(assistant) return assistant;
+    if (assistant) {
+        return assistant;
+    }
     assistant = [[MOAssistant alloc] init];
     return assistant;
 }
 
 @end
-

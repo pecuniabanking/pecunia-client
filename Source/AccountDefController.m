@@ -27,67 +27,67 @@
 
 #include "BWGradientBox.h"
 
-#define HEIGHT_MANUAL 550
+#define HEIGHT_MANUAL   550
 #define HEIGHT_STANDARD 530
 
 @implementation AccountDefController
 
--(id)init
+- (id)init
 {
-	self = [super initWithWindowNibName:@"AccountCreate"];
-	moc = [[MOAssistant assistant ] memContext ];
+    self = [super initWithWindowNibName: @"AccountCreate"];
+    moc = [[MOAssistant assistant] memContext];
 
-	account = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount" inManagedObjectContext:moc ];
-	account.currency = @"EUR";
-	account.country = @"DE";
-	account.name = @"Neues Konto";
+    account = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount" inManagedObjectContext: moc];
+    account.currency = @"EUR";
+    account.country = @"DE";
+    account.name = @"Neues Konto";
     success = NO;
-	return self;
+    return self;
 }
 
-- (void)setBankCode: (NSString*)code name: (NSString*)name
+- (void)setBankCode: (NSString *)code name: (NSString *)name
 {
-	account.bankCode = code;
-	account.bankName = name;
+    account.bankCode = code;
+    account.bankName = name;
 }
 
--(void)setHeight:(int)h
+- (void)setHeight: (int)h
 {
-    NSWindow *window = [self window ] ;
-    NSRect frame = [window frame ];
-    int pos = frame.origin.y + frame.size.height;
+    NSWindow *window = [self window];
+    NSRect   frame = [window frame];
+    int      pos = frame.origin.y + frame.size.height;
     frame.size.height = h;
     frame.origin.y = pos - h;
-    [window setFrame:frame display:YES animate:YES ];
+    [window setFrame: frame display: YES animate: YES];
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
-	[[self window ] center ];
-	
-	int i=0;
-	NSMutableArray* hbciUsers = [NSMutableArray arrayWithArray: [BankUser allUsers ] ];
-	// add special User
-	BankUser *noUser  = [NSEntityDescription insertNewObjectForEntityForName:@"BankUser" inManagedObjectContext:moc ];
-	noUser.name = NSLocalizedString(@"AP813", nil);
-	[hbciUsers insertObject:noUser atIndex:0 ];
-	
-	[users setContent: hbciUsers ];
-	// now find first user that fits bank code and change selection
-	if(account.bankCode) {
-		for(BankUser *user in hbciUsers) {
-			if([user.bankCode isEqual: account.bankCode ]) {
-				[dropDown selectItemAtIndex:i ];
-				break;
-			}
-			i++;
-		}
-	}
-	currentAddView = accountAddView;
-	[predicateEditor addRow:self ];
-	
-	// fill proposal values
-	[self dropChanged: self];
+    [[self window] center];
+
+    int            i = 0;
+    NSMutableArray *hbciUsers = [NSMutableArray arrayWithArray: [BankUser allUsers]];
+    // add special User
+    BankUser *noUser  = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser" inManagedObjectContext: moc];
+    noUser.name = NSLocalizedString(@"AP813", nil);
+    [hbciUsers insertObject: noUser atIndex: 0];
+
+    [users setContent: hbciUsers];
+    // now find first user that fits bank code and change selection
+    if (account.bankCode) {
+        for (BankUser *user in hbciUsers) {
+            if ([user.bankCode isEqual: account.bankCode]) {
+                [dropDown selectItemAtIndex: i];
+                break;
+            }
+            i++;
+        }
+    }
+    currentAddView = accountAddView;
+    [predicateEditor addRow: self];
+
+    // fill proposal values
+    [self dropChanged: self];
 
     // Manually set up properties which cannot be set via user defined runtime attributes
     // (Color type is not available pre 10.7).
@@ -96,46 +96,48 @@
     backgroundGradient.fillColor = [NSColor whiteColor];
 }
 
--(IBAction)dropChanged: (id)sender
+- (IBAction)dropChanged: (id)sender
 {
-	int idx = [dropDown indexOfSelectedItem ];
-	if(idx < 0) idx = 0;
-	BankUser *user = [users arrangedObjects ][idx];
+    int idx = [dropDown indexOfSelectedItem];
+    if (idx < 0) {
+        idx = 0;
+    }
+    BankUser *user = [users arrangedObjects][idx];
 
-	if(idx > 0) {
-		account.bankName = user.bankName;
-		account.bankCode = user.bankCode;
-		BankInfo *info = [[HBCIClient hbciClient ] infoForBankCode: user.bankCode inCountry:account.country ];
-		if (info) {
-			account.bic = info.bic;
-			account.bankName = info.name;
-		}
+    if (idx > 0) {
+        account.bankName = user.bankName;
+        account.bankCode = user.bankCode;
+        BankInfo *info = [[HBCIClient hbciClient] infoForBankCode: user.bankCode inCountry: account.country];
+        if (info) {
+            account.bic = info.bic;
+            account.bankName = info.name;
+        }
 
-		[bankCodeField setEditable: NO ];
-		//[bankCodeField setBezeled: NO ];
-		
-		if (currentAddView != accountAddView) {
+        [bankCodeField setEditable: NO];
+        //[bankCodeField setBezeled: NO ];
+
+        if (currentAddView != accountAddView) {
             [self setHeight: HEIGHT_STANDARD];
             NSRect frame = [manAccountAddView frame];
-			[boxView replaceSubview:manAccountAddView with:accountAddView ];
-			currentAddView = accountAddView;
-            [currentAddView setFrame:frame];
-		}
-	} else {
-		[bankCodeField setEditable: YES ];
-		//[bankCodeField setBezeled: YES ];
+            [boxView replaceSubview: manAccountAddView with: accountAddView];
+            currentAddView = accountAddView;
+            [currentAddView setFrame: frame];
+        }
+    } else {
+        [bankCodeField setEditable: YES];
+        //[bankCodeField setBezeled: YES ];
 
-		if (currentAddView != manAccountAddView) {
+        if (currentAddView != manAccountAddView) {
             [self setHeight: HEIGHT_MANUAL];
             NSRect frame = [accountAddView frame];
-			[boxView replaceSubview:accountAddView with:manAccountAddView ];
-			currentAddView = manAccountAddView;
-            [currentAddView setFrame:frame];
-		}
-	}
+            [boxView replaceSubview: accountAddView with: manAccountAddView];
+            currentAddView = manAccountAddView;
+            [currentAddView setFrame: frame];
+        }
+    }
 }
 
-- (void)windowWillClose:(NSNotification*)notification
+- (void)windowWillClose: (NSNotification *)notification
 {
     if (success) {
         [NSApp stopModalWithCode: 1];
@@ -144,13 +146,13 @@
     }
 }
 
-- (IBAction)cancel:(id)sender
+- (IBAction)cancel: (id)sender
 {
     if ([NSColorPanel sharedColorPanelExists]) {
         [[NSColorPanel sharedColorPanel] close];
     }
 
-	[moc reset];
+    [moc reset];
     [self close];
 }
 
@@ -160,179 +162,183 @@
         [[NSColorPanel sharedColorPanel] close];
     }
 
-	[accountController commitEditing];
-	if (![self check]) {
+    [accountController commitEditing];
+    if (![self check]) {
         return;
     }
-	NSManagedObjectContext *context = [[MOAssistant assistant ] context ];
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
 
-	BankUser *user = nil;
-	int idx = [dropDown indexOfSelectedItem ];
-	if(idx > 0) user = [users arrangedObjects ][idx];
+    BankUser *user = nil;
+    int      idx = [dropDown indexOfSelectedItem];
+    if (idx > 0) {
+        user = [users arrangedObjects][idx];
+    }
 
-	// account is new - create entity in productive context
-	BankAccount *bankRoot = [BankAccount bankRootForCode: account.bankCode ];
-	if(bankRoot == nil) {
-		Category *root = [Category bankRoot ];
-		if(root != nil) {
-			// create root for bank
-			bankRoot = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount" inManagedObjectContext:context];
-			bankRoot.bankName = account.bankName;
-			bankRoot.name = account.bankName;
-			bankRoot.bankCode = account.bankCode;
-			bankRoot.currency = account.currency;
-			bankRoot.country = account.country;
-			bankRoot.bic = account.bic;
-			bankRoot.isBankAcc = @YES;
-			// parent
-			bankRoot.parent = root;
-		} else bankRoot = nil;
-	}
-	// insert account into hierarchy
-	if(bankRoot) {
-		// account is new - create entity in productive context
-		newAccount = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccount" inManagedObjectContext:context ];
-		newAccount.bankCode = account.bankCode;
-		newAccount.bankName = account.bankName;
-		if(user) {
-			newAccount.isManual = @NO;
-			newAccount.userId = user.userId;
-			newAccount.customerId = user.customerId;
-			newAccount.collTransferMethod = account.collTransferMethod;
-			newAccount.isStandingOrderSupported = account.isStandingOrderSupported;
-		} else {
-			newAccount.isManual = @YES;	
-			newAccount.balance = account.balance;
-			NSPredicate* predicate = [predicateEditor objectValue];
-			if(predicate) newAccount.rule = [predicate description ];
-		}
-		
-		newAccount.parent = bankRoot;
-		newAccount.isBankAcc = @YES;
-	}
-	
-	if(newAccount) {
-		// update common data
-		newAccount.iban = account.iban;
-		newAccount.bic = account.bic;
-		newAccount.owner = account.owner;
-		newAccount.accountNumber = account.accountNumber; //?
-		newAccount.name = account.name;
-		newAccount.currency = account.currency;
-		newAccount.country = account.country;
+    // account is new - create entity in productive context
+    BankAccount *bankRoot = [BankAccount bankRootForCode: account.bankCode];
+    if (bankRoot == nil) {
+        Category *root = [Category bankRoot];
+        if (root != nil) {
+            // create root for bank
+            bankRoot = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount" inManagedObjectContext: context];
+            bankRoot.bankName = account.bankName;
+            bankRoot.name = account.bankName;
+            bankRoot.bankCode = account.bankCode;
+            bankRoot.currency = account.currency;
+            bankRoot.country = account.country;
+            bankRoot.bic = account.bic;
+            bankRoot.isBankAcc = @YES;
+            // parent
+            bankRoot.parent = root;
+        } else {bankRoot = nil; }
+    }
+    // insert account into hierarchy
+    if (bankRoot) {
+        // account is new - create entity in productive context
+        newAccount = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount" inManagedObjectContext: context];
+        newAccount.bankCode = account.bankCode;
+        newAccount.bankName = account.bankName;
+        if (user) {
+            newAccount.isManual = @NO;
+            newAccount.userId = user.userId;
+            newAccount.customerId = user.customerId;
+            newAccount.collTransferMethod = account.collTransferMethod;
+            newAccount.isStandingOrderSupported = account.isStandingOrderSupported;
+        } else {
+            newAccount.isManual = @YES;
+            newAccount.balance = account.balance;
+            NSPredicate *predicate = [predicateEditor objectValue];
+            if (predicate) {
+                newAccount.rule = [predicate description];
+            }
+        }
+
+        newAccount.parent = bankRoot;
+        newAccount.isBankAcc = @YES;
+    }
+
+    if (newAccount) {
+        // update common data
+        newAccount.iban = account.iban;
+        newAccount.bic = account.bic;
+        newAccount.owner = account.owner;
+        newAccount.accountNumber = account.accountNumber;         //?
+        newAccount.name = account.name;
+        newAccount.currency = account.currency;
+        newAccount.country = account.country;
         newAccount.catRepColor = account.catRepColor;
         newAccount.isHidden = account.isHidden;
         newAccount.noCatRep = account.noCatRep;
-	}
+    }
 
-    [self close ];
+    [self close];
 
-	// save all
-	NSError *error=nil;
-	if([context save: &error ] == NO) {
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert runModal];
-	}
-	
-	if (newAccount.userId) {
-		[[HBCIClient hbciClient ] addAccount:newAccount forUser:user ];
-	}
+    // save all
+    NSError *error = nil;
+    if ([context save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+    }
 
-	[moc reset ];
+    if (newAccount.userId) {
+        [[HBCIClient hbciClient] addAccount: newAccount forUser: user];
+    }
+
+    [moc reset];
     success = YES;
-    [self close ];
+    [self close];
 }
 
--(void)controlTextDidEndEditing:(NSNotification *)aNotification
+- (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
-	NSTextField	*te = [aNotification object ];
-	
-	if([te tag ] == 100) {
-		BOOL wasEditable = [bankNameField isEditable ];
-		BankAccount *bankRoot = [BankAccount bankRootForCode:[te stringValue ] ];
-		[bankNameField setEditable: NO];
-		[bankNameField setBezeled: NO];
+    NSTextField *te = [aNotification object];
+
+    if ([te tag] == 100) {
+        BOOL        wasEditable = [bankNameField isEditable];
+        BankAccount *bankRoot = [BankAccount bankRootForCode: [te stringValue]];
+        [bankNameField setEditable: NO];
+        [bankNameField setBezeled: NO];
         bankNameField.drawsBackground = NO;
-		if (bankRoot == nil) {
-			NSString *name = [[HBCIClient hbciClient  ] bankNameForCode: [te stringValue ] inCountry: account.country ];
-			if ([name isEqualToString:NSLocalizedString(@"AP13", nil) ]) {
-				[bankNameField setEditable: YES];
-				[bankNameField setBezeled: YES];
+        if (bankRoot == nil) {
+            NSString *name = [[HBCIClient hbciClient] bankNameForCode: [te stringValue] inCountry: account.country];
+            if ([name isEqualToString: NSLocalizedString(@"AP13", nil)]) {
+                [bankNameField setEditable: YES];
+                [bankNameField setBezeled: YES];
                 bankNameField.drawsBackground = YES;
-				if (wasEditable == NO) account.bankName = name;
-			} else account.bankName = name;
-		} else {
-			account.bankName = bankRoot.name;
-		}
-	}
+                if (wasEditable == NO) {
+                    account.bankName = name;
+                }
+            } else {account.bankName = name; }
+        } else {
+            account.bankName = bankRoot.name;
+        }
+    }
 }
 
-- (IBAction)predicateEditorChanged:(id)sender
-{	
-	//	if(awaking) return;
-	// check NSApp currentEvent for the return key
-    NSEvent* event = [NSApp currentEvent];
-    if ([event type] == NSKeyDown)
-	{
-		NSString* characters = [event characters];
-		if ([characters length] > 0 && [characters characterAtIndex:0] == 0x0D)
-		{
-			/*			
-			 [self calculateCatAssignPredicate ];
-			 ruleChanged = YES;
-			 */ 
-		}
+- (IBAction)predicateEditorChanged: (id)sender
+{
+    //	if(awaking) return;
+    // check NSApp currentEvent for the return key
+    NSEvent *event = [NSApp currentEvent];
+    if ([event type] == NSKeyDown) {
+        NSString *characters = [event characters];
+        if ([characters length] > 0 && [characters characterAtIndex: 0] == 0x0D) {
+            /*
+             [self calculateCatAssignPredicate ];
+             ruleChanged = YES;
+             */
+        }
     }
     // if the user deleted the first row, then add it again - no sense leaving the user with no rows
-    if ([predicateEditor numberOfRows] == 0)
-		[predicateEditor addRow:self];
+    if ([predicateEditor numberOfRows] == 0) {
+        [predicateEditor addRow: self];
+    }
 }
 
--(BOOL)check
+- (BOOL)check
 {
-	if(account.accountNumber == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-						NSLocalizedString(@"AP55", nil),
-						NSLocalizedString(@"AP1", nil), nil, nil);
-		return NO;
-	}
-	
-	if(account.bankCode == nil) {
-		NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-						NSLocalizedString(@"AP56", nil),
-						NSLocalizedString(@"AP1", nil), nil, nil);
-		return NO;
-	}
-	
-	// default currency
-	if([account.currency isEqual: @"" ]) account.currency = @"EUR";
-	
-	
-	// check IBAN
-	BOOL res;
-	HBCIClient *hbciClient = [HBCIClient hbciClient ];
-	
-	
-	if([hbciClient checkIBAN: account.iban ] == NO) {
-		NSRunAlertPanel(NSLocalizedString(@"AP59", nil), 
-						NSLocalizedString(@"AP70", nil),
-						NSLocalizedString(@"AP61", nil), nil, nil);
-		return NO;
-	}
-	
-	// check account number
-	res = [hbciClient checkAccount: account.accountNumber forBank: account.bankCode inCountry:account.country ];
-	if(res == NO) {
-		NSRunAlertPanel(NSLocalizedString(@"AP59", nil), 
-						NSLocalizedString(@"AP60", nil),
-						NSLocalizedString(@"AP61", nil), nil, nil);
-		return NO;
-	}
+    if (account.accountNumber == nil) {
+        NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                        NSLocalizedString(@"AP55", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+        return NO;
+    }
 
-	return YES;
+    if (account.bankCode == nil) {
+        NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                        NSLocalizedString(@"AP56", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+        return NO;
+    }
+
+    // default currency
+    if ([account.currency isEqual: @""]) {
+        account.currency = @"EUR";
+    }
+
+
+    // check IBAN
+    BOOL       res;
+    HBCIClient *hbciClient = [HBCIClient hbciClient];
+
+
+    if ([hbciClient checkIBAN: account.iban] == NO) {
+        NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+                        NSLocalizedString(@"AP70", nil),
+                        NSLocalizedString(@"AP61", nil), nil, nil);
+        return NO;
+    }
+
+    // check account number
+    res = [hbciClient checkAccount: account.accountNumber forBank: account.bankCode inCountry: account.country];
+    if (res == NO) {
+        NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+                        NSLocalizedString(@"AP60", nil),
+                        NSLocalizedString(@"AP61", nil), nil, nil);
+        return NO;
+    }
+
+    return YES;
 }
-
-
-
 
 @end

@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -25,16 +25,16 @@
  */
 @implementation SynchronousScrollView
 
-- (void)setSynchronizedScrollView: (NSScrollView*)scrollview
+- (void)setSynchronizedScrollView: (NSScrollView *)scrollview
 {
     [self.contentView setCopiesOnScroll: YES];
-    
+
     NSView *synchronizedContentView;
 
     [self stopSynchronizing];
     synchronizedScrollView = scrollview;
     synchronizedContentView = [synchronizedScrollView contentView];
-    [synchronizedContentView setPostsBoundsChangedNotifications:YES];
+    [synchronizedContentView setPostsBoundsChangedNotifications: YES];
 
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(synchronizedViewContentBoundsDidChange:)
@@ -44,10 +44,10 @@
 
 - (void)synchronizedViewContentBoundsDidChange: (NSNotification *)notification
 {
-    NSClipView *changedContentView  =[notification object];
-    NSPoint changedBoundsOrigin = [changedContentView documentVisibleRect].origin;
-    NSPoint curOffset = [[self contentView] bounds].origin;
-    NSPoint newOffset = curOffset;
+    NSClipView *changedContentView  = [notification object];
+    NSPoint    changedBoundsOrigin = [changedContentView documentVisibleRect].origin;
+    NSPoint    curOffset = [[self contentView] bounds].origin;
+    NSPoint    newOffset = curOffset;
 
     // We only sync vertically.
     if (newOffset.y != changedBoundsOrigin.y) {
@@ -62,7 +62,7 @@
 - (void)stopSynchronizing
 {
     if (synchronizedScrollView != nil) {
-        NSView* synchronizedContentView = [synchronizedScrollView contentView];
+        NSView *synchronizedContentView = [synchronizedScrollView contentView];
 
         [[NSNotificationCenter defaultCenter] removeObserver: self
                                                         name: NSViewBoundsDidChangeNotification

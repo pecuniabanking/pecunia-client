@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -23,10 +23,9 @@
 #include "AnimationHelper.h"
 
 #import "BWGradientBox.h"
-#import "MAAttachedWindow.h"
 
-extern NSString* const CategoryColorNotification;
-extern NSString* const CategoryKey;
+extern NSString *const CategoryColorNotification;
+extern NSString *const CategoryKey;
 
 // A simple descendant to accept double clicks.
 @interface DoubleClickImageView : NSImageView
@@ -39,7 +38,7 @@ extern NSString* const CategoryKey;
 
 @synthesize controller;
 
-- (void)mouseDown:(NSEvent *)theEvent
+- (void)mouseDown: (NSEvent *)theEvent
 {
     if ([[self target] respondsToSelector: [self action]]) {
         [NSApp sendAction: [self action] to: [self target] from: self];
@@ -75,7 +74,6 @@ extern NSString* const CategoryKey;
 {
     self = [super initWithFrame: frameRect];
     if (self != nil) {
-
     }
     return self;
 }
@@ -83,7 +81,7 @@ extern NSString* const CategoryKey;
 - (NSView *)hitTest: (NSPoint)aPoint
 {
     // Don't allow any mouse clicks for subviews in this NSBox (necessary for making this box selectable).
-	if (NSPointInRect(aPoint, [self convertRect: [self bounds] toView: [self superview]])) {
+    if (NSPointInRect(aPoint, [self convertRect: [self bounds] toView: [self superview]])) {
         return self;
     } else {
         return nil;
@@ -108,7 +106,7 @@ extern NSString* const CategoryKey;
 
 @implementation ImageLibraryPopup
 
-- (void)cancelOperation:(id)sender
+- (void)cancelOperation: (id)sender
 {
     [NSApp sendAction: @selector(cancelImage:) to: nil from: self];
 }
@@ -125,9 +123,9 @@ extern NSString* const CategoryKey;
 @synthesize iconCollectionController;
 @synthesize iconCollection;
 
-- (id)initWithCategory: (Category*)aCategory
+- (id)initWithCategory: (Category *)aCategory
 {
-	self = [super initWithWindowNibName: @"CategoryMaintenance"];
+    self = [super initWithWindowNibName: @"CategoryMaintenance"];
     if (self != nil) {
         moc = MOAssistant.assistant.memContext;
 
@@ -141,7 +139,7 @@ extern NSString* const CategoryKey;
         category.isHidden = aCategory.isHidden;
         category.noCatRep = aCategory.noCatRep;
     }
-	return self;
+    return self;
 }
 
 - (void)awakeFromNib
@@ -161,7 +159,7 @@ extern NSString* const CategoryKey;
         if ([category.iconName isAbsolutePath]) {
             path = category.iconName;
         } else {
-            NSString* subfolder = [category.iconName stringByDeletingLastPathComponent];
+            NSString *subfolder = [category.iconName stringByDeletingLastPathComponent];
             path = [[NSBundle mainBundle] pathForResource: [category.iconName lastPathComponent]
                                                    ofType: @"icns"
                                               inDirectory: subfolder];
@@ -176,8 +174,8 @@ extern NSString* const CategoryKey;
     NSArray *paths = [NSBundle.mainBundle pathsForResourcesOfType: @"icns" inDirectory: @"Collections/1"];
 
     for (NSString *path in paths) {
-        NSString* fileName = [[path lastPathComponent] stringByDeletingPathExtension];
-        NSImage *image = [[NSImage alloc] initWithContentsOfFile: path];
+        NSString *fileName = [[path lastPathComponent] stringByDeletingPathExtension];
+        NSImage  *image = [[NSImage alloc] initWithContentsOfFile: path];
         image.name = fileName;
         [iconCollectionController addObject: @{@"icon": image}];
     }
@@ -196,28 +194,8 @@ extern NSString* const CategoryKey;
 
 - (void)openImageLibrary
 {
-    if (imageLibraryPopupWindow == nil) {
-        NSRect bounds = categoryIcon.bounds;
-        NSPoint targetPoint = NSMakePoint(NSMidX(bounds),
-                                          NSMidY(bounds));
-        targetPoint = [categoryIcon convertPoint: targetPoint toView: nil];
-        imageLibraryPopupWindow = [[MAAttachedWindow alloc] initWithView: imageLibraryPopup
-                                                         attachedToPoint: targetPoint
-                                                                inWindow: self.window
-                                                                  onSide: MAPositionAutomatic
-                                                              atDistance: 20];
-
-        [imageLibraryPopupWindow setBackgroundColor: [NSColor colorWithCalibratedWhite: 1 alpha: 0.8]];
-        [imageLibraryPopupWindow setViewMargin: 1];
-        [imageLibraryPopupWindow setBorderWidth: 1];
-        [imageLibraryPopupWindow setCornerRadius: 10];
-        [imageLibraryPopupWindow setHasArrow: YES];
-        [imageLibraryPopupWindow setDrawsRoundCornerBesideArrow: YES];
-
-        [imageLibraryPopupWindow setAlphaValue: 0];
-        [self.window addChildWindow: imageLibraryPopupWindow ordered: NSWindowAbove];
-        [imageLibraryPopupWindow fadeIn];
-        [imageLibraryPopupWindow makeKeyWindow];
+    if (!imageLibraryPopover.shown) {
+        [imageLibraryPopover showRelativeToRect: categoryIcon.bounds ofView: categoryIcon preferredEdge: NSMinYEdge];
     }
 }
 
@@ -231,9 +209,7 @@ extern NSString* const CategoryKey;
 
 - (IBAction)acceptImage: (id)sender
 {
-    [imageLibraryPopupWindow fadeOut];
-    [self.window removeChildWindow: imageLibraryPopupWindow];
-    imageLibraryPopupWindow = nil;
+    [imageLibraryPopover performClose: sender];
 
     NSArray *selection = iconCollectionController.selectedObjects;
     if ([selection count] > 0) {
@@ -243,9 +219,7 @@ extern NSString* const CategoryKey;
 
 - (IBAction)cancelImage: (id)sender
 {
-    [imageLibraryPopupWindow fadeOut];
-    [self.window removeChildWindow: imageLibraryPopupWindow];
-    imageLibraryPopupWindow = nil;
+    [imageLibraryPopover performClose: sender];
 }
 
 - (IBAction)cancel: (id)sender
@@ -258,8 +232,8 @@ extern NSString* const CategoryKey;
 
 
     [self close];
-	[moc reset];
-	[NSApp stopModalWithCode: 0];
+    [moc reset];
+    [NSApp stopModalWithCode: 0];
 }
 
 - (IBAction)ok: (id)sender
@@ -270,11 +244,11 @@ extern NSString* const CategoryKey;
 
     [categoryIcon removeObserver: self forKeyPath: @"image"];
 
-	[categoryController commitEditing];
-	NSManagedObjectContext *context = MOAssistant.assistant.context;
-	
-	// Take changes over.
-	changedCategory.localName = category.localName;
+    [categoryController commitEditing];
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    // Take changes over.
+    changedCategory.localName = category.localName;
     changedCategory.currency = category.currency;
     changedCategory.categoryColor = category.categoryColor;
     changedCategory.isHidden = category.isHidden;
@@ -286,7 +260,7 @@ extern NSString* const CategoryKey;
             changedCategory.iconName = image.name;
         } else {
             // A library icon was selected. Construct the relative path.
-            changedCategory.iconName = [@"Collections/1/" stringByAppendingString: image.name];
+            changedCategory.iconName = [@"Collections/1/" stringByAppendingString : image.name];
         }
     } else {
         changedCategory.iconName = @""; // An empty string denotes a category without icon.
@@ -298,18 +272,19 @@ extern NSString* const CategoryKey;
                                                     userInfo: info];
     [self close];
 
-	// save all
-	NSError *error = nil;
-	if (![context save: &error]) {
-		NSAlert *alert = [NSAlert alertWithError: error];
-		[alert runModal];
-	}
+    // save all
+    NSError *error = nil;
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+    }
 
-	[moc reset];
-	[NSApp stopModalWithCode: 1];
+    [moc reset];
+    [NSApp stopModalWithCode: 1];
 }
 
-- (IBAction)removeIcon: (id)sender {
+- (IBAction)removeIcon: (id)sender
+{
     categoryIcon.image = nil;
     smallCategoryIcon.image = nil;
 }

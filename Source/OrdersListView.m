@@ -5,12 +5,12 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -51,7 +51,7 @@ NSString *OrderIsChangedKey       = @"OrderIsChangedKey";       // bool (as NSNu
 NSString *OrderPendingDeletionKey = @"OrderPendingDeletionKey"; // bool (as NSNumber)
 NSString *OrderIsSentKey          = @"OrderIsSentKey";          // bool (as NSNumber)
 
-extern NSString* OrderDataType;
+extern NSString *OrderDataType;
 
 @interface OrdersListView (Private)
 
@@ -67,7 +67,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 @synthesize owner;
 @synthesize dataSource;
 
-- (id)initWithCoder: (NSCoder*)decoder
+- (id)initWithCoder: (NSCoder *)decoder
 {
     self = [super initWithCoder: decoder];
     if (self != nil) {
@@ -75,7 +75,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
         [dateFormatter setLocale: [NSLocale currentLocale]];
         [dateFormatter setDateStyle: kCFDateFormatterShortStyle];
         [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
-        
+
         hunderedYearsLater = [[ShortDate currentDate] dateByAddingUnits: 100 byUnit: NSYearCalendarUnit];
     }
     return self;
@@ -84,7 +84,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+
     [self setDelegate: self];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -95,7 +95,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     }
 }
 
-- (void) dealloc
+- (void)dealloc
 {
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteName"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.date"];
@@ -116,7 +116,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.toDelete"];
 
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
-    
+
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObserver: self forKeyPath: @"autoCasing"];
 }
@@ -124,22 +124,21 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 #pragma mark -
 #pragma mark Bindings, KVO and KVC
 
-- (void)bind: (NSString *)binding
-    toObject: (id)observableObject
- withKeyPath: (NSString *)keyPath
-     options: (NSDictionary *)options
+- (void)   bind: (NSString *)binding
+       toObject: (id)observableObject
+    withKeyPath: (NSString *)keyPath
+        options: (NSDictionary *)options
 {
-    if ([binding isEqualToString: @"dataSource"])
-    {
+    if ([binding isEqualToString: @"dataSource"]) {
         observedObject = observableObject;
         dataSource = [observableObject valueForKey: keyPath];
-        
+
         // One binding for the array, to get notifications about insertion and deletions.
         [observableObject addObserver: self
                            forKeyPath: @"arrangedObjects"
                               options: 0
                               context: DataSourceBindingContext];
-        
+
         // Bindings to specific attributes to get notfied about changes to each of them
         // (for all objects in the array).
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteName" options: 0 context: nil];
@@ -211,20 +210,19 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 #pragma mark -
 #pragma mark PXListViewDelegate protocol implementation
 
-- (NSUInteger)numberOfRowsInListView: (PXListView*)aListView
+- (NSUInteger)numberOfRowsInListView: (PXListView *)aListView
 {
     pendingReload = NO;
-    
+
 #pragma unused(aListView)
-	return [dataSource count];
+    return [dataSource count];
 }
 
 - (id)formatValue: (id)value capitalize: (BOOL)capitalize
 {
-    if (value == nil || [value isKindOfClass: [NSNull class]])
+    if (value == nil || [value isKindOfClass: [NSNull class]]) {
         value = @"";
-    else
-    {
+    } else {
         if ([value isKindOfClass: [NSDate class]]) {
             ShortDate *date = [ShortDate dateWithDate: value];
             if ([hunderedYearsLater unitsToDate: date byUnit: NSYearCalendarUnit] > 0) {
@@ -246,16 +244,16 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
             }
         }
     }
-    
+
     return value;
 }
 
 #define CELL_HEIGHT 80
 
-- (void) fillCell: (OrdersListViewCell*)cell forRow: (NSUInteger)row
+- (void)fillCell: (OrdersListViewCell *)cell forRow: (NSUInteger)row
 {
     StandingOrder *order = dataSource[row];
-    
+
     // Update the bank name in case it isn't set yet.
     if (order.remoteBankName == nil && order.remoteBankCode != nil && order.account != nil && order.account.country != nil) {
         NSString *bankName = [[HBCIClient hbciClient] bankNameForCode: order.remoteBankCode inCountry: order.account.country];
@@ -265,59 +263,59 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     }
 
     cell.delegate = self;
-    NSColor *color = [order.account categoryColor];
+    NSColor      *color = [order.account categoryColor];
     NSDictionary *details = @{StatementIndexKey: @((int)row),
-                             OrderFirstExecDateKey: [self formatValue: order.firstExecDate capitalize: NO],
-                             StatementDateKey: [self formatValue: order.nextExecDate capitalize: NO],
-                             OrderLastExecDateKey: [self formatValue: order.lastExecDate capitalize: NO],
-                             StatementRemoteNameKey: [self formatValue: order.remoteName capitalize: YES],
-                             StatementPurposeKey: [self formatValue: order.purpose capitalize: YES],
-                             StatementValueKey: [self formatValue: order.value capitalize: NO],
-                             StatementCurrencyKey: [self formatValue: order.currency capitalize: NO],
-                             StatementRemoteBankNameKey: [self formatValue: order.remoteBankName capitalize: YES],
-                             StatementRemoteBankCodeKey: [self formatValue: order.remoteBankCode capitalize: NO],
-                             StatementRemoteAccountKey: [self formatValue: order.remoteAccount capitalize: YES],
-                             StatementTypeKey: [self formatValue: order.type capitalize: NO],
-                             OrderIsChangedKey: order.isChanged,
-                             OrderPendingDeletionKey: order.toDelete,
-                             OrderIsSentKey: order.isSent,
-                             StatementColorKey: (color != nil) ? color : [NSNull null]};
-    
+                              OrderFirstExecDateKey: [self formatValue: order.firstExecDate capitalize: NO],
+                              StatementDateKey: [self formatValue: order.nextExecDate capitalize: NO],
+                              OrderLastExecDateKey: [self formatValue: order.lastExecDate capitalize: NO],
+                              StatementRemoteNameKey: [self formatValue: order.remoteName capitalize: YES],
+                              StatementPurposeKey: [self formatValue: order.purpose capitalize: YES],
+                              StatementValueKey: [self formatValue: order.value capitalize: NO],
+                              StatementCurrencyKey: [self formatValue: order.currency capitalize: NO],
+                              StatementRemoteBankNameKey: [self formatValue: order.remoteBankName capitalize: YES],
+                              StatementRemoteBankCodeKey: [self formatValue: order.remoteBankCode capitalize: NO],
+                              StatementRemoteAccountKey: [self formatValue: order.remoteAccount capitalize: YES],
+                              StatementTypeKey: [self formatValue: order.type capitalize: NO],
+                              OrderIsChangedKey: order.isChanged,
+                              OrderPendingDeletionKey: order.toDelete,
+                              OrderIsSentKey: order.isSent,
+                              StatementColorKey: (color != nil) ? color : [NSNull null]};
+
     [cell setDetails: details];
-    
+
     NSRect frame = [cell frame];
     frame.size.height = CELL_HEIGHT;
     [cell setFrame: frame];
 }
 
-- (PXListViewCell*)listView: (PXListView*)aListView cellForRow: (NSUInteger)row
+- (PXListViewCell *)listView: (PXListView *)aListView cellForRow: (NSUInteger)row
 {
-	OrdersListViewCell* cell = (OrdersListViewCell*)[aListView dequeueCellWithReusableIdentifier: @"order-cell"];
-	
-	if (!cell) {
-		cell = [OrdersListViewCell cellLoadedFromNibNamed: @"OrdersListViewCell" reusableIdentifier: @"order-cell"];
+    OrdersListViewCell *cell = (OrdersListViewCell *)[aListView dequeueCellWithReusableIdentifier: @"order-cell"];
+
+    if (!cell) {
+        cell = [OrdersListViewCell cellLoadedFromNibNamed: @"OrdersListViewCell" reusableIdentifier: @"order-cell"];
         cell.listView = self;
-	}
-	
+    }
+
     [self fillCell: cell forRow: row];
-    
+
     return cell;
 }
 
-- (CGFloat)listView: (PXListView*)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
+- (CGFloat)listView: (PXListView *)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
 {
     return CELL_HEIGHT;
 }
 
-- (NSRange)listView: (PXListView*)aListView rangeOfDraggedRow: (NSUInteger)row
+- (NSRange)listView: (PXListView *)aListView rangeOfDraggedRow: (NSUInteger)row
 {
-    return NSMakeRange(0, CELL_HEIGHT);    
+    return NSMakeRange(0, CELL_HEIGHT);
 }
 
-- (void)listViewSelectionDidChange:(NSNotification*)aNotification
+- (void)listViewSelectionDidChange: (NSNotification *)aNotification
 {
     // Also let every entry check its selection state, in case internal states must be updated.
-    NSArray* cells = [self visibleCells];
+    NSArray *cells = [self visibleCells];
     for (OrdersListViewCell *cell in cells) {
         [cell selectionChanged];
     }
@@ -330,8 +328,9 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 {
     pendingRefresh = NO;
     NSArray *cells = [self visibleCells];
-    for (OrdersListViewCell *cell in cells)
+    for (OrdersListViewCell *cell in cells) {
         [self fillCell: cell forRow: [cell row]];
+    }
 }
 
 #pragma mark -
@@ -348,27 +347,27 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 #pragma mark -
 #pragma mark Drag'n drop
 
-- (BOOL)listView: (PXListView*)aListView writeRowsWithIndexes: (NSIndexSet*)rowIndexes
-    toPasteboard: (NSPasteboard*)dragPasteboard
-       slideBack: (BOOL*)slideBack
+- (BOOL)listView: (PXListView *)aListView writeRowsWithIndexes: (NSIndexSet *)rowIndexes
+    toPasteboard: (NSPasteboard *)dragPasteboard
+       slideBack: (BOOL *)slideBack
 {
     *slideBack = YES;
-	NSMutableArray *draggedTransfers = [NSMutableArray arrayWithCapacity: 5];
-    
+    NSMutableArray *draggedTransfers = [NSMutableArray arrayWithCapacity: 5];
+
     // Collect the ids of all selected transfers and put them on the dragboard.
     NSUInteger index = [rowIndexes firstIndex];
     while (index != NSNotFound) {
         StandingOrder *order = dataSource[index];
-        NSURL *url = [[order objectID] URIRepresentation];
+        NSURL         *url = [[order objectID] URIRepresentation];
         [draggedTransfers addObject: url];
-        
+
         index = [rowIndexes indexGreaterThanIndex: index];
     }
-    
+
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: draggedTransfers];
     [dragPasteboard declareTypes: @[OrderDataType] owner: self];
     [dragPasteboard setData: data forType: OrderDataType];
-    
+
     return YES;
 }
 

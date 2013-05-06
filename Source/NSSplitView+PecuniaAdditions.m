@@ -1,16 +1,16 @@
 /**
- * Copyright (c) 2008, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -26,11 +26,11 @@
 
 - (void)animateDividerToPosition: (CGFloat)dividerPosition
 {
-    NSView *view0 = [self subviews][0];
-    NSView *view1 = [self subviews][1];
-    NSRect view0Rect = [view0 frame];
-    NSRect view1Rect = [view1 frame];
-    NSRect overalRect = [self frame];
+    NSView  *view0 = [self subviews][0];
+    NSView  *view1 = [self subviews][1];
+    NSRect  view0Rect = [view0 frame];
+    NSRect  view1Rect = [view1 frame];
+    NSRect  overalRect = [self frame];
     CGFloat dividerSize = [self dividerThickness];
 
     BOOL view0AutoResizes = [view0 autoresizesSubviews];
@@ -38,8 +38,8 @@
 
     if ([self isVertical]) {
         // Disable autoresizing if *current* view size <= zero.
-        [view0 setAutoresizesSubviews:view0AutoResizes && view0Rect.size.width > 0];
-        [view1 setAutoresizesSubviews:view1AutoResizes && view1Rect.size.width > 0];
+        [view0 setAutoresizesSubviews: view0AutoResizes && view0Rect.size.width > 0];
+        [view1 setAutoresizesSubviews: view1AutoResizes && view1Rect.size.width > 0];
 
         // Set subviews target size.
         view0Rect.origin.x = MIN(0, dividerPosition);

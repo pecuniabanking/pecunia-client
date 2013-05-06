@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,53 +21,53 @@
 
 // ManagedObjectAssistant
 @interface MOAssistant : NSObject {
-	NSManagedObjectContext		*context;
-	NSManagedObjectContext		*memContext;
-	NSManagedObjectModel		*model;
-    
+    NSManagedObjectContext *context;
+    NSManagedObjectContext *memContext;
+    NSManagedObjectModel   *model;
+
     // LockView
-    NSView                      *lockView;
-    NSView                      *mainContentView;
-	
+    NSView *lockView;
+    NSView *mainContentView;
+
     // Location (external/internal) of data file (directory & filename)
-    NSURL                       *dataDirURL;
-    NSString                    *dataFilename;
+    NSURL    *dataDirURL;
+    NSString *dataFilename;
 
     // location (directory) of persistent store file
-    NSURL                       *pecuniaFileURL;
+    NSURL *pecuniaFileURL;
 
     // resulting URL to use for persistent store
-	NSURL						*accountsURL;
-    
+    NSURL *accountsURL;
+
     // passport directory
-	NSString					*ppDir;
-    
+    NSString *ppDir;
+
     // import settings directory
-	NSString					*importerDir;
-    
+    NSString *importerDir;
+
     // temporary directory
-	NSString					*tempDir;
-    
+    NSString *tempDir;
+
     // Idle Timer to lock application/encrypted data file
-    NSTimer                     *idleTimer;
-    
-    unsigned char               dataPasswordKey[32];
-    
-    BOOL                        passwordKeyValid;
-	BOOL						isEncrypted;
-	BOOL						decryptionDone;
-    BOOL                        isSandboxed;
-    BOOL                        isDefaultDir;
-    BOOL                        maxIdleTimeExceeded;
+    NSTimer *idleTimer;
+
+    unsigned char dataPasswordKey[32];
+
+    BOOL passwordKeyValid;
+    BOOL isEncrypted;
+    BOOL decryptionDone;
+    BOOL isSandboxed;
+    BOOL isDefaultDir;
+    BOOL maxIdleTimeExceeded;
 }
 
 @property (nonatomic, copy) NSString *ppDir;
 @property (nonatomic, copy) NSString *importerDir;
 @property (nonatomic, copy) NSString *tempDir;
 @property (nonatomic, copy) NSString *dataFilename;
-@property (nonatomic, strong) NSURL *accountsURL;
-@property (nonatomic, strong) NSURL *dataDirURL;
-@property (nonatomic, strong) NSURL *pecuniaFileURL;
+@property (nonatomic, strong) NSURL  *accountsURL;
+@property (nonatomic, strong) NSURL  *dataDirURL;
+@property (nonatomic, strong) NSURL  *pecuniaFileURL;
 @property (nonatomic, strong) NSView *mainContentView;
 
 - (void)clearAllData;
@@ -77,21 +77,20 @@
 - (BOOL)decrypt;
 - (void)shutdown;
 - (BOOL)encrypted;
-- (BOOL)encryptDataWithPassword: (NSString*)password;
+- (BOOL)encryptDataWithPassword: (NSString *)password;
 - (BOOL)stopEncryption;
-- (BOOL)checkDataPassword:(NSString*)password;
+- (BOOL)checkDataPassword: (NSString *)password;
 - (void)checkPaths;
 - (void)checkSandboxed;
-- (void)initDatafile:(NSString*)path;
+- (void)initDatafile: (NSString *)path;
 
-- (NSString*)passportDirectory;
+- (NSString *)passportDirectory;
 
 
-- (NSManagedObjectContext*)context;
-- (NSManagedObjectModel*)model;
-- (NSManagedObjectContext*)memContext;
+- (NSManagedObjectContext *)context;
+- (NSManagedObjectModel *)model;
+- (NSManagedObjectContext *)memContext;
 
-+ (MOAssistant*)assistant;
++ (MOAssistant *)assistant;
 
 @end
-

@@ -21,14 +21,14 @@
 
 #import "BFIconTabBar.h"
 
-@interface ColorPopup : NSObject <BFIconTabBarDelegate>
+@interface ColorPopup : NSObject <BFIconTabBarDelegate, NSPopoverDelegate>
 
-@property (nonatomic) id target;
-@property (nonatomic) SEL action;
+@property (nonatomic) id              target;
+@property (nonatomic) SEL             action;
 @property (nonatomic, strong) NSColor *color;
 
 + (ColorPopup *)sharedColorPopup;
 
-- (void)popupAtPosition: (NSPoint)position withOwner: (NSWindow*)owner;
+- (void)popupRelativeToRect: (NSRect)rect ofView: (NSView *)view;
 
 @end

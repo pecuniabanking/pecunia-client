@@ -29,7 +29,7 @@
 @property (strong) IBOutlet NSTextField *remoteNameText;
 @property (strong) IBOutlet NSTextField *valueText;
 @property (strong) IBOutlet NSTextField *currencyText;
-@property (strong) NSColor *categoryColor;
+@property (strong) NSColor              *categoryColor;
 
 @end
 
@@ -44,51 +44,47 @@ typedef enum {
 }
 
 @property (strong) CategoryHeatMapController *controller;
-@property (nonatomic, assign) HeatMapType mapType;
-@property (nonatomic, assign) NSUInteger currentYear;
+@property (nonatomic, assign) HeatMapType    mapType;
+@property (nonatomic, assign) NSUInteger     currentYear;
 
 @end
 
-@class MAAttachedWindow;
 @class OnOffSwitchControlCell;
 
 @interface CategoryHeatMapController : NSObject <PecuniaSectionItem, PXListViewDelegate>
 {
-    IBOutlet HeatMapView *heatMapView;
-    IBOutlet NSTextField *yearLabel;
+    IBOutlet HeatMapView        *heatMapView;
+    IBOutlet NSTextField        *yearLabel;
     IBOutlet NSSegmentedControl *dataSourceSwitch;
 
-    IBOutlet NSButton* helpButton;
-    IBOutlet NSView* helpContentView;
-    IBOutlet NSTextField* helpText;
+    IBOutlet NSButton    *helpButton;
+    IBOutlet NSView      *helpContentView;
+    IBOutlet NSTextField *helpText;
+    IBOutlet NSPopover   *helpPopover;
 
     IBOutlet NSTextField *perDayText;
     IBOutlet NSTextField *perMonthText;
 
-    IBOutlet NSView *popupView;
-    IBOutlet PXListView *popupList;
+    IBOutlet NSPopover  *statementsPopover;
+    IBOutlet PXListView *valuePopupList;
+
     IBOutlet OnOffSwitchControlCell *switchTypeButtonCell;
-    
+
 @private
-    unsigned currentYear;
-    Category *currentCategory;
+    unsigned          currentYear;
     NSNumberFormatter *formatter;
 
     NSArray *currentAssignments;   // Assignments for the day we show the popup for.
-    MAAttachedWindow* popupWindow;
-    BOOL popupVisible;
-    MAAttachedWindow* helpWindow;
-    BOOL helpVisible;
 }
 
 @property (strong) IBOutlet NSView *mainView;
 
 // PecuniaSectionItem protocol
-@property (nonatomic, strong) Category* category;
+@property (nonatomic, weak) Category *selectedCategory;
 
 - (void)activate;
 - (void)deactivate;
-- (void)setTimeRangeFrom: (ShortDate*)from to: (ShortDate*)to;
+- (void)setTimeRangeFrom: (ShortDate *)from to: (ShortDate *)to;
 - (void)print;
 
 @end

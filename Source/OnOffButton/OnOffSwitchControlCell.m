@@ -183,7 +183,7 @@ NSRect DKCenterRect(NSRect smallRect, NSRect bigRect)
 - (void)drawText:(NSString *)text withFrame:(NSRect)textFrame {
 	CGFloat fontSize = [NSFont systemFontSizeForControlSize:[self controlSize]];
 	//[NSFont fontWithName: @"HelveticaNeue-Bold" size:fontSize];
-	NSFont *sysFont = [NSFont boldSystemFontOfSize:fontSize];
+	NSFont *sysFont = [NSFont systemFontOfSize:fontSize];
 	NSDictionary *attributes = @{NSFontAttributeName: sysFont, 
 								NSForegroundColorAttributeName: [NSColor whiteColor]};
 	NSSize textSize = [text sizeWithAttributes:attributes];

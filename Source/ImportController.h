@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2012, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -30,9 +30,9 @@
 
 @interface FileEntry : NSObject
 
-@property (copy) NSString *name;
-@property (copy) NSString *path;
-@property (assign) BOOL isFolder;
+@property (copy) NSString  *name;
+@property (copy) NSString  *path;
+@property (assign) BOOL    isFolder;
 @property (strong) NSImage *icon;
 
 @property (strong) NSMutableArray *children;
@@ -40,7 +40,7 @@
 @end
 
 @interface ImportController : NSWindowController {
-	IBOutlet NSArrayController *storedSettingsController;
+    IBOutlet NSArrayController *storedSettingsController;
     IBOutlet NSPanel           *newSettingsNameSheet;
     IBOutlet ProcessingPanel   *processingSheet;
     IBOutlet NSTextField       *settingsNameField;
@@ -60,27 +60,27 @@
     NSNumberFormatter *numberFormatter;
 
     NSMutableArray *parsedValues;
-    BOOL updating;
+    BOOL           updating;
 }
 
 @property (strong) IBOutlet BWGradientBox *backgroundGradient;
 @property (strong) IBOutlet BWGradientBox *topGradient;
 
 @property (strong) IBOutlet NSObjectController *importSettingsController;
-@property (strong) IBOutlet NSArrayController *importValuesController;
-@property (strong) IBOutlet NSTableView *importValuesTable;
+@property (strong) IBOutlet NSArrayController  *importValuesController;
+@property (strong) IBOutlet NSTableView        *importValuesTable;
 
 @property (strong) IBOutlet NSTreeController *fileTreeController;
-@property (strong) IBOutlet NSOutlineView *fileOutlineView;
-@property (strong) IBOutlet NSTextView *ignoredText;
-@property (strong) IBOutlet NSTokenField *tokenField;
+@property (strong) IBOutlet NSOutlineView    *fileOutlineView;
+@property (strong) IBOutlet NSTextView       *ignoredText;
+@property (strong) IBOutlet NSTokenField     *tokenField;
 
 @property (strong) IBOutlet NSArrayController *encodingsController;
 
-@property (strong) ImportSettings *currentSettings;
+@property (strong) ImportSettings  *currentSettings;
 @property (strong) BankQueryResult *importResult;
-@property (strong) NSMutableArray *importValues;
-@property (assign) BOOL stopProcessing;
+@property (strong) NSMutableArray  *importValues;
+@property (assign) BOOL            stopProcessing;
 
 - (IBAction)cancel: (id)sender;
 - (IBAction)startProcessing: (id)sender;
@@ -89,4 +89,3 @@
 - (IBAction)settingSelectionChanged: (id)sender;
 
 @end
-

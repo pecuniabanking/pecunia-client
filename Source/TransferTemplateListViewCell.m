@@ -1,16 +1,16 @@
-/** 
+/**
  * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; version 2 of the
  * License.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -55,11 +55,10 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark Init/Dealloc
 
--(id)initWithFrame: (NSRect)frame
+- (id)initWithFrame: (NSRect)frame
 {
     self = [super initWithFrame: frame];
-    if (self != nil)
-    {
+    if (self != nil) {
         whiteAttributes = @{NSForegroundColorAttributeName: [NSColor whiteColor]};
         [self addObserver: self forKeyPath: @"row" options: 0 context: nil];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -92,8 +91,8 @@ extern void *UserDefaultsBindingContext;
             [self setNeedsDisplay: YES];
         }
     } else {
-      [self selectionChanged];
-      [self setNeedsDisplay: YES];
+        [self selectionChanged];
+        [self setNeedsDisplay: YES];
     }
 }
 
@@ -101,13 +100,13 @@ extern void *UserDefaultsBindingContext;
 {
     index = [details[StatementIndexKey] intValue];
     type = [details[StatementTypeKey] intValue];
-    
+
     [templateName setStringValue: [details valueForKey: TemplateNameKey]];
     [remoteNameLabel setStringValue: [details valueForKey: StatementRemoteNameKey]];
     [remoteNameLabel setToolTip: [details valueForKey: StatementRemoteNameKey]];
 
     [purposeLabel setToolTip: [details valueForKey: StatementPurposeKey]];
-    
+
     // For the remote bank code and account number we either use the german bank details or
     // IBAN/BIC, depending on the type.
     // TODO: support for SEPA normal/company single/consolidated debit transfers, standing/terminated debit tansfers.
@@ -145,7 +144,7 @@ extern void *UserDefaultsBindingContext;
     // the normal check for selection fails. We use instead the index we get from the owning
     // listview (which will later be assigned to this cell anyway).
     BOOL isSelected = [self.listView.selectedRows containsIndex: index];
-    
+
     if (isSelected) {
         [templateName setTextColor: [NSColor whiteColor]];
         [remoteNameLabel setTextColor: [NSColor whiteColor]];
@@ -158,7 +157,7 @@ extern void *UserDefaultsBindingContext;
 
         [self updateTextColors];
     }
-    
+
     [self constructAccountAndPurposeText];
 }
 
@@ -181,7 +180,7 @@ extern void *UserDefaultsBindingContext;
 - (void)constructAccountAndPurposeText
 {
     NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text"];
-    BOOL isSelected = [self.listView.selectedRows containsIndex: index];
+    BOOL    isSelected = [self.listView.selectedRows containsIndex: index];
 
     // The account label is constructed from two values and formatted.
     NSString *accountTitle;
@@ -199,14 +198,14 @@ extern void *UserDefaultsBindingContext;
 
     // Construct a formatted string for the account label.
     NSMutableAttributedString *accountString = [[NSMutableAttributedString alloc] init];
-    NSFont *normalFont = [NSFont fontWithName: @"LucidaGrande" size: 11];
-    NSDictionary *normalAttributes = @{NSFontAttributeName: normalFont,
-                                       NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};
+    NSFont                    *normalFont = [NSFont fontWithName: @"LucidaGrande" size: 11];
+    NSDictionary              *normalAttributes = @{NSFontAttributeName: normalFont,
+                                                    NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};
 
     NSFontManager *fontManager = [NSFontManager sharedFontManager];
-    NSFont *boldFont = [fontManager convertFont: normalFont toHaveTrait: NSBoldFontMask];
-    NSDictionary *boldAttributes = @{NSFontAttributeName: boldFont,
-                                     NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : [NSColor blackColor]};
+    NSFont        *boldFont = [fontManager convertFont: normalFont toHaveTrait: NSBoldFontMask];
+    NSDictionary  *boldAttributes = @{NSFontAttributeName: boldFont,
+                                      NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : [NSColor blackColor]};
 
     [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: accountTitle
                                                                            attributes: normalAttributes]
@@ -227,7 +226,7 @@ extern void *UserDefaultsBindingContext;
     // so it can have paragraph styles. At the same time we need to apply font size and color
     // explicitly as calling [s drawInRect] doesn't otherwise apply the same formatting as automatic drawing would.
     NSMutableAttributedString *purposeString = [[NSMutableAttributedString alloc] initWithString: purpose];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    NSMutableParagraphStyle   *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setMaximumLineHeight: 12];
 
     normalFont = [NSFont fontWithName: @"LucidaGrande" size: 10];
@@ -244,8 +243,8 @@ extern void *UserDefaultsBindingContext;
     [self setNeedsDisplay: YES];
 }
 
-static NSGradient* innerGradient;
-static NSGradient* innerGradientSelected;
+static NSGradient *innerGradient;
+static NSGradient *innerGradientSelected;
 
 - (void)updateDrawColors
 {
@@ -255,11 +254,11 @@ static NSGradient* innerGradientSelected;
                              nil];
 }
 
-- (void) setupDrawStructures
+- (void)setupDrawStructures
 {
     innerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                     [NSColor colorWithDeviceRed: 240 / 255.0 green: 240 / 255.0 blue: 240 / 255.0 alpha: 1], (CGFloat) 0.2,
-                     [NSColor whiteColor], (CGFloat) 0.8,
+                     [NSColor colorWithDeviceRed: 240 / 255.0 green: 240 / 255.0 blue: 240 / 255.0 alpha: 1], (CGFloat)0.2,
+                     [NSColor whiteColor], (CGFloat)0.8,
                      nil];
     [self updateDrawColors];
 }
@@ -268,19 +267,20 @@ static NSGradient* innerGradientSelected;
 
 - (void)drawRect: (NSRect)dirtyRect
 {
-    if (innerGradient == nil)
+    if (innerGradient == nil) {
         [self setupDrawStructures];
-    
+    }
+
     NSGraphicsContext *context = [NSGraphicsContext currentContext];
     [context saveGraphicsState];
-    
+
     NSBezierPath *path = [NSBezierPath bezierPathWithRect: self.bounds];
     if ([self isSelected]) {
         [innerGradientSelected drawInBezierPath: path angle: 90.0];
     } else {
         [innerGradient drawInBezierPath: path angle: 90.0];
     }
-    
+
     [context restoreGraphicsState];
 }
 

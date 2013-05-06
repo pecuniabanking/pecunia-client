@@ -24,33 +24,32 @@
 
 @synthesize saveCatName;
 
-- (NSMenu *)menuForEvent:(NSEvent *)theEvent {
-	
-    NSPoint curLoc = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+- (NSMenu *)menuForEvent: (NSEvent *)theEvent
+{
+    NSPoint curLoc = [self convertPoint: [theEvent locationInWindow] fromView: nil];
 
-	int row = [self  rowAtPoint: curLoc];
-	if (row < 0) {
+    int row = [self rowAtPoint: curLoc];
+    if (row < 0) {
         return nil;
     }
     [self selectRowIndexes: [NSIndexSet indexSetWithIndex: row] byExtendingSelection: NO];
-	
-	return [self menu];
+
+    return [self menu];
 }
 
--(void)editSelectedCell
+- (void)editSelectedCell
 {
-	[self editColumn:0 row: [self selectedRow] withEvent: nil select: YES];
+    [self editColumn: 0 row: [self selectedRow] withEvent: nil select: YES];
 }
 
-- (void)highlightSelectionInClipRect:(NSRect)rect
+- (void)highlightSelectionInClipRect: (NSRect)rect
 {
-  // Stop the outline from drawing a selection background. We do that in the image cell.
+    // Stop the outline from drawing a selection background. We do that in the image cell.
 }
 
-- (void)cancelOperation:(id)sender
+- (void)cancelOperation: (id)sender
 {
-    if ([self currentEditor] != nil)
-    {
+    if ([self currentEditor] != nil) {
         [self abortEditing];
         [[self window] makeFirstResponder: self];
     }

@@ -25,8 +25,8 @@
  * do date arithmetics.
  */
 @interface ShortDate : NSObject<NSCopying> {
-    NSDate* inner;
-    NSDateComponents* components; // The date split into components.
+    NSDate           *inner;
+    NSDateComponents *components; // The date split into components.
 }
 
 @property (nonatomic, assign, readonly) unsigned year;
@@ -35,45 +35,45 @@
 @property (nonatomic, assign, readonly) unsigned quarter;
 @property (nonatomic, assign, readonly) unsigned week;
 
-- (id)initWithDate: (NSDate*)date;
-- (NSComparisonResult)compare: (ShortDate*)date;
-- (NSDate*)lowDate;
-- (NSDate*)highDate;
+- (id)initWithDate: (NSDate *)date;
+- (NSComparisonResult)compare: (ShortDate *)date;
+- (NSDate *)lowDate;
+- (NSDate *)highDate;
 
-- (BOOL)isBetween: (ShortDate*)fromDate and:(ShortDate*)toDate;
-- (int)unitsToDate: (ShortDate*)toDate byUnit: (int)calendarUnit;
+- (BOOL)isBetween: (ShortDate *)fromDate and: (ShortDate *)toDate;
+- (int)unitsToDate: (ShortDate *)toDate byUnit: (int)calendarUnit;
 
-- (ShortDate*)dateByAddingUnits: (int)units byUnit: (int)calendarUnit;
+- (ShortDate *)dateByAddingUnits: (int)units byUnit: (int)calendarUnit;
 
-- (BOOL)isEqual: (ShortDate*)date;
+- (BOOL)isEqual: (ShortDate *)date;
 - (NSUInteger)hash;
-- (int)daysToDate: (ShortDate*)toDate;
-- (int)monthsToDate: (ShortDate*)toDate;
+- (int)daysToDate: (ShortDate *)toDate;
+- (int)monthsToDate: (ShortDate *)toDate;
 - (int)daysInMonth;
 
-- (NSString*)description;
-- (NSString*)monthYearDescription;
-- (NSString*)quarterYearDescription;
-- (NSString*)yearDescription;
-- (NSString*)weekYearDescription;
+- (NSString *)description;
+- (NSString *)monthYearDescription;
+- (NSString *)quarterYearDescription;
+- (NSString *)yearDescription;
+- (NSString *)weekYearDescription;
 
-- (ShortDate*)firstDayInYear;
-- (ShortDate*)lastDayInYear;
-- (ShortDate*)firstDayInMonth;
-- (ShortDate*)lastDayInMonth;
-- (ShortDate*)firstDayInQuarter;
-- (ShortDate*)lastDayInQuarter;
+- (ShortDate *)firstDayInYear;
+- (ShortDate *)lastDayInYear;
+- (ShortDate *)firstDayInMonth;
+- (ShortDate *)lastDayInMonth;
+- (ShortDate *)firstDayInQuarter;
+- (ShortDate *)lastDayInQuarter;
 - (NSInteger)dayInWeek;
-- (ShortDate*)firstDayInWeek;
-- (ShortDate*)lastDayInWeek;
+- (ShortDate *)firstDayInWeek;
+- (ShortDate *)lastDayInWeek;
 
 - (BOOL)isFirstDayInMonth;
 
-+ (ShortDate*)dateWithDate: (NSDate*)date;
-+ (ShortDate*)currentDate;
-+ (ShortDate*)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d;
-+ (ShortDate*)distantFuture;
-+ (ShortDate*)distantPast;
-+ (NSCalendar*)calendar;
++ (ShortDate *)dateWithDate: (NSDate *)date;
++ (ShortDate *)currentDate;
++ (ShortDate *)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d;
++ (ShortDate *)distantFuture;
++ (ShortDate *)distantPast;
++ (NSCalendar *)calendar;
 
 @end

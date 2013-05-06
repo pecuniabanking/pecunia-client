@@ -28,72 +28,72 @@
 
 @implementation BSSelectWindowController
 
--(id)initWithResults: (NSArray*)list
+- (id)initWithResults: (NSArray *)list
 {
-	self = [super initWithWindowNibName:@"BSSelectWindow"];
-	resultList = list;
-	return self;
+    self = [super initWithWindowNibName: @"BSSelectWindow"];
+    resultList = list;
+    return self;
 }
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
-	// green color for statements view
-	NSTableColumn *tc = [statementsView tableColumnWithIdentifier: @"value" ];
-	if(tc) {
-		NSCell	*cell = [tc dataCell ];
-		NSNumberFormatter	*form = [cell formatter ];
-		if(form) {
-			NSDictionary *newAttrs = @{@"NSColor": [NSColor colorWithDeviceRed: 0.09 green: 0.7 blue: 0 alpha: 100]};
-			[form setTextAttributesForPositiveValues: newAttrs ];
-		}
-	}
-	
-	// sort descriptor for statements view
-	NSSortDescriptor	*sd = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
-	NSArray				*sds = @[sd];
-	[statementsView setSortDescriptors: sds ];
-}
-
--(void)windowDidLoad
-{
-	NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 100 ];
-	BankQueryResult *result;
-	
-	for(result in resultList) [statements addObjectsFromArray: result.statements ];
-	[statController setContent: statements ];
-	[[self window ] center ];
-	[[self window ] makeKeyAndOrderFront: self ];
-}
-
--(IBAction)ok: (id)sender
-{
-	int count = 0;
-	
-	BankQueryResult *result;
-
-    @try {
-        for(result in resultList) {
-          count += [result.account updateFromQueryResult: result ];  
+    // green color for statements view
+    NSTableColumn *tc = [statementsView tableColumnWithIdentifier: @"value"];
+    if (tc) {
+        NSCell            *cell = [tc dataCell];
+        NSNumberFormatter *form = [cell formatter];
+        if (form) {
+            NSDictionary *newAttrs = @{@"NSColor": [NSColor colorWithDeviceRed: 0.09 green: 0.7 blue: 0 alpha: 100]};
+            [form setTextAttributesForPositiveValues: newAttrs];
         }
     }
-    @catch (NSException * e) {
-        [[MessageLog log ] addMessage:e.reason withLevel:LogLevel_Error];
-    }
-	[[BankingController controller ] requestFinished: resultList ];
 
-	// status message
-	StatusBarController *sc = [StatusBarController controller ];
-	[sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), count ] removeAfter:120 ];
-
-	[NSApp stopModal];
+    // sort descriptor for statements view
+    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
+    NSArray          *sds = @[sd];
+    [statementsView setSortDescriptors: sds];
 }
 
--(IBAction)cancel: (id)sender
+- (void)windowDidLoad
 {
-	[[BankingController controller ] requestFinished: nil ];
-	[NSApp stopModal];
+    NSMutableArray  *statements = [NSMutableArray arrayWithCapacity: 100];
+    BankQueryResult *result;
+
+    for (result in resultList) {
+        [statements addObjectsFromArray: result.statements];
+    }
+    [statController setContent: statements];
+    [[self window] center];
+    [[self window] makeKeyAndOrderFront: self];
 }
 
+- (IBAction)ok: (id)sender
+{
+    int count = 0;
 
+    BankQueryResult *result;
+
+    @try {
+        for (result in resultList) {
+            count += [result.account updateFromQueryResult: result];
+        }
+    }
+    @catch (NSException *e) {
+        [[MessageLog log] addMessage: e.reason withLevel: LogLevel_Error];
+    }
+    [[BankingController controller] requestFinished: resultList];
+
+    // status message
+    StatusBarController *sc = [StatusBarController controller];
+    [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), count] removeAfter: 120];
+
+    [NSApp stopModal];
+}
+
+- (IBAction)cancel: (id)sender
+{
+    [[BankingController controller] requestFinished: nil];
+    [NSApp stopModal];
+}
 
 @end

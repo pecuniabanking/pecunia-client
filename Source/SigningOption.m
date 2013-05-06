@@ -1,13 +1,23 @@
-//
-//  SigningOption.m
-//  Pecunia
-//
-//  Created by Frank Emminghaus on 04.08.12.
-//  Copyright 2012 Frank Emminghaus. All rights reserved.
-//
+/**
+ * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
 
 #import "SigningOption.h"
-
 
 @implementation SigningOption
 
@@ -21,37 +31,23 @@
 @synthesize mobileNumber;
 @synthesize secMethod;
 
-- (void)dealloc
-{
-	userId = nil;
-	userName = nil;
-	cardId = nil;
-	tanMethod = nil;
-	tanMethodName = nil;
-	tanMediumName = nil;
-    tanMediumCategory = nil;
-	mobileNumber = nil;    
-}
-
--(id)copyWithZone:(NSZone*)zone
+- (id)copyWithZone: (NSZone *)zone
 {
     return self;
 }
 
-- (NSString*)description
+- (NSString *)description
 {
     if (secMethod == SecMethod_PinTan) {
         if (tanMediumName) {
-            return [NSString stringWithFormat:@"%@ (%@)", tanMethodName, tanMediumName ];
+            return [NSString stringWithFormat: @"%@ (%@)", tanMethodName, tanMediumName];
         } else {
             return tanMethodName;
         }
     } else {
-        return [NSString stringWithFormat:@"Chipkarte: %@", cardId ];
+        return [NSString stringWithFormat: @"Chipkarte: %@", cardId];
     }
 
 }
 
-
 @end
-

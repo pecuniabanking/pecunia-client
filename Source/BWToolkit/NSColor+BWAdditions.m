@@ -8,8 +8,6 @@
 
 #import "NSColor+BWAdditions.h"
 
-extern BOOL runningOnLionOrLater;
-
 @implementation NSColor (BWAdditions)
 
 //  Use this method to draw 1 px wide lines independent of scale factor. Handy for resolution independent drawing. Still needs some work - there are issues with drawing at the edges of views.
