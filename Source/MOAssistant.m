@@ -530,52 +530,63 @@ static NSString* iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     char *decryptedBytes = malloc([fileData length]);
     
     if (passwordKeyValid == NO) {
+        PasswordWindow *pwWindow = nil;
+        BOOL passwordOk = NO;
         passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
         if(passwd == nil) {
-            BOOL passwordOk = NO;
-            PasswordWindow *pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP163", nil)
-                                                                       title: NSLocalizedString(@"AP162", nil)];
-            while (passwordOk == NO) {
+            pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP163", nil)
+                                                      title: NSLocalizedString(@"AP162", nil)];
+        }
+        
+        while (passwordOk == NO) {
+            if (pwWindow != nil && passwd == nil) {
                 int res = [NSApp runModalForWindow: [pwWindow window]];
                 if(res) [NSApp terminate: self];
-
+                
                 passwd = [pwWindow result];
                 savePassword = [pwWindow shouldSavePassword];
-                
-                // first get key from password
-                NSData *data = [passwd dataUsingEncoding:NSUTF8StringEncoding];
-                CC_SHA256([data bytes], (unsigned int)[data length], dataPasswordKey);
-                passwordKeyValid = YES;
-                
-                // check if password is correct, first decrypt check data
-                CCCryptorStatus status;
-                size_t decryptedSize;
-                status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, [fileData bytes], 64, decryptedBytes, 64, &decryptedSize);
-                if (status != kCCSuccess) {
-                    NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
-                                    NSLocalizedString(@"AP153", nil),
-                                    NSLocalizedString(@"ok", nil),
-                                    nil,
-                                    nil);
-                    NSLog(@"CCCrypt failure: %d", status);
-                    free(decryptedBytes);
-                    return NO;
-                }
-
-                // now check hash
-                int i;
-                passwordOk = YES;
-                for (i=0; i<32; i++) {
-                    if (dataPasswordKey[i] != decryptedBytes[2*i]) {
-                        // password is wrong
-                        passwordOk = NO;
-                        [pwWindow retry];
-                        break;
-                    }
+            }
+            
+            // first get key from password
+            NSData *data = [passwd dataUsingEncoding:NSUTF8StringEncoding];
+            CC_SHA256([data bytes], (unsigned int)[data length], dataPasswordKey);
+            passwordKeyValid = YES;
+            
+            // check if password is correct, first decrypt check data
+            CCCryptorStatus status;
+            size_t decryptedSize;
+            status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, [fileData bytes], 64, decryptedBytes, 64, &decryptedSize);
+            if (status != kCCSuccess) {
+                NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                                NSLocalizedString(@"AP153", nil),
+                                NSLocalizedString(@"ok", nil),
+                                nil,
+                                nil);
+                NSLog(@"CCCrypt failure: %d", status);
+                free(decryptedBytes);
+                return NO;
+            }
+            
+            // now check hash
+            int i;
+            passwordOk = YES;
+            for (i=0; i<32; i++) {
+                if (dataPasswordKey[i] != decryptedBytes[2*i]) {
+                    // password is wrong
+                    passwordOk = NO;
+                    [pwWindow retry];
+                    break;
                 }
             }
-            [pwWindow closeWindow];
-        }
+            if (passwordOk == NO) {
+                passwd = nil;
+                if (pwWindow == nil) {
+                    pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP163", nil)
+                                                              title: NSLocalizedString(@"AP162", nil)];
+                }
+            }
+        } // while
+        [pwWindow closeWindow];
     }
     
     // now decrypt
