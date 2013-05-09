@@ -165,8 +165,11 @@ static CallbackHandler *callbackHandler = nil;
     int res = [NSApp runModalForWindow: [pwWindow window]];
     [pwWindow closeWindow];
     if (res == 0) {
-        return [pwWindow result];
+        NSString *pin = [pwWindow result];
+        [Keychain setPassword: pin forService: currentPwService account: currentPwAccount store: NO];
+        return pin;
     } else {
+        [Keychain deletePasswordForService: @"Pecunia PIN" account: s];
         errorOccured = YES; // don't save PIN
         return @"<abort>";
     }

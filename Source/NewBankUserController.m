@@ -148,7 +148,7 @@
         currentUser.secMethod = @((int)secMethod);
     }
 
-    // PinTan-Zugang
+    // PinTan
     if (secMethod == SecMethod_PinTan) {
         if ([self check] == NO) {
             return;
@@ -161,7 +161,7 @@
         }
 
         if (step == 2) {
-            // jetzt schauen, ob wir Infos ‚Äö√†√∂¬¨‚à´ber die Bank haben
+            // look if we have bank infos
             BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
             if (bi) {
                 currentUser.hbciVersion = bi.pinTanVersion;
@@ -170,14 +170,14 @@
         }
 
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
-            // User anlegen
+            // create user
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
             PecuniaError *error = [[HBCIClient hbciClient] addBankUser: currentUser];
             if (error) {
                 [self stopProgress];
                 [error alertPanel];
             } else {
-                // TAN-Optionen aktualisieren
+                // update TAN options
                 [self updateTanMethods];
                 [self stopProgress];
 
@@ -187,10 +187,14 @@
         }
     }
 
-    // DDV-Zugang
+    // DDV-Access
     if (secMethod == SecMethod_DDV) {
+        if ([self check] == NO) {
+            return;
+        }
+        
         if (step == 1) {
-            // BankInfos holen
+            // get bank infos
             BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
             if (bi) {
                 currentUser.hbciVersion = bi.hbciVersion;
@@ -205,7 +209,7 @@
 
 
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
-            // User anlegen
+            // Create User
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
             PecuniaError *error = [[HBCIClient hbciClient] addBankUser: currentUser];
             if (error) {
@@ -303,7 +307,7 @@
     }
 
 
-    if (step == 2) {
+    if (step >= 2) {
         if ([currentUser userId] == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP52", nil),
@@ -365,7 +369,7 @@
             NSMutableArray *options = [[user getSigningOptions] mutableCopy];
 
             if ([options count] > 1) {
-                // F‚Äö√†√∂¬¨‚à´ge virtuelle Methode "Beim Senden festlegen" hinzu
+                // Add virtual method "Beim Senden festlegen"
                 SigningOption *option = [[SigningOption alloc] init];
                 option.secMethod = SecMethod_PinTan;
                 option.userId = user.userId;
@@ -482,13 +486,13 @@
     NSArray *views = [[ddvBox contentView] subviews];
 
     if (step == 1) {
-        // zur DDV-Box wechseln
+        // switch to DDV box
         NSView *contentView = [userSheet contentView];
         [contentView replaceSubview: currentBox with: ddvBox];
         currentBox = ddvBox;
         [ddvBox setFrame: [secSelectBox frame]];
 
-        // Defaultwerte setzen
+        // set default values
         BankUser *user = [currentUserController content];
         user.ddvPortIdx = @1;
         user.ddvReaderIdx = @0;
@@ -498,7 +502,7 @@
                 [view setHidden: YES];
             }
         }
-        // Gr‚Äö√†√∂‚Äö√†√á‚Äö√†√∂‚àö¬∫e setzen
+        // set size
         NSRect frame = [userSheet frame];
         frame.size.height += 20; frame.origin.y -= 20;
         [[userSheet animator] setFrame: frame display: YES];
@@ -537,7 +541,7 @@
     }
     if (step == 5) {
         for (NSView *view in views) {
-            if ([view tag] >= 110) {
+            if ([view tag] >= 100) {
                 [[view animator] setHidden: NO];
             }
         }
@@ -610,7 +614,7 @@
         // remove user from all related bank accounts
         NSMutableSet *accounts = [user mutableSetValueForKey: @"accounts"];
         for (BankAccount *account in accounts) {
-            // pr‚Äö√†√∂¬¨‚à´fen ob die userId gel‚Äö√†√∂‚Äö√†√áscht oder ge‚Äö√†√∂¬¨√ündert werden muss
+            // check if userId must be deleted or changed
             if ([account.userId isEqualToString: user.userId]) {
                 NSMutableSet *users = [account mutableSetValueForKey: @"users"];
                 account.userId = nil;
