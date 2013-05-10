@@ -72,6 +72,339 @@
 		2765D42716AAD5AB00FF371E /* send@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42516AAD5AB00FF371E /* send@2x.png */; };
 		2765D42A16AAD7C100FF371E /* delete2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42816AAD7C100FF371E /* delete2.png */; };
 		2765D42B16AAD7C100FF371E /* delete2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42916AAD7C100FF371E /* delete2@2x.png */; };
+		27778874173CE22700430EBC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		27778875173CE22700430EBC /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
+		27778876173CE22700430EBC /* TransactionController.m in Sources */ = {isa = PBXBuildFile; fileRef = B155D92D0BFD04B300904051 /* TransactionController.m */; };
+		27778877173CE22700430EBC /* BankStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F09E0C36F3E8001065C2 /* BankStatement.m */; };
+		27778878173CE22700430EBC /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B124F1100C371384001065C2 /* BankAccount.m */; };
+		27778879173CE22700430EBC /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F527040C3C1D5800BE3DFC /* Category.m */; };
+		2777887A173CE22700430EBC /* Transfer.m in Sources */ = {isa = PBXBuildFile; fileRef = B1927D240C52B5CD00B4D390 /* Transfer.m */; };
+		2777887B173CE22700430EBC /* NewBankUserController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18B20550CC6A51B00B0B02C /* NewBankUserController.m */; };
+		2777887C173CE22700430EBC /* TransactionLimits.m in Sources */ = {isa = PBXBuildFile; fileRef = B17072D40D4BD35D00FBF186 /* TransactionLimits.m */; };
+		2777887D173CE22700430EBC /* PreferenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17074860D55104000FBF186 /* PreferenceController.m */; };
+		2777887E173CE22700430EBC /* CCDLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EFA8020D5CE7BA007FD9C3 /* CCDLayoutAdditions.m */; };
+		2777887F173CE22700430EBC /* LogController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A035730D8C77FC00072442 /* LogController.m */; };
+		27778880173CE22700430EBC /* MOAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */; };
+		27778881173CE22700430EBC /* CategoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D6DEE0DEC9C9100C2B220 /* CategoryView.m */; };
+		27778882173CE22700430EBC /* CategoryDefWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1029E110E3FA1D700CC681B /* CategoryDefWindowController.m */; };
+		27778883173CE22700430EBC /* ExportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B18EA3690E4B8C0100A53FD4 /* ExportController.m */; };
+		27778884173CE22700430EBC /* CategoryAnalysisWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */; };
+		27778885173CE22700430EBC /* CategoryRepWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */; };
+		27778886173CE22700430EBC /* MCEMOutlineViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6C9ED0EAA5A3000EA99A2 /* MCEMOutlineViewLayout.m */; };
+		27778887173CE22700430EBC /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = B189782D0ECF47CA00D20503 /* Country.m */; };
+		27778888173CE22700430EBC /* StatementDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B18978860ED0B2E800D20503 /* StatementDetails.m */; };
+		27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
+		2777888A173CE22700430EBC /* BankInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F459EB0F2E480700BAF4E8 /* BankInfo.m */; };
+		2777888B173CE22700430EBC /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */; };
+		2777888C173CE22700430EBC /* MCEMTreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = B132F8D00F93DC0D00263F3B /* MCEMTreeController.m */; };
+		2777888D173CE22700430EBC /* ShortDate.m in Sources */ = {isa = PBXBuildFile; fileRef = B132F91E0F96594000263F3B /* ShortDate.m */; };
+		2777888E173CE22700430EBC /* TimeSliceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B132FADE0F9CFD0000263F3B /* TimeSliceManager.m */; };
+		2777888F173CE22700430EBC /* WorkerThread.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E03C0FABA2CC00509748 /* WorkerThread.m */; };
+		27778890173CE22700430EBC /* BSSelectWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E0930FACE15F00509748 /* BSSelectWindowController.m */; };
+		27778891173CE22700430EBC /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E1B10FB4CFE200509748 /* StatusBarController.m */; };
+		27778892173CE22700430EBC /* PecuniaError.m in Sources */ = {isa = PBXBuildFile; fileRef = B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */; };
+		27778893173CE22700430EBC /* PasswordWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A6E8340FC890E400566C55 /* PasswordWindow.m */; };
+		27778894173CE22700430EBC /* MCEMTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B136AAD70FCF1C4A007A643F /* MCEMTableView.m */; };
+		27778895173CE22700430EBC /* TanMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014AED101643C800ABA1FF /* TanMethod.m */; };
+		27778896173CE22700430EBC /* DonationMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1014C66101A37E800ABA1FF /* DonationMessageController.m */; };
+		27778897173CE22700430EBC /* MCEMBorderedView.m in Sources */ = {isa = PBXBuildFile; fileRef = B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */; };
+		27778898173CE22700430EBC /* BankQueryResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B14EBCFC1031FAC700020A26 /* BankQueryResult.m */; };
+		27778899173CE22700430EBC /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A496A10BDD23D002CC63E /* Account.m */; };
+		2777889A173CE22700430EBC /* HBCIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A498F10BDD6A2002CC63E /* HBCIClient.m */; };
+		2777889B173CE22700430EBC /* NewPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = B12A4D4E10C869F0002CC63E /* NewPasswordController.m */; };
+		2777889C173CE22700430EBC /* StatCatAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = B17078F810EA5E6100A974E7 /* StatCatAssignment.m */; };
+		2777889D173CE22700430EBC /* TransferResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A5940D112A8D8500FD8CB8 /* TransferResult.m */; };
+		2777889E173CE22700430EBC /* StatSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A59495113165BC00FD8CB8 /* StatSplitController.m */; };
+		2777889F173CE22700430EBC /* BankStatementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C60001148467A009324A6 /* BankStatementController.m */; };
+		277788A0173CE22700430EBC /* BankStatementPolicy030.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C61BA115AB4FB009324A6 /* BankStatementPolicy030.m */; };
+		277788A1173CE22700430EBC /* 030.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B14C6224115C04FA009324A6 /* 030.xcmappingmodel */; };
+		277788A2173CE22700430EBC /* CategoryPolicy030.m in Sources */ = {isa = PBXBuildFile; fileRef = B14C630D11629C7D009324A6 /* CategoryPolicy030.m */; };
+		277788A3173CE22700430EBC /* AccountDefController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A1377311B6FD9400622D6C /* AccountDefController.m */; };
+		277788A4173CE22700430EBC /* TransfersController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1762BD811EE4AE600F70263 /* TransfersController.m */; };
+		277788A5173CE22700430EBC /* PurposeSplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB50981209EA52004DCD6A /* PurposeSplitController.m */; };
+		277788A6173CE22700430EBC /* PurposeSplitData.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */; };
+		277788A7173CE22700430EBC /* TransferTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB6601124FC61B00C54A0E /* TransferTemplate.m */; };
+		277788A8173CE22700430EBC /* TransferTemplateController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB660E124FC89500C54A0E /* TransferTemplateController.m */; };
+		277788A9173CE22700430EBC /* BankStatementPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FB6B01126B7BF300C54A0E /* BankStatementPrintView.m */; };
+		277788AA173CE22700430EBC /* CategoryPeriodsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */; };
+		277788AB173CE22700430EBC /* CategoryReportingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B14587A41289ED8D00848683 /* CategoryReportingNode.m */; };
+		277788AC173CE22700430EBC /* StandingOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFA9351299C15900B115A7 /* StandingOrder.m */; };
+		277788AD173CE22700430EBC /* StandingOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFAA0412A061C100B115A7 /* StandingOrderController.m */; };
+		277788AE173CE22700430EBC /* MessageLog.m in Sources */ = {isa = PBXBuildFile; fileRef = B137BF4612D5004C00D0394C /* MessageLog.m */; };
+		277788AF173CE22700430EBC /* PurposeSplitRule.m in Sources */ = {isa = PBXBuildFile; fileRef = B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */; };
+		277788B0173CE22700430EBC /* 030alpha.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */; };
+		277788B1173CE22700430EBC /* BankStatementPolicy030alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */; };
+		277788B2173CE22700430EBC /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138AC3B13918EB50026BEE2 /* ImageAndTextCell.m */; };
+		277788B3173CE22700430EBC /* MCEMTransparentTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B138AE74139582E00026BEE2 /* MCEMTransparentTableView.m */; };
+		277788B4173CE22700430EBC /* DateAndValutaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B259139D52690026BEE2 /* DateAndValutaCell.m */; };
+		277788B5173CE22700430EBC /* AmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B315139D6B390026BEE2 /* AmountCell.m */; };
+		277788B6173CE22700430EBC /* DockIconController.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B3DE139EBC0E0026BEE2 /* DockIconController.m */; };
+		277788B7173CE22700430EBC /* MCEMDecimalNumberAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */; };
+		277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274DE2B313F992A50009EB77 /* MainBackgroundView.m */; };
+		277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */; };
+		277788BA173CE22700430EBC /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
+		277788BB173CE22700430EBC /* GraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27955AFE140C0603008369C9 /* GraphicsAdditions.m */; };
+		277788BC173CE22700430EBC /* HBCIBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C5E13DB5F3200843BE6 /* HBCIBridge.m */; };
+		277788BD173CE22700430EBC /* CallbackData.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6113DB5FC200843BE6 /* CallbackData.m */; };
+		277788BE173CE22700430EBC /* CallbackParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6313DB5FC200843BE6 /* CallbackParser.m */; };
+		277788BF173CE22700430EBC /* HBCIError.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6713DB600400843BE6 /* HBCIError.m */; };
+		277788C0173CE22700430EBC /* LogParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6913DB600400843BE6 /* LogParser.m */; };
+		277788C1173CE22700430EBC /* ResultParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C6B13DB600400843BE6 /* ResultParser.m */; };
+		277788C2173CE22700430EBC /* TanMethodListController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4C7213DB608D00843BE6 /* TanMethodListController.m */; };
+		277788C3173CE22700430EBC /* Passport.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4CD913DB712A00843BE6 /* Passport.m */; };
+		277788C4173CE22700430EBC /* HBCIController.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4D2313DC5F6E00843BE6 /* HBCIController.m */; };
+		277788C5173CE22700430EBC /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B14D4D2A13DCA0E000843BE6 /* User.m */; };
+		277788C6173CE22700430EBC /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
+		277788C7173CE22700430EBC /* FlickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B4213EC921200739E7A /* FlickerView.m */; };
+		277788C8173CE22700430EBC /* TanMediaWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */; };
+		277788C9173CE22700430EBC /* BankParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B41C8B14005B5B00BEEC8F /* BankParameter.m */; };
+		277788CA173CE22700430EBC /* ImportSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA6336140990EF00ADE1D0 /* ImportSettings.m */; };
+		277788CB173CE22700430EBC /* ImportController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AA640B140C074E00ADE1D0 /* ImportController.m */; };
+		277788CC173CE22700430EBC /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C78795143623080095F1DA /* ProgressWindowController.m */; };
+		277788CD173CE22700430EBC /* StatementsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD58CA1437569B0074B378 /* StatementsListView.m */; };
+		277788CE173CE22700430EBC /* PXListDocumentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 275C07DE1438779700D97415 /* PXListDocumentView.m */; };
+		277788CF173CE22700430EBC /* PXListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 275C07E01438779700D97415 /* PXListView.m */; };
+		277788D0173CE22700430EBC /* PXListView+UserInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 275C07E31438779700D97415 /* PXListView+UserInteraction.m */; };
+		277788D1173CE22700430EBC /* PXListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 275C07E51438779700D97415 /* PXListViewCell.m */; };
+		277788D2173CE22700430EBC /* StatementsListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 275C07EE143877C800D97415 /* StatementsListViewCell.m */; };
+		277788D3173CE22700430EBC /* RoundedOuterShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */; };
+		277788D4173CE22700430EBC /* ValueTransformers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788C8B91455C3CE00225939 /* ValueTransformers.m */; };
+		277788D5173CE22700430EBC /* Accounts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 27E55349146ED844001DE9BE /* Accounts.xcdatamodeld */; };
+		277788D6173CE22700430EBC /* ColumnLayoutCorePlotLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */; };
+		277788D7173CE22700430EBC /* PecuniaPlotTimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7B505147FC50300278131 /* PecuniaPlotTimeFormatter.m */; };
+		277788D8173CE22700430EBC /* AnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2792CB3314840506006A510A /* AnimationHelper.m */; };
+		277788D9173CE22700430EBC /* NS(Attributed)String+Geometrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */; };
+		277788DA173CE22700430EBC /* LaunchParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = B17FE3C214C9F17400F6FAFE /* LaunchParameters.m */; };
+		277788DB173CE22700430EBC /* CustomerMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B17FE44414CA091E00F6FAFE /* CustomerMessage.m */; };
+		277788DC173CE22700430EBC /* BankMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B17FE48B14CB586A00F6FAFE /* BankMessage.m */; };
+		277788DD173CE22700430EBC /* CategoryBudget.m in Sources */ = {isa = PBXBuildFile; fileRef = B17FE49614CB59BA00F6FAFE /* CategoryBudget.m */; };
+		277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728AF1502D0D300256898 /* BankSetupInfo.m */; };
+		277788DF173CE22700430EBC /* TanMedium.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728D61504ABC700256898 /* TanMedium.m */; };
+		277788E0173CE22700430EBC /* TanMediaList.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728EF1504B14500256898 /* TanMediaList.m */; };
+		277788E1173CE22700430EBC /* BankUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B17728FC1504C33F00256898 /* BankUser.m */; };
+		277788E2173CE22700430EBC /* TanMethodOld.m in Sources */ = {isa = PBXBuildFile; fileRef = B17729131504C9B200256898 /* TanMethodOld.m */; };
+		277788E3173CE22700430EBC /* BusinessTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B177297C1504CE1B00256898 /* BusinessTransactionsController.m */; };
+		277788E4173CE22700430EBC /* TanSigningOption.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EC7B261508077100813E1A /* TanSigningOption.m */; };
+		277788E5173CE22700430EBC /* 100.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = C10CFBC7150A046A003DFC12 /* 100.xcmappingmodel */; };
+		277788E6173CE22700430EBC /* CallbackHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C13152B0150A0B260037958E /* CallbackHandler.m */; };
+		277788E7173CE22700430EBC /* BWGradientBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DD4AFD150B6F84006C2370 /* BWGradientBox.m */; };
+		277788E8173CE22700430EBC /* NSColor+BWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DD4B08150B6FD0006C2370 /* NSColor+BWAdditions.m */; };
+		277788E9173CE22700430EBC /* MBTableGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD421514F6590066917C /* MBTableGrid.m */; };
+		277788EA173CE22700430EBC /* MBTableGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD441514F6590066917C /* MBTableGridCell.m */; };
+		277788EB173CE22700430EBC /* MBTableGridContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD461514F6590066917C /* MBTableGridContentView.m */; };
+		277788EC173CE22700430EBC /* MBTableGridHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD4A1514F6590066917C /* MBTableGridHeaderCell.m */; };
+		277788ED173CE22700430EBC /* MBTableGridHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2736DD4C1514F6590066917C /* MBTableGridHeaderView.m */; };
+		277788EE173CE22700430EBC /* SynchronousScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2716FE4C152381A60015A753 /* SynchronousScrollView.m */; };
+		277788EF173CE22700430EBC /* TransfersBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */; };
+		277788F0173CE22700430EBC /* TransfersListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 279A785C1539D8EB00443854 /* TransfersListView.m */; };
+		277788F1173CE22700430EBC /* TransfersListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 279A785E1539DA0300443854 /* TransfersListViewCell.m */; };
+		277788F2173CE22700430EBC /* BankingController+Tabs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FA4A1A154D5AB9002A5ED0 /* BankingController+Tabs.m */; };
+		277788F3173CE22700430EBC /* OnOffSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2706F2031556C3BE0011A20E /* OnOffSwitchControl.m */; };
+		277788F4173CE22700430EBC /* OnOffSwitchControlCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2706F2051556C3BE0011A20E /* OnOffSwitchControlCell.m */; };
+		277788F5173CE22700430EBC /* TransferFormularView.m in Sources */ = {isa = PBXBuildFile; fileRef = 273657291559890E00E8ABDC /* TransferFormularView.m */; };
+		277788F6173CE22700430EBC /* GradientButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B9868415769132008907F3 /* GradientButtonCell.m */; };
+		277788F7173CE22700430EBC /* TransferTemplatesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E662B315A09BD9002F9277 /* TransferTemplatesListView.m */; };
+		277788F8173CE22700430EBC /* TransferTemplateListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E662B515A09BDA002F9277 /* TransferTemplateListViewCell.m */; };
+		277788F9173CE22700430EBC /* NotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B183572A15CC5091003B93ED /* NotificationWindowController.m */; };
+		277788FA173CE22700430EBC /* SigningOption.m in Sources */ = {isa = PBXBuildFile; fileRef = B183586115CDC064003B93ED /* SigningOption.m */; };
+		277788FB173CE22700430EBC /* SigningOptionsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1835C0915D2A1A2003B93ED /* SigningOptionsViewCell.m */; };
+		277788FC173CE22700430EBC /* SigningOptionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1835C0A15D2A1A2003B93ED /* SigningOptionsController.m */; };
+		277788FD173CE22700430EBC /* 101.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1835D3415D521B5003B93ED /* 101.xcmappingmodel */; };
+		277788FE173CE22700430EBC /* NSString+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C883C615E0EBCE007572F0 /* NSString+PecuniaAdditions.m */; };
+		277788FF173CE22700430EBC /* NSView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B18361FC15E23D3F003B93ED /* NSView+PecuniaAdditions.m */; };
+		27778900173CE22700430EBC /* TanWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A652533415E39A92000C2989 /* TanWindow.m */; };
+		27778901173CE22700430EBC /* 102.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B17E5C8315EFFC03008527C8 /* 102.xcmappingmodel */; };
+		27778902173CE22700430EBC /* TransferPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */; };
+		27778903173CE22700430EBC /* NSButton+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */; };
+		27778904173CE22700430EBC /* OrdersListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A41A5115F3C9340043BB68 /* OrdersListView.m */; };
+		27778905173CE22700430EBC /* OrdersListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A41A5315F3C9340043BB68 /* OrdersListViewCell.m */; };
+		27778906173CE22700430EBC /* LicenseWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B179916B15F7D2B4005AB39A /* LicenseWindowController.m */; };
+		27778907173CE22700430EBC /* SupportedTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */; };
+		27778908173CE22700430EBC /* GenerateDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E68C49165CF7DA005EBE66 /* GenerateDataController.m */; };
+		27778909173CE22700430EBC /* GrowlNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* GrowlNotification.m */; };
+		2777890A173CE22700430EBC /* NSSplitView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D576451662819E00761132 /* NSSplitView+PecuniaAdditions.m */; };
+		2777890B173CE22700430EBC /* CategoryMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DFFD9516739DAE00848CD2 /* CategoryMaintenanceController.m */; };
+		2777890C173CE22700430EBC /* NSAttributedString+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C1A0E168B3CAC000E25FF /* NSAttributedString+PecuniaAdditions.m */; };
+		2777890D173CE22700430EBC /* DebitsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A3DA1E16A1C99C00FD7335 /* DebitsController.m */; };
+		2777890E173CE22700430EBC /* DebitsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A3DA2016A1C99C00FD7335 /* DebitsListView.m */; };
+		2777890F173CE22700430EBC /* DebitsListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A3DA2216A1C99C00FD7335 /* DebitsListViewCell.m */; };
+		27778910173CE22700430EBC /* DebitFormularView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A3DA2716A1CB8000FD7335 /* DebitFormularView.m */; };
+		27778911173CE22700430EBC /* CCSettlementList.m in Sources */ = {isa = PBXBuildFile; fileRef = A694636F16B52D1A006D9D43 /* CCSettlementList.m */; };
+		27778912173CE22700430EBC /* CreditCardSettlement.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB72E316B53C6100B44133 /* CreditCardSettlement.m */; };
+		27778913173CE22700430EBC /* CreditCardSettlementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */; };
+		27778914173CE22700430EBC /* CategoryHeatMapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DCC81A16EB8F700070E241 /* CategoryHeatMapController.m */; };
+		27778915173CE22700430EBC /* AdditionalControls.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CBA24416F60EFB00C2AC04 /* AdditionalControls.m */; };
+		27778916173CE22700430EBC /* Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = 27548B8F1705D98E00C4BF9B /* Tag.m */; };
+		27778917173CE22700430EBC /* TagView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2795F20E17071DE6003AC74D /* TagView.m */; };
+		27778918173CE22700430EBC /* ColorPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 279918111711E97400C1AC3D /* ColorPopup.m */; };
+		27778919173CE22700430EBC /* BFIconTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2739FEF3171336580066F326 /* BFIconTabBar.m */; };
+		2777891B173CE22700430EBC /* category-reporting-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC74A814A102800082495C /* category-reporting-help.rtf */; };
+		2777891C173CE22700430EBC /* category-analysis-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC73D314A0C0680082495C /* category-analysis-help.rtf */; };
+		2777891D173CE22700430EBC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165DFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		2777891E173CE22700430EBC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1F454370F101E7500BAF4E8 /* Localizable.strings */; };
+		2777891F173CE22700430EBC /* Transfers.icns in Resources */ = {isa = PBXBuildFile; fileRef = B165B4120D2D8E1A00447DD8 /* Transfers.icns */; };
+		27778920173CE22700430EBC /* Transfer_help.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B4430D2DA35600447DD8 /* Transfer_help.png */; };
+		27778921173CE22700430EBC /* plus-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B51E0D340C5800447DD8 /* plus-8.png */; };
+		27778922173CE22700430EBC /* minus-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B165B5200D340C7D00447DD8 /* minus-8.png */; };
+		27778923173CE22700430EBC /* log.icns in Resources */ = {isa = PBXBuildFile; fileRef = B1AB52280DD4F30900327122 /* log.icns */; };
+		27778924173CE22700430EBC /* Vespasian.icns in Resources */ = {isa = PBXBuildFile; fileRef = B19330180EE1DA37003FEC97 /* Vespasian.icns */; };
+		27778925173CE22700430EBC /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */; };
+		27778926173CE22700430EBC /* ins-8.png in Resources */ = {isa = PBXBuildFile; fileRef = B132F84A0F8FE9DB00263F3B /* ins-8.png */; };
+		27778927173CE22700430EBC /* PecuniaHelp in Resources */ = {isa = PBXBuildFile; fileRef = B1E811D70FF68B3700BF7451 /* PecuniaHelp */; };
+		27778928173CE22700430EBC /* save.ico in Resources */ = {isa = PBXBuildFile; fileRef = B1014BEB1018E87B00ABA1FF /* save.ico */; };
+		27778929173CE22700430EBC /* yes2.ico in Resources */ = {isa = PBXBuildFile; fileRef = B1014C0B1018F48500ABA1FF /* yes2.ico */; };
+		2777892A173CE22700430EBC /* CountryInfo.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */; };
+		2777892B173CE22700430EBC /* StatSplitController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1A59497113182DA00FD8CB8 /* StatSplitController.xib */; };
+		2777892C173CE22700430EBC /* BankStatementController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14C6002114848E1009324A6 /* BankStatementController.xib */; };
+		2777892D173CE22700430EBC /* PurposeSplitWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */; };
+		2777892E173CE22700430EBC /* TransferTemplates.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FB6610124FC9E300C54A0E /* TransferTemplates.xib */; };
+		2777892F173CE22700430EBC /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = B1FB6914125D0A5500C54A0E /* edit.png */; };
+		27778930173CE22700430EBC /* CategoryPeriods.xib in Resources */ = {isa = PBXBuildFile; fileRef = B14587A11289DCB700848683 /* CategoryPeriods.xib */; };
+		27778931173CE22700430EBC /* CategoryReporting.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA836129479BA00B115A7 /* CategoryReporting.xib */; };
+		27778932173CE22700430EBC /* CategoryAnalysis.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA8801295C5D800B115A7 /* CategoryAnalysis.xib */; };
+		27778933173CE22700430EBC /* Orders.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA9F6129EEA3900B115A7 /* Orders.xib */; };
+		27778934173CE22700430EBC /* cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = B134357112EB7FDF006C4687 /* cursor.png */; };
+		27778935173CE22700430EBC /* money_18.png in Resources */ = {isa = PBXBuildFile; fileRef = B138AC471391946E0026BEE2 /* money_18.png */; };
+		27778936173CE22700430EBC /* money_sync_18.png in Resources */ = {isa = PBXBuildFile; fileRef = B138AC481391946E0026BEE2 /* money_sync_18.png */; };
+		27778937173CE22700430EBC /* pen.png in Resources */ = {isa = PBXBuildFile; fileRef = 274DE33313F9A0C50009EB77 /* pen.png */; };
+		27778938173CE22700430EBC /* ChipTanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */; };
+		27778939173CE22700430EBC /* TanMediaWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */; };
+		2777893A173CE22700430EBC /* ImportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */; };
+		2777893B173CE22700430EBC /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27C78792143622920095F1DA /* ProgressWindow.xib */; };
+		2777893C173CE22700430EBC /* StatementsListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 275C07DA1438776000D97415 /* StatementsListViewCell.xib */; };
+		2777893D173CE22700430EBC /* new.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F30886143E282700A10FCE /* new.png */; };
+		2777893E173CE22700430EBC /* slanted_stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 272B5EB2143F724600007749 /* slanted_stripes.png */; };
+		2777893F173CE22700430EBC /* done.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27D240E9145302A900EDC8C7 /* done.mp3 */; };
+		27778940173CE22700430EBC /* ExportPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2703DE26146EE6AB0083CBA2 /* ExportPopup.xib */; };
+		27778941173CE22700430EBC /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D44FC91478407D008DD256 /* MainMenu.xib */; };
+		27778942173CE22700430EBC /* TanMethods.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D44FE7147841DA008DD256 /* TanMethods.xib */; };
+		27778943173CE22700430EBC /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D44FEE14784213008DD256 /* Preferences.xib */; };
+		27778944173CE22700430EBC /* PasswordWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D44FF11478428E008DD256 /* PasswordWindow.xib */; };
+		27778945173CE22700430EBC /* NewPasswordWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D44FF4147842C5008DD256 /* NewPasswordWindow.xib */; };
+		27778946173CE22700430EBC /* LogController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D44FF71478430A008DD256 /* LogController.xib */; };
+		27778947173CE22700430EBC /* Institutes.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D44FFD14784344008DD256 /* Institutes.xib */; };
+		27778948173CE22700430EBC /* Donation.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D45004147843D0008DD256 /* Donation.xib */; };
+		27778949173CE22700430EBC /* BSSelectWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D4500714784412008DD256 /* BSSelectWindow.xib */; };
+		2777894A173CE22700430EBC /* BankUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D4500A14784443008DD256 /* BankUser.xib */; };
+		2777894B173CE22700430EBC /* AccountCreate.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D4500D147844C3008DD256 /* AccountCreate.xib */; };
+		2777894C173CE22700430EBC /* AccountMaintenance.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D4506D147848D3008DD256 /* AccountMaintenance.xib */; };
+		2777894D173CE22700430EBC /* computing.png in Resources */ = {isa = PBXBuildFile; fileRef = 2700B91B148BC58700E18BBE /* computing.png */; };
+		2777894E173CE22700430EBC /* graph1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2700B91C148BC58700E18BBE /* graph1.png */; };
+		2777894F173CE22700430EBC /* graph2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2700B91D148BC58700E18BBE /* graph2.png */; };
+		27778950173CE22700430EBC /* statementlist.png in Resources */ = {isa = PBXBuildFile; fileRef = 2700B91E148BC58700E18BBE /* statementlist.png */; };
+		27778951173CE22700430EBC /* rules.png in Resources */ = {isa = PBXBuildFile; fileRef = 2708DA041493DB3300758A6B /* rules.png */; };
+		27778952173CE22700430EBC /* Colors.acf in Resources */ = {isa = PBXBuildFile; fileRef = 27C930F5149508280055EAD5 /* Colors.acf */; };
+		27778953173CE22700430EBC /* help-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E1693A149F6E5C00089103 /* help-button.png */; };
+		27778954173CE22700430EBC /* About.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E16999149F90D900089103 /* About.xib */; };
+		27778955173CE22700430EBC /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27E169D7149FA01600089103 /* Credits.rtf */; };
+		27778956173CE22700430EBC /* hatch-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2790544F14A37F59001380A3 /* hatch-1.png */; };
+		27778957173CE22700430EBC /* blue arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D3168F14A8C81B002F500D /* blue arrow.png */; };
+		27778958173CE22700430EBC /* Bank large.png in Resources */ = {isa = PBXBuildFile; fileRef = 27EB308314B22CB000ABE3A6 /* Bank large.png */; };
+		27778959173CE22700430EBC /* Tresor.png in Resources */ = {isa = PBXBuildFile; fileRef = 272BF53E14B770A100628805 /* Tresor.png */; };
+		2777895A173CE22700430EBC /* CategoryDefinition.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */; };
+		2777895B173CE22700430EBC /* BusinessTransactionsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17729AC1504D63200256898 /* BusinessTransactionsWindow.xib */; };
+		2777895C173CE22700430EBC /* HBCI business transactions.csv in Resources */ = {isa = PBXBuildFile; fileRef = 27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */; };
+		2777895D173CE22700430EBC /* background-pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D1172A15288C3600CD7E83 /* background-pattern.png */; };
+		2777895E173CE22700430EBC /* sort-indicator-inc.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302941538453300D6A2CC /* sort-indicator-inc.png */; };
+		2777895F173CE22700430EBC /* sort-indicator-dec.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302961538461700D6A2CC /* sort-indicator-dec.png */; };
+		27778960173CE22700430EBC /* TransfersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 279A78611539DD5400443854 /* TransfersListViewCell.xib */; };
+		27778961173CE22700430EBC /* accounts.png in Resources */ = {isa = PBXBuildFile; fileRef = 272D814815431DCD006E1008 /* accounts.png */; };
+		27778962173CE22700430EBC /* accounts-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 272D814A154324B3006E1008 /* accounts-active.png */; };
+		27778963173CE22700430EBC /* transfers.png in Resources */ = {isa = PBXBuildFile; fileRef = 272D814C154326B0006E1008 /* transfers.png */; };
+		27778964173CE22700430EBC /* transfers-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 272D814E154327F0006E1008 /* transfers-active.png */; };
+		27778965173CE22700430EBC /* standing-order-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 270A0BFC1544177B00653031 /* standing-order-active.png */; };
+		27778966173CE22700430EBC /* standing-order.png in Resources */ = {isa = PBXBuildFile; fileRef = 270A0BFD1544177B00653031 /* standing-order.png */; };
+		27778967173CE22700430EBC /* computing-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764B63415443C6600FF0B73 /* computing-active.png */; };
+		27778968173CE22700430EBC /* graph1-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764B63515443C6600FF0B73 /* graph1-active.png */; };
+		27778969173CE22700430EBC /* graph2-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764B63615443C6600FF0B73 /* graph2-active.png */; };
+		2777896A173CE22700430EBC /* rules-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764B63715443C6600FF0B73 /* rules-active.png */; };
+		2777896B173CE22700430EBC /* statementlist-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2764B63815443C6600FF0B73 /* statementlist-active.png */; };
+		2777896C173CE22700430EBC /* donate-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A15154D49E5002A5ED0 /* donate-active.png */; };
+		2777896D173CE22700430EBC /* donate.png in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A16154D49E5002A5ED0 /* donate.png */; };
+		2777896E173CE22700430EBC /* Transfers.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A1D154D5F16002A5ED0 /* Transfers.xib */; };
+		2777896F173CE22700430EBC /* transfer-debit-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289B1551A4D500B9683B /* transfer-debit-preview.png */; };
+		27778970173CE22700430EBC /* transfer-eu-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289C1551A4D500B9683B /* transfer-eu-preview.png */; };
+		27778971173CE22700430EBC /* transfer-internal-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289D1551A4D500B9683B /* transfer-internal-preview.png */; };
+		27778972173CE22700430EBC /* transfer-sepa-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289F1551A4D500B9683B /* transfer-sepa-preview.png */; };
+		27778973173CE22700430EBC /* transfer-normal-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E80D461551AC9600BB1AF8 /* transfer-normal-preview.png */; };
+		27778974173CE22700430EBC /* printer.png in Resources */ = {isa = PBXBuildFile; fileRef = B126CC21157018FC0065EAC1 /* printer.png */; };
+		27778975173CE22700430EBC /* green-slanted-stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 279BF27C15726BF0006C1B9A /* green-slanted-stripes.png */; };
+		27778976173CE22700430EBC /* calendar.png in Resources */ = {isa = PBXBuildFile; fileRef = 279BF27E15729175006C1B9A /* calendar.png */; };
+		27778977173CE22700430EBC /* standard-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8431573C3FC00CB1320 /* standard-transfer-icon.png */; };
+		27778978173CE22700430EBC /* internal-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8451573D39A00CB1320 /* internal-transfer-icon.png */; };
+		27778979173CE22700430EBC /* eu-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8471573D3A800CB1320 /* eu-transfer-icon.png */; };
+		2777897A173CE22700430EBC /* sepa-transfer-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2704B8491573D3BD00CB1320 /* sepa-transfer-icon.png */; };
+		2777897B173CE22700430EBC /* basket.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B56886159743B10064A28B /* basket.png */; };
+		2777897C173CE22700430EBC /* shield.png in Resources */ = {isa = PBXBuildFile; fileRef = 27465177159B795E00D774FE /* shield.png */; };
+		2777897D173CE22700430EBC /* TransferTemplateListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E662B015A09B24002F9277 /* TransferTemplateListViewCell.xib */; };
+		2777897E173CE22700430EBC /* templates.png in Resources */ = {isa = PBXBuildFile; fileRef = 2722DE8015B2F03300503E95 /* templates.png */; };
+		2777897F173CE22700430EBC /* NotificationWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B183572715CC505A003B93ED /* NotificationWindow.xib */; };
+		27778980173CE22700430EBC /* SigningOptions.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1215D2A1C6003B93ED /* SigningOptions.xib */; };
+		27778981173CE22700430EBC /* Kobil.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1415D2A1F4003B93ED /* Kobil.png */; };
+		27778982173CE22700430EBC /* iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1515D2A1F4003B93ED /* iPhone.png */; };
+		27778983173CE22700430EBC /* PinTan.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1615D2A1F4003B93ED /* PinTan.png */; };
+		27778984173CE22700430EBC /* Chipcard.png in Resources */ = {isa = PBXBuildFile; fileRef = B1835C1715D2A1F4003B93ED /* Chipcard.png */; };
+		27778985173CE22700430EBC /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C3B78815E37CD9008B8DB3 /* refresh.png */; };
+		27778986173CE22700430EBC /* TanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E9242915E38FFE00FA09A3 /* TanWindow.xib */; };
+		27778987173CE22700430EBC /* OrdersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A41A4E15F3C7750043BB68 /* OrdersListViewCell.xib */; };
+		27778988173CE22700430EBC /* gpl-2.0-standalone.html in Resources */ = {isa = PBXBuildFile; fileRef = B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */; };
+		27778989173CE22700430EBC /* cyclic.png in Resources */ = {isa = PBXBuildFile; fileRef = 2743844515FB925D00E36DB5 /* cyclic.png */; };
+		2777898A173CE22700430EBC /* send.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A659C21604D8C500C737E8 /* send.png */; };
+		2777898B173CE22700430EBC /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A659C81604D8D200C737E8 /* delete.png */; };
+		2777898C173CE22700430EBC /* donate2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2719CD83160F5B45004B37C0 /* donate2.jpg */; };
+		2777898D173CE22700430EBC /* container-migration.plist in Resources */ = {isa = PBXBuildFile; fileRef = B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */; };
+		2777898E173CE22700430EBC /* GenerateDataController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 277C84921657F6DB0090D46D /* GenerateDataController.xib */; };
+		2777898F173CE22700430EBC /* category-icon-defaults.txt in Resources */ = {isa = PBXBuildFile; fileRef = 277B478A1659363F008D410A /* category-icon-defaults.txt */; };
+		27778990173CE22700430EBC /* jre.zip in Resources */ = {isa = PBXBuildFile; fileRef = B1DE0768165FB554004FFC8A /* jre.zip */; };
+		27778991173CE22700430EBC /* hide.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D5763C16626C5300761132 /* hide.png */; };
+		27778992173CE22700430EBC /* hide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D5763D16626C5300761132 /* hide@2x.png */; };
+		27778993173CE22700430EBC /* show.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D57640166277CB00761132 /* show.png */; };
+		27778994173CE22700430EBC /* show@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D57641166277CB00761132 /* show@2x.png */; };
+		27778995173CE22700430EBC /* java.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = B170C16D167689310047FD42 /* java.entitlements */; };
+		27778996173CE22700430EBC /* CategoryMaintenance.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27DFFD9116739C0000848CD2 /* CategoryMaintenance.xib */; };
+		27778997173CE22700430EBC /* Collections in Resources */ = {isa = PBXBuildFile; fileRef = 27649721167D2A73006770A9 /* Collections */; };
+		27778998173CE22700430EBC /* new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 270DC2E41680D3000053D530 /* new@2x.png */; };
+		27778999173CE22700430EBC /* edit-large.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E23532168A16290050276E /* edit-large.png */; };
+		2777899A173CE22700430EBC /* edit-large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E23533168A16290050276E /* edit-large@2x.png */; };
+		2777899B173CE22700430EBC /* csv.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E2353B168A228D0050276E /* csv.png */; };
+		2777899C173CE22700430EBC /* csv@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E2353C168A228D0050276E /* csv@2x.png */; };
+		2777899D173CE22700430EBC /* pdf.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E2353D168A228D0050276E /* pdf.png */; };
+		2777899E173CE22700430EBC /* pdf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E2353E168A228D0050276E /* pdf@2x.png */; };
+		2777899F173CE22700430EBC /* Debits.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A3DA1716A1C71D00FD7335 /* Debits.xib */; };
+		277789A0173CE22700430EBC /* DebitsListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A3DA1A16A1C91500FD7335 /* DebitsListViewCell.xib */; };
+		277789A1173CE22700430EBC /* blue-slanted-stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B1DF9716A2E0A2007A1112 /* blue-slanted-stripes.png */; };
+		277789A2173CE22700430EBC /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42216AAD1E000FF371E /* delete@2x.png */; };
+		277789A3173CE22700430EBC /* edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42416AAD5AB00FF371E /* edit@2x.png */; };
+		277789A4173CE22700430EBC /* send@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42516AAD5AB00FF371E /* send@2x.png */; };
+		277789A5173CE22700430EBC /* delete2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42816AAD7C100FF371E /* delete2.png */; };
+		277789A6173CE22700430EBC /* delete2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42916AAD7C100FF371E /* delete2@2x.png */; };
+		277789A7173CE22700430EBC /* CreditCardSettlement.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E3E4B016BB02C800DC1638 /* CreditCardSettlement.xib */; };
+		277789A8173CE22700430EBC /* noccsettlements.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B1E3E4BD16BC6DE500DC1638 /* noccsettlements.pdf */; };
+		277789A9173CE22700430EBC /* delete3.png in Resources */ = {isa = PBXBuildFile; fileRef = 2791FBD416CFCA4C00953116 /* delete3.png */; };
+		277789AA173CE22700430EBC /* delete3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2791FBD516CFCA4C00953116 /* delete3@2x.png */; };
+		277789AB173CE22700430EBC /* reset.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C202FB16E3894100D696BF /* reset.png */; };
+		277789AC173CE22700430EBC /* reset@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C202FC16E3894100D696BF /* reset@2x.png */; };
+		277789AD173CE22700430EBC /* CategoryHeatMap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27DCC81716EB8E640070E241 /* CategoryHeatMap.xib */; };
+		277789AE173CE22700430EBC /* heat-map.png in Resources */ = {isa = PBXBuildFile; fileRef = 279D963416EFB189004FCAC4 /* heat-map.png */; };
+		277789AF173CE22700430EBC /* heat-map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 279D963616EFB6AF004FCAC4 /* heat-map@2x.png */; };
+		277789B0173CE22700430EBC /* heat-map-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 279D963816EFB744004FCAC4 /* heat-map-active.png */; };
+		277789B1173CE22700430EBC /* heat-map-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 279D963916EFB744004FCAC4 /* heat-map-active@2x.png */; };
+		277789B2173CE22700430EBC /* help-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27EEC8DF16F4C9630000A1A9 /* help-button@2x.png */; };
+		277789B3173CE22700430EBC /* category-heatmap-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27EEC8E116F4D2950000A1A9 /* category-heatmap-help.rtf */; };
+		277789B4173CE22700430EBC /* gray-hatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAED16FDBDFF00E054D2 /* gray-hatch.png */; };
+		277789B5173CE22700430EBC /* gray-hatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */; };
+		277789B6173CE22700430EBC /* RuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A0098817205B4800D61FE9 /* RuleEditor.xib */; };
+		277789B8173CE22700430EBC /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2799180E1711748C00C1AC3D /* Quartz.framework */; };
+		277789B9173CE22700430EBC /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; };
+		277789BA173CE22700430EBC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1872EFC163DD7B7003A8C14 /* Security.framework */; };
+		277789BB173CE22700430EBC /* CorePlot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
+		277789BC173CE22700430EBC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		277789BD173CE22700430EBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
+		277789BE173CE22700430EBC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2724DAED14012A0F00B0FE15 /* QuartzCore.framework */; };
+		277789C1173CE22700430EBC /* HBCIServer.jar in Copy Java */ = {isa = PBXBuildFile; fileRef = B15FCCEE141422A3000738B6 /* HBCIServer.jar */; };
+		277789C3173CE22700430EBC /* CorePlot.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */; };
+		277789C4173CE22700430EBC /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; };
+		277789C5173CE22700430EBC /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B1C0359A1720911D0007C1F5 /* Sparkle.framework */; };
 		277B478C16593643008D410A /* category-icon-defaults.txt in Resources */ = {isa = PBXBuildFile; fileRef = 277B478A1659363F008D410A /* category-icon-defaults.txt */; };
 		277C84931657F6DB0090D46D /* GenerateDataController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 277C84921657F6DB0090D46D /* GenerateDataController.xib */; };
 		2780E50D151B229700CB86CE /* category-reporting-help.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 27CC74A814A102800082495C /* category-reporting-help.rtf */; };
@@ -344,6 +677,30 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		277789C0173CE22700430EBC /* Copy Java */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = ..;
+			dstSubfolderSpec = 7;
+			files = (
+				277789C1173CE22700430EBC /* HBCIServer.jar in Copy Java */,
+			);
+			name = "Copy Java";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		277789C2173CE22700430EBC /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				277789C3173CE22700430EBC /* CorePlot.framework in Copy Frameworks */,
+				277789C4173CE22700430EBC /* Growl.framework in Copy Frameworks */,
+				277789C5173CE22700430EBC /* Sparkle.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27EEDE4E14153FB70099C900 /* Copy Java */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -468,6 +825,8 @@
 		2765D42516AAD5AB00FF371E /* send@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send@2x.png"; sourceTree = "<group>"; };
 		2765D42816AAD7C100FF371E /* delete2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete2.png; sourceTree = "<group>"; };
 		2765D42916AAD7C100FF371E /* delete2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete2@2x.png"; sourceTree = "<group>"; };
+		277789CB173CE22700430EBC /* Pecunia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pecunia.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		277789CC173CE22700430EBC /* Pecunia copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Pecunia copy-Info.plist"; path = "/Data/Work/projects/Pecunia/client/Pecunia copy-Info.plist"; sourceTree = "<absolute>"; };
 		277B478B16593643008D410A /* German */ = {isa = PBXFileReference; lastKnownFileType = text; name = German; path = "German.lproj/category-icon-defaults.txt"; sourceTree = SOURCE_ROOT; };
 		277C84921657F6DB0090D46D /* GenerateDataController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GenerateDataController.xib; sourceTree = "<group>"; };
 		2784DAED16FDBDFF00E054D2 /* gray-hatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch.png"; sourceTree = "<group>"; };
@@ -889,6 +1248,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		277789B7173CE22700430EBC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				277789B8173CE22700430EBC /* Quartz.framework in Frameworks */,
+				277789B9173CE22700430EBC /* Growl.framework in Frameworks */,
+				277789BA173CE22700430EBC /* Security.framework in Frameworks */,
+				277789BB173CE22700430EBC /* CorePlot.framework in Frameworks */,
+				277789BC173CE22700430EBC /* Cocoa.framework in Frameworks */,
+				277789BD173CE22700430EBC /* Foundation.framework in Frameworks */,
+				277789BE173CE22700430EBC /* QuartzCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D11072E0486CEB800E47090 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -937,6 +1310,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* Pecunia.app */,
+				277789CB173CE22700430EBC /* Pecunia.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1250,6 +1624,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				277789CC173CE22700430EBC /* Pecunia copy-Info.plist */,
 			);
 			indentWidth = 4;
 			name = Pecunia;
@@ -1770,6 +2145,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		27778872173CE22700430EBC /* Pecunia AppStore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 277789C7173CE22700430EBC /* Build configuration list for PBXNativeTarget "Pecunia AppStore" */;
+			buildPhases = (
+				27778873173CE22700430EBC /* Sources */,
+				2777891A173CE22700430EBC /* Resources */,
+				277789B7173CE22700430EBC /* Frameworks */,
+				277789C0173CE22700430EBC /* Copy Java */,
+				277789C2173CE22700430EBC /* Copy Frameworks */,
+				277789C6173CE22700430EBC /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pecunia AppStore";
+			productInstallPath = "$(HOME)/Applications";
+			productName = Pecunia;
+			productReference = 277789CB173CE22700430EBC /* Pecunia.app */;
+			productType = "com.apple.product-type.application";
+		};
 		8D1107260486CEB800E47090 /* Pecunia */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B14C0A870AAF71DB00CC41C4 /* Build configuration list for PBXNativeTarget "Pecunia" */;
@@ -1815,11 +2211,175 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Pecunia */,
+				27778872173CE22700430EBC /* Pecunia AppStore */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2777891A173CE22700430EBC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2777891B173CE22700430EBC /* category-reporting-help.rtf in Resources */,
+				2777891C173CE22700430EBC /* category-analysis-help.rtf in Resources */,
+				2777891D173CE22700430EBC /* InfoPlist.strings in Resources */,
+				2777891E173CE22700430EBC /* Localizable.strings in Resources */,
+				2777891F173CE22700430EBC /* Transfers.icns in Resources */,
+				27778920173CE22700430EBC /* Transfer_help.png in Resources */,
+				27778921173CE22700430EBC /* plus-8.png in Resources */,
+				27778922173CE22700430EBC /* minus-8.png in Resources */,
+				27778923173CE22700430EBC /* log.icns in Resources */,
+				27778924173CE22700430EBC /* Vespasian.icns in Resources */,
+				27778925173CE22700430EBC /* dsa_pub.pem in Resources */,
+				27778926173CE22700430EBC /* ins-8.png in Resources */,
+				27778927173CE22700430EBC /* PecuniaHelp in Resources */,
+				27778928173CE22700430EBC /* save.ico in Resources */,
+				27778929173CE22700430EBC /* yes2.ico in Resources */,
+				2777892A173CE22700430EBC /* CountryInfo.txt in Resources */,
+				2777892B173CE22700430EBC /* StatSplitController.xib in Resources */,
+				2777892C173CE22700430EBC /* BankStatementController.xib in Resources */,
+				2777892D173CE22700430EBC /* PurposeSplitWindow.xib in Resources */,
+				2777892E173CE22700430EBC /* TransferTemplates.xib in Resources */,
+				2777892F173CE22700430EBC /* edit.png in Resources */,
+				27778930173CE22700430EBC /* CategoryPeriods.xib in Resources */,
+				27778931173CE22700430EBC /* CategoryReporting.xib in Resources */,
+				27778932173CE22700430EBC /* CategoryAnalysis.xib in Resources */,
+				27778933173CE22700430EBC /* Orders.xib in Resources */,
+				27778934173CE22700430EBC /* cursor.png in Resources */,
+				27778935173CE22700430EBC /* money_18.png in Resources */,
+				27778936173CE22700430EBC /* money_sync_18.png in Resources */,
+				27778937173CE22700430EBC /* pen.png in Resources */,
+				27778938173CE22700430EBC /* ChipTanWindow.xib in Resources */,
+				27778939173CE22700430EBC /* TanMediaWindow.xib in Resources */,
+				2777893A173CE22700430EBC /* ImportWindow.xib in Resources */,
+				2777893B173CE22700430EBC /* ProgressWindow.xib in Resources */,
+				2777893C173CE22700430EBC /* StatementsListViewCell.xib in Resources */,
+				2777893D173CE22700430EBC /* new.png in Resources */,
+				2777893E173CE22700430EBC /* slanted_stripes.png in Resources */,
+				2777893F173CE22700430EBC /* done.mp3 in Resources */,
+				27778940173CE22700430EBC /* ExportPopup.xib in Resources */,
+				27778941173CE22700430EBC /* MainMenu.xib in Resources */,
+				27778942173CE22700430EBC /* TanMethods.xib in Resources */,
+				27778943173CE22700430EBC /* Preferences.xib in Resources */,
+				27778944173CE22700430EBC /* PasswordWindow.xib in Resources */,
+				27778945173CE22700430EBC /* NewPasswordWindow.xib in Resources */,
+				27778946173CE22700430EBC /* LogController.xib in Resources */,
+				27778947173CE22700430EBC /* Institutes.xib in Resources */,
+				27778948173CE22700430EBC /* Donation.xib in Resources */,
+				27778949173CE22700430EBC /* BSSelectWindow.xib in Resources */,
+				2777894A173CE22700430EBC /* BankUser.xib in Resources */,
+				2777894B173CE22700430EBC /* AccountCreate.xib in Resources */,
+				2777894C173CE22700430EBC /* AccountMaintenance.xib in Resources */,
+				2777894D173CE22700430EBC /* computing.png in Resources */,
+				2777894E173CE22700430EBC /* graph1.png in Resources */,
+				2777894F173CE22700430EBC /* graph2.png in Resources */,
+				27778950173CE22700430EBC /* statementlist.png in Resources */,
+				27778951173CE22700430EBC /* rules.png in Resources */,
+				27778952173CE22700430EBC /* Colors.acf in Resources */,
+				27778953173CE22700430EBC /* help-button.png in Resources */,
+				27778954173CE22700430EBC /* About.xib in Resources */,
+				27778955173CE22700430EBC /* Credits.rtf in Resources */,
+				27778956173CE22700430EBC /* hatch-1.png in Resources */,
+				27778957173CE22700430EBC /* blue arrow.png in Resources */,
+				27778958173CE22700430EBC /* Bank large.png in Resources */,
+				27778959173CE22700430EBC /* Tresor.png in Resources */,
+				2777895A173CE22700430EBC /* CategoryDefinition.xib in Resources */,
+				2777895B173CE22700430EBC /* BusinessTransactionsWindow.xib in Resources */,
+				2777895C173CE22700430EBC /* HBCI business transactions.csv in Resources */,
+				2777895D173CE22700430EBC /* background-pattern.png in Resources */,
+				2777895E173CE22700430EBC /* sort-indicator-inc.png in Resources */,
+				2777895F173CE22700430EBC /* sort-indicator-dec.png in Resources */,
+				27778960173CE22700430EBC /* TransfersListViewCell.xib in Resources */,
+				27778961173CE22700430EBC /* accounts.png in Resources */,
+				27778962173CE22700430EBC /* accounts-active.png in Resources */,
+				27778963173CE22700430EBC /* transfers.png in Resources */,
+				27778964173CE22700430EBC /* transfers-active.png in Resources */,
+				27778965173CE22700430EBC /* standing-order-active.png in Resources */,
+				27778966173CE22700430EBC /* standing-order.png in Resources */,
+				27778967173CE22700430EBC /* computing-active.png in Resources */,
+				27778968173CE22700430EBC /* graph1-active.png in Resources */,
+				27778969173CE22700430EBC /* graph2-active.png in Resources */,
+				2777896A173CE22700430EBC /* rules-active.png in Resources */,
+				2777896B173CE22700430EBC /* statementlist-active.png in Resources */,
+				2777896C173CE22700430EBC /* donate-active.png in Resources */,
+				2777896D173CE22700430EBC /* donate.png in Resources */,
+				2777896E173CE22700430EBC /* Transfers.xib in Resources */,
+				2777896F173CE22700430EBC /* transfer-debit-preview.png in Resources */,
+				27778970173CE22700430EBC /* transfer-eu-preview.png in Resources */,
+				27778971173CE22700430EBC /* transfer-internal-preview.png in Resources */,
+				27778972173CE22700430EBC /* transfer-sepa-preview.png in Resources */,
+				27778973173CE22700430EBC /* transfer-normal-preview.png in Resources */,
+				27778974173CE22700430EBC /* printer.png in Resources */,
+				27778975173CE22700430EBC /* green-slanted-stripes.png in Resources */,
+				27778976173CE22700430EBC /* calendar.png in Resources */,
+				27778977173CE22700430EBC /* standard-transfer-icon.png in Resources */,
+				27778978173CE22700430EBC /* internal-transfer-icon.png in Resources */,
+				27778979173CE22700430EBC /* eu-transfer-icon.png in Resources */,
+				2777897A173CE22700430EBC /* sepa-transfer-icon.png in Resources */,
+				2777897B173CE22700430EBC /* basket.png in Resources */,
+				2777897C173CE22700430EBC /* shield.png in Resources */,
+				2777897D173CE22700430EBC /* TransferTemplateListViewCell.xib in Resources */,
+				2777897E173CE22700430EBC /* templates.png in Resources */,
+				2777897F173CE22700430EBC /* NotificationWindow.xib in Resources */,
+				27778980173CE22700430EBC /* SigningOptions.xib in Resources */,
+				27778981173CE22700430EBC /* Kobil.png in Resources */,
+				27778982173CE22700430EBC /* iPhone.png in Resources */,
+				27778983173CE22700430EBC /* PinTan.png in Resources */,
+				27778984173CE22700430EBC /* Chipcard.png in Resources */,
+				27778985173CE22700430EBC /* refresh.png in Resources */,
+				27778986173CE22700430EBC /* TanWindow.xib in Resources */,
+				27778987173CE22700430EBC /* OrdersListViewCell.xib in Resources */,
+				27778988173CE22700430EBC /* gpl-2.0-standalone.html in Resources */,
+				27778989173CE22700430EBC /* cyclic.png in Resources */,
+				2777898A173CE22700430EBC /* send.png in Resources */,
+				2777898B173CE22700430EBC /* delete.png in Resources */,
+				2777898C173CE22700430EBC /* donate2.jpg in Resources */,
+				2777898D173CE22700430EBC /* container-migration.plist in Resources */,
+				2777898E173CE22700430EBC /* GenerateDataController.xib in Resources */,
+				2777898F173CE22700430EBC /* category-icon-defaults.txt in Resources */,
+				27778990173CE22700430EBC /* jre.zip in Resources */,
+				27778991173CE22700430EBC /* hide.png in Resources */,
+				27778992173CE22700430EBC /* hide@2x.png in Resources */,
+				27778993173CE22700430EBC /* show.png in Resources */,
+				27778994173CE22700430EBC /* show@2x.png in Resources */,
+				27778995173CE22700430EBC /* java.entitlements in Resources */,
+				27778996173CE22700430EBC /* CategoryMaintenance.xib in Resources */,
+				27778997173CE22700430EBC /* Collections in Resources */,
+				27778998173CE22700430EBC /* new@2x.png in Resources */,
+				27778999173CE22700430EBC /* edit-large.png in Resources */,
+				2777899A173CE22700430EBC /* edit-large@2x.png in Resources */,
+				2777899B173CE22700430EBC /* csv.png in Resources */,
+				2777899C173CE22700430EBC /* csv@2x.png in Resources */,
+				2777899D173CE22700430EBC /* pdf.png in Resources */,
+				2777899E173CE22700430EBC /* pdf@2x.png in Resources */,
+				2777899F173CE22700430EBC /* Debits.xib in Resources */,
+				277789A0173CE22700430EBC /* DebitsListViewCell.xib in Resources */,
+				277789A1173CE22700430EBC /* blue-slanted-stripes.png in Resources */,
+				277789A2173CE22700430EBC /* delete@2x.png in Resources */,
+				277789A3173CE22700430EBC /* edit@2x.png in Resources */,
+				277789A4173CE22700430EBC /* send@2x.png in Resources */,
+				277789A5173CE22700430EBC /* delete2.png in Resources */,
+				277789A6173CE22700430EBC /* delete2@2x.png in Resources */,
+				277789A7173CE22700430EBC /* CreditCardSettlement.xib in Resources */,
+				277789A8173CE22700430EBC /* noccsettlements.pdf in Resources */,
+				277789A9173CE22700430EBC /* delete3.png in Resources */,
+				277789AA173CE22700430EBC /* delete3@2x.png in Resources */,
+				277789AB173CE22700430EBC /* reset.png in Resources */,
+				277789AC173CE22700430EBC /* reset@2x.png in Resources */,
+				277789AD173CE22700430EBC /* CategoryHeatMap.xib in Resources */,
+				277789AE173CE22700430EBC /* heat-map.png in Resources */,
+				277789AF173CE22700430EBC /* heat-map@2x.png in Resources */,
+				277789B0173CE22700430EBC /* heat-map-active.png in Resources */,
+				277789B1173CE22700430EBC /* heat-map-active@2x.png in Resources */,
+				277789B2173CE22700430EBC /* help-button@2x.png in Resources */,
+				277789B3173CE22700430EBC /* category-heatmap-help.rtf in Resources */,
+				277789B4173CE22700430EBC /* gray-hatch.png in Resources */,
+				277789B5173CE22700430EBC /* gray-hatch@2x.png in Resources */,
+				277789B6173CE22700430EBC /* RuleEditor.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D1107290486CEB800E47090 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1986,6 +2546,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		277789C6173CE22700430EBC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n\n# copylibs.sh\n# Pecunia\n#\n# Created by Frank Emminghaus on 11.07.12.\n# Copyright 2012 Frank Emminghaus. All rights reserved.\necho \"$TARGET_BUILD_DIR/Pecunia.app/Contents/\"\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/pcsc-ctapi-wrapper.dylib\"\nif [ $? -ne 0 ]; then\n  echo \"copy libs\"\n  cp \"$SRCROOT/Resources/pcsc-ctapi-wrapper.dylib\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents\"\n  cp \"$SRCROOT/Resources/libhbci4java-card-mac-os-x-10.6.jnilib\" \"$TARGET_BUILD_DIR/Pecunia.app/Contents\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns\"\nif [ $? -ne 0 ]; then\n  echo \"create plugins directory\"\n  mkdir \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns\"\nfi\n\ntest -e \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns/jre\"\nif [ $? -ne 0 ]; then\n  echo \"copy java runtime\"\n  unzip \"$SRCROOT/Resources/jre.zip\" -d \"$TARGET_BUILD_DIR/Pecunia.app/Contents/PlugIns\"\nfi\n";
+		};
 		B150A17115ADBCC80003DF5B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2002,6 +2575,179 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		27778873173CE22700430EBC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27778874173CE22700430EBC /* main.m in Sources */,
+				27778875173CE22700430EBC /* BankingController.m in Sources */,
+				27778876173CE22700430EBC /* TransactionController.m in Sources */,
+				27778877173CE22700430EBC /* BankStatement.m in Sources */,
+				27778878173CE22700430EBC /* BankAccount.m in Sources */,
+				27778879173CE22700430EBC /* Category.m in Sources */,
+				2777887A173CE22700430EBC /* Transfer.m in Sources */,
+				2777887B173CE22700430EBC /* NewBankUserController.m in Sources */,
+				2777887C173CE22700430EBC /* TransactionLimits.m in Sources */,
+				2777887D173CE22700430EBC /* PreferenceController.m in Sources */,
+				2777887E173CE22700430EBC /* CCDLayoutAdditions.m in Sources */,
+				2777887F173CE22700430EBC /* LogController.m in Sources */,
+				27778880173CE22700430EBC /* MOAssistant.m in Sources */,
+				27778881173CE22700430EBC /* CategoryView.m in Sources */,
+				27778882173CE22700430EBC /* CategoryDefWindowController.m in Sources */,
+				27778883173CE22700430EBC /* ExportController.m in Sources */,
+				27778884173CE22700430EBC /* CategoryAnalysisWindowController.m in Sources */,
+				27778885173CE22700430EBC /* CategoryRepWindowController.m in Sources */,
+				27778886173CE22700430EBC /* MCEMOutlineViewLayout.m in Sources */,
+				27778887173CE22700430EBC /* Country.m in Sources */,
+				27778888173CE22700430EBC /* StatementDetails.m in Sources */,
+				27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */,
+				2777888A173CE22700430EBC /* BankInfo.m in Sources */,
+				2777888B173CE22700430EBC /* Keychain.m in Sources */,
+				2777888C173CE22700430EBC /* MCEMTreeController.m in Sources */,
+				2777888D173CE22700430EBC /* ShortDate.m in Sources */,
+				2777888E173CE22700430EBC /* TimeSliceManager.m in Sources */,
+				2777888F173CE22700430EBC /* WorkerThread.m in Sources */,
+				27778890173CE22700430EBC /* BSSelectWindowController.m in Sources */,
+				27778891173CE22700430EBC /* StatusBarController.m in Sources */,
+				27778892173CE22700430EBC /* PecuniaError.m in Sources */,
+				27778893173CE22700430EBC /* PasswordWindow.m in Sources */,
+				27778894173CE22700430EBC /* MCEMTableView.m in Sources */,
+				27778895173CE22700430EBC /* TanMethod.m in Sources */,
+				27778896173CE22700430EBC /* DonationMessageController.m in Sources */,
+				27778897173CE22700430EBC /* MCEMBorderedView.m in Sources */,
+				27778898173CE22700430EBC /* BankQueryResult.m in Sources */,
+				27778899173CE22700430EBC /* Account.m in Sources */,
+				2777889A173CE22700430EBC /* HBCIClient.m in Sources */,
+				2777889B173CE22700430EBC /* NewPasswordController.m in Sources */,
+				2777889C173CE22700430EBC /* StatCatAssignment.m in Sources */,
+				2777889D173CE22700430EBC /* TransferResult.m in Sources */,
+				2777889E173CE22700430EBC /* StatSplitController.m in Sources */,
+				2777889F173CE22700430EBC /* BankStatementController.m in Sources */,
+				277788A0173CE22700430EBC /* BankStatementPolicy030.m in Sources */,
+				277788A1173CE22700430EBC /* 030.xcmappingmodel in Sources */,
+				277788A2173CE22700430EBC /* CategoryPolicy030.m in Sources */,
+				277788A3173CE22700430EBC /* AccountDefController.m in Sources */,
+				277788A4173CE22700430EBC /* TransfersController.m in Sources */,
+				277788A5173CE22700430EBC /* PurposeSplitController.m in Sources */,
+				277788A6173CE22700430EBC /* PurposeSplitData.m in Sources */,
+				277788A7173CE22700430EBC /* TransferTemplate.m in Sources */,
+				277788A8173CE22700430EBC /* TransferTemplateController.m in Sources */,
+				277788A9173CE22700430EBC /* BankStatementPrintView.m in Sources */,
+				277788AA173CE22700430EBC /* CategoryPeriodsWindowController.m in Sources */,
+				277788AB173CE22700430EBC /* CategoryReportingNode.m in Sources */,
+				277788AC173CE22700430EBC /* StandingOrder.m in Sources */,
+				277788AD173CE22700430EBC /* StandingOrderController.m in Sources */,
+				277788AE173CE22700430EBC /* MessageLog.m in Sources */,
+				277788AF173CE22700430EBC /* PurposeSplitRule.m in Sources */,
+				277788B0173CE22700430EBC /* 030alpha.xcmappingmodel in Sources */,
+				277788B1173CE22700430EBC /* BankStatementPolicy030alpha.m in Sources */,
+				277788B2173CE22700430EBC /* ImageAndTextCell.m in Sources */,
+				277788B3173CE22700430EBC /* MCEMTransparentTableView.m in Sources */,
+				277788B4173CE22700430EBC /* DateAndValutaCell.m in Sources */,
+				277788B5173CE22700430EBC /* AmountCell.m in Sources */,
+				277788B6173CE22700430EBC /* DockIconController.m in Sources */,
+				277788B7173CE22700430EBC /* MCEMDecimalNumberAdditions.m in Sources */,
+				277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */,
+				277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */,
+				277788BA173CE22700430EBC /* RoundedSidebar.m in Sources */,
+				277788BB173CE22700430EBC /* GraphicsAdditions.m in Sources */,
+				277788BC173CE22700430EBC /* HBCIBridge.m in Sources */,
+				277788BD173CE22700430EBC /* CallbackData.m in Sources */,
+				277788BE173CE22700430EBC /* CallbackParser.m in Sources */,
+				277788BF173CE22700430EBC /* HBCIError.m in Sources */,
+				277788C0173CE22700430EBC /* LogParser.m in Sources */,
+				277788C1173CE22700430EBC /* ResultParser.m in Sources */,
+				277788C2173CE22700430EBC /* TanMethodListController.m in Sources */,
+				277788C3173CE22700430EBC /* Passport.m in Sources */,
+				277788C4173CE22700430EBC /* HBCIController.m in Sources */,
+				277788C5173CE22700430EBC /* User.m in Sources */,
+				277788C6173CE22700430EBC /* ChipTanWindowController.m in Sources */,
+				277788C7173CE22700430EBC /* FlickerView.m in Sources */,
+				277788C8173CE22700430EBC /* TanMediaWindowController.m in Sources */,
+				277788C9173CE22700430EBC /* BankParameter.m in Sources */,
+				277788CA173CE22700430EBC /* ImportSettings.m in Sources */,
+				277788CB173CE22700430EBC /* ImportController.m in Sources */,
+				277788CC173CE22700430EBC /* ProgressWindowController.m in Sources */,
+				277788CD173CE22700430EBC /* StatementsListView.m in Sources */,
+				277788CE173CE22700430EBC /* PXListDocumentView.m in Sources */,
+				277788CF173CE22700430EBC /* PXListView.m in Sources */,
+				277788D0173CE22700430EBC /* PXListView+UserInteraction.m in Sources */,
+				277788D1173CE22700430EBC /* PXListViewCell.m in Sources */,
+				277788D2173CE22700430EBC /* StatementsListViewCell.m in Sources */,
+				277788D3173CE22700430EBC /* RoundedOuterShadowView.m in Sources */,
+				277788D4173CE22700430EBC /* ValueTransformers.m in Sources */,
+				277788D5173CE22700430EBC /* Accounts.xcdatamodeld in Sources */,
+				277788D6173CE22700430EBC /* ColumnLayoutCorePlotLayer.m in Sources */,
+				277788D7173CE22700430EBC /* PecuniaPlotTimeFormatter.m in Sources */,
+				277788D8173CE22700430EBC /* AnimationHelper.m in Sources */,
+				277788D9173CE22700430EBC /* NS(Attributed)String+Geometrics.m in Sources */,
+				277788DA173CE22700430EBC /* LaunchParameters.m in Sources */,
+				277788DB173CE22700430EBC /* CustomerMessage.m in Sources */,
+				277788DC173CE22700430EBC /* BankMessage.m in Sources */,
+				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
+				277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */,
+				277788DF173CE22700430EBC /* TanMedium.m in Sources */,
+				277788E0173CE22700430EBC /* TanMediaList.m in Sources */,
+				277788E1173CE22700430EBC /* BankUser.m in Sources */,
+				277788E2173CE22700430EBC /* TanMethodOld.m in Sources */,
+				277788E3173CE22700430EBC /* BusinessTransactionsController.m in Sources */,
+				277788E4173CE22700430EBC /* TanSigningOption.m in Sources */,
+				277788E5173CE22700430EBC /* 100.xcmappingmodel in Sources */,
+				277788E6173CE22700430EBC /* CallbackHandler.m in Sources */,
+				277788E7173CE22700430EBC /* BWGradientBox.m in Sources */,
+				277788E8173CE22700430EBC /* NSColor+BWAdditions.m in Sources */,
+				277788E9173CE22700430EBC /* MBTableGrid.m in Sources */,
+				277788EA173CE22700430EBC /* MBTableGridCell.m in Sources */,
+				277788EB173CE22700430EBC /* MBTableGridContentView.m in Sources */,
+				277788EC173CE22700430EBC /* MBTableGridHeaderCell.m in Sources */,
+				277788ED173CE22700430EBC /* MBTableGridHeaderView.m in Sources */,
+				277788EE173CE22700430EBC /* SynchronousScrollView.m in Sources */,
+				277788EF173CE22700430EBC /* TransfersBackgroundView.m in Sources */,
+				277788F0173CE22700430EBC /* TransfersListView.m in Sources */,
+				277788F1173CE22700430EBC /* TransfersListViewCell.m in Sources */,
+				277788F2173CE22700430EBC /* BankingController+Tabs.m in Sources */,
+				277788F3173CE22700430EBC /* OnOffSwitchControl.m in Sources */,
+				277788F4173CE22700430EBC /* OnOffSwitchControlCell.m in Sources */,
+				277788F5173CE22700430EBC /* TransferFormularView.m in Sources */,
+				277788F6173CE22700430EBC /* GradientButtonCell.m in Sources */,
+				277788F7173CE22700430EBC /* TransferTemplatesListView.m in Sources */,
+				277788F8173CE22700430EBC /* TransferTemplateListViewCell.m in Sources */,
+				277788F9173CE22700430EBC /* NotificationWindowController.m in Sources */,
+				277788FA173CE22700430EBC /* SigningOption.m in Sources */,
+				277788FB173CE22700430EBC /* SigningOptionsViewCell.m in Sources */,
+				277788FC173CE22700430EBC /* SigningOptionsController.m in Sources */,
+				277788FD173CE22700430EBC /* 101.xcmappingmodel in Sources */,
+				277788FE173CE22700430EBC /* NSString+PecuniaAdditions.m in Sources */,
+				277788FF173CE22700430EBC /* NSView+PecuniaAdditions.m in Sources */,
+				27778900173CE22700430EBC /* TanWindow.m in Sources */,
+				27778901173CE22700430EBC /* 102.xcmappingmodel in Sources */,
+				27778902173CE22700430EBC /* TransferPrintView.m in Sources */,
+				27778903173CE22700430EBC /* NSButton+PecuniaAdditions.m in Sources */,
+				27778904173CE22700430EBC /* OrdersListView.m in Sources */,
+				27778905173CE22700430EBC /* OrdersListViewCell.m in Sources */,
+				27778906173CE22700430EBC /* LicenseWindowController.m in Sources */,
+				27778907173CE22700430EBC /* SupportedTransactionInfo.m in Sources */,
+				27778908173CE22700430EBC /* GenerateDataController.m in Sources */,
+				27778909173CE22700430EBC /* GrowlNotification.m in Sources */,
+				2777890A173CE22700430EBC /* NSSplitView+PecuniaAdditions.m in Sources */,
+				2777890B173CE22700430EBC /* CategoryMaintenanceController.m in Sources */,
+				2777890C173CE22700430EBC /* NSAttributedString+PecuniaAdditions.m in Sources */,
+				2777890D173CE22700430EBC /* DebitsController.m in Sources */,
+				2777890E173CE22700430EBC /* DebitsListView.m in Sources */,
+				2777890F173CE22700430EBC /* DebitsListViewCell.m in Sources */,
+				27778910173CE22700430EBC /* DebitFormularView.m in Sources */,
+				27778911173CE22700430EBC /* CCSettlementList.m in Sources */,
+				27778912173CE22700430EBC /* CreditCardSettlement.m in Sources */,
+				27778913173CE22700430EBC /* CreditCardSettlementController.m in Sources */,
+				27778914173CE22700430EBC /* CategoryHeatMapController.m in Sources */,
+				27778915173CE22700430EBC /* AdditionalControls.m in Sources */,
+				27778916173CE22700430EBC /* Tag.m in Sources */,
+				27778917173CE22700430EBC /* TagView.m in Sources */,
+				27778918173CE22700430EBC /* ColorPopup.m in Sources */,
+				27778919173CE22700430EBC /* BFIconTabBar.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D11072C0486CEB800E47090 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2213,6 +2959,143 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		277789C8173CE22700430EBC /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Frameworks\"",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_PASCAL_STRINGS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Pecunia_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Resources\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
+				OTHER_LDFLAGS = "-lz";
+				PRODUCT_NAME = Pecunia;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		277789C9173CE22700430EBC /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Frameworks\"",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_PASCAL_STRINGS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Pecunia_Prefix.pch;
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Resources\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
+				OTHER_LDFLAGS = "-lz";
+				PRODUCT_NAME = Pecunia;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		277789CA173CE22700430EBC /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Frameworks\"",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_PASCAL_STRINGS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Pecunia_Prefix.pch;
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Resources\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
+				OTHER_LDFLAGS = "-lz";
+				PRODUCT_NAME = Pecunia;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Default;
+		};
 		B14C0A880AAF71DB00CC41C4 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2396,6 +3279,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		277789C7173CE22700430EBC /* Build configuration list for PBXNativeTarget "Pecunia AppStore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				277789C8173CE22700430EBC /* Development */,
+				277789C9173CE22700430EBC /* Deployment */,
+				277789CA173CE22700430EBC /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
 		B14C0A870AAF71DB00CC41C4 /* Build configuration list for PBXNativeTarget "Pecunia" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
