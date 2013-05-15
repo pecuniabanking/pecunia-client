@@ -88,6 +88,8 @@ void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 
 static BankingController *bankinControllerInstance;
 
+static NSCursor *moveCursor;
+
 //----------------------------------------------------------------------------------------------------------------------
 
 @implementation PecuniaSplitView
@@ -157,12 +159,15 @@ static BankingController *bankinControllerInstance;
 //----------------------------------------------------------------------------------------------------------------------
 
 static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
+static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // For dragging an attachment.
 
-@interface AttachmentImageView : NSImageView <NSDraggingDestination>
+@interface AttachmentImageView : NSImageView <NSDraggingSource, NSDraggingDestination>
 {
 @private
     id       observedObject;
     NSString *observedKeyPath;
+    BOOL     highlight;
+    BOOL     dragPending;
 }
 
 @property (nonatomic, strong) NSString *reference;
@@ -184,68 +189,327 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     [self registerForDraggedTypes: @[NSStringPboardType, NSFilenamesPboardType]];
 }
 
+#pragma mark - Destination Operations
+
+- (NSDragOperation)dragOperationFor: (id <NSDraggingInfo>)sender
+{
+    if (!self.isEditable || ([sender draggingSource] == self)) {
+        return NSDragOperationNone;
+    }
+
+    NSArray *types = [[sender draggingPasteboard] types];
+    if ([types containsObject: AttachmentDataType]) {
+        return NSDragOperationMove;
+    }
+
+    if ([types containsObject: NSURLPboardType] || [types containsObject: NSFilenamesPboardType]) {
+        NSURL *url = [NSURL URLFromPasteboard: [sender draggingPasteboard]];
+        BOOL isFolder;
+        if ([NSFileManager.defaultManager fileExistsAtPath: url.path isDirectory: &isFolder]) {
+            if (isFolder) {
+                return NSDragOperationNone; // If the file is actually a folder don't accept it.
+            }
+        }
+
+        return NSDragOperationCopy;
+    }
+
+    if ([types containsObject: NSStringPboardType]) {
+        return NSDragOperationCopy;
+    }
+
+    return NSDragOperationNone;
+}
+
+- (NSDragOperation)draggingEntered: (id <NSDraggingInfo>)sender
+{
+    NSDragOperation result = [self dragOperationFor: sender];
+
+    highlight = YES;
+    [self setNeedsDisplay: YES];
+
+    switch (result) {
+        case NSDragOperationCopy:
+            [[NSCursor dragCopyCursor] push];
+            break;
+
+        case NSDragOperationMove:
+            [moveCursor push];
+            break;
+
+        default:
+            [[NSCursor operationNotAllowedCursor] push];
+            return NSDragOperationNone;
+            break;
+    }
+
+    return result;
+
+}
+
+- (void)draggingExited: (id <NSDraggingInfo>)sender
+{
+    [NSCursor pop];
+    
+    highlight = NO;
+    [self setNeedsDisplay: YES];
+}
+
+-(void)drawRect: (NSRect)rect
+{
+    [super drawRect: rect];
+
+    if (highlight) {
+        [[NSColor grayColor] set];
+        [NSBezierPath setDefaultLineWidth: 5];
+        [NSBezierPath strokeRect: rect];
+    }
+}
+
+- (BOOL)prepareForDragOperation:(id <NSDraggingInfo>)sender
+{
+    highlight = NO;
+    [self setNeedsDisplay: YES];
+
+    return YES;
+}
+
+- (BOOL)performDragOperation: (id<NSDraggingInfo>)sender
+{
+    NSDragOperation operation = [self dragOperationFor: sender];
+
+    switch (operation) {
+        case NSDragOperationMove: {
+            AttachmentImageView *otherView = [sender draggingSource];
+            NSString *value = otherView.reference;
+            [observedObject setValue: value forKeyPath: observedKeyPath];
+            [otherView->observedObject setValue: nil forKeyPath: otherView->observedKeyPath];
+
+            break;
+        }
+
+        case NSDragOperationCopy: {
+            NSURL *url;
+
+            NSArray *types = [[sender draggingPasteboard] types];
+            if ([types containsObject: NSURLPboardType] || [types containsObject: NSFilenamesPboardType]) {
+                url = [NSURL URLFromPasteboard: [sender draggingPasteboard]];
+            } else {
+                // Just some text. See if we can make a URL from it.
+                NSString *text = [[sender draggingPasteboard] stringForType: NSStringPboardType];
+                if (text.length > 0) {
+                    url = [NSURL URLWithString: text];
+                    if (url == nil) {
+                        // Not a valid web URL. Try using it as file name.
+                        // Of course the file must exist to be accepted.
+                        if ([NSFileManager.defaultManager fileExistsAtPath: text]) {
+                            url = [NSURL fileURLWithPath: text];
+                        }
+                    }
+                }
+            }
+
+            if (url != nil) {
+                [self processAttachment: url];
+            } else {
+                return NO;
+            }
+            break;
+        }
+    }
+
+    return YES;
+}
+
+- (void)concludeDragOperation: (id<NSDraggingInfo>)sender
+{
+    // Only here to disable NSImageView's drop handling.
+}
+
+#pragma mark - Source Operations
+
 - (void)mouseDown: (NSEvent *)event
 {
-    if ([[self target] respondsToSelector: [self action]]) {
-        [NSApp sendAction: [self action] to: [self target] from: self];
+    dragPending = YES;
+}
+
+- (void)mouseUp: (NSEvent *)event
+{
+    if (dragPending) {
+        // User just clicked. No mouse move.
+        dragPending = NO;
+        if ([[self target] respondsToSelector: [self action]]) {
+            [NSApp sendAction: [self action] to: [self target] from: self];
+        }
+    }
+}
+
+- (void)mouseDragged: (NSEvent *)event
+{
+    if (dragPending) {
+        dragPending = NO;
+
+        NSURL *url = [NSURL URLWithString: reference];
+        if (url != nil) {
+            NSPoint dragPosition = [self convertPoint: [event locationInWindow] fromView: nil];
+            dragPosition.x -= 100;
+
+            NSPasteboard *pasteBoard = [NSPasteboard pasteboardWithUniqueName];
+            [pasteBoard declareTypes: @[AttachmentDataType] owner: self];
+            [pasteBoard writeObjects: @[url]];
+
+            [self dragImage: [self image]
+                         at: dragPosition
+                     offset: NSZeroSize
+                      event: event
+                 pasteboard: pasteBoard
+                     source: self
+                  slideBack: NO];
+        }
+    }
+}
+
+- (NSDragOperation)       draggingSession: (NSDraggingSession *)session
+    sourceOperationMaskForDraggingContext: (NSDraggingContext)context;
+{
+    switch(context) {
+        case NSDraggingContextOutsideApplication:
+            return NSDragOperationDelete;
+            break;
+
+        case NSDraggingContextWithinApplication:
+        default:
+            return NSDragOperationDelete | NSDragOperationMove;
+            break;
+    }
+}
+
+- (BOOL)ignoreModifierKeysForDraggingSession:(NSDraggingSession *)session
+{
+    return YES;
+}
+
+- (void)draggingSession: (NSDraggingSession *)session
+           movedToPoint: (NSPoint)screenPoint
+{
+    if (NSPointInRect(screenPoint, self.window.frame)) {
+        NSRect windowRect = [self.window convertRectFromScreen: NSMakeRect(screenPoint.x, screenPoint.y, 1, 1)];
+        NSView *view = [self.window.contentView hitTest: windowRect.origin];
+        if (![view isKindOfClass: [AttachmentImageView class]]) {
+            [[NSCursor disappearingItemCursor] set];
+        }
+    }
+}
+
+- (void)updateDraggingItemsForDrag: (id<NSDraggingInfo>)sender
+{
+    sender.numberOfValidItemsForDrop = 1;
+}
+
+- (void)draggedImage: (NSImage *)image
+             endedAt: (NSPoint)screenPoint
+           operation: (NSDragOperation)operation
+{
+    // NSDragOperationNone is returned outside of instances of this class. So it's good as
+    // a delete indicator too.
+    screenPoint.x += 100;
+    NSRect windowRect = [self.window convertRectFromScreen: NSMakeRect(screenPoint.x, screenPoint.y, 1, 1)];
+    NSView *view = [self.window.contentView hitTest: windowRect.origin];
+    if (![view isKindOfClass: [AttachmentImageView class]] && (operation == NSDragOperationDelete || operation == NSDragOperationNone)) {
+        [self processAttachment: nil];
+        NSShowAnimationEffect(NSAnimationEffectPoof, screenPoint, self.bounds.size, nil, nil, NULL);
     }
 }
 
 - (void)resetCursorRects
 {
     [super resetCursorRects];
-    [self addCursorRect: [self bounds] cursor:
-     self.isEditable ? [NSCursor pointingHandCursor]: [NSCursor operationNotAllowedCursor]];
+    [self addCursorRect: [self bounds]
+                 cursor: self.isEditable ? [NSCursor pointingHandCursor]: [NSCursor operationNotAllowedCursor]];
 }
 
-- (NSDragOperation)draggingEntered: (id <NSDraggingInfo>)sender
+/**
+ * Processes the given URL depending on its type. In case of a file URL the file is copied to Pecunia's
+ * attachment folder (using a unique id) and a special reference is generated. For all other types the URL
+ * is simply stored in the reference field.
+ *
+ * The format of the reference for a file is: "attachment://unique-id.ext|original-name.ext".
+ */
+- (void)processAttachment: (NSURL *)url
 {
-    return self.isEditable ? NSDragOperationLink : NSDragOperationNone;
-}
+    // If the current reference points to a file then remove it.
+    NSURL *oldUrl = [NSURL URLWithString: reference];
+    self.reference = nil;
+    [observedObject setValue: nil forKeyPath: observedKeyPath];
 
-- (BOOL)prepareForDragOperation: (id <NSDraggingInfo>)sender
-{
-    return YES;
-}
+    if (oldUrl != nil) {
+        if ([oldUrl.scheme isEqual: @"attachment"]) {
+            NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.assistant.pecuniaFileURL.path];
+            NSString *targetFileName;
+            targetFileName = [NSString stringWithFormat: @"%@%@", targetFolder, oldUrl.host];
 
-- (BOOL)performDragOperation: (id <NSDraggingInfo>)sender
-{
-    return YES;
-}
-
-- (BOOL)wantsPeriodicDraggingUpdates
-{
-    return NO;
-}
-
-- (void)concludeDragOperation: (id<NSDraggingInfo>)sender
-{
-    NSURL *url;
-
-    NSArray *types = [[sender draggingPasteboard] types];
-    if ([types containsObject: NSURLPboardType] || [types containsObject: NSFilenamesPboardType]) {
-        url = [NSURL URLFromPasteboard: [sender draggingPasteboard]];
-    } else {
-        // Just some text. See if we can make a URL from it.
-        NSString *text = [[sender draggingPasteboard] stringForType: NSStringPboardType];
-        if (text.length > 0) {
-            url = [NSURL URLWithString: text];
-            if (url == nil) {
-                // Not a valid web URL. Try using it as file name.
-                // Of course the file must exist to be accepted.
-                if ([NSFileManager.defaultManager fileExistsAtPath: text]) {
-                    url = [NSURL fileURLWithPath: text];
-                }
-            }
+            // Remove the file but don't show a message in case of an error. The message is
+            // meaningless anyway (since it contains the internal filename).
+            [NSFileManager.defaultManager removeItemAtPath: targetFileName error: nil];
         }
     }
 
     if (url == nil) {
         return;
     }
+    
+    if (url.isFileURL) {
+        NSString *sourceFileName = url.path;
+        NSString *extension = sourceFileName.pathExtension;
 
-    self.reference = url.absoluteString;
-    [observedObject setValue: url.absoluteString forKeyPath: observedKeyPath];
+        NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
+        NSString *uniqueFilenName = [NSString stringWithFormat: @"%@.%@", guid, extension];
+        NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.assistant.pecuniaFileURL.path];
+        NSString *targetFileName = [targetFolder stringByAppendingString: uniqueFilenName];
+
+        NSError *error = nil;
+        if (![NSFileManager.defaultManager createDirectoryAtPath: targetFolder withIntermediateDirectories: YES attributes: nil error: &error]) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+            return;
+        }
+        if (![NSFileManager.defaultManager copyItemAtPath: sourceFileName toPath: targetFileName error: &error]) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+            return;
+        }
+
+        NSString *escapedName = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
+          (__bridge CFStringRef)sourceFileName.lastPathComponent, NULL, NULL, kCFStringEncodingUTF8));
+
+        NSString *newReference = [NSString stringWithFormat: @"attachment://%@?%@", uniqueFilenName, escapedName];
+        [observedObject setValue: newReference forKeyPath: observedKeyPath];
+    } else {
+        [observedObject setValue: url.absoluteString forKeyPath: observedKeyPath];
+    }
+}
+
+/**
+ * Open the reference in the default web browser if it is a web URL, otherwise construct a full path
+ * from the reference and open it with it's default application.
+ */
+- (void)openReference
+{
+    NSURL *url = [NSURL URLWithString: reference];
+
+    if (url.isFileURL || [url.scheme isEqual: @"attachment"]) {
+        NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.assistant.pecuniaFileURL.path];
+
+        NSString *targetFileName;
+        if ([url.scheme isEqual: @"attachment"]) {
+            targetFileName = [NSString stringWithFormat: @"%@%@", targetFolder, url.host];
+        } else {
+            targetFileName = url.absoluteString;
+        }
+        [NSWorkspace.sharedWorkspace openFile: targetFileName];
+    } else {
+        [NSWorkspace.sharedWorkspace openURL: url];
+    }
 }
 
 - (void)setReference: (id)value
@@ -259,6 +523,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         } else {
             self.toolTip = nil;
         }
+        reference = nil;
 
         return;
     }
@@ -272,12 +537,25 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
     reference = url.absoluteString;
 
-    if (url.isFileURL) {
-        self.toolTip = [NSString stringWithFormat: @"%@\n\n%@", url.path, NSLocalizedString(@"AP120", nil)];
+    if (url.isFileURL || [url.scheme isEqual: @"attachment"]) {
+        NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.assistant.pecuniaFileURL.path];
 
-        NSString *fileName = url.path;
-        NSString *extension = fileName.pathExtension;
+        NSString *targetFileName;
+        NSString *tooltipFileName;
+        if ([url.scheme isEqual: @"attachment"]) {
+            targetFileName = [NSString stringWithFormat: @"%@%@", targetFolder, url.host];
+            tooltipFileName = url.query;
+        } else {
+            targetFileName = value;
+            tooltipFileName = [targetFileName lastPathComponent];
+        }
 
+        NSString *unescapedTooltipFileName = CFBridgingRelease(
+          CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)tooltipFileName, CFSTR(""),
+                                                                  kCFStringEncodingUTF8));
+        NSString *extension = targetFileName.pathExtension;
+
+        self.toolTip = [NSString stringWithFormat: @"%@\n\n%@", unescapedTooltipFileName, NSLocalizedString(@"AP120", nil)];
         NSImage *image;
 
         // Display images as such. Exclude pdf files manually as they qualify as images too.
@@ -285,7 +563,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         if (![extension isCaseInsensitiveLike: @"pdf"]) {
             NSArray *types = NSImage.imageFileTypes;
             if ([types containsObject: extension]) {
-                image = [[NSImage alloc] initWithContentsOfFile: fileName];
+                image = [[NSImage alloc] initWithContentsOfFile: targetFileName];
                 if (image != nil) {
                     self.image = image;
                     return;
@@ -295,7 +573,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
         // Anything else. Get the system's icon for it. If there's no extension use the entire path.
         if (extension.length == 0) {
-            image = [NSWorkspace.sharedWorkspace iconForFile: fileName];
+            image = [NSWorkspace.sharedWorkspace iconForFile: targetFileName];
         } else {
             image = [[NSWorkspace sharedWorkspace] iconForFileType: extension];
         }
@@ -304,6 +582,8 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
 
     } else {
+        reference = url.absoluteString;
+
         self.toolTip = [NSString stringWithFormat: @"%@\n\n%@", reference, NSLocalizedString(@"AP120", nil)];
         NSImage *image = [[NSWorkspace sharedWorkspace] iconForFileType: @"html"];
         image.size = NSMakeSize(128, 128);
@@ -345,8 +625,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 @synthesize managedObjectContext;
 @synthesize dockIconController;
 
-#pragma mark -
-#pragma mark Initialization
+#pragma mark - Initialization
 
 - (id)init
 {
@@ -484,7 +763,8 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
     [self setEncrypted: [[MOAssistant assistant] encrypted]];
 
-    splitCursor = [[NSCursor alloc] initWithImage: [NSImage imageNamed: @"cursor.png"] hotSpot: NSMakePoint(0, 0)];
+    splitCursor = [[NSCursor alloc] initWithImage: [NSImage imageNamed: @"split-cursor"] hotSpot: NSMakePoint(0, 0)];
+    moveCursor = [[NSCursor alloc] initWithImage: [NSImage imageNamed: @"move-cursor"] hotSpot: NSMakePoint(18, 6)];
     [WorkerThread init];
 
     [categoryAssignments bind: @"contentSet" toObject: categoryController withKeyPath: @"selection.boundAssignments" options: nil];
@@ -558,8 +838,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext: self.managedObjectContext];
 }
 
-#pragma mark -
-#pragma mark User actions
+#pragma mark - User actions
 
 - (void)setHBCIAccounts
 {
@@ -874,7 +1153,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
         }
     }
     if (nInactive == [selectedAccounts count]) {
-        NSRunAlertPanel(NSLocalizedString(@"AP87", nil),
+        NSRunAlertPanel(NSLocalizedString(@"AP220", nil),
                         NSLocalizedString(@"AP215", nil),
                         NSLocalizedString(@"AP1", nil),
                         nil, nil
@@ -1116,8 +1395,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     }
 }
 
-#pragma mark -
-#pragma mark Account management
+#pragma mark - Account management
 
 - (IBAction)addAccount: (id)sender
 {
@@ -1251,8 +1529,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     }
 }
 
-#pragma mark -
-#pragma mark Page switching
+#pragma mark - Page switching
 
 - (void)updateStatusbar
 {
@@ -1536,8 +1813,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     [self updateDetailsPaneButton];
 }
 
-#pragma mark -
-#pragma mark File actions
+#pragma mark - File actions
 
 - (IBAction)export: (id)sender
 {
@@ -1814,8 +2090,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     return sel[0];
 }
 
-#pragma mark -
-#pragma mark Outline delegate methods
+#pragma mark - Outline delegate methods
 
 - (id)outlineView: (NSOutlineView *)outlineView persistentObjectForItem: (id)item
 {
@@ -2186,8 +2461,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     return 22;
 }
 
-#pragma mark -
-#pragma mark Splitview delegate methods
+#pragma mark - Splitview delegate methods
 
 - (CGFloat)splitView: (NSSplitView *)splitView constrainMinCoordinate: (CGFloat)proposedMin ofSubviewAt: (NSInteger)dividerIndex
 {
@@ -2225,8 +2499,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     return proposedPosition;
 }
 
-#pragma mark -
-#pragma mark Sorting and searching statements
+#pragma mark - Sorting and searching statements
 
 - (IBAction)filterStatements: (id)sender
 {
@@ -2255,8 +2528,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     [self updateSorting];
 }
 
-#pragma mark -
-#pragma mark Menu handling
+#pragma mark - Menu handling
 
 - (BOOL)validateMenuItem: (NSMenuItem *)item
 {
@@ -2394,8 +2666,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     return YES;
 }
 
-#pragma mark -
-#pragma mark Category management
+#pragma mark - Category management
 
 - (void)updateNotAssignedCategory
 {
@@ -2869,8 +3140,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     category.iconName = [@"Collections/1/" stringByAppendingString : bestMatch];
 }
 
-#pragma mark -
-#pragma mark Miscellaneous code
+#pragma mark - Miscellaneous code
 
 /**
  * Saves the expand states of the top bank account node and all its children.
@@ -3447,30 +3717,11 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
 - (IBAction)attachmentClicked: (id)sender
 {
-    AttachmentImageView *image;
-    BankStatement       *statement = [categoryAssignments.selectedObjects.lastObject statement];
-
-    switch ([sender tag]) {
-        case 0:
-            image = attachement1;
-            break;
-
-        case 1:
-            image = attachement2;
-            break;
-
-        case 2:
-            image = attachement3;
-            break;
-
-        case 3:
-            image = attachement4;
-            break;
-    }
+    AttachmentImageView *image = sender;
 
     if (image.reference == nil) {
         // No attachment yet. Allow adding one if editing is possible.
-        if (categoryAssignments.selectedObjects.count == 1) {
+        if (self.canEditAttachment) {
             NSOpenPanel *panel = [NSOpenPanel openPanel];
             panel.title = NSLocalizedString(@"AP118", nil);
             panel.canChooseDirectories = NO;
@@ -3479,63 +3730,11 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 
             int runResult = [panel runModal];
             if (runResult == NSOKButton) {
-                image.reference = [panel.URLs.lastObject absoluteString];
-                switch ([sender tag]) {
-                    case 0:
-                        statement.ref1 = image.reference;
-                        break;
-
-                    case 1:
-                        statement.ref2 = image.reference;
-                        break;
-
-                    case 2:
-                        statement.ref3 = image.reference;
-                        break;
-
-                    case 3:
-                        statement.ref4 = image.reference;
-                        break;
-                }
+                [image processAttachment: panel.URL];
             }
         }
     } else {
-        NSURL *url = [NSURL URLWithString: image.reference];
-
-        if (url.isFileURL) {
-            [NSWorkspace.sharedWorkspace openFile: url.path];
-        } else {
-            [NSWorkspace.sharedWorkspace openURL: url];
-        }
-    }
-}
-
-- (IBAction)clearAttachment: (id)sender
-{
-    if (categoryAssignments.selectedObjects.count != 1) {
-        return;
-    }
-
-    switch ([sender tag]) {
-        case 0:
-            attachement1.image = nil;
-            [categoryAssignments.selectedObjects.lastObject statement].ref1 = nil;
-            break;
-
-        case 1:
-            attachement2.image = nil;
-            [categoryAssignments.selectedObjects.lastObject statement].ref2 = nil;
-            break;
-
-        case 2:
-            attachement3.image = nil;
-            [categoryAssignments.selectedObjects.lastObject statement].ref3 = nil;
-            break;
-
-        case 3:
-            attachement4.image = nil;
-            [categoryAssignments.selectedObjects.lastObject statement].ref4 = nil;
-            break;
+        [image openReference];
     }
 }
 
@@ -3588,8 +3787,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     [sumValueField setNeedsDisplay];
 }
 
-#pragma mark -
-#pragma mark KVO
+#pragma mark - KVO
 
 - (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context
 {
@@ -3675,8 +3873,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     }
 }
 
-#pragma mark -
-#pragma mark Developer tools
+#pragma mark - Developer tools
 
 - (IBAction)deleteAllData: (id)sender
 {
@@ -3713,8 +3910,7 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
     [NSApp runModalForWindow: [controller window]];
 }
 
-#pragma mark -
-#pragma mark Other stuff
+#pragma mark - Other stuff
 
 - (void)migrate
 {

@@ -79,6 +79,7 @@
     cellFrame.size.height -= 2;
     CGFloat      radius = cellFrame.size.height / 2.0;
     NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect: cellFrame xRadius: radius yRadius: radius];
+    path.lineWidth = 1;
     [gradient drawInBezierPath: path angle: 90];
 
     [tag.tagColor setStroke];
