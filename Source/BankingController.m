@@ -531,6 +531,14 @@ static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
 #ifdef DEBUG
     [developerMenu setHidden: NO];
 #endif
+    
+#ifndef __APPSTORE
+    updater = [[SUUpdater alloc] init];
+    [updateItem setTarget:updater];
+    [updateItem setAction:@selector(checkForUpdates:)];
+#else
+    [updateItem setVisible:NO];
+#endif
 }
 
 - (void)publishContext

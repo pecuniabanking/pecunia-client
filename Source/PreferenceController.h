@@ -53,6 +53,7 @@
     IBOutlet NSMatrix          *expRadioMatrix;
     IBOutlet NSView            *contentView;
     IBOutlet PXListView        *colorListView;
+    IBOutlet NSTextField       *dataFileField;
 
     // encryption sheet
     NSString *password;

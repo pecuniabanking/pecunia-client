@@ -21,6 +21,10 @@
 
 #import "PecuniaSectionItem.h"
 
+#ifndef __APPSTORE
+#import "Sparkle/SUUpdater.h"
+#endif
+
 @class Account;
 @class BankAccount;
 @class BankUser;
@@ -110,6 +114,7 @@
 
     IBOutlet NSMenuItem *toggleFullscreenItem;
     IBOutlet NSMenuItem *developerMenu;
+    IBOutlet NSMenuItem *updateItem;
 
     IBOutlet NSWindow *licenseWindow;
     IBOutlet NSButton *toggleDetailsButton;
@@ -144,6 +149,10 @@
     NSCursor               *splitCursor;
     NSUInteger             lastSplitterPosition; // Last position of the right splitter.
     BOOL                   shuttingDown;
+    
+#ifndef __APPSTORE
+    SUUpdater              *updater;
+#endif
 
     NSImage *moneyImage;
     NSImage *moneySyncImage;

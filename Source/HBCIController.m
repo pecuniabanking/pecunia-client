@@ -597,8 +597,7 @@ NSString * escapeSpecial(NSString *s)
         [self appendTag: @"remoteIBAN" withValue: transfer.remoteIBAN to: cmd];
         [self appendTag: @"remoteCountry" withValue: transfer.remoteCountry == nil ? @"DE": [transfer.remoteCountry uppercaseString] to: cmd];
 
-        NSDecimalNumber *val = [transfer.value decimalNumberByMultiplyingByPowerOf10: 2];
-        [self appendTag: @"value" withValue: [val stringValue] to: cmd];
+        [self appendTag: @"value" withValue: [[transfer.value outboundNumber] stringValue] to: cmd];
         [cmd appendString: @"</transfer>"];
     }
     [cmd appendString: @"</transfers></command>"];

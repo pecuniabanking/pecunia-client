@@ -152,6 +152,7 @@ static NSGradient *headerGradient;
     MOAssistant *assistant = [MOAssistant assistant];
     encrypt = [assistant encrypted];
     [self setValue: @([assistant encrypted]) forKey: @"encrypt"];
+    [dataFileField setStringValue: [assistant dataFilename]];
 
     // erstes Tab setzen
     [toolBar setSelectedItemIdentifier: @"synch"];

@@ -56,13 +56,17 @@ static NSGradient *innerGradientSelected;
     NSRect             drawRect;
     SecurityMethod     secMethod;
 
-
     secMethod = [[self objectValue] secMethod];
 
     if (innerGradient == nil) {
         [self setupDrawStructures];
     }
 
+    cellFrame.size.width = controlView.bounds.size.width;
+    int width_TanMeth = cellFrame.size.width-360;
+    if (width_TanMeth < 130) {
+        width_TanMeth = 130;
+    }
     NSBezierPath *path = [NSBezierPath bezierPathWithRect: cellFrame];
     if ([self isHighlighted]) {
         //        [innerGradientSelected drawInBezierPath: path angle: 90.0];
@@ -121,13 +125,13 @@ static NSGradient *innerGradientSelected;
         // TAN-Methode
         attributes = @{NSFontAttributeName: txtFont13, NSForegroundColorAttributeName: textColor};
         as = [[NSMutableAttributedString alloc] initWithString: [[self objectValue] tanMethodName] attributes: attributes];
-        drawRect = NSMakeRect(310, cellFrame.origin.y + LINE1_Y, 130, 16);
+        drawRect = NSMakeRect(310, cellFrame.origin.y + LINE1_Y, width_TanMeth, 16);
         [as drawInRect: drawRect];
 
         // TAN-Medium
         if (medium) {
             as = [[NSMutableAttributedString alloc] initWithString: medium attributes: attributes];
-            drawRect = NSMakeRect(310, cellFrame.origin.y + LINE2_Y, 130, 16);
+            drawRect = NSMakeRect(310, cellFrame.origin.y + LINE2_Y, width_TanMeth, 16);
             [as drawInRect: drawRect];
         }
 
@@ -137,7 +141,7 @@ static NSGradient *innerGradientSelected;
             if ([category isEqualToString: @"M"]) {
                 // Icon für Phone
                 NSImage *phoneImage = [NSImage imageNamed: @"iPhone.png"];
-                drawRect = NSMakeRect(455, cellFrame.origin.y + 3, 20, 36);
+                drawRect = NSMakeRect(325+width_TanMeth, cellFrame.origin.y + 3, 20, 36);
                 [phoneImage drawInRect: drawRect
                               fromRect: NSZeroRect
                              operation: NSCompositeSourceOver
@@ -148,7 +152,7 @@ static NSGradient *innerGradientSelected;
             if ([category isEqualToString: @"G"]) {
                 // Icon für Generator
                 NSImage *generatorImage = [NSImage imageNamed: @"Kobil.png"];
-                drawRect = NSMakeRect(450, cellFrame.origin.y + 3, 30, 36);
+                drawRect = NSMakeRect(320+width_TanMeth, cellFrame.origin.y + 3, 30, 36);
                 [generatorImage drawInRect: drawRect
                                   fromRect: NSZeroRect
                                  operation: NSCompositeSourceOver
@@ -172,7 +176,7 @@ static NSGradient *innerGradientSelected;
         // Kartennummer
         attributes = @{NSFontAttributeName: txtFont13, NSForegroundColorAttributeName: textColor};
         as = [[NSMutableAttributedString alloc] initWithString: [[self objectValue] cardId] attributes: attributes];
-        drawRect = NSMakeRect(310, cellFrame.origin.y + LINE1_Y, 130, 16);
+        drawRect = NSMakeRect(310, cellFrame.origin.y + LINE1_Y, width_TanMeth, 16);
         [as drawInRect: drawRect];
 
         secImage = [NSImage imageNamed: @"Chipcard.png"];
