@@ -234,7 +234,6 @@
 - (IBAction)toggleFullscreenIfSupported: (id)sender;
 - (IBAction)toggleDetailsPane: (id)sender;
 - (IBAction)toggleFeature: (id)sender;
-- (IBAction)clearAttachment: (id)sender;
 
 - (IBAction)deleteAllData: (id)sender;
 - (IBAction)generateData: (id)sender;

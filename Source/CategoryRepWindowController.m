@@ -334,15 +334,7 @@ static NSString *const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     earningsMiniPlot.barWidthsAreInViewCoordinates = NO;
     earningsMiniPlot.alignsPointsToPixels = YES;
 
-    CPTImage *image = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: @"hatch-1" ofType: @"png"]];
-    CGFloat  scaleFactor = 1;
-    NSScreen *screen = [NSScreen mainScreen];
-    if ([screen respondsToSelector: @selector(backingScaleFactor)]) {
-        scaleFactor = screen.backingScaleFactor;
-    }
-    image.scale = scaleFactor * 4.3;
-    image.tiled = YES;
-    earningsMiniPlot.fill = [CPTFill fillWithImage: image];
+    // Fill pattern is set on backing store change.
 
     earningsMiniPlot.baseValue = CPTDecimalFromFloat(0.0f);
     earningsMiniPlot.dataSource = self;
@@ -369,7 +361,7 @@ static NSString *const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     spendingsMiniPlot.barWidthsAreInViewCoordinates = NO;
     spendingsMiniPlot.alignsPointsToPixels = YES;
 
-    spendingsMiniPlot.fill = [CPTFill fillWithImage: image];
+    // Fill pattern is set on backing store change.
 
     spendingsMiniPlot.baseValue = CPTDecimalFromFloat(0);
     spendingsMiniPlot.dataSource = self;
@@ -951,12 +943,7 @@ static NSString *const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 - (void)backingStoreChanged: (NSNotification *)notification
 {
     CPTImage *image = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: @"hatch-1" ofType: @"png"]];
-    CGFloat  scaleFactor = 1;
-    NSScreen *screen = [NSScreen mainScreen];
-    if ([screen respondsToSelector: @selector(backingScaleFactor)]) {
-        scaleFactor = screen.backingScaleFactor;
-    }
-    image.scale = scaleFactor * 4.3;
+    image.scale = topView.window.backingScaleFactor * 4.3;
     image.tiled = YES;
     earningsMiniPlot.fill = [CPTFill fillWithImage: image];
     spendingsMiniPlot.fill = [CPTFill fillWithImage: image];
