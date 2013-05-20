@@ -959,7 +959,7 @@ static NSFont *smallNumberFont;
         }
         value = [words componentsJoinedByString: @" "];
     }
-    return value;
+    return (value == nil) ? @"" : value;
 }
 
 - (PXListViewCell *)listView: (PXListView *)aListView cellForRow: (NSUInteger)row

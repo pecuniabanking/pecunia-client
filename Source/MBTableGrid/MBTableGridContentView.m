@@ -78,7 +78,7 @@
 
 
 - (void)drawRect:(NSRect)rect
-{	
+{
 	NSInteger numberOfColumns = [[self tableGrid] numberOfColumns];
 	NSInteger numberOfRows = [[self tableGrid] numberOfRows];
 	

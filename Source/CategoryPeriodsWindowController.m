@@ -283,7 +283,9 @@ extern void *UserDefaultsBindingContext;
     if (selectedRows.count > 0) {
         NSUInteger columnIndex = valueGrid.selectedColumnIndexes.firstIndex;
         id         item = [outline itemAtRow: selectedRows.firstIndex];
+
         self.selectedCategory = [item representedObject];
+        [self updateData];
         [self updateStatementList: [valueGrid frameOfCellAtColumn: columnIndex row: selectedRows.firstIndex - 1]];
     }
 }
@@ -451,29 +453,37 @@ extern void *UserDefaultsBindingContext;
 
 - (void)updateStatementList: (NSRect)cellBounds
 {
+    NSInteger columnIndex = valueGrid.selectedColumnIndexes.firstIndex;
+    ShortDate *selFromDate = dates[columnIndex + fromIndex];
+    ShortDate *selToDate;
+    switch (groupingInterval) {
+        case GroupByYears:
+            selToDate = [selFromDate lastDayInYear];
+            break;
+
+        case GroupByQuarters:
+            selToDate = [selFromDate lastDayInQuarter];
+            break;
+
+        default:
+            selToDate = [selFromDate lastDayInMonth];
+            break;
+    }
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSPredicate *predicate;
+
+    if ([defaults boolForKey: @"recursiveTransactions"]) {
+        predicate = [NSPredicate predicateWithFormat: @"category IN %@ AND statement.date >= %@ AND statement.date <= %@",
+                     [self.selectedCategory allCategories], [selFromDate lowDate], [selToDate highDate]];
+    } else {
+        predicate = [NSPredicate predicateWithFormat: @"category = %@ AND statement.date >= %@ AND statement.date <= %@",
+                     self.selectedCategory, [selFromDate lowDate], [selToDate highDate]];
+    }
+    [statementsController setFetchPredicate: predicate];
+    [statementsController prepareContent];
+
     if (detailsPopover.shown) {
-        NSInteger columnIndex = valueGrid.selectedColumnIndexes.firstIndex;
-        ShortDate *selFromDate = dates[columnIndex + fromIndex];
-        ShortDate *selToDate;
-        switch (groupingInterval) {
-            case GroupByYears:
-                selToDate = [selFromDate lastDayInYear];
-                break;
-
-            case GroupByQuarters:
-                selToDate = [selFromDate lastDayInQuarter];
-                break;
-
-            default:
-                selToDate = [selFromDate lastDayInMonth];
-                break;
-        }
-
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category IN %@ AND statement.date >= %@ AND statement.date <= %@",
-                                  [self.selectedCategory allCategories], [selFromDate lowDate], [selToDate highDate]];
-        [statementsController setFetchPredicate: predicate];
-        [statementsController prepareContent];
-
         [detailsPopover showRelativeToRect: cellBounds ofView: valueGrid preferredEdge: NSMinYEdge];
     }
 }

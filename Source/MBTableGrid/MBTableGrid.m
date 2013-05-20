@@ -195,7 +195,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 }
 
 - (void)drawRect:(NSRect)aRect
-{		
+{
 	// If the view is the first responder, draw the focus ring
 	NSResponder *firstResponder = [[self window] firstResponder];
 	if (([[firstResponder class] isSubclassOfClass:[NSView class]] && [(NSView *)firstResponder isDescendantOf:self]) && [[self window] isKeyWindow]) {

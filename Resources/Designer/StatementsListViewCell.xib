@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1080</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">3084</string>
@@ -99,9 +99,9 @@
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">4200448</int>
 							<string key="NSContents">note</string>
-							<object class="NSFont" key="NSSupport" id="24">
+							<object class="NSFont" key="NSSupport" id="271963239">
 								<string key="NSName">LucidaGrande</string>
-								<double key="NSSize">10</double>
+								<double key="NSSize">9</double>
 								<int key="NSfFlags">16</int>
 							</object>
 							<reference key="NSControlView" ref="695975855"/>
@@ -160,11 +160,7 @@
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">71309312</int>
 							<string key="NSContents">Dez</string>
-							<object class="NSFont" key="NSSupport" id="271963239">
-								<string key="NSName">LucidaGrande</string>
-								<double key="NSSize">9</double>
-								<int key="NSfFlags">16</int>
-							</object>
+							<reference key="NSSupport" ref="271963239"/>
 							<reference key="NSControlView" ref="578236796"/>
 							<reference key="NSBackgroundColor" ref="609700460"/>
 							<reference key="NSTextColor" ref="917043913"/>
@@ -183,7 +179,7 @@
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">4200448</int>
 							<string key="NSContents">transaction text</string>
-							<reference key="NSSupport" ref="24"/>
+							<reference key="NSSupport" ref="271963239"/>
 							<reference key="NSControlView" ref="474576322"/>
 							<reference key="NSBackgroundColor" ref="609700460"/>
 							<object class="NSColor" key="NSTextColor">
@@ -199,7 +195,6 @@
 						<string key="NSFrame">{{763, 6}, {23, 11}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="466988470">
 							<int key="NSCellFlags">68157504</int>
@@ -227,7 +222,11 @@
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">71309312</int>
 							<real value="-100000" key="NSContents"/>
-							<reference key="NSSupport" ref="24"/>
+							<object class="NSFont" key="NSSupport" id="24">
+								<string key="NSName">LucidaGrande</string>
+								<double key="NSSize">10</double>
+								<int key="NSfFlags">16</int>
+							</object>
 							<object class="NSNumberFormatter" key="NSFormatter" id="671061966">
 								<object class="NSMutableDictionary" key="NS.attributes">
 									<bool key="EncodedWithXMLCoder">YES</bool>
@@ -387,7 +386,7 @@
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">4200448</int>
 							<string key="NSContents">categories</string>
-							<object class="NSFont" key="NSSupport">
+							<object class="NSFont" key="NSSupport" id="251298919">
 								<string key="NSName">LucidaGrande</string>
 								<double key="NSSize">11</double>
 								<int key="NSfFlags">16</int>
@@ -521,11 +520,7 @@
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">4200448</int>
 							<string key="NSContents">purpose</string>
-							<object class="NSFont" key="NSSupport">
-								<string key="NSName">LucidaGrande</string>
-								<double key="NSSize">12</double>
-								<int key="NSfFlags">16</int>
-							</object>
+							<reference key="NSSupport" ref="251298919"/>
 							<reference key="NSControlView" ref="414654506"/>
 							<reference key="NSBackgroundColor" ref="609700460"/>
 							<reference key="NSTextColor" ref="920462120"/>
@@ -544,9 +539,9 @@
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">4200448</int>
 							<string key="NSContents">remote name</string>
-							<object class="NSFont" key="NSSupport">
+							<object class="NSFont" key="NSSupport" id="623550465">
 								<string key="NSName">LucidaGrande-Bold</string>
-								<double key="NSSize">12</double>
+								<double key="NSSize">11</double>
 								<int key="NSfFlags">16</int>
 							</object>
 							<reference key="NSControlView" ref="884097897"/>
@@ -567,11 +562,7 @@
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">71309312</int>
 							<string key="NSContents">turnovers</string>
-							<object class="NSFont" key="NSSupport" id="623550465">
-								<string key="NSName">LucidaGrande-Bold</string>
-								<double key="NSSize">11</double>
-								<int key="NSfFlags">16</int>
-							</object>
+							<reference key="NSSupport" ref="623550465"/>
 							<reference key="NSControlView" ref="616500165"/>
 							<reference key="NSBackgroundColor" ref="609700460"/>
 							<object class="NSColor" key="NSTextColor" id="219540686">

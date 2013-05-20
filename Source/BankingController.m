@@ -433,7 +433,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
  * attachment folder (using a unique id) and a special reference is generated. For all other types the URL
  * is simply stored in the reference field.
  *
- * The format of the reference for a file is: "attachment://unique-id.ext|original-name.ext".
+ * The format of the reference for a file is: "attachment://unique-id.ext?original-name.ext".
  */
 - (void)processAttachment: (NSURL *)url
 {

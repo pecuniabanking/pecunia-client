@@ -67,6 +67,9 @@ CPTBarPlotDelegate, CPTAnimationDelegate>
     NSInteger spendingsExplosionIndex;
     BOOL      inMouseMoveHandling;
 
+    CPTLayerAnnotation *earningsArrowAnnotation;
+    CPTLayerAnnotation *spendingsArrowAnnotation;
+
     // Animation support.
     CPTAnimationOperation *earningsAngleAnimation;
     CPTAnimationOperation *spendingsAngleAnimation;
