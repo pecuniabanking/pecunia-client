@@ -302,7 +302,7 @@ static NSGradient *headerGradient;
                 [Keychain deletePasswordForService: @"Pecunia" account: @"DataFile"];
                 NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                                 NSLocalizedString(@"AP154", nil),
-                                NSLocalizedString(@"ok", nil),
+                                NSLocalizedString(@"AP1", nil),
                                 nil,
                                 nil);
             }
@@ -322,7 +322,7 @@ static NSGradient *headerGradient;
             [[BankingController controller] setEncrypted: YES];
             NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                             NSLocalizedString(@"AP155", nil),
-                            NSLocalizedString(@"ok", nil),
+                            NSLocalizedString(@"AP1", nil),
                             nil,
                             nil);
             return;
@@ -345,7 +345,7 @@ static NSGradient *headerGradient;
     if ([passw1 length] < 8) {
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP168", nil),
-                        NSLocalizedString(@"ok", nil),
+                        NSLocalizedString(@"AP1", nil),
                         nil,
                         nil);
         return;
@@ -354,7 +354,7 @@ static NSGradient *headerGradient;
     if ([passw1 isEqualToString: passw2] == NO) {
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP169", nil),
-                        NSLocalizedString(@"ok", nil),
+                        NSLocalizedString(@"AP1", nil),
                         nil,
                         nil);
         return;

@@ -127,7 +127,7 @@ static ExportController *exportController = nil;
         // issue success message
         NSRunInformationalAlertPanel(NSLocalizedString(@"AP810", nil),
                                      NSLocalizedString(@"AP811", nil),
-                                     NSLocalizedString(@"ok", nil),
+                                     NSLocalizedString(@"AP1", nil),
                                      nil, nil,
                                      [[sp URL] path]
                                      );

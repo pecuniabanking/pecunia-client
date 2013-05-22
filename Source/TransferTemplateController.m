@@ -72,7 +72,7 @@
     if (template.remoteName == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP54", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
     // do not check remote account for EU transfers, instead IBAN
@@ -80,7 +80,7 @@
         if (template.remoteAccount == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP55", nil),
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
     } else {
@@ -88,7 +88,7 @@
         if (template.remoteIBAN == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP68", nil),
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
         // check IBAN
@@ -104,7 +104,7 @@
         if (template.remoteBIC == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP69", nil),
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
     }

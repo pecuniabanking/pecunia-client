@@ -295,13 +295,13 @@
         if (currentUser.bankCode == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP51", nil),
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
         if (currentUser.name == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP214", nil),
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
     }
@@ -311,7 +311,7 @@
         if ([currentUser userId] == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP52", nil),
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
     }
@@ -694,7 +694,7 @@
     }
     NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
                     NSLocalizedString(@"AP100", nil),
-                    NSLocalizedString(@"ok", nil), nil, nil);
+                    NSLocalizedString(@"AP1", nil), nil, nil);
 }
 
 @end
