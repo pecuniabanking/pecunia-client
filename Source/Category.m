@@ -820,13 +820,13 @@ BOOL updateSent = NO;
                     [countArray addObject: @(balanceCount)];
                     balanceCount = 1;
                     lastDate = date;
-                    currentValue = assignment.statement.value;
+                    currentValue = assignment.value;
                 } else {
                     if (lastDate == nil) {
                         lastDate = date;
                     }
                     balanceCount++;
-                    currentValue = [currentValue decimalNumberByAdding: assignment.statement.value];
+                    currentValue = [currentValue decimalNumberByAdding: assignment.value];
                 }
             }
             [dateArray addObject: lastDate];

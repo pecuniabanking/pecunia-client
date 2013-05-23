@@ -47,8 +47,10 @@
     }
 
     for (NSString *field in fields) {
-        if ([field isEqualToString: @"value"] || [field isEqualToString: @"userInfo"]) {
-            obj = [self valueForKey: field];
+        if ([field isEqualToString: @"value"]) {
+            obj = self.value;
+        } else if ([field isEqualToString: @"note"]) {
+            obj = [NSString stringWithFormat: @"\"%@\"", self.userInfo];
         } else if ([field isEqualToString: @"localName"]) {
             obj = self.statement.account.localName;
         } else if ([field isEqualToString: @"localCountry"]) {

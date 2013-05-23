@@ -247,6 +247,17 @@ static NSGradient *headerGradient;
 - (IBAction)encryptData: (id)sender
 {
     if (encrypt) {
+        // Backup reminder
+        int res = NSRunAlertPanel(NSLocalizedString(@"AP173", nil),
+                                  NSLocalizedString(@"AP174", nil),
+                                  NSLocalizedString(@"AP3", nil),
+                                  NSLocalizedString(@"AP4", nil),
+                                  nil);
+        if (res != NSAlertDefaultReturn) {
+            [encryptButton setState:NSOffState];
+            return;
+        }
+        
         // check if passwort is already defined. If yes, it must(!) be taken
         NSString *passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
         if (passwd != nil) {
@@ -306,6 +317,8 @@ static NSGradient *headerGradient;
                                 nil,
                                 nil);
             }
+        } else {
+            [encryptButton setState:NSOnState];
         }
     }
 }

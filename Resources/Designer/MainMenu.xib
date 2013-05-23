@@ -198,7 +198,6 @@
 							<string key="NSFrame">{{0, 20}, {1200, 680}}</string>
 							<reference key="NSSuperview" ref="996798234"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="641812421"/>
 							<array class="NSMutableArray" key="NSTabViewItems">
 								<object class="NSTabViewItem" id="177750096">
 									<string key="NSIdentifier">1</string>
@@ -2138,7 +2137,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																										<string key="NSFrameSize">{516, 113}</string>
 																										<reference key="NSSuperview" ref="470987086"/>
 																										<reference key="NSWindow"/>
-																										<reference key="NSNextKeyView" ref="377464508"/>
+																										<reference key="NSNextKeyView" ref="395855179"/>
 																										<string key="NSClassName">PXListDocumentView</string>
 																									</object>
 																								</array>
@@ -2180,7 +2179,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																						<string key="NSFrame">{{20, 59}, {790, 197}}</string>
 																						<reference key="NSSuperview" ref="475239580"/>
 																						<reference key="NSWindow"/>
-																						<reference key="NSNextKeyView" ref="395855179"/>
+																						<reference key="NSNextKeyView" ref="470987086"/>
 																						<int key="NSsFlags">133648</int>
 																						<reference key="NSVScroller" ref="377464508"/>
 																						<reference key="NSHScroller" ref="395855179"/>
@@ -2517,7 +2516,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																			<object class="NSTextField" id="643141902">
 																				<reference key="NSNextResponder" ref="1065472318"/>
 																				<int key="NSvFlags">268</int>
-																				<string key="NSFrame">{{465, 184}, {141, 16}}</string>
+																				<string key="NSFrame">{{465, 184}, {161, 16}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
 																				<reference key="NSNextKeyView" ref="121920222"/>
@@ -2562,7 +2561,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																			<object class="NSTextField" id="170648102">
 																				<reference key="NSNextResponder" ref="1065472318"/>
 																				<int key="NSvFlags">268</int>
-																				<string key="NSFrame">{{465, 204}, {141, 16}}</string>
+																				<string key="NSFrame">{{465, 204}, {235, 16}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
 																				<reference key="NSNextKeyView" ref="571920152"/>
@@ -3506,7 +3505,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																								<string key="NSFrameSize">{153, 70}</string>
 																								<reference key="NSSuperview" ref="679719261"/>
 																								<reference key="NSWindow"/>
-																								<reference key="NSNextKeyView" ref="34530007"/>
+																								<reference key="NSNextKeyView" ref="313999197"/>
 																								<object class="NSTextContainer" key="NSTextContainer" id="6843">
 																									<object class="NSLayoutManager" key="NSLayoutManager">
 																										<object class="NSTextStorage" key="NSTextStorage">
@@ -3627,7 +3626,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{391, 88}, {153, 70}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView" ref="313999197"/>
+																				<reference key="NSNextKeyView" ref="679719261"/>
 																				<int key="NSsFlags">133648</int>
 																				<reference key="NSVScroller" ref="715429031"/>
 																				<reference key="NSHScroller" ref="313999197"/>
@@ -3650,7 +3649,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																								<string key="NSFrameSize">{215, 75}</string>
 																								<reference key="NSSuperview" ref="909982314"/>
 																								<reference key="NSWindow"/>
-																								<reference key="NSNextKeyView" ref="498920341"/>
+																								<reference key="NSNextKeyView" ref="117266648"/>
 																								<object class="NSTextContainer" key="NSTextContainer" id="560996048">
 																									<object class="NSLayoutManager" key="NSLayoutManager">
 																										<object class="NSTextStorage" key="NSTextStorage">
@@ -3748,7 +3747,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{168, 83}, {215, 75}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView" ref="117266648"/>
+																				<reference key="NSNextKeyView" ref="909982314"/>
 																				<int key="NSsFlags">133680</int>
 																				<reference key="NSVScroller" ref="644377234"/>
 																				<reference key="NSHScroller" ref="117266648"/>
@@ -3810,7 +3809,6 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{170, 34}, {625, 18}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView"/>
 																				<bool key="NSEnabled">YES</bool>
 																				<object class="NSTextFieldCell" key="NSCell" id="82837621">
 																					<int key="NSCellFlags">68157504</int>
@@ -4307,7 +4305,6 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 							<string key="NSFrame">{{1162, 2}, {16, 16}}</string>
 							<reference key="NSSuperview" ref="996798234"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="469519529">
@@ -7017,7 +7014,7 @@ wGw</bytes>
 												<string key="NSFrameSize">{249, 42}</string>
 												<reference key="NSSuperview" ref="282730464"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="360928738"/>
+												<reference key="NSNextKeyView" ref="722625013"/>
 												<object class="NSTextContainer" key="NSTextContainer" id="789019817">
 													<object class="NSLayoutManager" key="NSLayoutManager">
 														<object class="NSTextStorage" key="NSTextStorage">
@@ -7116,7 +7113,7 @@ wGw</bytes>
 								<string key="NSFrame">{{10, 10}, {249, 42}}</string>
 								<reference key="NSSuperview" ref="1007349018"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="722625013"/>
+								<reference key="NSNextKeyView" ref="282730464"/>
 								<int key="NSsFlags">133648</int>
 								<reference key="NSVScroller" ref="722625013"/>
 								<reference key="NSHScroller" ref="89424374"/>
@@ -7150,7 +7147,7 @@ wGw</bytes>
 												<string key="NSFrameSize">{253, 42}</string>
 												<reference key="NSSuperview" ref="660939744"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="1018237781"/>
+												<reference key="NSNextKeyView" ref="545027783"/>
 												<object class="NSTextContainer" key="NSTextContainer" id="359784301">
 													<object class="NSLayoutManager" key="NSLayoutManager">
 														<object class="NSTextStorage" key="NSTextStorage">
@@ -7234,7 +7231,7 @@ wGw</bytes>
 								<string key="NSFrame">{{7, 10}, {253, 42}}</string>
 								<reference key="NSSuperview" ref="571516370"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="545027783"/>
+								<reference key="NSNextKeyView" ref="660939744"/>
 								<int key="NSsFlags">133648</int>
 								<reference key="NSVScroller" ref="1018237781"/>
 								<reference key="NSHScroller" ref="545027783"/>
@@ -7299,7 +7296,6 @@ wGw</bytes>
 						<string key="NSFrame">{{131, 34}, {646, 18}}</string>
 						<reference key="NSSuperview" ref="687681911"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="240277940">
 							<int key="NSCellFlags">68157504</int>
@@ -13539,6 +13535,7 @@ wGw</bytes>
 						<string key="activateMainPage:">id</string>
 						<string key="addAccount:">id</string>
 						<string key="addStatement:">id</string>
+						<string key="attachmentClicked:">id</string>
 						<string key="changeAccount:">id</string>
 						<string key="creditCardSettlements:">id</string>
 						<string key="deleteAccount:">id</string>
@@ -13556,10 +13553,12 @@ wGw</bytes>
 						<string key="manageCategories:">id</string>
 						<string key="printDocument:">id</string>
 						<string key="repairSaldo:">id</string>
+						<string key="resetCategoryIcons:">id</string>
 						<string key="resetIsNewStatements:">id</string>
 						<string key="showAboutPanel:">id</string>
 						<string key="showLicense:">id</string>
 						<string key="showLog:">id</string>
+						<string key="showTagPopup:">id</string>
 						<string key="sortingChanged:">id</string>
 						<string key="splitPurpose:">id</string>
 						<string key="splitStatement:">id</string>
@@ -13587,6 +13586,10 @@ wGw</bytes>
 						</object>
 						<object class="IBActionInfo" key="addStatement:">
 							<string key="name">addStatement:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="attachmentClicked:">
+							<string key="name">attachmentClicked:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="changeAccount:">
@@ -13657,6 +13660,10 @@ wGw</bytes>
 							<string key="name">repairSaldo:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="resetCategoryIcons:">
+							<string key="name">resetCategoryIcons:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="resetIsNewStatements:">
 							<string key="name">resetIsNewStatements:</string>
 							<string key="candidateClassName">id</string>
@@ -13671,6 +13678,10 @@ wGw</bytes>
 						</object>
 						<object class="IBActionInfo" key="showLog:">
 							<string key="name">showLog:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showTagPopup:">
+							<string key="name">showTagPopup:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="sortingChanged:">
