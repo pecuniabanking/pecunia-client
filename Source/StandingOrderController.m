@@ -620,35 +620,35 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     if (stord.remoteName == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP54", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
     // do not check remote account for EU transfers, instead IBAN
     if (stord.remoteAccount == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP55", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
 
     if (stord.remoteBankCode == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP56", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
 
     if ( (value = stord.value) == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP57", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
 
     if ([value doubleValue] <= 0) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP58", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
 
@@ -656,7 +656,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     if (stord.purpose1 == nil || [stord.purpose1 length] == 0) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP76", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
 

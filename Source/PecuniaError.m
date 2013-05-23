@@ -76,7 +76,7 @@
     }
 
     if (message && title) {
-        NSRunAlertPanel(title, message, NSLocalizedString(@"ok", nil), nil, nil);
+        NSRunAlertPanel(title, message, NSLocalizedString(@"AP1", nil), nil, nil);
     } else {NSLog(@"Unhandled alert: %@", [self localizedDescription]); }
 
 }

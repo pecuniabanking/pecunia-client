@@ -495,7 +495,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     if (status != kCCSuccess) {
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP152", nil),
-                        NSLocalizedString(@"ok", nil),
+                        NSLocalizedString(@"AP1", nil),
                         nil,
                         nil);
         NSLog(@"CCCrypt failure: %d", status);
@@ -510,7 +510,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     if ([encryptedData writeToURL: targetURL atomically: NO] == NO) {
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP111", nil),
-                        NSLocalizedString(@"ok", nil),
+                        NSLocalizedString(@"AP1", nil),
                         nil,
                         nil,
                         [targetURL path]);
@@ -570,7 +570,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             if (status != kCCSuccess) {
                 NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                                 NSLocalizedString(@"AP153", nil),
-                                NSLocalizedString(@"ok", nil),
+                                NSLocalizedString(@"AP1", nil),
                                 nil,
                                 nil);
                 NSLog(@"CCCrypt failure: %d", status);
@@ -609,7 +609,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     if (status != kCCSuccess) {
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP153", nil),
-                        NSLocalizedString(@"ok", nil),
+                        NSLocalizedString(@"AP1", nil),
                         nil,
                         nil);
         NSLog(@"CCCrypt failure: %d", status);
@@ -622,7 +622,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     if ([decryptedData writeToURL: accountsURL atomically: NO] == NO) {
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP111", nil),
-                        NSLocalizedString(@"ok", nil),
+                        NSLocalizedString(@"AP1", nil),
                         nil,
                         nil,
                         [accountsURL path]);
@@ -829,7 +829,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     // first check if data file already exists at target position
     BOOL useExisting = NO;
     if ([fm fileExistsAtPath: [newFilePathURL path]]) {
-        int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP11", nil),
+        int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP6", nil),
                                           NSLocalizedString(@"AP164", nil),
                                           NSLocalizedString(@"AP2", nil),
                                           NSLocalizedString(@"AP15", nil),

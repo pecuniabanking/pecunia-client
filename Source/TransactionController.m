@@ -461,7 +461,7 @@
         if ([cs characterIsMember: [s characterAtIndex: i]] == NO) {
             NSRunAlertPanel(NSLocalizedString(@"AP73", nil),
                             NSLocalizedString(@"AP74", nil),
-                            NSLocalizedString(@"ok", nil),
+                            NSLocalizedString(@"AP1", nil),
                             nil,
                             nil,
                             [s characterAtIndex: i]);
@@ -503,7 +503,7 @@
     if (currentTransfer.remoteName == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP54", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
     // do not check remote account for EU transfers, instead IBAN
@@ -511,7 +511,7 @@
         if (currentTransfer.remoteAccount == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP55", nil),
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
     } else {
@@ -519,7 +519,7 @@
         if (currentTransfer.remoteIBAN == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP68", nil),
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
         // check IBAN
@@ -541,7 +541,7 @@
         if (currentTransfer.remoteBankCode == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP56", nil),
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
     }
@@ -550,7 +550,7 @@
         if (currentTransfer.remoteBIC == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP69", nil),
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
     }
@@ -558,13 +558,13 @@
     if ( (value = currentTransfer.value) == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP57", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
     if ([value doubleValue] <= 0) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP58", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
 
@@ -572,7 +572,7 @@
     if (currentTransfer.purpose1 == nil || [currentTransfer.purpose1 length] == 0) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP76", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
 
@@ -586,7 +586,7 @@
         if (weekday == 1 || weekday == 7) {
             NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                             NSLocalizedString(@"AP425", nil),
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
     }
@@ -599,7 +599,7 @@
         if (![curr isEqual: foreignCurr] && ![curr isEqual: @"EUR"] && ![curr isEqual: account.currency]) {
             NSRunAlertPanel(NSLocalizedString(@"AP67", nil),
                             [NSString stringWithFormat: NSLocalizedString(@"AP63", nil), [limits localLimit]],
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
 
@@ -609,7 +609,7 @@
         if (limit > 0 && [value doubleValue] > limit) {
             NSRunAlertPanel(NSLocalizedString(@"AP66", nil),
                             [NSString stringWithFormat: NSLocalizedString(@"AP62", nil), [limits localLimit]],
-                            NSLocalizedString(@"ok", nil), nil, nil);
+                            NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
     }
@@ -661,7 +661,7 @@
     if ([[HBCIClient hbciClient] isTransferSupported: tt forAccount: acc] == NO) {
         NSRunAlertPanel(NSLocalizedString(@"AP64", nil),
                         NSLocalizedString(@"AP65", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
         return;
     }
 
