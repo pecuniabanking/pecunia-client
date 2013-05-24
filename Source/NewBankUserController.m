@@ -185,6 +185,18 @@
                 [NSApp endSheet: userSheet returnCode: 0];
             }
         }
+        if (step >= 3 && currentUser.hbciVersion == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP79", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil);
+            return;
+        }
+        if (step >= 3 && currentUser.bankURL == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP80", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil);
+            return;
+        }
     }
 
     // DDV-Access
@@ -224,6 +236,18 @@
                 [NSApp endSheet: userSheet returnCode: 0];
                 return;
             }
+        }
+        if (step >= 5 && currentUser.hbciVersion == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP79", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil);
+            return;
+        }
+        if (step >= 5 && currentUser.bankURL == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP81", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil);
+            return;
         }
     }
 
@@ -695,6 +719,12 @@
     NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
                     NSLocalizedString(@"AP100", nil),
                     NSLocalizedString(@"AP1", nil), nil, nil);
+}
+
+- (IBAction)callHelp:(id)sender
+{
+    NSURL *url = [NSURL URLWithString:@"http://www.pecuniabanking.de/index.php/beschreibung/bankkennungen"];
+    [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
 @end

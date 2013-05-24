@@ -4333,7 +4333,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="768391083"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMinSize">{1100, 751}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">mcmain</string>
@@ -4369,14 +4369,6 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 									<string key="NSTitle">Für Pecunia spenden...</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSKeyEquivModMask">1048576</int>
-									<int key="NSMnemonicLoc">2147483647</int>
-									<reference key="NSOnImage" ref="883146705"/>
-									<reference key="NSMixedImage" ref="237878853"/>
-								</object>
-								<object class="NSMenuItem" id="533009450">
-									<reference key="NSMenu" ref="125078274"/>
-									<string key="NSTitle">Auf Update prüfen...</string>
-									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="883146705"/>
 									<reference key="NSMixedImage" ref="237878853"/>
@@ -5524,7 +5516,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					</array>
 					<string key="NSFrameSize">{232, 62}</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -5883,7 +5875,7 @@ wGw</bytes>
 					<string key="NSFrameSize">{597, 543}</string>
 					<reference key="NSNextKeyView" ref="787527088"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -8619,14 +8611,6 @@ wGw</bytes>
 					<int key="connectionID">7060</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">updateItem</string>
-						<reference key="source" ref="674635667"/>
-						<reference key="destination" ref="533009450"/>
-					</object>
-					<int key="connectionID">7061</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">contentSet: selection.reportedAssignments</string>
 						<reference key="source" ref="107188715"/>
@@ -10335,7 +10319,6 @@ wGw</bytes>
 							<reference ref="794684049"/>
 							<reference ref="560425151"/>
 							<reference ref="940965442"/>
-							<reference ref="533009450"/>
 						</array>
 						<reference key="parent" ref="539701397"/>
 					</object>
@@ -12858,11 +12841,6 @@ wGw</bytes>
 						<string key="objectName">Tags Controller</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">7047</int>
-						<reference key="object" ref="533009450"/>
-						<reference key="parent" ref="125078274"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">7049</int>
 						<reference key="object" ref="325647310"/>
 						<array class="NSMutableArray" key="children">
@@ -13484,7 +13462,6 @@ wGw</bytes>
 				<string key="7023.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="7024.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="7025.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="7047.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="7049.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="7054.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="7055.CustomClassName">TagView</string>

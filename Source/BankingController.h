@@ -21,10 +21,6 @@
 
 #import "PecuniaSectionItem.h"
 
-#ifndef __APPSTORE
-#import "Sparkle/SUUpdater.h"
-#endif
-
 @class Account;
 @class BankAccount;
 @class BankUser;
@@ -149,10 +145,6 @@
     NSCursor               *splitCursor;
     NSUInteger             lastSplitterPosition; // Last position of the right splitter.
     BOOL                   shuttingDown;
-    
-#ifndef __APPSTORE
-    SUUpdater              *updater;
-#endif
 
     NSImage *moneyImage;
     NSImage *moneySyncImage;

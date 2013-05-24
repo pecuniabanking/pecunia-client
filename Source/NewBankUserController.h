@@ -66,12 +66,11 @@
 - (IBAction)addEntry: (id)sender;
 - (IBAction)removeEntry: (id)sender;
 - (IBAction)updateBankParameter: (id)sender;
-- (IBAction)changePinTanMethod: (id)sender;
 - (IBAction)printBankParameter: (id)sender;
-- (IBAction)allSettings: (id)sender;
 - (IBAction)secMethodChanged: (id)sender;
 - (IBAction)tanOptionChanged: (id)sender;
 - (IBAction)ok: (id)sender;
 - (IBAction)cancelSheet: (id)sender;
+- (IBAction)callHelp:(id)sender;
 
 @end

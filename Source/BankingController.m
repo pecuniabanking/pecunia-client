@@ -811,14 +811,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 #ifdef DEBUG
     [developerMenu setHidden: NO];
 #endif
-    
-#ifndef __APPSTORE
-    updater = [[SUUpdater alloc] init];
-    [updateItem setTarget:updater];
-    [updateItem setAction:@selector(checkForUpdates:)];
-#else
-    [updateItem setHidden:YES];
-#endif
 }
 
 - (void)publishContext

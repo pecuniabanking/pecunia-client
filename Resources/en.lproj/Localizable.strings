@@ -51,6 +51,10 @@
 "AP76" = "Bitte einen Verwendungszweck angeben";
 "AP77" = "IBAN und/oder BIC sind für das Konto %@ nicht eingetragen";
 "AP78" = "Aktion nicht möglich da bereits eine andere HBCI-Anfrage verarbeitet wird";
+"AP79" = "Bitte HBCI-Version angeben";
+"AP80" = "Bitte PIN/TAN-URL angeben";
+"AP80" = "Bitte HBCI-URL angeben";
+"AP81" = "Bitte Kommunikationsadresse (HBCI-URL) eingeben";
 
 // General + miscellaneous messages.
 // AP100..AP149
