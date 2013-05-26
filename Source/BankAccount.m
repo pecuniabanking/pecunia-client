@@ -336,14 +336,40 @@
 
 - (void)repairStatementBalances
 {
+    NSArray *statementsArray = [self valueForKey: @"statements"];
+
+    // First ensure that statements on a single day have a little time offset each,
+    // so they can maintain a fixed sort order.
+    // For now we don't fix valutaDate, though.
+    NSDictionary *statements = [self statementsByDay: statementsArray];
+    for (ShortDate *date in statements.allKeys) {
+        NSDate *newDate = nil;
+        for (BankStatement *statement in statements[date]) {
+            if (newDate == nil) {
+                // Initialize new date with a time value.
+                newDate = statement.date;
+                if (newDate == nil) {
+                    newDate = statement.valutaDate;
+                }
+                // Clear out an existing time part.
+                NSDateComponents* comps = [NSCalendar.currentCalendar components: NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
+                                                                        fromDate: newDate];
+                newDate = [NSCalendar.currentCalendar dateFromComponents: comps];
+            }
+            
+            // Move to next time point.
+            newDate = [[NSDate alloc] initWithTimeInterval: 10 sinceDate: newDate];
+            statement.date = newDate;
+        }
+    }
+
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
     NSArray          *sds = @[sd];
 
-    NSMutableSet *statements = [self mutableSetValueForKey: @"statements"];
-    NSArray      *stats = [[statements allObjects] sortedArrayUsingDescriptors: sds];
+    NSArray *sortedStatements = [statementsArray sortedArrayUsingDescriptors: sds];
 
     NSDecimalNumber *balance = self.balance;
-    for (BankStatement *stat in stats) {
+    for (BankStatement *stat in sortedStatements) {
         if (![stat.saldo isEqual: balance]) {
             stat.saldo = balance;
             balance = [balance decimalNumberBySubtracting: stat.value];
