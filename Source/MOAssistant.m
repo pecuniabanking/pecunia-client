@@ -712,7 +712,6 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
     // Exclusive access please. Drop pending changes.
     [context lock];
-    [context reset];
 
     // Delete the store from the current context.
     NSError *error;

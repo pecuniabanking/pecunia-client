@@ -161,7 +161,8 @@
         }
 
         // Once all data is read start by generating bank users and accounts.
-        NSArray *banks = blocks[@"Banks"];
+        // Banks must be mutable as we are going to randomize it.
+        NSMutableArray *banks = [blocks[@"Banks"] mutableCopy];
         if (banks.count == 0) {
             return;
         }
@@ -215,12 +216,27 @@
             return;
         }
 
-        NSArray *accounts = blocks[@"Accounts"];
+        NSMutableArray *accounts = [blocks[@"Accounts"] mutableCopy];
+
+        // Randomly change the order in the banks and accounts arrays
+        // This avoids using a bank/account more than once.
+        NSUInteger count = [banks count];
+        for (NSUInteger i = 0; i < count; ++i) {
+            NSInteger nElements = count - i;
+            NSInteger n = (arc4random() % nElements) + i;
+            [banks exchangeObjectAtIndex: i withObjectAtIndex: n];
+        }
+        
+        count = [accounts count];
+        for (NSUInteger i = 0; i < count; ++i) {
+            NSInteger nElements = count - i;
+            NSInteger n = (arc4random() % nElements) + i;
+            [accounts exchangeObjectAtIndex: i withObjectAtIndex: n];
+        }
 
         Category *root = [Category bankRoot];
         for (NSUInteger i = 0; i < bankCount; i++) {
-            NSInteger randomIndex = arc4random_uniform(banks.count);
-            NSString  *bank = banks[randomIndex];
+            NSString  *bank = banks[i % bankCount];
 
             BankUser *user = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser"
                                                            inManagedObjectContext: context];
@@ -250,12 +266,8 @@
             // To each bank root add a few accounts. The actual number depends on the data amount flag.
             NSMutableArray *accountList = [NSMutableArray array];
             NSUInteger     accountCount = 1 + arc4random_uniform(maxAccountsPerBank);
-            while (accountList.count < accountCount) {
-                NSUInteger randomIndex = arc4random_uniform(accounts.count);
-                NSString   *value = accounts[randomIndex];
-                if (![accountList containsObject: value]) {
-                    [accountList addObject: value];
-                }
+            for (NSUInteger index = 0; index < accountCount; ++index) {
+                [accountList addObject: accounts[index]];
             }
 
             for (NSString *accountName in accountList) {

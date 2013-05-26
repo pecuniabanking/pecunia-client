@@ -33,7 +33,6 @@
 #import <tgmath.h>
 
 static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
-static NSString *const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
 
 @interface PecuniaGraphHost : CPTGraphHostingView
 {
@@ -131,14 +130,6 @@ static NSString *const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     [self sendMouseNotification: theEvent withParameters: parameters];
 }
 
-- (void)viewDidChangeBackingProperties
-{
-    [super viewDidChangeBackingProperties];
-
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center postNotificationName: PecuniaBackingStoreNotification object: nil userInfo: nil];
-}
-
 @end;
 
 //--------------------------------------------------------------------------------------------------
@@ -201,10 +192,6 @@ static NSString *const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mouseHit:)
                                                  name: PecuniaHitNotification
-                                               object: nil];
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(backingStoreChanged:)
-                                                 name: PecuniaBackingStoreNotification
                                                object: nil];
 }
 
@@ -361,7 +348,11 @@ static NSString *const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     spendingsMiniPlot.barWidthsAreInViewCoordinates = NO;
     spendingsMiniPlot.alignsPointsToPixels = YES;
 
-    // Fill pattern is set on backing store change.
+    CPTImage *image = [CPTImage imageNamed: @"hatch-1"];
+    image.scale = 2.15;
+    image.tiled = YES;
+    earningsMiniPlot.fill = [CPTFill fillWithImage: image];
+    spendingsMiniPlot.fill = [CPTFill fillWithImage: image];
 
     spendingsMiniPlot.baseValue = CPTDecimalFromFloat(0);
     spendingsMiniPlot.dataSource = self;
@@ -440,7 +431,6 @@ static NSString *const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     x1.titleOffset = -180;
     x1.titleLocation = CPTDecimalFromFloat(15);
 
-    // Each mini plot gets an arrow image which is set up in backingStoreChanged:.
     CPTXYAxis *y1 = axisSet.yAxis;
     y1.plotSpace = earningsMiniPlot.plotSpace;
 
@@ -460,6 +450,31 @@ static NSString *const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
     y2.plotSpace = spendingsMiniPlot.plotSpace;
 
     [self setupMiniPlotAxisX: x2 y: y2 offset: 23.25];
+
+    CPTImage *arrowImage = [CPTImage imageNamed: @"blue arrow"];
+    earningsArrowAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: x1.axisTitle.contentLayer];
+    earningsArrowAnnotation.rectAnchor = CPTRectAnchorTopLeft;
+    earningsArrowAnnotation.displacement = CGPointMake(-15, -50);
+
+    CPTBorderedLayer *layer = [[CPTBorderedLayer alloc] initWithFrame: CGRectMake(0, 0, 24, 27)];
+    layer.fill = [CPTFill fillWithImage: arrowImage];
+
+    earningsArrowAnnotation.contentLayer = layer;
+    [earningsMiniPlot addAnnotation: earningsArrowAnnotation];
+
+    if (spendingsArrowAnnotation != nil) {
+        [spendingsMiniPlot removeAnnotation: spendingsArrowAnnotation];
+    }
+
+    spendingsArrowAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: x2.axisTitle.contentLayer];
+    spendingsArrowAnnotation.rectAnchor = CPTRectAnchorTopLeft;
+    spendingsArrowAnnotation.displacement = CGPointMake(-15, -50);
+
+    layer = [[CPTBorderedLayer alloc] initWithFrame: CGRectMake(0, 0, 24, 27)];
+    layer.fill = [CPTFill fillWithImage: arrowImage];
+
+    spendingsArrowAnnotation.contentLayer = layer;
+    [spendingsMiniPlot addAnnotation: spendingsArrowAnnotation];
 
     pieChartGraph.axisSet.axes = @[x1, y1, x2, y2];
 }
@@ -909,55 +924,6 @@ static NSString *const PecuniaBackingStoreNotification = @"PecuniaBackingStore";
             lastAngle = newAngle;
         }
     }
-}
-
-/**
- * Triggered when the backing store or color scheme changed. Reload resolution dependent stuff.
- * Coreplot currently cannot handle automatic switching of images.
- */
-- (void)backingStoreChanged: (NSNotification *)notification
-{
-    CPTImage *image = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: @"hatch-1" ofType: @"png"]];
-    image.scale = topView.window.backingScaleFactor * 4.3;
-    image.tiled = YES;
-    earningsMiniPlot.fill = [CPTFill fillWithImage: image];
-    spendingsMiniPlot.fill = [CPTFill fillWithImage: image];
-
-    NSString *arrowName = topView.window.backingScaleFactor > 1 ? @"blue arrow@2x" : @"blue arrow";
-    CPTImage *arrowImage = [CPTImage imageForPNGFile: [[NSBundle mainBundle] pathForResource: arrowName ofType: @"png"]];
-    size_t imageWidth = CGImageGetWidth(arrowImage.image) / topView.window.backingScaleFactor;
-    size_t imageHeight = CGImageGetHeight(arrowImage.image) / topView.window.backingScaleFactor;
-    arrowImage.scale = topView.window.backingScaleFactor;
-
-    if (earningsArrowAnnotation != nil) {
-        [earningsMiniPlot removeAnnotation: earningsArrowAnnotation];
-    }
-
-    CPTXYAxis *axis = pieChartGraph.axisSet.axes[0]; // First x axis.
-    earningsArrowAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: axis.axisTitle.contentLayer];
-    earningsArrowAnnotation.rectAnchor = CPTRectAnchorTopLeft;
-    earningsArrowAnnotation.displacement = CGPointMake(-15, -50);
-
-    CPTBorderedLayer *layer = [[CPTBorderedLayer alloc] initWithFrame: CGRectMake(0, 0, imageWidth, imageHeight)];
-    layer.fill = [CPTFill fillWithImage: arrowImage];
-
-    earningsArrowAnnotation.contentLayer = layer;
-    [earningsMiniPlot addAnnotation: earningsArrowAnnotation];
-    
-    if (spendingsArrowAnnotation != nil) {
-        [spendingsMiniPlot removeAnnotation: spendingsArrowAnnotation];
-    }
-
-    axis = pieChartGraph.axisSet.axes[2]; // Second x axis.
-    spendingsArrowAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: axis.axisTitle.contentLayer];
-    spendingsArrowAnnotation.rectAnchor = CPTRectAnchorTopLeft;
-    spendingsArrowAnnotation.displacement = CGPointMake(-15, -50);
-
-    layer = [[CPTBorderedLayer alloc] initWithFrame: CGRectMake(0, 0, imageWidth, imageHeight)];
-    layer.fill = [CPTFill fillWithImage: arrowImage];
-
-    spendingsArrowAnnotation.contentLayer = layer;
-    [spendingsMiniPlot addAnnotation: spendingsArrowAnnotation];
 }
 
 - (void)updateValues

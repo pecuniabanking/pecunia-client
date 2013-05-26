@@ -476,6 +476,8 @@
 		27D57642166277CB00761132 /* show.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D57640166277CB00761132 /* show.png */; };
 		27D57643166277CB00761132 /* show@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D57641166277CB00761132 /* show@2x.png */; };
 		27D576461662819E00761132 /* NSSplitView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D576451662819E00761132 /* NSSplitView+PecuniaAdditions.m */; };
+		27DBAAEC175123ED00E75996 /* hatch-1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27DBAAEB175123ED00E75996 /* hatch-1@2x.png */; };
+		27DBAAED175123ED00E75996 /* hatch-1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27DBAAEB175123ED00E75996 /* hatch-1@2x.png */; };
 		27DCC81816EB8E640070E241 /* CategoryHeatMap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27DCC81716EB8E640070E241 /* CategoryHeatMap.xib */; };
 		27DCC81B16EB8F700070E241 /* CategoryHeatMapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DCC81A16EB8F700070E241 /* CategoryHeatMapController.m */; };
 		27DD4AC5150B60A4006C2370 /* HBCI business transactions.csv in Resources */ = {isa = PBXBuildFile; fileRef = 27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */; };
@@ -637,7 +639,6 @@
 		B1B417E113F06CC600BEEC8F /* TanMediaWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */; };
 		B1B41C8C14005B5B00BEEC8F /* BankParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B41C8B14005B5B00BEEC8F /* BankParameter.m */; };
 		B1BCDF76111F5DBB002E0802 /* CountryInfo.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */; };
-		B1C0359B1720911D0007C1F5 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1C0359A1720911D0007C1F5 /* Sparkle.framework */; };
 		B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */; };
 		B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */; };
 		B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
@@ -922,6 +923,7 @@
 		27D57641166277CB00761132 /* show@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "show@2x.png"; sourceTree = "<group>"; };
 		27D576441662819200761132 /* NSSplitView+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSSplitView+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		27D576451662819E00761132 /* NSSplitView+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSSplitView+PecuniaAdditions.m"; sourceTree = "<group>"; };
+		27DBAAEB175123ED00E75996 /* hatch-1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hatch-1@2x.png"; sourceTree = "<group>"; };
 		27DCC81716EB8E640070E241 /* CategoryHeatMap.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryHeatMap.xib; sourceTree = "<group>"; };
 		27DCC81916EB8F700070E241 /* CategoryHeatMapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryHeatMapController.h; sourceTree = "<group>"; };
 		27DCC81A16EB8F700070E241 /* CategoryHeatMapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryHeatMapController.m; sourceTree = "<group>"; wrapsLines = 0; };
@@ -1279,7 +1281,6 @@
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				B12A4AE310BF1C79002CC63E /* Foundation.framework in Frameworks */,
 				27E79FCB145AFCB3007C0AE3 /* QuartzCore.framework in Frameworks */,
-				B1C0359B1720911D0007C1F5 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1826,6 +1827,7 @@
 				2784DAED16FDBDFF00E054D2 /* gray-hatch.png */,
 				2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */,
 				2790544F14A37F59001380A3 /* hatch-1.png */,
+				27DBAAEB175123ED00E75996 /* hatch-1@2x.png */,
 				279D963816EFB744004FCAC4 /* heat-map-active.png */,
 				279D963916EFB744004FCAC4 /* heat-map-active@2x.png */,
 				279D963416EFB189004FCAC4 /* heat-map.png */,
@@ -2380,6 +2382,7 @@
 				27CBF364174A4A1E0062E2A9 /* category-heatmap-help.rtf in Resources */,
 				27CBF366174A4A1E0062E2A9 /* category-reporting-help.rtf in Resources */,
 				27CBF36C174A4C5F0062E2A9 /* About.xib in Resources */,
+				27DBAAED175123ED00E75996 /* hatch-1@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2545,6 +2548,7 @@
 				27CBF363174A4A1E0062E2A9 /* category-heatmap-help.rtf in Resources */,
 				27CBF365174A4A1E0062E2A9 /* category-reporting-help.rtf in Resources */,
 				27CBF36B174A4C5F0062E2A9 /* About.xib in Resources */,
+				27DBAAEC175123ED00E75996 /* hatch-1@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2984,7 +2988,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Frank Emminghaus";
-				COMBINE_HIDPI_IMAGES = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Frameworks\"",
@@ -3040,7 +3044,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Frank Emminghaus";
-				COMBINE_HIDPI_IMAGES = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Frameworks\"",
@@ -3087,7 +3091,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
 				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Frank Emminghaus";
-				COMBINE_HIDPI_IMAGES = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Frameworks\"",
 					"\"$(SRCROOT)\"",
@@ -3129,8 +3133,8 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				COMBINE_HIDPI_IMAGES = NO;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Frameworks\"",
@@ -3183,8 +3187,8 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				COMBINE_HIDPI_IMAGES = NO;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Frameworks\"",
@@ -3227,8 +3231,8 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Pecunia.entitlements;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				COMBINE_HIDPI_IMAGES = NO;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Frameworks\"",

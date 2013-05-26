@@ -1041,7 +1041,7 @@ BOOL updateSent = NO;
  */
 + (void)createDefaultCategories
 {
-    NSString *sentinel = NSLocalizedString(@"AP250", nil); // Upper limit.
+    NSString *sentinel = NSLocalizedString(@"AP300", nil); // Upper limit.
     if (sentinel == nil || sentinel.length == 0) {
         return;
     }

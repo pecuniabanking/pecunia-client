@@ -344,7 +344,7 @@ static PXIsDragStartResult PXIsDragStart( NSEvent *startEvent, NSTimeInterval th
 	NSImage*	dragImage = [[NSImage alloc] initWithSize: imageSize];
 	
 	[dragImage lockFocus];
-    
+
     for( PXListViewCell* currCell in _visibleCells )
     {
         NSUInteger		currRow = [currCell row];
@@ -357,9 +357,16 @@ static PXIsDragStartResult PXIsDragStart( NSEvent *startEvent, NSTimeInterval th
             NSBitmapImageRep*	bir = [currCell bitmapImageRepForCachingDisplayInRect: bounds];
             [currCell cacheDisplayInRect: bounds toBitmapImageRep: bir];
             
-            NSPoint				thePos = NSMakePoint( rowRect.origin.x -minX, rowRect.origin.y -minY);
-            thePos.y = imageSize.height -(thePos.y +rowRect.size.height);	// Document view is flipped, so flip the coordinates before drawing into image, or the list items will be reversed.
-            [bir drawAtPoint: thePos];
+            bounds.origin.x = rowRect.origin.x -minX;
+            bounds.origin.y = imageSize.height - (rowRect.origin.y - minY + rowRect.size.height);	// Document view is flipped, so flip the coordinates before drawing into image, or the list items will be reversed.
+
+            [bir drawInRect: bounds
+                   fromRect: NSZeroRect
+                  operation: NSCompositeSourceOver
+                   fraction: 0.5
+             respectFlipped: YES
+                      hints: nil];
+
         }
     }
     

@@ -110,7 +110,6 @@
 
     IBOutlet NSMenuItem *toggleFullscreenItem;
     IBOutlet NSMenuItem *developerMenu;
-    IBOutlet NSMenuItem *updateItem;
 
     IBOutlet NSWindow *licenseWindow;
     IBOutlet NSButton *toggleDetailsButton;
@@ -121,8 +120,6 @@
     IBOutlet TagView           *tagsField;
     IBOutlet TagView           *tagViewPopup;
     IBOutlet NSView            *tagViewHost;
-    IBOutlet NSViewController  *tagPopoverController;
-    IBOutlet NSPopover         *tagPopover;
 
     IBOutlet AttachmentImageView *attachement1;
     IBOutlet AttachmentImageView *attachement2;
@@ -148,7 +145,7 @@
 
     NSImage *moneyImage;
     NSImage *moneySyncImage;
-    NSImage *folderImage;
+    NSImage *bankImage;
 
     NSMutableArray *bankAccountItemsExpandState;
     Category       *lastSelection;

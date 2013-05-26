@@ -2380,7 +2380,11 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     if (moneyImage == nil) {
         moneyImage = [NSImage imageNamed: @"money_18.png"];
         moneySyncImage = [NSImage imageNamed: @"money_sync_18.png"];
-        folderImage = [NSImage imageNamed: @"icon95-1"];
+
+        NSString *path = [[NSBundle mainBundle] pathForResource: @"icon95-1"
+                                                         ofType: @"icns"
+                                                    inDirectory: @"Collections/1/"];
+        bankImage = [[NSImage alloc] initWithContentsOfFile: path];
     }
 
     if (cat.iconName == nil) {
@@ -2414,7 +2418,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     NSInteger numberUnread = 0;
 
     if ([cat isBankAccount] && cat.accountNumber == nil) {
-        [cell setImage: folderImage];
+        [cell setImage: bankImage];
     }
 
     if ([cat isBankAccount] && cat.accountNumber != nil) {
@@ -3897,6 +3901,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [NSApp runModalForWindow: generator.window];
 }
 
+#pragma mark - Other stuff
+
 - (IBAction)creditCardSettlements: (id)sender
 {
     BankAccount *account = [self selectedBankAccount];
@@ -3909,8 +3915,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     [NSApp runModalForWindow: [controller window]];
 }
-
-#pragma mark - Other stuff
 
 - (void)migrate
 {
