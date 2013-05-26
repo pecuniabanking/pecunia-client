@@ -113,7 +113,7 @@ typedef struct {
                      recursive: (BOOL)recursive;
 
 - (NSArray *)assignmentsFrom: (ShortDate *)fromDate to: (ShortDate *)toDate withChildren: (BOOL)c;
-- (NSMutableSet *)allAssignments;
+- (NSArray *)allAssignments;
 - (void)updateBoundAssignments;
 
 + (Category *)bankRoot;

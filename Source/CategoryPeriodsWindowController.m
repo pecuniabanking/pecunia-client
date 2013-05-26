@@ -280,13 +280,15 @@ extern void *UserDefaultsBindingContext;
     if (![selectedRows isEqualToIndexSet: [outline selectedRowIndexes]]) {
         [outline selectRowIndexes: selectedRows byExtendingSelection: NO];
     }
+
     if (selectedRows.count > 0) {
         NSUInteger columnIndex = valueGrid.selectedColumnIndexes.firstIndex;
         id         item = [outline itemAtRow: selectedRows.firstIndex];
 
         self.selectedCategory = [item representedObject];
-        [self updateData];
-        [self updateStatementList: [valueGrid frameOfCellAtColumn: columnIndex row: selectedRows.firstIndex - 1]];
+        if (detailsPopover.shown) {
+            [self updateStatementList: [valueGrid frameOfCellAtColumn: columnIndex row: selectedRows.firstIndex - 1]];
+        }
     }
 }
 
@@ -406,8 +408,6 @@ extern void *UserDefaultsBindingContext;
     }
     [self updateLimitLabel: toText index: toIndex];
 
-    // Remaining data is loaded on demand.
-    //[self performSelectorInBackground:@selector(updateOutline) withObject:nil]; // <- this is leaking objects
     [self updateOutline];
     [valueGrid reloadData];
     [valueGrid setNeedsDisplay: YES];
@@ -429,6 +429,7 @@ extern void *UserDefaultsBindingContext;
     if (nodeDates == nil) {
         nodeDates = @[]; // Just to avoid frequent checks in the loop below.
     }
+    
     // Dates for this category might not correspond to the display range (i.e. no value for all dates)
     // so move the existing values to the appropriate array index and fill the rest with 0.
     NSMutableArray *balanceArray = [NSMutableArray arrayWithCapacity: [dates count]];
@@ -449,11 +450,17 @@ extern void *UserDefaultsBindingContext;
     if (!detailsPopover.shown) {
         [detailsPopover showRelativeToRect: cellBounds ofView: valueGrid preferredEdge: NSMinYEdge];
     }
+    [self updateStatementList: cellBounds];
 }
 
 - (void)updateStatementList: (NSRect)cellBounds
 {
-    NSInteger columnIndex = valueGrid.selectedColumnIndexes.firstIndex;
+    // It can happen data is not yet ready, so get out of here. We'll get a new chance later.
+    NSUInteger columnIndex = valueGrid.selectedColumnIndexes.firstIndex;
+    if (columnIndex + fromIndex > dates.count) {
+        return;
+    }
+    
     ShortDate *selFromDate = dates[columnIndex + fromIndex];
     ShortDate *selToDate;
     switch (groupingInterval) {

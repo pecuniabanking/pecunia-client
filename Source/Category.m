@@ -623,27 +623,30 @@ BOOL updateSent = NO;
 }
 
 /**
- * Returns all assignments from this category plus all of those from the children and grand children etc. categories.
+ * Returns all assignments from this category. Takes recursive setting into account.
  */
-- (NSMutableSet *)allAssignments
+- (NSArray *)allAssignments
 {
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSSet                  *allCats = [self allCategories];
-    NSMutableSet           *result = [[NSMutableSet alloc] init];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSSet          *categories;
+    if ([defaults boolForKey: @"recursiveTransactions"]) {
+        categories = [self allCategories];
+    } else {
+        categories = [NSSet setWithObject: self];
+    }
 
     NSFetchRequest      *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName: @"StatCatAssignment" inManagedObjectContext: context];
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"StatCatAssignment"
+                                              inManagedObjectContext: MOAssistant.assistant.context];
     [fetchRequest setEntity: entity];
 
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category in %@", allCats];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category in %@", categories];
     [fetchRequest setPredicate: predicate];
 
     NSError *error = nil;
-    NSArray *fetchedObjects = [context executeFetchRequest: fetchRequest error: &error];
-    if (fetchedObjects != nil) {
-        [result addObjectsFromArray: fetchedObjects];
-    }
-    return result;
+    NSArray *fetchedObjects = [MOAssistant.assistant.context executeFetchRequest: fetchRequest
+                                                                           error: &error];
+    return fetchedObjects;
 }
 
 /**
@@ -704,10 +707,10 @@ BOOL updateSent = NO;
                 withGrouping: (GroupingInterval)interval
                        sumUp: (BOOL)sumUp
 {
-    NSArray *statements = [[self allAssignments] allObjects];
-    NSArray *sortedAssignments = [statements sortedArrayUsingSelector: @selector(compareDate:)];
+    NSArray *assignments = [self allAssignments];
+    NSArray *sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
 
-    NSUInteger     count = [statements count];
+    NSUInteger     count = [sortedAssignments count];
     NSMutableArray *dateArray = [NSMutableArray arrayWithCapacity: count];
     NSMutableArray *balanceArray = [NSMutableArray arrayWithCapacity: count];
     NSMutableArray *countArray = [NSMutableArray arrayWithCapacity: count];
