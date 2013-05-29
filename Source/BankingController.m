@@ -1258,9 +1258,12 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
     autoSyncRunning = NO;
 
-    NSSound *doneSound = [NSSound soundNamed: @"done.mp3"];
-    if (doneSound != nil) {
-        [doneSound play];
+    BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
+    if (!suppressSound) {
+        NSSound *doneSound = [NSSound soundNamed: @"done.mp3"];
+        if (doneSound != nil) {
+            [doneSound play];
+        }
     }
 }
 

@@ -1227,7 +1227,7 @@ extern void *UserDefaultsBindingContext;
 
     CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: roundedLocalMinValue.decimalValue
                                                            length: [[roundedLocalMaxValue decimalNumberBySubtracting: roundedLocalMinValue] decimalValue]];
-/*
+
     [CPTAnimation animate: plotSpace
                  property: @"globalYRange"
             fromPlotRange: plotSpace.globalYRange
@@ -1244,18 +1244,6 @@ extern void *UserDefaultsBindingContext;
                 withDelay: 0
            animationCurve: CPTAnimationCurveCubicInOut
                  delegate: self];
- */
-    plotSpace.globalYRange = plotRange;
-    plotSpace.yRange = plotRange;
-
-    if (newMainYInterval > 0) {
-        CPTXYAxisSet *axisSet = (id)mainGraph.axisSet;
-        CPTXYAxis    *y = axisSet.yAxis;
-
-        y.majorIntervalLength = CPTDecimalFromFloat(newMainYInterval);
-        y.minorTicksPerInterval = [self minorTicksFromInterval: newMainYInterval];
-        newMainYInterval = 0;
-    }
 }
 
 - (void)updateMainGraph

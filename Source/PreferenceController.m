@@ -32,7 +32,7 @@
 
 static NSArray *exportFields = nil;
 
-#define SYNCH_HEIGHT     310
+#define GENERAL_HEIGHT   310
 #define SEC_HEIGHT       260
 #define LOC_HEIGHT       260
 #define DISPLAY_HEIGHT   320
@@ -159,7 +159,7 @@ static NSGradient *headerGradient;
     [mainTab selectTabViewItemAtIndex: 0];
     [mainTab setTabViewType: NSNoTabsNoBorder];
 
-    [self setHeight: SYNCH_HEIGHT];
+    [self setHeight: GENERAL_HEIGHT];
 
     // Export-Feldseparator
     NSString *expSep = [defaults stringForKey: _exportSeparator];
@@ -414,7 +414,7 @@ static NSGradient *headerGradient;
 - (IBAction)synchSettings: (id)sender
 {
     [mainTab selectTabViewItemAtIndex: 0];
-    [self setHeight: SYNCH_HEIGHT];
+    [self setHeight: GENERAL_HEIGHT];
 }
 
 - (IBAction)securitySettings: (id)sender
