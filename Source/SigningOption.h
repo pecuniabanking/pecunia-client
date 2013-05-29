@@ -19,6 +19,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class BankUser;
+
 typedef enum {
     SecMethod_PinTan = 0,
     SecMethod_DDV
@@ -48,5 +50,6 @@ typedef enum {
 @property (nonatomic, copy) NSString         *mobileNumber;
 @property (nonatomic, assign) SecurityMethod secMethod;
 
++(SigningOption*)defaultOptionForUser:(BankUser*)user;
 
 @end

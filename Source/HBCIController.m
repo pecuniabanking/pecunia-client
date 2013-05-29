@@ -1840,11 +1840,15 @@ NSString * escapeSpecial(NSString *s)
         }
     }
     if ([options count] == 0) {
+        [[MessageLog log] addMessage: @"signingOptionForAccount: no signing options defined by bank - use default" withLevel: LogLevel_Info];
+        return [SigningOption defaultOptionForUser: [[users allObjects] objectAtIndex:0]];
+        /*
         NSRunAlertPanel(NSLocalizedString(@"AP352", nil),
                         NSLocalizedString(@"AP353", nil),
                         NSLocalizedString(@"AP1", nil),
                         nil, nil, account.accountNumber);
         return nil;
+        */ 
     }
     if ([options count] == 1) {
         return [options lastObject];
