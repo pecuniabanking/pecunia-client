@@ -3834,18 +3834,16 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
                 if (firstValue == nil) {
                     firstValue = stat.statement.value;
                 }
-                if ([stat.category isBankAccount] && ![stat.category isRoot]) {
-                    BankAccount *account = (BankAccount *)stat.category;
-                    if ([stat.statement.isNew boolValue]) {
-                        stat.statement.isNew = @NO;
-                        account.unread = account.unread - 1;
-                        if (account.unread == 0) {
-                            [self updateUnread];
-                        }
-                        [accountsView setNeedsDisplay: YES];
+                if ([stat.statement.isNew boolValue]) {
+                    stat.statement.isNew = @NO;
+                    BankAccount *account = stat.statement.account;
+                    account.unread = account.unread - 1;
+                    if (account.unread == 0) {
+                        [self updateUnread];
                     }
                 }
             }
+            [accountsView setNeedsDisplay: YES];
 
             // Check for the type of transaction and adjust remote name display accordingly.
             if ([firstValue compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
