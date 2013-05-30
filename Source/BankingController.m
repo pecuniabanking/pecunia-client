@@ -2657,7 +2657,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         }
 
         if ([item action] == @selector(deleteStatement:)) {
-            if ([cat isBankAccount] == NO) {
+            if ([cat isBankAccount] == NO || categoryAssignments.selectedObjects.count == 0) {
                 return NO;
             }
         }
@@ -2902,8 +2902,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     if (!doDuplicateCheck) {
         int result = NSRunAlertPanel(NSLocalizedString(@"AP806", nil),
                                      NSLocalizedString(@"AP809", nil),
-                                     NSLocalizedString(@"AP3", nil),
                                      NSLocalizedString(@"AP4", nil),
+                                     NSLocalizedString(@"AP3", nil),
                                      nil, assignments.count);
         if (result != NSAlertDefaultReturn) {
             return;
@@ -2943,8 +2943,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
             if (hasDuplicate) {
                 res = NSRunAlertPanel(NSLocalizedString(@"AP805", nil),
                                       NSLocalizedString(@"AP807", nil),
-                                      NSLocalizedString(@"AP3", nil),
                                       NSLocalizedString(@"AP4", nil),
+                                      NSLocalizedString(@"AP3", nil),
                                       nil);
                 if (res == NSAlertDefaultReturn) {
                     deleteStatement = YES;
