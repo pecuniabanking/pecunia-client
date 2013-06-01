@@ -165,7 +165,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 }
 
 /**
- * Central point for assigning statements to their account. Here we a mapping between the account (category)
+ * Central point for assigning statements to their account. Here we do a mapping between the account (category)
  * and ourselve. After that we run all defined rules for assigning to categories and other actions.
  */
 - (void)addToAccount: (BankAccount *)account
