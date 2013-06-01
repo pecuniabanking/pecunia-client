@@ -57,7 +57,7 @@
     SigningOption *option = [[SigningOption alloc] init];
     option.userId = user.userId;
     option.userName = user.name;
-    option.tanMethod = @"900";
+    option.tanMethod = @"999";
     option.TanMethodName = @"unbekannt";
     return option;
 }

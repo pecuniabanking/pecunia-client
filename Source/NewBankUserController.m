@@ -482,12 +482,12 @@
     }
     if (step == 2) {
         for (NSView *view in views) {
-            if ([view tag] >= 100 && [view tag] <= 110) {
+            if ([view tag] >= 100 && [view tag] <= 130) {
                 [[view animator] setHidden: NO];
             }
         }
         NSRect frame = [userSheet frame];
-        frame.size.height += 32; frame.origin.y -= 32;
+        frame.size.height += 55; frame.origin.y -= 55;
         [[userSheet animator] setFrame: frame display: YES];
 
         [userSheet makeFirstResponder: [[userSheet contentView] viewWithTag: 110]];

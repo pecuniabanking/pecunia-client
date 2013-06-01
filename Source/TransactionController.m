@@ -569,12 +569,15 @@
     }
 
     // purpose?
+    // purpose is not checked because it is not mandatory
+    /*
     if (currentTransfer.purpose1 == nil || [currentTransfer.purpose1 length] == 0) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP76", nil),
                         NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
+    */
 
     // Prüfen, ob das Zieldatum auf ein Wochenende fällt
     if (transferType == TransferTypeDated) {
