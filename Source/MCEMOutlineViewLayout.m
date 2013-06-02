@@ -57,8 +57,10 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
+    /* Sorting is done via the tree controller.
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: [self sortDescriptors]];
     [defaults setObject: data forKey: [NSString stringWithFormat: @"NSOutlineView SD %@", [self autosaveName]]];
+*/
 
     NSArray       *columns = [self tableColumns];
     NSTableColumn *tc = columns[0];
@@ -70,6 +72,7 @@
 - (void)restoreLayout
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    /* Sorting is done via the tree controller.
     NSData         *data = [defaults dataForKey: [NSString stringWithFormat: @"NSOutlineView SD %@", [self autosaveName]]];
     if (data) {
         NSArray *sd = [NSKeyedUnarchiver unarchiveObjectWithData: data];
@@ -77,6 +80,7 @@
             [self setSortDescriptors: sd];
         }
     }
+     */
     float w = [defaults floatForKey: [NSString stringWithFormat: @"NSOutlineView SD %@", [self autosaveName]]];
     if (w > 0) {
         NSArray       *columns = [self tableColumns];

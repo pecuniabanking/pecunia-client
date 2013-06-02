@@ -736,10 +736,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         }
     }
 
-    // Sort descriptor for accounts view.
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
-    [categoryController setSortDescriptors: @[sd]];
-
     // status (content) bar
     [mainWindow setAutorecalculatesContentBorderThickness: NO forEdge: NSMinYEdge];
     [mainWindow setContentBorderThickness: 30.0f forEdge: NSMinYEdge];
@@ -798,7 +794,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [attachement3 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref3" options: nil];
     [attachement4 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref4" options: nil];
 
-    sd = [[NSSortDescriptor alloc] initWithKey: @"order" ascending: YES];
+    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"order" ascending: YES];
     [statementTags setSortDescriptors: @[sd]];
     [tagsController setSortDescriptors: @[sd]];
     tagButton.bordered = NO;
@@ -818,6 +814,9 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     NSError *error = nil;
 
     categoryController.managedObjectContext = self.managedObjectContext;
+    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
+    [categoryController setSortDescriptors: @[sd]];
+
     categoryAssignments.managedObjectContext = self.managedObjectContext;
     tagsController.managedObjectContext = self.managedObjectContext;
     [tagsController prepareContent];
@@ -833,8 +832,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [self updateUnread];
 
     [timeSlicer updateDelegate];
-    [self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
     [categoryController fetchWithRequest: nil merge: NO error: &error];
+    [self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext: self.managedObjectContext];
 }
 
@@ -3421,9 +3420,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
             [alert runModal];
             [NSApp terminate: self];
         }
-        [self publishContext];
-        [sc stopSpinning];
-        [sc clearMessage];
     }
 
     [self migrate];

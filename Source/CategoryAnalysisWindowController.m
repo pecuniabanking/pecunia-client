@@ -1188,6 +1188,9 @@ extern void *UserDefaultsBindingContext;
             }
         }
         endIndex = [self findIndexForTimePoint: units];
+        if (selectedCategory.isBankAccount) {
+            ++endIndex;
+        }
     }
 
     [self computeLocalStatisticsFrom: startIndex to: endIndex];
