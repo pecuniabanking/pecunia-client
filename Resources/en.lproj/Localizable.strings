@@ -19,6 +19,7 @@
 "AP15" = "Überschreiben";
 "AP16" = "Einnahmen";
 "AP17" = "Ausgaben";
+"AP18" = "keine";
 
 // Validation strings.
 // AP50..AP99

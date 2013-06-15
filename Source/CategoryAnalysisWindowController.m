@@ -591,8 +591,7 @@ extern void *UserDefaultsBindingContext;
     lineStyle.lineWidth = 1;
     lineStyle.lineColor = [CPTColor colorWithGenericGray: 64 / 255.0];
     lineStyle.lineCap = kCGLineCapRound;
-    lineStyle.dashPattern = lineStyle.dashPattern = @[@10.0f,
-                                                      @5.0f];
+    lineStyle.dashPattern = lineStyle.dashPattern = @[@10.0f, @5.0f];
     mainIndicatorLine.axisLineStyle = lineStyle;
     mainIndicatorLine.majorTickLineStyle = nil;
 

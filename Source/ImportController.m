@@ -174,7 +174,7 @@
     }
 
     if (errors == 0) {
-        errorsLabel.stringValue = @"keine";
+        errorsLabel.stringValue = NSLocalizedString(@"AP18", nil);
     } else {
         errorsLabel.stringValue = [NSString stringWithFormat: @"%lu", errors];
     }
@@ -775,7 +775,7 @@
                         field = [field stringByTrimmingCharactersInSet: singleQuoteCharset];
                     }
 
-                    id object = field;
+                    id object = (field.length == 0) ? nil : field;
                     if ([property isEqualToString: @"date"] || [property isEqualToString: @"valutaDate"]) {
                         NSRange range = NSMakeRange(0, field.length);
                         if ([dateFormatter getObjectValue: &object
