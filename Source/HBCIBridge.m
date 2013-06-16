@@ -81,31 +81,34 @@
     [task setStandardOutput: inPipe];
     [task setStandardInput: outPipe];
 
-    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-    NSString *jarPath = [bundlePath stringByAppendingString: @"/Contents/HBCIServer.jar"];
-    NSString *launchPath = [bundlePath stringByAppendingString: @"/Contents/Plugins/jre/Contents/Home/bin/java"];
+    if (LaunchParameters.parameters.debugServer) {
+        NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+        NSString *jarPath = [bundlePath stringByAppendingString: @"/Contents/HBCIServer.jar"];
 
-    //[task setLaunchPath: @"/usr/bin/java" ];
-    [task setLaunchPath: launchPath];
-    //	[task setEnvironment: [NSDictionary dictionaryWithObjectsAndKeys: @"/users/emmi/workspace/HBCIServer", @"CLASSPATH", nil ] ];
+        [task setLaunchPath: @"/usr/bin/java" ];
+        //	[task setEnvironment: [NSDictionary dictionaryWithObjectsAndKeys: @"/users/emmi/workspace/HBCIServer", @"CLASSPATH", nil ] ];
 
-    [task setArguments: @[@"-jar", jarPath]];
+        if ([LaunchParameters parameters ].debugServer) {
+            [task setArguments: [NSArray arrayWithObjects: @"-Xdebug", @"-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005", @"-jar", jarPath, nil ] ];
+        }
 
-    /*
-     if ([LaunchParameters parameters ].debugServer) {
-     [task setArguments: [NSArray arrayWithObjects: @"-Xdebug", @"-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005", @"-jar", jarPath, nil ] ];
-     } else [task setArguments: [NSArray arrayWithObjects: @"-jar", jarPath, nil ] ];
-     */
+        // Launch the task asynchronously.
+        [task launch];
 
-    // launch the task asynchronously
-    [task launch];
+        if (LaunchParameters.parameters.debugServer) {
+            // Consume jvm status message.
+            [[inPipe fileHandleForReading ] availableData ];
+        }
+    } else {
+        NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+        NSString *jarPath = [bundlePath stringByAppendingString: @"/Contents/HBCIServer.jar"];
+        NSString *launchPath = [bundlePath stringByAppendingString: @"/Contents/Plugins/jre/Contents/Home/bin/java"];
 
-    /*
-     if ([LaunchParameters parameters ].debugServer) {
-     // consume jvm status message
-     [[inPipe fileHandleForReading ] availableData ];
-     }
-     */
+        [task setLaunchPath: launchPath];
+        [task setArguments: @[@"-jar", jarPath]];
+
+        [task launch];
+    }
 }
 
 - (void)parse: (NSString *)cmd

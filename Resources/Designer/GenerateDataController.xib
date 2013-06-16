@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -635,11 +635,13 @@
 								<reference key="NSSupport" ref="628914651"/>
 								<object class="NSNumberFormatter" key="NSFormatter" id="277768029">
 									<dictionary class="NSMutableDictionary" key="NS.attributes">
-										<boolean value="YES" key="allowsFloats"/>
+										<boolean value="NO" key="allowsFloats"/>
 										<integer value="1040" key="formatterBehavior"/>
 										<boolean value="NO" key="lenient"/>
-										<integer value="2100" key="maximum"/>
-										<integer value="1990" key="minimum"/>
+										<object class="NSLocale" key="locale" id="846416121">
+											<string key="NS.identifier"/>
+										</object>
+										<integer value="100" key="minimum"/>
 										<string key="negativeFormat">0</string>
 										<string key="negativeInfinitySymbol">-∞</string>
 										<string key="nilSymbol"/>
@@ -659,8 +661,15 @@
 										<string key="NSString">NaN</string>
 										<reference key="NSAttributes" ref="749276549"/>
 									</object>
-									<integer value="1990" key="NS.min"/>
-									<integer value="2100" key="NS.max"/>
+									<integer value="100" key="NS.min"/>
+									<object class="NSDecimalNumberPlaceholder" key="NS.max" id="65538444">
+										<int key="NS.exponent">0</int>
+										<int key="NS.length">0</int>
+										<bool key="NS.negative">YES</bool>
+										<bool key="NS.compact">NO</bool>
+										<int key="NS.mantissa.bo">1</int>
+										<bytes key="NS.mantissa">AAAAAAAAAAAAAAAAAAAAAA</bytes>
+									</object>
 									<object class="NSDecimalNumberHandler" key="NS.rounding">
 										<int key="NS.roundingmode">3</int>
 										<bool key="NS.raise.overflow">YES</bool>
@@ -670,8 +679,8 @@
 									<string key="NS.decimal">,</string>
 									<string key="NS.thousand">.</string>
 									<bool key="NS.hasthousands">NO</bool>
-									<bool key="NS.localized">YES</bool>
-									<bool key="NS.allowsfloats">YES</bool>
+									<bool key="NS.localized">NO</bool>
+									<bool key="NS.allowsfloats">NO</bool>
 								</object>
 								<string key="NSCellIdentifier">_NS:9</string>
 								<reference key="NSControlView" ref="207636976"/>
@@ -698,7 +707,7 @@
 								<double key="NSValue">650</double>
 								<double key="NSMinValue">1</double>
 								<double key="NSMaxValue">10000</double>
-								<double key="NSIncrement">1</double>
+								<double key="NSIncrement">25</double>
 								<bool key="NSAutorepeat">YES</bool>
 							</object>
 							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -830,9 +839,7 @@
 									<dictionary class="NSMutableDictionary" key="NS.attributes">
 										<boolean value="YES" key="allowsFloats"/>
 										<integer value="1040" key="formatterBehavior"/>
-										<object class="NSLocale" key="locale">
-											<string key="NS.identifier"/>
-										</object>
+										<reference key="locale" ref="846416121"/>
 										<string key="negativeInfinitySymbol">-∞</string>
 										<string key="nilSymbol"/>
 										<integer value="0" key="numberStyle"/>
@@ -850,15 +857,8 @@
 										<string key="NSString">NaN</string>
 										<reference key="NSAttributes" ref="749276549"/>
 									</object>
-									<object class="NSDecimalNumberPlaceholder" key="NS.min" id="175869953">
-										<int key="NS.exponent">0</int>
-										<int key="NS.length">0</int>
-										<bool key="NS.negative">YES</bool>
-										<bool key="NS.compact">NO</bool>
-										<int key="NS.mantissa.bo">1</int>
-										<bytes key="NS.mantissa">AAAAAAAAAAAAAAAAAAAAAA</bytes>
-									</object>
-									<reference key="NS.max" ref="175869953"/>
+									<reference key="NS.min" ref="65538444"/>
+									<reference key="NS.max" ref="65538444"/>
 									<object class="NSDecimalNumberHandler" key="NS.rounding">
 										<int key="NS.roundingmode">3</int>
 										<bool key="NS.raise.overflow">YES</bool>
@@ -3413,7 +3413,7 @@
 				<string key="700.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="702.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<integer value="1040" key="703.IBNumberFormatterBehaviorMetadataKey"/>
-				<boolean value="YES" key="703.IBNumberFormatterLocalizesFormatMetadataKey"/>
+				<boolean value="NO" key="703.IBNumberFormatterLocalizesFormatMetadataKey"/>
 				<string key="703.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="721.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="724.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3518,7 +3518,6 @@
 						<string key="close:">id</string>
 						<string key="selectFile:">id</string>
 						<string key="start:">id</string>
-						<string key="stepperChanged:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="close:">
@@ -3531,10 +3530,6 @@
 						</object>
 						<object class="IBActionInfo" key="start:">
 							<string key="name">start:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="stepperChanged:">
-							<string key="name">stepperChanged:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
