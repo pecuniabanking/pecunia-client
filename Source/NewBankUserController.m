@@ -716,6 +716,14 @@
     if ([user.secMethod intValue] == SecMethod_PinTan) {
         [self updateTanMethods];
     }
+    
+    // save updates
+    if ([context save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
+
     NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
                     NSLocalizedString(@"AP100", nil),
                     NSLocalizedString(@"AP1", nil), nil, nil);

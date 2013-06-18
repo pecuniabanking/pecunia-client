@@ -3327,6 +3327,11 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [[NSWorkspace sharedWorkspace] openFile: path];
 }
 
+- (IBAction)showConsole:(id)sender
+{
+    [[NSWorkspace sharedWorkspace] launchApplication:@"Console"];
+}
+
 - (void)applicationWillFinishLaunching: (NSNotification *)notification
 {
     /*

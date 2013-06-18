@@ -597,6 +597,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 
     if (sourceMenu.numberOfItems > 1) {
+        if (selectedItem == -1) {
+            selectedItem = 1; // take first entry
+        }
         [sourceAccountSelector selectItemAtIndex: selectedItem];
     } else {
         [sourceAccountSelector selectItemAtIndex: -1];

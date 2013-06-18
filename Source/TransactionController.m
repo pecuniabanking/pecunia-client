@@ -395,6 +395,13 @@
 
 - (void)cancelCurrentTransfer
 {
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    
+    [context deleteObject:currentTransfer];
+    currentTransfer = nil;
+    currentTransferController.content = nil;
+    
+    /*
     if ([self editingInProgress]) {
         if (currentTransfer.changeState != TransferChangeNew) {
             currentTransfer.changeState = TransferChangeUnchanged;
@@ -405,6 +412,7 @@
         }
         currentTransfer = nil;
     }
+     */
 }
 
 /**

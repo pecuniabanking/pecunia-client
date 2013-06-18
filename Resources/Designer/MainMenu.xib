@@ -3526,7 +3526,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																									<int key="NSTCFlags">1</int>
 																								</object>
 																								<object class="NSTextViewSharedData" key="NSSharedData">
-																									<int key="NSFlags">17206915</int>
+																									<int key="NSFlags">84315779</int>
 																									<int key="NSTextCheckingTypes">0</int>
 																									<nil key="NSMarkedAttributes"/>
 																									<object class="NSColor" key="NSBackgroundColor">
@@ -3670,7 +3670,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																									<int key="NSTCFlags">1</int>
 																								</object>
 																								<object class="NSTextViewSharedData" key="NSSharedData">
-																									<int key="NSFlags">2049</int>
+																									<int key="NSFlags">67110913</int>
 																									<int key="NSTextCheckingTypes">0</int>
 																									<nil key="NSMarkedAttributes"/>
 																									<object class="NSColor" key="NSBackgroundColor">
@@ -3810,7 +3810,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{170, 34}, {625, 18}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView" ref="569487988"/>
+																				<reference key="NSNextKeyView"/>
 																				<bool key="NSEnabled">YES</bool>
 																				<object class="NSTextFieldCell" key="NSCell" id="82837621">
 																					<int key="NSCellFlags">68157504</int>
@@ -4336,7 +4336,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="768391083"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMinSize">{1100, 751}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">mcmain</string>
@@ -5164,6 +5164,15 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 									<reference key="NSOnImage" ref="883146705"/>
 									<reference key="NSMixedImage" ref="237878853"/>
 								</object>
+								<object class="NSMenuItem" id="378256449">
+									<reference key="NSMenu" ref="880863334"/>
+									<string key="NSTitle">Konsolenlog anzeigen</string>
+									<string key="NSKeyEquiv">k</string>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="883146705"/>
+									<reference key="NSMixedImage" ref="237878853"/>
+								</object>
 								<object class="NSMenuItem" id="947143237">
 									<reference key="NSMenu" ref="880863334"/>
 									<bool key="NSIsDisabled">YES</bool>
@@ -5519,7 +5528,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					</array>
 					<string key="NSFrameSize">{232, 62}</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -5591,7 +5600,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 												<int key="NSTCFlags">1</int>
 											</object>
 											<object class="NSTextViewSharedData" key="NSSharedData">
-												<int key="NSFlags">12263</int>
+												<int key="NSFlags">67121127</int>
 												<int key="NSTextCheckingTypes">0</int>
 												<nil key="NSMarkedAttributes"/>
 												<reference key="NSBackgroundColor" ref="361827110"/>
@@ -5878,7 +5887,7 @@ wGw</bytes>
 					<string key="NSFrameSize">{597, 543}</string>
 					<reference key="NSNextKeyView" ref="787527088"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
+				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -7029,7 +7038,7 @@ wGw</bytes>
 													<int key="NSTCFlags">1</int>
 												</object>
 												<object class="NSTextViewSharedData" key="NSSharedData">
-													<int key="NSFlags">3587</int>
+													<int key="NSFlags">67112451</int>
 													<int key="NSTextCheckingTypes">0</int>
 													<nil key="NSMarkedAttributes"/>
 													<object class="NSColor" key="NSBackgroundColor">
@@ -7162,7 +7171,7 @@ wGw</bytes>
 													<int key="NSTCFlags">1</int>
 												</object>
 												<object class="NSTextViewSharedData" key="NSSharedData">
-													<int key="NSFlags">2561</int>
+													<int key="NSFlags">67111425</int>
 													<int key="NSTextCheckingTypes">0</int>
 													<nil key="NSMarkedAttributes"/>
 													<object class="NSColor" key="NSBackgroundColor">
@@ -7331,7 +7340,7 @@ wGw</bytes>
 				<string key="NSClassName">StatementDetails</string>
 			</object>
 			<object class="NSCustomView" id="325647310">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="NSScrollView" id="2690316">
@@ -7366,8 +7375,7 @@ wGw</bytes>
 										</set>
 										<string key="NSFrameSize">{250, 300}</string>
 										<reference key="NSSuperview" ref="586310281"/>
-										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="609761378"/>
+										<reference key="NSNextKeyView" ref="730813649"/>
 										<string key="NSReuseIdentifierKey">_NS:13</string>
 										<object class="NSTextContainer" key="NSTextContainer" id="577168849">
 											<object class="NSLayoutManager" key="NSLayoutManager">
@@ -7388,7 +7396,7 @@ wGw</bytes>
 											<int key="NSTCFlags">1</int>
 										</object>
 										<object class="NSTextViewSharedData" key="NSSharedData">
-											<int key="NSFlags">11911</int>
+											<int key="NSFlags">67120775</int>
 											<int key="NSTextCheckingTypes">0</int>
 											<nil key="NSMarkedAttributes"/>
 											<reference key="NSBackgroundColor" ref="361827110"/>
@@ -7413,7 +7421,6 @@ wGw</bytes>
 								</array>
 								<string key="NSFrameSize">{250, 300}</string>
 								<reference key="NSSuperview" ref="2690316"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="417583637"/>
 								<string key="NSReuseIdentifierKey">_NS:11</string>
 								<reference key="NSDocView" ref="417583637"/>
@@ -7441,8 +7448,6 @@ wGw</bytes>
 								<int key="NSvFlags">256</int>
 								<string key="NSFrame">{{234, 0}, {16, 300}}</string>
 								<reference key="NSSuperview" ref="2690316"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:83</string>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 								<reference key="NSTarget" ref="2690316"/>
@@ -7455,7 +7460,6 @@ wGw</bytes>
 								<int key="NSvFlags">-2147483392</int>
 								<string key="NSFrame">{{-100, -100}, {87, 18}}</string>
 								<reference key="NSSuperview" ref="2690316"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="586310281"/>
 								<string key="NSReuseIdentifierKey">_NS:33</string>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -7468,8 +7472,7 @@ wGw</bytes>
 						</array>
 						<string key="NSFrame">{{10, 10}, {250, 300}}</string>
 						<reference key="NSSuperview" ref="325647310"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="730813649"/>
+						<reference key="NSNextKeyView" ref="586310281"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="NSsFlags">133136</int>
 						<reference key="NSVScroller" ref="609761378"/>
@@ -7481,8 +7484,6 @@ wGw</bytes>
 					</object>
 				</array>
 				<string key="NSFrameSize">{270, 320}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="2690316"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="NSClassName">NSView</string>
@@ -8621,6 +8622,14 @@ wGw</bytes>
 						<reference key="destination" ref="34530007"/>
 					</object>
 					<int key="connectionID">7060</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showConsole:</string>
+						<reference key="source" ref="674635667"/>
+						<reference key="destination" ref="378256449"/>
+					</object>
+					<int key="connectionID">7063</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -10274,6 +10283,7 @@ wGw</bytes>
 							<reference ref="947143237"/>
 							<reference ref="496781696"/>
 							<reference ref="1048598133"/>
+							<reference ref="378256449"/>
 						</array>
 						<reference key="parent" ref="335211105"/>
 					</object>
@@ -12886,6 +12896,11 @@ wGw</bytes>
 						<reference key="object" ref="609761378"/>
 						<reference key="parent" ref="2690316"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">7062</int>
+						<reference key="object" ref="378256449"/>
+						<reference key="parent" ref="880863334"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -13480,6 +13495,7 @@ wGw</bytes>
 				<string key="7055.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="7056.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="7057.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="7062.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="74.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="77.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="78.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -13496,7 +13512,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">7061</int>
+			<int key="maxID">7063</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -13524,7 +13540,6 @@ wGw</bytes>
 						<string key="activateMainPage:">id</string>
 						<string key="addAccount:">id</string>
 						<string key="addStatement:">id</string>
-						<string key="attachmentClicked:">id</string>
 						<string key="changeAccount:">id</string>
 						<string key="creditCardSettlements:">id</string>
 						<string key="deleteAccount:">id</string>
@@ -13542,12 +13557,11 @@ wGw</bytes>
 						<string key="manageCategories:">id</string>
 						<string key="printDocument:">id</string>
 						<string key="repairSaldo:">id</string>
-						<string key="resetCategoryIcons:">id</string>
 						<string key="resetIsNewStatements:">id</string>
 						<string key="showAboutPanel:">id</string>
+						<string key="showConsole:">id</string>
 						<string key="showLicense:">id</string>
 						<string key="showLog:">id</string>
-						<string key="showTagPopup:">id</string>
 						<string key="sortingChanged:">id</string>
 						<string key="splitPurpose:">id</string>
 						<string key="splitStatement:">id</string>
@@ -13575,10 +13589,6 @@ wGw</bytes>
 						</object>
 						<object class="IBActionInfo" key="addStatement:">
 							<string key="name">addStatement:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="attachmentClicked:">
-							<string key="name">attachmentClicked:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="changeAccount:">
@@ -13649,10 +13659,6 @@ wGw</bytes>
 							<string key="name">repairSaldo:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="resetCategoryIcons:">
-							<string key="name">resetCategoryIcons:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="resetIsNewStatements:">
 							<string key="name">resetIsNewStatements:</string>
 							<string key="candidateClassName">id</string>
@@ -13661,16 +13667,16 @@ wGw</bytes>
 							<string key="name">showAboutPanel:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="showConsole:">
+							<string key="name">showConsole:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="showLicense:">
 							<string key="name">showLicense:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="showLog:">
 							<string key="name">showLog:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showTagPopup:">
-							<string key="name">showTagPopup:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="sortingChanged:">
