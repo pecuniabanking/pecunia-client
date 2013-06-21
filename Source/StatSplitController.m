@@ -100,11 +100,26 @@
             if (cat !=  nil) {
                 [cat invalidateBalance];
                 [Category updateCatValues];
-                //				[catView setNeedsDisplay: YES ];
+                //[catView setNeedsDisplay: YES ];
             }
         }
     }
 }
+
+- (IBAction)categoryChanged:(id)sender
+{
+    NSArray *sel = [splitStatController selectedObjects];
+    if (sel && [sel count] == 1) {
+        StatCatAssignment *stat = sel[0];
+        Category *cat = stat.category;
+        if (cat !=  nil) {
+            [cat invalidateBalance];
+            [Category updateCatValues];
+            //[catView setNeedsDisplay: YES ];
+        }
+    }
+}
+
 
 - (IBAction)manageAssignments: (id)sender
 {

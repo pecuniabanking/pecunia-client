@@ -158,7 +158,8 @@ static CallbackHandler *callbackHandler = nil;
     }
 
     if (pwWindow == nil) {
-        pwWindow = [[PasswordWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP171", nil), data.userId]
+        BankUser *user = [BankUser userWithId:data.userId bankCode:data.bankCode];
+        pwWindow = [[PasswordWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP171", nil), user?user.name:data.userId]
                                                   title: @"Bitte PIN eingeben"];
 
     } else {[pwWindow retry]; }
@@ -185,16 +186,17 @@ static CallbackHandler *callbackHandler = nil;
 
 - (NSString *)getTan: (CallbackData *)data
 {
+    BankUser *user = [BankUser userWithId:data.userId bankCode:data.bankCode];
     if (data.proposal && [data.proposal length] > 0) {
         // FlickerCode
         ChipTanWindowController *controller = [[ChipTanWindowController alloc] initWithCode: data.proposal message: data.message];
-        int                     res = [NSApp runModalForWindow: [controller window]];
+        int res = [NSApp runModalForWindow: [controller window]];
         if (res == 0) {
             return [controller tan];
         } else {return @"<abort>"; }
     }
 
-    TanWindow *tanWindow = [[TanWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP172", nil), data.userId, data.message]];
+    TanWindow *tanWindow = [[TanWindow alloc] initWithText: [NSString stringWithFormat: NSLocalizedString(@"AP172", nil), user?user.name:data.userId, data.message]];
     int       res = [NSApp runModalForWindow: [tanWindow window]];
     [tanWindow close];
     if (res == 0) {

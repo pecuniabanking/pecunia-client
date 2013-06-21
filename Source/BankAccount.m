@@ -189,6 +189,11 @@
     ShortDate              *currentDate = nil;
     NSMutableArray         *newStatements = [NSMutableArray arrayWithCapacity: 50];
 
+    // make sure that balance is defined
+    if (self.balance == nil) {
+        self.balance = [NSDecimalNumber zero];
+    }
+    
     result.oldBalance = self.balance;
     if (result.balance) {
         self.balance = result.balance;
@@ -475,6 +480,11 @@
                                                         inManagedObjectContext: context];
 
     [stmt setValuesForKeysWithDictionary: attributeValues];
+    
+    // make sure value is defined
+    if (stmt.value == nil) {
+        stmt.value = [NSDecimalNumber zero];
+    }
 
     // negate value
     stmt.value = [[NSDecimalNumber zero] decimalNumberBySubtracting: stmt.value];

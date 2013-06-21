@@ -76,11 +76,19 @@
     return res;
 }
 
-- (void)moveAmount: (NSDecimalNumber *)amount toCategory: (Category *)tcat
+- (void)moveAmount: (NSDecimalNumber*)amount toCategory: (Category *)tcat
 {
     StatCatAssignment *stat;
     Category          *scat = self.category;
 
+    if (amount == nil) {
+        return;
+    }
+    
+    if ([amount compare:[NSDecimalNumber zero]] == NSOrderedSame) {
+        return;
+    }
+    
     if ([amount abs] > [self.value abs]) {
         amount = self.value;
     }

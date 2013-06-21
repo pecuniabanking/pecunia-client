@@ -82,7 +82,9 @@ BOOL updateSent = NO;
 
         StatCatAssignment *stat = nil;
         for (stat in stats) {
-            balance = [balance decimalNumberByAdding: stat.value];
+            if (stat.value != nil) {
+                balance = [balance decimalNumberByAdding: stat.value];
+            }
         }
         if (stat) {
             NSString *curr = stat.statement.currency;
@@ -131,6 +133,10 @@ BOOL updateSent = NO;
 - (NSDecimalNumber *)rollup
 {
     NSDecimalNumber *res = self.balance;
+    if (res == nil) {
+        res = [NSDecimalNumber zero];
+    }
+    
     hiddenChildren = 0;
     for (Category *category in self.children) {
         NSDecimalNumber *childResult = [category rollup];

@@ -37,5 +37,6 @@
 - (id)initWithStatement: (BankStatement *)stat view: (NSView *)view;
 
 - (IBAction)manageAssignments: (id)sender;
+- (IBAction)categoryChanged:(id)sender;
 
 @end
