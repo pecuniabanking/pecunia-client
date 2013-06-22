@@ -205,11 +205,11 @@ extern void *UserDefaultsBindingContext;
         [self loadDataForIndex: rowIndex];
         rowValues = balances[rowIndex];
     }
-    Category   *cat = [[outline itemAtRow: rowIndex] representedObject];
+    Category   *cat = [[outline itemAtRow: rowIndex + 1] representedObject];
     AmountCell *cell = valueGrid.cell;
     cell.currency = cat.currency;
 
-    columnIndex +=  fromIndex;
+    columnIndex += fromIndex;
     return ([rowValues count] > columnIndex) ? rowValues[columnIndex] : @"";
 }
 
@@ -361,18 +361,18 @@ extern void *UserDefaultsBindingContext;
         [[[outline itemAtRow: 0] representedObject] getDatesMin: &min max: &max];
         switch (groupingInterval) {
             case GroupByYears:
-                minDate = [min firstDayInYear];
-                maxDate = [max firstDayInYear];
+                minDate = [min lastDayInYear];
+                maxDate = [max lastDayInYear];
                 break;
 
             case GroupByQuarters:
-                minDate = [min firstDayInQuarter];
-                maxDate = [max firstDayInQuarter];
+                minDate = [min lastDayInQuarter];
+                maxDate = [max lastDayInQuarter];
                 break;
 
             default:
-                minDate = [min firstDayInMonth];
-                maxDate = [max firstDayInMonth];
+                minDate = [min lastDayInMonth];
+                maxDate = [max lastDayInMonth];
         }
 
         ShortDate *date = minDate;
@@ -404,7 +404,7 @@ extern void *UserDefaultsBindingContext;
     toSlider.maxValue = dates.count - 1;
     if (toIndex > toSlider.maxValue) {
         toIndex = toSlider.maxValue;
-        fromSlider.intValue = toIndex;
+        toSlider.intValue = toIndex;
     }
     [self updateLimitLabel: toText index: toIndex];
 
@@ -424,7 +424,7 @@ extern void *UserDefaultsBindingContext;
                 balances: &nodeBalances
            balanceCounts: &nodeTurnovers
             withGrouping: groupingInterval
-                   sumUp: item.isBankAccount];
+                   sumUp: NO];
 
     if (nodeDates == nil) {
         nodeDates = @[]; // Just to avoid frequent checks in the loop below.
@@ -461,19 +461,19 @@ extern void *UserDefaultsBindingContext;
         return;
     }
     
-    ShortDate *selFromDate = dates[columnIndex + fromIndex];
-    ShortDate *selToDate;
+    ShortDate *selFromDate;
+    ShortDate *selToDate = dates[columnIndex + fromIndex];
     switch (groupingInterval) {
         case GroupByYears:
-            selToDate = [selFromDate lastDayInYear];
+            selFromDate = [selToDate firstDayInYear];
             break;
 
         case GroupByQuarters:
-            selToDate = [selFromDate lastDayInQuarter];
+            selFromDate = [selToDate firstDayInQuarter];
             break;
 
         default:
-            selToDate = [selFromDate lastDayInMonth];
+            selFromDate = [selToDate firstDayInMonth];
             break;
     }
 
@@ -723,8 +723,8 @@ extern void *UserDefaultsBindingContext;
 
     // Reload the grid data, but not before the current run loop ended. Otherwise we end
     // up with a wrong number of rows (predicate changes in the tree controller are applied to the
-    // outline not before the end of the current run loop.
-    [self performSelector: @selector(updateData) withObject: nil afterDelay: 0.25];
+    // outline not before the end of the current run loop).
+    [self performSelector: @selector(updateData) withObject: nil afterDelay: 0];
 }
 
 - (void)deactivate
