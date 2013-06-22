@@ -1005,9 +1005,11 @@ NSString * escapeSpecial(NSString *s)
         NSInteger maxStatDays = 0;
         if ([[NSUserDefaults standardUserDefaults] boolForKey: @"limitStatsAge"]) {
             maxStatDays = [[NSUserDefaults standardUserDefaults] integerForKey: @"maxStatDays"];
+            /* do not restrict horizon to 90 days by default any more (too many complaints)
             if (maxStatDays == 0) {
                 maxStatDays = 90;
             }
+            */ 
         }
 
         if (result.account.latestTransferDate == nil && maxStatDays > 0) {

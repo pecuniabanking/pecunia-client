@@ -104,8 +104,8 @@
 "AP168" = "Das von Ihnen gewählte Passwort ist nicht sicher. Bitte wählen Sie ein Passwort mit mindestens 8 Zeichen";
 "AP169" = "Die angegebenen Passwörter stimmen nicht überein";
 "AP170" = "Das eingegebene Passwort ist falsch";
-"AP171" = "Bitte geben Sie die PIN für Benutzerkennung %@ ein";
-"AP172" = "Bitte geben Sie die TAN für Benutzerkennung %@ ein: %@";
+"AP171" = "Bitte geben Sie die PIN für Benutzerkennung '%@' ein";
+"AP172" = "Bitte geben Sie die TAN für Benutzerkennung '%@' ein: %@";
 "AP173" = "Datensicherheit";
 "AP174" = "Backups schützen vor Datenverlust. Wenn Sie die Verschlüsselung einschalten sind regelmäßige Backups unerlässlich, da eine verschlüsselte Datei auch von Experten nicht repariert werden kann! Möchten Sie die Daten verschlüsseln?";
 
