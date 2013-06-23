@@ -198,6 +198,7 @@
 							<string key="NSFrame">{{0, 20}, {1200, 680}}</string>
 							<reference key="NSSuperview" ref="996798234"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView" ref="641812421"/>
 							<array class="NSMutableArray" key="NSTabViewItems">
 								<object class="NSTabViewItem" id="177750096">
 									<string key="NSIdentifier">1</string>
@@ -1734,7 +1735,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																							<int key="NSCellFlags">68157504</int>
 																							<int key="NSCellFlags2">272630784</int>
 																							<string key="NSContents">Ausgewählt</string>
-																							<object class="NSFont" key="NSSupport" id="288244427">
+																							<object class="NSFont" key="NSSupport" id="347143925">
 																								<string key="NSName">HelveticaNeue-Light</string>
 																								<double key="NSSize">10</double>
 																								<int key="NSfFlags">16</int>
@@ -1795,7 +1796,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																							<int key="NSCellFlags">68157504</int>
 																							<int key="NSCellFlags2">272630784</int>
 																							<string key="NSContents">Umsätze</string>
-																							<reference key="NSSupport" ref="288244427"/>
+																							<reference key="NSSupport" ref="347143925"/>
 																							<string key="NSCellIdentifier">_NS:1535</string>
 																							<reference key="NSControlView" ref="238471389"/>
 																							<reference key="NSBackgroundColor" ref="537281325"/>
@@ -2142,7 +2143,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																										<string key="NSFrameSize">{516, 113}</string>
 																										<reference key="NSSuperview" ref="470987086"/>
 																										<reference key="NSWindow"/>
-																										<reference key="NSNextKeyView" ref="395855179"/>
+																										<reference key="NSNextKeyView" ref="377464508"/>
 																										<string key="NSClassName">PXListDocumentView</string>
 																									</object>
 																								</array>
@@ -2184,7 +2185,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																						<string key="NSFrame">{{20, 59}, {790, 197}}</string>
 																						<reference key="NSSuperview" ref="475239580"/>
 																						<reference key="NSWindow"/>
-																						<reference key="NSNextKeyView" ref="470987086"/>
+																						<reference key="NSNextKeyView" ref="395855179"/>
 																						<int key="NSsFlags">133648</int>
 																						<reference key="NSVScroller" ref="377464508"/>
 																						<reference key="NSHScroller" ref="395855179"/>
@@ -3502,7 +3503,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																								<string key="NSFrameSize">{153, 70}</string>
 																								<reference key="NSSuperview" ref="679719261"/>
 																								<reference key="NSWindow"/>
-																								<reference key="NSNextKeyView" ref="313999197"/>
+																								<reference key="NSNextKeyView" ref="34530007"/>
 																								<object class="NSTextContainer" key="NSTextContainer" id="6843">
 																									<object class="NSLayoutManager" key="NSLayoutManager">
 																										<object class="NSTextStorage" key="NSTextStorage">
@@ -3623,7 +3624,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{391, 88}, {153, 70}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView" ref="679719261"/>
+																				<reference key="NSNextKeyView" ref="313999197"/>
 																				<int key="NSsFlags">133648</int>
 																				<reference key="NSVScroller" ref="715429031"/>
 																				<reference key="NSHScroller" ref="313999197"/>
@@ -3646,7 +3647,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																								<string key="NSFrameSize">{215, 75}</string>
 																								<reference key="NSSuperview" ref="909982314"/>
 																								<reference key="NSWindow"/>
-																								<reference key="NSNextKeyView" ref="117266648"/>
+																								<reference key="NSNextKeyView" ref="498920341"/>
 																								<object class="NSTextContainer" key="NSTextContainer" id="560996048">
 																									<object class="NSLayoutManager" key="NSLayoutManager">
 																										<object class="NSTextStorage" key="NSTextStorage">
@@ -3744,7 +3745,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{168, 83}, {215, 75}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView" ref="909982314"/>
+																				<reference key="NSNextKeyView" ref="117266648"/>
 																				<int key="NSsFlags">133680</int>
 																				<reference key="NSVScroller" ref="644377234"/>
 																				<reference key="NSHScroller" ref="117266648"/>
@@ -3806,7 +3807,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{170, 34}, {625, 18}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView" ref="569487988"/>
+																				<reference key="NSNextKeyView" ref="768391083"/>
 																				<bool key="NSEnabled">YES</bool>
 																				<object class="NSTextFieldCell" key="NSCell" id="82837621">
 																					<int key="NSCellFlags">68157504</int>
@@ -4299,6 +4300,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 							<string key="NSFrame">{{1162, 2}, {16, 16}}</string>
 							<reference key="NSSuperview" ref="996798234"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="469519529">
@@ -7017,7 +7019,7 @@ wGw</bytes>
 												<string key="NSFrameSize">{249, 42}</string>
 												<reference key="NSSuperview" ref="282730464"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="722625013"/>
+												<reference key="NSNextKeyView" ref="360928738"/>
 												<object class="NSTextContainer" key="NSTextContainer" id="789019817">
 													<object class="NSLayoutManager" key="NSLayoutManager">
 														<object class="NSTextStorage" key="NSTextStorage">
@@ -7116,7 +7118,7 @@ wGw</bytes>
 								<string key="NSFrame">{{10, 10}, {249, 42}}</string>
 								<reference key="NSSuperview" ref="1007349018"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="282730464"/>
+								<reference key="NSNextKeyView" ref="722625013"/>
 								<int key="NSsFlags">133648</int>
 								<reference key="NSVScroller" ref="722625013"/>
 								<reference key="NSHScroller" ref="89424374"/>
@@ -7150,7 +7152,7 @@ wGw</bytes>
 												<string key="NSFrameSize">{253, 42}</string>
 												<reference key="NSSuperview" ref="660939744"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="545027783"/>
+												<reference key="NSNextKeyView" ref="1018237781"/>
 												<object class="NSTextContainer" key="NSTextContainer" id="359784301">
 													<object class="NSLayoutManager" key="NSLayoutManager">
 														<object class="NSTextStorage" key="NSTextStorage">
@@ -7234,7 +7236,7 @@ wGw</bytes>
 								<string key="NSFrame">{{7, 10}, {253, 42}}</string>
 								<reference key="NSSuperview" ref="571516370"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="660939744"/>
+								<reference key="NSNextKeyView" ref="545027783"/>
 								<int key="NSsFlags">133648</int>
 								<reference key="NSVScroller" ref="1018237781"/>
 								<reference key="NSHScroller" ref="545027783"/>
@@ -7299,6 +7301,7 @@ wGw</bytes>
 						<string key="NSFrame">{{131, 34}, {646, 18}}</string>
 						<reference key="NSSuperview" ref="687681911"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="240277940">
 							<int key="NSCellFlags">68157504</int>
@@ -7374,7 +7377,7 @@ wGw</bytes>
 										<string key="NSFrameSize">{250, 300}</string>
 										<reference key="NSSuperview" ref="586310281"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="730813649"/>
+										<reference key="NSNextKeyView" ref="609761378"/>
 										<string key="NSReuseIdentifierKey">_NS:13</string>
 										<object class="NSTextContainer" key="NSTextContainer" id="577168849">
 											<object class="NSLayoutManager" key="NSLayoutManager">
@@ -7449,6 +7452,7 @@ wGw</bytes>
 								<string key="NSFrame">{{234, 0}, {16, 300}}</string>
 								<reference key="NSSuperview" ref="2690316"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:83</string>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 								<reference key="NSTarget" ref="2690316"/>
@@ -7475,7 +7479,7 @@ wGw</bytes>
 						<string key="NSFrame">{{10, 10}, {250, 300}}</string>
 						<reference key="NSSuperview" ref="325647310"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="586310281"/>
+						<reference key="NSNextKeyView" ref="730813649"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="NSsFlags">133136</int>
 						<reference key="NSVScroller" ref="609761378"/>
@@ -7585,6 +7589,7 @@ wGw</bytes>
 					<string key="NSEntityName">StatCatAssignment</string>
 				</object>
 				<bool key="_NSIsUsingManagedProxy">YES</bool>
+				<bool key="NSPreservesSelection">YES</bool>
 				<bool key="NSSelectsInsertedObjects">YES</bool>
 				<bool key="NSFilterRestrictsInsertion">YES</bool>
 				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>

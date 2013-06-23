@@ -4013,7 +4013,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
         case 4:
             statementsListView.canShowHeaders = NO;
-            key = @"statement.value";
+            key = @"value";
             break;
 
         default: {
