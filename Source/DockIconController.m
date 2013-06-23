@@ -19,6 +19,7 @@
 
 #import "DockIconController.h"
 #import "BankStatement.h"
+#include "BankAccount.h"
 
 @implementation DockIconController
 
@@ -48,7 +49,7 @@
     NSSet        *updatedObjects = userInfoDictionary[NSUpdatedObjectsKey];
 
     for (id value in updatedObjects) {
-        if ([value isKindOfClass: [BankStatement class]]) {
+        if ([value isKindOfClass: [BankStatement class]] || [value isKindOfClass: [BankAccount class]]) {
             [self updateBadge];
             break;
         }

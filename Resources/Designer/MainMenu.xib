@@ -1735,7 +1735,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																							<int key="NSCellFlags">68157504</int>
 																							<int key="NSCellFlags2">272630784</int>
 																							<string key="NSContents">Ausgewählt</string>
-																							<object class="NSFont" key="NSSupport" id="347143925">
+																							<object class="NSFont" key="NSSupport" id="155164686">
 																								<string key="NSName">HelveticaNeue-Light</string>
 																								<double key="NSSize">10</double>
 																								<int key="NSfFlags">16</int>
@@ -1796,7 +1796,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																							<int key="NSCellFlags">68157504</int>
 																							<int key="NSCellFlags2">272630784</int>
 																							<string key="NSContents">Umsätze</string>
-																							<reference key="NSSupport" ref="347143925"/>
+																							<reference key="NSSupport" ref="155164686"/>
 																							<string key="NSCellIdentifier">_NS:1535</string>
 																							<reference key="NSControlView" ref="238471389"/>
 																							<reference key="NSBackgroundColor" ref="537281325"/>
@@ -3807,7 +3807,7 @@ AEsAIABQAHIAbwBmAGkAbABlAAA</bytes>
 																				<string key="NSFrame">{{170, 34}, {625, 18}}</string>
 																				<reference key="NSSuperview" ref="1065472318"/>
 																				<reference key="NSWindow"/>
-																				<reference key="NSNextKeyView" ref="768391083"/>
+																				<reference key="NSNextKeyView" ref="569487988"/>
 																				<bool key="NSEnabled">YES</bool>
 																				<object class="NSTextFieldCell" key="NSCell" id="82837621">
 																					<int key="NSCellFlags">68157504</int>
@@ -7585,6 +7585,7 @@ wGw</bytes>
 					<string>statement.currencySymbol</string>
 				</array>
 				<string key="NSObjectClassName">Account</string>
+				<bool key="NSAutomaticallyPreparesContent">YES</bool>
 				<object class="_NSManagedProxy" key="_NSManagedProxy">
 					<string key="NSEntityName">StatCatAssignment</string>
 				</object>
@@ -8643,19 +8644,19 @@ wGw</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentSet: selection.reportedAssignments</string>
+						<string key="label">contentArray: selection.boundAssignments</string>
 						<reference key="source" ref="107188715"/>
 						<reference key="destination" ref="122791859"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="107188715"/>
 							<reference key="NSDestination" ref="122791859"/>
-							<string key="NSLabel">contentSet: selection.reportedAssignments</string>
-							<string key="NSBinding">contentSet</string>
-							<string key="NSKeyPath">selection.reportedAssignments</string>
+							<string key="NSLabel">contentArray: selection.boundAssignments</string>
+							<string key="NSBinding">contentArray</string>
+							<string key="NSKeyPath">selection.boundAssignments</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">6861</int>
+					<int key="connectionID">7070</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -13530,7 +13531,7 @@ wGw</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">7064</int>
+			<int key="maxID">7070</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -13580,6 +13581,7 @@ wGw</bytes>
 						<string key="showConsole:">id</string>
 						<string key="showLicense:">id</string>
 						<string key="showLog:">id</string>
+						<string key="showTagPopup:">id</string>
 						<string key="sortingChanged:">id</string>
 						<string key="splitPurpose:">id</string>
 						<string key="splitStatement:">id</string>
@@ -13695,6 +13697,10 @@ wGw</bytes>
 						</object>
 						<object class="IBActionInfo" key="showLog:">
 							<string key="name">showLog:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showTagPopup:">
+							<string key="name">showTagPopup:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="sortingChanged:">

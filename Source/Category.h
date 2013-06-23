@@ -70,7 +70,7 @@ typedef struct {
 
 @property (nonatomic, strong) NSColor              *categoryColor; // Unarchived catRepColor.
 @property (nonatomic, strong) NSArray              *reportedAssignments; // assignments between start and end report date
-@property (nonatomic, readonly, weak) NSMutableSet *boundAssignments; // assignments bound to / displayed in a statements table view
+@property (nonatomic, readonly) NSArray *boundAssignments; // assignments bound to / displayed in a statements table view
 
 - (void)updateInvalidCategoryValues;
 - (void)invalidateBalance;

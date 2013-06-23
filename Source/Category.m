@@ -391,9 +391,11 @@ BOOL updateSent = NO;
     return limits;
 }
 
-// returns all assignments for the specified period
-// if the period equals the reporting period, the assignments are cached / retrieved from cache
-// the cache always only contains assignments directly belonging to the current category, not those from child categories!
+/** Returns all assignments for the specified period if the period equals the reporting period.
+ * The assignments are cached / retrieved from cache for quicker response.
+ * The cache always only contains assignments directly belonging to the current category, not those from child categories!
+ * TODO: is this really a good decision to not cache also child values?
+ */
 - (NSArray *)assignmentsFrom: (ShortDate *)fromDate to: (ShortDate *)toDate withChildren: (BOOL)includeChildren
 {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity: 100];
@@ -403,12 +405,14 @@ BOOL updateSent = NO;
             [result addObjectsFromArray: [category assignmentsFrom: fromDate to: toDate withChildren: YES]];
         }
     }
-    // check if we can take the assignments from cache
+
+    // Check if we can take the assignments from cache.
     if ([fromDate isEqual: startReportDate] && [toDate isEqual: endReportDate] && self.reportedAssignments != nil) {
         [result addObjectsFromArray: self.reportedAssignments];
         return result;
     }
-    // fetch all relevant statements
+
+    // Fetch all relevant statements.
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSFetchRequest         *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription    *entity = [NSEntityDescription entityForName: @"StatCatAssignment" inManagedObjectContext: context];
@@ -424,9 +428,10 @@ BOOL updateSent = NO;
     if (fetchedObjects != nil) {
         [result addObjectsFromArray: fetchedObjects];
     }
-    // cache assignments
+
+    // Now cache the assignments.
     if ([fromDate isEqual: startReportDate] && [toDate isEqual: endReportDate]) {
-        self.reportedAssignments = [fetchedObjects copy];
+        self.reportedAssignments = fetchedObjects;
     }
     return result;
 }
@@ -621,11 +626,11 @@ BOOL updateSent = NO;
  * Returns a set of all assignments displayed in the transaction list for this category.
  * Takes setting "recursiveTransactions" into account, i.e. whether also assignments of sub categories should be displayed.
  */
-- (NSMutableSet *)boundAssignments
+- (NSArray *)boundAssignments
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray        *assignments = [self assignmentsFrom: startReportDate to: endReportDate withChildren: [defaults boolForKey: @"recursiveTransactions"]];
-    return [NSMutableSet setWithArray: assignments];
+    return assignments;
 }
 
 /**

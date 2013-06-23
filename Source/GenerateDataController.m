@@ -241,7 +241,7 @@
             BankUser *user = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser"
                                                            inManagedObjectContext: context];
             user.name = bank;
-            user.bankCode = @"1234567890";
+            user.bankCode = [NSString stringWithFormat: @"%i", arc4random_uniform(99999999)];
             user.bankName = bank;
             user.bankURL = @"http://noip.com";
             user.port = @"1";
@@ -287,7 +287,7 @@
                 //newAccount.iban = account.iban;
                 //newAccount.bic = account.bic;
                 //newAccount.owner = account.owner;
-                newAccount.accountNumber = @"12341234";
+                newAccount.accountNumber = [NSString stringWithFormat: @"%i", arc4random_uniform(19999999)];
                 newAccount.name = accountName;
                 newAccount.currency = bankRoot.currency;
                 newAccount.country = bankRoot.country;

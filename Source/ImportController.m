@@ -48,11 +48,13 @@
 
 @implementation FileEntry
 
+@synthesize children;
+
 - (id)init
 {
     self = [super init];
     if (self != nil) {
-        _children = [NSMutableArray arrayWithCapacity: 10];
+        children = [NSMutableArray arrayWithCapacity: 10];
     }
     return self;
 }
@@ -267,7 +269,7 @@
         importValues = [NSMutableArray arrayWithCapacity: 10];
         textFont = [NSFont fontWithName: @"AndaleMono" size: 11];
 
-        managedObjectContext = MOAssistant.assistant.context;
+        managedObjectContext = MOAssistant.assistant.context; // For the accounts list.
         fileNames = [NSMutableSet setWithCapacity: 10];
     }
     return self;
@@ -847,12 +849,15 @@
 
 - (void)startImport
 {
-    BankAccount *account = [BankAccount accountWithNumber: currentSettings.accountNumber subNumber: currentSettings.accountSuffix bankCode: currentSettings.bankCode];
+    BankAccount *account = [BankAccount accountWithNumber: currentSettings.accountNumber
+                                                subNumber: currentSettings.accountSuffix
+                                                 bankCode: currentSettings.bankCode];
+    NSManagedObjectContext *context = MOAssistant.assistant.memContext;
 
     NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 100];
     for (NSDictionary *entry in parsedValues) {
         BankStatement *statement = [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement"
-                                                                 inManagedObjectContext: managedObjectContext];
+                                                                 inManagedObjectContext: context];
 
         [entry enumerateKeysAndObjectsUsingBlock:
          ^(id key, id obj, BOOL *stop) {

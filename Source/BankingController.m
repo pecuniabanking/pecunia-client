@@ -763,8 +763,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     moveCursor = [[NSCursor alloc] initWithImage: [NSImage imageNamed: @"move-cursor"] hotSpot: NSMakePoint(18, 6)];
     [WorkerThread init];
 
-    [categoryAssignments bind: @"contentSet" toObject: categoryController withKeyPath: @"selection.boundAssignments" options: nil];
-
     [categoryController addObserver: self forKeyPath: @"arrangedObjects.catSum" options: 0 context: nil];
     [categoryAssignments addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
 
@@ -1480,12 +1478,12 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     // issue a confirmation
     int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP802", nil),
                                       NSLocalizedString(@"AP812", nil),
-                                      NSLocalizedString(@"AP4", nil),
                                       NSLocalizedString(@"AP3", nil),
+                                      NSLocalizedString(@"AP4", nil),
                                       nil,
                                       account.accountNumber
                                       );
-    if (res != NSAlertAlternateReturn) {
+    if (res != NSAlertDefaultReturn) {
         return;
     }
 
@@ -2900,8 +2898,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     if (!doDuplicateCheck) {
         int result = NSRunAlertPanel(NSLocalizedString(@"AP806", nil),
                                      NSLocalizedString(@"AP809", nil),
-                                     NSLocalizedString(@"AP4", nil),
                                      NSLocalizedString(@"AP3", nil),
+                                     NSLocalizedString(@"AP4", nil),
                                      nil, assignments.count);
         if (result != NSAlertDefaultReturn) {
             return;
@@ -2961,7 +2959,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
             deleteStatement = YES;
         }
 
-        if (deleteStatement == YES) {
+        if (deleteStatement) {
             [self.managedObjectContext deleteObject: statement];
 
             // Rebuild balances - only for manual accounts.
@@ -2982,16 +2980,18 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
             }
         }
     }
-    // Cleanup.
-    [account rebuildValues];
+    
+    // Refresh content array of categoryAssignments.
+    [account updateBoundAssignments];
 
-    // Special behaviour for top bank accounts
+    // Special behaviour for top bank accounts.
     if (account.accountNumber == nil) {
         [self.managedObjectContext processPendingChanges];
         [account updateBoundAssignments];
     }
 
     [[Category bankRoot] rollup];
+    [categoryAssignments prepareContent];
 }
 
 - (void)splitStatement: (id)sender
@@ -3023,10 +3023,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     if (res) {
         [categoryAssignments rearrangeObjects];
 
-        // statement was created
+        // Statement was created. Save changes.
         NSError *error = nil;
-
-        // save updates
         if ([self.managedObjectContext save: &error] == NO) {
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
