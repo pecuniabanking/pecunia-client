@@ -899,13 +899,9 @@
 		27CBA24416F60EFB00C2AC04 /* AdditionalControls.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdditionalControls.m; sourceTree = "<group>"; };
 		27CBF352174A49E30062E2A9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		27CBF357174A4A0B0062E2A9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text; name = de; path = "de.lproj/category-icon-defaults.txt"; sourceTree = "<group>"; };
-		27CBF35A174A4A100062E2A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "en.lproj/category-icon-defaults.txt"; sourceTree = "<group>"; };
 		27CBF35C174A4A1D0062E2A9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = de; path = "de.lproj/category-analysis-help.rtf"; sourceTree = "<group>"; };
 		27CBF35E174A4A1E0062E2A9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = de; path = "de.lproj/category-heatmap-help.rtf"; sourceTree = "<group>"; };
 		27CBF360174A4A1E0062E2A9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = de; path = "de.lproj/category-reporting-help.rtf"; sourceTree = "<group>"; };
-		27CBF367174A4A250062E2A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = "en.lproj/category-analysis-help.rtf"; sourceTree = "<group>"; };
-		27CBF368174A4A2B0062E2A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = "en.lproj/category-heatmap-help.rtf"; sourceTree = "<group>"; };
-		27CBF369174A4A2E0062E2A9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = "en.lproj/category-reporting-help.rtf"; sourceTree = "<group>"; };
 		27CBF36A174A4C5F0062E2A9 /* About.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = About.xib; sourceTree = "<group>"; };
 		27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NS(Attributed)String+Geometrics.h"; sourceTree = "<group>"; };
 		27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NS(Attributed)String+Geometrics.m"; sourceTree = "<group>"; };
@@ -986,14 +982,13 @@
 		B1014C66101A37E800ABA1FF /* DonationMessageController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = DonationMessageController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1029E100E3FA1D700CC681B /* CategoryDefWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryDefWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1029E110E3FA1D700CC681B /* CategoryDefWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryDefWindowController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B10CA955174C16AC00FE5AF9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PurposeSplitRule.h; sourceTree = "<group>"; tabWidth = 4; };
 		B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PurposeSplitRule.m; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AB0D8EFC8300F00E60 /* MOAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MOAssistant.h; sourceTree = "<group>"; tabWidth = 4; };
 		B10F77AC0D8EFC8300F00E60 /* MOAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MOAssistant.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "container-migration.plist"; sourceTree = "<group>"; };
 		B124F09D0C36F3E8001065C2 /* BankStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatement.h; sourceTree = "<group>"; tabWidth = 4; };
-		B124F09E0C36F3E8001065C2 /* BankStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatement.m; sourceTree = "<group>"; tabWidth = 4; };
+		B124F09E0C36F3E8001065C2 /* BankStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatement.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B124F10F0C371384001065C2 /* BankAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankAccount.h; sourceTree = "<group>"; tabWidth = 4; };
 		B124F1100C371384001065C2 /* BankAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccount.m; sourceTree = "<group>"; tabWidth = 4; };
 		B126CC21157018FC0065EAC1 /* printer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = printer.png; sourceTree = "<group>"; };
@@ -2937,7 +2932,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				27CBF352174A49E30062E2A9 /* de */,
-				B10CA955174C16AC00FE5AF9 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -2946,7 +2940,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				27CBF357174A4A0B0062E2A9 /* de */,
-				27CBF35A174A4A100062E2A9 /* en */,
 			);
 			name = "category-icon-defaults.txt";
 			sourceTree = "<group>";
@@ -2955,7 +2948,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				27CBF35C174A4A1D0062E2A9 /* de */,
-				27CBF367174A4A250062E2A9 /* en */,
 			);
 			name = "category-analysis-help.rtf";
 			sourceTree = "<group>";
@@ -2964,7 +2956,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				27CBF35E174A4A1E0062E2A9 /* de */,
-				27CBF368174A4A2B0062E2A9 /* en */,
 			);
 			name = "category-heatmap-help.rtf";
 			sourceTree = "<group>";
@@ -2973,7 +2964,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				27CBF360174A4A1E0062E2A9 /* de */,
-				27CBF369174A4A2E0062E2A9 /* en */,
 			);
 			name = "category-reporting-help.rtf";
 			sourceTree = "<group>";

@@ -479,6 +479,26 @@ static NSGradient *headerGradient;
     return [defaults boolForKey: @"showHiddenCategories"];
 }
 
++ (NSString*)mainFontName
+{
+    return @"HelveticaNeue-Light";
+}
+
++ (NSString*)mainFontNameBold
+{
+    return @"HelveticaNeueMedium";
+}
+
++ (NSString*)mainFontNameLight
+{
+    return @"HelveticaNeue-UltraLight";
+}
+
++ (NSString*)popoverFontName
+{
+    return @"HelveticaNeue-Light";
+}
+
 #pragma mark -
 #pragma mark ListView delegate protocol
 

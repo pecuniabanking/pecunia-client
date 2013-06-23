@@ -131,6 +131,24 @@ BOOL stringEqual(NSString *a, NSString *b)
     return [a isEqualToString: b];
 }
 
+static NSRegularExpression *ibanRE;
+static NSRegularExpression *bicRE;
+
++ (void)initialize
+{
+    // Can be called multiple times, so just take care not to initialize more than once.
+    if (ibanRE == nil) {
+        ibanRE = [NSRegularExpression regularExpressionWithPattern: @"[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}"
+                                                           options: 0
+                                                             error: nil];
+    }
+    if (bicRE == nil) {
+        bicRE = [NSRegularExpression regularExpressionWithPattern: @"([a-zA-Z]{4}[a-zA-Z]{2}[a-zA-Z0-9]{2}([a-zA-Z0-9]{3})?)"
+                                                          options: 0
+                                                            error: nil];
+    }
+}
+
 - (NSString *)categoriesDescription
 {
     NSMutableSet      *stats = [self mutableSetValueForKey: @"assignments"];
@@ -208,6 +226,45 @@ BOOL stringEqual(NSString *a, NSString *b)
 
     // See if there is some value left that is not yet assigned to a category.
     [self updateAssigned];
+}
+
+/**
+ * Runs some checks for values that are in wrong locations or missing etc. and corrects those.
+ */
+- (void)sanitize
+{
+    // 1) Sanity check for date/valutaDate.
+    if (self.valutaDate == nil) {
+        if (self.date != nil) {
+            self.valutaDate = self.date;
+        } else {
+            self.valutaDate = [NSDate date];
+        }
+    }
+
+    // 2) Check remote bank code, account number, IBAN and BIC.
+    //    Move info in the correct fields if they are wrong.
+    if (self.remoteIBAN == nil && self.remoteAccount != nil) {
+        NSRange range = [ibanRE rangeOfFirstMatchInString: self.remoteAccount
+                                                  options: NSMatchingAnchored
+                                                    range: NSMakeRange(0, self.remoteAccount.length)];
+
+        if (range.length > 0) {
+            self.remoteIBAN = self.remoteAccount;
+            self.remoteAccount = nil;
+        }
+    }
+
+    if (self.remoteBIC == nil && self.remoteBankCode != nil) {
+        NSRange range = [bicRE rangeOfFirstMatchInString: self.remoteBankCode
+                                                 options: NSMatchingAnchored
+                                                   range: NSMakeRange(0, self.remoteBankCode.length)];
+
+        if (range.length > 0) {
+            self.remoteBIC = self.remoteBankCode;
+            self.remoteBankCode = nil;
+        }
+    }
 }
 
 - (BOOL)matches: (BankStatement *)stat

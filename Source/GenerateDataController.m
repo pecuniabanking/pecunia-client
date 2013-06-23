@@ -474,7 +474,7 @@
                 }
             }
             for (BankAccount *account in accounts) {
-                [account repairStatementBalances];
+                [account doMaintenance];
             }
         }
         [root rollup];

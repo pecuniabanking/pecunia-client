@@ -728,7 +728,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     if (tableColumn) {
         ImageAndTextCell *cell = (ImageAndTextCell *)[tableColumn dataCell];
         if (cell) {
-            [cell setFont: [NSFont fontWithName: @"Lucida Grande" size: 13]];
+            [cell setFont: [NSFont fontWithName: PreferenceController.mainFontName size: 13]];
 
             // update unread information
             NSInteger maxUnread = [BankAccount maxUnread];
@@ -765,7 +765,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     [categoryAssignments bind: @"contentSet" toObject: categoryController withKeyPath: @"selection.boundAssignments" options: nil];
 
-    // todo [self migrate];
     [categoryController addObserver: self forKeyPath: @"arrangedObjects.catSum" options: 0 context: nil];
     [categoryAssignments addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
 
@@ -3335,20 +3334,20 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 - (void)applicationWillFinishLaunching: (NSNotification *)notification
 {
     /*
-     // Check License Agreement
-     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-     BOOL licenseAgreed = [defaults boolForKey:@"licenseAgreed" ];
-     if (licenseAgreed == NO) {
-     int result = [NSApp runModalForWindow:licenseWindow ];
-     if (result == 1) {
-     [NSApp terminate:nil ];
-     return;
-     } else {
-     [defaults setBool:YES forKey:@"licenseAgreed" ];
-     }
-     }
-     */
-
+    // Check License Agreement
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
+    BOOL licenseAgreed = [defaults boolForKey:@"licenseAgreed" ];
+    if (licenseAgreed == NO) {
+        int result = [NSApp runModalForWindow:licenseWindow ];
+        if (result == 1) {
+            [NSApp terminate:nil ];
+            return;
+        } else {
+            [defaults setBool:YES forKey:@"licenseAgreed" ];
+        }
+    }
+    */
+    
     // Display main window
     [mainWindow display];
     [mainWindow makeKeyAndOrderFront: self];
@@ -3361,36 +3360,13 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     mainVSplit.fixedIndex = 0;
 
     tagViewPopup.datasource = tagsController;
-    tagViewPopup.defaultFont = [NSFont fontWithName: @"HelveticaNeue" size: 10];
+    tagViewPopup.defaultFont = [NSFont fontWithName: PreferenceController.popoverFontName size: 10];
     tagViewPopup.canCreateNewTags = YES;
 
     tagsField.datasource = statementTags;
-    tagsField.defaultFont = [NSFont fontWithName: @"HelveticaNeue" size: 10];
+    tagsField.defaultFont = [NSFont fontWithName: PreferenceController.popoverFontName size: 10];
     tagsField.canCreateNewTags = YES;
 
-    /*
-     // Open encrypted database
-     if ([[MOAssistant assistant] encrypted]) {
-     StatusBarController *sc = [StatusBarController controller];
-     [sc startSpinning];
-     [sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter:0];
-
-     @try {
-     [[MOAssistant assistant] decrypt];
-     self.managedObjectContext = [[MOAssistant assistant] context];
-     }
-     @catch(NSError* error) {
-     NSAlert *alert = [NSAlert alertWithError:error];
-     [alert runModal];
-     [NSApp terminate: self];
-     }
-     [self publishContext];
-     [sc stopSpinning];
-     [sc clearMessage];
-     }
-
-     [self migrate];
-     */
 }
 
 - (void)applicationDidFinishLaunching: (NSNotification *)aNotification
@@ -3597,7 +3573,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
 }
 
-- (IBAction)repairSaldo: (id)sender
+- (IBAction)accountMaintenance: (id)sender
 {
     NSError     *error = nil;
     BankAccount *account = nil;
@@ -3607,7 +3583,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
     account = (BankAccount *)cat;
 
-    [account repairStatementBalances];
+    [account doMaintenance];
 
     // save updates
     if ([self.managedObjectContext save: &error] == NO) {

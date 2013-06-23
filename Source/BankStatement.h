@@ -46,6 +46,7 @@ typedef enum {
 - (void)changeValueTo: (NSDecimalNumber *)val;
 
 - (void)addToAccount: (BankAccount *)account;
+- (void)sanitize;
 
 - (NSString *)floatingPurpose;
 

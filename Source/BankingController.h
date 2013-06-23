@@ -216,7 +216,7 @@
 - (IBAction)resetIsNewStatements: (id)sender;
 
 - (IBAction)printDocument: (id)sender;
-- (IBAction)repairSaldo: (id)sender;
+- (IBAction)accountMaintenance: (id)sender;
 - (IBAction)getAccountBalance: (id)sender;
 
 - (IBAction)showLog: (id)sender;

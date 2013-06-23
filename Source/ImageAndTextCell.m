@@ -133,8 +133,9 @@ extern void *UserDefaultsBindingContext;
 - (NSRect)titleRectForBounds: (NSRect)theRect
 {
     NSRect titleFrame = [super titleRectForBounds: theRect];
-    NSSize titleSize = [[self attributedStringValue] size];
-    titleFrame.origin.y = theRect.origin.y + (theRect.size.height - titleSize.height) / 2.0;
+    CGRect rect = [self.attributedStringValue boundingRectWithSize: CGSizeMake(theRect.size.width, 10000)
+                                                           options: 0];
+    titleFrame.origin.y = theRect.origin.y + (theRect.size.height - rect.size.height) / 2.0 + rect.origin.y + 1;
     return titleFrame;
 }
 
@@ -286,7 +287,7 @@ static NSGradient *selectionGradient = nil;
         valueColor = [valueColor colorWithAlphaComponent: 0.4];
     }
 
-    NSFont       *txtFont = [NSFont fontWithName: @"Lucida Grande" size: 13];
+    NSFont       *txtFont = [NSFont fontWithName: PreferenceController.mainFontName size: 13];
     NSDictionary *attributes = @{NSFontAttributeName: txtFont,
                                  NSForegroundColorAttributeName: valueColor};
 
@@ -294,14 +295,16 @@ static NSGradient *selectionGradient = nil;
     NSString *amountString = [amountFormatter stringFromNumber: amount];
 
     NSAttributedString *amountWithCurrency = [[NSMutableAttributedString alloc] initWithString: amountString attributes: attributes];
-    NSSize             stringSize = [amountWithCurrency size];
 
     // Draw sum only if the cell is large enough.
     if (cellFrame.size.width > 150) {
-        NSDivideRect(cellFrame, &amountwithCurrencyFrame, &cellFrame, stringSize.width + ROW_RIGHT_MARGIN, NSMaxXEdge);
+        CGRect rect = [amountWithCurrency boundingRectWithSize: CGSizeMake(cellFrame.size.width, 10000)
+                                                       options: 0];
+        NSDivideRect(cellFrame, &amountwithCurrencyFrame, &cellFrame, rect.size.width + ROW_RIGHT_MARGIN, NSMaxXEdge);
 
-        amountwithCurrencyFrame.origin.y += (cellFrame.size.height - stringSize.height) / 2;
-        amountwithCurrencyFrame.size.height = stringSize.height;
+        amountwithCurrencyFrame.origin.y += (cellFrame.size.height - rect.size.height) / 2.0 + rect.origin.y + 1;
+
+        amountwithCurrencyFrame.size.height = rect.size.height;
         amountwithCurrencyFrame.size.width -= ROW_RIGHT_MARGIN;
         cellFrame.size.width -= ROW_RIGHT_MARGIN;
 
@@ -354,7 +357,8 @@ static NSGradient *selectionGradient = nil;
 
 - (NSSize)sizeOfBadge: (NSInteger)unread
 {
-    NSAttributedString *badgeAttrString = [[NSAttributedString alloc] initWithString: [NSString stringWithFormat: @"%li", unread]                                                                                                                                          attributes: @{NSFontAttributeName: BADGE_FONT}];
+    NSAttributedString *badgeAttrString = [[NSAttributedString alloc] initWithString: [NSString stringWithFormat: @"%li", unread]
+                                                                          attributes: @{NSFontAttributeName: BADGE_FONT}];
 
     NSSize stringSize = [badgeAttrString size];
 
@@ -370,8 +374,6 @@ static NSGradient *selectionGradient = nil;
 
 - (void)drawBadgeInRect: (NSRect)badgeFrame
 {
-    //id rowItem = [self itemAtRow:rowIndex];
-
     NSBezierPath *badgePath = [NSBezierPath bezierPathWithRoundedRect: badgeFrame
                                                               xRadius: (BADGE_HEIGHT / 2.0)
                                                               yRadius: (BADGE_HEIGHT / 2.0)];

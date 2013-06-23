@@ -85,7 +85,12 @@
 
 - (void)setHeight: (int)h;
 
+// Query settings + related values.
 + (BOOL)showCategoryColorsInTree;
 + (BOOL)showHiddenCategories;
++ (NSString*)mainFontName;
++ (NSString*)mainFontNameBold;
++ (NSString*)mainFontNameLight;
++ (NSString*)popoverFontName;
 
 @end

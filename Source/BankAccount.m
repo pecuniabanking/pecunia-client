@@ -224,15 +224,8 @@
 
         [stmt setValuesForKeysWithDictionary: attributeValues];
         stmt.isNew = @YES;
+        [stmt sanitize];
 
-        // Sanity check for the date.
-        if (stmt.valutaDate == nil) {
-            if (stmt.date != nil) {
-                stmt.valutaDate = stmt.date;
-            } else {
-                stmt.valutaDate = [NSDate date];
-            }
-        }
         // check for old statements
         ShortDate *stmtDate = [ShortDate dateWithDate: stmt.date];
 
@@ -336,10 +329,14 @@
 - (void)updateBalanceWithValue: (NSDecimalNumber *)value
 {
     self.balance = value;
-    [self repairStatementBalances];
+    [self doMaintenance];
 }
 
-- (void)repairStatementBalances
+/**
+ * Account maintance is done here which involves things like correcting tranfer times (for correct ordering),
+ * balance recomputation and field validation.
+ */
+- (void)doMaintenance
 {
     NSArray *statementsArray = [self valueForKey: @"statements"];
 
@@ -374,22 +371,18 @@
     NSArray *sortedStatements = [statementsArray sortedArrayUsingDescriptors: sds];
 
     NSDecimalNumber *balance = self.balance;
-    for (BankStatement *stat in sortedStatements) {
-        if (![stat.saldo isEqual: balance]) {
-            stat.saldo = balance;
-            balance = [balance decimalNumberBySubtracting: stat.value];
+    for (BankStatement *statement in sortedStatements) {
+        // Balance recomputation.
+        if (![statement.saldo isEqual: balance]) {
+            statement.saldo = balance;
+            balance = [balance decimalNumberBySubtracting: statement.value];
         } else {
             break;
         }
+    }
 
-        // Fix dates while we are at it.
-        if (stat.date == nil) {
-            stat.date = stat.valutaDate;
-        } else {
-            if (stat.valutaDate == nil) {
-                stat.valutaDate = stat.date;
-            }
-        }
+    for (BankStatement *statement in sortedStatements) {
+        [statement sanitize];
     }
 }
 
