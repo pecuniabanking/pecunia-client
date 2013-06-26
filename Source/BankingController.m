@@ -74,6 +74,7 @@
 
 #import "User.h"
 #import "Tag.h"
+#import "AssignmentController.h"
 
 // Pasteboard data types.
 NSString *const BankStatementDataType = @"BankStatementDataType";
@@ -1386,14 +1387,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [tagViewPopup showTagPopupAt: button.bounds forView: button host: tagViewHost];
 }
 
-- (void)windowWillClose: (NSNotification *)aNotification
-{
-    id window = [aNotification object];
-    if (window == assignValueWindow) {
-        [NSApp stopModalWithCode: 0];
-    }
-}
-
 #pragma mark - Account management
 
 - (IBAction)addAccount: (id)sender
@@ -2255,15 +2248,22 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
                         if (negate) {
                             residual = [[NSDecimalNumber zero] decimalNumberBySubtracting: residual];
                         }
-                        [assignValueField setObjectValue: residual];
-                        [NSApp runModalForWindow: assignValueWindow];
-                        residual = [NSDecimalNumber decimalNumberWithDecimal: [[assignValueField objectValue] decimalValue]];
+                        
+                        AssignmentController *controller = [[AssignmentController alloc] initWithAmount:residual];
+                        int res = [NSApp runModalForWindow:controller.window];
+                        if (res) {
+                            return NO;
+                        }
+                        residual = controller.amount;
+                        
                         if (negate) {
                             residual = [[NSDecimalNumber zero] decimalNumberBySubtracting: residual];
                         }
-                        [stat.statement assignAmount: residual toCategory: cat];
+                        [stat.statement assignAmount: residual toCategory: cat withInfo: controller.info];
                         needListViewUpdate = YES;
-                    } else {[stat.statement assignAmount: stat.statement.nassValue toCategory: cat]; }
+                    } else {
+                        [stat.statement assignAmount: stat.statement.nassValue toCategory: cat withInfo: nil];
+                    }
                 }
 
                 // KVO takes care for changes in the category part of the tree. But for accounts the assignments
@@ -2271,7 +2271,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
                 needListViewUpdate = YES;
             } else {
                 if (mask == NSDragOperationCopy) {
-                    [stat.statement assignAmount: stat.value toCategory: cat];
+                    [stat.statement assignAmount: stat.value toCategory: cat withInfo: nil];
                 } else if (mask == NSDragOperationGeneric) {
                     // split
                     BOOL            negate = NO;
@@ -2282,15 +2282,20 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
                     if (negate) {
                         amount = [[NSDecimalNumber zero] decimalNumberBySubtracting: amount];
                     }
-                    [assignValueField setObjectValue: amount];
-                    [NSApp runModalForWindow: assignValueWindow];
-                    amount = [NSDecimalNumber decimalNumberWithDecimal: [[assignValueField objectValue] decimalValue]];
+                    
+                    AssignmentController *controller = [[AssignmentController alloc] initWithAmount:amount];
+                    int res = [NSApp runModalForWindow:controller.window];
+                    if (res) {
+                        return NO;
+                    }
+                    amount = controller.amount;
+                    
                     if (negate) {
                         amount = [[NSDecimalNumber zero] decimalNumberBySubtracting: amount];
                     }
                     // now we have the amount that should be assigned to the target category
-                    if ([amount abs] <= [stat.value abs]) {
-                        [stat moveAmount: amount toCategory: cat];
+                    if ([[amount abs] compare: [stat.value abs]] != NSOrderedDescending) {
+                        [stat moveAmount: amount toCategory: cat withInfo: controller.info];
                         needListViewUpdate = YES;
                     }
                 } else {
@@ -2871,10 +2876,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
                 [statementsListView updateVisibleCells];
             }
         }
-    }
-    if ([aNotification object] == assignValueField) {
-        [NSApp stopModalWithCode: 0];
-        [assignValueWindow orderOut: self];
     }
 }
 

@@ -76,7 +76,7 @@
     return res;
 }
 
-- (void)moveAmount: (NSDecimalNumber*)amount toCategory: (Category *)tcat
+- (void)moveAmount: (NSDecimalNumber*)amount toCategory: (Category *)tcat withInfo: (NSString*)info
 {
     StatCatAssignment *stat;
     Category          *scat = self.category;
@@ -89,7 +89,7 @@
         return;
     }
     
-    if ([amount abs] > [self.value abs]) {
+    if ([[amount abs] compare: [self.value abs]] != NSOrderedAscending) {
         amount = self.value;
     }
     if (tcat == scat) {
@@ -108,6 +108,13 @@
             // value must never be higher than statement's value
             if ([[stat.value abs] compare: [stat.statement.value abs]] == NSOrderedDescending) {
                 stat.value = stat.statement.value;
+                if (info && info.length > 0) {
+                    if (stat.userInfo && stat.userInfo.length > 0) {
+                        stat.userInfo = [NSString stringWithFormat:@"%@\n%@", stat.userInfo, info];
+                    } else {
+                        stat.userInfo = info;
+                    }
+                }
             }
             [stat.statement updateAssigned];
             [scat invalidateBalance];
@@ -124,7 +131,11 @@
     // if assignment is not done yet, create it
     if (assignmentDone == NO) {
         stat = [NSEntityDescription insertNewObjectForEntityForName: @"StatCatAssignment" inManagedObjectContext: context];
-        stat.userInfo = self.userInfo;
+        if (info) {
+            stat.userInfo = info;
+        } else {
+            stat.userInfo = self.userInfo;
+        }
         stat.category = tcat;
         stat.statement = self.statement;
         stat.value = amount;

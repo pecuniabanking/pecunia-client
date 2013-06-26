@@ -66,6 +66,7 @@
     IBOutlet NSPopUpButton *targetAccountSelector;
     IBOutlet NSComboBox    *receiverComboBox;
     IBOutlet NSTextField   *amountCurrencyText;
+    IBOutlet NSTextField   *amountCurrencyField;
     IBOutlet NSTextField   *amountField;
     IBOutlet NSTextField   *accountText;
     IBOutlet NSTextField   *accountNumber;

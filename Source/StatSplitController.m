@@ -59,7 +59,7 @@
 
 - (void)addAssignment: (id)sender
 {
-    [statement assignAmount: statement.nassValue toCategory: nil];
+    [statement assignAmount: statement.nassValue toCategory: nil withInfo: nil];
     [self setValue: [NSDecimalNumber zero] forKey: @"residualAmount"];
 }
 

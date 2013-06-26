@@ -459,10 +459,10 @@ static NSRegularExpression *bicRE;
 
 - (void)assignToCategory: (Category *)cat
 {
-    [self assignAmount: self.value toCategory: cat];
+    [self assignAmount: self.value toCategory: cat withInfo: nil];
 }
 
-- (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)cat
+- (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)cat withInfo: (NSString *)info
 {
     StatCatAssignment      *stat;
     Category               *ncat = [Category nassRoot];
@@ -476,7 +476,16 @@ static NSRegularExpression *bicRE;
         if (stat.category == cat) {
             if (value == nil || [value isEqual: [NSDecimalNumber zero]]) {
                 [context deleteObject: stat];
-            } else {stat.value = [stat.value decimalNumberByAdding: value]; }
+            } else {
+                stat.value = [stat.value decimalNumberByAdding: value];
+                if (info && info.length > 0) {
+                    if (stat.userInfo && stat.userInfo.length > 0) {
+                        stat.userInfo = [NSString stringWithFormat:@"%@\n%@", stat.userInfo, info];
+                    } else {
+                        stat.userInfo = info;
+                    }
+                }
+            }
             changed = YES;
             break;
         }
@@ -495,10 +504,14 @@ static NSRegularExpression *bicRE;
             stat.category = cat;
         }
         stat.statement = self;
-        // get User Info from Bank Assignment
-        if (bStat.userInfo) {
-            stat.userInfo = bStat.userInfo;
-        } else {stat.userInfo = @""; }
+        if (info == nil) {
+            // get User Info from Bank Assignment
+            if (bStat.userInfo) {
+                stat.userInfo = bStat.userInfo;
+            } else {stat.userInfo = @""; }
+        } else {
+            stat.userInfo = info;
+        }
         [stats addObject: stat];
     }
 

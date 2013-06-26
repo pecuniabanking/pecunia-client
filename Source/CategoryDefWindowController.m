@@ -271,7 +271,7 @@
         entries = assignPreviewController.arrangedObjects;
     }
     for (StatCatAssignment *entry in entries) {
-        [entry.statement assignAmount: [entry value] toCategory: selectedCategory];
+        [entry.statement assignAmount: [entry value] toCategory: selectedCategory withInfo: nil];
     }
     [selectedCategory invalidateBalance];
     [Category updateCatValues];
@@ -295,7 +295,7 @@
         return;
     }
 
-    [assignment.statement assignAmount: [assignment value] toCategory: selectedCategory];
+    [assignment.statement assignAmount: [assignment value] toCategory: selectedCategory withInfo: nil];
 
     [selectedCategory invalidateBalance];
     [Category updateCatValues];

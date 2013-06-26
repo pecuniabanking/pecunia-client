@@ -735,6 +735,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [targetCountrySelector setHidden: !isEUTransfer];
     [feeText setHidden: !isEUTransfer];
     [feeSelector setHidden: !isEUTransfer];
+    [amountCurrencyField setHidden:!isEUTransfer];
 
     [bankDescription setHidden: type == TransferTypeEU];
 
@@ -1494,10 +1495,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
         transactionController.currentTransfer.account = account;
 
-        if (account.currency.length == 0) {
-            transactionController.currentTransfer.currency = @"EUR";
-        } else {
-            transactionController.currentTransfer.currency = account.currency;
+        if (transactionController.currentTransfer.currency == nil) {
+            if (account.currency.length == 0) {
+                transactionController.currentTransfer.currency = @"EUR";
+            } else {
+                transactionController.currentTransfer.currency = account.currency;
+            }
         }
     }
     [self updateTargetAccountSelector];

@@ -603,6 +603,7 @@
     }
 
     if (activeType == TransferTypeEU) {
+        currentTransfer.currency = [currentTransfer.currency uppercaseString];
         NSString *foreignCurr = [[[countryController selectedObjects] lastObject] currency];
         NSString *curr = currentTransfer.currency;
         double   limit = 0.0;
@@ -614,6 +615,7 @@
             return NO;
         }
 
+        /* todo
         if ([curr isEqual: foreignCurr] && limits) {
             limit = [limits foreignLimit];
         } else {limit = [limits localLimit]; }
@@ -623,6 +625,7 @@
                             NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
+        */ 
     }
 
 

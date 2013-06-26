@@ -511,6 +511,10 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		A652533515E39A92000C2989 /* TanWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A652533415E39A92000C2989 /* TanWindow.m */; };
+		A68754621778CDC0007B4BC2 /* AssignmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = A68754601778CDC0007B4BC2 /* AssignmentController.m */; };
+		A68754631778CDC0007B4BC2 /* AssignmentController.m in Sources */ = {isa = PBXBuildFile; fileRef = A68754601778CDC0007B4BC2 /* AssignmentController.m */; };
+		A68754641778CDC0007B4BC2 /* AssignmentController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A68754611778CDC0007B4BC2 /* AssignmentController.xib */; };
+		A68754651778CDC0007B4BC2 /* AssignmentController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A68754611778CDC0007B4BC2 /* AssignmentController.xib */; };
 		A694637016B52D1A006D9D43 /* CCSettlementList.m in Sources */ = {isa = PBXBuildFile; fileRef = A694636F16B52D1A006D9D43 /* CCSettlementList.m */; };
 		A6DB72E416B53C6100B44133 /* CreditCardSettlement.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DB72E316B53C6100B44133 /* CreditCardSettlement.m */; };
 		A6E9242A15E38FFE00FA09A3 /* TanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E9242915E38FFE00FA09A3 /* TanWindow.xib */; };
@@ -969,6 +973,9 @@
 		8D1107320486CEB800E47090 /* Pecunia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pecunia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A652533315E39A76000C2989 /* TanWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanWindow.h; sourceTree = "<group>"; };
 		A652533415E39A92000C2989 /* TanWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanWindow.m; sourceTree = "<group>"; };
+		A687545F1778CDC0007B4BC2 /* AssignmentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssignmentController.h; sourceTree = "<group>"; };
+		A68754601778CDC0007B4BC2 /* AssignmentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssignmentController.m; sourceTree = "<group>"; };
+		A68754611778CDC0007B4BC2 /* AssignmentController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AssignmentController.xib; sourceTree = "<group>"; };
 		A68AEBBA1658ED6100CF8184 /* Accounts 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 7.xcdatamodel"; sourceTree = "<group>"; };
 		A694636E16B52D1A006D9D43 /* CCSettlementList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSettlementList.h; sourceTree = "<group>"; };
 		A694636F16B52D1A006D9D43 /* CCSettlementList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSettlementList.m; sourceTree = "<group>"; };
@@ -1995,6 +2002,9 @@
 				B1A59495113165BC00FD8CB8 /* StatSplitController.m */,
 				B14C5FFF1148467A009324A6 /* BankStatementController.h */,
 				B14C60001148467A009324A6 /* BankStatementController.m */,
+				A687545F1778CDC0007B4BC2 /* AssignmentController.h */,
+				A68754601778CDC0007B4BC2 /* AssignmentController.m */,
+				A68754611778CDC0007B4BC2 /* AssignmentController.xib */,
 			);
 			name = Statements;
 			sourceTree = "<group>";
@@ -2378,6 +2388,7 @@
 				27CBF366174A4A1E0062E2A9 /* category-reporting-help.rtf in Resources */,
 				27CBF36C174A4C5F0062E2A9 /* About.xib in Resources */,
 				27DBAAED175123ED00E75996 /* hatch-1@2x.png in Resources */,
+				A68754651778CDC0007B4BC2 /* AssignmentController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2544,6 +2555,7 @@
 				27CBF365174A4A1E0062E2A9 /* category-reporting-help.rtf in Resources */,
 				27CBF36B174A4C5F0062E2A9 /* About.xib in Resources */,
 				27DBAAEC175123ED00E75996 /* hatch-1@2x.png in Resources */,
+				A68754641778CDC0007B4BC2 /* AssignmentController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2749,6 +2761,7 @@
 				27778917173CE22700430EBC /* TagView.m in Sources */,
 				27778918173CE22700430EBC /* ColorPopup.m in Sources */,
 				27778919173CE22700430EBC /* BFIconTabBar.m in Sources */,
+				A68754631778CDC0007B4BC2 /* AssignmentController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2922,6 +2935,7 @@
 				2795F20F17071DE6003AC74D /* TagView.m in Sources */,
 				279918121711E97400C1AC3D /* ColorPopup.m in Sources */,
 				2739FEF4171336580066F326 /* BFIconTabBar.m in Sources */,
+				A68754621778CDC0007B4BC2 /* AssignmentController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

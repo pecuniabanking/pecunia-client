@@ -78,7 +78,6 @@
     IBOutlet NSTextField            *headerValueField;
     IBOutlet NSTextField            *sumValueField;
     IBOutlet NSTextField            *nassValueField;
-    IBOutlet NSWindow               *assignValueWindow;
     IBOutlet NSTextField            *assignValueField;
     IBOutlet NSTextField            *earningsField;
     IBOutlet NSTextField            *spendingsField;
@@ -230,7 +229,6 @@
 
 - (IBAction)creditCardSettlements: (id)sender;
 
-- (void)windowWillClose: (NSNotification *)aNotification;
 - (NSArray *)selectedNodes;
 - (BankAccount *)selectBankAccountWithNumber: (NSString *)accNum bankCode: (NSString *)code;
 - (void)awakeFromNib;
