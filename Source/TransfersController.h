@@ -68,6 +68,8 @@
     IBOutlet NSTextField   *amountCurrencyText;
     IBOutlet NSTextField   *amountCurrencyField;
     IBOutlet NSTextField   *amountField;
+    IBOutlet NSTextField   *remoteBankField;
+    IBOutlet NSTextField   *remoteBankLabel;
     IBOutlet NSTextField   *accountText;
     IBOutlet NSTextField   *accountNumber;
     IBOutlet NSTextField   *bankCodeText;

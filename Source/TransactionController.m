@@ -606,7 +606,7 @@
         currentTransfer.currency = [currentTransfer.currency uppercaseString];
         NSString *foreignCurr = [[[countryController selectedObjects] lastObject] currency];
         NSString *curr = currentTransfer.currency;
-        double   limit = 0.0;
+        //double   limit = 0.0;
 
         if (![curr isEqual: foreignCurr] && ![curr isEqual: @"EUR"] && ![curr isEqual: account.currency]) {
             NSRunAlertPanel(NSLocalizedString(@"AP67", nil),

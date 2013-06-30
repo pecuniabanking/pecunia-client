@@ -561,6 +561,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         Category       *currentAccount;
 
         while ((currentAccount = [accountEnumerator nextObject])) {
+            [[MessageLog log] addMessage:[NSString stringWithFormat:@"check account %@ for transfer type %d", currentAccount.accountNumber, transferType] withLevel:LogLevel_Debug];            
             if (![currentAccount isKindOfClass: [BankAccount class]]) {
                 continue;
             }
@@ -569,17 +570,20 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
             // Exclude manual accounts from the list.
             if ([account.isManual boolValue]) {
+                [[MessageLog log] addMessage:[NSString stringWithFormat:@"skip account: is a manual account (isManual=%@)", account.isManual] withLevel:LogLevel_Debug];
                 continue;
             }
 
             // check if the accout supports the current transfer type
             if ([[HBCIClient hbciClient] isTransferSupported: transferType forAccount: account] == NO) {
+                [[MessageLog log] addMessage:[NSString stringWithFormat:@"skip account %@, job %d not supported", account.accountNumber, transferType] withLevel:LogLevel_Debug];
                 continue;
             }
 
             [validAccounts addObject: account];
         }
 
+        [[MessageLog log] addMessage:[NSString stringWithFormat:@"%d accounts found for institute %@", (unsigned)[validAccounts count], currentInstitute.localName] withLevel:LogLevel_Debug];
         if ([validAccounts count] > 0) {
             NSMenuItem *item = [self createItemForAccountSelector: (BankAccount *)currentInstitute];
             [sourceMenu addItem: item];
@@ -736,6 +740,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [feeText setHidden: !isEUTransfer];
     [feeSelector setHidden: !isEUTransfer];
     [amountCurrencyField setHidden:!isEUTransfer];
+    [remoteBankField setHidden:!isEUTransfer];
+    [remoteBankLabel setHidden:!isEUTransfer];
+    [bankDescription setHidden:isEUTransfer];
 
     [bankDescription setHidden: type == TransferTypeEU];
 

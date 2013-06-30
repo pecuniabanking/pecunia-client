@@ -705,6 +705,7 @@ NSString * escapeSpecial(NSString *s)
                 case TransferTypeEU:
                     type = @"foreign";
                     [self appendTag: @"chargeTo" withValue: [transfer.chargedBy description]  to: cmd];
+                    [self appendTag:@"bankName" withValue:transfer.remoteBankName to:cmd];
                     break;
 
                 case TransferTypeCollectiveCredit:
@@ -725,10 +726,10 @@ NSString * escapeSpecial(NSString *s)
 
         [self startProgress];
         NSArray *resultList = [bridge syncCommand: cmd error: &err];
-        [self stopProgress];
         if (err) {
             [err logMessage];
         }
+        [self stopProgress];
 
         for (TransferResult *result in resultList) {
             NSURL             *uri = [NSURL URLWithString: result.transferId];
@@ -1352,7 +1353,14 @@ NSString * escapeSpecial(NSString *s)
             if (acc.iban != nil) {
                 account.iban = acc.iban;
             }
-
+            if ([account.isManual isEqual:@YES]) {
+                // check if account supports statement transfers
+                NSArray *jobNames = acc.supportedJobs;
+                if (jobNames != nil && [jobNames containsObject:@"KUmsAll"]) {
+                    [[MessageLog log] addMessage: [NSString stringWithFormat: @"Account %@ was previously created manually, changed to automatic update!", account.localName] withLevel:LogLevel_Notice];
+                    account.isManual = @NO;
+                }
+            }
         } else {
             // Account was not found: create it.
             BankAccount *bankRoot = [self getBankNodeWithAccount: acc inAccounts: bankAccounts];
@@ -1416,6 +1424,7 @@ NSString * escapeSpecial(NSString *s)
     for (Account *acc in accounts) {
         BankAccount *account = [BankAccount accountWithNumber: acc.accountNumber subNumber: acc.subNumber bankCode: acc.bankCode];
         if (account == nil) {
+            [[MessageLog log] addMessage: [NSString stringWithFormat:@"Bankaccount not found: %@ %@ %@", acc.accountNumber, acc.subNumber, acc.bankCode] withLevel: LogLevel_Error];
             continue;
         }
         NSArray *supportedJobNames = acc.supportedJobs;
@@ -1437,6 +1446,7 @@ NSString * escapeSpecial(NSString *s)
             } else {
                 tinfo.allowsCollective = @NO;
             }
+            [[MessageLog log] addMessage: @"Add supported transaction UEB" withLevel: LogLevel_Debug];
         }
 
         // todo as soon as we support management of dated transfers
@@ -1445,6 +1455,7 @@ NSString * escapeSpecial(NSString *s)
             tinfo.account = account;
             tinfo.user = user;
             tinfo.type = @(TransactionType_TransferDated);
+            [[MessageLog log] addMessage: @"Add supported transaction TERMUEB" withLevel: LogLevel_Debug];
         }
 
         if ([supportedJobNames containsObject: @"UebForeign"] == YES) {
@@ -1452,6 +1463,8 @@ NSString * escapeSpecial(NSString *s)
             tinfo.account = account;
             tinfo.user = user;
             tinfo.type = @(TransactionType_TransferEU);
+            [[MessageLog log] addMessage: @"Add supported transaction UEBFOREIGN" withLevel: LogLevel_Debug];
+
         }
 
         if ([supportedJobNames containsObject: @"UebSEPA"] == YES) {
@@ -1459,6 +1472,7 @@ NSString * escapeSpecial(NSString *s)
             tinfo.account = account;
             tinfo.user = user;
             tinfo.type = @(TransactionType_TransferSEPA);
+            [[MessageLog log] addMessage: @"Add supported transaction UEBSEPA" withLevel: LogLevel_Debug];
         }
 
         if ([supportedJobNames containsObject: @"Umb"] == YES) {
@@ -1466,6 +1480,7 @@ NSString * escapeSpecial(NSString *s)
             tinfo.account = account;
             tinfo.user = user;
             tinfo.type = @(TransactionType_TransferInternal);
+            [[MessageLog log] addMessage: @"Add supported transaction UMB" withLevel: LogLevel_Debug];
         }
 
         if ([supportedJobNames containsObject: @"Last"] == YES) {
@@ -1473,6 +1488,7 @@ NSString * escapeSpecial(NSString *s)
             tinfo.account = account;
             tinfo.user = user;
             tinfo.type = @(TransactionType_TransferDebit);
+            [[MessageLog log] addMessage: @"Add supported transaction LAST" withLevel: LogLevel_Debug];
         }
 
         if ([supportedJobNames containsObject: @"DauerNew"] == YES) {
@@ -1492,6 +1508,7 @@ NSString * escapeSpecial(NSString *s)
             } else {
                 tinfo.allowesDelete = @NO;
             }
+            [[MessageLog log] addMessage: @"Add supported transaction DAUERNEW" withLevel: LogLevel_Debug];
         }
 
         if ([supportedJobNames containsObject: @"KUmsAll"] == YES) {
@@ -1499,6 +1516,7 @@ NSString * escapeSpecial(NSString *s)
             tinfo.account = account;
             tinfo.user = user;
             tinfo.type = @(TransactionType_BankStatements);
+            [[MessageLog log] addMessage: @"Add supported transaction KUMSALL" withLevel: LogLevel_Debug];
         }
 
         if ([supportedJobNames containsObject: @"KKUmsAll"] == YES) {
@@ -1506,6 +1524,7 @@ NSString * escapeSpecial(NSString *s)
             tinfo.account = account;
             tinfo.user = user;
             tinfo.type = @(TransactionType_CCStatements);
+            [[MessageLog log] addMessage: @"Add supported transaction KKUMSALL" withLevel: LogLevel_Debug];
         }
 
         if ([supportedJobNames containsObject: @"KKSettleList"] == YES) {
@@ -1513,6 +1532,7 @@ NSString * escapeSpecial(NSString *s)
             tinfo.account = account;
             tinfo.user = user;
             tinfo.type = @(TransactionType_CCSettlementList);
+            [[MessageLog log] addMessage: @"Add supported transaction KKSETTLELIST" withLevel: LogLevel_Debug];
         }
 
         if ([supportedJobNames containsObject: @"KKSettleReq"] == YES) {
@@ -1520,6 +1540,7 @@ NSString * escapeSpecial(NSString *s)
             tinfo.account = account;
             tinfo.user = user;
             tinfo.type = @(TransactionType_CCSettlement);
+            [[MessageLog log] addMessage: @"Add supported transaction KKSETTLEREQ" withLevel: LogLevel_Debug];
         }
     }
     return nil;
@@ -1844,13 +1865,6 @@ NSString * escapeSpecial(NSString *s)
     if ([options count] == 0) {
         [[MessageLog log] addMessage: @"signingOptionForAccount: no signing options defined by bank - use default" withLevel: LogLevel_Info];
         return [SigningOption defaultOptionForUser: [[users allObjects] objectAtIndex:0]];
-        /*
-        NSRunAlertPanel(NSLocalizedString(@"AP352", nil),
-                        NSLocalizedString(@"AP353", nil),
-                        NSLocalizedString(@"AP1", nil),
-                        nil, nil, account.accountNumber);
-        return nil;
-        */ 
     }
     if ([options count] == 1) {
         return [options lastObject];
