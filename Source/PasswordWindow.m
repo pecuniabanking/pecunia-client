@@ -58,7 +58,7 @@
     if ([result length] == 0) {
         NSBeep();
     } else {
-        active = NO;
+        //active = NO;
         //[self closeWindow ];
         [NSApp stopModalWithCode: 0];
     }
