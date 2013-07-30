@@ -1908,22 +1908,11 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     dockIconController = nil;
 
-    if (self.managedObjectContext) {
+    if (self.managedObjectContext && [MOAssistant assistant].isMaxIdleTimeExceeded == NO) {
         if ([self.managedObjectContext save: &error] == NO) {
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
             return;
-        }
-    }
-
-    // if application shall restart, launch new task
-    if (restart) {
-        NSProcessInfo *info = [NSProcessInfo processInfo];
-        NSArray       *args = [info arguments];
-        NSString      *path = args[0];
-        if (path) {
-            int pid = [info processIdentifier];
-            [NSTask launchedTaskWithLaunchPath: path arguments: @[path, [NSString stringWithFormat: @"%d", pid]]];
         }
     }
 

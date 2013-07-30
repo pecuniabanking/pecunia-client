@@ -38,6 +38,7 @@
 @synthesize dataFilename;
 @synthesize pecuniaFileURL;
 @synthesize mainContentView;
+@synthesize isMaxIdleTimeExceeded;
 
 static MOAssistant *assistant = nil;
 
@@ -95,7 +96,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 - (void)startIdle
 {
-    if (isEncrypted && maxIdleTimeExceeded == NO && decryptionDone == YES) {
+    if (isEncrypted && isMaxIdleTimeExceeded == NO && decryptionDone == YES) {
         NSError *error = nil;
         [context save: &error];
         if (error != nil) {
@@ -124,7 +125,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         if (seconds > 0) {
             idleTimer = [NSTimer scheduledTimerWithTimeInterval: seconds target: self selector: @selector(maxIdleTimeExceeded) userInfo: nil repeats: NO];
         }
-        maxIdleTimeExceeded = NO;
+        isMaxIdleTimeExceeded = NO;
     }
 }
 
@@ -136,14 +137,14 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     [idleTimer invalidate];
     idleTimer = nil;
 
-    if (maxIdleTimeExceeded) {
+    if (isMaxIdleTimeExceeded) {
         // check password again
         passwordKeyValid = NO;
         [self decrypt];
         [lockView removeFromSuperview];
 
         [[NSApp mainWindow] makeKeyAndOrderFront: nil];
-        maxIdleTimeExceeded = NO;
+        isMaxIdleTimeExceeded = NO;
     }
 }
 
@@ -153,7 +154,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         return;
     }
 
-    maxIdleTimeExceeded = YES;
+    isMaxIdleTimeExceeded = YES;
 
     // encrypt database (but do not disconnect store)
     [self encrypt];
@@ -454,7 +455,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         [alert runModal];
     }
 
-    if (isEncrypted) {
+    if (isEncrypted && isMaxIdleTimeExceeded == NO) {
         [self encrypt];
     }
 

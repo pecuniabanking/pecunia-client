@@ -58,7 +58,7 @@
     BOOL decryptionDone;
     BOOL isSandboxed;
     BOOL isDefaultDir;
-    BOOL maxIdleTimeExceeded;
+    BOOL isMaxIdleTimeExceeded;
 }
 
 @property (nonatomic, copy) NSString *ppDir;
@@ -69,6 +69,7 @@
 @property (nonatomic, strong) NSURL  *dataDirURL;
 @property (nonatomic, strong) NSURL  *pecuniaFileURL;
 @property (nonatomic, strong) NSView *mainContentView;
+@property (nonatomic, assign, readonly) BOOL isMaxIdleTimeExceeded;
 
 - (void)clearAllData;
 - (void)loadModel;
