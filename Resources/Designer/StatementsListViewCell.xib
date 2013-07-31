@@ -90,18 +90,18 @@
 					<object class="NSTextField" id="695975855">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{227, 6}, {255, 14}}</string>
+						<string key="NSFrame">{{227, 5}, {255, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="160702253"/>
+						<reference key="NSNextKeyView" ref="925874188"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="525667335">
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">4200448</int>
 							<string key="NSContents">note Ag</string>
-							<object class="NSFont" key="NSSupport" id="420446319">
+							<object class="NSFont" key="NSSupport" id="674758697">
 								<string key="NSName">HelveticaNeue-Light</string>
-								<double key="NSSize">9</double>
+								<double key="NSSize">11</double>
 								<int key="NSfFlags">16</int>
 							</object>
 							<reference key="NSControlView" ref="695975855"/>
@@ -162,7 +162,7 @@
 							<string key="NSContents">Dez</string>
 							<object class="NSFont" key="NSSupport">
 								<string key="NSName">HelveticaNeue</string>
-								<double key="NSSize">9</double>
+								<double key="NSSize">10</double>
 								<int key="NSfFlags">16</int>
 							</object>
 							<reference key="NSControlView" ref="578236796"/>
@@ -174,7 +174,7 @@
 					<object class="NSTextField" id="474576322">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{48, 6}, {172, 14}}</string>
+						<string key="NSFrame">{{48, 5}, {172, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="695975855"/>
@@ -183,7 +183,7 @@
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">4200448</int>
 							<string key="NSContents">transaction text</string>
-							<reference key="NSSupport" ref="420446319"/>
+							<reference key="NSSupport" ref="674758697"/>
 							<reference key="NSControlView" ref="474576322"/>
 							<reference key="NSBackgroundColor" ref="609700460"/>
 							<object class="NSColor" key="NSTextColor">
@@ -199,13 +199,16 @@
 						<string key="NSFrame">{{763, 7}, {23, 13}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="466988470">
 							<int key="NSCellFlags">68157504</int>
 							<int key="NSCellFlags2">-1874852864</int>
 							<string key="NSContents">€</string>
-							<reference key="NSSupport" ref="420446319"/>
+							<object class="NSFont" key="NSSupport">
+								<string key="NSName">HelveticaNeue-Light</string>
+								<double key="NSSize">9</double>
+								<int key="NSfFlags">16</int>
+							</object>
 							<reference key="NSControlView" ref="249958409"/>
 							<reference key="NSBackgroundColor" ref="609700460"/>
 							<object class="NSColor" key="NSTextColor">
@@ -227,7 +230,7 @@
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">71309312</int>
 							<real value="-100000" key="NSContents"/>
-							<object class="NSFont" key="NSSupport" id="505667330">
+							<object class="NSFont" key="NSSupport">
 								<string key="NSName">HelveticaNeue-Light</string>
 								<double key="NSSize">10</double>
 								<int key="NSfFlags">16</int>
@@ -325,7 +328,7 @@
 					<object class="NSTextField" id="1035282341">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{642, 6}, {40, 14}}</string>
+						<string key="NSFrame">{{642, 8}, {40, 14}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1021982914"/>
@@ -334,7 +337,7 @@
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">71309312</int>
 							<string key="NSContents">Saldo</string>
-							<reference key="NSSupport" ref="505667330"/>
+							<reference key="NSSupport" ref="674758697"/>
 							<reference key="NSControlView" ref="1035282341"/>
 							<reference key="NSBackgroundColor" ref="609700460"/>
 							<object class="NSColor" key="NSTextColor">
@@ -385,17 +388,13 @@
 						<string key="NSFrame">{{489, 20}, {132, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="925874188"/>
+						<reference key="NSNextKeyView" ref="578236796"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="711706245">
 							<int key="NSCellFlags">67108928</int>
 							<int key="NSCellFlags2">4200448</int>
 							<string key="NSContents">categories</string>
-							<object class="NSFont" key="NSSupport">
-								<string key="NSName">HelveticaNeue-Light</string>
-								<double key="NSSize">11</double>
-								<int key="NSfFlags">16</int>
-							</object>
+							<reference key="NSSupport" ref="674758697"/>
 							<reference key="NSControlView" ref="160702253"/>
 							<reference key="NSBackgroundColor" ref="609700460"/>
 							<reference key="NSTextColor" ref="920462120"/>
@@ -519,7 +518,7 @@
 						<string key="NSFrame">{{227, 23}, {252, 15}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="578236796"/>
+						<reference key="NSNextKeyView" ref="160702253"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="666644316">
 							<int key="NSCellFlags">67108928</int>
