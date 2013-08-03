@@ -758,7 +758,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         tagButton.image = [[NSImage alloc] initWithContentsOfFile: path];
     }
 
-    [self setEncrypted: [[MOAssistant assistant] encrypted]];
+    // set encryption image
+    [self encryptionChanged];
 
     splitCursor = [[NSCursor alloc] initWithImage: [NSImage imageNamed: @"split-cursor"] hotSpot: NSMakePoint(0, 0)];
     moveCursor = [[NSCursor alloc] initWithImage: [NSImage imageNamed: @"move-cursor"] hotSpot: NSMakePoint(18, 6)];
@@ -801,6 +802,9 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     // TODO: can be done in the xib.
     [mainWindow setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
     [toggleFullscreenItem setHidden: NO];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged) name:@"contextDataChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(encryptionChanged) name:@"dataFileEncryptionChanged" object:nil];
 
 #ifdef DEBUG
     [developerMenu setHidden: NO];
@@ -833,6 +837,17 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [categoryController fetchWithRequest: nil merge: NO error: &error];
     [self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext: self.managedObjectContext];
+}
+
+- (void)contextChanged
+{
+    self.managedObjectContext = [[MOAssistant assistant] context];
+    [self publishContext];
+}
+
+- (void)encryptionChanged
+{
+    [lockImage setHidden: ![[MOAssistant assistant] encrypted]];
 }
 
 #pragma mark - User actions
@@ -3437,11 +3452,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 - (void)autoSyncTimerEvent: (NSTimer *)theTimer
 {
     [self syncAllAccounts];
-}
-
-- (void)setEncrypted: (BOOL)encrypted
-{
-    [lockImage setHidden: !encrypted];
 }
 
 - (BOOL)checkForUnhandledTransfersAndSend

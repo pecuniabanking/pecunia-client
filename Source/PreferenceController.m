@@ -234,6 +234,12 @@ static NSGradient *headerGradient;
     [assistant relocate];
 }
 
+- (IBAction)useFileLocation:(id)sender
+{
+    [[MOAssistant assistant] useExistingDataFile];
+}
+
+
 - (IBAction)restoreFileLocation: (id)sender
 {
     [[MOAssistant assistant] relocateToStandard];
@@ -309,7 +315,6 @@ static NSGradient *headerGradient;
             [pwWindow closeWindow];
 
             if ([assistant stopEncryption]) {
-                [[BankingController controller] setEncrypted: NO];
                 [Keychain deletePasswordForService: @"Pecunia" account: @"DataFile"];
                 NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                                 NSLocalizedString(@"AP154", nil),
@@ -332,7 +337,6 @@ static NSGradient *headerGradient;
         MOAssistant *assistant = [MOAssistant assistant];
         if ([assistant encryptDataWithPassword: password]) {
             [encryptButton setEnabled: NO];
-            [[BankingController controller] setEncrypted: YES];
             NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                             NSLocalizedString(@"AP155", nil),
                             NSLocalizedString(@"AP1", nil),

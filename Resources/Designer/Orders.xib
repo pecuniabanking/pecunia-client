@@ -78,7 +78,6 @@
 										<string key="NSFrame">{{363, 18}, {195, 25}}</string>
 										<reference key="NSSuperview" ref="830627434"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<object class="NSShadow" key="NSViewShadow">
 											<double key="NSShadowHoriz">1</double>
 											<double key="NSShadowVert">1</double>
@@ -121,7 +120,6 @@
 										<string key="NSFrame">{{160, 18}, {195, 25}}</string>
 										<reference key="NSSuperview" ref="830627434"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<object class="NSShadow" key="NSViewShadow">
 											<double key="NSShadowHoriz">1</double>
 											<double key="NSShadowVert">1</double>
@@ -157,7 +155,6 @@
 										<string key="NSFrame">{{20, 18}, {106, 25}}</string>
 										<reference key="NSSuperview" ref="830627434"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<object class="NSShadow" key="NSViewShadow">
 											<double key="NSShadowHoriz">1</double>
 											<double key="NSShadowVert">1</double>
@@ -313,7 +310,6 @@
 								<string key="NSFrame">{{15, 497}, {16, 16}}</string>
 								<reference key="NSSuperview" ref="881946480"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSButtonCell" key="NSCell" id="417833191">
@@ -1353,7 +1349,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 												<string key="NSFrame">{{419, 14}, {110, 27}}</string>
 												<reference key="NSSuperview" ref="978066620"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView"/>
 												<int key="NSTag">51</int>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSDatePickerCell" key="NSCell" id="245675827">
@@ -2833,6 +2828,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<int key="connectionID">515</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="1068435690"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">587</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: selection.currency</string>
 						<reference key="source" ref="38974891"/>
@@ -4028,7 +4031,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">586</int>
+			<int key="maxID">587</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

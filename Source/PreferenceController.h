@@ -64,6 +64,7 @@
 - (IBAction)changeFileLocation: (id)sender;
 - (IBAction)restoreFileLocation: (id)sender;
 - (IBAction)openFileLocation: (id)sender;
+- (IBAction)useFileLocation:(id)sender;
 
 - (IBAction)encryptData: (id)sender;
 - (IBAction)cancelSheet: (id)sender;

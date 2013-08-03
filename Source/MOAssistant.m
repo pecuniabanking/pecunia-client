@@ -298,6 +298,17 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 }
 
+- (BOOL)checkIsDefaultDataDir:(NSURL*)newDirURL
+{
+    // check if the new data path is the default data path
+    NSURL *defaultDataURL = [NSURL fileURLWithPath: [lDir stringByExpandingTildeInPath]];
+    if ([newDirURL isEqual: defaultDataURL]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 - (void)checkPaths
 {
     // create default paths
@@ -661,6 +672,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     for (store in stores) {
         [coord setURL: accountsURL forPersistentStore: store];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"dataFileEncryptionChanged" object:self];
     return YES;
 }
 
@@ -700,6 +713,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     for (store in stores) {
         [coord setURL: accountsURL forPersistentStore: store];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"dataFileEncryptionChanged" object:self];
     return YES;
 }
 
@@ -772,6 +787,9 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         coord = [context persistentStoreCoordinator];
     } else {
         coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: model];
+        if (context != nil) {
+            [context setPersistentStoreCoordinator:coord];
+        }
     }
 
     [coord addPersistentStoreWithType: NSSQLiteStoreType
@@ -866,12 +884,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 
     // check if the new data path is the default data path
-    NSURL *defaultDataURL = [NSURL fileURLWithPath: [lDir stringByExpandingTildeInPath]];
-    if ([newDataDirURL isEqual: defaultDataURL]) {
-        isDefaultDir = YES;
-    } else {
-        isDefaultDir = NO;
-    }
+    isDefaultDir = [self checkIsDefaultDataDir:newDataDirURL];
 
     // move pecunia file with all included files
     [fm moveItemAtPath: [pecuniaFileURL path] toPath: [newFilePathURL path] error: &error];
@@ -940,6 +953,75 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 
     [self relocateToURL: [panel URL]];
+}
+
+- (void)useExistingDataFile
+{
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    [panel setCanCreateDirectories: YES];
+    [panel setAllowedFileTypes: @[@"pecuniadata"]];
+    
+    NSInteger result = [panel runModal];
+    if (result == NSFileHandlingPanelCancelButton) {
+        return;
+    }
+    
+    // first savely close existing File
+    NSError *error = nil;
+    [context save: &error];
+    if (error != nil) {
+        NSLog(@"Pecunia save error: %@", error.localizedDescription);
+        return;
+    }
+    
+    // stop accessing old data file
+    [self shutdown];
+    
+    NSURL *url = panel.URLs[0];
+    self.dataFilename = [url lastPathComponent];
+    
+    isEncrypted = NO;
+    isDefaultDir = NO;
+    decryptionDone = NO;
+    passwordKeyValid = NO;
+    self.accountsURL = nil;
+    
+    self.dataDirURL = [url URLByDeletingLastPathComponent];
+    self.pecuniaFileURL = url;
+    
+    isEncrypted = [self checkIsEncrypted];
+    isDefaultDir = [self checkIsDefaultDataDir:self.dataDirURL];
+    
+    if (isEncrypted == NO) {
+        self.accountsURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
+    } else {
+        self.accountsURL = [[NSURL fileURLWithPath: tempDir] URLByAppendingPathComponent: _dataFileStandard];
+    }
+    
+    if (isEncrypted) {
+        [self decrypt];
+    }
+    
+    // set coordinator and stores
+    [self loadContext];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"contextDataChanged" object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"dataFileEncryptionChanged" object:self];
+
+    if (!isDefaultDir) {
+        // save SSB
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSData *bookmark = [url bookmarkDataWithOptions: NSURLBookmarkCreationWithSecurityScope includingResourceValuesForKeys: nil relativeToURL: nil error: &error];
+        if (error != nil) {
+            [NSAlert alertWithError:error];
+            abort();
+            return;
+        } else {
+            [defaults setValue: bookmark forKey: @"accountsBookmark"];
+        }
+    }
+
+    [self updateDefaults];
 }
 
 - (void)relocateToStandard

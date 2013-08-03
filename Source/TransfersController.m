@@ -1439,6 +1439,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     Transfer *transfer = transactionController.currentTransfer;
     [self cancelEditing];
     [context deleteObject: transfer];
+    [context processPendingChanges];
 
     NSError *error = nil;
     if (![context save: &error]) {
@@ -1796,6 +1797,31 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
     if (bankName != nil) {
         transactionController.currentTransfer.remoteBankName = bankName;
+    }
+    
+    if (textField == receiverComboBox) {
+        NSString *s = [textField stringValue];
+        // check for lastest transfer with receiver name and extract account number, bank code, etc.
+        
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Transfer" inManagedObjectContext: MOAssistant.assistant.context];
+        NSFetchRequest      *request = [[NSFetchRequest alloc] init];
+        [request setEntity: entityDescription];
+        
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
+        [request setSortDescriptors: @[sortDescriptor]];
+
+        NSError *error = nil;
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"remoteName = %@ AND type = %@", s, transactionController.currentTransfer.type];
+        [request setPredicate: predicate];
+        NSArray *transfers = [MOAssistant.assistant.context executeFetchRequest: request error: &error];
+        if (transfers.count > 1) {
+            Transfer *transfer = transfers[1];
+            transactionController.currentTransfer.remoteAccount = transfer.remoteAccount;
+            transactionController.currentTransfer.remoteBankCode = transfer.remoteBankCode;
+            transactionController.currentTransfer.remoteBankName = transfer.remoteBankName;
+            transactionController.currentTransfer.remoteBIC = transfer.remoteBIC;
+            transactionController.currentTransfer.remoteIBAN = transfer.remoteIBAN;
+        }
     }
 }
 

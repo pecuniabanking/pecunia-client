@@ -239,7 +239,6 @@
 - (void)updateNotAssignedCategory;
 - (void)requestFinished: (NSArray *)resultList;
 - (BOOL)requestRunning;
-- (void)setEncrypted: (BOOL)encrypted;
 
 - (Category *)currentSelection;
 - (void)repairCategories;
