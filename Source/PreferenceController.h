@@ -90,6 +90,7 @@
 + (BOOL)showCategoryColorsInTree;
 + (BOOL)showHiddenCategories;
 + (NSString*)mainFontName;
++ (NSString*)mainFontNameMedium;
 + (NSString*)mainFontNameBold;
 + (NSString*)mainFontNameLight;
 + (NSString*)popoverFontName;

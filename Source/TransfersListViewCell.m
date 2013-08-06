@@ -236,7 +236,7 @@ static CurrencyValueTransformer *currencyTransformer;
 
     // Construct a formatted string for the accunt label.
     NSMutableAttributedString *accountString = [[NSMutableAttributedString alloc] init];
-    NSFont                    *normalFont = [NSFont fontWithName: @"LucidaGrande" size: 11];
+    NSFont                    *normalFont = [NSFont fontWithName: @"HelveticaNeue" size: 11];
     NSDictionary              *normalAttributes = @{NSFontAttributeName: normalFont,
                                                     NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};
 
@@ -267,7 +267,7 @@ static CurrencyValueTransformer *currencyTransformer;
     NSMutableParagraphStyle   *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setMaximumLineHeight: 12];
 
-    normalFont = [NSFont fontWithName: @"LucidaGrande" size: 10];
+    normalFont = [NSFont fontWithName: @"HelveticaNeue" size: 10];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName: paragraphStyle,
                                  NSFontAttributeName: normalFont,
                                  NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};

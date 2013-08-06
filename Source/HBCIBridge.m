@@ -89,7 +89,7 @@
         //	[task setEnvironment: [NSDictionary dictionaryWithObjectsAndKeys: @"/users/emmi/workspace/HBCIServer", @"CLASSPATH", nil ] ];
 
         if ([LaunchParameters parameters ].debugServer) {
-            [task setArguments: [NSArray arrayWithObjects: @"-Xdebug", @"-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005", @"-jar", jarPath, nil ] ];
+            [task setArguments: @[@"-Xdebug", @"-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005", @"-jar", jarPath] ];
         }
 
         // Launch the task asynchronously.

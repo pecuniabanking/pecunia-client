@@ -22,7 +22,10 @@
 @interface NSString (PecuniaAdditions)
 
 + (NSString *)stringWithData: (NSData *)data;
+
 - (NSAttributedString *)attributedStringWithFont: (NSFont *)font;
 - (NSString *)stringByRemovingWhitespaces: (NSString *)s;
+
+- (NSArray*)csvRowsWithSeparator: (NSString *)separator;
 
 @end

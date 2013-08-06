@@ -26,6 +26,7 @@
 #import "BankQueryResult.h"
 #import "BankAccount.h"
 
+#import "NSString+PecuniaAdditions.h"
 #import "NSAttributedString+PecuniaAdditions.h"
 
 #import "BWGradientBox.h"
@@ -484,10 +485,14 @@
     }
 
     updating = YES;
-    NSCharacterSet *doubleQuoteCharset = [NSCharacterSet characterSetWithCharactersInString: @"\""];
-    NSCharacterSet *singleQuoteCharset = [NSCharacterSet characterSetWithCharactersInString: @"'"];
-
     @try {
+        NSString *separator = currentSettings.fieldSeparator;
+        if (separator == nil) {
+            separator = @",";
+        }
+
+        dateFormatter.dateFormat = currentSettings.dateFormat;
+        
         if ([NSFileManager.defaultManager fileExistsAtPath: currentFile]) {
             NSError  *error = nil;
             NSString *content = [NSString stringWithContentsOfFile: currentFile
@@ -497,13 +502,11 @@
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
             } else {
-                currentLines = [content componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+                currentLines = [content csvRowsWithSeparator: separator];
             }
         } else {
             currentLines = nil;
         }
-
-        dateFormatter.dateFormat = currentSettings.dateFormat;
 
         NSString   *text = @"";
         NSUInteger ignoredLines = currentSettings.ignoreLines.intValue;
@@ -511,38 +514,21 @@
             if (i >= currentLines.count) {
                 break;
             }
-            text = [text stringByAppendingFormat: @"%@\n", currentLines[i]];
+            text = [text stringByAppendingFormat: @"%@\n", [currentLines[i] componentsJoinedByString: separator]];
         }
         ignoredText.string = text;
         [ignoredText setTextColor: [NSColor grayColor]];
 
-        // Set up import values, which in turn will update the import values table view.
-        NSString *separator = currentSettings.fieldSeparator;
-        if (separator == nil) {
-            separator = @"";
-        }
         NSUInteger columnCount = 0;
         importValues = [NSMutableArray arrayWithCapacity: (currentLines.count >= ignoredLines) ? currentLines.count - ignoredLines: 0];
         for (NSUInteger i = ignoredLines; i < currentLines.count; i++) {
-            NSString *line = [currentLines[i] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
-            if (line.length == 0) {
-                continue;
-            }
-
-            NSArray *fields = [line componentsSeparatedByString: separator];
+            NSArray *fields = currentLines[i];
             if (fields.count > columnCount) {
                 columnCount = fields.count;
             }
             NSMutableDictionary *entry = [NSMutableDictionary dictionary];
             for (NSUInteger j = 0; j < fields.count; j++) {
-                NSString *field = fields[j];
-                if ([field hasPrefix: @"\""]) {
-                    field = [field stringByTrimmingCharactersInSet: doubleQuoteCharset];
-                }
-                if ([field hasPrefix: @"'"]) {
-                    field = [field stringByTrimmingCharactersInSet: singleQuoteCharset];
-                }
-                entry[[NSString stringWithFormat: @"%lu", j]] = field;
+                entry[[NSString stringWithFormat: @"%lu", j]] = fields[j];
             }
             [importValues addObject: entry];
         }
@@ -701,22 +687,28 @@
  */
 - (void)preprocessValues: (id)object
 {
-    NSArray        *lines;
-    NSCharacterSet *doubleQuoteCharset = [NSCharacterSet characterSetWithCharactersInString: @"\""];
-    NSCharacterSet *singleQuoteCharset = [NSCharacterSet characterSetWithCharactersInString: @"'"];
-
     NSDate     *minDate = nil;
     NSDate     *maxDate = nil;
     MessageLog *log = [MessageLog log];
     NSUInteger errorCount = 0;
 
     @try {
+        dateFormatter.dateFormat = currentSettings.dateFormat;
+
+        NSUInteger index = currentSettings.ignoreLines.intValue;
+        NSString   *separator = currentSettings.fieldSeparator;
+        if (separator == nil) {
+            separator = @",";
+        }
+
+        NSUInteger ignoredLines = currentSettings.ignoreLines.intValue;
         parsedValues = [NSMutableArray arrayWithCapacity: 1000];
         for (NSString *file in fileNames) {
             if (stopProcessing) {
                 return;
             }
 
+            NSArray *csvRows;
             if ([NSFileManager.defaultManager fileExistsAtPath: file]) {
                 NSError  *error = nil;
                 NSString *content = [NSString stringWithContentsOfFile: file
@@ -727,32 +719,18 @@
                     [alert runModal];
                     continue;
                 } else {
-                    lines = [content componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+                    csvRows = [content csvRowsWithSeparator: separator];
                 }
             } else {
-                lines = nil;
+                csvRows = nil;
             }
 
-            dateFormatter.dateFormat = currentSettings.dateFormat;
-
-            NSUInteger index = currentSettings.ignoreLines.intValue;
-            NSString   *separator = currentSettings.fieldSeparator;
-            if (separator == nil) {
-                separator = @"";
-            }
-
-            while (index < lines.count) {
+            for (NSUInteger i = ignoredLines; i < csvRows.count; i++) {
+                NSArray *fields = csvRows[i];
                 if (stopProcessing) {
                     return;
                 }
 
-                NSString *line = [lines[index] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
-                if (line.length == 0) {
-                    index++;
-                    continue;
-                }
-
-                NSArray             *fields = [line componentsSeparatedByString: separator];
                 NSMutableDictionary *entry = [NSMutableDictionary dictionary];
                 for (NSUInteger j = 0; j < fields.count; j++) {
                     if (stopProcessing) {
@@ -770,13 +748,6 @@
                     }
 
                     NSString *field = fields[j];
-                    if ([field hasPrefix: @"\""]) {
-                        field = [field stringByTrimmingCharactersInSet: doubleQuoteCharset];
-                    }
-                    if ([field hasPrefix: @"'"]) {
-                        field = [field stringByTrimmingCharactersInSet: singleQuoteCharset];
-                    }
-
                     id object = (field.length == 0) ? nil : field;
                     if ([property isEqualToString: @"date"] || [property isEqualToString: @"valutaDate"]) {
                         NSRange range = NSMakeRange(0, field.length);
@@ -836,8 +807,6 @@
                     }
                 }
                 [parsedValues addObject: entry];
-
-                index++;
             }
         }
         [processingSheet preprocessingDoneWithErrorCount: errorCount minDate: minDate maxDate: maxDate];

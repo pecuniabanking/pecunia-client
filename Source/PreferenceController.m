@@ -488,9 +488,14 @@ static NSGradient *headerGradient;
     return @"HelveticaNeue-Light";
 }
 
++ (NSString*)mainFontNameMedium
+{
+    return @"HelveticaNeue-Medium";
+}
+
 + (NSString*)mainFontNameBold
 {
-    return @"HelveticaNeueMedium";
+    return @"HelveticaNeue-Bold";
 }
 
 + (NSString*)mainFontNameLight
