@@ -150,6 +150,7 @@
     if (idx != NSNotFound) {
         Category *cat = [categoriesController arrangedObjects][idx];
         [newStatement assignToCategory: cat];
+        [Category updateCatValues];
     }
 
     // save updates

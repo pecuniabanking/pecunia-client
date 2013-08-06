@@ -182,7 +182,7 @@
         return;
     }
     BankAccount        *account = stat.statement.account;
-    NSString           *s = [NSString stringWithFormat: @"Konto: %@\tBLZ: %@\t%@", account.accountNumber, account.bankCode, account.bankName];
+    NSString           *s = [NSString stringWithFormat: @"Konto: %@\t%@\tBLZ: %@\t%@", account.accountNumber, account.name, account.bankCode, account.bankName];
     NSAttributedString *as = [[NSAttributedString alloc] initWithString: s attributes: attributes];
     headerFrame.origin.y += 1;
     headerFrame.origin.x += padding;

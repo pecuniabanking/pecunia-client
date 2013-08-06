@@ -1432,7 +1432,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         }
 
         [categoryController rearrangeObjects];
-        [self updateBalances];
+        [Category.bankRoot rollup];
     }
 }
 
@@ -3026,7 +3026,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     int res = [NSApp runModalForWindow: [statementController window]];
     if (res) {
-        [categoryAssignments rearrangeObjects];
+        //[categoryAssignments rearrangeObjects];
+        [cat updateBoundAssignments];
 
         // Statement was created. Save changes.
         NSError *error = nil;

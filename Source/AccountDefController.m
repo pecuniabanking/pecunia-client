@@ -231,8 +231,6 @@
         newAccount.noCatRep = account.noCatRep;
     }
 
-    [self close];
-
     // save all
     NSError *error = nil;
     if ([context save: &error] == NO) {
