@@ -37,7 +37,7 @@
 
 @interface TagAttachmentCell : NSTextAttachmentCell
 {
-    Tag *editedTag; // The tag begin edited when the color popup is displayed.
+    Tag *editedTag; // The tag being edited when the color popup is displayed.
 }
 
 @property (assign) TagView *owner; // controlView in drawWithFrame can be nil so we need a separate reference.
@@ -291,7 +291,6 @@
     // Show selected background only for plain text, no attachment, no line end.
     // Mark attachments as selected instead. They draw their selection state differently.
     // We can only have a single selected range.
-
     if (self.textStorage.length > 0) {
         NSRange range = self.selectedRange;
         for (NSUInteger i = range.location; i < range.location + range.length; ) {
@@ -344,6 +343,7 @@
         }
         i += effectiveRange.length;
     }
+    
     if (needConversion) {
         [self setSelectedRange: NSMakeRange(i + 1, 0)];
 
@@ -602,7 +602,7 @@
     TagAttachment *attachment = [self.textStorage attribute: NSAttachmentAttributeName
                                                     atIndex: charIndex
                                              effectiveRange: nil];
-    datasource.selectedObjects = [NSArray arrayWithObject: attachment.representedObject];
+    datasource.selectedObjects = @[attachment.representedObject];
 }
 
 #pragma mark -

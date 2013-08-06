@@ -1864,7 +1864,7 @@ NSString * escapeSpecial(NSString *s)
     }
     if ([options count] == 0) {
         [[MessageLog log] addMessage: @"signingOptionForAccount: no signing options defined by bank - use default" withLevel: LogLevel_Info];
-        return [SigningOption defaultOptionForUser: [[users allObjects] objectAtIndex:0]];
+        return [SigningOption defaultOptionForUser: [users allObjects][0]];
     }
     if ([options count] == 1) {
         return [options lastObject];

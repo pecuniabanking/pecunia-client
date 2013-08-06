@@ -69,4 +69,76 @@
     return result;
 }
 
+/**
+ * Parses the content of the receiver (which must be CSV data) into an array of arrays (rows with columns).
+ * Correctly handles quoted fields and fields containing line breaks.
+ */
+- (NSArray *)csvRowsWithSeparator: (NSString *)separator
+{
+    NSMutableArray *rows = [NSMutableArray array];
+
+    NSMutableCharacterSet *newlineCharacterSet = [NSMutableCharacterSet whitespaceAndNewlineCharacterSet];
+    [newlineCharacterSet formIntersectionWithCharacterSet: [[NSCharacterSet whitespaceCharacterSet] invertedSet]];
+
+    NSMutableCharacterSet *importantCharactersSet =
+      [NSMutableCharacterSet characterSetWithCharactersInString: [NSString stringWithFormat: @"%@\"", separator]];
+    [importantCharactersSet formUnionWithCharacterSet: newlineCharacterSet];
+
+    NSScanner *scanner = [NSScanner scannerWithString: self];
+    [scanner setCharactersToBeSkipped: nil];
+    while (![scanner isAtEnd]) {
+        BOOL insideQuotes = NO;
+        BOOL finishedRow = NO;
+
+        NSMutableArray  *columns = [NSMutableArray arrayWithCapacity: 10];
+        NSMutableString *currentColumn = [NSMutableString string];
+        while (!finishedRow) {
+            NSString *tempString;
+            if ([scanner scanUpToCharactersFromSet: importantCharactersSet intoString: &tempString]) {
+                [currentColumn appendString: tempString];
+            }
+
+            if ([scanner isAtEnd]) {
+                if (![currentColumn isEqualToString: @""]) {
+                    [columns addObject: currentColumn];
+                }
+                finishedRow = YES;
+            } else if ([scanner scanCharactersFromSet: newlineCharacterSet intoString: &tempString]) {
+                if (insideQuotes) {
+                    // Add line break to column text
+                    [currentColumn appendString: tempString];
+                } else {
+                    // End of row
+                    if (![currentColumn isEqualToString: @""]) {
+                        [columns addObject: currentColumn];
+                    }
+                    finishedRow = YES;
+                }
+            } else if ([scanner scanString: @"\"" intoString: NULL]) {
+                if (insideQuotes && [scanner scanString: @"\"" intoString: NULL]) {
+                    // Replace double quotes with a single quote in the column string.
+                    [currentColumn appendString: @"\""];
+                } else {
+                    // Start or end of a quoted string.
+                    insideQuotes = !insideQuotes;
+                }
+            } else if ([scanner scanString: separator intoString: NULL]) {
+                if (insideQuotes) {
+                    [currentColumn appendString: separator];
+                } else {
+                    // This is a column separating delimiter.
+                    [columns addObject: currentColumn];
+                    currentColumn = [NSMutableString string];
+                    [scanner scanCharactersFromSet: [NSCharacterSet whitespaceCharacterSet] intoString: NULL];
+                }
+            }
+        }
+        if ([columns count] > 0) {
+            [rows addObject: columns];
+        }
+    }
+
+    return rows;
+}
+
 @end
