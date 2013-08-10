@@ -106,6 +106,7 @@
     IBOutlet DragImageView            *transferNormalImage;
     IBOutlet DragImageView            *transferEUImage;
     IBOutlet DragImageView            *transferSEPAImage;
+    IBOutlet DragImageView            *transferDebitImage;
     IBOutlet DeleteTransferTargetView *transferDeleteImage;
     IBOutlet TimeSliceManager         *timeSlicer;
 

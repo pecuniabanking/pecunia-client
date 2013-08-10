@@ -147,7 +147,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                 break;
 
             case 4:
-                return; // Not yet implemented.
+                type = TransferTypeDebit;
                 break;
 
             default:
@@ -195,7 +195,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             break;
 
         case 4:
-            return; // Not yet implemented.
+            type = TransferTypeDebit;
             break;
 
         default:
@@ -409,8 +409,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     [[mainView window] setInitialFirstResponder: receiverComboBox];
 
-    NSArray *acceptedTypes = @[@(TransferTypeInternal), @(TransferTypeStandard), @(TransferTypeEU),     @(TransferTypeDated),
-                               @(TransferTypeSEPA)];
+    NSArray *acceptedTypes = @[@(TransferTypeInternal), @(TransferTypeStandard), @(TransferTypeEU), @(TransferTypeDated),
+                               @(TransferTypeSEPA), @(TransferTypeDebit)];
     pendingTransfers.managedObjectContext = MOAssistant.assistant.context;
     pendingTransfers.filterPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = NO and changeState = %d",
                                         acceptedTypes, TransferChangeUnchanged];
@@ -477,6 +477,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [transferEUImage setFrameCenterRotation: -10];
     transferSEPAImage.controller = self;
     [transferSEPAImage setFrameCenterRotation: -10];
+    transferDebitImage.controller = self;
+    [transferDebitImage setFrameCenterRotation: -10];
 
     transferDeleteImage.controller = self;
 
