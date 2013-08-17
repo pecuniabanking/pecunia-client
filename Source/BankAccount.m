@@ -339,36 +339,46 @@
 - (void)doMaintenance
 {
     NSArray *statementsArray = [self valueForKey: @"statements"];
-
-    // First ensure that statements on a single day have a little time offset each,
-    // so they can maintain a fixed sort order.
-    // For now we don't fix valutaDate, though.
-    NSDictionary *statements = [self statementsByDay: statementsArray];
-    for (ShortDate *date in statements.allKeys) {
-        NSDate *newDate = nil;
-        for (BankStatement *statement in statements[date]) {
-            if (newDate == nil) {
-                // Initialize new date with a time value.
-                newDate = statement.date;
-                if (newDate == nil) {
-                    newDate = statement.valutaDate;
-                }
-                // Clear out an existing time part.
-                NSDateComponents* comps = [NSCalendar.currentCalendar components: NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
-                                                                        fromDate: newDate];
-                newDate = [NSCalendar.currentCalendar dateFromComponents: comps];
-            }
-            
-            // Move to next time point.
-            newDate = [[NSDate alloc] initWithTimeInterval: 10 sinceDate: newDate];
-            statement.date = newDate;
+    
+    // first repair date if not defined
+    for (BankStatement *statement in statementsArray) {
+        if (statement.date == nil && statement.valutaDate != nil) {
+            statement.date = statement.valutaDate;
         }
     }
 
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
-    NSArray          *sds = @[sd];
+    // Then ensure that statements on a single day have a little time offset each,
+    // so they can maintain a fixed sort order.
+    // For now we don't fix valutaDate, though.
+    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: YES];
+    NSArray *sortedStatements = [statementsArray sortedArrayUsingDescriptors: @[sd]];
+    NSDictionary *statements = [self statementsByDay: sortedStatements];
+    for (ShortDate *date in statements.allKeys) {
+        NSDate *newDate = nil;
+        BOOL   doRepair = NO;
+        for (BankStatement *statement in statements[date]) {
+            if (newDate == nil) {
+                newDate = statement.date;
+            } else {
+                if (!doRepair) {
+                    if ([statement.date isEqualToDate:newDate]) {
+                        doRepair = YES;
+                    } else {
+                        newDate = statement.date;
+                    }
+                }
+                
+                if (doRepair) {
+                    statement.date = [[NSDate alloc] initWithTimeInterval: 10 sinceDate: newDate];
+                    newDate = statement.date;
+                }
+            }
+        }
+    }
 
-    NSArray *sortedStatements = [statementsArray sortedArrayUsingDescriptors: sds];
+    // repair balances
+    sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
+    sortedStatements = [statementsArray sortedArrayUsingDescriptors: @[sd]];
 
     NSDecimalNumber *balance = self.balance;
     for (BankStatement *statement in sortedStatements) {
@@ -376,8 +386,6 @@
         if (![statement.saldo isEqual: balance]) {
             statement.saldo = balance;
             balance = [balance decimalNumberBySubtracting: statement.value];
-        } else {
-            break;
         }
     }
 

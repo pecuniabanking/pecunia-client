@@ -806,38 +806,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="NSNextResponder" ref="738284139"/>
 						<int key="NSvFlags">273</int>
 						<array class="NSMutableArray" key="NSSubviews">
-							<object class="NSImageView" id="230644567">
-								<reference key="NSNextResponder" ref="374438338"/>
-								<int key="NSvFlags">268</int>
-								<set class="NSMutableSet" key="NSDragTypes">
-									<string>Apple PDF pasteboard type</string>
-									<string>Apple PICT pasteboard type</string>
-									<string>Apple PNG pasteboard type</string>
-									<string>NSFilenamesPboardType</string>
-									<string>NeXT Encapsulated PostScript v1.2 pasteboard type</string>
-									<string>NeXT TIFF v4.0 pasteboard type</string>
-								</set>
-								<string key="NSFrame">{{20, 464}, {211, 145}}</string>
-								<reference key="NSSuperview" ref="374438338"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="791394780"/>
-								<int key="NSTag">4</int>
-								<bool key="NSEnabled">YES</bool>
-								<object class="NSImageCell" key="NSCell" id="96626328">
-									<int key="NSCellFlags">134217728</int>
-									<int key="NSCellFlags2">33554432</int>
-									<object class="NSCustomResource" key="NSContents">
-										<string key="NSClassName">NSImage</string>
-										<string key="NSResourceName">transfer-debit-preview</string>
-									</object>
-									<int key="NSAlign">0</int>
-									<int key="NSScale">2</int>
-									<int key="NSStyle">0</int>
-									<bool key="NSAnimates">NO</bool>
-								</object>
-								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
-								<bool key="NSEditable">YES</bool>
-							</object>
 							<object class="NSImageView" id="1040201423">
 								<reference key="NSNextResponder" ref="374438338"/>
 								<int key="NSvFlags">265</int>
@@ -852,7 +820,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 								<string key="NSFrame">{{667, 629}, {59, 75}}</string>
 								<reference key="NSSuperview" ref="374438338"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="230644567"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="NSViewIsLayerTreeHost">YES</bool>
 								<object class="NSShadow" key="NSViewShadow">
 									<double key="NSShadowHoriz">3</double>
@@ -3176,14 +3144,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">transferDebitImage</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="230644567"/>
-					</object>
-					<int key="connectionID">735</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">rightPane</string>
 						<reference key="source" ref="738284139"/>
 						<reference key="destination" ref="374438338"/>
@@ -3763,7 +3723,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 							<reference ref="914284004"/>
 							<reference ref="956719228"/>
 							<reference ref="1040201423"/>
-							<reference ref="230644567"/>
 						</array>
 						<reference key="parent" ref="738284139"/>
 					</object>
@@ -4950,19 +4909,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="object" ref="756540991"/>
 						<reference key="parent" ref="915682617"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">733</int>
-						<reference key="object" ref="230644567"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="96626328"/>
-						</array>
-						<reference key="parent" ref="374438338"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">734</int>
-						<reference key="object" ref="96626328"/>
-						<reference key="parent" ref="230644567"/>
-					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -5204,9 +5150,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<string key="722.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="723.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="724.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="733.CustomClassName">DragImageView</string>
-				<string key="733.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="734.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="91.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="94.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="95.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -6056,9 +5999,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<string key="calendarChanged:">id</string>
 						<string key="cancelCreateTemplate:">id</string>
 						<string key="deleteTransfer:">id</string>
-						<string key="executionTimeChanged:">id</string>
-						<string key="filterStatements:">id</string>
-						<string key="filterTemplates:">id</string>
 						<string key="queueTransfer:">id</string>
 						<string key="saveTemplate:">id</string>
 						<string key="sendTransfer:">id</string>
@@ -6078,18 +6018,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						</object>
 						<object class="IBActionInfo" key="deleteTransfer:">
 							<string key="name">deleteTransfer:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="executionTimeChanged:">
-							<string key="name">executionTimeChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="filterStatements:">
-							<string key="name">filterStatements:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="filterTemplates:">
-							<string key="name">filterTemplates:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="queueTransfer:">
@@ -6453,7 +6381,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 			<string key="delete2">{16, 16}</string>
 			<string key="shield">{24, 24}</string>
 			<string key="templates">{95, 64}</string>
-			<string key="transfer-debit-preview">{211, 145}</string>
 			<string key="transfer-eu-preview">{211, 145}</string>
 			<string key="transfer-internal-preview">{211, 145}</string>
 			<string key="transfer-normal-preview">{211, 145}</string>
