@@ -1014,7 +1014,7 @@ static NSFont *smallNumberFont;
     heatMapView.currentYear = currentYear;
     [self updateValues];
     for (NSView *view in heatMapView.subviews) {
-        [view.animator setContentAlpha: 1];
+        [(id)view.animator setContentAlpha: 1];
     }
 }
 
@@ -1041,7 +1041,7 @@ static NSFont *smallNumberFont;
         selectedCategory = theCategory;
         [self updateValues];
         for (NSView *view in heatMapView.subviews) {
-            [view.animator setContentAlpha: 1];
+            [(id)view.animator setContentAlpha: 1];
         }
     }
 }

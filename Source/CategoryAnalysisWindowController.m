@@ -364,7 +364,7 @@ extern void *UserDefaultsBindingContext;
 - (void)regenerateGraphs;
 
 - (int)majorTickCount;
-- (NSUInteger)findIndexForTimePoint: (NSUInteger)timePoint;
+- (NSInteger)findIndexForTimePoint: (NSUInteger)timePoint;
 
 @end
 

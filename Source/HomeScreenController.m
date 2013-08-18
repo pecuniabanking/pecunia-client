@@ -215,7 +215,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     }
 
     trackingArea = [[NSTrackingArea alloc] initWithRect: self.bounds
-                                                options: NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveInActiveApp
+                                                options: NSTrackingCursorUpdate | NSTrackingActiveInActiveApp
                                                   owner: self
                                                userInfo: nil];
     [self addTrackingArea: trackingArea];
