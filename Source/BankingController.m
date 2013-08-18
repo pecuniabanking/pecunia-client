@@ -81,6 +81,7 @@ NSString *const BankStatementDataType = @"BankStatementDataType";
 NSString *const CategoryDataType = @"CategoryDataType";
 
 // Notification and dictionary key for category color change notifications.
+extern NSString *const HomeScreenCardClickedNotification;
 NSString *const CategoryColorNotification = @"CategoryColorNotification";
 NSString *const CategoryKey = @"CategoryKey";
 
@@ -805,8 +806,18 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [mainWindow setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
     [toggleFullscreenItem setHidden: NO];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(contextChanged) name: @"contextDataChanged" object: nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(encryptionChanged) name: @"dataFileEncryptionChanged" object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(contextChanged)
+                                                 name: @"contextDataChanged"
+                                               object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(encryptionChanged)
+                                                 name: @"dataFileEncryptionChanged"
+                                               object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(homeScreenCardClicked:)
+                                                 name: HomeScreenCardClickedNotification
+                                               object: nil];
 
 #ifdef DEBUG
     [developerMenu setHidden: NO];
@@ -893,6 +904,18 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 }
 
 #pragma mark - User actions
+
+- (void)homeScreenCardClicked: (NSNotification *)notification
+{
+    id object = notification.object;
+    if ([object isKindOfClass: Category.class]) {
+        NSControl *dummy = [[NSControl alloc] init];
+        dummy.tag = 1;
+        [categoryController setSelectedObject: object];
+        [self switchMainPage: 1];
+        [self activateAccountPage: dummy];
+    }
+}
 
 - (void)setHBCIAccounts
 {
@@ -1251,7 +1274,10 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [sc startSpinning];
     [sc setMessage: NSLocalizedString(@"AP219", nil) removeAfter: 0];
 
-    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(statementsNotification:) name: PecuniaStatementsNotification object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(statementsNotification:)
+                                                 name: PecuniaStatementsNotification
+                                               object: nil];
     [[HBCIClient hbciClient] getStatements: resultList];
 }
 
@@ -1263,7 +1289,9 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     BOOL                isImport = NO;
     int                 count = 0;
 
-    [[NSNotificationCenter defaultCenter] removeObserver: self name: PecuniaStatementsNotification object: nil];
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: PecuniaStatementsNotification
+                                                  object: nil];
 
     NSArray *resultList = [notification object];
     if (resultList == nil) {
@@ -1628,10 +1656,10 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         }
 
         case 1: {
-            [currentSection deactivate];
             [transfersController deactivate];
             [mainTabView selectTabViewItemAtIndex: 0];
             toolbarButtons.selectedSegment = 1;
+            [currentSection activate];
 
             break;
         }
@@ -2030,7 +2058,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
 
     // Switch to the transfers page.
-    [self switchMainPage: 1];
+    [self switchMainPage: 2];
 
     // Start local transfer
     [transfersController startTransferOfType: TransferTypeStandard withAccount: account];
@@ -2048,7 +2076,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
 
     // Switch to the transfers page.
-    [self switchMainPage: 1];
+    [self switchMainPage: 2];
 
     // Start transfer editing process.
     [transfersController startDonationTransfer];
@@ -2062,7 +2090,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
 
     // Switch to the transfers page.
-    [self switchMainPage: 1];
+    [self switchMainPage: 2];
 
     // Start local transfer
     [transfersController startTransferOfType: TransferTypeInternal withAccount: account];
@@ -2076,7 +2104,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
 
     // Switch to the transfers page.
-    [self switchMainPage: 1];
+    [self switchMainPage: 2];
 
     // Start local transfer
     [transfersController startTransferOfType: TransferTypeDated withAccount: account];
@@ -2100,7 +2128,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
 
     // Switch to the transfers page.
-    [self switchMainPage: 1];
+    [self switchMainPage: 2];
 
     // Start local transfer
     [transfersController startTransferOfType: TransferTypeEU withAccount: account];
@@ -2124,7 +2152,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
 
     // Switch to the transfers page.
-    [self switchMainPage: 1];
+    [self switchMainPage: 2];
 
     // Start local transfer
     [transfersController startTransferOfType: TransferTypeSEPA withAccount: account];
@@ -2800,7 +2828,9 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
     if (cat.isRoot) {
         [categoryController addChild: sender];
-    } else {[categoryController add: sender]; }
+    } else {
+        [categoryController add: sender];
+    }
     [accountsView performSelector: @selector(editSelectedCell) withObject: nil afterDelay: 0.0];
 }
 
@@ -3291,7 +3321,10 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     // get statements in separate thread
     autoSyncRunning = YES;
-    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(statementsNotification:) name: PecuniaStatementsNotification object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(statementsNotification:)
+                                                 name: PecuniaStatementsNotification
+                                               object: nil];
     [[HBCIClient hbciClient] getStatements: resultList];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -3520,7 +3553,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
                                   nil
                                   );
         if (res == NSAlertAlternateReturn) {
-            [self switchMainPage: 1];
+            [self switchMainPage: 2];
             return NO;
         }
         [transfersController cancelEditing];
@@ -3550,7 +3583,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         return YES;
     }
     if (res == NSAlertAlternateReturn) {
-        [self switchMainPage: 1];
+        [self switchMainPage: 2];
         return NO;
     }
 

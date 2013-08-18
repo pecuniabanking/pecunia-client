@@ -25,6 +25,8 @@
 
 @property (nonatomic) NSString *title;
 
+- (void)cardClicked: (id)object;
+
 @end
 
 @interface HomeScreenController : NSViewController <PecuniaTabItem>

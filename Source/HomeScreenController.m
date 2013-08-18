@@ -24,6 +24,8 @@
 #import "StockCard.h"
 #import "AssetsCard.h"
 
+NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
+
 @interface HomeScreenController ()
 
 @end
@@ -71,6 +73,8 @@
     NSBezierPath *gripPath;
     NSBezierPath *borderFillPath;
     NSBezierPath *borderPath;
+
+    NSTrackingArea *trackingArea;
 }
 
 @end
@@ -78,6 +82,11 @@
 @implementation HomeScreenCard
 
 @synthesize title;
+
++ (BOOL)clickable
+{
+    return NO;
+}
 
 - (id)initWithFrame: (NSRect)frameRect
 {
@@ -95,6 +104,10 @@
         self.layer.shadowOpacity = 0.5;
 
         [self updateStoredStructures];
+
+        if (self.class.clickable) {
+            [self updateTrackingArea];
+        }
     }
     return self;
 }
@@ -193,6 +206,43 @@
 
     [[NSColor colorWithCalibratedWhite: 0.3 alpha: 0.5] setStroke];
     [gripPath stroke];
+}
+
+- (void)updateTrackingArea
+{
+    if (trackingArea != nil) {
+        [self removeTrackingArea: trackingArea];
+    }
+
+    trackingArea = [[NSTrackingArea alloc] initWithRect: self.bounds
+                                                options: NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveInActiveApp
+                                                  owner: self
+                                               userInfo: nil];
+    [self addTrackingArea: trackingArea];
+}
+
+- (void)updateTrackingAreas
+{
+    [super updateTrackingAreas];
+
+    [self updateTrackingArea];
+}
+
+-(void)cursorUpdate: (NSEvent *)theEvent
+
+{
+    if (self.class.clickable) {
+        [[NSCursor pointingHandCursor] set];
+    } else {
+        [super cursorUpdate: theEvent];
+    }
+
+}
+
+- (void)cardClicked: (id)object
+{
+    [NSNotificationCenter.defaultCenter postNotificationName: HomeScreenCardClickedNotification
+                                                      object: object];
 }
 
 @end

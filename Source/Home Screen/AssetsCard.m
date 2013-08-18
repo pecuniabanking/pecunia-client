@@ -33,7 +33,6 @@ extern void *UserDefaultsBindingContext;
 {
 @private
     CPTXYGraph *graph;
-    Category *category;
 
     ShortDate *referenceDate;
 
@@ -59,9 +58,13 @@ extern void *UserDefaultsBindingContext;
 
 }
 
+@property (nonatomic, strong) Category *category;
+
 @end
 
 @implementation AssetGraph
+
+@synthesize category;
 
 - (id)initWithFrame: (NSRect)frame category: (Category *)aCategory
 {
@@ -519,6 +522,12 @@ extern void *UserDefaultsBindingContext;
     [self updateGraphRange];
 }
 
+- (void)mouseDown: (NSEvent *)theEvent
+{
+    [super mouseDown: theEvent];
+    [(HomeScreenCard *)self.superview cardClicked: category];
+}
+
 #pragma mark - Utility functions
 
 - (void)updateColors
@@ -674,6 +683,11 @@ extern void *UserDefaultsBindingContext;
 
 @implementation AssetsCard
 
++ (BOOL)clickable
+{
+    return YES;
+}
+
 - (id)initWithFrame: (NSRect)frame
 {
     self = [super initWithFrame: frame];
@@ -736,6 +750,15 @@ extern void *UserDefaultsBindingContext;
         child.frame = frame;
         frame.origin.y += frame.size.height;
     }
+}
+
+- (void)mouseDown: (NSEvent *)theEvent
+{
+    [super mouseDown: theEvent];
+    AssetGraph *graph = self.subviews[0];
+    Category *category = graph.category;
+
+    [self cardClicked: category];
 }
 
 #pragma mark - Bindings, KVO and KVC

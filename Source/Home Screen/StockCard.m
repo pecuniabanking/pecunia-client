@@ -770,8 +770,7 @@ typedef enum {
     [self updateTimer];
 }
 
-#pragma mark -
-#pragma mark Plot Data Source Methods
+#pragma mark - Plot Data Source Methods
 
 - (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot
 {
@@ -795,6 +794,14 @@ typedef enum {
 - (CPTLayer *)dataLabelForPlot: (CPTPlot *)plot recordIndex: (NSUInteger)index
 {
     return (id)[NSNull null]; // Don't show any data label.
+}
+
+#pragma mark - Mouse handling
+
+- (void)mouseDown: (NSEvent *)theEvent
+{
+    [super mouseDown: theEvent];
+    [(HomeScreenCard *)self.superview cardClicked: @"StockCard"];
 }
 
 @end
@@ -949,6 +956,12 @@ typedef enum {
             frame.origin.y += frame.size.height;
         }
     }
+}
+
+- (void)mouseDown: (NSEvent *)theEvent
+{
+    [super mouseDown: theEvent];
+    [self cardClicked: @"StockCard"];
 }
 
 #pragma mark - Bindings, KVO and KVC
