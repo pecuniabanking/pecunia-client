@@ -1,6 +1,7 @@
 @interface CPTColor : NSObject<NSCopying, NSCoding>
 
-@property (nonatomic, readonly, assign) CGColorRef cgColor;
+@property (nonatomic, readonly) CGColorRef cgColor;
+@property (nonatomic, readonly, getter = isOpaque) BOOL opaque;
 
 /// @name Factory Methods
 /// @{

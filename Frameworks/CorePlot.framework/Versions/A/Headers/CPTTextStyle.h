@@ -5,9 +5,10 @@
 @interface CPTTextStyle : NSObject<NSCoding, NSCopying, NSMutableCopying>
 
 @property (readonly, copy, nonatomic) NSString *fontName;
-@property (readonly, assign, nonatomic) CGFloat fontSize;
+@property (readonly, nonatomic) CGFloat fontSize;
 @property (readonly, copy, nonatomic) CPTColor *color;
-@property (readonly, assign, nonatomic) CPTTextAlignment textAlignment;
+@property (readonly, nonatomic) CPTTextAlignment textAlignment;
+@property (readonly, assign, nonatomic) NSLineBreakMode lineBreakMode;
 
 /// @name Factory Methods
 /// @{
@@ -23,7 +24,7 @@
  **/
 @interface CPTTextStyle(CPTPlatformSpecificTextStyleExtensions)
 
-@property (readonly, copy, nonatomic) NSDictionary *attributes;
+@property (readonly, nonatomic) NSDictionary *attributes;
 
 /// @name Factory Methods
 /// @{

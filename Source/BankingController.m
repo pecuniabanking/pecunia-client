@@ -690,6 +690,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 - (void)awakeFromNib
 {
+    [self setDefaultUserSettings];
+    
     sortAscending = NO;
     sortIndex = 0;
 
@@ -803,12 +805,52 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [mainWindow setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
     [toggleFullscreenItem setHidden: NO];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contextChanged) name:@"contextDataChanged" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(encryptionChanged) name:@"dataFileEncryptionChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(contextChanged) name: @"contextDataChanged" object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(encryptionChanged) name: @"dataFileEncryptionChanged" object: nil];
 
 #ifdef DEBUG
     [developerMenu setHidden: NO];
 #endif
+}
+
+/**
+ * Sets a number of settings to useful defaults.
+ */
+- (void)setDefaultUserSettings
+{
+    // Home screen settings.
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL stocksDefaultsSet = [defaults boolForKey: @"stocksDefaultsSet"];
+    NSString *stockSymbol = [defaults stringForKey: @"stocksSymbol1"];
+    if (stockSymbol == nil && !stocksDefaultsSet) {
+        [defaults setObject: @"^GDAXI" forKey: @"stocksSymbol1"];
+    }
+    id stockSymbolColor = [defaults objectForKey: @"stocksSymbolColor1"];
+    if (stockSymbolColor == nil) {
+        NSData *data = [NSArchiver archivedDataWithRootObject: [NSColor nextDefaultStockGraphColor]];
+        [defaults setObject: data forKey: @"stocksSymbolColor1"];
+    }
+
+    stockSymbol = [defaults stringForKey: @"stocksSymbol2"];
+    if (stockSymbol == nil && !stocksDefaultsSet) {
+        [defaults setObject: @"ORCL" forKey: @"stocksSymbol2"];
+    }
+    stockSymbolColor = [defaults objectForKey: @"stocksSymbolColor2"];
+    if (stockSymbolColor == nil) {
+        NSData *data = [NSArchiver archivedDataWithRootObject: [NSColor nextDefaultStockGraphColor]];
+        [defaults setObject: data forKey: @"stocksSymbolColor2"];
+    }
+
+    stockSymbol = [defaults stringForKey: @"stocksSymbol3"];
+    if (stockSymbol == nil && !stocksDefaultsSet) {
+        [defaults setObject: @"AAPL" forKey: @"stocksSymbol3"];
+    }
+    stockSymbolColor = [defaults objectForKey: @"stocksSymbolColor3"];
+    if (stockSymbolColor == nil) {
+        NSData *data = [NSArchiver archivedDataWithRootObject: [NSColor nextDefaultStockGraphColor]];
+        [defaults setObject: data forKey: @"stocksSymbolColor3"];
+    }
+    [defaults setBool: YES forKey: @"stocksDefaultsSet"];
 }
 
 - (void)publishContext
@@ -1565,7 +1607,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 - (void)updateDetailsPaneButton
 {
-    toggleDetailsButton.hidden = (toolbarButtons.selectedSegment != 0) || (currentSection != nil);
+    toggleDetailsButton.hidden = (toolbarButtons.selectedSegment != 1) || (currentSection != nil);
 }
 
 - (IBAction)activateMainPage: (id)sender
@@ -1579,7 +1621,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         case 0: {
             [currentSection deactivate];
             [transfersController deactivate];
-            [mainTabView selectTabViewItemAtIndex: 0];
+            [self activateHomeScreenTab];
             toolbarButtons.selectedSegment = 0;
 
             break;
@@ -1587,16 +1629,16 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
         case 1: {
             [currentSection deactivate];
-            [self activateTransfersTab];
+            [transfersController deactivate];
+            [mainTabView selectTabViewItemAtIndex: 0];
             toolbarButtons.selectedSegment = 1;
 
             break;
         }
-
+            
         case 2: {
             [currentSection deactivate];
-            [transfersController deactivate];
-            [self activateStandingOrdersTab];
+            [self activateTransfersTab];
             toolbarButtons.selectedSegment = 2;
 
             break;
@@ -1605,8 +1647,17 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         case 3: {
             [currentSection deactivate];
             [transfersController deactivate];
-            [self activateDebitsTab];
+            [self activateStandingOrdersTab];
             toolbarButtons.selectedSegment = 3;
+
+            break;
+        }
+
+        case 4: {
+            [currentSection deactivate];
+            [transfersController deactivate];
+            [self activateDebitsTab];
+            toolbarButtons.selectedSegment = 4;
 
             break;
         }
@@ -1906,7 +1957,9 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [statementsListView unbind: @"selectedRows"];
 
     for (id<PecuniaSectionItem> item in [mainTabItems allValues]) {
-        [item terminate];
+        if ([(id)item respondsToSelector: @selector(terminate)]) {
+            [item terminate];
+        }
     }
     if ([categoryAnalysisController respondsToSelector: @selector(terminate)]) {
         [categoryAnalysisController terminate];
@@ -3413,6 +3466,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [sc stopSpinning];
     [sc clearMessage];
 
+    [self activateMainPage: nil];
 
     // Display main window.
     [mainWindow display];

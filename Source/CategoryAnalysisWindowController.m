@@ -707,8 +707,7 @@ extern void *UserDefaultsBindingContext;
     CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
     lineStyle.lineWidth = 1;
     lineStyle.lineColor = [CPTColor colorWithGenericGray: 64 / 255.0];
-    lineStyle.dashPattern = lineStyle.dashPattern = @[@10.0f,
-                                                      @5.0f];
+    lineStyle.dashPattern = lineStyle.dashPattern = @[@10.0f, @5.0f];
     turnoversIndicatorLine.axisLineStyle = lineStyle;
     turnoversIndicatorLine.majorTickLineStyle = nil;
 
@@ -925,7 +924,7 @@ extern void *UserDefaultsBindingContext;
         lineStyle.lineColor = [CPTColor colorWithCGColor: lineColor];
         CGColorRelease(lineColor);
 
-        lineStyle.lineWidth = 1;
+        lineStyle.lineWidth = 2;
         lineStyle.dashPattern = @[@8.0f, @2.5f];
         averagePlot.dataLineStyle = lineStyle;
 
@@ -1472,10 +1471,9 @@ int double_compare(const void *value1, const void *value2)
                 sourceIndex = 0;
             } else {
                 if (sourceIndex >= (int)rawCount) {
-                    // At the end of the list fold back to half the window size, making so these
-                    // values repeating at the end (assuming the same values appear in the future).
+                    // At the end of the list simply repeat the last value.
                     // This is really a rough estimate and should be replaced as soon as we have a forecast.
-                    sourceIndex -= m;
+                    sourceIndex = rawCount - 1;
                     if (sourceIndex < 0) {
                         sourceIndex = 0;
                     }
@@ -2413,7 +2411,7 @@ int double_compare(const void *value1, const void *value2)
         lineStyle.lineColor = [CPTColor colorWithCGColor: lineColor];
         CGColorRelease(lineColor);
 
-        lineStyle.lineWidth = 1;
+        lineStyle.lineWidth = 2;
         lineStyle.dashPattern = @[@8.0f, @2.5f];
 
         scatterPlot.dataLineStyle = lineStyle;

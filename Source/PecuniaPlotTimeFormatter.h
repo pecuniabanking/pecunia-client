@@ -23,8 +23,20 @@
 /**
  * Enhancement of the coreplot time formatter, which allows to use other time units instead just seconds.
  */
-@interface PecuniaPlotTimeFormatter : CPTTimeFormatter {
+@interface PecuniaPlotTimeFormatter : CPTTimeFormatter
+{
     int calendarUnit;
+}
+
+- (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (int)unit;
+
+@end
+
+/**
+ * The stocks time formatter is a bit different. It works with unix time stamps.
+ */
+@interface StocksPlotTimeFormatter : CPTTimeFormatter
+{
 }
 
 - (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (int)unit;

@@ -25,6 +25,8 @@
  **/
 @interface CPTFill(AbstractMethods)
 
+@property (nonatomic, readonly, getter = isOpaque) BOOL opaque;
+
 /// @name Drawing
 /// @{
 -(void)fillRect:(CGRect)rect inContext:(CGContextRef)context;

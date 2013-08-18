@@ -38,6 +38,7 @@
 @class StatementsListView;
 @class RoundedOuterShadowView;
 
+@class HomeScreenController;
 @class CategoryAnalysisWindowController;
 @class CategoryRepWindowController;
 @class CategoryDefWindowController;
@@ -149,6 +150,7 @@
     NSMutableArray *bankAccountItemsExpandState;
     Category       *lastSelection;
 
+    HomeScreenController             *homeScreenController;
     CategoryAnalysisWindowController *categoryAnalysisController;
     CategoryRepWindowController      *categoryReportingController;
     CategoryDefWindowController      *categoryDefinitionController;

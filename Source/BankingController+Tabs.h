@@ -23,6 +23,7 @@
 
 @interface BankingController (Tabs)
 
+- (void)activateHomeScreenTab;
 - (void)activateTransfersTab;
 - (void)activateStandingOrdersTab;
 - (void)activateDebitsTab;

@@ -164,9 +164,6 @@ static NSMutableDictionary *userColors;
                                  alpha: 1];
 }
 
-/**
- * Like nextDefaultAccountColor but for categories.
- */
 + (NSColor *)nextDefaultTagColor
 {
     if (defaultColors == nil) {
@@ -188,9 +185,31 @@ static NSMutableDictionary *userColors;
                                  alpha: 1];
 }
 
++ (NSColor *)nextDefaultStockGraphColor
+{
+    if (defaultColors == nil) {
+        [self loadApplicationColors];
+    }
+
+    static int nextStockColorIndex = 1;
+
+    NSString *key = [NSString stringWithFormat: @"Default Stock Graph Color %i", nextStockColorIndex];
+    NSColor  *color = defaultColors[key];
+    if (color != nil) {
+        nextStockColorIndex++;
+        return color;
+    }
+
+    return [NSColor colorWithDeviceRed: (64 + random() % 190) / 255.0
+                                 green: (64 + random() % 190) / 255.0
+                                  blue: (64 + random() % 190) / 255.0
+                                 alpha: 1];
+}
+
 /**
  * Returns a predefined application color named by the given key. This key is the same as used
- * in the "Pecunia Colors.html" chart.
+ * in the "Pecunia Colors.html" chart. The color can be overridden by a user specified color for
+ * the same name.
  * Returns black if the given key could not be found.
  */
 + (NSColor *)applicationColorForKey: (NSString *)key
