@@ -131,6 +131,14 @@ extern void *UserDefaultsBindingContext;
             [self showBalance: [NSUserDefaults.standardUserDefaults boolForKey: @"showBalances"]];
         }
 
+        if ([keyPath isEqualToString: @"markNewStatements"]) {
+            if ([NSUserDefaults.standardUserDefaults boolForKey: @"markNewStatements"]) {
+                [newImage setHidden: YES];
+            } else {
+                [newImage setHidden: !isNew];
+            }
+        }
+
         [self setNeedsDisplay: YES];
     }
 }
@@ -224,7 +232,13 @@ static CurrencyValueTransformer *currencyTransformer;
 
 - (void)setIsNew: (BOOL)flag
 {
-    [newImage setHidden: !flag];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL newStatementsWithGradient = [defaults boolForKey: @"markNewStatements"];
+    if (newStatementsWithGradient) {
+        [newImage setHidden: YES];
+    } else {
+        [newImage setHidden: !flag];
+    }
     isNew = flag;
 }
 

@@ -387,7 +387,7 @@ NSCalendar *calendar = nil;
 
 + (ShortDate *)distantFuture
 {
-    return [ShortDate dateWithYear: 9999 month: 12 day: 31];
+    return [ShortDate dateWithYear: 2500 month: 12 day: 31];
 }
 
 + (ShortDate *)distantPast

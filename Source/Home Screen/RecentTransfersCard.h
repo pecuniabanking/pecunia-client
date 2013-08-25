@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,28 +17,13 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
+#import "HomeScreenController.h"
 
-@interface CurrencyValueTransformer : NSValueTransformer
+@interface RecentTransfersCard : HomeScreenCard <NSTableViewDelegate, NSTableViewDataSource>
+{
+}
 
-@end
-
-@interface MoreThanOneToBoolValueTransformer : NSValueTransformer
-
-@end
-
-@interface OneOrLessToBoolValueTransformer : NSValueTransformer
-
-@end
-
-@interface ExactlyOneToBoolValueTransformer : NSValueTransformer
-
-@end
-
-@interface RemoveWhitespaceTransformer : NSValueTransformer
-
-@end
-
-@interface StringCasingTransformer : NSValueTransformer
+@property (strong) IBOutlet NSScrollView *transfersViewContainer;
+@property (strong) IBOutlet NSTableView *transfersView;
 
 @end

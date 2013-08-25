@@ -597,10 +597,10 @@ BOOL updateSent = NO;
     }
     NSMutableSet *result = [[NSMutableSet alloc] init];
 
+    [result addObject: self];
     for (Category *child in self.children) {
         [result unionSet: [child allCategories]];
     }
-    [result addObject: self];
     return result;
 }
 
@@ -634,13 +634,17 @@ BOOL updateSent = NO;
 }
 
 /**
- * Returns all assignments from this category. Takes recursive setting into account.
+ * Returns all assignments from this category (and subcategories if recursive is YES).
+ * The resulting assignments are ordered by the date specified in @order and can be limited to
+ * a certain number if @limit is not NSNotFound.
  */
-- (NSArray *)allAssignments
+- (NSArray *)allAssignmentsOrderedBy: (CategoryDateOrder)order
+                               limit: (NSUInteger)limit
+                           recursive: (BOOL)recursive
+                           ascending: (BOOL)ascending
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSSet          *categories;
-    if ([defaults boolForKey: @"recursiveTransactions"]) {
+    NSSet *categories;
+    if (recursive) {
         categories = [self allCategories];
     } else {
         categories = [NSSet setWithObject: self];
@@ -654,10 +658,62 @@ BOOL updateSent = NO;
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category in %@", categories];
     [fetchRequest setPredicate: predicate];
 
+    NSString *key;
+    switch (order) {
+        case DateOrderValutaDate:
+            key = @"statement.valutaDate";
+            break;
+
+        case DateOrderDocDate:
+            key = @"statement.docDate";
+            break;
+
+        default:
+            key = @"statement.date";
+    }
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: key ascending: ascending];
+    NSArray *sortDescriptors = @[sortDescriptor];
+    [fetchRequest setSortDescriptors: sortDescriptors];
+
+    if (limit != NSNotFound) {
+        [fetchRequest setFetchLimit: limit];
+    }
+    
     NSError *error = nil;
     NSArray *fetchedObjects = [MOAssistant.assistant.context executeFetchRequest: fetchRequest
                                                                            error: &error];
     return fetchedObjects;
+}
+
+/**
+ * Determines the number of assignments for this category effienctly (i.e. without loading any object).
+ */
+- (NSUInteger)assignmentCountRecursive: (BOOL)recursive
+{
+    NSSet *categories;
+    if (recursive) {
+        categories = [self allCategories];
+    } else {
+        categories = [NSSet setWithObject: self];
+    }
+
+    NSFetchRequest      *request = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"StatCatAssignment"
+                                              inManagedObjectContext: MOAssistant.assistant.context];
+    [request setEntity: entity];
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category in %@", categories];
+    [request setPredicate: predicate];
+
+    NSError *error = nil;
+    NSUInteger count = [MOAssistant.assistant.context countForFetchRequest: request error: &error];
+    if (error != nil) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return 0;
+    }
+    return count;
+
 }
 
 /**
@@ -718,10 +774,13 @@ BOOL updateSent = NO;
                 withGrouping: (GroupingInterval)interval
                        sumUp: (BOOL)sumUp
 {
-    NSArray *assignments = [self allAssignments];
-    NSArray *sortedAssignments = [assignments sortedArrayUsingSelector: @selector(compareDate:)];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *assignments = [self allAssignmentsOrderedBy: DateOrderDate
+                                                   limit: NSNotFound
+                                               recursive: [defaults boolForKey: @"recursiveTransactions"]
+                                               ascending: YES];
 
-    NSUInteger     count = [sortedAssignments count];
+    NSUInteger     count = assignments.count;
     NSMutableArray *dateArray = [NSMutableArray arrayWithCapacity: count];
     NSMutableArray *balanceArray = [NSMutableArray arrayWithCapacity: count];
     NSMutableArray *countArray = [NSMutableArray arrayWithCapacity: count];
@@ -734,7 +793,7 @@ BOOL updateSent = NO;
             // We have to keep the current balance for each participating account as we have to sum
             // them up on each time point to get the total balance.
             NSMutableDictionary *currentBalances = [NSMutableDictionary dictionaryWithCapacity: 5];
-            for (StatCatAssignment *assignment in sortedAssignments) {
+            for (StatCatAssignment *assignment in assignments) {
                 // Ignore categories that are hidden, except if this is the parent category.
                 if (assignment.category != self) {
                     if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {
@@ -798,7 +857,7 @@ BOOL updateSent = NO;
         } else {
             int             balanceCount = 0;
             NSDecimalNumber *currentValue = [NSDecimalNumber zero];
-            for (StatCatAssignment *assignment in sortedAssignments) {
+            for (StatCatAssignment *assignment in assignments) {
                 // Ignore categories that are hidden, except if this is the parent category.
                 if (assignment.category != self) {
                     if ([assignment.category.isHidden boolValue] || [assignment.category.noCatRep boolValue]) {

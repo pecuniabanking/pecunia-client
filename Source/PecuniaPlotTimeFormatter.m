@@ -90,7 +90,7 @@
     NSString  *result = @"?";
     NSDate *date = [NSDate dateWithTimeIntervalSince1970: coordinateValue.intValue];
     NSDateComponents *components = [[ShortDate calendar] components: NSYearCalendarUnit | NSMonthCalendarUnit |
-                                    NSDayCalendarUnit | NSWeekCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit
+                                    NSDayCalendarUnit | NSWeekCalendarUnit | NSHourCalendarUnit
                                                            fromDate: date];
 
     switch (calendarUnit) {

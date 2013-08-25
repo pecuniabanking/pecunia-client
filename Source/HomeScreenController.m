@@ -23,6 +23,7 @@
 
 #import "StockCard.h"
 #import "AssetsCard.h"
+#import "RecentTransfersCard.h"
 
 NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
@@ -314,7 +315,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 - (void)setUpCards
 {
     // Layouting these cards is done explicitly.
-    HomeScreenCard *card = [[HomeScreenCard alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
+    HomeScreenCard *card = [[RecentTransfersCard alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
     card.title =  NSLocalizedString(@"AP952", nil);
     [self addSubview: card];
 

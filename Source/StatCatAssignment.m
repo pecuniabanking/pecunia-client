@@ -34,6 +34,11 @@
     return [self.statement.date compare: stat.statement.date];
 }
 
+- (NSComparisonResult)compareDateReverse: (StatCatAssignment *)stat
+{
+    return [stat.statement.date compare: self.statement.date];
+}
+
 - (NSString *)stringForFields: (NSArray *)fields usingDateFormatter: (NSDateFormatter *)dateFormatter numberFormatter: (NSNumberFormatter *)numberFormatter
 {
     NSMutableString *res = [NSMutableString stringWithCapacity: 300];
@@ -196,6 +201,7 @@
 
     self.category = tcat;
 
+    // XXX: all the updates below are highly ineffective when it comes to multiple move operations.
     [scat invalidateBalance];
     [tcat invalidateBalance];
 

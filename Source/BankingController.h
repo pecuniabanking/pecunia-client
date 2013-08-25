@@ -141,7 +141,6 @@
     NSDecimalNumber        *saveValue;
     NSCursor               *splitCursor;
     NSUInteger             lastSplitterPosition; // Last position of the right splitter.
-    BOOL                   shuttingDown;
 
     NSImage *moneyImage;
     NSImage *moneySyncImage;
@@ -181,6 +180,7 @@
 @property (nonatomic, assign) BOOL showBalances;
 @property (nonatomic, assign) BOOL showRecursiveStatements;
 @property (nonatomic, assign) BOOL showDetailsPane;
+@property (nonatomic, assign) BOOL shuttingDown;
 
 - (IBAction)addAccount: (id)sender;
 - (IBAction)changeAccount: (id)sender;
@@ -237,7 +237,6 @@
 - (int)AccSize;
 - (void)statementsNotification: (NSNotification *)notification;
 - (Category *)getBankingRoot;
-- (void)updateBalances;
 - (void)updateNotAssignedCategory;
 - (void)requestFinished: (NSArray *)resultList;
 - (BOOL)requestRunning;

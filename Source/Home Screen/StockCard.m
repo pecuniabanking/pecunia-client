@@ -246,7 +246,7 @@ typedef enum {
         textColor = [NSColor applicationColorForKey: @"Negative Cash"];
     }
     attributes = @{NSForegroundColorAttributeName: textColor,
-                   NSFontAttributeName: [NSFont fontWithName: @"HelveticaNeue-Bold" size: 10]};
+                   NSFontAttributeName: [NSFont fontWithName: @"HelveticaNeue-Medium" size: 10]};
     temp = [[NSAttributedString alloc] initWithString: [NSString stringWithFormat: @"%.2f (%.2f%%)   ", change, changePercent] attributes: attributes];
     [annotationString appendAttributedString: temp];
 

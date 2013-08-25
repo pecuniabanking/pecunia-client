@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,28 +17,28 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
+#import "TransfersHeaderView.h"
+#import "GraphicsAdditions.h"
 
-@interface CurrencyValueTransformer : NSValueTransformer
+extern void *UserDefaultsBindingContext;
 
-@end
+@implementation TransfersHeaderView
 
-@interface MoreThanOneToBoolValueTransformer : NSValueTransformer
+- (void)awakeFromNib
+{
+}
 
-@end
+- (void)dealloc
+{
+}
 
-@interface OneOrLessToBoolValueTransformer : NSValueTransformer
+- (void)drawRect: (NSRect)dirtyRect
+{
+    [[NSColor colorWithCalibratedWhite: 1 alpha: 0.2] setFill];
+    //NSRectFill(dirtyRect);
 
-@end
-
-@interface ExactlyOneToBoolValueTransformer : NSValueTransformer
-
-@end
-
-@interface RemoveWhitespaceTransformer : NSValueTransformer
-
-@end
-
-@interface StringCasingTransformer : NSValueTransformer
+    [[NSColor colorWithCalibratedWhite: 1 alpha: 1] setFill];
+    //NSFrameRect(dirtyRect);
+}
 
 @end

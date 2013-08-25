@@ -83,12 +83,7 @@ extern void *UserDefaultsBindingContext;
     }
 
     [defaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
-    autoCasing = YES;
-    if ([defaults objectForKey: @"autoCasing"] != nil) {
-        autoCasing = [defaults boolForKey: @"autoCasing"];
-    } else {
-        [defaults setBool: YES forKey: @"autoCasing"];
-    }
+    autoCasing = [defaults boolForKey: @"autoCasing"];
 }
 
 - (void)dealloc

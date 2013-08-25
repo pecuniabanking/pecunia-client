@@ -27,6 +27,9 @@
 #import "PecuniaPlotTimeFormatter.h"
 #import "MCEMDecimalNumberAdditions.h"
 
+#import "MOAssistant.h"
+#import "BankingController.h"
+
 extern void *UserDefaultsBindingContext;
 
 @interface AssetGraph : CPTGraphHostingView  <CPTPlotDataSource, CPTAnimationDelegate>
@@ -56,6 +59,9 @@ extern void *UserDefaultsBindingContext;
     // Temporary values for animations.
     float newMainYInterval;
 
+    // Animations.
+    CPTAnimationOperation *rangeAnimationOperation;
+    CPTAnimationOperation *globalRangeAnimationOperation;
 }
 
 @property (nonatomic, strong) Category *category;
@@ -80,6 +86,13 @@ extern void *UserDefaultsBindingContext;
 
 - (void)dealloc
 {
+    if (rangeAnimationOperation != nil) {
+        [CPTAnimation.sharedInstance removeAnimationOperation: rangeAnimationOperation];
+    }
+    if (globalRangeAnimationOperation != nil) {
+        [CPTAnimation.sharedInstance removeAnimationOperation: globalRangeAnimationOperation];
+    }
+
     free(timePoints);
     free(positiveBalances);
     free(negativeBalances);
@@ -275,9 +288,12 @@ extern void *UserDefaultsBindingContext;
                                                            length: CPTDecimalFromDouble(totalUnits)];
     plotSpace.globalXRange = plotRange;
 
-    NSDecimal fromPoint = [self distanceAsDecimalFromDate: referenceDate toDate: fromDate];
-    NSDecimal toPoint = CPTDecimalSubtract([self distanceAsDecimalFromDate: referenceDate toDate: toDate], fromPoint);
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: fromPoint length: toPoint];
+    int from = [self distanceFromDate: referenceDate toDate: fromDate];
+    int to = [self distanceFromDate: referenceDate toDate: toDate];
+    if (to - from < tickCount) {
+        to = from + 8;
+    }
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromInt(from) length: CPTDecimalFromInt(to - from)];
 
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
     CPTXYAxis    *x = axisSet.xAxis;
@@ -310,14 +326,10 @@ extern void *UserDefaultsBindingContext;
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
 
     NSUInteger startIndex = 0;
-    NSUInteger endIndex = 0;
+    NSUInteger endIndex = count - 1;
 
-    if (count > 0) {
-        NSUInteger units = floor(plotSpace.xRange.locationDouble);
-        startIndex = 0; // Always at 0 until we implement zoom.
-
-        units = floor(plotSpace.xRange.endDouble);
-        endIndex = count - 1;
+    if (endIndex - startIndex < 10) {
+        endIndex = startIndex + 10;
     }
 
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
@@ -381,22 +393,29 @@ extern void *UserDefaultsBindingContext;
     CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: roundedLocalMinValue.decimalValue
                                                            length: [[roundedLocalMaxValue decimalNumberBySubtracting: roundedLocalMinValue] decimalValue]];
 
-    [CPTAnimation animate: plotSpace
-                 property: @"globalYRange"
-            fromPlotRange: plotSpace.globalYRange
-              toPlotRange: plotRange
-                 duration: animationDuration
-                withDelay: 0
-           animationCurve: CPTAnimationCurveCubicInOut
-                 delegate: self];
-    [CPTAnimation animate: plotSpace
-                 property: @"yRange"
-            fromPlotRange: plotSpace.yRange
-              toPlotRange: plotRange
-                 duration: animationDuration
-                withDelay: 0
-           animationCurve: CPTAnimationCurveCubicInOut
-                 delegate: self];
+    if (rangeAnimationOperation != nil) {
+        [CPTAnimation.sharedInstance removeAnimationOperation: rangeAnimationOperation];
+    }
+    if (globalRangeAnimationOperation != nil) {
+        [CPTAnimation.sharedInstance removeAnimationOperation: globalRangeAnimationOperation];
+    }
+
+    globalRangeAnimationOperation = [CPTAnimation animate: plotSpace
+                                                 property: @"globalYRange"
+                                            fromPlotRange: plotSpace.globalYRange
+                                              toPlotRange: plotRange
+                                                 duration: animationDuration
+                                                withDelay: 0
+                                           animationCurve: CPTAnimationCurveCubicInOut
+                                                 delegate: self];
+    rangeAnimationOperation = [CPTAnimation animate: plotSpace
+                                           property: @"yRange"
+                                      fromPlotRange: plotSpace.yRange
+                                        toPlotRange: plotRange
+                                           duration: animationDuration
+                                          withDelay: 0
+                                     animationCurve: CPTAnimationCurveCubicInOut
+                                           delegate: self];
 }
 
 - (void)loadData
@@ -490,6 +509,9 @@ extern void *UserDefaultsBindingContext;
             positiveBalances[index] = positiveBalances[index - 1];
             negativeBalances[index] = negativeBalances[index - 1];
             totalBalances[index] = totalBalances[index - 1];
+        } else {
+            min = 0;
+            max = 100;
         }
 
         // Moving average values. Doesn't work so well for grouping with empty ranges (mostly grouping by day).
@@ -622,6 +644,13 @@ extern void *UserDefaultsBindingContext;
             newMainYInterval = 0;
         }
     }
+
+    if (operation == globalRangeAnimationOperation) {
+        globalRangeAnimationOperation = nil;
+    }
+    if (operation == rangeAnimationOperation) {
+        rangeAnimationOperation = nil;
+    }
 }
 
 - (void)animationCancelled: (CPTAnimationOperation *)operation
@@ -636,6 +665,13 @@ extern void *UserDefaultsBindingContext;
             y.majorIntervalLength = CPTDecimalFromFloat(newMainYInterval);
             newMainYInterval = 0;
         }
+    }
+    
+    if (operation == globalRangeAnimationOperation) {
+        globalRangeAnimationOperation = nil;
+    }
+    if (operation == rangeAnimationOperation) {
+        rangeAnimationOperation = nil;
     }
 }
 
@@ -692,10 +728,16 @@ extern void *UserDefaultsBindingContext;
 {
     self = [super initWithFrame: frame];
     if (self) {
-        [self setupUI];
+        [self updateUI];
 
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
+
+        [NSNotificationCenter.defaultCenter addObserver: self
+                                               selector: @selector(handleDataModelChange:)
+                                                   name: NSManagedObjectContextDidSaveNotification
+                                                 object: MOAssistant.assistant.context];
+
     }
 
     return self;
@@ -703,24 +745,66 @@ extern void *UserDefaultsBindingContext;
 
 - (void)dealloc
 {
+    [NSNotificationCenter.defaultCenter removeObserver: self];
 }
 
-- (void)setupUI
+- (void)handleDataModelChange: (NSNotification *)notification
 {
+    if (!BankingController.controller.shuttingDown) {
+        [self updateUI];
+    }
+}
+
+- (void)updateUI
+{
+    self.subviews = [NSArray array]; // Remove any subview.
+
     Category *strongest;
     Category *weakest;
-    for (Category *category in Category.bankRoot.allCategories) {
-        if (category == Category.bankRoot || category == Category.catRoot || category == Category.nassRoot) {
-            continue;
-        }
-        
-        if (strongest == nil || [strongest.balance compare: category.balance] == NSOrderedAscending) {
-            strongest = category;
-        }
-        if (weakest == nil || [weakest.balance compare: category.balance] == NSOrderedDescending) {
-            weakest = category;
+    for (Category *bank in Category.bankRoot.children) { // Iterate over banks.
+        for (Category *account in bank.allCategories) {
+            if (strongest == nil) {
+                strongest = account;
+                weakest = account;
+                continue;
+            }
+
+            switch ([strongest.catSum compare: account.catSum])
+            {
+                case NSOrderedSame:
+                    // Use the one with the most assignments, as that is probably more relevant.
+                    if ([strongest assignmentCountRecursive: YES] < [account assignmentCountRecursive: YES]) {
+                        strongest = account;
+                    }
+                    break;
+
+                case NSOrderedAscending:
+                    strongest = account;
+                    break;
+
+                case NSOrderedDescending:
+                    break;
+            }
+
+            switch ([weakest.catSum compare: account.catSum])
+            {
+                case NSOrderedSame:
+                    // Use the one with the most assignments, as that is probably more relevant.
+                    if ([weakest assignmentCountRecursive: YES] < [account assignmentCountRecursive: YES]) {
+                        weakest = account;
+                    }
+                    break;
+
+                case NSOrderedDescending:
+                    weakest = account;
+                    break;
+                    
+                case NSOrderedAscending:
+                    break;
+            }
         }
     }
+    
     AssetGraph *graph;
     if (strongest != nil) {
         graph = [[AssetGraph alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)
@@ -728,11 +812,13 @@ extern void *UserDefaultsBindingContext;
         [self addSubview: graph];
     }
 
-    if (weakest != nil) {
+    if (weakest != nil && weakest != strongest) {
         graph = [[AssetGraph alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)
                                          category: weakest];
         [self addSubview: graph];
     }
+
+    [self resizeSubviewsWithOldSize: self.bounds.size];
 }
 
 /**
@@ -754,11 +840,15 @@ extern void *UserDefaultsBindingContext;
 
 - (void)mouseDown: (NSEvent *)theEvent
 {
+    // Happens if the user clicked on space not covered by a graph. Take the first one in this case.
     [super mouseDown: theEvent];
-    AssetGraph *graph = self.subviews[0];
-    Category *category = graph.category;
 
-    [self cardClicked: category];
+    if (self.subviews.count > 0) {
+        AssetGraph *graph = self.subviews[0];
+        Category *category = graph.category;
+
+        [self cardClicked: category];
+    }
 }
 
 #pragma mark - Bindings, KVO and KVC

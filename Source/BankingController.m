@@ -626,6 +626,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 @synthesize saveValue;
 @synthesize managedObjectContext;
 @synthesize dockIconController;
+@synthesize shuttingDown;
 
 #pragma mark - Initialization
 
@@ -862,6 +863,10 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [defaults setObject: data forKey: @"stocksSymbolColor3"];
     }
     [defaults setBool: YES forKey: @"stocksDefaultsSet"];
+
+    if ([defaults objectForKey: @"autoCasing"] == nil) {
+        [defaults setBool: YES forKey: @"autoCasing"];
+    }
 }
 
 - (void)publishContext
@@ -1154,18 +1159,16 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [alert runModal];
         return;
     }
+
     for (Category *cat in cats) {
         if ([cat isBankingRoot] == NO) {
             [cat updateInvalidCategoryValues];
         }
         [cat rollup];
     }
-    // save updates
-    if ([self.managedObjectContext save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-        return;
-    }
+
+    // If saving any change is necessary the caller should do that.
+    // This function is also called on startup where no changes that should be store can come up.
 }
 
 - (IBAction)enqueueRequest: (id)sender
@@ -1339,6 +1342,13 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), count] removeAfter: 120];
     }
     autoSyncRunning = NO;
+
+    NSError *error;
+    if ([self.managedObjectContext save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
 
     BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
     if (!suppressSound) {
@@ -2778,6 +2788,11 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     for (BankStatement *stat in stats) {
         [stat updateAssigned];
     }
+
+    if ([self.managedObjectContext save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+    }
 }
 
 - (void)deleteCategory: (id)sender
@@ -2818,6 +2833,13 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     // workaround: NSTreeController issue: when an item is removed and the NSOutlineViewSelectionDidChange notification is sent,
     // the selectedObjects: message returns the wrong (the old) selection
     [self performSelector: @selector(outlineViewSelectionDidChange:) withObject: nil afterDelay: 0];
+
+    // Save changes to avoid losing category changes in case of failures/crashs.
+    NSError *error = nil;
+    if ([self.managedObjectContext save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+    }
 }
 
 - (void)addCategory: (id)sender
@@ -2832,6 +2854,12 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [categoryController add: sender];
     }
     [accountsView performSelector: @selector(editSelectedCell) withObject: nil afterDelay: 0.0];
+
+    NSError *error = nil;
+    if ([self.managedObjectContext save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+    }
 }
 
 - (void)insertCategory: (id)sender
@@ -2842,6 +2870,12 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
     [categoryController addChild: sender];
     [accountsView performSelector: @selector(editSelectedCell) withObject: nil afterDelay: 0.0];
+
+    NSError *error = nil;
+    if ([self.managedObjectContext save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+    }
 }
 
 - (IBAction)manageCategories: (id)sender
@@ -2973,8 +3007,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 - (IBAction)deleteStatement: (id)sender
 {
-    BankAccount *account = (BankAccount *)[self currentSelection];
-    if (account == nil) {
+    if (!self.currentSelection.isBankAcc.boolValue) {
         return;
     }
 
@@ -2998,6 +3031,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     NSFetchRequest      *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
 
+    NSMutableSet *affectedAccounts = [[NSMutableSet alloc] init];
     for (StatCatAssignment *assignment in assignments) {
         BankStatement *statement = assignment.statement;
 
@@ -3006,7 +3040,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
         if (doDuplicateCheck) {
             // Check if this statement is a duplicate. Select all statements with same date.
-            NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date = %@)", account, statement.date];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date = %@)", statement.account, statement.date];
             [request setPredicate: predicate];
 
             NSArray *possibleDuplicates = [self.managedObjectContext executeFetchRequest: request error: &error];
@@ -3048,10 +3082,14 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         }
 
         if (deleteStatement) {
+            BOOL isManualAccount = statement.account.isManual;
+            BankAccount *account = statement.account;
+            [affectedAccounts addObject: account]; // Automatically ignores duplicates.
+
             [self.managedObjectContext deleteObject: statement];
 
             // Rebuild balances - only for manual accounts.
-            if (account.userId == nil) {
+            if (isManualAccount) {
                 NSPredicate *balancePredicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date > %@)", account, statement.date];
                 request.predicate = balancePredicate;
                 NSArray *remainingStatements = [self.managedObjectContext executeFetchRequest: request error: &error];
@@ -3068,18 +3106,24 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
             }
         }
     }
-    
-    // Refresh content array of categoryAssignments.
-    [account updateBoundAssignments];
 
-    // Special behaviour for top bank accounts.
-    if (account.accountNumber == nil) {
-        [self.managedObjectContext processPendingChanges];
+    for (BankAccount *account in affectedAccounts) {
+        // Special behaviour for top bank accounts.
+        if (account.accountNumber == nil) {
+            [self.managedObjectContext processPendingChanges];
+        }
         [account updateBoundAssignments];
     }
-
+    
     [[Category bankRoot] rollup];
     [categoryAssignments prepareContent];
+
+    NSError *error = nil;
+    if ([self.managedObjectContext save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
 }
 
 - (void)splitStatement: (id)sender

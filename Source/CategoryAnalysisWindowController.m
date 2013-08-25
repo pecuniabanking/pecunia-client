@@ -2032,8 +2032,7 @@ int double_compare(const void *value1, const void *value2)
     [self hideInfoComponents];
 }
 
-#pragma mark -
-#pragma mark Coreplot delegate methods
+#pragma mark - Coreplot delegate methods
 
 - (void)animationDidFinish: (CPTAnimationOperation *)operation
 {
