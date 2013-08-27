@@ -138,7 +138,13 @@
                                                                            limit: 50
                                                                        recursive: YES
                                                                        ascending: NO] mutableCopy];
-        [newEntries sortUsingSelector: @selector(compareDateReverse:)];
+
+        // First remove all headers, so that new and old entries are comparable.
+        NSIndexSet *headerIndexes = [entries indexesOfObjectsPassingTest: ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+            return [obj isKindOfClass: StatementsHeader.class];
+        }];
+        [entries removeObjectsAtIndexes: headerIndexes];
+        [transfersView removeRowsAtIndexes: headerIndexes withAnimation: NSTableViewAnimationSlideUp];
 
         NSMutableIndexSet *indexes = [[NSMutableIndexSet alloc] init];
         if (deletedObjects.count > 0) {
@@ -164,7 +170,10 @@
         }
 
         entries = newEntries;
+        [self updateHeadersWithAnimation: YES];
         [transfersView endUpdates];
+
+        [transfersView reloadData];
     }
 }
 
@@ -176,12 +185,24 @@
                                                 recursive: YES
                                                 ascending: NO] mutableCopy];
 
+    [self updateHeadersWithAnimation: NO];
+    [transfersView reloadData];
+}
+
+/**
+ * Inserts grouping entries between entries of different dates.
+ */
+- (void)updateHeadersWithAnimation: (BOOL)animate
+{
     if (entries.count > 0) {
-        // Insert grouping entries between entries of different dates.
         ShortDate *lastDate = [ShortDate dateWithDate: [entries[0] statement].date];
         StatementsHeader *header = [[StatementsHeader alloc] init];
         header.date = lastDate;
         [entries insertObject: header atIndex: 0];
+        if (animate) {
+            [transfersView insertRowsAtIndexes: [NSIndexSet indexSetWithIndex: 0]
+                                 withAnimation: NSTableViewAnimationSlideDown];
+        }
 
         for (NSUInteger index = 1; index < entries.count; ++index) {
             if ([entries[index] isKindOfClass: StatementsHeader.class]) {
@@ -193,18 +214,20 @@
                 // New day. Insert a header row.
                 StatementsHeader *header = [[StatementsHeader alloc] init];
                 header.date = date;
-                [entries insertObject: header atIndex: index++];
+                [entries insertObject: header atIndex: index];
+                if (animate) {
+                    [transfersView insertRowsAtIndexes: [NSIndexSet indexSetWithIndex: index++]
+                                         withAnimation: NSTableViewAnimationSlideDown];
+                }
                 lastDate = date;
             }
         }
     }
-
-    [transfersView reloadData];
 }
 
 - (void)resizeSubviewsWithOldSize: (NSSize)oldSize
 {
-    NSRect frame = NSInsetRect(self.bounds, 20, 30);
+    NSRect frame = NSInsetRect(self.bounds, 20, 35);
     frame.origin.y += 10;
 
     // We actually have only one child view.

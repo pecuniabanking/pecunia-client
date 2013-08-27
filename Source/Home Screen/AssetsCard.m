@@ -86,18 +86,21 @@ extern void *UserDefaultsBindingContext;
 
 - (void)dealloc
 {
+    free(timePoints);
+    free(positiveBalances);
+    free(negativeBalances);
+    free(totalBalances);
+    free(movingAverage);
+}
+
+- (void)prepareForShutDown
+{
     if (rangeAnimationOperation != nil) {
         [CPTAnimation.sharedInstance removeAnimationOperation: rangeAnimationOperation];
     }
     if (globalRangeAnimationOperation != nil) {
         [CPTAnimation.sharedInstance removeAnimationOperation: globalRangeAnimationOperation];
     }
-
-    free(timePoints);
-    free(positiveBalances);
-    free(negativeBalances);
-    free(totalBalances);
-    free(movingAverage);
 }
 
 - (void)setupGraph
@@ -751,12 +754,20 @@ extern void *UserDefaultsBindingContext;
 - (void)handleDataModelChange: (NSNotification *)notification
 {
     if (!BankingController.controller.shuttingDown) {
-        [self updateUI];
+        NSSet *deletedObjects = notification.userInfo[NSDeletedObjectsKey];
+        NSSet *insertedObjects = notification.userInfo[NSInsertedObjectsKey];
+
+        if (deletedObjects.count + insertedObjects.count > 0) {
+            [self updateUI];
+        }
     }
 }
 
 - (void)updateUI
 {
+    for (AssetGraph *graph in self.subviews) {
+        [graph prepareForShutDown];
+    }
     self.subviews = [NSArray array]; // Remove any subview.
 
     Category *strongest;

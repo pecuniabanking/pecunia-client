@@ -100,7 +100,7 @@ typedef enum {
 
         progressIndicator = [[NSProgressIndicator alloc] initWithFrame: NSMakeRect(-5, 10, 16, 16)];
         [progressIndicator setControlSize: NSSmallControlSize];
-        progressIndicator.usesThreadedAnimation = NO;
+        progressIndicator.usesThreadedAnimation = YES;
         progressIndicator.style = NSProgressIndicatorSpinningStyle;
         [progressIndicator setHidden: YES];
         [self addSubview: progressIndicator];

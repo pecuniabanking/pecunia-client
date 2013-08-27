@@ -46,11 +46,11 @@ extern void *UserDefaultsBindingContext;
 
 - (void)drawRect: (NSRect)dirtyRect
 {
-    [[NSColor colorWithCalibratedWhite: 1 alpha: 0.2] setFill];
+    [[NSColor colorWithCalibratedWhite: 1 alpha: 0.5] setFill];
     NSRectFill(dirtyRect);
 
     [[NSColor colorWithCalibratedWhite: 1 alpha: 1] setFill];
-    NSFrameRect(dirtyRect);
+    //NSFrameRect(dirtyRect);
 }
 
 - (void)updateValueColors
@@ -84,8 +84,8 @@ static NSGradient *headerGradient;
 + (void)initialize
 {
     headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                      [NSColor colorWithCalibratedRed: 0.838 green: 0.832 blue: 0.790 alpha: 0.850], 0.0,
-                      [NSColor colorWithCalibratedRed: 0.762 green: 0.750 blue: 0.713 alpha: 0.850], 1.0,
+                      [NSColor colorWithCalibratedRed: 0.873 green: 0.799 blue: 0.607 alpha: 0.750], 0.0,
+                      [NSColor colorWithCalibratedRed: 0.873 green: 0.799 blue: 0.607 alpha: 0.750], 1.0,
                       nil];
 }
 
@@ -108,7 +108,7 @@ static NSGradient *headerGradient;
     if (self.isGroupRowStyle) {
         dirtyRect.origin.x++;
         dirtyRect.size.width -= 3;
-        dirtyRect.size.height--;
+        dirtyRect.size.height -= 1;
         NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect: dirtyRect xRadius: 2 yRadius: 2];
         [headerGradient drawInBezierPath: path angle: 90.0];
     }

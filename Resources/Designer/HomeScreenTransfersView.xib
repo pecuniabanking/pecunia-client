@@ -707,13 +707,8 @@
 										<reference key="NSControlView" ref="198790076"/>
 										<reference key="NSBackgroundColor" ref="867243042"/>
 										<object class="NSColor" key="NSTextColor">
-											<int key="NSColorSpace">6</int>
-											<string key="NSCatalogName">System</string>
-											<string key="NSColorName">textBackgroundColor</string>
-											<object class="NSColor" key="NSColor">
-												<int key="NSColorSpace">3</int>
-												<bytes key="NSWhite">MQA</bytes>
-											</object>
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MC4zODggMC4zODIgMC4zNjMAA</bytes>
 										</object>
 									</object>
 									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>

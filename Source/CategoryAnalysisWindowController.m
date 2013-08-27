@@ -1009,8 +1009,8 @@ extern void *UserDefaultsBindingContext;
 
     NSDecimal value = [range decimalValue];
     NSDecimal hundred = [@100 decimalValue];
-    if (NSDecimalCompare(&value, &hundred) == NSOrderedDescending) {
-        // The range is > 100 so scale it down so it falls into that range.
+    if (NSDecimalCompare(&value, &hundred) != NSOrderedAscending) {
+        // The range is >= 100 so scale it down so it falls into the range 1..100.
         NSDecimalMultiplyByPowerOf10(&value, &value, -digitCount + 2, NSRoundDown);
     }
     double convertedValue = [[NSDecimalNumber decimalNumberWithDecimal: value] doubleValue];
