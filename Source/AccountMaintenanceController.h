@@ -28,6 +28,7 @@
     IBOutlet NSTextField        *bicField;
     IBOutlet NSTextField        *bankCodeField;
     IBOutlet NSPredicateEditor  *predicateEditor;
+    IBOutlet NSArrayController  *usersController;
 
     IBOutlet NSBox         *boxView;
     IBOutlet NSView        *manAccountAddView;
@@ -35,6 +36,7 @@
     IBOutlet BWGradientBox *topGradient;
     IBOutlet BWGradientBox *backgroundGradient;
     IBOutlet NSPopUpButton *collTransferButton;
+    IBOutlet NSPopUpButton *usersButton;
 
 @private
     NSManagedObjectContext *moc;

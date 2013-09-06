@@ -83,6 +83,7 @@
 - (IBAction)displaySettings: (id)sender;
 
 - (IBAction)removePINs: (id)sender;
+- (IBAction)changePassword:(id)sender;
 
 - (void)setHeight: (int)h;
 

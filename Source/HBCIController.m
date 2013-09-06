@@ -1338,8 +1338,8 @@ NSString * escapeSpecial(NSString *s)
             }
         }
         if (found) {
-            // Update the user id if there is none assigned yet or if it differs.
-            if (account.userId == nil || ![account.userId isEqualToString: acc.userId]) {
+            // Update the user id if there is none assigned yet.
+            if (account.userId == nil) {
                 account.userId = acc.userId;
                 account.customerId = acc.customerId;
             }

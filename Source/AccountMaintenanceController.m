@@ -24,6 +24,7 @@
 #import "HBCIClient.h"
 #import "BankingController.h"
 #import "PecuniaError.h"
+#import "BankUser.h"
 
 #import "BWGradientBox.h"
 
@@ -66,6 +67,13 @@ extern NSString *const CategoryKey;
 - (void)awakeFromNib
 {
     if ([changedAccount.isManual boolValue]) {
+        
+        // add special User
+        BankUser *noUser  = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser" inManagedObjectContext: moc];
+        noUser.name = NSLocalizedString(@"AP813", nil);
+        [usersController addObject:noUser];
+        [usersButton setEnabled:NO];
+        
         int deltaHeight = [manAccountAddView frame].size.height - [accountAddView frame].size.height;
 
         // change window size
@@ -88,6 +96,25 @@ extern NSString *const CategoryKey;
         }
     } else {
         // no manual account
+        [usersController setManagedObjectContext:[[MOAssistant assistant] context]];
+        NSSet *users = [changedAccount mutableSetValueForKey:@"users"];
+        if ([users count] > 0) {
+            [usersController setContent:[users allObjects]];
+            for (BankUser *user in [usersController arrangedObjects]) {
+                if ([user.userId isEqualToString: changedAccount.userId]) {
+                    [usersController setSelectedObjects:@[user]];
+                    break;
+                }
+            }
+        } else {
+            // no users are assigned to account - get users with same bank code
+            for (BankUser *user in [BankUser allUsers]) {
+                if ([user.bankCode isEqualToString:account.bankCode]) {
+                    [usersController addObject:user];
+                }
+            }
+        }
+        
         // check if collective transfers are available - if not, disable collection transfer method popup
         BOOL collTransferSupported = [[HBCIClient hbciClient] isTransferSupported: TransferTypeCollectiveCredit forAccount: changedAccount];
         if (collTransferSupported == NO) {
@@ -137,6 +164,8 @@ extern NSString *const CategoryKey;
     changedAccount.categoryColor = account.categoryColor;
     changedAccount.isHidden = account.isHidden;
     changedAccount.noCatRep = account.noCatRep;
+    
+    NSString *oldUserId = changedAccount.userId;
 
     if ([changedAccount.isManual boolValue] == YES) {
         NSPredicate *predicate = [predicateEditor objectValue];
@@ -150,6 +179,15 @@ extern NSString *const CategoryKey;
         changedAccount.balance = account.balance;
     } else {
         changedAccount.accountSuffix = account.accountSuffix;
+        
+        // update userId
+        NSArray *selectedUser = [usersController selectedObjects];
+        if (selectedUser && [selectedUser count]>0) {
+            BankUser *user = [selectedUser lastObject];
+            if (oldUserId == nil || ![oldUserId isEqualToString:user.userId]) {
+                changedAccount.userId = user.userId;
+            }
+        }
     }
 
     NSDictionary *info = @{CategoryKey: changedAccount};
@@ -166,7 +204,11 @@ extern NSString *const CategoryKey;
     }
 
     if (changedAccount.userId) {
-        [[HBCIClient hbciClient] changeAccount: changedAccount];
+        if (oldUserId && [changedAccount.userId isEqualToString:oldUserId]) {
+            [[HBCIClient hbciClient] changeAccount: changedAccount];
+        } else {
+            [[HBCIClient hbciClient] setAccounts:@[changedAccount]];
+        }
     }
 
     [moc reset];

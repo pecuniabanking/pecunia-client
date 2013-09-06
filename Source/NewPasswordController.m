@@ -18,6 +18,7 @@
  */
 
 #import "NewPasswordController.h"
+#import "MOAssistant.h"
 
 @implementation NewPasswordController
 
@@ -45,7 +46,9 @@
 - (void)windowDidLoad
 {
     [passwordText setStringValue: text];
-    [[self window] setTitle: title];
+    if (title != nil) {
+        [[self window] setTitle: title];
+    }
 }
 
 - (IBAction)ok: (id)sender
@@ -67,11 +70,20 @@
 
 - (void)controlTextDidChange: (NSNotification *)aNotification
 {
-    NSString *pw1 = [passwordField1 stringValue];
-    NSString *pw2 = [passwordField2 stringValue];
-    if (pw1 && pw2 && [pw1 isEqualToString: pw2] && [pw1 length] > 4) {
-        [okButton setEnabled: YES];
-    } else {[okButton setEnabled: NO]; }
+    if (aNotification.object == oldPasswordField) {
+        if ([MOAssistant.assistant checkDataPassword:[oldPasswordField stringValue]]) {
+            [passwordField1 setEnabled:YES];
+            [passwordField2 setEnabled:YES];
+        }
+    } else {
+        NSString *pw1 = [passwordField1 stringValue];
+        NSString *pw2 = [passwordField2 stringValue];
+        if (pw1 && pw2 && [pw1 isEqualToString: pw2] && [pw1 length] > 7) {
+            [okButton setEnabled: YES];
+        } else {
+            [okButton setEnabled: NO];
+        }
+    }
 }
 
 @end

@@ -31,6 +31,27 @@
     context = [[MOAssistant assistant] context];
     account = acc;
     processConvertedStats = YES;
+    
+    if (account.splitRule) {
+        NSArray *tokens = [account.splitRule componentsSeparatedByString: @":"];
+        if ([tokens count] != 2) {
+            return nil;
+        }
+        
+        // first part is version info, skip
+        NSString *s = tokens[1];
+        tokens = [s componentsSeparatedByString: @","];
+        if ([tokens count] != 7) {
+            return nil;
+        }
+        ePos = [tokens[0] intValue];
+        eLen = [tokens[1] intValue];
+        kPos = [tokens[2] intValue];
+        kLen = [tokens[3] intValue];
+        bPos = [tokens[4] intValue];
+        bLen = [tokens[5] intValue];
+        vPos = [tokens[6] intValue];
+    }
     return self;
 }
 

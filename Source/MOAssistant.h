@@ -82,6 +82,7 @@
 - (BOOL)encryptDataWithPassword: (NSString *)password;
 - (BOOL)stopEncryption;
 - (BOOL)checkDataPassword: (NSString *)password;
+- (BOOL)changePassword: (NSString*)password;
 - (void)checkPaths;
 - (void)checkSandboxed;
 - (void)initDatafile: (NSString *)path;

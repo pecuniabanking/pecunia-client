@@ -108,6 +108,9 @@
 "AP172" = "Bitte geben Sie die TAN für Benutzerkennung '%@' ein: %@";
 "AP173" = "Datensicherheit";
 "AP174" = "Backups schützen vor Datenverlust. Wenn Sie die Verschlüsselung einschalten sind regelmäßige Backups unerlässlich, da eine verschlüsselte Datei auch von Experten nicht repariert werden kann! Möchten Sie die Daten verschlüsseln?";
+"AP175" = "Bitte geben Sie zunächst das alte und danach das neue Pecunia-Datenpasswort ein";
+"AP176" = "Das Pecunia-Datenpasswort wurde erfolgreich geändert";
+"AP177" = "Bitte wählen Sie die Datei %@ aus";
 
 // Banking common + business transactions
 // AP200..AP249

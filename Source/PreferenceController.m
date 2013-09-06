@@ -27,13 +27,14 @@
 #import "BankingController.h"
 #import "PasswordWindow.h"
 #import "GraphicsAdditions.h"
+#import "NewPasswordController.h"
 
 #define _exportSeparator @"exportSeparator"
 
 static NSArray *exportFields = nil;
 
 #define GENERAL_HEIGHT   310
-#define SEC_HEIGHT       260
+#define SEC_HEIGHT       270
 #define LOC_HEIGHT       260
 #define DISPLAY_HEIGHT   320
 #define COLOR_HEIGHT     450
@@ -227,6 +228,33 @@ static NSGradient *headerGradient;
 
     [Keychain deletePasswordsForService: @"Pecunia PIN"];
 }
+
+- (IBAction)changePassword:(id)sender
+{
+    BOOL passwordStored = NO;
+    
+    NewPasswordController *pwController = [[NewPasswordController alloc] initWithText: NSLocalizedString(@"AP175", nil)
+                                                                                title: nil];
+    int res = [NSApp runModalForWindow: [pwController window]];
+    if (res) {
+        return;
+    }
+    NSString *newPassword = [pwController result];
+    
+    if ([MOAssistant.assistant changePassword:newPassword]) {
+        // was the old password in key store?
+        NSString *passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
+        if (passwd) {
+            passwordStored = YES;
+        }
+        [Keychain setPassword: newPassword forService: @"Pecunia" account: @"DataFile" store: passwordStored];
+        
+        NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                        NSLocalizedString(@"AP176", nil),
+                        NSLocalizedString(@"ok", nil), nil, nil);
+    }
+}
+
 
 - (IBAction)changeFileLocation: (id)sender
 {

@@ -271,6 +271,10 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         }
 
         url = [op URL];
+        if (![[url lastPathComponent] isEqualToString:self.dataFilename]) {
+            @throw [PecuniaError errorWithText: [NSString stringWithFormat:NSLocalizedString(@"AP177", nil), self.dataFilename ]];
+        }
+        
         NSData *bookmark = [url bookmarkDataWithOptions: NSURLBookmarkCreationWithSecurityScope includingResourceValuesForKeys: nil relativeToURL: nil error: &error];
         if (error != nil) {
             @throw error;
@@ -480,30 +484,27 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     return isEncrypted;
 }
 
-- (BOOL)encrypt
+- (NSData*)encryptData:(NSData*)data withKey:(unsigned char*)passwordKey
 {
-    int i;
-
-    // read accounts file
-    NSData *fileData = [NSData dataWithContentsOfURL: self.accountsURL];
-    char   *encryptedBytes = malloc([fileData length] + 80);
-    char   *clearBytes = (char *)[fileData bytes];
+    char   *encryptedBytes = malloc([data length] + 80);
+    char   *clearBytes = (char *)[data bytes];
     char   checkData[64];
-
+    int    i;
+    
     for (i = 0; i < 32; i++) {
-        checkData[2 * i] = dataPasswordKey[i];
+        checkData[2 * i] = passwordKey[i];
         checkData[2 * i + 1] = clearBytes[4 * i + 100];
     }
     // now encrypt check data
     CCCryptorStatus status;
     size_t          encryptedSize;
-    status = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, checkData, 63, encryptedBytes, 64, &encryptedSize);
-
+    status = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, passwordKey, 32, NULL, checkData, 63, encryptedBytes, 64, &encryptedSize);
+    
     // now encrypt file data
     if (status == kCCSuccess) {
-        status = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, clearBytes, (unsigned int)[fileData length], encryptedBytes + 64, (unsigned int)[fileData length] + 16, &encryptedSize);
+        status = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, passwordKey, 32, NULL, clearBytes, (unsigned int)[data length], encryptedBytes + 64, (unsigned int)[data length] + 16, &encryptedSize);
     }
-
+    
     if (status != kCCSuccess) {
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP152", nil),
@@ -512,33 +513,45 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                         nil);
         NSLog(@"CCCrypt failure: %d", status);
         free(encryptedBytes);
-        return NO;
+        return nil;
     }
-
+    
     // write encrypted content to pecunia data file
     NSData *encryptedData = [NSData dataWithBytes: encryptedBytes length: encryptedSize + 64];
     free(encryptedBytes);
-    NSURL *targetURL = [pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
-    if ([encryptedData writeToURL: targetURL atomically: NO] == NO) {
-        NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
-                        NSLocalizedString(@"AP111", nil),
-                        NSLocalizedString(@"AP1", nil),
-                        nil,
-                        nil,
-                        [targetURL path]);
+    return encryptedData;
+}
+
+- (BOOL)encrypt
+{
+    // read accounts file
+    NSData *fileData = [NSData dataWithContentsOfURL: self.accountsURL];
+    NSData *encryptedData = [self encryptData:fileData withKey:dataPasswordKey];
+    if (encryptedData != nil) {
+        // write encrypted content to pecunia data file
+        NSURL *targetURL = [pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
+        if ([encryptedData writeToURL: targetURL atomically: NO] == NO) {
+            NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                            NSLocalizedString(@"AP111", nil),
+                            NSLocalizedString(@"AP1", nil),
+                            nil,
+                            nil,
+                            [targetURL path]);
+            return NO;
+        }
+        
+        // now remove uncrypted file
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSError       *error = nil;
+        [fm removeItemAtPath: [accountsURL path] error: &error];
+        if (error != nil) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+            return NO;
+        }
+    } else {
         return NO;
     }
-
-    // now remove uncrypted file
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSError       *error = nil;
-    [fm removeItemAtPath: [accountsURL path] error: &error];
-    if (error != nil) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-        return NO;
-    }
-
     return YES;
 }
 
@@ -655,14 +668,14 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     // first get key from password
     NSData *data = [password dataUsingEncoding: NSUTF8StringEncoding];
     CC_SHA256([data bytes], (unsigned int)[data length], dataPasswordKey);
-    passwordKeyValid = YES;
 
     if ([self encrypt] == NO) {
         return NO;
     }
+    passwordKeyValid = YES;
+    isEncrypted = YES;
 
     self.accountsURL = [[NSURL fileURLWithPath: tempDir] URLByAppendingPathComponent: _dataFileStandard];
-    isEncrypted = YES;
     [self decrypt];
 
     // set coordinator and stores
@@ -674,6 +687,36 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"dataFileEncryptionChanged" object:self];
+    return YES;
+}
+
+- (BOOL)changePassword: (NSString*)password
+{
+    unsigned char newPasswordKey[32];
+    
+    // first get new key from new password
+    NSData *data = [password dataUsingEncoding: NSUTF8StringEncoding];
+    CC_SHA256([data bytes], (unsigned int)[data length], newPasswordKey);
+    
+    // read accounts file
+    NSData *fileData = [NSData dataWithContentsOfURL: self.accountsURL];
+    NSData *encryptedData = [self encryptData:fileData withKey:newPasswordKey];
+    if (encryptedData != nil) {
+        // write encrypted content to pecunia data file
+        NSURL *targetURL = [pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
+        if ([encryptedData writeToURL: targetURL atomically: NO] == NO) {
+            NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
+                            NSLocalizedString(@"AP111", nil),
+                            NSLocalizedString(@"AP1", nil),
+                            nil,
+                            nil,
+                            [targetURL path]);
+            return NO;
+        }
+    } else {
+        return NO;
+    }
+    memcpy(dataPasswordKey, newPasswordKey, 32);
     return YES;
 }
 

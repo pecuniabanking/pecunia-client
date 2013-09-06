@@ -23,13 +23,14 @@
     IBOutlet NSTextField *passwordText;
     IBOutlet NSTextField *passwordField1;
     IBOutlet NSTextField *passwordField2;
+    IBOutlet NSTextField *oldPasswordField;
     IBOutlet NSButton    *okButton;
 
     NSString *text;
     NSString *title;
     NSString *result;
-
 }
+
 - (id)initWithText: (NSString *)x title: (NSString *)y;
 - (void)windowWillClose: (NSNotification *)aNotification;
 - (void)windowDidLoad;

@@ -102,7 +102,7 @@
     } else {
         NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
         NSString *jarPath = [bundlePath stringByAppendingString: @"/Contents/HBCIServer.jar"];
-        NSString *launchPath = [bundlePath stringByAppendingString: @"/Contents/Plugins/jre/Contents/Home/bin/java"];
+        NSString *launchPath = [bundlePath stringByAppendingString: @"/Contents/PlugIns/jre/Contents/Home/bin/java"];
 
         [task setLaunchPath: launchPath];
         [task setArguments: @[@"-jar", jarPath]];
