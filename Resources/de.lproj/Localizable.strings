@@ -84,34 +84,34 @@ AP120 = "Klicken, um den Anhang anzusehen";
 
 // Banking setup, migration, encryption, security.
 // AP150..AP199
-"AP150" = "Datenmigration";
-"AP151" = "Willkommen bei Pecunia. Um mit Ihrer Bank kommunizieren zu können müssen Sie zunächst eine sogenannte 'Bankkennung' anlegen. Mit der Bankkennung identifizieren Sie sich bei der Bank. Möchten Sie nun eine Bankkennung anlegen?";
-"AP152" = "Daten konnten nicht verschlüsselt werden";
-"AP153" = "Daten konnten nicht entschlüsselt werden";
-"AP154" = "Die Verschlüsselung wurde aufgehoben";
-"AP155" = "Die Pecunia-Datendatei wurde erfolgreich verschlüsselt";
-"AP156" = "Die Daten wurden erfolgreich migriert";
-"AP157" = "Bankkennung abrufen und einrichten...";
-"AP158" = "Die Kundenmeldung konnte nicht erfolgreich versendet werden";
-"AP159" = "Die Pecunia-Datendatei ist nicht im Default-Verzeichnis gespeichert. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
-"AP160" = "Die Pecunia-Datendatei ist verschlüsselt. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
-"AP161" = "Möchten Sie die Verschlüsselung Ihrer Konto- und Umsatzdaten wirklich aufheben?";
-"AP162" = "Sicherheitsabfrage";
-"AP163" = "Bitte geben Sie das Pecunia-Password (Password der Datenablage) ein";
-"AP164" = "Die Datei %@ existiert bereits. Möchten Sie die Datei überschreiben oder verwenden?";
-"AP165" = "PINs aus dem Schlüsselbund entfernen";
-"AP166" = "Es werden alle PINs aus dem Schlüsselbund entfernt. Möchten Sie fortfahren?";
-"AP167" = "Pecunia Sicherheit";
-"AP168" = "Das von Ihnen gewählte Passwort ist nicht sicher. Bitte wählen Sie ein Passwort mit mindestens 8 Zeichen";
-"AP169" = "Die angegebenen Passwörter stimmen nicht überein";
-"AP170" = "Das eingegebene Passwort ist falsch";
-"AP171" = "Bitte geben Sie die PIN für Benutzerkennung '%@' ein";
-"AP172" = "Bitte geben Sie die TAN für Benutzerkennung '%@' ein: %@";
-"AP173" = "Datensicherheit";
-"AP174" = "Backups schützen vor Datenverlust. Wenn Sie die Verschlüsselung einschalten sind regelmäßige Backups unerlässlich, da eine verschlüsselte Datei auch von Experten nicht repariert werden kann! Möchten Sie die Daten verschlüsseln?";
-"AP175" = "Bitte geben Sie zunächst das alte und danach das neue Pecunia-Datenpasswort ein";
-"AP176" = "Das Pecunia-Datenpasswort wurde erfolgreich geändert";
-"AP177" = "Bitte wählen Sie die Datei %@ aus";
+AP150 = "Datenmigration";
+AP151 = "Willkommen bei Pecunia. Um mit Ihrer Bank kommunizieren zu können müssen Sie zunächst eine sogenannte 'Bankkennung' anlegen. Mit der Bankkennung identifizieren Sie sich bei der Bank. Möchten Sie nun eine Bankkennung anlegen?";
+AP152 = "Daten konnten nicht verschlüsselt werden";
+AP153 = "Daten konnten nicht entschlüsselt werden";
+AP154 = "Die Verschlüsselung wurde aufgehoben";
+AP155 = "Die Pecunia-Datendatei wurde erfolgreich verschlüsselt";
+AP156 = "Die Daten wurden erfolgreich migriert";
+AP157 = "Bankkennung abrufen und einrichten...";
+AP158 = "Die Kundenmeldung konnte nicht erfolgreich versendet werden";
+AP159 = "Die Pecunia-Datendatei ist nicht im Default-Verzeichnis gespeichert. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
+AP160 = "Die Pecunia-Datendatei ist verschlüsselt. Die Migration kann nicht durchgeführt werden. Bitte beachten Sie die Hinweise unter http://www.pecuniabanking.de/index.php/migration";
+AP161 = "Möchten Sie die Verschlüsselung Ihrer Konto- und Umsatzdaten wirklich aufheben?";
+AP162 = "Sicherheitsabfrage";
+AP163 = "Bitte geben Sie das Pecunia-Password (Password der Datenablage) ein";
+AP164 = "Die Datei %@ existiert bereits. Möchten Sie die Datei überschreiben oder verwenden?";
+AP165 = "PINs aus dem Schlüsselbund entfernen";
+AP166 = "Es werden alle PINs aus dem Schlüsselbund entfernt. Möchten Sie fortfahren?";
+AP167 = "Pecunia Sicherheit";
+AP168 = "Das von Ihnen gewählte Passwort ist nicht sicher. Bitte wählen Sie ein Passwort mit mindestens 8 Zeichen";
+AP169 = "Die angegebenen Passwörter stimmen nicht überein";
+AP170 = "Das eingegebene Passwort ist falsch";
+AP171 = "Bitte geben Sie die PIN für Benutzerkennung '%@' ein";
+AP172 = "Bitte geben Sie die TAN für Benutzerkennung '%@' ein: %@";
+AP173 = "Datensicherheit";
+AP174 = "Backups schützen vor Datenverlust. Wenn Sie die Verschlüsselung einschalten sind regelmäßige Backups unerlässlich, da eine verschlüsselte Datei auch von Experten nicht repariert werden kann! Möchten Sie die Daten verschlüsseln?";
+AP175 = "Bitte geben Sie zunächst das alte und danach das neue Pecunia-Datenpasswort ein";
+AP176 = "Das Pecunia-Datenpasswort wurde erfolgreich geändert";
+AP177 = "Bitte wählen Sie die Datei %@ aus";
 
 // Banking common + business transactions
 // AP200..AP249

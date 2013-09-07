@@ -33,13 +33,16 @@
 
 static NSArray *exportFields = nil;
 
-#define GENERAL_HEIGHT   310
-#define SEC_HEIGHT       270
-#define LOC_HEIGHT       260
-#define DISPLAY_HEIGHT   320
-#define COLOR_HEIGHT     450
-#define EXP_HEIGHT       375
-#define PRINT_HEIGHT     200
+#define EXPORT_SEPARATOR @"exportSeparator"
+
+#define GENERAL_HEIGHT    310
+#define HOMESCREEN_HEIGHT 310
+#define SEC_HEIGHT        270
+#define LOC_HEIGHT        260
+#define DISPLAY_HEIGHT    320
+#define COLOR_HEIGHT      450
+#define EXP_HEIGHT        375
+#define PRINT_HEIGHT      200
 
 @implementation ColorListViewCell
 
