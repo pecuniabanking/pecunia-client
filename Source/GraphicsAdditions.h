@@ -26,6 +26,7 @@ CGColorRef CGColorCreateFromNSColor(NSColor *color);
 + (NSColor *)nextDefaultAccountColor;
 + (NSColor *)nextDefaultCategoryColor;
 + (NSColor *)nextDefaultTagColor;
++ (NSColor *)nextDefaultStockGraphColor;
 
 + (NSColor *)applicationColorForKey: (NSString *)key;
 + (void)setApplicationColor: (NSColor *)color forKey: (NSString *)key;

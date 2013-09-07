@@ -38,3 +38,7 @@
 @interface RemoveWhitespaceTransformer : NSValueTransformer
 
 @end
+
+@interface StringCasingTransformer : NSValueTransformer
+
+@end

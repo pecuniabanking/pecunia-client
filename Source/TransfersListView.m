@@ -113,8 +113,7 @@ extern void *UserDefaultsBindingContext;
     [userDefaults removeObserver: self forKeyPath: @"autoCasing"];
 }
 
-#pragma mark -
-#pragma mark Bindings, KVO and KVC
+#pragma mark - Bindings, KVO and KVC
 
 - (void)   bind: (NSString *)binding
        toObject: (id)observableObject
@@ -195,8 +194,7 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-#pragma mark -
-#pragma mark PXListViewDelegate protocol implementation
+#pragma mark - PXListViewDelegate protocol implementation
 
 - (NSUInteger)numberOfRowsInListView: (PXListView *)aListView
 {

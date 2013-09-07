@@ -6,7 +6,7 @@ AboutMessage:
 Names: Partial
 Rows: 12
 Columns: 12
-Entries: 84
+Entries: 94
 Prefix: 
 Suffix: 
 Type: Process
@@ -181,3 +181,23 @@ Pale Text
 Unread Transfer
 60395 65535 16962
 Uncategorized Transfer
+33667 38293 48573
+Default Stock Graph Color 1
+45489 17733 13364
+Default Stock Graph Color 2
+34695 34695 16191
+Default Stock Graph Color 3
+46774 42662 51400
+Default Stock Graph Color 4
+13107 39321 39321
+Default Stock Graph Color 5
+39321 52428 26214
+Default Stock Graph Color 6
+60652 56026 27756
+Default Stock Graph Color 7
+65535 54227 0
+Default Stock Graph Color 8
+58853 39064 20046
+Default Stock Graph Color 9
+23644 25700 16448
+Default Stock Graph Color 10

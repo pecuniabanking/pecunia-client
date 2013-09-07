@@ -29,7 +29,7 @@
 #import "GraphicsAdditions.h"
 #import "NewPasswordController.h"
 
-#define _exportSeparator @"exportSeparator"
+#import "YahooStockData.h"
 
 static NSArray *exportFields = nil;
 
@@ -155,15 +155,15 @@ static NSGradient *headerGradient;
     [self setValue: @([assistant encrypted]) forKey: @"encrypt"];
     [dataFileField setStringValue: [assistant dataFilename]];
 
-    // erstes Tab setzen
-    [toolBar setSelectedItemIdentifier: @"synch"];
+    // Select first tab.
+    [toolBar setSelectedItemIdentifier: @"general"];
     [mainTab selectTabViewItemAtIndex: 0];
     [mainTab setTabViewType: NSNoTabsNoBorder];
 
     [self setHeight: GENERAL_HEIGHT];
 
-    // Export-Feldseparator
-    NSString *expSep = [defaults stringForKey: _exportSeparator];
+    // Load field separator.
+    NSString *expSep = [defaults stringForKey: EXPORT_SEPARATOR];
     if (expSep) {
         if ([expSep isEqualToString: @"\t"]) {
             [expRadioMatrix setState: NSOnState atRow: 0 column: 0];
@@ -418,19 +418,19 @@ static NSGradient *headerGradient;
 - (IBAction)expSepTab: (id)sender
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject: @"\t" forKey: _exportSeparator];
+    [defaults setObject: @"\t" forKey: EXPORT_SEPARATOR];
 }
 
 - (IBAction)expSepSemi: (id)sender
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject: @";" forKey: _exportSeparator];
+    [defaults setObject: @";" forKey: EXPORT_SEPARATOR];
 }
 
 - (IBAction)expSepLine: (id)sender
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject: @"|" forKey: _exportSeparator];
+    [defaults setObject: @"|" forKey: EXPORT_SEPARATOR];
 }
 
 - (void)setHeight: (int)h
@@ -449,39 +449,45 @@ static NSGradient *headerGradient;
     [self setHeight: GENERAL_HEIGHT];
 }
 
-- (IBAction)securitySettings: (id)sender
+- (IBAction)homeScreenSettings: (id)sender
 {
     [mainTab selectTabViewItemAtIndex: 1];
+    [self setHeight: HOMESCREEN_HEIGHT];
+}
+
+- (IBAction)securitySettings: (id)sender
+{
+    [mainTab selectTabViewItemAtIndex: 2];
     [self setHeight: SEC_HEIGHT];
 }
 
 - (IBAction)locationSettings: (id)sender
 {
-    [mainTab selectTabViewItemAtIndex: 2];
+    [mainTab selectTabViewItemAtIndex: 3];
     [self setHeight: LOC_HEIGHT];
 }
 
 - (IBAction)displaySettings: (id)sender
 {
-    [mainTab selectTabViewItemAtIndex: 3];
+    [mainTab selectTabViewItemAtIndex: 4];
     [self setHeight: DISPLAY_HEIGHT];
 }
 
 - (IBAction)colorSettings: (id)sender
 {
-    [mainTab selectTabViewItemAtIndex: 4];
+    [mainTab selectTabViewItemAtIndex: 5];
     [self setHeight: COLOR_HEIGHT];
 }
 
 - (IBAction)exportSettings: (id)sender
 {
-    [mainTab selectTabViewItemAtIndex: 5];
+    [mainTab selectTabViewItemAtIndex: 6];
     [self setHeight: EXP_HEIGHT];
 }
 
 - (IBAction)printSettings: (id)sender
 {
-    [mainTab selectTabViewItemAtIndex: 6];
+    [mainTab selectTabViewItemAtIndex: 7];
     [self setHeight: PRINT_HEIGHT];
 }
 
@@ -494,10 +500,116 @@ static NSGradient *headerGradient;
     [colorListView reloadData];
 }
 
+- (IBAction)lookupSymbol: (id)sender
+{
+    NSString *value;
+    NSProgressIndicator *indicator;
+    NSButton *button;
+    switch ([sender tag]) {
+        case 0:
+            value = stockField1.stringValue;
+            indicator = progressIndicator1;
+            button = lookupButton1;
+            break;
+        case 1:
+            value = stockField2.stringValue;
+            indicator = progressIndicator2;
+            button = lookupButton2;
+            break;
+        case 2:
+            value = stockField3.stringValue;
+            indicator = progressIndicator3;
+            button = lookupButton3;
+            break;
+    }
+
+    NSMenu *menu = [button.cell menu];
+    if (menu == nil) {
+        menu = [[NSMenu alloc] init];
+        [button.cell setMenu: menu];
+    } else {
+        [menu removeAllItems];
+    }
+
+    if (value.length == 0) {
+        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle: NSLocalizedString(@"AP733", nil)
+                                                      action: nil
+                                               keyEquivalent: @""];
+        item.enabled = NO;
+        [menu addItem: item];
+    } else {
+        [indicator startAnimation: self];
+        NSError *error;
+        NSDictionary *data = [YahooStockData lookupSymbol: value error: &error];
+        for (NSString *key in data.allKeys) {
+            NSArray *entries = data[key];
+
+            // Exchange name.
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle: key
+                                                          action: nil
+                                                   keyEquivalent: @""];
+            item.enabled = NO;
+            [menu addItem: item];
+
+            // The symbols.
+            for (NSDictionary *details in entries) {
+                item = [[NSMenuItem alloc] initWithTitle: details[@"name"]
+                                                  action: @selector(symbolSelected:)
+                                           keyEquivalent: @""];
+                item.representedObject = details[@"symbol"];
+                item.indentationLevel = 1;
+                item.tag = [sender tag]; // To indicate which field to update.
+                [menu addItem: item];
+            }
+        }
+        [indicator stopAnimation: self];
+    }
+
+    int windowNumber = [self.window windowNumber];
+    NSRect frame = button.frame;
+
+    NSPoint wp = {0, NSHeight(frame)};
+    wp = [button convertPoint: wp toView: nil];
+    NSEvent* event = [NSEvent otherEventWithType: NSApplicationDefined
+                                        location: wp
+                                   modifierFlags: NSApplicationDefined
+                                       timestamp: 0
+                                    windowNumber: windowNumber
+                                         context: NSGraphicsContext.currentContext
+                                         subtype: 0
+                                           data1: 0
+                                           data2: 0];
+    
+    [NSMenu popUpContextMenu: menu withEvent:event forView: button];
+}
+
+- (void)symbolSelected: (id)sender
+{
+    NSTextField *field;
+    switch ([sender tag]) {
+        case 0:
+            field = stockField1;
+            break;
+        case 1:
+            field = stockField2;
+            break;
+        case 2:
+            field = stockField3;
+            break;
+    }
+
+    field.stringValue = [sender representedObject];
+    NSDictionary *bindingInfo = [field infoForBinding: NSValueBinding];
+    [[bindingInfo valueForKey: NSObservedObjectKey] setValue: field.stringValue
+                                                  forKeyPath: [bindingInfo valueForKey: NSObservedKeyPathKey]];
+}
+
 - (void)tabView: (NSTabView *)tabView didSelectTabViewItem: (NSTabViewItem *)tabViewItem
 {
     [[self window] setTitle: [tabViewItem label]];
 }
+
+#pragma mark - Convenience + constant preferences
 
 + (BOOL)showCategoryColorsInTree
 {

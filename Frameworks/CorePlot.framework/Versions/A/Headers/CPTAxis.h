@@ -19,14 +19,13 @@
 /**
  *  @brief Enumeration of labeling policies
  **/
-typedef enum _CPTAxisLabelingPolicy {
+typedef NS_ENUM (NSInteger, CPTAxisLabelingPolicy) {
     CPTAxisLabelingPolicyNone,              ///< No labels provided; user sets labels and tick locations.
     CPTAxisLabelingPolicyLocationsProvided, ///< User sets tick locations; axis makes labels.
     CPTAxisLabelingPolicyFixedInterval,     ///< Fixed interval labeling policy.
     CPTAxisLabelingPolicyAutomatic,         ///< Automatic labeling policy.
     CPTAxisLabelingPolicyEqualDivisions     ///< Divide the plot range into equal parts.
-}
-CPTAxisLabelingPolicy;
+};
 
 #pragma mark -
 
@@ -99,7 +98,7 @@ CPTAxisLabelingPolicy;
 @property (nonatomic, readwrite, copy) NSAttributedString *attributedTitle;
 @property (nonatomic, readwrite, assign) CGFloat titleRotation;
 @property (nonatomic, readwrite, assign) NSDecimal titleLocation;
-@property (nonatomic, readonly, assign) NSDecimal defaultTitleLocation;
+@property (nonatomic, readonly) NSDecimal defaultTitleLocation;
 /// @}
 
 /// @name Labels
@@ -113,11 +112,13 @@ CPTAxisLabelingPolicy;
 @property (nonatomic, readwrite, assign) CPTAlignment minorTickLabelAlignment;
 @property (nonatomic, readwrite, copy) CPTTextStyle *labelTextStyle;
 @property (nonatomic, readwrite, copy) CPTTextStyle *minorTickLabelTextStyle;
+@property (nonatomic, readwrite, assign) CPTSign tickLabelDirection;
+@property (nonatomic, readwrite, assign) CPTSign minorTickLabelDirection;
 @property (nonatomic, readwrite, strong) NSFormatter *labelFormatter;
 @property (nonatomic, readwrite, strong) NSFormatter *minorTickLabelFormatter;
 @property (nonatomic, readwrite, strong) NSSet *axisLabels;
 @property (nonatomic, readwrite, strong) NSSet *minorTickAxisLabels;
-@property (nonatomic, readonly, assign) BOOL needsRelabel;
+@property (nonatomic, readonly) BOOL needsRelabel;
 @property (nonatomic, readwrite, strong) NSArray *labelExclusionRanges;
 @property (nonatomic, readwrite, strong) CPTShadow *labelShadow;
 @property (nonatomic, readwrite, strong) CPTShadow *minorTickLabelShadow;
@@ -150,7 +151,7 @@ CPTAxisLabelingPolicy;
 /// @name Background Bands
 /// @{
 @property (nonatomic, readwrite, copy) NSArray *alternatingBandFills;
-@property (nonatomic, readonly, strong) NSArray *backgroundLimitBands;
+@property (nonatomic, readonly) NSArray *backgroundLimitBands;
 /// @}
 
 /// @name Plot Space
@@ -162,9 +163,9 @@ CPTAxisLabelingPolicy;
 /// @{
 @property (nonatomic, readwrite, assign) BOOL separateLayers;
 @property (nonatomic, readwrite, cpt_weak_property) __cpt_weak CPTPlotArea *plotArea;
-@property (nonatomic, readonly, cpt_weak_property) __cpt_weak CPTGridLines *minorGridLines;
-@property (nonatomic, readonly, cpt_weak_property) __cpt_weak CPTGridLines *majorGridLines;
-@property (nonatomic, readonly, strong) CPTAxisSet *axisSet;
+@property (nonatomic, readonly) __cpt_weak CPTGridLines *minorGridLines;
+@property (nonatomic, readonly) __cpt_weak CPTGridLines *majorGridLines;
+@property (nonatomic, readonly) CPTAxisSet *axisSet;
 /// @}
 
 /// @name Title

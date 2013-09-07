@@ -364,7 +364,7 @@ extern void *UserDefaultsBindingContext;
 - (void)regenerateGraphs;
 
 - (int)majorTickCount;
-- (NSUInteger)findIndexForTimePoint: (NSUInteger)timePoint;
+- (NSInteger)findIndexForTimePoint: (NSUInteger)timePoint;
 
 @end
 
@@ -707,8 +707,7 @@ extern void *UserDefaultsBindingContext;
     CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
     lineStyle.lineWidth = 1;
     lineStyle.lineColor = [CPTColor colorWithGenericGray: 64 / 255.0];
-    lineStyle.dashPattern = lineStyle.dashPattern = @[@10.0f,
-                                                      @5.0f];
+    lineStyle.dashPattern = lineStyle.dashPattern = @[@10.0f, @5.0f];
     turnoversIndicatorLine.axisLineStyle = lineStyle;
     turnoversIndicatorLine.majorTickLineStyle = nil;
 
@@ -925,7 +924,7 @@ extern void *UserDefaultsBindingContext;
         lineStyle.lineColor = [CPTColor colorWithCGColor: lineColor];
         CGColorRelease(lineColor);
 
-        lineStyle.lineWidth = 1;
+        lineStyle.lineWidth = 2;
         lineStyle.dashPattern = @[@8.0f, @2.5f];
         averagePlot.dataLineStyle = lineStyle;
 
@@ -1010,8 +1009,8 @@ extern void *UserDefaultsBindingContext;
 
     NSDecimal value = [range decimalValue];
     NSDecimal hundred = [@100 decimalValue];
-    if (NSDecimalCompare(&value, &hundred) == NSOrderedDescending) {
-        // The range is > 100 so scale it down so it falls into that range.
+    if (NSDecimalCompare(&value, &hundred) != NSOrderedAscending) {
+        // The range is >= 100 so scale it down so it falls into the range 1..100.
         NSDecimalMultiplyByPowerOf10(&value, &value, -digitCount + 2, NSRoundDown);
     }
     double convertedValue = [[NSDecimalNumber decimalNumberWithDecimal: value] doubleValue];
@@ -1472,10 +1471,9 @@ int double_compare(const void *value1, const void *value2)
                 sourceIndex = 0;
             } else {
                 if (sourceIndex >= (int)rawCount) {
-                    // At the end of the list fold back to half the window size, making so these
-                    // values repeating at the end (assuming the same values appear in the future).
+                    // At the end of the list simply repeat the last value.
                     // This is really a rough estimate and should be replaced as soon as we have a forecast.
-                    sourceIndex -= m;
+                    sourceIndex = rawCount - 1;
                     if (sourceIndex < 0) {
                         sourceIndex = 0;
                     }
@@ -2034,8 +2032,7 @@ int double_compare(const void *value1, const void *value2)
     [self hideInfoComponents];
 }
 
-#pragma mark -
-#pragma mark Coreplot delegate methods
+#pragma mark - Coreplot delegate methods
 
 - (void)animationDidFinish: (CPTAnimationOperation *)operation
 {
@@ -2413,7 +2410,7 @@ int double_compare(const void *value1, const void *value2)
         lineStyle.lineColor = [CPTColor colorWithCGColor: lineColor];
         CGColorRelease(lineColor);
 
-        lineStyle.lineWidth = 1;
+        lineStyle.lineWidth = 2;
         lineStyle.dashPattern = @[@8.0f, @2.5f];
 
         scatterPlot.dataLineStyle = lineStyle;

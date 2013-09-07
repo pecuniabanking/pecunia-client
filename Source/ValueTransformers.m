@@ -152,3 +152,35 @@ static NSMutableDictionary *cache;
 
 //----------------------------------------------------------------------------------------------------------------------
 
+@implementation StringCasingTransformer
+
++ (void)initialize
+{
+
+}
+
++ (BOOL)allowsReverseTransformation
+{
+    return NO;
+}
+
+- (id)transformedValue: (id)value
+{
+    if (![NSUserDefaults.standardUserDefaults boolForKey: @"autoCasing"]) {
+        return value;
+    }
+
+    NSMutableArray *words = [[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
+    for (NSUInteger i = 0; i < [words count]; i++) {
+        NSString *word = words[i];
+        if (i == 0 || [word length] > 3) {
+            words[i] = [word capitalizedString];
+        }
+    }
+    return [words componentsJoinedByString: @" "];
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+

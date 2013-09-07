@@ -55,6 +55,21 @@
     IBOutlet PXListView        *colorListView;
     IBOutlet NSTextField       *dataFileField;
 
+    // Home screen.
+    IBOutlet NSTextField *stockField1;
+    IBOutlet NSTextField *stockField2;
+    IBOutlet NSTextField *stockField3;
+    IBOutlet NSColorWell *stockColor1;
+    IBOutlet NSColorWell *stockColor2;
+    IBOutlet NSColorWell *stockColor3;
+    IBOutlet NSButton    *lookupButton1;
+    IBOutlet NSButton    *lookupButton2;
+    IBOutlet NSButton    *lookupButton3;
+
+    IBOutlet NSProgressIndicator *progressIndicator1;
+    IBOutlet NSProgressIndicator *progressIndicator2;
+    IBOutlet NSProgressIndicator *progressIndicator3;
+
     // encryption sheet
     NSString *password;
     BOOL     savePassword;

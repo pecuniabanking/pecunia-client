@@ -21,24 +21,33 @@
 
 NSCalendarDate * normalizeDate(NSDate *date);
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, CatValueType) {
     cat_earnings,
     cat_spendings,
     cat_turnovers,
     cat_all
-} CatValueType;
+};
 
 /**
  * Specifies the grouping of values when collecting statistical data, that is, which time frame
  * balance values should be coalesced in.
  */
-typedef enum {
+typedef NS_ENUM (NSUInteger, GroupingInterval) {
     GroupByDays,
     GroupByWeeks,
     GroupByMonths,
     GroupByQuarters,
     GroupByYears
-} GroupingInterval;
+};
+
+/**
+ * Specifies the date to use for ordering statements in a category.
+ */
+typedef NS_ENUM(NSUInteger, CategoryDateOrder) {
+    DateOrderDate,
+    DateOrderValutaDate,
+    DateOrderDocDate
+};
 
 typedef struct {
     double low;
@@ -113,7 +122,11 @@ typedef struct {
                      recursive: (BOOL)recursive;
 
 - (NSArray *)assignmentsFrom: (ShortDate *)fromDate to: (ShortDate *)toDate withChildren: (BOOL)c;
-- (NSArray *)allAssignments;
+- (NSArray *)allAssignmentsOrderedBy: (CategoryDateOrder)order
+                               limit: (NSUInteger)limit
+                           recursive: (BOOL)recursive
+                           ascending: (BOOL)ascending;
+- (NSUInteger)assignmentCountRecursive: (BOOL)recursive;
 - (void)updateBoundAssignments;
 
 + (Category *)bankRoot;

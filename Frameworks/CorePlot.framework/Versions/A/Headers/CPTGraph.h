@@ -22,20 +22,41 @@
  **/
 extern NSString *const CPTGraphNeedsRedrawNotification;
 
+/** @brief Notification sent by a graph after adding a new plot space.
+ *  @ingroup notification
+ *
+ *  The notification <code>userInfo</code> dictionary will include the new plot space under the
+ *  CPTGraphPlotSpaceNotificationKey key.
+ **/
+extern NSString *const CPTGraphDidAddPlotSpaceNotification;
+
+/** @brief Notification sent by a graph after removing a plot space.
+ *  @ingroup notification
+ *
+ *  The notification <code>userInfo</code> dictionary will include the removed plot space under the
+ *  CPTGraphPlotSpaceNotificationKey key.
+ **/
+extern NSString *const CPTGraphDidRemovePlotSpaceNotification;
+
+/** @brief The <code>userInfo</code> dictionary key used by the CPTGraphDidAddPlotSpaceNotification
+ *  and CPTGraphDidRemovePlotSpaceNotification notifications for the plot space.
+ *  @ingroup notification
+ **/
+extern NSString *const CPTGraphPlotSpaceNotificationKey;
+
 /// @}
 
 /**
  *  @brief Enumeration of graph layers.
  **/
-typedef enum _CPTGraphLayerType {
+typedef NS_ENUM (NSInteger, CPTGraphLayerType) {
     CPTGraphLayerTypeMinorGridLines, ///< Minor grid lines.
     CPTGraphLayerTypeMajorGridLines, ///< Major grid lines.
     CPTGraphLayerTypeAxisLines,      ///< Axis lines.
     CPTGraphLayerTypePlots,          ///< Plots.
     CPTGraphLayerTypeAxisLabels,     ///< Axis labels.
     CPTGraphLayerTypeAxisTitles      ///< Axis titles.
-}
-CPTGraphLayerType;
+};
 
 #pragma mark -
 
@@ -59,7 +80,7 @@ CPTGraphLayerType;
 /// @{
 @property (nonatomic, readwrite, strong) CPTAxisSet *axisSet;
 @property (nonatomic, readwrite, strong) CPTPlotAreaFrame *plotAreaFrame;
-@property (nonatomic, readonly, strong) CPTPlotSpace *defaultPlotSpace;
+@property (nonatomic, readonly) CPTPlotSpace *defaultPlotSpace;
 @property (nonatomic, readwrite, strong) NSArray *topDownLayerOrder;
 /// @}
 

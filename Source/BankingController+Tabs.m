@@ -19,17 +19,37 @@
 
 #import "BankingController+Tabs.h"
 
+#import "HomeScreenController.h"
 #import "TransfersController.h"
 #import "StandingOrderController.h"
 #import "DebitsController.h"
 #import "CategoryHeatMapController.h"
 
+#define HomeScreenTabIdentifier    @"homeScreen"
 #define TransfersTabIdentifier     @"transfers"
 #define StandingOrderTabIdentifier @"standingOrders"
 #define DebitsTabIdentifier        @"debits"
 #define HeatMapTabIdentifier       @"heatMap"
 
 @implementation BankingController (Tabs)
+
+- (void)activateHomeScreenTab
+{
+    NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: HomeScreenTabIdentifier];
+    if (index == NSNotFound) {
+        homeScreenController = [[HomeScreenController alloc] init];
+        if ([NSBundle loadNibNamed: @"HomeScreen" owner: homeScreenController]) {
+            NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: HomeScreenTabIdentifier];
+            [item setView: homeScreenController.view];
+            [mainTabView addTabViewItem: item];
+            [mainTabView selectTabViewItem: item];
+            mainTabItems[HomeScreenTabIdentifier] = homeScreenController;
+        }
+    } else {
+        [mainTabView selectTabViewItemAtIndex: index];
+        [homeScreenController activate];
+    }
+}
 
 - (void)activateStandingOrdersTab
 {
