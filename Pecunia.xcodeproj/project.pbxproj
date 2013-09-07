@@ -1031,7 +1031,7 @@
 		A652533415E39A92000C2989 /* TanWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanWindow.m; sourceTree = "<group>"; };
 		A687545F1778CDC0007B4BC2 /* AssignmentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssignmentController.h; sourceTree = "<group>"; };
 		A68754601778CDC0007B4BC2 /* AssignmentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssignmentController.m; sourceTree = "<group>"; };
-		A68754611778CDC0007B4BC2 /* AssignmentController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AssignmentController.xib; sourceTree = "<group>"; };
+		A68754611778CDC0007B4BC2 /* AssignmentController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AssignmentController.xib; path = ../../Source/AssignmentController.xib; sourceTree = "<group>"; };
 		A68AEBBA1658ED6100CF8184 /* Accounts 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 7.xcdatamodel"; sourceTree = "<group>"; };
 		A694636E16B52D1A006D9D43 /* CCSettlementList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSettlementList.h; sourceTree = "<group>"; };
 		A694636F16B52D1A006D9D43 /* CCSettlementList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSettlementList.m; sourceTree = "<group>"; };
@@ -1627,6 +1627,7 @@
 				27CBF36A174A4C5F0062E2A9 /* About.xib */,
 				B1D4500D147844C3008DD256 /* AccountCreate.xib */,
 				B1D4506D147848D3008DD256 /* AccountMaintenance.xib */,
+				A68754611778CDC0007B4BC2 /* AssignmentController.xib */,
 				B14C6002114848E1009324A6 /* BankStatementController.xib */,
 				B1D4500A14784443008DD256 /* BankUser.xib */,
 				B1D4500714784412008DD256 /* BSSelectWindow.xib */,
@@ -2088,7 +2089,6 @@
 				B14C60001148467A009324A6 /* BankStatementController.m */,
 				A687545F1778CDC0007B4BC2 /* AssignmentController.h */,
 				A68754601778CDC0007B4BC2 /* AssignmentController.m */,
-				A68754611778CDC0007B4BC2 /* AssignmentController.xib */,
 			);
 			name = Statements;
 			sourceTree = "<group>";
