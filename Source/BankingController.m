@@ -2591,7 +2591,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     NSString    *searchName = [te stringValue];
 
     if ([searchName length] == 0) {
-        [categoryAssignments setFilterPredicate: [timeSlicer predicateForField: @"date"]];
+        [categoryAssignments setFilterPredicate:nil];
     } else {
         NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or userInfo contains[c] %@ or value = %@",
                              searchName, searchName, searchName, [NSDecimalNumber decimalNumberWithString: searchName locale: [NSLocale currentLocale]]];
@@ -2891,12 +2891,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
     [Category setCatReportFrom: from to: to];
 
-    // todo: remove filter stuff
-    // change filter
-    /*
-     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(statement.date => %@) AND (statement.date <= %@)", [from lowDate], [to highDate]];
-     [categoryAssignments setFilterPredicate: predicate];
-     */
     [[self currentSelection] updateBoundAssignments];
 
     // Update current section if the default is not active.
