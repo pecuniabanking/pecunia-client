@@ -621,10 +621,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 //----------------------------------------------------------------------------------------------------------------------
 
-@interface BankingController (Private)
-    -(BOOL)save;
-@end
-
 @implementation BankingController
 
 @synthesize saveValue;
@@ -1144,7 +1140,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [self updateNotAssignedCategory];
     }
 
-    // save updates
     [self save];
 }
 
@@ -1167,7 +1162,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [cat rollup];
     }
 
-    // save updates
     [self save];
 }
 
@@ -1343,12 +1337,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
     autoSyncRunning = NO;
 
-    NSError *error;
-    if ([self.managedObjectContext save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-        return;
-    }
+    [self save];
 
     BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
     if (!suppressSound) {
@@ -1502,8 +1491,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     int res = [NSApp runModalForWindow: [defController window]];
     if (res) {
         // account was created
-
-        // save updates
         [self save];
 
         [categoryController rearrangeObjects];
@@ -1602,7 +1589,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     // delete account
     [self removeBankAccount: account keepAssignedStatements: keepAssignedStatements];
 
-    // save updates
     [self save];
 }
 
@@ -2003,7 +1989,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     dockIconController = nil;
 
     if (self.managedObjectContext && [MOAssistant assistant].isMaxIdleTimeExceeded == NO) {
-        if ([self save] == NO) {
+        if (![self save]) {
             return;
         }
     }
@@ -2396,7 +2382,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [[Category catRoot] rollup];
     }
 
-    // save updates
     [self save];
 
     if (needListViewUpdate) {
@@ -2770,10 +2755,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [stat updateAssigned];
     }
 
-    if ([self.managedObjectContext save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-    }
+    [self save];
 }
 
 - (void)deleteCategory: (id)sender
@@ -2816,11 +2798,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [self performSelector: @selector(outlineViewSelectionDidChange:) withObject: nil afterDelay: 0];
 
     // Save changes to avoid losing category changes in case of failures/crashs.
-    NSError *error = nil;
-    if ([self.managedObjectContext save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-    }
+    [self save];
 }
 
 - (void)addCategory: (id)sender
@@ -2836,11 +2814,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
     [accountsView performSelector: @selector(editSelectedCell) withObject: nil afterDelay: 0.0];
 
-    NSError *error = nil;
-    if ([self.managedObjectContext save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-    }
+    [self save];
 }
 
 - (void)insertCategory: (id)sender
@@ -2852,11 +2826,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [categoryController addChild: sender];
     [accountsView performSelector: @selector(editSelectedCell) withObject: nil afterDelay: 0.0];
 
-    NSError *error = nil;
-    if ([self.managedObjectContext save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-    }
+    [self save];
 }
 
 - (IBAction)manageCategories: (id)sender
@@ -3102,12 +3072,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [[Category bankRoot] rollup];
     [categoryAssignments prepareContent];
 
-    NSError *error = nil;
-    if ([self.managedObjectContext save: &error] == NO) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-        return;
-    }
+    [self save];
 }
 
 - (void)splitStatement: (id)sender
@@ -3137,10 +3102,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     int res = [NSApp runModalForWindow: [statementController window]];
     if (res) {
-        //[categoryAssignments rearrangeObjects];
         [cat updateBoundAssignments];
-
-        // Statement was created. Save changes.
         [self save];
     }
 }
@@ -3613,7 +3575,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     // send transfers
     BOOL sent = [[HBCIClient hbciClient] sendTransfers: transfers];
     if (sent) {
-        // save updates
         [self save];
     }
     return NO;
@@ -3688,8 +3649,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     account = (BankAccount *)cat;
 
     [account doMaintenance];
-
-    // save updates
     [self save];
 }
 
@@ -3708,7 +3667,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         return;
     }
 
-    // save updates
     [self save];
 }
 
@@ -3725,7 +3683,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     for (BankStatement *stat in statements) {
         stat.isNew = @NO;
     }
-    // save updates
     [self save];
 
     [self updateUnread];
@@ -4047,8 +4004,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
             }
         }
         
-        // update changes
-        if ([self save] == NO) {
+        if (![self save]) {
             return;
         }
 
@@ -4125,7 +4081,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     NSError *error = nil;
     
     // save updates
-    if ([self.managedObjectContext save: &error] == NO) {
+    if (![self.managedObjectContext save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return NO;
