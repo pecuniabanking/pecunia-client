@@ -75,7 +75,7 @@
 - (void)loadModel;
 - (void)relocate;
 - (void)relocateToStandard;
-- (void)useExistingDataFile;
+- (void)useExistingDataFile:(NSURL *)url;
 - (BOOL)decrypt;
 - (void)shutdown;
 - (BOOL)encrypted;

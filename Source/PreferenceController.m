@@ -267,7 +267,7 @@ static NSGradient *headerGradient;
 
 - (IBAction)useFileLocation:(id)sender
 {
-    [[MOAssistant assistant] useExistingDataFile];
+    [[MOAssistant assistant] useExistingDataFile:nil];
 }
 
 

@@ -1996,6 +1996,21 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     [[MOAssistant assistant] shutdown];
     [WorkerThread finish];
+    
+	// if application shall restart, launch new task
+	if(restart) {
+		NSProcessInfo *pi = [NSProcessInfo processInfo ];
+		NSArray *args = [pi arguments ];
+		NSString *path = [args objectAtIndex:0 ];
+		if(path) {
+            NSError *error = nil;
+            NSURL *url = [NSURL fileURLWithPath:path];
+            [[NSWorkspace sharedWorkspace] launchApplicationAtURL:url options: (NSWorkspaceLaunchNewInstance) configuration:nil error:&error];
+            if (error != nil) {
+                [[NSAlert alertWithError:error] runModal];
+            }
+		}
+	}
 }
 
 // workaround for strange outlineView collapsing...
