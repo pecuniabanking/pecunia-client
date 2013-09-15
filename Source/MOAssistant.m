@@ -819,7 +819,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
     NSDictionary        *pragmaOptions = nil;
     NSMutableDictionary *storeOptions = [NSMutableDictionary dictionary];
-    [storeOptions setDictionary: @{NSMigratePersistentStoresAutomaticallyOption: @YES, NSInferMappingModelAutomaticallyOption: @YES}];
+    [storeOptions setDictionary: @{NSMigratePersistentStoresAutomaticallyOption: @YES,
+                                   NSInferMappingModelAutomaticallyOption: @YES}];
     if (isEncrypted) {
         pragmaOptions = @{@"synchronous": @"NORMAL", @"fullfsync": @"1"};
         storeOptions[NSSQLitePragmasOption] = pragmaOptions;

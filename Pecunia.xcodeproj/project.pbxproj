@@ -958,6 +958,7 @@
 		27CBF36A174A4C5F0062E2A9 /* About.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = About.xib; sourceTree = "<group>"; };
 		27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NS(Attributed)String+Geometrics.h"; sourceTree = "<group>"; };
 		27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NS(Attributed)String+Geometrics.m"; sourceTree = "<group>"; };
+		27CEFE6617E6197C0085F93A /* Accounts 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Accounts 10.xcdatamodel"; sourceTree = "<group>"; };
 		27CF0A6B15F260F200F48203 /* NSButton+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSButton+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSButton+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		27D1172A15288C3600CD7E83 /* background-pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-pattern.png"; sourceTree = "<group>"; };
@@ -3480,6 +3481,7 @@
 			children = (
 				B1342CED16ADDFB7000F5737 /* Accounts 8.xcdatamodel */,
 				27548B8D1705CC8500C4BF9B /* Accounts 9.xcdatamodel */,
+				27CEFE6617E6197C0085F93A /* Accounts 10.xcdatamodel */,
 				A68AEBBA1658ED6100CF8184 /* Accounts 7.xcdatamodel */,
 				27E5534A146ED844001DE9BE /* Accounts 1.xcdatamodel */,
 				27E5534B146ED844001DE9BE /* Accounts 2.xcdatamodel */,
@@ -3489,7 +3491,7 @@
 				B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */,
 				B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */,
 			);
-			currentVersion = 27548B8D1705CC8500C4BF9B /* Accounts 9.xcdatamodel */;
+			currentVersion = 27CEFE6617E6197C0085F93A /* Accounts 10.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

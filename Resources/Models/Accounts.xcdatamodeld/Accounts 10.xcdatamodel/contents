@@ -158,6 +158,10 @@
         <attribute name="receipient" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="account" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankAccount" inverseName="userMessages" inverseEntity="BankAccount" indexed="YES" syncable="YES"/>
     </entity>
+    <entity name="Info" representedClassName="Info" syncable="YES">
+        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Binary" syncable="YES"/>
+    </entity>
     <entity name="StandingOrder" representedClassName="StandingOrder" syncable="YES">
         <attribute name="changeDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="currency" optional="YES" attributeType="String" minValueString="0" maxValueString="3" syncable="YES"/>
@@ -179,6 +183,8 @@
         <attribute name="remoteAccount" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteBankCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteBankName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteBIC" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteIBAN" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteSuffix" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -347,7 +353,8 @@
         <element name="CategoryBudget" positionX="322" positionY="-369" width="128" height="90"/>
         <element name="CreditCardSettlement" positionX="-18" positionY="-900" width="128" height="255"/>
         <element name="CustomerMessage" positionX="-218" positionY="-141" width="128" height="150"/>
-        <element name="StandingOrder" positionX="142" positionY="-243" width="128" height="465"/>
+        <element name="Info" positionX="144" positionY="-900" width="128" height="73"/>
+        <element name="StandingOrder" positionX="142" positionY="-243" width="128" height="495"/>
         <element name="StatCatAssignment" positionX="324" positionY="-600" width="128" height="105"/>
         <element name="SupportedTransactionInfo" positionX="-216" positionY="-381" width="128" height="165"/>
         <element name="Tag" positionX="513" positionY="216" width="128" height="105"/>

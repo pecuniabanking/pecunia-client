@@ -58,6 +58,8 @@ typedef enum {
 @property (nonatomic, strong) NSString        *remoteAccount;
 @property (nonatomic, strong) NSString        *remoteBankCode;
 @property (nonatomic, strong) NSString        *remoteBankName;
+@property (nonatomic, strong) NSString        *remoteBIC;
+@property (nonatomic, strong) NSString        *remoteIBAN;
 @property (nonatomic, strong) NSString        *remoteName;
 @property (nonatomic, strong) NSString        *remoteSuffix;
 @property (nonatomic, strong) NSNumber        *status;
