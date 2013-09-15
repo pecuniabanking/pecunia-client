@@ -19,11 +19,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSOutlineView (MCEMOutlineViewLayout)
+@interface NSOutlineView (PecuniaAdditions)
 
-- (NSString *)persistentObjectForItem: (id)item;
-- (void)restoreExpandedItems;
-- (void)saveLayout;
-- (void)restoreLayout;
-- (void)restoreAll;
+- (void)saveState;
+- (void)restoreState;
+
 @end

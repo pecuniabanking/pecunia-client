@@ -692,127 +692,130 @@
     MessageLog *log = [MessageLog log];
     NSUInteger errorCount = 0;
 
-    @try {
-        dateFormatter.dateFormat = currentSettings.dateFormat;
+    @synchronized(dateFormatter) {
+        @try {
+            dateFormatter.dateFormat = currentSettings.dateFormat;
 
-        NSUInteger index = currentSettings.ignoreLines.intValue;
-        NSString   *separator = currentSettings.fieldSeparator;
-        if (separator == nil) {
-            separator = @",";
-        }
-
-        NSUInteger ignoredLines = currentSettings.ignoreLines.intValue;
-        parsedValues = [NSMutableArray arrayWithCapacity: 1000];
-        for (NSString *file in fileNames) {
-            if (stopProcessing) {
-                return;
+            NSUInteger index = currentSettings.ignoreLines.intValue;
+            NSString   *separator = currentSettings.fieldSeparator;
+            if (separator == nil) {
+                separator = @",";
             }
 
-            NSArray *csvRows;
-            if ([NSFileManager.defaultManager fileExistsAtPath: file]) {
-                NSError  *error = nil;
-                NSString *content = [NSString stringWithContentsOfFile: file
-                                                              encoding: currentSettings.encoding.integerValue
-                                                                 error: &error];
-                if (error != nil) {
-                    NSAlert *alert = [NSAlert alertWithError: error];
-                    [alert runModal];
-                    continue;
-                } else {
-                    csvRows = [content csvRowsWithSeparator: separator];
-                }
-            } else {
-                csvRows = nil;
-            }
-
-            for (NSUInteger i = ignoredLines; i < csvRows.count; i++) {
-                NSArray *fields = csvRows[i];
+            NSUInteger ignoredLines = currentSettings.ignoreLines.intValue;
+            parsedValues = [NSMutableArray arrayWithCapacity: 1000];
+            for (NSString *file in fileNames) {
                 if (stopProcessing) {
                     return;
                 }
 
-                NSMutableDictionary *entry = [NSMutableDictionary dictionary];
-                for (NSUInteger j = 0; j < fields.count; j++) {
+                NSArray *csvRows;
+                if ([NSFileManager.defaultManager fileExistsAtPath: file]) {
+                    NSError  *error = nil;
+                    NSString *content = [NSString stringWithContentsOfFile: file
+                                                                  encoding: currentSettings.encoding.integerValue
+                                                                     error: &error];
+                    if (error != nil) {
+                        NSAlert *alert = [NSAlert alertWithError: error];
+                        [alert runModal];
+                        continue;
+                    } else {
+                        csvRows = [content csvRowsWithSeparator: separator];
+                    }
+                } else {
+                    csvRows = nil;
+                }
+
+                for (NSUInteger i = ignoredLines; i < csvRows.count; i++) {
+                    NSArray *fields = csvRows[i];
                     if (stopProcessing) {
                         return;
                     }
 
-                    // Ignore any field that goes beyond the defined fields.
-                    if (j >= currentSettings.fields.count) {
-                        break;
-                    }
-
-                    NSString *property = currentSettings.fields[j];
-                    if (property.length == 0) {
-                        continue; // An ignored field.
-                    }
-
-                    NSString *field = fields[j];
-                    id object = (field.length == 0) ? nil : field;
-                    if ([property isEqualToString: @"date"] || [property isEqualToString: @"valutaDate"]) {
-                        NSRange range = NSMakeRange(0, field.length);
-                        if ([dateFormatter getObjectValue: &object
-                                                forString: field
-                                                    range: &range
-                                                    error: nil] && range.length == field.length) {
-                            if (minDate == nil || [minDate isGreaterThan: object]) {
-                                minDate = object;
-                            }
-                            if (maxDate == nil || [object isGreaterThan: maxDate]) {
-                                maxDate = object;
-                            }
-                        } else {
-                            [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, date is invalid: %@",
-                                              file, index, field] withLevel: LogLevel_Error];
-                            errorCount++;
-                            object = nil;
+                    NSMutableDictionary *entry = [NSMutableDictionary dictionary];
+                    for (NSUInteger j = 0; j < fields.count; j++) {
+                        if (stopProcessing) {
+                            return;
                         }
-                    } else {
-                        if ([property isEqualToString: @"value"]) {
-                            object = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: field] decimalValue]];
-                            if ([object isEqualTo: [NSDecimalNumber notANumber]]) {
-                                [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, value is not a number: %@",
+
+                        // Ignore any field that goes beyond the defined fields.
+                        if (j >= currentSettings.fields.count) {
+                            break;
+                        }
+
+                        NSString *property = currentSettings.fields[j];
+                        if (property.length == 0) {
+                            continue; // An ignored field.
+                        }
+
+                        NSString *field = fields[j];
+                        id object = (field.length == 0) ? nil : field;
+                        if ([property isEqualToString: @"date"] || [property isEqualToString: @"valutaDate"]) {
+                            NSRange range = NSMakeRange(0, field.length);
+                            NSError *error;
+                            if ([dateFormatter getObjectValue: &object
+                                                    forString: field
+                                                        range: &range
+                                                        error: &error] && range.length == field.length) {
+                                if (minDate == nil || [minDate isGreaterThan: object]) {
+                                    minDate = object;
+                                }
+                                if (maxDate == nil || [object isGreaterThan: maxDate]) {
+                                    maxDate = object;
+                                }
+                            } else {
+                                [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, date is invalid: %@",
                                                   file, index, field] withLevel: LogLevel_Error];
                                 errorCount++;
                                 object = nil;
-                            } else {
-                                object = [object rounded];
                             }
-
-                        }
-                    }
-                    if (object != nil) {
-                        if (entry[property] == nil) {
-                            entry[property] = object;
                         } else {
-                            // If there's already a value then the user selected the same tag for different fields.
-                            // This is sometimes necessary to collect split values, however both object types
-                            // must be the same to be acceptable.
-                            if ([entry[property] isKindOfClass: [object class]]) {
-                                if ([object isKindOfClass: [NSString class]]) {
-                                    entry[property] = [NSString stringWithFormat: @"%@ %@", entry[property], object];
-                                } else if ([object isKindOfClass: [NSDecimalNumber class]]) {
-                                    entry[property] = [entry[property] decimalNumberByAdding: object];
+                            if ([property isEqualToString: @"value"]) {
+                                object = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: field] decimalValue]];
+                                if ([object isEqualTo: [NSDecimalNumber notANumber]]) {
+                                    [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, value is not a number: %@",
+                                                      file, index, field] withLevel: LogLevel_Error];
+                                    errorCount++;
+                                    object = nil;
+                                } else {
+                                    object = [object rounded];
+                                }
+
+                            }
+                        }
+                        if (object != nil) {
+                            if (entry[property] == nil) {
+                                entry[property] = object;
+                            } else {
+                                // If there's already a value then the user selected the same tag for different fields.
+                                // This is sometimes necessary to collect split values, however both object types
+                                // must be the same to be acceptable.
+                                if ([entry[property] isKindOfClass: [object class]]) {
+                                    if ([object isKindOfClass: [NSString class]]) {
+                                        entry[property] = [NSString stringWithFormat: @"%@ %@", entry[property], object];
+                                    } else if ([object isKindOfClass: [NSDecimalNumber class]]) {
+                                        entry[property] = [entry[property] decimalNumberByAdding: object];
+                                    } else {
+                                        errorCount++;
+                                        [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, multiple fields are set to the same import type but cannot be combined: %@",
+                                                          file, index, property] withLevel: LogLevel_Error];
+                                    }
                                 } else {
                                     errorCount++;
-                                    [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, multiple fields are set to the same import type but cannot be combined: %@",
+                                    [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, multiple fields are set to the same import type but have different types: %@",
                                                       file, index, property] withLevel: LogLevel_Error];
                                 }
-                            } else {
-                                errorCount++;
-                                [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, multiple fields are set to the same import type but have different types: %@",
-                                                  file, index, property] withLevel: LogLevel_Error];
                             }
                         }
                     }
+                    [parsedValues addObject: entry];
                 }
-                [parsedValues addObject: entry];
             }
+            [processingSheet preprocessingDoneWithErrorCount: errorCount minDate: minDate maxDate: maxDate];
         }
-        [processingSheet preprocessingDoneWithErrorCount: errorCount minDate: minDate maxDate: maxDate];
-    }
-    @catch (NSException *exception) {
-        [processingSheet preprocessingDoneWithFatalError];
+        @catch (NSException *exception) {
+            [processingSheet preprocessingDoneWithFatalError];
+        }
     }
 }
 
@@ -1163,42 +1166,44 @@
      forTableColumn: (NSTableColumn *)aTableColumn
                 row: (NSInteger)rowIndex
 {
-    NSColor *color = [NSColor grayColor];
-    [aCell setEditable: NO];
-    NSUInteger columnIndex = aTableColumn.identifier.integerValue;
-    if (columnIndex < currentSettings.fields.count) {
-        NSString *field = currentSettings.fields[columnIndex];
-        if (field.length > 0 && ![field isEqualToString: @"undefined"]) {
-            // We have a valid and assigned column. Check content now.
-            NSString *value = [aCell stringValue];
-            if ([field isEqualToString: @"value"]) {
-                NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: value] decimalValue]];
-                [aCell setObjectValue: [number rounded]];
-                if ([number isEqualTo: [NSDecimalNumber notANumber]]) {
-                    color = [NSColor redColor];
-                } else {
-                    color = [NSColor blackColor];
-                }
-            } else {
-                if ([field isEqualToString: @"date"] || [field isEqualToString: @"valutaDate"]) {
-                    id      parsedObject;
-                    NSRange range = NSMakeRange(0, value.length);
-                    if ([dateFormatter getObjectValue: &parsedObject
-                                            forString: value
-                                                range: &range
-                                                error: nil] && range.length == value.length) {
-                        color = [NSColor blackColor];
-                    } else {
+    @synchronized(dateFormatter) {
+        NSColor *color = [NSColor grayColor];
+        [aCell setEditable: NO];
+        NSUInteger columnIndex = aTableColumn.identifier.integerValue;
+        if (columnIndex < currentSettings.fields.count) {
+            NSString *field = currentSettings.fields[columnIndex];
+            if (field.length > 0 && ![field isEqualToString: @"undefined"]) {
+                // We have a valid and assigned column. Check content now.
+                NSString *value = [aCell stringValue];
+                if ([field isEqualToString: @"value"]) {
+                    NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: value] decimalValue]];
+                    [aCell setObjectValue: [number rounded]];
+                    if ([number isEqualTo: [NSDecimalNumber notANumber]]) {
                         color = [NSColor redColor];
+                    } else {
+                        color = [NSColor blackColor];
                     }
                 } else {
-                    color = [NSColor blackColor];
+                    if ([field isEqualToString: @"date"] || [field isEqualToString: @"valutaDate"]) {
+                        id      parsedObject;
+                        NSRange range = NSMakeRange(0, value.length);
+                        NSError *error;
+                        if ([dateFormatter getObjectValue: &parsedObject
+                                                forString: value
+                                                    range: &range
+                                                    error: &error] && range.length == value.length) {
+                            color = [NSColor blackColor];
+                        } else {
+                            color = [NSColor redColor];
+                        }
+                    } else {
+                        color = [NSColor blackColor];
+                    }
                 }
             }
         }
+        [aCell setTextColor: color];
     }
-
-    [aCell setTextColor: color];
 }
 
 - (NSDragOperation)tableView: (NSTableView *)aTableView

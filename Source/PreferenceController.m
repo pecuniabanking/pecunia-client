@@ -30,6 +30,7 @@
 #import "NewPasswordController.h"
 
 #import "YahooStockData.h"
+#import "Info.h"
 
 static NSArray *exportFields = nil;
 
@@ -651,8 +652,129 @@ static NSGradient *headerGradient;
     return @"HelveticaNeue-Light";
 }
 
-#pragma mark -
-#pragma mark ListView delegate protocol
+#pragma mark - Persistent storage of settings, flags etc.
+
+/**
+ * Does a lookup for the given key in the context's info entries and returns the value stored under
+ * that key (or nil if nothing is found).
+ */
++ (NSData *)persistentValueForKey: (NSString *)key
+{
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Info"
+                                                         inManagedObjectContext: context];
+    NSFetchRequest      *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"key = %@", key];
+    [request setPredicate: predicate];
+
+    NSError *error;
+    NSArray *entries = [context executeFetchRequest: request error: &error];
+    if (error) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return nil;
+    }
+
+    if (entries.count > 1) {
+        NSLog(@"Persistent info storage: more than one entry found for key: %@.", key);
+    }
+
+    if (entries.count == 0) {
+        return nil;
+    } else {
+        Info *info = entries[0];
+        return info.value;
+    }
+}
+
+/**
+ * Writes the given data under the given key in the persistent storage (our managed context).
+ * An entry is first created if it doesn't exist yet.
+ */
++ (void)setPersistentValue: (NSData *)value forKey: (NSString *)key
+{
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Info"
+                                                         inManagedObjectContext: context];
+    NSFetchRequest      *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"key = %@", key];
+    [request setPredicate: predicate];
+
+    NSError *error;
+    NSArray *entries = [context executeFetchRequest: request error: &error];
+    if (error) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
+
+    if (entries.count > 1) {
+        NSLog(@"Persistent info storage: more than one entry found for key: %@.", key);
+    }
+
+    Info *info;
+    if (entries.count == 0) {
+        // No entry yet, so create one.
+        info = [NSEntityDescription insertNewObjectForEntityForName: @"Info" inManagedObjectContext: context];
+        info.key = key;
+    } else {
+        info = entries[0];
+    }
+    info.value = value;
+}
+
++ (NSInteger)persistentIntValueForKey: (NSString *)key
+{
+    NSData *data = [self persistentValueForKey: key];
+    if (data == nil) {
+        return 0;
+    }
+    NSNumber *value = [NSUnarchiver unarchiveObjectWithData: data];
+    return value.integerValue;
+}
+
++ (BOOL)persistentBoolValueForKey: (NSString *)key
+{
+    NSData *data = [self persistentValueForKey: key];
+    if (data == nil) {
+        return NO;
+    }
+    NSNumber *value = [NSUnarchiver unarchiveObjectWithData: data];
+    return value.boolValue;
+}
+
++ (NSString *)persistentStringValueForKey: (NSString *)key
+{
+    NSData *data = [self persistentValueForKey: key];
+    if (data == nil) {
+        return NO;
+    }
+    return [NSUnarchiver unarchiveObjectWithData: data];
+}
+
++ (void)setPersistentIntValue: (NSInteger)value forKey: (NSString *)key
+{
+    NSData *data = [NSArchiver archivedDataWithRootObject: @(value)];
+    [self setPersistentValue: data forKey: key];
+}
+
++ (void)setPersistentBoolValue: (BOOL)value forKey: (NSString *)key
+{
+    NSData *data = [NSArchiver archivedDataWithRootObject: @(value)];
+    [self setPersistentValue: data forKey: key];
+}
+
++ (void)setPersistentStringValue: (NSString *)value forKey: (NSString *)key
+{
+    NSData *data = [NSArchiver archivedDataWithRootObject: value];
+    [self setPersistentValue: data forKey: key];
+}
+
+#pragma mark - ListView delegate protocol
 
 static char *colorEntries[] = {
     "AP700|Positive Plot Gradient (high)|AP652",

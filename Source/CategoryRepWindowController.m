@@ -19,7 +19,7 @@
 
 #import "CategoryRepWindowController.h"
 #import "Category.h"
-#import "MCEMOutlineViewLayout.h"
+#import "NSOutlineView+PecuniaAdditions.h"
 #import "ShortDate.h"
 #import "TimeSliceManager.h"
 #import "MOAssistant.h"

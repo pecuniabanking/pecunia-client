@@ -227,7 +227,7 @@
 
 - (void)resizeSubviewsWithOldSize: (NSSize)oldSize
 {
-    NSRect frame = NSInsetRect(self.bounds, 20, 35);
+    NSRect frame = NSInsetRect(self.bounds, 30, 45);
     frame.origin.y += 10;
 
     // We actually have only one child view.
@@ -269,7 +269,7 @@
 
 - (CGFloat)tableView: (NSTableView *)tableView heightOfRow: (NSInteger)row
 {
-    if ([entries[row] isKindOfClass: StatementsHeader.class]) {
+    if (row < (NSInteger)entries.count && [entries[row] isKindOfClass: StatementsHeader.class]) {
         return 20;
     } else {
         return 40;
@@ -278,7 +278,10 @@
 
 - (BOOL)tableView: (NSTableView *)tableView isGroupRow:( NSInteger)row
 {
-    return [entries[row] isKindOfClass: StatementsHeader.class];
+    if (row < (NSInteger)entries.count) {
+        return [entries[row] isKindOfClass: StatementsHeader.class];
+    }
+    return NO;
 }
 
 @end

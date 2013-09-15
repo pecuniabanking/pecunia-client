@@ -274,9 +274,9 @@
 										<int key="NSCellFlags">67108928</int>
 										<int key="NSCellFlags2">71309376</int>
 										<real value="-100000" key="NSContents"/>
-										<object class="NSFont" key="NSSupport">
+										<object class="NSFont" key="NSSupport" id="790308836">
 											<string key="NSName">HelveticaNeue-Medium</string>
-											<double key="NSSize">14</double>
+											<double key="NSSize">13</double>
 											<int key="NSfFlags">16</int>
 										</object>
 										<object class="NSNumberFormatter" key="NSFormatter" id="362707724">
@@ -437,9 +437,9 @@
 										<int key="NSCellFlags">68157504</int>
 										<int key="NSCellFlags2">272630784</int>
 										<string key="NSContents">€</string>
-										<object class="NSFont" key="NSSupport" id="790308836">
+										<object class="NSFont" key="NSSupport">
 											<string key="NSName">HelveticaNeue-Medium</string>
-											<double key="NSSize">13</double>
+											<double key="NSSize">12</double>
 											<int key="NSfFlags">16</int>
 										</object>
 										<string key="NSCellIdentifier">_NS:1535</string>
@@ -707,8 +707,13 @@
 										<reference key="NSControlView" ref="198790076"/>
 										<reference key="NSBackgroundColor" ref="867243042"/>
 										<object class="NSColor" key="NSTextColor">
-											<int key="NSColorSpace">1</int>
-											<bytes key="NSRGB">MC4zODggMC4zODIgMC4zNjMAA</bytes>
+											<int key="NSColorSpace">6</int>
+											<string key="NSCatalogName">System</string>
+											<string key="NSColorName">textBackgroundColor</string>
+											<object class="NSColor" key="NSColor">
+												<int key="NSColorSpace">3</int>
+												<bytes key="NSWhite">MQA</bytes>
+											</object>
 										</object>
 									</object>
 									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>

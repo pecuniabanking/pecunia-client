@@ -18,14 +18,15 @@
  */
 
 #import "GenerateDataController.h"
-#include "MOAssistant.h"
-#include "BankUser.h"
-#include "Category.h"
-#include "BankAccount.h"
-#include "BankStatement.h"
-#include "ShortDate.h"
+#import "MOAssistant.h"
+#import "BankUser.h"
+#import "Category.h"
+#import "BankAccount.h"
+#import "BankStatement.h"
+#import "StatCatAssignment.h"
+#import "ShortDate.h"
 
-#include "GrowlNotification.h"
+#import "GrowlNotification.h"
 
 @interface GenerateDataController ()
 
@@ -64,11 +65,13 @@
 
 - (void)updateTotalCount
 {
-    NSUInteger totalCount = 0;
-    if (endYear > startYear) {
-        totalCount = (endYear - startYear + 1) * numberOfStatementsPerBank * bankCount;
+    NSUInteger totalCountMin = 0;
+    NSUInteger totalCountMax = 0;
+    if (endYear >= startYear) {
+        totalCountMin = (endYear - startYear + 1) * numberOfStatementsPerBank * bankCount;
+        totalCountMax = (endYear - startYear + 1) * numberOfStatementsPerBank * bankCount * maxAccountsPerBank;
     }
-    self.totalCountLabel.stringValue = [NSString stringWithFormat: @"%lu", totalCount];
+    self.totalCountLabel.stringValue = [NSString stringWithFormat: @"%lu - %lu", totalCountMin, totalCountMax];
 }
 
 - (void)objectDidEndEditing: (id)editor
@@ -115,6 +118,277 @@
     return [calendar dateFromComponents: components];
 }
 
+- (void)addTransactions: (NSArray *)notes principals: (NSMutableArray *)principals categories: (NSSet *)categories
+{
+    // Add transactions to each account of a bank.
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    Category *root = Category.bankRoot;
+    for (BankAccount *bank in root.children) {
+        NSArray *accounts = [bank.children allObjects];
+        for (NSUInteger year = startYear; year <= endYear; year++) {
+            NSUInteger yearlyLimit = numberOfStatementsPerBank;
+            
+            // Reset all counters and start over.
+            for (NSMutableDictionary *dictionary in principals) {
+                int count = [dictionary[@"count"] intValue];
+                dictionary[@"remaining"] = @(count);
+            }
+            while (yearlyLimit > 0) {
+                // Walk the principals list repeatedly until we added the required amount of statements
+                // or no principal has a count > 0 anymore.
+                BOOL foundEntry = NO;
+                for (NSMutableDictionary *dictionary in principals) {
+                    int remaining = [dictionary[@"remaining"] intValue];
+                    if (remaining == 0) {
+                        continue;
+                    } else {
+                        dictionary[@"remaining"] = @(remaining - 1);
+                        foundEntry = YES;
+                    }
+                    
+                    // Randomly pick one of the accounts in this bank. Prefer the first one as most important.
+                    // It gets most of the transactions.
+                    NSInteger randomIndex = (NSInteger)arc4random_uniform([bank.children count] + 6) - 6;
+                    if (randomIndex < 0) {
+                        randomIndex = 0;
+                    }
+                    BankAccount *account = accounts[randomIndex];
+                    
+                    double    minBound = [dictionary[@"minBound"] doubleValue];
+                    NSInteger delta = [dictionary[@"delta"] integerValue];
+                    NSString  *unit = dictionary[@"unit"];
+                    
+                    NSDateComponents *components = [[NSDateComponents alloc] init];
+                    [components setYear: year];
+                    
+                    NSUInteger dateUnitMax = 1;
+                    switch ([unit characterAtIndex: 0]) {
+                        case 'y':
+                            break;
+                            
+                        case 'q':
+                            dateUnitMax = 4;
+                            break;
+                            
+                        case 'm':
+                            dateUnitMax = 12;
+                            break;
+                            
+                        case 'w':
+                            dateUnitMax = 52;
+                            break;
+                            
+                        case 'd':
+                            dateUnitMax = 365;
+                            break;
+                    }
+                    
+                    for (NSUInteger dateOffset = 0; dateOffset < dateUnitMax; dateOffset++) {
+                        NSUInteger      randomPart = arc4random_uniform(delta);
+                        NSDecimalNumber *value = [NSDecimalNumber decimalNumberWithDecimal: [@((minBound + randomPart) / 100.0)decimalValue]];
+                        
+                        NSDate *date;
+                        switch ([unit characterAtIndex: 0]) {
+                            case 'y': {
+                                NSDate           *firstDayOfYear = [self firstDayOfYear: year];
+                                NSDate           *firstDayOfNextYear = [self firstDayOfYear: year + 1];
+                                NSDateComponents *temp = [calendar components: NSDayCalendarUnit
+                                                                     fromDate: firstDayOfYear
+                                                                       toDate: firstDayOfNextYear
+                                                                      options: 0];
+                                [components setDay: 1 + arc4random_uniform(temp.day)];
+                                date = [calendar dateFromComponents: components];
+                                break;
+                            }
+                                
+                            case 'q': {
+                                NSDate *firstDayOfYear = [self firstDayOfYear: year];
+                                NSDate *firstDayOfQuarter = [self firstDayOfQuarter: dateOffset + 1
+                                                                             inYear: year];
+                                NSDateComponents *tempBase = [calendar components: NSDayCalendarUnit
+                                                                         fromDate: firstDayOfYear
+                                                                           toDate: firstDayOfQuarter
+                                                                          options: 0];
+                                NSDate *firstDayOfNextQuarter = [self firstDayOfQuarter: dateOffset + 2
+                                                                                 inYear: year];
+                                NSDateComponents *temp = [calendar components: NSDayCalendarUnit
+                                                                     fromDate: firstDayOfQuarter
+                                                                       toDate: firstDayOfNextQuarter
+                                                                      options: 0];
+                                [components setDay: tempBase.day + 1 + arc4random_uniform(temp.day)];
+                                date = [calendar dateFromComponents: components];
+                                break;
+                            }
+                                
+                            case 'm': {
+                                [components setMonth: dateOffset + 1];
+                                NSRange r = [calendar rangeOfUnit: NSDayCalendarUnit
+                                                           inUnit: NSMonthCalendarUnit
+                                                          forDate: [calendar dateFromComponents: components]];
+                                [components setDay: 1 + arc4random_uniform(r.length)];
+                                date = [calendar dateFromComponents: components];
+                                break;
+                            }
+                                
+                            case 'w':
+                                [components setDay: 7 * dateOffset + 1 + arc4random_uniform(7)];
+                                date = [calendar dateFromComponents: components];
+                                break;
+                                
+                            case 'd':
+                                [components setDay: dateOffset];
+                                date = [calendar dateFromComponents: components];
+                                break;
+                        }
+                        
+                        BankStatement *statement = [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement"
+                                                                                 inManagedObjectContext: context];
+                        statement.currency = account.currency;
+                        statement.localAccount = account.accountNumber;
+                        statement.localBankCode = account.bankCode;
+                        statement.isManual = @YES;
+                        statement.date = date;
+                        statement.valutaDate = date;
+                        statement.remoteCountry = @"de";
+                        statement.value = value;
+                        NSString *purpose = dictionary[@"purpose"];
+                        statement.purpose = [purpose stringByReplacingOccurrencesOfString: @"\\n" withString: @"\n"];
+                        statement.transactionText = NSLocalizedString(@"AP407", nil);
+                        statement.remoteName = dictionary[@"principal"];
+                        NSString *remoteAccount = [NSString stringWithFormat: @"%u", arc4random()];
+                        if (remoteAccount.length > 10) {
+                            statement.remoteAccount = [remoteAccount substringWithRange: NSMakeRange(0, 10)];
+                        } else {
+                            statement.remoteAccount = remoteAccount;
+                        }
+                        
+                        [statement addToAccount: account];
+                        
+                        NSUInteger noteIndex = arc4random_uniform(notes.count);
+                        statement.bankAssignment.userInfo = notes[noteIndex];
+                        
+                        NSArray *keywords = [dictionary[@"keywords"] componentsSeparatedByString: @","];
+                        if (keywords.count > 0) {
+                            // Assign this statement to all categories which contain any of the keywords.
+                            NSSet *matchingCategories = [categories objectsPassingTest: ^BOOL (id obj, BOOL *stop) {
+                                for (NSString *keyword in keywords) {
+                                    return [[obj name] rangeOfString: keyword].length > 0;
+                                }
+                                return NO;
+                            }];
+                            for (Category *category in matchingCategories) {
+                                [statement assignToCategory: category];
+                            }
+                        }
+                        [self.progressIndicator incrementBy: 1];
+                        yearlyLimit--;
+                        if (yearlyLimit == 0) {
+                            break;
+                        }
+                    }
+                    if (yearlyLimit == 0) {
+                        break;
+                    }
+                    
+                }
+                if (!foundEntry) {
+                    [self.progressIndicator incrementBy: yearlyLimit];
+                    yearlyLimit = 0; // No principals left, so go to the next year.
+                }
+            }
+        }
+        for (BankAccount *account in accounts) {
+            [account doMaintenance];
+        }
+    }
+}
+
+- (void)createUsersAndAccounts: (NSMutableArray *)banks accounts: (NSMutableArray *)accounts
+{
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    // Randomly change the order in the banks and accounts arrays
+    // This avoids using a bank/account more than once.
+    NSUInteger count = [banks count];
+    for (NSUInteger i = 0; i < count; ++i) {
+        NSInteger nElements = count - i;
+        NSInteger n = (arc4random() % nElements) + i;
+        [banks exchangeObjectAtIndex: i withObjectAtIndex: n];
+    }
+    
+    count = [accounts count];
+    for (NSUInteger i = 0; i < count; ++i) {
+        NSInteger nElements = count - i;
+        NSInteger n = (arc4random() % nElements) + i;
+        [accounts exchangeObjectAtIndex: i withObjectAtIndex: n];
+    }
+    
+    Category *root = Category.bankRoot;
+    for (NSUInteger i = 0; i < bankCount; i++) {
+        NSString  *bank = banks[i % bankCount];
+        
+        BankUser *user = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser"
+                                                       inManagedObjectContext: context];
+        user.name = bank;
+        user.bankCode = [NSString stringWithFormat: @"%i", arc4random_uniform(99999999)];
+        user.bankName = bank;
+        user.bankURL = @"http://noip.com";
+        user.port = @"1";
+        user.hbciVersion = @"2.2";
+        user.checkCert = @YES;
+        user.country = @"DE";
+        user.userId = @"0987654321";
+        user.customerId = @"";
+        user.secMethod = @(SecMethod_PinTan);
+        
+        // Add account for this bank (actually the bank root to which the real accounts are attached).
+        BankAccount *bankRoot = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount"
+                                                              inManagedObjectContext: context];
+        bankRoot.bankName = bank;
+        bankRoot.name = bank;
+        bankRoot.bankCode = user.bankCode;
+        bankRoot.currency = @"EUR";
+        bankRoot.country = user.country;
+        bankRoot.isBankAcc = @YES;
+        bankRoot.parent = root;
+        
+        // To each bank root add a few accounts. The actual number depends on the data amount flag.
+        NSMutableArray *accountList = [NSMutableArray array];
+        NSUInteger     accountCount = 1 + arc4random_uniform(maxAccountsPerBank);
+        for (NSUInteger index = 0; index < accountCount; ++index) {
+            [accountList addObject: accounts[index]];
+        }
+        
+        for (NSString *accountName in accountList) {
+            BankAccount *newAccount = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount"
+                                                                    inManagedObjectContext: context];
+            newAccount.bankCode = user.bankCode;
+            newAccount.bankName = user.bankName;
+            newAccount.isManual = @YES;
+            newAccount.userId = user.userId;
+            newAccount.customerId = user.customerId;
+            //newAccount.collTransferMethod = account.collTransferMethod;
+            newAccount.isStandingOrderSupported = @YES;
+            
+            newAccount.parent = bankRoot;
+            newAccount.isBankAcc = @YES;
+            
+            //newAccount.iban = account.iban;
+            //newAccount.bic = account.bic;
+            //newAccount.owner = account.owner;
+            newAccount.accountNumber = [NSString stringWithFormat: @"%i", arc4random_uniform(19999999)];
+            newAccount.name = accountName;
+            newAccount.currency = bankRoot.currency;
+            newAccount.country = bankRoot.country;
+            
+            // Current balance of the account. Saldos are computed backwards starting with this value.
+            double   dBalance = ((double)arc4random_uniform(500000) - 250000) / 100.0;
+            NSNumber *balance = @(dBalance);
+            newAccount.balance = [NSDecimalNumber decimalNumberWithDecimal: balance.decimalValue];
+        }
+    }
+}
+
 - (IBAction)start: (id)sender
 {
     NSError  *error;
@@ -148,6 +422,10 @@
             }
             [entries addObject: line];
         }
+        if (entries.count > 0) {
+            blocks[blockName] = entries;
+        }
+
         [self.progressIndicator setIndeterminate: YES];
         [self.progressIndicator startAnimation: self];
 
@@ -172,6 +450,8 @@
             return;
         }
 
+        NSArray *notes = blocks[@"Notes"];
+        
         NSSet *categories = Category.catRoot.allCategories;
 
         // Precompute details for principals.
@@ -218,273 +498,23 @@
 
         NSMutableArray *accounts = [blocks[@"Accounts"] mutableCopy];
 
-        // Randomly change the order in the banks and accounts arrays
-        // This avoids using a bank/account more than once.
-        NSUInteger count = [banks count];
-        for (NSUInteger i = 0; i < count; ++i) {
-            NSInteger nElements = count - i;
-            NSInteger n = (arc4random() % nElements) + i;
-            [banks exchangeObjectAtIndex: i withObjectAtIndex: n];
-        }
-        
-        count = [accounts count];
-        for (NSUInteger i = 0; i < count; ++i) {
-            NSInteger nElements = count - i;
-            NSInteger n = (arc4random() % nElements) + i;
-            [accounts exchangeObjectAtIndex: i withObjectAtIndex: n];
-        }
-
-        Category *root = [Category bankRoot];
-        for (NSUInteger i = 0; i < bankCount; i++) {
-            NSString  *bank = banks[i % bankCount];
-
-            BankUser *user = [NSEntityDescription insertNewObjectForEntityForName: @"BankUser"
-                                                           inManagedObjectContext: context];
-            user.name = bank;
-            user.bankCode = [NSString stringWithFormat: @"%i", arc4random_uniform(99999999)];
-            user.bankName = bank;
-            user.bankURL = @"http://noip.com";
-            user.port = @"1";
-            user.hbciVersion = @"2.2";
-            user.checkCert = @YES;
-            user.country = @"DE";
-            user.userId = @"0987654321";
-            user.customerId = @"";
-            user.secMethod = @(SecMethod_PinTan);
-
-            // Add account for this bank (actually the bank root to which the real accounts are attached).
-            BankAccount *bankRoot = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount"
-                                                                  inManagedObjectContext: context];
-            bankRoot.bankName = bank;
-            bankRoot.name = bank;
-            bankRoot.bankCode = user.bankCode;
-            bankRoot.currency = @"EUR";
-            bankRoot.country = user.country;
-            bankRoot.isBankAcc = @YES;
-            bankRoot.parent = root;
-
-            // To each bank root add a few accounts. The actual number depends on the data amount flag.
-            NSMutableArray *accountList = [NSMutableArray array];
-            NSUInteger     accountCount = 1 + arc4random_uniform(maxAccountsPerBank);
-            for (NSUInteger index = 0; index < accountCount; ++index) {
-                [accountList addObject: accounts[index]];
-            }
-
-            for (NSString *accountName in accountList) {
-                BankAccount *newAccount = [NSEntityDescription insertNewObjectForEntityForName: @"BankAccount"
-                                                                        inManagedObjectContext: context];
-                newAccount.bankCode = user.bankCode;
-                newAccount.bankName = user.bankName;
-                newAccount.isManual = @YES;
-                newAccount.userId = user.userId;
-                newAccount.customerId = user.customerId;
-                //newAccount.collTransferMethod = account.collTransferMethod;
-                newAccount.isStandingOrderSupported = @YES;
-
-                newAccount.parent = bankRoot;
-                newAccount.isBankAcc = @YES;
-
-                //newAccount.iban = account.iban;
-                //newAccount.bic = account.bic;
-                //newAccount.owner = account.owner;
-                newAccount.accountNumber = [NSString stringWithFormat: @"%i", arc4random_uniform(19999999)];
-                newAccount.name = accountName;
-                newAccount.currency = bankRoot.currency;
-                newAccount.country = bankRoot.country;
-
-                // Current balance of the account. Saldos are computed backwards starting with this value.
-                double   dBalance = ((double)arc4random_uniform(500000) - 250000) / 100.0;
-                NSNumber *balance = @(dBalance);
-                newAccount.balance = [NSDecimalNumber decimalNumberWithDecimal: balance.decimalValue];
-            }
-        }
+        [self createUsersAndAccounts: banks accounts: accounts];
         [self.progressIndicator setIndeterminate: NO];
-        self.progressIndicator.maxValue = (endYear - startYear + 1) * numberOfStatementsPerBank * banks.count;
+        self.progressIndicator.maxValue = (endYear - startYear + 1) * numberOfStatementsPerBank * banks.count * ceil(maxAccountsPerBank / 2);
 
-        // Add transactions to each account of a bank.
-        for (BankAccount *bank in root.children) {
-            NSArray *accounts = [bank.children allObjects];
-            for (NSUInteger year = startYear; year <= endYear; year++) {
-                NSUInteger yearlyLimit = numberOfStatementsPerBank;
+        [self addTransactions: notes
+                   principals: parsedPrincipals
+                   categories: categories];
+        [Category.bankRoot rollup];
 
-                // Reset all counters and start over.
-                for (NSMutableDictionary *dictionary in parsedPrincipals) {
-                    int count = [dictionary[@"count"] intValue];
-                    dictionary[@"remaining"] = @(count);
-                }
-                while (yearlyLimit > 0) {
-                    // Walk the principals list repeatedly until we added the required amount of statements
-                    // or no principal has a count > 0 anymore.
-                    BOOL foundEntry = NO;
-                    for (NSMutableDictionary *dictionary in parsedPrincipals) {
-                        int remaining = [dictionary[@"remaining"] intValue];
-                        if (remaining == 0) {
-                            continue;
-                        } else {
-                            dictionary[@"remaining"] = @(remaining - 1);
-                            foundEntry = YES;
-                        }
-
-                        // Randomly pick one of the accounts in this bank. Prefer the first one as most important.
-                        // It gets most of the transactions.
-                        NSInteger randomIndex = (NSInteger)arc4random_uniform([bank.children count] + 6) - 6;
-                        if (randomIndex < 0) {
-                            randomIndex = 0;
-                        }
-                        BankAccount *account = accounts[randomIndex];
-
-                        double    minBound = [dictionary[@"minBound"] doubleValue];
-                        NSInteger delta = [dictionary[@"delta"] integerValue];
-                        NSString  *unit = dictionary[@"unit"];
-
-                        NSDateComponents *components = [[NSDateComponents alloc] init];
-                        [components setYear: year];
-
-                        NSUInteger dateUnitMax = 1;
-                        switch ([unit characterAtIndex: 0]) {
-                            case 'y':
-                                break;
-
-                            case 'q':
-                                dateUnitMax = 4;
-                                break;
-
-                            case 'm':
-                                dateUnitMax = 12;
-                                break;
-
-                            case 'w':
-                                dateUnitMax = 52;
-                                break;
-
-                            case 'd':
-                                dateUnitMax = 365;
-                                break;
-                        }
-
-                        for (NSUInteger dateOffset = 0; dateOffset < dateUnitMax; dateOffset++) {
-                            NSUInteger      randomPart = arc4random_uniform(delta);
-                            NSDecimalNumber *value = [NSDecimalNumber decimalNumberWithDecimal: [@((minBound + randomPart) / 100.0)decimalValue]];
-
-                            NSDate *date;
-                            switch ([unit characterAtIndex: 0]) {
-                                case 'y': {
-                                    NSDate           *firstDayOfYear = [self firstDayOfYear: year];
-                                    NSDate           *firstDayOfNextYear = [self firstDayOfYear: year + 1];
-                                    NSDateComponents *temp = [calendar components: NSDayCalendarUnit
-                                                                         fromDate: firstDayOfYear
-                                                                           toDate: firstDayOfNextYear
-                                                                          options: 0];
-                                    [components setDay: 1 + arc4random_uniform(temp.day)];
-                                    date = [calendar dateFromComponents: components];
-                                    break;
-                                }
-
-                                case 'q': {
-                                    NSDate *firstDayOfYear = [self firstDayOfYear: year];
-                                    NSDate *firstDayOfQuarter = [self firstDayOfQuarter: dateOffset + 1
-                                                                                 inYear: year];
-                                    NSDateComponents *tempBase = [calendar components: NSDayCalendarUnit
-                                                                             fromDate: firstDayOfYear
-                                                                               toDate: firstDayOfQuarter
-                                                                              options: 0];
-                                    NSDate *firstDayOfNextQuarter = [self firstDayOfQuarter: dateOffset + 2
-                                                                                     inYear: year];
-                                    NSDateComponents *temp = [calendar components: NSDayCalendarUnit
-                                                                         fromDate: firstDayOfQuarter
-                                                                           toDate: firstDayOfNextQuarter
-                                                                          options: 0];
-                                    [components setDay: tempBase.day + 1 + arc4random_uniform(temp.day)];
-                                    date = [calendar dateFromComponents: components];
-                                    break;
-                                }
-
-                                case 'm': {
-                                    [components setMonth: dateOffset + 1];
-                                    NSRange r = [calendar rangeOfUnit: NSDayCalendarUnit
-                                                               inUnit: NSMonthCalendarUnit
-                                                              forDate: [calendar dateFromComponents: components]];
-                                    [components setDay: 1 + arc4random_uniform(r.length)];
-                                    date = [calendar dateFromComponents: components];
-                                    break;
-                                }
-
-                                case 'w':
-                                    [components setDay: 7 * dateOffset + 1 + arc4random_uniform(7)];
-                                    date = [calendar dateFromComponents: components];
-                                    break;
-
-                                case 'd':
-                                    [components setDay: dateOffset];
-                                    date = [calendar dateFromComponents: components];
-                                    break;
-                            }
-
-                            BankStatement *statement = [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement"
-                                                                                     inManagedObjectContext: context];
-                            statement.currency = account.currency;
-                            statement.localAccount = account.accountNumber;
-                            statement.localBankCode = account.bankCode;
-                            statement.isManual = @YES;
-                            statement.date = date;
-                            statement.valutaDate = date;
-                            statement.remoteCountry = @"de";
-                            statement.value = value;
-                            NSString *purpose = dictionary[@"purpose"];
-                            statement.purpose = [purpose stringByReplacingOccurrencesOfString: @"\\n" withString: @"\n"];
-                            statement.transactionText = NSLocalizedString(@"AP407", nil);
-                            statement.remoteName = dictionary[@"principal"];
-                            NSString *remoteAccount = [NSString stringWithFormat: @"%u", arc4random()];
-                            if (remoteAccount.length > 10) {
-                                statement.remoteAccount = [remoteAccount substringWithRange: NSMakeRange(0, 10)];
-                            } else {
-                                statement.remoteAccount = remoteAccount;
-                            }
-
-                            [statement addToAccount: account];
-
-                            NSArray *keywords = [dictionary[@"keywords"] componentsSeparatedByString: @","];
-                            if (keywords.count > 0) {
-                                // Assign this statement to all categories which contain any of the keywords.
-                                NSSet *matchingCategories = [categories objectsPassingTest: ^BOOL (id obj, BOOL *stop) {
-                                    for (NSString *keyword in keywords) {
-                                        return [[obj name] rangeOfString: keyword].length > 0;
-                                    }
-                                    return NO;
-                                }];
-                                for (Category *category in matchingCategories) {
-                                    [statement assignToCategory: category];
-                                }
-                            }
-                            [self.progressIndicator incrementBy: 1];
-                            yearlyLimit--;
-                            if (yearlyLimit == 0) {
-                                break;
-                            }
-                        }
-                        if (yearlyLimit == 0) {
-                            break;
-                        }
-
-                    }
-                    if (!foundEntry) {
-                        [self.progressIndicator incrementBy: yearlyLimit];
-                        yearlyLimit = 0; // No principals left, so go to the next year.
-                    }
-                }
-            }
-            for (BankAccount *account in accounts) {
-                [account doMaintenance];
-            }
-        }
-        [root rollup];
-
+        [self.progressIndicator stopAnimation: self];
         if (![context save: &error]) {
+            [NSApp stopModal];
+
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
             return;
         }
-        [self.progressIndicator stopAnimation: self];
 
         [GrowlNotification showMessage: NSLocalizedString(@"AP501", nil)
                              withTitle: NSLocalizedString(@"AP500", nil)

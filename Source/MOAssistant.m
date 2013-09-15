@@ -27,7 +27,7 @@
 #import <CommonCrypto/CommonCryptor.h>
 #import <CommonCrypto/CommonDigest.h>
 #import "MainBackgroundView.h"
-#import "BankingController.h";
+#import "BankingController.h"
 
 @implementation MOAssistant
 

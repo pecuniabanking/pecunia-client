@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">12E55</string>
+		<string key="IBDocument.SystemVersion">12F37</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
@@ -92,11 +92,9 @@
 							<string key="NSToolbarItemPaletteLabel">Buttons</string>
 							<nil key="NSToolbarItemToolTip"/>
 							<object class="NSSegmentedControl" key="NSToolbarItemView" id="805917942">
-								<reference key="NSNextResponder"/>
+								<nil key="NSNextResponder"/>
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{0, 14}, {529, 25}}</string>
-								<reference key="NSSuperview"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSEnabled">YES</bool>
 								<object class="NSSegmentedCell" key="NSCell" id="848648286">
@@ -684,7 +682,7 @@
 																						<int key="NSTvFlags">1396703232</int>
 																						<reference key="NSDelegate"/>
 																						<reference key="NSDataSource"/>
-																						<string key="NSAutosaveName">accounts1</string>
+																						<string key="NSAutosaveName">category-outline</string>
 																						<int key="NSColumnAutoresizingStyle">5</int>
 																						<int key="NSDraggingSourceMaskForLocal">15</int>
 																						<int key="NSDraggingSourceMaskForNonLocal">0</int>
@@ -694,7 +692,6 @@
 																						<int key="NSTableViewGroupRowStyle">1</int>
 																						<bool key="NSOutlineViewAutoresizesOutlineColumnKey">NO</bool>
 																						<float key="NSOutlineViewIndentationPerLevelKey">14</float>
-																						<bool key="NSOutlineViewAutosaveExpandedItemsKey">YES</bool>
 																					</object>
 																				</array>
 																				<string key="NSFrameSize">{314, 530}</string>
@@ -11024,8 +11021,8 @@ wGw</bytes>
 						<array class="NSMutableArray" key="children">
 							<reference ref="930628737"/>
 							<reference ref="337332097"/>
-							<reference ref="67429357"/>
 							<reference ref="1040351074"/>
+							<reference ref="67429357"/>
 						</array>
 						<reference key="parent" ref="339995800"/>
 						<string key="objectName">Sidebar with action buttons and tree</string>
@@ -13454,6 +13451,7 @@ wGw</bytes>
 						<string key="showConsole:">id</string>
 						<string key="showLicense:">id</string>
 						<string key="showLog:">id</string>
+						<string key="showTagPopup:">id</string>
 						<string key="sortingChanged:">id</string>
 						<string key="splitPurpose:">id</string>
 						<string key="splitStatement:">id</string>
@@ -13569,6 +13567,10 @@ wGw</bytes>
 						</object>
 						<object class="IBActionInfo" key="showLog:">
 							<string key="name">showLog:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showTagPopup:">
+							<string key="name">showTagPopup:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="sortingChanged:">

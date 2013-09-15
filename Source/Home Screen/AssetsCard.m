@@ -190,7 +190,7 @@ extern void *UserDefaultsBindingContext;
         linePlot.identifier = @"averagePlot";
 
         CPTMutableLineStyle *lineStyle = [[CPTMutableLineStyle alloc] init];
-        lineStyle.lineColor = [CPTColor whiteColor]; //[CPTColor colorWithCGColor: lineColor];
+        lineStyle.lineColor = [CPTColor whiteColor];
 
         lineStyle.lineWidth = 2;
         lineStyle.dashPattern = @[@8.0f, @2.5f];
@@ -220,7 +220,7 @@ extern void *UserDefaultsBindingContext;
     x.preferredNumberOfMajorTicks = 10;
 
     CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
-    textStyle.color = [[CPTColor blackColor] colorWithAlphaComponent: 0.25];
+    textStyle.color = [[CPTColor blackColor] colorWithAlphaComponent: 0.3];
     textStyle.fontName = @"HelveticaNeue";
     textStyle.fontSize = 10.0;
     x.labelTextStyle = textStyle;
@@ -241,7 +241,7 @@ extern void *UserDefaultsBindingContext;
 
     CPTXYAxis *y = axisSet.yAxis;
     textStyle.fontName = @"HelveticaNeue";
-    textStyle.color = [[CPTColor blackColor] colorWithAlphaComponent: 0.25];
+    textStyle.color = [[CPTColor blackColor] colorWithAlphaComponent: 0.5];
     y.labelTextStyle = textStyle;
     y.axisConstraints = [CPTConstraints constraintWithUpperOffset: 0];
     y.tickDirection = CPTSignPositive;

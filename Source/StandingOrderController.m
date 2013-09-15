@@ -101,13 +101,6 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 //--------------------------------------------------------------------------------------------------
 
-@interface StandingOrderController (private)
-- (void)updateSourceAccountSelector;
-- (void)prepareSourceAccountSelector: (BankAccount *)account;
-- (void)storeReceiverInMRUList;
-- (void)updateSourceAccountSelection;
-@end
-
 @implementation StandingOrderController
 
 @synthesize requestRunning;

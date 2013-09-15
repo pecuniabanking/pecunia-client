@@ -27,7 +27,7 @@
 #import "LogController.h"
 #import "TagView.h"
 #import "ExportController.h"
-#import "MCEMOutlineViewLayout.h"
+#import "NSOutlineView+PecuniaAdditions.h"
 #import "AccountDefController.h"
 #import "TimeSliceManager.h"
 #import "MCEMTreeController.h"
@@ -893,7 +893,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     [timeSlicer updateDelegate];
     [categoryController fetchWithRequest: nil merge: NO error: &error];
-    [self performSelector: @selector(restoreAccountsView) withObject: nil afterDelay: 0.0];
+    [accountsView restoreState];
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext: self.managedObjectContext];
 }
 
@@ -1959,7 +1959,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
 
     [currentSection deactivate];
-    [accountsView saveLayout];
+    [accountsView saveState];
 
     // Remove explicit bindings and observers to speed up shutdown.
     [categoryController removeObserver: self forKeyPath: @"arrangedObjects.catSum"];
@@ -2011,17 +2011,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
             }
 		}
 	}
-}
-
-// workaround for strange outlineView collapsing...
-- (void)restoreAccountsView
-{
-    [accountsView restoreAll];
-}
-
-- (int)AccSize
-{
-    return 20;
 }
 
 - (IBAction)showLog: (id)sender
@@ -2165,16 +2154,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 }
 
 #pragma mark - Outline delegate methods
-
-- (id)outlineView: (NSOutlineView *)outlineView persistentObjectForItem: (id)item
-{
-    return [outlineView persistentObjectForItem: item];
-}
-
-- (id)outlineView: (NSOutlineView *)outlineView itemForPersistentObject: (id)object
-{
-    return nil;
-}
 
 /**
  * Prevent the outline from selecting entries under certain conditions.
