@@ -27,7 +27,7 @@
 #import <CommonCrypto/CommonCryptor.h>
 #import <CommonCrypto/CommonDigest.h>
 #import "MainBackgroundView.h"
-#import "BankingController.h";
+#import "BankingController.h"
 
 @implementation MOAssistant
 
@@ -1022,6 +1022,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             [defaults setValue: bookmark forKey: @"accountsBookmark"];
         }
     }
+    
+    [defaults synchronize];
    
     [[BankingController controller] setRestart];
     [NSApp terminate:self];
