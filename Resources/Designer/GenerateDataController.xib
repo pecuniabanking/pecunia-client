@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1070</int>
-		<string key="IBDocument.SystemVersion">12E55</string>
+		<string key="IBDocument.SystemVersion">12F37</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
@@ -337,16 +337,21 @@
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="680575305">
 								<int key="NSCellFlags">-1804599231</int>
-								<int key="NSCellFlags2">71304192</int>
+								<int key="NSCellFlags2">71304256</int>
 								<integer value="2008" key="NSContents"/>
 								<reference key="NSSupport" ref="628914651"/>
-								<object class="NSNumberFormatter" key="NSFormatter" id="984074866">
+								<object class="NSNumberFormatter" key="NSFormatter" id="1061275912">
 									<dictionary class="NSMutableDictionary" key="NS.attributes">
-										<boolean value="YES" key="allowsFloats"/>
+										<boolean value="NO" key="allowsFloats"/>
 										<integer value="1040" key="formatterBehavior"/>
+										<boolean value="YES" key="generatesDecimalNumbers"/>
 										<boolean value="NO" key="lenient"/>
-										<integer value="2100" key="maximum"/>
+										<object class="NSLocale" key="locale" id="846416121">
+											<string key="NS.identifier"/>
+										</object>
+										<integer value="4" key="maximumIntegerDigits"/>
 										<integer value="1990" key="minimum"/>
+										<integer value="4" key="minimumIntegerDigits"/>
 										<string key="negativeFormat">0</string>
 										<string key="negativeInfinitySymbol">-∞</string>
 										<string key="nilSymbol"/>
@@ -364,21 +369,28 @@
 									</object>
 									<object class="NSAttributedString" key="NS.nan">
 										<string key="NSString">NaN</string>
-										<dictionary key="NSAttributes" id="749276549"/>
+										<dictionary key="NSAttributes" id="899614717"/>
 									</object>
 									<integer value="1990" key="NS.min"/>
-									<integer value="2100" key="NS.max"/>
+									<object class="NSDecimalNumberPlaceholder" key="NS.max" id="1045074857">
+										<int key="NS.exponent">0</int>
+										<int key="NS.length">0</int>
+										<bool key="NS.negative">YES</bool>
+										<bool key="NS.compact">NO</bool>
+										<int key="NS.mantissa.bo">1</int>
+										<bytes key="NS.mantissa">AAAAAAAAAAAAAAAAAAAAAA</bytes>
+									</object>
 									<object class="NSDecimalNumberHandler" key="NS.rounding">
 										<int key="NS.roundingmode">3</int>
 										<bool key="NS.raise.overflow">YES</bool>
 										<bool key="NS.raise.underflow">YES</bool>
 										<bool key="NS.raise.dividebyzero">YES</bool>
 									</object>
-									<string key="NS.decimal">,</string>
-									<string key="NS.thousand">.</string>
+									<string key="NS.decimal">.</string>
+									<string key="NS.thousand">,</string>
 									<bool key="NS.hasthousands">NO</bool>
-									<bool key="NS.localized">YES</bool>
-									<bool key="NS.allowsfloats">YES</bool>
+									<bool key="NS.localized">NO</bool>
+									<bool key="NS.allowsfloats">NO</bool>
 								</object>
 								<string key="NSCellIdentifier">_NS:9</string>
 								<reference key="NSControlView" ref="601938654"/>
@@ -425,11 +437,15 @@
 								<reference key="NSSupport" ref="628914651"/>
 								<object class="NSNumberFormatter" key="NSFormatter" id="378559124">
 									<dictionary class="NSMutableDictionary" key="NS.attributes">
-										<boolean value="YES" key="allowsFloats"/>
+										<boolean value="NO" key="allowsFloats"/>
 										<integer value="1040" key="formatterBehavior"/>
+										<boolean value="YES" key="generatesDecimalNumbers"/>
 										<boolean value="NO" key="lenient"/>
+										<reference key="locale" ref="846416121"/>
 										<integer value="2100" key="maximum"/>
+										<integer value="4" key="maximumIntegerDigits"/>
 										<integer value="1990" key="minimum"/>
+										<integer value="4" key="minimumIntegerDigits"/>
 										<string key="negativeFormat">0</string>
 										<string key="negativeInfinitySymbol">-∞</string>
 										<string key="nilSymbol"/>
@@ -447,7 +463,7 @@
 									</object>
 									<object class="NSAttributedString" key="NS.nan">
 										<string key="NSString">NaN</string>
-										<reference key="NSAttributes" ref="749276549"/>
+										<reference key="NSAttributes" ref="899614717"/>
 									</object>
 									<integer value="1990" key="NS.min"/>
 									<integer value="2100" key="NS.max"/>
@@ -460,8 +476,8 @@
 									<string key="NS.decimal">,</string>
 									<string key="NS.thousand">.</string>
 									<bool key="NS.hasthousands">NO</bool>
-									<bool key="NS.localized">YES</bool>
-									<bool key="NS.allowsfloats">YES</bool>
+									<bool key="NS.localized">NO</bool>
+									<bool key="NS.allowsfloats">NO</bool>
 								</object>
 								<string key="NSCellIdentifier">_NS:9</string>
 								<reference key="NSControlView" ref="80641902"/>
@@ -552,7 +568,7 @@
 									</object>
 									<object class="NSAttributedString" key="NS.nan">
 										<string key="NSString">NaN</string>
-										<reference key="NSAttributes" ref="749276549"/>
+										<reference key="NSAttributes" ref="899614717"/>
 									</object>
 									<integer value="1" key="NS.min"/>
 									<integer value="15" key="NS.max"/>
@@ -638,10 +654,8 @@
 										<boolean value="NO" key="allowsFloats"/>
 										<integer value="1040" key="formatterBehavior"/>
 										<boolean value="NO" key="lenient"/>
-										<object class="NSLocale" key="locale" id="846416121">
-											<string key="NS.identifier"/>
-										</object>
-										<integer value="100" key="minimum"/>
+										<reference key="locale" ref="846416121"/>
+										<integer value="1" key="minimum"/>
 										<string key="negativeFormat">0</string>
 										<string key="negativeInfinitySymbol">-∞</string>
 										<string key="nilSymbol"/>
@@ -659,25 +673,18 @@
 									</object>
 									<object class="NSAttributedString" key="NS.nan">
 										<string key="NSString">NaN</string>
-										<reference key="NSAttributes" ref="749276549"/>
+										<reference key="NSAttributes" ref="899614717"/>
 									</object>
-									<integer value="100" key="NS.min"/>
-									<object class="NSDecimalNumberPlaceholder" key="NS.max" id="65538444">
-										<int key="NS.exponent">0</int>
-										<int key="NS.length">0</int>
-										<bool key="NS.negative">YES</bool>
-										<bool key="NS.compact">NO</bool>
-										<int key="NS.mantissa.bo">1</int>
-										<bytes key="NS.mantissa">AAAAAAAAAAAAAAAAAAAAAA</bytes>
-									</object>
+									<integer value="1" key="NS.min"/>
+									<reference key="NS.max" ref="1045074857"/>
 									<object class="NSDecimalNumberHandler" key="NS.rounding">
 										<int key="NS.roundingmode">3</int>
 										<bool key="NS.raise.overflow">YES</bool>
 										<bool key="NS.raise.underflow">YES</bool>
 										<bool key="NS.raise.dividebyzero">YES</bool>
 									</object>
-									<string key="NS.decimal">,</string>
-									<string key="NS.thousand">.</string>
+									<string key="NS.decimal">.</string>
+									<string key="NS.thousand">,</string>
 									<bool key="NS.hasthousands">NO</bool>
 									<bool key="NS.localized">NO</bool>
 									<bool key="NS.allowsfloats">NO</bool>
@@ -771,7 +778,7 @@
 									</object>
 									<object class="NSAttributedString" key="NS.nan">
 										<string key="NSString">NaN</string>
-										<reference key="NSAttributes" ref="749276549"/>
+										<reference key="NSAttributes" ref="899614717"/>
 									</object>
 									<integer value="1" key="NS.min"/>
 									<integer value="9" key="NS.max"/>
@@ -855,10 +862,10 @@
 									</object>
 									<object class="NSAttributedString" key="NS.nan">
 										<string key="NSString">NaN</string>
-										<reference key="NSAttributes" ref="749276549"/>
+										<reference key="NSAttributes" ref="899614717"/>
 									</object>
-									<reference key="NS.min" ref="65538444"/>
-									<reference key="NS.max" ref="65538444"/>
+									<reference key="NS.min" ref="1045074857"/>
+									<reference key="NS.max" ref="1045074857"/>
 									<object class="NSDecimalNumberHandler" key="NS.rounding">
 										<int key="NS.roundingmode">3</int>
 										<bool key="NS.raise.overflow">YES</bool>
@@ -1042,6 +1049,22 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
+						<string key="label">maxValue: endYear</string>
+						<reference key="source" ref="124112343"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector" id="413376359">
+							<reference key="NSSource" ref="124112343"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">maxValue: endYear</string>
+							<string key="NSBinding">maxValue</string>
+							<string key="NSKeyPath">endYear</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">853</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: startYear</string>
 						<reference key="source" ref="124112343"/>
 						<reference key="destination" ref="1001"/>
@@ -1051,10 +1074,27 @@
 							<string key="NSLabel">value: startYear</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">startYear</string>
+							<reference key="NSPreviousConnector" ref="413376359"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">173</int>
+					<int key="connectionID">854</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">maxValue: endYear</string>
+						<reference key="source" ref="601938654"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector" id="638723190">
+							<reference key="NSSource" ref="601938654"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">maxValue: endYear</string>
+							<string key="NSBinding">maxValue</string>
+							<string key="NSKeyPath">endYear</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">841</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1067,10 +1107,27 @@
 							<string key="NSLabel">value: startYear</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">startYear</string>
+							<reference key="NSPreviousConnector" ref="638723190"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">188</int>
+					<int key="connectionID">842</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">minValue: startYear</string>
+						<reference key="source" ref="80641902"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector" id="342356790">
+							<reference key="NSSource" ref="80641902"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">minValue: startYear</string>
+							<string key="NSBinding">minValue</string>
+							<string key="NSKeyPath">startYear</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">845</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1083,10 +1140,27 @@
 							<string key="NSLabel">value: endYear</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">endYear</string>
+							<reference key="NSPreviousConnector" ref="342356790"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">215</int>
+					<int key="connectionID">846</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">minValue: startYear</string>
+						<reference key="source" ref="45062591"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector" id="934980568">
+							<reference key="NSSource" ref="45062591"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">minValue: startYear</string>
+							<string key="NSBinding">minValue</string>
+							<string key="NSKeyPath">startYear</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">849</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1099,10 +1173,11 @@
 							<string key="NSLabel">value: endYear</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">endYear</string>
+							<reference key="NSPreviousConnector" ref="934980568"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">837</int>
+					<int key="connectionID">850</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -2563,14 +2638,9 @@
 						<int key="objectID">178</int>
 						<reference key="object" ref="680575305"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="984074866"/>
+							<reference ref="1061275912"/>
 						</array>
 						<reference key="parent" ref="601938654"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">179</int>
-						<reference key="object" ref="984074866"/>
-						<reference key="parent" ref="680575305"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">184</int>
@@ -3214,6 +3284,11 @@
 						<reference key="object" ref="885285232"/>
 						<reference key="parent" ref="235061359"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">855</int>
+						<reference key="object" ref="1061275912"/>
+						<reference key="parent" ref="680575305"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -3256,9 +3331,6 @@
 				<boolean value="NO" key="177.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="177.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="178.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<integer value="1040" key="179.IBNumberFormatterBehaviorMetadataKey"/>
-				<boolean value="YES" key="179.IBNumberFormatterLocalizesFormatMetadataKey"/>
-				<string key="179.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="184.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<array key="189.IBNSViewMetadataConstraints">
 					<reference ref="13693979"/>
@@ -3335,7 +3407,7 @@
 				<string key="203.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="205.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<integer value="1040" key="206.IBNumberFormatterBehaviorMetadataKey"/>
-				<boolean value="YES" key="206.IBNumberFormatterLocalizesFormatMetadataKey"/>
+				<boolean value="NO" key="206.IBNumberFormatterLocalizesFormatMetadataKey"/>
 				<string key="206.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="216.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="NO" key="231.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
@@ -3502,12 +3574,15 @@
 				<string key="83.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="838.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="84.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<integer value="1040" key="855.IBNumberFormatterBehaviorMetadataKey"/>
+				<boolean value="NO" key="855.IBNumberFormatterLocalizesFormatMetadataKey"/>
+				<string key="855.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">838</int>
+			<int key="maxID">855</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3518,6 +3593,7 @@
 						<string key="close:">id</string>
 						<string key="selectFile:">id</string>
 						<string key="start:">id</string>
+						<string key="stepperChanged:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="close:">
@@ -3530,6 +3606,10 @@
 						</object>
 						<object class="IBActionInfo" key="start:">
 							<string key="name">start:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="stepperChanged:">
+							<string key="name">stepperChanged:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>

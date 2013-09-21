@@ -105,10 +105,23 @@
 // Query settings + related values.
 + (BOOL)showCategoryColorsInTree;
 + (BOOL)showHiddenCategories;
-+ (NSString*)mainFontName;
-+ (NSString*)mainFontNameMedium;
-+ (NSString*)mainFontNameBold;
-+ (NSString*)mainFontNameLight;
-+ (NSString*)popoverFontName;
++ (NSString *)mainFontName;
++ (NSString *)mainFontNameMedium;
++ (NSString *)mainFontNameBold;
++ (NSString *)mainFontNameLight;
++ (NSString *)popoverFontName;
+
+// Persistent storage per managed context.
++ (NSData *)persistentValueForKey: (NSString *)key;
++ (void)setPersistentValue: (NSData *)value forKey: (NSString *)key;
+
+// Convenience methods.
++ (NSInteger)persistentIntValueForKey: (NSString *)key;
++ (BOOL)persistentBoolValueForKey: (NSString *)key;
++ (NSString *)persistentStringValueForKey: (NSString *)key;
+
++ (void)setPersistentIntValue: (NSInteger)value forKey: (NSString *)key;
++ (void)setPersistentBoolValue: (BOOL)value forKey: (NSString *)key;
++ (void)setPersistentStringValue: (NSString *)value forKey: (NSString *)key;
 
 @end

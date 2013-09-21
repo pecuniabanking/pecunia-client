@@ -111,7 +111,9 @@
     self.allowMonthly = YES;
     if (self.execDaysWeekString == nil || self.weekCyclesString == nil) {
         self.allowWeekly = NO;
-    } else {self.allowWeekly = YES; }
+    } else {
+        self.allowWeekly = YES;
+    }
 
     if ([self.jobName isEqualToString: @"DauerEdit"]) {
         s = [limits valueForKey: @"recktoeditable"];

@@ -38,6 +38,8 @@
 @dynamic remoteAccount;
 @dynamic remoteBankCode;
 @dynamic remoteBankName;
+@dynamic remoteBIC;
+@dynamic remoteIBAN;
 @dynamic remoteName;
 @dynamic remoteSuffix;
 @dynamic status;

@@ -1,0 +1,793 @@
+/**
+ * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 2 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301  USA
+ */
+
+#import <CorePlot/CorePlot.h>
+
+#import "NextTransfersCard.h"
+#import "GraphicsAdditions.h"
+#import "ShortDate.h"
+
+#import "StandingOrder.h"
+#import "MOAssistant.h"
+#import "BankingController.h"
+
+@interface NextTransfersCalendar : NSView
+{
+@private
+    NSMutableDictionary *values;
+    ShortDate *selectedDate;
+    ShortDate       *startDate;
+    NSDateFormatter *dateFormatter;
+
+    CGFloat contentAlpha;
+    NSRect  valueArea;
+}
+
+@property (nonatomic, assign) CGFloat     contentAlpha;
+@property (nonatomic, strong) ShortDate   *selectedDate; // nil if not selected.
+
+@property (nonatomic, assign) NSUInteger month;
+@property (nonatomic, assign) NSUInteger year;
+
+@end
+
+@implementation NextTransfersCalendar
+
+@synthesize contentAlpha;
+@synthesize selectedDate;
+@synthesize month;
+@synthesize year;
+
++ (id)defaultAnimationForKey: (NSString *)key
+{
+    if ([key isEqualToString: @"contentAlpha"]) {
+        return [CABasicAnimation animation];
+    } else {
+        return [super defaultAnimationForKey: key];
+    }
+}
+
+- (id)initWithFrame: (NSRect)frameRect
+{
+    self = [super initWithFrame: frameRect];
+    if (self != nil) {
+        year = 0;
+        month = 0;
+
+        contentAlpha = 1;
+
+        [self updateConstantValues];
+    }
+    return self;
+}
+
+- (void)setMonth: (NSUInteger)m
+{
+    month = m;
+    [self updateConstantValues];
+    [self setNeedsDisplay: YES];
+}
+
+- (void)setYear: (NSUInteger)y
+{
+    year = y;
+    [self updateConstantValues];
+    [self setNeedsDisplay: YES];
+}
+
+- (void)setValues: (NSMutableDictionary *)theValues
+{
+    values = theValues;
+    [self setNeedsDisplay: YES];
+}
+
+- (void)setContentAlpha: (CGFloat)value
+{
+    contentAlpha = value;
+    [self setNeedsDisplay: YES];
+}
+
+- (void)setSelectedDate: (ShortDate *)value
+{
+    BOOL change = NO;
+    if (selectedDate == nil) {
+        if (value == nil) {
+            return;
+        } else {
+            change = YES;
+        }
+    } else {
+        change = ![selectedDate isEqual: value];
+    }
+    if (change) {
+        selectedDate = value;
+        [self display];
+        //[(HeatMapView *)self.superview resetSelectedDate : self];
+    }
+}
+
+- (void)mouseDown: (NSEvent *)theEvent
+{
+    NSPoint windowLocation = theEvent.locationInWindow;
+    NSPoint location = [self convertPoint: windowLocation fromView: nil];
+
+    if (NSPointInRect(location, valueArea)) {
+        location.x -= valueArea.origin.x;
+        location.y -= valueArea.origin.y;
+
+        NSRect cellArea;
+        cellArea.size.width = valueArea.size.width / 7;
+        cellArea.size.height = valueArea.size.height / 6;
+
+        NSUInteger weekDay = (NSUInteger)location.x / cellArea.size.width;
+        NSUInteger week = (NSUInteger)location.y / cellArea.size.height;
+        ShortDate *date = [startDate dateByAddingUnits: week * 7 + weekDay byUnit: NSDayCalendarUnit];
+        if (values[date] != nil) {
+            self.selectedDate = date;
+        } else {
+            self.selectedDate = nil;
+        }
+
+        cellArea.origin.x = valueArea.origin.x + weekDay * cellArea.size.width;
+        cellArea.origin.y = valueArea.origin.y + week * cellArea.size.height;
+        //        [controller showValuePopupForDate: selectedDate relativeToRect: cellArea forView: self];
+    } else {
+        self.selectedDate = nil;
+    }
+}
+
+static NSColor *transparentTextColor;
+static NSColor *darkTextColor;
+static NSColor *gridColor;
+static NSColor *frameColor;
+static NSColor *monthNameColor;
+static NSColor *grayColor;
+
+static NSFont       *monthNameFont;
+static NSDictionary *monthTextAttributes;
+
+static NSFont       *smallFont;
+static NSColor      *smallTextColor;
+static NSDictionary *smallTextAttributes;
+
+static NSFont *normalNumberFont;
+static NSFont *smallNumberFont;
+
+- (void)setupStaticValues
+{
+    dateFormatter = [[NSDateFormatter alloc] init];
+    gridColor = [NSColor colorWithCalibratedWhite: 214 / 255.0 alpha: 1];
+    frameColor = [NSColor colorWithCalibratedWhite: 193 / 255.0 alpha: 1];
+    monthNameColor = [NSColor colorWithCalibratedRed: 226 green: 150 / 255.0 blue: 24 / 255.0 alpha: 1];
+
+    monthNameFont = [NSFont fontWithName: @"HelveticaNeue" size: 14];
+    monthTextAttributes = @{NSForegroundColorAttributeName: monthNameColor,
+                            NSFontAttributeName: monthNameFont};
+
+    smallTextColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.6];
+    smallFont = [NSFont fontWithName: @"HelveticaNeue" size: 9];
+    smallTextAttributes = @{NSForegroundColorAttributeName: smallTextColor,
+                            NSFontAttributeName: smallFont};
+
+    normalNumberFont = [NSFont fontWithName: @"HelveticaNeue" size: 11];
+    smallNumberFont = [NSFont fontWithName: @"HelveticaNeue" size: 9];
+
+    grayColor = [NSColor colorWithCalibratedWhite: 239 / 255.0 alpha: 1];
+    darkTextColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.7];
+}
+
+- (void)updateConstantValues
+{
+    if (dateFormatter == nil) {
+        [self setupStaticValues];
+    }
+
+    if (month == 0 || year == 0) {
+        return;
+    }
+
+    ShortDate *firstDay = [ShortDate dateWithYear: year month: month day: 1];
+    startDate = [firstDay firstDayInWeek];
+
+    transparentTextColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.3];
+}
+
+- (void)drawRect: (NSRect)dirtyRect
+{
+    // Start with the day grid.
+    valueArea = NSIntegralRect(self.bounds);
+    valueArea.origin.x += 20;
+    valueArea.size.height -= 15;
+
+    NSUInteger cellWidth = (valueArea.size.width - 20) / 7;
+    valueArea.size.width = cellWidth * 7;
+    NSUInteger cellHeight = valueArea.size.height / 6;
+    valueArea.size.height = cellHeight * 6;
+
+    NSFont *numberFont;
+    if (cellWidth > 20 && cellHeight > 20) {
+        numberFont = normalNumberFont;
+    } else {
+        numberFont = smallNumberFont;
+    }
+
+    if (month == 0 || year == 0) {
+        return;
+    }
+
+    ShortDate *today = [ShortDate currentDate];
+    NSRect    dayRect = NSMakeRect(valueArea.origin.x - 1, valueArea.origin.y, cellWidth + 1, cellHeight + 1);
+
+    // Wweek numbers and day names.
+    CGFloat offset = valueArea.origin.y + (cellHeight - smallFont.pointSize) / 2 - 1;
+    ShortDate *workDate = [startDate copy];
+    for (unsigned week = 0; week < 6; week++) {
+        NSString *weekString = [NSString stringWithFormat: @"%i", workDate.week];
+        [weekString drawAtPoint: NSMakePoint(5,  offset) withAttributes: smallTextAttributes];
+        offset += dayRect.size.height - 1;
+        workDate = [workDate dateByAddingUnits: 1 byUnit: NSWeekCalendarUnit];
+    }
+    [dateFormatter setDateFormat: @"EEE"];
+    NSDate *dayNameDate = startDate.lowDate;
+    offset = valueArea.origin.x + 6;
+    for (unsigned i = 0; i < 7; i++) {
+        NSString *dayName = [dateFormatter stringFromDate: dayNameDate];
+        [dayName drawAtPoint: NSMakePoint(offset, NSMaxY(valueArea) + 1) withAttributes: smallTextAttributes];
+        dayNameDate = [dayNameDate dateByAddingTimeInterval: 24 * 3600];
+        offset += dayRect.size.width - 1;
+    }
+    NSBezierPath *clipPath = [NSBezierPath bezierPathWithRect: NSInsetRect(valueArea, 1, 1)];
+    [clipPath setClip];
+
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setAlignment: NSCenterTextAlignment];
+
+    NSColor *textColor;
+    workDate = [startDate copy];
+    for (NSUInteger week = 0; week < 6; week++) {
+        dayRect.origin.x = valueArea.origin.x;
+
+        for (NSUInteger day = 0; day < 7; day++) {
+            NSGradient *gradient;
+            NSColor    *startingColor;
+            NSColor    *endingColor;
+            if (workDate.month == month) {
+                NSArray *orders = values[workDate];
+
+                if ([today isEqual: workDate]) {
+                    startingColor = [NSColor applicationColorForKey: @"Selection Gradient (low)"];
+                    endingColor = [NSColor applicationColorForKey: @"Selection Gradient (high)"];
+                    textColor = [NSColor whiteColor];
+                } else {
+                    if ([today isGreaterThan: workDate]) {
+                        // Already passed days in this month.
+                        textColor = transparentTextColor;
+                        startingColor = [NSColor colorWithCalibratedRed: 0.825 green: 0.808 blue: 0.760 alpha: 1.000];
+                        endingColor = [NSColor colorWithCalibratedRed: 0.825 green: 0.808 blue: 0.760 alpha: 1.000];
+                    } else {
+                        if (orders != nil) {
+                            textColor = [NSColor whiteColor];
+                            startingColor = [NSColor colorWithCalibratedRed: 0.693 green: 0.271 blue: 0.204 alpha: 1.000];
+                            endingColor = [NSColor colorWithCalibratedRed: 0.693 green: 0.271 blue: 0.204 alpha: 1.000];
+                        } else {
+                            textColor = darkTextColor;
+                            if ([workDate isEqual: selectedDate]) {
+                                startingColor = [NSColor whiteColor];
+                                endingColor = [NSColor whiteColor];
+                            } else {
+                                textColor = [NSColor whiteColor];
+                                startingColor = [NSColor colorWithCalibratedRed: 0.497 green: 0.488 blue: 0.461 alpha: 1.000];
+                                endingColor = [NSColor colorWithCalibratedRed: 0.497 green: 0.488 blue: 0.461 alpha: 1.000];
+                            }
+                        }
+                    }
+                }
+
+                if (startingColor != nil) {
+                    if ([workDate isEqual: selectedDate]) {
+                        startingColor = [startingColor colorWithChangedBrightness: 0.8];
+                        endingColor = [endingColor colorWithChangedBrightness: 0.8];
+                    }
+                    gradient = [[NSGradient alloc] initWithStartingColor: startingColor endingColor: endingColor];
+                    [gradient drawInRect: dayRect angle: 90];
+                }
+            } else {
+                textColor = nil;
+            }
+
+            if (textColor != nil) {
+                NSString     *text = [NSString stringWithFormat: @"%i", workDate.day];
+                NSDictionary *attributes = @{NSParagraphStyleAttributeName: paragraphStyle,
+                                             NSForegroundColorAttributeName: textColor,
+                                             NSFontAttributeName: numberFont};
+
+                NSRect drawRect = dayRect;
+                CGSize size = [text sizeWithAttributes: attributes];
+                drawRect.origin.y -= (dayRect.size.height - size.height) / 2;
+
+                [text drawInRect: drawRect withAttributes: attributes];
+            }
+            dayRect.origin.x += cellWidth;
+            workDate = [workDate dateByAddingUnits: 1 byUnit: NSDayCalendarUnit];
+        }
+
+        dayRect.origin.y += cellHeight;
+    }
+}
+
+@end
+
+//--------------------------------------------------------------------------------------------------
+
+@interface BandEndView : NSView
+
+@property (nonatomic, assign) BOOL isTop;
+
+@end
+
+@implementation BandEndView
+
+@synthesize isTop;
+
+- (id)initWithFrame: (NSRect)frameRect isTop: (BOOL)top
+{
+    self = [super initWithFrame: frameRect];
+    if (self != nil) {
+        isTop = top;
+
+        self.wantsLayer = YES;
+        CGColorRef color = CGColorCreateFromNSColor([NSColor blackColor]);
+        self.layer.shadowColor = color;
+        CGColorRelease(color);
+
+        self.layer.shadowRadius = 2;
+        self.layer.shadowOffset = CGSizeMake(0, 0);
+        self.layer.shadowOpacity = 0.5;
+    }
+    return self;
+}
+
+- (void)drawRect: (NSRect)dirtyRect
+{
+    NSRect frame = self.bounds;
+    frame.size.height -= 5;
+    
+    [[NSColor colorWithCalibratedRed: 0.945 green: 0.927 blue: 0.883 alpha: 1.000] setFill];
+
+    if (!isTop) {
+        frame.origin.y += 5;
+    }
+    NSRectFill(frame);
+}
+
+- (void)resizeWithOldSuperviewSize: (NSSize)oldSize
+{
+    [super resizeWithOldSuperviewSize: oldSize];
+
+    NSRect bounds = NSInsetRect(self.bounds, 2, 0);
+    if (isTop) {
+        bounds.origin.y = 1;
+    } else {
+        bounds.origin.y = NSHeight(self.bounds) - 4;
+    }
+    bounds.size.height = 3;
+
+    NSBezierPath *shadowPath = [NSBezierPath bezierPathWithOvalInRect: bounds];
+    self.layer.shadowPath = shadowPath.cgPath;
+}
+
+@end
+
+//--------------------------------------------------------------------------------------------------
+
+#define CALENDAR_HEIGHT 160
+
+@interface BandView : NSView <NSAnimationDelegate>
+{
+    NSDateFormatter *dateFormatter;
+    NSMutableDictionary *monthAttributes;
+    NSDictionary *yearAttributes;
+
+    NSInteger offsetAccumulator;
+    BOOL ignoreMomentumChange;
+
+    BandEndView *startEnd;
+    NSArrayController *standingOrders;
+}
+
+@property BOOL listMode; // If YES use a list otherwise calendar view.
+@property NSUInteger contentWidth; // The usable width for content (right aligned).
+@property (nonatomic) NSInteger scrollOffset; // Vertical scroll position (scrolling goes endless).
+
+@end
+
+@implementation BandView
+
+@synthesize contentWidth;
+@synthesize scrollOffset;
+
+- (id)animationForKey: (NSString *)key
+{
+    if ([key isEqualToString: @"scrollOffset"]) {
+        CABasicAnimation *animation = [CABasicAnimation animation];
+        animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseOut];
+        animation.speed = 1;
+        return animation;
+    } else {
+        return [super animationForKey:key];
+    }
+}
+
+- (id)initWithFrame: (NSRect)frameRect startingEnd: (BandEndView *)view
+{
+    self = [super initWithFrame: frameRect];
+    if (self != nil) {
+        [self setWantsLayer: YES];
+
+        startEnd = view;
+        startEnd.layer.shadowOpacity = 0;
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateStyle = kCFDateFormatterShortStyle;
+        dateFormatter.dateFormat = @"MMMM";
+
+        monthAttributes = [NSMutableDictionary dictionaryWithCapacity: 2];
+        monthAttributes[NSFontAttributeName] = [NSFont fontWithName: @"HelveticaNeue-Bold" size: 13];
+
+        yearAttributes = @{NSFontAttributeName: [NSFont fontWithName: @"Haettenschweiler" size: 130],
+                           NSForegroundColorAttributeName: [NSColor colorWithDeviceWhite: 0 alpha: 0.05]};
+
+        standingOrders = [[NSArrayController alloc] init];
+        standingOrders.managedObjectContext = MOAssistant.assistant.context;
+        standingOrders.entityName = @"StandingOrder";
+        standingOrders.automaticallyRearrangesObjects = YES;
+
+        // At most 3 calendars can be visible.
+        NextTransfersCalendar *calendar = [[NextTransfersCalendar alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
+        [self addSubview: calendar];
+        calendar = [[NextTransfersCalendar alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
+        [self addSubview: calendar];
+        calendar = [[NextTransfersCalendar alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
+        [self addSubview: calendar];
+        [self updateCalendarsWithFetch: YES];
+    }
+    return self;
+}
+
+- (BOOL)isFlipped
+{
+    return YES;
+}
+
+- (void)drawRect: (NSRect)dirtyRect
+{
+    if (self.listMode) {
+
+    } else {
+        NSInteger height = NSHeight(self.bounds);
+        NSUInteger monthDistance = self.scrollOffset / CALENDAR_HEIGHT;
+        CGFloat currentOffset = height - 30.5 + self.scrollOffset % CALENDAR_HEIGHT;
+        if (currentOffset > height) {
+            currentOffset -= CALENDAR_HEIGHT;
+            monthDistance++;
+        }
+        ShortDate *date = [[ShortDate currentDate] dateByAddingUnits: monthDistance
+                                                              byUnit: NSMonthCalendarUnit];
+
+        NSString *year = [NSString stringWithFormat: @"%i", date.year];
+        NSAffineTransform *transform = [[NSAffineTransform alloc] init];
+        [transform translateXBy: -20 yBy: height - 55];
+        [transform rotateByDegrees: -90];
+        [transform concat];
+        [year drawAtPoint: NSMakePoint(0, 0) withAttributes: yearAttributes];
+        transform = [[NSAffineTransform alloc] init];
+        [transform rotateByDegrees: 90]; // Revert context transformations.
+        [transform translateXBy: 20 yBy: -(height - 55)];
+        [transform concat];
+
+        NSUInteger lineLength = NSWidth(self.bounds) - self.contentWidth - 10;
+        while (currentOffset > 0) {
+            NSInteger delta = height / 2;
+            if (height - currentOffset < 30)
+                delta = height - currentOffset;
+            if (currentOffset < 41) // 30px + text height
+                delta = currentOffset - 10;
+            if (delta < 0)
+                delta = 0;
+            if (delta > 30)
+                delta = 30;
+            NSColor *color = [NSColor colorWithCalibratedRed: 0.497 green: 0.488 blue: 0.461 alpha: delta / 30.0];
+            monthAttributes[NSForegroundColorAttributeName] = color;
+            [color set];
+
+            NSBezierPath *line = [NSBezierPath bezierPath];
+            line.lineWidth = 1;
+            [line moveToPoint: NSMakePoint(10, currentOffset)];
+            [line lineToPoint: NSMakePoint(lineLength, currentOffset)];
+            [line stroke];
+
+            NSString *month = [dateFormatter stringFromDate: date.lowDate];
+            [month drawAtPoint: NSMakePoint(10, currentOffset - 19) withAttributes: monthAttributes];
+            date = [date dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit];
+            currentOffset -= CALENDAR_HEIGHT;
+        }
+    }
+}
+
+- (void)scrollWheel: (NSEvent *)event
+{
+    switch (event.phase) {
+        case NSEventPhaseBegan: // Trackpad with no momentum scrolling. Fingers moved on trackpad.
+            offsetAccumulator = scrollOffset;
+            // Fall through.
+        case NSEventPhaseChanged:
+            if (offsetAccumulator >= 0) {
+                offsetAccumulator += event.scrollingDeltaY / 5;
+            } else {
+                offsetAccumulator += event.scrollingDeltaY / 2.0 * exp(offsetAccumulator / 75.0);
+            }
+            [self setScrollOffset: offsetAccumulator];
+            break;
+
+        case NSEventPhaseEnded:
+            if (scrollOffset < 0) {
+                [self.animator setScrollOffset: 0];
+            }
+            offsetAccumulator = scrollOffset;
+            break;
+
+        case NSEventPhaseNone:
+            if (event.momentumPhase == NSEventPhaseNone)
+            {
+                // Mouse wheel.
+                if ([event hasPreciseScrollingDeltas]) {
+                    offsetAccumulator += event.scrollingDeltaY;
+                    if (offsetAccumulator < 0) {
+                        offsetAccumulator = 0;
+                    }
+                    [self setScrollOffset: offsetAccumulator];
+
+                } else {
+                    offsetAccumulator += 10 * event.scrollingDeltaY;
+                    if (offsetAccumulator < 0) {
+                        offsetAccumulator = 0;
+                    }
+                    [self.animator setScrollOffset: offsetAccumulator];
+                }
+            }
+
+            break;
+    }
+
+    switch (event.momentumPhase) {
+        case NSEventPhaseBegan: // Trackpad with momentum scrolling. User just lifted fingers.
+            ignoreMomentumChange = NO;
+            offsetAccumulator = scrollOffset;
+            break;
+
+        case NSEventPhaseChanged:
+            if (!ignoreMomentumChange) {
+                if (offsetAccumulator >= -50) {
+                    offsetAccumulator += event.scrollingDeltaY / 5;
+                    [self setScrollOffset: offsetAccumulator];
+                } else {
+                    // If we scrolled beyond the acceptable bound ignore any further
+                    // (automatically generated) change events and animate back to 0 position.
+                    ignoreMomentumChange = YES;
+                    offsetAccumulator = 0;
+                    [self.animator setScrollOffset: offsetAccumulator];
+                }
+            }
+            break;
+
+        case NSEventPhaseEnded:
+            break;
+    }
+}
+
+- (void)setScrollOffset: (NSInteger)value
+{
+    if (scrollOffset != value) {
+        scrollOffset = value;
+        [self updateCalendarsWithFetch: NO];
+        [self resizeWithOldSuperviewSize: self.bounds.size];
+
+        if (scrollOffset >= 10) {
+            if (scrollOffset > 20) {
+                startEnd.layer.shadowOpacity = 0.5;
+            } else {
+                startEnd.layer.shadowOpacity = 0.5 * (scrollOffset - 10) / 10.0;
+            }
+        } else {
+            startEnd.layer.shadowOpacity = 0;
+        }
+
+        [self setNeedsDisplay: YES];
+    }
+}
+
+- (void)updateCalendarsWithFetch: (BOOL)fetch
+{
+    NSUInteger monthDistance = self.scrollOffset / CALENDAR_HEIGHT;
+    ShortDate *date = [[ShortDate currentDate] dateByAddingUnits: monthDistance
+                                                          byUnit: NSMonthCalendarUnit];
+
+    if (fetch) {
+        NSError *error = nil;
+        if (![standingOrders fetchWithRequest: nil merge: NO error: &error]) {
+            // It's not a critical error if fetching the standing orders failed.
+            // We just show empty calendars then.
+            [NSAlert alertWithError: error];
+        }
+    }
+
+    // We have added 3 calendars, so we just update their values here.
+    for (NSUInteger i = 0; i < 3; ++i) {
+        NextTransfersCalendar *calendar = self.subviews[i];
+        if (fetch || calendar.month != date.month || calendar.year != date.year) {
+            calendar.month = date.month;
+            calendar.year = date.year;
+
+            NSMutableDictionary *values = [NSMutableDictionary dictionary];
+            ShortDate *firstDay = [ShortDate dateWithYear: date.year month: date.month day: 1];
+            ShortDate *lastDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: 0];
+            for (StandingOrder *order in standingOrders.arrangedObjects) {
+                ShortDate *firstExecution = [ShortDate dateWithDate: order.firstExecDate];
+                ShortDate *lastExecution = order.lastExecDate == nil ? lastDay : [ShortDate dateWithDate: order.lastExecDate];
+                if ([firstExecution compare: lastDay] != NSOrderedDescending &&
+                    [lastExecution compare: firstDay] != NSOrderedAscending) {
+                    switch (order.period.intValue) {
+                        case stord_weekly:
+                            break;
+                            
+                        case stord_monthly:
+                        {
+                            int delta = date.month - firstExecution.month;
+                            if (delta < 0) {
+                                delta += 12;
+                            }
+                            if (delta % order.cycle.intValue == 0) {
+                                ShortDate *executionDay;
+                                int day = order.executionDay.intValue;
+                                switch (day) {
+                                    case 99: // Ultimo
+                                        executionDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: 0];
+                                        break;
+                                    case 98: // Ultimo - 1
+                                        executionDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: -1];
+                                        break;
+                                    case 97:  // Ultimo - 2
+                                        executionDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: -2];
+                                        break;
+                                    default:
+                                        executionDay = [ShortDate dateWithYear: date.year month: date.month day: day];
+                                        break;
+                                }
+                                NSMutableArray *entries = values[executionDay];
+                                if (entries == nil) {
+                                    entries = [NSMutableArray array];
+                                }
+                                [entries addObject: order];
+                                values[executionDay] = entries;
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            calendar.values = values;
+            [calendar setNeedsDisplay: YES];
+        }
+        date = [date dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit];
+    }
+}
+
+- (void)resizeWithOldSuperviewSize: (NSSize)oldSize
+{
+    NSRect frame = self.bounds;
+    frame.origin.x = frame.size.width - contentWidth + 15;
+    frame.size.width = contentWidth - 50;
+    frame.origin.y = frame.size.height - 20 - CALENDAR_HEIGHT + self.scrollOffset % CALENDAR_HEIGHT;
+    frame.size.height = CALENDAR_HEIGHT - 10;
+    for (NextTransfersCalendar *calendar in self.subviews) {
+        calendar.frame = frame;
+        frame.origin.y -= CALENDAR_HEIGHT;
+    }
+}
+
+@end
+
+@interface NextTransfersCard ()
+{
+    NSMutableArray *entries;
+    BandView *bandView;
+}
+
+@end
+
+@implementation NextTransfersCard
+
+- (id)initWithFrame: (NSRect)frame
+{
+    self = [super initWithFrame: frame];
+    if (self) {
+        [self loadData];
+        [NSNotificationCenter.defaultCenter addObserver: self
+                                               selector: @selector(handleDataModelChange:)
+                                                   name: NSManagedObjectContextDidSaveNotification
+                                                 object: MOAssistant.assistant.context];
+    }
+
+    return self;
+}
+
+- (void)dealloc
+{
+    [NSNotificationCenter.defaultCenter removeObserver: self];
+}
+
+- (void)handleDataModelChange: (NSNotification *)notification
+{
+    if (BankingController.controller.shuttingDown) {
+        return;
+    }
+
+    [bandView updateCalendarsWithFetch: YES];
+}
+
+- (void)loadData
+{
+    // View sizes are just dummy values. Layout is done below.
+    BandEndView *startView = [[BandEndView alloc] initWithFrame: NSMakeRect(0, 0, 100, 100) isTop: NO];
+    bandView = [[BandView alloc] initWithFrame: NSMakeRect(0, 0, 10, 10) startingEnd: startView];
+    bandView.listMode = NO;
+    [self addSubview: bandView];
+
+    BandEndView *endView = [[BandEndView alloc] initWithFrame: NSMakeRect(0, 0, 100, 100) isTop: YES];
+    [self addSubview: endView];
+    [self addSubview: startView];
+}
+
+- (void)resizeSubviewsWithOldSize: (NSSize)oldSize
+{
+    NSRect frame = self.bounds;
+    frame.origin.x = NSWidth(frame) / 3.0 - 15;
+    frame.size.width = 2 * NSWidth(frame) / 3.0 - 10;
+    frame.size.height = 20;
+
+    for (id child in self.subviews) {
+        if ([child isKindOfClass: BandEndView.class]) {
+            BandEndView *view = child;
+            if ([view isTop]) {
+                frame.origin.y = 40;
+            } else {
+                frame.origin.y = NSMaxY(self.bounds) - NSHeight(frame) - 30;
+            }
+            view.frame = frame;
+        } else {
+            BandView *view = child;
+            NSRect bandFrame = NSInsetRect(self.bounds, 15, 40);
+            bandFrame.origin.y += 5;
+            view.frame = bandFrame;
+            view.contentWidth = NSWidth(frame); // Content is drawn with the same width as the band end size.
+        }
+        [child resizeWithOldSuperviewSize: oldSize];
+    }
+}
+
+@end

@@ -234,7 +234,6 @@
 - (NSArray *)selectedNodes;
 - (BankAccount *)selectBankAccountWithNumber: (NSString *)accNum bankCode: (NSString *)code;
 - (void)awakeFromNib;
-- (int)AccSize;
 - (void)statementsNotification: (NSNotification *)notification;
 - (Category *)getBankingRoot;
 - (void)updateNotAssignedCategory;

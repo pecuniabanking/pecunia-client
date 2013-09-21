@@ -61,7 +61,7 @@
 
 @end
 
-@interface HeatMapView (Private)
+@interface HeatMapView ()
 - (void)resetSelectedDate: (HeatMapCalendar *)sender;
 @end;
 
@@ -143,7 +143,7 @@
 
 - (void)setValues: (NSArray *)theValues dates: (NSArray *)theDates limits: (HighLowValues)theLimits forType: (int)theType
 {
-    // Values and dates arrays must have the same number entries.
+    // Values and dates arrays must have the same number of entries.
     values = theValues;
     dates = theDates;
     limits = theLimits;
@@ -262,7 +262,11 @@ static NSFont *smallNumberFont;
 
 - (void)updateConstantValues
 {
-    if (month == 0 || year == 0) {
+    if (dateFormatter == nil) {
+        [self setupStaticValues];
+    }
+
+   if (month == 0 || year == 0) {
         return;
     }
 
@@ -332,7 +336,7 @@ static NSFont *smallNumberFont;
     // Next are month name, week numbers and day names.
     [monthName drawAtPoint: NSMakePoint(20, 0) withAttributes: monthTextAttributes];
 
-    offset = valueArea.origin.y + (cellHeight - smallFont.pointSize) / 2 - 1;
+    offset = valueArea.origin.y + (cellHeight - smallFont.pointSize) / 2 - 2;
     ShortDate *workDate = [date copy];
     for (unsigned week = 0; week < 6; week++) {
         NSString *weekString = [NSString stringWithFormat: @"%i", workDate.week];
@@ -592,10 +596,6 @@ static NSFont *smallNumberFont;
 
 - (void)drawRect: (NSRect)dirtyRect
 {
-    if (dateFormatter == nil) {
-        [self setupStaticValues];
-    }
-
     switch (currentType) {
         case HeatMapBlockType:
             [self drawBlockMap];

@@ -23,7 +23,7 @@
 
 #import "CategoryPeriodsWindowController.h"
 #import "ShortDate.h"
-#import "MCEMOutlineViewLayout.h"
+#import "NSOutlineView+PecuniaAdditions.h"
 #import "CategoryReportingNode.h"
 #import "MOAssistant.h"
 #import "AmountCell.h"

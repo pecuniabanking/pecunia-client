@@ -125,11 +125,6 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (void)swipeWithEvent: (NSEvent *)event
-{
-    // Not reliable, depending on system settings.
-}
-
 /**
  * Allow zooming the graph with a pinch gesture on a trackpad.
  */
@@ -344,7 +339,7 @@ extern void *UserDefaultsBindingContext;
 /**
  * Private declarations for the controller.
  */
-@interface CategoryAnalysisWindowController (Private)
+@interface CategoryAnalysisWindowController ()
 
 - (void)sanitizeDates;
 
@@ -1811,7 +1806,7 @@ int double_compare(const void *value1, const void *value2)
     CGPoint        point = CGPointMake(actualLocation, 0);
 
     NSDecimal dataPoint[2];
-    [plotSpace plotPoint: dataPoint forPlotAreaViewPoint: point];
+    [plotSpace plotPoint: dataPoint numberOfCoordinates: 2 forPlotAreaViewPoint: point];
     double timePoint = CPTDecimalDoubleValue(dataPoint[0]);
 
     // Check if the time point is within the visible range.
@@ -1834,7 +1829,7 @@ int double_compare(const void *value1, const void *value2)
     if (snap) {
         NSDecimal snapPoint[2] = {0, 0};
         snapPoint[0] = CPTDecimalFromDouble(timePointAtIndex);
-        CGPoint targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint];
+        CGPoint targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint numberOfCoordinates: 2];
         if (abs(targetPoint.x - actualLocation) <= barWidth / 2) {
             actualLocation = targetPoint.x;
             timePoint = timePointAtIndex;
@@ -1844,7 +1839,7 @@ int double_compare(const void *value1, const void *value2)
             if (index < (NSInteger)rawCount - 1) {
                 timePointAtIndex = timePoints[index + 1];
                 snapPoint[0] = CPTDecimalFromDouble(timePointAtIndex);
-                targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint];
+                targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint numberOfCoordinates: 2];
                 if (abs(targetPoint.x - actualLocation) <= barWidth) {
                     actualLocation = targetPoint.x;
                     timePoint = timePointAtIndex;
@@ -1970,7 +1965,7 @@ int double_compare(const void *value1, const void *value2)
                     CGPoint point = CGPointMake([center floatValue], 0);
 
                     NSDecimal dataPoint[2];
-                    [sourcePlotSpace plotPoint: dataPoint forPlotAreaViewPoint: point];
+                    [sourcePlotSpace plotPoint: dataPoint numberOfCoordinates: 2 forPlotAreaViewPoint: point];
                     timePoint = CPTDecimalDoubleValue(dataPoint[0]);
                 }
 
@@ -2003,7 +1998,7 @@ int double_compare(const void *value1, const void *value2)
                     CGPoint point = CGPointMake([location floatValue], 0);
 
                     NSDecimal dataPoint[2];
-                    [sourcePlotSpace plotPoint: dataPoint forPlotAreaViewPoint: point];
+                    [sourcePlotSpace plotPoint: dataPoint numberOfCoordinates: 2 forPlotAreaViewPoint: point];
                     double timePoint = CPTDecimalDoubleValue(dataPoint[0]);
                     location = @(timePoint - [range doubleValue] / 2);
 

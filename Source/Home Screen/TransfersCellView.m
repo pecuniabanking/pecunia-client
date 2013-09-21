@@ -47,7 +47,7 @@ extern void *UserDefaultsBindingContext;
 - (void)drawRect: (NSRect)dirtyRect
 {
     [[NSColor colorWithCalibratedWhite: 1 alpha: 0.5] setFill];
-    NSRectFill(dirtyRect);
+    //NSRectFill(dirtyRect);
 
     [[NSColor colorWithCalibratedWhite: 1 alpha: 1] setFill];
     //NSFrameRect(dirtyRect);
@@ -84,8 +84,8 @@ static NSGradient *headerGradient;
 + (void)initialize
 {
     headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                      [NSColor colorWithCalibratedRed: 0.873 green: 0.799 blue: 0.607 alpha: 0.750], 0.0,
-                      [NSColor colorWithCalibratedRed: 0.873 green: 0.799 blue: 0.607 alpha: 0.750], 1.0,
+                      [NSColor colorWithCalibratedRed: 0.566 green: 0.557 blue: 0.530 alpha: 0.750], 0.0,
+                      [NSColor colorWithCalibratedRed: 0.497 green: 0.488 blue: 0.461 alpha: 0.750], 1.0,
                       nil];
 }
 
