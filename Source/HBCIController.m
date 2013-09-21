@@ -621,7 +621,6 @@ NSString * escapeSpecial(NSString *s)
 {
     PecuniaError           *err = nil;
     Transfer               *transfer;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
     NSDateFormatter        *dateFormatter = [[NSDateFormatter alloc] initWithDateFormat: @"%Y-%m-%d" allowNaturalLanguage: NO];
     NSMutableDictionary    *accountTransferRegister = [NSMutableDictionary dictionaryWithCapacity: 10];
 
@@ -655,9 +654,8 @@ NSString * escapeSpecial(NSString *s)
             [self updateTanMediaForUser: user];
         }
 
-        NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfers\"><transfers type=\"list\">"];
         for (transfer in accountTransferRegister[account]) {
-            [cmd appendString: @"<transfer>"];
+            NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"sendTransfer\">"];
             [self appendTag: @"bankCode" withValue: transfer.account.bankCode to: cmd];
             [self appendTag: @"accountNumber" withValue: transfer.account.accountNumber to: cmd];
             [self appendTag: @"subNumber" withValue: transfer.account.accountSuffix to: cmd];
@@ -720,22 +718,16 @@ NSString * escapeSpecial(NSString *s)
 
             NSURL *uri = [[transfer objectID] URIRepresentation];
             [self appendTag: @"transferId" withValue: [uri absoluteString] to: cmd];
-            [cmd appendString: @"</transfer>"];
-        }
-        [cmd appendString: @"</transfers></command>"];
+            [cmd appendString: @"</command>"];
 
-        [self startProgress];
-        NSArray *resultList = [bridge syncCommand: cmd error: &err];
-        if (err) {
-            [err logMessage];
-        }
-        [self stopProgress];
-
-        for (TransferResult *result in resultList) {
-            NSURL             *uri = [NSURL URLWithString: result.transferId];
-            NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
-            Transfer          *transfer = (Transfer *)[context objectWithID: moID];
-            if (result.isOk) {
+            [self startProgress];
+            NSNumber *isOk = [bridge syncCommand: cmd error: &err];
+            if (err) {
+                [err logMessage];
+            }
+            [self stopProgress];
+            
+            if (err == nil && [isOk boolValue] == YES) {
                 transfer.isSent = @YES;
             } else {
                 allSent = NO;
