@@ -19,8 +19,28 @@
 
 #import "HomeScreenController.h"
 
-@interface NextTransfersCard : HomeScreenCard
+@class ShortDate;
+
+@interface OrderTableCellView : NSTableCellView
 {
 }
+
+@property (strong) IBOutlet NSTextField *receiverField;
+@property (strong) IBOutlet NSTextField *currencyField;
+@property (strong) IBOutlet NSTextField *valueField;
+@property (strong) IBOutlet NSTextField *purposeField;
+
+@end
+
+@interface NextTransfersCard : HomeScreenCard <NSTableViewDataSource, NSTableViewDelegate>
+{
+}
+
+- (void)showValuePopupForDate: (ShortDate *)date
+                       values: (NSArray *)values
+               relativeToRect: (NSRect)area
+                      forView: (NSView *)view;
+
+- (void)cancelPopover;
 
 @end

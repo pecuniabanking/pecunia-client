@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment defaultVersion="1070" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4510"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NextTransfersCard">
+            <connections>
+                <outlet property="ordersPopover" destination="dZO-Z9-G2F" id="KJp-ph-sDg"/>
+                <outlet property="ordersPopupList" destination="rF1-MP-Qda" id="V1C-3q-Puf"/>
+                <outlet property="popoverDataController" destination="quP-pk-dQH" id="DBq-m0-eG2"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <viewController id="ybd-mI-20K" userLabel="Popover View Controller">
+            <connections>
+                <outlet property="view" destination="P2v-jh-VCb" id="fQp-AD-0Wt"/>
+            </connections>
+        </viewController>
+        <popover behavior="semitransient" id="dZO-Z9-G2F">
+            <connections>
+                <outlet property="contentViewController" destination="ybd-mI-20K" id="yWX-E3-rlT"/>
+            </connections>
+        </popover>
+        <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="52" horizontalPageScroll="10" verticalLineScroll="52" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="P2v-jh-VCb" userLabel="Orders Tableview">
+            <rect key="frame" x="0.0" y="0.0" width="326" height="251"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="qbc-OY-fUP">
+                <rect key="frame" x="0.0" y="0.0" width="326" height="251"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="50" rowSizeStyle="automatic" viewBased="YES" id="rF1-MP-Qda">
+                        <rect key="frame" x="0.0" y="0.0" width="329" height="251"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <size key="intercellSpacing" width="3" height="2"/>
+                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                        <tableColumns>
+                            <tableColumn editable="NO" width="326" minWidth="40" maxWidth="1000" id="f5D-bV-e9q">
+                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
+                                </tableHeaderCell>
+                                <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="1ZI-g4-BJt">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
+                                <prototypeCellViews>
+                                    <tableCellView identifier="OrderCell" id="wS0-V3-sxb" customClass="OrderTableCellView">
+                                        <rect key="frame" x="1" y="1" width="326" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="Bph-zV-eWb" userLabel="Receiver">
+                                                <rect key="frame" x="7" y="15" width="226" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="t3d-kv-DkS">
+                                                    <font key="font" size="12" name="HelveticaNeue-Medium"/>
+                                                    <color key="textColor" red="0.18823531269999999" green="0.18823531269999999" blue="0.18823531269999999" alpha="1" colorSpace="deviceRGB"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                                <connections>
+                                                    <binding destination="wS0-V3-sxb" name="value" keyPath="objectValue.remoteName" id="i0D-2w-a9z">
+                                                        <dictionary key="options">
+                                                            <string key="NSValueTransformerName">StringCasingTransformer</string>
+                                                        </dictionary>
+                                                    </binding>
+                                                </connections>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="RqS-8O-tvM" userLabel="Value">
+                                                <rect key="frame" x="235" y="16" width="80" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="100.000,00" id="Flh-Ba-wZQ">
+                                                    <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="BfU-d7-okv">
+                                                        <real key="roundingIncrement" value="0.0"/>
+                                                        <metadata>
+                                                            <bool key="localizesFormat" value="YES"/>
+                                                            <real key="inspectorSampleValue" value="100"/>
+                                                        </metadata>
+                                                    </numberFormatter>
+                                                    <font key="font" size="14" name="HelveticaNeue-Medium"/>
+                                                    <color key="textColor" red="0.18823531269999999" green="0.18823531269999999" blue="0.18823531269999999" alpha="1" colorSpace="deviceRGB"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                                <connections>
+                                                    <binding destination="wS0-V3-sxb" name="value" keyPath="objectValue.value" id="4Ko-C2-CXJ"/>
+                                                </connections>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Vyx-2F-e2s" userLabel="Currency">
+                                                <rect key="frame" x="313" y="15" width="16" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="€" id="1XL-zd-Toi">
+                                                    <font key="font" size="12" name="HelveticaNeue-Light"/>
+                                                    <color key="textColor" red="0.18823531269999999" green="0.18823531269999999" blue="0.18823531269999999" alpha="1" colorSpace="deviceRGB"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                                <connections>
+                                                    <binding destination="wS0-V3-sxb" name="value" keyPath="objectValue.currency" id="Wa7-Hz-kW5">
+                                                        <dictionary key="options">
+                                                            <string key="NSNullPlaceholder">€</string>
+                                                            <string key="NSValueTransformerName">CurrencyValueTransformer</string>
+                                                        </dictionary>
+                                                    </binding>
+                                                </connections>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="CEI-Fg-I9r" userLabel="Purpose">
+                                                <rect key="frame" x="7" y="0.0" width="319" height="18"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Purpose" usesSingleLineMode="YES" id="wgw-aF-8Eq">
+                                                    <font key="font" size="11" name="HelveticaNeue-Light"/>
+                                                    <color key="textColor" red="0.38800000000000001" green="0.38200000000000001" blue="0.36299999999999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                                <connections>
+                                                    <binding destination="wS0-V3-sxb" name="value" keyPath="objectValue.purpose" id="Q2S-2E-mSJ">
+                                                        <dictionary key="options">
+                                                            <string key="NSValueTransformerName">StringCasingTransformer</string>
+                                                        </dictionary>
+                                                    </binding>
+                                                </connections>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="tng-iD-s6z" userLabel="Period Description">
+                                                <rect key="frame" x="7" y="35" width="319" height="14"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="UWK-wG-hyz">
+                                                    <font key="font" size="9" name="HelveticaNeue-Bold"/>
+                                                    <color key="textColor" red="0.75294125079999996" green="0.35294118520000001" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                                <connections>
+                                                    <binding destination="wS0-V3-sxb" name="value" keyPath="objectValue.periodDescription" id="UlI-iH-BgN"/>
+                                                </connections>
+                                            </textField>
+                                        </subviews>
+                                        <connections>
+                                            <outlet property="currencyField" destination="Vyx-2F-e2s" id="jXe-T4-keh"/>
+                                            <outlet property="purposeField" destination="CEI-Fg-I9r" id="7nZ-AY-q5I"/>
+                                            <outlet property="receiverField" destination="Bph-zV-eWb" id="2vY-Yk-IXg"/>
+                                            <outlet property="valueField" destination="RqS-8O-tvM" id="Md5-xy-CO3"/>
+                                        </connections>
+                                    </tableCellView>
+                                </prototypeCellViews>
+                            </tableColumn>
+                        </tableColumns>
+                        <connections>
+                            <binding destination="quP-pk-dQH" name="content" keyPath="arrangedObjects" id="a7h-yg-Jnr"/>
+                        </connections>
+                    </tableView>
+                </subviews>
+                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+            </clipView>
+            <scroller key="horizontalScroller" verticalHuggingPriority="750" id="UMr-Sm-wSm">
+                <rect key="frame" x="0.0" y="235" width="326" height="16"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </scroller>
+            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" id="dE0-tN-1af">
+                <rect key="frame" x="-15" y="17" width="16" height="0.0"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </scroller>
+        </scrollView>
+        <arrayController mode="entity" entityName="StandingOrder" editable="NO" automaticallyPreparesContent="YES" preservesSelection="NO" selectsInsertedObjects="NO" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="quP-pk-dQH" userLabel="Popover Data">
+            <declaredKeys>
+                <string>remoteName</string>
+                <string>value</string>
+                <string>currency</string>
+                <string>purpose</string>
+            </declaredKeys>
+        </arrayController>
+    </objects>
+</document>

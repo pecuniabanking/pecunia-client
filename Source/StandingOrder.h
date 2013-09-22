@@ -37,6 +37,7 @@ typedef enum {
 }
 
 - (NSString *)purpose;
+- (NSString *)periodDescription;
 - (void)setJobId: (unsigned int)jid;
 - (unsigned int)jobId;
 

@@ -248,6 +248,10 @@
    viewForTableColumn: (NSTableColumn *)tableColumn
                   row: (NSInteger)row
 {
+    if (row >= (NSInteger)entries.count) {
+        return nil;
+    }
+    
     if ([entries[row] isKindOfClass: StatementsHeader.class]) {
         StatementsHeader *header = entries[row];
         TransfersHeaderView *cell = [tableView makeViewWithIdentifier: @"HeaderCell" owner: self];

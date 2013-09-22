@@ -72,6 +72,7 @@
 + (ShortDate *)dateWithDate: (NSDate *)date;
 + (ShortDate *)currentDate;
 + (ShortDate *)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d;
++ (ShortDate *)dateWithYear: (unsigned)y week: (unsigned)w dayInWeek: (unsigned)d;
 + (ShortDate *)distantFuture;
 + (ShortDate *)distantPast;
 + (NSCalendar *)calendar;

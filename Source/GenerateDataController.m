@@ -25,8 +25,12 @@
 #import "BankStatement.h"
 #import "StatCatAssignment.h"
 #import "ShortDate.h"
+#import "StandingOrder.h"
+#import "PreferenceController.h"
 
 #import "GrowlNotification.h"
+
+static NSString *DemoDataKey = @"contains-demo-data";
 
 @interface GenerateDataController ()
 
@@ -45,11 +49,35 @@
     self = [super initWithWindowNibName: @"GenerateDataController"];
     if (self) {
         calendar = [ShortDate calendar];
+
         startYear = 2008;
         endYear = 2013;
         bankCount = 5;
         maxAccountsPerBank = 3;
         numberOfStatementsPerBank = 650;
+
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSDictionary *values = [defaults objectForKey: @"generator-values"];
+        if (values != nil) {
+            if ([values[@"path"] length] > 0) {
+                self.path.stringValue = values[@"path"];
+            }
+            if (values[@"startYear"] != nil) {
+                startYear = [values[@"startYear"] integerValue];
+            }
+            if (values[@"endYear"] != nil) {
+                endYear = [values[@"endYear"] integerValue];
+            }
+            if (values[@"bankCount"] != nil) {
+                bankCount = [values[@"bankCount"] integerValue];
+            }
+            if (values[@"maxAccounts"] != nil) {
+                maxAccountsPerBank = [values[@"maxAccounts"] integerValue];
+            }
+            if (values[@"transactionCount"] != nil) {
+                numberOfStatementsPerBank = [values[@"transactionCount"] integerValue];
+            }
+        }
     }
 
     return self;
@@ -389,8 +417,65 @@
     }
 }
 
+- (void)addStandingOrders: (NSArray *)orders
+{
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"dd.MM.yyyy";
+    for (NSString *line in orders) {
+        NSRange range = [line rangeOfString: @"#"];
+        NSString *entry = (range.length == 0) ? line : [line substringToIndex: range.location];
+
+        NSArray *parts = [entry componentsSeparatedByString: @":"];
+        if (parts.count < 10) {
+            continue; // Ignore any entry which is not properly specified (or empty/commented lines).
+        }
+
+        // Fields are: remote name:remote bank name:IBAN:BIC:amount:purpose:period ([w]eekly, [m]onthly):
+        //             cycle (months in year or days in week):executionDay (day in week or month):
+        //             first exec day:last exec day (optional)
+        StandingOrder *order = [NSEntityDescription insertNewObjectForEntityForName: @"StandingOrder"
+                                                             inManagedObjectContext: context];
+
+        order.remoteName = parts[0];
+        order.remoteBankName = parts[1];
+        order.remoteIBAN = parts[2];
+        order.remoteBIC = parts[3];
+        order.value = [NSDecimalNumber decimalNumberWithString: parts[4]];
+        order.purpose1 = parts[5]; // Assuming demo data has a purpose string of acceptable length for one line.
+
+        if ([parts[6] isEqualTo: @"w"]) {
+            order.period = @(stord_weekly);
+        } else {
+            order.period = @(stord_monthly);
+        }
+        order.cycle = @([parts[7] intValue]);
+        order.executionDay = @([parts[8] intValue]);
+        order.firstExecDate = [formatter dateFromString: parts[9]];
+
+        if (parts.count > 10) {
+            order.lastExecDate = [formatter dateFromString: parts[10]];
+        }
+    }
+
+}
+
 - (IBAction)start: (id)sender
 {
+    // First store all values used for generation for restore on next run.
+    // This way we can start off were we left, quickly.
+    NSDictionary *values = @{@"path": self.path.stringValue,
+                             @"startYear": @(startYear),
+                             @"endYear": @(endYear),
+                             @"bankCount": @(bankCount),
+                             @"maxAccounts": @(maxAccountsPerBank),
+                             @"transactionCount": @(numberOfStatementsPerBank)
+                             };
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject: values forKey: @"generator-values"];
+
     NSError  *error;
     NSString *path = self.path.stringValue;
     NSString *s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
@@ -454,6 +539,9 @@
         
         NSSet *categories = Category.catRoot.allCategories;
 
+        // Mark the database as having demo data.
+        [PreferenceController setPersistentBoolValue: YES forKey: DemoDataKey];
+
         // Precompute details for principals.
         NSMutableArray *parsedPrincipals = [NSMutableArray arrayWithCapacity: principals.count];
         for (NSString *principal in principals) {
@@ -506,6 +594,8 @@
                    principals: parsedPrincipals
                    categories: categories];
         [Category.bankRoot rollup];
+
+        [self addStandingOrders: blocks[@"Standing Orders"]];
 
         [self.progressIndicator stopAnimation: self];
         if (![context save: &error]) {

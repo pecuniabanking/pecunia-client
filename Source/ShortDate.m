@@ -60,6 +60,25 @@ NSCalendar *calendar = nil;
     return self;
 }
 
+- (id)initWithYear: (unsigned)y week: (unsigned)w dayInWeek: (unsigned)d
+{
+    self = [super init];
+    if (self != nil) {
+        components = [[NSDateComponents alloc] init];
+        components.yearForWeekOfYear = y;
+        components.weekOfYear = w;
+        components.weekday = d;
+        components.hour = 12;
+        components.minute = 0;
+        components.second = 0;
+
+        inner = [calendar dateFromComponents: components];
+        components = [calendar components: NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit
+                                 fromDate: inner];
+    }
+    return self;
+}
+
 - (id)initWithCoder: (NSCoder *)coder
 {
     self = [super init];
@@ -382,6 +401,12 @@ NSCalendar *calendar = nil;
 + (ShortDate *)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d
 {
     ShortDate *res = [[ShortDate alloc] initWithYear: y month: m day: d];
+    return res;
+}
+
++ (ShortDate *)dateWithYear: (unsigned)y week: (unsigned)w dayInWeek: (unsigned)d
+{
+    ShortDate *res = [[ShortDate alloc] initWithYear: y week: w dayInWeek: d + calendar.firstWeekday - 1];
     return res;
 }
 

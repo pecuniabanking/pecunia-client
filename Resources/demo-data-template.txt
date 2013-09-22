@@ -116,28 +116,28 @@ Nog één biertje, graag 	Nog een beer-t, grahg
 # Fields are: remote name:remote bank name:IBAN:BIC:amount:purpose:period ([w]eekly, [m]onthly):cycle (months in year or days in week):executionDay (day in week or month):first exec day:last exec day (optional)
 # Sender account is assigned randomly.
 # Expired orders:
-Max Mustermann:Sammlerbank:DE87120300000011223344:BYLADEM1001:10:Wöchentliche Aufstockung (1):w:1:3:25.4.2000:1.3.2013
-Erika Standard:Freie Bank:DE87120300000011223344:BYLADEM1001:10:Wöchentlich mal anders (1):w:1:5:10.8.2005:1.3.2013
+Max Michael Muran Meteo Mustafa Mike Mustermann:Sammlerbank:DE87120300000011223344:BYLADEM1001:10:Zweiwöchentliche Aufstockung (1):w:2:3:25.4.2000:1.3.2013
+Erika Standard:Freie Bank:DE87120300000011223344:BYLADEM1001:10:Wöchentlich mal anders (1):w:1:5:10.8.2005:5.3.2013
 Fred Vorgestern:Studentenbank:DE87120300000011223344:BYLADEM1001:17.99:Jeden Monat wieder (1):m:1:11:1.1.2006:22.6.2011
 Susi Sorglos:Volksbank RT:DE87120300000011223344:BYLADEM1001:22.56:Hab nur einmal im Quartal Geld (1):m:3:5:1.1.2006:6.3.2006
 Ingolf Irgendwer:Banco Blanco:IT87120300000011223344:BYLADEM1001:22.56:Eher sporadisch (1):m:7:13:1.1.2000:6.3.2010
-Julius Jedermann:Spar- und Verlustbank Großbimmel:DE87120300000011223344:BYLADEM1001:1010:Alle Jahre wieder (1):m:12:21:17.2.1995:6.9.2013
+Julius Jörn Jannes Jürgen Jaromir Justin Jedermann:Spar- und Verlustbank Großbimmel:DE87120300000011223344:BYLADEM1001:123456.99:Alle Jahre wieder (1):m:12:21:17.2.1995:6.9.2013
 Noël Personne:Banque de Luxembourg:LU87120300000011223344:BLUXLULL:1010:Zuverlässig wie immer (1):m:2:21:24.12.2004:24.12.2005
 
 # Future orders:
-Max Mustermann:Sammlerbank:DE87120300000011223344:BYLADEM1001:10:Wöchentliche Aufstockung (3):w:1:3:25.4.2014:1.3.2015
+Max Michael Muran Meteo Mustafa Mike Mustermann:Sammlerbank:DE87120300000011223344:BYLADEM1001:10:Zweiwöchentliche Aufstockung (3):w:2:3:25.4.2014:1.3.2015
 Erika Standard:Freie Bank:DE87120300000011223344:BYLADEM1001:10:Wöchentlich mal anders (3):w:1:5:10.8.2015
 Fred Vorgestern:Studentenbank:DE87120300000011223344:BYLADEM1001:17.99:Jeden Monat wieder (3):m:1:11:1.1.2016:22.6.2022
-Susi Sorglos:Volksbank RT:DE87120300000011223344:BYLADEM1001:22.56:Hab nur einmal im Quartal Geld (3):m:3:5:10.10.2013
-Ingolf Irgendwer:Banco Blanco:IT87120300000011223344:BYLADEM1001:22.56:Eher sporadisch (3):m:7:13:1.1.2000:1.11.2013
-Julius Jedermann:Spar- und Verlustbank Großbimmel:DE87120300000011223344:BYLADEM1001:1010:Alle Jahre wieder (3):m:12:21:31.12.2013:30.12.2020
-Noël Personne:Banque de Luxembourg:LU87120300000011223344:BLUXLULL:1010:Zuverlässig wie immer (3):m:2:21:24.12.2014
+Susi Sorglos:Volksbank RT:DE87120300000011223344:BYLADEM1001:22.56:Hab nur einmal im Quartal Geld (3):m:3:99:10.10.2015
+Ingolf Irgendwer:Banco Blanco:IT87120300000011223344:BYLADEM1001:22.56:Eher sporadisch (3):m:7:13:1.4.2017:1.11.2027
+Julius Jörn Jannes Jürgen Jaromir Justin Jedermann:Spar- und Verlustbank Großbimmel:DE87120300000011223344:BYLADEM1001:123456.99:Alle Jahre wieder (3):m:12:21:31.12.2013:30.12.2020
+Noël Personne:Banque de Luxembourg:LU87120300000011223344:BLUXLULL:223.45:Zuverlässig wie immer (3):m:2:21:24.12.2014
 
 # Current orders:
-Max Mustermann:Sammlerbank:DE87120300000011223344:BYLADEM1001:10:Wöchentliche Aufstockung (2):w:1:3:25.4.2001
+Max Michael Muran Meteo Mustafa Mike Mustermann:Sammlerbank:DE87120300000011223344:BYLADEM1001:10:Zweiwöchentliche Aufstockung (2):w:2:3:25.4.2001
 Erika Standard:Freie Bank:DE87120300000011223344:BYLADEM1001:10:Wöchentlich mal anders (2):w:1:5:10.8.2011:1.3.2015
 Fred Vorgestern:Studentenbank:DE87120300000011223344:BYLADEM1001:17.99:Jeden Monat wieder (2):m:1:11:1.1.2010
-Susi Sorglos:Volksbank RT:DE87120300000011223344:BYLADEM1001:22.56:Hab nur einmal im Quartal Geld (2):m:3:5:10.08.2013:22.6.2022
-Ingolf Irgendwer:Banco Blanco:IT87120300000011223344:BYLADEM1001:22.56:Eher sporadisch (2):m:7:13:1.1.2000:1.06.2013
-Julius Jedermann:Spar- und Verlustbank Großbimmel:DE87120300000011223344:BYLADEM1001:1010:Alle Jahre wieder (2):m:12:21:6.12.2010:6.12.2020
-Noël Personne:Banque de Luxembourg:LU87120300000011223344:BLUXLULL:1010:Zuverlässig wie immer (2):m:2:21:24.12.2012
+Susi Sorglos:Volksbank RT:DE87120300000011223344:BYLADEM1001:22.56:Hab nur einmal im Quartal Geld (2):m:3:99:10.08.2013:13.7.2015
+Ingolf Irgendwer:Banco Blanco:IT87120300000011223344:BYLADEM1001:22.56:Eher sporadisch (2):m:7:98:1.1.2000:1.04.2017
+Julius Jörn Jannes Jürgen Jaromir Justin Jedermann:Spar- und Verlustbank Großbimmel:DE87120300000011223344:BYLADEM1001:123456.99:Alle Jahre wieder (2):m:12:97:6.12.2010:6.12.2020
+Noël Personne:Banque de Luxembourg:LU87120300000011223344:BLUXLULL:1010:Zuverlässig wie immer (2):m:2:21:24.12.2012:24.12.2014

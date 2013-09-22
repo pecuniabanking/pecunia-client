@@ -26,10 +26,13 @@
 #import "StandingOrder.h"
 #import "MOAssistant.h"
 #import "BankingController.h"
+#import "MessageLog.h"
 
 @interface NextTransfersCalendar : NSView
 {
 @private
+    NextTransfersCard *card;
+
     NSMutableDictionary *values;
     ShortDate *selectedDate;
     ShortDate       *startDate;
@@ -63,10 +66,11 @@
     }
 }
 
-- (id)initWithFrame: (NSRect)frameRect
+- (id)initWithFrame: (NSRect)frameRect owner: (NextTransfersCard *)owner
 {
     self = [super initWithFrame: frameRect];
     if (self != nil) {
+        card = owner;
         year = 0;
         month = 0;
 
@@ -117,8 +121,7 @@
     }
     if (change) {
         selectedDate = value;
-        [self display];
-        //[(HeatMapView *)self.superview resetSelectedDate : self];
+        [self setNeedsDisplay: YES];
     }
 }
 
@@ -138,15 +141,22 @@
         NSUInteger weekDay = (NSUInteger)location.x / cellArea.size.width;
         NSUInteger week = (NSUInteger)location.y / cellArea.size.height;
         ShortDate *date = [startDate dateByAddingUnits: week * 7 + weekDay byUnit: NSDayCalendarUnit];
-        if (values[date] != nil) {
-            self.selectedDate = date;
-        } else {
-            self.selectedDate = nil;
-        }
+        if (date.month == month) {
+            if (values[date] != nil) {
+                self.selectedDate = date;
+            } else {
+                self.selectedDate = nil;
+            }
 
-        cellArea.origin.x = valueArea.origin.x + weekDay * cellArea.size.width;
-        cellArea.origin.y = valueArea.origin.y + week * cellArea.size.height;
-        //        [controller showValuePopupForDate: selectedDate relativeToRect: cellArea forView: self];
+            if (self.selectedDate != nil) {
+                cellArea.origin.x = valueArea.origin.x + weekDay * cellArea.size.width;
+                cellArea.origin.y = valueArea.origin.y + week * cellArea.size.height;
+                [card showValuePopupForDate: selectedDate
+                                     values: values[selectedDate]
+                             relativeToRect: cellArea
+                                    forView: self];
+            }
+        }
     } else {
         self.selectedDate = nil;
     }
@@ -400,6 +410,8 @@ static NSFont *smallNumberFont;
 
 @interface BandView : NSView <NSAnimationDelegate>
 {
+    NextTransfersCard *owner;
+
     NSDateFormatter *dateFormatter;
     NSMutableDictionary *monthAttributes;
     NSDictionary *yearAttributes;
@@ -434,12 +446,13 @@ static NSFont *smallNumberFont;
     }
 }
 
-- (id)initWithFrame: (NSRect)frameRect startingEnd: (BandEndView *)view
+- (id)initWithFrame: (NSRect)frameRect startingEnd: (BandEndView *)view card: (NextTransfersCard *)card
 {
     self = [super initWithFrame: frameRect];
     if (self != nil) {
         [self setWantsLayer: YES];
 
+        owner = card;
         startEnd = view;
         startEnd.layer.shadowOpacity = 0;
         dateFormatter = [[NSDateFormatter alloc] init];
@@ -458,11 +471,11 @@ static NSFont *smallNumberFont;
         standingOrders.automaticallyRearrangesObjects = YES;
 
         // At most 3 calendars can be visible.
-        NextTransfersCalendar *calendar = [[NextTransfersCalendar alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
+        NextTransfersCalendar *calendar = [[NextTransfersCalendar alloc] initWithFrame: NSMakeRect(0, 0, 100, 100) owner: card];
         [self addSubview: calendar];
-        calendar = [[NextTransfersCalendar alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
+        calendar = [[NextTransfersCalendar alloc] initWithFrame: NSMakeRect(0, 0, 100, 100) owner: card];
         [self addSubview: calendar];
-        calendar = [[NextTransfersCalendar alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
+        calendar = [[NextTransfersCalendar alloc] initWithFrame: NSMakeRect(0, 0, 100, 100) owner: card];
         [self addSubview: calendar];
         [self updateCalendarsWithFetch: YES];
     }
@@ -640,44 +653,81 @@ static NSFont *smallNumberFont;
     for (NSUInteger i = 0; i < 3; ++i) {
         NextTransfersCalendar *calendar = self.subviews[i];
         if (fetch || calendar.month != date.month || calendar.year != date.year) {
+            [owner cancelPopover];
+
             calendar.month = date.month;
             calendar.year = date.year;
 
+            // We need 2 separate loops, one for weeks and one for months.
             NSMutableDictionary *values = [NSMutableDictionary dictionary];
             ShortDate *firstDay = [ShortDate dateWithYear: date.year month: date.month day: 1];
             ShortDate *lastDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: 0];
+
+            // Month loop.
             for (StandingOrder *order in standingOrders.arrangedObjects) {
                 ShortDate *firstExecution = [ShortDate dateWithDate: order.firstExecDate];
                 ShortDate *lastExecution = order.lastExecDate == nil ? lastDay : [ShortDate dateWithDate: order.lastExecDate];
                 if ([firstExecution compare: lastDay] != NSOrderedDescending &&
                     [lastExecution compare: firstDay] != NSOrderedAscending) {
-                    switch (order.period.intValue) {
-                        case stord_weekly:
-                            break;
-                            
-                        case stord_monthly:
-                        {
-                            int delta = date.month - firstExecution.month;
-                            if (delta < 0) {
-                                delta += 12;
+
+                    if (order.period.intValue== stord_monthly)
+                    {
+                        int delta = (int)date.month - (int)firstExecution.month;
+                        if (delta < 0) {
+                            delta += 12;
+                        }
+                        if (delta % order.cycle.intValue == 0) {
+                            ShortDate *executionDay;
+                            int day = order.executionDay.intValue;
+                            switch (day) {
+                                case 99: // Ultimo
+                                    executionDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: 0];
+                                    break;
+                                case 98: // Ultimo - 1
+                                    executionDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: -1];
+                                    break;
+                                case 97:  // Ultimo - 2
+                                    executionDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: -2];
+                                    break;
+                                default:
+                                    executionDay = [ShortDate dateWithYear: date.year month: date.month day: day];
+                                    break;
                             }
-                            if (delta % order.cycle.intValue == 0) {
-                                ShortDate *executionDay;
-                                int day = order.executionDay.intValue;
-                                switch (day) {
-                                    case 99: // Ultimo
-                                        executionDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: 0];
-                                        break;
-                                    case 98: // Ultimo - 1
-                                        executionDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: -1];
-                                        break;
-                                    case 97:  // Ultimo - 2
-                                        executionDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: -2];
-                                        break;
-                                    default:
-                                        executionDay = [ShortDate dateWithYear: date.year month: date.month day: day];
-                                        break;
-                                }
+                            NSMutableArray *entries = values[executionDay];
+                            if (entries == nil) {
+                                entries = [NSMutableArray array];
+                            }
+                            [entries addObject: order];
+                            values[executionDay] = entries;
+                        }
+                    }
+                }
+            }
+
+            // Week loop.
+            for (StandingOrder *order in standingOrders.arrangedObjects) {
+                ShortDate *firstExecution = [ShortDate dateWithDate: order.firstExecDate];
+                ShortDate *lastExecution = order.lastExecDate == nil ? lastDay : [ShortDate dateWithDate: order.lastExecDate];
+                if (order.period.intValue == stord_weekly)
+                {
+                    int endWeek = lastDay.week;
+                    if (endWeek < (int)firstDay.week)
+                        endWeek += 52;
+                    for (int week = firstDay.week; week <= endWeek; ++week) {
+
+                        int delta = week - firstExecution.week;
+                        if (delta < 0) {
+                            delta += 52;
+                        }
+                        if (delta % order.cycle.intValue == 0) {
+                            int day = order.executionDay.intValue;
+                            ShortDate *executionDay = [ShortDate dateWithYear: date.year
+                                                                         week: week
+                                                                    dayInWeek: day];
+
+                            if ([firstExecution compare: executionDay] != NSOrderedDescending &&
+                                [lastExecution compare: executionDay] != NSOrderedAscending) {
+                                
                                 NSMutableArray *entries = values[executionDay];
                                 if (entries == nil) {
                                     entries = [NSMutableArray array];
@@ -685,11 +735,11 @@ static NSFont *smallNumberFont;
                                 [entries addObject: order];
                                 values[executionDay] = entries;
                             }
-                            break;
                         }
                     }
                 }
             }
+
             calendar.values = values;
             [calendar setNeedsDisplay: YES];
         }
@@ -712,11 +762,19 @@ static NSFont *smallNumberFont;
 
 @end
 
+@implementation OrderTableCellView
+@end
+
 @interface NextTransfersCard ()
 {
-    NSMutableArray *entries;
     BandView *bandView;
+
+    IBOutlet NSPopover  *ordersPopover;
+    IBOutlet NSTableView *ordersPopupList;
+    IBOutlet NSArrayController *popoverDataController;
 }
+
+@property (strong) NSArray *popoverData;
 
 @end
 
@@ -726,11 +784,20 @@ static NSFont *smallNumberFont;
 {
     self = [super initWithFrame: frame];
     if (self) {
+        NSNib *nib = [[NSNib alloc] initWithNibNamed: @"HomeScreenNextTransfers" bundle: nil];
+        NSArray *topLevelObjects;
+        if (![nib instantiateWithOwner: self topLevelObjects: &topLevelObjects]) {
+            // Can this ever fail?
+            [[MessageLog log] addMessage: @"Internal error: home screen transfer view loading failed" withLevel: LogLevel_Error];
+        }
+
         [self loadData];
         [NSNotificationCenter.defaultCenter addObserver: self
                                                selector: @selector(handleDataModelChange:)
                                                    name: NSManagedObjectContextDidSaveNotification
                                                  object: MOAssistant.assistant.context];
+
+        
     }
 
     return self;
@@ -754,13 +821,17 @@ static NSFont *smallNumberFont;
 {
     // View sizes are just dummy values. Layout is done below.
     BandEndView *startView = [[BandEndView alloc] initWithFrame: NSMakeRect(0, 0, 100, 100) isTop: NO];
-    bandView = [[BandView alloc] initWithFrame: NSMakeRect(0, 0, 10, 10) startingEnd: startView];
+    bandView = [[BandView alloc] initWithFrame: NSMakeRect(0, 0, 10, 10) startingEnd: startView card: self];
     bandView.listMode = NO;
     [self addSubview: bandView];
 
     BandEndView *endView = [[BandEndView alloc] initWithFrame: NSMakeRect(0, 0, 100, 100) isTop: YES];
     [self addSubview: endView];
     [self addSubview: startView];
+
+    //ordersPopupList.dataSource = self;
+    ordersPopupList.delegate = self;
+    popoverDataController.managedObjectContext = MOAssistant.assistant.context;
 }
 
 - (void)resizeSubviewsWithOldSize: (NSSize)oldSize
@@ -788,6 +859,73 @@ static NSFont *smallNumberFont;
         }
         [child resizeWithOldSuperviewSize: oldSize];
     }
+}
+
+- (void)showValuePopupForDate: (ShortDate *)date
+                       values: (NSArray *)values
+               relativeToRect: (NSRect)area
+                      forView: (NSView *)view
+{
+    self.popoverData = values;
+    popoverDataController.content = values;
+
+    NSRect frame = ordersPopupList.frame;
+    frame.origin = NSMakePoint(2, 2);
+    if (values.count < 6) {
+        frame.size.height = MAX(values.count, 1) * 51;
+    } else {
+        frame.size.height = 5 * 51;
+    }
+
+    NSSize contentSize = frame.size;
+    //contentSize.width += 4; // Border left/right.
+    contentSize.height += 4; // Ditto for top/bottom.
+    ordersPopupList.frame = frame;
+    ordersPopover.contentSize = contentSize;
+
+    [ordersPopupList reloadData];
+
+    [ordersPopover showRelativeToRect: area ofView: view preferredEdge: NSMaxXEdge];
+    ordersPopupList.frameOrigin = frame.origin; // Set the origin again, as NSPopover messes this up.
+}
+
+- (void)cancelPopover
+{
+    [ordersPopover close];
+}
+
+#pragma mark - NSTableViewDataSource protocol
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+{
+    return self.popoverData.count;
+}
+
+- (NSView *)tableView: (NSTableView *)tableView
+   viewForTableColumn: (NSTableColumn *)tableColumn
+                  row: (NSInteger)row
+{
+    if (row >= (NSInteger)self.popoverData.count) {
+        return nil;
+    }
+
+    return [tableView makeViewWithIdentifier: @"OrderCell" owner: self];
+}
+
+- (NSTableRowView *)tableView: (NSTableView *)tableView rowViewForRow: (NSInteger)row
+{
+    NSTableRowView *view = [[NSTableRowView alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
+    return view;
+}
+
+- (CGFloat)tableView: (NSTableView *)tableView heightOfRow: (NSInteger)row
+{
+    return 50;
+}
+
+- (BOOL)tableView: (NSTableView *)tableView isGroupRow:( NSInteger)row
+{
+    return NO;
 }
 
 @end

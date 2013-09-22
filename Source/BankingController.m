@@ -802,11 +802,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [tagsController setSortDescriptors: @[sd]];
     tagButton.bordered = NO;
 
-    // Setup full screen mode support on Lion+.
-    // TODO: can be done in the xib.
-    [mainWindow setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
-    [toggleFullscreenItem setHidden: NO];
-    
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(contextChanged)
                                                  name: @"contextDataChanged"
@@ -1941,76 +1936,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         }
     }
     return YES;
-}
-
-- (NSApplicationTerminateReply)applicationShouldTerminate: (NSApplication *)sender
-{
-    if ([self canTerminate] == NO) {
-        return NSTerminateCancel;
-    }
-    return NSTerminateNow;
-}
-
-- (void)applicationWillTerminate: (NSNotification *)aNotification
-{
-    shuttingDown = YES;
-
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
-
-    [currentSection deactivate];
-    [accountsView saveState];
-
-    // Remove explicit bindings and observers to speed up shutdown.
-    [categoryController removeObserver: self forKeyPath: @"arrangedObjects.catSum"];
-    [categoryAssignments removeObserver: self forKeyPath: @"selectionIndexes"];
-    [statementsListView unbind: @"dataSource"];
-    [categoryAssignments unbind: @"selectionIndexes"];
-    [statementsListView unbind: @"selectedRows"];
-
-    for (id<PecuniaSectionItem> item in [mainTabItems allValues]) {
-        if ([(id)item respondsToSelector: @selector(terminate)]) {
-            [item terminate];
-        }
-    }
-    if ([categoryAnalysisController respondsToSelector: @selector(terminate)]) {
-        [categoryAnalysisController terminate];
-    }
-    if ([categoryReportingController respondsToSelector: @selector(terminate)]) {
-        [categoryReportingController terminate];
-    }
-    if ([categoryDefinitionController respondsToSelector: @selector(terminate)]) {
-        [categoryDefinitionController terminate];
-    }
-    if ([categoryPeriodsController respondsToSelector: @selector(terminate)]) {
-        [categoryPeriodsController terminate];
-    }
-
-    dockIconController = nil;
-
-    if (self.managedObjectContext && [MOAssistant assistant].isMaxIdleTimeExceeded == NO) {
-        if (![self save]) {
-            return;
-        }
-    }
-
-    [[MOAssistant assistant] shutdown];
-    [WorkerThread finish];
-    
-	// if application shall restart, launch new task
-	if(restart) {
-		NSProcessInfo *pi = [NSProcessInfo processInfo ];
-		NSArray *args = [pi arguments ];
-		NSString *path = [args objectAtIndex:0 ];
-		if(path) {
-            NSError *error = nil;
-            NSURL *url = [NSURL fileURLWithPath:path];
-            [[NSWorkspace sharedWorkspace] launchApplicationAtURL:url options: (NSWorkspaceLaunchNewInstance) configuration:nil error:&error];
-            if (error != nil) {
-                [[NSAlert alertWithError:error] runModal];
-            }
-		}
-	}
 }
 
 - (IBAction)showLog: (id)sender
@@ -3472,7 +3397,13 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [sc stopSpinning];
     [sc clearMessage];
 
-    [self activateMainPage: nil];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey: @"restoreActivePage"]) {
+        NSInteger index = [PreferenceController persistentIntValueForKey: @"activePage"];
+        [self switchMainPage: index];
+    } else {
+        [self switchMainPage: 0];
+    }
 
     // Display main window.
     [mainWindow display];
@@ -3508,6 +3439,79 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
             [self editBankUsers: self];
         }
     }
+}
+
+- (NSApplicationTerminateReply)applicationShouldTerminate: (NSApplication *)sender
+{
+    if ([self canTerminate] == NO) {
+        return NSTerminateCancel;
+    }
+    return NSTerminateNow;
+}
+
+- (void)applicationWillTerminate: (NSNotification *)aNotification
+{
+    shuttingDown = YES;
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
+
+    NSInteger index = toolbarButtons.selectedSegment;
+    [PreferenceController setPersistentIntValue: index forKey: @"activePage"];
+
+    [currentSection deactivate];
+    [accountsView saveState];
+
+    // Remove explicit bindings and observers to speed up shutdown.
+    [categoryController removeObserver: self forKeyPath: @"arrangedObjects.catSum"];
+    [categoryAssignments removeObserver: self forKeyPath: @"selectionIndexes"];
+    [statementsListView unbind: @"dataSource"];
+    [categoryAssignments unbind: @"selectionIndexes"];
+    [statementsListView unbind: @"selectedRows"];
+
+    for (id<PecuniaSectionItem> item in [mainTabItems allValues]) {
+        if ([(id)item respondsToSelector: @selector(terminate)]) {
+            [item terminate];
+        }
+    }
+    if ([categoryAnalysisController respondsToSelector: @selector(terminate)]) {
+        [categoryAnalysisController terminate];
+    }
+    if ([categoryReportingController respondsToSelector: @selector(terminate)]) {
+        [categoryReportingController terminate];
+    }
+    if ([categoryDefinitionController respondsToSelector: @selector(terminate)]) {
+        [categoryDefinitionController terminate];
+    }
+    if ([categoryPeriodsController respondsToSelector: @selector(terminate)]) {
+        [categoryPeriodsController terminate];
+    }
+
+    dockIconController = nil;
+
+    if (self.managedObjectContext && [MOAssistant assistant].isMaxIdleTimeExceeded == NO) {
+        if (![self save]) {
+            return;
+        }
+    }
+
+    [[MOAssistant assistant] shutdown];
+    [WorkerThread finish];
+
+	// if application shall restart, launch new task
+	if(restart) {
+		NSProcessInfo *pi = [NSProcessInfo processInfo ];
+		NSArray *args = [pi arguments ];
+		NSString *path = [args objectAtIndex:0 ];
+		if(path) {
+            NSError *error = nil;
+            NSURL *url = [NSURL fileURLWithPath:path];
+            [[NSWorkspace sharedWorkspace] launchApplicationAtURL:url options: (NSWorkspaceLaunchNewInstance) configuration:nil error:&error];
+            if (error != nil) {
+                [[NSAlert alertWithError:error] runModal];
+            }
+		}
+	}
 }
 
 - (void)autoSyncTimerEvent: (NSTimer *)theTimer

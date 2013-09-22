@@ -516,6 +516,8 @@
 		27DD4B09150B6FD0006C2370 /* NSColor+BWAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DD4B08150B6FD0006C2370 /* NSColor+BWAdditions.m */; };
 		27DFFD9216739C0000848CD2 /* CategoryMaintenance.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27DFFD9116739C0000848CD2 /* CategoryMaintenance.xib */; };
 		27DFFD9616739DAE00848CD2 /* CategoryMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DFFD9516739DAE00848CD2 /* CategoryMaintenanceController.m */; };
+		27E0A10D17ECB3FD001E9A9F /* HomeScreenNextTransfers.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E0A10C17ECB3FC001E9A9F /* HomeScreenNextTransfers.xib */; };
+		27E0A10E17ECB3FD001E9A9F /* HomeScreenNextTransfers.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27E0A10C17ECB3FC001E9A9F /* HomeScreenNextTransfers.xib */; };
 		27E11ECF178B14C500AD350A /* YahooStockData.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E11ECE178B14C500AD350A /* YahooStockData.m */; };
 		27E11ED0178B14C500AD350A /* YahooStockData.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E11ECE178B14C500AD350A /* YahooStockData.m */; };
 		27E1693B149F6E5C00089103 /* help-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 27E1693A149F6E5C00089103 /* help-button.png */; };
@@ -958,7 +960,7 @@
 		27CBF36A174A4C5F0062E2A9 /* About.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = About.xib; sourceTree = "<group>"; };
 		27CC73F414A0D1770082495C /* NS(Attributed)String+Geometrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NS(Attributed)String+Geometrics.h"; sourceTree = "<group>"; };
 		27CC73F514A0D1770082495C /* NS(Attributed)String+Geometrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NS(Attributed)String+Geometrics.m"; sourceTree = "<group>"; };
-		27CEFE6617E6197C0085F93A /* Accounts 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Accounts 10.xcdatamodel"; sourceTree = "<group>"; };
+		27CEFE6617E6197C0085F93A /* Accounts 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 10.xcdatamodel"; sourceTree = "<group>"; };
 		27CF0A6B15F260F200F48203 /* NSButton+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSButton+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSButton+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		27D1172A15288C3600CD7E83 /* background-pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-pattern.png"; sourceTree = "<group>"; };
@@ -994,6 +996,7 @@
 		27DFFD9116739C0000848CD2 /* CategoryMaintenance.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryMaintenance.xib; sourceTree = "<group>"; };
 		27DFFD9416739DAE00848CD2 /* CategoryMaintenanceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryMaintenanceController.h; sourceTree = "<group>"; };
 		27DFFD9516739DAE00848CD2 /* CategoryMaintenanceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryMaintenanceController.m; sourceTree = "<group>"; wrapsLines = 0; };
+		27E0A10C17ECB3FC001E9A9F /* HomeScreenNextTransfers.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeScreenNextTransfers.xib; sourceTree = "<group>"; };
 		27E11ECD178B14C500AD350A /* YahooStockData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YahooStockData.h; path = "Home Screen/YahooStockData.h"; sourceTree = "<group>"; wrapsLines = 0; };
 		27E11ECE178B14C500AD350A /* YahooStockData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YahooStockData.m; path = "Home Screen/YahooStockData.m"; sourceTree = "<group>"; wrapsLines = 0; };
 		27E1693A149F6E5C00089103 /* help-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-button.png"; sourceTree = "<group>"; };
@@ -1254,7 +1257,7 @@
 		B1AFA836129479BA00B115A7 /* CategoryReporting.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryReporting.xib; sourceTree = "<group>"; };
 		B1AFA8801295C5D800B115A7 /* CategoryAnalysis.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryAnalysis.xib; sourceTree = "<group>"; };
 		B1AFA9341299C15900B115A7 /* StandingOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrder.h; sourceTree = "<group>"; tabWidth = 4; };
-		B1AFA9351299C15900B115A7 /* StandingOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrder.m; sourceTree = "<group>"; tabWidth = 4; };
+		B1AFA9351299C15900B115A7 /* StandingOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrder.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1AFA9F6129EEA3900B115A7 /* Orders.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Orders.xib; sourceTree = "<group>"; };
 		B1AFAA0312A061C100B115A7 /* StandingOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrderController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AFAA0412A061C100B115A7 /* StandingOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrderController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
@@ -1651,6 +1654,7 @@
 				2703DE26146EE6AB0083CBA2 /* ExportPopup.xib */,
 				277C84921657F6DB0090D46D /* GenerateDataController.xib */,
 				27D902F21788265700B7452B /* HomeScreen.xib */,
+				27E0A10C17ECB3FC001E9A9F /* HomeScreenNextTransfers.xib */,
 				276FBAE617C52F8400C67EEC /* HomeScreenTransfersView.xib */,
 				B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */,
 				B1D44FFD14784344008DD256 /* Institutes.xib */,
@@ -2403,6 +2407,7 @@
 				2777896E173CE22700430EBC /* Transfers.xib in Resources */,
 				2777896F173CE22700430EBC /* transfer-debit-preview.png in Resources */,
 				27778970173CE22700430EBC /* transfer-eu-preview.png in Resources */,
+				27E0A10E17ECB3FD001E9A9F /* HomeScreenNextTransfers.xib in Resources */,
 				27778971173CE22700430EBC /* transfer-internal-preview.png in Resources */,
 				27778972173CE22700430EBC /* transfer-sepa-preview.png in Resources */,
 				27778973173CE22700430EBC /* transfer-normal-preview.png in Resources */,
@@ -2578,6 +2583,7 @@
 				27FA4A1E154D5F16002A5ED0 /* Transfers.xib in Resources */,
 				272328A01551A4D500B9683B /* transfer-debit-preview.png in Resources */,
 				272328A11551A4D500B9683B /* transfer-eu-preview.png in Resources */,
+				27E0A10D17ECB3FD001E9A9F /* HomeScreenNextTransfers.xib in Resources */,
 				272328A21551A4D500B9683B /* transfer-internal-preview.png in Resources */,
 				272328A41551A4D500B9683B /* transfer-sepa-preview.png in Resources */,
 				27E80D471551AC9600BB1AF8 /* transfer-normal-preview.png in Resources */,

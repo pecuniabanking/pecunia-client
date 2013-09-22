@@ -36,7 +36,7 @@ static NSArray *exportFields = nil;
 
 #define EXPORT_SEPARATOR @"exportSeparator"
 
-#define GENERAL_HEIGHT    310
+#define GENERAL_HEIGHT    355
 #define HOMESCREEN_HEIGHT 310
 #define SEC_HEIGHT        270
 #define LOC_HEIGHT        260
@@ -725,6 +725,7 @@ static NSGradient *headerGradient;
         info = entries[0];
     }
     info.value = value;
+    [context commitEditing];
 }
 
 + (NSInteger)persistentIntValueForKey: (NSString *)key

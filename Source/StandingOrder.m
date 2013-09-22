@@ -70,6 +70,48 @@
     return s;
 }
 
+- (NSString *)periodDescription
+{
+    NSString *timeFrame;
+    NSString *day;
+    if (self.period.intValue == stord_weekly) {
+        if (self.cycle.intValue == 1) {
+            timeFrame = NSLocalizedString(@"AP451", nil);
+        } else {
+            timeFrame = [NSString stringWithFormat: NSLocalizedString(@"AP453", nil), self.cycle.intValue];
+        }
+
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        NSArray *weekDays = formatter.weekdaySymbols;
+        day = weekDays[self.executionDay.intValue];
+    } else {
+        if (self.cycle.intValue == 1) {
+            timeFrame = NSLocalizedString(@"AP450", nil);
+        } else {
+            timeFrame = [NSString stringWithFormat: NSLocalizedString(@"AP452", nil), self.cycle.intValue];
+        }
+        switch (self.executionDay.intValue)
+        {
+            case 99:
+                day = NSLocalizedString(@"AP466", nil);
+                break;
+            case 98:
+                day = NSLocalizedString(@"AP467", nil);
+                break;
+            case 97:
+                day = NSLocalizedString(@"AP468", nil);
+                break;
+            default:
+                day = [NSString stringWithFormat: @"%i.", self.executionDay.intValue];
+                break;
+        }
+    }
+
+    NSMutableString *result = [NSMutableString stringWithFormat: NSLocalizedString(@"AP465", nil), timeFrame, day];
+
+    return result;
+}
+
 - (void)setJobId: (unsigned int)jid
 {
     jobId = jid;
