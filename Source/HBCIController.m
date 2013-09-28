@@ -366,6 +366,28 @@ NSString * escapeSpecial(NSString *s)
     return YES;
 }
 
+- (BOOL)isTransactionSupported: (TransactionType)tt forUser: (BankUser *)user
+{
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"user = %@ AND type = %d", user, tt];
+    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
+    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+    [request setPredicate: predicate];
+    
+    NSError *error = nil;
+    NSArray *result = [context executeFetchRequest: request error: &error];
+    if (error != nil) {
+        return NO;
+    }
+    
+    if ([result count] == 0) {
+        return NO;
+    }
+    return YES;
+}
+
+
 - (BOOL)isTransferSupported: (TransferType)tt forAccount: (BankAccount *)account
 {
     TransactionType transactionType;
@@ -1534,6 +1556,14 @@ NSString * escapeSpecial(NSString *s)
             tinfo.type = @(TransactionType_CCSettlement);
             [[MessageLog log] addMessage: @"Add supported transaction KKSETTLEREQ" withLevel: LogLevel_Debug];
         }
+        
+        if ([supportedJobNames containsObject: @"ChangePin"] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = @(TransactionType_ChangePin);
+            [[MessageLog log] addMessage: @"Add supported transaction ChangePin" withLevel: LogLevel_Debug];
+        }
     }
     return nil;
 }
@@ -1593,6 +1623,34 @@ NSString * escapeSpecial(NSString *s)
     [cmd appendString: @"</command>"];
 
     [bridge syncCommand: cmd error: &error];
+    if (error) {
+        return error;
+    }
+    return nil;
+}
+
+- (PecuniaError *)changePinForUser: (BankUser *)user toPin: (NSString *)newPin
+{
+    PecuniaError *error = nil;
+    if ([self registerBankUser: user error: &error] == NO) {
+        return error;
+    }
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"changePin\">"];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
+    [self appendTag: @"userId" withValue: user.userId to: cmd];
+    [self appendTag: @"newPin" withValue: newPin to: cmd];
+    [cmd appendString: @"</command>"];
+    
+    NSNumber *isOk = [bridge syncCommand: cmd error: &error];
+    if ([isOk boolValue]) {
+        error = [PecuniaError errorWithMessage:NSLocalizedString(@"AP82", @"")
+                                         title:NSLocalizedString(@"AP53", @"")];
+    }
+    
+    // remove PIN from Keychain
+    NSString *s = [NSString stringWithFormat: @"PIN_%@_%@", user.bankCode, user.userId];
+    [Keychain deletePasswordForService: @"Pecunia PIN" account: s];
+
     if (error) {
         return error;
     }

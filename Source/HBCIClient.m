@@ -235,4 +235,15 @@ static HBCIClient *client = nil;
     return [controller isTransactionSupported: tt forAccount: account];
 }
 
+- (BOOL)isTransactionSupported: (TransactionType)tt forUser: (BankUser *)user
+{
+    return [controller isTransactionSupported:tt forUser:user];
+}
+
+- (PecuniaError *)changePinForUser: (BankUser *)user toPin: (NSString *)newPin
+{
+    return [controller changePinForUser:user toPin:newPin];
+}
+
+
 @end

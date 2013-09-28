@@ -57,6 +57,7 @@ AP79 = "Bitte HBCI-Version angeben";
 AP80 = "Bitte PIN/TAN-URL angeben";
 AP80 = "Bitte HBCI-URL angeben";
 AP81 = "Bitte Kommunikationsadresse (HBCI-URL) eingeben";
+AP82 = "Der Vorgang konnte nicht erfolgreich abgeschlossen werden. Details zur Fehlerursache finden Sie im Nachrichtenlog";
 
 // General + miscellaneous messages.
 // AP100..AP149

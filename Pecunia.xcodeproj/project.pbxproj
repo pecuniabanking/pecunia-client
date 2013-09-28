@@ -676,6 +676,10 @@
 		B1AFA9361299C15900B115A7 /* StandingOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFA9351299C15900B115A7 /* StandingOrder.m */; };
 		B1AFA9F7129EEA3900B115A7 /* Orders.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFA9F6129EEA3900B115A7 /* Orders.xib */; };
 		B1AFAA0512A061C100B115A7 /* StandingOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFAA0412A061C100B115A7 /* StandingOrderController.m */; };
+		B1AFC66D17F627B50046B625 /* NewPinWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFC66C17F627B50046B625 /* NewPinWindow.xib */; };
+		B1AFC66E17F627B50046B625 /* NewPinWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1AFC66C17F627B50046B625 /* NewPinWindow.xib */; };
+		B1AFC67117F62A980046B625 /* NewPinController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFC67017F62A980046B625 /* NewPinController.m */; };
+		B1AFC67217F62A980046B625 /* NewPinController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1AFC67017F62A980046B625 /* NewPinController.m */; };
 		B1B417DF13F06AD200BEEC8F /* TanMediaWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */; };
 		B1B417E113F06CC600BEEC8F /* TanMediaWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */; };
 		B1B41C8C14005B5B00BEEC8F /* BankParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B41C8B14005B5B00BEEC8F /* BankParameter.m */; };
@@ -1261,6 +1265,9 @@
 		B1AFA9F6129EEA3900B115A7 /* Orders.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Orders.xib; sourceTree = "<group>"; };
 		B1AFAA0312A061C100B115A7 /* StandingOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StandingOrderController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1AFAA0412A061C100B115A7 /* StandingOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StandingOrderController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		B1AFC66C17F627B50046B625 /* NewPinWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewPinWindow.xib; sourceTree = "<group>"; };
+		B1AFC66F17F62A830046B625 /* NewPinController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPinController.h; sourceTree = "<group>"; };
+		B1AFC67017F62A980046B625 /* NewPinController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPinController.m; sourceTree = "<group>"; };
 		B1B417DD13F06AD200BEEC8F /* TanMediaWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TanMediaWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TanMediaWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1B417E013F06CC600BEEC8F /* TanMediaWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TanMediaWindow.xib; sourceTree = "<group>"; };
@@ -1661,6 +1668,7 @@
 				B1D44FF71478430A008DD256 /* LogController.xib */,
 				B1D44FC91478407D008DD256 /* MainMenu.xib */,
 				B1D44FF4147842C5008DD256 /* NewPasswordWindow.xib */,
+				B1AFC66C17F627B50046B625 /* NewPinWindow.xib */,
 				B183572715CC505A003B93ED /* NotificationWindow.xib */,
 				27A41A4E15F3C7750043BB68 /* OrdersListViewCell.xib */,
 				B1835C1215D2A1C6003B93ED /* SigningOptions.xib */,
@@ -2111,6 +2119,8 @@
 				A652533415E39A92000C2989 /* TanWindow.m */,
 				B12A4D4D10C869F0002CC63E /* NewPasswordController.h */,
 				B12A4D4E10C869F0002CC63E /* NewPasswordController.m */,
+				B1AFC66F17F62A830046B625 /* NewPinController.h */,
+				B1AFC67017F62A980046B625 /* NewPinController.m */,
 				B17B2B3C13EC8D5000739E7A /* ChipTanWindowController.h */,
 				B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */,
 				B17B2B4113EC921200739E7A /* FlickerView.h */,
@@ -2338,6 +2348,7 @@
 				27778927173CE22700430EBC /* PecuniaHelp in Resources */,
 				27778928173CE22700430EBC /* save.ico in Resources */,
 				2777892A173CE22700430EBC /* CountryInfo.txt in Resources */,
+				B1AFC66E17F627B50046B625 /* NewPinWindow.xib in Resources */,
 				2777892B173CE22700430EBC /* StatSplitController.xib in Resources */,
 				2777892C173CE22700430EBC /* BankStatementController.xib in Resources */,
 				2777892D173CE22700430EBC /* PurposeSplitWindow.xib in Resources */,
@@ -2514,6 +2525,7 @@
 				B1E811F00FF68B3700BF7451 /* PecuniaHelp in Resources */,
 				B1014BEC1018E87B00ABA1FF /* save.ico in Resources */,
 				B1BCDF76111F5DBB002E0802 /* CountryInfo.txt in Resources */,
+				B1AFC66D17F627B50046B625 /* NewPinWindow.xib in Resources */,
 				B1A59498113182DA00FD8CB8 /* StatSplitController.xib in Resources */,
 				B14C6003114848E1009324A6 /* BankStatementController.xib in Resources */,
 				B1FB509B1209EAC7004DCD6A /* PurposeSplitWindow.xib in Resources */,
@@ -2814,6 +2826,7 @@
 				277788DA173CE22700430EBC /* LaunchParameters.m in Sources */,
 				277788DB173CE22700430EBC /* CustomerMessage.m in Sources */,
 				277788DC173CE22700430EBC /* BankMessage.m in Sources */,
+				B1AFC67217F62A980046B625 /* NewPinController.m in Sources */,
 				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
 				277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */,
 				277788DF173CE22700430EBC /* TanMedium.m in Sources */,
@@ -2997,6 +3010,7 @@
 				B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */,
 				B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */,
 				B17FE48C14CB586A00F6FAFE /* BankMessage.m in Sources */,
+				B1AFC67117F62A980046B625 /* NewPinController.m in Sources */,
 				B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */,
 				B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */,
 				B17728D71504ABC700256898 /* TanMedium.m in Sources */,

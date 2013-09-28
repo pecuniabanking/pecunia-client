@@ -28,6 +28,7 @@
 #import "MOAssistant.h"
 #import "BankSetupInfo.h"
 #import "TanSigningOption.h"
+#import "NewPinController.h"
 
 #import "AnimationHelper.h"
 #import "BWGradientBox.h"
@@ -413,6 +414,13 @@
 - (void)tableViewSelectionDidChange: (NSNotification *)aNotification
 {
     [self updateTanMethods];
+    
+    BankUser *user = [self selectedUser];
+    if (user != nil) {
+        [changePinButton setEnabled:[[HBCIClient hbciClient] isTransactionSupported:TransactionType_ChangePin forUser:user]];
+    } else {
+        [changePinButton setEnabled: NO];
+    }
 }
 
 #pragma mark -
@@ -734,5 +742,26 @@
     NSURL *url = [NSURL URLWithString:@"http://www.pecuniabanking.de/index.php/beschreibung/bankkennungen"];
     [[NSWorkspace sharedWorkspace] openURL:url];
 }
+
+- (IBAction)changePin:(id)sender
+{
+    BankUser *user = [self selectedUser];
+    if (user == nil) {
+        return;
+    }
+    
+    NewPinController *pinController = [[NewPinController alloc] init];
+    int res = [NSApp runModalForWindow: [pinController window]];
+    if (res) {
+        return;
+    }
+    
+    PecuniaError *error = [[HBCIClient hbciClient] changePinForUser:user toPin:[pinController result]];
+    if (error) {
+        [error alertPanel];
+        return;
+    }
+}
+
 
 @end

@@ -59,6 +59,7 @@
 - (BOOL)isTransferSupported: (TransferType)tt forAccount: (BankAccount *)account;
 - (BOOL)isStandingOrderSupportedForAccount: (BankAccount *)account;
 - (BOOL)isTransactionSupported: (TransactionType)tt forAccount: (BankAccount *)account;
+- (BOOL)isTransactionSupported: (TransactionType)tt forUser: (BankUser *)user;
 - (NSArray *)allowedCountriesForAccount: (BankAccount *)account;
 - (TransactionLimits *)limitsForType: (TransferType)tt account: (BankAccount *)account country: (NSString *)ctry;
 - (TransactionLimits *)standingOrderLimitsForAccount: (BankAccount *)account action: (StandingOrderAction)action;
@@ -70,6 +71,7 @@
 - (BOOL)sendTransfers: (NSArray *)transfers;
 - (PecuniaError *)sendStandingOrders: (NSArray *)orders;
 - (PecuniaError *)changePinTanMethodForUser: (BankUser *)user;
+- (PecuniaError *)changePinForUser: (BankUser *)user toPin: (NSString *)newPin;
 - (PecuniaError *)sendCustomerMessage: (CustomerMessage *)msg;
 
 - (PecuniaError *)addAccount: (BankAccount *)account forUser: (BankUser *)user;

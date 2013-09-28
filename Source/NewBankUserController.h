@@ -45,6 +45,7 @@
     IBOutlet NSPopUpButton       *secMethodPopup;
     IBOutlet NSPopUpButton       *ddvPortPopup;
     IBOutlet NSTextField         *ddvReaderIdx;
+    IBOutlet NSButton            *changePinButton;
 
     NSManagedObjectContext *context;
 
@@ -72,5 +73,6 @@
 - (IBAction)ok: (id)sender;
 - (IBAction)cancelSheet: (id)sender;
 - (IBAction)callHelp:(id)sender;
+- (IBAction)changePin:(id)sender;
 
 @end

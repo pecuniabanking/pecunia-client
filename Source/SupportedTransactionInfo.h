@@ -30,7 +30,8 @@ typedef enum {
     TransactionType_BankStatements,
     TransactionType_CCStatements,
     TransactionType_CCSettlementList,
-    TransactionType_CCSettlement
+    TransactionType_CCSettlement,
+    TransactionType_ChangePin
 } TransactionType;
 
 @class BankAccount;
