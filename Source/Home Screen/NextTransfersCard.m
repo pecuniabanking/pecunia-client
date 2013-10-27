@@ -377,11 +377,13 @@ static NSFont *smallNumberFont;
 - (void)drawRect: (NSRect)dirtyRect
 {
     NSRect frame = self.bounds;
-    frame.size.height -= 5;
+    frame.size.height -= 8;
     
     [[NSColor colorWithCalibratedRed: 0.945 green: 0.927 blue: 0.883 alpha: 1.000] setFill];
 
     if (!isTop) {
+        frame.origin.y += 4;
+    } else {
         frame.origin.y += 5;
     }
     NSRectFill(frame);
@@ -393,11 +395,11 @@ static NSFont *smallNumberFont;
 
     NSRect bounds = NSInsetRect(self.bounds, 2, 0);
     if (isTop) {
-        bounds.origin.y = 1;
+        bounds.origin.y = 3;
     } else {
-        bounds.origin.y = NSHeight(self.bounds) - 4;
+        bounds.origin.y = NSHeight(self.bounds) - 8;
     }
-    bounds.size.height = 3;
+    bounds.size.height = 5;
 
     NSBezierPath *shadowPath = [NSBezierPath bezierPathWithOvalInRect: bounds];
     self.layer.shadowPath = shadowPath.cgPath;
