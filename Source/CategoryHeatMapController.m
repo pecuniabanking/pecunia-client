@@ -21,7 +21,7 @@
 #import "ShortDate.h"
 #import "Category.h"
 #import "AnimationHelper.h"
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 
 #import "StatCatAssignment.h"
 #import "BankStatement.h"
@@ -201,7 +201,7 @@
 
             NSUInteger weekDay = (NSUInteger)location.x / cellArea.size.width;
             NSUInteger week = (NSUInteger)location.y / cellArea.size.height;
-            self.selectedDate = [date dateByAddingUnits: week * 7 + weekDay byUnit: NSDayCalendarUnit];
+            self.selectedDate = [date dateByAddingUnits: week * 7 + weekDay byUnit: NSCalendarUnitDay];
 
             cellArea.origin.x = valueArea.origin.x + weekDay * cellArea.size.width;
             cellArea.origin.y = valueArea.origin.y + week * cellArea.size.height;
@@ -210,7 +210,7 @@
             cellArea.size.height = floor((valueArea.size.height - 10) / 37.0);
             cellArea.size.width = valueArea.size.width;
             NSUInteger day = location.y / cellArea.size.height;
-            self.selectedDate = [date dateByAddingUnits: day byUnit: NSDayCalendarUnit];
+            self.selectedDate = [date dateByAddingUnits: day byUnit: NSCalendarUnitDay];
             cellArea.origin.x = valueArea.origin.x;
             cellArea.origin.y = valueArea.origin.y + day * cellArea.size.height + 5;
         }
@@ -342,7 +342,7 @@ static NSFont *smallNumberFont;
         NSString *weekString = [NSString stringWithFormat: @"%i", workDate.week];
         [weekString drawAtPoint: NSMakePoint(5,  offset) withAttributes: smallTextAttributes];
         offset += dayRect.size.height - 1;
-        workDate = [workDate dateByAddingUnits: 1 byUnit: NSWeekCalendarUnit];
+        workDate = [workDate dateByAddingUnits: 1 byUnit: NSCalendarUnitWeekOfYear];
     }
     [dateFormatter setDateFormat: @"EEE"];
     NSDate *dayNameDate = date.lowDate;
@@ -450,7 +450,7 @@ static NSFont *smallNumberFont;
                                          NSForegroundColorAttributeName: textColor,
                                          NSFontAttributeName: numberFont};
 
-            workDate = [workDate dateByAddingUnits: 1 byUnit: NSDayCalendarUnit];
+            workDate = [workDate dateByAddingUnits: 1 byUnit: NSCalendarUnitDay];
 
             NSRect drawRect = dayRect;
             CGSize size = [text sizeWithAttributes: attributes];
@@ -587,7 +587,7 @@ static NSFont *smallNumberFont;
             [text drawInRect: drawRect withAttributes: attributes];
         }
 
-        workDate = [workDate dateByAddingUnits: 1 byUnit: NSDayCalendarUnit];
+        workDate = [workDate dateByAddingUnits: 1 byUnit: NSCalendarUnitDay];
         dayRect.origin.y += cellHeight;
     }
     [[NSColor colorWithCalibratedWhite: 0.7 alpha: 1] setFill];
@@ -766,7 +766,7 @@ static NSFont *smallNumberFont;
             NSRect weekRect = NSMakeRect(offsetX - 40, offsetY, 40, 40);
             [weekString drawInRect: weekRect withAttributes: attributes];
             offsetY += 7 * cellHeight;
-            workDate = [workDate dateByAddingUnits: 1 byUnit: NSWeekCalendarUnit];
+            workDate = [workDate dateByAddingUnits: 1 byUnit: NSCalendarUnitWeekOfYear];
         }
         offsetX += calendarWidth + HORIZONTAL_SPACING;
     }

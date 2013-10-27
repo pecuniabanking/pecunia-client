@@ -23,6 +23,7 @@
 #import "BankStatement.h"
 #import "BankAccount.h"
 #import "PreferenceController.h"
+#import "LocalSettingsController.h"
 #import "MOAssistant.h"
 #import "LogController.h"
 #import "TagView.h"
@@ -69,7 +70,7 @@
 #import "StatementDetails.h"
 #include "ColorPopup.h"
 
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "BWGradientBox.h"
 
 #import "User.h"
@@ -692,8 +693,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 - (void)awakeFromNib
 {
-    [self setDefaultUserSettings];
-    
     sortAscending = NO;
     sortIndex = 0;
 
@@ -821,44 +820,95 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 }
 
 /**
- * Sets a number of settings to useful defaults.
+ * Sets a number of settings to useful defaults. This is the first phase of a two-phase process.
+ * Here we can initialize values that don't depend on stored data.
  */
 - (void)setDefaultUserSettings
 {
     // Home screen settings.
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL stocksDefaultsSet = [defaults boolForKey: @"stocksDefaultsSet"];
-    NSString *stockSymbol = [defaults stringForKey: @"stocksSymbol1"];
-    if (stockSymbol == nil && !stocksDefaultsSet) {
-        [defaults setObject: @"^GDAXI" forKey: @"stocksSymbol1"];
+    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
+
+    // We need an additional flag as the user can nullify each symbol and we would
+    // re-add the default then.
+    BOOL stocksDefaultsSet = [settings boolForKey: @"stocksDefaultsSet"];
+    if (settings[@"stocksSymbol1"] == nil && !stocksDefaultsSet) {
+        settings[@"stocksSymbol1"] = @"^GDAXI";
     }
-    id stockSymbolColor = [defaults objectForKey: @"stocksSymbolColor1"];
-    if (stockSymbolColor == nil) {
-        NSData *data = [NSArchiver archivedDataWithRootObject: [NSColor nextDefaultStockGraphColor]];
-        [defaults setObject: data forKey: @"stocksSymbolColor1"];
+    if (settings[@"stocksSymbolColor1"] == nil) {
+        settings[@"stocksSymbolColor1"] = [NSColor nextDefaultStockGraphColor];
     }
 
-    stockSymbol = [defaults stringForKey: @"stocksSymbol2"];
-    if (stockSymbol == nil && !stocksDefaultsSet) {
-        [defaults setObject: @"ORCL" forKey: @"stocksSymbol2"];
+    if (settings[@"stocksSymbol2"] == nil && !stocksDefaultsSet) {
+        settings[@"stocksSymbol2"] = @"AAPL";
     }
-    stockSymbolColor = [defaults objectForKey: @"stocksSymbolColor2"];
-    if (stockSymbolColor == nil) {
-        NSData *data = [NSArchiver archivedDataWithRootObject: [NSColor nextDefaultStockGraphColor]];
-        [defaults setObject: data forKey: @"stocksSymbolColor2"];
+    if (settings[@"stocksSymbolColor2"] == nil) {
+        settings[@"stocksSymbolColor2"] = [NSColor nextDefaultStockGraphColor];
     }
 
-    stockSymbol = [defaults stringForKey: @"stocksSymbol3"];
-    if (stockSymbol == nil && !stocksDefaultsSet) {
-        [defaults setObject: @"AAPL" forKey: @"stocksSymbol3"];
+    if (settings[@"stocksSymbol3"] == nil && !stocksDefaultsSet) {
+        settings[@"stocksSymbol3"] = @"ORCL";
     }
-    stockSymbolColor = [defaults objectForKey: @"stocksSymbolColor3"];
-    if (stockSymbolColor == nil) {
-        NSData *data = [NSArchiver archivedDataWithRootObject: [NSColor nextDefaultStockGraphColor]];
-        [defaults setObject: data forKey: @"stocksSymbolColor3"];
+    if (settings[@"stocksSymbolColor3"] == nil) {
+        settings[@"stocksSymbolColor3"] = [NSColor nextDefaultStockGraphColor];
     }
-    [defaults setBool: YES forKey: @"stocksDefaultsSet"];
 
+    [settings setBool: YES forKey: @"stocksDefaultsSet"];
+
+    if (settings[@"assetGraph1"] == nil || settings[@"assetGraph2"] == nil) {
+        // Find the accounts with highest and lowest balance as default for the home screen asset graphs.
+        Category *strongest;
+        Category *weakest;
+        for (Category *bank in Category.bankRoot.children) {
+            for (Category *account in bank.allCategories) {
+                if (strongest == nil) {
+                    strongest = account;
+                    weakest = account;
+                    continue;
+                }
+
+                switch ([strongest.catSum compare: account.catSum])
+                {
+                    case NSOrderedSame:
+                        // Use the one with the most assignments, as that is probably more relevant.
+                        if ([strongest assignmentCountRecursive: YES] < [account assignmentCountRecursive: YES]) {
+                            strongest = account;
+                        }
+                        break;
+
+                    case NSOrderedAscending:
+                        strongest = account;
+                        break;
+
+                    case NSOrderedDescending:
+                        break;
+                }
+
+                switch ([weakest.catSum compare: account.catSum])
+                {
+                    case NSOrderedSame:
+                        // Use the one with the most assignments, as that is probably more relevant.
+                        if ([weakest assignmentCountRecursive: YES] < [account assignmentCountRecursive: YES]) {
+                            weakest = account;
+                        }
+                        break;
+
+                    case NSOrderedDescending:
+                        weakest = account;
+                        break;
+
+                    case NSOrderedAscending:
+                        break;
+                }
+            }
+        }
+        if (strongest != nil) {
+            settings[@"assetGraph1"] = strongest.localName;
+        }
+        if (weakest != nil) {
+            settings[@"assetGraph2"] = strongest.localName;
+        }
+    }
+    NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     if ([defaults objectForKey: @"autoCasing"] == nil) {
         [defaults setBool: YES forKey: @"autoCasing"];
     }
@@ -1454,10 +1504,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 - (IBAction)editPreferences: (id)sender
 {
-    if (!prefController) {
-        prefController = [[PreferenceController alloc] init];
-    }
-    [prefController showWindow: self];
+    [PreferenceController showPreferencesWithOwner: self section: nil];
 }
 
 - (IBAction)showTagPopup: (id)sender
@@ -2556,9 +2603,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         if ([item action] == @selector(splitStatement:)) {
             return NO;
         }
-        if ([item action] == @selector(donate:)) {
-            return NO;
-        }
         if ([item action] == @selector(deleteStatement:)) {
             return NO;
         }
@@ -3238,7 +3282,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         }
         NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
         // set date +24Hr
-        NSDateComponents *comps1 = [calendar components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit fromDate: [NSDate dateWithTimeIntervalSinceNow: 86400]];
+        NSDateComponents *comps1 = [calendar components: NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay fromDate: [NSDate dateWithTimeIntervalSinceNow: 86400]];
         NSDateComponents *comps2 = [calendar components: NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: syncTime];
         [comps1 setHour: [comps2 hour]];
         [comps1 setMinute: [comps2 minute]];
@@ -3285,7 +3329,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
     // get today's sync time.
     NSCalendar       *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
-    NSDateComponents *comps1 = [calendar components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit fromDate: [NSDate date]];
+    NSDateComponents *comps1 = [calendar components: NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay fromDate: [NSDate date]];
     NSDateComponents *comps2 = [calendar components: NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: syncTime];
 
     [comps1 setHour: [comps2 hour]];
@@ -3394,12 +3438,14 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [self migrate];
 
     [self publishContext];
+    [self setDefaultUserSettings];
+
     [sc stopSpinning];
     [sc clearMessage];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey: @"restoreActivePage"]) {
-        NSInteger index = [PreferenceController persistentIntValueForKey: @"activePage"];
+        NSInteger index = [LocalSettingsController.sharedSettings integerForKey: @"activePage"];
         [self switchMainPage: index];
     } else {
         [self switchMainPage: 0];
@@ -3457,7 +3503,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
 
     NSInteger index = toolbarButtons.selectedSegment;
-    [PreferenceController setPersistentIntValue: index forKey: @"activePage"];
+    [LocalSettingsController.sharedSettings setInteger: index forKey: @"activePage"];
 
     [currentSection deactivate];
     [accountsView saveState];

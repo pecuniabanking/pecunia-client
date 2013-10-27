@@ -26,7 +26,7 @@
 #import "CategoryReportingNode.h"
 #import "PreferenceController.h"
 
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 
 static Category *catRootSingleton = nil;
 static Category *bankRootSingleton = nil;
@@ -773,11 +773,11 @@ BOOL updateSent = NO;
                balanceCounts: (NSArray **)counts
                 withGrouping: (GroupingInterval)interval
                        sumUp: (BOOL)sumUp
+              recursive: (BOOL)recursive
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray *assignments = [self allAssignmentsOrderedBy: DateOrderDate
                                                    limit: NSNotFound
-                                               recursive: [defaults boolForKey: @"recursiveTransactions"]
+                                               recursive: recursive
                                                ascending: YES];
 
     NSUInteger     count = assignments.count;
@@ -1074,6 +1074,26 @@ BOOL updateSent = NO;
         [notAssignedRootSingleton setValue: catRootSingleton forKey: @"parent"];
     }
     return notAssignedRootSingleton;
+}
+
++ (Category *)categoryForName: (NSString *)name
+{
+    if (name.length > 0) {
+        NSManagedObjectContext *context = [[MOAssistant assistant] context];
+        NSFetchRequest         *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription    *entity = [NSEntityDescription entityForName: @"Category" inManagedObjectContext: context];
+        [fetchRequest setEntity: entity];
+
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
+        [fetchRequest setPredicate: predicate];
+
+        NSError *error;
+        NSArray *fetchedObjects = [context executeFetchRequest: fetchRequest error: &error];
+        if (error == nil && fetchedObjects.count > 0) {
+            return fetchedObjects[0];
+        }
+    }
+    return nil;
 }
 
 + (void)updateCatValues

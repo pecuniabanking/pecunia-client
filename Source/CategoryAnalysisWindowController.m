@@ -25,7 +25,7 @@
 
 #import "PecuniaPlotTimeFormatter.h"
 #import "MCEMDecimalNumberAdditions.h"
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "NSView+PecuniaAdditions.h"
 #import "AnimationHelper.h"
 
@@ -1095,23 +1095,23 @@ extern void *UserDefaultsBindingContext;
 {
     switch (groupingInterval) {
         case GroupByWeeks:
-            return [from unitsToDate: to byUnit: NSWeekCalendarUnit];
+            return [from unitsToDate: to byUnit: NSCalendarUnitDay] / 7;
             break;
 
         case GroupByMonths:
-            return [from unitsToDate: to byUnit: NSMonthCalendarUnit];
+            return [from unitsToDate: to byUnit: NSCalendarUnitMonth];
             break;
 
         case GroupByQuarters:
-            return [from unitsToDate: to byUnit: NSQuarterCalendarUnit];
+            return [from unitsToDate: to byUnit: NSCalendarUnitQuarter];
             break;
 
         case GroupByYears:
-            return [from unitsToDate: to byUnit: NSYearCalendarUnit];
+            return [from unitsToDate: to byUnit: NSCalendarUnitYear];
             break;
 
         default:
-            return [from unitsToDate: to byUnit: NSDayCalendarUnit];
+            return [from unitsToDate: to byUnit: NSCalendarUnitDay];
 
     }
 }
@@ -1128,23 +1128,23 @@ extern void *UserDefaultsBindingContext;
 {
     switch (groupingInterval) {
         case GroupByWeeks:
-            return [from dateByAddingUnits: units byUnit: NSWeekCalendarUnit];
+            return [from dateByAddingUnits: 7 * units byUnit: NSCalendarUnitDay];
             break;
 
         case GroupByMonths:
-            return [from dateByAddingUnits: units byUnit: NSMonthCalendarUnit];
+            return [from dateByAddingUnits: units byUnit: NSCalendarUnitMonth];
             break;
 
         case GroupByQuarters:
-            return [from dateByAddingUnits: units byUnit: NSQuarterCalendarUnit];
+            return [from dateByAddingUnits: units byUnit: NSCalendarUnitQuarter];
             break;
 
         case GroupByYears:
-            return [from dateByAddingUnits: units byUnit: NSYearCalendarUnit];
+            return [from dateByAddingUnits: units byUnit: NSCalendarUnitYear];
             break;
 
         default:
-            return [from dateByAddingUnits: units byUnit: NSDayCalendarUnit];
+            return [from dateByAddingUnits: units byUnit: NSCalendarUnitDay];
 
     }
 }
@@ -1274,23 +1274,26 @@ extern void *UserDefaultsBindingContext;
     int calendarUnit;
     switch (groupingInterval) {
         case GroupByWeeks:
-            calendarUnit = NSWeekCalendarUnit;
+            calendarUnit = NSWeekCalendarUnit; // NSWeekCalendarUnit deprecated but there is no
+                                               // equivalent for it in the new enums since they describe
+                                               // a unit in a timeframe (week of month, week of year
+                                               // instead of the time frame "week".
             break;
 
         case GroupByMonths:
-            calendarUnit = NSMonthCalendarUnit;
+            calendarUnit = NSCalendarUnitMonth;
             break;
 
         case GroupByQuarters:
-            calendarUnit = NSQuarterCalendarUnit;
+            calendarUnit = NSCalendarUnitQuarter;
             break;
 
         case GroupByYears:
-            calendarUnit = NSYearCalendarUnit;
+            calendarUnit = NSCalendarUnitYear;
             break;
 
         default:
-            calendarUnit = NSDayCalendarUnit;
+            calendarUnit = NSCalendarUnitDay;
             break;
     }
     PecuniaPlotTimeFormatter *timeFormatter = [[PecuniaPlotTimeFormatter alloc] initWithDateFormatter: dateFormatter
@@ -1752,6 +1755,8 @@ int double_compare(const void *value1, const void *value2)
         infoLayerLocation.y = frame.origin.y + (verticalCenter - infoLayer.bounds.size.height) / 2;
     }
 
+    infoLayerLocation.x = round(infoLayerLocation.x);
+    infoLayerLocation.y = round(infoLayerLocation.y);
     if (infoLayer.position.x != infoLayerLocation.x || infoLayer.position.y != infoLayerLocation.y) {
         [infoLayer slideTo: infoLayerLocation inTime: 0.15];
     }
@@ -2211,11 +2216,13 @@ int double_compare(const void *value1, const void *value2)
         if (selectedCategory.isBankAccount) {
             extraEntry = YES;
         }
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [selectedCategory historyToDates: &dates
                                 balances: &balances
                            balanceCounts: &turnovers
                             withGrouping: groupingInterval
-                                   sumUp: extraEntry];
+                                   sumUp: extraEntry
+                               recursive: [defaults boolForKey: @"recursiveTransactions"]];
 
         if (dates != nil) {
             // Convert the data to the internal representations.

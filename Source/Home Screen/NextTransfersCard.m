@@ -20,6 +20,7 @@
 #import <CorePlot/CorePlot.h>
 
 #import "NextTransfersCard.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "GraphicsAdditions.h"
 #import "ShortDate.h"
 
@@ -140,7 +141,7 @@
 
         NSUInteger weekDay = (NSUInteger)location.x / cellArea.size.width;
         NSUInteger week = (NSUInteger)location.y / cellArea.size.height;
-        ShortDate *date = [startDate dateByAddingUnits: week * 7 + weekDay byUnit: NSDayCalendarUnit];
+        ShortDate *date = [startDate dateByAddingUnits: week * 7 + weekDay byUnit: NSCalendarUnitDay];
         if (date.month == month) {
             if (values[date] != nil) {
                 self.selectedDate = date;
@@ -334,7 +335,7 @@ static NSFont *smallNumberFont;
                 [text drawInRect: drawRect withAttributes: attributes];
             }
             dayRect.origin.x += cellWidth;
-            workDate = [workDate dateByAddingUnits: 1 byUnit: NSDayCalendarUnit];
+            workDate = [workDate dateByAddingUnits: 1 byUnit: NSCalendarUnitDay];
         }
 
         dayRect.origin.y += cellHeight;
@@ -500,7 +501,7 @@ static NSFont *smallNumberFont;
             monthDistance++;
         }
         ShortDate *date = [[ShortDate currentDate] dateByAddingUnits: monthDistance
-                                                              byUnit: NSMonthCalendarUnit];
+                                                              byUnit: NSCalendarUnitMonth];
 
         NSString *year = [NSString stringWithFormat: @"%i", date.year];
         NSAffineTransform *transform = [[NSAffineTransform alloc] init];
@@ -536,7 +537,7 @@ static NSFont *smallNumberFont;
 
             NSString *month = [dateFormatter stringFromDate: date.lowDate];
             [month drawAtPoint: NSMakePoint(10, currentOffset - 19) withAttributes: monthAttributes];
-            date = [date dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit];
+            date = [date dateByAddingUnits: 1 byUnit: NSCalendarUnitMonth];
             currentOffset -= CALENDAR_HEIGHT;
         }
     }
@@ -638,7 +639,7 @@ static NSFont *smallNumberFont;
 {
     NSUInteger monthDistance = self.scrollOffset / CALENDAR_HEIGHT;
     ShortDate *date = [[ShortDate currentDate] dateByAddingUnits: monthDistance
-                                                          byUnit: NSMonthCalendarUnit];
+                                                          byUnit: NSCalendarUnitMonth];
 
     if (fetch) {
         NSError *error = nil;
@@ -743,7 +744,7 @@ static NSFont *smallNumberFont;
             calendar.values = values;
             [calendar setNeedsDisplay: YES];
         }
-        date = [date dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit];
+        date = [date dateByAddingUnits: 1 byUnit: NSCalendarUnitMonth];
     }
 }
 
@@ -926,6 +927,11 @@ static NSFont *smallNumberFont;
 - (BOOL)tableView: (NSTableView *)tableView isGroupRow:( NSInteger)row
 {
     return NO;
+}
+
+- (NSIndexSet *)tableView: (NSTableView *)tableView selectionIndexesForProposedSelection: (NSIndexSet *)proposedSelectionIndexes
+{
+    return nil;
 }
 
 @end

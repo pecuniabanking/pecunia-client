@@ -23,12 +23,14 @@
 #import "ShortDate.h"
 #import "AssetsCard.h"
 
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "PecuniaPlotTimeFormatter.h"
 #import "MCEMDecimalNumberAdditions.h"
 
 #import "MOAssistant.h"
 #import "BankingController.h"
+
+#import "LocalSettingsController.h"
 
 extern void *UserDefaultsBindingContext;
 
@@ -42,13 +44,15 @@ extern void *UserDefaultsBindingContext;
     // Only used if we add zooming. Otherwise constant for the entire range of data.
     ShortDate *fromDate;
     ShortDate *toDate;
-    
-    NSUInteger count; // Number entries in all 3 data arrays (all same size).
-    double *timePoints;
-    double *positiveBalances;
-    double *negativeBalances;
-    double *totalBalances;
-    double *movingAverage;
+
+    CPTTextLayer *titleLayer;
+
+    NSUInteger count; // Number of entries in all 3 data arrays (all same size).
+    double     *timePoints;
+    double     *positiveBalances;
+    double     *negativeBalances;
+    double     *totalBalances;
+    double     *movingAverage;
 
     double min;
     double max;
@@ -62,9 +66,12 @@ extern void *UserDefaultsBindingContext;
     // Animations.
     CPTAnimationOperation *rangeAnimationOperation;
     CPTAnimationOperation *globalRangeAnimationOperation;
+
+    NSPoint lastMouseDown;
 }
 
 @property (nonatomic, strong) Category *category;
+@property NSInteger tag;
 
 @end
 
@@ -221,7 +228,7 @@ extern void *UserDefaultsBindingContext;
 
     CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
     textStyle.color = [[CPTColor blackColor] colorWithAlphaComponent: 0.3];
-    textStyle.fontName = @"HelveticaNeue";
+    textStyle.fontName = @"ArialNarrow-Bold";
     textStyle.fontSize = 10.0;
     x.labelTextStyle = textStyle;
     x.labelOffset = -1;
@@ -240,8 +247,8 @@ extern void *UserDefaultsBindingContext;
     zeroLineAxis.axisLineStyle = lineStyle;
 
     CPTXYAxis *y = axisSet.yAxis;
-    textStyle.fontName = @"HelveticaNeue";
-    textStyle.color = [[CPTColor blackColor] colorWithAlphaComponent: 0.5];
+    textStyle.fontName = @"ArialNarrow-Bold";
+    textStyle.color = [[CPTColor blackColor] colorWithAlphaComponent: 0.3];
     y.labelTextStyle = textStyle;
     y.axisConstraints = [CPTConstraints constraintWithUpperOffset: 0];
     y.tickDirection = CPTSignPositive;
@@ -260,23 +267,28 @@ extern void *UserDefaultsBindingContext;
 
     axisSet.axes = @[x, zeroLineAxis, y];
     
-    // Graph title.
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
-                                 NSFontAttributeName: [NSFont fontWithName: @"HelveticaNeue-Bold" size: 12]};
-
-    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString: category.name
-                                                                              attributes: attributes];
+    // Graph title preparation. The actual title is set in updateGraphTitle.
     CPTLayerAnnotation *titleAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: graph.plotAreaFrame];
-    CPTTextLayer *titleLayer = [[CPTTextLayer alloc] init];
+    titleLayer = [[CPTTextLayer alloc] init];
     titleAnnotation.contentLayer = titleLayer;
     titleAnnotation.rectAnchor = CPTRectAnchorLeft;
     titleAnnotation.rotation = pi / 2;
-    titleLayer.attributedText = title;
     [graph addAnnotation: titleAnnotation];
+}
+
+- (void)updateGraphTitle
+{
+    NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
+                                 NSFontAttributeName: [NSFont fontWithName: @"HelveticaNeue-Bold" size: 12]};
+
+    titleLayer.attributedText = [[NSAttributedString alloc] initWithString: category.localName
+                                                                attributes: attributes];
 }
 
 - (void)updateGraph
 {
+    [self updateGraphTitle];
+
     int tickCount = 8; // For months.
     int totalUnits = (count > 1) ? timePoints[count - 2] + 1 : 0;
     if (totalUnits < tickCount) {
@@ -308,7 +320,7 @@ extern void *UserDefaultsBindingContext;
     dateFormatter.dateStyle = kCFDateFormatterShortStyle;
 
     PecuniaPlotTimeFormatter *timeFormatter = [[PecuniaPlotTimeFormatter alloc] initWithDateFormatter: dateFormatter
-                                                                                         calendarUnit: NSMonthCalendarUnit];
+                                                                                         calendarUnit: NSCalendarUnitMonth];
 
     timeFormatter.referenceDate = [referenceDate lowDate];
     x.labelFormatter = timeFormatter;
@@ -454,7 +466,8 @@ extern void *UserDefaultsBindingContext;
                         balances: &rawBalances
                    balanceCounts: &turnovers
                     withGrouping: GroupByMonths
-                           sumUp: YES];
+                           sumUp: YES
+                       recursive: YES];
 
         if (dates != nil) {
             count = dates.count + 1;
@@ -468,10 +481,10 @@ extern void *UserDefaultsBindingContext;
             
             int index = 0;
             for (ShortDate *date in dates) {
-                timePoints[index++] = [referenceDate unitsToDate: date byUnit: NSMonthCalendarUnit];
+                timePoints[index++] = [referenceDate unitsToDate: date byUnit: NSCalendarUnitMonth];
             }
             timePoints[index] = timePoints[index - 1] + 1;
-            toDate = [dates.lastObject dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit];
+            toDate = [dates.lastObject dateByAddingUnits: 1 byUnit: NSCalendarUnitMonth];
 
             // Convert all NSDecimalNumbers to double for better performance.
             positiveBalances = malloc(count * sizeof(double));
@@ -547,10 +560,25 @@ extern void *UserDefaultsBindingContext;
     [self updateGraphRange];
 }
 
+- (void)setCategory: (Category *)value
+{
+    category = value;
+    [self loadData];
+}
+
 - (void)mouseDown: (NSEvent *)theEvent
 {
     [super mouseDown: theEvent];
-    [(HomeScreenCard *)self.superview cardClicked: category];
+    lastMouseDown = theEvent.locationInWindow;
+}
+
+- (void)mouseUp: (NSEvent *)theEvent
+{
+    [super mouseUp: theEvent];
+    NSPoint location = theEvent.locationInWindow;
+    if (abs(location.x - lastMouseDown.x) < 8 && abs(location.y - lastMouseDown.y) < 8) {
+        [(HomeScreenCard *)self.superview cardClicked: category];
+    }
 }
 
 #pragma mark - Utility functions
@@ -586,7 +614,7 @@ extern void *UserDefaultsBindingContext;
 
 - (int)distanceFromDate: (ShortDate *)from toDate: (ShortDate *)to
 {
-    return [from unitsToDate: to byUnit: NSMonthCalendarUnit];
+    return [from unitsToDate: to byUnit: NSCalendarUnitMonth];
 }
 
 - (NSDecimal)distanceAsDecimalFromDate: (ShortDate *)from toDate: (ShortDate *)to
@@ -631,8 +659,7 @@ extern void *UserDefaultsBindingContext;
     return 2 * pow(base, digitCount - 1);
 }
 
-#pragma mark -
-#pragma mark Coreplot delegate methods
+#pragma mark - Coreplot delegate methods
 
 - (void)animationDidFinish: (CPTAnimationOperation *)operation
 {
@@ -722,7 +749,12 @@ extern void *UserDefaultsBindingContext;
 
 @implementation AssetsCard
 
-+ (BOOL)clickable
++ (BOOL)isClickable
+{
+    return YES;
+}
+
++ (BOOL)isConfigurable
 {
     return YES;
 }
@@ -733,8 +765,10 @@ extern void *UserDefaultsBindingContext;
     if (self) {
         [self updateUI];
 
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
+        LocalSettingsController *settings = LocalSettingsController.sharedSettings;
+        [settings addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
+        [settings addObserver: self forKeyPath: @"assetGraph1" options: 0 context: UserDefaultsBindingContext];
+        [settings addObserver: self forKeyPath: @"assetGraph2" options: 0 context: UserDefaultsBindingContext];
 
         [NSNotificationCenter.defaultCenter addObserver: self
                                                selector: @selector(handleDataModelChange:)
@@ -748,6 +782,11 @@ extern void *UserDefaultsBindingContext;
 
 - (void)dealloc
 {
+    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
+    [settings removeObserver: self forKeyPath: @"colors"];
+    [settings removeObserver: self forKeyPath: @"assetGraph1"];
+    [settings removeObserver: self forKeyPath: @"assetGraph2"];
+
     [NSNotificationCenter.defaultCenter removeObserver: self];
 }
 
@@ -765,68 +804,33 @@ extern void *UserDefaultsBindingContext;
 
 - (void)updateUI
 {
-    for (AssetGraph *graph in self.subviews) {
-        [graph prepareForShutDown];
-    }
-    self.subviews = [NSArray array]; // Remove any subview.
+    AssetGraph *graph;
 
-    Category *strongest;
-    Category *weakest;
-    for (Category *bank in Category.bankRoot.children) { // Iterate over banks.
-        for (Category *account in bank.allCategories) {
-            if (strongest == nil) {
-                strongest = account;
-                weakest = account;
-                continue;
-            }
-
-            switch ([strongest.catSum compare: account.catSum])
-            {
-                case NSOrderedSame:
-                    // Use the one with the most assignments, as that is probably more relevant.
-                    if ([strongest assignmentCountRecursive: YES] < [account assignmentCountRecursive: YES]) {
-                        strongest = account;
-                    }
-                    break;
-
-                case NSOrderedAscending:
-                    strongest = account;
-                    break;
-
-                case NSOrderedDescending:
-                    break;
-            }
-
-            switch ([weakest.catSum compare: account.catSum])
-            {
-                case NSOrderedSame:
-                    // Use the one with the most assignments, as that is probably more relevant.
-                    if ([weakest assignmentCountRecursive: YES] < [account assignmentCountRecursive: YES]) {
-                        weakest = account;
-                    }
-                    break;
-
-                case NSOrderedDescending:
-                    weakest = account;
-                    break;
-                    
-                case NSOrderedAscending:
-                    break;
-            }
+    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
+    Category *category = [Category categoryForName: settings[@"assetGraph1"]];
+    if (category != nil) {
+        graph = [self viewWithTag: 1];
+        if (graph == nil) {
+            graph = [[AssetGraph alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)
+                                             category: category];
+            graph.tag = 1;
+            [self addSubview: graph];
+        } else {
+            graph.category = category;
         }
     }
-    
-    AssetGraph *graph;
-    if (strongest != nil) {
-        graph = [[AssetGraph alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)
-                                         category: strongest];
-        [self addSubview: graph];
-    }
 
-    if (weakest != nil && weakest != strongest) {
-        graph = [[AssetGraph alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)
-                                         category: weakest];
-        [self addSubview: graph];
+    category = [Category categoryForName: settings[@"assetGraph2"]];
+    if (category != nil) {
+        graph = [self viewWithTag: 2];
+        if (graph == nil) {
+            graph = [[AssetGraph alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)
+                                             category: category];
+            graph.tag = 2;
+            [self addSubview: graph];
+        } else {
+            graph.category = category;
+        }
     }
 
     [self resizeSubviewsWithOldSize: self.bounds.size];
@@ -844,8 +848,10 @@ extern void *UserDefaultsBindingContext;
     frame.origin.y = 35;
 
     for (NSView *child in self.subviews) {
-        child.frame = frame;
-        frame.origin.y += frame.size.height;
+        if ([child isKindOfClass: AssetGraph.class]) {
+            child.frame = frame;
+            frame.origin.y += frame.size.height;
+        }
     }
 }
 
@@ -854,10 +860,15 @@ extern void *UserDefaultsBindingContext;
     // Happens if the user clicked on space not covered by a graph. Take the first one in this case.
     [super mouseDown: theEvent];
 
-    if (self.subviews.count > 0) {
-        AssetGraph *graph = self.subviews[0];
-        Category *category = graph.category;
-
+    Category *category;
+    for (NSView *child in self.subviews) {
+        if ([child isKindOfClass: AssetGraph.class]) {
+            AssetGraph *graph = (id)child;
+            category = graph.category;
+            break;
+        }
+    }
+    if (category != nil) {
         [self cardClicked: category];
     }
 }
@@ -874,6 +885,11 @@ extern void *UserDefaultsBindingContext;
             for (AssetGraph *child in self.subviews) {
                 [child updateColors];
             }
+        }
+
+        // Only listen for the second change. Both graph values are changed at the same time.
+        if ([keyPath isEqualToString: @"assetGraph2"]) {
+            [self updateUI];
         }
     }
 }

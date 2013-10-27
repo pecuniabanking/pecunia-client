@@ -22,10 +22,9 @@
 #import "PXListView.h"
 #import "StatementsListViewCell.h"
 
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "ValueTransformers.h"
 #import "PreferenceController.h"
-#import "GraphicsAdditions.h"
 #import "Category.h"
 
 extern NSString *StatementDateKey;

@@ -24,7 +24,7 @@
 #import "TimeSliceManager.h"
 #import "MOAssistant.h"
 
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "NSView+PecuniaAdditions.h"
 #import "NS(Attributed)String+Geometrics.h"
 #import "AnimationHelper.h"

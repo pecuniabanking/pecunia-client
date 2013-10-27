@@ -30,7 +30,7 @@
 #import "StatCatAssignment.h"
 #import "BankStatement.h"
 
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "AnimationHelper.h"
 #import "SynchronousScrollView.h"
 #import "StatementsListview.h"
@@ -380,15 +380,15 @@ extern void *UserDefaultsBindingContext;
             [dates addObject: date];
             switch (groupingInterval) {
                 case GroupByYears:
-                    date = [date dateByAddingUnits: 1 byUnit: NSYearCalendarUnit];
+                    date = [date dateByAddingUnits: 1 byUnit: NSCalendarUnitYear];
                     break;
 
                 case GroupByQuarters:
-                    date = [date dateByAddingUnits: 1 byUnit: NSQuarterCalendarUnit];
+                    date = [date dateByAddingUnits: 1 byUnit: NSCalendarUnitQuarter];
                     break;
 
                 default:
-                    date = [date dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit];
+                    date = [date dateByAddingUnits: 1 byUnit: NSCalendarUnitMonth];
             }
         }
 
@@ -420,11 +420,14 @@ extern void *UserDefaultsBindingContext;
     NSArray *nodeDates = nil;
     NSArray *nodeBalances = nil;
     NSArray *nodeTurnovers = nil;
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [item historyToDates: &nodeDates
                 balances: &nodeBalances
            balanceCounts: &nodeTurnovers
             withGrouping: groupingInterval
-                   sumUp: NO];
+                   sumUp: NO
+               recursive: [defaults boolForKey: @"recursiveTransactions"]];
 
     if (nodeDates == nil) {
         nodeDates = @[]; // Just to avoid frequent checks in the loop below.

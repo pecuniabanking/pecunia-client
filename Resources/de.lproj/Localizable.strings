@@ -13,7 +13,7 @@ AP8 = "KONTEN";
 AP9 = "KATEGORIEN";
 AP10 = "Löschen";
 AP11 = "Warnung";
-AP12 = " Nicht zugeordnet";
+AP12 = "Nicht zugeordnet";
 AP13 = "Nicht bekannt";
 AP14 = "Verwenden";
 AP15 = "Überschreiben";
@@ -21,6 +21,11 @@ AP16 = "Einnahmen";
 AP17 = "Ausgaben";
 AP18 = "keine";
 AP19 = "Unbekannt";
+AP20 = "Jahr";
+AP21 = "Jahre";
+AP22 = "Monat";
+AP23 = "Monate";
+AP24 = "Einstellungen";
 
 // Validation strings.
 // AP50..AP99
@@ -409,12 +414,13 @@ AP879 = "Einnahme";
 AP900 = "879"; // Sentinel
 
 // Home screen
+// AP950..AP999
 AP950 = "Aktienkurse";
 AP951 = "Aktienmärkte geschlossen";
 AP952 = "Neueste Buchungen";
 AP953 = "Vermögensentwicklung";
 AP954 = "Fällige Zahlungen";
-AP955 = "Weitere Informationen";
+AP955 = "Finanzierung";
 AP956 = "1T";
 AP957 = "1W";
 AP958 = "1M";
@@ -423,6 +429,15 @@ AP960 = "1J";
 AP961 = "3J";
 AP962 = "20J";
 AP963 = "Empfänger unbekannt";
+AP964 = "Restschuld";
+AP965 = "Abgezahlt";
+AP966 = "Verbleibende Zeit";
+AP967 = "";
+AP968 = "Zins + Tilgung";
+AP969 = "Kreditsumme";
+AP970 = "Rückzahlung gesamt";
+AP971 = "davon Zinsen";
+AP972 = "In diesem Bereich können Sie den Tilgungsverlauf für einen Kredit (Annuitätendarlehen) anzeigen lassen. Geben Sie dazu Kreditsumme, Zinssatz usw. in den Einstellungen an.<br><br>Zum Öffnen der Einstellungen klicken sie auf das Symbol ";
 
 // Use a new block of IDs for the next set of strings!
 // AP1000..AP1059

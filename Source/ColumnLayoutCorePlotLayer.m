@@ -47,11 +47,14 @@
     subLayerFrame.size = subLayerSize;
 
     NSSet *excludedSublayers = [self sublayersExcludedFromAutomaticLayout];
-    for (CALayer *subLayer in self.sublayers) {
-        if (![excludedSublayers containsObject: subLayer] && [subLayer isKindOfClass: [CPTLayer class]] &&
-            !subLayer.hidden) {
+    for (CPTLayer *subLayer in self.sublayers) {
+        if (![excludedSublayers containsObject: subLayer] && !subLayer.hidden) {
+            if ([subLayer isKindOfClass: CPTTextLayer.class]) {
+                [(id)subLayer sizeToFit];
+            }
             subLayerFrame.size.height = subLayer.frame.size.height;
             subLayer.frame = subLayerFrame;
+            [subLayer pixelAlign];
             [subLayer setNeedsLayout];
             [subLayer setNeedsDisplay];
             subLayerFrame.origin.y += spacing + subLayerFrame.size.height;
@@ -75,9 +78,11 @@
         CGFloat maxWidth = 0;
         int     layoutedLayers = 0;
         NSSet   *excludedSublayers = [self sublayersExcludedFromAutomaticLayout];
-        for (CALayer *subLayer in self.sublayers) {
-            if (![excludedSublayers containsObject: subLayer] && [subLayer isKindOfClass: [CPTLayer class]] &&
-                !subLayer.hidden) {
+        for (CPTLayer *subLayer in self.sublayers) {
+            if (![excludedSublayers containsObject: subLayer] && !subLayer.hidden) {
+                if ([subLayer isKindOfClass: CPTTextLayer.class]) {
+                    [(id)subLayer sizeToFit];
+                }
                 if (subLayer.bounds.size.width > maxWidth) {
                     maxWidth = subLayer.bounds.size.width;
                 }
@@ -87,6 +92,16 @@
         }
         bounds.size.height += (layoutedLayers - 1) * spacing;
         bounds.size.width += maxWidth;
+    }
+
+    // Make bounds integral and size/width even to avoid half pixel coordinates
+    // (especially important for text layers).
+    bounds = NSIntegralRect(bounds);
+    if (((int)bounds.size.width & 1) != 0) {
+        bounds.size.width++;
+    }
+    if (((int)bounds.size.height & 1) != 0) {
+        bounds.origin.y += 0.5f;
     }
     self.bounds = bounds;
 }

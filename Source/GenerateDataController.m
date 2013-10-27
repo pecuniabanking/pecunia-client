@@ -26,7 +26,7 @@
 #import "StatCatAssignment.h"
 #import "ShortDate.h"
 #import "StandingOrder.h"
-#import "PreferenceController.h"
+#import "LocalSettingsController.h"
 
 #import "GrowlNotification.h"
 
@@ -220,7 +220,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
                             case 'y': {
                                 NSDate           *firstDayOfYear = [self firstDayOfYear: year];
                                 NSDate           *firstDayOfNextYear = [self firstDayOfYear: year + 1];
-                                NSDateComponents *temp = [calendar components: NSDayCalendarUnit
+                                NSDateComponents *temp = [calendar components: NSCalendarUnitDay
                                                                      fromDate: firstDayOfYear
                                                                        toDate: firstDayOfNextYear
                                                                       options: 0];
@@ -233,13 +233,13 @@ static NSString *DemoDataKey = @"contains-demo-data";
                                 NSDate *firstDayOfYear = [self firstDayOfYear: year];
                                 NSDate *firstDayOfQuarter = [self firstDayOfQuarter: dateOffset + 1
                                                                              inYear: year];
-                                NSDateComponents *tempBase = [calendar components: NSDayCalendarUnit
+                                NSDateComponents *tempBase = [calendar components: NSCalendarUnitDay
                                                                          fromDate: firstDayOfYear
                                                                            toDate: firstDayOfQuarter
                                                                           options: 0];
                                 NSDate *firstDayOfNextQuarter = [self firstDayOfQuarter: dateOffset + 2
                                                                                  inYear: year];
-                                NSDateComponents *temp = [calendar components: NSDayCalendarUnit
+                                NSDateComponents *temp = [calendar components: NSCalendarUnitDay
                                                                      fromDate: firstDayOfQuarter
                                                                        toDate: firstDayOfNextQuarter
                                                                       options: 0];
@@ -250,8 +250,8 @@ static NSString *DemoDataKey = @"contains-demo-data";
                                 
                             case 'm': {
                                 [components setMonth: dateOffset + 1];
-                                NSRange r = [calendar rangeOfUnit: NSDayCalendarUnit
-                                                           inUnit: NSMonthCalendarUnit
+                                NSRange r = [calendar rangeOfUnit: NSCalendarUnitDay
+                                                           inUnit: NSCalendarUnitMonth
                                                           forDate: [calendar dateFromComponents: components]];
                                 [components setDay: 1 + arc4random_uniform(r.length)];
                                 date = [calendar dateFromComponents: components];
@@ -540,7 +540,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
         NSSet *categories = Category.catRoot.allCategories;
 
         // Mark the database as having demo data.
-        [PreferenceController setPersistentBoolValue: YES forKey: DemoDataKey];
+        LocalSettingsController.sharedSettings[DemoDataKey] = @YES;
 
         // Precompute details for principals.
         NSMutableArray *parsedPrincipals = [NSMutableArray arrayWithCapacity: principals.count];

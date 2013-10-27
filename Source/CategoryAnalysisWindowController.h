@@ -64,18 +64,19 @@
     IBOutlet BWGradientBox *selectionBox;
 
 @private
-    CPTXYGraph                *mainGraph;
-    CPTXYGraph                *turnoversGraph;
-    CPTXYGraph                *selectionGraph;
-    CPTXYAxis                 *mainIndicatorLine;
-    CPTXYAxis                 *turnoversIndicatorLine;
-    ColumnLayoutCorePlotLayer *infoLayer; // Content layer of the info annotation.
-    CPTAnnotation             *infoAnnotation; // The host of the info layer placed in the plot area.
-    CPTTextLayer              *dateInfoLayer;
-    CPTTextLayer              *valueInfoLayer;
-    CPTLimitBand              *selectionBand;
+    CPTXYGraph    *mainGraph;
+    CPTXYGraph    *turnoversGraph;
+    CPTXYGraph    *selectionGraph;
+    CPTXYAxis     *mainIndicatorLine;
+    CPTXYAxis     *turnoversIndicatorLine;
+    CPTAnnotation *infoAnnotation; // The host of the info layer placed in the plot area.
+    CPTTextLayer  *dateInfoLayer;
+    CPTTextLayer  *valueInfoLayer;
+    CPTLimitBand  *selectionBand;
 
-    ShortDate *referenceDate;                 // The date at which the time points start.
+    ColumnLayoutCorePlotLayer *infoLayer; // Content layer of the info annotation.
+
+    ShortDate *referenceDate;             // The date at which the time points start.
 
     NSUInteger rawCount;                  // Raw number of values we have.
     NSUInteger selectionSampleCount;      // Number of values we use for the selection graph.
@@ -84,13 +85,13 @@
     double *selectionTimePoints;          // Down sampled time points for the selection graph (if sampling is active at all).
     double *totalBalances;                // A balance value for each time point (full set).
 
-    double            *selectionBalances; // Sampled balance values.
-    double            *positiveBalances;  // A balance value for each time point (positive main plot).
-    double            *negativeBalances;  // A balance value for each time point (negative main plot).
-    double            *balanceCounts;     // The number balances per unit for each time point.
-    double            *movingAverage;     // Linear weighted moving average values.
-    NSNumberFormatter *infoTextFormatter;
+    double *selectionBalances; // Sampled balance values.
+    double *positiveBalances;  // A balance value for each time point (positive main plot).
+    double *negativeBalances;  // A balance value for each time point (negative main plot).
+    double *balanceCounts;     // The number balances per unit for each time point.
+    double *movingAverage;     // Linear weighted moving average values.
 
+    NSNumberFormatter   *infoTextFormatter;
     NSMutableDictionary *mainInfoValues;
 
     ShortDate *fromDate;

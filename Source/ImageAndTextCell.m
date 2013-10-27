@@ -25,7 +25,7 @@
  */
 
 #import "ImageAndTextCell.h"
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "PreferenceController.h"
 
 // Layout constants

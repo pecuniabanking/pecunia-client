@@ -78,7 +78,7 @@ NSString *const kXMLReaderTextNodeKey = @"text";
     // Get the dictionary for the current level in the stack
     NSMutableDictionary *parentDict = [dictionaryStack lastObject];
 
-    // Create the child dictionary for the new element, and initilaize it with the attributes.
+    // Create the child dictionary for the new element, and initialize it with the attributes.
     NSMutableDictionary *childDict = [NSMutableDictionary dictionary];
     [childDict addEntriesFromDictionary: attributeDict];
 

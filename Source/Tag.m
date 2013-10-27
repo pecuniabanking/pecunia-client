@@ -19,7 +19,7 @@
 
 #import "Tag.h"
 
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "BankStatement.h"
 #include "MOAssistant.h"
 

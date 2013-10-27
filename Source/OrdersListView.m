@@ -76,7 +76,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
         [dateFormatter setDateStyle: kCFDateFormatterShortStyle];
         [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
 
-        hunderedYearsLater = [[ShortDate currentDate] dateByAddingUnits: 100 byUnit: NSYearCalendarUnit];
+        hunderedYearsLater = [[ShortDate currentDate] dateByAddingUnits: 100 byUnit: NSCalendarUnitYear];
     }
     return self;
 }
@@ -225,7 +225,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     } else {
         if ([value isKindOfClass: [NSDate class]]) {
             ShortDate *date = [ShortDate dateWithDate: value];
-            if ([hunderedYearsLater unitsToDate: date byUnit: NSYearCalendarUnit] > 0) {
+            if ([hunderedYearsLater unitsToDate: date byUnit: NSCalendarUnitYear] > 0) {
                 // Silently assumes that only last execution dates are set that high.
                 value = @"--";
             } else {

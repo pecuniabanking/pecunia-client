@@ -24,7 +24,7 @@
  * (it rounds itself to midnight 0h:0m:0s) and provides convenience methods to
  * do date arithmetics.
  */
-@interface ShortDate : NSObject<NSCopying> {
+@interface ShortDate : NSObject<NSCopying, NSCoding> {
     NSDate           *inner;
     NSDateComponents *components; // The date split into components.
 }
@@ -53,6 +53,7 @@
 
 - (NSString *)description;
 - (NSString *)monthYearDescription;
+- (NSString *)longMonthYearDescription;
 - (NSString *)quarterYearDescription;
 - (NSString *)yearDescription;
 - (NSString *)weekYearDescription;

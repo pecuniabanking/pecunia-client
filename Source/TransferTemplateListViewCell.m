@@ -21,7 +21,7 @@
 
 #import "TransferTemplateListViewCell.h"
 
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "ValueTransformers.h"
 
 extern NSString *StatementDateKey;

@@ -19,31 +19,93 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "BWGradientBox.h"
-
+#import "Category.h"
+#import "BankAccount.h"
 #import "PreferenceController.h"
 #import "MOAssistant.h"
 #import "Keychain.h"
 #import "BankingController.h"
 #import "PasswordWindow.h"
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "NewPasswordController.h"
+#import "LocalSettingsController.h"
+#import "ShortDate.h"
 
 #import "YahooStockData.h"
-#import "Info.h"
 
 static NSArray *exportFields = nil;
 
 #define EXPORT_SEPARATOR @"exportSeparator"
 
-#define GENERAL_HEIGHT    355
-#define HOMESCREEN_HEIGHT 310
-#define SEC_HEIGHT        270
-#define LOC_HEIGHT        260
-#define DISPLAY_HEIGHT    320
-#define COLOR_HEIGHT      450
-#define EXP_HEIGHT        375
-#define PRINT_HEIGHT      200
+#pragma mark - Helper routines
+
+NSMenuItem* createItemForDateSelector(NSString *title, NSUInteger tag)
+{
+    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle: title action: nil keyEquivalent: @""];
+    item.tag = tag;
+    return item;
+}
+
+void prepareLoanDateSelectors(NSPopUpButton *monthSelector, NSPopUpButton *yearSelector,
+                              ShortDate *selectedDate, NSUInteger startYear)
+{
+    [monthSelector removeAllItems];
+    [yearSelector removeAllItems];
+
+    if (selectedDate == nil) {
+        selectedDate = ShortDate.currentDate;
+    }
+
+    NSArray *monthNames = [NSCalendar.currentCalendar monthSymbols];
+    NSMenu *menu = monthSelector.menu;
+    for (NSUInteger month = 0; month < monthNames.count; ++month) {
+        NSMenuItem *item = createItemForDateSelector(monthNames[month], month + 1);
+        [menu addItem: item];
+        if (month + 1 == selectedDate.month) {
+            [monthSelector selectItem: item];
+        }
+    }
+
+    ShortDate *date = ShortDate.currentDate;
+    menu = yearSelector.menu;
+    if (startYear == 0) {
+        startYear = date.year - 30;
+    }
+    for (NSUInteger year = startYear; year <= startYear + 50; ++year) {
+        NSMenuItem *item = createItemForDateSelector([NSString stringWithFormat: @"%lu", year], year);
+        [menu addItem: item];
+        if (year == selectedDate.year) {
+            [yearSelector selectItem: item];
+        }
+    }
+}
+
+#pragma mark - Class implementations
+
+@interface PreferenceController ()
+
+- (void)removeRedemption: (id)cell;
+- (void)redemptionDateChanged: (ShortDate *)newDate cell: (id)cell;
+- (void)redemptionAmountChanged: (NSNumber *)newAmount cell: (id)cell;
+
+@end
+
+@interface ColorListViewCell : PXListViewCell
+{
+@private
+    IBOutlet NSTextField *caption;
+    IBOutlet NSColorWell *colorWell;
+    IBOutlet NSTextField *htmlText;
+    IBOutlet NSTextField *rgbText;
+    IBOutlet NSTextField *headerText;
+
+    NSString *colorKey;
+    BOOL     showHeader;
+}
+
+- (void)configureWithString: (NSString *)config;
+
+@end
 
 @implementation ColorListViewCell
 
@@ -123,7 +185,77 @@ static NSGradient *headerGradient;
 
 @end
 
+@interface RedemptionCellView : NSTableCellView
+{
+    IBOutlet NSPopUpButton *monthButton;
+    IBOutlet NSPopUpButton *yearButton;
+    IBOutlet NSTextField *amountField;
+}
+
+@property (weak) PreferenceController *delegate;
+
+@end
+
+@implementation RedemptionCellView
+
+@synthesize delegate;
+
+- (void)prepareForStartDate: (ShortDate *)date
+{
+    NSDictionary *values = self.objectValue;
+    prepareLoanDateSelectors(monthButton, yearButton, values[@"date"], date.year);
+    amountField.objectValue = values[@"amount"];
+}
+
+- (IBAction)remove: (id)sender
+{
+    [delegate removeRedemption: self];
+}
+
+- (IBAction)dateChanged: (id)sender
+{
+    ShortDate *date = [ShortDate dateWithYear: yearButton.selectedTag
+                                        month: monthButton.selectedTag
+                                          day: 1];
+    [delegate redemptionDateChanged: date cell: self];
+}
+
+- (IBAction)amountChanged: (id)sender
+{
+    NSNumber *amount = @([sender floatValue]);
+    [delegate redemptionAmountChanged: amount cell: self];
+}
+
+@end
+
 @implementation PreferenceController
+
+static NSDictionary *heightMappings;
+
+@synthesize selectedSection;
+
++ (void)initialize
+{
+    heightMappings = @{@"general": @355,
+                       @"home": @400,
+                       @"security": @270,
+                       @"persistence": @260,
+                       @"display": @320,
+                       @"colors": @450,
+                       @"export": @375,
+                       @"print": @200};
+}
+
++ (void)showPreferencesWithOwner: (id)owner section: (NSString *)section
+{
+    static PreferenceController *singleton;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        singleton = [[PreferenceController alloc] init];
+    });
+    singleton.selectedSection = section;
+    [singleton showWindow: owner];
+}
 
 - (id)init
 {
@@ -135,12 +267,35 @@ static NSGradient *headerGradient;
                          @"remoteBankName", @"remoteBankLocation", @"remoteIBAN", @"remoteBIC", @"remoteSuffix",
                          @"customerReference", @"bankReference", @"transactionText", @"primaNota",
                          @"transactionCode", @"categoriesDescription"];
+
+        roundUp = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode: NSRoundUp
+                                                                         scale: 2
+                                                              raiseOnExactness: NO
+                                                               raiseOnOverflow: NO
+                                                              raiseOnUnderflow: NO
+                                                           raiseOnDivideByZero: YES];
+
+        roundDown = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode: NSRoundDown
+                                                                           scale: 2
+                                                                raiseOnExactness: NO
+                                                                 raiseOnOverflow: NO
+                                                                raiseOnUnderflow: NO
+                                                             raiseOnDivideByZero: YES];
+
     }
     return self;
 }
 
 - (void)awakeFromNib
 {
+    [self prepareAccountSelectors];
+
+    NSDate *dateToSelect = LocalSettingsController.sharedSettings[@"loanStartDate"];
+    if (dateToSelect == nil) {
+        dateToSelect = NSDate.date;
+    }
+    prepareLoanDateSelectors(monthSelector, yearSelector, [ShortDate dateWithDate: dateToSelect], 0);
+
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray        *fields = [defaults objectForKey: @"Exporter.fields"];
     if (fields != nil) {
@@ -164,7 +319,7 @@ static NSGradient *headerGradient;
     [mainTab selectTabViewItemAtIndex: 0];
     [mainTab setTabViewType: NSNoTabsNoBorder];
 
-    [self setHeight: GENERAL_HEIGHT];
+    [self setHeight: heightMappings[@"general"]];
 
     // Load field separator.
     NSString *expSep = [defaults stringForKey: EXPORT_SEPARATOR];
@@ -180,10 +335,10 @@ static NSGradient *headerGradient;
         }
     }
 
-    // Fix icons in the toolbar. Those in subfolders of the Resources folder are not found automatically.
+    // Load icons in the toolbar. Those in subfolders of the Resources folder are not found automatically.
     NSFileManager *fileManager = [NSFileManager defaultManager];
     for (NSToolbarItem *item in toolBar.items) {
-        NSString *path = [[NSBundle mainBundle] pathForResource: item.image.name
+        NSString *path = [[NSBundle mainBundle] pathForResource: item.paletteLabel
                                                          ofType: @"icns"
                                                     inDirectory: @"Collections/1"];
         if ([fileManager fileExistsAtPath: path]) {
@@ -193,7 +348,113 @@ static NSGradient *headerGradient;
     colorListView.delegate = self;
     [colorListView reloadData];
 
+    if (selectionPending ) {
+        selectionPending = NO;
+        [mainTab selectTabViewItemWithIdentifier: selectedSection];
+        [toolBar setSelectedItemIdentifier: selectedSection];
+        [self setHeight: heightMappings[selectedSection]];
+    }
+
+    [self percentValueChanged: nil];
+
+    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
+    specialRedemptions = [settings[@"specialRedemptions"] mutableCopy];
+    [redemptionTableView reloadData];
 }
+
+- (void)setSelectedSection: (NSString *)section
+{
+    selectedSection = section;
+    if (selectedSection != nil) {
+        if (mainTab == nil) {
+            // Outlets not loaded yet.
+            selectionPending = true;
+        } else {
+            [mainTab selectTabViewItemWithIdentifier: selectedSection];
+            [toolBar setSelectedItemIdentifier: selectedSection];
+            [self setHeight: heightMappings[selectedSection]];
+        }
+    }
+}
+
+- (NSMenuItem *)createItemForAccountSelector: (Category *)account
+                                 indentation: (NSUInteger)indent
+{
+    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle: [account localName] action: nil keyEquivalent: @""];
+    item.representedObject = account;
+    item.indentationLevel = indent;
+    return item;
+}
+
+- (void)prepareAccountSelectors
+{
+    [accountSelector1 removeAllItems];
+    [accountSelector2 removeAllItems];
+
+    NSMenu *sourceMenu1 = [accountSelector1 menu];
+    NSMenu *sourceMenu2 = [accountSelector2 menu];
+
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"localName" ascending: YES];
+
+    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
+    NSString *account1 = settings[@"assetGraph1"];
+    NSString *account2 = settings[@"assetGraph2"];
+
+    // Create a top level item for all banks.
+    Category *category = [Category bankRoot];
+    NSMenuItem *item = [self createItemForAccountSelector: category indentation: 0];
+    [sourceMenu1 addItem: item];
+    if ([category.name isEqualToString: account1]) {
+        [accountSelector1 selectItem: item];
+    }
+    item = [self createItemForAccountSelector: category indentation: 0];
+    [sourceMenu2 addItem: item];
+    if ([category.name isEqualToString: account2]) {
+        [accountSelector2 selectItem: item];
+    }
+
+    NSArray *sortDescriptors = @[sortDescriptor];
+    NSArray *institutes = [category.children sortedArrayUsingDescriptors: sortDescriptors];
+
+    // Convert list of accounts in their institutes branches to a flat list
+    // usable by the selector.
+    for (Category *institute in institutes) {
+        if (![institute isKindOfClass: [BankAccount class]]) {
+            continue;
+        }
+
+        NSArray *accounts = [[institute children] sortedArrayUsingDescriptors: sortDescriptors];
+        if (accounts.count > 0) {
+            item = [self createItemForAccountSelector: (BankAccount *)institute indentation: 1];
+            [sourceMenu1 addItem: item];
+            if ([institute.localName isEqualToString: account1]) {
+                [accountSelector1 selectItem: item];
+            }
+
+            item = [self createItemForAccountSelector: (BankAccount *)institute indentation: 1];
+            [sourceMenu2 addItem: item];
+            if ([institute.localName isEqualToString: account1]) {
+                [accountSelector2 selectItem: item];
+            }
+
+            for (BankAccount *account in accounts) {
+                item = [self createItemForAccountSelector: account indentation: 2];
+                [sourceMenu1 addItem: item];
+                if ([account.localName isEqualToString: account1]) {
+                    [accountSelector1 selectItem: item];
+                }
+
+                item = [self createItemForAccountSelector: account indentation: 2];
+                [sourceMenu2 addItem: item];
+                if ([account.localName isEqualToString: account2]) {
+                    [accountSelector2 selectItem: item];
+                }
+            }
+        }
+    }
+}
+
+#pragma mark - Action handling
 
 - (void)windowWillClose: (NSNotification *)aNotification
 {
@@ -437,62 +698,20 @@ static NSGradient *headerGradient;
     [defaults setObject: @"|" forKey: EXPORT_SEPARATOR];
 }
 
-- (void)setHeight: (int)h
+- (void)setHeight: (NSNumber *)value
 {
-    NSWindow *window = [self window];
-    NSRect   frame = window.frame;
-    int      pos = frame.origin.y + frame.size.height;
-    frame.size.height = h;
-    frame.origin.y = pos - h;
-    [window setFrame: frame display: YES animate: YES];
+    NSRect frame = self.window.frame;
+    int    pos = frame.origin.y + frame.size.height;
+    frame.size.height = value.intValue;
+    frame.origin.y = pos - value.intValue;
+    [self.window setFrame: frame display: YES animate: YES];
 }
 
-- (IBAction)synchSettings: (id)sender
+- (IBAction)toolbarClicked: (id)sender
 {
-    [mainTab selectTabViewItemAtIndex: 0];
-    [self setHeight: GENERAL_HEIGHT];
-}
-
-- (IBAction)homeScreenSettings: (id)sender
-{
-    [mainTab selectTabViewItemAtIndex: 1];
-    [self setHeight: HOMESCREEN_HEIGHT];
-}
-
-- (IBAction)securitySettings: (id)sender
-{
-    [mainTab selectTabViewItemAtIndex: 2];
-    [self setHeight: SEC_HEIGHT];
-}
-
-- (IBAction)locationSettings: (id)sender
-{
-    [mainTab selectTabViewItemAtIndex: 3];
-    [self setHeight: LOC_HEIGHT];
-}
-
-- (IBAction)displaySettings: (id)sender
-{
-    [mainTab selectTabViewItemAtIndex: 4];
-    [self setHeight: DISPLAY_HEIGHT];
-}
-
-- (IBAction)colorSettings: (id)sender
-{
-    [mainTab selectTabViewItemAtIndex: 5];
-    [self setHeight: COLOR_HEIGHT];
-}
-
-- (IBAction)exportSettings: (id)sender
-{
-    [mainTab selectTabViewItemAtIndex: 6];
-    [self setHeight: EXP_HEIGHT];
-}
-
-- (IBAction)printSettings: (id)sender
-{
-    [mainTab selectTabViewItemAtIndex: 7];
-    [self setHeight: PRINT_HEIGHT];
+    selectedSection = [sender itemIdentifier];
+    [mainTab selectTabViewItemWithIdentifier: selectedSection];
+    [self setHeight: heightMappings[selectedSection]];
 }
 
 - (IBAction)resetAllColors: (id)sender
@@ -608,9 +827,125 @@ static NSGradient *headerGradient;
                                                   forKeyPath: [bindingInfo valueForKey: NSObservedKeyPathKey]];
 }
 
+- (IBAction)assetGraphChanged: (id)sender
+{
+    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
+    settings[@"assetGraph1"] = [accountSelector1.selectedItem.representedObject name];
+    settings[@"assetGraph2"] = [accountSelector2.selectedItem.representedObject name];
+}
+
+- (IBAction)percentValueChanged: (id)sender
+{
+    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
+    NSNumber *loan = settings[@"loanValue"];
+    NSNumber *interest = settings[@"interestRate"];
+    NSNumber *redemption = settings[@"redemptionRate"];
+
+    NSDecimalNumber *thousandTwoHundered = [NSDecimalNumber decimalNumberWithDecimal: @(1200).decimalValue];
+
+    NSDecimalNumber *initialInterest = [NSDecimalNumber decimalNumberWithDecimal: interest.decimalValue];
+    NSDecimalNumber *borrowedAmount = [NSDecimalNumber decimalNumberWithDecimal: loan.decimalValue];
+    NSDecimalNumber *initialRedemption = [NSDecimalNumber decimalNumberWithDecimal: redemption.decimalValue];
+
+    initialInterest = [initialInterest decimalNumberByDividingBy: thousandTwoHundered];
+    initialInterest = [initialInterest decimalNumberByMultiplyingBy: borrowedAmount];
+    initialInterest = [initialInterest decimalNumberByRoundingAccordingToBehavior: roundUp];
+
+    initialRedemption = [initialRedemption decimalNumberByDividingBy: thousandTwoHundered];
+    initialRedemption = [initialRedemption decimalNumberByMultiplyingBy: borrowedAmount];
+    initialRedemption = [initialRedemption decimalNumberByRoundingAccordingToBehavior: roundDown];
+
+    NSDecimalNumber *monthlyRate = [initialInterest decimalNumberByAdding: initialRedemption];
+    montlyRateLabel.objectValue = monthlyRate;
+}
+
+- (IBAction)loanDateChanged: (id)sender
+{
+    NSDate *date = [[ShortDate dateWithYear: yearSelector.selectedTag
+                                      month: monthSelector.selectedTag
+                                        day: 1] lowDate];
+    LocalSettingsController.sharedSettings[@"loanStartDate"] = date;
+}
+
+- (IBAction)showSpecialRedemptionDatePopover: (id)sender
+{
+    if (!redemptionPopover.shown) {
+        [redemptionPopover showRelativeToRect: [sender bounds] ofView: sender preferredEdge: NSMinXEdge];
+    }
+}
+
+- (IBAction)addRedemptionDate:(id)sender
+{
+    if (specialRedemptions == nil) {
+        specialRedemptions = [[NSMutableArray alloc] init];
+    }
+
+    // Add another entry like the last one just one year later.
+    NSDictionary *entry = specialRedemptions.lastObject;
+    NSDictionary *newEntry;
+    if (entry == nil) {
+        newEntry = @{@"date": ShortDate.currentDate, @"amount": @0};
+    } else {
+        newEntry = @{@"date": [entry[@"date"] dateByAddingUnits: 1 byUnit: NSCalendarUnitYear],
+                     @"amount": entry[@"amount"]};
+    }
+    [specialRedemptions addObject: newEntry];
+    [redemptionTableView reloadData];
+}
+
+#pragma mark - Tabview delegate methods
+
 - (void)tabView: (NSTabView *)tabView didSelectTabViewItem: (NSTabViewItem *)tabViewItem
 {
     [[self window] setTitle: [tabViewItem label]];
+}
+
+#pragma mark - NSTableViewDataSource protocol
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+{
+    return specialRedemptions.count;
+}
+
+- (NSView *)tableView: (NSTableView *)tableView
+   viewForTableColumn: (NSTableColumn *)tableColumn
+                  row: (NSInteger)row
+{
+    RedemptionCellView *cell = [tableView makeViewWithIdentifier: @"redemptionCellView" owner: nil];
+    cell.delegate = self;
+    cell.objectValue = specialRedemptions[row];
+    [cell prepareForStartDate: [ShortDate dateWithDate: LocalSettingsController.sharedSettings[@"loanStartDate"]] ];
+    return cell;
+}
+
+- (void)removeRedemption: (id)cell
+{
+    [specialRedemptions removeObject: [cell objectValue]];
+    [redemptionTableView reloadData];
+
+    LocalSettingsController.sharedSettings[@"specialRedemptions"] = specialRedemptions;
+}
+
+- (void)redemptionDateChanged: (ShortDate *)newDate cell: (id)cell
+{
+    NSDictionary *entry = [cell objectValue];
+    NSInteger index = [redemptionTableView rowForView: cell];
+
+    NSDictionary *newEntry = @{@"date":  newDate, @"amount": entry[@"amount"]};
+    [specialRedemptions replaceObjectAtIndex: index withObject: newEntry];
+
+    LocalSettingsController.sharedSettings[@"specialRedemptions"] = specialRedemptions;
+}
+
+- (void)redemptionAmountChanged: (NSNumber *)newAmount cell: (id)cell
+{
+    NSDictionary *entry = [cell objectValue];
+    NSInteger index = [redemptionTableView rowForView: cell];
+
+    NSDictionary *newEntry = @{@"date":  entry[@"date"], @"amount": newAmount};
+    [specialRedemptions replaceObjectAtIndex: index withObject: newEntry];
+
+    LocalSettingsController.sharedSettings[@"specialRedemptions"] = specialRedemptions;
 }
 
 #pragma mark - Convenience + constant preferences
@@ -650,129 +985,6 @@ static NSGradient *headerGradient;
 + (NSString*)popoverFontName
 {
     return @"HelveticaNeue-Light";
-}
-
-#pragma mark - Persistent storage of settings, flags etc.
-
-/**
- * Does a lookup for the given key in the context's info entries and returns the value stored under
- * that key (or nil if nothing is found).
- */
-+ (NSData *)persistentValueForKey: (NSString *)key
-{
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Info"
-                                                         inManagedObjectContext: context];
-    NSFetchRequest      *request = [[NSFetchRequest alloc] init];
-    [request setEntity: entityDescription];
-
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"key = %@", key];
-    [request setPredicate: predicate];
-
-    NSError *error;
-    NSArray *entries = [context executeFetchRequest: request error: &error];
-    if (error) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-        return nil;
-    }
-
-    if (entries.count > 1) {
-        NSLog(@"Persistent info storage: more than one entry found for key: %@.", key);
-    }
-
-    if (entries.count == 0) {
-        return nil;
-    } else {
-        Info *info = entries[0];
-        return info.value;
-    }
-}
-
-/**
- * Writes the given data under the given key in the persistent storage (our managed context).
- * An entry is first created if it doesn't exist yet.
- */
-+ (void)setPersistentValue: (NSData *)value forKey: (NSString *)key
-{
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Info"
-                                                         inManagedObjectContext: context];
-    NSFetchRequest      *request = [[NSFetchRequest alloc] init];
-    [request setEntity: entityDescription];
-
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"key = %@", key];
-    [request setPredicate: predicate];
-
-    NSError *error;
-    NSArray *entries = [context executeFetchRequest: request error: &error];
-    if (error) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-        return;
-    }
-
-    if (entries.count > 1) {
-        NSLog(@"Persistent info storage: more than one entry found for key: %@.", key);
-    }
-
-    Info *info;
-    if (entries.count == 0) {
-        // No entry yet, so create one.
-        info = [NSEntityDescription insertNewObjectForEntityForName: @"Info" inManagedObjectContext: context];
-        info.key = key;
-    } else {
-        info = entries[0];
-    }
-    info.value = value;
-    [context commitEditing];
-}
-
-+ (NSInteger)persistentIntValueForKey: (NSString *)key
-{
-    NSData *data = [self persistentValueForKey: key];
-    if (data == nil) {
-        return 0;
-    }
-    NSNumber *value = [NSUnarchiver unarchiveObjectWithData: data];
-    return value.integerValue;
-}
-
-+ (BOOL)persistentBoolValueForKey: (NSString *)key
-{
-    NSData *data = [self persistentValueForKey: key];
-    if (data == nil) {
-        return NO;
-    }
-    NSNumber *value = [NSUnarchiver unarchiveObjectWithData: data];
-    return value.boolValue;
-}
-
-+ (NSString *)persistentStringValueForKey: (NSString *)key
-{
-    NSData *data = [self persistentValueForKey: key];
-    if (data == nil) {
-        return NO;
-    }
-    return [NSUnarchiver unarchiveObjectWithData: data];
-}
-
-+ (void)setPersistentIntValue: (NSInteger)value forKey: (NSString *)key
-{
-    NSData *data = [NSArchiver archivedDataWithRootObject: @(value)];
-    [self setPersistentValue: data forKey: key];
-}
-
-+ (void)setPersistentBoolValue: (BOOL)value forKey: (NSString *)key
-{
-    NSData *data = [NSArchiver archivedDataWithRootObject: @(value)];
-    [self setPersistentValue: data forKey: key];
-}
-
-+ (void)setPersistentStringValue: (NSString *)value forKey: (NSString *)key
-{
-    NSData *data = [NSArchiver archivedDataWithRootObject: value];
-    [self setPersistentValue: data forKey: key];
 }
 
 #pragma mark - ListView delegate protocol

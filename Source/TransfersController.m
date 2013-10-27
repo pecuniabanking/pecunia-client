@@ -563,6 +563,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         Category       *currentAccount;
 
         while ((currentAccount = [accountEnumerator nextObject])) {
+            // TODO: do we really always want to log the accounts?
             [[MessageLog log] addMessage:[NSString stringWithFormat:@"check account %@ for transfer type %d", currentAccount.accountNumber, transferType] withLevel:LogLevel_Debug];            
             if (![currentAccount isKindOfClass: [BankAccount class]]) {
                 continue;

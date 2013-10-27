@@ -27,8 +27,8 @@ NSCalendar *calendar = nil;
 {
     self = [super init];
     if (self != nil) {
-        components = [[ShortDate calendar] components: NSYearCalendarUnit | NSMonthCalendarUnit |
-                      NSDayCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit
+        components = [[ShortDate calendar] components: NSCalendarUnitYear | NSCalendarUnitMonth |
+                      NSCalendarUnitDay | NSCalendarUnitWeekOfYear | NSCalendarUnitWeekday
                                              fromDate: date];
 
         // Make a copy of the given date set to noon (not midnight as this can produce timezone problems).
@@ -54,7 +54,7 @@ NSCalendar *calendar = nil;
         components.second = 0;
 
         inner = [calendar dateFromComponents: components];
-        components = [calendar components: NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit
+        components = [calendar components: NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekOfYear | NSCalendarUnitWeekday
                                  fromDate: inner];
     }
     return self;
@@ -73,7 +73,7 @@ NSCalendar *calendar = nil;
         components.second = 0;
 
         inner = [calendar dateFromComponents: components];
-        components = [calendar components: NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit
+        components = [calendar components: NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekOfYear | NSCalendarUnitWeekday
                                  fromDate: inner];
     }
     return self;
@@ -167,19 +167,18 @@ NSCalendar *calendar = nil;
 
 - (NSUInteger)hash
 {
-    // TODO: Shouldn't the magic numbers be prime numbers actually?
     return components.year * 372 + components.month * 31 + components.day;
 }
 
 - (int)daysToDate: (ShortDate *)toDate
 {
-    NSDateComponents *comps = [calendar components: NSDayCalendarUnit fromDate: self.lowDate toDate: toDate.lowDate options: 0];
+    NSDateComponents *comps = [calendar components: NSCalendarUnitDay fromDate: self.lowDate toDate: toDate.lowDate options: 0];
     return [comps day];
 }
 
 - (int)monthsToDate: (ShortDate *)toDate
 {
-    NSDateComponents *comps = [calendar components: NSMonthCalendarUnit fromDate: self.lowDate toDate: toDate.lowDate options: 0];
+    NSDateComponents *comps = [calendar components: NSCalendarUnitMonth fromDate: self.lowDate toDate: toDate.lowDate options: 0];
     return [comps month];
 }
 
@@ -194,26 +193,22 @@ NSCalendar *calendar = nil;
 - (int)unitsToDate: (ShortDate *)toDate byUnit: (int)calendarUnit
 {
     switch (calendarUnit) {
-        case NSYearCalendarUnit:
+        case NSCalendarUnitYear:
             return toDate.year - components.year;
 
-        case NSMonthCalendarUnit:
+        case NSCalendarUnitMonth:
             return 12 * (toDate.year - components.year) + (toDate.month - components.month);
 
-        case NSDayCalendarUnit: {
-            NSDateComponents *comps = [calendar components: NSDayCalendarUnit fromDate: inner toDate: toDate.lowDate options: 0];
+        case NSCalendarUnitDay: {
+            NSDateComponents *comps = [calendar components: NSCalendarUnitDay fromDate: inner toDate: toDate.lowDate options: 0];
             return comps.day;
         }
 
-        case NSWeekCalendarUnit: {
-            NSDateComponents *comps = [calendar components: NSWeekCalendarUnit fromDate: inner toDate: toDate.lowDate options: 0];
-            return comps.week;
-        }
-
-        case NSQuarterCalendarUnit:
+        case NSCalendarUnitQuarter:
             return 4 * (toDate.year - components.year) + (toDate.quarter - self.quarter);
 
         default:
+            NSLog(@"Invalid calendar unit specified in ShortDate unitsToDate:byUnit:");
             return 0;
     }
 }
@@ -226,28 +221,33 @@ NSCalendar *calendar = nil;
     // the allowed number of days in the target month we compute using the first day in the month
     // and adjust the day afterwards.
     switch (calendarUnit) {
-        case NSYearCalendarUnit:
+        case NSCalendarUnitYear:
             comps.year += units;
             break;
 
-        case NSMonthCalendarUnit:
+        case NSCalendarUnitMonth:
             comps.day = 1;
             comps.month += units;
             break;
 
-        case NSWeekdayCalendarUnit:
-        case NSDayCalendarUnit:
-            comps.day += units;
-            break;
-
-        case NSWeekCalendarUnit:
+        case NSWeekCalendarUnit: // NSWeekdayCalendarUnit is deprecated but I have not replacement
+                                 // with a timeframe meaning currently.
             comps.day += 7 * units;
             break;
 
-        case NSQuarterCalendarUnit:
+        case NSCalendarUnitWeekday:
+        case NSCalendarUnitDay:
+            comps.day += units;
+            break;
+
+        case NSCalendarUnitQuarter:
             comps.day = 1;
             comps.month += 3 * units;
             break;
+
+        default:
+            NSLog(@"Invalid calendar unit specified in ShortDate dateByAddingUnits:byUnit:");
+            return nil;
     }
     comps.hour = 12;
     comps.minute = 0;
@@ -255,9 +255,9 @@ NSCalendar *calendar = nil;
     NSDate *date = [calendar dateFromComponents: comps];
 
     switch (calendarUnit) {
-        case NSMonthCalendarUnit:
-        case NSQuarterCalendarUnit: {
-            NSRange   r = [calendar rangeOfUnit: NSDayCalendarUnit inUnit: NSMonthCalendarUnit forDate: date];
+        case NSCalendarUnitMonth:
+        case NSCalendarUnitQuarter: {
+            NSRange   r = [calendar rangeOfUnit: NSCalendarUnitDay inUnit: NSCalendarUnitMonth forDate: date];
             NSInteger day = ((NSInteger)r.length < components.day) ? r.length : components.day;
             date = [date dateByAddingTimeInterval: (day - 1) * 24 * 3600];
             break;
@@ -289,27 +289,35 @@ NSCalendar *calendar = nil;
 
 - (unsigned)week
 {
-    return components.week;
+    return components.weekOfYear;
 }
 
 - (int)daysInMonth
 {
-    NSRange r = [calendar rangeOfUnit: NSDayCalendarUnit inUnit: NSMonthCalendarUnit forDate: inner];
+    NSRange r = [calendar rangeOfUnit: NSCalendarUnitDay inUnit: NSCalendarUnitMonth forDate: inner];
     return r.length;
 }
 
 - (NSString *)description
 {
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    [df setDateStyle: NSDateFormatterMediumStyle];
-    [df setTimeStyle: NSDateFormatterNoStyle];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle: NSDateFormatterMediumStyle];
+    [formatter setTimeStyle: NSDateFormatterNoStyle];
 
-    return [df stringFromDate: [self lowDate]];
+    return [formatter stringFromDate: [self lowDate]];
 }
 
 - (NSString *)monthYearDescription
 {
     return [NSString stringWithFormat: @"%li/%li", components.month, components.year];
+}
+
+- (NSString *)longMonthYearDescription
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"MMMM y";
+
+    return [formatter stringFromDate: self.lowDate];
 }
 
 - (NSString *)quarterYearDescription
@@ -325,7 +333,7 @@ NSCalendar *calendar = nil;
 - (NSString *)weekYearDescription
 {
     // TODO: localization?
-    return [NSString stringWithFormat: @"KW %li/%li", components.week, components.year];
+    return [NSString stringWithFormat: @"KW %li/%li", components.weekOfYear, components.year];
 }
 
 - (ShortDate *)firstDayInYear
@@ -366,20 +374,20 @@ NSCalendar *calendar = nil;
 
 - (ShortDate *)firstDayInWeek
 {
-    NSDateComponents *comps = [calendar components: NSWeekdayCalendarUnit fromDate: [self lowDate]];
+    NSDateComponents *comps = [calendar components: NSCalendarUnitWeekday fromDate: [self lowDate]];
 
-    NSInteger offset = calendar.firstWeekday - [comps weekday];
+    NSInteger offset = calendar.firstWeekday - comps.weekday;
     if (offset > 0) {
         offset -= 7;
     }
-    return [self dateByAddingUnits: offset byUnit: NSWeekdayCalendarUnit];
+    return [self dateByAddingUnits: offset byUnit: NSCalendarUnitWeekday];
 }
 
 - (ShortDate *)lastDayInWeek
 {
-    NSDateComponents *comps = [calendar components: NSWeekdayCalendarUnit fromDate: [self lowDate]];
+    NSDateComponents *comps = [calendar components: NSCalendarUnitWeekday fromDate: [self lowDate]];
 
-    return [self dateByAddingUnits: (7 - [comps weekday]) byUnit: NSWeekdayCalendarUnit];
+    return [self dateByAddingUnits: (7 - comps.weekday) byUnit: NSCalendarUnitWeekday];
 }
 
 - (BOOL)isFirstDayInMonth

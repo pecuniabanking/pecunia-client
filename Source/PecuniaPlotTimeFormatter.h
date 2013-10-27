@@ -30,6 +30,8 @@
 
 - (id)initWithDateFormatter: (NSDateFormatter *)aDateFormatter calendarUnit: (int)unit;
 
+@property BOOL useMonthNames;
+
 @end
 
 /**

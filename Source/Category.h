@@ -77,8 +77,8 @@ typedef struct {
 @property (nonatomic) NSString                *iconName;
 @property (nonatomic, strong) NSNumber        *isHidden;
 
-@property (nonatomic, strong) NSColor              *categoryColor; // Unarchived catRepColor.
-@property (nonatomic, strong) NSArray              *reportedAssignments; // assignments between start and end report date
+@property (nonatomic, strong) NSColor   *categoryColor; // Unarchived catRepColor.
+@property (nonatomic, strong) NSArray   *reportedAssignments; // assignments between start and end report date
 @property (nonatomic, readonly) NSArray *boundAssignments; // assignments bound to / displayed in a statements table view
 
 - (void)updateInvalidCategoryValues;
@@ -104,7 +104,8 @@ typedef struct {
                     balances: (NSArray **)balances
                balanceCounts: (NSArray **)counts
                 withGrouping: (GroupingInterval)interval
-                       sumUp: (BOOL)sumUp;
+                       sumUp: (BOOL)sumUp
+                   recursive: (BOOL)recursive;
 - (void)getDatesMin: (ShortDate **)minDate max: (ShortDate **)maxDate;
 
 - (NSDecimalNumber *)valuesOfType: (CatValueType)type from: (ShortDate *)fromDate to: (ShortDate *)toDate;
@@ -132,6 +133,7 @@ typedef struct {
 + (Category *)bankRoot;
 + (Category *)catRoot;
 + (Category *)nassRoot;
++ (Category *)categoryForName: (NSString *)name;
 + (void)updateCatValues;
 + (void)setCatReportFrom: (ShortDate *)fDate to: (ShortDate *)tDate;
 + (void)recreateRoots;

@@ -21,26 +21,7 @@
 
 #import "PXListView.h"
 
-@class BWGradientBox;
-
-@interface ColorListViewCell : PXListViewCell
-{
-@private
-    IBOutlet NSTextField *caption;
-    IBOutlet NSColorWell *colorWell;
-    IBOutlet NSTextField *htmlText;
-    IBOutlet NSTextField *rgbText;
-    IBOutlet NSTextField *headerText;
-
-    NSString *colorKey;
-    BOOL     showHeader;
-}
-
-- (void)configureWithString: (NSString *)config;
-
-@end
-
-@interface PreferenceController : NSWindowController <PXListViewDelegate> {
+@interface PreferenceController : NSWindowController <PXListViewDelegate, NSTableViewDataSource> {
 @private
     IBOutlet NSArrayController *fieldController;
     IBOutlet NSTableView       *fieldTable;
@@ -70,11 +51,34 @@
     IBOutlet NSProgressIndicator *progressIndicator2;
     IBOutlet NSProgressIndicator *progressIndicator3;
 
+    IBOutlet NSPopUpButton *accountSelector1;
+    IBOutlet NSPopUpButton *accountSelector2;
+
+    IBOutlet NSTextField *montlyRateLabel;
+    IBOutlet NSTextField *loanField;
+
+    IBOutlet NSPopUpButton *monthSelector;
+    IBOutlet NSPopUpButton *yearSelector;
+
+    IBOutlet NSPopover *redemptionPopover;
+    IBOutlet NSTableView *redemptionTableView;
+
+    NSDecimalNumberHandler *roundUp;
+    NSDecimalNumberHandler *roundDown;
+
+    NSMutableArray *specialRedemptions;
+    
+    BOOL selectionPending;
+    
     // encryption sheet
     NSString *password;
     BOOL     savePassword;
     BOOL     encrypt;
 }
+
+@property (nonatomic, strong) NSString *selectedSection;
+
++ (void)showPreferencesWithOwner: (id)owner section: (NSString *)section;
 
 - (IBAction)changeFileLocation: (id)sender;
 - (IBAction)restoreFileLocation: (id)sender;
@@ -89,18 +93,8 @@
 - (IBAction)expSepSemi: (id)sender;
 - (IBAction)expSepLine: (id)sender;
 
-- (IBAction)synchSettings: (id)sender;
-- (IBAction)securitySettings: (id)sender;
-- (IBAction)locationSettings: (id)sender;
-- (IBAction)exportSettings: (id)sender;
-- (IBAction)printSettings: (id)sender;
-- (IBAction)colorSettings: (id)sender;
-- (IBAction)displaySettings: (id)sender;
-
 - (IBAction)removePINs: (id)sender;
 - (IBAction)changePassword:(id)sender;
-
-- (void)setHeight: (int)h;
 
 // Query settings + related values.
 + (BOOL)showCategoryColorsInTree;
@@ -110,18 +104,5 @@
 + (NSString *)mainFontNameBold;
 + (NSString *)mainFontNameLight;
 + (NSString *)popoverFontName;
-
-// Persistent storage per managed context.
-+ (NSData *)persistentValueForKey: (NSString *)key;
-+ (void)setPersistentValue: (NSData *)value forKey: (NSString *)key;
-
-// Convenience methods.
-+ (NSInteger)persistentIntValueForKey: (NSString *)key;
-+ (BOOL)persistentBoolValueForKey: (NSString *)key;
-+ (NSString *)persistentStringValueForKey: (NSString *)key;
-
-+ (void)setPersistentIntValue: (NSInteger)value forKey: (NSString *)key;
-+ (void)setPersistentBoolValue: (BOOL)value forKey: (NSString *)key;
-+ (void)setPersistentStringValue: (NSString *)value forKey: (NSString *)key;
 
 @end

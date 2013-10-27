@@ -20,7 +20,7 @@
 #import "TransfersCellView.h"
 #import "StatCatAssignment.h"
 #import "Category.h"
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 
 extern void *UserDefaultsBindingContext;
 

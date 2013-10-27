@@ -18,7 +18,7 @@
  */
 
 #import "NSOutlineView+PecuniaAdditions.h"
-#import "PreferenceController.h"
+#import "LocalSettingsController.h"
 
 @implementation NSOutlineView (PecuniaAdditions)
 
@@ -41,11 +41,10 @@
     }
 
     NSString *saveKey = [NSString stringWithFormat: @"%@-expand-state", autoSaveName];
-    NSData *data = [NSArchiver archivedDataWithRootObject: expandStates];
-    [PreferenceController setPersistentValue: data forKey: saveKey];
+    LocalSettingsController.sharedSettings[saveKey] = expandStates;
 
     saveKey = [NSString stringWithFormat: @"%@-selection", autoSaveName];
-    [PreferenceController setPersistentIntValue: self.selectedRow forKey: saveKey];
+    [LocalSettingsController.sharedSettings setInteger: self.selectedRow forKey: saveKey];
 }
 
 /**
@@ -59,16 +58,13 @@
     }
 
     NSString *saveKey = [NSString stringWithFormat: @"%@-expand-state", autoSaveName];
-    NSData *data = [PreferenceController persistentValueForKey: saveKey];
-    if (data != nil) {
-        NSArray *expandStates = [NSUnarchiver unarchiveObjectWithData: data];
-        for (NSUInteger i = 0; i < expandStates.count; ++i) {
-            [self expandItem: [self itemAtRow: [expandStates[i] intValue]]];
-        }
+    NSArray *expandStates = LocalSettingsController.sharedSettings[saveKey];
+    for (NSUInteger i = 0; i < expandStates.count; ++i) {
+        [self expandItem: [self itemAtRow: [expandStates[i] intValue]]];
     }
 
     saveKey = [NSString stringWithFormat: @"%@-selection", autoSaveName];
-    NSInteger selectedRow = [PreferenceController persistentIntValueForKey: saveKey];
+    NSInteger selectedRow = [LocalSettingsController.sharedSettings integerForKey: saveKey];
     [self selectRowIndexes: [NSIndexSet indexSetWithIndex: selectedRow] byExtendingSelection: NO];
 }
 

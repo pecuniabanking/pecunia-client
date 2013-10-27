@@ -18,7 +18,7 @@
  */
 
 #import "AmountCell.h"
-#import "GraphicsAdditions.h"
+#import "NSColor+PecuniaAdditions.h"
 
 #define CELL_BOUNDS 3
 

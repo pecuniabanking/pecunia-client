@@ -564,7 +564,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     order.executionDay = @1;
     order.isChanged = @YES;
     ShortDate *startDate = [[ShortDate currentDate] firstDayInMonth];
-    order.firstExecDate = [[startDate dateByAddingUnits: 1 byUnit: NSMonthCalendarUnit] lowDate];
+    order.firstExecDate = [[startDate dateByAddingUnits: 1 byUnit: NSCalendarUnitMonth] lowDate];
     order.lastExecDate = [[ShortDate dateWithYear: 2999 month: 12 day: 31] lowDate];
 
     [orderController addObject: order];

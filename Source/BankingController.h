@@ -25,7 +25,6 @@
 @class BankAccount;
 @class BankUser;
 @class NewBankUserController;
-@class PreferenceController;
 @class LogController;
 @class Category;
 @class MCEMTreeController;
@@ -131,7 +130,6 @@
     NSManagedObjectContext *managedObjectContext;
     NSManagedObjectModel   *model;
     NewBankUserController  *bankUserController;
-    PreferenceController   *prefController;
     LogController          *logController;
     DockIconController     *dockIconController;
     BOOL                   restart;

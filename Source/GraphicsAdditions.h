@@ -19,24 +19,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-CGColorRef CGColorCreateFromNSColor(NSColor *color);
-
-@interface NSColor (PecuniaAdditions)
-
-+ (NSColor *)nextDefaultAccountColor;
-+ (NSColor *)nextDefaultCategoryColor;
-+ (NSColor *)nextDefaultTagColor;
-+ (NSColor *)nextDefaultStockGraphColor;
-
-+ (NSColor *)applicationColorForKey: (NSString *)key;
-+ (void)setApplicationColor: (NSColor *)color forKey: (NSString *)key;
-+ (void)resetApplicationColorForKey: (NSString *)key;
-
-- (NSColor *)colorWithChangedBrightness: (CGFloat)factor;
-- (NSColor *)colorWithChangedSaturation: (CGFloat)factor;
-
-@end
-
 /**
  * Helper code for drawing with bezier paths and shadows.
  * Code mostly from: http://www.seanpatrickobrien.com/journal/posts/3.

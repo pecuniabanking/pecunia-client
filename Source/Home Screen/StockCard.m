@@ -21,8 +21,8 @@
 
 #import "StockCard.h"
 #import "YahooStockData.h"
-#import "PreferenceController.h"
-#import "GraphicsAdditions.h"
+#import "LocalSettingsController.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "PecuniaPlotTimeFormatter.h"
 
 typedef enum {
@@ -126,7 +126,7 @@ typedef enum {
 
 - (void)setupGraph
 {
-    graph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame : NSRectToCGRect(self.bounds)];
+    graph = [[CPTXYGraph alloc] initWithFrame : NSRectToCGRect(self.bounds)];
     graph.geometryFlipped = YES;
     graph.opacity = 0;
     self.hostedGraph = graph;
@@ -230,7 +230,7 @@ typedef enum {
 
     if (firstTimeUpdate) {
         attributes = @{NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
-                       NSFontAttributeName: [NSFont fontWithName: @"HelveticaNeue-Bold" size: 14]};
+                       NSFontAttributeName: [NSFont fontWithName: @"LucidaGrande-Bold" size: 14]};
 
         NSAttributedString *title = [[NSAttributedString alloc] initWithString: name attributes: attributes];
 
@@ -246,7 +246,7 @@ typedef enum {
         textColor = [NSColor applicationColorForKey: @"Negative Cash"];
     }
     attributes = @{NSForegroundColorAttributeName: textColor,
-                   NSFontAttributeName: [NSFont fontWithName: @"HelveticaNeue-Medium" size: 10]};
+                   NSFontAttributeName: [NSFont fontWithName: @"LucidaGrande-Bold" size: 10]};
     temp = [[NSAttributedString alloc] initWithString: [NSString stringWithFormat: @"%.2f (%.2f%%)   ", change, changePercent] attributes: attributes];
     [annotationString appendAttributedString: temp];
 
@@ -257,7 +257,7 @@ typedef enum {
     [annotationString appendAttributedString: temp];
 
     attributes = @{NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.582 green: 0.572 blue: 0.544 alpha: 1.000],
-                   NSFontAttributeName: [NSFont fontWithName: @"HelveticaNeue-Bold" size: 10]};
+                   NSFontAttributeName: [NSFont fontWithName: @"LucidaGrande-Bold" size: 10]};
     temp = [[NSAttributedString alloc] initWithString: currency attributes: attributes];
     [annotationString appendAttributedString: temp];
 
@@ -417,8 +417,8 @@ typedef enum {
         noChangeCounter = 0;
         price = currentPrice;
         name = quote[@"issuername"][@"text"];
-        if (name.length > 15) {
-            name = [NSString stringWithFormat: @"%@...", [name substringWithRange: NSMakeRange(0, 15)]];
+        if (name.length > 20) {
+            name = [NSString stringWithFormat: @"%@...", [name substringWithRange: NSMakeRange(0, 20)]];
         } else {
             if (name.length == 0) {
                 name = NSLocalizedString(@"AP19", nil);
@@ -599,7 +599,7 @@ typedef enum {
     time->tm_sec = 0;
     switch (interval) {
         case StocksIntervalOneWeek:
-            calendarUnit = NSDayCalendarUnit;
+            calendarUnit = NSCalendarUnitDay;
 
             time->tm_hour = 0;
             for (int i = 0; i < 7; i++) {
@@ -610,7 +610,7 @@ typedef enum {
             break;
 
         case StocksIntervalOneMonth:
-            calendarUnit = NSDayCalendarUnit;
+            calendarUnit = NSCalendarUnitDay;
 
             time->tm_hour = 0;
             for (int i = 0; i < 10; i++) {
@@ -621,7 +621,7 @@ typedef enum {
             break;
             
         case StocksIntervalOneQuarter:
-            calendarUnit = NSMonthCalendarUnit;
+            calendarUnit = NSCalendarUnitMonth;
 
             time->tm_hour = 0;
             time->tm_mday = 1;
@@ -633,7 +633,7 @@ typedef enum {
             break;
             
         case StocksIntervalOneYear:
-            calendarUnit = NSMonthCalendarUnit;
+            calendarUnit = NSCalendarUnitMonth;
 
             time->tm_hour = 0;
             time->tm_mday = 1;
@@ -645,7 +645,7 @@ typedef enum {
             break;
             
         case StocksIntervalThreeYears:
-            calendarUnit = NSYearCalendarUnit;
+            calendarUnit = NSCalendarUnitYear;
 
             time->tm_hour = 0;
             time->tm_mday = 1;
@@ -658,7 +658,7 @@ typedef enum {
             break;
 
         case StocksIntervalAllTime:
-            calendarUnit = NSYearCalendarUnit;
+            calendarUnit = NSCalendarUnitYear;
 
             time->tm_hour = 0;
             time->tm_mday = 1;
@@ -712,8 +712,8 @@ typedef enum {
 
     CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
     textStyle.color = [CPTColor colorWithComponentRed: 88 / 255.0 green: 86 / 255.0 blue: 77 / 255.0 alpha: 0.5];
-    textStyle.fontName = @"HelveticaNeue-Bold";
-    textStyle.fontSize = 9.5;
+    textStyle.fontName = @"HelveticaNeue-Medium";
+    textStyle.fontSize = 10;
     x.labelTextStyle = textStyle;
 
     CPTXYAxis *y = axisSet.yAxis;
@@ -818,6 +818,11 @@ typedef enum {
 
 @implementation StockCard
 
++ (BOOL)isConfigurable
+{
+    return YES;
+}
+
 - (id)initWithFrame: (NSRect)frame
 {
     self = [super initWithFrame: frame];
@@ -830,14 +835,14 @@ typedef enum {
 
 - (void)dealloc
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
     for (NSUInteger i = 1; i <= 3; i++) {
         NSString *symbolKey = [NSString stringWithFormat: @"stocksSymbol%li", i];
-        NSString *stockSymbol = [defaults stringForKey: symbolKey];
+        NSString *stockSymbol = settings[symbolKey];
         if (stockSymbol.length > 0) {
             NSString *colorKey = [NSString stringWithFormat: @"stocksSymbolColor%li", i];
-            [defaults removeObserver: self forKeyPath: symbolKey];
-            [defaults removeObserver: self forKeyPath: colorKey];
+            [settings removeObserver: self forKeyPath: symbolKey];
+            [settings removeObserver: self forKeyPath: colorKey];
         }
     }
 }
@@ -868,26 +873,24 @@ typedef enum {
     graphs = [NSMutableArray arrayWithCapacity: 3];
 
     NSColor *graphColor;
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
     StocksTimeInterval initialInterval = StocksIntervalIntraday;
-    if ([defaults objectForKey: @"stocksInterval"] != nil) {
-        initialInterval = [defaults integerForKey: @"stocksInterval"];
+    if (settings[@"stocksInterval"] != nil) {
+        initialInterval = [settings integerForKey: @"stocksInterval"];
     }
     intervalSelector.selectedSegment = initialInterval;
 
     for (NSUInteger i = 1; i <= 3; i++) {
         NSString *symbolKey = [NSString stringWithFormat: @"stocksSymbol%li", i];
-        NSString *stockSymbol = [defaults stringForKey: symbolKey];
+        NSString *stockSymbol = settings[symbolKey];
         //if (stockSymbol.length > 0) create hidden graphs for empty symbols
         {
             NSString *colorKey = [NSString stringWithFormat: @"stocksSymbolColor%li", i];
-            [defaults addObserver: self forKeyPath: symbolKey options: 0 context: nil];
-            [defaults addObserver: self forKeyPath: colorKey options: 0 context: nil];
+            [settings addObserver: self forKeyPath: symbolKey options: 0 context: nil];
+            [settings addObserver: self forKeyPath: colorKey options: 0 context: nil];
 
-            id data = [defaults objectForKey: colorKey];
-            if (data != nil) {
-                graphColor = (NSColor *)[NSUnarchiver unarchiveObjectWithData: data];
-            } else {
+            graphColor = settings[colorKey];
+            if (graphColor == nil) {
                 graphColor = [NSColor nextDefaultStockGraphColor];
             }
             StockGraph *graph = [[StockGraph alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)
@@ -927,8 +930,8 @@ typedef enum {
             interval = StocksIntervalAllTime;
             break;
     }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setInteger: interval forKey: @"stocksInterval"];
+    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
+    [settings setInteger: interval forKey: @"stocksInterval"];
 
     for (StockGraph *graph in graphs) {
        graph.interval = interval;
@@ -949,11 +952,13 @@ typedef enum {
 
     for (NSView *child in self.subviews) {
         if ([child isKindOfClass: [NSSegmentedControl class]]) {
-            NSPoint controlLocation = NSMakePoint(NSMaxX(self.bounds) - NSWidth(child.bounds) - 15, 13);
+            NSPoint controlLocation = NSMakePoint(NSMaxX(self.bounds) - NSWidth(child.bounds) - 32, 13);
             child.frameOrigin = controlLocation;
         } else {
-            child.frame = frame;
-            frame.origin.y += frame.size.height;
+            if ([child isKindOfClass: [StockGraph class]]) {
+                child.frame = frame;
+                frame.origin.y += frame.size.height;
+            }
         }
     }
 }
@@ -971,47 +976,44 @@ typedef enum {
                         change: (NSDictionary *)change
                        context: (void *)context
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
     if ([keyPath isEqualToString: @"stocksSymbol1"]) {
         if (graphs.count > 0) {
-            [graphs[0] setSymbol: [defaults stringForKey: keyPath]];
+            [graphs[0] setSymbol: settings[keyPath]];
         }
         return;
     }
     if ([keyPath isEqualToString: @"stocksSymbol2"]) {
         if (graphs.count > 1) {
-            [graphs[1] setSymbol: [defaults stringForKey: keyPath]];
+            [graphs[1] setSymbol: settings[keyPath]];
         }
         return;
     }
     if ([keyPath isEqualToString: @"stocksSymbol3"]) {
         if (graphs.count > 2) {
-            [graphs[2] setSymbol: [defaults stringForKey: keyPath]];
+            [graphs[2] setSymbol: settings[keyPath]];
         }
         return;
     }
 
     // Colors.
-    id data = [defaults objectForKey: keyPath];
-    if (data != nil) {
+    NSColor *color = settings[keyPath];
+    if (color != nil) {
         if ([keyPath isEqualToString: @"stocksSymbolColor1"]) {
             if (graphs.count > 0) {
-                NSColor *graphColor = (NSColor *)[NSUnarchiver unarchiveObjectWithData: data];
-                [graphs[0] setColor: graphColor];
+                [graphs[0] setColor: color];
             }
             return;
         }
         if ([keyPath isEqualToString: @"stocksSymbolColor2"]) {
             if (graphs.count > 1) {
-                NSColor *graphColor = (NSColor *)[NSUnarchiver unarchiveObjectWithData: data];
-                [graphs[1] setColor: graphColor];
+                [graphs[1] setColor: color];
             }
             return;
         }
         if ([keyPath isEqualToString: @"stocksSymbolColor3"]) {
             if (graphs.count > 2) {
-                NSColor *graphColor = (NSColor *)[NSUnarchiver unarchiveObjectWithData: data];
-                [graphs[2] setColor: graphColor];
+                [graphs[2] setColor: color];
             }
             return;
         }

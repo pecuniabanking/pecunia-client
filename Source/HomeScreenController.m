@@ -18,13 +18,16 @@
  */
 
 #import "HomeScreenController.h"
+#import "NSColor+PecuniaAdditions.h"
 #import "GraphicsAdditions.h"
 #import "PreferenceController.h"
+#import "ClickableImageView.h"
 
 #import "StockCard.h"
 #import "AssetsCard.h"
 #import "RecentTransfersCard.h"
 #import "NextTransfersCard.h"
+#import "SaveAndRedeemCard.h"
 
 NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
@@ -47,7 +50,6 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
 - (void)print
 {
-
 }
 
 - (NSView *)mainView
@@ -57,12 +59,10 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
 - (void)activate
 {
-
 }
 
 - (void)deactivate
 {
-
 }
 
 @end
@@ -72,9 +72,10 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 @interface HomeScreenCard ()
 {
     NSAttributedString *titleString;
-    NSBezierPath *gripPath;
-    NSBezierPath *borderFillPath;
-    NSBezierPath *borderPath;
+    NSBezierPath       *gripPath;
+    NSBezierPath       *borderFillPath;
+    NSBezierPath       *borderPath;
+    ClickableImageView *configImage;
 
     NSTrackingArea *trackingArea;
 }
@@ -85,7 +86,12 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
 @synthesize title;
 
-+ (BOOL)clickable
++ (BOOL)isClickable
+{
+    return NO;
+}
+
++ (BOOL)isConfigurable
 {
     return NO;
 }
@@ -107,8 +113,17 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
         [self updateStoredStructures];
 
-        if (self.class.clickable) {
+        if (self.class.isClickable) {
             [self updateTrackingArea];
+        }
+
+        if (self.class.isConfigurable) {
+            configImage = [[ClickableImageView alloc] init];
+            configImage.image = [NSImage imageNamed: @"gear"];
+            [self addSubview: configImage];
+
+            configImage.action = @selector(configure:);
+            configImage.target = self;
         }
     }
     return self;
@@ -117,6 +132,11 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 - (BOOL)isFlipped
 {
     return YES;
+}
+
+- (void)configure: (id)sender
+{
+    [PreferenceController showPreferencesWithOwner: self section: @"home"];
 }
 
 - (void)setTitle: (NSString *)aTitle
@@ -130,6 +150,10 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
 - (void)updateStoredStructures
 {
+    if (configImage != nil) {
+        configImage.frame = NSMakeRect(NSWidth(self.bounds) - 28, 14, 16, 16);
+    }
+
     NSRect bounds = NSInsetRect(self.bounds, 10, 10);
     bounds.origin.y = bounds.size.height - 3;
     bounds.size.height = 10;
@@ -139,7 +163,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
     gripPath = [NSBezierPath bezierPath];
     CGFloat x1 = (int)titleString.size.width + 25;
-    CGFloat x2 = NSMaxX(bounds) - 10;
+    CGFloat x2 = NSMaxX(bounds) - (self.class.isConfigurable ? 26 : 10);
     CGFloat y = 20.5;
     [gripPath moveToPoint: NSMakePoint(x1, y)];
     [gripPath lineToPoint: NSMakePoint(x2, y)];
@@ -233,7 +257,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 -(void)cursorUpdate: (NSEvent *)theEvent
 
 {
-    if (self.class.clickable) {
+    if (self.class.isClickable) {
         [[NSCursor pointingHandCursor] set];
     } else {
         [super cursorUpdate: theEvent];
@@ -332,7 +356,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     card.title =  NSLocalizedString(@"AP950", nil);
     [self addSubview: card];
 
-    card = [[HomeScreenCard alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
+    card = [[SaveAndRedeemCard alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
     card.title =  NSLocalizedString(@"AP955", nil);
     [self addSubview: card];
 
