@@ -250,7 +250,9 @@ static NSRegularExpression *bicRE;
                                                     range: NSMakeRange(0, self.remoteAccount.length)];
 
         if (range.length > 0) {
-            self.remoteIBAN = self.remoteAccount;
+            if (self.remoteAccount.length <= 34) {
+                self.remoteIBAN = self.remoteAccount;
+            }
             self.remoteAccount = nil;
         }
     }
@@ -261,7 +263,9 @@ static NSRegularExpression *bicRE;
                                                    range: NSMakeRange(0, self.remoteBankCode.length)];
 
         if (range.length > 0) {
-            self.remoteBIC = self.remoteBankCode;
+            if (self.remoteBankCode.length <= 11) {
+                self.remoteBIC = self.remoteBankCode;
+            }
             self.remoteBankCode = nil;
         }
     }
