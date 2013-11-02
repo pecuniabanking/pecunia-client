@@ -1381,6 +1381,14 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), count] removeAfter: 120];
     }
     autoSyncRunning = NO;
+    
+    // check for updated login data
+    for (result in resultList) {
+        BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode];
+        if (user != nil) {
+            [user checkForUpdatedLoginData];
+        }
+    }
 
     [self save];
 

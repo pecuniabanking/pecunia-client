@@ -1232,7 +1232,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     NSMutableDictionary *transfersByAccount = [NSMutableDictionary dictionaryWithCapacity: 10];
     for (Transfer *transfer in transfers) {
         BankAccount *account = transfer.account;
-        if ([account.collTransferMethod intValue] == CTM_none) {
+        if ([account.collTransferMethod intValue] == CTM_none ||
+            // up to now we only support collective Transfers for Standard Transfers (not dated, no SEPA, no EU...)
+            transfer.type.intValue != TransferTypeStandard ||
+            transfer.valutaDate != nil) {
             [singleTransfers addObject: transfer];
             continue;
         }

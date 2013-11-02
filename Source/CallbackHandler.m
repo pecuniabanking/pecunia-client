@@ -217,6 +217,20 @@ static CallbackHandler *callbackHandler = nil;
     } else {return @"<abort>"; }
 }
 
+- (void)userIDChanged: (CallbackData*)data
+{
+    NSArray *userData = [data.proposal componentsSeparatedByString: @"|"];
+    BankUser *user = [BankUser userWithId:data.userId bankCode:data.bankCode];
+    if (user != nil) {
+        if (![user.userId isEqualToString:[userData objectAtIndex:0]]) {
+            user.updatedUserId = [userData objectAtIndex:0];
+        }
+        if (![user.customerId isEqualToString:[userData objectAtIndex:1]]) {
+            user.updatedCustomerId = [userData objectAtIndex:1];
+        }
+    }
+}
+
 - (NSString *)callbackWithData: (CallbackData *)data
 {
     if ([data.command isEqualToString: @"password_load"]) {
@@ -266,6 +280,9 @@ static CallbackHandler *callbackHandler = nil;
     }
     if ([data.command isEqualToString: @"wrongPin"]) {
         [self removePin: data];
+    }
+    if ([data.command isEqualToString: @"UserIDChanged"]) {
+        [self userIDChanged: data];
     }
 
     return @"";

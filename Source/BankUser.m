@@ -24,6 +24,7 @@
 #import "SigningOption.h"
 #import "MessageLog.h"
 #import "HBCIClient.h"
+#import "BankAccount.h"
 
 @implementation BankUser
 
@@ -46,8 +47,14 @@
 @dynamic ddvReaderIdx;
 @dynamic secMethod;
 @dynamic chipCardId;
+@dynamic accounts;
 
 @synthesize isRegistered;
+@synthesize updatedCustomerId;
+@synthesize updatedUserId;
+
+// user cache
+static NSMutableDictionary *users = nil;
 
 - (id)copyWithZone: (NSZone *)zone
 {
@@ -286,6 +293,23 @@
     [self setpreferredSigningOption: options[idx]];
 }
 
+- (void)checkForUpdatedLoginData
+{
+    if (self.updatedUserId != nil) {
+        self.userId = self.updatedUserId;
+        for (BankAccount *account in self.accounts) {
+            account.userId = self.updatedUserId;
+        }
+        self.updatedUserId = nil;
+        self.isRegistered = NO;
+    }
+    if (self.updatedCustomerId != nil) {
+        self.customerId = self.updatedCustomerId;
+        self.updatedCustomerId = nil;
+        self.isRegistered = NO;
+    }
+}
+
 + (NSArray *)allUsers
 {
     NSError                *error = nil;
@@ -307,33 +331,43 @@
 + (BankUser *)userWithId: (NSString *)userId bankCode: (NSString *)bankCode
 {
     NSError                *error = nil;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankUser" inManagedObjectContext: context];
-    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
-    [request setEntity: entityDescription];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"userId = %@", userId];
-    [request setPredicate: predicate];
-    NSArray *bankUsers = [context executeFetchRequest: request error: &error];
-    if (error) {
-        [[MessageLog log] addMessage: [error localizedDescription] withLevel: LogLevel_Warning];
-        return nil;
+    
+    if (users == nil) {
+        users = [NSMutableDictionary dictionaryWithCapacity:10];
     }
-    if ([bankUsers count] == 0) {
-        NSRunAlertPanel(NSLocalizedString(@"AP201", nil),
-                        NSLocalizedString(@"AP202", nil),
-                        NSLocalizedString(@"AP1", nil),
-                        nil, nil, userId, bankCode);
-        return nil;
+    
+    NSArray *bankUsers = [users objectForKey:userId];
+    if (bankUsers == nil) {
+        NSManagedObjectContext *context = [[MOAssistant assistant] context];
+        NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankUser" inManagedObjectContext: context];
+        NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+        [request setEntity: entityDescription];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"userId = %@", userId];
+        [request setPredicate: predicate];
+        bankUsers = [context executeFetchRequest: request error: &error];
+        if (error) {
+            [[MessageLog log] addMessage: [error localizedDescription] withLevel: LogLevel_Warning];
+            return nil;
+        }
+        if ([bankUsers count] == 0) {
+            NSRunAlertPanel(NSLocalizedString(@"AP201", nil),
+                            NSLocalizedString(@"AP202", nil),
+                            NSLocalizedString(@"AP1", nil),
+                            nil, nil, userId, bankCode);
+            return nil;
+        }
+        [users setObject:bankUsers forKey:userId];
     }
-
+    
     // do we have a user with the right bankCode?
     for (BankUser *user in bankUsers) {
-        if ([user.bankCode isEqualToString: bankCode]) {
+        if ([user.bankCode isEqualToString:bankCode]) {
             return user;
         }
     }
+    
     // no - take the last one
-    return [bankUsers lastObject];
+    return [bankUsers lastObject];    
 }
 
 @end

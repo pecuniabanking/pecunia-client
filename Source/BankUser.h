@@ -24,7 +24,9 @@
 @class TanMethod;
 
 @interface BankUser : NSManagedObject {
-    BOOL isRegistered;
+    BOOL        isRegistered;
+    NSString    *updatedUserId;
+    NSString    *updatedCustomerId;
 }
 
 @property (nonatomic, strong) NSString     *bankCode;
@@ -47,6 +49,12 @@
 @property (nonatomic, strong) NSNumber     *ddvReaderIdx;
 @property (nonatomic, strong) NSNumber     *secMethod;
 
+@property (nonatomic, strong) NSMutableSet *accounts;
+
+// temporary store for new User and Customer IDs
+@property (nonatomic, strong) NSString     *updatedUserId;
+@property (nonatomic, strong) NSString     *updatedCustomerId;
+
 @property (nonatomic, assign) BOOL isRegistered;
 
 - (void)updateTanMethods: (NSArray *)methods;
@@ -55,6 +63,7 @@
 - (void)setpreferredSigningOption: (SigningOption *)option;
 - (SigningOption *)preferredSigningOption;
 - (int)getpreferredSigningOptionIdx;
+- (void)checkForUpdatedLoginData;
 
 + (NSArray *)allUsers;
 + (BankUser *)userWithId: (NSString *)userId bankCode: (NSString *)bankCode;
