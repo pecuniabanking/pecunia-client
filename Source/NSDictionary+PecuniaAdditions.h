@@ -23,5 +23,6 @@
 
 + (NSDictionary *)dictionaryForXMLData: (NSData *)data error: (NSError **)error;
 + (NSDictionary *)dictionaryForXMLString: (NSString *)string error: (NSError **)error;
++ (NSDictionary *)dictionaryForUrlParameters: (NSURL *)url;
 
 @end

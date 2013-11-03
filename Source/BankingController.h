@@ -120,10 +120,10 @@
     IBOutlet TagView           *tagViewPopup;
     IBOutlet NSView            *tagViewHost;
 
-    IBOutlet AttachmentImageView *attachement1;
-    IBOutlet AttachmentImageView *attachement2;
-    IBOutlet AttachmentImageView *attachement3;
-    IBOutlet AttachmentImageView *attachement4;
+    IBOutlet AttachmentImageView *attachment1;
+    IBOutlet AttachmentImageView *attachment2;
+    IBOutlet AttachmentImageView *attachment3;
+    IBOutlet AttachmentImageView *attachment4;
 
 @private
     NSMutableDictionary    *mainTabItems;

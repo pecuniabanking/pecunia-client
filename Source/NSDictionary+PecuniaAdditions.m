@@ -149,4 +149,17 @@ NSString *const kXMLReaderTextNodeKey = @"text";
     return [self dictionaryForXMLData: data error: error];
 }
 
++ (NSDictionary *)dictionaryForUrlParameters: (NSURL *)url
+{
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    NSString *key = [url query];
+    for (NSString *param in [[url query] componentsSeparatedByString: @"="]) {
+        if ([key rangeOfString: param].location == NSNotFound)
+            params[key] = param;
+        key = param;
+    }
+
+    return params;
+}
+
 @end

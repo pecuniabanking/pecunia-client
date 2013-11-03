@@ -71,6 +71,7 @@
 #include "ColorPopup.h"
 
 #import "NSColor+PecuniaAdditions.h"
+#import "NSDictionary+PecuniaAdditions.h"
 #import "BWGradientBox.h"
 
 #import "User.h"
@@ -791,10 +792,10 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     [MOAssistant assistant].mainContentView = [mainWindow contentView];
 
-    [attachement1 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref1" options: nil];
-    [attachement2 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref2" options: nil];
-    [attachement3 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref3" options: nil];
-    [attachement4 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref4" options: nil];
+    [attachment1 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref1" options: nil];
+    [attachment2 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref2" options: nil];
+    [attachment3 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref3" options: nil];
+    [attachment4 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref4" options: nil];
 
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"order" ascending: YES];
     [statementTags setSortDescriptors: @[sd]];
@@ -2434,18 +2435,31 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [self determineDefaultIconForCategory: cat];
     }
 
-    if ([cat.iconName length] > 0) {
+    if (cat.iconName.length > 0) {
         NSString *path;
         if ([cat.iconName isAbsolutePath]) {
             path = cat.iconName;
         } else {
-            NSString *subfolder = [cat.iconName stringByDeletingLastPathComponent];
-            if (subfolder.length > 0) {
+            NSURL *url = [NSURL URLWithString: cat.iconName];
+            if (url.scheme == nil) { // Old style collection item.
+                NSString *subfolder = [cat.iconName stringByDeletingLastPathComponent];
                 path = [[NSBundle mainBundle] pathForResource: [cat.iconName lastPathComponent]
                                                        ofType: @"icns"
                                                   inDirectory: subfolder];
             } else {
-                [cell setImage: nil];
+                if ([url.scheme isEqualToString: @"collection"]) { // An image from one of our collections.
+                    NSDictionary *parameters = [NSDictionary dictionaryForUrlParameters: url];
+                    NSString *subfolder = [@"Collections/" stringByAppendingString: parameters[@"c"]];
+                    path = [[NSBundle mainBundle] pathForResource: [url.host stringByDeletingPathExtension]
+                                                           ofType: url.host.pathExtension
+                                                      inDirectory: subfolder];
+
+                } else {
+                    if ([url.scheme isEqualToString: @"image"]) { // An image from our data bundle.
+                        NSString *targetFolder = [MOAssistant.assistant.pecuniaFileURL.path stringByAppendingString: @"/Images/"];
+                        path = [targetFolder stringByAppendingString: url.host];
+                    }
+                }
             }
         }
         if (path != nil) {

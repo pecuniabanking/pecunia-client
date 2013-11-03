@@ -20,18 +20,20 @@
 #import "CategoryMaintenanceController.h"
 #import "Category.h"
 #import "MOAssistant.h"
-#include "AnimationHelper.h"
+#import "NSDictionary+PecuniaAdditions.h"
 
 #import "BWGradientBox.h"
 
 extern NSString *const CategoryColorNotification;
 extern NSString *const CategoryKey;
 
-// A simple descendant to accept double clicks.
+// A simple descendant to send mouse click actions and accept dragged image files.
 @interface DoubleClickImageView : NSImageView
 {
 }
+
 @property (assign) id controller;
+
 @end
 
 @implementation DoubleClickImageView
@@ -40,7 +42,14 @@ extern NSString *const CategoryKey;
 
 - (void)mouseDown: (NSEvent *)theEvent
 {
-    if ([[self target] respondsToSelector: [self action]]) {
+    // Eat this event to prevent the image view from doing so which would result in no
+    // mouseUp event.
+}
+
+- (void)mouseUp: (NSEvent *)theEvent
+{
+    NSPoint point = [self convertPoint: theEvent.locationInWindow fromView: nil];
+    if (NSPointInRect(point, self.bounds) && [[self target] respondsToSelector: [self action]]) {
         [NSApp sendAction: [self action] to: [self target] from: self];
     }
 }
@@ -54,8 +63,13 @@ extern NSString *const CategoryKey;
 - (void)concludeDragOperation: (id <NSDraggingInfo>)sender
 {
     // Read image path for later processing.
+    // Temporarily remove the associated action to prevent NSImageView to trigger it.
+    SEL action = self.action;
+    self.action = nil;
+
     NSString *path = [[sender draggingPasteboard] propertyListForType: @"NSFilenamesPboardType"][0];
     [super concludeDragOperation: sender];
+    self.action = action;
     self.image.name = path;
 }
 
@@ -156,27 +170,44 @@ extern NSString *const CategoryKey;
 
     if (category.iconName.length > 0) {
         NSString *path;
-        if ([category.iconName isAbsolutePath]) {
+        if ([category.iconName isAbsolutePath]) { // Shouldn't happen, but just in case.
             path = category.iconName;
         } else {
-            NSString *subfolder = [category.iconName stringByDeletingLastPathComponent];
-            path = [[NSBundle mainBundle] pathForResource: [category.iconName lastPathComponent]
-                                                   ofType: @"icns"
-                                              inDirectory: subfolder];
+            NSURL *url = [NSURL URLWithString: category.iconName];
+            if (url.scheme == nil) { // Old style collection item.
+                NSString *subfolder = [category.iconName stringByDeletingLastPathComponent];
+                path = [[NSBundle mainBundle] pathForResource: [category.iconName lastPathComponent]
+                                                       ofType: @"icns"
+                                                  inDirectory: subfolder];
+            } else {
+                if ([url.scheme isEqualToString: @"collection"]) { // An image from one of our collections.
+                    NSDictionary *parameters = [NSDictionary dictionaryForUrlParameters: url];
+                    NSString *subfolder = [@"Collections/" stringByAppendingString: parameters[@"c"]];
+                    path = [[NSBundle mainBundle] pathForResource: [url.host stringByDeletingPathExtension]
+                                                           ofType: url.host.pathExtension
+                                                      inDirectory: subfolder];
+
+                } else {
+                    if ([url.scheme isEqualToString: @"image"]) { // An image from our data bundle.
+                        NSString *targetFolder = [MOAssistant.assistant.pecuniaFileURL.path stringByAppendingString: @"/Images/"];
+                        path = [targetFolder stringByAppendingString: url.host];
+                    }
+                }
+            }
         }
 
         // Might leave the image at nil if the path is wrong or the image could not be loaded.
         categoryIcon.image = [[NSImage alloc] initWithContentsOfFile: path];
-        categoryIcon.image.name = [category.iconName lastPathComponent];
+        categoryIcon.image.name = category.iconName;
     }
 
     // Set up the icon collection with all icons in our (first) internal collection.
+    // TODO: handle multiple collectons.
     NSArray *paths = [NSBundle.mainBundle pathsForResourcesOfType: @"icns" inDirectory: @"Collections/1"];
 
     for (NSString *path in paths) {
-        NSString *fileName = [[path lastPathComponent] stringByDeletingPathExtension];
         NSImage  *image = [[NSImage alloc] initWithContentsOfFile: path];
-        image.name = fileName;
+        image.name = [path lastPathComponent];
         [iconCollectionController addObject: @{@"icon": image}];
     }
 }
@@ -255,14 +286,56 @@ extern NSString *const CategoryKey;
     changedCategory.noCatRep = category.noCatRep;
 
     NSImage *image = categoryIcon.image;
+
+    // Path to the data bundle image folder.
+    NSString *targetFolder = [MOAssistant.assistant.pecuniaFileURL.path stringByAppendingString: @"/Images/"];
     if (image != nil && image.name != nil) {
-        if ([image.name isAbsolutePath]) {
-            changedCategory.iconName = image.name;
-        } else {
-            // A library icon was selected. Construct the relative path.
-            changedCategory.iconName = [@"Collections/1/" stringByAppendingString : image.name];
+        if (![image.name isEqualToString: category.iconName]) {
+            // Remove a previously copied image if there's one referenced.
+            NSURL *oldUrl = [NSURL URLWithString: category.iconName];
+            if (oldUrl != nil) {
+                if ([oldUrl.scheme isEqual: @"image"]) {
+                    NSString *targetFileName = [NSString stringWithFormat: @"%@%@", targetFolder, oldUrl.host];
+
+                    // Remove the file but don't show a message in case of an error. The message is
+                    // meaningless anyway (since it contains the internal filename).
+                    [NSFileManager.defaultManager removeItemAtPath: targetFileName error: nil];
+                }
+            }
+
+            if ([image.name isAbsolutePath]) {
+                // An icon located somewhere else in the file system. In order to avoid the need for
+                // security bookmarks and other trouble (like unavailable network drives etc.) we copy
+                // the icon to our data bundle (like we do for attachments).
+                NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
+                NSString *uniqueFilenName = [NSString stringWithFormat: @"%@.%@", guid, image.name.pathExtension];
+                NSString *targetFileName = [targetFolder stringByAppendingString: uniqueFilenName];
+
+                NSError *error = nil;
+                if (![NSFileManager.defaultManager createDirectoryAtPath: targetFolder withIntermediateDirectories: YES attributes: nil error: &error]) {
+                    NSAlert *alert = [NSAlert alertWithError: error];
+                    [alert runModal];
+                }
+                if (error == nil && ![NSFileManager.defaultManager copyItemAtPath: image.name toPath: targetFileName error: &error]) {
+                    NSAlert *alert = [NSAlert alertWithError: error];
+                    [alert runModal];
+                }
+
+                changedCategory.iconName = [@"image://" stringByAppendingString: uniqueFilenName];
+            } else {
+                // A library icon was selected. Construct the relative path. Parameter c refers to the
+                // collection number.
+                changedCategory.iconName = [NSString stringWithFormat: @"collection://%@?c=%i", image.name, 1];
+            }
         }
     } else {
+        NSURL *oldUrl = [NSURL URLWithString: category.iconName];
+        if (oldUrl != nil) {
+            if ([oldUrl.scheme isEqual: @"image"]) {
+                NSString *targetFileName = [NSString stringWithFormat: @"%@%@", targetFolder, oldUrl.host];
+                [NSFileManager.defaultManager removeItemAtPath: targetFileName error: nil];
+            }
+        }
         changedCategory.iconName = @""; // An empty string denotes a category without icon.
     }
 

@@ -716,8 +716,8 @@ IA
                                                                                     <dictionary key="options">
                                                                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                                                         <string key="NSNoSelectionPlaceholder">0.00</string>
-                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                         <string key="NSMultipleValuesPlaceholder">n/a</string>
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                     </dictionary>
                                                                                 </binding>
                                                                                 <outlet property="delegate" destination="235" id="4901"/>
@@ -1286,8 +1286,8 @@ IA
                                                                                     <dictionary key="options">
                                                                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                                                         <string key="NSNoSelectionPlaceholder">0.00</string>
-                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                         <string key="NSMultipleValuesPlaceholder">n/a</string>
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                     </dictionary>
                                                                                 </binding>
                                                                                 <outlet property="delegate" destination="235" id="5180"/>
@@ -1423,10 +1423,10 @@ IA
                                                                                 </binding>
                                                                                 <binding destination="236" name="hidden" keyPath="selection.statement.remoteIBAN" previousBinding="6881" id="6892">
                                                                                     <dictionary key="options">
-                                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                                                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                                        <integer key="NSNullPlaceholder" value="1"/>
                                                                                         <string key="NSValueTransformerName">NSIsNil</string>
                                                                                     </dictionary>
                                                                                 </binding>
@@ -1468,10 +1468,10 @@ IA
                                                                                 </binding>
                                                                                 <binding destination="236" name="hidden" keyPath="selection.statement.remoteBIC" previousBinding="6441" id="6907">
                                                                                     <dictionary key="options">
-                                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                                                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                                        <integer key="NSNullPlaceholder" value="1"/>
                                                                                         <string key="NSValueTransformerName">NSIsNil</string>
                                                                                     </dictionary>
                                                                                 </binding>
@@ -1492,8 +1492,8 @@ IA
                                                                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                         <string key="NSMultipleValuesPlaceholder">n/a</string>
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                     </dictionary>
                                                                                 </binding>
                                                                             </connections>
@@ -1619,10 +1619,10 @@ IA
                                                                                 <action selector="showTagPopup:" target="235" id="7022"/>
                                                                                 <binding destination="236" name="enabled" keyPath="selection.statement" id="7039">
                                                                                     <dictionary key="options">
-                                                                                        <integer key="NSNullPlaceholder" value="0"/>
+                                                                                        <integer key="NSMultipleValuesPlaceholder" value="0"/>
                                                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                                                         <integer key="NSNoSelectionPlaceholder" value="0"/>
-                                                                                        <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                                                                        <integer key="NSNullPlaceholder" value="0"/>
                                                                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                                                                     </dictionary>
                                                                                 </binding>
@@ -1634,10 +1634,10 @@ IA
                                                                             <connections>
                                                                                 <binding destination="236" name="hidden" keyPath="selection.statement" id="7020">
                                                                                     <dictionary key="options">
-                                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                                                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                                        <integer key="NSNullPlaceholder" value="1"/>
                                                                                         <string key="NSValueTransformerName">NSIsNil</string>
                                                                                     </dictionary>
                                                                                 </binding>
@@ -2459,10 +2459,10 @@ IA
                                 <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                <string key="NSNullPlaceholder" base64-UTF8="YES">
+                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
+                                <string key="NSNullPlaceholder" base64-UTF8="YES">
 IA
 </string>
                             </dictionary>
@@ -2487,10 +2487,10 @@ IA
                                 <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                <string key="NSNullPlaceholder" base64-UTF8="YES">
+                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
+                                <string key="NSNullPlaceholder" base64-UTF8="YES">
 IA
 </string>
                             </dictionary>
@@ -2537,10 +2537,10 @@ IA
                                                     <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                                    <string key="NSNullPlaceholder" base64-UTF8="YES">
+                                                    <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                                    <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
+                                                    <string key="NSNullPlaceholder" base64-UTF8="YES">
 IA
 </string>
                                                 </dictionary>
@@ -2648,8 +2648,8 @@ IA
                                 <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                 <string key="NSNotApplicablePlaceholder">0.00</string>
                                 <string key="NSNoSelectionPlaceholder">0.00</string>
-                                <string key="NSNullPlaceholder">0.00</string>
                                 <string key="NSMultipleValuesPlaceholder">mehrere</string>
+                                <string key="NSNullPlaceholder">0.00</string>
                             </dictionary>
                         </binding>
                         <outlet property="delegate" destination="235" id="6709"/>
@@ -3264,8 +3264,8 @@ IA
                                 <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                 <string key="NSNotApplicablePlaceholder">0.00</string>
                                 <string key="NSNoSelectionPlaceholder">0.00</string>
-                                <string key="NSNullPlaceholder">0.00</string>
                                 <string key="NSMultipleValuesPlaceholder">mehrere</string>
+                                <string key="NSNullPlaceholder">0.00</string>
                             </dictionary>
                         </binding>
                     </connections>
@@ -3307,10 +3307,10 @@ IA
                                 <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                <string key="NSNullPlaceholder" base64-UTF8="YES">
+                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
+                                <string key="NSNullPlaceholder" base64-UTF8="YES">
 IA
 </string>
                             </dictionary>
@@ -3345,10 +3345,10 @@ IA
                                 <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                <string key="NSNullPlaceholder" base64-UTF8="YES">
+                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
+                                <string key="NSNullPlaceholder" base64-UTF8="YES">
 IA
 </string>
                             </dictionary>
@@ -3459,11 +3459,11 @@ IA
                             <dictionary key="options">
                                 <bool key="NSConditionallySetsEnabled" value="NO"/>
                                 <integer key="NSMultipleValuesPlaceholder" value="0"/>
-                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                 <integer key="NSNullPlaceholder" value="0"/>
                                 <integer key="NSNotApplicablePlaceholder" value="0"/>
                                 <integer key="NSNoSelectionPlaceholder" value="0"/>
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                             </dictionary>
                         </binding>
                     </connections>
@@ -3517,10 +3517,10 @@ IA
                 <outlet property="accountsScrollView" destination="280" id="6349"/>
                 <outlet property="accountsView" destination="281" id="1031"/>
                 <outlet property="assignPreviewController" destination="2401" id="6338"/>
-                <outlet property="attachement1" destination="6916" id="6930"/>
-                <outlet property="attachement2" destination="6914" id="6931"/>
-                <outlet property="attachement3" destination="6912" id="6932"/>
-                <outlet property="attachement4" destination="6910" id="6933"/>
+                <outlet property="attachment1" destination="6916" id="ckW-rD-mj2"/>
+                <outlet property="attachment2" destination="6914" id="TVd-Wq-C15"/>
+                <outlet property="attachment3" destination="6912" id="RKt-CB-ozV"/>
+                <outlet property="attachment4" destination="6910" id="3LS-Ei-IQr"/>
                 <outlet property="catActions" destination="4559" id="4709"/>
                 <outlet property="categoryAssignments" destination="236" id="6432"/>
                 <outlet property="categoryController" destination="911" id="930"/>

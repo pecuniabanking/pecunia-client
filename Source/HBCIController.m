@@ -641,10 +641,13 @@ NSString * escapeSpecial(NSString *s)
  */
 - (BOOL)sendTransfers: (NSArray *)transfers
 {
-    PecuniaError           *err = nil;
-    Transfer               *transfer;
-    NSDateFormatter        *dateFormatter = [[NSDateFormatter alloc] initWithDateFormat: @"%Y-%m-%d" allowNaturalLanguage: NO];
-    NSMutableDictionary    *accountTransferRegister = [NSMutableDictionary dictionaryWithCapacity: 10];
+    PecuniaError *err = nil;
+    Transfer     *transfer;
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"y-MM-dd";
+
+    NSMutableDictionary *accountTransferRegister = [NSMutableDictionary dictionaryWithCapacity: 10];
 
     // Group transfers by BankAccount
     for (transfer in transfers) {
@@ -1002,7 +1005,8 @@ NSString * escapeSpecial(NSString *s)
 {
     bankQueryResults = resultList;
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getAllStatements\"><accinfolist type=\"list\">"];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] initWithDateFormat: @"%Y-%m-%d" allowNaturalLanguage: NO];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"y-MM-dd";
 
     BankQueryResult *result;
 
@@ -1149,7 +1153,8 @@ NSString * escapeSpecial(NSString *s)
 
 - (void)prepareCommand: (NSMutableString *)cmd forStandingOrder: (StandingOrder *)stord user: (BankUser *)user
 {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] initWithDateFormat: @"%Y-%m-%d" allowNaturalLanguage: NO];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"y-MM-dd";
 
     [self appendTag: @"bankCode" withValue: stord.account.bankCode to: cmd];
     [self appendTag: @"accountNumber" withValue: stord.account.accountNumber to: cmd];
