@@ -83,7 +83,7 @@ typedef struct {
 
 - (void)updateInvalidCategoryValues;
 - (void)invalidateBalance;
-- (NSDecimalNumber *)rollup;
+- (void)rollupRecursive: (BOOL)recursive;
 - (void)rebuildValues;
 
 - (NSString *)name;

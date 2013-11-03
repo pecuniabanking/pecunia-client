@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1070" defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -84,11 +84,11 @@
                                                                         </subviews>
                                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     </clipView>
-                                                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.0037037036381661892" id="3482">
-                                                                        <rect key="frame" x="0.0" y="545" width="284.87900000000002" height="15"/>
+                                                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.0037037036381661892" horizontal="YES" id="3482">
+                                                                        <rect key="frame" x="0.0" y="514" width="314" height="16"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                     </scroller>
-                                                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" id="3481">
+                                                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="3481">
                                                                         <rect key="frame" x="84" y="17" width="15" height="67"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                     </scroller>
@@ -327,11 +327,11 @@ IA
                                                             <connections>
                                                                 <binding destination="911" name="value" keyPath="selection.bankName" id="996">
                                                                     <dictionary key="options">
-                                                                        <integer key="NSRaisesForNotApplicableKeys" value="0"/>
-                                                                        <string key="NSNotApplicablePlaceholder"></string>
-                                                                        <string key="NSNoSelectionPlaceholder"></string>
-                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
                                                                         <string key="NSNullPlaceholder"></string>
+                                                                        <string key="NSNotApplicablePlaceholder"></string>
+                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
+                                                                        <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                                                        <string key="NSNoSelectionPlaceholder"></string>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
@@ -383,11 +383,11 @@ IA
                                                                                         </subviews>
                                                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                     </clipView>
-                                                                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" id="6048">
+                                                                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="6048">
                                                                                         <rect key="frame" x="-100" y="-100" width="739" height="15"/>
                                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                                     </scroller>
-                                                                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" id="6047">
+                                                                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="6047">
                                                                                         <rect key="frame" x="762" y="0.0" width="16" height="76"/>
                                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                                     </scroller>
@@ -636,11 +636,11 @@ IA
                                                                                 </subviews>
                                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </clipView>
-                                                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" id="4944">
+                                                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="4944">
                                                                                 <rect key="frame" x="-100" y="-100" width="262" height="15"/>
                                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                             </scroller>
-                                                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" id="4943">
+                                                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="4943">
                                                                                 <rect key="frame" x="239" y="0.0" width="16" height="0.0"/>
                                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                             </scroller>
@@ -673,11 +673,11 @@ IA
                                                                                 </subviews>
                                                                                 <color key="backgroundColor" red="0.95919952679999998" green="0.97022480870000005" blue="0.97022480870000005" alpha="1" colorSpace="calibratedRGB"/>
                                                                             </clipView>
-                                                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" id="4952">
+                                                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="4952">
                                                                                 <rect key="frame" x="-100" y="-100" width="261" height="15"/>
                                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                             </scroller>
-                                                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" id="4953">
+                                                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="4953">
                                                                                 <rect key="frame" x="235" y="0.0" width="16" height="0.0"/>
                                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                             </scroller>
@@ -1954,7 +1954,8 @@ IA
                 <menuItem title="Anzeige" id="6526">
                     <menu key="submenu" title="Anzeige" id="6527">
                         <items>
-                            <menuItem title="Untergeordnete Überweisungen" state="on" toolTip="Neben den Umsätzen des ausgewählten Eintrags werden auch Umsätze untergeordneter Konten/Kategorien in der Liste angezeigt" id="6530">
+                            <menuItem title="Kategorien rekursiv" state="on" id="6530">
+                                <string key="toolTip">Neben den Umsätzen der ausgewählten Kategorie werden auch Umsätze untergeordneter Kategorien in der Liste angezeigt. Zusätzlich schließt die Summenberechnung Unterkategorien ein.</string>
                                 <connections>
                                     <binding destination="6577" name="value" keyPath="values.recursiveTransactions" id="6589"/>
                                 </connections>
@@ -2381,11 +2382,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" id="6472">
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="6472">
                             <rect key="frame" x="-100" y="-100" width="87" height="18"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" verticalHuggingPriority="750" id="6471">
+                        <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="6471">
                             <rect key="frame" x="541" y="1" width="15" height="369"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
@@ -2549,11 +2550,11 @@ IA
                                 </subviews>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </clipView>
-                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" id="6643">
+                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="6643">
                                 <rect key="frame" x="-100" y="-100" width="262" height="15"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
-                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" id="6642">
+                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="6642">
                                 <rect key="frame" x="247" y="0.0" width="15" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
@@ -2601,11 +2602,11 @@ IA
                                 </subviews>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </clipView>
-                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" id="6639">
+                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="6639">
                                 <rect key="frame" x="-100" y="-100" width="261" height="15"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
-                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" id="6640">
+                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="6640">
                                 <rect key="frame" x="-100" y="-100" width="15" height="34"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
@@ -3493,11 +3494,11 @@ IA
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" id="7056">
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="7056">
                         <rect key="frame" x="-100" y="-100" width="87" height="18"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" id="7057">
+                    <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="7057">
                         <rect key="frame" x="234" y="0.0" width="16" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>

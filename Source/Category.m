@@ -130,7 +130,7 @@ BOOL updateSent = NO;
 /**
  * Collect hierarchical values like overall balance, hidden children etc.
  */
-- (NSDecimalNumber *)rollup
+- (void)rollupRecursive: (BOOL)recursive
 {
     NSDecimalNumber *res = self.balance;
     if (res == nil) {
@@ -139,11 +139,11 @@ BOOL updateSent = NO;
     
     hiddenChildren = 0;
     for (Category *category in self.children) {
-        NSDecimalNumber *childResult = [category rollup];
-        if (!category.noCatRep.boolValue) {
-            res = [res decimalNumberByAdding: childResult];
+        [category rollupRecursive: recursive];
+        if (recursive && !category.noCatRep.boolValue && !category.isHidden.boolValue) {
+            res = [res decimalNumberByAdding: category.catSum];
         }
-        if (category.isHidden.boolValue == YES) {
+        if (category.isHidden.boolValue) {
             hiddenChildren++;
         }
     }
@@ -158,7 +158,6 @@ BOOL updateSent = NO;
     }
     // reset update flag
     updateSent = NO;
-    return res;
 }
 
 - (void)invalidateBalance
@@ -629,7 +628,9 @@ BOOL updateSent = NO;
 - (NSArray *)boundAssignments
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSArray        *assignments = [self assignmentsFrom: startReportDate to: endReportDate withChildren: [defaults boolForKey: @"recursiveTransactions"]];
+
+    BOOL    recursive = [defaults boolForKey: @"recursiveTransactions"] || self.isBankAccount;
+    NSArray *assignments = [self assignmentsFrom: startReportDate to: endReportDate withChildren: recursive];
     return assignments;
 }
 
@@ -1102,7 +1103,9 @@ BOOL updateSent = NO;
         return;
     }
     [[self catRoot] updateInvalidCategoryValues];
-    [[self catRoot] rollup];
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [[self catRoot] rollupRecursive: [defaults boolForKey: @"recursiveTransactions"]];
 }
 
 + (void)setCatReportFrom: (ShortDate *)fDate to: (ShortDate *)tDate
@@ -1115,7 +1118,9 @@ BOOL updateSent = NO;
     startReportDate = fDate;
     endReportDate = tDate;
     [[self catRoot] rebuildValues];
-    [[self catRoot] rollup];
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [[self catRoot] rollupRecursive: [defaults boolForKey: @"recursiveTransactions"]];
     [[self bankRoot] updateReportedAssignments];
 }
 

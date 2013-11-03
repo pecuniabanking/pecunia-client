@@ -76,6 +76,8 @@ extern void *UserDefaultsBindingContext;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObserver: self forKeyPath: @"colors"];
+    [userDefaults removeObserver: self forKeyPath: @"recursiveTransactions"];
+    [userDefaults removeObserver: self forKeyPath: @"showHiddenCategories"];
 }
 
 - (void)awakeFromNib
@@ -158,6 +160,8 @@ extern void *UserDefaultsBindingContext;
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
+    [defaults addObserver: self forKeyPath: @"recursiveTransactions" options: 0 context: UserDefaultsBindingContext];
+    [defaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
 }
 
 #pragma mark -
@@ -172,6 +176,12 @@ extern void *UserDefaultsBindingContext;
         if ([keyPath isEqualToString: @"colors"]) {
             [self updateColors];
             [selectionBox setNeedsDisplay: YES];
+        }
+        if ([keyPath isEqualToString: @"recursiveTransactions"]) {
+            [self updateData];
+        }
+        if ([keyPath isEqualToString: @"showHiddenCategories"]) {
+            [valueGrid reloadData];
         }
     }
 }
@@ -578,14 +588,17 @@ extern void *UserDefaultsBindingContext;
 
     switch (groupingInterval) {
         case GroupByMonths:
+            fromDate = [fromDate firstDayInMonth];
             toDate = [toDate lastDayInMonth];
             break;
 
         case GroupByQuarters:
+            fromDate = [fromDate firstDayInQuarter];
             toDate = [toDate lastDayInQuarter];
             break;
 
         case GroupByYears:
+            fromDate = [fromDate firstDayInYear];
             toDate = [toDate lastDayInYear];
             break;
 

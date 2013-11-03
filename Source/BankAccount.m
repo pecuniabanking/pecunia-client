@@ -333,8 +333,8 @@
 }
 
 /**
- * Account maintance is done here which involves things like correcting tranfer times (for correct ordering),
- * balance recomputation and field validation.
+ * Account maintance is done here which involves things like correcting transfer times (for correct
+ * ordering), balance recomputation and field validation.
  */
 - (void)doMaintenance
 {

@@ -1063,7 +1063,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [categoryController removeObjectAtArrangedObjectIndexPath: newPath];
     }
     //	[categoryController remove: self];
-    [[Category bankRoot] rollup];
+    [[Category bankRoot] rollupRecursive: YES];
 }
 
 - (BOOL)cleanupBankNodes
@@ -1200,11 +1200,12 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         return;
     }
 
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     for (Category *cat in cats) {
         if ([cat isBankingRoot] == NO) {
             [cat updateInvalidCategoryValues];
         }
-        [cat rollup];
+        [cat rollupRecursive: [defaults boolForKey: @"recursiveTransactions"]];
     }
 
     [self save];
@@ -1544,7 +1545,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [self save];
 
         [categoryController rearrangeObjects];
-        [Category.bankRoot rollup];
+        [Category.bankRoot rollupRecursive: YES];
     }
 }
 
@@ -1562,11 +1563,12 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         return;
     }
 
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (!cat.isBankAccount && cat != Category.nassRoot && cat != Category.catRoot) {
         CategoryMaintenanceController *changeController = [[CategoryMaintenanceController alloc] initWithCategory: cat];
         [NSApp runModalForWindow: [changeController window]];
         [categoryController prepareContent]; // Visibility of a category could have changed.
-        [Category.catRoot rollup]; // Category could have switched its noCatRep property.
+        [Category.catRoot rollupRecursive: [defaults boolForKey: @"recursiveTransactions"]]; // Category could have switched its noCatRep property.
         return;
     }
 
@@ -1574,7 +1576,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         AccountMaintenanceController *changeController = [[AccountMaintenanceController alloc] initWithAccount: (BankAccount *)cat];
         [NSApp runModalForWindow: [changeController window]];
         [categoryController prepareContent];
-        [Category.bankRoot rollup];
+        [Category.bankRoot rollupRecursive: YES];
     }
     // Changes are stored in the controllers.
 }
@@ -2275,7 +2277,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
                     // drop on a manual account
                     BankAccount *account = (BankAccount *)cat;
                     [account copyStatement: stat.statement];
-                    [[Category bankRoot] rollup];
+                    [[Category bankRoot] rollupRecursive: YES];
                 } else {
                     if (mask == NSDragOperationCopy || [stat.statement.isAssigned boolValue]) {
                         [stat.statement assignToCategory: cat];
@@ -2353,13 +2355,15 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         }
         Category *scat = (Category *)[self.managedObjectContext objectWithID: moID];
         [scat setValue: cat forKey: @"parent"];
-        [[Category catRoot] rollup];
+
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [[Category catRoot] rollupRecursive: [defaults boolForKey: @"recursiveTransactions"]];
     }
 
     [self save];
 
     if (needListViewUpdate) {
-        // Updating the assignments (statments) list kills the current selection, so we preserve it here.
+        // Updating the assignments (statements) list kills the current selection, so we preserve it here.
         // Reassigning it after the update has the neat side effect that the details pane is properly updated too.
         NSUInteger selection = categoryAssignments.selectionIndex;
         categoryAssignments.selectionIndex = NSNotFound;
@@ -3034,7 +3038,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [account updateBoundAssignments];
     }
     
-    [[Category bankRoot] rollup];
+    [[Category bankRoot] rollupRecursive: YES];
     [categoryAssignments prepareContent];
 
     [self save];
@@ -3875,6 +3879,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 {
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"recursiveTransactions"]) {
+            [Category updateCatValues];
             [[self currentSelection] updateBoundAssignments];
             return;
         }

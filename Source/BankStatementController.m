@@ -143,7 +143,7 @@
 
     if (lastStatement) {
         account.balance = lastStatement.saldo;
-        [[Category bankRoot] rollup];
+        [[Category bankRoot] rollupRecursive: YES];
     }
 
     // Manually assign to a category. Doesn't affect automatic assignments based on rules.
