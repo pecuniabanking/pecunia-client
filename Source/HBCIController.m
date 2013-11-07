@@ -1164,6 +1164,8 @@ NSString * escapeSpecial(NSString *s)
     [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
     [self appendTag: @"remoteAccount" withValue: stord.remoteAccount to: cmd];
     [self appendTag: @"remoteBankCode" withValue: stord.remoteBankCode to: cmd];
+    [self appendTag: @"remoteIBAN" withValue: stord.remoteIBAN to: cmd];
+    [self appendTag: @"remoteBIC" withValue: stord.remoteBIC to: cmd];
     [self appendTag: @"remoteName" withValue: stord.remoteName to: cmd];
     [self appendTag: @"purpose1" withValue: stord.purpose1 to: cmd];
     [self appendTag: @"purpose2" withValue: stord.purpose2 to: cmd];
@@ -1491,6 +1493,14 @@ NSString * escapeSpecial(NSString *s)
             tinfo.account = account;
             tinfo.user = user;
             tinfo.type = @(TransactionType_TransferSEPA);
+
+            // Parameters
+            if ([supportedJobNames containsObject: @"TermUebSEPA"] == YES) {
+                tinfo.allowsDated = @YES;
+            } else {
+                tinfo.allowsDated = @NO;
+            }
+
             [[MessageLog log] addMessage: @"Add supported transaction UEBSEPA" withLevel: LogLevel_Debug];
         }
 
@@ -1527,8 +1537,39 @@ NSString * escapeSpecial(NSString *s)
             } else {
                 tinfo.allowesDelete = @NO;
             }
+            if ([supportedJobNames containsObject: @"DauerList"] == YES) {
+                tinfo.allowsList = @YES;
+            } else {
+                tinfo.allowsList = @NO;
+            }
             [[MessageLog log] addMessage: @"Add supported transaction DAUERNEW" withLevel: LogLevel_Debug];
         }
+
+        if ([supportedJobNames containsObject: @"DauerSEPANew"] == YES) {
+            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
+            tinfo.account = account;
+            tinfo.user = user;
+            tinfo.type = @(TransactionType_StandingOrder);
+            
+            // Parameters
+            if ([supportedJobNames containsObject: @"DauerSEPAEdit"] == YES) {
+                tinfo.allowsChange = @YES;
+            } else {
+                tinfo.allowsChange = @NO;
+            }
+            if ([supportedJobNames containsObject: @"DauerSEPADel"] == YES) {
+                tinfo.allowesDelete = @YES;
+            } else {
+                tinfo.allowesDelete = @NO;
+            }
+            if ([supportedJobNames containsObject: @"DauerSEPAList"] == YES) {
+                tinfo.allowsList = @YES;
+            } else {
+                tinfo.allowsList = @NO;
+            }
+            [[MessageLog log] addMessage: @"Add supported transaction DAUERNEW" withLevel: LogLevel_Debug];
+        }
+        
 
         if ([supportedJobNames containsObject: @"KUmsAll"] == YES) {
             SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
