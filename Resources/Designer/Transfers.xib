@@ -569,6 +569,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </popUpButtonCell>
                     <connections>
                         <action selector="sourceAccountChanged:" target="-2" id="528"/>
+                        <outlet property="nextKeyView" destination="515" id="ELi-Jc-YRt"/>
                     </connections>
                 </popUpButton>
                 <popUpButton verticalHuggingPriority="750" tag="2" id="498" userLabel="Target Account Selector">
@@ -600,6 +601,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </buttonCell>
                     <connections>
                         <action selector="queueTransfer:" target="-2" id="530"/>
+                        <outlet property="nextKeyView" destination="401" id="KcH-gG-LaI"/>
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" tag="51" id="401" userLabel="Send Button">
@@ -615,6 +617,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </buttonCell>
                     <connections>
                         <action selector="sendTransfer:" target="-2" id="531"/>
+                        <outlet property="nextKeyView" destination="374" id="g0a-WU-hTL"/>
                     </connections>
                 </button>
                 <textField verticalHuggingPriority="750" id="403">
@@ -724,6 +727,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </dictionary>
                         </binding>
                         <outlet property="delegate" destination="-2" id="532"/>
+                        <outlet property="nextKeyView" destination="420" id="Jq1-qf-O9J"/>
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" tag="12" id="419">
@@ -750,6 +754,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </dictionary>
                         </binding>
                         <outlet property="delegate" destination="-2" id="597"/>
+                        <outlet property="nextKeyView" destination="721" id="enp-Yc-Oiz"/>
                     </connections>
                 </textField>
                 <button id="429">
@@ -761,6 +766,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </buttonCell>
                     <connections>
                         <action selector="executionTimeChanged:" target="-2" id="675"/>
+                        <outlet property="nextKeyView" destination="433" id="0Sq-XM-NvZ"/>
                     </connections>
                 </button>
                 <button id="433">
@@ -772,6 +778,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </buttonCell>
                     <connections>
                         <action selector="executionTimeChanged:" target="-2" id="676"/>
+                        <outlet property="nextKeyView" destination="435" id="tb4-YP-wgG"/>
                     </connections>
                 </button>
                 <datePicker verticalHuggingPriority="750" id="435">
@@ -808,6 +815,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </datePickerCell>
                     <connections>
                         <binding destination="94" name="value" keyPath="selection.valutaDate" id="659"/>
+                        <outlet property="nextKeyView" destination="399" id="rqf-Pq-Ziu"/>
                     </connections>
                 </datePicker>
                 <button toolTip="Datum aus dem Minikalender wählen" id="448">
@@ -837,17 +845,18 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </textFieldCell>
                     <connections>
                         <binding destination="94" name="value" keyPath="selection.value" id="551"/>
+                        <outlet property="nextKeyView" destination="492" id="uou-6j-NCX"/>
                     </connections>
                 </textField>
                 <popUpButton verticalHuggingPriority="750" tag="21" id="464" userLabel="Country Selector">
                     <rect key="frame" x="167" y="213" width="171" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="467" id="465">
+                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="465">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" size="13" name="HelveticaNeue"/>
                         <menu key="menu" title="OtherViews" id="466">
                             <items>
-                                <menuItem title="Item 1" state="on" id="467"/>
+                                <menuItem title="Item 1" id="467"/>
                                 <menuItem title="Item 2" id="468"/>
                                 <menuItem title="Item 3" id="469"/>
                             </items>
@@ -858,6 +867,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <binding destination="536" name="content" keyPath="arrangedObjects" id="540"/>
                         <binding destination="536" name="contentValues" keyPath="arrangedObjects.name" previousBinding="540" id="542"/>
                         <binding destination="536" name="selectedIndex" keyPath="selectionIndex" previousBinding="542" id="544"/>
+                        <outlet property="nextKeyView" destination="484" id="ey4-ZE-wc7"/>
                     </connections>
                 </popUpButton>
                 <popUpButton verticalHuggingPriority="750" tag="23" id="484" userLabel="Charged By Selector">
@@ -886,6 +896,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <string key="NSValueTransformerName">ChargeByValueTransformer</string>
                             </dictionary>
                         </binding>
+                        <outlet property="nextKeyView" destination="455" id="Rqu-cp-FRR"/>
                     </connections>
                 </popUpButton>
                 <comboBox focusRingType="exterior" verticalHuggingPriority="750" tag="1" id="515" userLabel="Receiver Selector">
@@ -907,6 +918,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </binding>
                         <binding destination="94" name="value" keyPath="selection.remoteName" id="586"/>
                         <outlet property="delegate" destination="-2" id="674"/>
+                        <outlet property="nextKeyView" destination="416" id="jae-k9-Pi5"/>
                     </connections>
                 </comboBox>
                 <textField verticalHuggingPriority="750" tag="40" id="492" userLabel="Purpose 1">
@@ -924,6 +936,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </dictionary>
                         </binding>
                         <outlet property="delegate" destination="-2" id="667"/>
+                        <outlet property="nextKeyView" destination="556" id="FqA-IV-obd"/>
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" tag="41" id="556" userLabel="Purpose 2">
@@ -941,6 +954,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </dictionary>
                         </binding>
                         <outlet property="delegate" destination="-2" id="669"/>
+                        <outlet property="nextKeyView" destination="558" id="yQe-8m-Nbn"/>
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" tag="42" id="558" userLabel="Purpose 3">
@@ -958,6 +972,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </dictionary>
                         </binding>
                         <outlet property="delegate" destination="-2" id="671"/>
+                        <outlet property="nextKeyView" destination="559" id="vPW-xj-kXd"/>
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" tag="43" id="559" userLabel="Purpose 4">
@@ -975,6 +990,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </dictionary>
                         </binding>
                         <outlet property="delegate" destination="-2" id="673"/>
+                        <outlet property="nextKeyView" destination="429" id="K4R-zn-y7A"/>
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="679">
@@ -1019,6 +1035,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </textFieldCell>
                     <connections>
                         <binding destination="94" name="value" keyPath="selection.remoteBankName" id="728"/>
+                        <outlet property="nextKeyView" destination="464" id="WaH-Gm-s70"/>
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" tag="10" id="723">

@@ -13,14 +13,14 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="42" horizontalPageScroll="10" verticalLineScroll="42" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="1">
+        <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="1">
             <rect key="frame" x="0.0" y="0.0" width="379" height="423"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="oYy-hV-zRm">
                 <rect key="frame" x="0.0" y="0.0" width="379" height="423"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="40" rowSizeStyle="automatic" viewBased="YES" id="2">
+                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="2">
                         <rect key="frame" x="0.0" y="0.0" width="379" height="423"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <size key="intercellSpacing" width="3" height="2"/>
@@ -53,12 +53,12 @@
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                                 <connections>
-                                                    <binding destination="10" name="toolTip" keyPath="statement.remoteName" id="132"/>
                                                     <binding destination="10" name="value" keyPath="statement.remoteName" id="64">
                                                         <dictionary key="options">
                                                             <string key="NSValueTransformerName">StringCasingTransformer</string>
                                                         </dictionary>
                                                     </binding>
+                                                    <binding destination="10" name="toolTip" keyPath="statement.remoteName" id="132"/>
                                                 </connections>
                                             </textField>
                                             <textField verticalHuggingPriority="750" id="35" userLabel="Value Text">
@@ -106,15 +106,15 @@
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                                 <connections>
-                                                    <binding destination="10" name="hidden" keyPath="statement.transactionText" id="92">
-                                                        <dictionary key="options">
-                                                            <string key="NSValueTransformerName">NSIsNotNil</string>
-                                                        </dictionary>
-                                                    </binding>
-                                                    <binding destination="10" name="toolTip" keyPath="statement.purpose" id="135"/>
                                                     <binding destination="10" name="value" keyPath="statement.purpose" id="88">
                                                         <dictionary key="options">
                                                             <string key="NSValueTransformerName">StringCasingTransformer</string>
+                                                        </dictionary>
+                                                    </binding>
+                                                    <binding destination="10" name="toolTip" keyPath="statement.purpose" id="135"/>
+                                                    <binding destination="10" name="hidden" keyPath="statement.transactionText" id="92">
+                                                        <dictionary key="options">
+                                                            <string key="NSValueTransformerName">NSIsNotNil</string>
                                                         </dictionary>
                                                     </binding>
                                                 </connections>
@@ -136,13 +136,13 @@
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                                 <connections>
+                                                    <binding destination="10" name="value" keyPath="category.localName" id="83"/>
+                                                    <binding destination="10" name="toolTip" keyPath="category.localName" id="141"/>
                                                     <binding destination="10" name="hidden" keyPath="statement.remoteName" id="84">
                                                         <dictionary key="options">
                                                             <string key="NSValueTransformerName">NSIsNotNil</string>
                                                         </dictionary>
                                                     </binding>
-                                                    <binding destination="10" name="toolTip" keyPath="category.localName" id="141"/>
-                                                    <binding destination="10" name="value" keyPath="category.localName" id="83"/>
                                                 </connections>
                                             </textField>
                                             <textField verticalHuggingPriority="750" id="96" userLabel="Currency label">
@@ -193,7 +193,7 @@
                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
             </clipView>
             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="3">
-                <rect key="frame" x="1" y="119" width="223" height="15"/>
+                <rect key="frame" x="0.0" y="407" width="379" height="16"/>
                 <autoresizingMask key="autoresizingMask"/>
             </scroller>
             <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="5">
