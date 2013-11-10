@@ -342,7 +342,7 @@ static NSFont *smallNumberFont;
         NSString *weekString = [NSString stringWithFormat: @"%i", workDate.week];
         [weekString drawAtPoint: NSMakePoint(5,  offset) withAttributes: smallTextAttributes];
         offset += dayRect.size.height - 1;
-        workDate = [workDate dateByAddingUnits: 1 byUnit: NSCalendarUnitWeekOfYear];
+        workDate = [workDate dateByAddingUnits: 1 byUnit: NSWeekCalendarUnit];
     }
     [dateFormatter setDateFormat: @"EEE"];
     NSDate *dayNameDate = date.lowDate;
