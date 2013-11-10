@@ -623,6 +623,41 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 //----------------------------------------------------------------------------------------------------------------------
 
+@interface BankingController ()
+{
+    NSManagedObjectContext *managedObjectContext;
+    NSManagedObjectModel   *model;
+    NewBankUserController  *bankUserController;
+    LogController          *logController;
+    DockIconController     *dockIconController;
+    BOOL                   restart;
+    BOOL                   requestRunning;
+    BOOL                   statementsBound;
+    BOOL                   autoSyncRunning;
+    NSDecimalNumber        *saveValue;
+    NSCursor               *splitCursor;
+    NSUInteger             lastSplitterPosition; // Last position of the right splitter.
+
+    NSImage *moneyImage;
+    NSImage *moneySyncImage;
+    NSImage *bankImage;
+
+    NSMutableArray *bankAccountItemsExpandState;
+    Category       *lastSelection;
+
+    id<PecuniaSectionItem> currentSection;
+
+    // current statement details
+    StatementDetails *statementDetails;
+
+    // Sorting statements.
+    int  sortIndex;
+    BOOL sortAscending;
+
+    NSArray *defaultIcons; // Associations between categories and their default icons.
+}
+@end
+
 @implementation BankingController
 
 @synthesize saveValue;
@@ -3481,6 +3516,10 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [mainWindow display];
     [mainWindow makeKeyAndOrderFront: self];
 
+    if ([userDefaults boolForKey: @"startFullScreen"]) {
+        [self toggleFullscreenIfSupported: nil];
+    }
+
     [self checkForAutoSync];
 
     // Add default tags if there are none yet.
@@ -3526,6 +3565,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     shuttingDown = YES;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL inFullScreenMode = (mainWindow.styleMask & NSFullScreenWindowMask) != 0;
+    [userDefaults setValue: @(inFullScreenMode) forKey: @"startFullScreen"];
     [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
 
     NSInteger index = toolbarButtons.selectedSegment;

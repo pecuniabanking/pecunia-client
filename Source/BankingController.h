@@ -127,25 +127,6 @@
 
 @private
     NSMutableDictionary    *mainTabItems;
-    NSManagedObjectContext *managedObjectContext;
-    NSManagedObjectModel   *model;
-    NewBankUserController  *bankUserController;
-    LogController          *logController;
-    DockIconController     *dockIconController;
-    BOOL                   restart;
-    BOOL                   requestRunning;
-    BOOL                   statementsBound;
-    BOOL                   autoSyncRunning;
-    NSDecimalNumber        *saveValue;
-    NSCursor               *splitCursor;
-    NSUInteger             lastSplitterPosition; // Last position of the right splitter.
-
-    NSImage *moneyImage;
-    NSImage *moneySyncImage;
-    NSImage *bankImage;
-
-    NSMutableArray *bankAccountItemsExpandState;
-    Category       *lastSelection;
 
     HomeScreenController             *homeScreenController;
     CategoryAnalysisWindowController *categoryAnalysisController;
@@ -157,16 +138,6 @@
     DebitsController                 *debitsController;
     CategoryHeatMapController        *heatMapController;
 
-    id<PecuniaSectionItem> currentSection;
-
-    // current statement details
-    StatementDetails *statementDetails;
-
-    // Sorting statements.
-    int  sortIndex;
-    BOOL sortAscending;
-
-    NSArray *defaultIcons; // Associations between categories and their default icons.
 }
 
 @property (weak) IBOutlet NSMenuItem *toggleDetailsPaneItem;
