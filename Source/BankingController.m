@@ -3917,8 +3917,21 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
 
     if (object == categoryAssignments) {
+        static NSIndexSet *oldIdx;
+        
         if ([keyPath compare: @"selectionIndexes"] == NSOrderedSame) {
             // Selection did change.
+            // Check if selection really changed
+            NSIndexSet *selIdx = categoryAssignments.selectionIndexes;
+            if (oldIdx == nil && selIdx == nil) {
+                return;
+            }
+            if (oldIdx != nil && selIdx != nil) {
+                if ([oldIdx isEqualTo:selIdx]) {
+                    return;
+                }
+            }
+            oldIdx = selIdx;
 
             // If the currently selected entry is a new one remove the "new" mark.
             NSEnumerator      *enumerator = [[categoryAssignments selectedObjects] objectEnumerator];

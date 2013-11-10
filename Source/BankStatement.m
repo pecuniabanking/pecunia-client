@@ -390,11 +390,12 @@ static NSRegularExpression *bicRE;
     return nil;
 }
 
-- (void)updateAssigned
+- (BOOL)updateAssigned
 {
     NSDecimalNumber        *value = self.value;
     BOOL                   positive = [value compare: [NSDecimalNumber zero]] != NSOrderedAscending;
     BOOL                   assigned = NO;
+    BOOL                   ncatNeedsRefresh = NO;
     StatCatAssignment      *stat;
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     Category               *ncat = [Category nassRoot];
@@ -419,7 +420,9 @@ static NSRegularExpression *bicRE;
     // update not assigned part
     if (assigned == NO) {
         self.nassValue = value;
-    } else {self.nassValue = [NSDecimalNumber zero]; }
+    } else {
+        self.nassValue = [NSDecimalNumber zero];
+    }
     BOOL found = NO;
     iter = [stats objectEnumerator];
     while ((stat = [iter nextObject]) != nil) {
@@ -429,6 +432,7 @@ static NSRegularExpression *bicRE;
             }
             if (assigned) {
                 [context deleteObject: stat];
+                ncatNeedsRefresh = YES;
             } else {
                 stat.value = value;
             }
@@ -443,8 +447,10 @@ static NSRegularExpression *bicRE;
         stat.value = value;
         stat.category = ncat;
         stat.statement = self;
-        [ncat invalidateBalance];
+        ncatNeedsRefresh = YES;
+        //[ncat invalidateBalance];
     }
+    return ncatNeedsRefresh;
 }
 
 - (NSDecimalNumber *)residualAmount
@@ -468,10 +474,12 @@ static NSRegularExpression *bicRE;
 
 - (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)cat withInfo: (NSString *)info
 {
-    StatCatAssignment      *stat;
-    Category               *ncat = [Category nassRoot];
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSMutableSet           *stats = [self mutableSetValueForKey: @"assignments"];
+    StatCatAssignment       *stat;
+    Category                *ncat = [Category nassRoot];
+    NSManagedObjectContext  *context = [[MOAssistant assistant] context];
+    NSMutableSet            *stats = [self mutableSetValueForKey: @"assignments"];
+    BOOL                    ncatNeedsRefresh = NO;
+    BOOL                    catNeedsRefresh = NO;
 
     // if assignment already done, add value
     NSEnumerator *iter = [stats objectEnumerator];
@@ -506,6 +514,7 @@ static NSRegularExpression *bicRE;
         stat.value = value;
         if (cat) {
             stat.category = cat;
+            catNeedsRefresh = YES;
         }
         stat.statement = self;
         if (info == nil) {
@@ -519,13 +528,17 @@ static NSRegularExpression *bicRE;
         [stats addObject: stat];
     }
 
-    [self updateAssigned];
+    ncatNeedsRefresh = [self updateAssigned];
 
     [cat invalidateBalance];
     [ncat invalidateBalance];
 
-    [cat updateBoundAssignments];
-    [ncat updateBoundAssignments];
+    if (catNeedsRefresh) {
+        [cat updateBoundAssignments];
+    }
+    if (ncatNeedsRefresh) {
+        [ncat updateBoundAssignments];
+    }
 }
 
 - (NSComparisonResult)compareValuta: (BankStatement *)stat

@@ -39,7 +39,7 @@ typedef enum {
 
 - (void)assignToCategory: (Category *)cat;
 - (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)cat withInfo:(NSString *)info;
-- (void)updateAssigned;
+- (BOOL)updateAssigned;
 - (BOOL)hasAssignment;
 - (NSDecimalNumber *)residualAmount;
 - (StatCatAssignment *)bankAssignment;

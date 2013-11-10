@@ -83,6 +83,7 @@ typedef struct {
 
 - (void)updateInvalidCategoryValues;
 - (void)invalidateBalance;
+- (void)invalidateCache;
 - (void)rollupRecursive: (BOOL)recursive;
 - (void)rebuildValues;
 

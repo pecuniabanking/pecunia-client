@@ -230,7 +230,7 @@
     if (stat) {
         [stat updateAssigned];
     }
-    [cat invalidateBalance];
+    //[cat invalidateBalance];
     [cat updateBoundAssignments];
 }
 
@@ -250,11 +250,15 @@
 
 - (void)setCategory: (Category *)value
 {
-    [[self primitiveCategory] invalidateBalance];
-    [self willChangeValueForKey: @"category"];
-    [self setPrimitiveCategory: value];
-    [self didChangeValueForKey: @"category"];
-    [value invalidateBalance];
+    if ([self primitiveCategory] != value) {
+        [[self primitiveCategory] invalidateBalance];
+        [[self primitiveCategory] invalidateCache];
+        [self willChangeValueForKey: @"category"];
+        [self setPrimitiveCategory: value];
+        [self didChangeValueForKey: @"category"];
+        [value invalidateBalance];
+        [value invalidateCache];
+    }
 }
 
 - (NSString *)userInfo
