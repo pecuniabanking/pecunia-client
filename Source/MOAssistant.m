@@ -98,12 +98,6 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 - (void)startIdle
 {
     if (isEncrypted && isMaxIdleTimeExceeded == NO && decryptionDone == YES) {
-        NSError *error = nil;
-        [context save: &error];
-        if (error != nil) {
-            NSLog(@"Pecunia save error: %@", error.localizedDescription);
-            return;
-        }
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSUInteger     idx = [defaults integerForKey: @"lockTimeIndex"];
         NSUInteger     seconds = 0;
@@ -152,6 +146,13 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 - (void)maxIdleTimeExceeded
 {
     if (isEncrypted == NO) {
+        return;
+    }
+
+    NSError *error = nil;
+    [context save: &error];
+    if (error != nil) {
+        NSLog(@"Pecunia save error: %@", error.localizedDescription);
         return;
     }
 
