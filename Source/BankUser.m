@@ -332,6 +332,10 @@ static NSMutableDictionary *users = nil;
 {
     NSError                *error = nil;
     
+    if (userId == nil) {
+        return nil;
+    }
+    
     if (users == nil) {
         users = [NSMutableDictionary dictionaryWithCapacity:10];
     }
@@ -369,5 +373,17 @@ static NSMutableDictionary *users = nil;
     // no - take the last one
     return [bankUsers lastObject];    
 }
+
++ (void)removeUser:(BankUser*)user
+{
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+
+    if (user.userId != nil) {
+        [users removeObjectForKey:user.userId];
+    }
+    
+    [context deleteObject: user];
+}
+
 
 @end

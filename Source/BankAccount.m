@@ -129,7 +129,7 @@
         for (stat in newStats) {
             // Apply purpose split rule, if exists
             if (self.purposeSplitRule) {
-                [self.purposeSplitRule applyToStatement: stat];
+                //[self.purposeSplitRule applyToStatement: stat];
             }
             if (oldStats == nil) {
                 stat.isNew = @YES;

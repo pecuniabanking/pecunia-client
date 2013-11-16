@@ -638,7 +638,8 @@
     }
 
     if (user.userId == nil) {
-        [bankUserController remove: self];
+        //[bankUserController remove: self];
+        [BankUser removeUser:user];
         return;
     }
 
@@ -659,7 +660,8 @@
                 }
             }
         }
-        [bankUserController remove: self];
+        //[bankUserController remove: self];
+        [BankUser removeUser:user];
         [self updateTanMethods];
 
         // save updates

@@ -67,5 +67,6 @@
 
 + (NSArray *)allUsers;
 + (BankUser *)userWithId: (NSString *)userId bankCode: (NSString *)bankCode;
++ (void)removeUser:(BankUser*)user;
 
 @end
