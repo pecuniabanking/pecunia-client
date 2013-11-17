@@ -3975,12 +3975,12 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
             oldIdx = selIdx;
 
             // If the currently selected entry is a new one remove the "new" mark.
-            NSEnumerator      *enumerator = [[categoryAssignments selectedObjects] objectEnumerator];
-            StatCatAssignment *stat = nil;
-            NSDecimalNumber   *firstValue = nil;
-            while ((stat = [enumerator nextObject]) != nil) {
+            NSDecimalNumber *firstValue = nil;
+            BankStatementType firstStatementType = StatementType_Standard;
+            for (StatCatAssignment *stat in [categoryAssignments selectedObjects]) {
                 if (firstValue == nil) {
                     firstValue = stat.statement.value;
+                    firstStatementType = stat.statement.type.intValue;
                 }
                 if ([stat.statement.isNew boolValue]) {
                     stat.statement.isNew = @NO;
@@ -3994,29 +3994,13 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
             [accountsView setNeedsDisplay: YES];
 
             // Check for the type of transaction and adjust remote name display accordingly.
-            if ([firstValue compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
-                [remoteNameLabel setStringValue: NSLocalizedString(@"AP208", nil)];
+            if (firstStatementType == StatementType_CreditCard) {
+                [remoteNameLabel setStringValue: NSLocalizedString(@"AP221", nil)];
             } else {
-                [remoteNameLabel setStringValue: NSLocalizedString(@"AP209", nil)];
-            }
-
-            // need to switch details view?
-            NSArray *assignments = [categoryAssignments selectedObjects];
-            if ([assignments count] > 0) {
-                StatCatAssignment *stat = assignments[0];
-                if ([stat.statement.type intValue] == StatementType_CreditCard && statementDetails == standardDetails) {
-                    // switch to credit card details
-                    NSRect frame = [statementDetails frame];
-                    [creditCardDetails setFrame: frame];
-                    [rightSplitter replaceSubview: statementDetails with: creditCardDetails];
-                    statementDetails = creditCardDetails;
-                }
-                if ([stat.statement.type intValue] == StatementType_Standard && statementDetails == creditCardDetails) {
-                    //switch to standard details
-                    NSRect frame = [statementDetails frame];
-                    [standardDetails setFrame: frame];
-                    [rightSplitter replaceSubview: statementDetails with: standardDetails];
-                    statementDetails = standardDetails;
+                if ([firstValue compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
+                    [remoteNameLabel setStringValue: NSLocalizedString(@"AP208", nil)];
+                } else {
+                    [remoteNameLabel setStringValue: NSLocalizedString(@"AP209", nil)];
                 }
             }
 

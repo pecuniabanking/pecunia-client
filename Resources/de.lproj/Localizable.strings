@@ -142,6 +142,7 @@ AP217 = "Für %d von %d der ausgewählten Konten kann keine Kontenabfrage durchg
 AP218 = "Es wurden %d neue Umsätze geladen";
 AP219 = "Kontoumsätze holen...";
 AP220 = "Keine Kontenabfrage möglich";
+AP221 = "Kreditkarte:";
 
 // Categories
 // AP250..AP349

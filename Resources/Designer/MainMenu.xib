@@ -327,11 +327,11 @@ IA
                                                             <connections>
                                                                 <binding destination="911" name="value" keyPath="selection.bankName" id="996">
                                                                     <dictionary key="options">
-                                                                        <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
                                                                         <string key="NSNotApplicablePlaceholder"></string>
                                                                         <string key="NSNoSelectionPlaceholder"></string>
-                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
                                                                         <string key="NSNullPlaceholder"></string>
+                                                                        <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
@@ -550,19 +550,19 @@ IA
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                     <subviews>
                                                                         <textField verticalHuggingPriority="750" id="4598">
-                                                                            <rect key="frame" x="27" y="34" width="138" height="18"/>
+                                                                            <rect key="frame" x="27" y="34" width="86" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Kategorien" usesSingleLineMode="YES" id="4599">
-                                                                                <font key="font" size="13" name="HelveticaNeue"/>
+                                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
                                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="4814">
-                                                                            <rect key="frame" x="170" y="34" width="625" height="18"/>
+                                                                            <rect key="frame" x="121" y="34" width="379" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="keine" usesSingleLineMode="YES" id="4815">
-                                                                                <font key="font" size="15" name="HelveticaNeue-Medium"/>
+                                                                                <font key="font" size="14" name="HelveticaNeue-Medium"/>
                                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
@@ -577,49 +577,30 @@ IA
                                                                                 </binding>
                                                                             </connections>
                                                                         </textField>
-                                                                        <textField verticalHuggingPriority="750" id="623">
-                                                                            <rect key="frame" x="170" y="224" width="426" height="41"/>
-                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                                            <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="Test" id="3396">
-                                                                                <font key="font" size="14" name="HelveticaNeue-Medium"/>
-                                                                                <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                            </textFieldCell>
-                                                                            <connections>
-                                                                                <binding destination="236" name="value" keyPath="selection.statement.remoteName" id="6823">
-                                                                                    <dictionary key="options">
-                                                                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                                                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
-                                                                                    </dictionary>
-                                                                                </binding>
-                                                                            </connections>
-                                                                        </textField>
                                                                         <textField verticalHuggingPriority="750" id="604">
-                                                                            <rect key="frame" x="17" y="242" width="148" height="22"/>
+                                                                            <rect key="frame" x="17" y="240" width="100" height="22"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Auftraggeber" allowsEditingTextAttributes="YES" bezelStyle="round" id="3390">
-                                                                                <font key="font" size="13" name="HelveticaNeue"/>
+                                                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Auftraggeber:" allowsEditingTextAttributes="YES" bezelStyle="round" id="3390">
+                                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
                                                                                 <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="4942">
-                                                                            <rect key="frame" x="168" y="83" width="215" height="75"/>
+                                                                            <rect key="frame" x="47" y="90" width="215" height="65"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                                                                             <clipView key="contentView" drawsBackground="NO" id="Lrj-PE-EVE">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="215" height="75"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="215" height="65"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <textView focusRingType="none" editable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" horizontallyResizable="YES" verticallyResizable="YES" id="4945">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="215" height="75"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="215" height="65"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                                        <color key="backgroundColor" red="0.97647064920000004" green="0.96470594409999999" blue="0.92941182850000004" alpha="1" colorSpace="deviceRGB"/>
-                                                                                        <size key="minSize" width="215" height="75"/>
+                                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                                        <size key="minSize" width="215" height="65"/>
                                                                                         <size key="maxSize" width="794" height="10000000"/>
                                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                        <size key="minSize" width="215" height="75"/>
+                                                                                        <size key="minSize" width="215" height="65"/>
                                                                                         <size key="maxSize" width="794" height="10000000"/>
                                                                                         <connections>
                                                                                             <binding destination="236" name="value" keyPath="selection.statement.purpose" id="4958">
@@ -646,20 +627,20 @@ IA
                                                                             </scroller>
                                                                         </scrollView>
                                                                         <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="4950">
-                                                                            <rect key="frame" x="391" y="88" width="153" height="70"/>
+                                                                            <rect key="frame" x="272" y="90" width="226" height="65"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <clipView key="contentView" copiesOnScroll="NO" id="CSS-g5-PcT">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="153" height="70"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="226" height="65"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <textView focusRingType="none" drawsBackground="NO" importsGraphics="NO" richText="NO" horizontallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" verticallyResizable="YES" quoteSubstitution="YES" linkDetection="YES" dashSubstitution="YES" grammarChecking="YES" smartInsertDelete="YES" id="4951">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="153" height="70"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="226" height="65"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <color key="backgroundColor" red="0.97647058959999999" green="0.96470588450000005" blue="0.92941176889999999" alpha="1" colorSpace="deviceRGB"/>
-                                                                                        <size key="minSize" width="153" height="70"/>
+                                                                                        <size key="minSize" width="226" height="65"/>
                                                                                         <size key="maxSize" width="809" height="10000000"/>
                                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                        <size key="minSize" width="153" height="70"/>
+                                                                                        <size key="minSize" width="226" height="65"/>
                                                                                         <size key="maxSize" width="809" height="10000000"/>
                                                                                         <connections>
                                                                                             <binding destination="236" name="value" keyPath="selection.userInfo" id="6521">
@@ -716,8 +697,8 @@ IA
                                                                                     <dictionary key="options">
                                                                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                                                         <string key="NSNoSelectionPlaceholder">0.00</string>
-                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                         <string key="NSMultipleValuesPlaceholder">n/a</string>
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                     </dictionary>
                                                                                 </binding>
                                                                                 <outlet property="delegate" destination="235" id="4901"/>
@@ -1286,48 +1267,96 @@ IA
                                                                                     <dictionary key="options">
                                                                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                                                         <string key="NSNoSelectionPlaceholder">0.00</string>
-                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                         <string key="NSMultipleValuesPlaceholder">n/a</string>
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                     </dictionary>
                                                                                 </binding>
                                                                                 <outlet property="delegate" destination="235" id="5180"/>
                                                                             </connections>
                                                                         </textField>
-                                                                        <textField verticalHuggingPriority="750" id="624">
-                                                                            <rect key="frame" x="172" y="197" width="88" height="23"/>
+                                                                        <textField verticalHuggingPriority="750" id="0MO-Vn-dOw">
+                                                                            <rect key="frame" x="300" y="181" width="85" height="20"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" title="1234567890" usesSingleLineMode="YES" id="3397">
-                                                                                <font key="font" size="15" name="HelveticaNeue-Medium"/>
-                                                                                <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-200.000,00" usesSingleLineMode="YES" bezelStyle="round" id="0PS-WD-Nnb">
+                                                                                <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="#,##0.00" negativeFormat="[Red]-#,##0.00" thousandSeparator="." id="Pwl-RR-MPx">
+                                                                                    <textAttributesForNegativeValues>
+                                                                                        <color key="NSColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                    </textAttributesForNegativeValues>
+                                                                                    <attributedString key="attributedStringForZero">
+                                                                                        <fragment content="0,00">
+                                                                                            <attributes>
+                                                                                                <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                <font key="NSFont" metaFont="smallSystem"/>
+                                                                                                <font key="NSOriginalFont" metaFont="smallSystem"/>
+                                                                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="clipping" baseWritingDirection="natural"/>
+                                                                                            </attributes>
+                                                                                        </fragment>
+                                                                                    </attributedString>
+                                                                                    <decimal key="minimum" value="NaN"/>
+                                                                                    <decimal key="maximum" value="NaN"/>
+                                                                                    <metadata>
+                                                                                        <bool key="localizesFormat" value="YES"/>
+                                                                                    </metadata>
+                                                                                </numberFormatter>
+                                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
+                                                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                             <connections>
-                                                                                <binding destination="236" name="value" keyPath="selection.statement.remoteAccount" id="6825">
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.ccNumberUms" id="AS1-ze-0h6">
+                                                                                    <dictionary key="options">
+                                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="236" name="value" keyPath="selection.statement.origValue" id="woS-AY-7l6">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <outlet property="delegate" destination="235" id="OIO-SI-meF"/>
+                                                                            </connections>
+                                                                        </textField>
+                                                                        <textField verticalHuggingPriority="750" id="624">
+                                                                            <rect key="frame" x="300" y="220" width="200" height="18"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" title="1234567890" usesSingleLineMode="YES" id="3397">
+                                                                                <font key="font" size="13" name="HelveticaNeue-Medium"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.remoteIBAN" id="MLk-uH-UBj">
+                                                                                    <dictionary key="options">
+                                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="236" name="value" keyPath="selection.statement.remoteAccount" id="Mi4-3u-Pdk">
                                                                                     <dictionary key="options">
                                                                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                                                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
-                                                                                    </dictionary>
-                                                                                </binding>
-                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.remoteAccount" id="6888">
-                                                                                    <dictionary key="options">
-                                                                                        <integer key="NSNullPlaceholder" value="1"/>
-                                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
                                                                                     </dictionary>
                                                                                 </binding>
                                                                             </connections>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="625">
-                                                                            <rect key="frame" x="172" y="184" width="104" height="15"/>
+                                                                            <rect key="frame" x="300" y="202" width="200" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" title="12030000" usesSingleLineMode="YES" id="3398">
-                                                                                <font key="font" size="15" name="HelveticaNeue-Medium"/>
-                                                                                <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                <font key="font" size="13" name="HelveticaNeue-Medium"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                             <connections>
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.remoteBIC" id="ud1-Zn-dH9">
+                                                                                    <dictionary key="options">
+                                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
                                                                                 <binding destination="236" name="value" keyPath="selection.statement.remoteBankCode" id="6826">
                                                                                     <dictionary key="options">
                                                                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
@@ -1339,30 +1368,64 @@ IA
                                                                             </connections>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="608">
-                                                                            <rect key="frame" x="69" y="181" width="96" height="19"/>
+                                                                            <rect key="frame" x="210" y="202" width="80" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Bankleitzahl" usesSingleLineMode="YES" id="3392">
-                                                                                <font key="font" size="13" name="HelveticaNeue"/>
+                                                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Bankleitzahl:" usesSingleLineMode="YES" id="3392">
+                                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
                                                                                 <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="236" name="hidden2" keyPath="selection.statement.ccNumberUms" previousBinding="e2v-8C-bt9" id="avr-Ms-6dc">
+                                                                                    <dictionary key="options">
+                                                                                        <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                                                        <integer key="NSNullPlaceholder" value="-1"/>
+                                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.remoteBIC" id="e2v-8C-bt9">
+                                                                                    <dictionary key="options">
+                                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                            </connections>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="7023">
-                                                                            <rect key="frame" x="69" y="204" width="96" height="16"/>
+                                                                            <rect key="frame" x="210" y="220" width="80" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Konto" usesSingleLineMode="YES" id="7024">
-                                                                                <font key="font" size="13" name="HelveticaNeue"/>
+                                                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Konto:" usesSingleLineMode="YES" id="7024">
+                                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
                                                                                 <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="236" name="hidden2" keyPath="selection.statement.ccNumberUms" previousBinding="zUI-f4-zWG" id="HIY-p7-dsc">
+                                                                                    <dictionary key="options">
+                                                                                        <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                                                        <integer key="NSNullPlaceholder" value="-1"/>
+                                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.remoteIBAN" id="zUI-f4-zWG">
+                                                                                    <dictionary key="options">
+                                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                            </connections>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="626">
-                                                                            <rect key="frame" x="332" y="204" width="97" height="16"/>
+                                                                            <rect key="frame" x="121" y="220" width="75" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" title="01.01.2008" usesSingleLineMode="YES" id="3399">
+                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="left" title="01.01.2008" usesSingleLineMode="YES" id="3399">
                                                                                 <dateFormatter key="formatter" formatterBehavior="custom10_4" dateStyle="medium" id="4308"/>
-                                                                                <font key="font" size="15" name="HelveticaNeue-Medium"/>
-                                                                                <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                <font key="font" size="13" name="HelveticaNeue-Medium"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                             <connections>
@@ -1378,21 +1441,21 @@ IA
                                                                             </connections>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="617">
-                                                                            <rect key="frame" x="268" y="201" width="57" height="19"/>
+                                                                            <rect key="frame" x="56" y="220" width="57" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Datum:" usesSingleLineMode="YES" id="3395">
-                                                                                <font key="font" size="13" name="HelveticaNeue"/>
+                                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
                                                                                 <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="641">
-                                                                            <rect key="frame" x="332" y="182" width="97" height="18"/>
+                                                                            <rect key="frame" x="121" y="201" width="75" height="19"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" title="01.01.2008" usesSingleLineMode="YES" bezelStyle="round" id="3403">
+                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="left" title="01.01.2008" usesSingleLineMode="YES" bezelStyle="round" id="3403">
                                                                                 <dateFormatter key="formatter" formatterBehavior="custom10_4" dateStyle="medium" id="4307"/>
-                                                                                <font key="font" size="15" name="HelveticaNeue-Medium"/>
-                                                                                <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                <font key="font" size="13" name="HelveticaNeue-Medium"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                             <connections>
@@ -1408,36 +1471,51 @@ IA
                                                                             </connections>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="4296">
-                                                                            <rect key="frame" x="413" y="204" width="50" height="16"/>
+                                                                            <rect key="frame" x="210" y="220" width="80" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="IBAN:" usesSingleLineMode="YES" id="4297">
-                                                                                <font key="font" size="13" name="HelveticaNeue"/>
+                                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
                                                                                 <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                             <connections>
-                                                                                <binding destination="236" name="enabled" keyPath="selection.statement.remoteIBAN" id="6881">
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.remoteIBAN" id="2Bm-F4-rCY">
                                                                                     <dictionary key="options">
-                                                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                                                                    </dictionary>
-                                                                                </binding>
-                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.remoteIBAN" previousBinding="6881" id="6892">
-                                                                                    <dictionary key="options">
-                                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                                                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                            </connections>
+                                                                        </textField>
+                                                                        <textField verticalHuggingPriority="750" id="Vc3-6d-CKQ">
+                                                                            <rect key="frame" x="210" y="202" width="80" height="18"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="abgerechnet:" usesSingleLineMode="YES" id="i06-R0-Hoe">
+                                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
+                                                                                <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
+                                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.ccNumberUms" id="FLU-am-LUW">
+                                                                                    <dictionary key="options">
                                                                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                        <integer key="NSNullPlaceholder" value="1"/>
                                                                                         <string key="NSValueTransformerName">NSIsNil</string>
                                                                                     </dictionary>
                                                                                 </binding>
                                                                             </connections>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="4295">
-                                                                            <rect key="frame" x="465" y="204" width="235" height="16"/>
+                                                                            <rect key="frame" x="300" y="220" width="200" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" title="1500" usesSingleLineMode="YES" id="4298">
-                                                                                <font key="font" size="15" name="HelveticaNeue-Medium"/>
-                                                                                <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" title="DE14120300000011426772" usesSingleLineMode="YES" id="4298">
+                                                                                <font key="font" size="13" name="HelveticaNeue-Medium"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                             <connections>
@@ -1453,10 +1531,10 @@ IA
                                                                             </connections>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="4294">
-                                                                            <rect key="frame" x="413" y="184" width="50" height="16"/>
+                                                                            <rect key="frame" x="210" y="202" width="80" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="BIC:" usesSingleLineMode="YES" id="4299">
-                                                                                <font key="font" size="13" name="HelveticaNeue"/>
+                                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
                                                                                 <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
@@ -1468,21 +1546,21 @@ IA
                                                                                 </binding>
                                                                                 <binding destination="236" name="hidden" keyPath="selection.statement.remoteBIC" previousBinding="6441" id="6907">
                                                                                     <dictionary key="options">
-                                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                                                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                                        <integer key="NSNullPlaceholder" value="1"/>
                                                                                         <string key="NSValueTransformerName">NSIsNil</string>
                                                                                     </dictionary>
                                                                                 </binding>
                                                                             </connections>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="4293">
-                                                                            <rect key="frame" x="465" y="184" width="161" height="16"/>
+                                                                            <rect key="frame" x="300" y="202" width="200" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" title="BYLADEM 1001" usesSingleLineMode="YES" id="4300">
-                                                                                <font key="font" size="15" name="HelveticaNeue-Medium"/>
-                                                                                <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                <font key="font" size="13" name="HelveticaNeue-Medium"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
                                                                             <connections>
@@ -1492,17 +1570,17 @@ IA
                                                                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                         <string key="NSMultipleValuesPlaceholder">n/a</string>
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                                     </dictionary>
                                                                                 </binding>
                                                                             </connections>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="5913">
-                                                                            <rect key="frame" x="268" y="181" width="57" height="19"/>
+                                                                            <rect key="frame" x="56" y="202" width="57" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Valuta:" usesSingleLineMode="YES" id="5914">
-                                                                                <font key="font" size="13" name="HelveticaNeue"/>
+                                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
                                                                                 <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                             </textFieldCell>
@@ -1517,30 +1595,30 @@ IA
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" id="4824">
-                                                                            <rect key="frame" x="359" y="165" width="186" height="16"/>
+                                                                            <rect key="frame" x="314" y="163" width="186" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="Verwendungszweck und Notizen" usesSingleLineMode="YES" id="4825">
-                                                                                <font key="font" size="12" name="HelveticaNeue"/>
+                                                                                <font key="font" size="12" name="HelveticaNeue-Light"/>
                                                                                 <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="backgroundColor" red="0.31372550129999999" green="0.31372550129999999" blue="0.31372550129999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <box autoresizesSubviews="NO" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="6908">
-                                                                            <rect key="frame" x="42" y="168" width="318" height="5"/>
+                                                                            <rect key="frame" x="42" y="168" width="266" height="5"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                                                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                             <font key="titleFont" metaFont="system"/>
                                                                         </box>
                                                                         <box autoresizesSubviews="NO" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="6909">
-                                                                            <rect key="frame" x="571" y="168" width="166" height="5"/>
+                                                                            <rect key="frame" x="543" y="168" width="194" height="5"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                                             <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                                                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                             <font key="titleFont" metaFont="system"/>
                                                                         </box>
                                                                         <imageView toolTip="Dokumente, URLs oder Text hierher ziehen. Text muss eine gültige Referenz zu einer Resource darstellen." focusRingType="none" tag="3" id="6910" customClass="AttachmentImageView">
-                                                                            <rect key="frame" x="747" y="85" width="48" height="48"/>
+                                                                            <rect key="frame" x="747" y="87" width="48" height="48"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                                             <imageCell key="cell" selectable="YES" editable="YES" focusRingType="none" alignment="left" animates="YES" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="6911"/>
                                                                             <connections>
@@ -1555,7 +1633,7 @@ IA
                                                                             </connections>
                                                                         </imageView>
                                                                         <imageView focusRingType="none" tag="2" id="6912" customClass="AttachmentImageView">
-                                                                            <rect key="frame" x="697" y="85" width="48" height="48"/>
+                                                                            <rect key="frame" x="694" y="87" width="48" height="48"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                                             <imageCell key="cell" selectable="YES" editable="YES" focusRingType="none" alignment="left" animates="YES" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="6913"/>
                                                                             <connections>
@@ -1570,7 +1648,7 @@ IA
                                                                             </connections>
                                                                         </imageView>
                                                                         <imageView focusRingType="none" tag="1" id="6914" customClass="AttachmentImageView">
-                                                                            <rect key="frame" x="647" y="85" width="48" height="48"/>
+                                                                            <rect key="frame" x="640" y="87" width="48" height="48"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                                             <imageCell key="cell" selectable="YES" editable="YES" focusRingType="none" alignment="left" animates="YES" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="6915"/>
                                                                             <connections>
@@ -1585,7 +1663,7 @@ IA
                                                                             </connections>
                                                                         </imageView>
                                                                         <imageView focusRingType="none" id="6916" customClass="AttachmentImageView">
-                                                                            <rect key="frame" x="575" y="85" width="70" height="70"/>
+                                                                            <rect key="frame" x="564" y="87" width="70" height="70"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                                             <imageCell key="cell" selectable="YES" editable="YES" focusRingType="none" alignment="left" animates="YES" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="6917"/>
                                                                             <connections>
@@ -1600,16 +1678,16 @@ IA
                                                                             </connections>
                                                                         </imageView>
                                                                         <textField verticalHuggingPriority="750" id="6918">
-                                                                            <rect key="frame" x="735" y="165" width="62" height="16"/>
+                                                                            <rect key="frame" x="734" y="163" width="62" height="18"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="Anhänge" usesSingleLineMode="YES" id="6919">
-                                                                                <font key="font" size="12" name="HelveticaNeue"/>
+                                                                                <font key="font" size="12" name="HelveticaNeue-Light"/>
                                                                                 <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="backgroundColor" red="0.31372550129999999" green="0.31372550129999999" blue="0.31372550129999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <button id="6994">
-                                                                            <rect key="frame" x="146" y="66" width="16" height="16"/>
+                                                                            <rect key="frame" x="47" y="62" width="16" height="16"/>
                                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                             <buttonCell key="cell" type="square" title="Button" bezelStyle="shadowlessSquare" imagePosition="only" alignment="right" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6995">
                                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1619,30 +1697,176 @@ IA
                                                                                 <action selector="showTagPopup:" target="235" id="7022"/>
                                                                                 <binding destination="236" name="enabled" keyPath="selection.statement" id="7039">
                                                                                     <dictionary key="options">
-                                                                                        <integer key="NSNullPlaceholder" value="0"/>
+                                                                                        <integer key="NSMultipleValuesPlaceholder" value="0"/>
                                                                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                                                         <integer key="NSNoSelectionPlaceholder" value="0"/>
-                                                                                        <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                                                                        <integer key="NSNullPlaceholder" value="0"/>
                                                                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                                                                     </dictionary>
                                                                                 </binding>
                                                                             </connections>
                                                                         </button>
                                                                         <customView id="6997" customClass="TagView">
-                                                                            <rect key="frame" x="173" y="58" width="621" height="24"/>
+                                                                            <rect key="frame" x="70" y="58" width="428" height="22"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                                             <connections>
                                                                                 <binding destination="236" name="hidden" keyPath="selection.statement" id="7020">
                                                                                     <dictionary key="options">
-                                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                                                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                                        <integer key="NSNullPlaceholder" value="1"/>
                                                                                         <string key="NSValueTransformerName">NSIsNil</string>
                                                                                     </dictionary>
                                                                                 </binding>
                                                                             </connections>
                                                                         </customView>
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="cpr-fa-mJX">
+                                                                            <rect key="frame" x="121" y="241" width="443" height="18"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="remoteName" usesSingleLineMode="YES" id="1Y0-EE-Uo3">
+                                                                                <font key="font" size="13" name="HelveticaNeue-Medium"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.ccNumberUms" id="TNZ-MP-keA">
+                                                                                    <dictionary key="options">
+                                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="236" name="value" keyPath="selection.statement.remoteName" id="v5e-sN-Jze"/>
+                                                                            </connections>
+                                                                        </textField>
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="CmT-Av-EXj">
+                                                                            <rect key="frame" x="121" y="241" width="443" height="18"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="ccNumberUms" usesSingleLineMode="YES" id="q9w-rk-lS1">
+                                                                                <font key="font" size="13" name="HelveticaNeue-Medium"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.ccNumberUms" id="DGy-pE-zOE">
+                                                                                    <dictionary key="options">
+                                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="236" name="value" keyPath="selection.statement.ccNumberUms" id="G0R-Ci-KgC"/>
+                                                                            </connections>
+                                                                        </textField>
+                                                                        <textField verticalHuggingPriority="750" id="12c-VQ-Uav">
+                                                                            <rect key="frame" x="121" y="183" width="75" height="19"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="left" title="01.01.2008" usesSingleLineMode="YES" bezelStyle="round" id="9Ls-el-8y7">
+                                                                                <dateFormatter key="formatter" formatterBehavior="custom10_4" dateStyle="medium" id="NfP-br-nPL"/>
+                                                                                <font key="font" size="13" name="HelveticaNeue-Medium"/>
+                                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.docDate" id="qxG-8G-eE1">
+                                                                                    <dictionary key="options">
+                                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="236" name="value" keyPath="selection.statement.docDate" id="kd2-Mt-SXn">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                            </connections>
+                                                                        </textField>
+                                                                        <textField verticalHuggingPriority="750" id="mCV-fg-HhK">
+                                                                            <rect key="frame" x="33" y="184" width="80" height="18"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Belegdatum:" usesSingleLineMode="YES" id="gsc-cW-Hma">
+                                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
+                                                                                <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
+                                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.docDate" id="Fga-kw-m0S">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                            </connections>
+                                                                        </textField>
+                                                                        <textField verticalHuggingPriority="750" id="R3z-Ex-BmY">
+                                                                            <rect key="frame" x="210" y="184" width="80" height="18"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Orginalbetrag:" usesSingleLineMode="YES" id="Ntv-vn-T8k">
+                                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
+                                                                                <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
+                                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.docDate" id="vTI-wI-0QP">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                            </connections>
+                                                                        </textField>
+                                                                        <button id="6679">
+                                                                            <rect key="frame" x="300" y="202" width="18" height="18"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="only" alignment="left" enabled="NO" state="on" inset="2" id="6680">
+                                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                                <font key="font" metaFont="system"/>
+                                                                            </buttonCell>
+                                                                            <connections>
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.ccNumberUms" id="ZOO-KI-eK3">
+                                                                                    <dictionary key="options">
+                                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="236" name="value" keyPath="selection.statement.isSettled" id="6756">
+                                                                                    <dictionary key="options">
+                                                                                        <bool key="NSConditionallySetsEnabled" value="NO"/>
+                                                                                        <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                                                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                                        <integer key="NSNullPlaceholder" value="0"/>
+                                                                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                            </connections>
+                                                                        </button>
+                                                                        <textField verticalHuggingPriority="750" id="6614">
+                                                                            <rect key="frame" x="383" y="183" width="36" height="18"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="left" title="EUR" usesSingleLineMode="YES" id="6623">
+                                                                                <font key="font" size="12" name="HelveticaNeue-Light"/>
+                                                                                <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                            </textFieldCell>
+                                                                            <connections>
+                                                                                <binding destination="236" name="hidden" keyPath="selection.statement.ccNumberUms" id="yrF-rq-9Hc">
+                                                                                    <dictionary key="options">
+                                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                                <binding destination="236" name="value" keyPath="selection.statement.origCurrency" id="J63-xJ-HJI">
+                                                                                    <dictionary key="options">
+                                                                                        <string key="NSNullPlaceholder">€</string>
+                                                                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                                        <string key="NSValueTransformerName">CurrencyValueTransformer</string>
+                                                                                    </dictionary>
+                                                                                </binding>
+                                                                            </connections>
+                                                                        </textField>
                                                                     </subviews>
                                                                 </customView>
                                                             </subviews>
@@ -2428,1048 +2652,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <outlet property="delegate" destination="6480" id="6486"/>
             </connections>
         </window>
-        <customView id="6593" userLabel="CCStatementDetails" customClass="StatementDetails">
-            <rect key="frame" x="0.0" y="0.0" width="812" height="287"/>
-            <autoresizingMask key="autoresizingMask"/>
-            <subviews>
-                <textField verticalHuggingPriority="750" id="6600">
-                    <rect key="frame" x="39" y="34" width="98" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Kategorien:" id="6647">
-                        <font key="font" metaFont="cellTitle"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6601">
-                    <rect key="frame" x="131" y="34" width="646" height="18"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="keine" id="6646">
-                        <font key="font" size="14" name="LucidaGrande-Bold"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="236" name="value" keyPath="selection.statement.categoriesDescription" id="6772">
-                            <dictionary key="options">
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                <string key="NSNotApplicablePlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSNullPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6594">
-                    <rect key="frame" x="143" y="236" width="222" height="23"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="Test" id="6653">
-                        <font key="font" size="14" name="LucidaGrande-Bold"/>
-                        <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="236" name="value" keyPath="selection.statement.ccNumberUms" id="6748">
-                            <dictionary key="options">
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                <string key="NSNotApplicablePlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSNullPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6602">
-                    <rect key="frame" x="39" y="237" width="96" height="22"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Kreditkarte:" allowsEditingTextAttributes="YES" bezelStyle="round" id="6645">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <customView id="6603" customClass="RoundedInnerShadowView">
-                    <rect key="frame" x="56" y="69" width="267" height="62"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
-                    <subviews>
-                        <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="6641">
-                            <rect key="frame" x="7" y="10" width="253" height="42"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="iVT-of-yrJ">
-                                <rect key="frame" x="0.0" y="0.0" width="253" height="42"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <textView focusRingType="none" editable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" horizontallyResizable="YES" verticallyResizable="YES" smartInsertDelete="YES" id="6644">
-                                        <rect key="frame" x="0.0" y="0.0" width="253" height="42"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" red="0.97647064920000004" green="0.96470594409999999" blue="0.92941182850000004" alpha="1" colorSpace="deviceRGB"/>
-                                        <size key="minSize" width="253" height="42"/>
-                                        <size key="maxSize" width="794" height="10000000"/>
-                                        <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <size key="minSize" width="253" height="42"/>
-                                        <size key="maxSize" width="794" height="10000000"/>
-                                        <connections>
-                                            <binding destination="236" name="value" keyPath="selection.statement.purpose" id="6778">
-                                                <dictionary key="options">
-                                                    <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                                    <string key="NSNotApplicablePlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                                    <bool key="NSConditionallySetsEditable" value="NO"/>
-                                                    <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                                    <string key="NSNullPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                                    <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                                </dictionary>
-                                            </binding>
-                                        </connections>
-                                    </textView>
-                                </subviews>
-                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </clipView>
-                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="6643">
-                                <rect key="frame" x="-100" y="-100" width="262" height="15"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                            </scroller>
-                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="6642">
-                                <rect key="frame" x="247" y="0.0" width="15" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                            </scroller>
-                        </scrollView>
-                    </subviews>
-                </customView>
-                <customView focusRingType="none" id="6604" customClass="RoundedInnerShadowView">
-                    <rect key="frame" x="362" y="69" width="267" height="62"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
-                    <subviews>
-                        <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="6637">
-                            <rect key="frame" x="10" y="10" width="249" height="42"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="O8N-G4-XgV">
-                                <rect key="frame" x="0.0" y="0.0" width="249" height="42"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <textView focusRingType="none" drawsBackground="NO" importsGraphics="NO" richText="NO" horizontallyResizable="YES" allowsUndo="YES" verticallyResizable="YES" smartInsertDelete="YES" id="6638">
-                                        <rect key="frame" x="0.0" y="0.0" width="249" height="42"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" red="0.97647058959999999" green="0.96470588450000005" blue="0.92941176889999999" alpha="1" colorSpace="deviceRGB"/>
-                                        <size key="minSize" width="249" height="42"/>
-                                        <size key="maxSize" width="809" height="10000000"/>
-                                        <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <size key="minSize" width="249" height="42"/>
-                                        <size key="maxSize" width="809" height="10000000"/>
-                                        <connections>
-                                            <binding destination="236" name="value" keyPath="selection.userInfo" id="6782">
-                                                <dictionary key="options">
-                                                    <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                                    <string key="NSNotApplicablePlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                                    <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                                    <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                                    <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                                </dictionary>
-                                            </binding>
-                                        </connections>
-                                    </textView>
-                                </subviews>
-                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </clipView>
-                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="6639">
-                                <rect key="frame" x="-100" y="-100" width="261" height="15"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                            </scroller>
-                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="6640">
-                                <rect key="frame" x="-100" y="-100" width="15" height="34"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                            </scroller>
-                        </scrollView>
-                    </subviews>
-                </customView>
-                <textField focusRingType="none" verticalHuggingPriority="750" id="6605">
-                    <rect key="frame" x="570" y="225" width="190" height="37"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" focusRingType="none" alignment="right" title="-100.000,00" bezelStyle="round" id="6635">
-                        <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="#,##0.00" negativeFormat="[Red]-#,##0.00" thousandSeparator="." id="6636">
-                            <textAttributesForNegativeValues>
-                                <color key="NSColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </textAttributesForNegativeValues>
-                            <attributedString key="attributedStringForZero">
-                                <fragment content="0,00">
-                                    <attributes>
-                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                        <font key="NSFont" metaFont="smallSystem"/>
-                                        <font key="NSOriginalFont" metaFont="smallSystem"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="clipping" baseWritingDirection="natural"/>
-                                    </attributes>
-                                </fragment>
-                            </attributedString>
-                            <decimal key="minimum" value="NaN"/>
-                            <decimal key="maximum" value="NaN"/>
-                            <metadata>
-                                <bool key="localizesFormat" value="YES"/>
-                                <real key="inspectorSampleValue" value="0.0"/>
-                            </metadata>
-                        </numberFormatter>
-                        <font key="font" size="30" name="Helvetica"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="236" name="value" keyPath="selection.value" id="6797">
-                            <dictionary key="options">
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                <string key="NSNotApplicablePlaceholder">0.00</string>
-                                <string key="NSNoSelectionPlaceholder">0.00</string>
-                                <string key="NSNullPlaceholder">0.00</string>
-                                <string key="NSMultipleValuesPlaceholder">mehrere</string>
-                            </dictionary>
-                        </binding>
-                        <outlet property="delegate" destination="235" id="6709"/>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6606">
-                    <rect key="frame" x="762" y="228" width="27" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" title="€" bezelStyle="round" id="6634">
-                        <font key="font" size="22" name="Helvetica-Light"/>
-                        <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        <allowedInputSourceLocales>
-                            <string>ti_ER</string>
-                            <string>ar_LY</string>
-                            <string>kok_IN</string>
-                            <string>mk_MK</string>
-                            <string>eo</string>
-                            <string>fr_CH</string>
-                            <string>sw</string>
-                            <string>so_ET</string>
-                            <string>gv</string>
-                            <string>ar_BH</string>
-                            <string>hy_AM_REVISED</string>
-                            <string>it_IT</string>
-                            <string>bg_BG</string>
-                            <string>ro</string>
-                            <string>es_HN</string>
-                            <string>en_BE</string>
-                            <string>is</string>
-                            <string>kw_GB</string>
-                            <string>kl</string>
-                            <string>ga_IE</string>
-                            <string>nl_NL</string>
-                            <string>uk</string>
-                            <string>fr_CA</string>
-                            <string>sk_SK</string>
-                            <string>es_AR</string>
-                            <string>en_MT</string>
-                            <string>fr_BE</string>
-                            <string>ca</string>
-                            <string>cs_CZ</string>
-                            <string>fr_FR</string>
-                            <string>en_ZA</string>
-                            <string>sl</string>
-                            <string>fa</string>
-                            <string>so</string>
-                            <string>pt</string>
-                            <string>et_EE</string>
-                            <string>eu_ES</string>
-                            <string>fi</string>
-                            <string>de_CH</string>
-                            <string>or</string>
-                            <string>gu_IN</string>
-                            <string>mt_MT</string>
-                            <string>nb</string>
-                            <string>ms</string>
-                            <string>es_CR</string>
-                            <string>as_IN</string>
-                            <string>ar_SA</string>
-                            <string>am</string>
-                            <string>pl</string>
-                            <string>hu</string>
-                            <string>lv</string>
-                            <string>ar_DZ</string>
-                            <string>ur</string>
-                            <string>pt_PT</string>
-                            <string>eu</string>
-                            <string>so_DJ</string>
-                            <string>de</string>
-                            <string>en_IN</string>
-                            <string>hr_HR</string>
-                            <string>ar_AE</string>
-                            <string>gu</string>
-                            <string>lt</string>
-                            <string>te_IN</string>
-                            <string>ar_KW</string>
-                            <string>sr_Latn</string>
-                            <string>de_AT</string>
-                            <string>en_US</string>
-                            <string>es_PR</string>
-                            <string>pl_PL</string>
-                            <string>uz_Cyrl_UZ</string>
-                            <string>ar_EG</string>
-                            <string>it_CH</string>
-                            <string>nl</string>
-                            <string>haw_US</string>
-                            <string>is_IS</string>
-                            <string>en_IE</string>
-                            <string>kl_GL</string>
-                            <string>ps</string>
-                            <string>zh_Hans_CN</string>
-                            <string>ar</string>
-                            <string>ru_UA</string>
-                            <string>th_TH</string>
-                            <string>fr_LU</string>
-                            <string>uz_Latn_UZ</string>
-                            <string>az</string>
-                            <string>bn_IN</string>
-                            <string>es_MX</string>
-                            <string>kk_KZ</string>
-                            <string>en_US_POSIX</string>
-                            <string>el_GR</string>
-                            <string>he</string>
-                            <string>es_UY</string>
-                            <string>nn_NO</string>
-                            <string>sr</string>
-                            <string>sk</string>
-                            <string>ur_PK</string>
-                            <string>es_PA</string>
-                            <string>sv_FI</string>
-                            <string>zh</string>
-                            <string>es_DO</string>
-                            <string>en_CA</string>
-                            <string>en_BW</string>
-                            <string>de_DE</string>
-                            <string>haw</string>
-                            <string>pa_IN</string>
-                            <string>sq</string>
-                            <string>kw</string>
-                            <string>ga</string>
-                            <string>ml</string>
-                            <string>mt</string>
-                            <string>af_ZA</string>
-                            <string>az_Latn</string>
-                            <string>ko_KR</string>
-                            <string>fa_AF</string>
-                            <string>ps_AF</string>
-                            <string>be_BY</string>
-                            <string>bn</string>
-                            <string>it</string>
-                            <string>sr_Latn_CS</string>
-                            <string>zh_Hans</string>
-                            <string>as</string>
-                            <string>ms_MY</string>
-                            <string>be</string>
-                            <string>sl_SI</string>
-                            <string>fa_IR</string>
-                            <string>es_EC</string>
-                            <string>kok</string>
-                            <string>es_PY</string>
-                            <string>ta_IN</string>
-                            <string>am_ET</string>
-                            <string>es_CO</string>
-                            <string>uz_Latn</string>
-                            <string>el</string>
-                            <string>zh_Hant_MO</string>
-                            <string>kk</string>
-                            <string>kn</string>
-                            <string>zh_Hant</string>
-                            <string>en</string>
-                            <string>es_PE</string>
-                            <string>pt_BR</string>
-                            <string>ar_LB</string>
-                            <string>en_NZ</string>
-                            <string>es_ES</string>
-                            <string>en_HK</string>
-                            <string>es_BO</string>
-                            <string>hu_HU</string>
-                            <string>sr_Cyrl</string>
-                            <string>nb_NO</string>
-                            <string>sv</string>
-                            <string>vi</string>
-                            <string>ti_ET</string>
-                            <string>bg</string>
-                            <string>om</string>
-                            <string>de_LU</string>
-                            <string>en_SG</string>
-                            <string>id_ID</string>
-                            <string>ur_IN</string>
-                            <string>uz</string>
-                            <string>da</string>
-                            <string>ru_RU</string>
-                            <string>es_US</string>
-                            <string>es_VE</string>
-                            <string>ko</string>
-                            <string>ja</string>
-                            <string>af</string>
-                            <string>ar_YE</string>
-                            <string>lt_LT</string>
-                            <string>om_KE</string>
-                            <string>zh_Hans_SG</string>
-                            <string>es_NI</string>
-                            <string>he_IL</string>
-                            <string>en_PK</string>
-                            <string>en_PH</string>
-                            <string>az_Cyrl_AZ</string>
-                            <string>en_AU</string>
-                            <string>az_Cyrl</string>
-                            <string>ta</string>
-                            <string>ar_MA</string>
-                            <string>sw_KE</string>
-                            <string>tr_TR</string>
-                            <string>zh_Hant_HK</string>
-                            <string>en_ZW</string>
-                            <string>de_BE</string>
-                            <string>mk</string>
-                            <string>pa</string>
-                            <string>da_DK</string>
-                            <string>es_GT</string>
-                            <string>es</string>
-                            <string>ar_IQ</string>
-                            <string>az_Latn_AZ</string>
-                            <string>so_SO</string>
-                            <string>lv_LV</string>
-                            <string>mr</string>
-                            <string>te</string>
-                            <string>sq_AL</string>
-                            <string>ml_IN</string>
-                            <string>uk_UA</string>
-                            <string>hi_IN</string>
-                            <string>ca_ES</string>
-                            <string>ar_TN</string>
-                            <string>id</string>
-                            <string>om_ET</string>
-                            <string>cs</string>
-                            <string>fo_FO</string>
-                            <string>hy_AM</string>
-                            <string>en_GB</string>
-                            <string>sr_Cyrl_CS</string>
-                            <string>gl_ES</string>
-                            <string>sw_TZ</string>
-                            <string>ro_RO</string>
-                            <string>cy</string>
-                            <string>fr</string>
-                            <string>ms_BN</string>
-                            <string>so_KE</string>
-                            <string>tr</string>
-                            <string>gl</string>
-                            <string>cy_GB</string>
-                            <string>ar_OM</string>
-                            <string>fo</string>
-                            <string>es_CL</string>
-                            <string>sv_SE</string>
-                            <string>ar_JO</string>
-                            <string>uz_Cyrl</string>
-                            <string>zh_Hant_TW</string>
-                            <string>et</string>
-                            <string>hi</string>
-                            <string>fi_FI</string>
-                            <string>nn</string>
-                            <string>th</string>
-                            <string>ar_SY</string>
-                            <string>ja_JP</string>
-                            <string>gv_GB</string>
-                            <string>hy</string>
-                            <string>en_VI</string>
-                            <string>kn_IN</string>
-                            <string>ti</string>
-                            <string>ar_QA</string>
-                            <string>es_SV</string>
-                            <string>hr</string>
-                            <string>ru</string>
-                            <string>ar_SD</string>
-                            <string>mr_IN</string>
-                            <string>vi_VN</string>
-                            <string>nl_BE</string>
-                            <string>or_IN</string>
-                        </allowedInputSourceLocales>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="236" name="value" keyPath="selection.statement.currency" id="6799">
-                            <dictionary key="options">
-                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                <string key="NSNotApplicablePlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSNoSelectionPlaceholder">€</string>
-                                <string key="NSNullPlaceholder">€</string>
-                                <string key="NSValueTransformerName">CurrencyValueTransformer</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6607">
-                    <rect key="frame" x="762" y="211" width="27" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" title="€" bezelStyle="round" id="6633">
-                        <font key="font" size="14" name="Helvetica-Light"/>
-                        <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        <allowedInputSourceLocales>
-                            <string>ti_ER</string>
-                            <string>ar_LY</string>
-                            <string>kok_IN</string>
-                            <string>mk_MK</string>
-                            <string>eo</string>
-                            <string>fr_CH</string>
-                            <string>sw</string>
-                            <string>so_ET</string>
-                            <string>gv</string>
-                            <string>ar_BH</string>
-                            <string>hy_AM_REVISED</string>
-                            <string>it_IT</string>
-                            <string>bg_BG</string>
-                            <string>ro</string>
-                            <string>es_HN</string>
-                            <string>en_BE</string>
-                            <string>is</string>
-                            <string>kw_GB</string>
-                            <string>kl</string>
-                            <string>ga_IE</string>
-                            <string>nl_NL</string>
-                            <string>uk</string>
-                            <string>fr_CA</string>
-                            <string>sk_SK</string>
-                            <string>es_AR</string>
-                            <string>en_MT</string>
-                            <string>fr_BE</string>
-                            <string>ca</string>
-                            <string>cs_CZ</string>
-                            <string>fr_FR</string>
-                            <string>en_ZA</string>
-                            <string>sl</string>
-                            <string>fa</string>
-                            <string>so</string>
-                            <string>pt</string>
-                            <string>et_EE</string>
-                            <string>eu_ES</string>
-                            <string>fi</string>
-                            <string>de_CH</string>
-                            <string>or</string>
-                            <string>gu_IN</string>
-                            <string>mt_MT</string>
-                            <string>nb</string>
-                            <string>ms</string>
-                            <string>es_CR</string>
-                            <string>as_IN</string>
-                            <string>ar_SA</string>
-                            <string>am</string>
-                            <string>pl</string>
-                            <string>hu</string>
-                            <string>lv</string>
-                            <string>ar_DZ</string>
-                            <string>ur</string>
-                            <string>pt_PT</string>
-                            <string>eu</string>
-                            <string>so_DJ</string>
-                            <string>de</string>
-                            <string>en_IN</string>
-                            <string>hr_HR</string>
-                            <string>ar_AE</string>
-                            <string>gu</string>
-                            <string>lt</string>
-                            <string>te_IN</string>
-                            <string>ar_KW</string>
-                            <string>sr_Latn</string>
-                            <string>de_AT</string>
-                            <string>en_US</string>
-                            <string>es_PR</string>
-                            <string>pl_PL</string>
-                            <string>uz_Cyrl_UZ</string>
-                            <string>ar_EG</string>
-                            <string>it_CH</string>
-                            <string>nl</string>
-                            <string>haw_US</string>
-                            <string>is_IS</string>
-                            <string>en_IE</string>
-                            <string>kl_GL</string>
-                            <string>ps</string>
-                            <string>zh_Hans_CN</string>
-                            <string>ar</string>
-                            <string>ru_UA</string>
-                            <string>th_TH</string>
-                            <string>fr_LU</string>
-                            <string>uz_Latn_UZ</string>
-                            <string>az</string>
-                            <string>bn_IN</string>
-                            <string>es_MX</string>
-                            <string>kk_KZ</string>
-                            <string>en_US_POSIX</string>
-                            <string>el_GR</string>
-                            <string>he</string>
-                            <string>es_UY</string>
-                            <string>nn_NO</string>
-                            <string>sr</string>
-                            <string>sk</string>
-                            <string>ur_PK</string>
-                            <string>es_PA</string>
-                            <string>sv_FI</string>
-                            <string>zh</string>
-                            <string>es_DO</string>
-                            <string>en_CA</string>
-                            <string>en_BW</string>
-                            <string>de_DE</string>
-                            <string>haw</string>
-                            <string>pa_IN</string>
-                            <string>sq</string>
-                            <string>kw</string>
-                            <string>ga</string>
-                            <string>ml</string>
-                            <string>mt</string>
-                            <string>af_ZA</string>
-                            <string>az_Latn</string>
-                            <string>ko_KR</string>
-                            <string>fa_AF</string>
-                            <string>ps_AF</string>
-                            <string>be_BY</string>
-                            <string>bn</string>
-                            <string>it</string>
-                            <string>sr_Latn_CS</string>
-                            <string>zh_Hans</string>
-                            <string>as</string>
-                            <string>ms_MY</string>
-                            <string>be</string>
-                            <string>sl_SI</string>
-                            <string>fa_IR</string>
-                            <string>es_EC</string>
-                            <string>kok</string>
-                            <string>es_PY</string>
-                            <string>ta_IN</string>
-                            <string>am_ET</string>
-                            <string>es_CO</string>
-                            <string>uz_Latn</string>
-                            <string>el</string>
-                            <string>zh_Hant_MO</string>
-                            <string>kk</string>
-                            <string>kn</string>
-                            <string>zh_Hant</string>
-                            <string>en</string>
-                            <string>es_PE</string>
-                            <string>pt_BR</string>
-                            <string>ar_LB</string>
-                            <string>en_NZ</string>
-                            <string>es_ES</string>
-                            <string>en_HK</string>
-                            <string>es_BO</string>
-                            <string>hu_HU</string>
-                            <string>sr_Cyrl</string>
-                            <string>nb_NO</string>
-                            <string>sv</string>
-                            <string>vi</string>
-                            <string>ti_ET</string>
-                            <string>bg</string>
-                            <string>om</string>
-                            <string>de_LU</string>
-                            <string>en_SG</string>
-                            <string>id_ID</string>
-                            <string>ur_IN</string>
-                            <string>uz</string>
-                            <string>da</string>
-                            <string>ru_RU</string>
-                            <string>es_US</string>
-                            <string>es_VE</string>
-                            <string>ko</string>
-                            <string>ja</string>
-                            <string>af</string>
-                            <string>ar_YE</string>
-                            <string>lt_LT</string>
-                            <string>om_KE</string>
-                            <string>zh_Hans_SG</string>
-                            <string>es_NI</string>
-                            <string>he_IL</string>
-                            <string>en_PK</string>
-                            <string>en_PH</string>
-                            <string>az_Cyrl_AZ</string>
-                            <string>en_AU</string>
-                            <string>az_Cyrl</string>
-                            <string>ta</string>
-                            <string>ar_MA</string>
-                            <string>sw_KE</string>
-                            <string>tr_TR</string>
-                            <string>zh_Hant_HK</string>
-                            <string>en_ZW</string>
-                            <string>de_BE</string>
-                            <string>mk</string>
-                            <string>pa</string>
-                            <string>da_DK</string>
-                            <string>es_GT</string>
-                            <string>es</string>
-                            <string>ar_IQ</string>
-                            <string>az_Latn_AZ</string>
-                            <string>so_SO</string>
-                            <string>lv_LV</string>
-                            <string>mr</string>
-                            <string>te</string>
-                            <string>sq_AL</string>
-                            <string>ml_IN</string>
-                            <string>uk_UA</string>
-                            <string>hi_IN</string>
-                            <string>ca_ES</string>
-                            <string>ar_TN</string>
-                            <string>id</string>
-                            <string>om_ET</string>
-                            <string>cs</string>
-                            <string>fo_FO</string>
-                            <string>hy_AM</string>
-                            <string>en_GB</string>
-                            <string>sr_Cyrl_CS</string>
-                            <string>gl_ES</string>
-                            <string>sw_TZ</string>
-                            <string>ro_RO</string>
-                            <string>cy</string>
-                            <string>fr</string>
-                            <string>ms_BN</string>
-                            <string>so_KE</string>
-                            <string>tr</string>
-                            <string>gl</string>
-                            <string>cy_GB</string>
-                            <string>ar_OM</string>
-                            <string>fo</string>
-                            <string>es_CL</string>
-                            <string>sv_SE</string>
-                            <string>ar_JO</string>
-                            <string>uz_Cyrl</string>
-                            <string>zh_Hant_TW</string>
-                            <string>et</string>
-                            <string>hi</string>
-                            <string>fi_FI</string>
-                            <string>nn</string>
-                            <string>th</string>
-                            <string>ar_SY</string>
-                            <string>ja_JP</string>
-                            <string>gv_GB</string>
-                            <string>hy</string>
-                            <string>en_VI</string>
-                            <string>kn_IN</string>
-                            <string>ti</string>
-                            <string>ar_QA</string>
-                            <string>es_SV</string>
-                            <string>hr</string>
-                            <string>ru</string>
-                            <string>ar_SD</string>
-                            <string>mr_IN</string>
-                            <string>vi_VN</string>
-                            <string>nl_BE</string>
-                            <string>or_IN</string>
-                        </allowedInputSourceLocales>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="236" name="value" keyPath="selection.statement.currency" id="6805">
-                            <dictionary key="options">
-                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                <string key="NSNotApplicablePlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSNoSelectionPlaceholder">€</string>
-                                <string key="NSNullPlaceholder">€</string>
-                                <string key="NSValueTransformerName">CurrencyValueTransformer</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6608">
-                    <rect key="frame" x="665" y="211" width="95" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-200.000,00" bezelStyle="round" id="6631">
-                        <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="#,##0.00" negativeFormat="[Red]-#,##0.00" thousandSeparator="." id="6632">
-                            <textAttributesForNegativeValues>
-                                <color key="NSColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </textAttributesForNegativeValues>
-                            <attributedString key="attributedStringForZero">
-                                <fragment content="0,00">
-                                    <attributes>
-                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                        <font key="NSFont" metaFont="smallSystem"/>
-                                        <font key="NSOriginalFont" metaFont="smallSystem"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="clipping" baseWritingDirection="natural"/>
-                                    </attributes>
-                                </fragment>
-                            </attributedString>
-                            <decimal key="minimum" value="NaN"/>
-                            <decimal key="maximum" value="NaN"/>
-                            <metadata>
-                                <bool key="localizesFormat" value="YES"/>
-                                <real key="inspectorSampleValue" value="0.0"/>
-                            </metadata>
-                        </numberFormatter>
-                        <font key="font" size="14" name="Helvetica-Light"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="236" name="value" keyPath="selection.statement.nassValue" id="6803">
-                            <dictionary key="options">
-                                <string key="NSNotApplicablePlaceholder">0.00</string>
-                                <string key="NSNoSelectionPlaceholder">0.00</string>
-                                <string key="NSMultipleValuesPlaceholder">mehrere</string>
-                                <string key="NSNullPlaceholder">0.00</string>
-                            </dictionary>
-                        </binding>
-                        <outlet property="delegate" destination="235" id="6710"/>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6609">
-                    <rect key="frame" x="368" y="167" width="110" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-200.000,00" id="6630">
-                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="-#,##0.00" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="6711">
-                            <textAttributesForNegativeValues>
-                                <color key="NSColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </textAttributesForNegativeValues>
-                            <real key="roundingIncrement" value="0.0"/>
-                            <metadata>
-                                <bool key="localizesFormat" value="YES"/>
-                                <real key="inspectorSampleValue" value="0.0"/>
-                            </metadata>
-                        </numberFormatter>
-                        <font key="font" size="14" name="LucidaGrande-Bold"/>
-                        <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="236" name="value" keyPath="selection.statement.origValue" id="6789">
-                            <dictionary key="options">
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                <string key="NSNotApplicablePlaceholder">0.00</string>
-                                <string key="NSNoSelectionPlaceholder">0.00</string>
-                                <string key="NSNullPlaceholder">0.00</string>
-                                <string key="NSMultipleValuesPlaceholder">mehrere</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6598">
-                    <rect key="frame" x="264" y="168" width="96" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Originalbetrag:" id="6649">
-                        <font key="font" metaFont="cellTitle"/>
-                        <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6597">
-                    <rect key="frame" x="264" y="208" width="96" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="abgerechnet:" id="6650">
-                        <font key="font" metaFont="cellTitle"/>
-                        <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6611">
-                    <rect key="frame" x="142" y="208" width="97" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="01.01.2008" id="6627">
-                        <dateFormatter key="formatter" formatterBehavior="custom10_4" dateStyle="medium" id="6628"/>
-                        <font key="font" size="14" name="LucidaGrande-Bold"/>
-                        <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="236" name="value" keyPath="selection.statement.date" id="6743">
-                            <dictionary key="options">
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                <string key="NSNotApplicablePlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSNullPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6596">
-                    <rect key="frame" x="78" y="208" width="57" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Datum:" id="6651">
-                        <font key="font" metaFont="cellTitle"/>
-                        <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6612">
-                    <rect key="frame" x="142" y="188" width="97" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="01.01.2008" bezelStyle="round" id="6625">
-                        <dateFormatter key="formatter" formatterBehavior="custom10_4" dateStyle="medium" id="6626"/>
-                        <font key="font" size="14" name="LucidaGrande-Bold"/>
-                        <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="236" name="value" keyPath="selection.statement.valutaDate" id="6735">
-                            <dictionary key="options">
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                <string key="NSNotApplicablePlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSNullPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6614">
-                    <rect key="frame" x="476" y="166" width="47" height="18"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" title="EUR" id="6623">
-                        <font key="font" size="14" name="Helvetica-Light"/>
-                        <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="236" name="value" keyPath="selection.statement.origCurrency" id="6806">
-                            <dictionary key="options">
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                <string key="NSNoSelectionPlaceholder">€</string>
-                                <string key="NSNullPlaceholder"> €</string>
-                                <string key="NSValueTransformerName">CurrencyValueTransformer</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6595">
-                    <rect key="frame" x="78" y="188" width="57" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Valuta:" id="6652">
-                        <font key="font" metaFont="cellTitle"/>
-                        <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6618">
-                    <rect key="frame" x="523" y="212" width="148" height="13"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Keiner Kategorie zugeordnet:" id="6619">
-                        <font key="font" size="10" name="LucidaGrande"/>
-                        <color key="textColor" white="0.4008649554" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6599">
-                    <rect key="frame" x="56" y="130" width="267" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title=" Verwendungszweck" usesSingleLineMode="YES" id="6648">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="backgroundColor" red="0.31372550129999999" green="0.31372550129999999" blue="0.31372550129999999" alpha="1" colorSpace="calibratedRGB"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6617">
-                    <rect key="frame" x="362" y="130" width="267" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title=" Notizen" usesSingleLineMode="YES" id="6620">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="backgroundColor" red="0.31372550129999999" green="0.31372550129999999" blue="0.31372550129999999" alpha="1" colorSpace="calibratedRGB"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6663">
-                    <rect key="frame" x="51" y="168" width="83" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="Belegdatum:" id="6664">
-                        <font key="font" metaFont="cellTitle"/>
-                        <color key="textColor" white="0.40223214289999998" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" id="6665">
-                    <rect key="frame" x="142" y="167" width="97" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" title="01.01.2008" bezelStyle="round" id="6666">
-                        <dateFormatter key="formatter" formatterBehavior="custom10_4" dateStyle="medium" id="6667"/>
-                        <font key="font" size="14" name="LucidaGrande-Bold"/>
-                        <color key="textColor" red="0.16862745579999999" green="0.16862745579999999" blue="0.16862745579999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="236" name="value" keyPath="selection.statement.docDate" id="6727">
-                            <dictionary key="options">
-                                <string key="NSNotApplicablePlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSMultipleValuesPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                <string key="NSNullPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <button id="6679">
-                    <rect key="frame" x="369" y="207" width="18" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="only" alignment="left" enabled="NO" state="on" inset="2" id="6680">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <binding destination="236" name="value" keyPath="selection.statement.isSettled" id="6756">
-                            <dictionary key="options">
-                                <bool key="NSConditionallySetsEnabled" value="NO"/>
-                                <integer key="NSMultipleValuesPlaceholder" value="0"/>
-                                <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                <integer key="NSNullPlaceholder" value="0"/>
-                                <integer key="NSNotApplicablePlaceholder" value="0"/>
-                                <integer key="NSNoSelectionPlaceholder" value="0"/>
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </button>
-            </subviews>
-        </customView>
         <customView id="7049" userLabel="TagView Host">
             <rect key="frame" x="0.0" y="0.0" width="270" height="320"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -3525,7 +2707,6 @@ IA
                 <outlet property="categoryAssignments" destination="236" id="6432"/>
                 <outlet property="categoryController" destination="911" id="930"/>
                 <outlet property="computingButton" destination="6409" id="6421"/>
-                <outlet property="creditCardDetails" destination="6593" id="6713"/>
                 <outlet property="developerMenu" destination="6506" id="6509"/>
                 <outlet property="earningsField" destination="6099" id="6117"/>
                 <outlet property="graph1Button" destination="6405" id="6419"/>

@@ -85,7 +85,6 @@
     IBOutlet PecuniaSplitView       *rightSplitter;
     IBOutlet NSView                 *rightPane;
     IBOutlet StatementDetails       *standardDetails;
-    IBOutlet StatementDetails       *creditCardDetails;
     IBOutlet RoundedOuterShadowView *statementsListViewHost;
     IBOutlet NSSegmentedControl     *toolbarButtons;
 
