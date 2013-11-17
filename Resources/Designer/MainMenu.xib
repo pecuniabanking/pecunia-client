@@ -587,20 +587,20 @@ IA
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="4942">
-                                                                            <rect key="frame" x="47" y="90" width="215" height="65"/>
-                                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
+                                                                            <rect key="frame" x="47" y="90" width="220" height="65"/>
+                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                                                             <clipView key="contentView" drawsBackground="NO" id="Lrj-PE-EVE">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="215" height="65"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="220" height="65"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <textView focusRingType="none" editable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" horizontallyResizable="YES" verticallyResizable="YES" id="4945">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="215" height="65"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="220" height="65"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                        <size key="minSize" width="215" height="65"/>
+                                                                                        <size key="minSize" width="220" height="65"/>
                                                                                         <size key="maxSize" width="794" height="10000000"/>
                                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                        <size key="minSize" width="215" height="65"/>
+                                                                                        <size key="minSize" width="220" height="65"/>
                                                                                         <size key="maxSize" width="794" height="10000000"/>
                                                                                         <connections>
                                                                                             <binding destination="236" name="value" keyPath="selection.statement.purpose" id="4958">
@@ -627,20 +627,20 @@ IA
                                                                             </scroller>
                                                                         </scrollView>
                                                                         <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="4950">
-                                                                            <rect key="frame" x="272" y="90" width="226" height="65"/>
-                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                            <rect key="frame" x="278" y="90" width="220" height="65"/>
+                                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
                                                                             <clipView key="contentView" copiesOnScroll="NO" id="CSS-g5-PcT">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="226" height="65"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="220" height="65"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <textView focusRingType="none" drawsBackground="NO" importsGraphics="NO" richText="NO" horizontallyResizable="YES" continuousSpellChecking="YES" allowsUndo="YES" verticallyResizable="YES" quoteSubstitution="YES" linkDetection="YES" dashSubstitution="YES" grammarChecking="YES" smartInsertDelete="YES" id="4951">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="226" height="65"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="220" height="65"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <color key="backgroundColor" red="0.97647058959999999" green="0.96470588450000005" blue="0.92941176889999999" alpha="1" colorSpace="deviceRGB"/>
-                                                                                        <size key="minSize" width="226" height="65"/>
+                                                                                        <size key="minSize" width="220" height="65"/>
                                                                                         <size key="maxSize" width="809" height="10000000"/>
                                                                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                        <size key="minSize" width="226" height="65"/>
+                                                                                        <size key="minSize" width="220" height="65"/>
                                                                                         <size key="maxSize" width="809" height="10000000"/>
                                                                                         <connections>
                                                                                             <binding destination="236" name="value" keyPath="selection.userInfo" id="6521">

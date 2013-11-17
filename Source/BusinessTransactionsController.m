@@ -48,6 +48,9 @@
         }
 
         NSArray *sortedTransactions = [transactions sortedArrayUsingSelector: @selector(localizedCaseInsensitiveCompare:)];
+
+        // Remove any duplicate.
+        sortedTransactions = [[NSSet setWithArray: sortedTransactions] allObjects];
         transactionList = [NSMutableArray array];
         for (size_t i = 0; i < [sortedTransactions count]; i++) {
             NSString *description = allTransactions[sortedTransactions[i]];
