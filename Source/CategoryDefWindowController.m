@@ -210,7 +210,7 @@
 
     // set new fetch predicate
     if (compoundPredicate) {
-        [assignPreviewController setFilterPredicate: compoundPredicate];
+        [assignPreviewController setFetchPredicate: compoundPredicate];
     }
 }
 

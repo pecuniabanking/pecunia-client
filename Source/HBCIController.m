@@ -1144,6 +1144,10 @@ NSString * escapeSpecial(NSString *s)
         [self appendTag: @"subNumber" withValue: result.accountSubnumber to: cmd];
         [self appendTag: @"userId" withValue: user.userId to: cmd];
         [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
+        [self appendTag: @"iban" withValue: result.account.iban to: cmd];
+        [self appendTag: @"bic" withValue: result.account.bic to: cmd];
+        [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
+        [self appendTag: @"isSEPA" withValue: @"yes" to: cmd];
         [cmd appendString: @"</accinfo>"];
     }
     [cmd appendString: @"</accinfolist></command>"];
@@ -1160,6 +1164,8 @@ NSString * escapeSpecial(NSString *s)
     [self appendTag: @"accountNumber" withValue: stord.account.accountNumber to: cmd];
     [self appendTag: @"subNumber" withValue: stord.account.accountSuffix to: cmd];
     [self appendTag: @"customerId" withValue: stord.account.customerId to: cmd];
+    [self appendTag: @"iban" withValue: stord.account.iban to: cmd];
+    [self appendTag: @"bic" withValue: stord.account.bic to: cmd];
     [self appendTag: @"userId" withValue: user.userId to: cmd];
     [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
     [self appendTag: @"remoteAccount" withValue: stord.remoteAccount to: cmd];
