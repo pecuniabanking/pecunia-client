@@ -108,23 +108,4 @@
     }
 }
 
-- (void)activateHeatMapTab
-{
-    NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: HeatMapTabIdentifier];
-    if (index == NSNotFound) {
-        heatMapController = [[CategoryHeatMapController alloc] init];
-        if ([NSBundle loadNibNamed: @"CategoryHeatMap" owner: heatMapController]) {
-            NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: HeatMapTabIdentifier];
-            item.view =  heatMapController.mainView;
-            [mainTabView addTabViewItem: item];
-            [mainTabView selectTabViewItem: item];
-            mainTabItems[HeatMapTabIdentifier] = heatMapController;
-            [heatMapController prepare];
-        }
-    } else {
-        [mainTabView selectTabViewItemAtIndex: index];
-        [heatMapController activate];
-    }
-}
-
 @end

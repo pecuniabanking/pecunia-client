@@ -109,7 +109,9 @@ extern void *UserDefaultsBindingContext;
 
             [self setNeedsDisplay: YES];
         }
+        return;
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 - (IBAction)cancelDeletion: (id)sender

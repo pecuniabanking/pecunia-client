@@ -239,7 +239,6 @@
 		27778903173CE22700430EBC /* NSButton+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */; };
 		27778904173CE22700430EBC /* OrdersListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A41A5115F3C9340043BB68 /* OrdersListView.m */; };
 		27778905173CE22700430EBC /* OrdersListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A41A5315F3C9340043BB68 /* OrdersListViewCell.m */; };
-		27778906173CE22700430EBC /* LicenseWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B179916B15F7D2B4005AB39A /* LicenseWindowController.m */; };
 		27778907173CE22700430EBC /* SupportedTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */; };
 		27778908173CE22700430EBC /* GenerateDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E68C49165CF7DA005EBE66 /* GenerateDataController.m */; };
 		27778909173CE22700430EBC /* GrowlNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* GrowlNotification.m */; };
@@ -362,7 +361,6 @@
 		27778985173CE22700430EBC /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C3B78815E37CD9008B8DB3 /* refresh.png */; };
 		27778986173CE22700430EBC /* TanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E9242915E38FFE00FA09A3 /* TanWindow.xib */; };
 		27778987173CE22700430EBC /* OrdersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A41A4E15F3C7750043BB68 /* OrdersListViewCell.xib */; };
-		27778988173CE22700430EBC /* gpl-2.0-standalone.html in Resources */ = {isa = PBXBuildFile; fileRef = B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */; };
 		27778989173CE22700430EBC /* cyclic.png in Resources */ = {isa = PBXBuildFile; fileRef = 2743844515FB925D00E36DB5 /* cyclic.png */; };
 		2777898A173CE22700430EBC /* send.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A659C21604D8C500C737E8 /* send.png */; };
 		2777898B173CE22700430EBC /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A659C81604D8D200C737E8 /* delete.png */; };
@@ -431,6 +429,10 @@
 		2784DAEE16FDBDFF00E054D2 /* gray-hatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAED16FDBDFF00E054D2 /* gray-hatch.png */; };
 		2784DAF016FDC62C00E054D2 /* gray-hatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */; };
 		2788C8BA1455C3CE00225939 /* ValueTransformers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788C8B91455C3CE00225939 /* ValueTransformers.m */; };
+		2788D7B618421195000B59AF /* PecuniaSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788D7B518421195000B59AF /* PecuniaSplitView.m */; };
+		2788D7B718421195000B59AF /* PecuniaSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788D7B518421195000B59AF /* PecuniaSplitView.m */; };
+		2788D7BA1842133B000B59AF /* AttachmentImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788D7B91842133B000B59AF /* AttachmentImageView.m */; };
+		2788D7BB1842133B000B59AF /* AttachmentImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788D7B91842133B000B59AF /* AttachmentImageView.m */; };
 		2790160417B94720006DF9BC /* AssetsCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2790160317B94720006DF9BC /* AssetsCard.m */; };
 		2790160517B94720006DF9BC /* AssetsCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2790160317B94720006DF9BC /* AssetsCard.m */; };
 		2790545014A37F59001380A3 /* hatch-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2790544F14A37F59001380A3 /* hatch-1.png */; };
@@ -574,6 +576,10 @@
 		27FA4A18154D49E5002A5ED0 /* donate.png in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A16154D49E5002A5ED0 /* donate.png */; };
 		27FA4A1B154D5AB9002A5ED0 /* BankingController+Tabs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FA4A1A154D5AB9002A5ED0 /* BankingController+Tabs.m */; };
 		27FA4A1E154D5F16002A5ED0 /* Transfers.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A1D154D5F16002A5ED0 /* Transfers.xib */; };
+		27FD0DA218411AA00047911C /* StatementsOverview.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FD0DA118411AA00047911C /* StatementsOverview.xib */; };
+		27FD0DA318411AA00047911C /* StatementsOverview.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27FD0DA118411AA00047911C /* StatementsOverview.xib */; };
+		27FD0DA6184120AE0047911C /* StatementsOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD0DA5184120AE0047911C /* StatementsOverviewController.m */; };
+		27FD0DA7184120AE0047911C /* StatementsOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD0DA5184120AE0047911C /* StatementsOverviewController.m */; };
 		27FD58CB1437569B0074B378 /* StatementsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FD58CA1437569B0074B378 /* StatementsListView.m */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -653,8 +659,6 @@
 		B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B177297C1504CE1B00256898 /* BusinessTransactionsController.m */; };
 		B17729AD1504D63200256898 /* BusinessTransactionsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17729AC1504D63200256898 /* BusinessTransactionsWindow.xib */; };
 		B1798E2E15F0CE7E005AB39A /* TransferPrintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */; };
-		B179916C15F7D2B4005AB39A /* LicenseWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B179916B15F7D2B4005AB39A /* LicenseWindowController.m */; };
-		B179917015F7D6F8005AB39A /* gpl-2.0-standalone.html in Resources */ = {isa = PBXBuildFile; fileRef = B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */; };
 		B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */; };
 		B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B17B2B3D13EC8D5000739E7A /* ChipTanWindowController.m */; };
 		B17B2B4013EC913800739E7A /* ChipTanWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17B2B3F13EC913800739E7A /* ChipTanWindow.xib */; };
@@ -929,6 +933,10 @@
 		2784DAEF16FDC62C00E054D2 /* gray-hatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch@2x.png"; sourceTree = "<group>"; };
 		2788C8B81455C3CE00225939 /* ValueTransformers.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ValueTransformers.h; sourceTree = "<group>"; tabWidth = 4; };
 		2788C8B91455C3CE00225939 /* ValueTransformers.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ValueTransformers.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
+		2788D7B418421195000B59AF /* PecuniaSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaSplitView.h; sourceTree = "<group>"; wrapsLines = 0; };
+		2788D7B518421195000B59AF /* PecuniaSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaSplitView.m; sourceTree = "<group>"; };
+		2788D7B81842133B000B59AF /* AttachmentImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachmentImageView.h; sourceTree = "<group>"; };
+		2788D7B91842133B000B59AF /* AttachmentImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachmentImageView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		2790160217B94720006DF9BC /* AssetsCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AssetsCard.h; path = "Home Screen/AssetsCard.h"; sourceTree = "<group>"; };
 		2790160317B94720006DF9BC /* AssetsCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AssetsCard.m; path = "Home Screen/AssetsCard.m"; sourceTree = "<group>"; wrapsLines = 0; };
 		2790544F14A37F59001380A3 /* hatch-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hatch-1.png"; sourceTree = "<group>"; };
@@ -1082,6 +1090,9 @@
 		27FA4A19154D5AB9002A5ED0 /* BankingController+Tabs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BankingController+Tabs.h"; sourceTree = "<group>"; };
 		27FA4A1A154D5AB9002A5ED0 /* BankingController+Tabs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BankingController+Tabs.m"; sourceTree = "<group>"; };
 		27FA4A1D154D5F16002A5ED0 /* Transfers.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Transfers.xib; sourceTree = "<group>"; };
+		27FD0DA118411AA00047911C /* StatementsOverview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = StatementsOverview.xib; path = Resources/Designer/StatementsOverview.xib; sourceTree = "<group>"; };
+		27FD0DA4184120AE0047911C /* StatementsOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatementsOverviewController.h; sourceTree = "<group>"; };
+		27FD0DA5184120AE0047911C /* StatementsOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsOverviewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27FD58C91437569B0074B378 /* StatementsListView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementsListView.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		27FD58CA1437569B0074B378 /* StatementsListView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsListView.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; };
@@ -1221,9 +1232,6 @@
 		B1798E2C15F0CE7E005AB39A /* TransferPrintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransferPrintView.m; sourceTree = "<group>"; };
 		B1798E2D15F0CE7E005AB39A /* TransferPrintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransferPrintView.h; sourceTree = "<group>"; };
 		B1798EAD15F0F09B005AB39A /* PecuniaTabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaTabItem.h; sourceTree = "<group>"; };
-		B179916A15F7D2B4005AB39A /* LicenseWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseWindowController.h; sourceTree = "<group>"; };
-		B179916B15F7D2B4005AB39A /* LicenseWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicenseWindowController.m; sourceTree = "<group>"; };
-		B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "gpl-2.0-standalone.html"; sourceTree = "<group>"; };
 		B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 6.xcdatamodel"; sourceTree = "<group>"; };
 		B17992B415FBD5F0005AB39A /* SupportedTransactionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportedTransactionInfo.h; sourceTree = "<group>"; };
 		B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportedTransactionInfo.m; sourceTree = "<group>"; };
@@ -1580,6 +1588,8 @@
 				27CBA24416F60EFB00C2AC04 /* AdditionalControls.m */,
 				B138B314139D6B390026BEE2 /* AmountCell.h */,
 				B138B315139D6B390026BEE2 /* AmountCell.m */,
+				2788D7B81842133B000B59AF /* AttachmentImageView.h */,
+				2788D7B91842133B000B59AF /* AttachmentImageView.m */,
 				B14D6DED0DEC9C9100C2B220 /* CategoryView.h */,
 				B14D6DEE0DEC9C9100C2B220 /* CategoryView.m */,
 				2778C24718140984003BF49D /* ClickableImageView.h */,
@@ -1598,6 +1608,8 @@
 				B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */,
 				B136AAD60FCF1C4A007A643F /* MCEMTableView.h */,
 				B136AAD70FCF1C4A007A643F /* MCEMTableView.m */,
+				2788D7B418421195000B59AF /* PecuniaSplitView.h */,
+				2788D7B518421195000B59AF /* PecuniaSplitView.m */,
 				2716FE4B152381A60015A753 /* SynchronousScrollView.h */,
 				2716FE4C152381A60015A753 /* SynchronousScrollView.m */,
 			);
@@ -1762,19 +1774,21 @@
 		27FA4A1C154D5B76002A5ED0 /* Sections */ = {
 			isa = PBXGroup;
 			children = (
-				B159010A129310E40053CB9C /* PecuniaSectionItem.h */,
-				B192FDC00E8434D500B53380 /* CategoryRepWindowController.h */,
-				B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */,
 				B19822DB0E6F304A001C4C70 /* CategoryAnalysisWindowController.h */,
 				B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */,
-				27C7B2F41475466600BD4F56 /* ColumnLayoutCorePlotLayer.h */,
-				27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */,
 				B1029E100E3FA1D700CC681B /* CategoryDefWindowController.h */,
 				B1029E110E3FA1D700CC681B /* CategoryDefWindowController.m */,
-				B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */,
-				B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */,
 				27DCC81916EB8F700070E241 /* CategoryHeatMapController.h */,
 				27DCC81A16EB8F700070E241 /* CategoryHeatMapController.m */,
+				27C7B2F41475466600BD4F56 /* ColumnLayoutCorePlotLayer.h */,
+				27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */,
+				B145879E1289DC3100848683 /* CategoryPeriodsWindowController.h */,
+				B145879F1289DC3100848683 /* CategoryPeriodsWindowController.m */,
+				B192FDC00E8434D500B53380 /* CategoryRepWindowController.h */,
+				B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */,
+				B159010A129310E40053CB9C /* PecuniaSectionItem.h */,
+				27FD0DA4184120AE0047911C /* StatementsOverviewController.h */,
+				27FD0DA5184120AE0047911C /* StatementsOverviewController.m */,
 			);
 			name = Sections;
 			sourceTree = "<group>";
@@ -1782,6 +1796,7 @@
 		29B97314FDCFA39411CA2CEA /* Pecunia */ = {
 			isa = PBXGroup;
 			children = (
+				27FD0DA118411AA00047911C /* StatementsOverview.xib */,
 				B136AACF0FCF1BF5007A643F /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -1815,7 +1830,6 @@
 				27C930F5149508280055EAD5 /* Colors.acf */,
 				B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */,
 				B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */,
-				B179916F15F7D6F8005AB39A /* gpl-2.0-standalone.html */,
 				27DD4AC4150B60A3006C2370 /* HBCI business transactions.csv */,
 				B15FCCEE141422A3000738B6 /* HBCIServer.jar */,
 				B1DE0768165FB554004FFC8A /* jre.zip */,
@@ -2109,8 +2123,6 @@
 				27A41A5115F3C9340043BB68 /* OrdersListView.m */,
 				27A41A5215F3C9340043BB68 /* OrdersListViewCell.h */,
 				27A41A5315F3C9340043BB68 /* OrdersListViewCell.m */,
-				B179916A15F7D2B4005AB39A /* LicenseWindowController.h */,
-				B179916B15F7D2B4005AB39A /* LicenseWindowController.m */,
 			);
 			name = MainWindow;
 			sourceTree = "<group>";
@@ -2505,6 +2517,7 @@
 				2777896A173CE22700430EBC /* rules-active.png in Resources */,
 				2777896B173CE22700430EBC /* statementlist-active.png in Resources */,
 				2777896C173CE22700430EBC /* donate-active.png in Resources */,
+				27FD0DA318411AA00047911C /* StatementsOverview.xib in Resources */,
 				2777896D173CE22700430EBC /* donate.png in Resources */,
 				2777896E173CE22700430EBC /* Transfers.xib in Resources */,
 				2777896F173CE22700430EBC /* transfer-debit-preview.png in Resources */,
@@ -2534,7 +2547,6 @@
 				27778985173CE22700430EBC /* refresh.png in Resources */,
 				27778986173CE22700430EBC /* TanWindow.xib in Resources */,
 				27778987173CE22700430EBC /* OrdersListViewCell.xib in Resources */,
-				27778988173CE22700430EBC /* gpl-2.0-standalone.html in Resources */,
 				27778989173CE22700430EBC /* cyclic.png in Resources */,
 				2777898A173CE22700430EBC /* send.png in Resources */,
 				2777898B173CE22700430EBC /* delete.png in Resources */,
@@ -2693,6 +2705,7 @@
 				2764B63D15443C6600FF0B73 /* statementlist-active.png in Resources */,
 				27FA4A17154D49E5002A5ED0 /* donate-active.png in Resources */,
 				27FA4A18154D49E5002A5ED0 /* donate.png in Resources */,
+				27FD0DA218411AA00047911C /* StatementsOverview.xib in Resources */,
 				27FA4A1E154D5F16002A5ED0 /* Transfers.xib in Resources */,
 				272328A01551A4D500B9683B /* transfer-debit-preview.png in Resources */,
 				272328A11551A4D500B9683B /* transfer-eu-preview.png in Resources */,
@@ -2721,7 +2734,6 @@
 				27C3B78915E37CD9008B8DB3 /* refresh.png in Resources */,
 				A6E9242A15E38FFE00FA09A3 /* TanWindow.xib in Resources */,
 				27A41A4F15F3C7750043BB68 /* OrdersListViewCell.xib in Resources */,
-				B179917015F7D6F8005AB39A /* gpl-2.0-standalone.html in Resources */,
 				2743844615FB925D00E36DB5 /* cyclic.png in Resources */,
 				27A659C51604D8C500C737E8 /* send.png in Resources */,
 				27A659CB1604D8D200C737E8 /* delete.png in Resources */,
@@ -2872,6 +2884,7 @@
 				277788A0173CE22700430EBC /* BankStatementPolicy030.m in Sources */,
 				277788A1173CE22700430EBC /* 030.xcmappingmodel in Sources */,
 				277788A2173CE22700430EBC /* CategoryPolicy030.m in Sources */,
+				2788D7BB1842133B000B59AF /* AttachmentImageView.m in Sources */,
 				277788A3173CE22700430EBC /* AccountDefController.m in Sources */,
 				277788A4173CE22700430EBC /* TransfersController.m in Sources */,
 				277788A5173CE22700430EBC /* PurposeSplitController.m in Sources */,
@@ -2899,6 +2912,7 @@
 				277788BB173CE22700430EBC /* GraphicsAdditions.m in Sources */,
 				277788BC173CE22700430EBC /* HBCIBridge.m in Sources */,
 				277788BD173CE22700430EBC /* CallbackData.m in Sources */,
+				2788D7B718421195000B59AF /* PecuniaSplitView.m in Sources */,
 				277788BE173CE22700430EBC /* CallbackParser.m in Sources */,
 				277788BF173CE22700430EBC /* HBCIError.m in Sources */,
 				277788C0173CE22700430EBC /* LogParser.m in Sources */,
@@ -2917,6 +2931,7 @@
 				277788CD173CE22700430EBC /* StatementsListView.m in Sources */,
 				277788CE173CE22700430EBC /* PXListDocumentView.m in Sources */,
 				277788CF173CE22700430EBC /* PXListView.m in Sources */,
+				27FD0DA7184120AE0047911C /* StatementsOverviewController.m in Sources */,
 				277788D0173CE22700430EBC /* PXListView+UserInteraction.m in Sources */,
 				277788D1173CE22700430EBC /* PXListViewCell.m in Sources */,
 				277788D2173CE22700430EBC /* StatementsListViewCell.m in Sources */,
@@ -2973,7 +2988,6 @@
 				27778903173CE22700430EBC /* NSButton+PecuniaAdditions.m in Sources */,
 				27778904173CE22700430EBC /* OrdersListView.m in Sources */,
 				27778905173CE22700430EBC /* OrdersListViewCell.m in Sources */,
-				27778906173CE22700430EBC /* LicenseWindowController.m in Sources */,
 				275DAADE17F8436000526A07 /* SaveAndRedeemCard.m in Sources */,
 				27778907173CE22700430EBC /* SupportedTransactionInfo.m in Sources */,
 				27778908173CE22700430EBC /* GenerateDataController.m in Sources */,
@@ -3060,6 +3074,7 @@
 				B14C61BB115AB4FB009324A6 /* BankStatementPolicy030.m in Sources */,
 				B14C6225115C04FA009324A6 /* 030.xcmappingmodel in Sources */,
 				B14C630E11629C7D009324A6 /* CategoryPolicy030.m in Sources */,
+				2788D7BA1842133B000B59AF /* AttachmentImageView.m in Sources */,
 				B1A1377411B6FD9400622D6C /* AccountDefController.m in Sources */,
 				B1762BD911EE4AE600F70263 /* TransfersController.m in Sources */,
 				B1FB50991209EA52004DCD6A /* PurposeSplitController.m in Sources */,
@@ -3087,6 +3102,7 @@
 				27955AFF140C0603008369C9 /* GraphicsAdditions.m in Sources */,
 				B14D4C5F13DB5F3200843BE6 /* HBCIBridge.m in Sources */,
 				B14D4C6413DB5FC200843BE6 /* CallbackData.m in Sources */,
+				2788D7B618421195000B59AF /* PecuniaSplitView.m in Sources */,
 				B14D4C6513DB5FC200843BE6 /* CallbackParser.m in Sources */,
 				B14D4C6C13DB600400843BE6 /* HBCIError.m in Sources */,
 				B14D4C6D13DB600400843BE6 /* LogParser.m in Sources */,
@@ -3105,6 +3121,7 @@
 				27FD58CB1437569B0074B378 /* StatementsListView.m in Sources */,
 				275C07E91438779700D97415 /* PXListDocumentView.m in Sources */,
 				275C07EA1438779700D97415 /* PXListView.m in Sources */,
+				27FD0DA6184120AE0047911C /* StatementsOverviewController.m in Sources */,
 				275C07EB1438779700D97415 /* PXListView+UserInteraction.m in Sources */,
 				275C07EC1438779700D97415 /* PXListViewCell.m in Sources */,
 				275C07EF143877C800D97415 /* StatementsListViewCell.m in Sources */,
@@ -3161,7 +3178,6 @@
 				27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */,
 				27A41A5415F3C9340043BB68 /* OrdersListView.m in Sources */,
 				27A41A5515F3C9340043BB68 /* OrdersListViewCell.m in Sources */,
-				B179916C15F7D2B4005AB39A /* LicenseWindowController.m in Sources */,
 				275DAADD17F8436000526A07 /* SaveAndRedeemCard.m in Sources */,
 				B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */,
 				27E68C4A165CF7DA005EBE66 /* GenerateDataController.m in Sources */,

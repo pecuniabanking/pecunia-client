@@ -1465,7 +1465,10 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
             sendDebitsButton.title = NSLocalizedString(@"AP416", nil);
         }
         [sendDebitsButton setEnabled: [pendingDebits.arrangedObjects count] > 0];
+
+        return;
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 #pragma mark -

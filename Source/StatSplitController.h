@@ -30,11 +30,9 @@
     NSManagedObjectContext *managedObjectContext;
     BankStatement          *statement;
     NSDecimalNumber        *residualAmount;
-    NSView                 *catView;
-
 }
 
-- (id)initWithStatement: (BankStatement *)stat view: (NSView *)view;
+- (id)initWithStatement: (BankStatement *)stat;
 
 - (IBAction)manageAssignments: (id)sender;
 - (IBAction)categoryChanged:(id)sender;

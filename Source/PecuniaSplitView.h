@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,13 +19,10 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface LicenseWindowController : NSObject {
-    IBOutlet NSTextView *licenseView;
-    IBOutlet NSWindow   *window;
+@interface PecuniaSplitView : NSSplitView
 
-}
+- (NSColor *)dividerColor;
 
-- (IBAction)accept: (id)sender;
-- (IBAction)decline: (id)sender;
+@property NSUInteger fixedIndex; // The index of the subview that should not be resized when the splitview size changes.
 
 @end

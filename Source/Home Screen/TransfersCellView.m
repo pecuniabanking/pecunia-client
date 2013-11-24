@@ -70,9 +70,10 @@ extern void *UserDefaultsBindingContext;
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"colors"]) {
             [self updateValueColors];
-            return;
         }
+        return;
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 @end

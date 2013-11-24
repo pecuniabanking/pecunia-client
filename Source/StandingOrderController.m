@@ -962,9 +962,10 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
         // update account selector
         [self updateSourceAccountSelection];
-    } else {
-        [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
+
+        return;
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 #pragma mark -

@@ -67,8 +67,12 @@ extern NSString *StatementTypeKey;
                         change: (NSDictionary *)change
                        context: (void *)context
 {
-    [self selectionChanged];
-    [self setNeedsDisplay: YES];
+    if ([keyPath isEqualToString: @"row"]) {
+        [self selectionChanged];
+        [self setNeedsDisplay: YES];
+        return;
+    }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 static CurrencyValueTransformer *currencyTransformer;

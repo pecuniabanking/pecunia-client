@@ -25,14 +25,13 @@
 #import "PreferenceController.h"
 #import "LocalSettingsController.h"
 #import "MOAssistant.h"
+
 #import "LogController.h"
-#import "TagView.h"
 #import "ExportController.h"
-#import "NSOutlineView+PecuniaAdditions.h"
 #import "AccountDefController.h"
 #import "TimeSliceManager.h"
 #import "MCEMTreeController.h"
-#import "MCEMDecimalNumberAdditions.h"
+#import "MCEMDecimalNumberAdditions.h" // TODO: Removal candidate
 #import "WorkerThread.h"
 #import "BSSelectWindowController.h"
 #import "StatusBarController.h"
@@ -48,34 +47,36 @@
 #import "BankStatementController.h"
 #import "AccountMaintenanceController.h"
 #import "PurposeSplitController.h"
-#import "TransferTemplateController.h"
 
+#import "HomeScreenController.h"
+#import "StatementsOverviewController.h"
 #import "CategoryAnalysisWindowController.h"
 #import "CategoryRepWindowController.h"
 #import "CategoryDefWindowController.h"
 #import "CategoryPeriodsWindowController.h"
 #import "CategoryMaintenanceController.h"
 #import "CategoryHeatMapController.h"
+#import "StandingOrderController.h"
+#import "DebitsController.h"
 
 #import "TransfersController.h"
 
-#import "BankStatementPrintView.h"
 #import "DockIconController.h"
 #import "GenerateDataController.h"
 #import "CreditCardSettlementController.h"
 
 #import "ImportController.h"
 #import "ImageAndTextCell.h"
-#import "StatementsListview.h"
-#import "StatementDetails.h"
 #include "ColorPopup.h"
+#import "PecuniaSplitView.h"
 
 #import "NSColor+PecuniaAdditions.h"
 #import "NSDictionary+PecuniaAdditions.h"
+#import "NSOutlineView+PecuniaAdditions.h"
 #import "BWGradientBox.h"
 
-#import "User.h"
 #import "Tag.h"
+#import "User.h"
 #import "AssignmentController.h"
 
 // Pasteboard data types.
@@ -92,535 +93,6 @@ void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 
 static BankingController *bankinControllerInstance;
 
-static NSCursor *moveCursor;
-
-//----------------------------------------------------------------------------------------------------------------------
-
-@implementation PecuniaSplitView
-
-@synthesize fixedIndex;
-
-- (id)initWithCoder: (NSCoder *)aDecoder
-{
-    self = [super initWithCoder: aDecoder];
-    if (self != nil) {
-        fixedIndex = NSNotFound;
-    }
-    return self;
-}
-
-- (void)awakeFromNib
-{
-}
-
-- (NSColor *)dividerColor
-{
-    return [NSColor clearColor];
-}
-
-- (void)resizeSubviewsWithOldSize: (NSSize)oldSize
-{
-    if (fixedIndex == NSNotFound || fixedIndex >= self.subviews.count || self.subviews.count != 2) {
-        [super resizeSubviewsWithOldSize: oldSize];
-    } else {
-        // Fixed size support currently only for 2 subviews.
-        NSSize     totalSize = self.bounds.size;
-        NSUInteger variableIndex = fixedIndex == 0 ? 1 : 0;
-        NSSize     fixedSize = [self.subviews[fixedIndex] frame].size;
-
-        if ([(NSView *)(self.subviews[fixedIndex])isHidden]) {
-            fixedSize = NSZeroSize;
-        }
-
-        if (self.isVertical) {
-            NSSize size;
-            size.height = totalSize.height;
-            size.width = totalSize.width - self.dividerThickness - fixedSize.width;
-            [self.subviews[variableIndex] setFrameSize: size];
-            size.width = [self.subviews[fixedIndex] frame].size.width;
-            [self.subviews[fixedIndex] setFrameSize: size];
-            if (fixedIndex == 1) {
-                NSPoint origin = NSMakePoint(totalSize.width - fixedSize.width, 0);
-                [self.subviews[fixedIndex] setFrameOrigin: origin];
-            }
-        } else {
-            NSSize size;
-            size.width = totalSize.width;
-            size.height = totalSize.height - self.dividerThickness - fixedSize.height;
-            [self.subviews[variableIndex] setFrameSize: size];
-            size.height = [self.subviews[fixedIndex] frame].size.height;
-            [self.subviews[fixedIndex] setFrameSize: size];
-            if (fixedIndex == 1) {
-                NSPoint origin = NSMakePoint(0, totalSize.height - fixedSize.height);
-                [self.subviews[fixedIndex] setFrameOrigin: origin];
-            }
-        }
-    }
-}
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------
-
-static void *AttachmentBindingContext = (void *)@"AttachmentBinding";
-static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // For dragging an attachment.
-
-@interface AttachmentImageView : NSImageView <NSDraggingSource, NSDraggingDestination>
-{
-@private
-    id       observedObject;
-    NSString *observedKeyPath;
-    BOOL     highlight;
-    BOOL     dragPending;
-}
-
-@property (nonatomic, strong) NSString *reference;
-
-@end
-
-@implementation AttachmentImageView
-
-@synthesize reference;
-
-+ (void)initialize
-{
-    [self exposeBinding: @"reference"];
-}
-
-- (void)awakeFromNib
-{
-    [self unregisterDraggedTypes];
-    [self registerForDraggedTypes: @[NSStringPboardType, NSFilenamesPboardType]];
-}
-
-#pragma mark - Destination Operations
-
-- (NSDragOperation)dragOperationFor: (id <NSDraggingInfo>)sender
-{
-    if (!self.isEditable || ([sender draggingSource] == self)) {
-        return NSDragOperationNone;
-    }
-
-    NSArray *types = [[sender draggingPasteboard] types];
-    if ([types containsObject: AttachmentDataType]) {
-        return NSDragOperationMove;
-    }
-
-    if ([types containsObject: NSURLPboardType] || [types containsObject: NSFilenamesPboardType]) {
-        NSURL *url = [NSURL URLFromPasteboard: [sender draggingPasteboard]];
-        BOOL isFolder;
-        if ([NSFileManager.defaultManager fileExistsAtPath: url.path isDirectory: &isFolder]) {
-            if (isFolder) {
-                return NSDragOperationNone; // If the file is actually a folder don't accept it.
-            }
-        }
-
-        return NSDragOperationCopy;
-    }
-
-    if ([types containsObject: NSStringPboardType]) {
-        return NSDragOperationCopy;
-    }
-
-    return NSDragOperationNone;
-}
-
-- (NSDragOperation)draggingEntered: (id <NSDraggingInfo>)sender
-{
-    NSDragOperation result = [self dragOperationFor: sender];
-
-    highlight = YES;
-    [self setNeedsDisplay: YES];
-
-    switch (result) {
-        case NSDragOperationCopy:
-            [[NSCursor dragCopyCursor] push];
-            break;
-
-        case NSDragOperationMove:
-            [moveCursor push];
-            break;
-
-        default:
-            [[NSCursor operationNotAllowedCursor] push];
-            return NSDragOperationNone;
-            break;
-    }
-
-    return result;
-
-}
-
-- (void)draggingExited: (id <NSDraggingInfo>)sender
-{
-    [NSCursor pop];
-    
-    highlight = NO;
-    [self setNeedsDisplay: YES];
-}
-
--(void)drawRect: (NSRect)rect
-{
-    [super drawRect: rect];
-
-    if (highlight) {
-        [[NSColor grayColor] set];
-        [NSBezierPath setDefaultLineWidth: 5];
-        [NSBezierPath strokeRect: rect];
-    }
-}
-
-- (BOOL)prepareForDragOperation:(id <NSDraggingInfo>)sender
-{
-    highlight = NO;
-    [self setNeedsDisplay: YES];
-
-    return YES;
-}
-
-- (BOOL)performDragOperation: (id<NSDraggingInfo>)sender
-{
-    NSDragOperation operation = [self dragOperationFor: sender];
-
-    switch (operation) {
-        case NSDragOperationMove: {
-            AttachmentImageView *otherView = [sender draggingSource];
-            NSString *value = otherView.reference;
-            [observedObject setValue: value forKeyPath: observedKeyPath];
-            [otherView->observedObject setValue: nil forKeyPath: otherView->observedKeyPath];
-
-            break;
-        }
-
-        case NSDragOperationCopy: {
-            NSURL *url;
-
-            NSArray *types = [[sender draggingPasteboard] types];
-            if ([types containsObject: NSURLPboardType] || [types containsObject: NSFilenamesPboardType]) {
-                url = [NSURL URLFromPasteboard: [sender draggingPasteboard]];
-            } else {
-                // Just some text. See if we can make a URL from it.
-                NSString *text = [[sender draggingPasteboard] stringForType: NSStringPboardType];
-                if (text.length > 0) {
-                    url = [NSURL URLWithString: text];
-                    if (url == nil) {
-                        // Not a valid web URL. Try using it as file name.
-                        // Of course the file must exist to be accepted.
-                        if ([NSFileManager.defaultManager fileExistsAtPath: text]) {
-                            url = [NSURL fileURLWithPath: text];
-                        }
-                    }
-                }
-            }
-
-            if (url != nil) {
-                [self processAttachment: url];
-            } else {
-                return NO;
-            }
-            break;
-        }
-    }
-
-    return YES;
-}
-
-- (void)concludeDragOperation: (id<NSDraggingInfo>)sender
-{
-    // Only here to disable NSImageView's drop handling.
-}
-
-#pragma mark - Source Operations
-
-- (void)mouseDown: (NSEvent *)event
-{
-    dragPending = YES;
-}
-
-- (void)mouseUp: (NSEvent *)event
-{
-    if (dragPending) {
-        // User just clicked. No mouse move.
-        dragPending = NO;
-        if ([[self target] respondsToSelector: [self action]]) {
-            [NSApp sendAction: [self action] to: [self target] from: self];
-        }
-    }
-}
-
-- (void)mouseDragged: (NSEvent *)event
-{
-    if (dragPending) {
-        dragPending = NO;
-
-        NSURL *url = [NSURL URLWithString: reference];
-        if (url != nil) {
-            NSPoint dragPosition = [self convertPoint: [event locationInWindow] fromView: nil];
-            dragPosition.x -= 100;
-
-            NSPasteboard *pasteBoard = [NSPasteboard pasteboardWithUniqueName];
-            [pasteBoard declareTypes: @[AttachmentDataType] owner: self];
-            [pasteBoard writeObjects: @[url]];
-
-            [self dragImage: [self image]
-                         at: dragPosition
-                     offset: NSZeroSize
-                      event: event
-                 pasteboard: pasteBoard
-                     source: self
-                  slideBack: NO];
-        }
-    }
-}
-
-- (NSDragOperation)       draggingSession: (NSDraggingSession *)session
-    sourceOperationMaskForDraggingContext: (NSDraggingContext)context;
-{
-    switch(context) {
-        case NSDraggingContextOutsideApplication:
-            return NSDragOperationDelete;
-            break;
-
-        case NSDraggingContextWithinApplication:
-        default:
-            return NSDragOperationDelete | NSDragOperationMove;
-            break;
-    }
-}
-
-- (BOOL)ignoreModifierKeysForDraggingSession:(NSDraggingSession *)session
-{
-    return YES;
-}
-
-- (void)draggingSession: (NSDraggingSession *)session
-           movedToPoint: (NSPoint)screenPoint
-{
-    if (NSPointInRect(screenPoint, self.window.frame)) {
-        NSRect windowRect = [self.window convertRectFromScreen: NSMakeRect(screenPoint.x, screenPoint.y, 1, 1)];
-        NSView *view = [self.window.contentView hitTest: windowRect.origin];
-        if (![view isKindOfClass: [AttachmentImageView class]]) {
-            [[NSCursor disappearingItemCursor] set];
-        }
-    }
-}
-
-- (void)updateDraggingItemsForDrag: (id<NSDraggingInfo>)sender
-{
-    sender.numberOfValidItemsForDrop = 1;
-}
-
-- (void)draggedImage: (NSImage *)image
-             endedAt: (NSPoint)screenPoint
-           operation: (NSDragOperation)operation
-{
-    // NSDragOperationNone is returned outside of instances of this class. So it's good as
-    // a delete indicator too.
-    screenPoint.x += 100;
-    NSRect windowRect = [self.window convertRectFromScreen: NSMakeRect(screenPoint.x, screenPoint.y, 1, 1)];
-    NSView *view = [self.window.contentView hitTest: windowRect.origin];
-    if (![view isKindOfClass: [AttachmentImageView class]] && (operation == NSDragOperationDelete || operation == NSDragOperationNone)) {
-        [self processAttachment: nil];
-        NSShowAnimationEffect(NSAnimationEffectPoof, screenPoint, self.bounds.size, nil, nil, NULL);
-    }
-}
-
-- (void)resetCursorRects
-{
-    [super resetCursorRects];
-    [self addCursorRect: [self bounds]
-                 cursor: self.isEditable ? [NSCursor pointingHandCursor]: [NSCursor operationNotAllowedCursor]];
-}
-
-/**
- * Processes the given URL depending on its type. In case of a file URL the file is copied to Pecunia's
- * attachment folder (using a unique id) and a special reference is generated. For all other types the URL
- * is simply stored in the reference field.
- *
- * The format of the reference for a file is: "attachment://unique-id.ext?original-name.ext".
- */
-- (void)processAttachment: (NSURL *)url
-{
-    // If the current reference points to a file then remove it.
-    NSURL *oldUrl = [NSURL URLWithString: reference];
-    self.reference = nil;
-    [observedObject setValue: nil forKeyPath: observedKeyPath];
-
-    if (oldUrl != nil) {
-        if ([oldUrl.scheme isEqual: @"attachment"]) {
-            NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.assistant.pecuniaFileURL.path];
-            NSString *targetFileName;
-            targetFileName = [NSString stringWithFormat: @"%@%@", targetFolder, oldUrl.host];
-
-            // Remove the file but don't show a message in case of an error. The message is
-            // meaningless anyway (since it contains the internal filename).
-            [NSFileManager.defaultManager removeItemAtPath: targetFileName error: nil];
-        }
-    }
-
-    if (url == nil) {
-        return;
-    }
-    
-    if (url.isFileURL) {
-        NSString *sourceFileName = url.path;
-        NSString *extension = sourceFileName.pathExtension;
-
-        NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
-        NSString *uniqueFilenName = [NSString stringWithFormat: @"%@.%@", guid, extension];
-        NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.assistant.pecuniaFileURL.path];
-        NSString *targetFileName = [targetFolder stringByAppendingString: uniqueFilenName];
-
-        NSError *error = nil;
-        if (![NSFileManager.defaultManager createDirectoryAtPath: targetFolder withIntermediateDirectories: YES attributes: nil error: &error]) {
-            NSAlert *alert = [NSAlert alertWithError: error];
-            [alert runModal];
-            return;
-        }
-        if (![NSFileManager.defaultManager copyItemAtPath: sourceFileName toPath: targetFileName error: &error]) {
-            NSAlert *alert = [NSAlert alertWithError: error];
-            [alert runModal];
-            return;
-        }
-
-        NSString *escapedName = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
-          (__bridge CFStringRef)sourceFileName.lastPathComponent, NULL, NULL, kCFStringEncodingUTF8));
-
-        NSString *newReference = [NSString stringWithFormat: @"attachment://%@?%@", uniqueFilenName, escapedName];
-        [observedObject setValue: newReference forKeyPath: observedKeyPath];
-    } else {
-        [observedObject setValue: url.absoluteString forKeyPath: observedKeyPath];
-    }
-}
-
-/**
- * Open the reference in the default web browser if it is a web URL, otherwise construct a full path
- * from the reference and open it with it's default application.
- */
-- (void)openReference
-{
-    NSURL *url = [NSURL URLWithString: reference];
-
-    if (url.isFileURL || [url.scheme isEqual: @"attachment"]) {
-        NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.assistant.pecuniaFileURL.path];
-
-        NSString *targetFileName;
-        if ([url.scheme isEqual: @"attachment"]) {
-            targetFileName = [NSString stringWithFormat: @"%@%@", targetFolder, url.host];
-        } else {
-            targetFileName = url.absoluteString;
-        }
-        [NSWorkspace.sharedWorkspace openFile: targetFileName];
-    } else {
-        [NSWorkspace.sharedWorkspace openURL: url];
-    }
-}
-
-- (void)setReference: (id)value
-{
-    [self.window invalidateCursorRectsForView: self];
-
-    if (value == NSNoSelectionMarker || value == NSMultipleValuesMarker || value == nil) {
-        self.image = nil;
-        if (value == nil) {
-            self.toolTip = NSLocalizedString(@"AP119", nil);
-        } else {
-            self.toolTip = nil;
-        }
-        reference = nil;
-
-        return;
-    }
-
-    NSURL *url = [NSURL URLWithString: value];
-
-    // Ensure we always have a scheme in the URL. Assume file as default.
-    if (url.scheme == nil) {
-        url = [NSURL URLWithString: [NSString stringWithFormat: @"file://localhost/%@", value]];
-    }
-
-    reference = url.absoluteString;
-
-    if (url.isFileURL || [url.scheme isEqual: @"attachment"]) {
-        NSString *targetFolder = [NSString stringWithFormat: @"%@/Attachments/", MOAssistant.assistant.pecuniaFileURL.path];
-
-        NSString *targetFileName;
-        NSString *tooltipFileName;
-        if ([url.scheme isEqual: @"attachment"]) {
-            targetFileName = [NSString stringWithFormat: @"%@%@", targetFolder, url.host];
-            tooltipFileName = url.query;
-        } else {
-            targetFileName = value;
-            tooltipFileName = [targetFileName lastPathComponent];
-        }
-
-        NSString *unescapedTooltipFileName = CFBridgingRelease(
-          CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)tooltipFileName, CFSTR(""),
-                                                                  kCFStringEncodingUTF8));
-        NSString *extension = targetFileName.pathExtension;
-
-        self.toolTip = [NSString stringWithFormat: @"%@\n\n%@", unescapedTooltipFileName, NSLocalizedString(@"AP120", nil)];
-        NSImage *image;
-
-        // Display images as such. Exclude pdf files manually as they qualify as images too.
-        // (It's such a nonsense to show the content of the first pdf page as icon <sigh>.)
-        if (![extension isCaseInsensitiveLike: @"pdf"]) {
-            NSArray *types = NSImage.imageFileTypes;
-            if ([types containsObject: extension]) {
-                image = [[NSImage alloc] initWithContentsOfFile: targetFileName];
-                if (image != nil) {
-                    self.image = image;
-                    return;
-                }
-            }
-        }
-
-        // Anything else. Get the system's icon for it. If there's no extension use the entire path.
-        if (extension.length == 0) {
-            image = [NSWorkspace.sharedWorkspace iconForFile: targetFileName];
-        } else {
-            image = [[NSWorkspace sharedWorkspace] iconForFileType: extension];
-        }
-        image.size = NSMakeSize(128, 128); // Lower resolution is automatically used, depending on available space.
-        self.image = image;
-
-
-    } else {
-        reference = url.absoluteString;
-
-        self.toolTip = [NSString stringWithFormat: @"%@\n\n%@", reference, NSLocalizedString(@"AP120", nil)];
-        NSImage *image = [[NSWorkspace sharedWorkspace] iconForFileType: @"html"];
-        image.size = NSMakeSize(128, 128);
-        self.image = image;
-    }
-}
-
-- (void)   bind: (NSString *)binding
-       toObject: (id)observableObject
-    withKeyPath: (NSString *)keyPath
-        options: (NSDictionary *)options
-{
-    if ([binding isEqualToString: @"reference"]) {
-        observedObject = observableObject;
-        observedKeyPath = keyPath;
-        [observableObject addObserver: self forKeyPath: keyPath options: 0 context: AttachmentBindingContext];
-    } else {
-        [super bind: binding toObject: observableObject withKeyPath: keyPath options: options];
-    }
-}
-
-- (void)observeValueForKeyPath: (NSString *)keyPath
-                      ofObject: (id)object
-                        change: (NSDictionary *)change
-                       context: (void *)context
-{
-    if (context == AttachmentBindingContext) {
-        self.reference = [observedObject valueForKeyPath: observedKeyPath];
-    }
-}
-
-@end
-
 //----------------------------------------------------------------------------------------------------------------------
 
 @interface BankingController ()
@@ -634,9 +106,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     BOOL                   requestRunning;
     BOOL                   statementsBound;
     BOOL                   autoSyncRunning;
-    NSDecimalNumber        *saveValue;
     NSCursor               *splitCursor;
-    NSUInteger             lastSplitterPosition; // Last position of the right splitter.
 
     NSImage *moneyImage;
     NSImage *moneySyncImage;
@@ -647,23 +117,16 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     id<PecuniaSectionItem> currentSection;
 
-    // current statement details
-    StatementDetails *statementDetails;
-
-    // Sorting statements.
-    int  sortIndex;
-    BOOL sortAscending;
-
     NSArray *defaultIcons; // Associations between categories and their default icons.
 }
 @end
 
 @implementation BankingController
 
-@synthesize saveValue;
 @synthesize managedObjectContext;
 @synthesize dockIconController;
 @synthesize shuttingDown;
+@synthesize accountsView;
 
 #pragma mark - Initialization
 
@@ -729,35 +192,17 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 - (void)awakeFromNib
 {
-    sortAscending = NO;
-    sortIndex = 0;
-
-    // set standard details
-    statementDetails = standardDetails;
-
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults addObserver: self forKeyPath: @"recursiveTransactions" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
 
-    if ([userDefaults objectForKey: @"mainSortIndex"]) {
-        sortControl.selectedSegment = [[userDefaults objectForKey: @"mainSortIndex"] intValue];
-    }
-
-    if ([userDefaults objectForKey: @"mainSortAscending"]) {
-        sortAscending = [[userDefaults objectForKey: @"mainSortAscending"] boolValue];
-    }
-
-    lastSplitterPosition = [[userDefaults objectForKey: @"rightSplitterPosition"] intValue];
+    int lastSplitterPosition = [[userDefaults objectForKey: @"rightSplitterPosition"] intValue];
     if (lastSplitterPosition > 0) {
-        // The details pane was collapsed when Pecunia closed last time.
-        [statementDetails setHidden: YES];
         [toggleDetailsButton setImage: [NSImage imageNamed: @"show"]];
-        [rightSplitter adjustSubviews];
     }
     self.toggleDetailsPaneItem.state = lastSplitterPosition > 0 ? NSOffState : NSOnState;
 
-    [self updateSorting];
     [self updateValueColors];
 
     // Edit accounts/categories when double clicking on a node.
@@ -790,52 +235,17 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     if ([NSFileManager.defaultManager fileExistsAtPath: path]) {
         lockImage.image = [[NSImage alloc] initWithContentsOfFile: path];
     }
-    path = [[NSBundle mainBundle] pathForResource: @"icon14-1"
-                                           ofType: @"icns"
-                                      inDirectory: @"Collections/1"];
-    if ([NSFileManager.defaultManager fileExistsAtPath: path]) {
-        tagButton.image = [[NSImage alloc] initWithContentsOfFile: path];
-    }
 
     // set encryption image
     [self encryptionChanged];
 
     splitCursor = [[NSCursor alloc] initWithImage: [NSImage imageNamed: @"split-cursor"] hotSpot: NSMakePoint(0, 0)];
-    moveCursor = [[NSCursor alloc] initWithImage: [NSImage imageNamed: @"move-cursor"] hotSpot: NSMakePoint(18, 6)];
     [WorkerThread init];
 
     [categoryController addObserver: self forKeyPath: @"arrangedObjects.catSum" options: 0 context: nil];
-    [categoryAssignments addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
 
-    // Setup statements listview.
-    [statementsListView bind: @"dataSource" toObject: categoryAssignments withKeyPath: @"arrangedObjects" options: nil];
-
-    // Bind controller to selectedRow property and the listview to the controller's selectedIndex property to get notified about selection changes.
-    [categoryAssignments bind: @"selectionIndexes" toObject: statementsListView withKeyPath: @"selectedRows" options: nil];
-    [statementsListView bind: @"selectedRows" toObject: categoryAssignments withKeyPath: @"selectionIndexes" options: nil];
-
-    [statementsListView setCellSpacing: 0];
-    [statementsListView setAllowsEmptySelection: YES];
-    [statementsListView setAllowsMultipleSelection: YES];
-
-    currentSection = nil; // The right splitter, which is by default active is not a regular section.
     toolbarButtons.selectedSegment = 0;
-
-    if (self.managedObjectContext) {
-        [self publishContext];
-    }
-
-    [MOAssistant assistant].mainContentView = [mainWindow contentView];
-
-    [attachment1 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref1" options: nil];
-    [attachment2 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref2" options: nil];
-    [attachment3 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref3" options: nil];
-    [attachment4 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref4" options: nil];
-
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"order" ascending: YES];
-    [statementTags setSortDescriptors: @[sd]];
-    [tagsController setSortDescriptors: @[sd]];
-    tagButton.bordered = NO;
+    MOAssistant.assistant.mainContentView = [mainWindow contentView];
 
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(contextChanged)
@@ -958,10 +368,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
     [categoryController setSortDescriptors: @[sd]];
 
-    categoryAssignments.managedObjectContext = self.managedObjectContext;
-    tagsController.managedObjectContext = self.managedObjectContext;
-    [tagsController prepareContent];
-
     // repair Category Root
     [self repairCategories];
 
@@ -995,10 +401,11 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 {
     id object = notification.object;
     if ([object isKindOfClass: Category.class]) {
-        NSControl *dummy = [[NSControl alloc] init];
-        dummy.tag = 1;
         [categoryController setSelectedObject: object];
         [self switchMainPage: 1];
+
+        NSControl *dummy = [[NSControl alloc] init];
+        dummy.tag = 1;
         [self activateAccountPage: dummy];
     }
 }
@@ -1473,8 +880,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         // redraw accounts view
         [accountsView setNeedsDisplay: YES];
         [rightPane setNeedsDisplay: YES];
-
-        [categoryAssignments rearrangeObjects];
     }
 }
 
@@ -1514,25 +919,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     return requestRunning;
 }
 
-- (BankAccount *)selectBankAccountWithNumber: (NSString *)accNum bankCode: (NSString *)code
-{
-    NSError        *error = nil;
-    NSDictionary   *subst = @{@"ACCNT" : accNum, @"BCODE": code};
-    NSFetchRequest *fetchRequest =
-    [model fetchRequestFromTemplateWithName: @"bankAccountByID" substitutionVariables: subst];
-    NSArray *results =
-    [self.managedObjectContext executeFetchRequest: fetchRequest error: &error];
-    if (error != nil) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-        return nil;
-    }
-    if (results == nil || [results count] != 1) {
-        return nil;
-    }
-    return results[0];
-}
-
 - (NSArray *)selectedNodes
 {
     return [categoryController selectedObjects];
@@ -1550,12 +936,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 - (IBAction)editPreferences: (id)sender
 {
     [PreferenceController showPreferencesWithOwner: self section: nil];
-}
-
-- (IBAction)showTagPopup: (id)sender
-{
-    NSButton *button = sender;
-    [tagViewPopup showTagPopupAt: button.bounds forView: button host: tagViewHost];
 }
 
 #pragma mark - Account management
@@ -1709,7 +1089,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 - (void)updateDetailsPaneButton
 {
-    toggleDetailsButton.hidden = (toolbarButtons.selectedSegment != 1) || (currentSection != nil);
+    toggleDetailsButton.hidden = (toolbarButtons.selectedSegment != 1) || (currentSection != overviewController);
 }
 
 - (IBAction)activateMainPage: (id)sender
@@ -1776,7 +1156,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     if (currentSection != nil) {
         currentView = [currentSection mainView];
     } else {
-        currentView = rightSplitter;
+        currentView = sectionPlaceholder;
     }
 
     [statementsButton setImage: [NSImage imageNamed: @"statementlist"]];
@@ -1806,19 +1186,29 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     NSRect frame = [currentView frame];
     switch ([sender tag]) {
         case 0:
-            // Cross-fade between the active view and the right splitter.
-            if (currentSection != nil) {
-                [currentSection deactivate];
-                [rightSplitter setFrame: frame];
-                [rightPane replaceSubview: currentView with: rightSplitter];
-                currentSection = nil;
+            if (overviewController == nil) {
+                overviewController = [[StatementsOverviewController alloc] init];
+                if ([NSBundle loadNibNamed: @"StatementsOverview" owner: overviewController]) {
+                    NSView *view = [overviewController mainView];
+                    view.frame = frame;
+                }
+                [overviewController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
+            }
 
-                // update values in category tree to reflect time slicer interval again
-                [timeSlicer updateDelegate];
+            if (currentSection != overviewController) {
+                [currentSection deactivate];
+                [[overviewController mainView] setFrame: frame];
+                [rightPane replaceSubview: currentView with: [overviewController mainView]];
+                overviewController.toggleDetailsButton = toggleDetailsButton;
+                currentSection = overviewController;
+
                 pageHasChanged = YES;
             }
 
             [statementsButton setImage: [NSImage imageNamed: @"statementlist-active"]];
+
+            // Update values in category tree to reflect time slicer interval again.
+            [timeSlicer updateDelegate];
             break;
 
         case 1:
@@ -1841,11 +1231,9 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
             }
 
             [graph1Button setImage: [NSImage imageNamed: @"graph1-active"]];
-
-            // update values in category tree to reflect time slicer interval again
             [timeSlicer updateDelegate];
             break;
-
+            
         case 2:
             if (categoryReportingController == nil) {
                 categoryReportingController = [[CategoryRepWindowController alloc] init];
@@ -1871,9 +1259,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
                 pageHasChanged = YES;
             }
 
-            // Update values in category tree to reflect time slicer interval again.
             [timeSlicer updateDelegate];
-
             [graph2Button setImage: [NSImage imageNamed: @"graph2-active"]];
             break;
 
@@ -1936,7 +1322,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
                 pageHasChanged = YES;
             }
 
-            // update values in category tree to reflect time slicer interval again
             [timeSlicer updateDelegate];
 
             [rulesButton setImage: [NSImage imageNamed: @"rules-active"]];
@@ -1964,10 +1349,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
 
     if (pageHasChanged) {
-        if (currentSection != nil) {
-            currentSection.selectedCategory = [self currentSelection];
-            [currentSection activate];
-        }
+        currentSection.selectedCategory = [self currentSelection];
+        [currentSection activate];
         [accountsView setNeedsDisplay];
     }
     [self updateDetailsPaneButton];
@@ -2398,6 +1781,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     [self save];
 
+    /* TODO: Probably no longer needed.
     if (needListViewUpdate) {
         // Updating the assignments (statements) list kills the current selection, so we preserve it here.
         // Reassigning it after the update has the neat side effect that the details pane is properly updated too.
@@ -2406,6 +1790,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [statementsListView reloadData];
         categoryAssignments.selectionIndex = selection;
     }
+     */
     return YES;
 }
 
@@ -2420,20 +1805,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     // set states of categorie Actions Control
     [catActions setEnabled: [cat isRemoveable] forSegment: 2];
     [catActions setEnabled: [cat isInsertable] forSegment: 1];
-
-    BOOL editable = NO;
-    if (![cat isBankAccount] && cat != [Category nassRoot] && cat != [Category catRoot]) {
-        editable = categoryAssignments.selectedObjects.count == 1;
-    }
-
-    // value field
-    [valueField setEditable: editable];
-    if (editable) {
-        [valueField setDrawsBackground: YES];
-        [valueField setBackgroundColor: [NSColor whiteColor]];
-    } else {
-        [valueField setDrawsBackground: NO];
-    }
 
     // Update current section if the default is not active.
     if (currentSection != nil) {
@@ -2564,9 +1935,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     if (splitView == mainVSplit) {
         return 370;
     }
-    if (splitView == rightSplitter) {
-        return 240;
-    }
     return proposedMin;
 }
 
@@ -2575,53 +1943,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     if (splitView == mainVSplit) {
         return NSWidth([mainWindow frame]) - 800;
     }
-    if (splitView == rightSplitter) {
-        return NSHeight([rightSplitter frame]) - 300;
-    }
     return proposedMax;
-}
-
-- (CGFloat)splitView: (NSSplitView *)splitView constrainSplitPosition: (CGFloat)proposedPosition ofSubviewAt: (NSInteger)dividerIndex
-{
-    if (splitView == rightSplitter) {
-        // This function is called only when dragging the divider with the mouse. If the details pane is currently collapsed
-        // then it is automatically shown when dragging the divider. So we have to reset our interal state.
-        if (lastSplitterPosition > 0) {
-            lastSplitterPosition = 0;
-            [toggleDetailsButton setImage: [NSImage imageNamed: @"hide"]];
-        }
-    }
-
-    return proposedPosition;
-}
-
-#pragma mark - Sorting and searching statements
-
-- (IBAction)filterStatements: (id)sender
-{
-    NSTextField *te = sender;
-    NSString    *searchName = [te stringValue];
-
-    if ([searchName length] == 0) {
-        [categoryAssignments setFilterPredicate:nil];
-    } else {
-        NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or userInfo contains[c] %@ or value = %@",
-                             searchName, searchName, searchName, [NSDecimalNumber decimalNumberWithString: searchName locale: [NSLocale currentLocale]]];
-        if (pred != nil) {
-            [categoryAssignments setFilterPredicate: pred];
-        }
-    }
-}
-
-- (IBAction)sortingChanged: (id)sender
-{
-    if ([sender selectedSegment] == sortIndex) {
-        sortAscending = !sortAscending;
-    } else {
-        sortAscending = NO; // Per default entries are sorted by date in decreasing order.
-    }
-
-    [self updateSorting];
 }
 
 #pragma mark - Menu handling
@@ -2742,17 +2064,16 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
             }
         }
 
-        if ([item action] == @selector(deleteStatement:)) {
-            if ([cat isBankAccount] == NO || categoryAssignments.selectedObjects.count == 0) {
-                return NO;
-            }
-        }
-        if ([item action] == @selector(splitStatement:)) {
-            if ([[categoryAssignments selectedObjects] count] != 1) {
-                return NO;
-            }
-        }
         if (requestRunning && [item action] == @selector(enqueueRequest:)) {
+            return NO;
+        }
+
+        if ([(id)currentSection respondsToSelector: @selector(validateMenuItem:)]) {
+            BOOL result = [(id)currentSection validateMenuItem: item];
+            if (!result) {
+                return NO;
+            }
+        } else {
             return NO;
         }
     }
@@ -2901,13 +2222,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         Category *cat = [self currentSelection];
         accountsView.saveCatName = [cat name];
     }
-    if ([aNotification object] == valueField) {
-        NSArray *sel = [categoryAssignments selectedObjects];
-        if (sel && [sel count] == 1) {
-            StatCatAssignment *stat = sel[0];
-            self.saveValue = stat.value;
-        }
-    }
 }
 
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification
@@ -2926,50 +2240,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         // Category was created or changed. Save changes.
         [self save];
     }
-
-    // Value field changed (todo: replace by key value observation).
-    if ([aNotification object] == valueField) {
-        NSArray *sel = [categoryAssignments selectedObjects];
-        if (sel && [sel count] == 1) {
-            StatCatAssignment *stat = sel[0];
-
-            // do some checks
-            // amount must have correct sign
-            NSDecimal d1 = [stat.statement.value decimalValue];
-            NSDecimal d2 = [stat.value decimalValue];
-            if (d1._isNegative != d2._isNegative) {
-                NSBeep();
-                stat.value = self.saveValue;
-                return;
-            }
-
-            // amount must not be higher than original amount
-            if (d1._isNegative) {
-                if ([stat.value compare: stat.statement.value] == NSOrderedAscending) {
-                    NSBeep();
-                    stat.value = self.saveValue;
-                    return;
-                }
-            } else {
-                if ([stat.value compare: stat.statement.value] == NSOrderedDescending) {
-                    NSBeep();
-                    stat.value = self.saveValue;
-                    return;
-                }
-            }
-
-            // [Category updateCatValues] invalidates the selection we got. So re-set it first and then update.
-            [categoryAssignments setSelectedObjects: sel];
-
-            [stat.statement updateAssigned];
-            Category *cat = [self currentSelection];
-            if (cat !=  nil) {
-                [cat invalidateBalance];
-                [Category updateCatValues];
-                [statementsListView updateVisibleCells];
-            }
-        }
-    }
 }
 
 - (void)setRestart
@@ -2979,131 +2249,22 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 - (IBAction)deleteStatement: (id)sender
 {
+    // This function is only called if the associated menu item is enabled, which is only the case
+    // if (amongst other) the current section is the statements overview.
     if (!self.currentSelection.isBankAcc.boolValue) {
         return;
     }
 
-    // Process all selected assignments. If only a single assignment is selected then do an extra round
-    // regarding duplication check and confirmation from the user. Otherwise just confirm the delete operation as such.
-    NSArray *assignments = [categoryAssignments selectedObjects];
-    BOOL    doDuplicateCheck = assignments.count == 1;
-
-    if (!doDuplicateCheck) {
-        int result = NSRunAlertPanel(NSLocalizedString(@"AP806", nil),
-                                     NSLocalizedString(@"AP809", nil),
-                                     NSLocalizedString(@"AP3", nil),
-                                     NSLocalizedString(@"AP4", nil),
-                                     nil, assignments.count);
-        if (result != NSAlertDefaultReturn) {
-            return;
-        }
-    }
-
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: self.managedObjectContext];
-    NSFetchRequest      *request = [[NSFetchRequest alloc] init];
-    [request setEntity: entityDescription];
-
-    NSMutableSet *affectedAccounts = [[NSMutableSet alloc] init];
-    for (StatCatAssignment *assignment in assignments) {
-        BankStatement *statement = assignment.statement;
-
-        NSError *error = nil;
-        BOOL    deleteStatement = NO;
-
-        if (doDuplicateCheck) {
-            // Check if this statement is a duplicate. Select all statements with same date.
-            NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date = %@)", statement.account, statement.date];
-            [request setPredicate: predicate];
-
-            NSArray *possibleDuplicates = [self.managedObjectContext executeFetchRequest: request error: &error];
-            if (error) {
-                NSAlert *alert = [NSAlert alertWithError: error];
-                [alert runModal];
-                return;
-            }
-
-            BOOL hasDuplicate = NO;
-            for (BankStatement *possibleDuplicate in possibleDuplicates) {
-                if (possibleDuplicate != statement && [possibleDuplicate matches: statement]) {
-                    hasDuplicate = YES;
-                    break;
-                }
-            }
-            int res;
-            if (hasDuplicate) {
-                res = NSRunAlertPanel(NSLocalizedString(@"AP805", nil),
-                                      NSLocalizedString(@"AP807", nil),
-                                      NSLocalizedString(@"AP4", nil),
-                                      NSLocalizedString(@"AP3", nil),
-                                      nil);
-                if (res == NSAlertDefaultReturn) {
-                    deleteStatement = YES;
-                }
-            } else {
-                res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP805", nil),
-                                              NSLocalizedString(@"AP808", nil),
-                                              NSLocalizedString(@"AP4", nil),
-                                              NSLocalizedString(@"AP3", nil),
-                                              nil);
-                if (res == NSAlertAlternateReturn) {
-                    deleteStatement = YES;
-                }
-            }
-        } else {
-            deleteStatement = YES;
-        }
-
-        if (deleteStatement) {
-            BOOL isManualAccount = statement.account.isManual;
-            BankAccount *account = statement.account;
-            [affectedAccounts addObject: account]; // Automatically ignores duplicates.
-
-            [self.managedObjectContext deleteObject: statement];
-
-            // Rebuild balances - only for manual accounts.
-            if (isManualAccount) {
-                NSPredicate *balancePredicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date > %@)", account, statement.date];
-                request.predicate = balancePredicate;
-                NSArray *remainingStatements = [self.managedObjectContext executeFetchRequest: request error: &error];
-                if (error != nil) {
-                    NSAlert *alert = [NSAlert alertWithError: error];
-                    [alert runModal];
-                    return;
-                }
-
-                for (BankStatement *remainingStatement in remainingStatements) {
-                    remainingStatement.saldo = [remainingStatement.saldo decimalNumberBySubtracting: statement.value];
-                }
-                account.balance = [account.balance decimalNumberBySubtracting: statement.value];
-            }
-        }
-    }
-
-    for (BankAccount *account in affectedAccounts) {
-        // Special behaviour for top bank accounts.
-        if (account.accountNumber == nil) {
-            [self.managedObjectContext processPendingChanges];
-        }
-        [account updateBoundAssignments];
-    }
-    
-    [[Category bankRoot] rollupRecursive: YES];
-    [categoryAssignments prepareContent];
+    [(id)currentSection deleteSelectedStatements];
 
     [self save];
 }
 
 - (void)splitStatement: (id)sender
 {
-    int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]];
-    if (idx == 0) {
-        NSArray *sel = [categoryAssignments selectedObjects];
-        if (sel != nil && [sel count] == 1) {
-            StatSplitController *splitController = [[StatSplitController alloc] initWithStatement: [sel[0] statement]
-                                                                                             view: accountsView];
-            [NSApp runModalForWindow: [splitController window]];
-        }
-    }
+    // This function is only called if the associated menu item is enabled, which is only the case
+    // if (amongst others) the current section is the statements overview.
+    [(id)currentSection splitSelectedStatement];
 }
 
 - (IBAction)addStatement: (id)sender
@@ -3415,8 +2576,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 - (IBAction)showLicense: (id)sender
 {
-    NSString *path = [[NSBundle mainBundle] pathForResource: @"gpl-2.0-standalone" ofType: @"html"];
-    [[NSWorkspace sharedWorkspace] openFile: path];
+    NSURL *url = [NSURL URLWithString: @"http://opensource.org/licenses/GPL-2.0"];
+    [[NSWorkspace sharedWorkspace] openURL: url];
 }
 
 - (IBAction)showConsole:(id)sender
@@ -3426,21 +2587,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 - (void)applicationWillFinishLaunching: (NSNotification *)notification
 {
-    /*
-    // Check License Agreement
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults ];
-    BOOL licenseAgreed = [defaults boolForKey:@"licenseAgreed" ];
-    if (licenseAgreed == NO) {
-        int result = [NSApp runModalForWindow:licenseWindow ];
-        if (result == 1) {
-            [NSApp terminate:nil ];
-            return;
-        } else {
-            [defaults setBool:YES forKey:@"licenseAgreed" ];
-        }
-    }
-    */
-    
     // Display main window
     [mainWindow display];
     [mainWindow makeKeyAndOrderFront: self];
@@ -3449,16 +2595,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [sc startSpinning];
     [sc setMessage: NSLocalizedString(@"AP108", nil) removeAfter: 0];
 
-    rightSplitter.fixedIndex = 1;
     mainVSplit.fixedIndex = 0;
-
-    tagViewPopup.datasource = tagsController;
-    tagViewPopup.defaultFont = [NSFont fontWithName: PreferenceController.popoverFontName size: 10];
-    tagViewPopup.canCreateNewTags = YES;
-
-    tagsField.datasource = statementTags;
-    tagsField.defaultFont = [NSFont fontWithName: PreferenceController.popoverFontName size: 10];
-    tagsField.canCreateNewTags = YES;
 
 }
 
@@ -3500,6 +2637,10 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     [self publishContext];
     [self setDefaultUserSettings];
+
+    NSControl *dummy = [[NSControl alloc] init];
+    dummy.tag = 0;
+    [self activateAccountPage: dummy];
 
     [sc stopSpinning];
     [sc clearMessage];
@@ -3567,7 +2708,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     BOOL inFullScreenMode = (mainWindow.styleMask & NSFullScreenWindowMask) != 0;
     [userDefaults setValue: @(inFullScreenMode) forKey: @"startFullScreen"];
-    [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
 
     NSInteger index = toolbarButtons.selectedSegment;
     [LocalSettingsController.sharedSettings setInteger: index forKey: @"activePage"];
@@ -3577,15 +2717,12 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     // Remove explicit bindings and observers to speed up shutdown.
     [categoryController removeObserver: self forKeyPath: @"arrangedObjects.catSum"];
-    [categoryAssignments removeObserver: self forKeyPath: @"selectionIndexes"];
-    [statementsListView unbind: @"dataSource"];
-    [categoryAssignments unbind: @"selectionIndexes"];
-    [statementsListView unbind: @"selectedRows"];
 
-    for (id<PecuniaSectionItem> item in [mainTabItems allValues]) {
-        if ([(id)item respondsToSelector: @selector(terminate)]) {
-            [item terminate];
-        }
+    if ([homeScreenController respondsToSelector: @selector(terminate)]) {
+        [homeScreenController terminate];
+    }
+    if ([overviewController respondsToSelector: @selector(terminate)]) {
+        [overviewController terminate];
     }
     if ([categoryAnalysisController respondsToSelector: @selector(terminate)]) {
         [categoryAnalysisController terminate];
@@ -3598,6 +2735,18 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
     if ([categoryPeriodsController respondsToSelector: @selector(terminate)]) {
         [categoryPeriodsController terminate];
+    }
+    if ([transfersController respondsToSelector: @selector(terminate)]) {
+        [transfersController terminate];
+    }
+    if ([standingOrderController respondsToSelector: @selector(terminate)]) {
+        [standingOrderController terminate];
+    }
+    if ([debitsController respondsToSelector: @selector(terminate)]) {
+        [debitsController terminate];
+    }
+    if ([heatMapController respondsToSelector: @selector(terminate)]) {
+        [heatMapController terminate];
     }
 
     dockIconController = nil;
@@ -3696,44 +2845,15 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     }
 }
 
-- (void)printCurrentAccountsView
-{
-    if (currentSection == nil) {
-        NSPrintInfo *printInfo = [NSPrintInfo sharedPrintInfo];
-        [printInfo setTopMargin: 45];
-        [printInfo setBottomMargin: 45];
-        NSPrintOperation *printOp;
-        NSView           *view = [[BankStatementPrintView alloc] initWithStatements: [categoryAssignments arrangedObjects] printInfo: printInfo];
-        printOp = [NSPrintOperation printOperationWithView: view printInfo: printInfo];
-        [printOp setShowsPrintPanel: YES];
-        [printOp runOperation];
-
-        return;
-    }
-
-    [currentSection print];
-}
-
 - (IBAction)printDocument: (id)sender
 {
     switch ([mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]]) {
         case 0:
-            [self printCurrentAccountsView];
+            [currentSection print];
             break;
 
         case 1: {
             [transfersController print];
-            /*
-             NSPrintInfo	*printInfo = [NSPrintInfo sharedPrintInfo];
-             [printInfo setTopMargin:45];
-             [printInfo setBottomMargin:45];
-             [printInfo setHorizontalPagination:NSFitPagination];
-             [printInfo setVerticalPagination:NSFitPagination];
-             NSPrintOperation *printOp;
-             printOp = [NSPrintOperation printOperationWithView:[[mainTabView selectedTabViewItem] view] printInfo: printInfo];
-             [printOp setShowsPrintPanel:YES];
-             [printOp runOperation];
-             */
             break;
         }
 
@@ -3792,7 +2912,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
     [self updateUnread];
     [accountsView setNeedsDisplay: YES];
-    [categoryAssignments rearrangeObjects];
 }
 
 - (IBAction)showAboutPanel: (id)sender
@@ -3808,6 +2927,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
                                       [mainBundle objectForInfoDictionaryKey: @"CFBundleVersion"]
                                       ]];
         [copyrightText setStringValue: [mainBundle objectForInfoDictionaryKey: @"NSHumanReadableCopyright"]];
+
         gradient.fillColor = [NSColor whiteColor];
     }
 
@@ -3827,20 +2947,11 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 - (IBAction)toggleDetailsPane: (id)sender
 {
-    NSView *firstChild = (rightSplitter.subviews)[0];
-    if (lastSplitterPosition == 0) {
-        [statementDetails setHidden: YES];
-        lastSplitterPosition = NSHeight(firstChild.frame);
+    // Can only be triggered if the overview pane is visible (otherwise the toggle button is hidden).
+    if (![(id)currentSection toggleDetailsPane]) {
         [toggleDetailsButton setImage: [NSImage imageNamed: @"show"]];
-        [rightSplitter adjustSubviews];
         self.toggleDetailsPaneItem.state = NSOffState;
     } else {
-        [statementDetails setHidden: NO];
-        NSRect frame = firstChild.frame;
-        frame.size.height = lastSplitterPosition;
-        firstChild.frame = frame;
-        [rightSplitter adjustSubviews];
-        lastSplitterPosition = 0;
         [toggleDetailsButton setImage: [NSImage imageNamed: @"hide"]];
         self.toggleDetailsPaneItem.state = NSOnState;
     }
@@ -3848,40 +2959,9 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
 - (IBAction)toggleFeature: (id)sender
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-
     if (sender == self.toggleDetailsPaneItem) {
-        [self toggleDetailsPane: nil];
-        [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
+        [self toggleDetailsPane: sender];
     }
-}
-
-- (IBAction)attachmentClicked: (id)sender
-{
-    AttachmentImageView *image = sender;
-
-    if (image.reference == nil) {
-        // No attachment yet. Allow adding one if editing is possible.
-        if (self.canEditAttachment) {
-            NSOpenPanel *panel = [NSOpenPanel openPanel];
-            panel.title = NSLocalizedString(@"AP118", nil);
-            panel.canChooseDirectories = NO;
-            panel.canChooseFiles = YES;
-            panel.allowsMultipleSelection = NO;
-
-            int runResult = [panel runModal];
-            if (runResult == NSOKButton) {
-                [image processAttachment: panel.URL];
-            }
-        }
-    } else {
-        [image openReference];
-    }
-}
-
-- (BOOL)canEditAttachment
-{
-    return categoryAssignments.selectedObjects.count == 1;
 }
 
 - (void)reapplyDefaultIconsForCategory: (Category *)category
@@ -3918,12 +2998,8 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
     NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
 
-    [self setNumberFormatForCell: [valueField cell] positive: positiveAttributes negative: negativeAttributes];
-    [valueField setNeedsDisplay];
     [self setNumberFormatForCell: [headerValueField cell] positive: positiveAttributes negative: negativeAttributes];
     [headerValueField setNeedsDisplay];
-    [self setNumberFormatForCell: [nassValueField cell] positive: positiveAttributes negative: negativeAttributes];
-    [nassValueField setNeedsDisplay];
     [self setNumberFormatForCell: [sumValueField cell] positive: positiveAttributes negative: negativeAttributes];
     [sumValueField setNeedsDisplay];
 }
@@ -3956,58 +3032,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         [accountsView setNeedsDisplay: YES];
         return;
     }
-
-    if (object == categoryAssignments) {
-        static NSIndexSet *oldIdx;
-        
-        if ([keyPath compare: @"selectionIndexes"] == NSOrderedSame) {
-            // Selection did change.
-            // Check if selection really changed
-            NSIndexSet *selIdx = categoryAssignments.selectionIndexes;
-            if (oldIdx == nil && selIdx == nil) {
-                return;
-            }
-            if (oldIdx != nil && selIdx != nil) {
-                if ([oldIdx isEqualTo:selIdx]) {
-                    return;
-                }
-            }
-            oldIdx = selIdx;
-
-            // If the currently selected entry is a new one remove the "new" mark.
-            NSDecimalNumber *firstValue = nil;
-            BankStatementType firstStatementType = StatementType_Standard;
-            for (StatCatAssignment *stat in [categoryAssignments selectedObjects]) {
-                if (firstValue == nil) {
-                    firstValue = stat.statement.value;
-                    firstStatementType = stat.statement.type.intValue;
-                }
-                if ([stat.statement.isNew boolValue]) {
-                    stat.statement.isNew = @NO;
-                    BankAccount *account = stat.statement.account;
-                    account.unread = account.unread - 1;
-                    if (account.unread == 0) {
-                        [self updateUnread];
-                    }
-                }
-            }
-            [accountsView setNeedsDisplay: YES];
-
-            // Check for the type of transaction and adjust remote name display accordingly.
-            if (firstStatementType == StatementType_CreditCard) {
-                [remoteNameLabel setStringValue: NSLocalizedString(@"AP221", nil)];
-            } else {
-                if ([firstValue compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
-                    [remoteNameLabel setStringValue: NSLocalizedString(@"AP208", nil)];
-                } else {
-                    [remoteNameLabel setStringValue: NSLocalizedString(@"AP209", nil)];
-                }
-            }
-
-            [statementDetails setNeedsDisplay: YES];
-            [self updateStatusbar];
-        }
-    }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 #pragma mark - Developer tools
@@ -4135,48 +3160,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
                             );
         }
     }
-}
-
-- (void)updateSorting
-{
-    [sortControl setImage: nil forSegment: sortIndex];
-    sortIndex = [sortControl selectedSegment];
-    NSImage *sortImage = sortAscending ? [NSImage imageNamed: @"sort-indicator-inc"] : [NSImage imageNamed: @"sort-indicator-dec"];
-    [sortControl setImage: sortImage forSegment: sortIndex];
-
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setValue: @((int)sortIndex) forKey: @"mainSortIndex"];
-    [userDefaults setValue: @(sortAscending) forKey: @"mainSortAscending"];
-
-    NSString *key;
-    switch (sortIndex) {
-        case 1:
-            statementsListView.canShowHeaders = NO;
-            key = @"statement.remoteName";
-            break;
-
-        case 2:
-            statementsListView.canShowHeaders = NO;
-            key = @"statement.purpose";
-            break;
-
-        case 3:
-            statementsListView.canShowHeaders = NO;
-            key = @"statement.categoriesDescription";
-            break;
-
-        case 4:
-            statementsListView.canShowHeaders = NO;
-            key = @"value";
-            break;
-
-        default: {
-            statementsListView.canShowHeaders = YES;
-            key = @"statement.date";
-            break;
-        }
-    }
-    [categoryAssignments setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
 }
 
 - (BOOL)save

@@ -371,7 +371,10 @@
             assignEntriesButton.title = NSLocalizedString(@"AP551", nil);
         }
         [assignEntriesButton setEnabled: [assignPreviewController.arrangedObjects count] > 0];
+
+        return;
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 #pragma mark -

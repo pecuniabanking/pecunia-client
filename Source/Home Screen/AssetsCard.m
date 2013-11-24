@@ -891,7 +891,9 @@ extern void *UserDefaultsBindingContext;
         if ([keyPath isEqualToString: @"assetGraph2"]) {
             [self updateUI];
         }
+        return;
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 @end

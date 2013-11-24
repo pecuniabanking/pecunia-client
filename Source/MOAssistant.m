@@ -518,7 +518,6 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         return nil;
     }
     
-    // write encrypted content to pecunia data file
     NSData *encryptedData = [NSData dataWithBytes: encryptedBytes length: encryptedSize + 64];
     free(encryptedBytes);
     return encryptedData;

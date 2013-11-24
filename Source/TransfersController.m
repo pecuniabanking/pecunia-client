@@ -1843,7 +1843,10 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             sendTransfersButton.title = NSLocalizedString(@"AP416", nil);
         }
         [sendTransfersButton setEnabled: [pendingTransfers.arrangedObjects count] > 0];
+
+        return;
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 #pragma mark -

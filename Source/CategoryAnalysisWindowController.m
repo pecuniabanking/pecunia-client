@@ -454,7 +454,9 @@ extern void *UserDefaultsBindingContext;
         if ([keyPath isEqualToString: @"colors"]) {
             [self updateColors];
         }
+        return;
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 #pragma mark -

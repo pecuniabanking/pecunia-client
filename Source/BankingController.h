@@ -21,52 +21,30 @@
 
 #import "PecuniaSectionItem.h"
 
-@class Account;
-@class BankAccount;
-@class BankUser;
-@class NewBankUserController;
-@class LogController;
-@class Category;
 @class MCEMTreeController;
+@class SynchronousScrollView;
+@class PecuniaSplitView;
 @class TimeSliceManager;
+@class RoundedSidebar;
+@class BWGradientBox;
 @class CategoryView;
-@class TransfersController;
-@class DebitsController;
 @class DockIconController;
 
-@class StatementsListView;
-@class RoundedOuterShadowView;
-
 @class HomeScreenController;
+@class StatementsOverviewController;
 @class CategoryAnalysisWindowController;
 @class CategoryRepWindowController;
 @class CategoryDefWindowController;
 @class CategoryPeriodsWindowController;
+@class TransfersController;
 @class StandingOrderController;
+@class DebitsController;
 @class CategoryHeatMapController;
-
-@class RoundedSidebar;
-@class SideToolbarView;
-@class BWGradientBox;
-@class SynchronousScrollView;
-@class StatementDetails;
-
-@class AttachmentImageView;
-@class TagView;
-
-@interface PecuniaSplitView : NSSplitView
-- (NSColor *)dividerColor;
-
-@property NSUInteger fixedIndex; // The index of the subview that should not be resized when the splitview size changes.
-
-@end
 
 @interface BankingController : NSObject
 {
-    IBOutlet NSArrayController      *categoryAssignments;
     IBOutlet NSWindow               *mainWindow;
     IBOutlet NSTabView              *mainTabView;
-    IBOutlet CategoryView           *accountsView;
     IBOutlet MCEMTreeController     *categoryController;
     IBOutlet SynchronousScrollView  *accountsScrollView;
     IBOutlet PecuniaSplitView       *mainVSplit;
@@ -74,18 +52,13 @@
     IBOutlet TimeSliceManager       *timeSlicer;
     IBOutlet NSSegmentedControl     *catActions;
     IBOutlet NSImageView            *lockImage;
-    IBOutlet NSTextField            *valueField;
     IBOutlet NSTextField            *headerValueField;
     IBOutlet NSTextField            *sumValueField;
-    IBOutlet NSTextField            *nassValueField;
     IBOutlet NSTextField            *assignValueField;
     IBOutlet NSTextField            *earningsField;
     IBOutlet NSTextField            *spendingsField;
-    IBOutlet NSTextField            *remoteNameLabel;
-    IBOutlet PecuniaSplitView       *rightSplitter;
+    IBOutlet NSView                 *sectionPlaceholder;
     IBOutlet NSView                 *rightPane;
-    IBOutlet StatementDetails       *standardDetails;
-    IBOutlet RoundedOuterShadowView *statementsListViewHost;
     IBOutlet NSSegmentedControl     *toolbarButtons;
 
     // About panel.
@@ -94,9 +67,6 @@
     IBOutlet NSTextView    *aboutText;
     IBOutlet NSTextField   *versionText;
     IBOutlet NSTextField   *copyrightText;
-
-    IBOutlet StatementsListView *statementsListView;
-    IBOutlet NSSegmentedControl *sortControl;
 
     IBOutlet NSButton       *statementsButton;
     IBOutlet NSButton       *graph1Button;
@@ -109,25 +79,13 @@
     IBOutlet NSMenuItem *toggleFullscreenItem;
     IBOutlet NSMenuItem *developerMenu;
 
-    IBOutlet NSWindow *licenseWindow;
     IBOutlet NSButton *toggleDetailsButton;
-
-    IBOutlet NSArrayController *statementTags;
-    IBOutlet NSArrayController *tagsController;
-    IBOutlet NSButton          *tagButton;
-    IBOutlet TagView           *tagsField;
-    IBOutlet TagView           *tagViewPopup;
-    IBOutlet NSView            *tagViewHost;
-
-    IBOutlet AttachmentImageView *attachment1;
-    IBOutlet AttachmentImageView *attachment2;
-    IBOutlet AttachmentImageView *attachment3;
-    IBOutlet AttachmentImageView *attachment4;
 
 @private
     NSMutableDictionary    *mainTabItems;
 
     HomeScreenController             *homeScreenController;
+    StatementsOverviewController     *overviewController;
     CategoryAnalysisWindowController *categoryAnalysisController;
     CategoryRepWindowController      *categoryReportingController;
     CategoryDefWindowController      *categoryDefinitionController;
@@ -139,7 +97,8 @@
 
 }
 
-@property (weak) IBOutlet NSMenuItem *toggleDetailsPaneItem;
+@property (strong) IBOutlet CategoryView *accountsView;
+@property (strong) IBOutlet NSMenuItem   *toggleDetailsPaneItem;
 
 @property (nonatomic, copy) NSDecimalNumber          *saveValue;
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -154,7 +113,6 @@
 - (IBAction)changeAccount: (id)sender;
 - (IBAction)deleteAccount: (id)sender;
 - (IBAction)editPreferences: (id)sender;
-- (IBAction)sortingChanged: (id)sender;
 
 - (IBAction)activateMainPage: (id)sender;
 - (IBAction)activateAccountPage: (id)sender;
@@ -172,8 +130,6 @@
 
 - (IBAction)donate: (id)sender;
 - (IBAction)splitPurpose: (id)sender;
-
-- (IBAction)filterStatements: (id)sender;
 
 - (IBAction)manageCategories: (id)sender;
 
@@ -200,8 +156,6 @@
 - (IBAction)creditCardSettlements: (id)sender;
 
 - (NSArray *)selectedNodes;
-- (BankAccount *)selectBankAccountWithNumber: (NSString *)accNum bankCode: (NSString *)code;
-- (void)awakeFromNib;
 - (void)statementsNotification: (NSNotification *)notification;
 - (Category *)getBankingRoot;
 - (void)updateNotAssignedCategory;
@@ -214,6 +168,7 @@
 - (void)syncAllAccounts;
 - (void)publishContext;
 - (void)updateUnread;
+- (void)updateStatusbar;
 - (BOOL)checkForUnhandledTransfersAndSend;
 - (void)migrate;
 - (void)checkBalances: (NSArray *)resultList;

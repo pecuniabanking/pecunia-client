@@ -119,7 +119,9 @@ extern void *UserDefaultsBindingContext;
     if (context == SetRowBindingContext) {
         [self selectionChanged];
         [self setNeedsDisplay: YES];
+        return;
     }
+
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"colors"]) {
             [self updateTextColors];
@@ -139,7 +141,9 @@ extern void *UserDefaultsBindingContext;
         }
 
         [self setNeedsDisplay: YES];
+        return;
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 - (void)setHeaderHeight: (int)aHeaderHeight

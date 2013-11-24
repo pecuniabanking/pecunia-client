@@ -18,9 +18,7 @@
  */
 
 /**
- * This color popup uses ideas from BFColorPicker written by Balázs Faludi. His color picker requires
- * 10.7 to run (e.g. it uses NSPopover), so I had to reimplement it with MAAttachedWindow.
- * Turned out to be a lot simpler, without using private APIs.
+ * This color popup uses ideas/parts from BFColorPicker written by Balázs Faludi.
  */
 
 #import "ColorPopup.h"

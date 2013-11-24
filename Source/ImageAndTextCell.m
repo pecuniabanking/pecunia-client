@@ -94,7 +94,9 @@ extern void *UserDefaultsBindingContext;
             [self setupGradients];
             [[self controlView] setNeedsDisplay: YES];
         }
+        return;
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 - (NSRect)imageFrameForCellFrame: (NSRect)cellFrame

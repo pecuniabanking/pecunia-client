@@ -88,6 +88,17 @@ extern void *UserDefaultsBindingContext;
 
 - (void)dealloc
 {
+    [self removeBindings];
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObserver: self forKeyPath: @"showHeadersInLists"];
+    [defaults removeObserver: self forKeyPath: @"autoCasing"];
+}
+
+#pragma mark - Bindings, KVO and KVC
+
+- (void)removeBindings
+{
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.date"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteName"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.floatingPurpose"];
@@ -106,14 +117,7 @@ extern void *UserDefaultsBindingContext;
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.transactionText"];
 
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults removeObserver: self forKeyPath: @"showHeadersInLists"];
-    [defaults removeObserver: self forKeyPath: @"autoCasing"];
 }
-
-#pragma mark -
-#pragma mark Bindings, KVO and KVC
 
 - (void)   bind: (NSString *)binding
        toObject: (id)observableObject
@@ -150,6 +154,15 @@ extern void *UserDefaultsBindingContext;
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.transactionText" options: 0 context: nil];
     } else {
         [super bind: binding toObject: observableObject withKeyPath: keyPath options: options];
+    }
+}
+
+- (void)unbind: (NSString *)binding
+{
+    if ([binding isEqualToString: @"dataSource"]) {
+        [self removeBindings];
+    } else {
+        [super unbind: binding];
     }
 }
 

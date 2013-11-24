@@ -406,17 +406,19 @@
     }
 
     if ([keyPath isEqualToString: @"selectedObjects"]) {
-        for (NSUInteger i = 0; i < self.textStorage.length; ) {
-            NSRange       effectiveRange;
-            TagAttachment *attachment = [self.textStorage attribute: NSAttachmentAttributeName
-                                                            atIndex: i
-                                                     effectiveRange: &effectiveRange];
-            if (attachment != nil) {
-                attachment.selected = [datasource.selectedObjects containsObject: attachment.representedObject];
+        if (datasource.selectedObjects.count > 0) {
+            for (NSUInteger i = 0; i < self.textStorage.length; ) {
+                NSRange       effectiveRange;
+                TagAttachment *attachment = [self.textStorage attribute: NSAttachmentAttributeName
+                                                                atIndex: i
+                                                         effectiveRange: &effectiveRange];
+                if (attachment != nil) {
+                    attachment.selected = [datasource.selectedObjects containsObject: attachment.representedObject];
+                }
+                i += effectiveRange.length;
             }
-            i += effectiveRange.length;
+            [self setNeedsDisplay: YES];
         }
-        [self setNeedsDisplay: YES];
         return;
     }
 

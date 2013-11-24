@@ -25,12 +25,13 @@
 
 @implementation StatSplitController
 
-- (id)initWithStatement: (BankStatement *)stat view: (NSView *)view;
+- (id)initWithStatement: (BankStatement *)stat
 {
     self = [super initWithWindowNibName: @"StatSplitController"];
-    managedObjectContext = [[MOAssistant assistant] context];
-    statement = stat;
-    catView = view;
+    if (self != nil) {
+        managedObjectContext = [[MOAssistant assistant] context];
+        statement = stat;
+    }
     return self;
 }
 
@@ -100,7 +101,6 @@
             if (cat !=  nil) {
                 [cat invalidateBalance];
                 [Category updateCatValues];
-                //[catView setNeedsDisplay: YES ];
             }
         }
     }
@@ -115,7 +115,6 @@
         if (cat !=  nil) {
             [cat invalidateBalance];
             [Category updateCatValues];
-            //[catView setNeedsDisplay: YES ];
         }
     }
 }

@@ -1018,6 +1018,7 @@ typedef enum {
             return;
         }
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 @end

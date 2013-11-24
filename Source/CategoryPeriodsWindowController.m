@@ -183,7 +183,9 @@ extern void *UserDefaultsBindingContext;
         if ([keyPath isEqualToString: @"showHiddenCategories"]) {
             [valueGrid reloadData];
         }
+        return;
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 - (void)updateColors

@@ -220,7 +220,11 @@ extern NSString *const CategoryKey;
                         change: (NSDictionary *)change
                        context: (void *)context
 {
-    smallCategoryIcon.image = categoryIcon.image;
+    if ([keyPath isEqualToString: @"image"]) {
+        smallCategoryIcon.image = categoryIcon.image;
+        return;
+    }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 - (void)openImageLibrary

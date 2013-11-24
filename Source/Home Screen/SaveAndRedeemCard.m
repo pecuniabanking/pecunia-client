@@ -2711,7 +2711,9 @@ extern void *UserDefaultsBindingContext;
             || [keyPath isEqualToString: @"specialRedemptions"]) {
             [self updateGraphs];
         }
+        return;
     }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 @end

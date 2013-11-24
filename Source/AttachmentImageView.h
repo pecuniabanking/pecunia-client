@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,13 +19,19 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "BankingController.h"
+@interface AttachmentImageView : NSImageView <NSDraggingSource, NSDraggingDestination>
+{
+@private
+    id       observedObject;
+    NSString *observedKeyPath;
+    BOOL     highlight;
+    BOOL     dragPending;
+}
 
-@interface BankingController (Tabs)
+@property (nonatomic, strong) NSString *reference;
 
-- (void)activateHomeScreenTab;
-- (void)activateTransfersTab;
-- (void)activateStandingOrdersTab;
-- (void)activateDebitsTab;
+- (void)processAttachment: (NSURL *)url;
+- (void)openReference;
 
 @end
+
