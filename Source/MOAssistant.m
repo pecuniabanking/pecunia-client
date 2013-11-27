@@ -465,7 +465,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     NSArray                      *stores = [coord persistentStores];
     NSPersistentStore            *store;
     for (store in stores) {
-        [coord removePersistentStore: store error: &error];
+        //[coord removePersistentStore: store error: &error];
     }
     if (error) {
         NSAlert *alert = [NSAlert alertWithError: error];
