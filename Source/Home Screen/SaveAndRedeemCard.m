@@ -2702,7 +2702,9 @@ extern void *UserDefaultsBindingContext;
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"colors"]) {
             for (PrincipalBalanceGraph *child in self.subviews) {
-                [child updateColors];
+                if ([child respondsToSelector: @selector(updateColors)]) {
+                    [child updateColors];
+                }
             }
         }
 
