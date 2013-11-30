@@ -1325,20 +1325,20 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (void)startDonationTransfer
 {
-    if (![self prepareTransferOfType: TransferTypeStandard]) {
+    if (![self prepareTransferOfType: TransferTypeSEPA]) {
         return;
     }
 
-    BOOL result = [transactionController newTransferOfType: TransferTypeStandard];
+    BOOL result = [transactionController newTransferOfType: TransferTypeSEPA];
     if (result) {
         Transfer *transfer = transactionController.currentTransfer;
-        transfer.remoteAccount = @"1016381558";
-        transfer.remoteBankCode = @"12030000";
+        transfer.remoteIBAN = @"DE43120300001016381558";
+        transfer.remoteBIC = @"BYLADEM1001";
         transfer.remoteBankName = [[HBCIClient hbciClient] bankNameForCode: @"12030000" inCountry: @"de"];
         transfer.remoteName = @"Frank Emminghaus";
         transfer.purpose1 = @"Spende fuer Pecunia";
 
-        [self prepareSourceAccountSelector: nil forTransferType: TransferTypeStandard];
+        [self prepareSourceAccountSelector: nil forTransferType: TransferTypeSEPA];
     }
 
     [rightPane showFormular];

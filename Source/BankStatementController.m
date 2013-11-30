@@ -137,7 +137,6 @@
 
     // add to account
     [newStatement addToAccount: account];
-    newStatement.isNew = @(1);
 
     [self arrangeStatements];
 

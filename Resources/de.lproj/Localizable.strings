@@ -121,7 +121,7 @@ AP177 = "Bitte wählen Sie die Datei %@ aus";
 
 // Banking common + business transactions
 // AP200..AP249
-AP200 = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß 0123456789.,&-/+*$%";
+AP200 = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß 0123456789.,&-/+*$%():?";
 AP201 = "Unbekannte Bankkennung";
 AP202 = "Die Bankkennung %@ für die Bankleitzahl %@ ist nicht vorhanden. Bitte legen Sie sie erneut an";
 AP203 = "Pecunia ermittelt jetzt für jede Bankkennung Informationen über erlaubte Geschäftsvorfälle, TAN-Methoden etc. Dazu müssen Sie evtl. Ihre PINs eingeben (falls nicht im Schlüsselbund gespeichert).";
