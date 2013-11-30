@@ -3058,7 +3058,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
         }
 
         if (deleteStatement) {
-            BOOL isManualAccount = statement.account.isManual;
+            BOOL isManualAccount = [statement.account.isManual boolValue];
             BankAccount *account = statement.account;
             [affectedAccounts addObject: account]; // Automatically ignores duplicates.
 
