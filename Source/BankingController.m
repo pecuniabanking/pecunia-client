@@ -741,7 +741,11 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
     [userDefaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
 
     if ([userDefaults objectForKey: @"mainSortIndex"]) {
-        sortControl.selectedSegment = [[userDefaults objectForKey: @"mainSortIndex"] intValue];
+        sortIndex = [[userDefaults objectForKey: @"mainSortIndex"] intValue];
+        if (sortIndex < 0 || sortIndex >= sortControl.segmentCount) {
+            sortIndex = 0;
+        }
+        sortControl.selectedSegment = sortIndex;
     }
 
     if ([userDefaults objectForKey: @"mainSortAscending"]) {
