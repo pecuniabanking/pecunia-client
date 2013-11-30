@@ -102,7 +102,11 @@ extern void *UserDefaultsBindingContext;
             groupingSlider.intValue = groupingInterval;
         }
         if (values[@"sortIndex"]) {
-            sortControl.selectedSegment = [values[@"sortIndex"] intValue];
+            sortIndex = [values[@"sortIndex"] intValue];
+            if (sortIndex < 0 || sortIndex >= sortControl.segmentCount) {
+                sortIndex = 0;
+            }
+            sortControl.selectedSegment = sortIndex;
         }
         if (values[@"sortAscending"]) {
             sortAscending = ![values[@"sortAscending"] boolValue];

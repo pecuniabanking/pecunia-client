@@ -68,7 +68,11 @@ extern void *UserDefaultsBindingContext;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults objectForKey: @"mainSortIndex"]) {
-        sortControl.selectedSegment = [[userDefaults objectForKey: @"mainSortIndex"] intValue];
+        sortIndex = [[userDefaults objectForKey: @"mainSortIndex"] intValue];
+        if (sortIndex < 0 || sortIndex >= sortControl.segmentCount) {
+            sortIndex = 0;
+        }
+        sortControl.selectedSegment = sortIndex;
     }
 
     if ([userDefaults objectForKey: @"mainSortAscending"]) {
