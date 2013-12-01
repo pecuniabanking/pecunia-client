@@ -1789,11 +1789,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (transactionController.currentTransfer.type.intValue == TransferTypeEU ||
         transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
         if (textField == accountNumber) {
-            NSString *s = [textField stringValue];
-            if ([s hasPrefix: @"DE"]) {
-                bankName = [[HBCIClient hbciClient] bankNameForCode: [s substringWithRange: NSMakeRange(4, 8)]
-                                                          inCountry: transactionController.currentTransfer.remoteCountry];
-            }
+            bankName = [[HBCIClient hbciClient] bankNameForIBAN: textField.stringValue];
         }
     } else {
         if (textField == bankCode) {

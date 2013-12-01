@@ -317,8 +317,7 @@
     }
     if (currentStatement.remoteAccount && currentStatement.remoteBankCode) {
         res = [[HBCIClient hbciClient] checkAccount: currentStatement.remoteAccount
-                                            forBank: currentStatement.remoteBankCode
-                                          inCountry: currentStatement.remoteCountry];
+                                            forBank: currentStatement.remoteBankCode];
 
 
         if (res == NO) {

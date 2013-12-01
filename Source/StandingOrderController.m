@@ -583,21 +583,16 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
-    NSTextField *textField = [aNotification object];
-    NSString    *bankName;
-
-    if ([textField tag] == 100) {
-        bankName = [[HBCIClient hbciClient] bankNameForCode: [textField stringValue] inCountry: currentOrder.account.country];
-        if (bankName) {
-            currentOrder.remoteBankName = bankName;
-        }
+    NSInteger tag = [aNotification.object tag];
+    if (tag == 11) {
+        NSString *bankName = [[HBCIClient hbciClient] bankNameForIBAN: [aNotification.object stringValue]];
+        currentOrder.remoteBankName = bankName == nil ? @"" : bankName;
     }
-    currentOrder.isChanged = @YES;
 }
 
 - (void)controlTextDidChange: (NSNotification *)aNotification
 {
-    if ([currentOrder.isChanged boolValue] == NO) {
+    if (!currentOrder.isChanged.boolValue) {
         currentOrder.isChanged = @YES;
     }
 }
@@ -616,36 +611,35 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
                         NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
-    // do not check remote account for EU transfers, instead IBAN
-    if (stord.remoteAccount == nil) {
+    if (stord.remoteIBAN == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP55", nil),
                         NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
 
-    if (stord.remoteBankCode == nil) {
+    if (stord.remoteBIC == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP56", nil),
                         NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
 
-    if ( (value = stord.value) == nil) {
+    value = stord.value;
+    if (value == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP57", nil),
                         NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
 
-    if ([value doubleValue] <= 0) {
+    if (value.doubleValue <= 0) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP58", nil),
                         NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
 
-    // purpose?
     if (stord.purpose1 == nil || [stord.purpose1 length] == 0) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP76", nil),
@@ -653,13 +647,10 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
         return NO;
     }
 
-    res = [[HBCIClient hbciClient] checkAccount: stord.remoteAccount
-                                        forBank: stord.remoteBankCode
-                                      inCountry: @"DE"];
-
-    if (res == NO) {
+    res = [[HBCIClient hbciClient] checkIBAN: stord.remoteIBAN];
+    if (!res) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
-                        NSLocalizedString(@"AP60", nil),
+                        NSLocalizedString(@"AP70", nil),
                         NSLocalizedString(@"AP61", nil), nil, nil);
         return NO;
     }
@@ -861,33 +852,43 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 - (void)ordersNotification: (NSNotification *)notification
 {
-    BankQueryResult     *result;
-    StatusBarController *sc = [StatusBarController controller];
+    StatusBarController *status = [StatusBarController controller];
 
     [[NSNotificationCenter defaultCenter] removeObserver: self name: PecuniaStatementsNotification object: nil];
 
     NSArray *resultList = [notification object];
     if (resultList == nil) {
-        [sc stopSpinning];
-        [sc clearMessage];
+        [status stopSpinning];
+        [status clearMessage];
         self.requestRunning = @NO;
         return;
     }
 
-    // delete old orders
+    // Delete old orders.
     for (StandingOrder *order in [orderController arrangedObjects]) {
-        //[orderController removeObject:order ];
         [managedObjectContext deleteObject: order];
     }
-    for (result in resultList) {
+
+    for (BankQueryResult *result in resultList) {
         [result.account updateStandingOrders: result.standingOrders];
     }
-    [orderController fetch: self];
-    //[orderController rearrangeObjects];
+    // After updating all accounts schedule a delayed cleanup.
+    // Delayed, because we may need new HBCI requests that cannot run while we are here.
+    [self performSelector: @selector(validateNewOrders) withObject: nil afterDelay: 0.5];
+    [orderController prepareContent];
 
-    [sc stopSpinning];
-    [sc clearMessage];
+    [status stopSpinning];
+    [status clearMessage];
     self.requestRunning = @NO;
+}
+
+- (void)validateNewOrders
+{
+    for (StandingOrder *order in [orderController arrangedObjects]) {
+        if (order.remoteBankName == nil) {
+            order.remoteBankName = [[HBCIClient hbciClient] bankNameForIBAN: order.remoteIBAN];
+        }
+    }
 }
 
 #pragma mark -

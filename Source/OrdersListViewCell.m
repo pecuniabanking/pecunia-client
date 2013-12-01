@@ -142,8 +142,8 @@ static CurrencyValueTransformer *currencyTransformer;
     [bankNameLabel setToolTip: [details valueForKey: StatementRemoteBankNameKey]];
 
 
-    remoteBankCode = [[details valueForKey: StatementRemoteBankCodeKey] copy];
-    remoteAccount = [[details valueForKey: StatementRemoteAccountKey] copy];
+    remoteBIC = [[details valueForKey: StatementRemoteBICKey] copy];
+    remoteIBAN = [[details valueForKey: StatementRemoteIBANKey] copy];
     purpose = [[details valueForKey: StatementPurposeKey] copy];
 
     id color = [details valueForKey: StatementColorKey];
@@ -261,7 +261,7 @@ static CurrencyValueTransformer *currencyTransformer;
     bankCodeTitle = [NSString stringWithFormat: @"\t%@ ", NSLocalizedString(@"AP400", nil)];
 
     [accountLabel setToolTip: [NSString stringWithFormat: @"%@%@%@%@",
-                               accountTitle, remoteAccount, bankCodeTitle, remoteBankCode]];
+                               accountTitle, remoteIBAN, bankCodeTitle, remoteBIC]];
 
     // Construct a formatted string for the account label.
     NSMutableAttributedString *accountString = [[NSMutableAttributedString alloc] init];
@@ -277,13 +277,13 @@ static CurrencyValueTransformer *currencyTransformer;
     [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: accountTitle
                                                                            attributes: normalAttributes]
      ];
-    [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: remoteAccount
+    [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: remoteIBAN
                                                                            attributes: boldAttributes]
      ];
     [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: bankCodeTitle
                                                                            attributes: normalAttributes]
      ];
-    [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: remoteBankCode
+    [accountString appendAttributedString: [[NSAttributedString alloc] initWithString: remoteBIC
                                                                            attributes: boldAttributes]
      ];
 

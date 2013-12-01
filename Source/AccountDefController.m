@@ -320,7 +320,7 @@
     HBCIClient *hbciClient = [HBCIClient hbciClient];
 
 
-    if ([hbciClient checkIBAN: account.iban] == NO) {
+    if (![hbciClient checkIBAN: account.iban]) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP70", nil),
                         NSLocalizedString(@"AP61", nil), nil, nil);
@@ -328,7 +328,7 @@
     }
 
     // check account number
-    res = [hbciClient checkAccount: account.accountNumber forBank: account.bankCode inCountry: account.country];
+    res = [hbciClient checkAccount: account.accountNumber forBank: account.bankCode];
     if (res == NO) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP60", nil),

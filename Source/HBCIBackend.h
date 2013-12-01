@@ -47,13 +47,13 @@
 - (BankInfo *)infoForBankCode: (NSString *)bankCode inCountry: (NSString *)country;
 - (BankSetupInfo *)getBankSetupInfo: (NSString *)bankCode;
 - (NSString *)bankNameForCode: (NSString *)bankCode inCountry: (NSString *)country;
-- (NSString *)bankNameForBIC: (NSString *)bic inCountry: (NSString *)country;
+- (NSString *)bankNameForIBAN: (NSString *)iban;
 - (BankParameter *)getBankParameterForUser: (BankUser *)user;
 - (PecuniaError *)updateTanMethodsForUser: (BankUser *)user;
 - (PecuniaError *)updateTanMediaForUser: (BankUser *)user;
 - (PecuniaError *)sendCollectiveTransfer: (NSArray *)transfers;
 
-- (BOOL)checkAccount: (NSString *)accountNumber forBank: (NSString *)bankCode inCountry: (NSString *)country;
+- (BOOL)checkAccount: (NSString *)accountNumber forBank: (NSString *)bankCode;
 - (BOOL)checkIBAN: (NSString *)iban;
 
 - (BOOL)isTransferSupported: (TransferType)tt forAccount: (BankAccount *)account;

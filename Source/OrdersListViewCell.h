@@ -52,8 +52,8 @@
 
     // Need to keep these values from the details dictionary to rebuild the attributed string
     // for different labels depending on whether we are selected or not.
-    NSString *remoteBankCode;
-    NSString *remoteAccount;
+    NSString *remoteBIC;
+    NSString *remoteIBAN;
     NSString *purpose;
 
     NSUInteger index;

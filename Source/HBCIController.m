@@ -214,10 +214,12 @@ NSString * escapeSpecial(NSString *s)
     return info.name;
 }
 
-- (NSString *)bankNameForBIC: (NSString *)bic inCountry: (NSString *)country
+- (NSString *)bankNameForIBAN: (NSString *)iban
 {
-    // is not supported
-    return @"";
+    if (iban.length > 12 && [iban hasPrefix: @"DE"]) {
+        return [self bankNameForCode: [iban substringWithRange: NSMakeRange(4, 8)] inCountry: @""];
+    }
+    return NSLocalizedString(@"AP13", nil);
 }
 
 - (NSArray *)getAccountsForUser: (BankUser *)user
@@ -762,7 +764,7 @@ NSString * escapeSpecial(NSString *s)
     return allSent;
 }
 
-- (BOOL)checkAccount: (NSString *)accountNumber forBank: (NSString *)bankCode inCountry: (NSString *)country
+- (BOOL)checkAccount: (NSString *)accountNumber forBank: (NSString *)bankCode
 {
     PecuniaError *error = nil;
 
@@ -771,14 +773,16 @@ NSString * escapeSpecial(NSString *s)
     }
     NSString *cmd = [NSString stringWithFormat: @"<command name=\"checkAccount\"><bankCode>%@</bankCode><accountNumber>%@</accountNumber></command>", bankCode, accountNumber];
     NSNumber *result = [bridge syncCommand: cmd error: &error];
-    if (error) {
-        // Bei Fehlern sollte die Prüfung nicht die Buchung verhindern
+    if (error != nil) {
+        // A command error should not block the process. We just can't have an account validation then.
         [[MessageLog log] addMessage: [NSString stringWithFormat: @"Error checking account %@, bankCode %@", accountNumber, bankCode] withLevel: LogLevel_Warning];
         return YES;
     }
-    if (result) {
-        return [result boolValue];
-    } else {return NO; }
+    if (result != nil) {
+        return result.boolValue;
+    } else {
+        return NO;
+    }
 }
 
 - (BOOL)checkIBAN: (NSString *)iban

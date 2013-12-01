@@ -322,10 +322,11 @@
 
     // Determine the remote bank name again.
     NSString *bankName;
-    if (transferType == TransferTypeEU) {
-        bankName = [[HBCIClient hbciClient] bankNameForBIC: currentTransfer.remoteBIC inCountry: currentTransfer.remoteCountry];
+    if (transferType == TransferTypeEU || transferType == TransferTypeSEPA) {
+        bankName = [[HBCIClient hbciClient] bankNameForIBAN: currentTransfer.remoteIBAN];
     } else {
-        bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode inCountry: currentTransfer.remoteCountry];
+        bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode
+                                                  inCountry: currentTransfer.remoteCountry];
     }
     if (bankName != nil) {
         currentTransfer.remoteBankName = bankName;
@@ -347,10 +348,11 @@
 
     // Determine the remote bank name again.
     NSString *bankName;
-    if (transferType == TransferTypeEU) {
-        bankName = [[HBCIClient hbciClient] bankNameForBIC: currentTransfer.remoteBIC inCountry: currentTransfer.remoteCountry];
+    if (transferType == TransferTypeEU || transferType == TransferTypeSEPA) {
+        bankName = [[HBCIClient hbciClient] bankNameForIBAN: currentTransfer.remoteIBAN];
     } else {
-        bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode inCountry: currentTransfer.remoteCountry];
+        bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode
+                                                  inCountry: currentTransfer.remoteCountry];
     }
     if (bankName != nil) {
         currentTransfer.remoteBankName = bankName;
@@ -587,7 +589,7 @@
     }
     */
 
-    // Prüfen, ob das Zieldatum auf ein Wochenende fällt
+    // Check if the target date touches a weekend.
     if (transferType == TransferTypeDated) {
         NSCalendar *gregorian = [[NSCalendar alloc]
                                  initWithCalendarIdentifier: NSGregorianCalendar];
@@ -629,24 +631,38 @@
     }
 
 
-    // verify account and bank information
-    if (activeType != TransferTypeEU) {
-        // verify accounts, but only for available countries
-        if ([currentTransfer.remoteCountry caseInsensitiveCompare: @"de"] == NSOrderedSame ||
-            [currentTransfer.remoteCountry caseInsensitiveCompare: @"at"] == NSOrderedSame ||
-            [currentTransfer.remoteCountry caseInsensitiveCompare: @"ch"] == NSOrderedSame ||
-            [currentTransfer.remoteCountry caseInsensitiveCompare: @"ca"] == NSOrderedSame) {
-            res = [[HBCIClient hbciClient] checkAccount: currentTransfer.remoteAccount
-                                                forBank: currentTransfer.remoteBankCode
-                                              inCountry: currentTransfer.remoteCountry];
+    // Verify account/bank information.
+    switch (activeType)
+    {
+        case TransferTypeEU:
+            break;
 
-            if (res == NO) {
+        case TransferTypeSEPA:
+            res = [[HBCIClient hbciClient] checkIBAN: currentTransfer.remoteIBAN];
+            if (!res) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
-                                NSLocalizedString(@"AP60", nil),
+                                NSLocalizedString(@"AP70", nil),
                                 NSLocalizedString(@"AP61", nil), nil, nil);
                 return NO;
             }
-        }
+            break;
+
+        default:
+            // TODO: is it still necessary to limit account check to those countries?
+            if ([currentTransfer.remoteCountry caseInsensitiveCompare: @"de"] == NSOrderedSame ||
+                [currentTransfer.remoteCountry caseInsensitiveCompare: @"at"] == NSOrderedSame ||
+                [currentTransfer.remoteCountry caseInsensitiveCompare: @"ch"] == NSOrderedSame ||
+                [currentTransfer.remoteCountry caseInsensitiveCompare: @"ca"] == NSOrderedSame) {
+                res = [[HBCIClient hbciClient] checkAccount: currentTransfer.remoteAccount
+                                                    forBank: currentTransfer.remoteBankCode];
+
+                if (!res) {
+                    NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+                                    NSLocalizedString(@"AP60", nil),
+                                    NSLocalizedString(@"AP61", nil), nil, nil);
+                    return NO;
+                }
+            }
     }
     return YES;
 }
@@ -959,6 +975,7 @@
     donation = NO;
 }
 
+// TODO: probably obsolete.
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
     NSTextField *te = [aNotification object];
@@ -968,16 +985,18 @@
         return;
     }
 
-    if (transferType == TransferTypeEU) {
-        bankName = [[HBCIClient hbciClient] bankNameForBIC: [te stringValue] inCountry: currentTransfer.remoteCountry];
+    if (transferType == TransferTypeEU || transferType == TransferTypeSEPA) {
+        bankName = [[HBCIClient hbciClient] bankNameForIBAN: te.stringValue];
     } else {
-        bankName = [[HBCIClient hbciClient] bankNameForCode: [te stringValue] inCountry: currentTransfer.remoteCountry];
+        bankName = [[HBCIClient hbciClient] bankNameForCode: te.stringValue
+                                                  inCountry: currentTransfer.remoteCountry];
     }
     if (bankName) {
         currentTransfer.remoteBankName = bankName;
     }
 }
 
+// TODO: probably obsolete.
 - (void)controlTextDidChange: (NSNotification *)aNotification
 {
     NSTextField *te = [aNotification object];
@@ -1009,10 +1028,11 @@
         [currentTransfer copyFromTemplate: template withLimits: limits];
 
         // get Bank Name
-        if (transferType == TransferTypeEU) {
-            bankName = [[HBCIClient hbciClient] bankNameForBIC: currentTransfer.remoteBIC inCountry: currentTransfer.remoteCountry];
+        if (transferType == TransferTypeEU || transferType == TransferTypeSEPA) {
+            bankName = [[HBCIClient hbciClient] bankNameForIBAN: currentTransfer.remoteIBAN];
         } else {
-            bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode inCountry: currentTransfer.remoteCountry];
+            bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode
+                                                      inCountry: currentTransfer.remoteCountry];
         }
         if (bankName) {
             currentTransfer.remoteBankName = bankName;

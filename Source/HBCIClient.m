@@ -59,9 +59,9 @@ static HBCIClient *client = nil;
     return [controller bankNameForCode: bankCode inCountry: country];
 }
 
-- (NSString *)bankNameForBIC: (NSString *)bic inCountry: (NSString *)country
+- (NSString *)bankNameForIBAN: (NSString *)iban
 {
-    return [controller bankNameForBIC: bic inCountry: country];
+    return [controller bankNameForIBAN: iban];
 }
 
 - (PecuniaError *)addAccount: (BankAccount *)account forUser: (BankUser *)user
@@ -140,9 +140,9 @@ static HBCIClient *client = nil;
     return [controller sendTransfers: transfers];
 }
 
-- (BOOL)checkAccount: (NSString *)accountNumber forBank: (NSString *)bankCode inCountry: (NSString *)country
+- (BOOL)checkAccount: (NSString *)accountNumber forBank: (NSString *)bankCode
 {
-    return [controller checkAccount: accountNumber forBank: bankCode inCountry: country];
+    return [controller checkAccount: accountNumber forBank: bankCode];
 }
 
 - (BOOL)checkIBAN: (NSString *)iban

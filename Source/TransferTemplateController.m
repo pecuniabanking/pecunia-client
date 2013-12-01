@@ -66,67 +66,61 @@
 
 - (BOOL)checkTemplate: (TransferTemplate *)template
 {
-    TransferType transferType = [template.type intValue];
-    int          res;
-
     if (template.remoteName == nil) {
         NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                         NSLocalizedString(@"AP54", nil),
                         NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
-    // do not check remote account for EU transfers, instead IBAN
-    if (transferType != TransferTypeEU && transferType != TransferTypeSEPA) {
-        if (template.remoteAccount == nil) {
-            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-                            NSLocalizedString(@"AP55", nil),
-                            NSLocalizedString(@"AP1", nil), nil, nil);
-            return NO;
-        }
-    } else {
-        // EU or SEPA transfer
-        if (template.remoteIBAN == nil) {
-            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-                            NSLocalizedString(@"AP68", nil),
-                            NSLocalizedString(@"AP1", nil), nil, nil);
-            return NO;
-        }
-        // check IBAN
-        if ([[HBCIClient hbciClient] checkIBAN: template.remoteIBAN] == NO) {
-            NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
-                            NSLocalizedString(@"AP70", nil),
-                            NSLocalizedString(@"AP61", nil), nil, nil);
-            return NO;
-        }
-    }
 
-    if (transferType == TransferTypeSEPA) {
-        if (template.remoteBIC == nil) {
-            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-                            NSLocalizedString(@"AP69", nil),
-                            NSLocalizedString(@"AP1", nil), nil, nil);
-            return NO;
-        }
-    }
+    switch (template.type.intValue) {
+        case TransferTypeEU:
+        case TransferTypeSEPA:
+            if (template.remoteIBAN == nil) {
+                NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                                NSLocalizedString(@"AP68", nil),
+                                NSLocalizedString(@"AP1", nil), nil, nil);
+                return NO;
+            }
 
-    // verify account and bank information
-    if (transferType != TransferTypeEU && transferType != TransferTypeSEPA) {
-        // verify accounts, but only for available countries
-        if ([template.remoteCountry caseInsensitiveCompare: @"de"] == NSOrderedSame ||
-            [template.remoteCountry caseInsensitiveCompare: @"at"] == NSOrderedSame ||
-            [template.remoteCountry caseInsensitiveCompare: @"ch"] == NSOrderedSame ||
-            [template.remoteCountry caseInsensitiveCompare: @"ca"] == NSOrderedSame) {
-            res = [[HBCIClient hbciClient] checkAccount: template.remoteAccount
-                                                forBank: template.remoteBankCode
-                                              inCountry: template.remoteCountry];
-
-            if (res == NO) {
+            if ([[HBCIClient hbciClient] checkIBAN: template.remoteIBAN] == NO) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
-                                NSLocalizedString(@"AP60", nil),
+                                NSLocalizedString(@"AP70", nil),
                                 NSLocalizedString(@"AP61", nil), nil, nil);
                 return NO;
             }
-        }
+
+            if (template.remoteBIC == nil) {
+                NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                                NSLocalizedString(@"AP69", nil),
+                                NSLocalizedString(@"AP1", nil), nil, nil);
+                return NO;
+            }
+
+            break;
+
+        default:
+            if (template.remoteAccount == nil) {
+                NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                                NSLocalizedString(@"AP55", nil),
+                                NSLocalizedString(@"AP1", nil), nil, nil);
+                return NO;
+            }
+
+            if ([template.remoteCountry caseInsensitiveCompare: @"de"] == NSOrderedSame ||
+                [template.remoteCountry caseInsensitiveCompare: @"at"] == NSOrderedSame ||
+                [template.remoteCountry caseInsensitiveCompare: @"ch"] == NSOrderedSame ||
+                [template.remoteCountry caseInsensitiveCompare: @"ca"] == NSOrderedSame) {
+                int res = [[HBCIClient hbciClient] checkAccount: template.remoteAccount
+                                                        forBank: template.remoteBankCode];
+                if (res == NO) {
+                    NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+                                    NSLocalizedString(@"AP60", nil),
+                                    NSLocalizedString(@"AP61", nil), nil, nil);
+                    return NO;
+                }
+            }
+            break;
     }
 
     if (template.currency == nil || [template.currency length] == 0) {

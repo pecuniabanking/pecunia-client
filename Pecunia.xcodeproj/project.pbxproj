@@ -1200,7 +1200,7 @@
 		B152B5121025FE2400EE06D6 /* MCEMBorderedView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMBorderedView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMBorderedView.m; sourceTree = "<group>"; tabWidth = 4; };
 		B155D92C0BFD04B300904051 /* TransactionController.h */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransactionController.h; sourceTree = "<group>"; tabWidth = 4; };
-		B155D92D0BFD04B300904051 /* TransactionController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionController.m; sourceTree = "<group>"; tabWidth = 4; };
+		B155D92D0BFD04B300904051 /* TransactionController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B159010A129310E40053CB9C /* PecuniaSectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaSectionItem.h; sourceTree = "<group>"; tabWidth = 4; };
 		B15FCCEE141422A3000738B6 /* HBCIServer.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = HBCIServer.jar; sourceTree = "<group>"; };
 		B165B4120D2D8E1A00447DD8 /* Transfers.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Transfers.icns; sourceTree = "<group>"; };

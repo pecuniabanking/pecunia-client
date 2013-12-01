@@ -106,8 +106,8 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.purpose4"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.value"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.currency"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteBankCode"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteAccount"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteBIC"];
+    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteIBAN"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.remoteBankName"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.account.categoryColor"];
 
@@ -152,8 +152,8 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.purpose4" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.value" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.currency" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteBankCode" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteAccount" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteBIC" options: 0 context: nil];
+        [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteBIAN" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.remoteBankName" options: 0 context: nil];
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.account.categoryColor" options: 0 context: nil];
 
@@ -273,8 +273,8 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
                               StatementValueKey: [self formatValue: order.value capitalize: NO],
                               StatementCurrencyKey: [self formatValue: order.currency capitalize: NO],
                               StatementRemoteBankNameKey: [self formatValue: order.remoteBankName capitalize: YES],
-                              StatementRemoteBankCodeKey: [self formatValue: order.remoteBankCode capitalize: NO],
-                              StatementRemoteAccountKey: [self formatValue: order.remoteAccount capitalize: YES],
+                              StatementRemoteBICKey: [self formatValue: order.remoteBIC capitalize: NO],
+                              StatementRemoteIBANKey: [self formatValue: order.remoteIBAN capitalize: NO],
                               StatementTypeKey: [self formatValue: order.type capitalize: NO],
                               OrderIsChangedKey: order.isChanged,
                               OrderPendingDeletionKey: order.toDelete,
