@@ -695,6 +695,7 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 
         logController = [LogController logController];
     }
+    sortIndex = 0;
     return self;
 }
 
@@ -730,7 +731,6 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 - (void)awakeFromNib
 {
     sortAscending = NO;
-    sortIndex = 0;
 
     // set standard details
     statementDetails = standardDetails;
@@ -4161,6 +4161,9 @@ static NSString *const AttachmentDataType = @"pecunia.AttachmentDataType"; // Fo
 {
     [sortControl setImage: nil forSegment: sortIndex];
     sortIndex = [sortControl selectedSegment];
+    if (sortIndex < 0) {
+        sortIndex = 0;
+    }
     NSImage *sortImage = sortAscending ? [NSImage imageNamed: @"sort-indicator-inc"] : [NSImage imageNamed: @"sort-indicator-dec"];
     [sortControl setImage: sortImage forSegment: sortIndex];
 
