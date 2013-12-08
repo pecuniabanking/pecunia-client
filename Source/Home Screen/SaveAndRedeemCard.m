@@ -223,9 +223,7 @@ extern void *UserDefaultsBindingContext;
     // Setup scatter plot space
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = YES;
-    plotSpace.elasticGlobalXRange = YES;
-    plotSpace.elasticGlobalYRange = NO;
-    //plotSpace.allowsMomentum = YES; not until core-plot supports mouse swipe gestures.
+    plotSpace.allowsMomentum = YES;
     plotSpace.delegate = self;
 
     CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
@@ -1249,7 +1247,7 @@ extern void *UserDefaultsBindingContext;
      willChangePlotRangeTo: (CPTPlotRange *)newRange
              forCoordinate: (CPTCoordinate)coordinate
 {
-    if (peerUpdateCount > 0) {
+    if (peerUpdateCount > 0 || coordinate != CPTCoordinateX) {
         return newRange;
     }
 
@@ -1456,9 +1454,7 @@ extern void *UserDefaultsBindingContext;
     // Setup scatter plot space
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = YES;
-    plotSpace.elasticGlobalXRange = YES;
-    plotSpace.elasticGlobalYRange = NO;
-    //plotSpace.allowsMomentum = YES; not until core-plot supports mouse swipe gestures.
+    plotSpace.allowsMomentum = YES;
     plotSpace.delegate = self;
 
     CPTPlotRange *plotRange = [CPTPlotRange plotRangeWithLocation: CPTDecimalFromDouble(0)
@@ -2305,7 +2301,7 @@ extern void *UserDefaultsBindingContext;
      willChangePlotRangeTo: (CPTPlotRange *)newRange
              forCoordinate: (CPTCoordinate)coordinate
 {
-    if (peerUpdateCount > 0) {
+    if (peerUpdateCount > 0 || coordinate != CPTCoordinateX) {
         return newRange;
     }
 
