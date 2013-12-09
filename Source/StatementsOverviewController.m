@@ -279,6 +279,9 @@ extern void *UserDefaultsBindingContext;
 {
     [sortControl setImage: nil forSegment: sortIndex];
     sortIndex = [sortControl selectedSegment];
+    if (sortIndex < 0) {
+        sortIndex = 0;
+    }
     NSImage *sortImage = sortAscending ? [NSImage imageNamed: @"sort-indicator-inc"] : [NSImage imageNamed: @"sort-indicator-dec"];
     [sortControl setImage: sortImage forSegment: sortIndex];
 
@@ -391,7 +394,7 @@ extern void *UserDefaultsBindingContext;
         }
 
         if (deleteStatement) {
-            BOOL isManualAccount = statement.account.isManual;
+            BOOL isManualAccount = [statement.account.isManual boolValue];
             BankAccount *account = statement.account;
             [affectedAccounts addObject: account]; // Automatically ignores duplicates.
 

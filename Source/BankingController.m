@@ -155,7 +155,6 @@ static BankingController *bankinControllerInstance;
             [alert runModal];
             [NSApp terminate: self];
         }
-
         logController = [LogController logController];
     }
     return self;

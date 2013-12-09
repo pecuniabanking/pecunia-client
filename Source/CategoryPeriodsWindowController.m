@@ -65,6 +65,7 @@ extern void *UserDefaultsBindingContext;
         turnovers = [NSMutableArray array];
         selectedDates = [NSMutableArray array];
         managedObjectContext = [[MOAssistant assistant] context];
+        sortIndex = 0;
     }
 
     return self;
@@ -85,7 +86,6 @@ extern void *UserDefaultsBindingContext;
     fromIndex = 0;
     toIndex = 1;
     sortAscending = NO;
-    sortIndex = 0;
     groupingInterval = GroupByMonths;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -540,6 +540,9 @@ extern void *UserDefaultsBindingContext;
 {
     [sortControl setImage: nil forSegment: sortIndex];
     sortIndex = [sortControl selectedSegment];
+    if (sortIndex < 0) {
+        sortIndex = 0;
+    }
     NSImage *sortImage = sortAscending ? [NSImage imageNamed: @"sort-indicator-inc"] : [NSImage imageNamed: @"sort-indicator-dec"];
     [sortControl setImage: sortImage forSegment: sortIndex];
 

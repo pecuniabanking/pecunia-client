@@ -21,7 +21,6 @@
 #import "Category.h"
 
 @class BankQueryResult;
-@class PurposeSplitRule;
 @class BankStatement;
 @class BankUser;
 
@@ -39,13 +38,11 @@ typedef enum {
 
 @interface BankAccount : Category<NSCopying> {
     NSDate           *newLatestTransferDate;
-    PurposeSplitRule *purposeSplitRule;
     NSArray          *dbStatements;
     NSInteger        unread;
 }
 
 @property (nonatomic, strong) NSArray          *dbStatements;
-@property (nonatomic, strong) PurposeSplitRule *purposeSplitRule;
 
 @property (nonatomic, strong) NSDate          *latestTransferDate;
 @property (nonatomic, strong) NSString        *country;

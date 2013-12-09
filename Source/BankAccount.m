@@ -23,7 +23,6 @@
 #import "BankQueryResult.h"
 #import "ShortDate.h"
 #import "StandingOrder.h"
-#import "PurposeSplitRule.h"
 #import "PurposeSplitController.h"
 #import "BankUser.h"
 #import "MessageLog.h"
@@ -52,7 +51,6 @@
 @dynamic users;
 
 @synthesize dbStatements;
-@synthesize purposeSplitRule;
 @synthesize unread;
 
 - (id)copyWithZone: (NSZone *)zone
@@ -100,11 +98,6 @@
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
 
-    // check if purpose split rule exists
-    if (self.splitRule && self.purposeSplitRule == nil) {
-        self.purposeSplitRule = [[PurposeSplitRule alloc] initWithString: self.splitRule];
-    }
-
     // get old statements
     if ([res.statements count] == 0) {
         return;
@@ -127,10 +120,6 @@
         //repair mode...
         //		if ([oldStats count ] == [newStats count ]) continue;
         for (stat in newStats) {
-            // Apply purpose split rule, if exists
-            if (self.purposeSplitRule) {
-                //[self.purposeSplitRule applyToStatement: stat];
-            }
             if (oldStats == nil) {
                 stat.isNew = @YES;
                 continue;
