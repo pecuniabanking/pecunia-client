@@ -559,12 +559,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
         NSArray        *accounts = [[currentInstitute children] sortedArrayUsingDescriptors: sortDescriptors];
         NSMutableArray *validAccounts = [NSMutableArray arrayWithCapacity: 10];
-        NSEnumerator   *accountEnumerator = [accounts objectEnumerator];
-        Category       *currentAccount;
 
-        while ((currentAccount = [accountEnumerator nextObject])) {
-            // TODO: do we really always want to log the accounts?
-            [[MessageLog log] addMessage:[NSString stringWithFormat:@"check account %@ for transfer type %d", currentAccount.accountNumber, transferType] withLevel:LogLevel_Debug];            
+        for (Category *currentAccount in accounts) {
             if (![currentAccount isKindOfClass: [BankAccount class]]) {
                 continue;
             }

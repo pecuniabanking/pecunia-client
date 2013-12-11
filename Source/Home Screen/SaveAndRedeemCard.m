@@ -1240,6 +1240,8 @@ extern void *UserDefaultsBindingContext;
 - (CGPoint)plotSpace: (CPTPlotSpace *)space willDisplaceBy: (CGPoint)proposedDisplacementVector
 {
     [self hideInfoComponents];
+
+    proposedDisplacementVector.y = 0;
     return proposedDisplacementVector;
 }
 
@@ -2294,6 +2296,8 @@ extern void *UserDefaultsBindingContext;
 - (CGPoint)plotSpace: (CPTPlotSpace *)space willDisplaceBy: (CGPoint)proposedDisplacementVector
 {
     [self hideInfoComponents];
+
+    proposedDisplacementVector.y = 0;
     return proposedDisplacementVector;
 }
 

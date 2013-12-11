@@ -1780,16 +1780,10 @@ static BankingController *bankinControllerInstance;
 
     [self save];
 
-    /* TODO: Probably no longer needed.
-    if (needListViewUpdate) {
-        // Updating the assignments (statements) list kills the current selection, so we preserve it here.
-        // Reassigning it after the update has the neat side effect that the details pane is properly updated too.
-        NSUInteger selection = categoryAssignments.selectionIndex;
-        categoryAssignments.selectionIndex = NSNotFound;
-        [statementsListView reloadData];
-        categoryAssignments.selectionIndex = selection;
+    // TODO: Remove this manual update after exchanging PXListView by NSTableView.
+    if (needListViewUpdate && currentSection == overviewController) {
+        [overviewController reloadList];
     }
-     */
     return YES;
 }
 

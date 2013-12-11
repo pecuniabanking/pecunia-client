@@ -20,6 +20,7 @@
 #import "PXListView.h"
 
 #import "OrdersListViewCell.h"
+#import "PreferenceController.h"
 
 #import "NSColor+PecuniaAdditions.h"
 #import "ValueTransformers.h"
@@ -257,20 +258,19 @@ static CurrencyValueTransformer *currencyTransformer;
     // The account label is constructed from two values and formatted.
     NSString *accountTitle;
     NSString *bankCodeTitle;
-    accountTitle = [NSString stringWithFormat: @"%@ ", NSLocalizedString(@"AP401", nil)];
-    bankCodeTitle = [NSString stringWithFormat: @"\t%@ ", NSLocalizedString(@"AP400", nil)];
+    accountTitle = [NSString stringWithFormat: @"%@ ", NSLocalizedString(@"AP409", nil)];
+    bankCodeTitle = [NSString stringWithFormat: @"\t\t%@ ", NSLocalizedString(@"AP410", nil)];
 
     [accountLabel setToolTip: [NSString stringWithFormat: @"%@%@%@%@",
                                accountTitle, remoteIBAN, bankCodeTitle, remoteBIC]];
 
     // Construct a formatted string for the account label.
     NSMutableAttributedString *accountString = [[NSMutableAttributedString alloc] init];
-    NSFont                    *normalFont = [NSFont fontWithName: @"LucidaGrande" size: 11];
+    NSFont                    *normalFont = [NSFont fontWithName: PreferenceController.mainFontName size: 11];
     NSDictionary              *normalAttributes = @{NSFontAttributeName: normalFont,
                                                     NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};
 
-    NSFontManager *fontManager = [NSFontManager sharedFontManager];
-    NSFont        *boldFont = [fontManager convertFont: normalFont toHaveTrait: NSBoldFontMask];
+    NSFont        *boldFont = [NSFont fontWithName: PreferenceController.mainFontNameMedium size: 11];
     NSDictionary  *boldAttributes = @{NSFontAttributeName: boldFont,
                                       NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : [NSColor blackColor]};
 
@@ -296,7 +296,7 @@ static CurrencyValueTransformer *currencyTransformer;
     NSMutableParagraphStyle   *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setMaximumLineHeight: 12];
 
-    normalFont = [NSFont fontWithName: @"LucidaGrande" size: 10];
+    normalFont = [NSFont fontWithName: PreferenceController.mainFontName size: 10];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName: paragraphStyle,
                                  NSFontAttributeName: normalFont,
                                  NSForegroundColorAttributeName: isSelected ? [NSColor whiteColor] : paleColor};

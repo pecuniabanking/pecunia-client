@@ -58,6 +58,7 @@
 - (void)deleteSelectedStatements;
 - (void)splitSelectedStatement;
 - (BOOL)toggleDetailsPane;
+- (void)reloadList; // TODO: temporary, until we can remove PXListView.
 
 // PecuniaSectionItem protocol
 @property (nonatomic, weak) Category *selectedCategory;

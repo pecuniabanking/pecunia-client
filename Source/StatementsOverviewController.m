@@ -467,6 +467,16 @@ extern void *UserDefaultsBindingContext;
     return result;
 }
 
+- (void)reloadList
+{
+    // Updating the assignments (statements) list kills the current selection, so we preserve it here.
+    // Reassigning it after the update has the neat side effect that the details pane is properly updated too.
+    NSUInteger selection = categoryAssignments.selectionIndex;
+    categoryAssignments.selectionIndex = NSNotFound;
+    [statementsListView reloadData];
+    categoryAssignments.selectionIndex = selection;
+}
+
 - (void)updateValueColors
 {
     NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
