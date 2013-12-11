@@ -357,6 +357,9 @@ static BankingController *bankinControllerInstance;
     if ([defaults objectForKey: @"autoCasing"] == nil) {
         [defaults setBool: YES forKey: @"autoCasing"];
     }
+    if ([defaults objectForKey: @"recursiveTransactions"] == nil) {
+        [defaults setBool: YES forKey: @"recursiveTransactions"];
+    }
 }
 
 - (void)publishContext
