@@ -25,6 +25,7 @@
 #import "MCEMDecimalNumberAdditions.h"
 #import "BankQueryResult.h"
 #import "BankAccount.h"
+#import "ShortDate.h"
 
 #import "NSString+PecuniaAdditions.h"
 #import "NSAttributedString+PecuniaAdditions.h"
@@ -762,6 +763,13 @@
                                 }
                                 if (maxDate == nil || [object isGreaterThan: maxDate]) {
                                     maxDate = object;
+                                }
+                                ShortDate *date = [ShortDate dateWithDate: object];
+                                if (date.year < 1970 || date.year > 2100) {
+                                    [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, date is out of bounds: %@",
+                                                      file, index, field] withLevel: LogLevel_Error];
+                                    errorCount++;
+                                    object = nil;
                                 }
                             } else {
                                 [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, date is invalid: %@",
