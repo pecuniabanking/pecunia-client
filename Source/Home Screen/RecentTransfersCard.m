@@ -239,7 +239,7 @@
 
 #pragma mark - NSTableViewDataSource protocol
 
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+- (NSInteger)numberOfRowsInTableView: (NSTableView *)tableView
 {
     return entries.count;
 }

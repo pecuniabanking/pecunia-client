@@ -27,7 +27,7 @@
 @class StatementDetails;
 @class PecuniaSplitView;
 
-@interface StatementsOverviewController : NSObject <PecuniaSectionItem>
+@interface StatementsOverviewController : NSObject <PecuniaSectionItem, NSTableViewDelegate, NSTableViewDataSource>
 {
     IBOutlet NSArrayController  *categoryAssignments;
     IBOutlet StatementsListView *statementsListView;

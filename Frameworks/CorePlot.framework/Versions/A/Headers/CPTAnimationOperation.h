@@ -28,4 +28,10 @@
 @property (atomic, getter = isCanceled) BOOL canceled;
 /// @}
 
+/// @name Identification
+/// @{
+@property (nonatomic, readwrite, copy) id<NSCopying, NSObject> identifier;
+@property (nonatomic, readwrite, copy) NSDictionary *userInfo;
+/// @}
+
 @end

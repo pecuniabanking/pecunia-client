@@ -525,6 +525,57 @@ extern void *UserDefaultsBindingContext;
     return proposedPosition;
 }
 
+#pragma mark - NSTableViewDataSource protocol
+
+- (NSInteger)numberOfRowsInTableView: (NSTableView *)tableView
+{
+    return entries.count;
+}
+
+- (NSView *)tableView: (NSTableView *)tableView
+   viewForTableColumn: (NSTableColumn *)tableColumn
+                  row: (NSInteger)row
+{
+    if (row >= (NSInteger)entries.count) {
+        return nil;
+    }
+
+    if ([entries[row] isKindOfClass: StatementsHeader.class]) {
+        StatementsHeader *header = entries[row];
+        TransfersHeaderView *cell = [tableView makeViewWithIdentifier: @"HeaderCell" owner: self];
+        cell.textField.stringValue = [header.date description];
+        return cell;
+    } else {
+        TransfersCellView *cell = [tableView makeViewWithIdentifier: @"MainCell" owner: self];
+        cell.statement = [entries[row] statement];
+        cell.category = [entries[row] category];
+        return cell;
+    }
+}
+
+- (NSTableRowView *)tableView: (NSTableView *)tableView rowViewForRow: (NSInteger)row
+{
+    TransfersRowView *view = [[TransfersRowView alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
+    return view;
+}
+
+- (CGFloat)tableView: (NSTableView *)tableView heightOfRow: (NSInteger)row
+{
+    if (row < (NSInteger)entries.count && [entries[row] isKindOfClass: StatementsHeader.class]) {
+        return 20;
+    } else {
+        return 40;
+    }
+}
+
+- (BOOL)tableView: (NSTableView *)tableView isGroupRow:( NSInteger)row
+{
+    if (row < (NSInteger)entries.count) {
+        return [entries[row] isKindOfClass: StatementsHeader.class];
+    }
+    return NO;
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context
