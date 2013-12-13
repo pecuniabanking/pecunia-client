@@ -25,6 +25,8 @@
 #import "DebitsController.h"
 #import "CategoryHeatMapController.h"
 
+#import "MessageLog.h"
+
 #define HomeScreenTabIdentifier    @"homeScreen"
 #define TransfersTabIdentifier     @"transfers"
 #define StandingOrderTabIdentifier @"standingOrders"
@@ -35,10 +37,14 @@
 
 - (void)activateHomeScreenTab
 {
+    LOG_ENTER;
+
     NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: HomeScreenTabIdentifier];
     if (index == NSNotFound) {
         homeScreenController = [[HomeScreenController alloc] init];
+        [MessageLog.log addMessage: @"Loading HomeScreen.xib" withLevel: LogLevel_Debug];
         if ([NSBundle loadNibNamed: @"HomeScreen" owner: homeScreenController]) {
+            [MessageLog.log addMessage: @"Loading successful" withLevel: LogLevel_Debug];
             NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: HomeScreenTabIdentifier];
             [item setView: homeScreenController.view];
             [mainTabView addTabViewItem: item];
@@ -53,10 +59,14 @@
 
 - (void)activateStandingOrdersTab
 {
+    LOG_ENTER;
+
     NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: StandingOrderTabIdentifier];
     if (index == NSNotFound) {
         standingOrderController = [[StandingOrderController alloc] init];
+        [MessageLog.log addMessage: @"Loading Orders.xib" withLevel: LogLevel_Debug];
         if ([NSBundle loadNibNamed: @"Orders" owner: standingOrderController]) {
+            [MessageLog.log addMessage: @"Loading successful" withLevel: LogLevel_Debug];
             NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: StandingOrderTabIdentifier];
             [item setView: [standingOrderController mainView]];
             [mainTabView addTabViewItem: item];
@@ -72,10 +82,14 @@
 
 - (void)activateTransfersTab
 {
+    LOG_ENTER;
+
     NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: TransfersTabIdentifier];
     if (index == NSNotFound) {
         transfersController = [[TransfersController alloc] init];
+        [MessageLog.log addMessage: @"Loading Transfers.xib" withLevel: LogLevel_Debug];
         if ([NSBundle loadNibNamed: @"Transfers" owner: transfersController]) {
+            [MessageLog.log addMessage: @"Loading successful" withLevel: LogLevel_Debug];
             NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: TransfersTabIdentifier];
             [item setView: [transfersController mainView]];
             [mainTabView addTabViewItem: item];
@@ -91,10 +105,14 @@
 
 - (void)activateDebitsTab
 {
+    LOG_ENTER;
+
     NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: DebitsTabIdentifier];
     if (index == NSNotFound) {
         debitsController = [[DebitsController alloc] init];
+        [MessageLog.log addMessage: @"Loading Debits.xib" withLevel: LogLevel_Debug];
         if ([NSBundle loadNibNamed: @"Debits" owner: debitsController]) {
+            [MessageLog.log addMessage: @"Loading successful" withLevel: LogLevel_Debug];
             NSTabViewItem *item = [[NSTabViewItem alloc] initWithIdentifier: DebitsTabIdentifier];
             [item setView: [debitsController mainView]];
             [mainTabView addTabViewItem: item];

@@ -76,7 +76,8 @@ static LogController *_logController = nil;
 - (void)windowDidBecomeKey: (NSNotification *)notification
 {
     [messageLog registerLogUI: self];
-    [self logLevelChanged: self];
+    //[self logLevelChanged: self];
+    [self setLogLevel: MessageLog.log.currentLevel];
 }
 
 - (void)windowWillClose: (NSNotification *)notification
@@ -124,11 +125,13 @@ static LogController *_logController = nil;
     if (level > currentLevel) {
         return;
     }
-    if (isHidden == YES) {
+    if (isHidden) {
         if (level <= 1) {
             [self showWindow: self];
             [[self window] orderFront: self];
-        } else {return; }
+        } else {
+            return;
+        }
     }
 
     NSMutableAttributedString *s = [[NSMutableAttributedString alloc] initWithString: [NSString stringWithFormat: @"%@\n", info]];
