@@ -170,7 +170,6 @@ static BankingController *bankinControllerInstance;
     LOG_ENTER;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults removeObserver: self forKeyPath: @"recursiveTransactions"];
     [userDefaults removeObserver: self forKeyPath: @"showHiddenCategories"];
     [userDefaults removeObserver: self forKeyPath: @"colors"];
 
@@ -212,7 +211,6 @@ static BankingController *bankinControllerInstance;
     LOG_ENTER;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults addObserver: self forKeyPath: @"recursiveTransactions" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
     [userDefaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
 
@@ -380,9 +378,6 @@ static BankingController *bankinControllerInstance;
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     if ([defaults objectForKey: @"autoCasing"] == nil) {
         [defaults setBool: YES forKey: @"autoCasing"];
-    }
-    if ([defaults objectForKey: @"recursiveTransactions"] == nil) {
-        [defaults setBool: YES forKey: @"recursiveTransactions"];
     }
 
     LOG_LEAVE;
@@ -718,12 +713,11 @@ static BankingController *bankinControllerInstance;
         return;
     }
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     for (Category *cat in cats) {
         if ([cat isBankingRoot] == NO) {
             [cat updateInvalidCategoryValues];
         }
-        [cat rollupRecursive: [defaults boolForKey: @"recursiveTransactions"]];
+        [cat rollupRecursive: YES];
     }
 
     [self save];
@@ -1082,12 +1076,11 @@ static BankingController *bankinControllerInstance;
         return;
     }
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (!cat.isBankAccount && cat != Category.nassRoot && cat != Category.catRoot) {
         CategoryMaintenanceController *changeController = [[CategoryMaintenanceController alloc] initWithCategory: cat];
         [NSApp runModalForWindow: [changeController window]];
         [categoryController prepareContent]; // Visibility of a category could have changed.
-        [Category.catRoot rollupRecursive: [defaults boolForKey: @"recursiveTransactions"]]; // Category could have switched its noCatRep property.
+        [Category.catRoot rollupRecursive: YES]; // Category could have switched its noCatRep property.
         return;
     }
 
@@ -1950,8 +1943,7 @@ static BankingController *bankinControllerInstance;
         Category *scat = (Category *)[self.managedObjectContext objectWithID: moID];
         [scat setValue: cat forKey: @"parent"];
 
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [[Category catRoot] rollupRecursive: [defaults boolForKey: @"recursiveTransactions"]];
+        [[Category catRoot] rollupRecursive: YES];
     }
 
     [self save];
@@ -3234,12 +3226,6 @@ static BankingController *bankinControllerInstance;
 - (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context
 {
     if (context == UserDefaultsBindingContext) {
-        if ([keyPath isEqualToString: @"recursiveTransactions"]) {
-            [Category updateCatValues];
-            [[self currentSelection] updateBoundAssignments];
-            return;
-        }
-
         if ([keyPath isEqualToString: @"showHiddenCategories"]) {
             [categoryController prepareContent];
             return;

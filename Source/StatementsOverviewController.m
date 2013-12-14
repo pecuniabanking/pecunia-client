@@ -491,6 +491,16 @@ extern void *UserDefaultsBindingContext;
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
     [nassValueField setNeedsDisplay];
+
+    formatter = [sumField.cell formatter];
+    [formatter setTextAttributesForPositiveValues: positiveAttributes];
+    [formatter setTextAttributesForNegativeValues: negativeAttributes];
+    [sumField setNeedsDisplay];
+
+    formatter = [originalAmountField.cell formatter];
+    [formatter setTextAttributesForPositiveValues: positiveAttributes];
+    [formatter setTextAttributesForNegativeValues: negativeAttributes];
+    [originalAmountField setNeedsDisplay];
 }
 
 #pragma mark - Splitview delegate methods

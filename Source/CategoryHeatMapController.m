@@ -803,8 +803,6 @@ static NSFont *smallNumberFont;
 
 - (void)updateValues
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL           recursive = [userDefaults boolForKey: @"recursiveTransactions"];
     NSArray        *values;
     NSArray        *dates;
     HighLowValues  limits = {0, 0};
@@ -812,7 +810,7 @@ static NSFont *smallNumberFont;
         case 0: {
             [formatter setFormat: @"#,##0.##"];
 
-            limits.high = [selectedCategory turnoversForYear: currentYear toDates: &dates turnovers: &values recursive: recursive];
+            limits.high = [selectedCategory turnoversForYear: currentYear toDates: &dates turnovers: &values recursive: YES];
 
             // Make sure we have a minimal max value so that we don't show a low number of statements as hot.
             if (limits.high < 10) {
@@ -824,7 +822,7 @@ static NSFont *smallNumberFont;
         case 1: {
             [formatter setFormat: @"#,##0.## ¤"];
 
-            limits.high = [selectedCategory absoluteValuesForYear: currentYear toDates: &dates values: &values recursive: recursive];
+            limits.high = [selectedCategory absoluteValuesForYear: currentYear toDates: &dates values: &values recursive: YES];
 
             if (limits.high < 1000) {
                 limits.high = 1000;
@@ -835,7 +833,7 @@ static NSFont *smallNumberFont;
         case 2: {
             [formatter setFormat: @"#,##0.## ¤"];
 
-            limits = [selectedCategory valuesForYear: currentYear toDates: &dates values: &values recursive: recursive];
+            limits = [selectedCategory valuesForYear: currentYear toDates: &dates values: &values recursive: YES];
 
             if (limits.high < 1000) {
                 limits.high = 1000;
@@ -860,9 +858,7 @@ static NSFont *smallNumberFont;
 
 - (void)showValuePopupForDate: (ShortDate *)date relativeToRect: (NSRect)area forView: (NSView *)view
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL           recursive = [userDefaults boolForKey: @"recursiveTransactions"];
-    currentAssignments = [selectedCategory assignmentsFrom: date to: date withChildren: recursive];
+    currentAssignments = [selectedCategory assignmentsFrom: date to: date withChildren: YES];
     [valuePopupList reloadData];
 
     NSRect frame = valuePopupList.frame;

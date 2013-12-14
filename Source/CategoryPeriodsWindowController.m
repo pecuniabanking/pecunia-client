@@ -77,7 +77,6 @@ extern void *UserDefaultsBindingContext;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObserver: self forKeyPath: @"colors"];
-    [userDefaults removeObserver: self forKeyPath: @"recursiveTransactions"];
     [userDefaults removeObserver: self forKeyPath: @"showHiddenCategories"];
 }
 
@@ -164,7 +163,6 @@ extern void *UserDefaultsBindingContext;
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
-    [defaults addObserver: self forKeyPath: @"recursiveTransactions" options: 0 context: UserDefaultsBindingContext];
     [defaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
 }
 
@@ -180,9 +178,6 @@ extern void *UserDefaultsBindingContext;
         if ([keyPath isEqualToString: @"colors"]) {
             [self updateColors];
             [selectionBox setNeedsDisplay: YES];
-        }
-        if ([keyPath isEqualToString: @"recursiveTransactions"]) {
-            [self updateData];
         }
         if ([keyPath isEqualToString: @"showHiddenCategories"]) {
             [valueGrid reloadData];
@@ -437,13 +432,12 @@ extern void *UserDefaultsBindingContext;
     NSArray *nodeBalances = nil;
     NSArray *nodeTurnovers = nil;
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [item historyToDates: &nodeDates
                 balances: &nodeBalances
            balanceCounts: &nodeTurnovers
             withGrouping: groupingInterval
                    sumUp: NO
-               recursive: [defaults boolForKey: @"recursiveTransactions"]];
+               recursive: YES];
 
     if (nodeDates == nil) {
         nodeDates = @[]; // Just to avoid frequent checks in the loop below.
@@ -496,16 +490,8 @@ extern void *UserDefaultsBindingContext;
             break;
     }
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSPredicate *predicate;
-
-    if ([defaults boolForKey: @"recursiveTransactions"]) {
-        predicate = [NSPredicate predicateWithFormat: @"category IN %@ AND statement.date >= %@ AND statement.date <= %@",
-                     [self.selectedCategory allCategories], [selFromDate lowDate], [selToDate highDate]];
-    } else {
-        predicate = [NSPredicate predicateWithFormat: @"category = %@ AND statement.date >= %@ AND statement.date <= %@",
-                     self.selectedCategory, [selFromDate lowDate], [selToDate highDate]];
-    }
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category IN %@ AND statement.date >= %@ AND statement.date <= %@",
+                              [self.selectedCategory allCategories], [selFromDate lowDate], [selToDate highDate]];
     [statementsController setFetchPredicate: predicate];
     [statementsController prepareContent];
 

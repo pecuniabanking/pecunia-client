@@ -14,11 +14,13 @@
                 <outlet property="categoryAssignments" destination="G0H-Vc-kxE" id="Pgs-NJ-DGY"/>
                 <outlet property="mainView" destination="w0V-X0-deR" id="MMn-1o-j1m"/>
                 <outlet property="nassValueField" destination="nFd-8t-glt" id="7MU-td-uFZ"/>
+                <outlet property="originalAmountField" destination="DMT-l9-csg" id="jOe-0B-e8s"/>
                 <outlet property="remoteNameLabel" destination="SaI-Y6-beg" id="ZJ3-Wo-Se0"/>
                 <outlet property="sortControl" destination="dej-bv-9dk" id="5d7-qs-Qow"/>
                 <outlet property="statementDetails" destination="7KT-uq-qe2" id="0y6-Cz-Amw"/>
                 <outlet property="statementTags" destination="Uwg-sx-Y7L" id="9eD-7s-FGe"/>
                 <outlet property="statementsListView" destination="noR-xM-mzX" id="ghS-SE-1AS"/>
+                <outlet property="sumField" destination="p7V-Qv-BNy" id="2GD-wF-8ZL"/>
                 <outlet property="tagButton" destination="WZk-ui-cTv" id="VSG-oV-o51"/>
                 <outlet property="tagViewHost" destination="YTS-rH-MlE" id="1eg-co-UZH"/>
                 <outlet property="tagViewPopup" destination="8gL-ec-So2" id="71Q-n7-zhc"/>
@@ -156,7 +158,7 @@
                                     </textFieldCell>
                                 </textField>
                                 <textField verticalHuggingPriority="750" id="vT4-f4-SeE">
-                                    <rect key="frame" x="786" y="23" width="21" height="16"/>
+                                    <rect key="frame" x="786" y="20" width="21" height="16"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="€" id="eCK-iy-y3h">
                                         <font key="font" size="12" name="HelveticaNeue-Light"/>
@@ -165,16 +167,16 @@
                                     </textFieldCell>
                                 </textField>
                                 <textField verticalHuggingPriority="750" id="p7V-Qv-BNy">
-                                    <rect key="frame" x="674" y="21" width="112" height="16"/>
+                                    <rect key="frame" x="683" y="11" width="103" height="23"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="-300.000,00" usesSingleLineMode="YES" id="f0G-EH-xnh">
-                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" id="Vug-JE-Mov">
+                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="Vug-JE-Mov">
                                             <real key="roundingIncrement" value="0.0"/>
                                             <metadata>
                                                 <bool key="localizesFormat" value="YES"/>
                                             </metadata>
                                         </numberFormatter>
-                                        <font key="font" size="16" name="HelveticaNeue-Light"/>
+                                        <font key="font" size="16" name="HelveticaNeue"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -190,7 +192,7 @@
                                     <font key="titleFont" metaFont="system"/>
                                 </box>
                                 <textField verticalHuggingPriority="750" id="ZUh-6p-r18">
-                                    <rect key="frame" x="636" y="21" width="33" height="30"/>
+                                    <rect key="frame" x="636" y="14" width="19" height="35"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Σ" id="sLa-F6-tyF">
                                         <font key="font" size="24" name="Baskerville"/>
@@ -211,7 +213,7 @@
                                     <rect key="frame" x="437" y="16" width="59" height="15"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="10000" usesSingleLineMode="YES" id="RPG-yK-0iz">
-                                        <font key="font" size="14" name="HelveticaNeue-Light"/>
+                                        <font key="font" size="14" name="HelveticaNeue"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -237,7 +239,7 @@
                                     <rect key="frame" x="564" y="16" width="70" height="15"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="10000" usesSingleLineMode="YES" id="OXZ-yJ-hgB">
-                                        <font key="font" size="14" name="HelveticaNeue-Light"/>
+                                        <font key="font" size="14" name="HelveticaNeue"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -386,25 +388,10 @@ IA
                             <rect key="frame" x="588" y="228" width="190" height="37"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" focusRingType="none" alignment="right" title="-100.000,00" bezelStyle="round" id="J1A-e3-Hrz">
-                                <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="#,##0.00" negativeFormat="[Red]-#,##0.00" thousandSeparator="." id="5Hx-zy-vGp">
-                                    <textAttributesForNegativeValues>
-                                        <color key="NSColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </textAttributesForNegativeValues>
-                                    <attributedString key="attributedStringForZero">
-                                        <fragment content="0,00">
-                                            <attributes>
-                                                <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                <font key="NSFont" metaFont="smallSystem"/>
-                                                <font key="NSOriginalFont" metaFont="smallSystem"/>
-                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="clipping" baseWritingDirection="natural"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
-                                    <decimal key="minimum" value="NaN"/>
-                                    <decimal key="maximum" value="NaN"/>
+                                <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="5Hx-zy-vGp">
+                                    <real key="roundingIncrement" value="0.0"/>
                                     <metadata>
                                         <bool key="localizesFormat" value="YES"/>
-                                        <real key="inspectorSampleValue" value="-1234.75"/>
                                     </metadata>
                                 </numberFormatter>
                                 <font key="font" size="30" name="HelveticaNeue-Light"/>
@@ -412,10 +399,10 @@ IA
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
-                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.value" id="TD3-V4-yTj">
+                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.value" id="CKj-E8-k1X">
                                     <dictionary key="options">
-                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
-                                        <string key="NSNoSelectionPlaceholder">0.00</string>
+                                        <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                     </dictionary>
@@ -956,22 +943,8 @@ IA
                             <rect key="frame" x="683" y="200" width="95" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-200.000,00" usesSingleLineMode="YES" bezelStyle="round" id="E9r-vR-xqi">
-                                <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="#,##0.00" negativeFormat="[Red]-#,##0.00" thousandSeparator="." id="3l3-ls-RXt">
-                                    <textAttributesForNegativeValues>
-                                        <color key="NSColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </textAttributesForNegativeValues>
-                                    <attributedString key="attributedStringForZero">
-                                        <fragment content="0,00">
-                                            <attributes>
-                                                <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                <font key="NSFont" metaFont="smallSystem"/>
-                                                <font key="NSOriginalFont" metaFont="smallSystem"/>
-                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="clipping" baseWritingDirection="natural"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
-                                    <decimal key="minimum" value="NaN"/>
-                                    <decimal key="maximum" value="NaN"/>
+                                <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="3l3-ls-RXt">
+                                    <real key="roundingIncrement" value="0.0"/>
                                     <metadata>
                                         <bool key="localizesFormat" value="YES"/>
                                     </metadata>
@@ -981,10 +954,10 @@ IA
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
-                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.nassValue" id="qW0-t0-GtI">
+                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.nassValue" id="X9V-VV-6CQ">
                                     <dictionary key="options">
-                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
-                                        <string key="NSNoSelectionPlaceholder">0.00</string>
+                                        <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                     </dictionary>
@@ -995,22 +968,8 @@ IA
                             <rect key="frame" x="300" y="181" width="85" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-200.000,00" usesSingleLineMode="YES" bezelStyle="round" id="nmJ-dP-EBc">
-                                <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="#,##0.00" negativeFormat="[Red]-#,##0.00" thousandSeparator="." id="8Ec-Cc-UCj">
-                                    <textAttributesForNegativeValues>
-                                        <color key="NSColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </textAttributesForNegativeValues>
-                                    <attributedString key="attributedStringForZero">
-                                        <fragment content="0,00">
-                                            <attributes>
-                                                <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                <font key="NSFont" metaFont="smallSystem"/>
-                                                <font key="NSOriginalFont" metaFont="smallSystem"/>
-                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="clipping" baseWritingDirection="natural"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
-                                    <decimal key="minimum" value="NaN"/>
-                                    <decimal key="maximum" value="NaN"/>
+                                <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="8Ec-Cc-UCj">
+                                    <real key="roundingIncrement" value="0.0"/>
                                     <metadata>
                                         <bool key="localizesFormat" value="YES"/>
                                     </metadata>
@@ -1026,12 +985,11 @@ IA
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                     </dictionary>
                                 </binding>
-                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.origValue" id="H83-vN-Osx">
+                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.origValue" id="tcO-LF-pxL">
                                     <dictionary key="options">
-                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
-                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1100,8 +1058,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="-1"/>
-                                        <integer key="NSMultipleValuesPlaceholder" value="-1"/>
                                         <integer key="NSNullPlaceholder" value="-1"/>
+                                        <integer key="NSMultipleValuesPlaceholder" value="-1"/>
                                     </dictionary>
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement.remoteBIC" id="wTs-s3-j5a">
@@ -1126,8 +1084,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="-1"/>
-                                        <integer key="NSMultipleValuesPlaceholder" value="-1"/>
                                         <integer key="NSNullPlaceholder" value="-1"/>
+                                        <integer key="NSMultipleValuesPlaceholder" value="-1"/>
                                     </dictionary>
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement.remoteIBAN" id="EKW-ff-qJj">
@@ -1203,8 +1161,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                         <integer key="NSNullPlaceholder" value="1"/>
+                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1223,8 +1181,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                         <integer key="NSNullPlaceholder" value="1"/>
+                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1268,8 +1226,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                         <integer key="NSNullPlaceholder" value="1"/>
+                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1419,8 +1377,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                         <integer key="NSNoSelectionPlaceholder" value="0"/>
-                                        <integer key="NSMultipleValuesPlaceholder" value="0"/>
                                         <integer key="NSNullPlaceholder" value="0"/>
+                                        <integer key="NSMultipleValuesPlaceholder" value="0"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1434,8 +1392,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                         <integer key="NSNullPlaceholder" value="1"/>
+                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1554,11 +1512,11 @@ IA
                                     <dictionary key="options">
                                         <bool key="NSConditionallySetsEnabled" value="NO"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="0"/>
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                         <integer key="NSNullPlaceholder" value="0"/>
                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                         <integer key="NSNoSelectionPlaceholder" value="0"/>
-                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                     </dictionary>
                                 </binding>
                             </connections>

@@ -42,6 +42,8 @@
     IBOutlet NSTextField       *nassValueField;
     IBOutlet NSTextField       *remoteNameLabel;
     IBOutlet StatementDetails  *statementDetails;
+    IBOutlet NSTextField       *sumField;
+    IBOutlet NSTextField       *originalAmountField;
 
     IBOutlet NSSegmentedControl *sortControl;
 

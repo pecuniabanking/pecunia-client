@@ -327,11 +327,11 @@ IA
                                                             <connections>
                                                                 <binding destination="911" name="value" keyPath="selection.bankName" id="996">
                                                                     <dictionary key="options">
-                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
-                                                                        <string key="NSNotApplicablePlaceholder"></string>
-                                                                        <string key="NSNoSelectionPlaceholder"></string>
                                                                         <string key="NSNullPlaceholder"></string>
+                                                                        <string key="NSNotApplicablePlaceholder"></string>
+                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
                                                                         <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                                                        <string key="NSNoSelectionPlaceholder"></string>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
@@ -661,12 +661,6 @@ IA
                 <menuItem title="Anzeige" id="6526">
                     <menu key="submenu" title="Anzeige" id="6527">
                         <items>
-                            <menuItem title="Kategorien rekursiv" state="on" id="6530">
-                                <string key="toolTip">Neben den Umsätzen der ausgewählten Kategorie werden auch Umsätze untergeordneter Kategorien in der Liste angezeigt. Zusätzlich schließt die Summenberechnung Unterkategorien ein.</string>
-                                <connections>
-                                    <binding destination="6577" name="value" keyPath="values.recursiveTransactions" id="6589"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Versteckte Konten + Kategorien anzeigen" id="6869">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>

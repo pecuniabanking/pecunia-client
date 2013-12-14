@@ -2218,13 +2218,12 @@ int double_compare(const void *value1, const void *value2)
         if (selectedCategory.isBankAccount) {
             extraEntry = YES;
         }
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [selectedCategory historyToDates: &dates
                                 balances: &balances
                            balanceCounts: &turnovers
                             withGrouping: groupingInterval
                                    sumUp: extraEntry
-                               recursive: [defaults boolForKey: @"recursiveTransactions"]];
+                               recursive: YES];
 
         if (dates != nil) {
             // Convert the data to the internal representations.

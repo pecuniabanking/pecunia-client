@@ -627,14 +627,10 @@ BOOL updateSent = NO;
 
 /**
  * Returns a set of all assignments displayed in the transaction list for this category.
- * Takes setting "recursiveTransactions" into account, i.e. whether also assignments of sub categories should be displayed.
  */
 - (NSArray *)boundAssignments
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    BOOL    recursive = [defaults boolForKey: @"recursiveTransactions"] || self.isBankAccount;
-    NSArray *assignments = [self assignmentsFrom: startReportDate to: endReportDate withChildren: recursive];
+    NSArray *assignments = [self assignmentsFrom: startReportDate to: endReportDate withChildren: YES];
     return assignments;
 }
 
@@ -1107,9 +1103,7 @@ BOOL updateSent = NO;
         return;
     }
     [[self catRoot] updateInvalidCategoryValues];
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [[self catRoot] rollupRecursive: [defaults boolForKey: @"recursiveTransactions"]];
+    [[self catRoot] rollupRecursive: YES];
 }
 
 + (void)setCatReportFrom: (ShortDate *)fDate to: (ShortDate *)tDate
@@ -1122,9 +1116,7 @@ BOOL updateSent = NO;
     startReportDate = fDate;
     endReportDate = tDate;
     [[self catRoot] rebuildValues];
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [[self catRoot] rollupRecursive: [defaults boolForKey: @"recursiveTransactions"]];
+    [[self catRoot] rollupRecursive: YES];
     [[self bankRoot] updateReportedAssignments];
 }
 
