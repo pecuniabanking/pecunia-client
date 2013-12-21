@@ -19,6 +19,7 @@
 
 #import "StatementsOverviewController.h"
 
+#import "BankingController.h"
 #import "StatementsListview.h"
 
 #import "MOAssistant.h"
@@ -32,7 +33,7 @@
 #import "StatementDetails.h"
 #import "PecuniaSplitView.h"
 #import "AttachmentImageView.h"
-#import "BankingController.h"
+#import "ShortDate.h"
 
 #import "NSColor+PecuniaAdditions.h"
 
@@ -40,6 +41,452 @@
 #import "TagView.h"
 
 extern void *UserDefaultsBindingContext;
+extern NSString *const CategoryColorNotification;
+extern NSString *const CategoryKey;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+@interface OverviewTransfersCellView : NSTableCellView
+{
+    NSDictionary *whiteAttributes;
+    NSColor *categoryColor;
+}
+
+@end
+
+@implementation OverviewTransfersCellView
+
+#pragma mark Init/Dealloc
+
+- (void)awakeFromNib
+{
+    whiteAttributes = @{NSForegroundColorAttributeName: [NSColor whiteColor]};
+}
+
+/**
+ * Called when the user changes a color. We update here only those colors that are customizable.
+ /
+- (void)updateTextColors
+{
+    BOOL isSelected = [self.listView.selectedRows containsIndex: index];
+
+    if (!isSelected) {
+        NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
+        NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
+
+        [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
+        [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
+        [[[saldoLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
+        [[[saldoLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
+
+        NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text"];
+        [transactionTypeLabel setTextColor: paleColor];
+        [noteLabel setTextColor: paleColor];
+        [saldoCaption setTextColor: paleColor];
+        [currencyLabel setTextColor: paleColor];
+        [saldoCurrencyLabel setTextColor: paleColor];
+
+        [dayLabel setTextColor: paleColor];
+        [monthLabel setTextColor: paleColor];
+    }
+}
+
+- (void)showActivator: (BOOL)flag markActive: (BOOL)active
+{
+    [checkbox setHidden: !flag];
+    [checkbox setState: active ? NSOnState: NSOffState];
+}
+
+- (void)showBalance: (BOOL)flag
+{
+    [saldoCaption setHidden: !flag];
+    [saldoLabel setHidden: !flag];
+    [saldoCurrencyLabel setHidden: !flag];
+}
+*/
+
+- (void)applyUnselectedBackgroundToChildrenOf: (NSView *)parent
+{
+    NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
+    NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
+    NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text"];
+
+    for (NSView *child in parent.subviews) {
+        if ([child isKindOfClass: NSTextField.class]) {
+            // Color depends on wether this is a number with a formatter or on its tag
+            // which describes what text type we have.
+            NSFormatter *formatter = [[(id)child cell] formatter];
+            if ([formatter isKindOfClass: NSNumberFormatter.class]) {
+                [(id)formatter setTextAttributesForPositiveValues: positiveAttributes];
+                [(id)formatter setTextAttributesForNegativeValues: negativeAttributes];
+            }
+            switch (child.tag) {
+                case 1: // Normal color.
+                    [(id)child setTextColor: NSColor.controlTextColor];
+                    break;
+
+                case 2: // Pale color.
+                    [(id)child setTextColor: paleColor];
+                    break;
+
+                default:
+                    // Ignore anything else.
+                    break;
+            }
+        }
+        [self applyUnselectedBackgroundToChildrenOf: child];
+    }
+
+}
+
+- (void)applySelectedBackgroundToChildrenOf: (NSView *)parent
+{
+    for (NSView *child in parent.subviews) {
+        if ([child isKindOfClass: NSTextField.class]) {
+            if (child.tag > 0) {
+                [(id)child setTextColor: NSColor.whiteColor];
+
+                NSFormatter *formatter = [[(id)child cell] formatter];
+                if ([formatter isKindOfClass: NSNumberFormatter.class]) {
+                    [(id)formatter setTextAttributesForPositiveValues: whiteAttributes];
+                    [(id)formatter setTextAttributesForNegativeValues: whiteAttributes];
+                }
+            }
+        }
+
+        [self applySelectedBackgroundToChildrenOf: child];
+    }
+    
+}
+
+- (void)setBackgroundStyle: (NSBackgroundStyle)backgroundStyle
+{
+    switch (backgroundStyle) {
+        case NSBackgroundStyleLight:
+            [self applyUnselectedBackgroundToChildrenOf: self];
+            break;
+
+        case NSBackgroundStyleDark:
+            [self applySelectedBackgroundToChildrenOf: self];
+            break;
+    }
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+
+@interface OverviewTransfersHeaderView : NSTableCellView
+
+@property NSString *dateString;
+@property NSString *countString;
+
+@end
+
+@implementation OverviewTransfersHeaderView
+
++ (void)initialize
+{
+}
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+
+@interface OverviewTransfersRowView : NSTableRowView
+{
+    NSBezierPath *selectionPath;
+    NSBezierPath *accessoriePath;
+
+    BOOL    hasUnassignedValue;
+    NSColor *categoryColor;
+}
+
+@end
+
+@implementation OverviewTransfersRowView
+
+static NSGradient *background;
+static NSGradient *innerGradientSelected;
+static NSGradient *headerGradient;
+static NSGradient *headerGradientFloating;
+
+static NSImage    *stripeImage;
+
++ (void)initialize
+{
+    background = [[NSGradient alloc] initWithColorsAndLocations:
+                  [NSColor colorWithDeviceRed: 240 / 255.0 green: 240 / 255.0 blue: 240 / 255.0 alpha: 1], 0.2,
+                  [NSColor whiteColor], 0.8,
+                  nil];
+    headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
+                      [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], 0.0,
+                      [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], 1.0,
+                      nil];
+    headerGradientFloating = [[NSGradient alloc] initWithColorsAndLocations:
+                              [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 0.75], 0.0,
+                              [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 0.75], 1.0,
+                              nil];
+    stripeImage = [NSImage imageNamed: @"slanted_stripes.png"];
+    [self updateColors];
+}
+
++ (void)updateColors
+{
+    innerGradientSelected = [[NSGradient alloc] initWithColorsAndLocations:
+                             [NSColor applicationColorForKey: @"Selection Gradient (low)"], 0.0,
+                             [NSColor applicationColorForKey: @"Selection Gradient (high)"], 1.0,
+                             nil];
+}
+
+- (id)initWithFrame: (NSRect)frame assignment: (StatCatAssignment *)assignment
+{
+    self = [super initWithFrame: frame];
+    if (self != nil) {
+        hasUnassignedValue = [assignment.statement.nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
+        categoryColor = assignment.category.categoryColor;
+
+        [NSNotificationCenter.defaultCenter addObserverForName: CategoryColorNotification
+                                                        object: nil
+                                                         queue: nil
+                                                    usingBlock:
+         ^(NSNotification *notifictation) {
+             Category *category = (notifictation.userInfo)[CategoryKey];
+             categoryColor = category.categoryColor;
+             [self setNeedsDisplay: YES];
+         }
+        ];
+/*
+        // In addition listen to preference changes.
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults addObserver: self forKeyPath: @"markNAStatements" options: 0 context: UserDefaultsBindingContext];
+        [defaults addObserver: self forKeyPath: @"markNewStatements" options: 0 context: UserDefaultsBindingContext];
+        [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
+        [defaults addObserver: self forKeyPath: @"showBalances" options: 0 context: UserDefaultsBindingContext];
+ */
+    }
+
+    return self;
+}
+
+- (void)dealloc
+{
+    /*
+    [NSNotificationCenter.defaultCenter removeObserver: self];
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObserver: self forKeyPath: @"markNAStatements"];
+    [defaults removeObserver: self forKeyPath: @"markNewStatements"];
+    [defaults removeObserver: self forKeyPath: @"colors"];
+    [defaults removeObserver: self forKeyPath: @"showBalances"];
+     */
+}
+
+- (void)resizeSubviewsWithOldSize: (NSSize)oldSize
+{
+    [super resizeSubviewsWithOldSize: oldSize];
+    [self updatePaths];
+}
+
+- (void)viewDidMoveToSuperview
+{
+    [self updatePaths];
+}
+
+#define DENT_SIZE 4
+
+- (void)updatePaths
+{
+    selectionPath = [NSBezierPath bezierPath];
+
+    NSRect bounds = self.bounds;
+    [selectionPath moveToPoint: NSMakePoint(bounds.origin.x + 7, bounds.origin.y)];
+    [selectionPath lineToPoint: NSMakePoint(bounds.origin.x + bounds.size.width, bounds.origin.y)];
+    [selectionPath lineToPoint: NSMakePoint(bounds.origin.x + bounds.size.width, bounds.origin.y + bounds.size.height)];
+    [selectionPath lineToPoint: NSMakePoint(bounds.origin.x + 7, bounds.origin.y + bounds.size.height)];
+
+    // Add a number of dents (triangles) to the left side of the path. Since our height might not be a multiple
+    // of the dent height we distribute the remaining pixels to the first and last dent.
+    CGFloat    y = bounds.origin.y + bounds.size.height - 0.5;
+    CGFloat    x = bounds.origin.x + 7.5;
+    NSUInteger dentCount = bounds.size.height / DENT_SIZE;
+    if (dentCount > 0) {
+        NSUInteger remaining = bounds.size.height - DENT_SIZE * dentCount;
+
+        NSUInteger i = 0;
+        NSUInteger dentHeight = DENT_SIZE + remaining / 2;
+        remaining -= remaining / 2;
+
+        // First dent.
+        [selectionPath lineToPoint: NSMakePoint(x + DENT_SIZE, y - dentHeight / 2)];
+        [selectionPath lineToPoint: NSMakePoint(x, y - dentHeight)];
+        y -= dentHeight;
+
+        // Intermediate dents.
+        for (i = 1; i < dentCount - 1; i++) {
+            [selectionPath lineToPoint: NSMakePoint(x + DENT_SIZE, y - DENT_SIZE / 2)];
+            [selectionPath lineToPoint: NSMakePoint(x, y - DENT_SIZE)];
+            y -= DENT_SIZE;
+        }
+        // Last dent.
+        dentHeight = DENT_SIZE + remaining;
+        [selectionPath lineToPoint: NSMakePoint(x + DENT_SIZE, y - dentHeight / 2)];
+        [selectionPath lineToPoint: NSMakePoint(x, y - dentHeight)];
+    }
+
+    // Separator lines in front of every text in the main part.
+    accessoriePath = [NSBezierPath bezierPath];
+    CGFloat left = 0;
+    for (NSInteger column = 0; column < self.numberOfColumns - 1; ++column) {
+        NSView *cellView = [self viewAtColumn: column];
+        left += NSMaxX(cellView.bounds) + 0.5;
+        [accessoriePath moveToPoint: NSMakePoint(left, 10)];
+        [accessoriePath lineToPoint: NSMakePoint(left, 39)];
+    }
+
+    // Left, right and bottom lines.
+    [accessoriePath moveToPoint: NSMakePoint(0.5, 0)];
+    [accessoriePath lineToPoint: NSMakePoint(0.5, NSMaxY(bounds))];
+    [accessoriePath moveToPoint: NSMakePoint(NSMaxX(bounds) - 0.5, NSMaxY(bounds))];
+    [accessoriePath lineToPoint: NSMakePoint(NSMaxX(bounds) - 0.5, 0)];
+    if (!self.isSelected) {
+        [accessoriePath moveToPoint: NSMakePoint(0, NSMaxY(bounds))];
+        [accessoriePath lineToPoint: NSMakePoint(NSMaxX(bounds), NSMaxY(bounds))];
+    }
+}
+
+/**
+ * Draws non-group rows parts.
+ */
+- (void)drawInteriorSelected: (BOOL)selected
+{
+    // Old style gradient drawing for unassigned and new statements.
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    BOOL drawNotAssignedGradient = [defaults boolForKey: @"markNAStatements"];
+    BOOL drawNewStatementsGradient = [defaults boolForKey: @"markNewStatements"];
+    BOOL isUnassignedColored = NO;
+
+    NSRect bounds = self.bounds;
+
+    if (selected) {
+        [innerGradientSelected drawInBezierPath: selectionPath angle: -90.0];
+    } else {
+        NSBezierPath *path = [NSBezierPath bezierPathWithRect: bounds];
+
+        if (hasUnassignedValue) {
+            NSColor *color = drawNotAssignedGradient ? [NSColor applicationColorForKey: @"Uncategorized Transfer"] : nil;
+            if (color) {
+                NSGradient *aGradient = [[NSGradient alloc]
+                                         initWithColorsAndLocations: color, -0.1, [NSColor whiteColor], 1.1,
+                                         nil];
+
+                [aGradient drawInBezierPath: path angle: -90.0];
+                isUnassignedColored = YES;
+            }
+        }
+
+        if (!isUnassignedColored) {
+            //[background drawInBezierPath: path angle: -90.0];
+        }
+    }
+
+    [[NSColor colorWithDeviceWhite: 210 / 255.0 alpha: 1] set];
+    [accessoriePath stroke];
+
+    if (categoryColor != nil) {
+        [categoryColor set];
+        NSRect colorRect = bounds;
+        colorRect.size.width = 5;
+        [NSBezierPath fillRect: colorRect];
+    }
+
+    if (hasUnassignedValue) {
+        NSColor *color = drawNotAssignedGradient ? [NSColor applicationColorForKey: @"Uncategorized Transfer"] : nil;
+        if (color) {
+            isUnassignedColored = YES;
+        }
+    }
+
+    // Mark the value area if there is an unassigned value remaining.
+    if (hasUnassignedValue && !isUnassignedColored && (self.numberOfColumns > 3)) {
+        NSRect area = [[self viewAtColumn: 3] frame];
+        area.origin.y = 2;
+        area.size.height = bounds.size.height - 4;
+        area.size.width = stripeImage.size.width;
+        CGFloat fraction = self.isSelected ? 0.2 : 1;
+
+        // Tile the image into the area.
+        NSRect imageRect = NSMakeRect(0, 0, stripeImage.size.width, stripeImage.size.height);
+        while (area.origin.x < bounds.size.width - 4) {
+            [stripeImage drawInRect: area
+                           fromRect: imageRect
+                          operation: NSCompositeSourceOver
+                           fraction: fraction
+                     respectFlipped: YES
+                              hints: nil];
+            area.origin.x += stripeImage.size.width;
+        }
+    }
+
+}
+
+- (void)drawSelectionInRect: (NSRect)dirtyRect
+{
+    if (!self.isGroupRowStyle) {
+        [self drawInteriorSelected: YES];
+    }
+}
+
+- (void)drawBackgroundInRect: (NSRect)dirtyRect
+{
+    if (self.isGroupRowStyle) {
+        NSBezierPath *path = [NSBezierPath bezierPathWithRect: self.bounds];
+        if (self.isFloating) {
+            [headerGradientFloating drawInBezierPath: path angle: -90.0];
+        } else {
+            [headerGradient drawInBezierPath: path angle: -90.0];
+        }
+    } else {
+        [self drawInteriorSelected: NO];
+    }
+}
+
+- (void)observeValueForKeyPath: (NSString *)keyPath
+                      ofObject: (id)object
+                        change: (NSDictionary *)change
+                       context: (void *)context
+{
+    if (context == UserDefaultsBindingContext) {
+        if ([keyPath isEqualToString: @"colors"]) {
+            [self setNeedsDisplay: YES];
+            return;
+        }
+
+        if ([keyPath isEqualToString: @"showBalances"]) {
+            //[self showBalance: [NSUserDefaults.standardUserDefaults boolForKey: @"showBalances"]];
+        }
+
+        if ([keyPath isEqualToString: @"markNewStatements"]) {
+            NSImageView *newImage = [self viewWithTag: @"isNewImage"];
+            if ([NSUserDefaults.standardUserDefaults boolForKey: @"markNewStatements"]) {
+                //[newImage setHidden: YES];
+            } else {
+                //[newImage setHidden: ![self.objectValue isNew]];
+            }
+        }
+
+        [self setNeedsDisplay: YES];
+        return;
+    }
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
+}
+
+@end
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -47,6 +494,7 @@ extern void *UserDefaultsBindingContext;
 {
     NSDecimalNumber *saveValue;
     NSUInteger      lastSplitterPosition; // Last position of the splitter between list and details.
+    NSDateFormatter *dateFormatter;
 
     // Sorting statements.
     int  sortIndex;
@@ -61,10 +509,18 @@ extern void *UserDefaultsBindingContext;
 @synthesize selectedCategory;
 @synthesize toggleDetailsButton;
 
+- (void)dealloc
+{
+    free(entryMapping);
+}
+
 - (void)awakeFromNib
 {
     sortAscending = NO;
     sortIndex = 0;
+
+    dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateStyle = kCFDateFormatterFullStyle;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults objectForKey: @"mainSortIndex"]) {
@@ -92,6 +548,8 @@ extern void *UserDefaultsBindingContext;
 
     [self updateSorting];
     [self updateValueColors];
+
+    statementsView.floatsGroupRows = YES;
 
     // Setup statements listview.
     [statementsListView bind: @"dataSource" toObject: categoryAssignments withKeyPath: @"arrangedObjects" options: nil];
@@ -318,6 +776,48 @@ extern void *UserDefaultsBindingContext;
         }
     }
     [categoryAssignments setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
+    [self updateListMappingForceRecreation: NO];
+}
+
+/**
+ * Create the mapping array that helps us identify what group rows are and what normal entries in the
+ * statement list. Create a new mapping only if none exists yet or force is YES.
+ */
+- (void)updateListMappingForceRecreation: (BOOL)force
+{
+    if (mappingCount == 0 || force) {
+        free(entryMapping);
+        if (sortIndex != 0) {
+            // Currently not sorted by date. So just reset the mapping and recreate next time the user
+            // switches to sorting by date.
+            entryMapping = nil;
+            mappingCount = 0;
+            return;
+        }
+        mappingCount = [categoryAssignments.arrangedObjects count];
+        NSArray *assignments = categoryAssignments.arrangedObjects;
+        NSArray* distinctDates = [assignments valueForKeyPath: @"@distinctUnionOfObjects.dayOfExecution"];
+        distinctDates = [distinctDates sortedArrayUsingSelector: @selector(compareReversed:)];
+        mappingCount += distinctDates.count;
+        entryMapping = malloc(mappingCount * sizeof(NSInteger));
+
+        // Encode the number of entries under a specific date as negative number in the mappings array.
+        NSUInteger lastIndex = 0; // The first (top) entry is always a group row.
+        NSUInteger countForDate = 0;
+        for (NSUInteger mappingIndex = 1, distinctIndex = 0, assignmentIndex = 0; mappingIndex < mappingCount; ++mappingIndex) {
+            if (![[assignments[assignmentIndex] dayOfExecution] isEqual: distinctDates[distinctIndex]]) {
+                entryMapping[lastIndex] = -countForDate;
+                lastIndex = mappingIndex;
+                countForDate = 0;
+                ++distinctIndex;
+            } else {
+                entryMapping[mappingIndex] = assignmentIndex++;
+                ++countForDate;
+            }
+        }
+        entryMapping[lastIndex] = -countForDate; // Update the last header entry in the list.
+    }
+    [statementsView reloadData];
 }
 
 - (void)deleteSelectedStatements
@@ -474,6 +974,7 @@ extern void *UserDefaultsBindingContext;
     NSUInteger selection = categoryAssignments.selectionIndex;
     categoryAssignments.selectionIndex = NSNotFound;
     [statementsListView reloadData];
+    [statementsView reloadData];
     categoryAssignments.selectionIndex = selection;
 }
 
@@ -529,51 +1030,80 @@ extern void *UserDefaultsBindingContext;
 
 - (NSInteger)numberOfRowsInTableView: (NSTableView *)tableView
 {
-    return entries.count;
+    if (sortIndex == 0) {
+        return mappingCount;
+    }
+    return [categoryAssignments.arrangedObjects count];
 }
 
 - (NSView *)tableView: (NSTableView *)tableView
    viewForTableColumn: (NSTableColumn *)tableColumn
                   row: (NSInteger)row
 {
-    if (row >= (NSInteger)entries.count) {
-        return nil;
-    }
-
-    if ([entries[row] isKindOfClass: StatementsHeader.class]) {
-        StatementsHeader *header = entries[row];
-        TransfersHeaderView *cell = [tableView makeViewWithIdentifier: @"HeaderCell" owner: self];
-        cell.textField.stringValue = [header.date description];
+    if (sortIndex != 0 || entryMapping[row] > -1) {
+        NSString *identifier = [NSString stringWithFormat: @"%@CellView", tableColumn.identifier];
+        OverviewTransfersCellView *cell = [tableView makeViewWithIdentifier: identifier owner: tableView];
+        cell.objectValue = sortIndex == 0 ? categoryAssignments.arrangedObjects[entryMapping[row]] :
+                                            categoryAssignments.arrangedObjects[row];
         return cell;
     } else {
-        TransfersCellView *cell = [tableView makeViewWithIdentifier: @"MainCell" owner: self];
-        cell.statement = [entries[row] statement];
-        cell.category = [entries[row] category];
-        return cell;
+        if (tableColumn == nil) {
+            // We arrive here only if sorting is by date and we hit a header row. There's always at least
+            // one further entry we can use for certain information.
+            OverviewTransfersHeaderView *cell = [tableView makeViewWithIdentifier: @"HeaderCellView" owner: tableView];
+            StatCatAssignment *assignment = categoryAssignments.arrangedObjects[entryMapping[row + 1]];
+
+            NSDate *currentDate = assignment.statement.date;
+            if (currentDate == nil) {
+                currentDate = assignment.statement.valutaDate; // Should not be necessary, but still...
+            }
+            cell.dateString = [dateFormatter stringFromDate: currentDate];
+
+            NSUInteger turnovers = -entryMapping[row];
+            if (turnovers != 1) {
+                cell.countString = [NSString stringWithFormat: NSLocalizedString(@"AP207", nil), turnovers];
+            } else {
+                cell.countString = NSLocalizedString(@"AP206", nil);
+            }
+            return cell;
+        } else {
+            return nil;
+        }
     }
 }
 
 - (NSTableRowView *)tableView: (NSTableView *)tableView rowViewForRow: (NSInteger)row
 {
-    TransfersRowView *view = [[TransfersRowView alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
+    StatCatAssignment *assignment;
+    if (sortIndex != 0 || entryMapping[row] > -1) {
+        assignment = sortIndex == 0 ? categoryAssignments.arrangedObjects[entryMapping[row]] :
+                                      categoryAssignments.arrangedObjects[row];
+    }
+    OverviewTransfersRowView *view = [[OverviewTransfersRowView alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)
+                                                                          assignment: assignment];
     return view;
 }
 
 - (CGFloat)tableView: (NSTableView *)tableView heightOfRow: (NSInteger)row
 {
-    if (row < (NSInteger)entries.count && [entries[row] isKindOfClass: StatementsHeader.class]) {
-        return 20;
+    if (sortIndex != 0 || entryMapping[row] > -1) {
+        return 49;
     } else {
-        return 40;
+        return 20;
     }
 }
 
 - (BOOL)tableView: (NSTableView *)tableView isGroupRow:( NSInteger)row
 {
-    if (row < (NSInteger)entries.count) {
-        return [entries[row] isKindOfClass: StatementsHeader.class];
+    if (sortIndex == 0 && entryMapping[row] < 0) {
+        return YES;
     }
     return NO;
+}
+
+- (BOOL)tableView: (NSTableView *)tableView shouldSelectRow: (NSInteger)row
+{
+    return (sortIndex != 0 || entryMapping[row] > -1);
 }
 
 #pragma mark - KVO
@@ -677,6 +1207,7 @@ extern void *UserDefaultsBindingContext;
 {
     if (selectedCategory != newCategory) {
         selectedCategory = newCategory;
+        categoryAssignments.content = [selectedCategory boundAssignments];
 
         BOOL editable = NO;
         if (!newCategory.isBankAccount && newCategory != Category.nassRoot && newCategory != Category.catRoot) {
@@ -691,6 +1222,8 @@ extern void *UserDefaultsBindingContext;
         } else {
             [valueField setDrawsBackground: NO];
         }
+
+        [self updateListMappingForceRecreation: YES];
     }
 }
 

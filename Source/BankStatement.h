@@ -86,13 +86,14 @@ typedef enum {
 
 @property (nonatomic, strong, readonly) NSString *categoriesDescription;
 
-@property (nonatomic, strong) NSString         *localBankCode, *localAccount;
-@property (nonatomic, strong) NSString         *customerReference;
-@property (nonatomic, strong) NSString         *bankReference;
-@property (nonatomic, strong) NSString         *transactionText;
-@property (nonatomic, strong) NSNumber         *transactionCode;
-@property (nonatomic, strong) NSString         *currency;
-@property (nonatomic, strong) NSString         *primaNota;
+@property (nonatomic, strong) NSString *localBankCode, *localAccount;
+@property (nonatomic, strong) NSString *customerReference;
+@property (nonatomic, strong) NSString *bankReference;
+@property (nonatomic, strong) NSString *transactionText;
+@property (nonatomic, strong) NSNumber *transactionCode;
+@property (nonatomic, strong) NSString *currency;
+@property (nonatomic, strong) NSString *primaNota;
+
 @property (nonatomic, weak, readonly) NSString *note;
 
 @property (nonatomic, strong) NSString *additional;

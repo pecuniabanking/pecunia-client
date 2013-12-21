@@ -27,8 +27,9 @@
 @class StatementDetails;
 @class PecuniaSplitView;
 
-@interface StatementsOverviewController : NSObject <PecuniaSectionItem, NSTableViewDelegate, NSTableViewDataSource>
+@interface StatementsOverviewController : NSObject <PecuniaSectionItem>
 {
+@private
     IBOutlet NSArrayController  *categoryAssignments;
     IBOutlet StatementsListView *statementsListView;
 
@@ -42,6 +43,7 @@
     IBOutlet NSTextField       *nassValueField;
     IBOutlet NSTextField       *remoteNameLabel;
     IBOutlet StatementDetails  *statementDetails;
+    IBOutlet NSTableView       *statementsView;
 
     IBOutlet NSSegmentedControl *sortControl;
 
@@ -49,6 +51,9 @@
     IBOutlet AttachmentImageView *attachment2;
     IBOutlet AttachmentImageView *attachment3;
     IBOutlet AttachmentImageView *attachment4;
+
+    NSInteger *entryMapping;
+    NSUInteger mappingCount;
 }
 
 @property (strong) IBOutlet PecuniaSplitView *mainView;

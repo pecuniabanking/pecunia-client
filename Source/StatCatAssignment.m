@@ -24,10 +24,27 @@
 #import "BankAccount.h"
 #import "MCEMDecimalNumberAdditions.h"
 
+#import "ShortDate.h"
+
+@interface StatCatAssignment ()
+{
+    ShortDate *executionDate;
+}
+
+@end
+
 @implementation StatCatAssignment
 
 @dynamic value;
 @dynamic statement;
+
+- (ShortDate *)dayOfExecution
+{
+    if (executionDate == nil) {
+        executionDate = [ShortDate dateWithDate: self.statement.date];
+    }
+    return executionDate;
+}
 
 - (NSComparisonResult)compareDate: (StatCatAssignment *)stat
 {

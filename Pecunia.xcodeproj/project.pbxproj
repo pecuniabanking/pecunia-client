@@ -1652,6 +1652,15 @@
 			name = "Inline Help";
 			sourceTree = "<group>";
 		};
+		27D09422185F0FC900F26104 /* Overview */ = {
+			isa = PBXGroup;
+			children = (
+				27FD0DA4184120AE0047911C /* StatementsOverviewController.h */,
+				27FD0DA5184120AE0047911C /* StatementsOverviewController.m */,
+			);
+			name = Overview;
+			sourceTree = "<group>";
+		};
 		27D240E71453026400EDC8C7 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -1775,6 +1784,7 @@
 		27FA4A1C154D5B76002A5ED0 /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				27D09422185F0FC900F26104 /* Overview */,
 				B19822DB0E6F304A001C4C70 /* CategoryAnalysisWindowController.h */,
 				B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */,
 				B1029E100E3FA1D700CC681B /* CategoryDefWindowController.h */,
@@ -1788,8 +1798,6 @@
 				B192FDC00E8434D500B53380 /* CategoryRepWindowController.h */,
 				B192FDC10E8434D500B53380 /* CategoryRepWindowController.m */,
 				B159010A129310E40053CB9C /* PecuniaSectionItem.h */,
-				27FD0DA4184120AE0047911C /* StatementsOverviewController.h */,
-				27FD0DA5184120AE0047911C /* StatementsOverviewController.m */,
 			);
 			name = Sections;
 			sourceTree = "<group>";

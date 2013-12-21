@@ -21,6 +21,12 @@
 
 NSCalendar *calendar = nil;
 
+@interface ShortDate ()
+{
+    NSString *shortMonthName;
+}
+@end
+
 @implementation ShortDate
 
 - (id)initWithDate: (NSDate *)date
@@ -135,6 +141,19 @@ NSCalendar *calendar = nil;
         return NSOrderedDescending;
     }
     return NSOrderedSame;
+}
+
+- (NSComparisonResult)compareReversed: (ShortDate *)date
+{
+    NSComparisonResult result = [self compare: date];
+    switch (result) {
+        case NSOrderedAscending:
+            return NSOrderedDescending;
+        case NSOrderedDescending:
+            return NSOrderedAscending;
+        default:
+            return result;
+    }
 }
 
 - (BOOL)isBetween: (ShortDate *)fromDate and: (ShortDate *)toDate
@@ -304,7 +323,17 @@ NSCalendar *calendar = nil;
     [formatter setDateStyle: NSDateFormatterMediumStyle];
     [formatter setTimeStyle: NSDateFormatterNoStyle];
 
-    return [formatter stringFromDate: [self lowDate]];
+    return [formatter stringFromDate: self.lowDate];
+}
+
+- (NSString *)shortMonthDescription
+{
+    if (shortMonthName == nil) {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"MMM";
+        shortMonthName = [formatter stringFromDate: self.lowDate];
+    }
+    return shortMonthName;
 }
 
 - (NSString *)monthYearDescription

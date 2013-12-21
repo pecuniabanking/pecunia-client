@@ -24,14 +24,6 @@ extern void *UserDefaultsBindingContext;
 
 @implementation TransfersHeaderView
 
-- (void)awakeFromNib
-{
-}
-
-- (void)dealloc
-{
-}
-
 - (void)drawRect: (NSRect)dirtyRect
 {
     [[NSColor colorWithCalibratedWhite: 1 alpha: 0.2] setFill];

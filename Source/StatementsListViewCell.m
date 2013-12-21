@@ -369,9 +369,9 @@ static NSImage    *stripeImage;
 {
     // Old style gradient drawing for unassigned and new statements.
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL           drawNotAssignedGradient = [defaults boolForKey: @"markNAStatements"];
-    BOOL           drawNewStatementsGradient = [defaults boolForKey: @"markNewStatements"];
 
+    BOOL drawNotAssignedGradient = [defaults boolForKey: @"markNAStatements"];
+    BOOL drawNewStatementsGradient = [defaults boolForKey: @"markNewStatements"];
     BOOL isUnassignedColored = NO;
 
     if (innerGradient == nil) {
@@ -391,7 +391,7 @@ static NSImage    *stripeImage;
         bounds.size.height -= headerHeight;
     }
 
-    if ([self isSelected]) {
+    if (self.isSelected) {
         NSBezierPath *path = [NSBezierPath bezierPath];
 
         [path moveToPoint: NSMakePoint(bounds.origin.x + 7, bounds.origin.y)];
@@ -439,7 +439,7 @@ static NSImage    *stripeImage;
     } else {
         NSBezierPath *path = [NSBezierPath bezierPathWithRect: bounds];
 
-        [innerGradient drawInBezierPath: path angle: 90.0];
+        //[innerGradient drawInBezierPath: path angle: 90.0];
         if (hasUnassignedValue) {
             NSColor *color = drawNotAssignedGradient ? [NSColor applicationColorForKey: @"Uncategorized Transfer"] : nil;
             if (color) {
