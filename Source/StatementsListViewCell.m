@@ -439,7 +439,7 @@ static NSImage    *stripeImage;
     } else {
         NSBezierPath *path = [NSBezierPath bezierPathWithRect: bounds];
 
-        [innerGradient drawInBezierPath: path angle: 90.0];
+        //[innerGradient drawInBezierPath: path angle: 90.0];
         if (hasUnassignedValue) {
             NSColor *color = drawNotAssignedGradient ? [NSColor applicationColorForKey: @"Uncategorized Transfer"] : nil;
             if (color) {

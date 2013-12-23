@@ -23,5 +23,6 @@
 }
 
 - (DockIconController *)initWithManagedObjectContext: (NSManagedObjectContext *)objectContext;
+- (void)updateBadge;
 
 @end

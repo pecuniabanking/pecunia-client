@@ -533,7 +533,7 @@ static BankingController *bankinControllerInstance;
 
     [self.managedObjectContext processPendingChanges];
     [[Category nassRoot] invalidateBalance];
-    [Category updateCatValues];
+    [Category updateBalancesAndSums];
 
     // remove parent?
     BankAccount *parent = [bankAccount valueForKey: @"parent"];
@@ -557,8 +557,7 @@ static BankingController *bankinControllerInstance;
         newPath = [newPath indexPathByRemovingLastIndex];
         [categoryController removeObjectAtArrangedObjectIndexPath: newPath];
     }
-    //	[categoryController remove: self];
-    [[Category bankRoot] rollupRecursive: YES];
+    [[Category bankRoot] updateCategorySums];
 
     LOG_LEAVE;
 }
@@ -714,10 +713,10 @@ static BankingController *bankinControllerInstance;
     }
 
     for (Category *cat in cats) {
-        if ([cat isBankingRoot] == NO) {
-            [cat updateInvalidCategoryValues];
+        if (!cat.isBankingRoot) {
+            [cat recomputeInvalidBalances];
         }
-        [cat rollupRecursive: YES];
+        [cat updateCategorySums];
     }
 
     [self save];
@@ -934,8 +933,6 @@ static BankingController *bankinControllerInstance;
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: YES];
 
     if (resultList != nil) {
-        [[self currentSelection] updateBoundAssignments];
-
         BankQueryResult *result;
         NSDate          *maxDate = nil;
         for (result in resultList) {
@@ -1054,7 +1051,7 @@ static BankingController *bankinControllerInstance;
         [self save];
 
         [categoryController rearrangeObjects];
-        [Category.bankRoot rollupRecursive: YES];
+        [Category.bankRoot updateCategorySums];
     }
 
     LOG_LEAVE;
@@ -1080,7 +1077,7 @@ static BankingController *bankinControllerInstance;
         CategoryMaintenanceController *changeController = [[CategoryMaintenanceController alloc] initWithCategory: cat];
         [NSApp runModalForWindow: [changeController window]];
         [categoryController prepareContent]; // Visibility of a category could have changed.
-        [Category.catRoot rollupRecursive: YES]; // Category could have switched its noCatRep property.
+        [Category.catRoot updateCategorySums]; // Category could have switched its noCatRep property.
         return;
     }
 
@@ -1088,7 +1085,7 @@ static BankingController *bankinControllerInstance;
         AccountMaintenanceController *changeController = [[AccountMaintenanceController alloc] initWithAccount: (BankAccount *)cat];
         [NSApp runModalForWindow: [changeController window]];
         [categoryController prepareContent];
-        [Category.bankRoot rollupRecursive: YES];
+        [Category.bankRoot updateCategorySums];
     }
     // Changes are stored in the controllers.
 
@@ -1838,7 +1835,7 @@ static BankingController *bankinControllerInstance;
 
 - (BOOL)outlineView: (NSOutlineView *)outlineView acceptDrop: (id <NSDraggingInfo>)info item: (id)item childIndex: (NSInteger)childIndex
 {
-    Category     *cat = (Category *)[item representedObject];
+    Category     *targetCategory = (Category *)[item representedObject];
     NSPasteboard *pboard = [info draggingPasteboard];
     NSString     *type = [pboard availableTypeFromArray: @[BankStatementDataType, CategoryDataType]];
     if (type == nil) {
@@ -1846,31 +1843,31 @@ static BankingController *bankinControllerInstance;
     }
     NSData *data = [pboard dataForType: type];
 
-    BOOL needListViewUpdate = NO;
     if ([type isEqual: BankStatementDataType]) {
         NSDragOperation mask = [info draggingSourceOperationMask];
         NSArray         *uris = [NSKeyedUnarchiver unarchiveObjectWithData: data];
 
+        BOOL needBankRootUpdate = NO;
         for (NSURL *uri in uris) {
             NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
             if (moID == nil) {
                 continue;
             }
-            StatCatAssignment *stat = (StatCatAssignment *)[self.managedObjectContext objectWithID: moID];
+            StatCatAssignment *assignment = (StatCatAssignment *)[self.managedObjectContext objectWithID: moID];
 
             if ([[self currentSelection] isBankAccount]) {
                 // if already assigned or copy modifier is pressed, copy the complete bank statement amount - else assign residual amount (move)
-                if ([cat isBankAccount]) {
+                if ([targetCategory isBankAccount]) {
                     // drop on a manual account
-                    BankAccount *account = (BankAccount *)cat;
-                    [account copyStatement: stat.statement];
-                    [[Category bankRoot] rollupRecursive: YES];
+                    BankAccount *account = (BankAccount *)targetCategory;
+                    [account copyStatement: assignment.statement];
+                    needBankRootUpdate = YES;
                 } else {
-                    if (mask == NSDragOperationCopy || [stat.statement.isAssigned boolValue]) {
-                        [stat.statement assignToCategory: cat];
+                    if (mask == NSDragOperationCopy || [assignment.statement.isAssigned boolValue]) {
+                        [assignment.statement assignToCategory: targetCategory];
                     } else if (mask == NSDragOperationGeneric) {
                         BOOL            negate = NO;
-                        NSDecimalNumber *residual = stat.statement.nassValue;
+                        NSDecimalNumber *residual = assignment.statement.nassValue;
                         if ([residual compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
                             negate = YES;
                         }
@@ -1888,23 +1885,18 @@ static BankingController *bankinControllerInstance;
                         if (negate) {
                             residual = [[NSDecimalNumber zero] decimalNumberBySubtracting: residual];
                         }
-                        [stat.statement assignAmount: residual toCategory: cat withInfo: controller.info];
-                        needListViewUpdate = YES;
+                        [assignment.statement assignAmount: residual toCategory: targetCategory withInfo: controller.info];
                     } else {
-                        [stat.statement assignAmount: stat.statement.nassValue toCategory: cat withInfo: nil];
+                        [assignment.statement assignAmount: assignment.statement.nassValue toCategory: targetCategory withInfo: nil];
                     }
                 }
-
-                // KVO takes care for changes in the category part of the tree. But for accounts the assignments
-                // list is not changed by this operation, so we need a manual trigger for screen updates.
-                needListViewUpdate = YES;
             } else {
                 if (mask == NSDragOperationCopy) {
-                    [stat.statement assignAmount: stat.value toCategory: cat withInfo: nil];
+                    [assignment.statement assignAmount: assignment.value toCategory: targetCategory withInfo: nil];
                 } else if (mask == NSDragOperationGeneric) {
                     // split
                     BOOL            negate = NO;
-                    NSDecimalNumber *amount = stat.value;
+                    NSDecimalNumber *amount = assignment.value;
                     if ([amount compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
                         negate = YES;
                     }
@@ -1923,17 +1915,23 @@ static BankingController *bankinControllerInstance;
                         amount = [[NSDecimalNumber zero] decimalNumberBySubtracting: amount];
                     }
                     // now we have the amount that should be assigned to the target category
-                    if ([[amount abs] compare: [stat.value abs]] != NSOrderedDescending) {
-                        [stat moveAmount: amount toCategory: cat withInfo: controller.info];
-                        needListViewUpdate = YES;
+                    if ([[amount abs] compare: [assignment.value abs]] != NSOrderedDescending) {
+                        [assignment moveAmount: amount toCategory: targetCategory withInfo: controller.info];
                     }
                 } else {
-                    [stat moveToCategory: cat];
+                    [assignment moveToCategory: targetCategory];
                 }
             }
         }
-        // update values including rollup
-        [Category updateCatValues];
+
+        // Update category values including rollup for all categories.
+        [Category updateBalancesAndSums];
+
+        [self.currentSelection updateAssignmentsForReportRange]; // Update displayed assignments.
+
+        if (needBankRootUpdate) {
+            [[Category bankRoot] updateCategorySums];
+        }
     } else {
         NSURL             *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data];
         NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
@@ -1941,17 +1939,13 @@ static BankingController *bankinControllerInstance;
             return NO;
         }
         Category *scat = (Category *)[self.managedObjectContext objectWithID: moID];
-        [scat setValue: cat forKey: @"parent"];
+        [scat setValue: targetCategory forKey: @"parent"];
 
-        [[Category catRoot] rollupRecursive: YES];
+        [[Category catRoot] updateCategorySums];
     }
 
     [self save];
 
-    // TODO: Remove this manual update after exchanging PXListView by NSTableView.
-    if (needListViewUpdate && currentSection == overviewController) {
-        [overviewController reloadList];
-    }
     return YES;
 }
 
@@ -1971,7 +1965,7 @@ static BankingController *bankinControllerInstance;
     if (currentSection != nil) {
         currentSection.selectedCategory = cat;
     }
-
+    [self updateStatusbar];
 }
 
 - (void)outlineView: (NSOutlineView *)outlineView willDisplayCell: (ImageAndTextCell *)cell
@@ -2299,7 +2293,7 @@ static BankingController *bankinControllerInstance;
         [stat remove];
     }
     [categoryController remove: cat];
-    [Category updateCatValues];
+    [Category updateBalancesAndSums];
 
     // workaround: NSTreeController issue: when an item is removed and the NSOutlineViewSelectionDidChange notification is sent,
     // the selectedObjects: message returns the wrong (the old) selection
@@ -2374,8 +2368,6 @@ static BankingController *bankinControllerInstance;
         return;
     }
     [Category setCatReportFrom: from to: to];
-
-    [[self currentSelection] updateBoundAssignments];
 
     // Update current section if the default is not active.
     if (currentSection != nil) {
@@ -2456,8 +2448,8 @@ static BankingController *bankinControllerInstance;
 
     int res = [NSApp runModalForWindow: [statementController window]];
     if (res) {
-        [cat updateBoundAssignments];
         [self save];
+        [self.currentSelection updateAssignmentsForReportRange];
     }
 }
 
@@ -3400,7 +3392,5 @@ static BankingController *bankinControllerInstance;
 {
     return bankinControllerInstance;
 }
-
-//--------------------------------------------------------------------------------------------------
 
 @end

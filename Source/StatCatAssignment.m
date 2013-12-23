@@ -156,82 +156,66 @@
 
     [scat invalidateBalance];
     [tcat invalidateBalance];
-
-    [tcat updateBoundAssignments];
-    [scat updateBoundAssignments];
 }
 
-- (void)moveToCategory: (Category *)tcat
+- (void)moveToCategory: (Category *)targetCategory
 {
-    StatCatAssignment *stat;
-    Category          *ncat = [Category nassRoot];
-    Category          *scat = self.category;
+    Category *nassRoot = Category.nassRoot;
+    Category *sourceCategory = self.category;
 
-    if (tcat == scat) {
+    if (targetCategory == sourceCategory) {
         return;
     }
 
-    // check if there is already an entry for the statement in tcat
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSMutableSet           *stats = [self.statement mutableSetValueForKey: @"assignments"];
+    // Check if there is already an entry for the statement in the target category.
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
 
-    // if assignment already done, add value
-    NSEnumerator *iter = [stats objectEnumerator];
-    while ((stat = [iter nextObject]) != nil) {
-        if (stat.category == tcat) {
+    NSSet *assignments = [self.statement valueForKey: @"assignments"];
+
+    // If assignment already done, add value.
+    for (StatCatAssignment *stat in assignments) {
+        if (stat.category == targetCategory) {
             stat.value = [stat.value decimalNumberByAdding: self.value];
-            // value must never be higher than statement's value
+
+            // Value must never be higher than the statement's value.
             if ([[stat.value abs] compare: [stat.statement.value abs]] == NSOrderedDescending) {
                 stat.value = stat.statement.value;
             }
             [stat.statement updateAssigned];
             if (self != stat) {
                 [context deleteObject: self];
-                [context processPendingChanges];
             }
-            [scat invalidateBalance];
-            [tcat invalidateBalance];
-            [tcat updateBoundAssignments];
-            [scat updateBoundAssignments];
+            [sourceCategory invalidateBalance];
+            [targetCategory invalidateBalance];
             return;
         }
     }
 
-    [context processPendingChanges];
+    self.category = targetCategory;
 
-    self.category = tcat;
+    [sourceCategory invalidateBalance];
+    [targetCategory invalidateBalance];
 
-    // XXX: all the updates below are highly ineffective when it comes to multiple move operations.
-    [scat invalidateBalance];
-    [tcat invalidateBalance];
-
-    // This call doesn't actually update anything but triggers a KVO notification about this assignment change.
-    // TODO: do we need a similar call for the old category?
-    [tcat updateBoundAssignments];
-    [scat updateBoundAssignments];
-
-    if (tcat == ncat || scat == ncat) {
+    if (targetCategory == nassRoot || sourceCategory == nassRoot) {
         [self.statement updateAssigned];
     }
 }
 
 - (void)remove
 {
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    Category               *cat = self.category;
-    BankStatement          *stat = self.statement;
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    BankStatement *stat = self.statement;
     if (stat.account == nil) {
         [context deleteObject: stat];
         stat = nil;
     } else {[context deleteObject: self]; }
 
-    // important: do changes to the graph since updateAssigned counts on an updated graph
+    // Important: do changes to the graph since updateAssigned counts on an updated graph.
     [context processPendingChanges];
     if (stat) {
         [stat updateAssigned];
     }
-    //[cat invalidateBalance];
-    [cat updateBoundAssignments];
 }
 
 - (id)valueForUndefinedKey: (NSString *)key
@@ -252,12 +236,12 @@
 {
     if ([self primitiveCategory] != value) {
         [[self primitiveCategory] invalidateBalance];
-        [[self primitiveCategory] invalidateCache];
+        [[self primitiveCategory] invalidateCacheIncludeParents: YES];
         [self willChangeValueForKey: @"category"];
         [self setPrimitiveCategory: value];
         [self didChangeValueForKey: @"category"];
         [value invalidateBalance];
-        [value invalidateCache];
+        [value invalidateCacheIncludeParents: YES];
     }
 }
 

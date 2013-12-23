@@ -380,8 +380,8 @@ static NSGradient *innerGradientSelected;
             [innerGradientSelected drawInBezierPath: path angle: 90.0];
         }
     } else {
-        NSBezierPath *path = [NSBezierPath bezierPathWithRect: bounds];
-        [innerGradient drawInBezierPath: path angle: 90.0];
+        //NSBezierPath *path = [NSBezierPath bezierPathWithRect: bounds];
+        //[innerGradient drawInBezierPath: path angle: 90.0];
     }
 
     if (categoryColor != nil) {
