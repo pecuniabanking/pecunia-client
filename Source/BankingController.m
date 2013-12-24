@@ -901,6 +901,7 @@ static BankingController *bankinControllerInstance;
         [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), count] removeAfter: 120];
     }
     autoSyncRunning = NO;
+    [self.currentSelection updateAssignmentsForReportRange];
     
     // check for updated login data
     for (result in resultList) {

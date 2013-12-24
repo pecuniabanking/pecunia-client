@@ -254,6 +254,9 @@
             ltd = stmt.date;
         }
     }
+
+    [self updateAssignmentsForReportRange];
+    
     if (newStatements.count > 0) {
         if (result.balance == nil) {
             // no balance given - calculate new balance
