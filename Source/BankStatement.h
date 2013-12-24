@@ -38,7 +38,7 @@ typedef enum {
 - (NSComparisonResult)compareValuta: (BankStatement *)stat;
 
 - (void)assignToCategory: (Category *)cat;
-- (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)cat withInfo:(NSString *)info;
+- (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)targetCategory withInfo:(NSString *)info;
 - (BOOL)updateAssigned;
 - (BOOL)hasAssignment;
 - (NSDecimalNumber *)residualAmount;

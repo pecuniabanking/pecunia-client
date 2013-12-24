@@ -660,9 +660,9 @@ IA
                             </scroller>
                         </scrollView>
                         <textField verticalHuggingPriority="750" id="525">
-                            <rect key="frame" x="28" y="723" width="542" height="24"/>
+                            <rect key="frame" x="30" y="723" width="538" height="24"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Daueraufträge" id="530">
+                            <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Daueraufträge" drawsBackground="YES" id="530">
                                 <font key="font" size="20" name="HelveticaNeue"/>
                                 <color key="textColor" red="0.0" green="0.40461397170000002" blue="0.81900453569999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

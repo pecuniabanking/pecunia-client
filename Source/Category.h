@@ -56,6 +56,7 @@ typedef struct {
 
 @class ShortDate;
 @class CategoryReportingNode;
+@class StatCatAssignment;
 
 @interface Category : NSManagedObject {
 @private
@@ -77,15 +78,16 @@ typedef struct {
 @property (nonatomic) NSString                *iconName;
 @property (nonatomic, strong) NSNumber        *isHidden;
 
-@property (nonatomic, strong) NSColor   *categoryColor; // Unarchived catRepColor.
-@property (nonatomic, strong) NSArray   *reportedAssignments; // assignments between start and end report date
-@property (nonatomic, readonly) NSArray *boundAssignments; // assignments bound to / displayed in a statements table view
+@property (nonatomic, strong) NSColor *categoryColor; // Unarchived catRepColor.
+@property (nonatomic, strong) NSArray *reportedAssignments; // assignments between start and end report date
 
-- (void)updateInvalidCategoryValues;
+- (void)recomputeInvalidBalances;
 - (void)invalidateBalance;
-- (void)invalidateCache;
-- (void)rollupRecursive: (BOOL)recursive;
-- (void)rebuildValues;
+- (void)updateCategorySums;
+
+// Cache handling.
+- (void)invalidateCacheIncludeParents: (BOOL)flag;
+- (void)updateAssignmentsForReportRange;
 
 - (NSString *)name;
 - (NSString *)accountNumber;
@@ -129,13 +131,12 @@ typedef struct {
                            recursive: (BOOL)recursive
                            ascending: (BOOL)ascending;
 - (NSUInteger)assignmentCountRecursive: (BOOL)recursive;
-- (void)updateBoundAssignments;
 
 + (Category *)bankRoot;
 + (Category *)catRoot;
 + (Category *)nassRoot;
 + (Category *)categoryForName: (NSString *)name;
-+ (void)updateCatValues;
++ (void)updateBalancesAndSums;
 + (void)setCatReportFrom: (ShortDate *)fDate to: (ShortDate *)tDate;
 + (void)recreateRoots;
 + (void)createDefaultCategories;

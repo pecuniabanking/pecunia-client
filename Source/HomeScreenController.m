@@ -22,6 +22,7 @@
 #import "GraphicsAdditions.h"
 #import "PreferenceController.h"
 #import "ClickableImageView.h"
+#include "MessageLog.h"
 
 #import "StockCard.h"
 #import "AssetsCard.h"
@@ -293,8 +294,11 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
 - (id)initWithFrame: (NSRect)frameRect
 {
+    LOG_ENTER;
+
     self = [super initWithFrame: frameRect];
     if (self != nil) {
+        [MessageLog.log addMessage: @"Initializing resources" withLevel: LogLevel_Debug];
         NSImage *image = [NSImage imageNamed: @"background-pattern"];
         if (image != nil) {
             background = [NSColor colorWithPatternImage: image];
@@ -339,6 +343,8 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
  */
 - (void)setUpCards
 {
+    LOG_ENTER;
+
     // Layouting these cards is done explicitly.
     HomeScreenCard *card = [[RecentTransfersCard alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
     card.title =  NSLocalizedString(@"AP952", nil);
@@ -359,7 +365,6 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     card = [[SaveAndRedeemCard alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
     card.title =  NSLocalizedString(@"AP955", nil);
     [self addSubview: card];
-
 }
 
 - (BOOL)isFlipped
@@ -372,6 +377,8 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
  */
 - (void)resizeSubviewsWithOldSize: (NSSize)oldSize
 {
+    LOG_ENTER;
+
     // Children are laid out as they are listed in the subview collection.
     // The base layout is a 3 columns, 2 rows grid which is filled from top left to bottom right.
     // But only 5 subviews are actually used. The last space is not used by cards.
@@ -382,7 +389,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     NSUInteger y = 30;
 
     NSUInteger i = 0;
-    while (i < 5) {
+    while (i < self.subviews.count) {
         NSView *child = self.subviews[i];
         NSUInteger width = i % 3 == 1 ? 4 * baseWidth : 3 * baseWidth;
         child.frame = NSMakeRect(x, y, width, baseHeight);

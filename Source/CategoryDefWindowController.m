@@ -197,7 +197,7 @@
 
     // already assigned statements
     if (!hideAssignedValues) {
-        pred = [NSPredicate predicateWithFormat: @"(category.isBankAccount = 0)"];
+        pred = [NSPredicate predicateWithFormat: @"(category.isBankAcc = 0)"];
         if (predicate != nil) {
             pred = [NSCompoundPredicate andPredicateWithSubpredicates: @[pred, predicate]];
         }
@@ -274,7 +274,7 @@
         [entry.statement assignAmount: [entry value] toCategory: selectedCategory withInfo: nil];
     }
     [selectedCategory invalidateBalance];
-    [Category updateCatValues];
+    [Category updateBalancesAndSums];
 
     // Explicitly reload the listview. When removing from a category it happens automatically.
     // Not so when adding, though.
@@ -298,7 +298,7 @@
     [assignment.statement assignAmount: [assignment value] toCategory: selectedCategory withInfo: nil];
 
     [selectedCategory invalidateBalance];
-    [Category updateCatValues];
+    [Category updateBalancesAndSums];
 
     [statementsListView reloadData];
 
@@ -322,7 +322,7 @@
     [assignPreviewController rearrangeObjects];
 
     [selectedCategory invalidateBalance];
-    [Category updateCatValues];
+    [Category updateBalancesAndSums];
 
     // save updates
     NSManagedObjectContext *context = [[MOAssistant assistant] context];

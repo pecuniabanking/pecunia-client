@@ -60,15 +60,21 @@
 
 + (id)defaultAnimationForKey: (NSString *)key
 {
+    LOG_ENTER;
+
     if ([key isEqualToString: @"contentAlpha"]) {
         return [CABasicAnimation animation];
     } else {
         return [super defaultAnimationForKey: key];
     }
+
+    LOG_LEAVE;
 }
 
 - (id)initWithFrame: (NSRect)frameRect owner: (NextTransfersCard *)owner
 {
+    LOG_ENTER;
+
     self = [super initWithFrame: frameRect];
     if (self != nil) {
         card = owner;
@@ -79,37 +85,58 @@
 
         [self updateConstantValues];
     }
+
+    LOG_LEAVE;
+
     return self;
 }
 
 - (void)setMonth: (NSUInteger)m
 {
+    LOG_ENTER;
+
     month = m;
     [self updateConstantValues];
     [self setNeedsDisplay: YES];
+
+    LOG_LEAVE;
 }
 
 - (void)setYear: (NSUInteger)y
 {
+    LOG_ENTER;
+
     year = y;
     [self updateConstantValues];
     [self setNeedsDisplay: YES];
+
+    LOG_LEAVE;
 }
 
 - (void)setValues: (NSMutableDictionary *)theValues
 {
+    LOG_ENTER;
+
     values = theValues;
     [self setNeedsDisplay: YES];
+
+    LOG_LEAVE;
 }
 
 - (void)setContentAlpha: (CGFloat)value
 {
+    LOG_ENTER;
+
     contentAlpha = value;
     [self setNeedsDisplay: YES];
+
+    LOG_LEAVE;
 }
 
 - (void)setSelectedDate: (ShortDate *)value
 {
+    LOG_ENTER;
+
     BOOL change = NO;
     if (selectedDate == nil) {
         if (value == nil) {
@@ -124,10 +151,14 @@
         selectedDate = value;
         [self setNeedsDisplay: YES];
     }
+
+    LOG_LEAVE;
 }
 
 - (void)mouseDown: (NSEvent *)theEvent
 {
+    LOG_ENTER;
+
     NSPoint windowLocation = theEvent.locationInWindow;
     NSPoint location = [self convertPoint: windowLocation fromView: nil];
 
@@ -161,6 +192,8 @@
     } else {
         self.selectedDate = nil;
     }
+
+    LOG_LEAVE;
 }
 
 static NSColor *transparentTextColor;
@@ -182,6 +215,8 @@ static NSFont *smallNumberFont;
 
 - (void)setupStaticValues
 {
+    LOG_ENTER;
+
     dateFormatter = [[NSDateFormatter alloc] init];
     gridColor = [NSColor colorWithCalibratedWhite: 214 / 255.0 alpha: 1];
     frameColor = [NSColor colorWithCalibratedWhite: 193 / 255.0 alpha: 1];
@@ -201,10 +236,14 @@ static NSFont *smallNumberFont;
 
     grayColor = [NSColor colorWithCalibratedWhite: 239 / 255.0 alpha: 1];
     darkTextColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.7];
+
+    LOG_LEAVE;
 }
 
 - (void)updateConstantValues
 {
+    LOG_ENTER;
+
     if (dateFormatter == nil) {
         [self setupStaticValues];
     }
@@ -217,6 +256,8 @@ static NSFont *smallNumberFont;
     startDate = [firstDay firstDayInWeek];
 
     transparentTextColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.3];
+
+    LOG_LEAVE;
 }
 
 - (void)drawRect: (NSRect)dirtyRect
@@ -358,6 +399,8 @@ static NSFont *smallNumberFont;
 
 - (id)initWithFrame: (NSRect)frameRect isTop: (BOOL)top
 {
+    LOG_ENTER;
+
     self = [super initWithFrame: frameRect];
     if (self != nil) {
         isTop = top;
@@ -371,6 +414,9 @@ static NSFont *smallNumberFont;
         self.layer.shadowOffset = CGSizeMake(0, 0);
         self.layer.shadowOpacity = 0.5;
     }
+
+    LOG_LEAVE;
+
     return self;
 }
 
@@ -391,6 +437,8 @@ static NSFont *smallNumberFont;
 
 - (void)resizeWithOldSuperviewSize: (NSSize)oldSize
 {
+    LOG_ENTER;
+
     [super resizeWithOldSuperviewSize: oldSize];
 
     NSRect bounds = NSInsetRect(self.bounds, 2, 0);
@@ -403,6 +451,8 @@ static NSFont *smallNumberFont;
 
     NSBezierPath *shadowPath = [NSBezierPath bezierPathWithOvalInRect: bounds];
     self.layer.shadowPath = shadowPath.cgPath;
+
+    LOG_LEAVE;
 }
 
 @end
@@ -418,6 +468,7 @@ static NSFont *smallNumberFont;
     NSDateFormatter *dateFormatter;
     NSMutableDictionary *monthAttributes;
     NSDictionary *yearAttributes;
+    CGFloat yearLabelOffset;
 
     NSInteger offsetAccumulator;
     BOOL ignoreMomentumChange;
@@ -439,6 +490,8 @@ static NSFont *smallNumberFont;
 
 - (id)animationForKey: (NSString *)key
 {
+    LOG_ENTER;
+
     if ([key isEqualToString: @"scrollOffset"]) {
         CABasicAnimation *animation = [CABasicAnimation animation];
         animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseOut];
@@ -447,10 +500,14 @@ static NSFont *smallNumberFont;
     } else {
         return [super animationForKey:key];
     }
+
+    LOG_LEAVE;
 }
 
 - (id)initWithFrame: (NSRect)frameRect startingEnd: (BandEndView *)view card: (NextTransfersCard *)card
 {
+    LOG_ENTER;
+
     self = [super initWithFrame: frameRect];
     if (self != nil) {
         [self setWantsLayer: YES];
@@ -465,7 +522,13 @@ static NSFont *smallNumberFont;
         monthAttributes = [NSMutableDictionary dictionaryWithCapacity: 2];
         monthAttributes[NSFontAttributeName] = [NSFont fontWithName: @"HelveticaNeue-Bold" size: 13];
 
-        yearAttributes = @{NSFontAttributeName: [NSFont fontWithName: @"Haettenschweiler" size: 130],
+        yearLabelOffset = 20;
+        NSFont *font = [NSFont fontWithName: @"Haettenschweiler" size: 130];
+        if (font == nil) {
+            yearLabelOffset = 40;
+            font = [NSFont fontWithName: @"Impact" size: 100]; // Fallback.
+        }
+        yearAttributes = @{NSFontAttributeName: font,
                            NSForegroundColorAttributeName: [NSColor colorWithDeviceWhite: 0 alpha: 0.05]};
 
         standingOrders = [[NSArrayController alloc] init];
@@ -482,6 +545,9 @@ static NSFont *smallNumberFont;
         [self addSubview: calendar];
         [self updateCalendarsWithFetch: YES];
     }
+
+    LOG_LEAVE;
+
     return self;
 }
 
@@ -507,13 +573,14 @@ static NSFont *smallNumberFont;
 
         NSString *year = [NSString stringWithFormat: @"%i", date.year];
         NSAffineTransform *transform = [[NSAffineTransform alloc] init];
-        [transform translateXBy: -20 yBy: height - 55];
+
+        [transform translateXBy: -yearLabelOffset yBy: height - 80];
         [transform rotateByDegrees: -90];
         [transform concat];
         [year drawAtPoint: NSMakePoint(0, 0) withAttributes: yearAttributes];
         transform = [[NSAffineTransform alloc] init];
         [transform rotateByDegrees: 90]; // Revert context transformations.
-        [transform translateXBy: 20 yBy: -(height - 55)];
+        [transform translateXBy: yearLabelOffset yBy: - (height - 80)];
         [transform concat];
 
         NSUInteger lineLength = NSWidth(self.bounds) - self.contentWidth - 10;
@@ -639,6 +706,8 @@ static NSFont *smallNumberFont;
 
 - (void)updateCalendarsWithFetch: (BOOL)fetch
 {
+    LOG_ENTER;
+
     NSUInteger monthDistance = self.scrollOffset / CALENDAR_HEIGHT;
     ShortDate *date = [[ShortDate currentDate] dateByAddingUnits: monthDistance
                                                           byUnit: NSCalendarUnitMonth];
@@ -748,10 +817,14 @@ static NSFont *smallNumberFont;
         }
         date = [date dateByAddingUnits: 1 byUnit: NSCalendarUnitMonth];
     }
+
+    LOG_LEAVE;
 }
 
 - (void)resizeWithOldSuperviewSize: (NSSize)oldSize
 {
+    LOG_ENTER;
+
     NSRect frame = self.bounds;
     frame.origin.x = frame.size.width - contentWidth + 15;
     frame.size.width = contentWidth - 50;
@@ -761,6 +834,8 @@ static NSFont *smallNumberFont;
         calendar.frame = frame;
         frame.origin.y -= CALENDAR_HEIGHT;
     }
+
+    LOG_LEAVE;
 }
 
 @end
@@ -785,13 +860,12 @@ static NSFont *smallNumberFont;
 
 - (id)initWithFrame: (NSRect)frame
 {
+    LOG_ENTER;
+
     self = [super initWithFrame: frame];
     if (self) {
-        NSNib *nib = [[NSNib alloc] initWithNibNamed: @"HomeScreenNextTransfers" bundle: nil];
-        NSArray *topLevelObjects;
-        if (![nib instantiateWithOwner: self topLevelObjects: &topLevelObjects]) {
-            // Can this ever fail?
-            [[MessageLog log] addMessage: @"Internal error: home screen transfer view loading failed" withLevel: LogLevel_Error];
+        if (![NSBundle loadNibNamed: @"HomeScreenNextTransfers" owner: self]) {
+            [[MessageLog log] addMessage: @"Internal error: home screen next transfers view loading failed" withLevel: LogLevel_Error];
         }
 
         [self loadData];
@@ -803,25 +877,37 @@ static NSFont *smallNumberFont;
         
     }
 
+    LOG_LEAVE;
+
     return self;
 }
 
 - (void)dealloc
 {
+    LOG_ENTER;
+
     [NSNotificationCenter.defaultCenter removeObserver: self];
+
+    LOG_LEAVE;
 }
 
 - (void)handleDataModelChange: (NSNotification *)notification
 {
+    LOG_ENTER;
+
     if (BankingController.controller.shuttingDown) {
         return;
     }
 
     [bandView updateCalendarsWithFetch: YES];
+
+    LOG_LEAVE;
 }
 
 - (void)loadData
 {
+    LOG_ENTER;
+
     // View sizes are just dummy values. Layout is done below.
     BandEndView *startView = [[BandEndView alloc] initWithFrame: NSMakeRect(0, 0, 100, 100) isTop: NO];
     bandView = [[BandView alloc] initWithFrame: NSMakeRect(0, 0, 10, 10) startingEnd: startView card: self];
@@ -835,11 +921,15 @@ static NSFont *smallNumberFont;
     //ordersPopupList.dataSource = self;
     ordersPopupList.delegate = self;
     popoverDataController.managedObjectContext = MOAssistant.assistant.context;
+
+    LOG_LEAVE;
 }
 
 - (void)resizeSubviewsWithOldSize: (NSSize)oldSize
 {
-    NSRect frame = self.bounds;
+    LOG_ENTER;
+
+   NSRect frame = self.bounds;
     frame.origin.x = NSWidth(frame) / 3.0 - 15;
     frame.size.width = 2 * NSWidth(frame) / 3.0 - 10;
     frame.size.height = 20;
@@ -862,6 +952,8 @@ static NSFont *smallNumberFont;
         }
         [child resizeWithOldSuperviewSize: oldSize];
     }
+
+    LOG_LEAVE;
 }
 
 - (void)showValuePopupForDate: (ShortDate *)date
@@ -869,6 +961,8 @@ static NSFont *smallNumberFont;
                relativeToRect: (NSRect)area
                       forView: (NSView *)view
 {
+    LOG_ENTER;
+
     self.popoverData = values;
     popoverDataController.content = values;
 
@@ -890,6 +984,8 @@ static NSFont *smallNumberFont;
 
     [ordersPopover showRelativeToRect: area ofView: view preferredEdge: NSMaxXEdge];
     ordersPopupList.frameOrigin = frame.origin; // Set the origin again, as NSPopover messes this up.
+
+    LOG_LEAVE;
 }
 
 - (void)cancelPopover

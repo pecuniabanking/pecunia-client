@@ -29,7 +29,6 @@
 
 @interface StatementsOverviewController : NSObject <PecuniaSectionItem>
 {
-@private
     IBOutlet NSArrayController  *categoryAssignments;
     IBOutlet StatementsListView *statementsListView;
 
@@ -43,7 +42,8 @@
     IBOutlet NSTextField       *nassValueField;
     IBOutlet NSTextField       *remoteNameLabel;
     IBOutlet StatementDetails  *statementDetails;
-    IBOutlet NSTableView       *statementsView;
+    IBOutlet NSTextField       *sumField;
+    IBOutlet NSTextField       *originalAmountField;
 
     IBOutlet NSSegmentedControl *sortControl;
 
@@ -51,9 +51,6 @@
     IBOutlet AttachmentImageView *attachment2;
     IBOutlet AttachmentImageView *attachment3;
     IBOutlet AttachmentImageView *attachment4;
-
-    NSInteger *entryMapping;
-    NSUInteger mappingCount;
 }
 
 @property (strong) IBOutlet PecuniaSplitView *mainView;
@@ -63,7 +60,6 @@
 - (void)deleteSelectedStatements;
 - (void)splitSelectedStatement;
 - (BOOL)toggleDetailsPane;
-- (void)reloadList; // TODO: temporary, until we can remove PXListView.
 
 // PecuniaSectionItem protocol
 @property (nonatomic, weak) Category *selectedCategory;

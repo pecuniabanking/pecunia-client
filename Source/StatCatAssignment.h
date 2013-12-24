@@ -21,7 +21,6 @@
 
 @class Category;
 @class BankStatement;
-@class ShortDate;
 
 @interface StatCatAssignment : NSManagedObject {
 }
@@ -31,10 +30,10 @@
 @property (nonatomic) Category                *category;
 @property (nonatomic, strong) BankStatement   *statement;
 
-@property (nonatomic, readonly) ShortDate     *dayOfExecution; // Computed property. *Not* bindable.
-
-- (NSString *)stringForFields: (NSArray *)fields usingDateFormatter: (NSDateFormatter *)dateFormatter numberFormatter: (NSNumberFormatter *)numberFormatter;
-- (void)moveToCategory: (Category *)tcat;
+- (NSString *)stringForFields: (NSArray *)fields
+           usingDateFormatter: (NSDateFormatter *)dateFormatter
+              numberFormatter: (NSNumberFormatter *)numberFormatter;
+- (void)moveToCategory: (Category *)targetCategory;
 - (void)moveAmount: (NSDecimalNumber *)amount toCategory: (Category *)tcat withInfo:(NSString*)info;
 - (void)remove;
 

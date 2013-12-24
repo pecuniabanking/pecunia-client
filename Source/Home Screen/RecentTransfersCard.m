@@ -90,13 +90,12 @@
 
 - (id)initWithFrame: (NSRect)frame
 {
+    LOG_ENTER;
+
     self = [super initWithFrame: frame];
-    if (self) {
-        NSNib *nib = [[NSNib alloc] initWithNibNamed: @"HomeScreenTransfersView" bundle: nil];
-        NSArray *topLevelObjects;
-        if (![nib instantiateWithOwner: self topLevelObjects: &topLevelObjects]) {
-            // Can this ever fail?
-            [[MessageLog log] addMessage: @"Internal error: home screen transfer view loading failed" withLevel: LogLevel_Error];
+    if (self != nil) {
+        if (![NSBundle loadNibNamed: @"HomeScreenTransfersView" owner: self]) {
+            [[MessageLog log] addMessage: @"Internal error: home screen recent transfers view loading failed" withLevel: LogLevel_Error];
         }
 
         transfersView.delegate = self;
@@ -110,16 +109,24 @@
                                                  object: MOAssistant.assistant.context];
     }
 
+    LOG_LEAVE;
+
     return self;
 }
 
 - (void)dealloc
 {
+    LOG_ENTER;
+
     [NSNotificationCenter.defaultCenter removeObserver: self];
+
+    LOG_LEAVE;
 }
 
 - (void)handleDataModelChange: (NSNotification *)notification
 {
+    LOG_ENTER;
+
     if (BankingController.controller.shuttingDown) {
         return;
     }
@@ -175,10 +182,14 @@
 
         [transfersView reloadData];
     }
+
+    LOG_LEAVE;
 }
 
 - (void)loadData
 {
+    LOG_ENTER;
+
     // Retrieve assignments from the past two weeks.
     entries = [[Category.bankRoot allAssignmentsOrderedBy: DateOrderDate
                                                     limit: 50
@@ -187,6 +198,8 @@
 
     [self updateHeadersWithAnimation: NO];
     [transfersView reloadData];
+
+    LOG_LEAVE;
 }
 
 /**
@@ -194,6 +207,8 @@
  */
 - (void)updateHeadersWithAnimation: (BOOL)animate
 {
+    LOG_ENTER;
+
     if (entries.count > 0) {
         ShortDate *lastDate = [ShortDate dateWithDate: [entries[0] statement].date];
         StatementsHeader *header = [[StatementsHeader alloc] init];
@@ -223,10 +238,14 @@
             }
         }
     }
+
+    LOG_LEAVE;
 }
 
 - (void)resizeSubviewsWithOldSize: (NSSize)oldSize
 {
+    LOG_ENTER;
+
     NSRect frame = NSInsetRect(self.bounds, 30, 45);
     frame.origin.y += 10;
 
@@ -235,6 +254,8 @@
         child.frame = frame;
         frame.origin.y += frame.size.height;
     }
+
+    LOG_LEAVE;
 }
 
 #pragma mark - NSTableViewDataSource protocol

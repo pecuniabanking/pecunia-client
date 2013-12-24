@@ -29,6 +29,7 @@
 
 #import "MOAssistant.h"
 #import "BankingController.h"
+#import "MessageLog.h"
 
 #import "LocalSettingsController.h"
 
@@ -81,6 +82,8 @@ extern void *UserDefaultsBindingContext;
 
 - (id)initWithFrame: (NSRect)frame category: (Category *)aCategory
 {
+    LOG_ENTER;
+
     self = [super initWithFrame: frame];
     if (self) {
         category = aCategory;
@@ -88,30 +91,42 @@ extern void *UserDefaultsBindingContext;
         [self loadData];
     }
 
+    LOG_LEAVE;
+
     return self;
 }
 
 - (void)dealloc
 {
+    LOG_ENTER;
+
     free(timePoints);
     free(positiveBalances);
     free(negativeBalances);
     free(totalBalances);
     free(movingAverage);
+
+    LOG_LEAVE;
 }
 
 - (void)prepareForShutDown
 {
+    LOG_ENTER;
+
     if (rangeAnimationOperation != nil) {
         [CPTAnimation.sharedInstance removeAnimationOperation: rangeAnimationOperation];
     }
     if (globalRangeAnimationOperation != nil) {
         [CPTAnimation.sharedInstance removeAnimationOperation: globalRangeAnimationOperation];
     }
+
+    LOG_LEAVE;
 }
 
 - (void)setupGraph
 {
+    LOG_ENTER;
+
     graph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame : NSRectToCGRect(self.bounds)];
     self.hostedGraph = graph;
 
@@ -139,10 +154,14 @@ extern void *UserDefaultsBindingContext;
 
     [self setupPlot];
     [self setUpAxes];
+
+    LOG_LEAVE;
 }
 
 - (void)setupPlot
 {
+    LOG_ENTER;
+
     if (category != nil) {
         CPTScatterPlot *linePlot = [[CPTScatterPlot alloc] init];
         linePlot.alignsPointsToPixels = YES;
@@ -213,11 +232,14 @@ extern void *UserDefaultsBindingContext;
 
         [self updateColors];
     }
-    
+
+    LOG_LEAVE;
 }
 
 - (void)setUpAxes
 {
+    LOG_ENTER;
+
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
     CPTXYAxis    *x = axisSet.xAxis;
     x.axisLineStyle = nil; // This axis shows no axis line. We do that with a separate axis.
@@ -278,15 +300,21 @@ extern void *UserDefaultsBindingContext;
 
 - (void)updateGraphTitle
 {
+    LOG_ENTER;
+
     NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
                                  NSFontAttributeName: [NSFont fontWithName: @"HelveticaNeue-Bold" size: 12]};
 
     titleLayer.attributedText = [[NSAttributedString alloc] initWithString: category.localName
                                                                 attributes: attributes];
+
+    LOG_LEAVE;
 }
 
 - (void)updateGraph
 {
+    LOG_ENTER;
+
     [self updateGraphTitle];
 
     int tickCount = 8; // For months.
@@ -334,10 +362,14 @@ extern void *UserDefaultsBindingContext;
     currencyFormatter.currencyCode = currency;
     currencyFormatter.zeroSymbol = [NSString stringWithFormat: @"0 %@", currencyFormatter.currencySymbol];
     axisSet.yAxis.labelFormatter = currencyFormatter;
+
+    LOG_LEAVE;
 }
 
 - (void)updateGraphRange
 {
+    LOG_ENTER;
+
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
 
     NSUInteger startIndex = 0;
@@ -431,10 +463,14 @@ extern void *UserDefaultsBindingContext;
                                           withDelay: 0
                                      animationCurve: CPTAnimationCurveCubicInOut
                                            delegate: self];
+
+    LOG_LEAVE;
 }
 
 - (void)loadData
 {
+    LOG_ENTER;
+
     count = 0;
     free(timePoints);
     timePoints = nil;
@@ -558,6 +594,8 @@ extern void *UserDefaultsBindingContext;
     [graph reloadData];
     [self updateGraph];
     [self updateGraphRange];
+
+    LOG_LEAVE;
 }
 
 - (void)setCategory: (Category *)value
@@ -585,6 +623,8 @@ extern void *UserDefaultsBindingContext;
 
 - (void)updateColors
 {
+    LOG_ENTER;
+
     CGColorRef  gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (high)"] colorWithAlphaComponent: 1]);
     CGColorRef  gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (low)"] colorWithAlphaComponent: 1]);
     CPTGradient *positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
@@ -610,6 +650,7 @@ extern void *UserDefaultsBindingContext;
     plot = (id)[graph plotWithIdentifier: @"negativeBalances"];
     plot.areaFill = [CPTFill fillWithGradient: negativeGradient];
 
+    LOG_LEAVE;
 }
 
 - (int)distanceFromDate: (ShortDate *)from toDate: (ShortDate *)to
@@ -761,6 +802,8 @@ extern void *UserDefaultsBindingContext;
 
 - (id)initWithFrame: (NSRect)frame
 {
+    LOG_ENTER;
+
     self = [super initWithFrame: frame];
     if (self) {
         [self updateUI];
@@ -777,21 +820,29 @@ extern void *UserDefaultsBindingContext;
 
     }
 
+    LOG_LEAVE;
+
     return self;
 }
 
 - (void)dealloc
 {
+    LOG_ENTER;
+
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
     [settings removeObserver: self forKeyPath: @"colors"];
     [settings removeObserver: self forKeyPath: @"assetGraph1"];
     [settings removeObserver: self forKeyPath: @"assetGraph2"];
 
     [NSNotificationCenter.defaultCenter removeObserver: self];
+
+    LOG_LEAVE;
 }
 
 - (void)handleDataModelChange: (NSNotification *)notification
 {
+    LOG_ENTER;
+
     if (!BankingController.controller.shuttingDown) {
         NSSet *deletedObjects = notification.userInfo[NSDeletedObjectsKey];
         NSSet *insertedObjects = notification.userInfo[NSInsertedObjectsKey];
@@ -800,10 +851,14 @@ extern void *UserDefaultsBindingContext;
             [self updateUI];
         }
     }
+
+    LOG_LEAVE;
 }
 
 - (void)updateUI
 {
+    LOG_ENTER;
+
     AssetGraph *graph;
 
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
@@ -834,6 +889,8 @@ extern void *UserDefaultsBindingContext;
     }
 
     [self resizeSubviewsWithOldSize: self.bounds.size];
+
+    LOG_LEAVE;
 }
 
 /**
@@ -841,6 +898,8 @@ extern void *UserDefaultsBindingContext;
  */
 - (void)resizeSubviewsWithOldSize: (NSSize)oldSize
 {
+    LOG_ENTER;
+
     NSRect frame = self.bounds;
     frame.size.width -= 40;
     frame.size.height = (int)(frame.size.height - 55) / 2;
@@ -853,10 +912,14 @@ extern void *UserDefaultsBindingContext;
             frame.origin.y += frame.size.height;
         }
     }
+
+    LOG_LEAVE;
 }
 
 - (void)mouseDown: (NSEvent *)theEvent
 {
+    LOG_ENTER;
+
     // Happens if the user clicked on space not covered by a graph. Take the first one in this case.
     [super mouseDown: theEvent];
 
@@ -871,6 +934,8 @@ extern void *UserDefaultsBindingContext;
     if (category != nil) {
         [self cardClicked: category];
     }
+
+    LOG_LEAVE;
 }
 
 #pragma mark - Bindings, KVO and KVC

@@ -36,21 +36,22 @@ typedef enum {
 
 @end
 
+// Helper macros to ease function enter/exit messages.
+#define LOG_ENTER [MessageLog.log addMessage: [NSString stringWithFormat: @"Entering %s", __PRETTY_FUNCTION__] withLevel: LogLevel_Debug]
+#define LOG_LEAVE [MessageLog.log addMessage: [NSString stringWithFormat: @"Leaving %s", __PRETTY_FUNCTION__] withLevel: LogLevel_Debug]
 
 @interface MessageLog : NSObject {
     NSMutableSet    *logUIs;
     NSDateFormatter *formatter;
     BOOL            forceConsole;
-    LogLevel        currentLevel;
 }
 
-@property (nonatomic, assign) BOOL               forceConsole;
-@property (nonatomic, readonly, assign) LogLevel currentLevel;
+@property (nonatomic, assign) BOOL     forceConsole;
+@property (nonatomic, assign) LogLevel currentLevel;
 
 - (void)registerLogUI: (id<MessageLogUI>)ui;
 - (void)unregisterLogUI: (id<MessageLogUI>)ui;
 - (void)addMessage: (NSString *)msg withLevel: (LogLevel)level;
-- (void)setLevel: (LogLevel)level;
 
 + (MessageLog *)log;
 
