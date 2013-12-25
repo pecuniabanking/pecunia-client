@@ -31,7 +31,7 @@
         managedObjectContext = objectContext;
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(managedObjectContextChanged:)
-                                                     name: NSManagedObjectContextObjectsDidChangeNotification
+                                                     name: NSManagedObjectContextDidSaveNotification
                                                    object: nil];
         [self updateBadge];
     }

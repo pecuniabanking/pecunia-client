@@ -593,7 +593,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
         [self addTransactions: notes
                    principals: parsedPrincipals
                    categories: categories];
-        [Category.bankRoot rollupRecursive: YES];
+        [Category.bankRoot updateCategorySums];
 
         [self addStandingOrders: blocks[@"Standing Orders"]];
 

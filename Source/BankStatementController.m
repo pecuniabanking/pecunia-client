@@ -142,7 +142,7 @@
 
     if (lastStatement) {
         account.balance = lastStatement.saldo;
-        [[Category bankRoot] rollupRecursive: YES];
+        [[Category bankRoot] updateCategorySums];
     }
 
     // Manually assign to a category. Doesn't affect automatic assignments based on rules.
@@ -150,7 +150,7 @@
     if (idx != NSNotFound) {
         Category *cat = [categoriesController arrangedObjects][idx];
         [newStatement assignToCategory: cat];
-        [Category updateCatValues];
+        [Category updateBalancesAndSums];
     }
 
     // save updates

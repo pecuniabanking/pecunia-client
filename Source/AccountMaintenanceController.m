@@ -174,7 +174,7 @@ extern NSString *const CategoryKey;
         }
         if ([changedAccount.balance compare: account.balance] != NSOrderedSame) {
             changedAccount.balance = account.balance;
-            [[Category bankRoot] rollupRecursive: YES];
+            [[Category bankRoot] updateCategorySums];
         }
         changedAccount.balance = account.balance;
     } else {

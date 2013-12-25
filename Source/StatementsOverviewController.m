@@ -254,7 +254,7 @@ extern void *UserDefaultsBindingContext;
 
             [stat.statement updateAssigned];
             [selectedCategory invalidateBalance];
-            [Category updateCatValues];
+            [Category updateBalancesAndSums];
             [statementsListView updateVisibleCells];
         }
     }
@@ -419,15 +419,8 @@ extern void *UserDefaultsBindingContext;
         }
     }
 
-    for (BankAccount *account in affectedAccounts) {
-        // Special behaviour for top bank accounts.
-        if (account.accountNumber == nil) {
-            [context processPendingChanges];
-        }
-        [account updateBoundAssignments];
-    }
-
-    [[Category bankRoot] rollupRecursive: YES];
+    [context processPendingChanges];
+    [[Category bankRoot] updateCategorySums];
     [categoryAssignments prepareContent];
 }
 
@@ -465,16 +458,6 @@ extern void *UserDefaultsBindingContext;
     [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
 
     return result;
-}
-
-- (void)reloadList
-{
-    // Updating the assignments (statements) list kills the current selection, so we preserve it here.
-    // Reassigning it after the update has the neat side effect that the details pane is properly updated too.
-    NSUInteger selection = categoryAssignments.selectionIndex;
-    categoryAssignments.selectionIndex = NSNotFound;
-    [statementsListView reloadData];
-    categoryAssignments.selectionIndex = selection;
 }
 
 - (void)updateValueColors
@@ -596,7 +579,6 @@ extern void *UserDefaultsBindingContext;
             }
 
             [statementDetails setNeedsDisplay: YES];
-            [BankingController.controller updateStatusbar];
         }
         return;
     }

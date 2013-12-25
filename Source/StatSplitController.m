@@ -76,7 +76,6 @@
 
 - (void)controlTextDidEndEditing: (NSNotification *)aNotification
 {
-    // Value field changed (todo: replace by key value observation)
     if ([aNotification object] == splitView) {
         int idx = [splitView editedColumn];
         if (idx < 0) {
@@ -100,7 +99,7 @@
             Category *cat = stat.category;
             if (cat !=  nil) {
                 [cat invalidateBalance];
-                [Category updateCatValues];
+                [Category updateBalancesAndSums];
             }
         }
     }
@@ -114,7 +113,7 @@
         Category *cat = stat.category;
         if (cat !=  nil) {
             [cat invalidateBalance];
-            [Category updateCatValues];
+            [Category updateBalancesAndSums];
         }
     }
 }
