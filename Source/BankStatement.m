@@ -167,10 +167,10 @@ static NSRegularExpression *bicRE;
             [cats addObject: cat];
         }
 
-        if ([cat isBankAccount]) {
+        if (cat.isBankAccount) {
             continue;
         }
-        if ([cat isNotAssignedCategory]) {
+        if (cat.isNotAssignedCategory) {
             continue;
         }
         if (result) {
@@ -392,20 +392,23 @@ static NSRegularExpression *bicRE;
 
 - (BOOL)updateAssigned
 {
-    NSDecimalNumber        *value = self.value;
-    BOOL                   positive = [value compare: [NSDecimalNumber zero]] != NSOrderedAscending;
-    BOOL                   assigned = NO;
-    BOOL                   ncatNeedsRefresh = NO;
-    StatCatAssignment      *stat;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    Category               *ncat = [Category nassRoot];
-    NSMutableSet           *stats = [self mutableSetValueForKey: @"assignments"];
-    NSEnumerator           *iter = [stats objectEnumerator];
-    while ((stat = [iter nextObject]) != nil) {
-        if ([stat.category isBankAccount] == NO && stat.category != ncat) {
-            value = [value decimalNumberBySubtracting: stat.value];
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    NSDecimalNumber *value = self.value;
+
+    BOOL positive = [value compare: [NSDecimalNumber zero]] != NSOrderedAscending;
+    BOOL assigned = NO;
+    BOOL ncatNeedsRefresh = NO;
+
+    Category *ncat = Category.nassRoot;
+
+    NSSet *assignments = [self valueForKey: @"assignments"];
+    for (StatCatAssignment *assignment in assignments) {
+        if (![assignment.category isBankAccount] && assignment.category != ncat) {
+            value = [value decimalNumberBySubtracting: assignment.value];
         }
     }
+
     if (positive) {
         if ([value compare: [NSDecimalNumber zero]] != NSOrderedDescending) {
             assigned = YES;                                                                          // fully assigned
@@ -423,30 +426,31 @@ static NSRegularExpression *bicRE;
     } else {
         self.nassValue = [NSDecimalNumber zero];
     }
+
+    // Another round, find the first assignment to the not-assigned category (if any).
     BOOL found = NO;
-    iter = [stats objectEnumerator];
-    while ((stat = [iter nextObject]) != nil) {
-        if (stat.category == ncat) {
-            if (assigned || [stat.value compare: value] != NSOrderedSame) {
+    for (StatCatAssignment *assignment in assignments) {
+        if (assignment.category == ncat) {
+            if (assigned || [assignment.value compare: value] != NSOrderedSame) {
                 [ncat invalidateBalance];
             }
             if (assigned) {
-                [context deleteObject: stat];
+                [context deleteObject: assignment];
                 ncatNeedsRefresh = YES;
             } else {
-                stat.value = value;
+                assignment.value = value;
             }
             found = YES;
             break;
         }
     }
 
-    if (found == NO && assigned == NO) {
-        // create a new assignment to ncat
-        stat = [NSEntityDescription insertNewObjectForEntityForName: @"StatCatAssignment" inManagedObjectContext: context];
-        stat.value = value;
-        stat.category = ncat;
-        stat.statement = self;
+    if (!found && !assigned) {
+        // Create a new assignment to not-assigned category.
+        StatCatAssignment *assignment = [NSEntityDescription insertNewObjectForEntityForName: @"StatCatAssignment" inManagedObjectContext: context];
+        assignment.value = value;
+        assignment.category = ncat;
+        assignment.statement = self;
         ncatNeedsRefresh = YES;
     }
     return ncatNeedsRefresh;

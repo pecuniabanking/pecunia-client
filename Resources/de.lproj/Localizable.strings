@@ -6,7 +6,7 @@ AP1 = "Ok";
 AP2 = "Abbrechen";
 AP3 = "Ja";
 AP4 = "Nein";
-AP5 = "Überweisungen";
+AP5 = "unused";
 AP6 = "Warnung";
 AP7 = "Dennoch Beenden";
 AP8 = "KONTEN";
@@ -26,6 +26,17 @@ AP21 = "Jahre";
 AP22 = "Monat";
 AP23 = "Monate";
 AP24 = "Einstellungen";
+
+// Sidebar titles.
+AP25 = "Startseite";
+AP26 = "Übersicht";
+AP27 = "Verlauf";
+AP28 = "Verteilung";
+AP29 = "Vergleich";
+AP30 = "Tabelle";
+AP31 = "Zuordnung";
+AP32 = "Überweisungen";
+AP33 = "Daueraufträge";
 
 // Validation strings.
 // AP50..AP99
@@ -285,8 +296,10 @@ AP501 = "Demo Daten wurden erstellt";
 
 // Category assignments.
 // AP550..AP599
-AP550 = "Alle Einträge zuweisen";
-AP551 = "Ausgewählte Einträge zuweisen";
+AP550 = "Alles zuweisen";
+AP551 = "Auswahl zuweisen";
+AP552 = "Alles entfernen";
+AP553 = "Auswahl entfernen";
 
 // Import and export.
 // AP600..AP649

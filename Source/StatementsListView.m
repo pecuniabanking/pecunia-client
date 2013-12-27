@@ -120,6 +120,7 @@ extern void *UserDefaultsBindingContext;
 
         // Another one for the user info to update the list while the user is typing in the details area.
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.userInfo" options: 0 context: nil];
+
     } else {
         [super bind: binding toObject: observableObject withKeyPath: keyPath options: options];
     }

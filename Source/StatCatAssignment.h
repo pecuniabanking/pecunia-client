@@ -37,6 +37,8 @@
 - (void)moveAmount: (NSDecimalNumber *)amount toCategory: (Category *)tcat withInfo:(NSString*)info;
 - (void)remove;
 
++ (void)removeAssignments: (NSArray *)assignments;
+
 - (NSComparisonResult)compareDate: (StatCatAssignment *)stat;
 - (NSComparisonResult)compareDateReverse: (StatCatAssignment *)stat;
 

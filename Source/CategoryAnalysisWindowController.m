@@ -22,6 +22,7 @@
 #import "CategoryAnalysisWindowController.h"
 #import "ShortDate.h"
 #import "BankAccount.h"
+#import "PreferenceController.h"
 
 #import "PecuniaPlotTimeFormatter.h"
 #import "MCEMDecimalNumberAdditions.h"
@@ -496,7 +497,7 @@ extern void *UserDefaultsBindingContext;
 
     CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
     textStyle.color = [CPTColor colorWithComponentRed: 88 / 255.0 green: 86 / 255.0 blue: 77 / 255.0 alpha: 1];
-    textStyle.fontName = @"LucidaGrande";
+    textStyle.fontName = PreferenceController.mainFontNameBold;
     textStyle.fontSize = 10.0;
     x.labelTextStyle = textStyle;
 
@@ -527,9 +528,6 @@ extern void *UserDefaultsBindingContext;
 - (void)setupMainGraph
 {
     mainGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame : NSRectToCGRect(mainHostView.bounds)];
-    CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
-    [mainGraph applyTheme: theme];
-    //mainGraph.zPosition = 100;
     mainHostView.hostedGraph = mainGraph;
 
     // Setup scatter plot space
@@ -562,11 +560,6 @@ extern void *UserDefaultsBindingContext;
 
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
-
-    mainGraph.shadowColor = CGColorCreateGenericGray(0, 1);
-    mainGraph.shadowRadius = 2.0;
-    mainGraph.shadowOffset = CGSizeMake(1, -1);
-    mainGraph.shadowOpacity = 0.3;
 
     CPTFill *fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1]];
     frame.fill = fill;
@@ -614,7 +607,7 @@ extern void *UserDefaultsBindingContext;
 
     CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
     textStyle.color = [CPTColor colorWithComponentRed: 88 / 255.0 green: 86 / 255.0 blue: 77 / 255.0 alpha: 1];
-    textStyle.fontName = @"LucidaGrande";
+    textStyle.fontName = PreferenceController.mainFontNameBold;
     textStyle.fontSize = 10.0;
 
     CPTXYAxis *y = axisSet.yAxis;
@@ -645,7 +638,7 @@ extern void *UserDefaultsBindingContext;
     textStyle.textAlignment = CPTTextAlignmentCenter;
     textStyle.fontSize = 10.0;
     y.titleTextStyle = textStyle;
-    y.title = NSLocalizedString(@"AP5", nil);
+    y.title = NSLocalizedString(@"AP32", nil);
     y.titleOffset = 60;
 }
 
@@ -682,11 +675,6 @@ extern void *UserDefaultsBindingContext;
 
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
-
-    turnoversGraph.shadowColor = CGColorCreateGenericGray(0, 1);
-    turnoversGraph.shadowRadius = 2.0;
-    turnoversGraph.shadowOffset = CGSizeMake(1, -1);
-    turnoversGraph.shadowOpacity = 0.3;
 
     [self setupTurnoversAxes];
 
@@ -750,7 +738,7 @@ extern void *UserDefaultsBindingContext;
     // Graph title, use y axis label for this.
     CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
     textStyle.color = [CPTColor whiteColor];
-    textStyle.fontName = @"LucidaGrande";
+    textStyle.fontName = PreferenceController.mainFontNameBold;
     textStyle.fontSize = 10.0;
     textStyle.textAlignment = CPTTextAlignmentCenter;
     y.titleTextStyle = textStyle;

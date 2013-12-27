@@ -591,7 +591,7 @@ static ShortDate *endReportDate = nil;
 
 - (BOOL)isNotAssignedCategory
 {
-    return self == [Category nassRoot];
+    return self == Category.nassRoot;
 }
 
 - (id)children

@@ -36,6 +36,7 @@
     IBOutlet NSButton           *saveButton;
     IBOutlet NSButton           *discardButton;
     IBOutlet NSButton           *assignEntriesButton;
+    IBOutlet NSButton           *unassignEntriesButton;
 
     IBOutlet BWGradientBox *predicatesBackground;
 

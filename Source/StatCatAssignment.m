@@ -218,6 +218,9 @@
     }
 }
 
+/**
+ * Removes a single assignment (the receiver) and updates its previously associated bank statement.
+ */
 - (void)remove
 {
     NSManagedObjectContext *context = MOAssistant.assistant.context;
@@ -226,12 +229,39 @@
     if (stat.account == nil) {
         [context deleteObject: stat];
         stat = nil;
-    } else {[context deleteObject: self]; }
+    } else {
+        [context deleteObject: self];
+    }
 
     // Important: do changes to the graph since updateAssigned counts on an updated graph.
     [context processPendingChanges];
     if (stat) {
         [stat updateAssigned];
+    }
+}
+
+/**
+ * Efficiently removes a list of assignments and updates their bank statements.
+ */
++ (void)removeAssignments: (NSArray *)assignments
+{
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    NSMutableSet *statements = [NSMutableSet set]; // Automatically removes duplicates.
+
+    for (StatCatAssignment *assignment in assignments) {
+        if (assignment.statement.account == nil) {
+            [context deleteObject: assignment.statement];
+        } else {
+            [statements addObject: assignment.statement];
+            [context deleteObject: assignment];
+        }
+    }
+    
+    // Important: do changes to the graph since updateAssigned counts on an updated graph.
+    [context processPendingChanges];
+    for (BankStatement *statement in statements) {
+        [statement updateAssigned];
     }
 }
 
