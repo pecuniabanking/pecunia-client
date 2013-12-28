@@ -55,7 +55,6 @@
     IBOutlet TimeSliceManager       *timeSlicer;
     IBOutlet NSSegmentedControl     *catActions;
     IBOutlet NSImageView            *lockImage;
-    IBOutlet NSTextField            *headerValueField;
     IBOutlet NSTextField            *earningsField;
     IBOutlet NSTextField            *spendingsField;
     IBOutlet NSView                 *sectionPlaceholder;

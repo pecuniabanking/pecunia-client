@@ -42,7 +42,7 @@ typedef enum {
     NSInteger        unread;
 }
 
-@property (nonatomic, strong) NSArray          *dbStatements;
+@property (nonatomic, strong) NSArray         *dbStatements;
 
 @property (nonatomic, strong) NSDate          *latestTransferDate;
 @property (nonatomic, strong) NSString        *country;

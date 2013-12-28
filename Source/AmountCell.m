@@ -19,24 +19,45 @@
 
 #import "AmountCell.h"
 #import "NSColor+PecuniaAdditions.h"
+#import "PreferenceController.h"
 
 #define CELL_BOUNDS 3
 
 extern void *UserDefaultsBindingContext;
 
+@interface AmountCell ()
+{
+    NSDictionary *normalAttributes;
+    NSDictionary *selectedAttributes;
+
+    NSNumberFormatter *whiteFormatter;
+}
+@end
+
 @implementation AmountCell
 
 @synthesize currency;
-@synthesize formatter;
 
 - (id)initTextCell: (NSString *)aString
 {
     self = [super initTextCell: aString];
     if (self != nil) {
-        formatter = [[NSNumberFormatter alloc] init];
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
         [formatter setLocale: [NSLocale currentLocale]];
         [formatter setCurrencySymbol: @""];
+        self.formatter = formatter;
+
+        whiteFormatter = [formatter copy];
+        NSDictionary *whiteAttributes = @{NSForegroundColorAttributeName: NSColor.whiteColor};
+
+        [formatter setTextAttributesForPositiveValues: whiteAttributes];
+        [formatter setTextAttributesForNegativeValues: whiteAttributes];
+
+
+        normalAttributes = @{NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontName size: 13]};
+        selectedAttributes = @{NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameBold size: 13],
+                               NSForegroundColorAttributeName: NSColor.whiteColor};
 
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
@@ -46,29 +67,10 @@ extern void *UserDefaultsBindingContext;
     return self;
 }
 
-- (id)initWithCoder: (NSCoder *)decoder
-{
-    if ((self = [super initWithCoder: decoder])) {
-        formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
-        [formatter setLocale: [NSLocale currentLocale]];
-        [formatter setCurrencySymbol: @""];
-    }
-    return self;
-}
-
 - (void)dealloc
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObserver: self forKeyPath: @"colors"];
-}
-
-- (id)copyWithZone: (NSZone *)zone
-{
-    AmountCell *cell = (AmountCell *)[super copyWithZone: zone];
-    cell.formatter = formatter;
-    cell.currency = currency;
-    return cell;
 }
 
 - (void)observeValueForKeyPath: (NSString *)keyPath
@@ -87,49 +89,48 @@ extern void *UserDefaultsBindingContext;
 
 - (void)updateColors
 {
+    NSColor *color = [NSColor applicationColorForKey: @"Grid Partial Selection"];
     self.partiallyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                                         [NSColor applicationColorForKey: @"Grid Partial Selection"], 0.0,
-                                         [NSColor applicationColorForKey: @"Grid Partial Selection"], 1.0,
+                                         color, 0.0,
+                                         color, 1.0,
                                          nil
                                          ];
+
+    color = [color colorWithChangedBrightness: 0.5];
     self.fullyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                                     [NSColor applicationColorForKey: @"Cell Selection Gradient (high)"], 0.0,
-                                     [NSColor applicationColorForKey: @"Cell Selection Gradient (low)"], 1.0,
+                                     color, 0.0,
+                                     color, 1.0,
                                      nil
                                      ];
+    NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
+    NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
+
+    NSNumberFormatter *formatter = self.formatter;
+    [formatter setTextAttributesForPositiveValues: positiveAttributes];
+    [formatter setTextAttributesForNegativeValues: negativeAttributes];
 }
 
 - (void)drawInteriorWithFrame: (NSRect)cellFrame inView: (NSView *)controlView
 {
-    NSColor *textColor;
+    NSDictionary *attributes = normalAttributes;
+    NSNumberFormatter *formatter = self.formatter;
     if (self.isInSelectedRow || self.isInSelectedColumn) {
-        textColor  = [NSColor whiteColor];
-    } else {
-        if ([self.objectValue compare: [NSDecimalNumber zero]] != NSOrderedAscending) {
-            textColor = [NSColor applicationColorForKey: @"Positive Cash"];
-        } else {
-            textColor  = [NSColor applicationColorForKey: @"Negative Cash"];
-        }
+        attributes = selectedAttributes;
+        formatter = whiteFormatter;
     }
-    NSMutableDictionary *attrs = [[[self attributedStringValue] attributesAtIndex: 0 effectiveRange: NULL] mutableCopy];
-
-    // If this cell is selected then make the text bold.
-    if (self.isInSelectedRow || self.isInSelectedColumn) {
-        NSFontManager *manager = [NSFontManager sharedFontManager];
-        NSFont        *font = attrs[NSFontAttributeName];
-        font = [manager convertFont: font toHaveTrait: NSBoldFontMask];
-        attrs[NSFontAttributeName] = font;
-    }
-    attrs[NSForegroundColorAttributeName] = textColor;
     [formatter setCurrencyCode: currency];
-    NSString *str = [formatter stringFromNumber: self.objectValue];
-    if (str != nil) {
-        NSAttributedString *s = [[NSAttributedString alloc] initWithString: str attributes: attrs];
+    NSAttributedString *string = [formatter attributedStringForObjectValue: self.objectValue withDefaultAttributes: attributes];
+    if (string != nil) {
+        NSSize size = string.size;
 
-        cellFrame.origin.x += CELL_BOUNDS;
+        if (self.alignment == NSRightTextAlignment) {
+            cellFrame.origin.x += NSWidth(cellFrame) - size.width - CELL_BOUNDS;
+        } else {
+            cellFrame.origin.x += CELL_BOUNDS;
+        }
         cellFrame.size.width -= 2 * CELL_BOUNDS;
-        cellFrame.origin.y += 2;
-        [s drawInRect: cellFrame];
+        cellFrame.origin.y -= (cellFrame.size.height - size.height) / 2 + 1; // -1 for bottom line.
+        [string drawInRect: cellFrame];
     }
 }
 

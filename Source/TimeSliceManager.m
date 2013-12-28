@@ -453,8 +453,8 @@
 
 - (void)showControls: (BOOL)show
 {
-    [[control animator] setHidden: !show];
-    [[upDown animator] setHidden: !show];
+    control.hidden = !show;
+    upDown.hidden = !show;
 }
 
 - (void)setYearOnlyMode: (BOOL)flag

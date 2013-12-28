@@ -69,6 +69,7 @@
 #import "ImageAndTextCell.h"
 #include "ColorPopup.h"
 #import "PecuniaSplitView.h"
+#import "SynchronousScrollView.h"
 
 #import "NSColor+PecuniaAdditions.h"
 #import "NSDictionary+PecuniaAdditions.h"
@@ -216,12 +217,11 @@ static BankingController *bankinControllerInstance;
 
     LOG_ENTER;
 
-    mainWindow.centerFullScreenButton = YES;
+    mainWindow.centerFullScreenButton = NO;
     mainWindow.titleBarHeight = 40.0;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
-    [userDefaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
 
     int lastSplitterPosition = [[userDefaults objectForKey: @"rightSplitterPosition"] intValue];
     if (lastSplitterPosition > 0) {
@@ -229,7 +229,6 @@ static BankingController *bankinControllerInstance;
     }
     self.toggleDetailsPaneItem.state = lastSplitterPosition > 0 ? NSOffState : NSOnState;
 
-    [self updateValueColors];
     [self setupSidebar];
 
     // Edit accounts/categories when double clicking on a node.
@@ -1473,7 +1472,6 @@ static BankingController *bankinControllerInstance;
     LOG_ENTER;
 
     if (currentSectionIndex != sectionIndex) {
-        currentSectionIndex = sectionIndex;
 
         BOOL   pageHasChanged = NO;
         NSView *currentView;
@@ -1484,8 +1482,10 @@ static BankingController *bankinControllerInstance;
         }
 
         // Reset fetch predicate for the tree controller if we are switching away from
-        // the category periods view.
-        if (currentSection != nil && currentSection == categoryPeriodsController && sectionIndex != 3) {
+        // the category periods or rules definition view.
+        BOOL oldSectionHidesAccounts = currentSectionIndex == 3 || currentSectionIndex == 4;
+        BOOL newSectionHidesAccounts = sectionIndex == 3 || sectionIndex == 4;
+        if (oldSectionHidesAccounts && !newSectionHidesAccounts) {
             NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == nil"];
             [categoryController setFetchPredicate: predicate];
 
@@ -1494,12 +1494,14 @@ static BankingController *bankinControllerInstance;
             [self performSelector: @selector(restoreBankAccountItemsStates) withObject: nil afterDelay: 0.1];
 
             [timeSlicer showControls: YES];
+            catActions.hidden = NO;
         }
 
         if (currentSection != nil && currentSection == heatMapController && sectionIndex != 6) {
             [timeSlicer setYearOnlyMode: NO];
         }
 
+        currentSectionIndex = sectionIndex;
         NSRect frame = [currentView frame];
         switch (sectionIndex) {
             case 0:
@@ -1577,6 +1579,9 @@ static BankingController *bankinControllerInstance;
                 break;
 
             case 3:
+                [timeSlicer showControls: NO];
+                catActions.hidden = YES;
+
                 if (categoryPeriodsController == nil) {
                     categoryPeriodsController = [[CategoryPeriodsWindowController alloc] init];
                     if ([NSBundle loadNibNamed: @"CategoryPeriods" owner: categoryPeriodsController]) {
@@ -1595,14 +1600,14 @@ static BankingController *bankinControllerInstance;
                     currentSection = categoryPeriodsController;
 
                     // In order to be able to line up the category entries with the grid we hide the bank
-                    // accounts.
-                    [self saveBankAccountItemsStates];
+                    // accounts (if they weren't hidden already by the last section).
+                    if (!oldSectionHidesAccounts) {
+                        [self saveBankAccountItemsStates];
 
-                    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == nil && isBankAcc == NO"];
-                    [categoryController setFetchPredicate: predicate];
-                    [categoryController prepareContent];
-                    [timeSlicer showControls: NO];
-
+                        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == nil && isBankAcc == NO"];
+                        [categoryController setFetchPredicate: predicate];
+                        [categoryController prepareContent];
+                    }
                     pageHasChanged = YES;
                 }
 
@@ -1630,6 +1635,15 @@ static BankingController *bankinControllerInstance;
                     Category *category = [self currentSelection];
                     if ([category isBankAccount]) {
                         [categoryController setSelectedObject: Category.nassRoot];
+                    }
+
+                    // Accounts cannot have rules for assignments in this view so hide them.
+                    if (!oldSectionHidesAccounts) {
+                        [self saveBankAccountItemsStates];
+
+                        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == nil && isBankAcc == NO"];
+                        [categoryController setFetchPredicate: predicate];
+                        [categoryController prepareContent];
                     }
                     pageHasChanged = YES;
                 }
@@ -3295,22 +3309,6 @@ static BankingController *bankinControllerInstance;
     return YES;
 }
 
-/**
- * Applies the positive and negative cash color values to various fields.
- */
-- (void)updateValueColors
-{
-    LOG_ENTER;
-
-    NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
-    NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
-
-    [self setNumberFormatForCell: [headerValueField cell] positive: positiveAttributes negative: negativeAttributes];
-    [headerValueField setNeedsDisplay];
-
-    LOG_LEAVE;
-}
-
 - (void)startRefreshAnimation
 {
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation"];
@@ -3400,12 +3398,6 @@ static BankingController *bankinControllerInstance;
             [categoryController prepareContent];
             return;
         }
-
-        if ([keyPath isEqualToString: @"colors"]) {
-            [self updateValueColors];
-            return;
-        }
-
         return;
     }
 

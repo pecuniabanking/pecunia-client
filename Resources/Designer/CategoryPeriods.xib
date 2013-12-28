@@ -30,7 +30,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <customView canDrawConcurrently="YES" focusRingType="none" appearanceType="lightContent" id="238" customClass="MBTableGrid">
-                    <rect key="frame" x="30" y="113" width="1046" height="545"/>
+                    <rect key="frame" x="30" y="114" width="1046" height="540"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <connections>
                         <outlet property="dataSource" destination="-2" id="241"/>
