@@ -506,17 +506,18 @@ static BankingController *bankinControllerInstance;
 {
     LOG_ENTER;
 
-    NSSet         *stats = [bankAccount mutableSetValueForKey: @"statements"];
-    NSEnumerator  *enumerator = [stats objectEnumerator];
-    BankStatement *statement;
-    int           i;
-    BOOL          removeParent = NO;
+    BOOL removeParent = NO;
+
+    [bankAccount invalidateCacheIncludeParents: YES];
 
     //  Delete bank statements which are not assigned first
-    while ((statement = [enumerator nextObject])) {
-        if (keepAssignedStats == NO) {
+    NSSet *statements = [bankAccount valueForKey: @"statements"];
+    if (!keepAssignedStats) {
+        for (BankStatement *statement in statements) {
             [self.managedObjectContext deleteObject: statement];
-        } else {
+        }
+    } else {
+        for (BankStatement *statement in statements) {
             NSSet *assignments = [statement mutableSetValueForKey: @"assignments"];
             if ([assignments count] < 2) {
                 [self.managedObjectContext deleteObject: statement];
@@ -529,6 +530,7 @@ static BankingController *bankinControllerInstance;
                 statement.account = nil;
             }
         }
+
     }
 
     [self.managedObjectContext processPendingChanges];
@@ -549,7 +551,7 @@ static BankingController *bankinControllerInstance;
     NSIndexPath *path = [self indexPathForCategory: bankAccount inArray: nodes];
     // IndexPath umdrehen
     NSIndexPath *newPath = [[NSIndexPath alloc] init];
-    for (i = [path length] - 1; i >= 0; i--) {
+    for (NSInteger i = path.length - 1; i >= 0; i--) {
         newPath = [newPath indexPathByAddingIndex: [path indexAtPosition: i]];
     }
     [categoryController removeObjectAtArrangedObjectIndexPath: newPath];
