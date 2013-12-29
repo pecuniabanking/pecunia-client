@@ -48,6 +48,9 @@
     IBOutlet BWGradientBox     *separatorGradient;
     IBOutlet NSArrayController *accountsController;
     IBOutlet NSPopUpButton     *decimalSeparatorPopupButton;
+    IBOutlet NSPopUpButton     *fieldSeparatorPopupButton;
+    IBOutlet NSTextField       *customFieldSeparator;
+    IBOutlet NSTextField       *customFieldSeparatorLabel;
 
 @private
     NSManagedObjectContext *managedObjectContext;
