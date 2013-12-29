@@ -639,6 +639,23 @@
         [decimalSeparatorPopupButton selectItemAtIndex: 0];
     }
 
+    // Similar for the field separator.
+    switch ([currentSettings.fieldSeparator characterAtIndex: 0]) {
+        case ',':
+            [fieldSeparatorPopupButton selectItemAtIndex: 0];
+            break;
+        case ';':
+            [fieldSeparatorPopupButton selectItemAtIndex: 1];
+            break;
+        case '\t':
+            [fieldSeparatorPopupButton selectItemAtIndex: 2];
+            break;
+        default:
+            [fieldSeparatorPopupButton selectItemAtIndex: 3];
+            break;
+    }
+    [self fieldSeparatorChanged: nil];
+
     // Select the correct encoding.
     for (Encoding *encoding in encodingsController.arrangedObjects) {
         if ([encoding.value isEqualToNumber: currentSettings.encoding]) {
@@ -1117,6 +1134,27 @@
         currentSettings.decimalSeparator = @".";
         numberFormatter.decimalSeparator = @".";
     }
+}
+
+- (IBAction)fieldSeparatorChanged: (id)sender
+{
+    NSInteger tag = fieldSeparatorPopupButton.selectedTag;
+    switch (tag) {
+        case 0:
+            currentSettings.fieldSeparator = @",";
+            break;
+        case 1:
+            currentSettings.fieldSeparator = @";";
+            break;
+        case 2:
+            currentSettings.fieldSeparator = @"\t";
+            break;
+        case 3:
+            // No modification.
+            break;
+    }
+    customFieldSeparator.hidden = tag != 3;
+    customFieldSeparatorLabel.hidden = tag != 3;
 }
 
 #pragma mark -
