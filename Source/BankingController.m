@@ -746,31 +746,37 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)enqueueRequest: (id)sender
 {
+    if ((NSEvent.modifierFlags & NSAlternateKeyMask) != 0) {
+        [self synchronizeAccount: self.currentSelection];
+    } else {
+        [self synchronizeAccount: Category.bankRoot];
+    }
+}
+
+- (void)synchronizeAccount: (Category *)category
+{
     LOG_ENTER;
 
     NSMutableArray *selectedAccounts = [NSMutableArray arrayWithCapacity: 10];
     NSArray        *selectedNodes = nil;
-    Category       *cat;
     NSError        *error = nil;
 
-    cat = [self currentSelection];
-    if (cat == nil) {
+    if (category == nil) {
         return;
     }
 
     [self startRefreshAnimation];
 
-    // one bank account selected
-    if (cat.accountNumber != nil) {
-        [selectedAccounts addObject: cat];
+    if (category.accountNumber != nil) {
+        // A bank account.
+        [selectedAccounts addObject: category];
     } else {
-        // a node was selected
         NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: self.managedObjectContext];
         NSFetchRequest      *request = [[NSFetchRequest alloc] init];
         [request setEntity: entityDescription];
-        if (cat.parent == nil) {
-            // root was selected
-            NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == %@", cat];
+        if (category.parent == nil) {
+            // Bank root. Retrieve all bank accounts under it.
+            NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == %@", category];
             [request setPredicate: predicate];
             selectedNodes = [self.managedObjectContext executeFetchRequest: request error: &error];
             if (error) {
@@ -779,12 +785,12 @@ static BankingController *bankinControllerInstance;
                 return;
             }
         } else {
-            // a node was selected
-            selectedNodes = @[cat];
+            // One of the bank nodes.
+            selectedNodes = @[category];
         }
-        // now select accounts from nodes
-        BankAccount *account;
-        for (account in selectedNodes) {
+
+        // Get the accounts from each node.
+        for (BankAccount *account in selectedNodes) {
             NSArray     *result;
             NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == %@ AND noAutomaticQuery == 0", account];
             [request setPredicate: predicate];
@@ -797,19 +803,20 @@ static BankingController *bankinControllerInstance;
             [selectedAccounts addObjectsFromArray: result];
         }
     }
+
     if ([selectedAccounts count] == 0) {
         return;
     }
 
-    // check if at least one Account is assigned to a user
-    NSUInteger  nInactive = 0;
-    BankAccount *account;
-    for (account in selectedAccounts) {
-        if (account.userId == nil && ([account.isManual boolValue] == NO)) {
+    // Check that at least one account is assigned to a user.
+    NSUInteger nInactive = 0;
+    for (BankAccount *account in selectedAccounts) {
+        if (account.userId == nil && (!account.isManual.boolValue)) {
             nInactive++;
         }
     }
-    if (nInactive == [selectedAccounts count]) {
+
+    if (nInactive == selectedAccounts.count) {
         NSRunAlertPanel(NSLocalizedString(@"AP220", nil),
                         NSLocalizedString(@"AP215", nil),
                         NSLocalizedString(@"AP1", nil),
@@ -817,6 +824,7 @@ static BankingController *bankinControllerInstance;
                         );
         return;
     }
+
     if (nInactive > 0) {
         NSRunAlertPanel(NSLocalizedString(@"AP216", nil),
                         NSLocalizedString(@"AP217", nil),
@@ -827,10 +835,9 @@ static BankingController *bankinControllerInstance;
                         );
     }
 
-    // now selectedAccounts has all selected Bank Accounts
-    NSMutableArray *resultList = [NSMutableArray arrayWithCapacity: [selectedAccounts count]];
-    for (account in selectedAccounts) {
-        if (account.userId) {
+    NSMutableArray *resultList = [NSMutableArray arrayWithCapacity: selectedAccounts.count];
+    for (BankAccount *account in selectedAccounts) {
+        if (account.userId != nil) {
             BankQueryResult *result = [[BankQueryResult alloc] init];
             result.accountNumber = account.accountNumber;
             result.accountSubnumber = account.accountSuffix;
@@ -840,7 +847,8 @@ static BankingController *bankinControllerInstance;
             [resultList addObject: result];
         }
     }
-    // show log if wanted
+
+    // Show log if wanted.
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL           showLog = [defaults boolForKey: @"logForBankQuery"];
     if (showLog) {
@@ -848,7 +856,7 @@ static BankingController *bankinControllerInstance;
         [[logController window] orderFront: self];
     }
 
-    // prepare UI
+    // Prepare UI.
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: NO];
     StatusBarController *sc = [StatusBarController controller];
     [sc startSpinning];

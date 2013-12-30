@@ -332,11 +332,11 @@
                                                             <connections>
                                                                 <binding destination="911" name="value" keyPath="selection.bankName" id="996">
                                                                     <dictionary key="options">
-                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
-                                                                        <string key="NSNotApplicablePlaceholder"></string>
-                                                                        <string key="NSNoSelectionPlaceholder"></string>
                                                                         <string key="NSNullPlaceholder"></string>
+                                                                        <string key="NSNotApplicablePlaceholder"></string>
+                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
                                                                         <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                                                        <string key="NSNoSelectionPlaceholder"></string>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
@@ -449,7 +449,7 @@ IA
                         <rect key="frame" x="0.0" y="20" width="100" height="680"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                         <subviews>
-                            <button toolTip="Das ausgewählte Konto aktualisieren" wantsLayer="YES" id="hbf-EK-ccc" userLabel="Refresh Button">
+                            <button toolTip="Neue Umsätze aller Konten abrufen. Mit Alt nur das selektierte Konto aktualisieren." wantsLayer="YES" id="hbf-EK-ccc" userLabel="Refresh Button">
                                 <rect key="frame" x="53" y="658" width="17" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="refresh" imagePosition="only" alignment="center" inset="2" id="aBu-rK-fVG">

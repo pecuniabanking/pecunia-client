@@ -35,8 +35,6 @@
 		2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */; };
 		272B5EB3143F724600007749 /* slanted_stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 272B5EB2143F724600007749 /* slanted_stripes.png */; };
 		272BF53F14B770A100628805 /* Tresor.png in Resources */ = {isa = PBXBuildFile; fileRef = 272BF53E14B770A100628805 /* Tresor.png */; };
-		272D814D154326B0006E1008 /* transfers.png in Resources */ = {isa = PBXBuildFile; fileRef = 272D814C154326B0006E1008 /* transfers.png */; };
-		272D814F154327F0006E1008 /* transfers-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 272D814E154327F0006E1008 /* transfers-active.png */; };
 		27320ADA17C2826A00FF7A65 /* RecentTransfersCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 27320AD917C2826A00FF7A65 /* RecentTransfersCard.m */; };
 		27320ADB17C2826A00FF7A65 /* RecentTransfersCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 27320AD917C2826A00FF7A65 /* RecentTransfersCard.m */; };
 		273273701747DEE6005DF560 /* blue arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2732736F1747DEE6005DF560 /* blue arrow@2x.png */; };
@@ -344,8 +342,6 @@
 		2777895E173CE22700430EBC /* sort-indicator-inc.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302941538453300D6A2CC /* sort-indicator-inc.png */; };
 		2777895F173CE22700430EBC /* sort-indicator-dec.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302961538461700D6A2CC /* sort-indicator-dec.png */; };
 		27778960173CE22700430EBC /* TransfersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 279A78611539DD5400443854 /* TransfersListViewCell.xib */; };
-		27778963173CE22700430EBC /* transfers.png in Resources */ = {isa = PBXBuildFile; fileRef = 272D814C154326B0006E1008 /* transfers.png */; };
-		27778964173CE22700430EBC /* transfers-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 272D814E154327F0006E1008 /* transfers-active.png */; };
 		27778965173CE22700430EBC /* standing-order-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 270A0BFC1544177B00653031 /* standing-order-active.png */; };
 		27778966173CE22700430EBC /* standing-order.png in Resources */ = {isa = PBXBuildFile; fileRef = 270A0BFD1544177B00653031 /* standing-order.png */; };
 		2777896C173CE22700430EBC /* donate-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A15154D49E5002A5ED0 /* donate-active.png */; };
@@ -897,8 +893,6 @@
 		2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedInnerShadowView.m; sourceTree = "<group>"; tabWidth = 4; };
 		272B5EB2143F724600007749 /* slanted_stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slanted_stripes.png; sourceTree = "<group>"; };
 		272BF53E14B770A100628805 /* Tresor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Tresor.png; sourceTree = "<group>"; };
-		272D814C154326B0006E1008 /* transfers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = transfers.png; sourceTree = "<group>"; };
-		272D814E154327F0006E1008 /* transfers-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfers-active.png"; sourceTree = "<group>"; };
 		27320AD817C2826A00FF7A65 /* RecentTransfersCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecentTransfersCard.h; path = "Home Screen/RecentTransfersCard.h"; sourceTree = "<group>"; };
 		27320AD917C2826A00FF7A65 /* RecentTransfersCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecentTransfersCard.m; path = "Home Screen/RecentTransfersCard.m"; sourceTree = "<group>"; wrapsLines = 0; };
 		2732736F1747DEE6005DF560 /* blue arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue arrow@2x.png"; sourceTree = "<group>"; };
@@ -2212,8 +2206,6 @@
 				27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */,
 				27A3C0C117FF15D800FCF8BF /* time-zoom-in@2x.png */,
 				27A3C0C217FF15D800FCF8BF /* time-zoom-out.png */,
-				272D814E154327F0006E1008 /* transfers-active.png */,
-				272D814C154326B0006E1008 /* transfers.png */,
 				27D302961538461700D6A2CC /* sort-indicator-dec.png */,
 				27D302941538453300D6A2CC /* sort-indicator-inc.png */,
 				27D1172A15288C3600CD7E83 /* background-pattern.png */,
@@ -2651,9 +2643,7 @@
 				2777895E173CE22700430EBC /* sort-indicator-inc.png in Resources */,
 				2777895F173CE22700430EBC /* sort-indicator-dec.png in Resources */,
 				27778960173CE22700430EBC /* TransfersListViewCell.xib in Resources */,
-				27778963173CE22700430EBC /* transfers.png in Resources */,
 				27A3C0C817FF15D800FCF8BF /* time-zoom-in@2x.png in Resources */,
-				27778964173CE22700430EBC /* transfers-active.png in Resources */,
 				275AC7F2186B62BD002E6BED /* overview-active.png in Resources */,
 				27778965173CE22700430EBC /* standing-order-active.png in Resources */,
 				27778966173CE22700430EBC /* standing-order.png in Resources */,
@@ -2861,9 +2851,7 @@
 				27D302951538453300D6A2CC /* sort-indicator-inc.png in Resources */,
 				27D302971538461700D6A2CC /* sort-indicator-dec.png in Resources */,
 				279A78621539DD5400443854 /* TransfersListViewCell.xib in Resources */,
-				272D814D154326B0006E1008 /* transfers.png in Resources */,
 				27A3C0C717FF15D800FCF8BF /* time-zoom-in@2x.png in Resources */,
-				272D814F154327F0006E1008 /* transfers-active.png in Resources */,
 				270A0BFE1544177B00653031 /* standing-order-active.png in Resources */,
 				275AC7F1186B62BD002E6BED /* overview-active.png in Resources */,
 				270A0BFF1544177B00653031 /* standing-order.png in Resources */,
