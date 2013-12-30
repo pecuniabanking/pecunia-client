@@ -237,7 +237,7 @@ NS_INLINE CGGradientRef INCreateGradientWithColors(NSColor *startingColor, NSCol
             [[NSBezierPath bezierPathWithRect:self.bounds] fill];
         }
         #endif
-        clippingRect.size.height -= 1;
+        //clippingRect.size.height -= 1;
         CGPathRef clippingPath = INCreateClippingPathWithRectAndRadius(clippingRect, INCornerClipRadius);
         CGContextAddPath(context, clippingPath);
         CGContextClip(context);
@@ -268,7 +268,7 @@ NS_INLINE CGGradientRef INCreateGradientWithColors(NSColor *startingColor, NSCol
             }
         }
         
-        if (IN_RUNNING_LION && drawsAsMainWindow) {
+        if (NO && IN_RUNNING_LION && drawsAsMainWindow) {
             CGRect noiseRect = NSInsetRect(drawingRect, 1.0, 1.0);
             
             if (![window showsBaselineSeparator]) {

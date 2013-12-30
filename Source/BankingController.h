@@ -57,6 +57,8 @@
     IBOutlet NSImageView            *lockImage;
     IBOutlet NSTextField            *earningsField;
     IBOutlet NSTextField            *spendingsField;
+    IBOutlet NSTextField            *earningsFieldLabel;
+    IBOutlet NSTextField            *spendingsFieldLabel;
     IBOutlet NSView                 *sectionPlaceholder;
     IBOutlet NSView                 *rightPane;
     IBOutlet NSButton               *refreshButton;

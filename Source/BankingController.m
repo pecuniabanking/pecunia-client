@@ -219,6 +219,8 @@ static BankingController *bankinControllerInstance;
 
     mainWindow.centerFullScreenButton = NO;
     mainWindow.titleBarHeight = 40.0;
+    //mainWindow.titleBarStartColor = [NSColor colorWithDeviceWhite: 60 / 255.0 alpha: 1];
+    //mainWindow.titleBarEndColor = [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
@@ -459,8 +461,7 @@ static BankingController *bankinControllerInstance;
     id object = notification.object;
     if ([object isKindOfClass: Category.class]) {
         [categoryController setSelectedObject: object];
-        [self switchMainPage: 1];
-        [self switchToAccountPage: 1];
+        sidebar.selectedIndex = 2;
     }
 
     LOG_LEAVE;
@@ -1382,22 +1383,18 @@ static BankingController *bankinControllerInstance;
     ShortDate *fromDate = [timeSlicer lowerBounds];
     ShortDate *toDate = [timeSlicer upperBounds];
 
-    NSInteger turnovers = 0;
     if (currentPage == 1) {
-        NSDecimalNumber *turnoversValue = [cat valuesOfType: cat_turnovers from: fromDate to: toDate];
-        turnovers = [turnoversValue integerValue];
-    }
-
-    if (turnovers > 0) {
         NSDecimalNumber *spendingsValue = [cat valuesOfType: cat_spendings from: fromDate to: toDate];
         NSDecimalNumber *earningsValue = [cat valuesOfType: cat_earnings from: fromDate to: toDate];
 
-        [spendingsField setValue: spendingsValue forKey: @"objectValue"];
-        [earningsField setValue: earningsValue forKey: @"objectValue"];
-    } else {
-        [spendingsField setStringValue: @""];
-        [earningsField setStringValue: @""];
+        spendingsField.objectValue = spendingsValue;
+        earningsField.objectValue = earningsValue;
     }
+
+    spendingsField.hidden = currentPage != 1;
+    earningsField.hidden = currentPage != 1;
+    spendingsFieldLabel.hidden = currentPage != 1;
+    earningsFieldLabel.hidden = currentPage != 1;
 
     LOG_LEAVE;
 }
@@ -1405,11 +1402,6 @@ static BankingController *bankinControllerInstance;
 - (void)updateDetailsPaneButton
 {
     toggleDetailsButton.hidden = (currentPage != 1) || (currentSectionIndex != 0);
-}
-
-- (IBAction)activateMainPage: (id)sender
-{
-    [self switchMainPage: [sender selectedSegment]];
 }
 
 - (void)switchMainPage: (NSInteger)page
@@ -1802,7 +1794,7 @@ static BankingController *bankinControllerInstance;
     }
 
     // Switch to the transfers page.
-    [self switchMainPage: 2];
+    sidebar.selectedIndex = 7;
 
     // Start local transfer
     [transfersController startTransferOfType: TransferTypeStandard withAccount: account];
@@ -1824,7 +1816,7 @@ static BankingController *bankinControllerInstance;
     }
 
     // Switch to the transfers page.
-    [self switchMainPage: 2];
+    sidebar.selectedIndex = 7;
 
     // Start transfer editing process.
     [transfersController startDonationTransfer];
@@ -1840,7 +1832,7 @@ static BankingController *bankinControllerInstance;
     }
 
     // Switch to the transfers page.
-    [self switchMainPage: 2];
+    sidebar.selectedIndex = 7;
 
     // Start local transfer
     [transfersController startTransferOfType: TransferTypeInternal withAccount: account];
@@ -1858,7 +1850,7 @@ static BankingController *bankinControllerInstance;
     }
 
     // Switch to the transfers page.
-    [self switchMainPage: 2];
+    sidebar.selectedIndex = 7;
 
     // Start local transfer
     [transfersController startTransferOfType: TransferTypeDated withAccount: account];
@@ -1886,7 +1878,7 @@ static BankingController *bankinControllerInstance;
     }
 
     // Switch to the transfers page.
-    [self switchMainPage: 2];
+    sidebar.selectedIndex = 7;
 
     // Start local transfer
     [transfersController startTransferOfType: TransferTypeEU withAccount: account];
@@ -1914,7 +1906,7 @@ static BankingController *bankinControllerInstance;
     }
 
     // Switch to the transfers page.
-    [self switchMainPage: 2];
+    sidebar.selectedIndex = 7;
 
     // Start local transfer
     [transfersController startTransferOfType: TransferTypeSEPA withAccount: account];
@@ -3240,7 +3232,7 @@ static BankingController *bankinControllerInstance;
                                   nil
                                   );
         if (res == NSAlertAlternateReturn) {
-            [self switchMainPage: 2];
+            sidebar.selectedIndex = 7;
             return NO;
         }
         [transfersController cancelEditing];
@@ -3270,7 +3262,7 @@ static BankingController *bankinControllerInstance;
         return YES;
     }
     if (res == NSAlertAlternateReturn) {
-        [self switchMainPage: 2];
+        sidebar.selectedIndex = 7;
         return NO;
     }
 
