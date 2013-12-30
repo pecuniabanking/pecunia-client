@@ -466,7 +466,7 @@ IA
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <string key="toolTip">Für Pecunia spenden.
 Unterstütze die Entwicklung!</string>
-                                <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="favorite" imagePosition="only" alignment="center" inset="2" id="WSy-fx-agS">
+                                <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="donate" imagePosition="only" alignment="center" inset="2" id="WSy-fx-agS">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -1115,7 +1115,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="NSLeftFacingTriangleTemplate" width="9" height="9"/>
         <image name="NSLockLockedTemplate" width="9" height="12"/>
         <image name="NSRightFacingTriangleTemplate" width="9" height="9"/>
-        <image name="favorite" width="17" height="17"/>
+        <image name="donate" width="35" height="35"/>
         <image name="hide" width="16" height="16"/>
         <image name="ins-8" width="12" height="12"/>
         <image name="minus-8" width="8" height="8"/>

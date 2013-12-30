@@ -33,6 +33,14 @@
 		272328A21551A4D500B9683B /* transfer-internal-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289D1551A4D500B9683B /* transfer-internal-preview.png */; };
 		272328A41551A4D500B9683B /* transfer-sepa-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289F1551A4D500B9683B /* transfer-sepa-preview.png */; };
 		2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */; };
+		2727226E1871CE7E00215DFB /* donate-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226A1871CE7E00215DFB /* donate-active.png */; };
+		2727226F1871CE7E00215DFB /* donate-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226A1871CE7E00215DFB /* donate-active.png */; };
+		272722701871CE7E00215DFB /* donate-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226B1871CE7E00215DFB /* donate-active@2x.png */; };
+		272722711871CE7E00215DFB /* donate-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226B1871CE7E00215DFB /* donate-active@2x.png */; };
+		272722721871CE7E00215DFB /* donate.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226C1871CE7E00215DFB /* donate.png */; };
+		272722731871CE7E00215DFB /* donate.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226C1871CE7E00215DFB /* donate.png */; };
+		272722741871CE7E00215DFB /* donate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226D1871CE7E00215DFB /* donate@2x.png */; };
+		272722751871CE7E00215DFB /* donate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2727226D1871CE7E00215DFB /* donate@2x.png */; };
 		272B5EB3143F724600007749 /* slanted_stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 272B5EB2143F724600007749 /* slanted_stripes.png */; };
 		272BF53F14B770A100628805 /* Tresor.png in Resources */ = {isa = PBXBuildFile; fileRef = 272BF53E14B770A100628805 /* Tresor.png */; };
 		27320ADA17C2826A00FF7A65 /* RecentTransfersCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 27320AD917C2826A00FF7A65 /* RecentTransfersCard.m */; };
@@ -891,6 +899,10 @@
 		2724DAED14012A0F00B0FE15 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2724DC32140155F000B0FE15 /* RoundedInnerShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RoundedInnerShadowView.h; sourceTree = "<group>"; tabWidth = 4; };
 		2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedInnerShadowView.m; sourceTree = "<group>"; tabWidth = 4; };
+		2727226A1871CE7E00215DFB /* donate-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "donate-active.png"; sourceTree = "<group>"; };
+		2727226B1871CE7E00215DFB /* donate-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "donate-active@2x.png"; sourceTree = "<group>"; };
+		2727226C1871CE7E00215DFB /* donate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = donate.png; sourceTree = "<group>"; };
+		2727226D1871CE7E00215DFB /* donate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "donate@2x.png"; sourceTree = "<group>"; };
 		272B5EB2143F724600007749 /* slanted_stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slanted_stripes.png; sourceTree = "<group>"; };
 		272BF53E14B770A100628805 /* Tresor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Tresor.png; sourceTree = "<group>"; };
 		27320AD817C2826A00FF7A65 /* RecentTransfersCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecentTransfersCard.h; path = "Home Screen/RecentTransfersCard.h"; sourceTree = "<group>"; };
@@ -2120,6 +2132,10 @@
 				27AA5664186C389900B113E7 /* distribution@2x.png */,
 				27AA5661186C389900B113E7 /* distribution-active.png */,
 				27AA5662186C389900B113E7 /* distribution-active@2x.png */,
+				2727226A1871CE7E00215DFB /* donate-active.png */,
+				2727226B1871CE7E00215DFB /* donate-active@2x.png */,
+				2727226C1871CE7E00215DFB /* donate.png */,
+				2727226D1871CE7E00215DFB /* donate@2x.png */,
 				2719CD83160F5B45004B37C0 /* donate2.jpg */,
 				27E23532168A16290050276E /* edit-large.png */,
 				27E23533168A16290050276E /* edit-large@2x.png */,
@@ -2576,6 +2592,7 @@
 				B1AFC66E17F627B50046B625 /* NewPinWindow.xib in Resources */,
 				2777892B173CE22700430EBC /* StatSplitController.xib in Resources */,
 				2777892C173CE22700430EBC /* BankStatementController.xib in Resources */,
+				272722711871CE7E00215DFB /* donate-active@2x.png in Resources */,
 				2777892D173CE22700430EBC /* PurposeSplitWindow.xib in Resources */,
 				27AA5682186C3E9100B113E7 /* assign.png in Resources */,
 				2777892E173CE22700430EBC /* TransferTemplates.xib in Resources */,
@@ -2691,6 +2708,7 @@
 				27AA568E186C4F4600B113E7 /* send3.png in Resources */,
 				2777898A173CE22700430EBC /* send.png in Resources */,
 				2777898B173CE22700430EBC /* delete.png in Resources */,
+				272722751871CE7E00215DFB /* donate@2x.png in Resources */,
 				2777898C173CE22700430EBC /* donate2.jpg in Resources */,
 				2777898D173CE22700430EBC /* container-migration.plist in Resources */,
 				2777898E173CE22700430EBC /* GenerateDataController.xib in Resources */,
@@ -2732,6 +2750,7 @@
 				27AA56A2186C562D00B113E7 /* send3-active@2x.png in Resources */,
 				277789B2173CE22700430EBC /* help-button@2x.png in Resources */,
 				277789B4173CE22700430EBC /* gray-hatch.png in Resources */,
+				2727226F1871CE7E00215DFB /* donate-active.png in Resources */,
 				277789B5173CE22700430EBC /* gray-hatch@2x.png in Resources */,
 				277789B6173CE22700430EBC /* RuleEditor.xib in Resources */,
 				27AF5A9C173FC8EC00929B0E /* move-cursor.png in Resources */,
@@ -2742,6 +2761,7 @@
 				27CBF362174A4A1E0062E2A9 /* category-analysis-help.rtf in Resources */,
 				27CBF364174A4A1E0062E2A9 /* category-heatmap-help.rtf in Resources */,
 				27CBF366174A4A1E0062E2A9 /* category-reporting-help.rtf in Resources */,
+				272722731871CE7E00215DFB /* donate.png in Resources */,
 				27AA566A186C389900B113E7 /* distribution.png in Resources */,
 				27CBF36C174A4C5F0062E2A9 /* About.xib in Resources */,
 				27DBAAED175123ED00E75996 /* hatch-1@2x.png in Resources */,
@@ -2785,6 +2805,7 @@
 				B1AFC66D17F627B50046B625 /* NewPinWindow.xib in Resources */,
 				B1A59498113182DA00FD8CB8 /* StatSplitController.xib in Resources */,
 				B14C6003114848E1009324A6 /* BankStatementController.xib in Resources */,
+				272722701871CE7E00215DFB /* donate-active@2x.png in Resources */,
 				B1FB509B1209EAC7004DCD6A /* PurposeSplitWindow.xib in Resources */,
 				27AA5681186C3E9100B113E7 /* assign.png in Resources */,
 				B1FB6611124FC9E300C54A0E /* TransferTemplates.xib in Resources */,
@@ -2900,6 +2921,7 @@
 				27AA568D186C4F4600B113E7 /* send3.png in Resources */,
 				27A659CB1604D8D200C737E8 /* delete.png in Resources */,
 				2719CD84160F5B45004B37C0 /* donate2.jpg in Resources */,
+				272722741871CE7E00215DFB /* donate@2x.png in Resources */,
 				B11F78D3162F0BFC00D7A8E5 /* container-migration.plist in Resources */,
 				277C84931657F6DB0090D46D /* GenerateDataController.xib in Resources */,
 				B1DE0769165FB554004FFC8A /* jre.zip in Resources */,
@@ -2941,6 +2963,7 @@
 				27EEC8E016F4C9630000A1A9 /* help-button@2x.png in Resources */,
 				2784DAEE16FDBDFF00E054D2 /* gray-hatch.png in Resources */,
 				270A3DFA18146E820079B37F /* calendar.png in Resources */,
+				2727226E1871CE7E00215DFB /* donate-active.png in Resources */,
 				2784DAF016FDC62C00E054D2 /* gray-hatch@2x.png in Resources */,
 				27A0098917205B4800D61FE9 /* RuleEditor.xib in Resources */,
 				27AF5A9B173FC8EC00929B0E /* move-cursor.png in Resources */,
@@ -2951,6 +2974,7 @@
 				27CBF361174A4A1E0062E2A9 /* category-analysis-help.rtf in Resources */,
 				27CBF363174A4A1E0062E2A9 /* category-heatmap-help.rtf in Resources */,
 				27CBF365174A4A1E0062E2A9 /* category-reporting-help.rtf in Resources */,
+				272722721871CE7E00215DFB /* donate.png in Resources */,
 				27AA5669186C389900B113E7 /* distribution.png in Resources */,
 				27CBF36B174A4C5F0062E2A9 /* About.xib in Resources */,
 				27DBAAEC175123ED00E75996 /* hatch-1@2x.png in Resources */,
