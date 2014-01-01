@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,15 +19,25 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BankDetailsParser.h" // Another enhancement for NSString.
+enum ResultReliability {
+    PBReliabilityBad,
+    PBReliabilityUnsure,
+    PBReliabilityPerfect,
+};
 
-@interface NSString (PecuniaAdditions)
+extern NSString *PBBankCodeKey;
+extern NSString *PBBankCodeReliabilityKey;
+extern NSString *PBAccountNumberKey;
+extern NSString *PBAccountNumberReliabilityKey;
+extern NSString *PBIBANKey;
+extern NSString *PBIBANReliabilityKey;
+extern NSString *PBBICKey;
+extern NSString *PBBICReliabilityKey;
+extern NSString *PBReceiverKey;
+extern NSString *PBReceiverReliabilityKey;
 
-+ (NSString *)stringWithData: (NSData *)data;
+@interface NSString (BankDetailsParser)
 
-- (NSAttributedString *)attributedStringWithFont: (NSFont *)font;
-- (NSString *)stringByRemovingWhitespaces: (NSString *)s;
-
-- (NSArray*)csvRowsWithSeparator: (NSString *)separator;
+- (NSArray *)parseBankDetails;
 
 @end

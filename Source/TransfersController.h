@@ -96,6 +96,10 @@
     IBOutlet NSButton     *calendarButton;
     IBOutlet NSDatePicker *calendar;
     IBOutlet NSPopover    *calendarPopover;
+    IBOutlet NSTableView  *autofillTable;
+
+    IBOutlet NSPopover         *autofillPopover;
+    IBOutlet NSArrayController *autofillController;
 
     IBOutlet NSButton    *queueItButton;
     IBOutlet NSButton    *doItButton;

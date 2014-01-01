@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,6 +19,8 @@
 
 #import "TransfersController.h"
 #import "TransactionController.h"
+#import "BankingController.h"
+
 #import "PecuniaError.h"
 #import "LogController.h"
 #import "HBCIClient.h"
@@ -29,10 +31,11 @@
 #import "TransactionLimits.h"
 #import "TransferFormularView.h"
 #import "GradientButtonCell.h"
+
 #import "NSString+PecuniaAdditions.h"
 #import "GraphicsAdditions.h"
 #import "AnimationHelper.h"
-#import "BankingController.h"
+
 #import "TimeSliceManager.h"
 #import "ShortDate.h"
 
@@ -392,11 +395,16 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 //--------------------------------------------------------------------------------------------------
 
-@interface TransfersController (private)
+@interface TransfersController ()
+{
+    NSInteger lastChangeCount; // Change count of the general pasteboard.
+}
+
 - (void)updateSourceAccountSelector;
 - (void)prepareSourceAccountSelector: (BankAccount *)account forTransferType: (TransferType)transferType;
 - (void)updateTargetAccountSelector;
 - (void)storeReceiverInMRUList;
+
 @end
 
 @implementation TransfersController
@@ -487,6 +495,16 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     rowPositions[1] = [[transferFormular viewWithTag: 11] frame].origin.y;
     rowPositions[2] = [[transferFormular viewWithTag: 21] frame].origin.y;
     rowPositions[3] = [[transferFormular viewWithTag: 31] frame].origin.y;
+
+    // Start a timer that polls the pasteboard for changes (there's no notification API).
+    NSTimer *timer = [NSTimer timerWithTimeInterval: 1
+                                             target: self
+                                           selector: @selector(pasteboardCheck:)
+                                           userInfo: nil
+                                            repeats: YES];
+    [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSDefaultRunLoopMode];
+    autofillTable.target = self;
+    autofillTable.doubleAction = @selector(autoFill);
 }
 
 - (NSMenuItem *)createItemForAccountSelector: (BankAccount *)account
@@ -1418,6 +1436,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (IBAction)deleteTransfer: (id)sender
 {
+    [autofillPopover performClose: self];
+
     // If we are deleting a new transfer then silently cancel editing and remove the formular from screen.
     if (transactionController.currentTransfer.changeState == TransferChangeNew) {
         [self cancelEditing];
@@ -1666,8 +1686,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 }
 
-#pragma mark -
-#pragma mark Other application logic
+#pragma mark - Other application logic
 
 - (void)updateLimits
 {
@@ -1748,8 +1767,68 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [userDefaults setObject: mutableValues forKey: @"transfers"];
 }
 
-#pragma mark -
-#pragma mark Other delegate methods
+/**
+ * Checks if the general pasteboard changed and tries to make sense of the new content
+ * (if we can use to autofill account number, IBAN etc.).
+ */
+- (void)pasteboardCheck: (NSTimer *)timer
+{
+    NSPasteboard *pasteboard = NSPasteboard.generalPasteboard;
+    if (lastChangeCount != pasteboard.changeCount && transactionController.currentTransfer != nil) {
+        lastChangeCount = pasteboard.changeCount;
+
+        NSString *text = [pasteboard stringForType: NSPasteboardTypeString];
+        if (text.length > 0) {
+            NSArray *entries = [text parseBankDetails];
+            TransferType tt = transactionController.currentTransfer.type.intValue;
+            if (entries.count > 0 &&
+                (tt == TransferTypeSEPA || tt == TransferTypeDated || tt == TransferTypeStandard || tt == TransferTypeEU)) {
+                autofillController.content = entries;
+                NSRect bounds = receiverComboBox.bounds;
+                [autofillPopover showRelativeToRect: bounds ofView: receiverComboBox preferredEdge: NSMinYEdge];
+
+            }
+        }
+    }
+}
+
+- (void)autoFill
+{
+    NSDictionary *values = autofillController.selectedObjects[0]; // Single selection only.
+    if (values != nil) {
+        if (values[PBReceiverKey] != nil) {
+            transactionController.currentTransfer.remoteName = values[PBReceiverKey];
+        }
+        if (values[PBAccountNumberKey] != nil) {
+            transactionController.currentTransfer.remoteAccount = values[PBAccountNumberKey];
+        }
+        if (values[PBBankCodeKey] != nil) {
+            transactionController.currentTransfer.remoteBankCode = values[PBBankCodeKey];
+        }
+        if (values[PBIBANKey] != nil) {
+            transactionController.currentTransfer.remoteIBAN = values[PBIBANKey];
+        }
+        if (values[PBBICKey] != nil) {
+            transactionController.currentTransfer.remoteBIC = values[PBBICKey];
+        }
+
+        // Lookup the bank name.
+        NSString *bankName;
+        if (transactionController.currentTransfer.type.intValue == TransferTypeEU ||
+            transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
+            bankName = [[HBCIClient hbciClient] bankNameForIBAN: transactionController.currentTransfer.remoteIBAN];
+        } else {
+            bankName = [[HBCIClient hbciClient] bankNameForCode: transactionController.currentTransfer.remoteBankCode
+                                                      inCountry: transactionController.currentTransfer.remoteCountry];
+        }
+        if (bankName != nil) {
+            transactionController.currentTransfer.remoteBankName = bankName;
+        }
+    }
+    [autofillPopover performClose: self];
+}
+
+#pragma mark - Other delegate methods
 
 - (void)controlTextDidChange: (NSNotification *)aNotification
 {

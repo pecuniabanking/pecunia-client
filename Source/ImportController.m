@@ -856,8 +856,7 @@
         BankStatement *statement = [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement"
                                                                  inManagedObjectContext: context];
 
-        [entry enumerateKeysAndObjectsUsingBlock:
-         ^(id key, id obj, BOOL *stop) {
+        [entry enumerateKeysAndObjectsUsingBlock: ^(id key, id obj, BOOL *stop) {
              [statement setValue: obj forKey: key];
          }
 

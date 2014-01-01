@@ -436,8 +436,8 @@
                             <rect key="frame" x="1" y="76" width="729" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="41">
-                            <rect key="frame" x="715" y="1" width="15" height="91"/>
+                        <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="41">
+                            <rect key="frame" x="714" y="1" width="16" height="91"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
@@ -570,7 +570,7 @@
                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </clipView>
                                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="104">
-                                        <rect key="frame" x="1" y="336" width="277" height="16"/>
+                                        <rect key="frame" x="0.0" y="516" width="260" height="16"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
                                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="106">

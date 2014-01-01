@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1070" defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -12,6 +12,9 @@
                 <outlet property="amountCurrencyField" destination="716" id="720"/>
                 <outlet property="amountCurrencyText" destination="413" id="479"/>
                 <outlet property="amountField" destination="455" id="660"/>
+                <outlet property="autofillController" destination="43z-MN-Xh0" id="rj4-y6-s2C"/>
+                <outlet property="autofillPopover" destination="aQD-0m-Ut6" id="Siz-iB-sYu"/>
+                <outlet property="autofillTable" destination="IY8-Sc-cdp" id="QIs-Ve-1sz"/>
                 <outlet property="bankCode" destination="420" id="463"/>
                 <outlet property="bankCodeText" destination="419" id="462"/>
                 <outlet property="bankDescription" destination="533" id="535"/>
@@ -701,7 +704,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="533" userLabel="Bank Description">
-                    <rect key="frame" x="167" y="244" width="413" height="19"/>
+                    <rect key="frame" x="167" y="244" width="436" height="19"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Beschreibung der Bank" usesSingleLineMode="YES" id="534">
                         <font key="font" size="13" name="HelveticaNeue"/>
@@ -1157,7 +1160,7 @@ Gw
                 </subviews>
             </view>
         </window>
-        <viewController id="711" userLabel="Popover View Controller">
+        <viewController id="711" userLabel="Calendar Popover View Controller">
             <connections>
                 <outlet property="view" destination="441" id="715"/>
             </connections>
@@ -1167,6 +1170,234 @@ Gw
                 <outlet property="contentViewController" destination="711" id="713"/>
             </connections>
         </popover>
+        <viewController id="sjV-1W-gas" userLabel="Autofill Popover View Controller">
+            <connections>
+                <outlet property="view" destination="aoZ-Qe-Ikr" id="Zdt-oc-Hbu"/>
+            </connections>
+        </viewController>
+        <popover behavior="semitransient" id="aQD-0m-Ut6" userLabel="Autofill Popover">
+            <connections>
+                <outlet property="contentViewController" destination="sjV-1W-gas" id="qt8-cr-34I"/>
+            </connections>
+        </popover>
+        <arrayController objectClassName="NSDictionary" editable="NO" automaticallyPreparesContent="YES" preservesSelection="NO" selectsInsertedObjects="NO" avoidsEmptySelection="NO" automaticallyRearrangesObjects="YES" id="43z-MN-Xh0" userLabel="Autofill Content Controller">
+            <declaredKeys>
+                <string>BankCodeKey</string>
+                <string>AccountNumberKey</string>
+                <string>IBANKey</string>
+                <string>BICKey</string>
+            </declaredKeys>
+        </arrayController>
+        <customView id="aoZ-Qe-Ikr">
+            <rect key="frame" x="0.0" y="0.0" width="505" height="228"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="56" horizontalPageScroll="10" verticalLineScroll="56" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="Bwn-pk-IEG" userLabel="Autofill Table">
+                    <rect key="frame" x="20" y="20" width="465" height="151"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="mRo-JC-XIF">
+                        <rect key="frame" x="0.0" y="0.0" width="465" height="151"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="54" rowSizeStyle="automatic" viewBased="YES" id="IY8-Sc-cdp">
+                                <rect key="frame" x="0.0" y="0.0" width="465" height="151"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <size key="intercellSpacing" width="3" height="2"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <tableViewGridLines key="gridStyleMask" dashed="YES"/>
+                                <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                <tableColumns>
+                                    <tableColumn editable="NO" width="462" minWidth="400" maxWidth="1000" id="Jc9-NK-cvJ">
+                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
+                                        </tableHeaderCell>
+                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="e2t-O6-SEy">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
+                                        <prototypeCellViews>
+                                            <tableCellView id="gNQ-mC-qa5">
+                                                <rect key="frame" x="1" y="1" width="462" height="54"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="x7J-3u-VN0">
+                                                        <rect key="frame" x="0.0" y="37" width="77" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Empfänger:" usesSingleLineMode="YES" id="x9R-8P-7pB">
+                                                            <font key="font" size="12" name="HelveticaNeue"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="lIe-Kg-gap">
+                                                        <rect key="frame" x="71" y="37" width="390" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="123456" usesSingleLineMode="YES" id="UZc-bG-K10">
+                                                            <font key="font" size="12" name="HelveticaNeue-Medium"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <binding destination="gNQ-mC-qa5" name="value" keyPath="objectValue.ReceiverKey" id="LpX-Vg-0ma">
+                                                                <dictionary key="options">
+                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
+                                                                    <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                </dictionary>
+                                                            </binding>
+                                                        </connections>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="L1x-vO-ePP">
+                                                        <rect key="frame" x="1" y="19" width="96" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Kontonummer:" usesSingleLineMode="YES" id="tbM-tC-vqi">
+                                                            <font key="font" size="12" name="HelveticaNeue"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="qzR-IY-ElT">
+                                                        <rect key="frame" x="91" y="19" width="183" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="123456" usesSingleLineMode="YES" id="U1p-gP-BUw">
+                                                            <font key="font" size="12" name="HelveticaNeue-Medium"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <binding destination="gNQ-mC-qa5" name="value" keyPath="objectValue.AccountNumberKey" id="9nc-zJ-saf">
+                                                                <dictionary key="options">
+                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
+                                                                    <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                </dictionary>
+                                                            </binding>
+                                                        </connections>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="4BM-gq-eHP">
+                                                        <rect key="frame" x="278" y="19" width="44" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="BLZ:" usesSingleLineMode="YES" id="sAD-v9-bS4">
+                                                            <font key="font" size="12" name="HelveticaNeue"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="6VZ-dG-6If">
+                                                        <rect key="frame" x="326" y="19" width="135" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="123456" usesSingleLineMode="YES" id="1nz-rB-EoT">
+                                                            <font key="font" size="12" name="HelveticaNeue-Medium"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <binding destination="gNQ-mC-qa5" name="value" keyPath="objectValue.BankCodeKey" id="4nF-xK-fTp">
+                                                                <dictionary key="options">
+                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
+                                                                    <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                </dictionary>
+                                                            </binding>
+                                                        </connections>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="qRj-FH-IJa">
+                                                        <rect key="frame" x="1" y="3" width="86" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="IBAN:" usesSingleLineMode="YES" id="0e2-hX-jeR">
+                                                            <font key="font" size="12" name="HelveticaNeue"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="uLe-O4-3zC">
+                                                        <rect key="frame" x="91" y="3" width="183" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="DE1234567890" usesSingleLineMode="YES" id="LOU-7A-97R">
+                                                            <font key="font" size="12" name="HelveticaNeue-Medium"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <binding destination="gNQ-mC-qa5" name="value" keyPath="objectValue.IBANKey" id="HJ6-lk-mDk">
+                                                                <dictionary key="options">
+                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
+                                                                    <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                </dictionary>
+                                                            </binding>
+                                                        </connections>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="a0m-5p-78G">
+                                                        <rect key="frame" x="266" y="3" width="56" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="BIC:" usesSingleLineMode="YES" id="ucj-LM-3nX">
+                                                            <font key="font" size="12" name="HelveticaNeue"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="gBp-U5-0uE">
+                                                        <rect key="frame" x="326" y="3" width="141" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="GENODEF123Y" usesSingleLineMode="YES" id="aUb-xc-vEv">
+                                                            <font key="font" size="12" name="HelveticaNeue-Medium"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <binding destination="gNQ-mC-qa5" name="value" keyPath="objectValue.BICKey" id="8LU-D4-nfI">
+                                                                <dictionary key="options">
+                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
+                                                                    <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                </dictionary>
+                                                            </binding>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
+                                                <connections>
+                                                    <outlet property="textField" destination="x7J-3u-VN0" id="F4C-VO-SkQ"/>
+                                                </connections>
+                                            </tableCellView>
+                                        </prototypeCellViews>
+                                        <connections>
+                                            <binding destination="43z-MN-Xh0" name="value" keyPath="arrangedObjects.IBANKey" id="5Sk-MD-6Ps"/>
+                                        </connections>
+                                    </tableColumn>
+                                </tableColumns>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </clipView>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="nt5-qu-uhr">
+                        <rect key="frame" x="1" y="119" width="223" height="15"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="Oag-L1-ShC">
+                        <rect key="frame" x="224" y="17" width="15" height="102"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="r0r-AS-MAT">
+                    <rect key="frame" x="18" y="200" width="469" height="17"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Bankkontodaten in der Zwischenablage gefunden" usesSingleLineMode="YES" id="gHM-ud-lV3">
+                        <font key="font" size="16" name="HelveticaNeue-Medium"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="ycH-HA-aiZ">
+                    <rect key="frame" x="18" y="182" width="469" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Auf einen Eintrag doppelklicken, um dessen Werte zu übernehmen." usesSingleLineMode="YES" id="VpE-hm-rQ7">
+                        <font key="font" size="12" name="HelveticaNeue-Light"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+        </customView>
     </objects>
     <resources>
         <image name="NSLeftFacingTriangleTemplate" width="9" height="9"/>
