@@ -105,10 +105,13 @@
     IBOutlet NSButton            *startButton;
     IBOutlet NSView              *detailsView;
     IBOutlet NSTextField         *errorsLabel;
+    IBOutlet NSTextField         *ignoreLabel;
     IBOutlet NSMatrix            *dateRadioGroup;
     IBOutlet NSDatePicker        *fromDatePicker;
     IBOutlet NSDatePicker        *toDatePicker;
     IBOutlet NSTextField         *dateWarnLabel;
+    IBOutlet NSTextField         *toLabel;
+    IBOutlet NSTextField         *noDataWarningLabel;
 
 @private
     BOOL done;
@@ -139,6 +142,8 @@
     fromDatePicker.textColor = [NSColor disabledControlTextColor];
     toDatePicker.enabled = NO;
     toDatePicker.textColor = [NSColor disabledControlTextColor];
+
+    noDataWarningLabel.stringValue = NSLocalizedString(@"AP629", nil);
 }
 
 - (void)becomeKeyWindow
@@ -154,15 +159,24 @@
     }
 }
 
-- (void)preprocessingDoneWithErrorCount: (NSUInteger)errors minDate: (NSDate *)minDate maxDate: (NSDate *)maxDate
+- (void)preprocessingDoneWithErrorCount: (NSUInteger)errors
+                           ignoredCount: (NSUInteger)ignored
+                                minDate: (NSDate *)minDate
+                                maxDate: (NSDate *)maxDate
+                            canContinue: (BOOL)flag
 {
     if (minDate == nil) { // If a min date is set then there's always also a max date.
         dateWarnLabel.hidden = NO;
+        toLabel.hidden = YES;
         dateRadioGroup.hidden = YES;
         fromDatePicker.hidden = YES;
         toDatePicker.hidden = YES;
+
+        startButton.enabled = NO;
+        noDataWarningLabel.hidden = YES;
     } else {
         dateWarnLabel.hidden = YES;
+        toLabel.hidden = NO;
         dateRadioGroup.hidden = NO;
         fromDatePicker.hidden = NO;
         toDatePicker.hidden = NO;
@@ -174,13 +188,20 @@
         toDatePicker.maxDate = maxDate;
         toDatePicker.dateValue = maxDate;
 
-        startButton.enabled = YES;
+        startButton.enabled = flag;
+        noDataWarningLabel.hidden = flag;
     }
 
     if (errors == 0) {
         errorsLabel.stringValue = NSLocalizedString(@"AP18", nil);
     } else {
         errorsLabel.stringValue = [NSString stringWithFormat: @"%lu", errors];
+    }
+
+    if (ignored == 0) {
+        ignoreLabel.stringValue = NSLocalizedString(@"AP18", nil);
+    } else {
+        ignoreLabel.stringValue = [NSString stringWithFormat: @"%lu", ignored];
     }
 
     [progressBar stopAnimation: self];
@@ -524,14 +545,20 @@
         importValues = [NSMutableArray arrayWithCapacity: (currentLines.count >= ignoredLines) ? currentLines.count - ignoredLines: 0];
         for (NSUInteger i = ignoredLines; i < currentLines.count; i++) {
             NSArray *fields = currentLines[i];
+
+            BOOL isEmpty = YES;
+            NSMutableDictionary *entry = [NSMutableDictionary dictionary];
+            for (NSUInteger j = 0; j < fields.count; j++) {
+                isEmpty = isEmpty && [fields[j] length] == 0;
+                entry[[NSString stringWithFormat: @"%lu", j]] = fields[j];
+            }
+            if (!isEmpty) {
+                [importValues addObject: entry];
+            }
+
             if (fields.count > columnCount) {
                 columnCount = fields.count;
             }
-            NSMutableDictionary *entry = [NSMutableDictionary dictionary];
-            for (NSUInteger j = 0; j < fields.count; j++) {
-                entry[[NSString stringWithFormat: @"%lu", j]] = fields[j];
-            }
-            [importValues addObject: entry];
         }
         importValuesController.content = importValues;
 
@@ -720,6 +747,8 @@
                 separator = @",";
             }
 
+            NSUInteger nonImportedLineCount = 0;
+
             NSUInteger ignoredLines = currentSettings.ignoreLines.intValue;
             parsedValues = [NSMutableArray arrayWithCapacity: 1000];
             for (NSString *file in fileNames) {
@@ -748,6 +777,15 @@
                     NSArray *fields = csvRows[i];
                     if (stopProcessing) {
                         return;
+                    }
+
+                    BOOL isEmpty = YES;
+                    for (NSString *field in fields) {
+                        isEmpty = isEmpty && field.length == 0;
+                    }
+                    if (isEmpty) {
+                        ++nonImportedLineCount;
+                        continue;
                     }
 
                     NSMutableDictionary *entry = [NSMutableDictionary dictionary];
@@ -833,10 +871,19 @@
                             }
                         }
                     }
-                    [parsedValues addObject: entry];
+
+                    if (entry[@"date"] != nil || entry[@"valutadate"] != nil) {
+                        [parsedValues addObject: entry];
+                    } else {
+                        ++nonImportedLineCount;
+                    }
                 }
             }
-            [processingSheet preprocessingDoneWithErrorCount: errorCount minDate: minDate maxDate: maxDate];
+            [processingSheet preprocessingDoneWithErrorCount: errorCount
+                                                ignoredCount: nonImportedLineCount
+                                                     minDate: minDate
+                                                     maxDate: maxDate
+                                                 canContinue: parsedValues.count > 0];
         }
         @catch (NSException *exception) {
             [processingSheet preprocessingDoneWithFatalError];
@@ -1213,21 +1260,22 @@
                 row: (NSInteger)rowIndex
 {
     @synchronized(dateFormatter) {
-        NSColor *color = [NSColor grayColor];
         [aCell setEditable: NO];
+
+        BOOL hasError = NO;
+        BOOL hasAssignedContent = NO;
         NSUInteger columnIndex = aTableColumn.identifier.integerValue;
         if (columnIndex < currentSettings.fields.count) {
             NSString *field = currentSettings.fields[columnIndex];
             if (field.length > 0 && ![field isEqualToString: @"undefined"]) {
                 // We have a valid and assigned column. Check content now.
+                hasAssignedContent = YES;
                 NSString *value = [aCell stringValue];
                 if ([field isEqualToString: @"value"]) {
                     NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: value] decimalValue]];
                     [aCell setObjectValue: [number rounded]];
                     if ([number isEqualTo: [NSDecimalNumber notANumber]]) {
-                        color = [NSColor redColor];
-                    } else {
-                        color = [NSColor blackColor];
+                        hasError = YES;
                     }
                 } else {
                     if ([field isEqualToString: @"date"] || [field isEqualToString: @"valutaDate"]) {
@@ -1238,17 +1286,29 @@
                                                 forString: value
                                                     range: &range
                                                     error: &error] && range.length == value.length) {
-                            color = [NSColor blackColor];
+                            ShortDate *date = [ShortDate dateWithDate: parsedObject];
+                            hasError = date.year < 1970 || date.year > 2100;
                         } else {
-                            color = [NSColor redColor];
+                            hasError = YES;
                         }
-                    } else {
-                        color = [NSColor blackColor];
                     }
                 }
             }
         }
-        [aCell setTextColor: color];
+
+        if (!hasAssignedContent) {
+            [aCell setDrawsBackground: NO];
+            [aCell setTextColor: NSColor.grayColor];
+        } else {
+            if (hasError) {
+                [aCell setDrawsBackground: YES];
+                [aCell setBackgroundColor: NSColor.redColor];
+                [aCell setTextColor: NSColor.whiteColor];
+            } else {
+                [aCell setDrawsBackground: NO];
+                [aCell setTextColor: NSColor.blackColor];
+            }
+        }
     }
 }
 

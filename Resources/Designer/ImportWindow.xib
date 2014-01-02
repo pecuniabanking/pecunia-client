@@ -756,14 +756,23 @@ Gw
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     </progressIndicator>
                     <textField verticalHuggingPriority="750" id="367">
-                        <rect key="frame" x="17" y="87" width="492" height="53"/>
+                        <rect key="frame" x="17" y="87" width="492" height="57"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" allowsEditingTextAttributes="YES" id="368">
-                            <font key="font" metaFont="system"/>
+                            <font key="font" size="13" name="HelveticaNeue"/>
                             <string key="title">Line 1
 Line 2
 Line 3</string>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="FCo-8p-ARn">
+                        <rect key="frame" x="17" y="8" width="269" height="45"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="No usable data found" id="r8X-iM-9mS">
+                            <font key="font" size="13" name="HelveticaNeue"/>
+                            <color key="textColor" red="0.81863024640000004" green="0.30038207119999999" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
@@ -775,58 +784,79 @@ Line 3</string>
                 <outlet property="detailsView" destination="380" id="385"/>
                 <outlet property="errorsLabel" destination="383" id="399"/>
                 <outlet property="fromDatePicker" destination="393" id="401"/>
+                <outlet property="ignoreLabel" destination="RoF-Ka-MqG" id="xlK-2q-xCx"/>
+                <outlet property="noDataWarningLabel" destination="FCo-8p-ARn" id="Zk8-UE-X4q"/>
                 <outlet property="processingTaskLabel" destination="367" id="378"/>
                 <outlet property="progressBar" destination="365" id="377"/>
                 <outlet property="startButton" destination="359" id="379"/>
                 <outlet property="toDatePicker" destination="395" id="402"/>
+                <outlet property="toLabel" destination="397" id="nID-np-8Ny"/>
             </connections>
         </window>
         <customView id="380" userLabel="Processing Details View">
-            <rect key="frame" x="0.0" y="0.0" width="526" height="43"/>
+            <rect key="frame" x="0.0" y="0.0" width="526" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" id="381">
-                    <rect key="frame" x="17" y="26" width="127" height="17"/>
+                    <rect key="frame" x="17" y="47" width="127" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gefundene Fehler:" id="382">
-                        <font key="font" metaFont="system"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Gefundene Fehler:" usesSingleLineMode="YES" id="382">
+                        <font key="font" size="13" name="HelveticaNeue"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="383">
-                    <rect key="frame" x="146" y="26" width="38" height="17"/>
+                    <rect key="frame" x="149" y="47" width="38" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="keine" id="384">
-                        <font key="font" metaFont="system"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="keine" usesSingleLineMode="YES" id="384">
+                        <font key="font" size="13" name="HelveticaNeue"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField toolTip="Zeilen, die aufgrund ungültiger Datumsangaben oder weil sie keine verwertbaren Daten enthielten ignoriert werden" verticalHuggingPriority="750" id="QDU-3z-4bf">
+                    <rect key="frame" x="17" y="27" width="127" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Ignorierte Zeilen:" usesSingleLineMode="YES" id="clG-38-PMU">
+                        <font key="font" size="13" name="HelveticaNeue"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField toolTip="Zeilen, die aufgrund ungültiger Datumsangaben oder weil sie keine verwertbaren Daten enthielten ignoriert werden" verticalHuggingPriority="750" id="RoF-Ka-MqG">
+                    <rect key="frame" x="149" y="27" width="38" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="keine" usesSingleLineMode="YES" id="4MF-Kz-zaU">
+                        <font key="font" size="13" name="HelveticaNeue"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="386">
                     <rect key="frame" x="17" y="6" width="127" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Datumsbereich:" id="387">
-                        <font key="font" metaFont="system"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Datumsbereich:" usesSingleLineMode="YES" id="387">
+                        <font key="font" size="13" name="HelveticaNeue"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" id="388">
                     <rect key="frame" x="149" y="5" width="124" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     <size key="cellSize" width="60" height="18"/>
                     <size key="intercellSpacing" width="4" height="2"/>
                     <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="389">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" size="13" name="HelveticaNeue"/>
                     </buttonCell>
                     <cells>
                         <column>
                             <buttonCell type="radio" title="Alles" imagePosition="left" alignment="left" state="on" tag="1" inset="2" id="390">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                <font key="font" metaFont="system"/>
+                                <font key="font" size="13" name="HelveticaNeue"/>
                             </buttonCell>
                         </column>
                         <column>
@@ -842,18 +872,18 @@ Line 3</string>
                 </matrix>
                 <textField hidden="YES" verticalHuggingPriority="750" id="404">
                     <rect key="frame" x="146" y="6" width="363" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Es wurden keine Datumswerte gefunden!" id="405">
-                        <font key="font" metaFont="system"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Es wurden keine Datumswerte gefunden!" usesSingleLineMode="YES" id="405">
+                        <font key="font" size="13" name="HelveticaNeue"/>
                         <color key="textColor" red="1" green="0.29416880369999998" blue="0.18525631880000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <datePicker verticalHuggingPriority="750" id="393">
                     <rect key="frame" x="263" y="3" width="104" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="394">
-                        <font key="font" metaFont="system"/>
+                        <font key="font" size="13" name="HelveticaNeue"/>
                         <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
                             <!--1982-02-12 08:00:00 -0800-->
                             <timeZone key="timeZone" name="US/Pacific">
@@ -887,9 +917,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </datePicker>
                 <datePicker verticalHuggingPriority="750" id="395">
                     <rect key="frame" x="405" y="3" width="104" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="396">
-                        <font key="font" metaFont="system"/>
+                        <font key="font" size="13" name="HelveticaNeue"/>
                         <date key="date" timeIntervalSinceReferenceDate="-595555200">
                             <!--1982-02-17 00:00:00 +0000-->
                         </date>
@@ -905,9 +935,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </datePicker>
                 <textField verticalHuggingPriority="750" id="397">
                     <rect key="frame" x="369" y="6" width="38" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="bis:" id="398">
-                        <font key="font" metaFont="system"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="bis:" usesSingleLineMode="YES" id="398">
+                        <font key="font" size="13" name="HelveticaNeue"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>

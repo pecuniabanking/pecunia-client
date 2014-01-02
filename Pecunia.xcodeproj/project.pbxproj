@@ -1025,7 +1025,6 @@
 		27D240E9145302A900EDC8C7 /* done.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = done.mp3; path = Sounds/done.mp3; sourceTree = "<group>"; };
 		27D302941538453300D6A2CC /* sort-indicator-inc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-indicator-inc.png"; sourceTree = "<group>"; };
 		27D302961538461700D6A2CC /* sort-indicator-dec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-indicator-dec.png"; sourceTree = "<group>"; };
-		27D302A81538857900D6A2CC /* ChromiumTabs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChromiumTabs.framework; path = Frameworks/ChromiumTabs.framework; sourceTree = "<group>"; };
 		27D3168F14A8C81B002F500D /* blue arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue arrow.png"; sourceTree = "<group>"; };
 		27D5763C16626C5300761132 /* hide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hide.png; path = Resources/Images/hide.png; sourceTree = SOURCE_ROOT; };
 		27D5763D16626C5300761132 /* hide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "hide@2x.png"; path = "Resources/Images/hide@2x.png"; sourceTree = SOURCE_ROOT; };
@@ -1422,7 +1421,6 @@
 				2799180E1711748C00C1AC3D /* Quartz.framework */,
 				B1C0359A1720911D0007C1F5 /* Sparkle.framework */,
 				2701A84C165E832C00A9A1C7 /* Growl.framework */,
-				27D302A81538857900D6A2CC /* ChromiumTabs.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */,
 			);
@@ -3269,8 +3267,9 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Frameworks\"",
-					"\"$(SRCROOT)\"",
+					"\\\"$(SRCROOT)/Frameworks\\\"",
+					"$(SRCROOT)",
+					/Data/Work/projects/Pecunia/client/Frameworks,
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -3324,8 +3323,9 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Frameworks\"",
-					"\"$(SRCROOT)\"",
+					"\\\"$(SRCROOT)/Frameworks\\\"",
+					"$(SRCROOT)",
+					/Data/Work/projects/Pecunia/client/Frameworks,
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -3369,8 +3369,9 @@
 				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Frank Emminghaus (JY3Q678PYA)";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Frameworks\"",
-					"\"$(SRCROOT)\"",
+					"\\\"$(SRCROOT)/Frameworks\\\"",
+					"$(SRCROOT)",
+					/Data/Work/projects/Pecunia/client/Frameworks,
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -3412,8 +3413,8 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Frameworks\"",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)/Frameworks",
+					"$(SRCROOT)",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -3465,8 +3466,8 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Frameworks\"",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)/Frameworks",
+					"$(SRCROOT)",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -3508,8 +3509,8 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Frameworks\"",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)/Frameworks",
+					"$(SRCROOT)",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
