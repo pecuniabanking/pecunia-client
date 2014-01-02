@@ -332,6 +332,7 @@ AP625 = "Dateien oder Verzeichnisse für den Import auswählen";
 AP626 = "Importdaten werden untersucht...";
 AP627 = "Die Vorbereitungen sind abgeschlossen. Wählen Sie einen Importbereich und klicken Sie dann \"Import Starten\"";
 AP628 = "Während der Verarbeitung ist ein schwerwiegender Fehler aufgetreten. Bitte versichern Sie sich, dass die angegebenen Dateien, Einstellungen und Feldzuordnungen korrekt sind.";
+AP629 = "Es wurden keine verwertbaren Daten gefunden";
 
 // Preferences
 // AP650..AP749
