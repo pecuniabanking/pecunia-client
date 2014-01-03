@@ -18,6 +18,7 @@
  */
 
 #import "SupportedTransactionInfo.h"
+#import "MOAssistant.h"
 
 @implementation SupportedTransactionInfo
 
@@ -30,5 +31,26 @@
 
 @dynamic account;
 @dynamic user;
+
++ (SupportedTransactionInfo*)infoForType:(TransactionType)type account:(BankAccount*)account
+{
+    NSError                *error = nil;
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"account = %@ AND type = %d", account, type];
+    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
+    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+    [request setPredicate: predicate];
+    
+    NSArray *result = [context executeFetchRequest: request error: &error];
+    if (error != nil) {
+        return nil;
+    }
+    
+    if ([result count] == 0) {
+        return nil;
+    }
+    return result.lastObject;
+}
 
 @end

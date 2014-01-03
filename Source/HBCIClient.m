@@ -64,6 +64,11 @@ static HBCIClient *client = nil;
     return [controller bankNameForIBAN: iban];
 }
 
+- (NSString *)bicForIBAN: (NSString*)iban
+{
+    return [controller bicForIBAN:iban];
+}
+
 - (PecuniaError *)addAccount: (BankAccount *)account forUser: (BankUser *)user
 {
     return [controller addAccount: account forUser: user];

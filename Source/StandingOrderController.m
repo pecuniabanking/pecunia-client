@@ -30,7 +30,7 @@
 #import "StatusBarController.h"
 #import "ShortDate.h"
 #import "TransferFormularView.h"
-
+#import "SupportedTransactionInfo.h"
 #import "GraphicsAdditions.h"
 #import "AnimationHelper.h"
 
@@ -217,40 +217,6 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     return [weekDays indexOfObject: s] + 1;
 }
 
-- (void)preparePurposeFields
-{
-    int t;
-    if (currentLimits == nil) {
-        return;
-    }
-
-    int         num = (t = currentLimits.maxLinesPurpose) ? t : 2;
-    NSTextField *p;
-
-    p = (NSTextField *)[mainView viewWithTag: 43];
-    if (num < 4) {
-        [p setHidden: YES];
-        [p setStringValue: @""];
-    } else {
-        [p setHidden: NO];
-    }
-
-    p = [mainView viewWithTag: 42];
-    if (num < 3) {
-        [p setHidden: YES];
-        [p setStringValue: @""];
-    } else {
-        [p setHidden: NO];
-    }
-
-    p = [mainView viewWithTag: 41];
-    if (num < 2) {
-        [p setHidden: YES];
-        [p setStringValue: @""];
-    } else {
-        [p setHidden: NO];
-    }
-}
 
 - (void)enableWeekly: (BOOL)weekly
 {
@@ -283,6 +249,10 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     NSInteger      currentCycle = currentOrder.cycle.intValue;
     NSMutableArray *weekCycles = [NSMutableArray arrayWithCapacity: 52];
 
+    if (currentLimits == nil) {
+        return;
+    }
+    
     if (currentLimits.weekCycles == nil || currentLimits.weekCycles.count == 0 || [[currentLimits.weekCycles lastObject] intValue] == 0) {
         [weekCycles addObject: NSLocalizedString(@"AP451",  nil)];
         if (currentCycle == 1) {
@@ -331,6 +301,10 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     NSInteger      selectedIndex = 0;
     NSInteger      currentCycle = currentOrder.cycle.intValue;
     NSMutableArray *monthCycles = [NSMutableArray arrayWithCapacity: 12];
+    
+    if (currentLimits == nil) {
+        return;
+    }
 
     if (currentLimits.monthCycles == nil || currentLimits.monthCycles.count == 0 || [[currentLimits.monthCycles lastObject] intValue] == 0) {
         [monthCycles addObject: NSLocalizedString(@"AP450",  nil)];
@@ -587,6 +561,10 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     if (tag == 11) {
         NSString *bankName = [[HBCIClient hbciClient] bankNameForIBAN: [aNotification.object stringValue]];
         currentOrder.remoteBankName = bankName == nil ? @"" : bankName;
+        NSString *bic = [[HBCIClient hbciClient] bicForIBAN:[aNotification.object stringValue]];
+        if (bic != nil) {
+            currentOrder.remoteBIC = bic;
+        }
     }
 }
 
@@ -811,12 +789,15 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
         }
 
         // re-calculate limits and check
+        self.currentLimits = nil;
         if (currentOrder.orderKey == nil) {
             self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
         } else {
-            self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
+            SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType:TransactionType_StandingOrderSEPA account:currentOrder.account];
+            if (transactionInfo != nil && [transactionInfo.allowsChange boolValue]) {
+                self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
+            }
         }
-        [self preparePurposeFields];
 
         // update to new limits
         StandingOrderPeriod period = [currentOrder.period intValue];
@@ -826,24 +807,27 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
             period = stord_monthly;
         }
 
-        if (period == stord_weekly) {
-            [self enableWeekly: YES];
-            [weekCell setState: NSOnState];
-            [monthCell setState: NSOffState];
-            [self updateWeekCycles];
-            [weekCyclesPopup setEnabled: currentLimits.allowChangeCycle];
-            [execDaysWeekPopup setEnabled: currentLimits.allowChangeExecDay];
-        } else {
-            [self enableWeekly: NO];
-            [weekCell setState: NSOffState];
-            [monthCell setState: NSOnState];
-            [self updateMonthCycles];
-            [monthCyclesPopup setEnabled: currentLimits.allowChangeCycle];
-            [execDaysMonthPopup setEnabled: currentLimits.allowChangeExecDay];
+        if (currentLimits != nil && currentLimits.allowChangePeriod)
+        {
+            if (period == stord_weekly) {
+                [self enableWeekly: YES];
+                [weekCell setState: NSOnState];
+                [monthCell setState: NSOffState];
+                [self updateWeekCycles];
+                [weekCyclesPopup setEnabled: currentLimits.allowChangeCycle];
+                [execDaysWeekPopup setEnabled: currentLimits.allowChangeExecDay];
+            } else {
+                [self enableWeekly: NO];
+                [weekCell setState: NSOffState];
+                [monthCell setState: NSOnState];
+                [self updateMonthCycles];
+                [monthCyclesPopup setEnabled: currentLimits.allowChangeCycle];
+                [execDaysMonthPopup setEnabled: currentLimits.allowChangeExecDay];
+            }
+            
+            [weekCell setEnabled: currentLimits.allowWeekly];
+            [monthCell setEnabled: currentLimits.allowMonthly];
         }
-
-        [weekCell setEnabled: currentLimits.allowWeekly];
-        [monthCell setEnabled: currentLimits.allowMonthly];
     } else {
         [weekCell setEnabled: NO];
         [monthCell setEnabled: NO];
@@ -917,12 +901,20 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
         oldWeekCycle = nil;
         oldMonthDay =  nil;
         oldMonthCycle = nil;
+
+        self.currentLimits = nil;
         if (currentOrder.orderKey == nil) {
             self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
         } else {
-            self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
+            SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType:TransactionType_StandingOrderSEPA account:currentOrder.account];
+            if (transactionInfo != nil && [transactionInfo.allowsChange boolValue]) {
+                self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
+            }
         }
-        [self preparePurposeFields];
+        
+        // source account cannot be changed after order is created
+        [sourceAccountSelector setEnabled:currentOrder.orderKey == nil];
+        
         if (self.currentOrder.remoteBankCode != nil && (self.currentOrder.remoteBankName == nil || [self.currentOrder.remoteBankName length] == 0)) {
             NSString *bankName = [[HBCIClient hbciClient] bankNameForCode: self.currentOrder.remoteBankCode inCountry: self.currentOrder.account.country];
             if (bankName) {
@@ -930,25 +922,27 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
             }
         }
 
-        StandingOrderPeriod period = [currentOrder.period intValue];
-        if (period == stord_weekly) {
-            [self enableWeekly: YES];
-            [weekCell setState: NSOnState];
-            [monthCell setState: NSOffState];
-            [self updateWeekCycles];
-            [weekCyclesPopup setEnabled: currentLimits.allowChangeCycle];
-            [execDaysWeekPopup setEnabled: currentLimits.allowChangeExecDay];
-        } else {
-            [self enableWeekly: NO];
-            [weekCell setState: NSOffState];
-            [monthCell setState: NSOnState];
-            [self updateMonthCycles];
-            [monthCyclesPopup setEnabled: currentLimits.allowChangeCycle];
-            [execDaysMonthPopup setEnabled: currentLimits.allowChangeExecDay];
+        if (currentLimits != nil && currentLimits.allowChangePeriod) {
+            StandingOrderPeriod period = [currentOrder.period intValue];
+            if (period == stord_weekly) {
+                [self enableWeekly: YES];
+                [weekCell setState: NSOnState];
+                [monthCell setState: NSOffState];
+                [self updateWeekCycles];
+                [weekCyclesPopup setEnabled: currentLimits.allowChangeCycle];
+                [execDaysWeekPopup setEnabled: currentLimits.allowChangeExecDay];
+            } else {
+                [self enableWeekly: NO];
+                [weekCell setState: NSOffState];
+                [monthCell setState: NSOnState];
+                [self updateMonthCycles];
+                [monthCyclesPopup setEnabled: currentLimits.allowChangeCycle];
+                [execDaysMonthPopup setEnabled: currentLimits.allowChangeExecDay];
+            }
+            
+            [weekCell setEnabled: currentLimits.allowWeekly];
+            [monthCell setEnabled: currentLimits.allowMonthly];
         }
-
-        [weekCell setEnabled: currentLimits.allowWeekly];
-        [monthCell setEnabled: currentLimits.allowMonthly];
 
         // (Re)Load the set of previously entered text for the receiver combo box.
         [receiverComboBox removeAllItems];

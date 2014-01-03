@@ -3378,6 +3378,24 @@ static BankingController *bankinControllerInstance;
                             nil, nil
                             );
         }
+    } else {
+        BOOL migrated109 = [defaults boolForKey: @"Migrated109"];
+        if (migrated109 == NO) {
+            // BankUser update BPD
+            NSArray *bankUsers = [BankUser allUsers];
+            if ([bankUsers count] > 0) {
+                NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
+                                NSLocalizedString(@"AP203", nil),
+                                NSLocalizedString(@"AP1", nil),
+                                nil, nil
+                                );
+                for (BankUser *user in [BankUser allUsers]) {
+                    [[HBCIClient hbciClient] updateBankDataForUser: user];
+                }
+            }
+            
+            [defaults setBool: YES forKey: @"Migrated109"];
+        }
     }
 }
 

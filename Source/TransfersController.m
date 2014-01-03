@@ -1676,9 +1676,23 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                                             account: transactionController.currentTransfer.account
                                             country: transactionController.currentTransfer.remoteCountry];
 
-    [purpose2 setHidden: limits.maxLinesPurpose < 2 && limits.maxLinesPurpose > 0];
-    [purpose3 setHidden: limits.maxLinesPurpose < 3 && limits.maxLinesPurpose > 0];
-    [purpose4 setHidden: limits.maxLinesPurpose < 4 && limits.maxLinesPurpose > 0];
+    [purpose2 setHidden: (limits.maxLinesPurpose < 2 && limits.maxLinesPurpose > 0) || transactionController.currentTransfer.type.intValue == TransferTypeSEPA];
+    [purpose3 setHidden: (limits.maxLinesPurpose < 3 && limits.maxLinesPurpose > 0) || transactionController.currentTransfer.type.intValue == TransferTypeSEPA];
+    [purpose4 setHidden: (limits.maxLinesPurpose < 4 && limits.maxLinesPurpose > 0) || transactionController.currentTransfer.type.intValue == TransferTypeSEPA];
+    
+    if (transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
+        NSRect frame = purpose1.frame;
+        frame.size.height = 50;
+        frame.size.width = 542;
+        frame.origin.y = 106;
+        [purpose1 setFrame:frame];
+    } else {
+        NSRect frame = purpose1.frame;
+        frame.size.height = 24;
+        frame.size.width = 270;
+        frame.origin.y = 132;
+        [purpose1 setFrame:frame];
+    }
 
     if (limits.maxLinesPurpose > 0) {
         if (limits.maxLinesPurpose < 2 && transactionController.currentTransfer.purpose2 && [transactionController.currentTransfer.purpose2 length] > 0) {
@@ -1786,6 +1800,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
         if (textField == accountNumber) {
             bankName = [[HBCIClient hbciClient] bankNameForIBAN: textField.stringValue];
+            NSString *bic = [[HBCIClient hbciClient] bicForIBAN:[aNotification.object stringValue]];
+            if (bic != nil) {
+                transactionController.currentTransfer.remoteBIC = bic;
+            }
+
         }
     } else {
         if (textField == bankCode) {
