@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -160,6 +160,40 @@ NSString *const kXMLReaderTextNodeKey = @"text";
     }
 
     return params;
+}
+
+/**
+ * Looks up an entry for the given key and if that is a dictionary too returns the value of its @"text" subkey,
+ * provided that is a string.
+ */
+- (NSString *)textForKey: (NSString *)key
+{
+    id temp = self[key];
+    if ([temp isKindOfClass: NSDictionary.class]) {
+        temp = temp[@"text"];
+        if ([temp isKindOfClass: NSString.class]) {
+            return temp;
+        }
+    }
+    return nil;
+}
+
+/**
+ * Returns the dictionary stored under the given path, provided all parts on the path are in fact dictionaries.
+ * Returns nil otherwise.
+ */
+- (NSDictionary *)dictionaryFromPath: (NSArray *)path
+{
+    NSDictionary *result = self;
+    for (NSString *entry in path) {
+        if (![result[entry] isKindOfClass: NSDictionary.class]) {
+            return nil;
+        }
+
+        result = result[entry];
+    }
+
+    return result;
 }
 
 @end
