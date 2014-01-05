@@ -22,7 +22,10 @@
 #import "StockCard.h"
 #import "YahooStockData.h"
 #import "LocalSettingsController.h"
+
 #import "NSColor+PecuniaAdditions.h"
+#import "NSDictionary+PecuniaAdditions.h"
+
 #import "PecuniaPlotTimeFormatter.h"
 
 typedef enum {
@@ -398,9 +401,9 @@ typedef enum {
 
 - (void)checkForChanges: (NSDictionary *)values
 {
-    NSDictionary *quote = values[@"response"][@"result"][@"list"][@"quote"];
+    NSDictionary *quote = [values dictionaryFromPath: @[@"response", @"result", @"list", @"quote"]];
 
-    double currentPrice = [quote[@"price"][@"text"] floatValue];
+    double currentPrice = [[quote textForKey: @"price"] floatValue];
     BOOL doReadTicker = forceUpdate || (price != currentPrice);
 
     if (!doReadTicker) {
@@ -416,7 +419,7 @@ typedef enum {
         forceUpdate = NO;
         noChangeCounter = 0;
         price = currentPrice;
-        name = quote[@"issuername"][@"text"];
+        name = [quote textForKey: @"issuername"];
         if (name.length > 20) {
             name = [NSString stringWithFormat: @"%@...", [name substringWithRange: NSMakeRange(0, 20)]];
         } else {
@@ -424,20 +427,20 @@ typedef enum {
                 name = NSLocalizedString(@"AP19", nil);
             }
         }
-        change = [quote[@"change"][@"text"] floatValue];
-        changePercent = [quote[@"changepercent"][@"text"] floatValue];
-        currency = quote[@"currency"][@"text"];
+        change = [[quote textForKey: @"change"] floatValue];
+        changePercent = [[quote textForKey: @"changepercent"] floatValue];
+        currency = [quote textForKey: @"currency"];
         if (currency.length == 0) {
             currency = @"EUR";
         }
-        exchange = quote[@"exchange"][@"text"];
+        exchange = [quote textForKey: @"exchange"];
         if (exchange.length == 0) {
             exchange = @"---";
         }
-        high = [quote[@"high"][@"text"] floatValue];
-        low = [quote[@"low"][@"text"] floatValue];
-        open = [quote[@"open"][@"text"] floatValue];
-        marketCap = quote[@"marketcap"][@"text"];
+        high = [[quote textForKey: @"high"] floatValue];
+        low = [[quote textForKey: @"low"] floatValue];
+        open = [[quote textForKey: @"open"] floatValue];
+        marketCap = [quote textForKey: @"marketcap"];
         if (marketCap.length == 0) {
             marketCap = @"---";
         }
@@ -490,12 +493,13 @@ typedef enum {
     // For no appearent reason it can happen that an update contains less datapoints
     // than a previous request. Since previous prices are likely not to change we just ignore
     // such updates.
-    NSDictionary *list = values[@"response"][@"result"][@"list"];
+    NSDictionary *list = [values dictionaryFromPath: @[@"response", @"result", @"list"]];
     NSUInteger newCount = [list[@"count"] intValue];
     if (newCount > count) {
         count = newCount;
 
-        int timestamp = [values[@"response"][@"result"][@"timestamp"] intValue];
+        NSDictionary *result = [values dictionaryFromPath: @[@"response", @"result"]];
+        int timestamp = [result[@"timestamp"] intValue];
         free(timePoints);
         timePoints = nil;
 
@@ -505,10 +509,10 @@ typedef enum {
         // Times in the dictionaries are Unix timestamps and we keep it at that.
         // The label formatter will take care for creating the right display strings.
         if (count > 0) {
-
-            timeOffset = [list[@"meta"][@"gmtoffset"][@"text"] intValue];
-            marketCloseTime = [list[@"meta"][@"marketclose"][@"text"] intValue];
-            marketOpenTime = [list[@"meta"][@"marketopen"][@"text"] intValue];
+            NSDictionary *meta = [list dictionaryFromPath: @[@"meta"]];
+            timeOffset = [[meta textForKey: @"gmtoffset"] intValue];
+            marketCloseTime = [[meta textForKey: @"marketclose"] intValue];
+            marketOpenTime = [[meta textForKey: @"marketopen"] intValue];
 
             if (interval == StocksIntervalIntraday) {
                 if (timestamp < marketOpenTime || timestamp > marketCloseTime) {
@@ -531,7 +535,7 @@ typedef enum {
             CPTXYAxisSet *axisSet = (id)graph.axisSet;
             [self updateAxis: axisSet.xAxis];
 
-            if (count > 0) {
+            if (count > 0 && [list[@"point"] isKindOfClass: NSArray.class]) {
                 double min = 1e100;
                 double max = -1e100;
 
@@ -540,6 +544,9 @@ typedef enum {
 
                 NSArray *points = list[@"point"];
                 for (NSUInteger i = 0; i < count; ++i) {
+                    if (![points[i] isKindOfClass: NSDictionary.class]) {
+                        continue; // Ignore any ill-formed value.
+                    }
                     NSDictionary *point = points[i];
                     timePoints[i] = [point[@"timestamp"] intValue];
                     stockValues[i] = [point[@"close"] floatValue];
