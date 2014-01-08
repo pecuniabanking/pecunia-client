@@ -141,4 +141,14 @@
     return rows;
 }
 
+-(BOOL)hasSubstring: (NSString *)substring
+{
+    if (substring != nil) {
+        NSRange r = [self rangeOfString:substring];
+        return r.location != NSNotFound;
+    }
+    return NO;
+}
+
+
 @end

@@ -203,9 +203,6 @@ static BankingController *bankinControllerInstance;
 {
 #ifdef DEBUG
     MessageLog.log.forceConsole = YES;
-    MessageLog.log.currentLevel = LogLevel_Debug;
-#else
-    MessageLog.log.currentLevel = LogLevel_Info;
 #endif
 
     LOG_ENTER;
@@ -1556,6 +1553,7 @@ static BankingController *bankinControllerInstance;
 {
     LOG_ENTER;
 
+    [logController setLogLevel: LogLevel_Verbous];
     [logController showWindow: self];
 
     LOG_LEAVE;
