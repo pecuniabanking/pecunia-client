@@ -351,6 +351,7 @@ NSString * escapeSpecial(NSString *s)
     [self appendTag: @"userId" withValue: account.userId to: cmd];
     [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
     [self appendTag: @"jobName" withValue: jobName to: cmd];
+    [self appendTag: @"bankCode" withValue: account.bankCode to: cmd];
     [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd];
     [self appendTag: @"subNumber" withValue: account.accountSuffix to: cmd];
     [cmd appendString: @"</command>"];
@@ -1884,6 +1885,7 @@ NSString * escapeSpecial(NSString *s)
 
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getSupportedBusinessTransactions\">"];
     [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
+    [self appendTag: @"bankCode" withValue: account.bankCode to: cmd];
     [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd];
     [self appendTag: @"subNumber" withValue: account.accountSuffix to: cmd];
     [self appendTag: @"userId" withValue: user.userId to: cmd];

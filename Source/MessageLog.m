@@ -58,7 +58,7 @@ static MessageLog *_messageLog;
 
 - (void)addMessage: (NSString *)msg withLevel: (LogLevel)level
 {
-    if ((logUIs.count == 0 && !forceConsole) || (level > currentLevel)){
+    if ((logUIs.count == 0 && !forceConsole)){
         return;
     }
     NSDate   *date = [NSDate date];

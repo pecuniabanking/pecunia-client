@@ -20,6 +20,7 @@
 #import "TransactionLimits.h"
 #import "BankAccount.h"
 #import "BankUser.h"
+#import "NSString+PecuniaAdditions.h"
 
 @implementation TransactionLimits
 
@@ -67,13 +68,21 @@
     if (textKeys) {
         self.allowedTextKeysString = [textKeys componentsJoinedByString: @":"];
     }
-
+    
     NSString *s = [limits valueForKey: @"maxusage"];
     if (s) {
         self.maxLinesPurpose = [s intValue];
     } else {
         self.maxLinesPurpose = 2;
     }
+    
+    if ([self.jobName hasSubstring:@"SEPA"]) {
+        self.maxLinesPurpose = 1;
+        self.maxLenPurpose = 140;
+        self.maxLinesRemoteName = 1;
+        self.maxLenRemoteName = 70;
+    }
+    
     s = [limits valueForKey: @"minpreptime"];
     if (s) {
         self.minSetupTime = [s intValue];

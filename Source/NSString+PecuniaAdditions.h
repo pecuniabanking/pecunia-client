@@ -30,4 +30,6 @@
 
 - (NSArray*)csvRowsWithSeparator: (NSString *)separator;
 
+-(BOOL)hasSubstring: (NSString *)substring;
+
 @end
