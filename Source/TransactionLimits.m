@@ -115,7 +115,7 @@
         self.allowWeekly = YES;
     }
 
-    if ([self.jobName isEqualToString: @"DauerEdit"]) {
+    if ([self.jobName isEqualToString: @"DauerSEPAEdit"]) {
         s = [limits valueForKey: @"recktoeditable"];
         self.allowChangeRemoteAccount = NO;
         if (s) {

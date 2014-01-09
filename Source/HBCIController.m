@@ -222,6 +222,19 @@ NSString * escapeSpecial(NSString *s)
     return NSLocalizedString(@"AP13", nil);
 }
 
+- (NSString *)bicForIBAN: (NSString*)iban
+{
+    if (iban.length > 12 && [iban hasPrefix: @"DE"]) {
+        BankInfo *info = [self infoForBankCode:[iban substringWithRange: NSMakeRange(4, 8)] inCountry:@"DE"];
+        if (info) {
+            return info.bic;
+        } else {
+            return nil;
+        }
+    }
+    return nil;
+}
+
 - (NSArray *)getAccountsForUser: (BankUser *)user
 {
     PecuniaError *error = nil;
@@ -440,7 +453,7 @@ NSString * escapeSpecial(NSString *s)
 {
     NSError                *error = nil;
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"account = %@ AND type = %d", account, TransactionType_StandingOrder];
+    NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"account = %@ AND type = %d", account, TransactionType_StandingOrderSEPA];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
     NSFetchRequest         *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
@@ -555,11 +568,11 @@ NSString * escapeSpecial(NSString *s)
     NSString *jobName = nil;
 
     switch (action) {
-        case stord_change: jobName = @"DauerEdit"; break;
+        case stord_change: jobName = @"DauerSEPAEdit"; break;
 
-        case stord_create: jobName = @"DauerNew"; break;
+        case stord_create: jobName = @"DauerSEPANew"; break;
 
-        case stord_delete: jobName = @"DauerDel"; break;
+        case stord_delete: jobName = @"DauerSEPADel"; break;
     }
     if (jobName == nil) {
         return nil;
@@ -1432,6 +1445,29 @@ NSString * escapeSpecial(NSString *s)
     }
 }
 
+- (PecuniaError*)clearLimitsForUser:(BankUser*)user
+{
+    NSError                *error = nil;
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"TransactionLimits" inManagedObjectContext: context];
+    
+    NSPredicate    *predicate = [NSPredicate predicateWithFormat: @"user = %@", user];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+    [request setPredicate: predicate];
+    
+    // remove existing
+    NSArray *result = [context executeFetchRequest: request error: &error];
+    if (error) {
+        return [PecuniaError errorWithMessage: [error localizedDescription] title: NSLocalizedString(@"AP204", nil)];
+    }
+    
+    for (TransactionLimits *limit in result) {
+        [context deleteObject: limit];
+    }
+    return nil;
+}
+
 - (PecuniaError *)updateSupportedTransactionsForAccounts: (NSArray *)accounts user: (BankUser *)user
 {
     NSError                *error = nil;
@@ -1559,7 +1595,7 @@ NSString * escapeSpecial(NSString *s)
             SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
             tinfo.account = account;
             tinfo.user = user;
-            tinfo.type = @(TransactionType_StandingOrder);
+            tinfo.type = @(TransactionType_StandingOrderSEPA);
             
             // Parameters
             if ([supportedJobNames containsObject: @"DauerSEPAEdit"] == YES) {
@@ -1648,6 +1684,12 @@ NSString * escapeSpecial(NSString *s)
 
     // update supported transactions
     error = [self updateSupportedTransactionsForAccounts: usr.accounts user: user];
+    if (error) {
+        return error;
+    }
+    
+    // clear Limits cache
+    error = [self clearLimitsForUser:user];
     if (error) {
         return error;
     }

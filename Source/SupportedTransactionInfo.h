@@ -50,4 +50,7 @@ typedef enum {
 
 @property (nonatomic, strong) BankAccount *account;
 @property (nonatomic, strong) BankUser    *user;
+
++ (SupportedTransactionInfo*)infoForType:(TransactionType)type account:(BankAccount*)account;
+
 @end

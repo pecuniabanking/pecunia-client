@@ -56,7 +56,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField verticalHuggingPriority="750" id="447">
+                        <textField verticalHuggingPriority="750" tag="70" id="447">
                             <rect key="frame" x="103" y="379" width="90" height="19"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Empfänger" usesSingleLineMode="YES" id="458">
@@ -111,7 +111,7 @@
                             </textFieldCell>
                         </textField>
                         <textField verticalHuggingPriority="750" tag="12" id="440">
-                            <rect key="frame" x="396" y="344" width="74" height="19"/>
+                            <rect key="frame" x="405" y="344" width="65" height="19"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="BIC" usesSingleLineMode="YES" id="467">
                                 <font key="font" size="13" name="HelveticaNeue"/>
@@ -119,7 +119,7 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <comboBox focusRingType="exterior" verticalHuggingPriority="750" tag="1" id="424" userLabel="Receiver Combo Box">
+                        <comboBox focusRingType="exterior" verticalHuggingPriority="750" tag="71" id="424" userLabel="Receiver Combo Box">
                             <rect key="frame" x="205" y="374" width="403" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="exterior" placeholderString="Geben Sie den Zahlungsempfänger ein" usesSingleLineMode="YES" bezelStyle="round" numberOfVisibleItems="5" id="495">
@@ -131,7 +131,11 @@
                                 </allowedInputSourceLocales>
                             </comboBoxCell>
                             <connections>
-                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeRemoteName" id="512"/>
+                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeRemoteName" id="Hh0-ip-WwX">
+                                    <dictionary key="options">
+                                        <integer key="NSNullPlaceholder" value="0"/>
+                                    </dictionary>
+                                </binding>
                                 <binding destination="2" name="value" keyPath="selection.remoteName" id="515"/>
                                 <outlet property="delegate" destination="-2" id="587"/>
                             </connections>
@@ -144,7 +148,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" id="94">
-                                        <rect key="frame" x="18" y="50" width="101" height="64"/>
+                                        <rect key="frame" x="18" y="51" width="101" height="64"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <size key="cellSize" width="101" height="31"/>
@@ -160,6 +164,11 @@
                                                     <font key="font" metaFont="system"/>
                                                     <connections>
                                                         <action selector="monthCycle:" target="-2" id="207"/>
+                                                        <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangePeriod" id="hTA-Jv-HHO">
+                                                            <dictionary key="options">
+                                                                <integer key="NSNullPlaceholder" value="0"/>
+                                                            </dictionary>
+                                                        </binding>
                                                     </connections>
                                                 </buttonCell>
                                                 <buttonCell type="radio" title="wöchentlich" imagePosition="left" alignment="left" inset="2" id="96">
@@ -167,13 +176,25 @@
                                                     <font key="font" metaFont="system"/>
                                                     <connections>
                                                         <action selector="weekCycle:" target="-2" id="208"/>
+                                                        <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangePeriod" id="giF-aB-4sG">
+                                                            <dictionary key="options">
+                                                                <integer key="NSNullPlaceholder" value="0"/>
+                                                            </dictionary>
+                                                        </binding>
                                                     </connections>
                                                 </buttonCell>
                                             </column>
                                         </cells>
+                                        <connections>
+                                            <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangePeriod" id="SSG-cJ-4xH">
+                                                <dictionary key="options">
+                                                    <integer key="NSNullPlaceholder" value="0"/>
+                                                </dictionary>
+                                            </binding>
+                                        </connections>
                                     </matrix>
                                     <popUpButton verticalHuggingPriority="750" id="100">
-                                        <rect key="frame" x="165" y="85" width="130" height="26"/>
+                                        <rect key="frame" x="165" y="86" width="130" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="right" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="103" id="101">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -189,11 +210,16 @@
                                         <connections>
                                             <action selector="monthCycleChanged:" target="-2" id="216"/>
                                             <binding destination="144" name="contentValues" keyPath="arrangedObjects" id="192"/>
+                                            <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeCycle" id="2WE-1x-hpE">
+                                                <dictionary key="options">
+                                                    <integer key="NSNullPlaceholder" value="0"/>
+                                                </dictionary>
+                                            </binding>
                                             <binding destination="144" name="selectedIndex" keyPath="selectionIndex" previousBinding="192" id="194"/>
                                         </connections>
                                     </popUpButton>
                                     <textField verticalHuggingPriority="750" id="106">
-                                        <rect key="frame" x="358" y="91" width="52" height="17"/>
+                                        <rect key="frame" x="358" y="92" width="52" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="am" id="107">
                                             <font key="font" metaFont="system"/>
@@ -202,7 +228,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <popUpButton verticalHuggingPriority="750" id="108">
-                                        <rect key="frame" x="416" y="85" width="110" height="26"/>
+                                        <rect key="frame" x="416" y="86" width="110" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="right" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="111" id="109">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -218,11 +244,16 @@
                                         <connections>
                                             <action selector="monthDayChanged:" target="-2" id="217"/>
                                             <binding destination="146" name="contentValues" keyPath="arrangedObjects" id="200"/>
+                                            <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeExecDay" id="AMX-WD-ADE">
+                                                <dictionary key="options">
+                                                    <integer key="NSNullPlaceholder" value="0"/>
+                                                </dictionary>
+                                            </binding>
                                             <binding destination="146" name="selectedIndex" keyPath="selectionIndex" previousBinding="200" id="202"/>
                                         </connections>
                                     </popUpButton>
                                     <popUpButton verticalHuggingPriority="750" id="116">
-                                        <rect key="frame" x="165" y="52" width="130" height="26"/>
+                                        <rect key="frame" x="165" y="53" width="130" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="right" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="119" id="117">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -238,20 +269,25 @@
                                         <connections>
                                             <action selector="weekCycleChanged:" target="-2" id="218"/>
                                             <binding destination="145" name="contentValues" keyPath="arrangedObjects" id="209"/>
+                                            <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeCycle" id="L3X-5z-SQI">
+                                                <dictionary key="options">
+                                                    <integer key="NSNullPlaceholder" value="0"/>
+                                                </dictionary>
+                                            </binding>
                                             <binding destination="145" name="selectedIndex" keyPath="selectionIndex" previousBinding="209" id="215"/>
                                         </connections>
                                     </popUpButton>
                                     <textField verticalHuggingPriority="750" id="122">
-                                        <rect key="frame" x="358" y="58" width="52" height="17"/>
+                                        <rect key="frame" x="358" y="59" width="52" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="am" id="123">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
                                     <popUpButton verticalHuggingPriority="750" id="124">
-                                        <rect key="frame" x="416" y="52" width="110" height="26"/>
+                                        <rect key="frame" x="416" y="53" width="110" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="right" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="127" id="125">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -267,11 +303,16 @@
                                         <connections>
                                             <action selector="weekDayChanged:" target="-2" id="219"/>
                                             <binding destination="147" name="contentValues" keyPath="arrangedObjects" id="210"/>
+                                            <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeExecDay" id="yjt-zu-QoM">
+                                                <dictionary key="options">
+                                                    <integer key="NSNullPlaceholder" value="0"/>
+                                                </dictionary>
+                                            </binding>
                                             <binding destination="147" name="selectedIndex" keyPath="selectionIndex" previousBinding="210" id="212"/>
                                         </connections>
                                     </popUpButton>
-                                    <textField verticalHuggingPriority="750" id="130">
-                                        <rect key="frame" x="82" y="17" width="98" height="17"/>
+                                    <textField verticalHuggingPriority="750" tag="50" id="130">
+                                        <rect key="frame" x="82" y="18" width="98" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="erstmalig am" id="131">
                                             <font key="font" metaFont="system"/>
@@ -279,8 +320,8 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <datePicker verticalHuggingPriority="750" tag="50" id="132">
-                                        <rect key="frame" x="185" y="14" width="110" height="27"/>
+                                    <datePicker verticalHuggingPriority="750" tag="51" id="132">
+                                        <rect key="frame" x="185" y="15" width="110" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="133">
                                             <font key="font" metaFont="system"/>
@@ -313,17 +354,17 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </datePickerCell>
                                         <connections>
                                             <action selector="firstExecDateChanged:" target="-2" id="563"/>
-                                            <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeFirstExecDate" id="333">
+                                            <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeFirstExecDate" id="Y3y-rI-8SW">
                                                 <dictionary key="options">
-                                                    <integer key="NSNullPlaceholder" value="1"/>
                                                     <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                    <integer key="NSNullPlaceholder" value="0"/>
                                                 </dictionary>
                                             </binding>
                                             <binding destination="2" name="value" keyPath="selection.firstExecDate" id="182"/>
                                         </connections>
                                     </datePicker>
-                                    <textField verticalHuggingPriority="750" id="134">
-                                        <rect key="frame" x="316" y="17" width="102" height="17"/>
+                                    <textField verticalHuggingPriority="750" tag="60" id="134">
+                                        <rect key="frame" x="316" y="18" width="102" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="letztmalig am" id="135">
                                             <font key="font" metaFont="system"/>
@@ -331,8 +372,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <datePicker verticalHuggingPriority="750" tag="51" id="136">
-                                        <rect key="frame" x="419" y="14" width="110" height="27"/>
+                                    <datePicker verticalHuggingPriority="750" tag="61" id="136">
+                                        <rect key="frame" x="419" y="15" width="110" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="137">
                                             <font key="font" metaFont="system"/>
@@ -365,10 +406,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </datePickerCell>
                                         <connections>
                                             <action selector="lastExecDateChanged:" target="-2" id="564"/>
-                                            <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeLastExecDate" id="338">
+                                            <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeLastExecDate" id="ISU-tM-TsK">
                                                 <dictionary key="options">
-                                                    <integer key="NSNullPlaceholder" value="1"/>
                                                     <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                    <integer key="NSNullPlaceholder" value="0"/>
                                                 </dictionary>
                                             </binding>
                                             <binding destination="2" name="value" keyPath="selection.lastExecDate" id="181"/>
@@ -380,7 +421,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </box>
                         <textField verticalHuggingPriority="750" tag="40" id="63">
-                            <rect key="frame" x="63" y="235" width="270" height="22"/>
+                            <rect key="frame" x="63" y="211" width="542" height="46"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="123456789012345678901234567" placeholderString="(1)" drawsBackground="YES" id="70">
                                 <font key="font" metaFont="system"/>
@@ -388,10 +429,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
-                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangePurpose" id="313">
+                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangePurpose" id="x6K-P4-F9q">
                                     <dictionary key="options">
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                        <integer key="NSNullPlaceholder" value="0"/>
                                     </dictionary>
                                 </binding>
                                 <binding destination="2" name="value" keyPath="selection.purpose1" id="583">
@@ -403,84 +444,6 @@ IA
                                     </dictionary>
                                 </binding>
                                 <outlet property="delegate" destination="-2" id="359"/>
-                            </connections>
-                        </textField>
-                        <textField verticalHuggingPriority="750" tag="41" id="64">
-                            <rect key="frame" x="335" y="235" width="270" height="22"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="123456789012345678901234567" placeholderString="(2)" drawsBackground="YES" id="69">
-                                <font key="font" metaFont="system"/>
-                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                            <connections>
-                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangePurpose" id="318">
-                                    <dictionary key="options">
-                                        <integer key="NSNullPlaceholder" value="1"/>
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                    </dictionary>
-                                </binding>
-                                <binding destination="2" name="value" keyPath="selection.purpose2" id="584">
-                                    <dictionary key="options">
-                                        <string key="NSNullPlaceholder">(2)</string>
-                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                    </dictionary>
-                                </binding>
-                                <outlet property="delegate" destination="-2" id="360"/>
-                            </connections>
-                        </textField>
-                        <textField verticalHuggingPriority="750" tag="42" id="65">
-                            <rect key="frame" x="63" y="211" width="270" height="22"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="123456789012345678901234567" placeholderString="(3)" drawsBackground="YES" id="68">
-                                <font key="font" metaFont="system"/>
-                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                            <connections>
-                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangePurpose" id="323">
-                                    <dictionary key="options">
-                                        <integer key="NSNullPlaceholder" value="1"/>
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                    </dictionary>
-                                </binding>
-                                <binding destination="2" name="value" keyPath="selection.purpose3" id="585">
-                                    <dictionary key="options">
-                                        <string key="NSNullPlaceholder">(3)</string>
-                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                    </dictionary>
-                                </binding>
-                                <outlet property="delegate" destination="-2" id="361"/>
-                            </connections>
-                        </textField>
-                        <textField verticalHuggingPriority="750" tag="43" id="66">
-                            <rect key="frame" x="335" y="211" width="270" height="22"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="(4)" drawsBackground="YES" id="67">
-                                <font key="font" metaFont="system"/>
-                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                            <connections>
-                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangePurpose" id="328">
-                                    <dictionary key="options">
-                                        <integer key="NSNullPlaceholder" value="1"/>
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                    </dictionary>
-                                </binding>
-                                <binding destination="2" name="value" keyPath="selection.purpose4" id="586">
-                                    <dictionary key="options">
-                                        <string key="NSNullPlaceholder">(4)</string>
-                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                    </dictionary>
-                                </binding>
-                                <outlet property="delegate" destination="-2" id="362"/>
                             </connections>
                         </textField>
                         <textField verticalHuggingPriority="750" tag="21" id="73">
@@ -509,10 +472,10 @@ IA
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
-                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeValue" id="294">
+                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeValue" id="FTn-yX-VCi">
                                     <dictionary key="options">
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                        <integer key="NSNullPlaceholder" value="0"/>
                                     </dictionary>
                                 </binding>
                                 <binding destination="2" name="value" keyPath="selection.value" id="391">
@@ -544,10 +507,10 @@ IA
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
-                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeRemoteAccount" id="308">
+                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeRemoteAccount" id="HcC-5S-gfH">
                                     <dictionary key="options">
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                        <integer key="NSNullPlaceholder" value="0"/>
                                     </dictionary>
                                 </binding>
                                 <binding destination="2" name="value" keyPath="selection.remoteIBAN" id="IBx-nS-S9F">
@@ -569,10 +532,10 @@ IA
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                             <connections>
-                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeRemoteAccount" id="307">
+                                <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeRemoteAccount" id="eV3-aK-RqS">
                                     <dictionary key="options">
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                        <integer key="NSNullPlaceholder" value="0"/>
                                     </dictionary>
                                 </binding>
                                 <binding destination="2" name="value" keyPath="selection.remoteBIC" id="qKf-5V-lZy">
@@ -662,7 +625,7 @@ IA
                         <textField verticalHuggingPriority="750" id="525">
                             <rect key="frame" x="30" y="723" width="538" height="24"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Daueraufträge" drawsBackground="YES" id="530">
+                            <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" title="SEPA-Daueraufträge" drawsBackground="YES" id="530">
                                 <font key="font" size="20" name="HelveticaNeue"/>
                                 <color key="textColor" red="0.0" green="0.40461397170000002" blue="0.81900453569999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

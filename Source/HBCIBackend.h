@@ -48,6 +48,7 @@
 - (BankSetupInfo *)getBankSetupInfo: (NSString *)bankCode;
 - (NSString *)bankNameForCode: (NSString *)bankCode inCountry: (NSString *)country;
 - (NSString *)bankNameForIBAN: (NSString *)iban;
+- (NSString *)bicForIBAN: (NSString*)iban;
 - (BankParameter *)getBankParameterForUser: (BankUser *)user;
 - (PecuniaError *)updateTanMethodsForUser: (BankUser *)user;
 - (PecuniaError *)updateTanMediaForUser: (BankUser *)user;
