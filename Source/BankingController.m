@@ -391,7 +391,7 @@ static BankingController *bankinControllerInstance;
         [defaults setBool: YES forKey: @"autoCasing"];
     }
 
-    // Migrate the migration flag to the local settings if a migration was done.
+    // Migrate the migration flags to the local settings if a migration was done.
     // This must be a per-datafile setting, not a default setting.
     if (settings[@"Migrated10"] == nil) {
         BOOL migrated10 = [defaults boolForKey: @"Migrated10"];
@@ -399,6 +399,13 @@ static BankingController *bankinControllerInstance;
             settings[@"Migrated10"] = @YES;
         }
     }
+    if (settings[@"Migrated109"] == nil) {
+        BOOL migrated109 = [defaults boolForKey: @"Migrated109"];
+        if (migrated109) {
+            settings[@"Migrated109"] = @YES;
+        }
+    }
+
     LOG_LEAVE;
 }
 
@@ -3552,7 +3559,7 @@ static BankingController *bankinControllerInstance;
                             );
         }
     } else {
-        BOOL migrated109 = [defaults boolForKey: @"Migrated109"];
+        BOOL migrated109 = [settings boolForKey: @"Migrated109"];
         if (migrated109 == NO) {
             // BankUser update BPD
             NSArray *bankUsers = [BankUser allUsers];
@@ -3567,7 +3574,7 @@ static BankingController *bankinControllerInstance;
                 }
             }
             
-            [defaults setBool: YES forKey: @"Migrated109"];
+            settings[@"Migrated109"] = @YES;
         }
     }
 
