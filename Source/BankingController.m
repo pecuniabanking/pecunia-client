@@ -397,12 +397,14 @@ static BankingController *bankinControllerInstance;
         BOOL migrated10 = [defaults boolForKey: @"Migrated10"];
         if (migrated10) {
             settings[@"Migrated10"] = @YES;
+            [defaults removeObjectForKey: @"Migrated10"];
         }
     }
     if (settings[@"Migrated109"] == nil) {
         BOOL migrated109 = [defaults boolForKey: @"Migrated109"];
         if (migrated109) {
             settings[@"Migrated109"] = @YES;
+            [defaults removeObjectForKey: @"Migrated109"];
         }
     }
 

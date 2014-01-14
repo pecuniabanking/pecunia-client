@@ -38,10 +38,10 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <textField verticalHuggingPriority="750" id="227">
-                    <rect key="frame" x="31" y="425" width="794" height="13"/>
+                    <rect key="frame" x="24" y="427" width="795" height="17"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Mausrad oder Trackpad zum Zoomen verwenden, wenn sich der Mauszeiger über einer Grafik befindet. Swipe oder Drag zum Bewegen." id="228">
-                        <font key="font" metaFont="system" size="10"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Mausrad oder Trackpad zum Zoomen verwenden, wenn sich der Mauszeiger über einer Grafik befindet. Swipe oder Drag zum Bewegen." usesSingleLineMode="YES" id="228">
+                        <font key="font" size="11" name="HelveticaNeue-Light"/>
                         <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </textFieldCell>
@@ -62,10 +62,10 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <textField verticalHuggingPriority="750" id="237">
-                            <rect key="frame" x="16" y="12" width="38" height="14"/>
+                            <rect key="frame" x="14" y="10" width="27" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Tage" id="238">
-                                <font key="font" metaFont="smallSystem"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Tage" usesSingleLineMode="YES" id="238">
+                                <font key="font" size="11" name="HelveticaNeue-Light"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
@@ -79,46 +79,46 @@
                             </connections>
                         </slider>
                         <textField verticalHuggingPriority="750" id="235">
-                            <rect key="frame" x="20" y="43" width="327" height="17"/>
+                            <rect key="frame" x="20" y="48" width="327" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Gruppierungsintervall" id="236">
-                                <font key="font" metaFont="smallSystemBold"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Gruppierungsintervall" usesSingleLineMode="YES" id="236">
+                                <font key="font" size="12" name="HelveticaNeue-Medium"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
                         <textField verticalHuggingPriority="750" id="239">
-                            <rect key="frame" x="83" y="12" width="54" height="14"/>
+                            <rect key="frame" x="84" y="10" width="44" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Wochen" id="240">
-                                <font key="font" metaFont="smallSystem"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Wochen" usesSingleLineMode="YES" id="240">
+                                <font key="font" size="11" name="HelveticaNeue-Light"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
                         <textField verticalHuggingPriority="750" id="243">
-                            <rect key="frame" x="234" y="12" width="58" height="14"/>
+                            <rect key="frame" x="240" y="10" width="44" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Quartale" id="244">
-                                <font key="font" metaFont="smallSystem"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Quartale" usesSingleLineMode="YES" id="244">
+                                <font key="font" size="11" name="HelveticaNeue-Light"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
                         <textField verticalHuggingPriority="750" id="241">
-                            <rect key="frame" x="158" y="12" width="51" height="14"/>
+                            <rect key="frame" x="164" y="10" width="40" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Monate" id="242">
-                                <font key="font" metaFont="smallSystem"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Monate" usesSingleLineMode="YES" id="242">
+                                <font key="font" size="11" name="HelveticaNeue-Light"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
                         <textField verticalHuggingPriority="750" id="245">
-                            <rect key="frame" x="320" y="12" width="38" height="14"/>
+                            <rect key="frame" x="324" y="10" width="31" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Jahre" id="246">
-                                <font key="font" metaFont="smallSystem"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Jahre" usesSingleLineMode="YES" id="246">
+                                <font key="font" size="11" name="HelveticaNeue-Light"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
@@ -126,7 +126,7 @@
                     </subviews>
                 </customView>
                 <textField verticalHuggingPriority="750" id="291">
-                    <rect key="frame" x="505" y="86" width="84" height="16"/>
+                    <rect key="frame" x="507" y="86" width="82" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="292">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="293">
@@ -135,7 +135,7 @@
                                 <bool key="localizesFormat" value="YES"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="11" name="HelveticaNeue-MediumItalic"/>
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -150,7 +150,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="299">
-                    <rect key="frame" x="505" y="73" width="84" height="16"/>
+                    <rect key="frame" x="505" y="73" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="300">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="301">
@@ -159,7 +159,7 @@
                                 <bool key="localizesFormat" value="YES"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="11" name="HelveticaNeue-MediumItalic"/>
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -174,7 +174,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="303">
-                    <rect key="frame" x="505" y="47" width="84" height="16"/>
+                    <rect key="frame" x="505" y="47" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="304">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="305">
@@ -183,7 +183,7 @@
                                 <bool key="localizesFormat" value="YES"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="11" name="HelveticaNeue-MediumItalic"/>
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -198,7 +198,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="309">
-                    <rect key="frame" x="505" y="34" width="84" height="16"/>
+                    <rect key="frame" x="505" y="34" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="310">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="311">
@@ -207,7 +207,7 @@
                                 <bool key="localizesFormat" value="YES"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="11" name="HelveticaNeue-MediumItalic"/>
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -222,7 +222,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="313">
-                    <rect key="frame" x="505" y="21" width="84" height="16"/>
+                    <rect key="frame" x="505" y="21" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="314">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="315">
@@ -231,7 +231,7 @@
                                 <bool key="localizesFormat" value="YES"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="11" name="HelveticaNeue-MediumItalic"/>
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -246,16 +246,16 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="317">
-                    <rect key="frame" x="457" y="85" width="46" height="17"/>
+                    <rect key="frame" x="457" y="86" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="min" id="318">
-                        <font key="font" size="11" name="LucidaSans-Italic"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="min" usesSingleLineMode="YES" id="318">
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="319">
-                    <rect key="frame" x="505" y="60" width="84" height="16"/>
+                    <rect key="frame" x="505" y="60" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="320">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="321">
@@ -264,7 +264,7 @@
                                 <bool key="localizesFormat" value="YES"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="11" name="HelveticaNeue-MediumItalic"/>
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -279,46 +279,46 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="323">
-                    <rect key="frame" x="457" y="72" width="46" height="17"/>
+                    <rect key="frame" x="457" y="73" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="max" id="324">
-                        <font key="font" size="11" name="LucidaSans-Italic"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="max" usesSingleLineMode="YES" id="324">
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="325">
-                    <rect key="frame" x="457" y="42" width="46" height="17"/>
+                    <rect key="frame" x="457" y="47" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∅" id="326">
-                        <font key="font" metaFont="smallSystem"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∅" usesSingleLineMode="YES" id="326">
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="327">
-                    <rect key="frame" x="457" y="35" width="46" height="17"/>
+                    <rect key="frame" x="457" y="34" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="m" id="328">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="m" usesSingleLineMode="YES" id="328">
                         <font key="font" size="14" name="Baskerville-SemiBoldItalic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="329">
-                    <rect key="frame" x="457" y="17" width="46" height="17"/>
+                    <rect key="frame" x="457" y="21" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="σ" id="330">
-                        <font key="font" metaFont="smallSystem"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="σ" usesSingleLineMode="YES" id="330">
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="331">
-                    <rect key="frame" x="457" y="55" width="46" height="17"/>
+                    <rect key="frame" x="457" y="60" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∑" id="332">
-                        <font key="font" metaFont="system" size="10"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∑" usesSingleLineMode="YES" id="332">
+                        <font key="font" size="10" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -342,7 +342,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="337">
-                    <rect key="frame" x="647" y="86" width="84" height="16"/>
+                    <rect key="frame" x="647" y="86" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="367">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="368">
@@ -351,7 +351,7 @@
                                 <bool key="localizesFormat" value="YES"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="11" name="HelveticaNeue-MediumItalic"/>
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -366,7 +366,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="338">
-                    <rect key="frame" x="647" y="73" width="84" height="16"/>
+                    <rect key="frame" x="647" y="73" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="365">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="366">
@@ -375,7 +375,7 @@
                                 <bool key="localizesFormat" value="YES"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="11" name="HelveticaNeue-MediumItalic"/>
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -390,7 +390,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="339">
-                    <rect key="frame" x="647" y="47" width="84" height="16"/>
+                    <rect key="frame" x="647" y="47" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="363">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="364">
@@ -399,7 +399,7 @@
                                 <bool key="localizesFormat" value="YES"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="11" name="HelveticaNeue-MediumItalic"/>
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -414,7 +414,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="340">
-                    <rect key="frame" x="647" y="34" width="84" height="16"/>
+                    <rect key="frame" x="647" y="34" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="361">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="362">
@@ -423,7 +423,7 @@
                                 <bool key="localizesFormat" value="YES"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="11" name="HelveticaNeue-MediumItalic"/>
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -438,7 +438,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="341">
-                    <rect key="frame" x="647" y="21" width="84" height="16"/>
+                    <rect key="frame" x="647" y="21" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="359">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="360">
@@ -447,7 +447,7 @@
                                 <bool key="localizesFormat" value="YES"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="11" name="HelveticaNeue-MediumItalic"/>
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -462,16 +462,16 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="342">
-                    <rect key="frame" x="599" y="85" width="46" height="17"/>
+                    <rect key="frame" x="599" y="86" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="min" id="358">
-                        <font key="font" size="11" name="LucidaSans-Italic"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="min" usesSingleLineMode="YES" id="358">
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="343">
-                    <rect key="frame" x="647" y="60" width="84" height="16"/>
+                    <rect key="frame" x="647" y="60" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="356">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="357">
@@ -480,7 +480,7 @@
                                 <bool key="localizesFormat" value="YES"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="11" name="HelveticaNeue-MediumItalic"/>
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -495,46 +495,46 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="344">
-                    <rect key="frame" x="599" y="72" width="46" height="17"/>
+                    <rect key="frame" x="599" y="73" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="max" id="355">
-                        <font key="font" size="11" name="LucidaSans-Italic"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="max" usesSingleLineMode="YES" id="355">
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="345">
-                    <rect key="frame" x="599" y="42" width="46" height="17"/>
+                    <rect key="frame" x="599" y="47" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∅" id="354">
-                        <font key="font" metaFont="smallSystem"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∅" usesSingleLineMode="YES" id="354">
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="346">
-                    <rect key="frame" x="599" y="35" width="46" height="17"/>
+                    <rect key="frame" x="599" y="34" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="m" id="353">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="m" usesSingleLineMode="YES" id="353">
                         <font key="font" size="14" name="Baskerville-SemiBoldItalic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="347">
-                    <rect key="frame" x="599" y="17" width="46" height="17"/>
+                    <rect key="frame" x="599" y="21" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="σ" id="352">
-                        <font key="font" metaFont="smallSystem"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="σ" usesSingleLineMode="YES" id="352">
+                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="348">
-                    <rect key="frame" x="599" y="55" width="46" height="17"/>
+                    <rect key="frame" x="599" y="60" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∑" id="351">
-                        <font key="font" metaFont="system" size="10"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∑" usesSingleLineMode="YES" id="351">
+                        <font key="font" size="10" name="HelveticaNeue"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
