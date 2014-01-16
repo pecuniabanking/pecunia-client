@@ -535,14 +535,21 @@ typedef enum {
             CPTXYAxisSet *axisSet = (id)graph.axisSet;
             [self updateAxis: axisSet.xAxis];
 
-            if (count > 0 && [list[@"point"] isKindOfClass: NSArray.class]) {
+            if (count > 0) {
                 double min = 1e100;
                 double max = -1e100;
 
                 timePoints = malloc(count * sizeof(double));
                 stockValues = malloc(count * sizeof(double));
 
-                NSArray *points = list[@"point"];
+                // There can be a list of points (as array) or a single point (as dictionary).
+                NSArray *points;
+                if ([list[@"point"] isKindOfClass: NSArray.class]) {
+                    points = list[@"point"];
+                } else {
+                    points = @[list[@"point"]];
+                }
+
                 for (NSUInteger i = 0; i < count; ++i) {
                     if (![points[i] isKindOfClass: NSDictionary.class]) {
                         continue; // Ignore any ill-formed value.
