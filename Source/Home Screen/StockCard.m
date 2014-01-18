@@ -22,7 +22,10 @@
 #import "StockCard.h"
 #import "YahooStockData.h"
 #import "LocalSettingsController.h"
+
 #import "NSColor+PecuniaAdditions.h"
+#import "NSDictionary+PecuniaAdditions.h"
+
 #import "PecuniaPlotTimeFormatter.h"
 
 typedef enum {
@@ -70,6 +73,9 @@ typedef enum {
 
     BOOL forceUpdate;
     BOOL updatePending;
+
+    CPTTextLayer *titleLayer;
+    CGFloat       priceTextWidth;
 }
 
 @property (nonatomic, assign) StocksTimeInterval interval;
@@ -234,9 +240,14 @@ typedef enum {
 
         NSAttributedString *title = [[NSAttributedString alloc] initWithString: name attributes: attributes];
 
-        graph.attributedTitle = title;
-        graph.titlePlotAreaFrameAnchor = CPTRectAnchorTopLeft;
-        graph.titleDisplacement = CGPointMake(5, 0);
+        CPTLayerAnnotation *titleAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: graph.plotAreaFrame];
+        titleAnnotation.rectAnchor = CPTRectAnchorTopLeft;
+        titleAnnotation.contentAnchorPoint = CGPointMake(0, 0);
+        titleAnnotation.displacement = CGPointMake(4, -21);
+        titleLayer = [[CPTTextLayer alloc] initWithAttributedText: title];
+        titleAnnotation.contentLayer = titleLayer;
+        [graph addAnnotation: titleAnnotation];
+
     }
 
     // For the right aligned text we need a separate annotation.
@@ -262,14 +273,16 @@ typedef enum {
     [annotationString appendAttributedString: temp];
 
     if (priceTextLayer == nil) {
-        CPTLayerAnnotation *newTitleAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: graph.plotAreaFrame];
+        CPTLayerAnnotation *priceAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: graph.plotAreaFrame];
         priceTextLayer = [[CPTTextLayer alloc] init];
-        newTitleAnnotation.contentLayer = priceTextLayer;
-        newTitleAnnotation.rectAnchor = CPTRectAnchorTopRight;
-        newTitleAnnotation.displacement = CGPointMake(-80, -10);
-        [graph addAnnotation: newTitleAnnotation];
+        priceAnnotation.contentLayer = priceTextLayer;
+        priceAnnotation.rectAnchor = CPTRectAnchorTopRight;
+        priceAnnotation.displacement = CGPointMake(-80, -10);
+        [graph addAnnotation: priceAnnotation];
     }
     priceTextLayer.attributedText = annotationString;
+    priceTextWidth = annotationString.size.width;
+    titleLayer.maximumSize = CGSizeMake(NSWidth(self.bounds) - priceTextWidth - 20, 0);
 }
 
 - (void)setInterval: (StocksTimeInterval)newInterval
@@ -398,9 +411,9 @@ typedef enum {
 
 - (void)checkForChanges: (NSDictionary *)values
 {
-    NSDictionary *quote = values[@"response"][@"result"][@"list"][@"quote"];
+    NSDictionary *quote = [values dictionaryFromPath: @[@"response", @"result", @"list", @"quote"]];
 
-    double currentPrice = [quote[@"price"][@"text"] floatValue];
+    double currentPrice = [[quote textForKey: @"price"] floatValue];
     BOOL doReadTicker = forceUpdate || (price != currentPrice);
 
     if (!doReadTicker) {
@@ -416,28 +429,24 @@ typedef enum {
         forceUpdate = NO;
         noChangeCounter = 0;
         price = currentPrice;
-        name = quote[@"issuername"][@"text"];
-        if (name.length > 20) {
-            name = [NSString stringWithFormat: @"%@...", [name substringWithRange: NSMakeRange(0, 20)]];
-        } else {
-            if (name.length == 0) {
-                name = NSLocalizedString(@"AP19", nil);
-            }
+        name = [quote textForKey: @"issuername"];
+        if (name.length == 0) {
+            name = NSLocalizedString(@"AP19", nil);
         }
-        change = [quote[@"change"][@"text"] floatValue];
-        changePercent = [quote[@"changepercent"][@"text"] floatValue];
-        currency = quote[@"currency"][@"text"];
+        change = [[quote textForKey: @"change"] floatValue];
+        changePercent = [[quote textForKey: @"changepercent"] floatValue];
+        currency = [quote textForKey: @"currency"];
         if (currency.length == 0) {
             currency = @"EUR";
         }
-        exchange = quote[@"exchange"][@"text"];
+        exchange = [quote textForKey: @"exchange"];
         if (exchange.length == 0) {
             exchange = @"---";
         }
-        high = [quote[@"high"][@"text"] floatValue];
-        low = [quote[@"low"][@"text"] floatValue];
-        open = [quote[@"open"][@"text"] floatValue];
-        marketCap = quote[@"marketcap"][@"text"];
+        high = [[quote textForKey: @"high"] floatValue];
+        low = [[quote textForKey: @"low"] floatValue];
+        open = [[quote textForKey: @"open"] floatValue];
+        marketCap = [quote textForKey: @"marketcap"];
         if (marketCap.length == 0) {
             marketCap = @"---";
         }
@@ -490,12 +499,13 @@ typedef enum {
     // For no appearent reason it can happen that an update contains less datapoints
     // than a previous request. Since previous prices are likely not to change we just ignore
     // such updates.
-    NSDictionary *list = values[@"response"][@"result"][@"list"];
+    NSDictionary *list = [values dictionaryFromPath: @[@"response", @"result", @"list"]];
     NSUInteger newCount = [list[@"count"] intValue];
     if (newCount > count) {
         count = newCount;
 
-        int timestamp = [values[@"response"][@"result"][@"timestamp"] intValue];
+        NSDictionary *result = [values dictionaryFromPath: @[@"response", @"result"]];
+        int timestamp = [result[@"timestamp"] intValue];
         free(timePoints);
         timePoints = nil;
 
@@ -505,10 +515,10 @@ typedef enum {
         // Times in the dictionaries are Unix timestamps and we keep it at that.
         // The label formatter will take care for creating the right display strings.
         if (count > 0) {
-
-            timeOffset = [list[@"meta"][@"gmtoffset"][@"text"] intValue];
-            marketCloseTime = [list[@"meta"][@"marketclose"][@"text"] intValue];
-            marketOpenTime = [list[@"meta"][@"marketopen"][@"text"] intValue];
+            NSDictionary *meta = [list dictionaryFromPath: @[@"meta"]];
+            timeOffset = [[meta textForKey: @"gmtoffset"] intValue];
+            marketCloseTime = [[meta textForKey: @"marketclose"] intValue];
+            marketOpenTime = [[meta textForKey: @"marketopen"] intValue];
 
             if (interval == StocksIntervalIntraday) {
                 if (timestamp < marketOpenTime || timestamp > marketCloseTime) {
@@ -538,8 +548,18 @@ typedef enum {
                 timePoints = malloc(count * sizeof(double));
                 stockValues = malloc(count * sizeof(double));
 
-                NSArray *points = list[@"point"];
+                // There can be a list of points (as array) or a single point (as dictionary).
+                NSArray *points;
+                if ([list[@"point"] isKindOfClass: NSArray.class]) {
+                    points = list[@"point"];
+                } else {
+                    points = @[list[@"point"]];
+                }
+
                 for (NSUInteger i = 0; i < count; ++i) {
+                    if (![points[i] isKindOfClass: NSDictionary.class]) {
+                        continue; // Ignore any ill-formed value.
+                    }
                     NSDictionary *point = points[i];
                     timePoints[i] = [point[@"timestamp"] intValue];
                     stockValues[i] = [point[@"close"] floatValue];
@@ -770,6 +790,12 @@ typedef enum {
     [self updateTimer];
 }
 
+- (void)resizeWithOldSuperviewSize: (NSSize)oldSize
+{
+    [super resizeWithOldSuperviewSize: oldSize];
+    titleLayer.maximumSize = CGSizeMake(NSWidth(self.bounds) - priceTextWidth - 20, 0);
+}
+
 #pragma mark - Plot Data Source Methods
 
 - (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot
@@ -957,6 +983,7 @@ typedef enum {
         } else {
             if ([child isKindOfClass: [StockGraph class]]) {
                 child.frame = frame;
+                [child resizeWithOldSuperviewSize: oldSize];
                 frame.origin.y += frame.size.height;
             }
         }

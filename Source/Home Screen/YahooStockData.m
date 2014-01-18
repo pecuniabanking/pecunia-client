@@ -194,9 +194,15 @@
 
             NSArray *list;
             if ([rawResult[@"response"][@"result"][@"list"][@"count"] intValue] == 1) {
-                list = [NSArray arrayWithObject: rawResult[@"response"][@"result"][@"list"][@"quote"]];
+                id temp = [NSArray arrayWithObject: rawResult[@"response"][@"result"][@"list"][@"quote"]];
+                if ([temp isKindOfClass: NSArray.class]) {
+                    list = temp;
+                }
             } else {
-                list = rawResult[@"response"][@"result"][@"list"][@"quote"];
+                id temp = rawResult[@"response"][@"result"][@"list"][@"quote"];
+                if ([temp isKindOfClass: NSArray.class]) {
+                    list = temp;
+                }
             }
             if (list.count == 0) {
                 return [NSDictionary dictionaryWithObject: [NSArray array]
@@ -204,23 +210,35 @@
             }
             NSMutableDictionary *result = [NSMutableDictionary dictionary];
 
-            for (NSDictionary *entry in list) {
-                NSString *exchange = entry[@"exchange"][@"text"];
-                if (exchange.length == 0) {
-                    exchange = NSLocalizedString(@"AP19", nil);
-                }
-                NSMutableArray *values = result[exchange];
-                if (values == nil) {
-                    values = [NSMutableArray arrayWithCapacity: 3];
-                    result[exchange] = values;
-                }
-                NSString *name = entry[@"name"][@"text"];
-                NSString *symbol = entry[@"symbol"][@"text"];
-                if (name.length > 0 && symbol.length > 0) {
-                    NSDictionary *details = [NSDictionary dictionaryWithObjectsAndKeys: name, @"name",
-                                             symbol, @"symbol",
-                                             nil];
-                    [values addObject: details];
+            for (id entry in list) {
+                if ([entry isKindOfClass: NSDictionary.class]) {
+                    NSString *exchange;
+                    if ([entry[@"exchange"] isKindOfClass: NSDictionary.class]) {
+                        exchange = entry[@"exchange"][@"text"];
+                    }
+                    if (exchange.length == 0) {
+                        exchange = NSLocalizedString(@"AP19", nil);
+                    }
+
+                    NSMutableArray *values = result[exchange];
+                    if (values == nil) {
+                        values = [NSMutableArray arrayWithCapacity: 3];
+                        result[exchange] = values;
+                    }
+
+                    NSString *name;
+                    if ([entry[@"name"] isKindOfClass: NSDictionary.class]) {
+                        name = entry[@"name"][@"text"];
+                    }
+
+                    NSString *symbol;
+                    if ([entry[@"exchange"] isKindOfClass: NSDictionary.class]) {
+                        symbol = entry[@"symbol"][@"text"];
+                    }
+                    if (name.length > 0 && symbol.length > 0) {
+                        NSDictionary *details = @{@"name": name, @"symbol": symbol};
+                        [values addObject: details];
+                    }
                 }
             }
             return result;
