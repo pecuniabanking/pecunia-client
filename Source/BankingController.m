@@ -3367,6 +3367,7 @@ static BankingController *bankinControllerInstance;
         }
 
         [defaults setBool: YES forKey: @"Migrated10"];
+        [defaults setBool: YES forKey: @"Migrated109"];
 
         // success message
         if ([users count] > 0 && [bankUsers count] > 0) {
