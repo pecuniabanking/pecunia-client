@@ -73,6 +73,9 @@ typedef enum {
 
     BOOL forceUpdate;
     BOOL updatePending;
+
+    CPTTextLayer *titleLayer;
+    CGFloat       priceTextWidth;
 }
 
 @property (nonatomic, assign) StocksTimeInterval interval;
@@ -237,9 +240,14 @@ typedef enum {
 
         NSAttributedString *title = [[NSAttributedString alloc] initWithString: name attributes: attributes];
 
-        graph.attributedTitle = title;
-        graph.titlePlotAreaFrameAnchor = CPTRectAnchorTopLeft;
-        graph.titleDisplacement = CGPointMake(5, 0);
+        CPTLayerAnnotation *titleAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: graph.plotAreaFrame];
+        titleAnnotation.rectAnchor = CPTRectAnchorTopLeft;
+        titleAnnotation.contentAnchorPoint = CGPointMake(0, 0);
+        titleAnnotation.displacement = CGPointMake(4, -21);
+        titleLayer = [[CPTTextLayer alloc] initWithAttributedText: title];
+        titleAnnotation.contentLayer = titleLayer;
+        [graph addAnnotation: titleAnnotation];
+
     }
 
     // For the right aligned text we need a separate annotation.
@@ -265,14 +273,16 @@ typedef enum {
     [annotationString appendAttributedString: temp];
 
     if (priceTextLayer == nil) {
-        CPTLayerAnnotation *newTitleAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: graph.plotAreaFrame];
+        CPTLayerAnnotation *priceAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: graph.plotAreaFrame];
         priceTextLayer = [[CPTTextLayer alloc] init];
-        newTitleAnnotation.contentLayer = priceTextLayer;
-        newTitleAnnotation.rectAnchor = CPTRectAnchorTopRight;
-        newTitleAnnotation.displacement = CGPointMake(-80, -10);
-        [graph addAnnotation: newTitleAnnotation];
+        priceAnnotation.contentLayer = priceTextLayer;
+        priceAnnotation.rectAnchor = CPTRectAnchorTopRight;
+        priceAnnotation.displacement = CGPointMake(-80, -10);
+        [graph addAnnotation: priceAnnotation];
     }
     priceTextLayer.attributedText = annotationString;
+    priceTextWidth = annotationString.size.width;
+    titleLayer.maximumSize = CGSizeMake(NSWidth(self.bounds) - priceTextWidth - 20, 0);
 }
 
 - (void)setInterval: (StocksTimeInterval)newInterval
@@ -420,12 +430,8 @@ typedef enum {
         noChangeCounter = 0;
         price = currentPrice;
         name = [quote textForKey: @"issuername"];
-        if (name.length > 20) {
-            name = [NSString stringWithFormat: @"%@...", [name substringWithRange: NSMakeRange(0, 20)]];
-        } else {
-            if (name.length == 0) {
-                name = NSLocalizedString(@"AP19", nil);
-            }
+        if (name.length == 0) {
+            name = NSLocalizedString(@"AP19", nil);
         }
         change = [[quote textForKey: @"change"] floatValue];
         changePercent = [[quote textForKey: @"changepercent"] floatValue];
@@ -784,6 +790,12 @@ typedef enum {
     [self updateTimer];
 }
 
+- (void)resizeWithOldSuperviewSize: (NSSize)oldSize
+{
+    [super resizeWithOldSuperviewSize: oldSize];
+    titleLayer.maximumSize = CGSizeMake(NSWidth(self.bounds) - priceTextWidth - 20, 0);
+}
+
 #pragma mark - Plot Data Source Methods
 
 - (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot
@@ -971,6 +983,7 @@ typedef enum {
         } else {
             if ([child isKindOfClass: [StockGraph class]]) {
                 child.frame = frame;
+                [child resizeWithOldSuperviewSize: oldSize];
                 frame.origin.y += frame.size.height;
             }
         }
