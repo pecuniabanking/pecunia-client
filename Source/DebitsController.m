@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -576,7 +576,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     //   - Standard company/normal single debit/transfer
     //   - Standard consolidated company/normal debits/transfers
     // TODO: the bank has a final word if termination is available, so include this here.
-    BOOL canBeTerminated = (type == TransferTypeStandard) || (type == TransferTypeDated); // || (type == TransferTypeSEPA) || (type == TransferTypeDebit);
+    BOOL canBeTerminated = (type == TransferTypeOldStandard) || (type == TransferTypeOldStandardScheduled); // || (type == TransferTypeSEPA) || (type == TransferTypeDebit);
     [executeImmediatelyRadioButton setHidden: !canBeTerminated];
     [executeImmediatelyText setHidden: !canBeTerminated];
     [executeAtDateRadioButton setHidden: !canBeTerminated];
@@ -584,12 +584,12 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     [executionDatePicker setHidden: !canBeTerminated];
     [calendarButton setHidden: !canBeTerminated];
 
-    executeAtDateRadioButton.state = (type == TransferTypeDated) ? NSOnState : NSOffState;
-    executeImmediatelyRadioButton.state = (type == TransferTypeDated) ? NSOffState : NSOnState;
+    executeAtDateRadioButton.state = (type == TransferTypeOldStandardScheduled) ? NSOnState : NSOffState;
+    executeImmediatelyRadioButton.state = (type == TransferTypeOldStandardScheduled) ? NSOffState : NSOnState;
 
     executionDatePicker.dateValue = [NSDate date];
-    [executionDatePicker setEnabled: type == TransferTypeDated];
-    [calendarButton setEnabled: type == TransferTypeDated];
+    [executionDatePicker setEnabled: type == TransferTypeOldStandardScheduled];
+    [calendarButton setEnabled: type == TransferTypeOldStandardScheduled];
 
     // Load the set of previously entered text for the receiver combo box.
     [receiverComboBox removeAllItems];
@@ -875,7 +875,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         return NO;
     }
 
-    BOOL isTerminated = transfer.type.intValue == TransferTypeDated;
+    BOOL isTerminated = transfer.type.intValue == TransferTypeOldStandardScheduled;
 
     if (isTerminated) {
         executeAtDateRadioButton.state = NSOnState;
@@ -1199,14 +1199,14 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         // Remove valuta date, which is used to automatically switch to the dated type of the
         // transfer (in the transaction controller). Set the transfer type accordingly in case it was changed.
         transactionController.currentTransfer.valutaDate = nil;
-        transactionController.currentTransfer.type = @(TransferTypeStandard);
+        transactionController.currentTransfer.type = @(TransferTypeOldStandard);
     } else {
         executeImmediatelyRadioButton.state = NSOffState;
         [executionDatePicker setEnabled: YES];
         [calendarButton setEnabled: YES];
 
         transactionController.currentTransfer.valutaDate = executionDatePicker.dateValue;
-        transactionController.currentTransfer.type = @(TransferTypeDated);
+        transactionController.currentTransfer.type = @(TransferTypeOldStandardScheduled);
     }
 }
 
@@ -1347,8 +1347,8 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     // At the moment this is only possible for Standard Transfers
     TransferType tt = transactionController.currentTransfer.type.intValue;
     BOOL         allowsDated = NO;
-    if (tt == TransferTypeStandard || tt == TransferTypeDated) {
-        if ([[HBCIClient hbciClient] isTransferSupported: TransferTypeDated forAccount: transactionController.currentTransfer.account]) {
+    if (tt == TransferTypeOldStandard || tt == TransferTypeOldStandardScheduled) {
+        if ([[HBCIClient hbciClient] isTransferSupported: TransferTypeOldStandardScheduled forAccount: transactionController.currentTransfer.account]) {
             [executeAtDateRadioButton setEnabled: YES];
             allowsDated = YES;
         }

@@ -128,7 +128,9 @@
 
 @property (weak) IBOutlet TransferFormularView *transferFormular;
 @property (weak) IBOutlet NSTextField          *dragToHereLabel;
-@property (nonatomic, assign) BOOL             dropToEditRejected;
+
+@property (nonatomic, assign) BOOL dropToEditRejected;
+@property (nonatomic, assign) BOOL donation;
 
 - (IBAction)sendTransfers: (id)sender;
 - (IBAction)showCalendar: (id)sender;

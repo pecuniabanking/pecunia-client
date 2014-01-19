@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -29,7 +29,9 @@
 #import "LaunchParameters.h"
 #import "MainBackgroundView.h"
 #import "BankingController.h"
+
 #import "MessageLog.h"
+#import "LocalSettingsController.h"
 
 @implementation MOAssistant
 
@@ -83,9 +85,6 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
     // create default directories if necessary
     [self checkPaths];
-
-    // migrate old stores
-    [self migrate10];
 
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(startIdle) name: NSApplicationDidResignActiveNotification object: nil];
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(stopIdle) name: NSApplicationDidBecomeActiveNotification object: nil];
@@ -146,6 +145,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         passwordKeyValid = NO;
         [self decrypt];
         [lockView removeFromSuperview];
+        lockView = nil;
 
         [[NSApp mainWindow] makeKeyAndOrderFront: nil];
         isMaxIdleTimeExceeded = NO;
@@ -177,7 +177,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     // Show lock view
     lockView = [[MainBackgroundView alloc] initWithFrame: [mainContentView frame]];
     [lockView setAlphaValue: 0.7];
-    [mainContentView addSubview: lockView];
+    [mainContentView addSubview: lockView positioned: NSWindowAbove relativeTo: nil];
 
     LOG_LEAVE;
 }
@@ -433,17 +433,17 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     LOG_LEAVE;
 }
 
-- (void)migrate10
+- (void)migrate
 {
     LOG_ENTER;
 
-    NSError *error = nil;
-
     NSFileManager  *fm = [NSFileManager defaultManager];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL           migrated10 = [defaults boolForKey: @"Migrated10"];
-    if (migrated10 == NO) {
-        if (isDefaultDir == NO) {
+
+    LocalSettingsController *settings = LocalSettingsController.sharedSettings;
+
+    BOOL migrated10 = [settings boolForKey: @"Migrated10"];
+    if (!migrated10) {
+        if (!isDefaultDir) {
             @throw [PecuniaError errorWithText: NSLocalizedString(@"AP159", nil)];
         }
 
@@ -453,9 +453,11 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
         BOOL wasEncrypted = NO;
         if ([fm fileExistsAtPath: [oldURLEncr path]]) {
-            // encrypted file exists, check if unencrypted file exists as well and is older
+            // Encrypted file exists. Check if unencrypted file exists as well and is older.
             if ([fm fileExistsAtPath: [oldURLStandard path]]) {
-                // yes, now we have to check the dates
+                // We have to check the dates.
+                NSError *error = nil;
+                
                 NSDictionary *standardAttrs = [fm attributesOfItemAtPath: [oldURLStandard path] error: &error];
                 NSDictionary *encrAttrs = [fm attributesOfItemAtPath: [oldURLEncr path] error: &error];
                 NSDate       *standardDate = standardAttrs[NSFileModificationDate];
@@ -481,9 +483,11 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     if ([fm fileExistsAtPath: [accURL path]] == NO) {
         accURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
         if ([fm fileExistsAtPath: [accURL path]] == NO) {
-            // the data store is empty - try to migrate
+            // The data store is empty - try to migrate.
             NSURL *oldURL = [self.dataDirURL URLByAppendingPathComponent: [self.dataFilename stringByReplacingOccurrencesOfString: @"pecuniadata" withString: @"sqlite"]];
             if ([fm fileExistsAtPath: [oldURL path]] == YES) {
+                NSError *error = nil;
+
                 [fm moveItemAtPath: [oldURL path] toPath: [accURL path] error: &error];
                 if (error != nil) {
                     NSLog(@"Move of old accounts file %@ to new location (%@) failed.", oldURL, accURL);
@@ -510,7 +514,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     NSArray                      *stores = [coord persistentStores];
     NSPersistentStore            *store;
     for (store in stores) {
-        [coord removePersistentStore: store error: &error];
+        //[coord removePersistentStore: store error: &error];
     }
     if (error) {
         NSAlert *alert = [NSAlert alertWithError: error];
@@ -894,10 +898,12 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     if (model == nil) {
         [self loadModel];
     }
+
     if (accountsURL == nil) {
         LOG_LEAVE;
         return;
     }
+
     if (isEncrypted && decryptionDone == NO) {
         LOG_LEAVE;
         return;
@@ -1185,10 +1191,9 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 + (MOAssistant *)assistant
 {
-    if (assistant) {
-        return assistant;
+    if (assistant == nil) {
+        assistant = [[MOAssistant alloc] init];
     }
-    assistant = [[MOAssistant alloc] init];
     return assistant;
 }
 

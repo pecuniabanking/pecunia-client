@@ -154,7 +154,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                 break;
 
             default:
-                type = TransferTypeStandard;
+                type = TransferTypeOldStandard;
                 break;
         }
 
@@ -202,7 +202,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             break;
 
         default:
-            type = TransferTypeStandard;
+            type = TransferTypeOldStandard;
             break;
     }
 
@@ -294,6 +294,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
         // Check if we can start a new editing process.
         if ([controller prepareEditingFromDragging: info]) {
+            controller.donation = NO;
             [self showFormular];
             return NSDragOperationCopy;
         }
@@ -411,13 +412,14 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 @synthesize transferFormular;
 @synthesize dropToEditRejected;
-
+@synthesize donation;
 
 - (void)awakeFromNib
 {
     [[mainView window] setInitialFirstResponder: receiverComboBox];
 
-    NSArray *acceptedTypes = @[@(TransferTypeInternal), @(TransferTypeStandard), @(TransferTypeEU), @(TransferTypeDated),
+    NSArray *acceptedTypes = @[@(TransferTypeInternal), @(TransferTypeOldStandard), @(TransferTypeEU),
+                               @(TransferTypeOldStandardScheduled), @(TransferTypeSEPAScheduled),
                                @(TransferTypeSEPA), @(TransferTypeDebit)];
     pendingTransfers.managedObjectContext = MOAssistant.assistant.context;
     pendingTransfers.filterPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = NO and changeState = %d",
@@ -697,8 +699,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteBankCodeKey = @"selection.remoteBankCode";
             break;
 
-        case TransferTypeStandard:
-        case TransferTypeDated: // TODO: needs to be handled differently, for all the various terminated flavours.
+        case TransferTypeOldStandard:
+        case TransferTypeOldStandardScheduled:
             [titleText setStringValue: NSLocalizedString(@"AP404", nil)];
             [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
             [accountText setStringValue: NSLocalizedString(@"AP401", nil)];
@@ -719,6 +721,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             break;
 
         case TransferTypeSEPA:
+        case TransferTypeSEPAScheduled:
             [titleText setStringValue: NSLocalizedString(@"AP406", nil)];
             [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
             [accountText setStringValue: NSLocalizedString(@"AP409", nil)];
@@ -779,8 +782,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     //   - SEPA consolidated company/normal debits/transfers
     //   - Standard company/normal single debit/transfer
     //   - Standard consolidated company/normal debits/transfers
-    // TODO: the bank has a final word if termination is available, so include this here.
-    BOOL canBeTerminated = (type == TransferTypeStandard) || (type == TransferTypeDated); // || (type == TransferTypeSEPA) || (type == TransferTypeDebit);
+    BOOL canBeTerminated = (type == TransferTypeOldStandard) || (type == TransferTypeOldStandardScheduled)
+        || (type == TransferTypeSEPA) || (type = TransferTypeSEPAScheduled); //|| (type == TransferTypeDebit);
     [executionText setHidden: !canBeTerminated];
     [executeImmediatelyRadioButton setHidden: !canBeTerminated];
     [executeImmediatelyText setHidden: !canBeTerminated];
@@ -789,12 +792,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [executionDatePicker setHidden: !canBeTerminated];
     [calendarButton setHidden: !canBeTerminated];
 
-    executeAtDateRadioButton.state = (type == TransferTypeDated) ? NSOnState : NSOffState;
-    executeImmediatelyRadioButton.state = (type == TransferTypeDated) ? NSOffState : NSOnState;
+    BOOL canBeScheduled = (type == TransferTypeOldStandardScheduled || type == TransferTypeSEPAScheduled);
+    executeAtDateRadioButton.state = canBeScheduled ? NSOnState : NSOffState;
+    executeImmediatelyRadioButton.state = canBeScheduled ? NSOffState : NSOnState;
 
     executionDatePicker.dateValue = [NSDate date];
-    [executionDatePicker setEnabled: type == TransferTypeDated];
-    [calendarButton setEnabled: type == TransferTypeDated];
+    [executionDatePicker setEnabled: canBeScheduled];
+    [calendarButton setEnabled: canBeScheduled];
 
     // Load the set of previously entered text for the receiver combo box.
     [receiverComboBox removeAllItems];
@@ -1140,9 +1144,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return NO;
     }
 
-    BOOL isTerminated = transfer.type.intValue == TransferTypeDated;
+    BOOL isScheduled = (transfer.type.intValue == TransferTypeOldStandardScheduled || transfer.type.intValue == TransferTypeSEPAScheduled);
 
-    if (isTerminated) {
+    if (isScheduled) {
         executeAtDateRadioButton.state = NSOnState;
         executeImmediatelyRadioButton.state = NSOffState;
     } else {
@@ -1248,7 +1252,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         BankAccount *account = transfer.account;
         if ([account.collTransferMethod intValue] == CTM_none ||
             // up to now we only support collective Transfers for Standard Transfers (not dated, no SEPA, no EU...)
-            transfer.type.intValue != TransferTypeStandard ||
+            transfer.type.intValue != TransferTypeOldStandard ||
             transfer.valutaDate != nil) {
             [singleTransfers addObject: transfer];
             continue;
@@ -1355,12 +1359,16 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         [self prepareSourceAccountSelector: nil forTransferType: TransferTypeSEPA];
     }
 
+    self.donation = YES;
+    receiverComboBox.editable = NO; // Doesn't work with bindings, hence explicitly set here.
     [rightPane showFormular];
     [amountField.window makeFirstResponder: amountField];
 }
 
 - (BOOL)startTransferOfType: (TransferType)type withAccount: (BankAccount *)account
 {
+    self.donation = NO;
+    receiverComboBox.editable = YES;
     if (![self prepareTransferOfType: type]) {
         return NO;
     }
@@ -1375,6 +1383,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (BOOL)startTransferFromTemplate: (TransferTemplate *)template
 {
+    self.donation = NO;
+    receiverComboBox.editable = YES;
     TransferType type = template.type.intValue;
     if (![self prepareTransferOfType: type]) {
         return NO;
@@ -1553,6 +1563,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (IBAction)executionTimeChanged: (id)sender
 {
+    TransferType type = transactionController.currentTransfer.type.intValue;
     if (sender == executeImmediatelyRadioButton) {
         executeAtDateRadioButton.state = NSOffState;
         [executionDatePicker setEnabled: NO];
@@ -1561,14 +1572,22 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         // Remove valuta date, which is used to automatically switch to the dated type of the
         // transfer (in the transaction controller). Set the transfer type accordingly in case it was changed.
         transactionController.currentTransfer.valutaDate = nil;
-        transactionController.currentTransfer.type = @(TransferTypeStandard);
+        if (type == TransferTypeOldStandardScheduled) {
+            transactionController.currentTransfer.type = @(TransferTypeOldStandard);
+        } else {
+            transactionController.currentTransfer.type = @(TransferTypeSEPA);
+        }
     } else {
         executeImmediatelyRadioButton.state = NSOffState;
         [executionDatePicker setEnabled: YES];
         [calendarButton setEnabled: YES];
 
         transactionController.currentTransfer.valutaDate = executionDatePicker.dateValue;
-        transactionController.currentTransfer.type = @(TransferTypeDated);
+        if (type == TransferTypeOldStandard) {
+            transactionController.currentTransfer.type = @(TransferTypeOldStandardScheduled);
+        } else {
+            transactionController.currentTransfer.type = @(TransferTypeSEPAScheduled);
+        }
     }
 }
 
@@ -1725,20 +1744,37 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         }
     }
 
-    // check if dated is allowed
-    // At the moment this is only possible for Standard Transfers
-    TransferType tt = transactionController.currentTransfer.type.intValue;
-    BOOL         allowsDated = NO;
-    if (tt == TransferTypeStandard || tt == TransferTypeDated) {
-        if ([[HBCIClient hbciClient] isTransferSupported: TransferTypeDated forAccount: transactionController.currentTransfer.account]) {
-            [executeAtDateRadioButton setEnabled: YES];
-            allowsDated = YES;
-        }
+    // Check if scheduling is allowed.
+    // At the moment possible for old standard and SEPA transfers.
+    BOOL canBeScheduled = NO;
+    switch (transactionController.currentTransfer.type.intValue) {
+        case TransferTypeOldStandard:
+        case TransferTypeOldStandardScheduled:
+            if ([[HBCIClient hbciClient] isTransferSupported: TransferTypeOldStandardScheduled
+                                                  forAccount: transactionController.currentTransfer.account]) {
+                [executeAtDateRadioButton setEnabled: YES];
+                canBeScheduled = YES;
+            }
+            break;
+
+        case TransferTypeSEPA:
+        case TransferTypeSEPAScheduled:
+            if ([[HBCIClient hbciClient] isTransferSupported: TransferTypeSEPAScheduled
+                                                  forAccount: transactionController.currentTransfer.account]) {
+                [executeAtDateRadioButton setEnabled: YES];
+                canBeScheduled = YES;
+            }
+            break;
+
+        default:
+            canBeScheduled = NO;
+            break;
     }
-    if (allowsDated == NO) {
-        [executeAtDateRadioButton setEnabled: NO];
-        [executionDatePicker setEnabled: NO];
-        [calendarButton setEnabled: NO];
+
+    if (!canBeScheduled) {
+        executeAtDateRadioButton.enabled = NO;
+        executionDatePicker.enabled = NO;
+        calendarButton.enabled = NO;
     }
 }
 
@@ -1794,9 +1830,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         NSString *text = [pasteboard stringForType: NSPasteboardTypeString];
         if (text.length > 0) {
             NSArray *entries = [text parseBankDetails];
-            TransferType tt = transactionController.currentTransfer.type.intValue;
+            TransferType type = transactionController.currentTransfer.type.intValue;
             if (entries.count > 0 &&
-                (tt == TransferTypeSEPA || tt == TransferTypeDated || tt == TransferTypeStandard || tt == TransferTypeEU)) {
+                (type == TransferTypeSEPA || type == TransferTypeSEPAScheduled
+                    || type == TransferTypeOldStandardScheduled || type == TransferTypeOldStandard
+                    || type == TransferTypeEU)) {
                 autofillController.content = entries;
                 NSRect bounds = receiverComboBox.bounds;
                 [autofillPopover showRelativeToRect: bounds ofView: receiverComboBox preferredEdge: NSMinYEdge];

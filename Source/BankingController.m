@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -1812,7 +1812,7 @@ static BankingController *bankinControllerInstance;
     sidebar.selectedIndex = 7;
 
     // Start local transfer
-    [transfersController startTransferOfType: TransferTypeStandard withAccount: account];
+    [transfersController startTransferOfType: TransferTypeOldStandard withAccount: account];
 
     LOG_LEAVE;
 }
@@ -1868,7 +1868,7 @@ static BankingController *bankinControllerInstance;
     sidebar.selectedIndex = 7;
 
     // Start local transfer
-    [transfersController startTransferOfType: TransferTypeDated withAccount: account];
+    [transfersController startTransferOfType: TransferTypeOldStandardScheduled withAccount: account];
 
     LOG_LEAVE;
 }
@@ -3472,10 +3472,13 @@ static BankingController *bankinControllerInstance;
 {
     LOG_ENTER;
 
+    [MOAssistant.assistant migrate]; // Migration and file checks.
+
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
 
     BOOL migrated10 = [settings boolForKey: @"Migrated10"];
     if (!migrated10) {
+
         NSManagedObjectContext *context = MOAssistant.assistant.context;
 
         NSError *error = nil;
@@ -3551,6 +3554,7 @@ static BankingController *bankinControllerInstance;
         }
 
         settings[@"Migrated10"] = @YES;
+        settings[@"Migrated109"] = @YES;
 
         // success message
         if ([users count] > 0 && [bankUsers count] > 0) {

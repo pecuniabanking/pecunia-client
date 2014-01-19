@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -309,9 +309,9 @@ NSString * escapeSpecial(NSString *s)
 - (NSString *)jobNameForType: (TransferType)tt
 {
     switch (tt) {
-        case TransferTypeStandard: return @"Ueb"; break;
+        case TransferTypeOldStandard: return @"Ueb"; break;
 
-        case TransferTypeDated: return @"TermUeb"; break;
+        case TransferTypeOldStandardScheduled: return @"TermUeb"; break;
 
         case TransferTypeInternal: return @"Umb"; break;
 
@@ -320,6 +320,8 @@ NSString * escapeSpecial(NSString *s)
         case TransferTypeDebit: return @"Last"; break;
 
         case TransferTypeSEPA: return @"UebSEPA"; break;
+
+        case TransferTypeSEPAScheduled: return @"TermUebSEPA"; break;
 
         case TransferTypeCollectiveCredit: return @"MultiUeb"; break;
 
@@ -408,16 +410,18 @@ NSString * escapeSpecial(NSString *s)
 {
     TransactionType transactionType;
     switch (tt) {
-        case TransferTypeStandard:
+        case TransferTypeOldStandard:
         case TransferTypeCollectiveCredit: transactionType = TransactionType_TransferStandard; break;
 
         case TransferTypeEU: transactionType = TransactionType_TransferEU; break;
 
-        case TransferTypeDated: transactionType = TransactionType_TransferDated; break;
+        case TransferTypeOldStandardScheduled: transactionType = TransactionType_TransferDated; break;
 
         case TransferTypeInternal: transactionType = TransactionType_TransferInternal; break;
 
         case TransferTypeSEPA: transactionType = TransactionType_TransferSEPA; break;
+
+        case TransferTypeSEPAScheduled: transactionType = TransactionType_TransferSEPAScheduled; break;
 
         case TransferTypeDebit:
         case TransferTypeCollectiveDebit: transactionType = TransactionType_TransferDebit; break;
@@ -714,18 +718,19 @@ NSString * escapeSpecial(NSString *s)
             [self appendTag: @"remoteBIC" withValue: transfer.remoteBIC to: cmd];
             [self appendTag: @"remoteIBAN" withValue: transfer.remoteIBAN to: cmd];
             [self appendTag: @"remoteCountry" withValue: transfer.remoteCountry == nil ? @"DE": [transfer.remoteCountry uppercaseString] to: cmd];
-            if ([transfer.type intValue] == TransferTypeDated) {
+            if ([transfer.type intValue] == TransferTypeOldStandardScheduled) {
                 NSString *fromString = [dateFormatter stringFromDate: transfer.valutaDate];
                 [self appendTag: @"valutaDate" withValue: fromString to: cmd];
             }
             TransferType tt = [transfer.type intValue];
             NSString     *type;
             switch (tt) {
-                case TransferTypeStandard :
+                case TransferTypeOldStandard:
                     type = @"standard";
                     break;
 
-                case TransferTypeDated :
+                case TransferTypeOldStandardScheduled:
+                case TransferTypeSEPAScheduled: // XXX: make this an own string type.
                     type = @"dated";
                     break;
 

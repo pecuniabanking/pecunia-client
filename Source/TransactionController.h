@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,10 +20,8 @@
 #import <Cocoa/Cocoa.h>
 #import "Transfer.h"
 
-@class BankingController;
 @class BankAccount;
 @class TransactionLimits;
-
 
 @interface ChargeByValueTransformer : NSValueTransformer
 
@@ -32,29 +30,12 @@
 @interface TransactionController : NSObject
 {
     IBOutlet NSArrayController *countryController;
-    IBOutlet NSWindow          *transferLocalWindow;
-    IBOutlet NSWindow          *transferEUWindow;
-    IBOutlet NSWindow          *transferInternalWindow;
-    IBOutlet NSWindow          *transferSEPAWindow;
-    IBOutlet NSPopUpButton     *countryButton;
-    IBOutlet NSComboBox        *accountBox;
-    IBOutlet NSComboBox        *chargeBox;
-    IBOutlet NSDatePicker      *executionDatePicker;
-    IBOutlet NSDrawer          *templatesDraw;
-    IBOutlet NSView            *standardHelpView;
-    IBOutlet NSView            *foreignHelpView;
-    IBOutlet BankingController *bankingController;
-
-    NSWindow *window;
-
     BankAccount       *account;
     TransactionLimits *limits;
     TransferType      transferType;
     NSString          *selectedCountry;
     NSArray           *internalAccounts;
     NSDictionary      *selCountryInfo;
-
-    BOOL donation;
 }
 
 @property (nonatomic, weak, readonly) Transfer            *currentTransfer;
@@ -71,19 +52,8 @@
 - (BOOL)finishCurrentTransfer;
 - (BOOL)validateCurrentTransfer;
 
-- (void)transferOfType: (TransferType)tt forAccount: (BankAccount *)account; // deprecated
-- (void)donateWithAccount: (BankAccount *)account; // deprecated
-- (void)changeTransfer: (Transfer *)transfer; // deprecated
-- (void)hideTransferDate: (BOOL)hide; // deprecated
+- (IBAction)countryDidChange: (id)sender;
 
-- (IBAction)transferFinished: (id)sender; // deprecated
-- (IBAction)nextTransfer: (id)sender; // deprecated
-- (IBAction)cancel: (id)sender; // deprecated
-- (IBAction)getDataFromTemplate: (id)sender; // deprecated
-- (IBAction)countryDidChange: (id)sender; // deprecated
-- (IBAction)sendTransfer: (id)sender; // deprecated
-
-- (void)preparePurposeFields;
 - (void)setManagedObjectContext: (NSManagedObjectContext *)context;
 
 @end
