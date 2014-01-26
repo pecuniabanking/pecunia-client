@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -1058,8 +1058,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="-1"/>
-                                        <integer key="NSNullPlaceholder" value="-1"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                        <integer key="NSNullPlaceholder" value="-1"/>
                                     </dictionary>
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement.remoteBIC" id="wTs-s3-j5a">
@@ -1084,8 +1084,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="-1"/>
-                                        <integer key="NSNullPlaceholder" value="-1"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                        <integer key="NSNullPlaceholder" value="-1"/>
                                     </dictionary>
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement.remoteIBAN" id="EKW-ff-qJj">
@@ -1161,8 +1161,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                        <integer key="NSNullPlaceholder" value="1"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1181,8 +1181,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                        <integer key="NSNullPlaceholder" value="1"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1226,8 +1226,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                        <integer key="NSNullPlaceholder" value="1"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1377,8 +1377,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                         <integer key="NSNoSelectionPlaceholder" value="0"/>
-                                        <integer key="NSNullPlaceholder" value="0"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                        <integer key="NSNullPlaceholder" value="0"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1392,8 +1392,8 @@ IA
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                         <integer key="NSNotApplicablePlaceholder" value="1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                        <integer key="NSNullPlaceholder" value="1"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1412,7 +1412,19 @@ IA
                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                     </dictionary>
                                 </binding>
-                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.remoteName" id="xFD-eQ-QEz"/>
+                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.remoteName" id="0db-0r-V8t">
+                                    <dictionary key="options">
+                                        <string key="NSNullPlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                        <string key="NSNotApplicablePlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                    </dictionary>
+                                </binding>
                             </connections>
                         </textField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="wGV-AD-UQi">
@@ -1429,7 +1441,16 @@ IA
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                     </dictionary>
                                 </binding>
-                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.ccNumberUms" id="Ojb-qr-RkU"/>
+                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.ccNumberUms" id="H2g-ix-Due">
+                                    <dictionary key="options">
+                                        <string key="NSNullPlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                    </dictionary>
+                                </binding>
                             </connections>
                         </textField>
                         <textField verticalHuggingPriority="750" id="5ua-Wo-WSh">
@@ -1512,11 +1533,11 @@ IA
                                     <dictionary key="options">
                                         <bool key="NSConditionallySetsEnabled" value="NO"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="0"/>
-                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <integer key="NSNullPlaceholder" value="0"/>
                                         <integer key="NSNotApplicablePlaceholder" value="0"/>
                                         <integer key="NSNoSelectionPlaceholder" value="0"/>
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                     </dictionary>
                                 </binding>
                             </connections>
