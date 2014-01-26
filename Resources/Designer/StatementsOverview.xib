@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -343,7 +343,7 @@ IA
                             </scroller>
                         </scrollView>
                         <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="zUY-EJ-b2r">
-                            <rect key="frame" x="278" y="90" width="220" height="65"/>
+                            <rect key="frame" x="278" y="90" width="219.99999999999997" height="65"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
                             <clipView key="contentView" copiesOnScroll="NO" id="aMP-cL-oDq">
                                 <rect key="frame" x="0.0" y="0.0" width="220" height="65"/>
@@ -353,10 +353,10 @@ IA
                                         <rect key="frame" x="0.0" y="0.0" width="220" height="65"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" red="0.97647058959999999" green="0.96470588450000005" blue="0.92941176889999999" alpha="1" colorSpace="deviceRGB"/>
-                                        <size key="minSize" width="220" height="65"/>
+                                        <size key="minSize" width="219.99999999999997" height="65"/>
                                         <size key="maxSize" width="809" height="10000000"/>
                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <size key="minSize" width="220" height="65"/>
+                                        <size key="minSize" width="219.99999999999997" height="65"/>
                                         <size key="maxSize" width="809" height="10000000"/>
                                         <connections>
                                             <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.userInfo" id="EAR-Ah-gW9">
@@ -1407,7 +1407,16 @@ IA
                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                     </dictionary>
                                 </binding>
-                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.remoteName" id="xFD-eQ-QEz"/>
+                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.remoteName" id="bV4-BI-cKX">
+                                    <dictionary key="options">
+                                        <string key="NSNullPlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                    </dictionary>
+                                </binding>
                             </connections>
                         </textField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="wGV-AD-UQi">
@@ -1424,7 +1433,16 @@ IA
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                     </dictionary>
                                 </binding>
-                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.ccNumberUms" id="Ojb-qr-RkU"/>
+                                <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.ccNumberUms" id="oV6-Gs-WAb">
+                                    <dictionary key="options">
+                                        <string key="NSNullPlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
+IA
+</string>
+                                    </dictionary>
+                                </binding>
                             </connections>
                         </textField>
                         <textField verticalHuggingPriority="750" id="5ua-Wo-WSh">
