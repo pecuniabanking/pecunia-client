@@ -19,7 +19,7 @@
 
 #import "User.h"
 #import "TanMethodOld.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 
 @implementation User
 
@@ -72,7 +72,7 @@
 - (void)setTanMethod: (TanMethodOld *)tm
 {
     self.tanMethodNumber = tm.function;
-    //todo	[[HBCIClient hbciClient ] changePinTanMethodForUser:self method:tanMethodNumber ];
+    //todo	[[HBCIController controller ] changePinTanMethodForUser:self method:tanMethodNumber ];
 }
 
 - (void)dealloc

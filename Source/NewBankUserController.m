@@ -19,7 +19,7 @@
 
 #import "NewBankUserController.h"
 #import "BankingController.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "PecuniaError.h"
 #import "LogController.h"
 #import "BankParameter.h"
@@ -56,7 +56,7 @@
 
 - (void)awakeFromNib
 {
-    [hbciVersions setContent: [[HBCIClient hbciClient] supportedVersions]];
+    [hbciVersions setContent: [[HBCIController controller] supportedVersions]];
     [hbciVersions setSelectedObjects: @[@"220"]];
 
     // Manually set up properties which cannot be set via user defined runtime attributes (Color is not available pre XCode 4).
@@ -112,7 +112,7 @@
 {
     BankUser *currentUser = [currentUserController content];
 
-    BankSetupInfo *info = [[HBCIClient hbciClient] getBankSetupInfo: currentUser.bankCode];
+    BankSetupInfo *info = [[HBCIController controller] getBankSetupInfo: currentUser.bankCode];
     if (info != nil) {
         if (info.info_userid) {
             NSTextField *field = [[groupBox contentView] viewWithTag: 100];
@@ -163,7 +163,7 @@
 
         if (step == 2) {
             // look if we have bank infos
-            BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
+            BankInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
             if (bi) {
                 currentUser.hbciVersion = bi.pinTanVersion;
                 currentUser.bankURL = bi.pinTanURL;
@@ -173,7 +173,7 @@
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
             // create user
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
-            PecuniaError *error = [[HBCIClient hbciClient] addBankUser: currentUser];
+            PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
             if (error) {
                 [self stopProgress];
                 [error alertPanel];
@@ -208,7 +208,7 @@
         
         if (step == 1) {
             // get bank infos
-            BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
+            BankInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
             if (bi) {
                 currentUser.hbciVersion = bi.hbciVersion;
                 currentUser.bankURL = bi.host;
@@ -224,7 +224,7 @@
         if (step >= 2 && currentUser.hbciVersion != nil && currentUser.bankURL != nil) {
             // Create User
             [self startProgressWithMessage: NSLocalizedString(@"AP157", nil)];
-            PecuniaError *error = [[HBCIClient hbciClient] addBankUser: currentUser];
+            PecuniaError *error = [[HBCIController controller] addBankUser: currentUser];
             if (error) {
                 [self stopProgress];
                 if (step == 2) {
@@ -352,7 +352,7 @@
     if ([te tag] == 10) {
         NSString *bankCode = [s stringByReplacingOccurrencesOfString: @" " withString: @""];
         if ([bankCode length] == 8) {
-            BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: bankCode inCountry: @"DE"];
+            BankInfo *bi = [[HBCIController controller] infoForBankCode: bankCode inCountry: @"DE"];
             if (bi) {
                 currentUser.name = bi.name;
                 [okButton setKeyEquivalent: @"\r"];
@@ -377,7 +377,7 @@
      NSString *bankCode = [te stringValue];
      BankUser *currentUser = [currentUserController content ];
 
-     BankInfo *bi = [[HBCIClient hbciClient] infoForBankCode: bankCode inCountry: @"DE"];
+     BankInfo *bi = [[HBCIController controller] infoForBankCode: bankCode inCountry: @"DE"];
      if (bi) {
      currentUser.bankName = bi.name;
      currentUser.bankURL = bi.pinTanURL;
@@ -417,7 +417,7 @@
     
     BankUser *user = [self selectedUser];
     if (user != nil) {
-        [changePinButton setEnabled:[[HBCIClient hbciClient] isTransactionSupported:TransactionType_ChangePin forUser:user]];
+        [changePinButton setEnabled:[[HBCIController controller] isTransactionSupported:TransactionType_ChangePin forUser:user]];
     } else {
         [changePinButton setEnabled: NO];
     }
@@ -643,7 +643,7 @@
         return;
     }
 
-    if ([[HBCIClient hbciClient] deleteBankUser: user] == TRUE) {
+    if ([[HBCIController controller] deleteBankUser: user] == TRUE) {
         // remove user from all related bank accounts
         NSMutableSet *accounts = [user mutableSetValueForKey: @"accounts"];
         for (BankAccount *account in accounts) {
@@ -679,7 +679,7 @@
     if (user == nil) {
         return;
     }
-    PecuniaError *error = [[HBCIClient hbciClient] changePinTanMethodForUser: user];
+    PecuniaError *error = [[HBCIController controller] changePinTanMethodForUser: user];
     if (error) {
         [error alertPanel];
         return;
@@ -697,7 +697,7 @@
     //	[[logController window] makeKeyAndOrderFront:self];
     [logController showWindow: self];
     [logController setLogLevel: LogLevel_Info];
-    BankParameter *bp = [[HBCIClient hbciClient] getBankParameterForUser: user];
+    BankParameter *bp = [[HBCIController controller] getBankParameterForUser: user];
     if (bp == nil) {
         [messageLog addMessage: @"Bankparameter konnten nicht ermittelt werden" withLevel: LogLevel_Error];
         return;
@@ -716,7 +716,7 @@
         return;
     }
 
-    PecuniaError *error = [[HBCIClient hbciClient] updateBankDataForUser: user];
+    PecuniaError *error = [[HBCIController controller] updateBankDataForUser: user];
     if (error) {
         [error alertPanel];
         return;
@@ -758,7 +758,7 @@
         return;
     }
     
-    PecuniaError *error = [[HBCIClient hbciClient] changePinForUser:user toPin:[pinController result]];
+    PecuniaError *error = [[HBCIController controller] changePinForUser:user toPin:[pinController result]];
     if (error) {
         [error alertPanel];
         return;

@@ -20,7 +20,7 @@
 #import "DebitsController.h"
 #import "PecuniaError.h"
 #import "LogController.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
 #import "TransferPrintView.h"
@@ -484,7 +484,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
             }
 
             // check if the accout supports the current transfer type
-            if (![[HBCIClient hbciClient] isTransferSupported: transferType forAccount: account]) {
+            if (![[HBCIController controller] isTransferSupported: transferType forAccount: account]) {
                 continue;
             }
 
@@ -1010,7 +1010,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
             [transfersByAccount removeObjectForKey: account];
         } else {
             // now send collective transfer
-            PecuniaError *error = [[HBCIClient hbciClient] sendCollectiveTransfer: collTransfers];
+            PecuniaError *error = [[HBCIController controller] sendCollectiveTransfer: collTransfers];
             if (error) {
                 [error logMessage];
             }
@@ -1041,7 +1041,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     // first check for collective transfers
     transfers = [self doSendCollectiveTransfers: transfers];
 
-    BOOL sent = [[HBCIClient hbciClient] sendTransfers: transfers];
+    BOOL sent = [[HBCIController controller] sendTransfers: transfers];
     if (sent) {
         // Save updates and refresh UI.
         NSError                *error = nil;
@@ -1323,7 +1323,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 - (void)updateLimits
 {
     // currentTransfer must be valid
-    limits = [[HBCIClient hbciClient] limitsForType: transactionController.currentTransfer.type.intValue
+    limits = [[HBCIController controller] limitsForType: transactionController.currentTransfer.type.intValue
                                             account: transactionController.currentTransfer.account
                                             country: transactionController.currentTransfer.remoteCountry];
 
@@ -1348,7 +1348,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     TransferType tt = transactionController.currentTransfer.type.intValue;
     BOOL         allowsDated = NO;
     if (tt == TransferTypeOldStandard || tt == TransferTypeOldStandardScheduled) {
-        if ([[HBCIClient hbciClient] isTransferSupported: TransferTypeOldStandardScheduled forAccount: transactionController.currentTransfer.account]) {
+        if ([[HBCIController controller] isTransferSupported: TransferTypeOldStandardScheduled forAccount: transactionController.currentTransfer.account]) {
             [executeAtDateRadioButton setEnabled: YES];
             allowsDated = YES;
         }
@@ -1436,11 +1436,11 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     if (transactionController.currentTransfer.type.intValue == TransferTypeEU ||
         transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
         if (textField == accountNumber) {
-            bankName = [[HBCIClient hbciClient] bankNameForIBAN: textField.stringValue];
+            bankName = [[HBCIController controller] bankNameForIBAN: textField.stringValue];
         }
     } else {
         if (textField == bankCode) {
-            bankName = [[HBCIClient hbciClient] bankNameForCode: [textField stringValue]
+            bankName = [[HBCIController controller] bankNameForCode: [textField stringValue]
                                                       inCountry: transactionController.currentTransfer.remoteCountry];
         }
     }

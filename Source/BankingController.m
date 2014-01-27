@@ -38,7 +38,7 @@
 #import "DonationMessageController.h"
 #import "BankQueryResult.h"
 #import "CategoryView.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "StatCatAssignment.h"
 #import "PecuniaError.h"
 #import "ShortDate.h"
@@ -152,8 +152,7 @@ static BankingController *bankinControllerInstance;
         currentSectionIndex = -1;
 
         @try {
-            HBCIClient *client = [HBCIClient hbciClient];
-            PecuniaError *error = [client initalizeHBCI];
+            PecuniaError *error = [[HBCIController controller] initalizeHBCI];
             if (error != nil) {
                 [error alertPanel];
                 [NSApp terminate: self];
@@ -491,7 +490,7 @@ static BankingController *bankinControllerInstance;
         LOG_LEAVE;
         return;
     }
-    PecuniaError *pecError = [[HBCIClient hbciClient] setAccounts: accounts];
+    PecuniaError *pecError = [[HBCIController controller] setAccounts: accounts];
     if (pecError) {
         [pecError alertPanel];
     }
@@ -872,7 +871,7 @@ static BankingController *bankinControllerInstance;
                                              selector: @selector(statementsNotification:)
                                                  name: PecuniaStatementsNotification
                                                object: nil];
-    [[HBCIClient hbciClient] getStatements: resultList];
+    [[HBCIController controller] getStatements: resultList];
 
     LOG_LEAVE;
 }
@@ -1131,7 +1130,7 @@ static BankingController *bankinControllerInstance;
     }
     account = (BankAccount *)cat;
 
-    pec_err = [[HBCIClient hbciClient] getBalanceForAccount: account];
+    pec_err = [[HBCIController controller] getBalanceForAccount: account];
     if (pec_err) {
         return;
     }
@@ -2475,7 +2474,7 @@ static BankingController *bankinControllerInstance;
                     return NO;
                 }
                 if ([item action] == @selector(creditCardSettlements:)) {
-                    if ([[HBCIClient hbciClient] isTransactionSupported: TransactionType_CCSettlement forAccount: account] == NO) {
+                    if ([[HBCIController controller] isTransactionSupported: TransactionType_CCSettlement forAccount: account] == NO) {
                         return NO;
                     }
                 }
@@ -2951,7 +2950,7 @@ static BankingController *bankinControllerInstance;
                                              selector: @selector(statementsNotification:)
                                                  name: PecuniaStatementsNotification
                                                object: nil];
-    [[HBCIClient hbciClient] getStatements: resultList];
+    [[HBCIController controller] getStatements: resultList];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject: [NSDate date] forKey: @"lastSyncDate"];
@@ -3282,7 +3281,7 @@ static BankingController *bankinControllerInstance;
     }
 
     // send transfers
-    BOOL sent = [[HBCIClient hbciClient] sendTransfers: transfers];
+    BOOL sent = [[HBCIController controller] sendTransfers: transfers];
     if (sent) {
         [self save];
     }
@@ -3483,7 +3482,7 @@ static BankingController *bankinControllerInstance;
 
         NSError *error = nil;
         NSArray *bankUsers = BankUser.allUsers;
-        NSArray *users = [HBCIClient.hbciClient getOldBankUsers];
+        NSArray *users = [[HBCIController controller] getOldBankUsers];
 
         for (User *user in users) {
             BOOL found = NO;
@@ -3549,7 +3548,7 @@ static BankingController *bankinControllerInstance;
                             nil, nil
                             );
             for (BankUser *user in [BankUser allUsers]) {
-                [[HBCIClient hbciClient] updateBankDataForUser: user];
+                [[HBCIController controller] updateBankDataForUser: user];
             }
         }
 
@@ -3576,7 +3575,7 @@ static BankingController *bankinControllerInstance;
                                 nil, nil
                                 );
                 for (BankUser *user in [BankUser allUsers]) {
-                    [[HBCIClient hbciClient] updateBankDataForUser: user];
+                    [[HBCIController controller] updateBankDataForUser: user];
                 }
             }
             

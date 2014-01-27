@@ -18,7 +18,6 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import "MessageLog.h"
 #import "HBCIBackend.h"
 
 
@@ -44,5 +43,6 @@
 - (PecuniaError *)updateSupportedTransactionsForAccounts: (NSArray *)accounts user: (BankUser *)user;
 - (SigningOption *)signingOptionForAccount: (BankAccount *)account;
 
++ (id<HBCIBackend>)controller;
 
 @end

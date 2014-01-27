@@ -21,7 +21,7 @@
 #import "BankAccount.h"
 #import "MOAssistant.h"
 #import "BankInfo.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "BankingController.h"
 #import "PecuniaError.h"
 #import "BankUser.h"
@@ -116,7 +116,7 @@ extern NSString *const CategoryKey;
         }
         
         // check if collective transfers are available - if not, disable collection transfer method popup
-        BOOL collTransferSupported = [[HBCIClient hbciClient] isTransferSupported: TransferTypeCollectiveCredit forAccount: changedAccount];
+        BOOL collTransferSupported = [[HBCIController controller] isTransferSupported: TransferTypeCollectiveCredit forAccount: changedAccount];
         if (collTransferSupported == NO) {
             NSMenuItem *item = [collTransferButton itemAtIndex: 0];
             [item setTitle: NSLocalizedString(@"AP428", nil)];
@@ -205,9 +205,9 @@ extern NSString *const CategoryKey;
 
     if (changedAccount.userId) {
         if (oldUserId && [changedAccount.userId isEqualToString:oldUserId]) {
-            [[HBCIClient hbciClient] changeAccount: changedAccount];
+            [[HBCIController controller] changeAccount: changedAccount];
         } else {
-            [[HBCIClient hbciClient] setAccounts:@[changedAccount]];
+            [[HBCIController controller] setAccounts:@[changedAccount]];
         }
     }
 
@@ -225,10 +225,7 @@ extern NSString *const CategoryKey;
 
 - (BOOL)check
 {
-    // check IBAN
-    HBCIClient *hbciClient = [HBCIClient hbciClient];
-
-    if ([hbciClient checkIBAN: account.iban] == NO) {
+    if ([[HBCIController controller] checkIBAN: account.iban] == NO) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP70", nil),
                         NSLocalizedString(@"AP61", nil), nil, nil);
@@ -253,7 +250,7 @@ extern NSString *const CategoryKey;
 
 - (IBAction)showSupportedBusinessTransactions: (id)sender
 {
-    NSArray *result = [[HBCIClient hbciClient] getSupportedBusinessTransactions: account];
+    NSArray *result = [[HBCIController controller] getSupportedBusinessTransactions: account];
     if (result != nil) {
         if (supportedTransactionsSheet == nil) {
             transactionsController = [[BusinessTransactionsController alloc] initWithTransactions: result];

@@ -21,7 +21,7 @@
 #import "BankAccount.h"
 #import "BankStatement.h"
 #import "MOAssistant.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "ShortDate.h"
 
 @implementation BankStatementController
@@ -259,7 +259,7 @@
     NSControl *te = [aNotification object];
 
     if ([te tag] == 100) {
-        NSString *name = [[HBCIClient hbciClient] bankNameForCode: [te stringValue] inCountry: currentStatement.remoteCountry];
+        NSString *name = [[HBCIController controller] bankNameForCode: [te stringValue] inCountry: currentStatement.remoteCountry];
         if (name) {
             [self setValue: name forKey: @"bankName"];
         }
@@ -315,7 +315,7 @@
         return NO;
     }
     if (currentStatement.remoteAccount && currentStatement.remoteBankCode) {
-        res = [[HBCIClient hbciClient] checkAccount: currentStatement.remoteAccount
+        res = [[HBCIController controller] checkAccount: currentStatement.remoteAccount
                                             forBank: currentStatement.remoteBankCode];
 
 

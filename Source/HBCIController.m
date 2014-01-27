@@ -54,7 +54,7 @@
 #import "CreditCardSettlement.h"
 #import "MCEMDecimalNumberAdditions.h"
 
-static HBCIController *controller;
+static HBCIController *controller = nil;
 
 @implementation HBCIController(private)
 

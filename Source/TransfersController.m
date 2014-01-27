@@ -23,7 +23,7 @@
 
 #import "PecuniaError.h"
 #import "LogController.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
 #import "TransferPrintView.h"
@@ -594,7 +594,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             }
 
             // check if the accout supports the current transfer type
-            if ([[HBCIClient hbciClient] isTransferSupported: transferType forAccount: account] == NO) {
+            if ([[HBCIController controller] isTransferSupported: transferType forAccount: account] == NO) {
                 [[MessageLog log] addMessage:[NSString stringWithFormat:@"skip account %@, job %d not supported", account.accountNumber, transferType] withLevel:LogLevel_Debug];
                 continue;
             }
@@ -1295,7 +1295,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             [transfersByAccount removeObjectForKey: account];
         } else {
             // now send collective transfer
-            PecuniaError *error = [[HBCIClient hbciClient] sendCollectiveTransfer: collTransfers];
+            PecuniaError *error = [[HBCIController controller] sendCollectiveTransfer: collTransfers];
             if (error) {
                 [error logMessage];
             }
@@ -1326,7 +1326,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     // first check for collective transfers
     transfers = [self doSendCollectiveTransfers: transfers];
 
-    BOOL sent = [[HBCIClient hbciClient] sendTransfers: transfers];
+    BOOL sent = [[HBCIController controller] sendTransfers: transfers];
     if (sent) {
         // Save updates and refresh UI.
         NSError                *error = nil;
@@ -1352,7 +1352,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         Transfer *transfer = transactionController.currentTransfer;
         transfer.remoteIBAN = @"DE43120300001016381558";
         transfer.remoteBIC = @"BYLADEM1001";
-        transfer.remoteBankName = [[HBCIClient hbciClient] bankNameForCode: @"12030000" inCountry: @"de"];
+        transfer.remoteBankName = [[HBCIController controller] bankNameForCode: @"12030000" inCountry: @"de"];
         transfer.remoteName = @"Frank Emminghaus";
         transfer.purpose1 = @"Spende fuer Pecunia";
 
@@ -1710,7 +1710,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 - (void)updateLimits
 {
     // currentTransfer must be valid
-    limits = [[HBCIClient hbciClient] limitsForType: transactionController.currentTransfer.type.intValue
+    limits = [[HBCIController controller] limitsForType: transactionController.currentTransfer.type.intValue
                                             account: transactionController.currentTransfer.account
                                             country: transactionController.currentTransfer.remoteCountry];
 
@@ -1750,7 +1750,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     switch (transactionController.currentTransfer.type.intValue) {
         case TransferTypeOldStandard:
         case TransferTypeOldStandardScheduled:
-            if ([[HBCIClient hbciClient] isTransferSupported: TransferTypeOldStandardScheduled
+            if ([[HBCIController controller] isTransferSupported: TransferTypeOldStandardScheduled
                                                   forAccount: transactionController.currentTransfer.account]) {
                 [executeAtDateRadioButton setEnabled: YES];
                 canBeScheduled = YES;
@@ -1759,7 +1759,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
         case TransferTypeSEPA:
         case TransferTypeSEPAScheduled:
-            if ([[HBCIClient hbciClient] isTransferSupported: TransferTypeSEPAScheduled
+            if ([[HBCIController controller] isTransferSupported: TransferTypeSEPAScheduled
                                                   forAccount: transactionController.currentTransfer.account]) {
                 [executeAtDateRadioButton setEnabled: YES];
                 canBeScheduled = YES;
@@ -1868,9 +1868,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         NSString *bankName;
         if (transactionController.currentTransfer.type.intValue == TransferTypeEU ||
             transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
-            bankName = [[HBCIClient hbciClient] bankNameForIBAN: transactionController.currentTransfer.remoteIBAN];
+            bankName = [[HBCIController controller] bankNameForIBAN: transactionController.currentTransfer.remoteIBAN];
         } else {
-            bankName = [[HBCIClient hbciClient] bankNameForCode: transactionController.currentTransfer.remoteBankCode
+            bankName = [[HBCIController controller] bankNameForCode: transactionController.currentTransfer.remoteBankCode
                                                       inCountry: transactionController.currentTransfer.remoteCountry];
         }
         if (bankName != nil) {
@@ -1916,8 +1916,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (transactionController.currentTransfer.type.intValue == TransferTypeEU ||
         transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
         if (textField == accountNumber) {
-            bankName = [[HBCIClient hbciClient] bankNameForIBAN: textField.stringValue];
-            NSString *bic = [[HBCIClient hbciClient] bicForIBAN:[aNotification.object stringValue]];
+            bankName = [[HBCIController controller] bankNameForIBAN: textField.stringValue];
+            NSString *bic = [[HBCIController controller] bicForIBAN:[aNotification.object stringValue]];
             if (bic != nil) {
                 transactionController.currentTransfer.remoteBIC = bic;
             }
@@ -1925,7 +1925,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         }
     } else {
         if (textField == bankCode) {
-            bankName = [[HBCIClient hbciClient] bankNameForCode: [textField stringValue]
+            bankName = [[HBCIController controller] bankNameForCode: [textField stringValue]
                                                       inCountry: transactionController.currentTransfer.remoteCountry];
         }
     }

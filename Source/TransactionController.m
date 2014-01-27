@@ -23,7 +23,7 @@
 #import "TransactionLimits.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "Country.h"
 #import "TransferTemplate.h"
 #import "LogController.h"
@@ -91,7 +91,7 @@
 
 - (void)updateLimits
 {
-    limits = [[HBCIClient hbciClient] limitsForType: transferType account: account country: selectedCountry];
+    limits = [[HBCIController controller] limitsForType: transferType account: account country: selectedCountry];
 }
 
 - (void)prepareTransfer
@@ -102,7 +102,7 @@
         [self updateLimits];
         currentTransfer.remoteCountry = account.country;
     } else {
-        NSArray *allowedCountries = [[HBCIClient hbciClient] allowedCountriesForAccount: account];
+        NSArray *allowedCountries = [[HBCIController controller] allowedCountriesForAccount: account];
         [countryController setContent: allowedCountries];
         // sort descriptor for transactions view
         [countryController rearrangeObjects];
@@ -225,9 +225,9 @@
     // Determine the remote bank name again.
     NSString *bankName;
     if (transferType == TransferTypeEU || transferType == TransferTypeSEPA) {
-        bankName = [[HBCIClient hbciClient] bankNameForIBAN: currentTransfer.remoteIBAN];
+        bankName = [[HBCIController controller] bankNameForIBAN: currentTransfer.remoteIBAN];
     } else {
-        bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode
+        bankName = [[HBCIController controller] bankNameForCode: currentTransfer.remoteBankCode
                                                   inCountry: currentTransfer.remoteCountry];
     }
     if (bankName != nil) {
@@ -251,9 +251,9 @@
     // Determine the remote bank name again.
     NSString *bankName;
     if (transferType == TransferTypeEU || transferType == TransferTypeSEPA) {
-        bankName = [[HBCIClient hbciClient] bankNameForIBAN: currentTransfer.remoteIBAN];
+        bankName = [[HBCIController controller] bankNameForIBAN: currentTransfer.remoteIBAN];
     } else {
-        bankName = [[HBCIClient hbciClient] bankNameForCode: currentTransfer.remoteBankCode
+        bankName = [[HBCIController controller] bankNameForCode: currentTransfer.remoteBankCode
                                                   inCountry: currentTransfer.remoteCountry];
     }
     if (bankName != nil) {
@@ -440,7 +440,7 @@
         currentTransfer.remoteIBAN = [currentTransfer.remoteIBAN uppercaseString];
         currentTransfer.remoteBIC = [currentTransfer.remoteBIC uppercaseString];
 
-        if ([[HBCIClient hbciClient] checkIBAN: currentTransfer.remoteIBAN] == NO) {
+        if ([[HBCIController controller] checkIBAN: currentTransfer.remoteIBAN] == NO) {
             NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                             NSLocalizedString(@"AP70", nil),
                             NSLocalizedString(@"AP61", nil), nil, nil);
@@ -540,7 +540,7 @@
             break;
 
         case TransferTypeSEPA:
-            res = [[HBCIClient hbciClient] checkIBAN: currentTransfer.remoteIBAN];
+            res = [[HBCIController controller] checkIBAN: currentTransfer.remoteIBAN];
             if (!res) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                                 NSLocalizedString(@"AP70", nil),
@@ -555,7 +555,7 @@
                 [currentTransfer.remoteCountry caseInsensitiveCompare: @"at"] == NSOrderedSame ||
                 [currentTransfer.remoteCountry caseInsensitiveCompare: @"ch"] == NSOrderedSame ||
                 [currentTransfer.remoteCountry caseInsensitiveCompare: @"ca"] == NSOrderedSame) {
-                res = [[HBCIClient hbciClient] checkAccount: currentTransfer.remoteAccount
+                res = [[HBCIController controller] checkAccount: currentTransfer.remoteAccount
                                                     forBank: currentTransfer.remoteBankCode];
 
                 if (!res) {

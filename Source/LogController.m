@@ -18,7 +18,7 @@
  */
 
 #import "LogController.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "MessageLog.h"
 
 static LogController *_logController = nil;
@@ -171,7 +171,7 @@ static LogController *_logController = nil;
     currentLevel = level;
 
     // workaround: GWEN/Aq sends messages to console...
-    [[HBCIClient hbciClient] setLogLevel: level];
+    [[HBCIController controller] setLogLevel: level];
 }
 
 - (void)setLogLevel: (LogLevel)level
@@ -182,7 +182,7 @@ static LogController *_logController = nil;
     currentLevel = level;
     [self adjustPopupToLogLevel];
     //[messageLog setLevel:level ];
-    [[HBCIClient hbciClient] setLogLevel: level];
+    [[HBCIController controller] setLogLevel: level];
 }
 
 - (void)saveLog: (id)sender

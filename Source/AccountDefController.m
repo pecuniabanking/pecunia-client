@@ -22,7 +22,7 @@
 #import "MOAssistant.h"
 #import "BankUser.h"
 #import "BankInfo.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "BankingController.h"
 
 #include "BWGradientBox.h"
@@ -107,7 +107,7 @@
     if (idx > 0) {
         account.bankName = user.bankName;
         account.bankCode = user.bankCode;
-        BankInfo *info = [[HBCIClient hbciClient] infoForBankCode: user.bankCode inCountry: account.country];
+        BankInfo *info = [[HBCIController controller] infoForBankCode: user.bankCode inCountry: account.country];
         if (info) {
             account.bic = info.bic;
             account.bankName = info.name;
@@ -239,7 +239,7 @@
     }
 
     if (newAccount.userId) {
-        [[HBCIClient hbciClient] addAccount: newAccount forUser: user];
+        [[HBCIController controller] addAccount: newAccount forUser: user];
     }
 
     [moc reset];
@@ -258,7 +258,7 @@
         [bankNameField setBezeled: NO];
         bankNameField.drawsBackground = NO;
         if (bankRoot == nil) {
-            NSString *name = [[HBCIClient hbciClient] bankNameForCode: [te stringValue] inCountry: account.country];
+            NSString *name = [[HBCIController controller] bankNameForCode: [te stringValue] inCountry: account.country];
             if ([name isEqualToString: NSLocalizedString(@"AP13", nil)]) {
                 [bankNameField setEditable: YES];
                 [bankNameField setBezeled: YES];
@@ -317,10 +317,10 @@
 
     // check IBAN
     BOOL       res;
-    HBCIClient *hbciClient = [HBCIClient hbciClient];
+    id<HBCIBackend> hbciController = [HBCIController controller];
 
 
-    if (![hbciClient checkIBAN: account.iban]) {
+    if (![hbciController checkIBAN: account.iban]) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP70", nil),
                         NSLocalizedString(@"AP61", nil), nil, nil);
@@ -328,7 +328,7 @@
     }
 
     // check account number
-    res = [hbciClient checkAccount: account.accountNumber forBank: account.bankCode];
+    res = [hbciController checkAccount: account.accountNumber forBank: account.bankCode];
     if (res == NO) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP60", nil),

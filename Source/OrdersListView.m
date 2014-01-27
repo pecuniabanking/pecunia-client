@@ -23,7 +23,7 @@
 #import "StandingOrder.h"
 #import "Category.h"
 
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "BankAccount.h"
 
 extern NSString *StatementDateKey;             // Here the next execution date.
@@ -256,7 +256,7 @@ static void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
 
     // Update the bank name in case it isn't set yet.
     if (order.remoteBankName == nil && order.remoteBankCode != nil && order.account != nil && order.account.country != nil) {
-        NSString *bankName = [[HBCIClient hbciClient] bankNameForCode: order.remoteBankCode inCountry: order.account.country];
+        NSString *bankName = [[HBCIController controller] bankNameForCode: order.remoteBankCode inCountry: order.account.country];
         if (bankName) {
             order.remoteBankName = bankName;
         }
