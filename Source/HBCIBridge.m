@@ -188,9 +188,6 @@
 
             NSString *s = [NSString stringWithData: data];
 
-            // Log the message.
-            [[MessageLog log] addMessage: s withLevel: LogLevel_Verbous];
-
             if ([s hasSuffix: @">."]) {
                 [cmd appendString: [s substringToIndex: [s length] - 1]];
                 break;

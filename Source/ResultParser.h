@@ -29,9 +29,11 @@
     NSMutableArray  *stack;
     NSDateFormatter *dateFormatter;
     NSString        *currentType;
+    NSMutableString *resultXmlString;
 }
 
 - (id)result;
 - (id)initWithParent: (HBCIBridge *)par;
+- (NSString*)parsedResultString;
 
 @end

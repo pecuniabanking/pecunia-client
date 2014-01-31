@@ -22,6 +22,7 @@
 #import "HBCIError.h"
 #import <objc/runtime.h>
 #import "MOAssistant.h"
+#import "MessageLog.h"
 
 @implementation ResultParser
 
@@ -35,7 +36,13 @@
     parent = par;
     dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat: @"yyyy-MM-dd"];
+    resultXmlString = [[NSMutableString alloc] init];
     return self;
+}
+
+- (NSString*)parsedResultString
+{
+    return resultXmlString;
 }
 
 - (id)result
@@ -127,7 +134,8 @@
 - (void)parser: (NSXMLParser *)parser didStartElement: (NSString *)elementName namespaceURI: (NSString *)namespaceURI qualifiedName: (NSString *)qName attributes: (NSDictionary *)attributeDict
 {
     //	NSLog(@"startElement: %@", elementName);
-
+    [resultXmlString appendFormat:@"<%@>", elementName ];
+    
     currentType = [attributeDict valueForKey: @"type"];
     if (currentType == nil) {
         currentType = @"";
@@ -164,6 +172,8 @@
 
 - (void)parser: (NSXMLParser *)parser foundCharacters: (NSString *)string
 {
+    [resultXmlString appendString:string ];
+
     id obj = [stack lastObject];
     if (obj == nil) {
         return;                //todo: exception
@@ -176,6 +186,13 @@
 
 - (void)parser: (NSXMLParser *)parser didEndElement: (NSString *)elementName namespaceURI: (NSString *)namespaceURI qualifiedName: (NSString *)qName
 {
+    if ([elementName isEqualToString: @"result"]) {
+        NSString *msg = [NSString stringWithFormat:@"Parsed message result: %@", resultXmlString ];
+        [[MessageLog log] addMessage: msg withLevel: LogLevel_Verbous];
+    } else {
+        [resultXmlString appendFormat:@"</%@>", elementName ];
+    }
+    
     int idx = [stack count] - 1;
     int prev = idx - 1;
     //	NSLog(@"endElement: %@", elementName);
@@ -193,7 +210,6 @@
         [parser setDelegate: parent];
         result = [stack lastObject];
         [parent setResult: [stack lastObject]];
-        //[self autorelease ]; autorelease where alloc'ed
         return;
     } else {
         if ([[stack lastObject] isKindOfClass: [NSMutableArray class]] || [[stack lastObject] isKindOfClass: [NSMutableDictionary class]]) {
@@ -230,14 +246,6 @@
                 [stack addObject: value];
             } else if ([currentType isEqualToString: @"binary"]) {
                 NSString *s = [stack lastObject];
-                /*
-                 CFErrorRef error = NULL;
-                 SecTransformRef decoder = SecDecodeTransformCreate(kSecBase64Encoding, &error);
-                 SecTransformSetAttribute(decoder, kSecTransformInputAttributeName, (__bridge CFTypeRef)([s dataUsingEncoding:NSUTF8StringEncoding]), &error);
-                 CFDataRef decodedData = SecTransformExecute(decoder, &error);
-                 [stack removeLastObject];
-                 [stack addObject:(__bridge id)(decodedData)];
-                 */
                 NSData *decodedData = [self decodeBase64: [s dataUsingEncoding: NSUTF8StringEncoding]];
                 [stack removeLastObject];
                 [stack addObject: decodedData];
