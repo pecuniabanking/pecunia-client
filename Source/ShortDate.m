@@ -33,6 +33,9 @@ NSCalendar *calendar = nil;
 {
     self = [super init];
     if (self != nil) {
+        if (date == nil) {
+            date = NSDate.date;
+        }
         components = [[ShortDate calendar] components: NSCalendarUnitYear | NSCalendarUnitMonth |
                       NSCalendarUnitDay | NSCalendarUnitWeekOfYear | NSCalendarUnitWeekday
                                              fromDate: date];

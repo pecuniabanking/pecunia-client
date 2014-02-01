@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -127,62 +127,68 @@
 {
     LOG_ENTER;
 
-    if (BankingController.controller.shuttingDown) {
-        return;
-    }
+    @try {
+        if (BankingController.controller.shuttingDown) {
+            return;
+        }
 
-    NSSet *deletedObjects = notification.userInfo[NSDeletedObjectsKey];
-    NSSet *insertedObjects = notification.userInfo[NSInsertedObjectsKey];
+        NSSet *deletedObjects = notification.userInfo[NSDeletedObjectsKey];
+        NSSet *insertedObjects = notification.userInfo[NSInsertedObjectsKey];
 
-    // Check inserted and deleted objects.
-    // Note: this doesn't work with MOAssistant.clearAllData because we simply remove the underlying file.
-    //       But that's a dev feature anyway.
-    if (insertedObjects.count > 0 || deletedObjects.count > 0) {
-        [transfersView beginUpdates];
+        // Check inserted and deleted objects.
+        // Note: this doesn't work with MOAssistant.clearAllData because we simply remove the underlying file.
+        //       But that's a dev feature anyway.
+        if (insertedObjects.count > 0 || deletedObjects.count > 0) {
+            [transfersView beginUpdates];
 
-        // Get a new copy of the set of assignments we have now.
-        NSMutableArray *newEntries = [[Category.bankRoot allAssignmentsOrderedBy: DateOrderDate
-                                                                           limit: 50
-                                                                       recursive: YES
-                                                                       ascending: NO] mutableCopy];
+            // Get a new copy of the set of assignments we have now.
+            NSMutableArray *newEntries = [[Category.bankRoot allAssignmentsOrderedBy: DateOrderDate
+                                                                               limit: 50
+                                                                           recursive: YES
+                                                                           ascending: NO] mutableCopy];
 
-        // First remove all headers, so that new and old entries are comparable.
-        NSIndexSet *headerIndexes = [entries indexesOfObjectsPassingTest: ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-            return [obj isKindOfClass: StatementsHeader.class];
-        }];
-        [entries removeObjectsAtIndexes: headerIndexes];
-        [transfersView removeRowsAtIndexes: headerIndexes withAnimation: NSTableViewAnimationSlideUp];
+            // First remove all headers, so that new and old entries are comparable.
+            NSIndexSet *headerIndexes = [entries indexesOfObjectsPassingTest: ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+                return [obj isKindOfClass: StatementsHeader.class];
+            }];
+            [entries removeObjectsAtIndexes: headerIndexes];
+            [transfersView removeRowsAtIndexes: headerIndexes withAnimation: NSTableViewAnimationSlideUp];
 
-        NSMutableIndexSet *indexes = [[NSMutableIndexSet alloc] init];
-        if (deletedObjects.count > 0) {
-            for (id object in deletedObjects) {
-                if ([object isKindOfClass: StatCatAssignment.class]) {
-                    NSUInteger index = [entries indexOfObject: object];
-                    if (index != NSNotFound) {
-                        [indexes addIndex: index];
+            NSMutableIndexSet *indexes = [[NSMutableIndexSet alloc] init];
+            if (deletedObjects.count > 0) {
+                for (id object in deletedObjects) {
+                    if ([object isKindOfClass: StatCatAssignment.class]) {
+                        NSUInteger index = [entries indexOfObject: object];
+                        if (index != NSNotFound) {
+                            [indexes addIndex: index];
+                        }
                     }
                 }
+                [transfersView removeRowsAtIndexes: indexes withAnimation: NSTableViewAnimationSlideRight];
             }
-            [transfersView removeRowsAtIndexes: indexes withAnimation: NSTableViewAnimationSlideRight];
-        }
 
-        if (insertedObjects.count > 0) {
-            NSIndexSet *newIndexes = [newEntries indexesOfObjectsPassingTest: ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-                return ![entries containsObject: obj];
-            }];
+            if (insertedObjects.count > 0) {
+                NSIndexSet *newIndexes = [newEntries indexesOfObjectsPassingTest: ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+                    return ![entries containsObject: obj];
+                }];
 
-            if (newIndexes.count > 0) {
-                [transfersView insertRowsAtIndexes: newIndexes withAnimation: NSTableViewAnimationSlideDown];
+                if (newIndexes.count > 0) {
+                    [transfersView insertRowsAtIndexes: newIndexes withAnimation: NSTableViewAnimationSlideDown];
+                }
             }
+
+            entries = newEntries;
+            [self updateHeadersWithAnimation: YES];
+            [transfersView endUpdates];
+
+            [transfersView reloadData];
         }
-
-        entries = newEntries;
-        [self updateHeadersWithAnimation: YES];
-        [transfersView endUpdates];
-
-        [transfersView reloadData];
+        
     }
-
+    @catch (NSException *exception) {
+        // TODO: logging
+    }
+    
     LOG_LEAVE;
 }
 

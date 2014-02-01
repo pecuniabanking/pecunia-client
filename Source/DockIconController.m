@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -45,14 +45,19 @@
 
 - (void)managedObjectContextChanged: (NSNotification *)notification
 {
-    NSDictionary *userInfoDictionary = [notification userInfo];
-    NSSet        *updatedObjects = userInfoDictionary[NSUpdatedObjectsKey];
+    @try {
+        NSDictionary *userInfoDictionary = [notification userInfo];
+        NSSet        *updatedObjects = userInfoDictionary[NSUpdatedObjectsKey];
 
-    for (id value in updatedObjects) {
-        if ([value isKindOfClass: [BankStatement class]] || [value isKindOfClass: [BankAccount class]]) {
-            [self updateBadge];
-            break;
+        for (id value in updatedObjects) {
+            if ([value isKindOfClass: [BankStatement class]] || [value isKindOfClass: [BankAccount class]]) {
+                [self updateBadge];
+                break;
+            }
         }
+    }
+    @catch (NSException *exception) {
+        // TODO: logging.
     }
 }
 
