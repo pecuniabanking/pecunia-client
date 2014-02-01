@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -373,8 +373,8 @@ extern void *UserDefaultsBindingContext;
             if (hasDuplicate) {
                 res = NSRunAlertPanel(NSLocalizedString(@"AP805", nil),
                                       NSLocalizedString(@"AP807", nil),
-                                      NSLocalizedString(@"AP4", nil),
                                       NSLocalizedString(@"AP3", nil),
+                                      NSLocalizedString(@"AP4", nil),
                                       nil);
                 if (res == NSAlertDefaultReturn) {
                     deleteStatement = YES;
@@ -382,8 +382,8 @@ extern void *UserDefaultsBindingContext;
             } else {
                 res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP805", nil),
                                               NSLocalizedString(@"AP808", nil),
-                                              NSLocalizedString(@"AP4", nil),
                                               NSLocalizedString(@"AP3", nil),
+                                              NSLocalizedString(@"AP4", nil),
                                               nil);
                 if (res == NSAlertAlternateReturn) {
                     deleteStatement = YES;
@@ -420,6 +420,9 @@ extern void *UserDefaultsBindingContext;
     }
 
     [context processPendingChanges];
+    for (BankAccount *account in affectedAccounts) {
+        [account updateAssignmentsForReportRange];
+    }
     [[Category bankRoot] updateCategorySums];
     [categoryAssignments prepareContent];
 }

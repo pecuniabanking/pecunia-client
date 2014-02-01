@@ -74,6 +74,8 @@ typedef enum {
     BOOL forceUpdate;
     BOOL updatePending;
 
+    CPTLayerAnnotation *titleAnnotation;
+
     CPTTextLayer *titleLayer;
     CGFloat       priceTextWidth;
 }
@@ -235,12 +237,15 @@ typedef enum {
     NSAttributedString *temp;
 
     if (firstTimeUpdate) {
+        if (titleAnnotation != nil) {
+            [graph removeAnnotation: titleAnnotation];
+        }
         attributes = @{NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
                        NSFontAttributeName: [NSFont fontWithName: @"LucidaGrande-Bold" size: 14]};
 
         NSAttributedString *title = [[NSAttributedString alloc] initWithString: name attributes: attributes];
 
-        CPTLayerAnnotation *titleAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: graph.plotAreaFrame];
+        titleAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: graph.plotAreaFrame];
         titleAnnotation.rectAnchor = CPTRectAnchorTopLeft;
         titleAnnotation.contentAnchorPoint = CGPointMake(0, 0);
         titleAnnotation.displacement = CGPointMake(4, -21);

@@ -1093,9 +1093,7 @@ NSString * escapeSpecial(NSString *s)
 - (void)asyncCommandCompletedWithResult: (id)result error: (PecuniaError *)err
 {
     if (err == nil && result != nil) {
-        BankQueryResult *res;
-
-        for (res in result) {
+        for (BankQueryResult *res in result) {
             // find corresponding incoming structure
             BankQueryResult *iResult;
             for (iResult in bankQueryResults) {
@@ -1126,18 +1124,6 @@ NSString * escapeSpecial(NSString *s)
                 if ([res.statements count] > 0) {
                     BankStatement *stat = (res.statements)[[res.statements count] - 1];
                     iResult.balance = stat.saldo;
-                    /*
-                     // ensure order by refining posting date
-                     int seconds;
-                     NSDate *oldDate = [NSDate distantPast ];
-                     for(stat in res.statements) {
-                     if([stat.date compare: oldDate ] != NSOrderedSame) {
-                     seconds = 0;
-                     oldDate = stat.date;
-                     } else seconds += 100;
-                     if(seconds > 0) stat.date = [[[NSDate alloc ] initWithTimeInterval: seconds sinceDate: stat.date ] autorelease ];
-                     }
-                     */
                     iResult.statements = res.statements;
                 } else {
                     if (res.balance != nil) {
