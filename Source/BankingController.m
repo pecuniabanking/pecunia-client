@@ -390,6 +390,10 @@ static BankingController *bankinControllerInstance;
         [defaults setBool: YES forKey: @"autoCasing"];
     }
 
+    if ([defaults objectForKey: @"restoreActivePage"] == nil) {
+        [defaults setBool: YES forKey: @"restoreActivePage"];
+    }
+
     // Migrate the migration flags to the local settings if a migration was done.
     // This must be a per-datafile setting, not a default setting.
     if (settings[@"Migrated10"] == nil) {
