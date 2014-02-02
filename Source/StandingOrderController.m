@@ -726,7 +726,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
     for (StandingOrder *stord in [orderController arrangedObjects]) {
         if ([stord.isChanged boolValue]) {
-            int res = NSRunAlertPanel(NSLocalizedString(@"AP6", nil),
+            int res = NSRunAlertPanel(NSLocalizedString(@"AP84", nil),
                                       NSLocalizedString(@"AP461", nil),
                                       NSLocalizedString(@"AP462", nil),
                                       NSLocalizedString(@"AP2", nil), nil);
@@ -775,7 +775,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
         [[HBCIController controller] getStandingOrders: accountList];
     } else {
-        NSRunAlertPanel(NSLocalizedString(@"AP6", nil),
+        NSRunAlertPanel(NSLocalizedString(@"AP84", nil),
                         NSLocalizedString(@"AP457", nil),
                         NSLocalizedString(@"AP1", nil), nil, nil);
     }

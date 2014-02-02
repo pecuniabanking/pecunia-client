@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -399,55 +399,56 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 {
     NSError *error = nil;
 
+    NSURL *standardDataURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
+    NSURL *encryptedDataURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
+
+    // On enter the new bundle path has been created already. Check if it contains the data file, either uncrypted or
+    // unecrypted.
     NSFileManager  *fm = [NSFileManager defaultManager];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL           migrated10 = [defaults boolForKey: @"Migrated10"];
-    if (migrated10 == NO) {
-        if (isDefaultDir == NO) {
-            @throw [PecuniaError errorWithText: NSLocalizedString(@"AP159", nil)];
-        }
+    if ([fm fileExistsAtPath: standardDataURL.path] || [fm fileExistsAtPath: encryptedDataURL.path]) {
+        return; // Nothing to do.
+    }
 
-        // check for encryption / sparseimage file
-        NSURL *oldURLStandard = [self.dataDirURL URLByAppendingPathComponent: @"accounts.sqlite"];
-        NSURL *oldURLEncr = [self.dataDirURL URLByAppendingPathComponent: @"accounts.sparseimage"];
+    if (!isDefaultDir) {
+        NSRunCriticalAlertPanel(NSLocalizedString(@"AP85", nil),
+                                NSLocalizedString(@"AP159", nil),
+                                NSLocalizedString(@"AP1", nil), nil, nil);
+        [NSApp terminate: self];
+    }
 
-        BOOL wasEncrypted = NO;
-        if ([fm fileExistsAtPath: [oldURLEncr path]]) {
-            // encrypted file exists, check if unencrypted file exists as well and is older
-            if ([fm fileExistsAtPath: [oldURLStandard path]]) {
-                // yes, now we have to check the dates
-                NSDictionary *standardAttrs = [fm attributesOfItemAtPath: [oldURLStandard path] error: &error];
-                NSDictionary *encrAttrs = [fm attributesOfItemAtPath: [oldURLEncr path] error: &error];
-                NSDate       *standardDate = standardAttrs[NSFileModificationDate];
-                NSDate       *encrDate = encrAttrs[NSFileModificationDate];
-                if ([encrDate compare: standardDate] == NSOrderedDescending) {
-                    wasEncrypted = YES;
-                }
-            } else {
+    // Check for encryption / sparseimage file.
+    NSURL *oldURLStandard = [self.dataDirURL URLByAppendingPathComponent: @"accounts.sqlite"];
+    NSURL *oldURLEncr = [self.dataDirURL URLByAppendingPathComponent: @"accounts.sparseimage"];
+
+    BOOL wasEncrypted = NO;
+    if ([fm fileExistsAtPath: [oldURLEncr path]]) {
+        // encrypted file exists, check if unencrypted file exists as well and is older
+        if ([fm fileExistsAtPath: [oldURLStandard path]]) {
+            // yes, now we have to check the dates
+            NSDictionary *standardAttrs = [fm attributesOfItemAtPath: [oldURLStandard path] error: &error];
+            NSDictionary *encrAttrs = [fm attributesOfItemAtPath: [oldURLEncr path] error: &error];
+            NSDate       *standardDate = standardAttrs[NSFileModificationDate];
+            NSDate       *encrDate = encrAttrs[NSFileModificationDate];
+            if ([encrDate compare: standardDate] == NSOrderedDescending) {
                 wasEncrypted = YES;
             }
-        }
-        if (wasEncrypted) {
-            @throw [PecuniaError errorWithText: NSLocalizedString(@"AP160", nil)];
+        } else {
+            wasEncrypted = YES;
         }
     }
-
-    if (isDefaultDir == NO) {
-        return;
+    if (wasEncrypted) {
+        NSRunCriticalAlertPanel(NSLocalizedString(@"AP85", nil),
+                                NSLocalizedString(@"AP160", nil),
+                                NSLocalizedString(@"AP1", nil), nil, nil);
+        [NSApp terminate: self];
     }
 
-    NSURL *accURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
-    if ([fm fileExistsAtPath: [accURL path]] == NO) {
-        accURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
-        if ([fm fileExistsAtPath: [accURL path]] == NO) {
-            // the data store is empty - try to migrate
-            NSURL *oldURL = [self.dataDirURL URLByAppendingPathComponent: [self.dataFilename stringByReplacingOccurrencesOfString: @"pecuniadata" withString: @"sqlite"]];
-            if ([fm fileExistsAtPath: [oldURL path]] == YES) {
-                [fm moveItemAtPath: [oldURL path] toPath: [accURL path] error: &error];
-                if (error != nil) {
-                    NSLog(@"Move of old accounts file %@ to new location (%@) failed.", oldURL, accURL);
-                }
-            }
+    // The data store is empty - try to move the old data file over.
+    NSURL *oldURL = [self.dataDirURL URLByAppendingPathComponent: [self.dataFilename stringByReplacingOccurrencesOfString: @"pecuniadata" withString: @"sqlite"]];
+    if ([fm fileExistsAtPath: [oldURL path]]) {
+        [fm moveItemAtPath: oldURL.path toPath: standardDataURL.path error: &error];
+        if (error != nil) {
+            NSLog(@"Move of old accounts file %@ to new location (%@) failed.", oldURL, standardDataURL);
         }
     }
 }
@@ -909,7 +910,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
     // first check if data file already exists at target position
     if ([fm fileExistsAtPath: [newFilePathURL path]]) {
-        int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP6", nil),
+        int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP84", nil),
                                           NSLocalizedString(@"AP164", nil),
                                           NSLocalizedString(@"AP2", nil),
                                           NSLocalizedString(@"AP15", nil),

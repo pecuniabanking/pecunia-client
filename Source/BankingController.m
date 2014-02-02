@@ -3475,8 +3475,6 @@ static BankingController *bankinControllerInstance;
 {
     LOG_ENTER;
 
-    [MOAssistant.assistant migrate]; // Migration and file checks.
-
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
 
     BOOL migrated10 = [settings boolForKey: @"Migrated10"];

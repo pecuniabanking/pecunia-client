@@ -7,7 +7,7 @@ AP2 = "Abbrechen";
 AP3 = "Ja";
 AP4 = "Nein";
 AP5 = "unused";
-AP6 = "Warnung";
+AP6 = ""; // Unused
 AP7 = "Dennoch Beenden";
 AP8 = "KONTEN";
 AP9 = "KATEGORIEN";
@@ -70,10 +70,12 @@ AP76 = "Bitte einen Verwendungszweck angeben";
 AP77 = "IBAN und/oder BIC sind für das Konto %@ nicht eingetragen";
 AP78 = "Aktion nicht möglich da bereits eine andere HBCI-Anfrage verarbeitet wird";
 AP79 = "Bitte HBCI-Version angeben";
-AP80 = "Bitte PIN/TAN-URL angeben";
 AP80 = "Bitte HBCI-URL angeben";
 AP81 = "Bitte Kommunikationsadresse (HBCI-URL) eingeben";
 AP82 = "Der Vorgang konnte nicht erfolgreich abgeschlossen werden. Details zur Fehlerursache finden Sie im Nachrichtenlog";
+AP83 = "Fehler";
+AP84 = "Warnung";
+AP85 = "Kritischer Fehler";
 
 // General + miscellaneous messages.
 // AP100..AP149

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -1078,7 +1078,7 @@
 
             // Check if file already exists and issue warning.
             if ([[NSFileManager defaultManager] fileExistsAtPath: fileName]) {
-                int res = NSRunAlertPanel(NSLocalizedString(@"AP6", nil),
+                int res = NSRunAlertPanel(NSLocalizedString(@"AP84", nil),
                                           NSLocalizedString(@"AP600", nil),
                                           NSLocalizedString(@"AP4", nil),
                                           NSLocalizedString(@"AP3", nil),

@@ -88,7 +88,6 @@
 - (void)initDatafile: (NSString *)path;
 
 - (NSString *)passportDirectory;
-- (void)migrate;
 
 - (NSManagedObjectContext *)context;
 - (NSManagedObjectModel *)model;
