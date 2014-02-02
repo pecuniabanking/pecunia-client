@@ -843,13 +843,18 @@ extern void *UserDefaultsBindingContext;
 {
     LOG_ENTER;
 
-    if (!BankingController.controller.shuttingDown) {
-        NSSet *deletedObjects = notification.userInfo[NSDeletedObjectsKey];
-        NSSet *insertedObjects = notification.userInfo[NSInsertedObjectsKey];
+    @try {
+        if (!BankingController.controller.shuttingDown) {
+            NSSet *deletedObjects = notification.userInfo[NSDeletedObjectsKey];
+            NSSet *insertedObjects = notification.userInfo[NSInsertedObjectsKey];
 
-        if (deletedObjects.count + insertedObjects.count > 0) {
-            [self updateUI];
+            if ((deletedObjects.count + insertedObjects.count) > 0) {
+                [self updateUI];
+            }
         }
+    }
+    @catch (NSException *exception) {
+        // TODO: logging
     }
 
     LOG_LEAVE;
