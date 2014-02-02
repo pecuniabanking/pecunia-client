@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -724,7 +724,6 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     // edit action.
     [[mainView window] makeFirstResponder: sender];
 
-    NSMutableArray *resultList = nil;
     for (StandingOrder *stord in [orderController arrangedObjects]) {
         if ([stord.isChanged boolValue]) {
             int res = NSRunAlertPanel(NSLocalizedString(@"AP6", nil),
@@ -738,33 +737,48 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
             }
         }
     }
-    resultList = [NSMutableArray arrayWithCapacity: 10];
-    NSMenu  *menu = [sourceAccountSelector menu];
-    NSArray *items = [menu itemArray];
-    for (NSMenuItem *item in items) {
-        if ([item.representedObject isKindOfClass: [BankAccount class]]) {
-            BankAccount *account = (BankAccount *)item.representedObject;
-            if (account.userId) {
-                BankQueryResult *result = [[BankQueryResult alloc] init];
-                result.accountNumber = account.accountNumber;
-                result.accountSubnumber = account.accountSuffix;
-                result.bankCode = account.bankCode;
-                result.userId = account.userId;
-                result.account = account;
-                [resultList addObject: result];
-            }
+
+    NSMutableArray *accountList = [NSMutableArray arrayWithCapacity: 10];
+    NSSet *candidates = [Category.bankRoot allCategories];
+    for (Category *currentAccount in candidates) {
+        if (![currentAccount isKindOfClass: [BankAccount class]]) {
+            continue;
+        }
+
+        BankAccount *account = (BankAccount *)currentAccount;
+
+        // Exclude manual accounts and those that don't support standing orders from the list.
+        if ([[account isManual] boolValue] || ![[HBCIController controller] isStandingOrderSupportedForAccount: account]) {
+            continue;
+        }
+
+        if (account.userId != nil) {
+            BankQueryResult *result = [[BankQueryResult alloc] init];
+            result.accountNumber = account.accountNumber;
+            result.accountSubnumber = account.accountSuffix;
+            result.bankCode = account.bankCode;
+            result.userId = account.userId;
+            result.account = account;
+            [accountList addObject: result];
         }
     }
-    StatusBarController *sc = [StatusBarController controller];
-    [sc startSpinning];
-    self.requestRunning = @YES;
-    [sc setMessage: NSLocalizedString(@"AP459", nil) removeAfter: 0];
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(ordersNotification:)
-                                                 name: PecuniaStatementsNotification
-                                               object: nil];
 
-    [[HBCIController controller] getStandingOrders: resultList];
+    if (accountList.count > 0) {
+        StatusBarController *sc = [StatusBarController controller];
+        [sc startSpinning];
+        self.requestRunning = @YES;
+        [sc setMessage: NSLocalizedString(@"AP459", nil) removeAfter: 0];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(ordersNotification:)
+                                                     name: PecuniaStatementsNotification
+                                                   object: nil];
+
+        [[HBCIController controller] getStandingOrders: accountList];
+    } else {
+        NSRunAlertPanel(NSLocalizedString(@"AP6", nil),
+                        NSLocalizedString(@"AP457", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+    }
 }
 
 #pragma mark -
@@ -913,7 +927,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
         }
         
         // source account cannot be changed after order is created
-        [sourceAccountSelector setEnabled:currentOrder.orderKey == nil];
+        [sourceAccountSelector setEnabled: currentOrder.orderKey == nil];
         
         if (self.currentOrder.remoteBankCode != nil && (self.currentOrder.remoteBankName == nil || [self.currentOrder.remoteBankName length] == 0)) {
             NSString *bankName = [[HBCIController controller] bankNameForCode: self.currentOrder.remoteBankCode inCountry: self.currentOrder.account.country];
