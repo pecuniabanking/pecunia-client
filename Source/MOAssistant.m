@@ -738,6 +738,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 
     NSLog(@"Stop encryption");
+    sync();
     NSFileManager *fm = [NSFileManager defaultManager];
     NSError       *error = nil;
 

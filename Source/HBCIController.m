@@ -1614,7 +1614,7 @@ NSString * escapeSpecial(NSString *s)
             } else {
                 tinfo.allowsList = @NO;
             }
-            [[MessageLog log] addMessage: @"Add supported transaction DAUERNEW" withLevel: LogLevel_Debug];
+            [[MessageLog log] addMessage: @"Add supported transaction DAUERSEPANEW" withLevel: LogLevel_Debug];
         }
         
 
