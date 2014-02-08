@@ -574,6 +574,8 @@ static NSDictionary *heightMappings;
 
     } else {
         // stop encryption
+        NSError *error = nil;
+        
         int res = NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                                   NSLocalizedString(@"AP161", nil),
                                   NSLocalizedString(@"AP4", nil),
@@ -606,6 +608,13 @@ static NSDictionary *heightMappings;
 
             }
             [pwWindow closeWindow];
+            
+            [assistant.context save:&error];
+            if (error) {
+                NSAlert *alert = [NSAlert alertWithError: error];
+                [alert runModal];
+                return;
+            }
 
             if ([assistant stopEncryption]) {
                 [Keychain deletePasswordForService: @"Pecunia" account: @"DataFile"];
@@ -627,7 +636,14 @@ static NSDictionary *heightMappings;
 {
     if (code == 0) {
         // now create
+        NSError *error = nil;
         MOAssistant *assistant = [MOAssistant assistant];
+        [assistant.context save:&error];
+        if (error) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+            return;
+        }
         if ([assistant encryptDataWithPassword: password]) {
             [encryptButton setEnabled: NO];
             NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
