@@ -393,7 +393,11 @@
     NSNumber     *value;
     TransferType activeType = transferType;
     if (currentTransfer.valutaDate != nil) {
-        activeType = TransferTypeOldStandardScheduled;
+        switch (activeType) {
+            case TransferTypeOldStandard: activeType = TransferTypeOldStandardScheduled; break;
+            case TransferTypeSEPA: activeType = TransferTypeSEPAScheduled; break;
+            default: break;
+        }
     }
 
     if (![self validateCharacters: currentTransfer.purpose1]) {
@@ -419,7 +423,7 @@
         return NO;
     }
     // do not check remote account for EU transfers, instead IBAN
-    if (activeType != TransferTypeEU && activeType != TransferTypeSEPA) {
+    if (activeType != TransferTypeEU && activeType != TransferTypeSEPA && activeType != TransferTypeSEPAScheduled) {
         if (currentTransfer.remoteAccount == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP55", nil),
@@ -449,7 +453,7 @@
 
     }
 
-    if (activeType == TransferTypeOldStandard || activeType == TransferTypeOldStandardScheduled || activeType == TransferTypeDebit) {
+    if (activeType == TransferTypeOldStandard || activeType == TransferTypeOldStandardScheduled) {
         if (currentTransfer.remoteBankCode == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP56", nil),
@@ -458,7 +462,7 @@
         }
     }
 
-    if (activeType == TransferTypeSEPA) {
+    if (activeType == TransferTypeSEPA || activeType == TransferTypeSEPAScheduled) {
         if (currentTransfer.remoteBIC == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP69", nil),
@@ -492,7 +496,7 @@
     */
 
     // Check if the target date touches a weekend.
-    if (transferType == TransferTypeOldStandardScheduled) {
+    if (transferType == TransferTypeOldStandardScheduled || transferType == TransferTypeSEPAScheduled) {
         NSCalendar *gregorian = [[NSCalendar alloc]
                                  initWithCalendarIdentifier: NSGregorianCalendar];
         NSDateComponents *weekdayComponents =
@@ -540,6 +544,7 @@
             break;
 
         case TransferTypeSEPA:
+        case TransferTypeSEPAScheduled:
             res = [[HBCIController controller] checkIBAN: currentTransfer.remoteIBAN];
             if (!res) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),

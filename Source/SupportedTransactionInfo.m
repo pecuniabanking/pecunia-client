@@ -156,54 +156,33 @@
         [[MessageLog log] addMessage: @"Add supported transaction LAST" withLevel: LogLevel_Debug];
     }
     
-    if ([supportedJobNames containsObject: @"DauerNew"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_StandingOrder);
-        
-        // Parameters
-        if ([supportedJobNames containsObject: @"DauerEdit"] == YES) {
-            tinfo.allowsChange = @YES;
-        } else {
-            tinfo.allowsChange = @NO;
-        }
-        if ([supportedJobNames containsObject: @"DauerDel"] == YES) {
-            tinfo.allowesDelete = @YES;
-        } else {
-            tinfo.allowesDelete = @NO;
-        }
-        if ([supportedJobNames containsObject: @"DauerList"] == YES) {
-            tinfo.allowsList = @YES;
-        } else {
-            tinfo.allowsList = @NO;
-        }
-        [[MessageLog log] addMessage: @"Add supported transaction DAUERNEW" withLevel: LogLevel_Debug];
-    }
-    
     if ([supportedJobNames containsObject: @"DauerSEPANew"] == YES) {
         SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
         tinfo.account = account;
         tinfo.user = user;
         tinfo.type = @(TransactionType_StandingOrderSEPA);
+        [[MessageLog log] addMessage: @"Add supported transaction DAUERSEPANEW" withLevel: LogLevel_Debug];
         
         // Parameters
         if ([supportedJobNames containsObject: @"DauerSEPAEdit"] == YES) {
             tinfo.allowsChange = @YES;
+            [[MessageLog log] addMessage: @"Add supported transaction DAUERSEPAEDIT" withLevel: LogLevel_Debug];
         } else {
             tinfo.allowsChange = @NO;
         }
         if ([supportedJobNames containsObject: @"DauerSEPADel"] == YES) {
             tinfo.allowesDelete = @YES;
+            [[MessageLog log] addMessage: @"Add supported transaction DAUERSEPADEL" withLevel: LogLevel_Debug];
+            
         } else {
             tinfo.allowesDelete = @NO;
         }
         if ([supportedJobNames containsObject: @"DauerSEPAList"] == YES) {
             tinfo.allowsList = @YES;
+            [[MessageLog log] addMessage: @"Add supported transaction DAUERSEPALIST" withLevel: LogLevel_Debug];
         } else {
             tinfo.allowsList = @NO;
         }
-        [[MessageLog log] addMessage: @"Add supported transaction DAUERNEW" withLevel: LogLevel_Debug];
     }
     
     
