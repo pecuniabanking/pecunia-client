@@ -23,16 +23,16 @@
 
 @class HBCIBridge;
 @class PecuniaError;
-@class ProgressWindowController;
 @class SigningOption;
+@class ResultWindowController;
 
 @interface HBCIController : NSObject <HBCIBackend> {
     HBCIBridge               *bridge;
-    ProgressWindowController *progressController;
     NSMutableDictionary      *bankInfo;
     NSMutableDictionary      *countries;
     NSArray                  *bankQueryResults;
     int                      currentQuery;
+    ResultWindowController   *resultWindow;
 }
 
 - (void)readCountryInfos;

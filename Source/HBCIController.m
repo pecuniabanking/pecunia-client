@@ -53,6 +53,7 @@
 #import "CCSettlementList.h"
 #import "CreditCardSettlement.h"
 #import "MCEMDecimalNumberAdditions.h"
+#import "ResultWindowController.h"
 
 static HBCIController *controller = nil;
 
@@ -71,7 +72,7 @@ static HBCIController *controller = nil;
     bankInfo = [[NSMutableDictionary alloc] initWithCapacity: 10];
     countries = [[NSMutableDictionary alloc] initWithCapacity: 50];
     [self readCountryInfos];
-    progressController = [[ProgressWindowController alloc] init];
+    resultWindow = nil;
     return self;
 }
 
@@ -90,12 +91,12 @@ static HBCIController *controller = nil;
 
 - (void)startProgress
 {
-    [progressController start];
+    resultWindow = [[ResultWindowController alloc] init];
 }
 
 - (void)stopProgress
 {
-    [progressController stop];
+    [resultWindow showOnError];
 }
 
 - (void)readCountryInfos
@@ -868,7 +869,6 @@ NSString * escapeSpecial(NSString *s)
 
     [cmd appendString: @"</command>"];
 
-    progressController.forceHidden = YES;
     [self startProgress];
 
     // create bank user at the bank

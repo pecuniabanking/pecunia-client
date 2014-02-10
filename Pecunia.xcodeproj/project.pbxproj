@@ -770,6 +770,10 @@
 		B1BCDF76111F5DBB002E0802 /* CountryInfo.txt in Resources */ = {isa = PBXBuildFile; fileRef = B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */; };
 		B1C7AFFC12FE003A0091CD72 /* 030alpha.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */; };
 		B1C7AFFF12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */; };
+		B1C8828518A6E1790033A659 /* ResultWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1C8828418A6E1790033A659 /* ResultWindow.xib */; };
+		B1C8828618A6E1790033A659 /* ResultWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1C8828418A6E1790033A659 /* ResultWindow.xib */; };
+		B1C8828D18A6EEF60033A659 /* ResultWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C8828C18A6EEF60033A659 /* ResultWindowController.m */; };
+		B1C8828E18A6EEF60033A659 /* ResultWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C8828C18A6EEF60033A659 /* ResultWindowController.m */; };
 		B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C90E150ABB39D5006F18C9 /* BankingController.m */; };
 		B1D44FCA1478407D008DD256 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D44FC91478407D008DD256 /* MainMenu.xib */; };
 		B1D44FE8147841DA008DD256 /* TanMethods.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1D44FE7147841DA008DD256 /* TanMethods.xib */; };
@@ -1412,6 +1416,9 @@
 		B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 030alpha.xcmappingmodel; sourceTree = "<group>"; };
 		B1C7AFFD12FE0BAB0091CD72 /* BankStatementPolicy030alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030alpha.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPolicy030alpha.m; sourceTree = "<group>"; tabWidth = 4; };
+		B1C8828418A6E1790033A659 /* ResultWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResultWindow.xib; sourceTree = "<group>"; };
+		B1C8828B18A6EEF60033A659 /* ResultWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultWindowController.h; sourceTree = "<group>"; };
+		B1C8828C18A6EEF60033A659 /* ResultWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultWindowController.m; sourceTree = "<group>"; };
 		B1C90E140ABB39D5006F18C9 /* BankingController.h */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankingController.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1C90E150ABB39D5006F18C9 /* BankingController.m */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BankingController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		B1D44FC91478407D008DD256 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -1873,6 +1880,7 @@
 				A6E9242915E38FFE00FA09A3 /* TanWindow.xib */,
 				B1D44FEE14784213008DD256 /* Preferences.xib */,
 				27C78792143622920095F1DA /* ProgressWindow.xib */,
+				B1C8828418A6E1790033A659 /* ResultWindow.xib */,
 				B1FB509A1209EAC7004DCD6A /* PurposeSplitWindow.xib */,
 				27A0098817205B4800D61FE9 /* RuleEditor.xib */,
 				275C07DA1438776000D97415 /* StatementsListViewCell.xib */,
@@ -2398,6 +2406,8 @@
 				27E68C49165CF7DA005EBE66 /* GenerateDataController.m */,
 				B1E3E4B216BB05CD00DC1638 /* CreditCardSettlementController.h */,
 				B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */,
+				B1C8828B18A6EEF60033A659 /* ResultWindowController.h */,
+				B1C8828C18A6EEF60033A659 /* ResultWindowController.m */,
 			);
 			name = WindowController;
 			sourceTree = "<group>";
@@ -2653,6 +2663,7 @@
 				27778960173CE22700430EBC /* TransfersListViewCell.xib in Resources */,
 				27A3C0C817FF15D800FCF8BF /* time-zoom-in@2x.png in Resources */,
 				275AC7F2186B62BD002E6BED /* overview-active.png in Resources */,
+				B1C8828618A6E1790033A659 /* ResultWindow.xib in Resources */,
 				27778965173CE22700430EBC /* standing-order-active.png in Resources */,
 				27778966173CE22700430EBC /* standing-order.png in Resources */,
 				27AA5688186C439F00B113E7 /* favorite.png in Resources */,
@@ -2863,6 +2874,7 @@
 				27A3C0C717FF15D800FCF8BF /* time-zoom-in@2x.png in Resources */,
 				270A0BFE1544177B00653031 /* standing-order-active.png in Resources */,
 				275AC7F1186B62BD002E6BED /* overview-active.png in Resources */,
+				B1C8828518A6E1790033A659 /* ResultWindow.xib in Resources */,
 				270A0BFF1544177B00653031 /* standing-order.png in Resources */,
 				27AA5687186C439F00B113E7 /* favorite.png in Resources */,
 				27AA5699186C562300B113E7 /* send2-active.png in Resources */,
@@ -3201,6 +3213,7 @@
 				2790160517B94720006DF9BC /* AssetsCard.m in Sources */,
 				276FBAEC17C531A700C67EEC /* TransfersCellView.m in Sources */,
 				27D9758617CA1B8A00A23868 /* TransfersHeaderView.m in Sources */,
+				B1C8828E18A6EEF60033A659 /* ResultWindowController.m in Sources */,
 				273E100717D0F5BE00881FE7 /* NextTransfersCard.m in Sources */,
 				275B3C4F17E5D2F9006BBE8A /* Info.m in Sources */,
 			);
@@ -3394,6 +3407,7 @@
 				2790160417B94720006DF9BC /* AssetsCard.m in Sources */,
 				276FBAEB17C531A700C67EEC /* TransfersCellView.m in Sources */,
 				27D9758517CA1B8A00A23868 /* TransfersHeaderView.m in Sources */,
+				B1C8828D18A6EEF60033A659 /* ResultWindowController.m in Sources */,
 				273E100617D0F5BE00881FE7 /* NextTransfersCard.m in Sources */,
 				275B3C4E17E5D2F9006BBE8A /* Info.m in Sources */,
 			);
