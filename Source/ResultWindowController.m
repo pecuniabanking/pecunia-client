@@ -30,7 +30,13 @@
     messageLog = [MessageLog log];
     [messageLog registerLogUI: self];
     hasErrors = NO;
+    logString = [[NSMutableAttributedString alloc] initWithString: @""];
     return self;
+}
+
+- (void)awakeFromNib
+{
+    [[logView textStorage] appendAttributedString: logString];
 }
 
 - (NSColor *)colorForLevel: (LogLevel)level
@@ -58,23 +64,33 @@
     if (info == nil || [info length] == 0) {
         return;
     }
-    if (level > LogLevel_Error) {
+    if (level > LogLevel_Warning) {
         return;
     }
     
-    if (![info hasPrefix:@"HBCI Error"]) {
+    if (level <= LogLevel_Error) {
+        hasErrors = YES;
+    }
+    
+    if ([info hasSubstring:@"org.kapott"]) {
         return;
     }
     
-    hasErrors = YES;
+    if (![info hasPrefix:@"HBCI Error"] && level > LogLevel_Error) {
+        return;
+    }
     
     NSMutableAttributedString *s = [[NSMutableAttributedString alloc] initWithString: [NSString stringWithFormat: @"%@\n", info]];
     [s addAttribute: NSForegroundColorAttributeName
               value: [self colorForLevel: level]
               range: NSMakeRange(0, [s length])];
-    [[logView textStorage] appendAttributedString: s];
     
-    [logView moveToEndOfDocument: self];
+    if (logView == nil) {
+        [logString appendAttributedString: s];
+    } else {
+        [[logView textStorage] appendAttributedString: s];
+        [logView moveToEndOfDocument: self];
+    }
     //[logView display];
 }
 

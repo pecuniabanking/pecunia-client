@@ -25,6 +25,7 @@
     MessageLog                   *messageLog;
     LogLevel                     maxLevel;
     BOOL                         hasErrors;
+    NSMutableAttributedString    *logString;
     
 }
 

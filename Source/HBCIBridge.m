@@ -54,6 +54,10 @@
     if ([res isKindOfClass: [HBCIError class]]) {
         result = nil;
         error = res;
+        
+        // error has occured. Inform callback handler, which can then invalidate PIN
+        // in case PIN was entered
+        [[CallbackHandler handler] setErrorOccured];
     } else {
         result = res;
         error = nil;
