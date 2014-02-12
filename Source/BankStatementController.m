@@ -259,7 +259,7 @@
     NSControl *te = [aNotification object];
 
     if ([te tag] == 100) {
-        NSString *name = [[HBCIController controller] bankNameForCode: [te stringValue] inCountry: currentStatement.remoteCountry];
+        NSString *name = [[HBCIController controller] bankNameForCode: [te stringValue]];
         if (name) {
             [self setValue: name forKey: @"bankName"];
         }

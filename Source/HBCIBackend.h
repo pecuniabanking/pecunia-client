@@ -44,9 +44,9 @@
 
 - (NSArray *)supportedVersions;
 
-- (BankInfo *)infoForBankCode: (NSString *)bankCode inCountry: (NSString *)country;
+- (BankInfo *)infoForBankCode: (NSString *)bankCode;
 - (BankSetupInfo *)getBankSetupInfo: (NSString *)bankCode;
-- (NSString *)bankNameForCode: (NSString *)bankCode inCountry: (NSString *)country;
+- (NSString *)bankNameForCode: (NSString *)bankCode;
 - (NSString *)bankNameForIBAN: (NSString *)iban;
 - (NSString *)bicForIBAN: (NSString*)iban;
 - (BankParameter *)getBankParameterForUser: (BankUser *)user;

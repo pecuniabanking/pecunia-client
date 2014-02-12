@@ -173,10 +173,9 @@ extern NSString *const CategoryKey;
             changedAccount.rule = [predicate description];
         }
         if ([changedAccount.balance compare: account.balance] != NSOrderedSame) {
-            changedAccount.balance = account.balance;
+            [changedAccount updateBalanceWithValue:account.balance];
             [[Category bankRoot] updateCategorySums];
         }
-        changedAccount.balance = account.balance;
     } else {
         changedAccount.accountSuffix = account.accountSuffix;
         

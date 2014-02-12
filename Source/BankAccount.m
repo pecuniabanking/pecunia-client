@@ -318,10 +318,28 @@
     return [newStatements count];
 }
 
+- (void)updateStatementBalances
+{
+    // repair balances
+    NSSortDescriptor    *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
+    NSArray             *sortedStatements = [[self valueForKey: @"statements"] sortedArrayUsingDescriptors: @[sd]];
+    
+    NSDecimalNumber *balance = self.balance;
+    for (BankStatement *statement in sortedStatements) {
+        // Balance recomputation.
+        if (![statement.saldo isEqual: balance]) {
+            statement.saldo = balance;
+            balance = [balance decimalNumberBySubtracting: statement.value];
+        }
+    }
+}
+
 - (void)updateBalanceWithValue: (NSDecimalNumber *)value
 {
-    self.balance = value;
-    [self doMaintenance];
+    if ([self.balance compare:value] != NSOrderedSame) {
+        self.balance = value;
+        [self updateStatementBalances];
+    }
 }
 
 /**
@@ -369,17 +387,7 @@
     }
 
     // repair balances
-    sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
-    sortedStatements = [statementsArray sortedArrayUsingDescriptors: @[sd]];
-
-    NSDecimalNumber *balance = self.balance;
-    for (BankStatement *statement in sortedStatements) {
-        // Balance recomputation.
-        if (![statement.saldo isEqual: balance]) {
-            statement.saldo = balance;
-            balance = [balance decimalNumberBySubtracting: statement.value];
-        }
-    }
+    [self updateStatementBalances];
 
     for (BankStatement *statement in sortedStatements) {
         [statement sanitize];

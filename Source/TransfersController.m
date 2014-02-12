@@ -1352,7 +1352,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         Transfer *transfer = transactionController.currentTransfer;
         transfer.remoteIBAN = @"DE43120300001016381558";
         transfer.remoteBIC = @"BYLADEM1001";
-        transfer.remoteBankName = [[HBCIController controller] bankNameForCode: @"12030000" inCountry: @"de"];
+        transfer.remoteBankName = [[HBCIController controller] bankNameForCode: @"12030000"];
         transfer.remoteName = @"Frank Emminghaus";
         transfer.purpose1 = @"Spende fuer Pecunia";
 
@@ -1870,8 +1870,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
             bankName = [[HBCIController controller] bankNameForIBAN: transactionController.currentTransfer.remoteIBAN];
         } else {
-            bankName = [[HBCIController controller] bankNameForCode: transactionController.currentTransfer.remoteBankCode
-                                                      inCountry: transactionController.currentTransfer.remoteCountry];
+            bankName = [[HBCIController controller] bankNameForCode: transactionController.currentTransfer.remoteBankCode];
         }
         if (bankName != nil) {
             transactionController.currentTransfer.remoteBankName = bankName;
@@ -1925,8 +1924,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         }
     } else {
         if (textField == bankCode) {
-            bankName = [[HBCIController controller] bankNameForCode: [textField stringValue]
-                                                      inCountry: transactionController.currentTransfer.remoteCountry];
+            bankName = [[HBCIController controller] bankNameForCode: [textField stringValue]];
         }
     }
     if (bankName != nil) {

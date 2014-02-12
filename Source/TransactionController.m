@@ -227,8 +227,7 @@
     if (transferType == TransferTypeEU || transferType == TransferTypeSEPA) {
         bankName = [[HBCIController controller] bankNameForIBAN: currentTransfer.remoteIBAN];
     } else {
-        bankName = [[HBCIController controller] bankNameForCode: currentTransfer.remoteBankCode
-                                                  inCountry: currentTransfer.remoteCountry];
+        bankName = [[HBCIController controller] bankNameForCode: currentTransfer.remoteBankCode];
     }
     if (bankName != nil) {
         currentTransfer.remoteBankName = bankName;
@@ -253,8 +252,7 @@
     if (transferType == TransferTypeEU || transferType == TransferTypeSEPA) {
         bankName = [[HBCIController controller] bankNameForIBAN: currentTransfer.remoteIBAN];
     } else {
-        bankName = [[HBCIController controller] bankNameForCode: currentTransfer.remoteBankCode
-                                                  inCountry: currentTransfer.remoteCountry];
+        bankName = [[HBCIController controller] bankNameForCode: currentTransfer.remoteBankCode];
     }
     if (bankName != nil) {
         currentTransfer.remoteBankName = bankName;

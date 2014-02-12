@@ -163,7 +163,7 @@
 
         if (step == 2) {
             // look if we have bank infos
-            BankInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
+            BankInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
             if (bi) {
                 currentUser.hbciVersion = bi.pinTanVersion;
                 currentUser.bankURL = bi.pinTanURL;
@@ -208,7 +208,7 @@
         
         if (step == 1) {
             // get bank infos
-            BankInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode inCountry: @"DE"];
+            BankInfo *bi = [[HBCIController controller] infoForBankCode: currentUser.bankCode];
             if (bi) {
                 currentUser.hbciVersion = bi.hbciVersion;
                 currentUser.bankURL = bi.host;
@@ -352,7 +352,7 @@
     if ([te tag] == 10) {
         NSString *bankCode = [s stringByReplacingOccurrencesOfString: @" " withString: @""];
         if ([bankCode length] == 8) {
-            BankInfo *bi = [[HBCIController controller] infoForBankCode: bankCode inCountry: @"DE"];
+            BankInfo *bi = [[HBCIController controller] infoForBankCode: bankCode];
             if (bi) {
                 currentUser.name = bi.name;
                 [okButton setKeyEquivalent: @"\r"];
@@ -377,7 +377,7 @@
      NSString *bankCode = [te stringValue];
      BankUser *currentUser = [currentUserController content ];
 
-     BankInfo *bi = [[HBCIController controller] infoForBankCode: bankCode inCountry: @"DE"];
+     BankInfo *bi = [[HBCIController controller] infoForBankCode: bankCode];
      if (bi) {
      currentUser.bankName = bi.name;
      currentUser.bankURL = bi.pinTanURL;

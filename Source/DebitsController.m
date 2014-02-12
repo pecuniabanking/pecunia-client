@@ -1440,8 +1440,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
         }
     } else {
         if (textField == bankCode) {
-            bankName = [[HBCIController controller] bankNameForCode: [textField stringValue]
-                                                      inCountry: transactionController.currentTransfer.remoteCountry];
+            bankName = [[HBCIController controller] bankNameForCode: [textField stringValue]];
         }
     }
     if (bankName != nil) {

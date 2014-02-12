@@ -930,7 +930,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
         [sourceAccountSelector setEnabled: currentOrder.orderKey == nil];
         
         if (self.currentOrder.remoteBankCode != nil && (self.currentOrder.remoteBankName == nil || [self.currentOrder.remoteBankName length] == 0)) {
-            NSString *bankName = [[HBCIController controller] bankNameForCode: self.currentOrder.remoteBankCode inCountry: self.currentOrder.account.country];
+            NSString *bankName = [[HBCIController controller] bankNameForCode: self.currentOrder.remoteBankCode];
             if (bankName) {
                 self.currentOrder.remoteBankName = bankName;
             }

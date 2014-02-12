@@ -177,7 +177,7 @@ NSString * escapeSpecial(NSString *s)
     return error;
 }
 
-- (BankInfo *)infoForBankCode: (NSString *)bankCode inCountry: (NSString *)country
+- (BankInfo *)infoForBankCode: (NSString *)bankCode
 {
     PecuniaError *error = nil;
 
@@ -221,9 +221,9 @@ NSString * escapeSpecial(NSString *s)
     return info;
 }
 
-- (NSString *)bankNameForCode: (NSString *)bankCode inCountry: (NSString *)country
+- (NSString *)bankNameForCode: (NSString *)bankCode
 {
-    BankInfo *info = [self infoForBankCode: bankCode inCountry: country];
+    BankInfo *info = [self infoForBankCode: bankCode];
     if (info == nil || info.name == nil) {
         return NSLocalizedString(@"AP13", nil);
     }
@@ -233,7 +233,7 @@ NSString * escapeSpecial(NSString *s)
 - (NSString *)bankNameForIBAN: (NSString *)iban
 {
     if (iban.length > 12 && [iban hasPrefix: @"DE"]) {
-        return [self bankNameForCode: [iban substringWithRange: NSMakeRange(4, 8)] inCountry: @""];
+        return [self bankNameForCode: [iban substringWithRange: NSMakeRange(4, 8)]];
     }
     return NSLocalizedString(@"AP13", nil);
 }
@@ -241,7 +241,7 @@ NSString * escapeSpecial(NSString *s)
 - (NSString *)bicForIBAN: (NSString*)iban
 {
     if (iban.length > 12 && [iban hasPrefix: @"DE"]) {
-        BankInfo *info = [self infoForBankCode:[iban substringWithRange: NSMakeRange(4, 8)] inCountry:@"DE"];
+        BankInfo *info = [self infoForBankCode:[iban substringWithRange: NSMakeRange(4, 8)]];
         if (info) {
             return info.bic;
         } else {

@@ -107,7 +107,7 @@
     if (idx > 0) {
         account.bankName = user.bankName;
         account.bankCode = user.bankCode;
-        BankInfo *info = [[HBCIController controller] infoForBankCode: user.bankCode inCountry: account.country];
+        BankInfo *info = [[HBCIController controller] infoForBankCode: user.bankCode];
         if (info) {
             account.bic = info.bic;
             account.bankName = info.name;
@@ -258,7 +258,7 @@
         [bankNameField setBezeled: NO];
         bankNameField.drawsBackground = NO;
         if (bankRoot == nil) {
-            NSString *name = [[HBCIController controller] bankNameForCode: [te stringValue] inCountry: account.country];
+            NSString *name = [[HBCIController controller] bankNameForCode: [te stringValue]];
             if ([name isEqualToString: NSLocalizedString(@"AP13", nil)]) {
                 [bankNameField setEditable: YES];
                 [bankNameField setBezeled: YES];
