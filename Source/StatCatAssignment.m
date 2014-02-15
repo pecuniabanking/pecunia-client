@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -16,6 +16,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301  USA
  */
+
+#import "MessageLog.h"
 
 #import "StatCatAssignment.h"
 #import "Category.h"
@@ -267,7 +269,7 @@
 
 - (id)valueForUndefinedKey: (NSString *)key
 {
-    NSLog(@"Undefined key: %@", key);
+    LogError(@"StatCatAssignment, undefined key: %@", key);
     return [self.statement valueForKey: key];
 }
 

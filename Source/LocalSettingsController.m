@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -88,7 +88,7 @@
     }
 
     if (entries.count > 1) {
-        NSLog(@"Persistent info storage: more than one entry found for key: %@.", aKey);
+        LogWarning(@"Persistent info storage: more than one entry found for key: %@.", aKey);
     }
 
     if (entries.count == 0) {
@@ -132,7 +132,7 @@
     }
 
     if (entries.count > 1) {
-        NSLog(@"Persistent info storage: more than one entry found for key: %@.", aKey);
+        LogWarning(@"Persistent info storage: more than one entry found for key: %@.", aKey);
     }
 
     Info *info;

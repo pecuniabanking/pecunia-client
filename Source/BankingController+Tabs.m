@@ -37,7 +37,7 @@
 
 - (void)activateHomeScreenTab
 {
-    LOG_ENTER;
+    LogEnter;
 
     NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: HomeScreenTabIdentifier];
     if (index == NSNotFound) {
@@ -59,7 +59,7 @@
 
 - (void)activateStandingOrdersTab
 {
-    LOG_ENTER;
+    LogEnter;
 
     NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: StandingOrderTabIdentifier];
     if (index == NSNotFound) {
@@ -82,7 +82,7 @@
 
 - (void)activateTransfersTab
 {
-    LOG_ENTER;
+    LogEnter;
 
     NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: TransfersTabIdentifier];
     if (index == NSNotFound) {
@@ -105,7 +105,7 @@
 
 - (void)activateDebitsTab
 {
-    LOG_ENTER;
+    LogEnter;
 
     NSInteger index = [mainTabView indexOfTabViewItemWithIdentifier: DebitsTabIdentifier];
     if (index == NSNotFound) {

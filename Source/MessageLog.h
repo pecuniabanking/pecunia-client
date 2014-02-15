@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,6 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+// XXX: remove as soon as the other loggers are updated/removed.
 typedef enum {
     LogLevel_None = -1,
     LogLevel_Error,
@@ -36,9 +37,15 @@ typedef enum {
 
 @end
 
-// Helper macros to ease function enter/exit messages.
-#define LOG_ENTER [MessageLog.log addMessage: [NSString stringWithFormat: @"Entering %s", __PRETTY_FUNCTION__] withLevel: LogLevel_Debug]
-#define LOG_LEAVE [MessageLog.log addMessage: [NSString stringWithFormat: @"Leaving %s", __PRETTY_FUNCTION__] withLevel: LogLevel_Debug]
+// Helper macros to simplify logging calls.
+#define LogEnter [MessageLog.log logDebug: @"Entering %s", __PRETTY_FUNCTION__]
+#define LogLeave [MessageLog.log logDebug: @"Leaving %s", __PRETTY_FUNCTION__]
+
+#define LogError(format, ...) [MessageLog.log logError: format, ##__VA_ARGS__]
+#define LogWarning(format, ...) [MessageLog.log logWarning: format, ##__VA_ARGS__]
+#define LogInfo(format, ...) [MessageLog.log logInfo: format, ##__VA_ARGS__]
+#define LogDebug(format, ...) [MessageLog.log logDebug: format, ##__VA_ARGS__]
+#define LogVerbose(format, ...) [MessageLog.log logVerbose: format, ##__VA_ARGS__]
 
 @interface MessageLog : NSObject {
     NSMutableSet    *logUIs;
@@ -49,11 +56,16 @@ typedef enum {
 @property (nonatomic, assign) BOOL     forceConsole;
 @property (nonatomic, assign) LogLevel currentLevel;
 
++ (MessageLog *)log;
+
 - (void)registerLogUI: (id<MessageLogUI>)ui;
 - (void)unregisterLogUI: (id<MessageLogUI>)ui;
 - (void)addMessage: (NSString *)msg withLevel: (LogLevel)level;
 
-+ (MessageLog *)log;
-
+- (void)logError: (NSString *)format, ...;
+- (void)logWarning: (NSString *)format, ...;
+- (void)logInfo: (NSString *)format, ...;
+- (void)logDebug: (NSString *)format, ...;
+- (void)logVerbose: (NSString *)format, ...;
 
 @end

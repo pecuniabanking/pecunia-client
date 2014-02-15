@@ -82,7 +82,7 @@ extern void *UserDefaultsBindingContext;
 
 - (id)initWithFrame: (NSRect)frame category: (Category *)aCategory
 {
-    LOG_ENTER;
+    LogEnter;
 
     self = [super initWithFrame: frame];
     if (self) {
@@ -91,14 +91,14 @@ extern void *UserDefaultsBindingContext;
         [self loadData];
     }
 
-    LOG_LEAVE;
+    LogLeave;
 
     return self;
 }
 
 - (void)dealloc
 {
-    LOG_ENTER;
+    LogEnter;
 
     free(timePoints);
     free(positiveBalances);
@@ -106,12 +106,12 @@ extern void *UserDefaultsBindingContext;
     free(totalBalances);
     free(movingAverage);
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)prepareForShutDown
 {
-    LOG_ENTER;
+    LogEnter;
 
     if (rangeAnimationOperation != nil) {
         [CPTAnimation.sharedInstance removeAnimationOperation: rangeAnimationOperation];
@@ -120,12 +120,12 @@ extern void *UserDefaultsBindingContext;
         [CPTAnimation.sharedInstance removeAnimationOperation: globalRangeAnimationOperation];
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)setupGraph
 {
-    LOG_ENTER;
+    LogEnter;
 
     graph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame : NSRectToCGRect(self.bounds)];
     self.hostedGraph = graph;
@@ -155,12 +155,12 @@ extern void *UserDefaultsBindingContext;
     [self setupPlot];
     [self setUpAxes];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)setupPlot
 {
-    LOG_ENTER;
+    LogEnter;
 
     if (category != nil) {
         CPTScatterPlot *linePlot = [[CPTScatterPlot alloc] init];
@@ -233,12 +233,12 @@ extern void *UserDefaultsBindingContext;
         [self updateColors];
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)setUpAxes
 {
-    LOG_ENTER;
+    LogEnter;
 
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
     CPTXYAxis    *x = axisSet.xAxis;
@@ -300,7 +300,7 @@ extern void *UserDefaultsBindingContext;
 
 - (void)updateGraphTitle
 {
-    LOG_ENTER;
+    LogEnter;
 
     NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
                                  NSFontAttributeName: [NSFont fontWithName: @"HelveticaNeue-Bold" size: 12]};
@@ -308,12 +308,12 @@ extern void *UserDefaultsBindingContext;
     titleLayer.attributedText = [[NSAttributedString alloc] initWithString: category.localName
                                                                 attributes: attributes];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)updateGraph
 {
-    LOG_ENTER;
+    LogEnter;
 
     [self updateGraphTitle];
 
@@ -363,12 +363,12 @@ extern void *UserDefaultsBindingContext;
     currencyFormatter.zeroSymbol = [NSString stringWithFormat: @"0 %@", currencyFormatter.currencySymbol];
     axisSet.yAxis.labelFormatter = currencyFormatter;
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)updateGraphRange
 {
-    LOG_ENTER;
+    LogEnter;
 
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
 
@@ -464,12 +464,12 @@ extern void *UserDefaultsBindingContext;
                                      animationCurve: CPTAnimationCurveCubicInOut
                                            delegate: self];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)loadData
 {
-    LOG_ENTER;
+    LogEnter;
 
     count = 0;
     free(timePoints);
@@ -595,7 +595,7 @@ extern void *UserDefaultsBindingContext;
     [self updateGraph];
     [self updateGraphRange];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)setCategory: (Category *)value
@@ -623,7 +623,7 @@ extern void *UserDefaultsBindingContext;
 
 - (void)updateColors
 {
-    LOG_ENTER;
+    LogEnter;
 
     CGColorRef  gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (high)"] colorWithAlphaComponent: 1]);
     CGColorRef  gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (low)"] colorWithAlphaComponent: 1]);
@@ -650,7 +650,7 @@ extern void *UserDefaultsBindingContext;
     plot = (id)[graph plotWithIdentifier: @"negativeBalances"];
     plot.areaFill = [CPTFill fillWithGradient: negativeGradient];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (int)distanceFromDate: (ShortDate *)from toDate: (ShortDate *)to
@@ -802,7 +802,7 @@ extern void *UserDefaultsBindingContext;
 
 - (id)initWithFrame: (NSRect)frame
 {
-    LOG_ENTER;
+    LogEnter;
 
     self = [super initWithFrame: frame];
     if (self) {
@@ -820,14 +820,14 @@ extern void *UserDefaultsBindingContext;
 
     }
 
-    LOG_LEAVE;
+    LogLeave;
 
     return self;
 }
 
 - (void)dealloc
 {
-    LOG_ENTER;
+    LogEnter;
 
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
     [settings removeObserver: self forKeyPath: @"colors"];
@@ -836,12 +836,12 @@ extern void *UserDefaultsBindingContext;
 
     [NSNotificationCenter.defaultCenter removeObserver: self];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)handleDataModelChange: (NSNotification *)notification
 {
-    LOG_ENTER;
+    LogEnter;
 
     @try {
         if (!BankingController.controller.shuttingDown) {
@@ -857,12 +857,12 @@ extern void *UserDefaultsBindingContext;
         // TODO: logging
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)updateUI
 {
-    LOG_ENTER;
+    LogEnter;
 
     AssetGraph *graph;
 
@@ -895,7 +895,7 @@ extern void *UserDefaultsBindingContext;
 
     [self resizeSubviewsWithOldSize: self.bounds.size];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 /**
@@ -903,7 +903,7 @@ extern void *UserDefaultsBindingContext;
  */
 - (void)resizeSubviewsWithOldSize: (NSSize)oldSize
 {
-    LOG_ENTER;
+    LogEnter;
 
     NSRect frame = self.bounds;
     frame.size.width -= 40;
@@ -918,12 +918,12 @@ extern void *UserDefaultsBindingContext;
         }
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)mouseDown: (NSEvent *)theEvent
 {
-    LOG_ENTER;
+    LogEnter;
 
     // Happens if the user clicked on space not covered by a graph. Take the first one in this case.
     [super mouseDown: theEvent];
@@ -940,7 +940,7 @@ extern void *UserDefaultsBindingContext;
         [self cardClicked: category];
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 #pragma mark - Bindings, KVO and KVC

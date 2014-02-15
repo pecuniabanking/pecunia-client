@@ -90,7 +90,7 @@
 
 - (id)initWithFrame: (NSRect)frame
 {
-    LOG_ENTER;
+    LogEnter;
 
     self = [super initWithFrame: frame];
     if (self != nil) {
@@ -109,23 +109,23 @@
                                                  object: MOAssistant.assistant.context];
     }
 
-    LOG_LEAVE;
+    LogLeave;
 
     return self;
 }
 
 - (void)dealloc
 {
-    LOG_ENTER;
+    LogEnter;
 
     [NSNotificationCenter.defaultCenter removeObserver: self];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)handleDataModelChange: (NSNotification *)notification
 {
-    LOG_ENTER;
+    LogEnter;
 
     @try {
         if (BankingController.controller.shuttingDown) {
@@ -189,12 +189,12 @@
         // TODO: logging
     }
     
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)loadData
 {
-    LOG_ENTER;
+    LogEnter;
 
     // Retrieve assignments from the past two weeks.
     entries = [[Category.bankRoot allAssignmentsOrderedBy: DateOrderDate
@@ -205,7 +205,7 @@
     [self updateHeadersWithAnimation: NO];
     [transfersView reloadData];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 /**
@@ -213,7 +213,7 @@
  */
 - (void)updateHeadersWithAnimation: (BOOL)animate
 {
-    LOG_ENTER;
+    LogEnter;
 
     if (entries.count > 0) {
         ShortDate *lastDate = [ShortDate dateWithDate: [entries[0] statement].date];
@@ -245,12 +245,12 @@
         }
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)resizeSubviewsWithOldSize: (NSSize)oldSize
 {
-    LOG_ENTER;
+    LogEnter;
 
     NSRect frame = NSInsetRect(self.bounds, 30, 45);
     frame.origin.y += 10;
@@ -261,7 +261,7 @@
         frame.origin.y += frame.size.height;
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 #pragma mark - NSTableViewDataSource protocol

@@ -566,6 +566,16 @@
 		27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */; };
 		27D1172B15288C3600CD7E83 /* background-pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D1172A15288C3600CD7E83 /* background-pattern.png */; };
 		27D240EA145302A900EDC8C7 /* done.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27D240E9145302A900EDC8C7 /* done.mp3 */; };
+		27D24EBB18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB118A7D63A00F1EADA /* DDAbstractDatabaseLogger.m */; };
+		27D24EBC18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB118A7D63A00F1EADA /* DDAbstractDatabaseLogger.m */; };
+		27D24EBD18A7D63A00F1EADA /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB318A7D63A00F1EADA /* DDASLLogger.m */; };
+		27D24EBE18A7D63A00F1EADA /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB318A7D63A00F1EADA /* DDASLLogger.m */; };
+		27D24EBF18A7D63A00F1EADA /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB518A7D63A00F1EADA /* DDFileLogger.m */; };
+		27D24EC018A7D63A00F1EADA /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB518A7D63A00F1EADA /* DDFileLogger.m */; };
+		27D24EC118A7D63A00F1EADA /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB818A7D63A00F1EADA /* DDLog.m */; };
+		27D24EC218A7D63A00F1EADA /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB818A7D63A00F1EADA /* DDLog.m */; };
+		27D24EC318A7D63A00F1EADA /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EBA18A7D63A00F1EADA /* DDTTYLogger.m */; };
+		27D24EC418A7D63A00F1EADA /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EBA18A7D63A00F1EADA /* DDTTYLogger.m */; };
 		27D302951538453300D6A2CC /* sort-indicator-inc.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302941538453300D6A2CC /* sort-indicator-inc.png */; };
 		27D302971538461700D6A2CC /* sort-indicator-dec.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302961538461700D6A2CC /* sort-indicator-dec.png */; };
 		27D3169014A8C81B002F500D /* blue arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D3168F14A8C81B002F500D /* blue arrow.png */; };
@@ -1109,6 +1119,17 @@
 		27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSButton+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		27D1172A15288C3600CD7E83 /* background-pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-pattern.png"; sourceTree = "<group>"; };
 		27D240E9145302A900EDC8C7 /* done.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = done.mp3; path = Sounds/done.mp3; sourceTree = "<group>"; };
+		27D24EB018A7D63A00F1EADA /* DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
+		27D24EB118A7D63A00F1EADA /* DDAbstractDatabaseLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAbstractDatabaseLogger.m; sourceTree = "<group>"; };
+		27D24EB218A7D63A00F1EADA /* DDASLLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDASLLogger.h; sourceTree = "<group>"; };
+		27D24EB318A7D63A00F1EADA /* DDASLLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDASLLogger.m; sourceTree = "<group>"; };
+		27D24EB418A7D63A00F1EADA /* DDFileLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFileLogger.h; sourceTree = "<group>"; };
+		27D24EB518A7D63A00F1EADA /* DDFileLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDFileLogger.m; sourceTree = "<group>"; };
+		27D24EB618A7D63A00F1EADA /* DDLog+LOGV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDLog+LOGV.h"; sourceTree = "<group>"; };
+		27D24EB718A7D63A00F1EADA /* DDLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLog.h; sourceTree = "<group>"; };
+		27D24EB818A7D63A00F1EADA /* DDLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLog.m; sourceTree = "<group>"; };
+		27D24EB918A7D63A00F1EADA /* DDTTYLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTTYLogger.h; sourceTree = "<group>"; };
+		27D24EBA18A7D63A00F1EADA /* DDTTYLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTTYLogger.m; sourceTree = "<group>"; };
 		27D302941538453300D6A2CC /* sort-indicator-inc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-indicator-inc.png"; sourceTree = "<group>"; };
 		27D302961538461700D6A2CC /* sort-indicator-dec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-indicator-dec.png"; sourceTree = "<group>"; };
 		27D3168F14A8C81B002F500D /* blue arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue arrow.png"; sourceTree = "<group>"; };
@@ -1230,7 +1251,7 @@
 		B136AAD60FCF1C4A007A643F /* MCEMTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMTableView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B136AAD70FCF1C4A007A643F /* MCEMTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMTableView.m; sourceTree = "<group>"; tabWidth = 4; };
 		B137BF4512D5004C00D0394C /* MessageLog.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MessageLog.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B137BF4612D5004C00D0394C /* MessageLog.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MessageLog.m; sourceTree = "<group>"; tabWidth = 4; };
+		B137BF4612D5004C00D0394C /* MessageLog.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MessageLog.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B138AC3A13918EB50026BEE2 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTextCell.h; sourceTree = "<group>"; tabWidth = 4; };
 		B138AC3B13918EB50026BEE2 /* ImageAndTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndTextCell.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B138AC471391946E0026BEE2 /* money_18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money_18.png; sourceTree = "<group>"; };
@@ -1326,7 +1347,7 @@
 		B17E5C8315EFFC03008527C8 /* 102.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 102.xcmappingmodel; sourceTree = "<group>"; };
 		B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 3.xcdatamodel"; sourceTree = "<group>"; };
 		B17FE3C114C9F17400F6FAFE /* LaunchParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchParameters.h; sourceTree = "<group>"; };
-		B17FE3C214C9F17400F6FAFE /* LaunchParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchParameters.m; sourceTree = "<group>"; };
+		B17FE3C214C9F17400F6FAFE /* LaunchParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchParameters.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B17FE44314CA091E00F6FAFE /* CustomerMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerMessage.h; sourceTree = "<group>"; };
 		B17FE44414CA091E00F6FAFE /* CustomerMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerMessage.m; sourceTree = "<group>"; };
 		B17FE48A14CB586A00F6FAFE /* BankMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankMessage.h; sourceTree = "<group>"; };
@@ -1744,6 +1765,7 @@
 		27CC732314A09DDD0082495C /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				27D24EAF18A7D63A00F1EADA /* CocoaLumberJack */,
 				27DD4AFB150B6F84006C2370 /* BWToolkit */,
 				2732F697186ADEC100809CF2 /* EDSideBar */,
 				27535FF2186DE337007400BA /* INAppStoreWindow */,
@@ -1781,6 +1803,24 @@
 				27D240E9145302A900EDC8C7 /* done.mp3 */,
 			);
 			name = Sounds;
+			sourceTree = "<group>";
+		};
+		27D24EAF18A7D63A00F1EADA /* CocoaLumberJack */ = {
+			isa = PBXGroup;
+			children = (
+				27D24EB018A7D63A00F1EADA /* DDAbstractDatabaseLogger.h */,
+				27D24EB118A7D63A00F1EADA /* DDAbstractDatabaseLogger.m */,
+				27D24EB218A7D63A00F1EADA /* DDASLLogger.h */,
+				27D24EB318A7D63A00F1EADA /* DDASLLogger.m */,
+				27D24EB418A7D63A00F1EADA /* DDFileLogger.h */,
+				27D24EB518A7D63A00F1EADA /* DDFileLogger.m */,
+				27D24EB618A7D63A00F1EADA /* DDLog+LOGV.h */,
+				27D24EB718A7D63A00F1EADA /* DDLog.h */,
+				27D24EB818A7D63A00F1EADA /* DDLog.m */,
+				27D24EB918A7D63A00F1EADA /* DDTTYLogger.h */,
+				27D24EBA18A7D63A00F1EADA /* DDTTYLogger.m */,
+			);
+			path = CocoaLumberJack;
 			sourceTree = "<group>";
 		};
 		27DD4AFB150B6F84006C2370 /* BWToolkit */ = {
@@ -3033,6 +3073,7 @@
 				27778875173CE22700430EBC /* BankingController.m in Sources */,
 				27EA7D571816ED25000D9B30 /* LocalSettingsController.m in Sources */,
 				27778876173CE22700430EBC /* TransactionController.m in Sources */,
+				27D24EBE18A7D63A00F1EADA /* DDASLLogger.m in Sources */,
 				27778877173CE22700430EBC /* BankStatement.m in Sources */,
 				27778878173CE22700430EBC /* BankAccount.m in Sources */,
 				27778879173CE22700430EBC /* Category.m in Sources */,
@@ -3141,8 +3182,10 @@
 				B1AFC67217F62A980046B625 /* NewPinController.m in Sources */,
 				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
 				277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */,
+				27D24EC418A7D63A00F1EADA /* DDTTYLogger.m in Sources */,
 				277788DF173CE22700430EBC /* TanMedium.m in Sources */,
 				27535FFE186DE337007400BA /* INWindowButton.m in Sources */,
+				27D24EC018A7D63A00F1EADA /* DDFileLogger.m in Sources */,
 				277788E0173CE22700430EBC /* TanMediaList.m in Sources */,
 				277788E1173CE22700430EBC /* BankUser.m in Sources */,
 				277788E2173CE22700430EBC /* TanMethodOld.m in Sources */,
@@ -3197,6 +3240,8 @@
 				2778C24A18140984003BF49D /* ClickableImageView.m in Sources */,
 				27778912173CE22700430EBC /* CreditCardSettlement.m in Sources */,
 				27778913173CE22700430EBC /* CreditCardSettlementController.m in Sources */,
+				27D24EC218A7D63A00F1EADA /* DDLog.m in Sources */,
+				27D24EBC18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */,
 				27778914173CE22700430EBC /* CategoryHeatMapController.m in Sources */,
 				27778915173CE22700430EBC /* AdditionalControls.m in Sources */,
 				27778916173CE22700430EBC /* Tag.m in Sources */,
@@ -3227,6 +3272,7 @@
 				B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */,
 				27EA7D561816ED25000D9B30 /* LocalSettingsController.m in Sources */,
 				B155D92E0BFD04B300904051 /* TransactionController.m in Sources */,
+				27D24EBD18A7D63A00F1EADA /* DDASLLogger.m in Sources */,
 				B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */,
 				B124F1110C371384001065C2 /* BankAccount.m in Sources */,
 				B1F527050C3C1D5800BE3DFC /* Category.m in Sources */,
@@ -3335,8 +3381,10 @@
 				B1AFC67117F62A980046B625 /* NewPinController.m in Sources */,
 				B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */,
 				B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */,
+				27D24EC318A7D63A00F1EADA /* DDTTYLogger.m in Sources */,
 				B17728D71504ABC700256898 /* TanMedium.m in Sources */,
 				27535FFD186DE337007400BA /* INWindowButton.m in Sources */,
+				27D24EBF18A7D63A00F1EADA /* DDFileLogger.m in Sources */,
 				B17728F01504B14500256898 /* TanMediaList.m in Sources */,
 				B17728FD1504C33F00256898 /* BankUser.m in Sources */,
 				B17729141504C9B200256898 /* TanMethodOld.m in Sources */,
@@ -3391,6 +3439,8 @@
 				2778C24918140984003BF49D /* ClickableImageView.m in Sources */,
 				A6DB72E416B53C6100B44133 /* CreditCardSettlement.m in Sources */,
 				B1E3E4B416BB05CD00DC1638 /* CreditCardSettlementController.m in Sources */,
+				27D24EC118A7D63A00F1EADA /* DDLog.m in Sources */,
+				27D24EBB18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */,
 				27DCC81B16EB8F700070E241 /* CategoryHeatMapController.m in Sources */,
 				27CBA24516F60EFB00C2AC04 /* AdditionalControls.m in Sources */,
 				27548B901705D98E00C4BF9B /* Tag.m in Sources */,

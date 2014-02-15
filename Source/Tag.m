@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -16,6 +16,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301  USA
  */
+
+#import "MessageLog.h"
 
 #import "Tag.h"
 
@@ -93,7 +95,7 @@
                                                 substitutionVariables: substitution];
     NSArray *tags = [context executeFetchRequest: request error: &error];
     if (error != nil) {
-        NSLog(@"Error reading tags: %@", error.localizedDescription);
+        LogError(@"Error reading tags: %@", error.localizedDescription);
     }
     return tags.count == 0 ? nil : tags[0];
 }

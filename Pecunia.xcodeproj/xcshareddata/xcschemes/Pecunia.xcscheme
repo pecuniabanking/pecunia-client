@@ -59,7 +59,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-dServer"
+            argument = "-loglevel info"
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>

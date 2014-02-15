@@ -59,7 +59,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-f demodata"
+            argument = "-f demodata -d server"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

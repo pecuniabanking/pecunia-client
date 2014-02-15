@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,6 +17,7 @@
  * 02110-1301  USA
  */
 
+#import "MessageLog.h"
 #import "NSColor+PecuniaAdditions.h"
 
 /**
@@ -56,7 +57,7 @@ static NSMutableDictionary *userColors;
     NSError  *error = nil;
     NSString *s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
     if (error) {
-        NSLog(@"Error reading applicaton colors file at %@\n%@", path, [error localizedFailureReason]);
+        LogError(@"Error reading applicaton colors file at %@\n%@", path, [error localizedFailureReason]);
     } else {
         // Lines can be separated by Windows linebreaks, so we need to check explicitly.
         NSArray      *lines = [s componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\n"]];

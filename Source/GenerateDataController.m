@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -16,6 +16,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301  USA
  */
+
+#import "MessageLog.h"
 
 #import "GenerateDataController.h"
 #import "MOAssistant.h"
@@ -480,7 +482,7 @@ static NSString *DemoDataKey = @"contains-demo-data";
     NSString *path = self.path.stringValue;
     NSString *s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
     if (error) {
-        NSLog(@"Error reading demo data template file at %@\n%@", path, [error localizedFailureReason]);
+        LogError(@"Error reading demo data template file at %@\n%@", path, error.localizedFailureReason);
     } else {
         NSMutableDictionary *blocks = [NSMutableDictionary dictionary];
         NSString            *blockName = @"";
