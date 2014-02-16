@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,13 +17,14 @@
  * 02110-1301  USA
  */
 
+#import "MessageLog.h"
+
 #import "BankStatement.h"
 #import "Category.h"
 #import "MOAssistant.h"
 #import "StatCatAssignment.h"
 #import "ShortDate.h"
 #import "MCEMDecimalNumberAdditions.h"
-#import "MessageLog.h"
 
 static NSArray *catCache = nil;
 
@@ -218,8 +219,7 @@ static NSRegularExpression *bicRE;
             }
         }
         @catch (NSException *exception) {
-            [[MessageLog log] addMessage: [NSString stringWithFormat: @"Error in rule: %@", cat.rule]
-                               withLevel: LogLevel_Error];
+            LogError(@"Error in rule: %@. Reason: %@", cat.rule, exception.debugDescription);
         }
     }
     // Run the general rules.

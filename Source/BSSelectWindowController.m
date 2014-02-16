@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,6 +17,8 @@
  * 02110-1301  USA
  */
 
+#import "MessageLog.h"
+
 #import "BSSelectWindowController.h"
 #import "BankAccount.h"
 #import "BankingController.h"
@@ -24,7 +26,6 @@
 #import "BankStatement.h"
 #import "StatusBarController.h"
 #import "BankQueryResult.h"
-#import "MessageLog.h"
 
 @implementation BSSelectWindowController
 
@@ -78,8 +79,8 @@
             count += [result.account updateFromQueryResult: result];
         }
     }
-    @catch (NSException *e) {
-        [[MessageLog log] addMessage: e.reason withLevel: LogLevel_Error];
+    @catch (NSException *error) {
+        LogError(@"%@", error.debugDescription);
     }
     [[BankingController controller] requestFinished: resultList];
 

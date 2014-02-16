@@ -17,6 +17,8 @@
  * 02110-1301  USA
  */
 
+#include <sys/sysctl.h>
+
 #import "MessageLog.h"
 
 #import "DDLog.h"
@@ -24,8 +26,6 @@
 #import "DDFileLogger.h"
 
 #include "LaunchParameters.h"
-
-static MessageLog *_messageLog;
 
 @interface MessageLog ()
 {
@@ -63,6 +63,7 @@ static MessageLog *_messageLog;
         }
 
         // Send a log message to create the log file handles, otherwise explicit log file rolling is ignored.
+        // This goes to the last log file.
         [self logInfo: @"Rolling log file due to app start."];
         [fileLogger rollLogFileWithCompletionBlock: nil]; // We want a new log file on each start of the application.
 
@@ -115,10 +116,69 @@ static MessageLog *_messageLog;
     [self addMessage: data[@"message"] withLevel: level];
 }
 
++ (NSString *)getStringInfoFor: (const char *)name
+{
+    NSString *result = @"Unknown";
+
+    size_t len = 0;
+    sysctlbyname(name, NULL, &len, NULL, 0);
+
+    if (len > 0)
+    {
+        char *value = malloc(len * sizeof(char));
+        sysctlbyname(name, value, &len, NULL, 0);
+        result = [NSString stringWithUTF8String: value];
+        free(value);
+    }
+
+    return result;
+}
+
++ (NSNumber *)getNumberInfoFor: (const char *)name
+{
+    size_t len = 0;
+    sysctlbyname(name, NULL, &len, NULL, 0);
+
+    switch (len) {
+        case 4: {
+            int value;
+            sysctlbyname(name, &value, &len, NULL, 0);
+            return [NSNumber numberWithInt: value];
+        }
+        case 8: {
+            int64_t value = 0;
+            sysctlbyname(name, &value, &len, NULL, 0);
+            return [NSNumber numberWithInteger: value];
+        }
+        default:
+            return [NSNumber numberWithInt: 0];
+    }
+}
+
 + (MessageLog *)log
 {
+    static MessageLog *_messageLog;
+    
     if (_messageLog == nil) {
         _messageLog = [[MessageLog alloc] init];
+
+        // Log some important information. This goes to the newly created log file.
+        LogInfo(@"Starting up application");
+
+        NSProcessInfo *info = NSProcessInfo.processInfo;
+        info.automaticTerminationSupportEnabled = NO;
+
+        LogInfo(@"Arguments: %@", info.arguments);
+
+        NSBundle *mainBundle = [NSBundle mainBundle];
+        LogInfo(@"Pecunia version: %@", [mainBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"]);
+
+        LogInfo(@"Machine + OS: %@, %@", [MessageLog getStringInfoFor: "hw.model"], info.operatingSystemVersionString);
+        LogInfo(@"Mem size: %.01fGB", [MessageLog getNumberInfoFor: "hw.memsize"].doubleValue / 1024 / 1024 / 1024);
+        LogInfo(@"CPU : %@", [MessageLog getStringInfoFor: "machdep.cpu.brand_string"]);
+
+        LogInfo(@"Process environment: %@", info.environment);
+
     }
     return _messageLog;
 }
@@ -137,7 +197,7 @@ static MessageLog *_messageLog;
           function: sel_getName(_cmd)
               line: __LINE__
                tag:  nil
-            format: format
+            format: [NSString stringWithFormat: @"[Error] %@", format]
               args: args];
     }
 }
@@ -156,7 +216,7 @@ static MessageLog *_messageLog;
           function: sel_getName(_cmd)
               line: __LINE__
                tag:  nil
-            format: format
+            format: [NSString stringWithFormat: @"[Warning] %@", format]
               args: args];
     }
 }
@@ -175,7 +235,7 @@ static MessageLog *_messageLog;
           function: sel_getName(_cmd)
               line: __LINE__
                tag:  nil
-            format: format
+            format: [NSString stringWithFormat: @"[Info] %@", format]
               args: args];
     }
 }
@@ -194,7 +254,7 @@ static MessageLog *_messageLog;
           function: sel_getName(_cmd)
               line: __LINE__
                tag:  nil
-            format: format
+            format: [NSString stringWithFormat: @"[Debug] %@", format]
               args: args];
     }
 }
@@ -213,7 +273,7 @@ static MessageLog *_messageLog;
           function: sel_getName(_cmd)
               line: __LINE__
                tag:  nil
-            format: format
+            format: [NSString stringWithFormat: @"[Verbose] %@", format]
               args: args];
     }
 }

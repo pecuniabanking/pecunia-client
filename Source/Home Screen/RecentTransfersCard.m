@@ -19,12 +19,13 @@
 
 #import <CorePlot/CorePlot.h>
 
+#import "MessageLog.h"
+
 #import "RecentTransfersCard.h"
 #import "ShortDate.h"
 #import "Category.h"
 #import "StatCatAssignment.h"
 #import "BankStatement.h"
-#import "MessageLog.h"
 #import "TransfersCellView.h"
 #import "TransfersHeaderView.h"
 #import "ColorPopup.h"
@@ -185,8 +186,8 @@
         }
         
     }
-    @catch (NSException *exception) {
-        // TODO: logging
+    @catch (NSException *error) {
+        LogError(@"%@", error.debugDescription);
     }
     
     LogLeave;

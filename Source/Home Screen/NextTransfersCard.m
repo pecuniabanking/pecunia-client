@@ -19,6 +19,8 @@
 
 #import <CorePlot/CorePlot.h>
 
+#import "MessageLog.h"
+
 #import "NextTransfersCard.h"
 #import "NSColor+PecuniaAdditions.h"
 #import "GraphicsAdditions.h"
@@ -27,7 +29,6 @@
 #import "StandingOrder.h"
 #import "MOAssistant.h"
 #import "BankingController.h"
-#import "MessageLog.h"
 
 @interface NextTransfersCalendar : NSView
 {
@@ -901,10 +902,9 @@ static NSFont *smallNumberFont;
         }
 
         [bandView updateCalendarsWithFetch: YES];
-        
     }
-    @catch (NSException *exception) {
-        // TODO: logging.
+    @catch (NSException *error) {
+        LogError(@"%@", error.debugDescription);
     }
 
     LogLeave;

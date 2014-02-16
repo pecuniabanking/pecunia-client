@@ -99,8 +99,7 @@
             return [NSKeyedUnarchiver unarchiveObjectWithData: info.value];
         }
         @catch (...) {
-            [[MessageLog log] addMessage: [NSString stringWithFormat: @"Local settings: could unarchive value for key %@", aKey]
-                               withLevel: LogLevel_Warning];
+            LogWarning(@"Local settings: could not unarchive value for key %@", aKey);
             return nil;
         }
     }

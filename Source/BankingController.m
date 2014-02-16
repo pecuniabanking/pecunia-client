@@ -17,6 +17,8 @@
  * 02110-1301  USA
  */
 
+#import "MessageLog.h"
+
 #import "BankingController+Tabs.h" // Includes BankingController.h
 
 #import "NewBankUserController.h"
@@ -158,6 +160,7 @@ static BankingController *bankinControllerInstance;
             }
         }
         @catch (NSError *error) {
+            LogError(@"%@", error.debugDescription);
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
             [NSApp terminate: self];
@@ -924,8 +927,8 @@ static BankingController *bankinControllerInstance;
                 count += [result.account updateFromQueryResult: result];
             }
         }
-        @catch (NSException *e) {
-            [[MessageLog log] addMessage: e.reason withLevel: LogLevel_Error];
+        @catch (NSException *error) {
+            LogError(@"%@", error.debugDescription);
         }
         if (autoSyncRunning) {
             [self checkBalances: resultList];
@@ -3067,6 +3070,7 @@ static BankingController *bankinControllerInstance;
         self.managedObjectContext = [assistant context];
     }
     @catch (NSError *error) {
+        LogError(@"%@", error.debugDescription);
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         [NSApp terminate: self];
@@ -3083,6 +3087,7 @@ static BankingController *bankinControllerInstance;
             self.managedObjectContext = [assistant context];
         }
         @catch (NSError *error) {
+            LogError(@"%@", error.debugDescription);
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
             [NSApp terminate: self];

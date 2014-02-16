@@ -854,7 +854,7 @@ extern void *UserDefaultsBindingContext;
         }
     }
     @catch (NSException *exception) {
-        // TODO: logging
+        LogError(@"%@", exception.debugDescription);
     }
 
     LogLeave;

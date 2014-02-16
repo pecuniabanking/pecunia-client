@@ -17,10 +17,11 @@
  * 02110-1301  USA
  */
 
+#import "MessageLog.h"
+
 #import "ImportController.h"
 #import "MOAssistant.h"
 #import "ImportSettings.h"
-#import "MessageLog.h"
 #import "BankStatement.h"
 #import "MCEMDecimalNumberAdditions.h"
 #import "BankQueryResult.h"
@@ -885,7 +886,8 @@
                                                      maxDate: maxDate
                                                  canContinue: parsedValues.count > 0];
         }
-        @catch (NSException *exception) {
+        @catch (NSException *error) {
+            LogError(@"%@", error.debugDescription);
             [processingSheet preprocessingDoneWithFatalError];
         }
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -16,6 +16,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301  USA
  */
+
+#import "MessageLog.h"
 
 #import "CategoryDefWindowController.h"
 
@@ -108,12 +110,13 @@
         @try {
             [NSPredicate predicateWithFormat: rule];
         }
-        @catch (NSException *e) {
+        @catch (NSException *error) {
+            LogError(@"%@", error.debugDescription);
             NSRunAlertPanel(NSLocalizedString(@"AP113", nil),
                             NSLocalizedString(@"AP75", nil),
                             NSLocalizedString(@"AP1", nil),
                             nil, nil,
-                            e.reason
+                            error.reason
                             );
             return;
         }
