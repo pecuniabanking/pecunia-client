@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,12 +17,13 @@
  * 02110-1301  USA
  */
 
+#import "MessageLog.h"
+
 #import "ResultParser.h"
 #import "HBCIBridge.h"
 #import "HBCIError.h"
 #import <objc/runtime.h>
 #import "MOAssistant.h"
-#import "MessageLog.h"
 
 @implementation ResultParser
 
@@ -133,7 +134,7 @@
 
 - (void)parser: (NSXMLParser *)parser didStartElement: (NSString *)elementName namespaceURI: (NSString *)namespaceURI qualifiedName: (NSString *)qName attributes: (NSDictionary *)attributeDict
 {
-    //	NSLog(@"startElement: %@", elementName);
+    LogVerbose(@"startElement: %@", elementName);
     [resultXmlString appendFormat:@"<%@>", elementName ];
     
     currentType = [attributeDict valueForKey: @"type"];
@@ -147,7 +148,7 @@
         id obj;
         id class = objc_getClass([currentType UTF8String]);
         if (class == nil) {
-            NSLog(@"Result parser: couldn't find class \"%s\"", [currentType UTF8String]);
+            LogError(@"Result parser: couldn't find class \"%s\"", [currentType UTF8String]);
         } else {
             obj = [[class alloc] init];
             [stack addObject: obj];
@@ -195,7 +196,7 @@
     
     int idx = [stack count] - 1;
     int prev = idx - 1;
-    //	NSLog(@"endElement: %@", elementName);
+    LogVerbose(@"endElement: %@", elementName);
     if ([elementName isEqualToString: @"object"] || [elementName isEqualToString: @"cdObject"] || [elementName isEqualToString: @"dictionary"]) {
         if (prev >= 0) {
             id obj = stack[prev];

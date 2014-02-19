@@ -17,6 +17,8 @@
  * 02110-1301  USA
  */
 
+#import "MessageLog.h"
+
 #import "DockIconController.h"
 #import "BankStatement.h"
 #include "BankAccount.h"
@@ -56,8 +58,8 @@
             }
         }
     }
-    @catch (NSException *exception) {
-        // TODO: logging.
+    @catch (NSException *error) {
+        LogError(@"%@", error.debugDescription);
     }
 }
 

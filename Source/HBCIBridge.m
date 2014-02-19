@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -92,7 +92,7 @@
         [task setLaunchPath: @"/usr/bin/java" ];
         //	[task setEnvironment: [NSDictionary dictionaryWithObjectsAndKeys: @"/users/emmi/workspace/HBCIServer", @"CLASSPATH", nil ] ];
 
-        if ([LaunchParameters parameters ].debugServer) {
+        if (LaunchParameters.parameters.debugServer) {
             [task setArguments: @[@"-Xdebug", @"-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005", @"-jar", jarPath] ];
         }
 
@@ -117,7 +117,8 @@
 
 - (void)parse: (NSString *)cmd
 {
-    //	NSLog(@"String to parse: %@", cmd);
+    LogVerbose(@"HBCI bridge string to parse: %@", cmd);
+
     NSXMLParser *parser = [[NSXMLParser alloc] initWithData: [cmd dataUsingEncoding: NSUTF8StringEncoding]];
     [parser setDelegate: self];
     [parser setShouldResolveExternalEntities: YES];

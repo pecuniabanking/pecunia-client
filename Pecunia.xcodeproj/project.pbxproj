@@ -121,6 +121,8 @@
 		2765D42716AAD5AB00FF371E /* send@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42516AAD5AB00FF371E /* send@2x.png */; };
 		2765D42A16AAD7C100FF371E /* delete2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42816AAD7C100FF371E /* delete2.png */; };
 		2765D42B16AAD7C100FF371E /* delete2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42916AAD7C100FF371E /* delete2@2x.png */; };
+		2769AC4518B1008200F9D1D4 /* PecuniaApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 2769AC4418B1008200F9D1D4 /* PecuniaApplication.m */; };
+		2769AC4618B1008200F9D1D4 /* PecuniaApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 2769AC4418B1008200F9D1D4 /* PecuniaApplication.m */; };
 		276B83C51811A35F00AFF54A /* NSColor+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 276B83C41811A35F00AFF54A /* NSColor+PecuniaAdditions.m */; };
 		276B83C61811A35F00AFF54A /* NSColor+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 276B83C41811A35F00AFF54A /* NSColor+PecuniaAdditions.m */; };
 		276FBAE717C52F8400C67EEC /* HomeScreenTransfersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 276FBAE617C52F8400C67EEC /* HomeScreenTransfersView.xib */; };
@@ -541,6 +543,10 @@
 		27C202FD16E3894100D696BF /* reset.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C202FB16E3894100D696BF /* reset.png */; };
 		27C202FE16E3894100D696BF /* reset@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C202FC16E3894100D696BF /* reset@2x.png */; };
 		27C3B78915E37CD9008B8DB3 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C3B78815E37CD9008B8DB3 /* refresh.png */; };
+		27C5B15D18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C5B15C18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m */; };
+		27C5B15E18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C5B15C18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m */; };
+		27C5B16018B0C6A9004BB3C3 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C5B15F18B0C6A9004BB3C3 /* ExceptionHandling.framework */; };
+		27C5B16118B0C6E5004BB3C3 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C5B15F18B0C6A9004BB3C3 /* ExceptionHandling.framework */; };
 		27C78793143622920095F1DA /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27C78792143622920095F1DA /* ProgressWindow.xib */; };
 		27C78796143623080095F1DA /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C78795143623080095F1DA /* ProgressWindowController.m */; };
 		27C7B2F61475466600BD4F56 /* ColumnLayoutCorePlotLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C7B2F51475466600BD4F56 /* ColumnLayoutCorePlotLayer.m */; };
@@ -566,6 +572,16 @@
 		27CF0A6D15F260F200F48203 /* NSButton+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */; };
 		27D1172B15288C3600CD7E83 /* background-pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D1172A15288C3600CD7E83 /* background-pattern.png */; };
 		27D240EA145302A900EDC8C7 /* done.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 27D240E9145302A900EDC8C7 /* done.mp3 */; };
+		27D24EBB18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB118A7D63A00F1EADA /* DDAbstractDatabaseLogger.m */; };
+		27D24EBC18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB118A7D63A00F1EADA /* DDAbstractDatabaseLogger.m */; };
+		27D24EBD18A7D63A00F1EADA /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB318A7D63A00F1EADA /* DDASLLogger.m */; };
+		27D24EBE18A7D63A00F1EADA /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB318A7D63A00F1EADA /* DDASLLogger.m */; };
+		27D24EBF18A7D63A00F1EADA /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB518A7D63A00F1EADA /* DDFileLogger.m */; };
+		27D24EC018A7D63A00F1EADA /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB518A7D63A00F1EADA /* DDFileLogger.m */; };
+		27D24EC118A7D63A00F1EADA /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB818A7D63A00F1EADA /* DDLog.m */; };
+		27D24EC218A7D63A00F1EADA /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EB818A7D63A00F1EADA /* DDLog.m */; };
+		27D24EC318A7D63A00F1EADA /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EBA18A7D63A00F1EADA /* DDTTYLogger.m */; };
+		27D24EC418A7D63A00F1EADA /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D24EBA18A7D63A00F1EADA /* DDTTYLogger.m */; };
 		27D302951538453300D6A2CC /* sort-indicator-inc.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302941538453300D6A2CC /* sort-indicator-inc.png */; };
 		27D302971538461700D6A2CC /* sort-indicator-dec.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D302961538461700D6A2CC /* sort-indicator-dec.png */; };
 		27D3169014A8C81B002F500D /* blue arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 27D3168F14A8C81B002F500D /* blue arrow.png */; };
@@ -983,6 +999,8 @@
 		2765D42516AAD5AB00FF371E /* send@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send@2x.png"; sourceTree = "<group>"; };
 		2765D42816AAD7C100FF371E /* delete2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete2.png; sourceTree = "<group>"; };
 		2765D42916AAD7C100FF371E /* delete2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete2@2x.png"; sourceTree = "<group>"; };
+		2769AC4318B1008200F9D1D4 /* PecuniaApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaApplication.h; sourceTree = "<group>"; };
+		2769AC4418B1008200F9D1D4 /* PecuniaApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaApplication.m; sourceTree = "<group>"; };
 		276B83C31811A35F00AFF54A /* NSColor+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+PecuniaAdditions.h"; sourceTree = "<group>"; };
 		276B83C41811A35F00AFF54A /* NSColor+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+PecuniaAdditions.m"; sourceTree = "<group>"; wrapsLines = 0; };
 		276FBAE617C52F8400C67EEC /* HomeScreenTransfersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeScreenTransfersView.xib; sourceTree = "<group>"; };
@@ -1084,6 +1102,9 @@
 		27C202FB16E3894100D696BF /* reset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reset.png; sourceTree = "<group>"; };
 		27C202FC16E3894100D696BF /* reset@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reset@2x.png"; sourceTree = "<group>"; };
 		27C3B78815E37CD9008B8DB3 /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
+		27C5B15B18B0C59B004BB3C3 /* PecuniaExceptionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaExceptionDelegate.h; sourceTree = "<group>"; };
+		27C5B15C18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaExceptionDelegate.m; sourceTree = "<group>"; wrapsLines = 0; };
+		27C5B15F18B0C6A9004BB3C3 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
 		27C78792143622920095F1DA /* ProgressWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressWindow.xib; sourceTree = "<group>"; };
 		27C78794143623080095F1DA /* ProgressWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ProgressWindowController.h; sourceTree = "<group>"; tabWidth = 4; };
 		27C78795143623080095F1DA /* ProgressWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1109,6 +1130,17 @@
 		27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSButton+PecuniaAdditions.m"; sourceTree = "<group>"; };
 		27D1172A15288C3600CD7E83 /* background-pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-pattern.png"; sourceTree = "<group>"; };
 		27D240E9145302A900EDC8C7 /* done.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = done.mp3; path = Sounds/done.mp3; sourceTree = "<group>"; };
+		27D24EB018A7D63A00F1EADA /* DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
+		27D24EB118A7D63A00F1EADA /* DDAbstractDatabaseLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAbstractDatabaseLogger.m; sourceTree = "<group>"; };
+		27D24EB218A7D63A00F1EADA /* DDASLLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDASLLogger.h; sourceTree = "<group>"; };
+		27D24EB318A7D63A00F1EADA /* DDASLLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDASLLogger.m; sourceTree = "<group>"; };
+		27D24EB418A7D63A00F1EADA /* DDFileLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFileLogger.h; sourceTree = "<group>"; };
+		27D24EB518A7D63A00F1EADA /* DDFileLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDFileLogger.m; sourceTree = "<group>"; };
+		27D24EB618A7D63A00F1EADA /* DDLog+LOGV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DDLog+LOGV.h"; sourceTree = "<group>"; };
+		27D24EB718A7D63A00F1EADA /* DDLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLog.h; sourceTree = "<group>"; };
+		27D24EB818A7D63A00F1EADA /* DDLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLog.m; sourceTree = "<group>"; };
+		27D24EB918A7D63A00F1EADA /* DDTTYLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTTYLogger.h; sourceTree = "<group>"; };
+		27D24EBA18A7D63A00F1EADA /* DDTTYLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTTYLogger.m; sourceTree = "<group>"; };
 		27D302941538453300D6A2CC /* sort-indicator-inc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-indicator-inc.png"; sourceTree = "<group>"; };
 		27D302961538461700D6A2CC /* sort-indicator-dec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-indicator-dec.png"; sourceTree = "<group>"; };
 		27D3168F14A8C81B002F500D /* blue arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue arrow.png"; sourceTree = "<group>"; };
@@ -1180,7 +1212,7 @@
 		27FD0DA5184120AE0047911C /* StatementsOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsOverviewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27FD58C91437569B0074B378 /* StatementsListView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatementsListView.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		27FD58CA1437569B0074B378 /* StatementsListView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatementsListView.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = "<group>"; wrapsLines = 0; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* Pecunia_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pecunia_Prefix.pch; sourceTree = "<group>"; };
@@ -1230,7 +1262,7 @@
 		B136AAD60FCF1C4A007A643F /* MCEMTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMTableView.h; sourceTree = "<group>"; tabWidth = 4; };
 		B136AAD70FCF1C4A007A643F /* MCEMTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMTableView.m; sourceTree = "<group>"; tabWidth = 4; };
 		B137BF4512D5004C00D0394C /* MessageLog.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MessageLog.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
-		B137BF4612D5004C00D0394C /* MessageLog.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MessageLog.m; sourceTree = "<group>"; tabWidth = 4; };
+		B137BF4612D5004C00D0394C /* MessageLog.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MessageLog.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B138AC3A13918EB50026BEE2 /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTextCell.h; sourceTree = "<group>"; tabWidth = 4; };
 		B138AC3B13918EB50026BEE2 /* ImageAndTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndTextCell.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B138AC471391946E0026BEE2 /* money_18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money_18.png; sourceTree = "<group>"; };
@@ -1326,7 +1358,7 @@
 		B17E5C8315EFFC03008527C8 /* 102.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 102.xcmappingmodel; sourceTree = "<group>"; };
 		B17FE21014C22F7B00F6FAFE /* Accounts 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 3.xcdatamodel"; sourceTree = "<group>"; };
 		B17FE3C114C9F17400F6FAFE /* LaunchParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchParameters.h; sourceTree = "<group>"; };
-		B17FE3C214C9F17400F6FAFE /* LaunchParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchParameters.m; sourceTree = "<group>"; };
+		B17FE3C214C9F17400F6FAFE /* LaunchParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchParameters.m; sourceTree = "<group>"; wrapsLines = 0; };
 		B17FE44314CA091E00F6FAFE /* CustomerMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerMessage.h; sourceTree = "<group>"; };
 		B17FE44414CA091E00F6FAFE /* CustomerMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerMessage.m; sourceTree = "<group>"; };
 		B17FE48A14CB586A00F6FAFE /* BankMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankMessage.h; sourceTree = "<group>"; };
@@ -1412,7 +1444,6 @@
 		B1B41C8A14005B5B00BEEC8F /* BankParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankParameter.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1B41C8B14005B5B00BEEC8F /* BankParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankParameter.m; sourceTree = "<group>"; tabWidth = 4; };
 		B1BCDF75111F5DBB002E0802 /* CountryInfo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CountryInfo.txt; sourceTree = "<group>"; };
-		B1C0359A1720911D0007C1F5 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
 		B1C7AFFB12FE003A0091CD72 /* 030alpha.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = 030alpha.xcmappingmodel; sourceTree = "<group>"; };
 		B1C7AFFD12FE0BAB0091CD72 /* BankStatementPolicy030alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = BankStatementPolicy030alpha.h; sourceTree = "<group>"; tabWidth = 4; };
 		B1C7AFFE12FE0BAB0091CD72 /* BankStatementPolicy030alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BankStatementPolicy030alpha.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1473,6 +1504,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27C5B16118B0C6E5004BB3C3 /* ExceptionHandling.framework in Frameworks */,
 				277789B8173CE22700430EBC /* Quartz.framework in Frameworks */,
 				277789B9173CE22700430EBC /* Growl.framework in Frameworks */,
 				277789BA173CE22700430EBC /* Security.framework in Frameworks */,
@@ -1487,6 +1519,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27C5B16018B0C6A9004BB3C3 /* ExceptionHandling.framework in Frameworks */,
 				2799180F1711748C00C1AC3D /* Quartz.framework in Frameworks */,
 				2701A84D165E832C00A9A1C7 /* Growl.framework in Frameworks */,
 				B1872EFD163DD7B7003A8C14 /* Security.framework in Frameworks */,
@@ -1504,7 +1537,6 @@
 			isa = PBXGroup;
 			children = (
 				2799180E1711748C00C1AC3D /* Quartz.framework */,
-				B1C0359A1720911D0007C1F5 /* Sparkle.framework */,
 				2701A84C165E832C00A9A1C7 /* Growl.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				27E79FC0145AFBD4007C0AE3 /* CorePlot.framework */,
@@ -1744,6 +1776,7 @@
 		27CC732314A09DDD0082495C /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				27D24EAF18A7D63A00F1EADA /* CocoaLumberJack */,
 				27DD4AFB150B6F84006C2370 /* BWToolkit */,
 				2732F697186ADEC100809CF2 /* EDSideBar */,
 				27535FF2186DE337007400BA /* INAppStoreWindow */,
@@ -1781,6 +1814,24 @@
 				27D240E9145302A900EDC8C7 /* done.mp3 */,
 			);
 			name = Sounds;
+			sourceTree = "<group>";
+		};
+		27D24EAF18A7D63A00F1EADA /* CocoaLumberJack */ = {
+			isa = PBXGroup;
+			children = (
+				27D24EB018A7D63A00F1EADA /* DDAbstractDatabaseLogger.h */,
+				27D24EB118A7D63A00F1EADA /* DDAbstractDatabaseLogger.m */,
+				27D24EB218A7D63A00F1EADA /* DDASLLogger.h */,
+				27D24EB318A7D63A00F1EADA /* DDASLLogger.m */,
+				27D24EB418A7D63A00F1EADA /* DDFileLogger.h */,
+				27D24EB518A7D63A00F1EADA /* DDFileLogger.m */,
+				27D24EB618A7D63A00F1EADA /* DDLog+LOGV.h */,
+				27D24EB718A7D63A00F1EADA /* DDLog.h */,
+				27D24EB818A7D63A00F1EADA /* DDLog.m */,
+				27D24EB918A7D63A00F1EADA /* DDTTYLogger.h */,
+				27D24EBA18A7D63A00F1EADA /* DDTTYLogger.m */,
+			);
+			path = CocoaLumberJack;
 			sourceTree = "<group>";
 		};
 		27DD4AFB150B6F84006C2370 /* BWToolkit */ = {
@@ -1971,6 +2022,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				27C5B15F18B0C6A9004BB3C3 /* ExceptionHandling.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -2485,6 +2537,10 @@
 				B1FB509D1209F68E004DCD6A /* PurposeSplitData.m */,
 				B10DBBA812DA48EF0030D67A /* PurposeSplitRule.h */,
 				B10DBBA912DA48EF0030D67A /* PurposeSplitRule.m */,
+				27C5B15B18B0C59B004BB3C3 /* PecuniaExceptionDelegate.h */,
+				27C5B15C18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m */,
+				2769AC4318B1008200F9D1D4 /* PecuniaApplication.h */,
+				2769AC4418B1008200F9D1D4 /* PecuniaApplication.m */,
 			);
 			name = Basic;
 			sourceTree = "<group>";
@@ -3031,14 +3087,17 @@
 			files = (
 				27778874173CE22700430EBC /* main.m in Sources */,
 				27778875173CE22700430EBC /* BankingController.m in Sources */,
+				2769AC4618B1008200F9D1D4 /* PecuniaApplication.m in Sources */,
 				27EA7D571816ED25000D9B30 /* LocalSettingsController.m in Sources */,
 				27778876173CE22700430EBC /* TransactionController.m in Sources */,
+				27D24EBE18A7D63A00F1EADA /* DDASLLogger.m in Sources */,
 				27778877173CE22700430EBC /* BankStatement.m in Sources */,
 				27778878173CE22700430EBC /* BankAccount.m in Sources */,
 				27778879173CE22700430EBC /* Category.m in Sources */,
 				2777887A173CE22700430EBC /* Transfer.m in Sources */,
 				2777887B173CE22700430EBC /* NewBankUserController.m in Sources */,
 				2777887C173CE22700430EBC /* TransactionLimits.m in Sources */,
+				27C5B15E18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */,
 				2777887D173CE22700430EBC /* PreferenceController.m in Sources */,
 				2777887F173CE22700430EBC /* LogController.m in Sources */,
 				27778880173CE22700430EBC /* MOAssistant.m in Sources */,
@@ -3141,8 +3200,10 @@
 				B1AFC67217F62A980046B625 /* NewPinController.m in Sources */,
 				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
 				277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */,
+				27D24EC418A7D63A00F1EADA /* DDTTYLogger.m in Sources */,
 				277788DF173CE22700430EBC /* TanMedium.m in Sources */,
 				27535FFE186DE337007400BA /* INWindowButton.m in Sources */,
+				27D24EC018A7D63A00F1EADA /* DDFileLogger.m in Sources */,
 				277788E0173CE22700430EBC /* TanMediaList.m in Sources */,
 				277788E1173CE22700430EBC /* BankUser.m in Sources */,
 				277788E2173CE22700430EBC /* TanMethodOld.m in Sources */,
@@ -3197,6 +3258,8 @@
 				2778C24A18140984003BF49D /* ClickableImageView.m in Sources */,
 				27778912173CE22700430EBC /* CreditCardSettlement.m in Sources */,
 				27778913173CE22700430EBC /* CreditCardSettlementController.m in Sources */,
+				27D24EC218A7D63A00F1EADA /* DDLog.m in Sources */,
+				27D24EBC18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */,
 				27778914173CE22700430EBC /* CategoryHeatMapController.m in Sources */,
 				27778915173CE22700430EBC /* AdditionalControls.m in Sources */,
 				27778916173CE22700430EBC /* Tag.m in Sources */,
@@ -3225,14 +3288,17 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				B1C90E160ABB39D5006F18C9 /* BankingController.m in Sources */,
+				2769AC4518B1008200F9D1D4 /* PecuniaApplication.m in Sources */,
 				27EA7D561816ED25000D9B30 /* LocalSettingsController.m in Sources */,
 				B155D92E0BFD04B300904051 /* TransactionController.m in Sources */,
+				27D24EBD18A7D63A00F1EADA /* DDASLLogger.m in Sources */,
 				B124F09F0C36F3E8001065C2 /* BankStatement.m in Sources */,
 				B124F1110C371384001065C2 /* BankAccount.m in Sources */,
 				B1F527050C3C1D5800BE3DFC /* Category.m in Sources */,
 				B1927D250C52B5CD00B4D390 /* Transfer.m in Sources */,
 				B18B20560CC6A51B00B0B02C /* NewBankUserController.m in Sources */,
 				B17072D50D4BD35D00FBF186 /* TransactionLimits.m in Sources */,
+				27C5B15D18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m in Sources */,
 				B17074870D55104000FBF186 /* PreferenceController.m in Sources */,
 				B1A035750D8C77FC00072442 /* LogController.m in Sources */,
 				B10F77AD0D8EFC8300F00E60 /* MOAssistant.m in Sources */,
@@ -3335,8 +3401,10 @@
 				B1AFC67117F62A980046B625 /* NewPinController.m in Sources */,
 				B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */,
 				B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */,
+				27D24EC318A7D63A00F1EADA /* DDTTYLogger.m in Sources */,
 				B17728D71504ABC700256898 /* TanMedium.m in Sources */,
 				27535FFD186DE337007400BA /* INWindowButton.m in Sources */,
+				27D24EBF18A7D63A00F1EADA /* DDFileLogger.m in Sources */,
 				B17728F01504B14500256898 /* TanMediaList.m in Sources */,
 				B17728FD1504C33F00256898 /* BankUser.m in Sources */,
 				B17729141504C9B200256898 /* TanMethodOld.m in Sources */,
@@ -3391,6 +3459,8 @@
 				2778C24918140984003BF49D /* ClickableImageView.m in Sources */,
 				A6DB72E416B53C6100B44133 /* CreditCardSettlement.m in Sources */,
 				B1E3E4B416BB05CD00DC1638 /* CreditCardSettlementController.m in Sources */,
+				27D24EC118A7D63A00F1EADA /* DDLog.m in Sources */,
+				27D24EBB18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */,
 				27DCC81B16EB8F700070E241 /* CategoryHeatMapController.m in Sources */,
 				27CBA24516F60EFB00C2AC04 /* AdditionalControls.m in Sources */,
 				27548B901705D98E00C4BF9B /* Tag.m in Sources */,

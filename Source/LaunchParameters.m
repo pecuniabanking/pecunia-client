@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,6 +18,7 @@
  */
 
 #import "LaunchParameters.h"
+#import "DDLog.h" // For internal log levels.
 
 static NSString *extensionPackage = @".pecuniadata";
 
@@ -25,36 +26,43 @@ static NSString *extensionPackage = @".pecuniadata";
 
 @synthesize dataFile;
 @synthesize debugServer;
+@synthesize customLogLevel;
 
 static LaunchParameters *parameters = nil;
 
 - (void)parseParameters
 {
-    // Customize data file name and other parameters.
-    BOOL    altFile = NO;
-    NSArray *args = [[NSProcessInfo processInfo] arguments];
-    for (NSString *s in args) {
-        if ([s hasPrefix: @"-f"]) {
-            altFile = YES;
-            NSString *name = [s substringFromIndex: 2];
-            if (name == nil || [name length] == 0) {
-                continue;
-            } else {
-                self.dataFile = [name stringByAppendingString: extensionPackage];
-                altFile = NO;
-            }
-        }
-        if (altFile) {
-            // If there's a space between -f and the file name we end up here.
-            altFile = NO;
-            if (s == nil || [s length] == 0) {
-                continue;
-            }
-            self.dataFile = [s stringByAppendingString: extensionPackage];
-        }
+    NSUserDefaults *arguments = NSUserDefaults.standardUserDefaults;
 
-        if ([s isEqualToString: @"-dServer"]) {
-            debugServer = YES;
+    // Customize data file name and other parameters.
+    NSString *parameter = [arguments objectForKey: @"f"]; // "-f <datafile>"
+    if (parameter.length > 0) {
+        dataFile = parameter;
+        if (![parameter hasSuffix: extensionPackage]) {
+            dataFile = [parameter stringByAppendingString: extensionPackage];
+        }
+    }
+
+    parameter = [arguments objectForKey: @"d"]; // "-d server"
+    if (parameter.length > 0 && [parameter caseInsensitiveCompare: @"server"] == NSOrderedSame) {
+        debugServer = YES;
+    }
+
+    customLogLevel = -1;
+    parameter = [arguments objectForKey: @"loglevel"]; // "-loglevel (off, error, warning, info, debug, verbose)"
+    if (parameter.length > 0) {
+        NSDictionary *stringToNumber = @{@"off": @LOG_LEVEL_OFF,
+                                         @"error": @LOG_LEVEL_ERROR,
+                                         @"warning": @LOG_LEVEL_WARN,
+                                         @"info": @LOG_LEVEL_INFO,
+                                         @"debug": @LOG_LEVEL_DEBUG,
+                                         @"verbose": @LOG_LEVEL_VERBOSE};
+        NSNumber *number = [stringToNumber objectForKey: parameter.lowercaseString];
+        if (number) {
+            customLogLevel = number.intValue;
+            NSLog(@"Setting log level to %@ (0x%.2X)", parameter.lowercaseString, customLogLevel);
+        } else {
+            NSLog(@"Invalid log level \"%@\" specified. Using default log level instead.", parameter.lowercaseString);
         }
     }
 }

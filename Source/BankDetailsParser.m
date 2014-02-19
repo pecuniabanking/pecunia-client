@@ -151,7 +151,7 @@ typedef enum {
  */
 - (NSArray *)parseBankDetails
 {
-    LOG_ENTER;
+    LogEnter;
 
     if (ignoreSet == nil) {
         ignoreSet = [NSMutableCharacterSet alphanumericCharacterSet];
@@ -326,7 +326,7 @@ typedef enum {
         [result addObject: bankEntry];
     }
 
-    LOG_LEAVE;
+    LogLeave;
 
     return result;
 }

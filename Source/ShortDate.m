@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,6 +17,7 @@
  * 02110-1301  USA
  */
 
+#import "MessageLog.h"
 #import "ShortDate.h"
 
 NSCalendar *calendar = nil;
@@ -230,7 +231,7 @@ NSCalendar *calendar = nil;
             return 4 * (toDate.year - components.year) + (toDate.quarter - self.quarter);
 
         default:
-            NSLog(@"Invalid calendar unit specified in ShortDate unitsToDate:byUnit:");
+            LogError(@"Invalid calendar unit specified in ShortDate unitsToDate:byUnit:");
             return 0;
     }
 }
@@ -268,7 +269,7 @@ NSCalendar *calendar = nil;
             break;
 
         default:
-            NSLog(@"Invalid calendar unit specified in ShortDate dateByAddingUnits:byUnit:");
+            LogError(@"Invalid calendar unit specified in ShortDate dateByAddingUnits:byUnit:");
             return nil;
     }
     comps.hour = 12;

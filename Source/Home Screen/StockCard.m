@@ -99,7 +99,7 @@ typedef enum {
     initialInterval: (StocksTimeInterval)iInterval
               color: (NSColor *)graphColor
 {
-    LOG_ENTER;
+    LogEnter;
 
     self = [super initWithFrame: frame];
     if (self) {
@@ -121,25 +121,25 @@ typedef enum {
         [self updateTimer];
     }
 
-    LOG_LEAVE;
+    LogLeave;
 
     return self;
 }
 
 - (void)dealloc
 {
-    LOG_ENTER;
+    LogEnter;
 
     [queryTimer invalidate];
     free(timePoints);
     free(stockValues);
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)setupGraph
 {
-    LOG_ENTER;
+    LogEnter;
 
     graph = [[CPTXYGraph alloc] initWithFrame : NSRectToCGRect(self.bounds)];
     graph.opacity = 0;
@@ -190,12 +190,12 @@ typedef enum {
 
     [self updatePlot];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)updatePlot
 {
-    LOG_ENTER;
+    LogEnter;
 
     [graph removePlotWithIdentifier: @"stockPlot"];
     
@@ -235,7 +235,7 @@ typedef enum {
 
     [graph addPlot: linePlot];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 /**
@@ -244,7 +244,7 @@ typedef enum {
  */
 - (void)updateGraphTitle
 {
-    LOG_ENTER;
+    LogEnter;
 
     NSDictionary *attributes;
     NSAttributedString *temp;
@@ -304,12 +304,12 @@ typedef enum {
 
     titleLayer.maximumSize = CGSizeMake(NSWidth(self.bounds) - priceTextWidth - 18, 0);
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)setInterval: (StocksTimeInterval)newInterval
 {
-    LOG_ENTER;
+    LogEnter;
 
     interval = newInterval;
     forceUpdate = YES;
@@ -319,12 +319,12 @@ typedef enum {
     [closedView.animator setHidden: interval != StocksIntervalIntraday];
     [self updateTimer];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)setSymbol: (NSString *)newSymbol
 {
-    LOG_ENTER;
+    LogEnter;
 
     symbol = [newSymbol copy];
     forceUpdate = YES;
@@ -347,22 +347,22 @@ typedef enum {
 
     [self updateTimer];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)setColor: (NSColor *)newColor
 {
-    LOG_ENTER;
+    LogEnter;
 
     color = newColor;
     [self updatePlot];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)updateTimer
 {
-    LOG_ENTER;
+    LogEnter;
 
     // Stop all timers if we have no symbol to read.
     if (interval == StocksIntervalIntraday && symbol.length > 0) {
@@ -410,22 +410,22 @@ typedef enum {
         }
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)startProgressIndicator
 {
-    LOG_ENTER;
+    LogEnter;
 
     [progressIndicator.animator setHidden: NO];
     [progressIndicator startAnimation: self];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)stopProgressIndicator
 {
-    LOG_ENTER;
+    LogEnter;
 
     [progressIndicator stopAnimation: self];
     [progressIndicator.animator setHidden: YES];
@@ -436,12 +436,12 @@ typedef enum {
         [self onTimer: nil];
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)onTimer: (id)timer
 {
-    LOG_ENTER;
+    LogEnter;
 
     // If the progress indicator is visible then we already run a query.
     // Take a note of that and run onTimer again after finishing the current run.
@@ -456,12 +456,12 @@ typedef enum {
          ];
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)checkForChanges: (NSDictionary *)values
 {
-    LOG_ENTER;
+    LogEnter;
 
     NSDictionary *quote = [values dictionaryFromPath: @[@"response", @"result", @"list", @"quote"]];
 
@@ -545,12 +545,12 @@ typedef enum {
         [self stopProgressIndicator];
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)prepareDataForPlot: (NSDictionary *)values
 {
-    LOG_ENTER;
+    LogEnter;
 
     // For no appearent reason it can happen that an update contains less datapoints
     // than a previous request. Since previous prices are likely not to change we just ignore
@@ -661,12 +661,12 @@ typedef enum {
         graph.opacity = 1;
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)updateAxis: (CPTXYAxis *)axis
 {
-    LOG_ENTER;
+    LogEnter;
 
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateStyle = kCFDateFormatterShortStyle;
@@ -772,12 +772,12 @@ typedef enum {
         axis.labelingPolicy = CPTAxisLabelingPolicyNone;
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)setUpAxes
 {
-    LOG_ENTER;
+    LogEnter;
 
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
     CPTXYAxis    *x = axisSet.xAxis;
@@ -820,7 +820,7 @@ typedef enum {
     formatter.zeroSymbol = @"0";
     y.labelFormatter = formatter;
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 /**
@@ -828,7 +828,7 @@ typedef enum {
  */
 - (void)marketOpened
 {
-    LOG_ENTER;
+    LogEnter;
 
     marketIsOpen = YES;
     [closedView removeFromSuperview];
@@ -836,7 +836,7 @@ typedef enum {
     // Replace the market start timer by the regular repeating timer.
     [self updateTimer];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 /**
@@ -844,7 +844,7 @@ typedef enum {
  */
 - (void)marketClosed
 {
-    LOG_ENTER;
+    LogEnter;
 
     marketIsOpen = NO;
     if (closedView == nil) {
@@ -862,18 +862,18 @@ typedef enum {
     // intraday report mode.
     [self updateTimer];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)resizeWithOldSuperviewSize: (NSSize)oldSize
 {
-    LOG_ENTER;
+    LogEnter;
 
     [super resizeWithOldSuperviewSize: oldSize];
     titleLayer.maximumSize = CGSizeMake(NSWidth(self.bounds) - priceTextWidth - 18, 0);
     progressIndicator.frame = NSMakeRect(0, NSMaxY(self.bounds) - 25, 16, 16);
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 #pragma mark - Plot Data Source Methods
@@ -906,12 +906,12 @@ typedef enum {
 
 - (void)mouseDown: (NSEvent *)theEvent
 {
-    LOG_ENTER;
+    LogEnter;
 
     [super mouseDown: theEvent];
     [(HomeScreenCard *)self.superview cardClicked: @"StockCard"];
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 @end
@@ -935,21 +935,21 @@ typedef enum {
 
 - (id)initWithFrame: (NSRect)frame
 {
-    LOG_ENTER;
+    LogEnter;
 
     self = [super initWithFrame: frame];
     if (self) {
         [self setupUI];
     }
 
-    LOG_LEAVE;
+    LogLeave;
 
     return self;
 }
 
 - (void)dealloc
 {
-    LOG_ENTER;
+    LogEnter;
 
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
     for (NSUInteger i = 1; i <= 3; i++) {
@@ -962,12 +962,12 @@ typedef enum {
         }
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)setupUI
 {
-    LOG_ENTER;
+    LogEnter;
 
     NSRect frame = NSMakeRect(0, 0, 181, 13);
     intervalSelector = [[NSSegmentedControl alloc] initWithFrame: frame];
@@ -1023,12 +1023,12 @@ typedef enum {
         }
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)intervalChanged: (id)sender
 {
-    LOG_ENTER;
+    LogEnter;
 
     StocksTimeInterval interval;
     switch (intervalSelector.selectedSegment) {
@@ -1061,7 +1061,7 @@ typedef enum {
        graph.interval = interval;
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 /**
@@ -1069,7 +1069,7 @@ typedef enum {
  */
 - (void)resizeSubviewsWithOldSize: (NSSize)oldSize
 {
-    LOG_ENTER;
+    LogEnter;
 
     NSRect frame = self.bounds;
     frame.size.width -= 40;
@@ -1090,12 +1090,12 @@ typedef enum {
         }
     }
 
-    LOG_LEAVE;
+    LogLeave;
 }
 
 - (void)mouseDown: (NSEvent *)theEvent
 {
-    LOG_ENTER;
+    LogEnter;
 
     [super mouseDown: theEvent];
     [self cardClicked: @"StockCard"];
