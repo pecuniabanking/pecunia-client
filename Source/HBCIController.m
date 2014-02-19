@@ -181,6 +181,10 @@ NSString * escapeSpecial(NSString *s)
 {
     PecuniaError *error = nil;
 
+    if (bankCode == nil) {
+        return nil;
+    }
+    
     BankInfo *info = bankInfo[bankCode];
     if (info == nil) {
         NSString *cmd = [NSString stringWithFormat: @"<command name=\"getBankInfo\"><bankCode>%@</bankCode></command>", bankCode];
@@ -435,6 +439,7 @@ NSString * escapeSpecial(NSString *s)
 
         case TransferTypeInternal: transactionType = TransactionType_TransferInternal; break;
 
+        case TransferTypeCollectiveCreditSEPA:
         case TransferTypeSEPA: transactionType = TransactionType_TransferSEPA; break;
 
         case TransferTypeSEPAScheduled: transactionType = TransactionType_TransferSEPAScheduled; break;
@@ -444,11 +449,11 @@ NSString * escapeSpecial(NSString *s)
     }
 
     NSError *error = nil;
-    if (tt == TransferTypeCollectiveCredit || tt == TransferTypeCollectiveDebit) {
-    }
+
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSPredicate            *predicate = nil;
-    if (tt == TransferTypeCollectiveCredit || tt == TransferTypeCollectiveDebit) {
+    if (tt == TransferTypeCollectiveCredit || tt == TransferTypeCollectiveDebit ||
+        tt == TransferTypeCollectiveCreditSEPA) {
         predicate = [NSPredicate predicateWithFormat: @"account = %@ AND type = %d AND allowsCollective = 1", account, transactionType];
     } else {
         predicate = [NSPredicate predicateWithFormat: @"account = %@ AND type = %d", account, transactionType];

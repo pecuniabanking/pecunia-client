@@ -128,6 +128,12 @@
             tinfo.allowsDated = @NO;
         }
         
+        if ([supportedJobNames containsObject: @"MulitUebSEPA"] == YES) {
+            tinfo.allowsCollective = @YES;
+        } else {
+            tinfo.allowsCollective = @NO;
+        }
+        
         [[MessageLog log] addMessage: @"Add supported transaction UEBSEPA" withLevel: LogLevel_Debug];
     }
     
@@ -139,7 +145,7 @@
         
         [[MessageLog log] addMessage: @"Add supported transaction TERMUEBSEPA" withLevel: LogLevel_Debug];
     }
-    
+        
     if ([supportedJobNames containsObject: @"Umb"] == YES) {
         SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
         tinfo.account = account;

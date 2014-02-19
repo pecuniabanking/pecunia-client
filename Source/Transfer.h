@@ -32,7 +32,8 @@ typedef enum {
     TransferTypeSEPA,
     TransferTypeSEPAScheduled,
     TransferTypeCollectiveCredit,
-    TransferTypeCollectiveDebit
+    TransferTypeCollectiveDebit,
+    TransferTypeCollectiveCreditSEPA
 } TransferType;
 
 typedef enum {
