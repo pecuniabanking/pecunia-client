@@ -743,6 +743,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
         case TransferTypeCollectiveCredit:
         case TransferTypeCollectiveDebit:
+        case TransferTypeCollectiveCreditSEPA:
             return NO; // Not needed as individual transfer template type.
     }
 

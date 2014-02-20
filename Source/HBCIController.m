@@ -775,6 +775,7 @@ NSString * escapeSpecial(NSString *s)
 
                 case TransferTypeCollectiveCredit:
                 case TransferTypeCollectiveDebit:
+                case TransferTypeCollectiveCreditSEPA:
                     [[MessageLog log] addMessage: @"Collective transfer must be sent with 'sendCollectiveTransfer'" withLevel: LogLevel_Error];
                     continue;
                     break;
@@ -1498,6 +1499,32 @@ NSString * escapeSpecial(NSString *s)
     return nil;
 }
 
+- (PecuniaError*)updateSupportedTransactionsForUser:(BankUser *)user
+{
+    PecuniaError *error = nil;
+    if ([self registerBankUser: user error: &error] == NO) {
+        return error;
+    }
+    
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getUserData\">"];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
+    [self appendTag: @"customerId" withValue: user.customerId to: cmd];
+    [self appendTag: @"userId" withValue: user.userId to: cmd];
+    [cmd appendString: @"</command>"];
+    
+    // communicate with bank to update bank parameters
+    User *usr = [bridge syncCommand: cmd error: &error];
+    if (error) {
+        return error;
+    }
+    // update supported transactions
+    error = [self updateSupportedTransactionsForAccounts: usr.accounts user: user];
+    if (error) {
+        return error;
+    }
+    return nil;
+}
+
 - (PecuniaError *)updateBankDataForUser: (BankUser *)user
 {
     PecuniaError *error = nil;
@@ -1505,7 +1532,7 @@ NSString * escapeSpecial(NSString *s)
         return error;
     }
 
-    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"updateBankData\">"];
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"updateUserData\">"];
     [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
     [self appendTag: @"customerId" withValue: user.customerId to: cmd];
     [self appendTag: @"userId" withValue: user.userId to: cmd];
