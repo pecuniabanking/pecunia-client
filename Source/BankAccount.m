@@ -329,8 +329,8 @@
         // Balance recomputation.
         if (![statement.saldo isEqual: balance]) {
             statement.saldo = balance;
-            balance = [balance decimalNumberBySubtracting: statement.value];
         }
+        balance = [balance decimalNumberBySubtracting: statement.value];
     }
 }
 

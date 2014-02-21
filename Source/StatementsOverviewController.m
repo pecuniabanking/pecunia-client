@@ -382,8 +382,8 @@ extern void *UserDefaultsBindingContext;
             } else {
                 res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP805", nil),
                                               NSLocalizedString(@"AP808", nil),
-                                              NSLocalizedString(@"AP3", nil),
                                               NSLocalizedString(@"AP4", nil),
+                                              NSLocalizedString(@"AP3", nil),
                                               nil);
                 if (res == NSAlertAlternateReturn) {
                     deleteStatement = YES;
@@ -418,10 +418,15 @@ extern void *UserDefaultsBindingContext;
             }
         }
     }
+    
+    
 
     [context processPendingChanges];
     for (BankAccount *account in affectedAccounts) {
         [account updateAssignmentsForReportRange];
+        if (![account.isManual boolValue]) {
+            [account updateStatementBalances];
+        }
     }
     [[Category bankRoot] updateCategorySums];
     [categoryAssignments prepareContent];
