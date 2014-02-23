@@ -641,6 +641,22 @@
 		27EEDF63178B1E8F00FFE365 /* StockCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EEDF62178B1E8F00FFE365 /* StockCard.m */; };
 		27EEDF64178B1E8F00FFE365 /* StockCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EEDF62178B1E8F00FFE365 /* StockCard.m */; };
 		27F30887143E282700A10FCE /* new.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F30886143E282700A10FCE /* new.png */; };
+		27F69B7218BA3EFB002CBE06 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6118BA3EFB002CBE06 /* ioapi.c */; };
+		27F69B7318BA3EFB002CBE06 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6118BA3EFB002CBE06 /* ioapi.c */; };
+		27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6318BA3EFB002CBE06 /* unzip.c */; };
+		27F69B7518BA3EFB002CBE06 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6318BA3EFB002CBE06 /* unzip.c */; };
+		27F69B7618BA3EFB002CBE06 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6518BA3EFB002CBE06 /* zip.c */; };
+		27F69B7718BA3EFB002CBE06 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6518BA3EFB002CBE06 /* zip.c */; };
+		27F69B7818BA3EFB002CBE06 /* FileInZipInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6918BA3EFB002CBE06 /* FileInZipInfo.m */; };
+		27F69B7918BA3EFB002CBE06 /* FileInZipInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6918BA3EFB002CBE06 /* FileInZipInfo.m */; };
+		27F69B7A18BA3EFB002CBE06 /* ZipException.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6B18BA3EFB002CBE06 /* ZipException.m */; };
+		27F69B7B18BA3EFB002CBE06 /* ZipException.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6B18BA3EFB002CBE06 /* ZipException.m */; };
+		27F69B7C18BA3EFB002CBE06 /* ZipFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6D18BA3EFB002CBE06 /* ZipFile.m */; };
+		27F69B7D18BA3EFB002CBE06 /* ZipFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6D18BA3EFB002CBE06 /* ZipFile.m */; };
+		27F69B7E18BA3EFB002CBE06 /* ZipReadStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6F18BA3EFB002CBE06 /* ZipReadStream.m */; };
+		27F69B7F18BA3EFB002CBE06 /* ZipReadStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B6F18BA3EFB002CBE06 /* ZipReadStream.m */; };
+		27F69B8018BA3EFB002CBE06 /* ZipWriteStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B7118BA3EFB002CBE06 /* ZipWriteStream.m */; };
+		27F69B8118BA3EFB002CBE06 /* ZipWriteStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F69B7118BA3EFB002CBE06 /* ZipWriteStream.m */; };
 		27FA4A17154D49E5002A5ED0 /* donate-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A15154D49E5002A5ED0 /* donate-active.png */; };
 		27FA4A18154D49E5002A5ED0 /* donate.png in Resources */ = {isa = PBXBuildFile; fileRef = 27FA4A16154D49E5002A5ED0 /* donate.png */; };
 		27FA4A1B154D5AB9002A5ED0 /* BankingController+Tabs.m in Sources */ = {isa = PBXBuildFile; fileRef = 27FA4A1A154D5AB9002A5ED0 /* BankingController+Tabs.m */; };
@@ -1202,6 +1218,24 @@
 		27EEDF61178B1E8F00FFE365 /* StockCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StockCard.h; path = "Home Screen/StockCard.h"; sourceTree = "<group>"; };
 		27EEDF62178B1E8F00FFE365 /* StockCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StockCard.m; path = "Home Screen/StockCard.m"; sourceTree = "<group>"; wrapsLines = 0; };
 		27F30886143E282700A10FCE /* new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new.png; sourceTree = "<group>"; };
+		27F69B6018BA3EFB002CBE06 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		27F69B6118BA3EFB002CBE06 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		27F69B6218BA3EFB002CBE06 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		27F69B6318BA3EFB002CBE06 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		27F69B6418BA3EFB002CBE06 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		27F69B6518BA3EFB002CBE06 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		27F69B6618BA3EFB002CBE06 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		27F69B6818BA3EFB002CBE06 /* FileInZipInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileInZipInfo.h; sourceTree = "<group>"; };
+		27F69B6918BA3EFB002CBE06 /* FileInZipInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileInZipInfo.m; sourceTree = "<group>"; };
+		27F69B6A18BA3EFB002CBE06 /* ZipException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipException.h; sourceTree = "<group>"; };
+		27F69B6B18BA3EFB002CBE06 /* ZipException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZipException.m; sourceTree = "<group>"; };
+		27F69B6C18BA3EFB002CBE06 /* ZipFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipFile.h; sourceTree = "<group>"; };
+		27F69B6D18BA3EFB002CBE06 /* ZipFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZipFile.m; sourceTree = "<group>"; };
+		27F69B6E18BA3EFB002CBE06 /* ZipReadStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipReadStream.h; sourceTree = "<group>"; };
+		27F69B6F18BA3EFB002CBE06 /* ZipReadStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZipReadStream.m; sourceTree = "<group>"; };
+		27F69B7018BA3EFB002CBE06 /* ZipWriteStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipWriteStream.h; sourceTree = "<group>"; };
+		27F69B7118BA3EFB002CBE06 /* ZipWriteStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZipWriteStream.m; sourceTree = "<group>"; };
+		27F69B8218BA3F63002CBE06 /* ARCHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARCHelper.h; path = "Objective-Zip/ARCHelper.h"; sourceTree = "<group>"; };
 		27FA4A15154D49E5002A5ED0 /* donate-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "donate-active.png"; sourceTree = "<group>"; };
 		27FA4A16154D49E5002A5ED0 /* donate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = donate.png; sourceTree = "<group>"; };
 		27FA4A19154D5AB9002A5ED0 /* BankingController+Tabs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BankingController+Tabs.h"; sourceTree = "<group>"; };
@@ -1776,6 +1810,7 @@
 		27CC732314A09DDD0082495C /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				27F69B5E18BA3ED4002CBE06 /* Objective-Zip */,
 				27D24EAF18A7D63A00F1EADA /* CocoaLumberJack */,
 				27DD4AFB150B6F84006C2370 /* BWToolkit */,
 				2732F697186ADEC100809CF2 /* EDSideBar */,
@@ -1945,6 +1980,49 @@
 				27E662B015A09B24002F9277 /* TransferTemplateListViewCell.xib */,
 			);
 			path = Designer;
+			sourceTree = "<group>";
+		};
+		27F69B5E18BA3ED4002CBE06 /* Objective-Zip */ = {
+			isa = PBXGroup;
+			children = (
+				27F69B8218BA3F63002CBE06 /* ARCHelper.h */,
+				27F69B5F18BA3EFB002CBE06 /* MiniZip */,
+				27F69B6718BA3EFB002CBE06 /* Objective-Zip */,
+			);
+			name = "Objective-Zip";
+			sourceTree = "<group>";
+		};
+		27F69B5F18BA3EFB002CBE06 /* MiniZip */ = {
+			isa = PBXGroup;
+			children = (
+				27F69B6018BA3EFB002CBE06 /* crypt.h */,
+				27F69B6118BA3EFB002CBE06 /* ioapi.c */,
+				27F69B6218BA3EFB002CBE06 /* ioapi.h */,
+				27F69B6318BA3EFB002CBE06 /* unzip.c */,
+				27F69B6418BA3EFB002CBE06 /* unzip.h */,
+				27F69B6518BA3EFB002CBE06 /* zip.c */,
+				27F69B6618BA3EFB002CBE06 /* zip.h */,
+			);
+			name = MiniZip;
+			path = "Objective-Zip/MiniZip";
+			sourceTree = "<group>";
+		};
+		27F69B6718BA3EFB002CBE06 /* Objective-Zip */ = {
+			isa = PBXGroup;
+			children = (
+				27F69B6818BA3EFB002CBE06 /* FileInZipInfo.h */,
+				27F69B6918BA3EFB002CBE06 /* FileInZipInfo.m */,
+				27F69B6A18BA3EFB002CBE06 /* ZipException.h */,
+				27F69B6B18BA3EFB002CBE06 /* ZipException.m */,
+				27F69B6C18BA3EFB002CBE06 /* ZipFile.h */,
+				27F69B6D18BA3EFB002CBE06 /* ZipFile.m */,
+				27F69B6E18BA3EFB002CBE06 /* ZipReadStream.h */,
+				27F69B6F18BA3EFB002CBE06 /* ZipReadStream.m */,
+				27F69B7018BA3EFB002CBE06 /* ZipWriteStream.h */,
+				27F69B7118BA3EFB002CBE06 /* ZipWriteStream.m */,
+			);
+			name = "Objective-Zip";
+			path = "Objective-Zip/Objective-Zip";
 			sourceTree = "<group>";
 		};
 		27FA4A1C154D5B76002A5ED0 /* Sections */ = {
@@ -3119,6 +3197,7 @@
 				2777888F173CE22700430EBC /* WorkerThread.m in Sources */,
 				27778890173CE22700430EBC /* BSSelectWindowController.m in Sources */,
 				27778891173CE22700430EBC /* StatusBarController.m in Sources */,
+				27F69B7B18BA3EFB002CBE06 /* ZipException.m in Sources */,
 				27778892173CE22700430EBC /* PecuniaError.m in Sources */,
 				27778893173CE22700430EBC /* PasswordWindow.m in Sources */,
 				27778894173CE22700430EBC /* MCEMTableView.m in Sources */,
@@ -3175,8 +3254,10 @@
 				277788C6173CE22700430EBC /* ChipTanWindowController.m in Sources */,
 				277788C7173CE22700430EBC /* FlickerView.m in Sources */,
 				277788C8173CE22700430EBC /* TanMediaWindowController.m in Sources */,
+				27F69B7918BA3EFB002CBE06 /* FileInZipInfo.m in Sources */,
 				277788C9173CE22700430EBC /* BankParameter.m in Sources */,
 				277788CA173CE22700430EBC /* ImportSettings.m in Sources */,
+				27F69B7D18BA3EFB002CBE06 /* ZipFile.m in Sources */,
 				277788CB173CE22700430EBC /* ImportController.m in Sources */,
 				277788CC173CE22700430EBC /* ProgressWindowController.m in Sources */,
 				277788CD173CE22700430EBC /* StatementsListView.m in Sources */,
@@ -3193,6 +3274,7 @@
 				277788D7173CE22700430EBC /* PecuniaPlotTimeFormatter.m in Sources */,
 				277788D8173CE22700430EBC /* AnimationHelper.m in Sources */,
 				277788D9173CE22700430EBC /* NS(Attributed)String+Geometrics.m in Sources */,
+				27F69B7518BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69B186ADEC100809CF2 /* EDSideBar.m in Sources */,
 				277788DA173CE22700430EBC /* LaunchParameters.m in Sources */,
 				277788DB173CE22700430EBC /* CustomerMessage.m in Sources */,
@@ -3200,11 +3282,13 @@
 				B1AFC67217F62A980046B625 /* NewPinController.m in Sources */,
 				277788DD173CE22700430EBC /* CategoryBudget.m in Sources */,
 				277788DE173CE22700430EBC /* BankSetupInfo.m in Sources */,
+				27F69B8118BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				27D24EC418A7D63A00F1EADA /* DDTTYLogger.m in Sources */,
 				277788DF173CE22700430EBC /* TanMedium.m in Sources */,
 				27535FFE186DE337007400BA /* INWindowButton.m in Sources */,
 				27D24EC018A7D63A00F1EADA /* DDFileLogger.m in Sources */,
 				277788E0173CE22700430EBC /* TanMediaList.m in Sources */,
+				27F69B7F18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
 				277788E1173CE22700430EBC /* BankUser.m in Sources */,
 				277788E2173CE22700430EBC /* TanMethodOld.m in Sources */,
 				277788E3173CE22700430EBC /* BusinessTransactionsController.m in Sources */,
@@ -3248,6 +3332,7 @@
 				27778908173CE22700430EBC /* GenerateDataController.m in Sources */,
 				27778909173CE22700430EBC /* GrowlNotification.m in Sources */,
 				2777890A173CE22700430EBC /* NSSplitView+PecuniaAdditions.m in Sources */,
+				27F69B7718BA3EFB002CBE06 /* zip.c in Sources */,
 				2777890B173CE22700430EBC /* CategoryMaintenanceController.m in Sources */,
 				2777890C173CE22700430EBC /* NSAttributedString+PecuniaAdditions.m in Sources */,
 				2777890D173CE22700430EBC /* DebitsController.m in Sources */,
@@ -3258,6 +3343,7 @@
 				2778C24A18140984003BF49D /* ClickableImageView.m in Sources */,
 				27778912173CE22700430EBC /* CreditCardSettlement.m in Sources */,
 				27778913173CE22700430EBC /* CreditCardSettlementController.m in Sources */,
+				27F69B7318BA3EFB002CBE06 /* ioapi.c in Sources */,
 				27D24EC218A7D63A00F1EADA /* DDLog.m in Sources */,
 				27D24EBC18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */,
 				27778914173CE22700430EBC /* CategoryHeatMapController.m in Sources */,
@@ -3320,6 +3406,7 @@
 				B196E03D0FABA2CC00509748 /* WorkerThread.m in Sources */,
 				B196E0940FACE15F00509748 /* BSSelectWindowController.m in Sources */,
 				B196E1B20FB4CFE200509748 /* StatusBarController.m in Sources */,
+				27F69B7A18BA3EFB002CBE06 /* ZipException.m in Sources */,
 				B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */,
 				B1A6E8350FC890E400566C55 /* PasswordWindow.m in Sources */,
 				B136AAD80FCF1C4A007A643F /* MCEMTableView.m in Sources */,
@@ -3376,8 +3463,10 @@
 				B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */,
 				B17B2B4313EC921200739E7A /* FlickerView.m in Sources */,
 				B1B417DF13F06AD200BEEC8F /* TanMediaWindowController.m in Sources */,
+				27F69B7818BA3EFB002CBE06 /* FileInZipInfo.m in Sources */,
 				B1B41C8C14005B5B00BEEC8F /* BankParameter.m in Sources */,
 				B1AA6337140990EF00ADE1D0 /* ImportSettings.m in Sources */,
+				27F69B7C18BA3EFB002CBE06 /* ZipFile.m in Sources */,
 				B1AA640C140C074E00ADE1D0 /* ImportController.m in Sources */,
 				27C78796143623080095F1DA /* ProgressWindowController.m in Sources */,
 				27FD58CB1437569B0074B378 /* StatementsListView.m in Sources */,
@@ -3394,6 +3483,7 @@
 				27C7B506147FC50300278131 /* PecuniaPlotTimeFormatter.m in Sources */,
 				2792CB3414840506006A510A /* AnimationHelper.m in Sources */,
 				27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */,
+				27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69A186ADEC100809CF2 /* EDSideBar.m in Sources */,
 				B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */,
 				B17FE44514CA091E00F6FAFE /* CustomerMessage.m in Sources */,
@@ -3401,11 +3491,13 @@
 				B1AFC67117F62A980046B625 /* NewPinController.m in Sources */,
 				B17FE49714CB59BA00F6FAFE /* CategoryBudget.m in Sources */,
 				B17728B01502D0D300256898 /* BankSetupInfo.m in Sources */,
+				27F69B8018BA3EFB002CBE06 /* ZipWriteStream.m in Sources */,
 				27D24EC318A7D63A00F1EADA /* DDTTYLogger.m in Sources */,
 				B17728D71504ABC700256898 /* TanMedium.m in Sources */,
 				27535FFD186DE337007400BA /* INWindowButton.m in Sources */,
 				27D24EBF18A7D63A00F1EADA /* DDFileLogger.m in Sources */,
 				B17728F01504B14500256898 /* TanMediaList.m in Sources */,
+				27F69B7E18BA3EFB002CBE06 /* ZipReadStream.m in Sources */,
 				B17728FD1504C33F00256898 /* BankUser.m in Sources */,
 				B17729141504C9B200256898 /* TanMethodOld.m in Sources */,
 				B177297E1504CE1B00256898 /* BusinessTransactionsController.m in Sources */,
@@ -3449,6 +3541,7 @@
 				27E68C4A165CF7DA005EBE66 /* GenerateDataController.m in Sources */,
 				2701A84B165E827F00A9A1C7 /* GrowlNotification.m in Sources */,
 				27D576461662819E00761132 /* NSSplitView+PecuniaAdditions.m in Sources */,
+				27F69B7618BA3EFB002CBE06 /* zip.c in Sources */,
 				27DFFD9616739DAE00848CD2 /* CategoryMaintenanceController.m in Sources */,
 				270C1A0F168B3CAC000E25FF /* NSAttributedString+PecuniaAdditions.m in Sources */,
 				27A3DA2316A1C99C00FD7335 /* DebitsController.m in Sources */,
@@ -3459,6 +3552,7 @@
 				2778C24918140984003BF49D /* ClickableImageView.m in Sources */,
 				A6DB72E416B53C6100B44133 /* CreditCardSettlement.m in Sources */,
 				B1E3E4B416BB05CD00DC1638 /* CreditCardSettlementController.m in Sources */,
+				27F69B7218BA3EFB002CBE06 /* ioapi.c in Sources */,
 				27D24EC118A7D63A00F1EADA /* DDLog.m in Sources */,
 				27D24EBB18A7D63A00F1EADA /* DDAbstractDatabaseLogger.m in Sources */,
 				27DCC81B16EB8F700070E241 /* CategoryHeatMapController.m in Sources */,
