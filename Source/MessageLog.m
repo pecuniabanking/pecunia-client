@@ -30,6 +30,7 @@
 @interface MessageLog ()
 {
     int logLevel; // One of the CocoaLumberjack log levels.
+    DDFileLogger *fileLogger; // The regular file logger.
 }
 @end
 
@@ -53,7 +54,7 @@
 #endif
 
         // The file logger is always active.
-        DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
+        fileLogger = [[DDFileLogger alloc] init];
         fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
         fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
         [DDLog addLogger: fileLogger];
@@ -116,6 +117,18 @@
     [self addMessage: data[@"message"] withLevel: level];
 }
 
++ (NSURL *)currentLogFile
+{
+    NSArray *filePaths = [self.log->fileLogger.logFileManager sortedLogFilePaths];
+    return [NSURL fileURLWithPath: filePaths[0]];
+}
+
++ (NSURL *)logFolder
+{
+    NSString *folder = [self.log->fileLogger.logFileManager logsDirectory];
+    return [NSURL fileURLWithPath: folder];
+}
+
 + (NSString *)getStringInfoFor: (const char *)name
 {
     NSString *result = @"Unknown";
@@ -158,7 +171,7 @@
 + (MessageLog *)log
 {
     static MessageLog *_messageLog;
-    
+
     if (_messageLog == nil) {
         _messageLog = [[MessageLog alloc] init];
 

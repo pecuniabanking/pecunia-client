@@ -76,9 +76,13 @@
 #import "NSColor+PecuniaAdditions.h"
 #import "NSDictionary+PecuniaAdditions.h"
 #import "NSOutlineView+PecuniaAdditions.h"
+
 #import "BWGradientBox.h"
 #import "EDSideBar.h"
 #import "INAppStoreWindow.h"
+#import "ZipFile.h"
+#import "ZipWriteStream.h"
+#import "ZipException.h"
 
 #import "Tag.h"
 #import "User.h"
@@ -285,10 +289,7 @@ static BankingController *bankinControllerInstance;
     [developerMenu setHidden: NO];
 #endif
 
-    // TODO: without this short start the animation is not correct when used during enqeueRequest.
-    //       Investigate why the button image is shifted then until reloaded (e.g. for backing store changes).
-    [self startRefreshAnimation];
-    [self stopRefreshAnimation];
+    refreshButton.layer.anchorPoint = CGPointMake(0.49, 0.48);
 
     LogLeave;
 }
@@ -412,6 +413,45 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
+- (void)logSummary: (NSString *)entity withMessage: (NSString *)message
+{
+    NSError *error = nil;
+
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    request.entity = [NSEntityDescription entityForName: entity inManagedObjectContext: managedObjectContext];
+    NSUInteger count = [managedObjectContext countForFetchRequest: request error: &error];
+    if (error == nil) {
+        LogInfo(@"\t%i %@", count, message);
+    } else {
+        LogError(@"Couldn't determin summary for %@. Got error: %@", message, error.localizedDescription);
+    }
+}
+
+- (void)logDatabaseInfo
+{
+    // Log a few important data details.
+    LogInfo(@"Database summary:");
+
+    [self logSummary: @"BankAccount" withMessage: @"bank accounts"];
+    [self logSummary: @"BankMessage" withMessage: @"bank messages"];
+    [self logSummary: @"BankStatement" withMessage: @"bank statements"];
+    [self logSummary: @"BankUser" withMessage: @"bank users"];
+    [self logSummary: @"Category" withMessage: @"categories"];
+    [self logSummary: @"CreditCardSettlement" withMessage: @"credit card settlements"];
+    [self logSummary: @"CustomerMessage" withMessage: @"customer messages"];
+    [self logSummary: @"StandingOrder" withMessage: @"standing orders"];
+    [self logSummary: @"StatCatAssignment" withMessage: @"category assignments"];
+    [self logSummary: @"SupportedTransactionInfo" withMessage: @"transaction infos"];
+    [self logSummary: @"Tag" withMessage: @"tags"];
+    [self logSummary: @"TanMedium" withMessage: @"signing media"];
+    [self logSummary: @"TanMethod" withMessage: @"signing methods"];
+    [self logSummary: @"TransactionLimits" withMessage: @"transaction limits"];
+    [self logSummary: @"Transfer" withMessage: @"transfers"];
+    [self logSummary: @"TransferTemplate" withMessage: @"transfer templates"];
+
+    // ... details go here with debug log level...
+}
+
 - (void)publishContext
 {
     LogEnter;
@@ -436,6 +476,8 @@ static BankingController *bankinControllerInstance;
     [categoryController fetchWithRequest: nil merge: NO error: &error];
     [accountsView restoreState];
     dockIconController = [[DockIconController alloc] initWithManagedObjectContext: self.managedObjectContext];
+
+    [self logDatabaseInfo];
 
     LogLeave;
 }
@@ -1253,6 +1295,74 @@ static BankingController *bankinControllerInstance;
     [accountsView setNeedsDisplay: YES];
     
     LogLeave;
+}
+
+- (IBAction)sendErrorReport: (id)sender
+{
+    NSURL* logURL = MessageLog.currentLogFile;
+
+    // It's a weird oversight that there's no unified way of sending a mail to a given address with an attachment.
+    // That holds true at least until 10.8 where we finally have sharing services for that.
+    if (floor(NSAppKitVersionNumber) < NSAppKitVersionNumber10_8) {
+        // The least comfortable way.
+        NSString *mailtoLink = [NSString stringWithFormat: @"mailto:support@pecuniabanking.de?subject=%@&body=%@%@",
+                                NSLocalizedString(@"AP123", nil),
+                                NSLocalizedString(@"AP121", nil),
+                                NSLocalizedString(@"AP122", nil)];
+        NSURL *url = [NSURL URLWithString: (NSString *)
+                      CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)mailtoLink,
+                                                                                NULL, NULL, kCFStringEncodingUTF8))];
+
+        [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs: @[logURL]];
+        [[NSWorkspace sharedWorkspace] openURL: url];
+    } else {
+        NSAttributedString* textAttributedString = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"AP121", nil)];
+
+        NSSharingService* mailShare = [NSSharingService sharingServiceNamed: NSSharingServiceNameComposeEmail];
+        NSMutableArray* shareItems = [NSMutableArray arrayWithObjects: textAttributedString, nil];
+        if (logURL != nil) {
+            BOOL savedAsZip = NO;
+
+            @try {
+                // We use a fixed zip file name by intention, to avoid polluting the log folder with many zip files.
+                NSURL *zip = [MessageLog.logFolder URLByAppendingPathComponent: @"Pecunia Log.zip"];
+                ZipFile *zipFile = [[ZipFile alloc] initWithFileName: zip.path
+                                                                mode: ZipFileModeCreate];
+                ZipWriteStream *stream= [zipFile writeFileInZipWithName: [logURL.path lastPathComponent]
+                                                       compressionLevel: ZipCompressionLevelBest];
+                NSData *logData = [NSData dataWithContentsOfURL: logURL];
+                [stream writeData: logData];
+                [stream finishedWriting];
+                [zipFile close];
+
+                [shareItems addObject: zip];
+                savedAsZip = YES;
+            }
+            @catch (ZipException *exception) {
+                LogError(@"Could not create zipped log (%@).", logURL);
+            }
+
+            if (!savedAsZip) {
+                [shareItems addObject: logURL];
+            }
+        }
+
+        if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
+            // Mavericks. The best solution.
+            mailShare.subject = NSLocalizedString(@"AP123", nil);
+            mailShare.recipients = @[@"support@pecuniabanking.de"];
+        } else {
+            // Cannot set a mail subject or receiver before OS X 10.9 <sigh>.
+            [shareItems insertObject: NSLocalizedString(@"AP124", nil) atIndex: 0];
+        }
+        [mailShare performWithItems: shareItems];
+    }
+}
+
+- (IBAction)openLogFolder: (id)sender
+{
+    NSURL* logURL = MessageLog.currentLogFile;
+    [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs: @[logURL]];
 }
 
 #pragma mark - Account management
@@ -3325,12 +3435,11 @@ static BankingController *bankinControllerInstance;
 {
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation"];
     animation.fromValue = @0;
-    animation.toValue = @M_PI;
+    animation.toValue = @-M_PI;
     [animation setDuration: 0.5];
     [animation setTimingFunction: [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear]];
     [animation setRepeatCount: 20000];
 
-    refreshButton.layer.anchorPoint = CGPointMake(0.52, 0.475);
     [refreshButton.layer addAnimation: animation forKey: @"transform.rotation"];
     [CATransaction flush];
 }

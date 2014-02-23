@@ -100,6 +100,10 @@ AP117 = "Es liegen keine (neuen) Abrechnungen vor";
 AP118 = "Datei auswählen";
 AP119 = "Klicken, um eine Datei auszuwählen. Dateien und URLs können auch direkt hierher gezogen werden";
 AP120 = "Klicken, um den Anhang anzusehen";
+AP121 = "-- Hier bitte eine kurze Beschreibung des Problems eingeben:\n\n";
+AP122 = "-- Hier bitte die Logdatei anhängen, z.B. durch ziehen vom Finder hierher.\n-- Ein Finder Fenster wurde dazu geöffnet.";
+AP123 = "Pecunia Fehlerbericht";
+AP124 = "Mail bitte an die Adresse support@pecuniabanking.de senden.\n\n";
 
 // Banking setup, migration, encryption, security.
 // AP150..AP199

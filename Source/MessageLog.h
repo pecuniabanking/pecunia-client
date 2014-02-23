@@ -57,6 +57,8 @@ typedef enum {
 @property (nonatomic, assign) LogLevel currentLevel;
 
 + (MessageLog *)log;
++ (NSURL *)currentLogFile;
++ (NSURL *)logFolder;
 
 - (void)registerLogUI: (id<MessageLogUI>)ui;
 - (void)unregisterLogUI: (id<MessageLogUI>)ui;

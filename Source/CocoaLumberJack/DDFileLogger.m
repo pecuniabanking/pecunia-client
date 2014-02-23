@@ -286,7 +286,7 @@ BOOL doesAppRunInBackground(void);
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd' 'HH'-'mm'"];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    //[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 
     return dateFormatter;
 }
