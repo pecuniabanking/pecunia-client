@@ -54,6 +54,7 @@
 #import "CreditCardSettlement.h"
 #import "MCEMDecimalNumberAdditions.h"
 #import "ResultWindowController.h"
+#import "GrowlNotification.h"
 
 static HBCIController *controller = nil;
 
@@ -73,6 +74,11 @@ static HBCIController *controller = nil;
     countries = [[NSMutableDictionary alloc] initWithCapacity: 50];
     [self readCountryInfos];
     resultWindow = nil;
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(bankMessageReceived:)
+                                                 name: PecuniaInstituteMessageNotification
+                                               object: nil];
     return self;
 }
 
@@ -1890,6 +1896,41 @@ NSString * escapeSpecial(NSString *s)
         return nil;
     }
     return [controller selectedOption];
+}
+
+- (void)bankMessageReceived: (NSNotification *)notification
+{
+    NSDictionary *info = notification.object;
+    NSString *bankCode = info[@"bankCode"];
+    NSString *title = nil;
+    NSError  *error = nil;
+    
+    if (bankCode != nil) {
+        NSManagedObjectContext *context = [[MOAssistant assistant] context];
+        NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankUser" inManagedObjectContext: context];
+        NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+        [request setEntity: entityDescription];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"bankCode = %@", bankCode];
+        [request setPredicate: predicate];
+        NSArray *bankUsers = [context executeFetchRequest: request error: &error];
+        if (error) {
+            return;
+        }
+        if ([bankUsers count] == 0) {
+            return;
+        }
+        
+        BankUser *user = bankUsers[0];
+        title = NSLocalizedString(@"AP502", "");
+        title = [title stringByAppendingString:user.bankName];
+    }
+    NSString *message = info[@"message"];
+    if (message != nil) {
+        [GrowlNotification showStickyMessage: message
+                                   withTitle: title
+                                     context: @"BankMessage"];
+
+    }
 }
 
 @end

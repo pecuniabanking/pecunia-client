@@ -24,5 +24,6 @@
 @interface GrowlNotification : NSObject <GrowlApplicationBridgeDelegate>
 
 + (void)showMessage: (NSString *)message withTitle: (NSString *)title context: (NSString *)context;
++ (void)showStickyMessage: (NSString *)message withTitle: (NSString *)title context: (NSString *)context;
 
 @end

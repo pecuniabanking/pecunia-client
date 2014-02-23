@@ -89,4 +89,24 @@ static GrowlNotification *singleton;
 
 }
 
++ (void)showStickyMessage: (NSString *)message withTitle: (NSString *)title context: (NSString *)context
+{
+    if (singleton == nil) {
+        singleton = [[GrowlNotification alloc] init];
+    }
+    
+    Class bridge = NSClassFromString(@"GrowlApplicationBridge");
+    if ([bridge respondsToSelector: @selector(notifyWithTitle:description:notificationName:iconData:priority:isSticky:clickContext:identifier:)]) {
+        [bridge notifyWithTitle: title
+                    description: message
+               notificationName: PecuniaNotification
+                       iconData: pecuniaLogo()
+                       priority: 0
+                       isSticky: YES
+                   clickContext: nil
+                     identifier: context];
+    }
+    
+}
+
 @end

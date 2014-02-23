@@ -295,6 +295,7 @@ AP468 = "vorvorletzten Tag des Monats";
 // AP500..AP549
 AP500 = "Daten Erzeugung";
 AP501 = "Demo Daten wurden erstellt";
+AP502 = "Nachricht der Bank ";
 
 // Category assignments.
 // AP550..AP599
