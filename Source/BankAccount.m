@@ -532,6 +532,11 @@
 
     // add to account
     [stmt addToAccount: self];
+    
+    NSArray *categoryAssignments = [stat categoryAssignments];
+    for (StatCatAssignment *assignment in categoryAssignments) {
+        [stmt assignAmount: [[NSDecimalNumber zero] decimalNumberBySubtracting: assignment.value] toCategory:assignment.category withInfo:assignment.userInfo];
+    }
 }
 
 - (void)copyStatementsToManualAccounts: (NSArray *)statements

@@ -390,6 +390,20 @@ static NSRegularExpression *bicRE;
     return nil;
 }
 
+- (NSArray *)categoryAssignments
+{
+    NSMutableArray    *categoryAssignments = [NSMutableArray arrayWithCapacity:10];
+    NSMutableSet      *stats = [self mutableSetValueForKey: @"assignments"];
+    StatCatAssignment *stat;
+    for (stat in stats) {
+        if ([stat.category isBankAccount] == NO) {
+            [categoryAssignments addObject:stat];
+        }
+    }
+    return categoryAssignments;
+}
+
+
 - (BOOL)updateAssigned
 {
     NSManagedObjectContext *context = MOAssistant.assistant.context;

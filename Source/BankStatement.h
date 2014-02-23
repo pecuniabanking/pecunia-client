@@ -43,6 +43,7 @@ typedef enum {
 - (BOOL)hasAssignment;
 - (NSDecimalNumber *)residualAmount;
 - (StatCatAssignment *)bankAssignment;
+- (NSArray *)categoryAssignments;
 - (void)changeValueTo: (NSDecimalNumber *)val;
 
 - (void)addToAccount: (BankAccount *)account;
