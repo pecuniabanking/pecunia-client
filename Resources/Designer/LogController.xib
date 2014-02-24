@@ -8,7 +8,6 @@
         <customObject id="-2" userLabel="File's Owner" customClass="LogController">
             <connections>
                 <outlet property="logView" destination="116" id="117"/>
-                <outlet property="popUp" destination="11" id="20"/>
                 <outlet property="window" destination="5" id="9"/>
             </connections>
         </customObject>
@@ -24,48 +23,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="733" height="711"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <popUpButton verticalHuggingPriority="750" id="11">
-                        <rect key="frame" x="141" y="667" width="187" height="26"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <popUpButtonCell key="cell" type="push" title="Warnung" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="15" id="98">
-                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                            <menu key="menu" title="OtherViews" id="12">
-                                <items>
-                                    <menuItem title="Fehler" id="14"/>
-                                    <menuItem title="Warnung" state="on" id="15"/>
-                                    <menuItem title="Notiz" id="120">
-                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                    </menuItem>
-                                    <menuItem title="Information" id="25"/>
-                                    <menuItem title="Debug" id="26"/>
-                                    <menuItem title="Alle Meldungen" id="27"/>
-                                </items>
-                            </menu>
-                        </popUpButtonCell>
-                        <connections>
-                            <action selector="logLevelChanged:" target="-2" id="23"/>
-                        </connections>
-                    </popUpButton>
-                    <textField verticalHuggingPriority="750" id="21">
-                        <rect key="frame" x="17" y="673" width="114" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Meldungsstufe" id="99">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField verticalHuggingPriority="750" id="22">
-                        <rect key="frame" x="17" y="593" width="688" height="26"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="100">
-                            <font key="font" metaFont="label"/>
-                            <string key="title">Die Meldungsstufe filtert die Meldungen nach ihrer Dringlichkeit. Beispielsweise werden mit der Meldungsstufe "Warnung" neben Warnungen auch Fehler angezeigt, nicht aber Meldungen geringerer Priorität .</string>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <button toolTip="Log löschen" id="28">
                         <rect key="frame" x="685" y="671" width="28" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
@@ -89,20 +46,20 @@
                         </connections>
                     </button>
                     <scrollView focusRingType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="113">
-                        <rect key="frame" x="20" y="60" width="693" height="526"/>
+                        <rect key="frame" x="20" y="60" width="693" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="Yza-QI-VLO">
-                            <rect key="frame" x="1" y="1" width="691" height="524"/>
+                            <rect key="frame" x="1" y="1" width="691" height="601"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView editable="NO" importsGraphics="NO" richText="NO" findStyle="panel" allowsDocumentBackgroundColorChange="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="116">
-                                    <rect key="frame" x="0.0" y="0.0" width="691" height="524"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="691" height="601"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="691" height="524"/>
+                                    <size key="minSize" width="691" height="601"/>
                                     <size key="maxSize" width="1384" height="10000000"/>
                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="691" height="524"/>
+                                    <size key="minSize" width="691" height="601"/>
                                     <size key="maxSize" width="1384" height="10000000"/>
                                 </textView>
                             </subviews>
@@ -118,7 +75,7 @@
                         </scroller>
                     </scrollView>
                     <button id="123">
-                        <rect key="frame" x="18" y="635" width="214" height="18"/>
+                        <rect key="frame" x="18" y="675" width="214" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Konsolenmeldungen erzeugen" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="124">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
