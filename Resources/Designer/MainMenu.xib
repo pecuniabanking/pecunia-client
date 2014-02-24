@@ -332,11 +332,11 @@
                                                             <connections>
                                                                 <binding destination="911" name="value" keyPath="selection.bankName" id="996">
                                                                     <dictionary key="options">
-                                                                        <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
                                                                         <string key="NSNotApplicablePlaceholder"></string>
                                                                         <string key="NSNoSelectionPlaceholder"></string>
-                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
                                                                         <string key="NSNullPlaceholder"></string>
+                                                                        <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
@@ -450,7 +450,7 @@ IA
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                         <subviews>
                             <button toolTip="Neue Umsätze aller Konten abrufen. Mit Alt nur das selektierte Konto aktualisieren." wantsLayer="YES" id="hbf-EK-ccc" userLabel="Refresh Button">
-                                <rect key="frame" x="47" y="654" width="25" height="25"/>
+                                <rect key="frame" x="52" y="659" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="refresh" imagePosition="only" alignment="center" inset="2" id="aBu-rK-fVG">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -462,7 +462,7 @@ IA
                                 </connections>
                             </button>
                             <button id="4Zn-pj-CrH" userLabel="Donate Button">
-                                <rect key="frame" x="73" y="654" width="25" height="25"/>
+                                <rect key="frame" x="75" y="659" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <string key="toolTip">Für Pecunia spenden.
 Unterstütze die Entwicklung!</string>
@@ -1128,11 +1128,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="NSLeftFacingTriangleTemplate" width="9" height="9"/>
         <image name="NSLockLockedTemplate" width="9" height="12"/>
         <image name="NSRightFacingTriangleTemplate" width="9" height="9"/>
-        <image name="favorite" width="24" height="23"/>
+        <image name="favorite" width="20" height="20"/>
         <image name="hide" width="16" height="16"/>
         <image name="ins-8" width="12" height="12"/>
         <image name="minus-8" width="8" height="8"/>
         <image name="plus-8" width="8" height="8"/>
-        <image name="refresh" width="25" height="25"/>
+        <image name="refresh" width="20" height="20"/>
     </resources>
 </document>

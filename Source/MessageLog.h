@@ -41,11 +41,11 @@ typedef enum {
 #define LogEnter [MessageLog.log logDebug: @"Entering %s", __PRETTY_FUNCTION__]
 #define LogLeave [MessageLog.log logDebug: @"Leaving %s", __PRETTY_FUNCTION__]
 
-#define LogError(format, ...) [MessageLog.log logError: format, ##__VA_ARGS__]
-#define LogWarning(format, ...) [MessageLog.log logWarning: format, ##__VA_ARGS__]
-#define LogInfo(format, ...) [MessageLog.log logInfo: format, ##__VA_ARGS__]
-#define LogDebug(format, ...) [MessageLog.log logDebug: format, ##__VA_ARGS__]
-#define LogVerbose(format, ...) [MessageLog.log logVerbose: format, ##__VA_ARGS__]
+#define LogError(format, ...) [MessageLog.log logError: format file: __FILE__ function: __PRETTY_FUNCTION__ line: __LINE__, ##__VA_ARGS__]
+#define LogWarning(format, ...) [MessageLog.log logWarning: format file: __FILE__ function: __PRETTY_FUNCTION__ line: __LINE__, ##__VA_ARGS__]
+#define LogInfo(format, ...) [MessageLog.log logInfo: format file: __FILE__ function: __PRETTY_FUNCTION__ line: __LINE__, ##__VA_ARGS__]
+#define LogDebug(format, ...) [MessageLog.log logDebug: format file: __FILE__ function: __PRETTY_FUNCTION__ line: __LINE__, ##__VA_ARGS__]
+#define LogVerbose(format, ...) [MessageLog.log logVerbose: format file: __FILE__ function: __PRETTY_FUNCTION__ line: __LINE__, ##__VA_ARGS__]
 
 @interface MessageLog : NSObject {
     NSMutableSet    *logUIs;
@@ -59,15 +59,17 @@ typedef enum {
 + (MessageLog *)log;
 + (NSURL *)currentLogFile;
 + (NSURL *)logFolder;
++ (void)flush;
 
 - (void)registerLogUI: (id<MessageLogUI>)ui;
 - (void)unregisterLogUI: (id<MessageLogUI>)ui;
 - (void)addMessage: (NSString *)msg withLevel: (LogLevel)level;
 
-- (void)logError: (NSString *)format, ...;
-- (void)logWarning: (NSString *)format, ...;
-- (void)logInfo: (NSString *)format, ...;
-- (void)logDebug: (NSString *)format, ...;
-- (void)logVerbose: (NSString *)format, ...;
+- (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
+- (void)logWarning: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
+- (void)logInfo: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
+- (void)logDebug: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
+- (void)logDebug: (NSString *)format, ...; // A simpler form for enter/leave logging.
+- (void)logVerbose: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
 
 @end

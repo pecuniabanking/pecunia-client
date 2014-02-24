@@ -289,7 +289,7 @@ static BankingController *bankinControllerInstance;
     [developerMenu setHidden: NO];
 #endif
 
-    refreshButton.layer.anchorPoint = CGPointMake(0.49, 0.48);
+    refreshButton.layer.anchorPoint = CGPointMake(0.50, 0.48);
 
     LogLeave;
 }
@@ -423,7 +423,7 @@ static BankingController *bankinControllerInstance;
     if (error == nil) {
         LogInfo(@"\t%i %@", count, message);
     } else {
-        LogError(@"Couldn't determin summary for %@. Got error: %@", message, error.localizedDescription);
+        LogError(@"Couldn't determine summary for %@. Got error: %@", message, error.localizedDescription);
     }
 }
 
@@ -1299,6 +1299,8 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)sendErrorReport: (id)sender
 {
+    [MessageLog flush];
+
     NSURL* logURL = MessageLog.currentLogFile;
 
     // It's a weird oversight that there's no unified way of sending a mail to a given address with an attachment.

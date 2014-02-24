@@ -65,7 +65,8 @@
 
         // Send a log message to create the log file handles, otherwise explicit log file rolling is ignored.
         // This goes to the last log file.
-        [self logInfo: @"Rolling log file due to app start."];
+        // Attention: don't use the macro for this as it will otherwise lead to an endless loop.
+        [self logInfo: @"Rolling log file due to app start." file: NULL function: NULL line: 0];
         [fileLogger rollLogFileWithCompletionBlock: nil]; // We want a new log file on each start of the application.
 
         formatter = [[NSDateFormatter alloc] init];
@@ -127,6 +128,12 @@
 {
     NSString *folder = [self.log->fileLogger.logFileManager logsDirectory];
     return [NSURL fileURLWithPath: folder];
+}
+
++ (void)flush
+{
+    // This will flush all registered loggers.
+    [self.log->fileLogger flush];
 }
 
 + (NSString *)getStringInfoFor: (const char *)name
@@ -196,66 +203,85 @@
     return _messageLog;
 }
 
-- (void)logError: (NSString *)format, ...
+- (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...
 {
     if ((logLevel & LOG_FLAG_ERROR) != 0) {
         va_list args;
-        va_start(args, format);
+        va_start(args, line);
 
         [DDLog log: LOG_ASYNC_ERROR
              level: logLevel
               flag: LOG_FLAG_ERROR
            context: 0
-              file: __FILE__
-          function: sel_getName(_cmd)
-              line: __LINE__
+              file: file
+          function: function
+              line: line
                tag:  nil
             format: [NSString stringWithFormat: @"[Error] %@", format]
               args: args];
     }
 }
 
-- (void)logWarning: (NSString *)format, ...
+- (void)logWarning: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...
 {
     if ((logLevel & LOG_FLAG_WARN) != 0) {
         va_list args;
-        va_start(args, format);
+        va_start(args, line);
 
         [DDLog log: LOG_ASYNC_WARN
              level: logLevel
               flag: LOG_FLAG_WARN
            context: 0
-              file: __FILE__
-          function: sel_getName(_cmd)
-              line: __LINE__
+              file: file
+          function: function
+              line: line
                tag:  nil
             format: [NSString stringWithFormat: @"[Warning] %@", format]
               args: args];
     }
 }
 
-- (void)logInfo: (NSString *)format, ...
+- (void)logInfo: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...
 {
     if ((logLevel & LOG_FLAG_INFO) != 0) {
         va_list args;
-        va_start(args, format);
+        va_start(args, line);
 
         [DDLog log: LOG_ASYNC_INFO
              level: logLevel
               flag: LOG_FLAG_INFO
            context: 0
-              file: __FILE__
-          function: sel_getName(_cmd)
-              line: __LINE__
+              file: file
+          function: function
+              line: line
                tag:  nil
             format: [NSString stringWithFormat: @"[Info] %@", format]
               args: args];
     }
 }
 
-- (void)logDebug: (NSString *)format, ...
+- (void)logDebug: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...
 {
     if ((logLevel & LOG_FLAG_DEBUG) != 0) {
+        va_list args;
+        va_start(args, line);
+
+        [DDLog log: LOG_ASYNC_DEBUG
+             level: logLevel
+              flag: LOG_FLAG_DEBUG
+           context: 0
+              file: file
+          function: function
+              line: line
+               tag:  nil
+            format: [NSString stringWithFormat: @"[Debug] %@", format]
+              args: args];
+    }
+}
+
+- (void)logDebug: (NSString *)format, ...
+{
+    if ((logLevel & LOG_FLAG_WARN) != 0) {
         va_list args;
         va_start(args, format);
 
@@ -263,28 +289,28 @@
              level: logLevel
               flag: LOG_FLAG_DEBUG
            context: 0
-              file: __FILE__
-          function: sel_getName(_cmd)
-              line: __LINE__
+              file: NULL
+          function: NULL
+              line: 0
                tag:  nil
             format: [NSString stringWithFormat: @"[Debug] %@", format]
               args: args];
     }
 }
 
-- (void)logVerbose: (NSString *)format, ...
+- (void)logVerbose: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...
 {
     if ((logLevel & LOG_FLAG_VERBOSE) != 0) {
         va_list args;
-        va_start(args, format);
+        va_start(args, line);
 
         [DDLog log: LOG_ASYNC_VERBOSE
              level: logLevel
               flag: LOG_FLAG_VERBOSE
            context: 0
-              file: __FILE__
-          function: sel_getName(_cmd)
-              line: __LINE__
+              file: file
+          function: function
+              line: line
                tag:  nil
             format: [NSString stringWithFormat: @"[Verbose] %@", format]
               args: args];
