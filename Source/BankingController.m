@@ -575,7 +575,7 @@ static BankingController *bankinControllerInstance;
 
     BOOL removeParent = NO;
 
-    [bankAccount invalidateCacheIncludeParents: YES];
+    [bankAccount invalidateCacheIncludeParents: YES recursive: YES];
 
     //  Delete bank statements which are not assigned first
     NSSet *statements = [bankAccount valueForKey: @"statements"];
@@ -3330,7 +3330,7 @@ static BankingController *bankinControllerInstance;
 	if(restart) {
 		NSProcessInfo *pi = [NSProcessInfo processInfo ];
 		NSArray *args = [pi arguments ];
-		NSString *path = [args objectAtIndex:0 ];
+		NSString *path = [args objectAtIndex: 0];
 		if(path) {
             NSError *error = nil;
             NSURL *url = [NSURL fileURLWithPath:path];

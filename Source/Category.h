@@ -86,7 +86,7 @@ typedef struct {
 - (void)updateCategorySums;
 
 // Cache handling.
-- (void)invalidateCacheIncludeParents: (BOOL)flag;
+- (void)invalidateCacheIncludeParents: (BOOL)flag recursive: (BOOL)recursive;
 - (void)updateAssignmentsForReportRange;
 
 - (NSString *)name;
