@@ -55,6 +55,23 @@
     return result.lastObject;
 }
 
++ (NSArray*)supportedTransactionsForAccount: (BankAccount*)account
+{
+    NSError                *error = nil;
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"account = %@", account];
+    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
+    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+    [request setPredicate: predicate];
+    
+    NSArray *result = [context executeFetchRequest: request error: &error];
+    if (error != nil) {
+        return nil;
+    }
+    return result;
+}
+
 + (PecuniaError*)updateSupportedTransactionInfoForUser: (BankUser*)user account: (BankAccount*)account withJobs:(NSArray*)supportedJobNames
 {
     NSError                *error = nil;
@@ -232,6 +249,46 @@
         [[MessageLog log] addMessage: @"Add supported transaction ChangePin" withLevel: LogLevel_Debug];
     }
     return nil;
+}
+
+- (NSString*)description
+{
+    NSString *s = nil;
+    switch ([self.type intValue]) {
+        case TransactionType_TransferStandard: s = @"Standardüberweisung"; break;
+        case TransactionType_TransferEU: s = @"EU-Überweisung"; break;
+        case TransactionType_TransferDated: s = @"Terminüberweisung"; break;
+        case TransactionType_TransferInternal: s = @"Umbuchung"; break;
+        case TransactionType_TransferDebit: s = @"Lastschrift"; break;
+        case TransactionType_TransferSEPA: s = @"SEPA-Überweisung"; break;
+        case TransactionType_StandingOrder: s = @"Dauerauftrag"; break;
+        case TransactionType_BankStatements: s = @"Umsatzabfrage"; break;
+        case TransactionType_CCStatements: s = @"Kreditkartenumsätze"; break;
+        case TransactionType_CCSettlementList: s = @"Kreditkarten-Abrechnungsliste"; break;
+        case TransactionType_CCSettlement: s = @"Kreditkartenabrechnung"; break;
+        case TransactionType_ChangePin: s = @"PIN ändern"; break;
+        case TransactionType_StandingOrderSEPA: s = @"SEPA-Dauerauftrag"; break;
+        case TransactionType_TransferSEPAScheduled: s = @"SEPA-Terminüberweisung"; break;
+            
+        default: s = @"Unbekannt";
+    }
+    
+    if ([self.allowsChange boolValue]) {
+        s = [s stringByAppendingString:@" <ändern>"];
+    }
+    if ([self.allowsCollective boolValue]) {
+        s = [s stringByAppendingString:@" <mehrfach>"];
+    }
+    if ([self.allowsDated boolValue]) {
+        s = [s stringByAppendingString:@" <terminiert>"];
+    }
+    if ([self.allowesDelete boolValue]) {
+        s = [s stringByAppendingString:@" <löschen>"];
+    }
+    if ([self.allowsList boolValue]) {
+        s = [s stringByAppendingString:@" <liste>"];
+    }
+    return [s stringByAppendingString:@"\n"];
 }
 
 @end

@@ -33,4 +33,10 @@
 @dynamic preferredMedium;
 @dynamic user;
 
+- (NSString*)description
+{
+    NSString *fs = @"Name: %@ Methode: %@ ID: %@ Process: %@ ZKAMethode: %@\n";
+    return [NSString stringWithFormat:fs, self.name, self.method, self.identifier, self.process, self.zkaMethodName];
+}
+
 @end

@@ -27,6 +27,7 @@
 #import "BankUser.h"
 #import "MessageLog.h"
 #import "StatCatAssignment.h"
+#import "SupportedTransactionInfo.h"
 
 @implementation BankAccount
 
@@ -653,6 +654,27 @@
         }
     }
     return unread;
+}
+
+- (NSString*)description
+{
+    NSString *fs = @"Konto: %@ Unterkonto: %@ BLZ: %@\nIBAN: %@ BIC: %@\nUserID: %@\n";
+    NSMutableString *s = [NSMutableString stringWithFormat:fs, self.accountNumber, self.accountSuffix, self.bankCode, self.iban, self.bic, self.userId];
+    
+    if ([self.isManual boolValue]) {
+        [s appendString:@"<Manuelles Konto>\n"];
+    }
+    if ([self.isStandingOrderSupported boolValue]) {
+        [s appendString:@"<Daueraufträge möglich>\n"];
+    }
+    
+    [s appendString:@"Unterstützte Geschäftsvorfälle:\n"];
+    
+    NSArray *infos = [SupportedTransactionInfo supportedTransactionsForAccount:self];
+    for (SupportedTransactionInfo *info in infos) {
+        [s appendString: [info description]];
+    }
+    return s;
 }
 
 @end

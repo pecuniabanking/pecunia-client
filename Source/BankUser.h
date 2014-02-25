@@ -64,6 +64,7 @@
 - (SigningOption *)preferredSigningOption;
 - (int)getpreferredSigningOptionIdx;
 - (void)checkForUpdatedLoginData;
+- (NSString*)description;
 
 + (NSArray *)allUsers;
 + (BankUser *)userWithId: (NSString *)userId bankCode: (NSString *)bankCode;

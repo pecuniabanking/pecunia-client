@@ -310,6 +310,25 @@ static NSMutableDictionary *users = nil;
     }
 }
 
+- (NSString*)description
+{
+    NSString *fs = @"Bankkennung: %@ BLZ: %@ Name: %@\nKunde: %@ HBCI-Version: %@ URL: %@\n";
+    NSMutableString *s = [NSMutableString stringWithFormat:fs, self.userId, self.bankCode, self.bankName, self.customerId, self.hbciVersion, self.bankURL];
+    [s appendString:@"TAN-Methoden:\n"];
+    for (TanMethod *tm in self.tanMethods) {
+        [s appendString:[tm description]];
+    }
+    [s appendString:@"TAN-Media:\n"];
+    for (TanMedium *tm in self.tanMedia) {
+        [s appendString:[tm description]];
+    }
+    [s appendString:@"Konten:\n"];
+    for (BankAccount *account in self.accounts) {
+        [s appendString:[NSString stringWithFormat:@"Konto: %@ BLZ: %@\n", account.accountNumber, account.bankCode]];
+    }
+    return s;
+}
+
 + (NSArray *)allUsers
 {
     NSError                *error = nil;

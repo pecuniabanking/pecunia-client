@@ -80,6 +80,7 @@ typedef enum {
 - (NSDate *)nextDateForDate: (NSDate *)date;
 - (NSInteger)calcUnread;
 - (BankUser *)defaultBankUser;
+- (NSString*)description;
 
 + (BankAccount *)bankRootForCode: (NSString *)bankCode;
 + (BankAccount *)accountWithNumber: (NSString *)number bankCode: (NSString *)code;

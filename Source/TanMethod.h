@@ -37,4 +37,6 @@
 @property (nonatomic, strong) TanMedium *preferredMedium;
 @property (nonatomic, strong) BankUser  *user;
 
+- (NSString*)description;
+
 @end

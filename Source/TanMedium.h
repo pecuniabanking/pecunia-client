@@ -40,4 +40,6 @@
 @property (nonatomic, strong) NSDate   *activatedOn;
 @property (nonatomic, strong) BankUser *user;
 
+- (NSString*)description;
+
 @end

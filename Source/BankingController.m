@@ -1299,7 +1299,18 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)sendErrorReport: (id)sender
 {
-    [MessageLog flush];
+    // Log basic user and account information
+    NSArray *users = [BankUser allUsers];
+    
+    for (BankUser *user in users) {
+        LogInfo(@"\n\nUser information:\n%@", [user description]);
+        
+        for (BankAccount *account in user.accounts) {
+            LogInfo(@"\nAccount information:\n%@", [account description]);
+        }
+    }
+    
+//    [MessageLog flush];
 
     NSURL* logURL = MessageLog.currentLogFile;
 

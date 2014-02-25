@@ -36,4 +36,11 @@
 @dynamic activatedOn;
 @dynamic user;
 
+- (NSString*)description
+{
+    NSString *fs = @"Name: %@ Kategorie: %@ Kartentyp: %@ Mobilnummer: %@\n";
+    return [NSString stringWithFormat:fs, self.name, self.category, self.cardType, self.mobileNumberSecure];
+}
+
 @end
+
