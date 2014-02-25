@@ -99,23 +99,7 @@ extern void *UserDefaultsBindingContext;
 
 - (void)removeBindings
 {
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.date"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteName"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.floatingPurpose"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects.userInfo"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.categoryDescription"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.value"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.saldo"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.currency"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.valutaDate"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteName"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteBankCode"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteAccount"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteBankName"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteIBAN"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.remoteBIC"];
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.statement.transactionText"];
-
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
 }
 
@@ -134,24 +118,9 @@ extern void *UserDefaultsBindingContext;
                               options: 0
                               context: DataSourceBindingContext];
 
-        // Bindings to specific attributes to get notified about changes to each of them
-        // (for all objects in the array).
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.date" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteName" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.floatingPurpose" options: 0 context: nil];
+        // Another one for the user info to update the list while the user is typing in the details area.
         [observableObject addObserver: self forKeyPath: @"arrangedObjects.userInfo" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.categoryDescription" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.value" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.saldo" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.currency" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.valutaDate" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteName" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteBankCode" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteAccount" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteBankName" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteIBAN" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.remoteBIC" options: 0 context: nil];
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.statement.transactionText" options: 0 context: nil];
+
     } else {
         [super bind: binding toObject: observableObject withKeyPath: keyPath options: options];
     }
@@ -177,17 +146,19 @@ extern void *UserDefaultsBindingContext;
         if ([keyPath isEqualToString: @"showHeadersInLists"]) {
             showHeaders = [userDefaults boolForKey: @"showHeadersInLists"];
 
-            [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
-            pendingReload = YES;
-            [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
+            if (!pendingReload) {
+                pendingReload = YES;
+                [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
+            }
             return;
         }
 
         if ([keyPath isEqualToString: @"autoCasing"]) {
             autoCasing = [userDefaults boolForKey: @"autoCasing"];
+
             if (!pendingRefresh && !pendingReload) {
                 pendingRefresh = YES;
-                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
+                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.2];
             }
         }
 
@@ -195,28 +166,16 @@ extern void *UserDefaultsBindingContext;
     }
 
     if (context == DataSourceBindingContext) {
-        [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
-        pendingReload = YES;
-        [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
-
+        if (!pendingReload) {
+            pendingReload = YES;
+            [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
+        }
         return;
     }
 
-    if (!pendingReload) {
-        // If there's another property change pending cancel it and do a full reload instead.
-        if (pendingRefresh) {
-            pendingRefresh = NO;
-            [NSObject cancelPreviousPerformRequestsWithTarget: self]; // Remove any pending notification.
-            pendingReload = YES;
-            [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
-        } else {
-            pendingRefresh = YES;
-            [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
-        }
-    } else {
-        // Reschedule the reload call.
-        [NSObject cancelPreviousPerformRequestsWithTarget: self];
-        [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
+    if (!pendingReload && !pendingRefresh) {
+        pendingRefresh = NO;
+        [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
     }
 }
 
@@ -266,6 +225,9 @@ extern void *UserDefaultsBindingContext;
         BankStatement *statement = (BankStatement *)[dataSource[row] valueForKey: @"statement"];
         BankStatement *previousStatement = (BankStatement *)[dataSource[row - 1] valueForKey: @"statement"];
 
+        if (statement == nil || previousStatement == nil) {
+            return NO;
+        }
         result = [[ShortDate dateWithDate: statement.date] compare: [ShortDate dateWithDate: previousStatement.date]] != NSOrderedSame;
     }
     return result;
@@ -277,14 +239,15 @@ extern void *UserDefaultsBindingContext;
  */
 - (int)countSameDatesFromRow: (NSUInteger)row
 {
-    int       result = 1;
-    id        statement = [dataSource[row] valueForKey: @"statement"];
-    ShortDate *currentDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
+    int result = 1;
+
+    BankStatement *statement = [dataSource[row] statement];
+    ShortDate     *currentDate = [ShortDate dateWithDate: statement.date];
 
     NSUInteger totalCount = [dataSource count];
     while (++row < totalCount) {
-        statement = [dataSource[row] valueForKey: @"statement"];
-        ShortDate *nextDate = [ShortDate dateWithDate: [statement valueForKey: @"date"]];
+        statement = [dataSource[row] statement];
+        ShortDate *nextDate = [ShortDate dateWithDate: statement.date];
         if ([currentDate compare: nextDate] != NSOrderedSame) {
             break;
         }
@@ -309,15 +272,16 @@ extern void *UserDefaultsBindingContext;
         return;
     }
 
-    // Count how many statements have been booked for the current date.
-    int      turnovers = [self countSameDatesFromRow: row];
-    NSString *turnoversString;
-    if (turnovers != 1) {
-        turnoversString = [NSString stringWithFormat: NSLocalizedString(@"AP207", nil), turnovers];
-    } else {
-        turnoversString = NSLocalizedString(@"AP206", nil);
+    NSString *turnoversString = @"";
+    if ([self showsHeaderForRow: row]) {
+        // Count how many statements have been booked for the current date.
+        int turnovers = [self countSameDatesFromRow: row];
+        if (turnovers != 1) {
+            turnoversString = [NSString stringWithFormat: NSLocalizedString(@"AP207", nil), turnovers];
+        } else {
+            turnoversString = NSLocalizedString(@"AP206", nil);
+        }
     }
-
     cell.delegate = self;
     NSDictionary *details = @{StatementDateKey: currentDate,
                               StatementTurnoversKey: turnoversString,

@@ -14,6 +14,8 @@
 @property (nonatomic, readwrite, assign) CPTScaleType yScaleType;
 
 @property (nonatomic, readwrite) BOOL allowsMomentum;
+@property (nonatomic, readwrite) BOOL allowsMomentumX;
+@property (nonatomic, readwrite) BOOL allowsMomentumY;
 @property (nonatomic, readwrite) CPTAnimationCurve momentumAnimationCurve;
 @property (nonatomic, readwrite) CPTAnimationCurve bounceAnimationCurve;
 @property (nonatomic, readwrite) CGFloat momentumAcceleration;

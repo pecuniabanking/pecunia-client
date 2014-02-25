@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,13 +17,14 @@
  * 02110-1301  USA
  */
 
+#import "MessageLog.h"
+
 #import "BankStatement.h"
 #import "Category.h"
 #import "MOAssistant.h"
 #import "StatCatAssignment.h"
 #import "ShortDate.h"
 #import "MCEMDecimalNumberAdditions.h"
-#import "MessageLog.h"
 
 static NSArray *catCache = nil;
 
@@ -167,10 +168,10 @@ static NSRegularExpression *bicRE;
             [cats addObject: cat];
         }
 
-        if ([cat isBankAccount]) {
+        if (cat.isBankAccount) {
             continue;
         }
-        if ([cat isNotAssignedCategory]) {
+        if (cat.isNotAssignedCategory) {
             continue;
         }
         if (result) {
@@ -218,8 +219,7 @@ static NSRegularExpression *bicRE;
             }
         }
         @catch (NSException *exception) {
-            [[MessageLog log] addMessage: [NSString stringWithFormat: @"Error in rule: %@", cat.rule]
-                               withLevel: LogLevel_Error];
+            LogError(@"Error in rule: %@. Reason: %@", cat.rule, exception.debugDescription);
         }
     }
     // Run the general rules.
@@ -390,22 +390,39 @@ static NSRegularExpression *bicRE;
     return nil;
 }
 
-- (BOOL)updateAssigned
+- (NSArray *)categoryAssignments
 {
-    NSDecimalNumber        *value = self.value;
-    BOOL                   positive = [value compare: [NSDecimalNumber zero]] != NSOrderedAscending;
-    BOOL                   assigned = NO;
-    BOOL                   ncatNeedsRefresh = NO;
-    StatCatAssignment      *stat;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    Category               *ncat = [Category nassRoot];
-    NSMutableSet           *stats = [self mutableSetValueForKey: @"assignments"];
-    NSEnumerator           *iter = [stats objectEnumerator];
-    while ((stat = [iter nextObject]) != nil) {
-        if ([stat.category isBankAccount] == NO && stat.category != ncat) {
-            value = [value decimalNumberBySubtracting: stat.value];
+    NSMutableArray    *categoryAssignments = [NSMutableArray arrayWithCapacity:10];
+    NSMutableSet      *stats = [self mutableSetValueForKey: @"assignments"];
+    StatCatAssignment *stat;
+    for (stat in stats) {
+        if ([stat.category isBankAccount] == NO) {
+            [categoryAssignments addObject:stat];
         }
     }
+    return categoryAssignments;
+}
+
+
+- (BOOL)updateAssigned
+{
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    NSDecimalNumber *value = self.value;
+
+    BOOL positive = [value compare: [NSDecimalNumber zero]] != NSOrderedAscending;
+    BOOL assigned = NO;
+    BOOL ncatNeedsRefresh = NO;
+
+    Category *ncat = Category.nassRoot;
+
+    NSSet *assignments = [self valueForKey: @"assignments"];
+    for (StatCatAssignment *assignment in assignments) {
+        if (![assignment.category isBankAccount] && assignment.category != ncat) {
+            value = [value decimalNumberBySubtracting: assignment.value];
+        }
+    }
+
     if (positive) {
         if ([value compare: [NSDecimalNumber zero]] != NSOrderedDescending) {
             assigned = YES;                                                                          // fully assigned
@@ -423,32 +440,32 @@ static NSRegularExpression *bicRE;
     } else {
         self.nassValue = [NSDecimalNumber zero];
     }
+
+    // Another round, find the first assignment to the not-assigned category (if any).
     BOOL found = NO;
-    iter = [stats objectEnumerator];
-    while ((stat = [iter nextObject]) != nil) {
-        if (stat.category == ncat) {
-            if (assigned || [stat.value compare: value] != NSOrderedSame) {
+    for (StatCatAssignment *assignment in assignments) {
+        if (assignment.category == ncat) {
+            if (assigned || [assignment.value compare: value] != NSOrderedSame) {
                 [ncat invalidateBalance];
             }
             if (assigned) {
-                [context deleteObject: stat];
+                [context deleteObject: assignment];
                 ncatNeedsRefresh = YES;
             } else {
-                stat.value = value;
+                assignment.value = value;
             }
             found = YES;
             break;
         }
     }
 
-    if (found == NO && assigned == NO) {
-        // create a new assignment to ncat
-        stat = [NSEntityDescription insertNewObjectForEntityForName: @"StatCatAssignment" inManagedObjectContext: context];
-        stat.value = value;
-        stat.category = ncat;
-        stat.statement = self;
+    if (!found && !assigned) {
+        // Create a new assignment to not-assigned category.
+        StatCatAssignment *assignment = [NSEntityDescription insertNewObjectForEntityForName: @"StatCatAssignment" inManagedObjectContext: context];
+        assignment.value = value;
+        assignment.category = ncat;
+        assignment.statement = self;
         ncatNeedsRefresh = YES;
-        //[ncat invalidateBalance];
     }
     return ncatNeedsRefresh;
 }
@@ -472,73 +489,65 @@ static NSRegularExpression *bicRE;
     [self assignAmount: self.value toCategory: cat withInfo: nil];
 }
 
-- (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)cat withInfo: (NSString *)info
+- (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)targetCategory withInfo: (NSString *)info
 {
-    StatCatAssignment       *stat;
-    Category                *ncat = [Category nassRoot];
-    NSManagedObjectContext  *context = [[MOAssistant assistant] context];
-    NSMutableSet            *stats = [self mutableSetValueForKey: @"assignments"];
-    BOOL                    ncatNeedsRefresh = NO;
-    BOOL                    catNeedsRefresh = NO;
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
 
-    // if assignment already done, add value
-    NSEnumerator *iter = [stats objectEnumerator];
-    BOOL         changed = NO;
-    while ((stat = [iter nextObject]) != nil) {
-        if (stat.category == cat) {
+    // First check if this statement is already assigned to the target category. If so add the given value to that category
+    // or remove the assignment if the value is nil/zero.
+    BOOL  foundTarget = NO;
+    NSMutableSet *assignments = [self valueForKey: @"assignments"];
+    for (StatCatAssignment *assignment in assignments) {
+        if (assignment.category == targetCategory) {
             if (value == nil || [value isEqual: [NSDecimalNumber zero]]) {
-                [context deleteObject: stat];
+                [context deleteObject: assignment];
             } else {
-                stat.value = [stat.value decimalNumberByAdding: value];
-                if (info && info.length > 0) {
-                    if (stat.userInfo && stat.userInfo.length > 0) {
-                        stat.userInfo = [NSString stringWithFormat:@"%@\n%@", stat.userInfo, info];
+                assignment.value = [assignment.value decimalNumberByAdding: value];
+
+                // Ensure the assigned value is not larger than the statement's value.
+                if ([[assignment.value abs] compare: [assignment.statement.value abs]] == NSOrderedDescending) {
+                    assignment.value = assignment.statement.value;
+                }
+                
+                if (info.length > 0) {
+                    if (assignment.userInfo && assignment.userInfo.length > 0) {
+                        assignment.userInfo = [NSString stringWithFormat:@"%@\n%@", assignment.userInfo, info];
                     } else {
-                        stat.userInfo = info;
+                        assignment.userInfo = info;
                     }
                 }
             }
-            changed = YES;
+            foundTarget = YES;
             break;
         }
     }
-    // value must never be higher than statement's value
-    if (changed == YES && [[stat.value abs] compare: [stat.statement.value abs]] == NSOrderedDescending) {
-        stat.value = stat.statement.value;
-    }
 
-    if (changed == NO) {
-        // create StatCatAssignment
-        stat = [NSEntityDescription insertNewObjectForEntityForName: @"StatCatAssignment" inManagedObjectContext: context];
-        StatCatAssignment *bStat = [self bankAssignment];
-        stat.value = value;
-        if (cat) {
-            stat.category = cat;
-            catNeedsRefresh = YES;
+    if (!foundTarget) {
+        // There's no assignment for the given target yet so create a new one.
+        StatCatAssignment *assignment = [NSEntityDescription insertNewObjectForEntityForName: @"StatCatAssignment" inManagedObjectContext: context];
+        StatCatAssignment *bankAssignment = [self bankAssignment];
+        assignment.value = value;
+        if (targetCategory) {
+            assignment.category = targetCategory;
         }
-        stat.statement = self;
+        assignment.statement = self;
         if (info == nil) {
-            // get User Info from Bank Assignment
-            if (bStat.userInfo) {
-                stat.userInfo = bStat.userInfo;
-            } else {stat.userInfo = @""; }
+            // If there's no info given use that of the bank assignment.
+            if (bankAssignment.userInfo) {
+                assignment.userInfo = bankAssignment.userInfo;
+            } else {
+                assignment.userInfo = @"";
+            }
         } else {
-            stat.userInfo = info;
+            assignment.userInfo = info;
         }
-        [stats addObject: stat];
+        [assignments addObject: assignment];
     }
 
-    ncatNeedsRefresh = [self updateAssigned];
+    [self updateAssigned];
 
-    [cat invalidateBalance];
-    [ncat invalidateBalance];
-
-    if (catNeedsRefresh) {
-        [cat updateBoundAssignments];
-    }
-    if (ncatNeedsRefresh) {
-        [ncat updateBoundAssignments];
-    }
+    [targetCategory invalidateBalance];
+    [Category.nassRoot invalidateBalance];
 }
 
 - (NSComparisonResult)compareValuta: (BankStatement *)stat

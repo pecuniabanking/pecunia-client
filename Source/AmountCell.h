@@ -25,6 +25,5 @@
 }
 
 @property (nonatomic, strong) NSString          *currency;
-@property (nonatomic, strong) NSNumberFormatter *formatter;
 
 @end

@@ -21,7 +21,7 @@
 #import "BankAccount.h"
 #import "BankStatement.h"
 #import "MOAssistant.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "ShortDate.h"
 
 @implementation BankStatementController
@@ -142,7 +142,7 @@
 
     if (lastStatement) {
         account.balance = lastStatement.saldo;
-        [[Category bankRoot] rollupRecursive: YES];
+        [[Category bankRoot] updateCategorySums];
     }
 
     // Manually assign to a category. Doesn't affect automatic assignments based on rules.
@@ -150,7 +150,7 @@
     if (idx != NSNotFound) {
         Category *cat = [categoriesController arrangedObjects][idx];
         [newStatement assignToCategory: cat];
-        [Category updateCatValues];
+        [Category updateBalancesAndSums];
     }
 
     // save updates
@@ -259,7 +259,7 @@
     NSControl *te = [aNotification object];
 
     if ([te tag] == 100) {
-        NSString *name = [[HBCIClient hbciClient] bankNameForCode: [te stringValue] inCountry: currentStatement.remoteCountry];
+        NSString *name = [[HBCIController controller] bankNameForCode: [te stringValue]];
         if (name) {
             [self setValue: name forKey: @"bankName"];
         }
@@ -315,7 +315,7 @@
         return NO;
     }
     if (currentStatement.remoteAccount && currentStatement.remoteBankCode) {
-        res = [[HBCIClient hbciClient] checkAccount: currentStatement.remoteAccount
+        res = [[HBCIController controller] checkAccount: currentStatement.remoteAccount
                                             forBank: currentStatement.remoteBankCode];
 
 

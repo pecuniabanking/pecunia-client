@@ -23,7 +23,7 @@
 #import "TanMedium.h"
 #import "SigningOption.h"
 #import "MessageLog.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "BankAccount.h"
 
 @implementation BankUser
@@ -121,7 +121,7 @@ static NSMutableDictionary *users = nil;
         return nil;
     }
     // first get TAN Media if not already fetched
-    //if ([self.tanMediaFetched boolValue ] == NO) [[HBCIClient hbciClient ] updateTanMediaForUser:self ];
+    //if ([self.tanMediaFetched boolValue ] == NO) [[HBCIController controller ] updateTanMediaForUser:self ];
 
     NSSet          *methods = [self tanMethods];
     NSSet          *media = [self tanMedia];

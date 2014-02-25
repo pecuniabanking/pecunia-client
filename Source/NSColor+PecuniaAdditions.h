@@ -38,3 +38,13 @@ CGColorRef CGColorCreateFromNSColor(NSColor *color);
 - (NSString *)colorAsHTML;
 
 @end
+
+// Class to allow binding UI elements to an application color.
+@interface ColorsController : NSController
+
++ (instancetype)applicationColors;
+
+- (id)valueForKey: (id)key;
+- (void)setValue: (id)value forKey: (id)key;
+
+@end

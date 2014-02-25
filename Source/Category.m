@@ -32,14 +32,11 @@ static Category *catRootSingleton = nil;
 static Category *bankRootSingleton = nil;
 static Category *notAssignedRootSingleton = nil;
 
-ShortDate *startReportDate = nil;
-ShortDate *endReportDate = nil;
-
-BOOL updateSent = NO;
+static ShortDate *startReportDate = nil;
+static ShortDate *endReportDate = nil;
 
 // balance: sum of own statements
 // catSum: sum of balance and child's catSums
-
 
 @implementation Category
 
@@ -59,78 +56,73 @@ BOOL updateSent = NO;
 @synthesize categoryColor;
 @synthesize reportedAssignments;  // assignments that are between start and end report date
 
-// if the value of a category (sum of assignments between start and end report date) is not valid (isBalanceValid) it is recalculated
-// the value of a category is stored in the balance field
-- (void)updateInvalidCategoryValues
+/** If the balance of a category (sum of assignment values between start and end report date) is not valid
+ *  (isBalanceValid) it is recalculated here.
+ */
+- (void)recomputeInvalidBalances
 {
-    // only for categories
+    // Only for categories.
     if (self.isBankAccount) {
         return;
     }
+
     for (Category *category in self.children) {
-        [category updateInvalidCategoryValues];
+        [category recomputeInvalidBalances];
     }
+
     if (!self.isBalanceValid.boolValue) {
-        NSArray         *stats = nil;
-        NSDecimalNumber *balance = [NSDecimalNumber zero];
-
-        assert(startReportDate != nil);
-        assert(endReportDate != nil);
-        stats = [self assignmentsFrom: startReportDate
-                                   to: endReportDate
-                         withChildren: NO];
-
-        StatCatAssignment *stat = nil;
-        for (stat in stats) {
-            if (stat.value != nil) {
-                balance = [balance decimalNumberByAdding: stat.value];
-            }
-        }
-        if (stat) {
-            NSString *curr = stat.statement.currency;
-            if (curr != nil && curr.length > 0) {
-                self.currency = curr;
-            }
-        }
-        self.balance = balance;
-        self.isBalanceValid = @YES;
-    }
-}
-
-// rebuild all category values due to a change in the reporting period
-// also updates assignments cache
-- (void)rebuildValues
-{
-    if ([self isBankAccount]) {
-        return;
-    }
-    for (Category *cat in self.children) {
-        [cat rebuildValues];
-    }
-    // now handle self
-    NSDecimalNumber *balance = NSDecimalNumber.zero;
-
-    assert(startReportDate != nil);
-    assert(endReportDate != nil);
-    self.reportedAssignments = nil;  // clear cache
-    NSArray *assignments = [self assignmentsFrom: startReportDate
-                                              to: endReportDate
-                                    withChildren: NO];
-
-    for (StatCatAssignment *assignment in assignments) {
-        if (assignment.value != nil) {
-            balance = [balance decimalNumberByAdding: assignment.value];
+        if (self.reportedAssignments == nil) {
+            // The assignment cache was reset, hence it must be filled first.
+            // This will also compute the balance.
+            [self updateAssignmentsForReportRange];
         } else {
-            assignment.value = NSDecimalNumber.zero;
+            // The cache is valid, so don't re-create it but just query the assignments needed to
+            // compute the current balance.
+            NSDecimalNumber *balance = [NSDecimalNumber zero];
+
+            // Fetch all relevant statements.
+            NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+            NSFetchRequest      *fetchRequest = [[NSFetchRequest alloc] init];
+            NSEntityDescription *entity = [NSEntityDescription entityForName: @"StatCatAssignment" inManagedObjectContext: context];
+
+            [fetchRequest setEntity: entity];
+            NSDate *from = startReportDate.lowDate;
+            NSDate *to = endReportDate.highDate;
+
+            NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category = %@ and statement.date >= %@ and statement.date <= %@", self, from, to];
+            [fetchRequest setPredicate: predicate];
+
+            NSError *error = nil;
+            NSArray *fetchedObjects = [context executeFetchRequest: fetchRequest error: &error];
+            if (fetchedObjects != nil) {
+                for (StatCatAssignment *assignment in fetchedObjects) {
+                    if (assignment.value != nil) {
+                        balance = [balance decimalNumberByAdding: assignment.value];
+                    }
+                }
+
+                if (fetchedObjects.count > 0) {
+                    StatCatAssignment *assignment = fetchedObjects[0];
+                    NSString *currency = assignment.statement.currency;
+                    if (currency.length > 0) {
+                        self.currency = currency;
+                    }
+                }
+            }
+            
+            self.balance = balance;
+            self.isBalanceValid = @YES;
         }
     }
-    self.balance = balance;
 }
 
 /**
- * Collect hierarchical values like overall balance, hidden children etc.
+ * Recompute all category sums out of their balances and the category sums of their children.
+ * Since we are checking for hidden children here we can as well update the hidden children count
+ * which helps us to avoid unnecessary filtering (and hence copy operations) for children.
  */
-- (void)rollupRecursive: (BOOL)recursive
+- (void)updateCategorySums
 {
     NSDecimalNumber *res = self.balance;
     if (res == nil) {
@@ -138,9 +130,10 @@ BOOL updateSent = NO;
     }
     
     hiddenChildren = 0;
-    for (Category *category in self.children) {
-        [category rollupRecursive: recursive];
-        if (recursive && !category.noCatRep.boolValue && !category.isHidden.boolValue) {
+    NSSet *children = [self primitiveValueForKey: @"children"];
+    for (Category *category in children) {
+        [category updateCategorySums];
+        if (!category.noCatRep.boolValue && !category.isHidden.boolValue) {
             res = [res decimalNumberByAdding: category.catSum];
         }
         if (category.isHidden.boolValue) {
@@ -148,16 +141,15 @@ BOOL updateSent = NO;
         }
     }
     self.catSum = res;
+
     if ([self.children count] > 0) {
         // For now we assume all children have the same currency. We pick one child
         // to update this category's currency.
-        NSString *currency = [[self.children anyObject] currency];
+        NSString *currency = [[children anyObject] currency];
         if (currency.length > 0) {
             self.currency = currency;
         }
     }
-    // reset update flag
-    updateSent = NO;
 }
 
 - (void)invalidateBalance
@@ -165,9 +157,19 @@ BOOL updateSent = NO;
     self.isBalanceValid = @NO;
 }
 
-- (void)invalidateCache
+- (void)invalidateCacheIncludeParents: (BOOL)flag recursive: (BOOL)recursive
 {
-    self.reportedAssignments = nil;
+    reportedAssignments = nil;
+
+    if (flag && self.parent != Category.catRoot) {
+        [self.parent invalidateCacheIncludeParents: YES recursive: NO];
+    }
+
+    if (recursive) {
+        for (Category *child in self.children) {
+            [child invalidateCacheIncludeParents: NO recursive: YES];
+        }
+    }
 }
 
 // value of expenses, earnings or turnovers for a specified period
@@ -175,10 +177,7 @@ BOOL updateSent = NO;
 {
     NSDecimalNumber *result = [NSDecimalNumber zero];
 
-    for (Category *category in self.children) {
-        result = [result decimalNumberByAdding: [category valuesOfType: type from: fromDate to: toDate]];
-    }
-    NSArray *assignments = [self assignmentsFrom: fromDate to: toDate withChildren: NO];
+    NSArray *assignments = [self assignmentsFrom: fromDate to: toDate withChildren: YES];
     if ([assignments count] > 0) {
         switch (type) {
             case cat_all:
@@ -394,13 +393,18 @@ BOOL updateSent = NO;
     return limits;
 }
 
-/** Returns all assignments for the specified period if the period equals the reporting period.
- * The assignments are cached / retrieved from cache for quicker response.
- * The cache always only contains assignments directly belonging to the current category, not those from child categories!
- * TODO: is this really a good decision to not cache also child values?
+/**
+ * Returns all assignments for the specified period.
+ * The assignments are cached / retrieved from cache for quicker response if the given range corresponds to the
+ * current report range.
  */
 - (NSArray *)assignmentsFrom: (ShortDate *)fromDate to: (ShortDate *)toDate withChildren: (BOOL)includeChildren
 {
+    // Check if we can take the assignments from cache.
+    if ([fromDate isEqual: startReportDate] && [toDate isEqual: endReportDate] && self.reportedAssignments != nil) {
+        return self.reportedAssignments;
+    }
+
     NSMutableArray *result = [NSMutableArray arrayWithCapacity: 100];
 
     if (includeChildren) {
@@ -409,19 +413,15 @@ BOOL updateSent = NO;
         }
     }
 
-    // Check if we can take the assignments from cache.
-    if ([fromDate isEqual: startReportDate] && [toDate isEqual: endReportDate] && self.reportedAssignments != nil) {
-        [result addObjectsFromArray: self.reportedAssignments];
-        return result;
-    }
-
     // Fetch all relevant statements.
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSFetchRequest         *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription    *entity = [NSEntityDescription entityForName: @"StatCatAssignment" inManagedObjectContext: context];
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+
+    NSFetchRequest      *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"StatCatAssignment" inManagedObjectContext: context];
+    
     [fetchRequest setEntity: entity];
-    NSDate *from = [fromDate lowDate];
-    NSDate *to = [toDate highDate];
+    NSDate *from = fromDate.lowDate;
+    NSDate *to = toDate.highDate;
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"category = %@ and statement.date >= %@ and statement.date <= %@", self, from, to];
     [fetchRequest setPredicate: predicate];
@@ -430,24 +430,43 @@ BOOL updateSent = NO;
     NSArray *fetchedObjects = [context executeFetchRequest: fetchRequest error: &error];
     if (fetchedObjects != nil) {
         [result addObjectsFromArray: fetchedObjects];
+
+        // Update the balance value for this category while we have the filtered assignments at hand and this
+        // is not a bank account.
+        if (!self.isBankAccount) {
+            NSDecimalNumber *balance = NSDecimalNumber.zero;
+
+            for (StatCatAssignment *assignment in fetchedObjects) {
+                if (assignment.value != nil) {
+                    balance = [balance decimalNumberByAdding: assignment.value];
+                } else {
+                    assignment.value = NSDecimalNumber.zero;
+                }
+            }
+            self.balance = balance;
+        }
     }
 
-    // Now cache the assignments.
+    // Cache the assignments if the requested date range is the same as the current report range.
     if ([fromDate isEqual: startReportDate] && [toDate isEqual: endReportDate]) {
-        self.reportedAssignments = fetchedObjects;
+        self.reportedAssignments = result;
     }
     return result;
 }
 
-// update reported assignment caches due to a change of the reporting period
-- (void)updateReportedAssignments
+/**
+ * Recreate the assignments cache for the current reporting period in this category and those of its children.
+ */
+- (void)updateAssignmentsForReportRange
 {
     for (Category *category in self.children) {
-        [category updateReportedAssignments];
+        [category updateAssignmentsForReportRange];
     }
-    // now handle self
-    self.reportedAssignments = nil;
-    [self assignmentsFrom: startReportDate to: endReportDate withChildren: NO];
+
+    if (reportedAssignments != nil) { // Check this to avoid unnecessary KVO calls.
+        self.reportedAssignments = nil;
+    }
+    [self assignmentsFrom: startReportDate to: endReportDate withChildren: YES];
 }
 
 - (NSString *)accountNumber
@@ -576,7 +595,7 @@ BOOL updateSent = NO;
 
 - (BOOL)isNotAssignedCategory
 {
-    return self == [Category nassRoot];
+    return self == Category.nassRoot;
 }
 
 - (id)children
@@ -623,15 +642,6 @@ BOOL updateSent = NO;
         [set filterUsingPredicate: predicate];
     }
     return set;
-}
-
-/**
- * Returns a set of all assignments displayed in the transaction list for this category.
- */
-- (NSArray *)boundAssignments
-{
-    NSArray *assignments = [self assignmentsFrom: startReportDate to: endReportDate withChildren: YES];
-    return assignments;
 }
 
 /**
@@ -715,15 +725,6 @@ BOOL updateSent = NO;
     }
     return count;
 
-}
-
-/**
- * Used to get the KVO chain into moving when an assignment in this category changed.
- */
-- (void)updateBoundAssignments
-{
-    [self willChangeValueForKey: @"boundAssignments"];
-    [self didChangeValueForKey: @"boundAssignments"];
 }
 
 /**
@@ -1012,12 +1013,15 @@ BOOL updateSent = NO;
         return nil;
     }
     if ([cats count] > 0) {
-        return cats[0];
+        bankRootSingleton = cats[0];
     }
-    // create Root object
-    bankRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
-    [bankRootSingleton setValue: @"++bankroot" forKey: @"name"];
-    [bankRootSingleton setValue: @YES forKey: @"isBankAcc"];
+
+    // Create root object if none exists.
+    if (bankRootSingleton == nil) {
+        bankRootSingleton = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
+        [bankRootSingleton setValue: @"++bankroot" forKey: @"name"];
+        [bankRootSingleton setValue: @YES forKey: @"isBankAcc"];
+    }
     return bankRootSingleton;
 }
 
@@ -1097,27 +1101,31 @@ BOOL updateSent = NO;
     return nil;
 }
 
-+ (void)updateCatValues
++ (void)updateBalancesAndSums
 {
-    if (updateSent) {
-        return;
-    }
-    [[self catRoot] updateInvalidCategoryValues];
-    [[self catRoot] rollupRecursive: YES];
+    [[self catRoot] recomputeInvalidBalances];
+    [[self catRoot] updateCategorySums];
 }
 
 + (void)setCatReportFrom: (ShortDate *)fDate to: (ShortDate *)tDate
 {
-    if (startReportDate != nil && endReportDate != nil) {
-        if ([startReportDate isEqual: fDate] && [endReportDate isEqual: tDate]) {
-            return;
-        }
+    if (fDate == nil) {
+        fDate = [ShortDate distantPast];
     }
+    if (tDate == nil) {
+        tDate = [ShortDate distantFuture];
+    }
+    if ([startReportDate isEqual: fDate] && [endReportDate isEqual: tDate]) {
+        return;
+    }
+
     startReportDate = fDate;
     endReportDate = tDate;
-    [[self catRoot] rebuildValues];
-    [[self catRoot] rollupRecursive: YES];
-    [[self bankRoot] updateReportedAssignments];
+
+    // Update assignments cache for the new reporting date and recompute all balances/category sums.
+    [[self bankRoot] updateAssignmentsForReportRange];
+    [[self catRoot] updateAssignmentsForReportRange];
+    [[self catRoot] updateCategorySums];
 }
 
 /**
@@ -1131,7 +1139,7 @@ BOOL updateSent = NO;
 }
 
 /**
- * Creates a set of default categories, which are quite common. These categories are defined in localizable.strings.
+ * Creates a set of default categories, which are quite common. These categories are defined in Localizable.strings.
  */
 + (void)createDefaultCategories
 {

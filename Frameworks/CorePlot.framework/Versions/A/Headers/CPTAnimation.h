@@ -109,4 +109,9 @@ typedef NS_ENUM (NSInteger, CPTAnimationCurve) {
 -(void)removeAllAnimationOperations;
 /// @}
 
+/// @name Retrieving Animation Operations
+/// @{
+-(CPTAnimationOperation *)operationWithIdentifier:(id<NSCopying, NSObject>)identifier;
+/// @}
+
 @end

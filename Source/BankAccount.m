@@ -103,7 +103,7 @@
         return;
     }
     stat = (res.statements)[0];     // oldest statement
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [[ShortDate dateWithDate: stat.date] lowDate]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (valutaDate >= %@)", self, [[ShortDate dateWithDate: stat.valutaDate] lowDate]];
     [request setPredicate: predicate];
     self.dbStatements = [context executeFetchRequest: request error: &error];
 
@@ -254,6 +254,9 @@
             ltd = stmt.date;
         }
     }
+
+    [self updateAssignmentsForReportRange];
+    
     if (newStatements.count > 0) {
         if (result.balance == nil) {
             // no balance given - calculate new balance
@@ -315,10 +318,28 @@
     return [newStatements count];
 }
 
+- (void)updateStatementBalances
+{
+    // repair balances
+    NSSortDescriptor    *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
+    NSArray             *sortedStatements = [[self valueForKey: @"statements"] sortedArrayUsingDescriptors: @[sd]];
+    
+    NSDecimalNumber *balance = self.balance;
+    for (BankStatement *statement in sortedStatements) {
+        // Balance recomputation.
+        if (![statement.saldo isEqual: balance]) {
+            statement.saldo = balance;
+        }
+        balance = [balance decimalNumberBySubtracting: statement.value];
+    }
+}
+
 - (void)updateBalanceWithValue: (NSDecimalNumber *)value
 {
-    self.balance = value;
-    [self doMaintenance];
+    if ([self.balance compare:value] != NSOrderedSame) {
+        self.balance = value;
+        [self updateStatementBalances];
+    }
 }
 
 /**
@@ -366,17 +387,7 @@
     }
 
     // repair balances
-    sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
-    sortedStatements = [statementsArray sortedArrayUsingDescriptors: @[sd]];
-
-    NSDecimalNumber *balance = self.balance;
-    for (BankStatement *statement in sortedStatements) {
-        // Balance recomputation.
-        if (![statement.saldo isEqual: balance]) {
-            statement.saldo = balance;
-            balance = [balance decimalNumberBySubtracting: statement.value];
-        }
-    }
+    [self updateStatementBalances];
 
     for (BankStatement *statement in sortedStatements) {
         [statement sanitize];
@@ -521,6 +532,11 @@
 
     // add to account
     [stmt addToAccount: self];
+    
+    NSArray *categoryAssignments = [stat categoryAssignments];
+    for (StatCatAssignment *assignment in categoryAssignments) {
+        [stmt assignAmount: [[NSDecimalNumber zero] decimalNumberBySubtracting: assignment.value] toCategory:assignment.category withInfo:assignment.userInfo];
+    }
 }
 
 - (void)copyStatementsToManualAccounts: (NSArray *)statements

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -7,7 +7,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="StandingOrderController">
             <connections>
-                <outlet property="accountsController" destination="270" id="278"/>
                 <outlet property="deleteButton" destination="578" id="581"/>
                 <outlet property="deleteImage" destination="553" id="570"/>
                 <outlet property="execDaysMonthController" destination="146" id="198"/>
@@ -733,12 +732,6 @@ IA
         <arrayController id="145" userLabel="WeekCycles"/>
         <arrayController id="146" userLabel="MonthDays"/>
         <arrayController id="147" userLabel="WeekDays"/>
-        <arrayController mode="entity" entityName="BankAccount" editable="NO" id="270" userLabel="Accounts">
-            <declaredKeys>
-                <string>accountNumber</string>
-                <string>localName</string>
-            </declaredKeys>
-        </arrayController>
     </objects>
     <resources>
         <image name="basket" width="59" height="75"/>

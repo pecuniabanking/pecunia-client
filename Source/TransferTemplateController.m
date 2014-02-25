@@ -20,7 +20,7 @@
 #import "TransferTemplateController.h"
 #import "TransferTemplate.h"
 #import "MOAssistant.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "Transfer.h"
 #import "Country.h"
 
@@ -52,7 +52,7 @@
     NSArray          *sds = @[sd];
     [countryController setSortDescriptors: sds];
 
-    NSDictionary *countries = [[HBCIClient hbciClient] countries];
+    NSDictionary *countries = [[HBCIController controller] countries];
     [countryController setContent: [countries allValues]];
     // sort descriptor for transactions view
     [countryController rearrangeObjects];
@@ -83,7 +83,7 @@
                 return NO;
             }
 
-            if ([[HBCIClient hbciClient] checkIBAN: template.remoteIBAN] == NO) {
+            if ([[HBCIController controller] checkIBAN: template.remoteIBAN] == NO) {
                 NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                                 NSLocalizedString(@"AP70", nil),
                                 NSLocalizedString(@"AP61", nil), nil, nil);
@@ -111,7 +111,7 @@
                 [template.remoteCountry caseInsensitiveCompare: @"at"] == NSOrderedSame ||
                 [template.remoteCountry caseInsensitiveCompare: @"ch"] == NSOrderedSame ||
                 [template.remoteCountry caseInsensitiveCompare: @"ca"] == NSOrderedSame) {
-                int res = [[HBCIClient hbciClient] checkAccount: template.remoteAccount
+                int res = [[HBCIController controller] checkAccount: template.remoteAccount
                                                         forBank: template.remoteBankCode];
                 if (res == NO) {
                     NSRunAlertPanel(NSLocalizedString(@"AP59", nil),

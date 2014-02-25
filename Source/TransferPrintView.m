@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -101,11 +101,11 @@
     TransferType type = [transfer.type intValue];
     NSString     *typeString = nil;
     switch (type) {
-        case TransferTypeStandard:
+        case TransferTypeOldStandard:
             typeString = NSLocalizedString(@"AP404", nil);
             break;
 
-        case TransferTypeDated:
+        case TransferTypeOldStandardScheduled:
             typeString = NSLocalizedString(@"AP429", nil);
             break;
 

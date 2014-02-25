@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1070" defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -12,7 +12,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <window title="Pecunia" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" wantsToBeColor="NO" visibleAtLaunch="NO" frameAutosaveName="mcmain" animationBehavior="default" id="21" userLabel="Main">
+        <window title="Pecunia" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" wantsToBeColor="NO" visibleAtLaunch="NO" frameAutosaveName="mcmain" animationBehavior="default" id="21" userLabel="Main" customClass="INAppStoreWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="148" y="114" width="1200" height="700"/>
@@ -23,42 +23,42 @@
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <tabView type="noTabsNoBorder" initialItem="394" id="393">
-                        <rect key="frame" x="0.0" y="20" width="1200" height="680"/>
+                        <rect key="frame" x="100" y="20" width="1100" height="680"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <font key="font" metaFont="system"/>
                         <tabViewItems>
                             <tabViewItem label="Konten + Kategorien" identifier="1" id="394" userLabel="Tab View Item (Konten)">
                                 <view key="view" id="396" customClass="MainBackgroundView">
-                                    <rect key="frame" x="0.0" y="0.0" width="1200" height="680"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="1100" height="680"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <splitView autosaveName="MainSplitH" dividerStyle="thin" vertical="YES" id="6321" userLabel="Main Vertical Splitter" customClass="PecuniaSplitView">
-                                            <rect key="frame" x="0.0" y="0.0" width="1200" height="680"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1100" height="680"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <customView id="6322">
-                                                    <rect key="frame" x="0.0" y="0.0" width="369" height="680"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="338" height="680"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <customView id="5998" userLabel="Sidebar with action buttons and tree" customClass="RoundedOuterShadowView">
-                                                            <rect key="frame" x="0.0" y="0.0" width="369" height="620"/>
+                                                        <customView id="5998" userLabel="Main Navigation Bar" customClass="RoundedOuterShadowView">
+                                                            <rect key="frame" x="0.0" y="0.0" width="338" height="650"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="0.0" verticalLineScroll="20" verticalPageScroll="0.0" usesPredominantAxisScrolling="NO" id="280" customClass="SynchronousScrollView">
-                                                                    <rect key="frame" x="30" y="64" width="314" height="530"/>
+                                                                    <rect key="frame" x="30" y="60" width="283" height="560"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="WcI-He-wNN">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="314" height="530"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="283" height="560"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" multipleSelection="NO" autosaveName="category-outline" rowHeight="20" indentationPerLevel="14" outlineTableColumn="282" id="281" customClass="CategoryView">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="314" height="530"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="283" height="560"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <size key="intercellSpacing" width="3" height="0.0"/>
                                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                                 <tableColumns>
-                                                                                    <tableColumn identifier="name" width="311" minWidth="16" maxWidth="1000" headerToolTip="" id="282">
+                                                                                    <tableColumn identifier="name" width="280" minWidth="16" maxWidth="1000" headerToolTip="" id="282">
                                                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
                                                                                             <font key="font" metaFont="smallSystem"/>
                                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -85,7 +85,7 @@
                                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     </clipView>
                                                                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.0037037036381661892" horizontal="YES" id="3482">
-                                                                        <rect key="frame" x="0.0" y="514" width="314" height="16"/>
+                                                                        <rect key="frame" x="0.0" y="544" width="283" height="16"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                     </scroller>
                                                                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="3481">
@@ -94,7 +94,7 @@
                                                                     </scroller>
                                                                 </scrollView>
                                                                 <segmentedControl verticalHuggingPriority="750" id="4562">
-                                                                    <rect key="frame" x="300" y="29" width="51" height="18"/>
+                                                                    <rect key="frame" x="269" y="29" width="51" height="18"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                                     <segmentedCell key="cell" controlSize="small" state="on" alignment="left" style="roundRect" trackingMode="momentary" id="4563">
                                                                         <font key="font" metaFont="smallSystem"/>
@@ -108,7 +108,7 @@
                                                                     </connections>
                                                                 </segmentedControl>
                                                                 <segmentedControl verticalHuggingPriority="750" id="4561">
-                                                                    <rect key="frame" x="110" y="29" width="189" height="18"/>
+                                                                    <rect key="frame" x="79" y="29" width="189" height="18"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                                     <segmentedCell key="cell" controlSize="small" alignment="left" style="roundRect" trackingMode="selectOne" id="4564">
                                                                         <font key="font" metaFont="smallSystem"/>
@@ -145,125 +145,17 @@
                                                                 </segmentedControl>
                                                             </subviews>
                                                         </customView>
-                                                        <button toolTip="Übersicht" id="6403">
-                                                            <rect key="frame" x="104" y="638" width="24" height="24"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="statementlist-active" imagePosition="only" alignment="center" state="on" inset="2" id="6404">
-                                                                <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="activateAccountPage:" target="235" id="6417"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button toolTip="Zeitliche grafische Auswertung" tag="1" id="6405">
-                                                            <rect key="frame" x="137" y="638" width="24" height="24"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="graph1" imagePosition="overlaps" alignment="center" state="on" inset="2" id="6406">
-                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="activateAccountPage:" target="235" id="6416"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button toolTip="Grafischer Kategorienvergleich" tag="2" id="6407">
-                                                            <rect key="frame" x="206" y="638" width="24" height="24"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="graph2" imagePosition="overlaps" alignment="center" state="on" inset="2" id="6408">
-                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="activateAccountPage:" target="235" id="6415"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button toolTip="Numerische Auswertung" tag="3" id="6409">
-                                                            <rect key="frame" x="239" y="638" width="24" height="24"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="computing" imagePosition="overlaps" alignment="center" state="on" inset="2" id="6410">
-                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="activateAccountPage:" target="235" id="6414"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button toolTip="Regeldefinitionen" tag="4" id="6411">
-                                                            <rect key="frame" x="272" y="638" width="24" height="24"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="rules" imagePosition="overlaps" alignment="center" state="on" inset="2" id="6412">
-                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="activateAccountPage:" target="235" id="6413"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button toolTip="Spenden für Pecunia. Unterstütze die Entwicklung!" tag="5" id="6423">
-                                                            <rect key="frame" x="304" y="638" width="24" height="24"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="donate" imagePosition="overlaps" alignment="center" state="on" inset="2" id="6424">
-                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="donate:" target="235" id="6426"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button toolTip="Kontenabfrage" tag="100" id="601">
-                                                            <rect key="frame" x="39" y="638" width="24" height="24"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                            <buttonCell key="cell" type="bevel" title="Kontenabfrage" bezelStyle="regularSquare" image="refresh" imagePosition="only" alignment="center" tag="100" inset="2" id="3410">
-                                                                <behavior key="behavior" lightByContents="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="enqueueRequest:" target="235" id="667"/>
-                                                                <binding destination="911" name="enabled" keyPath="selection.isRequestable" id="4739"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button toolTip="Übersicht" tag="6" id="6872">
-                                                            <rect key="frame" x="172" y="638" width="24" height="24"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                            <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="heat-map" imagePosition="only" alignment="center" state="on" inset="2" id="6873">
-                                                                <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
-                                                                <font key="font" metaFont="system"/>
-                                                            </buttonCell>
-                                                            <connections>
-                                                                <action selector="activateAccountPage:" target="235" id="6875"/>
-                                                            </connections>
-                                                        </button>
                                                     </subviews>
                                                 </customView>
                                                 <customView id="6323">
-                                                    <rect key="frame" x="370" y="0.0" width="830" height="680"/>
+                                                    <rect key="frame" x="339" y="0.0" width="761" height="680"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <textField verticalHuggingPriority="750" id="786">
-                                                            <rect key="frame" x="782" y="632" width="27" height="24"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" title="€" bezelStyle="round" id="3409">
-                                                                <font key="font" size="20" name="LucidaGrande"/>
-                                                                <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="911" name="value" keyPath="selection.currency" id="6132">
-                                                                    <dictionary key="options">
-                                                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
-IA
-</string>
-                                                                        <string key="NSValueTransformerName">CurrencyValueTransformer</string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                            </connections>
-                                                        </textField>
                                                         <textField verticalHuggingPriority="750" id="6002">
-                                                            <rect key="frame" x="437" y="626" width="97" height="14"/>
+                                                            <rect key="frame" x="572" y="656" width="120" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Letzter Umsatz am" id="6003">
-                                                                <font key="font" size="11" name="HelveticaNeue-Light"/>
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Letzter Umsatz am" usesSingleLineMode="YES" id="6003">
+                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
                                                                 <color key="textColor" cyan="0.061142899096012115" magenta="0.053635463118553162" yellow="0.1271229088306427" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
                                                                 <color key="backgroundColor" red="0.2588235438" green="0.2588235438" blue="0.2588235438" alpha="1" colorSpace="deviceRGB"/>
                                                             </textFieldCell>
@@ -276,51 +168,164 @@ IA
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="573">
-                                                            <rect key="frame" x="256" y="626" width="174" height="14"/>
+                                                            <rect key="frame" x="178" y="656" width="198" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Kontonummer" id="3405">
-                                                                <font key="font" size="11" name="HelveticaNeue-Light"/>
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="iban" usesSingleLineMode="YES" id="3405">
+                                                                <font key="font" size="13" name="HelveticaNeue-Bold"/>
                                                                 <color key="textColor" cyan="0.061142899096012115" magenta="0.053635463118553162" yellow="0.1271229088306427" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
                                                                 <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="911" name="value" keyPath="selection.accountNumber" id="6001">
+                                                                <binding destination="911" name="hidden" keyPath="selection.iban" id="Xb2-CV-P9n">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                    </dictionary>
+                                                                </binding>
+                                                                <binding destination="911" name="value" keyPath="selection.iban" id="ySJ-0R-bVm">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
                                                         </textField>
-                                                        <textField verticalHuggingPriority="750" id="574">
-                                                            <rect key="frame" x="520" y="630" width="260" height="35"/>
+                                                        <textField verticalHuggingPriority="750" id="iL7-B7-Esb">
+                                                            <rect key="frame" x="136" y="656" width="38" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100.000,00" id="3406">
-                                                                <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="575">
-                                                                    <real key="roundingIncrement" value="0.0"/>
-                                                                    <metadata>
-                                                                        <bool key="localizesFormat" value="YES"/>
-                                                                    </metadata>
-                                                                </numberFormatter>
-                                                                <font key="font" size="28" name="HelveticaNeue-Light"/>
-                                                                <color key="textColor" white="0.0" alpha="0.75" colorSpace="calibratedWhite"/>
-                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="IBAN:" usesSingleLineMode="YES" id="FiZ-uQ-gTs">
+                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
+                                                                <color key="textColor" cyan="0.061142899100000002" magenta="0.053635463119999997" yellow="0.12712290879999999" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
+                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="911" name="value" keyPath="selection.catSum" id="6007">
+                                                                <binding destination="911" name="hidden" keyPath="selection.iban" id="hij-OV-sDu">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                                                        <real key="NSNoSelectionPlaceholder" value="0.0"/>
                                                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                    </dictionary>
+                                                                </binding>
+                                                            </connections>
+                                                        </textField>
+                                                        <textField verticalHuggingPriority="750" id="cBW-1J-fam">
+                                                            <rect key="frame" x="178" y="656" width="198" height="17"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Kontonummer" usesSingleLineMode="YES" id="sme-f3-gp6">
+                                                                <font key="font" size="13" name="HelveticaNeue-Bold"/>
+                                                                <color key="textColor" cyan="0.061142899100000002" magenta="0.053635463119999997" yellow="0.12712290879999999" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
+                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
+                                                            </textFieldCell>
+                                                            <connections>
+                                                                <binding destination="911" name="value" keyPath="selection.accountNumber" id="kkf-UZ-f0J">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                    </dictionary>
+                                                                </binding>
+                                                                <binding destination="911" name="hidden" keyPath="selection.iban" id="g7L-a4-yxe">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
+                                                                    </dictionary>
+                                                                </binding>
+                                                            </connections>
+                                                        </textField>
+                                                        <textField verticalHuggingPriority="750" id="8O0-fc-4lv">
+                                                            <rect key="frame" x="136" y="656" width="38" height="17"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Konto:" usesSingleLineMode="YES" id="bTv-fK-iza">
+                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
+                                                                <color key="textColor" cyan="0.061142899100000002" magenta="0.053635463119999997" yellow="0.12712290879999999" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
+                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
+                                                            </textFieldCell>
+                                                            <connections>
+                                                                <binding destination="911" name="hidden2" keyPath="selection.accountNumber" previousBinding="Z24-L1-9ZY" id="Get-Oz-i6d">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                    </dictionary>
+                                                                </binding>
+                                                                <binding destination="911" name="hidden" keyPath="selection.iban" id="Z24-L1-9ZY">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <string key="NSValueTransformerName">NSIsNotNil</string>
+                                                                    </dictionary>
+                                                                </binding>
+                                                            </connections>
+                                                        </textField>
+                                                        <textField verticalHuggingPriority="750" id="gbg-XW-nBA">
+                                                            <rect key="frame" x="417" y="656" width="151" height="17"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="bic" usesSingleLineMode="YES" id="bmq-6H-jeQ">
+                                                                <font key="font" size="13" name="HelveticaNeue-Bold"/>
+                                                                <color key="textColor" cyan="0.061142899100000002" magenta="0.053635463119999997" yellow="0.12712290879999999" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
+                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
+                                                            </textFieldCell>
+                                                            <connections>
+                                                                <binding destination="911" name="hidden" keyPath="selection.bic" id="61m-v5-U19">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <string key="NSValueTransformerName">NSIsNil</string>
+                                                                    </dictionary>
+                                                                </binding>
+                                                                <binding destination="911" name="value" keyPath="selection.bic" id="Gzo-q2-rNT">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                    </dictionary>
+                                                                </binding>
+                                                            </connections>
+                                                        </textField>
+                                                        <textField verticalHuggingPriority="750" id="L9r-fR-5jU">
+                                                            <rect key="frame" x="380" y="656" width="33" height="17"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BIC:" usesSingleLineMode="YES" id="9oT-lB-AI5">
+                                                                <font key="font" size="13" name="HelveticaNeue-Light"/>
+                                                                <color key="textColor" cyan="0.061142899100000002" magenta="0.053635463119999997" yellow="0.12712290879999999" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
+                                                                <color key="backgroundColor" red="0.26274511220000002" green="0.26274511220000002" blue="0.26274511220000002" alpha="1" colorSpace="deviceRGB"/>
+                                                            </textFieldCell>
+                                                            <connections>
+                                                                <binding destination="911" name="hidden" keyPath="selection.bic" id="IKo-U0-SMN">
+                                                                    <dictionary key="options">
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                                                        <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <string key="NSValueTransformerName">NSIsNil</string>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
                                                         </textField>
                                                         <textField verticalHuggingPriority="750" id="577">
-                                                            <rect key="frame" x="11" y="626" width="243" height="14"/>
+                                                            <rect key="frame" x="11" y="656" width="121" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Postbank" id="3408">
-                                                                <font key="font" size="11" name="HelveticaNeue-Light"/>
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Postbank" usesSingleLineMode="YES" id="3408">
+                                                                <font key="font" size="13" name="HelveticaNeue-Bold"/>
                                                                 <color key="textColor" cyan="0.061142899096012115" magenta="0.053635463118553162" yellow="0.1271229088306427" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
                                                                 <color key="backgroundColor" red="0.2588235438" green="0.2588235438" blue="0.2588235438" alpha="1" colorSpace="deviceRGB"/>
                                                             </textFieldCell>
@@ -336,33 +341,12 @@ IA
                                                                 </binding>
                                                             </connections>
                                                         </textField>
-                                                        <textField wantsLayer="YES" verticalHuggingPriority="750" id="576">
-                                                            <rect key="frame" x="7" y="642" width="586" height="30"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                            <shadow key="shadow" blurRadius="2">
-                                                                <size key="offset" width="2" height="2"/>
-                                                                <color key="color" white="0.0" alpha="0.52000000000000002" colorSpace="calibratedWhite"/>
-                                                            </shadow>
-                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Girokonto" id="3407">
-                                                                <font key="font" size="24" name="HelveticaNeue-Bold"/>
-                                                                <color key="textColor" cyan="0.061142899096012115" magenta="0.053635463118553162" yellow="0.1271229088306427" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
-                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                            <connections>
-                                                                <binding destination="911" name="value" keyPath="selection.localName" id="4710">
-                                                                    <dictionary key="options">
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                                                        <string key="NSNoSelectionPlaceholder"></string>
-                                                                    </dictionary>
-                                                                </binding>
-                                                            </connections>
-                                                        </textField>
                                                         <textField verticalHuggingPriority="750" id="4746">
-                                                            <rect key="frame" x="534" y="626" width="57" height="14"/>
+                                                            <rect key="frame" x="696" y="656" width="53" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Label" id="4747">
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Date" usesSingleLineMode="YES" id="4747">
                                                                 <dateFormatter key="formatter" formatterBehavior="custom10_4" dateStyle="short" id="4755"/>
-                                                                <font key="font" size="11" name="HelveticaNeue-Light"/>
+                                                                <font key="font" size="13" name="HelveticaNeue-Bold"/>
                                                                 <color key="textColor" cyan="0.061142899096012115" magenta="0.053635463118553162" yellow="0.1271229088306427" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
                                                                 <color key="backgroundColor" red="0.25490197539999998" green="0.25490197539999998" blue="0.25490197539999998" alpha="1" colorSpace="deviceRGB"/>
                                                             </textFieldCell>
@@ -383,7 +367,7 @@ IA
                                                             </connections>
                                                         </textField>
                                                         <customView id="lwF-Qy-Ve8" userLabel="Section Placeholder">
-                                                            <rect key="frame" x="0.0" y="0.0" width="830" height="620"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="761" height="651"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </customView>
                                                     </subviews>
@@ -421,23 +405,11 @@ IA
                         <imageCell key="cell" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSLockLockedTemplate" id="4741"/>
                     </imageView>
                     <textField verticalHuggingPriority="750" id="6099" userLabel="Income Text">
-                        <rect key="frame" x="939" y="3" width="100" height="14"/>
+                        <rect key="frame" x="824" y="3" width="100" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="+ 9.999.999,99 €" id="6100">
-                            <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="✚ #,##0.00 €" negativeFormat="-#,##0.00" thousandSeparator="." id="6105">
-                                <textAttributesForNegativeValues/>
-                                <attributedString key="attributedStringForZero">
-                                    <fragment content="✚ 0,00 €">
-                                        <attributes>
-                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" metaFont="smallSystem"/>
-                                            <font key="NSOriginalFont" metaFont="smallSystem"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="clipping" baseWritingDirection="natural"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <decimal key="minimum" value="NaN"/>
-                                <decimal key="maximum" value="NaN"/>
+                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="9.999.999,99 €" id="6100">
+                            <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="6105">
+                                <real key="roundingIncrement" value="0.0"/>
                                 <metadata>
                                     <bool key="localizesFormat" value="YES"/>
                                 </metadata>
@@ -448,26 +420,13 @@ IA
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" id="6103" userLabel="Spending Tect">
-                        <rect key="frame" x="1041" y="3" width="100" height="14"/>
+                        <rect key="frame" x="1021" y="3" width="100" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="9.999.999,99 €" id="6104">
-                            <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="#,##0.00 €" negativeFormat="− #,##0.00 €" thousandSeparator="." id="6106">
-                                <textAttributesForNegativeValues/>
-                                <attributedString key="attributedStringForZero">
-                                    <fragment content="− 0,00 €">
-                                        <attributes>
-                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" metaFont="smallSystem"/>
-                                            <font key="NSOriginalFont" metaFont="smallSystem"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="clipping" baseWritingDirection="natural"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <decimal key="minimum" value="NaN"/>
-                                <decimal key="maximum" value="NaN"/>
+                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="9.999.999,99 €" id="6104">
+                            <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="6106">
+                                <real key="roundingIncrement" value="0.0"/>
                                 <metadata>
                                     <bool key="localizesFormat" value="YES"/>
-                                    <real key="inspectorSampleValue" value="-1234.75"/>
                                 </metadata>
                             </numberFormatter>
                             <font key="font" metaFont="smallSystem"/>
@@ -486,42 +445,57 @@ IA
                             <action selector="toggleDetailsPane:" target="235" id="6520"/>
                         </connections>
                     </button>
+                    <customView id="B96-no-ost" customClass="EDSideBar">
+                        <rect key="frame" x="0.0" y="20" width="100" height="680"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button toolTip="Neue Umsätze aller Konten abrufen. Mit Alt nur das selektierte Konto aktualisieren." wantsLayer="YES" id="hbf-EK-ccc" userLabel="Refresh Button">
+                                <rect key="frame" x="52" y="659" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="refresh" imagePosition="only" alignment="center" inset="2" id="aBu-rK-fVG">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="enqueueRequest:" target="235" id="T0m-Uh-P2E"/>
+                                    <binding destination="911" name="enabled" keyPath="selection.isRequestable" id="Ww5-WJ-6qZ"/>
+                                </connections>
+                            </button>
+                            <button id="4Zn-pj-CrH" userLabel="Donate Button">
+                                <rect key="frame" x="75" y="659" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                <string key="toolTip">Für Pecunia spenden.
+Unterstütze die Entwicklung!</string>
+                                <buttonCell key="cell" type="bevel" title="Button" bezelStyle="regularSquare" image="favorite" imagePosition="only" alignment="center" inset="2" id="WSy-fx-agS">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="donate:" target="235" id="JyC-DI-8fJ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </customView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="jgg-oi-JS7">
+                        <rect key="frame" x="958" y="3" width="60" height="14"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Ausgaben:" id="Aov-5W-w9P">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Wz9-K1-SAF">
+                        <rect key="frame" x="741" y="3" width="81" height="14"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Einnahmen:" id="HPg-lN-syK">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="034C6A17-0D41-4DE9-A744-0130949CA213" autosavesConfiguration="NO" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconOnly" sizeMode="small" id="3532">
-                <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="6502"/>
-                    <toolbarItem implicitItemIdentifier="82DC93BF-CF89-451E-804F-C55D4E129DA5" label="" paletteLabel="Buttons" id="6495">
-                        <nil key="toolTip"/>
-                        <size key="minSize" width="104" height="25"/>
-                        <size key="maxSize" width="542" height="25"/>
-                        <segmentedControl key="view" verticalHuggingPriority="750" id="6493">
-                            <rect key="frame" x="0.0" y="14" width="529" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <segmentedCell key="cell" alignment="left" style="automatic" trackingMode="selectOne" id="6494">
-                                <font key="font" metaFont="system"/>
-                                <segments>
-                                    <segment label="Startseite" width="130"/>
-                                    <segment label="Konten + Kategorien" width="130" selected="YES" tag="1"/>
-                                    <segment label="Überweisungen" width="130"/>
-                                    <segment label="Daueraufträge" width="130"/>
-                                </segments>
-                            </segmentedCell>
-                            <connections>
-                                <action selector="activateMainPage:" target="235" id="6496"/>
-                            </connections>
-                        </segmentedControl>
-                    </toolbarItem>
-                </allowedToolbarItems>
-                <defaultToolbarItems>
-                    <toolbarItem reference="6502"/>
-                    <toolbarItem reference="6495"/>
-                    <toolbarItem reference="6502"/>
-                </defaultToolbarItems>
-                <connections>
-                    <outlet property="delegate" destination="235" id="3543"/>
-                </connections>
-            </toolbar>
             <contentBorderThickness minY="22"/>
             <connections>
                 <outlet property="delegate" destination="235" id="6433"/>
@@ -916,6 +890,19 @@ CA
                                     <action selector="showLicense:" target="235" id="5290"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="3D4-LS-roi"/>
+                            <menuItem title="Fehlerbericht senden" id="bZF-NA-SN5">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="sendErrorReport:" target="235" id="Ocx-IB-9Wt"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Log Verzeichnis öffnen" id="laH-Jl-m7P">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="openLogFolder:" target="235" id="4PE-Jc-Kgx"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
@@ -1052,28 +1039,22 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <outlet property="assignPreviewController" destination="2401" id="6338"/>
                 <outlet property="catActions" destination="4559" id="4709"/>
                 <outlet property="categoryController" destination="911" id="930"/>
-                <outlet property="computingButton" destination="6409" id="6421"/>
                 <outlet property="developerMenu" destination="6506" id="6509"/>
                 <outlet property="earningsField" destination="6099" id="6117"/>
-                <outlet property="graph1Button" destination="6405" id="6419"/>
-                <outlet property="graph2Button" destination="6407" id="6420"/>
-                <outlet property="headerValueField" destination="574" id="6004"/>
-                <outlet property="heatMapButton" destination="6872" id="6876"/>
+                <outlet property="earningsFieldLabel" destination="Wz9-K1-SAF" id="M52-A1-h1y"/>
                 <outlet property="lockImage" destination="4740" id="4742"/>
                 <outlet property="mainTabView" destination="393" id="476"/>
                 <outlet property="mainVSplit" destination="6321" id="6326"/>
                 <outlet property="mainWindow" destination="21" id="453"/>
+                <outlet property="refreshButton" destination="hbf-EK-ccc" id="fff-7j-nvu"/>
                 <outlet property="rightPane" destination="6323" id="6334"/>
-                <outlet property="rulesButton" destination="6411" id="6422"/>
                 <outlet property="sectionPlaceholder" destination="lwF-Qy-Ve8" id="R4K-Se-Vbp"/>
-                <outlet property="sideBar" destination="5998" id="6347"/>
+                <outlet property="sidebar" destination="B96-no-ost" id="ndF-xC-rco"/>
                 <outlet property="spendingsField" destination="6103" id="6108"/>
-                <outlet property="statementsButton" destination="6403" id="6418"/>
+                <outlet property="spendingsFieldLabel" destination="jgg-oi-JS7" id="5uc-Vp-xiZ"/>
                 <outlet property="timeSlicer" destination="4624" id="4672"/>
                 <outlet property="toggleDetailsButton" destination="6515" id="6517"/>
                 <outlet property="toggleDetailsPaneItem" destination="6532" id="6557"/>
-                <outlet property="toggleFullscreenItem" destination="6343" id="6346"/>
-                <outlet property="toolbarButtons" destination="6493" id="6497"/>
             </connections>
         </customObject>
         <customObject id="3601" customClass="ExportController">
@@ -1147,17 +1128,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="NSLeftFacingTriangleTemplate" width="9" height="9"/>
         <image name="NSLockLockedTemplate" width="9" height="12"/>
         <image name="NSRightFacingTriangleTemplate" width="9" height="9"/>
-        <image name="computing" width="24" height="24"/>
-        <image name="donate" width="24" height="24"/>
-        <image name="graph1" width="24" height="24"/>
-        <image name="graph2" width="24" height="24"/>
-        <image name="heat-map" width="24" height="24"/>
+        <image name="favorite" width="20" height="20"/>
         <image name="hide" width="16" height="16"/>
         <image name="ins-8" width="12" height="12"/>
         <image name="minus-8" width="8" height="8"/>
         <image name="plus-8" width="8" height="8"/>
-        <image name="refresh" width="24" height="24"/>
-        <image name="rules" width="24" height="24"/>
-        <image name="statementlist-active" width="24" height="24"/>
+        <image name="refresh" width="20" height="20"/>
     </resources>
 </document>

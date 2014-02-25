@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -16,6 +16,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301  USA
  */
+
+#import "MessageLog.h"
 
 #import "MOAssistant.h"
 #import "Category.h"
@@ -152,7 +154,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     NSError *error = nil;
     [context save: &error];
     if (error != nil) {
-        NSLog(@"Pecunia save error: %@", error.localizedDescription);
+        LogError(@"Pecunia save error: %@", error.localizedDescription);
         return;
     }
 
@@ -317,6 +319,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 - (void)checkPaths
 {
+    LogEnter;
+
     // create default paths
     NSFileManager  *fm = [NSFileManager defaultManager];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -333,6 +337,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     NSString *dataDir = [defaults valueForKey: dataDirKey];
 
     if (isSandboxed) {
+        LogDebug(@"Application is sandboxed.");
         if (dataDir != nil) {
             if ([dataDir hasSuffix: @"/Library/Application Support/Pecunia/Data"]) {
                 // it's the default directory, set the DataDir to nil
@@ -346,6 +351,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             dataDir = defaultDataDir;
         }
     } else {
+        LogDebug(@"Application is not sandboxed.");
         // not sandboxed
         if (dataDir == nil) {
             dataDir = defaultDataDir;
@@ -393,61 +399,71 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             }
         }
     }
+
+    LogInfo(@"Data dir URL: %@", dataDirURL);
+    LogInfo(@"Pecunia file URL: %@", pecuniaFileURL);
+    LogInfo(@"Passport dir: %@", self.ppDir);
+    LogInfo(@"Import/Export dir: %@", importerDir);
+    LogInfo(@"Temp dir: %@", tempDir);
+
+    LogLeave;
 }
 
 - (void)migrate10
 {
     NSError *error = nil;
 
+    NSURL *standardDataURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
+    NSURL *encryptedDataURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
+
+    // On enter the new bundle path has been created already. Check if it contains the data file, either encrypted or
+    // unencrypted.
     NSFileManager  *fm = [NSFileManager defaultManager];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL           migrated10 = [defaults boolForKey: @"Migrated10"];
-    if (migrated10 == NO) {
-        if (isDefaultDir == NO) {
-            @throw [PecuniaError errorWithText: NSLocalizedString(@"AP159", nil)];
-        }
+    if ([fm fileExistsAtPath: standardDataURL.path] || [fm fileExistsAtPath: encryptedDataURL.path]) {
+        return; // Nothing to do.
+    }
 
-        // check for encryption / sparseimage file
-        NSURL *oldURLStandard = [self.dataDirURL URLByAppendingPathComponent: @"accounts.sqlite"];
-        NSURL *oldURLEncr = [self.dataDirURL URLByAppendingPathComponent: @"accounts.sparseimage"];
+    if (!isDefaultDir) {
+        NSRunCriticalAlertPanel(NSLocalizedString(@"AP85", nil),
+                                NSLocalizedString(@"AP159", nil),
+                                NSLocalizedString(@"AP1", nil), nil, nil);
+        [NSApp terminate: self];
+    }
 
-        BOOL wasEncrypted = NO;
-        if ([fm fileExistsAtPath: [oldURLEncr path]]) {
-            // encrypted file exists, check if unencrypted file exists as well and is older
-            if ([fm fileExistsAtPath: [oldURLStandard path]]) {
-                // yes, now we have to check the dates
-                NSDictionary *standardAttrs = [fm attributesOfItemAtPath: [oldURLStandard path] error: &error];
-                NSDictionary *encrAttrs = [fm attributesOfItemAtPath: [oldURLEncr path] error: &error];
-                NSDate       *standardDate = standardAttrs[NSFileModificationDate];
-                NSDate       *encrDate = encrAttrs[NSFileModificationDate];
-                if ([encrDate compare: standardDate] == NSOrderedDescending) {
-                    wasEncrypted = YES;
-                }
-            } else {
+    // Check for encryption / sparseimage file.
+    NSURL *oldURLStandard = [self.dataDirURL URLByAppendingPathComponent: @"accounts.sqlite"];
+    NSURL *oldURLEncr = [self.dataDirURL URLByAppendingPathComponent: @"accounts.sparseimage"];
+
+    BOOL wasEncrypted = NO;
+    if ([fm fileExistsAtPath: [oldURLEncr path]]) {
+        // encrypted file exists, check if unencrypted file exists as well and is older
+        if ([fm fileExistsAtPath: [oldURLStandard path]]) {
+            // yes, now we have to check the dates
+            NSDictionary *standardAttrs = [fm attributesOfItemAtPath: [oldURLStandard path] error: &error];
+            NSDictionary *encrAttrs = [fm attributesOfItemAtPath: [oldURLEncr path] error: &error];
+            NSDate       *standardDate = standardAttrs[NSFileModificationDate];
+            NSDate       *encrDate = encrAttrs[NSFileModificationDate];
+            if ([encrDate compare: standardDate] == NSOrderedDescending) {
                 wasEncrypted = YES;
             }
-        }
-        if (wasEncrypted) {
-            @throw [PecuniaError errorWithText: NSLocalizedString(@"AP160", nil)];
+        } else {
+            wasEncrypted = YES;
         }
     }
-
-    if (isDefaultDir == NO) {
-        return;
+    if (wasEncrypted) {
+        NSRunCriticalAlertPanel(NSLocalizedString(@"AP85", nil),
+                                NSLocalizedString(@"AP160", nil),
+                                NSLocalizedString(@"AP1", nil), nil, nil);
+        [NSApp terminate: self];
     }
 
-    NSURL *accURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
-    if ([fm fileExistsAtPath: [accURL path]] == NO) {
-        accURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
-        if ([fm fileExistsAtPath: [accURL path]] == NO) {
-            // the data store is empty - try to migrate
-            NSURL *oldURL = [self.dataDirURL URLByAppendingPathComponent: [self.dataFilename stringByReplacingOccurrencesOfString: @"pecuniadata" withString: @"sqlite"]];
-            if ([fm fileExistsAtPath: [oldURL path]] == YES) {
-                [fm moveItemAtPath: [oldURL path] toPath: [accURL path] error: &error];
-                if (error != nil) {
-                    NSLog(@"Move of old accounts file %@ to new location (%@) failed.", oldURL, accURL);
-                }
-            }
+    // The data store is empty - try to move the old data file over.
+    NSURL *oldURL = [self.dataDirURL URLByAppendingPathComponent: [self.dataFilename stringByReplacingOccurrencesOfString: @"pecuniadata" withString: @"sqlite"]];
+    if ([fm fileExistsAtPath: [oldURL path]]) {
+        [fm moveItemAtPath: oldURL.path toPath: standardDataURL.path error: &error];
+        if (error != nil) {
+            LogError(@"Move of old accounts file %@ to new location (%@) failed. Error is: %@",
+                     oldURL, standardDataURL, error.localizedDescription);
         }
     }
 }
@@ -459,7 +475,10 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 - (void)shutdown
 {
+    LogEnter;
+
     NSError *error = nil;
+
 
     NSPersistentStoreCoordinator *coord = [context persistentStoreCoordinator];
     NSArray                      *stores = [coord persistentStores];
@@ -472,15 +491,25 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         [alert runModal];
     }
 
-    NSLog(@"Persistent stores released");
-    
-    if (isEncrypted && isMaxIdleTimeExceeded == NO) {
+    LogDebug(@"Persistent stores released");
+
+    if ([context hasChanges]) {
+        [context save: &error];
+    }
+    if (error != nil) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+    }
+
+    if (isEncrypted && !isMaxIdleTimeExceeded) {
         [self encrypt];
     }
 
-    if (isSandboxed && dataDirURL) {
+    if (isSandboxed && dataDirURL != nil) {
         [dataDirURL stopAccessingSecurityScopedResource];
     }
+
+    LogLeave;
 }
 
 - (BOOL)encrypted
@@ -515,7 +544,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                         NSLocalizedString(@"AP1", nil),
                         nil,
                         nil);
-        NSLog(@"CCCrypt failure: %d", status);
+        LogError(@"CCCrypt failure: %d", status);
         free(encryptedBytes);
         return nil;
     }
@@ -527,15 +556,19 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 - (BOOL)encrypt
 {
+    LogEnter;
+
     // read accounts file
     sync();
-    NSLog(@"Synced, now start encryption");
+    LogDebug(@"Sync'ed, now starting encryption");
+
     NSData *fileData = [NSData dataWithContentsOfURL: self.accountsURL];
     NSData *encryptedData = [self encryptData:fileData withKey:dataPasswordKey];
     if (encryptedData != nil) {
         // write encrypted content to pecunia data file
         NSURL *targetURL = [pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
-        NSLog(@"Write encrypted data to %@", targetURL);
+
+        LogDebug(@"Write encrypted data to %@", targetURL);
         if ([encryptedData writeToURL: targetURL atomically: NO] == NO) {
             NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                             NSLocalizedString(@"AP111", nil),
@@ -543,33 +576,41 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                             nil,
                             nil,
                             [targetURL path]);
+            LogLeave;
             return NO;
         }
         
         // now remove uncrypted file
-        NSLog(@"Write was successful, now delete file at %@", accountsURL);
+        LogDebug(@"Write was successful, now delete file at %@", accountsURL);
         NSFileManager *fm = [NSFileManager defaultManager];
         NSError       *error = nil;
         [fm removeItemAtPath: [accountsURL path] error: &error];
         if (error != nil) {
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
+
+            LogLeave;
             return NO;
         }
     } else {
+        LogLeave;
         return NO;
     }
+
+    LogLeave;
     return YES;
 }
 
 - (BOOL)decrypt
 {
+    LogEnter;
+
     BOOL     savePassword = NO;
     NSString *passwd = nil;
 
     // read encrypted file
     NSURL  *sourceURL = [pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
-    NSLog(@"Start decryption, read file at %@", sourceURL);
+    LogDebug(@"Start decryption, read file at %@", sourceURL);
 
     NSData *fileData = [NSData dataWithContentsOfURL: sourceURL];
     char   *decryptedBytes = malloc([fileData length]);
@@ -607,8 +648,10 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                                 NSLocalizedString(@"AP1", nil),
                                 nil,
                                 nil);
-                NSLog(@"CCCrypt failure: %d", status);
+                LogError(@"CCCrypt failure: %d", status);
                 free(decryptedBytes);
+
+                LogLeave;
                 return NO;
             }
             
@@ -646,15 +689,17 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                         NSLocalizedString(@"AP1", nil),
                         nil,
                         nil);
-        NSLog(@"CCCrypt failure: %d", status);
+        LogError(@"CCCrypt failure: %d", status);
         free(decryptedBytes);
+
+        LogLeave;
         return NO;
     }
 
     NSData *decryptedData = [NSData dataWithBytes: decryptedBytes length: decryptedSize];
     free(decryptedBytes);
     
-    NSLog(@"Write data to %@", accountsURL);
+    LogDebug(@"Write data to %@", accountsURL);
     if ([decryptedData writeToURL: accountsURL atomically: NO] == NO) {
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP111", nil),
@@ -662,6 +707,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
                         nil,
                         nil,
                         [accountsURL path]);
+
+        LogLeave;
         return NO;
     }
 
@@ -671,6 +718,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 
     decryptionDone = YES;
+
+    LogLeave;
     return YES;
 }
 
@@ -733,11 +782,14 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 - (BOOL)stopEncryption
 {
+    LogEnter;
+
     if (!isEncrypted) {
+        LogLeave;
         return NO;
     }
 
-    NSLog(@"Stop encryption");
+    LogDebug(@"Stop encryption");
     sync();
     NSFileManager *fm = [NSFileManager defaultManager];
     NSError       *error = nil;
@@ -745,7 +797,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     // move unencrypted file
     NSURL *targetURL = [pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
     
-    NSLog(@"Move %@ to %@", accountsURL, targetURL);
+    LogDebug(@"Move %@ to %@", accountsURL, targetURL);
     [fm moveItemAtPath: [accountsURL path] toPath: [targetURL path] error: &error];
     if (error != nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
@@ -759,7 +811,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     // remove encrypted file
     targetURL = [pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
     
-    NSLog(@"Remove encrypted file at %@", targetURL);
+    LogDebug(@"Remove encrypted file at %@", targetURL);
     [fm removeItemAtPath: [targetURL path] error: &error];
     if (error != nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
@@ -838,7 +890,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     [storeOptions setDictionary: @{NSMigratePersistentStoresAutomaticallyOption: @YES,
                                    NSInferMappingModelAutomaticallyOption: @YES}];
     if (isEncrypted) {
-        pragmaOptions = @{@"synchronous": @"FULL", @"journal_mode":@"DELETE"};
+        pragmaOptions = @{@"synchronous": @"FULL", @"journal_mode": @"DELETE"};
         storeOptions[NSSQLitePragmasOption] = pragmaOptions;
     }
 
@@ -853,7 +905,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         }
     }
 
-    NSLog(@"Open context from %@", accountsURL);
+    LogInfo(@"Open context from %@", accountsURL);
     [coord addPersistentStoreWithType: NSSQLiteStoreType
                         configuration: nil
                                   URL: accountsURL
@@ -894,12 +946,15 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 - (void)relocateToURL: (NSURL *)newFilePathURL
 {
+    LogEnter;
+
     // check if it is already
     if ([newFilePathURL isEqual: dataDirURL]) {
+        LogLeave;
         return;
     }
     
-    NSLog(@"Relocate to %@", newFilePathURL);
+    LogDebug(@"Relocate to %@", newFilePathURL);
 
     NSFileManager  *fm = [NSFileManager defaultManager];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -910,7 +965,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
     // first check if data file already exists at target position
     if ([fm fileExistsAtPath: [newFilePathURL path]]) {
-        int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP6", nil),
+        int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP84", nil),
                                           NSLocalizedString(@"AP164", nil),
                                           NSLocalizedString(@"AP2", nil),
                                           NSLocalizedString(@"AP15", nil),
@@ -927,6 +982,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             if (error != nil) {
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
+
+                LogLeave;
                 return;
             }
         }
@@ -941,11 +998,13 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     isDefaultDir = [self checkIsDefaultDataDir:newDataDirURL];
 
     // move pecunia file with all included files
-    NSLog(@"Move %@ to %@", pecuniaFileURL, newFilePathURL);
+    LogDebug(@"Move %@ to %@", pecuniaFileURL, newFilePathURL);
     [fm moveItemAtPath: [pecuniaFileURL path] toPath: [newFilePathURL path] error: &error];
     if (error != nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
+
+        LogLeave;
         return;
     }
 
@@ -978,6 +1037,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             [coord setURL: self.accountsURL forPersistentStore: store];
         }
     }
+
+    LogLeave;
 }
 
 - (void)relocate
@@ -1000,6 +1061,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 - (void)useExistingDataFile:(NSURL*)url
 {
+    LogEnter;
+
     if (url == nil) {
         NSOpenPanel *panel = [NSOpenPanel openPanel];
         [panel setCanCreateDirectories: YES];
@@ -1007,6 +1070,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         
         NSInteger result = [panel runModal];
         if (result == NSFileHandlingPanelCancelButton) {
+            LogLeave;
             return;
         }
         url = panel.URLs[0];
@@ -1016,7 +1080,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     NSError *error = nil;
     [context save: &error];
     if (error != nil) {
-        NSLog(@"Pecunia save error: %@", error.localizedDescription);
+        LogError(@"Pecunia save error: %@", error.localizedDescription);
+        LogLeave;
         return;
     }
     
@@ -1038,6 +1103,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         if (error != nil) {
             [NSAlert alertWithError:error];
             [NSApp terminate:self];
+
+            LogLeave;
             return;
         } else {
             [defaults setValue: bookmark forKey: @"accountsBookmark"];
@@ -1046,10 +1113,12 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     
     [defaults synchronize];
     
-    NSLog(@"Use existing datafile at %@", [defaults valueForKey:dataDirKey]);
+    LogDebug(@"Use existing datafile at %@", [defaults valueForKey:dataDirKey]);
    
     [[BankingController controller] setRestart];
-    [NSApp terminate:self];
+
+    LogLeave;
+    [NSApp terminate: self];
 }
 
 - (void)relocateToStandard

@@ -25,8 +25,8 @@
 @class SynchronousScrollView;
 @class PecuniaSplitView;
 @class TimeSliceManager;
-@class RoundedSidebar;
 @class BWGradientBox;
+@class EDSideBar;
 @class CategoryView;
 @class DockIconController;
 
@@ -41,9 +41,12 @@
 @class DebitsController;
 @class CategoryHeatMapController;
 
+@class INAppStoreWindow;
+
 @interface BankingController : NSObject
 {
-    IBOutlet NSWindow               *mainWindow;
+    IBOutlet INAppStoreWindow      *mainWindow;
+    IBOutlet EDSideBar              *sidebar;
     IBOutlet NSTabView              *mainTabView;
     IBOutlet MCEMTreeController     *categoryController;
     IBOutlet SynchronousScrollView  *accountsScrollView;
@@ -52,31 +55,21 @@
     IBOutlet TimeSliceManager       *timeSlicer;
     IBOutlet NSSegmentedControl     *catActions;
     IBOutlet NSImageView            *lockImage;
-    IBOutlet NSTextField            *headerValueField;
-    IBOutlet NSTextField            *sumValueField;
-    IBOutlet NSTextField            *assignValueField;
     IBOutlet NSTextField            *earningsField;
     IBOutlet NSTextField            *spendingsField;
+    IBOutlet NSTextField            *earningsFieldLabel;
+    IBOutlet NSTextField            *spendingsFieldLabel;
     IBOutlet NSView                 *sectionPlaceholder;
     IBOutlet NSView                 *rightPane;
-    IBOutlet NSSegmentedControl     *toolbarButtons;
+    IBOutlet NSButton               *refreshButton;
 
-    // About panel.
+    // About panel, different xib file.
     IBOutlet NSPanel       *aboutWindow;
     IBOutlet BWGradientBox *gradient;
     IBOutlet NSTextView    *aboutText;
     IBOutlet NSTextField   *versionText;
     IBOutlet NSTextField   *copyrightText;
 
-    IBOutlet NSButton       *statementsButton;
-    IBOutlet NSButton       *graph1Button;
-    IBOutlet NSButton       *graph2Button;
-    IBOutlet NSButton       *computingButton;
-    IBOutlet NSButton       *rulesButton;
-    IBOutlet NSButton       *heatMapButton;
-    IBOutlet RoundedSidebar *sideBar;
-
-    IBOutlet NSMenuItem *toggleFullscreenItem;
     IBOutlet NSMenuItem *developerMenu;
 
     IBOutlet NSButton *toggleDetailsButton;
@@ -114,9 +107,6 @@
 - (IBAction)deleteAccount: (id)sender;
 - (IBAction)editPreferences: (id)sender;
 
-- (IBAction)activateMainPage: (id)sender;
-- (IBAction)activateAccountPage: (id)sender;
-
 - (IBAction)enqueueRequest: (id)sender;
 - (IBAction)editBankUsers: (id)sender;
 - (IBAction)export: (id)sender;
@@ -128,7 +118,6 @@
 - (IBAction)transfer_dated: (id)sender;
 - (IBAction)transfer_internal: (id)sender;
 
-- (IBAction)donate: (id)sender;
 - (IBAction)splitPurpose: (id)sender;
 
 - (IBAction)manageCategories: (id)sender;
@@ -155,7 +144,6 @@
 
 - (IBAction)creditCardSettlements: (id)sender;
 
-- (NSArray *)selectedNodes;
 - (void)statementsNotification: (NSNotification *)notification;
 - (Category *)getBankingRoot;
 - (void)updateNotAssignedCategory;

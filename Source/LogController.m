@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,7 +18,7 @@
  */
 
 #import "LogController.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "MessageLog.h"
 
 static LogController *_logController = nil;
@@ -31,6 +31,8 @@ static LogController *_logController = nil;
     _logController = self;
     messageLog = [MessageLog log];
     isHidden = YES;
+    [self setLogLevel: LogLevel_Verbous];
+
     return self;
 }
 
@@ -77,7 +79,7 @@ static LogController *_logController = nil;
 {
     [messageLog registerLogUI: self];
     //[self logLevelChanged: self];
-    [self setLogLevel: MessageLog.log.currentLevel];
+    [self setLogLevel: LogLevel_Verbous];
 }
 
 - (void)windowWillClose: (NSNotification *)notification
@@ -171,7 +173,7 @@ static LogController *_logController = nil;
     currentLevel = level;
 
     // workaround: GWEN/Aq sends messages to console...
-    [[HBCIClient hbciClient] setLogLevel: level];
+    [[HBCIController controller] setLogLevel: level];
 }
 
 - (void)setLogLevel: (LogLevel)level
@@ -182,7 +184,7 @@ static LogController *_logController = nil;
     currentLevel = level;
     [self adjustPopupToLogLevel];
     //[messageLog setLevel:level ];
-    [[HBCIClient hbciClient] setLogLevel: level];
+    [[HBCIController controller] setLogLevel: level];
 }
 
 - (void)saveLog: (id)sender

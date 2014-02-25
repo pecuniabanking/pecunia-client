@@ -131,12 +131,6 @@ extern void *UserDefaultsBindingContext;
     [cell setAlignment: NSRightTextAlignment];
     valueGrid.cell = cell;
 
-    NSNumberFormatter *formatter = cell.formatter;
-
-    [formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
-    [formatter setLocale: [NSLocale currentLocale]];
-    [formatter setCurrencySymbol: @""];
-
     valueGrid.allowsMultipleSelection = NO;
     valueGrid.showSelectionRing = NO;
 

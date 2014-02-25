@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,9 +19,11 @@
 
 #import "TransfersController.h"
 #import "TransactionController.h"
+#import "BankingController.h"
+
 #import "PecuniaError.h"
 #import "LogController.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
 #import "TransferPrintView.h"
@@ -29,10 +31,11 @@
 #import "TransactionLimits.h"
 #import "TransferFormularView.h"
 #import "GradientButtonCell.h"
+
 #import "NSString+PecuniaAdditions.h"
 #import "GraphicsAdditions.h"
 #import "AnimationHelper.h"
-#import "BankingController.h"
+
 #import "TimeSliceManager.h"
 #import "ShortDate.h"
 
@@ -151,7 +154,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
                 break;
 
             default:
-                type = TransferTypeStandard;
+                type = TransferTypeOldStandard;
                 break;
         }
 
@@ -199,7 +202,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             break;
 
         default:
-            type = TransferTypeStandard;
+            type = TransferTypeOldStandard;
             break;
     }
 
@@ -291,6 +294,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
         // Check if we can start a new editing process.
         if ([controller prepareEditingFromDragging: info]) {
+            controller.donation = NO;
             [self showFormular];
             return NSDragOperationCopy;
         }
@@ -392,24 +396,30 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 //--------------------------------------------------------------------------------------------------
 
-@interface TransfersController (private)
+@interface TransfersController ()
+{
+    NSInteger lastChangeCount; // Change count of the general pasteboard.
+}
+
 - (void)updateSourceAccountSelector;
 - (void)prepareSourceAccountSelector: (BankAccount *)account forTransferType: (TransferType)transferType;
 - (void)updateTargetAccountSelector;
 - (void)storeReceiverInMRUList;
+
 @end
 
 @implementation TransfersController
 
 @synthesize transferFormular;
 @synthesize dropToEditRejected;
-
+@synthesize donation;
 
 - (void)awakeFromNib
 {
     [[mainView window] setInitialFirstResponder: receiverComboBox];
 
-    NSArray *acceptedTypes = @[@(TransferTypeInternal), @(TransferTypeStandard), @(TransferTypeEU), @(TransferTypeDated),
+    NSArray *acceptedTypes = @[@(TransferTypeInternal), @(TransferTypeOldStandard), @(TransferTypeEU),
+                               @(TransferTypeOldStandardScheduled), @(TransferTypeSEPAScheduled),
                                @(TransferTypeSEPA), @(TransferTypeDebit)];
     pendingTransfers.managedObjectContext = MOAssistant.assistant.context;
     pendingTransfers.filterPredicate = [NSPredicate predicateWithFormat: @"type in %@ and isSent = NO and changeState = %d",
@@ -487,6 +497,16 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     rowPositions[1] = [[transferFormular viewWithTag: 11] frame].origin.y;
     rowPositions[2] = [[transferFormular viewWithTag: 21] frame].origin.y;
     rowPositions[3] = [[transferFormular viewWithTag: 31] frame].origin.y;
+
+    // Start a timer that polls the pasteboard for changes (there's no notification API).
+    NSTimer *timer = [NSTimer timerWithTimeInterval: 1
+                                             target: self
+                                           selector: @selector(pasteboardCheck:)
+                                           userInfo: nil
+                                            repeats: YES];
+    [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSDefaultRunLoopMode];
+    autofillTable.target = self;
+    autofillTable.doubleAction = @selector(autoFill);
 }
 
 - (NSMenuItem *)createItemForAccountSelector: (BankAccount *)account
@@ -574,7 +594,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             }
 
             // check if the accout supports the current transfer type
-            if ([[HBCIClient hbciClient] isTransferSupported: transferType forAccount: account] == NO) {
+            if ([[HBCIController controller] isTransferSupported: transferType forAccount: account] == NO) {
                 [[MessageLog log] addMessage:[NSString stringWithFormat:@"skip account %@, job %d not supported", account.accountNumber, transferType] withLevel:LogLevel_Debug];
                 continue;
             }
@@ -679,8 +699,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             remoteBankCodeKey = @"selection.remoteBankCode";
             break;
 
-        case TransferTypeStandard:
-        case TransferTypeDated: // TODO: needs to be handled differently, for all the various terminated flavours.
+        case TransferTypeOldStandard:
+        case TransferTypeOldStandardScheduled:
             [titleText setStringValue: NSLocalizedString(@"AP404", nil)];
             [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
             [accountText setStringValue: NSLocalizedString(@"AP401", nil)];
@@ -701,6 +721,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             break;
 
         case TransferTypeSEPA:
+        case TransferTypeSEPAScheduled:
             [titleText setStringValue: NSLocalizedString(@"AP406", nil)];
             [receiverText setStringValue: NSLocalizedString(@"AP208", nil)];
             [accountText setStringValue: NSLocalizedString(@"AP409", nil)];
@@ -722,6 +743,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
         case TransferTypeCollectiveCredit:
         case TransferTypeCollectiveDebit:
+        case TransferTypeCollectiveCreditSEPA:
             return NO; // Not needed as individual transfer template type.
     }
 
@@ -761,8 +783,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     //   - SEPA consolidated company/normal debits/transfers
     //   - Standard company/normal single debit/transfer
     //   - Standard consolidated company/normal debits/transfers
-    // TODO: the bank has a final word if termination is available, so include this here.
-    BOOL canBeTerminated = (type == TransferTypeStandard) || (type == TransferTypeDated); // || (type == TransferTypeSEPA) || (type == TransferTypeDebit);
+    BOOL canBeTerminated = (type == TransferTypeOldStandard) || (type == TransferTypeOldStandardScheduled)
+        || (type == TransferTypeSEPA) || (type = TransferTypeSEPAScheduled); //|| (type == TransferTypeDebit);
     [executionText setHidden: !canBeTerminated];
     [executeImmediatelyRadioButton setHidden: !canBeTerminated];
     [executeImmediatelyText setHidden: !canBeTerminated];
@@ -771,12 +793,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [executionDatePicker setHidden: !canBeTerminated];
     [calendarButton setHidden: !canBeTerminated];
 
-    executeAtDateRadioButton.state = (type == TransferTypeDated) ? NSOnState : NSOffState;
-    executeImmediatelyRadioButton.state = (type == TransferTypeDated) ? NSOffState : NSOnState;
+    BOOL canBeScheduled = (type == TransferTypeOldStandardScheduled || type == TransferTypeSEPAScheduled);
+    executeAtDateRadioButton.state = canBeScheduled ? NSOnState : NSOffState;
+    executeImmediatelyRadioButton.state = canBeScheduled ? NSOffState : NSOnState;
 
     executionDatePicker.dateValue = [NSDate date];
-    [executionDatePicker setEnabled: type == TransferTypeDated];
-    [calendarButton setEnabled: type == TransferTypeDated];
+    [executionDatePicker setEnabled: canBeScheduled];
+    [calendarButton setEnabled: canBeScheduled];
 
     // Load the set of previously entered text for the receiver combo box.
     [receiverComboBox removeAllItems];
@@ -1122,9 +1145,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         return NO;
     }
 
-    BOOL isTerminated = transfer.type.intValue == TransferTypeDated;
+    BOOL isScheduled = (transfer.type.intValue == TransferTypeOldStandardScheduled || transfer.type.intValue == TransferTypeSEPAScheduled);
 
-    if (isTerminated) {
+    if (isScheduled) {
         executeAtDateRadioButton.state = NSOnState;
         executeImmediatelyRadioButton.state = NSOffState;
     } else {
@@ -1229,8 +1252,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     for (Transfer *transfer in transfers) {
         BankAccount *account = transfer.account;
         if ([account.collTransferMethod intValue] == CTM_none ||
-            // up to now we only support collective Transfers for Standard Transfers (not dated, no SEPA, no EU...)
-            transfer.type.intValue != TransferTypeStandard ||
+            // up to now we only support SEPA Transfers (not dated, no EU...)
+            transfer.type.intValue != TransferTypeSEPA ||
             transfer.valutaDate != nil) {
             [singleTransfers addObject: transfer];
             continue;
@@ -1273,7 +1296,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             [transfersByAccount removeObjectForKey: account];
         } else {
             // now send collective transfer
-            PecuniaError *error = [[HBCIClient hbciClient] sendCollectiveTransfer: collTransfers];
+            PecuniaError *error = [[HBCIController controller] sendCollectiveTransfer: collTransfers];
             if (error) {
                 [error logMessage];
             }
@@ -1304,7 +1327,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     // first check for collective transfers
     transfers = [self doSendCollectiveTransfers: transfers];
 
-    BOOL sent = [[HBCIClient hbciClient] sendTransfers: transfers];
+    BOOL sent = [[HBCIController controller] sendTransfers: transfers];
     if (sent) {
         // Save updates and refresh UI.
         NSError                *error = nil;
@@ -1330,19 +1353,23 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         Transfer *transfer = transactionController.currentTransfer;
         transfer.remoteIBAN = @"DE43120300001016381558";
         transfer.remoteBIC = @"BYLADEM1001";
-        transfer.remoteBankName = [[HBCIClient hbciClient] bankNameForCode: @"12030000" inCountry: @"de"];
+        transfer.remoteBankName = [[HBCIController controller] bankNameForCode: @"12030000"];
         transfer.remoteName = @"Frank Emminghaus";
         transfer.purpose1 = @"Spende fuer Pecunia";
 
         [self prepareSourceAccountSelector: nil forTransferType: TransferTypeSEPA];
     }
 
+    self.donation = YES;
+    receiverComboBox.editable = NO; // Doesn't work with bindings, hence explicitly set here.
     [rightPane showFormular];
     [amountField.window makeFirstResponder: amountField];
 }
 
 - (BOOL)startTransferOfType: (TransferType)type withAccount: (BankAccount *)account
 {
+    self.donation = NO;
+    receiverComboBox.editable = YES;
     if (![self prepareTransferOfType: type]) {
         return NO;
     }
@@ -1357,6 +1384,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (BOOL)startTransferFromTemplate: (TransferTemplate *)template
 {
+    self.donation = NO;
+    receiverComboBox.editable = YES;
     TransferType type = template.type.intValue;
     if (![self prepareTransferOfType: type]) {
         return NO;
@@ -1418,6 +1447,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (IBAction)deleteTransfer: (id)sender
 {
+    [autofillPopover performClose: self];
+
     // If we are deleting a new transfer then silently cancel editing and remove the formular from screen.
     if (transactionController.currentTransfer.changeState == TransferChangeNew) {
         [self cancelEditing];
@@ -1533,6 +1564,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (IBAction)executionTimeChanged: (id)sender
 {
+    TransferType type = transactionController.currentTransfer.type.intValue;
     if (sender == executeImmediatelyRadioButton) {
         executeAtDateRadioButton.state = NSOffState;
         [executionDatePicker setEnabled: NO];
@@ -1541,14 +1573,22 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         // Remove valuta date, which is used to automatically switch to the dated type of the
         // transfer (in the transaction controller). Set the transfer type accordingly in case it was changed.
         transactionController.currentTransfer.valutaDate = nil;
-        transactionController.currentTransfer.type = @(TransferTypeStandard);
+        if (type == TransferTypeOldStandardScheduled) {
+            transactionController.currentTransfer.type = @(TransferTypeOldStandard);
+        } else {
+            transactionController.currentTransfer.type = @(TransferTypeSEPA);
+        }
     } else {
         executeImmediatelyRadioButton.state = NSOffState;
         [executionDatePicker setEnabled: YES];
         [calendarButton setEnabled: YES];
 
         transactionController.currentTransfer.valutaDate = executionDatePicker.dateValue;
-        transactionController.currentTransfer.type = @(TransferTypeDated);
+        if (type == TransferTypeOldStandard) {
+            transactionController.currentTransfer.type = @(TransferTypeOldStandardScheduled);
+        } else {
+            transactionController.currentTransfer.type = @(TransferTypeSEPAScheduled);
+        }
     }
 }
 
@@ -1666,13 +1706,12 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 }
 
-#pragma mark -
-#pragma mark Other application logic
+#pragma mark - Other application logic
 
 - (void)updateLimits
 {
     // currentTransfer must be valid
-    limits = [[HBCIClient hbciClient] limitsForType: transactionController.currentTransfer.type.intValue
+    limits = [[HBCIController controller] limitsForType: transactionController.currentTransfer.type.intValue
                                             account: transactionController.currentTransfer.account
                                             country: transactionController.currentTransfer.remoteCountry];
 
@@ -1706,20 +1745,37 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         }
     }
 
-    // check if dated is allowed
-    // At the moment this is only possible for Standard Transfers
-    TransferType tt = transactionController.currentTransfer.type.intValue;
-    BOOL         allowsDated = NO;
-    if (tt == TransferTypeStandard || tt == TransferTypeDated) {
-        if ([[HBCIClient hbciClient] isTransferSupported: TransferTypeDated forAccount: transactionController.currentTransfer.account]) {
-            [executeAtDateRadioButton setEnabled: YES];
-            allowsDated = YES;
-        }
+    // Check if scheduling is allowed.
+    // At the moment possible for old standard and SEPA transfers.
+    BOOL canBeScheduled = NO;
+    switch (transactionController.currentTransfer.type.intValue) {
+        case TransferTypeOldStandard:
+        case TransferTypeOldStandardScheduled:
+            if ([[HBCIController controller] isTransferSupported: TransferTypeOldStandardScheduled
+                                                  forAccount: transactionController.currentTransfer.account]) {
+                [executeAtDateRadioButton setEnabled: YES];
+                canBeScheduled = YES;
+            }
+            break;
+
+        case TransferTypeSEPA:
+        case TransferTypeSEPAScheduled:
+            if ([[HBCIController controller] isTransferSupported: TransferTypeSEPAScheduled
+                                                  forAccount: transactionController.currentTransfer.account]) {
+                [executeAtDateRadioButton setEnabled: YES];
+                canBeScheduled = YES;
+            }
+            break;
+
+        default:
+            canBeScheduled = NO;
+            break;
     }
-    if (allowsDated == NO) {
-        [executeAtDateRadioButton setEnabled: NO];
-        [executionDatePicker setEnabled: NO];
-        [calendarButton setEnabled: NO];
+
+    if (!canBeScheduled) {
+        executeAtDateRadioButton.enabled = NO;
+        executionDatePicker.enabled = NO;
+        calendarButton.enabled = NO;
     }
 }
 
@@ -1762,8 +1818,69 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [userDefaults setObject: mutableValues forKey: @"transfers"];
 }
 
-#pragma mark -
-#pragma mark Other delegate methods
+/**
+ * Checks if the general pasteboard changed and tries to make sense of the new content
+ * (if we can use to autofill account number, IBAN etc.).
+ */
+- (void)pasteboardCheck: (NSTimer *)timer
+{
+    NSPasteboard *pasteboard = NSPasteboard.generalPasteboard;
+    if (lastChangeCount != pasteboard.changeCount && transactionController.currentTransfer != nil) {
+        lastChangeCount = pasteboard.changeCount;
+
+        NSString *text = [pasteboard stringForType: NSPasteboardTypeString];
+        if (text.length > 0) {
+            NSArray *entries = [text parseBankDetails];
+            TransferType type = transactionController.currentTransfer.type.intValue;
+            if (entries.count > 0 &&
+                (type == TransferTypeSEPA || type == TransferTypeSEPAScheduled
+                    || type == TransferTypeOldStandardScheduled || type == TransferTypeOldStandard
+                    || type == TransferTypeEU)) {
+                autofillController.content = entries;
+                NSRect bounds = receiverComboBox.bounds;
+                [autofillPopover showRelativeToRect: bounds ofView: receiverComboBox preferredEdge: NSMinYEdge];
+
+            }
+        }
+    }
+}
+
+- (void)autoFill
+{
+    NSDictionary *values = autofillController.selectedObjects[0]; // Single selection only.
+    if (values != nil) {
+        if (values[PBReceiverKey] != nil) {
+            transactionController.currentTransfer.remoteName = values[PBReceiverKey];
+        }
+        if (values[PBAccountNumberKey] != nil) {
+            transactionController.currentTransfer.remoteAccount = values[PBAccountNumberKey];
+        }
+        if (values[PBBankCodeKey] != nil) {
+            transactionController.currentTransfer.remoteBankCode = values[PBBankCodeKey];
+        }
+        if (values[PBIBANKey] != nil) {
+            transactionController.currentTransfer.remoteIBAN = values[PBIBANKey];
+        }
+        if (values[PBBICKey] != nil) {
+            transactionController.currentTransfer.remoteBIC = values[PBBICKey];
+        }
+
+        // Lookup the bank name.
+        NSString *bankName;
+        if (transactionController.currentTransfer.type.intValue == TransferTypeEU ||
+            transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
+            bankName = [[HBCIController controller] bankNameForIBAN: transactionController.currentTransfer.remoteIBAN];
+        } else {
+            bankName = [[HBCIController controller] bankNameForCode: transactionController.currentTransfer.remoteBankCode];
+        }
+        if (bankName != nil) {
+            transactionController.currentTransfer.remoteBankName = bankName;
+        }
+    }
+    [autofillPopover performClose: self];
+}
+
+#pragma mark - Other delegate methods
 
 - (void)controlTextDidChange: (NSNotification *)aNotification
 {
@@ -1799,8 +1916,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     if (transactionController.currentTransfer.type.intValue == TransferTypeEU ||
         transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
         if (textField == accountNumber) {
-            bankName = [[HBCIClient hbciClient] bankNameForIBAN: textField.stringValue];
-            NSString *bic = [[HBCIClient hbciClient] bicForIBAN:[aNotification.object stringValue]];
+            bankName = [[HBCIController controller] bankNameForIBAN: textField.stringValue];
+            NSString *bic = [[HBCIController controller] bicForIBAN:[aNotification.object stringValue]];
             if (bic != nil) {
                 transactionController.currentTransfer.remoteBIC = bic;
             }
@@ -1808,8 +1925,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         }
     } else {
         if (textField == bankCode) {
-            bankName = [[HBCIClient hbciClient] bankNameForCode: [textField stringValue]
-                                                      inCountry: transactionController.currentTransfer.remoteCountry];
+            bankName = [[HBCIController controller] bankNameForCode: [textField stringValue]];
         }
     }
     if (bankName != nil) {

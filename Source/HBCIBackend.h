@@ -42,21 +42,25 @@
 
 - (PecuniaError *)initalizeHBCI;
 
+// Information Methods
 - (NSArray *)supportedVersions;
-
-- (BankInfo *)infoForBankCode: (NSString *)bankCode inCountry: (NSString *)country;
+- (BankInfo *)infoForBankCode: (NSString *)bankCode;
 - (BankSetupInfo *)getBankSetupInfo: (NSString *)bankCode;
-- (NSString *)bankNameForCode: (NSString *)bankCode inCountry: (NSString *)country;
+- (NSString *)bankNameForCode: (NSString *)bankCode;
 - (NSString *)bankNameForIBAN: (NSString *)iban;
 - (NSString *)bicForIBAN: (NSString*)iban;
 - (BankParameter *)getBankParameterForUser: (BankUser *)user;
+- (NSDictionary *)countries;
+
+// TAN Methods & Media
 - (PecuniaError *)updateTanMethodsForUser: (BankUser *)user;
 - (PecuniaError *)updateTanMediaForUser: (BankUser *)user;
-- (PecuniaError *)sendCollectiveTransfer: (NSArray *)transfers;
 
+// Checks
 - (BOOL)checkAccount: (NSString *)accountNumber forBank: (NSString *)bankCode;
 - (BOOL)checkIBAN: (NSString *)iban;
 
+// Supported Transactions
 - (BOOL)isTransferSupported: (TransferType)tt forAccount: (BankAccount *)account;
 - (BOOL)isStandingOrderSupportedForAccount: (BankAccount *)account;
 - (BOOL)isTransactionSupported: (TransactionType)tt forAccount: (BankAccount *)account;
@@ -64,33 +68,48 @@
 - (NSArray *)allowedCountriesForAccount: (BankAccount *)account;
 - (TransactionLimits *)limitsForType: (TransferType)tt account: (BankAccount *)account country: (NSString *)ctry;
 - (TransactionLimits *)standingOrderLimitsForAccount: (BankAccount *)account action: (StandingOrderAction)action;
+- (NSArray *)getSupportedBusinessTransactions: (BankAccount *)account;
+- (PecuniaError*)updateSupportedTransactionsForUser:(BankUser *)user;
 
-- (void)getStatements: (NSArray *)resultList;
-- (void)getStandingOrders: (NSArray *)resultList;
-- (PecuniaError *)getBalanceForAccount: (BankAccount *)account;
-
-- (BOOL)sendTransfers: (NSArray *)transfers;
-- (PecuniaError *)sendStandingOrders: (NSArray *)orders;
-- (PecuniaError *)changePinTanMethodForUser: (BankUser *)user;
-- (PecuniaError *)changePinForUser: (BankUser *)user toPin: (NSString *)newPin;
-- (PecuniaError *)sendCustomerMessage: (CustomerMessage *)msg;
-
+// Accounts
 - (PecuniaError *)addAccount: (BankAccount *)account forUser: (BankUser *)user;
 - (PecuniaError *)changeAccount: (BankAccount *)account;
 - (PecuniaError *)setAccounts: (NSArray *)bankAccounts;
 - (NSArray *)getAccountsForUser: (BankUser *)user;
 
+// Get Statements & Orders
+- (void)getStatements: (NSArray *)resultList;
+- (void)getStandingOrders: (NSArray *)resultList;
+
+// Get Balance
+- (PecuniaError *)getBalanceForAccount: (BankAccount *)account;
+
+// Send Transfers
+- (BOOL)sendTransfers: (NSArray *)transfers;
+- (PecuniaError *)sendCollectiveTransfer: (NSArray *)transfers;
+
+// Standing Orders
+- (PecuniaError *)sendStandingOrders: (NSArray *)orders;
+
+// Bank User Handling
 - (PecuniaError *)addBankUser: (BankUser *)user;
 - (BOOL)deleteBankUser: (BankUser *)user;
 - (PecuniaError *)updateBankDataForUser: (BankUser *)user;
-- (NSArray *)getSupportedBusinessTransactions: (BankAccount *)account;
+- (NSArray *)getOldBankUsers;
 
-- (PecuniaError *)setLogLevel: (LogLevel)level;
+// Customer Message
+- (PecuniaError *)sendCustomerMessage: (CustomerMessage *)msg;
 
+// PIN/TAN Handling
+- (PecuniaError *)changePinTanMethodForUser: (BankUser *)user;
+- (PecuniaError *)changePinForUser: (BankUser *)user toPin: (NSString *)newPin;
+
+// Credit Card Settlements
 - (CreditCardSettlement *)getCreditCardSettlement: (NSString *)settleId forAccount: (BankAccount *)account;
 - (CCSettlementList *)getCCSettlementListForAccount: (BankAccount *)account;
 
-- (NSArray *)getOldBankUsers;
-- (NSDictionary *)countries;
+// Misc
+- (PecuniaError *)setLogLevel: (LogLevel)level;
+
 
 @end

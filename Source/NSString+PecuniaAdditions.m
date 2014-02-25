@@ -84,6 +84,17 @@
       [NSMutableCharacterSet characterSetWithCharactersInString: [NSString stringWithFormat: @"%@\"", separator]];
     [importantCharactersSet formUnionWithCharacterSet: newlineCharacterSet];
 
+    // Construct a characterset for skipping whitespaces between fields, but exclude the separator
+    // (which might be a whitespace too).
+    NSMutableString *skipChars = [NSMutableString string];
+    if ([separator rangeOfString: @" "].length == 0) {
+        [skipChars appendString: @" "];
+    }
+    if ([separator rangeOfString: @"\t"].length == 0) {
+        [skipChars appendString: @"\t"];
+    }
+    NSCharacterSet *skipCharacterSet = [NSCharacterSet characterSetWithCharactersInString: skipChars];
+
     NSScanner *scanner = [NSScanner scannerWithString: self];
     [scanner setCharactersToBeSkipped: nil];
     while (![scanner isAtEnd]) {
@@ -114,22 +125,23 @@
                     }
                     finishedRow = YES;
                 }
-            } else if ([scanner scanString: @"\"" intoString: NULL]) {
-                if (insideQuotes && [scanner scanString: @"\"" intoString: NULL]) {
+            } else if ([scanner scanString: @"\"" intoString: nil]) {
+                if (insideQuotes && [scanner scanString: @"\"" intoString: nil]) {
                     // Replace double quotes with a single quote in the column string.
                     [currentColumn appendString: @"\""];
                 } else {
                     // Start or end of a quoted string.
                     insideQuotes = !insideQuotes;
                 }
-            } else if ([scanner scanString: separator intoString: NULL]) {
+            } else if ([scanner scanString: separator intoString: nil]) {
                 if (insideQuotes) {
                     [currentColumn appendString: separator];
                 } else {
                     // This is a column separating delimiter.
                     [columns addObject: currentColumn];
                     currentColumn = [NSMutableString string];
-                    [scanner scanCharactersFromSet: [NSCharacterSet whitespaceCharacterSet] intoString: NULL];
+
+                    [scanner scanCharactersFromSet: skipCharacterSet intoString: nil];
                 }
             }
         }

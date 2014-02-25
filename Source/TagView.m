@@ -387,6 +387,10 @@
     }
 
     if ([keyPath isEqualToString: @"arrangedObjects"]) {
+        if ([datasource.arrangedObjects count] == 0) {
+            self.string = @"";
+            return;
+        }
         updatingContent = YES;
 
         NSMutableAttributedString *newText = [[NSMutableAttributedString alloc] init];

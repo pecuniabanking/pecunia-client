@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,7 +17,8 @@
  * 02110-1301  USA
  */
 
-#import "GraphicsAdditions.h"
+#import "MessageLog.h"
+#import "NSColor+PecuniaAdditions.h"
 
 /**
  * Creates a CGColorRef from an NSColor. The caller is reponsible for releasing the result
@@ -56,7 +57,7 @@ static NSMutableDictionary *userColors;
     NSError  *error = nil;
     NSString *s = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
     if (error) {
-        NSLog(@"Error reading applicaton colors file at %@\n%@", path, [error localizedFailureReason]);
+        LogError(@"Error reading applicaton colors file at %@\n%@", path, [error localizedFailureReason]);
     } else {
         // Lines can be separated by Windows linebreaks, so we need to check explicitly.
         NSArray      *lines = [s componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\n"]];
@@ -294,6 +295,91 @@ static NSMutableDictionary *userColors;
     [deviceColor getComponents: components];
 
     return [NSString stringWithFormat: @"#%2X%2X%2X", (int)(255 * components[0]), (int)(255 * components[1]), (int)(255 * components[2])];
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+
+@implementation ColorsController
+
+// Implement a singleton pattern so that LocalSettingsController can also be used in IB.
++ (id)alloc
+{
+    return self.applicationColors;
+}
+
++ (id)allocWithZone: (NSZone *)zone
+{
+    return self.applicationColors;
+}
+
++ (instancetype)applicationColors
+{
+    static ColorsController* singleton = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        singleton = [[self localAlloc] localInit];
+        if (defaultColors == nil) {
+            [NSColor loadApplicationColors];
+        }
+        [self createMapping];
+    });
+
+    return singleton;
+}
+
+- (id)init
+{
+    return self;
+}
+
++ (id)localAlloc
+{
+    return [super allocWithZone: NULL];
+}
+
+- (id)localInit
+{
+    return [super init];
+}
+
+static NSMutableDictionary *mapping; // Mapping of real color names to bindings compatible names.
+
++ (void)createMapping
+{
+    NSCharacterSet *charactersToRemove = [NSCharacterSet.alphanumericCharacterSet invertedSet];
+    mapping = [[NSMutableDictionary alloc] initWithCapacity: 100];
+
+    for (NSString *color in defaultColors.allKeys) {
+        NSMutableArray *words = [[color componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
+        for (NSUInteger i = 0; i < words.count; i++) {
+
+            // Remove any non-letter character.
+            NSString *word = [[words[i] componentsSeparatedByCharactersInSet: charactersToRemove] componentsJoinedByString: @""];
+
+            if (i == 0) {
+                words[i] = [word lowercaseString];
+            } else {
+                words[i] = [word capitalizedString];
+            }
+        }
+        mapping[[words componentsJoinedByString: @""]] = color;
+    }
+}
+
+- (id)valueForKey: (id)key
+{
+    id realKey = mapping[key];
+    return [NSColor applicationColorForKey: realKey == nil ? key : realKey];
+}
+
+- (void)setValue: (id)value forKey: (id)key
+{
+    [self willChangeValueForKey: key];
+    id realKey = mapping[key];
+    [NSColor setApplicationColor: value forKey: realKey == nil ? key : realKey];
+    [self didChangeValueForKey: key];
 }
 
 @end

@@ -25,6 +25,7 @@
  */
 @implementation MainBackgroundView
 
+#define HEADER_HEIGHT 31
 
 static NSImage *background = nil;
 
@@ -37,7 +38,7 @@ static NSImage *background = nil;
     [NSGraphicsContext saveGraphicsState];
 
     NSRect bounds = [self bounds];
-    bounds.size.height -= 61; // Upper border transfer list.
+    bounds.size.height -= HEADER_HEIGHT; // Upper border transfer list.
     NSColor *color;
     if (background != nil) {
         color = [NSColor colorWithPatternImage: background];
@@ -58,7 +59,7 @@ static NSImage *background = nil;
 
     bounds.origin.x = 0;
     bounds.origin.y = bounds.size.height; // Area above the transfer list.
-    bounds.size.height = 61;
+    bounds.size.height = HEADER_HEIGHT;
 
 
     NSGradient *topGradient = [[NSGradient alloc]
@@ -69,7 +70,7 @@ static NSImage *background = nil;
                                ];
 
     [topGradient drawInRect: bounds angle: 90.0];
-
+/*
     // Category sum area.
     height = [self bounds].size.height;
     bounds.size.height--;
@@ -103,7 +104,7 @@ static NSImage *background = nil;
     // Twofold inner shadow.
     [catSumAreaPath fillWithInnerShadow: innerShadow1 borderOnly: NO];
     [catSumAreaPath fillWithInnerShadow: innerShadow2 borderOnly: NO];
-
+*/
     [NSGraphicsContext restoreGraphicsState];
 }
 

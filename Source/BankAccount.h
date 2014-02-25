@@ -42,7 +42,7 @@ typedef enum {
     NSInteger        unread;
 }
 
-@property (nonatomic, strong) NSArray          *dbStatements;
+@property (nonatomic, strong) NSArray         *dbStatements;
 
 @property (nonatomic, strong) NSDate          *latestTransferDate;
 @property (nonatomic, strong) NSString        *country;
@@ -75,6 +75,7 @@ typedef enum {
 - (void)copyStatement: (BankStatement *)stat;
 - (void)copyStatementsToManualAccounts: (NSArray *)statements;
 - (void)updateBalanceWithValue: (NSDecimalNumber *)value;
+- (void)updateStatementBalances;
 - (void)doMaintenance;
 - (NSDate *)nextDateForDate: (NSDate *)date;
 - (NSInteger)calcUnread;

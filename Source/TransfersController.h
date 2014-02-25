@@ -96,6 +96,10 @@
     IBOutlet NSButton     *calendarButton;
     IBOutlet NSDatePicker *calendar;
     IBOutlet NSPopover    *calendarPopover;
+    IBOutlet NSTableView  *autofillTable;
+
+    IBOutlet NSPopover         *autofillPopover;
+    IBOutlet NSArrayController *autofillController;
 
     IBOutlet NSButton    *queueItButton;
     IBOutlet NSButton    *doItButton;
@@ -124,7 +128,9 @@
 
 @property (weak) IBOutlet TransferFormularView *transferFormular;
 @property (weak) IBOutlet NSTextField          *dragToHereLabel;
-@property (nonatomic, assign) BOOL             dropToEditRejected;
+
+@property (nonatomic, assign) BOOL dropToEditRejected;
+@property (nonatomic, assign) BOOL donation;
 
 - (IBAction)sendTransfers: (id)sender;
 - (IBAction)showCalendar: (id)sender;

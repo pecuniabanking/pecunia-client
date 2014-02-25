@@ -30,10 +30,14 @@
 @property (nonatomic) Category                *category;
 @property (nonatomic, strong) BankStatement   *statement;
 
-- (NSString *)stringForFields: (NSArray *)fields usingDateFormatter: (NSDateFormatter *)dateFormatter numberFormatter: (NSNumberFormatter *)numberFormatter;
-- (void)moveToCategory: (Category *)tcat;
+- (NSString *)stringForFields: (NSArray *)fields
+           usingDateFormatter: (NSDateFormatter *)dateFormatter
+              numberFormatter: (NSNumberFormatter *)numberFormatter;
+- (void)moveToCategory: (Category *)targetCategory;
 - (void)moveAmount: (NSDecimalNumber *)amount toCategory: (Category *)tcat withInfo:(NSString*)info;
 - (void)remove;
+
++ (void)removeAssignments: (NSArray *)assignments;
 
 - (NSComparisonResult)compareDate: (StatCatAssignment *)stat;
 - (NSComparisonResult)compareDateReverse: (StatCatAssignment *)stat;

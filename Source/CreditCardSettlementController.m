@@ -18,7 +18,7 @@
  */
 
 #import "CreditCardSettlementController.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "MOAssistant.h"
 #import "CCSettlementList.h"
 #import "CreditCardSettlement.h"
@@ -129,7 +129,7 @@
     int                    oldNum = [settlements count];
     int                    newNum = 0;
 
-    CCSettlementList *settleList = [[HBCIClient hbciClient] getCCSettlementListForAccount: account];
+    CCSettlementList *settleList = [[HBCIController controller] getCCSettlementListForAccount: account];
     if (settleList == nil) {
         return;
     }
@@ -145,7 +145,7 @@
         }
         if (found == NO) {
             // get new settlement
-            CreditCardSettlement *memSettlement = [[HBCIClient hbciClient] getCreditCardSettlement: info.settleID forAccount: account];
+            CreditCardSettlement *memSettlement = [[HBCIController controller] getCreditCardSettlement: info.settleID forAccount: account];
 
             // copy from memory to real context
             if (memSettlement != nil) {

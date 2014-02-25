@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -33,10 +33,12 @@ typedef enum {
     TransactionType_CCSettlement,
     TransactionType_ChangePin,
     TransactionType_StandingOrderSEPA,
+    TransactionType_TransferSEPAScheduled,
 } TransactionType;
 
 @class BankAccount;
 @class BankUser;
+@class PecuniaError;
 
 @interface SupportedTransactionInfo : NSManagedObject {
 }
@@ -52,5 +54,6 @@ typedef enum {
 @property (nonatomic, strong) BankUser    *user;
 
 + (SupportedTransactionInfo*)infoForType:(TransactionType)type account:(BankAccount*)account;
++ (PecuniaError*)updateSupportedTransactionInfoForUser: (BankUser*)user account: (BankAccount*)account withJobs:(NSArray*)supportedJobNames;
 
 @end

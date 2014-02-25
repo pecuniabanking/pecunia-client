@@ -37,6 +37,7 @@
 
 - (id)initWithDate: (NSDate *)date;
 - (NSComparisonResult)compare: (ShortDate *)date;
+- (NSComparisonResult)compareReversed: (ShortDate *)date;
 - (NSDate *)lowDate;
 - (NSDate *)highDate;
 
@@ -52,6 +53,7 @@
 - (int)daysInMonth;
 
 - (NSString *)description;
+- (NSString *)shortMonthDescription; // 3 letters month name
 - (NSString *)monthYearDescription;
 - (NSString *)longMonthYearDescription;
 - (NSString *)quarterYearDescription;

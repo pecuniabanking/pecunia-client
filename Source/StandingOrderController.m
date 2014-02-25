@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,7 +20,7 @@
 #import "StandingOrderController.h"
 #import "MOAssistant.h"
 #import "StandingOrder.h"
-#import "HBCIClient.h"
+#import "HBCIController.h"
 #import "BankAccount.h"
 #import "TransactionLimits.h"
 #import "BankQueryResult.h"
@@ -421,7 +421,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
             BankAccount *account = (BankAccount *)currentAccount;
 
             // Exclude manual accounts and those that don't support standing orders from the list.
-            if ([[account isManual] boolValue] || ![[HBCIClient hbciClient] isStandingOrderSupportedForAccount: account]) {
+            if ([[account isManual] boolValue] || ![[HBCIController controller] isStandingOrderSupportedForAccount: account]) {
                 continue;
             }
 
@@ -559,9 +559,9 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 {
     NSInteger tag = [aNotification.object tag];
     if (tag == 11) {
-        NSString *bankName = [[HBCIClient hbciClient] bankNameForIBAN: [aNotification.object stringValue]];
+        NSString *bankName = [[HBCIController controller] bankNameForIBAN: [aNotification.object stringValue]];
         currentOrder.remoteBankName = bankName == nil ? @"" : bankName;
-        NSString *bic = [[HBCIClient hbciClient] bicForIBAN:[aNotification.object stringValue]];
+        NSString *bic = [[HBCIController controller] bicForIBAN:[aNotification.object stringValue]];
         if (bic != nil) {
             currentOrder.remoteBIC = bic;
         }
@@ -625,7 +625,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
         return NO;
     }
 
-    res = [[HBCIClient hbciClient] checkIBAN: stord.remoteIBAN];
+    res = [[HBCIController controller] checkIBAN: stord.remoteIBAN];
     if (!res) {
         NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                         NSLocalizedString(@"AP70", nil),
@@ -679,7 +679,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
         [sendOrders addObject: stord];
     }
-    PecuniaError *hbciError = [[HBCIClient hbciClient] sendStandingOrders: sendOrders];
+    PecuniaError *hbciError = [[HBCIController controller] sendStandingOrders: sendOrders];
     if (hbciError != nil) {
         [sc stopSpinning];
         [sc clearMessage];
@@ -724,10 +724,9 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
     // edit action.
     [[mainView window] makeFirstResponder: sender];
 
-    NSMutableArray *resultList = nil;
     for (StandingOrder *stord in [orderController arrangedObjects]) {
         if ([stord.isChanged boolValue]) {
-            int res = NSRunAlertPanel(NSLocalizedString(@"AP6", nil),
+            int res = NSRunAlertPanel(NSLocalizedString(@"AP84", nil),
                                       NSLocalizedString(@"AP461", nil),
                                       NSLocalizedString(@"AP462", nil),
                                       NSLocalizedString(@"AP2", nil), nil);
@@ -738,33 +737,48 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
             }
         }
     }
-    resultList = [NSMutableArray arrayWithCapacity: 10];
-    NSMenu  *menu = [sourceAccountSelector menu];
-    NSArray *items = [menu itemArray];
-    for (NSMenuItem *item in items) {
-        if ([item.representedObject isKindOfClass: [BankAccount class]]) {
-            BankAccount *account = (BankAccount *)item.representedObject;
-            if (account.userId) {
-                BankQueryResult *result = [[BankQueryResult alloc] init];
-                result.accountNumber = account.accountNumber;
-                result.accountSubnumber = account.accountSuffix;
-                result.bankCode = account.bankCode;
-                result.userId = account.userId;
-                result.account = account;
-                [resultList addObject: result];
-            }
+
+    NSMutableArray *accountList = [NSMutableArray arrayWithCapacity: 10];
+    NSSet *candidates = [Category.bankRoot allCategories];
+    for (Category *currentAccount in candidates) {
+        if (![currentAccount isKindOfClass: [BankAccount class]]) {
+            continue;
+        }
+
+        BankAccount *account = (BankAccount *)currentAccount;
+
+        // Exclude manual accounts and those that don't support standing orders from the list.
+        if ([[account isManual] boolValue] || ![[HBCIController controller] isStandingOrderSupportedForAccount: account]) {
+            continue;
+        }
+
+        if (account.userId != nil) {
+            BankQueryResult *result = [[BankQueryResult alloc] init];
+            result.accountNumber = account.accountNumber;
+            result.accountSubnumber = account.accountSuffix;
+            result.bankCode = account.bankCode;
+            result.userId = account.userId;
+            result.account = account;
+            [accountList addObject: result];
         }
     }
-    StatusBarController *sc = [StatusBarController controller];
-    [sc startSpinning];
-    self.requestRunning = @YES;
-    [sc setMessage: NSLocalizedString(@"AP459", nil) removeAfter: 0];
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(ordersNotification:)
-                                                 name: PecuniaStatementsNotification
-                                               object: nil];
 
-    [[HBCIClient hbciClient] getStandingOrders: resultList];
+    if (accountList.count > 0) {
+        StatusBarController *sc = [StatusBarController controller];
+        [sc startSpinning];
+        self.requestRunning = @YES;
+        [sc setMessage: NSLocalizedString(@"AP459", nil) removeAfter: 0];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(ordersNotification:)
+                                                     name: PecuniaStatementsNotification
+                                                   object: nil];
+
+        [[HBCIController controller] getStandingOrders: accountList];
+    } else {
+        NSRunAlertPanel(NSLocalizedString(@"AP84", nil),
+                        NSLocalizedString(@"AP457", nil),
+                        NSLocalizedString(@"AP1", nil), nil, nil);
+    }
 }
 
 #pragma mark -
@@ -791,11 +805,11 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
         // re-calculate limits and check
         self.currentLimits = nil;
         if (currentOrder.orderKey == nil) {
-            self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
+            self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
         } else {
             SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType:TransactionType_StandingOrderSEPA account:currentOrder.account];
             if (transactionInfo != nil && [transactionInfo.allowsChange boolValue]) {
-                self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
+                self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
             }
         }
 
@@ -870,7 +884,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 {
     for (StandingOrder *order in [orderController arrangedObjects]) {
         if (order.remoteBankName == nil) {
-            order.remoteBankName = [[HBCIClient hbciClient] bankNameForIBAN: order.remoteIBAN];
+            order.remoteBankName = [[HBCIController controller] bankNameForIBAN: order.remoteIBAN];
         }
     }
 }
@@ -904,19 +918,19 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
         self.currentLimits = nil;
         if (currentOrder.orderKey == nil) {
-            self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
+            self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_create];
         } else {
             SupportedTransactionInfo *transactionInfo = [SupportedTransactionInfo infoForType:TransactionType_StandingOrderSEPA account:currentOrder.account];
             if (transactionInfo != nil && [transactionInfo.allowsChange boolValue]) {
-                self.currentLimits = [[HBCIClient hbciClient] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
+                self.currentLimits = [[HBCIController controller] standingOrderLimitsForAccount: currentOrder.account action: stord_change];
             }
         }
         
         // source account cannot be changed after order is created
-        [sourceAccountSelector setEnabled:currentOrder.orderKey == nil];
+        [sourceAccountSelector setEnabled: currentOrder.orderKey == nil];
         
         if (self.currentOrder.remoteBankCode != nil && (self.currentOrder.remoteBankName == nil || [self.currentOrder.remoteBankName length] == 0)) {
-            NSString *bankName = [[HBCIClient hbciClient] bankNameForCode: self.currentOrder.remoteBankCode inCountry: self.currentOrder.account.country];
+            NSString *bankName = [[HBCIController controller] bankNameForCode: self.currentOrder.remoteBankCode];
             if (bankName) {
                 self.currentOrder.remoteBankName = bankName;
             }

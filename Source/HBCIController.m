@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -53,8 +53,12 @@
 #import "CCSettlementList.h"
 #import "CreditCardSettlement.h"
 #import "MCEMDecimalNumberAdditions.h"
+#import "ResultWindowController.h"
+#import "GrowlNotification.h"
 
-@implementation HBCIController
+static HBCIController *controller = nil;
+
+@implementation HBCIController(private)
 
 - (id)init
 {
@@ -62,25 +66,43 @@
     if (self == nil) {
         return nil;
     }
-
+    
     bridge = [[HBCIBridge alloc] init];
     [bridge startup];
-
+    
     bankInfo = [[NSMutableDictionary alloc] initWithCapacity: 10];
     countries = [[NSMutableDictionary alloc] initWithCapacity: 50];
     [self readCountryInfos];
-    progressController = [[ProgressWindowController alloc] init];
+    resultWindow = nil;
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(bankMessageReceived:)
+                                                 name: PecuniaInstituteMessageNotification
+                                               object: nil];
     return self;
+}
+
+@end
+
+@implementation HBCIController
+
+
++ (id<HBCIBackend>)controller
+{
+    if (controller == nil) {
+        controller = [[HBCIController alloc] init];
+    }
+    return controller;
 }
 
 - (void)startProgress
 {
-    [progressController start];
+    resultWindow = [[ResultWindowController alloc] init];
 }
 
 - (void)stopProgress
 {
-    [progressController stop];
+    [resultWindow showOnError];
 }
 
 - (void)readCountryInfos
@@ -161,10 +183,14 @@ NSString * escapeSpecial(NSString *s)
     return error;
 }
 
-- (BankInfo *)infoForBankCode: (NSString *)bankCode inCountry: (NSString *)country
+- (BankInfo *)infoForBankCode: (NSString *)bankCode
 {
     PecuniaError *error = nil;
 
+    if (bankCode == nil) {
+        return nil;
+    }
+    
     BankInfo *info = bankInfo[bankCode];
     if (info == nil) {
         NSString *cmd = [NSString stringWithFormat: @"<command name=\"getBankInfo\"><bankCode>%@</bankCode></command>", bankCode];
@@ -205,9 +231,9 @@ NSString * escapeSpecial(NSString *s)
     return info;
 }
 
-- (NSString *)bankNameForCode: (NSString *)bankCode inCountry: (NSString *)country
+- (NSString *)bankNameForCode: (NSString *)bankCode
 {
-    BankInfo *info = [self infoForBankCode: bankCode inCountry: country];
+    BankInfo *info = [self infoForBankCode: bankCode];
     if (info == nil || info.name == nil) {
         return NSLocalizedString(@"AP13", nil);
     }
@@ -217,7 +243,7 @@ NSString * escapeSpecial(NSString *s)
 - (NSString *)bankNameForIBAN: (NSString *)iban
 {
     if (iban.length > 12 && [iban hasPrefix: @"DE"]) {
-        return [self bankNameForCode: [iban substringWithRange: NSMakeRange(4, 8)] inCountry: @""];
+        return [self bankNameForCode: [iban substringWithRange: NSMakeRange(4, 8)]];
     }
     return NSLocalizedString(@"AP13", nil);
 }
@@ -225,7 +251,7 @@ NSString * escapeSpecial(NSString *s)
 - (NSString *)bicForIBAN: (NSString*)iban
 {
     if (iban.length > 12 && [iban hasPrefix: @"DE"]) {
-        BankInfo *info = [self infoForBankCode:[iban substringWithRange: NSMakeRange(4, 8)] inCountry:@"DE"];
+        BankInfo *info = [self infoForBankCode:[iban substringWithRange: NSMakeRange(4, 8)]];
         if (info) {
             return info.bic;
         } else {
@@ -309,9 +335,9 @@ NSString * escapeSpecial(NSString *s)
 - (NSString *)jobNameForType: (TransferType)tt
 {
     switch (tt) {
-        case TransferTypeStandard: return @"Ueb"; break;
+        case TransferTypeOldStandard: return @"Ueb"; break;
 
-        case TransferTypeDated: return @"TermUeb"; break;
+        case TransferTypeOldStandardScheduled: return @"TermUeb"; break;
 
         case TransferTypeInternal: return @"Umb"; break;
 
@@ -320,6 +346,8 @@ NSString * escapeSpecial(NSString *s)
         case TransferTypeDebit: return @"Last"; break;
 
         case TransferTypeSEPA: return @"UebSEPA"; break;
+
+        case TransferTypeSEPAScheduled: return @"TermUebSEPA"; break;
 
         case TransferTypeCollectiveCredit: return @"MultiUeb"; break;
 
@@ -408,27 +436,30 @@ NSString * escapeSpecial(NSString *s)
 {
     TransactionType transactionType;
     switch (tt) {
-        case TransferTypeStandard:
+        case TransferTypeOldStandard:
         case TransferTypeCollectiveCredit: transactionType = TransactionType_TransferStandard; break;
 
         case TransferTypeEU: transactionType = TransactionType_TransferEU; break;
 
-        case TransferTypeDated: transactionType = TransactionType_TransferDated; break;
+        case TransferTypeOldStandardScheduled: transactionType = TransactionType_TransferDated; break;
 
         case TransferTypeInternal: transactionType = TransactionType_TransferInternal; break;
 
+        case TransferTypeCollectiveCreditSEPA:
         case TransferTypeSEPA: transactionType = TransactionType_TransferSEPA; break;
+
+        case TransferTypeSEPAScheduled: transactionType = TransactionType_TransferSEPAScheduled; break;
 
         case TransferTypeDebit:
         case TransferTypeCollectiveDebit: transactionType = TransactionType_TransferDebit; break;
     }
 
     NSError *error = nil;
-    if (tt == TransferTypeCollectiveCredit || tt == TransferTypeCollectiveDebit) {
-    }
+
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSPredicate            *predicate = nil;
-    if (tt == TransferTypeCollectiveCredit || tt == TransferTypeCollectiveDebit) {
+    if (tt == TransferTypeCollectiveCredit || tt == TransferTypeCollectiveDebit ||
+        tt == TransferTypeCollectiveCreditSEPA) {
         predicate = [NSPredicate predicateWithFormat: @"account = %@ AND type = %d AND allowsCollective = 1", account, transactionType];
     } else {
         predicate = [NSPredicate predicateWithFormat: @"account = %@ AND type = %d", account, transactionType];
@@ -714,18 +745,19 @@ NSString * escapeSpecial(NSString *s)
             [self appendTag: @"remoteBIC" withValue: transfer.remoteBIC to: cmd];
             [self appendTag: @"remoteIBAN" withValue: transfer.remoteIBAN to: cmd];
             [self appendTag: @"remoteCountry" withValue: transfer.remoteCountry == nil ? @"DE": [transfer.remoteCountry uppercaseString] to: cmd];
-            if ([transfer.type intValue] == TransferTypeDated) {
+            if ([transfer.type intValue] == TransferTypeOldStandardScheduled) {
                 NSString *fromString = [dateFormatter stringFromDate: transfer.valutaDate];
                 [self appendTag: @"valutaDate" withValue: fromString to: cmd];
             }
             TransferType tt = [transfer.type intValue];
             NSString     *type;
             switch (tt) {
-                case TransferTypeStandard :
+                case TransferTypeOldStandard:
                     type = @"standard";
                     break;
 
-                case TransferTypeDated :
+                case TransferTypeOldStandardScheduled:
+                case TransferTypeSEPAScheduled: // XXX: make this an own string type.
                     type = @"dated";
                     break;
 
@@ -749,6 +781,7 @@ NSString * escapeSpecial(NSString *s)
 
                 case TransferTypeCollectiveCredit:
                 case TransferTypeCollectiveDebit:
+                case TransferTypeCollectiveCreditSEPA:
                     [[MessageLog log] addMessage: @"Collective transfer must be sent with 'sendCollectiveTransfer'" withLevel: LogLevel_Error];
                     continue;
                     break;
@@ -848,7 +881,6 @@ NSString * escapeSpecial(NSString *s)
 
     [cmd appendString: @"</command>"];
 
-    progressController.forceHidden = YES;
     [self startProgress];
 
     // create bank user at the bank
@@ -1073,9 +1105,7 @@ NSString * escapeSpecial(NSString *s)
 - (void)asyncCommandCompletedWithResult: (id)result error: (PecuniaError *)err
 {
     if (err == nil && result != nil) {
-        BankQueryResult *res;
-
-        for (res in result) {
+        for (BankQueryResult *res in result) {
             // find corresponding incoming structure
             BankQueryResult *iResult;
             for (iResult in bankQueryResults) {
@@ -1106,18 +1136,6 @@ NSString * escapeSpecial(NSString *s)
                 if ([res.statements count] > 0) {
                     BankStatement *stat = (res.statements)[[res.statements count] - 1];
                     iResult.balance = stat.saldo;
-                    /*
-                     // ensure order by refining posting date
-                     int seconds;
-                     NSDate *oldDate = [NSDate distantPast ];
-                     for(stat in res.statements) {
-                     if([stat.date compare: oldDate ] != NSOrderedSame) {
-                     seconds = 0;
-                     oldDate = stat.date;
-                     } else seconds += 100;
-                     if(seconds > 0) stat.date = [[[NSDate alloc ] initWithTimeInterval: seconds sinceDate: stat.date ] autorelease ];
-                     }
-                     */
                     iResult.statements = res.statements;
                 } else {
                     if (res.balance != nil) {
@@ -1471,192 +1489,44 @@ NSString * escapeSpecial(NSString *s)
 
 - (PecuniaError *)updateSupportedTransactionsForAccounts: (NSArray *)accounts user: (BankUser *)user
 {
-    NSError                *error = nil;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
+    PecuniaError *error = nil;
 
-    NSPredicate    *predicate = [NSPredicate predicateWithFormat: @"user = %@", user];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity: entityDescription];
-    [request setPredicate: predicate];
-
-    // remove existing
-    NSArray *result = [context executeFetchRequest: request error: &error];
-    if (error) {
-        return [PecuniaError errorWithMessage: [error localizedDescription] title: NSLocalizedString(@"AP204", nil)];
-    }
-
-    for (SupportedTransactionInfo *tinfo in result) {
-        [context deleteObject: tinfo];
-    }
     for (Account *acc in accounts) {
         BankAccount *account = [BankAccount accountWithNumber: acc.accountNumber subNumber: acc.subNumber bankCode: acc.bankCode];
         if (account == nil) {
             [[MessageLog log] addMessage: [NSString stringWithFormat:@"Bankaccount not found: %@ %@ %@", acc.accountNumber, acc.subNumber, acc.bankCode] withLevel: LogLevel_Error];
             continue;
         }
-        NSArray *supportedJobNames = acc.supportedJobs;
-
-        if ([supportedJobNames containsObject: @"Ueb"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_TransferStandard);
-
-            // Parameters
-            if ([supportedJobNames containsObject: @"TermUeb"] == YES) {
-                tinfo.allowsDated = @YES;
-            } else {
-                tinfo.allowsDated = @NO;
-            }
-            if ([supportedJobNames containsObject: @"MultiUeb"] == YES) {
-                tinfo.allowsCollective = @YES;
-            } else {
-                tinfo.allowsCollective = @NO;
-            }
-            [[MessageLog log] addMessage: @"Add supported transaction UEB" withLevel: LogLevel_Debug];
+        error = [SupportedTransactionInfo updateSupportedTransactionInfoForUser:user account:account withJobs:acc.supportedJobs];
+        if (error != nil) {
+            return error;
         }
+    }
+    return nil;
+}
 
-        // todo as soon as we support management of dated transfers
-        if ([supportedJobNames containsObject: @"TermUeb"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_TransferDated);
-            [[MessageLog log] addMessage: @"Add supported transaction TERMUEB" withLevel: LogLevel_Debug];
-        }
-
-        if ([supportedJobNames containsObject: @"UebForeign"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_TransferEU);
-            [[MessageLog log] addMessage: @"Add supported transaction UEBFOREIGN" withLevel: LogLevel_Debug];
-
-        }
-
-        if ([supportedJobNames containsObject: @"UebSEPA"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_TransferSEPA);
-
-            // Parameters
-            if ([supportedJobNames containsObject: @"TermUebSEPA"] == YES) {
-                tinfo.allowsDated = @YES;
-            } else {
-                tinfo.allowsDated = @NO;
-            }
-
-            [[MessageLog log] addMessage: @"Add supported transaction UEBSEPA" withLevel: LogLevel_Debug];
-        }
-
-        if ([supportedJobNames containsObject: @"Umb"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_TransferInternal);
-            [[MessageLog log] addMessage: @"Add supported transaction UMB" withLevel: LogLevel_Debug];
-        }
-
-        if ([supportedJobNames containsObject: @"Last"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_TransferDebit);
-            [[MessageLog log] addMessage: @"Add supported transaction LAST" withLevel: LogLevel_Debug];
-        }
-
-        if ([supportedJobNames containsObject: @"DauerNew"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_StandingOrder);
-
-            // Parameters
-            if ([supportedJobNames containsObject: @"DauerEdit"] == YES) {
-                tinfo.allowsChange = @YES;
-            } else {
-                tinfo.allowsChange = @NO;
-            }
-            if ([supportedJobNames containsObject: @"DauerDel"] == YES) {
-                tinfo.allowesDelete = @YES;
-            } else {
-                tinfo.allowesDelete = @NO;
-            }
-            if ([supportedJobNames containsObject: @"DauerList"] == YES) {
-                tinfo.allowsList = @YES;
-            } else {
-                tinfo.allowsList = @NO;
-            }
-            [[MessageLog log] addMessage: @"Add supported transaction DAUERNEW" withLevel: LogLevel_Debug];
-        }
-
-        if ([supportedJobNames containsObject: @"DauerSEPANew"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_StandingOrderSEPA);
-            
-            // Parameters
-            if ([supportedJobNames containsObject: @"DauerSEPAEdit"] == YES) {
-                tinfo.allowsChange = @YES;
-            } else {
-                tinfo.allowsChange = @NO;
-            }
-            if ([supportedJobNames containsObject: @"DauerSEPADel"] == YES) {
-                tinfo.allowesDelete = @YES;
-            } else {
-                tinfo.allowesDelete = @NO;
-            }
-            if ([supportedJobNames containsObject: @"DauerSEPAList"] == YES) {
-                tinfo.allowsList = @YES;
-            } else {
-                tinfo.allowsList = @NO;
-            }
-            [[MessageLog log] addMessage: @"Add supported transaction DAUERSEPANEW" withLevel: LogLevel_Debug];
-        }
-        
-
-        if ([supportedJobNames containsObject: @"KUmsAll"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_BankStatements);
-            [[MessageLog log] addMessage: @"Add supported transaction KUMSALL" withLevel: LogLevel_Debug];
-        }
-
-        if ([supportedJobNames containsObject: @"KKUmsAll"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_CCStatements);
-            [[MessageLog log] addMessage: @"Add supported transaction KKUMSALL" withLevel: LogLevel_Debug];
-        }
-
-        if ([supportedJobNames containsObject: @"KKSettleList"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_CCSettlementList);
-            [[MessageLog log] addMessage: @"Add supported transaction KKSETTLELIST" withLevel: LogLevel_Debug];
-        }
-
-        if ([supportedJobNames containsObject: @"KKSettleReq"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_CCSettlement);
-            [[MessageLog log] addMessage: @"Add supported transaction KKSETTLEREQ" withLevel: LogLevel_Debug];
-        }
-        
-        if ([supportedJobNames containsObject: @"ChangePin"] == YES) {
-            SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-            tinfo.account = account;
-            tinfo.user = user;
-            tinfo.type = @(TransactionType_ChangePin);
-            [[MessageLog log] addMessage: @"Add supported transaction ChangePin" withLevel: LogLevel_Debug];
-        }
+- (PecuniaError*)updateSupportedTransactionsForUser:(BankUser *)user
+{
+    PecuniaError *error = nil;
+    if ([self registerBankUser: user error: &error] == NO) {
+        return error;
+    }
+    
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getUserData\">"];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
+    [self appendTag: @"customerId" withValue: user.customerId to: cmd];
+    [self appendTag: @"userId" withValue: user.userId to: cmd];
+    [cmd appendString: @"</command>"];
+    
+    // communicate with bank to update bank parameters
+    User *usr = [bridge syncCommand: cmd error: &error];
+    if (error) {
+        return error;
+    }
+    // update supported transactions
+    error = [self updateSupportedTransactionsForAccounts: usr.accounts user: user];
+    if (error) {
+        return error;
     }
     return nil;
 }
@@ -1668,7 +1538,7 @@ NSString * escapeSpecial(NSString *s)
         return error;
     }
 
-    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"updateBankData\">"];
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"updateUserData\">"];
     [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
     [self appendTag: @"customerId" withValue: user.customerId to: cmd];
     [self appendTag: @"userId" withValue: user.userId to: cmd];
@@ -2026,6 +1896,41 @@ NSString * escapeSpecial(NSString *s)
         return nil;
     }
     return [controller selectedOption];
+}
+
+- (void)bankMessageReceived: (NSNotification *)notification
+{
+    NSDictionary *info = notification.object;
+    NSString *bankCode = info[@"bankCode"];
+    NSString *title = nil;
+    NSError  *error = nil;
+    
+    if (bankCode != nil) {
+        NSManagedObjectContext *context = [[MOAssistant assistant] context];
+        NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankUser" inManagedObjectContext: context];
+        NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+        [request setEntity: entityDescription];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"bankCode = %@", bankCode];
+        [request setPredicate: predicate];
+        NSArray *bankUsers = [context executeFetchRequest: request error: &error];
+        if (error) {
+            return;
+        }
+        if ([bankUsers count] == 0) {
+            return;
+        }
+        
+        BankUser *user = bankUsers[0];
+        title = NSLocalizedString(@"AP502", "");
+        title = [title stringByAppendingString:user.bankName];
+    }
+    NSString *message = info[@"message"];
+    if (message != nil) {
+        [GrowlNotification showStickyMessage: message
+                                   withTitle: title
+                                     context: @"BankMessage"];
+
+    }
 }
 
 @end

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -254,7 +254,7 @@ extern void *UserDefaultsBindingContext;
 
             [stat.statement updateAssigned];
             [selectedCategory invalidateBalance];
-            [Category updateCatValues];
+            [Category updateBalancesAndSums];
             [statementsListView updateVisibleCells];
         }
     }
@@ -330,10 +330,10 @@ extern void *UserDefaultsBindingContext;
     if (!doDuplicateCheck) {
         int result = NSRunAlertPanel(NSLocalizedString(@"AP806", nil),
                                      NSLocalizedString(@"AP809", nil),
-                                     NSLocalizedString(@"AP3", nil),
                                      NSLocalizedString(@"AP4", nil),
+                                     NSLocalizedString(@"AP3", nil),
                                      nil, assignments.count);
-        if (result != NSAlertDefaultReturn) {
+        if (result != NSAlertAlternateReturn) {
             return;
         }
     }
@@ -376,7 +376,7 @@ extern void *UserDefaultsBindingContext;
                                       NSLocalizedString(@"AP4", nil),
                                       NSLocalizedString(@"AP3", nil),
                                       nil);
-                if (res == NSAlertDefaultReturn) {
+                if (res == NSAlertAlternateReturn) {
                     deleteStatement = YES;
                 }
             } else {
@@ -418,16 +418,17 @@ extern void *UserDefaultsBindingContext;
             }
         }
     }
+    
+    
 
+    [context processPendingChanges];
     for (BankAccount *account in affectedAccounts) {
-        // Special behaviour for top bank accounts.
-        if (account.accountNumber == nil) {
-            [context processPendingChanges];
+        [account updateAssignmentsForReportRange];
+        if (![account.isManual boolValue]) {
+            [account updateStatementBalances];
         }
-        [account updateBoundAssignments];
     }
-
-    [[Category bankRoot] rollupRecursive: YES];
+    [[Category bankRoot] updateCategorySums];
     [categoryAssignments prepareContent];
 }
 
@@ -465,16 +466,6 @@ extern void *UserDefaultsBindingContext;
     [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
 
     return result;
-}
-
-- (void)reloadList
-{
-    // Updating the assignments (statements) list kills the current selection, so we preserve it here.
-    // Reassigning it after the update has the neat side effect that the details pane is properly updated too.
-    NSUInteger selection = categoryAssignments.selectionIndex;
-    categoryAssignments.selectionIndex = NSNotFound;
-    [statementsListView reloadData];
-    categoryAssignments.selectionIndex = selection;
 }
 
 - (void)updateValueColors
@@ -596,7 +587,6 @@ extern void *UserDefaultsBindingContext;
             }
 
             [statementDetails setNeedsDisplay: YES];
-            [BankingController.controller updateStatusbar];
         }
         return;
     }
@@ -660,6 +650,7 @@ extern void *UserDefaultsBindingContext;
     [categoryAssignments unbind: @"selectionIndexes"];
     [statementsListView unbind: @"selectedRows"];
     [categoryAssignments removeObserver: self forKeyPath: @"selectionIndexes"];
+    categoryAssignments.content = nil;
 
     [attachment1 unbind: @"reference"];
     [attachment2 unbind: @"reference"];

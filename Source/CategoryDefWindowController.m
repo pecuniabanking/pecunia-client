@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -16,6 +16,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301  USA
  */
+
+#import "MessageLog.h"
 
 #import "CategoryDefWindowController.h"
 
@@ -108,12 +110,13 @@
         @try {
             [NSPredicate predicateWithFormat: rule];
         }
-        @catch (NSException *e) {
+        @catch (NSException *error) {
+            LogError(@"%@", error.debugDescription);
             NSRunAlertPanel(NSLocalizedString(@"AP113", nil),
                             NSLocalizedString(@"AP75", nil),
                             NSLocalizedString(@"AP1", nil),
                             nil, nil,
-                            e.reason
+                            error.reason
                             );
             return;
         }
@@ -197,7 +200,7 @@
 
     // already assigned statements
     if (!hideAssignedValues) {
-        pred = [NSPredicate predicateWithFormat: @"(category.isBankAccount = 0)"];
+        pred = [NSPredicate predicateWithFormat: @"(category.isBankAcc = 0)"];
         if (predicate != nil) {
             pred = [NSCompoundPredicate andPredicateWithSubpredicates: @[pred, predicate]];
         }
@@ -270,78 +273,65 @@
     if (entries.count == 0) {
         entries = assignPreviewController.arrangedObjects;
     }
+    [self assignToCategory: entries];
+}
+
+- (void)assignToCategory: (NSArray *)entries
+{
+    if (selectedCategory == nil) {
+        return;
+    }
+
     for (StatCatAssignment *entry in entries) {
         [entry.statement assignAmount: [entry value] toCategory: selectedCategory withInfo: nil];
     }
     [selectedCategory invalidateBalance];
-    [Category updateCatValues];
+    [Category updateBalancesAndSums];
 
-    // Explicitly reload the listview. When removing from a category it happens automatically.
-    // Not so when adding, though.
-    [statementsListView reloadData];
-
-    NSError                *error;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
-    if (![context save: &error]) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-        return;
-    }
-}
-
-- (void)assignToCategory: (StatCatAssignment *)assignment
-{
-    if (selectedCategory == nil) {
-        return;
-    }
-
-    [assignment.statement assignAmount: [assignment value] toCategory: selectedCategory withInfo: nil];
-
-    [selectedCategory invalidateBalance];
-    [Category updateCatValues];
-
-    [statementsListView reloadData];
-
-    NSError                *error;
-    NSManagedObjectContext *context = MOAssistant.assistant.context;
-    if (![context save: &error]) {
-        NSAlert *alert = [NSAlert alertWithError: error];
-        [alert runModal];
-        return;
-    }
-}
-
-- (void)unassignFromCategory: (StatCatAssignment *)assignment
-{
     NSError *error;
-    if (selectedCategory == nil) {
-        return;
-    }
-
-    [assignment remove];
-    [assignPreviewController rearrangeObjects];
-
-    [selectedCategory invalidateBalance];
-    [Category updateCatValues];
-
-    // save updates
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    if ([context save: &error] == NO) {
+    if (![MOAssistant.assistant.context save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return;
     }
+}
 
+- (IBAction)unassignEntries: (id)sender
+{
+    NSArray *entries = assignPreviewController.selectedObjects;
+    if (entries.count == 0) {
+        entries = assignPreviewController.arrangedObjects;
+    }
+    [self unassignFromCategory: entries];
+}
+
+- (void)unassignFromCategory: (NSArray *)entries
+{
+    if (selectedCategory == nil) {
+        return;
+    }
+
+    [StatCatAssignment removeAssignments: entries];
+
+    [selectedCategory invalidateBalance];
+    [Category updateBalancesAndSums];
+
+    NSError *error;
+    if (![MOAssistant.assistant.context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
 }
 
 - (void)activationChanged: (BOOL)active forIndex: (NSUInteger)index
 {
-    StatCatAssignment *assignment = [assignPreviewController arrangedObjects][index];
+    StatCatAssignment *assignment = assignPreviewController.arrangedObjects[index];
     if (assignment != nil) {
         if (active) {
-            [self assignToCategory: assignment];
+            [self assignToCategory: @[assignment]];
         } else {
-            [self unassignFromCategory: assignment];
+            [self unassignFromCategory: @[assignment]];
         }
     }
 }
@@ -367,10 +357,13 @@
     if (object == assignPreviewController) {
         if (assignPreviewController.selectedObjects.count == 0) {
             assignEntriesButton.title = NSLocalizedString(@"AP550", nil);
+            unassignEntriesButton.title = NSLocalizedString(@"AP552", nil);
         } else {
             assignEntriesButton.title = NSLocalizedString(@"AP551", nil);
+            unassignEntriesButton.title = NSLocalizedString(@"AP553", nil);
         }
-        [assignEntriesButton setEnabled: [assignPreviewController.arrangedObjects count] > 0];
+        assignEntriesButton.enabled = [assignPreviewController.arrangedObjects count] > 0 && !selectedCategory.isNotAssignedCategory;
+        unassignEntriesButton.enabled = [assignPreviewController.arrangedObjects count] > 0 && !selectedCategory.isNotAssignedCategory;
 
         return;
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,9 +17,16 @@
  * 02110-1301  USA
  */
 
+#import "MessageLog.h"
 #import "ShortDate.h"
 
 NSCalendar *calendar = nil;
+
+@interface ShortDate ()
+{
+    NSString *shortMonthName;
+}
+@end
 
 @implementation ShortDate
 
@@ -140,6 +147,19 @@ NSCalendar *calendar = nil;
     return NSOrderedSame;
 }
 
+- (NSComparisonResult)compareReversed: (ShortDate *)date
+{
+    NSComparisonResult result = [self compare: date];
+    switch (result) {
+        case NSOrderedAscending:
+            return NSOrderedDescending;
+        case NSOrderedDescending:
+            return NSOrderedAscending;
+        default:
+            return result;
+    }
+}
+
 - (BOOL)isBetween: (ShortDate *)fromDate and: (ShortDate *)toDate
 {
     unsigned fy = fromDate.year;
@@ -211,7 +231,7 @@ NSCalendar *calendar = nil;
             return 4 * (toDate.year - components.year) + (toDate.quarter - self.quarter);
 
         default:
-            NSLog(@"Invalid calendar unit specified in ShortDate unitsToDate:byUnit:");
+            LogError(@"Invalid calendar unit specified in ShortDate unitsToDate:byUnit:");
             return 0;
     }
 }
@@ -249,7 +269,7 @@ NSCalendar *calendar = nil;
             break;
 
         default:
-            NSLog(@"Invalid calendar unit specified in ShortDate dateByAddingUnits:byUnit:");
+            LogError(@"Invalid calendar unit specified in ShortDate dateByAddingUnits:byUnit:");
             return nil;
     }
     comps.hour = 12;
@@ -307,7 +327,17 @@ NSCalendar *calendar = nil;
     [formatter setDateStyle: NSDateFormatterMediumStyle];
     [formatter setTimeStyle: NSDateFormatterNoStyle];
 
-    return [formatter stringFromDate: [self lowDate]];
+    return [formatter stringFromDate: self.lowDate];
+}
+
+- (NSString *)shortMonthDescription
+{
+    if (shortMonthName == nil) {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"MMM";
+        shortMonthName = [formatter stringFromDate: self.lowDate];
+    }
+    return shortMonthName;
 }
 
 - (NSString *)monthYearDescription

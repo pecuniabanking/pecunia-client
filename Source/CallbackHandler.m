@@ -82,6 +82,8 @@ static CallbackHandler *callbackHandler = nil;
             NSString *passwd = [pwWindow result];
             BOOL     savePassword = [pwWindow shouldSavePassword];
             [Keychain setPassword: passwd forService: currentPwService account: currentPwAccount store: savePassword];
+        } else {
+            [Keychain deletePasswordForService: currentPwService account: currentPwAccount];
         }
         [pwWindow close];
         pwWindow = nil;
@@ -170,7 +172,7 @@ static CallbackHandler *callbackHandler = nil;
         [Keychain setPassword: pin forService: currentPwService account: currentPwAccount store: NO];
         return pin;
     } else {
-        [Keychain deletePasswordForService: @"Pecunia PIN" account: s];
+        [Keychain deletePasswordForService: currentPwService account: s];
         errorOccured = YES; // don't save PIN
         return @"<abort>";
     }

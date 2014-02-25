@@ -294,7 +294,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
 - (id)initWithFrame: (NSRect)frameRect
 {
-    LOG_ENTER;
+    LogEnter;
 
     self = [super initWithFrame: frameRect];
     if (self != nil) {
@@ -343,7 +343,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
  */
 - (void)setUpCards
 {
-    LOG_ENTER;
+    LogEnter;
 
     // Layouting these cards is done explicitly.
     HomeScreenCard *card = [[RecentTransfersCard alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
@@ -377,7 +377,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
  */
 - (void)resizeSubviewsWithOldSize: (NSSize)oldSize
 {
-    LOG_ENTER;
+    LogEnter;
 
     // Children are laid out as they are listed in the subview collection.
     // The base layout is a 3 columns, 2 rows grid which is filled from top left to bottom right.

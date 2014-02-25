@@ -6,8 +6,8 @@ AP1 = "Ok";
 AP2 = "Abbrechen";
 AP3 = "Ja";
 AP4 = "Nein";
-AP5 = "Überweisungen";
-AP6 = "Warnung";
+AP5 = "unused";
+AP6 = ""; // Unused
 AP7 = "Dennoch Beenden";
 AP8 = "KONTEN";
 AP9 = "KATEGORIEN";
@@ -26,6 +26,17 @@ AP21 = "Jahre";
 AP22 = "Monat";
 AP23 = "Monate";
 AP24 = "Einstellungen";
+
+// Sidebar titles.
+AP25 = "Startseite";
+AP26 = "Übersicht";
+AP27 = "Verlauf";
+AP28 = "Verteilung";
+AP29 = "Vergleich";
+AP30 = "Tabelle";
+AP31 = "Zuordnung";
+AP32 = "Überweisungen";
+AP33 = "Daueraufträge";
 
 // Validation strings.
 // AP50..AP99
@@ -59,10 +70,12 @@ AP76 = "Bitte einen Verwendungszweck angeben";
 AP77 = "IBAN und/oder BIC sind für das Konto %@ nicht eingetragen";
 AP78 = "Aktion nicht möglich da bereits eine andere HBCI-Anfrage verarbeitet wird";
 AP79 = "Bitte HBCI-Version angeben";
-AP80 = "Bitte PIN/TAN-URL angeben";
 AP80 = "Bitte HBCI-URL angeben";
 AP81 = "Bitte Kommunikationsadresse (HBCI-URL) eingeben";
 AP82 = "Der Vorgang konnte nicht erfolgreich abgeschlossen werden. Details zur Fehlerursache finden Sie im Nachrichtenlog";
+AP83 = "Fehler";
+AP84 = "Warnung";
+AP85 = "Kritischer Fehler";
 
 // General + miscellaneous messages.
 // AP100..AP149
@@ -87,6 +100,10 @@ AP117 = "Es liegen keine (neuen) Abrechnungen vor";
 AP118 = "Datei auswählen";
 AP119 = "Klicken, um eine Datei auszuwählen. Dateien und URLs können auch direkt hierher gezogen werden";
 AP120 = "Klicken, um den Anhang anzusehen";
+AP121 = "-- Hier bitte eine kurze Beschreibung des Problems eingeben:\n\n";
+AP122 = "-- Hier bitte die Logdatei anhängen, z.B. durch ziehen vom Finder hierher.\n-- Ein Finder Fenster wurde dazu geöffnet.";
+AP123 = "Pecunia Fehlerbericht";
+AP124 = "Mail bitte an die Adresse support@pecuniabanking.de senden.\n\n";
 
 // Banking setup, migration, encryption, security.
 // AP150..AP199
@@ -265,7 +282,7 @@ AP453 = "Alle %d Wochen";
 AP454 = "Löschen eines Dauerauftrags";
 AP455 = "Wenn Sie fortfahren, wird der gewählte Auftrag zur Löschung vorgemerkt. Die tatsächliche Löschung geschieht, wenn alle wartenden Änderungen zur Bank gesendet werden. Bis dahin können Sie jederzeit die Aktion durch Klick auf das Löschen-Icon neben dem Auftrag stornieren.";
 AP456 = "Zur Löschung vormerken";
-AP457 = "Der Dauerauftrag wird nur aus der Liste, nicht bei der Bank gelöscht! Um den Dauerauftrag bei der Bank zu löschen setzen Sie das Löschkennzeichen und drücken Sie auf 'Änderungen senden'. Möchten Sie den Eintrag wirklich löschen?";
+AP457 = "Es gibt keine Konten, die Daueraufträge unterstützen.";
 AP458 = "Dieser Dauerauftrag wurde noch nicht zur Bank gesendet. Er kann also sofort gelöscht werden. Wollen Sie den Auftrag endgültig entfernen?";
 AP459 = "Daueraufträge holen...";
 AP460 = "Änderungen senden ...";
@@ -282,11 +299,14 @@ AP468 = "vorvorletzten Tag des Monats";
 // AP500..AP549
 AP500 = "Daten Erzeugung";
 AP501 = "Demo Daten wurden erstellt";
+AP502 = "Nachricht der Bank ";
 
 // Category assignments.
 // AP550..AP599
-AP550 = "Alle Einträge zuweisen";
-AP551 = "Ausgewählte Einträge zuweisen";
+AP550 = "Alles zuweisen";
+AP551 = "Auswahl zuweisen";
+AP552 = "Alles entfernen";
+AP553 = "Auswahl entfernen";
 
 // Import and export.
 // AP600..AP649
@@ -319,6 +339,7 @@ AP625 = "Dateien oder Verzeichnisse für den Import auswählen";
 AP626 = "Importdaten werden untersucht...";
 AP627 = "Die Vorbereitungen sind abgeschlossen. Wählen Sie einen Importbereich und klicken Sie dann \"Import Starten\"";
 AP628 = "Während der Verarbeitung ist ein schwerwiegender Fehler aufgetreten. Bitte versichern Sie sich, dass die angegebenen Dateien, Einstellungen und Feldzuordnungen korrekt sind.";
+AP629 = "Es wurden keine verwertbaren Daten gefunden";
 
 // Preferences
 // AP650..AP749
