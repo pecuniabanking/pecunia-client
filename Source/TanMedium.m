@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -36,4 +36,16 @@
 @dynamic activatedOn;
 @dynamic user;
 
+- (NSString*)description
+{
+    return [self descriptionWithIndent: @""];
+}
+
+- (NSString*)descriptionWithIndent: (NSString *)indent
+{
+    NSString *fs = @"%@name: %@, category: %@, card type: %@, mobile nummer: %@\n";
+    return [NSString stringWithFormat: fs, indent, self.name, self.category, self.cardType, self.mobileNumberSecure];
+}
+
 @end
+

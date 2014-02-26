@@ -421,7 +421,7 @@ static BankingController *bankinControllerInstance;
     request.entity = [NSEntityDescription entityForName: entity inManagedObjectContext: managedObjectContext];
     NSUInteger count = [managedObjectContext countForFetchRequest: request error: &error];
     if (error == nil) {
-        LogInfo(@"\t%i %@", count, message);
+        LogInfo(@"    %i %@", count, message);
     } else {
         LogError(@"Couldn't determine summary for %@. Got error: %@", message, error.localizedDescription);
     }
@@ -449,7 +449,14 @@ static BankingController *bankinControllerInstance;
     [self logSummary: @"Transfer" withMessage: @"transfers"];
     [self logSummary: @"TransferTemplate" withMessage: @"transfer templates"];
 
-    // ... details go here with debug log level...
+    // General user and account information.
+    NSArray *users = [BankUser allUsers];
+    NSMutableString *text = [NSMutableString string];
+
+    for (BankUser *user in users) {
+        [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
+    }
+    LogInfo(@"Bank users: {\n%@}", text);
 }
 
 - (void)publishContext

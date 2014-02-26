@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -27,6 +27,9 @@
 #import "BankUser.h"
 #import "MessageLog.h"
 #import "StatCatAssignment.h"
+#import "SupportedTransactionInfo.h"
+
+#import "HBCIController.h"
 
 @implementation BankAccount
 
@@ -653,6 +656,67 @@
         }
     }
     return unread;
+}
+
+- (NSString*)description
+{
+    return [self descriptionWithIndent: @""];
+}
+
+- (NSString*)descriptionWithIndent: (NSString *)indent
+{
+    NSMutableString *s = [NSMutableString string];
+    switch (self.type.intValue) {
+        case AccountType_Standard: {
+            NSString *fs = @"%@account: %@, sub account: %@, bank code: %@\n";
+            [s appendFormat: fs, indent, self.accountNumber, self.accountSuffix, self.bankCode];
+
+            fs = @"%@user id: %@, IBAN: %@, BIC: %@\n";
+            [s appendFormat: fs, indent, self.userId, self.iban, self.bic];
+
+            break;
+        }
+
+        case AccountType_CreditCart: {
+            [s appendFormat: @"%@credit card: %@\n", indent, self.accountNumber];
+            break;
+        }
+            
+        default:
+            [s appendFormat: @"%@unknown account type", indent];
+            break;
+    }
+
+    [s appendFormat: @"%@properties: ", indent];
+    if ([self.isManual boolValue]) {
+        [s appendString: @"manual, "];
+    } else {
+        if ([self.noAutomaticQuery boolValue]) {
+            [s appendString: @"manual sync, "];
+        }
+    }
+    if ([self.isHidden boolValue]) {
+        [s appendString: @"hidden, "];
+    }
+    if ([self.noCatRep boolValue]) {
+        [s appendString: @"ignore balance, "];
+    }
+    if ([self.isStandingOrderSupported boolValue]) {
+        [s appendString: @"standing orders, "];
+    }
+
+    [s appendFormat: @"%@, %li unread, %@\n", self.currency, self.unread,
+        [ShortDate dateWithDate: self.latestTransferDate]];
+
+    [s appendFormat: @"%@supported transactions: ", indent];
+
+    NSArray *transactions =  [[HBCIController controller] getSupportedBusinessTransactions: self];
+    for (NSString *transaction in transactions) {
+        [s appendFormat: @"%@ ", transaction];
+    }
+
+    [s appendString: @"\n"];
+    return s;
 }
 
 @end

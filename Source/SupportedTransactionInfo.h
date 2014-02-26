@@ -54,6 +54,9 @@ typedef enum {
 @property (nonatomic, strong) BankUser    *user;
 
 + (SupportedTransactionInfo*)infoForType:(TransactionType)type account:(BankAccount*)account;
++ (NSArray*)supportedTransactionsForAccount: (BankAccount*)account;
 + (PecuniaError*)updateSupportedTransactionInfoForUser: (BankUser*)user account: (BankAccount*)account withJobs:(NSArray*)supportedJobNames;
+
+- (NSString*)description;
 
 @end
