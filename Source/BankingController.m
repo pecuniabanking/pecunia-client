@@ -1310,7 +1310,7 @@ static BankingController *bankinControllerInstance;
         }
     }
     
-//    [MessageLog flush];
+    [MessageLog flush];
 
     NSURL* logURL = MessageLog.currentLogFile;
 

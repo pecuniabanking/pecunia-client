@@ -133,7 +133,7 @@
 + (void)flush
 {
     // This will flush all registered loggers.
-    [self.log->fileLogger flush];
+    [DDLog flushLog];
 }
 
 + (NSString *)getStringInfoFor: (const char *)name
