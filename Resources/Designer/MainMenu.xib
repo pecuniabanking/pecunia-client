@@ -332,11 +332,11 @@
                                                             <connections>
                                                                 <binding destination="911" name="value" keyPath="selection.bankName" id="996">
                                                                     <dictionary key="options">
-                                                                        <string key="NSNullPlaceholder"></string>
-                                                                        <string key="NSNotApplicablePlaceholder"></string>
-                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
                                                                         <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                                                        <string key="NSNotApplicablePlaceholder"></string>
                                                                         <string key="NSNoSelectionPlaceholder"></string>
+                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
+                                                                        <string key="NSNullPlaceholder"></string>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>

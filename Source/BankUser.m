@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -312,20 +312,57 @@ static NSMutableDictionary *users = nil;
 
 - (NSString*)description
 {
-    NSString *fs = @"Bankkennung: %@ BLZ: %@ Name: %@\nKunde: %@ HBCI-Version: %@ URL: %@\n";
-    NSMutableString *s = [NSMutableString stringWithFormat:fs, self.userId, self.bankCode, self.bankName, self.customerId, self.hbciVersion, self.bankURL];
-    [s appendString:@"TAN-Methoden:\n"];
-    for (TanMethod *tm in self.tanMethods) {
-        [s appendString:[tm description]];
+    return [self descriptionWithIndent: @""];
+}
+
+/**
+ * Description with a certain indentation. indent is added in front of each line (in addition to their individual indentation).
+ */
+- (NSString*)descriptionWithIndent: (NSString *)indent
+{
+    NSString *format = @"%@user id: %@ code: %@ name: %@\n";
+    NSMutableString *s = [NSMutableString stringWithFormat: format, indent, self.userId, self.bankCode, self.bankName, self.customerId, self.hbciVersion, self.bankURL];
+    [s appendFormat: @"%@customer: %@, HBCI version: %@\n", indent, self.customerId, self.hbciVersion];
+    [s appendFormat: @"%@url: %@\n", indent, self.bankURL];
+
+    if (self.tanMethods.count > 0) {
+        NSMutableString *temp = [NSMutableString string];
+        NSArray *sortedMethods = [[self.tanMethods allObjects] sortedArrayUsingComparator: ^NSComparisonResult(id obj1, id obj2) {
+            TanMethod *method1 = (TanMethod *)obj1;
+            TanMethod *method2 = (TanMethod *)obj2;
+            return [method1.method compare: method2.method];
+        }];
+        for (TanMethod *method in sortedMethods) {
+            [temp appendString: [method descriptionWithIndent: [NSString stringWithFormat: @"%@    ", indent]]];
+        }
+
+        [s appendFormat: @"%@TAN methods: {\n%@%@}\n", indent, temp, indent];
+    } else {
+        [s appendFormat: @"%@no TAN methods found\n", indent];
     }
-    [s appendString:@"TAN-Media:\n"];
-    for (TanMedium *tm in self.tanMedia) {
-        [s appendString:[tm description]];
+
+    if (self.tanMedia.count > 0) {
+        NSMutableString *temp = [NSMutableString string];
+        for (TanMedium *medium in self.tanMedia) {
+            [temp appendString: [medium descriptionWithIndent: [NSString stringWithFormat: @"%@    ", indent]]];
+        }
+
+        [s appendFormat: @"%@TAN media: {\n%@%@}\n", indent, temp, indent];
+    } else {
+        [s appendFormat: @"%@no TAN media found\n", indent];
     }
-    [s appendString:@"Konten:\n"];
-    for (BankAccount *account in self.accounts) {
-        [s appendString:[NSString stringWithFormat:@"Konto: %@ BLZ: %@\n", account.accountNumber, account.bankCode]];
+
+    if (self.accounts.count > 0) {
+        NSMutableString *temp = [NSMutableString string];
+        for (BankAccount *account in self.accounts) {
+            [temp appendFormat: @"%@\n", [account descriptionWithIndent: [NSString stringWithFormat: @"%@    ", indent]]];
+        }
+
+        [s appendFormat: @"%@accounts: {\n%@%@}\n", indent, temp, indent];
+    } else {
+        [s appendFormat: @"%@no accounts found\n", indent];
     }
+
     return s;
 }
 

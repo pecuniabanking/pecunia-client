@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -66,9 +66,6 @@ typedef enum {
 @property (nonatomic, assign) NSInteger       unread;
 @property (nonatomic, strong) NSSet           *users;
 
-- (NSString *)bankCode;
-- (NSDate *)latestTransferDate;
-
 - (void)evaluateQueryResult: (BankQueryResult *)res;
 - (int)updateFromQueryResult: (BankQueryResult *)result;
 - (void)updateStandingOrders: (NSArray *)orders;
@@ -80,7 +77,9 @@ typedef enum {
 - (NSDate *)nextDateForDate: (NSDate *)date;
 - (NSInteger)calcUnread;
 - (BankUser *)defaultBankUser;
+
 - (NSString*)description;
+- (NSString*)descriptionWithIndent: (NSString *)indent;
 
 + (BankAccount *)bankRootForCode: (NSString *)bankCode;
 + (BankAccount *)accountWithNumber: (NSString *)number bankCode: (NSString *)code;

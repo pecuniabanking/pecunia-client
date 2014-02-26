@@ -421,7 +421,7 @@ static BankingController *bankinControllerInstance;
     request.entity = [NSEntityDescription entityForName: entity inManagedObjectContext: managedObjectContext];
     NSUInteger count = [managedObjectContext countForFetchRequest: request error: &error];
     if (error == nil) {
-        LogInfo(@"\t%i %@", count, message);
+        LogInfo(@"    %i %@", count, message);
     } else {
         LogError(@"Couldn't determine summary for %@. Got error: %@", message, error.localizedDescription);
     }
@@ -449,7 +449,14 @@ static BankingController *bankinControllerInstance;
     [self logSummary: @"Transfer" withMessage: @"transfers"];
     [self logSummary: @"TransferTemplate" withMessage: @"transfer templates"];
 
-    // ... details go here with debug log level...
+    // General user and account information.
+    NSArray *users = [BankUser allUsers];
+    NSMutableString *text = [NSMutableString string];
+
+    for (BankUser *user in users) {
+        [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
+    }
+    LogInfo(@"Bank users: {\n%@}", text);
 }
 
 - (void)publishContext
@@ -1299,17 +1306,6 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)sendErrorReport: (id)sender
 {
-    // Log basic user and account information
-    NSArray *users = [BankUser allUsers];
-    
-    for (BankUser *user in users) {
-        LogInfo(@"\n\nUser information:\n%@", [user description]);
-        
-        for (BankAccount *account in user.accounts) {
-            LogInfo(@"\nAccount information:\n%@", [account description]);
-        }
-    }
-    
     [MessageLog flush];
 
     NSURL* logURL = MessageLog.currentLogFile;

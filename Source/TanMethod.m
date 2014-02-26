@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -35,8 +35,15 @@
 
 - (NSString*)description
 {
-    NSString *fs = @"Name: %@ Methode: %@ ID: %@ Process: %@ ZKAMethode: %@\n";
-    return [NSString stringWithFormat:fs, self.name, self.method, self.identifier, self.process, self.zkaMethodName];
+    return [self descriptionWithIndent: @""];
+}
+
+- (NSString*)descriptionWithIndent: (NSString *)indent
+{
+    // Entries with constant length are at the left to minimize clutter when listing several methods.
+    NSString *fs = @"%@method: %@, process: %@, name: %@, id: %@, ZKA name: %@\n";
+    return [NSString stringWithFormat: fs, indent, self.method, self.process, self.name, self.identifier, self.zkaMethodName];
+
 }
 
 @end
