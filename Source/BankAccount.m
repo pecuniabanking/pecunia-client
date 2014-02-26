@@ -668,54 +668,51 @@
     NSMutableString *s = [NSMutableString string];
     switch (self.type.intValue) {
         case AccountType_Standard: {
-            NSString *fs = @"%@account: %@, sub account: %@, bank code: %@\n";
+            NSString *fs = NSLocalizedString(@"AP1000", @"");
             [s appendFormat: fs, indent, self.accountNumber, self.accountSuffix, self.bankCode];
 
-            fs = @"%@user id: %@, IBAN: %@, BIC: %@\n";
+            fs = NSLocalizedString(@"AP1001", @"");
             [s appendFormat: fs, indent, self.userId, self.iban, self.bic];
 
             break;
         }
 
         case AccountType_CreditCart: {
-            [s appendFormat: @"%@credit card: %@\n", indent, self.accountNumber];
+            [s appendFormat: NSLocalizedString(@"AP1002", @""), indent, self.accountNumber];
             break;
         }
             
         default:
-            [s appendFormat: @"%@unknown account type", indent];
+            [s appendFormat: NSLocalizedString(@"AP1003", @""), indent];
             break;
     }
 
-    [s appendFormat: @"%@properties: ", indent];
+    [s appendFormat: NSLocalizedString(@"AP1004", @""), indent];
     if ([self.isManual boolValue]) {
-        [s appendString: @"manual, "];
+        [s appendString: NSLocalizedString(@"AP1005", @"")];
     } else {
         if ([self.noAutomaticQuery boolValue]) {
-            [s appendString: @"manual sync, "];
+            [s appendString: NSLocalizedString(@"AP1006", @"")];
         }
     }
     if ([self.isHidden boolValue]) {
-        [s appendString: @"hidden, "];
+        [s appendString: NSLocalizedString(@"AP1007", @"")];
     }
     if ([self.noCatRep boolValue]) {
-        [s appendString: @"ignore balance, "];
+        [s appendString: NSLocalizedString(@"AP1008", @"")];
     }
     if ([self.isStandingOrderSupported boolValue]) {
-        [s appendString: @"standing orders, "];
+        [s appendString: NSLocalizedString(@"AP1009", @"")];
     }
 
-    [s appendFormat: @"%@, %li unread, %@\n", self.currency, self.unread,
-        [ShortDate dateWithDate: self.latestTransferDate]];
+    [s appendFormat: NSLocalizedString(@"AP1010", @""), indent];
 
-    [s appendFormat: @"%@supported transactions: ", indent];
-
-    NSArray *transactions =  [[HBCIController controller] getSupportedBusinessTransactions: self];
-    for (NSString *transaction in transactions) {
-        [s appendFormat: @"%@ ", transaction];
+    NSArray *infos = [SupportedTransactionInfo supportedTransactionsForAccount:self];
+    for (SupportedTransactionInfo *info in infos) {
+        [s appendFormat: @"    %@", [info descriptionWithIndent: indent]];
     }
 
-    [s appendString: @"\n"];
+    [s appendFormat:@"%@}", indent];
     return s;
 }
 

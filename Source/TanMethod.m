@@ -41,7 +41,7 @@
 - (NSString*)descriptionWithIndent: (NSString *)indent
 {
     // Entries with constant length are at the left to minimize clutter when listing several methods.
-    NSString *fs = @"%@method: %@, process: %@, name: %@, id: %@, ZKA name: %@\n";
+    NSString *fs = NSLocalizedString(@"AP1016", @"");
     return [NSString stringWithFormat: fs, indent, self.method, self.process, self.name, self.identifier, self.zkaMethodName];
 
 }

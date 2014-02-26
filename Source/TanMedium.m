@@ -43,7 +43,7 @@
 
 - (NSString*)descriptionWithIndent: (NSString *)indent
 {
-    NSString *fs = @"%@name: %@, category: %@, card type: %@, mobile nummer: %@\n";
+    NSString *fs = NSLocalizedString(@"AP1017", @"");
     return [NSString stringWithFormat: fs, indent, self.name, self.category, self.cardType, self.mobileNumberSecure];
 }
 

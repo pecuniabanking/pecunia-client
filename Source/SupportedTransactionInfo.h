@@ -58,5 +58,6 @@ typedef enum {
 + (PecuniaError*)updateSupportedTransactionInfoForUser: (BankUser*)user account: (BankAccount*)account withJobs:(NSArray*)supportedJobNames;
 
 - (NSString*)description;
+- (NSString*)descriptionWithIndent:(NSString*)indent;
 
 @end

@@ -320,10 +320,10 @@ static NSMutableDictionary *users = nil;
  */
 - (NSString*)descriptionWithIndent: (NSString *)indent
 {
-    NSString *format = @"%@user id: %@ code: %@ name: %@\n";
-    NSMutableString *s = [NSMutableString stringWithFormat: format, indent, self.userId, self.bankCode, self.bankName, self.customerId, self.hbciVersion, self.bankURL];
-    [s appendFormat: @"%@customer: %@, HBCI version: %@\n", indent, self.customerId, self.hbciVersion];
-    [s appendFormat: @"%@url: %@\n", indent, self.bankURL];
+    NSString *format = NSLocalizedString(@"AP1018", @"");
+    NSMutableString *s = [NSMutableString stringWithFormat: format, indent, self.userId, self.bankCode, self.bankName];
+    [s appendFormat: NSLocalizedString(@"AP1019", @""), indent, self.customerId, self.hbciVersion];
+    [s appendFormat: NSLocalizedString(@"AP1020", @""), indent, self.bankURL];
 
     if (self.tanMethods.count > 0) {
         NSMutableString *temp = [NSMutableString string];
@@ -336,9 +336,9 @@ static NSMutableDictionary *users = nil;
             [temp appendString: [method descriptionWithIndent: [NSString stringWithFormat: @"%@    ", indent]]];
         }
 
-        [s appendFormat: @"%@TAN methods: {\n%@%@}\n", indent, temp, indent];
+        [s appendFormat: NSLocalizedString(@"AP1021", @""), indent, temp, indent];
     } else {
-        [s appendFormat: @"%@no TAN methods found\n", indent];
+        [s appendFormat: NSLocalizedString(@"AP1022", @""), indent];
     }
 
     if (self.tanMedia.count > 0) {
@@ -347,9 +347,9 @@ static NSMutableDictionary *users = nil;
             [temp appendString: [medium descriptionWithIndent: [NSString stringWithFormat: @"%@    ", indent]]];
         }
 
-        [s appendFormat: @"%@TAN media: {\n%@%@}\n", indent, temp, indent];
+        [s appendFormat: NSLocalizedString(@"AP1023", @""), indent, temp, indent];
     } else {
-        [s appendFormat: @"%@no TAN media found\n", indent];
+        [s appendFormat: NSLocalizedString(@"AP1024", @""), indent];
     }
 
     if (self.accounts.count > 0) {
@@ -358,9 +358,9 @@ static NSMutableDictionary *users = nil;
             [temp appendFormat: @"%@\n", [account descriptionWithIndent: [NSString stringWithFormat: @"%@    ", indent]]];
         }
 
-        [s appendFormat: @"%@accounts: {\n%@%@}\n", indent, temp, indent];
+        [s appendFormat: NSLocalizedString(@"AP1025", @""), indent, temp, indent];
     } else {
-        [s appendFormat: @"%@no accounts found\n", indent];
+        [s appendFormat: NSLocalizedString(@"AP1026", @""), indent];
     }
 
     return s;

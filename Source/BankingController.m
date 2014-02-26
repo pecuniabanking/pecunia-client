@@ -450,13 +450,15 @@ static BankingController *bankinControllerInstance;
     [self logSummary: @"TransferTemplate" withMessage: @"transfer templates"];
 
     // General user and account information.
-    NSArray *users = [BankUser allUsers];
-    NSMutableString *text = [NSMutableString string];
+    //NSArray *users = [BankUser allUsers];
+    //NSMutableString *text = [NSMutableString string];
 
+    /*
     for (BankUser *user in users) {
         [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
     }
     LogInfo(@"Bank users: {\n%@}", text);
+    */
 }
 
 - (void)publishContext
@@ -1306,6 +1308,13 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)sendErrorReport: (id)sender
 {
+    NSMutableString *text = [NSMutableString string];
+    
+    for (BankUser *user in [BankUser allUsers]) {
+        [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
+    }
+    LogInfo(@"Bank users: {\n%@}", text);
+    
     [MessageLog flush];
 
     NSURL* logURL = MessageLog.currentLogFile;

@@ -464,3 +464,55 @@ AP972 = "In diesem Bereich können Sie den Tilgungsverlauf für einen Kredit (An
 // Use a new block of IDs for the next set of strings!
 // AP1000..AP1059
 
+// Logs
+// AP1000..AP1100
+AP1000 = "%@Konto: %@, Unterkonto: %@, Bankleitzahl: %@\n";
+AP1001 = "%@Bankkennung: %@, IBAN: %@, BIC: %@\n";
+AP1002 = "%@Kreditkarte: %@\n";
+AP1003 = "%@Unbekannte Kontoart";
+AP1004 = "%@Eigenschaften: ";
+AP1005 = "manuelles Konto, ";
+AP1006 = "manuelle Synchr., ";
+AP1007 = "versteckt, ";
+AP1008 = "Saldo ignorieren, ";
+AP1009 = "Daueraufträge möglich, ";
+AP1010 = "\n%@Unterstützte Geschäftsvorfälle: {\n";
+AP1011 = " <ändern>";
+AP1012 = " <mehrfach>";
+AP1013 = " <terminiert>";
+AP1014 = " <löschen>";
+AP1015 = " <liste>";
+AP1016 = "%@Methode: %@, Prozess: %@, Name: %@, ID: %@, ZKA-Name: %@\n";
+AP1017 = "%@Mediumname: %@, Kategorie: %@, Kartentyp: %@, Mobilnummer: %@\n";
+AP1018 = "%@Bankkennung: %@ Bankleitzahl: %@ Bankname: %@\n";
+AP1019 = "%@Kunde: %@, HBCI-Version: %@\n";
+AP1020 = "%@HBCI-URL: %@\n";
+AP1021 = "%@TAN-Methoden: {\n%@%@}\n";
+AP1022 = "%@Keine TAN-Methoden vorhanden\n";
+AP1023 = "%@TAN-Medien: {\n%@%@}\n";
+AP1024 = "%@Keine TAN-Medien vorhanden\n";
+AP1025 = "%@Konten: {\n%@%@}\n";
+AP1026 = "%@Keine Konten vorhanden\n";
+
+// Business Transactions
+// AP1200..AP1300
+AP1200 = "Standardüberweisung";
+AP1201 = "EU-Überweisung";
+AP1202 = "Terminüberweisung";
+AP1203 = "Umbuchung";
+AP1204 = "Lastschrift";
+AP1205 = "SEPA-Überweisung";
+AP1206 = "Dauerauftrag";
+AP1207 = "Umsatzabfrage";
+AP1208 = "Kreditkartenumsätze";
+AP1209 = "Kreditkarten-Abrechnungsliste";
+AP1210 = "Kreditkartenabrechnung";
+AP1211 = "PIN ändern";
+AP1212 = "SEPA-Dauerauftrag";
+AP1213 = "SEPA-Terminüberweisung";
+
+AP1299 = "Unbekannt";
+
+
+
+
