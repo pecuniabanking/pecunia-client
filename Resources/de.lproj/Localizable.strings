@@ -1,6 +1,3 @@
-// Common strings.
-ok = "Ok";
-
 // AP0..AP49
 AP1 = "Ok";
 AP2 = "Abbrechen";
@@ -461,11 +458,8 @@ AP970 = "Rückzahlung gesamt";
 AP971 = "davon Zinsen";
 AP972 = "In diesem Bereich können Sie den Tilgungsverlauf für einen Kredit (Annuitätendarlehen) anzeigen lassen. Geben Sie dazu Kreditsumme, Zinssatz usw. in den Einstellungen an.<br><br>Zum Öffnen der Einstellungen klicken sie auf das Symbol ";
 
-// Use a new block of IDs for the next set of strings!
-// AP1000..AP1059
-
 // Logs
-// AP1000..AP1100
+// AP1000..AP1199
 AP1000 = "%@Konto: %@, Unterkonto: %@, Bankleitzahl: %@\n";
 AP1001 = "%@Bankkennung: %@, IBAN: %@, BIC: %@\n";
 AP1002 = "%@Kreditkarte: %@\n";
@@ -495,7 +489,7 @@ AP1025 = "%@Konten: {\n%@%@}\n";
 AP1026 = "%@Keine Konten vorhanden\n";
 
 // Business Transactions
-// AP1200..AP1300
+// AP1200..AP1299
 AP1200 = "Standardüberweisung";
 AP1201 = "EU-Überweisung";
 AP1202 = "Terminüberweisung";
@@ -513,6 +507,7 @@ AP1213 = "SEPA-Terminüberweisung";
 
 AP1299 = "Unbekannt";
 
-
+// Use a new block of IDs for the next set of strings!
+// AP1300..AP1349
 
 
