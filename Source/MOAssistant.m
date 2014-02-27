@@ -479,7 +479,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
     NSError *error = nil;
 
-    /*
+
     NSPersistentStoreCoordinator *coord = [context persistentStoreCoordinator];
     NSArray                      *stores = [coord persistentStores];
     NSPersistentStore            *store;
@@ -492,7 +492,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 
     LogDebug(@"Persistent stores released");
-*/
+
     if ([context hasChanges]) {
         [context save: &error];
     }

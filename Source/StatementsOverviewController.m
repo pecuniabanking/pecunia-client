@@ -650,6 +650,7 @@ extern void *UserDefaultsBindingContext;
     [categoryAssignments unbind: @"selectionIndexes"];
     [statementsListView unbind: @"selectedRows"];
     [categoryAssignments removeObserver: self forKeyPath: @"selectionIndexes"];
+    categoryAssignments.content = nil;
 
     [attachment1 unbind: @"reference"];
     [attachment2 unbind: @"reference"];

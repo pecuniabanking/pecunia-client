@@ -55,6 +55,23 @@
     return result.lastObject;
 }
 
++ (NSArray*)supportedTransactionsForAccount: (BankAccount*)account
+{
+    NSError                *error = nil;
+    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"account = %@", account];
+    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
+    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+    [request setEntity: entityDescription];
+    [request setPredicate: predicate];
+    
+    NSArray *result = [context executeFetchRequest: request error: &error];
+    if (error != nil) {
+        return nil;
+    }
+    return result;
+}
+
 + (PecuniaError*)updateSupportedTransactionInfoForUser: (BankUser*)user account: (BankAccount*)account withJobs:(NSArray*)supportedJobNames
 {
     NSError                *error = nil;
@@ -232,6 +249,56 @@
         [[MessageLog log] addMessage: @"Add supported transaction ChangePin" withLevel: LogLevel_Debug];
     }
     return nil;
+}
+
+- (NSString*)description
+{
+    return [self descriptionWithIndent:@""];
+}
+
+- (NSString*)descriptionWithIndent:(NSString*)indent
+{
+    NSMutableString *descr = [[NSMutableString alloc] init];
+    NSString *s = nil;
+    switch ([self.type intValue]) {
+        case TransactionType_TransferStandard: s = NSLocalizedString(@"AP1200", @""); break;
+        case TransactionType_TransferEU: s = NSLocalizedString(@"AP1201", @""); break;
+        case TransactionType_TransferDated: s = NSLocalizedString(@"AP1202", @""); break;
+        case TransactionType_TransferInternal: s = NSLocalizedString(@"AP1203", @""); break;
+        case TransactionType_TransferDebit: s = NSLocalizedString(@"AP1204", @""); break;
+        case TransactionType_TransferSEPA: s = NSLocalizedString(@"AP1205", @""); break;
+        case TransactionType_StandingOrder: s = NSLocalizedString(@"AP1206", @""); break;
+        case TransactionType_BankStatements: s = NSLocalizedString(@"AP1207", @""); break;
+        case TransactionType_CCStatements: s = NSLocalizedString(@"AP1208", @""); break;
+        case TransactionType_CCSettlementList: s = NSLocalizedString(@"AP1209", @""); break;
+        case TransactionType_CCSettlement: s = NSLocalizedString(@"AP1210", @""); break;
+        case TransactionType_ChangePin: s = NSLocalizedString(@"AP1211", @""); break;
+        case TransactionType_StandingOrderSEPA: s = NSLocalizedString(@"AP1212", @""); break;
+        case TransactionType_TransferSEPAScheduled: s = NSLocalizedString(@"AP1213", @""); break;
+            
+        default: s = NSLocalizedString(@"AP1299", @"");
+    }
+    
+    [descr appendString:indent];
+    [descr appendString:s];
+    
+    if ([self.allowsChange boolValue]) {
+        [descr appendString:NSLocalizedString(@"AP1011", @"")];
+    }
+    if ([self.allowsCollective boolValue]) {
+        [descr appendString:NSLocalizedString(@"AP1012", @"")];
+    }
+    if ([self.allowsDated boolValue]) {
+        [descr appendString:NSLocalizedString(@"AP1013", @"")];
+    }
+    if ([self.allowesDelete boolValue]) {
+        [descr appendString:NSLocalizedString(@"AP1014", @"")];
+    }
+    if ([self.allowsList boolValue]) {
+        [descr appendString:NSLocalizedString(@"AP1015", @"")];
+    }
+    [descr appendString:@"\n"];
+    return descr;
 }
 
 @end

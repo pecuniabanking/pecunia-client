@@ -421,7 +421,7 @@ static BankingController *bankinControllerInstance;
     request.entity = [NSEntityDescription entityForName: entity inManagedObjectContext: managedObjectContext];
     NSUInteger count = [managedObjectContext countForFetchRequest: request error: &error];
     if (error == nil) {
-        LogInfo(@"\t%i %@", count, message);
+        LogInfo(@"    %i %@", count, message);
     } else {
         LogError(@"Couldn't determine summary for %@. Got error: %@", message, error.localizedDescription);
     }
@@ -449,7 +449,16 @@ static BankingController *bankinControllerInstance;
     [self logSummary: @"Transfer" withMessage: @"transfers"];
     [self logSummary: @"TransferTemplate" withMessage: @"transfer templates"];
 
-    // ... details go here with debug log level...
+    // General user and account information.
+    //NSArray *users = [BankUser allUsers];
+    //NSMutableString *text = [NSMutableString string];
+
+    /*
+    for (BankUser *user in users) {
+        [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
+    }
+    LogInfo(@"Bank users: {\n%@}", text);
+    */
 }
 
 - (void)publishContext
@@ -575,7 +584,7 @@ static BankingController *bankinControllerInstance;
 
     BOOL removeParent = NO;
 
-    [bankAccount invalidateCacheIncludeParents: YES];
+    [bankAccount invalidateCacheIncludeParents: YES recursive: YES];
 
     //  Delete bank statements which are not assigned first
     NSSet *statements = [bankAccount valueForKey: @"statements"];
@@ -1299,6 +1308,13 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)sendErrorReport: (id)sender
 {
+    NSMutableString *text = [NSMutableString string];
+    
+    for (BankUser *user in [BankUser allUsers]) {
+        [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
+    }
+    LogInfo(@"Bank users: {\n%@}", text);
+    
     [MessageLog flush];
 
     NSURL* logURL = MessageLog.currentLogFile;
@@ -3330,7 +3346,7 @@ static BankingController *bankinControllerInstance;
 	if(restart) {
 		NSProcessInfo *pi = [NSProcessInfo processInfo ];
 		NSArray *args = [pi arguments ];
-		NSString *path = [args objectAtIndex:0 ];
+		NSString *path = [args objectAtIndex: 0];
 		if(path) {
             NSError *error = nil;
             NSURL *url = [NSURL fileURLWithPath:path];

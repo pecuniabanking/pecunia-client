@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12F37" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="12F45" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="BankAccount" representedClassName="BankAccount" parentEntity="Category" syncable="YES">
         <attribute name="accountNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="accountSuffix" optional="YES" attributeType="String" syncable="YES"/>
@@ -234,7 +234,7 @@
         <relationship name="preferredForMethod" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="TanMethod" inverseName="preferredMedium" inverseEntity="TanMethod" indexed="YES" syncable="YES"/>
         <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankUser" inverseName="tanMedia" inverseEntity="BankUser" indexed="YES" syncable="YES"/>
     </entity>
-    <entity name="TanMethod" representedClassName="NSManagedObject" syncable="YES">
+    <entity name="TanMethod" representedClassName="TanMethod" syncable="YES">
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="inputInfo" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="maxTanLength" optional="YES" attributeType="Integer 16" defaultValueString="99" syncable="YES"/>
@@ -359,7 +359,7 @@
         <element name="SupportedTransactionInfo" positionX="-216" positionY="-381" width="128" height="165"/>
         <element name="Tag" positionX="513" positionY="216" width="128" height="105"/>
         <element name="TanMedium" positionX="-641" positionY="-315" width="128" height="285"/>
-        <element name="TanMethod" positionX="-641" positionY="-612" width="128" height="225"/>
+        <element name="TanMethod" positionX="-641" positionY="-612" width="128" height="223"/>
         <element name="TransactionLimits" positionX="-218" positionY="-900" width="128" height="450"/>
         <element name="Transfer" positionX="-27" positionY="-90" width="128" height="540"/>
         <element name="TransferTemplate" positionX="-639" positionY="144" width="128" height="315"/>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -27,6 +27,9 @@
 #import "BankUser.h"
 #import "MessageLog.h"
 #import "StatCatAssignment.h"
+#import "SupportedTransactionInfo.h"
+
+#import "HBCIController.h"
 
 @implementation BankAccount
 
@@ -653,6 +656,64 @@
         }
     }
     return unread;
+}
+
+- (NSString*)description
+{
+    return [self descriptionWithIndent: @""];
+}
+
+- (NSString*)descriptionWithIndent: (NSString *)indent
+{
+    NSMutableString *s = [NSMutableString string];
+    switch (self.type.intValue) {
+        case AccountType_Standard: {
+            NSString *fs = NSLocalizedString(@"AP1000", @"");
+            [s appendFormat: fs, indent, self.accountNumber, self.accountSuffix, self.bankCode];
+
+            fs = NSLocalizedString(@"AP1001", @"");
+            [s appendFormat: fs, indent, self.userId, self.iban, self.bic];
+
+            break;
+        }
+
+        case AccountType_CreditCart: {
+            [s appendFormat: NSLocalizedString(@"AP1002", @""), indent, self.accountNumber];
+            break;
+        }
+            
+        default:
+            [s appendFormat: NSLocalizedString(@"AP1003", @""), indent];
+            break;
+    }
+
+    [s appendFormat: NSLocalizedString(@"AP1004", @""), indent];
+    if ([self.isManual boolValue]) {
+        [s appendString: NSLocalizedString(@"AP1005", @"")];
+    } else {
+        if ([self.noAutomaticQuery boolValue]) {
+            [s appendString: NSLocalizedString(@"AP1006", @"")];
+        }
+    }
+    if ([self.isHidden boolValue]) {
+        [s appendString: NSLocalizedString(@"AP1007", @"")];
+    }
+    if ([self.noCatRep boolValue]) {
+        [s appendString: NSLocalizedString(@"AP1008", @"")];
+    }
+    if ([self.isStandingOrderSupported boolValue]) {
+        [s appendString: NSLocalizedString(@"AP1009", @"")];
+    }
+
+    [s appendFormat: NSLocalizedString(@"AP1010", @""), indent];
+
+    NSArray *infos = [SupportedTransactionInfo supportedTransactionsForAccount:self];
+    for (SupportedTransactionInfo *info in infos) {
+        [s appendFormat: @"    %@", [info descriptionWithIndent: indent]];
+    }
+
+    [s appendFormat:@"%@}", indent];
+    return s;
 }
 
 @end

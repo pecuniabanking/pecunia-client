@@ -285,12 +285,12 @@
 {
     if ([self primitiveCategory] != value) {
         [[self primitiveCategory] invalidateBalance];
-        [[self primitiveCategory] invalidateCacheIncludeParents: YES];
+        [[self primitiveCategory] invalidateCacheIncludeParents: YES recursive: NO];
         [self willChangeValueForKey: @"category"];
         [self setPrimitiveCategory: value];
         [self didChangeValueForKey: @"category"];
         [value invalidateBalance];
-        [value invalidateCacheIncludeParents: YES];
+        [value invalidateCacheIncludeParents: YES recursive: NO];
     }
 }
 

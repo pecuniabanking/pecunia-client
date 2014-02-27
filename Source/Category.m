@@ -157,14 +157,18 @@ static ShortDate *endReportDate = nil;
     self.isBalanceValid = @NO;
 }
 
-- (void)invalidateCacheIncludeParents: (BOOL)flag
+- (void)invalidateCacheIncludeParents: (BOOL)flag recursive: (BOOL)recursive
 {
-    if (reportedAssignments != nil) { // Check this to avoid unnecessary KVO calls.
-        self.reportedAssignments = nil;
-    }
+    reportedAssignments = nil;
 
     if (flag && self.parent != Category.catRoot) {
-        [self.parent invalidateCacheIncludeParents: YES];
+        [self.parent invalidateCacheIncludeParents: YES recursive: NO];
+    }
+
+    if (recursive) {
+        for (Category *child in self.children) {
+            [child invalidateCacheIncludeParents: NO recursive: YES];
+        }
     }
 }
 

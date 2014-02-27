@@ -516,7 +516,7 @@ static NSDictionary *heightMappings;
         
         NSRunAlertPanel(NSLocalizedString(@"AP167", nil),
                         NSLocalizedString(@"AP176", nil),
-                        NSLocalizedString(@"ok", nil), nil, nil);
+                        NSLocalizedString(@"AP1", nil), nil, nil);
     }
 }
 

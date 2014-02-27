@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -308,6 +308,62 @@ static NSMutableDictionary *users = nil;
         self.updatedCustomerId = nil;
         self.isRegistered = NO;
     }
+}
+
+- (NSString*)description
+{
+    return [self descriptionWithIndent: @""];
+}
+
+/**
+ * Description with a certain indentation. indent is added in front of each line (in addition to their individual indentation).
+ */
+- (NSString*)descriptionWithIndent: (NSString *)indent
+{
+    NSString *format = NSLocalizedString(@"AP1018", @"");
+    NSMutableString *s = [NSMutableString stringWithFormat: format, indent, self.userId, self.bankCode, self.bankName];
+    [s appendFormat: NSLocalizedString(@"AP1019", @""), indent, self.customerId, self.hbciVersion];
+    [s appendFormat: NSLocalizedString(@"AP1020", @""), indent, self.bankURL];
+
+    if (self.tanMethods.count > 0) {
+        NSMutableString *temp = [NSMutableString string];
+        NSArray *sortedMethods = [[self.tanMethods allObjects] sortedArrayUsingComparator: ^NSComparisonResult(id obj1, id obj2) {
+            TanMethod *method1 = (TanMethod *)obj1;
+            TanMethod *method2 = (TanMethod *)obj2;
+            return [method1.method compare: method2.method];
+        }];
+        for (TanMethod *method in sortedMethods) {
+            [temp appendString: [method descriptionWithIndent: [NSString stringWithFormat: @"%@    ", indent]]];
+        }
+
+        [s appendFormat: NSLocalizedString(@"AP1021", @""), indent, temp, indent];
+    } else {
+        [s appendFormat: NSLocalizedString(@"AP1022", @""), indent];
+    }
+
+    if (self.tanMedia.count > 0) {
+        NSMutableString *temp = [NSMutableString string];
+        for (TanMedium *medium in self.tanMedia) {
+            [temp appendString: [medium descriptionWithIndent: [NSString stringWithFormat: @"%@    ", indent]]];
+        }
+
+        [s appendFormat: NSLocalizedString(@"AP1023", @""), indent, temp, indent];
+    } else {
+        [s appendFormat: NSLocalizedString(@"AP1024", @""), indent];
+    }
+
+    if (self.accounts.count > 0) {
+        NSMutableString *temp = [NSMutableString string];
+        for (BankAccount *account in self.accounts) {
+            [temp appendFormat: @"%@\n", [account descriptionWithIndent: [NSString stringWithFormat: @"%@    ", indent]]];
+        }
+
+        [s appendFormat: NSLocalizedString(@"AP1025", @""), indent, temp, indent];
+    } else {
+        [s appendFormat: NSLocalizedString(@"AP1026", @""), indent];
+    }
+
+    return s;
 }
 
 + (NSArray *)allUsers
