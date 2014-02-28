@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -130,8 +130,12 @@
 - (IBAction)resetIsNewStatements: (id)sender;
 
 - (IBAction)printDocument: (id)sender;
-- (IBAction)accountMaintenance: (id)sender;
 - (IBAction)getAccountBalance: (id)sender;
+
+
+- (IBAction)updateStatementBalances:(id)sender;
+- (IBAction)accountMaintenance: (id)sender;
+- (IBAction)updateSupportedTransactions:(id)sender;
 
 - (IBAction)showLog: (id)sender;
 - (IBAction)showAboutPanel: (id)sender;

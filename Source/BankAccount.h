@@ -72,8 +72,12 @@ typedef enum {
 - (void)copyStatement: (BankStatement *)stat;
 - (void)copyStatementsToManualAccounts: (NSArray *)statements;
 - (void)updateBalanceWithValue: (NSDecimalNumber *)value;
+
+// correction functions
 - (void)updateStatementBalances;
 - (void)doMaintenance;
+- (void)updateSupportedTransactions;
+
 - (NSDate *)nextDateForDate: (NSDate *)date;
 - (NSInteger)calcUnread;
 - (BankUser *)defaultBankUser;

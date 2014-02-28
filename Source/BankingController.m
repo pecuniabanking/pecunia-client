@@ -450,13 +450,15 @@ static BankingController *bankinControllerInstance;
     [self logSummary: @"TransferTemplate" withMessage: @"transfer templates"];
 
     // General user and account information.
-    NSArray *users = [BankUser allUsers];
-    NSMutableString *text = [NSMutableString string];
+    //NSArray *users = [BankUser allUsers];
+    //NSMutableString *text = [NSMutableString string];
 
+    /*
     for (BankUser *user in users) {
         [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
     }
     LogInfo(@"Bank users: {\n%@}", text);
+    */
 }
 
 - (void)publishContext
@@ -1169,6 +1171,40 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
+- (IBAction)updateStatementBalances:(id)sender
+{
+    LogEnter;
+    
+    BankAccount *account = nil;
+    Category    *cat = [self currentSelection];
+    if (cat == nil || cat.accountNumber == nil) {
+        return;
+    }
+    account = (BankAccount *)cat;
+    
+    [account updateStatementBalances];
+    [self save];
+    
+    LogLeave;
+}
+
+- (IBAction)updateSupportedTransactions:(id)sender
+{
+    LogEnter;
+    
+    BankAccount *account = nil;
+    Category    *cat = [self currentSelection];
+    if (cat == nil || cat.accountNumber == nil) {
+        return;
+    }
+    account = (BankAccount *)cat;
+    
+    [account updateSupportedTransactions];
+    [self save];
+    
+    LogLeave;
+}
+
 - (IBAction)getAccountBalance: (id)sender
 {
     LogEnter;
@@ -1306,6 +1342,13 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)sendErrorReport: (id)sender
 {
+    NSMutableString *text = [NSMutableString string];
+    
+    for (BankUser *user in [BankUser allUsers]) {
+        [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
+    }
+    LogInfo(@"Bank users: {\n%@}", text);
+    
     [MessageLog flush];
 
     NSURL* logURL = MessageLog.currentLogFile;
@@ -3596,6 +3639,7 @@ static BankingController *bankinControllerInstance;
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
 
     BOOL migrated10 = [settings boolForKey: @"Migrated10"];
+    
     if (!migrated10) {
 
         NSManagedObjectContext *context = MOAssistant.assistant.context;
@@ -3673,7 +3717,7 @@ static BankingController *bankinControllerInstance;
         }
 
         settings[@"Migrated10"] = @YES;
-        settings[@"Migrated109"] = @YES;
+        settings[@"Migrated110"] = @YES;
 
         // success message
         if ([users count] > 0 && [bankUsers count] > 0) {
@@ -3683,26 +3727,26 @@ static BankingController *bankinControllerInstance;
                             nil, nil
                             );
         }
-    } else {
-        BOOL migrated109 = [settings boolForKey: @"Migrated109"];
-        if (migrated109 == NO) {
-            // BankUser update BPD
-            NSArray *bankUsers = [BankUser allUsers];
-            if ([bankUsers count] > 0) {
-                NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
-                                NSLocalizedString(@"AP203", nil),
-                                NSLocalizedString(@"AP1", nil),
-                                nil, nil
-                                );
-                for (BankUser *user in [BankUser allUsers]) {
-                    [[HBCIController controller] updateBankDataForUser: user];
-                }
-            }
-            
-            settings[@"Migrated109"] = @YES;
-        }
     }
-
+    
+    BOOL migrated110 = [settings boolForKey: @"Migrated110"];
+    if (migrated110 == NO) {
+        // BankUser update BPD
+        NSArray *bankUsers = [BankUser allUsers];
+        if ([bankUsers count] > 0) {
+            NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
+                            NSLocalizedString(@"AP203", nil),
+                            NSLocalizedString(@"AP1", nil),
+                            nil, nil
+                            );
+            for (BankUser *user in [BankUser allUsers]) {
+                [[HBCIController controller] updateSupportedTransactionsForUser: user];
+            }
+        }
+        
+        settings[@"Migrated110"] = @YES;
+    }
+    
     LogLeave;
 }
 
