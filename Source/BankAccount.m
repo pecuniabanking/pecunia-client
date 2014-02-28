@@ -337,6 +337,15 @@
     }
 }
 
+- (void)updateSupportedTransactions
+{
+    for (BankUser *user in self.users) {
+        if ([user.userId isEqualToString:self.userId]) {
+            [[HBCIController controller] updateSupportedTransactionsForUser:user];
+        }
+    }
+}
+
 - (void)updateBalanceWithValue: (NSDecimalNumber *)value
 {
     if ([self.balance compare:value] != NSOrderedSame) {

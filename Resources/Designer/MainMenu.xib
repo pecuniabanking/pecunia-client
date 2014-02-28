@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1070" defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -332,11 +332,11 @@
                                                             <connections>
                                                                 <binding destination="911" name="value" keyPath="selection.bankName" id="996">
                                                                     <dictionary key="options">
-                                                                        <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
                                                                         <string key="NSNotApplicablePlaceholder"></string>
                                                                         <string key="NSNoSelectionPlaceholder"></string>
-                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
                                                                         <string key="NSNullPlaceholder"></string>
+                                                                        <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
@@ -745,11 +745,24 @@ Unterstütze die Entwicklung!</string>
                             <menuItem isSeparatorItem="YES" id="4438">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Fehlerbereinigung" toolTip="Alle Überweisungen des ausgewählten Kontos werden überprüft und Fehler, wo möglich, beseitigt" id="5506">
+                            <menuItem title="Fehlerbereinigung" id="EfB-3s-NE1">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="accountMaintenance:" target="235" id="7064"/>
-                                </connections>
+                                <menu key="submenu" title="Fehlerbereinigung" id="Xx1-Rs-RhL">
+                                    <items>
+                                        <menuItem title="Erlaubte Geschäftsvorfälle" toolTip="Ermittelt die erlaubten Geschäftsvorfälle auf Basis der Bankparameter neu" id="sFY-Pc-jzH">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Zwischensalden" toolTip="Ermittelt die Zwischensalden der Umsätze neu" id="5O8-g3-wxd">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Umsätze" toolTip="Alle Überweisungen des ausgewählten Kontos werden überprüft und Fehler, wo möglich, beseitigt" id="5506">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="accountMaintenance:" target="235" id="7064"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="5507"/>
                             <menuItem title="Seite einrichten..." keyEquivalent="P" id="77">
