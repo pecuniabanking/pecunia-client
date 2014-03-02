@@ -73,7 +73,7 @@ static HBCIController *controller = nil;
     bankInfo = [[NSMutableDictionary alloc] initWithCapacity: 10];
     countries = [[NSMutableDictionary alloc] initWithCapacity: 50];
     [self readCountryInfos];
-    resultWindow = nil;
+    resultWindow = [[ResultWindowController alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(bankMessageReceived:)
@@ -97,7 +97,7 @@ static HBCIController *controller = nil;
 
 - (void)startProgress
 {
-    resultWindow = [[ResultWindowController alloc] init];
+    [resultWindow  clear];
 }
 
 - (void)stopProgress

@@ -106,6 +106,13 @@
     }
 }
 
+- (void)clear
+{
+    hasErrors = NO;
+    logString = [[NSMutableAttributedString alloc] initWithString: @""];
+    [[logView textStorage] setAttributedString: [[NSAttributedString alloc] initWithString: @""]];
+}
+
 - (void)dealloc
 {
     [messageLog unregisterLogUI: self];
