@@ -34,6 +34,7 @@ typedef enum {
     TransactionType_ChangePin,
     TransactionType_StandingOrderSEPA,
     TransactionType_TransferSEPAScheduled,
+    TransactionType_TransferCollectiveCreditSEPA
 } TransactionType;
 
 @class BankAccount;

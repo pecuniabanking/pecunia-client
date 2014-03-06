@@ -421,7 +421,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
             BankAccount *account = (BankAccount *)currentAccount;
 
             // Exclude manual accounts and those that don't support standing orders from the list.
-            if ([[account isManual] boolValue] || ![[HBCIController controller] isStandingOrderSupportedForAccount: account]) {
+            if ([[account isManual] boolValue] || ![[HBCIController controller] isTransactionSupported:TransactionType_StandingOrderSEPA forAccount:account]) {
                 continue;
             }
 
@@ -748,7 +748,7 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
         BankAccount *account = (BankAccount *)currentAccount;
 
         // Exclude manual accounts and those that don't support standing orders from the list.
-        if ([[account isManual] boolValue] || ![[HBCIController controller] isStandingOrderSupportedForAccount: account]) {
+        if ([[account isManual] boolValue] || ![[HBCIController controller] isTransactionSupported:TransactionType_StandingOrderSEPA forAccount: account]) {
             continue;
         }
 

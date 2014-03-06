@@ -201,7 +201,7 @@
         <relationship name="statement" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankStatement" inverseName="assignments" inverseEntity="BankStatement" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="SupportedTransactionInfo" representedClassName="SupportedTransactionInfo" syncable="YES">
-        <attribute name="allowesDelete" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="allowesDelete" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="allowsChange" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="allowsCollective" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="allowsDated" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -345,23 +345,23 @@
     <fetchRequest name="statementsByAccount" entity="BankStatement" predicateString="fromBank.bankCode == $BCODE AND fromBank.accountNumber == $ACCNT"/>
     <fetchRequest name="tagWithCaption" entity="Tag" predicateString="caption == $caption"/>
     <elements>
-        <element name="BankAccount" positionX="-20" positionY="-597" width="128" height="435"/>
-        <element name="BankMessage" positionX="-641" positionY="9" width="128" height="90"/>
-        <element name="BankStatement" positionX="511" positionY="-603" width="128" height="780"/>
-        <element name="BankUser" positionX="-432" positionY="-598" width="128" height="373"/>
-        <element name="Category" positionX="142" positionY="-594" width="128" height="315"/>
-        <element name="CategoryBudget" positionX="322" positionY="-369" width="128" height="90"/>
-        <element name="CreditCardSettlement" positionX="-18" positionY="-900" width="128" height="255"/>
-        <element name="CustomerMessage" positionX="-218" positionY="-141" width="128" height="150"/>
-        <element name="Info" positionX="144" positionY="-900" width="128" height="73"/>
-        <element name="StandingOrder" positionX="142" positionY="-243" width="128" height="495"/>
-        <element name="StatCatAssignment" positionX="324" positionY="-600" width="128" height="105"/>
-        <element name="SupportedTransactionInfo" positionX="-216" positionY="-381" width="128" height="165"/>
-        <element name="Tag" positionX="513" positionY="216" width="128" height="105"/>
-        <element name="TanMedium" positionX="-641" positionY="-315" width="128" height="285"/>
-        <element name="TanMethod" positionX="-641" positionY="-612" width="128" height="223"/>
-        <element name="TransactionLimits" positionX="-218" positionY="-900" width="128" height="450"/>
-        <element name="Transfer" positionX="-27" positionY="-90" width="128" height="540"/>
-        <element name="TransferTemplate" positionX="-639" positionY="144" width="128" height="315"/>
+        <element name="BankAccount" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankMessage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankStatement" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BankUser" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Category" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CategoryBudget" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CreditCardSettlement" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CustomerMessage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Info" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="StandingOrder" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="StatCatAssignment" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SupportedTransactionInfo" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Tag" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="TanMedium" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="TanMethod" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="TransactionLimits" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Transfer" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="TransferTemplate" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>
