@@ -30,7 +30,7 @@
 #import "StandingOrder.h"
 #import "LocalSettingsController.h"
 
-#import "GrowlNotification.h"
+#import "SystemNotification.h"
 
 static NSString *DemoDataKey = @"contains-demo-data";
 
@@ -608,9 +608,9 @@ static NSString *DemoDataKey = @"contains-demo-data";
             return;
         }
 
-        [GrowlNotification showMessage: NSLocalizedString(@"AP501", nil)
+        [SystemNotification showMessage: NSLocalizedString(@"AP501", nil)
                              withTitle: NSLocalizedString(@"AP500", nil)
-                               context: @"Data Generation"];
+                               context: nil];
         [NSApp stopModal];
     }
 }

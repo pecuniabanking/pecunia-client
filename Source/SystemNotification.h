@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,7 +21,7 @@
 
 #import <Growl/Growl.h>
 
-@interface GrowlNotification : NSObject <GrowlApplicationBridgeDelegate>
+@interface SystemNotification : NSObject <GrowlApplicationBridgeDelegate, NSUserNotificationCenterDelegate>
 
 + (void)showMessage: (NSString *)message withTitle: (NSString *)title context: (NSString *)context;
 + (void)showStickyMessage: (NSString *)message withTitle: (NSString *)title context: (NSString *)context;

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2701A84B165E827F00A9A1C7 /* GrowlNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* GrowlNotification.m */; };
+		2701A84B165E827F00A9A1C7 /* SystemNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* SystemNotification.m */; };
 		2701A84D165E832C00A9A1C7 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; };
 		2701A852165E87B100A9A1C7 /* Growl.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2701A84C165E832C00A9A1C7 /* Growl.framework */; };
 		27028DCF1539B58700AEB651 /* TransfersBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */; };
@@ -295,7 +295,7 @@
 		27778905173CE22700430EBC /* OrdersListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A41A5315F3C9340043BB68 /* OrdersListViewCell.m */; };
 		27778907173CE22700430EBC /* SupportedTransactionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B17992B515FBD5F0005AB39A /* SupportedTransactionInfo.m */; };
 		27778908173CE22700430EBC /* GenerateDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E68C49165CF7DA005EBE66 /* GenerateDataController.m */; };
-		27778909173CE22700430EBC /* GrowlNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* GrowlNotification.m */; };
+		27778909173CE22700430EBC /* SystemNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2701A84A165E827F00A9A1C7 /* SystemNotification.m */; };
 		2777890A173CE22700430EBC /* NSSplitView+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D576451662819E00761132 /* NSSplitView+PecuniaAdditions.m */; };
 		2777890B173CE22700430EBC /* CategoryMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DFFD9516739DAE00848CD2 /* CategoryMaintenanceController.m */; };
 		2777890C173CE22700430EBC /* NSAttributedString+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 270C1A0E168B3CAC000E25FF /* NSAttributedString+PecuniaAdditions.m */; };
@@ -914,8 +914,8 @@
 		089C165DFE840E0CC02AAC07 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = ../InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		2701A849165E827F00A9A1C7 /* GrowlNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowlNotification.h; sourceTree = "<group>"; };
-		2701A84A165E827F00A9A1C7 /* GrowlNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowlNotification.m; sourceTree = "<group>"; };
+		2701A849165E827F00A9A1C7 /* SystemNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNotification.h; sourceTree = "<group>"; };
+		2701A84A165E827F00A9A1C7 /* SystemNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNotification.m; sourceTree = "<group>"; wrapsLines = 0; };
 		2701A84C165E832C00A9A1C7 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = Frameworks/Growl.framework; sourceTree = "<group>"; };
 		27028DCD1539B58700AEB651 /* TransfersBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransfersBackgroundView.h; sourceTree = "<group>"; };
 		27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersBackgroundView.m; sourceTree = "<group>"; };
@@ -1065,7 +1065,7 @@
 		2788C8B81455C3CE00225939 /* ValueTransformers.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = ValueTransformers.h; sourceTree = "<group>"; tabWidth = 4; };
 		2788C8B91455C3CE00225939 /* ValueTransformers.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ValueTransformers.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		2788D7B418421195000B59AF /* PecuniaSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaSplitView.h; sourceTree = "<group>"; wrapsLines = 0; };
-		2788D7B518421195000B59AF /* PecuniaSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaSplitView.m; sourceTree = "<group>"; };
+		2788D7B518421195000B59AF /* PecuniaSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaSplitView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		2788D7B81842133B000B59AF /* AttachmentImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachmentImageView.h; sourceTree = "<group>"; };
 		2788D7B91842133B000B59AF /* AttachmentImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachmentImageView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		2790160217B94720006DF9BC /* AssetsCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AssetsCard.h; path = "Home Screen/AssetsCard.h"; sourceTree = "<group>"; };
@@ -2646,8 +2646,8 @@
 				B137BF4612D5004C00D0394C /* MessageLog.m */,
 				B17FE3C114C9F17400F6FAFE /* LaunchParameters.h */,
 				B17FE3C214C9F17400F6FAFE /* LaunchParameters.m */,
-				2701A849165E827F00A9A1C7 /* GrowlNotification.h */,
-				2701A84A165E827F00A9A1C7 /* GrowlNotification.m */,
+				2701A849165E827F00A9A1C7 /* SystemNotification.h */,
+				2701A84A165E827F00A9A1C7 /* SystemNotification.m */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -3392,7 +3392,7 @@
 				275DAADE17F8436000526A07 /* SaveAndRedeemCard.m in Sources */,
 				27778907173CE22700430EBC /* SupportedTransactionInfo.m in Sources */,
 				27778908173CE22700430EBC /* GenerateDataController.m in Sources */,
-				27778909173CE22700430EBC /* GrowlNotification.m in Sources */,
+				27778909173CE22700430EBC /* SystemNotification.m in Sources */,
 				2777890A173CE22700430EBC /* NSSplitView+PecuniaAdditions.m in Sources */,
 				27F69B7718BA3EFB002CBE06 /* zip.c in Sources */,
 				2777890B173CE22700430EBC /* CategoryMaintenanceController.m in Sources */,
@@ -3603,7 +3603,7 @@
 				275DAADD17F8436000526A07 /* SaveAndRedeemCard.m in Sources */,
 				B17992B615FBD5F0005AB39A /* SupportedTransactionInfo.m in Sources */,
 				27E68C4A165CF7DA005EBE66 /* GenerateDataController.m in Sources */,
-				2701A84B165E827F00A9A1C7 /* GrowlNotification.m in Sources */,
+				2701A84B165E827F00A9A1C7 /* SystemNotification.m in Sources */,
 				27D576461662819E00761132 /* NSSplitView+PecuniaAdditions.m in Sources */,
 				27F69B7618BA3EFB002CBE06 /* zip.c in Sources */,
 				27DFFD9616739DAE00848CD2 /* CategoryMaintenanceController.m in Sources */,

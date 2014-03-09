@@ -16,16 +16,17 @@
                 <outlet property="nassValueField" destination="nFd-8t-glt" id="7MU-td-uFZ"/>
                 <outlet property="originalAmountField" destination="DMT-l9-csg" id="jOe-0B-e8s"/>
                 <outlet property="remoteNameLabel" destination="SaI-Y6-beg" id="ZJ3-Wo-Se0"/>
+                <outlet property="selectedSumField" destination="p7V-Qv-BNy" id="kqT-At-vuj"/>
                 <outlet property="sortControl" destination="dej-bv-9dk" id="5d7-qs-Qow"/>
                 <outlet property="statementDetails" destination="7KT-uq-qe2" id="0y6-Cz-Amw"/>
                 <outlet property="statementTags" destination="Uwg-sx-Y7L" id="9eD-7s-FGe"/>
                 <outlet property="statementsListView" destination="noR-xM-mzX" id="ghS-SE-1AS"/>
-                <outlet property="sumField" destination="p7V-Qv-BNy" id="2GD-wF-8ZL"/>
                 <outlet property="tagButton" destination="WZk-ui-cTv" id="VSG-oV-o51"/>
                 <outlet property="tagViewHost" destination="YTS-rH-MlE" id="1eg-co-UZH"/>
                 <outlet property="tagViewPopup" destination="8gL-ec-So2" id="71Q-n7-zhc"/>
                 <outlet property="tagsController" destination="bvm-R3-EC2" id="fxF-S3-nJO"/>
                 <outlet property="tagsField" destination="cOP-fv-Al2" id="AbE-n2-5DY"/>
+                <outlet property="totalSumField" destination="9eD-Fn-69a" id="gwc-tQ-6uR"/>
                 <outlet property="valueField" destination="vmw-bS-e74" id="EgH-NM-2YD"/>
             </connections>
         </customObject>
@@ -166,7 +167,7 @@
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField verticalHuggingPriority="750" id="p7V-Qv-BNy">
+                                <textField verticalHuggingPriority="750" id="p7V-Qv-BNy" userLabel="Selected Sum">
                                     <rect key="frame" x="683" y="11" width="103" height="23"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="-300.000,00" usesSingleLineMode="YES" id="f0G-EH-xnh">
@@ -181,7 +182,35 @@
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                     <connections>
+                                        <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selectedObjects" id="cMo-59-FHT">
+                                            <dictionary key="options">
+                                                <string key="NSValueTransformerName">ZeroCountToBoolValueTransformer</string>
+                                            </dictionary>
+                                        </binding>
                                         <binding destination="G0H-Vc-kxE" name="value" keyPath="selectedObjects.@sum.value" id="4MB-v9-kmz"/>
+                                    </connections>
+                                </textField>
+                                <textField verticalHuggingPriority="750" id="9eD-Fn-69a" userLabel="Total Sum">
+                                    <rect key="frame" x="683" y="11" width="103" height="23"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="-300.000,00" usesSingleLineMode="YES" id="rxG-op-cnf">
+                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="BVJ-de-cdT">
+                                            <real key="roundingIncrement" value="0.0"/>
+                                            <metadata>
+                                                <bool key="localizesFormat" value="YES"/>
+                                            </metadata>
+                                        </numberFormatter>
+                                        <font key="font" size="16" name="HelveticaNeue"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="G0H-Vc-kxE" name="value" keyPath="arrangedObjects.@sum.value" id="aCg-ZO-KqT"/>
+                                        <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selectedObjects" id="Vhj-0U-hgs">
+                                            <dictionary key="options">
+                                                <string key="NSValueTransformerName">NonZeroCountToBoolValueTransformer</string>
+                                            </dictionary>
+                                        </binding>
                                     </connections>
                                 </textField>
                                 <box autoresizesSubviews="NO" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="zb6-99-pb2">
@@ -208,6 +237,13 @@
                                         <color key="textColor" red="0.48469388479999997" green="0.47359928489999997" blue="0.42747342589999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
+                                    <connections>
+                                        <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selectedObjects" id="7jq-AD-ZEm">
+                                            <dictionary key="options">
+                                                <string key="NSValueTransformerName">ZeroCountToBoolValueTransformer</string>
+                                            </dictionary>
+                                        </binding>
+                                    </connections>
                                 </textField>
                                 <textField verticalHuggingPriority="750" id="b5j-fP-1pG" userLabel="Turnovers Text">
                                     <rect key="frame" x="437" y="16" width="59" height="15"/>

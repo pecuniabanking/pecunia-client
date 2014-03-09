@@ -159,7 +159,7 @@ AP218 = "Es wurden %d neue Umsätze geladen";
 AP219 = "Kontoumsätze holen...";
 AP220 = "Keine Kontenabfrage möglich";
 AP221 = "Kreditkarte:";
-AP222 = "Kommunikationsmitschnitt starten...";
+AP222 = "Kommunikationsmitschnitt starten";
 AP223 = "Kommunikationsmitschnitt beenden";
 
 // Categories
@@ -301,6 +301,9 @@ AP468 = "vorvorletzten Tag des Monats";
 AP500 = "Daten Erzeugung";
 AP501 = "Demo Daten wurden erstellt";
 AP502 = "Nachricht der Bank ";
+AP503 = "Fehlersuche";
+AP504 = "Der Kommunikationsmittschnitt wurde gestartet";
+AP505 = "Der Kommunikationsmittschnitt wurde beendet und eine E-Mail zum Versand vorbereitet";
 
 // Category assignments.
 // AP550..AP599

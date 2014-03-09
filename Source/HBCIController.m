@@ -54,7 +54,7 @@
 #import "CreditCardSettlement.h"
 #import "MCEMDecimalNumberAdditions.h"
 #import "ResultWindowController.h"
-#import "GrowlNotification.h"
+#import "SystemNotification.h"
 
 static HBCIController *controller = nil;
 
@@ -1848,9 +1848,9 @@ NSString * escapeSpecial(NSString *s)
     }
     NSString *message = info[@"message"];
     if (message != nil) {
-        [GrowlNotification showStickyMessage: message
+        [SystemNotification showStickyMessage: message
                                    withTitle: title
-                                     context: @"BankMessage"];
+                                     context: nil];
 
     }
 }

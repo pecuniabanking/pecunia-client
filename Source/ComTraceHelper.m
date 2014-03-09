@@ -22,6 +22,7 @@
 #import "ComTraceHelper.h"
 #import "MessageLog.h"
 
+#import "SystemNotification.h"
 #import "NSImage+PecuniaAdditions.h"
 
 @implementation ComTraceHelper
@@ -87,12 +88,19 @@
         magnifyButton.toolTip = NSLocalizedString(@"AP125", nil);
 
         [MessageLog.log sendLog];
-        MessageLog.log.isComTraceActive = NO;
+        MessageLog.log.isComTraceActive = NO; // Must happen *after* sendLog, as it deletes the com trace file.
 
+        [SystemNotification showStickyMessage: NSLocalizedString(@"AP505", nil)
+                                   withTitle: NSLocalizedString(@"AP503", nil)
+                                     context: nil];
     } else {
         magnifyButton.toolTip = NSLocalizedString(@"AP126", nil);
         MessageLog.log.isComTraceActive = YES;
         [self startMagnifyAnimation];
+
+        [SystemNotification showStickyMessage: NSLocalizedString(@"AP504", nil)
+                                   withTitle: NSLocalizedString(@"AP503", nil)
+                                     context: nil];
     }
 }
 

@@ -18,7 +18,7 @@
  */
 
 #import "StatusBarController.h"
-#import "GrowlNotification.h"
+#import "SystemNotification.h"
 
 static StatusBarController *controller = nil;
 
@@ -46,7 +46,7 @@ static StatusBarController *controller = nil;
 {
     [NSObject cancelPreviousPerformRequestsWithTarget: self];
 
-    [GrowlNotification showMessage: message withTitle: nil context: @"status"];
+    [SystemNotification showMessage: message withTitle: nil context: nil];
     [messageField setStringValue: message];
 
     if (secs > 0) {

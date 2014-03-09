@@ -224,6 +224,8 @@ static BankingController *bankinControllerInstance;
     frame.origin.x = NSWidth(mainWindow.titleBarView.bounds) - NSWidth(frame);
     comTracePanel.frame = frame;
 
+    [MessageLog.log addObserver: self forKeyPath: @"isComTraceActive" options: 0 context: nil];
+
     comTracePanel.autoresizingMask = NSViewMinXMargin;
     //mainWindow.titleBarStartColor = [NSColor colorWithDeviceWhite: 60 / 255.0 alpha: 1];
     //mainWindow.titleBarEndColor = [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1];
@@ -1358,15 +1360,7 @@ static BankingController *bankinControllerInstance;
 
 - (IBAction)comTraceToggle: (id)sender
 {
-    if (MessageLog.log.isComTraceActive) {
-
-        MessageLog.log.isComTraceActive = NO; // Removes the com trace log file.
-        comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
-    } else {
-        //mainWindow add
-        MessageLog.log.isComTraceActive = YES;
-        comTraceMenuItem.title = NSLocalizedString(@"AP223", nil);
-    }
+    [comTracePanel toggleComTrace: sender];
 }
 
 #pragma mark - Account management
@@ -3224,6 +3218,8 @@ static BankingController *bankinControllerInstance;
         [self switchMainPage: 0];
     }
 
+    [mainVSplit restorePosition];
+
     // Display main window.
     [mainWindow display];
     [mainWindow makeKeyAndOrderFront: self];
@@ -3278,6 +3274,7 @@ static BankingController *bankinControllerInstance;
 
     shuttingDown = YES;
 
+    [mainVSplit savePosition];
     MessageLog.log.isComTraceActive = NO; // If that was active it will delete the trace log file.
 
     [LocalSettingsController.sharedSettings setInteger: sidebar.selectedIndex forKey: @"activePage"];
@@ -3533,6 +3530,16 @@ static BankingController *bankinControllerInstance;
         [accountsView setNeedsDisplay: YES];
         return;
     }
+
+    if ([keyPath isEqualToString: @"isComTraceActive"]) {
+        if (MessageLog.log.isComTraceActive) {
+            comTraceMenuItem.title = NSLocalizedString(@"AP223", nil);
+        } else {
+            comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
+        }
+        return;
+    }
+
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 

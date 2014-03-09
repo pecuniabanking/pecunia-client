@@ -32,7 +32,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="1100" height="680"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <splitView autosaveName="MainSplitH" dividerStyle="thin" vertical="YES" id="6321" userLabel="Main Vertical Splitter" customClass="PecuniaSplitView">
+                                        <splitView identifier="mainVerticalSplitter" autosaveName="" dividerStyle="thin" vertical="YES" id="6321" userLabel="Main Vertical Splitter" customClass="PecuniaSplitView">
                                             <rect key="frame" x="0.0" y="0.0" width="1100" height="680"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
@@ -143,12 +143,15 @@
                                                                         </binding>
                                                                     </connections>
                                                                 </segmentedControl>
-                                                                <box autoresizesSubviews="NO" appearanceType="lightContent" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="qGA-bX-XAH">
-                                                                    <rect key="frame" x="20" y="48" width="298" height="5"/>
+                                                                <box autoresizesSubviews="NO" boxType="custom" borderType="line" titlePosition="noTitle" id="GLe-iy-6ip" userLabel="Divider line">
+                                                                    <rect key="frame" x="20" y="49" width="298" height="1"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                                                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                                                    <view key="contentView">
+                                                                        <rect key="frame" x="1" y="1" width="296" height="0.0"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    </view>
+                                                                    <color key="borderColor" red="0.75294117647058822" green="0.75294117647058822" blue="0.75294117647058822" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                                    <font key="titleFont" metaFont="system"/>
                                                                 </box>
                                                             </subviews>
                                                             <userDefinedRuntimeAttributes>
@@ -344,11 +347,11 @@
                                                             <connections>
                                                                 <binding destination="911" name="value" keyPath="selection.bankName" id="996">
                                                                     <dictionary key="options">
-                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
-                                                                        <string key="NSNotApplicablePlaceholder"></string>
-                                                                        <string key="NSNoSelectionPlaceholder"></string>
                                                                         <string key="NSNullPlaceholder"></string>
+                                                                        <string key="NSNotApplicablePlaceholder"></string>
+                                                                        <integer key="NSConditionallySetsEnabled" value="1"/>
                                                                         <integer key="NSRaisesForNotApplicableKeys" value="0"/>
+                                                                        <string key="NSNoSelectionPlaceholder"></string>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
@@ -1077,7 +1080,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <outlet property="earningsFieldLabel" destination="Wz9-K1-SAF" id="M52-A1-h1y"/>
                 <outlet property="lockImage" destination="4740" id="4742"/>
                 <outlet property="mainTabView" destination="393" id="476"/>
-                <outlet property="mainVSplit" destination="6321" id="6326"/>
+                <outlet property="mainVSplit" destination="6321" id="9Ra-H7-kij"/>
                 <outlet property="mainWindow" destination="21" id="453"/>
                 <outlet property="refreshButton" destination="hbf-EK-ccc" id="fff-7j-nvu"/>
                 <outlet property="rightPane" destination="6323" id="6334"/>

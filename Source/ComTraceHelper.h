@@ -24,4 +24,6 @@
     IBOutlet NSButton *magnifyButton;
 }
 
+- (IBAction)toggleComTrace: (id)sender;
+
 @end
