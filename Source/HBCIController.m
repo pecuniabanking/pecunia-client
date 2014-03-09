@@ -782,7 +782,7 @@ NSString * escapeSpecial(NSString *s)
                 case TransferTypeCollectiveCredit:
                 case TransferTypeCollectiveDebit:
                 case TransferTypeCollectiveCreditSEPA:
-                    [[MessageLog log] addMessage: @"Collective transfer must be sent with 'sendCollectiveTransfer'" withLevel: LogLevel_Error];
+                    LogError(@"Collective transfer must be sent with 'sendCollectiveTransfer'");
                     continue;
                     break;
             }
@@ -822,7 +822,7 @@ NSString * escapeSpecial(NSString *s)
     NSNumber *result = [bridge syncCommand: cmd error: &error];
     if (error != nil) {
         // A command error should not block the process. We just can't have an account validation then.
-        [[MessageLog log] addMessage: [NSString stringWithFormat: @"Error checking account %@, bankCode %@", accountNumber, bankCode] withLevel: LogLevel_Warning];
+        LogWarning(@"Error checking account %@, bankCode %@", accountNumber, bankCode);
         return YES;
     }
     if (result != nil) {
@@ -843,7 +843,7 @@ NSString * escapeSpecial(NSString *s)
     NSNumber *result = [bridge syncCommand: cmd error: &error];
     if (error) {
         // Bei Fehlern sollte die Prüfung nicht die Buchung verhindern
-        [[MessageLog log] addMessage: [NSString stringWithFormat: @"Error checking iban %@", iban] withLevel: LogLevel_Warning];
+        LogWarning(@"Error checking iban %@", iban);
         return YES;
     }
     if (result) {
@@ -961,15 +961,12 @@ NSString * escapeSpecial(NSString *s)
     return YES;
 }
 
-- (PecuniaError *)setLogLevel: (LogLevel)level
+- (PecuniaError *)setLogLevel: (HBCILogLevel)level
 {
     PecuniaError    *error = nil;
-    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"setLogLevel\"><logLevel>%d</logLevel></command>", level + 1];
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"setLogLevel\"><logLevel>%d</logLevel></command>", (int)level];
     [bridge syncCommand: cmd error: &error];
-    if (error != nil) {
-        return error;
-    }
-    return nil;
+    return error;
 }
 
 - (CCSettlementList *)getCCSettlementListForAccount: (BankAccount *)account
@@ -1005,7 +1002,7 @@ NSString * escapeSpecial(NSString *s)
         return nil;
     }
     if (result == nil) {
-        [[MessageLog log] addMessage: @"Unexpected result for getCCSettlementList: nil" withLevel: LogLevel_Error];
+        LogError(@"Unexpected result for getCCSettlementList: nil");
         return nil;
     }
     return result;
@@ -1013,6 +1010,8 @@ NSString * escapeSpecial(NSString *s)
 
 - (CreditCardSettlement *)getCreditCardSettlement: (NSString *)settleId forAccount: (BankAccount *)account
 {
+    LogEnter;
+
     PecuniaError    *error = nil;
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getCCSettlement\">"];
 
@@ -1042,12 +1041,15 @@ NSString * escapeSpecial(NSString *s)
 
     if (error) {
         [error alertPanel];
+
+        LogLeave;
         return nil;
     }
     if (result == nil) {
-        [[MessageLog log] addMessage: @"Unexpected result for getCCSettlement: nil" withLevel: LogLevel_Error];
-        return nil;
+        LogError(@"Unexpected result for getCCSettlement: nil");
     }
+
+    LogLeave;
     return result;
 }
 
@@ -1419,8 +1421,8 @@ NSString * escapeSpecial(NSString *s)
             if ([account.isManual isEqual:@YES]) {
                 // check if account supports statement transfers
                 NSArray *jobNames = acc.supportedJobs;
-                if (jobNames != nil && [jobNames containsObject:@"KUmsAll"]) {
-                    [[MessageLog log] addMessage: [NSString stringWithFormat: @"Account %@ was previously created manually, changed to automatic update!", account.localName] withLevel:LogLevel_Notice];
+                if (jobNames != nil && [jobNames containsObject: @"KUmsAll"]) {
+                    LogInfo(@"Account %@ was previously created manually, changed to automatic update!", account.localName);
                     account.isManual = @NO;
                 }
             }
@@ -1494,7 +1496,7 @@ NSString * escapeSpecial(NSString *s)
     for (Account *acc in accounts) {
         BankAccount *account = [BankAccount accountWithNumber: acc.accountNumber subNumber: acc.subNumber bankCode: acc.bankCode];
         if (account == nil) {
-            [[MessageLog log] addMessage: [NSString stringWithFormat:@"Bankaccount not found: %@ %@ %@", acc.accountNumber, acc.subNumber, acc.bankCode] withLevel: LogLevel_Error];
+            LogError(@"Bankaccount not found: %@ %@ %@", acc.accountNumber, acc.subNumber, acc.bankCode);
             continue;
         }
         error = [SupportedTransactionInfo updateSupportedTransactionInfoForUser:user account:account withJobs:acc.supportedJobs];
@@ -1612,8 +1614,8 @@ NSString * escapeSpecial(NSString *s)
     
     NSNumber *isOk = [bridge syncCommand: cmd error: &error];
     if ([isOk boolValue]) {
-        error = [PecuniaError errorWithMessage:NSLocalizedString(@"AP82", @"")
-                                         title:NSLocalizedString(@"AP53", @"")];
+        error = [PecuniaError errorWithMessage: NSLocalizedString(@"AP82", nil)
+                                         title: NSLocalizedString(@"AP53", nil)];
     }
     
     // remove PIN from Keychain
@@ -1698,7 +1700,7 @@ NSString * escapeSpecial(NSString *s)
         return error;
     }
     if (result == nil) {
-        [[MessageLog log] addMessage: @"Unexpected result for getBalance: nil" withLevel: LogLevel_Error];
+        LogError(@"Unexpected result for getBalance: nil");
         return nil;
     }
     NSNumber *isOk = [result valueForKey: @"isOk"];
@@ -1707,7 +1709,7 @@ NSString * escapeSpecial(NSString *s)
         if (value != nil) {
             [account updateBalanceWithValue: value];
         } else {
-            [[MessageLog log] addMessage: @"getBalance: no balance delivered" withLevel: LogLevel_Error];
+            LogError(@"getBalance: no balance delivered");
             return nil;
         }
     } else {
@@ -1871,7 +1873,7 @@ NSString * escapeSpecial(NSString *s)
     NSMutableArray *options = [NSMutableArray arrayWithCapacity: 10];
     NSSet          *users = account.users;
     if (users == nil || [users count] == 0) {
-        [[MessageLog log] addMessage: @"signingOptionForAccount: no users assigned to account" withLevel: LogLevel_Error];
+        LogError(@"signingOptionForAccount: no users assigned to account");
         return nil;
     }
     for (BankUser *user in users) {
@@ -1883,7 +1885,7 @@ NSString * escapeSpecial(NSString *s)
         }
     }
     if ([options count] == 0) {
-        [[MessageLog log] addMessage: @"signingOptionForAccount: no signing options defined by bank - use default" withLevel: LogLevel_Info];
+        LogDebug(@"signingOptionForAccount: no signing options defined by bank - use default");
         return [SigningOption defaultOptionForUser: [users allObjects][0]];
     }
     if ([options count] == 1) {

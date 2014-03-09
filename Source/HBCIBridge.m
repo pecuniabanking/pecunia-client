@@ -137,7 +137,7 @@
         NSString *s = [NSString stringWithData: data];
 
         // Receive log
-        [[MessageLog log] addMessage: s withLevel: LogLevel_Verbous];
+        LogComTrace(HBCILogIntern, s);
 
         if (asyncString == nil) {
             asyncString = [[NSMutableString alloc] init];
@@ -256,8 +256,7 @@
 
     // todo: startSession hier ist nur die erste Näherung
     [[CallbackHandler handler] startSession];
-    // Send Log
-    [[MessageLog log] addMessage: cmd withLevel: LogLevel_Verbous];
+    LogComTrace(HBCILogIntern, cmd);
     [[outPipe fileHandleForWriting] writeData: [command dataUsingEncoding: NSUTF8StringEncoding]];
     [self receive];
     [[CallbackHandler handler] finishPasswordEntry];
@@ -278,10 +277,9 @@
         return;
     }
     NSString *command = [cmd stringByAppendingString: @".\n"];
-    // Send Log
-    [[MessageLog log] addMessage: cmd withLevel: LogLevel_Verbous];
+    LogComTrace(HBCILogIntern, cmd);
+
     [[outPipe fileHandleForWriting] writeData: [command dataUsingEncoding: NSUTF8StringEncoding]];
-    //	[[inPipe fileHandleForReading] readInBackgroundAndNotify ];
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(getData:) name: NSFileHandleReadCompletionNotification object: [inPipe fileHandleForReading]];
     [[inPipe fileHandleForReading] readInBackgroundAndNotify];
     asyncSender = sender;

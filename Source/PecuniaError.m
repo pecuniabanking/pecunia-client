@@ -21,6 +21,7 @@
 #import "MessageLog.h"
 
 @implementation PecuniaError
+
 @synthesize title;
 
 + (NSError *)errorWithText: (NSString *)msg
@@ -64,15 +65,30 @@
 
     NSString *message = nil;
     switch (self.code) {
-        case err_hbci_abort: message = NSLocalizedString(@"AP106", nil); break;
+        case err_hbci_abort: {
+            message = NSLocalizedString(@"AP106", nil);
+            break;
+        }
 
-        case err_hbci_gen: message = [self localizedDescription]; break;
+        case err_hbci_gen: {
+            message = [self localizedDescription];
+            break;
+        }
 
-        case err_hbci_passwd: message = NSLocalizedString(@"AP170", nil); break;
+        case err_hbci_passwd: {
+            message = NSLocalizedString(@"AP170", nil);
+            break;
+        }
 
-        case err_hbci_param: message = [NSString stringWithFormat: NSLocalizedString(@"AP359", nil), [self localizedDescription]]; break;
+        case err_hbci_param: {
+            message = [NSString stringWithFormat: NSLocalizedString(@"AP359", nil), [self localizedDescription]];
+            break;
+        }
 
-        default: message = [self localizedDescription]; break;
+        default: {
+            message = [self localizedDescription];
+            break;
+        }
     }
 
     if (message && title) {
@@ -86,17 +102,32 @@
 {
     NSString *message = nil;
     switch (self.code) {
-        case err_hbci_abort: message = NSLocalizedString(@"AP106", nil); break;
+        case err_hbci_abort: {
+            message = NSLocalizedString(@"AP106", nil);
+            break;
+        }
 
-        case err_hbci_gen: message = [self localizedDescription]; break;
+        case err_hbci_gen: {
+            message = [self localizedDescription];
+            break;
+        }
 
-        case err_hbci_passwd: message = NSLocalizedString(@"AP170", nil); break;
+        case err_hbci_passwd: {
+            message = NSLocalizedString(@"AP170", nil);
+            break;
+        }
 
-        case err_hbci_param: message = [NSString stringWithFormat: NSLocalizedString(@"AP359", nil), [self localizedDescription]]; break;
+        case err_hbci_param: {
+            message = [NSString stringWithFormat: NSLocalizedString(@"AP359", nil), [self localizedDescription]];
+            break;
+        }
 
-        default: message = [self localizedDescription]; break;
+        default: {
+            message = [self localizedDescription];
+            break;
+        }
     }
-    [[MessageLog log] addMessage: message withLevel: LogLevel_Error];
+    LogError(message);
 }
 
 @end

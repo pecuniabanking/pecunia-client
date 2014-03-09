@@ -189,7 +189,7 @@
 {
     if ([elementName isEqualToString: @"result"]) {
         NSString *msg = [NSString stringWithFormat:@"Parsed message result: %@", resultXmlString ];
-        [[MessageLog log] addMessage: msg withLevel: LogLevel_Verbous];
+        LogComTrace(HBCILogIntern, msg);
     } else {
         [resultXmlString appendFormat:@"</%@>", elementName ];
     }

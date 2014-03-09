@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -97,10 +97,10 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="noR-xM-mzX" customClass="StatementsListView">
-                                    <rect key="frame" x="20" y="59" width="790" height="197"/>
+                                    <rect key="frame" x="20" y="59" width="790" height="220"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <clipView key="contentView" id="9qI-Rq-Luc">
-                                        <rect key="frame" x="0.0" y="0.0" width="790" height="197"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="790" height="220"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <customView id="xiP-Un-w9y" customClass="PXListDocumentView">
@@ -120,7 +120,7 @@
                                     </scroller>
                                 </scrollView>
                                 <searchField verticalHuggingPriority="750" id="LSB-Ef-GKd">
-                                    <rect key="frame" x="626" y="267" width="184" height="22"/>
+                                    <rect key="frame" x="626" y="287" width="184" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                     <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="YO2-HN-7s3">
                                         <font key="font" metaFont="system"/>
@@ -132,7 +132,7 @@
                                     </connections>
                                 </searchField>
                                 <segmentedControl verticalHuggingPriority="750" id="dej-bv-9dk">
-                                    <rect key="frame" x="125" y="269" width="297" height="18"/>
+                                    <rect key="frame" x="125" y="289" width="297" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <segmentedCell key="cell" controlSize="small" alignment="left" style="roundRect" trackingMode="selectOne" id="OAO-dC-TG7">
                                         <font key="font" metaFont="smallSystem"/>
@@ -149,7 +149,7 @@
                                     </connections>
                                 </segmentedControl>
                                 <textField verticalHuggingPriority="750" id="AtL-ug-dNj">
-                                    <rect key="frame" x="19" y="270" width="104" height="19"/>
+                                    <rect key="frame" x="19" y="292" width="104" height="19"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sortieren nach" id="qxi-EU-6Y3">
                                         <font key="font" size="13" name="HelveticaNeue-Light"/>
@@ -257,6 +257,11 @@
                                     </textFieldCell>
                                 </textField>
                             </subviews>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="leftMargin">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </customView>
                     </subviews>
                 </customView>
@@ -1561,6 +1566,14 @@ IA
                             </connections>
                         </textField>
                     </subviews>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="leftMargin">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="topMargin">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </customView>
             </subviews>
             <holdingPriorities>

@@ -25,19 +25,49 @@
 #import "DDTTYLogger.h"
 #import "DDFileLogger.h"
 
+#import "ZipFile.h"
+#import "ZipWriteStream.h"
+#import "ZipException.h"
+
 #include "LaunchParameters.h"
+#import "HBCIController.h"
+
+#define LOG_FLAG_COM_TRACE (1 << 5)
+
+// A log file manager to implement own file names.
+@interface ComTraceFileManager : DDLogFileManagerDefault
+
+- (NSString *)newLogFileName;
+- (BOOL)isLogFile: (NSString *)fileName;
+
+@end
+
+@implementation ComTraceFileManager
+
+- (NSString *)newLogFileName
+{
+    return @"Pecunia Com Trace.log";
+}
+
+- (BOOL)isLogFile: (NSString *)fileName
+{
+    return [fileName isEqualToString: @"Pecunia Com Trace.log"];
+}
+
+@end
 
 @interface MessageLog ()
 {
-    int logLevel; // One of the CocoaLumberjack log levels.
-    DDFileLogger *fileLogger; // The regular file logger.
+    int logLevel;                 // One of the CocoaLumberjack log levels. Only used for the regular logger.
+    DDFileLogger *fileLogger;     // The regular file logger.
+    DDFileLogger *comTraceLogger; // The communication trace logger.
 }
 @end
 
 @implementation MessageLog
 
-@synthesize forceConsole;
 @synthesize currentLevel;
+@synthesize isComTraceActive;
 
 - (id)init
 {
@@ -76,6 +106,42 @@
     return self;
 }
 
+- (void)setIsComTraceActive: (BOOL)flag
+{
+    if (isComTraceActive != flag) {
+        if (isComTraceActive) {
+            // Going to switch off the com trace. Remove logger and log file.
+            NSArray *filePaths = [comTraceLogger.logFileManager sortedLogFilePaths];
+            NSError *error;
+            if (![NSFileManager.defaultManager removeItemAtPath: filePaths[0] error: &error]) {
+                // Removing the file faild. Take a notice.
+                LogError(@"Couldn't delete trace log at %@. The error is: %@", filePaths[0], error.localizedDescription);
+            }
+
+            [DDLog removeLogger: comTraceLogger];
+            comTraceLogger = nil;
+
+            // Also switch off logging in the server.
+            [HBCIController.controller setLogLevel: HBCILogNone];
+        }
+
+        isComTraceActive = flag;
+        if (isComTraceActive) {
+            // Switching on the com trace. Add logger.
+            ComTraceFileManager *manager = [[ComTraceFileManager alloc] init];
+            manager.maximumNumberOfLogFiles = 0;
+
+            comTraceLogger = [[DDFileLogger alloc] initWithLogFileManager: manager];
+            comTraceLogger.rollingFrequency = 0;
+
+            [DDLog addLogger: comTraceLogger withLogLevel: LOG_FLAG_COM_TRACE];
+
+            // Enable maximum logging in the server.
+            [HBCIController.controller setLogLevel: HBCILogIntern];
+        }
+    }
+}
+
 - (void)registerLogUI: (id<MessageLogUI>)ui
 {
     @synchronized(logUIs) {
@@ -93,7 +159,7 @@
         }
     }
 }
-
+/*
 - (void)addMessage: (NSString *)msg withLevel: (LogLevel)level
 {
     if ((logUIs.count == 0 && !forceConsole)){
@@ -111,30 +177,7 @@
         }
     }
 }
-
-- (void)addMessageFromDict: (NSDictionary *)data
-{
-    LogLevel level = (LogLevel)[data[@"level"] intValue];
-    [self addMessage: data[@"message"] withLevel: level];
-}
-
-+ (NSURL *)currentLogFile
-{
-    NSArray *filePaths = [self.log->fileLogger.logFileManager sortedLogFilePaths];
-    return [NSURL fileURLWithPath: filePaths[0]];
-}
-
-+ (NSURL *)logFolder
-{
-    NSString *folder = [self.log->fileLogger.logFileManager logsDirectory];
-    return [NSURL fileURLWithPath: folder];
-}
-
-+ (void)flush
-{
-    // This will flush all registered loggers.
-    [DDLog flushLog];
-}
+*/
 
 + (NSString *)getStringInfoFor: (const char *)name
 {
@@ -314,6 +357,188 @@
                tag:  nil
             format: [NSString stringWithFormat: @"[Verbose] %@", format]
               args: args];
+    }
+}
+
+/**
+ * Logs a communication trace message with the given level. For com traces we don't filter by log level, as we want
+ * all messages logged at the moment. Communication traces are enabled only on demand, so this is ok.
+ */
+- (void)logComTraceForLevel: (HBCILogLevel)level format: (NSString *)format, ...
+{
+    if (isComTraceActive) {
+        va_list args;
+        va_start(args, format);
+
+        int ddLevel = 0;
+        NSString *comTraceFormat;
+        switch (level) {
+            case HBCILogNone:
+                return;
+
+            case HBCILogError:
+                ddLevel = LOG_FLAG_ERROR;
+                comTraceFormat = [NSString stringWithFormat: @"[Error] %@", format];
+                break;
+            case HBCILogWarning:
+                ddLevel = LOG_FLAG_WARN;
+                comTraceFormat = [NSString stringWithFormat: @"[Warning] %@", format];
+                break;
+            case HBCILogInfo:
+                ddLevel = LOG_FLAG_INFO;
+                comTraceFormat = [NSString stringWithFormat: @"[Info] %@", format];
+                break;
+            case HBCILogDebug:
+                ddLevel = LOG_FLAG_DEBUG;
+                comTraceFormat = [NSString stringWithFormat: @"[Debug] %@", format];
+                break;
+            case HBCILogDebug2:
+            case HBCILogIntern:
+                ddLevel = LOG_FLAG_VERBOSE;
+                comTraceFormat = [NSString stringWithFormat: @"[Verbose] %@", format];
+                break;
+        }
+
+        [DDLog log: YES
+             level: ddLevel
+              flag: LOG_FLAG_COM_TRACE
+           context: 0
+              file: NULL
+          function: NULL
+              line: 0
+               tag:  nil
+            format: comTraceFormat
+              args: args];
+    }
+}
+
+/**
+ * An attempt is made to compress the source file and add the created zip (the target file) to the given items array.
+ * If that for any reason fails the source file is added to the items instead.
+ */
+- (void)compressFileAndAndAddToItems: (NSMutableArray *)items
+                          sourceFile: (NSURL *)source
+                          targetFile: (NSURL *)target
+{
+    BOOL savedAsZip = NO;
+
+    @try {
+        ZipFile *zipFile = [[ZipFile alloc] initWithFileName: target.path
+                                                        mode: ZipFileModeCreate];
+        ZipWriteStream *stream = [zipFile writeFileInZipWithName: [source.path lastPathComponent]
+                                                compressionLevel: ZipCompressionLevelBest];
+        NSData *logData = [NSData dataWithContentsOfURL: source];
+        [stream writeData: logData];
+        [stream finishedWriting];
+        [zipFile close];
+
+        [items addObject: target];
+        savedAsZip = YES;
+    }
+    @catch (NSException *e) {
+        LogError(@"Could not create zipped log (%@). Error: %@", source, e);
+    }
+
+    if (!savedAsZip) {
+        [items addObject: source];
+    }
+}
+
+/*
+ * Sends the current log via mail to the Pecunia support. If there's a communication trace this is sent too.
+ */
+- (void)sendLog
+{
+    [DDLog flushLog];
+
+    // The standard log.
+    NSArray *filePaths = [fileLogger.logFileManager sortedLogFilePaths];
+    NSURL* logURL = [NSURL fileURLWithPath: filePaths[0]];
+
+    NSMutableArray* mailItems = [NSMutableArray array];
+    if (logURL != nil) {
+        // We use fixed zip file names by intention, to avoid polluting the log folder with many zip files.
+        NSString *zip = [[fileLogger.logFileManager logsDirectory] stringByAppendingPathComponent: @"Pecunia Log.zip"];
+        [self compressFileAndAndAddToItems: mailItems sourceFile: logURL targetFile: [NSURL fileURLWithPath: zip]];
+    }
+
+    // The com trace if active.
+    if (isComTraceActive) {
+        filePaths = [comTraceLogger.logFileManager sortedLogFilePaths];
+        if ([NSFileManager.defaultManager fileExistsAtPath: filePaths[0]]) {
+            NSURL* traceURL = [NSURL fileURLWithPath: filePaths[0]];
+            NSString *zip = [[fileLogger.logFileManager logsDirectory] stringByAppendingPathComponent: @"Pecunia Com Trace.zip"];
+            [self compressFileAndAndAddToItems: mailItems sourceFile: traceURL targetFile: [NSURL fileURLWithPath: zip]];
+        }
+    }
+
+    // It's a weird oversight that there's no unified way of sending a mail to a given address with an attachment.
+    // That holds true at least until 10.8 where we finally have sharing services for that.
+    if (floor(NSAppKitVersionNumber) < NSAppKitVersionNumber10_8) {
+        // The least comfortable way.
+        NSString *mailtoLink = [NSString stringWithFormat: @"mailto:support@pecuniabanking.de?subject=%@&body=%@%@",
+                                NSLocalizedString(@"AP123", nil),
+                                NSLocalizedString(@"AP121", nil),
+                                NSLocalizedString(@"AP122", nil)];
+        NSURL *url = [NSURL URLWithString: (NSString *)
+                      CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)mailtoLink,
+                                                                                NULL, NULL, kCFStringEncodingUTF8))];
+
+        [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs: mailItems];
+        [[NSWorkspace sharedWorkspace] openURL: url];
+    } else {
+        NSAttributedString* textAttributedString = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"AP121", nil)];
+
+        NSSharingService* mailShare = [NSSharingService sharingServiceNamed: NSSharingServiceNameComposeEmail];
+        [mailItems insertObject:textAttributedString atIndex: 0];
+        if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
+            // Mavericks and up. The best solution.
+            mailShare.subject = NSLocalizedString(@"AP123", nil);
+            mailShare.recipients = @[@"support@pecuniabanking.de"];
+        } else {
+            // Cannot set a mail subject or receiver before OS X 10.9 <sigh>.
+            [mailItems insertObject: NSLocalizedString(@"AP124", nil) atIndex: 0];
+        }
+        [mailShare performWithItems: mailItems];
+    }
+}
+
+- (void)openLogFolder
+{
+    NSArray *filePaths = [fileLogger.logFileManager sortedLogFilePaths];
+    NSURL* logURL = [NSURL fileURLWithPath: filePaths[0]];
+    [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs: @[logURL]];
+}
+
+- (void)cleanUp
+{
+    // Clean up the log folder. Remove any com trace and zip file there.
+    NSFileManager *manager = NSFileManager.defaultManager;
+
+    NSString *logFolder = fileLogger.logFileManager.logsDirectory;
+    NSArray *allFiles = [manager contentsOfDirectoryAtPath: logFolder error: nil];
+    NSPredicate *filter = [NSPredicate predicateWithFormat: @"self ENDSWITH '.zip'"];
+    NSArray *filteredFiles = [allFiles filteredArrayUsingPredicate: filter];
+
+    for (NSString *file in filteredFiles)
+    {
+        NSError *error = nil;
+        [manager removeItemAtPath:[logFolder stringByAppendingPathComponent: file] error: &error];
+        if (error != nil) {
+            LogError(@"Could not remove file. Reason: %@", error);
+        }
+    }
+
+    filter = [NSPredicate predicateWithFormat: @"self CONTAINS 'com trace'"];
+    filteredFiles = [allFiles filteredArrayUsingPredicate: filter];
+
+    for (NSString *file in filteredFiles)
+    {
+        NSError *error = nil;
+        [manager removeItemAtPath: [logFolder stringByAppendingPathComponent: file] error: &error];
+        if (error != nil) {
+            LogError(@"Could not remove file. Reason: %@", error);
+        }
     }
 }
 

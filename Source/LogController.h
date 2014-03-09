@@ -27,7 +27,7 @@
     BOOL                isHidden;
     BOOL                withDetails;
     MessageLog          *messageLog;
-    LogLevel            currentLevel;
+    HBCILogLevel        currentLevel;
 }
 
 - (IBAction)writeConsole: (id)sender;

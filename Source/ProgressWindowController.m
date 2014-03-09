@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -47,12 +47,11 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     [messageLog registerLogUI: self];
-    maxLevel = LogLevel_Verbous;
     isHidden = [defaults boolForKey: @"hideProgressWindow"];
-    if (forceHidden == YES) {
+    if (forceHidden) {
         isHidden = YES;
     }
-    if (isHidden == NO) {
+    if (!isHidden) {
         [self showWindow: self];
         [[self window] orderFront: self];
         [progressIndicator setUsesThreadedAnimation: YES];
@@ -66,19 +65,19 @@
     [super showWindow: sender];
 }
 
-- (NSColor *)colorForLevel: (LogLevel)level
+- (NSColor *)colorForLevel: (HBCILogLevel)level
 {
     switch (level) {
-        case LogLevel_Error: return [NSColor redColor]; break;
+        case HBCILogError: return [NSColor redColor]; break;
 
-        case LogLevel_Warning: return [NSColor colorWithDeviceRed: 1.0 green: 0.73 blue: 0.0 alpha: 1.0]; break;
+        case HBCILogWarning: return [NSColor colorWithDeviceRed: 1.0 green: 0.73 blue: 0.0 alpha: 1.0]; break;
 
-        case LogLevel_Notice: return [NSColor colorWithDeviceRed: 0.0 green: 0.54 blue: 0.0 alpha: 1.0]; break;
+        case HBCILogInfo: return [NSColor colorWithDeviceRed: 0.0 green: 0.54 blue: 0.0 alpha: 1.0]; break;
 
-        case LogLevel_Info: return [NSColor blackColor]; break;
+        case HBCILogDebug: return [NSColor blackColor]; break;
 
-        case LogLevel_Debug:
-        case LogLevel_Verbous: return [NSColor darkGrayColor]; break;
+        case HBCILogDebug2:
+        case HBCILogIntern: return [NSColor darkGrayColor]; break;
 
         default:
             break;
@@ -86,14 +85,14 @@
     return [NSColor blackColor];
 }
 
-- (void)addMessage: (NSString *)info withLevel: (LogLevel)level
+- (void)addMessage: (NSString *)info withLevel: (HBCILogLevel)level
 {
     if (info == nil || [info length] == 0) {
         return;
     }
-    if (level > LogLevel_Notice) {
+    if (level > HBCILogInfo) {
         return;
-    }
+    }/*
     if (level < maxLevel) {
         maxLevel = level;
     }
@@ -112,12 +111,13 @@
 
     [logView moveToEndOfDocument: self];
     [logView display];
+      */
 }
 
 - (void)stop
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL           closeWindow = [defaults boolForKey: @"closeProgressOnSuccess"];
+    //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    //BOOL           closeWindow = [defaults boolForKey: @"closeProgressOnSuccess"];
 
     [messageLog unregisterLogUI: self];
     self.forceHidden = NO;
@@ -125,6 +125,7 @@
     if (isHidden == NO) {
         [progressIndicator stopAnimation: self];
     }
+    /*
     if (maxLevel > LogLevel_Error && closeWindow == YES) {
         [[self window] close];
         return;
@@ -132,11 +133,7 @@
     if (isHidden == NO) {
         [[self window] makeKeyAndOrderFront: self];
     }
-}
-
-- (void)setLogLevel: (LogLevel)level
-{
-    return;
+     */
 }
 
 - (void)cancel: (id)sender

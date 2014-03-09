@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -692,21 +692,14 @@
     if (user == nil) {
         return;
     }
-    LogController *logController = [LogController logController];
-    MessageLog    *messageLog = [MessageLog log];
-    //	[[logController window] makeKeyAndOrderFront:self];
-    [logController showWindow: self];
-    [logController setLogLevel: LogLevel_Info];
     BankParameter *bp = [[HBCIController controller] getBankParameterForUser: user];
     if (bp == nil) {
-        [messageLog addMessage: @"Bankparameter konnten nicht ermittelt werden" withLevel: LogLevel_Error];
+        LogError(@"Bankparameter konnten nicht ermittelt werden");
         return;
     }
-    [messageLog addMessage: @"Bankparameterdaten:" withLevel: LogLevel_Info];
-    [messageLog addMessage: bp.bpd_raw withLevel: LogLevel_Notice];
 
-    [messageLog addMessage: @"Anwenderparameterdaten:" withLevel: LogLevel_Info];
-    [messageLog addMessage: bp.upd_raw withLevel: LogLevel_Notice];
+    LogInfo(@"Bankparameterdaten: %@", bp.bpd_raw);
+    LogInfo(@"Anwenderparameterdaten: %@", bp.upd_raw);
 }
 
 - (IBAction)updateBankParameter: (id)sender

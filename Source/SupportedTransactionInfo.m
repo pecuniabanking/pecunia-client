@@ -111,7 +111,7 @@
         } else {
             tinfo.allowsCollective = @NO;
         }
-        [[MessageLog log] addMessage: @"Add supported transaction UEB" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction UEB");
     }
     
     // todo as soon as we support management of dated transfers
@@ -120,7 +120,7 @@
         tinfo.account = account;
         tinfo.user = user;
         tinfo.type = @(TransactionType_TransferDated);
-        [[MessageLog log] addMessage: @"Add supported transaction TERMUEB" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction TERMUEB");
     }
     
     if ([supportedJobNames containsObject: @"UebForeign"] == YES) {
@@ -128,7 +128,7 @@
         tinfo.account = account;
         tinfo.user = user;
         tinfo.type = @(TransactionType_TransferEU);
-        [[MessageLog log] addMessage: @"Add supported transaction UEBFOREIGN" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction UEBFOREIGN");
         
     }
     
@@ -151,7 +151,7 @@
             tinfo.allowsCollective = @NO;
         }
         
-        [[MessageLog log] addMessage: @"Add supported transaction UEBSEPA" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction UEBSEPA");
     }
     
     if ([supportedJobNames containsObject: @"TermUebSEPA"] == YES) {
@@ -160,7 +160,7 @@
         tinfo.user = user;
         tinfo.type = @(TransactionType_TransferSEPAScheduled);
         
-        [[MessageLog log] addMessage: @"Add supported transaction TERMUEBSEPA" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction TERMUEBSEPA");
     }
         
     if ([supportedJobNames containsObject: @"Umb"] == YES) {
@@ -168,7 +168,7 @@
         tinfo.account = account;
         tinfo.user = user;
         tinfo.type = @(TransactionType_TransferInternal);
-        [[MessageLog log] addMessage: @"Add supported transaction UMB" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction UMB");
     }
     
     if ([supportedJobNames containsObject: @"Last"] == YES) {
@@ -176,7 +176,7 @@
         tinfo.account = account;
         tinfo.user = user;
         tinfo.type = @(TransactionType_TransferDebit);
-        [[MessageLog log] addMessage: @"Add supported transaction LAST" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction LAST");
     }
     
     if ([supportedJobNames containsObject: @"DauerSEPANew"] == YES) {
@@ -184,25 +184,25 @@
         tinfo.account = account;
         tinfo.user = user;
         tinfo.type = @(TransactionType_StandingOrderSEPA);
-        [[MessageLog log] addMessage: @"Add supported transaction DAUERSEPANEW" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction DAUERSEPANEW");
         
         // Parameters
         if ([supportedJobNames containsObject: @"DauerSEPAEdit"] == YES) {
             tinfo.allowsChange = @YES;
-            [[MessageLog log] addMessage: @"Add supported transaction DAUERSEPAEDIT" withLevel: LogLevel_Debug];
+            LogDebug(@"Add supported transaction DAUERSEPAEDIT");
         } else {
             tinfo.allowsChange = @NO;
         }
         if ([supportedJobNames containsObject: @"DauerSEPADel"] == YES) {
             tinfo.allowesDelete = @YES;
-            [[MessageLog log] addMessage: @"Add supported transaction DAUERSEPADEL" withLevel: LogLevel_Debug];
+            LogDebug(@"Add supported transaction DAUERSEPADEL");
             
         } else {
             tinfo.allowesDelete = @NO;
         }
         if ([supportedJobNames containsObject: @"DauerSEPAList"] == YES) {
             tinfo.allowsList = @YES;
-            [[MessageLog log] addMessage: @"Add supported transaction DAUERSEPALIST" withLevel: LogLevel_Debug];
+            LogDebug(@"Add supported transaction DAUERSEPALIST");
         } else {
             tinfo.allowsList = @NO;
         }
@@ -214,7 +214,7 @@
         tinfo.account = account;
         tinfo.user = user;
         tinfo.type = @(TransactionType_BankStatements);
-        [[MessageLog log] addMessage: @"Add supported transaction KUMSALL" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction KUMSALL");
     }
     
     if ([supportedJobNames containsObject: @"KKUmsAll"] == YES) {
@@ -222,7 +222,7 @@
         tinfo.account = account;
         tinfo.user = user;
         tinfo.type = @(TransactionType_CCStatements);
-        [[MessageLog log] addMessage: @"Add supported transaction KKUMSALL" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction KKUMSALL");
     }
     
     if ([supportedJobNames containsObject: @"KKSettleList"] == YES) {
@@ -230,7 +230,7 @@
         tinfo.account = account;
         tinfo.user = user;
         tinfo.type = @(TransactionType_CCSettlementList);
-        [[MessageLog log] addMessage: @"Add supported transaction KKSETTLELIST" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction KKSETTLELIST");
     }
     
     if ([supportedJobNames containsObject: @"KKSettleReq"] == YES) {
@@ -238,7 +238,7 @@
         tinfo.account = account;
         tinfo.user = user;
         tinfo.type = @(TransactionType_CCSettlement);
-        [[MessageLog log] addMessage: @"Add supported transaction KKSETTLEREQ" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction KKSETTLEREQ");
     }
     
     if ([supportedJobNames containsObject: @"ChangePin"] == YES) {
@@ -246,7 +246,7 @@
         tinfo.account = account;
         tinfo.user = user;
         tinfo.type = @(TransactionType_ChangePin);
-        [[MessageLog log] addMessage: @"Add supported transaction ChangePin" withLevel: LogLevel_Debug];
+        LogDebug(@"Add supported transaction ChangePin");
     }
     return nil;
 }

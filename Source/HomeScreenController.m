@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -298,7 +298,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
     self = [super initWithFrame: frameRect];
     if (self != nil) {
-        [MessageLog.log addMessage: @"Initializing resources" withLevel: LogLevel_Debug];
+        LogDebug(@"Initializing resources");
         NSImage *image = [NSImage imageNamed: @"background-pattern"];
         if (image != nil) {
             background = [NSColor colorWithPatternImage: image];

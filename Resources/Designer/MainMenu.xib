@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1070" defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -45,20 +45,20 @@
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <scrollView focusRingType="none" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="0.0" verticalLineScroll="20" verticalPageScroll="0.0" usesPredominantAxisScrolling="NO" id="280" customClass="SynchronousScrollView">
-                                                                    <rect key="frame" x="30" y="60" width="283" height="560"/>
+                                                                    <rect key="frame" x="20" y="50" width="298" height="580"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="WcI-He-wNN">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="283" height="560"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="298" height="580"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <outlineView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" multipleSelection="NO" autosaveName="category-outline" rowHeight="20" indentationPerLevel="14" outlineTableColumn="282" id="281" customClass="CategoryView">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="283" height="560"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="298" height="580"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <size key="intercellSpacing" width="3" height="0.0"/>
                                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                                 <tableColumns>
-                                                                                    <tableColumn identifier="name" width="280" minWidth="16" maxWidth="1000" headerToolTip="" id="282">
+                                                                                    <tableColumn identifier="name" width="295" minWidth="16" maxWidth="1000" headerToolTip="" id="282">
                                                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
                                                                                             <font key="font" metaFont="smallSystem"/>
                                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -94,7 +94,7 @@
                                                                     </scroller>
                                                                 </scrollView>
                                                                 <segmentedControl verticalHuggingPriority="750" id="4562">
-                                                                    <rect key="frame" x="269" y="29" width="51" height="18"/>
+                                                                    <rect key="frame" x="269" y="19" width="51" height="18"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                                     <segmentedCell key="cell" controlSize="small" state="on" alignment="left" style="roundRect" trackingMode="momentary" id="4563">
                                                                         <font key="font" metaFont="smallSystem"/>
@@ -108,7 +108,7 @@
                                                                     </connections>
                                                                 </segmentedControl>
                                                                 <segmentedControl verticalHuggingPriority="750" id="4561">
-                                                                    <rect key="frame" x="79" y="29" width="189" height="18"/>
+                                                                    <rect key="frame" x="79" y="19" width="189" height="18"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                                     <segmentedCell key="cell" controlSize="small" alignment="left" style="roundRect" trackingMode="selectOne" id="4564">
                                                                         <font key="font" metaFont="smallSystem"/>
@@ -124,7 +124,7 @@
                                                                     </connections>
                                                                 </segmentedControl>
                                                                 <segmentedControl verticalHuggingPriority="750" id="4559">
-                                                                    <rect key="frame" x="29" y="29" width="74" height="18"/>
+                                                                    <rect key="frame" x="19" y="19" width="74" height="18"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <segmentedCell key="cell" controlSize="small" state="on" alignment="left" style="roundRect" trackingMode="momentary" id="4560">
                                                                         <font key="font" metaFont="smallSystem"/>
@@ -143,7 +143,19 @@
                                                                         </binding>
                                                                     </connections>
                                                                 </segmentedControl>
+                                                                <box autoresizesSubviews="NO" appearanceType="lightContent" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="qGA-bX-XAH">
+                                                                    <rect key="frame" x="20" y="48" width="298" height="5"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                                                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                    <font key="titleFont" metaFont="system"/>
+                                                                </box>
                                                             </subviews>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="rightMargin">
+                                                                    <integer key="value" value="5"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                         </customView>
                                                     </subviews>
                                                 </customView>
@@ -367,7 +379,7 @@ IA
                                                             </connections>
                                                         </textField>
                                                         <customView id="lwF-Qy-Ve8" userLabel="Section Placeholder">
-                                                            <rect key="frame" x="0.0" y="0.0" width="761" height="651"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="761" height="650"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </customView>
                                                     </subviews>
@@ -916,6 +928,12 @@ CA
                                     <action selector="openLogFolder:" target="235" id="4PE-Jc-Kgx"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Com trace" id="suc-Py-BAh">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="comTraceToggle:" target="235" id="Gmk-W2-baZ"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
@@ -1052,6 +1070,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <outlet property="assignPreviewController" destination="2401" id="6338"/>
                 <outlet property="catActions" destination="4559" id="4709"/>
                 <outlet property="categoryController" destination="911" id="930"/>
+                <outlet property="comTraceMenuItem" destination="suc-Py-BAh" id="j6I-1K-Ktn"/>
+                <outlet property="comTracePanel" destination="auX-7g-19I" id="RVM-e8-vDl"/>
                 <outlet property="developerMenu" destination="6506" id="6509"/>
                 <outlet property="earningsField" destination="6099" id="6117"/>
                 <outlet property="earningsFieldLabel" destination="Wz9-K1-SAF" id="M52-A1-h1y"/>
@@ -1136,6 +1156,26 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </connections>
         </arrayController>
         <userDefaultsController representsSharedInstance="YES" id="6577" userLabel="Shared User Defaults Controller"/>
+        <customView id="auX-7g-19I" userLabel="Com Trace Controls" customClass="ComTraceHelper">
+            <rect key="frame" x="0.0" y="0.0" width="65" height="35"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button wantsLayer="YES" id="40V-Vf-9Rp">
+                    <rect key="frame" x="9" y="10" width="22" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="magnify" imagePosition="only" alignment="center" inset="2" id="Dtb-uP-hBR">
+                        <behavior key="behavior" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="toggleComTrace:" target="auX-7g-19I" id="qMi-0L-PcF"/>
+                    </connections>
+                </button>
+            </subviews>
+            <connections>
+                <outlet property="magnifyButton" destination="40V-Vf-9Rp" id="w7m-5d-mVu"/>
+            </connections>
+        </customView>
     </objects>
     <resources>
         <image name="NSLeftFacingTriangleTemplate" width="9" height="9"/>
@@ -1144,6 +1184,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="favorite" width="20" height="20"/>
         <image name="hide" width="16" height="16"/>
         <image name="ins-8" width="12" height="12"/>
+        <image name="magnify" width="17" height="17"/>
         <image name="minus-8" width="8" height="8"/>
         <image name="plus-8" width="8" height="8"/>
         <image name="refresh" width="20" height="20"/>

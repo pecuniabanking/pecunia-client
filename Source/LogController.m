@@ -31,7 +31,7 @@ static LogController *_logController = nil;
     _logController = self;
     messageLog = [MessageLog log];
     isHidden = YES;
-    [self setLogLevel: LogLevel_Verbous];
+    //[self setLogLevel: LogLevel_Verbous];
 
     return self;
 }
@@ -45,7 +45,7 @@ static LogController *_logController = nil;
 }
 
 - (void)adjustPopupToLogLevel
-{
+{/*
     NSInteger idx;
     switch (currentLevel) {
         case LogLevel_Error: idx = 0; break;
@@ -63,6 +63,7 @@ static LogController *_logController = nil;
         default: idx = 2;
     }
     [popUp selectItemAtIndex: idx];
+  */
 }
 
 - (void)awakeFromNib
@@ -78,8 +79,7 @@ static LogController *_logController = nil;
 - (void)windowDidBecomeKey: (NSNotification *)notification
 {
     [messageLog registerLogUI: self];
-    //[self logLevelChanged: self];
-    [self setLogLevel: LogLevel_Verbous];
+    [self setLogLevel: HBCILogIntern];
 }
 
 - (void)windowWillClose: (NSNotification *)notification
@@ -99,8 +99,8 @@ static LogController *_logController = nil;
     [[self window] performClose: self];
 }
 
-- (NSColor *)colorForLevel: (LogLevel)level
-{
+- (NSColor *)colorForLevel: (HBCILogLevel)level
+{/*
     switch (level) {
         case LogLevel_Error: return [NSColor redColor]; break;
 
@@ -116,11 +116,12 @@ static LogController *_logController = nil;
         default:
             break;
     }
+  */
     return [NSColor blackColor];
 }
 
-- (void)addMessage: (NSString *)info withLevel: (LogLevel)level
-{
+- (void)addMessage: (NSString *)info withLevel: (HBCILogLevel)level
+{/*
     if (info == nil || [info length] == 0) {
         return;
     }
@@ -144,10 +145,11 @@ static LogController *_logController = nil;
 
     [logView moveToEndOfDocument: self];
     [logView display];
+  */
 }
 
 - (void)logLevelChanged: (id)sender
-{
+{/*
     LogLevel level;
 
     int idx = [popUp indexOfSelectedItem];
@@ -174,9 +176,10 @@ static LogController *_logController = nil;
 
     // workaround: GWEN/Aq sends messages to console...
     [[HBCIController controller] setLogLevel: level];
+  */
 }
 
-- (void)setLogLevel: (LogLevel)level
+- (void)setLogLevel: (HBCILogLevel)level
 {
     if (level <= currentLevel) {
         return;
@@ -218,12 +221,13 @@ static LogController *_logController = nil;
 }
 
 - (IBAction)writeConsole: (id)sender
-{
+{/*
     if ([sender state] == NSOnState) {
         messageLog.forceConsole = YES;
     } else {
         messageLog.forceConsole = NO;
     }
+  */
 }
 
 - (IBAction)sendMail: (id)sender

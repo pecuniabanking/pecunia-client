@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -27,8 +27,6 @@
     BOOL                         isHidden;
     BOOL                         forceHidden;
     MessageLog                   *messageLog;
-    LogLevel                     maxLevel;
-
 }
 
 @property (nonatomic, assign) BOOL forceHidden;
@@ -36,4 +34,5 @@
 - (IBAction)cancel: (id)sender;
 - (void)stop;
 - (void)start;
+
 @end

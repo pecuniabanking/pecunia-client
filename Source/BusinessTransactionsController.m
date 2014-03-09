@@ -33,7 +33,7 @@
         NSError  *error = nil;
         NSString *content = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: &error];
         if (error) {
-            [[MessageLog log] addMessage: @"Error reading HBCI business transactions file" withLevel: LogLevel_Error];
+            LogError(@"Error reading HBCI business transactions file %@", path);
         } else {
             NSArray *entries = [content componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
             for (content in entries) {

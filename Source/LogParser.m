@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -31,8 +31,10 @@
     }
     parent = par;
     if (lev) {
-        level = [lev intValue] - 1;
-    } else {level = LogLevel_Debug; }
+        level = lev.intValue;
+    } else {
+        level = HBCILogDebug;
+    }
     currentValue = [[NSMutableString alloc] init];
     return self;
 }
@@ -50,8 +52,7 @@
 {
     if ([elementName isEqualToString: @"log"]) {
         [parser setDelegate: parent];
-        [[MessageLog log] addMessage: currentValue withLevel: level];
-        //[self autorelease ]; don't autorelease here but where the parser is allocated or the analyizer will report a leak.
+        LogComTrace(level, currentValue);
         return;
     }
 }

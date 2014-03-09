@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -39,8 +39,9 @@
     [[logView textStorage] appendAttributedString: logString];
 }
 
-- (NSColor *)colorForLevel: (LogLevel)level
+- (NSColor *)colorForLevel: (HBCILogLevel)level
 {
+    /*
     switch (level) {
         case LogLevel_Error: return [NSColor redColor]; break;
             
@@ -56,11 +57,13 @@
         default:
             break;
     }
+     */
     return [NSColor blackColor];
 }
 
-- (void)addMessage: (NSString *)info withLevel: (LogLevel)level
+- (void)addMessage: (NSString *)info withLevel: (HBCILogLevel)level
 {
+    /*
     if (info == nil || [info length] == 0) {
         return;
     }
@@ -92,11 +95,7 @@
         [logView moveToEndOfDocument: self];
     }
     //[logView display];
-}
-
-- (void)setLogLevel:(LogLevel)level
-{
-    
+     */
 }
 
 - (void)showOnError
