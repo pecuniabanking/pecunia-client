@@ -19,7 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-typedef enum {
+typedef NS_ENUM(NSInteger, TransactionType) {
     TransactionType_TransferStandard = 0,
     TransactionType_TransferEU,
     TransactionType_TransferDated,
@@ -34,7 +34,8 @@ typedef enum {
     TransactionType_ChangePin,
     TransactionType_StandingOrderSEPA,
     TransactionType_TransferSEPAScheduled,
-} TransactionType;
+    TransactionType_TransferCollectiveCreditSEPA
+};
 
 @class BankAccount;
 @class BankUser;
@@ -53,11 +54,13 @@ typedef enum {
 @property (nonatomic, strong) BankAccount *account;
 @property (nonatomic, strong) BankUser    *user;
 
-+ (SupportedTransactionInfo*)infoForType:(TransactionType)type account:(BankAccount*)account;
-+ (NSArray*)supportedTransactionsForAccount: (BankAccount*)account;
-+ (PecuniaError*)updateSupportedTransactionInfoForUser: (BankUser*)user account: (BankAccount*)account withJobs:(NSArray*)supportedJobNames;
++ (SupportedTransactionInfo *)infoForType: (TransactionType)type account: (BankAccount *)account;
++ (NSArray *)supportedTransactionsForAccount: (BankAccount *)account;
++ (PecuniaError *)updateSupportedTransactionInfoForUser: (BankUser *)user
+                                                account: (BankAccount *)account
+                                               withJobs: (NSArray *)supportedJobNames;
 
-- (NSString*)description;
-- (NSString*)descriptionWithIndent:(NSString*)indent;
+- (NSString *)description;
+- (NSString *)descriptionWithIndent: (NSString *)indent;
 
 @end

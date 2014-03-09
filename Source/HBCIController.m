@@ -73,7 +73,7 @@ static HBCIController *controller = nil;
     bankInfo = [[NSMutableDictionary alloc] initWithCapacity: 10];
     countries = [[NSMutableDictionary alloc] initWithCapacity: 50];
     [self readCountryInfos];
-    resultWindow = nil;
+    resultWindow = [[ResultWindowController alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(bankMessageReceived:)
@@ -97,7 +97,7 @@ static HBCIController *controller = nil;
 
 - (void)startProgress
 {
-    resultWindow = [[ResultWindowController alloc] init];
+    [resultWindow  clear];
 }
 
 - (void)stopProgress
@@ -343,50 +343,14 @@ NSString * escapeSpecial(NSString *s)
 
         case TransferTypeEU: return @"UebForeign"; break;
 
-        case TransferTypeDebit: return @"Last"; break;
-
         case TransferTypeSEPA: return @"UebSEPA"; break;
 
         case TransferTypeSEPAScheduled: return @"TermUebSEPA"; break;
 
-        case TransferTypeCollectiveCredit: return @"MultiUeb"; break;
-
         default:
+            // collective transfers are handled special, only derive job names for supported jobs
             return nil;
     }
-}
-
-- (BOOL)isJobSupported: (NSString *)jobName forAccount: (BankAccount *)account
-{
-    PecuniaError *error = nil;
-    if (account == nil) {
-        return NO;
-    }
-
-    BankUser *user = [account defaultBankUser];
-    if (user == nil) {
-        return NO;
-    }
-    if ([self registerBankUser: user error: &error] == NO) {
-        if (error) {
-            [error logMessage];
-            return NO;
-        }
-        return NO;
-    }
-
-    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"isJobSupported\">"];
-    [self appendTag: @"userId" withValue: account.userId to: cmd];
-    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
-    [self appendTag: @"jobName" withValue: jobName to: cmd];
-    [self appendTag: @"bankCode" withValue: account.bankCode to: cmd];
-    [self appendTag: @"accountNumber" withValue: account.accountNumber to: cmd];
-    [self appendTag: @"subNumber" withValue: account.accountSuffix to: cmd];
-    [cmd appendString: @"</command>"];
-    NSNumber *result = [bridge syncCommand: cmd error: &error];
-    if (result) {
-        return [result boolValue];
-    } else {return NO; }
 }
 
 - (BOOL)isTransactionSupported: (TransactionType)tt forAccount: (BankAccount *)account
@@ -436,8 +400,7 @@ NSString * escapeSpecial(NSString *s)
 {
     TransactionType transactionType;
     switch (tt) {
-        case TransferTypeOldStandard:
-        case TransferTypeCollectiveCredit: transactionType = TransactionType_TransferStandard; break;
+        case TransferTypeOldStandard: transactionType = TransactionType_TransferStandard; break;
 
         case TransferTypeEU: transactionType = TransactionType_TransferEU; break;
 
@@ -445,62 +408,19 @@ NSString * escapeSpecial(NSString *s)
 
         case TransferTypeInternal: transactionType = TransactionType_TransferInternal; break;
 
-        case TransferTypeCollectiveCreditSEPA:
+        case TransferTypeCollectiveCreditSEPA: transactionType = TransactionType_TransferCollectiveCreditSEPA; break;
+            
         case TransferTypeSEPA: transactionType = TransactionType_TransferSEPA; break;
 
         case TransferTypeSEPAScheduled: transactionType = TransactionType_TransferSEPAScheduled; break;
-
-        case TransferTypeDebit:
-        case TransferTypeCollectiveDebit: transactionType = TransactionType_TransferDebit; break;
+            
+        default: return NO; // default is needed because of OLD transfer types which are not supported any longer
+            
     }
-
-    NSError *error = nil;
-
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSPredicate            *predicate = nil;
-    if (tt == TransferTypeCollectiveCredit || tt == TransferTypeCollectiveDebit ||
-        tt == TransferTypeCollectiveCreditSEPA) {
-        predicate = [NSPredicate predicateWithFormat: @"account = %@ AND type = %d AND allowsCollective = 1", account, transactionType];
-    } else {
-        predicate = [NSPredicate predicateWithFormat: @"account = %@ AND type = %d", account, transactionType];
-    }
-
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-    NSFetchRequest      *request = [[NSFetchRequest alloc] init];
-    [request setEntity: entityDescription];
-    [request setPredicate: predicate];
-
-    NSArray *result = [context executeFetchRequest: request error: &error];
-    if (error != nil) {
-        return NO;
-    }
-
-    if ([result count] == 0) {
-        return NO;
-    }
-    return YES;
+    
+    return [self isTransactionSupported:transactionType forAccount:account];
 }
 
-- (BOOL)isStandingOrderSupportedForAccount: (BankAccount *)account
-{
-    NSError                *error = nil;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSPredicate            *predicate = [NSPredicate predicateWithFormat: @"account = %@ AND type = %d", account, TransactionType_StandingOrderSEPA];
-    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
-    [request setEntity: entityDescription];
-    [request setPredicate: predicate];
-
-    NSArray *result = [context executeFetchRequest: request error: &error];
-    if (error != nil) {
-        return NO;
-    }
-
-    if ([result count] == 0) {
-        return NO;
-    }
-    return YES;
-}
 
 - (NSDictionary *)getRestrictionsForJob: (NSString *)jobname account: (BankAccount *)account
 {

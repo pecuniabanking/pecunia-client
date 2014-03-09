@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -33,6 +33,22 @@
 
 @dynamic account;
 @dynamic user;
+
++ (SupportedTransactionInfo *)insertInContext: (NSManagedObjectContext *)context
+                                         user: (BankUser *)user
+                                      account: (BankAccount *)account
+                                         type: (TransactionType)type
+                                      jobName: (NSString *)job
+{
+    SupportedTransactionInfo *info = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo"
+                                                                   inManagedObjectContext: context];
+    info.user = user;
+    info.account = account;
+    info.type = @(type);
+    LogDebug(@"Add supported transaction %@", job);
+
+    return info;
+}
 
 + (SupportedTransactionInfo*)infoForType:(TransactionType)type account:(BankAccount*)account
 {
@@ -72,21 +88,21 @@
     return result;
 }
 
+
 + (PecuniaError*)updateSupportedTransactionInfoForUser: (BankUser*)user account: (BankAccount*)account withJobs:(NSArray*)supportedJobNames
 {
-    NSError                *error = nil;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-
-    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
+    NSError                     *error = nil;
+    NSManagedObjectContext      *context = [[MOAssistant assistant] context];
+    NSEntityDescription         *entityDescription = [NSEntityDescription entityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
     
     NSPredicate    *predicate = [NSPredicate predicateWithFormat: @"user = %@ AND account = %@", user, account];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
     [request setPredicate: predicate];
     
-    // remove existing
+    // Remove existing info.
     NSArray *result = [context executeFetchRequest: request error: &error];
-    if (error) {
+    if (error != nil) {
         return [PecuniaError errorWithMessage: [error localizedDescription] title: NSLocalizedString(@"AP204", nil)];
     }
     
@@ -94,166 +110,106 @@
         [context deleteObject: tinfo];
     }
     
-    if ([supportedJobNames containsObject: @"Ueb"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_TransferStandard);
-        
-        // Parameters
-        if ([supportedJobNames containsObject: @"TermUeb"] == YES) {
-            tinfo.allowsDated = @YES;
-        } else {
-            tinfo.allowsDated = @NO;
-        }
-        if ([supportedJobNames containsObject: @"MultiUeb"] == YES) {
-            tinfo.allowsCollective = @YES;
-        } else {
-            tinfo.allowsCollective = @NO;
-        }
-        LogDebug(@"Add supported transaction UEB");
-    }
-    
-    // todo as soon as we support management of dated transfers
-    if ([supportedJobNames containsObject: @"TermUeb"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_TransferDated);
-        LogDebug(@"Add supported transaction TERMUEB");
-    }
-    
-    if ([supportedJobNames containsObject: @"UebForeign"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_TransferEU);
-        LogDebug(@"Add supported transaction UEBFOREIGN");
-        
-    }
-    
-    if ([supportedJobNames containsObject: @"UebSEPA"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_TransferSEPA);
-        
-        // Parameters
-        if ([supportedJobNames containsObject: @"TermUebSEPA"] == YES) {
-            tinfo.allowsDated = @YES;
-        } else {
-            tinfo.allowsDated = @NO;
+    for (NSString *jobName in supportedJobNames) {
+        if ([jobName isEqualToString:@"Ueb"]) {
+            SupportedTransactionInfo *info = [self insertInContext: context
+                                                              user: user
+                                                           account: account
+                                                              type: TransactionType_TransferStandard
+                                                           jobName: jobName];
+
+            // Parameters.
+            if ([supportedJobNames containsObject: @"TermUeb"]) {
+                info.allowsDated = @YES;
+            }
+            if ([supportedJobNames containsObject: @"MultiUeb"]) {
+                info.allowsCollective = @YES;
+            }
         }
         
-        if ([supportedJobNames containsObject: @"MulitUebSEPA"] == YES) {
-            tinfo.allowsCollective = @YES;
-        } else {
-            tinfo.allowsCollective = @NO;
+        if ([jobName isEqualToString:@"TermUeb"]) {
+            [self insertInContext: context user: user account: account type: TransactionType_TransferDated jobName: jobName];
         }
-        
-        LogDebug(@"Add supported transaction UEBSEPA");
-    }
-    
-    if ([supportedJobNames containsObject: @"TermUebSEPA"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_TransferSEPAScheduled);
-        
-        LogDebug(@"Add supported transaction TERMUEBSEPA");
-    }
-        
-    if ([supportedJobNames containsObject: @"Umb"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_TransferInternal);
-        LogDebug(@"Add supported transaction UMB");
-    }
-    
-    if ([supportedJobNames containsObject: @"Last"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_TransferDebit);
-        LogDebug(@"Add supported transaction LAST");
-    }
-    
-    if ([supportedJobNames containsObject: @"DauerSEPANew"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_StandingOrderSEPA);
-        LogDebug(@"Add supported transaction DAUERSEPANEW");
-        
-        // Parameters
-        if ([supportedJobNames containsObject: @"DauerSEPAEdit"] == YES) {
-            tinfo.allowsChange = @YES;
-            LogDebug(@"Add supported transaction DAUERSEPAEDIT");
-        } else {
-            tinfo.allowsChange = @NO;
+
+        if ([jobName isEqualToString:@"UebForeign"]) {
+            [self insertInContext: context user: user account: account type: TransactionType_TransferEU jobName: jobName];
         }
-        if ([supportedJobNames containsObject: @"DauerSEPADel"] == YES) {
-            tinfo.allowesDelete = @YES;
-            LogDebug(@"Add supported transaction DAUERSEPADEL");
-            
-        } else {
-            tinfo.allowesDelete = @NO;
+
+        if ([jobName isEqualToString:@"UebSEPA"]) {
+            SupportedTransactionInfo *info = [self insertInContext: context
+                                                              user: user
+                                                           account: account
+                                                              type: TransactionType_TransferSEPA
+                                                           jobName: jobName];
+
+            // Parameters
+            if ([supportedJobNames containsObject: @"TermUebSEPA"]) {
+                info.allowsDated = @YES;
+            }
+            if ([supportedJobNames containsObject: @"MulitUebSEPA"]) {
+                info.allowsCollective = @YES;
+            }
         }
-        if ([supportedJobNames containsObject: @"DauerSEPAList"] == YES) {
-            tinfo.allowsList = @YES;
-            LogDebug(@"Add supported transaction DAUERSEPALIST");
-        } else {
-            tinfo.allowsList = @NO;
+
+        if ([jobName isEqualToString:@"TermUebSEPA"]) {
+            [self insertInContext: context user: user account: account type: TransactionType_TransferSEPAScheduled jobName: jobName];
         }
-    }
-    
-    
-    if ([supportedJobNames containsObject: @"KUmsAll"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_BankStatements);
-        LogDebug(@"Add supported transaction KUMSALL");
-    }
-    
-    if ([supportedJobNames containsObject: @"KKUmsAll"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_CCStatements);
-        LogDebug(@"Add supported transaction KKUMSALL");
-    }
-    
-    if ([supportedJobNames containsObject: @"KKSettleList"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_CCSettlementList);
-        LogDebug(@"Add supported transaction KKSETTLELIST");
-    }
-    
-    if ([supportedJobNames containsObject: @"KKSettleReq"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_CCSettlement);
-        LogDebug(@"Add supported transaction KKSETTLEREQ");
-    }
-    
-    if ([supportedJobNames containsObject: @"ChangePin"] == YES) {
-        SupportedTransactionInfo *tinfo = [NSEntityDescription insertNewObjectForEntityForName: @"SupportedTransactionInfo" inManagedObjectContext: context];
-        tinfo.account = account;
-        tinfo.user = user;
-        tinfo.type = @(TransactionType_ChangePin);
-        LogDebug(@"Add supported transaction ChangePin");
+
+        if ([jobName isEqualToString:@"MultiUebSEPA"]) {
+            [self insertInContext: context user: user account: account type: TransactionType_TransferCollectiveCreditSEPA jobName: jobName];
+        }
+
+        if ([jobName isEqualToString:@"Umb"]) {
+            [self insertInContext: context user: user account: account type: TransactionType_TransferInternal jobName: jobName];
+        }
+
+        if ([jobName isEqualToString:@"DauerSEPANew"]) {
+            SupportedTransactionInfo *info = [self insertInContext: context
+                                                              user: user
+                                                           account: account
+                                                              type: TransactionType_StandingOrderSEPA
+                                                           jobName: jobName];
+            // Parameters.
+            if ([supportedJobNames containsObject: @"DauerSEPAEdit"]) {
+                info.allowsChange = @YES;
+                LogDebug(@"Add supported transaction DAUERSEPAEDIT");
+            }
+            if ([supportedJobNames containsObject: @"DauerSEPADel"]) {
+                info.allowesDelete = @YES;
+                LogDebug(@"Add supported transaction DAUERSEPADEL");
+            }
+            if ([supportedJobNames containsObject: @"DauerSEPAList"]) {
+                info.allowsList = @YES;
+                LogDebug(@"Add supported transaction DAUERSEPALIST");
+            }
+        }
+
+        if ([jobName isEqualToString: @"KUmsAll"]) {
+            [self insertInContext: context user: user account: account type: TransactionType_BankStatements jobName: jobName];
+        }
+
+        if ([jobName isEqualToString: @"KKUmsAll"]) {
+            [self insertInContext: context user: user account: account type: TransactionType_CCStatements jobName: jobName];
+        }
+
+        if ([jobName isEqualToString: @"KKSettleList"]) {
+            [self insertInContext: context user: user account: account type: TransactionType_CCSettlementList jobName: jobName];
+        }
+
+        if ([jobName isEqualToString: @"KKSettleReq"]) {
+            [self insertInContext: context user: user account: account type: TransactionType_CCSettlement jobName: jobName];
+        }
+
+        if ([jobName isEqualToString: @"ChangePin"]) {
+            [self insertInContext: context user: user account: account type: TransactionType_ChangePin jobName: jobName];
+        }
     }
     return nil;
 }
 
 - (NSString*)description
 {
-    return [self descriptionWithIndent:@""];
+    return [self descriptionWithIndent: @""];
 }
 
 - (NSString*)descriptionWithIndent:(NSString*)indent
@@ -275,6 +231,7 @@
         case TransactionType_ChangePin: s = NSLocalizedString(@"AP1211", @""); break;
         case TransactionType_StandingOrderSEPA: s = NSLocalizedString(@"AP1212", @""); break;
         case TransactionType_TransferSEPAScheduled: s = NSLocalizedString(@"AP1213", @""); break;
+        case TransactionType_TransferCollectiveCreditSEPA: s = NSLocalizedString(@"AP1214", @""); break;
             
         default: s = NSLocalizedString(@"AP1299", @"");
     }
@@ -283,21 +240,21 @@
     [descr appendString:s];
     
     if ([self.allowsChange boolValue]) {
-        [descr appendString:NSLocalizedString(@"AP1011", @"")];
+        [descr appendString: NSLocalizedString(@"AP1011", @"")];
     }
     if ([self.allowsCollective boolValue]) {
-        [descr appendString:NSLocalizedString(@"AP1012", @"")];
+        [descr appendString: NSLocalizedString(@"AP1012", @"")];
     }
     if ([self.allowsDated boolValue]) {
-        [descr appendString:NSLocalizedString(@"AP1013", @"")];
+        [descr appendString: NSLocalizedString(@"AP1013", @"")];
     }
     if ([self.allowesDelete boolValue]) {
-        [descr appendString:NSLocalizedString(@"AP1014", @"")];
+        [descr appendString: NSLocalizedString(@"AP1014", @"")];
     }
     if ([self.allowsList boolValue]) {
-        [descr appendString:NSLocalizedString(@"AP1015", @"")];
+        [descr appendString: NSLocalizedString(@"AP1015", @"")];
     }
-    [descr appendString:@"\n"];
+    [descr appendString: @"\n"];
     return descr;
 }
 

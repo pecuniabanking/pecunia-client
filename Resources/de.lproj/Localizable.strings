@@ -508,6 +508,7 @@ AP1210 = "Kreditkartenabrechnung";
 AP1211 = "PIN ändern";
 AP1212 = "SEPA-Dauerauftrag";
 AP1213 = "SEPA-Terminüberweisung";
+AP1214 = "SEPA-Sammelüberweisung";
 
 AP1299 = "Unbekannt";
 

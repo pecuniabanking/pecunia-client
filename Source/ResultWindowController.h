@@ -33,5 +33,6 @@
 - (IBAction)close: (id)sender;
 
 - (void)showOnError;
+- (void)clear;
 
 @end

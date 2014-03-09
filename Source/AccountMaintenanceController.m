@@ -116,7 +116,7 @@ extern NSString *const CategoryKey;
         }
         
         // check if collective transfers are available - if not, disable collection transfer method popup
-        BOOL collTransferSupported = [[HBCIController controller] isTransferSupported: TransferTypeCollectiveCredit forAccount: changedAccount];
+        BOOL collTransferSupported = [[HBCIController controller] isTransferSupported: TransferTypeCollectiveCreditSEPA forAccount: changedAccount];
         if (collTransferSupported == NO) {
             NSMenuItem *item = [collTransferButton itemAtIndex: 0];
             [item setTitle: NSLocalizedString(@"AP428", nil)];

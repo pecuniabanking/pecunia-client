@@ -62,7 +62,6 @@
 
 // Supported Transactions
 - (BOOL)isTransferSupported: (TransferType)tt forAccount: (BankAccount *)account;
-- (BOOL)isStandingOrderSupportedForAccount: (BankAccount *)account;
 - (BOOL)isTransactionSupported: (TransactionType)tt forAccount: (BankAccount *)account;
 - (BOOL)isTransactionSupported: (TransactionType)tt forUser: (BankUser *)user;
 - (NSArray *)allowedCountriesForAccount: (BankAccount *)account;
