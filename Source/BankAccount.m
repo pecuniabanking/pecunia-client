@@ -106,7 +106,7 @@
         return;
     }
     stat = (res.statements)[0];     // oldest statement
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (valutaDate >= %@)", self, [[ShortDate dateWithDate: stat.valutaDate] lowDate]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date >= %@)", self, [[ShortDate dateWithDate: stat.date] lowDate]];
     [request setPredicate: predicate];
     self.dbStatements = [context executeFetchRequest: request error: &error];
 
