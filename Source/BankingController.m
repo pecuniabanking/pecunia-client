@@ -3487,7 +3487,7 @@ static BankingController *bankinControllerInstance;
 {
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation"];
     animation.fromValue = @0;
-    animation.toValue = @-M_PI;
+    animation.toValue = @M_PI;
     [animation setDuration: 0.5];
     [animation setTimingFunction: [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear]];
     [animation setRepeatCount: 20000];
