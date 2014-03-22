@@ -89,7 +89,7 @@ static HBCIController *controller = nil;
 - (void)stopProgress
 {
     // TODO: see if we can reuse that in a different way.
-    if (!MessageLog.log.hasError) {
+    if (MessageLog.log.hasError) {
         [SystemNotification showStickyMessage: NSLocalizedString(@"AP127", nil)
                                     withTitle: NSLocalizedString(@"AP128", nil)
                                       context: nil];
