@@ -30,12 +30,6 @@ typedef NS_ENUM(NSInteger, HBCILogLevel) {
     HBCILogIntern
 };
 
-@protocol MessageLogUI
-
-//- (void)setLogLevel: (NSUInteger)level;
-
-@end
-
 // Helper macros to simplify logging calls.
 #define LogEnter [MessageLog.log logDebug: @"Entering %s", __PRETTY_FUNCTION__]
 #define LogLeave [MessageLog.log logDebug: @"Leaving %s", __PRETTY_FUNCTION__]
@@ -49,18 +43,14 @@ typedef NS_ENUM(NSInteger, HBCILogLevel) {
 #define LogComTrace(level, fmt, ...) [MessageLog.log logComTraceForLevel: level format: fmt, ##__VA_ARGS__]
 
 @interface MessageLog : NSObject {
-    NSMutableSet    *logUIs;
-    NSDateFormatter *formatter;
-    BOOL            forceConsole;
 }
 
 @property (nonatomic, assign) NSUInteger currentLevel;  // This is one of the CocoaLumberJack log levels, e.g. LOG_LEVEL_DEBUG.
 @property (nonatomic, assign) BOOL       isComTraceActive;
+@property (nonatomic, assign) BOOL       hasError;         // Set when either logError or logComTraceForLevel:format: was called with an error level.
 
 + (MessageLog *)log;
-
-- (void)registerLogUI: (id<MessageLogUI>)ui;
-- (void)unregisterLogUI: (id<MessageLogUI>)ui;
++ (NSString *)prettyPrintServerMessage: (NSString *)text;
 
 - (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
 - (void)logWarning: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;

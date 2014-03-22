@@ -17,13 +17,16 @@
  * 02110-1301  USA
  */
 
+#import <objc/runtime.h>
+
 #import "MessageLog.h"
 
 #import "ResultParser.h"
 #import "HBCIBridge.h"
 #import "HBCIError.h"
-#import <objc/runtime.h>
 #import "MOAssistant.h"
+
+#import "NSString+PecuniaAdditions.h"
 
 @implementation ResultParser
 
@@ -188,7 +191,8 @@
 - (void)parser: (NSXMLParser *)parser didEndElement: (NSString *)elementName namespaceURI: (NSString *)namespaceURI qualifiedName: (NSString *)qName
 {
     if ([elementName isEqualToString: @"result"]) {
-        NSString *msg = [NSString stringWithFormat:@"Parsed message result: %@", resultXmlString ];
+        NSString *msg = [NSString stringWithFormat: @"Parsed message result: %@",
+                         [MessageLog prettyPrintServerMessage: resultXmlString]];
         LogComTrace(HBCILogIntern, msg);
     } else {
         [resultXmlString appendFormat:@"</%@>", elementName ];

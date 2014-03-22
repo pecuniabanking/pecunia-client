@@ -153,10 +153,23 @@
     return rows;
 }
 
+/**
+ * Interprets the content as XML and inserts line breaks and whitespaces for better readability.
+ */
+- (NSString *)formatXML
+{
+    NSError *error;
+    NSXMLDocument *document = [[NSXMLDocument alloc] initWithXMLString: self options: NSXMLNodePreserveAll error: &error];
+    if (error != nil) {
+        return self;
+    }
+    return [document XMLStringWithOptions: NSXMLNodePrettyPrint];
+}
+
 -(BOOL)hasSubstring: (NSString *)substring
 {
     if (substring != nil) {
-        NSRange r = [self rangeOfString:substring];
+        NSRange r = [self rangeOfString: substring];
         return r.location != NSNotFound;
     }
     return NO;

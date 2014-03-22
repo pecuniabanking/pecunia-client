@@ -18,7 +18,7 @@
  */
 
 #import "BankDetailsParser.h"
-#import "LogController.h"
+#import "MessageLog.h"
 
 NSString *PBBankCodeKey = @"BankCodeKey";
 NSString *PBBankCodeReliabilityKey = @"BankCodeReliabilityKey";

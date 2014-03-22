@@ -71,7 +71,7 @@
         }
 
         case err_hbci_gen: {
-            message = [self localizedDescription];
+            message = @"%@";
             break;
         }
 
@@ -81,18 +81,18 @@
         }
 
         case err_hbci_param: {
-            message = [NSString stringWithFormat: NSLocalizedString(@"AP359", nil), [self localizedDescription]];
+            message = NSLocalizedString(@"AP359", nil);
             break;
         }
 
         default: {
-            message = [self localizedDescription];
+            message = @"%@";
             break;
         }
     }
 
     if (message && title) {
-        NSRunAlertPanel(title, message, NSLocalizedString(@"AP1", nil), nil, nil);
+        NSRunAlertPanel(title, message, NSLocalizedString(@"AP1", nil), nil, nil, self.localizedDescription);
     } else {
         LogError(@"Unhandled alert: %@", [self localizedDescription]);
     }

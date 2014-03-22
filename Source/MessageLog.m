@@ -93,15 +93,7 @@
             logLevel = LaunchParameters.parameters.customLogLevel;
         }
 
-        // Send a log message to create the log file handles, otherwise explicit log file rolling is ignored.
-        // This goes to the last log file.
-        // Attention: don't use the macro for this as it will otherwise lead to an endless loop.
-        [self logInfo: @"Rolling log file due to app start." file: NULL function: NULL line: 0];
-        [fileLogger rollLogFileWithCompletionBlock: nil]; // We want a new log file on each start of the application.
-
-        formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat: @"HH:mm:ss.SSS"];
-        logUIs = [[NSMutableSet alloc] initWithCapacity: 5];
+        fileLogger.doNotReuseLogFiles = YES; // Start with a new log file at each application launch.
     }
     return self;
 }
@@ -121,8 +113,8 @@
             [DDLog removeLogger: comTraceLogger];
             comTraceLogger = nil;
 
-            // Also switch off logging in the server.
-            [HBCIController.controller setLogLevel: HBCILogNone];
+            // Only log errors now.
+            [HBCIController.controller setLogLevel: HBCILogError];
         }
 
         isComTraceActive = flag;
@@ -142,42 +134,53 @@
     }
 }
 
-- (void)registerLogUI: (id<MessageLogUI>)ui
+/**
+ * Internal helper method for prettyPrintServerMessage.
+ */
++ (NSString *)doPrettyPrint: (NSString *)text
 {
-    @synchronized(logUIs) {
-        if (![logUIs containsObject: ui]) {
-            [logUIs addObject: ui];
+    if ([text hasPrefix: @"<"]) {
+        NSError *error;
+        NSXMLDocument *document = [[NSXMLDocument alloc] initWithXMLString: text
+                                                                   options: NSXMLNodePreserveAll
+                                                                     error: &error];
+        if (error == nil) {
+            text = [document XMLStringWithOptions: NSXMLNodePrettyPrint];
         }
-    }
-}
 
-- (void)unregisterLogUI: (id<MessageLogUI>)ui
-{
-    @synchronized(logUIs) {
-        if ([logUIs containsObject: ui]) {
-            [logUIs removeObject: ui];
-        }
-    }
-}
-/*
-- (void)addMessage: (NSString *)msg withLevel: (LogLevel)level
-{
-    if ((logUIs.count == 0 && !forceConsole)){
-        return;
-    }
-    NSDate   *date = [NSDate date];
-    NSString *message = [NSString stringWithFormat: @"<%@> %@\n", [formatter stringFromDate: date], msg];
-    if (forceConsole) {
-        NSLog(@"%@", message);
+        return [NSString stringWithFormat: @"{\n%@\n}", text];
     }
 
-    @synchronized(logUIs) {
-        for (id<MessageLogUI> logUI in logUIs) {
-            [logUI addMessage: message withLevel: level];
-        }
+    NSArray *parts = [text componentsSeparatedByString: @"'"];
+    if (parts.count == 1) {
+        return text;
     }
+    NSString *combined = [parts componentsJoinedByString: @"\n  "];
+    return [NSString stringWithFormat: @"{\n  %@\n}", [combined substringToIndex: combined.length - 3]];
 }
-*/
+
+/**
+ * Server messages can have different formats and this functions tries to pretty print in a human
+ * readable format.
+ */
++ (NSString *)prettyPrintServerMessage: (NSString *)text
+{
+    // For now only format plain xml log messages (usually commands) whose format isn't important for error analysis,
+    // but which profit from better readablility. All other messages stay as they are.
+    if ([text hasPrefix: @"<"]) {
+        NSError *error;
+        NSXMLDocument *document = [[NSXMLDocument alloc] initWithXMLString: text
+                                                                   options: NSXMLNodePreserveAll
+                                                                     error: &error];
+        if (error == nil) {
+            text = [document XMLStringWithOptions: NSXMLNodePrettyPrint];
+        }
+
+        return [NSString stringWithFormat: @"{\n%@\n}", text];
+    }
+    
+    return text;
+}
 
 + (NSString *)getStringInfoFor: (const char *)name
 {
@@ -248,6 +251,7 @@
 
 - (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...
 {
+    self.hasError = YES;
     if ((logLevel & LOG_FLAG_ERROR) != 0) {
         va_list args;
         va_start(args, line);
@@ -366,6 +370,10 @@
  */
 - (void)logComTraceForLevel: (HBCILogLevel)level format: (NSString *)format, ...
 {
+    if (level == HBCILogError) {
+        self.hasError = YES;
+    }
+
     if (isComTraceActive) {
         va_list args;
         va_start(args, format);

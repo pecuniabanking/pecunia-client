@@ -19,7 +19,6 @@
 
 #import "DebitsController.h"
 #import "PecuniaError.h"
-#import "LogController.h"
 #import "HBCIController.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
@@ -1027,15 +1026,6 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 {
     if (transfers.count == 0) {
         return;
-    }
-
-    // Show log output if wanted.
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL           showLog = [defaults boolForKey: @"logForTransfers"];
-    if (showLog) {
-        LogController *logController = [LogController logController];
-        [logController showWindow: self];
-        [[logController window] orderFront: self];
     }
 
     // first check for collective transfers

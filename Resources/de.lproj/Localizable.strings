@@ -101,8 +101,10 @@ AP121 = "-- Hier bitte eine kurze Beschreibung des Problems eingeben:\n\n";
 AP122 = "-- Hier bitte die gepackten Logdatei(en) anhängen, z.B. durch ziehen vom Finder hierher. Verwenden Sie dazu die ausgewählten Dateien in dem Finder Fenster, das gerade geöffnet wurde.";
 AP123 = "Pecunia Fehlerbericht";
 AP124 = "Mail bitte an die Adresse support@pecuniabanking.de senden.\n\n";
-AP125 = "Hiermit wird ein Mittschnitt der Kommunikation zwischen Bank und Pecunia aufgezeichnet, der zur Fehleranalyse an den Pecunia Support geschickt werden kann";
+AP125 = "Aufzeichnung der Kommunikation zwischen Bank und Pecunia starten. Dieser Mittschnitt kann zur Fehleranalyse an den Pecunia Support geschickt werden.";
 AP126 = "Es wird derzeit die Kommunkation mit der Bank zur Fehleranalyse aufgezeichnet. Klicken Sie hier, um den Nachrichtenmittschnitt zu beenden und an den Pecunia Support zu senden";
+AP127 = "Ein Fehler trat während der letzten Aktion mit der Bank auf. Nutzen Sie das Hilfe Menü für weitere Optionen zur Lösung des Problems, insbesondere die Fehlerdatei und die Aufzeichnung der Kommunikation.";
+AP128 = "Fehler bei der Auftragsausführung";
 
 // Banking setup, migration, encryption, security.
 // AP150..AP199
@@ -296,7 +298,7 @@ AP466 = "letzten Tag des Monats";
 AP467 = "vorletzten Tag des Monats";
 AP468 = "vorvorletzten Tag des Monats";
 
-// Growl messages.
+// Growl/notification center messages.
 // AP500..AP549
 AP500 = "Daten Erzeugung";
 AP501 = "Demo Daten wurden erstellt";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,7 +18,7 @@
  */
 
 #import "BusinessTransactionsController.h"
-#import "LogController.h"
+#import "MessageLog.h"
 
 @implementation BusinessTransactionsController
 

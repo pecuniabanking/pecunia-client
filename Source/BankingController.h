@@ -141,7 +141,6 @@
 - (IBAction)accountMaintenance: (id)sender;
 - (IBAction)updateSupportedTransactions:(id)sender;
 
-- (IBAction)showLog: (id)sender;
 - (IBAction)showAboutPanel: (id)sender;
 - (IBAction)toggleFullscreenIfSupported: (id)sender;
 - (IBAction)toggleDetailsPane: (id)sender;

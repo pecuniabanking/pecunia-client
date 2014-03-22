@@ -52,7 +52,7 @@
 {
     if ([elementName isEqualToString: @"log"]) {
         [parser setDelegate: parent];
-        LogComTrace(level, currentValue);
+        LogComTrace(level, [MessageLog prettyPrintServerMessage: currentValue]);
         return;
     }
 }

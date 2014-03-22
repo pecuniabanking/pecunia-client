@@ -24,41 +24,27 @@
 #import "BankQueryResult.h"
 #import "BankStatement.h"
 #import "BankAccount.h"
-#import "Transfer.h"
 #import "MOAssistant.h"
-#import "TransferResult.h"
-#import "BankingController.h"
-#import "WorkerThread.h"
 #import "User.h"
 #import "BankUser.h"
-#import "Account.h"
-#import "StandingOrder.h"
 #import "HBCIBridge.h"
 #import "Account.h"
 #import "TransactionLimits.h"
+
 #import "Country.h"
 #import "ShortDate.h"
-#import "BankParameter.h"
-#import "ProgressWindowController.h"
 #import "CustomerMessage.h"
-#import "MessageLog.h"
-#import "BankSetupInfo.h"
 #import "TanMediaList.h"
 #import "StatusBarController.h"
 #import "Keychain.h"
 #import "SigningOptionsController.h"
-#import "SigningOption.h"
 #import "CallbackHandler.h"
-#import "SupportedTransactionInfo.h"
-#import "CCSettlementList.h"
-#import "CreditCardSettlement.h"
 #import "MCEMDecimalNumberAdditions.h"
-#import "ResultWindowController.h"
 #import "SystemNotification.h"
 
 static HBCIController *controller = nil;
 
-@implementation HBCIController(private)
+@implementation HBCIController (private)
 
 - (id)init
 {
@@ -73,8 +59,7 @@ static HBCIController *controller = nil;
     bankInfo = [[NSMutableDictionary alloc] initWithCapacity: 10];
     countries = [[NSMutableDictionary alloc] initWithCapacity: 50];
     [self readCountryInfos];
-    resultWindow = [[ResultWindowController alloc] init];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(bankMessageReceived:)
                                                  name: PecuniaInstituteMessageNotification
@@ -97,12 +82,18 @@ static HBCIController *controller = nil;
 
 - (void)startProgress
 {
-    [resultWindow  clear];
+    // TODO: see if we can reuse that in a different way (like showing a progress indicator).
+    MessageLog.log.hasError = NO;
 }
 
 - (void)stopProgress
 {
-    [resultWindow showOnError];
+    // TODO: see if we can reuse that in a different way.
+    if (!MessageLog.log.hasError) {
+        [SystemNotification showStickyMessage: NSLocalizedString(@"AP127", nil)
+                                    withTitle: NSLocalizedString(@"AP128", nil)
+                                      context: nil];
+    }
 }
 
 - (void)readCountryInfos

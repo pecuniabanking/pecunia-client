@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1070" defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -12,7 +12,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <window title="Pecunia" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" wantsToBeColor="NO" visibleAtLaunch="NO" frameAutosaveName="mcmain" animationBehavior="default" id="21" userLabel="Main" customClass="INAppStoreWindow">
+        <window title="Pecunia" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="mcmain" animationBehavior="default" id="21" userLabel="Main" customClass="INAppStoreWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="148" y="114" width="1200" height="700"/>
@@ -193,18 +193,18 @@
                                                             <connections>
                                                                 <binding destination="911" name="hidden" keyPath="selection.iban" id="Xb2-CV-P9n">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <string key="NSValueTransformerName">NSIsNil</string>
                                                                     </dictionary>
                                                                 </binding>
                                                                 <binding destination="911" name="value" keyPath="selection.iban" id="ySJ-0R-bVm">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
@@ -220,11 +220,11 @@
                                                             <connections>
                                                                 <binding destination="911" name="hidden" keyPath="selection.iban" id="hij-OV-sDu">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <string key="NSValueTransformerName">NSIsNil</string>
                                                                     </dictionary>
                                                                 </binding>
@@ -241,17 +241,17 @@
                                                             <connections>
                                                                 <binding destination="911" name="value" keyPath="selection.accountNumber" id="kkf-UZ-f0J">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                     </dictionary>
                                                                 </binding>
                                                                 <binding destination="911" name="hidden" keyPath="selection.iban" id="g7L-a4-yxe">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                                                     </dictionary>
                                                                 </binding>
@@ -268,21 +268,21 @@
                                                             <connections>
                                                                 <binding destination="911" name="hidden2" keyPath="selection.accountNumber" previousBinding="Z24-L1-9ZY" id="Get-Oz-i6d">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <string key="NSValueTransformerName">NSIsNil</string>
                                                                     </dictionary>
                                                                 </binding>
                                                                 <binding destination="911" name="hidden" keyPath="selection.iban" id="Z24-L1-9ZY">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                                                     </dictionary>
                                                                 </binding>
@@ -299,18 +299,18 @@
                                                             <connections>
                                                                 <binding destination="911" name="hidden" keyPath="selection.bic" id="61m-v5-U19">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <string key="NSValueTransformerName">NSIsNil</string>
                                                                     </dictionary>
                                                                 </binding>
                                                                 <binding destination="911" name="value" keyPath="selection.bic" id="Gzo-q2-rNT">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
@@ -326,11 +326,11 @@
                                                             <connections>
                                                                 <binding destination="911" name="hidden" keyPath="selection.bic" id="IKo-U0-SMN">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
-                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
                                                                         <integer key="NSNullPlaceholder" value="1"/>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <string key="NSValueTransformerName">NSIsNil</string>
                                                                     </dictionary>
                                                                 </binding>
@@ -347,11 +347,11 @@
                                                             <connections>
                                                                 <binding destination="911" name="value" keyPath="selection.bankName" id="996">
                                                                     <dictionary key="options">
-                                                                        <string key="NSNullPlaceholder"></string>
-                                                                        <string key="NSNotApplicablePlaceholder"></string>
                                                                         <integer key="NSConditionallySetsEnabled" value="1"/>
-                                                                        <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                                                         <string key="NSNoSelectionPlaceholder"></string>
+                                                                        <string key="NSNotApplicablePlaceholder"></string>
+                                                                        <string key="NSNullPlaceholder"></string>
+                                                                        <integer key="NSRaisesForNotApplicableKeys" value="0"/>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
@@ -373,10 +373,10 @@
                                                                 </binding>
                                                                 <binding destination="911" name="value" keyPath="selection.latestTransferDate" id="6062">
                                                                     <dictionary key="options">
-                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
+                                                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                                     </dictionary>
                                                                 </binding>
                                                             </connections>
@@ -423,12 +423,7 @@ IA
                         <rect key="frame" x="824" y="3" width="100" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="9.999.999,99 €" id="6100">
-                            <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="6105">
-                                <real key="roundingIncrement" value="0.0"/>
-                                <metadata>
-                                    <bool key="localizesFormat" value="YES"/>
-                                </metadata>
-                            </numberFormatter>
+                            <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="6105"/>
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -437,13 +432,8 @@ IA
                     <textField verticalHuggingPriority="750" id="6103" userLabel="Spending Tect">
                         <rect key="frame" x="1021" y="3" width="100" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="9.999.999,99 €" id="6104">
-                            <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," positiveSuffix=" €" negativeSuffix=" €" id="6106">
-                                <real key="roundingIncrement" value="0.0"/>
-                                <metadata>
-                                    <bool key="localizesFormat" value="YES"/>
-                                </metadata>
-                            </numberFormatter>
+                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="9,999,999,99 €" id="6104">
+                            <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="6106"/>
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -858,19 +848,6 @@ CA
                 <menuItem title="Fenster" id="19">
                     <menu key="submenu" title="Fenster" systemMenu="window" id="24">
                         <items>
-                            <menuItem title="Nachrichtenlog anzeigen" keyEquivalent="l" id="1182">
-                                <connections>
-                                    <action selector="showLog:" target="235" id="1184"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Konsolenlog anzeigen" keyEquivalent="k" id="7062">
-                                <connections>
-                                    <action selector="showConsole:" target="235" id="7063"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="1183">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                            </menuItem>
                             <menuItem title="Im Dock ablegen" keyEquivalent="m" id="23">
                                 <connections>
                                     <action selector="performMiniaturize:" target="-1" id="37"/>
@@ -935,6 +912,11 @@ CA
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="comTraceToggle:" target="235" id="Gmk-W2-baZ"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Konsolenlog anzeigen" keyEquivalent="k" id="7062">
+                                <connections>
+                                    <action selector="showConsole:" target="235" id="7063"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -1160,7 +1142,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         </arrayController>
         <userDefaultsController representsSharedInstance="YES" id="6577" userLabel="Shared User Defaults Controller"/>
         <customView id="auX-7g-19I" userLabel="Com Trace Controls" customClass="ComTraceHelper">
-            <rect key="frame" x="0.0" y="0.0" width="65" height="35"/>
+            <rect key="frame" x="0.0" y="0.0" width="65" height="32"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button wantsLayer="YES" id="40V-Vf-9Rp">

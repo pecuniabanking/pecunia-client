@@ -136,8 +136,8 @@
         // -initWithData:encoding: on the other hand checks -[data length]
         NSString *s = [NSString stringWithData: data];
 
-        // Receive log
-        LogComTrace(HBCILogIntern, s);
+        // Receive log.
+        LogComTrace(HBCILogIntern, [MessageLog prettyPrintServerMessage: s]);
 
         if (asyncString == nil) {
             asyncString = [[NSMutableString alloc] init];
@@ -256,7 +256,7 @@
 
     // todo: startSession hier ist nur die erste Näherung
     [[CallbackHandler handler] startSession];
-    LogComTrace(HBCILogIntern, cmd);
+    LogComTrace(HBCILogIntern, [MessageLog prettyPrintServerMessage: cmd]);
     [[outPipe fileHandleForWriting] writeData: [command dataUsingEncoding: NSUTF8StringEncoding]];
     [self receive];
     [[CallbackHandler handler] finishPasswordEntry];
@@ -277,7 +277,7 @@
         return;
     }
     NSString *command = [cmd stringByAppendingString: @".\n"];
-    LogComTrace(HBCILogIntern, cmd);
+    LogComTrace(HBCILogIntern, [MessageLog prettyPrintServerMessage: cmd]);
 
     [[outPipe fileHandleForWriting] writeData: [command dataUsingEncoding: NSUTF8StringEncoding]];
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(getData:) name: NSFileHandleReadCompletionNotification object: [inPipe fileHandleForReading]];
