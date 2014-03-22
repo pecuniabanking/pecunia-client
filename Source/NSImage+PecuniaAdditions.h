@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,10 +19,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "RoundedOuterShadowView.h"
+@interface NSImage (PecuniaAdditions)
 
-@interface StatementDetails : RoundedOuterShadowView
-{
-}
+- (void)drawEtchedInRect: (NSRect)rect;
 
 @end

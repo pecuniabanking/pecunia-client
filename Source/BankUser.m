@@ -375,7 +375,7 @@ static NSMutableDictionary *users = nil;
     [request setEntity: entityDescription];
     NSArray *bankUsers = [context executeFetchRequest: request error: &error];
     if (error) {
-        [[MessageLog log] addMessage: [error localizedDescription] withLevel: LogLevel_Warning];
+        LogError(@"Error retrieving all bank users: %@", error.localizedDescription);
         return nil;
     }
     return bankUsers;
@@ -406,7 +406,7 @@ static NSMutableDictionary *users = nil;
         [request setPredicate: predicate];
         bankUsers = [context executeFetchRequest: request error: &error];
         if (error) {
-            [[MessageLog log] addMessage: [error localizedDescription] withLevel: LogLevel_Warning];
+            LogError(@"Retrieving bank user failed: %@", error.localizedDescription);
             return nil;
         }
         if ([bankUsers count] == 0) {

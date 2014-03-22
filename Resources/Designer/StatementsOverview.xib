@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="StatementsOverviewController">
@@ -16,16 +16,17 @@
                 <outlet property="nassValueField" destination="nFd-8t-glt" id="7MU-td-uFZ"/>
                 <outlet property="originalAmountField" destination="DMT-l9-csg" id="jOe-0B-e8s"/>
                 <outlet property="remoteNameLabel" destination="SaI-Y6-beg" id="ZJ3-Wo-Se0"/>
+                <outlet property="selectedSumField" destination="p7V-Qv-BNy" id="kqT-At-vuj"/>
                 <outlet property="sortControl" destination="dej-bv-9dk" id="5d7-qs-Qow"/>
                 <outlet property="statementDetails" destination="7KT-uq-qe2" id="0y6-Cz-Amw"/>
                 <outlet property="statementTags" destination="Uwg-sx-Y7L" id="9eD-7s-FGe"/>
                 <outlet property="statementsListView" destination="noR-xM-mzX" id="ghS-SE-1AS"/>
-                <outlet property="sumField" destination="p7V-Qv-BNy" id="2GD-wF-8ZL"/>
                 <outlet property="tagButton" destination="WZk-ui-cTv" id="VSG-oV-o51"/>
                 <outlet property="tagViewHost" destination="YTS-rH-MlE" id="1eg-co-UZH"/>
                 <outlet property="tagViewPopup" destination="8gL-ec-So2" id="71Q-n7-zhc"/>
                 <outlet property="tagsController" destination="bvm-R3-EC2" id="fxF-S3-nJO"/>
                 <outlet property="tagsField" destination="cOP-fv-Al2" id="AbE-n2-5DY"/>
+                <outlet property="totalSumField" destination="9eD-Fn-69a" id="gwc-tQ-6uR"/>
                 <outlet property="valueField" destination="vmw-bS-e74" id="EgH-NM-2YD"/>
             </connections>
         </customObject>
@@ -97,10 +98,10 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="noR-xM-mzX" customClass="StatementsListView">
-                                    <rect key="frame" x="20" y="59" width="790" height="197"/>
+                                    <rect key="frame" x="20" y="59" width="790" height="220"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <clipView key="contentView" id="9qI-Rq-Luc">
-                                        <rect key="frame" x="0.0" y="0.0" width="790" height="197"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="790" height="220"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <customView id="xiP-Un-w9y" customClass="PXListDocumentView">
@@ -120,7 +121,7 @@
                                     </scroller>
                                 </scrollView>
                                 <searchField verticalHuggingPriority="750" id="LSB-Ef-GKd">
-                                    <rect key="frame" x="626" y="267" width="184" height="22"/>
+                                    <rect key="frame" x="626" y="287" width="184" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                     <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="YO2-HN-7s3">
                                         <font key="font" metaFont="system"/>
@@ -132,7 +133,7 @@
                                     </connections>
                                 </searchField>
                                 <segmentedControl verticalHuggingPriority="750" id="dej-bv-9dk">
-                                    <rect key="frame" x="125" y="269" width="297" height="18"/>
+                                    <rect key="frame" x="125" y="289" width="297" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <segmentedCell key="cell" controlSize="small" alignment="left" style="roundRect" trackingMode="selectOne" id="OAO-dC-TG7">
                                         <font key="font" metaFont="smallSystem"/>
@@ -149,7 +150,7 @@
                                     </connections>
                                 </segmentedControl>
                                 <textField verticalHuggingPriority="750" id="AtL-ug-dNj">
-                                    <rect key="frame" x="19" y="270" width="104" height="19"/>
+                                    <rect key="frame" x="19" y="292" width="104" height="19"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sortieren nach" id="qxi-EU-6Y3">
                                         <font key="font" size="13" name="HelveticaNeue-Light"/>
@@ -166,22 +167,40 @@
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField verticalHuggingPriority="750" id="p7V-Qv-BNy">
+                                <textField verticalHuggingPriority="750" id="p7V-Qv-BNy" userLabel="Selected Sum">
                                     <rect key="frame" x="683" y="11" width="103" height="23"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="-300.000,00" usesSingleLineMode="YES" id="f0G-EH-xnh">
-                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="Vug-JE-Mov">
-                                            <real key="roundingIncrement" value="0.0"/>
-                                            <metadata>
-                                                <bool key="localizesFormat" value="YES"/>
-                                            </metadata>
-                                        </numberFormatter>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="-300,000,00" usesSingleLineMode="YES" id="f0G-EH-xnh">
+                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="Vug-JE-Mov"/>
                                         <font key="font" size="16" name="HelveticaNeue"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                     <connections>
+                                        <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selectedObjects" id="cMo-59-FHT">
+                                            <dictionary key="options">
+                                                <string key="NSValueTransformerName">ZeroCountToBoolValueTransformer</string>
+                                            </dictionary>
+                                        </binding>
                                         <binding destination="G0H-Vc-kxE" name="value" keyPath="selectedObjects.@sum.value" id="4MB-v9-kmz"/>
+                                    </connections>
+                                </textField>
+                                <textField verticalHuggingPriority="750" id="9eD-Fn-69a" userLabel="Total Sum">
+                                    <rect key="frame" x="683" y="11" width="103" height="23"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="-300,000,00" usesSingleLineMode="YES" id="rxG-op-cnf">
+                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="BVJ-de-cdT"/>
+                                        <font key="font" size="16" name="HelveticaNeue"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="G0H-Vc-kxE" name="value" keyPath="arrangedObjects.@sum.value" id="aCg-ZO-KqT"/>
+                                        <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selectedObjects" id="Vhj-0U-hgs">
+                                            <dictionary key="options">
+                                                <string key="NSValueTransformerName">NonZeroCountToBoolValueTransformer</string>
+                                            </dictionary>
+                                        </binding>
                                     </connections>
                                 </textField>
                                 <box autoresizesSubviews="NO" verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="zb6-99-pb2">
@@ -208,6 +227,13 @@
                                         <color key="textColor" red="0.48469388479999997" green="0.47359928489999997" blue="0.42747342589999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
+                                    <connections>
+                                        <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selectedObjects" id="7jq-AD-ZEm">
+                                            <dictionary key="options">
+                                                <string key="NSValueTransformerName">ZeroCountToBoolValueTransformer</string>
+                                            </dictionary>
+                                        </binding>
+                                    </connections>
                                 </textField>
                                 <textField verticalHuggingPriority="750" id="b5j-fP-1pG" userLabel="Turnovers Text">
                                     <rect key="frame" x="437" y="16" width="59" height="15"/>
@@ -241,8 +267,8 @@
                                     <connections>
                                         <binding destination="G0H-Vc-kxE" name="value" keyPath="selectedObjects.@count" id="H7Z-dR-AQM">
                                             <dictionary key="options">
-                                                <string key="NSNullPlaceholder">0</string>
                                                 <string key="NSNoSelectionPlaceholder">0</string>
+                                                <string key="NSNullPlaceholder">0</string>
                                             </dictionary>
                                         </binding>
                                     </connections>
@@ -257,6 +283,11 @@
                                     </textFieldCell>
                                 </textField>
                             </subviews>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="leftMargin">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </customView>
                     </subviews>
                 </customView>
@@ -284,10 +315,10 @@
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.categoriesDescription" id="szx-0S-6aA">
                                     <dictionary key="options">
+                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -320,12 +351,12 @@ IA
                                         <connections>
                                             <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.purpose" id="bu9-7v-AvT">
                                                 <dictionary key="options">
-                                                    <string key="NSMultipleValuesPlaceholder">n/a</string>
+                                                    <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                     <bool key="NSConditionallySetsEditable" value="NO"/>
+                                                    <string key="NSMultipleValuesPlaceholder">n/a</string>
                                                     <string key="NSNullPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                                    <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                 </dictionary>
                                             </binding>
                                         </connections>
@@ -382,13 +413,8 @@ IA
                         <textField focusRingType="none" verticalHuggingPriority="750" id="vmw-bS-e74">
                             <rect key="frame" x="588" y="228" width="190" height="37"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" focusRingType="none" alignment="right" title="-100.000,00" bezelStyle="round" id="J1A-e3-Hrz">
-                                <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="5Hx-zy-vGp">
-                                    <real key="roundingIncrement" value="0.0"/>
-                                    <metadata>
-                                        <bool key="localizesFormat" value="YES"/>
-                                    </metadata>
-                                </numberFormatter>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" focusRingType="none" alignment="right" title="-100,000,00" bezelStyle="round" id="J1A-e3-Hrz">
+                                <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="5Hx-zy-vGp"/>
                                 <font key="font" size="30" name="HelveticaNeue-Light"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -396,10 +422,10 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.value" id="CKj-E8-k1X">
                                     <dictionary key="options">
+                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="0"/>
                                         <integer key="NSNoSelectionPlaceholder" value="0"/>
                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -937,13 +963,8 @@ IA
                         <textField verticalHuggingPriority="750" id="nFd-8t-glt">
                             <rect key="frame" x="683" y="200" width="95" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-200.000,00" usesSingleLineMode="YES" bezelStyle="round" id="E9r-vR-xqi">
-                                <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="3l3-ls-RXt">
-                                    <real key="roundingIncrement" value="0.0"/>
-                                    <metadata>
-                                        <bool key="localizesFormat" value="YES"/>
-                                    </metadata>
-                                </numberFormatter>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-200,000,00" usesSingleLineMode="YES" bezelStyle="round" id="E9r-vR-xqi">
+                                <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="3l3-ls-RXt"/>
                                 <font key="font" size="14" name="HelveticaNeue-Light"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -951,10 +972,10 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.nassValue" id="X9V-VV-6CQ">
                                     <dictionary key="options">
+                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="0"/>
                                         <integer key="NSNoSelectionPlaceholder" value="0"/>
                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -962,13 +983,8 @@ IA
                         <textField verticalHuggingPriority="750" id="DMT-l9-csg">
                             <rect key="frame" x="300" y="181" width="85" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-200.000,00" usesSingleLineMode="YES" bezelStyle="round" id="nmJ-dP-EBc">
-                                <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="8Ec-Cc-UCj">
-                                    <real key="roundingIncrement" value="0.0"/>
-                                    <metadata>
-                                        <bool key="localizesFormat" value="YES"/>
-                                    </metadata>
-                                </numberFormatter>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-200,000,00" usesSingleLineMode="YES" bezelStyle="round" id="nmJ-dP-EBc">
+                                <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="8Ec-Cc-UCj"/>
                                 <font key="font" size="13" name="HelveticaNeue-Light"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -982,9 +998,9 @@ IA
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.origValue" id="tcO-LF-pxL">
                                     <dictionary key="options">
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                         <string key="NSMultipleValuesPlaceholder">n/a</string>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1000,16 +1016,16 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.remoteAccount" id="g5J-i8-Vlb">
                                     <dictionary key="options">
+                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
                                     </dictionary>
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement.remoteIBAN" id="Zch-3a-Qs4">
                                     <dictionary key="options">
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <string key="NSValueTransformerName">NSIsNotNil</string>
                                     </dictionary>
                                 </binding>
@@ -1031,10 +1047,10 @@ IA
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.remoteBankCode" id="Yc5-fW-m46">
                                     <dictionary key="options">
+                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1050,11 +1066,11 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="hidden2" keyPath="selection.statement.ccNumberUms" previousBinding="wTs-s3-j5a" id="4Yy-ha-k95">
                                     <dictionary key="options">
-                                        <string key="NSValueTransformerName">NSIsNotNil</string>
-                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
-                                        <integer key="NSNullPlaceholder" value="-1"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                        <integer key="NSNullPlaceholder" value="-1"/>
+                                        <string key="NSValueTransformerName">NSIsNotNil</string>
                                     </dictionary>
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement.remoteBIC" id="wTs-s3-j5a">
@@ -1076,11 +1092,11 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="hidden2" keyPath="selection.statement.ccNumberUms" previousBinding="EKW-ff-qJj" id="syb-Ld-Syp">
                                     <dictionary key="options">
-                                        <string key="NSValueTransformerName">NSIsNotNil</string>
-                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
-                                        <integer key="NSNullPlaceholder" value="-1"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                        <integer key="NSNullPlaceholder" value="-1"/>
+                                        <string key="NSValueTransformerName">NSIsNotNil</string>
                                     </dictionary>
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement.remoteIBAN" id="EKW-ff-qJj">
@@ -1103,11 +1119,11 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.date" id="K2O-2g-n6Q">
                                     <dictionary key="options">
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1133,11 +1149,11 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.valutaDate" id="O9b-Sb-wzA">
                                     <dictionary key="options">
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1153,11 +1169,11 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement.remoteIBAN" id="TNF-bA-8Rw">
                                     <dictionary key="options">
-                                        <string key="NSValueTransformerName">NSIsNil</string>
-                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                        <integer key="NSNullPlaceholder" value="1"/>
+                                        <string key="NSValueTransformerName">NSIsNil</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1173,11 +1189,11 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement.ccNumberUms" id="6RV-ie-SvW">
                                     <dictionary key="options">
-                                        <string key="NSValueTransformerName">NSIsNil</string>
-                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                        <integer key="NSNullPlaceholder" value="1"/>
+                                        <string key="NSValueTransformerName">NSIsNil</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1193,11 +1209,11 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.remoteIBAN" id="mgC-AM-u8q">
                                     <dictionary key="options">
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1218,11 +1234,11 @@ IA
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement.remoteBIC" previousBinding="OBh-dd-YCA" id="kRL-kY-G9c">
                                     <dictionary key="options">
-                                        <string key="NSValueTransformerName">NSIsNil</string>
-                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                        <integer key="NSNullPlaceholder" value="1"/>
+                                        <string key="NSValueTransformerName">NSIsNil</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1238,12 +1254,12 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.remoteBIC" id="yva-TC-fRN">
                                     <dictionary key="options">
+                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                         <string key="NSMultipleValuesPlaceholder">n/a</string>
                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
-                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1297,9 +1313,9 @@ IA
                                 <action selector="attachmentClicked:" target="-2" id="yQS-9A-HOq"/>
                                 <binding destination="G0H-Vc-kxE" name="editable" keyPath="selectionIndexes" id="nND-Up-mVa">
                                     <dictionary key="options">
-                                        <string key="NSValueTransformerName">ExactlyOneToBoolValueTransformer</string>
-                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                        <string key="NSValueTransformerName">ExactlyOneToBoolValueTransformer</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1312,9 +1328,9 @@ IA
                                 <action selector="attachmentClicked:" target="-2" id="Ioo-Ih-PaY"/>
                                 <binding destination="G0H-Vc-kxE" name="editable" keyPath="selectionIndexes" id="Okd-Px-3CN">
                                     <dictionary key="options">
-                                        <string key="NSValueTransformerName">ExactlyOneToBoolValueTransformer</string>
-                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                        <string key="NSValueTransformerName">ExactlyOneToBoolValueTransformer</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1327,9 +1343,9 @@ IA
                                 <action selector="attachmentClicked:" target="-2" id="Vqw-Fa-IPr"/>
                                 <binding destination="G0H-Vc-kxE" name="editable" keyPath="selectionIndexes" id="fb8-0f-0ml">
                                     <dictionary key="options">
-                                        <string key="NSValueTransformerName">ExactlyOneToBoolValueTransformer</string>
-                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                        <string key="NSValueTransformerName">ExactlyOneToBoolValueTransformer</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1342,9 +1358,9 @@ IA
                                 <action selector="attachmentClicked:" target="-2" id="bkb-MI-RPm"/>
                                 <binding destination="G0H-Vc-kxE" name="editable" keyPath="selectionIndexes" id="2yk-QK-eaP">
                                     <dictionary key="options">
-                                        <string key="NSValueTransformerName">ExactlyOneToBoolValueTransformer</string>
-                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                        <string key="NSValueTransformerName">ExactlyOneToBoolValueTransformer</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1369,11 +1385,11 @@ IA
                                 <action selector="showTagPopup:" target="-2" id="Y2b-E3-83l"/>
                                 <binding destination="G0H-Vc-kxE" name="enabled" keyPath="selection.statement" id="qhX-MQ-jfD">
                                     <dictionary key="options">
-                                        <string key="NSValueTransformerName">NSIsNotNil</string>
-                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
-                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
-                                        <integer key="NSNullPlaceholder" value="0"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                        <integer key="NSNullPlaceholder" value="0"/>
+                                        <string key="NSValueTransformerName">NSIsNotNil</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1384,11 +1400,11 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement" id="HXz-3p-d62">
                                     <dictionary key="options">
-                                        <string key="NSValueTransformerName">NSIsNil</string>
-                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                        <integer key="NSNullPlaceholder" value="1"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                        <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                        <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                        <integer key="NSNullPlaceholder" value="1"/>
+                                        <string key="NSValueTransformerName">NSIsNil</string>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1409,10 +1425,10 @@ IA
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.remoteName" id="bV4-BI-cKX">
                                     <dictionary key="options">
-                                        <string key="NSNullPlaceholder" base64-UTF8="YES">
+                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
+                                        <string key="NSNullPlaceholder" base64-UTF8="YES">
 IA
 </string>
                                     </dictionary>
@@ -1435,10 +1451,10 @@ IA
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.ccNumberUms" id="oV6-Gs-WAb">
                                     <dictionary key="options">
-                                        <string key="NSNullPlaceholder" base64-UTF8="YES">
+                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                        <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
+                                        <string key="NSNullPlaceholder" base64-UTF8="YES">
 IA
 </string>
                                     </dictionary>
@@ -1462,11 +1478,11 @@ IA
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.docDate" id="iB6-kq-NZF">
                                     <dictionary key="options">
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
+                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
-                                        <string key="NSMultipleValuesPlaceholder">n/a</string>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                     </dictionary>
                                 </binding>
                             </connections>
@@ -1482,8 +1498,8 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement.docDate" id="L0T-QM-HtY">
                                     <dictionary key="options">
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                     </dictionary>
                                 </binding>
@@ -1500,8 +1516,8 @@ IA
                             <connections>
                                 <binding destination="G0H-Vc-kxE" name="hidden" keyPath="selection.statement.docDate" id="5RB-me-Fb4">
                                     <dictionary key="options">
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <string key="NSValueTransformerName">NSIsNil</string>
                                     </dictionary>
                                 </binding>
@@ -1523,12 +1539,12 @@ IA
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.isSettled" id="UAi-rb-fxR">
                                     <dictionary key="options">
+                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                         <bool key="NSConditionallySetsEnabled" value="NO"/>
                                         <integer key="NSMultipleValuesPlaceholder" value="0"/>
-                                        <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                        <integer key="NSNullPlaceholder" value="0"/>
-                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
                                         <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                        <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                        <integer key="NSNullPlaceholder" value="0"/>
                                         <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                     </dictionary>
                                 </binding>
@@ -1551,16 +1567,24 @@ IA
                                 </binding>
                                 <binding destination="G0H-Vc-kxE" name="value" keyPath="selection.statement.origCurrency" id="i28-Ih-oG4">
                                     <dictionary key="options">
-                                        <string key="NSNullPlaceholder">€</string>
                                         <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                        <string key="NSNoSelectionPlaceholder">€</string>
                                         <string key="NSMultipleValuesPlaceholder">€</string>
+                                        <string key="NSNoSelectionPlaceholder">€</string>
+                                        <string key="NSNullPlaceholder">€</string>
                                         <string key="NSValueTransformerName">CurrencyValueTransformer</string>
                                     </dictionary>
                                 </binding>
                             </connections>
                         </textField>
                     </subviews>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="leftMargin">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="topMargin">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </customView>
             </subviews>
             <holdingPriorities>

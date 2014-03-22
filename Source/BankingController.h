@@ -29,6 +29,7 @@
 @class EDSideBar;
 @class CategoryView;
 @class DockIconController;
+@class ComTraceHelper;
 
 @class HomeScreenController;
 @class StatementsOverviewController;
@@ -46,6 +47,7 @@
 @interface BankingController : NSObject
 {
     IBOutlet INAppStoreWindow      *mainWindow;
+
     IBOutlet EDSideBar              *sidebar;
     IBOutlet NSTabView              *mainTabView;
     IBOutlet MCEMTreeController     *categoryController;
@@ -62,6 +64,7 @@
     IBOutlet NSView                 *sectionPlaceholder;
     IBOutlet NSView                 *rightPane;
     IBOutlet NSButton               *refreshButton;
+    IBOutlet ComTraceHelper         *comTracePanel;
 
     // About panel, different xib file.
     IBOutlet NSPanel       *aboutWindow;
@@ -71,6 +74,7 @@
     IBOutlet NSTextField   *copyrightText;
 
     IBOutlet NSMenuItem *developerMenu;
+    IBOutlet NSMenuItem *comTraceMenuItem;
 
     IBOutlet NSButton *toggleDetailsButton;
 
@@ -137,7 +141,6 @@
 - (IBAction)accountMaintenance: (id)sender;
 - (IBAction)updateSupportedTransactions:(id)sender;
 
-- (IBAction)showLog: (id)sender;
 - (IBAction)showAboutPanel: (id)sender;
 - (IBAction)toggleFullscreenIfSupported: (id)sender;
 - (IBAction)toggleDetailsPane: (id)sender;

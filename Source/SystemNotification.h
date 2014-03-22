@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,12 +17,13 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
-#import "RoundedOuterShadowView.h"
+#import <Growl/Growl.h>
 
-@interface StatementDetails : RoundedOuterShadowView
-{
-}
+@interface SystemNotification : NSObject <GrowlApplicationBridgeDelegate, NSUserNotificationCenterDelegate>
+
++ (void)showMessage: (NSString *)message withTitle: (NSString *)title context: (NSString *)context;
++ (void)showStickyMessage: (NSString *)message withTitle: (NSString *)title context: (NSString *)context;
 
 @end

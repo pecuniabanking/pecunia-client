@@ -28,7 +28,6 @@
 #import "LocalSettingsController.h"
 #import "MOAssistant.h"
 
-#import "LogController.h"
 #import "ExportController.h"
 #import "AccountDefController.h"
 #import "TimeSliceManager.h"
@@ -72,6 +71,7 @@
 #include "ColorPopup.h"
 #import "PecuniaSplitView.h"
 #import "SynchronousScrollView.h"
+#import "ComTraceHelper.h"
 
 #import "NSColor+PecuniaAdditions.h"
 #import "NSDictionary+PecuniaAdditions.h"
@@ -80,9 +80,6 @@
 #import "BWGradientBox.h"
 #import "EDSideBar.h"
 #import "INAppStoreWindow.h"
-#import "ZipFile.h"
-#import "ZipWriteStream.h"
-#import "ZipException.h"
 
 #import "Tag.h"
 #import "User.h"
@@ -109,7 +106,6 @@ static BankingController *bankinControllerInstance;
     NSManagedObjectContext *managedObjectContext;
     NSManagedObjectModel   *model;
     NewBankUserController  *bankUserController;
-    LogController          *logController;
     DockIconController     *dockIconController;
 
     BOOL restart;
@@ -169,7 +165,6 @@ static BankingController *bankinControllerInstance;
             [alert runModal];
             [NSApp terminate: self];
         }
-        logController = [LogController logController];
     }
 
     LogLeave;
@@ -215,8 +210,20 @@ static BankingController *bankinControllerInstance;
 {
     LogEnter;
 
+    // After the LogEnter call our log is set up properly. Now is a good time to clean up any left over
+    // in case Pecunia did not shut down properly during the last run.
+    [MessageLog.log cleanUp];
+
     mainWindow.centerFullScreenButton = NO;
     mainWindow.titleBarHeight = 40.0;
+    [mainWindow.titleBarView addSubview: comTracePanel];
+    NSRect frame = comTracePanel.bounds;
+    frame.origin.x = NSWidth(mainWindow.titleBarView.bounds) - NSWidth(frame);
+    comTracePanel.frame = frame;
+
+    [MessageLog.log addObserver: self forKeyPath: @"isComTraceActive" options: 0 context: nil];
+
+    comTracePanel.autoresizingMask = NSViewMinXMargin;
     //mainWindow.titleBarStartColor = [NSColor colorWithDeviceWhite: 60 / 255.0 alpha: 1];
     //mainWindow.titleBarEndColor = [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1];
 
@@ -290,6 +297,7 @@ static BankingController *bankinControllerInstance;
 #endif
 
     refreshButton.layer.anchorPoint = CGPointMake(0.50, 0.48);
+    comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
 
     LogLeave;
 }
@@ -449,16 +457,6 @@ static BankingController *bankinControllerInstance;
     [self logSummary: @"Transfer" withMessage: @"transfers"];
     [self logSummary: @"TransferTemplate" withMessage: @"transfer templates"];
 
-    // General user and account information.
-    //NSArray *users = [BankUser allUsers];
-    //NSMutableString *text = [NSMutableString string];
-
-    /*
-    for (BankUser *user in users) {
-        [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
-    }
-    LogInfo(@"Bank users: {\n%@}", text);
-    */
 }
 
 - (void)publishContext
@@ -906,14 +904,6 @@ static BankingController *bankinControllerInstance;
         }
     }
 
-    // Show log if wanted.
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL           showLog = [defaults boolForKey: @"logForBankQuery"];
-    if (showLog) {
-        [logController showWindow: self];
-        [[logController window] orderFront: self];
-    }
-
     // Prepare UI.
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: NO];
     StatusBarController *sc = [StatusBarController controller];
@@ -1348,73 +1338,18 @@ static BankingController *bankinControllerInstance;
         [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
     }
     LogInfo(@"Bank users: {\n%@}", text);
-    
-    [MessageLog flush];
 
-    NSURL* logURL = MessageLog.currentLogFile;
-
-    // It's a weird oversight that there's no unified way of sending a mail to a given address with an attachment.
-    // That holds true at least until 10.8 where we finally have sharing services for that.
-    if (floor(NSAppKitVersionNumber) < NSAppKitVersionNumber10_8) {
-        // The least comfortable way.
-        NSString *mailtoLink = [NSString stringWithFormat: @"mailto:support@pecuniabanking.de?subject=%@&body=%@%@",
-                                NSLocalizedString(@"AP123", nil),
-                                NSLocalizedString(@"AP121", nil),
-                                NSLocalizedString(@"AP122", nil)];
-        NSURL *url = [NSURL URLWithString: (NSString *)
-                      CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)mailtoLink,
-                                                                                NULL, NULL, kCFStringEncodingUTF8))];
-
-        [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs: @[logURL]];
-        [[NSWorkspace sharedWorkspace] openURL: url];
-    } else {
-        NSAttributedString* textAttributedString = [[NSAttributedString alloc] initWithString: NSLocalizedString(@"AP121", nil)];
-
-        NSSharingService* mailShare = [NSSharingService sharingServiceNamed: NSSharingServiceNameComposeEmail];
-        NSMutableArray* shareItems = [NSMutableArray arrayWithObjects: textAttributedString, nil];
-        if (logURL != nil) {
-            BOOL savedAsZip = NO;
-
-            @try {
-                // We use a fixed zip file name by intention, to avoid polluting the log folder with many zip files.
-                NSURL *zip = [MessageLog.logFolder URLByAppendingPathComponent: @"Pecunia Log.zip"];
-                ZipFile *zipFile = [[ZipFile alloc] initWithFileName: zip.path
-                                                                mode: ZipFileModeCreate];
-                ZipWriteStream *stream= [zipFile writeFileInZipWithName: [logURL.path lastPathComponent]
-                                                       compressionLevel: ZipCompressionLevelBest];
-                NSData *logData = [NSData dataWithContentsOfURL: logURL];
-                [stream writeData: logData];
-                [stream finishedWriting];
-                [zipFile close];
-
-                [shareItems addObject: zip];
-                savedAsZip = YES;
-            }
-            @catch (ZipException *exception) {
-                LogError(@"Could not create zipped log (%@).", logURL);
-            }
-
-            if (!savedAsZip) {
-                [shareItems addObject: logURL];
-            }
-        }
-
-        if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
-            // Mavericks. The best solution.
-            mailShare.subject = NSLocalizedString(@"AP123", nil);
-            mailShare.recipients = @[@"support@pecuniabanking.de"];
-        } else {
-            // Cannot set a mail subject or receiver before OS X 10.9 <sigh>.
-            [shareItems insertObject: NSLocalizedString(@"AP124", nil) atIndex: 0];
-        }
-        [mailShare performWithItems: shareItems];
-    }
+    [MessageLog.log sendLog];
 }
 
 - (IBAction)openLogFolder: (id)sender
 {
-    NSURL* logURL = MessageLog.currentLogFile;
-    [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs: @[logURL]];
+    [MessageLog.log openLogFolder];
+}
+
+- (IBAction)comTraceToggle: (id)sender
+{
+    [comTracePanel toggleComTrace: sender];
 }
 
 #pragma mark - Account management
@@ -1930,16 +1865,6 @@ static BankingController *bankinControllerInstance;
     return YES;
 }
 
-- (IBAction)showLog: (id)sender
-{
-    LogEnter;
-
-    [logController setLogLevel: LogLevel_Verbous];
-    [logController showWindow: self];
-
-    LogLeave;
-}
-
 - (BankAccount *)selectedBankAccount
 {
     LogEnter;
@@ -2049,8 +1974,9 @@ static BankingController *bankinControllerInstance;
     if (account != nil) {
         if (account.iban == nil || account.bic == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP101", nil),
-                            [NSString stringWithFormat: NSLocalizedString(@"AP77", nil), account.accountNumber],
-                            NSLocalizedString(@"AP1", nil), nil, nil);
+                            NSLocalizedString(@"AP77", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil,
+                            account.accountNumber);
             return;
         }
     }
@@ -2077,8 +2003,9 @@ static BankingController *bankinControllerInstance;
     if (account != nil) {
         if (account.iban == nil || account.bic == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP101", nil),
-                            [NSString stringWithFormat: NSLocalizedString(@"AP77", nil), account.accountNumber],
-                            NSLocalizedString(@"AP1", nil), nil, nil);
+                            NSLocalizedString(@"AP77", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil,
+                            account.accountNumber);
             return;
         }
     }
@@ -3272,6 +3199,8 @@ static BankingController *bankinControllerInstance;
         [self switchMainPage: 0];
     }
 
+    [mainVSplit restorePosition];
+
     // Display main window.
     [mainWindow display];
     [mainWindow makeKeyAndOrderFront: self];
@@ -3325,6 +3254,9 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     shuttingDown = YES;
+
+    [mainVSplit savePosition];
+    MessageLog.log.isComTraceActive = NO; // If that was active it will delete the trace log file.
 
     [LocalSettingsController.sharedSettings setInteger: sidebar.selectedIndex forKey: @"activePage"];
 
@@ -3391,6 +3323,7 @@ static BankingController *bankinControllerInstance;
 		}
 	}
 
+    [MessageLog.log cleanUp];
     LogLeave;
 }
 
@@ -3578,6 +3511,16 @@ static BankingController *bankinControllerInstance;
         [accountsView setNeedsDisplay: YES];
         return;
     }
+
+    if ([keyPath isEqualToString: @"isComTraceActive"]) {
+        if (MessageLog.log.isComTraceActive) {
+            comTraceMenuItem.title = NSLocalizedString(@"AP223", nil);
+        } else {
+            comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
+        }
+        return;
+    }
+
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 

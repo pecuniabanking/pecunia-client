@@ -98,9 +98,13 @@ AP118 = "Datei auswählen";
 AP119 = "Klicken, um eine Datei auszuwählen. Dateien und URLs können auch direkt hierher gezogen werden";
 AP120 = "Klicken, um den Anhang anzusehen";
 AP121 = "-- Hier bitte eine kurze Beschreibung des Problems eingeben:\n\n";
-AP122 = "-- Hier bitte die Logdatei anhängen, z.B. durch ziehen vom Finder hierher.\n-- Ein Finder Fenster wurde dazu geöffnet.";
+AP122 = "-- Hier bitte die gepackten Logdatei(en) anhängen, z.B. durch ziehen vom Finder hierher. Verwenden Sie dazu die ausgewählten Dateien in dem Finder Fenster, das gerade geöffnet wurde.";
 AP123 = "Pecunia Fehlerbericht";
 AP124 = "Mail bitte an die Adresse support@pecuniabanking.de senden.\n\n";
+AP125 = "Aufzeichnung der Kommunikation zwischen Bank und Pecunia starten. Dieser Mittschnitt kann zur Fehleranalyse an den Pecunia Support geschickt werden.";
+AP126 = "Es wird derzeit die Kommunkation mit der Bank zur Fehleranalyse aufgezeichnet. Klicken Sie hier, um den Nachrichtenmittschnitt zu beenden und an den Pecunia Support zu senden";
+AP127 = "Ein Fehler trat während der letzten Aktion mit der Bank auf. Nutzen Sie das Hilfe Menü für weitere Optionen zur Lösung des Problems, insbesondere die Fehlerdatei und die Aufzeichnung der Kommunikation.";
+AP128 = "Fehler bei der Auftragsausführung";
 
 // Banking setup, migration, encryption, security.
 // AP150..AP199
@@ -157,6 +161,8 @@ AP218 = "Es wurden %d neue Umsätze geladen";
 AP219 = "Kontoumsätze holen...";
 AP220 = "Keine Kontenabfrage möglich";
 AP221 = "Kreditkarte:";
+AP222 = "Kommunikationsmitschnitt starten";
+AP223 = "Kommunikationsmitschnitt beenden";
 
 // Categories
 // AP250..AP349
@@ -292,11 +298,14 @@ AP466 = "letzten Tag des Monats";
 AP467 = "vorletzten Tag des Monats";
 AP468 = "vorvorletzten Tag des Monats";
 
-// Growl messages.
+// Growl/notification center messages.
 // AP500..AP549
 AP500 = "Daten Erzeugung";
 AP501 = "Demo Daten wurden erstellt";
 AP502 = "Nachricht der Bank ";
+AP503 = "Fehlersuche";
+AP504 = "Der Kommunikationsmittschnitt wurde gestartet";
+AP505 = "Der Kommunikationsmittschnitt wurde beendet und eine E-Mail zum Versand vorbereitet";
 
 // Category assignments.
 // AP550..AP599

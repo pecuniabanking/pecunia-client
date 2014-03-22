@@ -619,7 +619,7 @@
     NSString *fileName = [NSString stringWithFormat: @"%@/%@.plist", MOAssistant.assistant.importerDir, settingName];
     currentSettings = [NSKeyedUnarchiver unarchiveObjectWithFile: fileName];
     if (currentSettings == nil) {
-        [[MessageLog log] addMessage: [NSString stringWithFormat: @"Import settings file not found: %@", fileName] withLevel: LogLevel_Warning];
+        LogWarning(@"Import settings file not found: %@", fileName);
         NSRunAlertPanel(NSLocalizedString(@"AP619", nil),
                         NSLocalizedString(@"AP620", nil),
                         NSLocalizedString(@"AP1", nil),
@@ -735,7 +735,6 @@
 {
     NSDate     *minDate = nil;
     NSDate     *maxDate = nil;
-    MessageLog *log = [MessageLog log];
     NSUInteger errorCount = 0;
 
     @synchronized(dateFormatter) {
@@ -822,14 +821,12 @@
                                 }
                                 ShortDate *date = [ShortDate dateWithDate: object];
                                 if (date.year < 1970 || date.year > 2100) {
-                                    [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, date is out of bounds: %@",
-                                                      file, index, field] withLevel: LogLevel_Error];
+                                    LogError(@"File: %@\n\tLine: %lu, date is out of bounds: %@", file, index, field);
                                     errorCount++;
                                     object = nil;
                                 }
                             } else {
-                                [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, date is invalid: %@",
-                                                  file, index, field] withLevel: LogLevel_Error];
+                                LogError(@"File: %@\n\tLine: %lu, date is invalid: %@", file, index, field);
                                 errorCount++;
                                 object = nil;
                             }
@@ -837,8 +834,7 @@
                             if ([property isEqualToString: @"value"]) {
                                 object = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: field] decimalValue]];
                                 if ([object isEqualTo: [NSDecimalNumber notANumber]]) {
-                                    [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, value is not a number: %@",
-                                                      file, index, field] withLevel: LogLevel_Error];
+                                    LogError(@"File: %@\n\tLine: %lu, value is not a number: %@", file, index, field);
                                     errorCount++;
                                     object = nil;
                                 } else {
@@ -861,13 +857,13 @@
                                         entry[property] = [entry[property] decimalNumberByAdding: object];
                                     } else {
                                         errorCount++;
-                                        [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, multiple fields are set to the same import type but cannot be combined: %@",
-                                                          file, index, property] withLevel: LogLevel_Error];
+                                        LogError(@"File: %@\n\tLine: %lu, multiple fields are set to the same import type but cannot be combined: %@",
+                                                 file, index, property);
                                     }
                                 } else {
                                     errorCount++;
-                                    [log addMessage: [NSString stringWithFormat: @"File: %@\n\tLine: %lu, multiple fields are set to the same import type but have different types: %@",
-                                                      file, index, property] withLevel: LogLevel_Error];
+                                    LogError(@"File: %@\n\tLine: %lu, multiple fields are set to the same import type but have different types: %@",
+                                             file, index, property);
                                 }
                             }
                         }

@@ -135,7 +135,6 @@ extern void *UserDefaultsBindingContext;
     tagsField.datasource = statementTags;
     tagsField.defaultFont = [NSFont fontWithName: PreferenceController.popoverFontName size: 10];
     tagsField.canCreateNewTags = YES;
-
 }
 
 - (IBAction)showTagPopup: (id)sender
@@ -483,10 +482,15 @@ extern void *UserDefaultsBindingContext;
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
     [nassValueField setNeedsDisplay];
 
-    formatter = [sumField.cell formatter];
+    formatter = [selectedSumField.cell formatter];
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
-    [sumField setNeedsDisplay];
+    [selectedSumField setNeedsDisplay];
+
+    formatter = [totalSumField.cell formatter];
+    [formatter setTextAttributesForPositiveValues: positiveAttributes];
+    [formatter setTextAttributesForNegativeValues: negativeAttributes];
+    [totalSumField setNeedsDisplay];
 
     formatter = [originalAmountField.cell formatter];
     [formatter setTextAttributesForPositiveValues: positiveAttributes];

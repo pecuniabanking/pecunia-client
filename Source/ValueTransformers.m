@@ -118,6 +118,44 @@ static NSMutableDictionary *cache;
 
 //----------------------------------------------------------------------------------------------------------------------
 
+@implementation ZeroCountToBoolValueTransformer
+
++ (BOOL)allowsReverseTransformation
+{
+    return NO;
+}
+
+- (id)transformedValue: (id)value
+{
+    if ([value count] == 0) {
+        return @YES;
+    }
+    return @NO;
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+
+@implementation NonZeroCountToBoolValueTransformer
+
++ (BOOL)allowsReverseTransformation
+{
+    return NO;
+}
+
+- (id)transformedValue: (id)value
+{
+    if ([value count] > 0) {
+        return @YES;
+    }
+    return @NO;
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+
 @implementation RemoveWhitespaceTransformer
 
 + (Class)transformedValueClass
