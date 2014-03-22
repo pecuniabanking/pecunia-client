@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="StandingOrderController">
@@ -30,11 +30,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
         <customView id="1" customClass="TransfersBackgroundView">
-            <rect key="frame" x="0.0" y="0.0" width="1342" height="788"/>
+            <rect key="frame" x="0.0" y="0.0" width="1199" height="788"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView wantsLayer="YES" id="553" userLabel="Waste Basket" customClass="DeleteOrderTargetView">
-                    <rect key="frame" x="1263" y="639" width="59" height="75"/>
+                    <rect key="frame" x="1120" y="639" width="59" height="75"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <shadow key="shadow" blurRadius="3">
                         <size key="offset" width="3" height="-3"/>
@@ -43,7 +43,7 @@
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="basket" id="554"/>
                 </imageView>
                 <customView wantsLayer="YES" id="418" userLabel="Transfer Formular" customClass="TransferFormularView">
-                    <rect key="frame" x="624" y="10" width="675" height="524"/>
+                    <rect key="frame" x="504" y="10" width="675" height="524"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <textField verticalHuggingPriority="750" id="452">
@@ -84,8 +84,8 @@
                             <connections>
                                 <binding destination="2" name="value" keyPath="selection.currency" id="uRv-w0-94K">
                                     <dictionary key="options">
-                                        <string key="NSNullPlaceholder">€</string>
                                         <string key="NSNoSelectionPlaceholder">€</string>
+                                        <string key="NSNullPlaceholder">€</string>
                                         <string key="NSValueTransformerName">CurrencyValueTransformer</string>
                                     </dictionary>
                                 </binding>
@@ -355,8 +355,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <action selector="firstExecDateChanged:" target="-2" id="563"/>
                                             <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeFirstExecDate" id="Y3y-rI-8SW">
                                                 <dictionary key="options">
-                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                     <integer key="NSNullPlaceholder" value="0"/>
+                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                 </dictionary>
                                             </binding>
                                             <binding destination="2" name="value" keyPath="selection.firstExecDate" id="182"/>
@@ -407,8 +407,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <action selector="lastExecDateChanged:" target="-2" id="564"/>
                                             <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeLastExecDate" id="ISU-tM-TsK">
                                                 <dictionary key="options">
-                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                     <integer key="NSNullPlaceholder" value="0"/>
+                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                 </dictionary>
                                             </binding>
                                             <binding destination="2" name="value" keyPath="selection.lastExecDate" id="181"/>
@@ -430,16 +430,16 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <connections>
                                 <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangePurpose" id="x6K-P4-F9q">
                                     <dictionary key="options">
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <integer key="NSNullPlaceholder" value="0"/>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                     </dictionary>
                                 </binding>
                                 <binding destination="2" name="value" keyPath="selection.purpose1" id="583">
                                     <dictionary key="options">
-                                        <string key="NSNullPlaceholder">(1)</string>
                                         <string key="NSNoSelectionPlaceholder" base64-UTF8="YES">
 IA
 </string>
+                                        <string key="NSNullPlaceholder">(1)</string>
                                     </dictionary>
                                 </binding>
                                 <outlet property="delegate" destination="-2" id="359"/>
@@ -462,9 +462,6 @@ IA
                                     </attributedString>
                                     <decimal key="minimum" value="NaN"/>
                                     <decimal key="maximum" value="NaN"/>
-                                    <metadata>
-                                        <bool key="localizesFormat" value="YES"/>
-                                    </metadata>
                                 </numberFormatter>
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -473,8 +470,8 @@ IA
                             <connections>
                                 <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeValue" id="FTn-yX-VCi">
                                     <dictionary key="options">
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <integer key="NSNullPlaceholder" value="0"/>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                     </dictionary>
                                 </binding>
                                 <binding destination="2" name="value" keyPath="selection.value" id="391">
@@ -508,8 +505,8 @@ IA
                             <connections>
                                 <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeRemoteAccount" id="HcC-5S-gfH">
                                     <dictionary key="options">
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <integer key="NSNullPlaceholder" value="0"/>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                     </dictionary>
                                 </binding>
                                 <binding destination="2" name="value" keyPath="selection.remoteIBAN" id="IBx-nS-S9F">
@@ -533,8 +530,8 @@ IA
                             <connections>
                                 <binding destination="-2" name="enabled" keyPath="currentLimits.allowChangeRemoteAccount" id="eV3-aK-RqS">
                                     <dictionary key="options">
-                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                         <integer key="NSNullPlaceholder" value="0"/>
+                                        <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                     </dictionary>
                                 </binding>
                                 <binding destination="2" name="value" keyPath="selection.remoteBIC" id="qKf-5V-lZy">
@@ -595,14 +592,14 @@ IA
                     </subviews>
                 </customView>
                 <customView id="522" customClass="RoundedOuterShadowView">
-                    <rect key="frame" x="0.0" y="10" width="588" height="767"/>
+                    <rect key="frame" x="0.0" y="10" width="490" height="767"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="526" userLabel="Orders Listview" customClass="OrdersListView">
-                            <rect key="frame" x="30" y="58" width="539" height="657"/>
+                            <rect key="frame" x="30" y="58" width="441" height="657"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <clipView key="contentView" id="52Y-Ql-SOB">
-                                <rect key="frame" x="0.0" y="0.0" width="539" height="657"/>
+                                <rect key="frame" x="0.0" y="0.0" width="441" height="657"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <customView id="527" customClass="PXListDocumentView">
@@ -622,7 +619,7 @@ IA
                             </scroller>
                         </scrollView>
                         <textField verticalHuggingPriority="750" id="525">
-                            <rect key="frame" x="30" y="723" width="538" height="24"/>
+                            <rect key="frame" x="30" y="723" width="440" height="24"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" title="SEPA-Daueraufträge" drawsBackground="YES" id="530">
                                 <font key="font" size="20" name="HelveticaNeue"/>
@@ -631,11 +628,11 @@ IA
                             </textFieldCell>
                         </textField>
                         <customView wantsLayer="YES" id="582">
-                            <rect key="frame" x="10" y="2" width="578" height="48"/>
+                            <rect key="frame" x="10" y="2" width="480" height="48"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button verticalHuggingPriority="750" id="571">
-                                    <rect key="frame" x="20" y="18" width="106" height="25"/>
+                                    <rect key="frame" x="12" y="18" width="106" height="25"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <shadow key="shadow" blurRadius="2">
                                         <size key="offset" width="1" height="1"/>
@@ -655,13 +652,13 @@ IA
                                     </connections>
                                 </button>
                                 <button verticalHuggingPriority="750" id="371">
-                                    <rect key="frame" x="160" y="18" width="195" height="25"/>
+                                    <rect key="frame" x="124" y="18" width="160" height="25"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <shadow key="shadow" blurRadius="2">
                                         <size key="offset" width="1" height="1"/>
                                         <color key="color" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                                     </shadow>
-                                    <buttonCell key="cell" type="roundTextured" title="Daueraufträge abrufen" bezelStyle="texturedRounded" image="shield" imagePosition="right" alignment="center" borderStyle="border" inset="2" id="372" customClass="GradientButtonCell">
+                                    <buttonCell key="cell" type="roundTextured" title="Aufträge abrufen" bezelStyle="texturedRounded" image="shield" imagePosition="right" alignment="center" borderStyle="border" inset="2" id="372" customClass="GradientButtonCell">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
@@ -675,7 +672,7 @@ IA
                                     </connections>
                                 </button>
                                 <button verticalHuggingPriority="750" id="373">
-                                    <rect key="frame" x="363" y="18" width="195" height="25"/>
+                                    <rect key="frame" x="290" y="18" width="170" height="25"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <shadow key="shadow" blurRadius="2">
                                         <size key="offset" width="1" height="1"/>

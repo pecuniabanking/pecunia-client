@@ -27,4 +27,6 @@
 @property (assign) CGFloat topMargin;
 @property (assign) CGFloat bottomMargin;
 
+@property (assign) CGSize minimumSize;
+
 @end

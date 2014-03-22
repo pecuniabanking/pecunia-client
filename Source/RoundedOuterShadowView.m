@@ -69,4 +69,27 @@ static NSShadow *borderShadow = nil;
     [NSGraphicsContext restoreGraphicsState];
 }
 
+- (void)resizeWithOldSuperviewSize: (NSSize)oldSize
+{
+    [super resizeWithOldSuperviewSize: oldSize];
+
+    // Ensure the given minimum size. Take also margins into account, so we do not go below what we need for them.
+    CGSize size = self.frame.size;
+    CGFloat minWidth = self.minimumSize.width;
+    if (minWidth < leftMargin + rightMargin) {
+        minWidth = leftMargin + rightMargin;
+    }
+    CGFloat minHeight = self.minimumSize.height;
+    if (minHeight < bottomMargin + topMargin) {
+        minHeight = bottomMargin + topMargin;
+    }
+    if (size.width < minWidth) {
+        size.width = minWidth;
+    }
+    if (size.height < minHeight) {
+        size.height = minHeight;
+    }
+    [self setFrameSize: size];
+}
+
 @end
