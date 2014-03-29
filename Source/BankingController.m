@@ -87,6 +87,7 @@
 #import "Tag.h"
 #import "User.h"
 #import "AssignmentController.h"
+#import "AboutWindowController.h"
 
 // Pasteboard data types.
 NSString *const BankStatementDataType = @"BankStatementDataType";
@@ -1273,23 +1274,8 @@ static BankingController *bankinControllerInstance;
 {
     LogEnter;
 
-    if (aboutWindow == nil) {
-        [NSBundle loadNibNamed: @"About" owner: self];
+    [AboutWindowController showAboutBox];
 
-        NSBundle *mainBundle = [NSBundle mainBundle];
-        NSString *path = [mainBundle pathForResource: @"Credits" ofType: @"rtf"];
-        [aboutText readRTFDFromFile: path];
-        [versionText setStringValue: [NSString stringWithFormat: @"Version %@ (%@)",
-                                      [mainBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"],
-                                      [mainBundle objectForInfoDictionaryKey: @"CFBundleVersion"]
-                                      ]];
-        [copyrightText setStringValue: [mainBundle objectForInfoDictionaryKey: @"NSHumanReadableCopyright"]];
-
-        gradient.fillColor = [NSColor whiteColor];
-    }
-    
-    [aboutWindow orderFront: self];
-    
     LogLeave;
 }
 

@@ -64,13 +64,6 @@
     IBOutlet NSView                 *rightPane;
     IBOutlet NSButton               *refreshButton;
 
-    // About panel, different xib file.
-    IBOutlet NSPanel       *aboutWindow;
-    IBOutlet BWGradientBox *gradient;
-    IBOutlet NSTextView    *aboutText;
-    IBOutlet NSTextField   *versionText;
-    IBOutlet NSTextField   *copyrightText;
-
     IBOutlet NSMenuItem *developerMenu;
 
     IBOutlet NSButton *toggleDetailsButton;
