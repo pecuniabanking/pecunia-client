@@ -66,13 +66,6 @@
     IBOutlet NSButton               *refreshButton;
     IBOutlet ComTraceHelper         *comTracePanel;
 
-    // About panel, different xib file.
-    IBOutlet NSPanel       *aboutWindow;
-    IBOutlet BWGradientBox *gradient;
-    IBOutlet NSTextView    *aboutText;
-    IBOutlet NSTextField   *versionText;
-    IBOutlet NSTextField   *copyrightText;
-
     IBOutlet NSMenuItem *developerMenu;
     IBOutlet NSMenuItem *comTraceMenuItem;
 

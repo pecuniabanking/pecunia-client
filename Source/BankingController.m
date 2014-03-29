@@ -84,6 +84,7 @@
 #import "Tag.h"
 #import "User.h"
 #import "AssignmentController.h"
+#import "AboutWindowController.h"
 
 // Pasteboard data types.
 NSString *const BankStatementDataType = @"BankStatementDataType";
@@ -209,10 +210,6 @@ static BankingController *bankinControllerInstance;
 - (void)awakeFromNib
 {
     LogEnter;
-
-    // After the LogEnter call our log is set up properly. Now is a good time to clean up any left over
-    // in case Pecunia did not shut down properly during the last run.
-    [MessageLog.log cleanUp];
 
     mainWindow.centerFullScreenButton = NO;
     mainWindow.titleBarHeight = 40.0;
@@ -1248,23 +1245,8 @@ static BankingController *bankinControllerInstance;
 {
     LogEnter;
 
-    if (aboutWindow == nil) {
-        [NSBundle loadNibNamed: @"About" owner: self];
+    [AboutWindowController showAboutBox];
 
-        NSBundle *mainBundle = [NSBundle mainBundle];
-        NSString *path = [mainBundle pathForResource: @"Credits" ofType: @"rtf"];
-        [aboutText readRTFDFromFile: path];
-        [versionText setStringValue: [NSString stringWithFormat: @"Version %@ (%@)",
-                                      [mainBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"],
-                                      [mainBundle objectForInfoDictionaryKey: @"CFBundleVersion"]
-                                      ]];
-        [copyrightText setStringValue: [mainBundle objectForInfoDictionaryKey: @"NSHumanReadableCopyright"]];
-
-        gradient.fillColor = [NSColor whiteColor];
-    }
-    
-    [aboutWindow orderFront: self];
-    
     LogLeave;
 }
 

@@ -94,6 +94,8 @@
         }
 
         fileLogger.doNotReuseLogFiles = YES; // Start with a new log file at each application launch.
+
+        [self cleanUp]; // In case we were not shutdown properly on last run.
     }
     return self;
 }

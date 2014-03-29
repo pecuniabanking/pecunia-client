@@ -543,6 +543,8 @@
 		27AA56A0186C562D00B113E7 /* send3-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AA569D186C562D00B113E7 /* send3-active.png */; };
 		27AA56A1186C562D00B113E7 /* send3-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AA569E186C562D00B113E7 /* send3-active@2x.png */; };
 		27AA56A2186C562D00B113E7 /* send3-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AA569E186C562D00B113E7 /* send3-active@2x.png */; };
+		27AE204318E6DE2700D4480A /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AE204218E6DE2700D4480A /* AboutWindowController.m */; };
+		27AE204418E6DE2700D4480A /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27AE204218E6DE2700D4480A /* AboutWindowController.m */; };
 		27AF5A9B173FC8EC00929B0E /* move-cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AF5A99173FC8EC00929B0E /* move-cursor.png */; };
 		27AF5A9C173FC8EC00929B0E /* move-cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AF5A99173FC8EC00929B0E /* move-cursor.png */; };
 		27AF5A9D173FC8EC00929B0E /* move-cursor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */; };
@@ -1121,6 +1123,8 @@
 		27AA5698186C562300B113E7 /* send2-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send2-active@2x.png"; sourceTree = "<group>"; };
 		27AA569D186C562D00B113E7 /* send3-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send3-active.png"; sourceTree = "<group>"; };
 		27AA569E186C562D00B113E7 /* send3-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send3-active@2x.png"; sourceTree = "<group>"; };
+		27AE204118E6DE2700D4480A /* AboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutWindowController.h; sourceTree = "<group>"; };
+		27AE204218E6DE2700D4480A /* AboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutWindowController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Pecunia.entitlements; path = ../Pecunia.entitlements; sourceTree = "<group>"; };
 		27AF5A99173FC8EC00929B0E /* move-cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move-cursor.png"; sourceTree = "<group>"; };
 		27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "move-cursor@2x.png"; sourceTree = "<group>"; };
@@ -2552,6 +2556,8 @@
 				27E68C49165CF7DA005EBE66 /* GenerateDataController.m */,
 				B1E3E4B216BB05CD00DC1638 /* CreditCardSettlementController.h */,
 				B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */,
+				27AE204118E6DE2700D4480A /* AboutWindowController.h */,
+				27AE204218E6DE2700D4480A /* AboutWindowController.m */,
 			);
 			name = WindowController;
 			sourceTree = "<group>";
@@ -3206,6 +3212,7 @@
 				27778888173CE22700430EBC /* StatementDetails.m in Sources */,
 				27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */,
 				2777888A173CE22700430EBC /* BankInfo.m in Sources */,
+				27AE204418E6DE2700D4480A /* AboutWindowController.m in Sources */,
 				2777888B173CE22700430EBC /* Keychain.m in Sources */,
 				2777888C173CE22700430EBC /* MCEMTreeController.m in Sources */,
 				27535FFC186DE337007400BA /* INAppStoreWindow.m in Sources */,
@@ -3414,6 +3421,7 @@
 				B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */,
 				B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */,
 				B1F459EC0F2E480700BAF4E8 /* BankInfo.m in Sources */,
+				27AE204318E6DE2700D4480A /* AboutWindowController.m in Sources */,
 				B19A85F00F3CC3D3000FE9B3 /* Keychain.m in Sources */,
 				B132F8D10F93DC0D00263F3B /* MCEMTreeController.m in Sources */,
 				27535FFB186DE337007400BA /* INAppStoreWindow.m in Sources */,
