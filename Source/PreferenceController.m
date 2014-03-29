@@ -240,7 +240,7 @@ static NSDictionary *heightMappings;
                        @"home": @400,
                        @"security": @270,
                        @"persistence": @260,
-                       @"display": @320,
+                       @"display": @340,
                        @"colors": @450,
                        @"export": @375,
                        @"print": @200};
@@ -1001,6 +1001,22 @@ static NSDictionary *heightMappings;
 + (NSString*)popoverFontName
 {
     return @"HelveticaNeue-Light";
+}
+
+/**
+ * Returns a font instance for the given font name and base size. The size is increased implictely depending
+ * on user settings.
+ */
++ (NSFont *)fontNamed: (NSString *)name baseSize: (CGFloat)size
+{
+    NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+    if ([defaults objectForKey: @"fontScale"] != nil) {
+        double scale = [defaults doubleForKey: @"fontScale"];
+        if (scale > 0.75 && scale < 2) {
+            size *= scale;
+        }
+    }
+    return [NSFont fontWithName: name size: size];
 }
 
 #pragma mark - ListView delegate protocol

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -104,5 +104,7 @@
 + (NSString *)mainFontNameBold;
 + (NSString *)mainFontNameLight;
 + (NSString *)popoverFontName;
+
++ (NSFont *)fontNamed: (NSString *)name baseSize: (CGFloat)size;
 
 @end

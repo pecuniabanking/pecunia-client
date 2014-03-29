@@ -42,3 +42,6 @@
 
 @interface StringCasingTransformer : NSValueTransformer
 @end
+
+@interface PercentTransformer : NSValueTransformer
+@end

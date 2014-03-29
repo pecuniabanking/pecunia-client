@@ -997,6 +997,47 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <binding destination="88" name="value" keyPath="values.showHiddenCategories" id="940"/>
                                             </connections>
                                         </button>
+                                        <textField verticalHuggingPriority="750" id="mMx-QJ-61m">
+                                            <rect key="frame" x="149" y="70" width="60" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="100" drawsBackground="YES" id="JAL-st-RxB">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="percent" minimumIntegerDigits="1" maximumIntegerDigits="309" id="wE7-TF-ie2">
+                                                    <integer key="multiplier" value="100"/>
+                                                    <real key="minimum" value="75"/>
+                                                    <real key="maximum" value="200"/>
+                                                    <metadata>
+                                                        <real key="inspectorSampleValue" value="0.0"/>
+                                                    </metadata>
+                                                </numberFormatter>
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="88" name="value" keyPath="values.fontScale" id="B8I-Yu-3hJ"/>
+                                            </connections>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="P6k-Js-I17">
+                                            <rect key="frame" x="22" y="73" width="121" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Schriftgröße" id="Ub5-A8-f1N">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="dLb-xq-B7y">
+                                            <rect key="frame" x="209" y="67" width="19" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <stepperCell key="cell" continuous="YES" alignment="left" minValue="75" maxValue="200" doubleValue="100" id="K0x-Ya-1W2"/>
+                                            <connections>
+                                                <binding destination="88" name="value" keyPath="values.fontScale" id="mr6-5o-Eua">
+                                                    <dictionary key="options">
+                                                        <string key="NSValueTransformerName">PercentTransformer</string>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
+                                        </stepper>
                                     </subviews>
                                 </view>
                             </tabViewItem>

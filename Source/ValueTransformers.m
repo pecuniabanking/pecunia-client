@@ -222,3 +222,24 @@ static NSMutableDictionary *cache;
 
 //----------------------------------------------------------------------------------------------------------------------
 
+@implementation PercentTransformer
+
++ (BOOL)allowsReverseTransformation
+{
+    return YES;
+}
+
+- (id)transformedValue: (id)value
+{
+    return [NSNumber numberWithDouble: 100 * [value doubleValue]];
+}
+
+- (id)reverseTransformedValue: (id)value
+{
+    return [NSNumber numberWithDouble: [value doubleValue] / 100];
+}
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------
+

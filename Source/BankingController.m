@@ -401,6 +401,10 @@ static BankingController *bankinControllerInstance;
         [defaults setBool: YES forKey: @"restoreActivePage"];
     }
 
+    if ([defaults objectForKey: @"fontScale"] == nil) {
+        [defaults setDouble: 1 forKey: @"fontScale"];
+    }
+
     // Migrate the migration flags to the local settings if a migration was done.
     // This must be a per-datafile setting, not a default setting.
     if (settings[@"Migrated10"] == nil) {
