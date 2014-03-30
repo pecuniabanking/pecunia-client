@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,5 +21,12 @@
 
 @interface RoundedOuterShadowView : NSView {
 }
+
+@property (assign) CGFloat leftMargin;
+@property (assign) CGFloat rightMargin;
+@property (assign) CGFloat topMargin;
+@property (assign) CGFloat bottomMargin;
+
+@property (assign) CGSize minimumSize;
 
 @end

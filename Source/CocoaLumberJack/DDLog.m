@@ -77,6 +77,7 @@ static void *const GlobalLoggingQueueIdentityKey = (void *)&GlobalLoggingQueueId
 + (void)lt_addLogger:(id <DDLogger>)logger logLevel:(int)logLevel;
 + (void)lt_removeLogger:(id <DDLogger>)logger;
 + (void)lt_removeAllLoggers;
++ (NSArray *)lt_allLoggers;
 + (void)lt_log:(DDLogMessage *)logMessage;
 + (void)lt_flush;
 
@@ -155,11 +156,14 @@ static unsigned int numProcessors;
     #else
         NSString *notificationName = nil;
 
-        if (NSClassFromString(@"NSApplication"))
-        {
+        // on Command Line Tool apps AppKit may not be avaliable
+        #ifdef NSAppKitVersionNumber10_0
+        if (NSApp) {
             notificationName = @"NSApplicationWillTerminateNotification";
         }
-        else
+        #endif
+
+        if (! notificationName)
         {
             // If there is no NSApp -> we are running Command Line Tool app.
             // In this case terminate notification wouldn't be fired, so we use workaround.
@@ -230,6 +234,17 @@ static unsigned int numProcessors;
         
         [self lt_removeAllLoggers];
     }});
+}
+
++ (NSArray *)allLoggers
+{
+    __block NSArray *theLoggers;
+
+    dispatch_sync(loggingQueue, ^{ @autoreleasepool {
+        theLoggers = [self lt_allLoggers];
+    }});
+
+    return theLoggers;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -527,13 +542,13 @@ static unsigned int numProcessors;
 #pragma mark Logging Thread
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- * This method should only be run on the logging thread/queue.
-**/
 + (void)lt_addLogger:(id <DDLogger>)logger logLevel:(int)logLevel
 {
     // Add to loggers array.
     // Need to create loggerQueue if loggerNode doesn't provide one.
+
+    NSAssert(dispatch_get_specific(GlobalLoggingQueueIdentityKey),
+            @"This method should only be run on the logging thread/queue");
     
     dispatch_queue_t loggerQueue = NULL;
     
@@ -570,12 +585,12 @@ static unsigned int numProcessors;
     }
 }
 
-/**
- * This method should only be run on the logging thread/queue.
-**/
 + (void)lt_removeLogger:(id <DDLogger>)logger
 {
     // Find associated loggerNode in list of added loggers
+
+    NSAssert(dispatch_get_specific(GlobalLoggingQueueIdentityKey),
+            @"This method should only be run on the logging thread/queue");
     
     DDLoggerNode *loggerNode = nil;
     
@@ -609,13 +624,13 @@ static unsigned int numProcessors;
     [loggers removeObject:loggerNode];
 }
 
-/**
- * This method should only be run on the logging thread/queue.
-**/
 + (void)lt_removeAllLoggers
 {
     // Notify all loggers
     
+    NSAssert(dispatch_get_specific(GlobalLoggingQueueIdentityKey),
+            @"This method should only be run on the logging thread/queue");
+
     for (DDLoggerNode *loggerNode in loggers)
     {
         if ([loggerNode->logger respondsToSelector:@selector(willRemoveLogger)])
@@ -632,12 +647,27 @@ static unsigned int numProcessors;
     [loggers removeAllObjects];
 }
 
-/**
- * This method should only be run on the logging thread/queue.
-**/
++ (NSArray *)lt_allLoggers
+{
+    NSAssert(dispatch_get_specific(GlobalLoggingQueueIdentityKey),
+            @"This method should only be run on the logging thread/queue");
+
+    NSMutableArray *theLoggers = [NSMutableArray new];
+
+    for (DDLoggerNode *loggerNode in loggers)
+    {
+        [theLoggers addObject:loggerNode->logger];
+    }
+
+    return [theLoggers copy];
+}
+
 + (void)lt_log:(DDLogMessage *)logMessage
 {
     // Execute the given log message on each of our loggers.
+
+    NSAssert(dispatch_get_specific(GlobalLoggingQueueIdentityKey),
+            @"This method should only be run on the logging thread/queue");
     
     if (numProcessors > 1)
     {
@@ -700,15 +730,15 @@ static unsigned int numProcessors;
     dispatch_semaphore_signal(queueSemaphore);
 }
 
-/**
- * This method should only be run on the background logging thread.
-**/
 + (void)lt_flush
 {
     // All log statements issued before the flush method was invoked have now been executed.
     // 
     // Now we need to propogate the flush request to any loggers that implement the flush method.
     // This is designed for loggers that buffer IO.
+
+    NSAssert(dispatch_get_specific(GlobalLoggingQueueIdentityKey),
+            @"This method should only be run on the logging thread/queue");
         
     for (DDLoggerNode *loggerNode in loggers)
     {

@@ -19,23 +19,16 @@
 
 #import <Cocoa/Cocoa.h>
 
-// XXX: remove as soon as the other loggers are updated/removed.
-typedef enum {
-    LogLevel_None = -1,
-    LogLevel_Error,
-    LogLevel_Warning,
-    LogLevel_Notice,
-    LogLevel_Info,
-    LogLevel_Debug,
-    LogLevel_Verbous
-} LogLevel;
-
-@protocol MessageLogUI
-
-- (void)addMessage: (NSString *)msg withLevel: (LogLevel)level;
-- (void)setLogLevel: (LogLevel)level;
-
-@end
+// A mirror of the log levels defined in the HBCI server.
+typedef NS_ENUM(NSInteger, HBCILogLevel) {
+    HBCILogNone,
+    HBCILogError,
+    HBCILogWarning,
+    HBCILogInfo,
+    HBCILogDebug,
+    HBCILogDebug2,
+    HBCILogIntern
+};
 
 // Helper macros to simplify logging calls.
 #define LogEnter [MessageLog.log logDebug: @"Entering %s", __PRETTY_FUNCTION__]
@@ -47,23 +40,17 @@ typedef enum {
 #define LogDebug(format, ...) [MessageLog.log logDebug: format file: __FILE__ function: __PRETTY_FUNCTION__ line: __LINE__, ##__VA_ARGS__]
 #define LogVerbose(format, ...) [MessageLog.log logVerbose: format file: __FILE__ function: __PRETTY_FUNCTION__ line: __LINE__, ##__VA_ARGS__]
 
+#define LogComTrace(level, fmt, ...) [MessageLog.log logComTraceForLevel: level format: fmt, ##__VA_ARGS__]
+
 @interface MessageLog : NSObject {
-    NSMutableSet    *logUIs;
-    NSDateFormatter *formatter;
-    BOOL            forceConsole;
 }
 
-@property (nonatomic, assign) BOOL     forceConsole;
-@property (nonatomic, assign) LogLevel currentLevel;
+@property (nonatomic, assign) NSUInteger currentLevel;  // This is one of the CocoaLumberJack log levels, e.g. LOG_LEVEL_DEBUG.
+@property (nonatomic, assign) BOOL       isComTraceActive;
+@property (nonatomic, assign) BOOL       hasError;         // Set when either logError or logComTraceForLevel:format: was called with an error level.
 
 + (MessageLog *)log;
-+ (NSURL *)currentLogFile;
-+ (NSURL *)logFolder;
-+ (void)flush;
-
-- (void)registerLogUI: (id<MessageLogUI>)ui;
-- (void)unregisterLogUI: (id<MessageLogUI>)ui;
-- (void)addMessage: (NSString *)msg withLevel: (LogLevel)level;
++ (NSString *)prettyPrintServerMessage: (NSString *)text;
 
 - (void)logError: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
 - (void)logWarning: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
@@ -71,5 +58,11 @@ typedef enum {
 - (void)logDebug: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
 - (void)logDebug: (NSString *)format, ...; // A simpler form for enter/leave logging.
 - (void)logVerbose: (NSString *)format file: (const char *)file function: (const char *)function line: (int)line, ...;
+
+- (void)logComTraceForLevel: (HBCILogLevel)level format: (NSString *)format, ...;
+
+- (void)sendLog;
+- (void)openLogFolder;
+- (void)cleanUp;
 
 @end

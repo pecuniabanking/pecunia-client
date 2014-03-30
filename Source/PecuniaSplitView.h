@@ -25,4 +25,7 @@
 
 @property NSUInteger fixedIndex; // The index of the subview that should not be resized when the splitview size changes.
 
+- (void)savePosition;
+- (void)restorePosition;
+
 @end

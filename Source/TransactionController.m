@@ -26,7 +26,6 @@
 #import "HBCIController.h"
 #import "Country.h"
 #import "TransferTemplate.h"
-#import "LogController.h"
 #import "MCEMDecimalNumberAdditions.h"
 
 /**
@@ -507,8 +506,7 @@
         //double   limit = 0.0;
 
         if (![curr isEqual: foreignCurr] && ![curr isEqual: @"EUR"] && ![curr isEqual: account.currency]) {
-            NSRunAlertPanel(NSLocalizedString(@"AP67", nil),
-                            [NSString stringWithFormat: NSLocalizedString(@"AP63", nil), [limits localLimit]],
+            NSRunAlertPanel(NSLocalizedString(@"AP67", nil), NSLocalizedString(@"AP63", nil),
                             NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }

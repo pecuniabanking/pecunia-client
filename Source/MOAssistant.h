@@ -19,15 +19,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-// ManagedObjectAssistant
+@class LockViewController;
+
 @interface MOAssistant : NSObject {
     NSManagedObjectContext *context;
     NSManagedObjectContext *memContext;
     NSManagedObjectModel   *model;
-
-    // LockView
-    NSView *lockView;
-    NSView *mainContentView;
 
     // Location (external/internal) of data file (directory & filename)
     NSURL    *dataDirURL;
@@ -48,8 +45,10 @@
     // temporary directory
     NSString *tempDir;
 
-    // Idle Timer to lock application/encrypted data file
+    // Idle timer to lock application/encrypted data file.
     NSTimer *idleTimer;
+
+    LockViewController *lockViewController;
 
     unsigned char dataPasswordKey[32];
 
@@ -68,7 +67,8 @@
 @property (nonatomic, strong) NSURL  *accountsURL;
 @property (nonatomic, strong) NSURL  *dataDirURL;
 @property (nonatomic, strong) NSURL  *pecuniaFileURL;
-@property (nonatomic, strong) NSView *mainContentView;
+
+@property (nonatomic, assign) NSWindow *mainWindow; // Just a weak reference to our application window.
 @property (nonatomic, assign, readonly) BOOL isMaxIdleTimeExceeded;
 
 - (void)clearAllData;

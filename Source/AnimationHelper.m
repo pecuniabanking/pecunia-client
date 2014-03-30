@@ -72,6 +72,29 @@
     [[from animator] setHidden: YES];
 }
 
+static int numberOfShakes = 8;
+static float durationOfShake = 0.5f;
+static float vigourOfShake = 0.05f;
+
++ (CAKeyframeAnimation *)shakeAnimation: (NSRect)frame
+{
+    // by Matt Long
+    CAKeyframeAnimation *shakeAnimation = [CAKeyframeAnimation animation];
+
+    CGMutablePathRef shakePath = CGPathCreateMutable();
+    CGPathMoveToPoint(shakePath, NULL, NSMinX(frame), NSMinY(frame));
+	int index;
+	for (index = 0; index < numberOfShakes; ++index)
+	{
+		CGPathAddLineToPoint(shakePath, NULL, NSMinX(frame) - frame.size.width * vigourOfShake, NSMinY(frame));
+		CGPathAddLineToPoint(shakePath, NULL, NSMinX(frame) + frame.size.width * vigourOfShake, NSMinY(frame));
+	}
+    CGPathCloseSubpath(shakePath);
+    shakeAnimation.path = shakePath;
+    shakeAnimation.duration = durationOfShake;
+    return shakeAnimation;
+}
+
 @end
 
 //--------------------------------------------------------------------------------------------------

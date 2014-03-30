@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,10 +22,19 @@
 
 @implementation RoundedOuterShadowView
 
+@synthesize leftMargin;
+@synthesize rightMargin;
+@synthesize topMargin;
+@synthesize bottomMargin;
+
 - (id)initWithFrame: (NSRect)frameRect
 {
     self = [super initWithFrame: frameRect];
     if (self != nil) {
+        leftMargin = 10;
+        rightMargin = 10;
+        topMargin = 10;
+        bottomMargin = 10;
     }
 
     return self;
@@ -47,10 +56,10 @@ static NSShadow *borderShadow = nil;
 
     // Outer bounds with shadow.
     NSRect bounds = [self bounds];
-    bounds.size.width -= 20;
-    bounds.size.height -= 20;
-    bounds.origin.x += 10;
-    bounds.origin.y += 10;
+    bounds.size.width -= leftMargin + rightMargin;
+    bounds.size.height -= topMargin + bottomMargin;
+    bounds.origin.x += leftMargin;
+    bounds.origin.y += bottomMargin;
 
     NSBezierPath *borderPath = [NSBezierPath bezierPathWithRoundedRect: bounds xRadius: 5 yRadius: 5];
     [borderShadow set];
@@ -58,6 +67,29 @@ static NSShadow *borderShadow = nil;
     [borderPath fill];
 
     [NSGraphicsContext restoreGraphicsState];
+}
+
+- (void)resizeWithOldSuperviewSize: (NSSize)oldSize
+{
+    [super resizeWithOldSuperviewSize: oldSize];
+
+    // Ensure the given minimum size. Take also margins into account, so we do not go below what we need for them.
+    CGSize size = self.frame.size;
+    CGFloat minWidth = self.minimumSize.width;
+    if (minWidth < leftMargin + rightMargin) {
+        minWidth = leftMargin + rightMargin;
+    }
+    CGFloat minHeight = self.minimumSize.height;
+    if (minHeight < bottomMargin + topMargin) {
+        minHeight = bottomMargin + topMargin;
+    }
+    if (size.width < minWidth) {
+        size.width = minWidth;
+    }
+    if (size.height < minHeight) {
+        size.height = minHeight;
+    }
+    [self setFrameSize: size];
 }
 
 @end

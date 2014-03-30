@@ -22,7 +22,6 @@
 #import "BankingController.h"
 
 #import "PecuniaError.h"
-#import "LogController.h"
 #import "HBCIController.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
@@ -549,6 +548,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (void)prepareSourceAccountSelector: (BankAccount *)selectedAccount forTransferType: (TransferType)transferType
 {
+    LogEnter;
+
     [sourceAccountSelector removeAllItems];
 
     NSMenu *sourceMenu = [sourceAccountSelector menu];
@@ -589,20 +590,20 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
             // Exclude manual accounts from the list.
             if ([account.isManual boolValue]) {
-                [[MessageLog log] addMessage:[NSString stringWithFormat:@"skip account: is a manual account (isManual=%@)", account.isManual] withLevel:LogLevel_Debug];
+                LogDebug(@"skipping manual account");
                 continue;
             }
 
             // check if the accout supports the current transfer type
-            if ([[HBCIController controller] isTransferSupported: transferType forAccount: account] == NO) {
-                [[MessageLog log] addMessage:[NSString stringWithFormat:@"skip account %@, job %d not supported", account.accountNumber, transferType] withLevel:LogLevel_Debug];
+            if (![[HBCIController controller] isTransferSupported: transferType forAccount: account]) {
+                LogDebug(@"skip account %@, job %d not supported", account.accountNumber, transferType);
                 continue;
             }
 
             [validAccounts addObject: account];
         }
 
-        [[MessageLog log] addMessage:[NSString stringWithFormat:@"%d accounts found for institute %@", (unsigned)[validAccounts count], currentInstitute.localName] withLevel:LogLevel_Debug];
+        LogDebug(@"%d accounts found for institute %@", validAccounts.count, currentInstitute.localName);
         if ([validAccounts count] > 0) {
             NSMenuItem *item = [self createItemForAccountSelector: (BankAccount *)currentInstitute];
             [sourceMenu addItem: item];
@@ -628,6 +629,8 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         [sourceAccountSelector selectItemAtIndex: -1];
     }
     [self sourceAccountChanged: sourceAccountSelector];
+
+    LogLeave;
 }
 
 /**
@@ -1313,15 +1316,6 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     if (transfers.count == 0) {
         return;
-    }
-
-    // Show log output if wanted.
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL           showLog = [defaults boolForKey: @"logForTransfers"];
-    if (showLog) {
-        LogController *logController = [LogController logController];
-        [logController showWindow: self];
-        [[logController window] orderFront: self];
     }
 
     // first check for collective transfers
