@@ -162,6 +162,13 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
+- (void)clearStatementFilter
+{
+    [categoryAssignments setFilterPredicate:nil];
+    
+    
+}
+
 - (IBAction)sortingChanged: (id)sender
 {
     if ([sender selectedSegment] == sortIndex) {

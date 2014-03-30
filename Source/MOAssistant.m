@@ -415,12 +415,29 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
     NSURL *standardDataURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
     NSURL *encryptedDataURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileCrypted];
+    NSFileManager  *fm = [NSFileManager defaultManager];
 
     // On enter the new bundle path has been created already. Check if it contains the data file, either encrypted or
     // unencrypted.
-    NSFileManager  *fm = [NSFileManager defaultManager];
-    if ([fm fileExistsAtPath: standardDataURL.path] || [fm fileExistsAtPath: encryptedDataURL.path]) {
-        return; // Nothing to do.
+    if (isDefaultDir) {
+        if ([fm fileExistsAtPath: standardDataURL.path] || [fm fileExistsAtPath: encryptedDataURL.path]) {
+            return; // Nothing to do.
+        }
+    } else {
+        // if it's not the default path, there must be a SSB
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+        // we need a security scoped Bookmark
+        NSURL  *url = nil;
+        NSData *bookmark = [defaults objectForKey: @"accountsBookmark"];
+        if (bookmark != nil) {
+            NSError *error = nil;
+            url = [NSURL URLByResolvingBookmarkData: bookmark options: NSURLBookmarkResolutionWithSecurityScope relativeToURL: nil bookmarkDataIsStale: NULL error: &error];
+            if (error == nil) {
+                // everything o.k.
+                return;
+            }
+        }
     }
 
     if (!isDefaultDir) {

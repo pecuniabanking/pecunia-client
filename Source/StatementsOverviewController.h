@@ -60,6 +60,7 @@
 - (void)deleteSelectedStatements;
 - (void)splitSelectedStatement;
 - (BOOL)toggleDetailsPane;
+- (void)clearStatementFilter;
 
 // PecuniaSectionItem protocol
 @property (nonatomic, weak) Category *selectedCategory;
