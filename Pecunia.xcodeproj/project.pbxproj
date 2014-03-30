@@ -29,6 +29,10 @@
 		27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
 		2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2716FE4C152381A60015A753 /* SynchronousScrollView.m */; };
 		2719CD84160F5B45004B37C0 /* donate2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2719CD83160F5B45004B37C0 /* donate2.jpg */; };
+		271AD6B318E85741005BE90D /* key.png in Resources */ = {isa = PBXBuildFile; fileRef = 271AD6B118E85741005BE90D /* key.png */; };
+		271AD6B418E85741005BE90D /* key.png in Resources */ = {isa = PBXBuildFile; fileRef = 271AD6B118E85741005BE90D /* key.png */; };
+		271AD6B518E85741005BE90D /* key@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271AD6B218E85741005BE90D /* key@2x.png */; };
+		271AD6B618E85741005BE90D /* key@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 271AD6B218E85741005BE90D /* key@2x.png */; };
 		2722DE8115B2F03300503E95 /* templates.png in Resources */ = {isa = PBXBuildFile; fileRef = 2722DE8015B2F03300503E95 /* templates.png */; };
 		272328A01551A4D500B9683B /* transfer-debit-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289B1551A4D500B9683B /* transfer-debit-preview.png */; };
 		272328A11551A4D500B9683B /* transfer-eu-preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 2723289C1551A4D500B9683B /* transfer-eu-preview.png */; };
@@ -475,6 +479,10 @@
 		279A785F1539DA0300443854 /* TransfersListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 279A785E1539DA0300443854 /* TransfersListViewCell.m */; };
 		279A78621539DD5400443854 /* TransfersListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 279A78611539DD5400443854 /* TransfersListViewCell.xib */; };
 		279BF27D15726BF0006C1B9A /* green-slanted-stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 279BF27C15726BF0006C1B9A /* green-slanted-stripes.png */; };
+		279C166118E830C200A4306F /* LockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 279C166018E830C200A4306F /* LockView.xib */; };
+		279C166218E830C200A4306F /* LockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 279C166018E830C200A4306F /* LockView.xib */; };
+		279C166518E8317600A4306F /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279C166418E8317600A4306F /* LockViewController.m */; };
+		279C166618E8317600A4306F /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279C166418E8317600A4306F /* LockViewController.m */; };
 		27A0098917205B4800D61FE9 /* RuleEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27A0098817205B4800D61FE9 /* RuleEditor.xib */; };
 		27A3C0C317FF15D800FCF8BF /* time-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */; };
 		27A3C0C417FF15D800FCF8BF /* time-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */; };
@@ -927,6 +935,8 @@
 		2716FE4B152381A60015A753 /* SynchronousScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynchronousScrollView.h; sourceTree = "<group>"; };
 		2716FE4C152381A60015A753 /* SynchronousScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynchronousScrollView.m; sourceTree = "<group>"; };
 		2719CD83160F5B45004B37C0 /* donate2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = donate2.jpg; sourceTree = "<group>"; };
+		271AD6B118E85741005BE90D /* key.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = key.png; sourceTree = "<group>"; };
+		271AD6B218E85741005BE90D /* key@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "key@2x.png"; sourceTree = "<group>"; };
 		2722DE8015B2F03300503E95 /* templates.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = templates.png; sourceTree = "<group>"; };
 		2723289B1551A4D500B9683B /* transfer-debit-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-debit-preview.png"; sourceTree = "<group>"; };
 		2723289C1551A4D500B9683B /* transfer-eu-preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer-eu-preview.png"; sourceTree = "<group>"; };
@@ -1076,6 +1086,9 @@
 		279A78601539DA1300443854 /* TransfersListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransfersListViewCell.h; sourceTree = "<group>"; };
 		279A78611539DD5400443854 /* TransfersListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransfersListViewCell.xib; sourceTree = "<group>"; };
 		279BF27C15726BF0006C1B9A /* green-slanted-stripes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-slanted-stripes.png"; sourceTree = "<group>"; };
+		279C166018E830C200A4306F /* LockView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LockView.xib; sourceTree = "<group>"; };
+		279C166318E8317600A4306F /* LockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockViewController.h; sourceTree = "<group>"; };
+		279C166418E8317600A4306F /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27A0098817205B4800D61FE9 /* RuleEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RuleEditor.xib; sourceTree = "<group>"; };
 		27A3C0BF17FF15D800FCF8BF /* time-zoom-in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-in.png"; sourceTree = "<group>"; };
 		27A3C0C017FF15D800FCF8BF /* time-zoom-out@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time-zoom-out@2x.png"; sourceTree = "<group>"; };
@@ -1981,6 +1994,7 @@
 				276FBAE617C52F8400C67EEC /* HomeScreenTransfersView.xib */,
 				B1AA640D140C07E600ADE1D0 /* ImportWindow.xib */,
 				B1D44FFD14784344008DD256 /* Institutes.xib */,
+				279C166018E830C200A4306F /* LockView.xib */,
 				B1D44FC91478407D008DD256 /* MainMenu.xib */,
 				B1D44FF4147842C5008DD256 /* NewPasswordWindow.xib */,
 				B1AFC66C17F627B50046B625 /* NewPinWindow.xib */,
@@ -2326,6 +2340,8 @@
 				2732F6A5186B0A5F00809CF2 /* home-active@2x.png */,
 				2732F69D186B06CE00809CF2 /* home@2x.png */,
 				B1835C1515D2A1F4003B93ED /* iPhone.png */,
+				271AD6B118E85741005BE90D /* key.png */,
+				271AD6B218E85741005BE90D /* key@2x.png */,
 				B1835C1415D2A1F4003B93ED /* Kobil.png */,
 				27AF5A99173FC8EC00929B0E /* move-cursor.png */,
 				27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */,
@@ -2514,6 +2530,8 @@
 				B17B2B4213EC921200739E7A /* FlickerView.m */,
 				B1B417DD13F06AD200BEEC8F /* TanMediaWindowController.h */,
 				B1B417DE13F06AD200BEEC8F /* TanMediaWindowController.m */,
+				279C166318E8317600A4306F /* LockViewController.h */,
+				279C166418E8317600A4306F /* LockViewController.m */,
 			);
 			name = Password;
 			sourceTree = "<group>";
@@ -2729,8 +2747,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				271AD6B618E85741005BE90D /* key@2x.png in Resources */,
 				275AC7F8186B6405002E6BED /* graph3-active.png in Resources */,
 				270A3DFB18146E820079B37F /* calendar.png in Resources */,
+				279C166218E830C200A4306F /* LockView.xib in Resources */,
 				2777891D173CE22700430EBC /* InfoPlist.strings in Resources */,
 				2778C24318140027003BF49D /* gear.png in Resources */,
 				27778921173CE22700430EBC /* plus-8.png in Resources */,
@@ -2923,6 +2943,7 @@
 				27DBAAED175123ED00E75996 /* hatch-1@2x.png in Resources */,
 				A68754651778CDC0007B4BC2 /* AssignmentController.xib in Resources */,
 				27AA5668186C389900B113E7 /* distribution-active@2x.png in Resources */,
+				271AD6B418E85741005BE90D /* key.png in Resources */,
 				27D902F41788265700B7452B /* HomeScreen.xib in Resources */,
 				27D902FC1788520E00B7452B /* flow.png in Resources */,
 				27D902FE1788520E00B7452B /* flow@2x.png in Resources */,
@@ -2942,8 +2963,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				271AD6B518E85741005BE90D /* key@2x.png in Resources */,
 				275AC7F7186B6405002E6BED /* graph3-active.png in Resources */,
 				B1E8119D0FF6863D00BF7451 /* InfoPlist.strings in Resources */,
+				279C166118E830C200A4306F /* LockView.xib in Resources */,
 				2778C24218140027003BF49D /* gear.png in Resources */,
 				B165B51F0D340C5800447DD8 /* plus-8.png in Resources */,
 				B165B5210D340C7D00447DD8 /* minus-8.png in Resources */,
@@ -3136,6 +3159,7 @@
 				27DBAAEC175123ED00E75996 /* hatch-1@2x.png in Resources */,
 				A68754641778CDC0007B4BC2 /* AssignmentController.xib in Resources */,
 				27AA5667186C389900B113E7 /* distribution-active@2x.png in Resources */,
+				271AD6B318E85741005BE90D /* key.png in Resources */,
 				27D902F31788265700B7452B /* HomeScreen.xib in Resources */,
 				27D902FB1788520E00B7452B /* flow.png in Resources */,
 				27D902FD1788520E00B7452B /* flow@2x.png in Resources */,
@@ -3208,6 +3232,7 @@
 				27778884173CE22700430EBC /* CategoryAnalysisWindowController.m in Sources */,
 				27778885173CE22700430EBC /* CategoryRepWindowController.m in Sources */,
 				27778886173CE22700430EBC /* NSOutlineView+PecuniaAdditions.m in Sources */,
+				279C166618E8317600A4306F /* LockViewController.m in Sources */,
 				27778887173CE22700430EBC /* Country.m in Sources */,
 				27778888173CE22700430EBC /* StatementDetails.m in Sources */,
 				27778889173CE22700430EBC /* AccountMaintenanceController.m in Sources */,
@@ -3417,6 +3442,7 @@
 				B19822DD0E6F304A001C4C70 /* CategoryAnalysisWindowController.m in Sources */,
 				B192FDC20E8434D500B53380 /* CategoryRepWindowController.m in Sources */,
 				B1D6C9EE0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.m in Sources */,
+				279C166518E8317600A4306F /* LockViewController.m in Sources */,
 				B189782E0ECF47CA00D20503 /* Country.m in Sources */,
 				B18978870ED0B2E800D20503 /* StatementDetails.m in Sources */,
 				B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */,

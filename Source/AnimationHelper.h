@@ -33,6 +33,8 @@
                 toView: (NSView *)to
              withSlide: (BOOL)doSlide;
 
++ (CAKeyframeAnimation *)shakeAnimation: (NSRect)frame;
+
 @end
 
 @interface NSWindow (PecuniaAdditions)

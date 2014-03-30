@@ -46,6 +46,7 @@
 
 @interface BankingController : NSObject
 {
+@private
     IBOutlet INAppStoreWindow      *mainWindow;
 
     IBOutlet EDSideBar              *sidebar;
@@ -71,7 +72,6 @@
 
     IBOutlet NSButton *toggleDetailsButton;
 
-@private
     NSMutableDictionary    *mainTabItems;
 
     HomeScreenController             *homeScreenController;

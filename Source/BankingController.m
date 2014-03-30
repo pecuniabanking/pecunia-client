@@ -211,6 +211,8 @@ static BankingController *bankinControllerInstance;
 {
     LogEnter;
 
+    [mainWindow.contentView setHidden: YES]; // Show content not before anything is done (especially if data is encrypted).
+
     mainWindow.centerFullScreenButton = NO;
     mainWindow.titleBarHeight = 40.0;
     [mainWindow.titleBarView addSubview: comTracePanel];
@@ -274,8 +276,7 @@ static BankingController *bankinControllerInstance;
 
     [categoryController addObserver: self forKeyPath: @"arrangedObjects.catSum" options: 0 context: nil];
 
-    MOAssistant.assistant.mainContentView = [mainWindow contentView];
-
+    MOAssistant.assistant.mainWindow = mainWindow;
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(contextChanged)
                                                  name: @"contextDataChanged"
@@ -3176,6 +3177,8 @@ static BankingController *bankinControllerInstance;
 
     [sc stopSpinning];
     [sc clearMessage];
+
+    [mainWindow.contentView setHidden: NO];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey: @"restoreActivePage"]) {

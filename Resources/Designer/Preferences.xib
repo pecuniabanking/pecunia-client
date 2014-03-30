@@ -1461,7 +1461,7 @@ Die Reihenfolge in der Liste entspricht später der Reihenfolge in der Datei.</s
                             </allowedInputSourceLocales>
                         </secureTextFieldCell>
                     </secureTextField>
-                    <button id="352">
+                    <button hidden="YES" id="352">
                         <rect key="frame" x="17" y="65" width="240" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Passwort im Schlüsselbund sichern" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" inset="2" id="753">

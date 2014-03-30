@@ -17,19 +17,20 @@
  * 02110-1301  USA
  */
 
+#import <CommonCrypto/CommonCryptor.h>
+#import <CommonCrypto/CommonDigest.h>
+
 #import "MessageLog.h"
 
 #import "MOAssistant.h"
 #import "Category.h"
 #import "BankAccount.h"
-#import "PasswordWindow.h"
 #import "Keychain.h"
 #import "PecuniaError.h"
 #import "LaunchParameters.h"
-#import <CommonCrypto/CommonCryptor.h>
-#import <CommonCrypto/CommonDigest.h>
-#import "MainBackgroundView.h"
 #import "BankingController.h"
+
+#import "LockViewController.h"
 
 @implementation MOAssistant
 
@@ -40,7 +41,8 @@
 @synthesize dataDirURL;
 @synthesize dataFilename;
 @synthesize pecuniaFileURL;
-@synthesize mainContentView;
+
+@synthesize mainWindow;
 @synthesize isMaxIdleTimeExceeded;
 
 static MOAssistant *assistant = nil;
@@ -73,6 +75,8 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
         self.dataFilename = [LaunchParameters parameters].dataFile;
     }
 
+    lockViewController = [LockViewController createController];
+
     isEncrypted = NO;
     isDefaultDir = YES;
     decryptionDone = NO;
@@ -94,15 +98,17 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     model = nil;
     context = nil;
 
+    // Remove any stored datastore passwords. We want the password always to be entered now.
+    [Keychain deletePasswordForService: @"Pecunia" account: @"DataFile"];
+    
     return self;
 }
 
 - (void)startIdle
 {
-    if (isEncrypted && isMaxIdleTimeExceeded == NO && decryptionDone == YES) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSUInteger     idx = [defaults integerForKey: @"lockTimeIndex"];
-        NSUInteger     seconds = 0;
+    if (isEncrypted && !isMaxIdleTimeExceeded && decryptionDone) {
+        NSUInteger idx = [NSUserDefaults.standardUserDefaults integerForKey: @"lockTimeIndex"];
+        NSUInteger seconds = 0;
 
         switch (idx) {
             case 1: seconds = 10; break;
@@ -128,19 +134,19 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
 - (void)stopIdle
 {
-    if (isEncrypted == NO || passwordKeyValid == NO) {
+    if (!isEncrypted || !passwordKeyValid) {
         return;
     }
+
     [idleTimer invalidate];
     idleTimer = nil;
 
     if (isMaxIdleTimeExceeded) {
-        // check password again
+        // Check password again.
         passwordKeyValid = NO;
         [self decrypt];
-        [lockView removeFromSuperview];
 
-        [[NSApp mainWindow] makeKeyAndOrderFront: nil];
+        [lockViewController removeLockView];
         isMaxIdleTimeExceeded = NO;
     }
 }
@@ -159,14 +165,10 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 
     isMaxIdleTimeExceeded = YES;
+    [lockViewController showLockViewInWindow: mainWindow];
 
-    // encrypt database (but do not disconnect store)
+    // Encrypt database (but do not disconnect store).
     [self encrypt];
-
-    // Show lock view
-    lockView = [[MainBackgroundView alloc] initWithFrame: [mainContentView frame]];
-    [lockView setAlphaValue: 0.7];
-    [mainContentView addSubview: lockView];
 }
 
 // initializes the data file (can be default data file from preferences or
@@ -198,10 +200,11 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
 
     isEncrypted = [self checkIsEncrypted];
 
-    if (isEncrypted == NO) {
-        self.accountsURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
-    } else {
+    if (isEncrypted) {
+        [lockViewController showLockViewInWindow: mainWindow];
         self.accountsURL = [[NSURL fileURLWithPath: tempDir] URLByAppendingPathComponent: _dataFileStandard];
+    } else {
+        self.accountsURL = [self.pecuniaFileURL URLByAppendingPathComponent: _dataFileStandard];
     }
 }
 
@@ -517,14 +520,13 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     return isEncrypted;
 }
 
-- (NSData*)encryptData:(NSData*)data withKey:(unsigned char*)passwordKey
+- (NSData*)encryptData: (NSData*)data withKey: (unsigned char*)passwordKey
 {
-    char   *encryptedBytes = malloc([data length] + 80);
-    char   *clearBytes = (char *)[data bytes];
-    char   checkData[64];
-    int    i;
-    
-    for (i = 0; i < 32; i++) {
+    char *encryptedBytes = malloc([data length] + 80);
+    char *clearBytes = (char *)[data bytes];
+    char checkData[64];
+
+    for (int i = 0; i < 32; i++) {
         checkData[2 * i] = passwordKey[i];
         checkData[2 * i + 1] = clearBytes[4 * i + 100];
     }
@@ -615,30 +617,25 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     NSData *fileData = [NSData dataWithContentsOfURL: sourceURL];
     char   *decryptedBytes = malloc([fileData length]);
 
-    if (passwordKeyValid == NO) {
-        PasswordWindow *pwWindow = nil;
+    if (!passwordKeyValid) {
         BOOL passwordOk = NO;
-        passwd = [Keychain passwordForService: @"Pecunia" account: @"DataFile"];
-        if(passwd == nil) {
-            pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP163", nil)
-                                                      title: NSLocalizedString(@"AP162", nil)];
-        }
-        
-        while (passwordOk == NO) {
-            if (pwWindow != nil && passwd == nil) {
-                int res = [NSApp runModalForWindow: [pwWindow window]];
-                if(res) [NSApp terminate: self];
-                
-                passwd = [pwWindow result];
-                savePassword = [pwWindow shouldSavePassword];
+        passwd = nil; //[Keychain passwordForService: @"Pecunia" account: @"DataFile"];
+
+        while (!passwordOk) {
+            if (passwd == nil) {
+                NSModalResponse res = [lockViewController waitForPassword];
+                if (res != NSModalResponseStop) {
+                    [NSApp terminate: self];
+                }
+                passwd = lockViewController.password;
             }
             
-            // first get key from password
-            NSData *data = [passwd dataUsingEncoding:NSUTF8StringEncoding];
+            // First generate key from password.
+            NSData *data = [passwd dataUsingEncoding: NSUTF8StringEncoding];
             CC_SHA256([data bytes], (unsigned int)[data length], dataPasswordKey);
             passwordKeyValid = YES;
             
-            // check if password is correct, first decrypt check data
+            // Next check if the password is correct by decrypting check data.
             CCCryptorStatus status;
             size_t decryptedSize;
             status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, [fileData bytes], 64, decryptedBytes, 64, &decryptedSize);
@@ -658,29 +655,26 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
             // now check hash
             int i;
             passwordOk = YES;
-            for (i=0; i<32; i++) {
-                if (dataPasswordKey[i] != decryptedBytes[2*i]) {
-                    // password is wrong
+            for (i=0; i < 32; i++) {
+                if (dataPasswordKey[i] != decryptedBytes[2 * i]) {
+                    // Password is wrong.
                     passwordOk = NO;
-                    [pwWindow retry];
+                    [lockViewController indicateInvalidPassword];
+
                     break;
                 }
             }
-            if (passwordOk == NO) {
+            if (!passwordOk) {
                 passwd = nil;
-                if (pwWindow == nil) {
-                    pwWindow = [[PasswordWindow alloc] initWithText: NSLocalizedString(@"AP163", nil)
-                                                              title: NSLocalizedString(@"AP162", nil)];
-                }
             }
-        } // while
-        [pwWindow closeWindow];
+        }
     }
 
     // now decrypt
     CCCryptorStatus status;
-    size_t          decryptedSize;
-    char            *encryptedBytes = (char *)[fileData bytes];
+
+    size_t decryptedSize;
+    char   *encryptedBytes = (char *)[fileData bytes];
     status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, dataPasswordKey, 32, NULL, encryptedBytes + 64, (unsigned int)[fileData length] - 64, decryptedBytes, (unsigned int)[fileData length] - 64, &decryptedSize);
 
     if (status != kCCSuccess) {
@@ -718,6 +712,7 @@ static NSString *iDir = @"~/Library/Application Support/Pecunia/ImportSettings";
     }
 
     decryptionDone = YES;
+    [lockViewController removeLockView];
 
     LogLeave;
     return YES;
