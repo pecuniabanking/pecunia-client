@@ -333,14 +333,6 @@
         return NO;
     }
 
-    // Change the transfer's type to a terminated transfer if a valuta date is given.
-    // TODO: solve terminated transfers differently. There are too many combinations possible as that
-    //       a single transfer type could cover all of them.
-    //       Should probably either just use the valuta date too in the server or add a new flag.
-    if (currentTransfer.valutaDate != nil) {
-        currentTransfer.type = @(TransferTypeOldStandardScheduled);
-    }
-
     NSError                *error = nil;
     NSManagedObjectContext *context = MOAssistant.assistant.context;
     if (![context save: &error]) {

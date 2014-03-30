@@ -1719,7 +1719,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [purpose3 setHidden: (limits.maxLinesPurpose < 3 && limits.maxLinesPurpose > 0) || transactionController.currentTransfer.type.intValue == TransferTypeSEPA];
     [purpose4 setHidden: (limits.maxLinesPurpose < 4 && limits.maxLinesPurpose > 0) || transactionController.currentTransfer.type.intValue == TransferTypeSEPA];
     
-    if (transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
+    if (transactionController.currentTransfer.type.intValue == TransferTypeSEPA || transactionController.currentTransfer.type.intValue == TransferTypeSEPAScheduled) {
         NSRect frame = purpose1.frame;
         frame.size.height = 50;
         frame.size.width = 542;

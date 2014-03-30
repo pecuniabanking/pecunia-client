@@ -2855,7 +2855,8 @@ static BankingController *bankinControllerInstance;
     }
 
     [(id)currentSection deleteSelectedStatements];
-
+    [overviewController clearStatementFilter];
+    
     [self save];
 
     LogLeave;
