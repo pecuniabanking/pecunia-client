@@ -104,7 +104,8 @@ static SystemNotification *singleton;
         NSUserNotification *notification = [[NSUserNotification alloc] init];
         notification.title = title;
         notification.informativeText = message;
-        notification.identifier = context;
+        notification.hasActionButton = NO;
+        //notification.identifier = context;
 
         if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
         }
@@ -135,7 +136,7 @@ static SystemNotification *singleton;
         NSUserNotification *notification = [[NSUserNotification alloc] init];
         notification.title = title;
         notification.informativeText = message;
-        notification.identifier = context;
+        //notification.identifier = context;
         notification.hasActionButton = YES;
         notification.actionButtonTitle = @"Show";
         notification.otherButtonTitle = @"Other";

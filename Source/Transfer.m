@@ -182,6 +182,18 @@
     self.value = other.value;
 }
 
+- (BOOL)isSEPA
+{
+    TransferType type = [self.type intValue];
+    return type == TransferTypeSEPA || type == TransferTypeSEPAScheduled || type == TransferTypeCollectiveCreditSEPA;
+}
+
+- (BOOL)isSEPAorEU
+{
+    TransferType type = [self.type intValue];
+    return self.isSEPA || type == TransferTypeEU;
+}
+
 - (void)setJobId: (unsigned int)jid
 {
     jobId = jid;

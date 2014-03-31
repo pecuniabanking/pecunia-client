@@ -51,6 +51,8 @@ typedef enum {
 - (void)copyFromTransfer: (Transfer *)other withLimits: (TransactionLimits *)limits;
 - (void)setJobId: (unsigned int)jid;
 - (unsigned int)jobId;
+- (BOOL)isSEPA;
+- (BOOL)isSEPAorEU;
 
 
 @property (nonatomic, strong) NSNumber        *chargedBy;
