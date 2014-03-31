@@ -140,8 +140,7 @@
 
 - (NSAttributedString *)bankAddressTextFromTransfer: (Transfer *)transfer
 {
-    TransferType type = [transfer.type intValue];
-    if (type == TransferTypeSEPA || type == TransferTypeEU) {
+    if ([transfer isSEPAorEU]) {
         NSFont                    *font1 = [NSFont fontWithName: @"Lucida Grande" size: 9];
         NSFont                    *font2 = [NSFont fontWithName: @"Lucida Grande Bold" size: 8];
         NSMutableAttributedString *mas = [[@"IBAN: " attributedStringWithFont : font1] mutableCopy];

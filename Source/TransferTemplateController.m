@@ -260,13 +260,13 @@
         return;
     }
     TransferTemplate *template = [sel lastObject];
-    if (([template.type intValue] == TransferTypeEU || [template.type intValue] == TransferTypeSEPA || [template.type intValue] == TransferTypeSEPAScheduled) && currentView == standardView) {
+    if (([template.type intValue] == TransferTypeEU || [template.type intValue] == TransferTypeSEPA) && currentView == standardView) {
         [boxView replaceSubview: standardView with: euView];
         [euView setFrameOrigin: subViewPos];
         currentView = euView;
         [self toggleCountryFieldsForType: [template.type intValue]];
     }
-    if (([template.type intValue] != TransferTypeEU || [template.type intValue] != TransferTypeSEPA || [template.type intValue] != TransferTypeSEPAScheduled) && currentView == euView) {
+    if (([template.type intValue] != TransferTypeEU || [template.type intValue] != TransferTypeSEPA) && currentView == euView) {
         [boxView replaceSubview: euView with: standardView];
         currentView = standardView;
     }

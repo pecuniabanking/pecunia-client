@@ -110,7 +110,7 @@ extern void *UserDefaultsBindingContext;
     // For the remote bank code and account number we either use the german bank details or
     // IBAN/BIC, depending on the type.
     // TODO: support for SEPA normal/company single/consolidated debit transfers, standing/terminated debit tansfers.
-    if (type == TransferTypeEU || type == TransferTypeSEPA || type == TransferTypeSEPAScheduled) {
+    if (type == TransferTypeEU || type == TransferTypeSEPA) {
         remoteBankCode = [[details valueForKey: StatementRemoteBICKey] copy];
         remoteAccount = [[details valueForKey: StatementRemoteIBANKey] copy];
     } else {
@@ -185,7 +185,7 @@ extern void *UserDefaultsBindingContext;
     // The account label is constructed from two values and formatted.
     NSString *accountTitle;
     NSString *bankCodeTitle;
-    if (type == TransferTypeEU || type == TransferTypeSEPA || type == TransferTypeSEPAScheduled) {
+    if (type == TransferTypeEU || type == TransferTypeSEPA) {
         accountTitle = [NSString stringWithFormat: @"%@ ", NSLocalizedString(@"AP409", nil)];
         bankCodeTitle = [NSString stringWithFormat: @"\t%@ ", NSLocalizedString(@"AP410", nil)];
     } else {

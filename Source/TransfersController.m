@@ -783,8 +783,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     //   - SEPA consolidated company/normal debits/transfers
     //   - Standard company/normal single debit/transfer
     //   - Standard consolidated company/normal debits/transfers
-    BOOL canBeTerminated = (type == TransferTypeOldStandard) || (type == TransferTypeOldStandardScheduled)
-        || (type == TransferTypeSEPA) || (type = TransferTypeSEPAScheduled); //|| (type == TransferTypeDebit);
+    BOOL canBeTerminated =  (type == TransferTypeOldStandard) ||
+                            (type == TransferTypeOldStandardScheduled) ||
+                            (type == TransferTypeSEPA) ||
+                            (type = TransferTypeSEPAScheduled);
+    
     [executionText setHidden: !canBeTerminated];
     [executeImmediatelyRadioButton setHidden: !canBeTerminated];
     [executeImmediatelyText setHidden: !canBeTerminated];
@@ -1710,16 +1713,18 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
 - (void)updateLimits
 {
+    BOOL isSEPAorEU = [transactionController.currentTransfer isSEPAorEU];
+    
     // currentTransfer must be valid
     limits = [[HBCIController controller] limitsForType: transactionController.currentTransfer.type.intValue
                                             account: transactionController.currentTransfer.account
                                             country: transactionController.currentTransfer.remoteCountry];
 
-    [purpose2 setHidden: (limits.maxLinesPurpose < 2 && limits.maxLinesPurpose > 0) || transactionController.currentTransfer.type.intValue == TransferTypeSEPA];
-    [purpose3 setHidden: (limits.maxLinesPurpose < 3 && limits.maxLinesPurpose > 0) || transactionController.currentTransfer.type.intValue == TransferTypeSEPA];
-    [purpose4 setHidden: (limits.maxLinesPurpose < 4 && limits.maxLinesPurpose > 0) || transactionController.currentTransfer.type.intValue == TransferTypeSEPA];
+    [purpose2 setHidden: (limits.maxLinesPurpose < 2 && limits.maxLinesPurpose > 0) || isSEPAorEU];
+    [purpose3 setHidden: (limits.maxLinesPurpose < 3 && limits.maxLinesPurpose > 0) || isSEPAorEU];
+    [purpose4 setHidden: (limits.maxLinesPurpose < 4 && limits.maxLinesPurpose > 0) || isSEPAorEU];
     
-    if (transactionController.currentTransfer.type.intValue == TransferTypeSEPA || transactionController.currentTransfer.type.intValue == TransferTypeSEPAScheduled) {
+    if (isSEPAorEU) {
         NSRect frame = purpose1.frame;
         frame.size.height = 50;
         frame.size.width = 542;
@@ -1833,13 +1838,14 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
             NSArray *entries = [text parseBankDetails];
             TransferType type = transactionController.currentTransfer.type.intValue;
             if (entries.count > 0 &&
-                (type == TransferTypeSEPA || type == TransferTypeSEPAScheduled
-                    || type == TransferTypeOldStandardScheduled || type == TransferTypeOldStandard
-                    || type == TransferTypeEU)) {
+                (type == TransferTypeSEPA ||
+                 type == TransferTypeSEPAScheduled ||
+                 type == TransferTypeOldStandardScheduled ||
+                 type == TransferTypeOldStandard ||
+                 type == TransferTypeEU)) {
                 autofillController.content = entries;
                 NSRect bounds = receiverComboBox.bounds;
                 [autofillPopover showRelativeToRect: bounds ofView: receiverComboBox preferredEdge: NSMinYEdge];
-
             }
         }
     }
@@ -1867,8 +1873,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 
         // Lookup the bank name.
         NSString *bankName;
-        if (transactionController.currentTransfer.type.intValue == TransferTypeEU ||
-            transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
+        if ([transactionController.currentTransfer isSEPAorEU]) {
             bankName = [[HBCIController controller] bankNameForIBAN: transactionController.currentTransfer.remoteIBAN];
         } else {
             bankName = [[HBCIController controller] bankNameForCode: transactionController.currentTransfer.remoteBankCode];
@@ -1913,8 +1918,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         [textField setStringValue: s];
     }
 
-    if (transactionController.currentTransfer.type.intValue == TransferTypeEU ||
-        transactionController.currentTransfer.type.intValue == TransferTypeSEPA) {
+    if ([transactionController.currentTransfer isSEPAorEU]) {
         if (textField == accountNumber) {
             bankName = [[HBCIController controller] bankNameForIBAN: textField.stringValue];
             NSString *bic = [[HBCIController controller] bicForIBAN:[aNotification.object stringValue]];

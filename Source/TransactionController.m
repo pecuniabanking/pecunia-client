@@ -224,7 +224,7 @@
 
     // Determine the remote bank name again.
     NSString *bankName;
-    if (transferType == TransferTypeEU || transferType == TransferTypeSEPA) {
+    if ([currentTransfer isSEPAorEU]) {
         bankName = [[HBCIController controller] bankNameForIBAN: currentTransfer.remoteIBAN];
     } else {
         bankName = [[HBCIController controller] bankNameForCode: currentTransfer.remoteBankCode];
@@ -249,7 +249,7 @@
 
     // Determine the remote bank name again.
     NSString *bankName;
-    if (transferType == TransferTypeEU || transferType == TransferTypeSEPA) {
+    if ([currentTransfer isSEPAorEU]) {
         bankName = [[HBCIController controller] bankNameForIBAN: currentTransfer.remoteIBAN];
     } else {
         bankName = [[HBCIController controller] bankNameForCode: currentTransfer.remoteBankCode];
@@ -274,6 +274,14 @@
     TransferTemplate       *template = [NSEntityDescription insertNewObjectForEntityForName: @"TransferTemplate" inManagedObjectContext: context];
     template.name = name;
     template.type = transfer.type;
+    
+    // remove schedule
+    switch (template.type.intValue) {
+        case TransferTypeSEPAScheduled: template.type = @(TransferTypeSEPA); break;
+        case TransferTypeOldStandardScheduled: template.type = @(TransferTypeOldStandard); break;
+        default: break;
+    }
+    
     template.remoteAccount = transfer.remoteAccount;
     template.remoteBankCode = transfer.remoteBankCode;
     template.remoteName = transfer.remoteName;
