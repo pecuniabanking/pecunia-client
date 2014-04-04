@@ -105,6 +105,7 @@ AP125 = "Aufzeichnung der Kommunikation zwischen Bank und Pecunia starten. Diese
 AP126 = "Es wird derzeit die Kommunkation mit der Bank zur Fehleranalyse aufgezeichnet. Klicken Sie hier, um den Nachrichtenmittschnitt zu beenden und an den Pecunia Support zu senden";
 AP127 = "Ein Fehler trat während der letzten Aktion mit der Bank auf. Nutzen Sie das Hilfe Menü für weitere Optionen zur Lösung des Problems, insbesondere die Fehlerdatei und die Aufzeichnung der Kommunikation.";
 AP128 = "Fehler bei der Auftragsausführung";
+AP129 = "Die Bankkennung '%@' wurde erfolgreich synchronisiert";
 
 // Banking setup, migration, encryption, security.
 // AP150..AP199

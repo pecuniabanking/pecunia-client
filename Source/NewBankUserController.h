@@ -67,6 +67,7 @@
 - (IBAction)addEntry: (id)sender;
 - (IBAction)removeEntry: (id)sender;
 - (IBAction)updateBankParameter: (id)sender;
+- (IBAction)synchronize: (id)sender;
 - (IBAction)printBankParameter: (id)sender;
 - (IBAction)secMethodChanged: (id)sender;
 - (IBAction)tanOptionChanged: (id)sender;

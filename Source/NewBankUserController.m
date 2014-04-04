@@ -731,6 +731,36 @@
                     NSLocalizedString(@"AP1", nil), nil, nil);
 }
 
+- (IBAction)synchronize: (id)sender
+{
+    BankUser *user = [self selectedUser];
+    if (user == nil) {
+        return;
+    }
+    
+    PecuniaError *error = [[HBCIController controller] synchronizeUser: user];
+    if (error) {
+        [error alertPanel];
+        return;
+    }
+    
+    // update TAN methods list
+    if ([user.secMethod intValue] == SecMethod_PinTan) {
+        [self updateTanMethods];
+    }
+    
+    // save updates
+    if ([context save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
+    
+    NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
+                    [NSString stringWithFormat:NSLocalizedString(@"AP129", nil), user.name],
+                    NSLocalizedString(@"AP1", nil), nil, nil);
+}
+
 - (IBAction)callHelp:(id)sender
 {
     NSURL *url = [NSURL URLWithString:@"http://www.pecuniabanking.de/index.php/beschreibung/bankkennungen"];

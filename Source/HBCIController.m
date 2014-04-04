@@ -1492,6 +1492,54 @@ NSString * escapeSpecial(NSString *s)
     return nil;
 }
 
+- (PecuniaError *)synchronizeUser: (BankUser *)user
+{
+    PecuniaError *error = nil;
+    if ([self registerBankUser: user error: &error] == NO) {
+        return error;
+    }
+    
+    NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"synchronize\">"];
+    [self appendTag: @"userBankCode" withValue: user.bankCode to: cmd];
+    [self appendTag: @"customerId" withValue: user.customerId to: cmd];
+    [self appendTag: @"userId" withValue: user.userId to: cmd];
+    [cmd appendString: @"</command>"];
+    
+    // communicate with bank to update bank parameters
+    User *usr = [bridge syncCommand: cmd error: &error];
+    if (error) {
+        return error;
+    }
+    
+    // Update user's accounts
+    [self updateBankAccounts: usr.accounts forUser: user];
+    
+    // update supported transactions
+    error = [self updateSupportedTransactionsForAccounts: usr.accounts user: user];
+    if (error) {
+        return error;
+    }
+    
+    // clear Limits cache
+    error = [self clearLimitsForUser:user];
+    if (error) {
+        return error;
+    }
+    
+    // also update TAN media and TAN methods
+    if ([user.secMethod intValue] == SecMethod_PinTan) {
+        error = [self updateTanMethodsForUser: user];
+        if (error != nil) {
+            return error;
+        }
+        error = [self updateTanMediaForUser: user];
+        if (error != nil) {
+            return error;
+        }
+    }
+    return nil;
+}
+
 - (PecuniaError *)changePinTanMethodForUser: (BankUser *)user
 {
     PecuniaError *error = nil;

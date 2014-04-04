@@ -136,9 +136,6 @@
         // -initWithData:encoding: on the other hand checks -[data length]
         NSString *s = [NSString stringWithData: data];
 
-        // Receive log.
-        LogComTrace(HBCILogIntern, [MessageLog prettyPrintServerMessage: s]);
-
         if (asyncString == nil) {
             asyncString = [[NSMutableString alloc] init];
         }

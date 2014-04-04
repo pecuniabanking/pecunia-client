@@ -95,6 +95,7 @@
 - (BOOL)deleteBankUser: (BankUser *)user;
 - (PecuniaError *)updateBankDataForUser: (BankUser *)user;
 - (NSArray *)getOldBankUsers;
+- (PecuniaError *)synchronizeUser: (BankUser *)user;
 
 // Customer Message
 - (PecuniaError *)sendCustomerMessage: (CustomerMessage *)msg;
