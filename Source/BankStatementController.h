@@ -30,6 +30,7 @@
     IBOutlet NSDatePicker       *valutaField;
     IBOutlet NSTextField        *saldoField;
     IBOutlet NSTextField        *valueField;
+    IBOutlet NSComboBox         *categoryBox;
 
     BankAccount            *account;
     NSManagedObjectContext *memContext;

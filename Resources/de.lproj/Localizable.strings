@@ -218,6 +218,7 @@ AP305 = "Regel sichern";
 AP306 = "Die Regel für die Kategorie %@ wurde verändert. Möchten Sie die Regel für die Kategorie sichern?";
 AP307 = "Regel löschen";
 AP308 = "Möchten Sie die Regel für die Kategorie %@ wirklich löschen?";
+AP309 = "Die Kategorie %@ existiert nicht. Möchten Sie die Kategorie neu erstellen?";
 
 // Callback and backend.
 // AP350..AP399

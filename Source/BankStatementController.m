@@ -146,9 +146,8 @@
     }
 
     // Manually assign to a category. Doesn't affect automatic assignments based on rules.
-    NSInteger idx = [categoriesController selectionIndex];
-    if (idx != NSNotFound) {
-        Category *cat = [categoriesController arrangedObjects][idx];
+    Category *cat = [self getSelectedCategory];
+    if (cat != nil) {
         [newStatement assignToCategory: cat];
         [Category updateBalancesAndSums];
     }
@@ -305,6 +304,22 @@
     [self updateSaldo];
 }
 
+- (Category *)getSelectedCategory
+{
+    NSString *catString = categoryBox.stringValue;
+    if (catString == nil || catString.length == 0) {
+        return nil;
+    }
+    
+    NSArray *categories = [categoriesController arrangedObjects];
+    for (Category *cat in categories) {
+        if ([cat.localName isEqualToString:catString]) {
+            return cat;
+        }
+    }
+    return nil;
+}
+
 - (BOOL)check
 {
     BOOL res;
@@ -323,6 +338,22 @@
             NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
                             NSLocalizedString(@"AP60", nil),
                             NSLocalizedString(@"AP61", nil), nil, nil);
+            return NO;
+        }
+    }
+
+    // check entered category
+    NSString *catString = categoryBox.stringValue;
+    if (catString != nil && catString.length > 0) {
+        if ([self getSelectedCategory] == nil) {
+            int result = NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
+                                         [NSString stringWithFormat:NSLocalizedString(@"AP309", nil), catString ],
+                                         NSLocalizedString(@"AP4", nil),
+                                         NSLocalizedString(@"AP3", nil), nil);
+            if (result == NSAlertAlternateReturn) {
+                [Category createCategoryWithName:catString];
+                return YES;
+            }
             return NO;
         }
     }
