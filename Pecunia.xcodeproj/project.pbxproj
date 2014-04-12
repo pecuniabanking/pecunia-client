@@ -838,6 +838,8 @@
 		B1E3E4BE16BC6DE500DC1638 /* noccsettlements.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B1E3E4BD16BC6DE500DC1638 /* noccsettlements.pdf */; };
 		B1E8119D0FF6863D00BF7451 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165DFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		B1E811F00FF68B3700BF7451 /* PecuniaHelp in Resources */ = {isa = PBXBuildFile; fileRef = B1E811D70FF68B3700BF7451 /* PecuniaHelp */; };
+		B1E8D89F18F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */; };
+		B1E8D8A018F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */; };
 		B1EC7B271508077100813E1A /* TanSigningOption.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EC7B261508077100813E1A /* TanSigningOption.m */; };
 		B1F458330F251F0E00BAF4E8 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */; };
 		B1F4587E0F2907BD00BAF4E8 /* AccountMaintenanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4587D0F2907BD00BAF4E8 /* AccountMaintenanceController.m */; };
@@ -1527,6 +1529,8 @@
 		B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditCardSettlementController.m; sourceTree = "<group>"; };
 		B1E3E4BD16BC6DE500DC1638 /* noccsettlements.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = noccsettlements.pdf; sourceTree = "<group>"; };
 		B1E811D70FF68B3700BF7451 /* PecuniaHelp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PecuniaHelp; sourceTree = "<group>"; };
+		B1E8D89D18F9DB8200EED3B2 /* PecuniaComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaComboBoxCell.h; sourceTree = "<group>"; };
+		B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaComboBoxCell.m; sourceTree = "<group>"; };
 		B1EC7B251508077100813E1A /* TanSigningOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TanSigningOption.h; sourceTree = "<group>"; };
 		B1EC7B261508077100813E1A /* TanSigningOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TanSigningOption.m; sourceTree = "<group>"; };
 		B1F458320F251F0E00BAF4E8 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
@@ -1830,6 +1834,8 @@
 				2716FE4C152381A60015A753 /* SynchronousScrollView.m */,
 				2704CC0418C0F173003C36F2 /* ComTraceHelper.h */,
 				2704CC0518C0F173003C36F2 /* ComTraceHelper.m */,
+				B1E8D89D18F9DB8200EED3B2 /* PecuniaComboBoxCell.h */,
+				B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */,
 			);
 			name = "Controls and Layouts";
 			sourceTree = "<group>";
@@ -3305,6 +3311,7 @@
 				277788C8173CE22700430EBC /* TanMediaWindowController.m in Sources */,
 				27F69B7918BA3EFB002CBE06 /* FileInZipInfo.m in Sources */,
 				277788C9173CE22700430EBC /* BankParameter.m in Sources */,
+				B1E8D8A018F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */,
 				277788CA173CE22700430EBC /* ImportSettings.m in Sources */,
 				27F69B7D18BA3EFB002CBE06 /* ZipFile.m in Sources */,
 				277788CB173CE22700430EBC /* ImportController.m in Sources */,
@@ -3515,6 +3522,7 @@
 				B1B417DF13F06AD200BEEC8F /* TanMediaWindowController.m in Sources */,
 				27F69B7818BA3EFB002CBE06 /* FileInZipInfo.m in Sources */,
 				B1B41C8C14005B5B00BEEC8F /* BankParameter.m in Sources */,
+				B1E8D89F18F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */,
 				B1AA6337140990EF00ADE1D0 /* ImportSettings.m in Sources */,
 				27F69B7C18BA3EFB002CBE06 /* ZipFile.m in Sources */,
 				B1AA640C140C074E00ADE1D0 /* ImportController.m in Sources */,

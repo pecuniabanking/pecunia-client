@@ -1138,6 +1138,24 @@ static ShortDate *endReportDate = nil;
     notAssignedRootSingleton = nil, [self nassRoot];
 }
 
++ (void)createCategoryWithName: (NSString *)name
+{
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
+    Category *root = [Category catRoot];
+ 
+    Category *cat = [NSEntityDescription insertNewObjectForEntityForName: @"Category" inManagedObjectContext: context];
+    cat.name = name;
+    cat.parent = root;
+    
+    NSError *error;
+    if (![context save: &error]) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
+}
+
+
 /**
  * Creates a set of default categories, which are quite common. These categories are defined in Localizable.strings.
  */

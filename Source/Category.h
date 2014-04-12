@@ -140,5 +140,6 @@ typedef struct {
 + (void)setCatReportFrom: (ShortDate *)fDate to: (ShortDate *)tDate;
 + (void)recreateRoots;
 + (void)createDefaultCategories;
++ (void)createCategoryWithName: (NSString *)name;
 
 @end
