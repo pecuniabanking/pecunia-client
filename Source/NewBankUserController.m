@@ -757,8 +757,8 @@
     }
     
     NSRunAlertPanel(NSLocalizedString(@"AP71", nil),
-                    [NSString stringWithFormat:NSLocalizedString(@"AP129", nil), user.name],
-                    NSLocalizedString(@"AP1", nil), nil, nil);
+                    NSLocalizedString(@"AP129", nil),
+                    NSLocalizedString(@"AP1", nil), nil, nil, user.name);
 }
 
 - (IBAction)callHelp:(id)sender
