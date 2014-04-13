@@ -789,7 +789,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     BOOL canBeTerminated =  (type == TransferTypeOldStandard) ||
                             (type == TransferTypeOldStandardScheduled) ||
                             (type == TransferTypeSEPA) ||
-                            (type = TransferTypeSEPAScheduled);
+                            (type == TransferTypeSEPAScheduled);
     
     [executionText setHidden: !canBeTerminated];
     [executeImmediatelyRadioButton setHidden: !canBeTerminated];
@@ -799,13 +799,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [executionDatePicker setHidden: !canBeTerminated];
     [calendarButton setHidden: !canBeTerminated];
 
-    BOOL canBeScheduled = (type == TransferTypeOldStandardScheduled || type == TransferTypeSEPAScheduled);
-    executeAtDateRadioButton.state = canBeScheduled ? NSOnState : NSOffState;
-    executeImmediatelyRadioButton.state = canBeScheduled ? NSOffState : NSOnState;
+    BOOL isScheduled = (type == TransferTypeOldStandardScheduled || type == TransferTypeSEPAScheduled);
+    executeAtDateRadioButton.state = isScheduled ? NSOnState : NSOffState;
+    executeImmediatelyRadioButton.state = isScheduled ? NSOffState : NSOnState;
 
     executionDatePicker.dateValue = [NSDate date];
-    [executionDatePicker setEnabled: canBeScheduled];
-    [calendarButton setEnabled: canBeScheduled];
+    [executionDatePicker setEnabled: isScheduled];
+    [calendarButton setEnabled: isScheduled];
 
     // Load the set of previously entered text for the receiver combo box.
     [receiverComboBox removeAllItems];

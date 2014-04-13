@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -347,9 +347,9 @@
     if (catString != nil && catString.length > 0) {
         if ([self getSelectedCategory] == nil) {
             int result = NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
-                                         [NSString stringWithFormat:NSLocalizedString(@"AP309", nil), catString ],
+                                         NSLocalizedString(@"AP309", nil),
                                          NSLocalizedString(@"AP4", nil),
-                                         NSLocalizedString(@"AP3", nil), nil);
+                                         NSLocalizedString(@"AP3", nil), nil, catString);
             if (result == NSAlertAlternateReturn) {
                 [Category createCategoryWithName:catString];
                 return YES;
