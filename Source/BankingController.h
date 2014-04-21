@@ -40,6 +40,7 @@
 @class StandingOrderController;
 @class DebitsController;
 @class CategoryHeatMapController;
+@class BSSelectWindowController;
 
 @class INAppStoreWindow;
 
@@ -76,6 +77,7 @@
 
 @private
     NSMutableDictionary    *mainTabItems;
+    NSUInteger             newStatementsCount;
 
     HomeScreenController             *homeScreenController;
     StatementsOverviewController     *overviewController;
@@ -87,7 +89,7 @@
     StandingOrderController          *standingOrderController;
     DebitsController                 *debitsController;
     CategoryHeatMapController        *heatMapController;
-
+    BSSelectWindowController         *selectWindowController;
 }
 
 @property (strong) IBOutlet CategoryView *accountsView;

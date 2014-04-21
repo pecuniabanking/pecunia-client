@@ -29,11 +29,16 @@
 
 @implementation BSSelectWindowController
 
-- (id)initWithResults: (NSArray *)list
+- (id)init
 {
     self = [super initWithWindowNibName: @"BSSelectWindow"];
-    resultList = list;
+    resultList = [[NSMutableArray alloc] initWithCapacity:20];
     return self;
+}
+
+- (void)addResults: (NSArray*)list
+{
+    [resultList addObjectsFromArray:list];
 }
 
 - (void)awakeFromNib

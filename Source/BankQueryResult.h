@@ -19,11 +19,17 @@
 
 #import <Cocoa/Cocoa.h>
 
+typedef enum {
+    BankQueryType_BankStatement = 0,
+    BankQueryType_StandingOrder,
+} BankQueryType;
+
 @class BankAccount;
 
 @interface BankQueryResult : NSObject {
 }
 
+@property (assign) BankQueryType type;
 @property (copy) NSString        *accountNumber;
 @property (copy) NSString        *accountSubnumber;
 @property (copy) NSString        *bankCode;

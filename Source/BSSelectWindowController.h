@@ -20,12 +20,13 @@
 #import <Cocoa/Cocoa.h>
 
 @interface BSSelectWindowController : NSWindowController {
-    NSArray                    *resultList;
+    NSMutableArray             *resultList;
     IBOutlet NSArrayController *statController;
     IBOutlet NSTableView       *statementsView;
 }
 
-- (id)initWithResults: (NSArray *)list;
+- (id)init;
+- (void)addResults: (NSArray*)list;
 
 - (IBAction)ok: (id)sender;
 - (IBAction)cancel: (id)sender;

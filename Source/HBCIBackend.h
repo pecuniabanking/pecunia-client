@@ -23,8 +23,9 @@
 #import "StandingOrder.h"
 #import "SupportedTransactionInfo.h"
 
-#define PecuniaStatementsNotification       @"PecuniaStatementsNotification"
-#define PecuniaInstituteMessageNotification @"PecuniaInstMessageNotification"
+#define PecuniaStatementsNotification           @"PecuniaStatementsNotification"
+#define PecuniaStatementsFinalizeNotification   @"PecuniaStatementsFinalizeNotification"
+#define PecuniaInstituteMessageNotification     @"PecuniaInstMessageNotification"
 
 @class BankInfo;
 @class TransactionLimits;

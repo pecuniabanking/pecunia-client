@@ -31,6 +31,8 @@
     NSMutableDictionary      *bankInfo;
     NSMutableDictionary      *countries;
     NSArray                  *bankQueryResults;
+    NSMutableDictionary      *bankQueryResultsByUser;
+    NSString                 *currentUserId;
     int                      currentQuery;
     ResultWindowController   *resultWindow;
 }
