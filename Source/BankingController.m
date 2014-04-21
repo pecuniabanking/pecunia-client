@@ -816,6 +816,7 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     NSMutableArray *selectedAccounts = [NSMutableArray arrayWithCapacity: 10];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray        *selectedNodes = nil;
     NSError        *error = nil;
 
@@ -911,10 +912,19 @@ static BankingController *bankinControllerInstance;
     StatusBarController *sc = [StatusBarController controller];
     [sc startSpinning];
     [sc setMessage: NSLocalizedString(@"AP219", nil) removeAfter: 0];
+    newStatementsCount = 0;
+    
+    if ([defaults boolForKey: @"manualTransactionCheck"]) {
+        selectWindowController = [[BSSelectWindowController alloc] init];
+    }
 
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(statementsNotification:)
                                                  name: PecuniaStatementsNotification
+                                               object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(statementsFinalizeNotification:)
+                                                 name: PecuniaStatementsFinalizeNotification
                                                object: nil];
     [[HBCIController controller] getStatements: resultList];
 
@@ -926,23 +936,15 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     BankQueryResult     *result;
-    StatusBarController *sc = [StatusBarController controller];
+    NSUserDefaults      *defaults = [NSUserDefaults standardUserDefaults];
     BOOL                noStatements = YES;
     BOOL                isImport = NO;
-    int                 count = 0;
-
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: PecuniaStatementsNotification
-                                                  object: nil];
 
     NSArray *resultList = [notification object];
     if (resultList == nil) {
-        [sc stopSpinning];
-        [sc clearMessage];
-        requestRunning = NO;
         return;
     }
-
+    
     // get Proposals
     for (result in resultList) {
         NSArray *stats = result.statements;
@@ -955,19 +957,14 @@ static BankingController *bankinControllerInstance;
         }
         [result.account updateStandingOrders: result.standingOrders];
     }
-    [sc stopSpinning];
-    [sc clearMessage];
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL           check = [defaults boolForKey: @"manualTransactionCheck"];
-
-    if (check && !noStatements) {
-        BSSelectWindowController *selectWindowController = [[BSSelectWindowController alloc] initWithResults: resultList];
+    if ([defaults boolForKey: @"manualTransactionCheck"] && !noStatements) {
+        [selectWindowController addResults:resultList];
         [NSApp runModalForWindow: [selectWindowController window]];
     } else {
         @try {
             for (result in resultList) {
-                count += [result.account updateFromQueryResult: result];
+                newStatementsCount += [result.account updateFromQueryResult: result];
             }
         }
         @catch (NSException *error) {
@@ -977,11 +974,7 @@ static BankingController *bankinControllerInstance;
             [self checkBalances: resultList];
         }
         [self requestFinished: resultList];
-
-        [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), count] removeAfter: 120];
     }
-    autoSyncRunning = NO;
-    [self.currentSelection updateAssignmentsForReportRange];
     
     // check for updated login data
     for (result in resultList) {
@@ -993,8 +986,37 @@ static BankingController *bankinControllerInstance;
 
     [self save];
 
-    [self stopRefreshAnimation];
+    LogLeave;
+}
 
+- (void)statementsFinalizeNotification: (NSNotification *)notification
+{
+    StatusBarController *sc = [StatusBarController controller];
+    NSUserDefaults      *defaults = [NSUserDefaults standardUserDefaults];
+    
+    [sc stopSpinning];
+    [sc clearMessage];
+    requestRunning = NO;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: PecuniaStatementsNotification
+                                                  object: nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: PecuniaStatementsFinalizeNotification
+                                                  object: nil];
+    
+    if ([defaults boolForKey: @"manualTransactionCheck"]) {
+        [NSApp runModalForWindow: [selectWindowController window]];
+    } else {
+        [sc setMessage: [NSString stringWithFormat: NSLocalizedString(@"AP218", nil), newStatementsCount] removeAfter: 120];
+    }
+
+    autoSyncRunning = NO;
+    [self.currentSelection updateAssignmentsForReportRange];
+
+    [self stopRefreshAnimation];
+    
     BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
     if (!suppressSound) {
         NSSound *doneSound = [NSSound soundNamed: @"done.mp3"];
@@ -1002,8 +1024,6 @@ static BankingController *bankinControllerInstance;
             [doneSound play];
         }
     }
-
-    LogLeave;
 }
 
 - (void)requestFinished: (NSArray *)resultList
@@ -1800,7 +1820,15 @@ static BankingController *bankinControllerInstance;
     if (res == 0) {
         NSArray        *results = @[controller.importResult];
         NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: results];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        newStatementsCount = 0;
+        
+        if ([defaults boolForKey: @"manualTransactionCheck"]) {
+            selectWindowController = [[BSSelectWindowController alloc] init];
+        }
+
         [self statementsNotification: notification];
+        [self statementsFinalizeNotification:nil];
     }
 
     LogLeave;
@@ -2991,47 +3019,11 @@ static BankingController *bankinControllerInstance;
 {
     LogEnter;
 
-    NSError        *error = nil;
-    NSFetchRequest *request = [model fetchRequestTemplateForName: @"allBankAccounts"];
-    NSArray        *selectedAccounts = [self.managedObjectContext executeFetchRequest: request error: &error];
-    if (error) {
-        LogError(@"Error reading bank accounts during automatic sync: %@", error.localizedDescription);
-        return;
-    }
-
-    [self startRefreshAnimation];
-
-    // Now selectedAccounts has all selected Bank Accounts.
-    BankAccount    *account;
-    NSMutableArray *resultList = [NSMutableArray arrayWithCapacity: [selectedAccounts count]];
-    for (account in selectedAccounts) {
-        if ([account.noAutomaticQuery boolValue] == YES) {
-            continue;
-        }
-
-        BankQueryResult *result = [[BankQueryResult alloc] init];
-        result.accountNumber = account.accountNumber;
-        result.accountSubnumber = account.accountSuffix;
-        result.bankCode = account.bankCode;
-        result.userId = account.userId;
-        result.account = account;
-        [resultList addObject: result];
-    }
-    // prepare UI
-    [[[mainWindow contentView] viewWithTag: 100] setEnabled: NO];
-    StatusBarController *sc = [StatusBarController controller];
-    [sc startSpinning];
-    [sc setMessage: NSLocalizedString(@"AP219", nil) removeAfter: 0];
-
-    // get statements in separate thread
-    autoSyncRunning = YES;
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(statementsNotification:)
-                                                 name: PecuniaStatementsNotification
-                                               object: nil];
-    [[HBCIController controller] getStatements: resultList];
-
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    autoSyncRunning = YES;
+    [self synchronizeAccount: Category.bankRoot];
+
     [defaults setObject: [NSDate date] forKey: @"lastSyncDate"];
 
     // if autosync, setup next timer event

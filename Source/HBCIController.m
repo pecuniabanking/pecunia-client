@@ -964,40 +964,40 @@ NSString * escapeSpecial(NSString *s)
     return result;
 }
 
-- (void)getStatements: (NSArray *)resultList
+// get all statements for one BankUser
+- (void)getUserStatements: (NSArray*)resultList
 {
-    bankQueryResults = resultList;
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getAllStatements\"><accinfolist type=\"list\">"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"y-MM-dd";
-
+    
     BankQueryResult *result;
-
-    [self startProgress];
+    
+    //[self startProgress];
     for (result in resultList) {
         // check if user is registered
         BankUser *user = [self getBankUserForId: result.userId bankCode: result.bankCode];
         if (user == nil) {
             continue;
         }
-
+        
         [cmd appendFormat: @"<accinfo><bankCode>%@</bankCode><accountNumber>%@</accountNumber>", result.bankCode, result.accountNumber];
         [self appendTag: @"subNumber" withValue: result.accountSubnumber to: cmd];
-
+        
         NSInteger maxStatDays = 0;
         if ([[NSUserDefaults standardUserDefaults] boolForKey: @"limitStatsAge"]) {
             maxStatDays = [[NSUserDefaults standardUserDefaults] integerForKey: @"maxStatDays"];
             /* do not restrict horizon to 90 days by default any more (too many complaints)
-            if (maxStatDays == 0) {
-                maxStatDays = 90;
-            }
-            */ 
+             if (maxStatDays == 0) {
+             maxStatDays = 90;
+             }
+             */
         }
-
+        
         if (result.account.latestTransferDate == nil && maxStatDays > 0) {
             result.account.latestTransferDate = [[NSDate alloc] initWithTimeInterval: -86400 * maxStatDays sinceDate: [NSDate date]];
         }
-
+        
         if (result.account.latestTransferDate != nil) {
             NSString *fromString = nil;
             NSDate   *fromDate = [[NSDate alloc] initWithTimeInterval: -605000 sinceDate: result.account.latestTransferDate];
@@ -1015,34 +1015,63 @@ NSString * escapeSpecial(NSString *s)
     [bridge asyncCommand: cmd sender: self];
 }
 
+- (void)getStatements: (NSArray *)resultList
+{
+    // organize statements by user
+    bankQueryResultsByUser = [NSMutableDictionary dictionaryWithCapacity:10];
+    for (BankQueryResult *result in resultList) {
+        NSMutableArray *accountResults = [bankQueryResultsByUser objectForKey:result.userId];
+        if (accountResults == nil) {
+            accountResults = [NSMutableArray arrayWithCapacity:10];
+            [bankQueryResultsByUser setObject:accountResults forKey:result.userId];
+        }
+        [accountResults addObject:result];
+    }
+    
+    // now start asynchronous queries with first user
+    NSArray *keys = [bankQueryResultsByUser allKeys];
+    if (keys.count > 0) {
+        currentUserId = keys[0];
+        [self startProgress];
+        [self getUserStatements:bankQueryResultsByUser[currentUserId]];
+    }
+ }
+
 - (void)asyncCommandCompletedWithResult: (id)result error: (PecuniaError *)err
 {
+    NSArray *queryResults = bankQueryResultsByUser[currentUserId];
+    
     if (err == nil && result != nil) {
         for (BankQueryResult *res in result) {
             // find corresponding incoming structure
+
             BankQueryResult *iResult;
-            for (iResult in bankQueryResults) {
-                if ([iResult.accountNumber isEqualToString: res.accountNumber] && [iResult.bankCode isEqualToString: res.bankCode] &&
-                    ((iResult.accountSubnumber == nil && res.accountSubnumber == nil) || [iResult.accountSubnumber isEqualToString: res.accountSubnumber])) {
-                    break;
-                }
+            NSUInteger idx = [queryResults indexOfObject:res];
+            if (idx == NSNotFound) {
+                continue;
             }
+            iResult = queryResults[idx];
+            
             if (res.ccNumber != nil) {
                 // Credit Card Statements, balance field is filled with current account balance
                 iResult.balance = res.balance;
                 iResult.ccNumber = res.ccNumber;
                 iResult.lastSettleDate = res.lastSettleDate;
-                for (BankStatement *stat in res.statements) {
-                    stat.saldo = res.balance;
-                    res.balance = [res.balance decimalNumberBySubtracting: stat.value];
+                
+                // check if order has to be reversed
+                BankStatement *statement1 = res.statements.firstObject;
+                BankStatement *statement2 = res.statements.lastObject;
+                if ([statement1.date compare: statement2.date] == NSOrderedDescending) {
+                    // reverse order
+                    int            idx;
+                    NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 50];
+                    for (idx = [res.statements count] - 1; idx >= 0; idx--) {
+                        [statements addObject: res.statements[idx]];
+                    }
+                    iResult.statements = statements;
+                } else {
+                    iResult.statements = res.statements;
                 }
-                // reverse order
-                int            idx;
-                NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 50];
-                for (idx = [res.statements count] - 1; idx >= 0; idx--) {
-                    [statements addObject: res.statements[idx]];
-                }
-                iResult.statements = statements;
             } else {
                 // Standard Statements
                 // saldo of the last statement is current saldo
@@ -1063,30 +1092,48 @@ NSString * escapeSpecial(NSString *s)
         }
     }
 
-    [self stopProgress];
-
     if (err) {
-        [err alertPanel];
-        NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: nil];
-        [[NSNotificationCenter defaultCenter] postNotification: notification];
+        [err logMessage];
     } else {
-        NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: bankQueryResults];
+        NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: queryResults];
         [[NSNotificationCenter defaultCenter] postNotification: notification];
+    }
+    
+    // continue with next user
+    [bankQueryResultsByUser removeObjectForKey:currentUserId];
+    NSArray *keys = [bankQueryResultsByUser allKeys];
+    if (keys.count > 0) {
+        currentUserId = keys[0];
+        NSArray *results = bankQueryResultsByUser[currentUserId];
+        switch (((BankQueryResult*)results.firstObject).type) {
+            case BankQueryType_BankStatement:
+                [self performSelector:@selector(getUserStatements:) withObject:results afterDelay:0.0];
+                break;
+            case BankQueryType_StandingOrder:
+                [self performSelector:@selector(getUserStandingOrders:) withObject:results afterDelay:0.0];
+                break;
+                
+            default:
+                break;
+        }
+    } else {
+        NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsFinalizeNotification object: nil];
+        [[NSNotificationCenter defaultCenter] postNotification: notification];
+        [self stopProgress];
     }
 }
 
-- (void)getStandingOrders: (NSArray *)resultList
+- (void)getUserStandingOrders: (NSArray*)resultList
 {
-    bankQueryResults = resultList;
     NSMutableString *cmd = [NSMutableString stringWithFormat: @"<command name=\"getAllStandingOrders\"><accinfolist type=\"list\">"];
-
+    
     for (BankQueryResult *result in resultList) {
         // check if user is registered
         BankUser *user = [self getBankUserForId: result.userId bankCode: result.bankCode];
         if (user == nil) {
             continue;
         }
-
+        
         [cmd appendString: @"<accinfo>"];
         [self appendTag: @"bankCode" withValue: result.bankCode to: cmd];
         [self appendTag: @"accountNumber" withValue: result.accountNumber to: cmd];
@@ -1100,8 +1147,29 @@ NSString * escapeSpecial(NSString *s)
         [cmd appendString: @"</accinfo>"];
     }
     [cmd appendString: @"</accinfolist></command>"];
-    [self startProgress];
     [bridge asyncCommand: cmd sender: self];
+}
+
+- (void)getStandingOrders: (NSArray *)resultList
+{
+    // organize statements by user
+    bankQueryResultsByUser = [NSMutableDictionary dictionaryWithCapacity:10];
+    for (BankQueryResult *result in resultList) {
+        NSMutableArray *accountResults = [bankQueryResultsByUser objectForKey:result.userId];
+        if (accountResults == nil) {
+            accountResults = [NSMutableArray arrayWithCapacity:10];
+            [bankQueryResultsByUser setObject:accountResults forKey:result.userId];
+        }
+        [accountResults addObject:result];
+    }
+    
+    // now start asynchronous queries with first user
+    NSArray *keys = [bankQueryResultsByUser allKeys];
+    if (keys.count > 0) {
+        currentUserId = keys[0];
+        [self startProgress];
+        [self getUserStandingOrders:bankQueryResultsByUser[currentUserId]];
+    }
 }
 
 - (void)prepareCommand: (NSMutableString *)cmd forStandingOrder: (StandingOrder *)stord user: (BankUser *)user

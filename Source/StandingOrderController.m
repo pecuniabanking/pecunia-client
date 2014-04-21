@@ -759,7 +759,14 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
             result.bankCode = account.bankCode;
             result.userId = account.userId;
             result.account = account;
+            result.type = BankQueryType_StandingOrder;
             [accountList addObject: result];
+            
+            // remove orders for this account
+            NSSet *orders = [account mutableSetValueForKey:@"standingOrders"];
+            for (StandingOrder *order in orders) {
+                [managedObjectContext deleteObject: order];
+            }
         }
     }
 
@@ -771,6 +778,10 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(ordersNotification:)
                                                      name: PecuniaStatementsNotification
+                                                   object: nil];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(ordersFinalizeNotification:)
+                                                     name: PecuniaStatementsFinalizeNotification
                                                    object: nil];
 
         [[HBCIController controller] getStandingOrders: accountList];
@@ -850,35 +861,42 @@ NSString *const OrderDataType = @"OrderDataType"; // For dragging an existing or
 
 - (void)ordersNotification: (NSNotification *)notification
 {
-    StatusBarController *status = [StatusBarController controller];
-
-    [[NSNotificationCenter defaultCenter] removeObserver: self name: PecuniaStatementsNotification object: nil];
-
     NSArray *resultList = [notification object];
-    if (resultList == nil) {
-        [status stopSpinning];
-        [status clearMessage];
-        self.requestRunning = @NO;
+    if (resultList == nil || resultList.count == 0) {
         return;
     }
-
-    // Delete old orders.
-    for (StandingOrder *order in [orderController arrangedObjects]) {
-        [managedObjectContext deleteObject: order];
-    }
-
+    
     for (BankQueryResult *result in resultList) {
         [result.account updateStandingOrders: result.standingOrders];
     }
+    
+    // save updates
+    NSError *error;
+    if ([managedObjectContext save: &error] == NO) {
+        NSAlert *alert = [NSAlert alertWithError: error];
+        [alert runModal];
+        return;
+    }
+}
+
+- (void)ordersFinalizeNotification: (NSNotification *)notification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver: self name: PecuniaStatementsNotification object: nil];
+    [[NSNotificationCenter defaultCenter] removeObserver: self name: PecuniaStatementsFinalizeNotification object: nil];
+    
+    StatusBarController *status = [StatusBarController controller];
+
     // After updating all accounts schedule a delayed cleanup.
     // Delayed, because we may need new HBCI requests that cannot run while we are here.
-    [self performSelector: @selector(validateNewOrders) withObject: nil afterDelay: 0.5];
+    //[self performSelector: @selector(validateNewOrders) withObject: nil afterDelay: 0.5];
+    [self validateNewOrders];
     [orderController prepareContent];
-
+    
     [status stopSpinning];
     [status clearMessage];
     self.requestRunning = @NO;
 }
+
 
 - (void)validateNewOrders
 {

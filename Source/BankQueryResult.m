@@ -35,4 +35,14 @@
 @synthesize ccNumber;
 @synthesize lastSettleDate;
 
+
+- (BOOL)isEqual:(BankQueryResult*)result
+{
+    if ([accountNumber isEqualToString:result.accountNumber] && [bankCode isEqualToString:result.bankCode]) {
+        return (accountSubnumber == nil && result.accountSubnumber == nil) ||
+        (accountSubnumber != nil && result.accountSubnumber != nil && [accountSubnumber isEqualToString:result.accountSubnumber]);
+    }
+    return NO;
+}
+
 @end
