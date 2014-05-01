@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,16 +17,11 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
+#import "PecuniaListViewCell.h"
 
-#import "PXListViewCell.h"
-#import "Transfer.h"
-#import "NSView+PecuniaAdditions.h"
-
-@interface TransfersListViewCell : PXListViewCell
+@interface TransfersListViewCell : PecuniaListViewCell
 {
     IBOutlet NSTextField *dateLabel;
-    IBOutlet NSTextField *accountLabel;
     IBOutlet NSTextField *bankNameLabel;
     IBOutlet NSTextField *remoteNameLabel;
     IBOutlet NSTextField *purposeLabel;
@@ -35,21 +30,12 @@
     IBOutlet NSTextField *valueTitle;
     IBOutlet NSTextField *dateTitle;
 
-@private
-    NSColor      *categoryColor;
-    NSDictionary *whiteAttributes;
-
-    // Need to keep these values from the details dictionary to rebuild the attributed string
-    // for the account label depending on whether we are selected or not.
-    NSString *remoteBankCode;
-    NSString *remoteAccount;
-    NSString *purpose;
-
-    NSUInteger   index;
-    TransferType type;
+    IBOutlet NSTextField *ibanCaption;
+    IBOutlet NSTextField *ibanLabel;
+    IBOutlet NSTextField *bicCaption;
+    IBOutlet NSTextField *bicLabel;
 }
 
 - (void)setDetails: (NSDictionary *)details;
-- (void)selectionChanged;
 
 @end

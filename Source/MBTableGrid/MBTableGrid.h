@@ -317,6 +317,11 @@ typedef enum {
 @property (nonatomic, assign) NSSize defaultCellSize;
 
 /**
+ * @brief	The default width for the row header and the height for the column header.
+ */
+@property (nonatomic, assign) NSSize defaultHeaderSize;
+
+/**
  * @}
  */
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -25,8 +25,10 @@
  */
 
 #import "ImageAndTextCell.h"
-#import "NSColor+PecuniaAdditions.h"
+
 #import "PreferenceController.h"
+#import "NSColor+PecuniaAdditions.h"
+#import "NSAttributedString+PecuniaAdditions.h"
 
 // Layout constants
 #define MIN_BADGE_WIDTH                     22.0 //The minimum badge width for each item (default 22.0)
@@ -48,6 +50,25 @@
 #define SWATCH_SIZE                         14
 
 extern void *UserDefaultsBindingContext;
+
+@interface ImageAndTextCell()
+{
+    NSImage           *image;
+    NSString          *currency;
+    NSNumberFormatter *amountFormatter;
+    NSDecimalNumber   *amount;
+
+    NSInteger countUnread;
+    NSInteger maxUnread;
+    NSInteger badgeWidth;
+
+    BOOL isRoot;
+    BOOL isDisabled;
+    BOOL isHidden;
+    BOOL isIgnored; // Not included in overall computation.
+}
+
+@end
 
 @implementation ImageAndTextCell
 
@@ -128,30 +149,22 @@ extern void *UserDefaultsBindingContext;
     isDisabled = disabled;
     isHidden = hidden;
     isIgnored = ignored;
-
-    return;
 }
 
 - (NSRect)titleRectForBounds: (NSRect)theRect
 {
     NSRect titleFrame = [super titleRectForBounds: theRect];
-    CGRect rect = [self.attributedStringValue boundingRectWithSize: CGSizeMake(theRect.size.width, 10000)
+    CGRect rect = [self.attributedStringValue boundingRectWithSize: NSMakeSize(FLT_MAX, NSHeight(titleFrame))
                                                            options: 0];
-    titleFrame.origin.y = theRect.origin.y + (theRect.size.height - rect.size.height) / 2.0 + rect.origin.y + 1;
+    titleFrame.origin.y -= NSHeight(rect) - floor(self.font.ascender);
+    titleFrame.origin.y += floor((titleFrame.size.height - self.font.xHeight) / 2);
     return titleFrame;
 }
 
 - (void)drawInteriorWithFrame: (NSRect)cellFrame inView: (NSView *)controlView
 {
     NSRect titleRect = [self titleRectForBounds: cellFrame];
-    [[self attributedStringValue] drawInRect: titleRect];
-}
-
-- (void)selectWithFrame: (NSRect)aRect inView: (NSView *)controlView editor: (NSText *)textObj delegate: (id)anObject start: (NSInteger)selStart length: (NSInteger)selLength;
-{
-    NSRect textFrame, imageFrame;
-    NSDivideRect(aRect, &imageFrame, &textFrame, image == nil ? 0 : 20, NSMinXEdge);
-    [super selectWithFrame: textFrame inView: controlView editor: textObj delegate: anObject start: selStart length: selLength];
+    [self.attributedStringValue drawInRect: titleRect];
 }
 
 // Shared objects.
@@ -182,18 +195,17 @@ static NSGradient *selectionGradient = nil;
     selectionRect.size.width = [controlView bounds].size.width;
     selectionRect.origin.x = 0;
 
-    NSBezierPath *selectionOutline = [NSBezierPath bezierPathWithRoundedRect: selectionRect xRadius: 3 yRadius: 3];
     if ([self isHighlighted]) {
         // Fill selection rectangle for selected entries.
         [selectionGradient drawInRect: selectionRect angle: 90];
     } else
         if (isRoot) {
             // Fill constant background for unselected root entries.
-            [headerGradient drawInBezierPath: selectionOutline angle: 90];
+            [headerGradient drawInRect: selectionRect angle: 90];
         }
 
     // Draw category color swatch.
-    if ([PreferenceController showCategoryColorsInTree] && swatchColor != nil) {
+    if (PreferenceController.showCategoryColorsInTree && swatchColor != nil) {
         NSRect  swatchRect = cellFrame;
         CGFloat swatchWidth = 3;
         swatchRect.size = NSMakeSize(swatchWidth, SWATCH_SIZE);
@@ -244,8 +256,6 @@ static NSGradient *selectionGradient = nil;
         cellFrame.origin.x   += ICON_SPACING;
     }
 
-    cellFrame.size.height--; // Seems to be a necessary correction for vertical alignment.
-
     // Reserve space for badges.
     if (maxUnread > 0) {
         NSRect badgeFrame;
@@ -272,25 +282,21 @@ static NSGradient *selectionGradient = nil;
     NSRect amountwithCurrencyFrame;
 
     NSColor *valueColor;
-    if ([self isHighlighted] || isRoot) {
+    if (self.isHighlighted || isRoot) {
         valueColor = [NSColor whiteColor];
     } else {
-        NSDictionary *fontAttributes;
         if ([amount compare: [NSDecimalNumber zero]] != NSOrderedAscending) {
-            fontAttributes = @{NSForegroundColorAttributeName : [NSColor applicationColorForKey: @"Positive Cash"]};
+            valueColor = [NSColor applicationColorForKey: @"Positive Cash"];
         } else {
-            fontAttributes = [amountFormatter textAttributesForNegativeValues];
-            fontAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
+            valueColor = [NSColor applicationColorForKey: @"Negative Cash"];
         }
-        valueColor = (NSColor *)fontAttributes[NSForegroundColorAttributeName];
     }
 
     if (isIgnored) {
         valueColor = [valueColor colorWithAlphaComponent: 0.4];
     }
 
-    NSFont       *txtFont = [NSFont fontWithName: PreferenceController.mainFontName size: 13];
-    NSDictionary *attributes = @{NSFontAttributeName: txtFont,
+    NSDictionary *attributes = @{NSFontAttributeName: self.font,
                                  NSForegroundColorAttributeName: valueColor};
 
     [amountFormatter setCurrencyCode: currency];
@@ -300,13 +306,13 @@ static NSGradient *selectionGradient = nil;
 
     // Draw sum only if the cell is large enough.
     if (cellFrame.size.width > 150) {
-        CGRect rect = [amountWithCurrency boundingRectWithSize: CGSizeMake(cellFrame.size.width, 10000)
+        CGRect rect = [amountWithCurrency boundingRectWithSize: CGSizeMake(FLT_MAX, NSHeight(cellFrame))
                                                        options: 0];
         NSDivideRect(cellFrame, &amountwithCurrencyFrame, &cellFrame, rect.size.width + ROW_RIGHT_MARGIN, NSMaxXEdge);
 
-        amountwithCurrencyFrame.origin.y += (cellFrame.size.height - rect.size.height) / 2.0 + rect.origin.y + 1;
+        amountwithCurrencyFrame.origin.y -= NSHeight(rect) - floor(self.font.ascender);
+        amountwithCurrencyFrame.origin.y += floor((NSHeight(cellFrame) - self.font.xHeight) / 2);
 
-        amountwithCurrencyFrame.size.height = rect.size.height;
         amountwithCurrencyFrame.size.width -= ROW_RIGHT_MARGIN;
         cellFrame.size.width -= ROW_RIGHT_MARGIN;
 
@@ -328,7 +334,7 @@ static NSGradient *selectionGradient = nil;
             textColor = [textColor colorWithAlphaComponent: 0.4];
         }
 
-        attributes = @{NSFontAttributeName: [self font],
+        attributes = @{NSFontAttributeName: self.font,
                        NSForegroundColorAttributeName: textColor,
                        NSParagraphStyleAttributeName: paragraphStyle};
         cellStringWithFormat = [[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
@@ -343,7 +349,7 @@ static NSGradient *selectionGradient = nil;
             textColor = [textColor colorWithAlphaComponent: 0.4];
         }
 
-        attributes = @{NSFontAttributeName: [self font],
+        attributes = @{NSFontAttributeName: self.font,
                        NSForegroundColorAttributeName: textColor,
                        NSParagraphStyleAttributeName: paragraphStyle};
         cellStringWithFormat = [[NSAttributedString alloc] initWithString: [[self attributedStringValue] string]
@@ -355,7 +361,7 @@ static NSGradient *selectionGradient = nil;
 }
 
 #pragma mark -
-#pragma mark Badge mit Zahlen
+#pragma mark Badge with numbers
 
 - (NSSize)sizeOfBadge: (NSInteger)unread
 {
@@ -420,21 +426,32 @@ static NSGradient *selectionGradient = nil;
     } else {badgeWidth = 0; }
 }
 
-- (NSSize)cellSize
-{
-    // TODO: This is acting weird. Needs to be replaced.
-    // This code is only used when a tooltip is about to be displayed.
-    NSSize cellSize = [super cellSize];
-    cellSize.width += 40; //(image ? 16 + ICON_SPACING : 0) + 3;
-    return cellSize;
-}
-
 - (NSText *)setUpFieldEditorAttributes: (NSText *)textObj
 {
     NSText *result = [super setUpFieldEditorAttributes: textObj];
     [result setDrawsBackground: YES];
+    result.font = self.font;
 
     return result;
+}
+
+- (void)selectWithFrame: (NSRect)aRect
+                 inView: (NSView *)controlView
+                 editor: (NSText *)textObj
+               delegate: (id)anObject
+                  start: (NSInteger)selStart
+                 length: (NSInteger)selLength
+{
+	aRect = [self titleRectForBounds: aRect];
+
+    NSRect textFrame, imageFrame;
+    NSDivideRect(aRect, &imageFrame, &textFrame, image == nil ? 0 : 20, NSMinXEdge);
+	[super selectWithFrame: textFrame
+                    inView: controlView
+                    editor: textObj
+                  delegate: anObject
+                     start: selStart
+                    length: selLength];
 }
 
 @end

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,12 +17,10 @@
  * 02110-1301  USA
  */
 
-#import <QuartzCore/QuartzCore.h>
-
-#import "PXListView.h"
 #import "StatementsListViewCell.h"
 
 #import "NSColor+PecuniaAdditions.h"
+
 #import "ValueTransformers.h"
 #import "PreferenceController.h"
 #import "Category.h"
@@ -36,7 +34,6 @@ extern NSString *StatementValueKey;
 extern NSString *StatementSaldoKey;
 extern NSString *StatementCurrencyKey;
 extern NSString *StatementTransactionTextKey;
-extern NSString *StatementIndexKey;
 extern NSString *StatementNoteKey;
 extern NSString *StatementRemoteBankNameKey;
 extern NSString *StatementColorKey;
@@ -49,21 +46,26 @@ extern NSString *StatementTypeKey;
 extern NSString *const CategoryColorNotification;
 extern NSString *const CategoryKey;
 
-static void *SetRowBindingContext = (void *)@"SetRowContext";
 extern void *UserDefaultsBindingContext;
+
+extern NSDateFormatter *dateFormatter;
+extern NSDictionary    *whiteAttributes;
+
+@interface StatementsListViewCell ()
+{
+@private
+    BOOL isNew;
+    BOOL hasUnassignedValue;
+    int  headerHeight;
+
+    NSColor *categoryColor;
+}
+@end
 
 @implementation StatementsListViewCell
 
 @synthesize delegate;
 @synthesize hasUnassignedValue;
-
-+ (id)defaultAnimationForKey: (NSString *)key
-{
-    // No animations for the cells please. In a class where cells are constantly added and removed
-    // this gets annoying quickly otherwise. This does only disable animations for the cell itself
-    // not its content.
-    return nil;
-}
 
 #pragma mark Init/Dealloc
 
@@ -71,13 +73,6 @@ extern void *UserDefaultsBindingContext;
 {
     self = [super initWithFrame: frame];
     if (self != nil) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setLocale: [NSLocale currentLocale]];
-        [dateFormatter setDateStyle: kCFDateFormatterFullStyle];
-        [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
-
-        whiteAttributes = @{NSForegroundColorAttributeName: [NSColor whiteColor]};
-        [self addObserver: self forKeyPath: @"row" options: 0 context: SetRowBindingContext];
         [NSNotificationCenter.defaultCenter addObserverForName: CategoryColorNotification
                                                         object: nil
                                                          queue: nil
@@ -90,11 +85,10 @@ extern void *UserDefaultsBindingContext;
 
          ];
 
-        // In addition listen to preference changes.
+        // In addition listen to certain preference changes.
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults addObserver: self forKeyPath: @"markNAStatements" options: 0 context: UserDefaultsBindingContext];
         [defaults addObserver: self forKeyPath: @"markNewStatements" options: 0 context: UserDefaultsBindingContext];
-        [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
         [defaults addObserver: self forKeyPath: @"showBalances" options: 0 context: UserDefaultsBindingContext];
     }
     return self;
@@ -107,8 +101,26 @@ extern void *UserDefaultsBindingContext;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults removeObserver: self forKeyPath: @"markNAStatements"];
     [defaults removeObserver: self forKeyPath: @"markNewStatements"];
-    [defaults removeObserver: self forKeyPath: @"colors"];
     [defaults removeObserver: self forKeyPath: @"showBalances"];
+}
+
+- (void)awakeFromNib
+{
+    [self registerStandardLabel: remoteNameLabel];
+    [self registerStandardLabel: purposeLabel];
+    [self registerStandardLabel: categoriesLabel];
+
+    [self registerNumberLabel: saldoLabel];
+    [self registerNumberLabel: valueLabel];
+
+    [self registerPaleLabel: currencyLabel];
+    [self registerPaleLabel: saldoCurrencyLabel];
+    [self registerPaleLabel: transactionTypeLabel];
+    [self registerPaleLabel: noteLabel];
+    [self registerPaleLabel: dayLabel];
+    [self registerPaleLabel: monthLabel];
+
+    [self adjustLabelsAndSize];
 }
 
 - (void)observeValueForKeyPath: (NSString *)keyPath
@@ -116,20 +128,12 @@ extern void *UserDefaultsBindingContext;
                         change: (NSDictionary *)change
                        context: (void *)context
 {
-    if (context == SetRowBindingContext) {
-        [self selectionChanged];
-        [self setNeedsDisplay: YES];
-        return;
-    }
-
     if (context == UserDefaultsBindingContext) {
-        if ([keyPath isEqualToString: @"colors"]) {
-            [self updateTextColors];
-            [self updateDrawColors];
-        }
-
         if ([keyPath isEqualToString: @"showBalances"]) {
             [self showBalance: [NSUserDefaults.standardUserDefaults boolForKey: @"showBalances"]];
+
+            [self setNeedsDisplay: YES];
+            return;
         }
 
         if ([keyPath isEqualToString: @"markNewStatements"]) {
@@ -138,10 +142,11 @@ extern void *UserDefaultsBindingContext;
             } else {
                 [newImage setHidden: !isNew];
             }
+
+            [self setNeedsDisplay: YES];
+            return;
         }
 
-        [self setNeedsDisplay: YES];
-        return;
     }
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
@@ -164,7 +169,7 @@ static CurrencyValueTransformer *currencyTransformer;
 
 - (void)setDetails: (NSDictionary *)details
 {
-    index = [details[StatementIndexKey] intValue];
+    [super setDetails: details];
 
     NSDate *date = details[StatementDateKey];
     dateFormatter.dateStyle = kCFDateFormatterFullStyle;
@@ -216,18 +221,8 @@ static CurrencyValueTransformer *currencyTransformer;
 {
     [super prepareForReuse];
 
-    [dateLabel setStringValue: @""];
-    [turnoversLabel setStringValue: @""];
-    [remoteNameLabel setStringValue: @""];
-    [purposeLabel setStringValue: @""];
-    [categoriesLabel setStringValue: @""];
-    [valueLabel setObjectValue: @""];
-    [saldoLabel setObjectValue: @""];
-    [transactionTypeLabel setObjectValue: @""];
-    [noteLabel setObjectValue: @""];
     hasUnassignedValue = NO;
     isNew = NO;
-    index = -1;
 }
 
 #pragma mark -
@@ -245,69 +240,6 @@ static CurrencyValueTransformer *currencyTransformer;
     isNew = flag;
 }
 
-- (void)selectionChanged
-{
-    // The internal row value might not be assigned yet (when the cell is reused), so
-    // the normal check for selection fails. We use instead the index we get from the owning
-    // listview (which will later be assigned to this cell anyway).
-    BOOL isSelected = [self.listView.selectedRows containsIndex: index];
-
-    if (isSelected) {
-        [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: whiteAttributes];
-        [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: whiteAttributes];
-        [[[saldoLabel cell] formatter] setTextAttributesForPositiveValues: whiteAttributes];
-        [[[saldoLabel cell] formatter] setTextAttributesForNegativeValues: whiteAttributes];
-
-        [remoteNameLabel setTextColor: [NSColor whiteColor]];
-        [purposeLabel setTextColor: [NSColor whiteColor]];
-        [categoriesLabel setTextColor: [NSColor whiteColor]];
-        [saldoLabel setTextColor: [NSColor whiteColor]];
-        [currencyLabel setTextColor: [NSColor whiteColor]];
-        [saldoCurrencyLabel setTextColor: [NSColor whiteColor]];
-
-        [transactionTypeLabel setTextColor: [NSColor whiteColor]];
-        [noteLabel setTextColor: [NSColor whiteColor]];
-        [saldoCaption setTextColor: [NSColor whiteColor]];
-
-        [dayLabel setTextColor: [NSColor whiteColor]];
-        [monthLabel setTextColor: [NSColor whiteColor]];
-    } else {
-        [remoteNameLabel setTextColor: [NSColor controlTextColor]];
-        [purposeLabel setTextColor: [NSColor controlTextColor]];
-        [categoriesLabel setTextColor: [NSColor controlTextColor]];
-
-        [self updateTextColors];
-    }
-}
-
-/**
- * Called when the user changes a color. We update here only those colors that are customizable.
- */
-- (void)updateTextColors
-{
-    BOOL isSelected = [self.listView.selectedRows containsIndex: index];
-
-    if (!isSelected) {
-        NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
-        NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
-
-        [[[valueLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
-        [[[valueLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
-        [[[saldoLabel cell] formatter] setTextAttributesForPositiveValues: positiveAttributes];
-        [[[saldoLabel cell] formatter] setTextAttributesForNegativeValues: negativeAttributes];
-
-        NSColor *paleColor = [NSColor applicationColorForKey: @"Pale Text"];
-        [transactionTypeLabel setTextColor: paleColor];
-        [noteLabel setTextColor: paleColor];
-        [saldoCaption setTextColor: paleColor];
-        [currencyLabel setTextColor: paleColor];
-        [saldoCurrencyLabel setTextColor: paleColor];
-
-        [dayLabel setTextColor: paleColor];
-        [monthLabel setTextColor: paleColor];
-    }
-}
-
 - (void)showActivator: (BOOL)flag markActive: (BOOL)active
 {
     [checkbox setHidden: !flag];
@@ -316,14 +248,8 @@ static CurrencyValueTransformer *currencyTransformer;
 
 - (void)showBalance: (BOOL)flag
 {
-    [saldoCaption setHidden: !flag];
     [saldoLabel setHidden: !flag];
     [saldoCurrencyLabel setHidden: !flag];
-}
-
-- (void)refresh
-{
-    [self setNeedsDisplay: YES];
 }
 
 - (IBAction)activationChanged: (id)sender
@@ -333,34 +259,18 @@ static CurrencyValueTransformer *currencyTransformer;
     }
 }
 
-#pragma mark -
-#pragma mark Drawing
+#pragma mark - Drawing
 
-static NSGradient *innerGradient;
-static NSGradient *innerGradientSelected;
 static NSGradient *headerGradient;
 static NSImage    *stripeImage;
 
-- (void)updateDrawColors
-{
-    innerGradientSelected = [[NSGradient alloc] initWithColorsAndLocations:
-                             [NSColor applicationColorForKey: @"Selection Gradient (low)"], (CGFloat)0,
-                             [NSColor applicationColorForKey: @"Selection Gradient (high)"], (CGFloat)1,
-                             nil];
-}
-
 - (void)setupDrawStructures
 {
-    innerGradient = [[NSGradient alloc] initWithColorsAndLocations:
-                     [NSColor colorWithDeviceRed: 240 / 255.0 green: 240 / 255.0 blue: 240 / 255.0 alpha: 1], (CGFloat)0.2,
-                     [NSColor whiteColor], (CGFloat)0.8,
-                     nil];
     headerGradient = [[NSGradient alloc] initWithColorsAndLocations:
                       [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1], (CGFloat)0,
                       [NSColor colorWithDeviceWhite: 120 / 255.0 alpha: 1], (CGFloat)1,
                       nil];
     stripeImage = [NSImage imageNamed: @"slanted_stripes.png"];
-    [self updateDrawColors];
 }
 
 #define DENT_SIZE 4
@@ -374,7 +284,7 @@ static NSImage    *stripeImage;
     BOOL drawNewStatementsGradient = [defaults boolForKey: @"markNewStatements"];
     BOOL isUnassignedColored = NO;
 
-    if (innerGradient == nil) {
+    if (headerGradient == nil) {
         [self setupDrawStructures];
     }
 
@@ -427,7 +337,7 @@ static NSImage    *stripeImage;
             [path lineToPoint: NSMakePoint(x + DENT_SIZE, y - dentHeight / 2)];
             [path lineToPoint: NSMakePoint(x, y - dentHeight)];
 
-            [innerGradientSelected drawInBezierPath: path angle: 90.0];
+            [self.selectionGradient drawInBezierPath: path angle: 90.0];
         }
 
         if (hasUnassignedValue) {
@@ -439,12 +349,11 @@ static NSImage    *stripeImage;
     } else {
         NSBezierPath *path = [NSBezierPath bezierPathWithRect: bounds];
 
-        //[innerGradient drawInBezierPath: path angle: 90.0];
         if (hasUnassignedValue) {
             NSColor *color = drawNotAssignedGradient ? [NSColor applicationColorForKey: @"Uncategorized Transfer"] : nil;
             if (color) {
                 NSGradient *aGradient = [[NSGradient alloc]
-                                         initWithColorsAndLocations: color, (CGFloat) - 0.1, [NSColor whiteColor], (CGFloat)1.1,
+                                         initWithColorsAndLocations: color, (CGFloat) - 0.1, NSColor.whiteColor, (CGFloat)1.1,
                                          nil];
 
                 [aGradient drawInBezierPath: path angle: 90.0];
@@ -455,7 +364,7 @@ static NSImage    *stripeImage;
             NSColor *color = drawNewStatementsGradient ? [NSColor applicationColorForKey: @"Unread Transfer"] : nil;
             if (color) {
                 NSGradient *aGradient = [[NSGradient alloc]
-                                         initWithColorsAndLocations: color, (CGFloat) - 0.1, [NSColor whiteColor], (CGFloat)1.1,
+                                         initWithColorsAndLocations: color, (CGFloat) - 0.1, NSColor.whiteColor, (CGFloat)1.1,
                                          nil];
 
                 [aGradient drawInBezierPath: path angle: 90.0];

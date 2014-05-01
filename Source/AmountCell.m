@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,7 +21,7 @@
 #import "NSColor+PecuniaAdditions.h"
 #import "PreferenceController.h"
 
-#define CELL_BOUNDS 3
+#define CELL_BOUNDS 5
 
 extern void *UserDefaultsBindingContext;
 
@@ -30,7 +30,7 @@ extern void *UserDefaultsBindingContext;
     NSDictionary *normalAttributes;
     NSDictionary *selectedAttributes;
 
-    NSNumberFormatter *whiteFormatter;
+    NSNumberFormatter *whiteFormatter; // not really using the value formmating (we have dedicated attributes above).
 }
 @end
 
@@ -49,20 +49,12 @@ extern void *UserDefaultsBindingContext;
         self.formatter = formatter;
 
         whiteFormatter = [formatter copy];
-        NSDictionary *whiteAttributes = @{NSForegroundColorAttributeName: NSColor.whiteColor};
-
-        [formatter setTextAttributesForPositiveValues: whiteAttributes];
-        [formatter setTextAttributesForNegativeValues: whiteAttributes];
-
-
-        normalAttributes = @{NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontName size: 13]};
-        selectedAttributes = @{NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameBold size: 13],
-                               NSForegroundColorAttributeName: NSColor.whiteColor};
 
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
+        [defaults addObserver: self forKeyPath: @"fontScale" options: 0 context: UserDefaultsBindingContext];
 
-        [self updateColors];
+        [self updateColorsAndFonts];
     }
     return self;
 }
@@ -71,6 +63,7 @@ extern void *UserDefaultsBindingContext;
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObserver: self forKeyPath: @"colors"];
+    [userDefaults removeObserver: self forKeyPath: @"fontScale"];
 }
 
 - (void)observeValueForKeyPath: (NSString *)keyPath
@@ -79,15 +72,16 @@ extern void *UserDefaultsBindingContext;
                        context: (void *)context
 {
     if (context == UserDefaultsBindingContext) {
-        if ([keyPath isEqualToString: @"colors"]) {
-            [self updateColors];
+        if ([keyPath isEqualToString: @"colors"] || [keyPath isEqualToString: @"fontScale"]) {
+            [self updateColorsAndFonts];
+            [[(id)self.controlView contentView] setNeedsDisplay: YES];
         }
         return;
     }
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
-- (void)updateColors
+- (void)updateColorsAndFonts
 {
     NSColor *color = [NSColor applicationColorForKey: @"Grid Partial Selection"];
     self.partiallyHighlightedGradient = [[NSGradient alloc] initWithColorsAndLocations:
@@ -102,6 +96,12 @@ extern void *UserDefaultsBindingContext;
                                      color, 1.0,
                                      nil
                                      ];
+
+    normalAttributes = @{NSFontAttributeName: [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13]};
+    selectedAttributes = @{NSFontAttributeName: [PreferenceController fontNamed: PreferenceController.mainFontNameBold baseSize: 13],
+                           NSForegroundColorAttributeName: NSColor.whiteColor};
+
+
     NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
     NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
 
@@ -116,21 +116,21 @@ extern void *UserDefaultsBindingContext;
     NSNumberFormatter *formatter = self.formatter;
     if (self.isInSelectedRow || self.isInSelectedColumn) {
         attributes = selectedAttributes;
-        formatter = whiteFormatter;
+        formatter = whiteFormatter; // Just to have a formatter without attributes for negative/positive values.
     }
     [formatter setCurrencyCode: currency];
     NSAttributedString *string = [formatter attributedStringForObjectValue: self.objectValue withDefaultAttributes: attributes];
     if (string != nil) {
-        NSSize size = string.size;
+        NSRect rect = [string boundingRectWithSize: CGSizeMake(FLT_MAX, NSHeight(cellFrame)) options: 0];
 
-        if (self.alignment == NSRightTextAlignment) {
-            cellFrame.origin.x += NSWidth(cellFrame) - size.width - CELL_BOUNDS;
-        } else {
-            cellFrame.origin.x += CELL_BOUNDS;
-        }
-        cellFrame.size.width -= 2 * CELL_BOUNDS;
-        cellFrame.origin.y -= (cellFrame.size.height - size.height) / 2 + 1; // -1 for bottom line.
-        [string drawInRect: cellFrame];
+        // Always right-align money values.
+        rect.origin.x = cellFrame.origin.x + NSWidth(cellFrame) - NSWidth(rect) - CELL_BOUNDS;
+
+        NSFont *font = attributes[NSFontAttributeName];
+        rect.origin.y = cellFrame.origin.y - NSHeight(rect) + floor(font.ascender);
+        rect.origin.y += floor((NSHeight(cellFrame) - font.xHeight) / 2);
+
+        [string drawInRect: rect];
     }
 }
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,28 +17,22 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
-#import "PXListViewCell.h"
-#import "StandingOrder.h"
-#import "NSView+PecuniaAdditions.h"
+#import "PecuniaListViewCell.h"
 
 @protocol OrdersListViewNotificationProtocol
 - (void)cancelDeletionForIndex: (NSUInteger)index;
 @end
 
-@interface OrdersListViewCell : PXListViewCell
+@interface OrdersListViewCell : PecuniaListViewCell
 {
     IBOutlet NSTextField *firstDateLabel;
     IBOutlet NSTextField *nextDateLabel;
     IBOutlet NSTextField *lastDateLabel;
-    IBOutlet NSTextField *accountLabel;
     IBOutlet NSTextField *bankNameLabel;
     IBOutlet NSTextField *remoteNameLabel;
     IBOutlet NSTextField *purposeLabel;
     IBOutlet NSTextField *valueLabel;
     IBOutlet NSTextField *currencyLabel;
-    IBOutlet NSTextField *valueTitle;
     IBOutlet NSTextField *firstDateTitle;
     IBOutlet NSTextField *lastDateTitle;
     IBOutlet NSTextField *nextDateTitle;
@@ -46,22 +40,14 @@
     IBOutlet NSImageView *sendImage;
     IBOutlet NSButton    *deleteButton;
 
-@private
-    NSColor      *categoryColor;
-    NSDictionary *whiteAttributes;
-
-    // Need to keep these values from the details dictionary to rebuild the attributed string
-    // for different labels depending on whether we are selected or not.
-    NSString *remoteBIC;
-    NSString *remoteIBAN;
-    NSString *purpose;
-
-    NSUInteger index;
+    IBOutlet NSTextField *ibanCaption;
+    IBOutlet NSTextField *ibanLabel;
+    IBOutlet NSTextField *bicCaption;
+    IBOutlet NSTextField *bicLabel;
 }
 
 @property (nonatomic, strong) id delegate;
 
 - (void)setDetails: (NSDictionary *)details;
-- (void)selectionChanged;
 
 @end

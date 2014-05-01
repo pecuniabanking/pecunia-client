@@ -42,6 +42,11 @@ NSString *MBTableGridDidMoveRowsNotification			= @"MBTableGridDidMoveRowsNotific
 NSString *MBTableGridColumnDataType = @"MBTableGridColumnDataType";
 NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 
+@interface MBTableGrid ()
+{
+}
+@end
+
 @interface MBTableGrid (Drawing)
 - (void)_drawColumnHeaderBackgroundInRect:(NSRect)aRect;
 - (void)_drawRowHeaderBackgroundInRect:(NSRect)aRect;
@@ -90,6 +95,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 @synthesize selectedRowIndexes;
 
 @synthesize defaultCellSize;
+@synthesize defaultHeaderSize;
 
 #pragma mark -
 #pragma mark Initialization & Superclass Overrides
@@ -114,11 +120,13 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		[defaultCell setScrollable:YES];
 		[defaultCell setLineBreakMode:NSLineBreakByTruncatingTail];
 		[self setCell:defaultCell];
-		
-    defaultCellSize = NSMakeSize(60, 20);
+
+      defaultCellSize = NSMakeSize(60, 20);
+      defaultHeaderSize = NSMakeSize(MBTableGridDefaultRowHeaderWidth, MBTableGridDefaultColumnHeaderHeight);
     
 		// Setup the column headers
-		NSRect columnHeaderFrame = NSMakeRect(MBTableGridRowHeaderWidth, 0, frameRect.size.width-MBTableGridRowHeaderWidth, MBTableGridColumnHeaderHeight);
+		NSRect columnHeaderFrame = NSMakeRect(defaultHeaderSize.width, 0,
+                                              frameRect.size.width - defaultHeaderSize.width, defaultHeaderSize.height);
 		columnHeaderScrollView = [[NSScrollView alloc] initWithFrame:columnHeaderFrame];
 		columnHeaderView = [[MBTableGridHeaderView alloc] initWithFrame:NSMakeRect(0,0,columnHeaderFrame.size.width,columnHeaderFrame.size.height)];
 	//	[columnHeaderView setAutoresizingMask:NSViewWidthSizable];
@@ -129,7 +137,8 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		[self addSubview:columnHeaderScrollView];
 		
 		// Setup the row headers
-		NSRect rowHeaderFrame = NSMakeRect(0, MBTableGridColumnHeaderHeight, MBTableGridRowHeaderWidth, [self frame].size.height-MBTableGridColumnHeaderHeight);
+		NSRect rowHeaderFrame = NSMakeRect(0, defaultHeaderSize.height, defaultHeaderSize.width,
+                                           [self frame].size.height-defaultHeaderSize.height);
 		rowHeaderScrollView = [[NSScrollView alloc] initWithFrame:rowHeaderFrame];
 		rowHeaderView = [[MBTableGridHeaderView alloc] initWithFrame:NSMakeRect(0,0,rowHeaderFrame.size.width,rowHeaderFrame.size.height)];
 		//[rowHeaderView setAutoresizingMask:NSViewHeightSizable];
@@ -140,7 +149,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 		[self addSubview:rowHeaderScrollView];
 		
 		// Setup the content view
-		NSRect contentFrame = NSMakeRect(MBTableGridRowHeaderWidth, MBTableGridColumnHeaderHeight, [self frame].size.width-MBTableGridRowHeaderWidth, [self frame].size.height-MBTableGridColumnHeaderHeight);
+		NSRect contentFrame = NSMakeRect(defaultHeaderSize.width, defaultHeaderSize.height, [self frame].size.width-defaultHeaderSize.width, [self frame].size.height-defaultHeaderSize.height);
 		contentScrollView = [[SynchronousScrollView alloc] initWithFrame: contentFrame];
 		contentView = [[MBTableGridContentView alloc] initWithFrame:NSMakeRect(0,0,contentFrame.size.width,contentFrame.size.height)];
 		[contentScrollView setDocumentView:contentView];
@@ -223,13 +232,13 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	// Draw the column header background
   if (![columnHeaderView isHidden]) {
     NSRect columnHeaderRect = NSMakeRect(NSWidth(cornerRect), 0,
-                                         [self frame].size.width - NSWidth(cornerRect), MBTableGridColumnHeaderHeight);
+                                         [self frame].size.width - NSWidth(cornerRect), defaultHeaderSize.height);
     [self _drawColumnHeaderBackgroundInRect:columnHeaderRect];
   }
 	
 	// Draw the row header background
   if (![rowHeaderView isHidden]) {
-    NSRect rowHeaderRect = NSMakeRect(0, NSMaxY(cornerRect), MBTableGridRowHeaderWidth,
+    NSRect rowHeaderRect = NSMakeRect(0, NSMaxY(cornerRect), defaultHeaderSize.width,
                                       [self frame].size.height - cornerRect.size.height);
     [self _drawRowHeaderBackgroundInRect:rowHeaderRect];
   }
@@ -978,7 +987,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	NSRect rect = [self convertRect:[contentView rectOfColumn:columnIndex] fromView:contentView];
 	rect.origin.y = 0;
   if (![columnHeaderView isHidden]) {
-    rect.size.height += MBTableGridColumnHeaderHeight;
+    rect.size.height += defaultHeaderSize.height;
   }
 	if(rect.size.height > [self frame].size.height) {
 		rect.size.height = [self frame].size.height;
@@ -998,7 +1007,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 	NSRect rect = [self convertRect:[contentView rectOfRow:rowIndex] fromView:contentView];
 	rect.origin.x = 0;
   if (![rowHeaderView isHidden]) {
-    rect.size.width += MBTableGridRowHeaderWidth;
+    rect.size.width += defaultHeaderSize.width;
   }
 	
 	return rect;
@@ -1021,7 +1030,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 
 - (NSRect)headerRectOfCorner
 {
-	NSRect rect = NSMakeRect(0, 0, MBTableGridRowHeaderWidth, MBTableGridColumnHeaderHeight);
+	NSRect rect = NSMakeRect(0, 0, defaultHeaderSize.width, defaultHeaderSize.height);
 	return rect;
 }
 
@@ -1056,7 +1065,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
   NSRect visibleRect = [contentScrollView documentVisibleRect];
   NSRect rowFrame = [self rectOfRow: rowIndex];
   if (![columnHeaderView isHidden]) {
-    rowFrame.origin.y -= MBTableGridColumnHeaderHeight;
+    rowFrame.origin.y -= defaultHeaderSize.height;
   }
   if (rowFrame.origin.y < 0) {
     // Row is above the visible area (keep in mind we are flipped).
@@ -1077,7 +1086,7 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
   NSRect visibleRect = [contentScrollView documentVisibleRect];
   NSRect columnFrame = [self rectOfColumn: columnIndex];
   if (![rowHeaderView isHidden]) {
-    columnFrame.origin.x -= MBTableGridRowHeaderWidth;
+    columnFrame.origin.x -= defaultHeaderSize.width;
   }
   if (columnFrame.origin.x < 0) {
 		[[contentScrollView contentView] scrollToPoint:
@@ -1093,48 +1102,28 @@ NSString *MBTableGridRowDataType = @"MBTableGridRowDataType";
 
 - (void)updateLayout
 {
-  NSRect frame = contentScrollView.frame;
-  CGFloat contentWidth = frame.size.width;
-  CGFloat contentHeight = frame.size.height;
-  CGFloat leftOffset = frame.origin.x;
-  CGFloat topOffset = frame.origin.y;
+    NSRect bounds = self.bounds;
 
-  BOOL horizontalChanged = NO;
-  if ([rowHeaderView isHidden] != (leftOffset == 0)) {
-    horizontalChanged = YES;
-    if (leftOffset > 0) {
-      contentWidth += MBTableGridRowHeaderWidth;
-      leftOffset = 0;
-    } else {
-      contentWidth -= MBTableGridRowHeaderWidth;
-      leftOffset = MBTableGridRowHeaderWidth;
+    CGFloat headerWidth = rowHeaderView.isHidden ? 0 : defaultHeaderSize.width;
+    CGFloat headerHeight = columnHeaderView.isHidden ? 0 : defaultHeaderSize.height;
+    if (!columnHeaderView.isHidden) {
+        NSRect newFrame = NSMakeRect(headerWidth, 0, NSWidth(bounds) - headerWidth, headerHeight);
+        columnHeaderScrollView.frame = newFrame;
+        newFrame = columnHeaderView.frame;
+        newFrame.size.height = headerHeight;
+        columnHeaderView.frame = newFrame;
     }
-  }
-  
-  BOOL verticalChanged = NO; 
-  if ([columnHeaderView isHidden] != (topOffset == 0)) {
-    verticalChanged = YES;
-    if (topOffset > 0) {
-      contentHeight += MBTableGridColumnHeaderHeight;
-      topOffset = 0;
-    } else {
-      contentHeight -= MBTableGridColumnHeaderHeight;
-      topOffset = MBTableGridRowHeaderWidth;
+    if (!rowHeaderView.isHidden) {
+        NSRect newFrame = NSMakeRect(0, headerHeight, headerWidth,
+                                     NSHeight(bounds) - headerHeight);
+        rowHeaderScrollView.frame = newFrame;
+        newFrame = rowHeaderView.frame;
+        newFrame.size.width = headerWidth;
+        rowHeaderView.frame = newFrame;
     }
-  }
-  
-  if (horizontalChanged || verticalChanged) {
-    if (horizontalChanged) {
-      NSRect columnHeaderFrame = NSMakeRect(leftOffset, 0, contentWidth, MBTableGridColumnHeaderHeight);
-      [columnHeaderScrollView setFrame: columnHeaderFrame];
-    }
-    if (verticalChanged) {
-      NSRect rowHeaderFrame = NSMakeRect(0, topOffset, MBTableGridRowHeaderWidth, contentHeight);
-      [rowHeaderScrollView setFrame: rowHeaderFrame];
-    }
-    frame = NSMakeRect(leftOffset, topOffset, contentWidth, contentHeight);
-    [contentScrollView setFrame: frame];
-  }
+    NSRect newFrame = NSMakeRect(headerWidth, headerHeight,
+                          NSWidth(bounds) - headerWidth, NSHeight(bounds) - headerHeight);
+    contentScrollView.frame = newFrame;
 }
 
 #pragma mark Auxiliary Views

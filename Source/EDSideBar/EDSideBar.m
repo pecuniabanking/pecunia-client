@@ -378,6 +378,11 @@
 	}
 }
 
+- (NSUInteger)buttonCount
+{
+    return _matrix.numberOfRows;
+}
+
 @end
 
 #pragma mark -

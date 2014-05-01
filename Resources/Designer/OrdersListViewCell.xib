@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1060" defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner"/>
@@ -13,52 +13,34 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" id="9" customClass="NoAnimationTextField">
-                    <rect key="frame" x="40" y="57" width="400" height="16"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Remote name" placeholderString="" usesSingleLineMode="YES" id="10">
+                    <rect key="frame" x="35" y="56" width="425" height="17"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Remote name" placeholderString="" id="10">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" id="87" customClass="NoAnimationTextField">
-                    <rect key="frame" x="40" y="23" width="394" height="17"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Bank name" placeholderString="" id="88">
-                        <font key="font" size="11" name="HelveticaNeue"/>
-                        <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="91" customClass="NoAnimationTextField">
-                    <rect key="frame" x="558" y="57" width="60" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="25.6.2013" usesSingleLineMode="YES" id="92">
+                    <rect key="frame" x="551" y="56" width="67" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="25.6.2013" id="92">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="94" customClass="NoAnimationTextField">
-                    <rect key="frame" x="454" y="4" width="45" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Betrag" id="95">
-                        <font key="font" size="11" name="HelveticaNeue"/>
-                        <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <textField verticalHuggingPriority="750" id="96" customClass="NoAnimationTextField">
-                    <rect key="frame" x="438" y="57" width="126" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="Ausführung erstmalig:" usesSingleLineMode="YES" id="97">
-                        <font key="font" size="11" name="HelveticaNeue"/>
+                    <rect key="frame" x="469" y="57" width="80" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="erstmalig:" id="97">
+                        <font key="font" size="11" name="HelveticaNeue-Light"/>
                         <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="23" customClass="NoAnimationTextField">
-                    <rect key="frame" x="605" y="3" width="16" height="17"/>
+                    <rect key="frame" x="605" y="4" width="10" height="15"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="€" id="24">
                         <font key="font" size="10" name="HelveticaNeue"/>
@@ -66,26 +48,53 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="85" customClass="NoAnimationTextField">
-                    <rect key="frame" x="40" y="37" width="394" height="16"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Account + bank code" usesSingleLineMode="YES" id="86">
-                        <font key="font" metaFont="smallSystem"/>
+                <textField verticalHuggingPriority="750" id="4AE-bH-gaG" customClass="NoAnimationTextField">
+                    <rect key="frame" x="35" y="37" width="42" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="IBAN" id="WyX-CJ-nIY">
+                        <font key="font" size="11" name="HelveticaNeue-Light"/>
+                        <color key="textColor" red="0.37471279499999999" green="0.37477266790000002" blue="0.37469977139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="RXI-Xx-8pA" customClass="NoAnimationTextField">
+                    <rect key="frame" x="303" y="37" width="35" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="BIC" id="9qi-bH-YNc">
+                        <font key="font" size="11" name="HelveticaNeue-Light"/>
+                        <color key="textColor" red="0.37471279499999999" green="0.37477266790000002" blue="0.37469977139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="9hM-EX-Oov" customClass="NoAnimationTextField">
+                    <rect key="frame" x="77" y="37" width="222" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="IBAN" id="4KC-ST-Gvc">
+                        <font key="font" size="11" name="HelveticaNeue-Medium"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="fWx-kd-U9q" customClass="NoAnimationTextField">
+                    <rect key="frame" x="342" y="37" width="118" height="17"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="BIC" id="KSa-z8-KN3">
+                        <font key="font" size="11" name="HelveticaNeue-Medium"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="118" customClass="NoAnimationTextField">
-                    <rect key="frame" x="40" y="4" width="400" height="19"/>
+                    <rect key="frame" x="35" y="5" width="425" height="17"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" truncatesLastVisibleLine="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Purpose" id="119">
-                        <font key="font" size="10" name="HelveticaNeue"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Purpose" id="119">
+                        <font key="font" size="11" name="HelveticaNeue-Light"/>
                         <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <imageView toolTip="Dieser Auftrag wurde verändert. Die Änderungen werden durch einen Klick auf &quot;Änderungen Senden&quot; zur Bank transferiert." wantsLayer="YES" id="135" customClass="NoAnimationImageView">
-                    <rect key="frame" x="18" y="47" width="16" height="16"/>
+                    <rect key="frame" x="16" y="47" width="16" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <shadow key="shadow" blurRadius="1">
                         <size key="offset" width="1" height="-1"/>
@@ -94,43 +103,43 @@
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="edit" id="136"/>
                 </imageView>
                 <textField verticalHuggingPriority="750" id="138" customClass="NoAnimationTextField">
-                    <rect key="frame" x="558" y="43" width="60" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="25.6.2013" usesSingleLineMode="YES" id="141">
+                    <rect key="frame" x="551" y="41" width="67" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="25.6.2013" id="141">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="139" customClass="NoAnimationTextField">
-                    <rect key="frame" x="438" y="43" width="126" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="nächste:" usesSingleLineMode="YES" id="140">
-                        <font key="font" size="11" name="HelveticaNeue"/>
+                    <rect key="frame" x="469" y="41" width="80" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="nächste:" id="140">
+                        <font key="font" size="11" name="HelveticaNeue-Light"/>
                         <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="142" customClass="NoAnimationTextField">
-                    <rect key="frame" x="558" y="29" width="60" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="25.6.2013" usesSingleLineMode="YES" id="145">
+                    <rect key="frame" x="551" y="25" width="67" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="25.6.2013" id="145">
                         <font key="font" size="11" name="HelveticaNeue-Medium"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="143" customClass="NoAnimationTextField">
-                    <rect key="frame" x="438" y="29" width="125" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="letztmalig:" usesSingleLineMode="YES" id="144">
-                        <font key="font" size="11" name="HelveticaNeue"/>
+                    <rect key="frame" x="469" y="24" width="80" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="letztmalig:" id="144">
+                        <font key="font" size="11" name="HelveticaNeue-Light"/>
                         <color key="textColor" red="0.34536081549999997" green="0.3374937475" blue="0.30316269400000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <imageView toolTip="Dieser Auftrag wurde erfolgreich zur Bank gesendet." wantsLayer="YES" id="156" customClass="NoAnimationImageView">
-                    <rect key="frame" x="17" y="29" width="16" height="16"/>
+                    <rect key="frame" x="15" y="29" width="16" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <shadow key="shadow" blurRadius="1">
                         <size key="offset" width="1" height="-1"/>
@@ -139,7 +148,7 @@
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="send" id="157"/>
                 </imageView>
                 <button toolTip="Löschanforderung für diesen Dauerauftrag aufheben." wantsLayer="YES" id="162">
-                    <rect key="frame" x="18" y="13" width="16" height="16"/>
+                    <rect key="frame" x="16" y="13" width="16" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <shadow key="shadow" blurRadius="1">
                         <size key="offset" width="1" height="-1"/>
@@ -154,31 +163,41 @@
                     </connections>
                 </button>
                 <textField verticalHuggingPriority="750" id="179" customClass="NoAnimationTextField">
-                    <rect key="frame" x="503" y="-1" width="104" height="23"/>
+                    <rect key="frame" x="489" y="4" width="118" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="-100.000,00" usesSingleLineMode="YES" id="180">
-                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="-#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="181">
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="-100,000,00" id="180">
+                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="-#,##0.00" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="181">
                             <textAttributesForNegativeValues/>
-                            <real key="roundingIncrement" value="0.0"/>
                             <metadata>
-                                <bool key="localizesFormat" value="YES"/>
                                 <real key="inspectorSampleValue" value="-1234.75"/>
                             </metadata>
                         </numberFormatter>
-                        <font key="font" size="15" name="HelveticaNeue-Medium"/>
+                        <font key="font" size="13" name="HelveticaNeue-Medium"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="h8t-uG-kzz" customClass="NoAnimationTextField">
+                    <rect key="frame" x="35" y="22" width="430" height="17"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Bank name" placeholderString="" id="lGD-qt-XDg">
+                        <font key="font" size="11" name="HelveticaNeue-Light"/>
+                        <color key="textColor" red="0.37471279499999999" green="0.37477266790000002" blue="0.37469977139999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
             </subviews>
             <connections>
-                <outlet property="accountLabel" destination="85" id="107"/>
-                <outlet property="bankNameLabel" destination="87" id="108"/>
+                <outlet property="bankNameLabel" destination="h8t-uG-kzz" id="geA-Aw-wKR"/>
+                <outlet property="bicCaption" destination="RXI-Xx-8pA" id="eSH-jb-In9"/>
+                <outlet property="bicLabel" destination="fWx-kd-U9q" id="NJx-0A-9MW"/>
                 <outlet property="currencyLabel" destination="23" id="111"/>
                 <outlet property="deleteButton" destination="162" id="164"/>
                 <outlet property="editImage" destination="135" id="137"/>
                 <outlet property="firstDateLabel" destination="91" id="146"/>
                 <outlet property="firstDateTitle" destination="96" id="151"/>
+                <outlet property="ibanCaption" destination="4AE-bH-gaG" id="eVS-Vg-tL3"/>
+                <outlet property="ibanLabel" destination="9hM-EX-Oov" id="gDh-4G-tYW"/>
                 <outlet property="lastDateLabel" destination="142" id="155"/>
                 <outlet property="lastDateTitle" destination="143" id="152"/>
                 <outlet property="nextDateLabel" destination="138" id="154"/>
@@ -187,7 +206,6 @@
                 <outlet property="remoteNameLabel" destination="9" id="105"/>
                 <outlet property="sendImage" destination="156" id="160"/>
                 <outlet property="valueLabel" destination="179" id="182"/>
-                <outlet property="valueTitle" destination="94" id="133"/>
             </connections>
         </customView>
     </objects>

@@ -217,7 +217,7 @@ extern void *UserDefaultsBindingContext;
     return value;
 }
 
-#define CELL_HEIGHT 49
+#define CELL_HEIGHT 55
 
 - (void)fillCell: (TransfersListViewCell *)cell forRow: (NSUInteger)row
 {

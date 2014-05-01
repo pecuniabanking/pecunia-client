@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -28,20 +28,6 @@
 
 @interface ImageAndTextCell : NSTextFieldCell
 {
-@private
-
-    NSImage           *image;
-    NSString          *currency;
-    NSNumberFormatter *amountFormatter;
-    NSDecimalNumber   *amount;
-
-    NSInteger countUnread;
-    NSInteger maxUnread;
-    NSInteger badgeWidth;
-    BOOL      isRoot;
-    BOOL      isDisabled;
-    BOOL      isHidden;
-    BOOL      isIgnored; // Not included in overall computation.
 }
 
 @property (nonatomic, strong) NSColor           *swatchColor;
@@ -60,7 +46,6 @@
 
 - (void)setMaxUnread: (NSInteger)n;
 - (void)drawWithFrame: (NSRect)cellFrame inView: (NSView *)controlView;
-- (NSSize)cellSize;
 
 - (NSSize)sizeOfBadge: (NSInteger)unread;
 - (void)drawBadgeInRect: (NSRect)badgeFrame;

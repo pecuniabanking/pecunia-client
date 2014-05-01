@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -138,8 +138,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     }
 }
 
-#pragma mark -
-#pragma mark PXListViewDelegate protocol implementation
+#pragma mark - PXListViewDelegate protocol implementation
 
 - (NSUInteger)numberOfRowsInListView: (PXListView *)aListView
 {
@@ -156,7 +155,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
     return value;
 }
 
-#define CELL_HEIGHT 49
+#define CELL_HEIGHT 55
 
 - (void)fillCell: (TransferTemplateListViewCell *)cell forRow: (NSUInteger)row
 {
@@ -170,6 +169,7 @@ static void *DataSourceBindingContext = (void *)@"DataSourceContext";
                               StatementRemoteIBANKey: [self formatValue: template.remoteIBAN],
                               StatementRemoteBICKey: [self formatValue: template.remoteBIC],
                               StatementRemoteAccountKey: [self formatValue: template.remoteAccount],
+                              StatementRemoteBankNameKey: [self formatValue: template.remoteBankName],
                               StatementTypeKey: template.type};
 
     [cell setDetails: details];

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,6 +20,8 @@
 #import "MBTableGrid/MBTableGrid.h"
 #import "MBTableGrid/MBTableGridHeaderView.h"
 #import "BWGradientBox.h"
+
+#import "PreferenceController.h"
 
 #import "CategoryPeriodsWindowController.h"
 #import "ShortDate.h"
@@ -77,6 +79,7 @@ extern void *UserDefaultsBindingContext;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObserver: self forKeyPath: @"colors"];
+    [userDefaults removeObserver: self forKeyPath: @"fontScale"];
     [userDefaults removeObserver: self forKeyPath: @"showHiddenCategories"];
 }
 
@@ -124,7 +127,10 @@ extern void *UserDefaultsBindingContext;
     toSlider.intValue = toIndex;
     [self updateLimitLabel: toText index: toIndex];
 
-    valueGrid.defaultCellSize = NSMakeSize(100, 22);
+    NSFont *font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13];
+    CGFloat height = floor(font.pointSize);
+    valueGrid.defaultCellSize = NSMakeSize(height < 16 ? 100 : 130, height + 8);
+    valueGrid.defaultHeaderSize = valueGrid.defaultCellSize;
     [valueGrid.rowHeaderView setHidden: YES];
 
     AmountCell *cell = [[AmountCell alloc] initTextCell: @""];
@@ -157,6 +163,7 @@ extern void *UserDefaultsBindingContext;
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
+    [defaults addObserver: self forKeyPath: @"fontScale" options: 0 context: UserDefaultsBindingContext];
     [defaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
 }
 
@@ -172,6 +179,13 @@ extern void *UserDefaultsBindingContext;
         if ([keyPath isEqualToString: @"colors"]) {
             [self updateColors];
             [selectionBox setNeedsDisplay: YES];
+        }
+        if ([keyPath isEqualToString: @"fontScale"]) {
+            NSFont *font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13];
+            CGFloat height = floor(font.pointSize);
+            valueGrid.defaultCellSize = NSMakeSize(height < 16 ? 100 : 130, height + 8);
+            valueGrid.defaultHeaderSize = valueGrid.defaultCellSize;
+            [valueGrid reloadData];
         }
         if ([keyPath isEqualToString: @"showHiddenCategories"]) {
             [valueGrid reloadData];

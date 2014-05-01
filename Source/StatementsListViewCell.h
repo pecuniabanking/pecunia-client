@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,28 +19,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "PXListViewCell.h"
-#import "NSView+PecuniaAdditions.h"
-
-// Key names for the fields passed in via the value dictionary.
-extern NSString *StatementDateKey;
-extern NSString *StatementTurnoversKey;
-extern NSString *StatementRemoteNameKey;
-extern NSString *StatementPurposeKey;
-extern NSString *StatementCategoriesKey;
-extern NSString *StatementValueKey;
-extern NSString *StatementSaldoKey;
-extern NSString *StatementCurrencyKey;
-extern NSString *StatementTransactionTextKey;
-extern NSString *StatementIndexKey;
-extern NSString *StatementNoteKey;
-
+#import "PecuniaListViewCell.h"
 
 @protocol StatementsListViewNotificationProtocol
 - (void)cellActivationChanged: (BOOL)state forIndex: (NSUInteger)index;
 @end
 
-@interface StatementsListViewCell : PXListViewCell
+@interface StatementsListViewCell : PecuniaListViewCell
 {
     IBOutlet NSTextField *dateLabel;
     IBOutlet NSTextField *turnoversLabel;
@@ -51,23 +36,12 @@ extern NSString *StatementNoteKey;
     IBOutlet NSTextField *valueLabel;
     IBOutlet NSImageView *newImage;
     IBOutlet NSTextField *currencyLabel;
-    IBOutlet NSTextField *saldoCaption;
     IBOutlet NSTextField *saldoLabel;
     IBOutlet NSTextField *saldoCurrencyLabel;
     IBOutlet NSTextField *transactionTypeLabel;
     IBOutlet NSButton    *checkbox;
     IBOutlet NSTextField *dayLabel;
     IBOutlet NSTextField *monthLabel;
-
-@private
-    BOOL       isNew;
-    BOOL       hasUnassignedValue;
-    int        headerHeight;
-    NSUInteger index;
-
-    NSDateFormatter *dateFormatter;
-    NSDictionary    *whiteAttributes;
-    NSColor         *categoryColor;
 }
 
 @property (nonatomic, strong) id   delegate;
@@ -79,7 +53,6 @@ extern NSString *StatementNoteKey;
 - (void)setDetails: (NSDictionary *)details;
 - (void)setIsNew: (BOOL)flag;
 - (void)showActivator: (BOOL)flag markActive: (BOOL)active;
-- (void)selectionChanged;
 - (void)showBalance: (BOOL)flag;
 
 @end

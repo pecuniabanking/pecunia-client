@@ -240,7 +240,7 @@ static NSDictionary *heightMappings;
                        @"home": @400,
                        @"security": @270,
                        @"persistence": @260,
-                       @"display": @340,
+                       @"display": @370,
                        @"colors": @450,
                        @"export": @375,
                        @"print": @200};
@@ -978,29 +978,26 @@ static NSDictionary *heightMappings;
     return [defaults boolForKey: @"showHiddenCategories"];
 }
 
+static NSString *baseFontName = @"HelveticaNeue";
+
 + (NSString*)mainFontName
 {
-    return @"HelveticaNeue-Light";
+    return [baseFontName stringByAppendingString: @"-Light"];
 }
 
 + (NSString*)mainFontNameMedium
 {
-    return @"HelveticaNeue-Medium";
+    return [baseFontName stringByAppendingString: @"-Medium"];
 }
 
 + (NSString*)mainFontNameBold
 {
-    return @"HelveticaNeue-Bold";
-}
-
-+ (NSString*)mainFontNameLight
-{
-    return @"HelveticaNeue-UltraLight";
+    return [baseFontName stringByAppendingString: @"-Bold"];
 }
 
 + (NSString*)popoverFontName
 {
-    return @"HelveticaNeue-Light";
+    return [baseFontName stringByAppendingString: @"-Light"];
 }
 
 /**
@@ -1012,11 +1009,12 @@ static NSDictionary *heightMappings;
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     if ([defaults objectForKey: @"fontScale"] != nil) {
         double scale = [defaults doubleForKey: @"fontScale"];
-        if (scale > 0.75 && scale < 2) {
+        if (scale >= 0.75 && scale <= 1.5) {
             size *= scale;
         }
     }
     return [NSFont fontWithName: name size: size];
+    //return [NSFont systemFontOfSize: size];
 }
 
 #pragma mark - ListView delegate protocol

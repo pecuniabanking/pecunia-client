@@ -102,7 +102,6 @@
 + (NSString *)mainFontName;
 + (NSString *)mainFontNameMedium;
 + (NSString *)mainFontNameBold;
-+ (NSString *)mainFontNameLight;
 + (NSString *)popoverFontName;
 
 + (NSFont *)fontNamed: (NSString *)name baseSize: (CGFloat)size;

@@ -67,6 +67,8 @@
     IBOutlet NSView                 *rightPane;
     IBOutlet NSButton               *refreshButton;
     IBOutlet ComTraceHelper         *comTracePanel;
+    IBOutlet NSButton               *decreaseFontButton;
+    IBOutlet NSButton               *increaseButton;
 
     IBOutlet NSMenuItem *developerMenu;
     IBOutlet NSMenuItem *comTraceMenuItem;

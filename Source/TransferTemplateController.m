@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,6 +17,8 @@
  * 02110-1301  USA
  */
 
+// XXX: this is no longer used, apparently.
+
 #import "TransferTemplateController.h"
 #import "TransferTemplate.h"
 #import "MOAssistant.h"
@@ -24,7 +26,8 @@
 #import "Transfer.h"
 #import "Country.h"
 
-@interface TransferTemplateController (private)
+@interface TransferTemplateController ()
+
 - (void)countryChanged: (id)sender;
 - (BOOL)checkTemplate: (TransferTemplate *)t;
 - (void)closeEditAnimate: (BOOL)animate;
@@ -32,6 +35,7 @@
 - (void)add: (id)sender;
 - (void)delete: (id)sender;
 - (void)edit: (id)sender;
+
 @end
 
 @implementation TransferTemplateController
@@ -39,7 +43,9 @@
 - (id)init
 {
     self = [super initWithWindowNibName: @"TransferTemplates"];
-    context = [[MOAssistant assistant] context];
+    if (self != nil) {
+        context = MOAssistant.assistant.context;
+    }
     return self;
 }
 

@@ -25,8 +25,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define MBTableGridColumnHeaderHeight 19.0
-#define MBTableGridRowHeaderWidth 40.0
+#define MBTableGridDefaultColumnHeaderHeight 19.0
+#define MBTableGridDefaultRowHeaderWidth 40.0
 
 @class MBTableGrid, MBTableGridCell;
 

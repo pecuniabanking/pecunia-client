@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2014, Pecunia Project. All rights reserved.
+ * Copyright (c) 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,20 +17,19 @@
  * 02110-1301  USA
  */
 
-#import "PecuniaListViewCell.h"
+#import "PXListViewCell.h"
 
-@interface TransferTemplateListViewCell : PecuniaListViewCell
-{
-    IBOutlet NSTextField *remoteNameLabel;
-    IBOutlet NSTextField *purposeLabel;
-    IBOutlet NSTextField *templateNameLabel;
-    IBOutlet NSTextField *bankNameLabel;
+@interface PecuniaListViewCell : PXListViewCell
 
-    IBOutlet NSTextField *ibanCaption;
-    IBOutlet NSTextField *ibanLabel;
-    IBOutlet NSTextField *bicCaption;
-    IBOutlet NSTextField *bicLabel;
-}
+@property (nonatomic, strong) NSGradient *selectionGradient;
+
+- (void)registerStandardLabel: (NSTextField *)field;
+- (void)registerNumberLabel: (NSTextField *)field;
+- (void)registerPaleLabel: (NSTextField *)field;
+
+- (void)updateTextColors;
+- (void)adjustLabelsAndSize;
+- (void)selectionChanged;
 
 - (void)setDetails: (NSDictionary *)details;
 

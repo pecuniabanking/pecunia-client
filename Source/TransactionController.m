@@ -283,6 +283,7 @@
     
     template.remoteAccount = transfer.remoteAccount;
     template.remoteBankCode = transfer.remoteBankCode;
+    template.remoteBankName = transfer.remoteBankName;
     template.remoteName = transfer.remoteName;
     template.purpose1 = transfer.purpose1;
     template.purpose2 = transfer.purpose2;

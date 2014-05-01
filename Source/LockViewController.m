@@ -99,7 +99,8 @@
 }
 
 /**
- * Starts a modal loop for the window in which the lock view is currently displayed. */
+ * Starts a modal loop for the window in which the lock view is currently displayed.
+ */
 - (NSModalResponse)waitForPassword
 {
     if (window == nil) {

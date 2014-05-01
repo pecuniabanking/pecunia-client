@@ -129,6 +129,7 @@ static BankingController *bankinControllerInstance;
 
     NSArray *defaultIcons; // Associations between categories and their default icons.
 }
+
 @end
 
 @implementation BankingController
@@ -223,11 +224,12 @@ static BankingController *bankinControllerInstance;
     [MessageLog.log addObserver: self forKeyPath: @"isComTraceActive" options: 0 context: nil];
 
     comTracePanel.autoresizingMask = NSViewMinXMargin;
-    //mainWindow.titleBarStartColor = [NSColor colorWithDeviceWhite: 60 / 255.0 alpha: 1];
-    //mainWindow.titleBarEndColor = [NSColor colorWithDeviceWhite: 100 / 255.0 alpha: 1];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults addObserver: self forKeyPath: @"showHiddenCategories" options: 0 context: UserDefaultsBindingContext];
+    [userDefaults addObserver: self forKeyPath: @"fontScale" options: 0 context: UserDefaultsBindingContext];
+    NSFont *font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13];
+    accountsView.rowHeight = floor(font.pointSize) + 7;
 
     int lastSplitterPosition = [[userDefaults objectForKey: @"rightSplitterPosition"] intValue];
     if (lastSplitterPosition > 0) {
@@ -245,11 +247,11 @@ static BankingController *bankinControllerInstance;
     if (tableColumn) {
         ImageAndTextCell *cell = (ImageAndTextCell *)[tableColumn dataCell];
         if (cell) {
-            [cell setFont: [NSFont fontWithName: PreferenceController.mainFontName size: 13]];
+            NSFont *font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13];
+            [cell setFont: font];
 
-            // update unread information
-            NSInteger maxUnread = [BankAccount maxUnread];
-            [cell setMaxUnread: maxUnread];
+            accountsView.rowHeight = floor(font.pointSize) + 8;
+            [cell setMaxUnread: [BankAccount maxUnread]];
         }
     }
 
@@ -1359,6 +1361,24 @@ static BankingController *bankinControllerInstance;
     [comTracePanel toggleComTrace: sender];
 }
 
+- (IBAction)changeFontSize: (id)sender
+{
+    NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+    double scale = [defaults doubleForKey: @"fontScale"];
+    if (sender == decreaseFontButton) {
+        scale = ((int)(scale * 10) - 1) / 10.0;
+    } else {
+        scale = ((int)(scale * 10) + 1) / 10.0;
+    }
+    if (scale < 0.75) {
+        scale = 0.75;
+    }
+    if (scale > 1.5) {
+        scale = 1.5;
+    }
+    [defaults setDouble: scale forKey: @"fontScale"];
+}
+
 #pragma mark - Account management
 
 - (IBAction)addAccount: (id)sender
@@ -2400,11 +2420,6 @@ static BankingController *bankinControllerInstance;
              isRoot: itemIsRoot
            isHidden: cat.isHidden.boolValue
           isIgnored: cat.noCatRep.boolValue];
-}
-
-- (CGFloat)outlineView: (NSOutlineView *)outlineView heightOfRowByItem: (id)item
-{
-    return 22;
 }
 
 #pragma mark - Splitview delegate methods
@@ -3475,31 +3490,62 @@ static BankingController *bankinControllerInstance;
 	[sidebar addButtonWithTitle: NSLocalizedString(@"AP33", nil)
                           image: [NSImage imageNamed:@"send3-active"]
                  alternateImage: [NSImage imageNamed:@"send3"]];
+
+    NSFont *font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 11];
+    if (font != nil) {
+        for (NSUInteger i = 0; i < sidebar.buttonCount; ++i) {
+            id cell = [sidebar cellForItem: i];
+            NSMutableAttributedString *title = [[cell attributedTitle] mutableCopy];
+            [title addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, title.length)];
+            [cell setAttributedTitle: title];
+        }
+    }
 }
 
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context
 {
-    if (context == UserDefaultsBindingContext) {
-        if ([keyPath isEqualToString: @"showHiddenCategories"]) {
-            [categoryController prepareContent];
-            return;
-        }
-        return;
-    }
-
-    if (object == categoryController) {
-        [accountsView setNeedsDisplay: YES];
-        return;
-    }
-
     if ([keyPath isEqualToString: @"isComTraceActive"]) {
         if (MessageLog.log.isComTraceActive) {
             comTraceMenuItem.title = NSLocalizedString(@"AP223", nil);
         } else {
             comTraceMenuItem.title = NSLocalizedString(@"AP222", nil);
         }
+        return;
+    }
+
+    if (context == UserDefaultsBindingContext) {
+        if ([keyPath isEqualToString: @"showHiddenCategories"]) {
+            [categoryController prepareContent];
+            return;
+        }
+
+        if ([keyPath isEqualToString: @"fontScale"]) {
+            [accountsScrollView setNeedsDisplay: YES];
+            NSFont *font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13];
+
+            NSTableColumn *tableColumn = [accountsView tableColumnWithIdentifier: @"name"];
+            if (tableColumn) {
+                [tableColumn.dataCell setFont: font];
+            }
+            accountsView.rowHeight = floor(font.pointSize) + 8;
+
+            font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 11];
+            for (NSUInteger i = 0; i < sidebar.buttonCount; ++i) {
+                id cell = [sidebar cellForItem: i];
+                NSMutableAttributedString *title = [[cell attributedTitle] mutableCopy];
+                [title addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, title.length)];
+                [cell setAttributedTitle: title];
+            }
+            return;
+        }
+
+        return;
+    }
+
+    if (object == categoryController) {
+        [accountsView setNeedsDisplay: YES];
         return;
     }
 
