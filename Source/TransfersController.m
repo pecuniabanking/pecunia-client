@@ -30,6 +30,7 @@
 #import "TransactionLimits.h"
 #import "TransferFormularView.h"
 #import "GradientButtonCell.h"
+#import "ShadowedTextField.h"
 
 #import "NSString+PecuniaAdditions.h"
 #import "GraphicsAdditions.h"
@@ -506,6 +507,9 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSDefaultRunLoopMode];
     autofillTable.target = self;
     autofillTable.doubleAction = @selector(autoFill);
+
+    self.dragToHereLabel.shadowColorOuter = nil;
+    self.dragToHereLabel.shadowDistance = @2;
 }
 
 - (NSMenuItem *)createItemForAccountSelector: (BankAccount *)account

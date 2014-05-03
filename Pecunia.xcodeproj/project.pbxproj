@@ -469,6 +469,8 @@
 		2788D7B718421195000B59AF /* PecuniaSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788D7B518421195000B59AF /* PecuniaSplitView.m */; };
 		2788D7BA1842133B000B59AF /* AttachmentImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788D7B91842133B000B59AF /* AttachmentImageView.m */; };
 		2788D7BB1842133B000B59AF /* AttachmentImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2788D7B91842133B000B59AF /* AttachmentImageView.m */; };
+		278EC8221915251D005091E8 /* ShadowedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EC8211915251D005091E8 /* ShadowedTextField.m */; };
+		278EC8231915251D005091E8 /* ShadowedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EC8211915251D005091E8 /* ShadowedTextField.m */; };
 		2790160417B94720006DF9BC /* AssetsCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2790160317B94720006DF9BC /* AssetsCard.m */; };
 		2790160517B94720006DF9BC /* AssetsCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2790160317B94720006DF9BC /* AssetsCard.m */; };
 		2790545014A37F59001380A3 /* hatch-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2790544F14A37F59001380A3 /* hatch-1.png */; };
@@ -924,7 +926,7 @@
 		2701A84A165E827F00A9A1C7 /* SystemNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNotification.m; sourceTree = "<group>"; wrapsLines = 0; };
 		2701A84C165E832C00A9A1C7 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Growl.framework; path = Frameworks/Growl.framework; sourceTree = "<group>"; };
 		27028DCD1539B58700AEB651 /* TransfersBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransfersBackgroundView.h; sourceTree = "<group>"; };
-		27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersBackgroundView.m; sourceTree = "<group>"; };
+		27028DCE1539B58700AEB651 /* TransfersBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersBackgroundView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		2703DE26146EE6AB0083CBA2 /* ExportPopup.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExportPopup.xib; sourceTree = "<group>"; };
 		2704B8431573C3FC00CB1320 /* standard-transfer-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "standard-transfer-icon.png"; sourceTree = "<group>"; };
 		2704B8451573D39A00CB1320 /* internal-transfer-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "internal-transfer-icon.png"; sourceTree = "<group>"; };
@@ -1081,6 +1083,8 @@
 		2788D7B518421195000B59AF /* PecuniaSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaSplitView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		2788D7B81842133B000B59AF /* AttachmentImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachmentImageView.h; sourceTree = "<group>"; };
 		2788D7B91842133B000B59AF /* AttachmentImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachmentImageView.m; sourceTree = "<group>"; wrapsLines = 0; };
+		278EC8201915251D005091E8 /* ShadowedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShadowedTextField.h; sourceTree = "<group>"; };
+		278EC8211915251D005091E8 /* ShadowedTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShadowedTextField.m; sourceTree = "<group>"; };
 		2790160217B94720006DF9BC /* AssetsCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AssetsCard.h; path = "Home Screen/AssetsCard.h"; sourceTree = "<group>"; };
 		2790160317B94720006DF9BC /* AssetsCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AssetsCard.m; path = "Home Screen/AssetsCard.m"; sourceTree = "<group>"; wrapsLines = 0; };
 		2790544F14A37F59001380A3 /* hatch-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hatch-1.png"; sourceTree = "<group>"; };
@@ -1408,7 +1412,7 @@
 		B17078F710EA5E6100A974E7 /* StatCatAssignment.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatCatAssignment.h; sourceTree = "<group>"; tabWidth = 4; };
 		B17078F810EA5E6100A974E7 /* StatCatAssignment.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatCatAssignment.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B170C16D167689310047FD42 /* java.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = java.entitlements; sourceTree = "<group>"; };
-		B1762BD711EE4AE600F70263 /* TransfersController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransfersController.h; sourceTree = "<group>"; tabWidth = 4; };
+		B1762BD711EE4AE600F70263 /* TransfersController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = TransfersController.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1762BD811EE4AE600F70263 /* TransfersController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = TransfersController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B17728AE1502D0D300256898 /* BankSetupInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankSetupInfo.h; sourceTree = "<group>"; };
 		B17728AF1502D0D300256898 /* BankSetupInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankSetupInfo.m; sourceTree = "<group>"; };
@@ -1842,6 +1846,8 @@
 				B14D6DEE0DEC9C9100C2B220 /* CategoryView.m */,
 				2778C24718140984003BF49D /* ClickableImageView.h */,
 				2778C24818140984003BF49D /* ClickableImageView.m */,
+				2704CC0418C0F173003C36F2 /* ComTraceHelper.h */,
+				2704CC0518C0F173003C36F2 /* ComTraceHelper.m */,
 				B138B258139D52690026BEE2 /* DateAndValutaCell.h */,
 				B138B259139D52690026BEE2 /* DateAndValutaCell.m */,
 				27B9868315769132008907F3 /* GradientButtonCell.h */,
@@ -1856,16 +1862,16 @@
 				B152B5131025FE2400EE06D6 /* MCEMBorderedView.m */,
 				B136AAD60FCF1C4A007A643F /* MCEMTableView.h */,
 				B136AAD70FCF1C4A007A643F /* MCEMTableView.m */,
-				2788D7B418421195000B59AF /* PecuniaSplitView.h */,
-				2788D7B518421195000B59AF /* PecuniaSplitView.m */,
-				2716FE4B152381A60015A753 /* SynchronousScrollView.h */,
-				2716FE4C152381A60015A753 /* SynchronousScrollView.m */,
-				2704CC0418C0F173003C36F2 /* ComTraceHelper.h */,
-				2704CC0518C0F173003C36F2 /* ComTraceHelper.m */,
 				B1E8D89D18F9DB8200EED3B2 /* PecuniaComboBoxCell.h */,
 				B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */,
 				27BB3B80190D4C0C006F15CB /* PecuniaListViewCell.h */,
 				27BB3B81190D4C0C006F15CB /* PecuniaListViewCell.m */,
+				2788D7B418421195000B59AF /* PecuniaSplitView.h */,
+				2788D7B518421195000B59AF /* PecuniaSplitView.m */,
+				278EC8201915251D005091E8 /* ShadowedTextField.h */,
+				278EC8211915251D005091E8 /* ShadowedTextField.m */,
+				2716FE4B152381A60015A753 /* SynchronousScrollView.h */,
+				2716FE4C152381A60015A753 /* SynchronousScrollView.m */,
 			);
 			name = "Controls and Layouts";
 			sourceTree = "<group>";
@@ -3395,6 +3401,7 @@
 				277788E9173CE22700430EBC /* MBTableGrid.m in Sources */,
 				277788EA173CE22700430EBC /* MBTableGridCell.m in Sources */,
 				277788EB173CE22700430EBC /* MBTableGridContentView.m in Sources */,
+				278EC8231915251D005091E8 /* ShadowedTextField.m in Sources */,
 				277788EC173CE22700430EBC /* MBTableGridHeaderCell.m in Sources */,
 				277788ED173CE22700430EBC /* MBTableGridHeaderView.m in Sources */,
 				277788EE173CE22700430EBC /* SynchronousScrollView.m in Sources */,
@@ -3607,6 +3614,7 @@
 				2736DD4D1514F6590066917C /* MBTableGrid.m in Sources */,
 				2736DD4E1514F6590066917C /* MBTableGridCell.m in Sources */,
 				2736DD4F1514F6590066917C /* MBTableGridContentView.m in Sources */,
+				278EC8221915251D005091E8 /* ShadowedTextField.m in Sources */,
 				2736DD511514F6590066917C /* MBTableGridHeaderCell.m in Sources */,
 				2736DD521514F6590066917C /* MBTableGridHeaderView.m in Sources */,
 				2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */,

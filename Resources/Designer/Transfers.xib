@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1070" defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TransfersController">
@@ -23,7 +23,7 @@
                 <outlet property="calendarPopover" destination="712" id="714"/>
                 <outlet property="calendarView" destination="441" id="444"/>
                 <outlet property="doItButton" destination="401" id="511"/>
-                <outlet property="dragToHereLabel" destination="53" id="665"/>
+                <outlet property="dragToHereLabel" destination="mfy-4l-oti" id="G72-pb-4jF"/>
                 <outlet property="executeAtDateLabel" destination="679" id="681"/>
                 <outlet property="executeAtDateRadioButton" destination="433" id="509"/>
                 <outlet property="executeImmediatelyRadioButton" destination="429" id="507"/>
@@ -70,7 +70,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <view id="2" userLabel="Transfers View" customClass="TransfersBackgroundView">
+        <view wantsLayer="YES" id="2" userLabel="Transfers View" customClass="TransfersBackgroundView">
             <rect key="frame" x="0.0" y="0.0" width="1304" height="788"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -368,19 +368,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <rect key="frame" x="558" y="10" width="751" height="778"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" heightSizable="YES"/>
                     <subviews>
-                        <textField wantsLayer="YES" verticalHuggingPriority="750" id="53">
-                            <rect key="frame" x="91" y="115" width="590" height="105"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <shadow key="shadow" blurRadius="2">
-                                <size key="offset" width="1" height="1"/>
-                                <color key="color" white="0.0" alpha="0.75" colorSpace="calibratedWhite"/>
-                            </shadow>
-                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Formular hierher ziehen" id="54">
-                                <font key="font" size="18" name="LucidaGrande-Bold"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                        </textField>
                         <imageView id="607" customClass="DragImageView">
                             <rect key="frame" x="20" y="594" width="211" height="145"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -410,10 +397,20 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </shadow>
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="basket" id="620"/>
                         </imageView>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" id="mfy-4l-oti" customClass="ShadowedTextField">
+                            <rect key="frame" x="125" y="93" width="498" height="173"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Formular hierher ziehen" id="EDg-eF-eiW">
+                                <font key="font" size="50" name="HelveticaNeue-Bold"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="0.5" colorSpace="deviceWhite"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
                     </subviews>
                 </customView>
             </subviews>
             <connections>
+                <outlet property="placeholderText" destination="mfy-4l-oti" id="inE-0D-B0g"/>
                 <outlet property="rightPane" destination="46" id="332"/>
             </connections>
         </view>
@@ -537,13 +534,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <textField verticalHuggingPriority="750" id="472">
                     <rect key="frame" x="497" y="371" width="95" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="123.456,78" usesSingleLineMode="YES" id="473">
-                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="474">
-                            <real key="roundingIncrement" value="0.0"/>
-                            <metadata>
-                                <bool key="localizesFormat" value="YES"/>
-                            </metadata>
-                        </numberFormatter>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="right" title="123,456,78" usesSingleLineMode="YES" id="473">
+                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="474"/>
                         <font key="font" size="18" name="HelveticaNeue"/>
                         <color key="textColor" red="0.44353374839999998" green="0.61568629740000003" blue="0.36564588549999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -836,12 +828,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <rect key="frame" x="170" y="182" width="165" height="24"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" usesSingleLineMode="YES" id="456">
-                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," id="457">
-                            <real key="roundingIncrement" value="0.0"/>
-                            <metadata>
-                                <bool key="localizesFormat" value="YES"/>
-                            </metadata>
-                        </numberFormatter>
+                        <numberFormatter key="formatter" formatterBehavior="custom10_4" positiveFormat="#,##0.00" negativeFormat="#,##0.00" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="457"/>
                         <font key="font" size="13" name="HelveticaNeue"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1187,14 +1174,14 @@ Gw
             <rect key="frame" x="0.0" y="0.0" width="505" height="228"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="Bwn-pk-IEG" userLabel="Autofill Table">
+                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="56" horizontalPageScroll="10" verticalLineScroll="56" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="Bwn-pk-IEG" userLabel="Autofill Table">
                     <rect key="frame" x="20" y="20" width="465" height="151"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="mRo-JC-XIF">
                         <rect key="frame" x="0.0" y="0.0" width="465" height="151"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" viewBased="YES" id="IY8-Sc-cdp">
+                            <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="54" rowSizeStyle="automatic" viewBased="YES" id="IY8-Sc-cdp">
                                 <rect key="frame" x="0.0" y="0.0" width="465" height="151"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -1239,8 +1226,8 @@ Gw
                                                         <connections>
                                                             <binding destination="gNQ-mC-qa5" name="value" keyPath="objectValue.ReceiverKey" id="LpX-Vg-0ma">
                                                                 <dictionary key="options">
-                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
                                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
                                                                 </dictionary>
                                                             </binding>
                                                         </connections>
@@ -1265,8 +1252,8 @@ Gw
                                                         <connections>
                                                             <binding destination="gNQ-mC-qa5" name="value" keyPath="objectValue.AccountNumberKey" id="9nc-zJ-saf">
                                                                 <dictionary key="options">
-                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
                                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
                                                                 </dictionary>
                                                             </binding>
                                                         </connections>
@@ -1291,8 +1278,8 @@ Gw
                                                         <connections>
                                                             <binding destination="gNQ-mC-qa5" name="value" keyPath="objectValue.BankCodeKey" id="4nF-xK-fTp">
                                                                 <dictionary key="options">
-                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
                                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
                                                                 </dictionary>
                                                             </binding>
                                                         </connections>
@@ -1317,8 +1304,8 @@ Gw
                                                         <connections>
                                                             <binding destination="gNQ-mC-qa5" name="value" keyPath="objectValue.IBANKey" id="HJ6-lk-mDk">
                                                                 <dictionary key="options">
-                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
                                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
                                                                 </dictionary>
                                                             </binding>
                                                         </connections>
@@ -1343,8 +1330,8 @@ Gw
                                                         <connections>
                                                             <binding destination="gNQ-mC-qa5" name="value" keyPath="objectValue.BICKey" id="8LU-D4-nfI">
                                                                 <dictionary key="options">
-                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
                                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                    <string key="NSNullPlaceholder">nicht gefunden</string>
                                                                 </dictionary>
                                                             </binding>
                                                         </connections>

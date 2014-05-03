@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -33,6 +33,7 @@
 @class BankAccount;
 @class TransactionLimits;
 @class TimeSliceManager;
+@class ShadowedTextField;
 
 @interface TransferTemplateDragDestination : NSView
 {
@@ -127,7 +128,7 @@
 }
 
 @property (weak) IBOutlet TransferFormularView *transferFormular;
-@property (weak) IBOutlet NSTextField          *dragToHereLabel;
+@property (weak) IBOutlet ShadowedTextField *dragToHereLabel;
 
 @property (nonatomic, assign) BOOL dropToEditRejected;
 @property (nonatomic, assign) BOOL donation;
