@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="12F45" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="BankAccount" representedClassName="BankAccount" parentEntity="Category" syncable="YES">
         <attribute name="accountNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="accountSuffix" optional="YES" attributeType="String" syncable="YES"/>
@@ -43,10 +43,13 @@
         <attribute name="ccNumberUms" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ccSettlementRef" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="charge" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="creditorId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="currency" optional="YES" attributeType="String" maxValueString="3" syncable="YES"/>
         <attribute name="customerReference" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="debitorId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="docDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="endToEndRef" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hashNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="isAssigned" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isManual" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -56,6 +59,7 @@
         <attribute name="localAccount" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localBankCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localSuffix" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mandateRef" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nassValue" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
         <attribute name="origCurrency" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="origValue" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
@@ -348,7 +352,7 @@
     <elements>
         <element name="BankAccount" positionX="0" positionY="0" width="128" height="435"/>
         <element name="BankMessage" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="BankStatement" positionX="0" positionY="0" width="128" height="780"/>
+        <element name="BankStatement" positionX="0" positionY="0" width="128" height="840"/>
         <element name="BankUser" positionX="0" positionY="0" width="128" height="375"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="315"/>
         <element name="CategoryBudget" positionX="0" positionY="0" width="128" height="90"/>
