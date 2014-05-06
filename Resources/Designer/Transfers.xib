@@ -397,7 +397,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </shadow>
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="basket" id="620"/>
                         </imageView>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" id="mfy-4l-oti" customClass="ShadowedTextField">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="mfy-4l-oti" customClass="ShadowedTextField">
                             <rect key="frame" x="125" y="93" width="498" height="173"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Formular hierher ziehen" id="EDg-eF-eiW">
@@ -625,7 +625,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" tag="30" id="409">
-                    <rect key="frame" x="117" y="185" width="42" height="19"/>
+                    <rect key="frame" x="116" y="185" width="43" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Betrag" usesSingleLineMode="YES" id="410">
                         <font key="font" size="13" name="HelveticaNeue"/>

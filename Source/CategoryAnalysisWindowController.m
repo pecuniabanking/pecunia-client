@@ -395,7 +395,6 @@ extern void *UserDefaultsBindingContext;
     free(positiveBalances);
     free(balanceCounts);
     free(selectionBalances);
-    free(movingAverage);
 }
 
 - (void)awakeFromNib
@@ -790,7 +789,7 @@ extern void *UserDefaultsBindingContext;
     [self setupSelectionAxes];
 }
 
-- (CPTScatterPlot *)createScatterPlotWithFill: (CPTFill *)fill
+- (CPTScatterPlot *)createScatterPlotWithFill: (CPTFill *)fill withDataSource: (BOOL)flag
 {
     CPTScatterPlot *linePlot = [[CPTScatterPlot alloc] init];
     linePlot.alignsPointsToPixels = YES;
@@ -802,7 +801,9 @@ extern void *UserDefaultsBindingContext;
     linePlot.areaBaseValue = CPTDecimalFromInt(0);
 
     linePlot.delegate = self;
-    linePlot.dataSource = self;
+    if (flag) {
+        linePlot.dataSource = self;
+    }
 
     return linePlot;
 }
@@ -868,7 +869,7 @@ extern void *UserDefaultsBindingContext;
 
         CPTPlot *plot;
         if (selectedCategory.isBankAccount) {
-            plot = [self createScatterPlotWithFill: positiveGradientFill];
+            plot = [self createScatterPlotWithFill: positiveGradientFill withDataSource: YES];
         } else {
             plot = [self createBarPlotWithFill: positiveGradientFill withBorder: YES];
         }
@@ -884,7 +885,7 @@ extern void *UserDefaultsBindingContext;
 
         // The negative plot.
         if (selectedCategory.isBankAccount) {
-            plot = [self createScatterPlotWithFill: negativeGradientFill];
+            plot = [self createScatterPlotWithFill: negativeGradientFill withDataSource: YES];
         } else {
             plot = [self createBarPlotWithFill: negativeGradientFill withBorder: YES];
         }
@@ -895,8 +896,8 @@ extern void *UserDefaultsBindingContext;
         [mainGraph addPlot: plot];
 
         // Moving average plot.
-        CPTScatterPlot *averagePlot = [self createScatterPlotWithFill: nil];
-        averagePlot.interpolation = CPTScatterPlotInterpolationCurved;
+        CPTScatterPlot *averagePlot = [self createScatterPlotWithFill: nil withDataSource: NO];
+        averagePlot.interpolation = CPTScatterPlotInterpolationLinear;
         averagePlot.identifier = @"averagePlot";
 
         CPTMutableLineStyle *lineStyle = [[CPTMutableLineStyle alloc] init];
@@ -973,7 +974,7 @@ extern void *UserDefaultsBindingContext;
         areaGradient.angle = 90.0;
         CPTFill *gradientFill = [CPTFill fillWithGradient: areaGradient];
 
-        CPTPlot *plot = [self createScatterPlotWithFill: gradientFill];
+        CPTPlot *plot = [self createScatterPlotWithFill: gradientFill withDataSource: YES];
 
         plot.identifier = @"selectionPlot";
         [self setupShadowForPlot: plot];
@@ -1139,11 +1140,29 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
+static CGFloat β0;
+static CGFloat β1;
+
+static CGFloat α0;
+static CGFloat α1;
+static CGFloat α2;
+
+double trend(double x)
+{
+    //return β0 + β1 * x;               // Linear trend function.
+    return α0 + x * α1 + x * x * α2; // Square trend function.
+}
+
 /**
  * Updates the vertical plotrange of the main graph and must only be called with data loaded.
  */
 - (void)updateVerticalMainGraphRange
 {
+    CPTScatterPlot        *averagePlot = (CPTScatterPlot *)[mainGraph plotWithIdentifier: @"averagePlot"];
+    CPTFunctionDataSource *plotDataSource = [CPTFunctionDataSource dataSourceForPlot: averagePlot
+                                                                        withFunction: trend];
+    plotDataSource.resolution = 1;
+    
     CPTXYPlotSpace *plotSpace = (id)mainGraph.defaultPlotSpace;
 
     NSUInteger startIndex = 0;
@@ -1407,22 +1426,18 @@ int double_compare(const void *value1, const void *value2)
         }
         free(sortedBalances);
 
-        for (NSUInteger i = 0; i < rawCount; i++) {
-            if (totalBalances[i] > max) {
-                max = totalBalances[i];
-            }
-            if (totalBalances[i] < min) {
-                min = totalBalances[i];
-            }
-            sum += totalBalances[i];
-            squareSum += totalBalances[i] * totalBalances[i];
-            if (balanceCounts[i] > maxTurnovers) {
-                maxTurnovers = balanceCounts[i];
-            }
-        }
+        // Compute some base values using the accelerate framework.
+        CGFloat mean;
+        vDSP_meanvD(totalBalances, 1, &mean, rawCount);
+
+        vDSP_minvD(totalBalances, 1, &min, rawCount);
+        vDSP_maxvD(totalBalances, 1, &max, rawCount);
+        vDSP_maxvD(balanceCounts, 1, &maxTurnovers, rawCount);
+        vDSP_svesqD(totalBalances, 1, &squareSum, rawCount);
+
         statistics[@"totalMinValue"] = @(min);
         statistics[@"totalMaxValue"] = @(max);
-        statistics[@"totalMeanValue"] = @(sum / rawCount);
+        statistics[@"totalMeanValue"] = @(mean);
         statistics[@"totalMedian"] = @(median);
 
         if (!selectedCategory.isBankAccount) {
@@ -1448,29 +1463,8 @@ int double_compare(const void *value1, const void *value2)
         [statistics removeObjectForKey: @"totalStandardDeviation"];
     }
 
-    // Moving average values. Doesn't work so well for grouping with empty ranges (mostly grouping by day).
-    // Consider using techniques to compute intermittent values (e.g. via Poisson distribution).
-    int m = rawCount < 10 ? rawCount / 2 : 5;
-    for (NSUInteger t = 0; t < rawCount; t++) {
-        double average = 0;
-        for (int i = -m; i <= m; i++) {
-            int sourceIndex = t + i;
-            if (sourceIndex < 0) {
-                sourceIndex = 0;
-            } else {
-                if (sourceIndex >= (int)rawCount) {
-                    // At the end of the list simply repeat the last value.
-                    // This is really a rough estimate and should be replaced as soon as we have a forecast.
-                    sourceIndex = rawCount - 1;
-                    if (sourceIndex < 0) {
-                        sourceIndex = 0;
-                    }
-                }
-            }
-            average += totalBalances[sourceIndex];
-        }
-        movingAverage[t] = average / (2 * m + 1);
-    }
+    [self computeTrendParameters];
+
     // Compute some special values for the graphs which directly depend on global stats.
     // Make sure we always show the base line in a graph.
     if (min > 0) {
@@ -1492,6 +1486,115 @@ int double_compare(const void *value1, const void *value2)
     }
     NSDecimal decimalTurnoversValue = CPTDecimalFromDouble(maxTurnovers);
     roundedMaxTurnovers = [[NSDecimalNumber decimalNumberWithDecimal: decimalTurnoversValue] roundToUpperOuter];
+}
+
+#define N 3
+#define LDA N
+#define LDB N
+
+/**
+ * (Re)computes the factors needed for the trend() function.
+ */
+- (void)computeTrendParameters
+{
+    if (rawCount == 0) {
+        β1 = 0;
+        β0 = 0;
+
+        α0 = 0;
+        α1 = 0;
+        α2 = 0;
+
+        return;
+    }
+
+    // For our trendline compute the regression factors so we can use them easily in the function datasource.
+    // We use the method of the least squares for that.
+
+    // 1) Linear case.
+    CGFloat xMean;
+    vDSP_meanvD(timePoints, 1, &xMean, rawCount);
+
+    CGFloat yMean;
+    vDSP_meanvD(totalBalances, 1, &yMean, rawCount);
+
+    CGFloat xResidualSum = 0;
+    CGFloat yResidualSum = 0;
+    for (NSUInteger i = 0; i < rawCount; ++i) {
+        CGFloat xResiduum = timePoints[i] - xMean;
+        CGFloat yResiduum = totalBalances[i] - yMean;
+
+        xResidualSum += xResiduum * xResiduum;
+        yResidualSum += xResiduum * yResiduum;
+    }
+
+    // Regression factors are static as we need them for the function datasource.
+    β1 = yResidualSum / xResidualSum;
+    β0 = yMean - β1 * xMean;
+
+    // 2) Polynomal variant (quadratic regression function).
+    //    Solve the equation system to find the minimum residual sum.
+    //    | n   ∑x  ∑x² |   | α0 |   | ∑y   |
+    //    | ∑x  ∑x² ∑x³ | * | α1 | = | ∑xy  |
+    //    | ∑x² ∑x³ ∑x⁴ |   | α2 |   | ∑x²y |
+    //
+    // where n is the number of datapoints, x are the time points, y balance values.
+
+    // We can compute all the sums in one single loop so no need to detour to Accelerate.framework
+    // (we don't get ∑x³, ∑x⁴ etc. from there anyway).
+    __CLPK_real xSum = 0;
+    __CLPK_real x2Sum = 0;
+    __CLPK_real x3Sum = 0;
+    __CLPK_real x4Sum = 0;
+    __CLPK_real ySum = 0;
+    __CLPK_real xySum = 0;
+    __CLPK_real x2ySum = 0;
+    for (NSUInteger i = 0; i < rawCount; ++i) {
+        __CLPK_real x = timePoints[i];
+        __CLPK_real x2 = x * x;
+        __CLPK_real y = totalBalances[i];
+        xSum += x;
+        x2Sum += x2;
+        x3Sum += x * x2;
+        x4Sum += x2 * x2;
+        ySum += y;
+        xySum += x * y;
+        x2ySum += x2 * y;
+    }
+
+    __CLPK_integer n = N, nrhs = 1, lda = LDA, ldb = LDB, info;
+    __CLPK_integer ipiv[N];
+
+    // Matrix is stored in column-primary order.
+    __CLPK_real a[LDA * N] = {
+        rawCount, xSum, x2Sum,
+        xSum, x2Sum, x3Sum,
+        x2Sum, x3Sum, x4Sum,
+    };
+
+    __CLPK_real b[LDB] = {
+        ySum, xySum, x2ySum,
+    };
+
+    // Solve a * x = b. Result is stored in b.
+    sgesv_(&n, &nrhs, a, &lda, ipiv, b, &ldb, &info);
+
+    if (info == 0) {
+        α0 = b[0];
+        α1 = b[1];
+        α2 = b[2];
+    }
+
+    //print_matrix(N, 1, b);
+}
+
+void print_matrix(size_t rows, size_t columns, __CLPK_real *mat) {
+    for(size_t r = 0; r < rows; ++r) {
+        for(size_t c = 0; c < columns; ++c) {
+            printf("%6.2f ", mat[r * columns + c]);
+        }
+        printf("\n");
+    }
 }
 
 - (void)computeLocalStatisticsFrom: (NSUInteger)fromIndex to: (NSUInteger)toIndex
@@ -2056,8 +2159,10 @@ int double_compare(const void *value1, const void *value2)
     }
 }
 
-#pragma mark -
-#pragma mark Plot Data Source Methods
+#pragma mark - Plot Data Source Methods
+
+// Only for plots that have the controller set as datasource. E.g. the average plot uses a function datasource
+// and hence does not trigger the datasource methods below.
 
 - (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot
 {
@@ -2065,10 +2170,6 @@ int double_compare(const void *value1, const void *value2)
         return selectionSampleCount;
     }
 
-    NSString *identifier = (id)plot.identifier;
-    if ([identifier isEqualToString: @"averagePlot"] && rawCount > 0) {
-        return rawCount;
-    }
     return rawCount;
 }
 
@@ -2097,7 +2198,7 @@ int double_compare(const void *value1, const void *value2)
             if ([identifier isEqualToString: @"negativePlot"]) {
                 return &negativeBalances[indexRange.location];
             } else {
-                return &movingAverage[indexRange.location];
+                return nil; // Should never happen.
             }
         }
     }
@@ -2181,9 +2282,6 @@ int double_compare(const void *value1, const void *value2)
         selectionTimePoints = nil;
     }
 
-    free(movingAverage);
-    movingAverage = nil;
-
     NSArray *plots = [mainGraph.allPlots copy];
     for (CPTPlot *plot in plots) {
         [mainGraph removePlot: plot];
@@ -2234,7 +2332,6 @@ int double_compare(const void *value1, const void *value2)
             totalBalances = malloc(rawCount * sizeof(double));
             positiveBalances = malloc(rawCount * sizeof(double));
             negativeBalances = malloc(rawCount * sizeof(double));
-            movingAverage = malloc(rawCount * sizeof(double));
 
             index = 0;
             for (NSDecimalNumber *value in balances) {
@@ -2306,6 +2403,7 @@ int double_compare(const void *value1, const void *value2)
     [mainGraph reloadData];
     [turnoversGraph reloadData];
     [selectionGraph reloadData];
+
 }
 
 - (void)regenerateGraphs
@@ -2322,7 +2420,6 @@ int double_compare(const void *value1, const void *value2)
     [self setupTurnoversPlot];
     [self setupSelectionPlot];
     [self updateSelectionDisplay];
-
     [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
 }
 

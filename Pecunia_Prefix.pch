@@ -5,6 +5,7 @@
 #ifdef __OBJC__
     #import <Cocoa/Cocoa.h>
     #import <QuartzCore/QuartzCore.h>
+    #include <Accelerate/Accelerate.h>
 
     #import "PXListView.h"
 #endif
