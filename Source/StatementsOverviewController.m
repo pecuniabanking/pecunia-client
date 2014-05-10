@@ -440,10 +440,21 @@ extern void *UserDefaultsBindingContext;
 
 - (void)splitSelectedStatement
 {
-    NSArray *sel = [categoryAssignments selectedObjects];
-    if (sel != nil && [sel count] == 1) {
-        StatSplitController *splitController = [[StatSplitController alloc] initWithStatement: [sel[0] statement]];
+    NSArray *selection = [categoryAssignments selectedObjects];
+    if (selection.count == 1) {
+        StatSplitController *splitController = [[StatSplitController alloc] initWithStatement: [selection[0] statement]];
         [NSApp runModalForWindow: [splitController window]];
+    }
+}
+
+- (void)markSelectedStatementsUnread {
+    NSArray *selection = [categoryAssignments selectedObjects];
+    if (selection.count > 0) {
+        for (StatCatAssignment *assignment in selection) {
+            assignment.statement.isNew = @YES;
+        }
+        [BankingController.controller updateUnread];
+        [statementsListView updateVisibleCells];
     }
 }
 
@@ -554,39 +565,38 @@ extern void *UserDefaultsBindingContext;
         static NSIndexSet *oldIdx;
 
         if ([keyPath isEqualToString: @"selectionIndexes"]) {
-            // Selection did change.
-            // Check if selection really changed
             NSIndexSet *selIdx = categoryAssignments.selectionIndexes;
             if (oldIdx == nil && selIdx == nil) {
                 return;
             }
             if (oldIdx != nil && selIdx != nil) {
-                if ([oldIdx isEqualTo:selIdx]) {
+                if ([oldIdx isEqualTo: selIdx]) {
                     return;
                 }
             }
             oldIdx = selIdx;
 
-            // If the currently selected entry is a new one remove the "new" mark.
+            // If the currently selected entry is marked as unread mark it now as read.
             NSDecimalNumber *firstValue = nil;
             BankStatementType firstStatementType = StatementType_Standard;
+            BOOL needUnreadUpdate = NO;
             for (StatCatAssignment *stat in [categoryAssignments selectedObjects]) {
                 if (firstValue == nil) {
                     firstValue = stat.statement.value;
                     firstStatementType = stat.statement.type.intValue;
                 }
                 if ([stat.statement.isNew boolValue]) {
+                    needUnreadUpdate = YES;
                     stat.statement.isNew = @NO;
                     BankAccount *account = stat.statement.account;
                     account.unread = account.unread - 1;
-                    if (account.unread == 0) {
-                        [BankingController.controller updateUnread];
-                    }
                 }
             }
-            [(id)BankingController.controller.accountsView setNeedsDisplay: YES];
+            if (needUnreadUpdate) {
+                [BankingController.controller updateUnread];
+            }
 
-            // Check for the type of transaction and adjust remote name display accordingly.
+            // Check for the type of transaction and adjust remote name display in the details pane accordingly.
             if (firstStatementType == StatementType_CreditCard) {
                 [remoteNameLabel setStringValue: NSLocalizedString(@"AP221", nil)];
             } else {

@@ -66,6 +66,7 @@ extern NSDictionary    *whiteAttributes;
 
 @synthesize delegate;
 @synthesize hasUnassignedValue;
+@synthesize isNew;
 
 #pragma mark Init/Dealloc
 

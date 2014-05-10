@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,9 +17,6 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
-#import "PXListView.h"
 #import "StatementsListviewCell.h"
 
 @protocol StatementsListViewProtocol <PXListViewDelegate>
@@ -27,24 +24,6 @@
 @end;
 
 @interface StatementsListView : PXListView <PXListViewDelegate, StatementsListViewNotificationProtocol>
-{
-@private
-    id observedObject;
-
-    NSDateFormatter *dateFormatter;
-    NSIndexSet      *draggedIndexes;
-
-    BOOL showAssignedIndicators;
-    id   owner;
-    BOOL autoResetNew;
-    BOOL pendingReload;  // Set when a notification arrived to completely reload the listview.
-    BOOL pendingRefresh; // Set when there was already a notification to refresh visible cells (for property changes).
-    BOOL activating;     // Set when a cells are activated programmatically (so we don't send notifications around).
-
-    // These are cached user settings.
-    BOOL showHeaders;
-    BOOL autoCasing;
-}
 
 @property (nonatomic, assign) BOOL    showAssignedIndicators;
 @property (nonatomic, strong) id      owner;

@@ -25,16 +25,11 @@
 
 @implementation DockIconController
 
-
 - (DockIconController *)initWithManagedObjectContext: (NSManagedObjectContext *)objectContext
 {
     self = [super init];
     if (self != nil) {
         managedObjectContext = objectContext;
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(managedObjectContextChanged:)
-                                                     name: NSManagedObjectContextDidSaveNotification
-                                                   object: nil];
         [self updateBadge];
     }
     return self;
@@ -45,35 +40,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
-- (void)managedObjectContextChanged: (NSNotification *)notification
-{
-    @try {
-        NSDictionary *userInfoDictionary = [notification userInfo];
-        NSSet        *updatedObjects = userInfoDictionary[NSUpdatedObjectsKey];
-
-        for (id value in updatedObjects) {
-            if ([value isKindOfClass: [BankStatement class]] || [value isKindOfClass: [BankAccount class]]) {
-                [self updateBadge];
-                break;
-            }
-        }
-    }
-    @catch (NSException *error) {
-        LogError(@"%@", error.debugDescription);
-    }
-}
-
 - (NSInteger)numberUnread
 {
     NSError             *error = nil;
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement"
                                                          inManagedObjectContext: managedObjectContext];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSFetchRequest *request = [NSFetchRequest new];
     [request setEntity: entityDescription];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1", self];
     [request setPredicate: predicate];
-    NSArray *statements = [managedObjectContext executeFetchRequest: request error: &error];
-    return [statements count];
+    return [managedObjectContext countForFetchRequest: request error: &error];
 }
 
 - (void)updateBadge

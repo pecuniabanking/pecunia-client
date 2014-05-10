@@ -1018,6 +1018,7 @@ static BankingController *bankinControllerInstance;
     [self.currentSelection updateAssignmentsForReportRange];
 
     [self stopRefreshAnimation];
+    [self updateUnread];
     
     BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
     if (!suppressSound) {
@@ -1245,14 +1246,14 @@ static BankingController *bankinControllerInstance;
 {
     LogEnter;
 
-    NSError                *error = nil;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: context];
-    NSFetchRequest         *request = [[NSFetchRequest alloc] init];
+    NSError             *error = nil;
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement"
+                                                         inManagedObjectContext: managedObjectContext];
+    NSFetchRequest      *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1"];
     [request setPredicate: predicate];
-    NSArray *statements = [context executeFetchRequest: request error: &error];
+    NSArray *statements = [managedObjectContext executeFetchRequest: request error: &error];
     for (BankStatement *stat in statements) {
         stat.isNew = @NO;
     }
@@ -1262,6 +1263,10 @@ static BankingController *bankinControllerInstance;
     [accountsView setNeedsDisplay: YES];
 
     LogLeave;
+}
+
+- (IBAction)markSelectedUnread:(id)sender {
+    [overviewController markSelectedStatementsUnread];
 }
 
 - (IBAction)showAboutPanel: (id)sender
@@ -3394,10 +3399,11 @@ static BankingController *bankinControllerInstance;
     NSTableColumn *tc = [accountsView tableColumnWithIdentifier: @"name"];
     if (tc) {
         ImageAndTextCell *cell = (ImageAndTextCell *)[tc dataCell];
-        // update unread information
-        NSInteger maxUnread = [BankAccount maxUnread];
-        [cell setMaxUnread: maxUnread];
+        [cell setMaxUnread: BankAccount.maxUnread];
     }
+
+    [dockIconController updateBadge];
+    [accountsView setNeedsDisplay: YES];
 
     LogLeave;
 }

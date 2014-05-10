@@ -46,12 +46,12 @@
 
 @property (nonatomic, strong) id   delegate;
 @property (nonatomic, assign) BOOL hasUnassignedValue;
+@property (nonatomic, assign) BOOL isNew;
 
 - (IBAction)activationChanged: (id)sender;
 
 - (void)setHeaderHeight: (int)aHeaderHeight;
 - (void)setDetails: (NSDictionary *)details;
-- (void)setIsNew: (BOOL)flag;
 - (void)showActivator: (BOOL)flag markActive: (BOOL)active;
 - (void)showBalance: (BOOL)flag;
 

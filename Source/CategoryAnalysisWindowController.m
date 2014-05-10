@@ -1497,7 +1497,7 @@ int double_compare(const void *value1, const void *value2)
  */
 - (void)computeTrendParameters
 {
-    if (rawCount == 0) {
+    if (rawCount < 2) {
         β1 = 0;
         β0 = 0;
 

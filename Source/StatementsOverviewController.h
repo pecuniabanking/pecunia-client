@@ -60,6 +60,7 @@
 - (BOOL)validateMenuItem: (NSMenuItem *)item;
 - (void)deleteSelectedStatements;
 - (void)splitSelectedStatement;
+- (void)markSelectedStatementsUnread;
 - (BOOL)toggleDetailsPane;
 - (void)clearStatementFilter;
 

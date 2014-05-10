@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -42,6 +42,27 @@ extern NSString *StatementRemoteBankCodeKey;
 extern NSString *StatementRemoteIBANKey;
 extern NSString *StatementRemoteBICKey;
 extern NSString *StatementTypeKey;
+
+@interface StatementsListView ()
+{
+    id observedObject;
+
+    NSDateFormatter *dateFormatter;
+    NSIndexSet      *draggedIndexes;
+
+    BOOL showAssignedIndicators;
+    id   owner;
+    BOOL autoResetNew;
+    BOOL pendingReload;  // Set when a notification arrived to completely reload the listview.
+    BOOL pendingRefresh; // Set when there was already a notification to refresh visible cells (for property changes).
+    BOOL activating;     // Set when a cells are activated programmatically (so we don't send notifications around).
+
+    // These are cached user settings.
+    BOOL showHeaders;
+    BOOL autoCasing;
+}
+
+@end
 
 @implementation StatementsListView
 
@@ -216,7 +237,9 @@ extern void *UserDefaultsBindingContext;
 
 - (BOOL)showsHeaderForRow: (NSUInteger)row
 {
-    if (!showHeaders || !canShowHeaders) {
+    // The given row can be out of bounds as we asynchronously reload the list on datasource changes
+    // and there can be relayout events before the actual reload kicks in.
+    if (!showHeaders || !canShowHeaders || row >= dataSource.count) {
         return false;
     }
 
@@ -297,7 +320,7 @@ extern void *UserDefaultsBindingContext;
                               StatementIndexKey: @((int)row)};
 
     [cell setDetails: details];
-    [cell setIsNew: [assignment.statement.isNew boolValue]];
+    cell.isNew = [assignment.statement.isNew boolValue];
 
     if (self.showAssignedIndicators) {
         bool activate = assignment.category != nil && assignment.category != Category.nassRoot;
@@ -366,7 +389,7 @@ extern void *UserDefaultsBindingContext;
         NSUInteger index = [selection firstIndex];
         while (index != NSNotFound) {
             StatementsListViewCell *cell = (id)[self cellForRowAtIndex : index];
-            [cell setIsNew: NO];
+            cell.isNew = NO;
             index = [selection indexGreaterThanIndex: index];
         }
     }
@@ -462,13 +485,6 @@ extern NSString *const BankStatementDataType;
     [dragPasteboard setData: data forType: BankStatementDataType];
 
     return YES;
-}
-
-// TODO: doesn't seem to have any effect, remove?
-- (NSDragOperation)listView: (PXListView *)aListView validateDrop: (id <NSDraggingInfo>)info proposedRow: (NSUInteger)row
-      proposedDropHighlight: (PXListViewDropHighlight)dropHighlight;
-{
-    return NSDragOperationCopy;
 }
 
 - (void)cellActivationChanged: (BOOL)state forIndex: (NSUInteger)index
