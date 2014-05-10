@@ -117,7 +117,7 @@
 									 (compressionLevel != ZipCompressionLevelNone) ? Z_DEFLATED : 0,
 									 compressionLevel, 0,
 									 -MAX_WBITS, DEF_MEM_LEVEL, Z_DEFAULT_STRATEGY,
-									 NULL, 0, 1);
+									 NULL, 0, 0);
 	if (err != ZIP_OK) {
 		NSString *reason= [NSString stringWithFormat:@"Error opening '%@' in zipfile", fileNameInZip];
 		@throw [[[ZipException alloc] initWithError:err reason:reason] autorelease];
@@ -153,7 +153,7 @@
 									 (compressionLevel != ZipCompressionLevelNone) ? Z_DEFLATED : 0,
 									 compressionLevel, 0,
 									 -MAX_WBITS, DEF_MEM_LEVEL, Z_DEFAULT_STRATEGY,
-									 NULL, 0, 1);
+									 NULL, 0, 0);
 	if (err != ZIP_OK) {
 		NSString *reason= [NSString stringWithFormat:@"Error opening '%@' in zipfile", fileNameInZip];
 		@throw [[[ZipException alloc] initWithError:err reason:reason] autorelease];
@@ -189,7 +189,7 @@
 									 (compressionLevel != ZipCompressionLevelNone) ? Z_DEFLATED : 0,
 									 compressionLevel, 0,
 									 -MAX_WBITS, DEF_MEM_LEVEL, Z_DEFAULT_STRATEGY,
-									 [password cStringUsingEncoding:NSUTF8StringEncoding], crc32, 1);
+									 [password cStringUsingEncoding:NSUTF8StringEncoding], crc32, 0);
 	if (err != ZIP_OK) {
 		NSString *reason= [NSString stringWithFormat:@"Error opening '%@' in zipfile", fileNameInZip];
 		@throw [[[ZipException alloc] initWithError:err reason:reason] autorelease];
