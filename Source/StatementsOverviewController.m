@@ -404,35 +404,24 @@ extern void *UserDefaultsBindingContext;
             BankAccount *account = statement.account;
             [affectedAccounts addObject: account]; // Automatically ignores duplicates.
 
+            [context deleteObject: assignment];
             [context deleteObject: statement];
 
-            // Rebuild balances - only for manual accounts.
+            // Remove deleted amount from the acount's balance, so we can recompute the intermittant values at the end.
             if (isManualAccount) {
-                NSPredicate *balancePredicate = [NSPredicate predicateWithFormat: @"(account = %@) AND (date > %@)", account, statement.date];
-                request.predicate = balancePredicate;
-                NSArray *remainingStatements = [context executeFetchRequest: request error: &error];
-                if (error != nil) {
-                    NSAlert *alert = [NSAlert alertWithError: error];
-                    [alert runModal];
-                    return;
-                }
-
-                for (BankStatement *remainingStatement in remainingStatements) {
-                    remainingStatement.saldo = [remainingStatement.saldo decimalNumberBySubtracting: statement.value];
-                }
                 account.balance = [account.balance decimalNumberBySubtracting: statement.value];
             }
         }
     }
     
+    for (BankAccount *account in affectedAccounts) {
+        [account invalidateCacheIncludeParents: YES recursive: NO];
+    }
     
-
     [context processPendingChanges];
     for (BankAccount *account in affectedAccounts) {
         [account updateAssignmentsForReportRange];
-        if (![account.isManual boolValue]) {
-            [account updateStatementBalances];
-        }
+        [account updateStatementBalances];
     }
     [[Category bankRoot] updateCategorySums];
     [categoryAssignments prepareContent];
@@ -514,6 +503,11 @@ extern void *UserDefaultsBindingContext;
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
     [originalAmountField setNeedsDisplay];
+}
+
+- (void)reload
+{
+    [statementsListView reloadData];
 }
 
 #pragma mark - Splitview delegate methods

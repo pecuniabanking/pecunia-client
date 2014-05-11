@@ -195,9 +195,11 @@ extern void *UserDefaultsBindingContext;
     }
 
     if (!pendingReload && !pendingRefresh) {
-        pendingRefresh = NO;
+        pendingRefresh = YES;
         [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
     }
+
+    //[super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 #pragma mark -

@@ -34,6 +34,8 @@
 		270CA2F51900359E00DCF0DB /* font-increase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 270CA2EE1900359E00DCF0DB /* font-increase@2x.png */; };
 		270CA2F61900359E00DCF0DB /* font-increase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 270CA2EE1900359E00DCF0DB /* font-increase@2x.png */; };
 		270DC2E51680D3000053D530 /* new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 270DC2E41680D3000053D530 /* new@2x.png */; };
+		2711AA6B191FB2FB0042A604 /* Mathematics.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711AA6A191FB2FB0042A604 /* Mathematics.m */; };
+		2711AA6C191FB2FB0042A604 /* Mathematics.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711AA6A191FB2FB0042A604 /* Mathematics.m */; };
 		27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
 		2716FE4D152381A60015A753 /* SynchronousScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2716FE4C152381A60015A753 /* SynchronousScrollView.m */; };
 		2719CD84160F5B45004B37C0 /* donate2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2719CD83160F5B45004B37C0 /* donate2.jpg */; };
@@ -949,6 +951,8 @@
 		270CA2ED1900359E00DCF0DB /* font-increase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "font-increase.png"; sourceTree = "<group>"; };
 		270CA2EE1900359E00DCF0DB /* font-increase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "font-increase@2x.png"; sourceTree = "<group>"; };
 		270DC2E41680D3000053D530 /* new@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new@2x.png"; sourceTree = "<group>"; };
+		2711AA69191FB2FB0042A604 /* Mathematics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mathematics.h; sourceTree = "<group>"; wrapsLines = 0; };
+		2711AA6A191FB2FB0042A604 /* Mathematics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mathematics.m; sourceTree = "<group>"; wrapsLines = 0; };
 		27150D9E140ABDAC000841E2 /* RoundedSidebar.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RoundedSidebar.h; sourceTree = "<group>"; tabWidth = 4; };
 		27150D9F140ABDAC000841E2 /* RoundedSidebar.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedSidebar.m; sourceTree = "<group>"; tabWidth = 4; };
 		2716FE4B152381A60015A753 /* SynchronousScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynchronousScrollView.h; sourceTree = "<group>"; };
@@ -2704,6 +2708,8 @@
 				27C5B15C18B0C59B004BB3C3 /* PecuniaExceptionDelegate.m */,
 				2769AC4318B1008200F9D1D4 /* PecuniaApplication.h */,
 				2769AC4418B1008200F9D1D4 /* PecuniaApplication.m */,
+				2711AA69191FB2FB0042A604 /* Mathematics.h */,
+				2711AA6A191FB2FB0042A604 /* Mathematics.m */,
 			);
 			name = Basic;
 			sourceTree = "<group>";
@@ -3379,6 +3385,7 @@
 				277788D7173CE22700430EBC /* PecuniaPlotTimeFormatter.m in Sources */,
 				277788D8173CE22700430EBC /* AnimationHelper.m in Sources */,
 				277788D9173CE22700430EBC /* NS(Attributed)String+Geometrics.m in Sources */,
+				2711AA6C191FB2FB0042A604 /* Mathematics.m in Sources */,
 				27F69B7518BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69B186ADEC100809CF2 /* EDSideBar.m in Sources */,
 				277788DA173CE22700430EBC /* LaunchParameters.m in Sources */,
@@ -3592,6 +3599,7 @@
 				27C7B506147FC50300278131 /* PecuniaPlotTimeFormatter.m in Sources */,
 				2792CB3414840506006A510A /* AnimationHelper.m in Sources */,
 				27CC73F614A0D1770082495C /* NS(Attributed)String+Geometrics.m in Sources */,
+				2711AA6B191FB2FB0042A604 /* Mathematics.m in Sources */,
 				27F69B7418BA3EFB002CBE06 /* unzip.c in Sources */,
 				2732F69A186ADEC100809CF2 /* EDSideBar.m in Sources */,
 				B17FE3C314C9F17400F6FAFE /* LaunchParameters.m in Sources */,

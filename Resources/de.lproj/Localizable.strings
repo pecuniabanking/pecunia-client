@@ -363,8 +363,8 @@ AP705 = "Gradientfarbe 2 (Diagram Anzahl Umsätze)";
 AP706 = "Gradientfarbe 1 (Auswahlminidiagramm)";
 AP707 = "Gradientfarbe 2 (Auswahlminidiagramm)";
 AP708 = "Auswahlband (Auswahlminidiagramm)";
-AP709 = "Durchschnittslinie (Konten)";
-AP710 = "Durchschnittslinie (Kategorien)";
+AP709 = "Trendlinie (Konten)";
+AP710 = "Trendlinie (Kategorien)";
 
 AP720 = "Positiver Betrag";
 AP721 = "Negativer Betrag";

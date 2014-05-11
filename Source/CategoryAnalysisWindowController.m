@@ -31,6 +31,7 @@
 #import "AnimationHelper.h"
 
 #import "BWGradientBox.h"
+#import "Mathematics.h"
 
 static NSString *const PecuniaGraphLayoutChangeNotification = @"PecuniaGraphLayoutChange";
 static NSString *const PecuniaGraphMouseExitedNotification = @"PecuniaGraphMouseExited";
@@ -542,7 +543,7 @@ extern void *UserDefaultsBindingContext;
     // Border style.
     CPTMutableLineStyle *frameStyle = [CPTMutableLineStyle lineStyle];
     frameStyle.lineWidth = 1;
-    frameStyle.lineColor = [[CPTColor colorWithGenericGray: 0] colorWithAlphaComponent: 0.5];
+    frameStyle.lineColor = [CPTColor colorWithComponentRed: 0.582 green: 0.572 blue: 0.544 alpha: 1.000];
 
     // Graph padding
     mainGraph.paddingLeft = 0;
@@ -553,15 +554,18 @@ extern void *UserDefaultsBindingContext;
 
     CPTPlotAreaFrame *frame = mainGraph.plotAreaFrame;
     frame.paddingLeft = 90;
-    frame.paddingRight = 50;
+    frame.paddingRight = 30;
     frame.paddingTop = 30;
     frame.paddingBottom = 30;
 
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
+    frame.fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1]];
 
-    CPTFill *fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1]];
-    frame.fill = fill;
+    mainGraph.shadowColor = CGColorCreateGenericGray(0, 1);
+    mainGraph.shadowRadius = 2.0;
+    mainGraph.shadowOffset = CGSizeMake(1, -1);
+    mainGraph.shadowOpacity = 0.15;
 
     [self setupMainAxes];
 
@@ -644,9 +648,6 @@ extern void *UserDefaultsBindingContext;
 - (void)setupTurnoversGraph
 {
     turnoversGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame : NSRectToCGRect(turnoversHostView.bounds)];
-    CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
-    [turnoversGraph applyTheme: theme];
-    //turnoversGraph.zPosition = -100;
     turnoversHostView.hostedGraph = turnoversGraph;
 
     // Setup scatter plot space
@@ -657,23 +658,29 @@ extern void *UserDefaultsBindingContext;
     // Frame setup (background, border).
     CPTMutableLineStyle *frameStyle = [CPTMutableLineStyle lineStyle];
     frameStyle.lineWidth = 1;
-    frameStyle.lineColor = [[CPTColor colorWithGenericGray: 0] colorWithAlphaComponent: 0.5];
+    frameStyle.lineColor = [CPTColor colorWithComponentRed: 0.582 green: 0.572 blue: 0.544 alpha: 1];
 
     // Graph properties.
-    turnoversGraph.fill = nil;
     turnoversGraph.paddingLeft = 0;
     turnoversGraph.paddingTop = 0;
     turnoversGraph.paddingRight = 0;
     turnoversGraph.paddingBottom = 0;
+    turnoversGraph.fill = nil;
 
     CPTPlotAreaFrame *frame = turnoversGraph.plotAreaFrame;
     frame.paddingLeft = 90;
-    frame.paddingRight = 50;
+    frame.paddingRight = 30;
     frame.paddingTop = 15;
     frame.paddingBottom = 15;
 
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
+    frame.fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1]];
+
+    turnoversGraph.shadowColor = CGColorCreateGenericGray(0, 1);
+    turnoversGraph.shadowRadius = 2.0;
+    turnoversGraph.shadowOffset = CGSizeMake(1, -1);
+    turnoversGraph.shadowOpacity = 0.15;
 
     [self setupTurnoversAxes];
 
@@ -791,7 +798,7 @@ extern void *UserDefaultsBindingContext;
 
 - (CPTScatterPlot *)createScatterPlotWithFill: (CPTFill *)fill withDataSource: (BOOL)flag
 {
-    CPTScatterPlot *linePlot = [[CPTScatterPlot alloc] init];
+    CPTScatterPlot *linePlot = [CPTScatterPlot new];
     linePlot.alignsPointsToPixels = YES;
 
     linePlot.dataLineStyle = nil;
@@ -839,7 +846,7 @@ extern void *UserDefaultsBindingContext;
 {
     [mainGraph removePlotWithIdentifier: @"positivePlot"];
     [mainGraph removePlotWithIdentifier: @"negativePlot"];
-    [mainGraph removePlotWithIdentifier: @"averagePlot"];
+    [mainGraph removePlotWithIdentifier: @"mainRegressionPlot"];
 
     // The main graph contains two plots, one for the positive values (with a gray fill)
     // and the other one for negative values (with a red fill).
@@ -895,38 +902,29 @@ extern void *UserDefaultsBindingContext;
 
         [mainGraph addPlot: plot];
 
-        // Moving average plot.
-        CPTScatterPlot *averagePlot = [self createScatterPlotWithFill: nil withDataSource: NO];
-        averagePlot.interpolation = CPTScatterPlotInterpolationLinear;
-        averagePlot.identifier = @"averagePlot";
+        // Regression plot.
+        CPTScatterPlot *mainRegressionPlot = [self createScatterPlotWithFill: nil withDataSource: NO];
+        mainRegressionPlot.interpolation = CPTScatterPlotInterpolationLinear;
+        mainRegressionPlot.identifier = @"mainRegressionPlot";
+        mainRegressionPlot.alignsPointsToPixels = NO;
 
-        CPTMutableLineStyle *lineStyle = [[CPTMutableLineStyle alloc] init];
+        CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle new];
         CGColorRef          lineColor;
         if (selectedCategory.isBankAccount) {
-            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Bank Account Average Line"]);
+            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Bank Account Trend Line"]);
         } else {
-            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Category Average Line"]);
+            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Category Trend Line"]);
         }
         lineStyle.lineColor = [CPTColor colorWithCGColor: lineColor];
         CGColorRelease(lineColor);
 
-        lineStyle.lineWidth = 2;
-        lineStyle.dashPattern = @[@8.0f, @2.5f];
-        averagePlot.dataLineStyle = lineStyle;
+        lineStyle.lineWidth = 3;
+        lineStyle.lineCap = kCGLineCapRound;
+        lineStyle.dashPattern = @[@8.0f, @4.5f];
 
-        // Line "border".
-        CPTMutableShadow *shadow = [CPTMutableShadow shadow];
-        if (selectedCategory.isBankAccount) {
-            shadow.shadowColor = [CPTColor colorWithComponentRed: 0 green: 0 blue: 0 alpha: 0.75];
-            shadow.shadowBlurRadius = 2.0;
-        } else {
-            shadow.shadowColor = [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1];
-            shadow.shadowBlurRadius = 5.0;
-        }
-        shadow.shadowOffset = CGSizeMake(0, 0);
-        averagePlot.shadow = shadow;
+        mainRegressionPlot.dataLineStyle = lineStyle;
 
-        [mainGraph addPlot: averagePlot];
+        [mainGraph addPlot: mainRegressionPlot];
     }
 
     [self updateMainGraph];
@@ -1140,17 +1138,11 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-static CGFloat β0;
-static CGFloat β1;
+static CGFloat factors[3];
 
-static CGFloat α0;
-static CGFloat α1;
-static CGFloat α2;
-
-double trend(double x)
+double mainTrend(double x)
 {
-    //return β0 + β1 * x;               // Linear trend function.
-    return α0 + x * α1 + x * x * α2; // Square trend function.
+    return factors[0] + x * factors[1] + x * x * factors[2]; // Square trend function.
 }
 
 /**
@@ -1158,10 +1150,10 @@ double trend(double x)
  */
 - (void)updateVerticalMainGraphRange
 {
-    CPTScatterPlot        *averagePlot = (CPTScatterPlot *)[mainGraph plotWithIdentifier: @"averagePlot"];
-    CPTFunctionDataSource *plotDataSource = [CPTFunctionDataSource dataSourceForPlot: averagePlot
-                                                                        withFunction: trend];
-    plotDataSource.resolution = 1;
+    CPTScatterPlot        *mainRegressionPlot = (CPTScatterPlot *)[mainGraph plotWithIdentifier: @"mainRegressionPlot"];
+    CPTFunctionDataSource *plotDataSource = [CPTFunctionDataSource dataSourceForPlot: mainRegressionPlot
+                                                                        withFunction: mainTrend];
+    plotDataSource.resolution = 10;
     
     CPTXYPlotSpace *plotSpace = (id)mainGraph.defaultPlotSpace;
 
@@ -1390,21 +1382,7 @@ double trend(double x)
     y.visibleRange = plotRange;
 }
 
-#pragma mark -
-#pragma mark Statistics
-
-int double_compare(const void *value1, const void *value2)
-{
-    double v1 = *(double *)value1;
-    double v2 = *(double *)value2;
-    if (v1 < v2) {
-        return -1;
-    }
-    if (v1 > v2) {
-        return 1;
-    }
-    return 0;
-}
+#pragma mark - Statistics
 
 - (void)computeTotalStatistics
 {
@@ -1413,19 +1391,8 @@ int double_compare(const void *value1, const void *value2)
     double maxTurnovers = 0;
     double sum = 0;
     double squareSum = 0;
-    double median = 0;
 
     if (rawCount > 0) {
-        double *sortedBalances = malloc(rawCount * sizeof(double));
-        memcpy(sortedBalances, totalBalances, rawCount * sizeof(double));
-        qsort(sortedBalances, rawCount, sizeof(double), double_compare);
-        if ((rawCount & 1) != 0) { // Odd/even handling is slightly different.
-            median = sortedBalances[rawCount / 2];
-        } else {
-            median = (sortedBalances[rawCount / 2] + sortedBalances[rawCount / 2 - 1]) / 2.0;
-        }
-        free(sortedBalances);
-
         // Compute some base values using the accelerate framework.
         CGFloat mean;
         vDSP_meanvD(totalBalances, 1, &mean, rawCount);
@@ -1433,12 +1400,12 @@ int double_compare(const void *value1, const void *value2)
         vDSP_minvD(totalBalances, 1, &min, rawCount);
         vDSP_maxvD(totalBalances, 1, &max, rawCount);
         vDSP_maxvD(balanceCounts, 1, &maxTurnovers, rawCount);
+        vDSP_sveD(totalBalances, 1, &sum, rawCount);
         vDSP_svesqD(totalBalances, 1, &squareSum, rawCount);
 
         statistics[@"totalMinValue"] = @(min);
         statistics[@"totalMaxValue"] = @(max);
         statistics[@"totalMeanValue"] = @(mean);
-        statistics[@"totalMedian"] = @(median);
 
         if (!selectedCategory.isBankAccount) {
             statistics[@"totalSum"] = @(sum);
@@ -1463,8 +1430,6 @@ int double_compare(const void *value1, const void *value2)
         [statistics removeObjectForKey: @"totalStandardDeviation"];
     }
 
-    [self computeTrendParameters];
-
     // Compute some special values for the graphs which directly depend on global stats.
     // Make sure we always show the base line in a graph.
     if (min > 0) {
@@ -1488,135 +1453,15 @@ int double_compare(const void *value1, const void *value2)
     roundedMaxTurnovers = [[NSDecimalNumber decimalNumberWithDecimal: decimalTurnoversValue] roundToUpperOuter];
 }
 
-#define N 3
-#define LDA N
-#define LDB N
-
-/**
- * (Re)computes the factors needed for the trend() function.
- */
-- (void)computeTrendParameters
-{
-    if (rawCount < 2) {
-        β1 = 0;
-        β0 = 0;
-
-        α0 = 0;
-        α1 = 0;
-        α2 = 0;
-
-        return;
-    }
-
-    // For our trendline compute the regression factors so we can use them easily in the function datasource.
-    // We use the method of the least squares for that.
-
-    // 1) Linear case.
-    CGFloat xMean;
-    vDSP_meanvD(timePoints, 1, &xMean, rawCount);
-
-    CGFloat yMean;
-    vDSP_meanvD(totalBalances, 1, &yMean, rawCount);
-
-    CGFloat xResidualSum = 0;
-    CGFloat yResidualSum = 0;
-    for (NSUInteger i = 0; i < rawCount; ++i) {
-        CGFloat xResiduum = timePoints[i] - xMean;
-        CGFloat yResiduum = totalBalances[i] - yMean;
-
-        xResidualSum += xResiduum * xResiduum;
-        yResidualSum += xResiduum * yResiduum;
-    }
-
-    // Regression factors are static as we need them for the function datasource.
-    β1 = yResidualSum / xResidualSum;
-    β0 = yMean - β1 * xMean;
-
-    // 2) Polynomal variant (quadratic regression function).
-    //    Solve the equation system to find the minimum residual sum.
-    //    | n   ∑x  ∑x² |   | α0 |   | ∑y   |
-    //    | ∑x  ∑x² ∑x³ | * | α1 | = | ∑xy  |
-    //    | ∑x² ∑x³ ∑x⁴ |   | α2 |   | ∑x²y |
-    //
-    // where n is the number of datapoints, x are the time points, y balance values.
-
-    // We can compute all the sums in one single loop so no need to detour to Accelerate.framework
-    // (we don't get ∑x³, ∑x⁴ etc. from there anyway).
-    __CLPK_real xSum = 0;
-    __CLPK_real x2Sum = 0;
-    __CLPK_real x3Sum = 0;
-    __CLPK_real x4Sum = 0;
-    __CLPK_real ySum = 0;
-    __CLPK_real xySum = 0;
-    __CLPK_real x2ySum = 0;
-    for (NSUInteger i = 0; i < rawCount; ++i) {
-        __CLPK_real x = timePoints[i];
-        __CLPK_real x2 = x * x;
-        __CLPK_real y = totalBalances[i];
-        xSum += x;
-        x2Sum += x2;
-        x3Sum += x * x2;
-        x4Sum += x2 * x2;
-        ySum += y;
-        xySum += x * y;
-        x2ySum += x2 * y;
-    }
-
-    __CLPK_integer n = N, nrhs = 1, lda = LDA, ldb = LDB, info;
-    __CLPK_integer ipiv[N];
-
-    // Matrix is stored in column-primary order.
-    __CLPK_real a[LDA * N] = {
-        rawCount, xSum, x2Sum,
-        xSum, x2Sum, x3Sum,
-        x2Sum, x3Sum, x4Sum,
-    };
-
-    __CLPK_real b[LDB] = {
-        ySum, xySum, x2ySum,
-    };
-
-    // Solve a * x = b. Result is stored in b.
-    sgesv_(&n, &nrhs, a, &lda, ipiv, b, &ldb, &info);
-
-    if (info == 0) {
-        α0 = b[0];
-        α1 = b[1];
-        α2 = b[2];
-    }
-
-    //print_matrix(N, 1, b);
-}
-
-void print_matrix(size_t rows, size_t columns, __CLPK_real *mat) {
-    for(size_t r = 0; r < rows; ++r) {
-        for(size_t c = 0; c < columns; ++c) {
-            printf("%6.2f ", mat[r * columns + c]);
-        }
-        printf("\n");
-    }
-}
-
 - (void)computeLocalStatisticsFrom: (NSUInteger)fromIndex to: (NSUInteger)toIndex
 {
     double min = 1e100;
     double max = -1e100;
     double sum = 0;
     double squareSum = 0;
-    double median = 0;
 
     NSUInteger count = toIndex - fromIndex + 1;
     if (toIndex > fromIndex) {
-        double *sortedBalances = malloc(count * sizeof(double));
-        memcpy(sortedBalances, &totalBalances[fromIndex], count * sizeof(double));
-        qsort(sortedBalances, count, sizeof(double), double_compare);
-        if ((count & 1) != 0) { // Odd/even handling is slightly different.
-            median = sortedBalances[count / 2];
-        } else {
-            median = (sortedBalances[count / 2] + sortedBalances[count / 2 - 1]) / 2.0;
-        }
-        free(sortedBalances);
-
         for (NSUInteger i = fromIndex; i <= toIndex; i++) {
             if (totalBalances[i] > max) {
                 max = totalBalances[i];
@@ -1630,7 +1475,6 @@ void print_matrix(size_t rows, size_t columns, __CLPK_real *mat) {
         statistics[@"localMinValue"] = @(min);
         statistics[@"localMaxValue"] = @(max);
         statistics[@"localMeanValue"] = @(sum / count);
-        statistics[@"localMedian"] = @(median);
 
         if (!selectedCategory.isBankAccount) {
             statistics[@"localSum"] = @(sum);
@@ -1641,7 +1485,6 @@ void print_matrix(size_t rows, size_t columns, __CLPK_real *mat) {
         [statistics removeObjectForKey: @"localMinValue"];
         [statistics removeObjectForKey: @"localMaxValue"];
         [statistics removeObjectForKey: @"localMeanValue"];
-        [statistics removeObjectForKey: @"localMedian"];
         [statistics removeObjectForKey: @"localSum"];
     }
 
@@ -1736,9 +1579,9 @@ void print_matrix(size_t rows, size_t columns, __CLPK_real *mat) {
         infoLayer.spacing = 5;
 
         infoLayer.shadowColor = CGColorCreateGenericGray(0, 1);
-        infoLayer.shadowRadius = 5.0;
+        infoLayer.shadowRadius = 3.0;
         infoLayer.shadowOffset = CGSizeMake(2, -2);
-        infoLayer.shadowOpacity = 0.75;
+        infoLayer.shadowOpacity = 0.25;
 
         CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle lineStyle];
         lineStyle.lineWidth = 2;
@@ -2161,8 +2004,8 @@ void print_matrix(size_t rows, size_t columns, __CLPK_real *mat) {
 
 #pragma mark - Plot Data Source Methods
 
-// Only for plots that have the controller set as datasource. E.g. the average plot uses a function datasource
-// and hence does not trigger the datasource methods below.
+// Only for plots that have the controller set as datasource. E.g. the regression plots use function datasources
+// and hence do not trigger the datasource methods below.
 
 - (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot
 {
@@ -2315,7 +2158,7 @@ void print_matrix(size_t rows, size_t columns, __CLPK_real *mat) {
             // Convert the data to the internal representations.
             // We add one to the total number as we need it (mostly) in scatter plots to
             // make it appear, due to the way coreplot works. Otherwise it is just cut off by the plot area.
-            rawCount = [dates count] + (extraEntry ? 1 : 0);
+            rawCount = dates.count + (extraEntry ? 1 : 0);
 
             // Convert the dates to distance units from a reference date.
             timePoints = malloc(rawCount * sizeof(double));
@@ -2329,6 +2172,7 @@ void print_matrix(size_t rows, size_t columns, __CLPK_real *mat) {
             }
 
             // Convert all NSDecimalNumbers to double for better performance.
+            // For display only we don't need the full precision.
             totalBalances = malloc(rawCount * sizeof(double));
             positiveBalances = malloc(rawCount * sizeof(double));
             negativeBalances = malloc(rawCount * sizeof(double));
@@ -2346,14 +2190,16 @@ void print_matrix(size_t rows, size_t columns, __CLPK_real *mat) {
                 }
                 index++;
             }
+
             // Now the turnovers.
             balanceCounts = malloc(rawCount * sizeof(double));
             index = 0;
             for (NSDecimalNumber *value in turnovers) {
                 balanceCounts[index++] = [value doubleValue];
             }
-            // The value in the extra field duplicates the value of the second last field
-            // to aid in computation of the moving average.
+
+            // The value in the extra field just duplicates the value of the second last field
+            // to correctly draw our stepped scatter plots.
             if (extraEntry) {
                 totalBalances[index] = totalBalances[index - 1];
                 positiveBalances[index] = positiveBalances[index - 1];
@@ -2361,6 +2207,12 @@ void print_matrix(size_t rows, size_t columns, __CLPK_real *mat) {
                 balanceCounts[index] = balanceCounts[index - 1];
             }
 
+            // Regression function parameters.
+            [Mathematics computeSquareFunctionParametersX: timePoints
+                                                        y: totalBalances
+                                                    count: dates.count
+                                                   result: factors];
+            
             // Sample data for the selection plot. Use only as many values as needed to fill the window.
             CPTPlotAreaFrame *frame = selectionGraph.plotAreaFrame;
             selectionSampleCount = frame.bounds.size.width - frame.paddingLeft - frame.paddingRight;
@@ -2487,19 +2339,20 @@ void print_matrix(size_t rows, size_t columns, __CLPK_real *mat) {
             barPlot.fill = negativeGradientFill;
         }
 
-        CPTScatterPlot      *scatterPlot = (CPTScatterPlot *)[mainGraph plotWithIdentifier: @"averagePlot"];
+        CPTScatterPlot      *scatterPlot = (CPTScatterPlot *)[mainGraph plotWithIdentifier: @"mainRegressionPlot"];
         CPTMutableLineStyle *lineStyle = [[CPTMutableLineStyle alloc] init];
         CGColorRef          lineColor;
         if (selectedCategory.isBankAccount) {
-            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Bank Account Average Line"]);
+            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Bank Account Trend Line"]);
         } else {
-            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Category Average Line"]);
+            lineColor = CGColorCreateFromNSColor([NSColor applicationColorForKey: @"Category Trend Line"]);
         }
         lineStyle.lineColor = [CPTColor colorWithCGColor: lineColor];
         CGColorRelease(lineColor);
 
-        lineStyle.lineWidth = 2;
-        lineStyle.dashPattern = @[@8.0f, @2.5f];
+        lineStyle.lineWidth = 3;
+        lineStyle.lineCap = kCGLineCapRound;
+        lineStyle.dashPattern = @[@8.0f, @4.5f];
 
         scatterPlot.dataLineStyle = lineStyle;
 

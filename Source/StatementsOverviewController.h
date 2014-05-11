@@ -63,6 +63,7 @@
 - (void)markSelectedStatementsUnread;
 - (BOOL)toggleDetailsPane;
 - (void)clearStatementFilter;
+- (void)reload;
 
 // PecuniaSectionItem protocol
 @property (nonatomic, weak) Category *selectedCategory;

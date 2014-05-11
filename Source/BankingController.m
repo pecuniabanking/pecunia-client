@@ -1183,6 +1183,8 @@ static BankingController *bankinControllerInstance;
     [account doMaintenance];
     [self save];
 
+    [overviewController reload];
+
     LogLeave;
 }
 
@@ -1199,7 +1201,9 @@ static BankingController *bankinControllerInstance;
     
     [account updateStatementBalances];
     [self save];
-    
+
+    [overviewController reload];
+
     LogLeave;
 }
 

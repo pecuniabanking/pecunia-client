@@ -778,9 +778,15 @@ Unterstütze die Entwicklung!</string>
                                     <items>
                                         <menuItem title="Erlaubte Geschäftsvorfälle" toolTip="Ermittelt die erlaubten Geschäftsvorfälle auf Basis der Bankparameter neu" id="sFY-Pc-jzH">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="updateSupportedTransactions:" target="235" id="dIc-ud-hCD"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Zwischensalden" toolTip="Ermittelt die Zwischensalden der Umsätze neu" id="5O8-g3-wxd">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="updateStatementBalances:" target="235" id="u2N-hA-2Mf"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Umsätze" toolTip="Alle Überweisungen des ausgewählten Kontos werden überprüft und Fehler, wo möglich, beseitigt" id="5506">
                                             <modifierMask key="keyEquivalentModifierMask"/>

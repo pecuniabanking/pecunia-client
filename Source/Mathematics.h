@@ -17,6 +17,16 @@
  * 02110-1301  USA
  */
 
-@interface PecuniaApplication : NSApplication
+@interface Mathematics : NSObject
+
++ (void)computeLinearFunctionParametersX: (double *)xValues
+                                       y: (double *)yValues
+                                   count: (NSUInteger)count
+                                  result: (double *)result;
+
++ (void)computeSquareFunctionParametersX: (double *)xValues
+                                       y: (double *)yValues
+                                   count: (NSUInteger)count
+                                  result: (double *)result;
 
 @end

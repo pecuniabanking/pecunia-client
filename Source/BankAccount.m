@@ -324,8 +324,8 @@
 - (void)updateStatementBalances
 {
     // repair balances
-    NSSortDescriptor    *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
-    NSArray             *sortedStatements = [[self valueForKey: @"statements"] sortedArrayUsingDescriptors: @[sd]];
+    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
+    NSArray          *sortedStatements = [[self valueForKey: @"statements"] sortedArrayUsingDescriptors: @[sd]];
     
     NSDecimalNumber *balance = self.balance;
     for (BankStatement *statement in sortedStatements) {
@@ -340,8 +340,8 @@
 - (void)updateSupportedTransactions
 {
     for (BankUser *user in self.users) {
-        if ([user.userId isEqualToString:self.userId]) {
-            [[HBCIController controller] updateSupportedTransactionsForUser:user];
+        if ([user.userId isEqualToString: self.userId]) {
+            [HBCIController.controller updateSupportedTransactionsForUser: user];
         }
     }
 }
@@ -383,7 +383,7 @@
                 newDate = statement.date;
             } else {
                 if (!doRepair) {
-                    if ([statement.date isEqualToDate:newDate]) {
+                    if ([statement.date isEqualToDate: newDate]) {
                         doRepair = YES;
                     } else {
                         newDate = statement.date;

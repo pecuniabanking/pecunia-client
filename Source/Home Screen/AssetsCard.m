@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -30,6 +30,7 @@
 #import "MOAssistant.h"
 #import "BankingController.h"
 #import "MessageLog.h"
+#import "Mathematics.h"
 
 #import "LocalSettingsController.h"
 
@@ -53,7 +54,6 @@ extern void *UserDefaultsBindingContext;
     double     *positiveBalances;
     double     *negativeBalances;
     double     *totalBalances;
-    double     *movingAverage;
 
     double min;
     double max;
@@ -88,7 +88,7 @@ extern void *UserDefaultsBindingContext;
     if (self) {
         category = aCategory;
         [self setupGraph];
-        [self loadData];
+        [self performSelector: @selector(loadData) withObject: nil afterDelay: 0.3];
     }
 
     LogLeave;
@@ -104,7 +104,6 @@ extern void *UserDefaultsBindingContext;
     free(positiveBalances);
     free(negativeBalances);
     free(totalBalances);
-    free(movingAverage);
 
     LogLeave;
 }
@@ -158,12 +157,19 @@ extern void *UserDefaultsBindingContext;
     LogLeave;
 }
 
+static CGFloat factors[3];
+
+double trend(double x)
+{
+    return factors[0] + x * factors[1] + x * x * factors[2]; // Square trend function.
+}
+
 - (void)setupPlot
 {
     LogEnter;
 
     if (category != nil) {
-        CPTScatterPlot *linePlot = [[CPTScatterPlot alloc] init];
+        CPTScatterPlot *linePlot = [CPTScatterPlot new];
         linePlot.alignsPointsToPixels = YES;
 
         linePlot.dataLineStyle = nil;
@@ -182,7 +188,7 @@ extern void *UserDefaultsBindingContext;
 
         [graph addPlot: linePlot];
 
-        linePlot = [[CPTScatterPlot alloc] init];
+        linePlot = [CPTScatterPlot new];
         linePlot.alignsPointsToPixels = YES;
 
         linePlot.dataLineStyle = nil;
@@ -201,25 +207,22 @@ extern void *UserDefaultsBindingContext;
 
         [graph addPlot: linePlot];
 
-        // Moving average plot.
-        linePlot = [[CPTScatterPlot alloc] init];
-        linePlot.alignsPointsToPixels = YES;
+        // Regression plot.
+        linePlot = [CPTScatterPlot new];
+        linePlot.alignsPointsToPixels = NO;
 
-        linePlot.dataLineStyle = nil;
-        linePlot.interpolation = CPTScatterPlotInterpolationCurved;
+        linePlot.interpolation = CPTScatterPlotInterpolationLinear;
         linePlot.areaFill = nil;
         linePlot.areaBaseValue = CPTDecimalFromInt(0);
-
         linePlot.delegate = self;
-        linePlot.dataSource = self;
+        linePlot.identifier = @"regressionPlot";
 
-        linePlot.identifier = @"averagePlot";
-
-        CPTMutableLineStyle *lineStyle = [[CPTMutableLineStyle alloc] init];
-        lineStyle.lineColor = [CPTColor whiteColor];
+        CPTMutableLineStyle *lineStyle = [CPTMutableLineStyle new];
+        lineStyle.lineColor = CPTColor.whiteColor;
 
         lineStyle.lineWidth = 2;
-        lineStyle.dashPattern = @[@8.0f, @2.5f];
+        lineStyle.lineCap = kCGLineCapRound;
+        lineStyle.dashPattern = @[@8.0f, @4.5f];
         linePlot.dataLineStyle = lineStyle;
 
         CPTMutableShadow *shadow = [CPTMutableShadow shadow];
@@ -370,6 +373,11 @@ extern void *UserDefaultsBindingContext;
 {
     LogEnter;
 
+    CPTScatterPlot        *regressionPlot = (CPTScatterPlot *)[graph plotWithIdentifier: @"regressionPlot"];
+    CPTFunctionDataSource *plotDataSource = [CPTFunctionDataSource dataSourceForPlot: regressionPlot
+                                                                        withFunction: trend];
+    plotDataSource.resolution = 10;
+
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
 
     NSUInteger startIndex = 0;
@@ -484,9 +492,6 @@ extern void *UserDefaultsBindingContext;
     free(totalBalances);
     totalBalances = nil;
 
-    free(movingAverage);
-    movingAverage = nil;
-
     min = 1e100;
     max = -1e100;
 
@@ -526,7 +531,6 @@ extern void *UserDefaultsBindingContext;
             positiveBalances = malloc(count * sizeof(double));
             negativeBalances = malloc(count * sizeof(double));
             totalBalances = malloc(count * sizeof(double));
-            movingAverage = malloc(count * sizeof(double));
 
             index = 0;
             for (NSDecimalNumber *value in rawBalances) {
@@ -566,29 +570,10 @@ extern void *UserDefaultsBindingContext;
             max = 100;
         }
 
-        // Moving average values. Doesn't work so well for grouping with empty ranges (mostly grouping by day).
-        // Consider using techniques to compute intermittent values (e.g. via Poisson distribution).
-        int m = count < 10 ? count / 5 : 10;
-        for (NSUInteger t = 0; t < count; t++) {
-            double average = 0;
-            for (int i = -m; i <= m; i++) {
-                int sourceIndex = t + i;
-                if (sourceIndex < 0) {
-                    sourceIndex = 0;
-                } else {
-                    if (sourceIndex >= (int)count) {
-                        // At the end of the list simply repeat the last value.
-                        // This is really a rough estimate and should be replaced as soon as we have a forecast.
-                        sourceIndex = count - 1;
-                        if (sourceIndex < 0) {
-                            sourceIndex = 0;
-                        }
-                    }
-                }
-                average += totalBalances[sourceIndex];
-            }
-            movingAverage[t] = average / (2 * m + 1);
-        }
+        [Mathematics computeSquareFunctionParametersX: timePoints
+                                                    y: totalBalances
+                                                count: dates.count
+                                               result: factors];
     }
 
     [graph reloadData];
@@ -765,8 +750,6 @@ extern void *UserDefaultsBindingContext;
     } else {
         if ([identifier isEqualToString: @"negativeBalances"]) {
             return &negativeBalances[indexRange.location];
-        } else {
-            return &movingAverage[indexRange.location];
         }
     }
 

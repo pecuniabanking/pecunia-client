@@ -34,7 +34,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </customView>
                 <customView id="219" userLabel="Selection Graph Host" customClass="PecuinaSelectionGraphHost">
-                    <rect key="frame" x="25" y="461" width="436" height="75"/>
+                    <rect key="frame" x="25" y="471" width="436" height="75"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
                 <textField verticalHuggingPriority="750" id="227">
@@ -126,7 +126,7 @@
                     </subviews>
                 </customView>
                 <textField verticalHuggingPriority="750" id="291">
-                    <rect key="frame" x="507" y="86" width="82" height="17"/>
+                    <rect key="frame" x="507" y="72" width="82" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="292">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="293"/>
@@ -145,7 +145,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="299">
-                    <rect key="frame" x="505" y="73" width="84" height="17"/>
+                    <rect key="frame" x="505" y="59" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="300">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="301"/>
@@ -164,7 +164,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="303">
-                    <rect key="frame" x="505" y="47" width="84" height="17"/>
+                    <rect key="frame" x="505" y="33" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="304">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="305"/>
@@ -174,25 +174,6 @@
                     </textFieldCell>
                     <connections>
                         <binding destination="282" name="value" keyPath="selection.totalMeanValue" id="392">
-                            <dictionary key="options">
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                <bool key="NSConditionallySetsEditable" value="NO"/>
-                                <string key="NSNullPlaceholder">n.a.</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" id="309">
-                    <rect key="frame" x="505" y="34" width="84" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="310">
-                        <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="311"/>
-                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
-                        <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="282" name="value" keyPath="selection.totalMedian" id="390">
                             <dictionary key="options">
                                 <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                 <bool key="NSConditionallySetsEditable" value="NO"/>
@@ -221,7 +202,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="317">
-                    <rect key="frame" x="457" y="86" width="46" height="17"/>
+                    <rect key="frame" x="457" y="72" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="min" usesSingleLineMode="YES" id="318">
                         <font key="font" size="11" name="HelveticaNeue-Italic"/>
@@ -230,7 +211,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="319">
-                    <rect key="frame" x="505" y="60" width="84" height="17"/>
+                    <rect key="frame" x="505" y="46" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="320">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="321"/>
@@ -249,7 +230,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="323">
-                    <rect key="frame" x="457" y="73" width="46" height="17"/>
+                    <rect key="frame" x="457" y="59" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="max" usesSingleLineMode="YES" id="324">
                         <font key="font" size="11" name="HelveticaNeue-Italic"/>
@@ -258,19 +239,10 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="325">
-                    <rect key="frame" x="457" y="47" width="46" height="17"/>
+                    <rect key="frame" x="457" y="33" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∅" usesSingleLineMode="YES" id="326">
                         <font key="font" size="11" name="HelveticaNeue-Italic"/>
-                        <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" id="327">
-                    <rect key="frame" x="457" y="34" width="46" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="m" usesSingleLineMode="YES" id="328">
-                        <font key="font" size="14" name="Baskerville-SemiBoldItalic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -285,7 +257,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="331">
-                    <rect key="frame" x="457" y="60" width="46" height="17"/>
+                    <rect key="frame" x="457" y="46" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∑" usesSingleLineMode="YES" id="332">
                         <font key="font" size="10" name="HelveticaNeue-Italic"/>
@@ -294,7 +266,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="333">
-                    <rect key="frame" x="401" y="97" width="102" height="20"/>
+                    <rect key="frame" x="401" y="83" width="102" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="Statistik" usesSingleLineMode="YES" id="334">
                         <font key="font" size="18" name="HelveticaNeue-BoldItalic"/>
@@ -303,7 +275,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="335">
-                    <rect key="frame" x="517" y="99" width="72" height="19"/>
+                    <rect key="frame" x="517" y="85" width="72" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Total" usesSingleLineMode="YES" id="336">
                         <font key="font" size="13" name="HelveticaNeue-Italic"/>
@@ -312,7 +284,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="337">
-                    <rect key="frame" x="647" y="86" width="84" height="17"/>
+                    <rect key="frame" x="647" y="72" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="367">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="368"/>
@@ -331,7 +303,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="338">
-                    <rect key="frame" x="647" y="73" width="84" height="17"/>
+                    <rect key="frame" x="647" y="59" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="365">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="366"/>
@@ -350,7 +322,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="339">
-                    <rect key="frame" x="647" y="47" width="84" height="17"/>
+                    <rect key="frame" x="647" y="33" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="363">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="364"/>
@@ -360,25 +332,6 @@
                     </textFieldCell>
                     <connections>
                         <binding destination="282" name="value" keyPath="selection.localMeanValue" id="397">
-                            <dictionary key="options">
-                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                <bool key="NSConditionallySetsEditable" value="NO"/>
-                                <string key="NSNullPlaceholder">n.a.</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" id="340">
-                    <rect key="frame" x="647" y="34" width="84" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="361">
-                        <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="362"/>
-                        <font key="font" size="11" name="HelveticaNeue-Italic"/>
-                        <color key="textColor" red="0.27042809309999999" green="0.27042809309999999" blue="0.27042809309999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="282" name="value" keyPath="selection.localMedian" id="398">
                             <dictionary key="options">
                                 <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                 <bool key="NSConditionallySetsEditable" value="NO"/>
@@ -407,7 +360,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="342">
-                    <rect key="frame" x="599" y="86" width="46" height="17"/>
+                    <rect key="frame" x="599" y="72" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="min" usesSingleLineMode="YES" id="358">
                         <font key="font" size="11" name="HelveticaNeue-Italic"/>
@@ -416,7 +369,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="343">
-                    <rect key="frame" x="647" y="60" width="84" height="17"/>
+                    <rect key="frame" x="647" y="46" width="84" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" alignment="right" title="-100,000,00 €" usesSingleLineMode="YES" id="356">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.00 ¤" negativeFormat="#,##0.00 ¤" numberStyle="currency" paddingCharacter="*" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="2" maximumFractionDigits="2" decimalSeparator="," groupingSeparator="." currencyDecimalSeparator="," plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix=" €" negativePrefix="-" negativeSuffix=" €" id="357"/>
@@ -435,7 +388,7 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="344">
-                    <rect key="frame" x="599" y="73" width="46" height="17"/>
+                    <rect key="frame" x="599" y="59" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="max" usesSingleLineMode="YES" id="355">
                         <font key="font" size="11" name="HelveticaNeue-Italic"/>
@@ -444,19 +397,10 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="345">
-                    <rect key="frame" x="599" y="47" width="46" height="17"/>
+                    <rect key="frame" x="599" y="33" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∅" usesSingleLineMode="YES" id="354">
                         <font key="font" size="11" name="HelveticaNeue-Italic"/>
-                        <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" id="346">
-                    <rect key="frame" x="599" y="34" width="46" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="m" usesSingleLineMode="YES" id="353">
-                        <font key="font" size="14" name="Baskerville-SemiBoldItalic"/>
                         <color key="textColor" red="0.6994180485" green="0.6994180485" blue="0.6994180485" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -471,7 +415,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="348">
-                    <rect key="frame" x="599" y="60" width="46" height="17"/>
+                    <rect key="frame" x="599" y="46" width="46" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="∑" usesSingleLineMode="YES" id="351">
                         <font key="font" size="10" name="HelveticaNeue"/>
@@ -480,7 +424,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="349">
-                    <rect key="frame" x="647" y="99" width="84" height="19"/>
+                    <rect key="frame" x="647" y="85" width="84" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Bereich" usesSingleLineMode="YES" id="350">
                         <font key="font" size="13" name="HelveticaNeue-Italic"/>
