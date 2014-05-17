@@ -24,24 +24,8 @@
 #import "ValueTransformers.h"
 #import "PreferenceController.h"
 #import "Category.h"
-
-extern NSString *StatementDateKey;
-extern NSString *StatementTurnoversKey;
-extern NSString *StatementRemoteNameKey;
-extern NSString *StatementPurposeKey;
-extern NSString *StatementCategoriesKey;
-extern NSString *StatementValueKey;
-extern NSString *StatementSaldoKey;
-extern NSString *StatementCurrencyKey;
-extern NSString *StatementTransactionTextKey;
-extern NSString *StatementNoteKey;
-extern NSString *StatementRemoteBankNameKey;
-extern NSString *StatementColorKey;
-extern NSString *StatementRemoteAccountKey;
-extern NSString *StatementRemoteBankCodeKey;
-extern NSString *StatementRemoteIBANKey;
-extern NSString *StatementRemoteBICKey;
-extern NSString *StatementTypeKey;
+#import "StatCatAssignment.h"
+#import "BankStatement.h"
 
 extern NSString *const CategoryColorNotification;
 extern NSString *const CategoryKey;
@@ -67,8 +51,9 @@ extern NSDictionary    *whiteAttributes;
 @synthesize delegate;
 @synthesize hasUnassignedValue;
 @synthesize isNew;
+@synthesize turnovers;
 
-#pragma mark Init/Dealloc
+#pragma mark - Init/Dealloc
 
 - (id)initWithFrame: (NSRect)frame
 {
@@ -91,6 +76,7 @@ extern NSDictionary    *whiteAttributes;
         [defaults addObserver: self forKeyPath: @"markNAStatements" options: 0 context: UserDefaultsBindingContext];
         [defaults addObserver: self forKeyPath: @"markNewStatements" options: 0 context: UserDefaultsBindingContext];
         [defaults addObserver: self forKeyPath: @"showBalances" options: 0 context: UserDefaultsBindingContext];
+        [defaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
     }
     return self;
 }
@@ -103,6 +89,9 @@ extern NSDictionary    *whiteAttributes;
     [defaults removeObserver: self forKeyPath: @"markNAStatements"];
     [defaults removeObserver: self forKeyPath: @"markNewStatements"];
     [defaults removeObserver: self forKeyPath: @"showBalances"];
+    [defaults removeObserver: self forKeyPath: @"autoCasing"];
+
+    [self.representedObject removeObserver: self forKeyPath: @"userInfo"];
 }
 
 - (void)awakeFromNib
@@ -148,7 +137,22 @@ extern NSDictionary    *whiteAttributes;
             return;
         }
 
+        if ([keyPath isEqualToString: @"autoCasing"]) {
+            [self updateLabelsWithCasing: [NSUserDefaults.standardUserDefaults boolForKey: @"autoCasing"]];
+            return;
+        }
+
     }
+
+    if ([keyPath isEqualToString: @"userInfo"]) {
+        StatCatAssignment *assignment = self.representedObject;
+        id value = [self formatValue: assignment.userInfo capitalize: NO];
+        noteLabel.stringValue = value;
+        noteLabel.toolTip = value;
+
+        return;
+    }
+    
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
@@ -166,57 +170,86 @@ extern NSDictionary    *whiteAttributes;
     [self setNeedsDisplay: YES];
 }
 
-static CurrencyValueTransformer *currencyTransformer;
-
-- (void)setDetails: (NSDictionary *)details
+- (void)setRepresentedObject: (id)object
 {
-    [super setDetails: details];
+    [self.representedObject removeObserver: self forKeyPath: @"userInfo"];
 
-    NSDate *date = details[StatementDateKey];
+    [super setRepresentedObject: object];
+    [object addObserver: self forKeyPath: @"userInfo" options: 0 context: nil];
+
+    StatCatAssignment *assignment = object;
+    NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
+
+    [self updateLabelsWithCasing: [defaults boolForKey: @"autoCasing"]];
+
+    NSDate *currentDate = assignment.statement.date;
+    if (currentDate == nil) {
+        currentDate = assignment.statement.valutaDate; // Should not be necessary, but still...
+    }
+
     dateFormatter.dateStyle = kCFDateFormatterFullStyle;
+    if (currentDate == nil) {
+        dateLabel.stringValue = @"";
+    } else {
+        dateLabel.stringValue = [dateFormatter stringFromDate: currentDate];
+    }
 
-    [dateLabel setStringValue: [dateFormatter stringFromDate: date]];
-    [turnoversLabel setStringValue: details[StatementTurnoversKey]];
-
-    [remoteNameLabel setStringValue: details[StatementRemoteNameKey]];
-    [remoteNameLabel setToolTip: details[StatementRemoteNameKey]];
-
-    [purposeLabel setStringValue: details[StatementPurposeKey]];
-    [purposeLabel setToolTip: details[StatementPurposeKey]];
-
-    [noteLabel setStringValue: details[StatementNoteKey]];
-    [noteLabel setToolTip: details[StatementNoteKey]];
-
-    [categoriesLabel setStringValue: details[StatementCategoriesKey]];
-    [categoriesLabel setToolTip: details[StatementCategoriesKey]];
-
-    [valueLabel setObjectValue: details[StatementValueKey]];
-    [saldoLabel setObjectValue: details[StatementSaldoKey]];
-
-    [transactionTypeLabel setObjectValue: details[StatementTransactionTextKey]];
-    [transactionTypeLabel setToolTip: details[StatementTransactionTextKey]];
-
+    static CurrencyValueTransformer *currencyTransformer;
     if (currencyTransformer == nil) {
         currencyTransformer = [[CurrencyValueTransformer alloc] init];
     }
 
-    id       currency = details[StatementCurrencyKey];
-    NSString *symbol = [currencyTransformer transformedValue: currency];
-    [currencyLabel setStringValue: symbol];
-    [[[valueLabel cell] formatter] setCurrencyCode: currency]; // Important for proper display of the value, even without currency.
-    [saldoCurrencyLabel setStringValue: symbol];
-    [[[saldoLabel cell] formatter] setCurrencyCode: currency];
+    id value = [self formatValue: assignment.statement.categoriesDescription capitalize: NO];
+    categoriesLabel.stringValue = value;
+    categoriesLabel.toolTip = value;
 
-    categoryColor = [details valueForKey: StatementColorKey];
+    value = [self formatValue: assignment.userInfo capitalize: NO];
+    noteLabel.stringValue = value;
+    noteLabel.toolTip = value;
+
+    valueLabel.objectValue = [self formatValue: assignment.value capitalize: NO];
+    saldoLabel.objectValue = [self formatValue: assignment.statement.saldo capitalize: NO];
+    
+    value = [self formatValue: assignment.statement.currency capitalize: NO];
+    NSString *symbol = [currencyTransformer transformedValue: value];
+    currencyLabel.stringValue = symbol;
+    [[valueLabel.cell formatter] setCurrencyCode: value]; // Important for proper display of the value, even without currency.
+    saldoCurrencyLabel.stringValue = symbol;
+    [[saldoLabel.cell formatter] setCurrencyCode: value];
+
+    categoryColor = assignment.category.categoryColor;
 
     // Dynamically updated fields.
     dateFormatter.dateFormat = @"d";
-    dayLabel.stringValue = [dateFormatter stringFromDate: date];
+    dayLabel.stringValue = [dateFormatter stringFromDate: currentDate];
     dateFormatter.dateFormat = @"MMM";
-    monthLabel.stringValue = [dateFormatter stringFromDate: date];
+    monthLabel.stringValue = [dateFormatter stringFromDate: currentDate];
+
+    [self showBalance: [defaults boolForKey: @"showBalances"]];
+    self.isNew = [assignment.statement.isNew boolValue];
+
+    NSDecimalNumber *nassValue = assignment.statement.nassValue;
+    self.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
 }
 
-#pragma mark Reuse
+- (void)updateLabelsWithCasing: (BOOL)autoCasing
+{
+    StatCatAssignment *assignment = self.representedObject;
+
+    id value = [self formatValue: assignment.statement.remoteName capitalize: autoCasing];
+    remoteNameLabel.stringValue = value;
+    remoteNameLabel.toolTip = value;
+
+    value = [self formatValue: assignment.statement.floatingPurpose capitalize: autoCasing];
+    purposeLabel.stringValue = value;
+    purposeLabel.toolTip = value;
+
+    value =  [self formatValue: assignment.statement.transactionText capitalize: autoCasing];
+    transactionTypeLabel.objectValue = value;
+    transactionTypeLabel.toolTip = value;
+}
+
+#pragma mark - Reuse
 
 - (void)prepareForReuse
 {
@@ -226,8 +259,7 @@ static CurrencyValueTransformer *currencyTransformer;
     isNew = NO;
 }
 
-#pragma mark -
-#pragma mark Properties
+#pragma mark - Properties
 
 - (void)setIsNew: (BOOL)flag
 {
@@ -251,6 +283,16 @@ static CurrencyValueTransformer *currencyTransformer;
 {
     [saldoLabel setHidden: !flag];
     [saldoCurrencyLabel setHidden: !flag];
+}
+
+- (void)setTurnovers: (NSUInteger)value
+{
+    turnovers = value;
+    if (turnovers != 1) {
+        turnoversLabel.stringValue = [NSString stringWithFormat: NSLocalizedString(@"AP207", nil), turnovers];
+    } else {
+        turnoversLabel.stringValue = NSLocalizedString(@"AP206", nil);
+    }
 }
 
 - (IBAction)activationChanged: (id)sender

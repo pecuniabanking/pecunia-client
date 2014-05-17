@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2008, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -170,8 +170,6 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 
     // Set up the pie charts and restore their transformations.
     pieChartGraph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame : NSRectToCGRect(pieChartHost.bounds)];
-    CPTTheme *theme = [CPTTheme themeNamed: kCPTPlainWhiteTheme];
-    [pieChartGraph applyTheme: theme];
     pieChartHost.hostedGraph = pieChartGraph;
 
     [self setupMiniPlots];
@@ -221,13 +219,12 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 
     frame.cornerRadius = 10;
     frame.borderLineStyle = frameStyle;
-    /*
-     frame.shadowColor = CGColorCreateGenericGray(0, 1);
-     frame.shadowRadius = 2.0;
-     frame.shadowOffset = CGSizeMake(1, -1);
-     frame.shadowOpacity = 0.25;
-     */
-    //    frame.fill = nil;
+    frame.fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1]];
+
+    pieChartGraph.shadowColor = CGColorCreateGenericGray(0, 1);
+    pieChartGraph.shadowRadius = 2.0;
+    pieChartGraph.shadowOffset = CGSizeMake(1, -1);
+    pieChartGraph.shadowOpacity = 0.15;
 
     CPTMutableLineStyle *pieLineStyle = [CPTMutableLineStyle lineStyle];
     pieLineStyle.lineColor = [CPTColor colorWithGenericGray: 1];
@@ -683,7 +680,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     return [CPTFill fillWithGradient: gradient];
 }
 
-- (void)pieChart: (CPTPieChart *)plot sliceWasSelectedAtRecordIndex: (NSUInteger)index
+-(void)pieChart: (CPTPieChart *)plot sliceTouchDownAtRecordIndex: (NSUInteger)idx
 {
     currentPlot = plot;
 
@@ -694,8 +691,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     currentPlot.shadow = shadow;
 }
 
-#pragma mark -
-#pragma mark Controller logic
+#pragma mark - Controller logic
 
 #define SLICE_OFFSET 10
 
@@ -1015,10 +1011,16 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
                 }
             }
         }
+
         // The sorted arrays contain values for the mini plots.
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO];
         [sortedEarningValues sortUsingDescriptors: @[sortDescriptor]];
         [sortedSpendingValues sortUsingDescriptors: @[sortDescriptor]];
+
+        // Since the child categories are not sorted in any way we sort them here by name.
+        sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
+        [earningsCategories sortUsingDescriptors: @[sortDescriptor]];
+        [spendingsCategories sortUsingDescriptors: @[sortDescriptor]];
     }
 
     for (NSUInteger i = 0; i < earningsCategories.count; i++) {
@@ -1304,8 +1306,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     }
 }
 
-#pragma mark -
-#pragma mark Plot animation events
+#pragma mark - Plot animation events
 
 - (void)animationDidStart: (CPTAnimationOperation *)operation
 {

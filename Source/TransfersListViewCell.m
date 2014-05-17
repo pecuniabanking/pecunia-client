@@ -90,8 +90,6 @@ static CurrencyValueTransformer *currencyTransformer;
 
 - (void)setDetails: (NSDictionary *)details
 {
-    [super setDetails: details];
-
     type = [details[StatementTypeKey] intValue];
 
     dateLabel.stringValue = [details valueForKey: StatementDateKey];

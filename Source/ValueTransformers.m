@@ -108,7 +108,7 @@ static NSMutableDictionary *cache;
 
 - (id)transformedValue: (id)value
 {
-    if ([value count] == 1) {
+    if ([value respondsToSelector: @selector(count)] && [value count] == 1) {
         return @YES;
     }
     return @NO;

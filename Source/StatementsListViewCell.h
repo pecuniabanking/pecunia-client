@@ -17,8 +17,6 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 #import "PecuniaListViewCell.h"
 
 @protocol StatementsListViewNotificationProtocol
@@ -47,11 +45,11 @@
 @property (nonatomic, strong) id   delegate;
 @property (nonatomic, assign) BOOL hasUnassignedValue;
 @property (nonatomic, assign) BOOL isNew;
+@property (nonatomic, assign) NSUInteger turnovers;
 
 - (IBAction)activationChanged: (id)sender;
 
 - (void)setHeaderHeight: (int)aHeaderHeight;
-- (void)setDetails: (NSDictionary *)details;
 - (void)showActivator: (BOOL)flag markActive: (BOOL)active;
 - (void)showBalance: (BOOL)flag;
 

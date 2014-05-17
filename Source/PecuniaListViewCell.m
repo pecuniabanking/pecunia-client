@@ -23,8 +23,6 @@
 #import "PreferenceController.h"
 #import "NSColor+PecuniaAdditions.h"
 
-extern NSString *StatementIndexKey;
-
 extern void *UserDefaultsBindingContext;
 static void *SetRowBindingContext = @"SetRowContext";
 
@@ -40,14 +38,13 @@ NSDictionary    *whiteAttributes;
     NSMutableArray *standardLabels;
     NSMutableArray *numberLabels;
     NSMutableArray *paleLabels;
-
-    NSUInteger index;
 }
 
 @end
 
 @implementation PecuniaListViewCell
 
+@synthesize representedObject;
 @synthesize selectionGradient;
 
 + (void)initialize
@@ -133,12 +130,7 @@ NSDictionary    *whiteAttributes;
 
 - (void)selectionChanged
 {
-    // The internal row value might not be assigned yet (when the cell is reused), so
-    // the normal check for selection fails. We use instead the index we get from the owning
-    // listview (which will later be assigned to this cell anyway).
-    BOOL isSelected = [self.listView.selectedRows containsIndex: index];
-
-    if (isSelected) {
+    if (self.isSelected) {
         for (NSDictionary* entry  in numberLabels) {
             [[[entry[@"field"] cell] formatter] setTextAttributesForPositiveValues: whiteAttributes];
             [[[entry[@"field"] cell] formatter] setTextAttributesForNegativeValues: whiteAttributes];
@@ -159,14 +151,36 @@ NSDictionary    *whiteAttributes;
     }
 }
 
+- (id)formatValue: (id)value capitalize: (BOOL)capitalize
+{
+    if (value == nil || [value isKindOfClass: [NSNull class]]) {
+        value = @"";
+    } else {
+        if ([value isKindOfClass: [NSDate class]]) {
+            value = [dateFormatter stringFromDate: value];
+        } else {
+            if (capitalize) {
+                NSMutableArray *words = [[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
+                for (NSUInteger i = 0; i < [words count]; i++) {
+                    NSString *word = words[i];
+                    if (i == 0 || [word length] > 3) {
+                        words[i] = [word capitalizedString];
+                    }
+                }
+                value = [words componentsJoinedByString: @" "];
+            }
+        }
+    }
+
+    return value;
+}
+
 /**
  * Called when the user changes a color. We update here only those colors that are customizable.
  */
 - (void)updateTextColors
 {
-    BOOL isSelected = [self.listView.selectedRows containsIndex: index];
-
-    if (!isSelected) {
+    if (!self.isSelected) {
         NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
         NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
 
@@ -209,13 +223,6 @@ NSDictionary    *whiteAttributes;
     }
 }
 
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-
-    index = -1;
-}
-
 - (void)registerStandardLabel: (NSTextField *)field
 {
     if (![standardLabels containsObject: field]) {
@@ -236,11 +243,6 @@ NSDictionary    *whiteAttributes;
     if (![paleLabels containsObject: field]) {
         [paleLabels addObject: @{@"field": field, @"font": field.font.fontName, @"size": @(field.font.pointSize)}];
     }
-}
-
-- (void)setDetails: (NSDictionary *)details
-{
-    index = [details[StatementIndexKey] intValue];
 }
 
 @end

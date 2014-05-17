@@ -109,8 +109,6 @@ static CurrencyValueTransformer *currencyTransformer;
 
 - (void)setDetails: (NSDictionary *)details
 {
-    [super setDetails: details];
-
     firstDateLabel.stringValue = [details valueForKey: OrderFirstExecDateKey];
     nextDateLabel.stringValue = [details valueForKey: StatementDateKey];
     lastDateLabel.stringValue = [details valueForKey: OrderLastExecDateKey];

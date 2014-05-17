@@ -82,8 +82,6 @@ extern void *UserDefaultsBindingContext;
 
 - (void)setDetails: (NSDictionary *)details
 {
-    [super setDetails: details];
-
     type = [details[StatementTypeKey] intValue];
 
     templateNameLabel.stringValue = [details valueForKey: TemplateNameKey];

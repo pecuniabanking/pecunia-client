@@ -21,16 +21,16 @@
 
 @interface PecuniaListViewCell : PXListViewCell
 
+@property (nonatomic, strong) id representedObject;
 @property (nonatomic, strong) NSGradient *selectionGradient;
 
 - (void)registerStandardLabel: (NSTextField *)field;
 - (void)registerNumberLabel: (NSTextField *)field;
 - (void)registerPaleLabel: (NSTextField *)field;
 
+- (id)formatValue: (id)value capitalize: (BOOL)capitalize;
 - (void)updateTextColors;
 - (void)adjustLabelsAndSize;
 - (void)selectionChanged;
-
-- (void)setDetails: (NSDictionary *)details;
 
 @end

@@ -59,7 +59,6 @@ extern NSString *StatementTypeKey;
 
     // These are cached user settings.
     BOOL showHeaders;
-    BOOL autoCasing;
 }
 
 @end
@@ -102,9 +101,6 @@ extern void *UserDefaultsBindingContext;
     } else {
         [defaults setBool: YES forKey: @"showHeadersInLists"];
     }
-
-    [defaults addObserver: self forKeyPath: @"autoCasing" options: 0 context: UserDefaultsBindingContext];
-    autoCasing = [defaults boolForKey: @"autoCasing"];
 }
 
 - (void)dealloc
@@ -113,14 +109,12 @@ extern void *UserDefaultsBindingContext;
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults removeObserver: self forKeyPath: @"showHeadersInLists"];
-    [defaults removeObserver: self forKeyPath: @"autoCasing"];
 }
 
 #pragma mark - Bindings, KVO and KVC
 
 - (void)removeBindings
 {
-    [observedObject removeObserver: self forKeyPath: @"arrangedObjects.userInfo"];
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
 }
 
@@ -138,9 +132,6 @@ extern void *UserDefaultsBindingContext;
                            forKeyPath: @"arrangedObjects"
                               options: 0
                               context: DataSourceBindingContext];
-
-        // Another one for the user info to update the list while the user is typing in the details area.
-        [observableObject addObserver: self forKeyPath: @"arrangedObjects.userInfo" options: 0 context: nil];
 
     } else {
         [super bind: binding toObject: observableObject withKeyPath: keyPath options: options];
@@ -173,17 +164,6 @@ extern void *UserDefaultsBindingContext;
             }
             return;
         }
-
-        if ([keyPath isEqualToString: @"autoCasing"]) {
-            autoCasing = [userDefaults boolForKey: @"autoCasing"];
-
-            if (!pendingRefresh && !pendingReload) {
-                pendingRefresh = YES;
-                [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.2];
-            }
-        }
-
-        return;
     }
 
     if (context == DataSourceBindingContext) {
@@ -194,12 +174,14 @@ extern void *UserDefaultsBindingContext;
         return;
     }
 
+    /*
     if (!pendingReload && !pendingRefresh) {
         pendingRefresh = YES;
         [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
     }
+     */
 
-    //[super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
 #pragma mark -
@@ -211,30 +193,6 @@ extern void *UserDefaultsBindingContext;
 
 #pragma unused(aListView)
     return [dataSource count];
-}
-
-- (id)formatValue: (id)value capitalize: (BOOL)capitalize
-{
-    if (value == nil || [value isKindOfClass: [NSNull class]]) {
-        value = @"";
-    } else {
-        if ([value isKindOfClass: [NSDate class]]) {
-            value = [dateFormatter stringFromDate: value];
-        } else {
-            if (capitalize && autoCasing) {
-                NSMutableArray *words = [[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
-                for (NSUInteger i = 0; i < [words count]; i++) {
-                    NSString *word = words[i];
-                    if (i == 0 || [word length] > 3) {
-                        words[i] = [word capitalizedString];
-                    }
-                }
-                value = [words componentsJoinedByString: @" "];
-            }
-        }
-    }
-
-    return value;
 }
 
 - (BOOL)showsHeaderForRow: (NSUInteger)row
@@ -288,41 +246,8 @@ extern void *UserDefaultsBindingContext;
 {
     StatCatAssignment *assignment = (StatCatAssignment *)dataSource[row];
 
-    NSDate *currentDate = assignment.statement.date;
-    if (currentDate == nil) {
-        currentDate = assignment.statement.valutaDate; // Should not be necessary, but still...
-    }
-
-    if (currentDate == nil) {
-        return;
-    }
-
-    NSString *turnoversString = @"";
-    if ([self showsHeaderForRow: row]) {
-        // Count how many statements have been booked for the current date.
-        int turnovers = [self countSameDatesFromRow: row];
-        if (turnovers != 1) {
-            turnoversString = [NSString stringWithFormat: NSLocalizedString(@"AP207", nil), turnovers];
-        } else {
-            turnoversString = NSLocalizedString(@"AP206", nil);
-        }
-    }
     cell.delegate = self;
-    NSDictionary *details = @{StatementDateKey: currentDate,
-                              StatementTurnoversKey: turnoversString,
-                              StatementRemoteNameKey: [self formatValue: assignment.statement.remoteName capitalize: YES],
-                              StatementPurposeKey: [self formatValue: assignment.statement.floatingPurpose capitalize: YES],
-                              StatementNoteKey: [self formatValue: assignment.userInfo capitalize: YES],
-                              StatementCategoriesKey: [self formatValue: [assignment.statement categoriesDescription] capitalize: NO],
-                              StatementValueKey: [self formatValue: assignment.value capitalize: NO],
-                              StatementSaldoKey: [self formatValue: assignment.statement.saldo capitalize: NO],
-                              StatementCurrencyKey: [self formatValue: assignment.statement.currency capitalize: NO],
-                              StatementTransactionTextKey: [self formatValue: assignment.statement.transactionText capitalize: YES],
-                              StatementColorKey: [assignment.category categoryColor],
-                              StatementIndexKey: @((int)row)};
-
-    [cell setDetails: details];
-    cell.isNew = [assignment.statement.isNew boolValue];
+    cell.representedObject = assignment;
 
     if (self.showAssignedIndicators) {
         bool activate = assignment.category != nil && assignment.category != Category.nassRoot;
@@ -331,22 +256,21 @@ extern void *UserDefaultsBindingContext;
         [cell showActivator: NO markActive: NO];
     }
 
-    NSDecimalNumber *nassValue = assignment.statement.nassValue;
-    cell.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
-
-    [cell showBalance: [NSUserDefaults.standardUserDefaults boolForKey: @"showBalances"]];
+    if ([self showsHeaderForRow: row]) {
+        cell.turnovers = [self countSameDatesFromRow: row];
+    }
 
     // Set the size of the cell, depending on if we show its header or not.
-    NSRect frame = [cell frame];
+    NSRect frame = cell.frame;
     frame.size.height = CELL_BODY_HEIGHT;
     if ([self showsHeaderForRow: row]) {
         frame.size.height += CELL_HEADER_HEIGHT;
         [cell setHeaderHeight: CELL_HEADER_HEIGHT];
     } else {
-        [cell setHeaderHeight: 0];
+        cell.headerHeight = 0;
     }
 
-    [cell setFrame: frame];
+    cell.frame = frame;
 }
 
 /**
