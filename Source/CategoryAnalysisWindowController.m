@@ -342,26 +342,59 @@ extern void *UserDefaultsBindingContext;
  * Private declarations for the controller.
  */
 @interface CategoryAnalysisWindowController ()
+{
+    CPTXYGraph    *mainGraph;
+    CPTXYGraph    *turnoversGraph;
+    CPTXYGraph    *selectionGraph;
+    CPTXYAxis     *mainIndicatorLine;
+    CPTXYAxis     *turnoversIndicatorLine;
+    CPTAnnotation *infoAnnotation;         // The host of the info layer placed in the plot area.
+    CPTTextLayer  *dateInfoLayer;
+    CPTTextLayer  *valueInfoLayer;
+    CPTLimitBand  *selectionBand;
 
-- (void)sanitizeDates;
+    ColumnLayoutCorePlotLayer *infoLayer; // Content layer of the info annotation.
 
-- (void)setupMainGraph;
-- (void)setupTurnoversGraph;
-- (void)setupSelectionGraph;
+    ShortDate *referenceDate;             // The date at which the time points start.
 
-- (void)setupMainPlots;
-- (void)setupTurnoversPlot;
-- (void)setupSelectionPlot;
+    NSUInteger rawCount;                  // Raw number of values we have.
+    NSUInteger selectionSampleCount;      // Number of values we use for the selection graph.
 
-- (void)updateMainGraph;
-- (void)updateTurnoversGraph;
-- (void)updateSelectionGraph;
-- (void)updateSelectionDisplay;
+    double *timePoints;                   // Contains for each data point the relative distance in date units from the reference day.
+                                          // This array actually contains integer values. The double data type is only
+                                          // for coreplot.
+    double *selectionTimePoints;          // Down sampled time points for the selection graph (if sampling is active at all).
+    double *totalBalances;                // A balance value for each time point (full set).
 
-- (void)regenerateGraphs;
+    double *selectionBalances; // Sampled balance values.
+    double *positiveBalances;  // A balance value for each time point (positive main plot).
+    double *negativeBalances;  // A balance value for each time point (negative main plot).
+    double *balanceCounts;     // The number balances per unit for each time point.
 
-- (int)majorTickCount;
-- (NSInteger)findIndexForTimePoint: (NSUInteger)timePoint;
+    NSNumberFormatter   *infoTextFormatter;
+    NSMutableDictionary *mainInfoValues;
+
+    ShortDate *fromDate;                  // Dates for the currently visible range.
+    ShortDate *toDate;
+    double    lastInfoTimePoint;          // The time point for which the info text was last updated.
+    bool      doingGraphUpdates;
+
+    CGFloat barWidth;
+
+    // For the graph ranges.
+    NSDecimalNumber *roundedTotalMinValue;
+    NSDecimalNumber *roundedTotalMaxValue;
+    NSDecimalNumber *roundedLocalMinValue;
+    NSDecimalNumber *roundedLocalMaxValue;
+    NSDecimalNumber *roundedMaxTurnovers;
+
+    GroupingInterval groupingInterval;
+
+    // Temporary values for animations.
+    float newMainYInterval;
+
+    NSMutableDictionary *statistics;     // All values are NSNumber.
+}
 
 @end
 
@@ -460,8 +493,7 @@ extern void *UserDefaultsBindingContext;
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
-#pragma mark -
-#pragma mark Graph setup
+#pragma mark - Graph setup
 
 - (void)setBarWidth: (CGFloat)value
 {
@@ -1161,29 +1193,43 @@ double mainTrend(double x)
     NSUInteger endIndex = 0;
 
     if (rawCount > 0) {
-        NSUInteger units = floor(plotSpace.xRange.locationDouble);
+        // Round up to the next actually possible timepoint (and hence the first tick visible in the graph).
+        NSUInteger units = ceil(plotSpace.xRange.locationDouble);
 
-        // Scatter plots go over a (horizontal) range, so even if the actual time point is out of view
-        // parts of the area representing the value can still be visible so we round down the position value.
+        // Find the closest value for this position. Could be either exactly on point or the next one
+        // closer to the start.
+        // Scatter plot values go over a range (stepped plot), so even if the actual time point is out of view
+        // parts of the area representing the value can still be visible.
         // Bar plots however appear around a time point (+-10%).
-        if (![selectedCategory isBankAccount]) {
-            double fraction = plotSpace.xRange.locationDouble - (double)units;
-            if (fraction > 0.1) {
-                units++;
-            }
-        }
         startIndex = [self findIndexForTimePoint: units];
 
-        units = floor(plotSpace.xRange.endDouble);
-        if (![selectedCategory isBankAccount]) {
-            double fraction = (double)units - plotSpace.xRange.endDouble;
-            if (fraction < 0.1) {
-                units++;
+        // Since our timePoints array contains double values which not always represent exact int values
+        // we round here to the next int for always correct results.
+        if (round(timePoints[startIndex]) == units) {
+            // There's a value at the first tick location. For bank accounts we need the previous one.
+            if (selectedCategory.isBankAccount && startIndex > 0) {
+                --startIndex;
+            }
+        } else {
+            // Got the index nearer to the start. Fine for bank accounts but we need the next
+            // real value for categories (bar charts), unless we are very close (within the 10%) to the found value.
+            double fraction = plotSpace.xRange.locationDouble - round(timePoints[startIndex]);
+            if (!selectedCategory.isBankAccount && fraction > 0.1) {
+                ++startIndex;
             }
         }
+
+        units = ceil(plotSpace.xRange.endDouble) - 1; // There's an extra range step in the graph.
         endIndex = [self findIndexForTimePoint: units];
-        if (selectedCategory.isBankAccount) {
-            ++endIndex;
+
+        // If the end index is on a real data point then fine. Otherwise however we have to check
+        // if the following data point is at least partially visible (even though its index/tick is out of view).
+        // This is only necessary for bar charts.
+        if (round(timePoints[endIndex]) != units && !selectedCategory.isBankAccount && endIndex < rawCount - 1) {
+            double fraction = round(timePoints[endIndex + 1]) - plotSpace.xRange.endDouble;
+            if (fraction <= 0.1) {
+                ++endIndex;
+            }
         }
     }
 
@@ -1193,7 +1239,7 @@ double mainTrend(double x)
 
     float animationDuration = 0.3;
     if (([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) != 0) {
-        animationDuration = 3;
+        animationDuration *= 10;
     }
 
     // Set the y axis ticks depending on the maximum value.
@@ -1246,12 +1292,15 @@ double mainTrend(double x)
 - (void)updateMainGraph
 {
     int tickCount = [self majorTickCount];
-    int totalUnits = (rawCount > 1) ? timePoints[rawCount - 2] + 1 : 0;
+    NSUInteger lastIndex = rawCount - 1;
+    if (selectedCategory.isBankAccount)
+        --lastIndex; // Account for the extra entry we add for bank accounts.
+    int totalUnits = (rawCount > 1) ? round(timePoints[lastIndex]) + 1 : 0;
     if (totalUnits < tickCount) {
         totalUnits = tickCount;
     }
 
-    // Set the available plot space depending on the min, max and day values we found.
+    // Set the available plot space depending on the min, max and time unit values we found.
     CPTXYPlotSpace *plotSpace = (id)mainGraph.defaultPlotSpace;
 
     // Horizontal range.
@@ -1269,13 +1318,13 @@ double mainTrend(double x)
 
     // Recreate the time formatter to apply the new reference date. Just setting the date on the existing
     // formatter is not enough.
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
     dateFormatter.dateStyle = kCFDateFormatterShortStyle;
 
     int calendarUnit;
     switch (groupingInterval) {
         case GroupByWeeks:
-            calendarUnit = NSWeekCalendarUnit; // NSWeekCalendarUnit deprecated but there is no
+            calendarUnit = NSWeekCalendarUnit; // NSWeekCalendarUnit is deprecated but there is no
                                                // equivalent for it in the new enums since they describe
                                                // a unit in a timeframe (week of month, week of year
                                                // instead of the time frame "week".
@@ -1316,9 +1365,13 @@ double mainTrend(double x)
 
 - (void)updateTurnoversGraph
 {
-    int totalUnits = (rawCount > 1) ? timePoints[rawCount - 2] + 1 : 0;
-    if (totalUnits < [self majorTickCount]) {
-        totalUnits = [self majorTickCount];
+    int tickCount = [self majorTickCount];
+    NSUInteger lastIndex = rawCount - 1;
+    if (selectedCategory.isBankAccount)
+        --lastIndex;
+    int totalUnits = (rawCount > 1) ? round(timePoints[lastIndex]) + 1 : 0;
+    if (totalUnits < tickCount) {
+        totalUnits = tickCount;
     }
 
     // Set the available plot space depending on the min, max and day values we found.
@@ -1350,15 +1403,19 @@ double mainTrend(double x)
 
 - (void)updateSelectionGraph
 {
+    int tickCount = [self majorTickCount];
     int totalUnits;
     if (selectionTimePoints != nil) {
-        totalUnits = selectionTimePoints[selectionSampleCount - 1];
+        totalUnits = round(selectionTimePoints[selectionSampleCount - 1]);
     } else {
-        totalUnits = (rawCount > 1) ? timePoints[rawCount - 2] + 1 : 0;
+        NSUInteger lastIndex = rawCount - 1;
+        if (selectedCategory.isBankAccount)
+            --lastIndex;
+        totalUnits = (rawCount > 1) ? round(timePoints[lastIndex]) + 1 : 0;
     }
 
-    if (totalUnits < [self majorTickCount]) {
-        totalUnits = [self majorTickCount];
+    if (totalUnits < tickCount) {
+        totalUnits = tickCount;
     }
 
     CPTXYPlotSpace *plotSpace = (id)selectionGraph.defaultPlotSpace;
@@ -1392,20 +1449,23 @@ double mainTrend(double x)
     double sum = 0;
     double squareSum = 0;
 
+    // Consider the extra dummy value we added just for display (bank accounts only).
+    NSUInteger count = selectedCategory.isBankAccount ? rawCount - 1 : rawCount;
     if (rawCount > 0) {
         // Compute some base values using the accelerate framework.
-        CGFloat mean;
-        vDSP_meanvD(totalBalances, 1, &mean, rawCount);
-
-        vDSP_minvD(totalBalances, 1, &min, rawCount);
-        vDSP_maxvD(totalBalances, 1, &max, rawCount);
-        vDSP_maxvD(balanceCounts, 1, &maxTurnovers, rawCount);
-        vDSP_sveD(totalBalances, 1, &sum, rawCount);
-        vDSP_svesqD(totalBalances, 1, &squareSum, rawCount);
+        vDSP_minvD(totalBalances, 1, &min, count);
+        vDSP_maxvD(totalBalances, 1, &max, count);
+        vDSP_maxvD(balanceCounts, 1, &maxTurnovers, count);
+        vDSP_sveD(totalBalances, 1, &sum, count);
+        vDSP_svesqD(totalBalances, 1, &squareSum, count);
 
         statistics[@"totalMinValue"] = @(min);
         statistics[@"totalMaxValue"] = @(max);
-        statistics[@"totalMeanValue"] = @(mean);
+
+        // Divide by the number of time entries, not the number of values.
+        // We want the mean value per time unit.
+        CPTXYPlotSpace *plotSpace = (id)mainGraph.defaultPlotSpace;
+        statistics[@"totalMeanValue"] = @(sum / plotSpace.globalXRange.lengthDouble);
 
         if (!selectedCategory.isBankAccount) {
             statistics[@"totalSum"] = @(sum);
@@ -1421,7 +1481,7 @@ double mainTrend(double x)
     }
 
     if (rawCount > 1) {
-        double deviationFactor = (squareSum - sum * sum / rawCount) / (rawCount - 1);
+        double deviationFactor = (squareSum - sum * sum / count) / (count - 1);
         if (deviationFactor < 0) {
             deviationFactor = 0; // Can become < 0 because of rounding errors.
         }
@@ -1461,7 +1521,7 @@ double mainTrend(double x)
     double squareSum = 0;
 
     NSUInteger count = toIndex - fromIndex + 1;
-    if (toIndex > fromIndex) {
+    if (count > 0) {
         for (NSUInteger i = fromIndex; i <= toIndex; i++) {
             if (totalBalances[i] > max) {
                 max = totalBalances[i];
@@ -1474,7 +1534,12 @@ double mainTrend(double x)
         }
         statistics[@"localMinValue"] = @(min);
         statistics[@"localMaxValue"] = @(max);
-        statistics[@"localMeanValue"] = @(sum / count);
+
+        // Divide by the number of time entries, not the number of values.
+        // We want the mean value per time unit.
+        CPTXYPlotSpace *plotSpace = (id)mainGraph.defaultPlotSpace;
+        CPTPlotRange *plotRange = plotSpace.xRange;
+        statistics[@"localMeanValue"] = @(sum / plotRange.lengthDouble);
 
         if (!selectedCategory.isBankAccount) {
             statistics[@"localSum"] = @(sum);
@@ -1495,7 +1560,11 @@ double mainTrend(double x)
         }
         statistics[@"localStandardDeviation"] = @(sqrt(deviationFactor));
     } else {
-        [statistics removeObjectForKey: @"localStandardDeviation"];
+        if (count == 1) {
+            statistics[@"localStandardDeviation"] = @0;
+        } else {
+            [statistics removeObjectForKey: @"localStandardDeviation"];
+        }
     }
 
     if (min > 0) {
@@ -1713,7 +1782,7 @@ double mainTrend(double x)
     int high = rawCount - 1;
     while (low <= high) {
         int    mid = (low + high) / 2;
-        double midPoint = timePoints[mid];
+        NSUInteger midPoint = round(timePoints[mid]);
         if (midPoint == timePoint) {
             return mid;
         }
@@ -1762,7 +1831,7 @@ double mainTrend(double x)
     // Find closest point in our time points that is before the computed time value.
     int       units = round(timePoint);
     NSInteger index = [self findIndexForTimePoint: units];
-    double    timePointAtIndex = index < 0 ? 0 : timePoints[index];
+    double    timePointAtIndex = index < 0 ? 0 : round(timePoints[index]);
     BOOL      dateHit = NO;
 
     // The found index might not be one matching exactly the current date. In order to ease
@@ -1778,7 +1847,7 @@ double mainTrend(double x)
         } else {
             // The found index is not close enough. Try the next date point if there is one.
             if (index < (NSInteger)rawCount - 1) {
-                timePointAtIndex = timePoints[index + 1];
+                timePointAtIndex = round(timePoints[index + 1]);
                 snapPoint[0] = CPTDecimalFromDouble(timePointAtIndex);
                 targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint numberOfCoordinates: 2];
                 if (abs(targetPoint.x - actualLocation) <= barWidth) {
@@ -2078,7 +2147,7 @@ double mainTrend(double x)
 
     // Now see if the new toDate goes beyond the available data. Try fixing it (if so)
     // by moving the selected range closer to the beginning.
-    ShortDate *date = [self dateByAddingUnits: referenceDate count: (rawCount > 0) ? timePoints[rawCount - 1]: 0];
+    ShortDate *date = [self dateByAddingUnits: referenceDate count: (rawCount > 0) ? round(timePoints[rawCount - 1]): 0];
     if (toDate == nil || [date compare: toDate] == NSOrderedAscending) {
         units = [self distanceFromDate: toDate toDate: date];
         toDate = date;
@@ -2168,7 +2237,7 @@ double mainTrend(double x)
                 timePoints[index++] = [self distanceFromDate: referenceDate toDate: date];
             }
             if (extraEntry) {
-                timePoints[index] = timePoints[index - 1] + 15;
+                timePoints[index] = timePoints[index - 1] + 1;
             }
 
             // Convert all NSDecimalNumbers to double for better performance.
@@ -2199,12 +2268,12 @@ double mainTrend(double x)
             }
 
             // The value in the extra field just duplicates the value of the second last field
-            // to correctly draw our stepped scatter plots.
+            // (except for the balance count) to show the correct values beyond the last real entry.
             if (extraEntry) {
                 totalBalances[index] = totalBalances[index - 1];
                 positiveBalances[index] = positiveBalances[index - 1];
                 negativeBalances[index] = negativeBalances[index - 1];
-                balanceCounts[index] = balanceCounts[index - 1];
+                balanceCounts[index] = 0;
             }
 
             // Regression function parameters.
@@ -2250,7 +2319,6 @@ double mainTrend(double x)
     }
 
     [self sanitizeDates];
-    [self computeTotalStatistics];
 
     [mainGraph reloadData];
     [turnoversGraph reloadData];
@@ -2269,9 +2337,13 @@ double mainTrend(double x)
     selectionGraph.defaultPlotSpace.allowsUserInteraction = rawCount > 0;
 
     [self setupMainPlots];
+    [self computeTotalStatistics]; // Compute right after the global x range is set, as it also computes
+                                   // values needed by the other graphs.
+
     [self setupTurnoversPlot];
     [self setupSelectionPlot];
     [self updateSelectionDisplay];
+
     [self performSelector: @selector(updateVerticalMainGraphRange) withObject: nil afterDelay: 0.3];
 }
 

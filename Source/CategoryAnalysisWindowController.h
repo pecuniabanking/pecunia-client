@@ -62,57 +62,6 @@
     IBOutlet NSPopover   *helpPopover;
 
     IBOutlet BWGradientBox *selectionBox;
-
-@private
-    CPTXYGraph    *mainGraph;
-    CPTXYGraph    *turnoversGraph;
-    CPTXYGraph    *selectionGraph;
-    CPTXYAxis     *mainIndicatorLine;
-    CPTXYAxis     *turnoversIndicatorLine;
-    CPTAnnotation *infoAnnotation; // The host of the info layer placed in the plot area.
-    CPTTextLayer  *dateInfoLayer;
-    CPTTextLayer  *valueInfoLayer;
-    CPTLimitBand  *selectionBand;
-
-    ColumnLayoutCorePlotLayer *infoLayer; // Content layer of the info annotation.
-
-    ShortDate *referenceDate;             // The date at which the time points start.
-
-    NSUInteger rawCount;                  // Raw number of values we have.
-    NSUInteger selectionSampleCount;      // Number of values we use for the selection graph.
-
-    double *timePoints;                   // Contains for each data point the relative distance in date units from the reference day.
-    double *selectionTimePoints;          // Down sampled time points for the selection graph (if sampling is active at all).
-    double *totalBalances;                // A balance value for each time point (full set).
-
-    double *selectionBalances; // Sampled balance values.
-    double *positiveBalances;  // A balance value for each time point (positive main plot).
-    double *negativeBalances;  // A balance value for each time point (negative main plot).
-    double *balanceCounts;     // The number balances per unit for each time point.
-
-    NSNumberFormatter   *infoTextFormatter;
-    NSMutableDictionary *mainInfoValues;
-
-    ShortDate *fromDate;
-    ShortDate *toDate;
-    double    lastInfoTimePoint;          // The time point for which the info text was last updated.
-    bool      doingGraphUpdates;
-
-    CGFloat barWidth;
-
-    // For the graph ranges.
-    NSDecimalNumber *roundedTotalMinValue;
-    NSDecimalNumber *roundedTotalMaxValue;
-    NSDecimalNumber *roundedLocalMinValue;
-    NSDecimalNumber *roundedLocalMaxValue;
-    NSDecimalNumber *roundedMaxTurnovers;
-
-    GroupingInterval groupingInterval;
-
-    // Temporary values for animations.
-    float newMainYInterval;
-
-    NSMutableDictionary *statistics;     // All values are NSNumber.
 }
 
 @property (nonatomic, weak) Category *selectedCategory;
