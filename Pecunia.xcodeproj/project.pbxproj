@@ -571,6 +571,7 @@
 		27AF5A9E173FC8EC00929B0E /* move-cursor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 27AF5A9A173FC8EC00929B0E /* move-cursor@2x.png */; };
 		27B1DF9816A2E0A2007A1112 /* blue-slanted-stripes.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B1DF9716A2E0A2007A1112 /* blue-slanted-stripes.png */; };
 		27B56887159743B10064A28B /* basket.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B56886159743B10064A28B /* basket.png */; };
+		27B62663192C8123007D51A8 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E2D28219167D30001D6E80 /* Accelerate.framework */; };
 		27B9868515769132008907F3 /* GradientButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B9868415769132008907F3 /* GradientButtonCell.m */; };
 		27BB1A1A14D4739900A2C8A7 /* CategoryDefinition.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27BB1A1914D4739900A2C8A7 /* CategoryDefinition.xib */; };
 		27BB3B82190D4C0C006F15CB /* PecuniaListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BB3B81190D4C0C006F15CB /* PecuniaListViewCell.m */; };
@@ -1590,6 +1591,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27B62663192C8123007D51A8 /* Accelerate.framework in Frameworks */,
 				27C5B16118B0C6E5004BB3C3 /* ExceptionHandling.framework in Frameworks */,
 				277789B8173CE22700430EBC /* Quartz.framework in Frameworks */,
 				277789B9173CE22700430EBC /* Growl.framework in Frameworks */,
