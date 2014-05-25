@@ -1521,7 +1521,7 @@ double mainTrend(double x)
     double squareSum = 0;
 
     NSUInteger count = toIndex - fromIndex + 1;
-    if (count > 0) {
+    if (rawCount > 0 && count > 0) {
         for (NSUInteger i = fromIndex; i <= toIndex; i++) {
             if (totalBalances[i] > max) {
                 max = totalBalances[i];
@@ -1560,11 +1560,7 @@ double mainTrend(double x)
         }
         statistics[@"localStandardDeviation"] = @(sqrt(deviationFactor));
     } else {
-        if (count == 1) {
-            statistics[@"localStandardDeviation"] = @0;
-        } else {
-            [statistics removeObjectForKey: @"localStandardDeviation"];
-        }
+        [statistics removeObjectForKey: @"localStandardDeviation"];
     }
 
     if (min > 0) {

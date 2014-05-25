@@ -40,8 +40,7 @@
 
 @implementation LinkTextField
 
-- (void)resetCursorRects
-{
+- (void)resetCursorRects {
     [self addCursorRect: [self bounds] cursor: [NSCursor pointingHandCursor]];
 }
 
@@ -53,8 +52,7 @@
 
 @synthesize children;
 
-- (id)init
-{
+- (id)init {
     self = [super init];
     if (self != nil) {
         children = [NSMutableArray arrayWithCapacity: 10];
@@ -88,8 +86,7 @@
 
 @implementation Encoding
 
-+ (Encoding *)encodingWithCaption: (NSString *)caption andValue: (NSStringEncoding)value
-{
++ (Encoding *)encodingWithCaption: (NSString *)caption andValue: (NSStringEncoding)value {
     Encoding *result = [[Encoding alloc] init];
     result.caption = caption;
     result.value = @((int)value);
@@ -114,7 +111,7 @@
     IBOutlet NSTextField         *toLabel;
     IBOutlet NSTextField         *noDataWarningLabel;
 
-@private
+    @private
     BOOL done;
 }
 
@@ -126,8 +123,7 @@
 
 @synthesize controller;
 
-- (void)prepare
-{
+- (void)prepare {
     done = NO;
 
     [detailsView removeFromSuperviewWithoutNeedingDisplay];
@@ -147,8 +143,7 @@
     noDataWarningLabel.stringValue = NSLocalizedString(@"AP629", nil);
 }
 
-- (void)becomeKeyWindow
-{
+- (void)becomeKeyWindow {
     [super becomeKeyWindow];
 
     if (!done) {
@@ -164,8 +159,7 @@
                            ignoredCount: (NSUInteger)ignored
                                 minDate: (NSDate *)minDate
                                 maxDate: (NSDate *)maxDate
-                            canContinue: (BOOL)flag
-{
+                            canContinue: (BOOL)flag {
     if (minDate == nil) { // If a min date is set then there's always also a max date.
         dateWarnLabel.hidden = NO;
         toLabel.hidden = YES;
@@ -218,27 +212,23 @@
     detailsView.frame = NSMakeRect(0, detailsPosition, detailsView.frame.size.width, detailsView.frame.size.height);
 }
 
-- (void)preprocessingDoneWithFatalError
-{
+- (void)preprocessingDoneWithFatalError {
     [progressBar stopAnimation: self];
     processingTaskLabel.stringValue = NSLocalizedString(@"AP628", nil);
     processingTaskLabel.textColor = [NSColor redColor];
 }
 
-- (IBAction)back: (id)sender
-{
+- (IBAction)back: (id)sender {
     // Back from processing to settings page.
     [NSApp endSheet: self returnCode: NSRunAbortedResponse];
 }
 
-- (IBAction)readyForImport: (id)sender
-{
+- (IBAction)readyForImport: (id)sender {
     // Everything has been checked. We can start importing.
     [NSApp endSheet: self returnCode: NSRunStoppedResponse];
 }
 
-- (IBAction)dateRangeChanged: (id)sender
-{
+- (IBAction)dateRangeChanged: (id)sender {
     BOOL customDateRange = dateRadioGroup.selectedColumn == 1;
     if (customDateRange) {
         fromDatePicker.enabled = YES;
@@ -253,8 +243,7 @@
     }
 }
 
-- (IBAction)dateChanged: (id)sender
-{
+- (IBAction)dateChanged: (id)sender {
     if (sender == fromDatePicker) {
         toDatePicker.minDate = fromDatePicker.dateValue;
     } else {
@@ -286,8 +275,7 @@
 #pragma mark -
 #pragma mark Initialization
 
-- (id)init
-{
+- (id)init {
     self = [super initWithWindowNibName: @"ImportWindow"];
     if (self != nil) {
         importValues = [NSMutableArray arrayWithCapacity: 10];
@@ -299,17 +287,15 @@
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [importSettingsController removeObserver: self forKeyPath: @"selection.isDirty"];
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     processingSheet.controller = self;
 
     dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setFormatterBehavior: NSDateFormatterBehavior10_4];
+    dateFormatter.formatterBehavior = NSDateFormatterBehavior10_4;
 
     numberFormatter = [[NSNumberFormatter alloc] init];
     [numberFormatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
@@ -345,8 +331,7 @@
 /**
  * Initializes the token field with predefined tokens. These cannot be edited.
  */
-- (void)setupTokenField
-{
+- (void)setupTokenField {
     NSMutableArray *tokens = [NSMutableArray arrayWithCapacity: 20];
     ColumnToken    *token = [[ColumnToken alloc] init];
     token.caption = NSLocalizedString(@"AP604", nil);
@@ -429,8 +414,7 @@
 /**
  * Initializes the encodings list.
  */
-- (void)setupEncodings
-{
+- (void)setupEncodings {
     NSMutableArray *encodings = [NSMutableArray arrayWithCapacity: 20];
 
     [encodings addObject: [Encoding encodingWithCaption: @"ASCII" andValue: NSASCIIStringEncoding]];
@@ -456,17 +440,14 @@
 /**
  * Need to delay this for the managed object context to finish fetching.
  */
-- (void)initialSelection
-{
+- (void)initialSelection {
     [self updateSettingsController];
     [importSettingsController addObserver: self forKeyPath: @"selection.isDirty" options: 0 context: nil];
 }
 
-#pragma mark -
-#pragma mark Application logic
+#pragma mark - Application logic
 
-- (void)updateSettingsController
-{
+- (void)updateSettingsController {
     NSError *error = nil;
     NSArray *files = [NSFileManager.defaultManager contentsOfDirectoryAtPath: MOAssistant.assistant.importerDir
                                                                        error: &error];
@@ -499,8 +480,7 @@
 /**
  * Called when a new file was selected.
  */
-- (void)updatePreview
-{
+- (void)updatePreview {
     // We might change some settings while updating the preview (to fix invalid entries), which
     // will cause a recursive call.
     if (updating) {
@@ -514,8 +494,6 @@
             separator = @",";
         }
 
-        dateFormatter.dateFormat = currentSettings.dateFormat;
-        
         if ([NSFileManager.defaultManager fileExistsAtPath: currentFile]) {
             NSError  *error = nil;
             NSString *content = [NSString stringWithContentsOfFile: currentFile
@@ -547,7 +525,7 @@
         for (NSUInteger i = ignoredLines; i < currentLines.count; i++) {
             NSArray *fields = currentLines[i];
 
-            BOOL isEmpty = YES;
+            BOOL                isEmpty = YES;
             NSMutableDictionary *entry = [NSMutableDictionary dictionary];
             for (NSUInteger j = 0; j < fields.count; j++) {
                 isEmpty = isEmpty && [fields[j] length] == 0;
@@ -606,11 +584,9 @@
     }
 }
 
-#pragma mark -
-#pragma mark Action messages
+#pragma mark - Action messages
 
-- (IBAction)settingSelectionChanged: (id)sender
-{
+- (IBAction)settingSelectionChanged: (id)sender {
     NSString *settingName = [[storedSettingsController selectedObjects] lastObject];
     if (settingName == nil) {
         return;
@@ -669,15 +645,18 @@
 
     // Similar for the field separator.
     switch ([currentSettings.fieldSeparator characterAtIndex: 0]) {
-        case ',':
+        case ',' :
             [fieldSeparatorPopupButton selectItemAtIndex: 0];
             break;
+
         case ';':
             [fieldSeparatorPopupButton selectItemAtIndex: 1];
             break;
+
         case '\t':
             [fieldSeparatorPopupButton selectItemAtIndex: 2];
             break;
+
         default:
             [fieldSeparatorPopupButton selectItemAtIndex: 3];
             break;
@@ -709,21 +688,20 @@
 
     updating = NO;
 
-    [dateFormatter setDateFormat: currentSettings.dateFormat];
+    dateFormatter.dateFormat = currentSettings.dateFormat;
     numberFormatter.decimalSeparator = currentSettings.decimalSeparator;
 
+    currentSettings.isDirty = NO;
     currentSettings.fileName = fileName;
     importSettingsController.content = currentSettings;
 }
 
-- (IBAction)cancel: (id)sender
-{
+- (IBAction)cancel: (id)sender {
     [[self window] close];
     [NSApp stopModalWithCode: 1];
 }
 
-- (void)windowWillClose: (NSNotification *)aNotification
-{
+- (void)windowWillClose: (NSNotification *)aNotification {
     [NSApp stopModalWithCode: 1];
 }
 
@@ -731,84 +709,81 @@
  * Runs on a background thread. Loads all files and parses the values. Once done the user gets a chance
  * to select a date range to be imported and can finally start the import.
  */
-- (void)preprocessValues: (id)object
-{
+- (void)preprocessValues: (id)object {
     NSDate     *minDate = nil;
     NSDate     *maxDate = nil;
     NSUInteger errorCount = 0;
 
-    @synchronized(dateFormatter) {
-        @try {
-            dateFormatter.dateFormat = currentSettings.dateFormat;
+    @try {
+        NSUInteger index = currentSettings.ignoreLines.intValue;
+        NSString   *separator = currentSettings.fieldSeparator;
+        if (separator == nil) {
+            separator = @",";
+        }
 
-            NSUInteger index = currentSettings.ignoreLines.intValue;
-            NSString   *separator = currentSettings.fieldSeparator;
-            if (separator == nil) {
-                separator = @",";
+        NSUInteger nonImportedLineCount = 0;
+
+        NSUInteger ignoredLines = currentSettings.ignoreLines.intValue;
+        parsedValues = [NSMutableArray arrayWithCapacity: 1000];
+        for (NSString *file in fileNames) {
+            if (stopProcessing) {
+                return;
             }
 
-            NSUInteger nonImportedLineCount = 0;
+            NSArray *csvRows;
+            if ([NSFileManager.defaultManager fileExistsAtPath: file]) {
+                NSError  *error = nil;
+                NSString *content = [NSString stringWithContentsOfFile: file
+                                                              encoding: currentSettings.encoding.integerValue
+                                                                 error: &error];
+                if (error != nil) {
+                    NSAlert *alert = [NSAlert alertWithError: error];
+                    [alert runModal];
+                    continue;
+                } else {
+                    csvRows = [content csvRowsWithSeparator: separator];
+                }
+            } else {
+                csvRows = nil;
+            }
 
-            NSUInteger ignoredLines = currentSettings.ignoreLines.intValue;
-            parsedValues = [NSMutableArray arrayWithCapacity: 1000];
-            for (NSString *file in fileNames) {
+            for (NSUInteger i = ignoredLines; i < csvRows.count; i++) {
+                NSArray *fields = csvRows[i];
                 if (stopProcessing) {
                     return;
                 }
 
-                NSArray *csvRows;
-                if ([NSFileManager.defaultManager fileExistsAtPath: file]) {
-                    NSError  *error = nil;
-                    NSString *content = [NSString stringWithContentsOfFile: file
-                                                                  encoding: currentSettings.encoding.integerValue
-                                                                     error: &error];
-                    if (error != nil) {
-                        NSAlert *alert = [NSAlert alertWithError: error];
-                        [alert runModal];
-                        continue;
-                    } else {
-                        csvRows = [content csvRowsWithSeparator: separator];
-                    }
-                } else {
-                    csvRows = nil;
+                BOOL isEmpty = YES;
+                for (NSString *field in fields) {
+                    isEmpty = isEmpty && field.length == 0;
+                }
+                if (isEmpty) {
+                    ++nonImportedLineCount;
+                    continue;
                 }
 
-                for (NSUInteger i = ignoredLines; i < csvRows.count; i++) {
-                    NSArray *fields = csvRows[i];
+                NSMutableDictionary *entry = [NSMutableDictionary dictionary];
+                for (NSUInteger j = 0; j < fields.count; j++) {
                     if (stopProcessing) {
                         return;
                     }
 
-                    BOOL isEmpty = YES;
-                    for (NSString *field in fields) {
-                        isEmpty = isEmpty && field.length == 0;
-                    }
-                    if (isEmpty) {
-                        ++nonImportedLineCount;
-                        continue;
+                    // Ignore any field that goes beyond the defined fields.
+                    if (j >= currentSettings.fields.count) {
+                        break;
                     }
 
-                    NSMutableDictionary *entry = [NSMutableDictionary dictionary];
-                    for (NSUInteger j = 0; j < fields.count; j++) {
-                        if (stopProcessing) {
-                            return;
-                        }
+                    NSString *property = currentSettings.fields[j];
+                    if (property.length == 0) {
+                        continue; // An ignored field.
+                    }
 
-                        // Ignore any field that goes beyond the defined fields.
-                        if (j >= currentSettings.fields.count) {
-                            break;
-                        }
-
-                        NSString *property = currentSettings.fields[j];
-                        if (property.length == 0) {
-                            continue; // An ignored field.
-                        }
-
-                        NSString *field = fields[j];
-                        id object = (field.length == 0) ? nil : field;
-                        if ([property isEqualToString: @"date"] || [property isEqualToString: @"valutaDate"]) {
-                            NSRange range = NSMakeRange(0, field.length);
-                            NSError *error;
+                    NSString *field = fields[j];
+                    id       object = (field.length == 0) ? nil : field;
+                    if ([property isEqualToString: @"date"] || [property isEqualToString: @"valutaDate"]) {
+                        NSRange range = NSMakeRange(0, field.length);
+                        NSError *error;
+                        @synchronized(dateFormatter) {
                             if ([dateFormatter getObjectValue: &object
                                                     forString: field
                                                         range: &range
@@ -830,67 +805,72 @@
                                 errorCount++;
                                 object = nil;
                             }
-                        } else {
-                            if ([property isEqualToString: @"value"]) {
-                                object = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: field] decimalValue]];
-                                if ([object isEqualTo: [NSDecimalNumber notANumber]]) {
-                                    LogError(@"File: %@\n\tLine: %lu, value is not a number: %@", file, index, field);
-                                    errorCount++;
-                                    object = nil;
-                                } else {
-                                    object = [object rounded];
-                                }
-
-                            }
                         }
-                        if (object != nil) {
-                            if (entry[property] == nil) {
-                                entry[property] = object;
+                    } else {
+                        if ([property isEqualToString: @"value"]) {
+                            object = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: field] decimalValue]];
+                            if ([object isEqualTo: [NSDecimalNumber notANumber]]) {
+                                LogError(@"File: %@\n\tLine: %lu, value is not a number: %@", file, index, field);
+                                errorCount++;
+                                object = nil;
                             } else {
-                                // If there's already a value then the user selected the same tag for different fields.
-                                // This is sometimes necessary to collect split values, however both object types
-                                // must be the same to be acceptable.
-                                if ([entry[property] isKindOfClass: [object class]]) {
-                                    if ([object isKindOfClass: [NSString class]]) {
-                                        entry[property] = [NSString stringWithFormat: @"%@ %@", entry[property], object];
-                                    } else if ([object isKindOfClass: [NSDecimalNumber class]]) {
-                                        entry[property] = [entry[property] decimalNumberByAdding: object];
-                                    } else {
-                                        errorCount++;
-                                        LogError(@"File: %@\n\tLine: %lu, multiple fields are set to the same import type but cannot be combined: %@",
-                                                 file, index, property);
-                                    }
+                                object = [object rounded];
+                            }
+
+                        }
+                    }
+                    if (object != nil) {
+                        if (entry[property] == nil) {
+                            entry[property] = object;
+                        } else {
+                            // If there's already a value then the user selected the same tag for different fields.
+                            // This is sometimes necessary to collect split values, however both object types
+                            // must be the same to be acceptable.
+                            if ([entry[property] isKindOfClass: [object class]]) {
+                                if ([object isKindOfClass: [NSString class]]) {
+                                    entry[property] = [NSString stringWithFormat: @"%@ %@", entry[property], object];
+                                } else if ([object isKindOfClass: [NSDecimalNumber class]]) {
+                                    entry[property] = [entry[property] decimalNumberByAdding: object];
                                 } else {
                                     errorCount++;
-                                    LogError(@"File: %@\n\tLine: %lu, multiple fields are set to the same import type but have different types: %@",
+                                    LogError(@"File: %@\n\tLine: %lu, multiple fields are set to the same import type but cannot be combined: %@",
                                              file, index, property);
                                 }
+                            } else {
+                                errorCount++;
+                                LogError(@"File: %@\n\tLine: %lu, multiple fields are set to the same import type but have different types: %@",
+                                         file, index, property);
                             }
                         }
                     }
-
-                    if (entry[@"date"] != nil || entry[@"valutadate"] != nil) {
-                        [parsedValues addObject: entry];
-                    } else {
-                        ++nonImportedLineCount;
+                }
+                if (entry[@"date"] != nil || entry[@"valutaDate"] != nil) {
+                    // Handle booking date and valuta date as equal and fill values if missing.
+                    if (entry[@"date"] == nil) {
+                        entry[@"date"] = entry[@"valutaDate"];
                     }
+                    if (entry[@"valutaDate"] == nil) {
+                        entry[@"valutaDate"] = entry[@"date"];
+                    }
+                    [parsedValues addObject: entry];
+                } else {
+                    ++nonImportedLineCount;
                 }
             }
-            [processingSheet preprocessingDoneWithErrorCount: errorCount
-                                                ignoredCount: nonImportedLineCount
-                                                     minDate: minDate
-                                                     maxDate: maxDate
-                                                 canContinue: parsedValues.count > 0];
         }
-        @catch (NSException *error) {
-            LogError(@"%@", error.debugDescription);
-            [processingSheet preprocessingDoneWithFatalError];
-        }
+        [processingSheet preprocessingDoneWithErrorCount: errorCount
+                                            ignoredCount: nonImportedLineCount
+                                                 minDate: minDate
+                                                 maxDate: maxDate
+                                             canContinue: parsedValues.count > 0];
+    }
+    @catch (NSException *error) {
+        LogError(@"%@", error.debugDescription);
+        [processingSheet preprocessingDoneWithFatalError];
     }
 }
 
-- (void)startImport
-{
+- (void)startImport {
     BankAccount *account = [BankAccount accountWithNumber: currentSettings.accountNumber
                                                 subNumber: currentSettings.accountSuffix
                                                  bankCode: currentSettings.bankCode];
@@ -902,10 +882,10 @@
                                                                  inManagedObjectContext: context];
 
         [entry enumerateKeysAndObjectsUsingBlock: ^(id key, id obj, BOOL *stop) {
-             [statement setValue: obj forKey: key];
-         }
+            [statement setValue: obj forKey: key];
+        }
 
-         ];
+        ];
 
         statement.localBankCode = currentSettings.bankCode;
         statement.localAccount = currentSettings.accountNumber;
@@ -939,8 +919,7 @@
     importResult.account = account;
 }
 
-- (IBAction)startProcessing: (id)sender
-{
+- (IBAction)startProcessing: (id)sender {
     [processingSheet prepare];
 
     stopProcessing = NO;
@@ -954,8 +933,7 @@
 /**
  * Recursively called to add files and folders to the file outline.
  */
-- (void)addFileEntryForPath: (NSString *)path atParent: (FileEntry *)parent
-{
+- (void)addFileEntryForPath: (NSString *)path atParent: (FileEntry *)parent {
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
     BOOL isFolder;
@@ -997,19 +975,17 @@
     }
 }
 
-- (void)removeFileEntries: (NSArray *)entries
-{
+- (void)removeFileEntries: (NSArray *)entries {
     for (FileEntry *file in entries) {
         [self removeFileEntries: file.children];
         [fileNames removeObject: file.path];
     }
 }
 
-- (IBAction)addRemoveFile: (id)sender
-{
+- (IBAction)addRemoveFile: (id)sender {
     int clickedSegment = [sender selectedSegment];
     switch (clickedSegment) {
-        case 0 : {
+        case 0: {
             // Add new files.
             NSOpenPanel *panel = [NSOpenPanel openPanel];
             panel.title = NSLocalizedString(@"AP625", nil);
@@ -1038,8 +1014,7 @@
 
 }
 
-- (IBAction)saveSettings: (id)sender
-{
+- (IBAction)saveSettings: (id)sender {
     [importSettingsController commitEditing];
 
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject: currentSettings];
@@ -1055,8 +1030,7 @@
     }
 }
 
-- (IBAction)saveSettingsAs: (id)sender
-{
+- (IBAction)saveSettingsAs: (id)sender {
     [NSApp  beginSheet: newSettingsNameSheet
         modalForWindow: [self window]
          modalDelegate: self
@@ -1064,8 +1038,7 @@
            contextInfo: SAVE_AS_CONTEXT];
 }
 
-- (void)sheetDidEnd: (NSWindow *)sheet returnCode: (NSInteger)returnCode contextInfo: (void *)contextInfo
-{
+- (void)sheetDidEnd: (NSWindow *)sheet returnCode: (NSInteger)returnCode contextInfo: (void *)contextInfo {
     [sheet orderOut: nil];
 
     if (contextInfo == SAVE_AS_CONTEXT) {
@@ -1111,8 +1084,7 @@
     }
 }
 
-- (IBAction)saveTemplate: (id)sender
-{
+- (IBAction)saveTemplate: (id)sender {
     NSString *name = settingsNameField.stringValue;
     if (name.length == 0) {
         NSBeep();
@@ -1121,13 +1093,11 @@
     [NSApp endSheet: newSettingsNameSheet returnCode: NSRunStoppedResponse];
 }
 
-- (IBAction)cancelNewNameTemplate: (id)sender
-{
+- (IBAction)cancelNewNameTemplate: (id)sender {
     [NSApp endSheet: newSettingsNameSheet returnCode: NSRunAbortedResponse];
 }
 
-- (IBAction)removeSettingEntry: (id)sender
-{
+- (IBAction)removeSettingEntry: (id)sender {
     NSString *settingName = [[storedSettingsController selectedObjects] lastObject];
     if (settingName == nil) {
         return;
@@ -1154,22 +1124,19 @@
     }
 }
 
-- (IBAction)encodingChanged: (id)sender
-{
+- (IBAction)encodingChanged: (id)sender {
     Encoding *encoding = [encodingsController.selectedObjects lastObject];
     currentSettings.encoding = encoding.value;
 }
 
-- (IBAction)accountChanged: (id)sender
-{
+- (IBAction)accountChanged: (id)sender {
     updating = YES; // Avoid two refreshs for the two changes here.
     currentSettings.accountNumber = [[accountsController.selectedObjects lastObject] accountNumber];
     updating = NO;
     currentSettings.bankCode = [[accountsController.selectedObjects lastObject] bankCode];
 }
 
-- (IBAction)decimalSeparatorChanged: (id)sender
-{
+- (IBAction)decimalSeparatorChanged: (id)sender {
     NSMenuItem *item = [sender selectedItem];
     if (item.tag == 0) {
         currentSettings.decimalSeparator = @",";
@@ -1180,19 +1147,21 @@
     }
 }
 
-- (IBAction)fieldSeparatorChanged: (id)sender
-{
+- (IBAction)fieldSeparatorChanged: (id)sender {
     NSInteger tag = fieldSeparatorPopupButton.selectedTag;
     switch (tag) {
         case 0:
             currentSettings.fieldSeparator = @",";
             break;
+
         case 1:
             currentSettings.fieldSeparator = @";";
             break;
+
         case 2:
             currentSettings.fieldSeparator = @"\t";
             break;
+
         case 3:
             // No modification.
             break;
@@ -1207,13 +1176,11 @@
 - (void)outlineView: (NSOutlineView *)outlineView
     willDisplayCell: (id)cell
      forTableColumn: (NSTableColumn *)tableColumn
-               item: (id)item
-{
+               item: (id)item {
     [cell setImage: [[item representedObject] icon]];
 }
 
-- (void)outlineViewSelectionDidChange: (NSNotification *)aNotification
-{
+- (void)outlineViewSelectionDidChange: (NSNotification *)aNotification {
     FileEntry *entry = [[fileOutlineView itemAtRow: [fileOutlineView selectedRow]] representedObject];
     if (!entry.isFolder) {
         currentFile = entry.path;
@@ -1224,8 +1191,7 @@
 - (NSDragOperation)outlineView: (NSOutlineView *)outlineView
                   validateDrop: (id < NSDraggingInfo >)info
                   proposedItem: (id)item
-            proposedChildIndex: (NSInteger)index
-{
+            proposedChildIndex: (NSInteger)index {
     if (item == nil) { // Accept drop only on free areas, since we don't drop on existing entries.
         return NSDragOperationCopy;
     }
@@ -1235,12 +1201,11 @@
 - (BOOL)outlineView: (NSOutlineView *)outlineView
          acceptDrop: (id <NSDraggingInfo>)info
                item: (id)item
-         childIndex: (NSInteger)index
-{
+         childIndex: (NSInteger)index {
     NSPasteboard *pasteboard = info.draggingPasteboard;
     NSArray      *urls = [pasteboard readObjectsForClasses: @[[NSURL class]]
                                                    options: @{NSPasteboardURLReadingFileURLsOnlyKey: @YES}
-                          ];
+        ];
 
     for (NSURL *url in urls) {
         [self addFileEntryForPath: url.path atParent: nil];
@@ -1254,31 +1219,30 @@
 - (void)  tableView: (NSTableView *)aTableView
     willDisplayCell: (id)aCell
      forTableColumn: (NSTableColumn *)aTableColumn
-                row: (NSInteger)rowIndex
-{
-    @synchronized(dateFormatter) {
-        [aCell setEditable: NO];
+                row: (NSInteger)rowIndex {
+    [aCell setEditable: NO];
 
-        BOOL hasError = NO;
-        BOOL hasAssignedContent = NO;
-        NSUInteger columnIndex = aTableColumn.identifier.integerValue;
-        if (columnIndex < currentSettings.fields.count) {
-            NSString *field = currentSettings.fields[columnIndex];
-            if (field.length > 0 && ![field isEqualToString: @"undefined"]) {
-                // We have a valid and assigned column. Check content now.
-                hasAssignedContent = YES;
-                NSString *value = [aCell stringValue];
-                if ([field isEqualToString: @"value"]) {
-                    NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: value] decimalValue]];
-                    [aCell setObjectValue: [number rounded]];
-                    if ([number isEqualTo: [NSDecimalNumber notANumber]]) {
-                        hasError = YES;
-                    }
-                } else {
-                    if ([field isEqualToString: @"date"] || [field isEqualToString: @"valutaDate"]) {
-                        id      parsedObject;
-                        NSRange range = NSMakeRange(0, value.length);
-                        NSError *error;
+    BOOL       hasError = NO;
+    BOOL       hasAssignedContent = NO;
+    NSUInteger columnIndex = aTableColumn.identifier.integerValue;
+    if (columnIndex < currentSettings.fields.count) {
+        NSString *field = currentSettings.fields[columnIndex];
+        if (field.length > 0 && ![field isEqualToString: @"undefined"]) {
+            // We have a valid and assigned column. Check content now.
+            hasAssignedContent = YES;
+            NSString *value = [aCell stringValue];
+            if ([field isEqualToString: @"value"]) {
+                NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithDecimal: [[numberFormatter numberFromString: value] decimalValue]];
+                [aCell setObjectValue: [number rounded]];
+                if ([number isEqualTo: [NSDecimalNumber notANumber]]) {
+                    hasError = YES;
+                }
+            } else {
+                if ([field isEqualToString: @"date"] || [field isEqualToString: @"valutaDate"]) {
+                    id      parsedObject;
+                    NSRange range = NSMakeRange(0, value.length);
+                    NSError *error;
+                    @synchronized(dateFormatter) {
                         if ([dateFormatter getObjectValue: &parsedObject
                                                 forString: value
                                                     range: &range
@@ -1292,19 +1256,19 @@
                 }
             }
         }
+    }
 
-        if (!hasAssignedContent) {
-            [aCell setDrawsBackground: NO];
-            [aCell setTextColor: NSColor.grayColor];
+    if (!hasAssignedContent) {
+        [aCell setDrawsBackground: NO];
+        [aCell setTextColor: NSColor.grayColor];
+    } else {
+        if (hasError) {
+            [aCell setDrawsBackground: YES];
+            [aCell setBackgroundColor: NSColor.redColor];
+            [aCell setTextColor: NSColor.whiteColor];
         } else {
-            if (hasError) {
-                [aCell setDrawsBackground: YES];
-                [aCell setBackgroundColor: NSColor.redColor];
-                [aCell setTextColor: NSColor.whiteColor];
-            } else {
-                [aCell setDrawsBackground: NO];
-                [aCell setTextColor: NSColor.blackColor];
-            }
+            [aCell setDrawsBackground: NO];
+            [aCell setTextColor: NSColor.blackColor];
         }
     }
 }
@@ -1312,8 +1276,7 @@
 - (NSDragOperation)tableView: (NSTableView *)aTableView
                 validateDrop: (id <NSDraggingInfo>)info
                  proposedRow: (NSInteger)row
-       proposedDropOperation: (NSTableViewDropOperation)operation
-{
+       proposedDropOperation: (NSTableViewDropOperation)operation {
     NSPoint localPoint = [aTableView convertPoint: info.draggingLocation fromView: nil];
     localPoint.y = 10; // Higher values cause the hit test to return no valid column <sigh>.
     NSInteger columnIndex = [aTableView.headerView columnAtPoint: localPoint];
@@ -1324,8 +1287,7 @@
 - (BOOL)tableView: (NSTableView *)aTableView
        acceptDrop: (id <NSDraggingInfo>)info
               row: (NSInteger)row
-    dropOperation: (NSTableViewDropOperation)operation
-{
+    dropOperation: (NSTableViewDropOperation)operation {
     if (aTableView.selectedColumn > -1) {
         NSPasteboard *pasteboard = info.draggingPasteboard;
 
@@ -1356,8 +1318,7 @@
 #pragma mark -
 #pragma mark Token field delegate methods
 
-- (NSString *)tokenField: (NSTokenField *)tokenField displayStringForRepresentedObject: (id)representedObject
-{
+- (NSString *)tokenField: (NSTokenField *)tokenField displayStringForRepresentedObject: (id)representedObject {
     return [representedObject caption];
 }
 
@@ -1365,8 +1326,7 @@
  * Writes tokens to the pasteboard. Ensures only one token is actually written, regardless of the selected amount
  * as we can only assign one token per column in the input table.
  */
-- (BOOL)tokenField: (NSTokenField *)tokenField writeRepresentedObjects: (NSArray *)objects toPasteboard: (NSPasteboard *)pboard
-{
+- (BOOL)tokenField: (NSTokenField *)tokenField writeRepresentedObjects: (NSArray *)objects toPasteboard: (NSPasteboard *)pboard {
     ColumnToken *token = [objects lastObject];
     NSString    *data = [NSString stringWithFormat: @"%@:%@", token.caption, token.property];
     [pboard setString: data forType: NSPasteboardTypeString];
@@ -1379,8 +1339,7 @@
 - (void)observeValueForKeyPath: (NSString *)keyPath
                       ofObject: (id)object
                         change: (NSDictionary *)change
-                       context: (void *)context
-{
+                       context: (void *)context {
     if ([keyPath isEqualToString: @"selection.isDirty"]) {
         [self updatePreview];
         return;

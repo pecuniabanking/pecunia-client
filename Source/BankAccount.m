@@ -56,13 +56,11 @@
 @synthesize dbStatements;
 @synthesize unread;
 
-- (id)copyWithZone: (NSZone *)zone
-{
+- (id)copyWithZone: (NSZone *)zone {
     return self;
 }
 
-- (NSInteger)calcUnread
-{
+- (NSInteger)calcUnread {
     NSError                *error = nil;
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSEntityDescription    *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: context];
@@ -74,8 +72,7 @@
     return unread = [statements count];
 }
 
-- (NSDictionary *)statementsByDay: (NSArray *)stats
-{
+- (NSDictionary *)statementsByDay: (NSArray *)stats {
     NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity: 10];
 
     for (BankStatement *stat in stats) {
@@ -90,8 +87,7 @@
     return result;
 }
 
-- (void)evaluateQueryResult: (BankQueryResult *)res
-{
+- (void)evaluateQueryResult: (BankQueryResult *)res {
     NSError       *error = nil;
     BankStatement *stat;
     //	ShortDate *lastTransferDate;
@@ -139,14 +135,15 @@
                 }
                 if (isMatched == NO) {
                     stat.isNew = @YES;
-                } else {stat.isNew = @NO; }
+                } else {
+                    stat.isNew = @NO;
+                }
             }
         }
     }
 }
 
-- (void)updateStandingOrders: (NSArray *)orders
-{
+- (void)updateStandingOrders: (NSArray *)orders {
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     StandingOrder          *stord;
     StandingOrder          *order;
@@ -173,8 +170,7 @@
     }
 }
 
-- (int)updateFromQueryResult: (BankQueryResult *)result
-{
+- (int)updateFromQueryResult: (BankQueryResult *)result {
     NSManagedObjectContext *context = MOAssistant.assistant.context;
     BankStatement          *stat;
     NSDate                 *ltd = self.latestTransferDate;
@@ -185,7 +181,7 @@
     if (self.balance == nil) {
         self.balance = [NSDecimalNumber zero];
     }
-    
+
     result.oldBalance = self.balance;
     if (result.balance) {
         self.balance = result.balance;
@@ -257,9 +253,8 @@
             ltd = stmt.date;
         }
     }
-
     [self updateAssignmentsForReportRange];
-    
+
     if (newStatements.count > 0) {
         if (result.balance == nil) {
             // no balance given - calculate new balance
@@ -321,12 +316,11 @@
     return [newStatements count];
 }
 
-- (void)updateStatementBalances
-{
+- (void)updateStatementBalances {
     // repair balances
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
     NSArray          *sortedStatements = [[self valueForKey: @"statements"] sortedArrayUsingDescriptors: @[sd]];
-    
+
     NSDecimalNumber *balance = self.balance;
     for (BankStatement *statement in sortedStatements) {
         // Balance recomputation.
@@ -337,8 +331,7 @@
     }
 }
 
-- (void)updateSupportedTransactions
-{
+- (void)updateSupportedTransactions {
     for (BankUser *user in self.users) {
         if ([user.userId isEqualToString: self.userId]) {
             [HBCIController.controller updateSupportedTransactionsForUser: user];
@@ -346,9 +339,8 @@
     }
 }
 
-- (void)updateBalanceWithValue: (NSDecimalNumber *)value
-{
-    if ([self.balance compare:value] != NSOrderedSame) {
+- (void)updateBalanceWithValue: (NSDecimalNumber *)value {
+    if ([self.balance compare: value] != NSOrderedSame) {
         self.balance = value;
         [self updateStatementBalances];
     }
@@ -358,23 +350,21 @@
  * Account maintance is done here which involves things like correcting transfer times (for correct
  * ordering), balance recomputation and field validation.
  */
-- (void)doMaintenance
-{
+- (void)doMaintenance {
     NSArray *statementsArray = [self valueForKey: @"statements"];
-    
+
     // first repair date if not defined
     for (BankStatement *statement in statementsArray) {
         if (statement.date == nil && statement.valutaDate != nil) {
             statement.date = statement.valutaDate;
         }
     }
-
     // Then ensure that statements on a single day have a little time offset each,
     // so they can maintain a fixed sort order.
     // For now we don't fix valutaDate, though.
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: YES];
-    NSArray *sortedStatements = [statementsArray sortedArrayUsingDescriptors: @[sd]];
-    NSDictionary *statements = [self statementsByDay: sortedStatements];
+    NSArray          *sortedStatements = [statementsArray sortedArrayUsingDescriptors: @[sd]];
+    NSDictionary     *statements = [self statementsByDay: sortedStatements];
     for (ShortDate *date in statements.allKeys) {
         NSDate *newDate = nil;
         BOOL   doRepair = NO;
@@ -389,7 +379,7 @@
                         newDate = statement.date;
                     }
                 }
-                
+
                 if (doRepair) {
                     statement.date = [[NSDate alloc] initWithTimeInterval: 10 sinceDate: newDate];
                     newDate = statement.date;
@@ -397,7 +387,6 @@
             }
         }
     }
-
     // repair balances
     [self updateStatementBalances];
 
@@ -406,8 +395,7 @@
     }
 }
 
-+ (BankAccount *)bankRootForCode: (NSString *)bankCode
-{
++ (BankAccount *)bankRootForCode: (NSString *)bankCode {
     BOOL    found = NO;
     NSError *error = nil;
 
@@ -431,26 +419,25 @@
     }
     if (found) {
         return bankNode;
-    } else {return nil; }
+    } else {
+        return nil;
+    }
 }
 
-- (void)setAccountNumber: (NSString *)n
-{
+- (void)setAccountNumber: (NSString *)n {
     [self willAccessValueForKey: @"accountNumber"];
     [self setPrimitiveValue: n forKey: @"accountNumber"];
     [self didAccessValueForKey: @"accountNumber"];
 }
 
-- (NSString *)accountNumber
-{
+- (NSString *)accountNumber {
     [self willAccessValueForKey: @"accountNumber"];
     NSString *n = [self primitiveValueForKey: @"accountNumber"];
     [self didAccessValueForKey: @"accountNumber"];
     return n;
 }
 
-- (NSDate *)nextDateForDate: (NSDate *)date
-{
+- (NSDate *)nextDateForDate: (NSDate *)date {
     NSError *error = nil;
     NSDate  *startDate = [[ShortDate dateWithDate: date] lowDate];
     NSDate  *endDate = [[ShortDate dateWithDate: date] highDate];
@@ -477,8 +464,7 @@
     return [[NSDate alloc] initWithTimeInterval: 100 sinceDate: currentDate];
 }
 
-- (void)copyStatement: (BankStatement *)stat
-{
+- (void)copyStatement: (BankStatement *)stat {
     NSDate                 *startDate = [[ShortDate dateWithDate: stat.date] lowDate];
     NSDate                 *endDate = [[ShortDate dateWithDate: stat.date] highDate];
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
@@ -493,7 +479,7 @@
                                                         inManagedObjectContext: context];
 
     [stmt setValuesForKeysWithDictionary: attributeValues];
-    
+
     // make sure value is defined
     if (stmt.value == nil) {
         stmt.value = [NSDecimalNumber zero];
@@ -544,15 +530,14 @@
 
     // add to account
     [stmt addToAccount: self];
-    
+
     NSArray *categoryAssignments = [stat categoryAssignments];
     for (StatCatAssignment *assignment in categoryAssignments) {
-        [stmt assignAmount: [[NSDecimalNumber zero] decimalNumberBySubtracting: assignment.value] toCategory:assignment.category withInfo:assignment.userInfo];
+        [stmt assignAmount: [[NSDecimalNumber zero] decimalNumberBySubtracting: assignment.value] toCategory: assignment.category withInfo: assignment.userInfo];
     }
 }
 
-- (void)copyStatementsToManualAccounts: (NSArray *)statements
-{
+- (void)copyStatementsToManualAccounts: (NSArray *)statements {
     NSError *error = nil;
 
     // find all manual accounts that have rules
@@ -580,8 +565,7 @@
     }
 }
 
-- (BankUser *)defaultBankUser
-{
+- (BankUser *)defaultBankUser {
     // If there are multiple user ids per bank account this might need adjustment.
     if (self.userId == nil) {
         LogError(@"Account %@: userId is nil, default user cannot be retrieved!", self.accountNumber);
@@ -590,13 +574,14 @@
     return [BankUser userWithId: self.userId bankCode: self.bankCode];
 }
 
-+ (BankAccount *)accountWithNumber: (NSString *)number bankCode: (NSString *)code
-{
++ (BankAccount *)accountWithNumber: (NSString *)number bankCode: (NSString *)code {
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSManagedObjectModel   *model = [[MOAssistant assistant] model];
 
-    NSError        *error = nil;
-    NSDictionary   *subst = @{@"ACCNT": number, @"BCODE": code};
+    NSError      *error = nil;
+    NSDictionary *subst = @{
+        @"ACCNT": number, @"BCODE": code
+    };
     NSFetchRequest *fetchRequest = [model fetchRequestFromTemplateWithName: @"bankAccountByID" substitutionVariables: subst];
     NSArray        *results = [context executeFetchRequest: fetchRequest error: &error];
     if (error != nil) {
@@ -610,13 +595,14 @@
     return results[0];
 }
 
-+ (BankAccount *)accountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code
-{
++ (BankAccount *)accountWithNumber: (NSString *)number subNumber: (NSString *)subNumber bankCode: (NSString *)code {
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
     NSManagedObjectModel   *model = [[MOAssistant assistant] model];
 
-    NSError        *error = nil;
-    NSDictionary   *subst = @{@"ACCNT": number, @"BCODE": code};
+    NSError      *error = nil;
+    NSDictionary *subst = @{
+        @"ACCNT": number, @"BCODE": code
+    };
     NSFetchRequest *fetchRequest = [model fetchRequestFromTemplateWithName: @"bankAccountByID" substitutionVariables: subst];
     NSArray        *results = [context executeFetchRequest: fetchRequest error: &error];
     if (error != nil) {
@@ -638,8 +624,7 @@
     return nil;
 }
 
-+ (NSInteger)maxUnread
-{
++ (NSInteger)maxUnread {
     NSError   *error = nil;
     NSInteger unread = 0;
 
@@ -666,13 +651,11 @@
     return unread;
 }
 
-- (NSString*)description
-{
+- (NSString *)description {
     return [self descriptionWithIndent: @""];
 }
 
-- (NSString*)descriptionWithIndent: (NSString *)indent
-{
+- (NSString *)descriptionWithIndent: (NSString *)indent {
     NSMutableString *s = [NSMutableString string];
     switch (self.type.intValue) {
         case AccountType_Standard: {
@@ -689,7 +672,7 @@
             [s appendFormat: NSLocalizedString(@"AP1002", @""), indent, self.accountNumber];
             break;
         }
-            
+
         default:
             [s appendFormat: NSLocalizedString(@"AP1003", @""), indent];
             break;
@@ -715,12 +698,11 @@
 
     [s appendFormat: NSLocalizedString(@"AP1010", @""), indent];
 
-    NSArray *infos = [SupportedTransactionInfo supportedTransactionsForAccount:self];
+    NSArray *infos = [SupportedTransactionInfo supportedTransactionsForAccount: self];
     for (SupportedTransactionInfo *info in infos) {
         [s appendFormat: @"    %@", [info descriptionWithIndent: indent]];
     }
-
-    [s appendFormat:@"%@}", indent];
+    [s appendFormat: @"%@}", indent];
     return s;
 }
 
