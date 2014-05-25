@@ -953,7 +953,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
         if (type == TransferReadyForUseDataType) {
             // If this is an edited transfer then finish the edit operation first
             // (and do so the validation) before using it as template.
-            if (![transactionController finishCurrentTransfer]) {
+            if (![transactionController finishCurrentTransferValidatingValue: NO]) {
                 return;
             }
             [rightPane hideFormular];
@@ -984,7 +984,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     }
 
     if (type == TransferReadyForUseDataType) {
-        if ([transactionController finishCurrentTransfer]) {
+        if ([transactionController finishCurrentTransferValidatingValue: YES]) {
             [rightPane hideFormular];
         }
     } else {
@@ -1425,7 +1425,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
 {
     [self storeReceiverInMRUList];
 
-    if ([transactionController finishCurrentTransfer]) {
+    if ([transactionController finishCurrentTransferValidatingValue: YES]) {
         [rightPane hideFormular];
         [pendingTransfers prepareContent];
     }
@@ -1439,7 +1439,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     [self storeReceiverInMRUList];
 
     // Can never be called if editing is not in progress, but better safe than sorry.
-    if ([self editingInProgress] && [transactionController finishCurrentTransfer]) {
+    if ([self editingInProgress] && [transactionController finishCurrentTransferValidatingValue: YES]) {
         NSArray *transfers = @[transactionController.currentTransfer];
         [self doSendTransfers: transfers];
         [rightPane hideFormular];

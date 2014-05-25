@@ -49,8 +49,7 @@
 - (void)saveTransfer: (Transfer *)transfer asTemplateWithName: (NSString *)name;
 - (BOOL)editingInProgress;
 - (void)cancelCurrentTransfer;
-- (BOOL)finishCurrentTransfer;
-- (BOOL)validateCurrentTransfer;
+- (BOOL)finishCurrentTransferValidatingValue: (BOOL)valueValidation;
 
 - (IBAction)countryDidChange: (id)sender;
 

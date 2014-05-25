@@ -708,7 +708,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     NSManagedObjectContext *context = MOAssistant.assistant.context;
 
     if (type == DebitReadyForUseDataType) {
-        if ([transactionController finishCurrentTransfer]) {
+        if ([transactionController finishCurrentTransferValidatingValue: NO]) {
             [rightPane hideFormular];
         }
     } else {
@@ -1085,7 +1085,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
 {
     [self storeReceiverInMRUList];
 
-    if ([transactionController finishCurrentTransfer]) {
+    if ([transactionController finishCurrentTransferValidatingValue: YES]) {
         [rightPane hideFormular];
         [pendingDebits prepareContent];
     }
@@ -1099,7 +1099,7 @@ extern NSString *DebitReadyForUseDataType;        // For dragging an edited tran
     [self storeReceiverInMRUList];
 
     // Can never be called if editing is not in progress, but better safe than sorry.
-    if ([self editingInProgress] && [transactionController finishCurrentTransfer]) {
+    if ([self editingInProgress] && [transactionController finishCurrentTransferValidatingValue: YES]) {
         NSArray *debits = @[transactionController.currentTransfer];
         [self doSendTransfers: debits];
         [rightPane hideFormular];

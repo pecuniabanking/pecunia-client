@@ -33,13 +33,11 @@
  */
 @implementation ChargeByValueTransformer
 
-+ (BOOL)allowsReverseTransformation
-{
++ (BOOL)allowsReverseTransformation {
     return YES;
 }
 
-- (id)transformedValue: (id)value
-{
+- (id)transformedValue: (id)value {
     if (value == nil) {
         return nil;
     }
@@ -51,8 +49,7 @@
     return @([value intValue] - 1);
 }
 
-- (id)reverseTransformedValue: (id)value
-{
+- (id)reverseTransformedValue: (id)value {
     if (value == nil) {
         return nil;
     }
@@ -68,8 +65,7 @@
 @synthesize currentTransferController;
 @synthesize templateController;
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     // sort descriptor for transactions view
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
     NSArray          *sds = @[sd];
@@ -81,20 +77,17 @@
     [templateController setSortDescriptors: sds];
 }
 
-- (void)setManagedObjectContext: (NSManagedObjectContext *)context
-{
+- (void)setManagedObjectContext: (NSManagedObjectContext *)context {
     [templateController setManagedObjectContext: context];
     [templateController prepareContent];
     [currentTransferController setManagedObjectContext: context];
 }
 
-- (void)updateLimits
-{
+- (void)updateLimits {
     limits = [[HBCIController controller] limitsForType: transferType account: account country: selectedCountry];
 }
 
-- (void)prepareTransfer
-{
+- (void)prepareTransfer {
     // Update limits.
     if (transferType != TransferTypeEU) {
         selectedCountry = nil;
@@ -113,7 +106,9 @@
                 if (country.code == selectedCountry) {
                     found = YES;
                     break;
-                } else {idx = idx + 1; }
+                } else {
+                    idx = idx + 1;
+                }
             }
             if (found) {
                 [countryController setSelectionIndex: idx];
@@ -132,7 +127,9 @@
         int setupTime;
         if (limits) {
             setupTime = [limits minSetupTime];
-        } else {setupTime = 2; }
+        } else {
+            setupTime = 2;
+        }
         NSDate *date = [NSDate dateWithTimeIntervalSinceNow: setupTime * 86400];
         NSDate *transferDate = currentTransfer.valutaDate;
         if (transferDate == nil || [transferDate compare: date] == NSOrderedAscending) {
@@ -149,8 +146,7 @@
     currentTransfer.date = [NSDate date];
 }
 
-- (BOOL)newTransferOfType: (TransferType)type
-{
+- (BOOL)newTransferOfType: (TransferType)type {
     NSError                *error = nil;
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
 
@@ -174,8 +170,7 @@
     return YES;
 }
 
-- (BOOL)editExistingTransfer: (Transfer *)transfer
-{
+- (BOOL)editExistingTransfer: (Transfer *)transfer {
     NSError                *error = nil;
     NSManagedObjectContext *context = MOAssistant.assistant.context;
 
@@ -204,8 +199,7 @@
     return YES;
 }
 
-- (BOOL)newTransferFromExistingTransfer: (Transfer *)transfer
-{
+- (BOOL)newTransferFromExistingTransfer: (Transfer *)transfer {
     if (![self newTransferOfType: [transfer.type intValue]]) {
         return NO;
     }
@@ -234,8 +228,7 @@
     return YES;
 }
 
-- (BOOL)newTransferFromTemplate: (TransferTemplate *)template
-{
+- (BOOL)newTransferFromTemplate: (TransferTemplate *)template {
     if (![self newTransferOfType: [template.type intValue]]) {
         return NO;
     }
@@ -259,8 +252,7 @@
     return YES;
 }
 
-- (void)saveTransfer: (Transfer *)transfer asTemplateWithName: (NSString *)name
-{
+- (void)saveTransfer: (Transfer *)transfer asTemplateWithName: (NSString *)name {
     if (name == nil) {
         return;
     }
@@ -273,14 +265,16 @@
     TransferTemplate       *template = [NSEntityDescription insertNewObjectForEntityForName: @"TransferTemplate" inManagedObjectContext: context];
     template.name = name;
     template.type = transfer.type;
-    
+
     // remove schedule
     switch (template.type.intValue) {
         case TransferTypeSEPAScheduled: template.type = @(TransferTypeSEPA); break;
+
         case TransferTypeOldStandardScheduled: template.type = @(TransferTypeOldStandard); break;
+
         default: break;
     }
-    
+
     template.remoteAccount = transfer.remoteAccount;
     template.remoteBankCode = transfer.remoteBankCode;
     template.remoteBankName = transfer.remoteBankName;
@@ -298,46 +292,31 @@
     // TODO: Save the context?
 }
 
-- (BOOL)editingInProgress
-{
+- (BOOL)editingInProgress {
     return currentTransferController.content != nil;
 }
 
-- (void)cancelCurrentTransfer
-{
+- (void)cancelCurrentTransfer {
     NSManagedObjectContext *context = [[MOAssistant assistant] context];
-    
-    [context deleteObject:currentTransfer];
+
+    [context deleteObject: currentTransfer];
     currentTransfer = nil;
     currentTransferController.content = nil;
-    
-    /*
-    if ([self editingInProgress]) {
-        if (currentTransfer.changeState != TransferChangeNew) {
-            currentTransfer.changeState = TransferChangeUnchanged;
-        }
-        currentTransferController.content = nil;
-        if (currentTransferController.managedObjectContext.hasChanges) {
-            [currentTransferController.managedObjectContext rollback];
-        }
-        currentTransfer = nil;
-    }
-     */
+
 }
 
 /**
  * Validates the values entered for the current transfer and if everything seems correct
- * commits the changes.
+ * commits the changes. The value however is only validated if valueValidation is YES.
  * Returns YES if the current transfer could be finished, otherwise (e.g. for validation errors) NO.
  */
-- (BOOL)finishCurrentTransfer
-{
+- (BOOL)finishCurrentTransferValidatingValue: (BOOL)valueValidation {
     [currentTransferController commitEditing];
 
     // prevent rounding issues
     currentTransfer.value = [currentTransfer.value rounded];
 
-    if (![self validateCurrentTransfer]) {
+    if (![self validateCurrentTransferValidatingValue: valueValidation]) {
         return NO;
     }
 
@@ -359,8 +338,7 @@
  * Checks if the given string contains any character that is not allowed and alerts the
  * user if so.
  */
-- (BOOL)validateCharacters: (NSString *)s
-{
+- (BOOL)validateCharacters: (NSString *)s {
     NSCharacterSet *cs = [NSCharacterSet characterSetWithCharactersInString: NSLocalizedString(@"AP200", nil)];
 
     if (s == nil || [s length] == 0) {
@@ -383,17 +361,18 @@
 
 /**
  * Validation of the entered values. Checks for empty or invalid entries.
+ * Ignores the value however, if valueValidation is NO.
  * Returns YES if all entries are ok, otherwise NO.
  */
-- (BOOL)validateCurrentTransfer
-{
+- (BOOL)validateCurrentTransferValidatingValue: (BOOL)valueValidation {
     BOOL         res;
-    NSNumber     *value;
     TransferType activeType = transferType;
     if (currentTransfer.valutaDate != nil) {
         switch (activeType) {
             case TransferTypeOldStandard: activeType = TransferTypeOldStandardScheduled; break;
+
             case TransferTypeSEPA: activeType = TransferTypeSEPAScheduled; break;
+
             default: break;
         }
     }
@@ -420,7 +399,7 @@
                         NSLocalizedString(@"AP1", nil), nil, nil);
         return NO;
     }
-    // do not check remote account for EU transfers, instead IBAN
+    // Don't check remote account for EU transfers, instead IBAN.
     if (activeType != TransferTypeEU && activeType != TransferTypeSEPA && activeType != TransferTypeSEPAScheduled) {
         if (currentTransfer.remoteAccount == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
@@ -429,16 +408,15 @@
             return NO;
         }
     } else {
-        // EU or SEPA transfer
+        // EU or SEPA transfer-
         if (currentTransfer.remoteIBAN == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
                             NSLocalizedString(@"AP68", nil),
                             NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
         }
-        // check IBAN
 
-        // transfer IBAN & BIC to uppercase
+        // Convert IBAN & BIC to uppercase.
         currentTransfer.remoteIBAN = [currentTransfer.remoteIBAN uppercaseString];
         currentTransfer.remoteBIC = [currentTransfer.remoteBIC uppercaseString];
 
@@ -469,36 +447,29 @@
         }
     }
 
-    if ( (value = currentTransfer.value) == nil) {
-        NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-                        NSLocalizedString(@"AP57", nil),
-                        NSLocalizedString(@"AP1", nil), nil, nil);
-        return NO;
+    if (valueValidation) {
+        NSNumber *value = currentTransfer.value;
+        if (value == nil) {
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP57", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil);
+            return NO;
+        }
+        if (value.doubleValue <= 0) {
+            NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
+                            NSLocalizedString(@"AP58", nil),
+                            NSLocalizedString(@"AP1", nil), nil, nil);
+            return NO;
+        }
     }
-    if ([value doubleValue] <= 0) {
-        NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-                        NSLocalizedString(@"AP58", nil),
-                        NSLocalizedString(@"AP1", nil), nil, nil);
-        return NO;
-    }
-
-    // purpose?
-    // purpose is not checked because it is not mandatory
-    /*
-    if (currentTransfer.purpose1 == nil || [currentTransfer.purpose1 length] == 0) {
-        NSRunAlertPanel(NSLocalizedString(@"AP50", nil),
-                        NSLocalizedString(@"AP76", nil),
-                        NSLocalizedString(@"AP1", nil), nil, nil);
-        return NO;
-    }
-    */
+    // Purpose is not checked because it is not mandatory.
 
     // Check if the target date touches a weekend.
     if (transferType == TransferTypeOldStandardScheduled || transferType == TransferTypeSEPAScheduled) {
         NSCalendar *gregorian = [[NSCalendar alloc]
                                  initWithCalendarIdentifier: NSGregorianCalendar];
         NSDateComponents *weekdayComponents =
-        [gregorian components: NSCalendarUnitWeekday fromDate: currentTransfer.valutaDate];
+            [gregorian components: NSCalendarUnitWeekday fromDate: currentTransfer.valutaDate];
         int weekday = [weekdayComponents weekday];
         if (weekday == 1 || weekday == 7) {
             NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
@@ -521,22 +492,21 @@
         }
 
         /* todo
-        if ([curr isEqual: foreignCurr] && limits) {
+           if ([curr isEqual: foreignCurr] && limits) {
             limit = [limits foreignLimit];
-        } else {limit = [limits localLimit]; }
-        if (limit > 0 && [value doubleValue] > limit) {
+           } else {limit = [limits localLimit]; }
+           if (limit > 0 && [value doubleValue] > limit) {
             NSRunAlertPanel(NSLocalizedString(@"AP66", nil),
                             [NSString stringWithFormat: NSLocalizedString(@"AP62", nil), [limits localLimit]],
                             NSLocalizedString(@"AP1", nil), nil, nil);
             return NO;
-        }
-        */ 
+           }
+         */
     }
 
 
     // Verify account/bank information.
-    switch (activeType)
-    {
+    switch (activeType) {
         case TransferTypeEU:
             break;
 
@@ -558,7 +528,7 @@
                 [currentTransfer.remoteCountry caseInsensitiveCompare: @"ch"] == NSOrderedSame ||
                 [currentTransfer.remoteCountry caseInsensitiveCompare: @"ca"] == NSOrderedSame) {
                 res = [[HBCIController controller] checkAccount: currentTransfer.remoteAccount
-                                                    forBank: currentTransfer.remoteBankCode];
+                                                        forBank: currentTransfer.remoteBankCode];
 
                 if (!res) {
                     NSRunAlertPanel(NSLocalizedString(@"AP59", nil),
@@ -571,8 +541,7 @@
     return YES;
 }
 
-- (IBAction)countryDidChange: (id)sender
-{
+- (IBAction)countryDidChange: (id)sender {
     selectedCountry = [(Country *)[[countryController selectedObjects] lastObject] code];
     [self updateLimits];
     currentTransfer.remoteCountry = selectedCountry;
