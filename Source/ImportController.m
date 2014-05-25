@@ -38,6 +38,9 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
+@interface LinkTextField : NSTextField
+@end
+
 @implementation LinkTextField
 
 - (void)resetCursorRects {
@@ -47,6 +50,17 @@
 @end
 
 //----------------------------------------------------------------------------------------------------------------------
+
+@interface FileEntry : NSObject
+
+@property (copy) NSString  *name;
+@property (copy) NSString  *path;
+@property (assign) BOOL    isFolder;
+@property (strong) NSImage *icon;
+
+@property (strong) NSMutableArray *children;
+
+@end
 
 @implementation FileEntry
 
@@ -98,6 +112,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 @interface ProcessingPanel : NSPanel <NSWindowDelegate> {
+@public
     IBOutlet NSProgressIndicator *progressBar;
     IBOutlet NSTextField         *processingTaskLabel;
     IBOutlet NSButton            *startButton;
@@ -111,7 +126,7 @@
     IBOutlet NSTextField         *toLabel;
     IBOutlet NSTextField         *noDataWarningLabel;
 
-    @private
+@private
     BOOL done;
 }
 
@@ -255,6 +270,34 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
+@interface ImportController ()  {
+    IBOutlet NSArrayController *storedSettingsController;
+    IBOutlet NSPanel           *newSettingsNameSheet;
+    IBOutlet ProcessingPanel   *processingSheet;
+    IBOutlet NSTextField       *settingsNameField;
+    IBOutlet NSTextField       *dateFormatLinkLabel;
+    IBOutlet BWGradientBox     *separatorGradient;
+    IBOutlet NSArrayController *accountsController;
+    IBOutlet NSPopUpButton     *decimalSeparatorPopupButton;
+    IBOutlet NSPopUpButton     *fieldSeparatorPopupButton;
+    IBOutlet NSTextField       *customFieldSeparator;
+    IBOutlet NSTextField       *customFieldSeparatorLabel;
+
+@private
+    NSManagedObjectContext *managedObjectContext;
+    NSMutableSet           *fileNames;
+
+    NSFont            *textFont;
+    NSString          *currentFile;
+    NSArray           *currentLines;
+    NSDateFormatter   *dateFormatter;
+    NSNumberFormatter *numberFormatter;
+
+    NSMutableArray *parsedValues;
+    BOOL           updating;
+}
+
+@end
 @implementation ImportController
 
 @synthesize backgroundGradient;
@@ -845,11 +888,16 @@
                     }
                 }
                 if (entry[@"date"] != nil || entry[@"valutaDate"] != nil) {
-                    // Handle booking date and valuta date as equal and fill values if missing.
+                    // Handle booking date and valuta date as equally adequate and fill the missing value (if there's any).
                     if (entry[@"date"] == nil) {
                         entry[@"date"] = entry[@"valutaDate"];
                     }
                     if (entry[@"valutaDate"] == nil) {
+                        entry[@"valutaDate"] = entry[@"date"];
+                    }
+
+                    // Do a sanity check for the order of booking and valuta date.
+                    if ([entry[@"date"] compare: entry[@"valutaDate"]] == NSOrderedDescending) {
                         entry[@"valutaDate"] = entry[@"date"];
                     }
                     [parsedValues addObject: entry];
@@ -876,8 +924,22 @@
                                                  bankCode: currentSettings.bankCode];
     NSManagedObjectContext *context = MOAssistant.assistant.memContext;
 
-    NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 100];
+    BOOL customDateRange = processingSheet->dateRadioGroup.selectedColumn == 1;
+    ShortDate *fromDate = [ShortDate dateWithDate: processingSheet->fromDatePicker.dateValue];
+    ShortDate *toDate = [ShortDate dateWithDate: processingSheet->toDatePicker.dateValue];
+
+    NSMutableArray *statements = [NSMutableArray arrayWithCapacity: parsedValues.count];
     for (NSDictionary *entry in parsedValues) {
+        // Add new entry only if everything is allowed or its date value is within the allowed range.
+        if (customDateRange) {
+            ShortDate *date = [ShortDate dateWithDate: entry[@"date"]]; // Should always be valid.
+            if (date == nil) {
+                continue;
+            }
+            if (![date isBetween: fromDate and: toDate]) {
+                continue;
+            }
+        }
         BankStatement *statement = [NSEntityDescription insertNewObjectForEntityForName: @"BankStatement"
                                                                  inManagedObjectContext: context];
 
@@ -896,12 +958,12 @@
 
         [statements addObject: statement];
     }
-    // check sorting of statements and re-sort if necessary
+
+    // Check sorting of statements and re-sort if necessary.
     if ([statements count] > 0) {
         BankStatement *first = statements[0];
         BankStatement *last = [statements lastObject];
         if ([first.date compare: last.date] == NSOrderedDescending) {
-            // resort
             NSMutableArray *newStats = [NSMutableArray arrayWithCapacity: 100];
             int            j;
             for (j = [statements count] - 1; j >= 0; j--) {
