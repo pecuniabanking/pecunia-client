@@ -1058,12 +1058,14 @@ NSString * escapeSpecial(NSString *s)
                 iResult.ccNumber = res.ccNumber;
                 iResult.lastSettleDate = res.lastSettleDate;
                 
-                // check if order has to be reversed
-                BankStatement *statement1 = res.statements.firstObject;
-                BankStatement *statement2 = res.statements.lastObject;
-                if ([statement1.date compare: statement2.date] == NSOrderedDescending) {
+                // check if order needs to be reversed
+                int idx;
+                
+                BankStatement *stat1 = res.statements.firstObject;
+                BankStatement *stat2 = res.statements.lastObject;
+                
+                if ([stat1.date compare:stat2.date] == NSOrderedDescending) {
                     // reverse order
-                    int            idx;
                     NSMutableArray *statements = [NSMutableArray arrayWithCapacity: 50];
                     for (idx = [res.statements count] - 1; idx >= 0; idx--) {
                         [statements addObject: res.statements[idx]];
@@ -1071,6 +1073,13 @@ NSString * escapeSpecial(NSString *s)
                     iResult.statements = statements;
                 } else {
                     iResult.statements = res.statements;
+                }
+                
+                // calculate balances
+                for (idx = [iResult.statements count] - 1; idx >= 0; idx--) {
+                    BankStatement *stat = [iResult.statements objectAtIndex:idx];
+                    stat.saldo = res.balance;
+                    res.balance = [res.balance decimalNumberBySubtracting: stat.value];
                 }
             } else {
                 // Standard Statements
