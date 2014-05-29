@@ -936,17 +936,20 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
         return;
     }
 
-    NSMutableSet    *childs = [selectedCategory mutableSetValueForKey: @"children"];
+    NSMutableArray  *children = [[[selectedCategory valueForKey: @"children"] allObjects] mutableCopy];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
+    [children sortUsingDescriptors: @[sortDescriptor]];
+
     NSDecimalNumber *totalEarnings = [NSDecimalNumber zero];
     NSDecimalNumber *totalSpendings = [NSDecimalNumber zero];
 
-    if ([childs count] > 0) {
+    if (children.count > 0) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         BOOL           balance = [userDefaults boolForKey: @"balanceCategories"];
 
         NSDecimalNumber *zero = [NSDecimalNumber zero];
 
-        for (Category *childCategory in childs) {
+        for (Category *childCategory in children) {
             if ([childCategory.isHidden boolValue] || [childCategory.noCatRep boolValue]) {
                 continue;
             }
@@ -1007,20 +1010,15 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 
                     [earningsCategories addObject: pieData];
                     [sortedEarningValues addObject: @{@"index": @((int)earningsCategories.count - 1),
-                     @"value": [earnings abs]}];
+                                                      @"value": [earnings abs]}];
                 }
             }
         }
 
         // The sorted arrays contain values for the mini plots.
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO];
+        sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO];
         [sortedEarningValues sortUsingDescriptors: @[sortDescriptor]];
         [sortedSpendingValues sortUsingDescriptors: @[sortDescriptor]];
-
-        // Since the child categories are not sorted in any way we sort them here by name.
-        sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
-        [earningsCategories sortUsingDescriptors: @[sortDescriptor]];
-        [spendingsCategories sortUsingDescriptors: @[sortDescriptor]];
     }
 
     for (NSUInteger i = 0; i < earningsCategories.count; i++) {
