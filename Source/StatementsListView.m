@@ -53,11 +53,8 @@ extern NSString *StatementTypeKey;
     BOOL showAssignedIndicators;
     id   owner;
     BOOL autoResetNew;
-    BOOL pendingReload;  // Set when a notification arrived to completely reload the listview.
-    BOOL pendingRefresh; // Set when there was already a notification to refresh visible cells (for property changes).
-    BOOL activating;     // Set when a cells are activated programmatically (so we don't send notifications around).
+    BOOL activating;     // Set when cells are activated programmatically (so we don't send notifications around).
 
-    // These are cached user settings.
     BOOL showHeaders;
 }
 
@@ -132,7 +129,6 @@ extern void *UserDefaultsBindingContext;
                            forKeyPath: @"arrangedObjects"
                               options: 0
                               context: DataSourceBindingContext];
-
     } else {
         [super bind: binding toObject: observableObject withKeyPath: keyPath options: options];
     }
@@ -154,43 +150,25 @@ extern void *UserDefaultsBindingContext;
 {
     // Coalesce many notifications into one.
     if (context == UserDefaultsBindingContext) {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         if ([keyPath isEqualToString: @"showHeadersInLists"]) {
-            showHeaders = [userDefaults boolForKey: @"showHeadersInLists"];
-
-            if (!pendingReload) {
-                pendingReload = YES;
-                [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
-            }
+            showHeaders = [NSUserDefaults.standardUserDefaults boolForKey: @"showHeadersInLists"];
+            [self updateVisibleCells];
             return;
         }
     }
 
     if (context == DataSourceBindingContext) {
-        if (!pendingReload) {
-            pendingReload = YES;
-            [self performSelector: @selector(reloadData) withObject: nil afterDelay: 0.1];
-        }
+        [self reloadData];
         return;
     }
-
-    /*
-    if (!pendingReload && !pendingRefresh) {
-        pendingRefresh = YES;
-        [self performSelector: @selector(updateVisibleCells) withObject: nil afterDelay: 0.0];
-    }
-     */
 
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
-#pragma mark -
-#pragma mark PXListViewDelegate protocoll implementation
+#pragma mark - PXListViewDelegate protocoll implementation
 
 - (NSUInteger)numberOfRowsInListView: (PXListView *)aListView
 {
-    pendingReload = NO;
-
 #pragma unused(aListView)
     return [dataSource count];
 }
@@ -337,8 +315,6 @@ extern void *UserDefaultsBindingContext;
  */
 - (void)updateVisibleCells
 {
-    pendingRefresh = NO;
-
     NSArray *cells = [self visibleCells];
     for (StatementsListViewCell *cell in cells) {
         [self fillCell: cell forRow: [cell row]];
@@ -373,8 +349,7 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-#pragma mark -
-#pragma mark Drag'n drop
+#pragma mark - Drag'n drop
 
 extern NSString *const BankStatementDataType;
 

@@ -68,6 +68,8 @@ extern void *UserDefaultsBindingContext;
     CPTAnimationOperation *rangeAnimationOperation;
     CPTAnimationOperation *globalRangeAnimationOperation;
 
+    CPTFunctionDataSource *regressionDataSource;
+
     NSPoint lastMouseDown;
 }
 
@@ -233,6 +235,10 @@ double trend(double x)
         
         [graph addPlot: linePlot];
 
+        regressionDataSource = [CPTFunctionDataSource dataSourceForPlot: linePlot
+                                                           withFunction: trend];
+        regressionDataSource.resolution = 10;
+
         [self updateColors];
     }
 
@@ -372,11 +378,6 @@ double trend(double x)
 - (void)updateGraphRange
 {
     LogEnter;
-
-    CPTScatterPlot        *regressionPlot = (CPTScatterPlot *)[graph plotWithIdentifier: @"regressionPlot"];
-    CPTFunctionDataSource *plotDataSource = [CPTFunctionDataSource dataSourceForPlot: regressionPlot
-                                                                        withFunction: trend];
-    plotDataSource.resolution = 10;
 
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
 

@@ -151,7 +151,7 @@ extern void *UserDefaultsBindingContext;
     NSString    *searchName = [te stringValue];
 
     if ([searchName length] == 0) {
-        [categoryAssignments setFilterPredicate:nil];
+        [categoryAssignments setFilterPredicate: nil];
     } else {
         NSPredicate *pred = [NSPredicate predicateWithFormat: @"statement.purpose contains[c] %@ or statement.remoteName contains[c] %@ or userInfo contains[c] %@ or value = %@",
                              searchName, searchName, searchName, [NSDecimalNumber decimalNumberWithString: searchName locale: [NSLocale currentLocale]]];
@@ -164,8 +164,6 @@ extern void *UserDefaultsBindingContext;
 - (void)clearStatementFilter
 {
     [categoryAssignments setFilterPredicate:nil];
-    
-    
 }
 
 - (IBAction)sortingChanged: (id)sender
@@ -324,6 +322,7 @@ extern void *UserDefaultsBindingContext;
         }
     }
     [categoryAssignments setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey: key ascending: sortAscending]]];
+    [categoryAssignments rearrangeObjects];
 }
 
 - (void)deleteSelectedStatements

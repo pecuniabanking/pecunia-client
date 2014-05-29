@@ -32,7 +32,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <arrayController mode="entity" entityName="StatCatAssignment" editable="NO" automaticallyPreparesContent="YES" preservesSelection="NO" selectsInsertedObjects="NO" avoidsEmptySelection="NO" clearsFilterPredicateOnInsertion="NO" automaticallyRearrangesObjects="YES" id="G0H-Vc-kxE" userLabel="Category Assignments">
+        <arrayController mode="entity" entityName="StatCatAssignment" editable="NO" selectsInsertedObjects="NO" avoidsEmptySelection="NO" clearsFilterPredicateOnInsertion="NO" id="G0H-Vc-kxE" userLabel="Category Assignments">
             <declaredKeys>
                 <string>Purpose</string>
                 <string>Infos.TransText</string>
@@ -82,7 +82,7 @@
                 <string>statement.currencySymbol</string>
             </declaredKeys>
             <connections>
-                <binding destination="-2" name="contentArray" keyPath="selectedCategory.reportedAssignments" id="DIe-W7-ibn"/>
+                <binding destination="-2" name="contentArray" keyPath="selectedCategory.reportedAssignments" id="ha5-ZD-yHN"/>
             </connections>
         </arrayController>
         <splitView autosaveName="MainSplitV" dividerStyle="thin" id="w0V-X0-deR" userLabel="Statements Overview" customClass="PecuniaSplitView">

@@ -30,7 +30,6 @@ typedef NSInteger PXIsDragStartResult;
 - (PXListViewCell*)visibleCellForRow:(NSUInteger)row;
 - (NSArray*)visibleCellsForRowIndexes:(NSIndexSet*)rows;
 
-- (NSUInteger)numberOfRows;
 - (void)deselectRowIndexes:(NSIndexSet*)rows;
 - (void)postSelectionDidChangeNotification;
 
