@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -26,7 +26,7 @@
 #import "AnimationHelper.h"
 #import "NSColor+PecuniaAdditions.h"
 #import "PecuniaPlotTimeFormatter.h"
-#import "MCEMDecimalNumberAdditions.h"
+#import "NSDecimalNumber+PecuniaAdditions.h"
 #import "ColumnLayoutCorePlotLayer.h"
 
 #import "MOAssistant.h"

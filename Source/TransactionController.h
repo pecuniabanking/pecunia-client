@@ -17,10 +17,10 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
 #import "Transfer.h"
 
 @class BankAccount;
+@class BankStatement;
 @class TransactionLimits;
 
 @interface ChargeByValueTransformer : NSValueTransformer
@@ -47,6 +47,7 @@
 - (BOOL)newTransferFromExistingTransfer: (Transfer *)transfer;
 - (BOOL)newTransferFromTemplate: (TransferTemplate *)template;
 - (void)saveTransfer: (Transfer *)transfer asTemplateWithName: (NSString *)name;
+- (void)saveStatement: (BankStatement *)statement asTemplateWithName: (NSString *)name;
 - (BOOL)editingInProgress;
 - (void)cancelCurrentTransfer;
 - (BOOL)finishCurrentTransferValidatingValue: (BOOL)valueValidation;

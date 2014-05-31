@@ -25,7 +25,9 @@
 #import "PreferenceController.h"
 #import "Category.h"
 #import "StatCatAssignment.h"
+
 #import "BankStatement.h"
+#import "BankAccount.h"
 
 extern NSString *const CategoryColorNotification;
 extern NSString *const CategoryKey;
@@ -292,6 +294,70 @@ extern NSDictionary    *whiteAttributes;
         turnoversLabel.stringValue = [NSString stringWithFormat: NSLocalizedString(@"AP207", nil), turnovers];
     } else {
         turnoversLabel.stringValue = NSLocalizedString(@"AP206", nil);
+    }
+}
+
+- (void)rightMouseDown: (NSEvent *)theEvent {
+    // Select cell on right click to have a context for the menu, if it isn't already selected.
+    if (![[self.listView selectedRows] containsIndex: self.row]) {
+        NSIndexSet	*clickedIndexSet = [NSIndexSet indexSetWithIndex: self.row];
+        [self.listView selectRowIndexes: clickedIndexSet byExtendingSelection: NO];
+    }
+
+    [super rightMouseDown: theEvent];
+}
+
+- (NSMenu *)menuForEvent: (NSEvent *)theEvent {
+    if ([self.delegate conformsToProtocol: @protocol(StatementsListViewNotificationProtocol)]) {
+        if (![self.delegate canHandleMenuActions]) {
+            return nil;
+        }
+    }
+
+    BOOL singleSelection = [self.listView selectedRows].count == 1;
+    NSMenu *menu = [[NSMenu alloc] initWithTitle: @"Statement List Context menu"];
+
+    NSMenuItem *item = [menu addItemWithTitle: NSLocalizedString(@"AP238", nil)
+                                       action: @selector(menuAction:)
+                                keyEquivalent: @""];
+    item.tag = MenuActionAddStatement;
+
+    item = [menu addItemWithTitle: NSLocalizedString(@"AP233", nil)
+                           action: singleSelection ? @selector(menuAction:) : nil
+                    keyEquivalent: @""];
+    item.tag = MenuActionSplitStatement;
+
+    item = [menu addItemWithTitle: NSLocalizedString(@"AP234", nil)
+                           action: @selector(menuAction:)
+                    keyEquivalent: @""];
+    item.tag = MenuActionDeleteStatement;
+
+    [menu addItem: [NSMenuItem separatorItem]];
+    item = [menu addItemWithTitle: NSLocalizedString(@"AP235", nil)
+                           action: @selector(menuAction:)
+                    keyEquivalent: @""];
+    item.tag = MenuActionMarkUnread;
+
+    BankStatement *statement = [self.representedObject statement];
+    if (!statement.account.isManual.boolValue) {
+        [menu addItem: [NSMenuItem separatorItem]];
+        item = [menu addItemWithTitle: NSLocalizedString(@"AP236", nil)
+                               action: singleSelection ? @selector(menuAction:) : nil
+                        keyEquivalent: @""];
+        item.tag = MenuActionStartTransfer;
+    }
+
+    item = [menu addItemWithTitle: NSLocalizedString(@"AP237", nil)
+                           action: singleSelection ? @selector(menuAction:) : nil
+                    keyEquivalent: @""];
+    item.tag = MenuActionCreateTemplate;
+
+    return menu;
+}
+
+- (void)menuAction: (id)sender {
+    if ([self.delegate conformsToProtocol: @protocol(StatementsListViewNotificationProtocol)]) {
+        [self.delegate menuActionForCell: self action: [sender tag]];
     }
 }
 

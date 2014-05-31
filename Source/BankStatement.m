@@ -24,7 +24,7 @@
 #import "MOAssistant.h"
 #import "StatCatAssignment.h"
 #import "ShortDate.h"
-#import "MCEMDecimalNumberAdditions.h"
+#import "NSDecimalNumber+PecuniaAdditions.h"
 
 static NSArray *catCache = nil;
 

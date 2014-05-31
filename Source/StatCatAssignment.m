@@ -24,7 +24,7 @@
 #import "BankStatement.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
-#import "MCEMDecimalNumberAdditions.h"
+#import "NSDecimalNumber+PecuniaAdditions.h"
 
 #import "ShortDate.h"
 

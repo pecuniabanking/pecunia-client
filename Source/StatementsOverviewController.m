@@ -19,7 +19,7 @@
 
 #import "StatementsOverviewController.h"
 
-#import "StatementsListview.h"
+#import "MessageLog.h"
 
 #import "MOAssistant.h"
 #import "Category.h"
@@ -33,6 +33,8 @@
 #import "PecuniaSplitView.h"
 #import "AttachmentImageView.h"
 #import "BankingController.h"
+#import "BankStatementController.h"
+#import "HBCIController.h"
 
 #import "NSColor+PecuniaAdditions.h"
 
@@ -92,6 +94,8 @@ extern void *UserDefaultsBindingContext;
 
     [self updateSorting];
     [self updateValueColors];
+
+    statementsListView.owner = self;
 
     // Setup statements listview.
     [statementsListView bind: @"dataSource" toObject: categoryAssignments withKeyPath: @"arrangedObjects" options: nil];
@@ -607,21 +611,71 @@ extern void *UserDefaultsBindingContext;
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
+#pragma mark - StatementsListViewProtocol
+
+- (void)actionForCategory: (StatCatAssignment *)assignment action: (StatementMenuAction)action {
+    LogEnter;
+
+    Category *category = assignment.category; // This is not the bank account for the statement, but the assigned category.
+    BankAccount *account = assignment.statement.account;
+    switch (action) {
+        case MenuActionAddStatement:
+            if (category.accountNumber != nil) {
+                BankStatementController *controller = [[BankStatementController alloc] initWithAccount: (BankAccount *)category
+                                                                                             statement: nil];
+
+                int res = [NSApp runModalForWindow: controller.window];
+                if (res != 0) {
+                    [assignment.category updateAssignmentsForReportRange];
+                }
+            }
+
+            break;
+
+        case MenuActionSplitStatement:
+            [self splitSelectedStatement];
+            break;
+
+        case MenuActionDeleteStatement:
+            [self deleteSelectedStatements];
+            break;
+
+        case MenuActionMarkUnread:
+            [self markSelectedStatementsUnread];
+            break;
+
+        case MenuActionStartTransfer:
+            if ([[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: account]) {
+                [BankingController.controller startTransferOfType: TransferTypeSEPA
+                                                      fromAccount: account
+                                                        statement: assignment.statement];
+            } else {
+                if ([[HBCIController controller] isTransferSupported: TransferTypeInternal forAccount: account]) {
+                    [BankingController.controller startTransferOfType: TransferTypeInternal
+                                                          fromAccount: account
+                                                            statement: assignment.statement];
+                }
+            }
+            break;
+
+        case MenuActionCreateTemplate:
+            [BankingController.controller createTemplateFromStatement: assignment.statement];
+            break;
+    }
+    
+    LogLeave;
+
+}
+
 #pragma mark - PecuniaSectionItem protocol
 
-- (void)activate
-{
-
+- (void)activate {
 }
 
-- (void)deactivate
-{
-
+- (void)deactivate {
 }
 
-- (void)setTimeRangeFrom: (ShortDate *)from to: (ShortDate *)to
-{
-
+- (void)setTimeRangeFrom: (ShortDate *)from to: (ShortDate *)to {
 }
 
 - (void)print

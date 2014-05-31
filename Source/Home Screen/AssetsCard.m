@@ -25,7 +25,7 @@
 
 #import "NSColor+PecuniaAdditions.h"
 #import "PecuniaPlotTimeFormatter.h"
-#import "MCEMDecimalNumberAdditions.h"
+#import "NSDecimalNumber+PecuniaAdditions.h"
 
 #import "MOAssistant.h"
 #import "BankingController.h"

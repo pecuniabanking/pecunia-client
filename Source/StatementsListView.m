@@ -19,29 +19,13 @@
 
 #import "StatementsListview.h"
 #import "StatementsListViewCell.h"
+
+#import "MessageLog.h"
+
 #import "StatCatAssignment.h"
 #import "ShortDate.h"
 #import "BankStatement.h"
 #import "BankAccount.h"
-
-extern NSString *StatementDateKey;
-extern NSString *StatementTurnoversKey;
-extern NSString *StatementRemoteNameKey;
-extern NSString *StatementPurposeKey;
-extern NSString *StatementCategoriesKey;
-extern NSString *StatementValueKey;
-extern NSString *StatementSaldoKey;
-extern NSString *StatementCurrencyKey;
-extern NSString *StatementTransactionTextKey;
-extern NSString *StatementIndexKey;
-extern NSString *StatementNoteKey;
-extern NSString *StatementRemoteBankNameKey;
-extern NSString *StatementColorKey;
-extern NSString *StatementRemoteAccountKey;
-extern NSString *StatementRemoteBankCodeKey;
-extern NSString *StatementRemoteIBANKey;
-extern NSString *StatementRemoteBICKey;
-extern NSString *StatementTypeKey;
 
 @interface StatementsListView ()
 {
@@ -72,8 +56,7 @@ extern NSString *StatementTypeKey;
 static void *DataSourceBindingContext = (void *)@"DataSourceContext";
 extern void *UserDefaultsBindingContext;
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
 
     [self setDelegate: self];
@@ -100,8 +83,7 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [self removeBindings];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -110,16 +92,14 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark - Bindings, KVO and KVC
 
-- (void)removeBindings
-{
+- (void)removeBindings {
     [observedObject removeObserver: self forKeyPath: @"arrangedObjects"];
 }
 
 - (void)   bind: (NSString *)binding
        toObject: (id)observableObject
     withKeyPath: (NSString *)keyPath
-        options: (NSDictionary *)options
-{
+        options: (NSDictionary *)options {
     if ([binding isEqualToString: @"dataSource"]) {
         observedObject = observableObject;
         dataSource = [observableObject valueForKey: keyPath];
@@ -134,8 +114,7 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (void)unbind: (NSString *)binding
-{
+- (void)unbind: (NSString *)binding {
     if ([binding isEqualToString: @"dataSource"]) {
         [self removeBindings];
     } else {
@@ -146,8 +125,7 @@ extern void *UserDefaultsBindingContext;
 - (void)observeValueForKeyPath: (NSString *)keyPath
                       ofObject: (id)object
                         change: (NSDictionary *)change
-                       context: (void *)context
-{
+                       context: (void *)context {
     // Coalesce many notifications into one.
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"showHeadersInLists"]) {
@@ -167,14 +145,12 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark - PXListViewDelegate protocoll implementation
 
-- (NSUInteger)numberOfRowsInListView: (PXListView *)aListView
-{
+- (NSUInteger)numberOfRowsInListView: (PXListView *)aListView {
 #pragma unused(aListView)
     return [dataSource count];
 }
 
-- (BOOL)showsHeaderForRow: (NSUInteger)row
-{
+- (BOOL)showsHeaderForRow: (NSUInteger)row {
     // The given row can be out of bounds as we asynchronously reload the list on datasource changes
     // and there can be relayout events before the actual reload kicks in.
     if (!showHeaders || !canShowHeaders || row >= dataSource.count) {
@@ -198,8 +174,7 @@ extern void *UserDefaultsBindingContext;
  * Looks through the statement array starting with "row" and counts how many entries follow it with the
  * same date (time is not compared).
  */
-- (int)countSameDatesFromRow: (NSUInteger)row
-{
+- (int)countSameDatesFromRow: (NSUInteger)row {
     int result = 1;
 
     BankStatement *statement = [dataSource[row] statement];
@@ -220,8 +195,7 @@ extern void *UserDefaultsBindingContext;
 #define CELL_BODY_HEIGHT   49
 #define CELL_HEADER_HEIGHT 20
 
-- (void)fillCell: (StatementsListViewCell *)cell forRow: (NSUInteger)row
-{
+- (void)fillCell: (StatementsListViewCell *)cell forRow: (NSUInteger)row {
     StatCatAssignment *assignment = (StatCatAssignment *)dataSource[row];
 
     cell.delegate = self;
@@ -256,8 +230,7 @@ extern void *UserDefaultsBindingContext;
  * to avoid creating potentially many cells. This way we can have many entries but still only as many
  * cells as fit in the window.
  */
-- (PXListViewCell *)listView: (PXListView *)aListView cellForRow: (NSUInteger)row
-{
+- (PXListViewCell *)listView: (PXListView *)aListView cellForRow: (NSUInteger)row {
     StatementsListViewCell *cell = (StatementsListViewCell *)[aListView dequeueCellWithReusableIdentifier: @"statcell"];
 
     if (!cell) {
@@ -269,24 +242,21 @@ extern void *UserDefaultsBindingContext;
     return cell;
 }
 
-- (CGFloat)listView: (PXListView *)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging
-{
+- (CGFloat)listView: (PXListView *)aListView heightOfRow: (NSUInteger)row forDragging: (BOOL)forDragging {
     if (!forDragging && [self showsHeaderForRow: row]) {
         return CELL_BODY_HEIGHT + CELL_HEADER_HEIGHT;
     }
     return CELL_BODY_HEIGHT;
 }
 
-- (NSRange)listView: (PXListView *)aListView rangeOfDraggedRow: (NSUInteger)row
-{
+- (NSRange)listView: (PXListView *)aListView rangeOfDraggedRow: (NSUInteger)row {
     if ([self showsHeaderForRow: row]) {
         return NSMakeRange(CELL_HEADER_HEIGHT, CELL_BODY_HEIGHT);
     }
     return NSMakeRange(0, CELL_BODY_HEIGHT);
 }
 
-- (void)listViewSelectionDidChange: (NSNotification *)aNotification
-{
+- (void)listViewSelectionDidChange: (NSNotification *)aNotification {
     if (autoResetNew) {
         // A selected statement automatically loses the "new" state (if auto reset is enabled).
         NSIndexSet *selection = [self selectedRows];
@@ -305,16 +275,14 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (bool)listView: (PXListView *)aListView shouldSelectRows: (NSIndexSet *)rows byExtendingSelection: (BOOL)shouldExtend
-{
+- (bool)listView: (PXListView *)aListView shouldSelectRows: (NSIndexSet *)rows byExtendingSelection: (BOOL)shouldExtend {
     return !self.disableSelection;
 }
 
 /**
  * Triggered when KVO notifies us about changes.
  */
-- (void)updateVisibleCells
-{
+- (void)updateVisibleCells {
     NSArray *cells = [self visibleCells];
     for (StatementsListViewCell *cell in cells) {
         [self fillCell: cell forRow: [cell row]];
@@ -325,8 +293,7 @@ extern void *UserDefaultsBindingContext;
  * Activates all selected cells. If no cell is selected then all cells are activated.
  * Implicitly makes all cells show the activator.
  */
-- (void)activateCells
-{
+- (void)activateCells {
     activating = YES;
     @try {
         NSIndexSet *selection = [self selectedRows];
@@ -355,8 +322,7 @@ extern NSString *const BankStatementDataType;
 
 - (BOOL)listView: (PXListView *)aListView writeRowsWithIndexes: (NSIndexSet *)rowIndexes
     toPasteboard: (NSPasteboard *)dragPasteboard
-       slideBack: (BOOL *)slideBack
-{
+       slideBack: (BOOL *)slideBack {
     *slideBack = YES;
 
     // Keep a copy of the selected indexes as the selection is removed during the drag operation,
@@ -388,14 +354,25 @@ extern NSString *const BankStatementDataType;
     return YES;
 }
 
-- (void)cellActivationChanged: (BOOL)state forIndex: (NSUInteger)index
-{
+#pragma mark - StatementsListViewNotificationProtocol
+
+- (void)cellActivationChanged: (BOOL)state forIndex: (NSUInteger)index {
     if (!activating) {
         // Simply forward the notification to the notification delegate if any is set.
         if ([self.owner respondsToSelector: @selector(activationChanged:forIndex:)]) {
             [self.owner activationChanged: state forIndex: index];
         }
     }
+}
+
+- (void)menuActionForCell: (PecuniaListViewCell *)cell action: (StatementMenuAction)action {
+    if ([self.owner respondsToSelector: @selector(actionForCategory:action:)]) {
+        [self.owner actionForCategory: cell.representedObject action: action];
+    }
+}
+
+- (BOOL)canHandleMenuActions {
+    return [self.owner respondsToSelector: @selector(actionForCategory:action:)];
 }
 
 @end

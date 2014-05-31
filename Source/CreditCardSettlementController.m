@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -50,20 +50,13 @@
         PDFDocument *document = [[PDFDocument alloc] initWithData: settlement.document];
         [pdfView setDocument: document];
     } else {
-        NSString *path = [[NSBundle mainBundle] resourcePath];
-        path = [path stringByAppendingString: @"/noccsettlements.pdf"];
+        NSString *path = [NSBundle.mainBundle pathForResource: @"noccsettlements" ofType: @"pdf"];
+
         NSData      *data = [NSData dataWithContentsOfFile: path];
         PDFDocument *document = [[PDFDocument alloc] initWithData: data];
         [pdfView setDocument: document];
     }
     [self enableButtons];
-}
-
-- (void)windowDidLoad
-{
-    [super windowDidLoad];
-
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
 
 - (void)enableButtons

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -598,6 +598,11 @@ static ShortDate *endReportDate = nil;
     return self == Category.nassRoot;
 }
 
+- (BOOL)isCategoryRoot
+{
+    return self == Category.catRoot;
+}
+
 - (id)children
 {
     if (hiddenChildren > 0 && !PreferenceController.showHiddenCategories) {
@@ -933,6 +938,21 @@ static ShortDate *endReportDate = nil;
         parent = parent.parent;
     }
     return YES;
+}
+
+/**
+ * Returns YES if this category is an account and not manual, or if it contains at least one child like that.
+ */
+- (BOOL)canSynchronize {
+    if (self.accountNumber != nil && [self respondsToSelector: @selector(isManual)] && ![(id)self isManual].boolValue) {
+        return YES;
+    }
+    for (Category *category in self.children) {
+        if (category.canSynchronize) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (NSColor *)categoryColor

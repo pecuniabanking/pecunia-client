@@ -428,6 +428,9 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 	if(!shouldExtend) {
         [updatedCellIndexes addIndexes:_selectedRows];
 		[_selectedRows removeAllIndexes];
+        if (rows.count == 1) {
+            _selectionAnchor = rows.firstIndex;
+        }
 	}
 	
 	[_selectedRows addIndexes:rows];

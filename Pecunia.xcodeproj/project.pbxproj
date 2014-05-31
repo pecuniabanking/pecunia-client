@@ -223,7 +223,7 @@
 		277788B4173CE22700430EBC /* DateAndValutaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B259139D52690026BEE2 /* DateAndValutaCell.m */; };
 		277788B5173CE22700430EBC /* AmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B315139D6B390026BEE2 /* AmountCell.m */; };
 		277788B6173CE22700430EBC /* DockIconController.m in Sources */ = {isa = PBXBuildFile; fileRef = B138B3DE139EBC0E0026BEE2 /* DockIconController.m */; };
-		277788B7173CE22700430EBC /* MCEMDecimalNumberAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */; };
+		277788B7173CE22700430EBC /* NSDecimalNumber+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B197C3E313C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m */; };
 		277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274DE2B313F992A50009EB77 /* MainBackgroundView.m */; };
 		277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2724DC33140155F000B0FE15 /* RoundedInnerShadowView.m */; };
 		277788BA173CE22700430EBC /* RoundedSidebar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27150D9F140ABDAC000841E2 /* RoundedSidebar.m */; };
@@ -433,7 +433,7 @@
 		277789A5173CE22700430EBC /* delete2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42816AAD7C100FF371E /* delete2.png */; };
 		277789A6173CE22700430EBC /* delete2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2765D42916AAD7C100FF371E /* delete2@2x.png */; };
 		277789A7173CE22700430EBC /* CreditCardSettlement.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E3E4B016BB02C800DC1638 /* CreditCardSettlement.xib */; };
-		277789A8173CE22700430EBC /* noccsettlements.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B1E3E4BD16BC6DE500DC1638 /* noccsettlements.pdf */; };
+		277789A8173CE22700430EBC /* de.lproj in Resources */ = {isa = PBXBuildFile; fileRef = B1E3E4BD16BC6DE500DC1638 /* de.lproj */; };
 		277789A9173CE22700430EBC /* delete3.png in Resources */ = {isa = PBXBuildFile; fileRef = 2791FBD416CFCA4C00953116 /* delete3.png */; };
 		277789AA173CE22700430EBC /* delete3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2791FBD516CFCA4C00953116 /* delete3@2x.png */; };
 		277789AB173CE22700430EBC /* reset.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C202FB16E3894100D696BF /* reset.png */; };
@@ -808,7 +808,7 @@
 		B196E03D0FABA2CC00509748 /* WorkerThread.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E03C0FABA2CC00509748 /* WorkerThread.m */; };
 		B196E0940FACE15F00509748 /* BSSelectWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E0930FACE15F00509748 /* BSSelectWindowController.m */; };
 		B196E1B20FB4CFE200509748 /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B196E1B10FB4CFE200509748 /* StatusBarController.m */; };
-		B197C3E413C3A28F0025F137 /* MCEMDecimalNumberAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */; };
+		B197C3E413C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B197C3E313C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m */; };
 		B19822DD0E6F304A001C4C70 /* CategoryAnalysisWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */; };
 		B19A85F00F3CC3D3000FE9B3 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */; };
 		B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */ = {isa = PBXBuildFile; fileRef = B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */; };
@@ -851,7 +851,7 @@
 		B1DE0769165FB554004FFC8A /* jre.zip in Resources */ = {isa = PBXBuildFile; fileRef = B1DE0768165FB554004FFC8A /* jre.zip */; };
 		B1E3E4B116BB02C800DC1638 /* CreditCardSettlement.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1E3E4B016BB02C800DC1638 /* CreditCardSettlement.xib */; };
 		B1E3E4B416BB05CD00DC1638 /* CreditCardSettlementController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */; };
-		B1E3E4BE16BC6DE500DC1638 /* noccsettlements.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B1E3E4BD16BC6DE500DC1638 /* noccsettlements.pdf */; };
+		B1E3E4BE16BC6DE500DC1638 /* de.lproj in Resources */ = {isa = PBXBuildFile; fileRef = B1E3E4BD16BC6DE500DC1638 /* de.lproj */; };
 		B1E8119D0FF6863D00BF7451 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165DFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		B1E811F00FF68B3700BF7451 /* PecuniaHelp in Resources */ = {isa = PBXBuildFile; fileRef = B1E811D70FF68B3700BF7451 /* PecuniaHelp */; };
 		B1E8D89F18F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */; };
@@ -1495,8 +1495,8 @@
 		B196E0930FACE15F00509748 /* BSSelectWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = BSSelectWindowController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B196E1B00FB4CFE200509748 /* StatusBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = StatusBarController.h; sourceTree = "<group>"; tabWidth = 4; };
 		B196E1B10FB4CFE200509748 /* StatusBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = StatusBarController.m; sourceTree = "<group>"; tabWidth = 4; };
-		B197C3E213C3A28F0025F137 /* MCEMDecimalNumberAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = MCEMDecimalNumberAdditions.h; sourceTree = "<group>"; tabWidth = 4; };
-		B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = MCEMDecimalNumberAdditions.m; sourceTree = "<group>"; tabWidth = 4; };
+		B197C3E213C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = "NSDecimalNumber+PecuniaAdditions.h"; sourceTree = "<group>"; tabWidth = 4; };
+		B197C3E313C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDecimalNumber+PecuniaAdditions.m"; sourceTree = "<group>"; tabWidth = 4; };
 		B19822DB0E6F304A001C4C70 /* CategoryAnalysisWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = CategoryAnalysisWindowController.h; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B19822DC0E6F304A001C4C70 /* CategoryAnalysisWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryAnalysisWindowController.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B19A85EE0F3CC3D3000FE9B3 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -1555,7 +1555,7 @@
 		B1E3E4B016BB02C800DC1638 /* CreditCardSettlement.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreditCardSettlement.xib; sourceTree = "<group>"; };
 		B1E3E4B216BB05CD00DC1638 /* CreditCardSettlementController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditCardSettlementController.h; sourceTree = "<group>"; };
 		B1E3E4B316BB05CD00DC1638 /* CreditCardSettlementController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditCardSettlementController.m; sourceTree = "<group>"; };
-		B1E3E4BD16BC6DE500DC1638 /* noccsettlements.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = noccsettlements.pdf; sourceTree = "<group>"; };
+		B1E3E4BD16BC6DE500DC1638 /* de.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = de.lproj; sourceTree = "<group>"; };
 		B1E811D70FF68B3700BF7451 /* PecuniaHelp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PecuniaHelp; sourceTree = "<group>"; };
 		B1E8D89D18F9DB8200EED3B2 /* PecuniaComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaComboBoxCell.h; sourceTree = "<group>"; };
 		B1E8D89E18F9DB8200EED3B2 /* PecuniaComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaComboBoxCell.m; sourceTree = "<group>"; };
@@ -1757,6 +1757,8 @@
 				27CF0A6C15F260F200F48203 /* NSButton+PecuniaAdditions.m */,
 				276B83C31811A35F00AFF54A /* NSColor+PecuniaAdditions.h */,
 				276B83C41811A35F00AFF54A /* NSColor+PecuniaAdditions.m */,
+				B197C3E213C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.h */,
+				B197C3E313C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m */,
 				27A6F361178DCCD60015327B /* NSDictionary+PecuniaAdditions.h */,
 				27A6F362178DCCD60015327B /* NSDictionary+PecuniaAdditions.m */,
 				B1D6C9EC0EAA5A3000EA99A2 /* NSOutlineView+PecuniaAdditions.h */,
@@ -1890,8 +1892,6 @@
 		27C7B503147FC47400278131 /* Numbers and Dates */ = {
 			isa = PBXGroup;
 			children = (
-				B197C3E213C3A28F0025F137 /* MCEMDecimalNumberAdditions.h */,
-				B197C3E313C3A28F0025F137 /* MCEMDecimalNumberAdditions.m */,
 				2788C8B81455C3CE00225939 /* ValueTransformers.h */,
 				2788C8B91455C3CE00225939 /* ValueTransformers.m */,
 				27C7B504147FC50300278131 /* PecuniaPlotTimeFormatter.h */,
@@ -2179,7 +2179,7 @@
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
 				27AF3B35150BFCF700DEB25B /* Pecunia.entitlements */,
-				B1E3E4BD16BC6DE500DC1638 /* noccsettlements.pdf */,
+				B1E3E4BD16BC6DE500DC1638 /* de.lproj */,
 				B11F78D2162F0BFC00D7A8E5 /* container-migration.plist */,
 				B170C16D167689310047FD42 /* java.entitlements */,
 				27CBF356174A4A0B0062E2A9 /* category-icon-defaults.txt */,
@@ -2975,7 +2975,7 @@
 				277789A5173CE22700430EBC /* delete2.png in Resources */,
 				277789A6173CE22700430EBC /* delete2@2x.png in Resources */,
 				277789A7173CE22700430EBC /* CreditCardSettlement.xib in Resources */,
-				277789A8173CE22700430EBC /* noccsettlements.pdf in Resources */,
+				277789A8173CE22700430EBC /* de.lproj in Resources */,
 				275AC7EE186B5DEC002E6BED /* refresh@2x.png in Resources */,
 				270CA2F41900359E00DCF0DB /* font-increase.png in Resources */,
 				277789A9173CE22700430EBC /* delete3.png in Resources */,
@@ -3194,7 +3194,7 @@
 				2765D42A16AAD7C100FF371E /* delete2.png in Resources */,
 				2765D42B16AAD7C100FF371E /* delete2@2x.png in Resources */,
 				B1E3E4B116BB02C800DC1638 /* CreditCardSettlement.xib in Resources */,
-				B1E3E4BE16BC6DE500DC1638 /* noccsettlements.pdf in Resources */,
+				B1E3E4BE16BC6DE500DC1638 /* de.lproj in Resources */,
 				2791FBD616CFCA4C00953116 /* delete3.png in Resources */,
 				275AC7ED186B5DEC002E6BED /* refresh@2x.png in Resources */,
 				270CA2F31900359E00DCF0DB /* font-increase.png in Resources */,
@@ -3348,7 +3348,7 @@
 				277788B4173CE22700430EBC /* DateAndValutaCell.m in Sources */,
 				277788B5173CE22700430EBC /* AmountCell.m in Sources */,
 				277788B6173CE22700430EBC /* DockIconController.m in Sources */,
-				277788B7173CE22700430EBC /* MCEMDecimalNumberAdditions.m in Sources */,
+				277788B7173CE22700430EBC /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
 				277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */,
 				277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */,
 				277788BA173CE22700430EBC /* RoundedSidebar.m in Sources */,
@@ -3562,7 +3562,7 @@
 				B138B25A139D52690026BEE2 /* DateAndValutaCell.m in Sources */,
 				B138B316139D6B390026BEE2 /* AmountCell.m in Sources */,
 				B138B3DF139EBC0E0026BEE2 /* DockIconController.m in Sources */,
-				B197C3E413C3A28F0025F137 /* MCEMDecimalNumberAdditions.m in Sources */,
+				B197C3E413C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
 				274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */,
 				2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */,
 				27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */,

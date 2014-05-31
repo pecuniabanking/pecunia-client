@@ -17,9 +17,8 @@
  * 02110-1301  USA
  */
 
-#import <Foundation/Foundation.h>
-
 #import "PecuniaSectionItem.h"
+#import "StatementsListView.h"
 
 @class StatementsListView;
 @class TagView;
@@ -27,7 +26,7 @@
 @class StatementDetails;
 @class PecuniaSplitView;
 
-@interface StatementsOverviewController : NSObject <PecuniaSectionItem>
+@interface StatementsOverviewController : NSObject <PecuniaSectionItem, StatementsListViewProtocol>
 {
     IBOutlet NSArrayController  *categoryAssignments;
     IBOutlet StatementsListView *statementsListView;

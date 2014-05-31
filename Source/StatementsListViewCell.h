@@ -19,8 +19,21 @@
 
 #import "PecuniaListViewCell.h"
 
+typedef NS_ENUM (NSInteger, StatementMenuAction) {
+    MenuActionAddStatement,
+    MenuActionSplitStatement,
+    MenuActionDeleteStatement,
+    MenuActionMarkUnread,
+    MenuActionStartTransfer,
+    MenuActionCreateTemplate
+};
+
 @protocol StatementsListViewNotificationProtocol
+
 - (void)cellActivationChanged: (BOOL)state forIndex: (NSUInteger)index;
+- (void)menuActionForCell: (PecuniaListViewCell *)cell action: (StatementMenuAction)action;
+- (BOOL)canHandleMenuActions;
+
 @end
 
 @interface StatementsListViewCell : PecuniaListViewCell

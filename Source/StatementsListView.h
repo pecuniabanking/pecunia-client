@@ -19,8 +19,12 @@
 
 #import "StatementsListviewCell.h"
 
-@protocol StatementsListViewProtocol <PXListViewDelegate>
+@class StatCatAssignment;
+
+@protocol StatementsListViewProtocol
+@optional
 - (void)activationChanged: (BOOL)active forIndex: (NSUInteger)index;
+- (void)actionForCategory: (StatCatAssignment *)assignment action: (StatementMenuAction)action;
 @end;
 
 @interface StatementsListView : PXListView <PXListViewDelegate, StatementsListViewNotificationProtocol>

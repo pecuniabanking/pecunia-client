@@ -32,7 +32,7 @@
 #import "AccountDefController.h"
 #import "TimeSliceManager.h"
 #import "MCEMTreeController.h"
-#import "MCEMDecimalNumberAdditions.h" // TODO: Removal candidate
+#import "NSDecimalNumber+PecuniaAdditions.h" // TODO: Removal candidate
 #import "WorkerThread.h"
 #import "BSSelectWindowController.h"
 #import "StatusBarController.h"
@@ -92,8 +92,8 @@ NSString *const CategoryDataType = @"CategoryDataType";
 
 // Notification and dictionary key for category color change notifications.
 extern NSString *const HomeScreenCardClickedNotification;
-NSString *const CategoryColorNotification = @"CategoryColorNotification";
-NSString *const CategoryKey = @"CategoryKey";
+NSString *const        CategoryColorNotification = @"CategoryColorNotification";
+NSString *const        CategoryKey = @"CategoryKey";
 
 // KVO contexts.
 void *UserDefaultsBindingContext = (void *)@"UserDefaultsContext";
@@ -104,10 +104,9 @@ static BankingController *bankinControllerInstance;
 
 @interface BankingController () <EDSideBarDelegate>
 {
-    NSManagedObjectContext *managedObjectContext;
-    NSManagedObjectModel   *model;
-    NewBankUserController  *bankUserController;
-    DockIconController     *dockIconController;
+    NSManagedObjectModel  *model;
+    NewBankUserController *bankUserController;
+    DockIconController    *dockIconController;
 
     BOOL restart;
     BOOL requestRunning;
@@ -134,15 +133,13 @@ static BankingController *bankinControllerInstance;
 
 @implementation BankingController
 
-@synthesize managedObjectContext;
 @synthesize dockIconController;
 @synthesize shuttingDown;
 @synthesize accountsView;
 
 #pragma mark - Initialization
 
-- (id)init
-{
+- (id)init {
     LogEnter; // Will implicitly set up the message log and the used loggers.
 
     self = [super init];
@@ -174,8 +171,7 @@ static BankingController *bankinControllerInstance;
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     LogEnter;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -186,8 +182,7 @@ static BankingController *bankinControllerInstance;
 }
 
 - (void)setNumberFormatForCell: (NSCell *)cell positive: (NSDictionary *)positive
-                      negative: (NSDictionary *)negative
-{
+                      negative: (NSDictionary *)negative {
     LogEnter;
     if (cell == nil) {
         return;
@@ -208,8 +203,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     LogEnter;
 
     [mainWindow.contentView setHidden: YES]; // Show content not before anything is done (especially if data is encrypted).
@@ -240,7 +234,7 @@ static BankingController *bankinControllerInstance;
     [self setupSidebar];
 
     // Edit accounts/categories when double clicking on a node.
-    [accountsView setDoubleAction: @selector(changeAccount:)];
+    [accountsView setDoubleAction: @selector(showProperties:)];
     [accountsView setTarget: self];
 
     NSTableColumn *tableColumn = [accountsView tableColumnWithIdentifier: @"name"];
@@ -305,8 +299,7 @@ static BankingController *bankinControllerInstance;
 /**
  * Sets a number of settings to useful defaults.
  */
-- (void)setDefaultUserSettings
-{
+- (void)setDefaultUserSettings {
     LogEnter;
 
     // Home screen settings.
@@ -350,8 +343,7 @@ static BankingController *bankinControllerInstance;
                     continue;
                 }
 
-                switch ([strongest.catSum compare: account.catSum])
-                {
+                switch ([strongest.catSum compare: account.catSum]) {
                     case NSOrderedSame:
                         // Use the one with the most assignments, as that is probably more relevant.
                         if ([strongest assignmentCountRecursive: YES] < [account assignmentCountRecursive: YES]) {
@@ -367,8 +359,7 @@ static BankingController *bankinControllerInstance;
                         break;
                 }
 
-                switch ([weakest.catSum compare: account.catSum])
-                {
+                switch ([weakest.catSum compare: account.catSum]) {
                     case NSOrderedSame:
                         // Use the one with the most assignments, as that is probably more relevant.
                         if ([weakest assignmentCountRecursive: YES] < [account assignmentCountRecursive: YES]) {
@@ -425,8 +416,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)logSummary: (NSString *)entity withMessage: (NSString *)message
-{
+- (void)logSummary: (NSString *)entity withMessage: (NSString *)message {
     NSError *error = nil;
 
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -439,8 +429,7 @@ static BankingController *bankinControllerInstance;
     }
 }
 
-- (void)logDatabaseInfo
-{
+- (void)logDatabaseInfo {
     // Log a few important data details.
     LogInfo(@"Database summary:");
 
@@ -463,13 +452,12 @@ static BankingController *bankinControllerInstance;
 
 }
 
-- (void)publishContext
-{
+- (void)publishContext {
     LogEnter;
 
     NSError *error = nil;
 
-    categoryController.managedObjectContext = self.managedObjectContext;
+    categoryController.managedObjectContext = managedObjectContext;
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
     [categoryController setSortDescriptors: @[sd]];
 
@@ -486,25 +474,23 @@ static BankingController *bankinControllerInstance;
     [timeSlicer updateDelegate];
     [categoryController fetchWithRequest: nil merge: NO error: &error];
     [accountsView restoreState];
-    dockIconController = [[DockIconController alloc] initWithManagedObjectContext: self.managedObjectContext];
+    dockIconController = [[DockIconController alloc] initWithManagedObjectContext: managedObjectContext];
 
     [self logDatabaseInfo];
 
     LogLeave;
 }
 
-- (void)contextChanged
-{
+- (void)contextChanged {
     LogEnter;
 
-    self.managedObjectContext = [[MOAssistant assistant] context];
+    managedObjectContext = MOAssistant.assistant.context;
     [self publishContext];
 
     LogLeave;
 }
 
-- (void)encryptionChanged
-{
+- (void)encryptionChanged {
     LogEnter;
 
     [lockImage setHidden: !MOAssistant.assistant.encrypted];
@@ -514,8 +500,7 @@ static BankingController *bankinControllerInstance;
 
 #pragma mark - User actions
 
-- (void)homeScreenCardClicked: (NSNotification *)notification
-{
+- (void)homeScreenCardClicked: (NSNotification *)notification {
     LogEnter;
 
     id object = notification.object;
@@ -527,8 +512,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)setHBCIAccounts
-{
+- (void)setHBCIAccounts {
     LogEnter;
 
     NSError             *error = nil;
@@ -537,7 +521,7 @@ static BankingController *bankinControllerInstance;
     [request setEntity: entityDescription];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"accountNumber != nil AND userId != nil"];
     [request setPredicate: predicate];
-    NSArray *accounts = [self.managedObjectContext executeFetchRequest: request error: &error];
+    NSArray *accounts = [managedObjectContext executeFetchRequest: request error: &error];
     if (error != nil || accounts == nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -553,8 +537,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (NSIndexPath *)indexPathForCategory: (Category *)cat inArray: (NSArray *)nodes
-{
+- (NSIndexPath *)indexPathForCategory: (Category *)cat inArray: (NSArray *)nodes {
     LogEnter;
 
     NSUInteger idx = 0;
@@ -574,14 +557,12 @@ static BankingController *bankinControllerInstance;
         }
         idx++;
     }
-
     LogLeave;
 
     return nil;
 }
 
-- (void)removeBankAccount: (BankAccount *)bankAccount keepAssignedStatements: (BOOL)keepAssignedStats
-{
+- (void)removeBankAccount: (BankAccount *)bankAccount keepAssignedStatements: (BOOL)keepAssignedStats {
     LogEnter;
 
     BOOL removeParent = NO;
@@ -592,26 +573,25 @@ static BankingController *bankinControllerInstance;
     NSSet *statements = [bankAccount valueForKey: @"statements"];
     if (!keepAssignedStats) {
         for (BankStatement *statement in statements) {
-            [self.managedObjectContext deleteObject: statement];
+            [managedObjectContext deleteObject: statement];
         }
     } else {
         for (BankStatement *statement in statements) {
             NSSet *assignments = [statement mutableSetValueForKey: @"assignments"];
             if ([assignments count] < 2) {
-                [self.managedObjectContext deleteObject: statement];
+                [managedObjectContext deleteObject: statement];
             } else if ([assignments count] == 2) {
                 // delete statement if not assigned yet
                 if ([statement hasAssignment] == NO) {
-                    [self.managedObjectContext deleteObject: statement];
+                    [managedObjectContext deleteObject: statement];
                 }
             } else {
                 statement.account = nil;
             }
         }
-
     }
 
-    [self.managedObjectContext processPendingChanges];
+    [managedObjectContext processPendingChanges];
     [[Category nassRoot] invalidateBalance];
     [Category updateBalancesAndSums];
 
@@ -642,8 +622,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (BOOL)cleanupBankNodes
-{
+- (BOOL)cleanupBankNodes {
     LogEnter;
 
     BOOL flg_changed = NO;
@@ -654,7 +633,7 @@ static BankingController *bankinControllerInstance;
         for (BankAccount *node in bankNodes) {
             NSMutableSet *childs = [node mutableSetValueForKey: @"children"];
             if (childs == nil || [childs count] == 0) {
-                [self.managedObjectContext deleteObject: node];
+                [managedObjectContext deleteObject: node];
                 flg_changed = YES;
             }
         }
@@ -665,13 +644,12 @@ static BankingController *bankinControllerInstance;
     return flg_changed;
 }
 
-- (Category *)getBankingRoot
-{
+- (Category *)getBankingRoot {
     LogEnter;
 
     NSError        *error = nil;
     NSFetchRequest *request = [model fetchRequestTemplateForName: @"getBankingRoot"];
-    NSArray        *cats = [self.managedObjectContext executeFetchRequest: request error: &error];
+    NSArray        *cats = [managedObjectContext executeFetchRequest: request error: &error];
     if (error != nil || cats == nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -683,7 +661,7 @@ static BankingController *bankinControllerInstance;
 
     // create Root object
     Category *obj = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
-                                                  inManagedObjectContext: self.managedObjectContext];
+                                                  inManagedObjectContext: managedObjectContext];
     [obj setValue: @"++bankroot" forKey: @"name"];
     [obj setValue: @YES forKey: @"isBankAcc"];
 
@@ -693,8 +671,7 @@ static BankingController *bankinControllerInstance;
 }
 
 // XXX: is this still required? Looks like a fix for a previous bug.
-- (void)repairCategories
-{
+- (void)repairCategories {
     LogEnter;
 
     NSError  *error = nil;
@@ -703,7 +680,7 @@ static BankingController *bankinControllerInstance;
 
     // repair bank root
     NSFetchRequest *request = [model fetchRequestTemplateForName: @"getBankingRoot"];
-    NSArray        *cats = [self.managedObjectContext executeFetchRequest: request error: &error];
+    NSArray        *cats = [managedObjectContext executeFetchRequest: request error: &error];
     if (error != nil || cats == nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -719,7 +696,7 @@ static BankingController *bankinControllerInstance;
     }
     // repair categories
     request = [model fetchRequestTemplateForName: @"getCategoryRoot"];
-    cats = [self.managedObjectContext executeFetchRequest: request error: &error];
+    cats = [managedObjectContext executeFetchRequest: request error: &error];
     if (error != nil || cats == nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -740,7 +717,7 @@ static BankingController *bankinControllerInstance;
     if (found == NO) {
         // create Category Root object
         Category *obj = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
-                                                      inManagedObjectContext: self.managedObjectContext];
+                                                      inManagedObjectContext: managedObjectContext];
         [obj setValue: @"++catroot" forKey: @"name"];
         [obj setValue: @NO forKey: @"isBankAcc"];
         catRoot = obj;
@@ -757,7 +734,7 @@ static BankingController *bankinControllerInstance;
     }
     // insert not assigned node
     request = [model fetchRequestTemplateForName: @"getNassRoot"];
-    cats = [self.managedObjectContext executeFetchRequest: request error: &error];
+    cats = [managedObjectContext executeFetchRequest: request error: &error];
     if (error != nil || cats == nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -765,7 +742,7 @@ static BankingController *bankinControllerInstance;
     }
     if ([cats count] == 0) {
         Category *obj = [NSEntityDescription insertNewObjectForEntityForName: @"Category"
-                                                      inManagedObjectContext: self.managedObjectContext];
+                                                      inManagedObjectContext: managedObjectContext];
         [obj setPrimitiveValue: @"++nassroot" forKey: @"name"];
         [obj setValue: @NO forKey: @"isBankAcc"];
         [obj setValue: catRoot forKey: @"parent"];
@@ -778,14 +755,13 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)updateBalances
-{
+- (void)updateBalances {
     LogEnter;
 
     NSError *error = nil;
 
     NSFetchRequest *request = [model fetchRequestTemplateForName: @"getRootNodes"];
-    NSArray        *cats = [self.managedObjectContext executeFetchRequest: request error: &error];
+    NSArray        *cats = [managedObjectContext executeFetchRequest: request error: &error];
     if (error != nil || cats == nil) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -798,14 +774,12 @@ static BankingController *bankinControllerInstance;
         }
         [cat updateCategorySums];
     }
-
     [self save];
 
     LogLeave;
 }
 
-- (IBAction)enqueueRequest: (id)sender
-{
+- (IBAction)enqueueRequest: (id)sender {
     if ((NSEvent.modifierFlags & NSAlternateKeyMask) != 0) {
         [self synchronizeAccount: self.currentSelection];
     } else {
@@ -813,8 +787,7 @@ static BankingController *bankinControllerInstance;
     }
 }
 
-- (void)synchronizeAccount: (Category *)category
-{
+- (void)synchronizeAccount: (Category *)category {
     LogEnter;
 
     NSMutableArray *selectedAccounts = [NSMutableArray arrayWithCapacity: 10];
@@ -832,14 +805,14 @@ static BankingController *bankinControllerInstance;
         // A bank account.
         [selectedAccounts addObject: category];
     } else {
-        NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: self.managedObjectContext];
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount" inManagedObjectContext: managedObjectContext];
         NSFetchRequest      *request = [[NSFetchRequest alloc] init];
         [request setEntity: entityDescription];
         if (category.parent == nil) {
             // Bank root. Retrieve all bank accounts under it.
             NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == %@", category];
             [request setPredicate: predicate];
-            selectedNodes = [self.managedObjectContext executeFetchRequest: request error: &error];
+            selectedNodes = [managedObjectContext executeFetchRequest: request error: &error];
             if (error) {
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
@@ -855,7 +828,7 @@ static BankingController *bankinControllerInstance;
             NSArray     *result;
             NSPredicate *predicate = [NSPredicate predicateWithFormat: @"parent == %@ AND noAutomaticQuery == 0", account];
             [request setPredicate: predicate];
-            result = [self.managedObjectContext executeFetchRequest: request error: &error];
+            result = [managedObjectContext executeFetchRequest: request error: &error];
             if (error) {
                 NSAlert *alert = [NSAlert alertWithError: error];
                 [alert runModal];
@@ -876,7 +849,6 @@ static BankingController *bankinControllerInstance;
             nInactive++;
         }
     }
-
     if (nInactive == selectedAccounts.count) {
         NSRunAlertPanel(NSLocalizedString(@"AP220", nil),
                         NSLocalizedString(@"AP215", nil),
@@ -908,14 +880,13 @@ static BankingController *bankinControllerInstance;
             [resultList addObject: result];
         }
     }
-
     // Prepare UI.
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: NO];
     StatusBarController *sc = [StatusBarController controller];
     [sc startSpinning];
     [sc setMessage: NSLocalizedString(@"AP219", nil) removeAfter: 0];
     newStatementsCount = 0;
-    
+
     if ([defaults boolForKey: @"manualTransactionCheck"]) {
         selectWindowController = [[BSSelectWindowController alloc] init];
     }
@@ -933,20 +904,19 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)statementsNotification: (NSNotification *)notification
-{
+- (void)statementsNotification: (NSNotification *)notification {
     LogEnter;
 
-    BankQueryResult     *result;
-    NSUserDefaults      *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL                noStatements = YES;
-    BOOL                isImport = NO;
+    BankQueryResult *result;
+    NSUserDefaults  *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL            noStatements = YES;
+    BOOL            isImport = NO;
 
     NSArray *resultList = [notification object];
     if (resultList == nil) {
         return;
     }
-    
+
     // get Proposals
     for (result in resultList) {
         NSArray *stats = result.statements;
@@ -959,9 +929,8 @@ static BankingController *bankinControllerInstance;
         }
         [result.account updateStandingOrders: result.standingOrders];
     }
-
     if ([defaults boolForKey: @"manualTransactionCheck"] && !noStatements) {
-        [selectWindowController addResults:resultList];
+        [selectWindowController addResults: resultList];
         [NSApp runModalForWindow: [selectWindowController window]];
     } else {
         @try {
@@ -977,29 +946,27 @@ static BankingController *bankinControllerInstance;
         }
         [self requestFinished: resultList];
     }
-    
+
     // check for updated login data
     for (result in resultList) {
-        BankUser *user = [BankUser userWithId:result.userId bankCode:result.bankCode];
+        BankUser *user = [BankUser userWithId: result.userId bankCode: result.bankCode];
         if (user != nil) {
             [user checkForUpdatedLoginData];
         }
     }
-
     [self save];
 
     LogLeave;
 }
 
-- (void)statementsFinalizeNotification: (NSNotification *)notification
-{
+- (void)statementsFinalizeNotification: (NSNotification *)notification {
     StatusBarController *sc = [StatusBarController controller];
     NSUserDefaults      *defaults = [NSUserDefaults standardUserDefaults];
-    
+
     [sc stopSpinning];
     [sc clearMessage];
     requestRunning = NO;
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: PecuniaStatementsNotification
                                                   object: nil];
@@ -1007,7 +974,7 @@ static BankingController *bankinControllerInstance;
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: PecuniaStatementsFinalizeNotification
                                                   object: nil];
-    
+
     if ([defaults boolForKey: @"manualTransactionCheck"]) {
         [NSApp runModalForWindow: [selectWindowController window]];
     } else {
@@ -1019,7 +986,7 @@ static BankingController *bankinControllerInstance;
 
     [self stopRefreshAnimation];
     [self updateUnread];
-    
+
     BOOL suppressSound = [NSUserDefaults.standardUserDefaults boolForKey: @"noSoundAfterSync"];
     if (!suppressSound) {
         NSSound *doneSound = [NSSound soundNamed: @"done.mp3"];
@@ -1029,11 +996,10 @@ static BankingController *bankinControllerInstance;
     }
 }
 
-- (void)requestFinished: (NSArray *)resultList
-{
+- (void)requestFinished: (NSArray *)resultList {
     LogEnter;
 
-    [self.managedObjectContext processPendingChanges];
+    [managedObjectContext processPendingChanges];
     [self updateBalances];
     requestRunning = NO;
     [[[mainWindow contentView] viewWithTag: 100] setEnabled: YES];
@@ -1069,8 +1035,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)checkBalances: (NSArray *)resultList
-{
+- (void)checkBalances: (NSArray *)resultList {
     LogEnter;
 
     NSNumber *threshold;
@@ -1104,13 +1069,11 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (BOOL)requestRunning
-{
+- (BOOL)requestRunning {
     return requestRunning;
 }
 
-- (IBAction)editBankUsers: (id)sender
-{
+- (IBAction)editBankUsers: (id)sender {
     LogEnter;
 
     if (bankUserController == nil) {
@@ -1122,13 +1085,11 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)editPreferences: (id)sender
-{
+- (IBAction)editPreferences: (id)sender {
     [PreferenceController showPreferencesWithOwner: self section: nil];
 }
 
-- (IBAction)showLicense: (id)sender
-{
+- (IBAction)showLicense: (id)sender {
     LogEnter;
 
     NSURL *url = [NSURL URLWithString: @"http://opensource.org/licenses/GPL-2.0"];
@@ -1137,8 +1098,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)showConsole:(id)sender
-{
+- (IBAction)showConsole: (id)sender {
     LogEnter;
 
     [[NSWorkspace sharedWorkspace] launchApplication: @"Console"];
@@ -1146,7 +1106,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)printDocument: (id)sender
+- (IBAction)printDocument: (id)sender // Bound via first responder to print menu item.
 {
     LogEnter;
 
@@ -1169,8 +1129,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)accountMaintenance: (id)sender
-{
+- (IBAction)accountMaintenance: (id)sender {
     LogEnter;
 
     BankAccount *account = nil;
@@ -1188,17 +1147,16 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)updateStatementBalances:(id)sender
-{
+- (IBAction)updateStatementBalances: (id)sender {
     LogEnter;
-    
+
     BankAccount *account = nil;
     Category    *cat = [self currentSelection];
     if (cat == nil || cat.accountNumber == nil) {
         return;
     }
     account = (BankAccount *)cat;
-    
+
     [account updateStatementBalances];
     [self save];
 
@@ -1207,25 +1165,23 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)updateSupportedTransactions:(id)sender
-{
+- (IBAction)updateSupportedTransactions: (id)sender {
     LogEnter;
-    
+
     BankAccount *account = nil;
     Category    *cat = [self currentSelection];
     if (cat == nil || cat.accountNumber == nil) {
         return;
     }
     account = (BankAccount *)cat;
-    
+
     [account updateSupportedTransactions];
     [self save];
-    
+
     LogLeave;
 }
 
-- (IBAction)getAccountBalance: (id)sender
-{
+- (IBAction)getAccountBalance: (id)sender {
     LogEnter;
 
     PecuniaError *pec_err = nil;
@@ -1246,14 +1202,13 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)resetIsNewStatements: (id)sender
-{
+- (IBAction)resetIsNewStatements: (id)sender {
     LogEnter;
 
     NSError             *error = nil;
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement"
                                                          inManagedObjectContext: managedObjectContext];
-    NSFetchRequest      *request = [[NSFetchRequest alloc] init];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isNew = 1"];
     [request setPredicate: predicate];
@@ -1269,12 +1224,11 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)markSelectedUnread:(id)sender {
+- (IBAction)markSelectedUnread: (id)sender {
     [overviewController markSelectedStatementsUnread];
 }
 
-- (IBAction)showAboutPanel: (id)sender
-{
+- (IBAction)showAboutPanel: (id)sender {
     LogEnter;
 
     [AboutWindowController showAboutBox];
@@ -1282,17 +1236,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)toggleFullscreenIfSupported: (id)sender
-{
-    LogEnter;
-
-    [mainWindow toggleFullScreen: mainWindow];
-
-    LogLeave;
-}
-
-- (IBAction)toggleDetailsPane: (id)sender
-{
+- (IBAction)toggleDetailsPane: (id)sender {
     LogEnter;
 
     // Can only be triggered if the overview pane is visible (otherwise the toggle button is hidden).
@@ -1307,15 +1251,13 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)toggleFeature: (id)sender
-{
+- (IBAction)toggleFeature: (id)sender {
     if (sender == self.toggleDetailsPaneItem) {
         [self toggleDetailsPane: sender];
     }
 }
 
-- (void)reapplyDefaultIconsForCategory: (Category *)category
-{
+- (void)reapplyDefaultIconsForCategory: (Category *)category {
     LogEnter;
 
     for (Category *child in category.children) {
@@ -1325,12 +1267,10 @@ static BankingController *bankinControllerInstance;
         [self determineDefaultIconForCategory: child];
         [self reapplyDefaultIconsForCategory: child];
     }
-
     LogLeave;
 }
 
-- (IBAction)resetCategoryIcons: (id)sender
-{
+- (IBAction)resetCategoryIcons: (id)sender {
     LogEnter;
 
     int res = NSRunAlertPanel(NSLocalizedString(@"AP301", nil),
@@ -1344,14 +1284,13 @@ static BankingController *bankinControllerInstance;
     }
     [self reapplyDefaultIconsForCategory: Category.catRoot];
     [accountsView setNeedsDisplay: YES];
-    
+
     LogLeave;
 }
 
-- (IBAction)sendErrorReport: (id)sender
-{
+- (IBAction)sendErrorReport: (id)sender {
     NSMutableString *text = [NSMutableString string];
-    
+
     for (BankUser *user in [BankUser allUsers]) {
         [text appendFormat: @"%@\n", [user descriptionWithIndent: @"    "]];
     }
@@ -1360,20 +1299,17 @@ static BankingController *bankinControllerInstance;
     [MessageLog.log sendLog];
 }
 
-- (IBAction)openLogFolder: (id)sender
-{
+- (IBAction)openLogFolder: (id)sender {
     [MessageLog.log openLogFolder];
 }
 
-- (IBAction)comTraceToggle: (id)sender
-{
+- (IBAction)comTraceToggle: (id)sender {
     [comTracePanel toggleComTrace: sender];
 }
 
-- (IBAction)changeFontSize: (id)sender
-{
+- (IBAction)changeFontSize: (id)sender {
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
-    double scale = [defaults doubleForKey: @"fontScale"];
+    double         scale = [defaults doubleForKey: @"fontScale"];
     if (sender == decreaseFontButton) {
         scale = ((int)(scale * 10) - 1) / 10.0;
     } else {
@@ -1390,8 +1326,7 @@ static BankingController *bankinControllerInstance;
 
 #pragma mark - Account management
 
-- (IBAction)addAccount: (id)sender
-{
+- (IBAction)addAccount: (id)sender {
     LogEnter;
 
     NSString *bankCode = nil;
@@ -1419,15 +1354,13 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)changeAccount: (id)sender
-{
+- (IBAction)showProperties: (id)sender {
     // In order to let KVO selection changes work properly when double clicking a node other than
     // the current one we have to run the modal dialogs after the runloop has finished its round.
-    [self performSelector: @selector(doChangeAccount) withObject: nil afterDelay: 0];
+    [self performSelector: @selector(doShowProperties) withObject: nil afterDelay: 0];
 }
 
-- (void)doChangeAccount
-{
+- (void)doShowProperties {
     LogEnter;
 
     Category *cat = [self currentSelection];
@@ -1448,14 +1381,15 @@ static BankingController *bankinControllerInstance;
         [NSApp runModalForWindow: [changeController window]];
         [categoryController prepareContent];
         [Category.bankRoot updateCategorySums];
+    } else {
+        [self editBankUsers: nil];
     }
     // Changes are stored in the controllers.
 
     LogLeave;
 }
 
-- (IBAction)deleteAccount: (id)sender
-{
+- (IBAction)deleteAccount: (id)sender {
     LogEnter;
 
     Category *cat = [self currentSelection];
@@ -1509,7 +1443,9 @@ static BankingController *bankinControllerInstance;
             } else {
                 if (alertResult == NSAlertOtherReturn) {
                     return;
-                } else {keepAssignedStatements = NO; }
+                } else {
+                    keepAssignedStatements = NO;
+                }
             }
         }
     }
@@ -1523,8 +1459,7 @@ static BankingController *bankinControllerInstance;
 
 #pragma mark - Page switching
 
-- (void)updateStatusbar
-{
+- (void)updateStatusbar {
     LogEnter;
 
     Category  *cat = [self currentSelection];
@@ -1547,13 +1482,11 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)updateDetailsPaneButton
-{
+- (void)updateDetailsPaneButton {
     toggleDetailsButton.hidden = (currentPage != 1) || (currentSectionIndex != 0);
 }
 
-- (void)switchMainPage: (NSInteger)page
-{
+- (void)switchMainPage: (NSInteger)page {
     LogEnter;
 
     if (currentPage != page) {
@@ -1602,19 +1535,17 @@ static BankingController *bankinControllerInstance;
                 break;
             }
         }
-        
+
         [self updateStatusbar];
         [self updateDetailsPaneButton];
     }
     LogLeave;
 }
 
-- (void)switchToAccountPage: (NSInteger)sectionIndex
-{
+- (void)switchToAccountPage: (NSInteger)sectionIndex {
     LogEnter;
 
     if (currentSectionIndex != sectionIndex) {
-
         BOOL   pageHasChanged = NO;
         NSView *currentView;
         if (currentSection != nil) {
@@ -1762,7 +1693,7 @@ static BankingController *bankinControllerInstance;
                         NSView *view = [categoryDefinitionController mainView];
                         view.frame = frame;
                     }
-                    [categoryDefinitionController setManagedObjectContext: self.managedObjectContext];
+                    [categoryDefinitionController setManagedObjectContext: managedObjectContext];
                     categoryDefinitionController.timeSliceManager = timeSlicer;
                     [categoryDefinitionController setTimeRangeFrom: [timeSlicer lowerBounds] to: [timeSlicer upperBounds]];
                 }
@@ -1811,9 +1742,9 @@ static BankingController *bankinControllerInstance;
                 }
                 [timeSlicer setYearOnlyMode: YES];
                 break;
-                
+
         }
-        
+
         if (pageHasChanged) {
             currentSection.selectedCategory = [self currentSelection];
             [currentSection activate];
@@ -1827,8 +1758,7 @@ static BankingController *bankinControllerInstance;
 
 #pragma mark - File actions
 
-- (IBAction)export: (id)sender
-{
+- (IBAction)export: (id)sender {
     LogEnter;
 
     Category *cat;
@@ -1840,8 +1770,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)import: (id)sender
-{
+- (IBAction)import: (id)sender {
     LogEnter;
 
     ImportController *controller = [[ImportController alloc] init];
@@ -1851,20 +1780,19 @@ static BankingController *bankinControllerInstance;
         NSNotification *notification = [NSNotification notificationWithName: PecuniaStatementsNotification object: results];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         newStatementsCount = 0;
-        
+
         if ([defaults boolForKey: @"manualTransactionCheck"]) {
             selectWindowController = [[BSSelectWindowController alloc] init];
         }
 
         [self statementsNotification: notification];
-        [self statementsFinalizeNotification:nil];
+        [self statementsFinalizeNotification: nil];
     }
 
     LogLeave;
 }
 
-- (BOOL)applicationShouldHandleReopen: (NSApplication *)theApplication hasVisibleWindows: (BOOL)flag
-{
+- (BOOL)applicationShouldHandleReopen: (NSApplication *)theApplication hasVisibleWindows: (BOOL)flag {
     LogEnter;
 
     if (!flag) {
@@ -1876,8 +1804,7 @@ static BankingController *bankinControllerInstance;
     return YES;
 }
 
-- (BOOL)canTerminate
-{
+- (BOOL)canTerminate {
     LogEnter;
 
     // Check if there are unsent or unfinished transfers. Send unsent transfers if the users says so.
@@ -1909,8 +1836,7 @@ static BankingController *bankinControllerInstance;
     return YES;
 }
 
-- (BankAccount *)selectedBankAccount
-{
+- (BankAccount *)selectedBankAccount {
     LogEnter;
 
     Category *cat = [self currentSelection];
@@ -1931,29 +1857,14 @@ static BankingController *bankinControllerInstance;
     return (BankAccount *)cat;
 }
 
-- (IBAction)transfer_local: (id)sender
-{
-    LogEnter;
-
-    BankAccount *account = self.selectedBankAccount;
-    if (account != nil && [account.isManual boolValue]) {
-        return;
-    }
-
-    // Switch to the transfers page.
-    sidebar.selectedIndex = 7;
-
-    // Start local transfer
-    [transfersController startTransferOfType: TransferTypeOldStandard withAccount: account];
-
-    LogLeave;
+- (IBAction)startLocalTransfer: (id)sender {
+    [self startTransferOfType: TransferTypeOldStandard fromAccount: self.selectedBankAccount statement: nil];
 }
 
-- (IBAction)donate: (id)sender
-{
+- (IBAction)donate: (id)sender {
     LogEnter;
 
-    // check if there are any bank users
+    // Check if there are any bank users.
     NSArray *users = [BankUser allUsers];
     if (users == nil || users.count == 0) {
         NSRunAlertPanel(NSLocalizedString(@"AP105", nil),
@@ -1969,53 +1880,27 @@ static BankingController *bankinControllerInstance;
     [transfersController startDonationTransfer];
 }
 
-- (IBAction)transfer_internal: (id)sender
-{
-    LogEnter;
-
-    BankAccount *account = self.selectedBankAccount;
-    if (account != nil && [account.isManual boolValue]) {
-        return;
-    }
-
-    // Switch to the transfers page.
-    sidebar.selectedIndex = 7;
-
-    // Start local transfer
-    [transfersController startTransferOfType: TransferTypeInternal withAccount: account];
-
-    LogLeave;
+- (IBAction)startInternalTransfer: (id)sender {
+    [self startTransferOfType: TransferTypeInternal fromAccount: self.selectedBankAccount statement: nil];
 }
 
-- (IBAction)transfer_dated: (id)sender
-{
-    LogEnter;
-
-    BankAccount *account = self.selectedBankAccount;
-    if (account != nil && [account.isManual boolValue]) {
-        return;
-    }
-
-    // Switch to the transfers page.
-    sidebar.selectedIndex = 7;
-
-    // Start local transfer
-    [transfersController startTransferOfType: TransferTypeOldStandardScheduled withAccount: account];
-
-    LogLeave;
+- (IBAction)startEuTransfer: (id)sender {
+    [self startTransferOfType: TransferTypeEU fromAccount: self.selectedBankAccount statement: nil];
 }
 
-- (IBAction)transfer_eu: (id)sender
-{
+- (IBAction)startSepaTransfer: (id)sender {
+    [self startTransferOfType: TransferTypeSEPA fromAccount: self.selectedBankAccount statement: nil];
+}
+
+- (void)startTransferOfType: (TransferType)type fromAccount: (BankAccount *)account statement: (BankStatement *)statement {
     LogEnter;
 
-    BankAccount *account = self.selectedBankAccount;
-    if (account != nil && [account.isManual boolValue]) {
+    if (account == nil || account.isManual.boolValue) {
         return;
     }
 
-    // check if bic and iban is defined
-    if (account != nil) {
+    // Check if BIC and IBAN are defined.
+    if (type == TransferTypeSEPA || type == TransferTypeEU) {
         if (account.iban == nil || account.bic == nil) {
             NSRunAlertPanel(NSLocalizedString(@"AP101", nil),
                             NSLocalizedString(@"AP77", nil),
@@ -2028,43 +1913,23 @@ static BankingController *bankinControllerInstance;
     // Switch to the transfers page.
     sidebar.selectedIndex = 7;
 
-    // Start local transfer
-    [transfersController startTransferOfType: TransferTypeEU withAccount: account];
+    [transfersController startTransferOfType: type withAccount: account statement: statement];
 
     LogLeave;
 }
 
-- (IBAction)transfer_sepa: (id)sender
-{
+- (void)createTemplateFromStatement: (BankStatement *)statement {
     LogEnter;
-
-    BankAccount *account = self.selectedBankAccount;
-    if (account != nil && [account.isManual boolValue]) {
-        return;
-    }
-
-    // check if bic and iban is defined
-    if (account != nil) {
-        if (account.iban == nil || account.bic == nil) {
-            NSRunAlertPanel(NSLocalizedString(@"AP101", nil),
-                            NSLocalizedString(@"AP77", nil),
-                            NSLocalizedString(@"AP1", nil), nil, nil,
-                            account.accountNumber);
-            return;
-        }
-    }
 
     // Switch to the transfers page.
     sidebar.selectedIndex = 7;
 
-    // Start local transfer
-    [transfersController startTransferOfType: TransferTypeSEPA withAccount: account];
-
+    [transfersController createTemplateFromStatement: statement];
+    
     LogLeave;
 }
 
-- (Category *)currentSelection
-{
+- (Category *)currentSelection {
     NSArray *sel = [categoryController selectedObjects];
     if (sel == nil || [sel count] != 1) {
         return nil;
@@ -2077,8 +1942,7 @@ static BankingController *bankinControllerInstance;
 /**
  * Prevent the outline from selecting entries under certain conditions.
  */
-- (BOOL)outlineView: (NSOutlineView *)outlineView shouldSelectItem: (id)item
-{
+- (BOOL)outlineView: (NSOutlineView *)outlineView shouldSelectItem: (id)item {
     if (currentSection != nil) {
         if (currentSection == categoryReportingController) {
             // If category reporting is active then don't allow selecting entries without children.
@@ -2099,8 +1963,7 @@ static BankingController *bankinControllerInstance;
     return YES;
 }
 
-- (BOOL)outlineView: (NSOutlineView *)ov writeItems: (NSArray *)items toPasteboard: (NSPasteboard *)pboard
-{
+- (BOOL)outlineView: (NSOutlineView *)ov writeItems: (NSArray *)items toPasteboard: (NSPasteboard *)pboard {
     Category *cat;
 
     cat = [items[0] representedObject];
@@ -2123,8 +1986,7 @@ static BankingController *bankinControllerInstance;
     return YES;
 }
 
-- (NSDragOperation)outlineView: (NSOutlineView *)ov validateDrop: (id <NSDraggingInfo>)info proposedItem: (id)item proposedChildIndex: (NSInteger)childIndex
-{
+- (NSDragOperation)outlineView: (NSOutlineView *)ov validateDrop: (id <NSDraggingInfo>)info proposedItem: (id)item proposedChildIndex: (NSInteger)childIndex {
     NSPasteboard *pboard = [info draggingPasteboard];
 
     // This method validates whether or not the proposal is a valid one. Returns NO if the drop should not be allowed.
@@ -2177,8 +2039,8 @@ static BankingController *bankinControllerInstance;
         }
         NSData            *data = [pboard dataForType: type];
         NSURL             *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data];
-        NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
-        Category          *scat = (Category *)[self.managedObjectContext objectWithID: moID];
+        NSManagedObjectID *moID = [[managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
+        Category          *scat = (Category *)[managedObjectContext objectWithID: moID];
         if ([scat checkMoveToCategory: cat] == NO) {
             return NSDragOperationNone;
         }
@@ -2186,8 +2048,7 @@ static BankingController *bankinControllerInstance;
     }
 }
 
-- (BOOL)outlineView: (NSOutlineView *)outlineView acceptDrop: (id <NSDraggingInfo>)info item: (id)item childIndex: (NSInteger)childIndex
-{
+- (BOOL)outlineView: (NSOutlineView *)outlineView acceptDrop: (id <NSDraggingInfo>)info item: (id)item childIndex: (NSInteger)childIndex {
     Category     *targetCategory = (Category *)[item representedObject];
     NSPasteboard *pboard = [info draggingPasteboard];
     NSString     *type = [pboard availableTypeFromArray: @[BankStatementDataType, CategoryDataType]];
@@ -2202,11 +2063,11 @@ static BankingController *bankinControllerInstance;
 
         BOOL needBankRootUpdate = NO;
         for (NSURL *uri in uris) {
-            NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
+            NSManagedObjectID *moID = [[managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
             if (moID == nil) {
                 continue;
             }
-            StatCatAssignment *assignment = (StatCatAssignment *)[self.managedObjectContext objectWithID: moID];
+            StatCatAssignment *assignment = (StatCatAssignment *)[managedObjectContext objectWithID: moID];
 
             if ([[self currentSelection] isBankAccount]) {
                 // if already assigned or copy modifier is pressed, copy the complete bank statement amount - else assign residual amount (move)
@@ -2227,14 +2088,14 @@ static BankingController *bankinControllerInstance;
                         if (negate) {
                             residual = [[NSDecimalNumber zero] decimalNumberBySubtracting: residual];
                         }
-                        
-                        AssignmentController *controller = [[AssignmentController alloc] initWithAmount:residual];
-                        int res = [NSApp runModalForWindow:controller.window];
+
+                        AssignmentController *controller = [[AssignmentController alloc] initWithAmount: residual];
+                        int                  res = [NSApp runModalForWindow: controller.window];
                         if (res) {
                             return NO;
                         }
                         residual = controller.amount;
-                        
+
                         if (negate) {
                             residual = [[NSDecimalNumber zero] decimalNumberBySubtracting: residual];
                         }
@@ -2256,14 +2117,14 @@ static BankingController *bankinControllerInstance;
                     if (negate) {
                         amount = [[NSDecimalNumber zero] decimalNumberBySubtracting: amount];
                     }
-                    
-                    AssignmentController *controller = [[AssignmentController alloc] initWithAmount:amount];
-                    int res = [NSApp runModalForWindow:controller.window];
+
+                    AssignmentController *controller = [[AssignmentController alloc] initWithAmount: amount];
+                    int                  res = [NSApp runModalForWindow: controller.window];
                     if (res) {
                         return NO;
                     }
                     amount = controller.amount;
-                    
+
                     if (negate) {
                         amount = [[NSDecimalNumber zero] decimalNumberBySubtracting: amount];
                     }
@@ -2276,7 +2137,6 @@ static BankingController *bankinControllerInstance;
                 }
             }
         }
-
         // Update category values including rollup for all categories.
         [Category updateBalancesAndSums];
 
@@ -2287,11 +2147,11 @@ static BankingController *bankinControllerInstance;
         }
     } else {
         NSURL             *uri = [NSKeyedUnarchiver unarchiveObjectWithData: data];
-        NSManagedObjectID *moID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
+        NSManagedObjectID *moID = [[managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation: uri];
         if (moID == nil) {
             return NO;
         }
-        Category *scat = (Category *)[self.managedObjectContext objectWithID: moID];
+        Category *scat = (Category *)[managedObjectContext objectWithID: moID];
         [scat setValue: targetCategory forKey: @"parent"];
 
         [[Category catRoot] updateCategorySums];
@@ -2302,8 +2162,7 @@ static BankingController *bankinControllerInstance;
     return YES;
 }
 
-- (void)outlineViewSelectionDidChange: (NSNotification *)aNotification
-{
+- (void)outlineViewSelectionDidChange: (NSNotification *)aNotification {
     if (shuttingDown) {
         return;
     }
@@ -2322,8 +2181,7 @@ static BankingController *bankinControllerInstance;
 }
 
 - (void)outlineView: (NSOutlineView *)outlineView willDisplayCell: (ImageAndTextCell *)cell
-     forTableColumn: (NSTableColumn *)tableColumn item: (id)item
-{
+     forTableColumn: (NSTableColumn *)tableColumn item: (id)item {
     if (![[tableColumn identifier] isEqualToString: @"name"]) {
         return;
     }
@@ -2363,7 +2221,7 @@ static BankingController *bankinControllerInstance;
             } else {
                 if ([url.scheme isEqualToString: @"collection"]) { // An image from one of our collections.
                     NSDictionary *parameters = [NSDictionary dictionaryForUrlParameters: url];
-                    NSString *subfolder = [@"Collections/" stringByAppendingString: parameters[@"c"]];
+                    NSString     *subfolder = [@"Collections/" stringByAppendingString : parameters[@"c"]];
                     path = [[NSBundle mainBundle] pathForResource: [url.host stringByDeletingPathExtension]
                                                            ofType: url.host.pathExtension
                                                       inDirectory: subfolder];
@@ -2433,16 +2291,14 @@ static BankingController *bankinControllerInstance;
 
 #pragma mark - Splitview delegate methods
 
-- (CGFloat)splitView: (NSSplitView *)splitView constrainMinCoordinate: (CGFloat)proposedMin ofSubviewAt: (NSInteger)dividerIndex
-{
+- (CGFloat)splitView: (NSSplitView *)splitView constrainMinCoordinate: (CGFloat)proposedMin ofSubviewAt: (NSInteger)dividerIndex {
     if (splitView == mainVSplit) {
         return 370;
     }
     return proposedMin;
 }
 
-- (CGFloat)splitView: (NSSplitView *)splitView constrainMaxCoordinate: (CGFloat)proposedMax ofSubviewAt: (NSInteger)dividerIndex
-{
+- (CGFloat)splitView: (NSSplitView *)splitView constrainMaxCoordinate: (CGFloat)proposedMax ofSubviewAt: (NSInteger)dividerIndex {
     if (splitView == mainVSplit) {
         return NSWidth([mainWindow frame]) - 800;
     }
@@ -2451,42 +2307,50 @@ static BankingController *bankinControllerInstance;
 
 #pragma mark - Sidebar delegate methods
 
-- (void)sideBar: (EDSideBar*)tabBar didSelectButton: (NSInteger)index
-{
+- (void)sideBar: (EDSideBar *)tabBar didSelectButton: (NSInteger)index {
     switch (index) {
         case 0: // Home screen.
             [self switchMainPage: 0];
             break;
+
         case 1: // Accounts + categories, overview section.
             [self switchMainPage: 1];
             [self switchToAccountPage: 0];
             break;
+
         case 2:
             [self switchMainPage: 1];
             [self switchToAccountPage: 1];
             break;
+
         case 3:
             [self switchMainPage: 1];
             [self switchToAccountPage: 6];
             break;
+
         case 4:
             [self switchMainPage: 1];
             [self switchToAccountPage: 2];
             break;
+
         case 5:
             [self switchMainPage: 1];
             [self switchToAccountPage: 3];
             break;
+
         case 6:
             [self switchMainPage: 1];
             [self switchToAccountPage: 4];
             break;
+
         case 7: // Transfers.
             [self switchMainPage: 2];
             break;
+
         case 8: // Standing orders.
             [self switchMainPage: 3];
             break;
+
         case 9: // Direct debits.
             [self switchMainPage: 4];
             break;
@@ -2495,8 +2359,7 @@ static BankingController *bankinControllerInstance;
 
 #pragma mark - Menu handling
 
-- (BOOL)validateMenuItem: (NSMenuItem *)item
-{
+- (BOOL)validateMenuItem: (NSMenuItem *)item {
     int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]];
 
     if (idx != 0) {
@@ -2506,7 +2369,7 @@ static BankingController *bankinControllerInstance;
         if ([item action] == @selector(addAccount:)) {
             return NO;
         }
-        if ([item action] == @selector(changeAccount:)) {
+        if ([item action] == @selector(showProperties:)) {
             return NO;
         }
         if ([item action] == @selector(deleteAccount:)) {
@@ -2515,19 +2378,16 @@ static BankingController *bankinControllerInstance;
         if ([item action] == @selector(enqueueRequest:)) {
             return NO;
         }
-        if ([item action] == @selector(transfer_local:)) {
+        if ([item action] == @selector(startLocalTransfer:)) {
             return NO;
         }
-        if ([item action] == @selector(transfer_eu:)) {
+        if ([item action] == @selector(startEuTransfer:)) {
             return NO;
         }
-        if ([item action] == @selector(transfer_sepa:)) {
+        if ([item action] == @selector(startSepaTransfer:)) {
             return NO;
         }
-        if ([item action] == @selector(transfer_dated:)) {
-            return NO;
-        }
-        if ([item action] == @selector(transfer_internal:)) {
+        if ([item action] == @selector(startInternalTransfer:)) {
             return NO;
         }
         if ([item action] == @selector(splitStatement:)) {
@@ -2550,25 +2410,22 @@ static BankingController *bankinControllerInstance;
             if ([item action] == @selector(enqueueRequest:)) {
                 return NO;
             }
-            if ([item action] == @selector(changeAccount:)) {
+            if ([item action] == @selector(showProperties:)) {
                 return NO;
             }
             if ([item action] == @selector(deleteAccount:)) {
                 return NO;
             }
-            if ([item action] == @selector(transfer_local:)) {
+            if ([item action] == @selector(startLocalTransfer:)) {
                 return NO;
             }
-            if ([item action] == @selector(transfer_eu:)) {
+            if ([item action] == @selector(startEuTransfer:)) {
                 return NO;
             }
-            if ([item action] == @selector(transfer_sepa:)) {
+            if ([item action] == @selector(startSepaTransfer:)) {
                 return NO;
             }
-            if ([item action] == @selector(transfer_dated:)) {
-                return NO;
-            }
-            if ([item action] == @selector(transfer_internal:)) {
+            if ([item action] == @selector(startInternalTransfer:)) {
                 return NO;
             }
             if ([item action] == @selector(addStatement:)) {
@@ -2581,19 +2438,16 @@ static BankingController *bankinControllerInstance;
         if ([cat isKindOfClass: [BankAccount class]]) {
             BankAccount *account = (BankAccount *)cat;
             if ([[account isManual] boolValue] == YES) {
-                if ([item action] == @selector(transfer_local:)) {
+                if ([item action] == @selector(startLocalTransfer:)) {
                     return NO;
                 }
-                if ([item action] == @selector(transfer_eu:)) {
+                if ([item action] == @selector(startEuTransfer:)) {
                     return NO;
                 }
-                if ([item action] == @selector(transfer_sepa:)) {
+                if ([item action] == @selector(startSepaTransfer:)) {
                     return NO;
                 }
-                if ([item action] == @selector(transfer_dated:)) {
-                    return NO;
-                }
-                if ([item action] == @selector(transfer_internal:)) {
+                if ([item action] == @selector(startInternalTransfer:)) {
                     return NO;
                 }
                 if ([item action] == @selector(creditCardSettlements:)) {
@@ -2615,8 +2469,8 @@ static BankingController *bankinControllerInstance;
             return NO;
         }
 
-        if ([(id)currentSection respondsToSelector: @selector(validateMenuItem:)]) {
-            BOOL result = [(id)currentSection validateMenuItem: item];
+        if ([(id)currentSection respondsToSelector : @selector(validateMenuItem:)]) {
+            BOOL result = [(id)currentSection validateMenuItem : item];
             if (!result) {
                 return NO;
             }
@@ -2627,17 +2481,16 @@ static BankingController *bankinControllerInstance;
 
 #pragma mark - Category management
 
-- (void)updateNotAssignedCategory
-{
+- (void)updateNotAssignedCategory {
     LogEnter;
 
     NSError *error = nil;
 
     // fetch all bank statements
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: self.managedObjectContext];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement" inManagedObjectContext: managedObjectContext];
     NSFetchRequest      *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
-    NSArray *stats = [self.managedObjectContext executeFetchRequest: request error: &error];
+    NSArray *stats = [managedObjectContext executeFetchRequest: request error: &error];
     if (error) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
@@ -2646,14 +2499,12 @@ static BankingController *bankinControllerInstance;
     for (BankStatement *stat in stats) {
         [stat updateAssigned];
     }
-
     [self save];
 
     LogLeave;
 }
 
-- (void)deleteCategory: (id)sender
-{
+- (void)deleteCategory: (id)sender {
     LogEnter;
 
     Category *cat = [self currentSelection];
@@ -2699,8 +2550,7 @@ static BankingController *bankinControllerInstance;
     [self save];
 }
 
-- (void)addCategory: (id)sender
-{
+- (void)addCategory: (id)sender {
     LogEnter;
 
     Category *cat = [self currentSelection];
@@ -2719,8 +2569,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)insertCategory: (id)sender
-{
+- (void)insertCategory: (id)sender {
     LogEnter;
 
     Category *cat = [self currentSelection];
@@ -2735,8 +2584,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)manageCategories: (id)sender
-{
+- (IBAction)manageCategories: (id)sender {
     LogEnter;
 
     int clickedSegment = [sender selectedSegment];
@@ -2755,14 +2603,12 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (NSString *)autosaveNameForTimeSlicer: (TimeSliceManager *)tsm
-{
+- (NSString *)autosaveNameForTimeSlicer: (TimeSliceManager *)tsm {
     return @"AccMainTimeSlice";
 }
 
-- (void)timeSliceManager: (TimeSliceManager *)tsm changedIntervalFrom: (ShortDate *)from to: (ShortDate *)to
-{
-    if (self.managedObjectContext == nil) {
+- (void)timeSliceManager: (TimeSliceManager *)tsm changedIntervalFrom: (ShortDate *)from to: (ShortDate *)to {
+    if (managedObjectContext == nil) {
         return;
     }
     int idx = [mainTabView indexOfTabViewItem: [mainTabView selectedTabViewItem]];
@@ -2779,16 +2625,14 @@ static BankingController *bankinControllerInstance;
     [self updateStatusbar];
 }
 
-- (void)controlTextDidBeginEditing: (NSNotification *)aNotification
-{
+- (void)controlTextDidBeginEditing: (NSNotification *)aNotification {
     if ([aNotification object] == accountsView) {
         Category *cat = [self currentSelection];
         accountsView.saveCatName = [cat name];
     }
 }
 
-- (void)controlTextDidEndEditing: (NSNotification *)aNotification
-{
+- (void)controlTextDidEndEditing: (NSNotification *)aNotification {
     // Category name changed
     if ([aNotification object] == accountsView) {
         Category *cat = [self currentSelection];
@@ -2799,19 +2643,17 @@ static BankingController *bankinControllerInstance;
         if (cat) {
             [categoryController setSelectedObject: cat];
         }
-        
+
         // Category was created or changed. Save changes.
         [self save];
     }
 }
 
-- (void)setRestart
-{
+- (void)setRestart {
     restart = YES;
 }
 
-- (IBAction)deleteStatement: (id)sender
-{
+- (IBAction)deleteStatement: (id)sender {
     LogEnter;
 
     // This function is only called if the associated menu item is enabled, which is only the case
@@ -2822,14 +2664,13 @@ static BankingController *bankinControllerInstance;
 
     [(id)currentSection deleteSelectedStatements];
     [overviewController clearStatementFilter];
-    
+
     [self save];
 
     LogLeave;
 }
 
-- (void)splitStatement: (id)sender
-{
+- (void)splitStatement: (id)sender {
     LogEnter;
 
     // This function is only called if the associated menu item is enabled, which is only the case
@@ -2839,8 +2680,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)addStatement: (id)sender
-{
+- (IBAction)addStatement: (id)sender {
     LogEnter;
 
     Category *cat = [self currentSelection];
@@ -2862,8 +2702,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)splitPurpose: (id)sender
-{
+- (IBAction)splitPurpose: (id)sender {
     LogEnter;
 
     Category *cat = [self currentSelection];
@@ -2877,8 +2716,7 @@ static BankingController *bankinControllerInstance;
 /**
  * Takes the (localized) title of the given category and determines an icon for it from the default collection.
  */
-- (void)determineDefaultIconForCategory: (Category *)category
-{
+- (void)determineDefaultIconForCategory: (Category *)category {
     if (defaultIcons == nil) {
         NSMutableArray *entries = [NSMutableArray arrayWithCapacity: 100];
 
@@ -2915,7 +2753,9 @@ static BankingController *bankinControllerInstance;
                     }
                     [keywords addObject: keyword];
                 }
-                NSDictionary *entry = @{@"icon": icon, @"keywords": keywords};
+                NSDictionary *entry = @{
+                    @"icon": icon, @"keywords": keywords
+                };
                 [entries addObject: entry];
             }
         }
@@ -2982,8 +2822,7 @@ static BankingController *bankinControllerInstance;
  * Saves the expand states of the top bank account node and all its children.
  * Also saves the current selection if it is on a bank account.
  */
-- (void)saveBankAccountItemsStates
-{
+- (void)saveBankAccountItemsStates {
     LogEnter;
 
     Category *category = [self currentSelection];
@@ -3004,7 +2843,6 @@ static BankingController *bankinControllerInstance;
             [bankAccountItemsExpandState addObject: category];
         }
     }
-
     LogLeave;
 }
 
@@ -3012,8 +2850,7 @@ static BankingController *bankinControllerInstance;
  * Restores the previously saved expand states of all bank account nodes and sets the
  * last selection if it was on a bank account node.
  */
-- (void)restoreBankAccountItemsStates
-{
+- (void)restoreBankAccountItemsStates {
     LogEnter;
 
     NSUInteger row, numberOfRows = [accountsView numberOfRows];
@@ -3039,12 +2876,11 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)syncAllAccounts
-{
+- (void)syncAllAccounts {
     LogEnter;
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
+
     autoSyncRunning = YES;
     [self synchronizeAccount: Category.bankRoot];
 
@@ -3078,8 +2914,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)checkForAutoSync
-{
+- (void)checkForAutoSync {
     BOOL           syncDone = NO;
     NSDate         *syncTime;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -3132,8 +2967,7 @@ static BankingController *bankinControllerInstance;
     }
 }
 
-- (void)applicationWillFinishLaunching: (NSNotification *)notification
-{
+- (void)applicationWillFinishLaunching: (NSNotification *)notification {
     LogEnter;
 
     // Display main window
@@ -3149,8 +2983,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)applicationDidFinishLaunching: (NSNotification *)aNotification
-{
+- (void)applicationDidFinishLaunching: (NSNotification *)aNotification {
     LogEnter;
 
     StatusBarController *sc = [StatusBarController controller];
@@ -3160,7 +2993,7 @@ static BankingController *bankinControllerInstance;
     @try {
         model = [assistant model];
         [assistant initDatafile: nil]; // use default data file
-        self.managedObjectContext = [assistant context];
+        managedObjectContext = [assistant context];
     }
     @catch (NSError *error) {
         LogError(@"%@", error.debugDescription);
@@ -3177,7 +3010,7 @@ static BankingController *bankinControllerInstance;
 
         @try {
             [assistant decrypt];
-            self.managedObjectContext = [assistant context];
+            managedObjectContext = [assistant context];
         }
         @catch (NSError *error) {
             LogError(@"%@", error.debugDescription);
@@ -3216,7 +3049,7 @@ static BankingController *bankinControllerInstance;
     // Add default tags if there are none yet.
     NSError        *error = nil;
     NSFetchRequest *request = [model fetchRequestTemplateForName: @"allTags"];
-    NSUInteger     count = [self.managedObjectContext countForFetchRequest: request error: &error];
+    NSUInteger     count = [managedObjectContext countForFetchRequest: request error: &error];
     if (error != nil) {
         LogError(@"Error reading tags: %@", error.localizedDescription);
     }
@@ -3245,8 +3078,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (NSApplicationTerminateReply)applicationShouldTerminate: (NSApplication *)sender
-{
+- (NSApplicationTerminateReply)applicationShouldTerminate: (NSApplication *)sender {
     LogEnter;
 
     if ([self canTerminate] == NO) {
@@ -3255,8 +3087,7 @@ static BankingController *bankinControllerInstance;
     return NSTerminateNow;
 }
 
-- (void)applicationWillTerminate: (NSNotification *)aNotification
-{
+- (void)applicationWillTerminate: (NSNotification *)aNotification {
     LogEnter;
 
     shuttingDown = YES;
@@ -3305,7 +3136,7 @@ static BankingController *bankinControllerInstance;
 
     dockIconController = nil;
 
-    if (self.managedObjectContext && [MOAssistant assistant].isMaxIdleTimeExceeded == NO) {
+    if (managedObjectContext && [MOAssistant assistant].isMaxIdleTimeExceeded == NO) {
         if (![self save]) {
             return;
         }
@@ -3314,32 +3145,30 @@ static BankingController *bankinControllerInstance;
     [[MOAssistant assistant] shutdown];
     [WorkerThread finish];
 
-	// if application shall restart, launch new task
-	if(restart) {
-		NSProcessInfo *pi = [NSProcessInfo processInfo ];
-		NSArray *args = [pi arguments ];
-		NSString *path = [args objectAtIndex: 0];
-		if(path) {
+    // if application shall restart, launch new task
+    if (restart) {
+        NSProcessInfo *pi = [NSProcessInfo processInfo];
+        NSArray       *args = [pi arguments];
+        NSString      *path = [args objectAtIndex: 0];
+        if (path) {
             NSError *error = nil;
-            NSURL *url = [NSURL fileURLWithPath:path];
-            [[NSWorkspace sharedWorkspace] launchApplicationAtURL:url options: (NSWorkspaceLaunchNewInstance) configuration:nil error:&error];
+            NSURL   *url = [NSURL fileURLWithPath: path];
+            [[NSWorkspace sharedWorkspace] launchApplicationAtURL: url options: (NSWorkspaceLaunchNewInstance) configuration: nil error: &error];
             if (error != nil) {
-                [[NSAlert alertWithError:error] runModal];
+                [[NSAlert alertWithError: error] runModal];
             }
-		}
-	}
+        }
+    }
 
     [MessageLog.log cleanUp];
     LogLeave;
 }
 
-- (void)autoSyncTimerEvent: (NSTimer *)theTimer
-{
+- (void)autoSyncTimerEvent: (NSTimer *)theTimer {
     [self syncAllAccounts];
 }
 
-- (BOOL)checkForUnhandledTransfersAndSend
-{
+- (BOOL)checkForUnhandledTransfersAndSend {
     LogEnter;
 
     // Check for a new transfer not yet finished.
@@ -3359,13 +3188,13 @@ static BankingController *bankinControllerInstance;
 
     // Check for unsent transfers.
     NSError             *error = nil;
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Transfer" inManagedObjectContext: self.managedObjectContext];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"Transfer" inManagedObjectContext: managedObjectContext];
     NSFetchRequest      *request = [[NSFetchRequest alloc] init];
     [request setEntity: entityDescription];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"isSent = NO"];
     [request setPredicate: predicate];
-    NSArray *transfers = [self.managedObjectContext executeFetchRequest: request error: &error];
+    NSArray *transfers = [managedObjectContext executeFetchRequest: request error: &error];
     if (error || [transfers count] == 0) {
         return YES;
     }
@@ -3396,8 +3225,7 @@ static BankingController *bankinControllerInstance;
     return NO;
 }
 
-- (void)updateUnread
-{
+- (void)updateUnread {
     LogEnter;
 
     NSTableColumn *tc = [accountsView tableColumnWithIdentifier: @"name"];
@@ -3412,8 +3240,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (BOOL)application: (NSApplication *)theApplication openFile: (NSString *)filename
-{
+- (BOOL)application: (NSApplication *)theApplication openFile: (NSString *)filename {
     LogEnter;
 
     [[MOAssistant assistant] initDatafile: filename];
@@ -3423,8 +3250,7 @@ static BankingController *bankinControllerInstance;
     return YES;
 }
 
-- (void)startRefreshAnimation
-{
+- (void)startRefreshAnimation {
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation"];
     animation.fromValue = @0;
     animation.toValue = @M_PI;
@@ -3436,75 +3262,73 @@ static BankingController *bankinControllerInstance;
     [CATransaction flush];
 }
 
-- (void)stopRefreshAnimation
-{
+- (void)stopRefreshAnimation {
     [refreshButton.layer removeAllAnimations];
 }
 
 /**
  * Creates the selection image for the side bar and adds buttons for different actions.
  */
-- (void)setupSidebar
-{
+- (void)setupSidebar {
     // First create selection image.
-	NSInteger imageWidth = 12;
+    NSInteger imageWidth = 12;
     NSInteger imageHeight = 22;
-	NSImage* selectionImage = [[NSImage alloc] initWithSize: NSMakeSize(imageWidth, imageHeight)];
+    NSImage   *selectionImage = [[NSImage alloc] initWithSize: NSMakeSize(imageWidth, imageHeight)];
 
-	[selectionImage lockFocus];
+    [selectionImage lockFocus];
 
     NSBezierPath *triangle = [NSBezierPath bezierPath];
-	[triangle setLineWidth: 1.0];
+    [triangle setLineWidth: 1.0];
     [triangle moveToPoint: NSMakePoint(imageWidth + 1, 0.0)];
     [triangle lineToPoint: NSMakePoint(0, imageHeight / 2.0)];
     [triangle lineToPoint: NSMakePoint(imageWidth + 1, imageHeight)];
     [triangle closePath];
-	[[NSColor colorWithCalibratedWhite: 0.5 alpha: 1.000] setFill];
-	[[NSColor darkGrayColor] setStroke];
-	[triangle fill];
-	[triangle stroke];
+    [[NSColor colorWithCalibratedWhite: 0.5 alpha: 1.000] setFill];
+    [[NSColor darkGrayColor] setStroke];
+    [triangle fill];
+    [triangle stroke];
 
     [selectionImage unlockFocus];
 
     sidebar.layoutMode = ECSideBarLayoutCenter;
-	sidebar.animateSelection = YES;
-	sidebar.sidebarDelegate = self;
-	sidebar.selectionImage = selectionImage;
+    sidebar.animateSelection = YES;
+    sidebar.sidebarDelegate = self;
+    sidebar.selectionImage = selectionImage;
 
     [sidebar addButtonWithTitle: NSLocalizedString(@"AP25", nil)
                           image: [NSImage imageNamed: @"home-active"]
                  alternateImage: [NSImage imageNamed: @"home"]];
 
-	[sidebar addButtonWithTitle: NSLocalizedString(@"AP26", nil)
-                          image: [NSImage imageNamed:@"overview-active"]
-                 alternateImage: [NSImage imageNamed:@"overview"]];
+    [sidebar addButtonWithTitle: NSLocalizedString(@"AP26", nil)
+                          image: [NSImage imageNamed: @"overview-active"]
+                 alternateImage: [NSImage imageNamed: @"overview"]];
     [sidebar addButtonWithTitle: NSLocalizedString(@"AP27", nil)
-                          image: [NSImage imageNamed:@"graph3-active"]
-                 alternateImage: [NSImage imageNamed:@"graph3"]];
-	[sidebar addButtonWithTitle: NSLocalizedString(@"AP28", nil)
-                          image: [NSImage imageNamed:@"distribution-active"]
-                 alternateImage: [NSImage imageNamed:@"distribution"]];
-	[sidebar addButtonWithTitle: NSLocalizedString(@"AP29", nil)
-                          image: [NSImage imageNamed:@"graph4-active"]
-                 alternateImage: [NSImage imageNamed:@"graph4"]];
+                          image: [NSImage imageNamed: @"graph3-active"]
+                 alternateImage: [NSImage imageNamed: @"graph3"]];
+    [sidebar addButtonWithTitle: NSLocalizedString(@"AP28", nil)
+                          image: [NSImage imageNamed: @"distribution-active"]
+                 alternateImage: [NSImage imageNamed: @"distribution"]];
+    [sidebar addButtonWithTitle: NSLocalizedString(@"AP29", nil)
+                          image: [NSImage imageNamed: @"graph4-active"]
+                 alternateImage: [NSImage imageNamed: @"graph4"]];
     [sidebar addButtonWithTitle: NSLocalizedString(@"AP30", nil)
-                          image: [NSImage imageNamed:@"table-active"]
-                 alternateImage: [NSImage imageNamed:@"table"]];
-	[sidebar addButtonWithTitle: NSLocalizedString(@"AP31", nil)
-                          image: [NSImage imageNamed:@"assign-active"]
-                 alternateImage: [NSImage imageNamed:@"assign"]];
+                          image: [NSImage imageNamed: @"table-active"]
+                 alternateImage: [NSImage imageNamed: @"table"]];
+    [sidebar addButtonWithTitle: NSLocalizedString(@"AP31", nil)
+                          image: [NSImage imageNamed: @"assign-active"]
+                 alternateImage: [NSImage imageNamed: @"assign"]];
 
-	[sidebar addButtonWithTitle: NSLocalizedString(@"AP32", nil)
-                          image: [NSImage imageNamed:@"send2-active"]
-                 alternateImage: [NSImage imageNamed:@"send2"]];
-	[sidebar addButtonWithTitle: NSLocalizedString(@"AP33", nil)
-                          image: [NSImage imageNamed:@"send3-active"]
-                 alternateImage: [NSImage imageNamed:@"send3"]];
+    [sidebar addButtonWithTitle: NSLocalizedString(@"AP32", nil)
+                          image: [NSImage imageNamed: @"send2-active"]
+                 alternateImage: [NSImage imageNamed: @"send2"]];
+    [sidebar addButtonWithTitle: NSLocalizedString(@"AP33", nil)
+                          image: [NSImage imageNamed: @"send3-active"]
+                 alternateImage: [NSImage imageNamed: @"send3"]];
 
     NSFont *font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 11];
     if (font != nil) {
         for (NSUInteger i = 0; i < sidebar.buttonCount; ++i) {
-            id cell = [sidebar cellForItem: i];
+            id                        cell = [sidebar cellForItem: i];
             NSMutableAttributedString *title = [[cell attributedTitle] mutableCopy];
             [title addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, title.length)];
             [cell setAttributedTitle: title];
@@ -3514,8 +3338,7 @@ static BankingController *bankinControllerInstance;
 
 #pragma mark - KVO
 
-- (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context
-{
+- (void)observeValueForKeyPath: (NSString *)keyPath ofObject: (id)object change: (NSDictionary *)change context: (void *)context {
     if ([keyPath isEqualToString: @"isComTraceActive"]) {
         if (MessageLog.log.isComTraceActive) {
             comTraceMenuItem.title = NSLocalizedString(@"AP223", nil);
@@ -3543,7 +3366,7 @@ static BankingController *bankinControllerInstance;
 
             font = [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 11];
             for (NSUInteger i = 0; i < sidebar.buttonCount; ++i) {
-                id cell = [sidebar cellForItem: i];
+                id                        cell = [sidebar cellForItem: i];
                 NSMutableAttributedString *title = [[cell attributedTitle] mutableCopy];
                 [title addAttribute: NSFontAttributeName value: font range: NSMakeRange(0, title.length)];
                 [cell setAttributedTitle: title];
@@ -3564,8 +3387,7 @@ static BankingController *bankinControllerInstance;
 
 #pragma mark - Developer tools
 
-- (IBAction)deleteAllData: (id)sender
-{
+- (IBAction)deleteAllData: (id)sender {
     LogEnter;
 
     int res = NSRunCriticalAlertPanel(NSLocalizedString(@"AP114", nil),
@@ -3584,8 +3406,7 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (IBAction)generateData: (id)sender
-{
+- (IBAction)generateData: (id)sender {
     LogEnter;
 
     GenerateDataController *generator = [[GenerateDataController alloc] init];
@@ -3596,8 +3417,7 @@ static BankingController *bankinControllerInstance;
 
 #pragma mark - Other stuff
 
-- (IBAction)creditCardSettlements: (id)sender
-{
+- (IBAction)creditCardSettlements: (id)sender {
     LogEnter;
 
     BankAccount *account = [self selectedBankAccount];
@@ -3613,16 +3433,14 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)migrate
-{
+- (void)migrate {
     LogEnter;
 
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
 
     BOOL migrated10 = [settings boolForKey: @"Migrated10"];
-    
-    if (!migrated10) {
 
+    if (!migrated10) {
         NSManagedObjectContext *context = MOAssistant.assistant.context;
 
         NSError *error = nil;
@@ -3658,7 +3476,7 @@ static BankingController *bankinControllerInstance;
         // BankUser assign accounts
         NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankAccount"
                                                              inManagedObjectContext: context];
-        NSFetchRequest      *request = [[NSFetchRequest alloc] init];
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
 
         [request setEntity: entityDescription];
         NSPredicate *predicate = [NSPredicate predicateWithFormat: @"userId != nil", self];
@@ -3679,7 +3497,6 @@ static BankingController *bankinControllerInstance;
                 [invalidUsers addObject: account.userId];
             }
         }
-        
         if (![self save]) {
             return;
         }
@@ -3709,7 +3526,7 @@ static BankingController *bankinControllerInstance;
                             );
         }
     }
-    
+
     BOOL migrated110 = [settings boolForKey: @"Migrated110"];
     if (migrated110 == NO) {
         // BankUser update BPD
@@ -3724,21 +3541,20 @@ static BankingController *bankinControllerInstance;
                 [[HBCIController controller] updateSupportedTransactionsForUser: user];
             }
         }
-        
+
         settings[@"Migrated110"] = @YES;
     }
-    
+
     LogLeave;
 }
 
-- (BOOL)save
-{
+- (BOOL)save {
     LogEnter;
 
     NSError *error = nil;
-    
+
     // save updates
-    if (![self.managedObjectContext save: &error]) {
+    if (![managedObjectContext save: &error]) {
         NSAlert *alert = [NSAlert alertWithError: error];
         [alert runModal];
         return NO;
@@ -3749,8 +3565,7 @@ static BankingController *bankinControllerInstance;
     return YES;
 }
 
-+ (BankingController *)controller
-{
++ (BankingController *)controller {
     return bankinControllerInstance;
 }
 

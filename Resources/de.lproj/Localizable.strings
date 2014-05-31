@@ -164,6 +164,21 @@ AP220 = "Keine Kontenabfrage möglich";
 AP221 = "Kreditkarte:";
 AP222 = "Kommunikationsmitschnitt starten";
 AP223 = "Kommunikationsmitschnitt beenden";
+AP224 = "Konto abrufen";
+AP225 = "Kategorie hinzufügen";
+AP226 = "Kategorie löschen...";
+AP227 = "Eigenschaften...";
+AP228 = "Alle Konten abrufen";
+AP229 = "Konten abrufen";
+AP230 = "Neue Überweisung von diesem Konto";
+AP231 = "Konto löschen...";
+AP232 = "Neues Konto anlegen...";
+AP233 = "Umsatz splitten...";
+AP234 = "Umsatz löschen...";
+AP235 = "Als ungelesen markieren";
+AP236 = "Neue Überweisung von dieser Buchung";
+AP237 = "Neue Vorlage von dieser Buchung";
+AP238 = "Manuellen Umsatz hinzufügen...";
 
 // Categories
 // AP250..AP349

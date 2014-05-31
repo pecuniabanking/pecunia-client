@@ -20,13 +20,14 @@
 #import "TransactionController.h"
 #import "Category.h"
 #import "Transfer.h"
+#include "BankStatement.h"
 #import "TransactionLimits.h"
 #import "MOAssistant.h"
 #import "BankAccount.h"
 #import "HBCIController.h"
 #import "Country.h"
 #import "TransferTemplate.h"
-#import "MCEMDecimalNumberAdditions.h"
+#import "NSDecimalNumber+PecuniaAdditions.h"
 
 /**
  * Transform zero-based selector indices to one-based chargedBy property values for transfers.
@@ -147,11 +148,11 @@
 }
 
 - (BOOL)newTransferOfType: (TransferType)type {
-    NSError                *error = nil;
-    NSManagedObjectContext *context = [[MOAssistant assistant] context];
+    NSManagedObjectContext *context = MOAssistant.assistant.context;
 
     // Save any previous change.
     if ([context  hasChanges]) {
+        NSError *error = nil;
         if ([context save: &error] == NO) {
             NSAlert *alert = [NSAlert alertWithError: error];
             [alert runModal];
@@ -266,13 +267,15 @@
     template.name = name;
     template.type = transfer.type;
 
-    // remove schedule
+    // Make the template an unscheduled transfer.
     switch (template.type.intValue) {
-        case TransferTypeSEPAScheduled: template.type = @(TransferTypeSEPA); break;
+        case TransferTypeSEPAScheduled:
+            template.type = @(TransferTypeSEPA);
+            break;
 
-        case TransferTypeOldStandardScheduled: template.type = @(TransferTypeOldStandard); break;
-
-        default: break;
+        case TransferTypeOldStandardScheduled:
+            template.type = @(TransferTypeOldStandard);
+            break;
     }
 
     template.remoteAccount = transfer.remoteAccount;
@@ -288,8 +291,43 @@
     template.remoteCountry = transfer.remoteCountry;
     template.value = transfer.value;
     template.currency = transfer.currency;
+}
 
-    // TODO: Save the context?
+- (void)saveStatement: (BankStatement *)statement asTemplateWithName: (NSString *)name {
+    if (name == nil) {
+        return;
+    }
+    name = [name stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (name.length == 0) {
+        return;
+    }
+
+    NSManagedObjectContext *context = templateController.managedObjectContext;
+    TransferTemplate       *template = [NSEntityDescription insertNewObjectForEntityForName: @"TransferTemplate" inManagedObjectContext: context];
+    template.name = name;
+    template.type = @(TransferTypeSEPA); //statement.type; for now make it always a SEPA transfer. The source type is not set.
+
+    // Make the template an unscheduled transfer.
+    switch (template.type.intValue) {
+        case TransferTypeSEPAScheduled:
+            template.type = @(TransferTypeSEPA);
+            break;
+
+        case TransferTypeOldStandardScheduled:
+            template.type = @(TransferTypeOldStandard);
+            break;
+    }
+
+    template.remoteAccount = statement.remoteAccount;
+    template.remoteBankCode = statement.remoteBankCode;
+    template.remoteBankName = statement.remoteBankName;
+    template.remoteName = statement.remoteName;
+    template.purpose1 = statement.floatingPurpose;
+    template.remoteIBAN = statement.remoteIBAN;
+    template.remoteBIC = statement.remoteBIC;
+    template.remoteCountry = statement.remoteCountry;
+    template.value = [statement.value abs];
+    template.currency = statement.currency;
 }
 
 - (BOOL)editingInProgress {

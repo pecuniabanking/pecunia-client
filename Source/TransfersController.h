@@ -31,6 +31,7 @@
 @class DragImageView;
 @class DeleteTransferTargetView;
 @class BankAccount;
+@class BankStatement;
 @class TransactionLimits;
 @class TimeSliceManager;
 @class ShadowedTextField;
@@ -152,6 +153,7 @@
 - (void)cancelEditing;
 - (BOOL)editingInProgress;
 - (void)startDonationTransfer;
-- (BOOL)startTransferOfType: (TransferType)type withAccount: (BankAccount *)account;
+- (BOOL)startTransferOfType: (TransferType)type withAccount: (BankAccount *)account statement: (BankStatement *)statement;
+- (void)createTemplateFromStatement: (BankStatement *)statement;
 
 @end

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2007, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -98,7 +98,9 @@ typedef struct {
 - (BOOL)isRemoveable;
 - (BOOL)isInsertable;
 - (BOOL)isNotAssignedCategory;
+- (BOOL)isCategoryRoot;
 - (BOOL)checkMoveToCategory: (Category *)cat;
+- (BOOL)canSynchronize;
 
 - (id)children;
 - (NSSet *)allCategories;

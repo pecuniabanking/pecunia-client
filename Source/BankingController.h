@@ -17,9 +17,8 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
-
 #import "PecuniaSectionItem.h"
+#include "Transfer.h"
 
 @class MCEMTreeController;
 @class SynchronousScrollView;
@@ -30,6 +29,8 @@
 @class CategoryView;
 @class DockIconController;
 @class ComTraceHelper;
+@class BankAccount;
+@class BankStatement;
 
 @class HomeScreenController;
 @class StatementsOverviewController;
@@ -75,6 +76,8 @@
 
     IBOutlet NSButton *toggleDetailsButton;
 
+    NSManagedObjectContext *managedObjectContext;
+
     NSMutableDictionary    *mainTabItems;
     NSUInteger             newStatementsCount;
 
@@ -95,7 +98,6 @@
 @property (strong) IBOutlet NSMenuItem   *toggleDetailsPaneItem;
 
 @property (nonatomic, copy) NSDecimalNumber          *saveValue;
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) DockIconController     *dockIconController;
 
 @property (nonatomic, assign) BOOL showBalances;
@@ -104,7 +106,7 @@
 @property (nonatomic, assign) BOOL shuttingDown;
 
 - (IBAction)addAccount: (id)sender;
-- (IBAction)changeAccount: (id)sender;
+- (IBAction)showProperties: (id)sender;
 - (IBAction)deleteAccount: (id)sender;
 - (IBAction)editPreferences: (id)sender;
 
@@ -113,14 +115,17 @@
 - (IBAction)export: (id)sender;
 - (IBAction)import: (id)sender;
 
-- (IBAction)transfer_local: (id)sender;
-- (IBAction)transfer_eu: (id)sender;
-- (IBAction)transfer_sepa: (id)sender;
-- (IBAction)transfer_dated: (id)sender;
-- (IBAction)transfer_internal: (id)sender;
+- (IBAction)startLocalTransfer: (id)sender;
+- (IBAction)startEuTransfer: (id)sender;
+- (IBAction)startSepaTransfer: (id)sender;
+- (IBAction)startInternalTransfer: (id)sender;
+- (void)startTransferOfType: (TransferType)type fromAccount: (BankAccount *)account statement: (BankStatement *)statement;
+- (void)createTemplateFromStatement: (BankStatement *)statement;
 
 - (IBAction)splitPurpose: (id)sender;
 
+- (void)insertCategory: (id)sender;
+- (void)deleteCategory: (id)sender;
 - (IBAction)manageCategories: (id)sender;
 
 - (IBAction)deleteStatement: (id)sender;
@@ -130,7 +135,6 @@
 - (IBAction)showConsole:(id)sender;
 - (IBAction)resetIsNewStatements: (id)sender;
 
-- (IBAction)printDocument: (id)sender;
 - (IBAction)getAccountBalance: (id)sender;
 
 
@@ -139,7 +143,6 @@
 - (IBAction)updateSupportedTransactions:(id)sender;
 
 - (IBAction)showAboutPanel: (id)sender;
-- (IBAction)toggleFullscreenIfSupported: (id)sender;
 - (IBAction)toggleDetailsPane: (id)sender;
 - (IBAction)toggleFeature: (id)sender;
 

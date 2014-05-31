@@ -39,7 +39,7 @@
 #import "Keychain.h"
 #import "SigningOptionsController.h"
 #import "CallbackHandler.h"
-#import "MCEMDecimalNumberAdditions.h"
+#import "NSDecimalNumber+PecuniaAdditions.h"
 #import "SystemNotification.h"
 
 static HBCIController *controller = nil;
