@@ -204,6 +204,7 @@
 {
     NSPopover        *tagPopover;
     NSViewController *tagPopoverController;
+    TagAttachmentCell *attachmentCell;
 }
 
 @end

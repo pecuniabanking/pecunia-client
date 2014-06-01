@@ -257,7 +257,9 @@ static ShortDate *endReportDate = nil;
                 balanceCount++;
             }
         }
-        [dateArray addObject: lastDate];
+        if (lastDate != nil) {
+            [dateArray addObject: lastDate];
+        }
         [countArray addObject: @(balanceCount)];
         if (balanceCount > maxTurnover) {
             maxTurnover = balanceCount;
@@ -315,7 +317,9 @@ static ShortDate *endReportDate = nil;
                 sum += fabs([assignment.value doubleValue]);
             }
         }
-        [dateArray addObject: lastDate];
+        if (lastDate != nil) {
+            [dateArray addObject: lastDate];
+        }
         [valuesArray addObject: @(sum)];
         if (sum > maxSum) {
             maxSum = sum;
@@ -379,7 +383,9 @@ static ShortDate *endReportDate = nil;
                 sum += [assignment.value doubleValue];
             }
         }
-        [dateArray addObject: lastDate];
+        if (lastDate != nil) {
+            [dateArray addObject: lastDate];
+        }
         [valuesArray addObject: @(sum)];
         if (sum > limits.high) {
             limits.high = sum;
@@ -909,7 +915,9 @@ static ShortDate *endReportDate = nil;
                     currentValue = [currentValue decimalNumberByAdding: assignment.value];
                 }
             }
-            [dateArray addObject: lastDate];
+            if (lastDate != nil) {
+                [dateArray addObject: lastDate];
+            }
             [balanceArray addObject: currentValue];
             [countArray addObject: @(balanceCount)];
         }

@@ -47,7 +47,7 @@
 - (BOOL)newTransferFromExistingTransfer: (Transfer *)transfer;
 - (BOOL)newTransferFromTemplate: (TransferTemplate *)template;
 - (void)saveTransfer: (Transfer *)transfer asTemplateWithName: (NSString *)name;
-- (void)saveStatement: (BankStatement *)statement asTemplateWithName: (NSString *)name;
+- (void)saveStatement: (BankStatement *)statement withType: (TransferType)type asTemplateWithName: (NSString *)name;
 - (BOOL)editingInProgress;
 - (void)cancelCurrentTransfer;
 - (BOOL)finishCurrentTransferValidatingValue: (BOOL)valueValidation;

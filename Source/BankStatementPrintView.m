@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,68 +22,90 @@
 #import "BankStatement.h"
 #import "BankAccount.h"
 
+@interface BankStatementPrintView () {
+    NSSize paperSize;
+    int    purposeWidth;
+    int    topMargin;
+    int    bottomMargin;
+    int    leftMargin;
+    int    rightMargin;
+    int    pageHeight;
+    int    pageWidth;
+    int    dateWidth;
+    int    amountWidth;
+    int    padding;
+    int    minStatHeight;
+    int    totalPages;
+    int    currentPage;
+    BOOL   printUserInfo;
+    BOOL   printCategories;
+
+    NSMutableArray *statements;
+    int            *statHeights;
+
+    NSDateFormatter   *dateFormatter;
+    NSNumberFormatter *numberFormatter;
+    NSNumberFormatter *debitNumberFormatter;
+}
+
+@end
+
 @implementation BankStatementPrintView
 
-
-- (id)initWithStatements: (NSArray *)stats printInfo: (NSPrintInfo *)pi
-{
-    paperSize = [pi paperSize];
-    topMargin = [pi topMargin];
-    bottomMargin = [pi bottomMargin];
-    leftMargin = [pi leftMargin];
-    rightMargin = [pi rightMargin];
-    pageHeight = paperSize.height - topMargin - bottomMargin;
-    pageWidth = paperSize.width - leftMargin - rightMargin;
-    dateWidth = 37;
-    amountWidth = 67;
-    purposeWidth = pageWidth - dateWidth - 3 * amountWidth;
-    padding = 3;
-    currentPage = 1;
-
-    statements = [[NSMutableArray alloc] initWithCapacity: 100];
-    for (StatCatAssignment *stat in stats) {
-        [statements addObject: stat];
-    }
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"statement.date" ascending: YES];
-    NSArray          *sds = @[sd];
-    [statements sortUsingDescriptors: sds];
-
-    statHeights = (int *)malloc([statements count] * sizeof(int));
-
-    dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat: @"dd.MM."];
-
-    numberFormatter = [[NSNumberFormatter alloc] init];
-    [numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
-    [numberFormatter setMinimumFractionDigits: 2];
-
-    debitNumberFormatter = [numberFormatter copy];
-    [debitNumberFormatter setMinusSign: @""];
-
-    // User defaults
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    printUserInfo = [defaults boolForKey: @"printUserInfo"];
-    printCategories = [defaults boolForKey: @"printCategories"];
-
-    NSRect frame;
-
-    frame.origin.x = 0;
-    frame.origin.y = 0;
-    frame.size.width = pageWidth;
+- (id)initWithStatements: (NSArray *)stats printInfo: (NSPrintInfo *)pi {
+    NSRect frame = NSMakeRect(0, 0, pi.paperSize.width - pi.leftMargin - pi.rightMargin, pi.paperSize.height - pi.topMargin - pi.bottomMargin);
 
     self = [super initWithFrame: frame];
     if (self) {
+        paperSize = pi.paperSize;
+        topMargin = pi.topMargin;
+        bottomMargin = pi.bottomMargin;
+        leftMargin = pi.leftMargin;
+        rightMargin = pi.rightMargin;
+        pageHeight = paperSize.height - topMargin - bottomMargin;
+        pageWidth = paperSize.width - leftMargin - rightMargin;
+        dateWidth = 37;
+        amountWidth = 67;
+        purposeWidth = pageWidth - dateWidth - 3 * amountWidth;
+        padding = 3;
+        currentPage = 1;
+
+        statements = [[NSMutableArray alloc] initWithCapacity: 100];
+        for (StatCatAssignment *stat in stats) {
+            [statements addObject: stat];
+        }
+        NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"statement.date" ascending: YES];
+        NSArray          *sds = @[sd];
+        [statements sortUsingDescriptors: sds];
+
+        statHeights = (int *)malloc(statements.count * sizeof(int));
+
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat: @"dd.MM."];
+
+        numberFormatter = [[NSNumberFormatter alloc] init];
+        [numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
+        [numberFormatter setMinimumFractionDigits: 2];
+
+        debitNumberFormatter = [numberFormatter copy];
+        [debitNumberFormatter setMinusSign: @""];
+
+        // User defaults
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        printUserInfo = [defaults boolForKey: @"printUserInfo"];
+        printCategories = [defaults boolForKey: @"printCategories"];
+
         int height = [self getStatementHeights];
         if (height > pageHeight) {
             frame.size.height = height;
-        } else {frame.size.height = pageHeight; }
-        [self setFrame: frame];
+            [self setFrame: frame];
+        }
     }
+
     return self;
 }
 
-- (NSAttributedString *)textFromStatement: (StatCatAssignment *)stat
-{
+- (NSAttributedString *)textFromStatement: (StatCatAssignment *)stat {
     NSMutableString *s = [NSMutableString stringWithString: @""];
     if (stat.statement.transactionText && [stat.statement.transactionText length] > 0) {
         [s appendString: stat.statement.transactionText];
@@ -95,13 +117,17 @@
     }
     [s appendString: stat.statement.purpose];
 
-    NSDictionary              *attr1 = @{NSFontAttributeName: [NSFont userFontOfSize: 9]};
+    NSDictionary *attr1 = @{
+        NSFontAttributeName: [NSFont userFontOfSize: 9]
+    };
     NSMutableAttributedString *as = [[NSMutableAttributedString alloc] initWithString: s attributes: attr1];
 
     // Zusatzinfo
     if (stat.userInfo != nil && printUserInfo) {
-        NSFont                    *font = [NSFont fontWithName: @"Helvetica-Oblique" size: 9];
-        NSDictionary              *attr2 = @{NSFontAttributeName: font};
+        NSFont       *font = [NSFont fontWithName: @"Helvetica-Oblique" size: 9];
+        NSDictionary *attr2 = @{
+            NSFontAttributeName: font
+        };
         NSMutableAttributedString *as2 = [[NSMutableAttributedString alloc] initWithString: [@"\n" stringByAppendingString : stat.userInfo] attributes: attr2];
         [as appendAttributedString: as2];
     }
@@ -111,8 +137,10 @@
         NSString *cs = [stat.statement categoriesDescription];
         if (cs != nil && [cs length] > 0) {
             cs = [NSString stringWithFormat: @"\n*(%@)", cs];
-            NSFont                    *font = [NSFont fontWithName: @"Helvetica-Oblique" size: 8];
-            NSDictionary              *attr2 = @{NSFontAttributeName: font};
+            NSFont       *font = [NSFont fontWithName: @"Helvetica-Oblique" size: 8];
+            NSDictionary *attr2 = @{
+                NSFontAttributeName: font
+            };
             NSMutableAttributedString *as2 = [[NSMutableAttributedString alloc] initWithString: cs attributes: attr2];
             [as appendAttributedString: as2];
         }
@@ -121,15 +149,14 @@
     return as;
 }
 
-- (int)getStatementHeights
-{
-    NSSize size;
-    size.width = purposeWidth - 2 * padding;
-    size.height = 400;
-    int                 page = 0;
-    int                 idx = 0;
-    int                 h = 65;
-    int                 height;
+- (int)getStatementHeights {
+    NSSize size = NSMakeSize(purposeWidth - 2 * padding, 400);
+
+    int page = 0;
+    int idx = 0;
+    int h = 65;
+    int height;
+
     NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity: 1];
     attributes[NSFontAttributeName] = [NSFont userFontOfSize: 9];
 
@@ -154,13 +181,11 @@
     return page * pageHeight + h + 18;
 }
 
-- (BOOL)isFlipped
-{
+- (BOOL)isFlipped {
     return YES;
 }
 
-- (void)drawHeaderForPage: (int)page
-{
+- (void)drawHeaderForPage: (int)page {
     int baseHeight = page * pageHeight;
     int hBase = 0;
 
@@ -237,8 +262,7 @@
     [as drawInRect: headerFrame];
 }
 
-- (void)finalizePage: (int)page atPosition: (int)pos
-{
+- (void)finalizePage: (int)page atPosition: (int)pos {
     int baseHeight = page * pageHeight;
     int hBase = 0;
     [NSBezierPath strokeLineFromPoint: NSMakePoint(0, baseHeight + pos) toPoint: NSMakePoint(pageWidth, baseHeight + pos)];
@@ -255,8 +279,7 @@
     [NSBezierPath strokeLineFromPoint: NSMakePoint(hBase, baseHeight + 45) toPoint: NSMakePoint(hBase, baseHeight + pos)];
 }
 
-- (void)drawRect: (NSRect)dirtyRect
-{
+- (void)drawRect: (NSRect)dirtyRect {
     NSSize size;
     NSRect rect;
     int    page = 0;
@@ -385,8 +408,7 @@
 
 }
 
-- (void)drawPageBorderWithSize: (NSSize)borderSize
-{
+- (void)drawPageBorderWithSize: (NSSize)borderSize {
     NSString        *s;
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateStyle: NSDateFormatterMediumStyle];

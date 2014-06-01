@@ -1030,11 +1030,8 @@ typedef enum {
 {
     LogEnter;
 
-    StocksTimeInterval interval;
+    StocksTimeInterval interval = StocksIntervalIntraday;
     switch (intervalSelector.selectedSegment) {
-        case 0:
-            interval = StocksIntervalIntraday;
-            break;
         case 1:
             interval = StocksIntervalOneWeek;
             break;

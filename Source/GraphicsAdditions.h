@@ -33,7 +33,7 @@
 @interface NSBezierPath (PecuniaAdditions)
 
 + (NSBezierPath *)bezierPathWithCGPath: (CGPathRef)pathRef;
-- (CGPathRef)cgPath;
+- (CGPathRef)newCGPath;
 
 - (NSBezierPath *)pathWithStrokeWidth: (CGFloat)strokeWidth;
 

@@ -40,26 +40,22 @@
 @dynamic value;
 @dynamic statement;
 
-- (ShortDate *)dayOfExecution
-{
+- (ShortDate *)dayOfExecution {
     if (executionDate == nil) {
         executionDate = [ShortDate dateWithDate: self.statement.date];
     }
     return executionDate;
 }
 
-- (NSComparisonResult)compareDate: (StatCatAssignment *)stat
-{
+- (NSComparisonResult)compareDate: (StatCatAssignment *)stat {
     return [self.statement.date compare: stat.statement.date];
 }
 
-- (NSComparisonResult)compareDateReverse: (StatCatAssignment *)stat
-{
+- (NSComparisonResult)compareDateReverse: (StatCatAssignment *)stat {
     return [stat.statement.date compare: self.statement.date];
 }
 
-- (NSString *)stringForFields: (NSArray *)fields usingDateFormatter: (NSDateFormatter *)dateFormatter numberFormatter: (NSNumberFormatter *)numberFormatter
-{
+- (NSString *)stringForFields: (NSArray *)fields usingDateFormatter: (NSDateFormatter *)dateFormatter numberFormatter: (NSNumberFormatter *)numberFormatter {
     NSMutableString *res = [NSMutableString stringWithCapacity: 300];
     NSUserDefaults  *defaults = [NSUserDefaults standardUserDefaults];
     NSString        *s;
@@ -79,7 +75,9 @@
             obj = self.statement.account.localName;
         } else if ([field isEqualToString: @"localCountry"]) {
             obj = self.statement.account.country;
-        } else {obj = [self.statement valueForKey: field]; }
+        } else {
+            obj = [self.statement valueForKey: field];
+        }
 
         if (obj) {
             if ([field isEqualToString: @"valutaDate"] || [field isEqualToString: @"date"]) {
@@ -88,7 +86,9 @@
                 s = [numberFormatter stringFromNumber: (NSNumber *)obj];
             } else if ([field isEqualToString: @"categories"]) {
                 s = self.statement.categoriesDescription;
-            } else {s = [obj description]; }
+            } else {
+                s = [obj description];
+            }
 
             if (s) {
                 [res appendString: s];
@@ -100,19 +100,18 @@
     return res;
 }
 
-- (void)moveAmount: (NSDecimalNumber*)amount toCategory: (Category *)tcat withInfo: (NSString*)info
-{
+- (void)moveAmount: (NSDecimalNumber *)amount toCategory: (Category *)tcat withInfo: (NSString *)info {
     StatCatAssignment *stat;
     Category          *scat = self.category;
 
     if (amount == nil) {
         return;
     }
-    
-    if ([amount compare:[NSDecimalNumber zero]] == NSOrderedSame) {
+
+    if ([amount compare: [NSDecimalNumber zero]] == NSOrderedSame) {
         return;
     }
-    
+
     if ([[amount abs] compare: [self.value abs]] != NSOrderedAscending) {
         amount = self.value;
     }
@@ -134,7 +133,7 @@
                 stat.value = stat.statement.value;
                 if (info && info.length > 0) {
                     if (stat.userInfo && stat.userInfo.length > 0) {
-                        stat.userInfo = [NSString stringWithFormat:@"%@\n%@", stat.userInfo, info];
+                        stat.userInfo = [NSString stringWithFormat: @"%@\n%@", stat.userInfo, info];
                     } else {
                         stat.userInfo = info;
                     }
@@ -143,12 +142,7 @@
             [stat.statement updateAssigned];
             [scat invalidateBalance];
             [tcat invalidateBalance];
-            assignmentDone = YES;
-            /*
-             if (self != stat) {
-             [context deleteObject: self ];
-             }
-             */
+
             return;
         }
     }
@@ -177,8 +171,7 @@
     [tcat invalidateBalance];
 }
 
-- (void)moveToCategory: (Category *)targetCategory
-{
+- (void)moveToCategory: (Category *)targetCategory {
     Category *nassRoot = Category.nassRoot;
     Category *sourceCategory = self.category;
 
@@ -209,7 +202,6 @@
             return;
         }
     }
-
     self.category = targetCategory;
 
     [sourceCategory invalidateBalance];
@@ -223,8 +215,7 @@
 /**
  * Removes a single assignment (the receiver) and updates its previously associated bank statement.
  */
-- (void)remove
-{
+- (void)remove {
     NSManagedObjectContext *context = MOAssistant.assistant.context;
 
     BankStatement *stat = self.statement;
@@ -245,8 +236,7 @@
 /**
  * Efficiently removes a list of assignments and updates their bank statements.
  */
-+ (void)removeAssignments: (NSArray *)assignments
-{
++ (void)removeAssignments: (NSArray *)assignments {
     NSManagedObjectContext *context = MOAssistant.assistant.context;
 
     NSMutableSet *statements = [NSMutableSet set]; // Automatically removes duplicates.
@@ -259,7 +249,6 @@
             [context deleteObject: assignment];
         }
     }
-    
     // Important: do changes to the graph since updateAssigned counts on an updated graph.
     [context processPendingChanges];
     for (BankStatement *statement in statements) {
@@ -267,22 +256,19 @@
     }
 }
 
-- (id)valueForUndefinedKey: (NSString *)key
-{
+- (id)valueForUndefinedKey: (NSString *)key {
     LogError(@"StatCatAssignment, undefined key: %@", key);
     return [self.statement valueForKey: key];
 }
 
-- (Category *)category
-{
+- (Category *)category {
     [self willAccessValueForKey: @"category"];
     Category *result = [self primitiveCategory];
     [self didAccessValueForKey: @"category"];
     return result;
 }
 
-- (void)setCategory: (Category *)value
-{
+- (void)setCategory: (Category *)value {
     if ([self primitiveCategory] != value) {
         [[self primitiveCategory] invalidateBalance];
         [[self primitiveCategory] invalidateCacheIncludeParents: YES recursive: NO];
@@ -294,8 +280,7 @@
     }
 }
 
-- (NSString *)userInfo
-{
+- (NSString *)userInfo {
     id tmpObject;
 
     [self willAccessValueForKey: @"userInfo"];
@@ -305,8 +290,7 @@
     return tmpObject;
 }
 
-- (void)setUserInfo: (NSString *)info
-{
+- (void)setUserInfo: (NSString *)info {
     NSString *oldInfo = self.userInfo;
     if (![oldInfo isEqualToString: info]) {
         [self willChangeValueForKey: @"userInfo"];
@@ -325,8 +309,7 @@
     }
 }
 
-- (BOOL)validateCategory: (id *)valueRef error: (NSError **)outError
-{
+- (BOOL)validateCategory: (id *)valueRef error: (NSError **)outError {
     // Insert custom validation logic here.
     return YES;
 }

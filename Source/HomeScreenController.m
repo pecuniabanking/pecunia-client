@@ -38,32 +38,27 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
 @implementation HomeScreenController
 
-- (id)initWithNibName: (NSString *)nibNameOrNil bundle: (NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName: (NSString *)nibNameOrNil bundle: (NSBundle *)nibBundleOrNil {
     self = [super initWithNibName: nibNameOrNil bundle: nibBundleOrNil];
     if (self != nil) {
     }
-    
+
     return self;
 }
 
 #pragma mark - PecuniaTabItem protocol
 
-- (void)print
-{
+- (void)print {
 }
 
-- (NSView *)mainView
-{
+- (NSView *)mainView {
     return self.view;
 }
 
-- (void)activate
-{
+- (void)activate {
 }
 
-- (void)deactivate
-{
+- (void)deactivate {
 }
 
 @end
@@ -87,18 +82,15 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
 @synthesize title;
 
-+ (BOOL)isClickable
-{
++ (BOOL)isClickable {
     return NO;
 }
 
-+ (BOOL)isConfigurable
-{
++ (BOOL)isConfigurable {
     return NO;
 }
 
-- (id)initWithFrame: (NSRect)frameRect
-{
+- (id)initWithFrame: (NSRect)frameRect {
     self = [super initWithFrame: frameRect];
     if (self != nil) {
         title = @"No title";
@@ -130,27 +122,25 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     return self;
 }
 
-- (BOOL)isFlipped
-{
+- (BOOL)isFlipped {
     return YES;
 }
 
-- (void)configure: (id)sender
-{
+- (void)configure: (id)sender {
     [PreferenceController showPreferencesWithOwner: self section: @"home"];
 }
 
-- (void)setTitle: (NSString *)aTitle
-{
+- (void)setTitle: (NSString *)aTitle {
     title = aTitle;
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
-                                 NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameMedium size: 14]};
+    NSDictionary *attributes = @{
+        NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
+        NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameMedium size: 14]
+    };
     titleString = [[NSAttributedString alloc] initWithString: title attributes: attributes];
 
 }
 
-- (void)updateStoredStructures
-{
+- (void)updateStoredStructures {
     if (configImage != nil) {
         configImage.frame = NSMakeRect(NSWidth(self.bounds) - 28, 14, 16, 16);
     }
@@ -160,7 +150,9 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     bounds.size.height = 10;
 
     NSBezierPath *shadowPath = [NSBezierPath bezierPathWithOvalInRect: bounds];
-    self.layer.shadowPath = shadowPath.cgPath;
+    CGPathRef    path = [shadowPath newCGPath];
+    self.layer.shadowPath = path;
+    CGPathRelease(path);
 
     gripPath = [NSBezierPath bezierPath];
     CGFloat x1 = (int)titleString.size.width + 25;
@@ -176,7 +168,9 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     [gripPath lineToPoint: NSMakePoint(x2, y)];
 
     [gripPath setLineWidth: 1];
-    CGFloat lineDash[2] = {1, 3};
+    CGFloat lineDash[2] = {
+        1, 3
+    };
     [gripPath setLineDash: lineDash count: 2 phase: 0];
 
     CGFloat radius = 15;
@@ -214,14 +208,12 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     [borderPath closePath];
 }
 
-- (void)resizeWithOldSuperviewSize: (NSSize)oldSize
-{
+- (void)resizeWithOldSuperviewSize: (NSSize)oldSize {
     [super resizeWithOldSuperviewSize: oldSize];
     [self updateStoredStructures];
 }
 
-- (void)drawRect: (NSRect)dirtyRect
-{
+- (void)drawRect: (NSRect)dirtyRect {
     [[NSColor colorWithCalibratedRed: 0.945 green: 0.927 blue: 0.883 alpha: 1.000] setFill];
     [borderFillPath fill];
 
@@ -235,8 +227,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     [gripPath stroke];
 }
 
-- (void)updateTrackingArea
-{
+- (void)updateTrackingArea {
     if (trackingArea != nil) {
         [self removeTrackingArea: trackingArea];
     }
@@ -248,16 +239,13 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     [self addTrackingArea: trackingArea];
 }
 
-- (void)updateTrackingAreas
-{
+- (void)updateTrackingAreas {
     [super updateTrackingAreas];
 
     [self updateTrackingArea];
 }
 
--(void)cursorUpdate: (NSEvent *)theEvent
-
-{
+- (void)cursorUpdate: (NSEvent *)theEvent {
     if (self.class.isClickable) {
         [[NSCursor pointingHandCursor] set];
     } else {
@@ -266,8 +254,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
 }
 
-- (void)cardClicked: (id)object
-{
+- (void)cardClicked: (id)object {
     [NSNotificationCenter.defaultCenter postNotificationName: HomeScreenCardClickedNotification
                                                       object: object];
 }
@@ -278,22 +265,21 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
 @interface HomeScreenContent : NSView
 {
-@private
-    NSColor  *background;
-    NSImage  *flow;
-    NSImage  *pecuniaVertical;
-    NSShadow *borderShadow;
-    NSDateFormatter* formatter;
-    NSDictionary *mainDateAttributes;
-    NSDictionary *largeDateAttributes;
+    @private
+    NSColor         *background;
+    NSImage         *flow;
+    NSImage         *pecuniaVertical;
+    NSShadow        *borderShadow;
+    NSDateFormatter *formatter;
+    NSDictionary    *mainDateAttributes;
+    NSDictionary    *largeDateAttributes;
 }
 
 @end
 
 @implementation HomeScreenContent
 
-- (id)initWithFrame: (NSRect)frameRect
-{
+- (id)initWithFrame: (NSRect)frameRect {
     LogEnter;
 
     self = [super initWithFrame: frameRect];
@@ -320,16 +306,20 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         paragraphStyle.alignment = NSCenterTextAlignment;
         [paragraphStyle setMaximumLineHeight: 15];
-        mainDateAttributes = @{NSForegroundColorAttributeName: [NSColor whiteColor],
-                               NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameMedium size: 18],
-                               NSParagraphStyleAttributeName: paragraphStyle};
+        mainDateAttributes = @{
+            NSForegroundColorAttributeName: [NSColor whiteColor],
+            NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameMedium size: 18],
+            NSParagraphStyleAttributeName: paragraphStyle
+        };
 
         paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         paragraphStyle.alignment = NSCenterTextAlignment;
         [paragraphStyle setMaximumLineHeight: 38];
-        largeDateAttributes = @{NSForegroundColorAttributeName: [NSColor whiteColor],
-                                NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameBold size: 36],
-                                NSParagraphStyleAttributeName: paragraphStyle};
+        largeDateAttributes = @{
+            NSForegroundColorAttributeName: [NSColor whiteColor],
+            NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameBold size: 36],
+            NSParagraphStyleAttributeName: paragraphStyle
+        };
 
         [self setUpCards];
 
@@ -341,8 +331,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
  * Reads stored settings and creates the homescreen cards. If there are no settings a default set
  * is created.
  */
-- (void)setUpCards
-{
+- (void)setUpCards {
     LogEnter;
 
     // Layouting these cards is done explicitly.
@@ -367,16 +356,14 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     [self addSubview: card];
 }
 
-- (BOOL)isFlipped
-{
+- (BOOL)isFlipped {
     return YES;
 }
 
 /**
  * Layouts all child views in a specific tile format.
  */
-- (void)resizeSubviewsWithOldSize: (NSSize)oldSize
-{
+- (void)resizeSubviewsWithOldSize: (NSSize)oldSize {
     LogEnter;
 
     // Children are laid out as they are listed in the subview collection.
@@ -390,7 +377,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
     NSUInteger i = 0;
     while (i < self.subviews.count) {
-        NSView *child = self.subviews[i];
+        NSView     *child = self.subviews[i];
         NSUInteger width = i % 3 == 1 ? 4 * baseWidth : 3 * baseWidth;
         child.frame = NSMakeRect(x, y, width, baseHeight);
         x += width + 20;
@@ -403,8 +390,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
     }
 }
 
-- (void)drawRect: (NSRect)rect
-{
+- (void)drawRect: (NSRect)rect {
     [NSGraphicsContext saveGraphicsState];
 
     // Background.
@@ -432,12 +418,12 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
     // Background images.
     CGFloat x = NSWidth(bounds) - flow.size.width - 130;
-    [flow drawInRect: NSMakeRect(x, NSHeight(bounds) - flow.size.height + 20, flow.size.width, flow.size.height)
-            fromRect: NSZeroRect
-           operation: NSCompositeSourceOver
-            fraction: 1
-      respectFlipped: YES
-               hints: nil];
+    [flow   drawInRect: NSMakeRect(x, NSHeight(bounds) - flow.size.height + 20, flow.size.width, flow.size.height)
+              fromRect: NSZeroRect
+             operation: NSCompositeSourceOver
+              fraction: 1
+        respectFlipped: YES
+                 hints: nil];
 
     x = NSWidth(bounds) - 75;
     [pecuniaVertical drawInRect: NSMakeRect(x, NSHeight(bounds) - pecuniaVertical.size.height - 10,
@@ -453,7 +439,7 @@ NSString *const HomeScreenCardClickedNotification = @"HomeScreenCardClicked";
 
     // Set a larger font for the day part.
     NSString *simpleString = dateString.string;
-    NSRange range = [simpleString rangeOfString: @"\n"];
+    NSRange  range = [simpleString rangeOfString: @"\n"];
     [dateString addAttributes: largeDateAttributes range: NSMakeRange(range.location + 1, 2)];
     [dateString drawInRect: NSMakeRect(bounds.size.width - 78, NSHeight(bounds) - 335, 54, 70)];
 }

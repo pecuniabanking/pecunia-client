@@ -120,7 +120,7 @@
 - (IBAction)startSepaTransfer: (id)sender;
 - (IBAction)startInternalTransfer: (id)sender;
 - (void)startTransferOfType: (TransferType)type fromAccount: (BankAccount *)account statement: (BankStatement *)statement;
-- (void)createTemplateFromStatement: (BankStatement *)statement;
+- (void)createTemplateOfType: (TransferType)type fromStatement: (BankStatement *)statement;
 
 - (IBAction)splitPurpose: (id)sender;
 

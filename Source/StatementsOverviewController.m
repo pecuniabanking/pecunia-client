@@ -659,7 +659,13 @@ extern void *UserDefaultsBindingContext;
             break;
 
         case MenuActionCreateTemplate:
-            [BankingController.controller createTemplateFromStatement: assignment.statement];
+            if ([[HBCIController controller] isTransferSupported: TransferTypeSEPA forAccount: account]) {
+                [BankingController.controller createTemplateOfType: TransferTypeSEPA fromStatement: assignment.statement];
+            } else {
+                if ([[HBCIController controller] isTransferSupported: TransferTypeInternal forAccount: account]) {
+                    [BankingController.controller createTemplateOfType: TransferTypeInternal fromStatement: assignment.statement];
+                }
+            }
             break;
     }
     

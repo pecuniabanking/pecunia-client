@@ -1918,13 +1918,13 @@ static BankingController *bankinControllerInstance;
     LogLeave;
 }
 
-- (void)createTemplateFromStatement: (BankStatement *)statement {
+- (void)createTemplateOfType: (TransferType)type fromStatement: (BankStatement *)statement {
     LogEnter;
 
     // Switch to the transfers page.
     sidebar.selectedIndex = 7;
 
-    [transfersController createTemplateFromStatement: statement];
+    [transfersController createTemplateOfType: type fromStatement: statement];
     
     LogLeave;
 }

@@ -43,7 +43,7 @@ extern void *UserDefaultsBindingContext;
  * interest and redemption.
  */
 @interface RedemptionGraph : CPTGraphHostingView  <CPTPlotDataSource, CPTAnimationDelegate,
-  CPTPlotSpaceDelegate, CPTBarPlotDataSource>
+                                                   CPTPlotSpaceDelegate, CPTBarPlotDataSource>
 
 - (void)updateTrackLineAndInfoDisplay: (CGFloat)location;
 - (void)showInfoComponents;
@@ -56,12 +56,12 @@ extern void *UserDefaultsBindingContext;
 
 @interface PrincipalBalanceGraph : CPTGraphHostingView  <CPTPlotDataSource, CPTAnimationDelegate, CPTPlotSpaceDelegate>
 {
-@public
+    @public
     RedemptionGraph *peerGraph;
 
-@private
+    @private
     SaveAndRedeemCard *owner;
-    CPTXYGraph *graph;
+    CPTXYGraph        *graph;
 
     ShortDate *referenceDate;
 
@@ -95,8 +95,6 @@ extern void *UserDefaultsBindingContext;
     double max;
     double totalPaid;
     double totalPaid2;
-    double interestPaid;
-    double interestPaid2;
 
     NSCalendarUnit currentGrouping;
     NSUInteger     lastInfoTimePoint;
@@ -112,7 +110,6 @@ extern void *UserDefaultsBindingContext;
     CPTMutableTextStyle *yearLabelTextStyle;
 
     NSUInteger peerUpdateCount;
-    BOOL animating;
 
     NSTrackingArea *trackingArea;
 }
@@ -121,14 +118,13 @@ extern void *UserDefaultsBindingContext;
 
 @implementation PrincipalBalanceGraph
 
-- (id)initWithFrame: (NSRect)frame
-          startDate: (ShortDate *)date
-        totalAmount: (double)amount
-       interestRate: (double)rate
-             redeem: (double)redeemValue
-  specialRedemption: (NSDictionary *)unscheduledRepayment
-              owner: (SaveAndRedeemCard *)anOwner
-{
+- (id)  initWithFrame: (NSRect)frame
+            startDate: (ShortDate *)date
+          totalAmount: (double)amount
+         interestRate: (double)rate
+               redeem: (double)redeemValue
+    specialRedemption: (NSDictionary *)unscheduledRepayment
+                owner: (SaveAndRedeemCard *)anOwner {
     self = [super initWithFrame: frame];
     if (self) {
         owner = anOwner;
@@ -140,11 +136,11 @@ extern void *UserDefaultsBindingContext;
         yearLabelTextStyle.fontSize = 14;
 
         roundUp = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode: NSRoundUp
-                                                                                  scale: 2
-                                                                       raiseOnExactness: NO
-                                                                        raiseOnOverflow: NO
-                                                                       raiseOnUnderflow: NO
-                                                                    raiseOnDivideByZero: YES];
+                                                                         scale: 2
+                                                              raiseOnExactness: NO
+                                                               raiseOnOverflow: NO
+                                                              raiseOnUnderflow: NO
+                                                           raiseOnDivideByZero: YES];
 
         roundDown = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode: NSRoundDown
                                                                            scale: 2
@@ -171,8 +167,7 @@ extern void *UserDefaultsBindingContext;
     return self;
 }
 
-- (void)showGraph
-{
+- (void)showGraph {
     CPTPlot          *plot = (id)[graph plotWithIdentifier : @"mainDebtValues"];
     CABasicAnimation *fadeIn = [CABasicAnimation animationWithKeyPath: @"opacity"];
     fadeIn.beginTime = CACurrentMediaTime() + 0.5;
@@ -194,8 +189,7 @@ extern void *UserDefaultsBindingContext;
     [plot addAnimation: fadeIn forKey: nil];
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     free(monthTimePoints);
     free(monthDebtValues);
     free(monthDebtValues2);
@@ -205,16 +199,14 @@ extern void *UserDefaultsBindingContext;
     free(yearDebtValues2);
 }
 
-- (void)animationDidStart: (CAAnimation *)anim
-{
+- (void)animationDidStart: (CAAnimation *)anim {
     CPTPlot *plot = (id)[graph plotWithIdentifier : @"mainDebtValues"];
     plot.opacity = 1; // We can't set the final opacity earlier since the animation is delayed.
     plot = (id)[graph plotWithIdentifier : @"rawDebtValues"];
     plot.opacity = 1;
 }
 
-- (void)setupGraph
-{
+- (void)setupGraph {
     self.allowPinchScaling = NO;
 
     graph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame : NSRectToCGRect(self.bounds)];
@@ -251,8 +243,7 @@ extern void *UserDefaultsBindingContext;
     [self setupAnnotations];
 }
 
-- (void)setupPlots
-{
+- (void)setupPlots {
     CPTBarPlot *plot = [[CPTBarPlot alloc] init];
     plot.opacity = 0;
     plot.alignsPointsToPixels = YES;
@@ -298,8 +289,7 @@ extern void *UserDefaultsBindingContext;
     [graph addPlot: plot];
 }
 
-- (void)setUpAxes
-{
+- (void)setUpAxes {
     // Grid line styles
     CPTMutableLineStyle *majorGridLineStyle = [CPTMutableLineStyle lineStyle];
     majorGridLineStyle.lineWidth = 1.0f;
@@ -364,8 +354,10 @@ extern void *UserDefaultsBindingContext;
 
     axisSet.axes = @[x, y, indicatorLine];
 
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
-                                 NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameBold size: 12]};
+    NSDictionary *attributes = @{
+        NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
+        NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameBold size: 12]
+    };
 
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"AP964", nil)
                                                                               attributes: attributes];
@@ -378,12 +370,14 @@ extern void *UserDefaultsBindingContext;
     [graph addAnnotation: titleAnnotation];
 }
 
-- (void)setupAnnotations
-{
+- (void)setupAnnotations {
     CPTAnnotation *zoomImageAnnotation = [[CPTAnnotation alloc] init];
 
     zoomImageLayer = [[CPTBorderedLayer alloc] init];
-    zoomImageLayer.shadowColor = CGColorCreateGenericGray(0, 1);
+    CGColorRef color = CGColorCreateGenericGray(0, 1);
+    zoomImageLayer.shadowColor = color;
+    CGColorRelease(color);
+
     zoomImageLayer.shadowRadius = 2.0;
     zoomImageLayer.shadowOffset = CGSizeMake(1, -1);
     zoomImageLayer.shadowOpacity = 0.25;
@@ -397,8 +391,7 @@ extern void *UserDefaultsBindingContext;
     [graph addAnnotation: zoomImageAnnotation];
 }
 
-- (void)updateGraphUsingMinimalTickCount: (BOOL)flag
-{
+- (void)updateGraphUsingMinimalTickCount: (BOOL)flag {
     int totalUnits;
     int tickCount;
     if (currentGrouping == NSCalendarUnitMonth) {
@@ -456,8 +449,7 @@ extern void *UserDefaultsBindingContext;
     axisSet.yAxis.labelFormatter = currencyFormatter;
 }
 
-- (void)updateVerticalGraphRange
-{
+- (void)updateVerticalGraphRange {
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
     CPTXYAxisSet   *axisSet = (id)graph.axisSet;
 
@@ -472,8 +464,8 @@ extern void *UserDefaultsBindingContext;
             max = min + 10; // Round the range up to 10.
         }
     }
-    NSDecimal decimalMinValue = CPTDecimalFromDouble(min);
-    NSDecimal decimalMaxValue = CPTDecimalFromDouble(max);
+    NSDecimal       decimalMinValue = CPTDecimalFromDouble(min);
+    NSDecimal       decimalMaxValue = CPTDecimalFromDouble(max);
     NSDecimalNumber *roundedMin = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundToUpperOuter];
     NSDecimalNumber *roundedMax;
     if (useDefault) {
@@ -499,8 +491,7 @@ extern void *UserDefaultsBindingContext;
     plotSpace.yRange = plotRange;
 }
 
-- (CPTPlotSpaceAnnotation *)createAnnotationAtPosition: (CGPoint)position
-{
+- (CPTPlotSpaceAnnotation *)createAnnotationAtPosition: (CGPoint)position {
     NSMutableArray *point = [[NSMutableArray alloc] initWithCapacity: 2];
     NSDecimal      decimal = CPTDecimalFromDouble(position.x);
     [point addObject: [NSDecimalNumber decimalNumberWithDecimal: decimal]];
@@ -512,8 +503,7 @@ extern void *UserDefaultsBindingContext;
 
 }
 
-- (void)updateYearLabelsRefill: (BOOL)refill
-{
+- (void)updateYearLabelsRefill: (BOOL)refill {
     CPTBarPlot *plot = (id)[graph plotWithIdentifier : @"mainDebtValues"];
     for (CPTPlotSpaceAnnotation *annotation in yearAnnotations) {
         if (annotation.annotationHostLayer != nil) {
@@ -533,7 +523,9 @@ extern void *UserDefaultsBindingContext;
             annotation.contentLayer = content;
 
             CPTPlotSpace *plotSpace = graph.defaultPlotSpace;
-            NSDecimal    target[2] = {0, 0};
+            NSDecimal    target[2] = {
+                0, 0
+            };
             CGPoint      zeroPoint = [plotSpace plotAreaViewPointForPlotPoint: target numberOfCoordinates: 2];
             target[1] = CPTDecimalFromDouble(max);
             CGPoint point = [plotSpace plotAreaViewPointForPlotPoint: target numberOfCoordinates: 2];
@@ -573,8 +565,7 @@ extern void *UserDefaultsBindingContext;
                    amount: (double)amount
              interestRate: (double)rate
                    redeem: (double)redeemValue
-        specialRedemption: (NSDictionary *)unscheduledRepayment
-{
+        specialRedemption: (NSDictionary *)unscheduledRepayment {
     ++peerUpdateCount;
 
     free(monthTimePoints);
@@ -691,8 +682,8 @@ extern void *UserDefaultsBindingContext;
     NSDecimalNumber *rateFactor = [NSDecimalNumber decimalNumberWithDecimal: decimal];
     rateFactor = [rateFactor decimalNumberByDividingBy: thousandTwoHundered];
     NSUInteger yearIndex = 0;
-    ShortDate *currentDate = fromDate.firstDayInMonth;
-    BOOL foundEarlierFullPayOff = NO;
+    ShortDate  *currentDate = fromDate.firstDayInMonth;
+    BOOL       foundEarlierFullPayOff = NO;
     for (NSUInteger i = 0; i < numberOfMonths; ++i) {
         monthTimePoints[i] = i;
 
@@ -720,18 +711,18 @@ extern void *UserDefaultsBindingContext;
 
         if (run.doubleValue > 0) {
             run = [run decimalNumberBySubtracting: currentRedeem];
-            total = [total decimalNumberByAdding : monthlyRate];
+            total = [total decimalNumberByAdding: monthlyRate];
 
             NSNumber *special = unscheduledRepayment[@(currentDate.hash)];
             if (special != nil) {
                 decimal = CPTDecimalFromDouble(special.doubleValue);
                 NSDecimalNumber *temp = [NSDecimalNumber decimalNumberWithDecimal: decimal];
                 run = [run decimalNumberBySubtracting: temp];
-                total = [total decimalNumberByAdding : temp];
+                total = [total decimalNumberByAdding: temp];
             }
             if (run.doubleValue <= 0) {
                 // We reached the actual end of the payment time frame.
-                total = [total decimalNumberByAdding : run];
+                total = [total decimalNumberByAdding: run];
 
                 run = [NSDecimalNumber zero];
                 foundEarlierFullPayOff = YES;
@@ -742,13 +733,13 @@ extern void *UserDefaultsBindingContext;
                                                                         withBehavior: bankersRounding];
             currentRedeem = [monthlyRate decimalNumberBySubtracting: currentInterestRate];
         }
-        total2 = [total2 decimalNumberByAdding : monthlyRate];
+        total2 = [total2 decimalNumberByAdding: monthlyRate];
 
         // The run value for the normal series never goes to zero before the end of the entire range,
         // but in can at the end (if the last redemption is larger than the remaining debt.
         run2 = [run2 decimalNumberBySubtracting: currentRedeem2];
         if (run2.doubleValue < 0) {
-            total2 = [total2 decimalNumberByAdding : run2];
+            total2 = [total2 decimalNumberByAdding: run2];
         }
         NSDecimalNumber *currentInterestRate = [run2 decimalNumberByMultiplyingBy: rateFactor
                                                                      withBehavior: bankersRounding];
@@ -756,7 +747,6 @@ extern void *UserDefaultsBindingContext;
 
         currentDate = [currentDate dateByAddingUnits: 1 byUnit: NSCalendarUnitMonth];
     }
-
     if (yearIndex < numberOfYears) {
         yearTimePoints[numberOfYears - 1] = yearIndex;
     }
@@ -790,8 +780,7 @@ extern void *UserDefaultsBindingContext;
  *
  * The location is given in plot area coordinates.
  */
-- (void)updateTrackLineAndInfoDisplay: (CGFloat)location
-{
+- (void)updateTrackLineAndInfoDisplay: (CGFloat)location {
     if (numberOfMonths < 1) {
         return;
     }
@@ -813,7 +802,9 @@ extern void *UserDefaultsBindingContext;
 
     // Find closest point in our time points that is before the computed time value.
     NSUInteger index = timePoint < 0 ? 0 : round(timePoint);
-    NSDecimal snapPoint[2] = {0, 0};
+    NSDecimal  snapPoint[2] = {
+        0, 0
+    };
     snapPoint[0] = CPTDecimalFromInteger(index);
     CGPoint targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint numberOfCoordinates: 2];
 
@@ -833,7 +824,7 @@ extern void *UserDefaultsBindingContext;
 
         /* TODO: for now we cannot use CPTAnimation for this as it does not cope well with
                  repeated animations for the same property.
-        if (indicatorAnimation == nil) {
+           if (indicatorAnimation == nil) {
             indicatorAnimation = [CPTAnimation animate: indicatorLine
                                               property: @"orthogonalCoordinateDecimal"
                                            fromDecimal: indicatorLine.orthogonalCoordinateDecimal
@@ -842,9 +833,9 @@ extern void *UserDefaultsBindingContext;
                                              withDelay: 0
                                         animationCurve: CPTAnimationCurveCubicInOut
                                               delegate: self];
-        } else {
+           } else {
             indicatorAnimation.canceled = YES;
-        }
+           }
          */
         indicatorLine.orthogonalCoordinateDecimal = CPTDecimalFromFloat(index);
 
@@ -859,8 +850,8 @@ extern void *UserDefaultsBindingContext;
                        principalBalance2: currentDept2
                                  paidOff: paidOff
                                 paidOff2: paidOff2
-                           remainingTime: index > realNumberOfMonths ? 0 : realNumberOfMonths - index
-                          remainingTime2: index > numberOfMonths ? 0 : numberOfMonths - index];
+                           remainingTime: index > realNumberOfMonths ? 0: realNumberOfMonths - index
+                          remainingTime2: index > numberOfMonths ? 0: numberOfMonths - index];
             } else {
                 [self showGeneralInfo];
             }
@@ -899,8 +890,7 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (void)showInfoComponents
-{
+- (void)showInfoComponents {
     if (peerUpdateCount > 0) {
         return;
     }
@@ -914,8 +904,7 @@ extern void *UserDefaultsBindingContext;
     --peerUpdateCount;
 }
 
-- (void)hideInfoComponents
-{
+- (void)hideInfoComponents {
     if (peerUpdateCount > 0) {
         return;
     }
@@ -930,8 +919,7 @@ extern void *UserDefaultsBindingContext;
     --peerUpdateCount;
 }
 
-- (void)switchToMonthMode
-{
+- (void)switchToMonthMode {
     currentGrouping = NSCalendarUnitMonth;
 
     CPTImage *image = [CPTImage imageNamed: @"time-zoom-out"];
@@ -944,14 +932,6 @@ extern void *UserDefaultsBindingContext;
     }
     fromDate = [ShortDate dateWithYear: referenceDate.year + lastInfoTimePoint month: month day: 1];
     toDate = [fromDate dateByAddingUnits: 12 byUnit: NSCalendarUnitMonth];
-
-    int totalUnits;
-    int tickCount;
-    tickCount = 12;
-    totalUnits = (numberOfMonths > 1) ? monthTimePoints[numberOfMonths - 1] + 1 : 0;
-    if (totalUnits < tickCount) {
-        totalUnits = tickCount;
-    }
 
     // We are still in year coordinates.
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
@@ -998,8 +978,7 @@ extern void *UserDefaultsBindingContext;
 /**
  * Called when the range animation has ended.
  */
-- (void)finishSwitchToMonthMode
-{
+- (void)finishSwitchToMonthMode {
     CPTBarPlot *plot = (id)[graph plotWithIdentifier : @"mainDebtValues"];
     plot.barWidth = CPTDecimalFromCGFloat(0.75);
 
@@ -1014,8 +993,7 @@ extern void *UserDefaultsBindingContext;
     [graph reloadData];
 }
 
-- (void)switchToYearMode
-{
+- (void)switchToYearMode {
     CPTImage *image = [CPTImage imageNamed: @"time-zoom-in"];
     zoomImageLayer.fill = [CPTFill fillWithImage: image];
 
@@ -1057,8 +1035,7 @@ extern void *UserDefaultsBindingContext;
     [peerGraph switchToYearMode];
 }
 
-- (void)changePlotRange: (CPTPlotRange *)newRange
-{
+- (void)changePlotRange: (CPTPlotRange *)newRange {
     if (zoomInAnimation != nil || zoomOutAnimation != nil) {
         return;
     }
@@ -1068,19 +1045,17 @@ extern void *UserDefaultsBindingContext;
     toDate = [fromDate dateByAddingUnits: newRange.lengthDouble byUnit: currentGrouping];
 }
 
-- (void)showGeneralInfo
-{
+- (void)showGeneralInfo {
     [owner updateInfoWithBorrowedAmount: borrowedAmount.doubleValue
                               totalPaid: totalPaid
                              totalPaid2: totalPaid2
                            interestPaid: totalPaid - borrowedAmount.doubleValue
-                          interestPaid2: isnan(totalPaid2) ? NAN : totalPaid2 - borrowedAmount.doubleValue];
+                          interestPaid2: isnan(totalPaid2) ? NAN: totalPaid2 - borrowedAmount.doubleValue];
 }
 
 #pragma mark - Event handling
 
-- (void)mouseMoved: (NSEvent *)theEvent
-{
+- (void)mouseMoved: (NSEvent *)theEvent {
     [super mouseMoved: theEvent];
 
     CPTXYPlotSpace *plotSpace = (id)[self hostedGraph].defaultPlotSpace;
@@ -1102,16 +1077,14 @@ extern void *UserDefaultsBindingContext;
     --peerUpdateCount;
 }
 
-- (void)mouseExited: (NSEvent *)theEvent
-{
+- (void)mouseExited: (NSEvent *)theEvent {
     [super mouseExited: theEvent];
     lastInfoTimePoint = 0;
     [self hideInfoComponents];
     [self showGeneralInfo];
 }
 
-- (void)updateTrackingAreas
-{
+- (void)updateTrackingAreas {
     [super updateTrackingAreas];
 
     if (trackingArea != nil) {
@@ -1120,8 +1093,8 @@ extern void *UserDefaultsBindingContext;
 
     trackingArea = [[NSTrackingArea alloc] initWithRect: self.bounds
                                                 options: NSTrackingMouseEnteredAndExited
-                                                         | NSTrackingMouseMoved
-                                                         | NSTrackingActiveInKeyWindow
+                    | NSTrackingMouseMoved
+                    | NSTrackingActiveInKeyWindow
                                                   owner: self
                                                userInfo: nil];
     [self addTrackingArea: trackingArea];
@@ -1129,13 +1102,11 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark - Utility functions
 
-- (void)updateColors
-{
+- (void)updateColors {
     [graph reloadData];
 }
 
-- (int)distanceFromDate: (ShortDate *)from toDate: (ShortDate *)to
-{
+- (int)distanceFromDate: (ShortDate *)from toDate: (ShortDate *)to {
     return [from unitsToDate: to byUnit: currentGrouping];
 }
 
@@ -1144,8 +1115,7 @@ extern void *UserDefaultsBindingContext;
  * overall size of the range. This is a bit tricky as we want sharp and easy intervals
  * for optimal perceptibility. The given range is already rounded up to two most significant digits.
  */
-- (float)intervalFromRange: (NSDecimalNumber *)range
-{
+- (float)intervalFromRange: (NSDecimalNumber *)range {
     int digitCount = [range numberOfDigits];
 
     NSDecimal value = [range decimalValue];
@@ -1177,13 +1147,11 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark - Plot data source methods
 
-- (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot
-{
+- (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot {
     return (currentGrouping == NSCalendarUnitMonth) ? numberOfMonths : numberOfYears;
 }
 
-- (double *)doublesForPlot: (CPTPlot *)plot field: (NSUInteger)fieldEnum recordIndexRange: (NSRange)indexRange
-{
+- (double *)doublesForPlot: (CPTPlot *)plot field: (NSUInteger)fieldEnum recordIndexRange: (NSRange)indexRange {
     if (fieldEnum == CPTBarPlotFieldBarLocation || fieldEnum == CPTScatterPlotFieldX) {
         if (currentGrouping == NSCalendarUnitMonth) {
             return &monthTimePoints[indexRange.location];
@@ -1207,8 +1175,7 @@ extern void *UserDefaultsBindingContext;
     return nil;
 }
 
-- (CPTLayer *)dataLabelForPlot: (CPTPlot *)plot recordIndex: (NSUInteger)index
-{
+- (CPTLayer *)dataLabelForPlot: (CPTPlot *)plot recordIndex: (NSUInteger)index {
     return (id)[NSNull null];
 }
 
@@ -1216,15 +1183,13 @@ extern void *UserDefaultsBindingContext;
 
 - (BOOL)                      plotSpace: (CPTPlotSpace *)space
     shouldHandlePointingDeviceDownEvent: (CPTNativeEvent *)event
-                                atPoint: (CGPoint)point
-{
+                                atPoint: (CGPoint)point {
     return !CGRectContainsPoint(zoomImageLayer.frame, point);
 }
 
 - (BOOL)                    plotSpace: (CPTPlotSpace *)space
     shouldHandlePointingDeviceUpEvent: (CPTNativeEvent *)event
-                              atPoint: (CGPoint)point
-{
+                              atPoint: (CGPoint)point {
     BOOL inZoomLayer = CGRectContainsPoint(zoomImageLayer.frame, point);
     if (!space.isDragging && inZoomLayer) {
         if (currentGrouping == NSCalendarUnitMonth) {
@@ -1237,18 +1202,16 @@ extern void *UserDefaultsBindingContext;
     return !inZoomLayer;
 }
 
-- (CGPoint)plotSpace: (CPTPlotSpace *)space willDisplaceBy: (CGPoint)proposedDisplacementVector
-{
+- (CGPoint)plotSpace: (CPTPlotSpace *)space willDisplaceBy: (CGPoint)proposedDisplacementVector {
     [self hideInfoComponents];
 
     proposedDisplacementVector.y = 0;
     return proposedDisplacementVector;
 }
 
--(CPTPlotRange *)plotSpace: (CPTPlotSpace *)space
-     willChangePlotRangeTo: (CPTPlotRange *)newRange
-             forCoordinate: (CPTCoordinate)coordinate
-{
+- (CPTPlotRange *)plotSpace: (CPTPlotSpace *)space
+      willChangePlotRangeTo: (CPTPlotRange *)newRange
+              forCoordinate: (CPTCoordinate)coordinate {
     if (peerUpdateCount > 0 || coordinate != CPTCoordinateX) {
         return newRange;
     }
@@ -1261,8 +1224,7 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark - Coreplot delegate methods
 
-- (void)animationDidFinish: (CPTAnimationOperation *)operation
-{
+- (void)animationDidFinish: (CPTAnimationOperation *)operation {
     if (operation == indicatorAnimation) {
         indicatorAnimation = nil;
     } else {
@@ -1275,8 +1237,7 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (void)animationCancelled: (CPTAnimationOperation *)operation
-{
+- (void)animationCancelled: (CPTAnimationOperation *)operation {
     if (operation == indicatorAnimation) {
         indicatorAnimation = nil;
     } else {
@@ -1299,12 +1260,12 @@ extern void *UserDefaultsBindingContext;
  */
 @interface RedemptionGraph ()
 {
-@public
+    @public
     PrincipalBalanceGraph *peerGraph;
 
-@private
+    @private
     SaveAndRedeemCard *owner;
-    CPTXYGraph *graph;
+    CPTXYGraph        *graph;
 
     ShortDate *referenceDate;
 
@@ -1355,14 +1316,13 @@ extern void *UserDefaultsBindingContext;
 
 @implementation RedemptionGraph
 
-- (id)initWithFrame: (NSRect)frame
-          startDate: (ShortDate *)date
-        totalAmount: (double)amount
-       interestRate: (double)rate
-             redeem: (double)redeemValue
-  specialRedemption: (NSDictionary *)unscheduledRepayment
-              owner: (SaveAndRedeemCard *)anOwner
-{
+- (id)  initWithFrame: (NSRect)frame
+            startDate: (ShortDate *)date
+          totalAmount: (double)amount
+         interestRate: (double)rate
+               redeem: (double)redeemValue
+    specialRedemption: (NSDictionary *)unscheduledRepayment
+                owner: (SaveAndRedeemCard *)anOwner {
     self = [super initWithFrame: frame];
     if (self) {
         owner = anOwner;
@@ -1400,8 +1360,7 @@ extern void *UserDefaultsBindingContext;
     return self;
 }
 
-- (void)showGraph
-{
+- (void)showGraph {
     CPTPlot          *plot = (id)[graph plotWithIdentifier : @"mainRedemptionPlot"];
     CABasicAnimation *fadeIn = [CABasicAnimation animationWithKeyPath: @"opacity"];
     fadeIn.beginTime = CACurrentMediaTime() + 0.5;
@@ -1423,8 +1382,7 @@ extern void *UserDefaultsBindingContext;
     [plot addAnimation: fadeIn forKey: nil];
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     free(monthTimePoints);
     free(monthInterestValues);
     free(monthInterestValues2);
@@ -1438,16 +1396,14 @@ extern void *UserDefaultsBindingContext;
     free(yearRedemptionValues2);
 }
 
-- (void)animationDidStart: (CAAnimation *)anim
-{
+- (void)animationDidStart: (CAAnimation *)anim {
     CPTPlot *plot = (id)[graph plotWithIdentifier : @"mainRedemptionPlot"];
     plot.opacity = 1; // We can't set the final opacity earlier since the animation is delayed.
     plot = (id)[graph plotWithIdentifier : @"rawRedemptionPlot"];
     plot.opacity = 1;
 }
 
-- (void)setupGraph
-{
+- (void)setupGraph {
     self.allowPinchScaling = NO;
 
     graph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame : NSRectToCGRect(self.bounds)];
@@ -1483,8 +1439,7 @@ extern void *UserDefaultsBindingContext;
     [self setUpAxes];
 }
 
-- (void)setupPlots
-{
+- (void)setupPlots {
     CPTBarPlot *plot = [[CPTBarPlot alloc] init];
     plot.opacity = 0;
     plot.alignsPointsToPixels = YES;
@@ -1520,8 +1475,7 @@ extern void *UserDefaultsBindingContext;
     [graph addPlot: plot];
 }
 
-- (void)setUpAxes
-{
+- (void)setUpAxes {
     // Grid line styles
     CPTMutableLineStyle *majorGridLineStyle = [CPTMutableLineStyle lineStyle];
     majorGridLineStyle.lineWidth = 1.0f;
@@ -1544,7 +1498,7 @@ extern void *UserDefaultsBindingContext;
 
     x.labelTextStyle = nil;
 
-    CPTXYAxis *y = axisSet.yAxis;
+    CPTXYAxis           *y = axisSet.yAxis;
     CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
     textStyle.color = [[CPTColor blackColor] colorWithAlphaComponent: 0.3];
     textStyle.fontName = @"ArialNarrow-Bold";
@@ -1580,8 +1534,10 @@ extern void *UserDefaultsBindingContext;
 
     axisSet.axes = @[x, y, indicatorLine];
 
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
-                                 NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameBold size: 12]};
+    NSDictionary *attributes = @{
+        NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
+        NSFontAttributeName: [NSFont fontWithName: PreferenceController.mainFontNameBold size: 12]
+    };
 
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"AP968", nil)
                                                                               attributes: attributes];
@@ -1594,8 +1550,7 @@ extern void *UserDefaultsBindingContext;
     [graph addAnnotation: titleAnnotation];
 }
 
-- (void)updateGraphUsingMinimalTickCount: (BOOL)flag
-{
+- (void)updateGraphUsingMinimalTickCount: (BOOL)flag {
     int totalUnits;
     int tickCount;
     if (currentGrouping == NSCalendarUnitMonth) {
@@ -1653,8 +1608,7 @@ extern void *UserDefaultsBindingContext;
     axisSet.yAxis.labelFormatter = currencyFormatter;
 }
 
-- (void)updateVerticalGraphRange
-{
+- (void)updateVerticalGraphRange {
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
     CPTXYAxisSet   *axisSet = (id)graph.axisSet;
 
@@ -1669,8 +1623,8 @@ extern void *UserDefaultsBindingContext;
             max = min + 10; // Round the range up to 10.
         }
     }
-    NSDecimal decimalMinValue = CPTDecimalFromDouble(min);
-    NSDecimal decimalMaxValue = CPTDecimalFromDouble(max);
+    NSDecimal       decimalMinValue = CPTDecimalFromDouble(min);
+    NSDecimal       decimalMaxValue = CPTDecimalFromDouble(max);
     NSDecimalNumber *roundedMin = [[NSDecimalNumber decimalNumberWithDecimal: decimalMinValue] roundToUpperOuter];
     NSDecimalNumber *roundedMax;
     if (useDefault) {
@@ -1696,8 +1650,7 @@ extern void *UserDefaultsBindingContext;
     plotSpace.yRange = plotRange;
 }
 
-- (CPTPlotSpaceAnnotation *)createAnnotationAtPosition: (CGPoint)position
-{
+- (CPTPlotSpaceAnnotation *)createAnnotationAtPosition: (CGPoint)position {
     NSMutableArray *point = [[NSMutableArray alloc] initWithCapacity: 2];
     NSDecimal      decimal = CPTDecimalFromDouble(position.x);
     [point addObject: [NSDecimalNumber decimalNumberWithDecimal: decimal]];
@@ -1713,8 +1666,7 @@ extern void *UserDefaultsBindingContext;
                    amount: (double)amount
              interestRate: (double)rate
                    redeem: (double)redeemValue
-        specialRedemption: (NSDictionary *)unscheduledRepayment
-{
+        specialRedemption: (NSDictionary *)unscheduledRepayment {
     ++peerUpdateCount;
 
     free(monthTimePoints);
@@ -1838,8 +1790,8 @@ extern void *UserDefaultsBindingContext;
     NSDecimalNumber *rateFactor = [NSDecimalNumber decimalNumberWithDecimal: decimal];
     rateFactor = [rateFactor decimalNumberByDividingBy: thousandTwoHundered];
     NSUInteger yearIndex = 0;
-    ShortDate *currentDate = fromDate.firstDayInMonth;
-    BOOL foundEarlierFullPayOff = NO;
+    ShortDate  *currentDate = fromDate.firstDayInMonth;
+    BOOL       foundEarlierFullPayOff = NO;
     for (NSUInteger i = 0; i < numberOfMonths; ++i) {
         monthTimePoints[i] = i;
 
@@ -1909,8 +1861,13 @@ extern void *UserDefaultsBindingContext;
         realNumberOfMonths = numberOfMonths;
         realNumberOfYears = numberOfYears;
     }
-    min = monthInterestValues[0];
-    max = monthRedemptionValues[realNumberOfMonths - 1];
+    if (numberOfMonths > 0) {
+        min = monthInterestValues[0];
+        max = monthRedemptionValues[realNumberOfMonths - 1];
+    } else {
+        min = 0;
+        max = 0;
+    }
 
     [self updateGraphUsingMinimalTickCount: YES];
     [self updateVerticalGraphRange];
@@ -1924,8 +1881,7 @@ extern void *UserDefaultsBindingContext;
  *
  * The location is given in plot area coordinates.
  */
-- (void)updateTrackLineAndInfoDisplay: (CGFloat)location
-{
+- (void)updateTrackLineAndInfoDisplay: (CGFloat)location {
     if (numberOfMonths < 1) {
         return;
     }
@@ -1948,7 +1904,9 @@ extern void *UserDefaultsBindingContext;
     // Find closest point in our time points that is before the computed time value.
     NSUInteger index = timePoint < 0 ? 0 : round(timePoint);
 
-    NSDecimal snapPoint[2] = {0, 0};
+    NSDecimal snapPoint[2] = {
+        0, 0
+    };
     snapPoint[0] = CPTDecimalFromInteger(index);
     CGPoint targetPoint = [plotSpace plotAreaViewPointForPlotPoint: snapPoint numberOfCoordinates: 2];
 
@@ -1959,15 +1917,13 @@ extern void *UserDefaultsBindingContext;
         return;
     }
 
-    location = targetPoint.x;
-
     if (lastInfoTimePoint == 0 || (index != lastInfoTimePoint)) {
         lastInfoTimePoint = index;
 
         [self showInfoComponents];
 
         /* TODO: see comment for the other indicatorLine change code.
-        if (indicatorAnimation == nil) {
+           if (indicatorAnimation == nil) {
             indicatorAnimation = [CPTAnimation animate: indicatorLine
                                               property: @"orthogonalCoordinateDecimal"
                                            fromDecimal: indicatorLine.orthogonalCoordinateDecimal
@@ -1976,17 +1932,16 @@ extern void *UserDefaultsBindingContext;
                                              withDelay: 0
                                         animationCurve: CPTAnimationCurveCubicInOut
                                               delegate: self];
-        } else {
+           } else {
             indicatorAnimation.canceled = YES;
-        }
+           }
          */
 
         indicatorLine.orthogonalCoordinateDecimal = CPTDecimalFromFloat(index);
     }
 }
 
-- (void)showInfoComponents
-{
+- (void)showInfoComponents {
     if (peerUpdateCount > 0) {
         return;
     }
@@ -1996,8 +1951,7 @@ extern void *UserDefaultsBindingContext;
     --peerUpdateCount;
 }
 
-- (void)hideInfoComponents
-{
+- (void)hideInfoComponents {
     if (peerUpdateCount > 0) {
         return;
     }
@@ -2008,8 +1962,7 @@ extern void *UserDefaultsBindingContext;
     --peerUpdateCount;
 }
 
-- (void)switchToMonthMode
-{
+- (void)switchToMonthMode {
     currentGrouping = NSCalendarUnitMonth;
     unsigned month = 1;
     if (lastInfoTimePoint == 0) {
@@ -2017,14 +1970,6 @@ extern void *UserDefaultsBindingContext;
     }
     fromDate = [ShortDate dateWithYear: referenceDate.year + lastInfoTimePoint month: month day: 1];
     toDate = [fromDate dateByAddingUnits: 12 byUnit: NSCalendarUnitMonth];
-
-    int totalUnits;
-    int tickCount;
-    tickCount = 12;
-    totalUnits = (numberOfMonths > 1) ? monthTimePoints[numberOfMonths - 1] + 1 : 0;
-    if (totalUnits < tickCount) {
-        totalUnits = tickCount;
-    }
 
     lastInfoTimePoint *= 12; // Convert to month index.
                              // Make the bar fill the entire width.
@@ -2055,8 +2000,7 @@ extern void *UserDefaultsBindingContext;
 /**
  * Called when the range animation has ended.
  */
-- (void)finishSwitchToMonthMode
-{
+- (void)finishSwitchToMonthMode {
     ++peerUpdateCount;
     CPTBarPlot *plot = (id)[graph plotWithIdentifier : @"mainRedemptionPlot"];
     plot.barWidth = CPTDecimalFromFloat(0.65);
@@ -2070,8 +2014,7 @@ extern void *UserDefaultsBindingContext;
     --peerUpdateCount;
 }
 
-- (void)switchToYearMode
-{
+- (void)switchToYearMode {
     // Switch immediately to a year range with the current year taking the full width.
     // The notifications of the peer graph will then animate it to the final range.
     toDate = [fromDate dateByAddingUnits: 1 byUnit: NSCalendarUnitYear];
@@ -2090,8 +2033,7 @@ extern void *UserDefaultsBindingContext;
     toDate = [fromDate dateByAddingUnits: 10 byUnit: NSCalendarUnitYear];
 }
 
-- (void)changePlotRange: (CPTPlotRange *)newRange
-{
+- (void)changePlotRange: (CPTPlotRange *)newRange {
     ++peerUpdateCount;
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
     plotSpace.xRange = newRange;
@@ -2102,8 +2044,7 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark - Event handling
 
-- (void)mouseMoved: (NSEvent *)theEvent
-{
+- (void)mouseMoved: (NSEvent *)theEvent {
     [super mouseMoved: theEvent];
 
     CPTXYPlotSpace *plotSpace = (id)[self hostedGraph].defaultPlotSpace;
@@ -2118,8 +2059,7 @@ extern void *UserDefaultsBindingContext;
     [peerGraph updateTrackLineAndInfoDisplay: pointInHostedGraph.x];
 }
 
-- (void)mouseExited: (NSEvent *)theEvent
-{
+- (void)mouseExited: (NSEvent *)theEvent {
     [super mouseExited: theEvent];
     lastInfoTimePoint = 0;
     [self hideInfoComponents];
@@ -2127,8 +2067,7 @@ extern void *UserDefaultsBindingContext;
     [peerGraph showGeneralInfo];
 }
 
-- (void)updateTrackingAreas
-{
+- (void)updateTrackingAreas {
     [super updateTrackingAreas];
 
     if (trackingArea != nil) {
@@ -2137,8 +2076,8 @@ extern void *UserDefaultsBindingContext;
 
     trackingArea = [[NSTrackingArea alloc] initWithRect: self.bounds
                                                 options: NSTrackingMouseEnteredAndExited
-                                                         | NSTrackingMouseMoved
-                                                         | NSTrackingActiveInKeyWindow
+                    | NSTrackingMouseMoved
+                    | NSTrackingActiveInKeyWindow
                                                   owner: self
                                                userInfo: nil];
     [self addTrackingArea: trackingArea];
@@ -2146,13 +2085,11 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark - Utility functions
 
-- (void)updateColors
-{
+- (void)updateColors {
     [graph reloadData];
 }
 
-- (int)distanceFromDate: (ShortDate *)from toDate: (ShortDate *)to
-{
+- (int)distanceFromDate: (ShortDate *)from toDate: (ShortDate *)to {
     return [from unitsToDate: to byUnit: currentGrouping];
 }
 
@@ -2161,8 +2098,7 @@ extern void *UserDefaultsBindingContext;
  * overall size of the range. This is a bit tricky as we want sharp and easy intervals
  * for optimal perceptibility. The given range is already rounded up to two most significant digits.
  */
-- (float)intervalFromRange: (NSDecimalNumber *)range
-{
+- (float)intervalFromRange: (NSDecimalNumber *)range {
     int digitCount = [range numberOfDigits];
 
     NSDecimal value = [range decimalValue];
@@ -2195,16 +2131,13 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark - Plot data source methods
 
-- (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot
-{
+- (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot {
     return (currentGrouping == NSCalendarUnitMonth) ? numberOfMonths : numberOfYears;
 }
 
-- (double *)doublesForPlot: (CPTPlot *)plot field: (NSUInteger)fieldEnum recordIndexRange: (NSRange)indexRange
-{
+- (double *)doublesForPlot: (CPTPlot *)plot field: (NSUInteger)fieldEnum recordIndexRange: (NSRange)indexRange {
     NSString *identifier = (id)plot.identifier;
-    switch (fieldEnum)
-    {
+    switch (fieldEnum) {
         case CPTBarPlotFieldBarLocation:
             if (currentGrouping == NSCalendarUnitMonth) {
                 return &monthTimePoints[indexRange.location];
@@ -2240,18 +2173,16 @@ extern void *UserDefaultsBindingContext;
     return nil;
 }
 
-- (CPTLayer *)dataLabelForPlot: (CPTPlot *)plot recordIndex: (NSUInteger)index
-{
+- (CPTLayer *)dataLabelForPlot: (CPTPlot *)plot recordIndex: (NSUInteger)index {
     return (id)[NSNull null];
 }
 
 #pragma mark - CPTBarPlot data source delegate methods
 
-- (CPTFill *)barFillForBarPlot: (CPTBarPlot *)barPlot recordIndex: (NSUInteger)idx
-{
+- (CPTFill *)barFillForBarPlot: (CPTBarPlot *)barPlot recordIndex: (NSUInteger)idx {
     NSString *identifier = (id)barPlot.identifier;
-    double *interestValues;
-    double alpha;
+    double   *interestValues;
+    double   alpha;
     if ([identifier isEqualToString: @"mainRedemptionPlot"]) {
         if (currentGrouping == NSCalendarUnitMonth) {
             interestValues = monthInterestValues;
@@ -2271,8 +2202,8 @@ extern void *UserDefaultsBindingContext;
     CPTGradient *gradient = [[CPTGradient alloc] init];
     gradient.angle = 90;
 
-    CGColorRef  positiveLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (low)"] colorWithAlphaComponent: 1]);
-    CGColorRef  negativeLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Negative Plot Gradient (low)"] colorWithAlphaComponent: 0.9]);
+    CGColorRef positiveLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (low)"] colorWithAlphaComponent: 1]);
+    CGColorRef negativeLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Negative Plot Gradient (low)"] colorWithAlphaComponent: 0.9]);
 
     CGFloat splitPoint = -interestValues[idx] / monthlyRate.doubleValue;
 
@@ -2293,18 +2224,16 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark - Plot space delegate methods
 
-- (CGPoint)plotSpace: (CPTPlotSpace *)space willDisplaceBy: (CGPoint)proposedDisplacementVector
-{
+- (CGPoint)plotSpace: (CPTPlotSpace *)space willDisplaceBy: (CGPoint)proposedDisplacementVector {
     [self hideInfoComponents];
 
     proposedDisplacementVector.y = 0;
     return proposedDisplacementVector;
 }
 
--(CPTPlotRange *)plotSpace: (CPTPlotSpace *)space
-     willChangePlotRangeTo: (CPTPlotRange *)newRange
-             forCoordinate: (CPTCoordinate)coordinate
-{
+- (CPTPlotRange *)plotSpace: (CPTPlotSpace *)space
+      willChangePlotRangeTo: (CPTPlotRange *)newRange
+              forCoordinate: (CPTCoordinate)coordinate {
     if (peerUpdateCount > 0 || coordinate != CPTCoordinateX) {
         return newRange;
     }
@@ -2317,8 +2246,7 @@ extern void *UserDefaultsBindingContext;
 
 #pragma mark - Coreplot delegate methods
 
-- (void)animationDidFinish: (CPTAnimationOperation *)operation
-{
+- (void)animationDidFinish: (CPTAnimationOperation *)operation {
     if (operation == indicatorAnimation) {
         indicatorAnimation = nil;
     } else {
@@ -2326,8 +2254,7 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (void)animationCancelled: (CPTAnimationOperation *)operation
-{
+- (void)animationCancelled: (CPTAnimationOperation *)operation {
     if (operation == indicatorAnimation) {
         indicatorAnimation = nil;
     } else {
@@ -2341,9 +2268,9 @@ extern void *UserDefaultsBindingContext;
 
 @interface SaveAndRedeemCard ()
 {
-@private
+    @private
     PrincipalBalanceGraph *graph1;
-    RedemptionGraph *graph2;
+    RedemptionGraph       *graph2;
 
     NSNumberFormatter *infoTextFormatter;
     NSTextView        *detailsField;
@@ -2369,13 +2296,11 @@ extern void *UserDefaultsBindingContext;
 
 @implementation SaveAndRedeemCard
 
-+ (BOOL)isConfigurable
-{
++ (BOOL)isConfigurable {
     return YES;
 }
 
-- (id)initWithFrame: (NSRect)frame
-{
+- (id)initWithFrame: (NSRect)frame {
     self = [super initWithFrame: frame];
     if (self) {
         NSString *currency = @"EUR"; // We may later make this configurable.
@@ -2405,8 +2330,7 @@ extern void *UserDefaultsBindingContext;
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults removeObserver: self forKeyPath: @"colors"];
 
@@ -2418,8 +2342,7 @@ extern void *UserDefaultsBindingContext;
     [settings removeObserver: self forKeyPath: @"specialRedemptions"];
 }
 
-- (void)setupUI
-{
+- (void)setupUI {
     detailsField = [[NSTextView alloc] init];
     detailsField.drawsBackground = NO;
     detailsField.editable = NO;
@@ -2430,20 +2353,18 @@ extern void *UserDefaultsBindingContext;
     [self updateGraphs];
 }
 
-- (void)updateGraphs
-{
+- (void)updateGraphs {
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
-    NSNumber *total = settings[@"loanValue"];
-    NSNumber *interest = settings[@"interestRate"];
-    NSNumber *redemption = settings[@"redemptionRate"];
-    NSDate *startDate = settings[@"loanStartDate"];
-    NSArray *specialRedemptions = settings[@"specialRedemptions"];
+    NSNumber                *total = settings[@"loanValue"];
+    NSNumber                *interest = settings[@"interestRate"];
+    NSNumber                *redemption = settings[@"redemptionRate"];
+    NSDate                  *startDate = settings[@"loanStartDate"];
+    NSArray                 *specialRedemptions = settings[@"specialRedemptions"];
 
     NSMutableDictionary *unscheduled = [NSMutableDictionary dictionary];
     for (NSDictionary *entry in specialRedemptions) {
         unscheduled[@([entry[@"date"] hash])] = entry[@"amount"];
     }
-
     BOOL fadeIn = NO;
     if (total.doubleValue > 0 && interest.doubleValue > 0 && redemption.doubleValue > 0 && startDate != nil) {
         if (graph2 == nil) {
@@ -2488,7 +2409,7 @@ extern void *UserDefaultsBindingContext;
             graph1->peerGraph = graph2;
             graph2->peerGraph = graph1;
 
-            if (fadeIn ) {
+            if (fadeIn) {
                 [graph1 showGraph];
                 [graph2 showGraph];
             }
@@ -2500,19 +2421,19 @@ extern void *UserDefaultsBindingContext;
         graph2 = nil;
 
         NSString *formatString = @"<span style='font-family: HelveticaNeue-Light; font-size: 11pt;"
-          " color: #909090'>%@</span>&nbsp;";
-        NSString *html = [NSString stringWithFormat: formatString, NSLocalizedString(@"AP972", nil)];
+            " color: #909090'>%@</span>&nbsp;";
+        NSString                  *html = [NSString stringWithFormat: formatString, NSLocalizedString(@"AP972", nil)];
         NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithHTML: [html dataUsingEncoding: NSUnicodeStringEncoding]
                                                                        documentAttributes: nil];
 
-        NSImage *image = [NSImage imageNamed: @"gear"];
-        NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+        NSImage              *image = [NSImage imageNamed: @"gear"];
+        NSTextAttachment     *attachment = [[NSTextAttachment alloc] init];
         NSTextAttachmentCell *cell = [[NSTextAttachmentCell alloc] initImageCell: image];
         cell.selectable = NO;
         cell.wraps = NO;
         cell.type = NSImageCellType;
         [attachment setAttachmentCell: cell];
-        [text appendAttributedString: [NSAttributedString  attributedStringWithAttachment: attachment]];
+        [text appendAttributedString: [NSAttributedString attributedStringWithAttachment: attachment]];
         detailsField.textStorage.attributedString = text;
         detailsField.selectable = NO;
     }
@@ -2522,8 +2443,7 @@ extern void *UserDefaultsBindingContext;
 /**
  * Layouts all charts in a column format.
  */
-- (void)resizeSubviewsWithOldSize: (NSSize)oldSize
-{
+- (void)resizeSubviewsWithOldSize: (NSSize)oldSize {
     if (graph1 != nil && graph2 != nil) {
         NSRect frame = self.bounds;
         frame.size.width -= 40;
@@ -2551,12 +2471,11 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (NSString *)computeTimeString: (NSUInteger)time
-{
+- (NSString *)computeTimeString: (NSUInteger)time {
     NSUInteger years = time / 12;
-    NSString *yearString = years == 1 ? NSLocalizedString(@"AP20", nil) : NSLocalizedString(@"AP21", nil);
+    NSString   *yearString = years == 1 ? NSLocalizedString(@"AP20", nil) : NSLocalizedString(@"AP21", nil);
     NSUInteger months = time % 12;
-    NSString *monthString = months == 1 ? NSLocalizedString(@"AP22", nil) : NSLocalizedString(@"AP23", nil);
+    NSString   *monthString = months == 1 ? NSLocalizedString(@"AP22", nil) : NSLocalizedString(@"AP23", nil);
     if (years == 0) {
         if (months == 0) {
             return @"--";
@@ -2570,8 +2489,7 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-- (NSString *)formatValuePair: (NSString *)value1 second: (NSString *)value2
-{
+- (NSString *)formatValuePair: (NSString *)value1 second: (NSString *)value2 {
     static NSString *format1 = @"<span style='color: %@'>%@</span>";
     static NSString *format2 = @"<span style='color: %@'>%@</span> / <span style='color: %@'>%@</span>";
 
@@ -2589,34 +2507,33 @@ extern void *UserDefaultsBindingContext;
     return [NSString stringWithFormat: format2, htmlColor1, value1, htmlColor2, value2];
 }
 
-- (void)updateInfoTextFromCurrentValues
-{
+- (void)updateInfoTextFromCurrentValues {
     static NSString *formatString = @"<table cellspacing = '0' cellpadding = '2' style = 'width: 100%%;"
-      " font-family: HelveticaNeue; color: #40678B;'>"
-      "  <tr>"
-      "    <td align='right' width='40%%'>%@:</td>"
-      "    <td width='60%%'><b>%@</b></td>"
-      "  </tr>"
-      "  <tr>"
-      "    <td align='right'>%@:</td>"
-      "    <td><b>%@</b></td>"
-      "  </tr>"
-      "  <tr>"
-      "    <td align='right'>%@:</td>"
-      "    <td><b>%@</b></td>"
-      "  </tr>"
-      "</table>";
+        " font-family: HelveticaNeue; color: #40678B;'>"
+        "  <tr>"
+        "    <td align='right' width='40%%'>%@:</td>"
+        "    <td width='60%%'><b>%@</b></td>"
+        "  </tr>"
+        "  <tr>"
+        "    <td align='right'>%@:</td>"
+        "    <td><b>%@</b></td>"
+        "  </tr>"
+        "  <tr>"
+        "    <td align='right'>%@:</td>"
+        "    <td><b>%@</b></td>"
+        "  </tr>"
+        "</table>";
 
-    NSString *balanceString = [self formatValuePair: isnan(currentBalance) ? nil : [infoTextFormatter stringFromNumber: @(currentBalance)]
-                                             second: isnan(currentBalance2) ? nil : [infoTextFormatter stringFromNumber: @(currentBalance2)]];
-    NSString *paidOffString = [self formatValuePair: currentPaidOff == 1 ? nil : [NSString stringWithFormat: @"%.2f %%", 100 * currentPaidOff]
-                                             second: currentPaidOff2 == 1 ? nil : [NSString stringWithFormat: @"%.2f %%", 100 * currentPaidOff2]];
-    NSString *timeString = [self formatValuePair: currentTime == 0 ? nil : [self computeTimeString: currentTime]
-                                          second: currentTime2 == 0 ? nil : [self computeTimeString: currentTime2]];
+    NSString *balanceString = [self formatValuePair: isnan(currentBalance) ? nil: [infoTextFormatter stringFromNumber: @(currentBalance)]
+                                             second: isnan(currentBalance2) ? nil: [infoTextFormatter stringFromNumber: @(currentBalance2)]];
+    NSString *paidOffString = [self formatValuePair: currentPaidOff == 1 ? nil: [NSString stringWithFormat: @"%.2f %%", 100 * currentPaidOff]
+                                             second: currentPaidOff2 == 1 ? nil: [NSString stringWithFormat: @"%.2f %%", 100 * currentPaidOff2]];
+    NSString *timeString = [self formatValuePair: currentTime == 0 ? nil: [self computeTimeString: currentTime]
+                                          second: currentTime2 == 0 ? nil: [self computeTimeString: currentTime2]];
     NSString *html = [NSString stringWithFormat: formatString,
-                       NSLocalizedString(@"AP964", nil), balanceString,
-                       NSLocalizedString(@"AP965", nil), paidOffString,
-                       NSLocalizedString(@"AP966", nil), timeString];
+                      NSLocalizedString(@"AP964", nil), balanceString,
+                      NSLocalizedString(@"AP965", nil), paidOffString,
+                      NSLocalizedString(@"AP966", nil), timeString];
 
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithHTML: [html dataUsingEncoding: NSUnicodeStringEncoding]
                                                                    documentAttributes: nil];
@@ -2630,8 +2547,7 @@ extern void *UserDefaultsBindingContext;
                   paidOff: (double)paidOff
                  paidOff2: (double)paidOff2
             remainingTime: (NSUInteger)time
-           remainingTime2: (NSUInteger)time2
-{
+           remainingTime2: (NSUInteger)time2 {
     currentBalance = balance;
     currentBalance2 = balance2;
     currentPaidOff = paidOff;
@@ -2644,8 +2560,7 @@ extern void *UserDefaultsBindingContext;
 - (void)updateInfoWithDebt: (double)debt
                      debt2: (double)debt2
                 redemption: (double)redemption
-               redemption2: (double)redemption2
-{
+               redemption2: (double)redemption2 {
     currentDebt = debt;
     currentDebt2 = debt2;
     currentRedemption = redemption;
@@ -2658,34 +2573,33 @@ extern void *UserDefaultsBindingContext;
                            totalPaid: (double)total
                           totalPaid2: (double)total2
                         interestPaid: (double)interest
-                       interestPaid2: (double)interest2
-{
+                       interestPaid2: (double)interest2 {
     static NSString *formatString = @"<table cellspacing = '0' cellpadding = '2' style = 'width: 100%%;"
-      " font-family: HelveticaNeue; color: #40678B;'>"
-      "  <tr>"
-      "    <td align='right' width='40%%'>%@:</td>"
-      "    <td width='60%%'><b>%@</b></td>"
-      "  </tr>"
-      "  <tr>"
-      "    <td align='right' >%@:</td>"
-      "    <td><b>%@</b></td>"
-      "  </tr>"
-      "  <tr>"
-      "    <td align='right' >%@:</td>"
-      "    <td><b>%@</b></td>"
-      "  </tr>"
-      "</table>";
+        " font-family: HelveticaNeue; color: #40678B;'>"
+        "  <tr>"
+        "    <td align='right' width='40%%'>%@:</td>"
+        "    <td width='60%%'><b>%@</b></td>"
+        "  </tr>"
+        "  <tr>"
+        "    <td align='right' >%@:</td>"
+        "    <td><b>%@</b></td>"
+        "  </tr>"
+        "  <tr>"
+        "    <td align='right' >%@:</td>"
+        "    <td><b>%@</b></td>"
+        "  </tr>"
+        "</table>";
 
     NSString *amountString = [self formatValuePair: [infoTextFormatter stringFromNumber: @(amount)]
                                             second: nil];
-    NSString *totalString = [self formatValuePair: isnan(total) ? nil : [infoTextFormatter stringFromNumber: @(total)]
-                                           second: isnan(total2) ? nil : [infoTextFormatter stringFromNumber: @(total2)]];
-    NSString *interestString = [self formatValuePair: isnan(interest) ? nil : [infoTextFormatter stringFromNumber: @(interest)]
-                                              second: isnan(interest2) ? nil : [infoTextFormatter stringFromNumber: @(interest2)]];
+    NSString *totalString = [self formatValuePair: isnan(total) ? nil: [infoTextFormatter stringFromNumber: @(total)]
+                                           second: isnan(total2) ? nil: [infoTextFormatter stringFromNumber: @(total2)]];
+    NSString *interestString = [self formatValuePair: isnan(interest) ? nil: [infoTextFormatter stringFromNumber: @(interest)]
+                                              second: isnan(interest2) ? nil: [infoTextFormatter stringFromNumber: @(interest2)]];
     NSString *html = [NSString stringWithFormat: formatString,
-                       NSLocalizedString(@"AP969", nil), amountString,
-                       NSLocalizedString(@"AP970", nil), totalString,
-                       NSLocalizedString(@"AP971", nil), interestString];
+                      NSLocalizedString(@"AP969", nil), amountString,
+                      NSLocalizedString(@"AP970", nil), totalString,
+                      NSLocalizedString(@"AP971", nil), interestString];
 
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithHTML: [html dataUsingEncoding: NSUnicodeStringEncoding]
                                                                    documentAttributes: nil];
@@ -2697,8 +2611,7 @@ extern void *UserDefaultsBindingContext;
 - (void)observeValueForKeyPath: (NSString *)keyPath
                       ofObject: (id)object
                         change: (NSDictionary *)change
-                       context: (void *)context
-{
+                       context: (void *)context {
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"colors"]) {
             for (PrincipalBalanceGraph *child in self.subviews) {

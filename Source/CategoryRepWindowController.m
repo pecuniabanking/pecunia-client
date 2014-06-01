@@ -43,8 +43,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 
 @implementation PecuniaGraphHost
 
-- (void)updateTrackingArea
-{
+- (void)updateTrackingArea {
     if (trackingArea != nil) {
         [self removeTrackingArea: trackingArea];
     }
@@ -56,33 +55,28 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     [self addTrackingArea: trackingArea];
 }
 
-- (id)initWithFrame: (NSRect)frameRect
-{
+- (id)initWithFrame: (NSRect)frameRect {
     self = [super initWithFrame: frameRect];
     [self updateTrackingArea];
 
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [self removeTrackingArea: trackingArea];
 }
 
-- (void)updateTrackingAreas
-{
+- (void)updateTrackingAreas {
     [super updateTrackingAreas];
 
     [self updateTrackingArea];
 }
 
-- (BOOL)acceptsFirstResponder
-{
+- (BOOL)acceptsFirstResponder {
     return YES;
 }
 
-- (void)sendMouseNotification: (NSEvent *)theEvent withParameters: (NSMutableDictionary *)parameters
-{
+- (void)sendMouseNotification: (NSEvent *)theEvent withParameters: (NSMutableDictionary *)parameters {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
     NSPoint location = [self convertPoint: [theEvent locationInWindow] fromView: nil];
@@ -94,8 +88,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     [center postNotificationName: PecuniaHitNotification object: nil userInfo: parameters];
 }
 
-- (void)mouseMoved: (NSEvent *)theEvent
-{
+- (void)mouseMoved: (NSEvent *)theEvent {
     [super mouseMoved: theEvent];
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -103,8 +96,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     [self sendMouseNotification: theEvent withParameters: parameters];
 }
 
-- (void)mouseDown: (NSEvent *)theEvent
-{
+- (void)mouseDown: (NSEvent *)theEvent {
     [super mouseDown: theEvent];
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -112,8 +104,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     [self sendMouseNotification: theEvent withParameters: parameters];
 }
 
-- (void)mouseDragged: (NSEvent *)theEvent
-{
+- (void)mouseDragged: (NSEvent *)theEvent {
     [super mouseDragged: theEvent];
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -121,8 +112,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     [self sendMouseNotification: theEvent withParameters: parameters];
 }
 
-- (void)mouseUp: (NSEvent *)theEvent
-{
+- (void)mouseUp: (NSEvent *)theEvent {
     [super mouseUp: theEvent];
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -158,8 +148,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 
 @synthesize selectedCategory;
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     earningsExplosionIndex = NSNotFound;
     spendingsExplosionIndex = NSNotFound;
 
@@ -193,8 +182,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
                                                object: nil];
 }
 
-- (void)setupPieCharts
-{
+- (void)setupPieCharts {
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)pieChartGraph.defaultPlotSpace;
     plotSpace.allowsUserInteraction = NO; // Disallow coreplot interaction (will do unwanted manipulations).
     plotSpace.delegate = self;
@@ -221,7 +209,10 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     frame.borderLineStyle = frameStyle;
     frame.fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1]];
 
-    pieChartGraph.shadowColor = CGColorCreateGenericGray(0, 1);
+    CGColorRef color = CGColorCreateGenericGray(0, 1);
+    pieChartGraph.shadowColor = color;
+    CGColorRelease(color);
+
     pieChartGraph.shadowRadius = 2.0;
     pieChartGraph.shadowOffset = CGSizeMake(1, -1);
     pieChartGraph.shadowOpacity = 0.15;
@@ -293,8 +284,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 /**
  * Miniplots represent ordered bar plots for the values in the pie charts.
  */
-- (void)setupMiniPlots
-{
+- (void)setupMiniPlots {
     // Mini plots are placed below the pie charts, so we need a separate plot space for each.
     CPTXYPlotSpace *barPlotSpace = [[CPTXYPlotSpace alloc] init];
 
@@ -363,8 +353,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 /**
  * Initialize a pair of xy axes.
  */
-- (void)setupMiniPlotAxisX: (CPTXYAxis *)x y: (CPTXYAxis *)y offset: (float)offset
-{
+- (void)setupMiniPlotAxisX: (CPTXYAxis *)x y: (CPTXYAxis *)y offset: (float)offset {
     x.majorTickLineStyle = nil;
     x.minorTickLineStyle = nil;
     x.labelTextStyle = nil;
@@ -408,8 +397,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
                                                       length: CPTDecimalFromFloat(14.75)];
 }
 
-- (void)setupMiniPlotAxes
-{
+- (void)setupMiniPlotAxes {
     // For the mini plots we use own axes for each plot. This will also cause two separate grids
     // to be shown.
     CPTXYAxisSet *axisSet = (id)pieChartGraph.axisSet;
@@ -479,8 +467,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
-- (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot
-{
+- (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot {
     switch ([(NSNumber *)plot.identifier intValue]) {
         case EARNINGS_PLOT_ID:
             if ([earningsCategories count] > 0) {
@@ -507,8 +494,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     }
 }
 
-- (NSNumber *)numberForPlot: (CPTPlot *)plot field: (NSUInteger)fieldEnum recordIndex: (NSUInteger)index
-{
+- (NSNumber *)numberForPlot: (CPTPlot *)plot field: (NSUInteger)fieldEnum recordIndex: (NSUInteger)index {
     switch ([(NSNumber *)plot.identifier intValue]) {
         case EARNINGS_PLOT_ID:
             if (fieldEnum == CPTPieChartFieldSliceWidth) {
@@ -552,8 +538,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     return (id)[NSNull null];
 }
 
-- (CPTLayer *)dataLabelForPlot: (CPTPlot *)plot recordIndex: (NSUInteger)index
-{
+- (CPTLayer *)dataLabelForPlot: (CPTPlot *)plot recordIndex: (NSUInteger)index {
     static CPTMutableTextStyle *labelStyle = nil;
 
     if (!labelStyle) {
@@ -593,8 +578,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     return newLayer;
 }
 
-- (CPTFill *)sliceFillForPieChart: (CPTPieChart *)pieChart recordIndex: (NSUInteger)index
-{
+- (CPTFill *)sliceFillForPieChart: (CPTPieChart *)pieChart recordIndex: (NSUInteger)index {
     NSColor *color = nil;
 
     switch ([(NSNumber *)pieChart.identifier intValue]) {
@@ -632,7 +616,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
                                                                                                green: deviceColor.greenComponent
                                                                                                 blue: deviceColor.blueComponent
                                                                                                alpha: deviceColor.alphaComponent]
-                             ];
+        ];
 
     gradient.angle = -45.0;
     CPTFill *gradientFill = [CPTFill fillWithGradient: gradient];
@@ -640,8 +624,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     return gradientFill;
 }
 
-- (CPTFill *)barFillForBarPlot: (CPTBarPlot *)barPlot recordIndex: (NSUInteger)index
-{
+- (CPTFill *)barFillForBarPlot: (CPTBarPlot *)barPlot recordIndex: (NSUInteger)index {
     NSColor *color = nil;
 
     switch ([(NSNumber *)barPlot.identifier intValue]) {
@@ -673,15 +656,14 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
                                                                                                green: color.greenComponent
                                                                                                 blue: color.blueComponent
                                                                                                alpha: 0.5]
-                             ];
+        ];
 
     gradient.angle = -90.0;
 
     return [CPTFill fillWithGradient: gradient];
 }
 
--(void)pieChart: (CPTPieChart *)plot sliceTouchDownAtRecordIndex: (NSUInteger)idx
-{
+- (void)pieChart: (CPTPieChart *)plot sliceTouchDownAtRecordIndex: (NSUInteger)idx {
     currentPlot = plot;
 
     CPTMutableShadow *shadow = [[CPTMutableShadow alloc] init];
@@ -698,8 +680,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 /**
  * Event handler specifically for mouse moves.
  */
-- (void)handleMouseMove: (NSDictionary *)parameters
-{
+- (void)handleMouseMove: (NSDictionary *)parameters {
     BOOL needEarningsLabelAdjustment = NO;
     BOOL needSpendingsLabelAdjustment = NO;
 
@@ -862,8 +843,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
  * Handler method for notifications sent from the graph host windows if something in the graphs need
  * adjustment, mostly due to user input.
  */
-- (void)mouseHit: (NSNotification *)notification
-{
+- (void)mouseHit: (NSNotification *)notification {
     if ([[notification name] isEqualToString: PecuniaHitNotification]) {
         NSDictionary *parameters = [notification userInfo];
         NSString     *type = parameters[@"type"];
@@ -922,8 +902,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     }
 }
 
-- (void)updateValues
-{
+- (void)updateValues {
     [spendingsCategories removeAllObjects];
     [earningsCategories removeAllObjects];
     [sortedSpendingValues removeAllObjects];
@@ -936,7 +915,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
         return;
     }
 
-    NSMutableArray  *children = [[[selectedCategory valueForKey: @"children"] allObjects] mutableCopy];
+    NSMutableArray   *children = [[[selectedCategory valueForKey: @"children"] allObjects] mutableCopy];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"name" ascending: YES];
     [children sortUsingDescriptors: @[sortDescriptor]];
 
@@ -970,7 +949,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
                     case NSOrderedAscending:
                         [spendingsCategories addObject: pieData];
                         [sortedSpendingValues addObject: @{@"index": @((int)spendingsCategories.count - 1),
-                         @"value": [value abs]}];
+                                                           @"value": [value abs]}];
 
                         totalSpendings = [totalSpendings decimalNumberByAdding: value];
                         break;
@@ -980,7 +959,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
                     case NSOrderedDescending:
                         [earningsCategories addObject: pieData];
                         [sortedEarningValues addObject: @{@"index": @((int)earningsCategories.count - 1),
-                         @"value": [value abs]}];
+                                                          @"value": [value abs]}];
 
                         totalEarnings = [totalEarnings decimalNumberByAdding: value];
                         break;
@@ -997,7 +976,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 
                     [spendingsCategories addObject: pieData];
                     [sortedSpendingValues addObject: @{@"index": @((int)spendingsCategories.count - 1),
-                     @"value": [spendings abs]}];
+                                                       @"value": [spendings abs]}];
 
                 }
 
@@ -1014,7 +993,6 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
                 }
             }
         }
-
         // The sorted arrays contain values for the mini plots.
         sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"value" ascending: NO];
         [sortedEarningValues sortUsingDescriptors: @[sortDescriptor]];
@@ -1031,8 +1009,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     [self updateMiniPlotAxes];
 }
 
-- (void)updatePlotsEarnings: (float)earnings spendings: (float)spendings
-{
+- (void)updatePlotsEarnings: (float)earnings spendings: (float)spendings {
     // Adjust miniplot ranges depending on the sorted values.
     float tipValue = 1;
     if (sortedEarningValues.count > 0) {
@@ -1093,8 +1070,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
                  delegate: nil];
 }
 
-- (void)updateMiniPlotAxes
-{
+- (void)updateMiniPlotAxes {
     CPTAxisSet *axisSet = pieChartGraph.axisSet;
 
     float range;
@@ -1150,8 +1126,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
                 earningsPercentage: (CGFloat)earningsPercentage
                          spendings: (NSDecimalNumber *)spendings
                spendingsPercentage: (CGFloat)spendingsPercentage
-                             color: (NSColor *)color
-{
+                             color: (NSColor *)color {
     if (infoTextFormatter == nil) {
         NSString *currency = (selectedCategory == nil) ? @"EUR" : [selectedCategory currency];
         infoTextFormatter = [[NSNumberFormatter alloc] init];
@@ -1174,7 +1149,10 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
         infoLayer.paddingRight = 12;
         infoLayer.spacing = 3;
 
-        infoLayer.shadowColor = CGColorCreateGenericGray(0, 1);
+        CGColorRef color = CGColorCreateGenericGray(0, 1);
+        infoLayer.shadowColor = color;
+        CGColorRelease(color);
+
         infoLayer.shadowRadius = 5.0;
         infoLayer.shadowOffset = CGSizeMake(2, -2);
         infoLayer.shadowOpacity = 0.75;
@@ -1238,8 +1216,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     [infoLayer sizeToFit];
 }
 
-- (void)updateInfoLayerPosition
-{
+- (void)updateInfoLayerPosition {
     CGRect frame = pieChartGraph.frame;
 
     CGPoint infoLayerLocation;
@@ -1255,8 +1232,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
  * Collects earnings and spendings for the given category and computes its share of the total
  * spendings/earnings. This is then displayed in the info window.
  */
-- (void)showInfoFor: (NSString *)category
-{
+- (void)showInfoFor: (NSString *)category {
     NSDecimalNumber *earnings = [NSDecimalNumber zero];
     NSDecimalNumber *totalEarnings = [NSDecimalNumber zero];
     NSColor         *color = nil;
@@ -1292,13 +1268,11 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 #pragma mark -
 #pragma mark Interface Builder actions
 
-- (IBAction)balancingRuleChanged: (id)sender
-{
+- (IBAction)balancingRuleChanged: (id)sender {
     [self updateValues];
 }
 
-- (IBAction)showHelp: (id)sender
-{
+- (IBAction)showHelp: (id)sender {
     if (!helpPopover.shown) {
         [helpPopover showRelativeToRect: helpButton.bounds ofView: helpButton preferredEdge: NSMinYEdge];
     }
@@ -1306,8 +1280,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 
 #pragma mark - Plot animation events
 
-- (void)animationDidStart: (CPTAnimationOperation *)operation
-{
+- (void)animationDidStart: (CPTAnimationOperation *)operation {
     if (operation == earningsAngleAnimation) {
         earningsPlot.hidden = NO;
     }
@@ -1316,8 +1289,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     }
 }
 
-- (void)animationDidFinish: (CPTAnimationOperation *)operation
-{
+- (void)animationDidFinish: (CPTAnimationOperation *)operation {
     if (operation == earningsAngleAnimation) {
         earningsPlot.endAngle = NAN;
         earningsAngleAnimation = nil;
@@ -1328,8 +1300,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     }
 }
 
-- (void)animationCancelled: (CPTAnimationOperation *)operation
-{
+- (void)animationCancelled: (CPTAnimationOperation *)operation {
     if (operation == earningsAngleAnimation) {
         earningsPlot.endAngle = NAN;
         earningsAngleAnimation = nil;
@@ -1343,8 +1314,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
 #pragma mark -
 #pragma mark PecuniaSectionItem protocol
 
-- (void)print
-{
+- (void)print {
     NSPrintInfo *printInfo = [NSPrintInfo sharedPrintInfo];
     [printInfo setTopMargin: 45];
     [printInfo setBottomMargin: 45];
@@ -1358,13 +1328,11 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     [printOp runOperation];
 }
 
-- (NSView *)mainView
-{
+- (NSView *)mainView {
     return topView;
 }
 
-- (void)prepare
-{
+- (void)prepare {
 }
 
 - (void)activate;
@@ -1372,12 +1340,10 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
     [pieChartHost updateTrackingAreas];
 }
 
-- (void)deactivate
-{
+- (void)deactivate {
 }
 
-- (void)setTimeRangeFrom: (ShortDate *)from to: (ShortDate *)to
-{
+- (void)setTimeRangeFrom: (ShortDate *)from to: (ShortDate *)to {
     fromDate = from;
     toDate = to;
 
@@ -1402,8 +1368,7 @@ static NSString *const PecuniaHitNotification = @"PecuniaMouseHit";
                                            delegate: self];
 }
 
-- (void)setSelectedCategory: (Category *)newCategory
-{
+- (void)setSelectedCategory: (Category *)newCategory {
     if (selectedCategory != newCategory) {
         selectedCategory = newCategory;
         [self updateValues];

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2011, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -26,20 +26,26 @@
  */
 + (void)crossFadeFromView: (NSView *)oldView
                    toView: (NSView *)newView
-             withDuration: (float)duration
-{
+             withDuration: (float)duration {
     NSDictionary *oldFadeOut = nil;
     if (oldView != nil) {
-        oldFadeOut = @{NSViewAnimationTargetKey: oldView,
-                       NSViewAnimationEffectKey: NSViewAnimationFadeOutEffect};
+        oldFadeOut = @{
+            NSViewAnimationTargetKey: oldView,
+            NSViewAnimationEffectKey: NSViewAnimationFadeOutEffect
+        };
     }
 
     NSDictionary *newFadeIn;
-    newFadeIn = @{NSViewAnimationTargetKey: newView,
-                  NSViewAnimationEffectKey: NSViewAnimationFadeInEffect};
+    newFadeIn = @{
+        NSViewAnimationTargetKey: newView,
+        NSViewAnimationEffectKey: NSViewAnimationFadeInEffect
+    };
 
-    NSArray *animations;
-    animations = @[newFadeIn, oldFadeOut];
+    NSMutableArray *animations = [NSMutableArray new];
+    [animations addObject: newFadeIn];
+    if (oldFadeOut != nil) {
+        [animations addObject: oldFadeOut];
+    }
 
     NSViewAnimation *animation;
     animation = [[NSViewAnimation alloc]
@@ -49,7 +55,6 @@
     [animation setDuration: duration];
 
     [animation startAnimation];
-
 }
 
 /**
@@ -58,8 +63,7 @@
  */
 + (void)switchFromView: (NSView *)from
                 toView: (NSView *)to
-             withSlide: (BOOL)doSlide
-{
+             withSlide: (BOOL)doSlide {
     if (doSlide) {
         NSRect frame = [to frame];
         frame.origin.x -= frame.size.width;
@@ -72,25 +76,24 @@
     [[from animator] setHidden: YES];
 }
 
-static int numberOfShakes = 8;
+static int   numberOfShakes = 8;
 static float durationOfShake = 0.5f;
 static float vigourOfShake = 0.05f;
 
-+ (CAKeyframeAnimation *)shakeAnimation: (NSRect)frame
-{
++ (CAKeyframeAnimation *)shakeAnimation: (NSRect)frame {
     // by Matt Long
     CAKeyframeAnimation *shakeAnimation = [CAKeyframeAnimation animation];
 
     CGMutablePathRef shakePath = CGPathCreateMutable();
     CGPathMoveToPoint(shakePath, NULL, NSMinX(frame), NSMinY(frame));
-	int index;
-	for (index = 0; index < numberOfShakes; ++index)
-	{
-		CGPathAddLineToPoint(shakePath, NULL, NSMinX(frame) - frame.size.width * vigourOfShake, NSMinY(frame));
-		CGPathAddLineToPoint(shakePath, NULL, NSMinX(frame) + frame.size.width * vigourOfShake, NSMinY(frame));
-	}
+    int index;
+    for (index = 0; index < numberOfShakes; ++index) {
+        CGPathAddLineToPoint(shakePath, NULL, NSMinX(frame) - frame.size.width * vigourOfShake, NSMinY(frame));
+        CGPathAddLineToPoint(shakePath, NULL, NSMinX(frame) + frame.size.width * vigourOfShake, NSMinY(frame));
+    }
     CGPathCloseSubpath(shakePath);
     shakeAnimation.path = shakePath;
+    CGPathRelease(shakePath);
     shakeAnimation.duration = durationOfShake;
     return shakeAnimation;
 }
@@ -112,8 +115,7 @@ static float vigourOfShake = 0.05f;
 
 @synthesize animationTimeMultiplier;
 
-- (NSTimeInterval)animationResizeTime: (NSRect)newWindowFrame
-{
+- (NSTimeInterval)animationResizeTime: (NSRect)newWindowFrame {
     float multiplier = animationTimeMultiplier;
 
     if (([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) != 0) {
@@ -127,8 +129,7 @@ static float vigourOfShake = 0.05f;
 
 @implementation NSWindow (PecuniaAdditions)
 
-- (ZoomWindow *)createZoomWindowWithRect: (NSRect)rect
-{
+- (ZoomWindow *)createZoomWindowWithRect: (NSRect)rect {
     // Code mostly from http://www.noodlesoft.com/blog/2007/06/30/animation-in-the-time-of-tiger-part-1/
     // Copyright 2007 Noodlesoft, L.L.C.. All rights reserved.
     // The code is provided under the MIT license.
@@ -225,8 +226,7 @@ static float vigourOfShake = 0.05f;
     return zoomWindow;
 }
 
-- (void)fadeIn
-{
+- (void)fadeIn {
     [self setAlphaValue: 0.f];
     [self orderFront: nil];
 
@@ -236,8 +236,7 @@ static float vigourOfShake = 0.05f;
     [NSAnimationContext endGrouping];
 }
 
-- (void)zoomInWithOvershot: (NSRect)overshotFrame withFade: (BOOL)fade makeKey: (BOOL)makeKey
-{
+- (void)zoomInWithOvershot: (NSRect)overshotFrame withFade: (BOOL)fade makeKey: (BOOL)makeKey {
     [self setAlphaValue: 0];
 
     NSRect     frame = [self frame];
@@ -246,9 +245,11 @@ static float vigourOfShake = 0.05f;
 
     [zoomWindow orderFront: self];
 
-    NSDictionary *windowResize = @{NSViewAnimationTargetKey: zoomWindow,
-                                   NSViewAnimationEndFrameKey: [NSValue valueWithRect: overshotFrame],
-                                   NSViewAnimationEffectKey: NSViewAnimationFadeInEffect};
+    NSDictionary *windowResize = @{
+        NSViewAnimationTargetKey: zoomWindow,
+        NSViewAnimationEndFrameKey: [NSValue valueWithRect: overshotFrame],
+        NSViewAnimationEffectKey: NSViewAnimationFadeInEffect
+    };
 
     NSArray         *animations = @[windowResize];
     NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations: animations];
@@ -271,8 +272,7 @@ static float vigourOfShake = 0.05f;
     [zoomWindow close];
 }
 
-- (void)fadeOut
-{
+- (void)fadeOut {
     [NSAnimationContext beginGrouping];
     float duration = 0.3;
     if (([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask) != 0) {
@@ -289,8 +289,7 @@ static float vigourOfShake = 0.05f;
     [NSAnimationContext endGrouping];
 }
 
-- (void)zoomOffToRect: (NSRect)endRect withFade: (BOOL)fade
-{
+- (void)zoomOffToRect: (NSRect)endRect withFade: (BOOL)fade {
     if (![self isVisible]) {
         return;
     }
@@ -303,15 +302,22 @@ static float vigourOfShake = 0.05f;
 
     NSDictionary *fadeWindow = nil;
     if (fade) {
-        fadeWindow = @{NSViewAnimationTargetKey: zoomWindow,
-                       NSViewAnimationEffectKey: NSViewAnimationFadeOutEffect};
+        fadeWindow = @{
+            NSViewAnimationTargetKey: zoomWindow,
+            NSViewAnimationEffectKey: NSViewAnimationFadeOutEffect
+        };
     }
 
-    NSDictionary *resizeWindow = @{NSViewAnimationTargetKey: zoomWindow,
-                                   NSViewAnimationEndFrameKey: [NSValue valueWithRect: endRect]};
+    NSDictionary *resizeWindow = @{
+        NSViewAnimationTargetKey: zoomWindow,
+        NSViewAnimationEndFrameKey: [NSValue valueWithRect: endRect]
+    };
 
-    NSArray *animations;
-    animations = @[resizeWindow, fadeWindow];
+    NSMutableArray *animations = [NSMutableArray new];
+    [animations addObject: resizeWindow];
+    if (fadeWindow != nil) {
+        [animations addObject: fadeWindow];
+    }
 
     NSViewAnimation *animation;
     animation = [[NSViewAnimation alloc] initWithViewAnimations: animations];
@@ -330,8 +336,7 @@ static float vigourOfShake = 0.05f;
  * duration: 0.1
  * vigour: 0.02
  */
-- (void)shakeItWithDuration: (float)duration count: (int)numberOfShakes vigour: (float)vigourOfShake
-{
+- (void)shakeItWithDuration: (float)duration count: (int)numberOfShakes vigour: (float)vigourOfShake {
     NSRect              frame = [self frame];
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath: @"frame"];
 
@@ -353,8 +358,7 @@ static float vigourOfShake = 0.05f;
 
 @implementation CALayer (PecuniaAdditions)
 
-- (void)fadeIn
-{
+- (void)fadeIn {
     self.hidden = NO;
     if (self.opacity < 1) {
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
@@ -368,8 +372,7 @@ static float vigourOfShake = 0.05f;
     }
 }
 
-- (void)fadeOut
-{
+- (void)fadeOut {
     if (self.opacity > 0) {
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath: @"opacity"];
         animation.fromValue = @1.0f;
@@ -386,8 +389,7 @@ static float vigourOfShake = 0.05f;
     }
 }
 
-- (void)slideTo: (CGPoint)newPosition inTime: (CGFloat)time
-{
+- (void)slideTo: (CGPoint)newPosition inTime: (CGFloat)time {
     if (self.hidden) {
         return;
     }
@@ -407,8 +409,7 @@ static float vigourOfShake = 0.05f;
     [self addAnimation: animation forKey: @"slide"];
 }
 
-- (void)animationDidStop: (CAAnimation *)anim finished: (BOOL)flag
-{
+- (void)animationDidStop: (CAAnimation *)anim finished: (BOOL)flag {
     if (flag) {
         CABasicAnimation *animation = (CABasicAnimation *)anim;
         NSString         *action = [animation valueForKey: @"action"];

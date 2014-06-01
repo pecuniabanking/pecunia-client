@@ -32,20 +32,20 @@
 
 @interface NextTransfersCalendar : NSView
 {
-@private
+    @private
     NextTransfersCard *card;
 
     NSMutableDictionary *values;
-    ShortDate *selectedDate;
-    ShortDate       *startDate;
-    NSDateFormatter *dateFormatter;
+    ShortDate           *selectedDate;
+    ShortDate           *startDate;
+    NSDateFormatter     *dateFormatter;
 
     CGFloat contentAlpha;
     NSRect  valueArea;
 }
 
-@property (nonatomic, assign) CGFloat     contentAlpha;
-@property (nonatomic, strong) ShortDate   *selectedDate; // nil if not selected.
+@property (nonatomic, assign) CGFloat   contentAlpha;
+@property (nonatomic, strong) ShortDate *selectedDate;   // nil if not selected.
 
 @property (nonatomic, assign) NSUInteger month;
 @property (nonatomic, assign) NSUInteger year;
@@ -59,8 +59,7 @@
 @synthesize month;
 @synthesize year;
 
-+ (id)defaultAnimationForKey: (NSString *)key
-{
++ (id)defaultAnimationForKey: (NSString *)key {
     LogEnter;
 
     if ([key isEqualToString: @"contentAlpha"]) {
@@ -72,8 +71,7 @@
     LogLeave;
 }
 
-- (id)initWithFrame: (NSRect)frameRect owner: (NextTransfersCard *)owner
-{
+- (id)initWithFrame: (NSRect)frameRect owner: (NextTransfersCard *)owner {
     LogEnter;
 
     self = [super initWithFrame: frameRect];
@@ -92,8 +90,7 @@
     return self;
 }
 
-- (void)setMonth: (NSUInteger)m
-{
+- (void)setMonth: (NSUInteger)m {
     LogEnter;
 
     month = m;
@@ -103,8 +100,7 @@
     LogLeave;
 }
 
-- (void)setYear: (NSUInteger)y
-{
+- (void)setYear: (NSUInteger)y {
     LogEnter;
 
     year = y;
@@ -114,8 +110,7 @@
     LogLeave;
 }
 
-- (void)setValues: (NSMutableDictionary *)theValues
-{
+- (void)setValues: (NSMutableDictionary *)theValues {
     LogEnter;
 
     values = theValues;
@@ -124,8 +119,7 @@
     LogLeave;
 }
 
-- (void)setContentAlpha: (CGFloat)value
-{
+- (void)setContentAlpha: (CGFloat)value {
     LogEnter;
 
     contentAlpha = value;
@@ -134,8 +128,7 @@
     LogLeave;
 }
 
-- (void)setSelectedDate: (ShortDate *)value
-{
+- (void)setSelectedDate: (ShortDate *)value {
     LogEnter;
 
     BOOL change = NO;
@@ -156,8 +149,7 @@
     LogLeave;
 }
 
-- (void)mouseDown: (NSEvent *)theEvent
-{
+- (void)mouseDown: (NSEvent *)theEvent {
     LogEnter;
 
     NSPoint windowLocation = theEvent.locationInWindow;
@@ -173,7 +165,7 @@
 
         NSUInteger weekDay = (NSUInteger)location.x / cellArea.size.width;
         NSUInteger week = (NSUInteger)location.y / cellArea.size.height;
-        ShortDate *date = [startDate dateByAddingUnits: week * 7 + weekDay byUnit: NSCalendarUnitDay];
+        ShortDate  *date = [startDate dateByAddingUnits: week * 7 + weekDay byUnit: NSCalendarUnitDay];
         if (date.month == month) {
             if (values[date] != nil) {
                 self.selectedDate = date;
@@ -214,8 +206,7 @@ static NSDictionary *smallTextAttributes;
 static NSFont *normalNumberFont;
 static NSFont *smallNumberFont;
 
-- (void)setupStaticValues
-{
+- (void)setupStaticValues {
     LogEnter;
 
     dateFormatter = [[NSDateFormatter alloc] init];
@@ -224,13 +215,17 @@ static NSFont *smallNumberFont;
     monthNameColor = [NSColor colorWithCalibratedRed: 226 green: 150 / 255.0 blue: 24 / 255.0 alpha: 1];
 
     monthNameFont = [NSFont fontWithName: @"HelveticaNeue" size: 14];
-    monthTextAttributes = @{NSForegroundColorAttributeName: monthNameColor,
-                            NSFontAttributeName: monthNameFont};
+    monthTextAttributes = @{
+        NSForegroundColorAttributeName: monthNameColor,
+        NSFontAttributeName: monthNameFont
+    };
 
     smallTextColor = [NSColor colorWithCalibratedWhite: 0 alpha: 0.6];
     smallFont = [NSFont fontWithName: @"HelveticaNeue" size: 9];
-    smallTextAttributes = @{NSForegroundColorAttributeName: smallTextColor,
-                            NSFontAttributeName: smallFont};
+    smallTextAttributes = @{
+        NSForegroundColorAttributeName: smallTextColor,
+        NSFontAttributeName: smallFont
+    };
 
     normalNumberFont = [NSFont fontWithName: @"HelveticaNeue" size: 11];
     smallNumberFont = [NSFont fontWithName: @"HelveticaNeue" size: 9];
@@ -241,8 +236,7 @@ static NSFont *smallNumberFont;
     LogLeave;
 }
 
-- (void)updateConstantValues
-{
+- (void)updateConstantValues {
     LogEnter;
 
     if (dateFormatter == nil) {
@@ -261,8 +255,7 @@ static NSFont *smallNumberFont;
     LogLeave;
 }
 
-- (void)drawRect: (NSRect)dirtyRect
-{
+- (void)drawRect: (NSRect)dirtyRect {
     // Start with the day grid.
     valueArea = NSIntegralRect(self.bounds);
     valueArea.origin.x += 20;
@@ -288,7 +281,7 @@ static NSFont *smallNumberFont;
     NSRect    dayRect = NSMakeRect(valueArea.origin.x - 1, valueArea.origin.y, cellWidth + 1, cellHeight + 1);
 
     // Wweek numbers and day names.
-    CGFloat offset = valueArea.origin.y + (cellHeight - smallFont.pointSize) / 2 - 1;
+    CGFloat   offset = valueArea.origin.y + (cellHeight - smallFont.pointSize) / 2 - 1;
     ShortDate *workDate = [startDate copy];
     for (unsigned week = 0; week < 6; week++) {
         NSString *weekString = [NSString stringWithFormat: @"%i", workDate.week];
@@ -366,9 +359,11 @@ static NSFont *smallNumberFont;
 
             if (textColor != nil) {
                 NSString     *text = [NSString stringWithFormat: @"%i", workDate.day];
-                NSDictionary *attributes = @{NSParagraphStyleAttributeName: paragraphStyle,
-                                             NSForegroundColorAttributeName: textColor,
-                                             NSFontAttributeName: numberFont};
+                NSDictionary *attributes = @{
+                    NSParagraphStyleAttributeName: paragraphStyle,
+                    NSForegroundColorAttributeName: textColor,
+                    NSFontAttributeName: numberFont
+                };
 
                 NSRect drawRect = dayRect;
                 CGSize size = [text sizeWithAttributes: attributes];
@@ -379,7 +374,6 @@ static NSFont *smallNumberFont;
             dayRect.origin.x += cellWidth;
             workDate = [workDate dateByAddingUnits: 1 byUnit: NSCalendarUnitDay];
         }
-
         dayRect.origin.y += cellHeight;
     }
 }
@@ -398,8 +392,7 @@ static NSFont *smallNumberFont;
 
 @synthesize isTop;
 
-- (id)initWithFrame: (NSRect)frameRect isTop: (BOOL)top
-{
+- (id)initWithFrame: (NSRect)frameRect isTop: (BOOL)top {
     LogEnter;
 
     self = [super initWithFrame: frameRect];
@@ -421,11 +414,10 @@ static NSFont *smallNumberFont;
     return self;
 }
 
-- (void)drawRect: (NSRect)dirtyRect
-{
+- (void)drawRect: (NSRect)dirtyRect {
     NSRect frame = self.bounds;
     frame.size.height -= 8;
-    
+
     [[NSColor colorWithCalibratedRed: 0.945 green: 0.927 blue: 0.883 alpha: 1.000] setFill];
 
     if (!isTop) {
@@ -436,8 +428,7 @@ static NSFont *smallNumberFont;
     NSRectFill(frame);
 }
 
-- (void)resizeWithOldSuperviewSize: (NSSize)oldSize
-{
+- (void)resizeWithOldSuperviewSize: (NSSize)oldSize {
     LogEnter;
 
     [super resizeWithOldSuperviewSize: oldSize];
@@ -451,7 +442,9 @@ static NSFont *smallNumberFont;
     bounds.size.height = 5;
 
     NSBezierPath *shadowPath = [NSBezierPath bezierPathWithOvalInRect: bounds];
-    self.layer.shadowPath = shadowPath.cgPath;
+    CGPathRef path = [shadowPath newCGPath];
+    self.layer.shadowPath = path;
+    CGPathRelease(path);
 
     LogLeave;
 }
@@ -466,20 +459,20 @@ static NSFont *smallNumberFont;
 {
     NextTransfersCard *owner;
 
-    NSDateFormatter *dateFormatter;
+    NSDateFormatter     *dateFormatter;
     NSMutableDictionary *monthAttributes;
-    NSDictionary *yearAttributes;
-    CGFloat yearLabelOffset;
+    NSDictionary        *yearAttributes;
+    CGFloat             yearLabelOffset;
 
     NSInteger offsetAccumulator;
-    BOOL ignoreMomentumChange;
+    BOOL      ignoreMomentumChange;
 
-    BandEndView *startEnd;
+    BandEndView       *startEnd;
     NSArrayController *standingOrders;
 }
 
-@property BOOL listMode; // If YES use a list otherwise calendar view.
-@property NSUInteger contentWidth; // The usable width for content (right aligned).
+@property BOOL                  listMode; // If YES use a list otherwise calendar view.
+@property NSUInteger            contentWidth; // The usable width for content (right aligned).
 @property (nonatomic) NSInteger scrollOffset; // Vertical scroll position (scrolling goes endless).
 
 @end
@@ -489,8 +482,7 @@ static NSFont *smallNumberFont;
 @synthesize contentWidth;
 @synthesize scrollOffset;
 
-- (id)animationForKey: (NSString *)key
-{
+- (id)animationForKey: (NSString *)key {
     LogEnter;
 
     if ([key isEqualToString: @"scrollOffset"]) {
@@ -499,14 +491,13 @@ static NSFont *smallNumberFont;
         animation.speed = 1;
         return animation;
     } else {
-        return [super animationForKey:key];
+        return [super animationForKey: key];
     }
 
     LogLeave;
 }
 
-- (id)initWithFrame: (NSRect)frameRect startingEnd: (BandEndView *)view card: (NextTransfersCard *)card
-{
+- (id)initWithFrame: (NSRect)frameRect startingEnd: (BandEndView *)view card: (NextTransfersCard *)card {
     LogEnter;
 
     self = [super initWithFrame: frameRect];
@@ -529,8 +520,10 @@ static NSFont *smallNumberFont;
             yearLabelOffset = 40;
             font = [NSFont fontWithName: @"Impact" size: 100]; // Fallback.
         }
-        yearAttributes = @{NSFontAttributeName: font,
-                           NSForegroundColorAttributeName: [NSColor colorWithDeviceWhite: 0 alpha: 0.05]};
+        yearAttributes = @{
+            NSFontAttributeName: font,
+            NSForegroundColorAttributeName: [NSColor colorWithDeviceWhite: 0 alpha: 0.05]
+        };
 
         standingOrders = [[NSArrayController alloc] init];
         standingOrders.managedObjectContext = MOAssistant.assistant.context;
@@ -552,19 +545,16 @@ static NSFont *smallNumberFont;
     return self;
 }
 
-- (BOOL)isFlipped
-{
+- (BOOL)isFlipped {
     return YES;
 }
 
-- (void)drawRect: (NSRect)dirtyRect
-{
+- (void)drawRect: (NSRect)dirtyRect {
     if (self.listMode) {
-
     } else {
-        NSInteger height = NSHeight(self.bounds);
+        NSInteger  height = NSHeight(self.bounds);
         NSUInteger monthDistance = self.scrollOffset / CALENDAR_HEIGHT;
-        CGFloat currentOffset = height - 30.5 + self.scrollOffset % CALENDAR_HEIGHT;
+        CGFloat    currentOffset = height - 30.5 + self.scrollOffset % CALENDAR_HEIGHT;
         if (currentOffset > height) {
             currentOffset -= CALENDAR_HEIGHT;
             monthDistance++;
@@ -572,7 +562,7 @@ static NSFont *smallNumberFont;
         ShortDate *date = [[ShortDate currentDate] dateByAddingUnits: monthDistance
                                                               byUnit: NSCalendarUnitMonth];
 
-        NSString *year = [NSString stringWithFormat: @"%i", date.year];
+        NSString          *year = [NSString stringWithFormat: @"%i", date.year];
         NSAffineTransform *transform = [[NSAffineTransform alloc] init];
 
         [transform translateXBy: -yearLabelOffset yBy: height - 80];
@@ -581,20 +571,24 @@ static NSFont *smallNumberFont;
         [year drawAtPoint: NSMakePoint(0, 0) withAttributes: yearAttributes];
         transform = [[NSAffineTransform alloc] init];
         [transform rotateByDegrees: 90]; // Revert context transformations.
-        [transform translateXBy: yearLabelOffset yBy: - (height - 80)];
+        [transform translateXBy: yearLabelOffset yBy: -(height - 80)];
         [transform concat];
 
         NSUInteger lineLength = NSWidth(self.bounds) - self.contentWidth - 10;
         while (currentOffset > 0) {
             NSInteger delta = height / 2;
-            if (height - currentOffset < 30)
+            if (height - currentOffset < 30) {
                 delta = height - currentOffset;
-            if (currentOffset < 41) // 30px + text height
+            }
+            if (currentOffset < 41) { // 30px + text height
                 delta = currentOffset - 10;
-            if (delta < 0)
+            }
+            if (delta < 0) {
                 delta = 0;
-            if (delta > 30)
+            }
+            if (delta > 30) {
                 delta = 30;
+            }
             NSColor *color = [NSColor colorWithCalibratedRed: 0.497 green: 0.488 blue: 0.461 alpha: delta / 30.0];
             monthAttributes[NSForegroundColorAttributeName] = color;
             [color set];
@@ -613,12 +607,12 @@ static NSFont *smallNumberFont;
     }
 }
 
-- (void)scrollWheel: (NSEvent *)event
-{
+- (void)scrollWheel: (NSEvent *)event {
     switch (event.phase) {
         case NSEventPhaseBegan: // Trackpad with no momentum scrolling. Fingers moved on trackpad.
             offsetAccumulator = scrollOffset;
-            // Fall through.
+
+        // Fall through.
         case NSEventPhaseChanged:
             if (offsetAccumulator >= 0) {
                 offsetAccumulator += event.scrollingDeltaY / 5;
@@ -636,8 +630,7 @@ static NSFont *smallNumberFont;
             break;
 
         case NSEventPhaseNone:
-            if (event.momentumPhase == NSEventPhaseNone)
-            {
+            if (event.momentumPhase == NSEventPhaseNone) {
                 // Mouse wheel.
                 if ([event hasPreciseScrollingDeltas]) {
                     offsetAccumulator += event.scrollingDeltaY;
@@ -684,8 +677,7 @@ static NSFont *smallNumberFont;
     }
 }
 
-- (void)setScrollOffset: (NSInteger)value
-{
+- (void)setScrollOffset: (NSInteger)value {
     if (scrollOffset != value) {
         scrollOffset = value;
         [self updateCalendarsWithFetch: NO];
@@ -705,13 +697,12 @@ static NSFont *smallNumberFont;
     }
 }
 
-- (void)updateCalendarsWithFetch: (BOOL)fetch
-{
+- (void)updateCalendarsWithFetch: (BOOL)fetch {
     LogEnter;
 
     NSUInteger monthDistance = self.scrollOffset / CALENDAR_HEIGHT;
-    ShortDate *date = [[ShortDate currentDate] dateByAddingUnits: monthDistance
-                                                          byUnit: NSCalendarUnitMonth];
+    ShortDate  *date = [[ShortDate currentDate] dateByAddingUnits: monthDistance
+                                                           byUnit: NSCalendarUnitMonth];
 
     if (fetch) {
         NSError *error = nil;
@@ -733,8 +724,8 @@ static NSFont *smallNumberFont;
 
             // We need 2 separate loops, one for weeks and one for months.
             NSMutableDictionary *values = [NSMutableDictionary dictionary];
-            ShortDate *firstDay = [ShortDate dateWithYear: date.year month: date.month day: 1];
-            ShortDate *lastDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: 0];
+            ShortDate           *firstDay = [ShortDate dateWithYear: date.year month: date.month day: 1];
+            ShortDate           *lastDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: 0];
 
             // Month loop.
             for (StandingOrder *order in standingOrders.arrangedObjects) {
@@ -742,26 +733,27 @@ static NSFont *smallNumberFont;
                 ShortDate *lastExecution = order.lastExecDate == nil ? lastDay : [ShortDate dateWithDate: order.lastExecDate];
                 if ([firstExecution compare: lastDay] != NSOrderedDescending &&
                     [lastExecution compare: firstDay] != NSOrderedAscending) {
-
-                    if (order.period.intValue== stord_monthly)
-                    {
+                    if (order.period.intValue == stord_monthly) {
                         int delta = (int)date.month - (int)firstExecution.month;
                         if (delta < 0) {
                             delta += 12;
                         }
                         if (delta % order.cycle.intValue == 0) {
                             ShortDate *executionDay;
-                            int day = order.executionDay.intValue;
+                            int       day = order.executionDay.intValue;
                             switch (day) {
                                 case 99: // Ultimo
                                     executionDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: 0];
                                     break;
+
                                 case 98: // Ultimo - 1
                                     executionDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: -1];
                                     break;
+
                                 case 97:  // Ultimo - 2
                                     executionDay = [ShortDate dateWithYear: date.year month: date.month + 1 day: -2];
                                     break;
+
                                 default:
                                     executionDay = [ShortDate dateWithYear: date.year month: date.month day: day];
                                     break;
@@ -776,31 +768,28 @@ static NSFont *smallNumberFont;
                     }
                 }
             }
-
             // Week loop.
             for (StandingOrder *order in standingOrders.arrangedObjects) {
                 ShortDate *firstExecution = [ShortDate dateWithDate: order.firstExecDate];
                 ShortDate *lastExecution = order.lastExecDate == nil ? lastDay : [ShortDate dateWithDate: order.lastExecDate];
-                if (order.period.intValue == stord_weekly)
-                {
+                if (order.period.intValue == stord_weekly) {
                     int endWeek = lastDay.week;
-                    if (endWeek < (int)firstDay.week)
+                    if (endWeek < (int)firstDay.week) {
                         endWeek += 52;
+                    }
                     for (int week = firstDay.week; week <= endWeek; ++week) {
-
                         int delta = week - firstExecution.week;
                         if (delta < 0) {
                             delta += 52;
                         }
                         if (delta % order.cycle.intValue == 0) {
-                            int day = order.executionDay.intValue;
+                            int       day = order.executionDay.intValue;
                             ShortDate *executionDay = [ShortDate dateWithYear: date.year
                                                                          week: week
                                                                     dayInWeek: day];
 
                             if ([firstExecution compare: executionDay] != NSOrderedDescending &&
                                 [lastExecution compare: executionDay] != NSOrderedAscending) {
-                                
                                 NSMutableArray *entries = values[executionDay];
                                 if (entries == nil) {
                                     entries = [NSMutableArray array];
@@ -812,18 +801,15 @@ static NSFont *smallNumberFont;
                     }
                 }
             }
-
             calendar.values = values;
             [calendar setNeedsDisplay: YES];
         }
         date = [date dateByAddingUnits: 1 byUnit: NSCalendarUnitMonth];
     }
-
     LogLeave;
 }
 
-- (void)resizeWithOldSuperviewSize: (NSSize)oldSize
-{
+- (void)resizeWithOldSuperviewSize: (NSSize)oldSize {
     LogEnter;
 
     NSRect frame = self.bounds;
@@ -835,7 +821,6 @@ static NSFont *smallNumberFont;
         calendar.frame = frame;
         frame.origin.y -= CALENDAR_HEIGHT;
     }
-
     LogLeave;
 }
 
@@ -848,8 +833,8 @@ static NSFont *smallNumberFont;
 {
     BandView *bandView;
 
-    IBOutlet NSPopover  *ordersPopover;
-    IBOutlet NSTableView *ordersPopupList;
+    IBOutlet NSPopover         *ordersPopover;
+    IBOutlet NSTableView       *ordersPopupList;
     IBOutlet NSArrayController *popoverDataController;
 }
 
@@ -859,8 +844,7 @@ static NSFont *smallNumberFont;
 
 @implementation NextTransfersCard
 
-- (id)initWithFrame: (NSRect)frame
-{
+- (id)initWithFrame: (NSRect)frame {
     LogEnter;
 
     self = [super initWithFrame: frame];
@@ -875,7 +859,7 @@ static NSFont *smallNumberFont;
                                                    name: NSManagedObjectContextDidSaveNotification
                                                  object: MOAssistant.assistant.context];
 
-        
+
     }
 
     LogLeave;
@@ -883,8 +867,7 @@ static NSFont *smallNumberFont;
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     LogEnter;
 
     [NSNotificationCenter.defaultCenter removeObserver: self];
@@ -892,8 +875,7 @@ static NSFont *smallNumberFont;
     LogLeave;
 }
 
-- (void)handleDataModelChange: (NSNotification *)notification
-{
+- (void)handleDataModelChange: (NSNotification *)notification {
     LogEnter;
 
     @try {
@@ -910,8 +892,7 @@ static NSFont *smallNumberFont;
     LogLeave;
 }
 
-- (void)loadData
-{
+- (void)loadData {
     LogEnter;
 
     // View sizes are just dummy values. Layout is done below.
@@ -931,11 +912,10 @@ static NSFont *smallNumberFont;
     LogLeave;
 }
 
-- (void)resizeSubviewsWithOldSize: (NSSize)oldSize
-{
+- (void)resizeSubviewsWithOldSize: (NSSize)oldSize {
     LogEnter;
 
-   NSRect frame = self.bounds;
+    NSRect frame = self.bounds;
     frame.origin.x = NSWidth(frame) / 3.0 - 15;
     frame.size.width = 2 * NSWidth(frame) / 3.0 - 10;
     frame.size.height = 20;
@@ -951,22 +931,20 @@ static NSFont *smallNumberFont;
             view.frame = frame;
         } else {
             BandView *view = child;
-            NSRect bandFrame = NSInsetRect(self.bounds, 15, 40);
+            NSRect   bandFrame = NSInsetRect(self.bounds, 15, 40);
             bandFrame.origin.y += 5;
             view.frame = bandFrame;
             view.contentWidth = NSWidth(frame); // Content is drawn with the same width as the band end size.
         }
         [child resizeWithOldSuperviewSize: oldSize];
     }
-
     LogLeave;
 }
 
 - (void)showValuePopupForDate: (ShortDate *)date
                        values: (NSArray *)values
                relativeToRect: (NSRect)area
-                      forView: (NSView *)view
-{
+                      forView: (NSView *)view {
     LogEnter;
 
     self.popoverData = values;
@@ -994,22 +972,19 @@ static NSFont *smallNumberFont;
     LogLeave;
 }
 
-- (void)cancelPopover
-{
+- (void)cancelPopover {
     [ordersPopover close];
 }
 
 #pragma mark - NSTableViewDataSource protocol
 
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
-{
+- (NSInteger)numberOfRowsInTableView: (NSTableView *)tableView {
     return self.popoverData.count;
 }
 
-- (NSView *)tableView: (NSTableView *)tableView
-   viewForTableColumn: (NSTableColumn *)tableColumn
-                  row: (NSInteger)row
-{
+- (NSView *) tableView: (NSTableView *)tableView
+    viewForTableColumn: (NSTableColumn *)tableColumn
+                   row: (NSInteger)row {
     if (row >= (NSInteger)self.popoverData.count) {
         return nil;
     }
@@ -1017,24 +992,20 @@ static NSFont *smallNumberFont;
     return [tableView makeViewWithIdentifier: @"OrderCell" owner: self];
 }
 
-- (NSTableRowView *)tableView: (NSTableView *)tableView rowViewForRow: (NSInteger)row
-{
+- (NSTableRowView *)tableView: (NSTableView *)tableView rowViewForRow: (NSInteger)row {
     NSTableRowView *view = [[NSTableRowView alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
     return view;
 }
 
-- (CGFloat)tableView: (NSTableView *)tableView heightOfRow: (NSInteger)row
-{
+- (CGFloat)tableView: (NSTableView *)tableView heightOfRow: (NSInteger)row {
     return 50;
 }
 
-- (BOOL)tableView: (NSTableView *)tableView isGroupRow:( NSInteger)row
-{
+- (BOOL)tableView: (NSTableView *)tableView isGroupRow: (NSInteger)row {
     return NO;
 }
 
-- (NSIndexSet *)tableView: (NSTableView *)tableView selectionIndexesForProposedSelection: (NSIndexSet *)proposedSelectionIndexes
-{
+- (NSIndexSet *)tableView: (NSTableView *)tableView selectionIndexesForProposedSelection: (NSIndexSet *)proposedSelectionIndexes {
     return nil;
 }
 

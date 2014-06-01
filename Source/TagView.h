@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -27,14 +27,13 @@
 @private
     BOOL              updatingContent;
     NSUInteger        sourceDragIndex;
-    NSPoint           sourceDraggingLocation;
-    TagAttachmentCell *attachmentCell;
 }
 
 @property (nonatomic, strong) NSArrayController *datasource;
-@property (assign) NSUInteger                   hotTagIndex;
-@property (nonatomic, strong) NSFont            *defaultFont; // NSText's font setting is ignored by NSTextView.
-@property (assign) BOOL                         canCreateNewTags;
+
+@property (assign) NSUInteger        hotTagIndex;
+@property (nonatomic, strong) NSFont *defaultFont;            // NSText's font setting is ignored by NSTextView.
+@property (assign) BOOL              canCreateNewTags;
 
 - (void)showTagPopupAt: (NSRect)rect forView: (NSView *)owner host: (NSView *)host;
 

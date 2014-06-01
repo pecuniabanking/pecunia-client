@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2009, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -36,10 +36,9 @@
 @synthesize toDate;
 @synthesize autosaveName;
 
-- (id)initWithYear: (int)y month: (int)m
-{
+- (id)initWithYear: (int)y month: (int)m {
     self = [super init];
-    if (self == nil) {
+    if (self != nil) {
         year = y;
         type = slice_month;
         lastType = slice_month;
@@ -49,8 +48,7 @@
     return self;
 }
 
-- (id)initWithCoder: (NSCoder *)coder
-{
+- (id)initWithCoder: (NSCoder *)coder {
     self = [super init];
     if (self != nil) {
         type = [coder decodeIntForKey: @"type"];
@@ -63,8 +61,7 @@
     return self;
 }
 
-- (void)encodeWithCoder: (NSCoder *)coder
-{
+- (void)encodeWithCoder: (NSCoder *)coder {
     [coder encodeInt: type forKey: @"type"];
     [coder encodeInt: year forKey: @"year"];
     [coder encodeInt: quarter forKey: @"quarter"];
@@ -73,8 +70,7 @@
     [coder encodeObject: toDate forKey: @"toDate"];
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     BOOL savedValues = NO;
 
     if ([delegate respondsToSelector: @selector(autosaveNameForTimeSlicer:)]) {
@@ -114,8 +110,7 @@
     }
 }
 
-- (void)save
-{
+- (void)save {
     if (autosaveName == nil) {
         return;
     }
@@ -131,8 +126,7 @@
     [userDefaults setObject: values forKey: autosaveName];
 }
 
-- (ShortDate *)lowerBounds
-{
+- (ShortDate *)lowerBounds {
     ShortDate *date;
     switch (type) {
         case slice_year:
@@ -167,8 +161,7 @@
     }
 }
 
-- (ShortDate *)upperBounds
-{
+- (ShortDate *)upperBounds {
     ShortDate *date;
     switch (type) {
         case slice_year:
@@ -208,8 +201,7 @@
     }
 }
 
-- (void)stepUp
-{
+- (void)stepUp {
     switch (type) {
         case slice_year:
             year++;
@@ -254,8 +246,7 @@
     }
 }
 
-- (void)stepDown
-{
+- (void)stepDown {
     switch (type) {
         case slice_year:
             year--;
@@ -300,8 +291,7 @@
     }
 }
 
-- (void)stepIn: (ShortDate *)date
-{
+- (void)stepIn: (ShortDate *)date {
     BOOL stepped = NO;
 
     if (maxDate != nil && [date compare: maxDate] == NSOrderedDescending) {
@@ -324,8 +314,7 @@
     }
 }
 
-- (void)updateControl
-{
+- (void)updateControl {
     if (type == slice_none) {
         // first deactivate timeSlicer
         int idx = [control selectedSegment];
@@ -347,8 +336,7 @@
     [control setLabel: months[month - 1] forSegment: slice_month];
 }
 
-- (void)updatePickers
-{
+- (void)updatePickers {
     fromDate = [self lowerBounds];
     toDate = [self upperBounds];
 
@@ -361,31 +349,27 @@
     }
 }
 
-- (void)updateDelegate
-{
+- (void)updateDelegate {
     if ([delegate respondsToSelector: @selector(timeSliceManager:changedIntervalFrom:to:)]) {
         [delegate timeSliceManager: self changedIntervalFrom: [self lowerBounds] to: [self upperBounds]];
     }
 }
 
-- (void)setMinDate: (ShortDate *)date
-{
+- (void)setMinDate: (ShortDate *)date {
     minDate = date;
     if (fromPicker != nil) {
         [fromPicker setMinDate: date.lowDate];
     }
 }
 
-- (void)setMaxDate: (ShortDate *)date
-{
+- (void)setMaxDate: (ShortDate *)date {
     maxDate = date;
     if (toPicker != nil) {
         [toPicker setMaxDate: date.highDate];
     }
 }
 
-- (IBAction)dateChanged: (id)sender
-{
+- (IBAction)dateChanged: (id)sender {
     type = slice_none;
     if (sender == fromPicker) {
         fromDate = [ShortDate dateWithDate: [sender dateValue]];
@@ -397,8 +381,7 @@
     [self save];
 }
 
-- (IBAction)timeSliceChanged: (id)sender
-{
+- (IBAction)timeSliceChanged: (id)sender {
     SliceType t = [sender selectedSegment];
     switch (t) {
         case slice_year: break;
@@ -424,8 +407,7 @@
     [self save];
 }
 
-- (IBAction)timeSliceUpDown: (id)sender
-{
+- (IBAction)timeSliceUpDown: (id)sender {
     if (type != slice_none && type != slice_all) {
         if ([sender selectedSegment] == 0) {
             [self stepDown];
@@ -440,25 +422,21 @@
     }
 }
 
-- (NSPredicate *)predicateForField: (NSString *)field
-{
+- (NSPredicate *)predicateForField: (NSString *)field {
     NSPredicate *pred = [NSPredicate predicateWithFormat: @"(statement.%K => %@) AND (statement.%K <= %@)", field, [[self lowerBounds] lowDate], field, [[self upperBounds] highDate]];
     return pred;
 }
 
-- (NSString *)description
-{
+- (NSString *)description {
     return [NSString stringWithFormat: @"%@ - %@", [self lowerBounds],  [self upperBounds]];
 }
 
-- (void)showControls: (BOOL)show
-{
+- (void)showControls: (BOOL)show {
     control.hidden = !show;
     upDown.hidden = !show;
 }
 
-- (void)setYearOnlyMode: (BOOL)flag
-{
+- (void)setYearOnlyMode: (BOOL)flag {
     if (flag) {
         lastType = type;
         type = slice_year;

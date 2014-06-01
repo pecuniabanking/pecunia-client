@@ -513,7 +513,10 @@ extern void *UserDefaultsBindingContext;
 
 - (void)setupShadowForPlot: (CPTPlot *)plot
 {
-    plot.shadowColor = CGColorCreateGenericGray(0, 1);
+    CGColorRef color = CGColorCreateGenericGray(0, 1);
+    plot.shadowColor = color;
+    CGColorRelease(color);
+    
     plot.shadowRadius = 3.0;
     plot.shadowOffset = CGSizeMake(2, -2);
     plot.shadowOpacity = 0.5;
@@ -594,7 +597,10 @@ extern void *UserDefaultsBindingContext;
     frame.borderLineStyle = frameStyle;
     frame.fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1]];
 
-    mainGraph.shadowColor = CGColorCreateGenericGray(0, 1);
+    CGColorRef color = CGColorCreateGenericGray(0, 1);
+    mainGraph.shadowColor = color;
+    CGColorRelease(color);
+
     mainGraph.shadowRadius = 2.0;
     mainGraph.shadowOffset = CGSizeMake(1, -1);
     mainGraph.shadowOpacity = 0.15;
@@ -709,7 +715,10 @@ extern void *UserDefaultsBindingContext;
     frame.borderLineStyle = frameStyle;
     frame.fill = [CPTFill fillWithColor: [CPTColor colorWithComponentRed: 1 green: 1 blue: 1 alpha: 1]];
 
-    turnoversGraph.shadowColor = CGColorCreateGenericGray(0, 1);
+    CGColorRef color = CGColorCreateGenericGray(0, 1);
+    turnoversGraph.shadowColor = color;
+    CGColorRelease(color);
+
     turnoversGraph.shadowRadius = 2.0;
     turnoversGraph.shadowOffset = CGSizeMake(1, -1);
     turnoversGraph.shadowOpacity = 0.15;
@@ -820,7 +829,10 @@ extern void *UserDefaultsBindingContext;
     CPTFill *gradientFill = [CPTFill fillWithGradient: gradient];
     frame.fill = gradientFill;
 
-    selectionGraph.shadowColor = CGColorCreateGenericGray(0, 1);
+    CGColorRef color = CGColorCreateGenericGray(0, 1);
+    selectionGraph.shadowColor = color;
+    CGColorRelease(color);
+
     selectionGraph.shadowRadius = 2.0;
     selectionGraph.shadowOffset = CGSizeMake(1, -1);
     selectionGraph.shadowOpacity = 0.5;
@@ -1643,7 +1655,10 @@ double mainTrend(double x)
         infoLayer.paddingRight = 15;
         infoLayer.spacing = 5;
 
-        infoLayer.shadowColor = CGColorCreateGenericGray(0, 1);
+        CGColorRef color = CGColorCreateGenericGray(0, 1);
+        infoLayer.shadowColor = color;
+        CGColorRelease(color);
+        
         infoLayer.shadowRadius = 3.0;
         infoLayer.shadowOffset = CGSizeMake(2, -2);
         infoLayer.shadowOpacity = 0.25;

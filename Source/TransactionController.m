@@ -124,6 +124,7 @@
     }
 
     // set default values
+    NSDate *date;
     if (transferType == TransferTypeOldStandardScheduled) {
         int setupTime;
         if (limits) {
@@ -131,20 +132,21 @@
         } else {
             setupTime = 2;
         }
-        NSDate *date = [NSDate dateWithTimeIntervalSinceNow: setupTime * 86400];
+        date = [NSDate dateWithTimeIntervalSinceNow: setupTime * 86400];
         NSDate *transferDate = currentTransfer.valutaDate;
         if (transferDate == nil || [transferDate compare: date] == NSOrderedAscending) {
-            //			[transfer setValue: date forKey: @"date" ];
             currentTransfer.valutaDate = date;
         }
         setupTime = [limits maxSetupTime];
         if (setupTime > 0) {
             date = [NSDate dateWithTimeIntervalSinceNow: setupTime * 86400];
         }
+    } else {
+        date = NSDate.date;
     }
 
     // set date
-    currentTransfer.date = [NSDate date];
+    currentTransfer.date = date;
 }
 
 - (BOOL)newTransferOfType: (TransferType)type {
@@ -293,7 +295,7 @@
     template.currency = transfer.currency;
 }
 
-- (void)saveStatement: (BankStatement *)statement asTemplateWithName: (NSString *)name {
+- (void)saveStatement: (BankStatement *)statement withType: (TransferType)type asTemplateWithName: (NSString *)name {
     if (name == nil) {
         return;
     }
@@ -305,19 +307,7 @@
     NSManagedObjectContext *context = templateController.managedObjectContext;
     TransferTemplate       *template = [NSEntityDescription insertNewObjectForEntityForName: @"TransferTemplate" inManagedObjectContext: context];
     template.name = name;
-    template.type = @(TransferTypeSEPA); //statement.type; for now make it always a SEPA transfer. The source type is not set.
-
-    // Make the template an unscheduled transfer.
-    switch (template.type.intValue) {
-        case TransferTypeSEPAScheduled:
-            template.type = @(TransferTypeSEPA);
-            break;
-
-        case TransferTypeOldStandardScheduled:
-            template.type = @(TransferTypeOldStandard);
-            break;
-    }
-
+    template.type = @(type);
     template.remoteAccount = statement.remoteAccount;
     template.remoteBankCode = statement.remoteBankCode;
     template.remoteBankName = statement.remoteBankName;

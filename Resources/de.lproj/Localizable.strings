@@ -292,6 +292,7 @@ AP431 = "Sie haben eine neue Überweisung begonnen ohne sie zu beenden. Wenn Sie
 AP432 = "Jetzt senden";
 AP433 = "Möchten Sie die Überweisungsvorlage löschen?";
 AP434 = "Neue Überweisungsvorlage";
+AP435 = "Überweisungsliste";
 
 // Standing orders.
 // AP450..AP499

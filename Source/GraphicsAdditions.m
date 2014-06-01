@@ -26,8 +26,7 @@
 /**
  * Simplify shadow creation.
  */
-- (id)initWithColor: (NSColor *)color offset: (NSSize)offset blurRadius: (CGFloat)blur
-{
+- (id)initWithColor: (NSColor *)color offset: (NSSize)offset blurRadius: (CGFloat)blur {
     self = [self init];
 
     if (self != nil) {
@@ -41,8 +40,7 @@
 
 @end
 
-static void CGPathCallback(void *info, const CGPathElement *element)
-{
+static void CGPathCallback(void *info, const CGPathElement *element) {
     NSBezierPath *path = CFBridgingRelease(info);
     CGPoint      *points = element->points;
 
@@ -79,8 +77,7 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 
 @implementation NSBezierPath (PecuniaAdditions)
 
-+ (NSBezierPath *)bezierPathWithCGPath: (CGPathRef)pathRef
-{
++ (NSBezierPath *)bezierPathWithCGPath: (CGPathRef)pathRef {
     NSBezierPath *path = [NSBezierPath bezierPath];
     CGPathApply(pathRef, (__bridge void *)(path), CGPathCallback);
 
@@ -88,10 +85,9 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 }
 
 // Method borrowed from Google's Cocoa additions
-- (CGPathRef)cgPath
-{
+- (CGPathRef)newCGPath {
     CGMutablePathRef thePath = CGPathCreateMutable();
-    if (!thePath) {
+    if (thePath == nil) {
         return nil;
     }
 
@@ -131,11 +127,10 @@ static void CGPathCallback(void *info, const CGPathElement *element)
     return thePath;
 }
 
-- (NSBezierPath *)pathWithStrokeWidth: (CGFloat)strokeWidth
-{
+- (NSBezierPath *)pathWithStrokeWidth: (CGFloat)strokeWidth {
     NSBezierPath *path = [self copy];
     CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
-    CGPathRef    pathRef = [path cgPath];
+    CGPathRef    pathRef = [path newCGPath];
 
     CGContextSaveGState(context);
 
@@ -155,8 +150,7 @@ static void CGPathCallback(void *info, const CGPathElement *element)
     return strokedPath;
 }
 
-- (void)fillWithInnerShadow: (NSShadow *)shadow borderOnly: (BOOL)borderOnly
-{
+- (void)fillWithInnerShadow: (NSShadow *)shadow borderOnly: (BOOL)borderOnly {
     [NSGraphicsContext saveGraphicsState];
 
     NSSize  offset = shadow.shadowOffset;
@@ -191,8 +185,7 @@ static void CGPathCallback(void *info, const CGPathElement *element)
     [NSGraphicsContext restoreGraphicsState];
 }
 
-- (void)drawBlurWithColor: (NSColor *)color radius: (CGFloat)radius
-{
+- (void)drawBlurWithColor: (NSColor *)color radius: (CGFloat)radius {
     NSRect   bounds = NSInsetRect(self.bounds, -radius, -radius);
     NSShadow *shadow = [[NSShadow alloc] init];
     shadow.shadowOffset = NSMakeSize(0, bounds.size.height);
@@ -219,14 +212,12 @@ static void CGPathCallback(void *info, const CGPathElement *element)
 }
 
 // Credit for the next two methods goes to Matt Gemmell
-- (void)strokeInside
-{
+- (void)strokeInside {
     /* Stroke within path using no additional clipping rectangle. */
     [self strokeInsideWithinRect: NSZeroRect];
 }
 
-- (void)strokeInsideWithinRect: (NSRect)clipRect
-{
+- (void)strokeInsideWithinRect: (NSRect)clipRect {
     NSGraphicsContext *thisContext = [NSGraphicsContext currentContext];
     float             lineWidth = [self lineWidth];
 

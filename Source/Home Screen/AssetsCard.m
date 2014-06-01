@@ -38,7 +38,7 @@ extern void *UserDefaultsBindingContext;
 
 @interface AssetGraph : CPTGraphHostingView  <CPTPlotDataSource, CPTAnimationDelegate>
 {
-@private
+    @private
     CPTXYGraph *graph;
 
     ShortDate *referenceDate;
@@ -57,7 +57,7 @@ extern void *UserDefaultsBindingContext;
 
     double min;
     double max;
-    
+
     NSDecimalNumber *roundedLocalMinValue;
     NSDecimalNumber *roundedLocalMaxValue;
 
@@ -74,7 +74,7 @@ extern void *UserDefaultsBindingContext;
 }
 
 @property (nonatomic, strong) Category *category;
-@property NSInteger tag;
+@property NSInteger                    tag;
 
 @end
 
@@ -82,8 +82,7 @@ extern void *UserDefaultsBindingContext;
 
 @synthesize category;
 
-- (id)initWithFrame: (NSRect)frame category: (Category *)aCategory
-{
+- (id)initWithFrame: (NSRect)frame category: (Category *)aCategory {
     LogEnter;
 
     self = [super initWithFrame: frame];
@@ -98,8 +97,7 @@ extern void *UserDefaultsBindingContext;
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     LogEnter;
 
     free(timePoints);
@@ -110,8 +108,7 @@ extern void *UserDefaultsBindingContext;
     LogLeave;
 }
 
-- (void)prepareForShutDown
-{
+- (void)prepareForShutDown {
     LogEnter;
 
     if (rangeAnimationOperation != nil) {
@@ -124,8 +121,7 @@ extern void *UserDefaultsBindingContext;
     LogLeave;
 }
 
-- (void)setupGraph
-{
+- (void)setupGraph {
     LogEnter;
 
     graph = [(CPTXYGraph *)[CPTXYGraph alloc] initWithFrame : NSRectToCGRect(self.bounds)];
@@ -161,13 +157,11 @@ extern void *UserDefaultsBindingContext;
 
 static CGFloat factors[3];
 
-double trend(double x)
-{
+double trend(double x) {
     return factors[0] + x * factors[1] + x * x * factors[2]; // Square trend function.
 }
 
-- (void)setupPlot
-{
+- (void)setupPlot {
     LogEnter;
 
     if (category != nil) {
@@ -181,7 +175,9 @@ double trend(double x)
         linePlot.delegate = self;
         linePlot.dataSource = self;
 
-        linePlot.shadowColor = CGColorCreateGenericGray(0, 1);
+        CGColorRef color = CGColorCreateGenericGray(0, 1);
+        linePlot.shadowColor = color;
+
         linePlot.shadowRadius = 2.0;
         linePlot.shadowOffset = CGSizeMake(2, -2);
         linePlot.shadowOpacity = 0.5;
@@ -200,13 +196,14 @@ double trend(double x)
         linePlot.delegate = self;
         linePlot.dataSource = self;
 
-        linePlot.shadowColor = CGColorCreateGenericGray(0, 1);
+        linePlot.shadowColor = color;
         linePlot.shadowRadius = 2.0;
         linePlot.shadowOffset = CGSizeMake(2, -2);
         linePlot.shadowOpacity = 0.5;
 
         linePlot.identifier = @"negativeBalances";
 
+        CGColorRelease(color);
         [graph addPlot: linePlot];
 
         // Regression plot.
@@ -232,7 +229,7 @@ double trend(double x)
         shadow.shadowBlurRadius = 2.0;
         shadow.shadowOffset = CGSizeMake(0, 0);
         linePlot.shadow = shadow;
-        
+
         [graph addPlot: linePlot];
 
         regressionDataSource = [CPTFunctionDataSource dataSourceForPlot: linePlot
@@ -245,8 +242,7 @@ double trend(double x)
     LogLeave;
 }
 
-- (void)setUpAxes
-{
+- (void)setUpAxes {
     LogEnter;
 
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
@@ -297,7 +293,7 @@ double trend(double x)
     y.minorTicksPerInterval = 0;
 
     axisSet.axes = @[x, zeroLineAxis, y];
-    
+
     // Graph title preparation. The actual title is set in updateGraphTitle.
     CPTLayerAnnotation *titleAnnotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer: graph.plotAreaFrame];
     titleLayer = [[CPTTextLayer alloc] init];
@@ -307,12 +303,13 @@ double trend(double x)
     [graph addAnnotation: titleAnnotation];
 }
 
-- (void)updateGraphTitle
-{
+- (void)updateGraphTitle {
     LogEnter;
 
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
-                                 NSFontAttributeName: [NSFont fontWithName: @"HelveticaNeue-Bold" size: 12]};
+    NSDictionary *attributes = @{
+        NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.388 green: 0.382 blue: 0.363 alpha: 1.000],
+        NSFontAttributeName: [NSFont fontWithName: @"HelveticaNeue-Bold" size: 12]
+    };
 
     titleLayer.attributedText = [[NSAttributedString alloc] initWithString: category.localName
                                                                 attributes: attributes];
@@ -320,8 +317,7 @@ double trend(double x)
     LogLeave;
 }
 
-- (void)updateGraph
-{
+- (void)updateGraph {
     LogEnter;
 
     [self updateGraphTitle];
@@ -375,19 +371,10 @@ double trend(double x)
     LogLeave;
 }
 
-- (void)updateGraphRange
-{
+- (void)updateGraphRange {
     LogEnter;
 
     CPTXYPlotSpace *plotSpace = (id)graph.defaultPlotSpace;
-
-    NSUInteger startIndex = 0;
-    NSUInteger endIndex = count - 1;
-
-    if (endIndex - startIndex < 10) {
-        endIndex = startIndex + 10;
-    }
-
     CPTXYAxisSet *axisSet = (id)graph.axisSet;
 
     // Set the ticks (and so the lables) to the side with less values.
@@ -476,8 +463,7 @@ double trend(double x)
     LogLeave;
 }
 
-- (void)loadData
-{
+- (void)loadData {
     LogEnter;
 
     count = 0;
@@ -489,7 +475,7 @@ double trend(double x)
 
     free(negativeBalances);
     negativeBalances = nil;
-    
+
     free(totalBalances);
     totalBalances = nil;
 
@@ -520,7 +506,7 @@ double trend(double x)
                 referenceDate = dates[0];
                 fromDate = dates[0];
             }
-            
+
             int index = 0;
             for (ShortDate *date in dates) {
                 timePoints[index++] = [referenceDate unitsToDate: date byUnit: NSCalendarUnitMonth];
@@ -554,7 +540,6 @@ double trend(double x)
                 }
                 index++;
             }
-
             // Always start plots at y = 0;
             if (min > 0) {
                 min = 0;
@@ -584,68 +569,62 @@ double trend(double x)
     LogLeave;
 }
 
-- (void)setCategory: (Category *)value
-{
+- (void)setCategory: (Category *)value {
     category = value;
     [self loadData];
 }
 
-- (void)mouseDown: (NSEvent *)theEvent
-{
+- (void)mouseDown: (NSEvent *)theEvent {
     [super mouseDown: theEvent];
     lastMouseDown = theEvent.locationInWindow;
 }
 
-- (void)mouseUp: (NSEvent *)theEvent
-{
+- (void)mouseUp: (NSEvent *)theEvent {
     [super mouseUp: theEvent];
     NSPoint location = theEvent.locationInWindow;
     if (abs(location.x - lastMouseDown.x) < 8 && abs(location.y - lastMouseDown.y) < 8) {
-        [(HomeScreenCard *)self.superview cardClicked: category];
+        [(HomeScreenCard *)self.superview cardClicked : category];
     }
 }
 
 #pragma mark - Utility functions
 
-- (void)updateColors
-{
+- (void)updateColors {
     LogEnter;
 
     CGColorRef  gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (high)"] colorWithAlphaComponent: 1]);
     CGColorRef  gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Positive Plot Gradient (low)"] colorWithAlphaComponent: 1]);
     CPTGradient *positiveGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
                                                                 endingColor: [CPTColor colorWithCGColor: gradientLowColor]
-                                     ];
+        ];
     CGColorRelease(gradientHighColor);
     CGColorRelease(gradientLowColor);
 
     positiveGradient.angle = -90.0;
 
-    CPTScatterPlot *plot = (id)[graph plotWithIdentifier: @"positiveBalances"];
+    CPTScatterPlot *plot = (id)[graph plotWithIdentifier : @"positiveBalances"];
     plot.areaFill = [CPTFill fillWithGradient: positiveGradient];
 
     gradientHighColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Negative Plot Gradient (high)"] colorWithAlphaComponent: 1]);
     gradientLowColor = CGColorCreateFromNSColor([[NSColor applicationColorForKey: @"Negative Plot Gradient (low)"] colorWithAlphaComponent: 0.9]);
     CPTGradient *negativeGradient = [CPTGradient gradientWithBeginningColor: [CPTColor colorWithCGColor: gradientHighColor]
                                                                 endingColor: [CPTColor colorWithCGColor: gradientLowColor]
-                                     ];
+        ];
     CGColorRelease(gradientHighColor);
     CGColorRelease(gradientLowColor);
 
     negativeGradient.angle = -90.0;
-    plot = (id)[graph plotWithIdentifier: @"negativeBalances"];
+    plot = (id)[graph plotWithIdentifier : @"negativeBalances"];
     plot.areaFill = [CPTFill fillWithGradient: negativeGradient];
 
     LogLeave;
 }
 
-- (int)distanceFromDate: (ShortDate *)from toDate: (ShortDate *)to
-{
+- (int)distanceFromDate: (ShortDate *)from toDate: (ShortDate *)to {
     return [from unitsToDate: to byUnit: NSCalendarUnitMonth];
 }
 
-- (NSDecimal)distanceAsDecimalFromDate: (ShortDate *)from toDate: (ShortDate *)to
-{
+- (NSDecimal)distanceAsDecimalFromDate: (ShortDate *)from toDate: (ShortDate *)to {
     return CPTDecimalFromInt([self distanceFromDate: from toDate: to]);
 }
 
@@ -654,8 +633,7 @@ double trend(double x)
  * overall size of the range. This is a bit tricky as we want sharp and easy intervals
  * for optimal perceptibility. The given range is already rounded up to two most significant digits.
  */
-- (float)intervalFromRange: (NSDecimalNumber *)range forTurnovers: (BOOL)lesserValues
-{
+- (float)intervalFromRange: (NSDecimalNumber *)range forTurnovers: (BOOL)lesserValues {
     int digitCount = [range numberOfDigits];
 
     NSDecimal value = [range decimalValue];
@@ -688,8 +666,7 @@ double trend(double x)
 
 #pragma mark - Coreplot delegate methods
 
-- (void)animationDidFinish: (CPTAnimationOperation *)operation
-{
+- (void)animationDidFinish: (CPTAnimationOperation *)operation {
     if (operation.boundObject == graph.defaultPlotSpace) {
         // Animation of the main graph vertical plot space.
         // We can now set the final interval length and tick count.
@@ -710,8 +687,7 @@ double trend(double x)
     }
 }
 
-- (void)animationCancelled: (CPTAnimationOperation *)operation
-{
+- (void)animationCancelled: (CPTAnimationOperation *)operation {
     if (operation.boundObject == graph.defaultPlotSpace) {
         // Animation of the main graph vertical plot space.
         // We can now set the final interval length and tick count.
@@ -723,7 +699,7 @@ double trend(double x)
             newMainYInterval = 0;
         }
     }
-    
+
     if (operation == globalRangeAnimationOperation) {
         globalRangeAnimationOperation = nil;
     }
@@ -734,13 +710,11 @@ double trend(double x)
 
 #pragma mark - Plot data source methods
 
-- (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot
-{
+- (NSUInteger)numberOfRecordsForPlot: (CPTPlot *)plot {
     return count;
 }
 
-- (double *)doublesForPlot: (CPTPlot *)plot field: (NSUInteger)fieldEnum recordIndexRange: (NSRange)indexRange
-{
+- (double *)doublesForPlot: (CPTPlot *)plot field: (NSUInteger)fieldEnum recordIndexRange: (NSRange)indexRange {
     if (fieldEnum == CPTBarPlotFieldBarLocation || fieldEnum == CPTScatterPlotFieldX) {
         return &timePoints[indexRange.location];
     }
@@ -757,8 +731,7 @@ double trend(double x)
     return nil;
 }
 
-- (CPTLayer *)dataLabelForPlot: (CPTPlot *)plot recordIndex: (NSUInteger)index
-{
+- (CPTLayer *)dataLabelForPlot: (CPTPlot *)plot recordIndex: (NSUInteger)index {
     return (id)[NSNull null]; // Don't show any data label.
 }
 
@@ -774,18 +747,15 @@ double trend(double x)
 
 @implementation AssetsCard
 
-+ (BOOL)isClickable
-{
++ (BOOL)isClickable {
     return YES;
 }
 
-+ (BOOL)isConfigurable
-{
++ (BOOL)isConfigurable {
     return YES;
 }
 
-- (id)initWithFrame: (NSRect)frame
-{
+- (id)initWithFrame: (NSRect)frame {
     LogEnter;
 
     self = [super initWithFrame: frame];
@@ -809,8 +779,7 @@ double trend(double x)
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     LogEnter;
 
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
@@ -823,8 +792,7 @@ double trend(double x)
     LogLeave;
 }
 
-- (void)handleDataModelChange: (NSNotification *)notification
-{
+- (void)handleDataModelChange: (NSNotification *)notification {
     LogEnter;
 
     @try {
@@ -844,14 +812,13 @@ double trend(double x)
     LogLeave;
 }
 
-- (void)updateUI
-{
+- (void)updateUI {
     LogEnter;
 
     AssetGraph *graph;
 
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
-    Category *category = [Category categoryForName: settings[@"assetGraph1"]];
+    Category                *category = [Category categoryForName: settings[@"assetGraph1"]];
     if (category != nil) {
         graph = [self viewWithTag: 1];
         if (graph == nil) {
@@ -885,8 +852,7 @@ double trend(double x)
 /**
  * Layouts all charts in a column format.
  */
-- (void)resizeSubviewsWithOldSize: (NSSize)oldSize
-{
+- (void)resizeSubviewsWithOldSize: (NSSize)oldSize {
     LogEnter;
 
     NSRect frame = self.bounds;
@@ -901,12 +867,10 @@ double trend(double x)
             frame.origin.y += frame.size.height;
         }
     }
-
     LogLeave;
 }
 
-- (void)mouseDown: (NSEvent *)theEvent
-{
+- (void)mouseDown: (NSEvent *)theEvent {
     LogEnter;
 
     // Happens if the user clicked on space not covered by a graph. Take the first one in this case.
@@ -932,8 +896,7 @@ double trend(double x)
 - (void)observeValueForKeyPath: (NSString *)keyPath
                       ofObject: (id)object
                         change: (NSDictionary *)change
-                       context: (void *)context
-{
+                       context: (void *)context {
     if (context == UserDefaultsBindingContext) {
         if ([keyPath isEqualToString: @"colors"]) {
             for (AssetGraph *child in self.subviews) {

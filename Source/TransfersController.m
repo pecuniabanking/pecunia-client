@@ -863,37 +863,11 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     return YES;
 }
 
-#pragma mark -
-#pragma mark Drag and drop
+#pragma mark - Drag and drop
 
 - (void)draggingStartsFor: (TransfersListView *)sender;
 {
     dropToEditRejected = NO;
-}
-
-/**
- * Called when the template name sheet ended.
- */
-- (void)sheetDidEnd: (NSWindow *)sheet returnCode: (NSInteger)returnCode contextInfo: (void *)contextInfo {
-    [sheet orderOut: nil];
-    if (returnCode == NSRunStoppedResponse) {
-        if (contextInfo == nil) {
-            NSUInteger counter = 0;
-            for (Transfer *transfer in draggedTransfers) {
-                NSString *actualName = (counter++ == 0) ? templateName.stringValue : [NSString stringWithFormat: @"%@ %li", templateName.stringValue, counter];
-                [transactionController saveTransfer: transfer asTemplateWithName: actualName];
-            }
-        } else {
-            BankStatement *statement = (__bridge BankStatement *)(contextInfo);
-            [transactionController saveStatement: statement asTemplateWithName: templateName.stringValue];
-        }
-        NSManagedObjectContext *context = MOAssistant.assistant.context;
-        NSError                *error = nil;
-        if ([context save: &error] == NO) {
-            NSAlert *alert = [NSAlert alertWithError: error];
-            [alert runModal];
-        }
-    }
 }
 
 /**
@@ -1212,6 +1186,35 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     return result;
 }
 
+#pragma mark - Start/Cancel transfers
+
+/**
+ * Called when the template name sheet ended.
+ */
+- (void)sheetDidEnd: (NSWindow *)sheet returnCode: (NSInteger)returnCode contextInfo: (void *)contextInfo {
+    [sheet orderOut: nil];
+    if (returnCode == NSRunStoppedResponse) {
+        if (contextInfo == nil) {
+            NSUInteger counter = 0;
+            for (Transfer *transfer in draggedTransfers) {
+                NSString *actualName = (counter++ == 0) ? templateName.stringValue : [NSString stringWithFormat: @"%@ %li", templateName.stringValue, counter];
+                [transactionController saveTransfer: transfer asTemplateWithName: actualName];
+            }
+        } else {
+            NSDictionary *info = (__bridge NSDictionary *)(contextInfo);
+            [transactionController saveStatement: info[@"statement"]
+                                        withType: [info[@"type"] intValue]
+                              asTemplateWithName: templateName.stringValue];
+        }
+        NSManagedObjectContext *context = MOAssistant.assistant.context;
+        NSError                *error = nil;
+        if ([context save: &error] == NO) {
+            NSAlert *alert = [NSAlert alertWithError: error];
+            [alert runModal];
+        }
+    }
+}
+
 - (void)cancelEditing {
     // Cancel an ongoing transfer creation (if there is one).
     if (transactionController.editingInProgress) {
@@ -1362,7 +1365,7 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     return result;
 }
 
-- (void)createTemplateFromStatement: (BankStatement *)statement {
+- (void)createTemplateOfType: (TransferType)type fromStatement: (BankStatement *)statement {
     if (statement == nil) {
         return;
     }
@@ -1370,12 +1373,13 @@ extern NSString *TransferTemplateDataType;        // For dragging one of the sto
     // Make template tab active.
     [transferTab selectLastTabViewItem: nil];
 
+    NSDictionary *info = @{@"statement" : statement, @"type" : @(type)};
     templateName.stringValue = statement.remoteName;
     [NSApp  beginSheet: templateNameSheet
         modalForWindow: [mainView window]
          modalDelegate: self
         didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
-           contextInfo: (__bridge void *)(statement)];
+           contextInfo: (__bridge void *)(info)];
 }
 
 - (BOOL)startTransferFromTemplate: (TransferTemplate *)template {

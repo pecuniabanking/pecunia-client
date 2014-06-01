@@ -125,7 +125,6 @@
     NSUInteger        rowPositions[4];
 
     NSPredicate *finishedTransfersPredicate;
-    NSPredicate *tempatesPredicate;
 }
 
 @property (weak) IBOutlet TransferFormularView *transferFormular;
@@ -154,6 +153,6 @@
 - (BOOL)editingInProgress;
 - (void)startDonationTransfer;
 - (BOOL)startTransferOfType: (TransferType)type withAccount: (BankAccount *)account statement: (BankStatement *)statement;
-- (void)createTemplateFromStatement: (BankStatement *)statement;
+- (void)createTemplateOfType: (TransferType)type fromStatement: (BankStatement *)statement;
 
 @end

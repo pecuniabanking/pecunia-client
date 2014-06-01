@@ -33,23 +33,20 @@
 @synthesize shadowBlurOuter;
 @synthesize shadowColorOuter;
 
-- (id)initWithFrame:(NSRect)frame
-{
-    self = [super initWithFrame:frame];
+- (id)initWithFrame: (NSRect)frame {
+    self = [super initWithFrame: frame];
     if (self) {
         [self setDefaults];
     }
     return self;
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
     [self setDefaults];
 }
 
-- (void)setDefaults
-{
+- (void)setDefaults {
     shadowDistance = @2;
     shadowDirection = @135;
     shadowBlur = @3;
@@ -61,8 +58,8 @@
     shadowColorOuter  = [NSColor colorWithCalibratedWhite: 0.000 alpha: 0.250];
 }
 
-- (NSImage*)blackSquareOfSize:(CGSize)size {
-    NSImage *blackSquare = [[NSImage alloc] initWithSize:size];
+- (NSImage *)blackSquareOfSize: (CGSize)size {
+    NSImage *blackSquare = [[NSImage alloc] initWithSize: size];
     [blackSquare lockFocus];
 
     [[NSColor blackColor] setFill];
@@ -72,8 +69,8 @@
     return blackSquare;
 }
 
-- (CGImageRef)createMaskWithSize:(CGSize)size shape:(void (^)(void))block {
-    NSImage *newMask = [[NSImage alloc] initWithSize:size];
+- (CGImageRef)newMaskWithSize: (CGSize)size shape: (void (^)(void))block {
+    NSImage    *newMask = [[NSImage alloc] initWithSize: size];
     CGImageRef mask;
 
     CGContextSetShadow([[NSGraphicsContext currentContext] graphicsPort], CGSizeZero, 0.0);
@@ -82,7 +79,7 @@
     block();
     [newMask unlockFocus];
 
-    struct CGImage *newMaskRef = [newMask CGImageForProposedRect:NULL context:[NSGraphicsContext currentContext] hints:nil];
+    struct CGImage *newMaskRef = [newMask CGImageForProposedRect: NULL context: [NSGraphicsContext currentContext] hints: nil];
 
     mask = CGImageMaskCreate(CGImageGetWidth(newMaskRef),
                              CGImageGetHeight(newMaskRef),
@@ -93,13 +90,12 @@
     return mask;
 }
 
-- (NSSize)intrinsicContentSize
-{
+- (NSSize)intrinsicContentSize {
     if (![self.cell wraps]) {
         return [super intrinsicContentSize];
     }
 
-    NSRect frame = [self frame];
+    NSRect  frame = [self frame];
     CGFloat width = frame.size.width;
 
     // Make the frame very high, while keeping the width.
@@ -111,36 +107,35 @@
     return NSMakeSize(width, height);
 }
 
-- (void)drawRect: (NSRect)dirtyRect
-{
+- (void)drawRect: (NSRect)dirtyRect {
     float shadowY = shadowDistance.floatValue * cos(shadowDirection.intValue * M_PI / 180.0);
     float shadowX = shadowDistance.floatValue * sin(shadowDirection.intValue * M_PI / 180.0);
 
     float shadowYOuter = shadowDistanceOuter.floatValue * cos(shadowDirectionOuter.intValue * M_PI / 180.0);
     float shadowXOuter = shadowDistanceOuter.floatValue * sin(shadowDirectionOuter.intValue * M_PI / 180.0);
 
-    NSAttributedString *text = self.attributedStringValue;
+    NSAttributedString        *text = self.attributedStringValue;
     NSMutableAttributedString *maskText = [text mutableCopy];
 
     CGPoint textLocation = CGPointMake(0, 0);
-    NSSize size = self.intrinsicContentSize;
-    NSRect textRect = NSMakeRect(textLocation.x, textLocation.y, size.width, size.height);
+    NSSize  size = self.intrinsicContentSize;
+    NSRect  textRect = NSMakeRect(textLocation.x, textLocation.y, size.width, size.height);
 
-    NSMutableParagraphStyle* textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
+    NSMutableParagraphStyle *textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
     [textStyle setAlignment: [self.cell alignment]];
 
-    NSDictionary* blackFontAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary *blackFontAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                          self.font, NSFontAttributeName,
                                          [NSColor blackColor], NSForegroundColorAttributeName,
                                          textStyle, NSParagraphStyleAttributeName, nil];
 
-    NSDictionary* whiteFontAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary *whiteFontAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                          self.font, NSFontAttributeName,
                                          [NSColor whiteColor], NSForegroundColorAttributeName,
                                          textStyle, NSParagraphStyleAttributeName, nil];
 
     // Create initial mask of white text on black background.
-    CGImageRef mask = [self createMaskWithSize: textRect.size shape: ^{
+    CGImageRef mask = [self newMaskWithSize: textRect.size shape: ^{
         [[NSColor blackColor] setFill];
         CGContextFillRect([[NSGraphicsContext currentContext] graphicsPort], textRect);
         [[NSColor whiteColor] setFill];
@@ -148,7 +143,7 @@
         [maskText drawInRect: textRect];
     }];
 
-    NSImage *cutoutImage = [self blackSquareOfSize: textRect.size];
+    NSImage    *cutoutImage = [self blackSquareOfSize: textRect.size];
     CGImageRef cutoutRawRef = [cutoutImage CGImageForProposedRect: NULL
                                                           context: [NSGraphicsContext currentContext]
                                                             hints:  nil];
@@ -156,11 +151,11 @@
     CGImageRef cutoutRef = CGImageCreateWithMask(cutoutRawRef, mask);
     CGImageRelease(mask);
 
-    NSImage *cutout = [[NSImage alloc] initWithCGImage:cutoutRef size: textRect.size];
+    NSImage *cutout = [[NSImage alloc] initWithCGImage: cutoutRef size: textRect.size];
 
     CGImageRelease(cutoutRef);
 
-    CGImageRef shadedMask = [self createMaskWithSize: textRect.size shape: ^{
+    CGImageRef shadedMask = [self newMaskWithSize: textRect.size shape: ^{
         [[NSColor whiteColor] setFill];
         CGContextFillRect([[NSGraphicsContext currentContext] graphicsPort], textRect);
         CGContextSetShadowWithColor([[NSGraphicsContext currentContext] graphicsPort],

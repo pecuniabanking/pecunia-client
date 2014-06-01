@@ -31,68 +31,60 @@
 
 @end
 
-
 @implementation TransferPrintView
 
 @synthesize transfers;
 
-- (id)initWithTransfers: (NSArray *)transfersToPrint printInfo: (NSPrintInfo *)pi
-{
-    paperSize = [pi paperSize];
-    topMargin = [pi topMargin];
-    bottomMargin = [pi bottomMargin];
-    leftMargin = [pi leftMargin];
-    rightMargin = [pi rightMargin];
-    pageHeight = paperSize.height - topMargin - bottomMargin;
-    pageWidth = paperSize.width - leftMargin - rightMargin;
-    dateWidth = 37;
-    amountWidth = 65;
-    bankAddressWidth = 130;
-    purposeWidth = pageWidth - dateWidth - amountWidth - bankAddressWidth;
-    padding = 3;
-    currentPage = 1;
-
-    self.transfers = [transfersToPrint mutableCopy];
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
-    NSArray          *sds = @[sd];
-    [self.transfers sortUsingDescriptors: sds];
-
-    statHeights = (int *)malloc([self.transfers count] * sizeof(int));
-
-    dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat: @"dd.MM."];
-
-    numberFormatter = [[NSNumberFormatter alloc] init];
-    [numberFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];
-    [numberFormatter setMinimumFractionDigits: 2];
-
-    debitNumberFormatter = [numberFormatter copy];
-    [debitNumberFormatter setMinusSign: @""];
-
-    NSRect frame;
-
-    frame.origin.x = 0;
-    frame.origin.y = 0;
-    frame.size.width = pageWidth;
-
+- (id)initWithTransfers: (NSArray *)transfersToPrint printInfo: (NSPrintInfo *)pi {
+    NSRect frame = NSMakeRect(0, 0, pi.paperSize.width - pi.leftMargin - pi.rightMargin, pi.paperSize.height - pi.topMargin - pi.bottomMargin);
     self = [super initWithFrame: frame];
-    if (self) {
+    if (self != nil) {
         int height = [self getTransferHeights];
         if (height > pageHeight) {
             frame.size.height = height;
-        } else {frame.size.height = pageHeight; }
-        [self setFrame: frame];
+            [self setFrame: frame];
+        }
+
+        paperSize = pi.paperSize;
+        topMargin = pi.topMargin;
+        bottomMargin = pi.bottomMargin;
+        leftMargin = pi.leftMargin;
+        rightMargin = pi.rightMargin;
+        pageHeight = paperSize.height - topMargin - bottomMargin;
+        pageWidth = paperSize.width - leftMargin - rightMargin;
+        dateWidth = 37;
+        amountWidth = 65;
+        bankAddressWidth = 130;
+        purposeWidth = pageWidth - dateWidth - amountWidth - bankAddressWidth;
+        padding = 3;
+        currentPage = 1;
+
+        self.transfers = [transfersToPrint mutableCopy];
+        NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"date" ascending: NO];
+        NSArray          *sds = @[sd];
+        [self.transfers sortUsingDescriptors: sds];
+
+        statHeights = (int *)malloc([self.transfers count] * sizeof(int));
+
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat: @"dd.MM."];
+
+        numberFormatter = [[NSNumberFormatter alloc] init];
+        [numberFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];
+        [numberFormatter setMinimumFractionDigits: 2];
+
+        debitNumberFormatter = [numberFormatter copy];
+        [debitNumberFormatter setMinusSign: @""];
     }
+
     return self;
 }
 
-- (BOOL)isFlipped
-{
+- (BOOL)isFlipped {
     return YES;
 }
 
-- (NSAttributedString *)textFromTransfer: (Transfer *)transfer
-{
+- (NSAttributedString *)textFromTransfer: (Transfer *)transfer {
     // Receiver
     NSFont                    *font = [NSFont fontWithName: @"Lucida Grande Bold" size: 9];
     NSMutableAttributedString *result = [[transfer.remoteName attributedStringWithFont: font] mutableCopy];
@@ -138,8 +130,7 @@
     return result;
 }
 
-- (NSAttributedString *)bankAddressTextFromTransfer: (Transfer *)transfer
-{
+- (NSAttributedString *)bankAddressTextFromTransfer: (Transfer *)transfer {
     if ([transfer isSEPAorEU]) {
         NSFont                    *font1 = [NSFont fontWithName: @"Lucida Grande" size: 9];
         NSFont                    *font2 = [NSFont fontWithName: @"Lucida Grande Bold" size: 8];
@@ -160,8 +151,7 @@
     }
 }
 
-- (int)getTransferHeights
-{
+- (int)getTransferHeights {
     NSSize purposeSize;
     NSSize addressSize;
     NSSize dateSize;
@@ -204,8 +194,7 @@
     return page * pageHeight + h + 18;
 }
 
-- (void)finalizePage: (int)page atPosition: (int)pos
-{
+- (void)finalizePage: (int)page atPosition: (int)pos {
     int baseHeight = page * pageHeight;
     int hBase = 0;
     [NSBezierPath strokeLineFromPoint: NSMakePoint(0, baseHeight + pos) toPoint: NSMakePoint(pageWidth, baseHeight + pos)];
@@ -220,8 +209,7 @@
     [NSBezierPath strokeLineFromPoint: NSMakePoint(hBase, baseHeight + HEADER_HEIGHT) toPoint: NSMakePoint(hBase, baseHeight + pos)];
 }
 
-- (void)drawHeaderForPage: (int)page
-{
+- (void)drawHeaderForPage: (int)page {
     int baseHeight = page * pageHeight;
     int hBase = 0;
 
@@ -277,8 +265,7 @@
     [as drawInRect: headerFrame];
 }
 
-- (void)drawPageBorderWithSize: (NSSize)borderSize
-{
+- (void)drawPageBorderWithSize: (NSSize)borderSize {
     NSString        *s;
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateStyle: NSDateFormatterMediumStyle];
@@ -296,10 +283,9 @@
     // Header
     NSMutableDictionary *headerAttributes = [NSMutableDictionary dictionaryWithCapacity: 1];
     headerAttributes[NSFontAttributeName] = [NSFont fontWithName: @"Helvetica Bold Oblique" size: 16];
-    //[headerAttributes setObject:mps forKey:NSParagraphStyleAttributeName ];
     NSRect rect = NSMakeRect(leftMargin, topMargin - 30, pageWidth, 25);
-    //rect.size.width-=10;
-    [@"Überweisungsliste" drawInRect : rect withAttributes : headerAttributes];
+    NSString *title = NSLocalizedString(@"AP435", nil);
+    [title drawInRect: rect withAttributes: headerAttributes];
 
     // Footer
     NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity: 1];
@@ -318,8 +304,7 @@
     [self setFrame: frame];
 }
 
-- (void)drawRect: (NSRect)dirtyRect
-{
+- (void)drawRect: (NSRect)dirtyRect {
     NSSize size;
     NSRect rect;
     int    page = 0;
@@ -389,34 +374,9 @@
         rect.origin.x = hBase + padding;
         [numberFormatter setCurrencyCode: transfer.currency];
         [[numberFormatter stringFromNumber: transfer.value] drawInRect: rect withAttributes: amountAttributes];
-        hBase += amountWidth;
         h += height + VERT_PADDING;
     }
     [self finalizePage: page atPosition: h];
-
-    /*
-     // draw final sum
-     rect.origin.x = 0;
-     rect.origin.y = page*pageHeight + h + 1;
-     rect.size.width = pageWidth;
-     rect.size.height = 16;
-     [NSBezierPath strokeRect:rect ];
-     rect.origin.x += padding;
-     rect.size.width = 200;
-     [@"Summe" drawInRect:rect withAttributes:attributes ];
-
-     rect.origin.x = dateWidth+purposeWidth+padding;
-     rect.size.width = amountWidth-2*padding;
-     [[debitNumberFormatter stringFromNumber:debitSum ] drawInRect:rect withAttributes:amountAttributes ];
-
-     rect.origin.x = dateWidth+purposeWidth+amountWidth+padding;
-     rect.size.width = amountWidth-2*padding;
-     [[numberFormatter stringFromNumber:creditSum ] drawInRect:rect withAttributes:amountAttributes ];
-
-     rect.origin.x = dateWidth+purposeWidth+2*amountWidth+padding;
-     rect.size.width = amountWidth-2*padding;
-     [[numberFormatter stringFromNumber:currentSaldo ] drawInRect:rect withAttributes:amountAttributes ];
-     */
 }
 
 @end
