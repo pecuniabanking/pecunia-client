@@ -423,6 +423,14 @@ AP812 = "Möchten Sie das Konto %@ wirklich löschen?";
 AP813 = "Keine (manuelle Kontoverwaltung)";
 AP814 = "Kontowarnung";
 AP815 = "Eines Ihrer Konten hat zu wenig Guthaben bzw. ist ins Minus gekommen!";
+AP816 = "Umsatzüberprüfung beendet";
+AP817 = "Die Aufräumarbeiten wurden erfolgreich abgeschlossen";
+AP818 = "Aufräumen gestartet";
+AP819 = "Umsätze und Salden werden überprüft";
+AP820 = "Geschäftsvorfälle werden synchronisiert";
+AP821 = "Alle Zwischensalden werden neu berechnet";
+AP822 = "Neuberechnung beendet";
+AP823 = "Synchronisierung durchgeführt";
 
 // Tags
 // AP850..AP949

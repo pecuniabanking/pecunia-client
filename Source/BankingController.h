@@ -45,41 +45,46 @@
 @class BSSelectWindowController;
 
 @class INAppStoreWindow;
+@class JMModalOverlay;
+@class WaitViewController;
 
 @interface BankingController : NSObject
 {
 @private
-    IBOutlet INAppStoreWindow      *mainWindow;
+    IBOutlet INAppStoreWindow *mainWindow;
 
-    IBOutlet EDSideBar              *sidebar;
-    IBOutlet NSTabView              *mainTabView;
-    IBOutlet MCEMTreeController     *categoryController;
-    IBOutlet SynchronousScrollView  *accountsScrollView;
-    IBOutlet PecuniaSplitView       *mainVSplit;
-    IBOutlet NSArrayController      *assignPreviewController;
-    IBOutlet TimeSliceManager       *timeSlicer;
-    IBOutlet NSSegmentedControl     *catActions;
-    IBOutlet NSImageView            *lockImage;
-    IBOutlet NSTextField            *earningsField;
-    IBOutlet NSTextField            *spendingsField;
-    IBOutlet NSTextField            *earningsFieldLabel;
-    IBOutlet NSTextField            *spendingsFieldLabel;
-    IBOutlet NSView                 *sectionPlaceholder;
-    IBOutlet NSView                 *rightPane;
-    IBOutlet NSButton               *refreshButton;
-    IBOutlet ComTraceHelper         *comTracePanel;
-    IBOutlet NSButton               *decreaseFontButton;
-    IBOutlet NSButton               *increaseButton;
+    IBOutlet EDSideBar             *sidebar;
+    IBOutlet NSTabView             *mainTabView;
+    IBOutlet MCEMTreeController    *categoryController;
+    IBOutlet SynchronousScrollView *accountsScrollView;
+    IBOutlet PecuniaSplitView      *mainVSplit;
+    IBOutlet NSArrayController     *assignPreviewController;
+    IBOutlet TimeSliceManager      *timeSlicer;
+    IBOutlet NSSegmentedControl    *catActions;
+    IBOutlet NSImageView           *lockImage;
+    IBOutlet NSTextField           *earningsField;
+    IBOutlet NSTextField           *spendingsField;
+    IBOutlet NSTextField           *earningsFieldLabel;
+    IBOutlet NSTextField           *spendingsFieldLabel;
+    IBOutlet NSView                *sectionPlaceholder;
+    IBOutlet NSView                *rightPane;
+    IBOutlet NSButton              *refreshButton;
+    IBOutlet ComTraceHelper        *comTracePanel;
+    IBOutlet NSButton              *decreaseFontButton;
+    IBOutlet NSButton              *increaseButton;
 
     IBOutlet NSMenuItem *developerMenu;
     IBOutlet NSMenuItem *comTraceMenuItem;
+
+    IBOutlet JMModalOverlay     *waitOverlay;
+    IBOutlet WaitViewController *waitViewController;
 
     IBOutlet NSButton *toggleDetailsButton;
 
     NSManagedObjectContext *managedObjectContext;
 
-    NSMutableDictionary    *mainTabItems;
-    NSUInteger             newStatementsCount;
+    NSMutableDictionary *mainTabItems;
+    NSUInteger          newStatementsCount;
 
     HomeScreenController             *homeScreenController;
     StatementsOverviewController     *overviewController;
@@ -97,8 +102,8 @@
 @property (strong) IBOutlet CategoryView *accountsView;
 @property (strong) IBOutlet NSMenuItem   *toggleDetailsPaneItem;
 
-@property (nonatomic, copy) NSDecimalNumber          *saveValue;
-@property (nonatomic, strong) DockIconController     *dockIconController;
+@property (nonatomic, copy) NSDecimalNumber      *saveValue;
+@property (nonatomic, strong) DockIconController *dockIconController;
 
 @property (nonatomic, assign) BOOL showBalances;
 @property (nonatomic, assign) BOOL showRecursiveStatements;
@@ -132,15 +137,15 @@
 - (IBAction)splitStatement: (id)sender;
 - (IBAction)addStatement: (id)sender;
 - (IBAction)showLicense: (id)sender;
-- (IBAction)showConsole:(id)sender;
+- (IBAction)showConsole: (id)sender;
 - (IBAction)resetIsNewStatements: (id)sender;
 
 - (IBAction)getAccountBalance: (id)sender;
 
 
-- (IBAction)updateStatementBalances:(id)sender;
+- (IBAction)updateStatementBalances: (id)sender;
 - (IBAction)accountMaintenance: (id)sender;
-- (IBAction)updateSupportedTransactions:(id)sender;
+- (IBAction)updateSupportedTransactions: (id)sender;
 
 - (IBAction)showAboutPanel: (id)sender;
 - (IBAction)toggleDetailsPane: (id)sender;

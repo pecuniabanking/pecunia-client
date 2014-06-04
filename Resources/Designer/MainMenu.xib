@@ -803,9 +803,9 @@ Unterstütze die Entwicklung!</string>
                             <menuItem isSeparatorItem="YES" id="4438">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Fehlerbereinigung" id="EfB-3s-NE1">
+                            <menuItem title="Aufräumen" id="EfB-3s-NE1">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Fehlerbereinigung" id="Xx1-Rs-RhL">
+                                <menu key="submenu" title="Aufräumen" id="Xx1-Rs-RhL">
                                     <items>
                                         <menuItem title="Erlaubte Geschäftsvorfälle" toolTip="Ermittelt die erlaubten Geschäftsvorfälle auf Basis der Bankparameter neu" id="sFY-Pc-jzH">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -1126,6 +1126,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <outlet property="timeSlicer" destination="4624" id="4672"/>
                 <outlet property="toggleDetailsButton" destination="6515" id="6517"/>
                 <outlet property="toggleDetailsPaneItem" destination="6532" id="6557"/>
+                <outlet property="waitOverlay" destination="RtS-rA-3Gv" id="aH4-YN-jUN"/>
+                <outlet property="waitViewController" destination="UlU-NN-NGf" id="lmm-G5-KTx"/>
             </connections>
         </customObject>
         <customObject id="3601" customClass="ExportController">
@@ -1139,6 +1141,20 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <outlet property="progressIndicator" destination="4592" id="4596"/>
             </connections>
         </customObject>
+        <customObject id="RtS-rA-3Gv" userLabel="Wait Overlay" customClass="JMModalOverlay">
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="animates" value="YES"/>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="shouldOverlayTitleBar" value="NO"/>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="shouldCloseWhenClickOnBackground" value="YES"/>
+                <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                    <color key="value" white="0.0" alpha="0.70000000000000007" colorSpace="calibratedWhite"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="contentViewController" destination="UlU-NN-NGf" id="Rlh-F0-fib"/>
+            </connections>
+        </customObject>
+        <viewController id="UlU-NN-NGf" userLabel="Wait View Controller" customClass="WaitViewController"/>
         <arrayController mode="entity" entityName="StatCatAssignment" preservesSelection="NO" selectsInsertedObjects="NO" avoidsEmptySelection="NO" clearsFilterPredicateOnInsertion="NO" id="2401" userLabel="AssignmentPreview">
             <declaredKeys>
                 <string>imageClassification</string>

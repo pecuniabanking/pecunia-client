@@ -80,6 +80,8 @@
 #import "BWGradientBox.h"
 #import "EDSideBar.h"
 #import "INAppStoreWindow.h"
+#import "JMModalOverlay.h"
+#import "WaitViewController.h"
 
 #import "Tag.h"
 #import "User.h"
@@ -1132,17 +1134,30 @@ static BankingController *bankinControllerInstance;
 - (IBAction)accountMaintenance: (id)sender {
     LogEnter;
 
-    BankAccount *account = nil;
-    Category    *cat = [self currentSelection];
-    if (cat == nil || cat.accountNumber == nil) {
+    Category *category = self.currentSelection;
+    if (category == nil || category.accountNumber == nil) {
         return;
     }
-    account = (BankAccount *)cat;
+    BankAccount *account = (BankAccount *)category;
+    NSDictionary *details = @{@"accountName": account.name,
+                              @"message": NSLocalizedString(@"AP818", nil),
+                              @"details": NSLocalizedString(@"AP819", nil)};
+    [waitViewController startWaiting: details];
 
-    [account doMaintenance];
-    [self save];
+    // Run maintenance in a background block.
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [account doMaintenance];
 
-    [overviewController reload];
+        // Run clean up on main thread.
+        NSDictionary *details = @{@"accountName": account.name,
+                                  @"message": NSLocalizedString(@"AP816", nil),
+                                  @"details": NSLocalizedString(@"AP817", nil)};
+        [self performSelectorOnMainThread: @selector(cleanupAfterMaintenance:) withObject: details waitUntilDone: NO modes: @[NSModalPanelRunLoopMode]];
+
+    });
+
+    waitOverlay.animationDirection = JMModalOverlayDirectionBottom;
+    [waitOverlay showInWindow: mainWindow];
 
     LogLeave;
 }
@@ -1150,34 +1165,71 @@ static BankingController *bankinControllerInstance;
 - (IBAction)updateStatementBalances: (id)sender {
     LogEnter;
 
-    BankAccount *account = nil;
-    Category    *cat = [self currentSelection];
-    if (cat == nil || cat.accountNumber == nil) {
+    Category *category = self.currentSelection;
+    if (category == nil || category.accountNumber == nil) {
         return;
     }
-    account = (BankAccount *)cat;
+    BankAccount *account = (BankAccount *)category;
 
-    [account updateStatementBalances];
-    [self save];
+    NSDictionary *details = @{@"accountName": account.name,
+                              @"message": NSLocalizedString(@"AP818", nil),
+                              @"details": NSLocalizedString(@"AP821", nil)};
+    [waitViewController startWaiting: details];
 
-    [overviewController reload];
+    // Run maintenance in a background block.
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [account updateStatementBalances];
 
+        // Run clean up on main thread.
+        NSDictionary *details = @{@"accountName": account.name,
+                                  @"message": NSLocalizedString(@"AP822", nil),
+                                  @"details": NSLocalizedString(@"AP817", nil)};
+        [self performSelectorOnMainThread: @selector(cleanupAfterMaintenance:) withObject: details waitUntilDone: NO modes: @[NSModalPanelRunLoopMode]];
+
+    });
+
+    waitOverlay.animationDirection = JMModalOverlayDirectionBottom;
+    [waitOverlay showInWindow: mainWindow];
+    
     LogLeave;
+}
+
+- (void)cleanupAfterMaintenance: (NSDictionary *)details {
+    [self save];
+    [overviewController reload];
+    [waitViewController markDone: details];
+    [waitOverlay performSelector: @selector(performClose:) withObject: nil afterDelay: 5 inModes: @[NSModalPanelRunLoopMode]];
 }
 
 - (IBAction)updateSupportedTransactions: (id)sender {
     LogEnter;
 
-    BankAccount *account = nil;
-    Category    *cat = [self currentSelection];
-    if (cat == nil || cat.accountNumber == nil) {
+    Category *category = self.currentSelection;
+    if (category == nil || category.accountNumber == nil) {
         return;
     }
-    account = (BankAccount *)cat;
+    BankAccount *account = (BankAccount *)category;
 
-    [account updateSupportedTransactions];
-    [self save];
+    NSDictionary *details = @{@"accountName": account.name,
+                              @"message": NSLocalizedString(@"AP818", nil),
+                              @"details": NSLocalizedString(@"AP820", nil)};
+    [waitViewController startWaiting: details];
 
+    // Run maintenance in a background block.
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [account updateSupportedTransactions];
+
+        // Run clean up on main thread.
+        NSDictionary *details = @{@"accountName": account.name,
+                                  @"message": NSLocalizedString(@"AP823", nil),
+                                  @"details": NSLocalizedString(@"AP817", nil)};
+        [self performSelectorOnMainThread: @selector(cleanupAfterMaintenance:) withObject: details waitUntilDone: NO modes: @[NSModalPanelRunLoopMode]];
+
+    });
+
+    waitOverlay.animationDirection = JMModalOverlayDirectionBottom;
+    [waitOverlay showInWindow: mainWindow];
+    
     LogLeave;
 }
 
@@ -2402,6 +2454,15 @@ static BankingController *bankinControllerInstance;
         if ([item action] == @selector(creditCardSettlements:)) {
             return NO;
         }
+        if ([item action] == @selector(updateSupportedTransactions:)) {
+            return NO;
+        }
+        if ([item action] == @selector(updateStatementBalances:)) {
+            return NO;
+        }
+        if ([item action] == @selector(accountMaintenance:)) {
+            return NO;
+        }
     }
 
     if (idx == 0) {
@@ -2432,6 +2493,15 @@ static BankingController *bankinControllerInstance;
                 return NO;
             }
             if ([item action] == @selector(creditCardSettlements:)) {
+                return NO;
+            }
+            if ([item action] == @selector(updateSupportedTransactions:)) {
+                return NO;
+            }
+            if ([item action] == @selector(updateStatementBalances:)) {
+                return NO;
+            }
+            if ([item action] == @selector(accountMaintenance:)) {
                 return NO;
             }
         }
