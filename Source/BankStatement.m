@@ -24,6 +24,8 @@
 #import "MOAssistant.h"
 #import "StatCatAssignment.h"
 #import "ShortDate.h"
+#import "SEPAMT94xPurposeParser.h"
+
 #import "NSDecimalNumber+PecuniaAdditions.h"
 
 static NSArray *catCache = nil;
@@ -269,6 +271,9 @@ static NSRegularExpression *bicRE;
             self.remoteBankCode = nil;
         }
     }
+
+    // Examine purpose to see if we need to extract SEPA informations.
+    //NSDictionary *values = [SEPAMT94xPurposeParser parse: self.purpose];
 }
 
 - (BOOL)matches: (BankStatement *)stat
