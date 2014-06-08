@@ -49,6 +49,7 @@ static NSArray *catCache = nil;
 @dynamic isManual;
 @dynamic isStorno;
 @dynamic isNew;
+@dynamic isPreliminary;
 @dynamic ref1, ref2, ref3, ref4;
 
 @dynamic docDate, origValue, origCurrency, isSettled, ccNumberUms, ccChargeForeign, ccChargeTerminal, ccChargeKey, ccSettlementRef;

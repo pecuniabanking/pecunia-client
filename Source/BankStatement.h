@@ -104,6 +104,7 @@ typedef enum {
 @property (nonatomic, strong) NSNumber *isManual;
 @property (nonatomic, strong) NSNumber *isStorno;
 @property (nonatomic, strong) NSNumber *isNew;
+@property (nonatomic, strong) NSNumber *isPreliminary;
 
 @property (nonatomic, strong) NSString *ref1;
 @property (nonatomic, strong) NSString *ref2;
