@@ -491,6 +491,8 @@
 		278EC8231915251D005091E8 /* ShadowedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 278EC8211915251D005091E8 /* ShadowedTextField.m */; };
 		2790160417B94720006DF9BC /* AssetsCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2790160317B94720006DF9BC /* AssetsCard.m */; };
 		2790160517B94720006DF9BC /* AssetsCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2790160317B94720006DF9BC /* AssetsCard.m */; };
+		279048B5194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 279048B4194338C200BFB135 /* SEPAMT94xPurposeParser.m */; };
+		279048B6194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 279048B4194338C200BFB135 /* SEPAMT94xPurposeParser.m */; };
 		2790545014A37F59001380A3 /* hatch-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2790544F14A37F59001380A3 /* hatch-1.png */; };
 		2791FBD616CFCA4C00953116 /* delete3.png in Resources */ = {isa = PBXBuildFile; fileRef = 2791FBD416CFCA4C00953116 /* delete3.png */; };
 		2791FBD716CFCA4C00953116 /* delete3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2791FBD516CFCA4C00953116 /* delete3@2x.png */; };
@@ -1124,6 +1126,8 @@
 		278EC8211915251D005091E8 /* ShadowedTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShadowedTextField.m; sourceTree = "<group>"; };
 		2790160217B94720006DF9BC /* AssetsCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AssetsCard.h; path = "Home Screen/AssetsCard.h"; sourceTree = "<group>"; };
 		2790160317B94720006DF9BC /* AssetsCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AssetsCard.m; path = "Home Screen/AssetsCard.m"; sourceTree = "<group>"; wrapsLines = 0; };
+		279048B3194338C200BFB135 /* SEPAMT94xPurposeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEPAMT94xPurposeParser.h; sourceTree = "<group>"; };
+		279048B4194338C200BFB135 /* SEPAMT94xPurposeParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEPAMT94xPurposeParser.m; sourceTree = "<group>"; wrapsLines = 0; };
 		2790544F14A37F59001380A3 /* hatch-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hatch-1.png"; sourceTree = "<group>"; };
 		2791FBD416CFCA4C00953116 /* delete3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete3.png; sourceTree = "<group>"; };
 		2791FBD516CFCA4C00953116 /* delete3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete3@2x.png"; sourceTree = "<group>"; };
@@ -2261,8 +2265,8 @@
 		B12A497E10BDD242002CC63E /* HBCIBackend */ = {
 			isa = PBXGroup;
 			children = (
-				B17B28FF13E340A300739E7A /* HBCIBackend.h */,
 				B17B294613E35BF900739E7A /* HBCI4Java */,
+				B17B28FF13E340A300739E7A /* HBCIBackend.h */,
 				B14D4D2913DCA0E000843BE6 /* User.h */,
 				B14D4D2A13DCA0E000843BE6 /* User.m */,
 				B1014AEC101643C800ABA1FF /* TanMethod.h */,
@@ -2293,6 +2297,8 @@
 				B183586115CDC064003B93ED /* SigningOption.m */,
 				A694636E16B52D1A006D9D43 /* CCSettlementList.h */,
 				A694636F16B52D1A006D9D43 /* CCSettlementList.m */,
+				279048B3194338C200BFB135 /* SEPAMT94xPurposeParser.h */,
+				279048B4194338C200BFB135 /* SEPAMT94xPurposeParser.m */,
 			);
 			name = HBCIBackend;
 			sourceTree = "<group>";
@@ -3393,6 +3399,7 @@
 				27778899173CE22700430EBC /* Account.m in Sources */,
 				2777889B173CE22700430EBC /* NewPasswordController.m in Sources */,
 				2777889C173CE22700430EBC /* StatCatAssignment.m in Sources */,
+				279048B6194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
 				2777889D173CE22700430EBC /* TransferResult.m in Sources */,
 				2777889E173CE22700430EBC /* StatSplitController.m in Sources */,
 				2777889F173CE22700430EBC /* BankStatementController.m in Sources */,
@@ -3613,6 +3620,7 @@
 				B12A497710BDD23D002CC63E /* Account.m in Sources */,
 				B12A4D4F10C869F0002CC63E /* NewPasswordController.m in Sources */,
 				B17078F910EA5E6100A974E7 /* StatCatAssignment.m in Sources */,
+				279048B5194338C200BFB135 /* SEPAMT94xPurposeParser.m in Sources */,
 				B1A5940E112A8D8500FD8CB8 /* TransferResult.m in Sources */,
 				B1A59496113165BC00FD8CB8 /* StatSplitController.m in Sources */,
 				B14C60011148467A009324A6 /* BankStatementController.m in Sources */,
