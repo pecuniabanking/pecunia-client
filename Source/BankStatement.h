@@ -23,6 +23,7 @@
 @class ClassificationContext;
 @class Category;
 @class StatCatAssignment;
+@class SepaData;
 
 typedef enum {
     StatementType_Standard = 0,
@@ -48,8 +49,10 @@ typedef enum {
 
 - (void)addToAccount: (BankAccount *)account;
 - (void)sanitize;
+- (void)extractSEPAData;
 
 - (NSString *)floatingPurpose;
+- (NSString *)nonfloatingPurpose;
 
 + (void)initCategoriesCache;
 
@@ -112,6 +115,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *ref4;
 
 @property (nonatomic, strong) BankAccount *account;
+@property (nonatomic, strong) SepaData    *sepa;
 @property (nonatomic, strong) NSSet       *tags;
 
 @end

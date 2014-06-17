@@ -831,6 +831,8 @@
 		B19A85F00F3CC3D3000FE9B3 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A85EF0F3CC3D3000FE9B3 /* Keychain.m */; };
 		B19CA99219410C04005B1125 /* SepaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA99119410C04005B1125 /* SepaData.m */; };
 		B19CA99319410C04005B1125 /* SepaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA99119410C04005B1125 /* SepaData.m */; };
+		B19CA9961950222E005B1125 /* AccountStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA9951950222E005B1125 /* AccountStatement.m */; };
+		B19CA9971950222E005B1125 /* AccountStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = B19CA9951950222E005B1125 /* AccountStatement.m */; };
 		B19F41BE0FBDF57B003EE0E1 /* PecuniaError.m in Sources */ = {isa = PBXBuildFile; fileRef = B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */; };
 		B1A1377411B6FD9400622D6C /* AccountDefController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A1377311B6FD9400622D6C /* AccountDefController.m */; };
 		B1A5940E112A8D8500FD8CB8 /* TransferResult.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A5940D112A8D8500FD8CB8 /* TransferResult.m */; };
@@ -1539,6 +1541,8 @@
 		B19CA98F193FAFCB005B1125 /* Accounts 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Accounts 12.xcdatamodel"; sourceTree = "<group>"; };
 		B19CA99019410C04005B1125 /* SepaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SepaData.h; sourceTree = "<group>"; };
 		B19CA99119410C04005B1125 /* SepaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SepaData.m; sourceTree = "<group>"; };
+		B19CA9941950222E005B1125 /* AccountStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountStatement.h; path = Source/AccountStatement.h; sourceTree = SOURCE_ROOT; };
+		B19CA9951950222E005B1125 /* AccountStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountStatement.m; path = Source/AccountStatement.m; sourceTree = SOURCE_ROOT; };
 		B19F41BC0FBDF57B003EE0E1 /* PecuniaError.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaError.h; sourceTree = "<group>"; tabWidth = 4; };
 		B19F41BD0FBDF57B003EE0E1 /* PecuniaError.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaError.m; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 0; };
 		B1A1377211B6FD9400622D6C /* AccountDefController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = AccountDefController.h; sourceTree = "<group>"; tabWidth = 4; };
@@ -2705,6 +2709,8 @@
 		B1FE0DCD106585DC005B3800 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
+				B19CA9941950222E005B1125 /* AccountStatement.h */,
+				B19CA9951950222E005B1125 /* AccountStatement.m */,
 				B19CA99019410C04005B1125 /* SepaData.h */,
 				B19CA99119410C04005B1125 /* SepaData.m */,
 				27EA7D541816ED25000D9B30 /* LocalSettingsController.h */,
@@ -3431,6 +3437,7 @@
 				277788B7173CE22700430EBC /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
 				277788B8173CE22700430EBC /* MainBackgroundView.m in Sources */,
 				277788B9173CE22700430EBC /* RoundedInnerShadowView.m in Sources */,
+				B19CA9971950222E005B1125 /* AccountStatement.m in Sources */,
 				277788BA173CE22700430EBC /* RoundedSidebar.m in Sources */,
 				277788BB173CE22700430EBC /* GraphicsAdditions.m in Sources */,
 				277788BC173CE22700430EBC /* HBCIBridge.m in Sources */,
@@ -3652,6 +3659,7 @@
 				B197C3E413C3A28F0025F137 /* NSDecimalNumber+PecuniaAdditions.m in Sources */,
 				274DE2B413F992A50009EB77 /* MainBackgroundView.m in Sources */,
 				2724DC34140155F000B0FE15 /* RoundedInnerShadowView.m in Sources */,
+				B19CA9961950222E005B1125 /* AccountStatement.m in Sources */,
 				27150DA0140ABDAC000841E2 /* RoundedSidebar.m in Sources */,
 				27955AFF140C0603008369C9 /* GraphicsAdditions.m in Sources */,
 				B14D4C5F13DB5F3200843BE6 /* HBCIBridge.m in Sources */,
@@ -4184,7 +4192,7 @@
 				B17E5C6715EFF6C0008527C8 /* Accounts 5.xcdatamodel */,
 				B17992A815FA93F6005AB39A /* Accounts 6.xcdatamodel */,
 			);
-			currentVersion = 273C80501912A056007E799E /* Accounts 11.xcdatamodel */;
+			currentVersion = B19CA98F193FAFCB005B1125 /* Accounts 12.xcdatamodel */;
 			path = Accounts.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

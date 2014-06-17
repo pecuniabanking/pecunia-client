@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="12F45" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="AccountStatement" representedClassName="AccountStatement" syncable="YES">
+        <attribute name="advertisement" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bic" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="conditions" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="confirmationCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="document" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="format" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="iban" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="info" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankAccount" inverseName="accountStatements" inverseEntity="BankAccount" syncable="YES"/>
+        <relationship name="statements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BankStatement" inverseName="accountStatement" inverseEntity="BankStatement" syncable="YES"/>
+    </entity>
     <entity name="BankAccount" representedClassName="BankAccount" parentEntity="Category" syncable="YES">
         <attribute name="accountNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="accountSuffix" optional="YES" attributeType="String" syncable="YES"/>
@@ -19,6 +34,7 @@
         <attribute name="type" optional="YES" attributeType="Integer 32" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="Integer 32" syncable="YES"/>
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="accountStatements" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AccountStatement" inverseName="account" inverseEntity="AccountStatement" syncable="YES"/>
         <relationship name="ccSettlements" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CreditCardSettlement" inverseName="account" inverseEntity="CreditCardSettlement" indexed="YES" syncable="YES"/>
         <relationship name="standingOrders" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StandingOrder" inverseName="account" inverseEntity="StandingOrder" indexed="YES" syncable="YES"/>
         <relationship name="statements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BankStatement" inverseName="account" inverseEntity="BankStatement" indexed="YES" syncable="YES"/>
@@ -83,6 +99,7 @@
         <attribute name="value" optional="YES" attributeType="Decimal" syncable="YES"/>
         <attribute name="valutaDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <relationship name="account" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="BankAccount" inverseName="statements" inverseEntity="BankAccount" indexed="YES" syncable="YES"/>
+        <relationship name="accountStatement" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AccountStatement" inverseName="statements" inverseEntity="AccountStatement" syncable="YES"/>
         <relationship name="assignments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatCatAssignment" inverseName="statement" inverseEntity="StatCatAssignment" indexed="YES" syncable="YES"/>
         <relationship name="sepa" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SepaData" inverseName="statement" inverseEntity="SepaData" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="statements" inverseEntity="Tag" syncable="YES"/>
@@ -166,6 +183,7 @@
         <attribute name="value" optional="YES" attributeType="Binary" syncable="YES"/>
     </entity>
     <entity name="SepaData" representedClassName="SepaData" syncable="YES">
+        <attribute name="creditorId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="debitorId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="endToEndId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mandateId" optional="YES" attributeType="String" syncable="YES"/>
@@ -366,9 +384,9 @@
     <fetchRequest name="statementsByAccount" entity="BankStatement" predicateString="fromBank.bankCode == $BCODE AND fromBank.accountNumber == $ACCNT"/>
     <fetchRequest name="tagWithCaption" entity="Tag" predicateString="caption == $caption"/>
     <elements>
-        <element name="BankAccount" positionX="0" positionY="0" width="128" height="435"/>
+        <element name="BankAccount" positionX="0" positionY="0" width="128" height="450"/>
         <element name="BankMessage" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="BankStatement" positionX="0" positionY="0" width="128" height="823"/>
+        <element name="BankStatement" positionX="0" positionY="0" width="128" height="838"/>
         <element name="BankUser" positionX="0" positionY="0" width="128" height="375"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="315"/>
         <element name="CategoryBudget" positionX="0" positionY="0" width="128" height="90"/>
@@ -384,6 +402,7 @@
         <element name="TransactionLimits" positionX="0" positionY="0" width="128" height="450"/>
         <element name="Transfer" positionX="0" positionY="0" width="128" height="553"/>
         <element name="TransferTemplate" positionX="0" positionY="0" width="128" height="30"/>
-        <element name="SepaData" positionX="9" positionY="153" width="128" height="253"/>
+        <element name="SepaData" positionX="9" positionY="153" width="128" height="268"/>
+        <element name="AccountStatement" positionX="18" positionY="162" width="128" height="238"/>
     </elements>
 </model>

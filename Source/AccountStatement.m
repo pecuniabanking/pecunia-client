@@ -17,27 +17,25 @@
  * 02110-1301  USA
  */
 
-#import "SepaData.h"
+#import "AccountStatement.h"
+#import "BankAccount.h"
 #import "BankStatement.h"
-#import "Transfer.h"
 
 
-@implementation SepaData
+@implementation AccountStatement
 
-@dynamic purpose;
-@dynamic ultimateDebitorId;
-@dynamic ultimateCreditorId;
-@dynamic purposeCode;
-@dynamic mandateId;
-@dynamic mandateSignatureDate;
-@dynamic sequenceType;
-@dynamic oldCreditorId;
-@dynamic oldMandateId;
-@dynamic settlementDate;
-@dynamic debitorId;
-@dynamic creditorId;
-@dynamic endToEndId;
-@dynamic statement;
-@dynamic transfer;
+@dynamic document;
+@dynamic format;
+@dynamic startDate;
+@dynamic endDate;
+@dynamic info;
+@dynamic conditions;
+@dynamic advertisement;
+@dynamic iban;
+@dynamic bic;
+@dynamic name;
+@dynamic confirmationCode;
+@dynamic account;
+@dynamic statements;
 
 @end

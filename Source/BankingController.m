@@ -3507,6 +3507,7 @@ static BankingController *bankinControllerInstance;
     LogEnter;
 
     LocalSettingsController *settings = LocalSettingsController.sharedSettings;
+    NSManagedObjectContext  *context = MOAssistant.assistant.context;
 
     BOOL migrated10 = [settings boolForKey: @"Migrated10"];
 
@@ -3615,6 +3616,31 @@ static BankingController *bankinControllerInstance;
         settings[@"Migrated110"] = @YES;
     }
 
+    BOOL migrated112 = [settings boolForKey: @"Migrated112"];
+    if (migrated112 == NO) {
+        NSError *error = nil;
+
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement"
+                                                             inManagedObjectContext: context];
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        [request setEntity: entityDescription];
+        NSArray *statements = [context executeFetchRequest: request error: &error];
+        if (statements.count > 0) {
+            NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
+                            NSLocalizedString(@"AP178", nil),
+                            NSLocalizedString(@"AP1", nil),
+                            nil, nil
+                            );
+
+            for (BankStatement *stat in statements) {
+                [stat extractSEPAData];
+            }
+        }
+        settings[@"Migrated112"] = @YES;
+    }
+
+    
+    
     LogLeave;
 }
 

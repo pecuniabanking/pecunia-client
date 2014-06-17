@@ -36,6 +36,7 @@
 @property (nonatomic, retain) NSDate   * settlementDate;
 @property (nonatomic, retain) NSString * debitorId;
 @property (nonatomic, retain) NSString * endToEndId;
+@property (nonatomic, retain) NSString * creditorId;
 @property (nonatomic, retain) BankStatement *statement;
 @property (nonatomic, retain) Transfer *transfer;
 
