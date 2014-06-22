@@ -32,5 +32,7 @@
 - (NSString *)formatXML;
 
 -(BOOL)hasSubstring: (NSString *)substring;
+- (NSString *)stringWithNaturalText;
+- (NSString *)stringWithNormalizedGermanChars;
 
 @end

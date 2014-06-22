@@ -370,7 +370,8 @@ static NSCursor *moveCursor;
     [self.window invalidateCursorRectsForView: self];
 
     if (value == NSNoSelectionMarker || value == NSMultipleValuesMarker || value == nil) {
-        self.image = nil;
+        self.image = [NSImage imageNamed: @"gray-hatch2"];
+        self.imageScaling = NSImageScaleNone;
         if (value == nil) {
             self.toolTip = NSLocalizedString(@"AP119", nil);
         } else {
@@ -381,6 +382,7 @@ static NSCursor *moveCursor;
         return;
     }
 
+    self.imageScaling = NSImageScaleProportionallyUpOrDown;
     NSURL *url = [NSURL URLWithString: value];
 
     // Ensure we always have a scheme in the URL. Assume file as default.
@@ -449,7 +451,7 @@ static NSCursor *moveCursor;
     withKeyPath: (NSString *)keyPath
         options: (NSDictionary *)options
 {
-    if ([binding isEqualToString: @"reference"]) {
+    if ([binding isEqualToString: @"reference"] || [binding isEqualToString: @"valueURL"]) {
         observedObject = observableObject;
         observedKeyPath = keyPath;
         [observableObject addObserver: self forKeyPath: keyPath options: 0 context: AttachmentBindingContext];

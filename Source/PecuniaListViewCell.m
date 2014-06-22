@@ -22,6 +22,7 @@
 
 #import "PreferenceController.h"
 #import "NSColor+PecuniaAdditions.h"
+#import "NSString+PecuniaAdditions.h"
 
 extern void *UserDefaultsBindingContext;
 static void *SetRowBindingContext = @"SetRowContext";
@@ -160,14 +161,7 @@ NSDictionary    *whiteAttributes;
             value = [dateFormatter stringFromDate: value];
         } else {
             if (capitalize) {
-                NSMutableArray *words = [[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
-                for (NSUInteger i = 0; i < [words count]; i++) {
-                    NSString *word = words[i];
-                    if (i == 0 || [word length] > 3) {
-                        words[i] = [word capitalizedString];
-                    }
-                }
-                value = [words componentsJoinedByString: @" "];
+                return [value stringWithNaturalText];
             }
         }
     }

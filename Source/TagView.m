@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -113,7 +113,7 @@
     NSDictionary *attributes = @{NSFontAttributeName: font,
                                  NSParagraphStyleAttributeName: paragraphStyle,
                                  NSForegroundColorAttributeName: textColor};
-    cellFrame.origin.y -= 1;
+    cellFrame.origin.y -= 2;
     [tag.caption drawInRect: NSInsetRect(cellFrame, 5, 0) withAttributes: attributes];
 }
 
@@ -752,18 +752,17 @@
 /**
  * Displays a popover window with a tag view to select tags from and edit them.
  */
-- (void)showTagPopupAt: (NSRect)rect forView: (NSView *)owner host: (NSView *)host
+- (void)showTagPopupAt: (NSRect)rect forView: (NSView *)owner host: (NSView *)host preferredEdge: (NSRectEdge)preferredEdge
 {
     if (tagPopover.shown) {
         return;
     }
 
     [self createPopoverWithHost: host];
-    [tagPopover showRelativeToRect: rect ofView: owner preferredEdge: NSMinYEdge];
+    [tagPopover showRelativeToRect: rect ofView: owner preferredEdge: preferredEdge]; // NSMinYEdge
 }
 
-#pragma mark -
-#pragma mark Popover Delegate Methods
+#pragma mark - Popover Delegate Methods
 
 - (void)popoverDidClose: (NSNotification *)notification
 {

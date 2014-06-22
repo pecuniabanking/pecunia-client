@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2013, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -27,31 +27,6 @@
 @class PecuniaSplitView;
 
 @interface StatementsOverviewController : NSObject <PecuniaSectionItem, StatementsListViewProtocol>
-{
-    IBOutlet NSArrayController  *categoryAssignments;
-    IBOutlet StatementsListView *statementsListView;
-
-    IBOutlet NSArrayController *statementTags;
-    IBOutlet NSArrayController *tagsController;
-    IBOutlet NSButton          *tagButton;
-    IBOutlet TagView           *tagsField;
-    IBOutlet TagView           *tagViewPopup;
-    IBOutlet NSView            *tagViewHost;
-    IBOutlet NSTextField       *valueField;
-    IBOutlet NSTextField       *nassValueField;
-    IBOutlet NSTextField       *remoteNameLabel;
-    IBOutlet StatementDetails  *statementDetails;
-    IBOutlet NSTextField       *selectedSumField;
-    IBOutlet NSTextField       *totalSumField;
-    IBOutlet NSTextField       *originalAmountField;
-
-    IBOutlet NSSegmentedControl *sortControl;
-
-    IBOutlet AttachmentImageView *attachment1;
-    IBOutlet AttachmentImageView *attachment2;
-    IBOutlet AttachmentImageView *attachment3;
-    IBOutlet AttachmentImageView *attachment4;
-}
 
 @property (strong) IBOutlet PecuniaSplitView *mainView;
 @property (weak) NSButton *toggleDetailsButton; // Reference to the BankingController's toggle button.

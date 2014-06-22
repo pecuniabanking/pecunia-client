@@ -30,8 +30,7 @@ NSCalendar *calendar = nil;
 
 @implementation ShortDate
 
-- (id)initWithDate: (NSDate *)date
-{
+- (id)initWithDate: (NSDate *)date {
     self = [super init];
     if (self != nil) {
         if (date == nil) {
@@ -51,8 +50,7 @@ NSCalendar *calendar = nil;
     return self;
 }
 
-- (id)initWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d
-{
+- (id)initWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d {
     self = [super init];
     if (self != nil) {
         components = [[NSDateComponents alloc] init];
@@ -70,8 +68,7 @@ NSCalendar *calendar = nil;
     return self;
 }
 
-- (id)initWithYear: (unsigned)y week: (unsigned)w dayInWeek: (unsigned)d
-{
+- (id)initWithYear: (unsigned)y week: (unsigned)w dayInWeek: (unsigned)d {
     self = [super init];
     if (self != nil) {
         components = [[NSDateComponents alloc] init];
@@ -89,8 +86,7 @@ NSCalendar *calendar = nil;
     return self;
 }
 
-- (id)initWithCoder: (NSCoder *)coder
-{
+- (id)initWithCoder: (NSCoder *)coder {
     self = [super init];
     if (self != nil) {
         components = [coder decodeObjectForKey: @"components"];
@@ -98,34 +94,29 @@ NSCalendar *calendar = nil;
     return self;
 }
 
-- (void)encodeWithCoder: (NSCoder *)coder
-{
+- (void)encodeWithCoder: (NSCoder *)coder {
     [coder encodeObject: components forKey: @"components"];
 }
 
-- (id)copyWithZone: (NSZone *)zone
-{
+- (id)copyWithZone: (NSZone *)zone {
     return self;
 }
 
-- (NSDate *)lowDate
-{
+- (NSDate *)lowDate {
     components.hour = 0;
     components.minute = 0;
     components.second = 0;
     return [[ShortDate calendar] dateFromComponents: components];
 }
 
-- (NSDate *)highDate
-{
+- (NSDate *)highDate {
     components.hour = 23;
     components.minute = 59;
     components.second = 59;
     return [[ShortDate calendar] dateFromComponents: components];
 }
 
-- (NSComparisonResult)compare: (ShortDate *)date
-{
+- (NSComparisonResult)compare: (ShortDate *)date {
     if (components.year < date.year) {
         return NSOrderedAscending;
     }
@@ -147,21 +138,21 @@ NSCalendar *calendar = nil;
     return NSOrderedSame;
 }
 
-- (NSComparisonResult)compareReversed: (ShortDate *)date
-{
+- (NSComparisonResult)compareReversed: (ShortDate *)date {
     NSComparisonResult result = [self compare: date];
     switch (result) {
         case NSOrderedAscending:
             return NSOrderedDescending;
+
         case NSOrderedDescending:
             return NSOrderedAscending;
+
         default:
             return result;
     }
 }
 
-- (BOOL)isBetween: (ShortDate *)fromDate and: (ShortDate *)toDate
-{
+- (BOOL)isBetween: (ShortDate *)fromDate and: (ShortDate *)toDate {
     unsigned fy = fromDate.year;
     unsigned ty = toDate.year;
     unsigned fm = fromDate.month;
@@ -183,24 +174,20 @@ NSCalendar *calendar = nil;
     return YES;
 }
 
-- (BOOL)isEqual: (ShortDate *)date
-{
+- (BOOL)isEqual: (ShortDate *)date {
     return (components.year == date.year) && (components.month == date.month) && (components.day == date.day);
 }
 
-- (NSUInteger)hash
-{
+- (NSUInteger)hash {
     return components.year * 372 + components.month * 31 + components.day;
 }
 
-- (int)daysToDate: (ShortDate *)toDate
-{
+- (int)daysToDate: (ShortDate *)toDate {
     NSDateComponents *comps = [calendar components: NSCalendarUnitDay fromDate: self.lowDate toDate: toDate.lowDate options: 0];
     return [comps day];
 }
 
-- (int)monthsToDate: (ShortDate *)toDate
-{
+- (int)monthsToDate: (ShortDate *)toDate {
     NSDateComponents *comps = [calendar components: NSCalendarUnitMonth fromDate: self.lowDate toDate: toDate.lowDate options: 0];
     return [comps month];
 }
@@ -213,8 +200,7 @@ NSCalendar *calendar = nil;
  *       e.g. Dec 22, 2010 and Dec 27, 2010 are only 5 days apart (so NSCalendar considers them 0 weeks apart)
  *       however they are actually in two different calendar weeks, so their week difference is 1.
  */
-- (int)unitsToDate: (ShortDate *)toDate byUnit: (int)calendarUnit
-{
+- (int)unitsToDate: (ShortDate *)toDate byUnit: (int)calendarUnit {
     switch (calendarUnit) {
         case NSCalendarUnitYear:
             return toDate.year - components.year;
@@ -236,8 +222,7 @@ NSCalendar *calendar = nil;
     }
 }
 
-- (ShortDate *)dateByAddingUnits: (int)units byUnit: (int)calendarUnit
-{
+- (ShortDate *)dateByAddingUnits: (int)units byUnit: (int)calendarUnit {
     NSDateComponents *comps = [components copy];
 
     // In order to avoid rounding up months to the next higher one if the original day value is beyond
@@ -290,39 +275,44 @@ NSCalendar *calendar = nil;
     return [ShortDate dateWithDate: date];
 }
 
-- (unsigned)year
-{
+- (unsigned)year {
     return components.year;
 }
 
-- (unsigned)month
-{
+- (unsigned)month {
     return components.month;
 }
 
-- (unsigned)day
-{
+- (unsigned)day {
     return components.day;
 }
 
-- (unsigned)quarter
-{
+- (unsigned)quarter {
     return (components.month - 1) / 3 + 1;
 }
 
-- (unsigned)week
-{
+- (unsigned)week {
     return components.weekOfYear;
 }
 
-- (int)daysInMonth
-{
+- (int)daysInMonth {
     NSRange r = [calendar rangeOfUnit: NSCalendarUnitDay inUnit: NSCalendarUnitMonth forDate: inner];
     return r.length;
 }
 
-- (NSString *)description
-{
+/**
+ * Returns the content of the receiver as an ISO conformal date (YYYY-MM-DD).
+ */
+- (NSString *)isoDate {
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    NSLocale        *enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier: @"en_US_POSIX"];
+    [formatter setLocale: enUSPOSIXLocale];
+    [formatter setDateFormat: @"yyyy-MM-dd"];
+
+    return [formatter stringFromDate: self.lowDate];
+}
+
+- (NSString *)description {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle: NSDateFormatterMediumStyle];
     [formatter setTimeStyle: NSDateFormatterNoStyle];
@@ -330,8 +320,7 @@ NSCalendar *calendar = nil;
     return [formatter stringFromDate: self.lowDate];
 }
 
-- (NSString *)shortMonthDescription
-{
+- (NSString *)shortMonthDescription {
     if (shortMonthName == nil) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"MMM";
@@ -340,73 +329,60 @@ NSCalendar *calendar = nil;
     return shortMonthName;
 }
 
-- (NSString *)monthYearDescription
-{
+- (NSString *)monthYearDescription {
     return [NSString stringWithFormat: @"%li/%li", components.month, components.year];
 }
 
-- (NSString *)longMonthYearDescription
-{
+- (NSString *)longMonthYearDescription {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"MMMM y";
 
     return [formatter stringFromDate: self.lowDate];
 }
 
-- (NSString *)quarterYearDescription
-{
+- (NSString *)quarterYearDescription {
     return [NSString stringWithFormat: @"Q%i/%li", self.quarter, components.year];
 }
 
-- (NSString *)yearDescription
-{
+- (NSString *)yearDescription {
     return [NSString stringWithFormat: @"%li", components.year];
 }
 
-- (NSString *)weekYearDescription
-{
+- (NSString *)weekYearDescription {
     // TODO: localization?
     return [NSString stringWithFormat: @"KW %li/%li", components.weekOfYear, components.year];
 }
 
-- (ShortDate *)firstDayInYear
-{
+- (ShortDate *)firstDayInYear {
     return [ShortDate dateWithYear: components.year month: 1 day: 1];
 }
 
-- (ShortDate *)lastDayInYear
-{
+- (ShortDate *)lastDayInYear {
     return [ShortDate dateWithYear: components.year month: 12 day: 31];
 }
 
-- (ShortDate *)firstDayInMonth
-{
+- (ShortDate *)firstDayInMonth {
     return [ShortDate dateWithYear: components.year month: components.month day: 1];
 }
 
-- (ShortDate *)lastDayInMonth
-{
+- (ShortDate *)lastDayInMonth {
     return [ShortDate dateWithYear: components.year month: components.month day: [self daysInMonth]];
 }
 
-- (ShortDate *)firstDayInQuarter
-{
+- (ShortDate *)firstDayInQuarter {
     return [ShortDate dateWithYear: components.year month: (self.quarter - 1) * 3 + 1 day: 1];
 }
 
-- (ShortDate *)lastDayInQuarter
-{
+- (ShortDate *)lastDayInQuarter {
     ShortDate *lastMonth = [ShortDate dateWithYear: components.year month: (self.quarter) * 3 day: 1];
     return [lastMonth lastDayInMonth];
 }
 
-- (NSInteger)dayInWeek
-{
+- (NSInteger)dayInWeek {
     return components.weekday;
 }
 
-- (ShortDate *)firstDayInWeek
-{
+- (ShortDate *)firstDayInWeek {
     NSDateComponents *comps = [calendar components: NSCalendarUnitWeekday fromDate: [self lowDate]];
 
     NSInteger offset = calendar.firstWeekday - comps.weekday;
@@ -416,53 +392,44 @@ NSCalendar *calendar = nil;
     return [self dateByAddingUnits: offset byUnit: NSCalendarUnitWeekday];
 }
 
-- (ShortDate *)lastDayInWeek
-{
+- (ShortDate *)lastDayInWeek {
     NSDateComponents *comps = [calendar components: NSCalendarUnitWeekday fromDate: [self lowDate]];
 
     return [self dateByAddingUnits: (7 - comps.weekday) byUnit: NSCalendarUnitWeekday];
 }
 
-- (BOOL)isFirstDayInMonth
-{
+- (BOOL)isFirstDayInMonth {
     return components.day == 1;
 }
 
-+ (ShortDate *)dateWithDate: (NSDate *)date
-{
++ (ShortDate *)dateWithDate: (NSDate *)date {
     ShortDate *res = [[ShortDate alloc] initWithDate: date];
     return res;
 }
 
-+ (ShortDate *)currentDate
-{
++ (ShortDate *)currentDate {
     return [ShortDate dateWithDate: [NSDate date]];
 }
 
-+ (ShortDate *)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d
-{
++ (ShortDate *)dateWithYear: (unsigned)y month: (unsigned)m day: (unsigned)d {
     ShortDate *res = [[ShortDate alloc] initWithYear: y month: m day: d];
     return res;
 }
 
-+ (ShortDate *)dateWithYear: (unsigned)y week: (unsigned)w dayInWeek: (unsigned)d
-{
++ (ShortDate *)dateWithYear: (unsigned)y week: (unsigned)w dayInWeek: (unsigned)d {
     ShortDate *res = [[ShortDate alloc] initWithYear: y week: w dayInWeek: d + calendar.firstWeekday - 1];
     return res;
 }
 
-+ (ShortDate *)distantFuture
-{
++ (ShortDate *)distantFuture {
     return [ShortDate dateWithYear: 2500 month: 12 day: 31];
 }
 
-+ (ShortDate *)distantPast
-{
++ (ShortDate *)distantPast {
     return [ShortDate dateWithYear: 2000 month: 1 day: 1];
 }
 
-+ (NSCalendar *)calendar
-{
++ (NSCalendar *)calendar {
     if (calendar == nil) {
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:  NSGregorianCalendar];
         calendar.firstWeekday = 2; // Set monday as first day of week.

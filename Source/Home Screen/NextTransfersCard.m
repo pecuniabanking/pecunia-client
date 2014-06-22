@@ -858,8 +858,6 @@ static NSFont *smallNumberFont;
                                                selector: @selector(handleDataModelChange:)
                                                    name: NSManagedObjectContextDidSaveNotification
                                                  object: MOAssistant.assistant.context];
-
-
     }
 
     LogLeave;

@@ -17,8 +17,6 @@
  * 02110-1301  USA
  */
 
-#import <Foundation/Foundation.h>
-
 enum ResultReliability {
     PBReliabilityBad,
     PBReliabilityUnsure,

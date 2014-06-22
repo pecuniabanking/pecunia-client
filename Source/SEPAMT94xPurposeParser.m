@@ -18,17 +18,16 @@
  */
 
 #import "SEPAMT94xPurposeParser.h"
+#import "MessageLog.h"
 
 @implementation SEPAMT94xPurposeParser
 
-// Unfortunately, these values are defined as german strings.
-#define REVERSE_TRANSFER_STRING @"RUECKUEBERWEISUNG:"
-#define CHARGE_BACK_STRING @"RUECKLASTSCHRIFT:"
-
 /**
- * Returns a set of SEPA prefixes and their localized descriptions.
+ * Returns a dictionary of SEPA prefixes and their localized descriptions.
  */
-+ (NSDictionary *)prefixMappings {
++ (NSDictionary *)prefixMap {
+    NSAssert([NSLocalizedString(@"AP1300", nil) hasPrefix: @"IBAN+"], @"Prefix mapping localizations have unexpectedly been changed.");
+
     static NSMutableDictionary *prefixes;
     if (prefixes == nil) {
         prefixes = [NSMutableDictionary new];
@@ -44,9 +43,11 @@
 }
 
 /**
- * Returns a set of SEPA purpose codes and their localized descriptions.
+ * Returns a dictionary of SEPA purpose codes and their localized descriptions.
  */
-+ (NSDictionary *)purposeCodeMappings {
++ (NSDictionary *)purposeCodeMap {
+    NSAssert([NSLocalizedString(@"AP1330", nil) hasPrefix: @"BENE+"], @"Purpose code mapping localizations have unexpectedly been changed.");
+
     static NSMutableDictionary *codes;
     if (codes == nil) {
         codes = [NSMutableDictionary new];
@@ -62,85 +63,167 @@
 }
 
 /**
+ * Returns a dictionary of SEPA sequence type codes and their localized descriptions + image names for the UI.
+ * Each entry consists of a dictionary with 2 values: image + description
+ */
++ (NSDictionary *)sequenceTypeMap {
+    NSAssert([NSLocalizedString(@"AP1300", nil) hasPrefix: @"IBAN+"], @"Prefix mapping localizations have unexpectedly been changed.");
+
+    static NSMutableDictionary *types;
+    if (types == nil) {
+        types = [NSMutableDictionary new];
+        for (int i = 1495; i < 1499; ++i) {
+            NSString *key = [NSString stringWithFormat: @"AP%i", i];
+            NSArray *parts = [NSLocalizedString(key, nil) componentsSeparatedByString: @"+"];
+            if (parts.count == 3) {
+                types[parts[0]] = @{@"description": parts[1], @"image": parts[2]};
+            }
+        }
+    }
+    return types;
+}
+
+/**
+ * Tries to find a sequence type code from the given text, using some heuristics.
+ */
++ (NSString *)sequenceTypeFromString: (NSString *)text {
+    if (text == nil) {
+        return nil;
+    }
+
+    static NSMutableDictionary *typeVariants;
+    if (typeVariants == nil) {
+        typeVariants = [NSMutableDictionary new];
+        for (int i = 1499; i < 1502; ++i) {
+            NSString *key = [NSString stringWithFormat: @"AP%i", i];
+            NSArray *parts = [NSLocalizedString(key, nil) componentsSeparatedByString: @":"];
+            if (parts.count == 2) {
+                typeVariants[parts[0]] = parts[1];
+            }
+        }
+    }
+
+    NSString *lowerCaseText = text.lowercaseString;
+    for (NSString *key in typeVariants.allKeys) {
+        if ([lowerCaseText rangeOfString: key].length > 0) {
+            return typeVariants[key];
+        }
+    }
+
+    return nil;
+}
+
+/**
  * Treats the given text as purpose provided by an MT94x result and extracts associated SEPA informations.
  * The returned dictionary contains an entry for each found SEPA prefix. The prefix is used as key.
  *
- * If there's no SEPA prefix in the text it is returned as SVWZ entry in the result. Otherwise the text is considered
- * consisting of only SEPA informations with prefix (line continuation takes place).
- * In addition to the manually specified purpose (or as alternative) a machine generated purpose is added
- * under its key PURP (if such a record is in the text at all). The purpose code is translated to a localized
- * description.
+ * If there's no SEPA prefix in the text it is returned as SVWZ entry in the result. Otherwise the text is split
+ * depending on the prefixes (line continuation takes place). Text before the first prefix and that in an SWVZ entry
+ * is concatenated to form the final SWVZ text. Some other special handling might be applied to that.
  */
 + (NSDictionary *)parse: (NSString *)text {
-    NSDictionary *mappings = [self prefixMappings];
+    if (text.length == 0) {
+        return nil;
+    }
+
+    static NSRegularExpression *sepaRegex;
+    if (sepaRegex == nil) {
+        NSError *error;
+        sepaRegex = [NSRegularExpression regularExpressionWithPattern: @"[A-Z]{3,4}(\\+|:)" options: 0 error: &error];
+        if (error != nil) {
+            LogError(@"Error while compiling RE for SEPA data: %@", error.debugDescription);
+        }
+    }
+
+    NSDictionary *mappings = [self prefixMap];
     NSMutableDictionary *result = [NSMutableDictionary new];
 
-    // Each prefix must start on its own line in the first position.
-    // Collect all unknown entries and the SVWZ entry into a common purpose string.
     NSArray *lines = [text componentsSeparatedByCharactersInSet: NSCharacterSet.newlineCharacterSet];
     NSString *lastKey;
     NSMutableString *purpose = [NSMutableString new];
+
     for (NSString *line in lines) {
-        NSArray *parts = [line componentsSeparatedByString: @"+"];
+        if (line.length == 0) {
+            continue;
+        }
 
-        if (parts.count == 2 && [parts[0] length] == 4) {
-            if (mappings[parts[0]] != nil) {
-                lastKey = parts[0];
-                NSString *value = parts[1];
-
-                // Some special handling required here.
-                // Entry SQTP+ is currently unclear. Couldn't find an understandable description so far.
-                if ([lastKey isEqualToString: @"EREF"] && [value isEqualToString: @"NOTPROVIDED"]) {
-                    continue; // Ignore this entry.
-                } else {
-                    if ([lastKey isEqualToString: @"KREF"] && [value isEqualToString: @"NONREF"]) {
-                        continue;
-                    } else {
-                        if ([lastKey isEqualToString: @"PURP"]) {
-                            // Generated purpose key. We can convert that to a clear text message.
-                            NSDictionary *purposeCodes = [self purposeCodeMappings];
-                            if (purposeCodes[value] != nil) {
-                                value = purposeCodes[value];
-                            }
-                        } else {
-                            if ([lastKey isEqualToString: @"SVWZ"]) {
-                                if ([value hasPrefix: REVERSE_TRANSFER_STRING]) {
-                                    value = [value substringFromIndex: [REVERSE_TRANSFER_STRING length]];
-                                } else {
-                                    if ([value hasPrefix: CHARGE_BACK_STRING]) {
-                                        value = [value substringFromIndex: [CHARGE_BACK_STRING length]];
-                                    }
-                                }
-                                // Collect the purpose text and any unknown found before the first prefix into
-                                // the overall purpose.
-                                [purpose appendString: value];
-                                continue;
-                            }
-                        }
-                        result[lastKey] = value;
-                    }
-                }
-            } else {
-                // Looks like a prefix but is unknown. Handle this as line continuation then.
-                if (lastKey == nil) {
-                    [purpose appendString: line];
-                } else {
-                    result[lastKey] = [result[lastKey] stringByAppendingString: line];
-                }
-            }
-        } else {
-            // A line without (known) prefix. Either this is the continuation of the previous line
+        // Each prefix must start on its own line in the first position. At least that's the theory. Some banks have
+        // their own interpretation, so we have to cater for that.
+        NSArray *matches = [sepaRegex matchesInString: line options: 0 range: NSMakeRange(0, line.length)];
+        if (matches.count == 0 || [matches[0] range].location > 0) {
+            // A line without (known) prefix or some remaining text before the first prefix.
+            // Either this is the continuation of the previous line
             // or something else we add to the purpose string.
-            if (lastKey == nil) {
-                if (purpose.length > 0) {
+            NSString *remainder = (matches.count == 0) ? line : [line substringWithRange: NSMakeRange(0, [matches[0] range].location)];
+
+            // Consider the (non-standard) DATUM prefix, but only if it starts at position 0.
+            // We may have to add more such special prefixes as banks tend to introduce their own markup.
+            if (lastKey == nil || [remainder hasPrefix: @"DATUM "]) {
+                if ([remainder hasPrefix: @"DATUM "]) {
+                    // Put the DATUM entry on an own line.
                     [purpose appendString: @"\n"];
                 }
-                [purpose appendString: line];
+                [purpose appendString: remainder];
+                [purpose appendString: @"\n"];
+                lastKey = nil; // DATUM prefix closes the last prefix if there was any.
             } else {
-                if ([lastKey isEqualToString: @"SVWZ"]) {
-                    [purpose appendString: line];
+                if ([lastKey isEqualToString: @"SVWZ"]) { // Line continuation for the purpose entry.
+                    [purpose appendString: remainder];
                 } else {
-                    result[lastKey] = [result[lastKey] stringByAppendingString: line];
+                    result[lastKey] = [[result[lastKey] stringByAppendingString: remainder] stringByTrimmingCharactersInSet: NSCharacterSet.whitespaceCharacterSet];
+                }
+            }
+            if (matches.count == 0) {
+                continue;
+            }
+        }
+
+        for (NSUInteger i = 0; i < matches.count; ++i) {
+            NSTextCheckingResult *match = matches[i];
+
+            // Anything before the first match has been handled already.
+            NSString *content;
+            NSString *keyPart = [line substringWithRange: NSMakeRange(match.range.location, match.range.length - 1)];
+
+            // Get the remaining part (between this and the next match or the line end).
+            // Sometimes there are whitespaces between the prefix and the content. Remove them too.
+            if (i + 1 >= matches.count) { // Last match?
+                content = [line substringFromIndex: match.range.location + match.range.length];
+            } else {
+                NSUInteger start = match.range.location + match.range.length; // Position after the prefix + separator.
+                NSTextCheckingResult *next = matches[i + 1];
+                content = [line substringWithRange: NSMakeRange(start, next.range.location - start)];
+            }
+
+            content = [content stringByTrimmingCharactersInSet: NSCharacterSet.whitespaceCharacterSet];
+
+            if (mappings[keyPart] == nil) {
+                LogWarning(@"SEPA tag %@ is not supported", keyPart);
+
+                // Keep any unknown prefix as part of the purpose string for now.
+                [purpose appendString: content];
+                [purpose appendString: @"\n"];
+                continue;
+            }
+
+            // Some special handling required here.
+            if ([keyPart isEqualToString: @"EREF"] && [content isEqualToString: @"NOTPROVIDED"]) {
+                lastKey = nil;
+                continue; // Ignore this entry.
+            } else {
+                if ([keyPart isEqualToString: @"KREF"] && [content isEqualToString: @"NONREF"]) {
+                    lastKey = nil;
+                    continue;
+                } else {
+                    lastKey = keyPart;
+                    
+                    if ([lastKey isEqualToString: @"SVWZ"]) {
+                        // Collect the purpose text anything before the first prefix into
+                        // the overall purpose.
+                        [purpose appendString: content];
+                        continue;
+                    }
+                    result[lastKey] = content;
                 }
             }
         }

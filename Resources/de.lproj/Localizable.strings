@@ -106,6 +106,8 @@ AP126 = "Es wird derzeit die Kommunkation mit der Bank zur Fehleranalyse aufgeze
 AP127 = "Ein Fehler trat während der letzten Aktion mit der Bank auf. Nutzen Sie das Hilfe Menü für weitere Optionen zur Lösung des Problems, insbesondere die Fehlerdatei und die Aufzeichnung der Kommunikation.";
 AP128 = "Fehler bei der Auftragsausführung";
 AP129 = "Die Bankkennung '%@' wurde erfolgreich synchronisiert";
+AP130 = "Buchung";
+AP131 = "Kreditkartenbuchung";
 
 // Banking setup, migration, encryption, security.
 // AP150..AP199
@@ -432,6 +434,7 @@ AP820 = "Geschäftsvorfälle werden synchronisiert";
 AP821 = "Alle Zwischensalden werden neu berechnet";
 AP822 = "Neuberechnung beendet";
 AP823 = "Synchronisierung durchgeführt";
+AP824 = "Ein Fehler ist während der Aufräumarbeiten aufgetreten";
 
 // Tags
 // AP850..AP949
@@ -441,7 +444,6 @@ AP852 = "Miete";
 AP853 = "Urlaub";
 AP854 = "Nebenkosten";
 AP855 = "Verein";
-AP863 = "Gewerkschaft";
 AP856 = "Spende";
 AP857 = "Energie";
 AP858 = "Entsorgung";
@@ -542,25 +544,26 @@ AP1212 = "SEPA-Dauerauftrag";
 AP1213 = "SEPA-Terminüberweisung";
 AP1214 = "SEPA-Sammelüberweisung";
 
+AP1215 = "Einfache Überweisung";
 AP1299 = "Unbekannt";
 
 // SEPA Informations
-// AP1300..AP1499
+// AP1300..AP1549
 AP1300 = "IBAN+IBAN des Auftraggebers";
 AP1301 = "BIC+BIC des Auftraggebers";
 AP1302 = "EREF+Ende zu Ende Referenz";
 AP1303 = "SVWZ+Verwendungszweck";
-AP1304 = "ABWA+Abweichender SEPA Auftraggeber";
-AP1305 = "ABWE+Abweichender SEPA Empfänger";
-AP1306 = "PURP+Purpose Code"; // See below for these codes
-AP1307 = "MREF+Mandatsreferenz (SEPA Mandat ID)";
-AP1308 = "CRED+Auftraggeber SEPA Creditor ID";
-AP1309 = "MDAT+SEPA Mandatsdatum";
-AP1310 = "SQTP+Wiederholung";
-AP1311 = "ORCR+SEPA Mandatsänderung: alte SEPA CI";
-AP1312 = "ORMR+SEPA Mandatsänderung: alte SEPA Mandatsreferenz";
-AP1313 = "DDAT+SEPA Settlement Tag für R- Message";
-AP1314 = "DEBT+Auftraggeber SEPA Creditor ID";
+AP1304 = "ABWA+Abweichender Auftraggeber";
+AP1305 = "ABWE+Abweichender Empfänger";
+AP1306 = "PURP+Purpose Code"; // See below for these codes.
+AP1307 = "MREF+Mandatsreferenz";
+AP1308 = "CRED+Auftraggeber Creditor ID";
+AP1309 = "MDAT+Mandatsdatum";
+AP1310 = "SQTP+Wiederholung"; // See below for these codes.
+AP1311 = "ORCR+Mandatsänderung: alte CID";
+AP1312 = "ORMR+Mandatsänderung: alte Referenz";
+AP1313 = "DDAT+Datum für Rücklastschrift";
+AP1314 = "DEBT+Creditor ID";
 AP1315 = "KREF+Kundenreferenz";
 AP1316 = "COAM+Rücklastschrift Entgelt";
 AP1317 = "OAMT+Originalbetrag";
@@ -585,7 +588,7 @@ AP1345 = "FCOL+Gebührensammlung";
 AP1346 = "MTUP+Handy aufladen";
 AP1347 = "ACCT+Kontoverwaltung (Umbuchung)";
 AP1348 = "CASH+Allgemeine Überweisung";
-AP1349 = "COLL*Sammelzahlung";
+AP1349 = "COLL+Sammelzahlung";
 AP1350 = "CSDB+Cash-Auszahlung";
 AP1351 = "DEPT+Einzahlung";
 AP1352 = "INTC+Interne Firmenzahlung";
@@ -610,7 +613,7 @@ AP1370 = "TRAD+Handelsdienstleistung";
 AP1371 = "COMT+Konsument für dritte Person konsolidierte Zahlung";
 AP1372 = "CLPR+Ausleihgebühren für das Auto als Hauptrückzahlung";
 AP1373 = "DBTC+Lastschriftsammelzahlung";
-AP1374 = "GOVI++Regierungsversicherung";
+AP1374 = "GOVI+Regierungsversicherung";
 AP1375 = "HLRP+Rückzahlung Baufinanzierung";
 AP1376 = "INPC+Versicherungsbeitrag Auto";
 AP1377 = "INSU+Versicherungsbeitrag";
@@ -637,10 +640,10 @@ AP1397 = "IDCP+Unwiderrufliche Debit-Kartenzahlung";
 AP1398 = "IHRP+Raten- oder Mieteinkauf-Vereinbarung";
 AP1399 = "INSM+Ratenzahlung";
 AP1400 = "MSVC+Vielfache Dienstleistungstypen";
-AP1301 = "NOWS+Nicht näher bekannte Dienstleistung";
+AP1401 = "NOWS+Nicht näher bekannte Dienstleistung";
 AP1402 = "OFEE+Eröffnungsgebühr";
 AP1403 = "OTHR+Unbekannter Zahlungsgrund";
-AP1404 = "PADD+Davor authorisierte Lastschrift";
+AP1404 = "PADD+Zuvor authorisierte Lastschrift";
 AP1405 = "PTSP+Zahlungsbedingungen";
 AP1406 = "RCKE+Scheckwiedervorlage";
 AP1407 = "RCPT+Erhaltene Zahlung";
@@ -683,9 +686,9 @@ AP1443 = "GVEA+Zahlung an österreichische Regierungsangestellte Kategorie A";
 AP1444 = "GVEB+Zahlung an österreichische Regierungsangestellte Kategorie B";
 AP1445 = "GVEC+Zahlung an österreichische Regierungsangestellte Kategorie C";
 AP1446 = "GVED+Zahlung an österreichische Regierungsangestellte Kategorie D";
-AP1437 = "GWLT+Regierungs-Kriegsgesetze Überweisung";
-AP1438 = "PAYR+Gehaltszahlung";
-AP1439 = "PRCP+Preiszahlung";
+AP1447 = "GWLT+Regierungs-Kriegsgesetze Überweisung";
+AP1448 = "PAYR+Gehaltszahlung";
+AP1449 = "PRCP+Preiszahlung";
 AP1450 = "RHBS+Rehabilitationsunterstützung";
 AP1451 = "ESTX+Erbschaftsteuer";
 AP1452 = "HSTX+Haus-/Grundsteuer";
@@ -694,8 +697,8 @@ AP1454 = "NITX+Steuer auf Gewinn";
 AP1455 = "TAXS+Steuerzahlung";
 AP1456 = "VATX+Umsatzsteuer";
 AP1457 = "WHLD+Quellensteuer";
-AP1448 = "TAXR+Steuerrückzahlung";
-AP1449 = "AIRB+Zahlung Lufttransport";
+AP1458 = "TAXR+Steuerrückzahlung";
+AP1459 = "AIRB+Zahlung Lufttransport";
 AP1460 = "BUSB+Zahlung Bustransport";
 AP1461 = "FERB+Zahlung Fähre";
 AP1462 = "RLWY+Zahlung Eisenbahn";
@@ -709,9 +712,20 @@ AP1469 = "OTLC+Andere Telekom bezogene Rechnungen";
 AP1470 = "PHON+Telefonrechnung";
 AP1471 = "WTER+Wasserrechnung";
 
-AP1499 = "Keine weitere Information vorhanden";
+// Sequence types (SQTP)
+AP1495 = "FRST+Erste von zukünftig wiederkehrenden Überweisungen+sequence-type-start";
+AP1496 = "RCUR+Wiederkehrende Überweisung+sequence-type-repeat";
+AP1497 = "FNAL+Letzte von bisher wiederkehrenden Überweisungen+sequence-type-end";
+AP1498 = "OOFF+Einmalige Überweisung+sequence-type-once-off";
+
+// Some transfer description to help parsing out the sequence type if there's not sequence code.
+AP1499 = "erstlastschrift:FRST";
+AP1500 = "folgelastschrift:RCUR";
+AP1501 = "dauerauftrag:RCUR";
+
+AP1549 = "\nDas Wertstellungsdatum liegt in der Zukunft, diese Transaktion ist also noch nicht vollständig gebucht";
 
 // Use a new block of IDs for the next set of strings!
-// AP1500..AP1550
+// AP1550..AP1599
 
 

@@ -364,7 +364,7 @@ extern NSDictionary    *whiteAttributes;
 - (IBAction)activationChanged: (id)sender
 {
     if ([self.delegate conformsToProtocol: @protocol(StatementsListViewNotificationProtocol)]) {
-        [self.delegate cellActivationChanged: ([checkbox state] == NSOnState ? YES : NO) forIndex: index];
+        [self.delegate cellActivationChanged: ([checkbox state] == NSOnState ? YES : NO) forIndex: self.row];
     }
 }
 

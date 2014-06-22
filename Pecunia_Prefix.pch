@@ -6,7 +6,8 @@
     #import <Foundation/Foundation.h>
     #import <Cocoa/Cocoa.h>
     #import <QuartzCore/QuartzCore.h>
-    #include <Accelerate/Accelerate.h>
+    #import <Accelerate/Accelerate.h>
+    #import <mach/mach_time.h>
 
     #import "PXListView.h"
 #endif

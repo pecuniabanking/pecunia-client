@@ -1139,20 +1139,31 @@ static BankingController *bankinControllerInstance;
         return;
     }
     BankAccount *account = (BankAccount *)category;
-    NSDictionary *details = @{@"accountName": account.name,
+    NSDictionary *details = @{@"title": account.name,
                               @"message": NSLocalizedString(@"AP818", nil),
                               @"details": NSLocalizedString(@"AP819", nil)};
     [waitViewController startWaiting: details];
 
     // Run maintenance in a background block.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [account doMaintenance];
+        NSMutableDictionary *details = [NSMutableDictionary new];
+        details[@"title"] = account.name;
+        details[@"message"] = NSLocalizedString(@"AP816", nil);
+        @try {
+            [account doMaintenance];
+            details[@"details"] = NSLocalizedString(@"AP817", nil);
+        }
+        @catch (NSException *exception) {
+            LogError(@"Error while doing account maintenance:\n%@", exception.debugDescription);
 
-        // Run clean up on main thread.
-        NSDictionary *details = @{@"accountName": account.name,
-                                  @"message": NSLocalizedString(@"AP816", nil),
-                                  @"details": NSLocalizedString(@"AP817", nil)};
-        [self performSelectorOnMainThread: @selector(cleanupAfterMaintenance:) withObject: details waitUntilDone: NO modes: @[NSModalPanelRunLoopMode]];
+            details[@"details"] = NSLocalizedString(@"AP824", nil);
+            details[@"failed"] = @YES;
+        }
+        @finally {
+            // Run clean up on main thread.
+            [self performSelectorOnMainThread: @selector(cleanupAfterMaintenance:) withObject: details waitUntilDone: NO modes: @[NSModalPanelRunLoopMode]];
+        }
+
 
     });
 
@@ -1171,21 +1182,30 @@ static BankingController *bankinControllerInstance;
     }
     BankAccount *account = (BankAccount *)category;
 
-    NSDictionary *details = @{@"accountName": account.name,
+    NSDictionary *details = @{@"title": account.name,
                               @"message": NSLocalizedString(@"AP818", nil),
                               @"details": NSLocalizedString(@"AP821", nil)};
     [waitViewController startWaiting: details];
 
     // Run maintenance in a background block.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [account updateStatementBalances];
+        NSMutableDictionary *details = [NSMutableDictionary new];
+        details[@"title"] = account.name;
+        details[@"message"] = NSLocalizedString(@"AP822", nil);
+        @try {
+            [account updateStatementBalances];
+            details[@"details"] = NSLocalizedString(@"AP817", nil);
+        }
+        @catch (NSException *exception) {
+            LogError(@"Error while updating statement balances:\n%@", exception.debugDescription);
 
-        // Run clean up on main thread.
-        NSDictionary *details = @{@"accountName": account.name,
-                                  @"message": NSLocalizedString(@"AP822", nil),
-                                  @"details": NSLocalizedString(@"AP817", nil)};
-        [self performSelectorOnMainThread: @selector(cleanupAfterMaintenance:) withObject: details waitUntilDone: NO modes: @[NSModalPanelRunLoopMode]];
-
+            details[@"details"] = NSLocalizedString(@"AP824", nil);
+            details[@"failed"] = @YES;
+        }
+        @finally {
+            // Run clean up on main thread.
+            [self performSelectorOnMainThread: @selector(cleanupAfterMaintenance:) withObject: details waitUntilDone: NO modes: @[NSModalPanelRunLoopMode]];
+        }
     });
 
     waitOverlay.animationDirection = JMModalOverlayDirectionBottom;
@@ -1210,21 +1230,30 @@ static BankingController *bankinControllerInstance;
     }
     BankAccount *account = (BankAccount *)category;
 
-    NSDictionary *details = @{@"accountName": account.name,
+    NSDictionary *details = @{@"title": account.name,
                               @"message": NSLocalizedString(@"AP818", nil),
                               @"details": NSLocalizedString(@"AP820", nil)};
     [waitViewController startWaiting: details];
 
     // Run maintenance in a background block.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [account updateSupportedTransactions];
+        NSMutableDictionary *details = [NSMutableDictionary new];
+        details[@"title"] = account.name;
+        details[@"message"] = NSLocalizedString(@"AP823", nil);
+        @try {
+            [account updateSupportedTransactions];
+            details[@"details"] = NSLocalizedString(@"AP817", nil);
+        }
+        @catch (NSException *exception) {
+            LogError(@"Error while updating supported transactions:\n%@", exception.debugDescription);
 
-        // Run clean up on main thread.
-        NSDictionary *details = @{@"accountName": account.name,
-                                  @"message": NSLocalizedString(@"AP823", nil),
-                                  @"details": NSLocalizedString(@"AP817", nil)};
-        [self performSelectorOnMainThread: @selector(cleanupAfterMaintenance:) withObject: details waitUntilDone: NO modes: @[NSModalPanelRunLoopMode]];
-
+            details[@"details"] = NSLocalizedString(@"AP824", nil);
+            details[@"failed"] = @YES;
+        }
+        @finally {
+            // Run clean up on main thread.
+            [self performSelectorOnMainThread: @selector(cleanupAfterMaintenance:) withObject: details waitUntilDone: NO modes: @[NSModalPanelRunLoopMode]];
+        }
     });
 
     waitOverlay.animationDirection = JMModalOverlayDirectionBottom;
@@ -3568,38 +3597,36 @@ static BankingController *bankinControllerInstance;
                 [invalidUsers addObject: account.userId];
             }
         }
-        if (![self save]) {
-            return;
-        }
-
-        // BankUser update BPD.
-        bankUsers = [BankUser allUsers];
-        if ([bankUsers count] > 0) {
-            NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
-                            NSLocalizedString(@"AP203", nil),
-                            NSLocalizedString(@"AP1", nil),
-                            nil, nil
-                            );
-            for (BankUser *user in [BankUser allUsers]) {
-                [[HBCIController controller] updateBankDataForUser: user];
+        if ([self save]) {
+            // BankUser update BPD.
+            bankUsers = [BankUser allUsers];
+            if ([bankUsers count] > 0) {
+                NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
+                                NSLocalizedString(@"AP203", nil),
+                                NSLocalizedString(@"AP1", nil),
+                                nil, nil
+                                );
+                for (BankUser *user in [BankUser allUsers]) {
+                    [[HBCIController controller] updateBankDataForUser: user];
+                }
             }
-        }
 
-        settings[@"Migrated10"] = @YES;
-        settings[@"Migrated110"] = @YES;
+            settings[@"Migrated10"] = @YES;
+            settings[@"Migrated110"] = @YES;
 
-        // success message
-        if ([users count] > 0 && [bankUsers count] > 0) {
-            NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
-                            NSLocalizedString(@"AP156", nil),
-                            NSLocalizedString(@"AP1", nil),
-                            nil, nil
-                            );
+            // success message
+            if ([users count] > 0 && [bankUsers count] > 0) {
+                NSRunAlertPanel(NSLocalizedString(@"AP150", nil),
+                                NSLocalizedString(@"AP156", nil),
+                                NSLocalizedString(@"AP1", nil),
+                                nil, nil
+                                );
+            }
         }
     }
 
     BOOL migrated110 = [settings boolForKey: @"Migrated110"];
-    if (migrated110 == NO) {
+    if (!migrated110) {
         // BankUser update BPD
         NSArray *bankUsers = [BankUser allUsers];
         if ([bankUsers count] > 0) {
@@ -3617,7 +3644,7 @@ static BankingController *bankinControllerInstance;
     }
 
     BOOL migrated112 = [settings boolForKey: @"Migrated112"];
-    if (migrated112 == NO) {
+    if (!migrated112) {
         NSError *error = nil;
 
         NSEntityDescription *entityDescription = [NSEntityDescription entityForName: @"BankStatement"

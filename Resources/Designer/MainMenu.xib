@@ -1145,7 +1145,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="boolean" keyPath="animates" value="YES"/>
                 <userDefinedRuntimeAttribute type="boolean" keyPath="shouldOverlayTitleBar" value="NO"/>
-                <userDefinedRuntimeAttribute type="boolean" keyPath="shouldCloseWhenClickOnBackground" value="YES"/>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="shouldCloseWhenClickOnBackground" value="NO"/>
                 <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
                     <color key="value" white="0.0" alpha="0.70000000000000007" colorSpace="calibratedWhite"/>
                 </userDefinedRuntimeAttribute>

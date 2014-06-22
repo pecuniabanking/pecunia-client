@@ -28,6 +28,10 @@
 
 @class INWindowButton;
 
+@protocol LIPopoverFirstResponderStealingSuppression <NSObject>
+@property (readonly, nonatomic) BOOL suppressFirstResponderWhenPopoverShows;
+@end
+
 /** @class INTitlebarView
  Draws a default style Mac OS X title bar.
  */

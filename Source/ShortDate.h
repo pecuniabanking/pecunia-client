@@ -52,6 +52,7 @@
 - (int)monthsToDate: (ShortDate *)toDate;
 - (int)daysInMonth;
 
+- (NSString *)isoDate;
 - (NSString *)description;
 - (NSString *)shortMonthDescription; // 3 letters month name
 - (NSString *)monthYearDescription;

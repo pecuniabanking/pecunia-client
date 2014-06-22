@@ -47,10 +47,8 @@
 @implementation StatementsListView
 
 @synthesize showAssignedIndicators;
-@synthesize owner;
 @synthesize autoResetNew;
 @synthesize disableSelection;
-@synthesize dataSource;
 @synthesize canShowHeaders;
 
 static void *DataSourceBindingContext = (void *)@"DataSourceContext";
@@ -81,6 +79,8 @@ extern void *UserDefaultsBindingContext;
     } else {
         [defaults setBool: YES forKey: @"showHeadersInLists"];
     }
+
+    [self initDetailsWithNibName: @"StatementDetails"];
 }
 
 - (void)dealloc {
@@ -102,7 +102,7 @@ extern void *UserDefaultsBindingContext;
         options: (NSDictionary *)options {
     if ([binding isEqualToString: @"dataSource"]) {
         observedObject = observableObject;
-        dataSource = [observableObject valueForKey: keyPath];
+        self.dataSource = [observableObject valueForKey: keyPath];
 
         // One binding for the array, to get notifications about insertion and deletions.
         [observableObject addObserver: self
@@ -147,20 +147,20 @@ extern void *UserDefaultsBindingContext;
 
 - (NSUInteger)numberOfRowsInListView: (PXListView *)aListView {
 #pragma unused(aListView)
-    return [dataSource count];
+    return [self.dataSource count];
 }
 
 - (BOOL)showsHeaderForRow: (NSUInteger)row {
     // The given row can be out of bounds as we asynchronously reload the list on datasource changes
     // and there can be relayout events before the actual reload kicks in.
-    if (!showHeaders || !canShowHeaders || row >= dataSource.count) {
+    if (!showHeaders || !canShowHeaders || row >= self.dataSource.count) {
         return false;
     }
 
     BOOL result = (row == 0);
     if (!result) {
-        BankStatement *statement = (BankStatement *)[dataSource[row] valueForKey: @"statement"];
-        BankStatement *previousStatement = (BankStatement *)[dataSource[row - 1] valueForKey: @"statement"];
+        BankStatement *statement = (BankStatement *)[self.dataSource[row] valueForKey: @"statement"];
+        BankStatement *previousStatement = (BankStatement *)[self.dataSource[row - 1] valueForKey: @"statement"];
 
         if (statement == nil || previousStatement == nil) {
             return NO;
@@ -177,12 +177,12 @@ extern void *UserDefaultsBindingContext;
 - (int)countSameDatesFromRow: (NSUInteger)row {
     int result = 1;
 
-    BankStatement *statement = [dataSource[row] statement];
+    BankStatement *statement = [self.dataSource[row] statement];
     ShortDate     *currentDate = [ShortDate dateWithDate: statement.date];
 
-    NSUInteger totalCount = [dataSource count];
+    NSUInteger totalCount = [self.dataSource count];
     while (++row < totalCount) {
-        statement = [dataSource[row] statement];
+        statement = [self.dataSource[row] statement];
         ShortDate *nextDate = [ShortDate dateWithDate: statement.date];
         if ([currentDate compare: nextDate] != NSOrderedSame) {
             break;
@@ -196,7 +196,7 @@ extern void *UserDefaultsBindingContext;
 #define CELL_HEADER_HEIGHT 20
 
 - (void)fillCell: (StatementsListViewCell *)cell forRow: (NSUInteger)row {
-    StatCatAssignment *assignment = (StatCatAssignment *)dataSource[row];
+    StatCatAssignment *assignment = (StatCatAssignment *)self.dataSource[row];
 
     cell.delegate = self;
     cell.representedObject = assignment;
@@ -279,6 +279,8 @@ extern void *UserDefaultsBindingContext;
     return !self.disableSelection;
 }
 
+#pragma mark - General stuff and User actions
+
 /**
  * Triggered when KVO notifies us about changes.
  */
@@ -305,7 +307,7 @@ extern void *UserDefaultsBindingContext;
                 index = [selection indexGreaterThanIndex: index];
             }
         } else {
-            for (NSUInteger index = 0; index < [dataSource count]; index++) {
+            for (NSUInteger index = 0; index < self.dataSource.count; index++) {
                 StatementsListViewCell *cell = (id)[self cellForRowAtIndex : index];
                 [cell showActivator: YES markActive: YES];
             }
@@ -341,7 +343,7 @@ extern NSString *const BankStatementDataType;
     do {
         count = [rowIndexes getIndexes: indexes maxCount: 30 inIndexRange: &range];
         for (i = 0; i < count; i++) {
-            stat = dataSource[indexes[i]];
+            stat = self.dataSource[indexes[i]];
             NSURL *uri = [[stat objectID] URIRepresentation];
             [uris addObject: uri];
         }

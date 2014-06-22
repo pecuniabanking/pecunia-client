@@ -7,10 +7,10 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WaitViewController">
             <connections>
-                <outlet property="accountField" destination="NND-50-YGG" id="9sy-oV-lnB"/>
                 <outlet property="detailsMessageField" destination="GDm-eG-pfl" id="jFX-aj-hzg"/>
                 <outlet property="mainMessageField" destination="bC2-FP-R44" id="9CW-Ze-hbs"/>
                 <outlet property="placeHolder" destination="pFF-qS-8di" id="fcv-nk-9O9"/>
+                <outlet property="titleField" destination="NND-50-YGG" id="6Qp-yN-DRS"/>
                 <outlet property="view" destination="c22-O7-iKe" id="6Bi-4i-3xj"/>
             </connections>
         </customObject>
@@ -49,7 +49,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NND-50-YGG">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NND-50-YGG" userLabel="Title Field">
                     <rect key="frame" x="195" y="316" width="544" height="57"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <shadow key="shadow" blurRadius="15">

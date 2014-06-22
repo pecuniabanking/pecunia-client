@@ -18,6 +18,7 @@
  */
 
 #import "StatementsListviewCell.h"
+#import "PecuniaListView.h"
 
 @class StatCatAssignment;
 
@@ -27,13 +28,11 @@
 - (void)actionForCategory: (StatCatAssignment *)assignment action: (StatementMenuAction)action;
 @end;
 
-@interface StatementsListView : PXListView <PXListViewDelegate, StatementsListViewNotificationProtocol>
+@interface StatementsListView : PecuniaListView <PXListViewDelegate, StatementsListViewNotificationProtocol>
 
 @property (nonatomic, assign) BOOL    showAssignedIndicators;
-@property (nonatomic, strong) id      owner;
 @property (nonatomic, assign) BOOL    autoResetNew;
 @property (nonatomic, assign) BOOL    disableSelection;
-@property (nonatomic, strong) NSArray *dataSource;
 @property (nonatomic, assign) BOOL    canShowHeaders; // Headers can be switched off temporarily.
 
 - (void)updateVisibleCells;

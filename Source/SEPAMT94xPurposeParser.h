@@ -19,8 +19,11 @@
 
 @interface SEPAMT94xPurposeParser : NSObject
 
-+ (NSDictionary *)prefixMappings;
-+ (NSDictionary *)purposeCodeMappings;
++ (NSDictionary *)prefixMap;
++ (NSDictionary *)purposeCodeMap;
++ (NSDictionary *)sequenceTypeMap;
++ (NSString *)sequenceTypeFromString: (NSString *)text;
+
 + (NSDictionary *)parse: (NSString *)text;
 
 @end

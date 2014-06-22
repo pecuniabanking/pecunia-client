@@ -19,6 +19,8 @@
 
 #import "ValueTransformers.h"
 
+#import "NSString+PecuniaAdditions.h"
+
 @implementation CurrencyValueTransformer
 
 + (BOOL)allowsReverseTransformation
@@ -194,7 +196,6 @@ static NSMutableDictionary *cache;
 
 + (void)initialize
 {
-
 }
 
 + (BOOL)allowsReverseTransformation
@@ -208,14 +209,8 @@ static NSMutableDictionary *cache;
         return value;
     }
 
-    NSMutableArray *words = [[value componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] mutableCopy];
-    for (NSUInteger i = 0; i < [words count]; i++) {
-        NSString *word = words[i];
-        if (i == 0 || [word length] > 3) {
-            words[i] = [word capitalizedString];
-        }
-    }
-    return [words componentsJoinedByString: @" "];
+    //return [value capitalizedStringWithLocale: NSLocale.currentLocale];
+    return [value stringWithNaturalText];
 }
 
 @end

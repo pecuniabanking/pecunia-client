@@ -33,7 +33,6 @@ typedef NSInteger PXIsDragStartResult;
 - (void)deselectRowIndexes:(NSIndexSet*)rows;
 - (void)postSelectionDidChangeNotification;
 
-- (void)updateCells;
 - (void)enqueueCell:(PXListViewCell*)cell;
 
 - (void)contentViewBoundsDidChange:(NSNotification*)notification;

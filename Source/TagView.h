@@ -35,6 +35,6 @@
 @property (nonatomic, strong) NSFont *defaultFont;            // NSText's font setting is ignored by NSTextView.
 @property (assign) BOOL              canCreateNewTags;
 
-- (void)showTagPopupAt: (NSRect)rect forView: (NSView *)owner host: (NSView *)host;
+- (void)showTagPopupAt: (NSRect)rect forView: (NSView *)owner host: (NSView *)host preferredEdge: (NSRectEdge)preferredEdge;
 
 @end

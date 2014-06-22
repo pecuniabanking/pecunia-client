@@ -17,12 +17,10 @@
  * 02110-1301  USA
  */
 
-#import <Cocoa/Cocoa.h>
+#import "PecuniaListView.h"
 
-#import "RoundedOuterShadowView.h"
+@interface StatementDetails : DetailsView <NSTextViewDelegate>
 
-@interface StatementDetails : RoundedOuterShadowView
-{
-}
+@property (strong) NSDictionary *sepaDetails;
 
 @end

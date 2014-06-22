@@ -29,4 +29,7 @@
                                    count: (NSUInteger)count
                                   result: (double *)result;
 
++ (uint64_t) beginTimeMeasure;
++ (double)timeDifferenceSince: (uint64_t)startTime;
+
 @end

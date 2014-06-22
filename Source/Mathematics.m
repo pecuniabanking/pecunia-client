@@ -128,4 +128,25 @@
     }
 }
 
+static double ticksToNanoseconds;
+
+/**
+ * Convenience function to measure time differences very precisely. Use in conjunction with timeDifferenceSince.
+ */
++ (uint64_t) beginTimeMeasure {
+    if (ticksToNanoseconds == 0) {
+        mach_timebase_info_data_t timebase;
+        mach_timebase_info(&timebase);
+        ticksToNanoseconds = (double)timebase.numer / timebase.denom;
+    }
+    return mach_absolute_time();
+}
+
+/**
+ * Returns a precise time differenc in nano seconds since startTime.
+ */
++ (double)timeDifferenceSince: (uint64_t)startTime {
+    return (mach_absolute_time() - startTime) * ticksToNanoseconds;
+}
+
 @end

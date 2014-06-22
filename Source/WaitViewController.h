@@ -20,6 +20,7 @@
 @interface WaitViewController : NSViewController
 
 - (void)startWaiting: (NSDictionary *)parameters;
+- (void)updateLabels: (NSDictionary *)parameters;
 - (void)markDone: (NSDictionary *)parameters;
 
 @end

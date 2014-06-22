@@ -31,7 +31,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="96" customClass="NoAnimationTextField">
-                    <rect key="frame" x="469" y="57" width="80" height="16"/>
+                    <rect key="frame" x="499" y="56" width="50" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="erstmalig:" id="97">
                         <font key="font" size="11" name="HelveticaNeue-Light"/>

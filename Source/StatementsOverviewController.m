@@ -53,6 +53,30 @@ extern void *UserDefaultsBindingContext;
     // Sorting statements.
     int  sortIndex;
     BOOL sortAscending;
+
+    IBOutlet NSArrayController  *categoryAssignments;
+    IBOutlet StatementsListView *statementsListView;
+
+    IBOutlet NSArrayController *statementTags;
+    IBOutlet NSArrayController *tagsController;
+    IBOutlet NSButton          *tagButton;
+    IBOutlet TagView           *tagsField;
+    IBOutlet TagView           *tagViewPopup;
+    IBOutlet NSView            *tagViewHost;
+    IBOutlet NSTextField       *valueField;
+    IBOutlet NSTextField       *nassValueField;
+    IBOutlet NSTextField       *remoteNameLabel;
+    IBOutlet StatementDetails  *statementDetails;
+    IBOutlet NSTextField       *selectedSumField;
+    IBOutlet NSTextField       *totalSumField;
+    IBOutlet NSTextField       *originalAmountField;
+
+    IBOutlet NSSegmentedControl *sortControl;
+
+    IBOutlet AttachmentImageView *attachment1;
+    IBOutlet AttachmentImageView *attachment2;
+    IBOutlet AttachmentImageView *attachment3;
+    IBOutlet AttachmentImageView *attachment4;
 }
 
 @end
@@ -144,7 +168,7 @@ extern void *UserDefaultsBindingContext;
 - (IBAction)showTagPopup: (id)sender
 {
     NSButton *button = sender;
-    [tagViewPopup showTagPopupAt: button.bounds forView: button host: tagViewHost];
+    [tagViewPopup showTagPopupAt: button.bounds forView: button host: tagViewHost preferredEdge: NSMinYEdge];
 }
 
 #pragma mark - Sorting and searching statements
@@ -611,7 +635,7 @@ extern void *UserDefaultsBindingContext;
     [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
 }
 
-#pragma mark - StatementsListViewProtocol
+#pragma mark - StatementsListViewProtocol and PecuniaListViewProtocol
 
 - (void)actionForCategory: (StatCatAssignment *)assignment action: (StatementMenuAction)action {
     LogEnter;

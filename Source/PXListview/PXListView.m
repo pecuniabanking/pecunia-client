@@ -296,7 +296,7 @@ NSString * const PXListViewSelectionDidChange = @"PXListViewSelectionDidChange";
 }
 
 - (void)updateCells
-{	
+{
     // ml: no cell updates while reloading data, please.
     if (_updating)
         return;

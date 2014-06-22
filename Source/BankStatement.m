@@ -29,12 +29,8 @@
 
 #import "NSDecimalNumber+PecuniaAdditions.h"
 
-#define SEPA_MT940_REGEX @"(EREF|SVWZ|KREF|MREF|IBAN|BIC|CRED|DEBT|ABWA|ABWE|PURP|MDAT|SQTP|ORCR|ORMR|DDAT|OAMT|COAM|ANAM)(\\+|:)"
+static NSArray *catCache = nil;
 
-static NSArray          *catCache = nil;
-static NSDateFormatter  *sepaDateFormatter = nil;
-
-static NSRegularExpression *sepaRegex = nil;
 static NSRegularExpression *ibanRE;
 static NSRegularExpression *bicRE;
 
@@ -65,8 +61,7 @@ static NSRegularExpression *bicRE;
 @dynamic docDate, origValue, origCurrency, isSettled, ccNumberUms, ccChargeForeign, ccChargeTerminal, ccChargeKey, ccSettlementRef;
 @dynamic tags, sepa;
 
-BOOL stringEqualIgnoreWhitespace(NSString *a, NSString *b)
-{
+BOOL stringEqualIgnoreWhitespace(NSString *a, NSString *b) {
     int            i = 0, j = 0;
     int            l1, l2;
     BOOL           done = NO;
@@ -107,13 +102,14 @@ BOOL stringEqualIgnoreWhitespace(NSString *a, NSString *b)
                 i++;
                 j++;
             }
-        } else {return NO; }
+        } else {
+            return NO;
+        }
     }
     return YES;
 }
 
-BOOL stringEqualIgnoringMissing(NSString *a, NSString *b)
-{
+BOOL stringEqualIgnoringMissing(NSString *a, NSString *b) {
     if (a == nil || b == nil) {
         return YES;
     }
@@ -123,8 +119,7 @@ BOOL stringEqualIgnoringMissing(NSString *a, NSString *b)
     return [a isEqualToString: b];
 }
 
-BOOL stringEqual(NSString *a, NSString *b)
-{
+BOOL stringEqual(NSString *a, NSString *b) {
     if (a == nil && b == nil) {
         return YES;
     }
@@ -143,8 +138,7 @@ BOOL stringEqual(NSString *a, NSString *b)
     return [a isEqualToString: b];
 }
 
-+ (void)initialize
-{
++ (void)initialize {
     // Can be called multiple times, so just take care not to initialize more than once.
     if (ibanRE == nil) {
         ibanRE = [NSRegularExpression regularExpressionWithPattern: @"[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}"
@@ -158,8 +152,7 @@ BOOL stringEqual(NSString *a, NSString *b)
     }
 }
 
-- (NSString *)categoriesDescription
-{
+- (NSString *)categoriesDescription {
     NSMutableSet      *stats = [self mutableSetValueForKey: @"assignments"];
     NSMutableSet      *cats = [NSMutableSet setWithCapacity: 10];
     StatCatAssignment *stat;
@@ -184,19 +177,22 @@ BOOL stringEqual(NSString *a, NSString *b)
         }
         if (result) {
             result = [NSString stringWithFormat: @"%@, %@", result, [cat localName]];
-        } else {result = [cat localName]; }
+        } else {
+            result = [cat localName];
+        }
     }
     if (result) {
         return result;
-    } else {return @""; }
+    } else {
+        return @"";
+    }
 }
 
 /**
  * Central point for assigning statements to their account. Here we do a mapping between the account (category)
  * and ourselve. After that we run all defined rules for assigning to categories and other actions.
  */
-- (void)addToAccount: (BankAccount *)account
-{
+- (void)addToAccount: (BankAccount *)account {
     if (account == nil) {
         return;
     }
@@ -241,137 +237,89 @@ BOOL stringEqual(NSString *a, NSString *b)
  */
 - (void)extractSEPAData {
     // Examine purpose to see if we need to extract SEPA informations.
-    
-    NSMutableDictionary *sepaValues = [NSMutableDictionary dictionary];
-    if (sepaRegex == nil) {
-        sepaRegex = [NSRegularExpression regularExpressionWithPattern:SEPA_MT940_REGEX options:0 error:nil];
-    }
-    
-    NSString *purp = [self.purpose stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-    NSArray  *matches = [sepaRegex matchesInString:purp options:NSRegularExpressionAllowCommentsAndWhitespace range:NSMakeRange(0, purp.length)];
-    NSString *value;
-    NSString *sepaPurpose = @"";
-    
-    for (NSUInteger i=0; i<matches.count; i++) {
-        NSTextCheckingResult *match = matches[i];
-        if (i == 0 && match.range.location != 0) {
-            sepaPurpose = [sepaPurpose stringByAppendingString:[purp substringWithRange:NSMakeRange(0, match.range.location)]];
-        }
-        if (i+1 >= matches.count) {
-            value = [purp substringFromIndex:match.range.location+match.range.length];
-        } else {
-            NSUInteger start = match.range.location+match.range.length;
-            NSTextCheckingResult *next = matches[i+1];
-            value = [purp substringWithRange:NSMakeRange(start, next.range.location-start)];
-        }
-        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        NSString *key = [purp substringWithRange:NSMakeRange(match.range.location, match.range.length-1)];
-        if ([key isEqualToString:@"SVWZ"]) {
-            sepaPurpose = [sepaPurpose stringByAppendingString:value];
-        }
-        if ([key isEqualToString:@"IBAN"]) {
-            NSRange range = [ibanRE rangeOfFirstMatchInString: value
-                                                      options: NSMatchingAnchored
-                                                        range: NSMakeRange(0, value.length)];
-            
-            if (range.location != NSNotFound ) {
-                if ([[value substringWithRange:NSMakeRange(range.location, 2)] isEqualToString:@"DE"]) {
-                    range.length = 22;
-                }
-                
-                // if there is more than a IBAN in this string, add the residual string to purpose
-                if (range.location+range.length < value.length) {
-                    sepaPurpose = [sepaPurpose stringByAppendingString: [value substringFromIndex:range.location+range.length]];
-                }
-                value = [value substringWithRange:range];
-            } else {
-                sepaPurpose = [sepaPurpose stringByAppendingString:value];
-                continue;
-            }
-        }
-        if ([key isEqualToString:@"BIC"]) {
-            NSRange range = [bicRE rangeOfFirstMatchInString: value
-                                                     options: NSMatchingAnchored
-                                                       range: NSMakeRange(0, value.length)];
-            if (range.location != NSNotFound ) {
-                // if there is more than a BIC in this string, add the residual string to purpose
-                if (range.location+range.length < value.length) {
-                    sepaPurpose = [sepaPurpose stringByAppendingString: [value substringFromIndex:range.location+range.length]];
-                }
-                value = [value substringWithRange:range];
-            } else {
-                sepaPurpose = [sepaPurpose stringByAppendingString:value];
-                continue;
-            }
-        }
-        [sepaValues setValue:value forKey:key];
-    }
-    if (sepaPurpose.length > 0) {
-        [sepaValues setValue:sepaPurpose forKey:@"SVWZ"];
-    }
-    
-    
-    //NSDictionary *sepaValues = [SEPAMT94xPurposeParser parse: self.purpose];
-    
-    if ([sepaValues count] != 0) {
-        NSManagedObjectContext *context = [[MOAssistant assistant] context];
-        
-        NSDictionary *map = [NSDictionary dictionaryWithObjectsAndKeys:@"endToEndId", @"EREF", @"purpose", @"SVWZ", @"ultimateDebitorId", @"ABWA",
-                             @"ultimateCreditorId", @"ABWE", @"purposeCode", @"PURP", @"mandateId", @"MREF", @"creditorId", @"CRED", @"oldCreditorId", @"ORCR",
-                             @"oldMandateId", @"ORMR", @"sequenceType", @"SQTP", @"debitorId", @"DEBT", @"creditorId", @"ANAM", nil];
-        
+    NSDictionary *values = [SEPAMT94xPurposeParser parse: self.purpose];
+    if (values.count > 0) {
+        NSManagedObjectContext *context = MOAssistant.assistant.context;
+
         if (self.sepa == nil) {
             self.sepa = [NSEntityDescription insertNewObjectForEntityForName: @"SepaData"
                                                       inManagedObjectContext: context];
         }
-        if (sepaDateFormatter == nil) {
-            sepaDateFormatter = [[NSDateFormatter alloc] initWithDateFormat:@"yyyy-MM-dd" allowNaturalLanguage:NO];
-        }
-        for (NSString *key in [sepaValues allKeys]) {
-            NSString *value = [sepaValues valueForKey:key];
 
-            if ([key isEqualToString:@"IBAN"]) {
-                if (self.remoteIBAN == nil) {
-                    self.remoteIBAN = value;
-                }
-            } else if ([key isEqualToString:@"BIC"]) {
-                if (self.remoteBIC == nil) {
-                    self.remoteBIC = value;
-                }
-            } else if ([key isEqualToString:@"MDAT"]) {
-                NSDate *date = [sepaDateFormatter dateFromString:value];
-                if (date != nil) {
-                    self.sepa.mandateSignatureDate = date;
-                }
-            } else if ([key isEqualToString:@"DDAT"]) {
-                NSDate *date = [sepaDateFormatter dateFromString:value];
-                if (date != nil) {
-                    self.sepa.settlementDate = date;
-                }
-            } else if ([key isEqualToString:@"KREF"]) {
-                self.customerReference = value;
-            } else if ([key isEqualToString:@"OAMT"]) {
-                NSDecimalNumber *val = [[NSDecimalNumber alloc] initWithString:value locale:[NSDictionary dictionaryWithObjectsAndKeys:@".", NSLocaleDecimalSeparator, nil]];
-                if (val != nil) {
-                    self.origValue = val;
-                }
-            } else if ([key isEqualToString:@"COAM"]) {
-                NSDecimalNumber *val = [[NSDecimalNumber alloc] initWithString:value locale:[NSDictionary dictionaryWithObjectsAndKeys:@".", NSLocaleDecimalSeparator, nil]];
-                if (val != nil) {
-                    self.charge = val;
-                }
-            } else {
-                NSString *field = [map valueForKey:key];
-                if (field == nil) {
-                    LogWarning(@"SEPA tag %@ is not supported yet", key);
-                    continue;
-                }
-                if (value == nil) {
-                    LogError(@"No SEPA value for key %@", key);
-                }
-                
-                [self.sepa setValue:value forKey:field];
+        static NSDateFormatter *sepaDateFormatter = nil;
+        if (sepaDateFormatter == nil) {
+            sepaDateFormatter = [[NSDateFormatter alloc] initWithDateFormat: @"yyyy-MM-dd" allowNaturalLanguage: NO];
+        }
+
+        if (values[@"IBAN"] != nil && self.remoteIBAN == nil) { // TODO: if we are correcting values, shouldn't we also overwrite a possibly wrong IBAN?
+            self.remoteIBAN = values[@"IBAN"];
+        }
+        if (values[@"BIC"] != nil && self.remoteBIC == nil) { // TODO: dito for BIC.
+            self.remoteBIC = values[@"BIC"];
+        }
+        self.sepa.endToEndId = values[@"EREF"]; // Sets to nil if not existent.
+        self.sepa.purpose = values[@"SVWZ"];
+        self.sepa.ultimateDebitorId = values[@"ABWA"];
+        self.sepa.ultimateCreditorId = values[@"ABWE"];
+        self.sepa.purposeCode = values[@"PURP"];
+        self.sepa.mandateId = values[@"MREF"];
+        self.sepa.creditorId = values[@"CRED"];
+        if (values[@"MDAT"] != nil) {
+            NSDate *date = [sepaDateFormatter dateFromString: values[@"MDAT"]];
+            self.sepa.mandateSignatureDate = date;
+        } else {
+            self.sepa.mandateSignatureDate = nil;
+        }
+        self.sepa.sequenceType = values[@"SQTP"];
+        self.sepa.oldCreditorId = values[@"ORCR"];
+        self.sepa.oldMandateId = values[@"ORMR"];
+        if (values[@"DDAT"] != nil) {
+            NSDate *date = [sepaDateFormatter dateFromString: values[@"DDAT"]];
+            self.sepa.settlementDate = date;
+        } else {
+            self.sepa.settlementDate = nil;
+        }
+        self.sepa.debitorId = values[@"DEBT"];
+        self.customerReference = values[@"KREF"];
+        if (values[@"COAM"] != nil) {
+            self.charge = [[NSDecimalNumber alloc] initWithString: values[@"COAM"]
+                                                           locale: @{NSLocaleDecimalSeparator: @"."}];
+        } else {
+            self.charge = nil;
+        }
+        if (values[@"OAMT"] != nil) {
+            // Currently not yet clear, but assume there can be a currency attached.
+            static NSRegularExpression *amountRegEx;
+            if (amountRegEx == nil) {
+                amountRegEx = [NSRegularExpression regularExpressionWithPattern: @"([A-Za-z]*)([0-9][0-9.,]*)([A-Za-z]*)" options: 0 error: nil];
             }
+            NSString *value = values[@"OAMT"];
+            NSArray *matches = [amountRegEx matchesInString: value options: 0 range: NSMakeRange(0, value.length)];
+
+            NSDecimalNumber *amount;
+            if (matches.count == 0) {
+                amount = [[NSDecimalNumber alloc] initWithString: value locale: @{NSLocaleDecimalSeparator: @"."}];
+            } else {
+                // If there's a match we always have 4 ranges: at 0 the full range + 3 capture groups.
+                NSTextCheckingResult *match = matches[0];
+                NSRange range = [match rangeAtIndex: 1];
+                if (range.length > 0) {
+                    // Leading currency.
+                    self.origCurrency = [value substringWithRange: range];
+                }
+                range = [match rangeAtIndex: 2];
+                amount = [[NSDecimalNumber alloc] initWithString: [value substringWithRange: range] locale: @{NSLocaleDecimalSeparator: @"."}];
+
+                range = [match rangeAtIndex: 3];
+                if (range.length > 0) {
+                    // Trailing currency. Hopefully not together with a leaading currency.
+                    // If so, the trailing one wins.
+                    self.origCurrency = [value substringWithRange: range];
+                }
+            }
+            self.origValue = (amount == NSDecimalNumber.notANumber) ? nil : amount;
+        } else {
+            self.origValue = nil;
         }
     }
 }
@@ -379,8 +327,7 @@ BOOL stringEqual(NSString *a, NSString *b)
 /**
  * Runs some checks for values that are in wrong locations or missing etc. and corrects those.
  */
-- (void)sanitize
-{
+- (void)sanitize {
     // 1) Sanity check for date/valutaDate.
     if (self.valutaDate == nil) {
         if (self.date != nil) {
@@ -417,12 +364,11 @@ BOOL stringEqual(NSString *a, NSString *b)
             self.remoteBankCode = nil;
         }
     }
-    
+
     [self extractSEPAData];
 }
 
-- (BOOL)matches: (BankStatement *)stat
-{
+- (BOOL)matches: (BankStatement *)stat {
     ShortDate *d1 = [ShortDate dateWithDate: self.date];
     ShortDate *d2 = [ShortDate dateWithDate: stat.date];
 
@@ -455,8 +401,7 @@ BOOL stringEqual(NSString *a, NSString *b)
     return YES;
 }
 
-- (BOOL)matchesAndRepair: (BankStatement *)stat
-{
+- (BOOL)matchesAndRepair: (BankStatement *)stat {
     NSDecimalNumber *e = [NSDecimalNumber decimalNumberWithMantissa: 1 exponent: -2 isNegative: NO];
     ShortDate       *d1 = [ShortDate dateWithDate: self.date];
     ShortDate       *d2 = [ShortDate dateWithDate: stat.date];
@@ -496,8 +441,7 @@ BOOL stringEqual(NSString *a, NSString *b)
     return YES;
 }
 
-- (void)changeValueTo: (NSDecimalNumber *)val
-{
+- (void)changeValueTo: (NSDecimalNumber *)val {
     Category *ncat = [Category nassRoot];
 
     self.value = val;
@@ -514,8 +458,7 @@ BOOL stringEqual(NSString *a, NSString *b)
     [self updateAssigned];
 }
 
-- (BOOL)hasAssignment
-{
+- (BOOL)hasAssignment {
     StatCatAssignment *stat;
     Category          *ncat = [Category nassRoot];
     NSMutableSet      *stats = [self mutableSetValueForKey: @"assignments"];
@@ -528,8 +471,7 @@ BOOL stringEqual(NSString *a, NSString *b)
     return NO;
 }
 
-- (StatCatAssignment *)bankAssignment
-{
+- (StatCatAssignment *)bankAssignment {
     NSMutableSet      *stats = [self mutableSetValueForKey: @"assignments"];
     StatCatAssignment *stat;
     for (stat in stats) {
@@ -540,22 +482,19 @@ BOOL stringEqual(NSString *a, NSString *b)
     return nil;
 }
 
-- (NSArray *)categoryAssignments
-{
-    NSMutableArray    *categoryAssignments = [NSMutableArray arrayWithCapacity:10];
+- (NSArray *)categoryAssignments {
+    NSMutableArray    *categoryAssignments = [NSMutableArray arrayWithCapacity: 10];
     NSMutableSet      *stats = [self mutableSetValueForKey: @"assignments"];
     StatCatAssignment *stat;
     for (stat in stats) {
         if ([stat.category isBankAccount] == NO) {
-            [categoryAssignments addObject:stat];
+            [categoryAssignments addObject: stat];
         }
     }
     return categoryAssignments;
 }
 
-
-- (BOOL)updateAssigned
-{
+- (BOOL)updateAssigned {
     NSManagedObjectContext *context = MOAssistant.assistant.context;
 
     NSDecimalNumber *value = self.value;
@@ -572,7 +511,6 @@ BOOL stringEqual(NSString *a, NSString *b)
             value = [value decimalNumberBySubtracting: assignment.value];
         }
     }
-
     if (positive) {
         if ([value compare: [NSDecimalNumber zero]] != NSOrderedDescending) {
             assigned = YES;                                                                          // fully assigned
@@ -608,7 +546,6 @@ BOOL stringEqual(NSString *a, NSString *b)
             break;
         }
     }
-
     if (!found && !assigned) {
         // Create a new assignment to not-assigned category.
         StatCatAssignment *assignment = [NSEntityDescription insertNewObjectForEntityForName: @"StatCatAssignment" inManagedObjectContext: context];
@@ -620,8 +557,7 @@ BOOL stringEqual(NSString *a, NSString *b)
     return ncatNeedsRefresh;
 }
 
-- (NSDecimalNumber *)residualAmount
-{
+- (NSDecimalNumber *)residualAmount {
     Category          *ncat = [Category nassRoot];
     NSMutableSet      *stats = [self mutableSetValueForKey: @"assignments"];
     NSEnumerator      *iter = [stats objectEnumerator];
@@ -634,18 +570,16 @@ BOOL stringEqual(NSString *a, NSString *b)
     return [NSDecimalNumber zero];
 }
 
-- (void)assignToCategory: (Category *)cat
-{
+- (void)assignToCategory: (Category *)cat {
     [self assignAmount: self.value toCategory: cat withInfo: nil];
 }
 
-- (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)targetCategory withInfo: (NSString *)info
-{
+- (void)assignAmount: (NSDecimalNumber *)value toCategory: (Category *)targetCategory withInfo: (NSString *)info {
     NSManagedObjectContext *context = MOAssistant.assistant.context;
 
     // First check if this statement is already assigned to the target category. If so add the given value to that category
     // or remove the assignment if the value is nil/zero.
-    BOOL  foundTarget = NO;
+    BOOL         foundTarget = NO;
     NSMutableSet *assignments = [self valueForKey: @"assignments"];
     for (StatCatAssignment *assignment in assignments) {
         if (assignment.category == targetCategory) {
@@ -658,10 +592,10 @@ BOOL stringEqual(NSString *a, NSString *b)
                 if ([[assignment.value abs] compare: [assignment.statement.value abs]] == NSOrderedDescending) {
                     assignment.value = assignment.statement.value;
                 }
-                
+
                 if (info.length > 0) {
                     if (assignment.userInfo && assignment.userInfo.length > 0) {
-                        assignment.userInfo = [NSString stringWithFormat:@"%@\n%@", assignment.userInfo, info];
+                        assignment.userInfo = [NSString stringWithFormat: @"%@\n%@", assignment.userInfo, info];
                     } else {
                         assignment.userInfo = info;
                     }
@@ -671,7 +605,6 @@ BOOL stringEqual(NSString *a, NSString *b)
             break;
         }
     }
-
     if (!foundTarget) {
         // There's no assignment for the given target yet so create a new one.
         StatCatAssignment *assignment = [NSEntityDescription insertNewObjectForEntityForName: @"StatCatAssignment" inManagedObjectContext: context];
@@ -700,13 +633,11 @@ BOOL stringEqual(NSString *a, NSString *b)
     [Category.nassRoot invalidateBalance];
 }
 
-- (NSComparisonResult)compareValuta: (BankStatement *)stat
-{
+- (NSComparisonResult)compareValuta: (BankStatement *)stat {
     return [self.valutaDate compare: stat.valutaDate];
 }
 
-+ (void)initCategoriesCache
-{
++ (void)initCategoriesCache {
     NSError                *error = nil;
     NSManagedObjectContext *context = MOAssistant.assistant.context;
     NSManagedObjectModel   *model = MOAssistant.assistant.model;
@@ -721,22 +652,19 @@ BOOL stringEqual(NSString *a, NSString *b)
     }
 }
 
-- (NSString *)floatingPurpose
-{
+- (NSString *)floatingPurpose {
     // replace newline with space
-    NSString *s = self.sepa == nil?self.purpose:self.sepa.purpose;
+    NSString *s = self.sepa == nil ? self.purpose : self.sepa.purpose;
     s = [s stringByReplacingOccurrencesOfString: @"\n " withString: @" "];
     s = [s stringByReplacingOccurrencesOfString: @" \n" withString: @" "];
     return [s stringByReplacingOccurrencesOfString: @"\n" withString: @" "];
 }
 
 - (NSString *)nonfloatingPurpose {
-    return self.sepa == nil?self.purpose:self.sepa.purpose;
+    return self.sepa == nil ? self.purpose : self.sepa.purpose;
 }
 
-
-- (NSString *)note
-{
+- (NSString *)note {
     StatCatAssignment *stat = [self bankAssignment];
     return stat.userInfo;
 }

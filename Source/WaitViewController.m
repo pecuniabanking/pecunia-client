@@ -29,7 +29,7 @@
 
 @property (strong) IBOutlet NSTextField *mainMessageField;
 @property (strong) IBOutlet NSTextField *detailsMessageField;
-@property (strong) IBOutlet NSTextField *accountField;
+@property (strong) IBOutlet NSTextField *titleField;
 
 @end
 
@@ -37,6 +37,32 @@
 
 - (NSString *)nibName {
     return @"WaitView";
+}
+
+- (void)updateLabels: (NSDictionary *)parameters {
+    id title = parameters[@"title"];
+    if ([title isKindOfClass: [NSAttributedString class]]) {
+        self.titleField.attributedStringValue = title;
+    } else {
+        NSString *text = [NSString stringWithFormat: @"%@: %@", NSLocalizedString(@"AP401", nil), title];
+        self.titleField.attributedStringValue = [[NSAttributedString alloc] initWithString: text];;
+    }
+
+    id message = parameters[@"message"];
+    if ([message isKindOfClass: [NSAttributedString class]]) {
+        self.mainMessageField.attributedStringValue = message;
+    } else {
+        NSAttributedString *text = [[NSAttributedString alloc] initWithString: message];
+        self.mainMessageField.attributedStringValue = text;
+    }
+
+    id details = parameters[@"details"];
+    if ([details isKindOfClass: [NSAttributedString class]]) {
+        self.detailsMessageField.attributedStringValue = details;
+    } else {
+        NSAttributedString *text = [[NSAttributedString alloc] initWithString: details];
+        self.detailsMessageField.attributedStringValue = text;
+    }
 }
 
 - (void)startWaiting: (NSDictionary *)parameters {
@@ -50,63 +76,21 @@
         [placeHolder addSubview: spinner];
     }
 
-    id accountName = parameters[@"accountName"];
-    if ([accountName isKindOfClass: [NSAttributedString class]]) {
-        self.accountField.attributedStringValue = accountName;
-    } else {
-        NSString *text = [NSString stringWithFormat: @"%@: %@", NSLocalizedString(@"AP401", nil), accountName];
-        self.accountField.attributedStringValue = [[NSAttributedString alloc] initWithString: text];;
-    }
-
-    id message = parameters[@"message"];
-    if ([message isKindOfClass: [NSAttributedString class]]) {
-        self.mainMessageField.attributedStringValue = message;
-    } else {
-        NSAttributedString *text = [[NSAttributedString alloc] initWithString: message];
-        self.mainMessageField.attributedStringValue = text;
-    }
-
-    id details = parameters[@"details"];
-    if ([details isKindOfClass: [NSAttributedString class]]) {
-        self.detailsMessageField.attributedStringValue = details;
-    } else {
-        NSAttributedString *text = [[NSAttributedString alloc] initWithString: details];
-        self.detailsMessageField.attributedStringValue = text;
-    }
-    
+    [self updateLabels: parameters];
     [spinner startAnimation: nil];
 }
 
 - (void)markDone: (NSDictionary *)parameters {
     if (checkImage == nil) {
         checkImage = [[NSImageView alloc] initWithFrame: placeHolder.bounds];
-        checkImage.image = [NSImage imageNamed: @"check-mark"];
+        if ([parameters[@"failed"] boolValue]) {
+            checkImage.image = [NSImage imageNamed: @"cross-mark"];
+        } else {
+            checkImage.image = [NSImage imageNamed: @"check-mark"];
+        }
     }
 
-    id accountName = parameters[@"accountName"];
-    if ([accountName isKindOfClass: [NSAttributedString class]]) {
-        self.accountField.attributedStringValue = accountName;
-    } else {
-        NSString *text = [NSString stringWithFormat: @"%@: %@", NSLocalizedString(@"AP401", nil), accountName];
-        self.accountField.attributedStringValue = [[NSAttributedString alloc] initWithString: text];;
-    }
-
-    id message = parameters[@"message"];
-    if ([message isKindOfClass: [NSAttributedString class]]) {
-        self.mainMessageField.attributedStringValue = message;
-    } else {
-        NSAttributedString *text = [[NSAttributedString alloc] initWithString: message];
-        self.mainMessageField.attributedStringValue = text;
-    }
-
-    id details = parameters[@"details"];
-    if ([details isKindOfClass: [NSAttributedString class]]) {
-        self.detailsMessageField.attributedStringValue = details;
-    } else {
-        NSAttributedString *text = [[NSAttributedString alloc] initWithString: details];
-        self.detailsMessageField.attributedStringValue = text;
-    }
-
+    [self updateLabels: parameters];
     [spinner stopAnimation: nil];
     [placeHolder.animator replaceSubview: spinner with: checkImage];
 }
