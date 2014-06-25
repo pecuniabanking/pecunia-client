@@ -719,9 +719,7 @@ AP1497 = "FNAL+Letzte von bisher wiederkehrenden Überweisungen+sequence-type-en
 AP1498 = "OOFF+Einmalige Überweisung+sequence-type-once-off";
 
 // Some transfer description to help parsing out the sequence type if there's not sequence code.
-AP1499 = "erstlastschrift:FRST";
-AP1500 = "folgelastschrift:RCUR";
-AP1501 = "dauerauftrag:RCUR";
+AP1499 = "dauerauftrag:RCUR";
 
 AP1549 = "\nDas Wertstellungsdatum liegt in der Zukunft, diese Transaktion ist also noch nicht vollständig gebucht";
 

@@ -390,6 +390,9 @@ extern NSString *PecuniaWordsLoadedNotification;
                                                            attributes: normalAttributes];
 
     [verticalConstraintValueCurrency.animator setConstant: statement.isAssigned.boolValue ? 15 : 39];
+
+    details[@"documentNumber"] = @"";
+    
     self.sepaDetails = details; // Triggers KVO.
 
     // Update sequence type image. We use the SEPA sequence type, if given. Otherwise we try to derive the correct
@@ -433,6 +436,7 @@ extern NSString *PecuniaWordsLoadedNotification;
     [overlay drawAtPoint: NSMakePoint(0, 0) fromRect: NSZeroRect operation: NSCompositeSourceOver fraction: 1];
     [sequenceImage unlockFocus];
     sequenceTypeImage.image = sequenceImage;
+
 }
 
 #pragma mark - User Actions

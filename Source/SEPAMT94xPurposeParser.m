@@ -94,7 +94,7 @@
     static NSMutableDictionary *typeVariants;
     if (typeVariants == nil) {
         typeVariants = [NSMutableDictionary new];
-        for (int i = 1499; i < 1502; ++i) {
+        for (int i = 1499; i < 1500; ++i) {
             NSString *key = [NSString stringWithFormat: @"AP%i", i];
             NSArray *parts = [NSLocalizedString(key, nil) componentsSeparatedByString: @":"];
             if (parts.count == 2) {
