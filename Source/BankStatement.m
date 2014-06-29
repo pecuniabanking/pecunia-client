@@ -141,12 +141,12 @@ BOOL stringEqual(NSString *a, NSString *b) {
 + (void)initialize {
     // Can be called multiple times, so just take care not to initialize more than once.
     if (ibanRE == nil) {
-        ibanRE = [NSRegularExpression regularExpressionWithPattern: @"[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}"
+        ibanRE = [NSRegularExpression regularExpressionWithPattern: @"^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}$"
                                                            options: 0
                                                              error: nil];
     }
     if (bicRE == nil) {
-        bicRE = [NSRegularExpression regularExpressionWithPattern: @"([a-zA-Z]{4}[a-zA-Z]{2}[a-zA-Z0-9]{2}([a-zA-Z0-9]{3})?)"
+        bicRE = [NSRegularExpression regularExpressionWithPattern: @"^([a-zA-Z]{4}[a-zA-Z]{2}[a-zA-Z0-9]{2}([a-zA-Z0-9]{3})?)$"
                                                           options: 0
                                                             error: nil];
     }
@@ -232,6 +232,27 @@ BOOL stringEqual(NSString *a, NSString *b) {
     [self updateAssigned];
 }
 
++ (BOOL)isValidIBAN: (NSString *)text {
+    if (text.length == 0) {
+        return NO;
+    }
+    if ([ibanRE matchesInString: text options: 0 range: NSMakeRange(0, text.length)].count == 1) {
+        return YES;
+    }
+    return NO;
+}
+
++ (BOOL)isValidBIC: (NSString *)text {
+    if (text.length == 0) {
+        return NO;
+    }
+
+    if ([bicRE matchesInString: text options: 0 range: NSMakeRange(0, text.length)].count == 1) {
+        return YES;
+    }
+    return NO;
+}
+
 /**
  * extract MT940 SEPA data
  */
@@ -251,10 +272,10 @@ BOOL stringEqual(NSString *a, NSString *b) {
             sepaDateFormatter = [[NSDateFormatter alloc] initWithDateFormat: @"yyyy-MM-dd" allowNaturalLanguage: NO];
         }
 
-        if (values[@"IBAN"] != nil && self.remoteIBAN == nil) { // TODO: if we are correcting values, shouldn't we also overwrite a possibly wrong IBAN?
+        if ([BankStatement isValidIBAN: values[@"IBAN"]] && ![BankStatement isValidIBAN: self.remoteIBAN]) {
             self.remoteIBAN = values[@"IBAN"];
         }
-        if (values[@"BIC"] != nil && self.remoteBIC == nil) { // TODO: dito for BIC.
+        if ([BankStatement isValidBIC: values[@"BIC"]] && ![BankStatement isValidBIC: self.remoteBIC]) {
             self.remoteBIC = values[@"BIC"];
         }
         self.sepa.endToEndId = values[@"EREF"]; // Sets to nil if not existent.

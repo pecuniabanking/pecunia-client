@@ -276,16 +276,24 @@ static BOOL wordsValid;
                                     }
                                 } else {
                                     // Not a whitespace. See if that is a known word.
+                                    // TODO: needs localization.
                                     NSString *key = item.stringWithNormalizedGermanChars.lowercaseString;
                                     NSString *word = words[key];
                                     if (word != nil) {
-                                        // Make the first letter upper case if it is the first entry.
-                                        // Don't touch the other letters, though!
-                                        if (result.length == 0) {
-                                            [result appendString: [word substringToIndex: 1].capitalizedString];
+                                        // If the original work contains lower case characters then it was probably
+                                        // already in true case. We only use the lookup then for replacing diacritics/sharp-s.
+                                        if ([item rangeOfCharacterFromSet: NSCharacterSet.lowercaseLetterCharacterSet].length > 0) {
+                                            [result appendString: [item substringToIndex: 1]];
                                             [result appendString: [word substringFromIndex: 1]];
                                         } else {
-                                            [result appendString: word];
+                                            // Make the first letter upper case if it is the first entry.
+                                            // Don't touch the other letters, though!
+                                            if (result.length == 0) {
+                                                [result appendString: [word substringToIndex: 1].capitalizedString];
+                                                [result appendString: [word substringFromIndex: 1]];
+                                            } else {
+                                                [result appendString: word];
+                                            }
                                         }
                                     } else {
                                         [result appendString: item];
