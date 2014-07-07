@@ -71,7 +71,6 @@ typedef enum {
 @property (nonatomic, strong) NSString *remoteIBAN;
 @property (nonatomic, strong) NSString *remoteBIC;
 @property (nonatomic, strong) NSString *remoteBankCode;
-@property (nonatomic, strong) NSString *remoteBankLocation;
 @property (nonatomic, strong) NSString *remoteBankName;
 @property (nonatomic, strong) NSString *remoteAccount;
 @property (nonatomic, strong) NSString *remoteCountry;
@@ -101,7 +100,6 @@ typedef enum {
 @property (nonatomic, weak, readonly) NSString *note;
 
 @property (nonatomic, strong) NSString *additional;
-@property (nonatomic, strong) NSNumber *hashNumber;
 @property (nonatomic, strong) NSNumber *type;
 @property (nonatomic, strong) NSNumber *isAssigned;             // assigned to >= 100%
 @property (nonatomic, strong) NSNumber *isManual;

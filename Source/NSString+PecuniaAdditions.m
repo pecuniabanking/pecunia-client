@@ -305,4 +305,17 @@ static BOOL wordsValid;
     return [result stringByReplacingOccurrencesOfString: @"\u0308" withString: @"e"]; // Combining diaresis.
 }
 
+- (NSString *)stringByEscapingXmlCharacters {
+    NSCharacterSet *cs = [NSCharacterSet characterSetWithCharactersInString: @"&<>'"];
+    NSRange        range = [self rangeOfCharacterFromSet: cs];
+    if (range.location == NSNotFound) {
+        return self;
+    }
+    NSString *res = [self stringByReplacingOccurrencesOfString: @"&" withString: @"&amp;"];
+    res = [res stringByReplacingOccurrencesOfString: @"<" withString: @"&lt;"];
+    res = [res stringByReplacingOccurrencesOfString: @">" withString: @"&gt;"];
+    res = [res stringByReplacingOccurrencesOfString: @"'" withString: @"&apos;"];
+    return res;
+}
+
 @end

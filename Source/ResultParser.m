@@ -176,7 +176,7 @@
 
 - (void)parser: (NSXMLParser *)parser foundCharacters: (NSString *)string
 {
-    [resultXmlString appendString:string ];
+    [resultXmlString appendString: [string stringByEscapingXmlCharacters] ];
 
     id obj = [stack lastObject];
     if (obj == nil) {
