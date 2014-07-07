@@ -116,6 +116,9 @@ typedef enum {
 @property (nonatomic, strong) SepaData    *sepa;
 @property (nonatomic, strong) NSSet       *tags;
 
++ (BOOL)isValidIBAN: (NSString *)text;
++ (BOOL)isValidBIC: (NSString *)text;
+
 @end
 
 // coalesce these into one @interface BankStatement (CoreDataGeneratedAccessors) section

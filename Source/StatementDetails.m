@@ -30,6 +30,7 @@
 #import "BankStatement.h"
 #import "SepaData.h"
 #import "ShortDate.h"
+#import "SliderView.h"
 
 #import "NSView+PecuniaAdditions.h"
 #import "NSColor+PecuniaAdditions.h"
@@ -61,6 +62,70 @@ extern NSString *PecuniaWordsLoadedNotification;
 }
 
 @end
+
+@interface DetailsViewStepperCell : NSStepperCell
+@end
+
+@implementation DetailsViewStepperCell
+
+- (void)drawInteriorWithFrame: (NSRect)cellFrame inView: (NSView *)controlView {
+    [NSColor.blackColor set];
+
+    cellFrame = NSInsetRect(cellFrame, 6, 0);
+    NSBezierPath *path = [NSBezierPath new];
+    [path moveToPoint: NSMakePoint(NSMinX(cellFrame), NSMidY(cellFrame) + 2)];
+    [path lineToPoint: NSMakePoint(NSMaxX(cellFrame), NSMidY(cellFrame) + 2)];
+    [path lineToPoint: NSMakePoint(NSMidX(cellFrame), NSMidY(cellFrame) + NSWidth(cellFrame) / 2 + 2)];
+    [path closePath];
+    [path fill];
+
+    path = [NSBezierPath new];
+    [path moveToPoint: NSMakePoint(NSMinX(cellFrame), NSMidY(cellFrame) - 2)];
+    [path lineToPoint: NSMakePoint(NSMaxX(cellFrame), NSMidY(cellFrame) - 2)];
+    [path lineToPoint: NSMakePoint(NSMidX(cellFrame), NSMidY(cellFrame) - NSWidth(cellFrame) / 2 - 2)];
+    [path closePath];
+    [path fill];
+}
+
+@end
+
+@interface DateTextFieldCell : NSTextFieldCell
+@end
+
+@implementation DateTextFieldCell
+
+- (void)drawInteriorWithFrame: (NSRect)cellFrame inView: (NSView *)controlView {
+    [super drawInteriorWithFrame: cellFrame inView: controlView];
+}
+
+@end
+
+@interface DateTextField : NSTextField
+@end
+
+@implementation DateTextField
+
+- (void)resizeSubviewsWithOldSize: (NSSize)oldSize {
+    // Adjust right alignment tab to always sit at the right border.
+    NSMutableAttributedString *string = [self.attributedStringValue mutableCopy];
+    [string removeAttribute: NSParagraphStyleAttributeName
+                      range: NSMakeRange(0, string.length)];
+
+    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+    style.alignment = NSLeftTextAlignment;
+    NSTextTab *tab = [[NSTextTab alloc] initWithTextAlignment: NSRightTextAlignment
+                                                     location: NSWidth(self.frame) - 4
+                                                      options: nil];
+    style.tabStops = @[tab];
+    [string addAttribute: NSParagraphStyleAttributeName
+                   value: style
+                   range: NSMakeRange(0, string.length)];
+    self.attributedStringValue = string;
+}
+
+@end
+
+#pragma mark - Statement details implementation
 
 @interface DetailsTagView : TagView
 @end
@@ -94,6 +159,8 @@ extern NSString *PecuniaWordsLoadedNotification;
 @property (strong) IBOutlet NSTextView *sepaInfoTextView;
 
 @property (weak) IBOutlet NSImageView *sequenceTypeImage;
+@property (weak) IBOutlet SliderView  *dateSlider;
+@property (weak) IBOutlet NSStepper   *dateStepper;
 
 @property (strong) IBOutlet TagView         *tagViewPopup;
 @property (weak) IBOutlet NSView            *tagViewHost;
@@ -101,6 +168,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 @property (weak) IBOutlet NSArrayController *statementTags;
 
 @property (weak) IBOutlet NSLayoutConstraint *verticalConstraintValueCurrency;
+@property (weak) IBOutlet NSLayoutConstraint *dateFieldRightBorderConstraint;
 
 @end
 
@@ -120,6 +188,8 @@ extern NSString *PecuniaWordsLoadedNotification;
 @synthesize currencyField;
 
 @synthesize sequenceTypeImage;
+@synthesize dateSlider;
+@synthesize dateStepper;
 
 @synthesize tagViewPopup;
 @synthesize tagView;
@@ -129,6 +199,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 @synthesize sepaInfoTextView;
 
 @synthesize verticalConstraintValueCurrency;
+@synthesize dateFieldRightBorderConstraint;
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -166,7 +237,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 }
 
 - (void)updateDisplayAfterLoading {
-    self.representedObject = self.representedObject; // Reassign to update values.
+    [self updateCaseDependentText];
 }
 
 - (void)updateValueColors {
@@ -237,14 +308,14 @@ extern NSString *PecuniaWordsLoadedNotification;
                                                                row: row
                                                             column: 0
                                                               font: [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 12]
-                                                             color: [NSColor colorWithCalibratedRed: 0.582 green: 0.572 blue: 0.544 alpha: 1.000]]];
+                                                             color: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]]];
     [text appendAttributedString: [self createCellStringWithString: [[value description] stringByAppendingString: @"\n"]
                                                              table: table
                                                          alignment: NSLeftTextAlignment
                                                                row: row
                                                             column: 1
                                                               font: [PreferenceController fontNamed: PreferenceController.mainFontNameBold baseSize: 12]
-                                                             color: [NSColor colorWithCalibratedRed: 0.497 green: 0.488 blue: 0.461 alpha: 1.000]]];
+                                                             color: [NSColor colorWithCalibratedWhite: 0.302 alpha: 1.000]]];
     return YES;
 }
 
@@ -295,6 +366,52 @@ extern NSString *PecuniaWordsLoadedNotification;
     }
 
     details[@"sepaInfo"] = text;
+}
+
+/**
+ * Update text fields that depend on proper casing.
+ */
+-(void)updateCaseDependentText {
+    StatCatAssignment *assignment = self.representedObject;
+    BankStatement     *statement = assignment.statement;
+    NSString *transactionText = statement.transactionText;
+    if (transactionText.length > 0) {
+        self.sepaDetails[@"PURP"] = transactionText.stringWithNaturalText;
+    }
+}
+
+- (void)addDateField: (NSString *)name
+             forDate: (ShortDate *)date
+              normal: (NSDictionary *)normalAttributes
+                bold: (NSDictionary *)boldAttributes {
+    DateTextField *field = [[DateTextField alloc] initWithFrame: NSMakeRect(0, 0, 100, 20)];
+    field.bordered = NO;
+    field.editable = NO;
+    field.selectable = NO;
+    field.drawsBackground = NO;
+    [field.cell setScrollable: YES];
+    [field.cell setUsesSingleLineMode: YES];
+
+    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+    NSTextTab *tab = [[NSTextTab alloc] initWithTextAlignment: NSRightTextAlignment
+                                                     location: NSWidth(dateSlider.frame) - 4
+                                                      options: nil];
+    style.tabStops = @[tab];
+
+    NSMutableAttributedString *string = [NSMutableAttributedString new];
+    [string appendAttributedString: [[NSAttributedString alloc] initWithString: name
+                                                                    attributes: normalAttributes]
+     ];
+    [string appendAttributedString: [[NSAttributedString alloc] initWithString: [NSString stringWithFormat: @"\t%@", date]
+                                                                    attributes: boldAttributes]
+     ];
+    [string addAttribute: NSParagraphStyleAttributeName
+                   value: style
+                   range: NSMakeRange(0, string.length)];
+
+    field.attributedStringValue = string;
+    [dateSlider addSubview: field];
+
 }
 
 - (void)setRepresentedObject: (id)value {
@@ -358,12 +475,12 @@ extern NSString *PecuniaWordsLoadedNotification;
     }
 
     NSDictionary *normalAttributes = @{
-        NSFontAttributeName: [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 12],
-        NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.497 green: 0.488 blue: 0.461 alpha: 1.000]
+        NSFontAttributeName: [PreferenceController fontNamed: PreferenceController.mainFontName baseSize: 13],
+        NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.302 alpha:1.000]
     };
     NSDictionary *boldAttributes = @{
-        NSFontAttributeName: [PreferenceController fontNamed: PreferenceController.mainFontNameBold baseSize: 12],
-        NSForegroundColorAttributeName: [NSColor colorWithCalibratedRed: 0.497 green: 0.488 blue: 0.461 alpha: 1.000]
+        NSFontAttributeName: [PreferenceController fontNamed: PreferenceController.mainFontNameBold baseSize: 13],
+        NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.302 alpha:1.000]
     };
 
     NSMutableAttributedString *string = [NSMutableAttributedString new];
@@ -437,6 +554,38 @@ extern NSString *PecuniaWordsLoadedNotification;
     [sequenceImage unlockFocus];
     sequenceTypeImage.image = sequenceImage;
 
+    dateSlider.subviews = @[];
+    ShortDate *date = [ShortDate dateWithDate: statement.date];
+    [self addDateField: NSLocalizedString(@"AP605", nil) forDate: date normal: normalAttributes bold: boldAttributes];
+    if (statement.valutaDate) {
+        ShortDate *valuta = [ShortDate dateWithDate: statement.valutaDate];
+        if (![date isEqual: valuta] || [valuta compare: ShortDate.currentDate] == NSOrderedDescending) {
+            [self addDateField: NSLocalizedString(@"AP604", nil) forDate: valuta normal: normalAttributes bold: boldAttributes];
+        }
+    }
+
+    if (statement.docDate != nil) {
+        date = [ShortDate dateWithDate: statement.docDate];
+        [self addDateField: NSLocalizedString(@"AP632", nil) forDate: date normal: normalAttributes bold: boldAttributes];
+    }
+
+    if (statement.sepa.mandateSignatureDate != nil) {
+        date = [ShortDate dateWithDate: statement.sepa.mandateSignatureDate];
+        [self addDateField: NSLocalizedString(@"AP630", nil) forDate: date normal: normalAttributes bold: boldAttributes];
+    }
+
+    if (statement.sepa.settlementDate != nil) {
+        date = [ShortDate dateWithDate: statement.sepa.settlementDate];
+        [self addDateField: NSLocalizedString(@"AP631", nil) forDate: date normal: normalAttributes bold: boldAttributes];
+    }
+
+    BOOL hideStepper = dateSlider.subviews.count < 2;
+    [dateStepper.animator setHidden: hideStepper];
+    dateFieldRightBorderConstraint.constant = hideStepper ? 21 : 35;
+
+    dateSlider.slide = SlideVertical;
+    dateSlider.fade = NO;
+    dateSlider.wrap = YES;
 }
 
 #pragma mark - User Actions
@@ -467,6 +616,15 @@ extern NSString *PecuniaWordsLoadedNotification;
 
 - (IBAction)showTagPopup: (id)sender {
     [tagViewPopup showTagPopupAt: tagView.bounds forView: tagView host: tagViewHost preferredEdge: NSMinYEdge];
+}
+
+- (IBAction)stepDate: (id)sender {
+    if ([sender intValue] > 0) {
+        [dateSlider showPrevious];
+    } else {
+        [dateSlider showNext];
+    }
+    [sender setIntValue: 0];
 }
 
 #pragma mark - KVO

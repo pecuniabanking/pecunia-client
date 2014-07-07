@@ -21,6 +21,6 @@
 
 @interface StatementDetails : DetailsView <NSTextViewDelegate>
 
-@property (strong) NSDictionary *sepaDetails;
+@property (strong) NSMutableDictionary *sepaDetails;
 
 @end
