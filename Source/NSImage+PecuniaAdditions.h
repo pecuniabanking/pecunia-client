@@ -21,6 +21,8 @@
 
 @interface NSImage (PecuniaAdditions)
 
++ (NSImage *)imageNamed: (NSString *)name fromCollection: (NSUInteger)collection;
+
 - (void)drawEtchedInRect: (NSRect)rect;
 
 @end

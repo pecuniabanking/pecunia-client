@@ -17,25 +17,22 @@
  * 02110-1301  USA
  */
 
-#import "PXListView.h"
-#import "INAppStoreWindow.h"
+// A view that shows only one of its subviews at a time, but can animate switching between them using
+// a simple built-in up/down control, by code or by a timer.
 
-@class PecuniaListView;
+typedef NS_ENUM(NSUInteger, SlideDirection) {
+    SlideNone,
+    SlideHorizontal,
+    SlideVertical,
+};
 
-@interface DetailsView : NSView <LIPopoverFirstResponderStealingSuppression>
+@interface SliderView : NSView <NSAnimationDelegate>
 
-@property (nonatomic, weak) id owner;
-@property (nonatomic, strong) id representedObject;
+@property (assign) SlideDirection slide; // Determines the direction of the slide animation, if any.
+@property (assign) BOOL fade;            // Determines if to apply a cross-fade (alone or in addition to the slide).
+@property (assign) BOOL wrap;            // Determines whether to start at the beginning again when reaching the end and vice versa.
 
-@end
-
-@interface PecuniaListView : PXListView <NSAnimationDelegate>
-
-@property (weak) id      owner;
-@property (weak) NSArray *dataSource;
-
-- (void)initDetailsWithNibName: (NSString *)nibName;
-- (void)toggleStatementDetails;
-- (void)updateVisibleCells;
+- (void)showNext;
+- (void)showPrevious;
 
 @end

@@ -26,7 +26,10 @@
 #import "Keychain.h"
 #import "BankingController.h"
 #import "PasswordWindow.h"
+
 #import "NSColor+PecuniaAdditions.h"
+#import "NSImage+PecuniaAdditions.h"
+
 #import "NewPasswordController.h"
 #import "LocalSettingsController.h"
 #import "ShortDate.h"
@@ -336,15 +339,13 @@ static NSDictionary *heightMappings;
     }
 
     // Load icons in the toolbar. Those in subfolders of the Resources folder are not found automatically.
-    NSFileManager *fileManager = [NSFileManager defaultManager];
     for (NSToolbarItem *item in toolBar.items) {
-        NSString *path = [[NSBundle mainBundle] pathForResource: item.paletteLabel
-                                                         ofType: @"icns"
-                                                    inDirectory: @"Collections/1"];
-        if ([fileManager fileExistsAtPath: path]) {
-            item.image = [[NSImage alloc] initWithContentsOfFile: path];
+        NSImage *image = [NSImage imageNamed: item.paletteLabel fromCollection: 1];
+        if (image != nil) {
+            item.image = image; // Leave alone images that do not come from the collection.
         }
     }
+
     colorListView.delegate = self;
     [colorListView reloadData];
 

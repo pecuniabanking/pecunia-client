@@ -76,6 +76,7 @@
 #import "NSColor+PecuniaAdditions.h"
 #import "NSDictionary+PecuniaAdditions.h"
 #import "NSOutlineView+PecuniaAdditions.h"
+#import "NSImage+PecuniaAdditions.h"
 
 #import "BWGradientBox.h"
 #import "EDSideBar.h"
@@ -258,13 +259,7 @@ static BankingController *bankinControllerInstance;
     // Register drag'n drop types.
     [accountsView registerForDraggedTypes: @[BankStatementDataType, CategoryDataType]];
 
-    // Set a number of images that use a collection (and hence are are not automatically found).
-    NSString *path = [[NSBundle mainBundle] pathForResource: @"icon72-1"
-                                                     ofType: @"icns"
-                                                inDirectory: @"Collections/1"];
-    if ([NSFileManager.defaultManager fileExistsAtPath: path]) {
-        lockImage.image = [[NSImage alloc] initWithContentsOfFile: path];
-    }
+    lockImage.image = [NSImage imageNamed: @"icon72-1" fromCollection: 1];
 
     // Update encryption image.
     [self encryptionChanged];
@@ -2278,10 +2273,7 @@ static BankingController *bankinControllerInstance;
         moneyImage = [NSImage imageNamed: @"money_18.png"];
         moneySyncImage = [NSImage imageNamed: @"money_sync_18.png"];
 
-        NSString *path = [[NSBundle mainBundle] pathForResource: @"icon95-1"
-                                                         ofType: @"icns"
-                                                    inDirectory: @"Collections/1/"];
-        bankImage = [[NSImage alloc] initWithContentsOfFile: path];
+        bankImage = [NSImage imageNamed: @"icon95-1" fromCollection: 1];
     }
 
     if (cat.iconName == nil) {

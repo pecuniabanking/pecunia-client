@@ -37,6 +37,7 @@
 #import "HBCIController.h"
 
 #import "NSColor+PecuniaAdditions.h"
+#import "NSImage+PecuniaAdditions.h"
 
 #import "Tag.h"
 #import "TagView.h"
@@ -135,12 +136,7 @@ extern void *UserDefaultsBindingContext;
 
     [categoryAssignments addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
 
-    NSString * path = [[NSBundle mainBundle] pathForResource: @"icon14-1"
-                                                      ofType: @"icns"
-                                                 inDirectory: @"Collections/1"];
-    if ([NSFileManager.defaultManager fileExistsAtPath: path]) {
-        tagButton.image = [[NSImage alloc] initWithContentsOfFile: path];
-    }
+    tagButton.image = [NSImage imageNamed: @"icon14-1" fromCollection: 1];
 
     [attachment1 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref1" options: nil];
     [attachment2 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref2" options: nil];

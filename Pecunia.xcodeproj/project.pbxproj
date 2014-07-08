@@ -179,6 +179,8 @@
 		27686E4B193B5E860038067D /* WaitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27686E49193B5E860038067D /* WaitViewController.m */; };
 		2769AC4518B1008200F9D1D4 /* PecuniaApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 2769AC4418B1008200F9D1D4 /* PecuniaApplication.m */; };
 		2769AC4618B1008200F9D1D4 /* PecuniaApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 2769AC4418B1008200F9D1D4 /* PecuniaApplication.m */; };
+		276AED0D195B2F61005D5E06 /* SliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 276AED0C195B2F61005D5E06 /* SliderView.m */; };
+		276AED0E195B2F61005D5E06 /* SliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 276AED0C195B2F61005D5E06 /* SliderView.m */; };
 		276B5EFB194DAC1F00B12400 /* gray-hatch2.png in Resources */ = {isa = PBXBuildFile; fileRef = 276B5EF9194DAC1F00B12400 /* gray-hatch2.png */; };
 		276B5EFC194DAC1F00B12400 /* gray-hatch2.png in Resources */ = {isa = PBXBuildFile; fileRef = 276B5EF9194DAC1F00B12400 /* gray-hatch2.png */; };
 		276B5EFD194DAC1F00B12400 /* gray-hatch2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 276B5EFA194DAC1F00B12400 /* gray-hatch2@2x.png */; };
@@ -1068,7 +1070,7 @@
 		2743844515FB925D00E36DB5 /* cyclic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cyclic.png; sourceTree = "<group>"; };
 		27465177159B795E00D774FE /* shield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shield.png; sourceTree = "<group>"; };
 		2747C58F1944750C0089A7C9 /* PecuniaListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaListView.h; sourceTree = "<group>"; };
-		2747C5901944750C0089A7C9 /* PecuniaListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaListView.m; sourceTree = "<group>"; };
+		2747C5901944750C0089A7C9 /* PecuniaListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaListView.m; sourceTree = "<group>"; wrapsLines = 0; };
 		2747C5931944981C0089A7C9 /* StatementDetails.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatementDetails.xib; sourceTree = "<group>"; };
 		274C09FB1440BC9800A80F0E /* RoundedOuterShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RoundedOuterShadowView.h; sourceTree = "<group>"; tabWidth = 4; };
 		274C09FC1440BC9800A80F0E /* RoundedOuterShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RoundedOuterShadowView.m; sourceTree = "<group>"; tabWidth = 4; };
@@ -1132,6 +1134,8 @@
 		27686E49193B5E860038067D /* WaitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaitViewController.m; sourceTree = "<group>"; };
 		2769AC4318B1008200F9D1D4 /* PecuniaApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PecuniaApplication.h; sourceTree = "<group>"; };
 		2769AC4418B1008200F9D1D4 /* PecuniaApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PecuniaApplication.m; sourceTree = "<group>"; };
+		276AED0B195B2F61005D5E06 /* SliderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderView.h; sourceTree = "<group>"; };
+		276AED0C195B2F61005D5E06 /* SliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderView.m; sourceTree = "<group>"; };
 		276B5EF9194DAC1F00B12400 /* gray-hatch2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch2.png"; sourceTree = "<group>"; };
 		276B5EFA194DAC1F00B12400 /* gray-hatch2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray-hatch2@2x.png"; sourceTree = "<group>"; };
 		276B83C31811A35F00AFF54A /* NSColor+PecuniaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+PecuniaAdditions.h"; sourceTree = "<group>"; };
@@ -1990,6 +1994,8 @@
 				2716FE4C152381A60015A753 /* SynchronousScrollView.m */,
 				27686E48193B5E860038067D /* WaitViewController.h */,
 				27686E49193B5E860038067D /* WaitViewController.m */,
+				276AED0B195B2F61005D5E06 /* SliderView.h */,
+				276AED0C195B2F61005D5E06 /* SliderView.m */,
 			);
 			name = "Controls and Layouts";
 			sourceTree = "<group>";
@@ -3538,6 +3544,7 @@
 				277788C6173CE22700430EBC /* ChipTanWindowController.m in Sources */,
 				277788C7173CE22700430EBC /* FlickerView.m in Sources */,
 				277788C8173CE22700430EBC /* TanMediaWindowController.m in Sources */,
+				276AED0E195B2F61005D5E06 /* SliderView.m in Sources */,
 				27F69B7918BA3EFB002CBE06 /* FileInZipInfo.m in Sources */,
 				277788C9173CE22700430EBC /* BankParameter.m in Sources */,
 				B1E8D8A018F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */,
@@ -3761,6 +3768,7 @@
 				B17B2B3E13EC8D5000739E7A /* ChipTanWindowController.m in Sources */,
 				B17B2B4313EC921200739E7A /* FlickerView.m in Sources */,
 				B1B417DF13F06AD200BEEC8F /* TanMediaWindowController.m in Sources */,
+				276AED0D195B2F61005D5E06 /* SliderView.m in Sources */,
 				27F69B7818BA3EFB002CBE06 /* FileInZipInfo.m in Sources */,
 				B1B41C8C14005B5B00BEEC8F /* BankParameter.m in Sources */,
 				B1E8D89F18F9DB8200EED3B2 /* PecuniaComboBoxCell.m in Sources */,

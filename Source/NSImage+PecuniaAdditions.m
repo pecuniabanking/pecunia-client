@@ -21,8 +21,17 @@
 
 @implementation NSImage (PecuniaAdditions)
 
-- (void)drawEtchedInRect: (NSRect)rect
-{
++ (NSImage *)imageNamed: (NSString *)name fromCollection: (NSUInteger)collection {
+    NSString *path = [[NSBundle mainBundle] pathForResource: name
+                                                     ofType: @"icns"
+                                                inDirectory: [NSString stringWithFormat: @"Collections/%lu", collection]];
+    if ([NSFileManager.defaultManager fileExistsAtPath: path]) {
+        return [[NSImage alloc] initWithContentsOfFile: path];
+    }
+    return nil;
+}
+
+- (void)drawEtchedInRect: (NSRect)rect {
     NSSize  size = rect.size;
     CGFloat dropShadowOffsetY = size.width <= 64.0 ? -1.0 : -2.0;
     CGFloat innerShadowBlurRadius = size.width <= 32.0 ? 1.0 : 4.0;

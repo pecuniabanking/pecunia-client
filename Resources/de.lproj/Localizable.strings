@@ -341,7 +341,7 @@ AP600 = "Importeinstellungen mit dem Namen %@ existieren bereits. Möchten Sie s
 AP601 = "Die Angabe einer Importdatei fehlt";
 AP602 = "Importfehler";
 AP603 = "Datei %@ existiert nicht!";
-AP604 = "Wertstellung";
+AP604 = "Wertstellungsdatum";
 AP605 = "Buchungsdatum";
 AP606 = "Betrag";
 AP607 = "Auftraggeber/Begünstigter";
@@ -367,6 +367,9 @@ AP626 = "Importdaten werden untersucht...";
 AP627 = "Die Vorbereitungen sind abgeschlossen. Wählen Sie einen Importbereich und klicken Sie dann \"Import Starten\"";
 AP628 = "Während der Verarbeitung ist ein schwerwiegender Fehler aufgetreten. Bitte versichern Sie sich, dass die angegebenen Dateien, Einstellungen und Feldzuordnungen korrekt sind.";
 AP629 = "Es wurden keine verwertbaren Daten gefunden";
+AP630 = "Mandatsdatum";
+AP631 = "Datum Rücklastschrift";
+AP632 = "Belegdatum";
 
 // Preferences
 // AP650..AP749
@@ -721,9 +724,13 @@ AP1498 = "OOFF+Einmalige Überweisung+sequence-type-once-off";
 // Some transfer description to help parsing out the sequence type if there's not sequence code.
 AP1499 = "dauerauftrag:RCUR";
 
-AP1549 = "\nDas Wertstellungsdatum liegt in der Zukunft, diese Transaktion ist also noch nicht vollständig gebucht";
+// Tooltips
+// AP1550..AP1699
+AP1550 = "\nDas Wertstellungsdatum liegt in der Zukunft, diese Transaktion ist noch nicht vollständig gebucht";
+AP1551 = "Banküberweisung";
+AP1552 = "Kreditkartenumsatz";
 
 // Use a new block of IDs for the next set of strings!
-// AP1550..AP1599
+// AP1700..AP1749
 
 

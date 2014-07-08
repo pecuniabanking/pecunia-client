@@ -35,8 +35,11 @@
 #import "NSView+PecuniaAdditions.h"
 #import "NSColor+PecuniaAdditions.h"
 #import "NSString+PecuniaAdditions.h"
+#import "NSImage+PecuniaAdditions.h"
 
 #import "MOAssistant.h"
+#import "BankInfo.h"
+#import "HBCIController.h"
 
 extern void     *UserDefaultsBindingContext;
 extern NSString *PecuniaWordsLoadedNotification;
@@ -150,6 +153,12 @@ extern NSString *PecuniaWordsLoadedNotification;
 @property (weak) IBOutlet AttachmentImageView *attachment3;
 @property (weak) IBOutlet AttachmentImageView *attachment4;
 
+@property (weak) IBOutlet NSImageView *typeImage;
+@property (weak) IBOutlet NSImageView *manualIndicator;
+@property (weak) IBOutlet NSImageView *preliminaryIndicator;
+@property (weak) IBOutlet NSImageView *isNewIndicator;
+@property (weak) IBOutlet NSImageView *cancellationIndicator;
+
 @property (weak) IBOutlet NSButton    *tagButton;
 @property (weak) IBOutlet NSBox       *colorBox;
 @property (weak) IBOutlet NSTextField *currencyField;
@@ -198,6 +207,12 @@ extern NSString *PecuniaWordsLoadedNotification;
 @synthesize tagViewHost;
 @synthesize sepaInfoTextView;
 
+@synthesize typeImage;
+@synthesize manualIndicator;
+@synthesize preliminaryIndicator;
+@synthesize isNewIndicator;
+@synthesize cancellationIndicator;
+
 @synthesize verticalConstraintValueCurrency;
 @synthesize dateFieldRightBorderConstraint;
 
@@ -232,6 +247,9 @@ extern NSString *PecuniaWordsLoadedNotification;
     tagView.canCreateNewTags = YES;
 
     notesTextView.editable = NO;
+
+    preliminaryIndicator.image = [NSImage imageNamed: @"icon96-1" fromCollection: 1];
+    cancellationIndicator.image = [NSImage imageNamed: @"icon66-1" fromCollection: 1];
 
     [self updateValueColors];
 }
@@ -423,6 +441,8 @@ extern NSString *PecuniaWordsLoadedNotification;
     StatCatAssignment *assignment = value;
     BankStatement     *statement = assignment.statement;
 
+    BOOL isCreditCardStatement = statement.type.intValue == StatementType_CreditCard;
+
     NSMutableDictionary *details = [NSMutableDictionary new];
     NSString            *detailedPurpose = purposeMapping[statement.sepa.purposeCode]; // Covers unknown codes.
     if (detailedPurpose.length > 0) {
@@ -440,7 +460,7 @@ extern NSString *PecuniaWordsLoadedNotification;
         }
     }
 
-    if (statement.ccNumberUms != nil) {
+    if (isCreditCardStatement) {
         details[@"receiver"] = statement.ccNumberUms;
     } else {
         if (statement.remoteName != nil) {
@@ -508,8 +528,6 @@ extern NSString *PecuniaWordsLoadedNotification;
 
     [verticalConstraintValueCurrency.animator setConstant: statement.isAssigned.boolValue ? 15 : 39];
 
-    details[@"documentNumber"] = @"";
-    
     self.sepaDetails = details; // Triggers KVO.
 
     // Update sequence type image. We use the SEPA sequence type, if given. Otherwise we try to derive the correct
@@ -545,7 +563,7 @@ extern NSString *PecuniaWordsLoadedNotification;
         tooltip = NSLocalizedString(@"AP1215", nil);
     }
     if (futureTransaction) {
-        tooltip = [tooltip stringByAppendingString: NSLocalizedString(@"AP1549", nil)];
+        tooltip = [tooltip stringByAppendingString: NSLocalizedString(@"AP1550", nil)];
     }
     sequenceTypeImage.toolTip = tooltip;
     NSImage *overlay = [NSImage imageNamed: sequenceTypeMap[sequenceType][@"image"]];
@@ -586,6 +604,21 @@ extern NSString *PecuniaWordsLoadedNotification;
     dateSlider.slide = SlideVertical;
     dateSlider.fade = NO;
     dateSlider.wrap = YES;
+
+    if (isCreditCardStatement) {
+        typeImage.image = [NSImage imageNamed: @"icon87-1" fromCollection: 1];
+        typeImage.toolTip = NSLocalizedString(@"AP1552", nil);
+    } else {
+        typeImage.image = [NSImage imageNamed: @"icon95-1" fromCollection: 1];
+        typeImage.toolTip = NSLocalizedString(@"AP1551", nil);
+    }
+
+    manualIndicator.alphaValue = statement.isManual.boolValue ? 1 : 0.125;
+    preliminaryIndicator.alphaValue = statement.isPreliminary.boolValue ? 1 : 0.125;
+    isNewIndicator.alphaValue = statement.isNew.boolValue ? 1 : 0.125;
+    cancellationIndicator.alphaValue = statement.isStorno.boolValue ? 1 : 0.125;
+
+    //BankInfo *info = [HBCIController.controller infoForBankCode: statement.remoteBankCode];
 }
 
 #pragma mark - User Actions

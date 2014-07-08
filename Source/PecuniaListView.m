@@ -22,6 +22,38 @@
 
 extern NSString *PecuniaWordsLoadedNotification;
 
+@interface PopoverAnimation : NSAnimation {
+@private
+    NSRect startRect;
+    NSRect endRect;
+    NSPopover *target;
+}
+@end
+
+@implementation  PopoverAnimation
+
+- (id)initWithPopover: (NSPopover *)popover startRect: (NSRect)start endRect: (NSRect)end {
+    self = [super initWithDuration: 0.125 animationCurve: NSAnimationEaseInOut];
+    if (self != nil) {
+        target = popover;
+        startRect = start;
+        endRect = end;
+    }
+    return self;
+}
+
+- (void)setCurrentProgress: (NSAnimationProgress)progress
+{
+    [super setCurrentProgress: progress];
+
+    NSRect newRect = startRect;
+    newRect.origin.x += progress * (NSMinX(endRect) - NSMinX(startRect));
+    newRect.origin.y += progress * (NSMinY(endRect) - NSMinY(startRect));
+    target.positioningRect = newRect;
+}
+
+@end
+
 @implementation DetailsView
 
 @synthesize representedObject;
@@ -50,6 +82,8 @@ extern NSString *PecuniaWordsLoadedNotification;
     NSViewController *detailsPopoverController;
 
     DetailsView *detailsView;
+
+    PopoverAnimation *positionAnimation;
 }
 
 @end
@@ -69,6 +103,7 @@ extern NSString *PecuniaWordsLoadedNotification;
     detailsPopover = [NSPopover new];
     detailsPopover.contentViewController = detailsPopoverController;
     detailsPopover.behavior = NSPopoverBehaviorSemitransient;
+    detailsPopover.animates = YES;
 }
 
 - (void)updateVisibleCells {
@@ -78,7 +113,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 - (void)updateCells {
     // Called when the content view is scrolled.
     [super updateCells];
-    [self updatePopoverPosition];
+    [self updatePopoverPositionWithAnimation: NO];
 }
 
 - (void)moveUp: (id)sender {
@@ -86,7 +121,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 
     if (detailsPopover.shown) {
         [self updateDetails];
-        [self updatePopoverPosition];
+        [self updatePopoverPositionWithAnimation: YES];
     }
 }
 
@@ -95,18 +130,16 @@ extern NSString *PecuniaWordsLoadedNotification;
 
     if (detailsPopover.shown) {
         [self updateDetails];
-        [self updatePopoverPosition];
+        [self updatePopoverPositionWithAnimation: YES];
     }
 }
 
 - (void)scrollToBeginningOfDocument: (id)sender {
     [self scrollRowToVisible: 0];
-    [self updatePopoverPosition];
 }
 
 - (void)scrollToEndOfDocument: (id)sender {
     [self scrollRowToVisible: self.numberOfRows - 1];
-    [self updatePopoverPosition];
 }
 
 - (void)insertNewline: (id)sender {
@@ -135,12 +168,13 @@ extern NSString *PecuniaWordsLoadedNotification;
         detailsPopover.behavior = NSPopoverBehaviorSemitransient;
 
         [self updateDetails];
-        [self updatePopoverPosition];
+        [self updatePopoverPositionWithAnimation: YES];
     }
 }
 
 - (NSRect)popoverRect {
-    NSRect rect = [self rectOfRow: self.selectedRow];
+    // We use forDragging: YES here to exclude the header, if there's any.
+    NSRect rect = [self rectOfRow: self.selectedRow forDragging: YES];
     NSRect frame = [self.contentView documentVisibleRect];
     rect.origin.y -= frame.origin.y;
 
@@ -160,7 +194,7 @@ extern NSString *PecuniaWordsLoadedNotification;
         return;
     }
 
-    self.selectedRow = self.selectedRows.firstIndex; // Make it a single selection.
+    self.selectedRow = self.selectedRows.lastIndex; // Make it a single selection.
     [self updateDetails];
 
     // Will not show the popover if the computed rect is outside the current view.
@@ -175,11 +209,27 @@ extern NSString *PecuniaWordsLoadedNotification;
  * Similar to NSTableView positions the details popover to the currently selected row (while scrolling).
  * The popover is hidden when the selected row moves out of the visible area.
  */
-- (void)updatePopoverPosition {
+- (void)updatePopoverPositionWithAnimation: (BOOL)animate {
     if (detailsPopover.shown) {
         NSRect rect = self.popoverRect;
-        if (NSContainsRect(self.bounds, rect)) {
-            detailsPopover.positioningRect = rect;
+        if (NSIntersectsRect(self.bounds, rect)) {
+
+            if (positionAnimation != nil) {
+                [positionAnimation stopAnimation];
+            }
+            if (abs(NSMinY(detailsPopover.positioningRect) - NSMinY(rect)) < NSHeight([self rectOfRow: self.selectedRow forDragging: YES])) {
+                animate = NO;
+            }
+            if (animate) {
+                positionAnimation = [[PopoverAnimation alloc] initWithPopover: detailsPopover
+                                                                    startRect: detailsPopover.positioningRect
+                                                                      endRect: rect];
+                positionAnimation.animationBlockingMode = NSAnimationNonblockingThreaded;
+                positionAnimation.delegate = self;
+                [positionAnimation startAnimation];
+            } else {
+                detailsPopover.positioningRect = rect;
+            }
         } else {
             [detailsPopover close];
         }
@@ -187,7 +237,16 @@ extern NSString *PecuniaWordsLoadedNotification;
 }
 
 - (void)cancelOperation: (id)sender {
+    [positionAnimation stopAnimation];
     [detailsPopover performClose: self];
+}
+
+- (void)animationDidStop:(NSAnimation *)animation {
+    positionAnimation = nil;
+}
+
+- (void)animationDidEnd: (NSAnimation *)animation {
+    positionAnimation = nil;
 }
 
 @end
