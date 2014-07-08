@@ -128,6 +128,11 @@
                 for (NSUInteger idx = 0; idx < [oldStats count]; idx++) {
                     BankStatement *oldStat = oldStats[idx];
                     if ([stat matchesAndRepair: oldStat]) {
+                        // now check if old statement was preliminary
+                        if (oldStat.isPreliminary.boolValue == YES && stat.isPreliminary.boolValue == NO) {
+                            oldStat.isPreliminary = @NO;
+                        }
+                        
                         isMatched = YES;
                         [oldStats removeObjectAtIndex: idx];
                         break;
@@ -286,9 +291,10 @@
 
             [mergedStatements addObjectsFromArray: newStatements];
             [mergedStatements sortUsingDescriptors: sds];
+            
             // Sum up balances.
             for (stat in mergedStatements) {
-                if (stat.value != nil) {
+                if (stat.value != nil && stat.isPreliminary.boolValue == NO) {
                     newBalance = [newBalance decimalNumberByAdding: stat.value];
                 }
                 stat.saldo = newBalance;
@@ -304,8 +310,10 @@
             [mergedStatements sortUsingDescriptors: sds];
             NSDecimalNumber *newBalance = self.balance;
             for (stat in mergedStatements) {
-                stat.saldo = newBalance;
-                newBalance = [newBalance decimalNumberBySubtracting: stat.value];
+                if (stat.isPreliminary.boolValue == NO) {
+                    stat.saldo = newBalance;
+                    newBalance = [newBalance decimalNumberBySubtracting: stat.value];
+                }
             }
         }
         [self copyStatementsToManualAccounts: newStatements];
@@ -323,11 +331,13 @@
 
     NSDecimalNumber *balance = self.balance;
     for (BankStatement *statement in sortedStatements) {
-        // Balance recomputation.
-        if (![statement.saldo isEqual: balance]) {
-            statement.saldo = balance;
+        if (statement.isPreliminary.boolValue == NO) {
+            // Balance recomputation.
+            if (![statement.saldo isEqual: balance]) {
+                statement.saldo = balance;
+            }
+            balance = [balance decimalNumberBySubtracting: statement.value];
         }
-        balance = [balance decimalNumberBySubtracting: statement.value];
     }
 }
 

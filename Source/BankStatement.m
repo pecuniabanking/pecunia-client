@@ -41,7 +41,7 @@ static NSRegularExpression *bicRE;
 
 @dynamic value, nassValue, charge, saldo;
 @dynamic localBankCode, localAccount;
-@dynamic remoteName, remoteIBAN, remoteBIC, remoteBankCode, remoteAccount, remoteCountry, remoteBankName, remoteBankLocation;
+@dynamic remoteName, remoteIBAN, remoteBIC, remoteBankCode, remoteAccount, remoteCountry, remoteBankName;
 @dynamic purpose, localSuffix, remoteSuffix;
 
 @dynamic customerReference, bankReference;
@@ -51,7 +51,7 @@ static NSRegularExpression *bicRE;
 @dynamic additional;
 @dynamic isAssigned;    // assigned to >= 100%
 @dynamic account;
-@dynamic hashNumber, type;
+@dynamic type;
 @dynamic isManual;
 @dynamic isStorno;
 @dynamic isNew;
@@ -419,6 +419,7 @@ BOOL stringEqual(NSString *a, NSString *b) {
     if (stringEqualIgnoringMissing(self.remoteIBAN, stat.remoteIBAN) == NO) {
         return NO;
     }
+    
     return YES;
 }
 

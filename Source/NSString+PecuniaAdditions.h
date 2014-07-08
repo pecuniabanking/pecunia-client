@@ -34,5 +34,6 @@
 -(BOOL)hasSubstring: (NSString *)substring;
 - (NSString *)stringWithNaturalText;
 - (NSString *)stringWithNormalizedGermanChars;
+- (NSString *)stringByEscapingXmlCharacters;
 
 @end

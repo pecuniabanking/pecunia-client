@@ -41,6 +41,7 @@
 #import "CallbackHandler.h"
 #import "NSDecimalNumber+PecuniaAdditions.h"
 #import "SystemNotification.h"
+#import "NSString+PecuniaAdditions.h"
 
 static HBCIController *controller = nil;
 
@@ -119,20 +120,6 @@ static HBCIController *controller = nil;
     }
 }
 
-NSString * escapeSpecial(NSString *s)
-{
-    NSCharacterSet *cs = [NSCharacterSet characterSetWithCharactersInString: @"&<>'"];
-    NSRange        range = [s rangeOfCharacterFromSet: cs];
-    if (range.location == NSNotFound) {
-        return s;
-    }
-    NSString *res = [s stringByReplacingOccurrencesOfString: @"&" withString: @"&amp;"];
-    res = [res stringByReplacingOccurrencesOfString: @"<" withString: @"&lt;"];
-    res = [res stringByReplacingOccurrencesOfString: @">" withString: @"&gt;"];
-    res = [res stringByReplacingOccurrencesOfString: @"'" withString: @"&apos;"];
-    return res;
-}
-
 - (NSDictionary *)countries
 {
     return countries;
@@ -151,7 +138,7 @@ NSString * escapeSpecial(NSString *s)
     if (val == nil) {
         return;
     }
-    NSString *s = escapeSpecial(val);
+    NSString *s = [val stringByEscapingXmlCharacters];
     if (val) {
         [cmd appendFormat: @"<%@>%@</%@>", tag, s, tag];
     }
@@ -1083,15 +1070,19 @@ NSString * escapeSpecial(NSString *s)
                 }
             } else {
                 // Standard Statements
-                // saldo of the last statement is current saldo
-                if ([res.statements count] > 0) {
-                    BankStatement *stat = (res.statements)[[res.statements count] - 1];
-                    iResult.balance = stat.saldo;
-                    iResult.statements = res.statements;
-                } else {
-                    if (res.balance != nil) {
-                        iResult.balance = res.balance;
+                // saldo of the last statement which is not preliminary is current saldo
+                int idx = [res.statements count] - 1;
+                while (idx >= 0) {
+                    BankStatement *stat = (res.statements)[idx];
+                    if (stat.isPreliminary.boolValue == NO) {
+                        iResult.balance = stat.saldo;
+                        iResult.statements = res.statements;
+                        break;
                     }
+                    idx--;
+                }
+                if (idx < 0 && res.balance != nil) {
+                    iResult.balance = res.balance;
                 }
             }
 
