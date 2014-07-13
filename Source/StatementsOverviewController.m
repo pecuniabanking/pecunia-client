@@ -459,6 +459,17 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
+- (void)markSelectedStatementsRead {
+    NSArray *selection = [categoryAssignments selectedObjects];
+    if (selection.count > 0) {
+        for (StatCatAssignment *assignment in selection) {
+            assignment.statement.isNew = @NO;
+        }
+        [BankingController.controller updateUnread];
+        [statementsListView updateVisibleCells];
+    }
+}
+
 - (void)markSelectedStatementsUnread {
     NSArray *selection = [categoryAssignments selectedObjects];
     if (selection.count > 0) {
@@ -593,38 +604,21 @@ extern void *UserDefaultsBindingContext;
             }
             oldIdx = selIdx;
 
-            // If the currently selected entry is marked as unread mark it now as read.
-            NSDecimalNumber *firstValue = nil;
-            BankStatementType firstStatementType = StatementType_Standard;
-            BOOL needUnreadUpdate = NO;
-            for (StatCatAssignment *stat in [categoryAssignments selectedObjects]) {
-                if (firstValue == nil) {
-                    firstValue = stat.statement.value;
-                    firstStatementType = stat.statement.type.intValue;
+            // If the currently selected entry is marked as unread mark it now as read (if that is enabled).
+            if ([NSUserDefaults.standardUserDefaults boolForKey: @"autoResetNew"]) {
+                BOOL needUnreadUpdate = NO;
+                for (StatCatAssignment *stat in [categoryAssignments selectedObjects]) {
+                    if ([stat.statement.isNew boolValue]) {
+                        needUnreadUpdate = YES;
+                        stat.statement.isNew = @NO;
+                        BankAccount *account = stat.statement.account;
+                        account.unread = account.unread - 1;
+                    }
                 }
-                if ([stat.statement.isNew boolValue]) {
-                    needUnreadUpdate = YES;
-                    stat.statement.isNew = @NO;
-                    BankAccount *account = stat.statement.account;
-                    account.unread = account.unread - 1;
-                }
-            }
-            if (needUnreadUpdate) {
-                [BankingController.controller updateUnread];
-            }
-
-            // Check for the type of transaction and adjust remote name display in the details pane accordingly.
-            if (firstStatementType == StatementType_CreditCard) {
-                [remoteNameLabel setStringValue: NSLocalizedString(@"AP221", nil)];
-            } else {
-                if ([firstValue compare: [NSDecimalNumber zero]] == NSOrderedAscending) {
-                    [remoteNameLabel setStringValue: NSLocalizedString(@"AP208", nil)];
-                } else {
-                    [remoteNameLabel setStringValue: NSLocalizedString(@"AP209", nil)];
+                if (needUnreadUpdate) {
+                    [BankingController.controller updateUnread];
                 }
             }
-
-            [statementDetails setNeedsDisplay: YES];
         }
         return;
     }
@@ -658,6 +652,10 @@ extern void *UserDefaultsBindingContext;
 
         case MenuActionDeleteStatement:
             [self deleteSelectedStatements];
+            break;
+
+        case MenuActionMarkRead:
+            [self markSelectedStatementsRead];
             break;
 
         case MenuActionMarkUnread:

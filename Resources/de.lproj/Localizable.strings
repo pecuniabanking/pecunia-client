@@ -3,7 +3,7 @@ AP1 = "Ok";
 AP2 = "Abbrechen";
 AP3 = "Ja";
 AP4 = "Nein";
-AP5 = "unused";
+AP5 = ""; // Unused
 AP6 = ""; // Unused
 AP7 = "Dennoch Beenden";
 AP8 = "KONTEN";
@@ -24,7 +24,7 @@ AP22 = "Monat";
 AP23 = "Monate";
 AP24 = "Einstellungen";
 
-// Sidebar titles.
+// Sidebar titles
 AP25 = "Startseite";
 AP26 = "Übersicht";
 AP27 = "Verlauf";
@@ -35,7 +35,7 @@ AP31 = "Zuordnung";
 AP32 = "Überweisungen";
 AP33 = "Daueraufträge";
 
-// Validation strings.
+// Validation strings
 // AP50..AP99
 AP50 = "Eingabe unvollständig";
 AP51 = "Bitte Bankleitzahl eingeben";
@@ -74,7 +74,7 @@ AP83 = "Fehler";
 AP84 = "Warnung";
 AP85 = "Kritischer Fehler";
 
-// General + miscellaneous messages.
+// General + miscellaneous messages
 // AP100..AP149
 AP100 = "Bankparameter wurden erfolgreich aktualisiert";
 AP101 = "Daten unvollständig";
@@ -109,7 +109,7 @@ AP129 = "Die Bankkennung '%@' wurde erfolgreich synchronisiert";
 AP130 = "Buchung";
 AP131 = "Kreditkartenbuchung";
 
-// Banking setup, migration, encryption, security.
+// Banking setup, migration, encryption, security
 // AP150..AP199
 AP150 = "Datenmigration";
 AP151 = "Willkommen bei Pecunia. Um mit Ihrer Bank kommunizieren zu können müssen Sie zunächst eine sogenannte 'Bankkennung' anlegen. Mit der Bankkennung identifizieren Sie sich bei der Bank. Möchten Sie nun eine Bankkennung anlegen?";
@@ -182,6 +182,7 @@ AP235 = "Als ungelesen markieren";
 AP236 = "Neue Überweisung von dieser Buchung";
 AP237 = "Neue Vorlage von dieser Buchung";
 AP238 = "Manuellen Umsatz hinzufügen...";
+AP239 = "Als gelesen markieren";
 
 // Categories
 // AP250..AP349
@@ -245,7 +246,7 @@ AP307 = "Regel löschen";
 AP308 = "Möchten Sie die Regel für die Kategorie %@ wirklich löschen?";
 AP309 = "Die Kategorie %@ existiert nicht. Möchten Sie die Kategorie neu erstellen?";
 
-// Callback and backend.
+// Callback and backend
 // AP350..AP399
 AP350 = "Bitte legen Sie Ihre Chipkarte in das Chipkarten-Terminal ein";
 AP351 = "Bitte geben Sie Ihre PIN in das Chipkarten-Terminal ein";
@@ -258,7 +259,7 @@ AP357 = "Chipkarten-Terminal";
 AP358 = "HBCI-Aktion ist nicht möglich, da der HBCI-Dienst beendet wurde bzw. nicht gestartet werden kann";
 AP359 = "Fehlende HBCI-Information: %@";
 
-// Transfers.
+// Transfers
 // AP400..AP449
 AP400 = "BLZ";
 AP401 = "Konto";
@@ -296,8 +297,13 @@ AP432 = "Jetzt senden";
 AP433 = "Möchten Sie die Überweisungsvorlage löschen?";
 AP434 = "Neue Überweisungsvorlage";
 AP435 = "Überweisungsliste";
+AP436 = "Kreditkartennummer";
+AP437 = "Gebührenschlüssel";
+AP438 = "Entgeld und Buchungsreferenz";
+AP439 = "Entgeld und Buchungsreferenz (Ausland)";
+AP440 = "Abrechnungsperiode";
 
-// Standing orders.
+// Standing orders
 // AP450..AP499
 AP450 = "Jeden Monat";
 AP451 = "Jede Woche";
@@ -319,7 +325,7 @@ AP466 = "letzten Tag des Monats";
 AP467 = "vorletzten Tag des Monats";
 AP468 = "vorvorletzten Tag des Monats";
 
-// Growl/notification center messages.
+// Notification center messages
 // AP500..AP549
 AP500 = "Daten Erzeugung";
 AP501 = "Demo Daten wurden erstellt";
@@ -328,14 +334,14 @@ AP503 = "Fehlersuche";
 AP504 = "Der Kommunikationsmittschnitt wurde gestartet";
 AP505 = "Der Kommunikationsmittschnitt wurde beendet und eine E-Mail zum Versand vorbereitet";
 
-// Category assignments.
+// Category assignments
 // AP550..AP599
 AP550 = "Alles zuweisen";
 AP551 = "Auswahl zuweisen";
 AP552 = "Alles entfernen";
 AP553 = "Auswahl entfernen";
 
-// Import and export.
+// Import and export
 // AP600..AP649
 AP600 = "Importeinstellungen mit dem Namen %@ existieren bereits. Möchten Sie sie überschreiben?";
 AP601 = "Die Angabe einer Importdatei fehlt";

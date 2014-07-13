@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
@@ -82,9 +82,9 @@
                     </textFieldCell>
                 </textField>
                 <imageView toolTip="Neuer Umsatz" id="28">
-                    <rect key="frame" x="607" y="6" width="40" height="40"/>
+                    <rect key="frame" x="631" y="29" width="16" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" image="new" id="29"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" image="new-small" id="29"/>
                 </imageView>
                 <textField verticalHuggingPriority="750" id="66" customClass="NoAnimationTextField">
                     <rect key="frame" x="686" y="5" width="74" height="15"/>
@@ -120,7 +120,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" id="91" customClass="NoAnimationTextField">
-                    <rect key="frame" x="14" y="6" width="26" height="14"/>
+                    <rect key="frame" x="17" y="5" width="22" height="15"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="right" title="Dez" id="92">
                         <font key="font" size="10" name="HelveticaNeue"/>
@@ -129,7 +129,7 @@
                     </textFieldCell>
                 </textField>
                 <button hidden="YES" toolTip="Aktivieren um diese Transaktion der aktiven Kategorie zuzuweisen" tag="1" id="79">
-                    <rect key="frame" x="7" y="33" width="22" height="18"/>
+                    <rect key="frame" x="5" y="32" width="22" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="mini" state="on" inset="2" id="80">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -178,6 +178,6 @@
         </customView>
     </objects>
     <resources>
-        <image name="new" width="40" height="40"/>
+        <image name="new-small" width="16" height="16"/>
     </resources>
 </document>

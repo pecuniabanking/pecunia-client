@@ -18,6 +18,7 @@
  */
 
 #import "StatementsListViewCell.h"
+#import "StatementsListView.h"
 
 #import "NSColor+PecuniaAdditions.h"
 
@@ -40,8 +41,6 @@ extern NSDictionary    *whiteAttributes;
 @interface StatementsListViewCell ()
 {
 @private
-    BOOL isNew;
-    BOOL hasUnassignedValue;
     int  headerHeight;
 
     NSColor *categoryColor;
@@ -184,6 +183,10 @@ extern NSDictionary    *whiteAttributes;
 
     [self updateLabelsWithCasing: [defaults boolForKey: @"autoCasing"]];
 
+    if (assignment.statement == nil) {
+        return;
+    }
+    
     NSDate *currentDate = assignment.statement.date;
     if (currentDate == nil) {
         currentDate = assignment.statement.valutaDate; // Should not be necessary, but still...
@@ -229,6 +232,7 @@ extern NSDictionary    *whiteAttributes;
 
     [self showBalance: [defaults boolForKey: @"showBalances"]];
     self.isNew = [assignment.statement.isNew boolValue];
+    [self bind: @"isNew" toObject: self.representedObject withKeyPath: @"statement.isNew.boolValue" options: 0];
 
     NSDecimalNumber *nassValue = assignment.statement.nassValue;
     self.hasUnassignedValue =  [nassValue compare: [NSDecimalNumber zero]] != NSOrderedSame;
@@ -259,6 +263,7 @@ extern NSDictionary    *whiteAttributes;
 
     hasUnassignedValue = NO;
     isNew = NO;
+    [self unbind: @"isNew"];
 }
 
 #pragma mark - Properties
@@ -314,7 +319,9 @@ extern NSDictionary    *whiteAttributes;
         }
     }
 
-    BOOL singleSelection = [self.listView selectedRows].count == 1;
+    StatementsListView *listView = (StatementsListView *)self.listView;
+
+    BOOL singleSelection = listView.selectedRows.count == 1;
     NSMenu *menu = [[NSMenu alloc] initWithTitle: @"Statement List Context menu"];
 
     NSMenuItem *item = [menu addItemWithTitle: NSLocalizedString(@"AP238", nil)
@@ -333,10 +340,18 @@ extern NSDictionary    *whiteAttributes;
     item.tag = MenuActionDeleteStatement;
 
     [menu addItem: [NSMenuItem separatorItem]];
-    item = [menu addItemWithTitle: NSLocalizedString(@"AP235", nil)
+
+    __block BOOL allRead = YES;
+    [listView.selectedRows enumerateIndexesUsingBlock: ^(NSUInteger index, BOOL *stop) {
+        if ([listView.dataSource[index] statement].isNew.boolValue) {
+            allRead = NO;
+            stop = YES;
+        }
+    }];
+    item = [menu addItemWithTitle: allRead ? NSLocalizedString(@"AP235", nil) : NSLocalizedString(@"AP239", nil)
                            action: @selector(menuAction:)
                     keyEquivalent: @""];
-    item.tag = MenuActionMarkUnread;
+         item.tag = allRead ? MenuActionMarkUnread : MenuActionMarkRead;
 
     BankStatement *statement = [self.representedObject statement];
     if (!statement.account.isManual.boolValue) {
@@ -366,6 +381,13 @@ extern NSDictionary    *whiteAttributes;
     if ([self.delegate conformsToProtocol: @protocol(StatementsListViewNotificationProtocol)]) {
         [self.delegate cellActivationChanged: ([checkbox state] == NSOnState ? YES : NO) forIndex: self.row];
     }
+}
+
+- (void)selectionChanged {
+    [super selectionChanged];
+
+    newImage.image = [NSImage imageNamed: self.isSelected ? @"new-small-white" : @"new-small"];
+
 }
 
 #pragma mark - Drawing

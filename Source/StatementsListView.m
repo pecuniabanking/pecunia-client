@@ -36,7 +36,6 @@
 
     BOOL showAssignedIndicators;
     id   owner;
-    BOOL autoResetNew;
     BOOL activating;     // Set when cells are activated programmatically (so we don't send notifications around).
 
     BOOL showHeaders;
@@ -47,7 +46,6 @@
 @implementation StatementsListView
 
 @synthesize showAssignedIndicators;
-@synthesize autoResetNew;
 @synthesize disableSelection;
 @synthesize canShowHeaders;
 
@@ -62,7 +60,6 @@ extern void *UserDefaultsBindingContext;
     [dateFormatter setLocale: [NSLocale currentLocale]];
     [dateFormatter setDateStyle: kCFDateFormatterFullStyle];
     [dateFormatter setTimeStyle: NSDateFormatterNoStyle];
-    autoResetNew = YES;
     disableSelection = NO;
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -257,18 +254,7 @@ extern void *UserDefaultsBindingContext;
 }
 
 - (void)listViewSelectionDidChange: (NSNotification *)aNotification {
-    if (autoResetNew) {
-        // A selected statement automatically loses the "new" state (if auto reset is enabled).
-        NSIndexSet *selection = [self selectedRows];
-        NSUInteger index = [selection firstIndex];
-        while (index != NSNotFound) {
-            StatementsListViewCell *cell = (id)[self cellForRowAtIndex : index];
-            cell.isNew = NO;
-            index = [selection indexGreaterThanIndex: index];
-        }
-    }
-
-    // Also let every entry check its selection state, in case internal states must be updated.
+    // Let every visible entry check its selection state, in case internal states must be updated.
     NSArray *cells = [self visibleCells];
     for (StatementsListViewCell *cell in cells) {
         [cell selectionChanged];

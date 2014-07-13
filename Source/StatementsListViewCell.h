@@ -23,6 +23,7 @@ typedef NS_ENUM (NSInteger, StatementMenuAction) {
     MenuActionAddStatement,
     MenuActionSplitStatement,
     MenuActionDeleteStatement,
+    MenuActionMarkRead,
     MenuActionMarkUnread,
     MenuActionStartTransfer,
     MenuActionCreateTemplate
