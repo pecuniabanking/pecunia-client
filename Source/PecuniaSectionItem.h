@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010, 2013, Pecunia Project. All rights reserved.
+ * Copyright (c) 2010, 2014, Pecunia Project. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -30,9 +30,9 @@
 @required
 
 @property (nonatomic, weak) Category *selectedCategory;
+@property (nonatomic, strong) NSView *mainView;
 
 - (void)print;
-- (NSView *)mainView;
 - (void)activate;
 - (void)deactivate;
 

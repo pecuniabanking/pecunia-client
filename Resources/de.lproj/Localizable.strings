@@ -183,6 +183,7 @@ AP236 = "Neue Überweisung von dieser Buchung";
 AP237 = "Neue Vorlage von dieser Buchung";
 AP238 = "Manuellen Umsatz hinzufügen...";
 AP239 = "Als gelesen markieren";
+AP240 = "Umsatzdetails anzeigen";
 
 // Categories
 // AP250..AP349

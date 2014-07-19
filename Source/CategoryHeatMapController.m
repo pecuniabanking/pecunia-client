@@ -797,8 +797,9 @@ static NSFont *smallNumberFont;
     heatMapView.controller = self;
     [valuePopupList reloadData];
 
-    switchTypeButtonCell.offSwitchLabel = NSLocalizedString(@"AP751", nil);
-    switchTypeButtonCell.onSwitchLabel = NSLocalizedString(@"AP752", nil);
+    switchTypeButtonCell.useiOSStyle = YES;
+    switchTypeButtonCell.offSwitchLabel = @"";
+    switchTypeButtonCell.onSwitchLabel = @"";
 }
 
 - (void)updateValues

@@ -155,7 +155,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 
 @property (weak) IBOutlet NSImageView *typeImage;
 @property (weak) IBOutlet NSImageView *manualIndicator;
-@property (weak) IBOutlet NSImageView *preliminaryIndicator;
+@property (weak) IBOutlet NSImageView *isReversalIndicator;
 @property (weak) IBOutlet NSImageView *isNewIndicator;
 @property (weak) IBOutlet NSImageView *isSettledIndicator;
 
@@ -212,7 +212,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 
 @synthesize typeImage;
 @synthesize manualIndicator;
-@synthesize preliminaryIndicator;
+@synthesize isReversalIndicator;
 @synthesize isNewIndicator;
 @synthesize isSettledIndicator;
 
@@ -254,7 +254,7 @@ extern NSString *PecuniaWordsLoadedNotification;
 
     notesTextView.editable = NO;
 
-    preliminaryIndicator.image = [NSImage imageNamed: @"icon96-1" fromCollection: 1];
+    isReversalIndicator.image = [NSImage imageNamed: @"icon66-1" fromCollection: 1];
 
     [self updateValueColors];
 }
@@ -542,13 +542,10 @@ extern NSString *PecuniaWordsLoadedNotification;
     }
 
     // Compose sequence type image from background and type image. Background determines future transactions.
-    BOOL    futureTransaction;
     NSImage *background;
-    if ([ShortDate.currentDate compare: [ShortDate dateWithDate: statement.valutaDate]] == NSOrderedAscending) {
-        futureTransaction = YES;
+    if (statement.isPreliminary) {
         background = [NSImage imageNamed: @"sequence-type-red"];
     } else {
-        futureTransaction = NO;
         background = [NSImage imageNamed: @"sequence-type-blue"];
     }
     NSImage *sequenceImage = [[NSImage alloc] initWithSize: background.size];
@@ -563,7 +560,7 @@ extern NSString *PecuniaWordsLoadedNotification;
     if (tooltip.length == 0) {
         tooltip = NSLocalizedString(@"AP1215", nil);
     }
-    if (futureTransaction) {
+    if (statement.isPreliminary) {
         tooltip = [tooltip stringByAppendingString: NSLocalizedString(@"AP1550", nil)];
     }
     sequenceTypeImage.toolTip = tooltip;
@@ -629,7 +626,7 @@ extern NSString *PecuniaWordsLoadedNotification;
         typeImage.toolTip = NSLocalizedString(@"AP1551", nil);
 
         manualIndicator.alphaValue = statement.isManual.boolValue ? 1 : 0.25;
-        preliminaryIndicator.alphaValue = statement.isPreliminary.boolValue ? 1 : 0.25;
+        isReversalIndicator.alphaValue = statement.isStorno.boolValue ? 1 : 0.25;
         isNewIndicator.alphaValue = statement.isNew.boolValue ? 1 : 0.25;
 
         NSString *accountTitle;

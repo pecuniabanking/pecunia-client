@@ -60,7 +60,6 @@
     IBOutlet PecuniaSplitView      *mainVSplit;
     IBOutlet NSArrayController     *assignPreviewController;
     IBOutlet TimeSliceManager      *timeSlicer;
-    IBOutlet NSSegmentedControl    *catActions;
     IBOutlet NSImageView           *lockImage;
     IBOutlet NSTextField           *earningsField;
     IBOutlet NSTextField           *spendingsField;
@@ -78,8 +77,6 @@
 
     IBOutlet JMModalOverlay     *waitOverlay;
     IBOutlet WaitViewController *waitViewController;
-
-    IBOutlet NSButton *toggleDetailsButton;
 
     NSManagedObjectContext *managedObjectContext;
 
@@ -100,7 +97,6 @@
 }
 
 @property (strong) IBOutlet CategoryView *accountsView;
-@property (strong) IBOutlet NSMenuItem   *toggleDetailsPaneItem;
 
 @property (nonatomic, copy) NSDecimalNumber      *saveValue;
 @property (nonatomic, strong) DockIconController *dockIconController;
@@ -131,7 +127,6 @@
 
 - (void)insertCategory: (id)sender;
 - (void)deleteCategory: (id)sender;
-- (IBAction)manageCategories: (id)sender;
 
 - (IBAction)deleteStatement: (id)sender;
 - (IBAction)splitStatement: (id)sender;
@@ -148,8 +143,6 @@
 - (IBAction)updateSupportedTransactions: (id)sender;
 
 - (IBAction)showAboutPanel: (id)sender;
-- (IBAction)toggleDetailsPane: (id)sender;
-- (IBAction)toggleFeature: (id)sender;
 
 - (IBAction)deleteAllData: (id)sender;
 - (IBAction)generateData: (id)sender;

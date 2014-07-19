@@ -126,14 +126,18 @@ NSRect DKCenterRect(NSRect smallRect, NSRect bigRect)
 	return self;
 }
 
-- (NSRect) thumbRectInFrame:(NSRect)cellFrame {
+- (NSRect)thumbRectInFrame: (NSRect)cellFrame {
 	cellFrame.size.width -= 2.0f;
 	cellFrame.size.height -= 2.0f;
 	cellFrame.origin.x += 1.0f;
 	cellFrame.origin.y += 1.0f;
 
 	NSRect thumbFrame = cellFrame;
-	thumbFrame.size.width *= THUMB_WIDTH_FRACTION;
+    if (self.useiOSStyle) {
+        thumbFrame.size.width = thumbFrame.size.height;
+    } else {
+        thumbFrame.size.width *= THUMB_WIDTH_FRACTION;
+    }
 
 	NSCellStateValue state = [self state];
 	switch (state) {
@@ -196,7 +200,11 @@ NSRect DKCenterRect(NSRect smallRect, NSRect bigRect)
 	
 	NSGraphicsContext *context = [NSGraphicsContext currentContext];
 	[context saveGraphicsState];
-	[[NSBezierPath bezierPathWithRoundedRect:cellFrame xRadius:FRAME_CORNER_RADIUS yRadius:FRAME_CORNER_RADIUS] addClip];
+
+    CGFloat radius = self.useiOSStyle ? NSHeight(cellFrame) / 2 : FRAME_CORNER_RADIUS;
+	[[NSBezierPath bezierPathWithRoundedRect: cellFrame
+                                     xRadius: radius
+                                     yRadius: radius] addClip];
 	
 	// NOTE(dk): Make everything to the left of the thumb one color, and to the right another.
 	NSRect thumbFrame = [self thumbRectInFrame:cellFrame];
@@ -277,7 +285,10 @@ NSRect DKCenterRect(NSRect smallRect, NSRect bigRect)
 	CGContextBeginTransparencyLayer(quartzContext, /*auxInfo*/ NULL);
 
 	//Draw the background, then the frame.
-	NSBezierPath *borderPath = [NSBezierPath bezierPathWithRoundedRect:NSInsetRect(cellFrame, 1.0f, 1.0f) xRadius:FRAME_CORNER_RADIUS yRadius:FRAME_CORNER_RADIUS];
+    CGFloat radius = self.useiOSStyle ? NSHeight(cellFrame) / 2 : FRAME_CORNER_RADIUS;
+	NSBezierPath *borderPath = [NSBezierPath bezierPathWithRoundedRect: NSInsetRect(cellFrame, 1.0f, 1.0f)
+                                                               xRadius: radius
+                                                               yRadius: radius];
 
 	[[NSColor colorWithCalibratedWhite:BORDER_WHITE alpha:1.0f] setStroke];
 	[borderPath stroke];
@@ -289,7 +300,9 @@ NSRect DKCenterRect(NSRect smallRect, NSRect bigRect)
 
 	[context saveGraphicsState];
 	
-	[[NSBezierPath bezierPathWithRoundedRect: NSInsetRect(cellFrame, 1, 1) xRadius:FRAME_CORNER_RADIUS yRadius:FRAME_CORNER_RADIUS] addClip];
+	[[NSBezierPath bezierPathWithRoundedRect: NSInsetRect(cellFrame, 1, 1)
+                                     xRadius: radius
+                                     yRadius: radius] addClip];
 	
 	// NOTE(dk): start additions
 	if (USE_COLORED_GRADIENTS && ![self allowsMixedState]) {
@@ -333,7 +346,11 @@ NSRect DKCenterRect(NSRect smallRect, NSRect bigRect)
 	cellFrame.size.height -= 2.0f;
 	cellFrame.origin.x += 1.0f;
 	cellFrame.origin.y += 1.0f;
-	NSBezierPath *clipPath = [NSBezierPath bezierPathWithRoundedRect:cellFrame xRadius:THUMB_CORNER_RADIUS yRadius:THUMB_CORNER_RADIUS];
+
+    CGFloat radius = self.useiOSStyle ? NSHeight(cellFrame) / 2 : THUMB_CORNER_RADIUS;
+	NSBezierPath *clipPath = [NSBezierPath bezierPathWithRoundedRect: cellFrame
+                                                             xRadius: radius
+                                                             yRadius: radius];
 	[clipPath addClip];
 
 	if (tracking) {
@@ -350,7 +367,9 @@ NSRect DKCenterRect(NSRect smallRect, NSRect bigRect)
 		trackingThumbCenterX = [self centerXForThumbWithFrame:cellFrame];
 	}
 
-	NSBezierPath *thumbPath = [NSBezierPath bezierPathWithRoundedRect:thumbFrame xRadius:THUMB_CORNER_RADIUS yRadius:THUMB_CORNER_RADIUS];
+	NSBezierPath *thumbPath = [NSBezierPath bezierPathWithRoundedRect: thumbFrame
+                                                              xRadius: radius
+                                                              yRadius: radius];
 	NSShadow *thumbShadow = [[NSShadow alloc] init];
 	[thumbShadow setShadowColor:[NSColor colorWithCalibratedWhite:THUMB_SHADOW_WHITE alpha:THUMB_SHADOW_ALPHA]];
 	[thumbShadow setShadowBlurRadius:THUMB_SHADOW_BLUR];

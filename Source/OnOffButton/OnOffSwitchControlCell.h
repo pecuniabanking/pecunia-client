@@ -41,6 +41,8 @@ NSRect DKCenterRect(NSRect smallRect, NSRect bigRect);
 @property (readwrite, assign) BOOL showsOnOffLabels;
 @property (readwrite, assign) OnOffSwitchControlColors onOffSwitchControlColors;
 
+@property bool useiOSStyle;
+
 - (void) setOnOffSwitchCustomOnColor:(NSColor *)onColor offColor:(NSColor *)offColor;
 
 @end

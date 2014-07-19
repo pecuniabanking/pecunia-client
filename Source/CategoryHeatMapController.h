@@ -77,7 +77,7 @@ typedef enum {
     NSArray *currentAssignments;   // Assignments for the day we show the popup for.
 }
 
-@property (strong) IBOutlet NSView *mainView;
+@property (nonatomic, strong) IBOutlet NSView *mainView;
 
 // PecuniaSectionItem protocol
 @property (nonatomic, weak) Category *selectedCategory;

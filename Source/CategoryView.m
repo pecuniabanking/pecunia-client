@@ -42,10 +42,10 @@
     NSMenu *menu = [[NSMenu alloc] initWithTitle: @"Category Context menu"];
     Category *category = [[self itemAtRow: row] representedObject];
 
-    NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity: 1];
-    attributes[NSFontAttributeName] = [NSFont fontWithName: PreferenceController.mainFontNameMedium
+    NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionaryWithCapacity: 1];
+    titleAttributes[NSFontAttributeName] = [NSFont fontWithName: PreferenceController.mainFontNameMedium
                                                       size: 14];
-    attributes[NSForegroundColorAttributeName] = [NSColor colorWithCalibratedRed: 0.177
+    titleAttributes[NSForegroundColorAttributeName] = [NSColor colorWithCalibratedRed: 0.177
                                                                            green: 0.413
                                                                             blue: 0.809
                                                                            alpha: 1.000];
@@ -55,7 +55,7 @@
                                            action: nil
                                     keyEquivalent: @""];
         item.attributedTitle = [[NSAttributedString alloc] initWithString: category.localName
-                                                               attributes: attributes];
+                                                               attributes: titleAttributes];
 
         if (category == Category.bankRoot) {
             item = [menu addItemWithTitle: NSLocalizedString(@"AP228", nil)
@@ -63,7 +63,7 @@
                             keyEquivalent: @""];
             item.indentationLevel = 1;
 
-            [menu addItem: [NSMenuItem separatorItem]];
+            [menu addItem: NSMenuItem.separatorItem];
 
             item = [menu addItemWithTitle: NSLocalizedString(@"AP232", nil)
                                    action: @selector(createAccount:)
@@ -83,7 +83,7 @@
                                 keyEquivalent: @""];
                 item.indentationLevel = 1;
 
-                [menu addItem: [NSMenuItem separatorItem]];
+                [menu addItem: NSMenuItem.separatorItem];
                 item = [menu addItemWithTitle: NSLocalizedString(@"AP230", nil)
                                        action: @selector(startTransfer:)
                                 keyEquivalent: @""];
@@ -97,7 +97,7 @@
                 }
 
                 if (account.type.intValue == AccountType_CreditCart) {
-                    [menu addItem: [NSMenuItem separatorItem]];
+                    [menu addItem: NSMenuItem.separatorItem];
                     item = [menu addItemWithTitle: NSLocalizedString(@"AP1210", nil)
                                            action: @selector(getCreditCardSettlements:)
                                     keyEquivalent: @""];
@@ -106,14 +106,9 @@
 
             }
 
-            [menu addItem: [NSMenuItem separatorItem]];
+            [menu addItem: NSMenuItem.separatorItem];
             item = [menu addItemWithTitle: NSLocalizedString(@"AP232", nil)
                                    action: @selector(createAccount:)
-                            keyEquivalent: @""];
-            item.indentationLevel = 1;
-
-            item = [menu addItemWithTitle: NSLocalizedString(@"AP227", nil)
-                                   action: @selector(editCategory:)
                             keyEquivalent: @""];
             item.indentationLevel = 1;
 
@@ -123,6 +118,13 @@
                                 keyEquivalent: @""];
                 item.indentationLevel = 1;
             }
+
+            [menu addItem: NSMenuItem.separatorItem];
+            item = [menu addItemWithTitle: NSLocalizedString(@"AP227", nil)
+                                   action: @selector(editCategory:)
+                            keyEquivalent: @""];
+            item.indentationLevel = 1;
+
         }
     } else {
         if (!category.isNotAssignedCategory) {
@@ -131,7 +133,7 @@
                                         keyEquivalent: @""];
 
             item.attributedTitle = [[NSAttributedString alloc] initWithString: category.localName
-                                                                   attributes: attributes];
+                                                                   attributes: titleAttributes];
 
             item = [menu addItemWithTitle: NSLocalizedString(@"AP225", nil)
                                    action: @selector(createCategory:)
@@ -139,12 +141,16 @@
             item.indentationLevel = 1;
 
             if (!category.isCategoryRoot) {
-                item = [menu addItemWithTitle: NSLocalizedString(@"AP227", nil)
-                                       action: @selector(editCategory:)
-                                keyEquivalent: @""];
-                item.indentationLevel = 1;
                 item = [menu addItemWithTitle: NSLocalizedString(@"AP226", nil)
                                        action: @selector(deleteCategory:)
+                                keyEquivalent: @""];
+                item.indentationLevel = 1;
+
+                // Show properties. This is the default action (also happens on double click).
+                // So, make it bold to indicate this fact.
+                [menu addItem: NSMenuItem.separatorItem];
+                item = [menu addItemWithTitle: NSLocalizedString(@"AP227", nil)
+                                       action: @selector(editCategory:)
                                 keyEquivalent: @""];
                 item.indentationLevel = 1;
             }

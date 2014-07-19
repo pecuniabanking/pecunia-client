@@ -39,9 +39,6 @@
 #import "NSColor+PecuniaAdditions.h"
 #import "NSImage+PecuniaAdditions.h"
 
-#import "Tag.h"
-#import "TagView.h"
-
 extern void *UserDefaultsBindingContext;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -58,35 +55,17 @@ extern void *UserDefaultsBindingContext;
     IBOutlet NSArrayController  *categoryAssignments;
     IBOutlet StatementsListView *statementsListView;
 
-    IBOutlet NSArrayController *statementTags;
-    IBOutlet NSArrayController *tagsController;
-    IBOutlet NSButton          *tagButton;
-    IBOutlet TagView           *tagsField;
-    IBOutlet TagView           *tagViewPopup;
-    IBOutlet NSView            *tagViewHost;
-    IBOutlet NSTextField       *valueField;
-    IBOutlet NSTextField       *nassValueField;
-    IBOutlet NSTextField       *remoteNameLabel;
-    IBOutlet StatementDetails  *statementDetails;
     IBOutlet NSTextField       *selectedSumField;
     IBOutlet NSTextField       *totalSumField;
-    IBOutlet NSTextField       *originalAmountField;
 
     IBOutlet NSSegmentedControl *sortControl;
-
-    IBOutlet AttachmentImageView *attachment1;
-    IBOutlet AttachmentImageView *attachment2;
-    IBOutlet AttachmentImageView *attachment3;
-    IBOutlet AttachmentImageView *attachment4;
 }
 
 @end
 
 @implementation StatementsOverviewController
 
-@synthesize mainView;
 @synthesize selectedCategory;
-@synthesize toggleDetailsButton;
 
 - (void)awakeFromNib
 {
@@ -108,15 +87,6 @@ extern void *UserDefaultsBindingContext;
     
     [userDefaults addObserver: self forKeyPath: @"colors" options: 0 context: UserDefaultsBindingContext];
 
-    lastSplitterPosition = [[userDefaults objectForKey: @"rightSplitterPosition"] intValue];
-    if (lastSplitterPosition > 0) {
-        // The details pane was collapsed when Pecunia closed last time.
-        [statementDetails setHidden: YES];
-        [mainView adjustSubviews];
-    }
-
-    mainView.fixedIndex = 1;
-
     [self updateSorting];
     [self updateValueColors];
 
@@ -136,35 +106,7 @@ extern void *UserDefaultsBindingContext;
 
     [categoryAssignments addObserver: self forKeyPath: @"selectionIndexes" options: 0 context: nil];
 
-    tagButton.image = [NSImage imageNamed: @"icon14-1" fromCollection: 1];
-
-    [attachment1 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref1" options: nil];
-    [attachment2 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref2" options: nil];
-    [attachment3 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref3" options: nil];
-    [attachment4 bind: @"reference" toObject: categoryAssignments withKeyPath: @"selection.statement.ref4" options: nil];
-
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey: @"order" ascending: YES];
-    [statementTags setSortDescriptors: @[sd]];
-    [tagsController setSortDescriptors: @[sd]];
-    tagButton.bordered = NO;
-    
     categoryAssignments.managedObjectContext = MOAssistant.assistant.context;
-    tagsController.managedObjectContext = MOAssistant.assistant.context;
-    [tagsController prepareContent];
-
-    tagViewPopup.datasource = tagsController;
-    tagViewPopup.defaultFont = [NSFont fontWithName: PreferenceController.popoverFontName size: 10];
-    tagViewPopup.canCreateNewTags = YES;
-
-    tagsField.datasource = statementTags;
-    tagsField.defaultFont = [NSFont fontWithName: PreferenceController.popoverFontName size: 10];
-    tagsField.canCreateNewTags = YES;
-}
-
-- (IBAction)showTagPopup: (id)sender
-{
-    NSButton *button = sender;
-    [tagViewPopup showTagPopupAt: button.bounds forView: button host: tagViewHost preferredEdge: NSMinYEdge];
 }
 
 #pragma mark - Sorting and searching statements
@@ -201,91 +143,11 @@ extern void *UserDefaultsBindingContext;
     [self updateSorting];
 }
 
-#pragma mark - Other actions
-
-- (IBAction)attachmentClicked: (id)sender
-{
-    AttachmentImageView *image = sender;
-
-    if (image.reference == nil) {
-        // No attachment yet. Allow adding one if editing is possible.
-        if (self.canEditAttachment) {
-            NSOpenPanel *panel = [NSOpenPanel openPanel];
-            panel.title = NSLocalizedString(@"AP118", nil);
-            panel.canChooseDirectories = NO;
-            panel.canChooseFiles = YES;
-            panel.allowsMultipleSelection = NO;
-
-            int runResult = [panel runModal];
-            if (runResult == NSOKButton) {
-                [image processAttachment: panel.URL];
-            }
-        }
-    } else {
-        [image openReference];
-    }
-}
-
 #pragma mark - General logic
 
 - (BOOL)canEditAttachment
 {
     return categoryAssignments.selectedObjects.count == 1;
-}
-
-- (void)controlTextDidBeginEditing: (NSNotification *)aNotification
-{
-    if ([aNotification object] == valueField) {
-        NSArray *sel = [categoryAssignments selectedObjects];
-        if (sel && [sel count] == 1) {
-            StatCatAssignment *stat = sel[0];
-            saveValue = stat.value;
-        }
-    }
-}
-
-- (void)controlTextDidEndEditing: (NSNotification *)aNotification
-{
-    // Value field changed (todo: replace by key value observation).
-    if ([aNotification object] == valueField) {
-        NSArray *sel = [categoryAssignments selectedObjects];
-        if (sel && [sel count] == 1) {
-            StatCatAssignment *stat = sel[0];
-
-            // do some checks
-            // amount must have correct sign
-            NSDecimal d1 = [stat.statement.value decimalValue];
-            NSDecimal d2 = [stat.value decimalValue];
-            if (d1._isNegative != d2._isNegative) {
-                NSBeep();
-                stat.value = saveValue;
-                return;
-            }
-
-            // amount must not be higher than original amount
-            if (d1._isNegative) {
-                if ([stat.value compare: stat.statement.value] == NSOrderedAscending) {
-                    NSBeep();
-                    stat.value = saveValue;
-                    return;
-                }
-            } else {
-                if ([stat.value compare: stat.statement.value] == NSOrderedDescending) {
-                    NSBeep();
-                    stat.value = saveValue;
-                    return;
-                }
-            }
-
-            // [Category updateCatValues] invalidates the selection we got. So re-set it first and then update.
-            [categoryAssignments setSelectedObjects: sel];
-
-            [stat.statement updateAssigned];
-            [selectedCategory invalidateBalance];
-            [Category updateBalancesAndSums];
-            [statementsListView updateVisibleCells];
-        }
-    }
 }
 
 - (BOOL)validateMenuItem: (NSMenuItem *)item
@@ -481,49 +343,12 @@ extern void *UserDefaultsBindingContext;
     }
 }
 
-/**
- * Shows or hides the statement details pane and returns YES if the pane is now visible, NO otherwise.
- */
-- (BOOL)toggleDetailsPane
-{
-    BOOL result;
-    NSView *firstChild = (mainView.subviews)[0];
-    if (lastSplitterPosition == 0) {
-        [statementDetails setHidden: YES];
-        lastSplitterPosition = NSHeight(firstChild.frame);
-        [mainView adjustSubviews];
-        result = NO;
-    } else {
-        [statementDetails setHidden: NO];
-        NSRect frame = firstChild.frame;
-        frame.size.height = lastSplitterPosition;
-        firstChild.frame = frame;
-        [mainView adjustSubviews];
-        lastSplitterPosition = 0;
-        result = YES;
-    }
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setValue: @((int)lastSplitterPosition) forKey: @"rightSplitterPosition"];
-
-    return result;
-}
-
 - (void)updateValueColors
 {
     NSDictionary *positiveAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Positive Cash"]};
     NSDictionary *negativeAttributes = @{NSForegroundColorAttributeName: [NSColor applicationColorForKey: @"Negative Cash"]};
 
-    NSNumberFormatter *formatter = [valueField.cell formatter];
-    [formatter setTextAttributesForPositiveValues: positiveAttributes];
-    [formatter setTextAttributesForNegativeValues: negativeAttributes];
-    [valueField setNeedsDisplay];
-
-    formatter = [nassValueField.cell formatter];
-    [formatter setTextAttributesForPositiveValues: positiveAttributes];
-    [formatter setTextAttributesForNegativeValues: negativeAttributes];
-    [nassValueField setNeedsDisplay];
-
-    formatter = [selectedSumField.cell formatter];
+    NSNumberFormatter *formatter = [selectedSumField.cell formatter];
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
     [selectedSumField setNeedsDisplay];
@@ -532,48 +357,11 @@ extern void *UserDefaultsBindingContext;
     [formatter setTextAttributesForPositiveValues: positiveAttributes];
     [formatter setTextAttributesForNegativeValues: negativeAttributes];
     [totalSumField setNeedsDisplay];
-
-    formatter = [originalAmountField.cell formatter];
-    [formatter setTextAttributesForPositiveValues: positiveAttributes];
-    [formatter setTextAttributesForNegativeValues: negativeAttributes];
-    [originalAmountField setNeedsDisplay];
 }
 
 - (void)reload
 {
     [statementsListView reloadData];
-}
-
-#pragma mark - Splitview delegate methods
-
-- (CGFloat)splitView: (NSSplitView *)splitView constrainMinCoordinate: (CGFloat)proposedMin ofSubviewAt: (NSInteger)dividerIndex
-{
-    if (splitView == mainView) {
-        return 240;
-    }
-    return proposedMin;
-}
-
-- (CGFloat)splitView: (NSSplitView *)splitView constrainMaxCoordinate: (CGFloat)proposedMax ofSubviewAt: (NSInteger)dividerIndex
-{
-    if (splitView == mainView) {
-        return NSHeight([mainView frame]) - 300;
-    }
-    return proposedMax;
-}
-
-- (CGFloat)splitView: (NSSplitView *)splitView constrainSplitPosition: (CGFloat)proposedPosition ofSubviewAt: (NSInteger)dividerIndex
-{
-    if (splitView == mainView) {
-        // This function is called only when dragging the divider with the mouse. If the details pane is currently collapsed
-        // then it is automatically shown when dragging the divider. So we have to reset our interal state.
-        if (lastSplitterPosition > 0) {
-            lastSplitterPosition = 0;
-            [toggleDetailsButton setImage: [NSImage imageNamed: @"hide"]];
-        }
-    }
-
-    return proposedPosition;
 }
 
 #pragma mark - KVO
@@ -633,6 +421,10 @@ extern void *UserDefaultsBindingContext;
     Category *category = assignment.category; // This is not the bank account for the statement, but the assigned category.
     BankAccount *account = assignment.statement.account;
     switch (action) {
+        case MenuActionShowDetails:
+            [statementsListView toggleStatementDetails];
+            break;
+
         case MenuActionAddStatement:
             if (category.accountNumber != nil) {
                 BankStatementController *controller = [[BankStatementController alloc] initWithAccount: (BankAccount *)category
@@ -723,15 +515,6 @@ extern void *UserDefaultsBindingContext;
         if (!newCategory.isBankAccount && newCategory != Category.nassRoot && newCategory != Category.catRoot) {
             editable = categoryAssignments.selectedObjects.count == 1;
         }
-
-        // value field
-        [valueField setEditable: editable];
-        if (editable) {
-            [valueField setDrawsBackground: YES];
-            [valueField setBackgroundColor: [NSColor whiteColor]];
-        } else {
-            [valueField setDrawsBackground: NO];
-        }
     }
 }
 
@@ -743,14 +526,6 @@ extern void *UserDefaultsBindingContext;
     [statementsListView unbind: @"selectedRows"];
     [categoryAssignments removeObserver: self forKeyPath: @"selectionIndexes"];
     categoryAssignments.content = nil;
-
-    [attachment1 unbind: @"reference"];
-    [attachment2 unbind: @"reference"];
-    [attachment3 unbind: @"reference"];
-    [attachment4 unbind: @"reference"];
-
-    tagViewPopup.datasource = nil;
-    tagsField.datasource = nil;
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObserver: self forKeyPath: @"colors"];

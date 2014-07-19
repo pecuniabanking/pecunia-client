@@ -933,7 +933,7 @@ Line 3</string>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="nMx-VY-N4o">
-                        <rect key="frame" x="383" y="0.0" width="15" height="58"/>
+                        <rect key="frame" x="382" y="0.0" width="16" height="58"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
@@ -1071,7 +1071,7 @@ Line 3</string>
                             </scroller>
                         </scrollView>
                         <imageView toolTip="Umsatz abgerechnet" horizontalHuggingPriority="251" verticalHuggingPriority="251" alphaValue="0.25" translatesAutoresizingMaskIntoConstraints="NO" id="RZc-dJ-mEV" userLabel="Is Settled Indicator">
-                            <rect key="frame" x="390" y="22" width="17" height="17"/>
+                            <rect key="frame" x="390" y="39" width="17" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="17" id="MxF-9Q-pLF"/>
@@ -1095,7 +1095,7 @@ Line 3</string>
                         <constraint firstAttribute="height" constant="60" id="Doo-qC-piU"/>
                         <constraint firstAttribute="bottom" secondItem="Kqp-vf-DAe" secondAttribute="bottom" constant="1" id="FvO-G3-lnr"/>
                         <constraint firstItem="Kqp-vf-DAe" firstAttribute="leading" secondItem="EIF-RJ-VhE" secondAttribute="leading" constant="11" id="VLp-z1-ZTp"/>
-                        <constraint firstItem="RZc-dJ-mEV" firstAttribute="top" secondItem="EIF-RJ-VhE" secondAttribute="top" constant="21" id="Yq6-pd-9xX"/>
+                        <constraint firstItem="RZc-dJ-mEV" firstAttribute="top" secondItem="EIF-RJ-VhE" secondAttribute="top" constant="4" id="Yq6-pd-9xX"/>
                         <constraint firstItem="Kqp-vf-DAe" firstAttribute="top" secondItem="EIF-RJ-VhE" secondAttribute="top" constant="1" id="auH-h4-qJg"/>
                         <constraint firstAttribute="trailing" secondItem="RZc-dJ-mEV" secondAttribute="trailing" constant="8" id="mNq-pc-ncp"/>
                     </constraints>
@@ -1173,8 +1173,8 @@ Line 3</string>
                             </contentFilters>
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyUpOrDown" image="edit-large" id="Tza-n8-IOn"/>
                         </imageView>
-                        <imageView toolTip="Vorläufiger Umsatz" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Jd4-8H-73H" userLabel="Preliminary Indicator">
-                            <rect key="frame" x="391" y="4" width="16" height="16"/>
+                        <imageView toolTip="Stornierter Umsatz" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Jd4-8H-73H" userLabel="Preliminary Indicator">
+                            <rect key="frame" x="391" y="3" width="16" height="16"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="F6D-JB-bNG"/>
@@ -1189,10 +1189,10 @@ Line 3</string>
                                     </configuration>
                                 </ciFilter>
                             </contentFilters>
-                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyUpOrDown" image="icon96-1" id="PAj-yo-F02"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyUpOrDown" image="icon66-1" id="PAj-yo-F02"/>
                         </imageView>
                         <imageView toolTip="Neuer Umsatz" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rHU-z4-DIm" userLabel="New Transaction Indicator">
-                            <rect key="frame" x="391" y="36" width="16" height="16"/>
+                            <rect key="frame" x="391" y="38" width="16" height="16"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="Hc8-w1-PnM"/>
@@ -1205,11 +1205,11 @@ Line 3</string>
                         <constraint firstAttribute="height" constant="60" id="0m5-Gl-kJ8"/>
                         <constraint firstItem="c3d-EU-JPc" firstAttribute="top" secondItem="eTq-jf-pUF" secondAttribute="top" constant="3" id="2Aq-fq-zr8"/>
                         <constraint firstItem="LWN-46-phW" firstAttribute="leading" secondItem="TJE-00-gPL" secondAttribute="trailing" constant="8" id="2zK-OP-8uk"/>
-                        <constraint firstItem="rHU-z4-DIm" firstAttribute="top" secondItem="eTq-jf-pUF" secondAttribute="top" constant="8" id="60F-ah-Ypv"/>
+                        <constraint firstItem="rHU-z4-DIm" firstAttribute="top" secondItem="eTq-jf-pUF" secondAttribute="top" constant="6" id="60F-ah-Ypv"/>
                         <constraint firstItem="TJE-00-gPL" firstAttribute="leading" secondItem="c3d-EU-JPc" secondAttribute="leading" id="GM1-W4-65S"/>
-                        <constraint firstItem="Y9e-x7-k8R" firstAttribute="top" secondItem="rHU-z4-DIm" secondAttribute="bottom" id="GyP-Dr-4uC"/>
+                        <constraint firstItem="Y9e-x7-k8R" firstAttribute="top" secondItem="rHU-z4-DIm" secondAttribute="bottom" constant="2" id="GyP-Dr-4uC"/>
                         <constraint firstItem="c3d-EU-JPc" firstAttribute="leading" secondItem="eTq-jf-pUF" secondAttribute="leading" constant="12" id="JIa-yB-vx9"/>
-                        <constraint firstItem="Jd4-8H-73H" firstAttribute="top" secondItem="Y9e-x7-k8R" secondAttribute="bottom" id="JeO-b3-Ocy"/>
+                        <constraint firstItem="Jd4-8H-73H" firstAttribute="top" secondItem="Y9e-x7-k8R" secondAttribute="bottom" constant="1" id="JeO-b3-Ocy"/>
                         <constraint firstItem="TJE-00-gPL" firstAttribute="baseline" secondItem="LWN-46-phW" secondAttribute="baseline" id="MLi-Ak-Ejs"/>
                         <constraint firstItem="TJE-00-gPL" firstAttribute="top" secondItem="eTq-jf-pUF" secondAttribute="top" constant="22" id="QKb-xk-mY8"/>
                         <constraint firstAttribute="width" constant="415" id="Vpx-7f-7Tc"/>
@@ -1298,11 +1298,11 @@ Line 3</string>
                 <outlet property="dateSlider" destination="qzw-vj-Dkd" id="Vrf-Um-tVI"/>
                 <outlet property="dateStepper" destination="n2e-fc-zQb" id="3Mi-lZ-Y5q"/>
                 <outlet property="isNewIndicator" destination="rHU-z4-DIm" id="fsr-DF-2zp"/>
+                <outlet property="isReversalIndicator" destination="Jd4-8H-73H" id="MwV-9F-mgW"/>
                 <outlet property="isSettledIndicator" destination="RZc-dJ-mEV" id="jEU-w2-RH8"/>
                 <outlet property="manualIndicator" destination="Y9e-x7-k8R" id="ylk-53-eCL"/>
                 <outlet property="nassValueField" destination="uzi-YS-vKj" id="HtG-mT-t38"/>
                 <outlet property="notesTextView" destination="K6c-5A-tNh" id="1jH-Xl-744"/>
-                <outlet property="preliminaryIndicator" destination="Jd4-8H-73H" id="nxv-vn-KLE"/>
                 <outlet property="sepaInfoTextView" destination="7XJ-6g-QrA" id="4Cc-GM-Loa"/>
                 <outlet property="sequenceTypeImage" destination="CVN-a9-xwb" id="Ykl-gP-1Uz"/>
                 <outlet property="statementTags" destination="NhK-1M-IZ8" id="FCT-vz-VGI"/>
@@ -1368,8 +1368,8 @@ Line 3</string>
     <resources>
         <image name="edit-large" width="64" height="64"/>
         <image name="gray-hatch2" width="34" height="34"/>
+        <image name="icon66-1" width="128" height="128"/>
         <image name="icon87-1" width="128" height="128"/>
-        <image name="icon96-1" width="128" height="128"/>
         <image name="new-small" width="16" height="16"/>
         <image name="sequence-type-repeat" width="32" height="32"/>
         <image name="settled" width="17" height="17"/>

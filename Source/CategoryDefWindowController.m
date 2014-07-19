@@ -43,6 +43,7 @@
 @synthesize timeSliceManager;
 @synthesize selectedCategory;
 @synthesize hideAssignedValues;
+@synthesize mainView;
 
 - (id)init
 {

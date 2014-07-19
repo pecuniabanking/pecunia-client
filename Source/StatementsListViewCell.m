@@ -326,20 +326,29 @@ extern NSDictionary    *whiteAttributes;
 
     NSMenuItem *item = [menu addItemWithTitle: NSLocalizedString(@"AP238", nil)
                                        action: @selector(menuAction:)
-                                keyEquivalent: @""];
+                                keyEquivalent: @"n"];
+    item.keyEquivalentModifierMask = NSCommandKeyMask;
     item.tag = MenuActionAddStatement;
+
+    [menu addItem: NSMenuItem.separatorItem];
+
+    item = [menu addItemWithTitle: NSLocalizedString(@"AP240", nil)
+                           action: @selector(menuAction:)
+                    keyEquivalent: @" "];
+    item.keyEquivalentModifierMask = 0;
+    item.tag = MenuActionShowDetails;
 
     item = [menu addItemWithTitle: NSLocalizedString(@"AP233", nil)
                            action: singleSelection ? @selector(menuAction:) : nil
-                    keyEquivalent: @""];
+                    keyEquivalent: @"s"];
     item.tag = MenuActionSplitStatement;
 
     item = [menu addItemWithTitle: NSLocalizedString(@"AP234", nil)
                            action: @selector(menuAction:)
-                    keyEquivalent: @""];
+                    keyEquivalent: [NSString stringWithFormat: @"%c", NSBackspaceCharacter]];
     item.tag = MenuActionDeleteStatement;
 
-    [menu addItem: [NSMenuItem separatorItem]];
+    [menu addItem: NSMenuItem.separatorItem];
 
     __block BOOL allRead = YES;
     [listView.selectedRows enumerateIndexesUsingBlock: ^(NSUInteger index, BOOL *stop) {
